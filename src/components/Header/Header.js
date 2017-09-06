@@ -1,10 +1,9 @@
-import React, { Component } from 'react'
-import { Input, Menu, Breadcrumb, Dropdown } from 'semantic-ui-react'
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Input, Menu, Breadcrumb, Dropdown } from 'semantic-ui-react';
+import { Link } from 'react-router';
 
 class Header extends Component {
-    constructor(props) {
-        super(props);
-    }
 
     render() {
         return (
@@ -27,10 +26,11 @@ class Header extends Component {
                     <Menu.Item>
                         Inbox
                     </Menu.Item>
-                    <Dropdown item text='Username'>
+                    <Dropdown item text={this.props.username}>
                         <Dropdown.Menu>
-                            <Dropdown.Item>Setting</Dropdown.Item>
-                            <Dropdown.Item>Logout</Dropdown.Item>
+                            <Dropdown.Item as={Link} to='/settings'>Setting</Dropdown.Item>
+                            <Dropdown.Divider />
+                            <Dropdown.Item as={Link} to='/signout'>Logout</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
                 </Menu.Menu>
@@ -39,4 +39,11 @@ class Header extends Component {
     }
 }
 
-export default Header;
+function mapStateToProps(state) {
+    return {
+      authenticated: state.auth.authenticated,
+      username: state.auth.username
+    };
+  }
+  
+export default connect(mapStateToProps)(Header);
