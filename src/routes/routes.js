@@ -10,7 +10,7 @@ import Signout from '../components/Auth/Signout';
 export default (
     <Route path="/" component={App}>
         <IndexRoute component={RequireAuth(MainPanel)} />
-        <Route path="settings" component={Settings} />
+        <Route path="settings" component={RequireAuth(Settings)} />
         <Route path="signin" component={Signin} />
         <Route path="signout" component={Signout} />
     </Route>

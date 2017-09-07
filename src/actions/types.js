@@ -5,3 +5,5 @@ export const FETCH_MESSAGE = 'fetch_message';
 export const FETCH_USERS = 'fetch_users';
 export const USERS_ERROR = 'users_error';
 export const NEW_USER = 'new_user';
+export const DELETE_USER = 'delete_user';
+export const UPDATE_USER = 'update_user';

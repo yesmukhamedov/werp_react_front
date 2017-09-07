@@ -7,7 +7,9 @@ import {
     AUTH_ERROR,
     FETCH_USERS,
     USERS_ERROR,
-    NEW_USER
+    NEW_USER,
+    DELETE_USER,
+    UPDATE_USER
 } from './types';
 
 export function signinUser1({username, password}) {    
@@ -32,7 +34,7 @@ export function signinUser1({username, password}) {
                 } else if(error.stack) {
                     Promise.resolve({ error }).then(response => dispatch(authError(response.error.message)))                    
                 } 
-            });    
+            });
     }
 }
 
@@ -61,7 +63,7 @@ export function signupUser({username, password, firstName, lastName, profile}) {
                 // - save the JWT token
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('username', username);
-                // - redirect to the route './feature'
+                // - redirect to the route './'
                 browserHistory.push('/');
             })
             .catch(error => {
@@ -74,36 +76,48 @@ export function signupUser({username, password, firstName, lastName, profile}) {
     }    
 }
 
+export function updateUser({username, password, firstName, lastName, profile}, id, contactId) {
+    return function(dispatch) {
+        const user = {userID: id, username, password, contactId, profileId: profile};
+        const contact = {firstName, lastName, contactID: contactId};
+        axios.put(`${ROOT_URL}/users/${id}`, {user, contact})
+            .then(response =>{
+                dispatch({
+                    type: UPDATE_USER,
+                    payload: "Successfully updated user: " + username                    
+                });
+            })
+            .catch(error => {
+                const msg = "Update user error. ";
+                if(error.response) {
+                    dispatch(usersError(msg + error.response.data.message))
+                } else {
+                    Promise.resolve({ error }).then(response => dispatch(usersError(msg + response.error.message)))  
+                }                
+            });
+    }    
+}
+
 export function addUser({username, password, firstName, lastName, profile}) {
     return function(dispatch) {
         const user = {username, password, profileId: profile};
         const contact = {firstName, lastName};
         axios.post(`${ROOT_URL}/signup`, {user, contact})
             .then(response =>{
-                dispatch(newUser(username));
+                dispatch({
+                    type: NEW_USER,
+                    payload: "Successfully added new user: " + username
+                });
             })
             .catch(error => {
+                const msg = "Add user error. ";
                 if(error.response) {
-                    dispatch(authError(error.response.data.message))
+                    dispatch(usersError(msg + error.response.data.message))
                 } else {
-                    Promise.resolve({ error }).then(response => dispatch(authError(response.error.message)))  
+                    Promise.resolve({ error }).then(response => dispatch(usersError(msg + response.error.message)))  
                 }                
             });
     }    
-}
-
-export function authUser(username) {
-    return {
-        type: AUTH_USER,
-        payload: username
-    };
-}
-
-export function authError(error) {
-    return {
-        type: AUTH_ERROR,
-        payload: error
-    };
 }
 
 export function signoutUser() {
@@ -125,14 +139,38 @@ export function fetchUsers() {
                 });
             })
             .catch(error => {
+                const msg = "Can't fetch all users. "
                 if(error.response) {
-                    dispatch(usersError(error.response.data.message))
+                    dispatch(usersError(msg + error.response.data.message))
                 } else {
-                    Promise.resolve({ error }).then(response => dispatch(usersError(response.error.message)))  
+                    Promise.resolve({ error }).then(response => dispatch(usersError(msg + response.error.message)))  
                 }    
                      
             });
     }        
+}
+
+export function deleteUser(id) {
+    return function(dispatch) {
+        axios.delete(`${ROOT_URL}/users/${id}`)
+            .then(response =>{
+                const msg = "Successfully deleted user: " + response.data.username;
+                dispatch({
+                    type: DELETE_USER,
+                    payload: msg
+                });
+            })
+            .catch(error => {
+                const msg = "User delete error. "
+                if(error.response) {
+                    dispatch(usersError(msg + error.response.data.message))
+                } else {
+                    Promise.resolve({ error }).then(response => dispatch(usersError(msg + response.error.message)))  
+                }    
+                    
+            });
+    }
+    
 }
 
 export function usersError(error) {
@@ -142,9 +180,16 @@ export function usersError(error) {
     };
 }
 
-export function newUser(username) {
+export function authUser(username) {
     return {
-        type: NEW_USER,
+        type: AUTH_USER,
         payload: username
+    };
+}
+
+export function authError(error) {
+    return {
+        type: AUTH_ERROR,
+        payload: error
     };
 }

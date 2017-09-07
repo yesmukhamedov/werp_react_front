@@ -1,0 +1,9 @@
+.signForm {
+    padding: 15px;
+    width: 30%; 
+    margin: auto;
+}
+
+.error {
+    color: red;
+}
