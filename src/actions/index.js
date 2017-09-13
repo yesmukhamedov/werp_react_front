@@ -9,7 +9,8 @@ import {
     USERS_ERROR,
     NEW_USER,
     DELETE_USER,
-    UPDATE_USER
+    UPDATE_USER,
+    CHANGE_LANGUAGE
 } from './types';
 
 export function signinUser1({username, password}) {    
@@ -192,4 +193,13 @@ export function authError(error) {
         type: AUTH_ERROR,
         payload: error
     };
+}
+
+export function changeLanguage(lang) {
+    return function(dispatch) {
+        dispatch({
+            type: CHANGE_LANGUAGE,
+            payload: lang
+        });
+    }
 }

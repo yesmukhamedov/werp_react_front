@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Input, Menu, Breadcrumb, Dropdown } from 'semantic-ui-react';
 import { Link } from 'react-router';
+import LanguageSwitcher from './LanguageSwitcher';
 
 class Header extends Component {
 
@@ -26,6 +27,7 @@ class Header extends Component {
                     <Menu.Item>
                         Inbox
                     </Menu.Item>
+                    <LanguageSwitcher />
                     <Dropdown item text={this.props.username}>
                         <Dropdown.Menu>
                             <Dropdown.Item as={Link} to='/settings'>Setting</Dropdown.Item>

@@ -1,0 +1,10 @@
+{ 
+  "en": 
+  {
+    "Header.greeting": "Welcome page"
+  },
+  "ru": 
+  {
+    "Header.greeting": "Привет"
+  } 
+}

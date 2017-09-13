@@ -4,9 +4,10 @@
   "private": true,
   "dependencies": {
     "axios": "^0.16.2",
+    "cross-env": "^5.0.5",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
-    "react-intl": "^2.3.0",
+    "react-intl": "^2.4.0",
     "react-intl-redux": "^0.6.0",
     "react-redux": "^5.0.6",
     "react-router": "^2.8.1",
@@ -21,6 +22,13 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "translate": "cross-env NODE_ENV=production babel ./src > NUL",
+    "build:langs": "cross-env NODE_ENV=production ./node_modules/.bin/babel-node src/utils/translator.js"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-react-intl": "^2.3.1",
+    "babel-preset-react-app": "^3.0.2"
   }
 }

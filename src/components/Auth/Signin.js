@@ -22,7 +22,7 @@ class Signin extends Component {
   }
 
   render() {
-    const { handleSubmit, pristine, reset, submitting} = this.props;
+    const { handleSubmit } = this.props;
 
     return(
       <div className='login-form'>
