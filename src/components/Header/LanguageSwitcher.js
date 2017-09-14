@@ -3,25 +3,26 @@ import {connect} from 'react-redux';
 import * as actions from '../../actions';
 import { Dropdown } from 'semantic-ui-react';
 
-const allLanguages = [
-    { code: 'en', flag:'us', name: 'English'},
-    { code: 'ru', flag:'ru', name: 'Русский'}
-  ]
-
-const options = allLanguages.map(language => {
-    return {key:language.code, value:language.code, flag:language.flag, text:language.name}
-});
+const options = [{key:'en', value:'en', flag:'us', text:'English'},
+                 {key:'ru', value:'ru', flag:'ru', text:'Русский'}];
 
 class LanguageSwitcher extends Component {
+
     handleChange = (e, { value }) => {
         this.props.changeLanguage(value);
     }
 
     render () {
       return (
-        <Dropdown item defaultValue={options[0].value} options={options} onChange={this.handleChange}/>
+        <Dropdown item  value={this.props.locales.lang} options={options} onChange={this.handleChange}/>
       );
     }
 }
 
-export default connect(null, actions)(LanguageSwitcher);
+function mapStateToProps(state) {
+    return {
+        locales: state.locales
+    };
+}
+
+export default connect(mapStateToProps, actions)(LanguageSwitcher);
