@@ -9,9 +9,10 @@ import {
     USERS_ERROR,
     NEW_USER,
     DELETE_USER,
-    UPDATE_USER,
-    CHANGE_LANGUAGE
+    UPDATE_USER
 } from './types';
+
+import jwt from 'jwt-simple';
 
 export function signinUser1({username, password}) {    
     return function(dispatch) {
@@ -45,9 +46,15 @@ export function signinUser({username, password}) {
         // - update state to indicate user is authenticated
         dispatch(authUser(username));
         // - save the JWT token
-        const token = "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1MDQ3MDQ4NTMsInN1YiI6IjEyMyJ9.2pU_cZNy0dCsIoB0n-csDdoRNwcU8YxrWZZVg8s9lVg";
+        const token = "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1MDU0NzM3NTksInN1YiI6IjEyMyJ9.ktFsanexX3N3HBgg0ssqbRDD3yHXlJIkf8HVpFvAfNA";
         localStorage.setItem('token', token);
         localStorage.setItem('username', username);
+
+        // test
+        //const tokenPayload = jwt.decode(token, 'secret');
+        //console.log('tokenPayload:', tokenPayload);
+        // end test
+
         // - redirect to the route './feature'
         browserHistory.push('/');
     }
@@ -193,13 +200,4 @@ export function authError(error) {
         type: AUTH_ERROR,
         payload: error
     };
-}
-
-export function changeLanguage(lang) {
-    return function(dispatch) {
-        dispatch({
-            type: CHANGE_LANGUAGE,
-            payload: lang
-        });
-    }
 }

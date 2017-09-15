@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import * as actions from '../../actions';
-import { Button,  Icon, Table,  Container, Header, Confirm } from 'semantic-ui-react';
+import { Button,  Icon, Table,  Container, Header } from 'semantic-ui-react';
 import UserModal from './UserModal';
 import Notification from './Notification';
 import Confirmation from './Confirmation';
@@ -20,7 +20,9 @@ class Settings extends Component {
 
     handleEditModal(e){
         const id = e.target.getAttribute('id');
+        // eslint-disable-next-line
         this.props.users.userList.map((userInfo) => {
+            // eslint-disable-next-line
             if(id == userInfo.user.userID) {
                 this.setState({ 
                     modalOpen: true,

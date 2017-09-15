@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 import { Field, reduxForm } from 'redux-form';
+import { defineMessages, intlShape, injectIntl } from 'react-intl';
 import * as actions from '../../actions';
 import logo from '../../assets/images/auro.jpg';
+import LanguageSwitcher from './../Header/LanguageSwitcher';
 
 class Signin extends Component {
   handleFormSubmit({ username, password }) {
@@ -21,16 +23,17 @@ class Signin extends Component {
     }
   }
 
+  inputField = ({input, icon, type}) => {
+    const {formatMessage} = this.props.intl;
+    const placeholder = (input.name === 'username') ? messages.username : messages.password;
+    return <Form.Input {...input} fluid icon={icon} iconPosition='left' placeholder={formatMessage(placeholder)} required/>
+  }  
+
   render() {
     const { handleSubmit } = this.props;
-
+    const {formatMessage} = this.props.intl;
     return(
       <div className='login-form'>
-        {/*
-          Heads up! The styles below are necessary for the correct render of this example.
-          You can do same with CSS, the main idea is that all the elements up to the `Grid`
-          below must have a height of 100%.
-        */}
         <style>{` body > div, body > div > div, body > div > div > div.login-form { height: 100%;}`}</style>
         <Grid
           textAlign='center'
@@ -38,22 +41,27 @@ class Signin extends Component {
           verticalAlign='middle'
         >
           <Grid.Column style={{ maxWidth: 450 }}>
-            <Header as='h2' color='blue' textAlign='center'>
+            <Header as='h2' color='teal' textAlign='center'>
               <Image src={logo} />
-              {' '}Log-in to your account
+              {' '}{formatMessage(messages.test)}
             </Header>
             <Form size='large' onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
               <Segment stacked>
                 <Field
                   name="username"
-                  component={usernameInput}
+                  icon="user"
+                  type="text"
+                  component={this.inputField}
                 />
                 <Field
                   name="password"
-                  component={passwordInput}
-                />                
+                  icon="lock"
+                  type="password"
+                  component={this.inputField}
+                />
+                <LanguageSwitcher type="signin"/>
                 {this.renderAlert()}
-                <Button color='blue' fluid size='large' type="submit">Login</Button>
+                <Button color='teal' fluid size='large' type="submit">{formatMessage(messages.login)}</Button>
               </Segment>
             </Form>
           </Grid.Column>
@@ -63,19 +71,35 @@ class Signin extends Component {
   }
 }
 
-const usernameInput = ({input}) => 
-    <Form.Input {...input} fluid icon='user' iconPosition='left' placeholder='Username' required/>
-
-const passwordInput = ({input}) => 
-    <Form.Input {...input} fluid icon='lock' iconPosition='left' placeholder='Password' type='password' required/> 
-  
+const messages = defineMessages({
+  test: {
+    id: 'Auth.Signin.Header', 
+    defaultMessage: 'Log-in to your account'
+  },
+  username: {
+      id: 'Auth.Signin.Username',
+      defaultMessage: 'Username'
+  },
+  password: {
+      id: 'Auth.Signin.Password',
+      defaultMessage: 'Password'
+  },
+  login: {
+      id: 'Auth.Signin.Login',
+      defaultMessage: 'Login'
+  }
+}); 
 
 function mapStateToProps(state) {
   return  {errorMessage: state.auth.error};
 }
 
+Signin.propTypes = {
+  intl: intlShape.isRequired
+};
+
 Signin = reduxForm({
   form: 'signin'
 })(Signin);
 
-export default connect(mapStateToProps, actions)(Signin);
+export default connect(mapStateToProps, actions)(injectIntl(Signin));

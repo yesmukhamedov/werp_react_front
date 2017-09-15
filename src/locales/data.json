@@ -1,10 +1,23 @@
 { 
-  "en": 
-  {
+  "en": {
+    "Auth.Signin.Header": "Log-in to your account",
+    "Auth.Signin.Username": "Username",
+    "Auth.Signin.Password": "Password",
+    "Auth.Signin.Login": "Login",
     "Header.greeting": "Welcome page"
   },
-  "ru": 
-  {
-    "Header.greeting": "Привет"
+  "ru": {
+    "Auth.Signin.Header": "Войдите в свой аккаунт",
+    "Auth.Signin.Username": "Имя пользователя",
+    "Auth.Signin.Password": "Пароль",
+    "Auth.Signin.Login": "Войти",
+    "Header.greeting": "Приветственная страница"
+  },
+  "kk": {
+    "Auth.Signin.Header": "Аккаунтыңызға кіріңіз",
+    "Auth.Signin.Username": "Пайдаланушы аты",
+    "Auth.Signin.Password": "Пароль",
+    "Auth.Signin.Login": "Кіру",
+    "Header.greeting": "Сәлемдесу беті"
   } 
 }

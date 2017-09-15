@@ -1,0 +1,18 @@
+[
+  {
+    "id": "Auth.Signin.Header",
+    "defaultMessage": "Log-in to your account"
+  },
+  {
+    "id": "Auth.Signin.Username",
+    "defaultMessage": "Username"
+  },
+  {
+    "id": "Auth.Signin.Password",
+    "defaultMessage": "Password"
+  },
+  {
+    "id": "Auth.Signin.Login",
+    "defaultMessage": "Login"
+  }
+]

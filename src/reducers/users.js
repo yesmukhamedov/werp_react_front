@@ -9,6 +9,7 @@ import {
 const INITIAL_STATE = { newUserAdded: false, deleteUser: false, updateUser: false, message: '', userList:[], showMsg: false, msgType: false };
 
 export default function(state=INITIAL_STATE, action) {
+    // eslint-disable-next-line
     switch (action.type) {
         case FETCH_USERS:
             return {...state, newUserAdded: false, deleteUser: false, updateUser: false, userList: [...action.payload.data]};
