@@ -14,7 +14,7 @@ import {
 
 import jwt from 'jwt-simple';
 
-export function signinUser1({username, password}) {    
+export function signinUser({username, password}) {    
     return function(dispatch) {
         // Submit username/password to the server
         axios.post(`${ROOT_URL}/signin`, {username, password})
@@ -27,6 +27,11 @@ export function signinUser1({username, password}) {
                 localStorage.setItem('username', username);
                 // - redirect to the route './feature'
                 browserHistory.push('/');
+
+                 // test
+                const tokenPayload = jwt.decode(response.data.token, 'secret');
+                console.log('tokenPayload:', tokenPayload);
+                // end test
             })
             .catch(error => {
                 // If request is bad...
@@ -40,19 +45,19 @@ export function signinUser1({username, password}) {
     }
 }
 
-export function signinUser({username, password}) {  
+export function signinUser1({username, password}) {  
     return function(dispatch) {
         // If request is good...
         // - update state to indicate user is authenticated
         dispatch(authUser(username));
         // - save the JWT token
-        const token = "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1MDU0NzM3NTksInN1YiI6IjEyMyJ9.ktFsanexX3N3HBgg0ssqbRDD3yHXlJIkf8HVpFvAfNA";
+        const token = "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1MDU0OTEyOTEsInN1YiI6IjEyMyJ9.85pSC-DCBnsI3yPNZBwsvfTWIwZQzabKbRMZoahpzCE";
         localStorage.setItem('token', token);
         localStorage.setItem('username', username);
 
         // test
-        //const tokenPayload = jwt.decode(token, 'secret');
-        //console.log('tokenPayload:', tokenPayload);
+        const tokenPayload = jwt.decode(token, 'secret');
+        console.log('tokenPayload:', tokenPayload);
         // end test
 
         // - redirect to the route './feature'
