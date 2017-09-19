@@ -1,10 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Input, Menu, Breadcrumb, Dropdown } from 'semantic-ui-react';
+import { Input, Menu, Breadcrumb, Dropdown, Label } from 'semantic-ui-react';
 import { Link } from 'react-router';
 import LanguageSwitcher from './LanguageSwitcher';
+import {fetchUnreadMessages} from "../../actions/inbox";
 
 class Header extends Component {
+
+    componentWillMount() {
+        if (this.props.authenticated) {
+            // TODO replace with valid user id
+            const userId = -1;
+            this.props.fetchUnreadMessages({userId});
+        }
+    }
 
     render() {
         return (
@@ -25,12 +34,12 @@ class Header extends Component {
 
                 <Menu.Menu position='right'>
                     <Menu.Item>
-                        Inbox
+                        Inbox<Label color='teal' circular>{this.props.unread}</Label>
                     </Menu.Item>
                     <LanguageSwitcher />
                     <Dropdown item text={this.props.username}>
                         <Dropdown.Menu>
-                            <Dropdown.Item as={Link} to='/settings'>Setting</Dropdown.Item>
+                            <Dropdown.Item as={Link} to='/settings'>Settings</Dropdown.Item>
                             <Dropdown.Divider />
                             <Dropdown.Item as={Link} to='/signout'>Logout</Dropdown.Item>
                         </Dropdown.Menu>
@@ -44,8 +53,9 @@ class Header extends Component {
 function mapStateToProps(state) {
     return {
       authenticated: state.auth.authenticated,
-      username: state.auth.username
+      username: state.auth.username,
+      unread: state.inbox.unread
     };
   }
   
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, {fetchUnreadMessages})(Header);
