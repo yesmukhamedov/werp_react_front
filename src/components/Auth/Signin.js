@@ -10,7 +10,7 @@ import LanguageSwitcher from './../Header/LanguageSwitcher';
 class Signin extends Component {
   handleFormSubmit({ username, password }) {
     // Need to do something to log user in
-    this.props.signinUser({ username, password });
+    this.props.signinUser({ username, password }, this.props.locales.lang);
   }
 
   renderAlert() {
@@ -26,7 +26,7 @@ class Signin extends Component {
   inputField = ({input, icon, type}) => {
     const {formatMessage} = this.props.intl;
     const placeholder = (input.name === 'username') ? messages.username : messages.password;
-    return <Form.Input {...input} fluid icon={icon} iconPosition='left' placeholder={formatMessage(placeholder)} required/>
+    return <Form.Input {...input} fluid icon={icon} iconPosition='left' type={type} placeholder={formatMessage(placeholder)} required/>
   }  
 
   render() {
@@ -91,7 +91,10 @@ const messages = defineMessages({
 }); 
 
 function mapStateToProps(state) {
-  return  {errorMessage: state.auth.error};
+  return  {
+    errorMessage: state.auth.error,
+    locales: state.locales
+  };
 }
 
 Signin.propTypes = {

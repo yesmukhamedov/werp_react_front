@@ -1,4 +1,5 @@
 import axios from 'axios';
+import jwt from 'jwt-simple';
 import {browserHistory} from 'react-router';
 import {ROOT_URL} from '../utils/constants';
 import {
@@ -12,12 +13,10 @@ import {
     UPDATE_USER
 } from './types';
 
-import jwt from 'jwt-simple';
-
-export function signinUser({username, password}) {    
+export function signinUser({username, password}, language) {    
     return function(dispatch) {
         // Submit username/password to the server
-        axios.post(`${ROOT_URL}/signin`, {username, password})
+        axios.post(`${ROOT_URL}/signin`, {username, password, language})
             .then(response => {
                 // If request is good...
                 // - update state to indicate user is authenticated
