@@ -8,7 +8,7 @@ export function fetchUnreadMessages({userId}) {
         axios
             .get(url)
             .then(response => {
-                console.log(`fetchUnreadMessages(${userId}): ${JSON.stringify(response)}`);
+                //console.log(`fetchUnreadMessages(${userId}): ${JSON.stringify(response)}`);
                 // If request is good...
                 // - TODO check whether response is successful
 
