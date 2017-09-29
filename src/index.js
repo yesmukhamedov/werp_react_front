@@ -7,17 +7,18 @@ import reduxThunk from 'redux-thunk';
 import routes from './routes/routes';
 import reducers from './reducers';
 import {AUTH_USER} from './actions/types';
+import ConnectedIntlProvider from './ConnectedIntlProvider';
+import JwtRefresher from './middlewares/JwtRefresher';
 import 'semantic-ui-css/semantic.min.css';
 import './index.css';
 import { addLocaleData } from 'react-intl';
 import en from 'react-intl/locale-data/en';
 import ru from 'react-intl/locale-data/ru';
 import kk from 'react-intl/locale-data/kk';
-import ConnectedIntlProvider from './ConnectedIntlProvider';
 
 addLocaleData([...en, ...ru, ...kk]);
 
-const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
+const createStoreWithMiddleware = applyMiddleware(JwtRefresher, reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers);
 
 const token = localStorage.getItem('token');

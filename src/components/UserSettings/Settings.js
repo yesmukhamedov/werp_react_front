@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import * as actions from '../../actions';
+import * as actions from '../../actions/auth';
 import { Button,  Icon, Table,  Container, Header } from 'semantic-ui-react';
 import UserModal from './UserModal';
 import Notification from './Notification';
