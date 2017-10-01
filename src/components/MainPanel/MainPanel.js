@@ -6,16 +6,7 @@ class MainPanel extends Component {
   render() {
     return (
       <div>
-          <Message success>
-             <Message.Header> <Icon name='attention' />
-              <strong>
-                <FormattedMessage
-                  id={ 'Header.greeting' }
-                  defaultMessage={ 'Welcome page' }
-                />  
-              </strong>
-             </Message.Header>          
-          </Message>
+          
       </div>
     );
   }

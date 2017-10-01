@@ -10,7 +10,7 @@ import AssignUserBranch from '../components/dit/userBranch/assign_user_branch';
 
 export default (
     <Route path="/" component={App}>
-        <IndexRoute component={RequireAuth(MainPanel)} />
+        <IndexRoute component={MainPanel} />
         <Route path="settings" component={RequireAuth(Settings)} />
         <Route path="signin" component={Signin} />
         <Route path="signout" component={Signout} />
