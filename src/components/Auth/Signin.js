@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Button, Form, Grid, Header, Image, Message, Segment } from 'semantic-ui-react';
 import { Field, reduxForm } from 'redux-form';
 import { defineMessages, intlShape, injectIntl } from 'react-intl';
-import * as actions from '../../actions';
+import * as actions from '../../actions/auth';
 import logo from '../../assets/images/auro.jpg';
 import LanguageSwitcher from './../Header/LanguageSwitcher';
 

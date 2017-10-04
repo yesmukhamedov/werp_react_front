@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import {connect} from 'react-redux';
-import * as actions from '../../actions';
+import * as actions from '../../actions/auth';
 import { Button, Header, Icon, Modal, Form } from 'semantic-ui-react';
 import './settings.css';
 
