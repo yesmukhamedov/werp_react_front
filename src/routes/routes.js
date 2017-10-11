@@ -6,7 +6,7 @@ import Settings from '../components/UserSettings/Settings';
 import RequireAuth from '../components/Auth/require_auth';
 import Signin from '../components/Auth/Signin';
 import Signout from '../components/Auth/Signout';
-import AssignUserBranch from '../components/dit/userBranch/assign_user_branch';
+import AssignUserBranch from '../dit/userBranch/components/assign_user_branch';
 
 export default (
     <Route path="/" component={App}>
