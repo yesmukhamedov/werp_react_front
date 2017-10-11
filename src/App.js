@@ -38,6 +38,10 @@ class App extends Component {
       return (
         <div className="wrapper">
           <Menu secondary attached="top">
+              <Menu.Item onClick={() => this.setState({ menuVisible: !this.state.menuVisible })} >
+                  <Icon name="sidebar" />Menu
+              </Menu.Item>
+
               <Menu.Item >
                   <Input action={{ type: 'submit', content: 'Go' }} placeholder='Navigate to...' />
               </Menu.Item>
@@ -68,8 +72,16 @@ class App extends Component {
               </Dropdown>
             </Menu.Menu>
           </Menu>
-          <TreeMenu />
-          {this.props.children}
+            <Sidebar.Pushable as={Segment} attached="bottom" >
+                <Sidebar as={Menu} animation="overlay" visible={this.state.menuVisible} icon="labeled" vertical>
+                    <TreeMenu/>
+                </Sidebar>
+                <Sidebar.Pusher>
+                    <Segment basic>
+                        {this.props.children}
+                    </Segment>
+                </Sidebar.Pusher>
+            </Sidebar.Pushable>
         </div>
       );
     } else {
