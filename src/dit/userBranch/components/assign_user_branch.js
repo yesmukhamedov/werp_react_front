@@ -34,8 +34,9 @@ class AssignUserBranch extends Component {
                         Search
                     </button> 
                 </div>
-                <UserList foundUsers={this.props.foundUsers}/>
+                <UserList foundUsers={this.props.foundUsers} />
                 <BukrsBranchList />
+                
             </div>
             </Container>
         

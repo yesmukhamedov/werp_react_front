@@ -13,34 +13,52 @@ class BukrsBranchList extends Component {
     }
 
     componentWillReceiveProps(nextProps){
-        this.setState(
-            prevState => ({userBranchList: [...this.state.userBranchList, this.props.userBranchList]})        
+        // console.log(nextProps.userBranchList);
+        // this.setState(userBranchList = nextProps.userBranchList;
+        // console.log(1);
+        this.setState(//{userBranchList : nextProps.userBranchList}
+            prevState => ({userBranchList: [...this.state.userBranchList, nextProps.userBranchList]})        
         );
-        console.log(this.state);
+        // console.log(2);
+        //  console.log(this.state);
+        // console.log(' zz');
     }
-    
     handleChangeCheckbox(event){
-     
+        // event.flagExists=true;
         const target = event.target;
         const name = target.name;
         const value = target.type === 'checkbox' ? target.checked : target.value;
-        this.props.userBranchList[name] = value;
-        console.log(target);
-    }
-    renderBukrsBranchList() {
-        console.log();
-        ;
-        return this.state.userBranchList[this.state.userBranchList.length-1].map((ub)=>{
-            
-            return (
-                <Table.Row key={ub.branchId}>
-                    <Table.Cell>{ub.bukrsName}</Table.Cell>
-                    <Table.Cell>{ub.branchName}</Table.Cell>
-                    <Table.Cell><input type="checkbox" checked={ub.booleanExists} onChange={this.handleChangeCheckbox} /></Table.Cell>
-                </Table.Row>
+        const varai = this.state.userBranchList[this.state.userBranchList.length-1];
+        varai[name].flagExists=value;
+        this.setState(
+                prevState => ({userBranchList: [...this.state.userBranchList, varai]})        
             );
 
-        })
+        // this.state.userBranchList[0] = varai;
+        // console.log(this.state);
+        // console.log('idx='+name);
+        // console.log('value='+value);
+    }
+    renderBukrsBranchList() {
+        
+        // console.log(this.state);
+        // console.log(' yy');
+        if (this.state.userBranchList[this.state.userBranchList.length-1])
+        {
+            // console.log(3333);
+            return this.state.userBranchList[this.state.userBranchList.length-1].map((ub,idx)=>{
+                // console.log(idx);
+                return (
+                    <Table.Row key={ub.branchId}>
+                        <Table.Cell>{ub.bukrsName}</Table.Cell>
+                        <Table.Cell>{ub.branchName}</Table.Cell>
+                        <Table.Cell><input type="checkbox" checked={ub.flagExists} name = {idx} onChange={this.handleChangeCheckbox} /></Table.Cell>
+                    </Table.Row>
+                );
+    
+            })
+        }
+        
 
         
     
@@ -52,7 +70,7 @@ class BukrsBranchList extends Component {
         return (
             <div className="bukrsBranch">
 
-                <Table striped compact collapsing selectable className="bukrsBranch">
+                <Table striped compact collapsing  className="bukrsBranch">
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell>Компания</Table.HeaderCell>

@@ -1,8 +1,11 @@
 .userList{
     display: inline;
-    
+    margin:0;
+    padding:0;
 }
 
 .bukrsBranch{
     display: inline;
+    margin:0;
+    padding:0;
 }
