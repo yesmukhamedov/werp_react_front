@@ -15,9 +15,9 @@ import {
 import { Link } from 'react-router';
 import LanguageSwitcher from './components/Header/LanguageSwitcher';
 import {fetchUnreadMessages} from "./actions/inbox";
+import {fetchTreeMenu} from "./actions/tree_menu";
 
 class App extends Component {
-
     constructor(props) {
         super(props);
         this.state = {menuVisible: false};
@@ -27,7 +27,8 @@ class App extends Component {
         if (this.props.authenticated) {
             // TODO replace with valid user id
             const userId = -1;
-            // this.props.fetchUnreadMessages({userId});
+            this.props.fetchUnreadMessages({userId});
+            this.props.fetchTreeMenu();
         }
     }
 
@@ -74,7 +75,7 @@ class App extends Component {
             </Menu>
             <Sidebar.Pushable as={Segment} attached="bottom" >
                 <Sidebar as={Menu} animation='overlay' visible={this.state.menuVisible} icon="labeled" vertical>
-                    <TreeMenu lang={this.props.lang} />
+                    <TreeMenu lang={this.props.lang} data={this.props.treeMenu}/>
                 </Sidebar>
                 <Sidebar.Pusher>
                     {this.props.children}
@@ -97,8 +98,9 @@ function mapStateToProps(state) {
         authenticated: state.auth.authenticated,
         username: state.auth.username,
         unread: state.inbox.unread,
-        lang: state.locales.lang
+        lang: state.locales.lang,
+        treeMenu: state.menu.tree
     };
 }
 
-export default connect(mapStateToProps, {fetchUnreadMessages})(App);
+export default connect(mapStateToProps, {fetchUnreadMessages, fetchTreeMenu})(App);

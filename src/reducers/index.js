@@ -5,6 +5,7 @@ import usersReducer from './users';
 import langReducer from './lang_reducer';
 import inboxReducer from './inbox';
 import ditUserBranchReducer from '../dit/userBranch/reducers/userBranch_reducer';
+import treeMenuReducer from './tree_menu';
 import {
   UNAUTH_USER
 } from '../actions/types';
@@ -15,7 +16,8 @@ const appReducer = combineReducers({
   users: usersReducer,
   locales: langReducer,
   ditUserBranch: ditUserBranchReducer,  
-  inbox: inboxReducer
+  inbox: inboxReducer,
+  menu: treeMenuReducer
 });
 
 const rootReducer = (state, action) => {
@@ -24,6 +26,6 @@ const rootReducer = (state, action) => {
   }
 
   return appReducer(state, action)
-}
+};
 
 export default rootReducer;

@@ -9,3 +9,4 @@ export const DELETE_USER = 'delete_user';
 export const UPDATE_USER = 'update_user';
 export const CHANGE_LANGUAGE = 'change_language';
 export const INBOX_UNREAD = 'inbox_unread';
+export const TREE_MENU = 'tree_menu';
