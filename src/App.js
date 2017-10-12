@@ -37,49 +37,47 @@ class App extends Component {
     if(token) {
       return (
         <div className="wrapper">
-          <Menu secondary attached="top">
-              <Menu.Item onClick={() => this.setState({ menuVisible: !this.state.menuVisible })} >
-                  <Icon name="sidebar" />Menu
-              </Menu.Item>
+            <Menu secondary attached="top">
+                <Menu.Item onClick={() => this.setState({ menuVisible: !this.state.menuVisible })} >
+                    <Icon name="sidebar" />Menu
+                </Menu.Item>
 
-              <Menu.Item >
-                  <Input action={{ type: 'submit', content: 'Go' }} placeholder='Navigate to...' />
-              </Menu.Item>
+                <Menu.Item >
+                    <Input action={{ type: 'submit', content: 'Go' }} placeholder='Navigate to...' />
+                </Menu.Item>
 
-            <Menu.Item >
-              <Breadcrumb size='small'>
-                <Breadcrumb.Section link>Home</Breadcrumb.Section>
-                <Breadcrumb.Divider icon='right chevron' />
-                <Breadcrumb.Section link>Registration</Breadcrumb.Section>
-                <Breadcrumb.Divider icon='right chevron' />
-                <Breadcrumb.Section active>Personal Information</Breadcrumb.Section>
-              </Breadcrumb>
-            </Menu.Item>
+                <Menu.Item >
+                    <Breadcrumb size='small'>
+                    <Breadcrumb.Section link>Home</Breadcrumb.Section>
+                    <Breadcrumb.Divider icon='right chevron' />
+                    <Breadcrumb.Section link>Registration</Breadcrumb.Section>
+                    <Breadcrumb.Divider icon='right chevron' />
+                    <Breadcrumb.Section active>Personal Information</Breadcrumb.Section>
+                    </Breadcrumb>
+                </Menu.Item>
 
-            <Menu.Menu position='right'>
-              <Menu.Item>
-                Inbox<Label color='teal' circular>{this.props.unread}</Label>
-              </Menu.Item>
+                <Menu.Menu position='right'>
+                    <Menu.Item>
+                    Inbox<Label color='teal' circular>{this.props.unread}</Label>
+                    </Menu.Item>
 
-                <LanguageSwitcher />
+                    <LanguageSwitcher />
 
-              <Dropdown item text={this.props.username}>
-                  <Dropdown.Menu>
-                      <Dropdown.Item as={Link} to='/settings'>Settings</Dropdown.Item>
-                      <Dropdown.Divider />
-                      <Dropdown.Item as={Link} to='/signout'>Logout</Dropdown.Item>
-                  </Dropdown.Menu>
-              </Dropdown>
-            </Menu.Menu>
-          </Menu>
+                    <Dropdown item text={this.props.username}>
+                        <Dropdown.Menu>
+                            <Dropdown.Item as={Link} to='/settings'>Settings</Dropdown.Item>
+                            <Dropdown.Divider />
+                            <Dropdown.Item as={Link} to='/signout'>Logout</Dropdown.Item>
+                        </Dropdown.Menu>
+                    </Dropdown>
+                </Menu.Menu>
+            </Menu>
             <Sidebar.Pushable as={Segment} attached="bottom" >
-                <Sidebar as={Menu} animation="overlay" visible={this.state.menuVisible} icon="labeled" vertical>
+                <Sidebar as={Menu} animation='push' visible={this.state.menuVisible} icon="labeled" vertical>
                     <TreeMenu/>
                 </Sidebar>
                 <Sidebar.Pusher>
-                    <Segment basic>
-                        {this.props.children}
-                    </Segment>
+                    {this.props.children}
                 </Sidebar.Pusher>
             </Sidebar.Pushable>
         </div>
@@ -87,7 +85,8 @@ class App extends Component {
     } else {
       return (          
         <div >
-            {this.props.children}
+            /* {this.props.children} */
+            expired token
         </div>
       );            
     } 

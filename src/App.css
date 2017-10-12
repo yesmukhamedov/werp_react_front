@@ -23,7 +23,7 @@
   to { transform: rotate(360deg); }
 }
 
-#wrapper{
+.wrapper {
   width: 100%;
   height: 100%;
 }
