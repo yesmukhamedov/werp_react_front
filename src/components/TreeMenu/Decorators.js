@@ -1,5 +1,3 @@
-'use strict';
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
@@ -39,12 +37,12 @@ Toggle.propTypes = {
     style: PropTypes.object
 };
 
-const Header = ({node, style, terminal}) => {
+const Header = ({node, style, terminal, lang}) => {
     return (
         <div style={style.base}>
-            <div style={style.title}>
+            <div style={style.title}>                
                 {
-                    terminal ? (<Link to={node.link}>{node.translations.ru}</Link>) : node.translations.ru
+                    terminal ? (<Link to={node.link}>{node.translations[this.a.lang]}</Link>) : node.translations[this.a.lang]
                 }
             </div>
         </div>
@@ -57,13 +55,12 @@ Header.propTypes = {
 
 class Container extends React.Component {
     render() {
-        const {style, decorators, terminal, onClick, node} = this.props;
+        const {style, decorators, terminal, onClick, node } = this.props;
         return (
                 <div onClick={onClick}
                     ref={ref => this.clickableRef = ref}
                     style={style.container}>
                     {this.renderToggle()}
-
                     <decorators.Header node={node}
                                     style={style.header}
                                     terminal={node.leaf} />

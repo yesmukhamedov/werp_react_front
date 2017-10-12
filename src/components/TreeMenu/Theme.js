@@ -1,18 +1,14 @@
-'use strict';
-
 export default {
     tree: {
         base: {
             listStyle: 'none',
-            backgroundColor: 'white',
             margin: 0,
             padding: 0,
             color: '#9DA5AB',
-            fontFamily: 'lucida grande ,tahoma,verdana,arial,sans-serif',
+            fontFamily: 'lucida grande,tahoma,verdana,arial,sans-serif',
             fontSize: '10px',
-            width: '200px',
-            border: '1px solid black',
-            
+            width: '250px',
+            textAlign: 'left'
         },
         node: {
             base: {
@@ -25,7 +21,7 @@ export default {
                 display: 'block'
             },
             activeLink: {
-                background: '#31363F'
+                background: 'red',
             },
             toggle: {
                 base: {
