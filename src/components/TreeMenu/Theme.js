@@ -2,7 +2,6 @@ export default {
     tree: {
         base: {
             listStyle: 'none',
-            backgroundColor: 'white',
             margin: 0,
             padding: 0,
             color: '#9DA5AB',
@@ -22,7 +21,7 @@ export default {
                 display: 'block'
             },
             activeLink: {
-                background: 'red'
+                background: 'red',
             },
             toggle: {
                 base: {

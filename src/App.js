@@ -73,8 +73,8 @@ class App extends Component {
                 </Menu.Menu>
             </Menu>
             <Sidebar.Pushable as={Segment} attached="bottom" >
-                <Sidebar as={Menu} animation='push' visible={this.state.menuVisible} icon="labeled" vertical>
-                    <TreeMenu/>
+                <Sidebar as={Menu} animation='overlay' visible={this.state.menuVisible} icon="labeled" vertical>
+                    <TreeMenu lang={this.props.lang} />
                 </Sidebar>
                 <Sidebar.Pusher>
                     {this.props.children}
@@ -85,8 +85,7 @@ class App extends Component {
     } else {
       return (          
         <div >
-            /* {this.props.children} */
-            expired token
+            {this.props.children}
         </div>
       );            
     } 
@@ -97,7 +96,8 @@ function mapStateToProps(state) {
     return {
         authenticated: state.auth.authenticated,
         username: state.auth.username,
-        unread: state.inbox.unread
+        unread: state.inbox.unread,
+        lang: state.locales.lang
     };
 }
 

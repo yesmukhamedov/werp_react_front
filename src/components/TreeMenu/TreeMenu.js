@@ -1759,9 +1759,7 @@ export default class TreeMenu extends Component {
         super(props)
         this.state = {}
 
-        this.onToggle = this
-            .onToggle
-            .bind(this)
+        this.onToggle = this.onToggle.bind(this)
     }
 
     onToggle(node, toggled) {
@@ -1787,6 +1785,7 @@ export default class TreeMenu extends Component {
     render() {
         return (
             <div className="tree-menu">
+                {Decorators.lang = this.props.lang}
                 <Treebeard
                     data={data}
                     style={Theme}
