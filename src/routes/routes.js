@@ -8,12 +8,30 @@ import Signin from '../components/Auth/Signin';
 import Signout from '../components/Auth/Signout';
 import AssignUserBranch from '../dit/userBranch/components/assign_user_branch';
 
-export default (
-    <Route path="/" component={App}>
-        <IndexRoute component={RequireAuth(MainPanel)} />
-        <Route path="settings" component={RequireAuth(Settings)} />
-        <Route path="signin" component={Signin} />
-        <Route path="signout" component={Signout} />
-        <Route path="dit/userBranch" component={AssignUserBranch} />
-    </Route>
-);
+const urlToComponent = {
+    'dit/userBranch': AssignUserBranch
+}
+
+
+
+
+export default (data) => {
+           console.log("HAPPY CASE", data)
+
+
+            return (
+                <Route path="/" component={App}>
+                    <IndexRoute component={RequireAuth(MainPanel)} />
+                    <Route path="settings" component={RequireAuth(Settings)} />
+                    <Route path="signin" component={Signin} />
+                    <Route path="signout" component={Signout} />
+                    {/* dynamically generated URLs */} 
+                    { data.map((el) => {
+                        return <Route path={`${data.url}`} component={urlToComponent[data.component]} />
+                    })}
+                    
+                </Route>
+            )
+   
+    
+    };

@@ -15,6 +15,11 @@ import { addLocaleData } from 'react-intl';
 import en from 'react-intl/locale-data/en';
 import ru from 'react-intl/locale-data/ru';
 import kk from 'react-intl/locale-data/kk';
+import axios from 'axios';
+import {ROOT_URL} from "./utils/constants";
+
+const promise = axios.get(`${ROOT_URL}/menu-tree`);
+
 
 addLocaleData([...en, ...ru, ...kk]);
 
@@ -28,10 +33,20 @@ if(token) {
   store.dispatch({type: AUTH_USER, payload: localStorage.getItem('username')});
 }
 
-ReactDOM.render(
-    <Provider store={store}>
-        <ConnectedIntlProvider>
-            <Router history={browserHistory} routes={routes} />
-        </ConnectedIntlProvider>
-    </Provider>, 
-    document.getElementById('root'));
+promise.then(({ data }) => {  
+    let resolvedRoutes = routes(data);
+
+    console.log('resolvedRoute', resolvedRoutes)
+
+    ReactDOM.render(
+        <Provider store={store}>
+            <ConnectedIntlProvider>
+                <Router history={browserHistory} routes={resolvedRoutes} />
+            </ConnectedIntlProvider>
+        </Provider>, 
+        document.getElementById('root'));
+})
+
+
+
+
