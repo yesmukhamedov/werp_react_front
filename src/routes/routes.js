@@ -7,31 +7,24 @@ import RequireAuth from '../components/Auth/require_auth';
 import Signin from '../components/Auth/Signin';
 import Signout from '../components/Auth/Signout';
 import AssignUserBranch from '../dit/userBranch/components/assign_user_branch';
+import NewServicePacketComponent from '../service/mainoperation/testTransaction/components/testComponent';
 
-const urlToComponent = {
-    'dit/userBranch': AssignUserBranch
+const getComponent = {
+    'NewServicePacketComponent': NewServicePacketComponent
 }
 
-
-
-
 export default (data) => {
-           console.log("HAPPY CASE", data)
-
-
-            return (
-                <Route path="/" component={App}>
-                    <IndexRoute component={RequireAuth(MainPanel)} />
-                    <Route path="settings" component={RequireAuth(Settings)} />
-                    <Route path="signin" component={Signin} />
-                    <Route path="signout" component={Signout} />
-                    {/* dynamically generated URLs */} 
-                    { data.map((el) => {
-                        return <Route path={`${data.url}`} component={urlToComponent[data.component]} />
-                    })}
-                    
-                </Route>
-            )
-   
-    
-    };
+    return (
+        <Route path="/" component={App}>
+            <IndexRoute component={RequireAuth(MainPanel)} />
+            <Route path="settings" component={RequireAuth(Settings)} />
+            <Route path="signin" component={Signin} />
+            <Route path="signout" component={Signout} />
+            <Route path="dit/userBranch" component={AssignUserBranch} />
+            {/* dynamically generated URLs */} 
+            {data.map((el) => {
+                return <Route path={`${el.url}`} component={getComponent[el.component]} key={el.url}/>
+            })}            
+        </Route>
+    )
+};

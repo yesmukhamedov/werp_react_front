@@ -18,7 +18,7 @@ import kk from 'react-intl/locale-data/kk';
 import axios from 'axios';
 import {ROOT_URL} from "./utils/constants";
 
-const promise = axios.get(`${ROOT_URL}/menu-tree`);
+const promise = axios.get(`${ROOT_URL}/routes`);
 
 
 addLocaleData([...en, ...ru, ...kk]);
@@ -35,9 +35,6 @@ if(token) {
 
 promise.then(({ data }) => {  
     let resolvedRoutes = routes(data);
-
-    console.log('resolvedRoute', resolvedRoutes)
-
     ReactDOM.render(
         <Provider store={store}>
             <ConnectedIntlProvider>
