@@ -1,11 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-<<<<<<< HEAD
-import { Link } from 'react-router';
-//import Radium from 'radium';
-=======
 import {Link} from 'react-router';
->>>>>>> f5369eb5ba13c76e0e250bcb66c677496d9ffc65
 import {VelocityComponent} from 'velocity-react';
 
 
@@ -94,11 +89,7 @@ class Container extends React.Component {
     }
 
     renderToggleDecorator() {
-<<<<<<< HEAD
-        const {style, decorators, node} = this.props;
-=======
         const {style, decorators, /*terminal,*/ node} = this.props;
->>>>>>> f5369eb5ba13c76e0e250bcb66c677496d9ffc65
 
         return <decorators.Toggle
             style={style.toggle}
