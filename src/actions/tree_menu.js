@@ -9,7 +9,6 @@ export function fetchTreeMenu() {
         axios
             .get(url)
             .then(response => {
-                //console.log(`fetchTreeMenu(): ${JSON.stringify(response)}`);
                 // If request is good...
                 // - TODO check whether response is successful
 

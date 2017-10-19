@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import Radium from 'radium';
+//import Radium from 'radium';
 import {VelocityComponent} from 'velocity-react';
 
 
@@ -55,7 +55,7 @@ Header.propTypes = {
 
 class Container extends React.Component {
     render() {
-        const {style, decorators, terminal, onClick, node } = this.props;
+        const {style, decorators, onClick, node } = this.props;
         return (
                 <div onClick={onClick}
                     ref={ref => this.clickableRef = ref}
@@ -85,7 +85,7 @@ class Container extends React.Component {
     }
 
     renderToggleDecorator() {
-        const {style, decorators, terminal, node} = this.props;
+        const {style, decorators, node} = this.props;
 
         return <decorators.Toggle 
                     style={style.toggle}

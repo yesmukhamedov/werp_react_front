@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import TreeMenu from './components/TreeMenu/TreeMenu'
+import TreeMenu from './components/TreeMenu/TreeMenu';
 import './App.css';
-
-import {
-    Dropdown,
-    Segment,
-    Menu,
-    Icon,
-    Sidebar,
-
-    Input, Breadcrumb, Label} from 'semantic-ui-react';
-
+import Signin from './components/Auth/Signin';
+import { Dropdown,Segment, Menu,Icon,Sidebar,
+         Input, Breadcrumb, Label} from 'semantic-ui-react';
 import { Link } from 'react-router';
 import LanguageSwitcher from './components/Header/LanguageSwitcher';
 import {fetchUnreadMessages} from "./actions/inbox";
@@ -26,6 +19,16 @@ class App extends Component {
     componentWillMount() {
         if (this.props.authenticated) {
             // TODO replace with valid user id
+            const userId = -1;
+            this.props.fetchUnreadMessages({userId});
+            this.props.fetchTreeMenu();
+        }
+    }
+
+    // dispatching an action based on state change
+    componentWillUpdate(nextProps, nextState) {
+        if ((nextProps.authenticated !== this.props.authenticated) && nextProps.refetch ) {            
+            // TODO replace with valid user id            
             const userId = -1;
             this.props.fetchUnreadMessages({userId});
             this.props.fetchTreeMenu();
@@ -84,10 +87,8 @@ class App extends Component {
         </div>
       );
     } else {
-      return (          
-        <div >
-            {this.props.children}
-        </div>
+      return (   
+        <Signin />
       );            
     } 
   }
@@ -99,7 +100,8 @@ function mapStateToProps(state) {
         username: state.auth.username,
         unread: state.inbox.unread,
         lang: state.locales.lang,
-        treeMenu: state.menu.tree
+        treeMenu: state.menu.tree,
+        refetch: state.menu.refetch
     };
 }
 

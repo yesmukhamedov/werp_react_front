@@ -1,15 +1,15 @@
 import React, {Component} from 'react'
 import {Treebeard} from 'react-treebeard'
-import {Link} from 'react-router';
-import {
-    Sidebar,
-    Segment,
-    Button,
-    Menu,
-    Image,
-    Icon,
-    Header
-} from 'semantic-ui-react'
+// import {Link} from 'react-router';
+// import {
+//     Sidebar,
+//     Segment,
+//     Button,
+//     Menu,
+//     Image,
+//     Icon,
+//     Header
+// } from 'semantic-ui-react'
 import Decorators from './Decorators'
 import Animations from './Animations'
 import Theme from './Theme'

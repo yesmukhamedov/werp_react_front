@@ -22,7 +22,7 @@ export function signinUser({username, password}, language) {
                 // - save the JWT token
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('username', username);
-                // - redirect to the route './feature'
+                // - redirect to the route '/'
                 browserHistory.push('/');
 
                  // test
