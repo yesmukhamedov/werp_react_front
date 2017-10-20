@@ -10,3 +10,10 @@ export const UPDATE_USER = 'update_user';
 export const CHANGE_LANGUAGE = 'change_language';
 export const INBOX_UNREAD = 'inbox_unread';
 export const TREE_MENU = 'tree_menu';
+
+/*
+* This action type is broadcasted after user clicks on the menu item.
+* As a payload, array of menu item nodes is passed.
+* e.g. ['Home', 'Registration', 'Personal Information']
+* */
+export const BREADCRUMB = 'breadcrumb';

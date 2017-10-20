@@ -35,7 +35,36 @@ class App extends Component {
         }
     }
 
-  render() {
+    renderBreadcrumb(translations) {
+        const len = translations ? translations.length : 0;
+        const lang = this.props.lang;
+        const items = [];
+        if (len > 0) {
+            const breadcrumb = translations.map(t => t[lang]);
+            if (len === 1) {
+                items.push([<Breadcrumb.Section active key='0'>{breadcrumb[0]}</Breadcrumb.Section>]);
+            } else {
+                items.push([<Breadcrumb.Section link key='0'>{breadcrumb[0]}</Breadcrumb.Section>]);
+            }
+            for (let i = 1; i < len; i++) {
+                const last = (i === len - 1);
+                items.push(<Breadcrumb.Divider icon='right chevron' key={'d' + i}/>);
+                if (last) {
+                    items.push(<Breadcrumb.Section active key={i}>{breadcrumb[i]}</Breadcrumb.Section>);
+                } else {
+                    items.push(<Breadcrumb.Section link key={i}>{breadcrumb[i]}</Breadcrumb.Section>);
+                }
+            }
+        }
+        return (
+            <Breadcrumb size='small'>
+                {items}
+            </Breadcrumb>
+        )
+    };
+
+
+    render() {
     const token = localStorage.getItem('token');
     // If we have a token, consider the user to be signed in
     if(token) {
@@ -51,13 +80,9 @@ class App extends Component {
                 </Menu.Item>
 
                 <Menu.Item >
-                    <Breadcrumb size='small'>
-                    <Breadcrumb.Section link>Home</Breadcrumb.Section>
-                    <Breadcrumb.Divider icon='right chevron' />
-                    <Breadcrumb.Section link>Registration</Breadcrumb.Section>
-                    <Breadcrumb.Divider icon='right chevron' />
-                    <Breadcrumb.Section active>Personal Information</Breadcrumb.Section>
-                    </Breadcrumb>
+                    <Menu.Item >
+                        {this.renderBreadcrumb(this.props.breadcrumb)}
+                    </Menu.Item>
                 </Menu.Item>
 
                 <Menu.Menu position='right'>
@@ -101,7 +126,8 @@ function mapStateToProps(state) {
         unread: state.inbox.unread,
         lang: state.locales.lang,
         treeMenu: state.menu.tree,
-        refetch: state.menu.refetch
+        refetch: state.menu.refetch,
+        breadcrumb: state.menu.breadcrumb
     };
 }
 
