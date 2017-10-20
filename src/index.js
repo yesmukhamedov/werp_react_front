@@ -7,7 +7,7 @@ import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
 import routes from './routes/routes';
 import reducers from './reducers';
-import {AUTH_USER} from './actions/types';
+import {AUTH_USER, ROUTES} from './actions/types';
 import ConnectedIntlProvider from './ConnectedIntlProvider';
 import JwtRefresher from './middlewares/JwtRefresher';
 import 'semantic-ui-css/semantic.min.css';
@@ -35,6 +35,10 @@ if(token) {
 }
 
 promise.then(({ data }) => {  
+    store.dispatch({
+        type: ROUTES, 
+        payload: data
+    });
     let resolvedRoutes = routes(data);
     ReactDOM.render(
         <Provider store={store}>
