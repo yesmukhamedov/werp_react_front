@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import TreeMenu from './components/TreeMenu/TreeMenu';
+import { Dropdown, Segment, Menu, Icon, Sidebar, Input, Breadcrumb, Label} from 'semantic-ui-react';
+import { Link } from 'react-router';
 import './App.css';
 import Signin from './components/Auth/Signin';
-import { Dropdown,Segment, Menu,Icon,Sidebar,
-         Input, Breadcrumb, Label} from 'semantic-ui-react';
-import { Link } from 'react-router';
+import TreeMenu from './components/TreeMenu/TreeMenu';
 import LanguageSwitcher from './components/Header/LanguageSwitcher';
 import {fetchUnreadMessages} from "./actions/inbox";
 import {fetchTreeMenu} from "./actions/tree_menu";
+import Header from './components/Header/Header';
 
 class App extends Component {
     constructor(props) {
@@ -41,46 +41,15 @@ class App extends Component {
     if(token) {
       return (
         <div className="wrapper">
-            <Menu secondary attached="top">
-                <Menu.Item onClick={() => this.setState({ menuVisible: !this.state.menuVisible })} >
-                    <Icon name="sidebar" />Menu
-                </Menu.Item>
+            <Header unread={this.props.unread} 
+                    toggleMenu={() => this.setState({ menuVisible: !this.state.menuVisible })} />
 
-                <Menu.Item >
-                    <Input action={{ type: 'submit', content: 'Go' }} placeholder='Navigate to...' />
-                </Menu.Item>
-
-                <Menu.Item >
-                    <Breadcrumb size='small'>
-                    <Breadcrumb.Section link>Home</Breadcrumb.Section>
-                    <Breadcrumb.Divider icon='right chevron' />
-                    <Breadcrumb.Section link>Registration</Breadcrumb.Section>
-                    <Breadcrumb.Divider icon='right chevron' />
-                    <Breadcrumb.Section active>Personal Information</Breadcrumb.Section>
-                    </Breadcrumb>
-                </Menu.Item>
-
-                <Menu.Menu position='right'>
-                    <Menu.Item>
-                    Inbox<Label color='teal' circular>{this.props.unread}</Label>
-                    </Menu.Item>
-
-                    <LanguageSwitcher />
-
-                    <Dropdown item text={this.props.username}>
-                        <Dropdown.Menu>
-                            <Dropdown.Item as={Link} to='/settings'>Settings</Dropdown.Item>
-                            <Dropdown.Divider />
-                            <Dropdown.Item as={Link} to='/signout'>Logout</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </Menu.Menu>
-            </Menu>
             <Sidebar.Pushable as={Segment} attached="bottom" >
                 <Sidebar as={Menu} animation='overlay' visible={this.state.menuVisible} icon="labeled" vertical>
-                    <TreeMenu lang={this.props.lang} data={this.props.treeMenu}/>
+                    <TreeMenu lang={this.props.lang} 
+                              data={this.props.treeMenu}/>
                 </Sidebar>
-                <Sidebar.Pusher>
+                <Sidebar.Pusher onClick={() => this.setState({...this.state, menuVisible: false})}>
                     {this.props.children}
                 </Sidebar.Pusher>
             </Sidebar.Pushable>

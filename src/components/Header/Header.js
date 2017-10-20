@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Input, Menu, Breadcrumb, Dropdown, Label } from 'semantic-ui-react';
+import { Input, Menu, Breadcrumb, Dropdown, Label, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router';
 import LanguageSwitcher from './LanguageSwitcher';
-import {fetchUnreadMessages} from "../../actions/inbox";
+import { fetchUnreadMessages } from "../../actions/inbox";
 
 class Header extends Component {
-
     componentWillMount() {
         if (this.props.authenticated) {
             // TODO replace with valid user id
@@ -16,37 +15,42 @@ class Header extends Component {
     }
 
     render() {
-        return (
-              <Menu fixed='top'>            
-                <Menu.Item >
-                  <Input action={{ type: 'submit', content: 'Go' }} placeholder='Navigate to...' />
-                </Menu.Item>
- 
-                <Menu.Item >
-                    <Breadcrumb size='small'>
+        return (<Menu secondary attached="top">
+                    <Menu.Item onClick={this.props.toggleMenu} >
+                        <Icon name="sidebar" />Menu
+                    </Menu.Item>
+
+                    <Menu.Item >
+                        <Input action={{ type: 'submit', content: 'Go' }} placeholder='Navigate to...' />
+                    </Menu.Item>
+
+                    <Menu.Item >
+                        <Breadcrumb size='small'>
                         <Breadcrumb.Section link>Home</Breadcrumb.Section>
                         <Breadcrumb.Divider icon='right chevron' />
                         <Breadcrumb.Section link>Registration</Breadcrumb.Section>
                         <Breadcrumb.Divider icon='right chevron' />
                         <Breadcrumb.Section active>Personal Information</Breadcrumb.Section>
-                    </Breadcrumb>
-                </Menu.Item>
-
-                <Menu.Menu position='right'>
-                    <Menu.Item>
-                        Inbox<Label color='teal' circular>{this.props.unread}</Label>
+                        </Breadcrumb>
                     </Menu.Item>
-                    <LanguageSwitcher />
-                    <Dropdown item text={this.props.username}>
-                        <Dropdown.Menu>
-                            <Dropdown.Item as={Link} to='/settings'>Settings</Dropdown.Item>
-                            <Dropdown.Divider />
-                            <Dropdown.Item as={Link} to='/signout'>Logout</Dropdown.Item>
-                        </Dropdown.Menu>
-                    </Dropdown>
-                </Menu.Menu>
-              </Menu>
-        );
+
+                    <Menu.Menu position='right'>
+                        <Menu.Item>
+                            Inbox<Label color='teal' circular>{this.props.unread}</Label>
+                        </Menu.Item>
+
+                        <LanguageSwitcher />
+
+                        <Dropdown item text={this.props.username}>
+                            <Dropdown.Menu>
+                                <Dropdown.Item as={Link} to='/settings'>Settings</Dropdown.Item>
+                                <Dropdown.Divider />
+                                <Dropdown.Item as={Link} to='/signout'>Logout</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Menu.Menu>
+                </Menu>              
+        )
     }
 }
 

@@ -43,11 +43,7 @@ export default class TreeMenu extends Component {
         this.setState({cursor: node});
 
         if (node && node.leaf) {
-            console.log("node", node);
-            console.log("link", node.link);
-            console.log("isLeaf", node.leaf);
-
-            // Bottom-Up approach to gather the breadcrumb
+           // Bottom-Up approach to gather the breadcrumb
             const lang = this.props.lang;
             const breadcrumb = [];
             for (let n = node; n; n = n.parent) {
