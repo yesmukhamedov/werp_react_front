@@ -43,9 +43,9 @@ class Header extends Component {
 
                         <Dropdown item text={this.props.username}>
                             <Dropdown.Menu>
-                                <Dropdown.Item as={Link} to='/settings'>Settings</Dropdown.Item>
+                                <Dropdown.Item as={Link} to='/settings' icon='setting' text='Settings' />
                                 <Dropdown.Divider />
-                                <Dropdown.Item as={Link} to='/signout'>Logout</Dropdown.Item>
+                                <Dropdown.Item as={Link} to='/signout' icon='log out' text='Logout' />
                             </Dropdown.Menu>
                         </Dropdown>
                     </Menu.Menu>

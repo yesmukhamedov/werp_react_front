@@ -1,11 +1,10 @@
+/*jshint esversion: 6 */ 
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Dropdown, Segment, Menu, Icon, Sidebar, Input, Breadcrumb, Label} from 'semantic-ui-react';
-import { Link } from 'react-router';
+import { Segment, Menu,Sidebar} from 'semantic-ui-react';
 import './App.css';
 import Signin from './components/Auth/Signin';
 import TreeMenu from './components/TreeMenu/TreeMenu';
-import LanguageSwitcher from './components/Header/LanguageSwitcher';
 import {fetchUnreadMessages} from "./actions/inbox";
 import {fetchTreeMenu} from "./actions/tree_menu";
 import Header from './components/Header/Header';
@@ -19,8 +18,8 @@ class App extends Component {
     componentWillMount() {
         if (this.props.authenticated) {
             // TODO replace with valid user id
-            const userId = -1;
-            this.props.fetchUnreadMessages({userId});
+            // const userId = -1;
+            // this.props.fetchUnreadMessages({userId});
             this.props.fetchTreeMenu();
         }
     }
@@ -29,8 +28,8 @@ class App extends Component {
     componentWillUpdate(nextProps, nextState) {
         if ((nextProps.authenticated !== this.props.authenticated) && nextProps.refetch ) {            
             // TODO replace with valid user id            
-            const userId = -1;
-            this.props.fetchUnreadMessages({userId});
+            // const userId = -1;
+            // this.props.fetchUnreadMessages({userId});
             this.props.fetchTreeMenu();
         }
     }
