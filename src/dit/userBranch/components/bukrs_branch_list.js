@@ -12,9 +12,6 @@ class BukrsBranchList extends Component {
     //     // this.handleChangeCheckbox = this.handleChangeCheckbox.bind(this);
     // }
 
-    constructor(props){
-        super(props);
-    }
     // componentWillReceiveProps(nextProps){
     //     // console.log(nextProps.userBranchList);
     //     // this.setState(userBranchList = nextProps.userBranchList;
@@ -28,9 +25,9 @@ class BukrsBranchList extends Component {
     // }
     handleChangeCheckbox(event, idx){
         // event.flagExists=true;
-        const target = event.target;
-        const name = target.name;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
+        // const target = event.target;
+        // const name = target.name;
+        // const value = target.type === 'checkbox' ? target.checked : target.value;
         this.props.markBranch(idx);
     }
     renderBukrsBranchList() {

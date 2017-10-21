@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Input, Menu, Breadcrumb, Dropdown, Label, Icon } from 'semantic-ui-react';
+import { Menu, Breadcrumb, Dropdown, Label, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router';
 import LanguageSwitcher from './LanguageSwitcher';
 import Navigate from './Navigate';

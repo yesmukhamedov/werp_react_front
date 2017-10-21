@@ -1,8 +1,7 @@
 import React,{ Component } from 'react';
 import { connect } from 'react-redux';
 import { Table   } from 'semantic-ui-react';
-import { Button, Header, Image, Modal, Dropdown, Grid, Icon } from 'semantic-ui-react';
-import { Field, reduxForm } from 'redux-form';
+import { Button, Modal, Dropdown, Icon } from 'semantic-ui-react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import './customerF4.css';
@@ -14,10 +13,10 @@ const options = [
     { key: 1, text: 'Юр', value: 1 },
     { key: 2, text: 'Физ', value: 2 },
   ]
-  var options2 = [
-    { key: 1, text: 'Qazaqstan', value: 1 },
-    { key: 2, text: 'Turkey', value: 2 },
-  ]  
+  // var options2 = [
+  //   { key: 1, text: 'Qazaqstan', value: 1 },
+  //   { key: 2, text: 'Turkey', value: 2 },
+  // ]
 
  
 // const arrayList= ;
@@ -68,7 +67,7 @@ class CustomerF4 extends Component {
 
             this.setState({customerList: result.data});
         });
-        console.log(this.state);
+        // console.log(this.state);
 
 
 

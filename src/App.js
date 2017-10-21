@@ -1,6 +1,7 @@
 /*jshint esversion: 6 */
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import jwt from 'jwt-simple';
 import {Menu, Segment, Sidebar} from 'semantic-ui-react';
 import './App.css';
 import Signin from './components/Auth/Signin';
@@ -15,12 +16,24 @@ class App extends Component {
         this.state = {menuVisible: false};
     }
 
+    // TODO
+    // Fix this method, because it is a dummy one. If jwtToken is available, it extracts
+    // userId, otherwise it returns 'm.test's user id which is equal to 774.
+    getUserId() {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const payload = jwt.decode(token, 'secret');
+            return payload.userId;
+        } else {
+            return 774;
+        }
+    }
+
     componentWillMount() {
         if (this.props.authenticated) {
             // TODO replace with valid user id
-            // const userId = -1;
             // this.props.fetchUnreadMessages({userId});
-            this.props.fetchTreeMenu();
+            this.props.fetchTreeMenu(this.getUserId());
         }
     }
 
@@ -30,7 +43,7 @@ class App extends Component {
             // TODO replace with valid user id            
             // const userId = -1;
             // this.props.fetchUnreadMessages({userId});
-            this.props.fetchTreeMenu();
+            this.props.fetchTreeMenu(this.getUserId());
         }
     }
 

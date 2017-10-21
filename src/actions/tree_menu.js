@@ -2,10 +2,10 @@ import {BREADCRUMB, TREE_MENU} from "./types";
 import axios from 'axios';
 import {ROOT_URL} from "../utils/constants";
 
-export function fetchTreeMenu() {
+export function fetchTreeMenu(userId) {
     return (dispatch) => {
         // const url = `https://private-876aa-auraerpapi.apiary-mock.com/api/v1/menu-tree`;
-        const url = `${ROOT_URL}/menu-tree`;
+        const url = `${ROOT_URL}/users/${userId}/menu-tree`;
         axios
             .get(url)
             .then(response => {
