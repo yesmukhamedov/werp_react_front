@@ -1,4 +1,4 @@
-import {TREE_MENU} from "./types";
+import {BREADCRUMB, TREE_MENU} from "./types";
 import axios from 'axios';
 import {ROOT_URL} from "../utils/constants";
 
@@ -9,7 +9,6 @@ export function fetchTreeMenu() {
         axios
             .get(url)
             .then(response => {
-                console.log(`fetchTreeMenu(): ${JSON.stringify(response)}`);
                 // If request is good...
                 // - TODO check whether response is successful
 
@@ -20,5 +19,18 @@ export function fetchTreeMenu() {
             })
             .catch(err => console.log('Error fetching tree menu', err)
             );
+    }
+}
+
+/**
+ * Broadcasts an action with a new breadcrumb items.
+ * @param breadcrumb - array of menu item node names in user's selected language.
+ */
+export function breadcrumbChanged(breadcrumb) {
+    return (dispatch) => {
+        dispatch({
+            type: BREADCRUMB,
+            payload: breadcrumb
+        });
     }
 }
