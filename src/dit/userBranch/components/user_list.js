@@ -10,10 +10,13 @@ class UserList extends Component {
     renderUsers() {
         return this.props.foundUsers.map((user)=>{
             return (
-                <Table.Row key={user.userId} onClick={()  => this.onRowSelect(user.userId)}>
+                <Table.Row key={user.userId} onClick={()  => this.onRowSelect(user.userId,user.userName,user.fio)
+                    }>
+                
                     <Table.Cell>{user.userName}</Table.Cell>
                     <Table.Cell>{user.fio}</Table.Cell>
-                </Table.Row>
+                    
+                </Table.Row> 
             );
 
         })
@@ -21,17 +24,18 @@ class UserList extends Component {
     
     
 
-    onRowSelect(a_userId){
+    onRowSelect(a_userId,a_userName,a_fio){
         this.props.fethcUserBranches(a_userId);
+        this.props.onUserSelect(a_fio);
     }
 
     render(){
         
         
         return (
-            <div className="userList">
+            <div id="userListDiv">
                 
-                <Table striped compact collapsing selectable>
+                <Table striped compact collapsing selectable id="userListTable">
                     <Table.Header >
                         <Table.Row>
                             <Table.HeaderCell>Пользователь</Table.HeaderCell>

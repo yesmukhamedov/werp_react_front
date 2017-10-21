@@ -1,4 +1,4 @@
-import { FETCH_USERS, FIND_USERS, FETCH_USER_BRANCHES } from '../actions/userBranch_action';
+import { FETCH_USERS, FIND_USERS, FETCH_USER_BRANCHES, MARK_BRANCH } from '../actions/userBranch_action';
 const INITIAL_STATE={ allUsers: [], foundUsers:[], selectedUser:null, userBranchList: []};
 
 export default function (state=INITIAL_STATE, action)
@@ -13,8 +13,15 @@ export default function (state=INITIAL_STATE, action)
             return {...state,foundUsers:action.payload.data,userBranchList:[]};    
         case FETCH_USER_BRANCHES:
             return {...state,userBranchList:action.payload.data};   
-            
+
+         case MARK_BRANCH:
+            const waUserBranchList = JSON.parse(JSON.stringify(state.userBranchList));
+            const index = action.payload;
+            waUserBranchList[index].flagExists = !state.userBranchList[index].flagExists;
+            return {...state, userBranchList: waUserBranchList}; 
+
         default:
             return state;
     }
 }
+
