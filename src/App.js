@@ -5,7 +5,6 @@ import jwt from 'jwt-simple';
 import {Menu, Segment, Sidebar} from 'semantic-ui-react';
 import './App.css';
 import Signin from './components/Auth/Signin';
-import TreeMenu from './components/TreeMenu/TreeMenu';
 import {fetchUnreadMessages} from "./actions/inbox";
 import {fetchTreeMenu} from "./actions/tree_menu";
 import Header from './components/Header/Header';

@@ -45,10 +45,6 @@
     content: '▾';
     font-size: 20px;
   }
-
-  .tree-view_item {
-    /* immediate child of .tree-view, for styling convenience */
-  }
   
   /* style for the children nodes container */
   .tree-view_children {

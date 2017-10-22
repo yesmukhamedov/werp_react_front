@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import TreeView from 'react-treeview'
 import 'react-treeview/react-treeview.css'
 import './TreeViewMenu.css'
+import { LEGACY_SYSTEM_URL } from "../../utils/constants";
 
 
 class TreeViewMenu extends Component {
@@ -35,12 +36,17 @@ class TreeViewMenu extends Component {
 
     traverse(node, i) {
         if (node.leaf) {
+            let nodeName = node.translations[this.props.lang]
             return (
                 <div key={node.name} 
                     onClick={() => {this.handleClick(node)}}
                     className={`leaf ${(node === this.state.selectedNode ? 'node-active' : '')}`}>
                     <i className="file text outline icon"></i>
-                    <Link to={node.link}>{node.translations[this.props.lang]}</Link>
+                    {(node.link.endsWith('.xhtml') ?
+                        <Link target='_blank' to={`${LEGACY_SYSTEM_URL}/${node.link}`}>{nodeName}</Link> :
+                        <Link to={node.link}>{nodeName}</Link>
+                    )}
+                    
                 </div>
             )
         } else {
