@@ -1,46 +1,49 @@
 import React,{ Component } from 'react';
 import { connect } from 'react-redux';
-import '../css/userBranch.css';
+import { markBranch } from '../actions/userBranch_action';
 import { Table } from 'semantic-ui-react';
 
 // const arrayList= ;
 class BukrsBranchList extends Component {
 
-    constructor(props){
-        super(props);
-        this.state = {userBranchList:[]};
-        this.handleChangeCheckbox = this.handleChangeCheckbox.bind(this);
-    }
+    // constructor(props){
+    //     super(props);
+    //     // //this.state = {userBranchList:[]};
+    //     // this.handleChangeCheckbox = this.handleChangeCheckbox.bind(this);
+    // }
 
-    componentWillReceiveProps(nextProps){
-        this.setState(
-            prevState => ({userBranchList: [...this.state.userBranchList, this.props.userBranchList]})        
-        );
-        console.log(this.state);
-    }
-    
-    handleChangeCheckbox(event){
-     
-        const target = event.target;
-        const name = target.name;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        this.props.userBranchList[name] = value;
-        console.log(target);
+    // componentWillReceiveProps(nextProps){
+    //     // console.log(nextProps.userBranchList);
+    //     // this.setState(userBranchList = nextProps.userBranchList;
+    //     // console.log(1);
+    //     this.setState(//{userBranchList : nextProps.userBranchList}
+    //         prevState => ({userBranchList: [...this.state.userBranchList, nextProps.userBranchList]})        
+    //     );
+    //     // console.log(2);
+    //     //  console.log(this.state);
+    //     // console.log(' zz');
+    // }
+    handleChangeCheckbox(event, idx){
+        // event.flagExists=true;
+        // const target = event.target;
+        // const name = target.name;
+        // const value = target.type === 'checkbox' ? target.checked : target.value;
+        this.props.markBranch(idx);
     }
     renderBukrsBranchList() {
-        console.log();
-        ;
-        return this.state.userBranchList[this.state.userBranchList.length-1].map((ub)=>{
-            
-            return (
-                <Table.Row key={ub.branchId}>
-                    <Table.Cell>{ub.bukrsName}</Table.Cell>
-                    <Table.Cell>{ub.branchName}</Table.Cell>
-                    <Table.Cell><input type="checkbox" checked={ub.booleanExists} onChange={this.handleChangeCheckbox} /></Table.Cell>
-                </Table.Row>
-            );
-
-        })
+        
+        if (this.props.userBranchList) {
+            return this.props.userBranchList.map((ub,idx)=>{
+                return (
+                    <Table.Row key={ub.branchId}>
+                        <Table.Cell>{ub.bukrsName}</Table.Cell>
+                        <Table.Cell>{ub.branchName}</Table.Cell>
+                        <Table.Cell><input type="checkbox" checked={ub.flagExists} name = {idx} className="checkBox" onChange={(event)=>this.handleChangeCheckbox(event, idx)} /></Table.Cell>
+                    </Table.Row>
+                );
+            })
+        }
+        
 
         
     
@@ -50,9 +53,9 @@ class BukrsBranchList extends Component {
         
         
         return (
-            <div className="bukrsBranch">
-
-                <Table striped compact collapsing selectable className="bukrsBranch">
+            <div id="bukrsBranchDiv">
+                {this.props.selectdeUser3}
+                <Table striped compact collapsing  id="bukrsBranchTable">
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell>Компания</Table.HeaderCell>
@@ -74,13 +77,13 @@ class BukrsBranchList extends Component {
 
 function mapStateToProps(state)
 {
-    console.log(state);
+    // console.log("BukrsBranchList component line 99",state);
     return { userBranchList: state.ditUserBranch.userBranchList};
 }
 
 // function mapDispatchToProps(dispatch){
 //     return bindActionCreators({ fetchUsers },dispatch);
 // }
-export default connect(mapStateToProps,{  }) (BukrsBranchList);
+export default connect(mapStateToProps,{ markBranch }) (BukrsBranchList);
 
 

@@ -1,8 +1,24 @@
-.userList{
-    display: inline;
-    
+#userListDiv{
+    display: inline-block;
+    margin:0;
+    padding:0;
+    float:left;
+}
+#userListTable td:hover{
+    cursor: pointer ;
 }
 
-.bukrsBranch{
-    display: inline;
+#bukrsBranchTable .checkBox:hover{
+    cursor: pointer ;
+
+}
+
+
+#bukrsBranchDiv{
+    display: inline-block;
+    margin:0;
+    padding:0;
+    float:left;
+    margin-left:20px;
+
 }

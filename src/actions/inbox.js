@@ -20,7 +20,7 @@ export function fetchUnreadMessages({userId}) {
 }
 
 function unreadMessages(messages) {
-    console.log('_unreadMessages:', JSON.stringify(messages));
+    // console.log('_unreadMessages:', JSON.stringify(messages));
     return {
         type: INBOX_UNREAD,
         payload: messages

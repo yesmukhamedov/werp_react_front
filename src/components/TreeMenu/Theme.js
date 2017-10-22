@@ -5,8 +5,8 @@ export default {
             margin: 0,
             padding: 0,
             color: '#9DA5AB',
-            fontFamily: 'lucida grande,tahoma,verdana,arial,sans-serif',
-            fontSize: '10px',
+            fontFamily: 'sans-serif,lucida grande,tahoma,verdana,arial',
+            fontSize: '12px',
             width: '250px',
             textAlign: 'left'
         },

@@ -23,8 +23,8 @@ export default (data) => {
             <Route path="dit/userBranch" component={AssignUserBranch} />
             {/* dynamically generated URLs */} 
             {data.map((el) => {
-                return <Route path={`${el.url}`} component={getComponent[el.component]} key={el.url}/>
-            })}            
+                return <Route path={`${el.url}`} component={getComponent[el.component]} key={el.transactionCode}/>
+            })}                      
         </Route>
     )
 };
