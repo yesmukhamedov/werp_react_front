@@ -9,6 +9,7 @@ import LanguageSwitcher from './components/Header/LanguageSwitcher';
 import {fetchUnreadMessages} from "./actions/inbox";
 import {fetchTreeMenu} from "./actions/tree_menu";
 import Header from './components/Header/Header';
+import TreeViewMenu from './components/TreeViewMenu/TreeViewMenu'
 
 class App extends Component {
     constructor(props) {
@@ -46,8 +47,11 @@ class App extends Component {
 
             <Sidebar.Pushable as={Segment} attached="bottom" >
                 <Sidebar as={Menu} animation='overlay' visible={this.state.menuVisible} icon="labeled" vertical>
-                    <TreeMenu lang={this.props.lang} 
-                              data={this.props.treeMenu}/>
+                    {/* <TreeMenu lang={this.props.lang} 
+                              data={this.props.treeMenu}/> */}
+                    <TreeViewMenu 
+                        lang={this.props.lang}
+                        list={this.props.treeMenu} />
                 </Sidebar>
                 <Sidebar.Pusher onClick={() => this.setState({...this.state, menuVisible: false})}>
                     {this.props.children}
