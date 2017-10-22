@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Menu, Breadcrumb, Dropdown, Label, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router';
 import LanguageSwitcher from './LanguageSwitcher';
-import Navigate from './Navigate';
+import TransactionSearchbar from './TransactionSearchbar';
 import { fetchUnreadMessages } from "../../actions/inbox";
 
 class Header extends Component {
@@ -52,7 +52,7 @@ class Header extends Component {
 
                     <Menu.Item >
                         {/* <Input action={{ type: 'submit', content: 'Go' }} placeholder='Navigate to...' /> */}
-                        <Navigate />
+                        <TransactionSearchbar routes={this.props.routes}/>
                     </Menu.Item>
 
                     <Menu.Item>
@@ -86,6 +86,7 @@ function mapStateToProps(state) {
       unread: state.inbox.unread,
       breadcrumb: state.menu.breadcrumb,
       lang: state.locales.lang,
+      routes: state.menu.routes
     };
   }
   
