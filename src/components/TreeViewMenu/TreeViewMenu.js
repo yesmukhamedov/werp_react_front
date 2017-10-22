@@ -1,9 +1,11 @@
 import React, { Component } from "react"
 import { Link } from 'react-router'
 import TreeView from 'react-treeview'
+import { connect } from 'react-redux'
 import 'react-treeview/react-treeview.css'
 import './TreeViewMenu.css'
-import { LEGACY_SYSTEM_URL } from "../../utils/constants";
+import { breadcrumbChanged } from "../../actions/tree_menu";
+import { LEGACY_SYSTEM_URL } from "../../utils/constants"
 
 
 class TreeViewMenu extends Component {
@@ -19,9 +21,19 @@ class TreeViewMenu extends Component {
 
     handleClick(id) {
         console.log(id)
-        // node.collapsed = false
         id.collapse = !id.collapse
         this.setState({...this.state, selectedNode: id})
+
+
+        if (id.leaf) {
+            // Bottom-Up approach to gather the breadcrumb
+            const menuItemNames = [];
+            for (let n = id; n; n = n.parent) {
+                menuItemNames.push(n.translations);
+            }
+            const breadcrumb = menuItemNames.reverse();
+            this.props.breadcrumbChanged(breadcrumb);
+        }
     }
 
     componentWillReceiveProps(nextProps) {
@@ -53,6 +65,7 @@ class TreeViewMenu extends Component {
             if (!node.hasOwnProperty('collapse')) {
                 node.collapse = true
             }
+            node.children.map((child) => {child.parent = node})
             const label =
             <span className={`node ${(node === this.state.selectedNode ? 'node-active' : '')}`} 
                 key={node.name}
@@ -78,4 +91,4 @@ class TreeViewMenu extends Component {
     }
 }
 
-export default TreeViewMenu
+export default connect(null, { breadcrumbChanged })(TreeViewMenu);

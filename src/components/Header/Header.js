@@ -16,7 +16,6 @@ class Header extends Component {
     }
 
     renderBreadcrumb(translations) {
-        // console.log('TRANSLATIONS: ', translations);
         const len = translations ? translations.length : 0;
         const lang = this.props.lang;
         const items = [];
