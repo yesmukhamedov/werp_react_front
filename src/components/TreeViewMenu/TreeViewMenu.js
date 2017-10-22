@@ -20,7 +20,6 @@ class TreeViewMenu extends Component {
     }
 
     handleClick(id) {
-        console.log(id)
         id.collapse = !id.collapse
         this.setState({...this.state, selectedNode: id})
 
@@ -42,7 +41,6 @@ class TreeViewMenu extends Component {
                 ...this.state,
                 list: [...nextProps.list]
             })
-            console.log("componentWillReceiveProps executed")
         }
     }
 
