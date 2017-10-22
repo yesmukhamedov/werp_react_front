@@ -1,5 +1,6 @@
 .menu-container {
     text-align: left;
+    min-width: 200px;
 }
 
 .node, .tree-view_children .leaf {

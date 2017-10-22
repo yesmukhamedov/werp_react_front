@@ -41,7 +41,8 @@ export default class TransactionSearchbar extends Component {
                     onSearchChange={this.handleSearchChange}
                     results={results}
                     value={value}
-                    resultRenderer={resultRenderer}/>)
+                    noResultsMessage='No transactions found.'
+                    resultRenderer={resultRenderer} />)
     }
 }
 
