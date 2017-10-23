@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router';
 import {VelocityComponent} from 'velocity-react';
-
+import {LEGACY_SYSTEM_URL} from "../../utils/constants";
 
 const Loading = ({style}) => {
     return <div style={style}>loading...</div>;
@@ -41,12 +41,17 @@ Toggle.propTypes = {
 };
 
 const Header = ({node, style, terminal, lang}) => {
+    const nodeName = node.translations[this.a.lang];
     return (
         <div style={style.base}>
             <div style={style.title}>
                 {
                     terminal ? (
-                        <Link to={node.link}>{node.translations[this.a.lang]}</Link>) : node.translations[this.a.lang]
+                        node.link.endsWith('.xhtml') ?
+                            <Link target='_blank' to={`${LEGACY_SYSTEM_URL}/${node.link}`}>{nodeName}</Link> :
+                            <Link to={node.link}>{nodeName}</Link>
+                        ) :
+                        nodeName
                 }
             </div>
         </div>

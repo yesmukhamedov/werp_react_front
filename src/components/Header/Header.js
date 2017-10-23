@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Input, Menu, Breadcrumb, Dropdown, Label, Icon } from 'semantic-ui-react';
+import { Menu, Breadcrumb, Dropdown, Label, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router';
+import { defineMessages, intlShape, injectIntl } from 'react-intl';
 import LanguageSwitcher from './LanguageSwitcher';
-import Navigate from './Navigate';
+import TransactionSearchbar from './TransactionSearchbar';
 import { fetchUnreadMessages } from "../../actions/inbox";
 
 class Header extends Component {
@@ -16,7 +17,6 @@ class Header extends Component {
     }
 
     renderBreadcrumb(translations) {
-        // console.log('TRANSLATIONS: ', translations);
         const len = translations ? translations.length : 0;
         const lang = this.props.lang;
         const items = [];
@@ -46,14 +46,15 @@ class Header extends Component {
     };
 
     render() {
+        const {formatMessage} = this.props.intl;
         return (<Menu secondary attached="top">
                     <Menu.Item onClick={this.props.toggleMenu} >
-                        <Icon name="sidebar" />Menu
+                        <Icon name="sidebar" />{formatMessage(messages.menu)}
                     </Menu.Item>
 
                     <Menu.Item >
                         {/* <Input action={{ type: 'submit', content: 'Go' }} placeholder='Navigate to...' /> */}
-                        <Navigate />
+                        <TransactionSearchbar routes={this.props.routes}/>
                     </Menu.Item>
 
                     <Menu.Item>
@@ -62,16 +63,16 @@ class Header extends Component {
 
                     <Menu.Menu position='right'>
                         <Menu.Item>
-                            Inbox<Label color='teal' circular>{this.props.unread}</Label>
+                            {formatMessage(messages.inbox)}<Label color='teal' circular>{this.props.unread}</Label>
                         </Menu.Item>
 
                         <LanguageSwitcher />
 
                         <Dropdown item text={this.props.username}>
                             <Dropdown.Menu>
-                                <Dropdown.Item as={Link} to='/settings' icon='setting' text='Settings' />
+                                <Dropdown.Item as={Link} to='/settings' icon='setting' text={formatMessage(messages.settings)} />
                                 <Dropdown.Divider />
-                                <Dropdown.Item as={Link} to='/signout' icon='log out' text='Logout' />
+                                <Dropdown.Item as={Link} to='/signout' icon='log out' text={formatMessage(messages.logout)} />
                             </Dropdown.Menu>
                         </Dropdown>
                     </Menu.Menu>
@@ -80,6 +81,25 @@ class Header extends Component {
     }
 }
 
+const messages = defineMessages({
+    menu: {
+        id: 'Header.Menu.MenuLabel', 
+        defaultMessage: 'Menu'
+    },
+    inbox: {
+        id: 'Header.Menu.Inbox', 
+        defaultMessage: 'Inbox'
+    },
+    settings: {
+      id: 'Header.Menu.Settings', 
+      defaultMessage: 'Settings'
+    },
+    logout: {
+        id: 'Header.Menu.Logout',
+        defaultMessage: 'Logout'
+    }
+}); 
+  
 function mapStateToProps(state) {
     return {
       authenticated: state.auth.authenticated,
@@ -87,7 +107,12 @@ function mapStateToProps(state) {
       unread: state.inbox.unread,
       breadcrumb: state.menu.breadcrumb,
       lang: state.locales.lang,
+      routes: state.menu.routes
     };
-  }
+}
+
+Header.propTypes = {
+    intl: intlShape.isRequired
+};
   
-export default connect(mapStateToProps, {fetchUnreadMessages})(Header);
+export default connect(mapStateToProps, {fetchUnreadMessages})(injectIntl(Header));

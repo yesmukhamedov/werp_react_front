@@ -12,9 +12,6 @@ class BukrsBranchList extends Component {
     //     // this.handleChangeCheckbox = this.handleChangeCheckbox.bind(this);
     // }
 
-    // constructor(props){
-    //     super(props);
-    // }
     // componentWillReceiveProps(nextProps){
     //     // console.log(nextProps.userBranchList);
     //     // this.setState(userBranchList = nextProps.userBranchList;

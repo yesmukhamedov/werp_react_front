@@ -1,13 +1,14 @@
 /*jshint esversion: 6 */
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import jwt from 'jwt-simple';
 import {Menu, Segment, Sidebar} from 'semantic-ui-react';
 import './App.css';
 import Signin from './components/Auth/Signin';
-import TreeMenu from './components/TreeMenu/TreeMenu';
 import {fetchUnreadMessages} from "./actions/inbox";
 import {fetchTreeMenu} from "./actions/tree_menu";
 import Header from './components/Header/Header';
+import TreeViewMenu from './components/TreeViewMenu/TreeViewMenu'
 
 class App extends Component {
     constructor(props) {
@@ -15,12 +16,24 @@ class App extends Component {
         this.state = {menuVisible: false};
     }
 
+    // TODO
+    // Fix this method, because it is a dummy one. If jwtToken is available, it extracts
+    // userId, otherwise it returns 'm.test's user id which is equal to 774.
+    getUserId() {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const payload = jwt.decode(token, 'secret');
+            return payload.userId;
+        } else {
+            return 774;
+        }
+    }
+
     componentWillMount() {
         if (this.props.authenticated) {
             // TODO replace with valid user id
-            // const userId = -1;
             // this.props.fetchUnreadMessages({userId});
-            this.props.fetchTreeMenu();
+            this.props.fetchTreeMenu(this.getUserId());
         }
     }
 
@@ -30,7 +43,7 @@ class App extends Component {
             // TODO replace with valid user id            
             // const userId = -1;
             // this.props.fetchUnreadMessages({userId});
-            this.props.fetchTreeMenu();
+            this.props.fetchTreeMenu(this.getUserId());
         }
     }
 
@@ -43,10 +56,13 @@ class App extends Component {
                     <Header unread={this.props.unread}
                             toggleMenu={() => this.setState({menuVisible: !this.state.menuVisible})}/>
 
-                    <Sidebar.Pushable as={Segment} attached="bottom">
+                    <Sidebar.Pushable as={Segment} attached="bottom" >
                         <Sidebar as={Menu} animation='overlay' visible={this.state.menuVisible} icon="labeled" vertical>
-                            <TreeMenu lang={this.props.lang}
-                                      data={this.props.treeMenu}/>
+                            {/* <TreeMenu lang={this.props.lang} 
+                                    data={this.props.treeMenu}/> */}
+                            <TreeViewMenu 
+                                lang={this.props.lang}
+                                list={this.props.treeMenu} />
                         </Sidebar>
                         <Sidebar.Pusher onClick={() => this.setState({...this.state, menuVisible: false})}>
                             {this.props.children}
@@ -55,11 +71,11 @@ class App extends Component {
                 </div>
             );
         } else {
-            return (
-                <Signin/>
-            );
-        }
-    }
+      return (   
+        <Signin />
+      );            
+    } 
+  }
 }
 
 function mapStateToProps(state) {

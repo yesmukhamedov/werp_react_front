@@ -13,6 +13,10 @@ const options = [
     { key: 1, text: 'Юр', value: 1 },
     { key: 2, text: 'Физ', value: 2 },
   ]
+  // var options2 = [
+  //   { key: 1, text: 'Qazaqstan', value: 1 },
+  //   { key: 2, text: 'Turkey', value: 2 },
+  // ]
 
  
 // const arrayList= ;
