@@ -1,8 +1,7 @@
 import React,{ Component } from 'react';
 import { connect } from 'react-redux';
 import { Table   } from 'semantic-ui-react';
-import { Button, Header, Image, Modal, Dropdown, Grid, Icon } from 'semantic-ui-react';
-import { Field, reduxForm } from 'redux-form';
+import { Button, Modal, Dropdown, Icon } from 'semantic-ui-react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import './customerF4.css';
@@ -14,10 +13,6 @@ const options = [
     { key: 1, text: 'Юр', value: 1 },
     { key: 2, text: 'Физ', value: 2 },
   ]
-  var options2 = [
-    { key: 1, text: 'Qazaqstan', value: 1 },
-    { key: 2, text: 'Turkey', value: 2 },
-  ]  
 
  
 // const arrayList= ;
@@ -35,7 +30,7 @@ class CustomerF4 extends Component {
                     var newStateArray = this.state.countryList.slice();
                     newStateArray.push({key: country.country_id,text: country.country, value:country.country_id});
                     this.setState({countryList: newStateArray});
-
+                    return "";
         
                 })
             }
@@ -57,18 +52,18 @@ class CustomerF4 extends Component {
     }
     fetchCustomers() {
         // replace with whatever your api logic is.
-        console.log(333);
+        // console.log(333);
         let customer = Object.assign({}, this.state.customerSearchTerm);
-        console.log(customer);
+        // console.log(customer);
         if(!customer.country_id)
         {
             customer.country_id=0;
         }
-        return axios.post(`${ROOT_URL}/general/FETCH_CUSTOMERS34`,{customer}).then(result=>{
+        return axios.post(`${ROOT_URL}/general/FETCH_CUSTOMERS`,{customer}).then(result=>{
 
             this.setState({customerList: result.data});
         });
-        console.log(this.state);
+        // console.log(this.state);
 
 
 
@@ -86,44 +81,14 @@ class CustomerF4 extends Component {
 
 
 
-    renderUsers() {
-
-
-        return this.state.customerList.map((cus,idx)=>{
-            console.log(cus);
-            var wa_birthday;
-            if (cus.birthday) {wa_birthday = moment(cus.birthday).format("DD.MM.YYYY")}
-            return (
-                
-                <Table.Row key={idx}>
-                    
-                    <Table.Cell>{cus.fiz_yur}</Table.Cell>
-                    <Table.Cell>{cus.iin_bin}</Table.Cell>
-                    <Table.Cell>{cus.name}</Table.Cell>
-                    <Table.Cell>{cus.fullFIO}</Table.Cell>
-                    <Table.Cell>{wa_birthday}</Table.Cell>
-                    <Table.Cell>{cus.passport_id}</Table.Cell>
-                                    {/* <Table.HeaderCell>Физ/Юр</Table.HeaderCell>
-                                    <Table.HeaderCell>ИИН/БИН</Table.HeaderCell>
-                                    <Table.HeaderCell>Название</Table.HeaderCell>
-                                    <Table.HeaderCell>ФИО</Table.HeaderCell>
-                                    <Table.HeaderCell>День рождения</Table.HeaderCell>
-                                    <Table.HeaderCell>Номер паспорта</Table.HeaderCell> */}
-                </Table.Row> 
-            );
-
-        })
-    }
+    
     clearSelectedCountry () {
         let waCustomerSearchTerm = Object.assign({}, this.state.customerSearchTerm);
         waCustomerSearchTerm.country_id="";
         this.setState({customerSearchTerm:waCustomerSearchTerm});
     }   
 
-    // onRowSelect(a_userId,a_userName,a_fio){
-    //     this.props.fethcUserBranches(a_userId);
-    //     this.props.onUserSelect(a_fio);
-    // }
+    
     onInputChange(value,stateFieldName){
         let waCustomerSearchTerm = Object.assign({}, this.state.customerSearchTerm);
         // console.log(waCustomerSearchTerm);
@@ -155,16 +120,36 @@ class CustomerF4 extends Component {
         this.setState({customerSearchTerm:waCustomerSearchTerm});
         // console.log(this.state);
     }
-    render(){
+
+    onRowSelect(a_customerObject){
+        if (this.props.onCustomerSelect)
+        {
+            this.props.onCustomerSelect(a_customerObject);
+        }
         
-        // const renderDatePicker = ({input, placeholder, defaultValue,disabled, meta: {touched, error} }) => (
-        // <div>
-        //         <DatePicker {...input} isClearable="true"  onChange={value => input.onChange(value,"birthday")} 
-        //         disabled={disabled}
-        //         placeholderText={" "+placeholder} dateFormat=" DD.MM.YYYY" selected={input.value ? moment(input.value) : null} />
-        //         {touched && error && <span>{error}</span>}
-        // </div>
-        // );
+    }
+    renderUsers() {
+        return this.state.customerList.map((cus,idx)=>{
+            // console.log(cus);
+            var wa_birthday;
+            if (cus.birthday) {wa_birthday = moment(cus.birthday).format("DD.MM.YYYY")}
+            var wa_fizYurText;
+            if (cus.fiz_yur===1){ wa_fizYurText = "Юр."} else { wa_fizYurText = "Физ."}
+            return (
+                
+                <Table.Row key={idx} onClick={()  => this.onRowSelect(cus)}>                    
+                    <Table.Cell>{wa_fizYurText}</Table.Cell>
+                    <Table.Cell>{cus.iin_bin}</Table.Cell>
+                    <Table.Cell>{cus.name}</Table.Cell>
+                    <Table.Cell>{cus.fullFIO}</Table.Cell>
+                    <Table.Cell>{wa_birthday}</Table.Cell>
+                    <Table.Cell>{cus.passport_id}</Table.Cell>
+                </Table.Row> 
+            );
+
+        })
+    }
+    render(){
 
         
         return (
@@ -174,7 +159,7 @@ class CustomerF4 extends Component {
 
                 <Modal trigger={<Button>Show Modal</Button>}>
                     <Modal.Content>
-                        <h3>Search for customer</h3>
+                        <h3>Контрагент</h3>
                         
                         <Table compact collapsing sortable id="customerF4SearchForm">           
                             <Table.Body>
@@ -218,10 +203,10 @@ class CustomerF4 extends Component {
                                     <Table.Cell>День рождения</Table.Cell>
                                     <Table.Cell>
                                         <DatePicker 
-                                            showMonthDropdown showYearDropdown dropdownMode="select"
+                                            showMonthDropdown showYearDropdown dropdownMode="select" timezone="UTC"
                                             selected={this.state.customerSearchTerm.birthday}
                                             onChange={(event) => this.onInputChange(event,"birthday")} isClearable={!this.state.disableFiz} 
-                                            dateFormat=" DD.MM.YYYY" disabled={this.state.disableFiz} />
+                                            dateFormat="DD.MM.YYYY" disabled={this.state.disableFiz} />
                                      </Table.Cell>                    
                                 </Table.Row>
                                 <Table.Row>                

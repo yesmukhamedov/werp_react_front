@@ -4,7 +4,7 @@ import BukrsBranchList from './bukrs_branch_list';
 import CustomerF4 from '../../../reference/f4/Customer/customerF4';
 import { fetchUsers, findUsers, fethcUserBranches } from '../actions/userBranch_action';
 import { connect } from 'react-redux';
-import { Container } from 'semantic-ui-react';
+import { Container, Button, Icon } from 'semantic-ui-react';
 import '../css/userBranch.css';
 class AssignUserBranch extends Component {    
 
@@ -33,9 +33,8 @@ class AssignUserBranch extends Component {
             <div className="userBranch">
                 <div className="searchTerm">
                     <input value ={this.state.userSearchTerm} onChange={event => this.onInputChange(event.target.value)}/>
-                    <button className="btn btn-danger pull-xs-right" onClick={this.onSearchClick.bind(this)}>
-                        Search
-                    </button> 
+                    <Button icon labelPosition='left' primary size='small' onClick={this.onSearchClick.bind(this)} ><Icon name='search' 
+                                    size='large' />Поиск</Button>    
                 </div>
                 <UserList foundUsers={this.props.foundUsers} onUserSelect={(selectedUser)=>this.setState({selectedUser})} />
                 <BukrsBranchList selectdeUser3={this.state.selectedUser}/>

@@ -1,9 +1,11 @@
 #customerF4SearchForm{
     border: none;
-
 }
 
 .clickableIcon:hover{
-    cursor: pointer ;
+    cursor: pointer;
+}
 
+#customerF4Table td:hover{
+    cursor: pointer ;
 }
