@@ -4,7 +4,6 @@
   "Auth.Signin.Password": "Password",
   "Auth.Signin.Login": "Login",
   "Header.Menu.MenuLabel": "Menu",
-  "Header.Menu.Inbox": "Inbox",
   "Header.Menu.Settings": "Settings",
   "Header.Menu.Logout": "Logout"
 },
@@ -14,7 +13,6 @@
   "Auth.Signin.Password": "Пароль",
   "Auth.Signin.Login": "Войти",
   "Header.Menu.MenuLabel": "Меню",
-  "Header.Menu.Inbox": "Входящие",
   "Header.Menu.Settings": "Настройки",
   "Header.Menu.Logout": "Выйти"
 },
@@ -24,8 +22,7 @@
   "Auth.Signin.Password": "Пароль",
   "Auth.Signin.Login": "Кіру",
   "Header.Menu.MenuLabel": "Мәзір",
-  "Header.Menu.Inbox": "Кіріс пошта",
   "Header.Menu.Settings": "Баптаулар",
   "Header.Menu.Logout": "Шығу"
-}
+} 
 }

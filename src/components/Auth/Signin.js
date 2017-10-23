@@ -43,7 +43,7 @@ class Signin extends Component {
           <Grid.Column style={{ maxWidth: 450 }}>
             <Header as='h2' color='teal' textAlign='center'>
               <Image src={logo} />
-              {' '}{formatMessage(messages.test)}
+              {' '}{formatMessage(messages.header)}
             </Header>
             <Form size='large' onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
               <Segment stacked>
@@ -72,7 +72,7 @@ class Signin extends Component {
 }
 
 const messages = defineMessages({
-  test: {
+  header: {
     id: 'Auth.Signin.Header', 
     defaultMessage: 'Log-in to your account'
   },

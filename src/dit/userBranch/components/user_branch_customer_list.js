@@ -26,6 +26,7 @@ class UserBranchCustomerList extends Component {
                     //     <Table.Cell>{ub.branchName}</Table.Cell>
                     //     <Table.Cell><input type="checkbox" checked={ub.flagExists} name = {idx} className="checkBox" onChange={(event)=>this.handleChangeCheckbox(event, idx)} /></Table.Cell>
                     // </Table.Row>
+                    <div>Test</div>
                 );
             })
         }
