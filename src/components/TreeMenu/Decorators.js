@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router';
 import {VelocityComponent} from 'velocity-react';
-import {LEGACY_SYSTEM_URL} from "../../utils/constants";
+import {LEGACY_URL} from "../../utils/constants";
 
 const Loading = ({style}) => {
     return <div style={style}>loading...</div>;
@@ -48,7 +48,7 @@ const Header = ({node, style, terminal, lang}) => {
                 {
                     terminal ? (
                         node.link.endsWith('.xhtml') ?
-                            <Link target='_blank' to={`${LEGACY_SYSTEM_URL}/${node.link}`}>{nodeName}</Link> :
+                            <Link target='_blank' to={`${LEGACY_URL}/${node.link}`}>{nodeName}</Link> :
                             <Link to={node.link}>{nodeName}</Link>
                         ) :
                         nodeName
