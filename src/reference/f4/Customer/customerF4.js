@@ -57,15 +57,8 @@ class CustomerF4 extends Component {
         // replace with whatever your api logic is.
         // console.log(333);
         let customer = Object.assign({}, this.state.customerSearchTerm);
-
-
-        let strVal = customer.birthday.startOf('day').format('YYYY-MM-DD[T]HH:mm:ss')
-
-        console.log("CUSTOMER", customer);
-        console.log("CUSTOMER BD", customer.birthday);
-        // var dateString = customer.birthday.format('YYYY MM DD'); 
-        customer.birthday =new Date(strVal);
-        console.log("CUSTOMER BD UTC", customer.birthday);
+        let strVal = customer.birthday.format('YYYY-MM-DD')
+        customer.birthday = moment.utc(strVal).format()
 
         if(!customer.country_id)
         {
