@@ -1,8 +1,8 @@
 import React,{ Component } from 'react';
 import { connect } from 'react-redux';
-import { markBranch } from '../actions/userBranch_action';
+import { markBranch, editUserBranches } from '../actions/userBranch_action';
 import { Table } from 'semantic-ui-react';
-
+import { Button, Icon, Label } from 'semantic-ui-react';
 // const arrayList= ;
 class BukrsBranchList extends Component {
 
@@ -30,6 +30,14 @@ class BukrsBranchList extends Component {
         // const value = target.type === 'checkbox' ? target.checked : target.value;
         this.props.markBranch(idx);
     }
+    renderEditCustomer(a_userBranchId){
+        if (a_userBranchId)
+        {
+            return (                
+                <Icon name='clone'  size='large'  className="clickableIcon"/>
+            )
+        }
+    }
     renderBukrsBranchList() {
         
         if (this.props.userBranchList) {
@@ -39,6 +47,7 @@ class BukrsBranchList extends Component {
                         <Table.Cell>{ub.bukrsName}</Table.Cell>
                         <Table.Cell>{ub.branchName}</Table.Cell>
                         <Table.Cell><input type="checkbox" checked={ub.flagExists} name = {idx} className="checkBox" onChange={(event)=>this.handleChangeCheckbox(event, idx)} /></Table.Cell>
+                        <Table.Cell>{this.renderEditCustomer(ub.userBranchId)}</Table.Cell>
                     </Table.Row>
                 );
             })
@@ -49,17 +58,37 @@ class BukrsBranchList extends Component {
     
     }
 
+    renderSelectedUserLabel(){
+        if (this.props.selectdeUser)
+        {
+            return (                
+                <div>  
+                    <br />                  
+                    <Label as='a' color='teal' image>
+                        {this.props.selectdeUser.fio}                        
+                    </Label>
+                </div> 
+            )
+        }
+        
+    }
+    // 
     render(){
-        
-        
         return (
             <div id="bukrsBranchDiv">
-                {this.props.selectdeUser3}
+                <div>
+                    <Button icon labelPosition='left' primary size='small' onClick={() => this.props.editUserBranches(this.props.selectdeUser.userId,this.props.userBranchList)} >
+                        <Icon name='save' size='large' />Сохранить
+                    </Button>
+                </div>
+                {this.renderSelectedUserLabel(this.bind)}   
+                
                 <Table striped compact collapsing  id="bukrsBranchTable">
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell>Компания</Table.HeaderCell>
                             <Table.HeaderCell>Филиал</Table.HeaderCell>
+                            <Table.HeaderCell></Table.HeaderCell>
                             <Table.HeaderCell></Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>            
@@ -84,6 +113,6 @@ function mapStateToProps(state)
 // function mapDispatchToProps(dispatch){
 //     return bindActionCreators({ fetchUsers },dispatch);
 // }
-export default connect(mapStateToProps,{ markBranch }) (BukrsBranchList);
+export default connect(mapStateToProps,{ markBranch, editUserBranches }) (BukrsBranchList);
 
 

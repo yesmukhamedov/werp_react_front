@@ -4,7 +4,7 @@ import BukrsBranchList from './bukrs_branch_list';
 import CustomerF4 from '../../../reference/f4/Customer/customerF4';
 import { fetchUsers, findUsers, fethcUserBranches } from '../actions/userBranch_action';
 import { connect } from 'react-redux';
-import { Container, Button, Icon } from 'semantic-ui-react';
+import { Container, Button, Icon, Table } from 'semantic-ui-react';
 import '../css/userBranch.css';
 class AssignUserBranch extends Component {    
 
@@ -31,13 +31,20 @@ class AssignUserBranch extends Component {
 
             <Container style={{ marginTop: '1em' }}>
             <div className="userBranch">
+                
                 <div className="searchTerm">
-                    <input value ={this.state.userSearchTerm} onChange={event => this.onInputChange(event.target.value)}/>
-                    <Button icon labelPosition='left' primary size='small' onClick={this.onSearchClick.bind(this)} ><Icon name='search' 
-                                    size='large' />Поиск</Button>    
+                    <Table striped compact collapsing>      
+                        <Table.Body>
+                            <Table.Row>
+                                <Table.Cell><input value ={this.state.userSearchTerm} onChange={event => this.onInputChange(event.target.value)}/></Table.Cell>
+                                <Table.Cell><Button icon labelPosition='left' primary size='small' onClick={this.onSearchClick.bind(this)} ><Icon name='search' 
+                                    size='large' />Поиск</Button></Table.Cell>
+                            </Table.Row>
+                        </Table.Body>        
+                    </Table>  
                 </div>
                 <UserList foundUsers={this.props.foundUsers} onUserSelect={(selectedUser)=>this.setState({selectedUser})} />
-                <BukrsBranchList selectdeUser3={this.state.selectedUser}/>
+                <BukrsBranchList selectdeUser={this.state.selectedUser}/>
                 <CustomerF4 />
             </div>
             </Container>

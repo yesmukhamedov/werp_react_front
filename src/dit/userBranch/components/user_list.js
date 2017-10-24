@@ -10,7 +10,7 @@ class UserList extends Component {
     renderUsers() {
         return this.props.foundUsers.map((user)=>{
             return (
-                <Table.Row key={user.userId} onClick={()  => this.onRowSelect(user.userId,user.userName,user.fio)
+                <Table.Row key={user.userId} onClick={()  => this.onRowSelect(user)
                     }>
                 
                     <Table.Cell>{user.userName}</Table.Cell>
@@ -24,9 +24,9 @@ class UserList extends Component {
     
     
 
-    onRowSelect(a_userId,a_userName,a_fio){
-        this.props.fethcUserBranches(a_userId);
-        this.props.onUserSelect(a_fio);
+    onRowSelect(a_userObject){
+        this.props.fethcUserBranches(a_userObject.userId);
+        this.props.onUserSelect(a_userObject);
     }
 
     render(){

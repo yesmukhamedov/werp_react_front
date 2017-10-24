@@ -1,7 +1,6 @@
 import React,{ Component } from 'react';
 import { connect } from 'react-redux';
-import { Table   } from 'semantic-ui-react';
-import { Button, Modal, Dropdown, Icon } from 'semantic-ui-react';
+import { Table, Button, Modal, Dropdown, Icon } from 'semantic-ui-react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import './customerF4.css';
@@ -58,7 +57,16 @@ class CustomerF4 extends Component {
         // replace with whatever your api logic is.
         // console.log(333);
         let customer = Object.assign({}, this.state.customerSearchTerm);
-        // console.log(customer);
+
+
+        let strVal = customer.birthday.startOf('day').format('YYYY-MM-DD[T]HH:mm:ss')
+
+        console.log("CUSTOMER", customer);
+        console.log("CUSTOMER BD", customer.birthday);
+        // var dateString = customer.birthday.format('YYYY MM DD'); 
+        customer.birthday =new Date(strVal);
+        console.log("CUSTOMER BD UTC", customer.birthday);
+
         if(!customer.country_id)
         {
             customer.country_id=0;
@@ -113,7 +121,9 @@ class CustomerF4 extends Component {
                 waCustomerSearchTerm.name="";
             } 
         }
-        else if (stateFieldName==='birthday') waCustomerSearchTerm.birthday=value;
+        else if (stateFieldName==='birthday') { 
+            waCustomerSearchTerm.birthday=value; 
+        }
         else if (stateFieldName==='iin_bin') waCustomerSearchTerm.iin_bin=value;
         else if (stateFieldName==='name') waCustomerSearchTerm.name=value;
         else if (stateFieldName==='firstname') waCustomerSearchTerm.firstname=value;
@@ -207,7 +217,7 @@ class CustomerF4 extends Component {
                                     <Table.Cell>День рождения</Table.Cell>
                                     <Table.Cell>
                                         <DatePicker 
-                                            showMonthDropdown showYearDropdown dropdownMode="select" timezone="UTC"
+                                            showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
                                             selected={this.state.customerSearchTerm.birthday}
                                             onChange={(event) => this.onInputChange(event,"birthday")} isClearable={!this.state.disableFiz} 
                                             dateFormat="DD.MM.YYYY" disabled={this.state.disableFiz} />
