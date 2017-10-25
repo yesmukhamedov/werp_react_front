@@ -57,6 +57,7 @@ class CustomerF4 extends Component {
         // replace with whatever your api logic is.
         // console.log(333);
         let customer = Object.assign({}, this.state.customerSearchTerm);
+<<<<<<< .merge_file_a05692
 
 
         let strVal = customer.birthday.utc().startOf('day').format('YYYY-MM-DD[T]HH:mm:ss')
@@ -66,6 +67,10 @@ class CustomerF4 extends Component {
         // var dateString = customer.birthday.format('YYYY MM DD'); 
         customer.birthday =new Date(strVal);
         console.log("CUSTOMER BD UTC", customer.birthday);
+=======
+        let strVal = customer.birthday.format('YYYY-MM-DD')
+        customer.birthday = moment.utc(strVal).format()
+>>>>>>> .merge_file_a08856
 
         if(!customer.country_id)
         {
