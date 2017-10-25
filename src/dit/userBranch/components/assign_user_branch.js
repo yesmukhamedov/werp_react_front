@@ -1,6 +1,7 @@
 import React,{ Component } from 'react';
 import UserList from './user_list';
 import BukrsBranchList from './bukrs_branch_list';
+import UserBranchCustomerList from './user_branch_customer_list';
 import CustomerF4 from '../../../reference/f4/Customer/customerF4';
 import { fetchUsers, findUsers, fethcUserBranches } from '../actions/userBranch_action';
 import { connect } from 'react-redux';
@@ -44,7 +45,8 @@ class AssignUserBranch extends Component {
                     </Table>  
                 </div>
                 <UserList foundUsers={this.props.foundUsers} onUserSelect={(selectedUser)=>this.setState({selectedUser})} />
-                <BukrsBranchList selectdeUser={this.state.selectedUser}/>
+                <BukrsBranchList selectdeUser={this.state.selectedUser} onUserBranchSelect={(selectedUserBranch)=>this.setState({selectedUserBranch})}/>
+                <UserBranchCustomerList selectedUserBranch={this.state.selectedUserBranch} />
                 <CustomerF4 />
             </div>
             </Container>

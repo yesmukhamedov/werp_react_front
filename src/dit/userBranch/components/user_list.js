@@ -10,12 +10,9 @@ class UserList extends Component {
     renderUsers() {
         return this.props.foundUsers.map((user)=>{
             return (
-                <Table.Row key={user.userId} onClick={()  => this.onRowSelect(user)
-                    }>
-                
+                <Table.Row key={user.userId} onClick={()  => this.onRowSelect(user)}>                
                     <Table.Cell>{user.userName}</Table.Cell>
-                    <Table.Cell>{user.fio}</Table.Cell>
-                    
+                    <Table.Cell>{user.fio}</Table.Cell>                    
                 </Table.Row> 
             );
 

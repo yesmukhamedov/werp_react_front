@@ -59,7 +59,7 @@ class CustomerF4 extends Component {
         let customer = Object.assign({}, this.state.customerSearchTerm);
 
 
-        let strVal = customer.birthday.startOf('day').format('YYYY-MM-DD[T]HH:mm:ss')
+        let strVal = customer.birthday.utc().startOf('day').format('YYYY-MM-DD[T]HH:mm:ss')
 
         console.log("CUSTOMER", customer);
         console.log("CUSTOMER BD", customer.birthday);

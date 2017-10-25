@@ -1,6 +1,6 @@
 import React,{ Component } from 'react';
 import { connect } from 'react-redux';
-import { markBranch, editUserBranches } from '../actions/userBranch_action';
+import { markBranch, editUserBranches, fethcUserBranchCustomers } from '../actions/userBranch_action';
 import { Table } from 'semantic-ui-react';
 import { Button, Icon, Label } from 'semantic-ui-react';
 // const arrayList= ;
@@ -30,11 +30,15 @@ class BukrsBranchList extends Component {
         // const value = target.type === 'checkbox' ? target.checked : target.value;
         this.props.markBranch(idx);
     }
-    renderEditCustomer(a_userBranchId){
-        if (a_userBranchId)
+    onRowSelect(a_ubObject){
+        this.props.fethcUserBranchCustomers(a_ubObject.userBranchId);
+        this.props.onUserBranchSelect(a_ubObject);
+    }
+    renderEditCustomer(a_ubObject){
+        if (a_ubObject.userBranchId)
         {
             return (                
-                <Icon name='clone'  size='large'  className="clickableIcon"/>
+                <Icon name='clone'  size='large'  className="clickableIcon" onClick={()  => this.onRowSelect(a_ubObject)}/>
             )
         }
     }
@@ -47,7 +51,7 @@ class BukrsBranchList extends Component {
                         <Table.Cell>{ub.bukrsName}</Table.Cell>
                         <Table.Cell>{ub.branchName}</Table.Cell>
                         <Table.Cell><input type="checkbox" checked={ub.flagExists} name = {idx} className="checkBox" onChange={(event)=>this.handleChangeCheckbox(event, idx)} /></Table.Cell>
-                        <Table.Cell>{this.renderEditCustomer(ub.userBranchId)}</Table.Cell>
+                        <Table.Cell>{this.renderEditCustomer(ub)}</Table.Cell>
                     </Table.Row>
                 );
             })
@@ -113,6 +117,6 @@ function mapStateToProps(state)
 // function mapDispatchToProps(dispatch){
 //     return bindActionCreators({ fetchUsers },dispatch);
 // }
-export default connect(mapStateToProps,{ markBranch, editUserBranches }) (BukrsBranchList);
+export default connect(mapStateToProps,{ markBranch, editUserBranches, fethcUserBranchCustomers }) (BukrsBranchList);
 
 
