@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */ 
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -6,7 +7,7 @@ import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
 import routes from './routes/routes';
 import reducers from './reducers';
-import {AUTH_USER} from './actions/types';
+import {AUTH_USER, ROUTES} from './actions/types';
 import ConnectedIntlProvider from './ConnectedIntlProvider';
 import JwtRefresher from './middlewares/JwtRefresher';
 import 'semantic-ui-css/semantic.min.css';
@@ -15,6 +16,11 @@ import { addLocaleData } from 'react-intl';
 import en from 'react-intl/locale-data/en';
 import ru from 'react-intl/locale-data/ru';
 import kk from 'react-intl/locale-data/kk';
+import axios from 'axios';
+import {ROOT_URL} from "./utils/constants";
+
+const promise = axios.get(`${ROOT_URL}/routes`);
+
 
 addLocaleData([...en, ...ru, ...kk]);
 
@@ -28,10 +34,21 @@ if(token) {
   store.dispatch({type: AUTH_USER, payload: localStorage.getItem('username')});
 }
 
-ReactDOM.render(
-    <Provider store={store}>
-        <ConnectedIntlProvider>
-            <Router history={browserHistory} routes={routes} />
-        </ConnectedIntlProvider>
-    </Provider>, 
-    document.getElementById('root'));
+promise.then(({ data }) => {  
+    store.dispatch({
+        type: ROUTES, 
+        payload: data
+    });
+    let resolvedRoutes = routes(data);
+    ReactDOM.render(
+        <Provider store={store}>
+            <ConnectedIntlProvider>
+                <Router history={browserHistory} routes={resolvedRoutes} />
+            </ConnectedIntlProvider>
+        </Provider>, 
+        document.getElementById('root'));
+})
+
+
+
+

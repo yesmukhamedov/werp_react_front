@@ -1,9 +1,12 @@
 import React,{ Component } from 'react';
 import UserList from './user_list';
 import BukrsBranchList from './bukrs_branch_list';
+import UserBranchCustomerList from './user_branch_customer_list';
+import CustomerF4 from '../../../reference/f4/Customer/customerF4';
 import { fetchUsers, findUsers, fethcUserBranches } from '../actions/userBranch_action';
 import { connect } from 'react-redux';
-import { Container } from 'semantic-ui-react';
+import { Container, Button, Icon, Table } from 'semantic-ui-react';
+import '../css/userBranch.css';
 class AssignUserBranch extends Component {    
 
     componentWillMount(){
@@ -12,7 +15,7 @@ class AssignUserBranch extends Component {
 
     constructor(props){
         super(props);
-        this.state = {userSearchTerm:""};
+        this.state = {userSearchTerm:"",selectedUser:"",selectedUserBranch:""};
     }
 
     onInputChange(term){
@@ -24,18 +27,27 @@ class AssignUserBranch extends Component {
     }
     render(){
         
-        
         return (
+
+
             <Container style={{ marginTop: '1em' }}>
             <div className="userBranch">
+                
                 <div className="searchTerm">
-                    <input value ={this.state.userSearchTerm} onChange={event => this.onInputChange(event.target.value)}/>
-                    <button className="btn btn-danger pull-xs-right" onClick={this.onSearchClick.bind(this)}>
-                        Search
-                    </button> 
+                    <Table striped compact collapsing>      
+                        <Table.Body>
+                            <Table.Row>
+                                <Table.Cell><input value ={this.state.userSearchTerm} onChange={event => this.onInputChange(event.target.value)}/></Table.Cell>
+                                <Table.Cell><Button icon labelPosition='left' primary size='small' onClick={this.onSearchClick.bind(this)} ><Icon name='search' 
+                                    size='large' />Поиск</Button></Table.Cell>
+                            </Table.Row>
+                        </Table.Body>        
+                    </Table>  
                 </div>
-                <UserList foundUsers={this.props.foundUsers}/>
-                <BukrsBranchList />
+                <UserList foundUsers={this.props.foundUsers} onUserSelect={(selectedUser)=>this.setState({selectedUser})} />
+                <BukrsBranchList selectdeUser={this.state.selectedUser} onUserBranchSelect={(selectedUserBranch)=>this.setState({selectedUserBranch})}/>
+                <UserBranchCustomerList selectedUserBranch={this.state.selectedUserBranch} />
+                <CustomerF4 />
             </div>
             </Container>
         

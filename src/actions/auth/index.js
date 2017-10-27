@@ -1,3 +1,4 @@
+/*jshint esversion: 6 */ 
 import axios from 'axios';
 import jwt from 'jwt-simple';
 import {browserHistory} from 'react-router';
@@ -22,7 +23,7 @@ export function signinUser({username, password}, language) {
                 // - save the JWT token
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('username', username);
-                // - redirect to the route './feature'
+                // - redirect to the route '/'
                 browserHistory.push('/');
 
                  // test
@@ -34,12 +35,12 @@ export function signinUser({username, password}, language) {
                 // If request is bad...
                 // - Show an error to the user
                 if(error.response) {
-                    dispatch(authError(error.response.data.message))
+                    dispatch(authError(error.response.data.message));
                 } else if(error.stack) {
-                    Promise.resolve({ error }).then(response => dispatch(authError(response.error.message)))                    
+                    Promise.resolve({ error }).then(response => dispatch(authError(response.error.message)));                    
                 } 
             });
-    }
+    };
 }
 
 export function signoutUser() {
@@ -47,7 +48,7 @@ export function signoutUser() {
         resetLocalStorage();
         dispatch({type: UNAUTH_USER});
         browserHistory.push('/');
-    }
+    };
 }
 
 export function fetchUsers() {    
@@ -60,15 +61,15 @@ export function fetchUsers() {
                 });
             })
             .catch(error => {
-                const msg = "Can't fetch all users. "
+                const msg = "Can't fetch all users. ";
                 if(error.response) {
-                    dispatch(usersError(msg + error.response.data.message))
+                    dispatch(usersError(msg + error.response.data.message));
                 } else {
-                    Promise.resolve({ error }).then(response => dispatch(usersError(msg + response.error.message)))  
+                    Promise.resolve({ error }).then(response => dispatch(usersError(msg + response.error.message)));  
                 }    
                      
             });
-    }        
+    };        
 }
 
 export function usersError(error) {

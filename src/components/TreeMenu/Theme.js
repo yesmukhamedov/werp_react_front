@@ -5,8 +5,8 @@ export default {
             margin: 0,
             padding: 0,
             color: '#9DA5AB',
-            fontFamily: 'lucida grande,tahoma,verdana,arial,sans-serif',
-            fontSize: '10px',
+            fontFamily: 'sans-serif,lucida grande,tahoma,verdana,arial',
+            fontSize: '12px',
             width: '250px',
             textAlign: 'left'
         },
@@ -30,14 +30,16 @@ export default {
                     verticalAlign: 'top',
                     marginLeft: '-5px',
                     height: '24px',
-                    width: '24px'
+                    width: '24px',
+                    cursor: 'pointer'
                 },
                 wrapper: {
                     position: 'absolute',
                     top: '50%',
                     left: '50%',
                     margin: '-7px 0 0 -7px',
-                    height: '14px'
+                    height: '14px',
+                    cursor: 'pointer'
                 },
                 height: 14,
                 width: 14,
@@ -50,7 +52,8 @@ export default {
                 base: {
                     display: 'inline-block',
                     verticalAlign: 'top',
-                    color: '#9DA5AB'
+                    color: '#9DA5AB',                    
+                    cursor: 'pointer'
                 },
                 connector: {
                     width: '2px',

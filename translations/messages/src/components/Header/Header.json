@@ -1,0 +1,18 @@
+[
+  {
+    "id": "Header.Menu.MenuLabel",
+    "defaultMessage": "Menu"
+  },
+  {
+    "id": "Header.Menu.Inbox",
+    "defaultMessage": "Inbox"
+  },
+  {
+    "id": "Header.Menu.Settings",
+    "defaultMessage": "Settings"
+  },
+  {
+    "id": "Header.Menu.Logout",
+    "defaultMessage": "Logout"
+  }
+]
