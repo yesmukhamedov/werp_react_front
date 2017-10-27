@@ -2,7 +2,7 @@ import React,{ Component } from 'react';
 import { connect } from 'react-redux';
 import { markBranch } from '../actions/userBranch_action';
 import { Table } from 'semantic-ui-react';
-
+import { Button, Icon, Label } from 'semantic-ui-react';
 // const arrayList= ;
 class UserBranchCustomerList extends Component {
 
@@ -17,16 +17,19 @@ class UserBranchCustomerList extends Component {
     }
    
     renderTableList() {
+        console.log(this.props);
         
-        if (this.props.userBranchList) {
-            return this.props.userBranchList.map((ub,idx)=>{
+        if (this.props.userBranchCustomerList) {
+            return this.props.userBranchCustomerList.map((ubc,idx)=>{
+                var wa_fizYurText;
+                if (ubc.fiz_yur===1){ wa_fizYurText = "Юр."} else { wa_fizYurText = "Физ."}
                 return (
-                    // <Table.Row key={ub.branchId}>
-                    //     <Table.Cell>{ub.bukrsName}</Table.Cell>
-                    //     <Table.Cell>{ub.branchName}</Table.Cell>
-                    //     <Table.Cell><input type="checkbox" checked={ub.flagExists} name = {idx} className="checkBox" onChange={(event)=>this.handleChangeCheckbox(event, idx)} /></Table.Cell>
-                    // </Table.Row>
-                    <div>Test</div>
+                    <Table.Row key={idx}>
+                        <Table.Cell>{ubc.iin_bin}</Table.Cell>
+                        <Table.Cell>{ubc.fio}</Table.Cell>
+                        <Table.Cell>{wa_fizYurText}</Table.Cell>
+                        <Table.Cell>{ubc.ubcAccess}</Table.Cell>
+                    </Table.Row>
                 );
             })
         }
@@ -35,12 +38,32 @@ class UserBranchCustomerList extends Component {
         
     
     }
-
+    renderSelectedUserBranchLabel(){
+        if (this.props.selectedUserBranch)
+        {
+            return (                
+                <div>  
+                    <br />                  
+                    <Label as='a' color='teal' image>
+                        {this.props.selectedUserBranch.branchName}                        
+                    </Label>
+                </div> 
+            )
+        }
+        
+    }
     render(){
         
         
         return (
             <div id="bukrsBranchDiv">
+
+                <div>
+                    <Button icon labelPosition='left' primary size='small' >
+                        <Icon name='save' size='large' />Сохранить
+                    </Button>
+                </div>
+                {this.renderSelectedUserBranchLabel(this.bind)}   
                 <Table striped compact collapsing  id="userBranchCustomerTable">
                     <Table.Header>
                         <Table.Row>
@@ -65,13 +88,13 @@ class UserBranchCustomerList extends Component {
 function mapStateToProps(state)
 {
     // console.log("BukrsBranchList component line 99",state);
-    return { //userBranchList: state.ditUserBranch.userBranchList
+    return { userBranchCustomerList: state.ditUserBranch.userBranchCustomerList
     };
 }
 
 // function mapDispatchToProps(dispatch){
 //     return bindActionCreators({ fetchUsers },dispatch);
 // }
-export default connect(mapStateToProps,{ markBranch }) (BukrsBranchList);
+export default connect(mapStateToProps,{  }) (UserBranchCustomerList);
 
 

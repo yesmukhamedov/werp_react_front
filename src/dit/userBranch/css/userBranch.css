@@ -21,3 +21,11 @@
     margin-left:20px;
 
 }
+
+.userBranch .searchTerm Table{
+    border: 0px;
+}
+
+.clickableIcon:hover{
+    cursor: pointer;
+}
