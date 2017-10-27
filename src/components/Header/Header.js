@@ -6,6 +6,8 @@ import { defineMessages, intlShape, injectIntl } from 'react-intl';
 import LanguageSwitcher from './LanguageSwitcher';
 import TransactionSearchbar from './TransactionSearchbar';
 import { fetchUnreadMessages } from "../../actions/inbox";
+import { breadcrumbChanged } from "../../actions/tree_menu";
+import { calcBreadcrumb } from "../../utils/helpers";
 
 class Header extends Component {
     componentWillMount() {
@@ -45,6 +47,12 @@ class Header extends Component {
         )
     };
 
+    handleTransactionSelected(transactionCode) {
+        const leafNode = this.props.transactions[transactionCode];
+        const breadcrumb = calcBreadcrumb(leafNode);
+        this.props.breadcrumbChanged(breadcrumb);
+    }
+
     render() {
         const {formatMessage} = this.props.intl;
         return (<Menu secondary attached="top">
@@ -54,7 +62,7 @@ class Header extends Component {
 
                     <Menu.Item >
                         {/* <Input action={{ type: 'submit', content: 'Go' }} placeholder='Navigate to...' /> */}
-                        <TransactionSearchbar routes={this.props.routes}/>
+                        <TransactionSearchbar transactions={this.props.transactions} transactionSelected={this.handleTransactionSelected.bind(this)}/>
                     </Menu.Item>
 
                     <Menu.Item>
@@ -107,7 +115,9 @@ function mapStateToProps(state) {
       unread: state.inbox.unread,
       breadcrumb: state.menu.breadcrumb,
       lang: state.locales.lang,
-      routes: state.menu.routes
+      routes: state.menu.routes,
+      treeMenu: state.menu.tree,
+      transactions: state.menu.transactions
     };
 }
 
@@ -115,4 +125,4 @@ Header.propTypes = {
     intl: intlShape.isRequired
 };
   
-export default connect(mapStateToProps, {fetchUnreadMessages})(injectIntl(Header));
+export default connect(mapStateToProps, {fetchUnreadMessages, breadcrumbChanged})(injectIntl(Header));

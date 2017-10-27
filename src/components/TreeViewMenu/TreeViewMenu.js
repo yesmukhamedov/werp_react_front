@@ -1,14 +1,12 @@
-import React, { Component } from "react"
-import { Link } from 'react-router'
+import React, {Component} from "react"
+import {Link} from 'react-router'
 import TreeView from 'react-treeview'
-import { connect } from 'react-redux'
 import 'react-treeview/react-treeview.css'
 import './TreeViewMenu.css'
-import { breadcrumbChanged } from "../../actions/tree_menu";
-import { LEGACY_URL } from "../../utils/constants"
+import {LEGACY_URL} from "../../utils/constants"
+import {calcBreadcrumb} from "../../utils/helpers";
 
-
-class TreeViewMenu extends Component {
+export default class TreeViewMenu extends Component {
     constructor(props) {
         super(props)
 
@@ -19,18 +17,14 @@ class TreeViewMenu extends Component {
         this.handleClick = this.handleClick.bind(this)
     }
 
-    handleClick(id) {
-        id.collapse = !id.collapse
-        this.setState({...this.state, selectedNode: id})
+    handleClick(node) {
+        node.collapse = !node.collapse
+        this.setState({...this.state, selectedNode: node})
 
 
-        if (id.leaf) {
+        if (node.leaf) {
             // Bottom-Up approach to gather the breadcrumb
-            const menuItemNames = [];
-            for (let n = id; n; n = n.parent) {
-                menuItemNames.push(n.translations);
-            }
-            const breadcrumb = menuItemNames.reverse();
+            const breadcrumb = calcBreadcrumb(node);
             this.props.breadcrumbChanged(breadcrumb);
         }
     }
@@ -48,31 +42,37 @@ class TreeViewMenu extends Component {
         if (node.leaf) {
             let nodeName = node.translations[this.props.lang]
             return (
-                <div key={node.name} 
-                    onClick={() => {this.handleClick(node)}}
-                    className={`leaf ${(node === this.state.selectedNode ? 'node-active' : '')}`}>
+                <div key={node.name}
+                     onClick={() => {
+                         this.handleClick(node)
+                     }}
+                     className={`leaf ${(node === this.state.selectedNode ? 'node-active' : '')}`}>
                     <i className="file text outline icon"></i>
                     {(node.link.endsWith('.xhtml') ?
-                        <Link target='_blank' to={`${LEGACY_URL}/${node.link}`}>{nodeName}</Link> :
-                        <Link to={node.link}>{nodeName}</Link>
+                            <Link target='_blank' to={`${LEGACY_URL}/${node.link}`}>{nodeName}</Link> :
+                            <Link to={node.link}>{nodeName}</Link>
                     )}
-                    
+
                 </div>
             )
         } else {
             if (!node.hasOwnProperty('collapse')) {
                 node.collapse = true
             }
-            node.children.map((child) => {child.parent = node})
+            node.children.map((child) => {
+                child.parent = node
+            })
             const label =
-            <span className={`node ${(node === this.state.selectedNode ? 'node-active' : '')}`} 
-                key={node.name}
-                onClick={() => {this.handleClick(node)}}>{node.translations[this.props.lang]}</span>
+                <span className={`node ${(node === this.state.selectedNode ? 'node-active' : '')}`}
+                      key={node.name}
+                      onClick={() => {
+                          this.handleClick(node)
+                      }}>{node.translations[this.props.lang]}</span>
             return (
-                <TreeView 
-                    key={node.name} 
-                    nodeLabel={label} 
-                    collapsed={node.collapse} >
+                <TreeView
+                    key={node.name}
+                    nodeLabel={label}
+                    collapsed={node.collapse}>
                     {node.children.map((el, i) => this.traverse(el, i))}
                 </TreeView>
             )
@@ -88,5 +88,3 @@ class TreeViewMenu extends Component {
         )
     }
 }
-
-export default connect(null, { breadcrumbChanged })(TreeViewMenu);

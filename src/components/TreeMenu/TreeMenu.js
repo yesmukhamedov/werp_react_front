@@ -6,22 +6,9 @@ import Animations from './Animations'
 import Theme from './Theme'
 import './TreeMenu.css'
 import {breadcrumbChanged} from "../../actions/tree_menu";
+import {calcBreadcrumb} from "../../utils/helpers";
 
-// Recursively adds parent links to child fields
-const addParentLinks = (data) => {
-    const setParent = (node) => {
-        if (!node.leaf) {
-            for (let i = 0; i < node.children.length; i++) {
-                node.children[i].parent = node;
-                setParent(node.children[i]);
-            }
-        }
-    };
-    for (const node of data) {
-        setParent(node);
-    }
-    return data;
-};
+
 
 class TreeMenu extends Component {
 
@@ -48,12 +35,7 @@ class TreeMenu extends Component {
         this.setState({cursor: node});
 
         if (node && node.leaf) {
-            // Bottom-Up approach to gather the breadcrumb
-            const menuItemNames = [];
-            for (let n = node; n; n = n.parent) {
-                menuItemNames.push(n.translations);
-            }
-            const breadcrumb = menuItemNames.reverse();
+            const breadcrumb = calcBreadcrumb(node);
             this.props.breadcrumbChanged(breadcrumb);
         }
 
@@ -65,7 +47,7 @@ class TreeMenu extends Component {
                 <div className="tree-menu">
                     {Decorators.lang = this.props.lang}
                     <Treebeard
-                        data={addParentLinks(this.props.data)}
+                        data={this.props.data}
                         style={Theme}
                         animations={Animations}
                         decorators={Decorators}

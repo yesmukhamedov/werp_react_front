@@ -7,6 +7,7 @@ import './App.css';
 import Signin from './components/Auth/Signin';
 import {fetchUnreadMessages} from "./actions/inbox";
 import {fetchTreeMenu} from "./actions/tree_menu";
+import {breadcrumbChanged} from "./actions/tree_menu";
 import Header from './components/Header/Header';
 import TreeViewMenu from './components/TreeViewMenu/TreeViewMenu'
 
@@ -62,7 +63,10 @@ class App extends Component {
                                     data={this.props.treeMenu}/> */}
                             <TreeViewMenu 
                                 lang={this.props.lang}
-                                list={this.props.treeMenu} />
+                                list={this.props.treeMenu}
+                                transactions={this.props.transactions}
+                                breadcrumbChanged={this.props.breadcrumbChanged}
+                                />
                         </Sidebar>
                         <Sidebar.Pusher onClick={() => this.setState({...this.state, menuVisible: false})}>
                             {this.props.children}
@@ -85,8 +89,9 @@ function mapStateToProps(state) {
         unread: state.inbox.unread,
         lang: state.locales.lang,
         treeMenu: state.menu.tree,
-        refetch: state.menu.refetch
+        refetch: state.menu.refetch,
+        transactions: state.menu.transactions
     };
 }
 
-export default connect(mapStateToProps, {fetchUnreadMessages, fetchTreeMenu})(App);
+export default connect(mapStateToProps, {fetchUnreadMessages, fetchTreeMenu, breadcrumbChanged})(App);
