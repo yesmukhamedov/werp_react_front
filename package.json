@@ -28,7 +28,10 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "sh -ac '. ./.env.${REACT_APP_ENV}; react-scripts build'",
+    "build:dev": "REACT_APP_ENV=development npm run build",
+    "build:stage": "REACT_APP_ENV=staging npm run build",
+    "build:prod": "REACT_APP_ENV=production npm run build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "translate": "cross-env NODE_ENV=production babel ./src > NUL",

@@ -4,8 +4,6 @@
  */
 const isLocalIpAddress = () => {
     const hostname = window.location.hostname;
-    console.log(hostname)
-    console.log(window.location.href)
     return hostname.includes('localhost') || hostname.includes('192.168');
 };
 
