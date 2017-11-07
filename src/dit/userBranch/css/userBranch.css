@@ -29,3 +29,14 @@
 .clickableIcon:hover{
     cursor: pointer;
 }
+
+.userBranch{
+    width:1400px;
+}
+
+div.footer{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 300px;
+}

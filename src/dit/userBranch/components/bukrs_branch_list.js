@@ -6,28 +6,8 @@ import { Button, Icon, Label } from 'semantic-ui-react';
 // const arrayList= ;
 class BukrsBranchList extends Component {
 
-    // constructor(props){
-    //     super(props);
-    //     // //this.state = {userBranchList:[]};
-    //     // this.handleChangeCheckbox = this.handleChangeCheckbox.bind(this);
-    // }
 
-    // componentWillReceiveProps(nextProps){
-    //     // console.log(nextProps.userBranchList);
-    //     // this.setState(userBranchList = nextProps.userBranchList;
-    //     // console.log(1);
-    //     this.setState(//{userBranchList : nextProps.userBranchList}
-    //         prevState => ({userBranchList: [...this.state.userBranchList, nextProps.userBranchList]})        
-    //     );
-    //     // console.log(2);
-    //     //  console.log(this.state);
-    //     // console.log(' zz');
-    // }
     handleChangeCheckbox(event, idx){
-        // event.flagExists=true;
-        // const target = event.target;
-        // const name = target.name;
-        // const value = target.type === 'checkbox' ? target.checked : target.value;
         this.props.markBranch(idx);
     }
     onRowSelect(a_ubObject){
@@ -43,7 +23,6 @@ class BukrsBranchList extends Component {
         }
     }
     renderBukrsBranchList() {
-        
         if (this.props.userBranchList) {
             return this.props.userBranchList.map((ub,idx)=>{
                 return (
@@ -110,13 +89,8 @@ class BukrsBranchList extends Component {
 
 function mapStateToProps(state)
 {
-    // console.log("BukrsBranchList component line 99",state);
     return { userBranchList: state.ditUserBranch.userBranchList};
 }
-
-// function mapDispatchToProps(dispatch){
-//     return bindActionCreators({ fetchUsers },dispatch);
-// }
 export default connect(mapStateToProps,{ markBranch, editUserBranches, fethcUserBranchCustomers }) (BukrsBranchList);
 
 

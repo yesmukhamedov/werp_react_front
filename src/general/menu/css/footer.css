@@ -1,0 +1,8 @@
+div.fixedFooter {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 300px;
+    border: 0px;
+    margin-top: 10px;
+}

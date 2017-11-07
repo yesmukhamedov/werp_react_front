@@ -9,7 +9,8 @@ import {fetchUnreadMessages} from "./actions/inbox";
 import {fetchTreeMenu} from "./actions/tree_menu";
 import {breadcrumbChanged} from "./actions/tree_menu";
 import Header from './components/Header/Header';
-import TreeViewMenu from './components/TreeViewMenu/TreeViewMenu'
+import TreeViewMenu from './components/TreeViewMenu/TreeViewMenu';
+import Notification from './general/notification/notification';
 
 class App extends Component {
     constructor(props) {
@@ -56,7 +57,7 @@ class App extends Component {
                 <div className="wrapper">
                     <Header unread={this.props.unread}
                             toggleMenu={() => this.setState({menuVisible: !this.state.menuVisible})}/>
-
+                            <Notification />
                     <Sidebar.Pushable as={Segment} attached="bottom" >
                         <Sidebar as={Menu} animation='overlay' visible={this.state.menuVisible} icon="labeled" vertical>
                             {/* <TreeMenu lang={this.props.lang} 
