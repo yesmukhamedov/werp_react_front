@@ -7,21 +7,16 @@ import './customerF4.css';
 import moment from 'moment';
 import axios from 'axios';
 import {ROOT_URL} from '../../../utils/constants';
+import { notify } from '../../../general/notification/notification_action';
 
 const options = [
     { key: 1, text: 'Юр', value: 1 },
     { key: 2, text: 'Физ', value: 2 },
   ]
-  // var options2 = [
-  //   { key: 1, text: 'Qazaqstan', value: 1 },
-  //   { key: 2, text: 'Turkey', value: 2 },
-  // ]
-
  
 // const arrayList= ;
 class CustomerF4 extends Component {
     componentWillMount(){
-
 
         this.fetchCountries().then(result => 
             {   
@@ -38,37 +33,38 @@ class CustomerF4 extends Component {
                 })
             }
           )
-
-        // this.fetchCustomers().then(result => 
-        //     {   
-        //         // let data = result.data;
-        //         const map = result.data;
-        //         console.log(map);
-        //     }
-        // )
         
     }
 
     fetchCountries() {
-        // replace with whatever your api logic is.
         return axios.get(`${ROOT_URL}/reference/FETCH_COUNTRIES`);
     }
     fetchCustomers() {
-        // replace with whatever your api logic is.
-        // console.log(333);
         let customer = Object.assign({}, this.state.customerSearchTerm);
-        let strVal = customer.birthday.format('YYYY-MM-DD')
-        customer.birthday = moment.utc(strVal).format()
-
-        if(!customer.country_id)
+        if (customer.birthday)
         {
-            customer.country_id=0;
+            let strVal = customer.birthday.format('YYYY-MM-DD');
+            customer.birthday = moment.utc(strVal).format();
         }
-        return axios.post(`${ROOT_URL}/general/FETCH_CUSTOMERS`,{customer}).then(result=>{
+        
 
-            this.setState({customerList: result.data});
+        if(!customer.country_id) customer.country_id=0; 
+
+        if (!customer.fiz_yur) { this.props.notify('error','Выберите Физ/Юр','Ошибка'); return;}
+
+        return axios.post(`${ROOT_URL}/general/FETCH_CUSTOMERS`,{customer}).then(response=>{
+
+            this.setState({customerList: response.data});
+        })
+        .catch(error => {
+            if(error.response) {
+                this.props.notify('error',error.response.data.message,'Ошибка');
+            } else {
+                
+                Promise.resolve({ error }).then(response =>this.props.notify('error',error.response.data.message,'Ошибка'));  
+            }    
+                 
         });
-        // console.log(this.state);
 
 
 
@@ -79,9 +75,7 @@ class CustomerF4 extends Component {
         this.state = {customerList:[],countryList:[],
             customerSearchTerm:{fiz_yur:"",iin_bin:"",name:"",firstname:"",lastname:"",middlename:"",birthday:"",passport_id:"",country_id:""},
             disableFiz:true,disableYur:true};
-
-
-        
+        this.close = this.close.bind(this);
     }
 
 
@@ -131,9 +125,10 @@ class CustomerF4 extends Component {
     onRowSelect(a_customerObject){
         if (this.props.onCustomerSelect)
         {
+            // console.log(a_customerObject);
             this.props.onCustomerSelect(a_customerObject);
         }
-        
+        this.close();
     }
     renderUsers() {
         return this.state.customerList.map((cus,idx)=>{
@@ -156,6 +151,11 @@ class CustomerF4 extends Component {
 
         })
     }
+    close(){
+
+        this.props.onCloseCustomerF4(false);        
+    }
+    
     render(){
 
         
@@ -164,7 +164,7 @@ class CustomerF4 extends Component {
 
             <div id="">
 
-                <Modal trigger={<Button>Show Modal</Button>}>
+                <Modal  open={this.props.open} closeOnEscape={false} onClose={this.close} >
                     <Modal.Content>
                         <h3>Контрагент</h3>
                         
@@ -259,7 +259,4 @@ function mapStateToProps(state)
     return { };
 }
 
-// function mapDispatchToProps(dispatch){
-//     return bindActionCreators({ fetchUsers },dispatch);
-// }
-export default connect(mapStateToProps,{  }) (CustomerF4);
+export default connect(mapStateToProps,{ notify }) (CustomerF4);

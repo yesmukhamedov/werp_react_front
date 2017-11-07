@@ -2,7 +2,6 @@ import React,{ Component } from 'react';
 import UserList from './user_list';
 import BukrsBranchList from './bukrs_branch_list';
 import UserBranchCustomerList from './user_branch_customer_list';
-import CustomerF4 from '../../../reference/f4/Customer/customerF4';
 import { fetchUsers, findUsers, fethcUserBranches } from '../actions/userBranch_action';
 import { connect } from 'react-redux';
 import { Container, Button, Icon, Table } from 'semantic-ui-react';
@@ -15,7 +14,8 @@ class AssignUserBranch extends Component {
 
     constructor(props){
         super(props);
-        this.state = {userSearchTerm:"",selectedUser:"",selectedUserBranch:""};
+        this.state = {userSearchTerm:"",selectedUser:"",selectedUserBranch:"", 
+        newUbc:{add:true, change:false, fio:'', fiz_yur:1, iin_bin:null, remove:false, ubcAccess:'', ubcId:'', userBranchId:'',customerId:null}};
     }
 
     onInputChange(term){
@@ -44,10 +44,11 @@ class AssignUserBranch extends Component {
                         </Table.Body>        
                     </Table>  
                 </div>
-                <UserList foundUsers={this.props.foundUsers} onUserSelect={(selectedUser)=>this.setState({selectedUser})} />
+                <UserList foundUsers={this.props.foundUsers} onUserSelect={(selectedUser)=>this.setState({selectedUser,selectedUserBranch:'' })} />
                 <BukrsBranchList selectdeUser={this.state.selectedUser} onUserBranchSelect={(selectedUserBranch)=>this.setState({selectedUserBranch})}/>
-                <UserBranchCustomerList selectedUserBranch={this.state.selectedUserBranch} />
-                <CustomerF4 />
+                <UserBranchCustomerList selectedUserBranch={this.state.selectedUserBranch} newUbc={this.state.newUbc} 
+                selectNewUbc={(newUbc)=>this.setState({newUbc})}/>
+
             </div>
             </Container>
         
