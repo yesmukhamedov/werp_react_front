@@ -9,6 +9,7 @@ const productOptions = [ { key: 'ROBO', value: 'ROBO', text: 'ROBOCLEAN' }]
 class Header extends Component {
     render() {
         return (
+            <div>
             <form className="ui form">
                 <h4 className="ui top attached block header">
                     Новый сервис пакет
@@ -63,6 +64,7 @@ class Header extends Component {
                     </div>
                 </div>
             </form>
+            </div>
         )
     }
 }

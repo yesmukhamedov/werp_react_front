@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Header from './Header';
+import ReferenceModal from './ReferenceModal';
+import ServiceProductList from './ServiceProductList';
 
 
 class SpNewPage extends Component {
@@ -8,6 +10,8 @@ class SpNewPage extends Component {
             <div>
                 <Header/>
                 <h3>SpNewPage component</h3>
+                <ServiceProductList />
+                <ReferenceModal />
             </div>
         );
     }
