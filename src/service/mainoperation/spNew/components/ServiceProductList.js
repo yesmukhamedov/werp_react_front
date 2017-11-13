@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import { Table, Input } from 'semantic-ui-react';
+import React, { Component } from "react"
+import { Table, Input } from 'semantic-ui-react'
 
 export default class ServiceProductList extends Component {
   render() {
     return (
-      <Table className="ui compact celled definition table">
+    <Table celled compact definition>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell colspan="9">
+            <Table.HeaderCell colSpan="9">
               {/* <div className="ui small disabled icon button">
                 <i className="save icon" />
                 Сохранить
@@ -94,13 +94,13 @@ export default class ServiceProductList extends Component {
         </Table.Body>
         <Table.Footer className="full-widTable.HeaderCell">
           <Table.Row>
-            <Table.HeaderCell colspan="6" />
+            <Table.HeaderCell colSpan="6" />
             <Table.HeaderCell>Итоги:</Table.HeaderCell>
             <Table.HeaderCell>0,00</Table.HeaderCell>
             <Table.HeaderCell />
           </Table.Row>
         </Table.Footer>
-      </Table>
+    </Table>
     )
   }
 }

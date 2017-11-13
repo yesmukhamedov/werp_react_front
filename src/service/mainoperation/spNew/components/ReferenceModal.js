@@ -1,9 +1,56 @@
 import React, { Component } from 'react'
 import { Button, Header, Icon, Modal, Form, Input, Table } from 'semantic-ui-react'
 import ReactTable from "react-table"
+import _ from 'lodash'
 import "react-table/react-table.css"
+import "../css/test.css"
 
 export default class ReferenceModal extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            selectedRow: undefined,
+            results: [], 
+            codeValue: '',
+            titleValue: ''
+        }
+    }
+
+    componentWillMount(nextProps) {
+        this.setState({...this.state, results: this.props.data});
+    }
+
+    handleSearchChange = (e, { value }, type) => {
+        switch(type) {
+            case "code":
+                this.setState({...this.state, codeValue: value});
+                break;
+            case "title":
+                this.setState({...this.state, titleValue: value});
+                break;
+            default:
+                throw new Error("Impossible branch")    
+        }    
+        
+        setTimeout(() => {
+            // filter by code
+            const reCode = new RegExp(_.escapeRegExp(this.state.codeValue), 'i');
+            const codeMatch = result => reCode.test(result.code);
+            let filteredByCode = _.filter(this.props.data, codeMatch)
+
+            // filter by title
+            const reTitle = new RegExp(_.escapeRegExp(this.state.titleValue), 'i');
+            const titleMatch = result => reTitle.test(result.title);
+            let filtedByCodeAndTitle = _.filter(filteredByCode, titleMatch)
+
+            this.setState({
+                ...this.state,
+                results: filtedByCodeAndTitle,
+                selectedRow: undefined
+            })
+        }, 500)
+    };
+
     render() {
         return (
             <Modal trigger={<Button>Show Modal</Button>} closeIcon>
@@ -11,27 +58,57 @@ export default class ReferenceModal extends Component {
                 <Modal.Content>
                     <Form>
                         <Form.Group widths='equal'>
-                            <Form.Field control={Input} label='Код' placeholder='код' />
-                            <Form.Field control={Input} label='Название' placeholder='название' />
+                            <Form.Field 
+                                control={Input} 
+                                label='Код' 
+                                placeholder='код' 
+                                size="mini" 
+                                value={this.state.codeValue}
+                                onChange={(e, val) => this.handleSearchChange(e, val, "code")} />
+                            <Form.Field 
+                                control={Input} 
+                                label='Название' 
+                                placeholder='название' 
+                                size="mini" 
+                                onChange={(e, val) => this.handleSearchChange(e, val, "title")} />
                         </Form.Group>
                     </Form>
                     <ReactTable
-                        data={data}
-                        columns={columns}
-                        pageSizeOptions={[]}
-                        defaultPageSize={10}                
-                        previousText="Предыдущий"
-                        nextText="Следующий"
-                        loadingText="Загружается..."
+                        className="-striped -highlight" 
+                        data={this.state.results}
+                        columns={columns} 
+                        showPagination={false}             
                         noDataText="Нет записей"
-                        pageText="Страница"
-                        ofText="из"
-                        rowsText="записей"
                         style={{
                             height: "400px"
-                        }}
-                        className="-striped -highlight" 
-                        />
+                        }} 
+                        
+                        getTrProps={(state, rowInfo , column) => {
+                            return {
+                                
+                                style: {
+                                   background: (rowInfo == undefined ? '' : this.state.selectedRow === rowInfo.index ? 'lightgreen' : '')
+                                },
+                                onClick: (e, handleOriginal) => {
+                                    console.log('A Td Element was clicked!')
+                                    console.log('it produced this event:', e)
+                                    console.log('It was in this column:', column)
+                                    console.log('It was in this row:', rowInfo.index)
+                                    
+                                    let { index } = rowInfo
+                                
+
+                                    // IMPORTANT! React-Table uses onClick internally to trigger
+                                    // events like expanding SubComponents and pivots.
+                                    // By default a custom 'onClick' handler will override this functionality.
+                                    // If you want to fire the original onClick handler, call the
+                                    // 'handleOriginal' function.
+                                    this.setState({...this.state, selectedRow: index})
+                                
+                                }
+                           }
+                        }}  
+                        /> 
                 </Modal.Content>
                 <Modal.Actions>
                     <Button color='red'>
@@ -61,11 +138,3 @@ const columns = [
         accessor: "currency",
     }
 ]
-
-
-const data = [{
-    code: "",
-    price: "price",
-    title: "title",
-    currency: "currency"
-}]
