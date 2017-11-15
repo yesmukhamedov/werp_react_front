@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Header from './Header';
 import SparePartList from './SparePartList';
-import ServiceWarrantyList from './ServiceWarrantyList';
+import WarrantyList from './WarrantyList';
 import ServicePaymentDetails from './ServicePaymentDetails';
 
 
@@ -51,8 +51,8 @@ class SpNewPage extends Component {
                 
                 {/* <Header/> */}
                 {/* <h3>SpNewPage component</h3> */}
-                <SparePartList openReference={this.openSparePartListModal} />
-                {/* <ServiceWarrantyList /> */}
+                <SparePartList />
+                <WarrantyList />
                 {/* <ServicePaymentDetails /> */}
             </div>
         );
