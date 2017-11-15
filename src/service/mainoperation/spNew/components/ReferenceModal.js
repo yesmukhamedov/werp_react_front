@@ -9,15 +9,34 @@ export default class ReferenceModal extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            selectedRow: undefined,
+            selectedItem: undefined,
+            selectedIdx: undefined,
             results: [], 
             codeValue: '',
-            titleValue: ''
+            titleValue: '',
+            sourceId: undefined
         }
+
+        this.clearState = this.clearState.bind(this)
     }
 
     componentWillMount(nextProps) {
         this.setState({...this.state, results: this.props.data});
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({...this.state, results: nextProps.data});
+    }
+
+    clearState() {
+        this.setState({
+            selectedItem: undefined,
+            selectedIdx: undefined,
+            results: [], 
+            codeValue: '',
+            titleValue: '',
+            sourceId: undefined
+        })
     }
 
     handleSearchChange = (e, { value }, type) => {
@@ -40,20 +59,21 @@ export default class ReferenceModal extends Component {
 
             // filter by title
             const reTitle = new RegExp(_.escapeRegExp(this.state.titleValue), 'i');
-            const titleMatch = result => reTitle.test(result.title);
+            const titleMatch = result => reTitle.test(result.name);
             let filtedByCodeAndTitle = _.filter(filteredByCode, titleMatch)
 
             this.setState({
                 ...this.state,
                 results: filtedByCodeAndTitle,
-                selectedRow: undefined
+                selectedRow: undefined,
+                selectedItem: undefined
             })
         }, 500)
     };
 
     render() {
         return (
-            <Modal trigger={<Button>Show Modal</Button>} closeIcon>
+            <Modal open={this.props.visible} closeIcon onClose={() => { this.clearState() }}>
                 <Header icon='filter' content='Материалы' />
                 <Modal.Content>
                     <Form>
@@ -87,15 +107,15 @@ export default class ReferenceModal extends Component {
                             return {
                                 
                                 style: {
-                                   background: (rowInfo == undefined ? '' : this.state.selectedRow === rowInfo.index ? 'lightgreen' : '')
+                                   background: (rowInfo == undefined ? '' : this.state.selectedIdx === rowInfo.index ? 'lightgreen' : '')
                                 },
                                 onClick: (e, handleOriginal) => {
                                     console.log('A Td Element was clicked!')
                                     console.log('it produced this event:', e)
                                     console.log('It was in this column:', column)
-                                    console.log('It was in this row:', rowInfo.index)
+                                    console.log('It was in this row:', rowInfo)
                                     
-                                    let { index } = rowInfo
+                                    let { index, original } = rowInfo
                                 
 
                                     // IMPORTANT! React-Table uses onClick internally to trigger
@@ -103,18 +123,17 @@ export default class ReferenceModal extends Component {
                                     // By default a custom 'onClick' handler will override this functionality.
                                     // If you want to fire the original onClick handler, call the
                                     // 'handleOriginal' function.
-                                    this.setState({...this.state, selectedRow: index})
-                                
+                                    this.setState({...this.state, selectedIdx: index, selectedItem: original})
                                 }
                            }
                         }}  
                         /> 
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button color='red'>
+                    <Button color='red' onClick={() => {this.clearState()}}>
                         <Icon name='cancel' /> Отменить
                     </Button>
-                    <Button color='green'>
+                    <Button color='green' onClick={() => this.props.select(this.state.selectedItem)}>
                         <Icon name='checkmark' /> Выбрать
                     </Button>
                 </Modal.Actions>
@@ -132,7 +151,7 @@ const columns = [
         accessor: "price",
     }, {
         Header: "Название",
-        accessor: "title",
+        accessor: "name",
     }, {
         Header: "Валюта",
         accessor: "currency",

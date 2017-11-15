@@ -1,21 +1,59 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import Header from './Header';
-import ReferenceModal from './ReferenceModal';
-import ServiceProductList from './ServiceProductList';
+import SparePartList from './SparePartList';
 import ServiceWarrantyList from './ServiceWarrantyList';
 import ServicePaymentDetails from './ServicePaymentDetails';
 
 
+
+
 class SpNewPage extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            referenceData: [],
+            companyId: 1000,
+            categoryId: 2,
+            
+        }
+
+        
+    }
+
+    // fetchSparePartReference() {
+    //     // axios.get(`${ROOT_URL}/api/reference/products`, {
+    //     //     headers: { authorization: localStorage.getItem('token') },
+    //     //     params: {
+    //     //         category: this.state.categoryId,
+    //     //         company: this.state.companyId
+    //     //     }
+    //     // })
+    //     // .then(function ({data}) {
+    //     //   console.log(data);
+    //     // })
+    //     // .catch(function (error) {
+    //     //   console.log(error);
+    //     // });
+
+    //     this.setState({
+    //         ...this.state,
+    //         referenceData: referenceSparePartList
+    //     })
+    // }
+
+    
+
+
     render(){
         return (
             <div>
-                <ReferenceModal data={data} />
-                <Header/>
-                <h3>SpNewPage component</h3>
-                <ServiceProductList />
-                <ServiceWarrantyList />
-                <ServicePaymentDetails />
+                
+                {/* <Header/> */}
+                {/* <h3>SpNewPage component</h3> */}
+                <SparePartList openReference={this.openSparePartListModal} />
+                {/* <ServiceWarrantyList /> */}
+                {/* <ServicePaymentDetails /> */}
             </div>
         );
     }
