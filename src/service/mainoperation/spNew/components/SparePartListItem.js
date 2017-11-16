@@ -23,7 +23,7 @@ const SparePartListItem = (props) => {
                     />
             </td>
             <td>
-                <Button disabled={type} icon onClick={() => props.handleOpenReference(id)}>
+                <Button disabled={type !== 0} icon onClick={() => props.handleOpenReference(id)}>
                     <Icon name='external square'/>
                 </Button>
             </td>
@@ -41,7 +41,7 @@ const SparePartListItem = (props) => {
                         }}
                     labelPosition='right'
                     type='number'
-                    onChange={(e, data) => props.handleCellChange(props.idx, 'price', parseFloat(data.value))} />
+                    onChange={(e, data) => props.handleCellChange(props.idx, 'price', data.value)} />
             </td>
             <td><Input
                     value={quantity}

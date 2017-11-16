@@ -34,12 +34,12 @@ export default class SparePartList extends Component {
   handleAddEmptySparePartListItem() {
     let listItem = {
       id: uuid(),
-      type: undefined,
+      type: 0,
       desc: "",
-      price: undefined,
+      price: "",
       quantity: "",
       currency: "",
-      total: undefined
+      total: ""
     };
     this.setState({
       ...this.state,
@@ -100,7 +100,7 @@ export default class SparePartList extends Component {
   }
 
   calculateTotalSum(list) {
-    return _.sumBy(list, "price");
+    return _.sumBy(list, (item) => parseInt(item.price || 0));
   }
 
   updateCellData(index, dataType, value) {
@@ -111,6 +111,17 @@ export default class SparePartList extends Component {
             ...el,
             [dataType]: value,
             ["total"]: value
+          };
+        } else if (dataType === "type") {
+          return {
+            ...el,
+            [dataType]: value,
+            // clear other fields
+            desc: "",
+            price: "",
+            quantity: "",
+            currency: "",
+            total: ""
           };
         }
         return {
@@ -151,7 +162,7 @@ export default class SparePartList extends Component {
       <div className="sp-sparepart-wrapper">
         <table className="sp-sparepart-list">
           <tr className="sp-sparepart-list-header">
-            <td colSpan={7}>
+            <td colSpan={8}>
               <Button primary onClick={this.handleAddEmptySparePartListItem}>
                 Добавить
               </Button>
@@ -165,6 +176,7 @@ export default class SparePartList extends Component {
             <th>Цена</th>
             <th>Количество (шт.)</th>
             <th>Сумма</th>
+            <th></th>
           </tr>
           <tbody>
             {this.state.sparePartList.map((el, idx) => (
@@ -179,7 +191,7 @@ export default class SparePartList extends Component {
               />
             ))}
             <tr className="sp-sparepart-list-footer">
-              <td colSpan={6}>Total</td>
+              <td colSpan={7}>Total</td>
               <td>{this.state.totalSum}</td>
             </tr>
           </tbody>
