@@ -13,15 +13,10 @@ export default class ReferenceModal extends Component {
             selectedIdx: undefined,
             results: [], 
             codeValue: '',
-            titleValue: '',
-            sourceId: undefined
+            titleValue: ''
         }
 
         this.clearState = this.clearState.bind(this)
-    }
-
-    componentWillMount(nextProps) {
-        this.setState({...this.state, results: this.props.data});
     }
 
     componentWillReceiveProps(nextProps) {
@@ -31,12 +26,12 @@ export default class ReferenceModal extends Component {
     clearState() {
         this.setState({
             selectedItem: undefined,
-            selectedIdx: undefined,
-            results: [], 
+            selectedIdx: -1,
             codeValue: '',
-            titleValue: '',
-            sourceId: undefined
-        })
+            titleValue: ''
+        }, this.props.close)
+        console.log("clearState");
+        // this.props.close();
     }
 
     handleSearchChange = (e, { value }, type) => {
@@ -130,7 +125,7 @@ export default class ReferenceModal extends Component {
                         /> 
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button color='red' onClick={() => {this.clearState(); this.props.close()}}>
+                    <Button color='red' onClick={this.clearState}>
                         <Icon name='cancel' /> Отменить
                     </Button>
                     <Button color='green' onClick={() => this.props.select(this.state.selectedItem)}>
