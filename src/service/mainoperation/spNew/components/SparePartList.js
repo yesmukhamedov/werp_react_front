@@ -62,22 +62,37 @@ export default class SparePartList extends Component {
   }
 
   selectSparePartItem(selectedItem) {
-    // find empty spare part with id
-    let [oldItem] = this.state.sparePartList.filter(
-      item => item.id === this.state.sourceSparePartId
-    );
+    // // find empty spare part with id
+    // let [oldItem] = this.state.sparePartList.filter(
+    //   item => item.id === this.state.sourceSparePartId
+    // );
 
-    // update empty spare part with fields from reference
-    oldItem.desc = selectedItem.name;
-    oldItem.price = selectedItem.price;
-    oldItem.currency = selectedItem.currency;
-    oldItem.quantity = 1;
-    oldItem.total = selectedItem.price;
+    // // update empty spare part with fields from reference
+    // oldItem.desc = selectedItem.name;
+    // oldItem.price = selectedItem.price;
+    // oldItem.currency = selectedItem.currency;
+    // oldItem.quantity = 1;
+    // oldItem.total = selectedItem.price;
+    let newSparePartListModal = this.state.sparePartList.map((item) => {
+      if (item.id === this.state.sourceSparePartId) {
+        return {
+          ...item,
+          desc: selectedItem.name,
+          price: selectedItem.price,
+          currency: selectedItem.currency,
+          quantity: 1,
+          total: selectedItem.price
+        }
+      }
+
+      return item;
+    })
 
     let newTotalSum = this.calculateTotalSum(this.state.sparePartList);
 
     this.setState({
       ...this.state,
+      sparePartList: newSparePartListModal,
       sourceSparePartId: undefined,
       sparePartListModal: false,
       totalSum: newTotalSum

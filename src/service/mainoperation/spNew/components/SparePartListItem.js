@@ -23,7 +23,7 @@ const SparePartListItem = (props) => {
                     />
             </td>
             <td>
-                <Button icon onClick={() => props.handleOpenReference(id)}>
+                <Button disabled={type} icon onClick={() => props.handleOpenReference(id)}>
                     <Icon name='external square'/>
                 </Button>
             </td>

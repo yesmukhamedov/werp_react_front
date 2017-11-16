@@ -73,7 +73,7 @@ export default class ReferenceModal extends Component {
 
     render() {
         return (
-            <Modal open={this.props.visible} closeIcon onClose={() => { this.clearState() }}>
+            <Modal open={this.props.visible}>
                 <Header icon='filter' content='Материалы' />
                 <Modal.Content>
                     <Form>
@@ -130,7 +130,7 @@ export default class ReferenceModal extends Component {
                         /> 
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button color='red' onClick={() => {this.clearState()}}>
+                    <Button color='red' onClick={() => {this.clearState(); this.props.close()}}>
                         <Icon name='cancel' /> Отменить
                     </Button>
                     <Button color='green' onClick={() => this.props.select(this.state.selectedItem)}>

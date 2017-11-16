@@ -19,20 +19,41 @@ export default class WarrantyList extends Component {
     }
 
     // handler for adding empty item to list
-    this.handleAddEmptySparePartListItem = this.handleAddEmptySparePartListItem.bind(this)
+    this.handleAddEmptyWarrantyListItem = this.handleAddEmptyWarrantyListItem.bind(this)
     // handler for removing item from list
-    this.handleRemoveSparePartListItem = this.handleRemoveSparePartListItem.bind(this)
+    this.handleRemoveWarrantyListItem = this.handleRemoveWarrantyListItem.bind(this)
+    // handler for selecting item from reference modal
+    this.handleSelectWarrantyItem = this.handleSelectWarrantyItem.bind(this)
+    // 
+    this.openModal = this.openModal.bind(this)
+    this.closeModal = this.closeModal.bind(this)
   }
 
-  handleAddEmptySparePartListItem() {
+  openModal(id) {
+    console.log("openModal is executed")
+    this.setState({
+      ...this.state,
+      referenceData: referenceSparePartList,
+      warrantyModal: true,
+      sourceSparePartId: id
+    });
+  }
+
+  closeModal() {
+    this.setState({
+      ...this.state,
+      referenceData: [],
+      warrantyModal: false,
+      sourceSparePartId: null
+    });
+  }
+
+  handleAddEmptyWarrantyListItem() {
     let listItem = {
       id: uuid(),
-      type: undefined,
       desc: "",
-      price: undefined,
-      quantity: "",
-      currency: "",
-      total: undefined
+      code: "",
+      warrantyPeriod: ""
     };
     this.setState({
       ...this.state,
@@ -40,7 +61,7 @@ export default class WarrantyList extends Component {
     });
   }
 
-  handleRemoveSparePartListItem(id) {
+  handleRemoveWarrantyListItem(id) {
     let newWarrantyList = this.state.warrantyList.filter(
       item => item.id !== id
     );
@@ -50,35 +71,28 @@ export default class WarrantyList extends Component {
     });
   }
 
-  handleSparePartTypeChange(e, data) {
-      console.log(e, data)
-  }
-
-  selectSparePartItem(selectedItem) {
-    // find empty spare part with id
-    let [oldItem] = this.state.sparePartList.filter(
-      item => item.id === this.state.sourceSparePartId
-    );
-
-    // update empty spare part with fields from reference
-    oldItem.desc = selectedItem.name;
-    oldItem.price = selectedItem.price;
-    oldItem.currency = selectedItem.currency;
-    oldItem.quantity = 1;
-    oldItem.total = selectedItem.price;
-
-    let newTotalSum = this.calculateTotalSum(this.state.sparePartList);
+  handleSelectWarrantyItem(selectedItem) {
+    console.log("selectedItem", selectedItem, "sourceID", this.state.sourceSparePartId)
+    const newWarrantyList = this.state.warrantyList.map(item => {
+      if (item.id === this.state.sourceSparePartId) {
+        return {
+          ...item, 
+          desc: selectedItem.name,
+          code: selectedItem.code,
+          warrantyPeriod: -1
+        }
+      }
+      return item
+    })
+    
+    console.log(newWarrantyList)
 
     this.setState({
       ...this.state,
+      warrantyModal: false,
+      warrantyList: newWarrantyList,
       sourceSparePartId: undefined,
-      sparePartListModal: false,
-      totalSum: newTotalSum
-    });
-  }
-
-  calculateTotalSum(list) {
-    return _.sumBy(list, "price");
+    })
   }
 
   updateCellData(index, dataType, value) {
@@ -106,31 +120,13 @@ export default class WarrantyList extends Component {
     });
   }
 
-  openSparePartListModal(id) {
-    this.setState({
-      ...this.state,
-      referenceData: referenceSparePartList,
-      sparePartListModal: true,
-      sourceSparePartId: id
-    });
-  }
-
-  closeSparePartListModal() {
-    this.setState({
-      ...this.state,
-      referenceData: [],
-      sparePartListModal: false,
-      sourceSparePartId: null
-    });
-  }
-
   render() {
     return (
       <div className="sp-sparepart-wrapper">
         <table className="sp-sparepart-list">
           <tr className="sp-sparepart-list-header">
             <td colSpan={6}>
-              <Button primary onClick={this.handleAddEmptySparePartListItem}>
+              <Button primary onClick={this.handleAddEmptyWarrantyListItem}>
                 Добавить
               </Button>
             </td>
@@ -149,12 +145,17 @@ export default class WarrantyList extends Component {
                 key={idx}
                 idx={idx}
                 data={el}
-                handleOpenReference={this.openSparePartListModal}
-                handleRemove={this.handleRemoveSparePartListItem} />
+                handleOpenReference={this.openModal}
+                handleCloseReference={this.closeModal}
+                handleRemove={this.handleRemoveWarrantyListItem} />
             ))}
           </tbody>
         </table>
-        <ReferenceModal />
+        <ReferenceModal 
+          data={referenceSparePartList}
+          visible={this.state.warrantyModal}
+          close={this.closeModal}
+          select={this.handleSelectWarrantyItem} />
       </div>
     );
   }
