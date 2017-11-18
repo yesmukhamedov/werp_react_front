@@ -8,9 +8,11 @@ import Signin from '../components/Auth/Signin';
 import Signout from '../components/Auth/Signout';
 import AssignUserBranch from '../dit/userBranch/components/assign_user_branch';
 import SpNewPage from '../service/mainoperation/spNew/components/spNewPage';
+import SpViewPage from '../service/mainoperation/spView/components/spViewPage';
 
 const getComponent = {
-    'SpNew': SpNewPage    
+    'SpNew': SpNewPage,
+    'SpView': SpViewPage    
 }
 
 export default (data) => {

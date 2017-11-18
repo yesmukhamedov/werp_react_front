@@ -2,7 +2,7 @@ import React from 'react'
 import {Input, Dropdown, Button, Icon, Table} from 'semantic-ui-react'
 
 const SparePartListItem = (props) => {
-    let { id, type, desc, price, quantity, total} = props.data
+    let { id, operTypeId, description, price, quantity, totalPrice, code} = props.data
     return (
         <Table.Row>
             <Table.Cell>{props.idx+1}</Table.Cell>
@@ -10,29 +10,36 @@ const SparePartListItem = (props) => {
                 <Dropdown
                     fluid
                     selection
-                    value={type}
+                    value={operTypeId}
                     options={[
                     {
                         text: 'Продажа запчастей',
-                        value: 0
+                        value: 1
                     }, {
                         text: 'Услуга',
-                        value: 1
+                        value: 2
                     }]}
-                    onChange={(e, data) => props.handleCellChange(props.idx, 'type', data.value)}
+                    onChange={(e, data) => props.handleCellChange(props.idx, 'operTypeId', data.value)}
                     />
             </Table.Cell>
             <Table.Cell>
-                <Button disabled={type !== 0} icon onClick={() => props.handleOpenReference(id)}>
+                <Button disabled={operTypeId !== 1} icon onClick={() => props.handleOpenReference(id)}>
                     <Icon name='external square'/>
                 </Button>
             </Table.Cell>
-            <Table.Cell><Input 
+            <Table.Cell>
+                <Input 
                     fluid 
-                    value={desc} 
-                    onChange={(e, data) => props.handleCellChange(props.idx, 'desc', data.value)} />
+                    value={code} />
             </Table.Cell>
-            <Table.Cell><Input
+            <Table.Cell>
+                <Input 
+                    fluid 
+                    value={description} 
+                    onChange={(e, data) => props.handleCellChange(props.idx, 'description', data.value)} />
+            </Table.Cell>
+            <Table.Cell>
+                <Input
                     value={price}
                     fluid
                     label={{
@@ -43,7 +50,8 @@ const SparePartListItem = (props) => {
                     type='number'
                     onChange={(e, data) => props.handleCellChange(props.idx, 'price', data.value)} />
             </Table.Cell>
-            <Table.Cell><Input
+            <Table.Cell>
+                <Input
                     value={quantity}
                     fluid
                     label={{
@@ -52,8 +60,9 @@ const SparePartListItem = (props) => {
                     }}
                     labelPosition='right' />
             </Table.Cell>
-            <Table.Cell><Input 
-                    value={total} 
+            <Table.Cell>
+                <Input 
+                    value={totalPrice} 
                     fluid />
             </Table.Cell>
             <Table.Cell>

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import {Button, Table, Icon, Label} from "semantic-ui-react";
 import uuid from "uuid";
-import _ from "lodash";
 import SparePartListItem from "./SparePartListItem";
 import ReferenceModal from "./ReferenceModal";
 
@@ -11,7 +10,6 @@ export default class SparePartList extends Component {
     this.state = {
       sparePartList: [],
       sparePartTotal: 0,
-      totalSum: 0,
       sparePartListModal: false,
       sourceSparePartId: undefined
     };
@@ -30,12 +28,15 @@ export default class SparePartList extends Component {
   handleAddEmptySparePartListItem() {
     let listItem = {
       id: uuid(),
-      type: 0,
-      desc: "",
+      sparePartId: "",
+      operTypeId: 1,
+      description: "",
       price: "",
-      quantity: "",
+      quantity: 1,
       currency: "",
-      total: ""
+      totalPrice: "",
+      code: "",
+      submittable: false
     };
     this.setState({
       ...this.state,
@@ -66,31 +67,27 @@ export default class SparePartList extends Component {
       if (item.id === this.state.sourceSparePartId) {
         return {
           ...item,
-          desc: selectedItem.name,
+          sparePartId: selectedItem.id,
+          description: selectedItem.name,
           price: selectedItem.price,
           currency: selectedItem.currency,
           quantity: 1,
-          total: selectedItem.price
+          totalPrice: selectedItem.price,
+          code: selectedItem.code,
+          submittable: true
         }
       }
       return item;
     })
 
-    let newTotalSum = this.calculateTotalSum(this.state.sparePartList);
-
     this.setState({
       ...this.state,
       sparePartList: newSparePartListModal,
       sourceSparePartId: undefined,
-      sparePartListModal: false,
-      totalSum: newTotalSum
+      sparePartListModal: false
     }, () => {
       this.props.saveChange(this.state.sparePartList, 'sparePartList')
     });
-  }
-
-  calculateTotalSum(list) {
-    return _.sumBy(list, (item) => parseInt(item.price || 0));
   }
 
   updateCellData(index, dataType, value) {
@@ -99,23 +96,28 @@ export default class SparePartList extends Component {
         if (dataType === "price") {
           return {
             ...el,
-            [dataType]: value
+            [dataType]: value,
+            totalPrice: value,
+            submittable: true
           };
-        } else if (dataType === "type") {
+        } else if (dataType === "operTypeId") {
           return {
             ...el,
             [dataType]: value,
             // clear other fields
-            desc: "",
+            description: "",
             price: "",
-            quantity: "",
+            quantity: 1,
             currency: "",
-            total: ""
+            totalPrice: "",
+            code: "",
+            submittable: false
           };
         }
         return {
           ...el,
-          [dataType]: value
+          [dataType]: value,
+          submittable: true
         };
       }
       return el;
@@ -123,8 +125,7 @@ export default class SparePartList extends Component {
 
     this.setState({
       ...this.state,
-      sparePartList: updateSparePartList,
-      totalSum: this.calculateTotalSum(updateSparePartList)
+      sparePartList: updateSparePartList
     }, () => {
       this.props.saveChange(this.state.sparePartList, 'sparePartList')
     });
@@ -154,7 +155,7 @@ export default class SparePartList extends Component {
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell />
-              <Table.HeaderCell colSpan='7'>
+              <Table.HeaderCell colSpan='8'>
                 <Button 
                   onClick={this.handleAddEmptySparePartListItem}
                   floated='right' icon labelPosition='left' primary size='small'>
@@ -166,7 +167,8 @@ export default class SparePartList extends Component {
               <Table.HeaderCell collapsing>#</Table.HeaderCell>
               <Table.HeaderCell>Операция</Table.HeaderCell>
               <Table.HeaderCell collapsing>Материал</Table.HeaderCell>
-              <Table.HeaderCell >Описание</Table.HeaderCell>
+              <Table.HeaderCell>Код</Table.HeaderCell>
+              <Table.HeaderCell>Описание</Table.HeaderCell>
               <Table.HeaderCell>Цена</Table.HeaderCell>
               <Table.HeaderCell>Количество (шт.)</Table.HeaderCell>
               <Table.HeaderCell>Сумма</Table.HeaderCell>
@@ -189,8 +191,8 @@ export default class SparePartList extends Component {
           </Table.Body>
           <Table.Footer fullWidth>
             <Table.Row>
-              <Table.HeaderCell colSpan='7' style={{textAlign: 'right'}}>Total</Table.HeaderCell>
-              <Table.HeaderCell style={{textAlign: 'center'}}>{this.state.totalSum}</Table.HeaderCell>
+              <Table.HeaderCell colSpan='8' style={{textAlign: 'right'}}>Total</Table.HeaderCell>
+              <Table.HeaderCell style={{textAlign: 'center'}}>{this.props.totalSum}</Table.HeaderCell>
             </Table.Row>
           </Table.Footer>
         </Table>

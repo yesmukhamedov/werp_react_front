@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Input, Form, Dropdown, Grid, Header,Segment,Label} from 'semantic-ui-react';
+import {Input, Form, Dropdown, Grid, Header, Segment, Label, Button} from 'semantic-ui-react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
@@ -25,13 +25,14 @@ class Header2 extends Component {
             fetchReferenceList,
             title,
             description,
-            startDate
+            startDate,
+            saveServicePacket
         } = this.props
         return (        
         
             <Form>
                 <Segment padded size='small'>
-                    <Label attached='top'><Header as='h3'>Новый сервис пакет</Header></Label>
+                    <Label attached='top'><Header as='h3'>Создать сервис пакет</Header></Label>
                     <Grid columns='five' divided>
                         <Grid.Row>                        
                             <Grid.Column width={3}>
@@ -92,6 +93,10 @@ class Header2 extends Component {
                                     <DatePicker 
                                         selected={startDate}
                                         onChange={date => inputChange(date, 'startDate')} />
+                                </Form.Field>
+                                <Form.Field>
+                                    <Button size='massive'
+                                        onClick={saveServicePacket}>Сохранить сервис пакет</Button>
                                 </Form.Field>
                             </Grid.Column>                        
                         </Grid.Row>
