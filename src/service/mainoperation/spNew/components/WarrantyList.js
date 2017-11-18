@@ -20,7 +20,7 @@ export default class WarrantyList extends Component {
     this.handleRemoveWarrantyListItem = this.handleRemoveWarrantyListItem.bind(this)
     // handler for selecting item from reference modal
     this.handleSelectWarrantyItem = this.handleSelectWarrantyItem.bind(this)
-    // 
+    
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
   }
@@ -45,9 +45,11 @@ export default class WarrantyList extends Component {
   handleAddEmptyWarrantyListItem() {
     let listItem = {
       id: uuid(),
-      desc: "",
+      sparePartId: "",
+      description: "",
       code: "",
-      warrantyPeriod: ""
+      warrantyMonths: "",
+      submittable: false
     };
     this.setState({
       ...this.state,
@@ -75,9 +77,11 @@ export default class WarrantyList extends Component {
       if (item.id === this.state.sourceSparePartId) {
         return {
           ...item, 
-          desc: selectedItem.name,
+          sparePartId: selectedItem.id,
+          description: selectedItem.name,
           code: selectedItem.code,
-          warrantyPeriod: -1
+          warrantyMonths: selectedItem.warrantyMonths,
+          submittable: true
         }
       }
       return item

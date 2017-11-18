@@ -12,7 +12,7 @@ export default class BonusPanel extends Component {
                         <Form.Input 
                           label='Сумма к оплате' 
                           placeholder='Сумма к оплате'
-                          onChange={(e, {value}) => this.props.inputChange(value, 'totalSum')} 
+                          // onChange={(e, {value}) => this.props.inputChange(value, 'totalSum')} 
                           value={totalSum} />
                         <Form.Input 
                           label='Премия Мастера' 
