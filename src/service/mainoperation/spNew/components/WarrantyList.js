@@ -1,12 +1,8 @@
 import React, { Component } from "react";
-import { Table, Input, Dropdown, Button, Icon } from "semantic-ui-react";
+import {Button, Table, Icon} from "semantic-ui-react";
 import uuid from "uuid";
-import axios from "axios";
-import _ from "lodash";
 import WarrantyListItem from "./WarrantyListItem";
 import ReferenceModal from "./ReferenceModal";
-import { ROOT_URL } from "../../../../utils/constants";
-import { referenceSparePartList } from "../../../../utils/stubs";
 import "../css/SparePartList.css";
 
 export default class WarrantyList extends Component {
@@ -33,7 +29,6 @@ export default class WarrantyList extends Component {
     console.log("openModal is executed")
     this.setState({
       ...this.state,
-      referenceData: referenceSparePartList,
       warrantyModal: true,
       sourceSparePartId: id
     });
@@ -42,7 +37,6 @@ export default class WarrantyList extends Component {
   closeModal() {
     this.setState({
       ...this.state,
-      referenceData: [],
       warrantyModal: false,
       sourceSparePartId: null
     });
@@ -58,6 +52,8 @@ export default class WarrantyList extends Component {
     this.setState({
       ...this.state,
       warrantyList: [...this.state.warrantyList, listItem]
+    }, () => {
+      this.props.saveChange(this.state.warrantyList, 'warrantyList')
     });
   }
 
@@ -68,6 +64,8 @@ export default class WarrantyList extends Component {
     this.setState({
       ...this.state,
       warrantyList: newWarrantyList
+    }, () => {
+      this.props.saveChange(this.state.warrantyList, 'warrantyList')
     });
   }
 
@@ -92,54 +90,36 @@ export default class WarrantyList extends Component {
       warrantyModal: false,
       warrantyList: newWarrantyList,
       sourceSparePartId: undefined,
+    }, () => {
+      this.props.saveChange(this.state.warrantyList, 'warrantyList')
     })
-  }
-
-  updateCellData(index, dataType, value) {
-    const updateSparePartList = this.state.sparePartList.map((el, i) => {
-      if (i == index) {
-        if (dataType === "price") {
-          return {
-            ...el,
-            [dataType]: value,
-            ["total"]: value
-          };
-        }
-        return {
-          ...el,
-          [dataType]: value
-        };
-      }
-      return el;
-    });
-
-    this.setState({
-      ...this.state,
-      sparePartList: updateSparePartList,
-      totalSum: this.calculateTotalSum(updateSparePartList)
-    });
   }
 
   render() {
     return (
-      <div className="sp-sparepart-wrapper">
-        <table className="sp-sparepart-list">
-          <tr className="sp-sparepart-list-header">
-            <td colSpan={6}>
-              <Button primary onClick={this.handleAddEmptyWarrantyListItem}>
-                Добавить
-              </Button>
-            </td>
-          </tr>
-          <tr>
-            <th>#</th>
-            <th>Материал</th>
-            <th>Код</th>
-            <th>Описание</th>
-            <th>Гарантия (в мес.)</th>
-            <th></th>
-          </tr>
-          <tbody>
+      <div>
+        <Table celled color='black' striped>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell />
+              <Table.HeaderCell colSpan='6'>
+                <Button 
+                  onClick={this.handleAddEmptyWarrantyListItem}
+                  floated='right' icon labelPosition='left' primary size='small'>
+                  <Icon name='plus' /> Добавить
+                </Button>
+              </Table.HeaderCell>
+            </Table.Row>
+            <Table.Row>
+              <Table.HeaderCell collapsing>#</Table.HeaderCell>
+              <Table.HeaderCell collapsing>Материал</Table.HeaderCell>
+              <Table.HeaderCell>Код</Table.HeaderCell>
+              <Table.HeaderCell>Описание</Table.HeaderCell>
+              <Table.HeaderCell>Гарантия (в мес.)</Table.HeaderCell>
+              <Table.HeaderCell collapsing></Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
             {this.state.warrantyList.map((el, idx) => (
               <WarrantyListItem
                 key={idx}
@@ -149,14 +129,28 @@ export default class WarrantyList extends Component {
                 handleCloseReference={this.closeModal}
                 handleRemove={this.handleRemoveWarrantyListItem} />
             ))}
-          </tbody>
-        </table>
+          </Table.Body>
+        </Table>
         <ReferenceModal 
-          data={referenceSparePartList}
+          data={this.props.data}
           visible={this.state.warrantyModal}
           close={this.closeModal}
-          select={this.handleSelectWarrantyItem} />
+          select={this.handleSelectWarrantyItem}
+          columns={columns} />
       </div>
     );
   }
 }
+
+const columns = [
+  {
+      Header: "Код",
+          accessor: "code"
+  }, {
+      Header: "Название",
+      accessor: "name",
+  }, {
+      Header: "Гарантия (в мес.)",
+      accessor: "warrantyMonths",
+  }
+]

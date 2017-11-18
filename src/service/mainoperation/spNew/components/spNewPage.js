@@ -1,9 +1,12 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import axios from 'axios';
-import Header from './Header';
+import moment from 'moment'
+import {Container} from 'semantic-ui-react';
+import Header from './Header2';
 import SparePartList from './SparePartList';
 import WarrantyList from './WarrantyList';
-import ServicePaymentDetails from './ServicePaymentDetails';
+import BonusPanel from './BonusPanel';
+import {ROOT_URL} from '../../../../utils/constants';
 
 
 
@@ -12,203 +15,212 @@ class SpNewPage extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            referenceData: [],
-            companyId: 1000,
-            categoryId: 2,
-            
+            sparePartOptions: [],
+            warrantyOptions: [],
+            companyOptions: [],
+            countryOptions: [],
+            categoryOptions: [],
+            productOptions: [],
+            selectedCompany: undefined,
+            selectedCategory: undefined,
+            selectedCountry: undefined,
+            selectedProduct: undefined,
+            title: '',
+            description: '',
+            startDate: moment(),
+            totalSum: '',
+            masterBonus: '',
+            operatorBonus: '',
+            sparePartList: [],
+            warrantyList: []
         }
 
+        this.handleInputChange = this.handleInputChange.bind(this)   
+        this.fetchCategories = this.fetchCategories.bind(this)
+        this.fetchReferenceList = this.fetchReferenceList.bind(this)
+    } 
+
+    componentWillMount() {
+        axios.all([
+            axios.get(`${ROOT_URL}/api/reference/countries`, {
+            headers: {
+                authorization: localStorage.getItem('token')}
+            }), 
+            axios.get(`${ROOT_URL}/api/reference/companies`, {
+                headers: {
+                    authorization: localStorage.getItem('token')}
+            }),
+            axios.get(`${ROOT_URL}/api/reference/product-categories`, {
+                headers: {
+                    authorization: localStorage.getItem('token')}
+            })
+        ])
+        .then(axios.spread(({data: countryList}, {data: companyList}, {data: categoryList}) => {
+            const newCountryOptions = countryList.map(item => {
+                return {
+                    key: item.countryId,
+                    text: item.country,
+                    value: item.countryId
+                }
+            })
+
+            const newCompanyOptions = companyList.map(item => {
+                return {
+                    key: item.id,
+                    value: item.id,
+                    text: item.name
+                }
+            })
+
+            const newCategoryOptions = categoryList.map(item => {
+                return {
+                    key: item.id,
+                    value: item.id,
+                    text: item.label
+                }
+            })
+
         
+            this.setState({
+                ...this.state,
+                countryOptions: newCountryOptions,
+                companyOptions: newCompanyOptions,
+                categoryOptions: newCategoryOptions
+            }, () => {
+                console.log("spNewPage state ", this.state)
+            })
+        }))
+        .catch((err) => {
+            console.log("Error in spNewPage", err)
+        })
     }
 
-    // fetchSparePartReference() {
-    //     // axios.get(`${ROOT_URL}/api/reference/products`, {
-    //     //     headers: { authorization: localStorage.getItem('token') },
-    //     //     params: {
-    //     //         category: this.state.categoryId,
-    //     //         company: this.state.companyId
-    //     //     }
-    //     // })
-    //     // .then(function ({data}) {
-    //     //   console.log(data);
-    //     // })
-    //     // .catch(function (error) {
-    //     //   console.log(error);
-    //     // });
+    
+    handleInputChange(value, dataType) {
+        let clearedFileds = {}
+        switch (dataType) {
+            case 'selectedCompany': {
+                clearedFileds = { 
+                    selectedCountry: undefined,
+                    selectedCategory: undefined,
+                    selectedProduct: undefined,
+                    productOptions: []
+                }
+                break;
+            }
+            case 'selectedCountry': {
+                clearedFileds = { 
+                    selectedCategory: undefined,
+                    selectedProduct: undefined,
+                    productOptions: []
+                }
+                break;
+            }
+            case 'selectedCategory': {
+                clearedFileds = { 
+                    selectedProduct: undefined,
+                    productOptions: []
+                }
+                break;
+            }
+            default: {}
+        }
+        this.setState({
+            ...this.state,
+            [dataType]: value,
+            ...clearedFileds  
+        }, () => console.log("handled field ", dataType, " state ", this.state))
+    }
 
-    //     this.setState({
-    //         ...this.state,
-    //         referenceData: referenceSparePartList
-    //     })
-    // }
+    fetchCategories(companyId, categoryId) {
+        axios.get(`${ROOT_URL}/api/reference/products?categoryId=${categoryId}&companyId=${companyId}`, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        })
+        .then(({data}) => {
+            const newProductOptions = data.map(item => {
+                return {
+                    key: item.id,
+                    value: item.id,
+                    text: item.name
+                }
+            })
+
+            this.setState({
+                ...this.state,
+                productOptions: newProductOptions
+            })
+        })
+        .catch(err => console.log(err))
+    }
+
+    fetchReferenceList(companyId, countryId, productId) {
+        axios.all([
+            axios.get(`${ROOT_URL}/api/reference/spare-part-warranties?productId=${productId}`, {
+            headers: {
+                authorization: localStorage.getItem('token')}
+            }), 
+            axios.get(`${ROOT_URL}/api/reference/spare-part-prices?companyId=${companyId}&countryId=${countryId}&productId=${productId}`, {
+                headers: {
+                    authorization: localStorage.getItem('token')}
+            })
+        ])
+        .then(axios.spread(({data: warranties}, {data: spareParts}) => {
+            this.setState({
+                ...this.state,
+                sparePartOptions: spareParts,
+                warrantyOptions: warranties
+            }, () => {
+                console.log("spNewPage state ", this.state)
+            })
+        }))
+        .catch((err) => {
+            console.log("Error in spNewPage", err)
+        })
+    }
 
     
 
 
     render(){
         return (
-            <div>
-                
-                {/* <Header/> */}
-                {/* <h3>SpNewPage component</h3> */}
-                <SparePartList />
-                <WarrantyList />
-                {/* <ServicePaymentDetails /> */}
-            </div>
+            <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
+                <Header 
+                    countryOpts={this.state.countryOptions}
+                    companyOpts={this.state.companyOptions}
+                    categoryOpts={this.state.categoryOptions}
+                    productOpts={this.state.productOptions}
+                    selectedCompany={this.state.selectedCompany}
+                    selectedCountry={this.state.selectedCountry}
+                    selectedCategory={this.state.selectedCategory}
+                    selectedProduct={this.state.selectedProduct}
+                    inputChange={this.handleInputChange}
+                    fetchCategories={this.fetchCategories}
+                    fetchReferenceList={this.fetchReferenceList}
+                    title={this.state.title}
+                    description={this.state.description}
+                    startDate={this.state.startDate}
+                    sparePartOptions={this.state.sparePartOptions}
+                    warrantyOptions={this.state.warrantyOptions} />
+                <p>--<br/>--<br/></p>
+                <SparePartList 
+                    data={this.state.sparePartOptions}
+                    saveChange={this.handleInputChange} />
+                <p>--<br/>--<br/></p>
+                <WarrantyList 
+                    data={this.state.warrantyOptions}
+                    saveChange={this.handleInputChange} />
+                <p>--<br/>--<br/></p>
+                <BonusPanel 
+                    masterBonus={this.state.masterBonus}
+                    operatorBonus={this.state.operatorBonus}
+                    totalSum={this.state.totalSum}
+                    inputChange={this.handleInputChange} />
+            </Container> 
         );
     }
 }
 
-export default SpNewPage;
 
-const data = [{
-    code: "1",
-    price: "price",
-    title: "title1",
-    currency: "currency"
-},{
-    code: "2",
-    price: "price",
-    title: "title2",
-    currency: "currency"
-},{
-    code: "3",
-    price: "price",
-    title: "title3",
-    currency: "currency"
-},{
-    code: "4",
-    price: "price",
-    title: "title4",
-    currency: "currency"
-},{
-    code: "5",
-    price: "price",
-    title: "title5",
-    currency: "currency"
-},{
-    code: "6",
-    price: "price",
-    title: "title6",
-    currency: "currency"
-},{
-    code: "7",
-    price: "price",
-    title: "title7",
-    currency: "currency"
-},{
-    code: "8",
-    price: "price",
-    title: "title8",
-    currency: "currency"
-},{
-    code: "9",
-    price: "price",
-    title: "mitle9",
-    currency: "currency"
-},{
-    code: "10",
-    price: "price",
-    title: "title10",
-    currency: "currency"
-},{
-    code: "11",
-    price: "price",
-    title: "title11",
-    currency: "currency"
-},{
-    code: "12",
-    price: "price",
-    title: "title12",
-    currency: "currency"
-},{
-    code: "13",
-    price: "price",
-    title: "title13",
-    currency: "currency"
-},{
-    code: "14",
-    price: "price",
-    title: "title14",
-    currency: "currency"
-},{
-    code: "15",
-    price: "price",
-    title: "title15",
-    currency: "currency"
-},{
-    code: "16",
-    price: "price",
-    title: "title16",
-    currency: "currency"
-},{
-    code: "17",
-    price: "price",
-    title: "title17",
-    currency: "currency"
-},{
-    code: "18",
-    price: "price",
-    title: "title18",
-    currency: "currency"
-},{
-    code: "19",
-    price: "price",
-    title: "mitle19",
-    currency: "currency"
-},{
-    code: "20",
-    price: "price",
-    title: "mitle20",
-    currency: "currency"
-},{
-    code: "21",
-    price: "price",
-    title: "title21",
-    currency: "currency"
-},{
-    code: "22",
-    price: "price",
-    title: "title22",
-    currency: "currency"
-},{
-    code: "23",
-    price: "price",
-    title: "title23",
-    currency: "currency"
-},{
-    code: "24",
-    price: "price",
-    title: "title24",
-    currency: "currency"
-},{
-    code: "25",
-    price: "price",
-    title: "title25",
-    currency: "currency"
-},{
-    code: "26",
-    price: "price",
-    title: "title26",
-    currency: "currency"
-},{
-    code: "27",
-    price: "price",
-    title: "title27",
-    currency: "currency"
-},{
-    code: "28",
-    price: "price",
-    title: "title28",
-    currency: "currency"
-},{
-    code: "29",
-    price: "price",
-    title: "title29",
-    currency: "currency"
-},{
-    code: "30",
-    price: "price",
-    title: "title30",
-    currency: "currency"
-}]
+export default SpNewPage;

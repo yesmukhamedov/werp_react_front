@@ -1,85 +1,103 @@
 import React, {Component} from 'react';
-import { Input, Form, Dropdown, Grid, Header, Container,Segment,Label, List } from 'semantic-ui-react';
-import DatePicker from 'react-datepicker';
-import axios from 'axios';
+import {Input, Form, Dropdown, Grid, Header,Segment,Label} from 'semantic-ui-react';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import moment from 'moment';
 import {ROOT_URL} from '../../../../utils/constants';
 
-const companyOptions = [ { key: 'AURA', value: 'AURA', text: 'AURA' }, { key: 'GREENLIGHT', value: 'GREENLIGHT', text: 'GREENLIGHT' }]
-const countryOptions = [ { key: 'kz', value: 'kz', flag: 'kz', text: 'Kazakhstan' }]
-const productOptions = [ { key: 'ROBO', value: 'ROBO', text: 'ROBOCLEAN' }]
-const categoryOptions = [ { key: 'cleaning', value: 'cleaning', text: 'Уборочная система' },
-                          { key: 'waterCleaning', value: 'waterCleaning', text: 'Система очистки воды' }]
-
 class Header2 extends Component {
-
-    componentWillMount() {
-        axios.get(`${ROOT_URL}/api/reference/companies`, {
-            headers: {
-                authorization: localStorage.getItem('token')}
-        })
-        .then(response => {
-            // If request is good...
-            console.log("Response", response.data);
-        })
-        .catch(error => {
-            // If request is bad...
-            // - Show an error to the user
-            const msg = "Something is wrong !!!";
-            if(error.response) {
-                console.log(msg + error.response.data.message);
-            } else{
-                Promise.resolve({ error }).then(response => console.log(msg + response.error.message));
-            } 
-        });
+    constructor(props) {
+        super(props)
     }
 
     render() {
+        const {
+            countryOpts, 
+            companyOpts, 
+            categoryOpts,
+            productOpts,
+            selectedCompany, 
+            selectedCountry, 
+            selectedCategory, 
+            selectedProduct, 
+            inputChange, 
+            fetchCategories,
+            fetchReferenceList,
+            title,
+            description,
+            startDate
+        } = this.props
         return (        
-        <Container fluid style={{ marginTop: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
+        
             <Form>
                 <Segment padded size='small'>
                     <Label attached='top'><Header as='h3'>Новый сервис пакет</Header></Label>
-                    <Grid columns='four' divided>
+                    <Grid columns='five' divided>
                         <Grid.Row>                        
-                            <Grid.Column>
+                            <Grid.Column width={3}>
                                 <Form.Field>
-                                    <Label>Компания</Label>
-                                    <Dropdown placeholder='Select Company' fluid selection options={companyOptions}/>
+                                    <label>Компания</label>
+                                    <Dropdown placeholder='Выберите компанию' fluid selection 
+                                        options={companyOpts}
+                                        value={selectedCompany}
+                                        onChange={(e, {value}) => inputChange(value, 'selectedCompany')} />
                                 </Form.Field>
                                 <Form.Field>
-                                    <Label>Страна</Label>
-                                    <Dropdown placeholder='Select Country' fluid selection options={countryOptions}/>
+                                    <label>Страна</label>
+                                    <Dropdown placeholder='Выберите страну' fluid selection 
+                                        options={countryOpts}
+                                        value={selectedCountry}
+                                        onChange={(e, {value}) => inputChange(value, 'selectedCountry')} />
                                 </Form.Field>
                                 <Form.Field>
-                                    <Label>Категория</Label>
-                                    <Dropdown placeholder='Выберите категорию' fluid selection options={categoryOptions}/>
+                                    <label>Категория</label>
+                                    <Dropdown placeholder='Выберите категорию' fluid selection 
+                                        disabled={!(selectedCountry && selectedCompany)}
+                                        value={selectedCategory}
+                                        options={categoryOpts}
+                                        onChange={(e, {value}) => { 
+                                            inputChange(value, 'selectedCategory'); 
+                                            fetchCategories(selectedCompany, value);
+                                        }} />
                                 </Form.Field>
                                 <Form.Field>
-                                    <Label>Товар</Label>
-                                    <Dropdown placeholder='Select Product' fluid selection options={productOptions} />
+                                    <label>Товар</label>
+                                    <Dropdown placeholder='Select Product' fluid selection 
+                                        value={selectedProduct}
+                                        options={productOpts}
+                                        disabled={!(selectedCountry && selectedCompany && selectedCategory)}
+                                        onChange={(e, {value}) => { 
+                                            inputChange(value, 'selectedProduct'); 
+                                            fetchReferenceList(selectedCompany, selectedCountry, value);
+                                        }} />
                                 </Form.Field>
                             </Grid.Column>                        
-                            <Grid.Column>
+                            <Grid.Column  width={5}>
                                 <Form.Field>
-                                    <Label>Дата начала действия</Label>
-                                    <DatePicker />
+                                    <label>Название</label>
+                                    <Input type='text' 
+                                        placeholder='Название'
+                                        value={title}
+                                        onChange={(e, {value}) => inputChange(value, 'title')} />
                                 </Form.Field>
                                 <Form.Field>
-                                    <Label>Название</Label>
-                                    <Input type='text' placeholder='Название' />
+                                    <label>Примечание</label>
+                                    <Input type='text' 
+                                        placeholder='Примечание'
+                                        value={description}
+                                        onChange={(e, {value}) => inputChange(value, 'description')} />
                                 </Form.Field>
                                 <Form.Field>
-                                    <Label>Примечание</Label>
-                                    <Input type='text' placeholder='Примечание' />
+                                    <label>Дата начала действия</label>
+                                    <DatePicker 
+                                        selected={startDate}
+                                        onChange={date => inputChange(date, 'startDate')} />
                                 </Form.Field>
-                                {/* <Form.Input label='Название' placeholder='Название' />
-                                <Form.Input label='Примечание' placeholder='Примечание' /> */}
                             </Grid.Column>                        
                         </Grid.Row>
                     </Grid>
                 </Segment>
-            </Form>     
-        </Container>        
+            </Form>            
         )
     }
 }

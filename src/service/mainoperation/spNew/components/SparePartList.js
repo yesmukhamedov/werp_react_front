@@ -1,13 +1,9 @@
 import React, { Component } from "react";
-import { Table, Input, Dropdown, Button, Icon } from "semantic-ui-react";
+import {Button, Table, Icon, Label} from "semantic-ui-react";
 import uuid from "uuid";
-import axios from "axios";
 import _ from "lodash";
 import SparePartListItem from "./SparePartListItem";
 import ReferenceModal from "./ReferenceModal";
-import { ROOT_URL } from "../../../../utils/constants";
-import { referenceSparePartList } from "../../../../utils/stubs";
-import "../css/SparePartList.css";
 
 export default class SparePartList extends Component {
   constructor(props) {
@@ -44,6 +40,8 @@ export default class SparePartList extends Component {
     this.setState({
       ...this.state,
       sparePartList: [...this.state.sparePartList, listItem]
+    }, () => {
+      this.props.saveChange(this.state.sparePartList, 'sparePartList')
     });
   }
 
@@ -54,6 +52,8 @@ export default class SparePartList extends Component {
     this.setState({
       ...this.state,
       sparePartList: newSparePartList
+    }, () => {
+      this.props.saveChange(this.state.sparePartList, 'sparePartList')
     });
   }
 
@@ -62,17 +62,6 @@ export default class SparePartList extends Component {
   }
 
   selectSparePartItem(selectedItem) {
-    // // find empty spare part with id
-    // let [oldItem] = this.state.sparePartList.filter(
-    //   item => item.id === this.state.sourceSparePartId
-    // );
-
-    // // update empty spare part with fields from reference
-    // oldItem.desc = selectedItem.name;
-    // oldItem.price = selectedItem.price;
-    // oldItem.currency = selectedItem.currency;
-    // oldItem.quantity = 1;
-    // oldItem.total = selectedItem.price;
     let newSparePartListModal = this.state.sparePartList.map((item) => {
       if (item.id === this.state.sourceSparePartId) {
         return {
@@ -84,7 +73,6 @@ export default class SparePartList extends Component {
           total: selectedItem.price
         }
       }
-
       return item;
     })
 
@@ -96,6 +84,8 @@ export default class SparePartList extends Component {
       sourceSparePartId: undefined,
       sparePartListModal: false,
       totalSum: newTotalSum
+    }, () => {
+      this.props.saveChange(this.state.sparePartList, 'sparePartList')
     });
   }
 
@@ -105,12 +95,11 @@ export default class SparePartList extends Component {
 
   updateCellData(index, dataType, value) {
     const updateSparePartList = this.state.sparePartList.map((el, i) => {
-      if (i == index) {
+      if (i === index) {
         if (dataType === "price") {
           return {
             ...el,
-            [dataType]: value,
-            ["total"]: value
+            [dataType]: value
           };
         } else if (dataType === "type") {
           return {
@@ -136,13 +125,14 @@ export default class SparePartList extends Component {
       ...this.state,
       sparePartList: updateSparePartList,
       totalSum: this.calculateTotalSum(updateSparePartList)
+    }, () => {
+      this.props.saveChange(this.state.sparePartList, 'sparePartList')
     });
   }
 
   openSparePartListModal(id) {
     this.setState({
       ...this.state,
-      referenceData: referenceSparePartList,
       sparePartListModal: true,
       sourceSparePartId: id
     });
@@ -151,7 +141,6 @@ export default class SparePartList extends Component {
   closeSparePartListModal() {
     this.setState({
       ...this.state,
-      referenceData: [],
       sparePartListModal: false,
       sourceSparePartId: null
     });
@@ -159,26 +148,32 @@ export default class SparePartList extends Component {
 
   render() {
     return (
-      <div className="sp-sparepart-wrapper">
-        <table className="sp-sparepart-list">
-          <tr className="sp-sparepart-list-header">
-            <td colSpan={8}>
-              <Button primary onClick={this.handleAddEmptySparePartListItem}>
-                Добавить
-              </Button>
-            </td>
-          </tr>
-          <tr>
-            <th>#</th>
-            <th>Операция</th>
-            <th>Материал</th>
-            <th>Описание</th>
-            <th>Цена</th>
-            <th>Количество (шт.)</th>
-            <th>Сумма</th>
-            <th></th>
-          </tr>
-          <tbody>
+      <div>
+        
+        <Table celled color='black' striped>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell />
+              <Table.HeaderCell colSpan='7'>
+                <Button 
+                  onClick={this.handleAddEmptySparePartListItem}
+                  floated='right' icon labelPosition='left' primary size='small'>
+                  <Icon name='plus' /> Добавить
+                </Button>
+              </Table.HeaderCell>
+            </Table.Row>
+            <Table.Row>
+              <Table.HeaderCell collapsing>#</Table.HeaderCell>
+              <Table.HeaderCell>Операция</Table.HeaderCell>
+              <Table.HeaderCell collapsing>Материал</Table.HeaderCell>
+              <Table.HeaderCell >Описание</Table.HeaderCell>
+              <Table.HeaderCell>Цена</Table.HeaderCell>
+              <Table.HeaderCell>Количество (шт.)</Table.HeaderCell>
+              <Table.HeaderCell>Сумма</Table.HeaderCell>
+              <Table.HeaderCell collapsing></Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
             {this.state.sparePartList.map((el, idx) => (
               <SparePartListItem
                 key={idx}
@@ -190,20 +185,41 @@ export default class SparePartList extends Component {
                 handleTypeChange={this.handleSparePartTypeChange}
               />
             ))}
-            <tr className="sp-sparepart-list-footer">
-              <td colSpan={7}>Total</td>
-              <td>{this.state.totalSum}</td>
-            </tr>
-          </tbody>
-        </table>
+            
+          </Table.Body>
+          <Table.Footer fullWidth>
+            <Table.Row>
+              <Table.HeaderCell colSpan='7' style={{textAlign: 'right'}}>Total</Table.HeaderCell>
+              <Table.HeaderCell style={{textAlign: 'center'}}>{this.state.totalSum}</Table.HeaderCell>
+            </Table.Row>
+          </Table.Footer>
+        </Table>
+
         <ReferenceModal
           visible={this.state.sparePartListModal}
-          data={this.state.referenceData}
+          data={this.props.data}
           close={this.closeSparePartListModal}
           open={this.openSparePartListModal}
           select={this.selectSparePartItem}
+          columns={columns}
         />
       </div>
     );
   }
 }
+
+const columns = [
+  {
+      Header: "Код",
+          accessor: "code"
+  }, {
+      Header: "Цена",
+      accessor: "price",
+  }, {
+      Header: "Название",
+      accessor: "name",
+  }, {
+      Header: "Валюта",
+      accessor: "currency",
+  }
+]

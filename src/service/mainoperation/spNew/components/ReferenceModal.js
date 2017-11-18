@@ -20,6 +20,7 @@ export default class ReferenceModal extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        console.log("Modal is receiving nextProps such as: " + nextProps)
         this.setState({...this.state, results: nextProps.data});
     }
 
@@ -91,7 +92,7 @@ export default class ReferenceModal extends Component {
                     <ReactTable
                         className="-striped -highlight" 
                         data={this.state.results}
-                        columns={columns} 
+                        columns={this.props.columns} 
                         showPagination={false}             
                         noDataText="Нет записей"
                         style={{
@@ -137,18 +138,3 @@ export default class ReferenceModal extends Component {
     }
 }
 
-const columns = [
-    {
-        Header: "Код",
-            accessor: "code"
-    }, {
-        Header: "Цена",
-        accessor: "price",
-    }, {
-        Header: "Название",
-        accessor: "name",
-    }, {
-        Header: "Валюта",
-        accessor: "currency",
-    }
-]

@@ -1,12 +1,12 @@
 import React from 'react'
-import { Table, Input, Dropdown, Button, Icon } from 'semantic-ui-react'
+import {Input, Dropdown, Button, Icon, Table} from 'semantic-ui-react'
 
 const SparePartListItem = (props) => {
-    let { id, type, desc, price, currency, quantity, total } = props.data
+    let { id, type, desc, price, quantity, total} = props.data
     return (
-        <tr className="sp-sparepart-list-item">
-            <td>{id}</td>
-            <td>
+        <Table.Row>
+            <Table.Cell>{props.idx+1}</Table.Cell>
+            <Table.Cell>
                 <Dropdown
                     fluid
                     selection
@@ -21,18 +21,18 @@ const SparePartListItem = (props) => {
                     }]}
                     onChange={(e, data) => props.handleCellChange(props.idx, 'type', data.value)}
                     />
-            </td>
-            <td>
+            </Table.Cell>
+            <Table.Cell>
                 <Button disabled={type !== 0} icon onClick={() => props.handleOpenReference(id)}>
                     <Icon name='external square'/>
                 </Button>
-            </td>
-            <td><Input 
+            </Table.Cell>
+            <Table.Cell><Input 
                     fluid 
                     value={desc} 
                     onChange={(e, data) => props.handleCellChange(props.idx, 'desc', data.value)} />
-            </td>
-            <td><Input
+            </Table.Cell>
+            <Table.Cell><Input
                     value={price}
                     fluid
                     label={{
@@ -42,8 +42,8 @@ const SparePartListItem = (props) => {
                     labelPosition='right'
                     type='number'
                     onChange={(e, data) => props.handleCellChange(props.idx, 'price', data.value)} />
-            </td>
-            <td><Input
+            </Table.Cell>
+            <Table.Cell><Input
                     value={quantity}
                     fluid
                     label={{
@@ -51,17 +51,17 @@ const SparePartListItem = (props) => {
                         content: 'шт'
                     }}
                     labelPosition='right' />
-            </td>
-            <td><Input 
+            </Table.Cell>
+            <Table.Cell><Input 
                     value={total} 
                     fluid />
-            </td>
-            <td>
+            </Table.Cell>
+            <Table.Cell>
                 <Button icon onClick={() => props.handleRemove(id)}>
                     <Icon name='remove'/>
                 </Button>
-            </td>
-        </tr>
+            </Table.Cell>
+        </Table.Row>
     )
 }
 

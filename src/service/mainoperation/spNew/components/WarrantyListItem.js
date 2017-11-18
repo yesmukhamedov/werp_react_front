@@ -1,37 +1,28 @@
 import React from 'react'
-import { Table, Input, Dropdown, Button, Icon } from 'semantic-ui-react'
+import {Table, Input, Dropdown, Button, Icon} from 'semantic-ui-react'
 
 const WarrantyListItem = (props) => {
-    const { id, desc, currency, code, warrantyPeriod } = props.data
+    const {id, desc, currency, code, warrantyPeriod} = props.data
     return (
-        <tr className="sp-sparepart-list-item">
-            <td>{id}</td>
-            <td>
+        <Table.Row>
+            <Table.Cell>{props.idx + 1}</Table.Cell>
+            <Table.Cell>
                 <Button icon onClick={() => props.handleOpenReference(id)}>
                     <Icon name='external square'/>
                 </Button>
-            </td>
-            <td><Input 
-                    fluid 
-                    value={code} 
-                    />
-            </td>
-            
-            <td><Input 
-                    fluid 
-                    value={desc} 
-                     />
-            </td>
-            <td><Input 
-                    value={warrantyPeriod} 
-                    fluid />
-            </td>
-            <td>
+            </Table.Cell>
+            <Table.Cell><Input fluid value={code}/>
+            </Table.Cell>
+            <Table.Cell><Input fluid value={desc}/>
+            </Table.Cell>
+            <Table.Cell><Input value={warrantyPeriod} fluid/>
+            </Table.Cell>
+            <Table.Cell>
                 <Button icon onClick={() => props.handleRemove(id)}>
                     <Icon name='remove'/>
                 </Button>
-            </td>
-        </tr>
+            </Table.Cell>
+        </Table.Row>
     )
 }
 
