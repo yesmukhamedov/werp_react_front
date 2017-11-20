@@ -9,6 +9,7 @@ import {
     Header,
     Segment
 } from 'semantic-ui-react'
+import moment from 'moment'
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 
@@ -91,11 +92,10 @@ export default class SearchPanel extends Component {
                                 </Form.Field>
                                 <Form.Field>
                                     <label>Период</label>
-                                    с
-                                    <DatePicker/>
-                                    до
-                                    <DatePicker/>
                                 </Form.Field>
+                                    с <DatePicker />                                                          
+                                    до <DatePicker />
+                                 
                             </Grid.Column>
                             <Grid.Column width={5}>
                                 <Form.Field>

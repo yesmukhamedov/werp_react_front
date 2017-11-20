@@ -7,13 +7,13 @@ export default class extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            servicePacketNumber: 261,
             servicePacketData: undefined
         }
     }
 
     componentWillMount() {
-        axios.get(`${ROOT_URL}/api/service/packets/${this.state.servicePacketNumber}`, {
+        const {id} = this.props.params
+        axios.get(`${ROOT_URL}/api/service/packets/${id}`, {
             headers: {
                 authorization: localStorage.getItem('token')
             }
@@ -27,7 +27,7 @@ export default class extends Component {
     }
 
     render() {
-        return (
+        return (            
             <Container fluid style={{marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
                 <Form>
                     <Segment padded size='small'>
