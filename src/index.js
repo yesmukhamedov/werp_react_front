@@ -18,14 +18,24 @@ import ru from 'react-intl/locale-data/ru';
 import kk from 'react-intl/locale-data/kk';
 import axios from 'axios';
 import {ROOT_URL} from "./utils/constants";
+import { loadLang, saveLang } from "./utils/localStorage";
+import localeData from './locales/data.json';
+import throttle from 'lodash/throttle';
 
 const promise = axios.get(`${ROOT_URL}/routes`);
 
 
 addLocaleData([...en, ...ru, ...kk]);
+const persistedLang = loadLang();
 
 const createStoreWithMiddleware = applyMiddleware(JwtRefresher, reduxThunk)(createStore);
-const store = createStoreWithMiddleware(reducers);
+const store = createStoreWithMiddleware(reducers, persistedLang);
+
+store.subscribe(throttle(() => {
+    saveLang({
+        locales: store.getState().locales    
+    });
+}, 1000));
 
 const token = localStorage.getItem('token');
 // If we have a token, consider the user to be signed in
