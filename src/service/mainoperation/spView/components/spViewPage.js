@@ -1,14 +1,34 @@
 import React, {Component} from 'react'
-import {Button, Table, Icon, Label, Input, Form, Dropdown, Grid, Header, Segment, Container} from "semantic-ui-react"
-import moment from 'moment'
-import DatePicker from 'react-datepicker'
-import "react-datepicker/dist/react-datepicker.css"
-
+import {Button, Table, Icon, Label, Input, Form, Dropdown, Grid, Header, Segment, Container} from 'semantic-ui-react'
+import axios from 'axios'
+import {ROOT_URL} from '../../../../utils/constants'
 
 export default class extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            servicePacketData: undefined
+        }
+    }
+
+    componentWillMount() {
+        const {id} = this.props.params
+        axios.get(`${ROOT_URL}/api/service/packets/${id}`, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        })
+        .then(({data}) => {
+            this.setState({servicePacketData: data})
+        }, () => {
+            console.log("SPVIEW state:", this.state)
+        })
+        .catch(err => console.log(err))
+    }
+
     render() {
-        return (
-            <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
+        return (            
+            <Container fluid style={{marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
                 <Form>
                     <Segment padded size='small'>
                         <Label attached='top'>
@@ -45,8 +65,9 @@ export default class extends Component {
                                     </Form.Field>
                                     <Form.Field>
                                         <label>Дата начала действия</label>
-                                        <DatePicker
-                                            selected={moment()} />
+                                        <Input
+                                            type='text'
+                                            placeholder='Примечание' />
                                     </Form.Field>
                                 </Grid.Column>
                             </Grid.Row>

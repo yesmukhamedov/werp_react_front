@@ -9,12 +9,14 @@ import Signout from '../components/Auth/Signout';
 import AssignUserBranch from '../dit/userBranch/components/assign_user_branch';
 import SpNewPage from '../service/mainoperation/spNew/components/spNewPage';
 import SpViewPage from '../service/mainoperation/spView/components/spViewPage';
+import SpListPage from '../service/mainoperation/spList/components/spListPage';
 import CreateStaff from '../hr/mainoperation/staff/components/CreateStaff';
 import ViewStaff from '../hr/mainoperation/staff/components/ViewStaff';
 
 const getComponent = {
     'SpNew': SpNewPage,
-    'SpView': SpViewPage    
+    'SpView': SpViewPage,
+    'SpList': SpListPage
 }
 
 export default (data) => {
