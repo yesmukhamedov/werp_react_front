@@ -139,7 +139,7 @@ export default class extends Component {
                             } = item
                             const {operName=''} = operType
                             return (
-                                <Table.Row>
+                                <Table.Row key={idx}>
                                     <Table.Cell>{idx+1}</Table.Cell>
                                     <Table.Cell>{operName}</Table.Cell>
                                     <Table.Cell>{code}</Table.Cell>
@@ -179,7 +179,7 @@ export default class extends Component {
                                 warrantyMonths = ''
                             } = item
                             return (
-                                <Table.Row>
+                                <Table.Row key={idx}>
                                     <Table.Cell>{idx+1}</Table.Cell>
                                     <Table.Cell>{code}</Table.Cell>
                                     <Table.Cell>{description}</Table.Cell>
