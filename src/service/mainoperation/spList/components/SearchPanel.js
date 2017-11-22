@@ -29,6 +29,8 @@ export default class SearchPanel extends Component {
             startDate,
             endDate,
             servicePacketId,
+            sparePartPosDescription,
+            sparePartId,
             handleSearch
         } = this.props
         return (
@@ -106,15 +108,24 @@ export default class SearchPanel extends Component {
                                     <Input 
                                         type='text' 
                                         placeholder='номер пакета'
+                                        value={servicePacketId}
                                         onChange={(e, {value}) => inputChange(value,'servicePacketId')} />
                                 </Form.Field>
                                 <Form.Field>
                                     <label>По запчастям</label>
-                                    <Input type='text' placeholder='номер запчасти'/>
+                                    <Input 
+                                        type='text' 
+                                        placeholder='номер запчасти'
+                                        value={sparePartId}
+                                        onChange={(e, {value}) => inputChange(value,'sparePartId')}  />
                                 </Form.Field>
                                 <Form.Field>
                                     <label>По услугам</label>
-                                    <Input type='text' placeholder='номер услуги'/>
+                                    <Input 
+                                        type='text' 
+                                        placeholder='номер услуги'
+                                        value={sparePartPosDescription}
+                                        onChange={(e, {value}) => inputChange(value,'sparePartPosDescription')}  />
                                 </Form.Field>
                                 <Button size='huge' onClick={handleSearch}>Поиск</Button>
                             </Grid.Column>

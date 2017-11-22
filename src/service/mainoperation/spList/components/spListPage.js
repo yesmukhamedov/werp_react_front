@@ -30,6 +30,8 @@ export default class SpList extends Component {
             startDate: undefined,
             endDate: undefined,
             servicePacketId: undefined,
+            sparePartPosDescription: undefined,
+            sparePartId: undefined,
             result: []
         }
 
@@ -163,6 +165,8 @@ export default class SpList extends Component {
             startDate: this.state.startDate,
             endDate: this.state.endDate,
             servicePacketId: this.state.servicePacketId,
+            sparePartPosDescription: this.state.sparePartPosDescription,
+            sparePartId: this.state.sparePartId
         }
 
         const params = _.map(paramsDict, (val, key) => { return (val ? `${key}=${val}` : ``) })
@@ -225,6 +229,8 @@ export default class SpList extends Component {
                     startDate={this.state.startDate}
                     endDate={this.state.endDate}
                     servicePacketId={this.state.servicePacketId}
+                    sparePartPosDescription={this.state.sparePartPosDescription}
+                    sparePartId={this.state.sparePartId}
                     handleSearch={this.handleSearch} />
                 <Table celled color='black' striped>
                     <Table.Header>
