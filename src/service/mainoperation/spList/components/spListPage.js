@@ -157,13 +157,27 @@ export default class SpList extends Component {
     }
 
     handleSearch() {
+
+        let startDateUtc = undefined
+        let endDateUtc = undefined
+        if (this.state.startDate) {
+            const startVal = this.state.startDate.format('YYYY-MM-DD');
+            startDateUtc = moment.utc(startVal).format();
+        }
+
+        if (this.state.endDate) {
+            const endVal = this.state.endDate.format('YYYY-MM-DD');
+            endDateUtc = moment.utc(endVal).format();
+        }
+
+
         const paramsDict = {
             companyId: this.state.selectedCompany,
             countryId: this.state.selectedCountry,
             productId: this.state.selectedProduct,
             productCategoryId: this.state.selectedProductCategory,
-            startDate: this.state.startDate,
-            endDate: this.state.endDate,
+            startDate: startDateUtc,
+            endDate: endDateUtc,
             servicePacketId: this.state.servicePacketId,
             sparePartPosDescription: this.state.sparePartPosDescription,
             sparePartId: this.state.sparePartId
