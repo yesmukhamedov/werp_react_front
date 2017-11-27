@@ -12,6 +12,8 @@ import SpViewPage from '../service/mainoperation/spView/components/spViewPage';
 import SpListPage from '../service/mainoperation/spList/components/spListPage';
 import CreateStaff from '../hr/mainoperation/staff/components/CreateStaff';
 import ViewStaff from '../hr/mainoperation/staff/components/ViewStaff';
+import AccountabilityStaffListPage from '../logistics/report/accountabilityStaff/AccountabilityStaffListPage';
+import AccountabilityStaffDetailPage from '../logistics/report/accountabilityStaff/AccountabilityStaffDetailPage';
 
 const getComponent = {
     'SpNew': SpNewPage,
@@ -29,6 +31,8 @@ export default (data) => {
             <Route path="dit/userBranch" component={AssignUserBranch} />
             <Route path="hr/staff/create" component={CreateStaff} />
             <Route path="hr/staff/view/:id" component={ViewStaff} />
+            <Route path="logistics/report/accountability-staff" component={AccountabilityStaffListPage} />
+            <Route path="logistics/report/accountability-staff/:id" component={AccountabilityStaffDetailPage} />
             {/* dynamically generated URLs */} 
             {data.map((el) => {
                 return <Route path={`${el.url}`} component={getComponent[el.component]} key={el.transactionCode}/>

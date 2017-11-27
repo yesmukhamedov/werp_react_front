@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {Link} from 'react-router'
 import axios from 'axios';
 import {Container,Segment,Grid,Form,Checkbox,Dropdown,Divider,Menu,Table,Icon,Header,Button} from 'semantic-ui-react';
-import {ROOT_URL} from '../../../../utils/constants';
+import {ROOT_URL} from '../../../utils/constants';
 
 class AccountabilityStaffListPage extends Component{
 
@@ -10,12 +10,23 @@ class AccountabilityStaffListPage extends Component{
         super(props);
 
         this.state = {
-            companies:[],
-            branches:[],
+            bukrsOptions:[],
+            branchOptions:[],
             items:[],
-            selectedCompany:'',
-            selectedBranch:0
+            selectedBukrs:'',
+            selectedBranches:[],
+            queryParams:{
+                bukrs:'',
+                branchId:0,
+                positionId:0
+            },
+            errors:{
+                bukrsHasError:false
+            },
+            loading:false
         }
+
+        this.loadItems = this.loadItems.bind(this);
     }
 
     componentWillMount(){
@@ -34,7 +45,7 @@ class AccountabilityStaffListPage extends Component{
                 })
                 this.setState({
                     ...this.state,
-                    companies:loadedCompanies
+                    bukrsOptions:loadedCompanies
                 })
             }).catch((error) => {
             console.log(error)
@@ -57,7 +68,7 @@ class AccountabilityStaffListPage extends Component{
                 })
                 this.setState({
                     ...this.state,
-                    branches:loadedBranches
+                    branchOptions:loadedBranches
                 })
             }).catch((error) => {
             console.log(error)
@@ -69,7 +80,8 @@ class AccountabilityStaffListPage extends Component{
             case 'company':
                 this.setState({
                     ...this.state,
-                    selectedCompany:value
+                    selectedBukrs:value,
+                    errors:{bukrsHasError:false}
                 })
 
                 this.loadBranches(value);
@@ -78,7 +90,7 @@ class AccountabilityStaffListPage extends Component{
             case 'branch':
                 this.setState({
                     ...this.state,
-                    selectedBranch:value
+                    selectedBranches:value
                 })
 
                 break
@@ -86,27 +98,39 @@ class AccountabilityStaffListPage extends Component{
     }
 
     loadItems(){
+        if(!this.state.selectedBukrs || this.state.selectedBukrs.length == 0){
+            this.setState({
+                ...this.state,
+                errors:{bukrsHasError:true}
+            })
+
+            return;
+        }
+        this.setState({
+            ...this.state,
+            loading:true
+        })
         axios.get(`${ROOT_URL}/api/logistics/report/accountability-staff`,{
             headers: {
                 authorization: localStorage.getItem('token')
             },
             params:{
+                bukrs:this.state.selectedBukrs,
+                branchIds:this.state.selectedBranches.join()
             }
         })
             .then((response) => {
-                let loadedBranches = response.data.map(item => {
-                    return {
-                        key: item.branch_id,
-                        text: item.text45,
-                        value: item.branch_id
-                    }
-                })
                 this.setState({
                     ...this.state,
-                    branches:loadedBranches
+                    items:response.data,
+                    loading:false
                 })
             }).catch((error) => {
             console.log(error)
+            this.setState({
+                ...this.state,
+                loading:false
+            })
         })
     }
 
@@ -115,27 +139,29 @@ class AccountabilityStaffListPage extends Component{
             <Form>
                 <Form.Field>
                     <label>Компания</label>
-                    <Dropdown placeholder='Компания' fluid selection options={this.state.companies}  onChange={(e, { value }) => this.handleDropdownChange('company',value)}  />
+                    <Dropdown error={this.state.errors.bukrsHasError} placeholder='Компания' fluid selection options={this.state.bukrsOptions}  onChange={(e, { value }) => this.handleDropdownChange('company',value)}  />
                 </Form.Field>
                 <Form.Field>
                     <label>Филиал</label>
-                    <Dropdown placeholder='Филиал' fluid selection options={this.state.branches}  onChange={(e, { value }) => this.handleDropdownChange('branch',value)}   />
+                    <Dropdown placeholder='Филиал' fluid multiple search selection options={this.state.branchOptions}  onChange={(e, { value }) => this.handleDropdownChange('branch',value)}   />
                 </Form.Field>
                 <Form.Field>
                     <Checkbox label='Лимит' />
                 </Form.Field>
-                <Button onClick={this.loadItems}>Submit</Button>
+                <Button onClick={this.loadItems} loading={this.state.loading}>Сформировать</Button>
             </Form>
         )
     }
 
     renderData(){
         return (
-            <Table celled>
+            <Table celled striped>
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell>StaffID</Table.HeaderCell>
-                    <Table.HeaderCell>ФИО</Table.HeaderCell>
+                    <Table.HeaderCell>Фамилия</Table.HeaderCell>
+                    <Table.HeaderCell>Имя</Table.HeaderCell>
+                    <Table.HeaderCell>Отчество</Table.HeaderCell>
                     <Table.HeaderCell>Филиал</Table.HeaderCell>
                     <Table.HeaderCell></Table.HeaderCell>
                 </Table.Row>
@@ -143,13 +169,15 @@ class AccountabilityStaffListPage extends Component{
             <Table.Body>
             {this.state.items.map((item,idx) => {
                 return (
-                    <Table.Row key={item.staff_id}>
-                        <Table.Cell>{item.staff_id}</Table.Cell>
-                        <Table.Cell>{item.fullname}</Table.Cell>
+                    <Table.Row key={item.staffId}>
+                        <Table.Cell>{item.staffId}</Table.Cell>
+                        <Table.Cell>{item.lastname}</Table.Cell>
+                        <Table.Cell>{item.firstname}</Table.Cell>
+                        <Table.Cell>{item.middlename}</Table.Cell>
                         <Table.Cell>{item.branchName}</Table.Cell>
                         <Table.Cell>
-                            <Link className={'ui icon button'} to={`/hr/staff/view/${item.staff_id}`}>
-                                <Icon name='eye' large />
+                            <Link className={'ui icon button'} to={`/logistics/report/accountability-staff/${item.staffId}`}>
+                                Детально
                             </Link>
                         </Table.Cell>
                     </Table.Row>
@@ -163,6 +191,9 @@ class AccountabilityStaffListPage extends Component{
     render(){
         return (
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
+                <Header as="h2" block>
+                    Отчет о подочетных сотрудниках
+                </Header>
                 <Grid columns={2} divided>
                     <Grid.Row stretched columns={2}>
                         <Grid.Column computer={4} >
