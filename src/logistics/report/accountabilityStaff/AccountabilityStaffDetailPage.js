@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router'
 import axios from 'axios';
-import {Container,Segment,Grid,Form,Checkbox,Dropdown,Divider,Menu,Table,Icon,Header,Button} from 'semantic-ui-react';
+import {Container,Grid,Table,Header} from 'semantic-ui-react';
 import {ROOT_URL} from '../../../utils/constants';
 
 class AccountabilityStaffDetailPage extends Component{
@@ -15,6 +15,7 @@ class AccountabilityStaffDetailPage extends Component{
                 lastname:'',
                 middlename:''
             },
+            salaries:[],
             items:[]
         }
     }
@@ -28,6 +29,19 @@ class AccountabilityStaffDetailPage extends Component{
             this.setState({
                 ...this.state,
                 staff:response.data
+            })
+        }).catch((err) => {
+            console.log(err);
+        })
+
+        axios.get(`${ROOT_URL}//api/hr/staff/` +  + this.props.params.id + '/salaries/current',{
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        }).then((response) => {
+            this.setState({
+                ...this.state,
+                salaries:response.data
             })
         }).catch((err) => {
             console.log(err);
@@ -50,6 +64,7 @@ class AccountabilityStaffDetailPage extends Component{
 
     renderStaffData(){
         let stf = this.state.staff;
+        let salaries = this.state.salaries;
         return (
             <Table celled striped>
                 <Table.Body>
@@ -70,6 +85,41 @@ class AccountabilityStaffDetailPage extends Component{
                         <Table.HeaderCell textAlign={'right'}>Отчество</Table.HeaderCell>
                         <Table.Cell>{stf.middlename}</Table.Cell>
                     </Table.Row>
+
+                    <Table.Row>
+                        <Table.HeaderCell textAlign={'right'}>Должности</Table.HeaderCell>
+                        <Table.Cell>{
+                            salaries.map((sal) => {
+                                return <p>{sal.positionName} ({sal.branchName})</p>;
+                            })
+                        }</Table.Cell>
+                    </Table.Row>
+
+                </Table.Body>
+            </Table>
+        )
+    }
+
+    renderBarcode(b){
+        return (
+            <div key={b} style={'display:block;'}>{b}</div>
+        )
+    }
+
+    renderSalaryData(){
+        let salaries = this.state.salaries;
+        return (
+            <Table celled striped>
+                <Table.Body>
+                    {salaries.map((sal) => {
+                        return (
+                            <Table.Row key={sal.salaryId}>
+                                <Table.Cell>{sal.bukrsName}</Table.Cell>
+                                <Table.Cell>{sal.branchName}</Table.Cell>
+                                <Table.Cell>{sal.positionName}</Table.Cell>
+                            </Table.Row>
+                        )
+                    })}
                 </Table.Body>
             </Table>
         )
@@ -91,11 +141,15 @@ class AccountabilityStaffDetailPage extends Component{
             <Table.Body>
             {this.state.items.map((item,idx) => {
                 return (
-                    <Table.Row key={item.matnrId}>
+                    <Table.Row key={item.matnrId} negative={item.qty > item.limit}>
                         <Table.Cell>{item.werksName}</Table.Cell>
                         <Table.Cell>{item.matnrName}</Table.Cell>
                         <Table.Cell>{item.matnrCode}</Table.Cell>
-                        <Table.Cell>{item.barcode}</Table.Cell>
+                        <Table.Cell>{
+                            item.barcodes.map((brcode) => {
+                                return <p>{brcode}</p>
+                            })
+                        }</Table.Cell>
                         <Table.Cell>{item.qty}</Table.Cell>
                         <Table.Cell>{item.limit}</Table.Cell>
                     </Table.Row>
@@ -109,7 +163,7 @@ class AccountabilityStaffDetailPage extends Component{
     render(){
         return (
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
-                <Header as="h2" block>
+               <Header as="h2" block>
                     Материалы в подотчете у сотрудника
                 </Header>
                 <Grid columns={2} divided>

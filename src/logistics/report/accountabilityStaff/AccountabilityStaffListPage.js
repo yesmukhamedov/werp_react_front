@@ -14,12 +14,8 @@ class AccountabilityStaffListPage extends Component{
             branchOptions:[],
             items:[],
             selectedBukrs:'',
+            limitChecked:false,
             selectedBranches:[],
-            queryParams:{
-                bukrs:'',
-                branchId:0,
-                positionId:0
-            },
             errors:{
                 bukrsHasError:false
             },
@@ -94,6 +90,14 @@ class AccountabilityStaffListPage extends Component{
                 })
 
                 break
+
+            case 'limit':
+                let tempCheched = this.state.limitChecked;
+                this.setState({
+                    ...this.state,
+                    limitChecked:!tempCheched
+                })
+                break
         }
     }
 
@@ -116,7 +120,8 @@ class AccountabilityStaffListPage extends Component{
             },
             params:{
                 bukrs:this.state.selectedBukrs,
-                branchIds:this.state.selectedBranches.join()
+                branchIds:this.state.selectedBranches.join(),
+                limit:this.state.limitChecked?1:0
             }
         })
             .then((response) => {
@@ -146,7 +151,7 @@ class AccountabilityStaffListPage extends Component{
                     <Dropdown placeholder='Филиал' fluid multiple search selection options={this.state.branchOptions}  onChange={(e, { value }) => this.handleDropdownChange('branch',value)}   />
                 </Form.Field>
                 <Form.Field>
-                    <Checkbox label='Лимит' />
+                    <Checkbox label='Лимит' checked={this.state.limitChecked} onChange={(e) => this.handleDropdownChange('limit','')}  />
                 </Form.Field>
                 <Button onClick={this.loadItems} loading={this.state.loading}>Сформировать</Button>
             </Form>
@@ -176,7 +181,7 @@ class AccountabilityStaffListPage extends Component{
                         <Table.Cell>{item.middlename}</Table.Cell>
                         <Table.Cell>{item.branchName}</Table.Cell>
                         <Table.Cell>
-                            <Link className={'ui icon button'} to={`/logistics/report/accountability-staff/${item.staffId}`}>
+                            <Link target="_blank" className={'ui icon button'} to={`/logistics/report/accountability-staff/${item.staffId}`}>
                                 Детально
                             </Link>
                         </Table.Cell>
