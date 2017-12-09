@@ -11,7 +11,6 @@ class KpiCard extends Component{
 
     render(){
         const {cardData} = this.props;
-        console.log(cardData);
             return (
                 <Grid.Column width={8}>
                     <Segment padded size={'small'}>
@@ -32,14 +31,14 @@ class KpiCard extends Component{
                             </Table.Header>
 
                             <Table.Body>
-                                {cardData.indicators.map((indicator,idx) => {
-                                    return <Table.Row>
+                                {cardData.items.map((item,idx) => {
+                                    return <Table.Row key={item.indicatorId}>
                                         <Table.Cell>{idx}</Table.Cell>
-                                        <Table.Cell>{indicator.name}</Table.Cell>
-                                        <Table.Cell>{indicator.value}</Table.Cell>
-                                        <Table.Cell>{indicator.point}</Table.Cell>
-                                        <Table.Cell>{indicator.doneValue}</Table.Cell>
-                                        <Table.Cell negative>{indicator.score}</Table.Cell>
+                                        <Table.Cell>{item.indicatorName}</Table.Cell>
+                                        <Table.Cell>{item.value}</Table.Cell>
+                                        <Table.Cell>{item.point}</Table.Cell>
+                                        <Table.Cell>{item.doneValue}</Table.Cell>
+                                        <Table.Cell negative>{item.score}</Table.Cell>
                                     </Table.Row>
                                 })}
                             </Table.Body>
