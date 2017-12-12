@@ -17,13 +17,17 @@ import AccountabilityStaffDetailPage from '../logistics/report/accountabilitySta
 import KpiReportPage from '../crm/report/kpi/components/KpiReportPage';
 import RecoCurrentPage from '../crm/mainoperation/reco/components/RecoCurrentPage';
 import DemoListPage from '../crm/mainoperation/demo/components/DemoListPage';
+import Serrep2 from '../service/report/serrep2/serrep2';
+import ForbiddenPage from '../general/forbidden';
 
 const getComponent = {
     'SpNew': SpNewPage,
     'SpView': SpViewPage,
     'SpList': SpListPage,
     'LogRepAccStaff':AccountabilityStaffListPage,
-    'LogRepAccStaffDetail':AccountabilityStaffDetailPage
+    'LogRepAccStaffDetail':AccountabilityStaffDetailPage,
+    'Serrep2':Serrep2
+
 }
 
 export default (data) => {
@@ -39,6 +43,8 @@ export default (data) => {
             <Route path="crm/report/kpi" component={KpiReportPage} />
             <Route path="crm/reco/current" component={RecoCurrentPage} />
             <Route path="crm/demo/list" component={DemoListPage} />
+            <Route path="forbidden" component={ForbiddenPage} />
+
             {/* dynamically generated URLs */} 
             {data.map((el) => {
                 return <Route path={`${el.url}`} component={getComponent[el.component]} key={el.transactionCode}/>

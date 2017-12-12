@@ -19,7 +19,7 @@ class AssignUserBranch extends Component {
     }
 
     onInputChange(term){
-        this.setState({userSearchTerm:term});
+        this.setState({...this.state,userSearchTerm:term});
     }
 
     onSearchClick(){
