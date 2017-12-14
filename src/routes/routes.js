@@ -18,6 +18,7 @@ import KpiReportPage from '../crm/report/kpi/components/KpiReportPage';
 import RecoCurrentPage from '../crm/mainoperation/reco/components/RecoCurrentPage';
 import DemoListPage from '../crm/mainoperation/demo/components/DemoListPage';
 import Serrep2 from '../service/report/serrep2/serrep2';
+import Serrep1 from '../service/report/serrep1/serrep1';
 import ForbiddenPage from '../general/forbidden';
 
 const getComponent = {
@@ -26,8 +27,8 @@ const getComponent = {
     'SpList': SpListPage,
     'LogRepAccStaff':AccountabilityStaffListPage,
     'LogRepAccStaffDetail':AccountabilityStaffDetailPage,
-    'Serrep2':Serrep2
-
+    'Serrep2':Serrep2,
+    'Serrep1':Serrep1
 }
 
 export default (data) => {

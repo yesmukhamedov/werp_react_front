@@ -226,13 +226,14 @@ class Serrep2 extends Component {
                        
                     <Table.Cell>{wa.bukrs}</Table.Cell>        
                     <Table.Cell>{wa.branchName}</Table.Cell>
-                    <Table.Cell>{wa.f1}</Table.Cell>
-                    <Table.Cell>{wa.f2}</Table.Cell>
-                    <Table.Cell>{wa.f3}</Table.Cell>
-                    <Table.Cell>{wa.f4}</Table.Cell>
-                    <Table.Cell>{wa.f5}</Table.Cell>
+                    <Table.Cell>{new Intl.NumberFormat('ru-RU').format(wa.f1)}</Table.Cell>
+                    <Table.Cell>{new Intl.NumberFormat('ru-RU').format(wa.f2)}</Table.Cell>
+                    <Table.Cell>{new Intl.NumberFormat('ru-RU').format(wa.f3)}</Table.Cell>
+                    <Table.Cell>{new Intl.NumberFormat('ru-RU').format(wa.f4)}</Table.Cell>
+                    <Table.Cell>{new Intl.NumberFormat('ru-RU').format(wa.f5)}</Table.Cell>
                     <Table.Cell><Label>{wa.waers}</Label>
-                    <NumberFormat thousandSeparator={' '}  value={wa.dmbtr} decimalScale={2} fixedDecimalScale/>
+                    {new Intl.NumberFormat('ru-RU').format(wa.dmbtr)}
+                    {/* <NumberFormat thousandSeparator={' '}  value={wa.dmbtr} decimalScale={2} fixedDecimalScale/> */}
                     </Table.Cell>
 
                     
@@ -249,14 +250,14 @@ class Serrep2 extends Component {
                         
                         <Table.Row key={idx}>            
                             <Table.HeaderCell></Table.HeaderCell>        
-                            <Table.HeaderCell>Всего</Table.HeaderCell>
-                            <Table.HeaderCell>{wa.f1}</Table.HeaderCell>
-                            <Table.HeaderCell>{wa.f2}</Table.HeaderCell>
-                            <Table.HeaderCell>{wa.f3}</Table.HeaderCell>
-                            <Table.HeaderCell>{wa.f4}</Table.HeaderCell>
-                            <Table.HeaderCell>{wa.f5}</Table.HeaderCell>
-                            <Table.HeaderCell><Label>{wa.waers}</Label>
-                            <NumberFormat thousandSeparator={' '}  value={wa.dmbtr} decimalScale={2} fixedDecimalScale/>
+                            <Table.HeaderCell><b>Всего</b></Table.HeaderCell>
+                            <Table.HeaderCell><b>{new Intl.NumberFormat('ru-RU').format(wa.f1)}</b></Table.HeaderCell>
+                            <Table.HeaderCell><b>{new Intl.NumberFormat('ru-RU').format(wa.f2)}</b></Table.HeaderCell>
+                            <Table.HeaderCell><b>{new Intl.NumberFormat('ru-RU').format(wa.f3)}</b></Table.HeaderCell>
+                            <Table.HeaderCell><b>{new Intl.NumberFormat('ru-RU').format(wa.f4)}</b></Table.HeaderCell>
+                            <Table.HeaderCell><b>{new Intl.NumberFormat('ru-RU').format(wa.f5)}</b></Table.HeaderCell>
+                            <Table.HeaderCell><Label>{wa.waers}</Label><b>{new Intl.NumberFormat('ru-RU').format(wa.dmbtr)}</b>
+                            {/* <NumberFormat thousandSeparator={' '}  value={wa.dmbtr} decimalScale={2} fixedDecimalScale/> */}
                             </Table.HeaderCell>
         
                             
@@ -361,7 +362,7 @@ class Serrep2 extends Component {
                                     </Table.Row>
                                 </Table.Body>        
                             </Table>
-                            <Table compact striped celled sortable id="zamenaFilterTable">
+                            <Table compact striped celled id="zamenaFilterTable">
                                 <Table.Header >
                                     <Table.Row>
                                         <Table.HeaderCell colSpan='8' textAlign="center">{this.state.resultDate}</Table.HeaderCell>
