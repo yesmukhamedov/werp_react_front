@@ -151,7 +151,7 @@ const monthOptions = [
 ];
 
 const currentDate = new Date();
-
+const loadedManagers = {};
 class KpiReportPage extends Component{
 
     constructor(props) {
@@ -166,17 +166,51 @@ class KpiReportPage extends Component{
             selectedBukrs:'',
             selectedBranches:[],
             selectedManager:0,
-            selectedYear:0,
-            selectedMonth:0
+            selectedYear:currentDate.getFullYear(),
+            selectedMonth:currentDate.getMonth()+1,
+            forGroups:false,
+            detail:'',
+            detailId:0
         }
 
         this.loadBranches = this.loadBranches.bind(this);
         this.handleDropdownChange = this.handleDropdownChange.bind(this);
         this.loadItems = this.loadItems.bind(this);
+        this.submitSearch = this.submitSearch.bind(this);
+        this.loadDetail = this.loadDetail.bind(this);
     }
 
     handleError(e){
         console.log(e)
+    }
+
+    getLoadedManagers(branchId){
+        axios.get(`${ROOT_URL}/api/hr/pyramid/managers/by-branch/` + branchId,{
+            headers: {
+                authorization: localStorage.getItem('token')
+            },
+            params:{
+                year:this.state.selectedYear,
+                month:this.state.selectedMonth
+            }
+        })
+            .then((response) => {
+                response.data[0] = 'Не выбрано';
+                let result = Object.keys(response.data).map((key) => {
+                    return {
+                        key:key,
+                        text:response.data[key],
+                        value:key
+                    }
+                });
+
+                this.setState({
+                    ...this.state,
+                    managerOptions:result
+                })
+            }).catch((error) => {
+            console.log(error)
+        })
     }
 
     componentWillMount(){
@@ -206,10 +240,7 @@ class KpiReportPage extends Component{
         })
     }
 
-    loadItems(){
-        if(!this.state.selectedBukrs || this.state.selectedBukrs.length == 0){
-            return;
-        }
+    loadItems(detail,detailId){
         axios.get(`${ROOT_URL}/api/crm/report/kpi/` + this.state.selectedBukrs,{
             headers: {
                 authorization: localStorage.getItem('token')
@@ -217,7 +248,9 @@ class KpiReportPage extends Component{
             params:{
                 branchIds:this.state.selectedBranches.join(','),
                 year:this.state.selectedYear,
-                month:this.state.selectedMonth
+                month:this.state.selectedMonth,
+                detail:detail,
+                detailId:detailId
             }
         }).then((res) => {
             this.setState({
@@ -227,6 +260,26 @@ class KpiReportPage extends Component{
         }).catch((e) => {
             console.log(e);
         });
+    }
+
+    submitSearch(){
+        if(!this.state.selectedBukrs || this.state.selectedBukrs.length == 0){
+            return;
+        }
+        this.setState({
+            ...this.state,
+            detail:'',
+            detailId:0
+        })
+        this.loadItems('',0);
+    }
+
+    loadDetail(detail,detailId){
+        this.setState({
+            ...this.state,
+            detail:detail
+        })
+        this.loadItems(detail,detailId);
     }
 
     loadBranches(bukrs){
@@ -268,16 +321,22 @@ class KpiReportPage extends Component{
                 break
 
             case "branch":
+                let {managerOptions} = this.state;
+                if(value.length == 1){
+                    if(loadedManagers[value[0]]){
+                        managerOptions = loadedManagers[value[0]];
+                    }else{
+                        let t = this.getLoadedManagers(value[0]);
+                    }
+                }else{
+                    managerOptions = [];
+                }
                 this.setState({
                     ...this.state,
                     selectedBranches:value,
                     managerOptions:[],
                     selectedManager:0
                 })
-
-                if(value.length == 1){
-                    this.loadManagers(value[0]);
-                }
 
                 break
 
@@ -299,6 +358,18 @@ class KpiReportPage extends Component{
         }
     }
 
+    isForBukrs(){
+        return this.state.selectedBukrs && this.state.selectedBukrs.length > 1 && this.state.selectedBranches.length == 0;
+    }
+
+    isForBrances(){
+        return this.state.selectedBranches.length > 0;
+    }
+
+    isForManager(){
+        return this.state.selectedManager && this.state.selectedManager > 0;
+    }
+
     handleChange(e){
         console.log(e.target.value);
         console.log(e)
@@ -310,13 +381,13 @@ class KpiReportPage extends Component{
         return (
             <Form>
                 <Form.Group widths='equal'>
-                    <Form.Select defaultValue={selectedBukrs} error={this.state.selectedBukrs.length == 0} name="bukrs" label='Компания' options={bukrsOptions} placeholder='Компания' onChange={this.handleDropdownChange} />
-                    <Form.Select name="branch" fluid multiple search selection label='Филиал' options={branchOptions} placeholder='Филиал' onChange={this.handleDropdownChange} />
-                    <Form.Select name="manager" label='Менеджер' options={managerOptions} placeholder='Менеджер' />
+                    <Form.Select defaultValue={selectedBukrs} error={this.state.selectedBukrs.length == 0}
+                                 name="bukrs" label='Компания' options={bukrsOptions} placeholder='Компания' onChange={this.handleDropdownChange} />
+                    <Form.Select name="branch" multiple search selection label='Филиал' options={branchOptions} placeholder='Филиал' onChange={this.handleDropdownChange} />
                     <Form.Select defaultValue={currentDate.getFullYear()} name="year" label='Год' options={yearOptions} placeholder='Год' onChange={this.handleDropdownChange} />
-                    <Form.Select defaultValue={currentDate.getMonth()} name="month" label='Месяц' options={monthOptions} placeholder='Месяц' onChange={this.handleDropdownChange} />
+                    <Form.Select defaultValue={currentDate.getMonth()+1} name="month" label='Месяц' options={monthOptions} placeholder='Месяц' onChange={this.handleDropdownChange} />
                 </Form.Group>
-                <Form.Button onClick={this.loadItems}>Сформировать</Form.Button>
+                <Form.Button onClick={this.submitSearch}>Сформировать</Form.Button>
             </Form>
         )
     }
@@ -333,7 +404,11 @@ class KpiReportPage extends Component{
                     <Segment attached>
                         <Grid columns={2}>
                             {this.state.items.map((item) => {
-                                return <KpiCard key={item.id} cardData={item} />
+                                return <KpiCard
+                                    key={item.id}
+                                    cardData={item}
+                                    cardType={this.state.detail}
+                                    loadDetail={this.loadDetail}/>
                             })}
                         </Grid>
                     </Segment>
