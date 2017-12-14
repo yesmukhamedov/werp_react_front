@@ -8,10 +8,10 @@ import axios from 'axios';
 import {ROOT_URL} from '../../../utils/constants';
 import { notify } from '../../../general/notification/notification_action';
 import NumberFormat from 'react-number-format';
-import './serrep1.css';
+import '../serrep1/serrep1.css';
 
 // const arrayList= ;
-class Serrep1 extends Component {
+class Serrep3 extends Component {
 
     static contextTypes = {
         router: PropTypes.object
@@ -23,7 +23,7 @@ class Serrep1 extends Component {
         this.onSelectTableType = this.onSelectTableType.bind(this);
         moment.locale('pl');
         
-        this.state={searchTerm:{bukrs:'',branchList:[],dateFrom:'',dateTo:''}, companyOptions:[], branchOptions:[],
+        this.state={searchTerm:{bukrs:'',branchList:[],date:''}, companyOptions:[], branchOptions:[],
         button1:true,button2:false,button3:false, pyl:[],filter:[],currentTable:[],pylTotal:[],filterTotal:[],currentTableTotal:[],resultDate:''};
     }
 
@@ -71,11 +71,8 @@ class Serrep1 extends Component {
         else if (stateFieldName==='branch') { 
             waSearchTerm.branchList=value;            
         }
-        else if (stateFieldName==='dateFrom') { 
-            waSearchTerm.dateFrom=value; 
-        }
-        else if (stateFieldName==='dateTo') { 
-            waSearchTerm.dateTo=value; 
+        else if (stateFieldName==='date') { 
+            waSearchTerm.date=value; 
         }
         this.setState({searchTerm:waSearchTerm});
         
@@ -97,31 +94,23 @@ class Serrep1 extends Component {
             return;
         }
         
-        if (this.state.searchTerm.dateFrom===null || this.state.searchTerm.dateFrom.length===0)
+        if (this.state.searchTerm.date===null || this.state.searchTerm.date.length===0)
         {
             this.props.notify('error','Выберите период','Ошибка');
             return;
         }
 
-        if (this.state.searchTerm.dateTo===null || this.state.searchTerm.dateTo.length===0)
-        {
-            this.props.notify('error','Выберите период','Ошибка');
-            return;
-        }
-        let strVal = this.state.searchTerm.dateFrom.format('YYYY-MM-DD');
-        let searchDateFrom = moment.utc(strVal).format();
-        strVal = this.state.searchTerm.dateTo.format('YYYY-MM-DD');
-        let searchDateTo = moment.utc(strVal).format();
+        let strVal = this.state.searchTerm.date.format('YYYY-MM-DD');
+        let searchDate = moment.utc(strVal).format();
 
-        axios.get(`${ROOT_URL}/api/service/reports/serrep1/search`, {
+        axios.get(`${ROOT_URL}/api/service/reports/serrep3/search`, {
             headers: {
                 authorization: localStorage.getItem('token')
             },
             params:{
                 bukrs:this.state.searchTerm.bukrs,
                 branchIds:this.state.searchTerm.branchList.join(),
-                dateFrom:searchDateFrom,
-                dateTo:searchDateTo
+                date:searchDate
             }
         })
         .then((response) => {
@@ -206,18 +195,11 @@ class Serrep1 extends Component {
                 
                   
                
-                <Table.Row key={idx}>              
-                         
-                    <Table.Cell>{wa.branchName}</Table.Cell>
-                    <Table.Cell>{wa.waers}</Table.Cell>
-                    {this.state.button3 && <Table.Cell >{new Intl.NumberFormat('ru-RU').format(wa.kol1)}</Table.Cell>}
-                    {this.state.button3 && <Table.Cell >{new Intl.NumberFormat('ru-RU').format(wa.summa1)}</Table.Cell>}                   
-                    {this.state.button3 && <Table.Cell >{new Intl.NumberFormat('ru-RU').format(wa.kol2)}</Table.Cell>}
-                    {this.state.button3 && <Table.Cell >{new Intl.NumberFormat('ru-RU').format(wa.summa2)}</Table.Cell>}                  
-                    <Table.Cell>{new Intl.NumberFormat('ru-RU').format(wa.kol3)}</Table.Cell>
-                    <Table.Cell>{new Intl.NumberFormat('ru-RU').format(wa.summa3)}</Table.Cell>       
-                    <Table.Cell>{new Intl.NumberFormat('ru-RU').format(wa.kol4)}</Table.Cell>
-                    <Table.Cell>{new Intl.NumberFormat('ru-RU').format(wa.summa4)}</Table.Cell>             
+                <Table.Row key={idx}>                         
+                    <Table.Cell>{wa.branchName}</Table.Cell>                 
+                    <Table.Cell>{new Intl.NumberFormat('ru-RU').format(wa.total)}</Table.Cell>
+                    <Table.Cell>{new Intl.NumberFormat('ru-RU').format(wa.war)}</Table.Cell>       
+                    <Table.Cell>{new Intl.NumberFormat('ru-RU').format(wa.notWar)}</Table.Cell>          
                 </Table.Row> 
             );
 
@@ -231,17 +213,10 @@ class Serrep1 extends Component {
                     return (
                         
                         <Table.Row key={idx}>    
-                            <Table.HeaderCell><b>Всего</b></Table.HeaderCell>
-                            <Table.HeaderCell><b>{wa.waers}</b></Table.HeaderCell>
-                            {this.state.button3 && <Table.HeaderCell ><b>{new Intl.NumberFormat('ru-RU').format(wa.kol1)}</b></Table.HeaderCell>}
-                            {this.state.button3 && <Table.HeaderCell ><b>{new Intl.NumberFormat('ru-RU').format(wa.summa1)}</b></Table.HeaderCell>}                  
-                            {this.state.button3 && <Table.HeaderCell ><b>{new Intl.NumberFormat('ru-RU').format(wa.kol2)}</b></Table.HeaderCell>}
-                            {this.state.button3 && <Table.HeaderCell ><b>{new Intl.NumberFormat('ru-RU').format(wa.summa2)}</b></Table.HeaderCell>}                  
-                            <Table.HeaderCell><b>{new Intl.NumberFormat('ru-RU').format(wa.kol3)}</b></Table.HeaderCell>
-                            <Table.HeaderCell><b>{new Intl.NumberFormat('ru-RU').format(wa.summa3)}</b></Table.HeaderCell>               
-                            <Table.HeaderCell><b>{new Intl.NumberFormat('ru-RU').format(wa.kol4)}</b></Table.HeaderCell>
-                            <Table.HeaderCell><b>{new Intl.NumberFormat('ru-RU').format(wa.summa4)}</b></Table.HeaderCell>
-                            
+                            <Table.HeaderCell><b>Всего</b></Table.HeaderCell>               
+                            <Table.HeaderCell><b>{new Intl.NumberFormat('ru-RU').format(wa.total)}</b></Table.HeaderCell>
+                            <Table.HeaderCell><b>{new Intl.NumberFormat('ru-RU').format(wa.war)}</b></Table.HeaderCell>               
+                            <Table.HeaderCell><b>{new Intl.NumberFormat('ru-RU').format(wa.notWar)}</b></Table.HeaderCell>                            
                         </Table.Row> 
                     );
         
@@ -255,7 +230,7 @@ class Serrep1 extends Component {
             
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
                 <Header as="h2" block>
-                    Сервис за период в разрезе филиалов (Количество и сумма)
+                    Количество договоров по гарантии в разрезе филиалов
                 </Header>
                 
                 
@@ -319,15 +294,10 @@ class Serrep1 extends Component {
                                         Дата
                                     </Table.Cell> 
                                     <Table.Cell>
-                                        С <DatePicker 
+                                        <DatePicker 
                                             showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
-                                            selected={this.state.searchTerm.dateFrom} locale="en-gb"
-                                            onChange={(event) => this.onInputChange(event,"dateFrom")} 
-                                            dateFormat="DD.MM.YYYY" />
-                                            по <DatePicker 
-                                            showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
-                                            selected={this.state.searchTerm.dateTo} locale="en-gb"
-                                            onChange={(event) => this.onInputChange(event,"dateTo")} 
+                                            selected={this.state.searchTerm.date} locale="en-gb"
+                                            onChange={(event) => this.onInputChange(event,"date")} 
                                             dateFormat="DD.MM.YYYY" />
                                     </Table.Cell> 
                                     <Table.Cell>
@@ -356,35 +326,13 @@ class Serrep1 extends Component {
                                 {this.state.resultDate}
                             </Header>
                             <Table  striped compact collapsing fixed celled   id="serrep1Table">
-                                <Table.Header >
-                                
-                                    
-                                    <Table.Row>
-                                        <Table.HeaderCell rowSpan="2">Филиал</Table.HeaderCell>
-                                        <Table.HeaderCell rowSpan="2">Валюта</Table.HeaderCell>
-                                        
-                                        {this.state.button3 &&
-                                        <Table.HeaderCell colSpan='2' textAlign="center" >Замена фильтров</Table.HeaderCell>}
-                                        {this.state.button3 &&
-                                        <Table.HeaderCell colSpan='2' textAlign="center" >Установка</Table.HeaderCell>}
-                                    
-                                        <Table.HeaderCell colSpan='2' textAlign="center">Сервисное обслуживание</Table.HeaderCell>
-                                        <Table.HeaderCell colSpan='2' textAlign="center">Сервис пакеты</Table.HeaderCell>
-                                    </Table.Row>
-                                    <Table.Row>        
-
-                 {this.state.button3 && <Table.HeaderCell>Количество</Table.HeaderCell>}
-                 {this.state.button3 && <Table.HeaderCell>Сумма</Table.HeaderCell>}
-                 {this.state.button3 && <Table.HeaderCell>Количество</Table.HeaderCell>}
-                 {this.state.button3 && <Table.HeaderCell>Сумма</Table.HeaderCell>}
-                                        
-                                    
-                                        <Table.HeaderCell>Количество</Table.HeaderCell>
-                                        <Table.HeaderCell>Сумма</Table.HeaderCell>
-                                        <Table.HeaderCell>Количество</Table.HeaderCell>
-                                        <Table.HeaderCell>Сумма</Table.HeaderCell>
-                                    </Table.Row>
-                                
+                                <Table.Header>                                
+                                    <Table.Row>                                               
+                                        <Table.HeaderCell>Филиал</Table.HeaderCell>
+                                        <Table.HeaderCell>Всего</Table.HeaderCell>
+                                        <Table.HeaderCell>в гарантии</Table.HeaderCell>
+                                        <Table.HeaderCell>не в гарантии</Table.HeaderCell>
+                                    </Table.Row>                                
                                 </Table.Header>       
                                 <Table.Body>
                                     {this.renderTable()}
@@ -393,9 +341,6 @@ class Serrep1 extends Component {
                                     {this.renderTableFooter()}
                                 </Table.Footer>      
                             </Table>      
-                            
-                               
-                             
                         </Grid.Column>
                         
                     </Grid.Row>
@@ -419,4 +364,4 @@ function mapStateToProps(state)
     return { };
 }
 
-export default connect(mapStateToProps,{ notify }) (Serrep1);
+export default connect(mapStateToProps,{ notify }) (Serrep3);

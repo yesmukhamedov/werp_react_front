@@ -1,6 +1,6 @@
 import React,{ Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Table, Button, Modal, Dropdown, Icon, Container, Header, Grid, Tab, Label, Input } from 'semantic-ui-react';
+import { Table, Button, Modal, Dropdown, Icon, Container, Header, Grid, Tab, Label, Input,Checkbox } from 'semantic-ui-react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
@@ -24,7 +24,7 @@ class Serrep2 extends Component {
         this.onSelectTableType = this.onSelectTableType.bind(this);
         
         
-        this.state={searchTerm:{bukrs:'',branchList:[],date:''}, companyOptions:[], branchOptions:[],
+        this.state={searchTerm:{bukrs:'',branchList:[],date:'',today:true,archive:false}, companyOptions:[], branchOptions:[],
         button1:true,button2:false,button3:false, tek:[],pros:[],all:[],currentTable:[],tekTotal:[],prosTotal:[],allTotal:[],currentTableTotal:[],resultDate:''};
     }
 
@@ -73,6 +73,12 @@ class Serrep2 extends Component {
         }
         else if (stateFieldName==='date') { 
             waSearchTerm.date=value; 
+        }else if (stateFieldName==='today') { 
+            waSearchTerm.today=!waSearchTerm.today; 
+            waSearchTerm.archive=!waSearchTerm.archive; 
+        }else if (stateFieldName==='archive') { 
+            waSearchTerm.today=!waSearchTerm.today; 
+            waSearchTerm.archive=!waSearchTerm.archive; 
         }
         this.setState({searchTerm:waSearchTerm});
         
@@ -94,13 +100,17 @@ class Serrep2 extends Component {
             return;
         }
         
-        if (this.state.searchTerm.date===null || this.state.searchTerm.date.length===0)
+        let strVal = '';
+        let searchDate = '';
+        if (this.state.searchTerm.archive && (this.state.searchTerm.date===null || this.state.searchTerm.date.length===0))
         {
             this.props.notify('error','Выберите месяц','Ошибка');
             return;
+        }else if (this.state.searchTerm.archive){
+            strVal = this.state.searchTerm.date.format('YYYY-MM')+'-01';
+            searchDate = moment.utc(strVal).format();
         }
-        let strVal = this.state.searchTerm.date.format('YYYY-MM')+'-01';
-        let searchDate = moment.utc(strVal).format();
+        
 
         axios.get(`${ROOT_URL}/api/service/reports/serrep2/search`, {
             headers: {
@@ -109,7 +119,8 @@ class Serrep2 extends Component {
             params:{
                 bukrs:this.state.searchTerm.bukrs,
                 branchIds:this.state.searchTerm.branchList.join(),
-                date:searchDate
+                date:searchDate,
+                archive:this.state.searchTerm.archive
             }
         })
         .then((response) => {
@@ -302,6 +313,25 @@ class Serrep2 extends Component {
                         </Grid.Column>
                         
                     </Grid.Row>
+                    
+                    <Grid.Row  columns={2}>
+                        <Grid.Column mobile={16} tablet={8} computer={4}>
+                            На сегодня
+                        </Grid.Column>
+                        <Grid.Column mobile={16} tablet={8} computer={12}>
+                            <Checkbox  checked={this.state.searchTerm.today} onChange={(event)=>this.onInputChange(event, 'today')}/>    
+                        </Grid.Column>
+                        
+                    </Grid.Row>
+                    <Grid.Row  columns={2}>
+                        <Grid.Column mobile={16} tablet={8} computer={4}>
+                            Из архива
+                        </Grid.Column>
+                        <Grid.Column mobile={16} tablet={8} computer={12}>
+                            <Checkbox  checked={this.state.searchTerm.archive} onChange={(event)=>this.onInputChange(event, 'archive')}/>                        
+                        </Grid.Column>
+                        
+                    </Grid.Row>
                     <Grid.Row  columns={2}>
                         <Grid.Column mobile={16} tablet={8} computer={4}>
                             Месяц
@@ -310,7 +340,7 @@ class Serrep2 extends Component {
                             <DatePicker 
                                             showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
                                             selected={this.state.searchTerm.date} locale="en-gb"
-                                            onChange={(event) => this.onInputChange(event,"date")} 
+                                            onChange={(event) => this.onInputChange(event,"date")} disabled={!this.state.searchTerm.archive}
                                             dateFormat="MM.YYYY" />
 
                         </Grid.Column>
