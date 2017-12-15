@@ -41,7 +41,7 @@ class KpiCard extends Component{
                         </Table.Body>
                     </Table>
                     <Divider />
-                    <Button onClick={(e) => this.props.loadDetail('branch',cardData.id)}>
+                    <Button onClick={(e) => this.props.loadDetail('branch',cardData)}>
                         Деталь
                     </Button>
                 </Segment>
@@ -81,7 +81,7 @@ class KpiCard extends Component{
                         </Table.Body>
                     </Table>
                     <Divider />
-                    <Button onClick={(e) => this.props.loadDetail('group',cardData.id)}>
+                    <Button onClick={(e) => this.props.loadDetail('group',cardData)}>
                         Деталь
                     </Button>
                 </Segment>
