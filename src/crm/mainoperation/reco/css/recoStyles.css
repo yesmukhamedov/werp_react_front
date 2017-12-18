@@ -1,3 +1,19 @@
 .phoneNumberLabel{
     display: block;
 }
+
+.recoGrid{
+    font-size:12px;
+}
+
+.recoGrid form{
+    font-size:12px !important;
+}
+
+.recoGrid form label{
+    font-size:12px !important;
+}
+
+.ui.form{
+    font-size:12px;
+}
