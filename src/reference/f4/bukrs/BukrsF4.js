@@ -40,7 +40,12 @@ class  BukrsF4 extends Component{
                     selected:loaded[0]['value'],
                     selectedName:loaded[0]['text']
                 });
-                this.handleChange(loaded[0]['value']);
+                let temp = {
+                    value:loaded[0]['value'],
+                    options:loaded,
+                    name:"bukrs"
+                }
+                this.handleChange({},temp);
             }else{
                 this.setState({
                     ...this.state,
@@ -66,7 +71,7 @@ class  BukrsF4 extends Component{
     render(){
         if(this.state.mode === MODE_LABEL){
             return <div>
-                <Form.Input readonly disabled
+                <Form.Input readOnly disabled
                              label='Компания' value={this.state.selectedName}
                              placeholder='Компания' />
             </div>

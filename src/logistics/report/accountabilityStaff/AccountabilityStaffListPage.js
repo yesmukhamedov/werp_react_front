@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router'
 import axios from 'axios';
-import {Container,Segment,Grid,Form,Checkbox,Dropdown,Divider,Menu,Table,Icon,Header,Button} from 'semantic-ui-react';
+import {Container,Grid,Form,Checkbox,Dropdown,Table,Header,Button} from 'semantic-ui-react';
 import {ROOT_URL} from '../../../utils/constants';
 
 class AccountabilityStaffListPage extends Component{
@@ -102,7 +102,7 @@ class AccountabilityStaffListPage extends Component{
     }
 
     loadItems(){
-        if(!this.state.selectedBukrs || this.state.selectedBukrs.length == 0){
+        if(!this.state.selectedBukrs || this.state.selectedBukrs.length === 0){
             this.setState({
                 ...this.state,
                 errors:{bukrsHasError:true}

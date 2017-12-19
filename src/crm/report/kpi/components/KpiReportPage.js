@@ -1,15 +1,14 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import {connect} from 'react-redux';
 import {Container,Header,Segment,Grid,Form,Divider,Breadcrumb,Loader} from 'semantic-ui-react';
 import KpiCard from './KpiCard';
-import {ROOT_URL,YEAR_OPTIONS,MONTH_OPTIONS} from '../../../../utils/constants';
+import {ROOT_URL} from '../../../../utils/constants';
 import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4'
 import BranchF4 from '../../../../reference/f4/branch/BranchF4'
 import YearF4 from '../../../../reference/f4/date/YearF4'
 import MonthF4 from '../../../../reference/f4/date/MonthF4'
 const currentDate = new Date();
-const loadedManagers = {};
+
 class KpiReportPage extends Component{
 
     constructor(props) {
@@ -76,7 +75,7 @@ class KpiReportPage extends Component{
 
     submitSearch(){
         const {selectedBukrs} = this.state;
-        if(!selectedBukrs || selectedBukrs.length == 0){
+        if(!selectedBukrs || selectedBukrs.length === 0){
             return;
         }
 
@@ -91,7 +90,7 @@ class KpiReportPage extends Component{
     }
 
     loadDetail(detailName,cardData){
-        if(detailName == 'branch'){
+        if(detailName === 'branch'){
             this.setState({
                 ...this.state,
                 headerBukrsId:cardData.bukrs,
@@ -105,7 +104,7 @@ class KpiReportPage extends Component{
                 loading:true,
                 items:[]
             })
-        }else if(detailName == 'group'){
+        }else if(detailName === 'group'){
             this.setState({
                 ...this.state,
                 headerBukrsId:cardData.bukrs,
@@ -152,6 +151,8 @@ class KpiReportPage extends Component{
                 selectedMonth = value;
                 break
         }
+
+        console.log(selectedBukrs);
 
         this.setState({
             ...this.state,
