@@ -8,7 +8,7 @@ import axios from 'axios';
 import {ROOT_URL} from '../../../utils/constants';
 import { notify } from '../../../general/notification/notification_action';
 import NumberFormat from 'react-number-format';
-
+require('moment/locale/ru');
 
 
 // const arrayList= ;
@@ -339,7 +339,7 @@ class Serrep2 extends Component {
                         <Grid.Column mobile={16} tablet={8} computer={12}>
                             <DatePicker 
                                             showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
-                                            selected={this.state.searchTerm.date} locale="en-gb"
+                                            selected={this.state.searchTerm.date} locale="ru"
                                             onChange={(event) => this.onInputChange(event,"date")} disabled={!this.state.searchTerm.archive}
                                             dateFormat="MM.YYYY" />
 
