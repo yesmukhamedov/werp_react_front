@@ -86,12 +86,14 @@ class Header2 extends Component {
                                     <Input type='text' 
                                         placeholder='Примечание'
                                         value={description}
+                                        locale='de'
                                         onChange={(e, {value}) => inputChange(value, 'description')} />
                                 </Form.Field>
                                 <Form.Field>
                                     <label>Дата начала действия</label>
                                     <DatePicker 
                                         selected={startDate}
+                                        dateFormat="DD.MM.YYYY"
                                         onChange={date => inputChange(date, 'startDate')} />
                                 </Form.Field>
                                 <Form.Field>
