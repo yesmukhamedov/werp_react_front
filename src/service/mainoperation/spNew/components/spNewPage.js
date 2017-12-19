@@ -30,8 +30,8 @@ class SpNewPage extends Component {
             description: '',
             startDate: moment(),
             totalSum: '',
-            masterBonus: '',
-            operatorBonus: '',
+            masterBonus: 0,
+            operatorBonus: 0,
             sparePartList: [],
             warrantyList: []
         }
@@ -106,11 +106,19 @@ class SpNewPage extends Component {
         const servicePacket = {
             name: this.state.title,
             description: this.state.description,
-            countryId: this.state.selectedCountry,
-            companyId: this.state.selectedCompany,
+            country: {
+                countryId: this.state.selectedCountry
+            },
+            company: {
+                id: this.state.selectedCompany
+            },
             startDate: startDateUtc,
-            productCategoryId: this.state.selectedCategory,
-            productId: this.state.selectedProduct,
+            productCategory: {
+                id: this.state.selectedCategory
+            },
+            product: {
+                id: this.state.selectedProduct
+            },
             price: this.state.totalSum,
             totalPrice: this.state.totalSum,            
             masterBonus: this.state.masterBonus,
@@ -118,8 +126,14 @@ class SpNewPage extends Component {
             currency: this.state.countryDict.get(this.state.selectedCountry),
             active: true
         }
+
         // construct spareParts
-        const spareParts = this.state.sparePartList
+        const spareParts = this.state.sparePartList.map(sp => {
+            sp.operType = {
+                operTypeId: sp.operTypeId
+            };
+            return sp;
+        })
 
         // construct sparePartsWithWarranty
         const sparePartsWithWarranty = this.state.warrantyList

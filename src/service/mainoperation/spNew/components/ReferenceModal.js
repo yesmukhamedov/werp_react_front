@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Header, Icon, Modal, Form, Input, Table } from 'semantic-ui-react'
+import { Button, Header, Icon, Modal, Form, Input } from 'semantic-ui-react'
 import ReactTable from "react-table"
 import _ from 'lodash'
 import "react-table/react-table.css"

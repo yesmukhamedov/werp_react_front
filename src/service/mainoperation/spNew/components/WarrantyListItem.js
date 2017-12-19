@@ -1,8 +1,8 @@
 import React from 'react'
-import {Table, Input, Dropdown, Button, Icon} from 'semantic-ui-react'
+import {Table, Input, Button, Icon} from 'semantic-ui-react'
 
 const WarrantyListItem = (props) => {
-    const {id, description, currency, code, warrantyMonths} = props.data
+    const {id, description, /*currency,*/ code, warrantyMonths} = props.data
     return (
         <Table.Row>
             <Table.Cell>{props.idx + 1}</Table.Cell>

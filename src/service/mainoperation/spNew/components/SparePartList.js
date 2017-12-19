@@ -67,6 +67,7 @@ export default class SparePartList extends Component {
       if (item.id === this.state.sourceSparePartId) {
         return {
           ...item,
+            id: selectedItem.id,
           sparePartId: selectedItem.id,
           description: selectedItem.name,
           price: selectedItem.price,
