@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import moment from 'moment'
-import {Container,Divider,Tab,Table,Grid,Label,Menu,Icon,Header} from 'semantic-ui-react';
+import {Container,Divider,Tab,Table,Grid,Header} from 'semantic-ui-react';
 import {ROOT_URL} from '../../../../utils/constants';
 
 class ViewStaff extends Component{
@@ -35,7 +35,7 @@ class ViewStaff extends Component{
                 staff:response.data
             })
         }).catch(function(e){
-            if(e.response && e.response.status && e.response.status == 404){
+            if(e.response && e.response.status && e.response.status === 404){
                 _this.loadedSuccess = false;
             }
             console.log('TEST');
@@ -56,7 +56,7 @@ class ViewStaff extends Component{
         }
 
         //Salaries
-        if(data.activeIndex == 2){
+        if(data.activeIndex === 2){
             if(this.state.salariesLoaded){
                 return;
             }
@@ -80,7 +80,7 @@ class ViewStaff extends Component{
                 })
             }
 
-        }else if(data.activeIndex == 4){
+        }else if(data.activeIndex === 4){
             if(this.state.expensesLoaded){
                 return;
             }
@@ -109,7 +109,7 @@ class ViewStaff extends Component{
     }
 
     formatTimestamptToDate(v){
-        if(!v || v.length == 0){
+        if(!v || v.length === 0){
             return ''
         }
         return (
@@ -147,7 +147,7 @@ class ViewStaff extends Component{
 
                     <Table.Row>
                         <Table.Cell>Пол</Table.Cell>
-                        <Table.Cell>{stf.gender == 'male'?'Мужской':'Женский'}</Table.Cell>
+                        <Table.Cell>{stf.gender === 'male'?'Мужской':'Женский'}</Table.Cell>
                     </Table.Row>
 
                 </Table.Body>
@@ -218,7 +218,7 @@ class ViewStaff extends Component{
     renderSalaryData(){
         let tempContent = this.state.salaries.map(salary => {
             return (
-                <Table.Row className={salary.prev == true ? 'error':(salary.next == true?'success':'')}>
+                <Table.Row className={salary.prev === true ? 'error':(salary.next === true?'success':'')}>
                     <Table.Cell>{salary.salaryId}</Table.Cell>
                     <Table.Cell>{salary.statusName}</Table.Cell>
                     <Table.Cell>{salary.companyName}</Table.Cell>

@@ -12,11 +12,27 @@ import SpViewPage from '../service/mainoperation/spView/components/spViewPage';
 import SpListPage from '../service/mainoperation/spList/components/spListPage';
 import CreateStaff from '../hr/mainoperation/staff/components/CreateStaff';
 import ViewStaff from '../hr/mainoperation/staff/components/ViewStaff';
+import AccountabilityStaffListPage from '../logistics/report/accountabilityStaff/AccountabilityStaffListPage';
+import AccountabilityStaffDetailPage from '../logistics/report/accountabilityStaff/AccountabilityStaffDetailPage';
+import KpiReportPage from '../crm/report/kpi/components/KpiReportPage';
+import RecoCurrentPage from '../crm/mainoperation/reco/components/RecoCurrentPage';
+import DemoListPage from '../crm/mainoperation/demo/components/DemoListPage';
+import Serrep1 from '../service/report/serrep1/serrep1';
+import Serrep2 from '../service/report/serrep2/serrep2';
+import Serrep3 from '../service/report/serrep3/serrep3';
+import Serrep4 from '../service/report/serrep4/serrep4';
+import ForbiddenPage from '../general/forbidden';
 
 const getComponent = {
     'SpNew': SpNewPage,
     'SpView': SpViewPage,
-    'SpList': SpListPage
+    'SpList': SpListPage,
+    'LogRepAccStaff':AccountabilityStaffListPage,
+    'LogRepAccStaffDetail':AccountabilityStaffDetailPage,
+    'Serrep1':Serrep1,
+    'Serrep2':Serrep2,
+    'Serrep3':Serrep3,
+    'Serrep4':Serrep4
 }
 
 export default (data) => {
@@ -29,6 +45,11 @@ export default (data) => {
             <Route path="dit/userBranch" component={AssignUserBranch} />
             <Route path="hr/staff/create" component={CreateStaff} />
             <Route path="hr/staff/view/:id" component={ViewStaff} />
+            <Route path="crm/report/kpi" component={KpiReportPage} />
+            <Route path="crm/reco/current" component={RecoCurrentPage} />
+            <Route path="crm/demo/list" component={DemoListPage} />
+            <Route path="forbidden" component={ForbiddenPage} />
+
             {/* dynamically generated URLs */} 
             {data.map((el) => {
                 return <Route path={`${el.url}`} component={getComponent[el.component]} key={el.transactionCode}/>

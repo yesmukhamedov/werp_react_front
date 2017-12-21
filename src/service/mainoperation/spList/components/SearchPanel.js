@@ -26,11 +26,12 @@ export default class SearchPanel extends Component {
             selectedProduct,
             inputChange,
             fetchCategories,
-            fetchReferenceList,
-            title,
-            description,
             startDate,
-            saveServicePacket
+            endDate,
+            servicePacketId,
+            sparePartPosDescription,
+            sparePartId,
+            handleSearch
         } = this.props
         return (
             <Form>
@@ -87,30 +88,46 @@ export default class SearchPanel extends Component {
                                         disabled={!(selectedCountry && selectedCompany && selectedCategory)}
                                         onChange={(e, {value}) => {
                                         inputChange(value, 'selectedProduct');
-                                        fetchReferenceList(selectedCompany, selectedCountry, value);
                                     }}/>
                                 </Form.Field>
                                 <Form.Field>
                                     <label>Период</label>
                                 </Form.Field>
-                                    с <DatePicker />                                                          
-                                    до <DatePicker />
-                                 
+                                    с <DatePicker 
+                                        dateFormat="DD.MM.YYYY"
+                                        selected={startDate}
+                                        onChange={date => inputChange(date, 'startDate')} />                                                          
+                                    до <DatePicker 
+                                        dateFormat="DD.MM.YYYY"
+                                        selected={endDate}
+                                        onChange={date => inputChange(date, 'endDate')}/>
                             </Grid.Column>
                             <Grid.Column width={5}>
                                 <Form.Field>
                                     <label>По номеру пакета</label>
-                                    <Input type='text' placeholder='номер пакета'/>
+                                    <Input 
+                                        type='text' 
+                                        placeholder='номер пакета'
+                                        value={servicePacketId}
+                                        onChange={(e, {value}) => inputChange(value,'servicePacketId')} />
                                 </Form.Field>
                                 <Form.Field>
                                     <label>По запчастям</label>
-                                    <Input type='text' placeholder='номер запчасти'/>
+                                    <Input 
+                                        type='text' 
+                                        placeholder='номер запчасти'
+                                        value={sparePartId}
+                                        onChange={(e, {value}) => inputChange(value,'sparePartId')}  />
                                 </Form.Field>
                                 <Form.Field>
                                     <label>По услугам</label>
-                                    <Input type='text' placeholder='номер услуги'/>
+                                    <Input 
+                                        type='text' 
+                                        placeholder='номер услуги'
+                                        value={sparePartPosDescription}
+                                        onChange={(e, {value}) => inputChange(value,'sparePartPosDescription')}  />
                                 </Form.Field>
-                                <Button size='huge'>Поиск</Button>
+                                <Button size='huge' onClick={handleSearch}>Поиск</Button>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
