@@ -5,7 +5,8 @@ import {
 
 export default function(state={lang:'en'}, action) {    
     // Try full locale, fallback to locale without region code, fallback to en
-    const messages = localeData[action.payload];
+    const messages = localeData[action.payload] || localeData.en;
+    console.log("message", messages)
     
     // eslint-disable-next-line
     switch(action.type) {

@@ -18,14 +18,14 @@
   "Header.Menu.Settings": "Настройки",
   "Header.Menu.Logout": "Выйти"
 },
-"kk": {
-  "Auth.Signin.Header": "Аккаунтыңызға кіріңіз",
-  "Auth.Signin.Username": "Пайдаланушы аты",
-  "Auth.Signin.Password": "Пароль",
-  "Auth.Signin.Login": "Кіру",
-  "Header.Menu.MenuLabel": "Мәзір",
-  "Header.Menu.Inbox": "Кіріс пошта",
-  "Header.Menu.Settings": "Баптаулар",
-  "Header.Menu.Logout": "Шығу"
+"tr": {
+  "Auth.Signin.Header": "Hesabınıza giriş yapın",
+  "Auth.Signin.Username": "Kullanıcı adı",
+  "Auth.Signin.Password": "Password",
+  "Auth.Signin.Login": "Giriş",
+  "Header.Menu.MenuLabel": "Menü",
+  "Header.Menu.Inbox": "Gelen kutusu",
+  "Header.Menu.Settings": "Ayarlar",
+  "Header.Menu.Logout": "Çıkış"
 }
 }

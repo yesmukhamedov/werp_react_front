@@ -15,7 +15,7 @@ import './index.css';
 import { addLocaleData } from 'react-intl';
 import en from 'react-intl/locale-data/en';
 import ru from 'react-intl/locale-data/ru';
-import kk from 'react-intl/locale-data/kk';
+import tr from 'react-intl/locale-data/tr';
 import axios from 'axios';
 import {ROOT_URL} from "./utils/constants";
 import { loadLang, saveLang } from "./utils/localStorage";
@@ -25,7 +25,7 @@ import throttle from 'lodash/throttle';
 const promise = axios.get(`${ROOT_URL}/routes`);
 
 
-addLocaleData([...en, ...ru, ...kk]);
+addLocaleData([...en, ...ru, ...tr]);
 const persistedLang = loadLang();
 
 const createStoreWithMiddleware = applyMiddleware(JwtRefresher, reduxThunk)(createStore);
