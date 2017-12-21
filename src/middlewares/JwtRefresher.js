@@ -21,7 +21,6 @@ function isAlmostExpired(dispatch) {
             const tokenPayload = jwt.decode(token, 'secret');
             let exp = new Date(tokenPayload.exp * 1000);
             let now = new Date();
-            console.log("time: ", (exp - now)/1000)
             if( exp > now) {            
                 let delta = exp - now;
                 if(delta < TOKEN_REFRESH_LIMIT) {
