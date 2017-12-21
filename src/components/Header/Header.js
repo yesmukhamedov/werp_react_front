@@ -54,7 +54,7 @@ class Header extends Component {
     handleTransactionSelected(transactionCode) {
         const leafNode = this.props.transactions[transactionCode];
         const breadcrumb = calcBreadcrumb(leafNode);
-        this.props.breadcrumbChanged(breadcrumb);
+        this.props.breadcrumbChanged(breadcrumb);        
     }
 
     render() {
