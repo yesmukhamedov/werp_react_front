@@ -15,6 +15,7 @@ import {
 export function signinUser({username, password}, language) {    
     return function(dispatch) {
         // Submit username/password to the server
+        let path = null
         axios.post(`${ROOT_URL}/signin`, {username, password, language})
             .then(response => {
                 // If request is good...                
@@ -24,7 +25,12 @@ export function signinUser({username, password}, language) {
                 // - update state to indicate user is authenticated
                 dispatch(authUser(username));
                 // - redirect to the route '/'
-                browserHistory.push('/');
+                path = localStorage.getItem("currentPathName")
+                if(path) {
+                    browserHistory.push(path);    
+                } else {
+                    browserHistory.push('/');
+                }                
             })
             .catch(error => {
                 // If request is bad...
@@ -41,6 +47,7 @@ export function signinUser({username, password}, language) {
 export function signoutUser() {
     return function(dispatch) {
         resetLocalStorage();
+        localStorage.removeItem('currentPathName');
         dispatch({type: UNAUTH_USER});
         dispatch({
             type: CHANGE_LANGUAGE,

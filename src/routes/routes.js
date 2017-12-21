@@ -35,6 +35,14 @@ const getComponent = {
     'Serrep4':Serrep4
 }
 
+function persistPath(nextState, replace) {
+    try {
+        localStorage.setItem('currentPathName', nextState.location.pathname);
+    } catch (error) {
+        //Ignore write errors.
+    }
+  }
+
 export default (data) => {
     return (
         <Route path="/" component={App}>
@@ -52,7 +60,7 @@ export default (data) => {
 
             {/* dynamically generated URLs */} 
             {data.map((el) => {
-                return <Route path={`${el.url}`} component={getComponent[el.component]} key={el.transactionCode}/>
+                return <Route path={`${el.url}`} component={getComponent[el.component]} key={el.transactionCode} onEnter={persistPath}/>
             })}                      
         </Route>
     )
