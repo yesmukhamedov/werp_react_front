@@ -7,6 +7,7 @@ import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4'
 import BranchF4 from '../../../../reference/f4/branch/BranchF4'
 import YearF4 from '../../../../reference/f4/date/YearF4'
 import MonthF4 from '../../../../reference/f4/date/MonthF4'
+import PositionF4 from '../../../../reference/f4/position/PositionF4'
 
 class KpiRatingReportPage extends Component{
     constructor(props) {
@@ -41,7 +42,8 @@ class KpiRatingReportPage extends Component{
                 bukrs:this.state.selectedBukrs,
                 branchIds:this.state.selectedBranches.join(','),
                 year:this.state.selectedYear,
-                month:this.state.selectedMonth
+                month:this.state.selectedMonth,
+                positionId:this.state.selectedPositionId
             }
         }).then((res) => {
             this.setState({
@@ -65,11 +67,13 @@ class KpiRatingReportPage extends Component{
                 columns={[
                     {
                         Header:"Компания",
-                        accessor:"bukrsName"
+                        accessor:"bukrsName",
+                        maxWidth:100
                     },
                     {
                         Header:"Филиал",
-                        accessor: "branchName"
+                        accessor: "branchName",
+                        maxWidth:150
                     },
                     {
                         Header:"Сотудник",
@@ -77,7 +81,8 @@ class KpiRatingReportPage extends Component{
                     },
                     {
                         Header:"Должность",
-                        accessor: "positionName"
+                        accessor: "positionName",
+                        maxWidth:150
                     },
                     {
                         Header:"KPI %",
@@ -105,7 +110,7 @@ class KpiRatingReportPage extends Component{
 
     handleDropdownChange(e,result){
         const {name,value,options} = result;
-        let {selectedBukrs,selectedYear,selectedMonth,selectedBranches} = this.state;
+        let {selectedBukrs,selectedYear,selectedMonth,selectedBranches,selectedPositionId} = this.state;
         switch (name){
             case "bukrs":
                 selectedBukrs = value;
@@ -122,6 +127,10 @@ class KpiRatingReportPage extends Component{
             case "month":
                 selectedMonth = value;
                 break
+
+            case 'position':
+                selectedPositionId = value;
+                break
         }
 
         this.setState({
@@ -129,7 +138,8 @@ class KpiRatingReportPage extends Component{
             selectedBukrs:selectedBukrs,
             selectedBranches:selectedBranches,
             selectedYear:selectedYear,
-            selectedMonth:selectedMonth
+            selectedMonth:selectedMonth,
+            selectedPositionId:selectedPositionId
         })
     }
 
@@ -138,6 +148,7 @@ class KpiRatingReportPage extends Component{
             <Form.Group widths='equal'>
                 <BukrsF4 handleChange={this.handleDropdownChange} />
                 <BranchF4 search={true} multiple={true} handleChange={this.handleDropdownChange} bukrs={this.state.selectedBukrs} />
+                <PositionF4 search={true} handleChange={this.handleDropdownChange}/>
                 <YearF4 handleChange={this.handleDropdownChange} />
                 <MonthF4 handleChange={this.handleDropdownChange} />
             </Form.Group>

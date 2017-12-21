@@ -9,7 +9,7 @@ import {ROOT_URL} from '../../../utils/constants';
 import { notify } from '../../../general/notification/notification_action';
 import NumberFormat from 'react-number-format';
 import '../serrep1/serrep1.css';
-
+require('moment/locale/ru');
 // const arrayList= ;
 class Serrep3 extends Component {
 
@@ -21,7 +21,6 @@ class Serrep3 extends Component {
         this.onInputChange = this.onInputChange.bind(this);
         this.onSearchClick = this.onSearchClick.bind(this);
         this.onSelectTableType = this.onSelectTableType.bind(this);
-        moment.locale('pl');
         
         this.state={searchTerm:{bukrs:'',branchList:[],date:''}, companyOptions:[], branchOptions:[],
         button1:true,button2:false,button3:false, pyl:[],filter:[],currentTable:[],pylTotal:[],filterTotal:[],currentTableTotal:[],resultDate:''};
@@ -296,7 +295,7 @@ class Serrep3 extends Component {
                                     <Table.Cell>
                                         <DatePicker 
                                             showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
-                                            selected={this.state.searchTerm.date} locale="en-gb"
+                                            selected={this.state.searchTerm.date} locale="ru"
                                             onChange={(event) => this.onInputChange(event,"date")} 
                                             dateFormat="DD.MM.YYYY" />
                                     </Table.Cell> 
