@@ -29,7 +29,7 @@ class SpNewPage extends Component {
             title: '',
             description: '',
             startDate: moment(),
-            totalSum: '',
+            totalSum: 0,
             masterBonus: 0,
             operatorBonus: 0,
             sparePartList: [],
@@ -209,7 +209,7 @@ class SpNewPage extends Component {
     }
 
     calculateTotalSum(list) {
-        return _.sumBy(list, (item) => parseInt(item.price || 0));
+        return _.sumBy(list, (item) => parseInt(item.totalPrice || 0));
     }
 
     fetchCategories(companyId, categoryId) {
