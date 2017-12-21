@@ -7,7 +7,7 @@ import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
 import routes from './routes/routes';
 import reducers from './reducers';
-import {AUTH_USER, ROUTES} from './actions/types';
+import {AUTH_USER} from './actions/types';
 import ConnectedIntlProvider from './ConnectedIntlProvider';
 import JwtRefresher from './middlewares/JwtRefresher';
 import 'semantic-ui-css/semantic.min.css';
@@ -18,8 +18,8 @@ import ru from 'react-intl/locale-data/ru';
 import tr from 'react-intl/locale-data/tr';
 import axios from 'axios';
 import {ROOT_URL} from "./utils/constants";
+import {CHANGE_LANGUAGE} from './actions/types';
 import { loadLang, saveLang } from "./utils/localStorage";
-import localeData from './locales/data.json';
 import throttle from 'lodash/throttle';
 
 const promise = axios.get(`${ROOT_URL}/routes`);
@@ -30,6 +30,8 @@ const persistedLang = loadLang();
 
 const createStoreWithMiddleware = applyMiddleware(JwtRefresher, reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers, persistedLang);
+
+
 
 store.subscribe(throttle(() => {
     saveLang({
@@ -44,11 +46,11 @@ if(token) {
   store.dispatch({type: AUTH_USER, payload: localStorage.getItem('username')});
 }
 
-promise.then(({ data }) => {  
-    // store.dispatch({
-    //     type: ROUTES, 
-    //     payload: data
-    // });
+promise.then(({ data }) => {
+    store.dispatch({
+        type: CHANGE_LANGUAGE,
+        payload: 'ru'
+    });
     let resolvedRoutes = routes(data);
     ReactDOM.render(
         <Provider store={store}>

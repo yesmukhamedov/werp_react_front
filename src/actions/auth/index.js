@@ -8,7 +8,8 @@ import {
     UNAUTH_USER,
     AUTH_ERROR,
     FETCH_USERS,
-    USERS_ERROR
+    USERS_ERROR,
+    CHANGE_LANGUAGE
 } from '../types';
 
 export function signinUser({username, password}, language) {    
@@ -41,6 +42,10 @@ export function signoutUser() {
     return function(dispatch) {
         resetLocalStorage();
         dispatch({type: UNAUTH_USER});
+        dispatch({
+            type: CHANGE_LANGUAGE,
+            payload: 'ru'
+        });
         browserHistory.push('/');
     };
 }
