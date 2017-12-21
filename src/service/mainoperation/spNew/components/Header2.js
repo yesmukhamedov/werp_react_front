@@ -32,7 +32,7 @@ class Header2 extends Component {
         
             <Form>
                 <Segment padded size='small'>
-                    <Label attached='top'><Header as='h3'>Создать сервис пакет</Header></Label>
+                    <Label attached='top'><Header as='h3'>Сформировать Новый Сервис Пакет</Header></Label>
                     <Grid columns='five' divided>
                         <Grid.Row>                        
                             <Grid.Column width={3}>
@@ -92,6 +92,7 @@ class Header2 extends Component {
                                     <label>Дата начала действия</label>
                                     <DatePicker 
                                         selected={startDate}
+                                        dateFormat="DD.MM.YYYY"
                                         onChange={date => inputChange(date, 'startDate')} />
                                 </Form.Field>
                                 <Form.Field>
