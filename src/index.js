@@ -31,8 +31,6 @@ const persistedLang = loadLang();
 const createStoreWithMiddleware = applyMiddleware(JwtRefresher, reduxThunk)(createStore);
 const store = createStoreWithMiddleware(reducers, persistedLang);
 
-
-
 store.subscribe(throttle(() => {
     saveLang({
         locales: store.getState().locales    
@@ -44,13 +42,15 @@ const token = localStorage.getItem('token');
 if(token) {
   // we need to update application state
   store.dispatch({type: AUTH_USER, payload: localStorage.getItem('username')});
-}
-
-promise.then(({ data }) => {
-    store.dispatch({
+} else {
+        store.dispatch({
         type: CHANGE_LANGUAGE,
         payload: 'ru'
     });
+}
+
+promise.then(({ data }) => {
+    
     let resolvedRoutes = routes(data);
     ReactDOM.render(
         <Provider store={store}>
