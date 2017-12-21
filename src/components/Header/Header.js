@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Menu, Breadcrumb, Dropdown, Label, Icon } from 'semantic-ui-react';
 import { Link } from 'react-router';
+import jwt from 'jwt-simple';
 import { defineMessages, intlShape, injectIntl } from 'react-intl';
 import LanguageSwitcher from './LanguageSwitcher';
 import TransactionSearchbar from './TransactionSearchbar';
@@ -12,9 +13,12 @@ import { calcBreadcrumb } from "../../utils/helpers";
 class Header extends Component {
     componentWillMount() {
         if (this.props.authenticated) {
-            // TODO replace with valid user id
-            const userId = -1;
-            this.props.fetchUnreadMessages({userId});
+            const token = localStorage.getItem('token');
+            if (token) {
+              const payload = jwt.decode(token, 'secret')
+              const userId = payload.userId
+              this.props.fetchUnreadMessages({userId});
+            }             
         }
     }
 
@@ -115,7 +119,7 @@ function mapStateToProps(state) {
       unread: state.inbox.unread,
       breadcrumb: state.menu.breadcrumb,
       lang: state.locales.lang,
-      routes: state.menu.routes,
+      //routes: state.menu.routes,
       treeMenu: state.menu.tree,
       transactions: state.menu.transactions
     };

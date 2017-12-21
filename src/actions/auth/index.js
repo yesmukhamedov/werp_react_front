@@ -1,6 +1,5 @@
 /*jshint esversion: 6 */ 
 import axios from 'axios';
-import jwt from 'jwt-simple';
 import {browserHistory} from 'react-router';
 import {ROOT_URL} from '../../utils/constants';
 import {resetLocalStorage} from '../../utils/helpers';
@@ -17,19 +16,14 @@ export function signinUser({username, password}, language) {
         // Submit username/password to the server
         axios.post(`${ROOT_URL}/signin`, {username, password, language})
             .then(response => {
-                // If request is good...
-                // - update state to indicate user is authenticated
-                dispatch(authUser(username));
+                // If request is good...                
                 // - save the JWT token
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('username', username);
+                // - update state to indicate user is authenticated
+                dispatch(authUser(username));
                 // - redirect to the route '/'
                 browserHistory.push('/');
-
-                 // test
-                const tokenPayload = jwt.decode(response.data.token, 'secret');
-                console.log('tokenPayload:', tokenPayload);
-                // end test
             })
             .catch(error => {
                 // If request is bad...

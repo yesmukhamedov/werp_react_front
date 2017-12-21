@@ -6,7 +6,7 @@ import {Menu, Segment, Sidebar} from 'semantic-ui-react'
 import './App.css'
 import Signin from './components/Auth/Signin'
 import {fetchUnreadMessages} from './actions/inbox'
-import {fetchTreeMenu, breadcrumbChanged} from './actions/tree_menu'
+import {fetchTreeMenu, fetchAvailableRoutes, breadcrumbChanged} from './actions/tree_menu'
 import Header from './components/Header/Header'
 import TreeViewMenu from './components/TreeViewMenu/TreeViewMenu'
 import Notification from './general/notification/notification'
@@ -17,34 +17,29 @@ class App extends Component {
     this.state = {menuVisible: false}
   }
 
-  // TODO
-  // Fix this method, because it is a dummy one. If jwtToken is available, it extracts
-  // userId, otherwise it returns 'm.test's user id which is equal to 774.
   getUserId () {
     const token = localStorage.getItem('token')
     if (token) {
       const payload = jwt.decode(token, 'secret')
       return payload.userId
-    } else {
-      return 774
+    } 
+    else {
+      return -1
     }
   }
 
   componentWillMount () {
     if (this.props.authenticated) {
-            // TODO replace with valid user id
-            // this.props.fetchUnreadMessages({userId});
-      this.props.fetchTreeMenu(this.getUserId())
+      this.props.fetchTreeMenu(this.getUserId());
+      //this.props.fetchAvailableRoutes();
     }
   }
 
     // dispatching an action based on state change
   componentWillUpdate (nextProps, nextState) {
     if ((nextProps.authenticated !== this.props.authenticated) && nextProps.refetch) {
-            // TODO replace with valid user id
-            // const userId = -1;
-            // this.props.fetchUnreadMessages({userId});
       this.props.fetchTreeMenu(this.getUserId())
+      //this.props.fetchAvailableRoutes();
     }
   }
 
@@ -94,4 +89,4 @@ function mapStateToProps (state) {
   }
 }
 
-export default connect(mapStateToProps, {fetchUnreadMessages, fetchTreeMenu, breadcrumbChanged})(App)
+export default connect(mapStateToProps, {fetchUnreadMessages, fetchTreeMenu, fetchAvailableRoutes, breadcrumbChanged})(App)

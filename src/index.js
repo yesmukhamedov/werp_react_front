@@ -45,10 +45,10 @@ if(token) {
 }
 
 promise.then(({ data }) => {  
-    store.dispatch({
-        type: ROUTES, 
-        payload: data
-    });
+    // store.dispatch({
+    //     type: ROUTES, 
+    //     payload: data
+    // });
     let resolvedRoutes = routes(data);
     ReactDOM.render(
         <Provider store={store}>
