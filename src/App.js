@@ -17,31 +17,37 @@ class App extends Component {
     this.state = {menuVisible: false}
   }
 
-  getUserId () {
-    const token = localStorage.getItem('token')
-    if (token) {
-      const payload = jwt.decode(token, 'secret')
-      return payload.userId
-    } 
-    else {
-      return -1
-    }
-  }
+  // getUserId () {
+  //   const token = localStorage.getItem('token')
+  //   if (token) {
+  //     const payload = jwt.decode(token, 'secret')
+  //     return payload.userId
+  //   } 
+  //   else {
+  //     return -1
+  //   }
+  // }
 
-  componentWillMount () {
-    if (this.props.authenticated) {
-      this.props.fetchTreeMenu(this.getUserId());
-      //this.props.fetchAvailableRoutes();
-    }
-  }
+  // componentWillMount () {
+  //   if (this.props.authenticated) {
+  //     if(this.getUserId() !== -1) {
+  //       console.log("componentWillMount")
+  //       this.props.fetchTreeMenu(this.getUserId());
+  //     }      
+  //     //this.props.fetchAvailableRoutes();
+  //   }
+  // }
 
-    // dispatching an action based on state change
-  componentWillUpdate (nextProps, nextState) {
-    if ((nextProps.authenticated !== this.props.authenticated) && nextProps.refetch) {
-      this.props.fetchTreeMenu(this.getUserId())
-      //this.props.fetchAvailableRoutes();
-    }
-  }
+  //   // dispatching an action based on state change
+  // componentWillUpdate (nextProps, nextState) {
+  //   if ((nextProps.authenticated !== this.props.authenticated) && nextProps.refetch) {
+  //     if(this.getUserId() !== -1) {
+  //       console.log("componentWillUpdate")
+  //       this.props.fetchTreeMenu(this.getUserId())
+  //     }      
+  //     //this.props.fetchAvailableRoutes();
+  //   }
+  // }
 
   render () {
     const token = localStorage.getItem('token')

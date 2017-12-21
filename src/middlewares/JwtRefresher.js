@@ -3,10 +3,7 @@ import jwt from 'jwt-simple';
 import {browserHistory} from 'react-router';
 import {ROOT_URL, TOKEN_REFRESH_LIMIT} from '../utils/constants';
 import {resetLocalStorage} from '../utils/helpers';
-import {
-    UNAUTH_USER,
-    AUTH_ERROR
-} from '../actions/types';
+import {UNAUTH_USER,AUTH_ERROR,CHANGE_LANGUAGE} from '../actions/types';
 
 export default function({dispatch}) {
     return next => action => {
@@ -24,6 +21,7 @@ function isAlmostExpired(dispatch) {
             const tokenPayload = jwt.decode(token, 'secret');
             let exp = new Date(tokenPayload.exp * 1000);
             let now = new Date();
+            console.log("time: ", (exp - now)/1000)
             if( exp > now) {            
                 let delta = exp - now;
                 if(delta < TOKEN_REFRESH_LIMIT) {
@@ -65,6 +63,10 @@ function tokenRefresh(dispatch, action) {
 function signoutUser(dispatch, errorMsg) {        
     resetLocalStorage();
     dispatch({type: UNAUTH_USER});
+    dispatch({
+        type: CHANGE_LANGUAGE,
+        payload: 'ru'
+    });
     dispatch({
         type: AUTH_ERROR,
         payload: errorMsg

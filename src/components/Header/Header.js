@@ -9,6 +9,7 @@ import TransactionSearchbar from './TransactionSearchbar';
 import { fetchUnreadMessages } from "../../actions/inbox";
 import { breadcrumbChanged } from "../../actions/tree_menu";
 import { calcBreadcrumb } from "../../utils/helpers";
+import {fetchTreeMenu} from '../../actions/tree_menu'
 
 class Header extends Component {
     componentWillMount() {
@@ -18,6 +19,7 @@ class Header extends Component {
               const payload = jwt.decode(token, 'secret')
               const userId = payload.userId
               this.props.fetchUnreadMessages({userId});
+              this.props.fetchTreeMenu(userId);
             }             
         }
     }
@@ -129,4 +131,4 @@ Header.propTypes = {
     intl: intlShape.isRequired
 };
   
-export default connect(mapStateToProps, {fetchUnreadMessages, breadcrumbChanged})(injectIntl(Header));
+export default connect(mapStateToProps, {fetchUnreadMessages, breadcrumbChanged, fetchTreeMenu})(injectIntl(Header));
