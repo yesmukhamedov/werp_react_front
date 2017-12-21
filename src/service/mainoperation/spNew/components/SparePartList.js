@@ -98,9 +98,16 @@ export default class SparePartList extends Component {
           return {
             ...el,
             [dataType]: value,
-            totalPrice: value,
+            totalPrice: value * el.quantity,
             submittable: true
           };
+        } else if (dataType === "quantity") {
+          return {
+              ...el,
+              [dataType]: value,
+              totalPrice: value * el.price,
+              submittable: true
+          }
         } else if (dataType === "operTypeId") {
           return {
             ...el,

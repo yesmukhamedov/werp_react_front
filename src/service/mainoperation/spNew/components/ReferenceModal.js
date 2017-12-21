@@ -93,7 +93,8 @@ export default class ReferenceModal extends Component {
                         className="-striped -highlight" 
                         data={this.state.results}
                         columns={this.props.columns} 
-                        showPagination={false}             
+                        showPagination={false}
+                        defaultPageSize={this.state.results.length}
                         noDataText="Нет записей"
                         style={{
                             height: "400px"

@@ -58,6 +58,9 @@ const SparePartListItem = (props) => {
                         basic: true,
                         content: 'шт'
                     }}
+                    type='number'
+                    min='1'
+                    onChange={(e, data) => props.handleCellChange(props.idx, 'quantity', data.value)}
                     labelPosition='right' />
             </Table.Cell>
             <Table.Cell>
