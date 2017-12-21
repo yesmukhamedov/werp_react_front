@@ -86,7 +86,6 @@ class Header2 extends Component {
                                     <Input type='text' 
                                         placeholder='Примечание'
                                         value={description}
-                                        locale='de'
                                         onChange={(e, {value}) => inputChange(value, 'description')} />
                                 </Form.Field>
                                 <Form.Field>
