@@ -1,6 +1,5 @@
 /*jshint esversion: 6 */ 
 import axios from 'axios';
-import jwt from 'jwt-simple';
 import {browserHistory} from 'react-router';
 import {ROOT_URL} from '../../utils/constants';
 import {resetLocalStorage} from '../../utils/helpers';
@@ -9,27 +8,29 @@ import {
     UNAUTH_USER,
     AUTH_ERROR,
     FETCH_USERS,
-    USERS_ERROR
+    USERS_ERROR,
+    CHANGE_LANGUAGE
 } from '../types';
 
 export function signinUser({username, password}, language) {    
     return function(dispatch) {
         // Submit username/password to the server
+        let path = null
         axios.post(`${ROOT_URL}/signin`, {username, password, language})
             .then(response => {
-                // If request is good...
-                // - update state to indicate user is authenticated
-                dispatch(authUser(username));
+                // If request is good...                
                 // - save the JWT token
                 localStorage.setItem('token', response.data.token);
                 localStorage.setItem('username', username);
+                // - update state to indicate user is authenticated
+                dispatch(authUser(username));
                 // - redirect to the route '/'
-                browserHistory.push('/');
-
-                 // test
-                const tokenPayload = jwt.decode(response.data.token, 'secret');
-                console.log('tokenPayload:', tokenPayload);
-                // end test
+                path = localStorage.getItem("currentPathName")
+                if(path) {
+                    browserHistory.push(path);    
+                } else {
+                    browserHistory.push('/');
+                }                
             })
             .catch(error => {
                 // If request is bad...
@@ -46,7 +47,12 @@ export function signinUser({username, password}, language) {
 export function signoutUser() {
     return function(dispatch) {
         resetLocalStorage();
+        localStorage.removeItem('currentPathName');
         dispatch({type: UNAUTH_USER});
+        dispatch({
+            type: CHANGE_LANGUAGE,
+            payload: 'ru'
+        });
         browserHistory.push('/');
     };
 }

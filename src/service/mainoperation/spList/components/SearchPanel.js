@@ -9,11 +9,11 @@ import {
     Header,
     Segment
 } from 'semantic-ui-react'
-import moment from 'moment'
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 
 export default class SearchPanel extends Component {
+
     render() {
         const {
             countryOpts,
@@ -29,7 +29,6 @@ export default class SearchPanel extends Component {
             startDate,
             endDate,
             servicePacketId,
-            sparePartPosDescription,
             sparePartId,
             handleSearch
         } = this.props
@@ -44,16 +43,6 @@ export default class SearchPanel extends Component {
                         <Grid.Row>
                             <Grid.Column width={5}>
                                 <Form.Field>
-                                    <label>Страна</label>
-                                    <Dropdown
-                                        placeholder='Выберите страну'
-                                        fluid
-                                        selection
-                                        options={countryOpts}
-                                        value={selectedCountry}
-                                        onChange={(e, {value}) => inputChange(value, 'selectedCountry')}/>
-                                </Form.Field>
-                                <Form.Field>
                                     <label>Компания</label>
                                     <Dropdown
                                         placeholder='Выберите компанию'
@@ -62,6 +51,16 @@ export default class SearchPanel extends Component {
                                         options={companyOpts}
                                         value={selectedCompany}
                                         onChange={(e, {value}) => inputChange(value, 'selectedCompany')}/>
+                                </Form.Field>
+                                <Form.Field>
+                                    <label>Страна</label>
+                                    <Dropdown
+                                        placeholder='Выберите страну'
+                                        fluid
+                                        selection
+                                        options={countryOpts}
+                                        value={selectedCountry}
+                                        onChange={(e, {value}) => inputChange(value, 'selectedCountry')}/>
                                 </Form.Field>
                                 <Form.Field>
                                     <label>Категория</label>
@@ -80,7 +79,7 @@ export default class SearchPanel extends Component {
                                 <Form.Field>
                                     <label>Товар</label>
                                     <Dropdown
-                                        placeholder='Select Product'
+                                        placeholder='Выберите товар'
                                         fluid
                                         selection
                                         value={selectedProduct}
@@ -90,43 +89,48 @@ export default class SearchPanel extends Component {
                                         inputChange(value, 'selectedProduct');
                                     }}/>
                                 </Form.Field>
-                                <Form.Field>
-                                    <label>Период</label>
-                                </Form.Field>
-                                    с <DatePicker 
-                                        dateFormat="DD.MM.YYYY"
-                                        selected={startDate}
-                                        onChange={date => inputChange(date, 'startDate')} />                                                          
-                                    до <DatePicker 
-                                        dateFormat="DD.MM.YYYY"
-                                        selected={endDate}
-                                        onChange={date => inputChange(date, 'endDate')}/>
                             </Grid.Column>
                             <Grid.Column width={5}>
                                 <Form.Field>
                                     <label>По номеру пакета</label>
-                                    <Input 
-                                        type='text' 
+                                    <Input
+                                        type='text'
                                         placeholder='номер пакета'
                                         value={servicePacketId}
                                         onChange={(e, {value}) => inputChange(value,'servicePacketId')} />
                                 </Form.Field>
                                 <Form.Field>
                                     <label>По запчастям</label>
-                                    <Input 
-                                        type='text' 
+                                    <Input
+                                        type='text'
                                         placeholder='номер запчасти'
                                         value={sparePartId}
                                         onChange={(e, {value}) => inputChange(value,'sparePartId')}  />
                                 </Form.Field>
                                 <Form.Field>
-                                    <label>По услугам</label>
-                                    <Input 
-                                        type='text' 
-                                        placeholder='номер услуги'
-                                        value={sparePartPosDescription}
-                                        onChange={(e, {value}) => inputChange(value,'sparePartPosDescription')}  />
+                                    <label>Период</label>
                                 </Form.Field>
+                                с <DatePicker
+                                        dateFormat='DD.MM.YYYY'
+                                        // dateFormat='LL'
+                                        selected={startDate}
+                                        // locale='en'
+                                        onChange={date => inputChange(date, 'startDate')} />
+                                до <DatePicker
+                                        dateFormat='DD.MM.YYYY'
+                                        // dateFormat='LL'
+                                        selected={endDate}
+                                        // locale='ru'
+                                        onChange={date => inputChange(date, 'endDate')}/>
+                                {/*<Form.Field>*/}
+                                    {/*<label>По услугам</label>*/}
+                                    {/*<Input*/}
+                                        {/*type='text'*/}
+                                        {/*placeholder='текст услуги'*/}
+                                        {/*value={sparePartPosDescription}*/}
+                                        {/*onChange={(e, {value}) => inputChange(value,'sparePartPosDescription')}  />*/}
+                                {/*</Form.Field>*/}
+                                <br />
                                 <Button size='huge' onClick={handleSearch}>Поиск</Button>
                             </Grid.Column>
                         </Grid.Row>

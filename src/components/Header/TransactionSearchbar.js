@@ -4,6 +4,7 @@ import {Search, Label} from 'semantic-ui-react';
 import _ from 'lodash'
 import './Header.css';
 import {LEGACY_URL} from "../../utils/constants";
+import {browserHistory} from 'react-router';
 
 export default class TransactionSearchbar extends Component {
 
@@ -16,6 +17,7 @@ export default class TransactionSearchbar extends Component {
     handleResultSelect = (e, {result}) => {
         this.setState({value: ''});
         this.props.transactionSelected(result.title);
+        browserHistory.push(result.image);        
     };
 
     handleSearchChange = (e, {value}) => {

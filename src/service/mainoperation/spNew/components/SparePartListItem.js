@@ -2,7 +2,7 @@ import React from 'react'
 import {Input, Dropdown, Button, Icon, Table} from 'semantic-ui-react'
 
 const SparePartListItem = (props) => {
-    let { id, operTypeId, description, price, quantity, totalPrice, code} = props.data
+    let { id, operTypeId, description, price, currency, quantity, totalPrice, code} = props.data
     return (
         <Table.Row>
             <Table.Cell>{props.idx+1}</Table.Cell>
@@ -44,7 +44,7 @@ const SparePartListItem = (props) => {
                     fluid
                     label={{
                             basic: true,
-                            content: 'KZT'
+                            content: currency
                         }}
                     labelPosition='right'
                     type='number'
@@ -58,6 +58,9 @@ const SparePartListItem = (props) => {
                         basic: true,
                         content: 'шт'
                     }}
+                    type='number'
+                    min='1'
+                    onChange={(e, data) => props.handleCellChange(props.idx, 'quantity', data.value)}
                     labelPosition='right' />
             </Table.Cell>
             <Table.Cell>

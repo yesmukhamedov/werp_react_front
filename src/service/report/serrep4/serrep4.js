@@ -1,6 +1,6 @@
 import React,{ Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Table, Button, Modal, Dropdown, Icon, Container, Header, Grid, Tab, Label, Input } from 'semantic-ui-react';
+import { Table, Button, Modal, Dropdown, Icon, Container, Header, Grid, Tab, Label, Input, Menu, Checkbox} from 'semantic-ui-react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
@@ -8,10 +8,11 @@ import axios from 'axios';
 import {ROOT_URL} from '../../../utils/constants';
 import { notify } from '../../../general/notification/notification_action';
 import NumberFormat from 'react-number-format';
-import './serrep1.css';
+import '../serrep1/serrep1.css';
+import SemanticPagination from '../../../general/pagination/semanticTableFooter/semanticPagination';
 require('moment/locale/ru');
 // const arrayList= ;
-class Serrep1 extends Component {
+class Serrep4 extends Component {
 
     static contextTypes = {
         router: PropTypes.object
@@ -22,8 +23,10 @@ class Serrep1 extends Component {
         this.onSearchClick = this.onSearchClick.bind(this);
         this.onSelectTableType = this.onSelectTableType.bind(this);
         
-        this.state={searchTerm:{bukrs:'',branchList:[],dateFrom:'',dateTo:''}, companyOptions:[], branchOptions:[],
-        button1:true,button2:false,button3:false, pyl:[],filter:[],currentTable:[],pylTotal:[],filterTotal:[],currentTableTotal:[],resultDate:''};
+        this.state={searchTerm:{bukrs:'',branchList:[],dateFrom:'',dateTo:'',warranty:true}, companyOptions:[], branchOptions:[],
+        button1:true,button2:false,button3:false, pyl:[],filter:[],currentTable:[],resultDate:'',pylSelectedPageNumber:1,filterSelectedPageNumber:1, currentSelectedPageNumber:1,
+        pylRowNumbers:0,pylTotalPageNumbers:1,filterRowNumbers:0,filterTotalPageNumbers:1
+        };
     }
 
     componentWillMount() {
@@ -59,7 +62,6 @@ class Serrep1 extends Component {
 
     }
     onInputChange(value,stateFieldName){
-        // console.log(formatMoney(324234234.55));
         let waSearchTerm = Object.assign({}, this.state.searchTerm);
         if (stateFieldName==="bukrs")
         {               
@@ -75,6 +77,9 @@ class Serrep1 extends Component {
         }
         else if (stateFieldName==='dateTo') { 
             waSearchTerm.dateTo=value; 
+        }
+        else if (stateFieldName==='warranty') { 
+            waSearchTerm.warranty=!waSearchTerm.warranty; 
         }
         this.setState({searchTerm:waSearchTerm});
         
@@ -111,8 +116,9 @@ class Serrep1 extends Component {
         let searchDateFrom = moment.utc(strVal).format();
         strVal = this.state.searchTerm.dateTo.format('YYYY-MM-DD');
         let searchDateTo = moment.utc(strVal).format();
+        console.log(this.state.searchTerm);
 
-        axios.get(`${ROOT_URL}/api/service/reports/serrep1/search`, {
+        axios.get(`${ROOT_URL}/api/service/reports/serrep4/search`, {
             headers: {
                 authorization: localStorage.getItem('token')
             },
@@ -120,7 +126,8 @@ class Serrep1 extends Component {
                 bukrs:this.state.searchTerm.bukrs,
                 branchIds:this.state.searchTerm.branchList.join(),
                 dateFrom:searchDateFrom,
-                dateTo:searchDateTo
+                dateTo:searchDateTo,
+                warranty:this.state.searchTerm.warranty
             }
         })
         .then((response) => {
@@ -129,9 +136,11 @@ class Serrep1 extends Component {
                 pyl:response.data.pyl,
                 filter:response.data.filter,
                 currentTable:response.data.pyl,
-                pylTotal:response.data.pylTotal,
-                filterTotal:response.data.filterTotal,
-                currentTableTotal:response.data.pylTotal,
+                pylRowNumbers:response.data.pylRowNumbers,
+                pylTotalPageNumbers:response.data.pylTotalPageNumbers,
+                filterRowNumbers:response.data.filterRowNumbers,
+                filterTotalPageNumbers:response.data.filterTotalPageNumbers,
+                pylSelectedPageNumber:1,filterSelectedPageNumber:1, currentSelectedPageNumber:1,
                 button1:false,
                 button2:true,
                 button3:false,
@@ -140,6 +149,8 @@ class Serrep1 extends Component {
             });
         })
         .catch((error) => {
+            console.log(error);
+            console.log(error.response);
             if (error.response.status===403)
             {
                 //blog post has been created, navigate the user to the index
@@ -191,15 +202,16 @@ class Serrep1 extends Component {
     onSelectTableType(index){
 
         if (index===1) {this.setState({...this.state,currentTable:this.state.pyl,button1:true,button2:false,
-            button3:false,currentTableTotal:this.state.pylTotal,displayTable:"hide",displayColumn:"hide"});}
+            button3:false, currentSelectedPageNumber:this.state.pylSelectedPageNumber});}
         else if (index===2) {this.setState({...this.state,currentTable:this.state.pyl,button1:false,button2:true,
-            button3:false,currentTableTotal:this.state.pylTotal,displayTable:"show",displayColumn:"hide"});}
+            button3:false, currentSelectedPageNumber:this.state.pylSelectedPageNumber});}
         else if (index===3) {this.setState({...this.state,currentTable:this.state.filter,button1:false,button2:false,
-            button3:true,currentTableTotal:this.state.filterTotal,displayTable:"show",displayColumn:"show"});}
+            button3:true, currentSelectedPageNumber:this.state.filterSelectedPageNumber});}
     }
 
     renderTable() {
-        return this.state.currentTable.map((wa,idx)=>{
+        if (this.state.currentTable[this.state.currentSelectedPageNumber-1]==null) return "";
+        return this.state.currentTable[this.state.currentSelectedPageNumber-1].list.map((wa,idx)=>{
       
             return (
                 
@@ -208,44 +220,16 @@ class Serrep1 extends Component {
                 <Table.Row key={idx}>              
                          
                     <Table.Cell>{wa.branchName}</Table.Cell>
-                    <Table.Cell>{wa.waers}</Table.Cell>
-                    {this.state.button3 && <Table.Cell >{new Intl.NumberFormat('ru-RU').format(wa.kol1)}</Table.Cell>}
-                    {this.state.button3 && <Table.Cell >{new Intl.NumberFormat('ru-RU').format(wa.summa1)}</Table.Cell>}                   
-                    {this.state.button3 && <Table.Cell >{new Intl.NumberFormat('ru-RU').format(wa.kol2)}</Table.Cell>}
-                    {this.state.button3 && <Table.Cell >{new Intl.NumberFormat('ru-RU').format(wa.summa2)}</Table.Cell>}                  
-                    <Table.Cell>{new Intl.NumberFormat('ru-RU').format(wa.kol3)}</Table.Cell>
-                    <Table.Cell>{new Intl.NumberFormat('ru-RU').format(wa.summa3)}</Table.Cell>       
-                    <Table.Cell>{new Intl.NumberFormat('ru-RU').format(wa.kol4)}</Table.Cell>
-                    <Table.Cell>{new Intl.NumberFormat('ru-RU').format(wa.summa4)}</Table.Cell>             
+                    <Table.Cell>{wa.code}</Table.Cell>               
+                    <Table.Cell>{wa.matnrName}</Table.Cell>
+                    <Table.Cell>{new Intl.NumberFormat('ru-RU').format(wa.zavodCena)}</Table.Cell>       
+                    <Table.Cell>{new Intl.NumberFormat('ru-RU').format(wa.kol)}</Table.Cell>         
                 </Table.Row> 
             );
 
         })
     }
     
-    renderTableFooter() {
-        
-                return this.state.currentTableTotal.map((wa,idx)=>{
-                    
-                    return (
-                        
-                        <Table.Row key={idx}>    
-                            <Table.HeaderCell><b>Всего</b></Table.HeaderCell>
-                            <Table.HeaderCell><b>{wa.waers}</b></Table.HeaderCell>
-                            {this.state.button3 && <Table.HeaderCell ><b>{new Intl.NumberFormat('ru-RU').format(wa.kol1)}</b></Table.HeaderCell>}
-                            {this.state.button3 && <Table.HeaderCell ><b>{new Intl.NumberFormat('ru-RU').format(wa.summa1)}</b></Table.HeaderCell>}                  
-                            {this.state.button3 && <Table.HeaderCell ><b>{new Intl.NumberFormat('ru-RU').format(wa.kol2)}</b></Table.HeaderCell>}
-                            {this.state.button3 && <Table.HeaderCell ><b>{new Intl.NumberFormat('ru-RU').format(wa.summa2)}</b></Table.HeaderCell>}                  
-                            <Table.HeaderCell><b>{new Intl.NumberFormat('ru-RU').format(wa.kol3)}</b></Table.HeaderCell>
-                            <Table.HeaderCell><b>{new Intl.NumberFormat('ru-RU').format(wa.summa3)}</b></Table.HeaderCell>               
-                            <Table.HeaderCell><b>{new Intl.NumberFormat('ru-RU').format(wa.kol4)}</b></Table.HeaderCell>
-                            <Table.HeaderCell><b>{new Intl.NumberFormat('ru-RU').format(wa.summa4)}</b></Table.HeaderCell>
-                            
-                        </Table.Row> 
-                    );
-        
-                })
-            }
 
             
     render(){
@@ -254,7 +238,7 @@ class Serrep1 extends Component {
             
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
                 <Header as="h2" block>
-                    Сервис за период в разрезе филиалов (Количество и сумма)
+                    Израсходованные материалы за период
                 </Header>
                 
                 
@@ -262,7 +246,7 @@ class Serrep1 extends Component {
                 <Grid>
                     <Grid.Row  >
                         <Grid.Column mobile={16} tablet={16} computer={16}>
-                            <Table >      
+                            <Table>      
                                 <Table.Body>
                                     <Table.Row>
                                         <Table.Cell>
@@ -313,6 +297,17 @@ class Serrep1 extends Component {
                                     <Table.Cell></Table.Cell>
                                     </Table.Row>
                                     <Table.Row>
+                                    <Table.Cell>                                
+                                        Гарантия
+                                    </Table.Cell> 
+                                    <Table.Cell>                                    
+                                        <Checkbox  checked={this.state.searchTerm.warranty} onChange={(event,{value})=>this.onInputChange(value, 'warranty')}/>
+                                    </Table.Cell>
+                                    <Table.Cell></Table.Cell>
+                                    </Table.Row>
+                                    
+                                    {/*      */}
+                                    <Table.Row>
                                     <Table.Cell>                                        
                                         <Icon name='calendar' />
                                         Дата
@@ -322,7 +317,7 @@ class Serrep1 extends Component {
                                             showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
                                             selected={this.state.searchTerm.dateFrom} locale="ru"
                                             onChange={(event) => this.onInputChange(event,"dateFrom")} 
-                                            dateFormat="DD.MM.YYYY" />
+                                            dateFormat="DD.MM.YYYY"  />
                                             по <DatePicker 
                                             showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
                                             selected={this.state.searchTerm.dateTo} locale="ru"
@@ -359,29 +354,12 @@ class Serrep1 extends Component {
                                 
                                     
                                     <Table.Row>
-                                        <Table.HeaderCell rowSpan="2">Филиал</Table.HeaderCell>
-                                        <Table.HeaderCell rowSpan="2">Валюта</Table.HeaderCell>
-                                        
-                                        {this.state.button3 &&
-                                        <Table.HeaderCell colSpan='2' textAlign="center" >Замена фильтров</Table.HeaderCell>}
-                                        {this.state.button3 &&
-                                        <Table.HeaderCell colSpan='2' textAlign="center" >Установка</Table.HeaderCell>}
-                                    
-                                        <Table.HeaderCell colSpan='2' textAlign="center">Сервисное обслуживание</Table.HeaderCell>
-                                        <Table.HeaderCell colSpan='2' textAlign="center">Сервис пакеты</Table.HeaderCell>
-                                    </Table.Row>
-                                    <Table.Row>        
-
-                 {this.state.button3 && <Table.HeaderCell>Количество</Table.HeaderCell>}
-                 {this.state.button3 && <Table.HeaderCell>Сумма</Table.HeaderCell>}
-                 {this.state.button3 && <Table.HeaderCell>Количество</Table.HeaderCell>}
-                 {this.state.button3 && <Table.HeaderCell>Сумма</Table.HeaderCell>}
-                                        
-                                    
+                                        <Table.HeaderCell>Филиал</Table.HeaderCell>
+                                        <Table.HeaderCell>Код</Table.HeaderCell>
+                                        <Table.HeaderCell>Название</Table.HeaderCell>
+                                        <Table.HeaderCell>Завод. цена</Table.HeaderCell>
                                         <Table.HeaderCell>Количество</Table.HeaderCell>
-                                        <Table.HeaderCell>Сумма</Table.HeaderCell>
-                                        <Table.HeaderCell>Количество</Table.HeaderCell>
-                                        <Table.HeaderCell>Сумма</Table.HeaderCell>
+                                        
                                     </Table.Row>
                                 
                                 </Table.Header>       
@@ -389,7 +367,19 @@ class Serrep1 extends Component {
                                     {this.renderTable()}
                                 </Table.Body>
                                 <Table.Footer>
-                                    {this.renderTableFooter()}
+                                    <Table.Row>
+                                <Table.HeaderCell colSpan='5'>
+                                {this.state.button2 && <SemanticPagination rowNumbers={this.state.pylRowNumbers} pageNumbers={this.state.pylTotalPageNumbers} 
+                                selectedPageNumber={this.state.pylSelectedPageNumber} 
+                                selectPageNumber={(selectedPageNumber)=>this.setState({pylSelectedPageNumber:selectedPageNumber, currentSelectedPageNumber:selectedPageNumber})}/>}
+
+                                {this.state.button3 && <SemanticPagination rowNumbers={this.state.filterRowNumbers} pageNumbers={this.state.filterTotalPageNumbers} 
+                                selectedPageNumber={this.state.filterSelectedPageNumber} 
+                                selectPageNumber={(selectedPageNumber)=>this.setState({filterSelectedPageNumber:selectedPageNumber, currentSelectedPageNumber:selectedPageNumber})}/>}            
+                                </Table.HeaderCell>
+                                
+                                    {/* {this.renderTableFooter()} */}
+                                    </Table.Row>
                                 </Table.Footer>      
                             </Table>      
                             
@@ -401,7 +391,6 @@ class Serrep1 extends Component {
                     }
                 </Grid>
                 
-
 
                  
             </Container>
@@ -418,4 +407,4 @@ function mapStateToProps(state)
     return { };
 }
 
-export default connect(mapStateToProps,{ notify }) (Serrep1);
+export default connect(mapStateToProps,{ notify }) (Serrep4);

@@ -26,7 +26,6 @@ export default class SpList extends Component {
             selectedCategory: undefined,
             selectedCountry: undefined,
             selectedProduct: undefined,
-            selectedProductCategory: undefined,
             startDate: undefined,
             endDate: undefined,
             servicePacketId: undefined,
@@ -80,12 +79,22 @@ export default class SpList extends Component {
                     text: item.label
                 }
             })
-        
+
             this.setState({
                 ...this.state,
-                countryOptions: newCountryOptions,
+                countryOptions: [
+                    {
+                        key: -1,
+                        value: -1,
+                        text: 'Все страны'
+                    }, ...newCountryOptions
+                ],
                 companyOptions: newCompanyOptions,
-                categoryOptions: newCategoryOptions
+                categoryOptions: [{
+                    key: -1,
+                    value: -1,
+                    text: 'Все категории'
+                }, ...newCategoryOptions]
             }, () => {
                 console.log("spListPage state ", this.state)
             })
@@ -112,7 +121,12 @@ export default class SpList extends Component {
 
             this.setState({
                 ...this.state,
-                productOptions: newProductOptions
+                productOptions: [
+                    {
+                        key: -1,
+                        value: -1,
+                        text: 'Все продукты'
+                    }, ...newProductOptions]
             })
         })
         .catch(err => console.log(err))
@@ -122,8 +136,7 @@ export default class SpList extends Component {
         let clearedFileds = {}
         switch (dataType) {
             case 'selectedCountry': {
-                clearedFileds = { 
-                    selectedCompany: undefined,
+                clearedFileds = {
                     selectedCategory: undefined,
                     selectedProduct: undefined,
                     productOptions: []
@@ -175,7 +188,7 @@ export default class SpList extends Component {
             companyId: this.state.selectedCompany,
             countryId: this.state.selectedCountry,
             productId: this.state.selectedProduct,
-            productCategoryId: this.state.selectedProductCategory,
+            productCategoryId: this.state.selectedCategory,
             startDate: startDateUtc,
             endDate: endDateUtc,
             servicePacketId: this.state.servicePacketId,
@@ -286,7 +299,7 @@ export default class SpList extends Component {
                                             onClick={() => this.handleActivateServicePacket(id, active)} />
                                     </Table.Cell>
                                     <Table.Cell collapsing>
-                                        <Link to={`/service/packets/spview/${id}`}>
+                                        <Link target="_blank" to={`/service/packets/spview/${id}`}>
                                             <Icon name='eye' size='large' />
                                         </Link>
                                     </Table.Cell>

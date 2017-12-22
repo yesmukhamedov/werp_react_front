@@ -1,4 +1,4 @@
-import {BREADCRUMB, TREE_MENU} from "./types";
+import {BREADCRUMB, TREE_MENU, ROUTES} from "./types";
 import axios from 'axios';
 import {ROOT_URL} from "../utils/constants";
 
@@ -10,7 +10,6 @@ export function fetchTreeMenu(userId) {
             .get(url)
             .then(response => {
                 // If request is good...
-                // - TODO check whether response is successful
 
                 dispatch({
                     type: TREE_MENU,
@@ -18,6 +17,25 @@ export function fetchTreeMenu(userId) {
                 });
             })
             .catch(err => console.log('Error fetching tree menu', err)
+            );
+    }
+}
+
+export function fetchAvailableRoutes() {
+    return (dispatch) => {
+        axios
+            .get(`${ROOT_URL}/api/routes`,{
+                headers: {
+                    authorization: localStorage.getItem('token')}
+            })
+            .then(response => {
+                // If request is good...
+                dispatch({
+                    type: ROUTES,
+                    payload: response.data
+                });
+            })
+            .catch(err => console.log('Error fetching available routes', err)
             );
     }
 }

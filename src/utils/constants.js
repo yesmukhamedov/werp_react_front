@@ -22,10 +22,10 @@ export const LEGACY_URL = isLocalIpAddress() ?
     process.env.REACT_APP_LEGACY_URL_REMOTE;
 
 /**
- * Token refresh limit equals to 5 minutes
+ * Token refresh limit equals to 10 minutes
  * @type {number} in seconds
  */
-export const TOKEN_REFRESH_LIMIT = 5 * 60 * 1000;
+export const TOKEN_REFRESH_LIMIT = 10 * 60 * 1000;
 
 
 export const YEAR_OPTIONS = [

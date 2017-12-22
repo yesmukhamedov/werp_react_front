@@ -18,9 +18,10 @@ import KpiReportPage from '../crm/report/kpi/components/KpiReportPage';
 import KpiRatingReportPage from '../crm/report/kpi/components/KpiRatingReportPage';
 import RecoCurrentPage from '../crm/mainoperation/reco/components/RecoCurrentPage';
 import DemoListPage from '../crm/mainoperation/demo/components/DemoListPage';
-import Serrep2 from '../service/report/serrep2/serrep2';
 import Serrep1 from '../service/report/serrep1/serrep1';
+import Serrep2 from '../service/report/serrep2/serrep2';
 import Serrep3 from '../service/report/serrep3/serrep3';
+import Serrep4 from '../service/report/serrep4/serrep4';
 import ForbiddenPage from '../general/forbidden';
 
 const getComponent = {
@@ -29,12 +30,22 @@ const getComponent = {
     'SpList': SpListPage,
     'LogRepAccStaff':AccountabilityStaffListPage,
     'LogRepAccStaffDetail':AccountabilityStaffDetailPage,
-    'Serrep2':Serrep2,
     'Serrep1':Serrep1,
+    'Serrep2':Serrep2,
+    'Serrep3':Serrep3,
+    'Serrep4':Serrep4,
     'Serrep3':Serrep3,
     'CrmRepKpi':KpiReportPage,
     'CrmRepKpiRtg':KpiRatingReportPage
 }
+
+function persistPath(nextState, replace) {
+    try {
+        localStorage.setItem('currentPathName', nextState.location.pathname);
+    } catch (error) {
+        //Ignore write errors.
+    }
+  }
 
 export default (data) => {
     return (
@@ -52,7 +63,7 @@ export default (data) => {
 
             {/* dynamically generated URLs */} 
             {data.map((el) => {
-                return <Route path={`${el.url}`} component={getComponent[el.component]} key={el.transactionCode}/>
+                return <Route path={`${el.url}`} component={getComponent[el.component]} key={el.transactionCode} onEnter={persistPath}/>
             })}                      
         </Route>
     )

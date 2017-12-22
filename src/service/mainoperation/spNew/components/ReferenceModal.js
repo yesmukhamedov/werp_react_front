@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, Header, Icon, Modal, Form, Input, Table } from 'semantic-ui-react'
+import { Button, Header, Icon, Modal, Form, Input } from 'semantic-ui-react'
 import ReactTable from "react-table"
 import _ from 'lodash'
 import "react-table/react-table.css"
@@ -93,7 +93,8 @@ export default class ReferenceModal extends Component {
                         className="-striped -highlight" 
                         data={this.state.results}
                         columns={this.props.columns} 
-                        showPagination={false}             
+                        showPagination={false}
+                        defaultPageSize={this.state.results.length}
                         noDataText="Нет записей"
                         style={{
                             height: "400px"

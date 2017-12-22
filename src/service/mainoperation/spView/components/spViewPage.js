@@ -42,9 +42,9 @@ export default class extends Component {
             product = {},
             productCategory = {},
             startDate = '',
-            totalPrice = '',
-            masterBonus = '',
-            operatorBonus = ''
+            totalPrice = 0,
+            masterBonus = 0,
+            operatorBonus = 0
         } = servicePacket
     
 
@@ -53,7 +53,7 @@ export default class extends Component {
                 <Form>
                     <Segment padded size='small'>
                         <Label attached='top'>
-                            <Header as='h3'>Создать сервис пакет</Header>
+                            <Header as='h3'>Сформировать Новый Сервис Пакет</Header>
                         </Label>
                         <Grid columns='five' divided>
                             <Grid.Row>
