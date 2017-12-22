@@ -210,6 +210,7 @@ class Serrep4 extends Component {
     }
 
     renderTable() {
+        if (this.state.currentTable[this.state.currentSelectedPageNumber-1]==null) return "";
         return this.state.currentTable[this.state.currentSelectedPageNumber-1].list.map((wa,idx)=>{
       
             return (
