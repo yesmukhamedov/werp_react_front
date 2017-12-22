@@ -5,100 +5,11 @@ import {Container,Divider,Menu,Table,Icon,Header,Button,Form,Input,Segment,Grid}
 import DatePicker from "react-datepicker";
 import ReactTable from 'react-table';
 import {ROOT_URL} from '../../../../utils/constants';
+import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4'
+import BranchF4 from '../../../../reference/f4/branch/BranchF4'
+import YearF4 from '../../../../reference/f4/date/YearF4'
+import MonthF4 from '../../../../reference/f4/date/MonthF4'
 
-const bukrsOptions = [
-    {
-        key:"1000",
-        text:"Aura",
-        value:"1000"
-    },
-    {
-        key:"2000",
-        text:"GreenLight",
-        value:"2000"
-    }
-];
-
-const yearOptions = [
-    {
-        key:2017,
-        text:2017,
-        value:2017
-    },
-    {
-        key:2018,
-        text:2018,
-        value:2018
-    },
-    {
-        key:2019,
-        text:2019,
-        value:2019
-    }
-];
-
-const monthOptions = [
-    {
-        key:1,
-        text:'Январь',
-        value:1
-    },
-    {
-        key:2,
-        text:'Февраль',
-        value:2
-    },
-    {
-        key:3,
-        text:'Март',
-        value:3
-    },
-    {
-        key:4,
-        text:'Апрель',
-        value:4
-    },
-    {
-        key:5,
-        text:'Май',
-        value:5
-    },
-    {
-        key:6,
-        text:'Июнь',
-        value:6
-    },
-    {
-        key:7,
-        text:'Июль',
-        value:7
-    },
-    {
-        key:8,
-        text:'Август',
-        value:8
-    },
-    {
-        key:9,
-        text:'Сентябрь',
-        value:9
-    },
-    {
-        key:10,
-        text:'Октябрь',
-        value:10
-    },
-    {
-        key:11,
-        text:'Ноябрь',
-        value:11
-    },
-    {
-        key:12,
-        text:'Декабрь',
-        value:12
-    }
-];
 const currentDate = new Date();
 class DemoListPage extends Component{
     constructor(props){
@@ -116,38 +27,14 @@ class DemoListPage extends Component{
                 managerId:0,
                 dealerId:0,
                 resultIds:[],
-                year:0,
-                month:0
+                year:currentDate.getFullYear(),
+                month:currentDate.getMonth()+1
             }
         }
 
-        this.handleDropdown = this.handleDropdown.bind(this);
-        this.loadBranches = this.loadBranches.bind(this);
+        this.handleDropdownChange = this.handleDropdownChange.bind(this);
         this.loadItems = this.loadItems.bind(this);
         this.getLoadedManagers = this.getLoadedManagers.bind(this);
-    }
-
-    loadBranches(bukrs){
-        axios.get(`${ROOT_URL}/api/reference/branches/` + bukrs,{
-            headers: {
-                authorization: localStorage.getItem('token')
-            }
-        })
-            .then((response) => {
-                let loaded = response.data.map((it) => {
-                    return {
-                        key:it.branch_id,
-                        text:it.text45,
-                        value:it.branch_id
-                    }
-                })
-                this.setState({
-                    ...this.state,
-                    branchOptions:loaded
-                })
-            }).catch((error) => {
-            console.log(error)
-        })
     }
 
     getLoadedManagers(branchId){
@@ -178,17 +65,17 @@ class DemoListPage extends Component{
         })
     }
 
-    handleDropdown(e,o){
+    handleDropdownChange(e,o){
         let {name,value} = o;
         let {queryParams,managerOptions} = this.state;
         switch (name){
             case 'bukrs':
                 queryParams[name] = value;
-                this.loadBranches(value);
+                queryParams['branchIds'] = [];
                 break;
 
-            case 'branchIds':
-                queryParams[name] = value;
+            case 'branch':
+                queryParams['branchIds'] = value;
 
                 if(value.length == 1){
                     let r = this.getLoadedManagers(value);
@@ -293,30 +180,21 @@ class DemoListPage extends Component{
                     </Header>
                     <Segment attached>
                         <Form>
-                            <Form.Field>
-                                <Form.Select name="bukrs" label='Компания' options={bukrsOptions} placeholder='Компания' onChange={this.handleDropdown} />
-                            </Form.Field>
-                            <Form.Field>
-                                <Form.Select name="branchIds" label='Филиал' fluid multiple selection options={this.state.branchOptions} placeholder='Филиал' onChange={this.handleDropdown} />
-                            </Form.Field>
+                            <BukrsF4 handleChange={this.handleDropdownChange} />
+                            <BranchF4 search={true} multiple={true} handleChange={this.handleDropdownChange} bukrs={this.state.queryParams.bukrs} />
                             <Form.Field>
                                 <Form.Select name="managerId" label='Менеджер' options={this.state.managerOptions} placeholder='Менеджер' onChange={this.handleDropdown} />
                             </Form.Field>
                             <Form.Field>
-                                <Form.Select name="dealerId" label='Дилер' fluid selection options={this.state.dealerOptions} placeholder='Дилер' onChange={this.handleDropdown} />
+                                <Form.Select name="dealerId" label='Дилер'
+                                             fluid selection options={this.state.dealerOptions} placeholder='Дилер' onChange={this.handleDropdown} />
                             </Form.Field>
                             <Form.Field>
-                                <Form.Select name="resultIds" label='Результат' fluid multiple selection options={this.state.resultOptions} placeholder='Результат' onChange={this.handleDropdown} />
+                                <Form.Select name="resultIds" label='Результат'
+                                             fluid multiple selection options={this.state.resultOptions} placeholder='Результат' onChange={this.handleDropdown} />
                             </Form.Field>
-                            <Form.Field>
-                                <Form.Select name="year" defaultValue={currentDate.getFullYear()} label='Год' fluid selection
-                                             options={yearOptions} placeholder='Год' onChange={this.handleDropdown} />
-                            </Form.Field>
-
-                            <Form.Field>
-                                <Form.Select name="month" defaultValue={currentDate.getMonth()+1} label='Месяц'
-                                             fluid selection options={monthOptions} placeholder='Месяц' onChange={this.handleDropdown} />
-                            </Form.Field>
+                            <YearF4 handleChange={this.handleDropdownChange} />
+                            <MonthF4 handleChange={this.handleDropdownChange} />
 
                             <Button loading={this.state.btnLoading} onClick={this.loadItems} type='submit'>Сформировать</Button>
                         </Form>

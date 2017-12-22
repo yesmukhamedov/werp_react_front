@@ -3,7 +3,7 @@ import {Label,Icon,Modal,Tab,Table,Form,Input,TextArea,Button,Container,Divider,
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import axios from 'axios';
-import {ROOT_URL} from '../../../../utils/constants';
+import {ROOT_URL,MONTH_OPTIONS} from '../../../../utils/constants';
 
 const locationOptions = [
     {
@@ -22,6 +22,7 @@ const CALL_RESULT_DEMO = 1;
 const CALL_RESULT_REFUSE = 2;
 const CALL_RESULT_RECALL = 3;
 const CALL_RESULT_NOT_AVAILABLE = 4;
+
 
 class CallModal extends Component{
 
@@ -59,7 +60,8 @@ class CallModal extends Component{
                 demoDate:false,
                 demoAddress:false,
                 demoLocationId:false
-            }
+            },
+            months:MONTH_OPTIONS
         }
         this.handlePhoneClick = this.handlePhoneClick.bind(this);
         this.handleModalClose = this.handleModalClose.bind(this);
@@ -91,8 +93,10 @@ class CallModal extends Component{
         }).catch((e) => {
             console.log(e);
         })
+    }
 
-
+    handleDate(p1,p2,p3){
+        console.log(p1,p2,p3);
     }
 
     renderDemoForm(){
@@ -171,6 +175,7 @@ class CallModal extends Component{
         switch (fieldName){
             case 'callDate':
             case 'callRecallDate':
+            case 'demoDate':
                 call[fieldName] = o;
                 break
             case 'demoLocationId':

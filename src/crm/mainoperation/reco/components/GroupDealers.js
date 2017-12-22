@@ -1,10 +1,11 @@
 import React,{ Component } from 'react';
 import axios from 'axios';
+import { connect } from 'react-redux';
 import { Form } from 'semantic-ui-react';
 import {ROOT_URL} from '../../../utils/constants';
 
 const bukrsBranches = {};
-class  BranchF4 extends Component{
+class  GroupDealers extends Component{
     constructor(props) {
         super(props)
         this.state = {
@@ -66,14 +67,14 @@ class  BranchF4 extends Component{
 
         return (
         <Form.Select
-            name="branch"
+            name={this.props.name || 'dealer'}
             multiple={this.props.multiple}
             search={this.props.search}
             selection
-            label='Филиал'
-            options={this.state.options} placeholder='Филиал' onChange={this.handleChange}  />
+            label={this.props.label || 'Дилер'}
+            options={this.state.options} placeholder={this.props.placeholder || 'Дилер'} onChange={this.handleChange}  />
         )
     }
 }
 
-export default BranchF4;
+export default GroupDealers;

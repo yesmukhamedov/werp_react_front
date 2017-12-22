@@ -1,14 +1,11 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import styles from '../css/recoStyles.css';
-import ReactTable from 'react-table';
-import MaskedInput from 'react-text-mask';
-import { Tab,Header,Container,Label,Icon,Form,Grid,Segment,Dropdown,Button,Divider,Checkbox,Radio } from 'semantic-ui-react'
+import { Header,Container,Label,Icon,Form,Grid,Segment,Dropdown,Button,Divider,Checkbox,Radio,Input,List } from 'semantic-ui-react'
 import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
-import Phone from './Phone';
 import recoStyles from '../css/recoStyles.css'
 import { notify } from '../../../../general/notification/notification_action';
+import DatePicker from "react-datepicker";
 
 const switchDateOptions = [
     {
@@ -36,35 +33,30 @@ const callerOptions = [
     }
 ];
 
-const phoneMasks = {
-    'kz':'9(999) 999 99 99'
-};
 class RecoCreatePage extends Component{
 
     constructor(props) {
         super(props)
         this.loadedSuccess = true;
         this.state = {
-            itemIndex:0,
             dealerOptions:[],
             reco:{
-                index:0,
-                context:'aa',
-                contextId:0,
+                context:this.props.params.context || 'aa',
+                contextId:this.props.params.contextId || 0,
                 tempRecommender:'',
                 recommenderInfo:'',
                 responsibleId:0,
                 items:[]
             },
-            callResultOptions:[],
-            callRefuseOptions:[],
-            usedItems:[]
+            itemPhones:[]
         }
 
         this.renderHeaderForm = this.renderHeaderForm.bind(this);
         this.addReco = this.addReco.bind(this);
-        this.handleItemChange = this.handleItemChange.bind(this);
         this.submitData = this.submitData.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.validateAndSendData = this.validateAndSendData.bind(this);
+        this.removeReco = this.removeReco.bind(this);
     }
 
     componentWillMount(){
@@ -79,6 +71,11 @@ class RecoCreatePage extends Component{
                     value:item.staffId
                 }
             })
+            loaded.unshift({
+                key:0,
+                text:'Не выбрано',
+                value:0
+            });
             this.setState({
                 ...this.state,
                 dealerOptions:loaded
@@ -88,55 +85,81 @@ class RecoCreatePage extends Component{
         })
     }
 
+    handleChange(p1,p2){
+        const {name,value} = p2;
+        let {reco,itemPhones} = this.state;
 
+        let tempIndex = name.indexOf('[');
+        if(tempIndex > -1){
+            const originalName = name.substring(0,tempIndex);
+            const itemIndex = name.substring(tempIndex+1,name.indexOf(']'));
+            let item = reco['items'][itemIndex];
+            switch (originalName){
+                case 'clientName':
+                case 'districtName':
+                case 'professionName':
+                case 'relativeName':
+                case 'note':
+                case 'categoryId':
+                case 'switchDate':
+                    item[originalName] = value;
+                    break
 
-    handleItemChange(v, f, i){
-        let {reco} = this.state;
-        let items = reco['items'];
-        let item = items[i];
-        switch (f){
-            case 'hasChild':
-            case 'hasAnimal':
-            case 'hasAllergy':
-            case 'hasAsthma':
-                if(v){
-                    item[f] = 1;
-                }else{
-                    item[f] = 0;
-                }
+                case 'hasAnimal':
+                case 'hasChild':
+                case 'hasAsthma':
+                case 'hasAllergy':
+                    if(p2.checked){
+                        item[originalName] = 1;
+                    }else{
+                        item[originalName] = 0;
+                    }
                 break;
 
-            default:
-                item[f] = v;
+                case 'phoneNumber1':
+                case 'phoneNumber2':
+
+                    let v = value.replace(/[^0-9\.]+/g, '');
+                    if(v.length === 0){
+                        itemPhones[itemIndex][originalName] = '';
+                        item[originalName] = '';
+                    }else{
+                        let v1 = v;
+                        if(v.length > 8){
+                             v1 = v.substring(0,3) + '-' + v.substring(3,6) + '-' + v.substring(6,8) + '-' + v.substring(8,10);
+                        }else if(v.length > 6){
+                            v1 = v.substring(0,3) + '-' + v.substring(3,6) + '-' + v.substring(6,8);
+                        }else if(v.length > 3){
+                            v1 = v.substring(0,3) + '-' + v.substring(3);
+                        }
+
+                        itemPhones[itemIndex][originalName] = v1;
+                        item[originalName] = v.substring(0,10);
+                    }
+                    // console.log(v);
+                    // console.log(isNaN(v));
+                    break
+            }
+
+            reco['items'][itemIndex] = item;
+        }else{
+            reco[name] = value;
         }
 
-        items[i] = item;
-        reco['items'] = items;
         this.setState({
             ...this.state,
             reco:reco
-        })
+        });
     }
 
-    handleItemCheckbox(o1,o2,o3){
-        console.log(o1);
-        console.log(o2);
-        console.log(o3);
-    }
-
-    inputChange(v,f,i){
-    }
-
-    handleChange(v1,v2,v3){
-        console.log(v1);
-        console.log(v2);
-        console.log(v3);
+    handleChangeDate(p1,p2,index){
+        console.log(p1,p2,index);
     }
 
     addReco(){
-        let {reco,itemIndex} = this.state;
-        let form = {
-            index:itemIndex++,
+        let {reco,itemPhones} = this.state;
+        let itemIndex = reco.items.length;
+            let form = {
             clientName:'',
             districtName:'',
             professionName:'',
@@ -150,21 +173,77 @@ class RecoCreatePage extends Component{
             hasAnimal:0,
             hasAllergy:0,
             hasAsthma:0,
-            categoryId:0
+            categoryId:0,
+            switchDate:0
         };
 
-        reco['items'].push(form);
+        reco['items'][itemIndex] = form;
+        itemPhones[itemIndex] = {
+            phoneNumber1:'',
+            phoneNumber2:''
+        };
         this.setState({
             ...this.state,
-            reco:reco
+            reco:reco,
+            itemPhones:itemPhones
         })
     }
 
     renderRecoForms(){
         let {items} = this.state.reco;
-        return items.map((item) => {
-            return this.renderRecoForm(item)
+        return items.map((item,index) => {
+            return this.renderRecoForm(item,index)
         })
+    }
+
+    validateAndSendData(){
+        let {reco} = this.state;
+        let error = [];
+        if(reco.responsibleId === 0){
+            error.push("Выберите дилера");
+        }
+
+        if(reco.tempRecommender.length === 0){
+            error.push("Введите ФИО рекомендателя");
+        }
+
+        let items = reco.items.map((item,idx) => {
+            let index = idx+1;
+            if(item.phoneNumber1.length === 0 && item.phoneNumber2.length === 0){
+                error.push("Введите хотя бы 1 Тел. номер в рекомендации №" + index);
+            }else{
+                if(item.phoneNumber1.length > 0 && item.phoneNumber1.length < 10){
+                    error.push("Не правильно введен Тел. номер в рекомендации №" + index);
+                }
+
+                if(item.phoneNumber2.length > 0 && item.phoneNumber2.length < 10){
+                    error.push("Не правильно введен Тел. номер в рекомендации №" + index);
+                }
+            }
+
+            if(item.clientName.length === 0){
+                error.push("Введите ФИО супруг в рекомендации №" + index);
+            }
+
+            if(item.categoryId === 0){
+                error.push("Выберите категорию в рекомендации №" + index);
+            }
+        });
+
+        this.setState({
+            ...this.state,
+            hasError:true
+        });
+
+        if(error.length > 0){
+            this.props.notify('error',this.renderError(error),'Ошибка');
+        }else{
+            this.submitData();
+        }
+    }
+
+    renderError(error){
+        return <List items={error}></List>
     }
 
     submitData(){
@@ -176,63 +255,116 @@ class RecoCreatePage extends Component{
             .then((response) => {
                 console.log(response);
             }).catch((error) => {
-            console.log(error);
+            switch (error.response.status){
+                case 400:
+                    this.props.notify('error',error.response.data.message,'Ошибка');
+                    break;
+            }
         })
     }
 
-    renderRecoForm(item){
-        let value=0;
-        let index = item.index;
-        return <Grid.Column key={item.index} floated='left' width={5}>
+    getItemName(name,index){
+        return name + '[' + index + ']';
+    }
+
+    renderCallDate(show,index){
+        if(show){
+            return <DatePicker
+                placeholderText={'Дата-время звонка'}
+                showMonthDropdown showYearDropdown dropdownMode="select"
+                dateFormat="DD.MM.YYYY"
+                onChange={(p1,p2) => this.handleChangeDate(p1,p2,index)}
+            />
+        }
+
+        return '';
+    }
+
+    removeReco(index){
+        if(!window.confirm('Вы действительно хотите удалить рекомендацию №' + (index+1))){
+            return false;
+        }
+
+        let {reco,itemPhones,itemIndex} = this.state;
+        if(reco['items'][index]){
+            let counter = 0;
+            reco.items.splice(index,1);
+            itemPhones.splice(index,1);
+
+
+            // delete reco.items[index];
+            // delete itemPhones[index];
+
+            this.setState({
+                ...this.state,
+                reco:reco,
+                itemPhones:itemPhones,
+                itemIndex:reco.items.length
+            })
+        }
+    }
+
+    renderRecoForm(item,index){
+        return <Grid.Column key={index} floated='left' width={5}>
                 <Segment padded size='small'>
-                <Label attached='top'><Header as='h3'>№ {item.index+1}</Header></Label>
+                <Label attached='top'>
+                    <Header as='h3' floated='left'>№ {index+1}</Header>
+                    <Button icon='delete' className='right floated' onClick={(e) => this.removeReco(index)}/>
+                </Label>
                     <Form className='recoGrid'>
-                        <Form.Input label="ФИО супруг" placeholder="ФИО супруг"
-                                    onChange={(e, {value}) => this.handleItemChange(value, 'clientName',index)} />
-                        <Form.Input label="Район" placeholder="Район"
-                                    onChange={(e, {value}) => this.handleItemChange(value, 'districtName',index)} />
-                        <Form.Input label="Профессия" placeholder="Профессия"
-                                    onChange={(e, {value}) => this.handleItemChange(value, 'professionName',index)} />
-                        <Form.Input label="Род. отношение" placeholder="Род. отношение"
-                                    onChange={(e, {value}) => this.handleItemChange(value, 'relativeName',index)} />
-                        <Form.Dropdown fluid selection label="Дата время звонка" placeholder='Выберите дилера'
+                        <Form.Input name={this.getItemName('clientName',index)}
+                                    label="ФИО супруг" placeholder="ФИО супруг"
+                                    onChange={this.handleChange} />
+                        <Form.Input name={this.getItemName('districtName',index)} label="Район" placeholder="Район"
+                                    onChange={this.handleChange} />
+                        <Form.Input name={this.getItemName('professionName',index)} label="Профессия" placeholder="Профессия"
+                                    onChange={this.handleChange} />
+                        <Form.Input name={this.getItemName('relativeName',index)} label="Род. отношение" placeholder="Род. отношение"
+                                    onChange={this.handleChange} />
+                        <Form.Dropdown name={this.getItemName('switchDate',index)} fluid selection label="Дата время звонка" placeholder='Выберите дилера'
                                        options={switchDateOptions}
-                                       onChange={(e, {value}) => this.handleItemChange(value, 'switchDate',index)}  />
-                        <Form.Dropdown defaultValue="0" fluid selection label="Звонить будет" placeholder='Звонить будет' options={callerOptions}
-                                       onChange={(e, {value}) => this.handleItemChange(value, 'callerIsDealer',index)}  />
-                        <Form.TextArea label="Примечание" placeholder="Примечание"
-                                       onChange={(e, {value}) => this.handleItemChange(value, 'note',index)}  />
+                                       onChange={this.handleChange}  />
+                        {this.renderCallDate(item.switchDate === 1)}
+                        <Form.Dropdown name={this.getItemName('callerIsDealer',index)} defaultValue="0" fluid selection label="Звонить будет"
+                                       placeholder='Звонить будет' options={callerOptions}
+                                       onChange={this.handleChange}  />
+                        <Form.TextArea name={this.getItemName('note',index)} label="Примечание" placeholder="Примечание"
+                                       onChange={this.handleChange}  />
                         <Form.Field>
                             <label>Тел. номер</label>
-                            <MaskedInput mask={['9','(999)', '999', '99', '99']} />
-                            <input onChange={(e, {value}) => this.handleItemChange(value, 'phoneNumber1',index)}  />
+                        <Input label={{ basic:true,content:'+7'}} placeholder='705-224-26-45'
+                               name={this.getItemName('phoneNumber1',index)} onChange={this.handleChange}
+                               value={this.state.itemPhones[index]['phoneNumber1']} />
                         </Form.Field>
 
                         <Form.Field>
                             <label>Тел. номер</label>
-                            <input  onChange={(e, {value}) => this.handleItemChange(value, 'phoneNumber2',index)} />
+                            <Input label={{ basic:true,content:'+7'}} placeholder='705-224-26-45'
+                                   name={this.getItemName('phoneNumber2',index)}
+                                   onChange={this.handleChange} value={this.state.itemPhones[index]['phoneNumber2']} />
                         </Form.Field>
+
                         <Form.Group inline>
-                            <Form.Field control={Checkbox} label='Ребенок' value='1'
-                                        onChange={(e, v) => this.handleItemChange(v.checked, 'hasChild',index)}  />
-                            <Form.Field control={Checkbox} label='Дом. жив.' value='1'
-                                        onChange={(e, {value}) => this.handleItemChange(value, 'hasAnimal',index)}  />
+                            <Form.Field name={this.getItemName('hasChild',index)} control={Checkbox} label='Ребенок' value='1'
+                                        onChange={this.handleChange}  />
+                            <Form.Field name={this.getItemName('hasAnimal',index)} control={Checkbox} label='Дом. жив.' value='1'
+                                        onChange={this.handleChange}  />
                         </Form.Group>
                         <Form.Group inline>
-                            <Form.Field control={Checkbox} label='Аллергия' value='1'
-                                        onChange={(e, {value}) => this.handleItemChange(value, 'hasAllergy',index)} />
-                            <Form.Field control={Checkbox} label='Астма' value='1'
-                                        onChange={(e, {value}) => this.handleItemChange(value, 'hasAsthma',index)} />
+                            <Form.Field name={this.getItemName('hasAllergy',index)} control={Checkbox} label='Аллергия' value='1'
+                                        onChange={this.handleChange} />
+                            <Form.Field name={this.getItemName('hasAsthma',index)} control={Checkbox} label='Астма' value='1'
+                                        onChange={this.handleChange} />
                         </Form.Group>
 
                         <label>Категория клиента</label>
                         <Form.Group inline>
-                            <Form.Field control={Radio} label='1-я категория' value='1' checked={item.categoryId === '1'}
-                                        onChange={(e, {value}) => this.handleItemChange(value, 'categoryId',index)} />
-                            <Form.Field control={Radio} label='2-я категория' value='2' checked={item.categoryId === '2'}
-                                        onChange={(e, {value}) => this.handleItemChange(value, 'categoryId',index)} />
-                            <Form.Field control={Radio} label='3-я категория' value='3' checked={item.categoryId === '3'}
-                                        onChange={(e, {value}) => this.handleItemChange(value, 'categoryId',index)} />
+                            <Form.Field name={this.getItemName('categoryId',index)} control={Radio} label='1-я категория' value='1' checked={item.categoryId === '1'}
+                                        onChange={this.handleChange} />
+                            <Form.Field name={this.getItemName('categoryId',index)} control={Radio} label='2-я категория' value='2' checked={item.categoryId === '2'}
+                                        onChange={this.handleChange} />
+                            <Form.Field name={this.getItemName('categoryId',index)} control={Radio} label='3-я категория' value='3' checked={item.categoryId === '3'}
+                                        onChange={this.handleChange} />
                         </Form.Group>
 
                     </Form>
@@ -246,20 +378,21 @@ class RecoCreatePage extends Component{
                 <Form.Group widths='equal'>
                     <Form.Field>
                         <label>Дилер</label>
-                        <Dropdown placeholder='Выберите дилера' fluid selection
+                        <Dropdown name="responsibleId" placeholder='Выберите дилера' fluid selection search
+                                  selectOnBlur={false}
                                   options={this.state.dealerOptions}
-                                  onChange={(e, {value}) => this.inputChange(value, 'selectedCompany')} />
+                                  onChange={this.handleChange} />
                     </Form.Field>
 
-                    <Form.Input label="ФИО рекомендателя" />
-                    <Form.TextArea label="Доп. данные рекомендателя" />
+                    <Form.Input name="tempRecommender" onChange={this.handleChange} label="ФИО рекомендателя" />
+                    <Form.TextArea name="recommenderInfo" onChange={this.handleChange} label="Доп. данные рекомендателя" />
                 </Form.Group>
                 <Button icon labelPosition='left' onClick={this.addReco}>
                     <Icon name="plus"/>
                     Добавить
                 </Button>
 
-                <Button onClick={this.submitData} primary floated='right'>Сохранить</Button>
+                <Button onClick={this.validateAndSendData} primary floated='right'>Сохранить</Button>
             </Form>
         )
     }
@@ -281,9 +414,8 @@ class RecoCreatePage extends Component{
     }
 }
 
-function mapStateToProps(state)
-{
-    return { };
-}
+const mapStateToProps = (state) => {
+    return { state};
+};
 
 export default connect(mapStateToProps,{ notify }) (RecoCreatePage);

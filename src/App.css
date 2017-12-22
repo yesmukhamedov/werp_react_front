@@ -27,3 +27,20 @@
   width: 100%;
   height: 100%;
 }
+
+/*.react-datepicker-time__header{*/
+  /*width: 100px !important;*/
+/*}*/
+
+/*.react-datepicker__time-list{*/
+  /*width: 100px !important;*/
+/*}*/
+
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box{
+  width: 100px !important;
+}
+
+.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item{
+  padding: 5px 0px !important;
+}
+

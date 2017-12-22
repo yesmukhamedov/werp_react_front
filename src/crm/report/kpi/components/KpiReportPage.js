@@ -136,6 +136,7 @@ class KpiReportPage extends Component{
                         return b.text;
                     }
                 })
+                selectedBranches = [];
                 selectedBukrs = value;
                 break
 
@@ -151,8 +152,6 @@ class KpiReportPage extends Component{
                 selectedMonth = value;
                 break
         }
-
-        console.log(selectedBukrs);
 
         this.setState({
             ...this.state,

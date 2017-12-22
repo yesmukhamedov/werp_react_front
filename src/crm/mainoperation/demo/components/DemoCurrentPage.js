@@ -11,7 +11,7 @@ const categoryButtons = {
     2:'olive',
     3:'grey'
 };
-class RecoCurrentPage extends Component{
+class DemoCurrentPage extends Component{
 
     constructor(props) {
         super(props)

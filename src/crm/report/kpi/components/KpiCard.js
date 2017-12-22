@@ -35,7 +35,7 @@ class KpiCard extends Component{
                                     <Table.Cell>{item.indicatorName}</Table.Cell>
                                     <Table.Cell>{item.value}</Table.Cell>
                                     <Table.Cell>{item.doneValue}</Table.Cell>
-                                    <Table.Cell negative>{this.roundedValue(item.percentage)}%</Table.Cell>
+                                    <Table.Cell negative={item.percentage < 60} positive={item.percentage > 80} warning={item.percentage >= 60 && item.percentage <= 80}>{this.roundedValue(item.percentage)}%</Table.Cell>
                                 </Table.Row>
                             })}
                         </Table.Body>
@@ -75,7 +75,12 @@ class KpiCard extends Component{
                                     <Table.Cell>{item.indicatorName}</Table.Cell>
                                     <Table.Cell>{item.value}</Table.Cell>
                                     <Table.Cell>{item.doneValue}</Table.Cell>
-                                    <Table.Cell negative>{this.roundedValue(item.percentage)}%</Table.Cell>
+                                    <Table.Cell
+                                        negative={item.percentage < 60}
+                                        positive={item.percentage > 80}
+                                        warning={item.percentage >= 60 && item.percentage <= 80}>
+                                        {this.roundedValue(item.percentage)}%
+                                    </Table.Cell>
                                 </Table.Row>
                             })}
                         </Table.Body>
@@ -116,7 +121,7 @@ class KpiCard extends Component{
                                 <Table.Cell>{item.value}</Table.Cell>
                                 <Table.Cell>{item.doneValue}</Table.Cell>
                                 <Table.Cell>{item.point}</Table.Cell>
-                                <Table.Cell negative>{this.roundedValue(item.score)}</Table.Cell>
+                                <Table.Cell negative={item.percentage < 60} positive={item.percentage > 80} warning={item.percentage >= 60 && item.percentage <= 80}>{this.roundedValue(item.score)}</Table.Cell>
                             </Table.Row>
                         })}
                     </Table.Body>

@@ -15,6 +15,7 @@ import ViewStaff from '../hr/mainoperation/staff/components/ViewStaff';
 import AccountabilityStaffListPage from '../logistics/report/accountabilityStaff/AccountabilityStaffListPage';
 import AccountabilityStaffDetailPage from '../logistics/report/accountabilityStaff/AccountabilityStaffDetailPage';
 import KpiReportPage from '../crm/report/kpi/components/KpiReportPage';
+import KpiRatingReportPage from '../crm/report/kpi/components/KpiRatingReportPage';
 import RecoCurrentPage from '../crm/mainoperation/reco/components/RecoCurrentPage';
 import DemoListPage from '../crm/mainoperation/demo/components/DemoListPage';
 import Serrep2 from '../service/report/serrep2/serrep2';
@@ -30,7 +31,9 @@ const getComponent = {
     'LogRepAccStaffDetail':AccountabilityStaffDetailPage,
     'Serrep2':Serrep2,
     'Serrep1':Serrep1,
-    'Serrep3':Serrep3
+    'Serrep3':Serrep3,
+    'CrmRepKpi':KpiReportPage,
+    'CrmRepKpiRtg':KpiRatingReportPage
 }
 
 export default (data) => {
@@ -43,7 +46,6 @@ export default (data) => {
             <Route path="dit/userBranch" component={AssignUserBranch} />
             <Route path="hr/staff/create" component={CreateStaff} />
             <Route path="hr/staff/view/:id" component={ViewStaff} />
-            <Route path="crm/report/kpi" component={KpiReportPage} />
             <Route path="crm/reco/current" component={RecoCurrentPage} />
             <Route path="crm/demo/list" component={DemoListPage} />
             <Route path="forbidden" component={ForbiddenPage} />
