@@ -18,12 +18,15 @@ class Serrep4 extends Component {
         router: PropTypes.object
     }
     constructor(props){
+        var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+        var firstDay = new Date(y, m, 1);
+        var lastDay = new Date(y, m + 1, 0);
         super(props);
         this.onInputChange = this.onInputChange.bind(this);
         this.onSearchClick = this.onSearchClick.bind(this);
         this.onSelectTableType = this.onSelectTableType.bind(this);
         
-        this.state={searchTerm:{bukrs:'',branchList:[],dateFrom:'',dateTo:'',warranty:true}, companyOptions:[], branchOptions:[],
+        this.state={searchTerm:{bukrs:'',branchList:[],dateFrom:moment(firstDay),dateTo:moment(lastDay),warranty:true}, companyOptions:[], branchOptions:[],
         button1:true,button2:false,button3:false, pyl:[],filter:[],currentTable:[],resultDate:'',pylSelectedPageNumber:1,filterSelectedPageNumber:1, currentSelectedPageNumber:1,
         pylRowNumbers:0,pylTotalPageNumbers:1,filterRowNumbers:0,filterTotalPageNumbers:1
         };
@@ -86,6 +89,27 @@ class Serrep4 extends Component {
         // console.log(this.state);
     }
 
+    onSearchColumn(value,stateFieldName){
+        let waCurrentTable;
+        let waResultTable;
+        if (this.state.button2) waCurrentTable = Object.assign({}, this.state.pyl);
+        if (this.state.button3) waCurrentTable = Object.assign({}, this.state.filter);
+        
+        if (stateFieldName==="code")
+        {               
+            // waSearchTerm.bukrs=value;
+            // waSearchTerm.branchList=[];   
+            // this.fetchUserBranches(value);
+        }
+        else if (stateFieldName==='matnrName') { 
+            // waSearchTerm.branchList=value;
+            console.log(stateFieldName)         
+        }
+        // this.setState({searchTerm:waSearchTerm});
+        
+        // console.log(this.state);
+    }
+
     onSearchClick(){
         //do
         
@@ -116,7 +140,6 @@ class Serrep4 extends Component {
         let searchDateFrom = moment.utc(strVal).format();
         strVal = this.state.searchTerm.dateTo.format('YYYY-MM-DD');
         let searchDateTo = moment.utc(strVal).format();
-        console.log(this.state.searchTerm);
 
         axios.get(`${ROOT_URL}/api/service/reports/serrep4/search`, {
             headers: {
@@ -149,8 +172,6 @@ class Serrep4 extends Component {
             });
         })
         .catch((error) => {
-            console.log(error);
-            console.log(error.response);
             if (error.response.status===403)
             {
                 //blog post has been created, navigate the user to the index
@@ -349,14 +370,18 @@ class Serrep4 extends Component {
                             <Header as="h3" block>
                                 {this.state.resultDate}
                             </Header>
-                            <Table  striped compact collapsing fixed celled   id="serrep1Table">
+                            <Table   striped celled  id="serrep4Table">
                                 <Table.Header >
                                 
                                     
                                     <Table.Row>
                                         <Table.HeaderCell>Филиал</Table.HeaderCell>
-                                        <Table.HeaderCell>Код</Table.HeaderCell>
-                                        <Table.HeaderCell>Название</Table.HeaderCell>
+                                        <Table.HeaderCell>Код <div><Input icon='search' iconPosition='left' placeholder='Поиск' 
+                                        onChange={(e, { value }) => this.onSearchColumn(value,'code')}
+                                        /></div></Table.HeaderCell>
+                                        <Table.HeaderCell>Название <div><Input icon='search' iconPosition='left' placeholder='Поиск' 
+                                        onChange={(e, { value }) => this.onSearchColumn(value,'matnrName')}
+                                        /></div></Table.HeaderCell>
                                         <Table.HeaderCell>Завод. цена</Table.HeaderCell>
                                         <Table.HeaderCell>Количество</Table.HeaderCell>
                                         

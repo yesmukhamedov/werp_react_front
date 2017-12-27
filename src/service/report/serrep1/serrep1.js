@@ -17,12 +17,16 @@ class Serrep1 extends Component {
         router: PropTypes.object
     }
     constructor(props){
+        var date = new Date(), y = date.getFullYear(), m = date.getMonth();
+        var firstDay = new Date(y, m, 1);
+        var lastDay = new Date(y, m + 1, 0);
+
         super(props);
         this.onInputChange = this.onInputChange.bind(this);
         this.onSearchClick = this.onSearchClick.bind(this);
         this.onSelectTableType = this.onSelectTableType.bind(this);
         
-        this.state={searchTerm:{bukrs:'',branchList:[],dateFrom:'',dateTo:''}, companyOptions:[], branchOptions:[],
+        this.state={searchTerm:{bukrs:'',branchList:[],dateFrom:moment(firstDay),dateTo:moment(lastDay)}, companyOptions:[], branchOptions:[],
         button1:true,button2:false,button3:false, pyl:[],filter:[],currentTable:[],pylTotal:[],filterTotal:[],currentTableTotal:[],resultDate:''};
     }
 
@@ -354,7 +358,7 @@ class Serrep1 extends Component {
                             <Header as="h3" block>
                                 {this.state.resultDate}
                             </Header>
-                            <Table  striped compact collapsing fixed celled   id="serrep1Table">
+                            <Table  striped celled id="serrep1Table">
                                 <Table.Header >
                                 
                                     

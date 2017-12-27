@@ -24,7 +24,7 @@ class Serrep2 extends Component {
         this.onSelectTableType = this.onSelectTableType.bind(this);
         
         
-        this.state={searchTerm:{bukrs:'',branchList:[],date:'',today:true,archive:false}, companyOptions:[], branchOptions:[],
+        this.state={searchTerm:{bukrs:'',branchList:[],date:moment(),today:true,archive:false}, companyOptions:[], branchOptions:[],
         button1:true,button2:false,button3:false, tek:[],pros:[],all:[],currentTable:[],tekTotal:[],prosTotal:[],allTotal:[],currentTableTotal:[],resultDate:''};
     }
 

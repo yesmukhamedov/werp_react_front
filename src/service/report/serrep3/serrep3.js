@@ -22,7 +22,7 @@ class Serrep3 extends Component {
         this.onSearchClick = this.onSearchClick.bind(this);
         this.onSelectTableType = this.onSelectTableType.bind(this);
         
-        this.state={searchTerm:{bukrs:'',branchList:[],date:''}, companyOptions:[], branchOptions:[],
+        this.state={searchTerm:{bukrs:'',branchList:[],date:moment()}, companyOptions:[], branchOptions:[],
         button1:true,button2:false,button3:false, pyl:[],filter:[],currentTable:[],pylTotal:[],filterTotal:[],currentTableTotal:[],resultDate:''};
     }
 
@@ -324,7 +324,7 @@ class Serrep3 extends Component {
                             <Header as="h3" block>
                                 {this.state.resultDate}
                             </Header>
-                            <Table  striped compact collapsing fixed celled   id="serrep1Table">
+                            <Table  striped celled   id="serrep3Table">
                                 <Table.Header>                                
                                     <Table.Row>                                               
                                         <Table.HeaderCell>Филиал</Table.HeaderCell>
