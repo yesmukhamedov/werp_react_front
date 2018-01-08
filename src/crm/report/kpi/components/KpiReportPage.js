@@ -20,8 +20,8 @@ class KpiReportPage extends Component{
             selectedYear:currentDate.getFullYear(),
             selectedMonth:currentDate.getMonth()+1,
             forGroups:false,
-            detail:'',
-            detailId:0,
+            context:'',
+            contextId:0,
             headerBukrsName:'',
             headerBukrsId:'',
             headerBranchId:0,
@@ -31,10 +31,7 @@ class KpiReportPage extends Component{
             loading:false
         }
 
-        this.handleDropdownChange = this.handleDropdownChange.bind(this);
         this.loadItems = this.loadItems.bind(this);
-        this.submitSearch = this.submitSearch.bind(this);
-        this.loadDetail = this.loadDetail.bind(this);
         this.renderHeader = this.renderHeader.bind(this);
         this.breadcrumbLink = this.breadcrumbLink.bind(this);
     }
@@ -44,25 +41,25 @@ class KpiReportPage extends Component{
     }
 
     componentWillMount(){
+       this.loadItems("",0);
     }
 
-    loadItems(detail,detailId){
-        axios.get(`${ROOT_URL}/api/crm/report/kpi/` + this.state.selectedBukrs,{
+    loadItems(context,contextId){
+        console.log(context);
+        axios.get(`${ROOT_URL}/api/crm/report/kpi-current`,{
             headers: {
                 authorization: localStorage.getItem('token')
             },
             params:{
-                branchIds:this.state.selectedBranches.join(','),
-                year:this.state.selectedYear,
-                month:this.state.selectedMonth,
-                detail:detail,
-                detailId:detailId
+                context:context,
+                contextId:contextId
             }
         }).then((res) => {
             this.setState({
                 ...this.state,
                 items:res.data,
-                loading:false
+                loading:false,
+                context:context
             })
         }).catch((e) => {
             console.log(e);
@@ -71,111 +68,6 @@ class KpiReportPage extends Component{
                 loading:false
             })
         });
-    }
-
-    submitSearch(){
-        const {selectedBukrs} = this.state;
-        if(!selectedBukrs || selectedBukrs.length === 0){
-            return;
-        }
-
-        this.setState({
-            ...this.state,
-            detail: '',
-            detailId: 0,
-            loading: true,
-            items: []
-        })
-        this.loadItems('',0);
-    }
-
-    loadDetail(detailName,cardData){
-        if(detailName === 'branch'){
-            this.setState({
-                ...this.state,
-                headerBukrsId:cardData.bukrs,
-                headerBukrsName:cardData.bukrsName,
-                headerBranchId:0,
-                headerBranchName:cardData.branchName,
-                headerManagerName:'',
-                headerManagerId:0,
-                detail:detailName,
-                detailId:cardData.id,
-                loading:true,
-                items:[]
-            })
-        }else if(detailName === 'group'){
-            this.setState({
-                ...this.state,
-                headerBukrsId:cardData.bukrs,
-                headerBukrsName:cardData.bukrsName,
-                headerBranchId:cardData.branchId,
-                headerBranchName:cardData.branchName,
-                headerManagerName:cardData.name,
-                headerManagerId:cardData.id,
-                detail:detailName,
-                detailId:cardData.id,
-                loading:true,
-                items:[]
-            })
-        }else{
-
-        }
-
-        this.loadItems(detailName,cardData.id);
-
-    }
-
-    handleDropdownChange(e,result){
-        const {name,value,options} = result;
-        let {selectedBukrs,headerBukrsName,selectedYear,selectedMonth,selectedBranches} = this.state;
-        switch (name){
-            case "bukrs":
-                headerBukrsName = options.map((b) => {
-                    if(b.value == value){
-                        return b.text;
-                    }
-                })
-                selectedBranches = [];
-                selectedBukrs = value;
-                break
-
-            case "branch":
-                selectedBranches = value;
-                break
-
-            case "year":
-                selectedYear = value;
-                break
-
-            case "month":
-                selectedMonth = value;
-                break
-        }
-
-        this.setState({
-            ...this.state,
-            selectedBukrs:selectedBukrs,
-            selectedBranches:selectedBranches,
-            headerBukrsName:headerBukrsName,
-            selectedYear:selectedYear,
-            selectedMonth:selectedMonth
-        })
-    }
-
-    renderSearchForm() {
-        let value ='';
-        return (
-            <Form>
-                <Form.Group widths='equal'>
-                    <BukrsF4 handleChange={this.handleDropdownChange} />
-                    <BranchF4 search={true} multiple={true} handleChange={this.handleDropdownChange} bukrs={this.state.selectedBukrs} />
-                    <YearF4 handleChange={this.handleDropdownChange} />
-                    <MonthF4 handleChange={this.handleDropdownChange} />
-                </Form.Group>
-                <Form.Button onClick={this.submitSearch}>Сформировать</Form.Button>
-            </Form>
-        )
     }
 
     breadcrumbLink(key){
@@ -222,7 +114,7 @@ class KpiReportPage extends Component{
                 </Header>
             )
         }
-        return this.renderSearchForm();
+        return '';
     }
 
     render(){
@@ -230,7 +122,7 @@ class KpiReportPage extends Component{
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
                 <div>
                     <Header as='h2' attached='top'>
-                        KPI отчет сотрудников отдела маркетинга
+                        Текущий KPI сотрудников отдела маркетинга
                     </Header>
                     {this.renderHeader()}
                     <Divider clearing />
@@ -241,8 +133,8 @@ class KpiReportPage extends Component{
                                 return <KpiCard
                                     key={item.id}
                                     cardData={item}
-                                    cardType={this.state.detail}
-                                    loadDetail={this.loadDetail}/>
+                                    context={this.state.context}
+                                    loadItems={this.loadItems}/>
                             })}
                         </Grid>
                     </Segment>

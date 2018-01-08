@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router'
 import ReactTable from 'react-table';
-import { Tab,Header,Container,Label,Icon,Button,Segment } from 'semantic-ui-react'
+import { Tab,Header,Container,Label,Icon,Button,Segment,Menu,Dropdown } from 'semantic-ui-react'
 import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
 import moment from 'moment';
@@ -11,7 +11,7 @@ const categoryButtons = {
     2:'olive',
     3:'grey'
 };
-class DemoCurrentPage extends Component{
+class DemoArchivePage extends Component{
 
     constructor(props) {
         super(props)
@@ -28,7 +28,7 @@ class DemoCurrentPage extends Component{
 
     componentWillMount(){
         this.setState({...this.state,loading:true})
-        axios.get(`${ROOT_URL}/api/crm/demo/current`,{
+        axios.get(`${ROOT_URL}/api/crm/demo/archive`,{
             headers: {
                 authorization: localStorage.getItem('token')}
         }).then((res) => {
@@ -130,6 +130,15 @@ class DemoCurrentPage extends Component{
                         {
                             Header:"Результат",
                             accessor: "resultName"
+                        },
+                        {
+                            Header:"Действия",
+                            accessor:"id",
+                            Cell:row => (
+                                <Link className={'ui icon button'} to={`/crm/demo/view/` + row.value}>
+                                    Просмотр
+                                </Link>
+                            )
                         }
                     ]}
 
@@ -146,7 +155,7 @@ class DemoCurrentPage extends Component{
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
                 <Segment clearing>
                     <Header as='h2' floated='left'>
-                        Текущие демонстрации
+                        Архив демонстрации группы
                     </Header>
                 </Segment>
                 {this.renderTable()}
@@ -155,4 +164,4 @@ class DemoCurrentPage extends Component{
     }
 }
 
-export default DemoCurrentPage;
+export default DemoArchivePage;
