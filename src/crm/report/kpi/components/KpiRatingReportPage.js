@@ -9,6 +9,8 @@ import YearF4 from '../../../../reference/f4/date/YearF4'
 import MonthF4 from '../../../../reference/f4/date/MonthF4'
 import PositionF4 from '../../../../reference/f4/position/PositionF4'
 
+const currentDate = new Date();
+
 class KpiRatingReportPage extends Component{
     constructor(props) {
         super(props)
@@ -17,8 +19,8 @@ class KpiRatingReportPage extends Component{
             loading:false,
             selectedBukrs:'',
             selectedBranches:[],
-            selectedYear:2017,
-            selectedMonth:12,
+            selectedYear:currentDate.getFullYear(),
+            selectedMonth:currentDate.getMonth()+1,
             selectedPositionId:0
         }
 
