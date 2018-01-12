@@ -121,7 +121,11 @@ class KpiCard extends Component{
                                 <Table.Cell>{item.value}</Table.Cell>
                                 <Table.Cell>{item.doneValue}</Table.Cell>
                                 <Table.Cell>{item.point}</Table.Cell>
-                                <Table.Cell negative={item.percentage < 60} positive={item.percentage > 80} warning={item.percentage >= 60 && item.percentage <= 80}>{this.roundedValue(item.score)}</Table.Cell>
+                                <Table.Cell negative={item.percentage < 60}
+                                            positive={item.percentage > 80}
+                                            warning={item.percentage >= 60 && item.percentage <= 80}>
+                                    {this.roundedValue(item.score)}
+                                </Table.Cell>
                             </Table.Row>
                         })}
                     </Table.Body>
@@ -130,6 +134,46 @@ class KpiCard extends Component{
                 <Button onClick={(e) => this.props.loadItems('manager',cardData.id)}>
                     Деталь
                 </Button>
+            </Segment>
+        </Grid.Column>
+    }
+
+    renderForManager(cardData){
+        return <Grid.Column width={8}>
+            <Segment padded size={'small'}>
+                <Label attached='top'>
+                    <Header as='h3' floated={'left'}>{cardData.name}</Header>
+                    <Button floated={'right'}>{this.roundedValue(cardData.totalPercentage)}</Button>
+                </Label>
+                <Table celled>
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell>#</Table.HeaderCell>
+                            <Table.HeaderCell>Индикатор</Table.HeaderCell>
+                            <Table.HeaderCell>Значение</Table.HeaderCell>
+                            <Table.HeaderCell>Выполнено</Table.HeaderCell>
+                            <Table.HeaderCell>Балл</Table.HeaderCell>
+                            <Table.HeaderCell>Набранный балл</Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
+
+                    <Table.Body>
+                        {cardData.items.map((item,idx) => {
+                            return <Table.Row key={item.indicatorId}>
+                                <Table.Cell>{idx+1}</Table.Cell>
+                                <Table.Cell>{item.indicatorName}</Table.Cell>
+                                <Table.Cell>{item.value}</Table.Cell>
+                                <Table.Cell>{item.doneValue}</Table.Cell>
+                                <Table.Cell>{item.point}</Table.Cell>
+                                <Table.Cell negative={item.percentage < 60}
+                                            positive={item.percentage > 80}
+                                            warning={item.percentage >= 60 && item.percentage <= 80}>
+                                    {this.roundedValue(item.score)}
+                                </Table.Cell>
+                            </Table.Row>
+                        })}
+                    </Table.Body>
+                </Table>
             </Segment>
         </Grid.Column>
     }

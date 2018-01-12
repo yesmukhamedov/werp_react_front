@@ -9,43 +9,79 @@ import YearF4 from '../../../../reference/f4/date/YearF4'
 import MonthF4 from '../../../../reference/f4/date/MonthF4'
 const currentDate = new Date();
 
+const bukrsMap = {};
+const branchesMap = {};
 class KpiReportPage extends Component{
 
     constructor(props) {
         super(props)
         this.state = {
             items:[],
-            selectedBukrs:'',
-            selectedBranches:[],
-            selectedYear:currentDate.getFullYear(),
-            selectedMonth:currentDate.getMonth()+1,
-            forGroups:false,
             context:'',
             contextId:0,
-            headerBukrsName:'',
-            headerBukrsId:'',
-            headerBranchId:0,
-            headerBranchName:'',
-            headerManagerId:0,
-            headerManagerName:'',
-            loading:false
+            loading:false,
+            bukrs:'',
+            branchId:0,
+            managerId:0,
+            breadcrumbs:[]
         }
 
         this.loadItems = this.loadItems.bind(this);
         this.renderHeader = this.renderHeader.bind(this);
-        this.breadcrumbLink = this.breadcrumbLink.bind(this);
     }
 
     handleError(e){
         console.log(e)
     }
 
+    loadBranches(bukrs){
+        if(branchesMap[bukrs]){
+            return;
+        }
+        axios.get(`${ROOT_URL}/api/reference/branches/` + bukrs,{
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        }).then((res) => {
+            branchesMap[bukrs] = {};
+            for(let i = 0; i < res.data.length; i++){
+                branchesMap[bukrs][res.data[i]['branch_id']] = res.data[i]['text45'];
+            }
+        }).catch((e) => {
+            console.log(e);
+            this.setState({
+                ...this.state,
+                loading:false
+            })
+        });
+    }
+
     componentWillMount(){
+        axios.get(`${ROOT_URL}/api/reference/companies`,{
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        }).then((res) => {
+            for(let i = 0; i < res.data.length; i++){
+                bukrsMap[res.data[i]['id']] = res.data[i]['name'];
+            }
+        }).catch((e) => {
+            console.log(e);
+            this.setState({
+                ...this.state,
+                loading:false
+            })
+        });
+
        this.loadItems("",0);
     }
 
     loadItems(context,contextId){
-        console.log(context);
+        let {currentBukrsName,currentBranchName} = this.state;
+        this.setState({
+            ...this.state,
+            loading:true
+        });
         axios.get(`${ROOT_URL}/api/crm/report/kpi-current`,{
             headers: {
                 authorization: localStorage.getItem('token')
@@ -55,11 +91,21 @@ class KpiReportPage extends Component{
                 contextId:contextId
             }
         }).then((res) => {
+            if(context === 'branch'){
+                this.loadBranches(contextId);
+                currentBukrsName = bukrsMap[contextId];
+            }else if(context === 'group'){
+                currentBranchName = branchesMap
+            }
             this.setState({
                 ...this.state,
-                items:res.data,
+                items:res.data.items,
                 loading:false,
-                context:context
+                context:res.data.context,
+                contextId:res.data.contextId,
+                currentBukrsName:currentBukrsName,
+                currentBranchName:currentBranchName,
+                breadcrumbs:res.data.breadcrumbs
             })
         }).catch((e) => {
             console.log(e);
@@ -70,51 +116,28 @@ class KpiReportPage extends Component{
         });
     }
 
-    breadcrumbLink(key){
-        switch (key){
-            case 'bukrs':
-                this.submitSearch();
-                break
-
-            case 'branch':
-                this.setState({
-                    ...this.state,
-                    detail:'branch',
-                    detailId:this.state.headerBranchId,
-                    loading:true,
-                    items:[]
-                })
-                this.loadItems('branch',this.state.headerBranchId);
-                break
-        }
-    }
-
     renderHeader(){
-
-        if(this.state.detail === 'branch'){
-            return (
-                <Header as='h3' block>
-                    <Breadcrumb size='big'>
-                        <Breadcrumb.Section onClick={(e) => this.breadcrumbLink('bukrs')} link>Компания {this.state.headerBukrsName}</Breadcrumb.Section>
-                        <Breadcrumb.Divider icon='right chevron' />
-                        <Breadcrumb.Section active>{this.state.headerBranchName}</Breadcrumb.Section>
-                    </Breadcrumb>
-                </Header>
-            )
-        }else if(this.state.detail == 'group'){
-            return (
-                <Header as='h3' block>
-                    <Breadcrumb size='big'>
-                        <Breadcrumb.Section onClick={(e) => this.breadcrumbLink('bukrs')} link>Компания {this.state.headerBukrsName}</Breadcrumb.Section>
-                        <Breadcrumb.Divider icon='right chevron' />
-                        <Breadcrumb.Section onClick={(e) => this.breadcrumbLink('branch')} link>{this.state.headerBranchName}</Breadcrumb.Section>
-                        <Breadcrumb.Divider icon='right chevron' />
-                        <Breadcrumb.Section active>{this.state.headerManagerName}</Breadcrumb.Section>
-                    </Breadcrumb>
-                </Header>
-            )
-        }
-        return '';
+        return (
+            <Header as='h3' block>
+                <Breadcrumb size='big'>
+                    {this.state.breadcrumbs.map((item,idx) => {
+                        if(item.clickable){
+                            return <span key={idx}><Breadcrumb.Section onClick={(e) => this.loadItems(item.name,item.id)} link>{item.title}</Breadcrumb.Section>
+                                <Breadcrumb.Divider icon='right chevron' /></span>
+                        }else {
+                            if(item.active){
+                                return <Breadcrumb.Section key={idx} active>{item.title}</Breadcrumb.Section>
+                            }else{
+                                return <span key={idx}>
+                                    <Breadcrumb.Section>{item.title}</Breadcrumb.Section>
+                                    <Breadcrumb.Divider icon='right chevron' />
+                                </span>
+                            }
+                        }
+                    })}
+                </Breadcrumb>
+            </Header>
+        )
     }
 
     render(){
