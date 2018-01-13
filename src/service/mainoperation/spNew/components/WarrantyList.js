@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {Button, Table, Icon} from "semantic-ui-react";
 import uuid from "uuid";
+import _ from "lodash";
 import WarrantyListItem from "./WarrantyListItem";
 import ReferenceModal from "./ReferenceModal";
 import "../css/SparePartList.css";
@@ -11,7 +12,8 @@ export default class WarrantyList extends Component {
     this.state = {
       warrantyList: [],
       warrantyModal: false,
-      sourceSparePartId: undefined
+      sourceSparePartUUID: undefined,
+      selectedReferenceItems: []
     }
 
     // handler for adding empty item to list
@@ -25,12 +27,12 @@ export default class WarrantyList extends Component {
     this.closeModal = this.closeModal.bind(this)
   }
 
-  openModal(id) {
+  openModal(uuid) {
     console.log("openModal is executed")
     this.setState({
       ...this.state,
       warrantyModal: true,
-      sourceSparePartId: id
+      sourceSparePartUUID: uuid
     });
   }
 
@@ -38,13 +40,13 @@ export default class WarrantyList extends Component {
     this.setState({
       ...this.state,
       warrantyModal: false,
-      sourceSparePartId: null
+      sourceSparePartUUID: null
     });
   }
 
   handleAddEmptyWarrantyListItem() {
     let listItem = {
-      id: uuid(),
+      uuid: uuid(),
       sparePartId: "",
       description: "",
       code: "",
@@ -59,25 +61,30 @@ export default class WarrantyList extends Component {
     });
   }
 
-  handleRemoveWarrantyListItem(id) {
-    let newWarrantyList = this.state.warrantyList.filter(
-      item => item.id !== id
+  handleRemoveWarrantyListItem(uuid) {
+    const newWarrantyList = this.state.warrantyList.filter(
+      item => item.uuid !== uuid
     );
+
+    const newSelectedReferenceItems = this.state.selectedReferenceItems.filter(
+      item => item.uuid !== uuid
+    )
     this.setState({
       ...this.state,
-      warrantyList: newWarrantyList
+      warrantyList: newWarrantyList,
+      selectedReferenceItems: newSelectedReferenceItems
     }, () => {
       this.props.saveChange(this.state.warrantyList, 'warrantyList')
     });
   }
 
   handleSelectWarrantyItem(selectedItem) {
-    console.log("selectedItem", selectedItem, "sourceID", this.state.sourceSparePartId)
+    console.log("selectedItem", selectedItem, "sourceID", this.state.sourceSparePartUUID)
     const newWarrantyList = this.state.warrantyList.map(item => {
-      if (item.id === this.state.sourceSparePartId) {
+      if (item.uuid === this.state.sourceSparePartUUID) {
         return {
           ...item, 
-          sparePartId: selectedItem.id,
+          sparePartId: selectedItem.uuid,
           description: selectedItem.name,
           code: selectedItem.code,
           warrantyMonths: selectedItem.warrantyMonths,
@@ -86,20 +93,22 @@ export default class WarrantyList extends Component {
       }
       return item
     })
-    
-    console.log(newWarrantyList)
 
+    const newSelectedReferenceItems = [...this.state.selectedReferenceItems, { id: selectedItem.id, uuid: this.state.sourceSparePartUUID }]
+  
     this.setState({
       ...this.state,
       warrantyModal: false,
       warrantyList: newWarrantyList,
-      sourceSparePartId: undefined,
+      sourceSparePartUUID: undefined,
+      selectedReferenceItems: newSelectedReferenceItems
     }, () => {
       this.props.saveChange(this.state.warrantyList, 'warrantyList')
     })
   }
 
   render() {
+    const filteredReferenceList = _.differenceBy(this.props.data, this.state.selectedReferenceItems, 'id')
     return (
       <div>
         <Table celled color='black' striped>
@@ -136,7 +145,7 @@ export default class WarrantyList extends Component {
           </Table.Body>
         </Table>
         <ReferenceModal 
-          data={this.props.data}
+          data={filteredReferenceList}
           visible={this.state.warrantyModal}
           close={this.closeModal}
           select={this.handleSelectWarrantyItem}

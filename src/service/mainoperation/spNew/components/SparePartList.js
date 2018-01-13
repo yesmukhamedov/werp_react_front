@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {Button, Table, Icon, Label} from "semantic-ui-react";
 import uuid from "uuid";
+import _ from "lodash";
 import SparePartListItem from "./SparePartListItem";
 import ReferenceModal from "./ReferenceModal";
 
@@ -11,7 +12,8 @@ export default class SparePartList extends Component {
       sparePartList: [],
       sparePartTotal: 0,
       sparePartListModal: false,
-      sourceSparePartId: undefined
+      sourceSparePartUUID: undefined,
+      selectedReferenceItems: []
     };
 
     this.handleAddEmptySparePartListItem = this.handleAddEmptySparePartListItem.bind(this);
@@ -27,7 +29,7 @@ export default class SparePartList extends Component {
 
   handleAddEmptySparePartListItem() {
     let listItem = {
-      id: uuid(),
+      uuid: uuid(),
       sparePartId: "",
       operTypeId: 1,
       description: "",
@@ -46,13 +48,18 @@ export default class SparePartList extends Component {
     });
   }
 
-  handleRemoveSparePartListItem(id) {
+  handleRemoveSparePartListItem(uuid) {
     let newSparePartList = this.state.sparePartList.filter(
-      item => item.id !== id
+      item => item.uuid !== uuid
     );
+    let newSelectedReferenceItems = this.state.selectedReferenceItems.filter(
+      item => item.uuid !== uuid
+    )
+
     this.setState({
       ...this.state,
-      sparePartList: newSparePartList
+      sparePartList: newSparePartList,
+      selectedReferenceItems: newSelectedReferenceItems
     }, () => {
       this.props.saveChange(this.state.sparePartList, 'sparePartList')
     });
@@ -64,10 +71,10 @@ export default class SparePartList extends Component {
 
   selectSparePartItem(selectedItem) {
     let newSparePartListModal = this.state.sparePartList.map((item) => {
-      if (item.id === this.state.sourceSparePartId) {
+      if (item.uuid === this.state.sourceSparePartUUID) {
         return {
           ...item,
-            id: selectedItem.id,
+          //  id: selectedItem.id,
           sparePartId: selectedItem.id,
           description: selectedItem.name,
           price: selectedItem.price,
@@ -81,11 +88,14 @@ export default class SparePartList extends Component {
       return item;
     })
 
+    let newSelectedReferenceItems = [...this.state.selectedReferenceItems, {id: selectedItem.id, uuid: this.state.sourceSparePartUUID}]
+
     this.setState({
       ...this.state,
       sparePartList: newSparePartListModal,
-      sourceSparePartId: undefined,
-      sparePartListModal: false
+      sourceSparePartUUID: undefined,
+      sparePartListModal: false,
+      selectedReferenceItems: newSelectedReferenceItems
     }, () => {
       this.props.saveChange(this.state.sparePartList, 'sparePartList')
     });
@@ -139,11 +149,11 @@ export default class SparePartList extends Component {
     });
   }
 
-  openSparePartListModal(id) {
+  openSparePartListModal(uuid) {
     this.setState({
       ...this.state,
       sparePartListModal: true,
-      sourceSparePartId: id
+      sourceSparePartUUID: uuid
     });
   }
 
@@ -151,14 +161,14 @@ export default class SparePartList extends Component {
     this.setState({
       ...this.state,
       sparePartListModal: false,
-      sourceSparePartId: null
+      sourceSparePartUUID: null
     });
   }
 
   render() {
+    const filteredReferenceList = _.differenceBy(this.props.data, this.state.selectedReferenceItems, 'id')
     return (
       <div>
-        
         <Table celled color='black' striped>
           <Table.Header>
             <Table.Row>
@@ -190,7 +200,7 @@ export default class SparePartList extends Component {
                 idx={idx}
                 data={el}
                 handleCellChange={this.updateCellData}
-                handleOpenReference={this.openSparePartListModal}
+                handleOpen={this.openSparePartListModal}
                 handleRemove={this.handleRemoveSparePartListItem}
                 handleTypeChange={this.handleSparePartTypeChange}
               />
@@ -207,7 +217,7 @@ export default class SparePartList extends Component {
 
         <ReferenceModal
           visible={this.state.sparePartListModal}
-          data={this.props.data}
+          data={filteredReferenceList}
           close={this.closeSparePartListModal}
           open={this.openSparePartListModal}
           select={this.selectSparePartItem}

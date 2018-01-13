@@ -2,7 +2,7 @@ import React from 'react'
 import {Input, Dropdown, Button, Icon, Table} from 'semantic-ui-react'
 
 const SparePartListItem = (props) => {
-    let { id, operTypeId, description, price, currency, quantity, totalPrice, code} = props.data
+    let { uuid, operTypeId, description, price, currency, quantity, totalPrice, code} = props.data
     return (
         <Table.Row>
             <Table.Cell>{props.idx+1}</Table.Cell>
@@ -23,7 +23,7 @@ const SparePartListItem = (props) => {
                     />
             </Table.Cell>
             <Table.Cell>
-                <Button disabled={operTypeId !== 1} icon onClick={() => props.handleOpenReference(id)}>
+                <Button disabled={operTypeId !== 1} icon onClick={() => props.handleOpen(uuid)}>
                     <Icon name='external square'/>
                 </Button>
             </Table.Cell>
@@ -69,7 +69,7 @@ const SparePartListItem = (props) => {
                     fluid />
             </Table.Cell>
             <Table.Cell>
-                <Button icon onClick={() => props.handleRemove(id)}>
+                <Button icon onClick={() => props.handleRemove(uuid)}>
                     <Icon name='remove'/>
                 </Button>
             </Table.Cell>
