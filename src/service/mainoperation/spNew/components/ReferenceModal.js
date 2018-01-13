@@ -130,7 +130,9 @@ export default class ReferenceModal extends Component {
                     <Button color='red' onClick={this.clearState}>
                         <Icon name='cancel' /> Отменить
                     </Button>
-                    <Button color='green' onClick={() => this.props.select(this.state.selectedItem)}>
+                    <Button color='green' disabled={!this.state.selectedItem} onClick={
+                            () => this.props.select(this.state.selectedItem)
+                        }>
                         <Icon name='checkmark' /> Выбрать
                     </Button>
                 </Modal.Actions>
