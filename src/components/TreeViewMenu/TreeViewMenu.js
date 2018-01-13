@@ -19,13 +19,13 @@ export default class TreeViewMenu extends Component {
 
     handleClick(node) {
         node.collapse = !node.collapse
-        this.setState({...this.state, selectedNode: node})
-
+        this.setState({...this.state, selectedNode: node})        
 
         if (node.leaf) {
             // Bottom-Up approach to gather the breadcrumb
             const breadcrumb = calcBreadcrumb(node);
             this.props.breadcrumbChanged(breadcrumb);
+            this.props.toggleMenu();
         }
     }
 
