@@ -60,6 +60,18 @@ class RecoCreatePage extends Component{
     }
 
     componentWillMount(){
+        axios.get(`${ROOT_URL}/api/crm/reco/create?context=` + (this.props.params.context||'aa') + `&contextId=` + (this.props.params.contextId||0) ,{
+            headers: {
+                authorization: localStorage.getItem('token')}
+        }).then((res) => {
+            this.setState({
+                ...this.state,
+                reco:res.data
+            })
+        }).catch((e) => {
+            console.log(e);
+        })
+
         axios.get(`${ROOT_URL}/api/hr/pyramid/crm/group-dealers`,{
             headers: {
                 authorization: localStorage.getItem('token')}
@@ -247,16 +259,18 @@ class RecoCreatePage extends Component{
     }
 
     submitData(){
-        axios.post(`${ROOT_URL}/api/crm/reco`,{ ...this.state.reco }, {
+        axios.post(`${ROOT_URL}/api/crm/reco/create`,{ ...this.state.reco }, {
             headers: {
                 authorization: localStorage.getItem('token')
             }
         })
             .then((response) => {
-                console.log(response);
+                //this.context.router.push('/crm/reco/current');
+                window.location.href="/crm/reco/current";
             }).catch((error) => {
             switch (error.response.status){
                 case 400:
+                case 500:
                     this.props.notify('error',error.response.data.message,'Ошибка');
                     break;
             }
@@ -321,7 +335,9 @@ class RecoCreatePage extends Component{
                                     onChange={this.handleChange} />
                         <Form.Input name={this.getItemName('relativeName',index)} label="Род. отношение" placeholder="Род. отношение"
                                     onChange={this.handleChange} />
-                        <Form.Dropdown name={this.getItemName('switchDate',index)} fluid selection label="Дата время звонка" placeholder='Выберите дилера'
+                        <Form.Dropdown name={this.getItemName('switchDate',index)}
+                                       fluid selection label="Дата время звонка"
+                                       placeholder='Дата время звонка'
                                        options={switchDateOptions}
                                        onChange={this.handleChange}  />
                         {this.renderCallDate(item.switchDate === 1)}
@@ -378,14 +394,21 @@ class RecoCreatePage extends Component{
                 <Form.Group widths='equal'>
                     <Form.Field>
                         <label>Дилер</label>
-                        <Dropdown name="responsibleId" placeholder='Выберите дилера' fluid selection search
+                        <Dropdown name="responsibleId"
+                                  placeholder='Выберите дилера'
+                                  fluid selection search
+                                  value={this.state.reco.responsibleId}
                                   selectOnBlur={false}
                                   options={this.state.dealerOptions}
                                   onChange={this.handleChange} />
                     </Form.Field>
 
-                    <Form.Input name="tempRecommender" onChange={this.handleChange} label="ФИО рекомендателя" />
-                    <Form.TextArea name="recommenderInfo" onChange={this.handleChange} label="Доп. данные рекомендателя" />
+                    <Form.Input
+                        name="tempRecommender"
+                        value={this.state.reco.tempRecommender || ''}
+                        readOnly={this.state.reco.contextId > 0}
+                        onChange={this.handleChange} label="ФИО рекомендателя" />
+                    {this.state.reco.contextId > 0?'':<Form.TextArea name="recommenderInfo" onChange={this.handleChange} label="Доп. данные рекомендателя" />}
                 </Form.Group>
                 <Button icon labelPosition='left' onClick={this.addReco}>
                     <Icon name="plus"/>

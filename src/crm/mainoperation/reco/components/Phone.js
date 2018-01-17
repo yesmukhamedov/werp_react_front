@@ -17,6 +17,7 @@ class Phone extends Component{
         this.handlePhoneClick = this.handlePhoneClick.bind(this);
         this.handleModalClose = this.handleModalClose.bind(this);
         this.onCloseCallModal = this.onCloseCallModal.bind(this);
+        this.onCallSaved = this.onCallSaved.bind(this);
     }
 
     handlePhoneClick(){
@@ -82,6 +83,15 @@ class Phone extends Component{
         console.log(d);
     }
 
+    onCallSaved(){
+        this.setState({
+            ...this.state,
+            callModalOpen:false
+        })
+
+        this.props.onCallSaved();
+    }
+
     render(){
         const {id,phoneNumber,callResultOptions} = this.props;
         return (
@@ -99,7 +109,8 @@ class Phone extends Component{
                             callRefuseOptions={this.props.callRefuseOptions}
                             recommender={this.state.recommender}
                             context={this.props.context}
-                            contextId={this.props.contextId}/>
+                            contextId={this.props.contextId}
+                            onCallSaved={this.onCallSaved}/>
             </p>
         )
     }

@@ -27,9 +27,11 @@ class RecoCurrentPage extends Component{
         this.renderTabUsed = this.renderTabUsed.bind(this);
         this.renderTabNew = this.renderTabNew.bind(this);
         this.renderTabDemoDone = this.renderTabDemoDone.bind(this);
+        this.loadItems = this.loadItems.bind(this);
+        this.onCallSaved = this.onCallSaved.bind(this);
     }
 
-    componentWillMount(){
+    loadItems(){
         axios.get(`${ROOT_URL}/api/crm/reco/current/used`,{
             headers: {
                 authorization: localStorage.getItem('token')}
@@ -65,6 +67,10 @@ class RecoCurrentPage extends Component{
         }).catch((e) => {
             console.log(e);
         })
+    }
+
+    componentWillMount(){
+       this.loadItems();
 
         axios.get(`${ROOT_URL}/api/crm/call/results`,{
             headers: {
@@ -112,6 +118,11 @@ class RecoCurrentPage extends Component{
         console.log(d);
     }
 
+    onCallSaved(){
+        console.log("TEST");
+        this.loadItems();
+    }
+
     renderPhoneNumbers(recoId,phones){
         return <div>
             {phones.map((p) => {
@@ -120,6 +131,7 @@ class RecoCurrentPage extends Component{
                     callResultOptions={this.state.callResultOptions}
                     key={p.id} phoneNumber={p.phoneNumber} phoneId={p.id}
                     context="reco" contextId={recoId}
+                    onCallSaved={this.onCallSaved}
                 />
             })}
         </div>;
