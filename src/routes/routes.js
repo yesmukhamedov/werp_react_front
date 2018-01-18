@@ -27,6 +27,7 @@ import Serrep1 from '../service/report/serrep1/serrep1';
 import Serrep2 from '../service/report/serrep2/serrep2';
 import Serrep3 from '../service/report/serrep3/serrep3';
 import Serrep4 from '../service/report/serrep4/serrep4';
+import Prcltgs from '../marketing/mainoperation/prcltgs/prcltgs';
 import ForbiddenPage from '../general/forbidden';
 
 const getComponent = {
@@ -37,11 +38,12 @@ const getComponent = {
     'LogRepAccStaffDetail':AccountabilityStaffDetailPage,
     'Serrep1':Serrep1,
     'Serrep2':Serrep2,
-    'Serrep3':Serrep3,
     'Serrep4':Serrep4,
     'Serrep3':Serrep3,
     'CrmRepKpi':KpiReportPage,
-    'CrmRepKpiRtg':KpiRatingReportPage
+    'CrmRepKpiRtg':KpiRatingReportPage,
+    'Prcltgs':Prcltgs
+    
 }
 
 function persistPath(nextState, replace) {
