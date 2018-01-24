@@ -41,7 +41,7 @@ export default class SearchPanel extends Component {
                         <Header as='h3'>Активация / Деактивация сервис пакета</Header>
                     </Label>
                     <Header as='h5'>Параметры поиска</Header>
-                    <Grid columns='five' divided>
+                    <Grid divided stackable columns={2}>
                         <Grid.Row>
                             <Grid.Column width={5}>
                                 <Form.Field>
