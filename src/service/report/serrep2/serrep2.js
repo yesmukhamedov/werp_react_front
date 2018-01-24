@@ -1,13 +1,12 @@
 import React,{ Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Table, Button, Modal, Dropdown, Icon, Container, Header, Grid, Tab, Label, Input,Checkbox } from 'semantic-ui-react';
+import { Table, Button, Dropdown, Icon, Container, Header, Grid, Label, Checkbox } from 'semantic-ui-react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import axios from 'axios';
 import {ROOT_URL} from '../../../utils/constants';
 import { notify } from '../../../general/notification/notification_action';
-import NumberFormat from 'react-number-format';
 require('moment/locale/ru');
 
 
@@ -226,7 +225,6 @@ class Serrep2 extends Component {
     }
 
     renderTable() {
-        let stripColor = 'orange';
         return this.state.currentTable.map((wa,idx)=>{
       
             return (

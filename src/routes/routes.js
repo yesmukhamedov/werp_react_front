@@ -17,14 +17,17 @@ import AccountabilityStaffDetailPage from '../logistics/report/accountabilitySta
 import KpiReportPage from '../crm/report/kpi/components/KpiReportPage';
 import KpiRatingReportPage from '../crm/report/kpi/components/KpiRatingReportPage';
 import RecoCurrentPage from '../crm/mainoperation/reco/components/RecoCurrentPage';
+import RecoCreatePage from '../crm/mainoperation/reco/components/RecoCreatePage';
 import RecoArchivePage from '../crm/mainoperation/reco/components/RecoArchivePage';
 import DemoListPage from '../crm/mainoperation/demo/components/DemoListPage';
 import DemoCurrentPage from '../crm/mainoperation/demo/components/DemoCurrentPage';
 import DemoArchivePage from '../crm/mainoperation/demo/components/DemoArchivePage';
+import DemoViewPage from '../crm/mainoperation/demo/components/DemoViewPage';
 import Serrep1 from '../service/report/serrep1/serrep1';
 import Serrep2 from '../service/report/serrep2/serrep2';
 import Serrep3 from '../service/report/serrep3/serrep3';
 import Serrep4 from '../service/report/serrep4/serrep4';
+import Prcltgs from '../marketing/mainoperation/prcltgs/prcltgs';
 import ForbiddenPage from '../general/forbidden';
 
 const getComponent = {
@@ -35,11 +38,12 @@ const getComponent = {
     'LogRepAccStaffDetail':AccountabilityStaffDetailPage,
     'Serrep1':Serrep1,
     'Serrep2':Serrep2,
-    'Serrep3':Serrep3,
     'Serrep4':Serrep4,
     'Serrep3':Serrep3,
     'CrmRepKpi':KpiReportPage,
-    'CrmRepKpiRtg':KpiRatingReportPage
+    'CrmRepKpiRtg':KpiRatingReportPage,
+    'Prcltgs':Prcltgs
+    
 }
 
 function persistPath(nextState, replace) {
@@ -62,7 +66,9 @@ export default (data) => {
             <Route path="hr/staff/view/:id" component={ViewStaff} />
             <Route path="crm/reco/current" component={RecoCurrentPage} />
             <Route path="crm/reco/archive" component={RecoArchivePage} />
+            <Route path="crm/reco/create(/:context/:contextId)" component={RecoCreatePage} />
             <Route path="crm/demo/current" component={DemoCurrentPage} />
+            <Route path="crm/demo/view/:id" component={DemoViewPage} />
             <Route path="crm/demo/list" component={DemoListPage} />
             <Route path="crm/demo/archive" component={DemoArchivePage} />
             <Route path="forbidden" component={ForbiddenPage} />

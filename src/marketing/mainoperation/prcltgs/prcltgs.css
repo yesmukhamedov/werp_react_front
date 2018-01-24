@@ -1,0 +1,18 @@
+#branchList td:hover{
+    cursor: pointer ;
+}
+
+.clickable:hover{
+    cursor: pointer ;
+}
+
+.f4Icon:hover{
+    cursor: pointer ;
+}
+.f4Icon{
+    float:right;
+}
+
+.moneyInput{
+    width:120px;
+}

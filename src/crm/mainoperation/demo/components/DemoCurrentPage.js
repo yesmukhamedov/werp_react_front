@@ -114,7 +114,9 @@ class DemoCurrentPage extends Component{
                         },
                         {
                             Header:"Дилер",
-                            accessor: "dealerName"
+                            accessor: "dealerName",
+                            filterMethod: (filter, row) =>
+                                row[filter.id].startsWith(filter.value)
                         },
                         {
                             Header:"Категория",
@@ -130,6 +132,14 @@ class DemoCurrentPage extends Component{
                         {
                             Header:"Результат",
                             accessor: "resultName"
+                        },
+                        {
+                            Header:'',
+                            accessor:'id',
+                            filterable:false,
+                            Cell: ({value}) => <Link className={'ui icon button'} to={`/crm/demo/view/` + value}>
+                                            Просмотр
+                                        </Link>
                         }
                     ]}
 

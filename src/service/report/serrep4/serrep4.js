@@ -1,13 +1,12 @@
 import React,{ Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Table, Button, Modal, Dropdown, Icon, Container, Header, Grid, Tab, Label, Input, Menu, Checkbox} from 'semantic-ui-react';
+import { Table, Button, Dropdown, Icon, Container, Header, Grid, Input, Checkbox} from 'semantic-ui-react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import axios from 'axios';
 import {ROOT_URL} from '../../../utils/constants';
 import { notify } from '../../../general/notification/notification_action';
-import NumberFormat from 'react-number-format';
 import '../serrep1/serrep1.css';
 import SemanticPagination from '../../../general/pagination/semanticTableFooter/semanticPagination';
 require('moment/locale/ru');
@@ -90,21 +89,21 @@ class Serrep4 extends Component {
     }
 
     onSearchColumn(value,stateFieldName){
-        let waCurrentTable;
-        let waResultTable;
-        if (this.state.button2) waCurrentTable = Object.assign({}, this.state.pyl);
-        if (this.state.button3) waCurrentTable = Object.assign({}, this.state.filter);
+        // let waCurrentTable;
+        // let waResultTable;
+        // if (this.state.button2) waCurrentTable = Object.assign({}, this.state.pyl);
+        // if (this.state.button3) waCurrentTable = Object.assign({}, this.state.filter);
         
-        if (stateFieldName==="code")
-        {               
-            // waSearchTerm.bukrs=value;
-            // waSearchTerm.branchList=[];   
-            // this.fetchUserBranches(value);
-        }
-        else if (stateFieldName==='matnrName') { 
-            // waSearchTerm.branchList=value;
-            console.log(stateFieldName)         
-        }
+        // if (stateFieldName==="code")
+        // {               
+        //     // waSearchTerm.bukrs=value;
+        //     // waSearchTerm.branchList=[];   
+        //     // this.fetchUserBranches(value);
+        // }
+        // else if (stateFieldName==='matnrName') { 
+        //     // waSearchTerm.branchList=value;
+        //     console.log(stateFieldName)         
+        // }
         // this.setState({searchTerm:waSearchTerm});
         
         // console.log(this.state);

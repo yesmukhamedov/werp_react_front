@@ -181,6 +181,7 @@ class CallModal extends Component{
             case 'demoLocationId':
             case 'demoClientName':
             case 'demoAddress':
+            case 'callReasonId':
                 call[fieldName] = o.value;
                 break
 
@@ -233,7 +234,6 @@ class CallModal extends Component{
     validateForm(){
         let {call,errors} = this.state;
         Object.keys(errors).map((k) => {
-            console.log(k)
             if(errors.hasOwnProperty(k)){
                 errors[k] = false;
             }
@@ -245,6 +245,7 @@ class CallModal extends Component{
         if(call.callResultId == 0){
             errors.callResultId = true;
         }else if(call.callResultId == CALL_RESULT_REFUSE){
+            console.log(call.callReasonId);
             if(call.callReasonId == 0){
                 errors.callReasonId = true;
             }
@@ -278,7 +279,8 @@ class CallModal extends Component{
             }
         })
             .then((response) => {
-                console.log(response);
+                this.close();
+
             }).catch((error) => {
             console.log(error);
         })
