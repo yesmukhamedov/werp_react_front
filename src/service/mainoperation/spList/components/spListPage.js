@@ -1,15 +1,10 @@
 import React, {Component} from 'react'
-import {Link} from 'react-router'
-import {
-    Table,
-    Icon,
-    Container,
-    Checkbox
-} from 'semantic-ui-react'
+import {Container} from 'semantic-ui-react'
 import axios from 'axios'
 import moment from 'moment'
 import _ from 'lodash'
 import SearchPanel from './SearchPanel'
+import SpListTable from './spListTable'
 import {ROOT_URL} from '../../../../utils/constants'
 
 export default class SpList extends Component {
@@ -31,6 +26,7 @@ export default class SpList extends Component {
             servicePacketId: undefined,
             sparePartPosDescription: undefined,
             sparePartId: undefined,
+            selectedStatus: 'all',
             result: []
         }
 
@@ -193,10 +189,11 @@ export default class SpList extends Component {
             endDate: endDateUtc,
             servicePacketId: this.state.servicePacketId,
             sparePartPosDescription: this.state.sparePartPosDescription,
-            sparePartId: this.state.sparePartId
+            sparePartId: this.state.sparePartId,
+            status: this.state.selectedStatus
         }
 
-        const params = _.map(paramsDict, (val, key) => { return (val ? `${key}=${val}` : ``) })
+        const params = _.map(paramsDict, (val, key) => { return (val ? `${key}=${val}` : val === false ? `${key}=${val}` : ``) })
                         .filter(param => param)
                         .join('&')
 
@@ -259,56 +256,9 @@ export default class SpList extends Component {
                     sparePartPosDescription={this.state.sparePartPosDescription}
                     sparePartId={this.state.sparePartId}
                     handleSearch={this.handleSearch} />
-                <Table celled color='black' striped>
-                    <Table.Header>
-                        <Table.Row>
-                            <Table.HeaderCell collapsing>#</Table.HeaderCell>
-                            <Table.HeaderCell>Название</Table.HeaderCell>
-                            <Table.HeaderCell>Компания</Table.HeaderCell>
-                            <Table.HeaderCell>Страна</Table.HeaderCell>
-                            <Table.HeaderCell>Дата начала</Table.HeaderCell>
-                            <Table.HeaderCell>Категория</Table.HeaderCell>
-                            <Table.HeaderCell>Товар/Модель</Table.HeaderCell>
-                            <Table.HeaderCell collapsing></Table.HeaderCell>
-                            <Table.HeaderCell collapsing></Table.HeaderCell>
-                        </Table.Row>
-                        {this.state.result.map((item, idx) => {
-                            const {
-                                id,
-                                name,
-                                companyName,
-                                countryName,
-                                startDate,
-                                productCategory,
-                                productName,
-                                active
-                            } = item
-                            return (
-                                <Table.Row key={idx}>
-                                    <Table.Cell>{idx+1}</Table.Cell>
-                                    <Table.Cell>{`${id} - ${name}`}</Table.Cell>
-                                    <Table.Cell>{companyName}</Table.Cell>
-                                    <Table.Cell>{countryName}</Table.Cell>
-                                    <Table.Cell>{moment(startDate).format('DD.MM.YYYY')}</Table.Cell>
-                                    <Table.Cell>{productCategory}</Table.Cell>
-                                    <Table.Cell>{productName}</Table.Cell>
-                                    <Table.Cell collapsing>
-                                        <Checkbox 
-                                            slider 
-                                            checked={active}
-                                            onClick={() => this.handleActivateServicePacket(id, active)} />
-                                    </Table.Cell>
-                                    <Table.Cell collapsing>
-                                        <Link target="_blank" to={`/service/packets/spview/${id}`}>
-                                            <Icon name='eye' size='large' />
-                                        </Link>
-                                    </Table.Cell>
-                                </Table.Row>
-                            )
-                        })}
-                    </Table.Header>
-                    <Table.Body></Table.Body>
-                </Table> 
+                <SpListTable 
+                    data={this.state.result}
+                    handleActivate={this.handleActivateServicePacket}/>                
             </Container>
         )
     }

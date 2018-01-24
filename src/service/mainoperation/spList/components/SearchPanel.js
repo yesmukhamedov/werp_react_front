@@ -7,14 +7,15 @@ import {
     Dropdown,
     Grid,
     Header,
-    Segment
+    Segment,
+    Checkbox
 } from 'semantic-ui-react'
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 
-export default class SearchPanel extends Component {
-
+export default class SearchPanel extends Component {    
     render() {
+        const statusOpts = [{key: 'all', text: 'All', value: 'all'}, {key: 'active', text: 'Active', value: 'active'}, {key: 'inactive', text: 'Inactive', value: 'inactive'}];
         const {
             countryOpts,
             companyOpts,
@@ -30,7 +31,8 @@ export default class SearchPanel extends Component {
             endDate,
             servicePacketId,
             sparePartId,
-            handleSearch
+            handleSearch,
+            selectedStatus
         } = this.props
         return (
             <Form>
@@ -87,6 +89,19 @@ export default class SearchPanel extends Component {
                                         disabled={!(selectedCountry && selectedCompany && selectedCategory)}
                                         onChange={(e, {value}) => {
                                         inputChange(value, 'selectedProduct');
+                                    }}/>
+                                </Form.Field>
+                                <Form.Field>
+                                    <label>Статус</label>
+                                    <Dropdown
+                                        placeholder='Выберите статус'
+                                        fluid
+                                        selection
+                                        value={selectedStatus}
+                                        options={statusOpts}
+                                        // disabled={!(selectedCountry && selectedCompany && selectedCategory)}
+                                        onChange={(e, {value}) => {
+                                            inputChange(value, 'selectedStatus');
                                     }}/>
                                 </Form.Field>
                             </Grid.Column>
