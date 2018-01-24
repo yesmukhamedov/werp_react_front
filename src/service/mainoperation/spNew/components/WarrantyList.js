@@ -22,6 +22,7 @@ export default class WarrantyList extends Component {
     this.handleRemoveWarrantyListItem = this.handleRemoveWarrantyListItem.bind(this)
     // handler for selecting item from reference modal
     this.handleSelectWarrantyItem = this.handleSelectWarrantyItem.bind(this)
+    this.updateCellData = this.updateCellData.bind(this)
     
     this.openModal = this.openModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
@@ -51,7 +52,8 @@ export default class WarrantyList extends Component {
       description: "",
       code: "",
       warrantyMonths: "",
-      submittable: false
+      submittable: false, 
+      sparePartId: undefined
     };
     this.setState({
       ...this.state,
@@ -84,10 +86,10 @@ export default class WarrantyList extends Component {
       if (item.uuid === this.state.sourceSparePartUUID) {
         return {
           ...item, 
-          sparePartId: selectedItem.uuid,
+          id: selectedItem.id,
           description: selectedItem.name,
           code: selectedItem.code,
-          warrantyMonths: selectedItem.warrantyMonths,
+          warrantyMonths: Math.max(selectedItem.warrantyMonths, 1),
           submittable: true
         }
       }
@@ -105,6 +107,26 @@ export default class WarrantyList extends Component {
     }, () => {
       this.props.saveChange(this.state.warrantyList, 'warrantyList')
     })
+  }
+
+  updateCellData(index, dataType, value) {
+    const updateWarrantyList = this.state.warrantyList.map((el, i) => {
+      if (i === index) {
+        return {
+          ...el,
+          [dataType]: value,
+          submittable: true
+        };
+      }
+      return el;
+    });
+
+    this.setState({
+      ...this.state,
+      warrantyList: updateWarrantyList
+    }, () => {
+      this.props.saveChange(this.state.warrantyList, 'warrantyList')
+    });
   }
 
   render() {
@@ -140,6 +162,7 @@ export default class WarrantyList extends Component {
                 data={el}
                 handleOpenReference={this.openModal}
                 handleCloseReference={this.closeModal}
+                handleCellChange={this.updateCellData}
                 handleRemove={this.handleRemoveWarrantyListItem} />
             ))}
           </Table.Body>

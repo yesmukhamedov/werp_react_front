@@ -30,7 +30,7 @@ export default class SparePartList extends Component {
   handleAddEmptySparePartListItem() {
     let listItem = {
       uuid: uuid(),
-      sparePartId: "",
+      id: undefined,
       operTypeId: 1,
       description: "",
       price: "",
@@ -74,8 +74,7 @@ export default class SparePartList extends Component {
       if (item.uuid === this.state.sourceSparePartUUID) {
         return {
           ...item,
-          //  id: selectedItem.id,
-          sparePartId: selectedItem.id,
+          id: selectedItem.id,
           description: selectedItem.name,
           price: selectedItem.price,
           currency: selectedItem.currency,
