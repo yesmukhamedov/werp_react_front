@@ -136,7 +136,14 @@ class SpNewPage extends Component {
         })
 
         // construct sparePartsWithWarranty
-        const sparePartsWithWarranty = this.state.warrantyList
+        const sparePartsWithWarranty = this.state.warrantyList.map(item => { 
+            return {
+                id: item.id,
+                code: item.code,
+                description: item.description,
+                warrantyMonths: item.warrantyMonths
+            }
+        })
 
         // transactionCode
         // transactionId
