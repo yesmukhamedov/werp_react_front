@@ -19,7 +19,10 @@ import KpiRatingReportPage from '../crm/report/kpi/components/KpiRatingReportPag
 import RecoCurrentPage from '../crm/mainoperation/reco/components/RecoCurrentPage';
 import RecoCreatePage from '../crm/mainoperation/reco/components/RecoCreatePage';
 import RecoArchivePage from '../crm/mainoperation/reco/components/RecoArchivePage';
+import RecoViewPage from '../crm/mainoperation/reco/components/RecoViewPage';
 import DemoListPage from '../crm/mainoperation/demo/components/DemoListPage';
+import VisitArchivePage from '../crm/mainoperation/visit/components/VisitArchivePage';
+import VisitViewPage from '../crm/mainoperation/visit/components/VisitViewPage';
 import DemoCurrentPage from '../crm/mainoperation/demo/components/DemoCurrentPage';
 import DemoArchivePage from '../crm/mainoperation/demo/components/DemoArchivePage';
 import DemoViewPage from '../crm/mainoperation/demo/components/DemoViewPage';
@@ -69,7 +72,10 @@ export default (data) => {
             <Route path="crm/reco/create(/:context/:contextId)" component={RecoCreatePage} />
             <Route path="crm/demo/current" component={DemoCurrentPage} />
             <Route path="crm/demo/view/:id" component={DemoViewPage} />
+            <Route path="crm/reco/view/:id" component={RecoViewPage} />
             <Route path="crm/demo/list" component={DemoListPage} />
+            <Route path="crm/visit/archive" component={VisitArchivePage} />
+            <Route path="crm/visit/view/:id" component={VisitViewPage} />
             <Route path="crm/demo/archive" component={DemoArchivePage} />
             <Route path="forbidden" component={ForbiddenPage} />
 

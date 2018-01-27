@@ -5,6 +5,7 @@ import { Tab,Header,Container,Label,Icon,Button,Segment } from 'semantic-ui-reac
 import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
 import Phone from './Phone';
+import moment from 'moment';
 
 const categoryButtons = {
     1:'green',
@@ -153,7 +154,13 @@ class RecoCurrentPage extends Component{
                         },
                         {
                             Header:"Дата звонка",
-                            accessor: "callDate"
+                            id: "callDate",
+                            accessor: ((row )=> {
+                                if(row['callDate']){
+                                    return moment(row['callDate']).format('DD.MM.YYYY HH:mm');
+                                }
+                                return '';
+                            })
                         },
                         {
                             Header:"Тел. номера",
@@ -181,9 +188,18 @@ class RecoCurrentPage extends Component{
                         {
                             Header:"Статус",
                             accessor: "statusName"
+                        },
+                        {
+                            Header:'',
+                            accessor:'id',
+                            filterable:false,
+                            Cell: ({value}) => <Link className={'ui icon button mini'} to={`/crm/reco/view/` + value}>
+                                Просмотр
+                            </Link>
                         }
                     ]}
 
+                    defaultPageSize={50}
                     filterable
                     className="-striped -highlight">
 

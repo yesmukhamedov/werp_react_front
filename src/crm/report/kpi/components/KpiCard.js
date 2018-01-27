@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Card, Icon, Table,Segment,Button,Label,Header,Grid,Divider } from 'semantic-ui-react'
+import { Table,Segment,Button,Label,Header,Grid,Divider } from 'semantic-ui-react'
 
 class KpiCard extends Component{
     constructor(props) {
@@ -54,8 +54,8 @@ class KpiCard extends Component{
             <Grid.Column width={8}>
                 <Segment padded size={'small'}>
                     <Label attached='top'>
-                        <Header as='h3' floated={'left'}>{cardData.name}</Header>
-                        <Button floated={'right'}>{this.roundedValue(cardData.totalPercentage)}%</Button>
+                        <Header as='h3' floated={'left'}>{cardData.name} ({cardData.totalItemCount} чел.)</Header>
+                        <Button floated={'right'}>{this.roundedValue(cardData.totalAverageScore)}%</Button>
                     </Label>
                     <Table celled>
                         <Table.Header>
@@ -86,9 +86,10 @@ class KpiCard extends Component{
                         </Table.Body>
                     </Table>
                     <Divider />
-                    <Button onClick={(e) => this.props.loadItems('group',cardData.id)}>
-                        Деталь
-                    </Button>
+                    {cardData.detailable?<Button onClick={(e) => this.props.loadItems(cardData.detailContext,cardData.id)}>
+                            Деталь
+                        </Button>:''}
+
                 </Segment>
             </Grid.Column>
         )
@@ -99,14 +100,14 @@ class KpiCard extends Component{
             <Segment padded size={'small'}>
                 <Label attached='top'>
                     <Header as='h3' floated={'left'}>{cardData.name}</Header>
-                    <Button floated={'right'}>{this.roundedValue(cardData.totalPercentage)}</Button>
+                    <Button floated={'right'}>{this.roundedValue(cardData.totalScore)}</Button>
                 </Label>
                 <Table celled>
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell>#</Table.HeaderCell>
                             <Table.HeaderCell>Индикатор</Table.HeaderCell>
-                            <Table.HeaderCell>Значение</Table.HeaderCell>
+                            <Table.HeaderCell>Цель</Table.HeaderCell>
                             <Table.HeaderCell>Выполнено</Table.HeaderCell>
                             <Table.HeaderCell>Балл</Table.HeaderCell>
                             <Table.HeaderCell>Набранный балл</Table.HeaderCell>
@@ -143,7 +144,7 @@ class KpiCard extends Component{
             <Segment padded size={'small'}>
                 <Label attached='top'>
                     <Header as='h3' floated={'left'}>{cardData.name}</Header>
-                    <Button floated={'right'}>{this.roundedValue(cardData.totalPercentage)}</Button>
+                    <Button floated={'right'}>{this.roundedValue(cardData.totalAverageScore)}</Button>
                 </Label>
                 <Table celled>
                     <Table.Header>
@@ -225,15 +226,19 @@ class KpiCard extends Component{
 
     render(){
         const {cardData,context} = this.props;
-        if(context === 'branch'){
-            return this.renderForBranches(cardData);
-        }else if(context === 'group'){
-            return this.renderForGroups(cardData);
-        }else if(context === 'manager'){
+        if(context === 'manager'){
             return this.renderForManager(cardData);
         }
-
-        return this.renderForBukrs(cardData);
+        return this.renderForBranches(cardData);
+        // if(context === 'branch'){
+        //     return this.renderForBranches(cardData);
+        // }else if(context === 'group'){
+        //     return this.renderForBranches(cardData);
+        // }else if(context === 'manager'){
+        //     return this.renderForManager(cardData);
+        // }
+        //
+        // return this.renderForBukrs(cardData);
     }
 
     roundedValue(v){

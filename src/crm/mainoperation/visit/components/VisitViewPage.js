@@ -5,15 +5,15 @@ import { Tab,Header,Container,Label,Icon,Button,Segment,Grid,Table,Divider,Card,
 import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
 import moment from 'moment';
-import RecoUpdateModal from './RecoUpdateModal';
+import RecoUpdateModal from './VisitUpdateModal';
 
-class RecoViewPage extends Component{
+class VisitViewPage extends Component{
 
     constructor(props) {
         super(props)
         this.loadedSuccess = true;
         this.state = {
-            reco:{},
+            visit:{},
             calls:[],
             callResultOptions:[],
             callRefuseOptions:[],
@@ -35,13 +35,13 @@ class RecoViewPage extends Component{
     }
 
     loadItem(id){
-        axios.get(`${ROOT_URL}/api/crm/reco/` + id,{
+        axios.get(`${ROOT_URL}/api/crm/visit/` + id,{
             headers: {
                 authorization: localStorage.getItem('token')}
         }).then((response) => {
             this.setState({
                 ...this.state,
-                reco:response.data
+                visit:response.data
             })
         }).catch(function(e){
             if(e.response && e.response.status && e.response.status === 404){
@@ -70,10 +70,13 @@ class RecoViewPage extends Component{
 
     renderActions(){
         return <div>
-            <Link className={'ui icon button'} to={`/crm/reco/current`}>
+            <Link className={'ui icon button'} to={`/crm/visit/archive`}>
                 В список
             </Link>
-            <Button onClick={this.openUpdateModal}>Редактировать</Button>
+            {/*<Button onClick={this.openUpdateModal}>Редактировать</Button>*/}
+            <Link className={'ui icon button'} to={`/crm/reco/create/visit/` + this.state.visit.id}>
+                Добавить рекомендации
+            </Link>
         </div>
     }
 
@@ -105,11 +108,11 @@ class RecoViewPage extends Component{
     }
 
     renderRecoTable(){
-        let {reco} = this.state;
+        let {visit} = this.state;
         return <Card fluid>
             <Card.Content>
                 <Card.Header>
-                    Основная информация
+                    Данные по визиту
                 </Card.Header>
             </Card.Content>
             <Card.Content>
@@ -120,7 +123,7 @@ class RecoViewPage extends Component{
                                 <Header as={'H4'}>Компания</Header>
                             </Table.Cell>
                             <Table.Cell>
-                                {reco.bukrsName}
+                                {visit.bukrsName}
                             </Table.Cell>
                         </Table.Row>
 
@@ -129,16 +132,34 @@ class RecoViewPage extends Component{
                                 <Header as={'H4'}>Филиал</Header>
                             </Table.Cell>
                             <Table.Cell>
-                                {reco.branchName}
+                                {visit.branchName}
                             </Table.Cell>
                         </Table.Row>
 
                         <Table.Row>
                             <Table.Cell>
-                                <Header as={'H4'}>Ответсвенный сотрудник</Header>
+                                <Header as={'H4'}>Посетитель</Header>
                             </Table.Cell>
                             <Table.Cell>
-                                {reco.responsibleName}
+                                {visit.visitorName}
+                            </Table.Cell>
+                        </Table.Row>
+
+                        <Table.Row>
+                            <Table.Cell>
+                                <Header as={'H4'}>Дата посещения</Header>
+                            </Table.Cell>
+                            <Table.Cell>
+                                {moment(visit.docDate).format('DD.MM.YYYY')}
+                            </Table.Cell>
+                        </Table.Row>
+
+                        <Table.Row>
+                            <Table.Cell>
+                                <Header as={'H4'}>Адрес</Header>
+                            </Table.Cell>
+                            <Table.Cell>
+                                {visit.address}
                             </Table.Cell>
                         </Table.Row>
 
@@ -147,70 +168,7 @@ class RecoViewPage extends Component{
                                 <Header as={'H4'}>ФИО супруг</Header>
                             </Table.Cell>
                             <Table.Cell>
-                                {reco.clientName}
-                            </Table.Cell>
-                        </Table.Row>
-
-                        <Table.Row>
-                            <Table.Cell>
-                                <Header as={'H4'}>Район</Header>
-                            </Table.Cell>
-                            <Table.Cell>
-                                {reco.districtName}
-                            </Table.Cell>
-                        </Table.Row>
-
-                        <Table.Row>
-                            <Table.Cell>
-                                <Header as={'H4'}>Тел номера</Header>
-                            </Table.Cell>
-                            <Table.Cell>
-                                {this.renderPhones(reco.phones)}
-                            </Table.Cell>
-                        </Table.Row>
-
-                        <Table.Row>
-                            <Table.Cell>
-                                <Header as={'H4'}>Рекомендатель</Header>
-                            </Table.Cell>
-                            <Table.Cell>
-                                {reco.recommenderName}
-                            </Table.Cell>
-                        </Table.Row>
-
-                        <Table.Row>
-                            <Table.Cell>
-                                <Header as={'H4'}>Владелец</Header>
-                            </Table.Cell>
-                            <Table.Cell>
-                                {reco.ownerName}
-                            </Table.Cell>
-                        </Table.Row>
-
-                        <Table.Row>
-                            <Table.Cell>
-                                <Header as={'H4'}>Филиал владельца</Header>
-                            </Table.Cell>
-                            <Table.Cell>
-                                {reco.ownerBranchName}
-                            </Table.Cell>
-                        </Table.Row>
-
-                        <Table.Row>
-                            <Table.Cell>
-                                <Header as={'H4'}>Род. отношение</Header>
-                            </Table.Cell>
-                            <Table.Cell>
-                                {reco.relative}
-                            </Table.Cell>
-                        </Table.Row>
-
-                        <Table.Row>
-                            <Table.Cell>
-                                <Header as={'H4'}>Звонит будет</Header>
-                            </Table.Cell>
-                            <Table.Cell>
-                                {reco.callerIsDealer == 1?'ДИЛЕР':'СЕКРЕТАРЬ'}
+                                {visit.clientName}
                             </Table.Cell>
                         </Table.Row>
 
@@ -219,34 +177,7 @@ class RecoViewPage extends Component{
                                 <Header as={'H4'}>Примечание</Header>
                             </Table.Cell>
                             <Table.Cell>
-                                {reco.note}
-                            </Table.Cell>
-                        </Table.Row>
-
-                        <Table.Row>
-                            <Table.Cell>
-                                <Header as={'H4'}>Доп. данные</Header>
-                            </Table.Cell>
-                            <Table.Cell>
-                                {''}
-                            </Table.Cell>
-                        </Table.Row>
-
-                        <Table.Row>
-                            <Table.Cell>
-                                <Header as={'H4'}>Категория</Header>
-                            </Table.Cell>
-                            <Table.Cell>
-                                {reco.categoryName}
-                            </Table.Cell>
-                        </Table.Row>
-
-                        <Table.Row>
-                            <Table.Cell>
-                                <Header as={'H4'}>Статус</Header>
-                            </Table.Cell>
-                            <Table.Cell>
-                                {reco.statusName}
+                                {visit.note}
                             </Table.Cell>
                         </Table.Row>
 
@@ -256,13 +187,15 @@ class RecoViewPage extends Component{
         </Card>
     }
 
-    renderDemoRecosTable(){
-        let {calls} = this.state;
-
+    renderVisitRecosTable(){
+        let {visit} = this.state;
+        if(!visit.recos){
+            return;
+        }
         return <Card fluid>
             <Card.Content>
                 <Card.Header>
-                    Звонки
+                    Рекомендации
                 </Card.Header>
             </Card.Content>
             <Card.Content>
@@ -270,23 +203,18 @@ class RecoViewPage extends Component{
                     <Table.Header>
                         <Table.Row>
                             <Table.HeaderCell>#</Table.HeaderCell>
-                            <Table.HeaderCell>Компания</Table.HeaderCell>
-                            <Table.HeaderCell>Филиал</Table.HeaderCell>
-                            <Table.HeaderCell>Дата-время звонка</Table.HeaderCell>
-                            <Table.HeaderCell>Звонил</Table.HeaderCell>
-                            <Table.HeaderCell>Номер</Table.HeaderCell>
-                            <Table.HeaderCell>Результат</Table.HeaderCell>
-                            <Table.HeaderCell>Примечание</Table.HeaderCell>
+                            <Table.HeaderCell>ФИО супруг</Table.HeaderCell>
+                            <Table.HeaderCell>Статус</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
 
                     <Table.Body>
-                        {calls.map((item,idx) => {
+                        {visit.recos.map((item,idx) => {
                             return <Table.Row key={item.id}>
-                                    <Table.Cell>{idx+1}</Table.Cell>
-                                    <Table.Cell>{item.clientName}</Table.Cell>
-                                    <Table.Cell>{item.statusName}</Table.Cell>
-                                </Table.Row>
+                                <Table.Cell>{idx+1}</Table.Cell>
+                                <Table.Cell>{item.clientName}</Table.Cell>
+                                <Table.Cell>{item.statusName}</Table.Cell>
+                            </Table.Row>
                         })}
                     </Table.Body>
                 </Table>
@@ -299,7 +227,7 @@ class RecoViewPage extends Component{
             ...this.state,
             updateModalOpened:false
         });
-        this.loadItem(this.state.reco.id);
+        this.loadItem(this.state.visit.id);
     }
 
     render(){
@@ -307,13 +235,13 @@ class RecoViewPage extends Component{
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
                 <Segment clearing>
                     <Header as='h2' floated='left'>
-                        Рекомендация № {this.state.reco.id}
+                        Визит № {this.state.visit.id}
                     </Header>
                 </Segment>
                 {this.renderActions()}
                 <RecoUpdateModal
                     modalOpened={this.state.updateModalOpened}
-                    reco={this.state.reco}
+                    reco={this.state.visit}
                     onClose={this.onCloseUpdateModal}
                 />
                 <Divider/>
@@ -324,7 +252,7 @@ class RecoViewPage extends Component{
                         </Grid.Column>
 
                         <Grid.Column width={8}>
-                            {this.renderDemoRecosTable()}
+                            {this.renderVisitRecosTable()}
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
@@ -333,4 +261,4 @@ class RecoViewPage extends Component{
     }
 }
 
-export default RecoViewPage;
+export default VisitViewPage;

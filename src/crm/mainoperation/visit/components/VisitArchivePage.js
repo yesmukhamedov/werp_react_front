@@ -5,13 +5,14 @@ import { Tab,Header,Container,Label,Icon,Button,Segment,Menu,Dropdown } from 'se
 import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
 import moment from 'moment';
+import VisitCreateModal from './VisitCreateModal';
 
 const categoryButtons = {
     1:'green',
     2:'olive',
     3:'grey'
 };
-class DemoArchivePage extends Component{
+class VisitArchivePage extends Component{
 
     constructor(props) {
         super(props)
@@ -20,15 +21,18 @@ class DemoArchivePage extends Component{
             callResultOptions:[],
             callRefuseOptions:[],
             items:[],
-            loading:false
+            loading:false,
+            showCreateModal:false
         }
 
         this.renderTable = this.renderTable.bind(this);
+        this.openCreateModal = this.openCreateModal.bind(this);
+        this.closeCreateModal = this.closeCreateModal.bind(this);
+        this.loadItems = this.loadItems.bind(this);
     }
 
-    componentWillMount(){
-        this.setState({...this.state,loading:true})
-        axios.get(`${ROOT_URL}/api/crm/demo/archive`,{
+    loadItems(){
+        axios.get(`${ROOT_URL}/api/crm/visit/archive`,{
             headers: {
                 authorization: localStorage.getItem('token')}
         }).then((res) => {
@@ -40,7 +44,12 @@ class DemoArchivePage extends Component{
         }).catch((e) => {
             console.log(e);
         })
+    }
 
+    componentWillMount(){
+        this.setState({...this.state,loading:true})
+
+        this.loadItems();
         axios.get(`${ROOT_URL}/api/crm/call/results`,{
             headers: {
                 authorization: localStorage.getItem('token')}
@@ -108,29 +117,24 @@ class DemoArchivePage extends Component{
                             accessor: "address"
                         },
                         {
-                            Header:"Дата-время",
-                            accessor: "dateTime",
-                            Cell:row => moment(row.value).format('DD.MM.YYYY HH:mm')
+                            Header:"Дата посещения",
+                            accessor: "docDate",
+                            Cell:row => moment(row.value).format('DD.MM.YYYY')
                         },
                         {
-                            Header:"Дилер",
-                            accessor: "dealerName",
+                            Header:"Посетитель",
+                            accessor: "visitorName",
                             minWidth:150
                         },
                         {
                             Header:"Примечание",
                             accessor: "note"
                         },
-
-                        {
-                            Header:"Результат",
-                            accessor: "resultName"
-                        },
                         {
                             Header:"Действия",
                             accessor:"id",
                             Cell:row => (
-                                <Link className={'ui icon button mini'} to={`/crm/demo/view/` + row.value}>
+                                <Link className={'ui icon button mini'} to={`/crm/visit/view/` + row.value}>
                                     Просмотр
                                 </Link>
                             ),
@@ -146,18 +150,40 @@ class DemoArchivePage extends Component{
         )
     }
 
+    openCreateModal(){
+        this.setState({
+            ...this.state,
+            showCreateModal:true
+        })
+    }
+
+    closeCreateModal(){
+        this.setState({
+            ...this.state,
+            showCreateModal:false
+        })
+    }
+
     render(){
         return (
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
                 <Segment clearing>
                     <Header as='h2' floated='left'>
-                        Архив демонстрации группы
+                        Список визитов группы
                     </Header>
+                    <Button className={'ui icon button primary right floated'} onClick={this.openCreateModal}>
+                        <Icon name='plus' /> Добавить
+                    </Button>
                 </Segment>
                 {this.renderTable()}
+                <VisitCreateModal
+                    modalOpened={this.state.showCreateModal}
+                    onClose={this.closeCreateModal}
+                    afterSave={this.loadItems}
+                />
             </Container>
         )
     }
 }
 
-export default DemoArchivePage;
+export default VisitArchivePage;

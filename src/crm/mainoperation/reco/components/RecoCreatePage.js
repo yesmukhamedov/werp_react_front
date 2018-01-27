@@ -6,7 +6,7 @@ import {ROOT_URL} from '../../../../utils/constants';
 import recoStyles from '../css/recoStyles.css'
 import { notify } from '../../../../general/notification/notification_action';
 import DatePicker from "react-datepicker";
-
+import moment from 'moment';
 const switchDateOptions = [
     {
         key:0,
@@ -55,6 +55,7 @@ class RecoCreatePage extends Component{
         this.addReco = this.addReco.bind(this);
         this.submitData = this.submitData.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangeDate = this.handleChangeDate.bind(this);
         this.validateAndSendData = this.validateAndSendData.bind(this);
         this.removeReco = this.removeReco.bind(this);
     }
@@ -114,7 +115,12 @@ class RecoCreatePage extends Component{
                 case 'note':
                 case 'categoryId':
                 case 'switchDate':
+                case 'callerIsDealer':
                     item[originalName] = value;
+                    break
+
+                case 'callDate':
+                    console.log(value);
                     break
 
                 case 'hasAnimal':
@@ -164,8 +170,21 @@ class RecoCreatePage extends Component{
         });
     }
 
-    handleChangeDate(p1,p2,index){
-        console.log(p1,p2,index);
+    handleChangeDate(m,index){
+        let {reco} = this.state;
+        let item = reco['items'][index];
+        if(m){
+            console.log(m.utc().unix());
+            item['callDate'] = m.valueOf();
+        }else{
+            item['callDate'] = null;
+        }
+
+        reco['items'][index] = item;
+        this.setState({
+            ...this.state,
+            reco:reco
+        });
     }
 
     addReco(){
@@ -215,7 +234,7 @@ class RecoCreatePage extends Component{
             error.push("Выберите дилера");
         }
 
-        if(reco.tempRecommender.length === 0){
+        if(!reco.tempRecommender || reco.tempRecommender.length === 0){
             error.push("Введите ФИО рекомендателя");
         }
 
@@ -266,7 +285,7 @@ class RecoCreatePage extends Component{
         })
             .then((response) => {
                 //this.context.router.push('/crm/reco/current');
-                window.location.href="/crm/reco/current";
+                //window.location.href="/crm/reco/current";
             }).catch((error) => {
             switch (error.response.status){
                 case 400:
@@ -284,10 +303,12 @@ class RecoCreatePage extends Component{
     renderCallDate(show,index){
         if(show){
             return <DatePicker
+                label=""
                 placeholderText={'Дата-время звонка'}
-                showMonthDropdown showYearDropdown dropdownMode="select"
-                dateFormat="DD.MM.YYYY"
-                onChange={(p1,p2) => this.handleChangeDate(p1,p2,index)}
+                showMonthDropdown showYearDropdown showTimeSelect dropdownMode="select"
+                dateFormat="DD.MM.YYYY HH:mm"
+                selected={this.state.reco.items[index].callDate?moment(this.state.reco.items[index].callDate):null}
+                onChange={(v) => this.handleChangeDate(v,index)}
             />
         }
 
@@ -340,7 +361,7 @@ class RecoCreatePage extends Component{
                                        placeholder='Дата время звонка'
                                        options={switchDateOptions}
                                        onChange={this.handleChange}  />
-                        {this.renderCallDate(item.switchDate === 1)}
+                        {this.renderCallDate(item.switchDate === 1,index)}
                         <Form.Dropdown name={this.getItemName('callerIsDealer',index)} defaultValue="0" fluid selection label="Звонить будет"
                                        placeholder='Звонить будет' options={callerOptions}
                                        onChange={this.handleChange}  />

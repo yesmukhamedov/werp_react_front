@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ReactTable from 'react-table';
 import axios from 'axios';
-import {Container,Header,Segment,Grid,Form,Divider,Loader} from 'semantic-ui-react';
+import {Container,Header,Segment,Form,Divider} from 'semantic-ui-react';
 import {ROOT_URL} from '../../../../utils/constants';
 import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4'
 import BranchF4 from '../../../../reference/f4/branch/BranchF4'

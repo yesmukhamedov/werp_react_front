@@ -7,7 +7,7 @@ import {ROOT_URL} from '../../../../utils/constants';
 import moment from 'moment';
 import DemoUpdateModal from './DemoUpdateModal';
 
-class DemoCurrentPage extends Component{
+class DemoViewPage extends Component{
 
     constructor(props) {
         super(props)
@@ -29,7 +29,6 @@ class DemoCurrentPage extends Component{
     }
 
     componentWillMount(){
-        let _this = this;
         this.loadItem(this.props.params.id);
     }
 
@@ -333,4 +332,4 @@ class DemoCurrentPage extends Component{
     }
 }
 
-export default DemoCurrentPage;
+export default DemoViewPage;

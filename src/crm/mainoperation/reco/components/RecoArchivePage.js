@@ -160,10 +160,6 @@ class RecoArchivePage extends Component{
                         {
                             Header:"Статус",
                             accessor: "statusName"
-                        },
-                        {
-                            Header:"Статус Демо",
-                            accessor: "demoStatusName"
                         }
                     ]}
                     defaultPageSize={50}
