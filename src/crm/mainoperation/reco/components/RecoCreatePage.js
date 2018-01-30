@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import { Header,Container,Label,Icon,Form,Grid,Segment,Dropdown,Button,Divider,Checkbox,Radio,Input,List } from 'semantic-ui-react'
 import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
-import recoStyles from '../css/recoStyles.css'
 import { notify } from '../../../../general/notification/notification_action';
 import DatePicker from "react-datepicker";
 import moment from 'moment';
@@ -157,6 +156,9 @@ class RecoCreatePage extends Component{
                     // console.log(v);
                     // console.log(isNaN(v));
                     break
+
+                default:
+                    break;
             }
 
             reco['items'][itemIndex] = item;
@@ -238,7 +240,7 @@ class RecoCreatePage extends Component{
             error.push("Введите ФИО рекомендателя");
         }
 
-        let items = reco.items.map((item,idx) => {
+        reco.items.map((item,idx) => {
             let index = idx+1;
             if(item.phoneNumber1.length === 0 && item.phoneNumber2.length === 0){
                 error.push("Введите хотя бы 1 Тел. номер в рекомендации №" + index);
@@ -320,7 +322,7 @@ class RecoCreatePage extends Component{
             return false;
         }
 
-        let {reco,itemPhones,itemIndex} = this.state;
+        let {reco,itemPhones} = this.state;
         if(reco['items'][index]){
             let counter = 0;
             reco.items.splice(index,1);

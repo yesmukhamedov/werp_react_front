@@ -111,7 +111,7 @@ class KpiRatingReportPage extends Component{
     }
 
     handleDropdownChange(e,result){
-        const {name,value,options} = result;
+        const {name,value} = result;
         let {selectedBukrs,selectedYear,selectedMonth,selectedBranches,selectedPositionId} = this.state;
         switch (name){
             case "bukrs":
@@ -133,6 +133,9 @@ class KpiRatingReportPage extends Component{
             case 'position':
                 selectedPositionId = value;
                 break
+
+            default:
+                break;
         }
 
         this.setState({

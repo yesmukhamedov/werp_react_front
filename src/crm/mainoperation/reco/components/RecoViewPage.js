@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router'
-import ReactTable from 'react-table';
-import { Tab,Header,Container,Label,Icon,Button,Segment,Grid,Table,Divider,Card,Modal } from 'semantic-ui-react'
+import { Header,Container,Button,Segment,Grid,Table,Divider,Card } from 'semantic-ui-react'
 import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
-import moment from 'moment';
 import RecoUpdateModal from './RecoUpdateModal';
 
 class RecoViewPage extends Component{

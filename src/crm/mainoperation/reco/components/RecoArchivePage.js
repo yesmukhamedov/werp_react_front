@@ -1,17 +1,12 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router'
 import ReactTable from 'react-table';
-import { Tab,Header,Container,Label,Icon,Button,Segment,Table } from 'semantic-ui-react'
+import { Tab,Header,Container,Icon,Segment,Table } from 'semantic-ui-react'
 import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
 import Phone from './Phone';
 import moment from 'moment';
 
-const categoryButtons = {
-    1:'green',
-    2:'olive',
-    3:'grey'
-};
 class RecoArchivePage extends Component{
 
     constructor(props) {

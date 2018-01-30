@@ -99,31 +99,6 @@ class AccountabilityStaffDetailPage extends Component{
         )
     }
 
-    renderBarcode(b){
-        return (
-            <div key={b} style={'display:block;'}>{b}</div>
-        )
-    }
-
-    renderSalaryData(){
-        let salaries = this.state.salaries;
-        return (
-            <Table celled striped>
-                <Table.Body>
-                    {salaries.map((sal) => {
-                        return (
-                            <Table.Row key={sal.salaryId}>
-                                <Table.Cell>{sal.bukrsName}</Table.Cell>
-                                <Table.Cell>{sal.branchName}</Table.Cell>
-                                <Table.Cell>{sal.positionName}</Table.Cell>
-                            </Table.Row>
-                        )
-                    })}
-                </Table.Body>
-            </Table>
-        )
-    }
-
     renderData(){
         return (
             <Table celled striped>

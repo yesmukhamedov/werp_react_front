@@ -1,17 +1,10 @@
 import React, {Component} from 'react';
 import axios from 'axios';
-import {BarChart,XAxis,YAxis,Tooltip,Legend,Bar,CartesianGrid} from 'recharts';
+import {BarChart,XAxis,YAxis,Tooltip,Bar,CartesianGrid} from 'recharts';
 import {Container,Header,Segment,Grid,Divider,Breadcrumb,Loader,Button,Icon,Table} from 'semantic-ui-react';
 import KpiCard from './KpiCard';
 import {ROOT_URL} from '../../../../utils/constants';
 
-const CustomizedLabel = React.createClass({
-    render () {
-        const {x, y, stroke, value} = this.props;
-
-        return <text x={x} y={y} dy={-4} fill={stroke} fontSize={10} textAnchor="middle">{value}</text>
-    }
-});
 const CustomizedAxisTick = React.createClass({
     render () {
         const {x, y, stroke, payload} = this.props;
@@ -190,7 +183,7 @@ class KpiReportPage extends Component{
                 <Table.Row>
                     <Table.HeaderCell>#</Table.HeaderCell>
                     <Table.HeaderCell>Название</Table.HeaderCell>
-                    <Table.HeaderCell>Рейтинг</Table.HeaderCell>
+                    <Table.HeaderCell>Набранный балл</Table.HeaderCell>
                     <Table.HeaderCell></Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
@@ -201,10 +194,10 @@ class KpiReportPage extends Component{
                         <Table.Cell>{idx+1}</Table.Cell>
                         <Table.Cell>{item.name}</Table.Cell>
                         <Table.Cell
-                            negative={item.totalPercentage < 60}
-                            positive={item.totalPercentage > 80}
-                            warning={item.totalPercentage >= 60 && item.totalPercentage <= 80}
-                        >{this.roundedValue(item.totalPercentage)}%</Table.Cell>
+                            negative={item.totalAverageScore < 60}
+                            positive={item.totalAverageScore > 80}
+                            warning={item.totalAverageScore >= 60 && item.totalAverageScore <= 80}
+                        >{this.roundedValue(item.totalAverageScore)}</Table.Cell>
                         <Table.Cell>
                             {item.detailable?<Button onClick={(e) => this.loadItems(item.detailContext,item.id)}>
                                     Деталь

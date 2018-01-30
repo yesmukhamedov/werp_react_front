@@ -98,6 +98,8 @@ class AccountabilityStaffListPage extends Component{
                     limitChecked:!tempCheched
                 })
                 break
+            default:
+                break;
         }
     }
 
