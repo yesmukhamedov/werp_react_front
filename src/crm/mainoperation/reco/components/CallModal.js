@@ -79,6 +79,10 @@ class CallModal extends Component{
 
     }
 
+    componentWillReceiveProps(props){
+        console.log(props);
+    }
+
     handlePhoneClick(){
         axios.get(`${ROOT_URL}/api/crm/call/number-history/` + this.props.id,{
             headers: {
@@ -170,6 +174,7 @@ class CallModal extends Component{
     }
 
     handleChange(fieldName,o){
+        console.log(this.state.call.bukrs);
         let {call,showDemoForm,errors} = this.state;
 
         switch (fieldName){

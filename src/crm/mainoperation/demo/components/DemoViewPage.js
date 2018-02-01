@@ -276,6 +276,7 @@ class DemoViewPage extends Component{
                             <Table.HeaderCell>#</Table.HeaderCell>
                             <Table.HeaderCell>ФИО супруг</Table.HeaderCell>
                             <Table.HeaderCell>Статус</Table.HeaderCell>
+                            <Table.HeaderCell></Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
 
@@ -285,6 +286,9 @@ class DemoViewPage extends Component{
                                     <Table.Cell>{idx+1}</Table.Cell>
                                     <Table.Cell>{item.clientName}</Table.Cell>
                                     <Table.Cell>{item.statusName}</Table.Cell>
+                                <Table.Cell><Link className={'ui icon button mini'} to={`/crm/reco/view/` + item.id}>
+                                    Просмотр
+                                </Link></Table.Cell>
                                 </Table.Row>
                         })}
                     </Table.Body>

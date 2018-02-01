@@ -229,6 +229,7 @@ class DemoArchivePage extends Component{
                         <Table.HeaderCell>Назначел(а)</Table.HeaderCell>
                         <Table.HeaderCell>Результат</Table.HeaderCell>
                         <Table.HeaderCell>Дата-время демо</Table.HeaderCell>
+                        <Table.HeaderCell></Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
             <Table.Body>
@@ -241,12 +242,15 @@ class DemoArchivePage extends Component{
                         <Table.Cell>Cell</Table.Cell>
                         <Table.Cell>{item.resultName}</Table.Cell>
                         <Table.Cell>{item.dateTime}</Table.Cell>
+                        <Table.Cell><Link className={'ui icon button mini'} to={`/crm/demo/view/` + item.id}>
+                            Просмотр
+                        </Link></Table.Cell>
                     </Table.Row>
                 })}
             </Table.Body>
             <Table.Footer>
                 <Table.Row>
-                    <Table.HeaderCell colSpan='7'>
+                    <Table.HeaderCell colSpan='8'>
                         <LazyPagination
                             onItemClick={this.onPaginationItemClick}
                             totalRows={this.state.totalRows}

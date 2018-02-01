@@ -197,7 +197,7 @@ class KpiReportPage extends Component{
                             negative={item.totalAverageScore < 60}
                             positive={item.totalAverageScore > 80}
                             warning={item.totalAverageScore >= 60 && item.totalAverageScore <= 80}
-                        >{this.roundedValue(item.totalAverageScore)}</Table.Cell>
+                        >{item.totalAverageScore}</Table.Cell>
                         <Table.Cell>
                             {item.detailable?<Button onClick={(e) => this.loadItems(item.detailContext,item.id)}>
                                     Деталь
@@ -212,12 +212,12 @@ class KpiReportPage extends Component{
     renderAsChart(){
         let chartData = [];
         for(let k in this.state.items){
-            if(this.state.items[k]['totalPercentage'] > 0){
+            //if(this.state.items[k]['totalAverageScore'] > 0){
                 chartData.push({
                     name:this.state.items[k]['name'],
-                    score:this.roundedValue(this.state.items[k]['totalPercentage'])
+                    score:this.state.items[k]['totalAverageScore']
                 });
-            }
+            //}
         }
 
         return <BarChart width={900} height={400} data={chartData}

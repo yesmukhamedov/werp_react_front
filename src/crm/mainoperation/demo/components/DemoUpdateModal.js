@@ -83,7 +83,6 @@ class DemoUpdateModal extends Component{
                     value:k
                 }
             });
-            console.log(results);
             this.setState({
                 ...this.state,
                 results:results

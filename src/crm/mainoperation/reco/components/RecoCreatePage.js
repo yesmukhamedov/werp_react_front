@@ -232,7 +232,7 @@ class RecoCreatePage extends Component{
     validateAndSendData(){
         let {reco} = this.state;
         let error = [];
-        if(reco.responsibleId === 0){
+        if(reco.responsibleId === 0 || reco.responsibleId == null){
             error.push("Выберите дилера");
         }
 
@@ -287,7 +287,7 @@ class RecoCreatePage extends Component{
         })
             .then((response) => {
                 //this.context.router.push('/crm/reco/current');
-                //window.location.href="/crm/reco/current";
+                window.location.href="/crm/reco/current";
             }).catch((error) => {
             switch (error.response.status){
                 case 400:
@@ -324,7 +324,6 @@ class RecoCreatePage extends Component{
 
         let {reco,itemPhones} = this.state;
         if(reco['items'][index]){
-            let counter = 0;
             reco.items.splice(index,1);
             itemPhones.splice(index,1);
 

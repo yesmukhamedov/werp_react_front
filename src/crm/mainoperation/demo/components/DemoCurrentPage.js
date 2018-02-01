@@ -137,7 +137,7 @@ class DemoCurrentPage extends Component{
                             Header:'',
                             accessor:'id',
                             filterable:false,
-                            Cell: ({value}) => <Link className={'ui icon button'} to={`/crm/demo/view/` + value}>
+                            Cell: ({value}) => <Link className={'ui icon button mini'} to={`/crm/demo/view/` + value}>
                                             Просмотр
                                         </Link>
                         }
