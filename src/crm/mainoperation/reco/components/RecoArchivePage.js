@@ -155,6 +155,14 @@ class RecoArchivePage extends Component{
                         {
                             Header:"Статус",
                             accessor: "statusName"
+                        },
+                        {
+                            Header:'',
+                            accessor:'id',
+                            filterable:false,
+                            Cell: ({value}) => <Link className={'ui icon button mini'} to={`/crm/reco/view/` + value}>
+                                Просмотр
+                            </Link>
                         }
                     ]}
                     defaultPageSize={50}

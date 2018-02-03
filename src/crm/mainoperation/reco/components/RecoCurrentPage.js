@@ -167,10 +167,6 @@ class RecoCurrentPage extends Component{
                             accessor: "responsibleName"
                         },
                         {
-                            Header:"Звонит",
-                            accessor: "callerName"
-                        },
-                        {
                             Header:"Примечание",
                             accessor: "note"
                         },

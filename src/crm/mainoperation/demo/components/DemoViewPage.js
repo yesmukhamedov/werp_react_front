@@ -6,6 +6,7 @@ import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
 import moment from 'moment';
 import DemoUpdateModal from './DemoUpdateModal';
+import DemoCreateModal from './DemoCreateModal';
 
 class DemoViewPage extends Component{
 
@@ -18,7 +19,8 @@ class DemoViewPage extends Component{
             callRefuseOptions:[],
             items:[],
             loading:false,
-            updateModalOpened:false
+            updateModalOpened:false,
+            createModalOpened:false
         }
 
         this.renderActions = this.renderActions.bind(this);
@@ -26,6 +28,8 @@ class DemoViewPage extends Component{
         this.openUpdateModal = this.openUpdateModal.bind(this);
         this.onCloseUpdateModal = this.onCloseUpdateModal.bind(this);
         this.loadItem = this.loadItem.bind(this);
+        this.openCreateModal = this.openCreateModal.bind(this);
+        this.onCloseCreateModal = this.onCloseCreateModal.bind(this);
     }
 
     componentWillMount(){
@@ -73,6 +77,8 @@ class DemoViewPage extends Component{
             {this.state.demo.resultId === 0 ?'':<Link className={'ui icon button'} to={`/crm/reco/create/demo/` + this.state.demo.id}>
                     Добавить рекомендации
                 </Link>}
+
+            <Button onClick={this.openCreateModal}>Добавить демо</Button>
         </div>
     }
 
@@ -80,6 +86,13 @@ class DemoViewPage extends Component{
         this.setState({
             ...this.state,
             updateModalOpened:true
+        })
+    }
+
+    openCreateModal(){
+        this.setState({
+            ...this.state,
+            createModalOpened:true
         })
     }
 
@@ -305,6 +318,14 @@ class DemoViewPage extends Component{
         this.loadItem(this.state.demo.id);
     }
 
+    onCloseCreateModal(){
+        this.setState({
+            ...this.state,
+            createModalOpened:false
+        });
+        this.loadItem(this.state.demo.id);
+    }
+
     render(){
         return (
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
@@ -318,6 +339,14 @@ class DemoViewPage extends Component{
                     modalOpened={this.state.updateModalOpened}
                     demo={this.state.demo}
                     onClose={this.onCloseUpdateModal}
+                />
+                <DemoCreateModal
+                    modalOpened={this.state.createModalOpened}
+                    parentId={this.state.demo.id}
+                    visitId={0}
+                    recoId={0}
+                    dealerId={this.state.demo.dealerId}
+                    onClose={this.onCloseCreateModal}
                 />
                 <Divider/>
                 <Grid>
