@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router'
-import { Header,Container,Button,Segment,Grid,Table,Divider,Card,Modal } from 'semantic-ui-react'
+import { Header,Container,Button,Segment,Grid,Table,Divider,Card,Modal,Form,Input } from 'semantic-ui-react'
 import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
 import RecoUpdateModal from './RecoUpdateModal';
@@ -20,7 +20,9 @@ class RecoViewPage extends Component{
             items:[],
             loading:false,
             updateModalOpened:false,
-            showDeleteModal:false
+            showDeleteModal:false,
+            showPhoneUpdateModal:false,
+            formattedPhones:{}
         }
 
         this.renderActions = this.renderActions.bind(this);
@@ -30,6 +32,8 @@ class RecoViewPage extends Component{
         this.loadCalls = this.loadCalls.bind(this);
         this.deleteModalTrigger = this.deleteModalTrigger.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
+        this.handlePhoneChange = this.handlePhoneChange.bind(this);
+        this.submitPhoneUpdate = this.submitPhoneUpdate.bind(this);
     }
 
     componentWillMount(){
@@ -82,9 +86,14 @@ class RecoViewPage extends Component{
             headers: {
                 authorization: localStorage.getItem('token')}
         }).then((response) => {
+            let formattedPhones = {};
+            for(let i in response.data['phones']){
+                formattedPhones['p_' + response.data['phones'][i]['id']] = this.formatPhoneNumber(response.data['phones'][i]['phoneNumber']);
+            }
             this.setState({
                 ...this.state,
-                reco:response.data
+                reco:response.data,
+                formattedPhones:formattedPhones
             })
         }).catch(function(e){
             if(e.response && e.response.status && e.response.status === 404){
@@ -145,6 +154,94 @@ class RecoViewPage extends Component{
             </Modal.Actions>
         </Modal>
     }
+    formatPhoneNumber(phoneNumber){
+        if(!phoneNumber || phoneNumber.length === 0){
+            return '';
+        }
+
+        let out = phoneNumber;
+        if(phoneNumber.length > 8){
+            out = phoneNumber.substring(0,3) + '-' + phoneNumber.substring(3,6) + '-' + phoneNumber.substring(6,8) + '-' + phoneNumber.substring(8,10);
+        }else if(phoneNumber.length > 6){
+            out = phoneNumber.substring(0,3) + '-' + phoneNumber.substring(3,6) + '-' + phoneNumber.substring(6,8);
+        }else if(phoneNumber.length > 3){
+            out = phoneNumber.substring(0,3) + '-' + phoneNumber.substring(3);
+        }
+
+        return out;
+    }
+    renderPhoneFormField(phone){
+        return <Form.Field key={phone.id}>
+            <label>Тел. номер</label>
+            <Input label={{ basic:true,content:'+7'}} placeholder='705-224-26-45'
+                   name={'p_' + phone.id} onChange={this.handlePhoneChange}
+                   value={this.formatPhoneNumber(phone.phoneNumber)} />
+        </Form.Field>
+    }
+
+    handlePhoneChange(a,b){
+        let {reco} = this.state;
+        let phones = reco.phones;
+        let {name,value} = b;
+
+        let existed = false;
+        for(let k in  phones){
+            if(name === 'p_' + phones[k]['id']){
+                let v = value.replace(/[^0-9\.]+/g, '');
+                phones[k]['phoneNumber'] = v.substring(0,10);
+                existed = true;
+                break;
+            }
+        }
+
+        reco['phones'] = phones;
+
+        this.setState({
+            ...this.state,
+            reco:reco
+        });
+    }
+
+    submitPhoneUpdate(){
+        const o = {"phones":this.state.reco.phones};
+        axios.put(`${ROOT_URL}/api/crm/reco/update-phones/` + this.state.reco.id,
+            { ...o },
+            {
+                headers: {
+                    authorization: localStorage.getItem('token')
+                }
+        })
+            .then((response) => {
+                this.setState({
+                    ...this.state,
+                    showPhoneUpdateModal:false
+                })
+            }).catch((error) => {
+            console.log(error);
+        })
+    }
+
+    renderPhoneUpdateModal(){
+        if(!this.state.reco.phones){
+            return;
+        }
+        return <Modal open={this.state.showPhoneUpdateModal}>
+            <Modal.Header>Редактирование тел. номеров</Modal.Header>
+            <Modal.Content>
+                <Form.Group widths='equal'>
+                    {this.state.reco.phones.map((phone) => {
+                        return this.renderPhoneFormField(phone);
+                    })}
+                </Form.Group>
+            </Modal.Content>
+            <Modal.Actions>
+                <Button onClick={() => this.setState({...this.state,showPhoneUpdateModal:false})} negative>
+                    Отмена
+                </Button>
+                <Button positive onClick={this.submitPhoneUpdate} icon='checkmark' labelPosition='right' content='Сохранить' />
+            </Modal.Actions>
+        </Modal>
+    }
 
     renderActions(){
         return <div>
@@ -152,6 +249,9 @@ class RecoViewPage extends Component{
                 В список
             </Link>
             <Button onClick={this.openUpdateModal}>Редактировать</Button>
+            <Button onClick={() => this.setState({...this.state,showPhoneUpdateModal:true})}>
+                Редактировать тел. номера
+            </Button>
             <Button color={'red'} onClick={() => this.deleteModalTrigger(true)}>Удалить</Button>
         </div>
     }
@@ -444,6 +544,7 @@ class RecoViewPage extends Component{
                     reco={this.state.reco}
                     onClose={this.onCloseUpdateModal}
                 />
+                {this.renderPhoneUpdateModal()}
                 <Divider/>
                 <Grid>
                     <Grid.Row>

@@ -114,16 +114,9 @@ class DemoCurrentPage extends Component{
                         },
                         {
                             Header:"Дилер",
-                            accessor: "dealerName",
-                            filterMethod: (filter, row) =>
-                                row[filter.id].startsWith(filter.value)
+                            accessor: "dealerName"
                         },
-                        {
-                            Header:"Категория",
-                            accessor: "categoryName",
-                            //id:"categoryId",
-                            //Cell:row => <Button color={categoryButtons[row.id]}>{row.id}</Button>
-                        },
+
                         {
                             Header:"Примечание",
                             accessor: "note"
@@ -137,12 +130,30 @@ class DemoCurrentPage extends Component{
                             Header:'',
                             accessor:'id',
                             filterable:false,
+                            maxWidth:100,
                             Cell: ({value}) => <Link className={'ui icon button mini'} to={`/crm/demo/view/` + value}>
                                             Просмотр
                                         </Link>
                         }
                     ]}
 
+                    defaultFilterMethod={(filter,row) => {
+                        const colName = filter.id;
+                        if(colName === 'dateTime'){
+                            return moment(row[colName]).format('DD.MM.YYYY HH:mm').toString().includes(filter.value);
+                        }
+
+                        if(filter.value && filter.value.length > 0 && row[colName] && row[colName].length > 0){
+
+
+                            return row[colName].toLowerCase().includes(filter.value.toLowerCase());
+                        }
+                    }}
+
+                    previousText={'Пред.'}
+                    nextText={'След.'}
+                    rowsText={'строк'}
+                    pageText={'Страница'}
                     filterable
                     className="-striped -highlight">
 

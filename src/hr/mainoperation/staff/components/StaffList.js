@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import {Link} from 'react-router'
 import axios from 'axios';
-import {Container,Divider,Menu,Table,Icon,Header,Button} from 'semantic-ui-react';
+import {Container,Divider,Menu,Table,Icon,Header,Button,Segment,Form,Grid} from 'semantic-ui-react';
 import {ROOT_URL} from '../../../../utils/constants';
+import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4'
+import BranchF4 from '../../../../reference/f4/branch/BranchF4'
+import PositionF4 from '../../../../reference/f4/position/PositionF4'
 
 const PAGINATION_TOTAL_COUNT_KEY = 'X-Pagination-Total-Count';
 const PAGINATION_CURRENT_PAGE_KEY = 'X-Pagination-Current-Page';
@@ -16,19 +19,19 @@ class StaffList extends Component{
         this.state = {
             items:[],
             queryParams:{
-                companyId:'',
-                branchId:0,
-                iin:'',
-                firstname:'',
-                lastname:'',
+                bukrs:'',
+                branchIds:[],
+                iinBin:'',
+                firstName:'',
+                lastName:'',
                 departmentId:0,
+                positionId:0,
                 page:0
-            },
-            pagination:{
-                currentPage:0,
-
             }
         }
+
+        this.handleDropdownChange = this.handleDropdownChange.bind(this);
+        this.loadItems = this.loadItems.bind(this);
     }
 
     componentWillMount(){
@@ -36,6 +39,11 @@ class StaffList extends Component{
     }
 
     loadItems(){
+        const {queryParams} = this.state;
+        if(queryParams.branchIds){
+            queryParams['branchIds'] = queryParams.branchIds.join()
+        }
+
         axios.get(`${ROOT_URL}/api/hr/staff`,{
             headers: {
                 authorization: localStorage.getItem('token')
@@ -89,11 +97,11 @@ class StaffList extends Component{
                             <Table.Cell></Table.Cell>
                             <Table.Cell>
                                 <Link className={'ui icon button'} to={`/hr/staff/view/${item.staffId}`}>
-                                    <Icon name='eye' large />
+                                    <Icon name='eye' />
                                 </Link>
 
                                 <Link className={'ui icon button'} to={`/hr/staff/update/${item.staffId}`}>
-                                    <Icon name='pencil' large />
+                                    <Icon name='pencil' />
                                 </Link>
 
                             </Table.Cell>
@@ -127,6 +135,59 @@ class StaffList extends Component{
         )
     }
 
+    renderSearchPanel(){
+        return <div>
+            <Header as='h4' attached='top'>
+                Расширенный поиск
+            </Header>
+            <Segment attached>
+                <Form>
+                    <BukrsF4 handleChange={this.handleDropdownChange} />
+                    <BranchF4 search={true} multiple={true} handleChange={this.handleDropdownChange} bukrs={this.state.queryParams.bukrs} />
+                    <PositionF4 handleChange={this.handleDropdownChange}/>
+                    <Form.Field>
+                        <Form.Select name="resultIds" label='Результат'
+                                     fluid multiple selection options={this.state.resultOptions} placeholder='Результат' onChange={this.handleDropdown} />
+                    </Form.Field>
+
+                    <Button loading={this.state.btnLoading} onClick={this.loadItems} type='submit'>Сформировать</Button>
+                </Form>
+            </Segment>
+        </div>
+    }
+
+    handleDropdownChange(e,o){
+        let {name,value} = o;
+        let {queryParams} = this.state;
+        switch (name){
+            case 'bukrs':
+                queryParams[name] = value;
+                queryParams['branchIds'] = [];
+                break;
+
+            case 'branch':
+                queryParams['branchIds'] = value;
+                break;
+
+            case 'position':
+                queryParams['positionId'] = value;
+                break
+
+            case 'resultIds':
+                queryParams[name] = value;
+                break;
+
+            default:
+                queryParams[name] = value;
+                break;
+        }
+
+        this.setState({
+            ...this.state,
+            queryParams:queryParams
+        })
+    }
+
     render(){
         return (
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
@@ -134,11 +195,20 @@ class StaffList extends Component{
                     Список сотрудников
                 </Header>
                 <Divider/>
-                <Table celled striped>
-                    {this.renderTableHeader()}
-                    {this.renderTableBody()}
-                    {this.renderTableFooter()}
-                </Table>
+                <Grid>
+                    <Grid.Column floated='left' width={4}>
+                        {this.renderSearchPanel()}
+                    </Grid.Column>
+
+                    <Grid.Column floated='left' width={12}>
+                        <Table celled striped>
+                            {this.renderTableHeader()}
+                            {this.renderTableBody()}
+                            {this.renderTableFooter()}
+                        </Table>
+                    </Grid.Column>
+                </Grid>
+                <Divider/>
             </Container>
         )
     }

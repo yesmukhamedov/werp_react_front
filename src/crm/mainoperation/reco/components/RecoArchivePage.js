@@ -124,6 +124,22 @@ class RecoArchivePage extends Component{
         </Table.Row>
     }
 
+    defaultFilter(filter,row){
+        switch (filter.id){
+            case 'recommenderName':
+            case 'clientName':
+            case 'phoneNumber':
+            case 'statusName':
+                if(filter.value.length > 0 && row[filter.id] && row[filter.id].length > 0){
+                    //return
+                    return row[filter.id].toLowerCase().indexOf(filter.value.toLowerCase()) !== -1;
+                }
+
+            default:
+                return false;
+        }
+    }
+
     renderItems(){
         return (
             <div>
@@ -145,7 +161,7 @@ class RecoArchivePage extends Component{
                         },
                         {
                             Header:"Тел. номера",
-                            id:"phoneNumbers",
+                            id:"pNumbers",
                             accessor: row=>this.renderPhoneNumbers(row.id,row.phones)
                         },
                         {
@@ -166,6 +182,7 @@ class RecoArchivePage extends Component{
                         }
                     ]}
                     defaultPageSize={50}
+                    defaultFilterMethod={(filter,row) => this.defaultFilter(filter,row)}
                     filterable
                     className="-striped -highlight">
 

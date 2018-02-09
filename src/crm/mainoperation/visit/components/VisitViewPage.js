@@ -6,6 +6,7 @@ import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
 import moment from 'moment';
 import RecoUpdateModal from './VisitUpdateModal';
+import DemoCreateModal from '../../demo/components/DemoCreateModal'
 
 class VisitViewPage extends Component{
 
@@ -19,7 +20,8 @@ class VisitViewPage extends Component{
             callRefuseOptions:[],
             items:[],
             loading:false,
-            updateModalOpened:false
+            updateModalOpened:false,
+            demoCreateModalOpened:false
         }
 
         this.renderActions = this.renderActions.bind(this);
@@ -27,6 +29,8 @@ class VisitViewPage extends Component{
         this.onCloseUpdateModal = this.onCloseUpdateModal.bind(this);
         this.loadItem = this.loadItem.bind(this);
         this.loadCalls = this.loadCalls.bind(this);
+        this.openDemoCreateModal = this.openDemoCreateModal.bind(this);
+        this.onCloseDemoCreateModal = this.onCloseDemoCreateModal.bind(this);
     }
 
     componentWillMount(){
@@ -77,7 +81,16 @@ class VisitViewPage extends Component{
             <Link className={'ui icon button'} to={`/crm/reco/create/visit/` + this.state.visit.id}>
                 Добавить рекомендации
             </Link>
+
+            <Button onClick={this.openDemoCreateModal}>Добавить демо</Button>
         </div>
+    }
+
+    openDemoCreateModal(){
+        this.setState({
+            ...this.state,
+            demoCreateModalOpened:true
+        })
     }
 
     openUpdateModal(){
@@ -230,6 +243,14 @@ class VisitViewPage extends Component{
         this.loadItem(this.state.visit.id);
     }
 
+    onCloseDemoCreateModal(){
+        this.setState({
+            ...this.state,
+            demoCreateModalOpened:false
+        });
+        this.loadItem(this.state.visit.id);
+    }
+
     render(){
         return (
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
@@ -243,6 +264,15 @@ class VisitViewPage extends Component{
                     modalOpened={this.state.updateModalOpened}
                     reco={this.state.visit}
                     onClose={this.onCloseUpdateModal}
+                />
+
+                <DemoCreateModal
+                    modalOpened={this.state.demoCreateModalOpened}
+                    parentId={0}
+                    visitId={this.state.visit.id}
+                    recoId={0}
+                    dealerId={this.state.visit.visitorId}
+                    onClose={this.onCloseDemoCreateModal}
                 />
                 <Divider/>
                 <Grid>

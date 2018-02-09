@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router'
-import ReactTable from 'react-table';
 import { Tab,Header,Container,Label,Icon,Button,Segment,Grid,Table,Divider,Card,Modal } from 'semantic-ui-react'
 import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
@@ -72,7 +71,7 @@ class DemoViewPage extends Component{
             <Link className={'ui icon button'} to={`/crm/demo/current`}>
                 В список
             </Link>
-            <Button>Печать</Button>
+            <Button onClick={() => window.open(`${ROOT_URL}` + '/crm/demo/print/' + this.state.demo.id, 'Print', 'width=1000,height=500')}>Печать</Button>
             <Button onClick={this.openUpdateModal}>Редактировать</Button>
             {this.state.demo.resultId === 0 ?'':<Link className={'ui icon button'} to={`/crm/reco/create/demo/` + this.state.demo.id}>
                     Добавить рекомендации

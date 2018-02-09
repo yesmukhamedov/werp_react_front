@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Label,Icon,Modal,Tab,Table,Button,Form,Input,TextArea,Divider } from 'semantic-ui-react';
+import {Label,Icon,Modal,Tab,Table,Button,Form,Input,TextArea,Divider,Header } from 'semantic-ui-react';
 import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import {ROOT_URL} from '../../../../utils/constants';
@@ -53,6 +53,7 @@ class Phone extends Component{
         this.renderCallForm = this.renderCallForm.bind(this);
         this.saveCall = this.saveCall.bind(this);
         this.closeModal = this.closeModal.bind(this);
+        this.renderRecommenderInfo = this.renderRecommenderInfo.bind(this);
     }
 
     handlePhoneClick(){
@@ -78,10 +79,11 @@ class Phone extends Component{
             headers: {
                 authorization: localStorage.getItem('token')}
         }).then((res) => {
-            res.data['callDate'] = moment();
+            res.data.call['callDate'] = moment();
             this.setState({
                 ...this.state,
-                call:res.data
+                call:res.data.call,
+                recommender:res.data.recommender
             })
         }).catch((e) => {
             console.log(e);
@@ -145,7 +147,40 @@ class Phone extends Component{
     }
 
     renderRecommenderInfo(){
-        return 'TEST3';
+        let {recommender} = this.state;
+        return <Table celled striped>
+            <Table.Body>
+                <Table.Row>
+                    <Table.Cell>
+                        <Header as={'H4'}>ФИО</Header>
+                    </Table.Cell>
+                    <Table.Cell>
+                        {recommender.clientName}
+                    </Table.Cell>
+                </Table.Row>
+
+                <Table.Row>
+                    <Table.Cell>
+                        <Header as={'H4'}>Род. отношение</Header>
+                    </Table.Cell>
+                    <Table.Cell>
+                        {recommender.relationName}
+                    </Table.Cell>
+                </Table.Row>
+
+                <Table.Row>
+                    <Table.Cell>
+                        <Header as={'H4'}>Тел. номера</Header>
+                    </Table.Cell>
+                    <Table.Cell>
+                        {recommender.phoneNumbers.map((item) => {
+                            return item + ', ';
+                        })}
+                    </Table.Cell>
+                </Table.Row>
+
+            </Table.Body>
+        </Table>;
     }
 
     renderCallForm(){

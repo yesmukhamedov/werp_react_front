@@ -17,12 +17,14 @@ class RecoCurrentPage extends Component{
             callRefuseOptions:[],
             usedItems:[],
             newItems:[],
-            doneItems:[]
+            doneItems:[],
+            movedItems:[],
         }
 
         this.renderTabUsed = this.renderTabUsed.bind(this);
         this.renderTabNew = this.renderTabNew.bind(this);
         this.renderTabDemoDone = this.renderTabDemoDone.bind(this);
+        this.renderTableMoved = this.renderTableMoved.bind(this);
         this.loadItems = this.loadItems.bind(this);
         this.onCallSaved = this.onCallSaved.bind(this);
     }
@@ -59,6 +61,18 @@ class RecoCurrentPage extends Component{
             this.setState({
                 ...this.state,
                 doneItems:res.data
+            })
+        }).catch((e) => {
+            console.log(e);
+        })
+
+        axios.get(`${ROOT_URL}/api/crm/reco/current/moved`,{
+            headers: {
+                authorization: localStorage.getItem('token')}
+        }).then((res) => {
+            this.setState({
+                ...this.state,
+                movedItems:res.data
             })
         }).catch((e) => {
             console.log(e);
@@ -137,11 +151,22 @@ class RecoCurrentPage extends Component{
         return (
             <div>
                 <ReactTable
+                    defaultFilterMethod={(filter,row) => {
+                        const colName = filter.id === 'phoneNumbers' ?'phonesAsStr':filter.id;
+                        if(filter.value && filter.value.length > 0 && row[colName] && row[colName]){
+                            return row[colName].toLowerCase().includes(filter.value.toLowerCase());
+                        }
+                    }}
                     data={items}
                     columns={[
                         {
                             Header:"Клиент",
                             accessor:"clientName"
+                        },
+                        {
+                            Header:"",
+                            accessor: "phonesAsStr",
+                            show:false
                         },
                         {
                             Header:"Рекомендатель",
@@ -189,7 +214,8 @@ class RecoCurrentPage extends Component{
                             </Link>
                         }
                     ]}
-
+                    previousText={'Пред.'}
+                    nextText={'След.'}
                     defaultPageSize={50}
                     filterable
                     className="-striped -highlight">
@@ -211,11 +237,16 @@ class RecoCurrentPage extends Component{
         return this.renderTable(this.state.usedItems)
     }
 
+    renderTableMoved(){
+        return this.renderTable(this.state.movedItems)
+    }
+
     render(){
         const panes = [
             { menuItem: 'Использованные', render:this.renderTabUsed },
             { menuItem: 'Новые', render: this.renderTabNew },
             { menuItem: 'Пройденные (для перезвона)', render: this.renderTabDemoDone },
+            { menuItem: 'Перенесенные', render: this.renderTableMoved }
         ]
         return (
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
