@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import { Header,Container,Button,Segment,Grid,Table,Divider,Card,Modal,Form,Input } from 'semantic-ui-react'
 import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';

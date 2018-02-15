@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Menu, Breadcrumb, Dropdown, Label, Icon } from 'semantic-ui-react';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 import jwt from 'jwt-simple';
 import { defineMessages, intlShape, injectIntl } from 'react-intl';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -84,9 +84,21 @@ class Header extends Component {
 
                         <Dropdown item text={this.props.username}>
                             <Dropdown.Menu>
-                                <Dropdown.Item as={Link} to='/settings' icon='setting' text={formatMessage(messages.settings)} />
+                                <Dropdown.Item>
+                                    <Link to='/settings'>
+                                        <Icon name="settings" />
+                                        { formatMessage(messages.settings) }
+                                    </Link>
+                                </Dropdown.Item> 
+                                {/* <Dropdown.Item as={Link} to='/settings' icon='setting' text={formatMessage(messages.settings)} /> */}
                                 <Dropdown.Divider />
-                                <Dropdown.Item as={Link} to='/signout' icon='log out' text={formatMessage(messages.logout)} />
+                                <Dropdown.Item>
+                                    <Link to='/signout'>
+                                        <Icon name="log out" />
+                                        { formatMessage(messages.logout) }
+                                    </Link>
+                                </Dropdown.Item>
+                                {/* <Dropdown.Item as={Link} to='/signout' icon='log out' text={formatMessage(messages.logout)} /> */}
                             </Dropdown.Menu>
                         </Dropdown>
                     </Menu.Menu>

@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router';
+import { Link, Redirect } from 'react-router-dom';
 import {Search, Label} from 'semantic-ui-react';
 import _ from 'lodash'
 import './Header.css';
 import {LEGACY_URL} from "../../utils/constants";
-import {browserHistory} from 'react-router';
+import browserHistory from '../../utils/history';
 
 export default class TransactionSearchbar extends Component {
 

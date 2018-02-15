@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 import ReactTable from "react-table"
 import "react-table/react-table.css"
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import moment from 'moment'
 import {Checkbox, Icon} from 'semantic-ui-react'
 

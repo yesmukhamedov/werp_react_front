@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import TreeView from 'react-treeview'
 import 'react-treeview/react-treeview.css'
 import './TreeViewMenu.css'

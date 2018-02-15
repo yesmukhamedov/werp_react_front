@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, IndexRoute } from 'react-router';
+import { Route } from 'react-router-dom';
 import App from '../App';
 import MainPanel from '../components/MainPanel/MainPanel';
 import Settings from '../components/UserSettings/Settings';
@@ -57,32 +57,36 @@ function persistPath(nextState, replace) {
     }
   }
 
-export default (data) => {
-    return (
-        <Route path="/" component={App}>
-            <IndexRoute component={RequireAuth(MainPanel)} />
-            <Route path="settings" component={RequireAuth(Settings)} />
-            <Route path="signin" component={Signin} />
-            <Route path="signout" component={Signout} />
-            <Route path="dit/userBranch" component={AssignUserBranch} />
-            <Route path="hr/staff/create" component={CreateStaff} />
-            <Route path="hr/staff/view/:id" component={ViewStaff} />
-            <Route path="crm/reco/current" component={RecoCurrentPage} />
-            <Route path="crm/reco/archive" component={RecoArchivePage} />
-            <Route path="crm/reco/create(/:context/:contextId)" component={RecoCreatePage} />
-            <Route path="crm/demo/current" component={DemoCurrentPage} />
-            <Route path="crm/demo/view/:id" component={DemoViewPage} />
-            <Route path="crm/reco/view/:id" component={RecoViewPage} />
-            <Route path="crm/demo/list" component={DemoListPage} />
-            <Route path="crm/visit/archive" component={VisitArchivePage} />
-            <Route path="crm/visit/view/:id" component={VisitViewPage} />
-            <Route path="crm/demo/archive" component={DemoArchivePage} />
-            <Route path="forbidden" component={ForbiddenPage} />
+const generateRoutes = (transactionRoutes) => {
+    return (<div>
+                <Route exact path="/" component={RequireAuth(MainPanel)} />
+                <Route path="/settings" component={RequireAuth(Settings)} />
+                <Route path="/signin" component={Signin} />
+                <Route path="/signout" component={Signout} />
+                
+                <Route path="dit/userBranch" component={AssignUserBranch} />
+                <Route path="hr/staff/create" component={CreateStaff} />
+                <Route path="hr/staff/view/:id" component={ViewStaff} />
+                <Route path="crm/reco/current" component={RecoCurrentPage} />
+                <Route path="crm/reco/archive" component={RecoArchivePage} />
+                <Route path="crm/reco/create(/:context/:contextId)" component={RecoCreatePage} />
+                <Route path="crm/demo/current" component={DemoCurrentPage} />
+                <Route path="crm/demo/view/:id" component={DemoViewPage} />
+                <Route path="crm/reco/view/:id" component={RecoViewPage} />
+                <Route path="crm/demo/list" component={DemoListPage} />
+                <Route path="crm/visit/archive" component={VisitArchivePage} />
+                <Route path="crm/visit/view/:id" component={VisitViewPage} />
+                <Route path="crm/demo/archive" component={DemoArchivePage} />
+                <Route path="forbidden" component={ForbiddenPage} /> 
 
-            {/* dynamically generated URLs */} 
-            {data.map((el) => {
-                return <Route path={`${el.url}`} component={getComponent[el.component]} key={el.transactionCode} onEnter={persistPath}/>
-            })}                      
-        </Route>
-    )
-};
+                {/* dynamically generated URLs  */}
+                {transactionRoutes.map((route) => {
+                    return <Route path={`${route.url}`} 
+                                component={getComponent[route.component]} 
+                                key={route.transactionCode} 
+                                onEnter={persistPath} />
+                })}                       
+            </div>)
+}
+
+export default generateRoutes;

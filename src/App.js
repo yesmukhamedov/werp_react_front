@@ -1,9 +1,10 @@
-/* jshint esversion: 6 */
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import { Router } from 'react-router-dom'
 import jwt from 'jwt-simple'
 import {Menu, Segment, Sidebar} from 'semantic-ui-react'
 import './App.css'
+import history from './utils/history'
 import Signin from './components/Auth/Signin'
 import {fetchUnreadMessages} from './actions/inbox'
 import {fetchTreeMenu, fetchAvailableRoutes, breadcrumbChanged} from './actions/tree_menu'
@@ -53,7 +54,9 @@ class App extends Component {
     const token = localStorage.getItem('token')
         // If we have a token, consider the user to be signed in
     if (token) {
+      
       return (
+        <Router history={history}>
         <div className='wrapper'>
           <Header unread={this.props.unread}
             toggleMenu={() => this.setState({menuVisible: !this.state.menuVisible})} />
@@ -71,10 +74,14 @@ class App extends Component {
                                 />
             </Sidebar>
             <Sidebar.Pusher onClick={() => this.setState({...this.state, menuVisible: false})}>
-              {this.props.children}
+              {/* {this.props.children} */}
+              {this.props.routes}
             </Sidebar.Pusher>
           </Sidebar.Pushable>
+
+          
         </div>
+        </Router>
       )
     } else {
       return (

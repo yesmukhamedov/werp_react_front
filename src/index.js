@@ -2,10 +2,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { Router, browserHistory } from 'react-router';
 import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
-import routes from './routes/routes';
+import generateRoutes from './routes/routes';
+import App from './App';
 import reducers from './reducers';
 import {AUTH_USER} from './actions/types';
 import ConnectedIntlProvider from './ConnectedIntlProvider';
@@ -49,13 +49,13 @@ if(token) {
     });
 }
 
-promise.then(({ data }) => {
+promise.then(({ data: transactionRoutes }) => {
     
-    let resolvedRoutes = routes(data);
+    const generatedRoutes = generateRoutes(transactionRoutes);
     ReactDOM.render(
         <Provider store={store}>
             <ConnectedIntlProvider>
-                <Router history={browserHistory} routes={resolvedRoutes} />
+                <App routes={generatedRoutes} />
             </ConnectedIntlProvider>
         </Provider>, 
         document.getElementById('root'));

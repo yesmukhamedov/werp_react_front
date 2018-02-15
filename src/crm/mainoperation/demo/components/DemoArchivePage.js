@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import ReactTable from 'react-table';
 import { Header,Container,Segment,Form,Table,Loader } from 'semantic-ui-react'
 import LazyPagination from '../../../../general/pagination/LazyPagination'

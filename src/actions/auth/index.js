@@ -1,6 +1,5 @@
-/*jshint esversion: 6 */ 
 import axios from 'axios';
-import {browserHistory} from 'react-router';
+import browserHistory from '../../utils/history';
 import {ROOT_URL} from '../../utils/constants';
 import {resetLocalStorage} from '../../utils/helpers';
 import {

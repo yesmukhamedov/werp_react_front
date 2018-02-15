@@ -13,7 +13,7 @@ export default class extends Component {
     }
 
     componentWillMount() {
-        const {id} = this.props.params
+        const id = parseInt(this.props.match.params.id, 10)
         axios.get(`${ROOT_URL}/api/service/packets/${id}`, {
             headers: {
                 authorization: localStorage.getItem('token')
