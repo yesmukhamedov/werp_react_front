@@ -40,47 +40,47 @@ import LoadingPage from '../general/LoadingPage'
 
 
 const AsyncSettings = Loadable({
-    loader: () => import('../components/UserSettings/Settings' /* webpackChunkName: "spNewPage" */),
+    loader: () => import('../components/UserSettings/Settings' /* webpackChunkName: "Settings" */),
     loading: () => <LoadingPage />
 });
 
 const AsyncSerrep1 = Loadable({
-    loader: () => import('../service/report/serrep1/serrep1' /* webpackChunkName: "spNewPage" */),
+    loader: () => import('../service/report/serrep1/serrep1' /* webpackChunkName: "serrep1" */),
     loading: () => <LoadingPage />
 });
 
 const AsyncSerrep2 = Loadable({
-    loader: () => import('../service/report/serrep2/serrep2' /* webpackChunkName: "spNewPage" */),
+    loader: () => import('../service/report/serrep2/serrep2' /* webpackChunkName: "serrep2" */),
     loading: () => <LoadingPage />
 });
 
 const AsyncSerrep3 = Loadable({
-    loader: () => import('../service/report/serrep3/serrep3' /* webpackChunkName: "spNewPage" */),
+    loader: () => import('../service/report/serrep3/serrep3' /* webpackChunkName: "serrep3" */),
     loading: () => <LoadingPage />
 });
 
 const AsyncSerrep4 = Loadable({
-    loader: () => import('../service/report/serrep4/serrep4' /* webpackChunkName: "spNewPage" */),
+    loader: () => import('../service/report/serrep4/serrep4' /* webpackChunkName: "serrep4" */),
     loading: () => <LoadingPage />
 });
 
 const AsyncKpiReportPage = Loadable({
-    loader: () => import('../crm/report/kpi/components/KpiReportPage' /* webpackChunkName: "spNewPage" */),
+    loader: () => import('../crm/report/kpi/components/KpiReportPage' /* webpackChunkName: "KpiReportPage" */),
     loading: () => <LoadingPage />
 });
 
 const AsyncKpiRatingReportPage = Loadable({
-    loader: () => import('../crm/report/kpi/components/KpiRatingReportPage' /* webpackChunkName: "spNewPage" */),
+    loader: () => import('../crm/report/kpi/components/KpiRatingReportPage' /* webpackChunkName: "KpiRatingReportPage" */),
     loading: () => <LoadingPage />
 });
 
 const AsyncPrcltgs = Loadable({
-    loader: () => import('../marketing/mainoperation/prcltgs/prcltgs' /* webpackChunkName: "spNewPage" */),
+    loader: () => import('../marketing/mainoperation/prcltgs/prcltgs' /* webpackChunkName: "prcltgs" */),
     loading: () => <LoadingPage />
 });
 
 const AsyncAccountabilityStaffDetailPage = Loadable({
-    loader: () => import('../logistics/report/accountabilityStaff/AccountabilityStaffDetailPage' /* webpackChunkName: "spNewPage" */),
+    loader: () => import('../logistics/report/accountabilityStaff/AccountabilityStaffDetailPage' /* webpackChunkName: "AccountabilityStaffDetailPage" */),
     loading: () => <LoadingPage />
 });
 
