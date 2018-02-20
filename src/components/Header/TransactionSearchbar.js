@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import {Search, Label} from 'semantic-ui-react';
-import _ from 'lodash'
+import escapeRegExp from 'lodash/escapeRegExp'
+import filter from 'lodash/filter'
 import './Header.css';
 import {LEGACY_URL} from "../../utils/constants";
 import browserHistory from '../../utils/history';
@@ -27,7 +28,7 @@ export default class TransactionSearchbar extends Component {
             if (this.state.value.length < 1) 
                 return this.resetComponent();
 
-            const re = new RegExp(_.escapeRegExp(this.state.value), 'i');
+            const re = new RegExp(escapeRegExp(this.state.value), 'i');
             const isMatch = result => re.test(result.title);
             const leafNodes = Object.values(this.props.transactions);
             const routes = leafNodes.map(node => {
@@ -36,7 +37,7 @@ export default class TransactionSearchbar extends Component {
 
             this.setState({
                 isLoading: false,
-                results: _.filter(routes, isMatch)
+                results: filter(routes, isMatch)
             })
         }, 500)
     };
