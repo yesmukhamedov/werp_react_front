@@ -1,31 +1,41 @@
-import axios from 'axios';
-import {ROOT_URL} from '../../utils/constants';
-
 const routes = [
-    {url: "/service/packets/splist", component: "SpList", transactionCode: "SPLIST"},
-    {url: "/service/packets/spnew", component: "SpNew", transactionCode: "SPNEW"},
-    {url: "/service/packets/spview/:id", component: "SpView", transactionCode: "SPVIEW"}]
+  {
+    url: '/service/packets/splist',
+    component: 'SpList',
+    transactionCode: 'SPLIST',
+  },
+  {
+    url: '/service/packets/spnew',
+    component: 'SpNew',
+    transactionCode: 'SPNEW',
+  },
+  {
+    url: '/service/packets/spview/:id',
+    component: 'SpView',
+    transactionCode: 'SPVIEW',
+  },
+];
 
 export default store => (nextState, replace) => {
-    console.log(store.getState().menu.routes)
-    console.log("nextState.location.pathname", nextState.location.pathname)
-    let noAccess = true;  
-    routes.map(item => {
-        console.log(item.url, item.component, item.transactionCode)
-        if(nextState.location.pathname === item.url) {
-            console.log("it is true", nextState.location.pathname, item.url)
-            noAccess = false;
-        }
-    });
-    console.log('noAccess: ', noAccess)
-    if(noAccess) {
-        replace({pathname: '/noAccess'});
+  console.log(store.getState().menu.routes);
+  console.log('nextState.location.pathname', nextState.location.pathname);
+  let noAccess = true;
+  routes.map((item) => {
+    console.log(item.url, item.component, item.transactionCode);
+    if (nextState.location.pathname === item.url) {
+      console.log('it is true', nextState.location.pathname, item.url);
+      noAccess = false;
     }
-}
+  });
+  console.log('noAccess: ', noAccess);
+  if (noAccess) {
+    replace({ pathname: '/noAccess' });
+  }
+};
 
 // export const requireAccess1 = (nextState, replace) => {
 //     console.log("nextState.location.pathname", nextState.location.pathname)
-    
+
 //     const promise = axios.get(`${ROOT_URL}/api/routes`, {
 //         headers: {
 //             authorization: localStorage.getItem('token')}
@@ -34,9 +44,9 @@ export default store => (nextState, replace) => {
 
 //     promise.then(response => {
 //         // If request is good...
-//         // - check access to this route 
+//         // - check access to this route
 //         console.log(response.data)
-//         let noAccess = true;  
+//         let noAccess = true;
 //         response.data.map(item => {
 //             console.log(item.url, item.component, item.transactionCode)
 //             if(nextState.location.pathname === item.url) {
@@ -49,7 +59,7 @@ export default store => (nextState, replace) => {
 //             console.log("replace ???")
 //             replace({pathname: '/noAccess'});
 //         }
-                
+
 //     })
 //     .catch(error => {
 //         // If request is bad...
@@ -61,8 +71,8 @@ export default store => (nextState, replace) => {
 //             Promise.resolve({ error }).then(response => console.log(msg + response.error.message));
 //         }
 //         replace({pathname: '/noAccess'});
-//     });   
-// } 
+//     });
+// }
 
 // function haveAccess(route){
 //     let returnType = false;
@@ -73,17 +83,17 @@ export default store => (nextState, replace) => {
 //     .then(response => {
 //         // If request is good...
 //         // - check access to this route
-//         console.log(response.data)        
+//         console.log(response.data)
 //         response.data.map(item => {
 //             console.log(item.url, item.component, item.transactionCode)
 //             if(route === item.url) {
 //                 console.log("it is true", route, item.url)
 //                 returnType = true;
-//             }            
+//             }
 //         });
 //         console.log('returnType', returnType)
-//         return returnType; 
-                
+//         return returnType;
+
 //     })
 //     .catch(error => {
 //         // If request is bad...
@@ -94,5 +104,5 @@ export default store => (nextState, replace) => {
 //         } else{
 //             Promise.resolve({ error }).then(response => console.log(msg + response.error.message));
 //         }
-//     });              
+//     });
 // };

@@ -1,20 +1,20 @@
 export const loadLang = () => {
-    try {
-        const serializedLang = localStorage.getItem('lang');
-        if(serializedLang === null) {
-            return undefined;
-        }
-        return JSON.parse(serializedLang);
-    } catch (error) {
-        return undefined;
+  try {
+    const serializedLang = localStorage.getItem('lang');
+    if (serializedLang === null) {
+      return undefined;
     }
+    return JSON.parse(serializedLang);
+  } catch (error) {
+    return undefined;
+  }
 };
 
 export const saveLang = (lang) => {
-    try {
-        const serializedLang = JSON.stringify(lang);
-        localStorage.setItem('lang', serializedLang);
-    } catch (error) {
-        //Ignore write errors.
-    }
+  try {
+    const serializedLang = JSON.stringify(lang);
+    localStorage.setItem('lang', serializedLang);
+  } catch (error) {
+    // Ignore write errors.
+  }
 };

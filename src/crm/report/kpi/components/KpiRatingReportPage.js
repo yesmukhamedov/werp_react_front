@@ -1,187 +1,184 @@
-import React, {Component} from 'react';
-import ReactTable from 'react-table';
-import axios from 'axios';
-import {Container,Header,Segment,Form,Divider} from 'semantic-ui-react';
-import {ROOT_URL} from '../../../../utils/constants';
+import React, {Component} from 'react'
+import ReactTable from 'react-table'
+import axios from 'axios'
+import {Container, Header, Segment, Form, Divider} from 'semantic-ui-react'
+import {ROOT_URL} from '../../../../utils/constants'
 import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4'
 import BranchF4 from '../../../../reference/f4/branch/BranchF4'
 import YearF4 from '../../../../reference/f4/date/YearF4'
 import MonthF4 from '../../../../reference/f4/date/MonthF4'
 import PositionF4 from '../../../../reference/f4/position/PositionF4'
 
-const currentDate = new Date();
+const currentDate = new Date()
 
-class KpiRatingReportPage extends Component{
-    constructor(props) {
-        super(props)
-        this.state = {
-            items:[],
-            loading:false,
-            selectedBukrs:'',
-            selectedBranches:[],
-            selectedYear:currentDate.getFullYear(),
-            selectedMonth:currentDate.getMonth()+1,
-            selectedPositionId:0
-        }
-
-        this.handleDropdownChange = this.handleDropdownChange.bind(this);
-        this.loadItems = this.loadItems.bind(this);
+class KpiRatingReportPage extends Component {
+  constructor (props) {
+    super(props)
+    this.state = {
+      items: [],
+      loading: false,
+      selectedBukrs: '',
+      selectedBranches: [],
+      selectedYear: currentDate.getFullYear(),
+      selectedMonth: currentDate.getMonth() + 1,
+      selectedPositionId: 0
     }
 
-    componentWillMount(){
+    this.handleDropdownChange = this.handleDropdownChange.bind(this)
+    this.loadItems = this.loadItems.bind(this)
+  }
+
+  componentWillMount () {
+  }
+
+  loadItems () {
+    this.setState({
+      ...this.state,
+      loading: true
+    })
+    axios.get(`${ROOT_URL}/api/crm/report/kpi-rating`, {
+      headers: {
+        authorization: localStorage.getItem('token')
+      },
+      params: {
+        bukrs: this.state.selectedBukrs,
+        branchIds: this.state.selectedBranches.join(','),
+        year: this.state.selectedYear,
+        month: this.state.selectedMonth,
+        positionId: this.state.selectedPositionId
+      }
+    }).then((res) => {
+      this.setState({
+        ...this.state,
+        items: res.data,
+        loading: false
+      })
+    }).catch((e) => {
+      console.log(e)
+      this.setState({
+        ...this.state,
+        loading: false
+      })
+    })
+  }
+
+  renderDataTable () {
+    return <div>
+      <ReactTable
+        data={this.state.items}
+        columns={[
+          {
+            Header: 'Компания',
+            accessor: 'bukrsName',
+            maxWidth: 100
+          },
+          {
+            Header: 'Филиал',
+            accessor: 'branchName',
+            maxWidth: 150
+          },
+          {
+            Header: 'Сотудник',
+            accessor: 'staffName'
+          },
+          {
+            Header: 'Должность',
+            accessor: 'positionName',
+            maxWidth: 150
+          },
+          {
+            Header: 'KPI %',
+            id: 'score',
+            accessor: row => this.roundedValue(row.score)
+          }
+        ]}
+
+        defaultSorted={[
+          {
+            id: 'score',
+            desc: true
+          }
+        ]}
+        defaultPageSize={50}
+        className='-striped -highlight' />
+    </div>
+  }
+
+  submitSearch () {
+    this.loadItems()
+  }
+
+  handleDropdownChange (e, result) {
+    const {name, value} = result
+    let {selectedBukrs, selectedYear, selectedMonth, selectedBranches, selectedPositionId} = this.state
+    switch (name) {
+      case 'bukrs':
+        selectedBukrs = value
+        break
+
+      case 'branch':
+        selectedBranches = value
+        break
+
+      case 'year':
+        selectedYear = value
+        break
+
+      case 'month':
+        selectedMonth = value
+        break
+
+      case 'position':
+        selectedPositionId = value
+        break
+
+      default:
+        break
     }
 
-    loadItems(){
-        this.setState({
-            ...this.state,
-            loading:true
-        })
-        axios.get(`${ROOT_URL}/api/crm/report/kpi-rating`,{
-            headers: {
-                authorization: localStorage.getItem('token')
-            },
-            params:{
-                bukrs:this.state.selectedBukrs,
-                branchIds:this.state.selectedBranches.join(','),
-                year:this.state.selectedYear,
-                month:this.state.selectedMonth,
-                positionId:this.state.selectedPositionId
-            }
-        }).then((res) => {
-            this.setState({
-                ...this.state,
-                items:res.data,
-                loading:false
-            })
-        }).catch((e) => {
-            console.log(e);
-            this.setState({
-                ...this.state,
-                loading:false
-            })
-        });
-    }
+    this.setState({
+      ...this.state,
+      selectedBukrs: selectedBukrs,
+      selectedBranches: selectedBranches,
+      selectedYear: selectedYear,
+      selectedMonth: selectedMonth,
+      selectedPositionId: selectedPositionId
+    })
+  }
 
-    renderDataTable(){
-        return <div>
-            <ReactTable
-                data={this.state.items}
-                columns={[
-                    {
-                        Header:"Компания",
-                        accessor:"bukrsName",
-                        maxWidth:100
-                    },
-                    {
-                        Header:"Филиал",
-                        accessor: "branchName",
-                        maxWidth:150
-                    },
-                    {
-                        Header:"Сотудник",
-                        accessor: "staffName"
-                    },
-                    {
-                        Header:"Должность",
-                        accessor: "positionName",
-                        maxWidth:150
-                    },
-                    {
-                        Header:"KPI %",
-                        id:"score",
-                        accessor: row=>this.roundedValue(row.score)
-                    }
-                ]}
+  renderSearchForm () {
+    return <Form>
+      <Form.Group widths='equal'>
+        <BukrsF4 handleChange={this.handleDropdownChange} />
+        <BranchF4 search multiple handleChange={this.handleDropdownChange} bukrs={this.state.selectedBukrs} />
+        <PositionF4 search handleChange={this.handleDropdownChange} />
+        <YearF4 handleChange={this.handleDropdownChange} />
+        <MonthF4 handleChange={this.handleDropdownChange} />
+      </Form.Group>
+      <Form.Button loading={this.state.loading} onClick={this.loadItems}>Сформировать</Form.Button>
+    </Form>
+  }
 
-                defaultSorted={[
-                    {
-                        id:"score",
-                        desc:true
-                    }
-                ]}
-                defaultPageSize={50}
-                className="-striped -highlight">
-
-            </ReactTable>
-        </div>
-    }
-
-    submitSearch(){
-        this.loadItems();
-    }
-
-    handleDropdownChange(e,result){
-        const {name,value} = result;
-        let {selectedBukrs,selectedYear,selectedMonth,selectedBranches,selectedPositionId} = this.state;
-        switch (name){
-            case "bukrs":
-                selectedBukrs = value;
-                break
-
-            case "branch":
-                selectedBranches = value;
-                break
-
-            case "year":
-                selectedYear = value;
-                break
-
-            case "month":
-                selectedMonth = value;
-                break
-
-            case 'position':
-                selectedPositionId = value;
-                break
-
-            default:
-                break;
-        }
-
-        this.setState({
-            ...this.state,
-            selectedBukrs:selectedBukrs,
-            selectedBranches:selectedBranches,
-            selectedYear:selectedYear,
-            selectedMonth:selectedMonth,
-            selectedPositionId:selectedPositionId
-        })
-    }
-
-    renderSearchForm(){
-        return <Form>
-            <Form.Group widths='equal'>
-                <BukrsF4 handleChange={this.handleDropdownChange} />
-                <BranchF4 search={true} multiple={true} handleChange={this.handleDropdownChange} bukrs={this.state.selectedBukrs} />
-                <PositionF4 search={true} handleChange={this.handleDropdownChange}/>
-                <YearF4 handleChange={this.handleDropdownChange} />
-                <MonthF4 handleChange={this.handleDropdownChange} />
-            </Form.Group>
-            <Form.Button loading={this.state.loading} onClick={this.loadItems}>Сформировать</Form.Button>
-        </Form>
-    }
-
-    render(){
-            return (
-                <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
-                    <div>
-                        <Header as='h2' attached='top'>
+  render () {
+    return (
+      <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
+        <div>
+          <Header as='h2' attached='top'>
                             Рейтинг сотрудников отдела маркетинга
-                        </Header>
-                        {this.renderSearchForm()}
-                        <Divider clearing />
-                        <Segment attached>
-                            {this.renderDataTable()}
-                        </Segment>
-                    </div>
-                </Container>
-            )
-    }
+          </Header>
+          {this.renderSearchForm()}
+          <Divider clearing />
+          <Segment attached>
+            {this.renderDataTable()}
+          </Segment>
+        </div>
+      </Container>
+    )
+  }
 
-    roundedValue(v){
-        return Math.round(v*100)/100;
-    }
+  roundedValue (v) {
+    return Math.round(v * 100) / 100
+  }
 }
 
-export  default KpiRatingReportPage;
-
+export default KpiRatingReportPage

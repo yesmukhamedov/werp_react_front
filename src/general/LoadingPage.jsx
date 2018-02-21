@@ -1,10 +1,10 @@
-import React from 'react'
-import { Loader, Segment } from 'semantic-ui-react'
+import React from 'react';
+import { Loader, Segment } from 'semantic-ui-react';
 
 const LoadingPage = () => (
   <Segment>
     <Loader active />
   </Segment>
-)
+);
 
-export default LoadingPage
+export default LoadingPage;

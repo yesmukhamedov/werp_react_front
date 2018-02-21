@@ -16,7 +16,10 @@
     "react-intl-redux": "^0.6.0",
     "react-loadable": "^5.3.1",
     "react-number-format": "^3.1.5",
+    "redux": "^3.7.2",
     "react-redux": "^5.0.7",
+    "redux-form": "^7.2.3",
+    "redux-thunk": "^2.2.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.1",
@@ -26,9 +29,6 @@
     "react-treeview": "^0.4.7",
     "react-widgets": "^4.2.0",
     "recharts": "^1.0.0-beta.9",
-    "redux": "^3.7.2",
-    "redux-form": "^7.2.3",
-    "redux-thunk": "^2.2.0",
     "semantic-ui-css": "^2.2.14",
     "semantic-ui-react": "^0.72.0",
     "uuid": "^3.2.1",
@@ -42,11 +42,22 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "translate": "cross-env NODE_ENV=production babel ./src > NUL",
-    "build:langs": "cross-env NODE_ENV=production ./node_modules/.bin/babel-node src/utils/translator.js"
+    "build:langs": "cross-env NODE_ENV=production ./node_modules/.bin/babel-node src/utils/translator.js",
+    "lint": "eslint . --ext .js,.jsx"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-plugin-react-intl": "^2.4.0",
-    "babel-preset-react-app": "^3.1.1"
+    "babel-preset-react-app": "^3.1.1",
+    "eslint": "^4.18.1",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0"
+  },
+  "eslintConfig": {
+    "globals": {
+      "localStorage": true
+    }
   }
 }

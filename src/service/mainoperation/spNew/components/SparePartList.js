@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import {Button, Table, Icon, Label} from "semantic-ui-react";
-import uuid from "uuid";
-import _ from "lodash";
-import SparePartListItem from "./SparePartListItem";
-import ReferenceModal from "./ReferenceModal";
+import React, { Component } from 'react';
+import { Button, Table, Icon } from 'semantic-ui-react';
+import uuid from 'uuid';
+import _ from 'lodash';
+import SparePartListItem from './SparePartListItem';
+import ReferenceModal from './ReferenceModal';
 
 export default class SparePartList extends Component {
   constructor(props) {
@@ -13,7 +13,7 @@ export default class SparePartList extends Component {
       sparePartTotal: 0,
       sparePartListModal: false,
       sourceSparePartUUID: undefined,
-      selectedReferenceItems: []
+      selectedReferenceItems: [],
     };
 
     this.handleAddEmptySparePartListItem = this.handleAddEmptySparePartListItem.bind(this);
@@ -24,53 +24,49 @@ export default class SparePartList extends Component {
     this.openSparePartListModal = this.openSparePartListModal.bind(this);
     this.closeSparePartListModal = this.closeSparePartListModal.bind(this);
 
-    this.handleSparePartTypeChange = this.handleSparePartTypeChange.bind(this)
+    this.handleSparePartTypeChange = this.handleSparePartTypeChange.bind(this);
   }
 
   handleAddEmptySparePartListItem() {
-    let listItem = {
+    const listItem = {
       uuid: uuid(),
       id: undefined,
       operTypeId: 1,
-      description: "",
-      price: "",
+      description: '',
+      price: '',
       quantity: 1,
-      currency: "",
-      totalPrice: "",
-      code: "",
-      submittable: false
+      currency: '',
+      totalPrice: '',
+      code: '',
+      submittable: false,
     };
     this.setState({
       ...this.state,
-      sparePartList: [...this.state.sparePartList, listItem]
+      sparePartList: [...this.state.sparePartList, listItem],
     }, () => {
-      this.props.saveChange(this.state.sparePartList, 'sparePartList')
+      this.props.saveChange(this.state.sparePartList, 'sparePartList');
     });
   }
 
   handleRemoveSparePartListItem(uuid) {
-    let newSparePartList = this.state.sparePartList.filter(
-      item => item.uuid !== uuid
-    );
-    let newSelectedReferenceItems = this.state.selectedReferenceItems.filter(
-      item => item.uuid !== uuid
-    )
+    const newSparePartList = this.state.sparePartList.filter(item => item.uuid !== uuid );
+    const newSelectedReferenceItems = this.state.selectedReferenceItems.filter(item => item.uuid !== uuid );
 
     this.setState({
       ...this.state,
       sparePartList: newSparePartList,
-      selectedReferenceItems: newSelectedReferenceItems
+      selectedReferenceItems: newSelectedReferenceItems,
     }, () => {
-      this.props.saveChange(this.state.sparePartList, 'sparePartList')
+      this.props.saveChange(this.state.sparePartList, 'sparePartList');
     });
   }
 
   handleSparePartTypeChange(e, data) {
-      console.log(e, data)
+    console.log(e, data);
   }
 
   selectSparePartItem(selectedItem) {
-    let newSparePartListModal = this.state.sparePartList.map((item) => {
+    const newSparePartListModal = this.state.sparePartList.map((item) => {
       if (item.uuid === this.state.sourceSparePartUUID) {
         return {
           ...item,
@@ -81,60 +77,60 @@ export default class SparePartList extends Component {
           quantity: 1,
           totalPrice: selectedItem.price,
           code: selectedItem.code,
-          submittable: true
-        }
+          submittable: true,
+        };
       }
       return item;
-    })
+    });
 
-    let newSelectedReferenceItems = [...this.state.selectedReferenceItems, {id: selectedItem.id, uuid: this.state.sourceSparePartUUID}]
+    const newSelectedReferenceItems = [...this.state.selectedReferenceItems, { id: selectedItem.id, uuid: this.state.sourceSparePartUUID }];
 
     this.setState({
       ...this.state,
       sparePartList: newSparePartListModal,
       sourceSparePartUUID: undefined,
       sparePartListModal: false,
-      selectedReferenceItems: newSelectedReferenceItems
+      selectedReferenceItems: newSelectedReferenceItems,
     }, () => {
-      this.props.saveChange(this.state.sparePartList, 'sparePartList')
+      this.props.saveChange(this.state.sparePartList, 'sparePartList');
     });
   }
 
   updateCellData(index, dataType, value) {
     const updateSparePartList = this.state.sparePartList.map((el, i) => {
       if (i === index) {
-        if (dataType === "price") {
+        if (dataType === 'price') {
           return {
             ...el,
             [dataType]: value,
             totalPrice: value * el.quantity,
-            submittable: true
+            submittable: true,
           };
-        } else if (dataType === "quantity") {
+        } else if (dataType === 'quantity') {
           return {
-              ...el,
-              [dataType]: value,
-              totalPrice: value * el.price,
-              submittable: true
-          }
-        } else if (dataType === "operTypeId") {
+            ...el,
+            [dataType]: value,
+            totalPrice: value * el.price,
+            submittable: true,
+          };
+        } else if (dataType === 'operTypeId') {
           return {
             ...el,
             [dataType]: value,
             // clear other fields
-            description: "",
-            price: "",
+            description: '',
+            price: '',
             quantity: 1,
-            currency: "",
-            totalPrice: "",
-            code: "",
-            submittable: false
+            currency: '',
+            totalPrice: '',
+            code: '',
+            submittable: false,
           };
         }
         return {
           ...el,
           [dataType]: value,
-          submittable: true
+          submittable: true,
         };
       }
       return el;
@@ -142,9 +138,9 @@ export default class SparePartList extends Component {
 
     this.setState({
       ...this.state,
-      sparePartList: updateSparePartList
+      sparePartList: updateSparePartList,
     }, () => {
-      this.props.saveChange(this.state.sparePartList, 'sparePartList')
+      this.props.saveChange(this.state.sparePartList, 'sparePartList');
     });
   }
 
@@ -152,7 +148,7 @@ export default class SparePartList extends Component {
     this.setState({
       ...this.state,
       sparePartListModal: true,
-      sourceSparePartUUID: uuid
+      sourceSparePartUUID: uuid,
     });
   }
 
@@ -160,23 +156,28 @@ export default class SparePartList extends Component {
     this.setState({
       ...this.state,
       sparePartListModal: false,
-      sourceSparePartUUID: null
+      sourceSparePartUUID: null,
     });
   }
 
   render() {
-    const filteredReferenceList = _.differenceBy(this.props.data, this.state.selectedReferenceItems, 'id')
+    const filteredReferenceList = _.differenceBy(this.props.data, this.state.selectedReferenceItems, 'id');
     return (
       <div>
-        <Table celled color='black' striped>
+        <Table celled color="black" striped>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell />
-              <Table.HeaderCell colSpan='8'>
-                <Button 
+              <Table.HeaderCell colSpan="8">
+                <Button
                   onClick={this.handleAddEmptySparePartListItem}
-                  floated='right' icon labelPosition='left' primary size='small'>
-                  <Icon name='plus' /> Добавить
+                  floated="right"
+                  icon
+                  labelPosition="left"
+                  primary
+                  size="small"
+                >
+                  <Icon name="plus" /> Добавить
                 </Button>
               </Table.HeaderCell>
             </Table.Row>
@@ -189,7 +190,7 @@ export default class SparePartList extends Component {
               <Table.HeaderCell>Цена</Table.HeaderCell>
               <Table.HeaderCell>Количество (шт.)</Table.HeaderCell>
               <Table.HeaderCell>Сумма</Table.HeaderCell>
-              <Table.HeaderCell collapsing></Table.HeaderCell>
+              <Table.HeaderCell collapsing />
             </Table.Row>
           </Table.Header>
           <Table.Body>
@@ -204,12 +205,12 @@ export default class SparePartList extends Component {
                 handleTypeChange={this.handleSparePartTypeChange}
               />
             ))}
-            
+
           </Table.Body>
           <Table.Footer fullWidth>
             <Table.Row>
-              <Table.HeaderCell colSpan='8' style={{textAlign: 'right'}}>Total</Table.HeaderCell>
-              <Table.HeaderCell style={{textAlign: 'center'}}>{this.props.totalSum}</Table.HeaderCell>
+              <Table.HeaderCell colSpan="8" style={{ textAlign: 'right' }}>Total</Table.HeaderCell>
+              <Table.HeaderCell style={{ textAlign: 'center' }}>{this.props.totalSum}</Table.HeaderCell>
             </Table.Row>
           </Table.Footer>
         </Table>
@@ -229,16 +230,16 @@ export default class SparePartList extends Component {
 
 const columns = [
   {
-      Header: "Код",
-          accessor: "code"
+    Header: 'Код',
+    accessor: 'code',
   }, {
-      Header: "Цена",
-      accessor: "price",
+    Header: 'Цена',
+    accessor: 'price',
   }, {
-      Header: "Название",
-      accessor: "name",
+    Header: 'Название',
+    accessor: 'name',
   }, {
-      Header: "Валюта",
-      accessor: "currency",
-  }
-]
+    Header: 'Валюта',
+    accessor: 'currency',
+  },
+];
