@@ -25,6 +25,7 @@ class App extends Component {
     const token = localStorage.getItem('token');
     // If we have a token, consider the user to be signed in
     if (token) {
+      console.log("HAVE TOEKN")
       return (
         <Router history={history}>
           <div className="wrapper">
@@ -68,6 +69,7 @@ class App extends Component {
         </Router>
       );
     }
+    console.log("DONT HAVE TOEKN")
     return <Signin />;
   }
 }
