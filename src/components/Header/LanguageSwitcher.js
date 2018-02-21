@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {changeLanguage} from '../../actions/language';
+import changeLanguage from '../../actions/language';
 import { Dropdown } from 'semantic-ui-react';
 import './Header.css';
 

@@ -1,7 +1,7 @@
 export function resetLocalStorage() {
-    localStorage.removeItem('token');    
-    localStorage.removeItem('username');
-    localStorage.removeItem('lang');
+  localStorage.removeItem('token');
+  localStorage.removeItem('username');
+  localStorage.removeItem('lang');
 }
 
 /**
@@ -13,10 +13,9 @@ export function resetLocalStorage() {
  * @returns {Array.<*>} - array of translation objects
  */
 export function calcBreadcrumb(node) {
-    const menuItemNames = [];
-    for (let n = node; n; n = n.parent) {
-        menuItemNames.push(n.translations);
-    }
-    return menuItemNames.reverse();
+  const menuItemNames = [];
+  for (let n = node; n; n = n.parent) {
+    menuItemNames.push(n.translations);
+  }
+  return menuItemNames.reverse();
 }
-

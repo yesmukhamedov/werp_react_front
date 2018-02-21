@@ -1,6 +1,6 @@
 import {
-    TREE_MENU, AUTH_USER, BREADCRUMB, ROUTES
-} from '../actions/types';
+  TREE_MENU, AUTH_USER, BREADCRUMB, ROUTES
+} from '../actions/types'
 
 /**
  * Recursively adds parent links to child fields
@@ -8,52 +8,51 @@ import {
  * @returns {*} - the same array of menu nodes with parent links set.
  */
 const addParentLinks = (data) => {
-    const setParent = (node) => {
-        if (!node.leaf) {
-            for (let i = 0; i < node.children.length; i++) {
-                node.children[i].parent = node;
-                setParent(node.children[i]);
-            }
-        }
-    };
-    for (const node of data) {
-        setParent(node);
+  const setParent = (node) => {
+    if (!node.leaf) {
+      for (let i = 0; i < node.children.length; i++) {
+        node.children[i].parent = node
+        setParent(node.children[i])
+      }
     }
-    return data;
-};
-
+  }
+  for (const node of data) {
+    setParent(node)
+  }
+  return data
+}
 
 const prepareTransactions = (data) => {
-    const queue = [];
-    for (const node of data) {
-        queue.push(node);
-    }
+  const queue = []
+  for (const node of data) {
+    queue.push(node)
+  }
 
-    const map = {};
-    while (queue.length > 0) {
-        const top = queue.shift();
-        if (top.leaf) {
-            map[top.transactionCode] = top;
-        } else {
-            for (const child of top.children) {
-                queue.push(child);
-            }
-        }
+  const map = {}
+  while (queue.length > 0) {
+    const top = queue.shift()
+    if (top.leaf) {
+      map[top.transactionCode] = top
+    } else {
+      for (const child of top.children) {
+        queue.push(child)
+      }
     }
-    return map;
-};
+  }
+  return map
+}
 
-export default function(state={}, action) {
-    switch(action.type) {
-        case TREE_MENU:
-            return {...state, tree: action.payload, refetch: false, transactions: prepareTransactions(addParentLinks(action.payload))};
-        case AUTH_USER:
-            return {...state, refetch: true};
-        case BREADCRUMB:
-            return {...state, breadcrumb: action.payload};
-        case ROUTES:
-            return {...state, routes: action.payload};    
-        default:
-            return state;
-    }
+export default function (state = {}, action) {
+  switch (action.type) {
+    case TREE_MENU:
+      return {...state, tree: action.payload, refetch: false, transactions: prepareTransactions(addParentLinks(action.payload))}
+    case AUTH_USER:
+      return {...state, refetch: true}
+    case BREADCRUMB:
+      return {...state, breadcrumb: action.payload}
+    case ROUTES:
+      return {...state, routes: action.payload}
+    default:
+      return state
+  }
 }
