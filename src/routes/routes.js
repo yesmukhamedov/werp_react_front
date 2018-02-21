@@ -10,6 +10,8 @@ import AssignUserBranch from '../dit/userBranch/components/assign_user_branch';
 import SpNewPage from '../service/mainoperation/spNew/components/spNewPage';
 import SpViewPage from '../service/mainoperation/spView/components/spViewPage';
 import SpListPage from '../service/mainoperation/spList/components/spListPage';
+import ContractListPage from '../testComponent/mainoperation/contractList/components/ContractListPage';
+import NewIssuePage from '../testComponent/mainoperation/newIssue/components/NewIssuePage';
 import CreateStaff from '../hr/mainoperation/staff/components/CreateStaff';
 import ViewStaff from '../hr/mainoperation/staff/components/ViewStaff';
 import AccountabilityStaffListPage from '../logistics/report/accountabilityStaff/AccountabilityStaffListPage';
@@ -78,6 +80,8 @@ export default (data) => {
             <Route path="crm/visit/view/:id" component={VisitViewPage} />
             <Route path="crm/demo/archive" component={DemoArchivePage} />
             <Route path="forbidden" component={ForbiddenPage} />
+            <Route path="contractListPage" component={ContractListPage} />
+            <Route path="newIssuePage/:id" component={NewIssuePage} />
 
             {/* dynamically generated URLs */} 
             {data.map((el) => {

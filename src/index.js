@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import reduxThunk from 'redux-thunk';
 import routes from './routes/routes';
 import reducers from './reducers';
@@ -28,8 +29,15 @@ const promise = axios.get(`${ROOT_URL}/routes`);
 addLocaleData([...en, ...ru, ...tr]);
 const persistedLang = loadLang();
 
-const createStoreWithMiddleware = applyMiddleware(JwtRefresher, reduxThunk)(createStore);
-const store = createStoreWithMiddleware(reducers, persistedLang);
+const composeEnhancers = composeWithDevTools({
+    // Specify name here, actionsBlacklist, actionsCreators and other options if needed
+  });
+// const createStoreWithMiddleware = applyMiddleware(JwtRefresher, reduxThunk)(createStore);
+// const store = createStoreWithMiddleware(reducers, persistedLang);
+
+const store = createStore(reducers, persistedLang, composeEnhancers(
+    applyMiddleware(JwtRefresher, reduxThunk)
+));
 
 store.subscribe(throttle(() => {
     saveLang({

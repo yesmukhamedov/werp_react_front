@@ -7,6 +7,7 @@ import inboxReducer from './inbox';
 import ditUserBranchReducer from '../dit/userBranch/reducers/userBranch_reducer';
 import treeMenuReducer from './tree_menu';
 import notificationReducer from '../general/notification/notification_reducer';
+import contractListReducer from '../testComponent/mainoperation/contractList/reducers/ContractListReducer';
 import {
   UNAUTH_USER
 } from '../actions/types';
@@ -19,7 +20,8 @@ const appReducer = combineReducers({
   ditUserBranch: ditUserBranchReducer,  
   inbox: inboxReducer,
   menu: treeMenuReducer,
-  notification: notificationReducer
+  notification: notificationReducer,
+  contractList: contractListReducer
 });
 
 const rootReducer = (state, action) => {

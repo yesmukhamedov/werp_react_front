@@ -21,3 +21,4 @@ yarn-error.log*
 *.iml
 
 .env.development.local
+.jshintrc
