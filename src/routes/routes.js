@@ -106,6 +106,12 @@ const AsyncContractListPage = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncNewIssuePage = Loadable({
+  loader: () =>
+    import('../testComponent/mainoperation/newIssue/components/NewIssuePage' /* webpackChunkName: "NewIssuePage" */),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   SpNew: AsyncSpNewPage,
   SpView: AsyncSpViewPage,
@@ -120,6 +126,7 @@ const getComponent = {
   CrmRepKpiRtg: AsyncKpiRatingReportPage,
   Prcltgs: AsyncPrcltgs,
   ContractListPage: AsyncContractListPage,
+  NewIssuePage: AsyncNewIssuePage
 };
 
 function persistPath(nextState, replace) {
@@ -156,6 +163,7 @@ const generateRoutes = transactionRoutes => {
       <Route path="crm/demo/archive" component={DemoArchivePage} />
       <Route path="forbidden" component={ForbiddenPage} />
       <Route path="/contractListPage" component={AsyncContractListPage} />
+      <Route path="/newIssuePage/:id" component={AsyncNewIssuePage} />
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
