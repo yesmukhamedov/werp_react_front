@@ -22,6 +22,9 @@ import DemoViewPage from '../crm/mainoperation/demo/components/DemoViewPage';
 import ForbiddenPage from '../general/forbidden';
 import LoadingPage from '../general/LoadingPage';
 
+import NewIssuePage from '../testComponent/mainoperation/newIssue/components/NewIssuePage';
+
+
 const AsyncSettings = Loadable({
   loader: () =>
     import('../components/UserSettings/Settings' /* webpackChunkName: "Settings" */),
@@ -108,9 +111,10 @@ const AsyncContractListPage = Loadable({
 
 const AsyncNewIssuePage = Loadable({
   loader: () =>
-    import('../testComponent/mainoperation/newIssue/components/NewIssuePage' /* webpackChunkName: "NewIssuePage" */),
+    import('../testComponent/mainoperation/newIssue/components/NewIssuePage' /* webpackChunkName: "NewIssuePageTest" */),
   loading: () => <LoadingPage />,
 });
+
 
 const getComponent = {
   SpNew: AsyncSpNewPage,
@@ -163,7 +167,7 @@ const generateRoutes = transactionRoutes => {
       <Route path="crm/demo/archive" component={DemoArchivePage} />
       <Route path="forbidden" component={ForbiddenPage} />
       <Route path="/contractListPage" component={AsyncContractListPage} />
-      <Route path="/newIssuePage/:id" component={AsyncNewIssuePage} />
+      <Route path="/newIssue/:id" component={NewIssuePage} />
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {

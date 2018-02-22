@@ -108,7 +108,7 @@ class ContractListTable extends Component {
           const { SNcontract } = props.original;
           return (
             <div style={{ textAlign: 'center' }}>
-              <Link target="_blank" to={`/newIssuePage/${SNcontract}`}>
+              <Link target="_blank" to={`/newIssue/${SNcontract}`}>
                 <Icon name="eye" size="large" />
               </Link>
             </div>);
