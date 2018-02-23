@@ -7,17 +7,12 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Icon } from 'semantic-ui-react';
 
-class ContractListTable extends Component {
+class ContractListTableComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedIdx: undefined,
     };
-    this.handleAttributeChange = this.handleAttributeChange.bind(this);
-  }
-
-  handleAttributeChange(field, value) {
-    console.log('FIELD', field, 'VALUE', value);
   }
 
   render() {
@@ -147,12 +142,11 @@ class ContractListTable extends Component {
                                 this.setState({ ...this.state, selectedIdx: rowInfo.index });
                             },
                             style: {
-                                background: (rowInfo === undefined ? '' :
-                                 (this.state.selectedIdx === rowInfo.index ? 'rgba(169, 221, 236, 1)' : '')),
+                                background: (rowInfo === undefined ? '' : (this.state.selectedIdx === rowInfo.index ? 'rgba(169, 221, 236, 1)' : '')),
                             },
                        })}
     />);
   }
 }
 
-export default ContractListTable;
+export default ContractListTableComponent;

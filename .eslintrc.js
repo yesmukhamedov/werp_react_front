@@ -6,6 +6,8 @@ module.exports = {
   },
   rules:{
     "linebreak-style": 0,
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],    
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }], 
+    "react/require-default-props": [0],
+    "react/forbid-prop-types": [0]
   }
 };
