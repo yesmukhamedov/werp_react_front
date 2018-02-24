@@ -22,7 +22,7 @@ import DemoViewPage from '../crm/mainoperation/demo/components/DemoViewPage';
 import ForbiddenPage from '../general/forbidden';
 import LoadingPage from '../general/LoadingPage';
 
-import NewIssuePage from '../testComponent/mainoperation/newIssue/components/NewIssuePage';
+import NewIssuePage from '../testComponent/mainoperation/NewIssue/components/NewIssuePage';
 
 
 const AsyncSettings = Loadable({
@@ -111,7 +111,7 @@ const AsyncContractListPage = Loadable({
 
 const AsyncNewIssuePage = Loadable({
   loader: () =>
-    import('../testComponent/mainoperation/newIssue/components/NewIssuePage' /* webpackChunkName: "NewIssuePageTest" */),
+    import('../testComponent/mainoperation/NewIssue/components/NewIssuePage' /* webpackChunkName: "NewIssuePageTest" */),
   loading: () => <LoadingPage />,
 });
 

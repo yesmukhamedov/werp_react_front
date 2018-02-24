@@ -1,68 +1,84 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Segment, Label, Form } from 'semantic-ui-react';
+import { Segment, Label, Form, Grid } from 'semantic-ui-react';
+import PortalComponentDisplay from '../../../../../general/portal/PortalComponent';
+import { PaymentBreakdownTableDisplay } from '../PaymentBreakdownTable';
 
 const PersonalInfoPanelDisplay = props => (
   <Segment raised>
     <Label color="blue" ribbon>Финансовые данные клиента</Label>
-    <Form>
-      <Form.Group widths="equal">
-        <Form.Field
-          label="Первоначальная сумма"
-          control="input"
-          value={props.initialPayment}
-          width="2"
-        />
-        <Form.Field
-          label="Остаток суммы"
-          control="input"
-          value={props.remainingPayment}
-          width="2"
-        />
-        <Form.Field
-          label="Скидка от дилера"
-          control="input"
-          value={props.dealerDiscount}
-          width="2"
-        />
-        <Form.Field
-          label="Скидка от рекомендателя"
-          control="input"
-          value={props.referalDiscount}
-          width="2"
-        />
-        <Form.Field
-          label="Оплата через"
-          control="input"
-          value={props.bankPartnerName}
-          width="2"
-        />
-        <Form.Field
-          label="Финансовый агент"
-          control="input"
-          value={props.financialAgent}
-          width="2"
-        />
-        <Form.Field
-          label="Рекомендатель"
-          control="input"
-          value={props.referrer}
-          width="2"
-        />
-        <Form.Field
-          label="Заводской номер аппарата"
-          control="input"
-          value={props.serialNumber}
-          width="2"
-        />
-        <Form.Field
-          label="Подарки"
-          control="input"
-          value={props.promotionName}
-          width="2"
-        />
-      </Form.Group>
-    </Form>
+    <Grid columns={4} divided>
+      <Grid.Row>
+        <Grid.Column>
+          <Form>
+            <Form.Field
+              label="Первоначальная сумма"
+              control="input"
+              defaultValue={props.initialPayment}
+            />
+            <Form.Field
+              label="Остаток суммы"
+              control="input"
+              defaultValue={props.remainingPayment}
+            />
+            <PortalComponentDisplay
+              openLabel="Ежемесячный взнос"
+              closeLabel="Скрыть ежемесячный взнос"
+            >
+              <PaymentBreakdownTableDisplay />
+            </PortalComponentDisplay>
+          </Form>
+        </Grid.Column>
+        <Grid.Column>
+          <Form>
+            <Form.Field
+              label="Скидка от дилера"
+              control="input"
+              defaultValue={props.dealerDiscount}
+            />
+            <Form.Field
+              label="Скидка от рекомендателя"
+              control="input"
+              defaultValue={props.referalDiscount}
+            />
+            <Form.Field
+              label="Оплата через"
+              control="input"
+              defaultValue={props.bankPartnerName}
+            />
+          </Form>
+        </Grid.Column>
+        <Grid.Column>
+          <Form>
+            <Form.Field
+              label="Финансовый агент"
+              control="input"
+              defaultValue={props.financialAgent}
+            />
+            <Form.Field
+              label="Рекомендатель"
+              control="input"
+              defaultValue={props.referrer}
+            />
+          </Form>
+        </Grid.Column>
+
+        <Grid.Column>
+          <Form>
+            <Form.Field
+              label="Заводской номер аппарата"
+              control="input"
+              defaultValue={props.serialNumber}
+            />
+            <Form.Field
+              label="Подарки"
+              control="input"
+              defaultValue={props.promotionName}
+            />
+          </Form>
+        </Grid.Column>
+      </Grid.Row>
+    </Grid>
   </Segment>
 );
 
