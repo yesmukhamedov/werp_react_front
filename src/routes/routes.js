@@ -9,16 +9,8 @@ import Signout from '../components/Auth/Signout';
 import AssignUserBranch from '../dit/userBranch/components/assign_user_branch';
 import CreateStaff from '../hr/mainoperation/staff/components/CreateStaff';
 import ViewStaff from '../hr/mainoperation/staff/components/ViewStaff';
-import RecoCurrentPage from '../crm/mainoperation/reco/components/RecoCurrentPage';
-import RecoCreatePage from '../crm/mainoperation/reco/components/RecoCreatePage';
-import RecoArchivePage from '../crm/mainoperation/reco/components/RecoArchivePage';
-import RecoViewPage from '../crm/mainoperation/reco/components/RecoViewPage';
 import DemoListPage from '../crm/mainoperation/demo/components/DemoListPage';
-import VisitArchivePage from '../crm/mainoperation/visit/components/VisitArchivePage';
-import VisitViewPage from '../crm/mainoperation/visit/components/VisitViewPage';
-import DemoCurrentPage from '../crm/mainoperation/demo/components/DemoCurrentPage';
-import DemoArchivePage from '../crm/mainoperation/demo/components/DemoArchivePage';
-import DemoViewPage from '../crm/mainoperation/demo/components/DemoViewPage';
+
 import ForbiddenPage from '../general/forbidden';
 import LoadingPage from '../general/LoadingPage';
 import Frcoln from '../finance/report/frcoln/frcoln'
@@ -110,6 +102,52 @@ const AsyncContractListPage = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncRecoCurrentPage = Loadable({
+        loader: () => import('../crm/mainoperation/reco/components/RecoCurrentPage' /* webpackChunkName: "RecoCurrentPage" */),
+    loading: () => <LoadingPage />
+});
+
+const AsyncRecoArchivePage = Loadable({
+        loader: () => import('../crm/mainoperation/reco/components/RecoArchivePage' /* webpackChunkName: "RecoArchivePage" */),
+    loading: () => <LoadingPage />
+});
+
+const AsyncDemoCurrentPage = Loadable({
+        loader: () => import('../crm/mainoperation/demo/components/DemoCurrentPage' /* webpackChunkName: "DemoCurrentPage" */),
+    loading: () => <LoadingPage />
+});
+
+const AsyncDemoArchivePage = Loadable({
+        loader: () => import('../crm/mainoperation/demo/components/DemoArchivePage' /* webpackChunkName: "DemoArchivePage" */),
+    loading: () => <LoadingPage />
+});
+
+const AsyncVisitArchivePage = Loadable({
+        loader: () => import('../crm/mainoperation/visit/components/VisitArchivePage' /* webpackChunkName: "VisitArchivePage" */),
+    loading: () => <LoadingPage />
+});
+
+const AsyncRecoViewPage = Loadable({
+        loader: () => import('../crm/mainoperation/reco/components/RecoViewPage' /* webpackChunkName: "RecoViewPage" */),
+        loading: () => <LoadingPage />
+});
+
+const AsyncRecoCreatePage = Loadable({
+        loader: () => import('../crm/mainoperation/reco/components/RecoCreatePage' /* webpackChunkName: "RecoCreatePage" */),
+        loading: () => <LoadingPage />
+});
+
+const AsyncDemoViewPage = Loadable({
+        loader: () => import('../crm/mainoperation/demo/components/DemoViewPage' /* webpackChunkName: "DemoViewPage" */),
+    loading: () => <LoadingPage />
+});
+
+const AsyncVisitViewPage = Loadable({
+        loader: () => import('../crm/mainoperation/visit/components/VisitViewPage' /* webpackChunkName: "VisitViewPage" */),
+    loading: () => <LoadingPage />
+});
+
+
 const AsyncNewIssuePage = Loadable({
   loader: () =>
     import('../testComponent/mainoperation/NewIssue/components/NewIssuePage' /* webpackChunkName: "NewIssuePageTest" */),
@@ -118,21 +156,28 @@ const AsyncNewIssuePage = Loadable({
 
 
 const getComponent = {
-  SpNew: AsyncSpNewPage,
-  SpView: AsyncSpViewPage,
-  SpList: AsyncSpListPage,
-  LogRepAccStaff: AsyncAccountabilityStaffListPage,
-  LogRepAccStaffDetail: AsyncAccountabilityStaffDetailPage,
-  Serrep1: AsyncSerrep1,
-  Serrep2: AsyncSerrep2,
-  Serrep4: AsyncSerrep4,
-  Serrep3: AsyncSerrep3,
-  CrmRepKpi: AsyncKpiReportPage,
-  CrmRepKpiRtg: AsyncKpiRatingReportPage,
-  Prcltgs: AsyncPrcltgs,
-  ContractListPage: AsyncContractListPage,
-  NewIssuePage: AsyncNewIssuePage
-};
+    SpNew: AsyncSpNewPage,
+    SpView: AsyncSpViewPage,
+    SpList: AsyncSpListPage,
+    LogRepAccStaff: AsyncAccountabilityStaffListPage,
+    LogRepAccStaffDetail: AsyncAccountabilityStaffDetailPage,
+    Serrep1: AsyncSerrep1,
+    Serrep2: AsyncSerrep2,
+    Serrep4: AsyncSerrep4,
+    Serrep3: AsyncSerrep3,
+    CrmRepKpi: AsyncKpiReportPage,
+    CrmRepKpiRtg: AsyncKpiRatingReportPage,
+    Prcltgs:AsyncPrcltgs,
+    CrmRecoCurrent:AsyncRecoCurrentPage,
+    CrmRecoArchive:AsyncRecoArchivePage,
+    CrmDemoCurrent:AsyncDemoCurrentPage,
+    CrmDemoArchive:AsyncDemoArchivePage,
+    CrmVisitArchive : AsyncVisitArchivePage,
+    CrmRecoView:AsyncRecoViewPage,
+    CrmDemoView:AsyncDemoViewPage,
+    CrmVisitView:AsyncVisitViewPage,
+    NewIssuePage: AsyncNewIssuePage
+}
 
 function persistPath(nextState, replace) {
   try {
@@ -142,33 +187,17 @@ function persistPath(nextState, replace) {
   }
 }
 
-const generateRoutes = transactionRoutes => {
+const generateRoutes = (transactionRoutes) => {
   return (
     <div>
       <Route exact path="/" component={RequireAuth(MainPanel)} />
       <Route path="/settings" component={RequireAuth(AsyncSettings)} />
       <Route path="/signin" component={Signin} />
       <Route path="/signout" component={Signout} />
-
-      <Route path="dit/userBranch" component={AssignUserBranch} />
-      <Route path="hr/staff/create" component={CreateStaff} />
-      <Route path="hr/staff/view/:id" component={ViewStaff} />
-      <Route path="crm/reco/current" component={RecoCurrentPage} />
-      <Route path="crm/reco/archive" component={RecoArchivePage} />
-      <Route
-        path="crm/reco/create(/:context/:contextId)"
-        component={RecoCreatePage}
-      />
-      <Route path="crm/demo/current" component={DemoCurrentPage} />
-      <Route path="crm/demo/view/:id" component={DemoViewPage} />
-      <Route path="crm/reco/view/:id" component={RecoViewPage} />
-      <Route path="crm/demo/list" component={DemoListPage} />
-      <Route path="crm/visit/archive" component={VisitArchivePage} />
-      <Route path="crm/visit/view/:id" component={VisitViewPage} />
-      <Route path="crm/demo/archive" component={DemoArchivePage} />
-      <Route path="forbidden" component={ForbiddenPage} />
-      <Route path="/contractListPage" component={AsyncContractListPage} />
-      <Route path="/newIssue/:id" component={NewIssuePage} />
+      <Route path="/dit/userBranch" component={AssignUserBranch} />
+    <Route path="forbidden" component={ForbiddenPage} />
+        <Route path="/contractListPage" component={AsyncContractListPage} />
+        <Route path="/newIssue/:id" component={NewIssuePage} />
       <Route path="finance/reports/frcol" component={Frcoln} />
 
       {/* dynamically generated URLs  */}

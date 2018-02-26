@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
-import {Label, Icon, Modal, Tab, Table, Form, Input, TextArea, Button, Container, Divider, Checkbox } from 'semantic-ui-react'
+import {Modal, Form, Input, TextArea, Button } from 'semantic-ui-react'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import axios from 'axios'
-import {ROOT_URL, MONTH_OPTIONS} from '../../../../utils/constants'
+import {ROOT_URL} from '../../../../utils/constants'
 
 const locationOptions = [
   {
@@ -18,13 +18,11 @@ const locationOptions = [
   }
 ]
 
-const RESULT_UNKNOWN = 0
+
 const RESULT_DONE = 1
 const RESULT_MOVED = 2
 const RESULT_CANCELLED = 3
 const RESULT_SOLD = 4
-const RESULT_MINI_CONTRACT = 5
-const RESULT_SOLD_CANCELLED = 6
 
 let allReasons = []
 
@@ -123,11 +121,12 @@ class DemoUpdateModal extends Component {
 
   getReasonsByResultId (resultId) {
     let reasonTypeId = 0
-    if (resultId == RESULT_DONE) {
+    resultId = parseInt(resultId,10);
+    if (resultId === RESULT_DONE) {
       reasonTypeId = 2
-    } else if (resultId == RESULT_CANCELLED) {
+    } else if (resultId === RESULT_CANCELLED) {
       reasonTypeId = 3
-    } else if (resultId == RESULT_MOVED) {
+    } else if (resultId === RESULT_MOVED) {
       reasonTypeId = 4
     }
 
@@ -147,7 +146,10 @@ class DemoUpdateModal extends Component {
 
   renderReasonRow () {
     let resultId = this.state.demo.resultId
-    if (resultId == RESULT_CANCELLED || resultId == RESULT_DONE || resultId == RESULT_MOVED) {
+    if(resultId){
+        resultId = parseInt(resultId,10);
+    }
+    if (resultId === RESULT_CANCELLED || resultId === RESULT_DONE || resultId === RESULT_MOVED) {
       return <Form.Select error={this.state.errors.reasonId}
         value={this.state.demo.reasonId}
         required fluid selection
@@ -156,6 +158,23 @@ class DemoUpdateModal extends Component {
     }
 
     return <Form.Field />
+  }
+
+  renderSaleDateRow(){
+      let resultId = parseInt(this.state.demo.resultId,10);
+      if (resultId === RESULT_SOLD) {
+          return <Form.Field error={this.state.errors.saleDate} required>
+                  <label>Дата продажи</label>
+                  <DatePicker
+                      label=''
+                      placeholderText={'Дата продажи'}
+                      showMonthDropdown showYearDropdown dropdownMode='select'
+                      dateFormat='DD.MM.YYYY' selected={this.state.demo.saleDate?moment(this.state.demo.saleDate):null}
+                      onChange={(v) => this.handleChange('saleDate', v)} />
+            </Form.Field>
+      }
+
+      return null
   }
 
   renderUpdateForm () {
@@ -181,6 +200,7 @@ class DemoUpdateModal extends Component {
           label='Результат' options={this.state.results}
           onChange={(e, v) => this.handleChange('resultId', v)} />
         {this.renderReasonRow()}
+        {this.renderSaleDateRow()}
       </Form.Group>
       <Form.Group widths='equal'>
         <Form.Field error={this.state.errors.address}
@@ -215,13 +235,14 @@ class DemoUpdateModal extends Component {
   handleChange (fieldName, o) {
     let {demo, errors} = this.state
 
-    switch (fieldName) {
-      case 'dateTime':
-        if (o) {
-          demo[fieldName] = o['_i']
-        } else {
-          demo[fieldName] = null
-        }
+        switch (fieldName){
+            case 'dateTime':
+            case 'saleDate':
+                if(o){
+                    demo[fieldName] = o.valueOf();
+                }else{
+                    demo[fieldName] = null;
+                }
 
         break
       case 'locationId':
@@ -232,10 +253,12 @@ class DemoUpdateModal extends Component {
       case 'dealerId':
       case 'note':
         demo[fieldName] = o.value
-        if (fieldName == 'resultId') {
+        if (fieldName === 'resultId') {
           demo['reasonId'] = 0
         }
         break
+
+      default:{}
     }
 
     this.setState({
@@ -247,16 +270,22 @@ class DemoUpdateModal extends Component {
 
   validateForm () {
     let {demo, errors} = this.state
-    Object.keys(errors).map((k) => {
-      if (errors.hasOwnProperty(k)) {
-        errors[k] = false
+      for(let k in errors){
+          if (errors.hasOwnProperty(k)) {
+              errors[k] = false
+          }
       }
-    })
+     let resId = parseInt(demo.resultId,10);
+      let reasonId = parseInt(demo.reasonId,10);
 
-    if (demo.resultId == RESULT_MOVED || demo.resultId == RESULT_CANCELLED || demo.resultId == RESULT_DONE) {
-      if (demo.reasonId == 0) {
+    if (resId === RESULT_MOVED || resId === RESULT_CANCELLED || resId === RESULT_DONE) {
+      if (reasonId === 0) {
         errors['reasonId'] = true
       }
+    }else if(resId === RESULT_SOLD){
+          if(!demo.saleDate || demo.saleDate.length === 0){
+              errors['saleDate'] = true;
+          }
     }
 
     if (!demo.clientName || demo.clientName.length === 0) {
@@ -287,11 +316,12 @@ class DemoUpdateModal extends Component {
   saveDemo () {
     this.validateForm()
     let isValid = true
-    Object.keys(this.state.errors).map((k) => {
-      if (this.state.errors[k]) {
-        isValid = false
+      for(let k in this.state.errors){
+          if (this.state.errors[k]) {
+              isValid = false
+          }
       }
-    })
+
     if (!isValid) {
       return
     }

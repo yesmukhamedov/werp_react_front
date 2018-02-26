@@ -4,25 +4,28 @@ import moment from 'moment'
 import {Container, Divider, Tab, Table, Grid, Header} from 'semantic-ui-react'
 import {ROOT_URL} from '../../../../utils/constants'
 
-class ViewStaff extends Component {
-  constructor (props) {
-    super(props)
-    this.loadedSuccess = true
-    this.state = {
-      staff: {},
-      salaries: [],
-      salariesLoaded: false,
-      expenses: [],
-      expensesLoaded: false
-    }
+class ViewStaff extends Component{
+    constructor(props) {
+        super(props)
+        this.loadedSuccess = true;
+        this.state = {
+            staff:{},
+            salaries:[],
+            salariesLoaded:false,
+            expenses:[],
+            offData:[],
+            expensesLoaded:false,
+            offDataLoaded:false
+        }
 
-    this.renderMainData = this.renderMainData.bind(this)
-    this.renderPassportData = this.renderPassportData.bind(this)
-    this.renderSalaryData = this.renderSalaryData.bind(this)
-    this.handleTabChange = this.handleTabChange.bind(this)
-    this.renderContactData = this.renderContactData.bind(this)
-    this.renderExpensesData = this.renderExpensesData.bind(this)
-  }
+        this.renderMainData = this.renderMainData.bind(this);
+        this.renderPassportData = this.renderPassportData.bind(this);
+        this.renderSalaryData = this.renderSalaryData.bind(this);
+        this.handleTabChange = this.handleTabChange.bind(this);
+        this.renderContactData = this.renderContactData.bind(this);
+        this.renderExpensesData = this.renderExpensesData.bind(this);
+        this.renderOfficialData = this.renderOfficialData.bind(this);
+    }
 
   componentWillMount () {
     let _this = this
@@ -84,22 +87,37 @@ class ViewStaff extends Component {
         return
       }
 
-      axios.get(`${ROOT_URL}/api/hr/staff/` + this.state.staff.staff_id + `/expenses`, {
-        headers: {
-          authorization: localStorage.getItem('token')}
-      }).then((response) => {
-        this.setState({
-          ...this.state,
-          expenses: response.data,
-          expensesLoaded: true
-        })
-      }).catch((error) => {
-        console.log(error)
-      })
+            axios.get(`${ROOT_URL}/api/hr/staff/` + this.state.staff.staff_id + `/expenses`,{
+                headers: {
+                    authorization: localStorage.getItem('token')}
+            }).then((response) => {
+                this.setState({
+                    ...this.state,
+                    expenses:response.data,
+                    expensesLoaded:true
+                })
+            }).catch((error) => {
+                console.log(error);
+            })
+        }else if(data.activeIndex === 5){
+            if(this.state.offDataLoaded){
+                return;
+            }
+
+            axios.get(`${ROOT_URL}/api/hr/staff/` + this.state.staff.staff_id + `/official-data`,{
+                headers: {
+                    authorization: localStorage.getItem('token')}
+            }).then((response) => {
+                this.setState({
+                    ...this.state,
+                    offData:response.data,
+                    offDataLoaded:true
+                })
+            }).catch((error) => {
+                console.log(error);
+            })
+        }
     }
-    // console.log(e);
-    // console.log(data);
-  }
 
   renderNotFound () {
     return (
@@ -214,100 +232,137 @@ class ViewStaff extends Component {
     )
   }
 
-  renderSalaryData () {
-    let tempContent = this.state.salaries.map(salary => {
-      return (
-        <Table.Row className={salary.prev === true ? 'error' : (salary.next === true ? 'success' : '')}>
-          <Table.Cell>{salary.salaryId}</Table.Cell>
-          <Table.Cell>{salary.statusName}</Table.Cell>
-          <Table.Cell>{salary.companyName}</Table.Cell>
-          <Table.Cell>{salary.branchName}</Table.Cell>
-          <Table.Cell>{salary.departmentName}</Table.Cell>
-          <Table.Cell>{salary.beginDate}</Table.Cell>
-          <Table.Cell>{salary.endDate}</Table.Cell>
-          <Table.Cell>{salary.positionName}</Table.Cell>
-          <Table.Cell>{salary.amount}</Table.Cell>
-          <Table.Cell>{salary.waers}</Table.Cell>
-          <Table.Cell>{salary.note}</Table.Cell>
-          <Table.Cell>{salary.payrollDate}</Table.Cell>
-          <Table.Cell />
-        </Table.Row>
-      )
-    })
-    return (
-      <Table celled>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>SalaryId</Table.HeaderCell>
-            <Table.HeaderCell>Статус</Table.HeaderCell>
-            <Table.HeaderCell>Компания</Table.HeaderCell>
-            <Table.HeaderCell>Филиал</Table.HeaderCell>
-            <Table.HeaderCell>Департамент</Table.HeaderCell>
-            <Table.HeaderCell>Дата начало</Table.HeaderCell>
-            <Table.HeaderCell>Дата окончания</Table.HeaderCell>
-            <Table.HeaderCell>Должность</Table.HeaderCell>
-            <Table.HeaderCell>Оклад</Table.HeaderCell>
-            <Table.HeaderCell>Валюта</Table.HeaderCell>
-            <Table.HeaderCell>Примечание</Table.HeaderCell>
-            <Table.HeaderCell>Дата выдачи</Table.HeaderCell>
-            <Table.HeaderCell>Действия</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
+    renderSalaryData(){
+        let tempContent = this.state.salaries.map(salary => {
+            return (
+                <Table.Row key={salary.salaryId} className={salary.prev === true ? 'error':(salary.next === true?'success':'')}>
+                    <Table.Cell>{salary.salaryId}</Table.Cell>
+                    <Table.Cell>{salary.statusName}</Table.Cell>
+                    <Table.Cell>{salary.companyName}</Table.Cell>
+                    <Table.Cell>{salary.branchName}</Table.Cell>
+                    <Table.Cell>{salary.departmentName}</Table.Cell>
+                    <Table.Cell>{salary.beginDate}</Table.Cell>
+                    <Table.Cell>{salary.endDate}</Table.Cell>
+                    <Table.Cell>{salary.positionName}</Table.Cell>
+                    <Table.Cell>{salary.amount}</Table.Cell>
+                    <Table.Cell>{salary.waers}</Table.Cell>
+                    <Table.Cell>{salary.note}</Table.Cell>
+                    <Table.Cell>{salary.payrollDate}</Table.Cell>
+                    <Table.Cell>
+
+                    </Table.Cell>
+                </Table.Row>
+            )
+        })
+        return (
+            <Table celled>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.HeaderCell>SalaryId</Table.HeaderCell>
+                        <Table.HeaderCell>Статус</Table.HeaderCell>
+                        <Table.HeaderCell>Компания</Table.HeaderCell>
+                        <Table.HeaderCell>Филиал</Table.HeaderCell>
+                        <Table.HeaderCell>Департамент</Table.HeaderCell>
+                        <Table.HeaderCell>Дата начало</Table.HeaderCell>
+                        <Table.HeaderCell>Дата окончания</Table.HeaderCell>
+                        <Table.HeaderCell>Должность</Table.HeaderCell>
+                        <Table.HeaderCell>Оклад</Table.HeaderCell>
+                        <Table.HeaderCell>Валюта</Table.HeaderCell>
+                        <Table.HeaderCell>Примечание</Table.HeaderCell>
+                        <Table.HeaderCell>Дата выдачи</Table.HeaderCell>
+                        <Table.HeaderCell>Действия</Table.HeaderCell>
+                    </Table.Row>
+                </Table.Header>
 
         <Table.Body>{tempContent}</Table.Body>
       </Table>
     )
   }
 
-  renderExpensesData () {
-    let tempContent = this.state.expenses.map(exp => {
-      return (
-        <Table.Row>
-          <Table.Cell>{exp.id}</Table.Cell>
-          <Table.Cell>{exp.typeName}</Table.Cell>
-          <Table.Cell>{exp.amount}</Table.Cell>
-          <Table.Cell>{exp.currency}</Table.Cell>
-          <Table.Cell>{exp.description}</Table.Cell>
-          <Table.Cell>{exp.expenseDate}</Table.Cell>
-          <Table.Cell />
-        </Table.Row>
-      )
-    })
-    return (
-      <Table celled>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>ID</Table.HeaderCell>
-            <Table.HeaderCell>Тип расхода</Table.HeaderCell>
-            <Table.HeaderCell>Сумма</Table.HeaderCell>
-            <Table.HeaderCell>Валюта</Table.HeaderCell>
-            <Table.HeaderCell>Примечание</Table.HeaderCell>
-            <Table.HeaderCell>Дата</Table.HeaderCell>
-            <Table.HeaderCell>Действия</Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
+    renderExpensesData(){
+        let tempContent = this.state.expenses.map(exp => {
+            return (
+                <Table.Row key={exp.id}>
+                    <Table.Cell>{exp.id}</Table.Cell>
+                    <Table.Cell>{exp.typeName}</Table.Cell>
+                    <Table.Cell>{exp.amount}</Table.Cell>
+                    <Table.Cell>{exp.currency}</Table.Cell>
+                    <Table.Cell>{exp.description}</Table.Cell>
+                    <Table.Cell>{exp.expenseDate}</Table.Cell>
+                    <Table.Cell>
+
+                    </Table.Cell>
+                </Table.Row>
+            )
+        })
+        return (
+            <Table celled>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.HeaderCell>ID</Table.HeaderCell>
+                        <Table.HeaderCell>Тип расхода</Table.HeaderCell>
+                        <Table.HeaderCell>Сумма</Table.HeaderCell>
+                        <Table.HeaderCell>Валюта</Table.HeaderCell>
+                        <Table.HeaderCell>Примечание</Table.HeaderCell>
+                        <Table.HeaderCell>Дата</Table.HeaderCell>
+                        <Table.HeaderCell>Действия</Table.HeaderCell>
+                    </Table.Row>
+                </Table.Header>
 
         <Table.Body>{tempContent}</Table.Body>
       </Table>
     )
   }
 
-  renderProfile () {
-    const panes = [
-      {menuItem: 'Основные данные', render: this.renderMainData},
-      {menuItem: 'Паспортные данные', render: this.renderPassportData},
-      {menuItem: 'Должности', render: this.renderSalaryData},
-      {menuItem: 'Контакты', render: this.renderContactData},
-      {menuItem: 'Расходы', render: this.renderExpensesData},
-      {menuItem: 'Оф. данные', render: this.renderMainData},
-      {menuItem: 'Файлы', render: this.renderMainData},
-      {menuItem: 'Доп. данные', render: this.renderMainData},
-      {menuItem: 'Баланс', render: this.renderMainData},
-      {menuItem: 'Склад', render: this.renderMainData}
-    ]
-    return (
-      <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
-        <Header as='h2' block>
+    renderOfficialData(){
+        let tempContent = this.state.offData.map(d => {
+            return (
+                <Table.Row key={d.id}>
+                    <Table.Cell>{d.subCompanyName}</Table.Cell>
+                    <Table.Cell>{d.positionName}</Table.Cell>
+                    <Table.Cell>{d.salary}</Table.Cell>
+                    <Table.Cell>{d.pension}</Table.Cell>
+                    <Table.Cell>{d.ipn}</Table.Cell>
+                    <Table.Cell>{d.note}</Table.Cell>
+                    <Table.Cell></Table.Cell>
+                </Table.Row>
+            )
+        })
+        return (
+            <Table celled>
+                <Table.Header>
+                    <Table.Row>
+                        <Table.HeaderCell>Фирма</Table.HeaderCell>
+                        <Table.HeaderCell>Должность</Table.HeaderCell>
+                        <Table.HeaderCell>Оклад</Table.HeaderCell>
+                        <Table.HeaderCell>ОПВ</Table.HeaderCell>
+                        <Table.HeaderCell>ИПН</Table.HeaderCell>
+                        <Table.HeaderCell>Примечание</Table.HeaderCell>
+                        <Table.HeaderCell>Действия</Table.HeaderCell>
+                    </Table.Row>
+                </Table.Header>
+
+                <Table.Body>{tempContent}</Table.Body>
+            </Table>
+        )
+    }
+
+    renderProfile(){
+        const panes = [
+            {menuItem:'Основные данные',render:this.renderMainData},
+            {menuItem:'Паспортные данные',render:this.renderPassportData},
+            {menuItem:'Должности',render:this.renderSalaryData},
+            {menuItem:'Контакты',render:this.renderContactData},
+            {menuItem:'Расходы',render:this.renderExpensesData},
+            {menuItem:'Оф. данные',render:this.renderOfficialData},
+            {menuItem:'Файлы',render:this.renderMainData},
+            {menuItem:'Доп. данные',render:this.renderMainData},
+            {menuItem:'Баланс',render:this.renderMainData},
+            {menuItem:'Склад',render:this.renderMainData}
+        ]
+        return (
+            <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
+                <Header as="h2" block>
                     Карточка сотрудника / {this.state.staff.lastname} {this.state.staff.firstname}
         </Header>
         <Divider />

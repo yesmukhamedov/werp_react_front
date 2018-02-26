@@ -1,28 +1,25 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
-import ReactTable from 'react-table'
-import { Tab, Header, Container, Label, Icon, Button, Segment, Menu, Dropdown } from 'semantic-ui-react'
-import axios from 'axios'
-import {ROOT_URL} from '../../../../utils/constants'
-import moment from 'moment'
-import VisitCreateModal from './VisitCreateModal'
+import ReactTable from 'react-table';
+import "react-table/react-table.css";
+import { Tab,Header,Container,Label,Icon,Button,Segment,Menu,Dropdown } from 'semantic-ui-react'
+import axios from 'axios';
+import {ROOT_URL} from '../../../../utils/constants';
+import moment from 'moment';
+import VisitCreateModal from './VisitCreateModal';
 
-const categoryButtons = {
-  1: 'green',
-  2: 'olive',
-  3: 'grey'
-}
-class VisitArchivePage extends Component {
-  constructor (props) {
-    super(props)
-    this.loadedSuccess = true
-    this.state = {
-      callResultOptions: [],
-      callRefuseOptions: [],
-      items: [],
-      loading: false,
-      showCreateModal: false
-    }
+class VisitArchivePage extends Component{
+
+    constructor(props) {
+        super(props)
+        this.loadedSuccess = true;
+        this.state = {
+            callResultOptions:[],
+            callRefuseOptions:[],
+            items:[],
+            loading:false,
+            showCreateModal:false
+        }
 
     this.renderTable = this.renderTable.bind(this)
     this.openCreateModal = this.openCreateModal.bind(this)

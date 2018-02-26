@@ -31,7 +31,7 @@ class DemoViewPage extends Component {
   }
 
   componentWillMount () {
-    this.loadItem(this.props.params.id)
+    this.loadItem(parseInt(this.props.match.params.id, 10))
   }
 
   loadItem (id) {
@@ -51,34 +51,44 @@ class DemoViewPage extends Component {
     })
   }
 
-  getSourceLink (demo) {
-    if (demo.visitId > 0) {
-      return <Link className={'button'} to={`/crm/visit/view/` + demo.visitId}>
+    getSourceLink(demo){
+        if(demo.visitId > 0){
+            return <Link className={'button'} to={`/crm/visit/view/` + demo.visitId}>
                     Визит № {demo.visitId}
-      </Link>
-    } else if (demo.recoId > 0) {
-      return <Link className={'button'} to={`/crm/reco/view/` + demo.recoId}>
+                </Link>
+        }else if(demo.recoId > 0){
+            return <Link className={'button'} to={`/crm/reco/view/` + demo.recoId}>
                 Рекомендация № {demo.recoId}
-      </Link>
-    } else {
-
+            </Link>
+        }else if(demo.parentId > 0){
+            return <Link className={'button'} to={`/crm/demo/view/` + demo.recoId}>
+                Демо № {demo.parentId}
+            </Link>
+        }else{
+            return;
+        }
     }
-  }
 
-  renderActions () {
-    return <div>
-      <Link className={'ui icon button'} to={`/crm/demo/current`}>
-                В список
-      </Link>
-      <Button onClick={() => window.open(`${ROOT_URL}` + '/crm/demo/print/' + this.state.demo.id, 'Print', 'width=1000,height=500')}>Печать</Button>
-      <Button onClick={this.openUpdateModal}>Редактировать</Button>
-      {this.state.demo.resultId === 0 ? '' : <Link className={'ui icon button'} to={`/crm/reco/create/demo/` + this.state.demo.id}>
+    renderActions(){
+        const {demo} = this.state;
+        const notDemoDone = demo.resultId === 0 || demo.resultId === 2 || demo.resultId === 3;
+        return <div>
+            <Link className={'ui icon button'} to={`/crm/demo/current`}>
+                В список текущих
+            </Link>
+
+            <Link className={'ui icon button'} to={`/crm/demo/archive`}>
+                В Архив
+            </Link>
+
+            <Button onClick={() => window.open(`${ROOT_URL}` + '/crm/demo/print/' + this.state.demo.id, 'Print', 'width=1000,height=500')}>Печать</Button>
+            <Button onClick={this.openUpdateModal}>Редактировать</Button>
+            {notDemoDone ?'':<Link className={'ui icon button'} to={`/crm/reco/create/demo/` + this.state.demo.id}>
                     Добавить рекомендации
-      </Link>}
-
-      <Button onClick={this.openCreateModal}>Добавить демо</Button>
-    </div>
-  }
+                </Link>}
+            {notDemoDone?'':<Button onClick={this.openCreateModal}>Добавить демо</Button>}
+        </div>
+    }
 
   openUpdateModal () {
     this.setState({
@@ -291,22 +301,22 @@ class DemoViewPage extends Component {
             </Table.Row>
           </Table.Header>
 
-          <Table.Body>
-            {demo.recos.map((item, idx) => {
-              return <Table.Row key={item.id}>
-                <Table.Cell>{idx + 1}</Table.Cell>
-                <Table.Cell>{item.clientName}</Table.Cell>
-                <Table.Cell>{item.statusName}</Table.Cell>
-                <Table.Cell><Link className={'ui icon button mini'} to={`/crm/reco/view/` + item.id}>
+                    <Table.Body>
+                        {demo.recos.map((item,idx) => {
+                            return <Table.Row key={item.id}>
+                                    <Table.Cell>{idx+1}</Table.Cell>
+                                    <Table.Cell>{item.clientName}</Table.Cell>
+                                    <Table.Cell>{item.statusName}</Table.Cell>
+                                <Table.Cell><Link className={'ui icon button mini'} to={`/crm/reco/view/` + item.id}>
                                     Просмотр
-                </Link></Table.Cell>
-              </Table.Row>
-            })}
-          </Table.Body>
-        </Table>
-      </Card.Content>
-    </Card>
-  }
+                                </Link></Table.Cell>
+                                </Table.Row>
+                        })}
+                    </Table.Body>
+                </Table>
+            </Card.Content>
+        </Card>
+    }
 
   onCloseUpdateModal () {
     this.setState({

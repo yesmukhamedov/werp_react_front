@@ -1,11 +1,13 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
-import ReactTable from 'react-table'
-import { Tab, Header, Container, Icon, Segment } from 'semantic-ui-react'
-import axios from 'axios'
-import {ROOT_URL} from '../../../../utils/constants'
-import Phone from './Phone'
-import moment from 'moment'
+import ReactTable from 'react-table';
+import "react-table/react-table.css";
+import { Tab,Header,Container,Icon,Segment } from 'semantic-ui-react'
+import axios from 'axios';
+import {ROOT_URL} from '../../../../utils/constants';
+import Phone from './Phone';
+import moment from 'moment';
+import { connect } from 'react-redux'
 
 class RecoCurrentPage extends Component {
   constructor (props) {
@@ -26,6 +28,7 @@ class RecoCurrentPage extends Component {
     this.renderTableMoved = this.renderTableMoved.bind(this)
     this.loadItems = this.loadItems.bind(this)
     this.onCallSaved = this.onCallSaved.bind(this)
+      console.log(props)
   }
 
   loadItems () {
@@ -261,4 +264,8 @@ class RecoCurrentPage extends Component {
   }
 }
 
-export default RecoCurrentPage
+function mapStateToProps (state) {
+    return {}
+}
+
+export default connect(mapStateToProps, {})(RecoCurrentPage)

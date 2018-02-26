@@ -21,7 +21,6 @@ const locationOptions = [
 const CALL_RESULT_DEMO = 1
 const CALL_RESULT_REFUSE = 2
 const CALL_RESULT_RECALL = 3
-const CALL_RESULT_NOT_AVAILABLE = 4
 
 class Phone extends Component {
   constructor (props) {
@@ -113,7 +112,8 @@ class Phone extends Component {
   }
 
   renderDemoForm () {
-    if (!this.state.call.callResultId || this.state.call.callResultId != CALL_RESULT_DEMO) {
+    let callResultId = parseInt(this.state.call.callResultId,10);
+    if (!this.state.call.callResultId || callResultId !== CALL_RESULT_DEMO) {
       return null
     }
     return (
@@ -214,26 +214,27 @@ class Phone extends Component {
 
   validateForm () {
     let {call, errors} = this.state
-    Object.keys(errors).map((k) => {
-      if (errors.hasOwnProperty(k)) {
-        errors[k] = false
+      for(let k in errors){
+          if (errors.hasOwnProperty(k)) {
+              errors[k] = false
+          }
       }
-    })
-    if (!call.callDate || call.callDate.length == 0) {
+
+    if (!call.callDate || call.callDate.length === 0) {
       errors.callDate = true
     }
 
-    if (!call.callResultId || call.callResultId == 0) {
+    if (!call.callResultId || call.callResultId === 0) {
       errors.callResultId = true
-    } else if (call.callResultId == CALL_RESULT_REFUSE) {
-      if (!call.callReasonId || call.callReasonId == 0) {
+    } else if (call.callResultId === CALL_RESULT_REFUSE) {
+      if (!call.callReasonId || call.callReasonId === 0) {
         errors.callReasonId = true
       }
-    } else if (call.callResultId == CALL_RESULT_RECALL) {
-      if (!call.callRecallDate || call.callRecallDate.length == 0) {
+    } else if (call.callResultId === CALL_RESULT_RECALL) {
+      if (!call.callRecallDate || call.callRecallDate.length === 0) {
         errors.callRecallDate = true
       }
-    } else if (call.callResultId == CALL_RESULT_DEMO) {
+    } else if (call.callResultId === CALL_RESULT_DEMO) {
       if (!call.demoAddress || call.demoAddress.length === 0) {
         errors.demoAddress = true
       }
@@ -260,11 +261,13 @@ class Phone extends Component {
   saveCall () {
     this.validateForm()
     let isValid = true
-    Object.keys(this.state.errors).map((k) => {
-      if (this.state.errors[k]) {
-        isValid = false
+      for(let k in this.state.errors){
+          if (this.state.errors[k]) {
+              isValid = false
+              break
+          }
       }
-    })
+
     if (!isValid) {
       return
     }
@@ -346,12 +349,14 @@ class Phone extends Component {
         if (call[fieldName] > 0) {
           errors[fieldName] = false
         }
-        if (call[fieldName] == CALL_RESULT_DEMO) {
+        if (call[fieldName] === CALL_RESULT_DEMO) {
           showDemoForm = true
         } else {
           showDemoForm = false
         }
         break
+
+        default:{}
     }
 
     this.setState({
@@ -363,13 +368,13 @@ class Phone extends Component {
   }
 
   renderCallResultDependentField () {
-    if (this.state.call.callResultId == CALL_RESULT_REFUSE) {
+    if (this.state.call.callResultId === CALL_RESULT_REFUSE) {
       // Otkaz
       return (
         <Form.Select error={this.state.errors.callReasonId} required fluid label='Причина отказа' options={this.props.callRefuseOptions}
           onChange={(e, v) => this.handleChange('callReasonId', v)} />
       )
-    } else if (this.state.call.callResultId == CALL_RESULT_RECALL) {
+    } else if (this.state.call.callResultId === CALL_RESULT_RECALL) {
       // Perzvonit'
       return (
         <Form.Field error={this.state.errors.callRecallDate} required>
@@ -388,7 +393,7 @@ class Phone extends Component {
   }
 
   render () {
-    const {id, phoneNumber, callResultOptions} = this.props
+    const {phoneNumber} = this.props
     return (
       <p>
         {this.state.buttonLoading ? <Button loading>Loading</Button> : <Label as='button' horizontal onClick={this.handlePhoneClick}>

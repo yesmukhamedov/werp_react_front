@@ -32,10 +32,11 @@ class VisitViewPage extends Component {
     this.onCloseDemoCreateModal = this.onCloseDemoCreateModal.bind(this)
   }
 
-  componentWillMount () {
-    this.loadItem(this.props.params.id)
-    this.loadCalls(this.props.params.id)
-  }
+    componentWillMount(){
+        const id = parseInt(this.props.match.params.id, 10)
+        this.loadItem(id);
+        this.loadCalls(id);
+    }
 
   loadItem (id) {
     axios.get(`${ROOT_URL}/api/crm/visit/` + id, {
