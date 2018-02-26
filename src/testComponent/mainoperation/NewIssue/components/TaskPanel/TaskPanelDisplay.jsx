@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table, Button, Icon, Segment, Header } from 'semantic-ui-react';
-import { OutCallDetailsPanelDisplay } from '../OutCallDetailsPanel';
 
 const TaskPanelDisplay = props => (
   <Segment>
@@ -45,11 +44,11 @@ const TaskPanelDisplay = props => (
         </Table.Row>
       </Table.Body>
 
-      <Table.Footer fullWidth>
+      <Table.Footer>
         <Table.Row>
           <Table.HeaderCell colSpan="6">
             <Button
-              floated="right"
+              // floated="right"
               icon
               labelPosition="left"
               primary

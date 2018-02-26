@@ -7,7 +7,7 @@ import { PaymentBreakdownTableDisplay } from '../PaymentBreakdownTable';
 const PersonalInfoPanelDisplay = props => (
   <Segment raised>
     <Label color="blue" ribbon>Финансовые данные клиента</Label>
-    <Grid columns={4} divided>
+    <Grid columns={4} divided stackable>
       <Grid.Row>
         <Grid.Column>
           <Form>

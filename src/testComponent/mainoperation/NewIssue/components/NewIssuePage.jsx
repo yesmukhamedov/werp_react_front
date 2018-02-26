@@ -6,6 +6,9 @@ import { PersonalInfoPanelContainer } from './PersonalInfoPanel';
 import { FinancialInfoPanelContainer } from './FinancialInfoPanel';
 import { TaskTrackerPanelDisplay } from './TaskTrackerPanel';
 import { PurchasesPanelDisplay } from './PurchasesPanel';
+import { TaskPanelDisplay } from './TaskPanel';
+import { OutCallDetailsPanelDisplay } from './OutCallDetailsPanel';
+import { NewTaskModalComponent } from './NewTaskModal';
 
 export default class NewIssuePage extends Component {
   constructor(props) {
@@ -31,16 +34,10 @@ export default class NewIssuePage extends Component {
 
   render() {
     return (
-      <Container
-        fluid
-        style={{
-          paddingLeft: '1em',
-          paddingRight: '1em',
-          backgroundColor: 'rgb(232, 234, 237)',
-        }}
-        stretched="false"
-      >
-        <TaskTrackerPanelDisplay />
+      <Container>
+        <TaskPanelDisplay />
+        <NewTaskModalComponent />
+        <OutCallDetailsPanelDisplay />
         <Accordion fluid styled>
           <Accordion.Title
             active={0}

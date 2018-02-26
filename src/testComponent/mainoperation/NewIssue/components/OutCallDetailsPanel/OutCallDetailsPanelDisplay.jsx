@@ -4,7 +4,7 @@ import faker from 'faker';
 
 const OutCallDetailsPanelDisplay = props => (
   <Segment raised>
-    <Comment.Group>
+    <Comment.Group style={{ maxWidth: "100%" }}>
       <Header as='h3' dividing>Коментарий</Header>
       <Comment>
         {/* <Comment.Avatar as="a" src="/assets/images/avatar/small/joe.jpg" /> */}
