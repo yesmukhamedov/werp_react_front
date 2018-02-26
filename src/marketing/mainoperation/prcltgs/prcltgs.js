@@ -1,12 +1,11 @@
-import React,{ Component, PropTypes } from 'react';
+import React,{ Component } from 'react';
 import { connect } from 'react-redux';
-import { Loader, Table, Button, Modal, Dropdown, Icon, Container, Header, Grid, Tab, Label, Input,Checkbox } from 'semantic-ui-react';
-import DatePicker from "react-datepicker";
+import { Loader, Table, Button,  Dropdown, Icon, Container, Header, Grid,  Label, Input } from 'semantic-ui-react';
 import "react-datepicker/dist/react-datepicker.css";
-import moment from 'moment';
 import axios from 'axios';
 import {ROOT_URL} from '../../../utils/constants';
 import { notify } from '../../../general/notification/notification_action';
+import { fetchBukrsOptions } from '../../../reference/f4/bukrs/BukrsOptions';
 import './prcltgs.css';
 require('moment/locale/ru');
 
@@ -41,9 +40,7 @@ const monthNumOptions = [
 // const arrayList= ;
 class Prcltgs extends Component {
 
-    static contextTypes = {
-        router: PropTypes.object
-    }
+
     constructor(props){
         super(props);
         this.onInputChange = this.onInputChange.bind(this);
@@ -86,26 +83,10 @@ class Prcltgs extends Component {
     componentWillMount() {
         
         this.setState({loading:true});
-        axios.get(`${ROOT_URL}/api/reference/companies`, {
-            headers: {
-                authorization: localStorage.getItem('token')}
-        })
-        .then(({data}) => {
-            const newCompanyOptions = data.map(item => {
-                return {
-                    key: item.id,
-                    value: item.id,
-                    text: item.name
-                }
-            })
-            
-            this.setState({
-                ...this.state,
-                companyOptions: newCompanyOptions,
-                loading:false
-            })
-        })
-        .catch(err => console.log(err));
+        fetchBukrsOptions().then((returnValue)=>{
+            this.setState({companyOptions:returnValue,loading:false});
+
+        });
 
 
         if (this.state.companyOptions.size===1){
@@ -126,7 +107,7 @@ class Prcltgs extends Component {
             .then(({
                 data
             }) => {
-                const newBranchOptions = data.filter(item=>item.tovarCategory==1||item.tovarCategory==2).map(item => {
+                const newBranchOptions = data.filter(item=>item.tovarCategory===1||item.tovarCategory===2).map(item => {
                     // console.log(item.tovarCategory);
                     // console.log(item);
                     return {
@@ -137,8 +118,8 @@ class Prcltgs extends Component {
                     }
                     
                 });
-                const newBranchOptions2 = newBranchOptions.filter(item=>item.tovarCategory==this.state.searchTerm.selectedCategory 
-                    || this.state.searchTerm.selectedCategory==3).map(item2=>{
+                const newBranchOptions2 = newBranchOptions.filter(item=>item.tovarCategory===this.state.searchTerm.selectedCategory 
+                    || this.state.searchTerm.selectedCategory===3).map(item2=>{
                         return {
                             key: item2.key,
                             text: item2.text,
@@ -160,7 +141,7 @@ class Prcltgs extends Component {
     onInputChange(value,stateFieldName){
         let waSearchTerm = Object.assign({}, this.state.searchTerm);
         if (stateFieldName==="bukrs")
-        {               
+        {
             waSearchTerm.bukrs=value;
             this.clearSelected();
             this.fetchUserBranches(value);
@@ -368,18 +349,18 @@ class Prcltgs extends Component {
         price.price = 0;
         price.remain = 0;
         
-        for (var i = 0; i < newPtList.length; i++) {
-            newPtList.ptOrder=i;
+        for (var i2 = 0; i2 < newPtList.length; i2++) {
+            newPtList.ptOrder=i2;
             
-            price.price = price.price + (newPtList[i].monthlyPaymentSum*newPtList[i].monthNum);
-            if (i===0) {
-                price.firstPayment = newPtList[i].monthlyPaymentSum;
-                newPtList[i].info = "first_payment";
+            price.price = price.price + (newPtList[i2].monthlyPaymentSum*newPtList[i2].monthNum);
+            if (i2===0) {
+                price.firstPayment = newPtList[i2].monthlyPaymentSum;
+                newPtList[i2].info = "first_payment";
             }    
             else
             {
-                price.month = price.month + newPtList[i].monthNum;
-                newPtList[i].info = "monthly_payment";
+                price.month = price.month + newPtList[i2].monthNum;
+                newPtList[i2].info = "monthly_payment";
             }
         } 
 

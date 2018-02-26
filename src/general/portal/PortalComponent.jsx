@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { Button, Grid, Header, Segment, Portal } from 'semantic-ui-react';
+import { Button, Segment, Portal } from 'semantic-ui-react';
 
 const portalContentStyle = {
   left: '50%',
@@ -22,7 +21,6 @@ export default class PortalComponent extends Component {
 
   render() {
     const { open } = this.state;
-    const { left, right } = this.props;
 
     return (
       <div>

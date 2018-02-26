@@ -9,6 +9,9 @@ import treeMenuReducer from './tree_menu';
 import notificationReducer from '../general/notification/notification_reducer';
 import contractListReducer from '../testComponent/mainoperation/contractList/reducers/ContractListReducer';
 
+import userInfoReducer from '../general/userInfo/userInfo_reducer';
+import frcolnReducer from '../finance/report/frcoln/frcoln_reducer';
+import loaderReducer from '../general/loader/loader_reducer';
 import {
   UNAUTH_USER
 } from '../actions/types';
@@ -22,7 +25,10 @@ const appReducer = combineReducers({
   inbox: inboxReducer,
   menu: treeMenuReducer,
   notification: notificationReducer,
-  contractList: contractListReducer
+  contractList: contractListReducer,
+  userInfo:userInfoReducer,
+  frcoln:frcolnReducer,
+  loader:loaderReducer
 });
 
 const rootReducer = (state, action) => {

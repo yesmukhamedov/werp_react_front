@@ -6,23 +6,26 @@ import jwt from 'jwt-simple';
 import { defineMessages, intlShape, injectIntl } from 'react-intl';
 import LanguageSwitcher from './LanguageSwitcher';
 import TransactionSearchbar from './TransactionSearchbar';
-import { fetchUnreadMessages } from '../../actions/inbox';
-import { breadcrumbChanged } from '../../actions/tree_menu';
-import { calcBreadcrumb } from '../../utils/helpers';
-import { fetchTreeMenu } from '../../actions/tree_menu';
+import { fetchUnreadMessages } from "../../actions/inbox";
+import { breadcrumbChanged } from "../../actions/tree_menu";
+import { calcBreadcrumb } from "../../utils/helpers";
+import {fetchTreeMenu} from '../../actions/tree_menu';
+import {fetchUserInfo} from '../../general/userInfo/userInfo_action';
 
 class Header extends Component {
-  componentWillMount() {
-    if (this.props.authenticated) {
-      const token = localStorage.getItem('token');
-      if (token) {
-        const payload = jwt.decode(token, 'secret');
-        const userId = payload.userId;
-        this.props.fetchUnreadMessages({ userId });
-        this.props.fetchTreeMenu(userId);
-      }
+    componentWillMount() {
+        if (this.props.authenticated) {
+            const token = localStorage.getItem('token');
+            if (token) {
+              const payload = jwt.decode(token, 'secret')
+              const userId = payload.userId
+              this.props.fetchUnreadMessages({userId});
+              this.props.fetchTreeMenu(userId);
+              this.props.fetchUserInfo();
+            }             
+        }
     }
-  }
+  
 
 
   handleTransactionSelected(transactionCode) {
@@ -157,9 +160,5 @@ function mapStateToProps(state) {
 Header.propTypes = {
   intl: intlShape.isRequired,
 };
-
-export default connect(mapStateToProps, {
-  fetchUnreadMessages,
-  breadcrumbChanged,
-  fetchTreeMenu,
-})(injectIntl(Header));
+  
+export default connect(mapStateToProps, {fetchUnreadMessages, breadcrumbChanged, fetchTreeMenu, fetchUserInfo})(injectIntl(Header));
