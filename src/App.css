@@ -44,3 +44,6 @@
   padding: 5px 0px !important;
 }
 
+.clickableItem:hover{
+  cursor: pointer;
+}

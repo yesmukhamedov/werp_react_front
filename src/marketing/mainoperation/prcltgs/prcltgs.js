@@ -7,6 +7,7 @@ import moment from 'moment';
 import axios from 'axios';
 import {ROOT_URL} from '../../../utils/constants';
 import { notify } from '../../../general/notification/notification_action';
+import { fetchBukrsOptions } from '../../../reference/f4/bukrs/BukrsOptions';
 import './prcltgs.css';
 require('moment/locale/ru');
 
@@ -86,26 +87,10 @@ class Prcltgs extends Component {
     componentWillMount() {
         
         this.setState({loading:true});
-        axios.get(`${ROOT_URL}/api/reference/companies`, {
-            headers: {
-                authorization: localStorage.getItem('token')}
-        })
-        .then(({data}) => {
-            const newCompanyOptions = data.map(item => {
-                return {
-                    key: item.id,
-                    value: item.id,
-                    text: item.name
-                }
-            })
-            
-            this.setState({
-                ...this.state,
-                companyOptions: newCompanyOptions,
-                loading:false
-            })
-        })
-        .catch(err => console.log(err));
+        fetchBukrsOptions().then((returnValue)=>{
+            this.setState({companyOptions:returnValue,loading:false});
+
+        });
 
 
         if (this.state.companyOptions.size===1){
@@ -160,7 +145,7 @@ class Prcltgs extends Component {
     onInputChange(value,stateFieldName){
         let waSearchTerm = Object.assign({}, this.state.searchTerm);
         if (stateFieldName==="bukrs")
-        {               
+        {
             waSearchTerm.bukrs=value;
             this.clearSelected();
             this.fetchUserBranches(value);

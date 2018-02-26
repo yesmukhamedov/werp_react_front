@@ -7,6 +7,8 @@ import moment from 'moment';
 import axios from 'axios';
 import {ROOT_URL} from '../../../utils/constants';
 import { notify } from '../../../general/notification/notification_action';
+import { fetchBukrsOptions } from '../../../reference/f4/bukrs/BukrsOptions';
+import { fetchBranchOptions } from '../../../reference/f4/branch/BranchOptions';
 require('moment/locale/ru');
 
 
@@ -30,25 +32,10 @@ class Serrep2 extends Component {
     componentWillMount() {
         
 
-        axios.get(`${ROOT_URL}/api/reference/companies`, {
-            headers: {
-                authorization: localStorage.getItem('token')}
-        })
-        .then(({data}) => {
-            const newCompanyOptions = data.map(item => {
-                return {
-                    key: item.id,
-                    value: item.id,
-                    text: item.name
-                }
-            })
-            
-            this.setState({
-                ...this.state,
-                companyOptions: newCompanyOptions
-            })
-        })
-        .catch(err => console.log(err));
+        fetchBukrsOptions().then((returnValue)=>{
+            this.setState({companyOptions:returnValue});
+
+        });
 
 
         if (this.state.companyOptions.size===1){
@@ -64,8 +51,11 @@ class Serrep2 extends Component {
         if (stateFieldName==="bukrs")
         {               
             waSearchTerm.bukrs=value;
-            waSearchTerm.branchList=[];   
-            this.fetchUserBranches(value);
+            waSearchTerm.branchList=[];      
+            fetchBranchOptions(value,'service').then((returnValue)=>{
+                this.setState({branchOptions:returnValue});
+    
+            });
         }
         else if (stateFieldName==='branch') { 
             waSearchTerm.branchList=value;            
@@ -191,30 +181,7 @@ class Serrep2 extends Component {
 
     }
 
-    fetchUserBranches(bukrs) {
-        axios.get(`${ROOT_URL}/api/reference/branches/service/` + bukrs, {
-                headers: {
-                    authorization: localStorage.getItem('token')
-                }
-            })
-            .then(({
-                data
-            }) => {
-                const newBranchOptions = data.map(item => {
-                    return {
-                        key: item.branch_id,
-                        text: item.text45,
-                        value: item.branch_id
-                    }
-                })
-
-                this.setState({
-                    ...this.state,
-                    branchOptions: newBranchOptions
-                })
-            })
-            .catch(err => console.log(err));
-    }
+    
 
     onSelectTableType(index){
 
