@@ -25,7 +25,7 @@ class Header extends Component {
             }             
         }
     }
-  }
+  
 
 
   handleTransactionSelected(transactionCode) {
