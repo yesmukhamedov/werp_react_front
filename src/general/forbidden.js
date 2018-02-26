@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {Container, Header, Icon, Image} from 'semantic-ui-react'
+import {Container, Header, Image} from 'semantic-ui-react'
 
 class ForbiddenPage extends Component {
   render () {

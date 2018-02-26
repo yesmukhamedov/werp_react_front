@@ -1,12 +1,10 @@
-import React,{ Component, PropTypes } from 'react';
+import React,{ Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Button, Dropdown, Icon, Container, Header, Grid, Tab, Divider, Segment, Menu } from 'semantic-ui-react';
+import { Table, Button, Dropdown, Icon, Container, Header, Grid, Divider, Segment, Menu } from 'semantic-ui-react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import moment from 'moment';
-import axios from 'axios';
-import {ROOT_URL} from '../../../utils/constants';
 import { notify } from '../../../general/notification/notification_action';
 import ReactTable from 'react-table';
 import _ from "lodash";
@@ -14,7 +12,6 @@ import '../frcoln/frcoln.css';
 import {frcolnSearchData, frcolnFetchBranchData, changeTab, frcolnFetchCollectorData, clearState, frcolnSaveData} from './frcoln_action';
 import {LEGACY_URL} from "../../../utils/constants"
 require('moment/locale/ru');
-let count = 0;
 const statusOptions = [
     { key: 0, text: 'Стандарт', value: 0 },
     { key: 1, text: 'Проблемный', value: 1 }
@@ -26,13 +23,9 @@ const statusOptions = [
  
 class Frcoln extends Component {
 
-    static contextTypes = {
-        router: PropTypes.object
-    }
+
     constructor(props){
-        var date = new Date(), y = date.getFullYear(), m = date.getMonth();
-        var firstDay = new Date(y, m, 1);
-        var lastDay = new Date(y, m + 1, 0);
+        var date = new Date();
 
         super(props);
         this.onInputChange = this.onInputChange.bind(this);

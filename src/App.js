@@ -1,7 +1,6 @@
 /* jshint esversion: 6 */
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import jwt from 'jwt-simple'
 import {Loader, Menu, Segment, Sidebar} from 'semantic-ui-react'
 import './App.css'
 import Signin from './components/Auth/Signin'

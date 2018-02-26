@@ -1,4 +1,4 @@
-import React,{ Component, PropTypes } from 'react';
+import React,{ Component } from 'react';
 import { connect } from 'react-redux';
 import { Table, Button, Dropdown, Icon, Container, Header, Grid, Input, Checkbox} from 'semantic-ui-react';
 import DatePicker from "react-datepicker";
@@ -15,9 +15,6 @@ require('moment/locale/ru');
 // const arrayList= ;
 class Serrep4 extends Component {
 
-    static contextTypes = {
-        router: PropTypes.object
-    }
     constructor(props){
         var date = new Date(), y = date.getFullYear(), m = date.getMonth();
         var firstDay = new Date(y, m, 1);

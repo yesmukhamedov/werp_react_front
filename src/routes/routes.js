@@ -21,6 +21,7 @@ import DemoArchivePage from '../crm/mainoperation/demo/components/DemoArchivePag
 import DemoViewPage from '../crm/mainoperation/demo/components/DemoViewPage';
 import ForbiddenPage from '../general/forbidden';
 import LoadingPage from '../general/LoadingPage';
+import Frcoln from '../finance/report/frcoln/frcoln'
 
 import NewIssuePage from '../testComponent/mainoperation/NewIssue/components/NewIssuePage';
 
