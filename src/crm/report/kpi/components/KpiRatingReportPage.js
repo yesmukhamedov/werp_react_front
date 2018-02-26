@@ -1,34 +1,48 @@
 import React, {Component} from 'react'
 import ReactTable from 'react-table'
+import 'react-table/react-table.css'
 import axios from 'axios'
-import {Container, Header, Segment, Form, Divider} from 'semantic-ui-react'
+import {Container, Header, Segment, Form, Divider, Tab,Loader} from 'semantic-ui-react'
 import {ROOT_URL} from '../../../../utils/constants'
 import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4'
 import BranchF4 from '../../../../reference/f4/branch/BranchF4'
 import YearF4 from '../../../../reference/f4/date/YearF4'
 import MonthF4 from '../../../../reference/f4/date/MonthF4'
-import PositionF4 from '../../../../reference/f4/position/PositionF4'
 
 const currentDate = new Date()
+
+const DEALER_POSITION_ID = 4;
+const STAZHER_DEALER_POSITION_ID = 67;
+const MANAGER_POSITION_ID = 3;
+const DIRECTOR_POSITION_ID = 10;
 
 class KpiRatingReportPage extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      items: [],
+        items:{
+            STAZHER_DEALER_POSITION_ID:[],
+            DEALER_POSITION_ID: [],
+            MANAGER_POSITION_ID:[],
+            DIRECTOR_POSITION_ID:[]
+        },
       loading: false,
-      selectedBukrs: '',
-      selectedBranches: [],
-      selectedYear: currentDate.getFullYear(),
-      selectedMonth: currentDate.getMonth() + 1,
-      selectedPositionId: 0
+      bukrs: '',
+      branches: [],
+      year: currentDate.getFullYear(),
+      month: currentDate.getMonth() + 1,
+      positionId:STAZHER_DEALER_POSITION_ID,
+        loadedMap:{}
     }
 
     this.handleDropdownChange = this.handleDropdownChange.bind(this)
     this.loadItems = this.loadItems.bind(this)
+    this.onTabChange = this.onTabChange.bind(this)
+      this.renderDataTable = this.renderDataTable.bind(this)
   }
 
   componentWillMount () {
+      this.loadItems()
   }
 
   loadItems () {
@@ -36,21 +50,23 @@ class KpiRatingReportPage extends Component {
       ...this.state,
       loading: true
     })
+      let {bukrs,branches,positionId,year,month,items} = this.state;
     axios.get(`${ROOT_URL}/api/crm/report/kpi-rating`, {
       headers: {
         authorization: localStorage.getItem('token')
       },
       params: {
-        bukrs: this.state.selectedBukrs,
-        branchIds: this.state.selectedBranches.join(','),
-        year: this.state.selectedYear,
-        month: this.state.selectedMonth,
-        positionId: this.state.selectedPositionId
+        bukrs: bukrs,
+        branchIds: branches.join(','),
+        year: year,
+        month: month,
+        positionId: positionId
       }
     }).then((res) => {
+        items[positionId] = res.data
       this.setState({
         ...this.state,
-        items: res.data,
+        items:items,
         loading: false
       })
     }).catch((e) => {
@@ -62,10 +78,37 @@ class KpiRatingReportPage extends Component {
     })
   }
 
-  renderDataTable () {
+onTabChange(e,data){
+      let positionId = STAZHER_DEALER_POSITION_ID
+      switch (data.activeIndex){
+          case 1:
+              positionId = DEALER_POSITION_ID
+              break
+
+          case 2:
+              positionId = MANAGER_POSITION_ID
+              break
+
+          case 3:
+              positionId = DIRECTOR_POSITION_ID
+              break
+
+          default:{}
+      }
+
+      this.setState({...this.state,positionId:positionId})
+}
+
+  renderDataTable (positionId) {
+    const {loading,items} = this.state;
+    if(loading){
+        return <div>
+                    <Loader style={{'marginTop':100}} active={true}/>
+                </div>
+    }
     return <div>
       <ReactTable
-        data={this.state.items}
+        data={items[positionId] || []}
         columns={[
           {
             Header: 'Компания',
@@ -78,18 +121,14 @@ class KpiRatingReportPage extends Component {
             maxWidth: 150
           },
           {
-            Header: 'Сотудник',
-            accessor: 'staffName'
-          },
-          {
-            Header: 'Должность',
-            accessor: 'positionName',
-            maxWidth: 150
+            Header: 'Сотрудник',
+            accessor: 'name'
           },
           {
             Header: 'KPI %',
-            id: 'score',
-            accessor: row => this.roundedValue(row.score)
+            id: 'totalScore',
+            maxWidth: 150,
+            accessor: row => this.roundedValue(row.totalScore)
           }
         ]}
 
@@ -109,67 +148,37 @@ class KpiRatingReportPage extends Component {
   }
 
   handleDropdownChange (e, result) {
-    const {name, value} = result
-    let {selectedBukrs, selectedYear, selectedMonth, selectedBranches, selectedPositionId} = this.state
-    switch (name) {
-      case 'bukrs':
-        selectedBukrs = value
-        break
-
-      case 'branch':
-        selectedBranches = value
-        break
-
-      case 'year':
-        selectedYear = value
-        break
-
-      case 'month':
-        selectedMonth = value
-        break
-
-      case 'position':
-        selectedPositionId = value
-        break
-
-      default:
-        break
-    }
-
-    this.setState({
-      ...this.state,
-      selectedBukrs: selectedBukrs,
-      selectedBranches: selectedBranches,
-      selectedYear: selectedYear,
-      selectedMonth: selectedMonth,
-      selectedPositionId: selectedPositionId
-    })
+    const {value} = result
+    this.setState({name:value})
   }
 
   renderSearchForm () {
     return <Form>
       <Form.Group widths='equal'>
         <BukrsF4 handleChange={this.handleDropdownChange} />
-        <BranchF4 search multiple handleChange={this.handleDropdownChange} bukrs={this.state.selectedBukrs} />
-        <PositionF4 search handleChange={this.handleDropdownChange} />
+        <BranchF4 search multiple handleChange={this.handleDropdownChange} bukrs={this.state.bukrs} />
         <YearF4 handleChange={this.handleDropdownChange} />
         <MonthF4 handleChange={this.handleDropdownChange} />
       </Form.Group>
-      <Form.Button loading={this.state.loading} onClick={this.loadItems}>Сформировать</Form.Button>
+      <Form.Button onClick={this.loadItems}>Сформировать</Form.Button>
     </Form>
   }
 
   render () {
+      const panes = [
+          { menuItem: 'Стажеры', render: () => this.renderDataTable(STAZHER_DEALER_POSITION_ID) },
+          { menuItem: 'Дилеры', render: () => this.renderDataTable(DEALER_POSITION_ID) },
+          { menuItem: 'Менеджеры', render: () => this.renderDataTable(MANAGER_POSITION_ID) },
+          { menuItem: 'Директоры', render: () => this.renderDataTable(DIRECTOR_POSITION_ID) }
+      ]
     return (
       <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
         <div>
-          <Header as='h2' attached='top'>
-                            Рейтинг сотрудников отдела маркетинга
-          </Header>
+          <Header as='h2' attached='top'>Рейтинг сотрудников отдела маркетинга</Header>
           {this.renderSearchForm()}
           <Divider clearing />
           <Segment attached>
-            {this.renderDataTable()}
+              <Tab onTabChange={this.onTabChange} menu={{ secondary: true, pointing: true }} panes={panes} />
           </Segment>
         </div>
       </Container>

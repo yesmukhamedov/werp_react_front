@@ -67,22 +67,21 @@ class KpiReportPage extends Component {
     })
   }
 
-  componentWillMount () {
-    axios.get(`${ROOT_URL}/api/reference/companies`, {
-      headers: {
-        authorization: localStorage.getItem('token')
-      }
-    }).then((res) => {
-      for (let i = 0; i < res.data.length; i++) {
-        bukrsMap[res.data[i]['id']] = res.data[i]['name']
-      }
-    }).catch((e) => {
-      console.log(e)
-      this.setState({
-        ...this.state,
-        loading: false
-      })
-    })
+    componentWillMount(){
+        axios.get(`${ROOT_URL}/api/reference/companies`,{
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        }).then((res) => {
+            for(let i = 0; i < res.data.length; i++){
+                bukrsMap[res.data[i]['id']] = res.data[i]['name']
+            }
+        }).catch((e) => {
+            this.setState({
+                ...this.state,
+                loading:false
+            })
+        });
 
     this.loadItems('', 0)
   }

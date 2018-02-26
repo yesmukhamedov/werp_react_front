@@ -20,43 +20,48 @@ class BukrsF4 extends Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  componentWillMount () {
-    axios.get(`${ROOT_URL}/api/reference/companies`, {
-      headers: {
-        authorization: localStorage.getItem('token')
-      }
-    }).then((res) => {
-      let loaded = res.data.map((b) => {
-        return {
-          key: b.id,
-          text: b.name,
-          value: b.id
-        }
-      })
-      if (loaded.length === 1) {
-        this.setState({
-          ...this.state,
-          mode: MODE_LABEL,
-          selected: loaded[0]['value'],
-          selectedName: loaded[0]['text']
+    componentWillMount(){
+        axios.get(`${ROOT_URL}/api/reference/companies`,{
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        }).then((res) => {
+            let loaded = res.data.map((b) => {
+                return {
+                    key:b.id,
+                    text:b.name,
+                    value: b.id
+                }
+            })
+            if(loaded.length === 1){
+                this.setState({
+                    ...this.state,
+                    mode:MODE_LABEL,
+                    selected:loaded[0]['value'],
+                    selectedName:loaded[0]['text']
+                })
+                let temp = {
+                    value:loaded[0]['value'],
+                    options:loaded,
+                    name:'bukrs'
+                }
+                this.handleChange({},temp)
+            }else{
+                loaded.unshift({
+                    key:0,
+                    text:'Не выбрано',
+                    value:''
+                });this.setState({
+                    ...this.state,
+                    mode:MODE_DROPDOWN,
+                    options:loaded
+                })
+            }
+
+        }).catch((e) => {
+            console.log(e)
         })
-        let temp = {
-          value: loaded[0]['value'],
-          options: loaded,
-          name: 'bukrs'
-        }
-        this.handleChange({}, temp)
-      } else {
-        this.setState({
-          ...this.state,
-          mode: MODE_DROPDOWN,
-          options: loaded
-        })
-      }
-    }).catch((e) => {
-      console.log(e)
-    })
-  }
+    }
 
   handleChange (e, v) {
     this.setState({

@@ -6,6 +6,7 @@ import {ROOT_URL} from '../../../../utils/constants'
 import { notify } from '../../../../general/notification/notification_action'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
+import 'react-datepicker/dist/react-datepicker.css';
 const switchDateOptions = [
   {
     key: 0,
@@ -39,8 +40,8 @@ class RecoCreatePage extends Component {
     this.state = {
       dealerOptions: [],
       reco: {
-        context: this.props.params.context || 'aa',
-        contextId: this.props.params.contextId || 0,
+        context: this.props.match.params.context || 'aa',
+        contextId: this.props.match.params.contextId || 0,
         tempRecommender: '',
         recommenderInfo: '',
         responsibleId: 0,
@@ -59,7 +60,7 @@ class RecoCreatePage extends Component {
   }
 
   componentWillMount () {
-    axios.get(`${ROOT_URL}/api/crm/reco/create?context=` + (this.props.params.context || 'aa') + `&contextId=` + (this.props.params.contextId || 0), {
+    axios.get(`${ROOT_URL}/api/crm/reco/create?context=` + (this.props.match.params.context || 'aa') + `&contextId=` + (this.props.match.params.contextId || 0), {
       headers: {
         authorization: localStorage.getItem('token')}
     }).then((res) => {
@@ -132,29 +133,39 @@ class RecoCreatePage extends Component {
           }
           break
 
-        case 'phoneNumber1':
-        case 'phoneNumber2':
+                case 'phoneNumber1':
+                case 'phoneNumber2':
+                    const phonePattern = this.state.reco.phonePattern || '';
+                    const ppLenght = phonePattern.replace(/[^0-9]+/g, '').length;
+                    let v = value.replace(/[^0-9]+/g, '');
+                    if(v.length === 0){
+                        itemPhones[itemIndex][originalName] = '';
+                        item[originalName] = '';
+                    } else {
+                        let temp = '';
+                        let userCounter = 0;
+                        for(let k = 0; k < phonePattern.length; k++) {
+                            const userChar = v.charAt(userCounter);
+                            userCounter++;
+                            if(!userChar){
+                                break;
+                            }
 
-          let v = value.replace(/[^0-9\.]+/g, '')
-          if (v.length === 0) {
-            itemPhones[itemIndex][originalName] = ''
-            item[originalName] = ''
-          } else {
-            let v1 = v
-            if (v.length > 8) {
-              v1 = v.substring(0, 3) + '-' + v.substring(3, 6) + '-' + v.substring(6, 8) + '-' + v.substring(8, 10)
-            } else if (v.length > 6) {
-              v1 = v.substring(0, 3) + '-' + v.substring(3, 6) + '-' + v.substring(6, 8)
-            } else if (v.length > 3) {
-              v1 = v.substring(0, 3) + '-' + v.substring(3)
-            }
+                            const char = phonePattern.charAt(k);
+                            if(isNaN(char)) {
+                                temp += char;
+                                userCounter--;
+                            }else{
+                                temp += userChar;
+                            }
+                        }
 
-            itemPhones[itemIndex][originalName] = v1
-            item[originalName] = v.substring(0, 10)
-          }
-          // console.log(v);
-          // console.log(isNaN(v));
-          break
+                        itemPhones[itemIndex][originalName] = temp;
+                        item[originalName] = v.substring(0,ppLenght);
+                    }
+                    // console.log(v);
+                    // console.log(isNaN(v));
+                    break
 
         default:
           break
@@ -171,15 +182,14 @@ class RecoCreatePage extends Component {
     })
   }
 
-  handleChangeDate (m, index) {
-    let {reco} = this.state
-    let item = reco['items'][index]
-    if (m) {
-      console.log(m.utc().unix())
-      item['callDate'] = m.valueOf()
-    } else {
-      item['callDate'] = null
-    }
+    handleChangeDate(m,index){
+        let {reco} = this.state;
+        let item = reco['items'][index];
+        if(m){
+            item['callDate'] = m.valueOf();
+        }else{
+            item['callDate'] = null;
+        }
 
     reco['items'][index] = item
     this.setState({
@@ -235,32 +245,35 @@ class RecoCreatePage extends Component {
       error.push('Выберите дилера')
     }
 
-    if (!reco.tempRecommender || reco.tempRecommender.length === 0) {
-      error.push('Введите ФИО рекомендателя')
-    }
-
-    reco.items.map((item, idx) => {
-      let index = idx + 1
-      if (item.phoneNumber1.length === 0 && item.phoneNumber2.length === 0) {
-        error.push('Введите хотя бы 1 Тел. номер в рекомендации №' + index)
-      } else {
-        if (item.phoneNumber1.length > 0 && item.phoneNumber1.length < 10) {
-          error.push('Не правильно введен Тел. номер в рекомендации №' + index)
+        if(!reco.tempRecommender || reco.tempRecommender.length === 0){
+            error.push("Введите ФИО рекомендателя");
         }
+        const phonePattern = reco.phonePattern.replace(/[^0-9]+/g, '');
+        let index = 1;
+        for(let k in reco.items){
+            let item = reco.items[k];
+            if(item.phoneNumber1.length === 0 && item.phoneNumber2.length === 0){
+                error.push("Введите хотя бы 1 Тел. номер в рекомендации №" + index);
+            }else{
+                if(item.phoneNumber1.length > 0 && item.phoneNumber1.length < phonePattern.length){
+                    error.push("Не правильно введен Тел. номер в рекомендации №" + index);
+                }
 
-        if (item.phoneNumber2.length > 0 && item.phoneNumber2.length < 10) {
-          error.push('Не правильно введен Тел. номер в рекомендации №' + index)
+                if(item.phoneNumber2.length > 0 && item.phoneNumber2.length < phonePattern.length){
+                    error.push("Не правильно введен Тел. номер в рекомендации №" + index);
+                }
+            }
+
+            if (item.clientName.length === 0) {
+                error.push('Введите ФИО супруг в рекомендации №' + index)
+            }
+
+            if (item.categoryId === 0) {
+                error.push('Выберите категорию в рекомендации №' + index)
+            }
+
+            index++;
         }
-      }
-
-      if (item.clientName.length === 0) {
-        error.push('Введите ФИО супруг в рекомендации №' + index)
-      }
-
-      if (item.categoryId === 0) {
-        error.push('Выберите категорию в рекомендации №' + index)
-      }
-    })
 
     this.setState({
       ...this.state,
@@ -293,6 +306,8 @@ class RecoCreatePage extends Component {
           case 500:
             this.props.notify('error', error.response.data.message, 'Ошибка')
             break
+
+            default:{}
         }
       })
   }
@@ -338,47 +353,47 @@ class RecoCreatePage extends Component {
     }
   }
 
-  renderRecoForm (item, index) {
-    return <Grid.Column key={index} floated='left' width={5}>
-      <Segment padded size='small'>
-        <Label attached='top'>
-          <Header as='h3' floated='left'>№ {index + 1}</Header>
-          <Button icon='delete' className='right floated' onClick={(e) => this.removeReco(index)} />
-        </Label>
-        <Form className='recoGrid'>
-          <Form.Input name={this.getItemName('clientName', index)}
-            label='ФИО супруг' placeholder='ФИО супруг'
-            onChange={this.handleChange} />
-          <Form.Input name={this.getItemName('districtName', index)} label='Район' placeholder='Район'
-            onChange={this.handleChange} />
-          <Form.Input name={this.getItemName('professionName', index)} label='Профессия' placeholder='Профессия'
-            onChange={this.handleChange} />
-          <Form.Input name={this.getItemName('relativeName', index)} label='Род. отношение' placeholder='Род. отношение'
-            onChange={this.handleChange} />
-          <Form.Dropdown name={this.getItemName('switchDate', index)}
-            fluid selection label='Дата время звонка'
-            placeholder='Дата время звонка'
-            options={switchDateOptions}
-            onChange={this.handleChange} />
-          {this.renderCallDate(item.switchDate === 1, index)}
-          <Form.Dropdown name={this.getItemName('callerIsDealer', index)} defaultValue='0' fluid selection label='Звонить будет'
-            placeholder='Звонить будет' options={callerOptions}
-            onChange={this.handleChange} />
-          <Form.TextArea name={this.getItemName('note', index)} label='Примечание' placeholder='Примечание'
-            onChange={this.handleChange} />
-          <Form.Field>
-            <label>Тел. номер</label>
-            <Input label={{ basic: true, content: '+7'}} placeholder='705-224-26-45'
-              name={this.getItemName('phoneNumber1', index)} onChange={this.handleChange}
-              value={this.state.itemPhones[index]['phoneNumber1']} />
-          </Form.Field>
+    renderRecoForm(item,index){
+        return <Grid.Column key={index} floated='left' width={5}>
+                <Segment padded size='small'>
+                <Label attached='top'>
+                    <Header as='h3' floated='left'>№ {index+1}</Header>
+                    <Button icon='delete' className='right floated' onClick={(e) => this.removeReco(index)}/>
+                </Label>
+                    <Form className='recoGrid'>
+                        <Form.Input name={this.getItemName('clientName',index)}
+                                    label="ФИО супруг" placeholder="ФИО супруг"
+                                    onChange={this.handleChange} />
+                        <Form.Input name={this.getItemName('districtName',index)} label="Район" placeholder="Район"
+                                    onChange={this.handleChange} />
+                        <Form.Input name={this.getItemName('professionName',index)} label="Профессия" placeholder="Профессия"
+                                    onChange={this.handleChange} />
+                        <Form.Input name={this.getItemName('relativeName',index)} label="Род. отношение" placeholder="Род. отношение"
+                                    onChange={this.handleChange} />
+                        <Form.Dropdown name={this.getItemName('switchDate',index)}
+                                       fluid selection label="Дата время звонка"
+                                       placeholder='Дата время звонка'
+                                       options={switchDateOptions}
+                                       onChange={this.handleChange}  />
+                        {this.renderCallDate(item.switchDate === 1,index)}
+                        <Form.Dropdown name={this.getItemName('callerIsDealer',index)} defaultValue="0" fluid selection label="Звонить будет"
+                                       placeholder='Звонить будет' options={callerOptions}
+                                       onChange={this.handleChange}  />
+                        <Form.TextArea name={this.getItemName('note',index)} label="Примечание" placeholder="Примечание"
+                                       onChange={this.handleChange}  />
+                        <Form.Field>
+                            <label>Тел. номер</label>
+                        <Input label={{ basic:true,content:this.state.reco['phoneCode']}} placeholder={this.state.reco['phonePattern']}
+                               name={this.getItemName('phoneNumber1',index)} onChange={this.handleChange}
+                               value={this.state.itemPhones[index]['phoneNumber1']} />
+                        </Form.Field>
 
-          <Form.Field>
-            <label>Тел. номер</label>
-            <Input label={{ basic: true, content: '+7'}} placeholder='705-224-26-45'
-              name={this.getItemName('phoneNumber2', index)}
-              onChange={this.handleChange} value={this.state.itemPhones[index]['phoneNumber2']} />
-          </Form.Field>
+                        <Form.Field>
+                            <label>Тел. номер</label>
+                            <Input label={{ basic:true,content:this.state.reco['phoneCode']}} placeholder={this.state.reco['phonePattern']}
+                                   name={this.getItemName('phoneNumber2',index)}
+                                   onChange={this.handleChange} value={this.state.itemPhones[index]['phoneNumber2']} />
+                        </Form.Field>
 
           <Form.Group inline>
             <Form.Field name={this.getItemName('hasChild', index)} control={Checkbox} label='Ребенок' value='1'

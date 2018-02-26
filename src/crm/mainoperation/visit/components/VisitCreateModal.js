@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
-import {Label, Icon, Modal, Tab, Table, Form, Input, TextArea, Button, Container, Divider, Checkbox } from 'semantic-ui-react'
+import {Modal,Form, Input, TextArea, Button } from 'semantic-ui-react'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import axios from 'axios'
-import {ROOT_URL, MONTH_OPTIONS} from '../../../../utils/constants'
+import {ROOT_URL} from '../../../../utils/constants'
 
 class VisitCreateModal extends Component {
   constructor (props) {
@@ -128,6 +128,8 @@ class VisitCreateModal extends Component {
       case 'visitorId':
         visit[fieldName] = o.value
         break
+
+        default:{}
     }
 
     this.setState({
@@ -139,11 +141,11 @@ class VisitCreateModal extends Component {
 
   validateForm () {
     let {visit, errors} = this.state
-    Object.keys(errors).map((k) => {
-      if (errors.hasOwnProperty(k)) {
-        errors[k] = false
+      for(let k in errors){
+          if (errors.hasOwnProperty(k)) {
+              errors[k] = false
+          }
       }
-    })
 
     if (!visit.clientName || visit.clientName.length === 0) {
       errors['clientName'] = true
@@ -166,11 +168,13 @@ class VisitCreateModal extends Component {
   saveData () {
     this.validateForm()
     let isValid = true
-    Object.keys(this.state.errors).map((k) => {
-      if (this.state.errors[k]) {
-        isValid = false
-      }
-    })
+    const {errors} = this.state;
+    for(let k in errors){
+        if (errors[k]) {
+            isValid = false
+        }
+    }
+
     if (!isValid) {
       return
     }

@@ -1,9 +1,7 @@
 import React, {Component} from 'react'
-import {Label, Icon, Modal, Tab, Table, Form, Input, TextArea, Button, Container, Divider, Checkbox } from 'semantic-ui-react'
-import DatePicker from 'react-datepicker'
-import moment from 'moment'
+import {Modal, Form, Input, TextArea, Button } from 'semantic-ui-react'
 import axios from 'axios'
-import {ROOT_URL, MONTH_OPTIONS} from '../../../../utils/constants'
+import {ROOT_URL} from '../../../../utils/constants'
 
 const categories = [
   {
@@ -36,13 +34,9 @@ const callerIsDealer = [
   }
 ]
 
-const RESULT_UNKNOWN = 0
 const RESULT_DONE = 1
 const RESULT_MOVED = 2
 const RESULT_CANCELLED = 3
-const RESULT_SOLD = 4
-const RESULT_MINI_CONTRACT = 5
-const RESULT_SOLD_CANCELLED = 6
 
 let allReasons = []
 
@@ -138,11 +132,12 @@ class RecoUpdateModal extends Component {
 
   getReasonsByResultId (resultId) {
     let reasonTypeId = 0
-    if (resultId == RESULT_DONE) {
+      resultId = parseInt(resultId,10);
+    if (resultId === RESULT_DONE) {
       reasonTypeId = 2
-    } else if (resultId == RESULT_CANCELLED) {
+    } else if (resultId === RESULT_CANCELLED) {
       reasonTypeId = 3
-    } else if (resultId == RESULT_MOVED) {
+    } else if (resultId === RESULT_MOVED) {
       reasonTypeId = 4
     }
 
@@ -207,7 +202,7 @@ class RecoUpdateModal extends Component {
       case 'clientName':
       case 'districtName':
       case 'note':
-        if (o.required && !o.value || o.value.trim().length === 0) {
+        if (o.required && (!o.value || o.value.trim().length === 0)) {
           errors[fieldName] = true
         } else {
           errors[fieldName] = false
@@ -221,7 +216,7 @@ class RecoUpdateModal extends Component {
         reco[fieldName] = o.value
         if (o.required) {
           if (fieldName === 'callerIsDealer') {
-            if (o.value != 0 && o.value != 1) {
+            if (o.value !== 0 && o.value !== 1) {
               errors[fieldName] = true
             } else {
               errors[fieldName] = false
@@ -235,6 +230,8 @@ class RecoUpdateModal extends Component {
           }
         }
         break
+
+        default:{}
     }
 
     this.setState({
@@ -253,11 +250,13 @@ class RecoUpdateModal extends Component {
 
   saveData () {
     let isValid = true
-    Object.keys(this.state.errors).map((k) => {
-      if (this.state.errors[k]) {
-        isValid = false
+      for (let k in this.state.errors){
+          if (this.state.errors[k]) {
+              isValid = false
+              break
+          }
       }
-    })
+
     if (!isValid) {
       return
     }
@@ -282,7 +281,7 @@ class RecoUpdateModal extends Component {
   }
 
   render () {
-    const {modalOpened, reco} = this.props
+    const {modalOpened} = this.props
     return (
       <Modal size={'small'} open={modalOpened} onOpen={this.onOpen}>
         <Modal.Header>Редактирование рекомендации</Modal.Header>

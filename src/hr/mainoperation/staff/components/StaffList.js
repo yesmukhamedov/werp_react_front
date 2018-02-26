@@ -1,11 +1,12 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
-import axios from 'axios'
-import {Container, Divider, Menu, Table, Icon, Header, Button, Segment, Form, Grid} from 'semantic-ui-react'
-import {ROOT_URL} from '../../../../utils/constants'
+import axios from 'axios';
+import {Container,Divider,Table,Icon,Header,Button,Segment,Form,Grid,Loader,Input,List} from 'semantic-ui-react';
+import {ROOT_URL} from '../../../../utils/constants';
 import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4'
 import BranchF4 from '../../../../reference/f4/branch/BranchF4'
 import PositionF4 from '../../../../reference/f4/position/PositionF4'
+import LazyPagination from '../../../../general/pagination/LazyPagination'
 
 const PAGINATION_TOTAL_COUNT_KEY = 'X-Pagination-Total-Count'
 const PAGINATION_CURRENT_PAGE_KEY = 'X-Pagination-Current-Page'
@@ -15,144 +16,188 @@ class StaffList extends Component {
   constructor (props) {
     super(props)
 
-    this.state = {
-      items: [],
-      queryParams: {
-        bukrs: '',
-        branchIds: [],
-        iinBin: '',
-        firstName: '',
-        lastName: '',
-        departmentId: 0,
-        positionId: 0,
-        page: 0
-      }
+        this.state = {
+            items:[],
+            queryParams:{
+                bukrs:'',
+                branchIds:[],
+                iinBin:'',
+                firstName:'',
+                lastName:'',
+                departmentId:0,
+                positionId:0,
+                page:0
+            },
+            loading:false,
+            totalRows:0,
+            perPage:0,
+            page:0
+        }
+
+        this.handleDropdownChange = this.handleDropdownChange.bind(this);
+        this.loadItems = this.loadItems.bind(this);
+        this.renderTableFooter = this.renderTableFooter.bind(this);
+        this.inputChanged = this.inputChanged.bind(this);
     }
 
-    this.handleDropdownChange = this.handleDropdownChange.bind(this)
-    this.loadItems = this.loadItems.bind(this)
-  }
-
-  componentWillMount () {
-    this.loadItems()
-  }
-
-  loadItems () {
-    const {queryParams} = this.state
-    if (queryParams.branchIds) {
-      queryParams['branchIds'] = queryParams.branchIds.join()
+    componentWillMount(){
+        this.loadItems(0);
     }
 
-    axios.get(`${ROOT_URL}/api/hr/staff`, {
-      headers: {
-        authorization: localStorage.getItem('token')
-      },
-      params: this.state.queryParams
-    })
-      .then((response) => {
-        console.log(response.headers[PAGINATION_CURRENT_PAGE_KEY])
-        console.log(response['data'])
+    loadItems(page){
         this.setState({
-          ...this.state,
-          items: response['data']
+            ...this.state,
+            loading:true
         })
-      }).catch((error) => {
-        console.log(error)
-      })
-  }
+
+        const {queryParams} = this.state;
+        let params = {};
+        for(let k in queryParams){
+            if(k === 'branchIds'){
+                if(typeof queryParams[k] !== 'undefined' && queryParams[k].length > 0){
+                    params[k] = queryParams[k].join();
+                }
+            }else{
+                params[k] = queryParams[k];
+            }
+        }
+
+        params['page'] = page;
+
+        axios.get(`${ROOT_URL}/api/hr/staff`,{
+            headers: {
+                authorization: localStorage.getItem('token')
+            },
+            params:params
+        })
+            .then((response) => {
+                this.setState({
+                    ...this.state,
+                    items:response['data']['items'],
+                    loading:false,
+                    totalRows:response.data['meta']['totalRows'],
+                    page:response.data['meta']['page'],
+                    perPage:response.data['meta']['perPage']
+                })
+            }).catch((error) => {
+                console.log(error)
+        })
+    }
 
   redirectToView (e, staffId) {
     this.props.history.pushState(null, '/hr/staff/view/' + staffId)
   }
 
-  renderTableHeader () {
-    return (
-      <Table.Header>
-        <Table.Row>
-          <Table.HeaderCell>StaffID</Table.HeaderCell>
-          <Table.HeaderCell>Фамилия</Table.HeaderCell>
-          <Table.HeaderCell>Имя</Table.HeaderCell>
-          <Table.HeaderCell>Отчество</Table.HeaderCell>
-          <Table.HeaderCell>ИИН</Table.HeaderCell>
-          <Table.HeaderCell>Должности</Table.HeaderCell>
-          <Table.HeaderCell>Действия</Table.HeaderCell>
-        </Table.Row>
-      </Table.Header>
-    )
-  }
+    renderTableHeader(){
+        return (
+            <Table.Header>
+                <Table.Row>
+                    <Table.HeaderCell>StaffID</Table.HeaderCell>
+                    <Table.HeaderCell>Фамилия</Table.HeaderCell>
+                    <Table.HeaderCell>Имя</Table.HeaderCell>
+                    <Table.HeaderCell>Отчество</Table.HeaderCell>
+                    <Table.HeaderCell>Должности</Table.HeaderCell>
+                    <Table.HeaderCell>Действия</Table.HeaderCell>
+                </Table.Row>
+            </Table.Header>
+        )
+    }
 
-  renderTableBody () {
-    return (
-      <Table.Body>
-        {this.state.items.map((item, idx) => {
-          return (
-            <Table.Row key={idx}>
-              <Table.Cell>{item.staffId}</Table.Cell>
-              <Table.Cell>{item.lastname}</Table.Cell>
-              <Table.Cell>{item.firstname}</Table.Cell>
-              <Table.Cell>{item.middlename}</Table.Cell>
-              <Table.Cell>{item.iin}</Table.Cell>
-              <Table.Cell />
-              <Table.Cell>
-                <Link className={'ui icon button'} to={`/hr/staff/view/${item.staffId}`}>
-                  <Icon name='eye' />
-                </Link>
+    renderPositions(positions){
+        if(typeof positions !== 'undefined' && positions.length>0){
+            return <List bulleted>
+                {positions.map((p,idx) => {
+                    return <List.Item key={idx}>{p.positionName} ({p.branchName})</List.Item>;
+                })}
+            </List>
+        }
+
+        return '';
+    }
+
+    renderTableBody(){
+        return (
+            <Table.Body>
+                {this.state.items.length >0?this.state.items.map((item,idx) => {
+
+                    return (
+                        <Table.Row key={idx}>
+                            <Table.Cell>{item.staffId}</Table.Cell>
+                            <Table.Cell>{item.lastname}</Table.Cell>
+                            <Table.Cell>{item.firstname}</Table.Cell>
+                            <Table.Cell>{item.middlename}</Table.Cell>
+                            <Table.Cell>{this.renderPositions(item.positions)}</Table.Cell>
+                            <Table.Cell width={2}>
+                                <Link className={'ui icon button'} to={`/hr/staff/view/${item.staffId}`}>
+                                    <Icon name='eye' />
+                                </Link>
 
                 <Link className={'ui icon button'} to={`/hr/staff/update/${item.staffId}`}>
                   <Icon name='pencil' />
                 </Link>
 
-              </Table.Cell>
-            </Table.Row>
-          )
-        })}
-      </Table.Body>
-    )
-  }
+                            </Table.Cell>
+                        </Table.Row>
+                    )
+                    }):<Table.Row><Table.Cell>{'No Records'}</Table.Cell></Table.Row>}
+            </Table.Body>
+        )
+    }
 
-  renderTableFooter () {
-    return (
-      <Table.Footer>
-        <Table.Row>
-          <Table.HeaderCell colSpan='7'>
-            <Menu floated='right' pagination>
-              <Menu.Item as='a' icon>
-                <Icon name='left chevron' />
-              </Menu.Item>
-              <Menu.Item as='a'>1</Menu.Item>
-              <Menu.Item as='a'>2</Menu.Item>
-              <Menu.Item as='a'>3</Menu.Item>
-              <Menu.Item as='a'>4</Menu.Item>
-              <Menu.Item as='a' icon>
-                <Icon name='right chevron' />
-              </Menu.Item>
-            </Menu>
-          </Table.HeaderCell>
-        </Table.Row>
-      </Table.Footer>
-    )
-  }
+    renderTableFooter(){
+        return (
+            <Table.Footer>
+                <Table.Row>
+                    <Table.HeaderCell colSpan='2'>
+                        Количество: {this.state.totalRows}
+                    </Table.HeaderCell>
+                    <Table.HeaderCell colSpan='5'>
+                        <LazyPagination
+                            onItemClick={this.loadItems}
+                            totalRows={this.state.totalRows}
+                            currentPage={this.state.page}
+                            perPage={this.state.perPage}/>
+                    </Table.HeaderCell>
+                </Table.Row>
+            </Table.Footer>
+        )
+    }
 
-  renderSearchPanel () {
-    return <div>
-      <Header as='h4' attached='top'>
+    inputChanged(e,data){
+        const {name,value} = data;
+        const {queryParams} = this.state;
+        queryParams[name] = value;
+        this.setState({
+            ...this.state,
+            queryParams:queryParams
+        })
+    }
+
+    renderSearchPanel(){
+        return <div>
+            <Header as='h4' attached='top'>
                 Расширенный поиск
-      </Header>
-      <Segment attached>
-        <Form>
-          <BukrsF4 handleChange={this.handleDropdownChange} />
-          <BranchF4 search multiple handleChange={this.handleDropdownChange} bukrs={this.state.queryParams.bukrs} />
-          <PositionF4 handleChange={this.handleDropdownChange} />
-          <Form.Field>
-            <Form.Select name='resultIds' label='Результат'
-              fluid multiple selection options={this.state.resultOptions} placeholder='Результат' onChange={this.handleDropdown} />
-          </Form.Field>
+            </Header>
+            <Segment attached>
+                <Form>
+                    <BukrsF4 handleChange={this.handleDropdownChange} />
+                    <BranchF4 search={true} multiple={true} handleChange={this.handleDropdownChange} bukrs={this.state.queryParams.bukrs} />
+                    <PositionF4 handleChange={this.handleDropdownChange}/>
+                    <Form.Field>
+                        <label>Фамилия</label>
+                        <Input name="lastName" placeholder='Фамилия' onChange={this.inputChanged} />
+                    </Form.Field>
 
-          <Button loading={this.state.btnLoading} onClick={this.loadItems} type='submit'>Сформировать</Button>
-        </Form>
-      </Segment>
-    </div>
-  }
+                    <Form.Field>
+                        <label>Имя</label>
+                        <Input name="firstName" placeholder='Имя' onChange={this.inputChanged} />
+                    </Form.Field>
+
+                    <Button loading={this.state.btnLoading} onClick={() => this.loadItems(0)} type='submit'>Сформировать</Button>
+                </Form>
+            </Segment>
+        </div>
+    }
 
   handleDropdownChange (e, o) {
     let {name, value} = o
@@ -198,18 +243,18 @@ class StaffList extends Component {
             {this.renderSearchPanel()}
           </Grid.Column>
 
-          <Grid.Column floated='left' width={12}>
-            <Table celled striped>
-              {this.renderTableHeader()}
-              {this.renderTableBody()}
-              {this.renderTableFooter()}
-            </Table>
-          </Grid.Column>
-        </Grid>
-        <Divider />
-      </Container>
-    )
-  }
+                    <Grid.Column floated='left' width={12}>
+                        {this.state.loading?<Loader active inline='centered' />:<Table celled striped>
+                                {this.renderTableHeader()}
+                                {this.renderTableBody()}
+                                {this.renderTableFooter()}
+                            </Table>}
+                    </Grid.Column>
+                </Grid>
+                <Divider/>
+            </Container>
+        )
+    }
 }
 
 export default StaffList

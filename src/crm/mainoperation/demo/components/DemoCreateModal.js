@@ -1,9 +1,9 @@
 import React, {Component} from 'react'
-import {Label, Icon, Modal, Tab, Table, Form, Input, TextArea, Button, Container, Divider, Checkbox } from 'semantic-ui-react'
+import {Modal, Form, Input, TextArea, Button} from 'semantic-ui-react'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import axios from 'axios'
-import {ROOT_URL, MONTH_OPTIONS} from '../../../../utils/constants'
+import {ROOT_URL} from '../../../../utils/constants'
 
 const locationOptions = [
   {
@@ -18,13 +18,9 @@ const locationOptions = [
   }
 ]
 
-const RESULT_UNKNOWN = 0
 const RESULT_DONE = 1
 const RESULT_MOVED = 2
 const RESULT_CANCELLED = 3
-const RESULT_SOLD = 4
-const RESULT_MINI_CONTRACT = 5
-const RESULT_SOLD_CANCELLED = 6
 
 let allReasons = []
 
@@ -135,11 +131,12 @@ class DemoCreateModal extends Component {
 
   getReasonsByResultId (resultId) {
     let reasonTypeId = 0
-    if (resultId == RESULT_DONE) {
+    resultId = parseInt(resultId,10);
+    if (resultId === RESULT_DONE) {
       reasonTypeId = 2
-    } else if (resultId == RESULT_CANCELLED) {
+    } else if (resultId === RESULT_CANCELLED) {
       reasonTypeId = 3
-    } else if (resultId == RESULT_MOVED) {
+    } else if (resultId === RESULT_MOVED) {
       reasonTypeId = 4
     }
 
@@ -159,7 +156,7 @@ class DemoCreateModal extends Component {
 
   renderReasonRow () {
     let resultId = this.state.demo.resultId
-    if (resultId == RESULT_CANCELLED || resultId == RESULT_DONE || resultId == RESULT_MOVED) {
+    if (resultId === RESULT_CANCELLED || resultId === RESULT_DONE || resultId === RESULT_MOVED) {
       return <Form.Select error={this.state.errors.reasonId}
         value={this.state.demo.reasonId}
         required fluid selection
@@ -244,10 +241,11 @@ class DemoCreateModal extends Component {
       case 'dealerId':
       case 'note':
         demo[fieldName] = o.value
-        if (fieldName == 'resultId') {
+        if (fieldName === 'resultId') {
           demo['reasonId'] = 0
         }
         break
+        default:{}
     }
 
     this.setState({
@@ -258,14 +256,14 @@ class DemoCreateModal extends Component {
 
   validateForm () {
     let {demo, errors} = this.state
-    Object.keys(errors).map((k) => {
-      if (errors.hasOwnProperty(k)) {
-        errors[k] = false
+      for(let k in errors){
+          if (errors.hasOwnProperty(k)) {
+              errors[k] = false
+          }
       }
-    })
 
-    if (demo.resultId == RESULT_MOVED || demo.resultId == RESULT_CANCELLED || demo.resultId == RESULT_DONE) {
-      if (demo.reasonId == 0) {
+    if (demo.resultId === RESULT_MOVED || demo.resultId === RESULT_CANCELLED || demo.resultId === RESULT_DONE) {
+      if (demo.reasonId === 0) {
         errors['reasonId'] = true
       }
     }
@@ -309,11 +307,13 @@ class DemoCreateModal extends Component {
     console.log(this.state.demo)
     this.validateForm()
     let isValid = true
-    Object.keys(this.state.errors).map((k) => {
-      if (this.state.errors[k]) {
-        isValid = false
+      for(let k in this.state.errors){
+          if (this.state.errors[k]) {
+              isValid = false
+              break
+          }
       }
-    })
+
     if (!isValid) {
       return
     }
