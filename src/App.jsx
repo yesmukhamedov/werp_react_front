@@ -19,6 +19,14 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = { menuVisible: false };
+
+    this.handlePusherClick = this.handlePusherClick.bind(this);
+  }
+
+  handlePusherClick() {
+    if (this.state.menuVisible) {
+      this.setState({ ...this.state, menuVisible: false });
+    }
   }
 
   render() {
@@ -44,8 +52,6 @@ class App extends Component {
                 icon="labeled"
                 vertical
               >
-                {/* <TreeMenu lang={this.props.lang}
-                                    data={this.props.treeMenu}/> */}
                 <TreeViewMenu
                   lang={this.props.lang}
                   list={this.props.treeMenu}
@@ -56,12 +62,7 @@ class App extends Component {
                   }
                 />
               </Sidebar>
-              <Sidebar.Pusher
-                onClick={() =>
-                  this.setState({ ...this.state, menuVisible: false })
-                }
-              >
-                {/* {this.props.children} */}
+              <Sidebar.Pusher onClick={this.handlePusherClick}>
                 {this.props.routes}
               </Sidebar.Pusher>
             </Sidebar.Pushable>

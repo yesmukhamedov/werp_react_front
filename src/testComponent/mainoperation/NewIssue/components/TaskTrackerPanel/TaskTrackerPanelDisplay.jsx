@@ -6,7 +6,7 @@ import { OutCallDetailsPanelDisplay } from '../OutCallDetailsPanel';
 
 const TaskTrackerPanelDisplay = props => (
   <Segment>
-    <Grid divided="vertically">
+    <Grid divided="vertically" stackable>
       <Grid.Row columns={2}>
         <Grid.Column>
           <TaskPanelDisplay />
