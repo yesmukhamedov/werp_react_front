@@ -52,7 +52,7 @@ export function frcolnSearchData(a_bukrs, a_branchList, a_status, a_date) {
 export function frcolnFetchBranchData(a_bukrs, a_branchId, a_status, a_date, a_waers) {
     let year = a_date.format('YYYY');
     let month = a_date.format('MM');
-    console.log(222);
+    // console.log(222);
     return function(dispatch) {
         dispatch(modifyLoader(true));
         axios.get(`${ROOT_URL}/api/finance/reports/frcoln/searchByBranch`, {
@@ -165,7 +165,7 @@ export function frcolnSaveData(a_bukrs, a_date) {
 
 export function handleError(error,dispatch) {
     if(error.response) {                
-        console.log(error);
+        // console.log(error);
         if (error.response.status && error.response.status===403)
         {
             //blog post has been created, navigate the user to the index

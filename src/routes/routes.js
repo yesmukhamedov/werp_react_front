@@ -195,10 +195,10 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/signin" component={Signin} />
       <Route path="/signout" component={Signout} />
       <Route path="/dit/userBranch" component={AssignUserBranch} />
-    <Route path="forbidden" component={ForbiddenPage} />
-        <Route path="/contractListPage" component={AsyncContractListPage} />
-        <Route path="/newIssue/:id" component={NewIssuePage} />
-      <Route path="finance/reports/frcol" component={Frcoln} />
+      <Route path="forbidden" component={ForbiddenPage} />
+      <Route path="/contractListPage" component={AsyncContractListPage} />
+      <Route path="/newIssue/:id" component={NewIssuePage} />
+      <Route path="/finance/reports/frcol" component={Frcoln} />
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
