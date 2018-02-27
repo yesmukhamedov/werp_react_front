@@ -1,4 +1,4 @@
-import React, { PureComponent, Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Modal, Message, Icon, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';

@@ -11,6 +11,7 @@ import _ from "lodash";
 import "react-table/react-table.css";
 import MatnrF4Modal from '../../../reference/f4/matnr/matnrF4Modal';
 import PositionF4Modal from '../../../reference/f4/position/positionF4Modal';
+import {f4FetchCurrencyList, f4ClearCurrencyList, f4FetchBonusTypeList, f4ClearBonusTypeList} from '../../../reference/f4/f4_action'
 // import {frcolnSearchData, frcolnFetchBranchData, changeTab, frcolnFetchCollectorData, clearState, frcolnSaveData} from './frcoln_action';
 import {LEGACY_URL} from "../../../utils/constants"
 require('moment/locale/ru');
@@ -55,9 +56,18 @@ class Hrb02 extends Component {
         // }
         
     }
-    componentWillUnmount(){
-        // this.props.clearState();
+    componentWillMount() {
+        this.props.f4FetchBonusTypeList('hrb02');
+        this.props.f4FetchCurrencyList('hrb02');
     }
+  
+    componentWillUnmount(){
+        this.props.f4ClearBonusTypeList();
+        this.props.f4ClearCurrencyList();
+    }
+    
+    
+    
     // .filter((item) =>
     //         {item.businessAreaId==1})
     onInputChange(value,stateFieldName){
@@ -118,6 +128,24 @@ class Hrb02 extends Component {
     render(){
        
         
+        const currencyOption=this.props.currencyList.map(item=>{
+            return {
+                key: item.currency,
+                text: item.currency,
+                value: item.currency,
+                text20: item.text20,
+                currency_id: item.currency_id
+            }
+        });
+
+        const bonusTypeOption=this.props.bonusTypeList.map(item=>{
+            return {
+                key: item.bonus_type_id,
+                text: item.text45,
+                value: item.bonus_type_id
+            }
+        });
+
 
 
         // let open=this.state.matnrF4ModalOpen;
@@ -134,8 +162,20 @@ class Hrb02 extends Component {
                 <Header as="h2" block>
                     Редактировать бонус
                 </Header>
+
+                <Button icon='external' onClick={()=>this.matnrF4ModalOpenHanlder(true)} />
+                <Button icon='external' onClick={()=>this.matnrF4ModalOpenHanlder(true)} />
+                <Button icon='external' onClick={()=>this.matnrF4ModalOpenHanlder(true)} />
                 <Button icon='external' onClick={()=>this.matnrF4ModalOpenHanlder(true)} />
                 <Button icon='external' onClick={()=>this.positionF4ModalOpenHanlder(true)} />
+                <Dropdown  selection options={currencyOption} />
+                <Dropdown  selection options={bonusTypeOption} />
+                <Dropdown  selection options={bonusTypeOption} />
+                <Dropdown  selection options={bonusTypeOption} />
+                <Dropdown  selection options={bonusTypeOption} />
+
+                {/* <CurrencyF4Dropdown  trans={'hrb02'}/>
+                <CurrencyF4Dropdown  trans={'hrb02'}/> */}
                 
                 {/* <Segment >
                     <ReactTable
@@ -182,16 +222,11 @@ class Hrb02 extends Component {
 
 function mapStateToProps(state)
 {
-    // console.log(state);
+    console.log(state);
     return { companyOptions:state.userInfo.companyOptions,branchOptions:state.userInfo.branchOptionsMarketing
-        
-        // ,tab2OutputTable:state.frcoln.tab2OutputTable
-        // ,tab3OutputTable:state.frcoln.tab3OutputTable
-        // ,tab4OutputTable:state.frcoln.tab4OutputTable
-        // ,tab2TotalTable:state.frcoln.tab2TotalTable
-        // ,tab3TotalTable:state.frcoln.tab3TotalTable 
-        // ,activeIndex:state.frcoln.activeIndex
+        ,currencyList: state.f4.currencyList
+        ,bonusTypeList: state.f4.bonusTypeList
     };
 }
 
-export default connect(mapStateToProps,{ notify }) (Hrb02);
+export default connect(mapStateToProps,{ notify, f4FetchCurrencyList, f4ClearCurrencyList, f4FetchBonusTypeList, f4ClearBonusTypeList }) (Hrb02);

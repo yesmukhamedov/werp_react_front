@@ -595,7 +595,7 @@ class Frcoln extends Component {
 
 function mapStateToProps(state)
 {
-    // console.log(state);
+    console.log(state);
     return { companyOptions:state.userInfo.companyOptions,branchOptions:state.userInfo.branchOptionsMarketing
         
         ,tab2OutputTable:state.frcoln.tab2OutputTable

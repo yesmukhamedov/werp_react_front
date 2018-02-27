@@ -1,4 +1,4 @@
-import React, { PureComponent, Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Modal, Message, Icon, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
@@ -55,7 +55,7 @@ class PositionF4Modal extends PureComponent{
             <Modal open={this.props.open} onClose={this.close}  dimmer={"inverted"} size='small' >
                 <Modal.Header>
                     <Icon name='filter' size='big' />
-                    Материалы
+                    Должности
                 </Modal.Header>
                 <Modal.Content>
                     {trans &&
