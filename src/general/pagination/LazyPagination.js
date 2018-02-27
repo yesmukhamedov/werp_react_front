@@ -24,7 +24,7 @@ class LazyPagination extends Component {
 
     }
     renderItem(buttonsCount) {
-        const {totalRows,currentPage,perPage} = this.props;
+        const {currentPage,perPage} = this.props;
         const buttonsPerPage = this.props.buttonsPerPage || 10;
 
 
@@ -33,7 +33,7 @@ class LazyPagination extends Component {
             for(let i = 0; i < buttonsCount; i++){
                 a.push({
                     idx:i+1,
-                    active:i == currentPage,
+                    active:i === currentPage,
                     perPage:perPage
                 });
             }

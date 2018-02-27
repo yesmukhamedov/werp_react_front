@@ -4,18 +4,7 @@ import {BarChart, XAxis, YAxis, Tooltip, Bar, CartesianGrid} from 'recharts'
 import {Container, Header, Segment, Grid, Divider, Breadcrumb, Loader, Button, Icon, Table} from 'semantic-ui-react'
 import KpiCard from './KpiCard'
 import {ROOT_URL} from '../../../../utils/constants'
-
-const CustomizedAxisTick = React.createClass({
-  render () {
-    const {x, y, stroke, payload} = this.props
-
-    return (
-      <g transform={`translate(${x},${y})`}>
-        <text x={0} y={0} dy={16} textAnchor='end' fill='#666' transform='rotate(-35)'>{payload.value}</text>
-      </g>
-    )
-  }
-})
+import CustomizedAxisTick from './CustomizedAxisTick'
 
 const bukrsMap = {}
 const branchesMap = {}
