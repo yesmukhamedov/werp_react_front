@@ -8,6 +8,7 @@
     "history": "^4.7.2",
     "jwt-simple": "^0.5.1",
     "lodash": "^4.17.5",
+    "match-sorter": "^2.2.0",
     "moment": "^2.20.1",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",

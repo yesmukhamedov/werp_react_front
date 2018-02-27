@@ -14,6 +14,7 @@ import DemoListPage from '../crm/mainoperation/demo/components/DemoListPage';
 import ForbiddenPage from '../general/forbidden';
 import LoadingPage from '../general/LoadingPage';
 import Frcoln from '../finance/report/frcoln/frcoln'
+import Hrb02 from '../hr/mainoperation/hrb02/hrb02'
 
 import NewIssuePage from '../testComponent/mainoperation/NewIssue/components/NewIssuePage';
 
@@ -199,6 +200,8 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/contractListPage" component={AsyncContractListPage} />
       <Route path="/newIssue/:id" component={NewIssuePage} />
       <Route path="/finance/reports/frcol" component={Frcoln} />
+      <Route path="/hr/bonus/hrb02" component={Hrb02} />
+      
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
