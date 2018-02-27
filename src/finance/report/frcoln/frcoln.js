@@ -9,6 +9,7 @@ import { notify } from '../../../general/notification/notification_action';
 import ReactTable from 'react-table';
 import _ from "lodash";
 import '../frcoln/frcoln.css';
+import "react-table/react-table.css";
 import {frcolnSearchData, frcolnFetchBranchData, changeTab, frcolnFetchCollectorData, clearState, frcolnSaveData} from './frcoln_action';
 import {LEGACY_URL} from "../../../utils/constants"
 require('moment/locale/ru');
@@ -25,7 +26,6 @@ class Frcoln extends Component {
 
 
     constructor(props){
-        var date = new Date();
 
         super(props);
         this.onInputChange = this.onInputChange.bind(this);

@@ -113,31 +113,32 @@ onTabChange(e,data){
           {
             Header: 'Компания',
             accessor: 'bukrsName',
-            maxWidth: 100
+            maxWidth: 150
           },
           {
             Header: 'Филиал',
             accessor: 'branchName',
-            maxWidth: 150
+            maxWidth: 250
           },
           {
             Header: 'Сотрудник',
-            accessor: 'name'
+            accessor: 'staffName'
           },
           {
-            Header: 'KPI %',
-            id: 'totalScore',
-            maxWidth: 150,
-            accessor: row => this.roundedValue(row.totalScore)
+            Header: 'Набранный бал',
+            id: 'ratingScore',
+              accessor: 'ratingScore',
+            maxWidth: 150
           }
         ]}
 
         defaultSorted={[
           {
-            id: 'score',
+            id: 'ratingScore',
             desc: true
           }
         ]}
+        indexKey="indexKey"
         defaultPageSize={50}
         className='-striped -highlight' />
     </div>
@@ -148,8 +149,25 @@ onTabChange(e,data){
   }
 
   handleDropdownChange (e, result) {
-    const {value} = result
-    this.setState({name:value})
+    const {value,name} = result
+      let {bukrs,branches,month,year} = this.state;
+    if(name === 'bukrs'){
+        bukrs = value;
+    }else if(name === 'branch'){
+        branches = value
+    }else if(name === 'month'){
+        month = value
+    }else if(name === 'year'){
+        year = value
+    }
+    console.log(name)
+    this.setState({
+        ...this.state,
+        bukrs:bukrs,
+        branches:branches,
+        year:year,
+        month:month
+    })
   }
 
   renderSearchForm () {

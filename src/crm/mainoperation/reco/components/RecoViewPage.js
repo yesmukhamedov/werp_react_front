@@ -204,7 +204,7 @@ class RecoViewPage extends Component {
           <Table.Body>
             <Table.Row>
               <Table.Cell>
-                <Header as={'H4'}>Компания</Header>
+                <Header as={'h4'}>Компания</Header>
               </Table.Cell>
               <Table.Cell>
                 {reco.bukrsName}
@@ -213,7 +213,7 @@ class RecoViewPage extends Component {
 
             <Table.Row>
               <Table.Cell>
-                <Header as={'H4'}>Филиал</Header>
+                <Header as={'h4'}>Филиал</Header>
               </Table.Cell>
               <Table.Cell>
                 {reco.branchName}
@@ -222,7 +222,7 @@ class RecoViewPage extends Component {
 
             <Table.Row>
               <Table.Cell>
-                <Header as={'H4'}>Ответсвенный сотрудник</Header>
+                <Header as={'h4'}>Ответсвенный сотрудник</Header>
               </Table.Cell>
               <Table.Cell>
                 {reco.responsibleName}
@@ -231,7 +231,7 @@ class RecoViewPage extends Component {
 
             <Table.Row>
               <Table.Cell>
-                <Header as={'H4'}>ФИО супруг</Header>
+                <Header as={'h4'}>ФИО супруг</Header>
               </Table.Cell>
               <Table.Cell>
                 {reco.clientName}
@@ -240,7 +240,7 @@ class RecoViewPage extends Component {
 
             <Table.Row>
               <Table.Cell>
-                <Header as={'H4'}>Район</Header>
+                <Header as={'h4'}>Район</Header>
               </Table.Cell>
               <Table.Cell>
                 {reco.districtName}
@@ -249,7 +249,7 @@ class RecoViewPage extends Component {
 
             <Table.Row>
               <Table.Cell>
-                <Header as={'H4'}>Тел номера</Header>
+                <Header as={'h4'}>Тел номера</Header>
               </Table.Cell>
               <Table.Cell>
                 {this.renderPhones(reco.phones)}
@@ -258,7 +258,7 @@ class RecoViewPage extends Component {
 
             <Table.Row>
               <Table.Cell>
-                <Header as={'H4'}>Рекомендатель</Header>
+                <Header as={'h4'}>Рекомендатель</Header>
               </Table.Cell>
               <Table.Cell>
                 {reco.recommenderName}
@@ -267,7 +267,7 @@ class RecoViewPage extends Component {
 
             <Table.Row>
               <Table.Cell>
-                <Header as={'H4'}>Владелец</Header>
+                <Header as={'h4'}>Владелец</Header>
               </Table.Cell>
               <Table.Cell>
                 {reco.ownerName}
@@ -276,7 +276,7 @@ class RecoViewPage extends Component {
 
             <Table.Row>
               <Table.Cell>
-                <Header as={'H4'}>Филиал владельца</Header>
+                <Header as={'h4'}>Филиал владельца</Header>
               </Table.Cell>
               <Table.Cell>
                 {reco.ownerBranchName}
@@ -285,7 +285,7 @@ class RecoViewPage extends Component {
 
             <Table.Row>
               <Table.Cell>
-                <Header as={'H4'}>Род. отношение</Header>
+                <Header as={'h4'}>Род. отношение</Header>
               </Table.Cell>
               <Table.Cell>
                 {reco.relative}
@@ -294,7 +294,7 @@ class RecoViewPage extends Component {
 
             <Table.Row>
                 <Table.Cell>
-                    <Header as={'H4'}>Звонит будет</Header>
+                    <Header as={'h4'}>Звонит будет</Header>
                 </Table.Cell>
                 <Table.Cell>
                     {reco.callerIsDealer === 1?'ДИЛЕР':'СЕКРЕТАРЬ'}
@@ -303,7 +303,7 @@ class RecoViewPage extends Component {
 
             <Table.Row>
               <Table.Cell>
-                <Header as={'H4'}>Примечание</Header>
+                <Header as={'h4'}>Примечание</Header>
               </Table.Cell>
               <Table.Cell>
                 {reco.note}
@@ -312,7 +312,7 @@ class RecoViewPage extends Component {
 
             <Table.Row>
               <Table.Cell>
-                <Header as={'H4'}>Доп. данные</Header>
+                <Header as={'h4'}>Доп. данные</Header>
               </Table.Cell>
               <Table.Cell>
                 {''}
@@ -321,7 +321,7 @@ class RecoViewPage extends Component {
 
             <Table.Row>
               <Table.Cell>
-                <Header as={'H4'}>Категория</Header>
+                <Header as={'h4'}>Категория</Header>
               </Table.Cell>
               <Table.Cell>
                 {reco.categoryName}
@@ -330,7 +330,7 @@ class RecoViewPage extends Component {
 
             <Table.Row>
               <Table.Cell>
-                <Header as={'H4'}>Статус</Header>
+                <Header as={'h4'}>Статус</Header>
               </Table.Cell>
               <Table.Cell>
                 {reco.statusName}

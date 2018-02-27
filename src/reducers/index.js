@@ -15,6 +15,7 @@ import loaderReducer from '../general/loader/loader_reducer';
 import {
   UNAUTH_USER
 } from '../actions/types';
+import f4_reducer from '../reference/f4/f4_reducer';
 
 const appReducer = combineReducers({
   form,
@@ -28,7 +29,8 @@ const appReducer = combineReducers({
   contractList: contractListReducer,
   userInfo:userInfoReducer,
   frcoln:frcolnReducer,
-  loader:loaderReducer
+  loader:loaderReducer,
+  f4:f4_reducer
 });
 
 const rootReducer = (state, action) => {
