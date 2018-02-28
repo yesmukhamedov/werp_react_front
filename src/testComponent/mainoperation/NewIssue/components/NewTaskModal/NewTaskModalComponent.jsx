@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Modal, Button, Header } from 'semantic-ui-react';
+import { Modal, Button, Form, TextArea } from 'semantic-ui-react';
 
 export default class NewTaskModalComponent extends PureComponent {
   constructor(props) {
@@ -32,26 +32,37 @@ export default class NewTaskModalComponent extends PureComponent {
   render() {
     return (
       <Modal dimmer="inverted" open="true">
-        <Modal.Header>Select a Photo</Modal.Header>
-        <Modal.Content image>
+        <Modal.Header>Новая задача</Modal.Header>
+        <Modal.Content>
           <Modal.Description>
-            <Header>Default Profile Image</Header>
-            <p>
-              We've found the following gravatar image associated with your
-              e-mail address.
-            </p>
-            <p>Is it okay to use this photo?</p>
+            <Form>
+              <Form.Input fluid label="Тема" />
+              <Form.TextArea
+                label="Описание"
+                placeholder="Описание задачи"
+                style={{ minHeight: 200 }}
+              />
+              <Form.Group widths="equal">
+                <Form.Select label="Статус" />
+                <Form.Select label="Приоритет" />
+              </Form.Group>
+              <Form.Group widths="equal">
+                <Form.Select label="Филиал" />
+                <Form.Select label="Департамент" />
+                <Form.Select label="Должность" />
+              </Form.Group>
+            </Form>
           </Modal.Description>
         </Modal.Content>
         <Modal.Actions>
-          <Button color="black" onClick={this.close}>
-            Nope
+          <Button color="youtube" onClick={this.close}>
+            Отменить
           </Button>
           <Button
             positive
             icon="checkmark"
             labelPosition="right"
-            content="Yep, that's me"
+            content="Создать"
           />
         </Modal.Actions>
       </Modal>
