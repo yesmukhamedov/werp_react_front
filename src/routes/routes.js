@@ -171,6 +171,7 @@ const getComponent = {
     Prcltgs:AsyncPrcltgs,
     CrmRecoCurrent:AsyncRecoCurrentPage,
     CrmRecoArchive:AsyncRecoArchivePage,
+    CrmRecoCreate: AsyncRecoCreatePage,
     CrmDemoCurrent:AsyncDemoCurrentPage,
     CrmDemoArchive:AsyncDemoArchivePage,
     CrmVisitArchive : AsyncVisitArchivePage,
