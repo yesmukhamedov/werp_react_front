@@ -338,14 +338,18 @@ class Phone extends Component {
       case 'demoLocationId':
       case 'demoClientName':
       case 'demoAddress':
-      case 'callReasonId':
+
       case 'callNote':
       case 'demoNote':
         call[fieldName] = o.value
         break
 
+        case 'callReasonId':
+            call[fieldName] = parseInt(o.value,10)
+            break
+
       case 'callResultId':
-        call[fieldName] = o.value
+        call[fieldName] = parseInt(o.value,10)
         if (call[fieldName] > 0) {
           errors[fieldName] = false
         }

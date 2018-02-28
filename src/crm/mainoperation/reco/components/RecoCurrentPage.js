@@ -8,18 +8,19 @@ import {ROOT_URL} from '../../../../utils/constants';
 import Phone from './Phone';
 import moment from 'moment';
 import { connect } from 'react-redux'
+import {fetchRecoCurrentData,fetchCallResults,fetchReasons} from '../actions/recoAction';
 
 class RecoCurrentPage extends Component {
   constructor (props) {
     super(props)
     this.loadedSuccess = true
     this.state = {
-      callResultOptions: [],
-      callRefuseOptions: [],
-      usedItems: [],
-      newItems: [],
-      doneItems: [],
-      movedItems: []
+      // callResultOptions: [],
+      // callRefuseOptions: [],
+      // usedItems: [],
+      // newItems: [],
+      // doneItems: [],
+      // movedItems: []
     }
 
     this.renderTabUsed = this.renderTabUsed.bind(this)
@@ -28,101 +29,20 @@ class RecoCurrentPage extends Component {
     this.renderTableMoved = this.renderTableMoved.bind(this)
     this.loadItems = this.loadItems.bind(this)
     this.onCallSaved = this.onCallSaved.bind(this)
-      console.log(props)
+      console.log('props',props)
   }
 
   loadItems () {
-    axios.get(`${ROOT_URL}/api/crm/reco/current/used`, {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((res) => {
-      this.setState({
-        ...this.state,
-        usedItems: res.data
-      })
-    }).catch((e) => {
-      console.log(e)
-    })
 
-    axios.get(`${ROOT_URL}/api/crm/reco/current/new`, {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((res) => {
-      this.setState({
-        ...this.state,
-        newItems: res.data
-      })
-    }).catch((e) => {
-      console.log(e)
-    })
-
-    axios.get(`${ROOT_URL}/api/crm/reco/current/demo-done`, {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((res) => {
-      this.setState({
-        ...this.state,
-        doneItems: res.data
-      })
-    }).catch((e) => {
-      console.log(e)
-    })
-
-    axios.get(`${ROOT_URL}/api/crm/reco/current/moved`, {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((res) => {
-      this.setState({
-        ...this.state,
-        movedItems: res.data
-      })
-    }).catch((e) => {
-      console.log(e)
-    })
   }
 
   componentWillMount () {
-    this.loadItems()
-
-    axios.get(`${ROOT_URL}/api/crm/call/results`, {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((res) => {
-      let loaded = Object.keys(res.data).map((k) => {
-        return {
-          key: k,
-          text: res.data[k],
-          value: k
-        }
-      })
-
-      this.setState({
-        ...this.state,
-        callResultOptions: loaded
-      })
-    }).catch((e) => {
-      console.log(e)
-    })
-
-    axios.get(`${ROOT_URL}/api/reference/reasons/1`, {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((res) => {
-      let loaded = res.data.map((item) => {
-        return {
-          key: item.id,
-          text: item.name,
-          value: item.id
-        }
-      })
-
-      this.setState({
-        ...this.state,
-        callRefuseOptions: loaded
-      })
-    }).catch((e) => {
-      console.log(e)
-    })
+      this.props.fetchRecoCurrentData('new')
+      this.props.fetchRecoCurrentData('demo-done')
+      this.props.fetchRecoCurrentData('moved')
+      this.props.fetchRecoCurrentData('used')
+      this.props.fetchReasons(1)
+      this.props.fetchCallResults()
   }
 
   renderPhoneCall (e, d) {
@@ -139,8 +59,8 @@ class RecoCurrentPage extends Component {
     return <div>
       {phones.map((p) => {
         return <Phone
-          callRefuseOptions={this.state.callRefuseOptions}
-          callResultOptions={this.state.callResultOptions}
+          callRefuseOptions={this.props.callResults}
+          callResultOptions={this.props.callResults}
           key={p.id} phoneNumber={p.phoneNumber} phoneId={p.id}
           context='reco' contextId={recoId}
           onCallSaved={this.onCallSaved}
@@ -150,6 +70,7 @@ class RecoCurrentPage extends Component {
   }
 
   renderTable (items) {
+
     return (
       <div>
         <ReactTable
@@ -226,19 +147,19 @@ class RecoCurrentPage extends Component {
   }
 
   renderTabDemoDone () {
-    return this.renderTable(this.state.doneItems)
+    return this.renderTable(this.props.doneItems)
   }
 
   renderTabNew () {
-    return this.renderTable(this.state.newItems)
+    return this.renderTable(this.props.newItems)
   }
 
   renderTabUsed () {
-    return this.renderTable(this.state.usedItems)
+    return this.renderTable(this.props.usedItems)
   }
 
   renderTableMoved () {
-    return this.renderTable(this.state.movedItems)
+    return this.renderTable(this.props.movedItems)
   }
 
   render () {
@@ -265,7 +186,15 @@ class RecoCurrentPage extends Component {
 }
 
 function mapStateToProps (state) {
-    return {}
+    console.log(state)
+    return {
+        newItems:state.crmReco.newItems,
+        doneItems:state.crmReco.doneItems,
+        usedItems:state.crmReco.usedItems,
+        movedItems:state.crmReco.movedItems,
+        reasons:state.crmReco.reasons,
+        callResults:state.crmReco.callResults
+    }
 }
 
-export default connect(mapStateToProps, {})(RecoCurrentPage)
+export default connect(mapStateToProps, {fetchRecoCurrentData,fetchReasons,fetchCallResults})(RecoCurrentPage)

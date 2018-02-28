@@ -189,7 +189,7 @@ class CallModal extends Component {
         break
 
       case 'callResultId':
-        call[fieldName] = o.value
+        call[fieldName] = parseInt(o.value,10)
         if (call[fieldName] > 0) {
           errors[fieldName] = false
         }
@@ -210,7 +210,8 @@ class CallModal extends Component {
   }
 
   renderCallResultDependentField () {
-    if (this.state.call.callResultId == CALL_RESULT_REFUSE) {
+    console.log('ss')
+    if (this.state.call.callResultId === CALL_RESULT_REFUSE) {
       // Otkaz
       return (
         <Form.Select error={this.state.errors.callReasonId} required fluid label='Причина отказа' options={this.props.callRefuseOptions}

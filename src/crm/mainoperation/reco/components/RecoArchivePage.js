@@ -9,6 +9,8 @@ import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4'
 import BranchF4 from '../../../../reference/f4/branch/BranchF4'
 import LazyPagination from '../../../../general/pagination/LazyPagination'
 import RecoStatusLabel from './RecoStatusLabel';
+import {fetchRecoArchive,fetchRecoStatuses} from '../actions/recoAction';
+import { connect } from 'react-redux'
 
 class RecoArchivePage extends Component{
 
@@ -16,17 +18,10 @@ class RecoArchivePage extends Component{
         super(props)
         this.loadedSuccess = true;
         this.state = {
-            statusOptions:[],
-            callRefuseOptions:[],
-            items:[],
-            loading:false,
             queryParams:{
                 bukrs:'',
                 branchIds:[]
-            },
-            totalRows:0,
-            perPage:0,
-            page:0
+            }
         }
 
         this.renderTable = this.renderTable.bind(this);
@@ -38,33 +33,11 @@ class RecoArchivePage extends Component{
     }
 
     componentWillMount(){
-        axios.get(`${ROOT_URL}/api/crm/reco/statuses`,{
-            headers: {
-                authorization: localStorage.getItem('token')}
-        }).then((res) => {
-            let loaded = Object.keys(res.data).map((k) => {
-                return {
-                    key:k,
-                    text:res.data[k],
-                    value:k
-                }
-            });
-            this.setState({
-                ...this.state,
-                statusOptions:loaded
-            })
-        }).catch((e) => {
-            console.log(e);
-        })
-
+        this.props.fetchRecoStatuses()
         this.loadItems(0);
     }
 
     loadItems(page){
-        this.setState({
-            ...this.state,
-            loading:true
-        });
 
         const {queryParams} = this.state;
         let params = {};
@@ -80,37 +53,8 @@ class RecoArchivePage extends Component{
 
         params['page'] = page;
 
-        axios.get(`${ROOT_URL}/api/crm/reco/archive`,{
-            headers: {
-                authorization: localStorage.getItem('token')
-            },
-            params:params
-        }).then((res) => {
-            this.setState({
-                ...this.state,
-                items:res.data['items'],
-                loading:false,
-                totalRows:res.data['meta']['totalRows'],
-                page:res.data['meta']['page'],
-                perPage:res.data['meta']['perPage']
-            })
-        }).catch((e) => {
-            console.log(e);
-        })
+        this.props.fetchRecoArchive(params)
     }
-
-  renderPhoneNumbers (recoId, phones) {
-    return <div>
-      {phones.map((p) => {
-        return <Phone
-          callRefuseOptions={this.state.callRefuseOptions}
-          callResultOptions={this.state.callResultOptions}
-          key={p.id} phoneNumber={p.phoneNumber} phoneId={p.id}
-          context='reco' contextId={recoId}
-        />
-      })}
-    </div>
-  }
 
     renderTableHeader(){
         return (
@@ -183,7 +127,7 @@ class RecoArchivePage extends Component{
 
 
     renderTableBody(){
-        if(this.state.items.length === 0){
+        if(!this.props.items || this.props.items.length === 0){
             return <Table.Body>
                 <Table.Row>
                     <Table.Cell colSpan={8}>Нет данных</Table.Cell>
@@ -192,7 +136,7 @@ class RecoArchivePage extends Component{
         }
         return (
             <Table.Body>
-                {this.state.items.map((item) => {
+                {this.props.items.map((item) => {
                     return this.renderTableRow(item);
                 })}
             </Table.Body>
@@ -210,7 +154,7 @@ class RecoArchivePage extends Component{
                         multiple={true}
                         search={true}
                         label='Статус'
-                        options={this.state.statusOptions} placeholder='Статус' onChange={this.handleDropdownChange}  />
+                        options={this.props.statuses || []} placeholder='Статус' onChange={this.handleDropdownChange}  />
                     <Form.Input name="clientName" onChange={this.handleChange} fluid label='ФИО клиента' placeholder='ФИО клиента' />
                     <Form.Input name="phoneNumber" onChange={this.handleChange}  fluid label='Тел. номер' placeholder='Тел. номер' />
                 </Form.Group>
@@ -224,14 +168,14 @@ class RecoArchivePage extends Component{
             <Table.Footer>
                 <Table.Row>
                     <Table.HeaderCell colSpan='2'>
-                        Количество: {this.state.totalRows}
+                        Количество: {this.props.meta.totalRows}
                     </Table.HeaderCell>
                     <Table.HeaderCell colSpan='6'>
                         <LazyPagination
                             onItemClick={this.loadItems}
-                            totalRows={this.state.totalRows}
-                            currentPage={this.state.page}
-                            perPage={this.state.perPage}/>
+                            totalRows={this.props.meta.totalRows}
+                            currentPage={this.props.meta.page}
+                            perPage={this.props.meta.perPage}/>
                     </Table.HeaderCell>
                 </Table.Row>
             </Table.Footer>
@@ -252,7 +196,7 @@ class RecoArchivePage extends Component{
         return (
             <Table celled>
                 {this.renderTableHeader()}
-                {this.state.loading?this.renderLoader():this.renderTableBody()}
+                {this.props.loader.active?this.renderLoader():this.renderTableBody()}
                 {this.renderTableFooter()}
             </Table>
         )
@@ -276,4 +220,14 @@ class RecoArchivePage extends Component{
     }
 }
 
-export default RecoArchivePage;
+function mapStateToProps (state) {
+    console.log(state)
+    return {
+        items: state.crmReco.items,
+        meta: state.crmReco.meta,
+        statuses:state.crmReco.statuses,
+        loader:state.loader
+    }
+}
+
+export default connect(mapStateToProps, {fetchRecoArchive,fetchRecoStatuses})(RecoArchivePage)

@@ -12,6 +12,7 @@ import contractListReducer from '../testComponent/mainoperation/contractList/red
 import userInfoReducer from '../general/userInfo/userInfo_reducer';
 import frcolnReducer from '../finance/report/frcoln/frcoln_reducer';
 import loaderReducer from '../general/loader/loader_reducer';
+import recoReducer from '../crm/mainoperation/reco/reducres/recoReducer';
 import {
   UNAUTH_USER
 } from '../actions/types';
@@ -30,7 +31,8 @@ const appReducer = combineReducers({
   userInfo:userInfoReducer,
   frcoln:frcolnReducer,
   loader:loaderReducer,
-  f4:f4_reducer
+  f4:f4_reducer,
+  crmReco:recoReducer
 });
 
 const rootReducer = (state, action) => {
