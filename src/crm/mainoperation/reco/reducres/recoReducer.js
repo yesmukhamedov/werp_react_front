@@ -29,7 +29,6 @@ const INITIAL_STATE={
 
 export default function (state=INITIAL_STATE, action)
 {
-    console.log(action.type)
     switch(action.type)
     {
         case CRM_RECO_FETCH_CURRENT_DEMO_DONE:

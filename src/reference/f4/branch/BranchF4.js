@@ -18,7 +18,7 @@ class BranchF4 extends Component {
   }
 
   loadItems (bukrs) {
-    if (!bukrs || bukrs.length == 0) {
+    if (!bukrs || bukrs.length === 0) {
       console.log('ERR')
       return
     }

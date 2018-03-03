@@ -6,89 +6,27 @@ import { Header,Container,Segment } from 'semantic-ui-react'
 import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
 import moment from 'moment';
+import {fetchDemoCurrentData} from '../actions/demoAction'
+import { connect } from 'react-redux'
 
 class DemoCurrentPage extends Component{
 
     constructor(props) {
         super(props)
-        this.loadedSuccess = true;
-        this.state = {
-            callResultOptions:[],
-            callRefuseOptions:[],
-            items:[],
-            loading:false
-        }
 
         this.renderTable = this.renderTable.bind(this);
     }
 
     componentWillMount(){
-        this.setState({...this.state,loading:true})
-        axios.get(`${ROOT_URL}/api/crm/demo/current`,{
-            headers: {
-                authorization: localStorage.getItem('token')}
-        }).then((res) => {
-            this.setState({
-                ...this.state,
-                items:res.data,
-                loading:false
-            })
-        }).catch((e) => {
-            console.log(e);
-        })
-
-        axios.get(`${ROOT_URL}/api/crm/call/results`,{
-            headers: {
-                authorization: localStorage.getItem('token')}
-        }).then((res) => {
-            let loaded = Object.keys(res.data).map((k) => {
-                return {
-                    key:k,
-                    text:res.data[k],
-                    value:k
-                }
-            })
-
-            this.setState({
-                ...this.state,
-                callResultOptions:loaded
-            })
-        }).catch((e) => {
-            console.log(e);
-        })
-
-        axios.get(`${ROOT_URL}/api/reference/reasons/1`,{
-            headers: {
-                authorization: localStorage.getItem('token')}
-        }).then((res) => {
-            let loaded = res.data.map((item) => {
-                return {
-                    key:item.id,
-                    text:item.name,
-                    value:item.id
-                }
-            })
-
-            this.setState({
-                ...this.state,
-                callRefuseOptions:loaded
-            })
-        }).catch((e) => {
-            console.log(e);
-        })
-    }
-
-    renderPhoneCall(e,d){
-        console.log(e);
-        console.log(d);
+        this.props.fetchDemoCurrentData()
     }
 
     renderTable(){
         return (
             <div>
                 <ReactTable
-                    loading={this.state.loading}
-                    data={this.state.items}
+                    loading={this.props.loader.active}
+                    data={this.props.items}
                     columns={[
                         {
                             Header:"№",
@@ -133,19 +71,6 @@ class DemoCurrentPage extends Component{
                         }
                     ]}
 
-                    defaultFilterMethod={(filter,row) => {
-                        const colName = filter.id;
-                        if(colName === 'dateTime'){
-                            return moment(row[colName]).format('DD.MM.YYYY HH:mm').toString().includes(filter.value);
-                        }
-
-                        if(filter.value && filter.value.length > 0 && row[colName] && row[colName].length > 0){
-
-
-                            return row[colName].toLowerCase().includes(filter.value.toLowerCase());
-                        }
-                    }}
-
                     previousText={'Пред.'}
                     nextText={'След.'}
                     rowsText={'строк'}
@@ -172,4 +97,11 @@ class DemoCurrentPage extends Component{
     }
 }
 
-export default DemoCurrentPage;
+function mapStateToProps (state) {
+    return {
+        items:state.crmDemo.items,
+        loader:state.loader
+    }
+}
+
+export default connect(mapStateToProps, {fetchDemoCurrentData})(DemoCurrentPage)

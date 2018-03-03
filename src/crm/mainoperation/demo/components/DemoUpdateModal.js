@@ -2,41 +2,16 @@ import React, {Component} from 'react'
 import {Modal, Form, Input, TextArea, Button } from 'semantic-ui-react'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
-import axios from 'axios'
-import {ROOT_URL} from '../../../../utils/constants'
-
-const locationOptions = [
-  {
-    key: 1,
-    text: 'Город',
-    value: 1
-  },
-  {
-    key: 2,
-    text: 'ЗАгород',
-    value: 2
-  }
-]
-
-
-const RESULT_DONE = 1
-const RESULT_MOVED = 2
-const RESULT_CANCELLED = 3
-const RESULT_SOLD = 4
-
-let allReasons = []
+import {fetchGroupDealers,fetchDemoResults,fetchReasons,updateDemo,toggleDemoUpdateModal} from '../actions/demoAction'
+import { connect } from 'react-redux'
+import {DEMO_RESULT_CANCELLED,DEMO_RESULT_DONE,DEMO_RESULT_MOVED,getReasonsByResultId,LOCATION_OPTIONS,DEMO_RESULT_SOLD,demoResultOptions} from '../../../crmUtil'
 
 class DemoUpdateModal extends Component {
   constructor (props) {
     super(props)
 
     this.state = {
-      opened: false,
-      demo: this.props.demo,
-      loaded: false,
-      results: [],
-      dealers: [],
-      reasons: [],
+        localDemo:{},
       errors: {
         dealerId: false,
         resultId: false,
@@ -52,108 +27,26 @@ class DemoUpdateModal extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.validateForm = this.validateForm.bind(this)
     this.renderUpdateForm = this.renderUpdateForm.bind(this)
-    this.onOpen = this.onOpen.bind(this)
     this.saveDemo = this.saveDemo.bind(this)
   }
 
-  loadReasons () {
-    axios.get(`${ROOT_URL}/api/reference/reasons/0`, {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((res) => {
-      allReasons = res.data
-    }).catch((e) => {
-      console.log(e)
-    })
-  }
-
   componentWillMount () {
-    axios.get(`${ROOT_URL}/api/crm/demo/results`, {
-      headers: {
-        authorization: localStorage.getItem('token')
-      }
-    }).then((res) => {
-      let results = Object.keys(res.data).map((k) => {
-        return {
-          key: k,
-          text: res.data[k],
-          value: k
-        }
-      })
-      this.setState({
-        ...this.state,
-        results: results
-      })
-    }).catch((e) => {
-      console.log(e)
-    })
-
-    axios.get(`${ROOT_URL}/api/hr/pyramid/crm/group-dealers`, {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((res) => {
-      let loaded = res.data.map((item) => {
-        return {
-          key: item.staffId,
-          text: item.lastname + ' ' + item.firstname,
-          value: item.staffId
-        }
-      })
-      loaded.unshift({
-        key: 0,
-        text: 'Не выбрано',
-        value: 0
-      })
-      this.setState({
-        ...this.state,
-        dealers: loaded
-      })
-    }).catch((e) => {
-      console.log(e)
-    })
-
-    this.loadReasons()
-  }
-
-  handleDate (p1, p2, p3) {
-    console.log(p1, p2, p3)
-  }
-
-  getReasonsByResultId (resultId) {
-    let reasonTypeId = 0
-    resultId = parseInt(resultId,10);
-    if (resultId === RESULT_DONE) {
-      reasonTypeId = 2
-    } else if (resultId === RESULT_CANCELLED) {
-      reasonTypeId = 3
-    } else if (resultId === RESULT_MOVED) {
-      reasonTypeId = 4
-    }
-
-    let out = []
-    for (let k in allReasons) {
-      if (allReasons[k]['typeId'] === reasonTypeId) {
-        out.push({
-          key: allReasons[k]['id'],
-          text: allReasons[k]['name'],
-          value: allReasons[k]['id']
-        })
-      }
-    }
-
-    return out
+    this.props.fetchGroupDealers()
+    this.props.fetchDemoResults()
+    this.props.fetchReasons()
   }
 
   renderReasonRow () {
-    let resultId = this.state.demo.resultId
+    let resultId = this.state.localDemo.resultId
     if(resultId){
         resultId = parseInt(resultId,10);
     }
-    if (resultId === RESULT_CANCELLED || resultId === RESULT_DONE || resultId === RESULT_MOVED) {
+    if (resultId === DEMO_RESULT_CANCELLED || resultId === DEMO_RESULT_DONE || resultId === DEMO_RESULT_MOVED) {
       return <Form.Select error={this.state.errors.reasonId}
-        value={this.state.demo.reasonId}
+       name="reasonId"
+        value={this.state.localDemo.reasonId}
         required fluid selection
-        label='Причина' options={this.getReasonsByResultId(resultId)}
+        label='Причина' options={getReasonsByResultId(resultId,this.props.reasons)}
         onChange={(e, v) => this.handleChange('reasonId', v)} />
     }
 
@@ -161,15 +54,15 @@ class DemoUpdateModal extends Component {
   }
 
   renderSaleDateRow(){
-      let resultId = parseInt(this.state.demo.resultId,10);
-      if (resultId === RESULT_SOLD) {
+      let resultId = parseInt(this.state.localDemo.resultId,10);
+      if (resultId === DEMO_RESULT_SOLD) {
           return <Form.Field error={this.state.errors.saleDate} required>
                   <label>Дата продажи</label>
                   <DatePicker
                       label=''
                       placeholderText={'Дата продажи'}
                       showMonthDropdown showYearDropdown dropdownMode='select'
-                      dateFormat='DD.MM.YYYY' selected={this.state.demo.saleDate?moment(this.state.demo.saleDate):null}
+                      dateFormat='DD.MM.YYYY' selected={this.state.localDemo.saleDate?moment(this.state.localDemo.saleDate):null}
                       onChange={(v) => this.handleChange('saleDate', v)} />
             </Form.Field>
       }
@@ -178,10 +71,11 @@ class DemoUpdateModal extends Component {
   }
 
   renderUpdateForm () {
+      let {localDemo} = this.state
     return <Form>
       <Form.Group widths='equal'>
         <Form.Field error={this.state.errors.clientName} onChange={(e, o) => this.handleChange('clientName', o)}
-          value={this.state.demo.clientName}
+          value={localDemo.clientName}
           control={Input} required label='ФИО клиента' placeholder='ФИО клиента' />
         <Form.Field error={this.state.errors.dateTime} required>
           <label>Дата-время демонстрации</label>
@@ -189,15 +83,15 @@ class DemoUpdateModal extends Component {
             label=''
             placeholderText={'Дата-время демонстрации'}
             showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'
-            dateFormat='DD.MM.YYYY HH:mm' selected={moment(this.state.demo.dateTime)}
+            dateFormat='DD.MM.YYYY HH:mm' selected={moment(localDemo.dateTime)}
             onChange={(v) => this.handleChange('dateTime', v)} />
         </Form.Field>
       </Form.Group>
       <Form.Group widths='equal'>
         <Form.Select error={this.state.errors.resultId}
-          value={this.state.demo.resultId}
+          value={localDemo.resultId}
           required fluid selection
-          label='Результат' options={this.state.results}
+          label='Результат' options={demoResultOptions(this.props.demoResults)}
           onChange={(e, v) => this.handleChange('resultId', v)} />
         {this.renderReasonRow()}
         {this.renderSaleDateRow()}
@@ -207,96 +101,117 @@ class DemoUpdateModal extends Component {
           required control={TextArea}
           onChange={(e, o) => this.handleChange('address', o)}
           label='Адрес' placeholder='Адрес'
-          value={this.state.demo.address}
+          value={localDemo.address}
         />
         <Form.Select error={this.state.errors.locationId}
-          value={this.state.demo.locationId}
+          value={localDemo.locationId}
           required fluid selection
-          label='Местоположение' options={locationOptions}
+          label='Местоположение' options={LOCATION_OPTIONS}
           onChange={(e, v) => this.handleChange('locationId', v)} />
       </Form.Group>
       <Form.Group widths='equal'>
         <Form.Select error={this.state.errors.dealerId}
-          value={this.state.demo.dealerId}
+          value={localDemo.dealerId}
           required fluid selection
-          label='Дилер' options={this.state.dealers}
+          label='Дилер' options={this.props.dealers}
           onChange={(e, v) => this.handleChange('dealerId', v)} />
 
         <Form.Field control={TextArea}
           onChange={(e, o) => this.handleChange('note', o)}
           label='Примечание для демо'
           placeholder='Примечание для демо'
-          value={this.state.demo.note || ''}
+          value={localDemo.note || ''}
         />
       </Form.Group>
     </Form>
   }
 
-  handleChange (fieldName, o) {
-    let {demo, errors} = this.state
+  getOptionTextValue(o){
+      if(o.options){
+          for(let k in o.options){
+              if(o.options[k]['key'] === o.value){
+                  return o.options[k]['text']
+              }
+          }
+      }
 
+      return ''
+  }
+
+  handleChange (fieldName, o) {
+      let localDemo = Object.assign({}, this.state.localDemo);
         switch (fieldName){
             case 'dateTime':
             case 'saleDate':
                 if(o){
-                    demo[fieldName] = o.valueOf();
+                    localDemo[fieldName] = o.valueOf();
                 }else{
-                    demo[fieldName] = null;
+                    localDemo[fieldName] = null;
                 }
-
         break
+
+            case 'reasonId':
+                localDemo[fieldName] = o.value
+                localDemo['reasonName'] = this.getOptionTextValue(o)
+            break
+
+            case 'resultId':
+                localDemo[fieldName] = o.value
+                localDemo['resultName'] = this.getOptionTextValue(o)
+                localDemo['reasonName'] = ''
+                localDemo['reasonId'] = 0
+                break
+
+            case 'dealerId':
+                localDemo[fieldName] = o.value
+                localDemo['dealerName'] = this.getOptionTextValue(o)
+                break
+
       case 'locationId':
       case 'clientName':
       case 'address':
-      case 'resultId':
-      case 'reasonId':
-      case 'dealerId':
       case 'note':
-        demo[fieldName] = o.value
-        if (fieldName === 'resultId') {
-          demo['reasonId'] = 0
-        }
+          localDemo[fieldName] = o.value
         break
 
       default:{}
     }
 
     this.setState({
-      ...this.state,
-      demo: demo,
-      errors: errors
+        ...this.state,
+        localDemo: localDemo
     })
   }
 
   validateForm () {
-    let {demo, errors} = this.state
+    let {localDemo, errors} = this.state
       for(let k in errors){
           if (errors.hasOwnProperty(k)) {
               errors[k] = false
           }
       }
-     let resId = parseInt(demo.resultId,10);
-      let reasonId = parseInt(demo.reasonId,10);
+     let resId = parseInt(localDemo.resultId,10);
+      let reasonId = parseInt(localDemo.reasonId,10);
 
-    if (resId === RESULT_MOVED || resId === RESULT_CANCELLED || resId === RESULT_DONE) {
+    if (resId === DEMO_RESULT_MOVED || resId === DEMO_RESULT_CANCELLED || resId === DEMO_RESULT_DONE) {
       if (reasonId === 0) {
         errors['reasonId'] = true
       }
-    }else if(resId === RESULT_SOLD){
-          if(!demo.saleDate || demo.saleDate.length === 0){
+    }else if(resId === DEMO_RESULT_SOLD){
+          if(!localDemo.saleDate || localDemo.saleDate.length === 0){
               errors['saleDate'] = true;
           }
     }
 
-    if (!demo.clientName || demo.clientName.length === 0) {
+    if (!localDemo.clientName || localDemo.clientName.length === 0) {
       errors['clientName'] = true
     }
 
-    if (!demo.dateTime || demo.dateTime.length === 0) {
+    if (!localDemo.dateTime || localDemo.dateTime.length === 0) {
       errors['dateTime'] = true
     }
 
-    if (!demo.address || demo.address.length === 0) {
+    if (!localDemo.address || localDemo.address.length === 0) {
       errors['address'] = true
     }
 
@@ -307,10 +222,13 @@ class DemoUpdateModal extends Component {
   }
 
   componentWillReceiveProps (props) {
-    this.setState({
-      ...this.state,
-      demo: props.demo
-    })
+      if(props.demo != this.state.localDemo){
+          let localDemo = Object.assign({}, this.props.demo);
+          this.setState({
+              ...this.state,
+              localDemo: localDemo
+          })
+      }
   }
 
   saveDemo () {
@@ -325,37 +243,25 @@ class DemoUpdateModal extends Component {
     if (!isValid) {
       return
     }
-    axios.put(`${ROOT_URL}/api/crm/demo/` + this.state.demo.id, { ...this.state.demo }, {
-      headers: {
-        authorization: localStorage.getItem('token')
-      }
-    })
-      .then((response) => {
-        this.close()
-      }).catch((error) => {
-        console.log(error)
-      })
+
+    this.props.updateDemo(this.state.localDemo)
   }
 
   close () {
-    this.props.onClose(false)
-  }
-
-  onOpen (e, data) {
-    console.log('OPENED')
+    this.props.toggleDemoUpdateModal(false)
   }
 
   render () {
-    const {modalOpened, demo} = this.props
+    const {openDemoUpdateModal, demo} = this.props
     demo['recos'] = []
     return (
-      <Modal size={'small'} open={modalOpened} onOpen={this.onOpen}>
+      <Modal size={'small'} open={openDemoUpdateModal}>
         <Modal.Header>Редактирование демонстрации</Modal.Header>
         <Modal.Content>
           {this.renderUpdateForm()}
         </Modal.Content>
         <Modal.Actions>
-          <Button negative onClick={this.close}>Отмена</Button>
+          <Button negative onClick={() => this.props.toggleDemoUpdateModal(false)}>Отмена</Button>
           <Button positive icon='checkmark' onClick={this.saveDemo} labelPosition='right' content='Сохранить' />
         </Modal.Actions>
       </Modal>
@@ -363,4 +269,15 @@ class DemoUpdateModal extends Component {
   }
 }
 
-export default DemoUpdateModal
+function mapStateToProps (state) {
+    return {
+        dealers:state.crmDemo.dealers,
+        loader:state.loader,
+        demoResults:state.crmDemo.demoResults,
+        reasons:state.crmDemo.reasons,
+        demo:state.crmDemo.demo,
+        openDemoUpdateModal:state.crmDemo.openDemoUpdateModal
+    }
+}
+
+export default connect(mapStateToProps, {fetchGroupDealers,fetchDemoResults,fetchReasons,updateDemo,toggleDemoUpdateModal})(DemoUpdateModal)

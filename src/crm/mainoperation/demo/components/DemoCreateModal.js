@@ -4,31 +4,16 @@ import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import axios from 'axios'
 import {ROOT_URL} from '../../../../utils/constants'
+import {toggleDemoCreateModal} from '../actions/demoAction'
+import { connect } from 'react-redux'
+import {DEMO_RESULT_CANCELLED,DEMO_RESULT_DONE,DEMO_RESULT_MOVED,getReasonsByResultId,LOCATION_OPTIONS} from '../../../crmUtil'
 
-const locationOptions = [
-  {
-    key: 1,
-    text: 'Город',
-    value: 1
-  },
-  {
-    key: 2,
-    text: 'ЗАгород',
-    value: 2
-  }
-]
 
-const RESULT_DONE = 1
-const RESULT_MOVED = 2
-const RESULT_CANCELLED = 3
-
-let allReasons = []
 
 class DemoCreateModal extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      opened: false,
       demo: {
         parentId: props.parentId,
         recoId: props.recoId,
@@ -43,10 +28,6 @@ class DemoCreateModal extends Component {
         reasonId: 0,
         saleDate: null
       },
-      loaded: false,
-      results: [],
-      dealers: [],
-      reasons: [],
       errors: {
         dealerId: false,
         resultId: false,
@@ -62,105 +43,23 @@ class DemoCreateModal extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.validateForm = this.validateForm.bind(this)
     this.renderUpdateForm = this.renderUpdateForm.bind(this)
-    this.onOpen = this.onOpen.bind(this)
     this.saveDemo = this.saveDemo.bind(this)
   }
 
-  loadReasons () {
-    axios.get(`${ROOT_URL}/api/reference/reasons/0`, {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((res) => {
-      allReasons = res.data
-    }).catch((e) => {
-      console.log(e)
-    })
-  }
-
   componentWillMount () {
-    axios.get(`${ROOT_URL}/api/crm/demo/results`, {
-      headers: {
-        authorization: localStorage.getItem('token')
-      }
-    }).then((res) => {
-      let results = Object.keys(res.data).map((k) => {
-        return {
-          key: k,
-          text: res.data[k],
-          value: k
-        }
-      })
-      this.setState({
-        ...this.state,
-        results: results
-      })
-    }).catch((e) => {
-      console.log(e)
-    })
 
-    axios.get(`${ROOT_URL}/api/hr/pyramid/crm/group-dealers`, {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((res) => {
-      let loaded = res.data.map((item) => {
-        return {
-          key: item.staffId,
-          text: item.lastname + ' ' + item.firstname,
-          value: item.staffId
-        }
-      })
-      loaded.unshift({
-        key: 0,
-        text: 'Не выбрано',
-        value: 0
-      })
-      this.setState({
-        ...this.state,
-        dealers: loaded
-      })
-    }).catch((e) => {
-      console.log(e)
-    })
-
-    this.loadReasons()
-  }
-
-  handleDate (p1, p2, p3) {
-    console.log(p1, p2, p3)
-  }
-
-  getReasonsByResultId (resultId) {
-    let reasonTypeId = 0
-    resultId = parseInt(resultId,10);
-    if (resultId === RESULT_DONE) {
-      reasonTypeId = 2
-    } else if (resultId === RESULT_CANCELLED) {
-      reasonTypeId = 3
-    } else if (resultId === RESULT_MOVED) {
-      reasonTypeId = 4
-    }
-
-    let out = []
-    for (let k in allReasons) {
-      if (allReasons[k]['typeId'] === reasonTypeId) {
-        out.push({
-          key: allReasons[k]['id'],
-          text: allReasons[k]['name'],
-          value: allReasons[k]['id']
-        })
-      }
-    }
-
-    return out
   }
 
   renderReasonRow () {
     let resultId = this.state.demo.resultId
-    if (resultId === RESULT_CANCELLED || resultId === RESULT_DONE || resultId === RESULT_MOVED) {
+      if(resultId){
+        resultId = parseInt(resultId,10)
+      }
+    if (resultId === DEMO_RESULT_CANCELLED || resultId === DEMO_RESULT_DONE || resultId === DEMO_RESULT_MOVED) {
       return <Form.Select error={this.state.errors.reasonId}
         value={this.state.demo.reasonId}
         required fluid selection
-        label='Причина' options={this.getReasonsByResultId(resultId)}
+        label='Причина' options={getReasonsByResultId(resultId,this.props.reasons)}
         onChange={(e, v) => this.handleChange('reasonId', v)} />
     }
 
@@ -187,7 +86,7 @@ class DemoCreateModal extends Component {
         <Form.Select error={this.state.errors.resultId}
           value={this.state.demo.resultId}
           required fluid selection
-          label='Результат' options={this.state.results}
+          label='Результат' options={this.resultsOptions()}
           onChange={(e, v) => this.handleChange('resultId', v)} />
         {this.renderReasonRow()}
       </Form.Group>
@@ -201,14 +100,14 @@ class DemoCreateModal extends Component {
         <Form.Select error={this.state.errors.locationId}
           value={this.state.demo.locationId}
           required fluid selection
-          label='Местоположение' options={locationOptions}
+          label='Местоположение' options={LOCATION_OPTIONS}
           onChange={(e, v) => this.handleChange('locationId', v)} />
       </Form.Group>
       <Form.Group widths='equal'>
         <Form.Select error={this.state.errors.dealerId}
           value={this.state.demo.dealerId}
           required fluid selection
-          label='Дилер' options={this.state.dealers}
+          label='Дилер' options={this.props.dealers}
           onChange={(e, v) => this.handleChange('dealerId', v)} />
 
         <Form.Field control={TextArea}
@@ -222,7 +121,7 @@ class DemoCreateModal extends Component {
   }
 
   handleChange (fieldName, o) {
-    let {demo} = this.state
+      let demo = Object.assign({}, this.state.demo);
 
     switch (fieldName) {
       case 'dateTime':
@@ -262,7 +161,7 @@ class DemoCreateModal extends Component {
           }
       }
 
-    if (demo.resultId === RESULT_MOVED || demo.resultId === RESULT_CANCELLED || demo.resultId === RESULT_DONE) {
+    if (demo.resultId === DEMO_RESULT_MOVED || demo.resultId === DEMO_RESULT_CANCELLED || demo.resultId === DEMO_RESULT_DONE) {
       if (demo.reasonId === 0) {
         errors['reasonId'] = true
       }
@@ -304,7 +203,6 @@ class DemoCreateModal extends Component {
   }
 
   saveDemo () {
-    console.log(this.state.demo)
     this.validateForm()
     let isValid = true
       for(let k in this.state.errors){
@@ -330,17 +228,28 @@ class DemoCreateModal extends Component {
   }
 
   close () {
-    this.props.onClose(false)
+    this.props.toggleDemoCreateModal(false)
   }
 
-  onOpen (e, data) {
-    console.log('OPENED')
-  }
+    resultsOptions(){
+        if(!this.props.demoResults){
+            return []
+        }
+        let out = Object.keys(this.props.demoResults).map((k) => {
+            return {
+                key:k,
+                text:this.props.demoResults[k],
+                value:k
+            }
+        });
+
+        return out;
+    }
 
   render () {
-    const {modalOpened} = this.props
+    const {openDemoCreateModal} = this.props
     return (
-      <Modal size={'small'} open={modalOpened} onOpen={this.onOpen}>
+      <Modal size={'small'} open={openDemoCreateModal}>
         <Modal.Header>Редактирование демонстрации</Modal.Header>
         <Modal.Content>
           {this.renderUpdateForm()}
@@ -354,4 +263,14 @@ class DemoCreateModal extends Component {
   }
 }
 
-export default DemoCreateModal
+function mapStateToProps (state) {
+    return {
+        dealers:state.crmDemo.dealers,
+        loader:state.loader,
+        demoResults:state.crmDemo.demoResults,
+        reasons:state.crmDemo.reasons,
+        openDemoCreateModal:state.crmDemo.openDemoCreateModal
+    }
+}
+
+export default connect(mapStateToProps, {toggleDemoCreateModal})(DemoCreateModal)
