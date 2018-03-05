@@ -2,11 +2,12 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom'
 import { Header,Container,Segment,Form,Table,Loader } from 'semantic-ui-react'
 import LazyPagination from '../../../../general/pagination/LazyPagination'
-import axios from 'axios';
-import {ROOT_URL} from '../../../../utils/constants';
 import DatePicker from "react-datepicker";
 import moment from 'moment';
 import DemoResultLabel from './DemoResultLabel';
+import {fetchDemoArchive,fetchDemoResults,fetchGroupDealers} from '../actions/demoAction'
+import { connect } from 'react-redux'
+import {demoResultOptions} from '../../../crmUtil'
 
 class DemoArchivePage extends Component{
 
@@ -16,11 +17,6 @@ class DemoArchivePage extends Component{
         this.state = {
             callResultOptions:[],
             callRefuseOptions:[],
-            items:[],
-            page:0,
-            perPage:30,
-            totalRows:0,
-            dealers:[],
             results:[],
             searchModel:{
                 id:0,
@@ -42,7 +38,6 @@ class DemoArchivePage extends Component{
     }
 
     loadItems(page){
-        this.setState({...this.state,loading:true})
         let {searchModel} = this.state;
         let temp = [];
         temp.push('page=' + page);
@@ -60,103 +55,14 @@ class DemoArchivePage extends Component{
             }
         }
         let q = temp.join('&');
-        axios.get(`${ROOT_URL}/api/crm/demo/archive?` + q,{
-            headers:{
-                authorization: localStorage.getItem('token')
-            }
-        })
-            .then((res) => {
-                this.setState({
-                    ...this.state,
-                    items:res.data['items'],
-                    totalRows:res.data['meta']['totalRows'],
-                    page:res.data['meta']['page'],
-                    perPage:res.data['meta']['perPage'],
-                    loading:false
-                })
-            }).catch((e) => {
-            console.log(e);
-        })
+        this.props.fetchDemoArchive(q)
     }
 
     componentWillMount(){
-
         this.loadItems(0);
 
-        axios.get(`${ROOT_URL}/api/hr/pyramid/crm/group-dealers`,{
-            headers: {
-                authorization: localStorage.getItem('token')}
-        }).then((res) => {
-            let loaded = res.data.map((item) => {
-                return {
-                    key:item.staffId,
-                    text:item.lastname + ' ' + item.firstname,
-                    value:item.staffId
-                }
-            });
-            loaded.unshift({
-                key:0,
-                text:'Не выбрано',
-                value:0
-            });
-            this.setState({
-                ...this.state,
-                dealers:loaded
-            })
-        }).catch((e) => {
-            console.log(e);
-        });
-
-        axios.get(`${ROOT_URL}/api/crm/demo/results`,{
-            headers: {
-                authorization: localStorage.getItem('token')}
-        }).then((res) => {
-            let loaded = Object.keys(res.data).map((k) => {
-                return {
-                    key:k,
-                    text:res.data[k],
-                    value:k
-                }
-            });
-
-            loaded.unshift({
-                key:'',
-                text:'Не выбрано',
-                value:''
-            });
-
-            this.setState({
-                ...this.state,
-                results:loaded
-            })
-        }).catch((e) => {
-            console.log(e);
-        })
-
-        axios.get(`${ROOT_URL}/api/reference/reasons/1`,{
-            headers: {
-                authorization: localStorage.getItem('token')}
-        }).then((res) => {
-            let loaded = res.data.map((item) => {
-                return {
-                    key:item.id,
-                    text:item.name,
-                    value:item.id
-                }
-            })
-
-            this.setState({
-                ...this.state,
-                callRefuseOptions:loaded
-            })
-        }).catch((e) => {
-            console.log(e);
-        })
-    }
-
-    renderPhoneCall(e,d){
-        console.log(e);
-        console.log(d);
+        this.props.fetchDemoResults()
+        this.props.fetchGroupDealers()
     }
 
     onPaginationItemClick(page){
@@ -184,8 +90,8 @@ class DemoArchivePage extends Component{
     renderSearchForm(){
         return <Form>
             <Form.Group widths='equal'>
-                <Form.Select fluid label='Дилер' options={this.state.dealers} placeholder='Дилер' onChange={(e,v) => this.handleChange('dealerId',v)} />
-                <Form.Select fluid label='Результат' options={this.state.results} placeholder='Результат' onChange={(e,v) => this.handleChange('resultId',v)} />
+                <Form.Select fluid label='Дилер' options={this.props.dealers} placeholder='Дилер' onChange={(e,v) => this.handleChange('dealerId',v)} />
+                <Form.Select fluid label='Результат' options={demoResultOptions(this.props.demoResults)} placeholder='Результат' onChange={(e,v) => this.handleChange('resultId',v)} />
                 <Form.Input fluid label='ФИО клиента' placeholder='ФИО клиента' onChange={(e,v) => this.handleChange('clientName',v)} />
                 <Form.Field>
                     <label>Дата С</label>
@@ -218,12 +124,12 @@ class DemoArchivePage extends Component{
     }
 
     renderTableBody(){
-        if(this.state.items.length === 0){
+        if(this.props.items.length === 0){
             return <Table.Row>
                 <Table.Cell colSpan={8}>Нет данных</Table.Cell>
             </Table.Row>
         }
-        return this.state.items.map((item,idx) => {
+        return this.props.items.map((item,idx) => {
             return <Table.Row key={idx}>
                 <Table.Cell>{item.id}</Table.Cell>
                 <Table.Cell>{item.branchName}</Table.Cell>
@@ -242,7 +148,7 @@ class DemoArchivePage extends Component{
     }
 
     renderTable(){
-        if(this.state.loading){
+        if(this.props.loader.active){
             return <Loader active={true} />
         }
         return <Table celled>
@@ -264,14 +170,14 @@ class DemoArchivePage extends Component{
             <Table.Footer>
                 <Table.Row>
                     <Table.HeaderCell colSpan='2'>
-                        Количество: {this.state.totalRows}
+                        Количество: {this.props.meta.totalRows}
                     </Table.HeaderCell>
                     <Table.HeaderCell colSpan='6'>
                         <LazyPagination
                             onItemClick={this.onPaginationItemClick}
-                            totalRows={this.state.totalRows}
-                            currentPage={this.state.page}
-                            perPage={this.state.perPage}/>
+                            totalRows={this.props.meta.totalRows}
+                            currentPage={this.props.meta.page}
+                            perPage={this.props.meta.perPage}/>
                     </Table.HeaderCell>
                 </Table.Row>
             </Table.Footer>
@@ -295,4 +201,14 @@ class DemoArchivePage extends Component{
     }
 }
 
-export default DemoArchivePage;
+function mapStateToProps (state) {
+    return {
+        items:state.crmDemo.items,
+        loader:state.loader,
+        meta:state.crmDemo.meta,
+        dealers:state.crmDemo.dealers,
+        demoResults:state.crmDemo.demoResults
+    }
+}
+
+export default connect(mapStateToProps, {fetchDemoArchive,fetchDemoResults,fetchGroupDealers})(DemoArchivePage)

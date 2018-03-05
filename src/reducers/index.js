@@ -13,6 +13,7 @@ import userInfoReducer from '../general/userInfo/userInfo_reducer';
 import frcolnReducer from '../finance/report/frcoln/frcoln_reducer';
 import loaderReducer from '../general/loader/loader_reducer';
 import recoReducer from '../crm/mainoperation/reco/reducres/recoReducer';
+import demoReducer from '../crm/mainoperation/demo/reducres/demoReducer'
 import {
   UNAUTH_USER
 } from '../actions/types';
@@ -32,7 +33,8 @@ const appReducer = combineReducers({
   frcoln:frcolnReducer,
   loader:loaderReducer,
   f4:f4_reducer,
-  crmReco:recoReducer
+  crmReco:recoReducer,
+    crmDemo:demoReducer
 });
 
 const rootReducer = (state, action) => {
