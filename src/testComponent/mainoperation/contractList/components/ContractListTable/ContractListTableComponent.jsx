@@ -1,11 +1,11 @@
 /* eslint linebreak-style: ["error", "windows"] */
-
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import { Icon } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 
 class ContractListTableComponent extends Component {
   constructor(props) {
@@ -16,15 +16,17 @@ class ContractListTableComponent extends Component {
   }
 
   render() {
-    const options = this.props.operator.map((el, idx) => (
-      <option value={el.text} key={idx}>
-        {el.text}
-      </option>
-    ));
+    let options;
+    if (this.props.result) {
+      options = this.props.result.map(el =>
+        (<option value={el.operator.id} key={el.operator.id}>
+          {el.operator.lastName} {el.operator.firstName}
+        </option>));
+    }
     const columns = [
       {
         Header: 'SN договор',
-        accessor: 'SNcontract',
+        accessor: 'contractNumber',
         maxWidth: 100,
         filterable: true,
       },
@@ -35,41 +37,57 @@ class ContractListTableComponent extends Component {
           const { contractDate } = props.original;
           return moment(contractDate).format('DD.MM.YYYY');
         },
-        maxWidth: 160,
+        maxWidth: 110,
       },
       {
         Header: 'ФИО',
-        accessor: 'fio',
-        maxWidth: 260,
+        accessor: 'customer',
+        Cell: (props) => {
+          const { customer } = props.original;
+          return (
+            <div>
+              {customer.lastName} {customer.firstName} {customer.patronymic}
+            </div>
+          );
+        },
+        maxWidth: 270,
       },
       {
         Header: 'Филиал',
-        accessor: 'branch',
+        accessor: 'companyBranchName',
         maxWidth: 160,
       },
       {
         Header: 'Продукт',
-        accessor: 'product',
+        accessor: 'productName',
         maxWidth: 160,
       },
       {
         Header: 'ФИО Диллера',
         accessor: 'dealer',
-        maxWidth: 160,
+        Cell: (props) => {
+          const { dealer } = props.original;
+          return (
+            <div>
+              {dealer.lastName} {dealer.firstName} {dealer.patronymic}
+            </div>
+          );
+        },
+        maxWidth: 270,
       },
       {
         Header: 'Состояние',
         accessor: 'state',
         maxWidth: 160,
       },
-      {
-        Header: 'Последнее примечание',
-        accessor: 'lastNote',
-        maxWidth: 160,
-      },
+      // {
+      //   Header: 'Последнее примечание',
+      //   accessor: 'lastNote',
+      //   maxWidth: 160,
+      // },
       {
         Header: 'Обновлено',
-        accessor: 'updated',
+        accessor: 'modifiedAt',
         Cell: (props) => {
           const { updated } = props.original;
           return moment(updated).format('DD.MM.YYYY, hh:mm:ss');
@@ -78,8 +96,16 @@ class ContractListTableComponent extends Component {
       },
       {
         Header: 'Оператор',
-        accessor: 'operator',
+        accessor: 'operator.id',
         id: 'opr',
+        Cell: (props) => {
+          const { operator } = props.original;
+          return (
+            <div>
+              {operator.lastName} {operator.firstName} {operator.patronymic}
+            </div>
+          );
+        },
         filterable: true,
         filterMethod: (filter, row) => {
           if (filter.value === '0') {
@@ -93,18 +119,18 @@ class ContractListTableComponent extends Component {
             style={{ width: '100%' }}
             value={filter ? filter.value : '0'}
           >
-            <option value="0">Show All</option>
+            <option value="0">Все</option>
             {options}
-          </select>),
+           </select>),
       },
       {
 
         Cell: (props) => {
-          const { SNcontract } = props.original;
+          const { contractNumber } = props.original;
           return (
             <div style={{ textAlign: 'center' }}>
-              <Link target="_blank" to={`/newIssue/${SNcontract}`}>
-                <Icon name="eye" size="large" />
+              <Link target="_blank" to={`/newIssue/${contractNumber}`}>
+                <Icon name="eye" size="large" color="black" />
               </Link>
             </div>);
         },
@@ -113,7 +139,7 @@ class ContractListTableComponent extends Component {
     ];
     return (<ReactTable
       loading={this.props.loading}
-      data={this.props.data}
+      data={this.props.result}
       columns={columns}
       pageSizeOptions={[10, 20, 30, 50]}
       defaultPageSize={10}
@@ -124,29 +150,26 @@ class ContractListTableComponent extends Component {
       pageText="Страница"
       ofText="из"
       rowsText="записей"
-      className="-striped -highlight"
-      getTrProps={(state, rowInfo, column) => ({
-                            onClick: (e, handleOriginal) => {
-                                // console.log('A Td Element was clicked!')
-                                // console.log('it produced this event:', e)
-                                // console.log('It was in this column:', column)
-                                // console.log('It was in this row:', rowInfo)
-
-                                // let { index, original } = rowInfo
-
-                                // IMPORTANT! React-Table uses onClick internally to trigger
-                                // events like expanding SubComponents and pivots.
-                                // By default a custom 'onClick' handler will override this functionality.
-                                // If you want to fire the original onClick handler, call the
-                                // 'handleOriginal' function.
+      className="-highlight"
+      getTrProps={(state, rowInfo) => ({
+                            onClick: () => {
                                 this.setState({ ...this.state, selectedIdx: rowInfo.index });
                             },
                             style: {
-                                background: (rowInfo === undefined ? '' : (this.state.selectedIdx === rowInfo.index ? 'rgba(169, 221, 236, 1)' : '')),
+                                background: (rowInfo === undefined ? '' : (this.state.selectedIdx === rowInfo.index ? 'rgba(241,250,229, 1)' : '')),
                             },
                        })}
+      getTheadProps={() => ({
+        style: {
+          background: 'rgba(227,232,238, 1)',
+        },
+      })}
     />);
   }
 }
+
+ContractListTableComponent.propTypes = {
+  result: PropTypes.arrayOf(PropTypes.object),
+};
 
 export default ContractListTableComponent;

@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
-import { Container, Dimmer, Loader } from 'semantic-ui-react';
-import axios from 'axios';
+import { Container } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 import _ from 'lodash';
-import ContractListTable from './ContractListTable/ContractListTableComponent';
-import ContractListSearch from './ContractListSearch/ContractListSearchDisplay';
-import { ROOT_URL } from '../../../../utils/constants';
-import { makeData } from './Utils';
+import ContractListTable from './ContractListTable/ContractListTableContainer';
+import ContractListSearch from './ContractListSearch/ContractListSearchContainer';
 
 class ContractListPageComponent extends Component {
   constructor(props) {
@@ -17,7 +15,6 @@ class ContractListPageComponent extends Component {
       selectedState: undefined,
       startDate: undefined,
       endDate: undefined,
-      result: [],
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -26,7 +23,6 @@ class ContractListPageComponent extends Component {
 
   componentWillMount() {
     this.props.getDirectories();
-    // this.setState({ ...this.state, result: makeData() });
   }
 
   componentWillUnmount() {
@@ -71,54 +67,40 @@ class ContractListPageComponent extends Component {
       .join('&');
 
     // console.log('PARAMS', params);
-    this.setState({ ...this.state, result: makeData() });
-    // axios.get(`${ROOT_URL}/api/service/packets?${params}`, {
-    //     headers: {
-    //         authorization: localStorage.getItem('token')
-    //     }
-    // })
-    // .then(({data}) => this.setState({...this.state, result: data}))
-    // .catch(err => console.log("ERROR in SPLIST PAGE", err))
+    this.props.searchContracts(params);
   }
 
   render() {
-    if (this.props.directories) {
-      return (
-        <Container
-          fluid
-          style={{
-            marginTop: '2em',
-            marginBottom: '2em',
-            paddingLeft: '2em',
-            paddingRight: '2em',
-          }}
-        >
-          <ContractListSearch
-            companyOpts={this.props.directories.companyOptions}
-            branchOpts={this.props.directories.branchOptions}
-            stateOpts={this.props.directories.stateOptions}
-            selectedCompany={this.state.selectedCompany}
-            selectedBranch={this.state.selectedBranch}
-            selectedState={this.state.selectedState}
-            startDate={this.state.startDate}
-            endDate={this.state.endDate}
-            inputChange={this.handleInputChange}
-            handleSearch={this.handleSearch}
-          />
-          <br />
-          <ContractListTable
-            data={this.state.result}
-            operator={this.props.directories.operatorOptions}
-          />
-        </Container>
-      );
-    }
     return (
-      <Dimmer active>
-        <Loader indeterminate>Fetching directories...</Loader>
-      </Dimmer>
+      <Container
+        fluid
+        style={{
+          marginTop: '2em',
+          marginBottom: '2em',
+          paddingLeft: '2em',
+          paddingRight: '2em',
+        }}
+      >
+        <ContractListSearch
+          selectedCompany={this.state.selectedCompany}
+          selectedBranch={this.state.selectedBranch}
+          selectedState={this.state.selectedState}
+          startDate={this.state.startDate}
+          endDate={this.state.endDate}
+          inputChange={this.handleInputChange}
+          handleSearch={this.handleSearch}
+        />
+        <br />
+        <ContractListTable />
+      </Container>
     );
   }
 }
+
+ContractListPageComponent.propTypes = {
+  getDirectories: PropTypes.func.isRequired,
+  searchContracts: PropTypes.func.isRequired,
+  clearContractListStore: PropTypes.func.isRequired,
+};
 
 export default ContractListPageComponent;
