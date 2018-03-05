@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Modal, Button, Form, TextArea } from 'semantic-ui-react';
+import { Modal, Button, Form } from 'semantic-ui-react';
 
 export default class NewTaskModalComponent extends PureComponent {
   constructor(props) {

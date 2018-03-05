@@ -8,15 +8,13 @@ import ditUserBranchReducer from '../dit/userBranch/reducers/userBranch_reducer'
 import treeMenuReducer from './tree_menu';
 import notificationReducer from '../general/notification/notification_reducer';
 import contractListReducer from '../testComponent/mainoperation/contractList/reducers/ContractListReducer';
-
+import outCallsReducer from '../testComponent/mainoperation/newIssue/reducers';
 import userInfoReducer from '../general/userInfo/userInfo_reducer';
 import frcolnReducer from '../finance/report/frcoln/frcoln_reducer';
 import loaderReducer from '../general/loader/loader_reducer';
 import recoReducer from '../crm/mainoperation/reco/reducres/recoReducer';
-import demoReducer from '../crm/mainoperation/demo/reducres/demoReducer'
-import {
-  UNAUTH_USER
-} from '../actions/types';
+import demoReducer from '../crm/mainoperation/demo/reducres/demoReducer';
+import { UNAUTH_USER } from '../actions/types';
 import f4_reducer from '../reference/f4/f4_reducer';
 
 const appReducer = combineReducers({
@@ -29,12 +27,13 @@ const appReducer = combineReducers({
   menu: treeMenuReducer,
   notification: notificationReducer,
   contractList: contractListReducer,
-  userInfo:userInfoReducer,
-  frcoln:frcolnReducer,
-  loader:loaderReducer,
-  f4:f4_reducer,
-  crmReco:recoReducer,
-    crmDemo:demoReducer
+  userInfo: userInfoReducer,
+  frcoln: frcolnReducer,
+  loader: loaderReducer,
+  f4: f4_reducer,
+  crmReco: recoReducer,
+  crmDemo: demoReducer,
+  outCalls: outCallsReducer,
 });
 
 const rootReducer = (state, action) => {

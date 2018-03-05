@@ -32,7 +32,7 @@ class Signin extends Component {
   render() {
     const { handleSubmit } = this.props;
     const {formatMessage} = this.props.intl;
-    return(
+    return (
       <div className='login-form'>
         <style>{` body > div, body > div > div, body > div > div > div.login-form { height: 100%;}`}</style>
         <Grid

@@ -16,7 +16,7 @@ import LoadingPage from '../general/LoadingPage';
 import Frcoln from '../finance/report/frcoln/frcoln'
 import Hrb02 from '../hr/mainoperation/hrb02/hrb02'
 
-import NewIssuePage from '../testComponent/mainoperation/newIssue/components/NewIssuePage'
+import NewIssuePageContainer from '../testComponent/mainoperation/newIssue/components/NewIssuePageContainer'
 
 const AsyncSettings = Loadable({
   loader: () =>
@@ -148,9 +148,9 @@ const AsyncVisitViewPage = Loadable({
 });
 
 
-const AsyncNewIssuePage = Loadable({
+const AsyncNewIssuePageContainer = Loadable({
   loader: () =>
-    import('../testComponent/mainoperation/newIssue/components/NewIssuePage' /* webpackChunkName: "NewIssuePageTest" */),
+    import('../testComponent/mainoperation/newIssue/components/NewIssuePageContainer' /* webpackChunkName: "NewIssuePageTest" */),
   loading: () => <LoadingPage />,
 });
 
@@ -177,7 +177,7 @@ const getComponent = {
     CrmRecoView:AsyncRecoViewPage,
     CrmDemoView:AsyncDemoViewPage,
     CrmVisitView:AsyncVisitViewPage,
-    NewIssuePage: AsyncNewIssuePage
+    NewIssuePage: AsyncNewIssuePageContainer
 }
 
 function persistPath(nextState, replace) {
@@ -199,7 +199,7 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/dit/userBranch" component={AssignUserBranch} />
       <Route path="forbidden" component={ForbiddenPage} />
       <Route path="/contractListPage" component={AsyncContractListPage} />
-      <Route path="/newIssue/:id" component={NewIssuePage} />
+      <Route path="/newIssue/:id" component={NewIssuePageContainer} />
       <Route path="/finance/reports/frcol" component={Frcoln} />
       <Route path="/hr/bonus/hrb02" component={Hrb02} />
       
