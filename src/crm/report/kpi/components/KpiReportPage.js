@@ -1,10 +1,12 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 import {BarChart, XAxis, YAxis, Tooltip, Bar, CartesianGrid} from 'recharts'
-import {Container, Header, Segment, Grid, Divider, Breadcrumb, Loader, Button, Icon, Table} from 'semantic-ui-react'
+import {Container, Header, Segment, Grid, Divider, Breadcrumb, Loader, Button, Icon, Table,Form,Label} from 'semantic-ui-react'
 import KpiCard from './KpiCard'
 import {ROOT_URL} from '../../../../utils/constants'
 import CustomizedAxisTick from './CustomizedAxisTick'
+import MonthF4 from '../../../../reference/f4/date/MonthF4'
+import YearF4 from '../../../../reference/f4/date/YearF4'
 
 const bukrsMap = {}
 const branchesMap = {}
@@ -22,12 +24,16 @@ class KpiReportPage extends Component {
       bukrs: '',
       branchId: 0,
       managerId: 0,
-      breadcrumbs: []
+      breadcrumbs: [],
+        year:0,
+        month:0
     }
 
     this.loadItems = this.loadItems.bind(this)
     this.renderHeader = this.renderHeader.bind(this)
     this.changeRenderType = this.changeRenderType.bind(this)
+      this.renderSearchPanel = this.renderSearchPanel.bind(this)
+      this.handleDropdownChange = this.handleDropdownChange.bind(this)
   }
 
   handleError (e) {
@@ -87,7 +93,9 @@ class KpiReportPage extends Component {
       },
       params: {
         context: context,
-        contextId: contextId
+        contextId: contextId,
+          year:this.state.year,
+          month:this.state.month
       }
     }).then((res) => {
       if (context === 'branch') {
@@ -116,9 +124,44 @@ class KpiReportPage extends Component {
     })
   }
 
+    handleDropdownChange(e,data){
+        let {month,year} = this.state
+        let {name} = data
+        switch (name){
+            case 'year':
+                year = data.value
+                break
+
+            case 'month':
+                month = data.value
+                break
+
+            default:{}
+        }
+
+        this.setState({...this.state,year:year,month:month})
+    }
+
+  renderSearchPanel(){
+      return <div>
+          <Form>
+              <Form.Group>
+                  <YearF4 handleChange={this.handleDropdownChange} />
+                  <MonthF4 handleChange={this.handleDropdownChange} />
+                  <div className="field">
+                      <label>&nbsp;</label>
+                      <Button onClick={() => this.loadItems(this.state.context,this.state.contextId)}>Сформировать</Button>
+                  </div>
+              </Form.Group>
+          </Form>
+      </div>
+  }
+
   renderHeader () {
     return (
       <Segment clearing>
+          {this.renderSearchPanel()}
+          <br/>
         <Header as='h3' block floated={'left'}>
           <Breadcrumb size='big'>
             {this.state.breadcrumbs.map((item, idx) => {

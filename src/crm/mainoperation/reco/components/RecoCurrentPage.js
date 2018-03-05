@@ -29,7 +29,6 @@ class RecoCurrentPage extends Component {
     this.renderTableMoved = this.renderTableMoved.bind(this)
     this.loadItems = this.loadItems.bind(this)
     this.onCallSaved = this.onCallSaved.bind(this)
-      console.log('props',props)
   }
 
   loadItems () {
@@ -186,7 +185,6 @@ class RecoCurrentPage extends Component {
 }
 
 function mapStateToProps (state) {
-    console.log(state)
     return {
         newItems:state.crmReco.newItems,
         doneItems:state.crmReco.doneItems,
