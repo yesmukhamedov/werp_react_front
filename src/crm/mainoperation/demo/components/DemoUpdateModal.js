@@ -222,7 +222,7 @@ class DemoUpdateModal extends Component {
   }
 
   componentWillReceiveProps (props) {
-      if(props.demo != this.state.localDemo){
+      if(props.demo !== this.state.localDemo){
           let localDemo = Object.assign({}, this.props.demo);
           this.setState({
               ...this.state,
