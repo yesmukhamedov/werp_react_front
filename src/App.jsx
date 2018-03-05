@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Router } from 'react-router-dom';
-import { Menu, Segment, Sidebar,Loader } from 'semantic-ui-react';
+import { Menu, Segment, Sidebar, Loader } from 'semantic-ui-react';
 import './App.css';
-import history from './utils/history';
 import Signin from './components/Auth/Signin';
 import { fetchUnreadMessages } from './actions/inbox';
 import {
@@ -33,45 +31,41 @@ class App extends Component {
     const token = localStorage.getItem('token');
     // If we have a token, consider the user to be signed in
     if (token) {
-      console.log("HAVE TOEKN")
       return (
-        <Router history={history}>
-          <div className="wrapper">
-            <Header
-              unread={this.props.unread}
-              toggleMenu={() =>
-                this.setState({ menuVisible: !this.state.menuVisible })
-              }
-            />
-            <Notification />
-            <Sidebar.Pushable as={Segment} attached="bottom">
-              <Sidebar
-                as={Menu}
-                animation="overlay"
-                visible={this.state.menuVisible}
-                icon="labeled"
-                vertical
-              >
-                <TreeViewMenu
-                  lang={this.props.lang}
-                  list={this.props.treeMenu}
-                  transactions={this.props.transactions}
-                  breadcrumbChanged={this.props.breadcrumbChanged}
-                  toggleMenu={() =>
-                    this.setState({ menuVisible: !this.state.menuVisible })
-                  }
-                />
-              </Sidebar>
-              <Sidebar.Pusher onClick={this.handlePusherClick}>
-                <Loader active={this.props.activeLoader}/>
-                {this.props.routes}
-              </Sidebar.Pusher>
-            </Sidebar.Pushable>
-          </div>
-        </Router>
+        <div className="wrapper">
+          <Header
+            unread={this.props.unread}
+            toggleMenu={() =>
+              this.setState({ menuVisible: !this.state.menuVisible })
+            }
+          />
+          <Notification />
+          <Sidebar.Pushable as={Segment} attached="bottom">
+            <Sidebar
+              as={Menu}
+              animation="overlay"
+              visible={this.state.menuVisible}
+              icon="labeled"
+              vertical
+            >
+              <TreeViewMenu
+                lang={this.props.lang}
+                list={this.props.treeMenu}
+                transactions={this.props.transactions}
+                breadcrumbChanged={this.props.breadcrumbChanged}
+                toggleMenu={() =>
+                  this.setState({ menuVisible: !this.state.menuVisible })
+                }
+              />
+            </Sidebar>
+            <Sidebar.Pusher onClick={this.handlePusherClick}>
+              <Loader active={this.props.activeLoader} />
+              {this.props.routes}
+            </Sidebar.Pusher>
+          </Sidebar.Pushable>
+        </div>
       );
     }
-    console.log("DONT HAVE TOEKN")
     return <Signin />;
   }
 }
@@ -85,7 +79,7 @@ function mapStateToProps(state) {
     treeMenu: state.menu.tree,
     refetch: state.menu.refetch,
     transactions: state.menu.transactions,
-    activeLoader:state.loader.active
+    activeLoader: state.loader.active,
   };
 }
 

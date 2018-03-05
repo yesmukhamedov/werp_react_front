@@ -1,4 +1,5 @@
 import React from 'react';
+import { Router, Route } from 'react-router-dom';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
@@ -13,11 +14,11 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import 'semantic-ui-css/semantic.min.css';
 
 import generateRoutes from './routes/routes';
-import App from './App';
 import reducers from './reducers';
 import { AUTH_USER, CHANGE_LANGUAGE } from './actions/types';
 import ConnectedIntlProvider from './ConnectedIntlProvider';
 import JwtRefresher from './middlewares/JwtRefresher';
+import AppWrapper from './AppWrapper';
 
 import './index.css';
 
@@ -65,7 +66,7 @@ promise.then(({ data: transactionRoutes }) => {
   render(
     <Provider store={store}>
       <ConnectedIntlProvider>
-        <App routes={generatedRoutes} />
+        <AppWrapper routes={generatedRoutes} />
       </ConnectedIntlProvider>
     </Provider>,
     document.getElementById('root'),

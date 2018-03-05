@@ -181,6 +181,7 @@ const getComponent = {
 }
 
 function persistPath(nextState, replace) {
+  console.log("Persist path: ", nextState.location.path)
   try {
     localStorage.setItem('currentPathName', nextState.location.pathname);
   } catch (error) {
@@ -191,8 +192,8 @@ function persistPath(nextState, replace) {
 const generateRoutes = (transactionRoutes) => {
   return (
     <div>
-      <Route exact path="/" component={RequireAuth(MainPanel)} />
-      <Route path="/settings" component={RequireAuth(AsyncSettings)} />
+      <Route exact path="/" component={MainPanel} />
+      <Route path="/settings" component={AsyncSettings} />
       <Route path="/signin" component={Signin} />
       <Route path="/signout" component={Signout} />
       <Route path="/dit/userBranch" component={AssignUserBranch} />
