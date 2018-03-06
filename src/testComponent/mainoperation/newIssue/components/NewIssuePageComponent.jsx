@@ -42,12 +42,11 @@ export default class NewIssuePage extends Component {
 
   render() {
     const { contractDetails }  = this.props;
-
     return (
       <Container>
         <TaskPanelDisplay />
         {/* <NewTaskModalComponent /> */}
-        <OutCallDetailsPanelDisplay />
+        <OutCallDetailsPanelDisplay {...contractDetails} />
         <Accordion fluid styled>
           <Accordion.Title
             active={0}
