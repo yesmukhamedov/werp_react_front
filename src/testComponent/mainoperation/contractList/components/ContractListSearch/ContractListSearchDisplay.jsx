@@ -108,7 +108,7 @@ ContractListSearchDisplay.propTypes = {
   handleSearch: PropTypes.func.isRequired,
   directories: PropTypes.object,
   companyOptions: PropTypes.arrayOf(PropTypes.object),
-  branchOptions: PropTypes.object,
+  branchOptions: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
 };
 
 export default ContractListSearchDisplay;

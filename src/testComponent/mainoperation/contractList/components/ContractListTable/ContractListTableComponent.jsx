@@ -89,8 +89,8 @@ class ContractListTableComponent extends Component {
         Header: 'Обновлено',
         accessor: 'modifiedAt',
         Cell: (props) => {
-          const { updated } = props.original;
-          return moment(updated).format('DD.MM.YYYY, hh:mm:ss');
+          const { modifiedAt } = props.original;
+          return moment(modifiedAt).utc().format('DD.MM.YYYY, hh:mm:ss');
         },
         maxWidth: 160,
       },
