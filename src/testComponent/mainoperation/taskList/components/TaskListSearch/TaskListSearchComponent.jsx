@@ -1,117 +1,109 @@
 /* eslint linebreak-style: ["error", "windows"] */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Dropdown, Grid, Segment, Dimmer, Loader } from 'semantic-ui-react';
+import _ from 'lodash';
+import { Form, Dropdown, Grid, Segment, Dimmer, Loader, Label, Icon } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 class TaskListSearchComponent extends Component {
-    constructor(props) {
-      super(props);
-      this.state = {
-        selectedIdx: undefined,
-      };
-    }
+  constructor(props) {
+    super(props);
+    this.state = {
+      selectedStatus: undefined,
+      selectedPriority: undefined,
+    };
 
-    render() {
-        return (
-            <Form onSubmit={props.handleSearch}>
-              <Segment padded size="small">
-                <Grid stackable>
-                  <Grid.Column width={3}>
-                    <Form.Field>
-                      <label>Статус</label>
-                      <Dropdown
-                        placeholder="Статус"
-                        fluid
-                        selection
-                        options={props.companyOptions}
-                        value={props.selectedCompany}
-                        onChange={(e, { value }) =>
-                          props.inputChange(value, 'selectedCompany')
-                        }
-                      />
-                    </Form.Field>
-                  </Grid.Column>
-                  <Grid.Column width={3}>
-                    <Form.Field>
-                      <label>Приоритет</label>
-                      <Dropdown
-                        placeholder="Приоритет"
-                        fluid
-                        selection
-                        options={props.selectedCompany ? props.branchOptions[props.selectedCompany] : []}
-                        value={props.selectedBranch}
-                        onChange={(e, { value }) =>
-                          props.inputChange(value, 'selectedBranch')
-                        }
-                      />
-                    </Form.Field>
-                  </Grid.Column>
-                  <Grid.Column width={3}>
-                    <Form.Field>
-                      <label>Состояние</label>
-                      <Dropdown
-                        placeholder="состояние"
-                        fluid
-                        selection
-                        value={props.selectedState}
-                        options={props.directories.stateOptions}
-                        onChange={(e, { value }) =>
-                          props.inputChange(value, 'selectedState')
-                        }
-                      />
-                    </Form.Field>
-                  </Grid.Column>
-                  <Grid.Column width={2}>
-                    <Form.Field>
-                      <label>с</label>
-                      <DatePicker
-                        dateFormat="DD.MM.YYYY"
-                        // dateFormat='LL'
-                        selected={props.startDate}
-                        // locale='en'
-                        onChange={date => props.inputChange(date, 'startDate')}
-                      />
-                    </Form.Field>
-                  </Grid.Column>
-                  <Grid.Column width={2}>
-                    <Form.Field>
-                      <label>до</label>
-                      <DatePicker
-                        dateFormat="DD.MM.YYYY"
-                        // dateFormat='LL'
-                        selected={props.endDate}
-                        // locale='ru'
-                        onChange={date => props.inputChange(date, 'endDate')}
-                      />
-                    </Form.Field>
-                  </Grid.Column>
-                  <Grid.Column width={2}>
-                    <Form.Button
-                      content="Поиск"
-                      style={
-                        { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
-                    />
-                  </Grid.Column>
-                </Grid>
-              </Segment>
-            </Form>
-          );
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
+  }
+
+  handleInputChange(value, dataType) {
+    // console.log(dataType, value)
+    this.setState({
+      ...this.state,
+      [dataType]: value,
+    });
+  }
+
+  handleSearch() {
+    const paramsDict = {
+      statusId: this.state.selectedStatus,
+      priorityId: this.state.selectedPriority,
+    };
+    // console.log(paramsDict);
+    const params = _.map(
+      paramsDict,
+      (val, key) =>
+        (val ? `${key}=${val}` : val === false ? `${key}=${val}` : ''),
+    )
+      .filter(param => param)
+      .join('&');
+
+    console.log('PARAMS', params);
+    this.props.searchTasks(params);
+  }
+
+  render() {
+    if (this.props.directories) {
+      return (
+        <Form onSubmit={this.handleSearch}>
+          <Segment padded size="small">
+            <Label as="a" attached="top" content="Задачи" icon="checkmark box" />
+            <Grid stackable>
+              <Grid.Column width={3}>
+                <Form.Field>
+                  <label>Статус</label>
+                  <Dropdown
+                    placeholder="Статус"
+                    fluid
+                    selection
+                    options={this.props.directories.statusOptions}
+                    value={this.state.selectedStatus}
+                    onChange={(e, { value }) =>
+                      this.handleInputChange(value, 'selectedStatus')
+                    }
+                  />
+                </Form.Field>
+              </Grid.Column>
+              <Grid.Column width={3}>
+                <Form.Field>
+                  <label>Приоритет</label>
+                  <Dropdown
+                    placeholder="Приоритет"
+                    fluid
+                    selection
+                    options={this.props.directories.priorityOptions}
+                    value={this.state.selectedPriority}
+                    onChange={(e, { value }) =>
+                      this.handleInputChange(value, 'selectedPriority')
+                    }
+                  />
+                </Form.Field>
+              </Grid.Column>
+              <Grid.Column width={2}>
+                <Form.Button
+                  content="Поиск"
+                  style={
+                    { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
+                />
+              </Grid.Column>
+            </Grid>
+          </Segment>
+        </Form>
+      );
     }
+    return (
+      <Dimmer active>
+        <Loader indeterminate>Fetching directories...</Loader>
+      </Dimmer>
+    );
+  }
 }
 
 TaskListSearchComponent.propTypes = {
-  selectedCompany: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  selectedBranch: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  selectedState: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  startDate: PropTypes.object,
-  endDate: PropTypes.object,
-  inputChange: PropTypes.func.isRequired,
-  handleSearch: PropTypes.func.isRequired,
+  searchTasks: PropTypes.func.isRequired,
   directories: PropTypes.object,
-  companyOptions: PropTypes.arrayOf(PropTypes.object),
-  branchOptions: PropTypes.object,
 };
 
 export default TaskListSearchComponent;

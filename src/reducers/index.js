@@ -8,6 +8,8 @@ import ditUserBranchReducer from '../dit/userBranch/reducers/userBranch_reducer'
 import treeMenuReducer from './tree_menu';
 import notificationReducer from '../general/notification/notification_reducer';
 import contractListReducer from '../testComponent/mainoperation/contractList/reducers/ContractListReducer';
+import taskListReducer from '../testComponent/mainoperation/taskList/reducers/TaskListReducer';
+
 import outCallsReducer from '../testComponent/mainoperation/newIssue/reducers';
 import userInfoReducer from '../general/userInfo/userInfo_reducer';
 import frcolnReducer from '../finance/report/frcoln/frcoln_reducer';
@@ -27,6 +29,7 @@ const appReducer = combineReducers({
   menu: treeMenuReducer,
   notification: notificationReducer,
   contractList: contractListReducer,
+  taskList: taskListReducer,
   userInfo: userInfoReducer,
   frcoln: frcolnReducer,
   loader: loaderReducer,
