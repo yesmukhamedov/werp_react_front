@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, Accordion, Icon } from 'semantic-ui-react';
-import * as actions from '../actions/NewIssueAction';
-import { PersonalInfoPanelContainer } from './PersonalInfoPanel';
-import { FinancialInfoPanelContainer } from './FinancialInfoPanel';
-import { TaskTrackerPanelDisplay } from './TaskTrackerPanel';
+import { fetchContractById } from '../actions';
+import { PersonalInfoPanelDisplay } from './PersonalInfoPanel';
+import { FinancialInfoPanelDisplay } from './FinancialInfoPanel';
 import { PurchasesPanelDisplay } from './PurchasesPanel';
 import { TaskPanelDisplay } from './TaskPanel';
 import { OutCallDetailsPanelDisplay } from './OutCallDetailsPanel';
 import { NewTaskModalComponent } from './NewTaskModal';
+
 
 export default class NewIssuePage extends Component {
   constructor(props) {
@@ -18,6 +18,14 @@ export default class NewIssuePage extends Component {
     };
 
     this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentWillMount() {
+    const { id: contractId } = this.props.match.params;
+    if (contractId) {
+      this.props.fetchContractById(contractId);
+      console.log("thrown an action")
+    }
   }
 
   handleClick(field, value) {
@@ -33,10 +41,12 @@ export default class NewIssuePage extends Component {
     () => this.handleClick('showDetailedInfo', !this.state.showDetailedInfo);
 
   render() {
+    const { contractDetails }  = this.props;
+
     return (
       <Container>
         <TaskPanelDisplay />
-        <NewTaskModalComponent />
+        {/* <NewTaskModalComponent /> */}
         <OutCallDetailsPanelDisplay />
         <Accordion fluid styled>
           <Accordion.Title
@@ -48,9 +58,9 @@ export default class NewIssuePage extends Component {
             Детальная информация по договору
           </Accordion.Title>
           <Accordion.Content active={this.state.showDetailedInfo}>
-            <PersonalInfoPanelContainer />
-            <FinancialInfoPanelContainer />
-            <PurchasesPanelDisplay />
+            <PersonalInfoPanelDisplay {...contractDetails} />
+            <FinancialInfoPanelDisplay {...contractDetails} />
+            <PurchasesPanelDisplay {...contractDetails} />
           </Accordion.Content>
         </Accordion>
       </Container>
