@@ -15,7 +15,8 @@ const ContactsPanelDisplay = (props) => {
     <div style={{ width: '600px' }}>
       <h3>Контактные данные</h3>
       <Form>
-        {contactDetails &&
+        {
+          contactDetails &&
           contactDetails.map(contact => (
             <Form.Group>
               <Form.Field
@@ -31,7 +32,8 @@ const ContactsPanelDisplay = (props) => {
                 width="10"
               />
             </Form.Group>
-          ))}
+          ))
+        }
 
         {/* // <Form.Group>
         //   <Form.Field
