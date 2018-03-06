@@ -1,4 +1,4 @@
-import PersonalInfoPanelContainer from './PersonalInfoPanelContainer';
+import PersonalInfoPanelDisplay from './PersonalInfoPanelDisplay';
 
-export { PersonalInfoPanelDisplay } from './PersonalInfoPanelDisplay';
-export { PersonalInfoPanelContainer };
+export { PersonalInfoPanelDisplay };
+

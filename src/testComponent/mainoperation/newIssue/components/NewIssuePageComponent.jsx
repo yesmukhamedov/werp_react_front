@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, Accordion, Icon } from 'semantic-ui-react';
 import { fetchContractById } from '../actions';
-import { PersonalInfoPanelContainer } from './PersonalInfoPanel';
+import { PersonalInfoPanelDisplay } from './PersonalInfoPanel';
 import { FinancialInfoPanelContainer } from './FinancialInfoPanel';
 import { PurchasesPanelDisplay } from './PurchasesPanel';
 import { TaskPanelDisplay } from './TaskPanel';
@@ -58,7 +58,7 @@ export default class NewIssuePage extends Component {
             Детальная информация по договору
           </Accordion.Title>
           <Accordion.Content active={this.state.showDetailedInfo}>
-            <PersonalInfoPanelContainer {...contractDetails} />
+            <PersonalInfoPanelDisplay {...contractDetails} />
             <FinancialInfoPanelContainer {...contractDetails} />
             <PurchasesPanelDisplay {...contractDetails} />
           </Accordion.Content>
