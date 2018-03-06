@@ -1,4 +1,4 @@
-import FinancialInfoPanelContainer from './FinancialInfoPanelContainer';
+import FinancialInfoPanelDisplay from './FinancialInfoPanelDisplay';
 
-export { FinancialInfoPanelDisplay } from './FinancialInfoPanelDisplay';
-export { FinancialInfoPanelContainer };
+export { FinancialInfoPanelDisplay };
+

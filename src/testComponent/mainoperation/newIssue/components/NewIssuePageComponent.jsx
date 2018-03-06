@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Container, Accordion, Icon } from 'semantic-ui-react';
 import { fetchContractById } from '../actions';
 import { PersonalInfoPanelDisplay } from './PersonalInfoPanel';
-import { FinancialInfoPanelContainer } from './FinancialInfoPanel';
+import { FinancialInfoPanelDisplay } from './FinancialInfoPanel';
 import { PurchasesPanelDisplay } from './PurchasesPanel';
 import { TaskPanelDisplay } from './TaskPanel';
 import { OutCallDetailsPanelDisplay } from './OutCallDetailsPanel';
@@ -59,7 +59,7 @@ export default class NewIssuePage extends Component {
           </Accordion.Title>
           <Accordion.Content active={this.state.showDetailedInfo}>
             <PersonalInfoPanelDisplay {...contractDetails} />
-            <FinancialInfoPanelContainer {...contractDetails} />
+            <FinancialInfoPanelDisplay {...contractDetails} />
             <PurchasesPanelDisplay {...contractDetails} />
           </Accordion.Content>
         </Accordion>
