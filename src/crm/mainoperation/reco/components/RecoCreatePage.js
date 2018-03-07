@@ -7,38 +7,15 @@ import { notify } from '../../../../general/notification/notification_action'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import 'react-datepicker/dist/react-datepicker.css';
-const switchDateOptions = [
-  {
-    key: 0,
-    text: 'В любое время',
-    value: 0
-  },
-  {
-    key: 1,
-    text: 'Задать дату',
-    value: 1
-  }
-]
+import {RECO_SWITCH_OPTIONS,RECO_CALLER_OPTIONS} from '../../../crmUtil'
+import {fetchGroupDealers} from '../../demo/actions/demoAction';
 
-const callerOptions = [
-  {
-    key: 0,
-    text: 'Секретарь',
-    value: 0
-  },
-  {
-    key: 1,
-    text: 'Дилер',
-    value: 1
-  }
-]
 
 class RecoCreatePage extends Component {
   constructor (props) {
     super(props)
     this.loadedSuccess = true
     this.state = {
-      dealerOptions: [],
       reco: {
         context: this.props.match.params.context || 'aa',
         contextId: this.props.match.params.contextId || 0,
@@ -60,6 +37,7 @@ class RecoCreatePage extends Component {
   }
 
   componentWillMount () {
+      this.props.fetchGroupDealers()
     axios.get(`${ROOT_URL}/api/crm/reco/create?context=` + (this.props.match.params.context || 'aa') + `&contextId=` + (this.props.match.params.contextId || 0), {
       headers: {
         authorization: localStorage.getItem('token')}
@@ -67,30 +45,6 @@ class RecoCreatePage extends Component {
       this.setState({
         ...this.state,
         reco: res.data
-      })
-    }).catch((e) => {
-      console.log(e)
-    })
-
-    axios.get(`${ROOT_URL}/api/hr/pyramid/crm/group-dealers`, {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((res) => {
-      let loaded = res.data.map((item) => {
-        return {
-          key: item.staffId,
-          text: item.lastname + ' ' + item.firstname,
-          value: item.staffId
-        }
-      })
-      loaded.unshift({
-        key: 0,
-        text: 'Не выбрано',
-        value: 0
-      })
-      this.setState({
-        ...this.state,
-        dealerOptions: loaded
       })
     }).catch((e) => {
       console.log(e)
@@ -373,11 +327,11 @@ class RecoCreatePage extends Component {
                         <Form.Dropdown name={this.getItemName('switchDate',index)}
                                        fluid selection label="Дата время звонка"
                                        placeholder='Дата время звонка'
-                                       options={switchDateOptions}
+                                       options={RECO_SWITCH_OPTIONS}
                                        onChange={this.handleChange}  />
                         {this.renderCallDate(item.switchDate === 1,index)}
                         <Form.Dropdown name={this.getItemName('callerIsDealer',index)} defaultValue="0" fluid selection label="Звонить будет"
-                                       placeholder='Звонить будет' options={callerOptions}
+                                       placeholder='Звонить будет' options={RECO_CALLER_OPTIONS}
                                        onChange={this.handleChange}  />
                         <Form.TextArea name={this.getItemName('note',index)} label="Примечание" placeholder="Примечание"
                                        onChange={this.handleChange}  />
@@ -434,7 +388,7 @@ class RecoCreatePage extends Component {
               fluid selection search
               value={this.state.reco.responsibleId}
               selectOnBlur={false}
-              options={this.state.dealerOptions}
+              options={this.props.dealers}
               onChange={this.handleChange} />
           </Form.Field>
 
@@ -473,7 +427,9 @@ class RecoCreatePage extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { state}
+  return {
+      dealers:state.crmDemo.dealers
+  }
 }
 
-export default connect(mapStateToProps, { notify })(RecoCreatePage)
+export default connect(mapStateToProps, { notify,fetchGroupDealers })(RecoCreatePage)

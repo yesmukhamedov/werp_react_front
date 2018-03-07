@@ -1,7 +1,8 @@
 import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
-import { notify } from '../../../../general/notification/notification_action';
+import { handleError } from '../../../../general/notification/notification_action';
 import { modifyLoader } from '../../../../general/loader/loader_action';
+
 
 /**
  * Страница Текущие рекомендации
@@ -23,7 +24,64 @@ export const CRM_FETCH_REASONS = 'CRM_FETCH_REASONS';
 
 export const CRM_RECO_CLEAR_STATE = 'CRM_RECO_CLEAR_STATE';
 
+export const CRM_RECO_FETCH_SINGLE = 'CRM_RECO_FETCH_SINGLE'
+export const CRM_RECO_UPDATE_MODAL_TOGGLE = 'CRM_RECO_UPDATE_MODAL_TOGGLE'
 
+export const CRM_RECO_UPDATE = 'CRM_RECO_UPDATE';
+export const CRM_FETCH_PHONE_NUMBER_HISTORY = 'CRM_FETCH_PHONE_NUMBER_HISTORY'
+
+
+export function fetchPhoneNumberHistory(phoneId){
+    return function (dispatch) {
+        axios.get(`${ROOT_URL}/api/crm/call/number-history/` + phoneId, {
+            headers: {
+                authorization: localStorage.getItem('token')}
+        }).then(({data}) => {
+            dispatch({
+                type:CRM_FETCH_PHONE_NUMBER_HISTORY,
+                payload:data
+            })
+        }).catch((e) => {
+            handleError(e,dispatch)
+        })
+    }
+}
+
+export function updateReco(reco) {
+    return function (dispatch){
+        axios.put(`${ROOT_URL}/api/crm/reco/` + reco.id, { ...reco }, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        })
+            .then(({data}) => {
+                dispatch({
+                    type: CRM_RECO_UPDATE,
+                    payload:reco
+                });
+            }).catch((e) => {
+            handleError(e,dispatch)
+        })
+    }
+}
+
+export function fetchSingleReco(id){
+    return function (dispatch) {
+        dispatch(modifyLoader(true))
+        axios.get(`${ROOT_URL}/api/crm/reco/` + id, {
+            headers: {
+                authorization: localStorage.getItem('token')}
+        }).then(({data}) => {
+            dispatch(modifyLoader(false))
+            dispatch({
+                type:CRM_RECO_FETCH_SINGLE,
+                payload:data
+            })
+        }).catch(function (e) {
+            handleError(e,dispatch)
+        })
+    }
+}
 
 export function fetchRecoCurrentData(type){
 
@@ -58,9 +116,8 @@ export function fetchRecoCurrentData(type){
             });
 
         })
-        .catch(error => {
-            //handleError(error);
-            console.log(error)
+        .catch(e => {
+            handleError(e,dispatch)
         });
     }
 }
@@ -81,11 +138,11 @@ export function fetchCallResults(){
 
             dispatch({
                 type: CRM_CALL_FETCH_RESULTS,
-                items:loaded
+                payload:loaded
             });
 
         }).catch((e) => {
-            console.log(e)
+            handleError(e,dispatch)
         })
     }
 }
@@ -107,7 +164,7 @@ export function fetchRecoArchive(params){
                 meta:data['meta']
             })
         }).catch((e) => {
-            console.log(e);
+            handleError(e,dispatch)
         })
     }
 }
@@ -130,7 +187,7 @@ export function fetchRecoStatuses(){
                 statuses:loaded
             })
         }).catch((e) => {
-            console.log(e);
+            handleError(e,dispatch)
         })
     }
 }
@@ -154,29 +211,14 @@ export function fetchReasons(typeId){
                 items:loaded
             });
         }).catch((e) => {
-            console.log(e)
+            handleError(e,dispatch)
         })
     }
 }
 
-export function handleError(error,dispatch) {
-    if(error.response) {
-        // console.log(error);
-        if (error.response.status && error.response.status===403)
-        {
-            //blog post has been created, navigate the user to the index
-            //We navigate by calling this.context.router.push with the new path to navigate to
-            this.context.router.push('/forbidden');
-        }
-        else if (error.response.status && error.response.status===500)
-        {
-            //blog post has been created, navigate the user to the index
-            //We navigate by calling this.context.router.push with the new path to navigate to
-            this.context.router.push('/forbidden');
-        }
-        dispatch(notify('error',error.response.data.message,'Ошибка'));
-
-    } else {
-        Promise.resolve({ error }).then(response => dispatch(notify('error',error.response.data.message,'Ошибка')));
+export function toggleRecoUpdateModal(flag){
+    return {
+        type: CRM_RECO_UPDATE_MODAL_TOGGLE,
+        payload: flag
     }
 }

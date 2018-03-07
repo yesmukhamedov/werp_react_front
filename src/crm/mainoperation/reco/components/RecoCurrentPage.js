@@ -3,12 +3,11 @@ import {Link} from 'react-router-dom'
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
 import { Tab,Header,Container,Icon,Segment } from 'semantic-ui-react'
-import axios from 'axios';
-import {ROOT_URL} from '../../../../utils/constants';
 import Phone from './Phone';
 import moment from 'moment';
 import { connect } from 'react-redux'
-import {fetchRecoCurrentData,fetchCallResults,fetchReasons} from '../actions/recoAction';
+import {fetchRecoCurrentData,fetchCallResults} from '../actions/recoAction';
+import {fetchReasons} from '../../demo/actions/demoAction'
 
 class RecoCurrentPage extends Component {
   constructor (props) {
@@ -40,7 +39,7 @@ class RecoCurrentPage extends Component {
       this.props.fetchRecoCurrentData('demo-done')
       this.props.fetchRecoCurrentData('moved')
       this.props.fetchRecoCurrentData('used')
-      this.props.fetchReasons(1)
+      this.props.fetchReasons()
       this.props.fetchCallResults()
   }
 

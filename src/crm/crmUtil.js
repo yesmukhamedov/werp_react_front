@@ -5,6 +5,12 @@ export const DEMO_RESULT_CANCELLED = 3
 export const DEMO_RESULT_SOLD = 4
 
 
+//CALL RESULTS
+export const CALL_RESULT_DEMO = 1
+export const CALL_RESULT_REFUSE = 2
+export const CALL_RESULT_RECALL = 3
+export const CALL_RESULT_NOT_AVAILABLE = 4
+
 export const LOCATION_OPTIONS = [
     {
         key: 1,
@@ -15,6 +21,50 @@ export const LOCATION_OPTIONS = [
         key: 2,
         text: 'ЗАгород',
         value: 2
+    }
+]
+
+export const RECO_CATEGORIES = [
+    {
+        key: 1,
+        text: '1-я категория',
+        value: 1
+    },
+    {
+        key: 2,
+        text: '2-я категория',
+        value: 2
+    },
+    {
+        key: 3,
+        text: '3-я категория',
+        value: 3
+    }
+]
+
+export const RECO_SWITCH_OPTIONS = [
+    {
+        key: 0,
+        text: 'В любое время',
+        value: 0
+    },
+    {
+        key: 1,
+        text: 'Задать дату',
+        value: 1
+    }
+]
+
+export const RECO_CALLER_OPTIONS = [
+    {
+        key: 0,
+        text: 'Секретарь',
+        value: 0
+    },
+    {
+        key: 1,
+        text: 'Дилер',
+        value: 1
     }
 ]
 
@@ -55,6 +105,12 @@ export function demoResultOptions(results){
             value:k
         }
     });
+
+    out.unshift({
+        key:'',
+        text:'Не выбрано',
+        value:''
+    })
 
     return out;
 }
