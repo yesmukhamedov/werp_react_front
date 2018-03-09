@@ -49,7 +49,15 @@ class TaskListSearchComponent extends Component {
       return (
         <Form onSubmit={this.handleSearch}>
           <Segment padded size="small">
-            <Label as="a" attached="top" content="Задачи" icon="checkmark box" />
+            <Label
+              as="a"
+              attached="top"
+              content="Задачи"
+              icon="checkmark box"
+              style={{
+                background: 'rgba(227,232,238, 1)',
+              }}
+            />
             <Grid stackable>
               <Grid.Column width={3}>
                 <Form.Field>

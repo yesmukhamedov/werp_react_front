@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import { Container } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import TaskListSearch from './TaskListSearch/TaskListSearchContainer';
-import TaskListTable from './TaskListTable/TaskListTableContainer';
+import TaskInfoComponent from './TaskInfo/TaskInfoComponent';
+import TaskDetailsComponent from './TaskDetails/TaskDetailsComponent';
 
-class TaskListPage extends Component {
-  componentWillMount() {
+class TaskPageDisplay extends Component {
+
+  componentWillMount() {    
+    const { id: taskId } = this.props.match.params;
+    console.log("id: ", taskId)
     this.props.getDirectories();
   }
 
   componentWillUnmount() {
-    console.log('componentWillUnmount')
-    this.props.clearTaskListStore();
+    //this.props.clearTaskListStore();
   }
 
   render() {
@@ -24,18 +26,16 @@ class TaskListPage extends Component {
           paddingLeft: '2em',
           paddingRight: '2em',
         }}
-      >
-        <TaskListSearch />
-        <br />
-        <TaskListTable />
+      >      
+        <TaskInfoComponent />
+        <TaskDetailsComponent />
       </Container>
     );
   }
 }
 
-TaskListPage.propTypes = {
+TaskPageDisplay.propTypes = {
   getDirectories: PropTypes.func.isRequired,
-  clearTaskListStore: PropTypes.func.isRequired,
 };
 
-export default TaskListPage;
+export default TaskPageDisplay;

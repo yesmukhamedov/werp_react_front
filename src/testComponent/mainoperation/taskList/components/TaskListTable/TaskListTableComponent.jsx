@@ -18,28 +18,45 @@ class TaskListTableComponent extends Component {
   render() {
     const columns = [
       {
-        Header: 'Номер',
+        Header: '#',
         accessor: 'id',
-        maxWidth: 100,
+        maxWidth: 50,
+        Cell: (props) => {
+          const { id } = props.original;
+          return (
+              <Link target="_blank" to={`/task/${id}`}>
+                {id}
+              </Link>
+          );
+        },
       },
       {
         Header: 'Статус',
         accessor: 'status',
-        maxWidth: 160,
+        maxWidth: 120,
       },
       {
         Header: 'Приоритет',
         accessor: 'priority',
-        maxWidth: 160,
+        maxWidth: 120,
       },
       {
         Header: 'Тема',
         accessor: 'title',
-        maxWidth: 160,
+        maxWidth: 380,
+        Cell: (props) => {
+          const { title, id } = props.original;
+          return (
+              <Link target="_blank" to={`/task/${id}`}>
+                {title}
+              </Link>
+          );
+        },
       },
       {
         Header: 'Назначена',
         accessor: 'recipient',
+        maxWidth: 270,
         Cell: (props) => {
           const { recipient } = props.original;
           return (
@@ -47,30 +64,16 @@ class TaskListTableComponent extends Component {
               {recipient.branch}/{recipient.department}/{recipient.position}
             </div>
           );
-        },
-        maxWidth: 270,
+        },        
       },
       {
         Header: 'Обновлено',
         accessor: 'modifiedAt',
+        maxWidth: 160,
         Cell: (props) => {
           const { modifiedAt } = props.original;
           return moment(modifiedAt, 'YYYY-MM-DDTHH:mm:ssZ').utc().format('DD.MM.YYYY, hh:mm:ss');
-        },
-        maxWidth: 160,
-      },
-      {
-
-        Cell: (props) => {
-          const { id } = props.original;
-          return (
-            <div style={{ textAlign: 'center' }}>
-              <Link target="_blank" to={`/newIssue/${id}`}>
-                <Icon name="eye" size="large" color="black" />
-              </Link>
-            </div>);
-        },
-        maxWidth: 60,
+        },        
       },
     ];
     return (<ReactTable
