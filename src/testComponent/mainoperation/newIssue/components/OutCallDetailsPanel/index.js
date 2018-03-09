@@ -1,3 +1,4 @@
 import OutCallDetailsPanelDisplay from './OutCallDetailsPanelDisplay';
+import OutCallDetailsPanelContainer from './OutCallDetailsPanelContainer';
 
-export { OutCallDetailsPanelDisplay };
+export { OutCallDetailsPanelDisplay, OutCallDetailsPanelContainer };
