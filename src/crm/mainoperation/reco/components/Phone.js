@@ -4,23 +4,9 @@ import axios from 'axios'
 import DatePicker from 'react-datepicker'
 import {ROOT_URL} from '../../../../utils/constants'
 import moment from 'moment'
-
-const locationOptions = [
-  {
-    key: 1,
-    text: 'Город',
-    value: 1
-  },
-  {
-    key: 2,
-    text: 'ЗАгород',
-    value: 2
-  }
-]
-
-const CALL_RESULT_DEMO = 1
-const CALL_RESULT_REFUSE = 2
-const CALL_RESULT_RECALL = 3
+import {LOCATION_OPTIONS,CALL_RESULT_DEMO,CALL_RESULT_REFUSE,CALL_RESULT_RECALL,getReasonsByResultId} from '../../../crmUtil'
+import { connect } from 'react-redux'
+import {fetchPhoneNumberHistory,fetchCallResults,fetchSingleReco} from '../actions/recoAction'
 
 class Phone extends Component {
   constructor (props) {
@@ -28,7 +14,6 @@ class Phone extends Component {
 
     this.state = {
       callModalOpen: false,
-      historyItems: [],
       recommender: {},
       opened: false,
       buttonLoading: false,
@@ -54,24 +39,18 @@ class Phone extends Component {
     this.renderRecommenderInfo = this.renderRecommenderInfo.bind(this)
   }
 
+  componentWillMount(){
+      //this.props.fetchCallResults()
+  }
+
   handlePhoneClick () {
     this.setState({
       ...this.state,
-      buttonLoading: true
+      buttonLoading: true,
+        opened:true
     })
-    axios.get(`${ROOT_URL}/api/crm/call/number-history/` + this.props.phoneId, {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((res) => {
-      this.setState({
-        ...this.state,
-        historyItems: res.data,
-        buttonLoading: false,
-        opened: true
-      })
-    }).catch((e) => {
-      console.log(e)
-    })
+
+
 
     axios.get(`${ROOT_URL}/api/crm/call/create/` + this.props.phoneId, {
       headers: {
@@ -91,7 +70,8 @@ class Phone extends Component {
   handleModalClose () {
     this.setState({
       ...this.state,
-      opened: false
+      opened: false,
+        buttonLoading: false
     })
   }
 
@@ -102,7 +82,8 @@ class Phone extends Component {
       { menuItem: 'Данные рекомендателя', render: this.renderRecommenderInfo }
     ]
     return (
-      <Modal size={'large'} open={this.state.opened} onClose={this.handleModalClose}>
+      <Modal size={'large'}
+             open={this.state.opened} onClose={this.handleModalClose}>
         <Modal.Header>Звонок по номеру: {this.props.phoneNumber}</Modal.Header>
         <Modal.Content>
           <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
@@ -134,7 +115,7 @@ class Phone extends Component {
         </Form.Group>
         <Form.Group widths='equal'>
           <Form.Field error={this.state.errors.demoAddress} required control={TextArea} onChange={(e, o) => this.handleChange('demoAddress', o)} label='Адрес' placeholder='Адрес' />
-          <Form.Select error={this.state.errors.demoLocationId} required fluid selection label='Местоположение' options={locationOptions}
+          <Form.Select error={this.state.errors.demoLocationId} required fluid selection label='Местоположение' options={LOCATION_OPTIONS}
             onChange={(e, v) => this.handleChange('demoLocationId', v)} />
         </Form.Group>
         <Form.Group widths='equal'>
@@ -277,6 +258,7 @@ class Phone extends Component {
       }
     })
       .then((response) => {
+          this.props.fetchSingleReco(this.props.recoId)
         this.closeModal()
       }).catch((error) => {
         console.log(error)
@@ -286,7 +268,8 @@ class Phone extends Component {
   closeModal () {
     this.setState({
       ...this.state,
-      opened: false
+      opened: false,
+        buttonLoading:false
     })
 
     if (this.props.onCloseModal) {
@@ -309,7 +292,7 @@ class Phone extends Component {
       </Table.Header>
 
       <Table.Body>
-        {this.state.historyItems.map((item, idx) => {
+        {this.props.historyItems.map((item, idx) => {
           return (
             <Table.Row key={item.id}>
               <Table.Cell>{idx + 1}</Table.Cell>
@@ -375,7 +358,7 @@ class Phone extends Component {
     if (this.state.call.callResultId === CALL_RESULT_REFUSE) {
       // Otkaz
       return (
-        <Form.Select error={this.state.errors.callReasonId} required fluid label='Причина отказа' options={this.props.callRefuseOptions}
+        <Form.Select error={this.state.errors.callReasonId} required fluid label='Причина отказа' options={getReasonsByResultId(this.state.call.callResultId,this.props.reasons)}
           onChange={(e, v) => this.handleChange('callReasonId', v)} />
       )
     } else if (this.state.call.callResultId === CALL_RESULT_RECALL) {
@@ -411,4 +394,12 @@ class Phone extends Component {
   }
 }
 
-export default Phone
+function mapStateToProps (state) {
+    return {
+        historyItems:state.crmReco.phoneNumberHistory,
+        callResultOptions:state.crmReco.callResultOptions,
+        reasons:state.crmDemo.reasons
+    }
+}
+
+export default connect(mapStateToProps, {fetchPhoneNumberHistory,fetchCallResults,fetchSingleReco})(Phone)

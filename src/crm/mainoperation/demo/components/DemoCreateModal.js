@@ -250,7 +250,7 @@ class DemoCreateModal extends Component {
     const {openDemoCreateModal} = this.props
     return (
       <Modal size={'small'} open={openDemoCreateModal}>
-        <Modal.Header>Редактирование демонстрации</Modal.Header>
+        <Modal.Header>Добавление демо от демо</Modal.Header>
         <Modal.Content>
           {this.renderUpdateForm()}
         </Modal.Content>

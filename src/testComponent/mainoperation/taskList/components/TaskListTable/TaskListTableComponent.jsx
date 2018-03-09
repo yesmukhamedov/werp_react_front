@@ -24,9 +24,9 @@ class TaskListTableComponent extends Component {
         Cell: (props) => {
           const { id } = props.original;
           return (
-              <Link target="_blank" to={`/task/${id}`}>
-                {id}
-              </Link>
+            <Link target="_blank" to={`/task/${id}`}>
+              {id}
+            </Link>
           );
         },
       },
@@ -47,9 +47,9 @@ class TaskListTableComponent extends Component {
         Cell: (props) => {
           const { title, id } = props.original;
           return (
-              <Link target="_blank" to={`/task/${id}`}>
-                {title}
-              </Link>
+            <Link target="_blank" to={`/task/${id}`}>
+              {title}
+            </Link>
           );
         },
       },
@@ -64,7 +64,7 @@ class TaskListTableComponent extends Component {
               {recipient.branch}/{recipient.department}/{recipient.position}
             </div>
           );
-        },        
+        },
       },
       {
         Header: 'Обновлено',
@@ -73,7 +73,7 @@ class TaskListTableComponent extends Component {
         Cell: (props) => {
           const { modifiedAt } = props.original;
           return moment(modifiedAt, 'YYYY-MM-DDTHH:mm:ssZ').utc().format('DD.MM.YYYY, hh:mm:ss');
-        },        
+        },
       },
     ];
     return (<ReactTable

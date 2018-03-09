@@ -10,7 +10,7 @@ import notificationReducer from '../general/notification/notification_reducer';
 import contractListReducer from '../testComponent/mainoperation/contractList/reducers/ContractListReducer';
 import taskListReducer from '../testComponent/mainoperation/taskList/reducers/TaskListReducer';
 
-import outCallsReducer from '../testComponent/mainoperation/newIssue/reducers';
+import outCallsTransactionReducer from '../testComponent/mainoperation/newIssue/reducers';
 import userInfoReducer from '../general/userInfo/userInfo_reducer';
 import frcolnReducer from '../finance/report/frcoln/frcoln_reducer';
 import loaderReducer from '../general/loader/loader_reducer';
@@ -36,7 +36,7 @@ const appReducer = combineReducers({
   f4: f4_reducer,
   crmReco: recoReducer,
   crmDemo: demoReducer,
-  outCalls: outCallsReducer,
+  outCalls: outCallsTransactionReducer,
 });
 
 const rootReducer = (state, action) => {

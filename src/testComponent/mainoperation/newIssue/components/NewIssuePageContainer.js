@@ -3,8 +3,9 @@ import NewIssuePageComponent from './NewIssuePageComponent';
 import { fetchContractById, fetchTasks } from '../actions';
 
 function mapStateToProps(state) {
+  console.log("NIPC", state)
   return {
-    contractDetails: state.outCalls.contractDetails,
+    contractDetails: state.outCalls.newIssuePage.contractDetails,
   };
 }
 

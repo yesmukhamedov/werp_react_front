@@ -1,6 +1,7 @@
 import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
 import { modifyLoader } from '../../../../general/loader/loader_action';
+import {handleError} from '../../../../general/notification/notification_action'
 
 export const CRM_DEMO_FETCH_CURRENT = 'CRM_DEMO_FETCH_CURRENT';
 export const CRM_DEMO_FETCH_ARCHIVE = 'CRM_DEMO_FETCH_ARCHIVE';
@@ -33,7 +34,7 @@ export function updateDemo(demo){
                     item:demo
                 });
             }).catch((error) => {
-            console.log(error)
+            handleError(error,dispatch)
         })
     }
 }
@@ -53,7 +54,7 @@ export function fetchDemo(id){
 
         })
             .catch(error => {
-                console.log(error)
+                handleError(error,dispatch)
             });
     }
 }
@@ -75,7 +76,7 @@ export function fetchDemoCurrentData(){
 
         })
         .catch(error => {
-            console.log(error)
+            handleError(error,dispatch)
         });
     }
 }
@@ -96,7 +97,7 @@ export function fetchDemoArchive(q){
                 meta:data['meta']
             })
         }).catch((e) => {
-            console.log(e);
+            handleError(e,dispatch)
         })
     }
 }
@@ -114,7 +115,7 @@ export function fetchDemoResults(){
                 items:data
             })
         }).catch((e) => {
-            console.log(e);
+            handleError(e,dispatch)
         })
     }
 }
@@ -146,7 +147,7 @@ export function fetchGroupDealers(){
                 items:loaded
             })
         }).catch((e) => {
-            console.log(e);
+            handleError(e,dispatch)
         })
     }
 }
@@ -164,7 +165,7 @@ export function fetchReasons(){
                 items:data
             })
         }).catch((e) => {
-            console.log(e);
+            handleError(e,dispatch)
         })
     }
 }
@@ -174,13 +175,6 @@ export function toggleDemoUpdateModal(flag){
         type: CRM_DEMO_UPDATE_MODAL_TOGGLE,
         payload: flag
     }
-
-    // return function (dispatch) {
-    //     dispatch({
-    //         type: CRM_DEMO_UPDATE_MODAL_TOGGLE,
-    //         payload: flag
-    //     })
-    // }
 }
 
 export function toggleDemoCreateModal(flag){

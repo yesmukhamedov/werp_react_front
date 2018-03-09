@@ -20,17 +20,15 @@ const PurchasesPanelDisplay = (props) => {
                   <Table.HeaderCell>Продукт</Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
-              {
-                otherPurchases &&
-                otherPurchases.map(item => (
-                  <Table.Body>
-                    <Table.Row key={item.contractNumber}>
+              <Table.Body>
+                {otherPurchases &&
+                  otherPurchases.map((item, idx) => (
+                    <Table.Row key={idx}>
                       <Table.Cell>{item.contractNumber}</Table.Cell>
                       <Table.Cell>{item.productName}</Table.Cell>
                     </Table.Row>
-                  </Table.Body>
-                ))
-              }
+                  ))}
+              </Table.Body>
             </Table>
           </Grid.Column>
           <Grid.Column>

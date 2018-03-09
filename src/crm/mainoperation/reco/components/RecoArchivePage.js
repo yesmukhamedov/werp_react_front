@@ -1,9 +1,6 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import { Header,Container,Icon,Segment,Table,Form,Loader } from 'semantic-ui-react'
-import axios from 'axios';
-import {ROOT_URL} from '../../../../utils/constants';
-import Phone from './Phone';
 import moment from 'moment';
 import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4'
 import BranchF4 from '../../../../reference/f4/branch/BranchF4'
@@ -221,7 +218,6 @@ class RecoArchivePage extends Component{
 }
 
 function mapStateToProps (state) {
-    console.log(state)
     return {
         items: state.crmReco.items,
         meta: state.crmReco.meta,

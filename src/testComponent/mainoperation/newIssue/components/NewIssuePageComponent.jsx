@@ -5,9 +5,8 @@ import { fetchContractById } from '../actions';
 import { PersonalInfoPanelDisplay } from './PersonalInfoPanel';
 import { FinancialInfoPanelDisplay } from './FinancialInfoPanel';
 import { PurchasesPanelDisplay } from './PurchasesPanel';
-import { TaskPanelDisplay } from './TaskPanel';
-import { OutCallDetailsPanelDisplay } from './OutCallDetailsPanel';
-import { NewTaskModalComponent } from './NewTaskModal';
+import { TaskPanelComponent } from './TaskPanel';
+import { OutCallDetailsPanelContainer } from './OutCallDetailsPanel';
 
 
 export default class NewIssuePage extends Component {
@@ -42,12 +41,10 @@ export default class NewIssuePage extends Component {
 
   render() {
     const { contractDetails }  = this.props;
-
     return (
       <Container>
-        <TaskPanelDisplay />
-        {/* <NewTaskModalComponent /> */}
-        <OutCallDetailsPanelDisplay />
+        <TaskPanelComponent />
+        <OutCallDetailsPanelContainer />
         <Accordion fluid styled>
           <Accordion.Title
             active={0}

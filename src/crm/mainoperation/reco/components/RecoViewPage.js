@@ -6,13 +6,15 @@ import {ROOT_URL} from '../../../../utils/constants';
 import RecoUpdateModal from './RecoUpdateModal';
 import Phone from './Phone';
 import moment from 'moment';
+import {fetchSingleReco,toggleRecoUpdateModal,fetchCallResults} from '../actions/recoAction'
+import {fetchReasons} from '../../demo/actions/demoAction'
+import { connect } from 'react-redux'
 
 class RecoViewPage extends Component {
   constructor (props) {
     super(props)
     this.loadedSuccess = true
     this.state = {
-      reco: {},
       calls: [],
       demos: [],
       callResultOptions: [],
@@ -27,92 +29,15 @@ class RecoViewPage extends Component {
     this.renderActions = this.renderActions.bind(this)
     this.openUpdateModal = this.openUpdateModal.bind(this)
     this.onCloseUpdateModal = this.onCloseUpdateModal.bind(this)
-    this.loadItem = this.loadItem.bind(this)
-    this.loadCalls = this.loadCalls.bind(this)
     this.deleteModalTrigger = this.deleteModalTrigger.bind(this)
     this.deleteItem = this.deleteItem.bind(this)
   }
 
     componentWillMount(){
         const id = parseInt(this.props.match.params.id, 10)
-        this.loadItem(id)
-        this.loadCalls(id)
-
-    axios.get(`${ROOT_URL}/api/reference/reasons/1`, {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((res) => {
-      let loaded = res.data.map((item) => {
-        return {
-          key: item.id,
-          text: item.name,
-          value: item.id
-        }
-      })
-
-      this.setState({
-        ...this.state,
-        callRefuseOptions: loaded
-      })
-    }).catch((e) => {
-      console.log(e)
-    })
-
-    axios.get(`${ROOT_URL}/api/crm/call/results`, {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((res) => {
-      let loaded = Object.keys(res.data).map((k) => {
-        return {
-          key: k,
-          text: res.data[k],
-          value: k
-        }
-      })
-
-      this.setState({
-        ...this.state,
-        callResultOptions: loaded
-      })
-    }).catch((e) => {
-      console.log(e)
-    })
-  }
-
-  loadItem (id) {
-    axios.get(`${ROOT_URL}/api/crm/reco/` + id, {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((response) => {
-
-      this.setState({
-        ...this.state,
-        reco: response.data
-      })
-    }).catch(function (e) {
-      if (e.response && e.response.status && e.response.status === 404) {
-        // _this.loadedSuccess = false;
-      }
-      console.log(e)
-    })
-  }
-
-  loadCalls (recoId) {
-    axios.get(`${ROOT_URL}/api/crm/call/by-context/reco/` + recoId, {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((response) => {
-      this.setState({
-        ...this.state,
-        calls: response.data,
-        demos: response.data.filter((item) => item.demoId && item.demoId > 0)
-      })
-    }).catch(function (e) {
-      if (e.response && e.response.status && e.response.status === 404) {
-        // _this.loadedSuccess = false;
-      }
-      console.log(e)
-    })
+        this.props.fetchSingleReco(id)
+        this.props.fetchCallResults()
+        this.props.fetchReasons()
   }
 
     deleteItem(){
@@ -162,7 +87,7 @@ class RecoViewPage extends Component {
                 В Архив
             </Link>
 
-            <Button onClick={this.openUpdateModal}>Редактировать</Button>
+            <Button onClick={() => this.props.toggleRecoUpdateModal(true)}>Редактировать</Button>
             <Button color={'red'} onClick={() => this.deleteModalTrigger(true)}>Удалить</Button>
     </div>
   }
@@ -182,9 +107,10 @@ class RecoViewPage extends Component {
     return <div>
       {phones.map((p) => {
         return <Phone
-          callRefuseOptions={this.state.callRefuseOptions}
-          callResultOptions={this.state.callResultOptions}
-          key={p.id} phoneNumber={p.phoneNumber} phoneId={p.id}
+          key={p.id}
+          phoneNumber={p.phoneNumber}
+          phoneId={p.id}
+          recoId={this.props.reco.id}
           onCallSaved={this.onCallSaved}
         />
       })}
@@ -192,7 +118,7 @@ class RecoViewPage extends Component {
   }
 
   renderRecoTable () {
-    let {reco} = this.state
+    let {reco} = this.props
     return <Card fluid>
       <Card.Content>
         <Card.Header>
@@ -344,7 +270,8 @@ class RecoViewPage extends Component {
   }
 
   renderCallsTable () {
-    let {calls} = this.state
+    let {reco} = this.props
+      let calls = reco.calls || []
 
     return <Card fluid>
       <Card.Content>
@@ -385,7 +312,8 @@ class RecoViewPage extends Component {
     }
 
   renderDemosTable () {
-    let {demos} = this.state
+    let {reco} = this.props
+    let demos = reco.demos || []
 
     return <Card fluid>
       <Card.Content>
@@ -441,9 +369,7 @@ class RecoViewPage extends Component {
     return (
       <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
         <Segment clearing>
-          <Header as='h2' floated='left'>
-                        Рекомендация № {this.state.reco.id}
-          </Header>
+          <Header as='h2' floated='left'>Рекомендация № {this.props.reco.id}</Header>
         </Segment>
         {this.renderActions()}
         <RecoUpdateModal
@@ -470,4 +396,11 @@ class RecoViewPage extends Component {
   }
 }
 
-export default RecoViewPage
+function mapStateToProps (state) {
+    return {
+        reco:state.crmReco.reco,
+        loader:state.loader
+    }
+}
+
+export default connect(mapStateToProps, {fetchSingleReco,toggleRecoUpdateModal,fetchCallResults,fetchReasons})(RecoViewPage)

@@ -7,7 +7,11 @@ import {
         CRM_FETCH_REASONS,
         CRM_CALL_FETCH_RESULTS,
         CRM_RECO_FETCH_ARCHIVE,
-    CRM_RECO_FETCH_STATUSES
+    CRM_RECO_FETCH_STATUSES,
+    CRM_RECO_FETCH_SINGLE,
+    CRM_RECO_UPDATE_MODAL_TOGGLE,
+    CRM_RECO_UPDATE,
+    CRM_FETCH_PHONE_NUMBER_HISTORY
 } from '../actions/recoAction';
 
 const INITIAL_STATE={
@@ -23,7 +27,10 @@ const INITIAL_STATE={
                         totalRows:0,
                         perPage:0,
                         page:0
-                    }
+                    },
+                    reco:{},
+                    updateModalOpened:false,
+                    phoneNumberHistory:[]
 
 };
 
@@ -31,6 +38,8 @@ export default function (state=INITIAL_STATE, action)
 {
     switch(action.type)
     {
+        case CRM_FETCH_PHONE_NUMBER_HISTORY:
+            return {...state,phoneNumberHistory:action.payload};
         case CRM_RECO_FETCH_CURRENT_DEMO_DONE:
             return {...state,doneItems:action.items};
 
@@ -44,7 +53,7 @@ export default function (state=INITIAL_STATE, action)
             return {...state,usedItems:action.items};
 
         case CRM_CALL_FETCH_RESULTS:
-            return {...state,callResults:action.items};
+            return {...state,callResultOptions:action.payload};
 
         case CRM_FETCH_REASONS:
             return {...state,reasons:action.items};
@@ -56,11 +65,23 @@ export default function (state=INITIAL_STATE, action)
                     meta:action.meta
             };
 
+        case CRM_RECO_FETCH_SINGLE:
+            return {
+                ...state,
+                reco: action.payload
+            };
+
         case CRM_RECO_FETCH_STATUSES:
             return {
                 ...state,
                 statuses: action.statuses
             };
+
+        case CRM_RECO_UPDATE_MODAL_TOGGLE:
+            return {...state,updateModalOpened:action.payload}
+
+        case CRM_RECO_UPDATE:
+            return {...state,reco:action.payload,updateModalOpened:false}
 
         case CRM_RECO_CLEAR_STATE:
             return {...state,doneItems:[],movedItems:[],newItems:[],usedItems:[] };
