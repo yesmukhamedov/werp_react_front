@@ -1,3 +1,3 @@
-import TaskPanelDisplay from './TaskPanelDisplay';
+import TaskPanelComponent from './TaskPanelComponent';
 
-export { TaskPanelDisplay };
+export { TaskPanelComponent };

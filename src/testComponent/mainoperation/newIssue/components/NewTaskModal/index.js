@@ -1,3 +1,3 @@
-import NewTaskModalComponent from './NewTaskModalComponent';
+import NewTaskModalDisplay from './NewTaskModalDisplay';
 
-export { NewTaskModalComponent };
+export { NewTaskModalDisplay };

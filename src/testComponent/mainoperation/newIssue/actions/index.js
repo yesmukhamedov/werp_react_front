@@ -2,7 +2,7 @@ import axios from 'axios';
 import {
   FETCH_CONTRACT_DETAILS,
   EDIT_OUTCALL_COMMENT,
-  SUBMIT_OUTCALL_COMMENT
+  SUBMIT_OUTCALL_COMMENT,
 } from './actionTypes';
 import { ROOT_URL } from '../../../../utils/constants';
 
@@ -54,7 +54,6 @@ export function submitNewComment(outCallId, newComment) {
       .catch(err => console.log('NEW_ISSUE_PAGE SUBMIT ERROR: ', err));
   };
 }
-
 
 export function fetchTasks() {
   return (dispatch) => {

@@ -3,7 +3,11 @@ import {
   FETCH_TASKS,
 } from '../actions/actionTypes';
 
-const newIssuePageReducer = (prevState = {}, action) => {
+const initialState = {
+  modalOpen: false,
+};
+
+const newIssuePageReducer = (prevState = initialState, action) => {
   switch (action.type) {
     case FETCH_CONTRACT_DETAILS:
       // TODO: refactor after backend splits into separate objects
