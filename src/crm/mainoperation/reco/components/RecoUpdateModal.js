@@ -61,7 +61,7 @@ class RecoUpdateModal extends Component {
       </Form.Group>
 
         <Form.Group widths='equal'>
-            <Form.Field onChange={(e, o) => this.handleChange('relative', o)}
+            <Form.Field required onChange={(e, o) => this.handleChange('relative', o)}
                         value={this.state.localReco.relative || ''}
                         control={Input} label='Род. отношения' placeholder='Род. отношения' />
             <Form.Field />

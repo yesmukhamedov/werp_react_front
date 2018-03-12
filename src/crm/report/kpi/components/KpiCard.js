@@ -18,9 +18,9 @@ class KpiCard extends Component {
       <Grid.Column width={8}>
         <Segment padded size={'small'}>
           <Label attached='top'>
-            {cardData.name.length > 30
-              ? <Header style={cardHeader} as='h4' floated={'left'}>{cardData.name} ({cardData.totalItemCount} чел.)</Header>
-              : <Header style={cardHeader} as='h3' floated={'left'}>{cardData.name} ({cardData.totalItemCount} чел.)</Header>}
+            {cardData.label.length > 30
+              ? <Header style={cardHeader} as='h4' floated={'left'}>{cardData.label} ({cardData.totalItemCount} чел.)</Header>
+              : <Header style={cardHeader} as='h3' floated={'left'}>{cardData.label} ({cardData.totalItemCount} чел.)</Header>}
             <Button floated={'right'}>{cardData.totalAverageScore}</Button>
           </Label>
           <Table celled>
@@ -55,7 +55,7 @@ class KpiCard extends Component {
             </Table.Body>
           </Table>
           <Divider />
-          {cardData.detailable ? <Button onClick={(e) => this.props.loadItems(cardData.detailContext, cardData.id)}>
+          {cardData.detailable ? <Button onClick={(e) => this.props.loadItems(cardData.detailContext, cardData.id,cardData.bukrs,cardData.branchId)}>
                             Деталь
           </Button> : ''}
 
@@ -68,7 +68,7 @@ class KpiCard extends Component {
     return <Grid.Column width={8}>
       <Segment padded size={'small'}>
         <Label attached='top'>
-          <Header as='h3' floated={'left'}>{cardData.name}</Header>
+          <Header as='h3' floated={'left'}>{cardData.label}</Header>
           <Button floated={'right'}>{cardData.totalScore}</Button>
         </Label>
         <Table celled>

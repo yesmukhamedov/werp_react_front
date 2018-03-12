@@ -2,6 +2,7 @@ import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
 import { handleError } from '../../../../general/notification/notification_action';
 import { modifyLoader } from '../../../../general/loader/loader_action';
+import browserHistory from '../../../../utils/history';
 
 
 /**
@@ -220,5 +221,18 @@ export function toggleRecoUpdateModal(flag){
     return {
         type: CRM_RECO_UPDATE_MODAL_TOGGLE,
         payload: flag
+    }
+}
+
+export function deleteReco(recoId){
+    return function (dispatch) {
+        axios.delete(`${ROOT_URL}/api/crm/reco/` + recoId,{
+            headers: {
+                authorization: localStorage.getItem('token')}
+        }).then((response) => {
+            browserHistory.push('/crm/reco/current')
+        }).catch(e => {
+            handleError(e,dispatch)
+        })
     }
 }

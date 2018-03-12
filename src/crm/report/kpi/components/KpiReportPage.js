@@ -81,7 +81,7 @@ class KpiReportPage extends Component {
     this.loadItems('', 0)
   }
 
-  loadItems (context, contextId) {
+  loadItems (context, contextId,bukrs,branchId) {
     let {currentBukrsName, currentBranchName} = this.state
     this.setState({
       ...this.state,
@@ -94,8 +94,10 @@ class KpiReportPage extends Component {
       params: {
         context: context,
         contextId: contextId,
-          year:this.state.year,
-          month:this.state.month
+      year:this.state.year,
+      month:this.state.month,
+          bukrs:bukrs || null,
+          branchId:branchId || null
       }
     }).then((res) => {
       if (context === 'branch') {
