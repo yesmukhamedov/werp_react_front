@@ -12,6 +12,7 @@ import {
 
 const INITIAL_STATE={
                     demo:{},
+                    childDemos:[],
                     demoResults:[],
                     callResults:[],
                     reasons:[],

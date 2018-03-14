@@ -6,8 +6,9 @@ import { Tab,Header,Container,Icon,Segment } from 'semantic-ui-react'
 import Phone from './Phone';
 import moment from 'moment';
 import { connect } from 'react-redux'
-import {fetchRecoCurrentData,fetchCallResults} from '../actions/recoAction';
+import {fetchRecoCurrentData,fetchCallResults,fetchRecoStatuses} from '../actions/recoAction';
 import {fetchReasons} from '../../demo/actions/demoAction'
+import {RECO_CATEGORIES} from '../../../crmUtil'
 
 class RecoCurrentPage extends Component {
   constructor (props) {
@@ -41,6 +42,7 @@ class RecoCurrentPage extends Component {
       this.props.fetchRecoCurrentData('used')
       this.props.fetchReasons()
       this.props.fetchCallResults()
+      this.props.fetchRecoStatuses()
   }
 
   renderPhoneCall (e, d) {
@@ -68,7 +70,20 @@ class RecoCurrentPage extends Component {
   }
 
   renderTable (items) {
+      let statusOptions = [];
+      if (this.props.statuses) {
+          statusOptions = this.props.statuses.map(o =>
+              (<option value={o.text} key={o.value}>
+                  {o.text}
+              </option>));
+      }
 
+      let categoryOptions = RECO_CATEGORIES.map(o =>
+          (
+              <option value={o.text} key={o.value}>
+                  {o.text}
+              </option>
+          ))
     return (
       <div>
         <ReactTable
@@ -118,13 +133,41 @@ class RecoCurrentPage extends Component {
             },
             {
               Header: 'Категория',
-              accessor: 'categoryName'
-              // id:"categoryId",
-              // Cell:row => <Button color={categoryButtons[row.id]}>{row.id}</Button>
+              accessor: 'categoryName',
+                filterMethod: (filter, row) => {
+                    if (filter.value === '0') {
+                        return true;
+                    }
+                    return String(row[filter.id]) === filter.value;
+                },
+                Filter:({filter,onChange}) =>
+                    <select
+                        onChange={event => onChange(event.target.value)}
+                        style={{ width: "100%" }}
+                        value={filter ? filter.value : 0}
+                    >
+                        <option value={0}>Все</option>
+                        {categoryOptions}
+                    </select>
             },
             {
               Header: 'Статус',
-              accessor: 'statusName'
+              accessor: 'statusName',
+                filterMethod: (filter, row) => {
+                    if (filter.value === '0') {
+                        return true;
+                    }
+                    return String(row[filter.id]) === filter.value;
+                },
+                Filter:({filter,onChange}) =>
+                    <select
+                        onChange={event => onChange(event.target.value)}
+                        style={{ width: "100%" }}
+                        value={filter ? filter.value : 0}
+                    >
+                        <option value={0}>Все</option>
+                        {statusOptions}
+                    </select>
             },
             {
               Header: '',
@@ -190,8 +233,9 @@ function mapStateToProps (state) {
         usedItems:state.crmReco.usedItems,
         movedItems:state.crmReco.movedItems,
         reasons:state.crmReco.reasons,
-        callResults:state.crmReco.callResults
+        callResults:state.crmReco.callResults,
+        statuses:state.crmReco.statuses
     }
 }
 
-export default connect(mapStateToProps, {fetchRecoCurrentData,fetchReasons,fetchCallResults})(RecoCurrentPage)
+export default connect(mapStateToProps, {fetchRecoCurrentData,fetchReasons,fetchCallResults,fetchRecoStatuses})(RecoCurrentPage)

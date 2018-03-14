@@ -1,4 +1,5 @@
 import _ from 'lodash';
+import moment from 'moment';
 
 export function resetLocalStorage() {
   localStorage.removeItem('token');
@@ -37,4 +38,12 @@ export function difference(object, base) {
     });
   }
   return changes(object, base);
+}
+export function formatTimestamptToDate (v) {
+    if (!v || v.length === 0) {
+        return ''
+    }
+    return (
+        moment.utc(v).format('DD.MM.YYYY')
+    )
 }

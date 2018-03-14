@@ -17,8 +17,10 @@ import frcolnReducer from '../finance/report/frcoln/frcoln_reducer';
 import loaderReducer from '../general/loader/loader_reducer';
 import recoReducer from '../crm/mainoperation/reco/reducres/recoReducer';
 import demoReducer from '../crm/mainoperation/demo/reducres/demoReducer';
+import visitReducer  from '../crm/mainoperation/visit/reducres/visitReducer'
 import { UNAUTH_USER } from '../actions/types';
 import f4_reducer from '../reference/f4/f4_reducer';
+import hrStaffReducer from '../hr/mainoperation/staff/reducers/hrStaffReducer'
 
 const appReducer = combineReducers({
   form,
@@ -38,7 +40,9 @@ const appReducer = combineReducers({
   f4: f4_reducer,
   crmReco: recoReducer,
   crmDemo: demoReducer,
+  crmVisit:visitReducer,
   outCalls: outCallsTransactionReducer,
+    hrStaff:hrStaffReducer
 });
 
 const rootReducer = (state, action) => {

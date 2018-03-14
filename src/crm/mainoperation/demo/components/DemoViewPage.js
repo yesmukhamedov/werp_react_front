@@ -1,12 +1,14 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
-import { Tab, Header, Container, Button, Segment, Grid, Table, Divider, Card } from 'semantic-ui-react'
+import { Header, Container, Button, Segment, Grid, Table, Divider, Card,Modal } from 'semantic-ui-react'
 import {ROOT_URL} from '../../../../utils/constants'
-import moment from 'moment'
 import DemoUpdateModal from './DemoUpdateModal'
 import DemoCreateModal from './DemoCreateModal'
-import {fetchDemo,toggleDemoUpdateModal,toggleDemoCreateModal} from '../actions/demoAction'
+import {fetchDemo,toggleDemoUpdateModal,toggleDemoCreateModal,deleteDemo} from '../actions/demoAction'
 import { connect } from 'react-redux'
+import ChildDemosTable from './ChildDemosTable'
+import ChildRecosTable from '../../reco/components/ChildRecosTable'
+import DemoViewTable from './DemoViewTable'
 
 class DemoViewPage extends Component {
   constructor (props) {
@@ -15,7 +17,8 @@ class DemoViewPage extends Component {
       callResultOptions: [],
       callRefuseOptions: [],
       items: [],
-      createModalOpened: false
+      createModalOpened: false,
+        showDeleteModal:false
     }
 
     this.renderActions = this.renderActions.bind(this)
@@ -25,7 +28,8 @@ class DemoViewPage extends Component {
   }
 
   componentWillMount () {
-      this.props.fetchDemo(this.props.match.params.id, 10)
+      const id = parseInt(this.props.match.params.id, 10);
+      this.props.fetchDemo(id)
   }
 
     getSourceLink(demo){
@@ -64,7 +68,31 @@ class DemoViewPage extends Component {
                     Добавить рекомендации
                 </Link>}
             {notDemoDone?'':<Button onClick={this.openCreateModal}>Добавить демо</Button>}
+            <Button color={'red'} onClick={() => this.deleteModalTrigger(true)}>Удалить</Button>
         </div>
+    }
+
+    deleteModalTrigger (showDeleteModal) {
+        this.setState({
+            ...this.state,
+            showDeleteModal: showDeleteModal
+        })
+    }
+
+    renderDeleteConfirmModal(){
+        return <Modal open={this.state.showDeleteModal}>
+            <Modal.Header>ПРЕДУПРЕЖДЕНИЕ!</Modal.Header>
+            <Modal.Content>
+                <p>Удалятся все демонстрации, рекомендации и звонки связанные с данной демо!</p>
+                <p>Удалятся: Демо, Звонки, Тел. номера связанные с данной демо!</p>
+            </Modal.Content>
+            <Modal.Actions>
+                <Button onClick={() => this.deleteModalTrigger(false)} negative>
+                    Отмена
+                </Button>
+                <Button onClick={() => this.props.deleteDemo(this.props.demo.id)} positive icon='checkmark' labelPosition='right' content='Удалить' />
+            </Modal.Actions>
+        </Modal>
     }
 
   openUpdateModal () {
@@ -74,195 +102,6 @@ class DemoViewPage extends Component {
   openCreateModal () {
         this.props.toggleDemoCreateModal(true)
   }
-
-  renderDemoTable () {
-    let {demo} = this.props
-    return <Card fluid>
-      <Card.Content>
-        <Card.Header>Основная информация</Card.Header>
-      </Card.Content>
-      <Card.Content>
-        <Table celled striped>
-          <Table.Body>
-            <Table.Row>
-              <Table.Cell>
-                <Header as={'h4'}>Компания</Header>
-              </Table.Cell>
-              <Table.Cell>
-                {demo.bukrsName}
-              </Table.Cell>
-            </Table.Row>
-
-            <Table.Row>
-              <Table.Cell>
-                <Header as={'h4'}>Филиал</Header>
-              </Table.Cell>
-              <Table.Cell>
-                {demo.branchName}
-              </Table.Cell>
-            </Table.Row>
-
-            <Table.Row>
-              <Table.Cell>
-                <Header as={'h4'}>Дилер</Header>
-              </Table.Cell>
-              <Table.Cell>
-                {demo.dealerName}
-              </Table.Cell>
-            </Table.Row>
-
-            <Table.Row>
-              <Table.Cell>
-                <Header as={'h4'}>Назначел(а)</Header>
-              </Table.Cell>
-              <Table.Cell>
-                {demo.appointerName}
-              </Table.Cell>
-            </Table.Row>
-
-            <Table.Row>
-              <Table.Cell>
-                <Header as={'h4'}>Номер телефона</Header>
-              </Table.Cell>
-              <Table.Cell>
-                {demo.phoneNumber}
-              </Table.Cell>
-            </Table.Row>
-
-            <Table.Row>
-              <Table.Cell>
-                <Header as={'h4'}>Источник</Header>
-              </Table.Cell>
-              <Table.Cell>
-                {this.getSourceLink(demo)}
-              </Table.Cell>
-            </Table.Row>
-
-            <Table.Row>
-              <Table.Cell>
-                <Header as={'h4'}>Дата-время проведения</Header>
-              </Table.Cell>
-              <Table.Cell>
-                {moment(demo.dateTime).format('DD.MM.YYYY H:mm')}
-              </Table.Cell>
-            </Table.Row>
-
-            <Table.Row>
-              <Table.Cell>
-                <Header as={'h4'}>Клиент</Header>
-              </Table.Cell>
-              <Table.Cell>
-                {demo.clientName}
-              </Table.Cell>
-            </Table.Row>
-
-            <Table.Row>
-              <Table.Cell>
-                <Header as={'h4'}>Адрес</Header>
-              </Table.Cell>
-              <Table.Cell>
-                {demo.address}
-              </Table.Cell>
-            </Table.Row>
-
-            <Table.Row>
-              <Table.Cell>
-                <Header as={'h4'}>Результат демо</Header>
-              </Table.Cell>
-              <Table.Cell>
-                {demo.resultName}
-              </Table.Cell>
-            </Table.Row>
-
-            <Table.Row>
-              <Table.Cell>
-                <Header as={'h4'}>Причина</Header>
-              </Table.Cell>
-              <Table.Cell>
-                {demo.reasonName}
-              </Table.Cell>
-            </Table.Row>
-
-            <Table.Row>
-              <Table.Cell>
-                <Header as={'h4'}>Примечание</Header>
-              </Table.Cell>
-              <Table.Cell>
-                {demo.note}
-              </Table.Cell>
-            </Table.Row>
-
-            <Table.Row>
-              <Table.Cell>
-                <Header as={'h4'}>№ договора</Header>
-              </Table.Cell>
-              <Table.Cell>
-                {demo.contractNumber}
-              </Table.Cell>
-            </Table.Row>
-
-            <Table.Row>
-              <Table.Cell>
-                <Header as={'h4'}>Дата продажи</Header>
-              </Table.Cell>
-              <Table.Cell>
-                {demo.saleDate ? moment(demo.saleDate).format('DD.MM.YYYY') : ''}
-              </Table.Cell>
-            </Table.Row>
-
-            <Table.Row>
-              <Table.Cell>
-                <Header as={'h4'}>Дата-время создания</Header>
-              </Table.Cell>
-              <Table.Cell>
-                {moment(demo.createdAt).format('DD.MM.YYYY H:mm')}
-              </Table.Cell>
-            </Table.Row>
-
-          </Table.Body>
-        </Table>
-      </Card.Content>
-    </Card>
-  }
-
-  renderDemoRecosTable () {
-    let {demo} = this.props
-    if (!demo.recos) {
-      return
-    }
-    return <Card fluid>
-      <Card.Content>
-        <Card.Header>
-                    Рекомендации
-        </Card.Header>
-      </Card.Content>
-      <Card.Content>
-        <Table celled striped>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>#</Table.HeaderCell>
-              <Table.HeaderCell>ФИО супруг</Table.HeaderCell>
-              <Table.HeaderCell>Статус</Table.HeaderCell>
-              <Table.HeaderCell />
-            </Table.Row>
-          </Table.Header>
-
-                    <Table.Body>
-                        {demo.recos.map((item,idx) => {
-                            return <Table.Row key={item.id}>
-                                    <Table.Cell>{idx+1}</Table.Cell>
-                                    <Table.Cell>{item.clientName}</Table.Cell>
-                                    <Table.Cell>{item.statusName}</Table.Cell>
-                                <Table.Cell><Link className={'ui icon button mini'} to={`/crm/reco/view/` + item.id}>
-                                    Просмотр
-                                </Link></Table.Cell>
-                                </Table.Row>
-                        })}
-                    </Table.Body>
-                </Table>
-            </Card.Content>
-        </Card>
-    }
 
   onCloseCreateModal () {
     this.setState({
@@ -281,6 +120,7 @@ class DemoViewPage extends Component {
           </Header>
         </Segment>
         {this.renderActions()}
+          {this.renderDeleteConfirmModal()}
         <DemoUpdateModal />
         <DemoCreateModal
           parentId={this.props.demo.id}
@@ -293,11 +133,12 @@ class DemoViewPage extends Component {
         <Grid>
           <Grid.Row>
             <Grid.Column width={8}>
-              {this.renderDemoTable()}
+              {<DemoViewTable demo={demo}/>}
             </Grid.Column>
 
             <Grid.Column width={8}>
-              {this.renderDemoRecosTable()}
+              {<ChildRecosTable items={demo.recos || []}/>}
+                {<ChildDemosTable items={demo.childDemos || []}/>}
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -314,4 +155,4 @@ function mapStateToProps (state) {
     }
 }
 
-export default connect(mapStateToProps, {fetchDemo,toggleDemoUpdateModal,toggleDemoCreateModal})(DemoViewPage)
+export default connect(mapStateToProps, {fetchDemo,toggleDemoUpdateModal,toggleDemoCreateModal,deleteDemo})(DemoViewPage)

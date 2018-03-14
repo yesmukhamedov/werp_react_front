@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const ContractListSearchDisplay = (props) => {
-  if (props.directories) {
+  if (props.directories && props.companyOptions) {
     return (
       <Form onSubmit={props.handleSearch}>
         <Segment padded size="small">

@@ -2,6 +2,7 @@ import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
 import { modifyLoader } from '../../../../general/loader/loader_action';
 import {handleError} from '../../../../general/notification/notification_action'
+import browserHistory from '../../../../utils/history';
 
 export const CRM_DEMO_FETCH_CURRENT = 'CRM_DEMO_FETCH_CURRENT';
 export const CRM_DEMO_FETCH_ARCHIVE = 'CRM_DEMO_FETCH_ARCHIVE';
@@ -165,6 +166,19 @@ export function fetchReasons(){
                 items:data
             })
         }).catch((e) => {
+            handleError(e,dispatch)
+        })
+    }
+}
+
+export function deleteDemo(demoId){
+    return function (dispatch) {
+        axios.delete(`${ROOT_URL}/api/crm/demo/` + demoId,{
+            headers: {
+                authorization: localStorage.getItem('token')}
+        }).then((response) => {
+            browserHistory.push('/crm/demo/current')
+        }).catch(e => {
             handleError(e,dispatch)
         })
     }

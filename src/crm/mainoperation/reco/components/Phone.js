@@ -258,7 +258,9 @@ class Phone extends Component {
       }
     })
       .then((response) => {
-          this.props.fetchSingleReco(this.props.recoId)
+          if(this.props.recoId){
+              this.props.fetchSingleReco(this.props.recoId)
+          }
         this.closeModal()
       }).catch((error) => {
         console.log(error)

@@ -7,9 +7,9 @@ import Signin from '../components/Auth/Signin';
 import Signout from '../components/Auth/Signout';
 
 import AssignUserBranch from '../dit/userBranch/components/assign_user_branch';
-import CreateStaff from '../hr/mainoperation/staff/components/CreateStaff';
 import ViewStaff from '../hr/mainoperation/staff/components/ViewStaff';
 import DemoListPage from '../crm/mainoperation/demo/components/DemoListPage';
+import StaffListPage from '../hr/mainoperation/staff/components/StaffListPage'
 
 import ForbiddenPage from '../general/forbidden';
 import LoadingPage from '../general/LoadingPage';
@@ -166,6 +166,20 @@ const AsyncNewIssuePageContainer = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncStaffListPage = Loadable({
+        loader: () => import('../hr/mainoperation/staff/components/StaffListPage' /* webpackChunkName: "StaffListPage" */),
+    loading: () => <LoadingPage />
+});
+
+const AsyncStaffUpdatePage = Loadable({
+        loader: () => import('../hr/mainoperation/staff/components/StaffUpdatePage' /* webpackChunkName: "StaffUpdatePage" */),
+    loading: () => <LoadingPage />
+});
+
+const AsyncStaffViewPage = Loadable({
+        loader: () => import('../hr/mainoperation/staff/components/StaffViewPage' /* webpackChunkName: "StaffViewPage" */),
+    loading: () => <LoadingPage />
+});
 
 const getComponent = {
     SpNew: AsyncSpNewPage,
@@ -192,7 +206,10 @@ const getComponent = {
     ContractListPage: AsyncContractListPage,
     TaskListPage: AsyncTaskListPage,
     TaskPage: AsyncTaskPage,
-    NewIssuePage: AsyncNewIssuePageContainer
+    NewIssuePage: AsyncNewIssuePageContainer,
+    HrStaffList:AsyncStaffListPage,
+    HrStaffUpdate:AsyncStaffUpdatePage,
+    HrStaffView:AsyncStaffViewPage
 }
 
 function persistPath(nextState, replace) {
@@ -219,6 +236,9 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/newIssue/:id" component={NewIssuePageContainer} />
       <Route path="/finance/reports/frcol" component={Frcoln} />
       <Route path="/hr/bonus/hrb02" component={Hrb02} />
+        <Route path="/hr/staff/list" component={AsyncStaffListPage} />
+        <Route path="/hr/staff/update/:id?" component={AsyncStaffUpdatePage} />
+        <Route path="/hr/staff/view/:id" component={AsyncStaffViewPage} />
       
 
       {/* dynamically generated URLs  */}
