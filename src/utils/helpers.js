@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export function resetLocalStorage() {
   localStorage.removeItem('token');
   localStorage.removeItem('username');
@@ -18,4 +20,13 @@ export function calcBreadcrumb(node) {
     menuItemNames.push(n.translations);
   }
   return menuItemNames.reverse();
+}
+
+export function formatTimestamptToDate (v) {
+    if (!v || v.length === 0) {
+        return ''
+    }
+    return (
+        moment.utc(v).format('DD.MM.YYYY')
+    )
 }

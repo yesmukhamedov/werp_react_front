@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import axios from 'axios'
-import {Form, Button, Checkbox, Divider} from 'semantic-ui-react'
+import {Form, Button} from 'semantic-ui-react'
 import DatePicker from 'react-datepicker'
 import {ROOT_URL} from '../../../../utils/constants'
 
@@ -13,45 +13,7 @@ class StaffForm extends Component {
   constructor (props) {
     super(props)
     this.state = {
-      staff: {
-        firstname: '',
-        middlename: '',
-        lastname: '',
-        passport_id: '',
-        passport_given_by: '',
-        passport_given_date: null,
-        birthday: null,
-        gender: 0,
-        passport_id: '',
-        passport_given_by: '',
-        passport_given_date: null,
-        passport_validity: null,
-        passport_id2: '',
-        passport_given_by2: '',
-        passport_given_date2: null,
-        passport_validity2: null,
-        homephone: '',
-        workphone: '',
-        mobile: '',
-        mobile1: '',
-        corp_email: '',
-        email: '',
-        email2: '',
-        regAddress: {
-          country_id: 0,
-          state_id: 0,
-          city_id: 0,
-          region_id: 0,
-          postal_code: '',
-          microdistrict: '',
-          village: '',
-          avenue: '',
-          street: '',
-          ap_number: '',
-          ap_drob: '',
-          flat_number: ''
-        }
-      },
+        localStaff:{},
       countryOptions1: [],
       stateOptions1: [],
       cityOptions1: [],
@@ -178,6 +140,16 @@ class StaffForm extends Component {
       })
   }
 
+    componentWillReceiveProps (nextProps) {
+        if(nextProps.staff !== this.state.staff){
+            let localStaff = Object.assign({}, this.props.staff);
+            this.setState({
+                ...this.state,
+                localStaff: localStaff
+            })
+        }
+    }
+
   onInputChange (fieldName, fieldValue) {
     const stf = this.state.staff
     if (stf.hasOwnProperty(fieldName)) {
@@ -191,6 +163,7 @@ class StaffForm extends Component {
   }
 
   render () {
+      let {localStaff} = this.state
     return (
 
       <Form>
@@ -216,7 +189,7 @@ class StaffForm extends Component {
                 <DatePicker
                   placeholderText={'Дата рождения'}
                   showMonthDropdown showYearDropdown dropdownMode='select'
-                  selected={this.state.staff.birthday}
+                  selected={localStaff.birthday || null}
                   dateFormat='DD.MM.YYYY'
                   onChange={(v) => this.onInputChange('birthday', v)}
                 />
