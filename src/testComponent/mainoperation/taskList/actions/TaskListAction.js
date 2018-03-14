@@ -65,7 +65,7 @@ export function clearTaskListStore() {
 
 export function searchTasks(params) {
   return function (dispatch) {
-    axios.get(`${ROOT_URL}/tasks?${params}`, {
+    axios.get(`${ROOT_URL}/api/tasks?${params}`, {
       headers: { authorization: localStorage.getItem('token') },
     })
       .then(({ data }) => {

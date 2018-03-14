@@ -9,6 +9,7 @@ import treeMenuReducer from './tree_menu';
 import notificationReducer from '../general/notification/notification_reducer';
 import contractListReducer from '../testComponent/mainoperation/contractList/reducers/ContractListReducer';
 import taskListReducer from '../testComponent/mainoperation/taskList/reducers/TaskListReducer';
+import taskReducer from '../testComponent/mainoperation/task/reducers/TaskReducer';
 
 import outCallsTransactionReducer from '../testComponent/mainoperation/newIssue/reducers';
 import userInfoReducer from '../general/userInfo/userInfo_reducer';
@@ -30,6 +31,7 @@ const appReducer = combineReducers({
   notification: notificationReducer,
   contractList: contractListReducer,
   taskList: taskListReducer,
+  task: taskReducer,
   userInfo: userInfoReducer,
   frcoln: frcolnReducer,
   loader: loaderReducer,

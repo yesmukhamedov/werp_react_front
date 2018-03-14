@@ -10,7 +10,6 @@ class TaskListPage extends Component {
   }
 
   componentWillUnmount() {
-    console.log('componentWillUnmount')
     this.props.clearTaskListStore();
   }
 

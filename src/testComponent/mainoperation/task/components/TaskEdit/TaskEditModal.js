@@ -1,51 +1,16 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
-import { Button, Header, Icon, Modal, Form, TextArea, Segment, Dropdown } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import { Button, Header, Icon, Modal, Form, Segment } from 'semantic-ui-react';
 // import * as actions from '../../actions/auth';
 import './settings.css';
-
-const inputField = ({
-  input, label, disabled, meta: { touched, error, warning },
-}) => (
-  <div className="marginField">
-      <label>
-        <strong>{label}</strong>
-      </label>
-      <div>
-        <input {...input} placeholder={label} disabled={disabled} />
-        {touched && (error && <span className="error"> {error} </span>)}
-      </div>
-    </div>
-);
-
-const textArea = ({
-  input, label, disabled, meta: { touched, error, warning },
-}) => (
-  <div className="marginField">
-      <label>
-        <strong>{label}</strong>
-      </label>
-      <div>
-        <TextArea {...input} placeholder={label} disabled={disabled} autoHeight />
-        {touched && (error && <span className="error"> {error} </span>)}
-      </div>
-    </div>
-);
-
-const DropdownFormField = props => (
-  <Form.Field>
-    <label>{props.label}</label>
-    <Dropdown
-      selection
-      options={props.options}
-      {...props.input}
-      value={props.input.value}
-      onChange={(param, data) => props.input.onChange(data.value)}
-      placeholder={props.label}
-    />
-  </Form.Field>
-);
+import { difference } from '../../../../../utils/helpers';
+import {
+  DropdownFormField,
+  TextAreaFormField,
+  TextInputFormField,
+} from '../../../../../utils/formFields';
 
 class TaskEditModal extends Component {
   constructor(props) {
@@ -55,7 +20,7 @@ class TaskEditModal extends Component {
     this.handleFormClose = this.handleFormClose.bind(this);
   }
 
-  handleFormSubmit(props) {
+  handleFormSubmit(values, dispatch, props) {
     // if (this.props.modalType === 'add') {
     //   this.props.addUser(props);
     // } else if (this.props.modalType === 'edit') {
@@ -63,7 +28,12 @@ class TaskEditModal extends Component {
     //   const contactId = this.props.modalData.user.contactId;
     //   this.props.updateUser(props, id, contactId);
     // }
-    console.log('What: ', props.status);
+    console.log('Props: ', props);
+    console.log('finalValues: ', values);
+    console.log('initialValues: ', props.initialValues);
+    // const dirty_fields_only = values.filter((value, key) => !(value === props.initialValues.get(key)))
+    const dirty_fields_only = difference(values, props.initialValues);
+    console.log("dirty: ", dirty_fields_only);
     this.props.handleClose();
     this.clear();
   }
@@ -79,10 +49,12 @@ class TaskEditModal extends Component {
   }
 
   render() {
-    const { handleSubmit, directories } = this.props;
+    const {
+      handleSubmit, directories, modalOpen, pristine, submitting 
+    } = this.props;
     return (
       <Modal
-        open={this.props.modalOpen}
+        open={modalOpen}
         onClose={this.handleFormClose}
         closeOnEscape={false}
         closeOnRootNodeClick={false}
@@ -100,21 +72,21 @@ class TaskEditModal extends Component {
               <Field
                 name="title"
                 label="Тема"
-                // disabled={this.props.userType === 'operator'}
-                component={inputField}
+                disabled
+                component={TextInputFormField}
               />
               <Form.Group widths="equal">
                 <Field
                   name="status"
                   component={DropdownFormField}
                   label="Статус"
-                  options={directories.statusOptions}
+                  opts={directories.statusOptions}
                 />
                 <Field
                   name="priority"
                   component={DropdownFormField}
                   label="Приоритет"
-                  options={directories.priorityOptions}
+                  opts={directories.priorityOptions}
                 />
               </Form.Group>
               <Segment>
@@ -124,38 +96,38 @@ class TaskEditModal extends Component {
                     name="branch"
                     component={DropdownFormField}
                     label="Филиал"
-                    options={directories.priorityOptions}
+                    opts={directories.priorityOptions}
                   />
                   <Field
                     name="department"
                     component={DropdownFormField}
                     label="Департамент"
-                    options={directories.priorityOptions}
+                    opts={directories.priorityOptions}
                   />
                   <Field
                     name="position"
                     component={DropdownFormField}
                     label="Должность"
-                    options={directories.priorityOptions}
+                    opts={directories.priorityOptions}
                   />
                 </Form.Group>
               </Segment>
               <Field
                 name="description"
-                label="Description"
-                component={textArea}
+                label="Описание"
+                component={TextAreaFormField}
               />
               <Field
                 name="comment"
-                label="Comments"
-                component={textArea}
+                label="Примечания"
+                component={TextAreaFormField}
               />
               <div className="buttonGroup">
-                <Button color="blue" floated="right" type="submit" inverted>
+                <Button color="teal" floated="right" type="submit" disabled={pristine || submitting}>
                   <Icon name="checkmark" /> Yes
                 </Button>
                 <Button
-                  color="red"
+                  color="youtube"
                   floated="right"
                   onClick={this.handleFormClose}
                   inverted
@@ -171,7 +143,7 @@ class TaskEditModal extends Component {
   }
 }
 
-function validate(formProps, props) {
+function validate(formProps) {
   const error = {};
 
   if (!formProps.title) {
@@ -182,34 +154,30 @@ function validate(formProps, props) {
     error.description = 'Please enter the description';
   }
 
-  // if (props.modalType === 'add') {
-  //   if (!formProps.password) {
-  //     error.password = 'Please enter a password';
-  //   }
-
-  //   if (!formProps.passwordConfirm) {
-  //     error.passwordConfirm = 'Please enter a passwordConfirm';
-  //   }
-  // }
-
   return error;
 }
 
 function mapStateToProps(state, props) {
-  // if (props.modalData !== null) {
   const initialData = {
+    title: props.title,
     status: 2,
     priority: 1,
+    branch: 1,
+    department: 1,
+    position: 1,
+    description: props.description,
   };
-  //   return {
-  //     initialValues: initialData,
-  //   };
-  // }
   return {
     directories: state.taskList.directories,
     initialValues: initialData,
   };
 }
+
+TaskEditModal.propTypes = {
+  handleClose: PropTypes.func.isRequired,
+  directories: PropTypes.object,
+  modalOpen: PropTypes.bool,
+};
 
 TaskEditModal = reduxForm({
   form: 'editTask',

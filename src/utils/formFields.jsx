@@ -5,11 +5,10 @@ export const DropdownFormField = (props) => {
   const {
     label,
     input,
-    errorText,
     opts,
     meta: { touched, error, warning },
   } = props;
-  {console.log(touched, error)}
+  // {console.log(touched, error)}
   return (
     <Form.Field error={touched && error}>
       <label>{label}</label>
@@ -25,7 +24,7 @@ export const DropdownFormField = (props) => {
       {touched &&
         error && (
           <Label basic color="red" pointing>
-            {errorText}
+            {error}
           </Label>
         )
       }
@@ -37,7 +36,6 @@ export const TextAreaFormField = (props) => {
   const {
     label,
     input,
-    errorText,
     meta: { touched, error, warning },
   } = props;
   return (
@@ -52,7 +50,7 @@ export const TextAreaFormField = (props) => {
       {touched &&
         error && (
           <Label basic color="red" pointing>
-            {errorText}
+            {error}
           </Label>
         )
       }
@@ -64,7 +62,6 @@ export const TextInputFormField = (props) => {
   const {
     label,
     input,
-    errorText,
     meta: { touched, error, warning },
   } = props;
   return (
@@ -77,9 +74,9 @@ export const TextInputFormField = (props) => {
         placeholder={label}
       />
       {touched &&
-        error && (
+        (error &&
           <Label basic color="red" pointing>
-            {errorText}
+            {error}
           </Label>
         )
       }
