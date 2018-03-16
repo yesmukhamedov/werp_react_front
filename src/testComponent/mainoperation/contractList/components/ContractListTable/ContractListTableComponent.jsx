@@ -4,7 +4,6 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 class ContractListTableComponent extends Component {
@@ -29,6 +28,14 @@ class ContractListTableComponent extends Component {
         accessor: 'contractNumber',
         maxWidth: 100,
         filterable: true,
+        Cell: (props) => {
+          const { contractNumber } = props.original;
+          return (
+            <Link target="_blank" to={`/newIssue/${contractNumber}`}>
+              {contractNumber}
+            </Link>
+          );
+        },
       },
       {
         Header: 'Дата договора',
@@ -77,7 +84,7 @@ class ContractListTableComponent extends Component {
       },
       {
         Header: 'Состояние',
-        accessor: 'state',
+        accessor: 'status.text',
         maxWidth: 160,
       },
       // {
@@ -98,6 +105,7 @@ class ContractListTableComponent extends Component {
         Header: 'Оператор',
         accessor: 'operator.id',
         id: 'opr',
+        maxWidth: 270,
         Cell: (props) => {
           const { operator } = props.original;
           return (
@@ -122,19 +130,6 @@ class ContractListTableComponent extends Component {
             <option value="0">Все</option>
             {options}
            </select>),
-      },
-      {
-
-        Cell: (props) => {
-          const { contractNumber } = props.original;
-          return (
-            <div style={{ textAlign: 'center' }}>
-              <Link target="_blank" to={`/newIssue/${contractNumber}`}>
-                <Icon name="eye" size="large" color="black" />
-              </Link>
-            </div>);
-        },
-        maxWidth: 60,
       },
     ];
     return (<ReactTable

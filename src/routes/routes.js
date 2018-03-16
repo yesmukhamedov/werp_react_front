@@ -102,6 +102,12 @@ const AsyncContractListPage = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncSOContractListPage = Loadable({
+  loader: () =>
+    import('../testComponent/mainoperation/contractList/components/SeniorOperatorPage/ContractListPage' /* webpackChunkName: "SOContractListPage" */),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncTaskListPage = Loadable({
   loader: () =>
     import('../testComponent/mainoperation/taskList/components/TaskListPage' /* webpackChunkName: "TaskListPage" */),
@@ -204,6 +210,7 @@ const getComponent = {
     CrmDemoView:AsyncDemoViewPage,
     CrmVisitView:AsyncVisitViewPage,
     ContractListPage: AsyncContractListPage,
+    SOContractListPage: AsyncSOContractListPage,
     TaskListPage: AsyncTaskListPage,
     TaskPage: AsyncTaskPage,
     NewIssuePage: AsyncNewIssuePageContainer,
@@ -231,6 +238,7 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/dit/userBranch" component={AssignUserBranch} />
       <Route path="forbidden" component={ForbiddenPage} />
       <Route path="/contractListPage" component={AsyncContractListPage} />
+      <Route path="/soContractListPage" component={AsyncSOContractListPage} />
       <Route path="/taskListPage" component={AsyncTaskListPage} />
       <Route path="/task/:id" component={AsyncTaskPage} />
       <Route path="/newIssue/:id" component={NewIssuePageContainer} />

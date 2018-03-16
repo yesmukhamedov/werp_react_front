@@ -4,7 +4,6 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 class TaskListTableComponent extends Component {

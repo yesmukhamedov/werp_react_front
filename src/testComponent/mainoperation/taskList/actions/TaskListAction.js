@@ -13,7 +13,7 @@ export const FOUND_TASKS = 'found_tasks';
 // }
 
 export function getDirectories() {
-  return function (dispatch) {
+  return (dispatch) => {
     const directories = {
       statusOptions: [{ key: 1, value: 1, text: 'Status1' },
         { key: 2, value: 2, text: 'Status2' },
@@ -58,13 +58,13 @@ export function getDirectories() {
 }
 
 export function clearTaskListStore() {
-  return function (dispatch) {
+  return (dispatch) => {
     dispatch({ type: CLEAR_TASK_LIST_STORE });
   };
 }
 
 export function searchTasks(params) {
-  return function (dispatch) {
+  return (dispatch) => {
     axios.get(`${ROOT_URL}/api/tasks?${params}`, {
       headers: { authorization: localStorage.getItem('token') },
     })
