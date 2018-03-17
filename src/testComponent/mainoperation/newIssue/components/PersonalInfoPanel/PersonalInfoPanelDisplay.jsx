@@ -7,13 +7,13 @@ import { ContactsPanelDisplay } from '../ContactsPanel';
 const PersonalInfoPanelDisplay = (props) => {
   console.log("PIPD", props);
   const {
-    contractNumber,
-    branchName,
-    clientFullName,
-    clientIIN,
-    dealerFullName,
-    clientStatus,
-    issueType,
+    contractNumber = '',
+    branchName = '',
+    clientFullName = {},
+    clientIIN = '',
+    dealerFullName = {},
+    clientStatus = '',
+    issueType = '',
     contactDetails,
   } = props;
   return (
@@ -44,7 +44,7 @@ const PersonalInfoPanelDisplay = (props) => {
                 control="input"
                 value={
                   clientFullName &&
-                  `${clientFullName.lastName} ${clientFullName.firstName} ${clientFullName.patronymic}`
+                  `${clientFullName.lastName || ''} ${clientFullName.firstName || ''} ${clientFullName.patronymic || ''}`
                 }
               />
               <Form.Field
@@ -61,7 +61,7 @@ const PersonalInfoPanelDisplay = (props) => {
                 control="input"
                 value={
                   dealerFullName &&
-                  `${dealerFullName.lastName} ${dealerFullName.firstName} ${dealerFullName.patronymic}`
+                  `${dealerFullName.lastName || ''} ${dealerFullName.firstName || ''} ${dealerFullName.patronymic || ''}`
                 }
               />
               <Form.Field

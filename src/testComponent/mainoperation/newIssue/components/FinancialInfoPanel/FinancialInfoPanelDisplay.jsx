@@ -4,7 +4,7 @@ import { Segment, Label, Form, Grid, Loader } from 'semantic-ui-react';
 import PortalComponentDisplay from '../../../../../general/portal/PortalComponent';
 import { PaymentBreakdownTableDisplay } from '../PaymentBreakdownTable';
 
-const PersonalInfoPanelDisplay = (props) => {
+const FinancialInfoPanelDisplay = (props) => {
   const { financialDetails = {} } = props;
   const {
     initialPayment,
@@ -13,12 +13,12 @@ const PersonalInfoPanelDisplay = (props) => {
     recommenderDiscount,
     financialAgent,
     recommender,
-    productBarcode,
+    productSerialNumber,
     promotions,
     monthlyPayments,
     otherPurchases,
+    bankPartnerName,
   } = financialDetails;
-  console.log("PIPD", props)
   return (
     <Segment raised>
       <Label color="blue" ribbon>
@@ -43,7 +43,9 @@ const PersonalInfoPanelDisplay = (props) => {
                   openLabel="Ежемесячный взнос"
                   closeLabel="Скрыть ежемесячный взнос"
                 >
-                  <PaymentBreakdownTableDisplay monthlyPayments={monthlyPayments} />
+                  <PaymentBreakdownTableDisplay
+                    monthlyPayments={monthlyPayments}
+                  />
                 </PortalComponentDisplay>
               </Form>
             </Grid.Column>
@@ -59,11 +61,7 @@ const PersonalInfoPanelDisplay = (props) => {
                   control="input"
                   value={recommenderDiscount}
                 />
-                <Form.Field
-                  label="Оплата через"
-                  control="input"
-                  value="???"
-                />
+                <Form.Field label="Оплата через" control="input" value={bankPartnerName} />
               </Form>
             </Grid.Column>
             <Grid.Column>
@@ -71,13 +69,21 @@ const PersonalInfoPanelDisplay = (props) => {
                 <Form.Field
                   label="Финансовый агент"
                   control="input"
-                  value={financialAgent &&
-                    `${financialAgent.lastName} ${financialAgent.firstName} ${financialAgent.patronymic}`}
+                  value={
+                    financialAgent &&
+                    `${financialAgent.lastName || ''} ${financialAgent.firstName || ''} ${
+                      financialAgent.patronymic || ''}`
+                    }
                 />
                 <Form.Field
                   label="Рекомендатель"
                   control="input"
-                  value={recommender}
+                  value={
+                    recommender &&
+                    recommender.recommenderName &&
+                      `${recommender.recommenderName.lastName || ''} ${recommender.recommenderName.firstName || ''} ${
+                        recommender.recommenderName.patronymic || ''}`
+                      }
                 />
               </Form>
             </Grid.Column>
@@ -87,13 +93,12 @@ const PersonalInfoPanelDisplay = (props) => {
                 <Form.Field
                   label="Заводской номер аппарата"
                   control="input"
-                  value={productBarcode}
+                  value={productSerialNumber}
                 />
                 <Form.Field
                   label="Подарки"
                   control="input"
-                  value={promotions &&
-                    promotions.join(', ')}
+                  value={promotions && promotions.join(', ')}
                 />
               </Form>
             </Grid.Column>
@@ -106,7 +111,7 @@ const PersonalInfoPanelDisplay = (props) => {
   );
 };
 
-PersonalInfoPanelDisplay.propTypes = {
+FinancialInfoPanelDisplay.propTypes = {
   initialPayment: PropTypes.string.isRequired,
   remainingPayment: PropTypes.string.isRequired,
   dealerDiscount: PropTypes.string.isRequired,
@@ -118,4 +123,4 @@ PersonalInfoPanelDisplay.propTypes = {
   promotionName: PropTypes.string.isRequired,
 };
 
-export default PersonalInfoPanelDisplay;
+export default FinancialInfoPanelDisplay;

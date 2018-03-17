@@ -3,66 +3,41 @@ import PropTypes from 'prop-types';
 import { Form } from 'semantic-ui-react';
 
 const labels = {
-  dom: 'Адрес домашний',
-  drugoi: 'Адрес для клиента',
-  rabota: 'Адрес рабочий',
+  home: 'Адрес домашний',
+  service: 'Адрес для клиента',
+  work: 'Адрес рабочий',
 };
+const renderContactItem = (item, label) =>
+  (item ? (
+    <Form.Group>
+      <Form.Field
+        label={label}
+        control="input"
+        value={item.address}
+        width="8"
+      />
+      <Form.Field
+        label="Телефон"
+        control="input"
+        defaultValue={`${item.telHome || ''} ${item.telMob1 ||
+          ''} ${item.telMob2 || ''}`}
+        width="10"
+      />
+    </Form.Group>
+  ) : (
+    ''
+  ));
 
 const ContactsPanelDisplay = (props) => {
-  const { contactDetails } = props;
-  console.log('CPD', props);
+  const { contactDetails = {} } = props;
+  const { home, service, work } = contactDetails;
   return (
     <div style={{ width: '600px' }}>
       <h3>Контактные данные</h3>
       <Form>
-        {
-          contactDetails &&
-          contactDetails.map(contact => (
-            <Form.Group>
-              <Form.Field
-                label={labels[contact.type]}
-                control="input"
-                value={contact.address}
-                width="6"
-              />
-              <Form.Field
-                label="Телефон"
-                control="input"
-                defaultValue={contact.phoneNumbers.join('  ')}
-                width="10"
-              />
-            </Form.Group>
-          ))
-        }
-
-        {/* // <Form.Group>
-        //   <Form.Field
-        //     label="Адрес для клиента"
-        //     control="input"
-        //     defaultValue={props.clientAddress}
-        //     width="11"
-        //   />
-        //   <Form.Field
-        //     label="Телефон"
-        //     control="input"
-        //     defaultValue={props.clientPhone}
-        //     width="5"
-        //   />
-        // </Form.Group>
-        // <Form.Group>
-        //   <Form.Field
-        //     label="Адрес рабочий"
-        //     control="input"
-        //     defaultValue={props.workAddress}
-        //     width="11"
-        //   />
-        //   <Form.Field
-        //     label="Телефон"
-        //     control="input"
-        //     defaultValue={props.phonePhone}
-        //     width="5"
-        //   />
-        // </Form.Group> */}
+        {renderContactItem(home, 'Адрес домашний')}
+        {renderContactItem(service, 'Адрес для клиента')}
+        {renderContactItem(work, 'Адрес рабочий')}
       </Form>
     </div>
   );
