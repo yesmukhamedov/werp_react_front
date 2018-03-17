@@ -3,12 +3,7 @@ import { Segment, Comment, Form, Button, Message, Header } from 'semantic-ui-rea
 import faker from 'faker';
 
 const OutCallDetailsPanelDisplay = (props) => {
-  const {
-    comments,
-    newComment,
-    editNewComment,
-    submitNewComment,
-  } = props;
+  const { comments } = props;
   return (
     <Segment raised>
       <Comment.Group style={{ maxWidth: "100%" }}>
@@ -31,21 +26,6 @@ const OutCallDetailsPanelDisplay = (props) => {
             </Comment>
           ))
         }
-        <Form reply>
-          <Form.TextArea
-            onChange={editNewComment}
-            value={newComment}
-          />
-          <Button
-            content="Добавить"
-            labelPosition="left"
-            icon="edit"
-            onClick={
-              (e) => submitNewComment(5, newComment)
-            }
-            primary
-          />
-        </Form>
       </Comment.Group>
     </Segment>
   );
