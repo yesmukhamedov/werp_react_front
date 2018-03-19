@@ -1,6 +1,7 @@
 /* eslint linebreak-style: ["error", "windows"] */
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
+import _ from 'lodash';
 import 'react-table/react-table.css';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
@@ -17,10 +18,16 @@ class ContractListTableComponent extends Component {
   render() {
     let options;
     if (this.props.result) {
-      options = this.props.result.map(el =>
-        (<option value={el.operator.id} key={el.operator.id}>
-          {el.operator.lastName} {el.operator.firstName}
-        </option>));
+      let visited = {};
+      const opers = this.props.result.map(item => item.operator);
+      visited = _.mapKeys(opers, 'id');
+      options = Object.values(visited).map((operator) => {
+        if (operator) {
+          return (<option value={operator.id} key={operator.id}>
+            {operator.lastName} {operator.firstName}
+                  </option>);
+        }
+      });
     }
     const columns = [
       {
@@ -76,7 +83,7 @@ class ContractListTableComponent extends Component {
           const { dealer } = props.original;
           return (
             <div>
-              {dealer.lastName} {dealer.firstName} {dealer.patronymic}
+              {dealer && dealer.lastName} {dealer && dealer.firstName} {dealer && dealer.patronymic}
             </div>
           );
         },
@@ -110,7 +117,7 @@ class ContractListTableComponent extends Component {
           const { operator } = props.original;
           return (
             <div>
-              {operator.lastName} {operator.firstName} {operator.patronymic}
+              {operator && operator.lastName} {operator && operator.firstName} {operator && operator.patronymic}
             </div>
           );
         },
@@ -147,13 +154,13 @@ class ContractListTableComponent extends Component {
       rowsText="записей"
       className="-highlight"
       getTrProps={(state, rowInfo) => ({
-                            onClick: () => {
-                                this.setState({ ...this.state, selectedIdx: rowInfo.index });
-                            },
-                            style: {
-                                background: (rowInfo === undefined ? '' : (this.state.selectedIdx === rowInfo.index ? 'rgba(241,250,229, 1)' : '')),
-                            },
-                       })}
+        onClick: () => {
+          this.setState({ ...this.state, selectedIdx: rowInfo.index });
+        },
+        style: {
+          background: (rowInfo === undefined ? '' : (this.state.selectedIdx === rowInfo.index ? 'rgba(241,250,229, 1)' : '')),
+        },
+      })}
       getTheadProps={() => ({
         style: {
           background: 'rgba(227,232,238, 1)',

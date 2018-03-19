@@ -53,7 +53,7 @@ class ContractListPageComponent extends Component {
     const paramsDict = {
       companyId: this.state.selectedCompany,
       branchId: this.state.selectedBranch,
-      stateId: this.state.selectedState,
+      statusId: this.state.selectedState,
       startDate: startDateUtc,
       endDate: endDateUtc,
     };
@@ -66,7 +66,7 @@ class ContractListPageComponent extends Component {
       .filter(param => param)
       .join('&');
 
-    // console.log('PARAMS', params);
+    console.log('PARAMS', params);
     this.props.searchContracts(params);
   }
 

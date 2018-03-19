@@ -36,7 +36,7 @@ class TaskInfoComponent extends Component {
         id, title, author, status, priority, recipient, createdAt, description,
       } = this.props;
       const closedAt =
-        (status.id === 4) ? moment(this.props.modifiedAt, 'YYYY-MM-DDTHH:mm:ssZ').utc().format('DD.MM.YYYY, hh:mm:ss') : undefined;
+        (status.id === 5) ? moment(this.props.modifiedAt, 'YYYY-MM-DDTHH:mm:ssZ').format('DD.MM.YYYY, hh:mm:ss') : undefined;
       return (
         <Segment.Group>
           <Segment clearing>
@@ -112,7 +112,7 @@ class TaskInfoComponent extends Component {
                     <List verticalAlign="middle" relaxed>
                       <List.Item>
                         <List.Content>
-                          {moment(createdAt, 'YYYY-MM-DDTHH:mm:ssZ').utc().format('DD.MM.YYYY, hh:mm:ss')}
+                          {moment(createdAt, 'YYYY-MM-DDTHH:mm:ssZ').format('DD.MM.YYYY, hh:mm:ss')}
                         </List.Content>
                       </List.Item>
                       <List.Item>

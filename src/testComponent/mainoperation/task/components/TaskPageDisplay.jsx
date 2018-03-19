@@ -9,7 +9,7 @@ class TaskPageDisplay extends Component {
     const { id: taskId } = this.props.match.params;
     if (taskId) {
       this.props.fetchTaskById(taskId);
-      this.props.getDirectories();
+      this.props.getTaskDirectories(this.props.lang);
     }
   }
 
@@ -44,10 +44,11 @@ class TaskPageDisplay extends Component {
 }
 
 TaskPageDisplay.propTypes = {
-  getDirectories: PropTypes.func.isRequired,
+  getTaskDirectories: PropTypes.func.isRequired,
   fetchTaskById: PropTypes.func.isRequired,
   clearTaskStore: PropTypes.func.isRequired,
   taskDetails: PropTypes.object,
+  lang: PropTypes.string,
 };
 
 export default TaskPageDisplay;

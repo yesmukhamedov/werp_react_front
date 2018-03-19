@@ -6,7 +6,8 @@ import TaskListTable from './TaskListTable/TaskListTableContainer';
 
 class TaskListPage extends Component {
   componentWillMount() {
-    this.props.getDirectories();
+    const { lang } = this.props;
+    this.props.getTaskDirectories(lang);
   }
 
   componentWillUnmount() {
@@ -33,7 +34,7 @@ class TaskListPage extends Component {
 }
 
 TaskListPage.propTypes = {
-  getDirectories: PropTypes.func.isRequired,
+  getTaskDirectories: PropTypes.func.isRequired,
   clearTaskListStore: PropTypes.func.isRequired,
 };
 

@@ -1,59 +1,78 @@
 /* jshint esversion: 6 */
 import axios from 'axios';
+import _ from 'lodash';
 import { ROOT_URL } from '../../../../utils/constants';
+import { notify } from '../../../../general/notification/notification_action';
 
 export const TASK_LIST_DIRECTORIES = 'task_list_directories';
 export const CLEAR_TASK_LIST_STORE = 'clear_task_list_store';
 export const FOUND_TASKS = 'found_tasks';
 
-// function getDirectory(name) {
-//   return axios.get(`${ROOT_URL}/api/reference/${name}`, {
-//     headers: { authorization: localStorage.getItem('token') },
-//   });
-// }
+function getTaskDirectory(name) {
+  return axios.get(`${ROOT_URL}/api/tasks/${name}`, {
+    headers: { authorization: localStorage.getItem('token') },
+  });
+}
 
-export function getDirectories() {
+function getRefDirectory(name) {
+  return axios.get(`${ROOT_URL}/api/reference/${name}`, {
+    headers: { authorization: localStorage.getItem('token') },
+  });
+}
+
+export function getTaskDirectories(lang) {
   return (dispatch) => {
-    const directories = {
-      statusOptions: [{ key: 1, value: 1, text: 'Status1' },
-        { key: 2, value: 2, text: 'Status2' },
-        { key: 3, value: 3, text: 'Status3' }],
-      priorityOptions: [{ key: 1, value: 1, text: 'Priority1' },
-        { key: 2, value: 2, text: 'Priority2' },
-        { key: 3, value: 3, text: 'Priority3' }],
-    };
-    dispatch({
-      type: TASK_LIST_DIRECTORIES,
-      payload: directories,
-    });
-    // axios.all([getDirectory('countries'), getDirectory('companies')])
-    //   .then(axios.spread(({ data: countryList }, { data: companyList }) => {
-    //     const newCompanyOptions = companyList.map(item => ({
-    //       key: item.id,
-    //       value: item.id,
-    //       text: item.name,
-    //     }));
-    //     const directories = {
-    //       companyOptions: newCompanyOptions,
-    //       operatorOptions: [{ key: 0, value: 0, text: 'Nagima' },
-    //       { key: 1, value: 1, text: 'Raushan' },
-    //       { key: 2, value: 2, text: 'Assel' }],
-    //       branchOptions: [{ key: 1, value: 1, text: 'Branch1' },
-    //       { key: 2, value: 2, text: 'Branch2' },
-    //       { key: 3, value: 3, text: 'Branch3' }],
-    //       stateOptions: [{ key: 1, value: 1, text: 'State1' },
-    //       { key: 2, value: 2, text: 'State2' },
-    //       { key: 3, value: 3, text: 'State3' }],
-    //       // result: makeData();
-    //     };
-    //     dispatch({
-    //       type: CONTRACT_LIST_DIRECTORIES,
-    //       payload: directories,
-    //     });
-    //   }))
-    //   .catch((err) => {
-    //     console.log('Error in ContractListPage', err);
-    //   });
+    axios.all([getTaskDirectory('status'), getTaskDirectory('priorities'),
+      getRefDirectory('branches/all'), getRefDirectory('departments'), getRefDirectory('positions')])
+      .then(axios.spread((
+        { data: statusList }, { data: priorityList },
+        { data: branchList }, { data: deptList }, { data: positionList },
+      ) => {
+        const statusOpts = statusList.map(item => ({
+          key: item.id,
+          value: item.id,
+          text: item.text,
+        }));
+        const priorityOpts = priorityList.map(item => ({
+          key: item.id,
+          value: item.id,
+          text: item.text,
+        }));
+        const branchOpts = branchList.map(item => ({
+          key: item.branch_id,
+          value: item.branch_id,
+          text: item.text45,
+        }));
+        const deptOpts = deptList.map(item => ({
+          key: item.dep_id,
+          value: item.dep_id,
+          text: (lang == 'ru') ? item.name_ru : (lang === 'en' ? item.name_en : item.name_tr),
+        }));
+        const positionOpts = positionList.map(item => ({
+          key: item.position_id,
+          value: item.position_id,
+          text: item.text,
+        }));
+        const directories = {
+          statusOptions: _.mapKeys(statusOpts, 'key'),
+          priorityOptions: _.mapKeys(priorityOpts, 'key'),
+          branchOptions: _.mapKeys(branchOpts, 'key'),
+          deptOptions: _.mapKeys(deptOpts, 'key'),
+          posOptions: _.mapKeys(positionOpts, 'key'),
+        };
+        dispatch({
+          type: TASK_LIST_DIRECTORIES,
+          payload: directories,
+        });
+      }))
+      .catch((error) => {
+        console.log('Error in task list directories', error);
+        if (error.response) {
+          dispatch(notify('error', error.response.data.message, 'Ошибка'));
+        } else {
+          Promise.resolve({ error }).then(response => dispatch(notify('error', error.response.data.message, 'Ошибка')));
+        }
+      });
   };
 }
 
@@ -75,6 +94,13 @@ export function searchTasks(params) {
           payload: data,
         });
       })
-      .catch(err => console.log('ERROR in task list search', err));
+      .catch((error) => {
+        console.log('ERROR in task list search', error);
+        if (error.response) {
+          dispatch(notify('error', error.response.data.message, 'Ошибка'));
+        } else {
+          Promise.resolve({ error }).then(response => dispatch(notify('error', error.response.data.message, 'Ошибка')));
+        }
+      });
   };
 }

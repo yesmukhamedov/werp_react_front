@@ -15,7 +15,6 @@ export default function (state = {}, action) {
       const result = _.mapKeys(action.payload, 'id');
       return { ...state, result };
     case EDIT_CONTRACT_OPERATOR:
-      console.log('edit data: ', action.payload);
       const newResult = { ...state.result, [action.payload.id]: action.payload };
       return { ...state, result: newResult };
     case CLEAR_CONSTRACT_LIST_STORE:

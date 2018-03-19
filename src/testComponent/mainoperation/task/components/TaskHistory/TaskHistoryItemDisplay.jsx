@@ -1,65 +1,82 @@
 /* eslint linebreak-style: ["error", "windows"] */
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
-import { Comment, Segment, Header } from 'semantic-ui-react';
+import { Comment, List } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const TaskHistoryItemDisplay = (props) => {
   let diff = {};
-  const { history, text } = props;
   try {
     diff = JSON.parse(props.history);
   } catch (e) {
     diff = {};
   }
-  const {
-    title,
-    description,
-    status,
-    priority,
-    branch,
-    department,
-    position,
-  } = diff;
+  const { dir } = props;
   return (
     <div>
-      <Comment.Text>
-        <p>{text}</p>
-      </Comment.Text>
       {
-        diff.touched &&
+        diff &&
         <div>
           <Comment.Text>
-            <p>{title && `${title.from} -> ${title.to}`}</p>
-          </Comment.Text>
-          <Comment.Text>
-            <p>{description && `${description.from} -> ${description.to}`}</p>
-          </Comment.Text>
-          <Comment.Text>
-            <p>{status && `${status.from} -> ${status.to}`}</p>
-          </Comment.Text>
-          <Comment.Text>
-            <p>{priority && `${priority.from} -> ${priority.to}`}</p>
-          </Comment.Text>
-          <Comment.Text>
-            <p>{branch && `${branch.from} -> ${branch.to}`}</p>
-          </Comment.Text>
-          <Comment.Text>
-            <p>{department && `${department.from} -> ${department.to}`}</p>
-          </Comment.Text>
-          <Comment.Text>
-            <p>{position && `${position.from} -> ${position.to}`}</p>
+            <List as="ol">
+              {diff.title &&
+                <List.Item as="li" value="-">
+                  <i>{`Параметр Тема изменился с ${diff.title.from} на ${diff.title.to}`}</i>
+                </List.Item>}
+              {diff.description &&
+                <List.Item as="li" value="-">
+                  <i>{`Параметр Описание изменился с ${diff.description.from} на ${diff.description.to}`}</i>
+                </List.Item>}
+              {diff.status &&
+                <List.Item as="li" value="-">
+                  <i>
+                    {`Параметр Статус изменился с ${dir.statusOptions[diff.status.from].text} 
+                                                на ${dir.statusOptions[diff.status.to].text}`}
+                  </i>
+                </List.Item>}
+              {diff.priority &&
+                <List.Item as="li" value="-">
+                  <i>
+                    {`Параметр Приоритет изменился с ${dir.priorityOptions[diff.priority.from].text} 
+                                                   на ${dir.priorityOptions[diff.priority.to].text}`}
+                  </i>
+                </List.Item>}
+              {diff.branch &&
+                <List.Item as="li" value="-">
+                  <i>
+                    {`Параметр Филиал изменился с ${dir.branchOptions[diff.branch.from] && dir.branchOptions[diff.branch.from].text} 
+                                            на ${dir.branchOptions[diff.branch.to] && dir.branchOptions[diff.branch.to].text}`}
+                  </i>
+                </List.Item>}
+              {diff.department &&
+                <List.Item as="li" value="-">
+                  <i>
+                    {`Параметр Департамент изменился с ${dir.deptOptions[diff.department.from].text} 
+                                                     на ${dir.deptOptions[diff.department.to].text}`}
+                  </i>
+                </List.Item>}
+              {diff.position &&
+                <List.Item as="li" value="-">
+                  <i>
+                    {`Параметр Должность изменился с ${dir.posOptions[diff.position.from].text} 
+                                                   на ${dir.posOptions[diff.position.to].text}`}
+                  </i>
+                </List.Item>}
+            </List>
           </Comment.Text>
         </div>
       }
+      <Comment.Text>
+        <p>{props.text}</p>
+      </Comment.Text>
     </div>
   );
 };
 
 TaskHistoryItemDisplay.propTypes = {
-  history: PropTypes.object,
+  history: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
   text: PropTypes.string,
+  dir: PropTypes.object,
 };
 
 export default TaskHistoryItemDisplay;

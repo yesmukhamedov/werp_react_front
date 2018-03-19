@@ -35,17 +35,20 @@ class ContractListTableComponent extends Component {
       modalOpen: false,
     });
   }
-  
+
   render() {
     let options;
     if (this.props.result) {
       let visited = {};
       const opers = this.props.result.map(item => item.operator);
       visited = _.mapKeys(opers, 'id');
-      options = Object.values(visited).map(operator =>
-        (<option value={operator.id} key={operator.id}>
-          {operator.lastName} {operator.firstName}
-        </option>));
+      options = Object.values(visited).map((operator) => {
+        if (operator) {
+          return (<option value={operator.id} key={operator.id}>
+            {operator.lastName} {operator.firstName}
+                  </option>);
+        }
+      });
     }
     const columns = [
       {
@@ -101,7 +104,7 @@ class ContractListTableComponent extends Component {
           const { dealer } = props.original;
           return (
             <div>
-              {dealer.lastName} {dealer.firstName} {dealer.patronymic}
+              {dealer && dealer.lastName} {dealer && dealer.firstName} {dealer && dealer.patronymic}
             </div>
           );
         },
@@ -135,7 +138,7 @@ class ContractListTableComponent extends Component {
           const { operator } = props.original;
           return (
             <div>
-              {operator.lastName} {operator.firstName} {operator.patronymic}
+              {operator && operator.lastName} {operator && operator.firstName} {operator && operator.patronymic}
             </div>
           );
         },

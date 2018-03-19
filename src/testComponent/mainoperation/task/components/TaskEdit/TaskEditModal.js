@@ -3,7 +3,7 @@ import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Button, Header, Icon, Modal, Form, Segment } from 'semantic-ui-react';
-// import * as actions from '../../actions/auth';
+import { editTask } from '../../actions/TaskAction';
 import './settings.css';
 import { difference } from '../../../../../utils/helpers';
 import {
@@ -21,19 +21,8 @@ class TaskEditModal extends Component {
   }
 
   handleFormSubmit(values, dispatch, props) {
-    // if (this.props.modalType === 'add') {
-    //   this.props.addUser(props);
-    // } else if (this.props.modalType === 'edit') {
-    //   const id = this.props.modalData.user.userID;
-    //   const contactId = this.props.modalData.user.contactId;
-    //   this.props.updateUser(props, id, contactId);
-    // }
-    console.log('Props: ', props);
-    console.log('finalValues: ', values);
-    console.log('initialValues: ', props.initialValues);
-    // const dirty_fields_only = values.filter((value, key) => !(value === props.initialValues.get(key)))
-    const dirty_fields_only = difference(values, props.initialValues);
-    console.log("dirty: ", dirty_fields_only);
+    const dirtyFields = difference(values, props.initialValues);
+    this.props.editTask(props.id, dirtyFields);
     this.props.handleClose();
     this.clear();
   }
@@ -80,13 +69,13 @@ class TaskEditModal extends Component {
                   name="status"
                   component={DropdownFormField}
                   label="Статус"
-                  opts={directories.statusOptions}
+                  opts={Object.values(directories.statusOptions)}
                 />
                 <Field
                   name="priority"
                   component={DropdownFormField}
                   label="Приоритет"
-                  opts={directories.priorityOptions}
+                  opts={Object.values(directories.priorityOptions)}
                 />
               </Form.Group>
               <Segment>
@@ -96,19 +85,19 @@ class TaskEditModal extends Component {
                     name="branch"
                     component={DropdownFormField}
                     label="Филиал"
-                    opts={directories.priorityOptions}
+                    opts={Object.values(directories.branchOptions)}
                   />
                   <Field
                     name="department"
                     component={DropdownFormField}
                     label="Департамент"
-                    opts={directories.priorityOptions}
+                    opts={Object.values(directories.deptOptions)}
                   />
                   <Field
                     name="position"
                     component={DropdownFormField}
                     label="Должность"
-                    opts={directories.priorityOptions}
+                    opts={Object.values(directories.posOptions)}
                   />
                 </Form.Group>
               </Segment>
@@ -160,11 +149,11 @@ function validate(formProps) {
 function mapStateToProps(state, props) {
   const initialData = {
     title: props.title,
-    status: 2,
-    priority: 1,
-    branch: 1,
-    department: 1,
-    position: 1,
+    status: props.status.id,
+    priority: props.priority.id,
+    branch: props.recipient.branch.id,
+    department: props.recipient.department.id,
+    position: props.recipient.position.id,
     description: props.description,
   };
   return {
@@ -175,6 +164,7 @@ function mapStateToProps(state, props) {
 
 TaskEditModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
+  editTask: PropTypes.func.isRequired,
   directories: PropTypes.object,
   modalOpen: PropTypes.bool,
 };
@@ -185,4 +175,4 @@ TaskEditModal = reduxForm({
   enableReinitialize: true,
 })(TaskEditModal);
 
-export default connect(mapStateToProps)(TaskEditModal);
+export default connect(mapStateToProps, { editTask })(TaskEditModal);

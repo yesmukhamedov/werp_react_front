@@ -5,7 +5,7 @@ import moment from 'moment';
 import { Comment, Segment, Header } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import TaskHistoryItemDisplay from './TaskHistoryItemDisplay';
+import TaskHistoryItemDisplay from './TaskHistoryContainer';
 
 const TaskHistoryDisplay = (props) => {
   const { history } = props;
@@ -22,13 +22,9 @@ const TaskHistoryDisplay = (props) => {
                   {item.author && `${item.author.lastName} ${item.author.firstName} ${item.author.patronymic}`}
                 </Comment.Author>
                 <Comment.Metadata>
-                  <div>{moment(item.createdAt, 'YYYY-MM-DDTHH:mm:ssZ').utc().format('DD.MM.YYYY, hh:mm:ss')}</div>
+                  <div>{moment(item.createdAt, 'YYYY-MM-DDTHH:mm:ssZ').format('DD.MM.YYYY, hh:mm:ss')}</div>
                 </Comment.Metadata>
-                {/* <Comment.Text>
-                  <p>{item.history}</p>
-                  <p>{item.text}</p>
-                </Comment.Text> */}
-                <TaskHistoryItemDisplay text={item.text} history={item.history} />
+                <TaskHistoryItemDisplay text={item.text} history={item.historyItem} />
               </Comment.Content>
             </Comment>
           ))
@@ -39,7 +35,7 @@ const TaskHistoryDisplay = (props) => {
 };
 
 TaskHistoryDisplay.propTypes = {
-  comments: PropTypes.arrayOf(PropTypes.object).isRequired,
+  history: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default TaskHistoryDisplay;
