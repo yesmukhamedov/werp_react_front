@@ -185,17 +185,17 @@ const AsyncStaffViewPage = Loadable({
 });
 
 const AsyncHrb02 = Loadable({
-  loader: () => import('../hr/mainoperation/hrb02/hrb02' /* webpackChunkName: "StaffViewPage" */),
+  loader: () => import('../hr/mainoperation/hrb02/hrb02' /* webpackChunkName: "hrb02" */),
 loading: () => <LoadingPage />
 });
 
 const AsyncFrcoln = Loadable({
-  loader: () => import('../finance/report/frcoln/frcoln' /* webpackChunkName: "StaffViewPage" */),
+  loader: () => import('../finance/report/frcoln/frcoln' /* webpackChunkName: "frcoln" */),
 loading: () => <LoadingPage />
 });
 
 const AsyncAssignUserBranch = Loadable({
-  loader: () => import('../dit/userBranch/components/assign_user_branch' /* webpackChunkName: "StaffViewPage" */),
+  loader: () => import('../dit/userBranch/components/assign_user_branch' /* webpackChunkName: "ditaub" */),
 loading: () => <LoadingPage />
 });
 
@@ -252,15 +252,12 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/settings" component={AsyncSettings} />
       <Route path="/signin" component={Signin} />
       <Route path="/signout" component={Signout} />
-      <Route path="/dit/userBranch" component={AssignUserBranch} />
       <Route path="forbidden" component={ForbiddenPage} />
       <Route path="/contractListPage" component={AsyncContractListPage} />
       <Route path="/soContractListPage" component={AsyncSOContractListPage} />
       <Route path="/taskListPage" component={AsyncTaskListPage} />
       <Route path="/task/:id" component={AsyncTaskPage} />
       <Route path="/newIssue/:id" component={NewIssuePageContainer} />
-      <Route path="/finance/reports/frcol" component={Frcoln} />
-      <Route path="/hr/bonus/hrb02" component={Hrb02} />
         <Route path="/hr/staff/list" component={AsyncStaffListPage} />
         <Route path="/hr/staff/update/:id?" component={AsyncStaffUpdatePage} />
         <Route path="/hr/staff/view/:id" component={AsyncStaffViewPage} />
