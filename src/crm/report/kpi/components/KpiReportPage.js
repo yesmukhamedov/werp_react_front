@@ -231,7 +231,7 @@ class KpiReportPage extends Component {
               warning={item.totalAverageScore >= 60 && item.totalAverageScore <= 80}
             >{item.totalAverageScore}</Table.Cell>
             <Table.Cell>
-              {item.detailable ? <Button onClick={(e) => this.loadItems(item.detailContext, item.id)}>
+              {item.detailable ? <Button onClick={(e) => this.loadItems(item.detailContext, item.id,item.bukrs,item.branchId)}>
                                     Деталь
               </Button> : ''}
             </Table.Cell>
