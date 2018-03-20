@@ -6,15 +6,12 @@ import MainPanel from '../components/MainPanel/MainPanel';
 import Signin from '../components/Auth/Signin';
 import Signout from '../components/Auth/Signout';
 
-import AssignUserBranch from '../dit/userBranch/components/assign_user_branch';
 import ViewStaff from '../hr/mainoperation/staff/components/ViewStaff';
 import DemoListPage from '../crm/mainoperation/demo/components/DemoListPage';
 import StaffListPage from '../hr/mainoperation/staff/components/StaffListPage'
 
 import ForbiddenPage from '../general/forbidden';
 import LoadingPage from '../general/LoadingPage';
-import Frcoln from '../finance/report/frcoln/frcoln'
-import Hrb02 from '../hr/mainoperation/hrb02/hrb02'
 
 import NewIssuePageContainer from '../testComponent/mainoperation/NewIssue/components/NewIssuePageContainer'
 
@@ -187,7 +184,27 @@ const AsyncStaffViewPage = Loadable({
     loading: () => <LoadingPage />
 });
 
+const AsyncHrb02 = Loadable({
+  loader: () => import('../hr/mainoperation/hrb02/hrb02' /* webpackChunkName: "StaffViewPage" */),
+loading: () => <LoadingPage />
+});
+
+const AsyncFrcoln = Loadable({
+  loader: () => import('../finance/report/frcoln/frcoln' /* webpackChunkName: "StaffViewPage" */),
+loading: () => <LoadingPage />
+});
+
+const AsyncAssignUserBranch = Loadable({
+  loader: () => import('../dit/userBranch/components/assign_user_branch' /* webpackChunkName: "StaffViewPage" */),
+loading: () => <LoadingPage />
+});
+
+
+
 const getComponent = {
+    Ditaub:AsyncAssignUserBranch,
+    Hrb02:AsyncHrb02,
+    Frcoln:AsyncFrcoln,
     SpNew: AsyncSpNewPage,
     SpView: AsyncSpViewPage,
     SpList: AsyncSpListPage,
