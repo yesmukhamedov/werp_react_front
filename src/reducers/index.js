@@ -11,7 +11,7 @@ import contractListReducer from '../testComponent/mainoperation/contractList/red
 import taskListReducer from '../testComponent/mainoperation/taskList/reducers/TaskListReducer';
 import taskReducer from '../testComponent/mainoperation/task/reducers/TaskReducer';
 
-import outCallsTransactionReducer from '../testComponent/mainoperation/newIssue/reducers';
+import outCallsTransactionReducer from '../testComponent/mainoperation/NewIssue/reducers';
 import userInfoReducer from '../general/userInfo/userInfo_reducer';
 import frcolnReducer from '../finance/report/frcoln/frcoln_reducer';
 import loaderReducer from '../general/loader/loader_reducer';
