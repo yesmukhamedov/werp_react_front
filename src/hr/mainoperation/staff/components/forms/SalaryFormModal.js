@@ -332,7 +332,6 @@ class SalaryFormModal extends Component {
 }
 
 function mapStateToProps (state) {
-    console.log(state)
     return {
         salary:state.hrStaff.salary,
         salaryFormModalOpened:state.hrStaff.salaryFormModalOpened,
