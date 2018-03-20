@@ -37,15 +37,7 @@ class Hrb02 extends Component {
         , bonusEditModalOpen:false, selectedBonus:null, selectedBonusIndex:null};
         
     }
-    componentWillReceiveProps(nextProps){
-        if(this.props.companyOptions!==nextProps.companyOptions){            
-            this.setState({companyOptions:nextProps.companyOptions});
-            // if (nextProps.companyOptions && nextProps.companyOptions.size===1){
-            //     this.onInputChange(nextProps.companyOptions[0].value,'bukrs');
-            // };
-        }
-        
-    }
+
     componentWillMount() {
         this.props.f4FetchBonusTypeList('hrb02');
         this.props.f4FetchCurrencyList('hrb02');
@@ -66,8 +58,8 @@ class Hrb02 extends Component {
             waSearchTerm.bukrs=value;
             waSearchTerm.selectedBranchKey=null;
             let branchOptions = this.props.branchOptions[value].filter(item=>
-                (item.tovarCategory===this.state.searchTerm.selectedCategory)
-                ||(item.businessAreaId===this.state.searchTerm.selectedCategory) ).map(item => {
+                (item.tovarcategory===this.state.searchTerm.selectedCategory)
+                ||(item.businessareaid===this.state.searchTerm.selectedCategory) ).map(item => {
                return {
                    key: item.key,
                    text: item.text,
@@ -85,8 +77,8 @@ class Hrb02 extends Component {
         }
         else if (stateFieldName==='category') { 
             let branchOptions = this.props.branchOptions[this.state.searchTerm.bukrs].filter(item=>
-                 (item.tovarCategory===value)
-                 ||(item.businessAreaId===value) ).map(item => {
+                 (item.tovarcategory===value)
+                 ||(item.businessareaid===value) ).map(item => {
                 return {
                     key: item.key,
                     text: item.text,
@@ -151,7 +143,7 @@ class Hrb02 extends Component {
                                 Компания
                             </Table.Cell>
                             <Table.Cell>
-                                <Dropdown placeholder='Компания' selection options={this.state.companyOptions} value={this.state.searchTerm.bukrs} 
+                                <Dropdown placeholder='Компания' selection options={this.props.companyOptions} value={this.state.searchTerm.bukrs} 
                                             onChange={(e, { value }) => this.onInputChange(value,'bukrs')} />
                             </Table.Cell>
                             <Table.Cell>

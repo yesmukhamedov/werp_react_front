@@ -42,15 +42,7 @@ class Frcoln extends Component {
         //   }
     
     }
-    componentWillReceiveProps(nextProps){
-        if(this.props.companyOptions!==nextProps.companyOptions){            
-            this.setState({companyOptions:nextProps.companyOptions});
-            if (nextProps.companyOptions && nextProps.companyOptions.size===1){
-                this.onInputChange(nextProps.companyOptions[0].value,'bukrs');
-            };
-        }
-        
-    }
+    
     componentWillUnmount(){
         this.props.clearState();
     }
@@ -135,7 +127,7 @@ class Frcoln extends Component {
                                         Компанияl
                                     </Table.Cell>
                                     <Table.Cell>
-                                    <Dropdown fluid placeholder='Компания' selection options={this.state.companyOptions} value={this.state.searchTerm.bukrs} 
+                                    <Dropdown fluid placeholder='Компания' selection options={this.props.companyOptions} value={this.state.searchTerm.bukrs} 
                                         onChange={(e, { value }) => this.onInputChange(value,'bukrs')} />
                                         {/* <BukrsF4n handleChange={(value, fieldname)=> this.onInputChange(value,fieldname)} fluid={true}/>                                         */}
                                     </Table.Cell>
