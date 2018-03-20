@@ -6,12 +6,20 @@ import browserHistory from '../../../../utils/history';
 
 export const HR_STAFF_CURRENT_STAFFS = 'HR_STAFF_CURRENT_STAFFS';
 export const HR_STAFF_SINGLE_STAFF = 'HR_STAFF_SINGLE_STAFF';
+export const HR_STAFF_ALL_STAFFS = 'HR_STAFF_ALL_STAFFS';
 
 export const HR_STAFF_FETCH_STAFF_SALARIES = 'HR_STAFF_FETCH_STAFF_SALARIES'
 export const HR_STAFF_FETCH_STAFF_EXPENCES = 'HR_STAFF_FETCH_STAFF_EXPENCES'
 export const HR_STAFF_FETCH_STAFF_OFF_DATA = 'HR_STAFF_FETCH_STAFF_OFF_DATA'
 
+export const HR_STAFF_LIST_MODAL_OPENED = 'HR_STAFF_LIST_MODAL_OPENED'
+
 export const HR_STAFF_CLEAR_STATE = 'HR_STAFF_CLEAR_STATE';
+
+export const HR_SALARY_FORM_MODAL_OPENED = 'HR_SALARY_FORM_MODAL_OPENED'
+export const HR_SALARY_CREATE = 'HR_SALARY_CREATE'
+
+export const HR_PYRAMID_FETCH_BRANCH_PYRAMIDS = 'HR_PYRAMID_FETCH_BRANCH_PYRAMIDS'
 
 export function fetchCurrentStaffs(params){
     return function(dispatch){
@@ -35,6 +43,27 @@ export function fetchCurrentStaffs(params){
     }
 }
 
+export function fetchAllStaffs(params){
+    return function(dispatch){
+        dispatch(modifyLoader(true));
+        axios.get(`${ROOT_URL}/api/hr/staff/current-all`,{
+            headers: {
+                authorization: localStorage.getItem('token')
+            },
+            params:params
+        })
+            .then(({data}) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type:HR_STAFF_ALL_STAFFS,
+                    payload:data
+                })
+            }).catch((error) => {
+            handleError(error,dispatch)
+        })
+    }
+}
+
 export function createStaff(staff){
     return function (dispatch){
         dispatch(modifyLoader(true))
@@ -46,6 +75,27 @@ export function createStaff(staff){
             .then(({data}) => {
                 dispatch(modifyLoader(false))
                 browserHistory.push('/hr/staff/view/' + data['staffId'])
+            }).catch((error) => {
+            dispatch(modifyLoader(false))
+            handleError(error,dispatch)
+        })
+    }
+}
+
+export function createSalary(salary){
+    return function (dispatch){
+        dispatch(modifyLoader(true))
+        axios.post(`${ROOT_URL}/api/hr/salary`, salary,{
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        })
+            .then(({data}) => {
+                dispatch(modifyLoader(false))
+                dispatch({
+                    type:HR_SALARY_CREATE,
+                    payload:data
+                })
             }).catch((error) => {
             dispatch(modifyLoader(false))
             handleError(error,dispatch)
@@ -105,6 +155,22 @@ export function fetchStaffExpences(staffId){
     }
 }
 
+export function fetchBlankSalary(staffId){
+    return function(dispatch){
+        axios.get(`${ROOT_URL}/api/hr/staff/` + staffId + `/expenses`,{
+            headers: {
+                authorization: localStorage.getItem('token')}
+        }).then(({data}) => {
+            dispatch({
+                type:HR_STAFF_FETCH_STAFF_EXPENCES,
+                payload:data
+            })
+        }).catch((error) => {
+            handleError(error,dispatch)
+        })
+    }
+}
+
 export function fetchStaffOffData(staffId){
     return function(dispatch){
         axios.get(`${ROOT_URL}/api/hr/staff/` + staffId + `/official-data`,{
@@ -118,5 +184,37 @@ export function fetchStaffOffData(staffId){
         }).catch((error) => {
             handleError(error,dispatch)
         })
+    }
+}
+
+export function fetchBranchPyramids(branchId){
+    return function(dispatch){
+        axios.get(`${ROOT_URL}/api/hr/pyramid/by-branch/` + branchId,{
+            headers: {
+                authorization: localStorage.getItem('token')}
+        }).then(({data}) => {
+            dispatch({
+                type:HR_PYRAMID_FETCH_BRANCH_PYRAMIDS,
+                payload:data
+            })
+        }).catch((error) => {
+            handleError(error,dispatch)
+        })
+    }
+}
+
+
+
+export function toggleStaffListModal(flag){
+    return {
+        type: HR_STAFF_LIST_MODAL_OPENED,
+        payload: flag
+    }
+}
+
+export function toggleSalaryFormtModal(flag){
+    return {
+        type: HR_SALARY_FORM_MODAL_OPENED,
+        payload: flag
     }
 }

@@ -69,7 +69,7 @@ export default function DemoViewTable(props){
                             <Header as={'h4'}>Источник</Header>
                         </Table.Cell>
                         <Table.Cell>
-                            {this.getSourceLink(demo)}
+                            {getSourceLink(demo)}
                         </Table.Cell>
                     </Table.Row>
 
@@ -158,4 +158,22 @@ export default function DemoViewTable(props){
             </Table>
         </Card.Content>
     </Card>
+}
+
+function getSourceLink(demo){
+    if(demo.visitId > 0){
+        return <Link className={'button'} to={`/crm/visit/view/` + demo.visitId}>
+            Визит № {demo.visitId}
+        </Link>
+    }else if(demo.recoId > 0){
+        return <Link className={'button'} to={`/crm/reco/view/` + demo.recoId}>
+            Рекомендация № {demo.recoId}
+        </Link>
+    }else if(demo.parentId > 0){
+        return <Link className={'button'} to={`/crm/demo/view/` + demo.recoId}>
+            Демо № {demo.parentId}
+        </Link>
+    }else{
+        return;
+    }
 }

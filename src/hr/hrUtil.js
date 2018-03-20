@@ -29,6 +29,8 @@ export const STAFF_BLANK_OBJECT = {
     factStateId:0,
     factCityId:0,
     factAddress:'',
+    tsStaffName:'',
+    tsStaffId:0,
     livingAddress:{
         type:1,
         address:'',

@@ -3,20 +3,23 @@ import {Container,Form, Button,Input} from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
-import {fetchSingleStaff,createStaff} from '../actions/hrStaffAction'
+import {fetchSingleStaff,createStaff,toggleStaffListModal,fetchAllStaffs} from '../actions/hrStaffAction'
 import {f4FetchCountryList,f4FetchStateList,f4FetchCityList,f4FetchCityregList} from '../../../../reference/f4/f4_action'
 import StaffAddressForm from  './StaffAddressForm'
+import StaffListModal from './StaffListModal'
 import {STAFF_BLANK_OBJECT} from '../../../hrUtil'
 const genderOptions = [
     { key: 'male', text: 'Мужской', value: 'male' },
     { key: 'female', text: 'Женский', value: 'female' }
 ]
 
+
 class StaffUpdatePage extends Component {
     constructor (props) {
         super(props)
         this.state = {
             localStaff:STAFF_BLANK_OBJECT,
+            staffListModalOpened:false,
             errors:{
                 firstname:false,
                 middlename:false,
@@ -49,6 +52,8 @@ class StaffUpdatePage extends Component {
         this.handleLivingAddress = this.handleLivingAddress.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.submitForm = this.submitForm.bind(this)
+        this.onScoutSelected = this.onScoutSelected.bind(this)
+        this.removeScout = this.removeScout.bind(this)
     }
 
     componentWillMount(){
@@ -60,6 +65,7 @@ class StaffUpdatePage extends Component {
         this.props.f4FetchStateList()
         this.props.f4FetchCityList()
         this.props.f4FetchCityregList()
+        this.props.fetchAllStaffs({})
     }
 
     // componentWillReceiveProps (nextProps) {
@@ -351,6 +357,27 @@ class StaffUpdatePage extends Component {
         this.props.createStaff(localStaff)
     }
 
+    onScoutSelected(o){
+        let {localStaff} = this.state
+        localStaff['tsStaffId'] = o['staffId']
+        localStaff['tsStaffName'] = o['lastname'] + ' ' + o['firstname']
+        this.setState({
+            ...this.state,
+            localStaff:localStaff,
+            staffListModalOpened:false
+        })
+    }
+
+    removeScout(){
+        let {localStaff} = this.state
+        localStaff['tsStaffId'] = 0
+        localStaff['tsStaffName'] = ''
+        this.setState({
+            ...this.state,
+            localStaff:localStaff
+        })
+    }
+
     renderForm(){
         const {} = this.props
         let {localStaff,errors} = this.state
@@ -413,6 +440,20 @@ class StaffUpdatePage extends Component {
                             options={genderOptions}
                             placeholder='Пол'
                             onChange={this.handleChange} />
+
+                            <Form.Field>
+                                <label>Scouted By</label>
+                                <Button.Group>
+                                    <Button
+                                        onClick={() => this.setState({...this.state,staffListModalOpened:true})}
+                                        content= {localStaff.tsStaffName && localStaff.tsStaffName.length > 0?localStaff.tsStaffName:'Не выбрано'}
+                                        icon='search'
+                                        labelPosition='left' />
+                                    <Button
+                                        onClick={() => this.removeScout()}
+                                        icon='remove' />
+                                </Button.Group>
+                            </Form.Field>
                     </Form.Group>
                 </div>
             </div>
@@ -608,6 +649,10 @@ class StaffUpdatePage extends Component {
       <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
         <h2>{(id && id > 0)?'Редактирование сотрудника':'Добавление нового сотрудника'}</h2>
           {this.renderForm()}
+          <StaffListModal
+              opened={this.state.staffListModalOpened}
+              staffs={this.props.allStaffs}
+              onSelect={this.onScoutSelected}/>
       </Container>
     )
   }
@@ -616,6 +661,7 @@ class StaffUpdatePage extends Component {
 function mapStateToProps (state) {
     return {
         staff:state.hrStaff.staff,
+        allStaffs:state.hrStaff.allStaffs,
         countryList:state.f4.countryList,
         stateList:state.f4.stateList,
         cityList:state.f4.cityList,
@@ -623,4 +669,7 @@ function mapStateToProps (state) {
     }
 }
 
-export default connect(mapStateToProps, {fetchSingleStaff,f4FetchCountryList,f4FetchStateList,f4FetchCityList,f4FetchCityregList,createStaff})(StaffUpdatePage)
+export default connect(mapStateToProps, {
+    fetchSingleStaff,f4FetchCountryList,f4FetchStateList,f4FetchCityList,f4FetchCityregList,createStaff,
+    toggleStaffListModal,fetchAllStaffs
+})(StaffUpdatePage)

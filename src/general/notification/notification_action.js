@@ -1,3 +1,5 @@
+import browserHistory from '../../utils/history';
+
 export const NOTIFY = 'NOTIFY'
 
 export function notify (a_notify_type, a_notify_text, a_notify_header) {
@@ -17,13 +19,15 @@ export function handleError(error,dispatch) {
         {
             //blog post has been created, navigate the user to the index
             //We navigate by calling this.context.router.push with the new path to navigate to
-            this.context.router.push('/forbidden');
+            //this.context.router.push('/forbidden');
+            browserHistory.push('/forbidden')
         }
         else if (error.response.status && error.response.status===500)
         {
             //blog post has been created, navigate the user to the index
             //We navigate by calling this.context.router.push with the new path to navigate to
-            this.context.router.push('/forbidden');
+            //this.context.router.push('/forbidden');
+            browserHistory.push('/forbidden')
         }
         dispatch(notify('error',error.response.data.message,'Ошибка'));
 
