@@ -1,5 +1,5 @@
 import React from 'react';
-import {Container,Form, Button,Input} from 'semantic-ui-react'
+import {Form, Input} from 'semantic-ui-react'
 
 /**
  * Компонент для рендеринга формы адреса

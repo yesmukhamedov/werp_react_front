@@ -6,17 +6,14 @@ import MainPanel from '../components/MainPanel/MainPanel';
 import Signin from '../components/Auth/Signin';
 import Signout from '../components/Auth/Signout';
 
-import AssignUserBranch from '../dit/userBranch/components/assign_user_branch';
 import ViewStaff from '../hr/mainoperation/staff/components/ViewStaff';
 import DemoListPage from '../crm/mainoperation/demo/components/DemoListPage';
 import StaffListPage from '../hr/mainoperation/staff/components/StaffListPage'
 
 import ForbiddenPage from '../general/forbidden';
 import LoadingPage from '../general/LoadingPage';
-import Frcoln from '../finance/report/frcoln/frcoln'
-import Hrb02 from '../hr/mainoperation/hrb02/hrb02'
 
-import NewIssuePageContainer from '../testComponent/mainoperation/newIssue/components/NewIssuePageContainer'
+import NewIssuePageContainer from '../testComponent/mainoperation/NewIssue/components/NewIssuePageContainer'
 
 const AsyncSettings = Loadable({
   loader: () =>
@@ -168,7 +165,7 @@ const AsyncVisitViewPage = Loadable({
 
 const AsyncNewIssuePageContainer = Loadable({
   loader: () =>
-    import('../testComponent/mainoperation/newIssue/components/NewIssuePageContainer' /* webpackChunkName: "NewIssuePageTest" */),
+    import('../testComponent/mainoperation/NewIssue/components/NewIssuePageContainer' /* webpackChunkName: "NewIssuePageTest" */),
   loading: () => <LoadingPage />,
 });
 
@@ -187,7 +184,27 @@ const AsyncStaffViewPage = Loadable({
     loading: () => <LoadingPage />
 });
 
+const AsyncHrb02 = Loadable({
+  loader: () => import('../hr/mainoperation/hrb02/hrb02' /* webpackChunkName: "hrb02" */),
+loading: () => <LoadingPage />
+});
+
+const AsyncFrcoln = Loadable({
+  loader: () => import('../finance/report/frcoln/frcoln' /* webpackChunkName: "frcoln" */),
+loading: () => <LoadingPage />
+});
+
+const AsyncAssignUserBranch = Loadable({
+  loader: () => import('../dit/userBranch/components/assign_user_branch' /* webpackChunkName: "ditaub" */),
+loading: () => <LoadingPage />
+});
+
+
+
 const getComponent = {
+    Ditaub:AsyncAssignUserBranch,
+    Hrb02:AsyncHrb02,
+    Frcoln:AsyncFrcoln,
     SpNew: AsyncSpNewPage,
     SpView: AsyncSpViewPage,
     SpList: AsyncSpListPage,
@@ -235,15 +252,12 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/settings" component={AsyncSettings} />
       <Route path="/signin" component={Signin} />
       <Route path="/signout" component={Signout} />
-      <Route path="/dit/userBranch" component={AssignUserBranch} />
       <Route path="forbidden" component={ForbiddenPage} />
       <Route path="/contractListPage" component={AsyncContractListPage} />
       <Route path="/soContractListPage" component={AsyncSOContractListPage} />
       <Route path="/taskListPage" component={AsyncTaskListPage} />
       <Route path="/task/:id" component={AsyncTaskPage} />
       <Route path="/newIssue/:id" component={NewIssuePageContainer} />
-      <Route path="/finance/reports/frcol" component={Frcoln} />
-      <Route path="/hr/bonus/hrb02" component={Hrb02} />
         <Route path="/hr/staff/list" component={AsyncStaffListPage} />
         <Route path="/hr/staff/update/:id?" component={AsyncStaffUpdatePage} />
         <Route path="/hr/staff/view/:id" component={AsyncStaffViewPage} />

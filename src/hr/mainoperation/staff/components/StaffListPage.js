@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import {Link} from 'react-router-dom'
-import {Container,Divider,Table,Icon,Header,Button,Segment,Form,Grid,Loader,Input,List} from 'semantic-ui-react';
+import {Container,Divider,Header,Button,Segment,Form,Grid,Input} from 'semantic-ui-react';
 import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4'
 import BranchF4 from '../../../../reference/f4/branch/BranchF4'
 import PositionF4 from '../../../../reference/f4/position/PositionF4'
-import LazyPagination from '../../../../general/pagination/LazyPagination'
 import { connect } from 'react-redux'
 import {fetchCurrentStaffs} from '../actions/hrStaffAction'
+import StaffListTable from './StaffListTable'
 
 
 class StaffListPage extends Component {
@@ -28,12 +28,11 @@ class StaffListPage extends Component {
 
         this.handleDropdownChange = this.handleDropdownChange.bind(this);
         this.loadItems = this.loadItems.bind(this);
-        this.renderTableFooter = this.renderTableFooter.bind(this);
         this.inputChanged = this.inputChanged.bind(this);
     }
 
     componentWillMount(){
-        this.loadItems(0);
+        //this.loadItems(0);
     }
 
     loadItems(page){
@@ -51,83 +50,6 @@ class StaffListPage extends Component {
 
         params['page'] = page;
         this.props.fetchCurrentStaffs(params)
-    }
-
-    renderTableHeader(){
-        return (
-            <Table.Header>
-                <Table.Row>
-                    <Table.HeaderCell>StaffID</Table.HeaderCell>
-                    <Table.HeaderCell>Фамилия</Table.HeaderCell>
-                    <Table.HeaderCell>Имя</Table.HeaderCell>
-                    <Table.HeaderCell>Отчество</Table.HeaderCell>
-                    <Table.HeaderCell>Должности</Table.HeaderCell>
-                    <Table.HeaderCell>Действия</Table.HeaderCell>
-                </Table.Row>
-            </Table.Header>
-        )
-    }
-
-    renderPositions(positions){
-        if(typeof positions !== 'undefined' && positions.length>0){
-            return <List bulleted>
-                {positions.map((p,idx) => {
-                    return <List.Item key={idx}>{p.positionName} ({p.branchName})</List.Item>;
-                })}
-            </List>
-        }
-
-        return '';
-    }
-
-    renderTableBody(){
-        const {currentStaffs} = this.props;
-        return (
-            <Table.Body>
-                {(currentStaffs && currentStaffs.length) >0?currentStaffs.map((item,idx) => {
-
-                    return (
-                        <Table.Row key={idx}>
-                            <Table.Cell>{item.staffId}</Table.Cell>
-                            <Table.Cell>{item.lastname}</Table.Cell>
-                            <Table.Cell>{item.firstname}</Table.Cell>
-                            <Table.Cell>{item.middlename}</Table.Cell>
-                            <Table.Cell>{this.renderPositions(item.positions)}</Table.Cell>
-                            <Table.Cell width={2}>
-                                <Link className={'ui icon button'} to={`/hr/staff/view/${item.staffId}`}>
-                                    <Icon name='eye' />
-                                </Link>
-
-                <Link className={'ui icon button'} to={`/hr/staff/update/${item.staffId}`}>
-                  <Icon name='pencil' />
-                </Link>
-
-                            </Table.Cell>
-                        </Table.Row>
-                    )
-                    }):<Table.Row><Table.Cell>{'No Records'}</Table.Cell></Table.Row>}
-            </Table.Body>
-        )
-    }
-
-    renderTableFooter(){
-        const {meta} = this.props
-        return (
-            <Table.Footer>
-                <Table.Row>
-                    <Table.HeaderCell colSpan='2'>
-                        Количество: {meta['totalRows']}
-                    </Table.HeaderCell>
-                    <Table.HeaderCell colSpan='5'>
-                        <LazyPagination
-                            onItemClick={this.loadItems}
-                            totalRows={meta['totalRows']}
-                            currentPage={meta['page']}
-                            perPage={meta['perPage']}/>
-                    </Table.HeaderCell>
-                </Table.Row>
-            </Table.Footer>
-        )
     }
 
     inputChanged(e,data){
@@ -212,11 +134,7 @@ class StaffListPage extends Component {
           </Grid.Column>
 
                     <Grid.Column floated='left' width={12}>
-                        {this.state.loading?<Loader active inline='centered' />:<Table celled striped>
-                                {this.renderTableHeader()}
-                                {this.renderTableBody()}
-                                {this.renderTableFooter()}
-                            </Table>}
+                        <StaffListTable staffs={this.props.currentStaffs} meta={this.props.meta} loadItems={this.loadItems} />
                     </Grid.Column>
                 </Grid>
                 <Divider/>

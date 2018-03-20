@@ -25,6 +25,31 @@ export const F4_CLEAR_STATE_LIST = 'F4_CLEAR_STATE_LIST';
 export const F4_FETCH_CITY_LIST = 'F4_FETCH_CITY_LIST';
 export const F4_CLEAR_CITY_LIST = 'F4_CLEAR_CITY_LIST';
 
+//
+export const F4_FETCH_BUSINESS_AREA_LIST = 'F4_FETCH_BUSINESS_AREA_LIST';
+export const F4_CLEAR_BUSINESS_AREA_LIST = 'F4_CLEAR_BUSINESS_AREA_LIST';
+
+export const F4_FETCH_DEPARTMENT_LIST = 'F4_FETCH_DEPARTMENT_LIST';
+export const F4_CLEAR_DEPARTMENT_LIST = 'F4_CLEAR_DEPARTMENT_LIST';
+
+export function f4FetchDepartmentList(){
+    return function(dispatch) {
+        axios.get(`${ROOT_URL}/api/reference/departments`, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        }).then(({data}) => {
+            dispatch({
+                type: F4_FETCH_DEPARTMENT_LIST,
+                departmentList:data
+            });
+        })
+            .catch(error => {
+
+            });
+    }
+}
+
 export function f4FetchCountryList(){
     return function(dispatch) {
         axios.get(`${ROOT_URL}/api/reference/countries`, {
@@ -240,3 +265,21 @@ export function f4ClearBonusTypeList() {
     return obj;
 }
 
+export function f4FetchBusinessAreaList() {
+    return function(dispatch) {
+        axios.get(`${ROOT_URL}/api/reference/business-areas`, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        })
+            .then(({data}) => {
+                dispatch({
+                    type: F4_FETCH_BUSINESS_AREA_LIST,
+                    businessAreaList:data
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+}

@@ -32,7 +32,7 @@ export function fetchUserInfo() {
     
         })
         .catch(error => {
-
+            // console.log(error);
             if(error.response) {                
                 if (error.response.status && error.response.status===403)
                 {
