@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react';
-import { Modal, Message, Icon, Button } from 'semantic-ui-react';
+import { Modal, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
@@ -9,9 +9,7 @@ import matchSorter from 'match-sorter';
 
 // const arrayList= ;
 class MatnrF4Modal extends PureComponent{
-    constructor (props) {
-        super(props)
-    }
+    
     componentWillMount() {
         this.props.f4FetchMatnrList(this.props.trans);
     }

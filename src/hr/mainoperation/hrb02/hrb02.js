@@ -1,26 +1,25 @@
 import React,{ Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Button, Dropdown, Icon, Container, Header, Grid, Divider, Segment, Menu } from 'semantic-ui-react';
+import { Table, Button, Dropdown, Icon, Container, Header, Grid,  } from 'semantic-ui-react';
+import moment from 'moment';
+import Hrb02OutputTable from './hrb02OutputTable';
+import "react-table/react-table.css";
+import {fetchBonusData,clearRedStateHrb02} from './hrb02_action'
+import {f4FetchBonusTypeList,f4FetchCurrencyList,f4ClearBonusTypeList,f4ClearCurrencyList} from '../../../reference/f4/f4_action'
+import './hrb02.css';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {Link} from 'react-router-dom'
-import moment from 'moment';
-import { notify } from '../../../general/notification/notification_action';
-import ReactTable from 'react-table';
-import _ from "lodash";
-import "react-table/react-table.css";
-import MatnrF4Modal from '../../../reference/f4/matnr/matnrF4Modal';
-import PositionF4Modal from '../../../reference/f4/position/positionF4Modal';
-import {f4FetchCurrencyList, f4ClearCurrencyList, f4FetchBonusTypeList, f4ClearBonusTypeList} from '../../../reference/f4/f4_action'
-// import {frcolnSearchData, frcolnFetchBranchData, changeTab, frcolnFetchCollectorData, clearState, frcolnSaveData} from './frcoln_action';
-import {LEGACY_URL} from "../../../utils/constants"
+import {saveBonusData} from './hrb02_action';
+
+
+import Hrb02EditBonus from './hrb02EditBonus';
 require('moment/locale/ru');
-const statusOptions = [
-    { key: 0, text: 'Стандарт', value: 0 },
-    { key: 1, text: 'Проблемный', value: 1 }
+
+const categoryOptions = [
+    { key: 1, text: 'Уборочная система', value: 1 },
+    { key: 2, text: 'Система очистки воды', value: 2 },
+    { key: 5, text: 'Сервис', value: 5 }
   ];
-
-
   
 
  
@@ -30,30 +29,21 @@ class Hrb02 extends Component {
     constructor(props){
 
         super(props);
-        // this.onInputChange = this.onInputChange.bind(this);
-        // this.onSearchClick = this.onSearchClick.bind(this);
-        // this.searchBranchInfo = this.searchBranchInfo.bind(this);
-        // this.handleTabChange = this.handleTabChange.bind(this);
-        // this.searchCollectorInfo = this.searchCollectorInfo.bind(this);
-        this.matnrF4ModalOpenHanlder = this.matnrF4ModalOpenHanlder.bind(this);
-        this.positionF4ModalOpenHanlder = this.positionF4ModalOpenHanlder.bind(this);
+        this.bonusEditModalOpenHandler=this.bonusEditModalOpenHandler.bind(this);
         
 
         
-        this.state={searchTerm:{bukrs:'',branchList:[],date:moment(),status:0}, companyOptions:[], branchOptions:[], matnrF4ModalOpen:false, positionF4ModalOpen:false};
+        this.state={searchTerm:{bukrs:'',selectedCategory:1,date:moment(),selectedBranchKey:null}, companyOptions:[], branchOptions:[]
+        , bonusEditModalOpen:false, selectedBonus:null, selectedBonusIndex:null};
         
-        // // ,tab2TableParams : {table:[], headers:headerObjectArray,columns:columnObjectArray, 
-        // //     pagination:true//,footers:footers//, paginationSize:5//,totalPages:undefined, currentPage:undefined//
-        //   }
-    
     }
     componentWillReceiveProps(nextProps){
-        // if(this.props.companyOptions!==nextProps.companyOptions){            
-        //     this.setState({companyOptions:nextProps.companyOptions});
-        //     if (nextProps.companyOptions && nextProps.companyOptions.size===1){
-        //         this.onInputChange(nextProps.companyOptions[0].value,'bukrs');
-        //     };
-        // }
+        if(this.props.companyOptions!==nextProps.companyOptions){            
+            this.setState({companyOptions:nextProps.companyOptions});
+            // if (nextProps.companyOptions && nextProps.companyOptions.size===1){
+            //     this.onInputChange(nextProps.companyOptions[0].value,'bukrs');
+            // };
+        }
         
     }
     componentWillMount() {
@@ -64,141 +54,190 @@ class Hrb02 extends Component {
     componentWillUnmount(){
         this.props.f4ClearBonusTypeList();
         this.props.f4ClearCurrencyList();
+        this.props.clearRedStateHrb02();
     }
     
-    
-    
-    // .filter((item) =>
-    //         {item.businessAreaId==1})
     onInputChange(value,stateFieldName){
-        // console.log(formatMoney(324234234.55));
-        // let waSearchTerm = Object.assign({}, this.state.searchTerm);
-        // if (stateFieldName==="bukrs")
-        // {               
-        //     this.props.clearState();
-        //     waSearchTerm.bukrs=value;
-        //     let branchOptions = this.props.branchOptions[value];
-        //     this.setState({searchTerm:waSearchTerm,branchOptions:branchOptions?branchOptions:[]});
-        //     // if (branchOptions!==undefined && branchOptions.length>0){
-        //     //     this.setState({searchTerm:waSearchTerm,branchOptions});
-        //     // }
-        //     // else
-        //     // {
-        //     //     this.setState({searchTerm:waSearchTerm,branchOptions:branchOptions?branchOptions:[]});
-        //     // }
+        this.props.clearRedStateHrb02();
+        let waSearchTerm = Object.assign({}, this.state.searchTerm);
+        if (stateFieldName==="bukrs")
+        {               
             
-        // }
-        // else if (stateFieldName==='branch') { 
-        //     this.props.clearState();
-        //     waSearchTerm.branchList=value;
-        //     this.setState({searchTerm:waSearchTerm});
-        // }
-        // else if (stateFieldName==='date') { 
-        //     this.props.clearState();
-        //     waSearchTerm.date=value;
-        //     this.setState({searchTerm:waSearchTerm});
-        // }
-        // else if (stateFieldName==='status') { 
-        //     this.props.clearState();
-        //     waSearchTerm.status=value;
-        //     this.setState({searchTerm:waSearchTerm});
-        // } 
+            waSearchTerm.bukrs=value;
+            waSearchTerm.selectedBranchKey=null;
+            let branchOptions = this.props.branchOptions[value].filter(item=>
+                (item.tovarCategory===this.state.searchTerm.selectedCategory)
+                ||(item.businessAreaId===this.state.searchTerm.selectedCategory) ).map(item => {
+               return {
+                   key: item.key,
+                   text: item.text,
+                   value: item.value
+               }
+               
+           });
+            this.setState({searchTerm:waSearchTerm,branchOptions:branchOptions?branchOptions:[]});
+            
+        }
+        else if (stateFieldName==='branch') { 
+            waSearchTerm.selectedBranchKey = value;
+            this.setState({searchTerm:waSearchTerm});
+            this.props.fetchBonusData(this.state.searchTerm.bukrs,value,this.state.searchTerm.date);
+        }
+        else if (stateFieldName==='category') { 
+            let branchOptions = this.props.branchOptions[this.state.searchTerm.bukrs].filter(item=>
+                 (item.tovarCategory===value)
+                 ||(item.businessAreaId===value) ).map(item => {
+                return {
+                    key: item.key,
+                    text: item.text,
+                    value: item.value
+                }
+                
+            });
+            waSearchTerm.selectedCategory=value;
+            waSearchTerm.selectedBranchKey=null;
+            this.setState({searchTerm:waSearchTerm,branchOptions:branchOptions?branchOptions:[]});
+        }
+        else if (stateFieldName==='date') { 
+            waSearchTerm.date=value;
+            waSearchTerm.selectedBranchKey=null;
+            this.setState({searchTerm:waSearchTerm});
+        }
         
         // console.log(this.state);
     }
 
 
-    // matnrF4ModalOpenHanlder= (a_boolean) => () => {
-    //     this.setState({matnrF4ModalOpen:a_boolean});
-    // }
     
-    matnrF4ModalOpenHanlder(a_boolean){
-        console.log(a_boolean);
-        this.setState({matnrF4ModalOpen:a_boolean});
-    }
-    positionF4ModalOpenHanlder(a_boolean){
-        console.log(a_boolean);
-        this.setState({positionF4ModalOpen:a_boolean});
-    }
 
-    selectItemMatnr(matnr){
-        console.log("matnr",matnr)
+
+
+    bonusEditModalOpenHandler(index,row){
+        this.setState({bonusEditModalOpen:true, selectedBonus:row, selectedBonusIndex:index});
     }
+    
+    
     
     render(){
        
         
-        const currencyOption=this.props.currencyList.map(item=>{
-            return {
-                key: item.currency,
-                text: item.currency,
-                value: item.currency,
-                text20: item.text20,
-                currency_id: item.currency_id
-            }
-        });
+        
 
-        const bonusTypeOption=this.props.bonusTypeList.map(item=>{
-            return {
-                key: item.bonus_type_id,
-                text: item.text45,
-                value: item.bonus_type_id
-            }
-        });
-
-
-
-        // let open=this.state.matnrF4ModalOpen;
-
+        
         return (
             
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
-
-                <MatnrF4Modal open={this.state.matnrF4ModalOpen} closeModal={(bool)=>this.matnrF4ModalOpenHanlder(bool)} trans={'hrb02'} 
-                selectItem={(item)=>this.selectItemMatnr(item)}/>
-
-                <PositionF4Modal open={this.state.positionF4ModalOpen} closeModal={(bool)=>this.positionF4ModalOpenHanlder(bool)} trans={'hrb02'} 
-                selectItem={(item)=>this.selectItemMatnr(item)}/>
                 <Header as="h2" block>
                     Редактировать бонус
                 </Header>
-
-                <Button icon='external' onClick={()=>this.matnrF4ModalOpenHanlder(true)} />
-                <Button icon='external' onClick={()=>this.matnrF4ModalOpenHanlder(true)} />
-                <Button icon='external' onClick={()=>this.matnrF4ModalOpenHanlder(true)} />
-                <Button icon='external' onClick={()=>this.matnrF4ModalOpenHanlder(true)} />
-                <Button icon='external' onClick={()=>this.positionF4ModalOpenHanlder(true)} />
-                <Dropdown  selection options={currencyOption} />
-                <Dropdown  selection options={bonusTypeOption} />
-                <Dropdown  selection options={bonusTypeOption} />
-                <Dropdown  selection options={bonusTypeOption} />
-                <Dropdown  selection options={bonusTypeOption} />
-
-                {/* <CurrencyF4Dropdown  trans={'hrb02'}/>
-                <CurrencyF4Dropdown  trans={'hrb02'}/> */}
                 
-                {/* <Segment >
-                    <ReactTable
-                        data={this.props.tab4OutputTable}
-                        columns={t5columns}
-                        defaultPageSize={20}
-                        showPagination={true}
-                        loadingText= 'Loading...'
-                        noDataText= 'Нет записей'
-                        className="-striped -highlight"
-                        previousText={'Пред.'}
-                        nextText={'След.'}
-                        rowsText={'строк'}
-                        pageText={'Страница'}
-                        ofText={'из'}
-                        >
-        
-                    </ReactTable>
-                </Segment> */}
+                <Grid textAlign='justified' >
+                    <Grid.Row  columns={1}>
+                        <Grid.Column mobile={16} tablet={16} computer={16}>
+                            <Button icon labelPosition='left' primary size='small' disabled={this.state.searchTerm.selectedBranchKey===null || !this.props.current} 
+                            onClick={()=> this.props.saveBonusData(this.state.searchTerm.bukrs,this.state.searchTerm.selectedBranchKey,this.state.searchTerm.date,
+                            this.props.table)}>
+                                <Icon name='save' size='large' />Сохранить
+                            </Button>                          
+                        </Grid.Column>
+                    </Grid.Row>
+                </Grid> 
+
+                <Table collapsing>
+                    <Table.Body>
+                        <Table.Row>
+                            <Table.Cell>
+                                <Icon name='folder' />
+                                Компания
+                            </Table.Cell>
+                            <Table.Cell>
+                                <Dropdown placeholder='Компания' selection options={this.state.companyOptions} value={this.state.searchTerm.bukrs} 
+                                            onChange={(e, { value }) => this.onInputChange(value,'bukrs')} />
+                            </Table.Cell>
+                            <Table.Cell>
+                                <Icon name='browser' />
+                                Категория
+                            </Table.Cell>
+                            <Table.Cell>
+                                <Dropdown selection options={categoryOptions} value={this.state.searchTerm.selectedCategory} 
+                                    onChange={(e, { value }) => this.onInputChange(value,'category')} />
+                            </Table.Cell>
+                            <Table.Cell>
+                                <Icon name='calendar' />
+                                Дата
+                            </Table.Cell>
+                            <Table.Cell>
+                                <DatePicker 
+                                            showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
+                                            selected={this.state.searchTerm.date} locale="ru"
+                                            onChange={(event) => this.onInputChange(event,"date")}
+                                            dateFormat="MM.YYYY" />
+                            </Table.Cell>
+
+
+                            
+                        </Table.Row>
+                    </Table.Body>                     
+                </Table>
+
+                <Grid textAlign='justified' >
+                    <Grid.Row  columns={2}>
+                        <Grid.Column mobile={16} tablet={2} computer={2}>
+                            <Table selectable>
+                                <Table.Header >
+                                    <Table.Row>
+                                        <Table.HeaderCell>Филиал</Table.HeaderCell>
+                                    </Table.Row>
+                                </Table.Header>  
+                                <Table.Body>
+                                    {this.state.branchOptions.map((item,key)=>{
+                                        return (
+                                        <Table.Row key={item.key}  negative={item.key===this.state.searchTerm.selectedBranchKey}
+                                        onClick={()  => this.onInputChange(item.key,'branch')} className="clickableItem">
+                                            <Table.Cell>
+                                                {item.text}
+                                            </Table.Cell>
+                                        </Table.Row>)
+                                    })}
+                                </Table.Body>                     
+                            </Table>                          
+                        </Grid.Column>
+                        <Grid.Column mobile={16} tablet={14} computer={14}> 
+                            <Hrb02OutputTable tovarCategory={this.state.searchTerm.selectedCategory} 
+                            bonusEditModalOpenHandler={(index,row)=>this.bonusEditModalOpenHandler(index,row)}
+                            table={this.props.table}
+                            current={this.props.current}
+                            />
+                        </Grid.Column>
+
+
+                    </Grid.Row>
+                         
+
+               
+
+                    
+                </Grid>
                 
+                        <Hrb02EditBonus open={this.state.bonusEditModalOpen} 
+                        bonus={this.state.selectedBonus} index={this.state.selectedBonusIndex}
+                        closeModal={()=>this.setState({bonusEditModalOpen:false})} />
 
 
+                       
+                 
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
 
+              
 
        
         
@@ -222,11 +261,13 @@ class Hrb02 extends Component {
 
 function mapStateToProps(state)
 {
-    console.log(state);
-    return { companyOptions:state.userInfo.companyOptions,branchOptions:state.userInfo.branchOptionsMarketing
-        ,currencyList: state.f4.currencyList
-        ,bonusTypeList: state.f4.bonusTypeList
+    // console.log(state);
+    return { companyOptions:state.userInfo.companyOptions,branchOptions:state.userInfo.branchOptionsAll
+        ,currencyList:state.f4.currencyList
+        ,table:state.hrb02.table
+        ,current:state.hrb02.current
     };
 }
 
-export default connect(mapStateToProps,{ notify, f4FetchCurrencyList, f4ClearCurrencyList, f4FetchBonusTypeList, f4ClearBonusTypeList }) (Hrb02);
+export default connect(mapStateToProps,{ fetchBonusData, f4FetchBonusTypeList, f4FetchCurrencyList, saveBonusData 
+    ,clearRedStateHrb02 ,f4ClearBonusTypeList, f4ClearCurrencyList}) (Hrb02);

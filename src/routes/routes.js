@@ -16,7 +16,7 @@ import LoadingPage from '../general/LoadingPage';
 import Frcoln from '../finance/report/frcoln/frcoln'
 import Hrb02 from '../hr/mainoperation/hrb02/hrb02'
 
-import NewIssuePageContainer from '../testComponent/mainoperation/newIssue/components/NewIssuePageContainer'
+import NewIssuePageContainer from '../testComponent/mainoperation/NewIssue/components/NewIssuePageContainer'
 
 const AsyncSettings = Loadable({
   loader: () =>
@@ -168,7 +168,7 @@ const AsyncVisitViewPage = Loadable({
 
 const AsyncNewIssuePageContainer = Loadable({
   loader: () =>
-    import('../testComponent/mainoperation/newIssue/components/NewIssuePageContainer' /* webpackChunkName: "NewIssuePageTest" */),
+    import('../testComponent/mainoperation/NewIssue/components/NewIssuePageContainer' /* webpackChunkName: "NewIssuePageTest" */),
   loading: () => <LoadingPage />,
 });
 

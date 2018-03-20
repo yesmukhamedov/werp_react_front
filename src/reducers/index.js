@@ -21,6 +21,7 @@ import visitReducer  from '../crm/mainoperation/visit/reducres/visitReducer'
 import { UNAUTH_USER } from '../actions/types';
 import f4_reducer from '../reference/f4/f4_reducer';
 import hrStaffReducer from '../hr/mainoperation/staff/reducers/hrStaffReducer'
+import hrb02Reducer from '../hr/mainoperation/hrb02/hrb02_reducer'
 
 const appReducer = combineReducers({
   form,
@@ -42,7 +43,8 @@ const appReducer = combineReducers({
   crmDemo: demoReducer,
   crmVisit:visitReducer,
   outCalls: outCallsTransactionReducer,
-    hrStaff:hrStaffReducer
+    hrStaff:hrStaffReducer,
+  hrb02:hrb02Reducer
 });
 
 const rootReducer = (state, action) => {
