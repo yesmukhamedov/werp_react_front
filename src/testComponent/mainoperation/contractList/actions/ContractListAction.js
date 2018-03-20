@@ -92,7 +92,7 @@ export function editOperator(contractId, operatorId) {
   };
   return (dispatch) => {
     axios.put(
-      `${ROOT_URL}/api/call-center/out-calls/${contractId}`,
+      `${ROOT_URL}/api/call-center/out-calls/operator/${contractId}`,
       { status: s, operator: o },
       { headers: { authorization: localStorage.getItem('token') } },
     ).then(({ data }) => {

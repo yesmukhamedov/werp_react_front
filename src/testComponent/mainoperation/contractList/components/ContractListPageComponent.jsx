@@ -19,6 +19,7 @@ class ContractListPageComponent extends Component {
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleResetChange = this.handleResetChange.bind(this);
   }
 
   componentWillMount() {
@@ -34,6 +35,16 @@ class ContractListPageComponent extends Component {
     this.setState({
       ...this.state,
       [dataType]: value,
+    });
+  }
+
+  handleResetChange() {
+    this.setState({
+      selectedCompany: undefined,
+      selectedBranch: undefined,
+      selectedState: undefined,
+      startDate: undefined,
+      endDate: undefined,
     });
   }
 
@@ -88,6 +99,7 @@ class ContractListPageComponent extends Component {
           startDate={this.state.startDate}
           endDate={this.state.endDate}
           inputChange={this.handleInputChange}
+          resetChange={this.handleResetChange}
           handleSearch={this.handleSearch}
         />
         <br />

@@ -81,7 +81,7 @@ class ContractListTableComponent extends Component {
           const { customer } = props.original;
           return (
             <div>
-              {customer.lastName} {customer.firstName} {customer.patronymic}
+              {customer && customer.lastName} {customer && customer.firstName} {customer && customer.patronymic}
             </div>
           );
         },
@@ -190,7 +190,7 @@ class ContractListTableComponent extends Component {
                 selectedIdx: rowInfo.index,
                 contractNumber: rowInfo.original.contractNumber,
                 contractId: rowInfo.original.id,
-                operatorId: rowInfo.original.operator.id,
+                operatorId: rowInfo.original.operator && rowInfo.original.operator.id,
               });
             },
             style: {
