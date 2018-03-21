@@ -47,3 +47,6 @@
 .clickableItem:hover{
   cursor: pointer;
 }
+.clickableIcon:hover{  
+  cursor: pointer;
+}

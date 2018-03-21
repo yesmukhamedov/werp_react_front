@@ -2,8 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Form, Dropdown, Grid, Segment, Dimmer, Loader, Label, Icon } from 'semantic-ui-react';
-import DatePicker from 'react-datepicker';
+import { Form, Dropdown, Grid, Segment, Dimmer, Loader, Label } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
 
 class TaskListSearchComponent extends Component {
@@ -66,7 +65,7 @@ class TaskListSearchComponent extends Component {
                     placeholder="Статус"
                     fluid
                     selection
-                    options={this.props.directories.statusOptions}
+                    options={Object.values(this.props.directories.statusOptions)}
                     value={this.state.selectedStatus}
                     onChange={(e, { value }) =>
                       this.handleInputChange(value, 'selectedStatus')
@@ -81,7 +80,7 @@ class TaskListSearchComponent extends Component {
                     placeholder="Приоритет"
                     fluid
                     selection
-                    options={this.props.directories.priorityOptions}
+                    options={Object.values(this.props.directories.priorityOptions)}
                     value={this.state.selectedPriority}
                     onChange={(e, { value }) =>
                       this.handleInputChange(value, 'selectedPriority')

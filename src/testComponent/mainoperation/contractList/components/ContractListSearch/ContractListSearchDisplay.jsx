@@ -80,11 +80,21 @@ const ContractListSearchDisplay = (props) => {
               </Form.Field>
             </Grid.Column>
             <Grid.Column width={2}>
-              <Form.Button
-                content="Поиск"
-                style={
-                  { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
-              />
+              <Form.Group widths="equal">
+                <Form.Button
+                  content="Поиск"
+                  type="submit"
+                  style={
+                    { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
+                />
+                <Form.Button
+                  content="Сброс"
+                  type="button"
+                  style={
+                    { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
+                  onClick={props.resetChange}
+                />
+              </Form.Group>
             </Grid.Column>
           </Grid>
         </Segment>
@@ -105,6 +115,7 @@ ContractListSearchDisplay.propTypes = {
   startDate: PropTypes.object,
   endDate: PropTypes.object,
   inputChange: PropTypes.func.isRequired,
+  resetChange: PropTypes.func.isRequired,
   handleSearch: PropTypes.func.isRequired,
   directories: PropTypes.object,
   companyOptions: PropTypes.arrayOf(PropTypes.object),

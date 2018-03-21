@@ -110,6 +110,11 @@ onTabChange(e,data){
       <ReactTable
         data={items[positionId] || []}
         columns={[
+            {
+                Header: 'Место',
+                accessor: 'placeNumber',
+                maxWidth: 100
+            },
           {
             Header: 'Компания',
             accessor: 'bukrsName',
@@ -132,12 +137,6 @@ onTabChange(e,data){
           }
         ]}
 
-        defaultSorted={[
-          {
-            id: 'ratingScore',
-            desc: true
-          }
-        ]}
         indexKey="indexKey"
         defaultPageSize={50}
         className='-striped -highlight' />

@@ -6,7 +6,9 @@ import {
         F4_FETCH_COUNTRY_LIST,F4_CLEAR_COUNTRY_LIST,
         F4_FETCH_STATE_LIST,F4_CLEAR_STATE_LIST,
         F4_FETCH_CITY_LIST,F4_CLEAR_CITY_LIST,
-        F4_FETCH_CITYREG_LIST,F4_CLEAR_CITYREG_LIST
+        F4_FETCH_CITYREG_LIST,F4_CLEAR_CITYREG_LIST,
+        F4_FETCH_BUSINESS_AREA_LIST,F4_CLEAR_BUSINESS_AREA_LIST,
+    F4_FETCH_DEPARTMENT_LIST,F4_CLEAR_DEPARTMENT_LIST
 } from './f4_action';
 
 const INITIAL_STATE={
@@ -17,7 +19,9 @@ const INITIAL_STATE={
                     countryList:[],
                     stateList:[],
                     cityList:[],
-                    cityregList:[]
+                    cityregList:[],
+                    businessAreaList:[],
+                    departmentList:[]
     };
 
 export default function (state=INITIAL_STATE, action)
@@ -57,6 +61,16 @@ export default function (state=INITIAL_STATE, action)
             return {...state,cityregList:action.cityregList};
         case F4_CLEAR_CITYREG_LIST:
             return {...state,cityregList:[]}
+
+        case F4_FETCH_BUSINESS_AREA_LIST:
+            return {...state,businessAreaList:action.businessAreaList};
+        case F4_CLEAR_BUSINESS_AREA_LIST:
+            return {...state,bussinessAreaList:[]}
+
+        case F4_FETCH_DEPARTMENT_LIST:
+            return {...state,departmentList:action.departmentList};
+        case F4_CLEAR_DEPARTMENT_LIST:
+            return {...state,departmentList:[]}
 
         default:
             return state;

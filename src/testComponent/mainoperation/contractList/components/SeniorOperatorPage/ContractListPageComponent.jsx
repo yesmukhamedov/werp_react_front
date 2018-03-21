@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import _ from 'lodash';
 import ContractListTable from './ContractListTable/ContractListTableContainer';
-import ContractListSearch from './ContractListSearch/ContractListSearchContainer';
+import ContractListSearch from '../ContractListSearch/ContractListSearchContainer';
 
 class ContractListPageComponent extends Component {
   constructor(props) {
@@ -19,6 +19,7 @@ class ContractListPageComponent extends Component {
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleResetChange = this.handleResetChange.bind(this);
   }
 
   componentWillMount() {
@@ -34,6 +35,16 @@ class ContractListPageComponent extends Component {
     this.setState({
       ...this.state,
       [dataType]: value,
+    });
+  }
+
+  handleResetChange() {
+    this.setState({
+      selectedCompany: undefined,
+      selectedBranch: undefined,
+      selectedState: undefined,
+      startDate: undefined,
+      endDate: undefined,
     });
   }
 
@@ -53,7 +64,7 @@ class ContractListPageComponent extends Component {
     const paramsDict = {
       companyId: this.state.selectedCompany,
       branchId: this.state.selectedBranch,
-      stateId: this.state.selectedState,
+      statusId: this.state.selectedState,
       startDate: startDateUtc,
       endDate: endDateUtc,
     };
@@ -88,6 +99,7 @@ class ContractListPageComponent extends Component {
           startDate={this.state.startDate}
           endDate={this.state.endDate}
           inputChange={this.handleInputChange}
+          resetChange={this.handleResetChange}
           handleSearch={this.handleSearch}
         />
         <br />

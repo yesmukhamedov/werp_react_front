@@ -4,7 +4,6 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
-import { Icon } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 
 class TaskListTableComponent extends Component {
@@ -32,13 +31,29 @@ class TaskListTableComponent extends Component {
       },
       {
         Header: 'Статус',
-        accessor: 'status',
+        accessor: 'status.id',
         maxWidth: 120,
+        Cell: (props) => {
+          const { status } = props.original;
+          return (
+            <div>
+              {status.text}
+            </div>
+          );
+        },
       },
       {
         Header: 'Приоритет',
         accessor: 'priority',
         maxWidth: 120,
+        Cell: (props) => {
+          const { priority } = props.original;
+          return (
+            <div>
+              {priority.text}
+            </div>
+          );
+        },
       },
       {
         Header: 'Тема',
@@ -61,7 +76,7 @@ class TaskListTableComponent extends Component {
           const { recipient } = props.original;
           return (
             <div>
-              {recipient.branch}/{recipient.department}/{recipient.position}
+              {recipient.branch.value}/{recipient.department.value}/{recipient.position.value}
             </div>
           );
         },

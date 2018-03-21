@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {ROOT_URL} from '../../../utils/constants';
-import { notify } from '../../../general/notification/notification_action';
+import { notify,handleError } from '../../../general/notification/notification_action';
 import { modifyLoader } from '../../../general/loader/loader_action';
 
 export const FRCOLN_SAVE_DATA = 'FRCOLN_SAVE_DATA';
@@ -42,7 +42,7 @@ export function frcolnSearchData(a_bukrs, a_branchList, a_status, a_date) {
     
         })
         .catch(error => {
-            handleError(error);               
+            handleError(error,dispatch);               
                  
         });
     }    
@@ -161,28 +161,6 @@ export function frcolnSaveData(a_bukrs, a_date) {
     }    
 
 
-}
-
-export function handleError(error,dispatch) {
-    if(error.response) {                
-        // console.log(error);
-        if (error.response.status && error.response.status===403)
-        {
-            //blog post has been created, navigate the user to the index
-            //We navigate by calling this.context.router.push with the new path to navigate to
-            this.context.router.push('/forbidden');
-        }
-        else if (error.response.status && error.response.status===500)
-        {
-            //blog post has been created, navigate the user to the index
-            //We navigate by calling this.context.router.push with the new path to navigate to
-            this.context.router.push('/forbidden');
-        }
-        dispatch(notify('error',error.response.data.message,'Ошибка'));
-        
-    } else {                
-        Promise.resolve({ error }).then(response => dispatch(notify('error',error.response.data.message,'Ошибка')));  
-    }
 }
 
 export function changeTab(idx) {

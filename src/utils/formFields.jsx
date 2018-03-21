@@ -6,7 +6,7 @@ export const DropdownFormField = (props) => {
     label,
     input,
     opts,
-    meta: { touched, error, warning },
+    meta: { touched, error },
   } = props;
   // {console.log(touched, error)}
   return (
@@ -36,7 +36,7 @@ export const TextAreaFormField = (props) => {
   const {
     label,
     input,
-    meta: { touched, error, warning },
+    meta: { touched, error },
   } = props;
   return (
     <Form.Field error={touched && error}>
@@ -62,7 +62,7 @@ export const TextInputFormField = (props) => {
   const {
     label,
     input,
-    meta: { touched, error, warning },
+    meta: { touched, error },
   } = props;
   return (
     <Form.Field error={touched && error}>
