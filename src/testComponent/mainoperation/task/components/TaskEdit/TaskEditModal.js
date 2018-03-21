@@ -69,7 +69,7 @@ class TaskEditModal extends Component {
                   name="status"
                   component={DropdownFormField}
                   label="Статус"
-                  opts={Object.values(directories.statusOptions)}
+                  opts={directories && Object.values(directories.statusOptions)}
                 />
                 <Field
                   name="priority"
@@ -85,19 +85,19 @@ class TaskEditModal extends Component {
                     name="branch"
                     component={DropdownFormField}
                     label="Филиал"
-                    opts={Object.values(directories.branchOptions)}
+                    opts={directories && Object.values(directories.branchOptions)}
                   />
                   <Field
                     name="department"
                     component={DropdownFormField}
                     label="Департамент"
-                    opts={Object.values(directories.deptOptions)}
+                    opts={directories && Object.values(directories.deptOptions)}
                   />
                   <Field
                     name="position"
                     component={DropdownFormField}
                     label="Должность"
-                    opts={Object.values(directories.posOptions)}
+                    opts={directories && Object.values(directories.posOptions)}
                   />
                 </Form.Group>
               </Segment>
