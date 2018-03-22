@@ -11,6 +11,8 @@ class TaskListSearchComponent extends Component {
     this.state = {
       selectedStatus: undefined,
       selectedPriority: undefined,
+      selectedCompany: undefined,
+      selectedBranch: undefined,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -30,15 +32,19 @@ class TaskListSearchComponent extends Component {
     this.setState({
       selectedStatus: undefined,
       selectedPriority: undefined,
+      selectedCompany: undefined,
+      selectedBranch: undefined,
     });
   }
 
   handleSearch() {
     const paramsDict = {
+      companyId: this.state.selectedCompany,
+      branchId: this.state.selectedBranch,
       statusId: this.state.selectedStatus,
       priorityId: this.state.selectedPriority,
     };
-    // console.log(paramsDict);
+    //console.log(paramsDict);
     const params = _.map(
       paramsDict,
       (val, key) =>
@@ -66,6 +72,36 @@ class TaskListSearchComponent extends Component {
               }}
             />
             <Grid stackable>
+              <Grid.Column width={3}>
+                <Form.Field>
+                  <label>Компания</label>
+                  <Dropdown
+                    placeholder="компания"
+                    fluid
+                    selection
+                    options={this.props.companyOptions}
+                    value={this.state.selectedCompany}
+                    onChange={(e, { value }) =>
+                      this.handleInputChange(value, 'selectedCompany')
+                    }
+                  />
+                </Form.Field>
+              </Grid.Column>
+              <Grid.Column width={3}>
+                <Form.Field>
+                  <label>Филиал</label>
+                  <Dropdown
+                    placeholder="филиал"
+                    fluid
+                    selection
+                    options={this.state.selectedCompany ? this.props.branchOptions[this.state.selectedCompany] : []}
+                    value={this.state.selectedBranch}
+                    onChange={(e, { value }) =>
+                      this.handleInputChange(value, 'selectedBranch')
+                    }
+                  />
+                </Form.Field>
+              </Grid.Column>
               <Grid.Column width={3}>
                 <Form.Field>
                   <label>Статус</label>
