@@ -23,74 +23,74 @@ const validate = (values) => {
   if (!values.description) {
     errors.description = 'Required';
   }
-  if (!values.status) {
-    errors.status = 'Required';
-  }
-  if (!values.priority) {
-    errors.priority = 'Required';
-  }
-  if (!values.branch) {
-    errors.branch = 'Required';
-  }
-  if (!values.position) {
-    errors.position = 'Required';
-  }
-  if (!values.department) {
-    errors.department = 'Required';
-  }
+  // if (!values.status) {
+  //   errors.status = 'Required';
+  // }
+  // if (!values.priority) {
+  //   errors.priority = 'Required';
+  // }
+  // if (!values.branch) {
+  //   errors.branch = 'Required';
+  // }
+  // if (!values.position) {
+  //   errors.position = 'Required';
+  // }
+  // if (!values.department) {
+  //   errors.department = 'Required';
+  // }
   return errors;
 };
 
-const submit = () => {
-  console.log('submitting form');
+const submit = (props) => {
+  console.log('submitting form', props);
 };
 
+const clearForm = (props) => {
+
+}
+
 const NewTaskModalDisplay = (props) => {
-  const { isOpen, open, close } = props;
+  const {
+    isOpen,
+    open,
+    close,
+    handleSubmit,
+    reset,
+    statusOptions,
+    priorityOptions,
+    branchOptions,
+    deptOptions,
+    posOptions,
+  } = props;
+  console.log("MODAL PROPS", props)
   return (
     <Modal open={isOpen} onClose={close}>
       <Modal.Header>Новая задача</Modal.Header>
       <Modal.Content>
         <Modal.Description>
-          <Form onSubmit={submit}>
+          <Form onSubmit={handleSubmit(submit)}>
             <Field
               name="title"
               component={TextInputFormField}
               label="Тема"
-              errorText="Объязательное поле для заполнения"
             />
             <Field
               name="description"
               component={TextAreaFormField}
               label="Описание задачи"
-              errorText="Объязательное поле для заполнения"
             />
             <Form.Group widths="equal">
               <Field
                 name="status"
                 component={DropdownFormField}
                 label="Статус"
-                errorText="Объязательное поле для заполнения"
-                opts={[
-                  { key: 'NEW', value: 'NEW', text: 'NEW' },
-                  {
-                    key: 'IN PROGRESS',
-                    value: 'IN PROGRESS',
-                    text: 'IN PROGRESS',
-                  },
-                ]}
+                opts={statusOptions}
               />
               <Field
                 name="priority"
                 component={DropdownFormField}
                 label="Приоритет"
-                // validate={[required, maxLength15, minLength2]}
-                // warn={alphaNumeric}
-                opts={[
-                  { key: 'LOW', value: 'LOW', text: 'LOW' },
-                  { key: 'NORMAL', value: 'NORMAL', text: 'NORMAL' },
-                  { key: 'HIGH', value: 'HIGH', text: 'HIGH' },
-                ]}
+                opts={priorityOptions}
               />
             </Form.Group>
             <Form.Group widths="equal">
@@ -98,38 +98,34 @@ const NewTaskModalDisplay = (props) => {
                 name="branch"
                 component={DropdownFormField}
                 label="Филиал"
-                // validate={[required, maxLength15, minLength2]}
-                // warn={alphaNumeric}
+                opts={branchOptions}
               />
               <Field
                 name="department"
                 component={DropdownFormField}
                 label="Департамент"
-                // validate={[required, maxLength15, minLength2]}
-                // warn={alphaNumeric}
+                opts={deptOptions}
               />
               <Field
                 name="position"
                 component={DropdownFormField}
                 label="Должность"
-                // validate={[required, maxLength15, minLength2]}
-                // warn={alphaNumeric}
+                opts={posOptions}
               />
             </Form.Group>
+            <Button color="youtube" onClick={() => { reset(); close(); }}>
+              Отменить
+            </Button>
+            <Button
+              positive
+              icon="checkmark"
+              labelPosition="right"
+              content="Создать"
+              type="submit"
+            />
           </Form>
         </Modal.Description>
       </Modal.Content>
-      <Modal.Actions>
-        <Button color="youtube" onClick={close}>
-          Отменить
-        </Button>
-        <Button
-          positive
-          icon="checkmark"
-          labelPosition="right"
-          content="Создать"
-        />
-      </Modal.Actions>
     </Modal>
   );
 };

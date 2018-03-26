@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, Accordion, Icon } from 'semantic-ui-react';
-import { fetchContractById } from '../actions';
+// import { fetchContractById, fetchTasks } from '../actions';
 import { PersonalInfoPanelDisplay } from './PersonalInfoPanel';
 import { FinancialInfoPanelDisplay } from './FinancialInfoPanel';
 import { PurchasesPanelDisplay } from './PurchasesPanel';
-import { TaskPanelComponent } from './TaskPanel';
+import { TaskPanelContainer } from './TaskPanel';
 import { OutCallDetailsPanelContainer } from './OutCallDetailsPanel';
+import OutCallPanelDisplay from './OutCallPanel/OutCallPanelDisplay';
 
 
 export default class NewIssuePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showDetailedInfo: true,
+      showDetailedInfo: false,
     };
 
     this.handleClick = this.handleClick.bind(this);
@@ -23,7 +24,8 @@ export default class NewIssuePage extends Component {
     const { id: contractId } = this.props.match.params;
     if (contractId) {
       this.props.fetchContractById(contractId);
-      console.log("thrown an action")
+      this.props.fetchTasks(contractId);
+      this.props.getTaskDirectories();
     }
   }
 
@@ -36,18 +38,16 @@ export default class NewIssuePage extends Component {
     });
   }
 
-  handleAccordionClick = 
-    () => this.handleClick('showDetailedInfo', !this.state.showDetailedInfo);
+  handleAccordionClick = () => this.handleClick('showDetailedInfo', !this.state.showDetailedInfo);
 
   render() {
-    const { contractDetails }  = this.props;
+    const { contractDetails, directories }  = this.props;
+    const { id: outCallId } = this.props.match.params;
     return (
       <Container>
-        <TaskPanelComponent />
-        <OutCallDetailsPanelContainer />
-        <Accordion fluid styled>
+        <Accordion fluid styled style={{ marginTop: '20px', marginBottom: '20px' }}>
           <Accordion.Title
-            active={0}
+            active={this.state.showDetailedInfo}
             index={0}
             onClick={ this.handleAccordionClick }
           >
@@ -60,6 +60,12 @@ export default class NewIssuePage extends Component {
             <PurchasesPanelDisplay {...contractDetails} />
           </Accordion.Content>
         </Accordion>
+        <OutCallPanelDisplay
+          outCallId={outCallId}
+          statusOptions={directories.statusOptions}
+        />
+        <TaskPanelContainer directories={directories} />
+        <OutCallDetailsPanelContainer />
       </Container>
     );
   }

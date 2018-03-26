@@ -13,7 +13,7 @@ import StaffListPage from '../hr/mainoperation/staff/components/StaffListPage'
 import ForbiddenPage from '../general/forbidden';
 import LoadingPage from '../general/LoadingPage';
 
-import NewIssuePageContainer from '../testComponent/mainoperation/NewIssue/components/NewIssuePageContainer'
+// import NewIssuePageContainer from '../testComponent/mainoperation/newIssue/components/NewIssuePageContainer'
 
 const AsyncSettings = Loadable({
   loader: () =>
@@ -165,7 +165,7 @@ const AsyncVisitViewPage = Loadable({
 
 const AsyncNewIssuePageContainer = Loadable({
   loader: () =>
-    import('../testComponent/mainoperation/NewIssue/components/NewIssuePageContainer' /* webpackChunkName: "NewIssuePageTest" */),
+    import('../testComponent/mainoperation/newIssue/components/NewIssuePageContainer' /* webpackChunkName: "NewIssuePageTest" */),
   loading: () => <LoadingPage />,
 });
 
@@ -257,7 +257,7 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/soContractListPage" component={AsyncSOContractListPage} />
       <Route path="/taskListPage" component={AsyncTaskListPage} />
       <Route path="/task/:id" component={AsyncTaskPage} />
-      <Route path="/newIssue/:id" component={NewIssuePageContainer} />
+      <Route path="/newIssue/:id" component={AsyncNewIssuePageContainer} />
         <Route path="/hr/staff/list" component={AsyncStaffListPage} />
         <Route path="/hr/staff/update/:id?" component={AsyncStaffUpdatePage} />
         <Route path="/hr/staff/view/:id" component={AsyncStaffViewPage} />

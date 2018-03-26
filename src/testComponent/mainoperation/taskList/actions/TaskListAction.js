@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { ROOT_URL } from '../../../../utils/constants';
 import { notify } from '../../../../general/notification/notification_action';
 
-export const TASK_LIST_DIRECTORIES = 'task_list_directories';
+export const TASK_LIST_DIRECTORIES = 'TASK_LIST_DIRECTORIES';
 export const CLEAR_TASK_LIST_STORE = 'clear_task_list_store';
 export const FOUND_TASKS = 'found_tasks';
 

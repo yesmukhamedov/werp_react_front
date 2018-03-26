@@ -3,24 +3,26 @@ import {
   FETCH_CONTRACT_DETAILS,
   EDIT_OUTCALL_COMMENT,
   SUBMIT_OUTCALL_COMMENT,
+  FETCH_TASKS,
+  OUTCALL_STATUS_COMMENT_UPDATED,
 } from './actionTypes';
 import { ROOT_URL } from '../../../../utils/constants';
 
-export function fetchContractById(contractId) {
+export function fetchContractById(outCallId) {
+  const req = axios.get(`${ROOT_URL}/api/call-center/out-calls/${outCallId}`, {
+    headers: {
+      authorization: localStorage.getItem('token'),
+    },
+  });
   return (dispatch) => {
-    axios
-      .get(`${ROOT_URL}/api/call-center/out-calls/${contractId}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    req
       .then(({ data }) => {
         dispatch({
           type: FETCH_CONTRACT_DETAILS,
           payload: data,
         });
       })
-      .catch(err => console.log('NEW_ISSUE_PAGE ERROR: ', err));
+      .catch(err => console.log('NEW_ISSUE_PAGE ERROR: FETCH_CONTRACT_DETAILS ', err));
   };
 }
 
@@ -51,12 +53,55 @@ export function submitNewComment(outCallId, newComment) {
           payload: data,
         });
       })
-      .catch(err => console.log('NEW_ISSUE_PAGE SUBMIT ERROR: ', err));
+      .catch(err => console.log('NEW_ISSUE_PAGE ERROR: SUBMIT_OUTCALL_COMMENT ', err));
   };
 }
 
-export function fetchTasks() {
+export function fetchTasks(outCallId) {
+  const req = axios.get(
+    `${ROOT_URL}/api/call-center/out-calls/${outCallId}/tasks`,
+    {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    },
+  );
   return (dispatch) => {
-    console.log(dispatch);
+    req
+      .then(({ data }) => {
+        dispatch({
+          type: FETCH_TASKS,
+          payload: data,
+        });
+      })
+      .catch(err => console.log('NEW_ISSUE_PAGE ERROR: FETCH_TASKS ', err));
+  };
+}
+
+export function updateOutCall(newOutCallParams) {
+  const req = axios.put(
+    `${ROOT_URL}/api/call-center/out-calls/${newOutCallParams.id}`,
+    {
+      id: newOutCallParams.id,
+      status: {
+        id: newOutCallParams.status,
+      },
+      newComment: newOutCallParams.text,
+    },
+    {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    },
+  );
+  return (dispatch) => {
+    req
+      .then(({ data }) => {
+        dispatch({
+          type: OUTCALL_STATUS_COMMENT_UPDATED,
+          payload: data,
+        });
+      })
+      .catch(err => console.log('NEW_ISSUE_PAGE ERROR: OUTCALL_STATUS_COMMENT_UPDATED ', err));
   };
 }

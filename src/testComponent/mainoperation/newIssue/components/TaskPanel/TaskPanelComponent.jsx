@@ -6,7 +6,7 @@ class TaskPanelComponent extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      modalOpen: true,
+      modalOpen: false,
     };
 
     this.open = this.open.bind(this);
@@ -22,6 +22,7 @@ class TaskPanelComponent extends PureComponent {
   }
 
   render() {
+    const { tasks } = this.props;
     return (
       <Segment>
         <Header as="h3" dividing>
@@ -40,30 +41,19 @@ class TaskPanelComponent extends PureComponent {
           </Table.Header>
 
           <Table.Body>
-            <Table.Row>
-              <Table.Cell>John Lilki</Table.Cell>
-              <Table.Cell>September 14, 2013</Table.Cell>
-              <Table.Cell>jhlilk22@yahoo.com</Table.Cell>
-              <Table.Cell>No</Table.Cell>
-              <Table.Cell>No</Table.Cell>
-              <Table.Cell>No</Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell>Jamie Harington</Table.Cell>
-              <Table.Cell>January 11, 2014</Table.Cell>
-              <Table.Cell>jamieharingonton@yahoo.com</Table.Cell>
-              <Table.Cell>Yes</Table.Cell>
-              <Table.Cell>No</Table.Cell>
-              <Table.Cell>No</Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell>Jill Lewis</Table.Cell>
-              <Table.Cell>May 11, 2014</Table.Cell>
-              <Table.Cell>jilsewris22@yahoo.com</Table.Cell>
-              <Table.Cell>Yes</Table.Cell>
-              <Table.Cell>No</Table.Cell>
-              <Table.Cell>No</Table.Cell>
-            </Table.Row>
+            {
+              tasks &&
+              tasks.map(task => (
+                <Table.Row>
+                  <Table.Cell>{task.id}</Table.Cell>
+                  <Table.Cell>{task.status.text}</Table.Cell>
+                  <Table.Cell>{task.priority.text}</Table.Cell>
+                  <Table.Cell>{task.title}</Table.Cell>
+                  <Table.Cell>?</Table.Cell>
+                  <Table.Cell>{task.modifiedAt}</Table.Cell>
+                </Table.Row>
+              ))
+            }
           </Table.Body>
 
           <Table.Footer>
@@ -86,6 +76,7 @@ class TaskPanelComponent extends PureComponent {
           isOpen={this.state.modalOpen}
           open={this.open}
           close={this.close}
+          {...this.props.directories}
         />
       </Segment>
     );

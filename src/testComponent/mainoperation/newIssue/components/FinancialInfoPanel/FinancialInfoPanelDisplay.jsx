@@ -17,7 +17,7 @@ const FinancialInfoPanelDisplay = (props) => {
     promotions,
     monthlyPayments,
     otherPurchases,
-    bankPartnerName,
+    bankPartner,
   } = financialDetails;
   return (
     <Segment raised>
@@ -61,7 +61,13 @@ const FinancialInfoPanelDisplay = (props) => {
                   control="input"
                   value={recommenderDiscount}
                 />
-                <Form.Field label="Оплата через" control="input" value={bankPartnerName} />
+                <Form.Field
+                  label="Оплата через"
+                  control="input"
+                  value={
+                    bankPartner && `${bankPartner.shortName}`
+                  }
+                />
               </Form>
             </Grid.Column>
             <Grid.Column>

@@ -1,12 +1,17 @@
 import { connect } from 'react-redux';
 import NewIssuePageComponent from './NewIssuePageComponent';
 import { fetchContractById, fetchTasks } from '../actions';
+import { getTaskDirectories } from '../../taskList/actions/TaskListAction';
 
 function mapStateToProps(state) {
-  console.log("NIPC", state)
   return {
     contractDetails: state.outCalls.newIssuePage.contractDetails,
+    directories: state.outCalls.newIssuePage.directories,
   };
 }
 
-export default connect(mapStateToProps, { fetchContractById, fetchTasks })(NewIssuePageComponent);
+export default connect(mapStateToProps, {
+  fetchContractById,
+  fetchTasks,
+  getTaskDirectories,
+})(NewIssuePageComponent);
