@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Dimmer, Loader } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import TaskInfoComponent from './TaskInfo/TaskInfoComponent';
+import TaskInfoWrapper from './TaskInfo/TaskInfoWrapper';
 import TaskHistoryDisplay from './TaskHistory/TaskHistoryDisplay';
 
 class TaskPageDisplay extends Component {
@@ -30,7 +30,7 @@ class TaskPageDisplay extends Component {
             paddingRight: '2em',
           }}
         >
-          <TaskInfoComponent {...taskDetails} />
+          <TaskInfoWrapper {...taskDetails} />
           <TaskHistoryDisplay {...taskDetails} />
         </Container>
       );

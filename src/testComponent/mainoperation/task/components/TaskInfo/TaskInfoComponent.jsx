@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Form, Container, List, Grid, Header, Button, Segment, Dimmer, Loader, Label, Icon } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
-//import TaskEditModal from '../TaskEdit/TaskEditModal';
-import TaskEditContainer from '../TaskEdit/TaskEditContainer';
 
 class TaskInfoComponent extends Component {
   constructor(props) {
@@ -34,7 +32,7 @@ class TaskInfoComponent extends Component {
   render() {
     if (this.props.id) {
       const {
-        id, title, author, status, priority, recipient, createdAt, description,
+        id, title, author, status, priority, recipient, createdAt, description, TaskEditContainer,
       } = this.props;
       const closedAt =
         (status.id === 5) ? moment(this.props.modifiedAt, 'YYYY-MM-DDTHH:mm:ssZ').format('DD.MM.YYYY, hh:mm:ss') : undefined;
@@ -162,6 +160,7 @@ TaskInfoComponent.propTypes = {
   description: PropTypes.string,
   createdAt: PropTypes.string,
   modifiedAt: PropTypes.string,
+  TaskEditContainer: PropTypes.func,
 };
 
 export default TaskInfoComponent;

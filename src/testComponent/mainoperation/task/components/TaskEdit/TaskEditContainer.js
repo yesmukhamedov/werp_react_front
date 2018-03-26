@@ -12,20 +12,9 @@ function mapStateToProps(state, props) {
     position: props.recipient.position.id,
     description: props.description,
   };
-  const fieldState = {
-    title: true,
-    status: false,
-    priority: true,
-    branch: true,
-    department: true,
-    position: true,
-    description: true,
-    comment: false,
-  };
   return {
     directories: state.taskList.directories,
     initialValues: initialData,
-    fieldState,
   };
 }
 
