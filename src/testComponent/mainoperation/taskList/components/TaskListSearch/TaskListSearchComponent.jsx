@@ -11,10 +11,13 @@ class TaskListSearchComponent extends Component {
     this.state = {
       selectedStatus: undefined,
       selectedPriority: undefined,
+      selectedCompany: undefined,
+      selectedBranch: undefined,
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleResetChange = this.handleResetChange.bind(this);
   }
 
   handleInputChange(value, dataType) {
@@ -25,12 +28,23 @@ class TaskListSearchComponent extends Component {
     });
   }
 
+  handleResetChange() {
+    this.setState({
+      selectedStatus: undefined,
+      selectedPriority: undefined,
+      selectedCompany: undefined,
+      selectedBranch: undefined,
+    });
+  }
+
   handleSearch() {
     const paramsDict = {
+      companyId: this.state.selectedCompany,
+      branchId: this.state.selectedBranch,
       statusId: this.state.selectedStatus,
       priorityId: this.state.selectedPriority,
     };
-    // console.log(paramsDict);
+    //console.log(paramsDict);
     const params = _.map(
       paramsDict,
       (val, key) =>
@@ -39,7 +53,7 @@ class TaskListSearchComponent extends Component {
       .filter(param => param)
       .join('&');
 
-    console.log('PARAMS', params);
+    //console.log('PARAMS', params);
     this.props.searchTasks(params);
   }
 
@@ -58,6 +72,36 @@ class TaskListSearchComponent extends Component {
               }}
             />
             <Grid stackable>
+              <Grid.Column width={3}>
+                <Form.Field>
+                  <label>Компания</label>
+                  <Dropdown
+                    placeholder="компания"
+                    fluid
+                    selection
+                    options={this.props.companyOptions}
+                    value={this.state.selectedCompany}
+                    onChange={(e, { value }) =>
+                      this.handleInputChange(value, 'selectedCompany')
+                    }
+                  />
+                </Form.Field>
+              </Grid.Column>
+              <Grid.Column width={3}>
+                <Form.Field>
+                  <label>Филиал</label>
+                  <Dropdown
+                    placeholder="филиал"
+                    fluid
+                    selection
+                    options={this.state.selectedCompany ? this.props.branchOptions[this.state.selectedCompany] : []}
+                    value={this.state.selectedBranch}
+                    onChange={(e, { value }) =>
+                      this.handleInputChange(value, 'selectedBranch')
+                    }
+                  />
+                </Form.Field>
+              </Grid.Column>
               <Grid.Column width={3}>
                 <Form.Field>
                   <label>Статус</label>
@@ -89,11 +133,21 @@ class TaskListSearchComponent extends Component {
                 </Form.Field>
               </Grid.Column>
               <Grid.Column width={2}>
-                <Form.Button
-                  content="Поиск"
-                  style={
-                    { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
-                />
+                <Form.Group widths="equal">
+                  <Form.Button
+                    content="Поиск"
+                    type="submit"
+                    style={
+                      { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
+                  />
+                  <Form.Button
+                    content="Сброс"
+                    type="button"
+                    style={
+                      { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
+                    onClick={this.handleResetChange}
+                  />
+                </Form.Group>
               </Grid.Column>
             </Grid>
           </Segment>

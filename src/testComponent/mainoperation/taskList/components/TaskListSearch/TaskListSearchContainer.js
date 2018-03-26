@@ -5,6 +5,8 @@ import TaskListSearchComponent from './TaskListSearchComponent';
 function mapStateToProps(state) {
   return {
     directories: state.taskList.directories,
+    companyOptions: state.userInfo.companyOptions,
+    branchOptions: state.userInfo.branchOptionsMarketing,
   };
 }
 

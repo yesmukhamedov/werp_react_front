@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Button, Header, Icon, Modal, Form, Segment } from 'semantic-ui-react';
-import { editTask } from '../../actions/TaskAction';
 import './settings.css';
 import { difference } from '../../../../../utils/helpers';
 import {
@@ -61,7 +59,7 @@ class TaskEditModal extends Component {
               <Field
                 name="title"
                 label="Тема"
-                disabled
+                readOnly={this.props.fieldState.title}
                 component={TextInputFormField}
               />
               <Form.Group widths="equal">
@@ -69,13 +67,15 @@ class TaskEditModal extends Component {
                   name="status"
                   component={DropdownFormField}
                   label="Статус"
-                  opts={Object.values(directories.statusOptions)}
+                  disabled={this.props.fieldState.status}
+                  opts={directories && Object.values(directories.statusOptions)}
                 />
                 <Field
                   name="priority"
                   component={DropdownFormField}
                   label="Приоритет"
-                  opts={Object.values(directories.priorityOptions)}
+                  disabled={this.props.fieldState.priority}
+                  opts={directories && Object.values(directories.priorityOptions)}
                 />
               </Form.Group>
               <Segment>
@@ -85,30 +85,35 @@ class TaskEditModal extends Component {
                     name="branch"
                     component={DropdownFormField}
                     label="Филиал"
-                    opts={Object.values(directories.branchOptions)}
+                    disabled={this.props.fieldState.branch}
+                    opts={directories && Object.values(directories.branchOptions)}
                   />
                   <Field
                     name="department"
                     component={DropdownFormField}
                     label="Департамент"
-                    opts={Object.values(directories.deptOptions)}
+                    disabled={this.props.fieldState.department}
+                    opts={directories && Object.values(directories.deptOptions)}
                   />
                   <Field
                     name="position"
                     component={DropdownFormField}
                     label="Должность"
-                    opts={Object.values(directories.posOptions)}
+                    disabled={this.props.fieldState.position}
+                    opts={directories && Object.values(directories.posOptions)}
                   />
                 </Form.Group>
               </Segment>
               <Field
                 name="description"
                 label="Описание"
+                readOnly={this.props.fieldState.description}
                 component={TextAreaFormField}
               />
               <Field
                 name="comment"
                 label="Примечания"
+                readOnly={this.props.fieldState.comment}
                 component={TextAreaFormField}
               />
               <div className="buttonGroup">
@@ -146,27 +151,12 @@ function validate(formProps) {
   return error;
 }
 
-function mapStateToProps(state, props) {
-  const initialData = {
-    title: props.title,
-    status: props.status.id,
-    priority: props.priority.id,
-    branch: props.recipient.branch.id,
-    department: props.recipient.department.id,
-    position: props.recipient.position.id,
-    description: props.description,
-  };
-  return {
-    directories: state.taskList.directories,
-    initialValues: initialData,
-  };
-}
-
 TaskEditModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
   editTask: PropTypes.func.isRequired,
   directories: PropTypes.object,
   modalOpen: PropTypes.bool,
+  fieldState: PropTypes.object,
 };
 
 TaskEditModal = reduxForm({
@@ -175,4 +165,4 @@ TaskEditModal = reduxForm({
   enableReinitialize: true,
 })(TaskEditModal);
 
-export default connect(mapStateToProps, { editTask })(TaskEditModal);
+export default TaskEditModal;

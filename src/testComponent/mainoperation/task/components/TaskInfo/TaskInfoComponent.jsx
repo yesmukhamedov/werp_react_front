@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import { Form, Container, List, Grid, Header, Button, Segment, Dimmer, Loader, Label, Icon } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
-import TaskEditModal from '../TaskEdit/TaskEditModal';
+//import TaskEditModal from '../TaskEdit/TaskEditModal';
+import TaskEditContainer from '../TaskEdit/TaskEditContainer';
 
 class TaskInfoComponent extends Component {
   constructor(props) {
@@ -135,13 +136,10 @@ class TaskInfoComponent extends Component {
               </Grid>
             </Form>
           </Segment>
-          <TaskEditModal
+          <TaskEditContainer
             modalOpen={this.state.modalOpen}
             handleClose={this.handleModalClose}
             {...this.props}
-          // modalType={this.state.modalType}
-          // userType={???}
-          // handleMsgOpen={this.handleMsgOpen}
           />
         </Segment.Group>
       );

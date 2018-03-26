@@ -6,6 +6,7 @@ export const DropdownFormField = (props) => {
     label,
     input,
     opts,
+    disabled,
     meta: { touched, error },
   } = props;
   // {console.log(touched, error)}
@@ -14,6 +15,7 @@ export const DropdownFormField = (props) => {
       <label>{label}</label>
       
       <Dropdown
+        disabled={disabled}
         selection
         options={opts}
         {...input}
@@ -36,6 +38,7 @@ export const TextAreaFormField = (props) => {
   const {
     label,
     input,
+    readOnly,
     meta: { touched, error },
   } = props;
   return (
@@ -43,6 +46,7 @@ export const TextAreaFormField = (props) => {
       <label>{label}</label>
       <TextArea
         {...input}
+        readOnly={readOnly}
         value={input.value}
         onChange={(e, data) => input.onChange(data.value)}
         placeholder={label}
@@ -62,6 +66,7 @@ export const TextInputFormField = (props) => {
   const {
     label,
     input,
+    readOnly,
     meta: { touched, error },
   } = props;
   return (
@@ -69,6 +74,7 @@ export const TextInputFormField = (props) => {
       <label>{label}</label>
       <Input
         {...input}
+        readOnly={readOnly}
         value={input.value}
         onChange={(e, data) => input.onChange(data.value)}
         placeholder={label}
