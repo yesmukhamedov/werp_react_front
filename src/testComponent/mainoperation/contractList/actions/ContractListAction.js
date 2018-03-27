@@ -83,13 +83,13 @@ export function searchContracts(params) {
   };
 }
 
-export function editOperator(contractId, operatorId) {
+export function editOperator(contractNumber, operatorId) {
   const o = {
     id: operatorId,
   };
   return (dispatch) => {
     axios.put(
-      `${ROOT_URL}/api/call-center/out-calls/operator/${contractId}`,
+      `${ROOT_URL}/api/call-center/out-calls/operator/${contractNumber}`,
       { operator: o },
       { headers: { authorization: localStorage.getItem('token') } },
     ).then(({ data }) => {

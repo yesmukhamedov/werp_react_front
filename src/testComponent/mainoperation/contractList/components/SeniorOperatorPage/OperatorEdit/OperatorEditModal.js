@@ -16,7 +16,7 @@ class OperatorEditModal extends Component {
   }
 
   handleFormSubmit(values) {
-    this.props.editOperator(this.props.contractId, values.operator);
+    this.props.editOperator(this.props.contractNumber, values.operator);
     this.props.handleClose();
     this.clear();
   }

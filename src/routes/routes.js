@@ -117,6 +117,12 @@ const AsyncTaskPage = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncOutCallTaskPage = Loadable({
+  loader: () =>
+    import('../testComponent/mainoperation/newIssue/components/TaskPanel/TaskView/TaskViewContainer' /* webpackChunkName: "OutCallTaskPage" */),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncRecoCurrentPage = Loadable({
         loader: () => import('../crm/mainoperation/reco/components/RecoCurrentPage' /* webpackChunkName: "RecoCurrentPage" */),
     loading: () => <LoadingPage />
@@ -230,6 +236,7 @@ const getComponent = {
     SOContractListPage: AsyncSOContractListPage,
     TaskListPage: AsyncTaskListPage,
     TaskPage: AsyncTaskPage,
+    OutCallTaskPage: AsyncOutCallTaskPage,
     NewIssuePage: AsyncNewIssuePageContainer,
     HrStaffList:AsyncStaffListPage,
     HrStaffUpdate:AsyncStaffUpdatePage,
@@ -257,6 +264,7 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/soContractListPage" component={AsyncSOContractListPage} />
       <Route path="/taskListPage" component={AsyncTaskListPage} />
       <Route path="/task/:id" component={AsyncTaskPage} />
+      <Route path="/outCallTask/:id" component={AsyncOutCallTaskPage} />
       <Route path="/newIssue/:id" component={AsyncNewIssuePageContainer} />
         <Route path="/hr/staff/list" component={AsyncStaffListPage} />
         <Route path="/hr/staff/update/:id?" component={AsyncStaffUpdatePage} />

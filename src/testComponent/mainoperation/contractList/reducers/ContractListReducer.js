@@ -12,10 +12,10 @@ export default function (state = {}, action) {
     case CONTRACT_LIST_DIRECTORIES:
       return { ...state, directories: action.payload };
     case FOUND_CONTRACTS:
-      const result = _.mapKeys(action.payload, 'id');
+      const result = _.mapKeys(action.payload, 'contractNumber');
       return { ...state, result };
     case EDIT_CONTRACT_OPERATOR:
-      const newResult = { ...state.result, [action.payload.id]: action.payload };
+      const newResult = { ...state.result, [action.payload.contractNumber]: action.payload };
       return { ...state, result: newResult };
     case CLEAR_CONSTRACT_LIST_STORE:
       return {

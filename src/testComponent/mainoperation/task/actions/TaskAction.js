@@ -51,22 +51,24 @@ export function editTask(taskId, fields) {
     const priority = { id: fields.priority };
     dirtyFields.priority = priority;
   }
-  if (fields.branch) {
-    const branchId = { branch: { id: fields.branch } };
-    dirtyFields.recipient = branchId;
-  }
-  if (fields.department) {
-    const departmentId = { department: { id: fields.department } };
-    dirtyFields.recipient = departmentId;
-  }
-  if (fields.position) {
-    const positionId = { position: { id: fields.position } };
-    dirtyFields.recipient = positionId;
+  if (fields.branch || fields.department || fields.position) {
+    dirtyFields.recipient = {};
+    if (fields.branch) {
+      const branchId = { id: fields.branch };
+      dirtyFields.recipient.branch = branchId;
+    }
+    if (fields.department) {
+      const departmentId = { id: fields.department };
+      dirtyFields.recipient.department = departmentId;
+    }
+    if (fields.position) {
+      const positionId = { id: fields.position };
+      dirtyFields.recipient.position = positionId;
+    }
   }
   if (fields.comment) {
     dirtyFields.newComment = fields.comment;
   }
-  // console.log("dirty: ", dirtyFields)
   return (dispatch) => {
     axios.put(
       `${ROOT_URL}/api/tasks/${taskId}`,

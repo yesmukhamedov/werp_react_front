@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Dimmer, Loader } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-import TaskInfoWrapper from './TaskInfo/TaskInfoWrapper';
+//import TaskInfoWrapper from './TaskInfo/TaskInfoWrapper';
 import TaskHistoryDisplay from './TaskHistory/TaskHistoryDisplay';
 
 class TaskPageDisplay extends Component {
@@ -18,7 +18,7 @@ class TaskPageDisplay extends Component {
   }
 
   render() {
-    const { taskDetails } = this.props;
+    const { taskDetails, TaskInfoWrapper } = this.props;
     if (taskDetails) {
       return (
         <Container
@@ -44,6 +44,7 @@ class TaskPageDisplay extends Component {
 }
 
 TaskPageDisplay.propTypes = {
+  TaskInfoWrapper: PropTypes.func.isRequired,
   getTaskDirectories: PropTypes.func.isRequired,
   fetchTaskById: PropTypes.func.isRequired,
   clearTaskStore: PropTypes.func.isRequired,

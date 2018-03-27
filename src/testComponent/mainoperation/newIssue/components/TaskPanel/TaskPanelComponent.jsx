@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { Link } from 'react-router-dom';
 import { Table, Button, Icon, Segment, Header } from 'semantic-ui-react';
 import { NewTaskModalDisplay } from '../NewTaskModal';
 
@@ -45,10 +46,18 @@ class TaskPanelComponent extends PureComponent {
               tasks &&
               tasks.map(task => (
                 <Table.Row>
-                  <Table.Cell>{task.id}</Table.Cell>
+                  <Table.Cell>
+                    <Link target="_blank" to={`/outCallTask/${task.id}`}>
+                      {task.id}
+                    </Link>
+                  </Table.Cell>
                   <Table.Cell>{task.status.text}</Table.Cell>
                   <Table.Cell>{task.priority.text}</Table.Cell>
-                  <Table.Cell>{task.title}</Table.Cell>
+                  <Table.Cell>
+                    <Link target="_blank" to={`/outCallTask/${task.id}`}>
+                      {task.title}
+                    </Link>
+                  </Table.Cell>
                   <Table.Cell>?</Table.Cell>
                   <Table.Cell>{task.modifiedAt}</Table.Cell>
                 </Table.Row>

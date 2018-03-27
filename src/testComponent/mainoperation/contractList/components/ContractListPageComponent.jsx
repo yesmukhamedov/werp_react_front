@@ -77,7 +77,7 @@ class ContractListPageComponent extends Component {
       .filter(param => param)
       .join('&');
 
-    console.log('PARAMS', params);
+    // console.log('PARAMS', params);
     this.props.searchContracts(params);
   }
 
