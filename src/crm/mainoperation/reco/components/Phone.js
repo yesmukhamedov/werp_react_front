@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import {Label, Icon, Modal, Tab, Table, Button, Form, Input, TextArea, Divider, Header } from 'semantic-ui-react'
 import axios from 'axios'
 import DatePicker from 'react-datepicker'
+import "react-datepicker/dist/react-datepicker.css"
 import {ROOT_URL} from '../../../../utils/constants'
 import moment from 'moment'
 import {LOCATION_OPTIONS,CALL_RESULT_DEMO,CALL_RESULT_REFUSE,CALL_RESULT_RECALL,getReasonsByResultId} from '../../../crmUtil'
