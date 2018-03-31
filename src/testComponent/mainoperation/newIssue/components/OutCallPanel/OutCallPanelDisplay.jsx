@@ -35,8 +35,16 @@ class OutCallPanelDisplay extends PureComponent {
   render() {
     const {
       outCallId,
+      outCallInfo = {},
       statusOptions,
     } = this.props;
+    const {
+      status = {},
+      operator = {},
+      createdAt,
+      modifiedAt,
+      contractNumber,
+    } = outCallInfo;
     return (
       <div>
         <Segment.Group>
@@ -44,16 +52,28 @@ class OutCallPanelDisplay extends PureComponent {
             <Header as="h3" floated="left">
               Заявка #&nbsp;
               <Label as="a" basic size="big">
-                {outCallId}
+                {outCallInfo.contractNumber}
               </Label>
             </Header>
             <Header as="h4" floated="right">
-              <Button
-                style={{ background: 'rgba(84,170,169, 1)', color: 'white' }}
-                onClick={this.open}
-              >
-                <Icon name="edit" />Редактировать
-              </Button>
+              {
+                status.text &&
+                (status.text === 'VIRGIN' ?
+                  <Button
+                    style={{ background: 'rgba(84,170,169, 1)', color: 'white' }}
+                    onClick={this.open}
+                  >
+                    <Icon name="add" />Привязать мне
+                  </Button>
+                  :
+                  <Button
+                    style={{ background: 'rgba(84,170,169, 1)', color: 'white' }}
+                    onClick={this.open}
+                  >
+                    <Icon name="edit" />Редактировать
+                  </Button>
+                )
+              }
             </Header>
           </Segment>
           <Segment padded color="grey">
@@ -67,16 +87,16 @@ class OutCallPanelDisplay extends PureComponent {
                           Дата создания:
                         </Item.Header>
                         <Item.Description>
-                          {'alksjdhflkasdf asdlfkjhasdlfk aslkdjfhaslkd f'}
+                          {new Date(createdAt).toLocaleString()}
                         </Item.Description>
                       </Item.Content>
                     </Item>
                     <Item>
                       <Item.Content verticalAlign="middle">
                         <Item.Header style={headerStyle}>
-                          Дата закрытия:
+                          Дата обновления:
                         </Item.Header>
-                        <Item.Description>{}</Item.Description>
+                        <Item.Description>{new Date(modifiedAt).toLocaleString()}</Item.Description>
                       </Item.Content>
                     </Item>
                   </Item.Group>
@@ -86,15 +106,17 @@ class OutCallPanelDisplay extends PureComponent {
                     <Item>
                       <Item.Content verticalAlign="middle">
                         <Item.Header style={headerStyle}>Открыл:</Item.Header>
-                        <Item.Description>{}</Item.Description>
+                        <Item.Description>
+                          {(status.text !== 'VIRGIN' ? `${operator.lastName} ${operator.firstName} ${operator.patronymic}` : '')}
+                        </Item.Description>
                       </Item.Content>
                     </Item>
-                    <Item>
+                    {/* <Item>
                       <Item.Content verticalAlign="middle">
                         <Item.Header style={headerStyle}>Закрыл:</Item.Header>
                         <Item.Description>{}</Item.Description>
                       </Item.Content>
-                    </Item>
+                    </Item> */}
                   </Item.Group>
                 </Grid.Column>
                 <Grid.Column>
@@ -104,7 +126,11 @@ class OutCallPanelDisplay extends PureComponent {
                         <Item.Header style={headerStyle}>
                           Статус заявки:
                         </Item.Header>
-                        <Item.Description>{}</Item.Description>
+                        <Item.Description>
+                          <Label color="blue">
+                            {status && status.text}
+                          </Label>
+                        </Item.Description>
                       </Item.Content>
                     </Item>
                   </Item.Group>
@@ -118,6 +144,7 @@ class OutCallPanelDisplay extends PureComponent {
           open={this.open}
           close={this.close}
           statusOptions={statusOptions}
+          contractNumber={contractNumber}
         />
       </div>
     );

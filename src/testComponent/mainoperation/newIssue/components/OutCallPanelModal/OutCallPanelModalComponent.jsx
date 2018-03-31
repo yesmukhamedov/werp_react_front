@@ -17,8 +17,8 @@ import {
 
 const validate = (values) => {
   const errors = {};
-  if (!values.title) {
-    errors.title = 'Required';
+  if (!values.status) {
+    errors.status = 'Required';
   }
   if (!values.description) {
     errors.description = 'Required';
@@ -36,9 +36,9 @@ class OutCallPanelModalComponent extends PureComponent {
   }
 
   handleFormSubmit(values, dispatch, props) {
-    const { outCallId, updateOutCall } = this.props;
+    const { contractNumber, updateOutCall } = this.props;
     const params = {
-      id: outCallId,
+      id: contractNumber,
       text: values.description,
       status: values.status,
     };
@@ -64,7 +64,7 @@ class OutCallPanelModalComponent extends PureComponent {
       close,
       handleSubmit,
       reset,
-      statusOptions,
+      statusOptions
     } = this.props;
     return (
       <Modal open={isOpen} onClose={close}>

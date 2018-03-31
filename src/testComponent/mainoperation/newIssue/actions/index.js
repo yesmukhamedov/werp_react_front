@@ -2,18 +2,21 @@ import axios from 'axios';
 import {
   FETCH_CONTRACT_DETAILS,
   EDIT_OUTCALL_COMMENT,
-  SUBMIT_OUTCALL_COMMENT,
+  CREATE_NEW_TASK,
   FETCH_TASKS,
   OUTCALL_STATUS_COMMENT_UPDATED,
 } from './actionTypes';
 import { ROOT_URL } from '../../../../utils/constants';
 
-export function fetchContractById(outCallId) {
-  const req = axios.get(`${ROOT_URL}/api/call-center/out-calls/${outCallId}`, {
-    headers: {
-      authorization: localStorage.getItem('token'),
+export function fetchContractById(contractNumber) {
+  const req = axios.get(
+    `${ROOT_URL}/api/call-center/out-calls/${contractNumber}`,
+    {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
     },
-  });
+  );
   return (dispatch) => {
     req
       .then(({ data }) => {
@@ -22,7 +25,8 @@ export function fetchContractById(outCallId) {
           payload: data,
         });
       })
-      .catch(err => console.log('NEW_ISSUE_PAGE ERROR: FETCH_CONTRACT_DETAILS ', err));
+      .catch(err =>
+        console.log('NEW_ISSUE_PAGE ERROR: FETCH_CONTRACT_DETAILS ', err),);
   };
 }
 
@@ -33,33 +37,51 @@ export function editNewComment(e) {
   };
 }
 
-export function submitNewComment(outCallId, newComment) {
+export function createNewTask(contractNumber, params) {
+  const req = axios.post(
+    `${ROOT_URL}/api/call-center/out-calls/${contractNumber}/tasks`,
+    {
+      title: params.title,
+      description: params.description,
+      status: {
+        id: params.status,
+      },
+      priority: {
+        id: params.priority,
+      },
+      recipient: {
+        branch: {
+          id: params.branch,
+        },
+        department: {
+          id: params.department,
+        },
+        position: {
+          id: params.position,
+        },
+      },
+    },
+    {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    },
+  );
   return (dispatch) => {
-    axios
-      .post(
-        `${ROOT_URL}/api/call-center/out-calls/${outCallId}/comments`,
-        {
-          text: newComment,
-        },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    req
       .then(({ data }) => {
         dispatch({
-          type: SUBMIT_OUTCALL_COMMENT,
+          type: CREATE_NEW_TASK,
           payload: data,
         });
       })
-      .catch(err => console.log('NEW_ISSUE_PAGE ERROR: SUBMIT_OUTCALL_COMMENT ', err));
+      .catch(err => console.log('NEW_ISSUE_PAGE ERROR: CREATE_NEW_TASK ', err));
   };
 }
 
-export function fetchTasks(outCallId) {
+export function fetchTasks(contractNumber) {
   const req = axios.get(
-    `${ROOT_URL}/api/call-center/out-calls/${outCallId}/tasks`,
+    `${ROOT_URL}/api/call-center/out-calls/${contractNumber}/tasks`,
     {
       headers: {
         authorization: localStorage.getItem('token'),
@@ -102,6 +124,10 @@ export function updateOutCall(newOutCallParams) {
           payload: data,
         });
       })
-      .catch(err => console.log('NEW_ISSUE_PAGE ERROR: OUTCALL_STATUS_COMMENT_UPDATED ', err));
+      .catch(err =>
+        console.log(
+          'NEW_ISSUE_PAGE ERROR: OUTCALL_STATUS_COMMENT_UPDATED ',
+          err,
+        ),);
   };
 }

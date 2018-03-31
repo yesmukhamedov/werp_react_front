@@ -17,7 +17,7 @@ const OutCallDetailsPanelDisplay = (props) => {
                   { item.author && `${item.author.lastName} ${item.author.firstName} ${item.author.patronymic}`}
                 </Comment.Author>
                 <Comment.Metadata>
-                  <div>{item.createdAt}</div>
+                  <div>{new Date(item.createdAt).toLocaleString()}</div>
                 </Comment.Metadata>
                 <Comment.Text>
                   <p>{item.text}</p>

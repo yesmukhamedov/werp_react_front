@@ -21,11 +21,12 @@ export default class NewIssuePage extends Component {
   }
 
   componentWillMount() {
-    const { id: contractId } = this.props.match.params;
-    if (contractId) {
-      this.props.fetchContractById(contractId);
-      this.props.fetchTasks(contractId);
-      this.props.getTaskDirectories();
+    const { id: contractNumber } = this.props.match.params;
+    const { lang } = this.props;
+    if (contractNumber) {
+      this.props.fetchContractById(contractNumber);
+      this.props.fetchTasks(contractNumber);
+      this.props.getTaskDirectories(lang);
     }
   }
 
@@ -41,8 +42,7 @@ export default class NewIssuePage extends Component {
   handleAccordionClick = () => this.handleClick('showDetailedInfo', !this.state.showDetailedInfo);
 
   render() {
-    const { contractDetails, directories }  = this.props;
-    const { id: outCallId } = this.props.match.params;
+    const { contractDetails, directories, outCallInfo, contractNumber }  = this.props;
     return (
       <Container>
         <Accordion fluid styled style={{ marginTop: '20px', marginBottom: '20px' }}>
@@ -61,7 +61,8 @@ export default class NewIssuePage extends Component {
           </Accordion.Content>
         </Accordion>
         <OutCallPanelDisplay
-          outCallId={outCallId}
+          outCallId={contractNumber}
+          outCallInfo={outCallInfo}
           statusOptions={directories.statusOptions}
         />
         <TaskPanelContainer directories={directories} />

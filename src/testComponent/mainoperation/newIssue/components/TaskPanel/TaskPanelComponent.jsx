@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import { Table, Button, Icon, Segment, Header } from 'semantic-ui-react';
-import { NewTaskModalDisplay } from '../NewTaskModal';
+import { NewTaskModalContainer } from '../NewTaskModal';
 
 class TaskPanelComponent extends PureComponent {
   constructor(props) {
@@ -81,7 +81,7 @@ class TaskPanelComponent extends PureComponent {
             </Table.Row>
           </Table.Footer>
         </Table>
-        <NewTaskModalDisplay
+        <NewTaskModalContainer
           isOpen={this.state.modalOpen}
           open={this.open}
           close={this.close}
