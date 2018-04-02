@@ -7,6 +7,8 @@ function mapStateToProps(state) {
   return {
     contractDetails: state.outCalls.newIssuePage.contractDetails,
     directories: state.outCalls.newIssuePage.directories,
+    outCallInfo: state.outCalls.newIssuePage.outCallInfo,
+    lang: state.locales.lang,
   };
 }
 

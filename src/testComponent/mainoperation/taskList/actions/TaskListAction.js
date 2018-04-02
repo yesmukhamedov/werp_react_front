@@ -42,11 +42,12 @@ export function getTaskDirectories(lang) {
           key: item.branch_id,
           value: item.branch_id,
           text: item.text45,
+          bukrs: item.bukrs,
         }));
         const deptOpts = deptList.map(item => ({
           key: item.dep_id,
           value: item.dep_id,
-          text: (lang == 'ru') ? item.name_ru : (lang === 'en' ? item.name_en : item.name_tr),
+          text: (lang === 'ru') ? item.name_ru : (lang === 'en' ? item.name_en : item.name_tr),
         }));
         const positionOpts = positionList.map(item => ({
           key: item.position_id,
