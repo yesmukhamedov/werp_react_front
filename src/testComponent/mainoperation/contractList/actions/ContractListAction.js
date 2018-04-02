@@ -21,7 +21,7 @@ function getStates() {
   });
 }
 
-export function getDirectories() {
+export function getDirectories(lang) {
   return (dispatch) => {
     axios.all([getOperators(), getStates()])
       .then(axios.spread(({ data: operatorList }, { data: stateList }) => {
@@ -33,7 +33,7 @@ export function getDirectories() {
         const stateOpts = stateList.map(item => ({
           key: item.id,
           value: item.id,
-          text: item.text,
+          text: item[lang],
         }));
         const directories = {
           operatorOptions: operatorOpts,

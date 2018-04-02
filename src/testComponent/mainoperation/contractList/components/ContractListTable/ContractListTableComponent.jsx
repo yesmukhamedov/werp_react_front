@@ -4,8 +4,9 @@ import ReactTable from 'react-table';
 import _ from 'lodash';
 import 'react-table/react-table.css';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
+// import moment from 'moment';
 import PropTypes from 'prop-types';
+import { formatDate } from '../../../../../utils/helpers';
 
 class ContractListTableComponent extends Component {
   constructor(props) {
@@ -49,7 +50,8 @@ class ContractListTableComponent extends Component {
         accessor: 'contractDate',
         Cell: (props) => {
           const { contractDate } = props.original;
-          return moment(contractDate).format('DD.MM.YYYY');
+          // return moment(contractDate).format('DD.MM.YYYY');
+          return formatDate(contractDate, 'DD.MM.YYYY');
         },
         maxWidth: 110,
       },
@@ -91,7 +93,15 @@ class ContractListTableComponent extends Component {
       },
       {
         Header: 'Состояние',
-        accessor: 'status.text',
+        accessor: 'status.id',
+        Cell: (props) => {
+          const { status } = props.original;
+          return (
+            <div>
+              {status[this.props.lang]}
+            </div>
+          );
+        },
         maxWidth: 160,
       },
       // {
@@ -104,7 +114,8 @@ class ContractListTableComponent extends Component {
         accessor: 'modifiedAt',
         Cell: (props) => {
           const { modifiedAt } = props.original;
-          return moment(modifiedAt).utc().format('DD.MM.YYYY, hh:mm:ss');
+          // return moment(modifiedAt).utc().format('DD.MM.YYYY, hh:mm:ss');
+          return formatDate(modifiedAt, 'DD.MM.YYYY, hh:mm:ss');
         },
         maxWidth: 160,
       },

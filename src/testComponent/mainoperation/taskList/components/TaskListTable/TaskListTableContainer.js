@@ -4,6 +4,7 @@ import TaskListTableComponent from './TaskListTableComponent';
 function mapStateToProps(state) {
   return {
     result: state.taskList.result,
+    lang: state.locales.lang,
   };
 }
 

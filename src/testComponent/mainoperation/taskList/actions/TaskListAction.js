@@ -31,12 +31,12 @@ export function getTaskDirectories(lang) {
         const statusOpts = statusList.map(item => ({
           key: item.id,
           value: item.id,
-          text: item.text,
+          text: item[lang],
         }));
         const priorityOpts = priorityList.map(item => ({
           key: item.id,
           value: item.id,
-          text: item.text,
+          text: item[lang],
         }));
         const branchOpts = branchList.map(item => ({
           key: item.branch_id,

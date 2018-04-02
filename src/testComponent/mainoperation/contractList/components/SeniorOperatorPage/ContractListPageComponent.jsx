@@ -23,7 +23,8 @@ class ContractListPageComponent extends Component {
   }
 
   componentWillMount() {
-    this.props.getDirectories();
+    const { lang } = this.props;
+    this.props.getDirectories(lang);
   }
 
   componentWillUnmount() {
@@ -62,9 +63,9 @@ class ContractListPageComponent extends Component {
     }
 
     const paramsDict = {
-      companyId: this.state.selectedCompany,
+      bukrs: this.state.selectedCompany,
       branchId: this.state.selectedBranch,
-      statusId: this.state.selectedState,
+      statusId: (this.state.selectedState === 1000) ? undefined : this.state.selectedState,
       startDate: startDateUtc,
       endDate: endDateUtc,
     };

@@ -39,11 +39,21 @@ export function difference(object, base) {
   }
   return changes(object, base);
 }
-export function formatTimestamptToDate (v) {
-    if (!v || v.length === 0) {
-        return ''
-    }
-    return (
-        moment.utc(v).format('DD.MM.YYYY')
-    )
+
+export function formatTimestamptToDate(v) {
+  if (!v || v.length === 0) {
+    return '';
+  }
+  return (
+    moment.utc(v).format('DD.MM.YYYY')
+  );
+}
+
+export function formatDate(v, form) {
+  if (!v || v.length === 0) {
+    return '';
+  }
+  return (
+    moment.utc(v).format(form)
+  );
 }

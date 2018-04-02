@@ -15,6 +15,7 @@ class TaskListTableComponent extends Component {
   }
 
   render() {
+    const { lang } = this.props;
     const columns = [
       {
         Header: '#',
@@ -37,7 +38,7 @@ class TaskListTableComponent extends Component {
           const { status } = props.original;
           return (
             <div>
-              {status.text}
+              {status[lang]}
             </div>
           );
         },
@@ -50,7 +51,7 @@ class TaskListTableComponent extends Component {
           const { priority } = props.original;
           return (
             <div>
-              {priority.text}
+              {priority[lang]}
             </div>
           );
         },

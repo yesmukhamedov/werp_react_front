@@ -39,10 +39,11 @@ class TaskListSearchComponent extends Component {
 
   handleSearch() {
     const paramsDict = {
-      companyId: this.state.selectedCompany,
+      bukrs: this.state.selectedCompany,
       branchId: this.state.selectedBranch,
       statusId: this.state.selectedStatus,
       priorityId: this.state.selectedPriority,
+      departmentId: 1, // "Отдел маркетинга"
     };
     //console.log(paramsDict);
     const params = _.map(
