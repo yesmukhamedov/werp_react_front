@@ -4,6 +4,7 @@ import browserHistory from '../utils/history'
 import { ROOT_URL, TOKEN_REFRESH_LIMIT } from '../utils/constants'
 import { resetLocalStorage } from '../utils/helpers'
 import { UNAUTH_USER, AUTH_ERROR, CHANGE_LANGUAGE } from '../actions/types'
+import { notify } from '../general/notification/notification_action';
 
 export default function ({ dispatch }) {
   return next => action => {
@@ -28,8 +29,13 @@ function isAlmostExpired (dispatch) {
         }
       }
       return false
-    } catch (err) {
-      signoutUser(dispatch, err.message)
+    } catch (error) {
+      if (error.response) {
+        dispatch(notify('error', error.response.data.message, 'Ошибка'));
+      } else {
+        Promise.resolve({ error }).then(response => dispatch(notify('error', error.response.data.message, 'Ошибка')));
+      }
+      signoutUser(dispatch, error.message)
     }
   } else return false
 }
