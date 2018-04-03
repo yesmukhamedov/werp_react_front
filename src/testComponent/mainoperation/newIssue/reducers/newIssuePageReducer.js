@@ -12,7 +12,9 @@ const initialState = {
   details: {},
   directories: {},
   contractDetails: {},
-  outCallInfo: {},
+  outCallInfo: {
+    status: {},
+  },
   tasks: [],
   bukrs: '0',
   comments: [],
