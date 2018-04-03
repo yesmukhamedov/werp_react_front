@@ -65,7 +65,7 @@ class ContractListPageComponent extends Component {
     const paramsDict = {
       bukrs: this.state.selectedCompany,
       branchId: this.state.selectedBranch,
-      statusId: (this.state.selectedState === 1000) ? undefined : this.state.selectedState,
+      statusId: this.state.selectedState,
       startDate: startDateUtc,
       endDate: endDateUtc,
     };
