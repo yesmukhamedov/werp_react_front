@@ -1,13 +1,14 @@
 import React from 'react';
-import { Segment, Comment, Form, Button, Message, Header } from 'semantic-ui-react';
-import faker from 'faker';
+import { Segment, Comment, Header } from 'semantic-ui-react';
+import { formatDateTime } from '../../../../../utils/helpers';
+
 
 const OutCallDetailsPanelDisplay = (props) => {
   const { comments } = props;
   return (
     <Segment raised>
-      <Comment.Group style={{ maxWidth: "100%" }}>
-        <Header as='h3' dividing>Коментарий</Header>
+      <Comment.Group style={{ maxWidth: '100%' }}>
+        <Header as="h3" dividing>Коментарий</Header>
         {
           comments &&
           comments.map((item, idx) => (
@@ -17,7 +18,7 @@ const OutCallDetailsPanelDisplay = (props) => {
                   { item.author && `${item.author.lastName} ${item.author.firstName} ${item.author.patronymic}`}
                 </Comment.Author>
                 <Comment.Metadata>
-                  <div>{new Date(item.createdAt).toLocaleString()}</div>
+                  <div>{formatDateTime(item.createdAt)}</div>
                 </Comment.Metadata>
                 <Comment.Text>
                   <p>{item.text}</p>

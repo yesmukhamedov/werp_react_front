@@ -1,12 +1,20 @@
 import axios from 'axios';
 import {
   FETCH_CONTRACT_DETAILS,
-  EDIT_OUTCALL_COMMENT,
   CREATE_NEW_TASK,
   FETCH_TASKS,
   OUTCALL_STATUS_COMMENT_UPDATED,
+  CREATE_OUTCALL,
 } from './actionTypes';
 import { ROOT_URL } from '../../../../utils/constants';
+import { notify } from '../../../../general/notification/notification_action';
+
+// .then((response) => {
+//   this.props.notify('success', 'Сервис пакет сохранен.', 'Успешно');
+// })
+// .catch((err) => {
+//   this.props.notify('error', `Не удалось сохранить новый сервис пакет! ${err}`, 'Ошибка');
+// });
 
 export function fetchContractById(contractNumber) {
   const req = axios.get(
@@ -25,15 +33,29 @@ export function fetchContractById(contractNumber) {
           payload: data,
         });
       })
-      .catch(err =>
-        console.log('NEW_ISSUE_PAGE ERROR: FETCH_CONTRACT_DETAILS ', err),);
+      .catch(err => dispatch(notify('error', `Не удалось получить детали контракта! ${err}`, 'Ошибка')));
   };
 }
 
-export function editNewComment(e) {
-  return {
-    type: EDIT_OUTCALL_COMMENT,
-    payload: e.target.value,
+export function createOutCallFromContract({ contractNumber }) {
+  const req = axios.post(
+    `${ROOT_URL}/api/call-center/out-calls/${contractNumber}`, {},
+    {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    },
+  );
+  return (dispatch) => {
+    req
+      .then(({ data }) => {
+        dispatch({
+          type: CREATE_OUTCALL,
+          payload: data,
+        });
+        dispatch(notify('success', 'Заявка успешно привязана.', 'Успешно'));
+      })
+      .catch(err => dispatch(notify('error', `Не удалось привязать заявку! ${err}`, 'Ошибка')));
   };
 }
 
@@ -74,8 +96,9 @@ export function createNewTask(contractNumber, params) {
           type: CREATE_NEW_TASK,
           payload: data,
         });
+        dispatch(notify('success', 'Задача успешно создана.', 'Успешно'));
       })
-      .catch(err => console.log('NEW_ISSUE_PAGE ERROR: CREATE_NEW_TASK ', err));
+      .catch(err => dispatch(notify('error', `Не удалось создать задачу! ${err}`, 'Ошибка')));
   };
 }
 
@@ -96,7 +119,7 @@ export function fetchTasks(contractNumber) {
           payload: data,
         });
       })
-      .catch(err => console.log('NEW_ISSUE_PAGE ERROR: FETCH_TASKS ', err));
+      .catch(err => dispatch(notify('error', `Не удалось получть список задач! ${err}`, 'Ошибка')));
   };
 }
 
@@ -123,11 +146,8 @@ export function updateOutCall(newOutCallParams) {
           type: OUTCALL_STATUS_COMMENT_UPDATED,
           payload: data,
         });
+        dispatch(notify('success', 'Заявка успешно обновлена.', 'Успешно'));
       })
-      .catch(err =>
-        console.log(
-          'NEW_ISSUE_PAGE ERROR: OUTCALL_STATUS_COMMENT_UPDATED ',
-          err,
-        ),);
+      .catch(err => dispatch(notify('error', `Не удалось обновить заявку! ${err}`, 'Ошибка')));
   };
 }

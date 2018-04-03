@@ -7,7 +7,7 @@ import { FinancialInfoPanelDisplay } from './FinancialInfoPanel';
 import { PurchasesPanelDisplay } from './PurchasesPanel';
 import { TaskPanelContainer } from './TaskPanel';
 import { OutCallDetailsPanelContainer } from './OutCallDetailsPanel';
-import OutCallPanelDisplay from './OutCallPanel/OutCallPanelDisplay';
+import { OutCallPanelContainer } from './OutCallPanel';
 
 
 export default class NewIssuePage extends Component {
@@ -60,7 +60,7 @@ export default class NewIssuePage extends Component {
             <PurchasesPanelDisplay {...contractDetails} />
           </Accordion.Content>
         </Accordion>
-        <OutCallPanelDisplay
+        <OutCallPanelContainer
           outCallId={contractNumber}
           outCallInfo={outCallInfo}
           statusOptions={directories.statusOptions}

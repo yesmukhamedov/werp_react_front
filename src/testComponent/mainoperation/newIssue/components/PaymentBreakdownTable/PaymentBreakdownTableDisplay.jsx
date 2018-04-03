@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table, Header } from 'semantic-ui-react';
+import { formatDate } from '../../../../../../src/utils/helpers';
 
 const PaymentBreakdownTableDisplay = (props) => {
   const { monthlyPayments } = props;
@@ -20,11 +21,11 @@ const PaymentBreakdownTableDisplay = (props) => {
         <Table.Body>
           {monthlyPayments &&
             monthlyPayments.map((item, idx) => (
-              <Table.Row key={item.date}>
+              <Table.Row key={idx}>
                 <Table.Cell>{idx + 1}</Table.Cell>
-                <Table.Cell>{item.date}</Table.Cell>
-                <Table.Cell>{item.amount}</Table.Cell>
-                <Table.Cell>{item.paid}</Table.Cell>
+                <Table.Cell>{formatDate(item.date, "DD.MM.YYYY")}</Table.Cell>
+                <Table.Cell>{item.paidAmount}</Table.Cell>
+                <Table.Cell>{item.toBePaidAmount}</Table.Cell>
               </Table.Row>
             ))}
         </Table.Body>

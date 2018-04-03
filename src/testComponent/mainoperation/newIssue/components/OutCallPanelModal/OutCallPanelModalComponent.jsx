@@ -18,10 +18,10 @@ import {
 const validate = (values) => {
   const errors = {};
   if (!values.status) {
-    errors.status = 'Required';
+    errors.status = 'Объязательное поле для заполнения';
   }
   if (!values.description) {
-    errors.description = 'Required';
+    errors.description = 'Объязательное поле для заполнения';
   }
   return errors;
 };
@@ -108,6 +108,5 @@ class OutCallPanelModalComponent extends PureComponent {
 
 export default reduxForm({
   form: 'outCallsEditForm',
-  nur: 'gissa',
   validate,
 })(OutCallPanelModalComponent);

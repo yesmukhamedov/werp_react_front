@@ -10,25 +10,25 @@ import {
 const validate = (values) => {
   const errors = {};
   if (!values.title) {
-    errors.title = 'Required';
+    errors.title = 'Объязательное поле для заполнения';
   }
   if (!values.description) {
-    errors.description = 'Required';
+    errors.description = 'Объязательное поле для заполнения';
   }
   if (!values.status) {
-    errors.status = 'Required';
+    errors.status = 'Объязательное поле для заполнения';
   }
   if (!values.priority) {
-    errors.priority = 'Required';
+    errors.priority = 'Объязательное поле для заполнения';
   }
   if (!values.branch) {
-    errors.branch = 'Required';
+    errors.branch = 'Объязательное поле для заполнения';
   }
   if (!values.department) {
-    errors.department = 'Required';
+    errors.department = 'Объязательное поле для заполнения';
   }
   if (!values.position) {
-    errors.position = 'Required';
+    errors.position = 'Объязательное поле для заполнения';
   }
   return errors;
 };

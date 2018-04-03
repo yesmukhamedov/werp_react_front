@@ -9,6 +9,7 @@ import {
   Label,
 } from 'semantic-ui-react';
 import { OutCallPanelModalContainer } from '../OutCallPanelModal';
+import { formatDateTime } from '../../../../../utils/helpers';
 
 const headerStyle = {
   fontSize: '14px',
@@ -37,6 +38,8 @@ class OutCallPanelDisplay extends PureComponent {
       outCallId,
       outCallInfo = {},
       statusOptions,
+      createOutCallFromContract,
+      lang,
     } = this.props;
     const {
       status = {},
@@ -61,7 +64,7 @@ class OutCallPanelDisplay extends PureComponent {
                 (status.text === 'VIRGIN' ?
                   <Button
                     style={{ background: 'rgba(84,170,169, 1)', color: 'white' }}
-                    onClick={this.open}
+                    onClick={() => createOutCallFromContract({ contractNumber })}
                   >
                     <Icon name="add" />Привязать мне
                   </Button>
@@ -86,9 +89,7 @@ class OutCallPanelDisplay extends PureComponent {
                         <Item.Header style={headerStyle}>
                           Дата создания:
                         </Item.Header>
-                        <Item.Description>
-                          {new Date(createdAt).toLocaleString()}
-                        </Item.Description>
+                        <Item.Description>{formatDateTime(createdAt)}</Item.Description>
                       </Item.Content>
                     </Item>
                     <Item>
@@ -96,7 +97,7 @@ class OutCallPanelDisplay extends PureComponent {
                         <Item.Header style={headerStyle}>
                           Дата обновления:
                         </Item.Header>
-                        <Item.Description>{new Date(modifiedAt).toLocaleString()}</Item.Description>
+                        <Item.Description>{formatDateTime(modifiedAt)}</Item.Description>
                       </Item.Content>
                     </Item>
                   </Item.Group>
@@ -128,7 +129,7 @@ class OutCallPanelDisplay extends PureComponent {
                         </Item.Header>
                         <Item.Description>
                           <Label color="blue">
-                            {status && status.text}
+                            {status && status[lang]}
                           </Label>
                         </Item.Description>
                       </Item.Content>

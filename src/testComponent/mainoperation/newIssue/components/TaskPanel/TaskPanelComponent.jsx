@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
 import { Table, Button, Icon, Segment, Header } from 'semantic-ui-react';
 import { NewTaskModalContainer } from '../NewTaskModal';
+import { formatDateTime } from '../../../../../utils/helpers';
 
 class TaskPanelComponent extends PureComponent {
   constructor(props) {
@@ -32,12 +33,12 @@ class TaskPanelComponent extends PureComponent {
         <Table structured celled>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell>Номер задачи</Table.HeaderCell>
-              <Table.HeaderCell>Статус</Table.HeaderCell>
-              <Table.HeaderCell>Приоритет</Table.HeaderCell>
+              <Table.HeaderCell collapsing>Номер задачи</Table.HeaderCell>
+              <Table.HeaderCell collapsing>Статус</Table.HeaderCell>
+              <Table.HeaderCell collapsing>Приоритет</Table.HeaderCell>
               <Table.HeaderCell>Тема</Table.HeaderCell>
               <Table.HeaderCell>Назначена</Table.HeaderCell>
-              <Table.HeaderCell>Обновлена</Table.HeaderCell>
+              <Table.HeaderCell collapsing>Обновлена</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
 
@@ -58,8 +59,8 @@ class TaskPanelComponent extends PureComponent {
                       {task.title}
                     </Link>
                   </Table.Cell>
-                  <Table.Cell>?</Table.Cell>
-                  <Table.Cell>{task.modifiedAt}</Table.Cell>
+                  <Table.Cell>{`${task.recipient.branch.value} - ${task.recipient.department.value} - ${task.recipient.position.value}`}</Table.Cell>
+                  <Table.Cell>{formatDateTime(task.modifiedAt)}</Table.Cell>
                 </Table.Row>
               ))
             }

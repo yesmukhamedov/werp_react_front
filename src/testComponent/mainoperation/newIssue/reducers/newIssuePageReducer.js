@@ -1,6 +1,9 @@
 import {
   FETCH_CONTRACT_DETAILS,
+  CREATE_OUTCALL,
+  CREATE_NEW_TASK,
   FETCH_TASKS,
+  OUTCALL_STATUS_COMMENT_UPDATED,
 } from '../actions/actionTypes';
 import { TASK_LIST_DIRECTORIES } from '../../taskList/actions/TaskListAction';
 
@@ -12,10 +15,13 @@ const initialState = {
   outCallInfo: {},
   tasks: [],
   bukrs: '0',
+  comments: [],
 };
 
 const newIssuePageReducer = (prevState = initialState, action) => {
   switch (action.type) {
+    case CREATE_OUTCALL:
+    case OUTCALL_STATUS_COMMENT_UPDATED:
     case FETCH_CONTRACT_DETAILS:
       return {
         ...prevState,
@@ -29,11 +35,17 @@ const newIssuePageReducer = (prevState = initialState, action) => {
           createdAt: action.payload.details.createdAt,
           modifiedAt: action.payload.details.modifiedAt,
         },
+        comments: action.payload.comments,
       };
     case TASK_LIST_DIRECTORIES:
       return {
         ...prevState,
         directories: action.payload,
+      };
+    case CREATE_NEW_TASK:
+      return {
+        ...prevState,
+        tasks: [...prevState.tasks, action.payload],
       };
     case FETCH_TASKS:
       return {

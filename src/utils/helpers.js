@@ -54,6 +54,10 @@ export function formatDate(v, form) {
     return '';
   }
   return (
-    moment.utc(v).format(form)
+    moment(v).format(form)
   );
+}
+
+export function formatDateTime(v) {
+  return formatDate(v, 'DD.MM.YYYY HH:MM');
 }
