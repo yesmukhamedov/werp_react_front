@@ -64,7 +64,8 @@ class OutCallPanelModalComponent extends PureComponent {
       close,
       handleSubmit,
       reset,
-      statusOptions
+      statusOptions,
+      selectedStatus,
     } = this.props;
     return (
       <Modal open={isOpen} onClose={close}>
@@ -77,6 +78,7 @@ class OutCallPanelModalComponent extends PureComponent {
                 component={DropdownFormField}
                 label="Статус"
                 opts={statusOptions}
+                value={selectedStatus}
               />
               <Field
                 name="description"
@@ -109,4 +111,5 @@ class OutCallPanelModalComponent extends PureComponent {
 export default reduxForm({
   form: 'outCallsEditForm',
   validate,
+  enableReinitialize: true,
 })(OutCallPanelModalComponent);

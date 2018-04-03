@@ -24,7 +24,7 @@ class TaskPanelComponent extends PureComponent {
   }
 
   render() {
-    const { tasks } = this.props;
+    const { tasks, lang } = this.props;
     return (
       <Segment>
         <Header as="h3" dividing>
@@ -33,7 +33,7 @@ class TaskPanelComponent extends PureComponent {
         <Table structured celled>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell collapsing>Номер задачи</Table.HeaderCell>
+              <Table.HeaderCell collapsing>#</Table.HeaderCell>
               <Table.HeaderCell collapsing>Статус</Table.HeaderCell>
               <Table.HeaderCell collapsing>Приоритет</Table.HeaderCell>
               <Table.HeaderCell>Тема</Table.HeaderCell>
@@ -52,8 +52,8 @@ class TaskPanelComponent extends PureComponent {
                       {task.id}
                     </Link>
                   </Table.Cell>
-                  <Table.Cell>{task.status.text}</Table.Cell>
-                  <Table.Cell>{task.priority.text}</Table.Cell>
+                  <Table.Cell>{task.status[lang]}</Table.Cell>
+                  <Table.Cell>{task.priority[lang]}</Table.Cell>
                   <Table.Cell>
                     <Link target="_blank" to={`/outCallTask/${task.id}`}>
                       {task.title}

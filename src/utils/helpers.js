@@ -49,15 +49,13 @@ export function formatTimestamptToDate(v) {
   );
 }
 
-export function formatDate(v, form) {
-  if (!v || v.length === 0) {
+export function formatDate(timeStr, form) {
+  if (!timeStr || timeStr.length === 0) {
     return '';
   }
-  return (
-    moment(v).format(form)
-  );
+  return moment(timeStr).local().format(form);
 }
 
-export function formatDateTime(v) {
-  return formatDate(v, 'DD.MM.YYYY HH:MM');
+export function formatDateTime(timeStr) {
+  return formatDate(timeStr, 'DD.MM.YYYY HH:mm');
 }
