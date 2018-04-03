@@ -30,7 +30,7 @@ class TaskPageDisplay extends Component {
             paddingRight: '2em',
           }}
         >
-          <TaskInfoWrapper {...taskDetails} />
+          <TaskInfoWrapper lang={this.props.lang} {...taskDetails} />
           <TaskHistoryDisplay {...taskDetails} />
         </Container>
       );

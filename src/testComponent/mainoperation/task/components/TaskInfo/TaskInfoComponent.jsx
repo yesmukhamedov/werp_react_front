@@ -32,7 +32,7 @@ class TaskInfoComponent extends Component {
   render() {
     if (this.props.id) {
       const {
-        id, title, author, status, priority, recipient, createdAt, description, TaskEditContainer,
+        id, title, author, status, priority, recipient, createdAt, description, TaskEditContainer, lang
       } = this.props;
       const closedAt =
         (status.id === 5) ? moment(this.props.modifiedAt, 'YYYY-MM-DDTHH:mm:ssZ').format('DD.MM.YYYY, hh:mm:ss') : undefined;
@@ -82,12 +82,12 @@ class TaskInfoComponent extends Component {
                     <List verticalAlign="middle" relaxed>
                       <List.Item>
                         <List.Content>
-                          {status.text}
+                          {status[lang]}
                         </List.Content>
                       </List.Item>
                       <List.Item>
                         <List.Content>
-                          {priority.text}
+                          {priority[lang]}
                         </List.Content>
                       </List.Item>
                       <List.Item>
@@ -160,6 +160,7 @@ TaskInfoComponent.propTypes = {
   description: PropTypes.string,
   createdAt: PropTypes.string,
   modifiedAt: PropTypes.string,
+  lang: PropTypes.string,
   TaskEditContainer: PropTypes.func,
 };
 

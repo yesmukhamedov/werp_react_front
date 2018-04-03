@@ -5,6 +5,7 @@ import 'react-table/react-table.css';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import PropTypes from 'prop-types';
+import { formatDate } from '../../../../../utils/helpers';
 
 class TaskListTableComponent extends Component {
   constructor(props) {
@@ -88,7 +89,8 @@ class TaskListTableComponent extends Component {
         maxWidth: 160,
         Cell: (props) => {
           const { modifiedAt } = props.original;
-          return moment(modifiedAt, 'YYYY-MM-DDTHH:mm:ssZ').utc().format('DD.MM.YYYY, hh:mm:ss');
+          // return moment(modifiedAt, 'YYYY-MM-DDTHH:mm:ssZ').utc().format('DD.MM.YYYY, hh:mm:ss');
+          return formatDate(modifiedAt, 'DD.MM.YYYY, hh:mm:ss');
         },
       },
     ];
