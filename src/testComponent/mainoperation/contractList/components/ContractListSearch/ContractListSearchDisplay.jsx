@@ -1,125 +1,188 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Form, Dropdown, Grid, Segment, Dimmer, Loader } from 'semantic-ui-react';
-import DatePicker from 'react-datepicker';
+import { Field, reduxForm } from 'redux-form';
+import moment from 'moment';
+import _ from 'lodash';
+import { Form, Grid, Segment, Dimmer, Loader } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
+import { DropdownFormField, DatePickerFormField } from '../../../../../utils/formFields';
 
-const ContractListSearchDisplay = (props) => {
-  if (props.directories && props.companyOptions) {
+class ContractListSearchDisplay extends Component {
+  constructor(props) {
+    super(props);
+
+    this.handleFormSubmit = this.handleFormSubmit.bind(this);
+  }
+
+  handleFormSubmit(values) {
+    const startDateUtc = moment.utc(values.startDate).format();
+    const endDateUtc = moment.utc(values.endDate).format();
+
+    const paramsDict = {
+      bukrs: values.company,
+      branchId: values.branch,
+      statusId: values.state,
+      startDate: startDateUtc,
+      endDate: endDateUtc,
+    };
+
+    const params = _.map(
+      paramsDict,
+      (val, key) =>
+        (val ? `${key}=${val}` : val === false ? `${key}=${val}` : ''),
+    )
+      .filter(param => param)
+      .join('&');
+
+    this.props.searchContracts(params);
+  }
+
+  handleSearch() {
+    let startDateUtc;
+    let endDateUtc;
+    if (this.state.startDate) {
+      const startVal = this.state.startDate.format('YYYY-MM-DD');
+      startDateUtc = moment.utc(startVal).format();
+    }
+
+    if (this.state.endDate) {
+      const endVal = this.state.endDate.format('YYYY-MM-DD');
+      endDateUtc = moment.utc(endVal).format();
+    }
+
+    const paramsDict = {
+      bukrs: this.state.selectedCompany,
+      branchId: this.state.selectedBranch,
+      statusId: this.state.selectedState,
+      startDate: startDateUtc,
+      endDate: endDateUtc,
+    };
+    // console.log(paramsDict);
+    const params = _.map(
+      paramsDict,
+      (val, key) =>
+        (val ? `${key}=${val}` : val === false ? `${key}=${val}` : ''),
+    )
+      .filter(param => param)
+      .join('&');
+
+    // console.log('PARAMS', params);
+    this.props.searchContracts(params);
+  }
+
+  render() {
+    const {
+      handleSubmit, pristine, submitting, reset
+    } = this.props;
+    if (this.props.directories && this.props.companyOptions) {
+      return (
+        <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
+          <Segment padded size="small">
+            <Grid stackable>
+              <Grid.Column width={3}>
+                <Field
+                  required
+                  name="company"
+                  component={DropdownFormField}
+                  label="Компания"
+                  opts={this.props.companyOptions}
+                />
+              </Grid.Column>
+              <Grid.Column width={3}>
+                <Field
+                  required
+                  name="branch"
+                  component={DropdownFormField}
+                  label="Филиал"
+                  opts={this.props.company ? this.props.branchOptions[this.props.company] : []}
+                />
+              </Grid.Column>
+              <Grid.Column width={3}>
+                <Field
+                  name="state"
+                  component={DropdownFormField}
+                  label="Состояние"
+                  opts={this.props.directories.stateOptions}
+                />
+              </Grid.Column>
+              <Grid.Column width={2}>
+                <Field
+                  required
+                  name="startDate"
+                  label="с"
+                  component={DatePickerFormField}
+                />
+              </Grid.Column>
+              <Grid.Column width={2}>
+                <Field
+                  required
+                  name="endDate"
+                  label="до"
+                  component={DatePickerFormField}
+                />
+              </Grid.Column>
+              <Grid.Column width={2}>
+                <Form.Group widths="equal">
+                  <Form.Button
+                    content="Поиск"
+                    type="submit"
+                    disabled={pristine || submitting}
+                    style={
+                      { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
+                  />
+                  <Form.Button
+                    content="Сброс"
+                    type="button"
+                    style={
+                      { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
+                    onClick={reset}
+                  />
+                </Form.Group>
+              </Grid.Column>
+            </Grid>
+          </Segment>
+        </Form>
+      );
+    }
     return (
-      <Form onSubmit={props.handleSearch}>
-        <Segment padded size="small">
-          <Grid stackable>
-            <Grid.Column width={3}>
-              <Form.Field>
-                <label>Компания</label>
-                <Dropdown
-                  placeholder="компания"
-                  fluid
-                  selection
-                  options={props.companyOptions}
-                  value={props.selectedCompany}
-                  onChange={(e, { value }) =>
-                    props.inputChange(value, 'selectedCompany')
-                  }
-                />
-              </Form.Field>
-            </Grid.Column>
-            <Grid.Column width={3}>
-              <Form.Field>
-                <label>Филиал</label>
-                <Dropdown
-                  placeholder="филиал"
-                  fluid
-                  selection
-                  options={props.selectedCompany ? props.branchOptions[props.selectedCompany] : []}
-                  value={props.selectedBranch}
-                  onChange={(e, { value }) =>
-                    props.inputChange(value, 'selectedBranch')
-                  }
-                />
-              </Form.Field>
-            </Grid.Column>
-            <Grid.Column width={3}>
-              <Form.Field>
-                <label>Состояние</label>
-                <Dropdown
-                  placeholder="состояние"
-                  fluid
-                  selection
-                  value={props.selectedState}
-                  options={props.directories.stateOptions}
-                  onChange={(e, { value }) =>
-                    props.inputChange(value, 'selectedState')
-                  }
-                />
-              </Form.Field>
-            </Grid.Column>
-            <Grid.Column width={2}>
-              <Form.Field>
-                <label>с</label>
-                <DatePicker
-                  dateFormat="DD.MM.YYYY"
-                  // dateFormat='LL'
-                  selected={props.startDate}
-                  // locale='en'
-                  onChange={date => props.inputChange(date, 'startDate')}
-                />
-              </Form.Field>
-            </Grid.Column>
-            <Grid.Column width={2}>
-              <Form.Field>
-                <label>до</label>
-                <DatePicker
-                  dateFormat="DD.MM.YYYY"
-                  // dateFormat='LL'
-                  selected={props.endDate}
-                  // locale='ru'
-                  onChange={date => props.inputChange(date, 'endDate')}
-                />
-              </Form.Field>
-            </Grid.Column>
-            <Grid.Column width={2}>
-              <Form.Group widths="equal">
-                <Form.Button
-                  content="Поиск"
-                  type="submit"
-                  style={
-                    { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
-                />
-                <Form.Button
-                  content="Сброс"
-                  type="button"
-                  style={
-                    { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
-                  onClick={props.resetChange}
-                />
-              </Form.Group>
-            </Grid.Column>
-          </Grid>
-        </Segment>
-      </Form>
+      <Dimmer active>
+        <Loader indeterminate>Fetching directories...</Loader>
+      </Dimmer>
     );
   }
-  return (
-    <Dimmer active>
-      <Loader indeterminate>Fetching directories...</Loader>
-    </Dimmer>
-  );
-};
+}
 
 ContractListSearchDisplay.propTypes = {
-  selectedCompany: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  selectedBranch: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  selectedState: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  startDate: PropTypes.object,
-  endDate: PropTypes.object,
-  inputChange: PropTypes.func.isRequired,
-  resetChange: PropTypes.func.isRequired,
-  handleSearch: PropTypes.func.isRequired,
   directories: PropTypes.object,
   companyOptions: PropTypes.arrayOf(PropTypes.object),
   branchOptions: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
 };
+
+function validate(formProps) {
+  const error = {};
+
+  if (!formProps.company) {
+    error.company = 'Выберите компанию';
+  }
+
+  if (!formProps.branch) {
+    error.branch = 'Выберите филиал';
+  }
+
+  if (!formProps.startDate) {
+    error.startDate = 'Выберите дату';
+  }
+
+  if (!formProps.endDate) {
+    error.endDate = 'Выберите дату';
+  }
+
+  return error;
+}
+
+ContractListSearchDisplay = reduxForm({
+  form: 'contractListSearchDisplay',
+  validate,
+})(ContractListSearchDisplay);
 
 export default ContractListSearchDisplay;

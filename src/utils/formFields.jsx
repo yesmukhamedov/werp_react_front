@@ -1,5 +1,8 @@
 import React from 'react';
 import { Form, TextArea, Dropdown, Input, Label } from 'semantic-ui-react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
 
 export const DropdownFormField = (props) => {
   const {
@@ -7,11 +10,12 @@ export const DropdownFormField = (props) => {
     input,
     opts,
     disabled,
+    required,
     meta: { touched, error },
   } = props;
   // {console.log(touched, error)}
   return (
-    <Form.Field error={touched && error}>
+    <Form.Field error={touched && error} required={required}>
       <label>{label}</label>
       
       <Dropdown
@@ -78,6 +82,33 @@ export const TextInputFormField = (props) => {
         value={input.value}
         onChange={(e, data) => input.onChange(data.value)}
         placeholder={label}
+      />
+      {touched &&
+        (error &&
+          <Label basic color="red" pointing>
+            {error}
+          </Label>
+        )
+      }
+    </Form.Field>
+  );
+};
+
+export const DatePickerFormField = (props) => {
+  const {
+    label,
+    input,
+    required,
+    meta: { touched, error },
+  } = props;
+  return (
+    <Form.Field error={touched && error} required={required}>
+      <label>{label}</label>
+      <DatePicker
+        {...input}
+        showYearDropdown
+        dateFormat="YYYY-MM-DD"
+        selected={input.value ? moment(input.value, 'YYYY-MM-DD') : null}
       />
       {touched &&
         (error &&

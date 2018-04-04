@@ -1,6 +1,7 @@
 /* eslint linebreak-style: ["error", "windows"] */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Field, reduxForm } from 'redux-form';
 import _ from 'lodash';
 import { Form, Dropdown, Grid, Segment, Dimmer, Loader, Label } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
