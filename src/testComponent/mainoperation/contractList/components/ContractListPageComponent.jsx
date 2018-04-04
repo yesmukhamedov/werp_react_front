@@ -17,6 +17,57 @@ class ContractListPageComponent extends Component {
     this.props.clearContractListStore();
   }
 
+  handleInputChange(value, dataType) {
+    // console.log(dataType, value)
+    this.setState({
+      ...this.state,
+      [dataType]: value,
+    });
+  }
+
+  handleResetChange() {
+    this.setState({
+      selectedCompany: undefined,
+      selectedBranch: undefined,
+      selectedState: undefined,
+      startDate: undefined,
+      endDate: undefined,
+    });
+  }
+
+  handleSearch() {
+    let startDateUtc;
+    let endDateUtc;
+    if (this.state.startDate) {
+      const startVal = this.state.startDate.format('YYYY-MM-DD');
+      startDateUtc = moment.utc(startVal).format();
+    }
+
+    if (this.state.endDate) {
+      const endVal = this.state.endDate.format('YYYY-MM-DD');
+      endDateUtc = moment.utc(endVal).format();
+    }
+
+    const paramsDict = {
+      bukrs: this.state.selectedCompany,
+      branchId: this.state.selectedBranch,
+      statusId: this.state.selectedState,
+      startDate: startDateUtc,
+      endDate: endDateUtc,
+    };
+    // console.log(paramsDict);
+    const params = _.map(
+      paramsDict,
+      (val, key) =>
+        (val ? `${key}=${val}` : val === false ? `${key}=${val}` : ''),
+    )
+      .filter(param => param)
+      .join('&');
+
+    console.log('PARAMS', params);
+    this.props.searchContracts(params);
+  }
+
   render() {
     return (
       <Container

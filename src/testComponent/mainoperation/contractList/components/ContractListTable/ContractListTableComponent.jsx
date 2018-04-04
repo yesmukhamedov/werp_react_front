@@ -39,7 +39,7 @@ class ContractListTableComponent extends Component {
         Cell: (props) => {
           const { contractNumber } = props.original;
           return (
-            <Link target="_blank" to={`/newIssue/${contractNumber}`}>
+            <Link target="_blank" to={`/crm/callcenter/ccasoc/${contractNumber}`}>
               {contractNumber}
             </Link>
           );

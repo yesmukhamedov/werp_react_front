@@ -232,15 +232,21 @@ const getComponent = {
     CrmRecoView:AsyncRecoViewPage,
     CrmDemoView:AsyncDemoViewPage,
     CrmVisitView:AsyncVisitViewPage,
-    ContractListPage: AsyncContractListPage,
-    SOContractListPage: AsyncSOContractListPage,
-    TaskListPage: AsyncTaskListPage,
-    TaskPage: AsyncTaskPage,
+    // ContractListPage: AsyncContractListPage,
+    // SOContractListPage: AsyncSOContractListPage,
+    // TaskListPage: AsyncTaskListPage,
+    // TaskPage: AsyncTaskPage,
+    // NewIssuePage: AsyncNewIssuePageContainer,
     OutCallTaskPage: AsyncOutCallTaskPage,
-    NewIssuePage: AsyncNewIssuePageContainer,
     HrStaffList:AsyncStaffListPage,
     HrStaffUpdate:AsyncStaffUpdatePage,
-    HrStaffView:AsyncStaffViewPage
+    HrStaffView:AsyncStaffViewPage,
+
+    Ccaslt: AsyncContractListPage,
+    Ccasao: AsyncSOContractListPage,
+    Ccasoc: AsyncNewIssuePageContainer,
+    Ccastskl: AsyncTaskListPage,
+    Gtskedit: AsyncTaskPage,
 }
 
 function persistPath(nextState, replace) {
@@ -260,15 +266,35 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/signin" component={Signin} />
       <Route path="/signout" component={Signout} />
       <Route path="forbidden" component={ForbiddenPage} />
-      <Route path="/contractListPage" component={AsyncContractListPage} />
-      <Route path="/soContractListPage" component={AsyncSOContractListPage} />
-      <Route path="/taskListPage" component={AsyncTaskListPage} />
-      <Route path="/task/:id" component={AsyncTaskPage} />
+
+      {/* <Route path="/contractListPage" component={AsyncContractListPage} /> */}
+      {/* <Route path="/soContractListPage" component={AsyncSOContractListPage} /> */}
+      {/* <Route path="/taskListPage" component={AsyncTaskListPage} /> */}
       <Route path="/outCallTask/:id" component={AsyncOutCallTaskPage} />
-      <Route path="/newIssue/:id" component={AsyncNewIssuePageContainer} />
-        <Route path="/hr/staff/list" component={AsyncStaffListPage} />
-        <Route path="/hr/staff/update/:id?" component={AsyncStaffUpdatePage} />
-        <Route path="/hr/staff/view/:id" component={AsyncStaffViewPage} />
+      {/* <Route path="/newIssue/:id" component={AsyncNewIssuePageContainer} /> */}
+      {/* <Route path="/task/:id" component={AsyncTaskPage} /> */}
+      
+      <Route path="/hr/staff/list" component={AsyncStaffListPage} />
+      <Route path="/hr/staff/update/:id?" component={AsyncStaffUpdatePage} />
+      <Route path="/hr/staff/view/:id" component={AsyncStaffViewPage} />
+      
+      {/* <Route path="/crm/callcenter/ccaslt" component={AsyncContractListPage} />
+      <Route path="/crm/callcenter/ccasao" component={AsyncSOContractListPage} />
+      <Route path="/crm/callcenter/ccasoc/:id" component={AsyncNewIssuePageContainer} />
+      <Route path="/crm/callcenter/ccastlm" component={AsyncTaskListPage} />
+      <Route path="/crm/callcenter/gtskedit" component={AsyncTaskPage} /> */}
+
+
+      {
+        /*
+        +868 CCASLT /crm/callcenter/ccaslt Ccaslt Список дог. после продажи
+        +873 CCASAO /crm/callcenter/ccasao Ccasao Список дог. после продажи (стар. опер)
+        +869 CCASOC /crm/callcenter/ccasoc Ccasoc Создать заявку
+        ?870 CCASNT /crm/callcenter/ccasnt Ccasnt Создать задачу
+        +871 GTSKEDIT /general/gtskedit Gtskedit Редактировать задачу
+        +872 CCASTLM /crm/callcenter/ccastskl Ccastlm Список задач (маркетинг)
+        */
+      }
       
 
       {/* dynamically generated URLs  */}

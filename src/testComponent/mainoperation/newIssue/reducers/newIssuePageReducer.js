@@ -32,6 +32,7 @@ const newIssuePageReducer = (prevState = initialState, action) => {
         bukrs: action.payload.details.bukrs,
         outCallInfo: {
           contractNumber: action.payload.details.contractNumber,
+          outCallId: action.payload.details.id,
           status: action.payload.details.status,
           operator: action.payload.details.operator,
           createdAt: action.payload.details.createdAt,

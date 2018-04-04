@@ -55,7 +55,7 @@ class OutCallPanelDisplay extends PureComponent {
             <Header as="h3" floated="left">
               Заявка #&nbsp;
               <Label as="a" basic size="big">
-                {outCallInfo.contractNumber}
+                {outCallInfo.outCallId}
               </Label>
             </Header>
             <Header as="h4" floated="right">

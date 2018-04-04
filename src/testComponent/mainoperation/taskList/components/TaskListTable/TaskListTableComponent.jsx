@@ -25,7 +25,7 @@ class TaskListTableComponent extends Component {
         Cell: (props) => {
           const { id } = props.original;
           return (
-            <Link target="_blank" to={`/task/${id}`}>
+            <Link target="_blank" to={`/general/gtskedit/${id}`}>
               {id}
             </Link>
           );
