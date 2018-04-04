@@ -3,7 +3,7 @@ import { formValueSelector } from 'redux-form';
 import ContractListSearchDisplay from './ContractListSearchDisplay';
 import { searchContracts } from '../../actions/ContractListAction';
 
-const selector = formValueSelector('contractListSearchDisplay')
+const selector = formValueSelector('contractListSearchDisplay');
 
 function mapStateToProps(state) {
   const company = selector(state, 'company');

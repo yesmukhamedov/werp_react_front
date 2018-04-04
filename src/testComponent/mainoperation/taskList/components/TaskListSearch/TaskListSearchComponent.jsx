@@ -5,45 +5,46 @@ import { Field, reduxForm } from 'redux-form';
 import _ from 'lodash';
 import { Form, Dropdown, Grid, Segment, Dimmer, Loader, Label } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
+import { DropdownFormField } from '../../../../../utils/formFields';
 
 class TaskListSearchComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      selectedStatus: undefined,
-      selectedPriority: undefined,
-      selectedCompany: undefined,
-      selectedBranch: undefined,
-    };
+    // this.state = {
+    //   selectedStatus: undefined,
+    //   selectedPriority: undefined,
+    //   selectedCompany: undefined,
+    //   selectedBranch: undefined,
+    // };
 
-    this.handleInputChange = this.handleInputChange.bind(this);
+    // this.handleInputChange = this.handleInputChange.bind(this);
+    // this.handleResetChange = this.handleResetChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
-    this.handleResetChange = this.handleResetChange.bind(this);
   }
 
-  handleInputChange(value, dataType) {
-    // console.log(dataType, value)
-    this.setState({
-      ...this.state,
-      [dataType]: value,
-    });
-  }
+  // handleInputChange(value, dataType) {
+  //   // console.log(dataType, value)
+  //   this.setState({
+  //     ...this.state,
+  //     [dataType]: value,
+  //   });
+  // }
 
-  handleResetChange() {
-    this.setState({
-      selectedStatus: undefined,
-      selectedPriority: undefined,
-      selectedCompany: undefined,
-      selectedBranch: undefined,
-    });
-  }
+  // handleResetChange() {
+  //   this.setState({
+  //     selectedStatus: undefined,
+  //     selectedPriority: undefined,
+  //     selectedCompany: undefined,
+  //     selectedBranch: undefined,
+  //   });
+  // }
 
-  handleSearch() {
+  handleSearch(values) {
     const paramsDict = {
-      bukrs: this.state.selectedCompany,
-      branchId: this.state.selectedBranch,
-      statusId: this.state.selectedStatus,
-      priorityId: this.state.selectedPriority,
+      bukrs: values.company,
+      branchId: values.branch,
+      statusId: values.status,
+      priorityId: values.priority,
       departmentId: 1, // "Отдел маркетинга"
     };
     //console.log(paramsDict);
@@ -60,9 +61,12 @@ class TaskListSearchComponent extends Component {
   }
 
   render() {
-    if (this.props.directories) {
+    const {
+      handleSubmit, pristine, submitting, reset, directories, companyOptions, branchOptions
+    } = this.props;
+    if (directories) {
       return (
-        <Form onSubmit={this.handleSearch}>
+        <Form onSubmit={handleSubmit(this.handleSearch)}>
           <Segment padded size="small">
             <Label
               as="a"
@@ -75,70 +79,45 @@ class TaskListSearchComponent extends Component {
             />
             <Grid stackable>
               <Grid.Column width={3}>
-                <Form.Field>
-                  <label>Компания</label>
-                  <Dropdown
-                    placeholder="компания"
-                    fluid
-                    selection
-                    options={this.props.companyOptions}
-                    value={this.state.selectedCompany}
-                    onChange={(e, { value }) =>
-                      this.handleInputChange(value, 'selectedCompany')
-                    }
-                  />
-                </Form.Field>
+                <Field
+                  required
+                  name="company"
+                  component={DropdownFormField}
+                  label="Компания"
+                  opts={companyOptions}
+                />
               </Grid.Column>
               <Grid.Column width={3}>
-                <Form.Field>
-                  <label>Филиал</label>
-                  <Dropdown
-                    placeholder="филиал"
-                    fluid
-                    selection
-                    options={this.state.selectedCompany ? this.props.branchOptions[this.state.selectedCompany] : []}
-                    value={this.state.selectedBranch}
-                    onChange={(e, { value }) =>
-                      this.handleInputChange(value, 'selectedBranch')
-                    }
-                  />
-                </Form.Field>
+                <Field
+                  required
+                  name="branch"
+                  component={DropdownFormField}
+                  label="Филиал"
+                  opts={this.props.company ? branchOptions[this.props.company] : []}
+                />
               </Grid.Column>
               <Grid.Column width={3}>
-                <Form.Field>
-                  <label>Статус</label>
-                  <Dropdown
-                    placeholder="Статус"
-                    fluid
-                    selection
-                    options={Object.values(this.props.directories.statusOptions)}
-                    value={this.state.selectedStatus}
-                    onChange={(e, { value }) =>
-                      this.handleInputChange(value, 'selectedStatus')
-                    }
-                  />
-                </Form.Field>
+                <Field
+                  name="status"
+                  component={DropdownFormField}
+                  label="Статус"
+                  opts={Object.values(directories.statusOptions)}
+                />
               </Grid.Column>
               <Grid.Column width={3}>
-                <Form.Field>
-                  <label>Приоритет</label>
-                  <Dropdown
-                    placeholder="Приоритет"
-                    fluid
-                    selection
-                    options={Object.values(this.props.directories.priorityOptions)}
-                    value={this.state.selectedPriority}
-                    onChange={(e, { value }) =>
-                      this.handleInputChange(value, 'selectedPriority')
-                    }
-                  />
-                </Form.Field>
+                <Field
+                  name="priority"
+                  component={DropdownFormField}
+                  label="Приоритет"
+                  opts={Object.values(directories.priorityOptions)}
+                />
               </Grid.Column>
               <Grid.Column width={2}>
                 <Form.Group widths="equal">
                   <Form.Button
                     content="Поиск"
                     type="submit"
+                    disabled={pristine || submitting}
                     style={
                       { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
                   />
@@ -147,7 +126,7 @@ class TaskListSearchComponent extends Component {
                     type="button"
                     style={
                       { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
-                    onClick={this.handleResetChange}
+                    onClick={reset}
                   />
                 </Form.Group>
               </Grid.Column>
@@ -168,5 +147,24 @@ TaskListSearchComponent.propTypes = {
   searchTasks: PropTypes.func.isRequired,
   directories: PropTypes.object,
 };
+
+function validate(formProps) {
+  const error = {};
+
+  if (!formProps.company) {
+    error.company = 'Выберите компанию';
+  }
+
+  if (!formProps.branch) {
+    error.branch = 'Выберите филиал';
+  }
+
+  return error;
+}
+
+TaskListSearchComponent = reduxForm({
+  form: 'taskListSearchComponent',
+  validate,
+})(TaskListSearchComponent);
 
 export default TaskListSearchComponent;
