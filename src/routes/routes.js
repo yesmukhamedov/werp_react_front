@@ -6,9 +6,6 @@ import MainPanel from '../components/MainPanel/MainPanel';
 import Signin from '../components/Auth/Signin';
 import Signout from '../components/Auth/Signout';
 
-import ViewStaff from '../hr/mainoperation/staff/components/ViewStaff';
-import DemoListPage from '../crm/mainoperation/demo/components/DemoListPage';
-import StaffListPage from '../hr/mainoperation/staff/components/StaffListPage'
 
 import ForbiddenPage from '../general/forbidden';
 import LoadingPage from '../general/LoadingPage';
@@ -168,6 +165,11 @@ const AsyncVisitViewPage = Loadable({
     loading: () => <LoadingPage />
 });
 
+const AsyncKpiSettingPage = Loadable({
+        loader: () => import('../crm/mainoperation/kpi/components/KpiSettingPage' /* webpackChunkName: "KpiSettingPage" */),
+    loading: () => <LoadingPage />
+});
+
 
 const AsyncNewIssuePageContainer = Loadable({
   loader: () =>
@@ -273,11 +275,16 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/outCallTask/:id" component={AsyncOutCallTaskPage} />
       {/* <Route path="/newIssue/:id" component={AsyncNewIssuePageContainer} /> */}
       {/* <Route path="/task/:id" component={AsyncTaskPage} /> */}
-      
+
       <Route path="/hr/staff/list" component={AsyncStaffListPage} />
       <Route path="/hr/staff/update/:id?" component={AsyncStaffUpdatePage} />
       <Route path="/hr/staff/view/:id" component={AsyncStaffViewPage} />
-      
+      <Route path="/newIssue/:id" component={AsyncNewIssuePageContainer} />
+        <Route path="/hr/staff/list" component={AsyncStaffListPage} />
+        <Route path="/hr/staff/update/:id?" component={AsyncStaffUpdatePage} />
+        <Route path="/hr/staff/view/:id" component={AsyncStaffViewPage} />
+        <Route path="/crm/kpi/setting" component={AsyncKpiSettingPage} />
+
       {/* <Route path="/crm/callcenter/ccaslt" component={AsyncContractListPage} />
       <Route path="/crm/callcenter/ccasao" component={AsyncSOContractListPage} />
       <Route path="/crm/callcenter/ccasoc/:id" component={AsyncNewIssuePageContainer} />
@@ -295,7 +302,7 @@ const generateRoutes = (transactionRoutes) => {
         +872 CCASTLM /crm/callcenter/ccastskl Ccastlm Список задач (маркетинг)
         */
       }
-      
+
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
