@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Header,Container,Segment,Form,Table,Loader,Image } from 'semantic-ui-react'
+import { Header,Container,Table,Image } from 'semantic-ui-react'
 import moment from 'moment'
 const hiddenTable = {
     display:'none'

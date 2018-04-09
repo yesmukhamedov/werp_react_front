@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {Link} from 'react-router-dom'
 import { Header,Container,Segment,Form,Table,Loader } from 'semantic-ui-react'
 import LazyPagination from '../../../../general/pagination/LazyPagination'
-import DatePicker from "react-datepicker";
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
 import moment from 'moment';
 import DemoResultLabel from './DemoResultLabel';
 import {fetchDemoArchive,fetchDemoResults,fetchGroupDealers} from '../actions/demoAction'
@@ -25,7 +26,9 @@ class DemoArchivePage extends Component{
                 appointedBy:0,
                 resultId:'',
                 dateFrom:null,
-                dateTo:null
+                dateTo:null,
+                saleDateFr: null,
+                saleDateTo: null
             },
             loading:false
         }
@@ -44,7 +47,7 @@ class DemoArchivePage extends Component{
         temp.push('perPage=' + this.state.perPage);
         for(let key in searchModel){
             if(searchModel.hasOwnProperty(key)){
-                if(key == 'dateFrom' || key == 'dateTo'){
+                if(key === 'dateFrom' || key === 'dateTo' || key === 'saleDateFr' || key === 'saleDateTo'){
                     if(searchModel[key]){
                         temp.push(key + '=' + searchModel[key]);
                     }
@@ -97,7 +100,7 @@ class DemoArchivePage extends Component{
                     <label>Дата С</label>
                     <DatePicker
                         label=""
-                        placeholderText={'Дата-время звонка'}
+                        placeholderText={'Дата-время демо'}
                         showMonthDropdown showYearDropdown dropdownMode="select"
                         dateFormat="DD.MM.YYYY"
                         selected={this.state.searchModel.dateFrom?moment(this.state.searchModel.dateFrom):null}
@@ -108,11 +111,36 @@ class DemoArchivePage extends Component{
                     <label>Дата По</label>
                     <DatePicker
                         label=""
-                        placeholderText={'Дата-время звонка'}
+                        placeholderText={'Дата-время демо'}
                         showMonthDropdown showYearDropdown dropdownMode="select"
                         dateFormat="DD.MM.YYYY"
                         selected={this.state.searchModel.dateTo?moment(this.state.searchModel.dateTo):null}
                         onChange={(v) => this.handleChangeDate('dateTo',v)}
+                    />
+                </Form.Field>
+            </Form.Group>
+
+            <Form.Group>
+                <Form.Field>
+                    <label>Дата продажи С</label>
+                    <DatePicker
+                        label=""
+                        placeholderText={'Дата продажи С'}
+                        showMonthDropdown showYearDropdown dropdownMode="select"
+                        dateFormat="DD.MM.YYYY"
+                        selected={this.state.searchModel.saleDateFr?moment(this.state.searchModel.saleDateFr):null}
+                        onChange={(v) => this.handleChangeDate('saleDateFr',v)}
+                    />
+                </Form.Field>
+                <Form.Field>
+                    <label>Дата продажи По</label>
+                    <DatePicker
+                        label=""
+                        placeholderText={'Дата продажи По'}
+                        showMonthDropdown showYearDropdown dropdownMode="select"
+                        dateFormat="DD.MM.YYYY"
+                        selected={this.state.searchModel.saleDateTo?moment(this.state.searchModel.saleDateTo):null}
+                        onChange={(v) => this.handleChangeDate('saleDateTo',v)}
                     />
                 </Form.Field>
                 <Form.Field>
