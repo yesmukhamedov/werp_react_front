@@ -212,7 +212,7 @@ export function toggleStaffListModal(flag){
     }
 }
 
-export function toggleSalaryFormtModal(flag){
+export function toggleSalaryFormModal(flag){
     return {
         type: HR_SALARY_FORM_MODAL_OPENED,
         payload: flag

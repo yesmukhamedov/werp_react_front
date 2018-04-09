@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import { Header, Container, Button, Segment, Grid, Table, Divider, Card,Modal } from 'semantic-ui-react'
+import ReactToPrint from "react-to-print";
 import {ROOT_URL} from '../../../../utils/constants'
 import DemoUpdateModal from './DemoUpdateModal'
 import DemoCreateModal from './DemoCreateModal'
@@ -9,6 +10,7 @@ import { connect } from 'react-redux'
 import ChildDemosTable from './ChildDemosTable'
 import ChildRecosTable from '../../reco/components/ChildRecosTable'
 import DemoViewTable from './DemoViewTable'
+import DemoPrintPage from './DemoPrintPage'
 
 class DemoViewPage extends Component {
   constructor (props) {
@@ -18,13 +20,16 @@ class DemoViewPage extends Component {
       callRefuseOptions: [],
       items: [],
       createModalOpened: false,
-        showDeleteModal:false
+        showDeleteModal:false,
+        showPrintPage:false
     }
 
     this.renderActions = this.renderActions.bind(this)
     this.openUpdateModal = this.openUpdateModal.bind(this)
     this.openCreateModal = this.openCreateModal.bind(this)
     this.onCloseCreateModal = this.onCloseCreateModal.bind(this)
+      this.onBeforePrint = this.onBeforePrint.bind(this)
+      this.onAfterPrint = this.onAfterPrint.bind(this)
   }
 
   componentWillMount () {
@@ -61,8 +66,10 @@ class DemoViewPage extends Component {
             <Link className={'ui icon button'} to={`/crm/demo/archive`}>
                 В Архив
             </Link>
-
-            <Button onClick={() => window.open(`${ROOT_URL}` + '/crm/demo/print/' + demo.id, 'Print', 'width=1000,height=500')}>Печать</Button>
+            <ReactToPrint
+                trigger={() => <Button>Печать</Button>}
+                content={() => this.componentRef}
+            />
             <Button onClick={this.openUpdateModal}>Редактировать</Button>
             {notDemoDone ?'':<Link className={'ui icon button'} to={`/crm/reco/create/demo/` + demo.id}>
                     Добавить рекомендации
@@ -70,6 +77,20 @@ class DemoViewPage extends Component {
             {notDemoDone?'':<Button onClick={this.openCreateModal}>Добавить демо</Button>}
             <Button color={'red'} onClick={() => this.deleteModalTrigger(true)}>Удалить</Button>
         </div>
+    }
+
+    onBeforePrint(){
+        this.setState({
+            ...this.state,
+            showPrintPage:true
+        })
+    }
+
+    onAfterPrint(){
+        this.setState({
+            ...this.state,
+            showPrintPage:false
+        })
     }
 
     deleteModalTrigger (showDeleteModal) {
@@ -141,6 +162,13 @@ class DemoViewPage extends Component {
                 {<ChildDemosTable items={demo.childDemos || []}/>}
             </Grid.Column>
           </Grid.Row>
+
+            <Grid.Column width={8}>
+                <h3>Версия для печати</h3>
+                <DemoPrintPage demo={demo} ref={el => (this.componentRef = el)}/>
+            </Grid.Column>
+            <Grid.Column width={8}>
+            </Grid.Column>
         </Grid>
       </Container>
     )

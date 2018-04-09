@@ -2,10 +2,11 @@ import React, {Component} from 'react'
 import {Container,Form, Button,Input} from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import DatePicker from 'react-datepicker'
+import "react-datepicker/dist/react-datepicker.css"
 import moment from 'moment'
 import {fetchSingleStaff,createStaff,toggleStaffListModal,fetchAllStaffs} from '../actions/hrStaffAction'
 import {f4FetchCountryList,f4FetchStateList,f4FetchCityList,f4FetchCityregList} from '../../../../reference/f4/f4_action'
-import StaffAddressForm from  './StaffAddressForm'
+import StaffAddressForm from  './forms/StaffAddressForm'
 import StaffListModal from './StaffListModal'
 import {STAFF_BLANK_OBJECT} from '../../../hrUtil'
 const genderOptions = [

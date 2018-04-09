@@ -277,13 +277,10 @@ const generateRoutes = (transactionRoutes) => {
       {/* <Route path="/task/:id" component={AsyncTaskPage} /> */}
 
       <Route path="/hr/staff/list" component={AsyncStaffListPage} />
-      <Route path="/hr/staff/update/:id?" component={AsyncStaffUpdatePage} />
-      <Route path="/hr/staff/view/:id" component={AsyncStaffViewPage} />
       <Route path="/newIssue/:id" component={AsyncNewIssuePageContainer} />
-        <Route path="/hr/staff/list" component={AsyncStaffListPage} />
-        <Route path="/hr/staff/update/:id?" component={AsyncStaffUpdatePage} />
-        <Route path="/hr/staff/view/:id" component={AsyncStaffViewPage} />
-        <Route path="/crm/kpi/setting" component={AsyncKpiSettingPage} />
+    <Route path="/hr/staff/update/:id?" component={AsyncStaffUpdatePage} />
+    <Route path="/hr/staff/view/:id" component={AsyncStaffViewPage} />
+    <Route path="/crm/kpi/setting" component={AsyncKpiSettingPage} />
 
       {/* <Route path="/crm/callcenter/ccaslt" component={AsyncContractListPage} />
       <Route path="/crm/callcenter/ccasao" component={AsyncSOContractListPage} />

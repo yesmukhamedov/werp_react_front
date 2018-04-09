@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Container, Divider, Tab, Header,Button} from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import {fetchSingleStaff,fetchStaffSalaries,fetchStaffExpences,fetchStaffOffData,toggleSalaryFormtModal} from '../actions/hrStaffAction'
+import {fetchSingleStaff,fetchStaffSalaries,fetchStaffExpences,fetchStaffOffData,toggleSalaryFormModal} from '../actions/hrStaffAction'
 import StaffSalariesTable from './view/StaffSalariesTable'
 import StaffExpencesTable from './view/StaffExpencesTable'
 import StaffOffDataTable from './view/StaffOffDataTable'
@@ -9,6 +9,7 @@ import StaffPassportTable from './view/StaffPassportTable'
 import StaffMainDataTable from './view/StaffMainDataTable'
 import StaffFilesTable from './view/StaffFilesTable'
 import SalaryFormModal from './forms/SalaryFormModal'
+import {f4FetchBusinessAreaList,f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList} from '../../../../reference/f4/f4_action'
 
 class StaffViewPage extends Component{
     constructor(props) {
@@ -28,6 +29,10 @@ class StaffViewPage extends Component{
       this.props.fetchStaffSalaries(id)
       this.props.fetchStaffExpences(id)
       this.props.fetchStaffOffData(id)
+      this.props.f4FetchBusinessAreaList()
+      this.props.f4FetchPositionList('staff')
+      this.props.f4FetchCurrencyList('staff')
+      this.props.f4FetchDepartmentList()
   }
 
   renderMainData () {
@@ -58,7 +63,7 @@ class StaffViewPage extends Component{
 
     renderSalaryData(){
         return <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
-                    <Button onClick={() => this.props.toggleSalaryFormtModal(true)} floated={'right'} primary>Добавить</Button>
+                    <Button onClick={() => this.props.toggleSalaryFormModal(true)} floated={'right'} primary>Добавить</Button>
                     <SalaryFormModal/>
                 <StaffSalariesTable salaries={this.props.staffSalaries}/>
             </Container>
@@ -107,5 +112,5 @@ function mapStateToProps (state) {
 
 export default connect(mapStateToProps, {
     fetchSingleStaff,fetchStaffSalaries,fetchStaffExpences,fetchStaffOffData,
-    toggleSalaryFormtModal
+    f4FetchBusinessAreaList,f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList,toggleSalaryFormModal
 })(StaffViewPage)

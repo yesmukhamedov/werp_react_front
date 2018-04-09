@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {Modal, Form, Input, TextArea, Button } from 'semantic-ui-react'
-import {toggleSalaryFormtModal,createSalary,fetchBranchPyramids} from '../../actions/hrStaffAction'
-import {f4FetchBusinessAreaList,f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList} from '../../../../../reference/f4/f4_action'
+import {toggleSalaryFormModal,createSalary,fetchBranchPyramids} from '../../actions/hrStaffAction'
 import { connect } from 'react-redux'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
@@ -42,10 +41,7 @@ class SalaryFormModal extends Component {
   }
 
   componentWillMount () {
-      this.props.f4FetchBusinessAreaList()
-      this.props.f4FetchPositionList('staff')
-      this.props.f4FetchCurrencyList('staff')
-      this.props.f4FetchDepartmentList()
+
 
   }
 
@@ -103,6 +99,11 @@ class SalaryFormModal extends Component {
 
       const {branchPyramids} = this.props
       let out = []
+      out.push({
+          key:null,
+          value:null,
+          text:"Не выбрано"
+      })
       for(let k in branchPyramids){
           out.push({
               key: branchPyramids[k]['staffId'],
@@ -295,15 +296,15 @@ class SalaryFormModal extends Component {
     })
   }
 
-  // componentWillReceiveProps (nextProps) {
-  //     if(nextProps.salary !== this.state.localSalary){
-  //         let localSalary = Object.assign({}, this.props.salary);
-  //         this.setState({
-  //             ...this.state,
-  //             localSalary: localSalary
-  //         })
-  //     }
-  // }
+  componentWillReceiveProps (nextProps) {
+      if(nextProps.salary !== this.state.localSalary){
+          let localSalary = Object.assign({}, this.props.salary);
+          this.setState({
+              ...this.state,
+              localSalary: localSalary
+          })
+      }
+  }
 
   validateData(){
   }
@@ -346,6 +347,5 @@ function mapStateToProps (state) {
 }
 
 export default connect(mapStateToProps, {
-        toggleSalaryFormtModal,createSalary,f4FetchBusinessAreaList,fetchBranchPyramids,
-        f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList
+    toggleSalaryFormModal,createSalary,fetchBranchPyramids
 })(SalaryFormModal)

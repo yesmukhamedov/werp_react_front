@@ -57,7 +57,7 @@ export function fetchIndicators(){
 export function blankItem(){
 
     return function (dispatch){
-        axios.get(`${ROOT_URL}/api/crm/kpi/blank`,{
+        axios.get(`${ROOT_URL}/api/crm/report/test`,{
             headers: {
                 authorization: localStorage.getItem('token')
             }
