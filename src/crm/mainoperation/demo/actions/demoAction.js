@@ -199,3 +199,9 @@ export function toggleDemoCreateModal(flag){
         })
     }
 }
+
+export function clearState(){
+    return {
+        type: CRM_DEMO_CLEAR_STATE
+    }
+}

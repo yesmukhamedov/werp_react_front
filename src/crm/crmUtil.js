@@ -98,19 +98,14 @@ export function demoResultOptions(results){
     if(!results){
         return []
     }
+
     let out = Object.keys(results).map((k) => {
         return {
-            key:k,
+            key: parseInt(k),
             text:results[k],
-            value:k
+            value: parseInt(k)
         }
     });
-
-    out.unshift({
-        key:'',
-        text:'Не выбрано',
-        value:''
-    })
 
     return out;
 }

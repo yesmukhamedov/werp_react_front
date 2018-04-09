@@ -170,7 +170,7 @@ function getSourceLink(demo){
             Рекомендация № {demo.recoId}
         </Link>
     }else if(demo.parentId > 0){
-        return <Link className={'button'} to={`/crm/demo/view/` + demo.recoId}>
+        return <Link to={`/crm/demo/view/` + demo.parentId}>
             Демо № {demo.parentId}
         </Link>
     }else{

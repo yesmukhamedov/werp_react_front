@@ -28,22 +28,20 @@ export default function ChildDemosTable(props){
                         <Table.HeaderCell>Дата-время</Table.HeaderCell>
                         <Table.HeaderCell>Звонил(а)</Table.HeaderCell>
                         <Table.HeaderCell>Результат</Table.HeaderCell>
+                        <Table.HeaderCell></Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
 
                 <Table.Body>
                     {items.map((item,idx) => {
                         return <Table.Row key={idx}>
-                            <Table.Cell>
-                                <Link to={`/crm/demo/view/` + item.id}>
-                                    {idx+1}
-                                </Link>
-                            </Table.Cell>
+                            <Table.Cell>{idx+1}</Table.Cell>
                             <Table.Cell>{item.branchName}</Table.Cell>
                             <Table.Cell>{item.clientName}</Table.Cell>
                             <Table.Cell>{item.dateTime?moment(item.dateTime).format('DD.MM.YYYY HH:mm'):''}</Table.Cell>
                             <Table.Cell>{item.appointer}</Table.Cell>
                             <Table.Cell>{item.resultName}</Table.Cell>
+                            <Table.Cell>--</Table.Cell>
                         </Table.Row>
                     })}
                 </Table.Body>

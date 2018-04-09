@@ -1,11 +1,10 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
-import { Header, Container, Button, Segment, Grid, Table, Divider, Card,Modal } from 'semantic-ui-react'
+import { Header, Container, Button, Segment, Grid, Divider, Modal } from 'semantic-ui-react'
 import ReactToPrint from "react-to-print";
-import {ROOT_URL} from '../../../../utils/constants'
 import DemoUpdateModal from './DemoUpdateModal'
 import DemoCreateModal from './DemoCreateModal'
-import {fetchDemo,toggleDemoUpdateModal,toggleDemoCreateModal,deleteDemo} from '../actions/demoAction'
+import {fetchDemo,toggleDemoUpdateModal,toggleDemoCreateModal,deleteDemo,clearState} from '../actions/demoAction'
 import { connect } from 'react-redux'
 import ChildDemosTable from './ChildDemosTable'
 import ChildRecosTable from '../../reco/components/ChildRecosTable'
@@ -183,4 +182,4 @@ function mapStateToProps (state) {
     }
 }
 
-export default connect(mapStateToProps, {fetchDemo,toggleDemoUpdateModal,toggleDemoCreateModal,deleteDemo})(DemoViewPage)
+export default connect(mapStateToProps, {fetchDemo,toggleDemoUpdateModal,toggleDemoCreateModal,deleteDemo,clearState})(DemoViewPage)
