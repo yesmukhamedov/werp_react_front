@@ -60,8 +60,8 @@ class OutCallPanelDisplay extends PureComponent {
             </Header>
             <Header as="h4" floated="right">
               {
-                status.text &&
-                (status.text === 'VIRGIN' ?
+                status.id &&
+                (status.id === 1000 ?
                   <Button
                     style={{ background: 'rgba(84,170,169, 1)', color: 'white' }}
                     onClick={() => createOutCallFromContract({ contractNumber })}
@@ -108,7 +108,7 @@ class OutCallPanelDisplay extends PureComponent {
                       <Item.Content verticalAlign="middle">
                         <Item.Header style={headerStyle}>Открыл:</Item.Header>
                         <Item.Description>
-                          {(status.text !== 'VIRGIN' ? `${operator.lastName} ${operator.firstName} ${operator.patronymic}` : '')}
+                          {(status.id !== 1000 ? `${operator.lastName} ${operator.firstName} ${operator.patronymic}` : '')}
                         </Item.Description>
                       </Item.Content>
                     </Item>
