@@ -10,7 +10,34 @@ export const ON_DELETE_ROW = 'ON_DELETE_ROW';
 export const ON_ADD_ROW = 'ON_ADD_ROW';
 export const SAVE_BONUS_DATA = 'SAVE_BONUS_DATA';
 
+export function updateF4All() {
+    
+    
 
+    return function(dispatch) {
+        axios.post(`${ROOT_URL}/api/reference/updateF4All`, 
+        {
+
+        },     
+        {            
+            headers: 
+            {                            
+                // 'Content-Type': 'application/json;charset=UTF-8',
+                authorization: localStorage.getItem('token')
+            }
+        })
+        .then(({data}) => {    
+            dispatch(notify('success','Сохранен.','Успешно'));
+        })
+        .catch(error => {
+            console.log(error);
+            handleError(error,dispatch);               
+                 
+        });
+    }    
+
+
+}
 export function fetchBonusData(a_bukrs, a_branchId, a_date) {
     
     

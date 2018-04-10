@@ -9,7 +9,7 @@ import {f4FetchBonusTypeList,f4FetchCurrencyList,f4ClearBonusTypeList,f4ClearCur
 import './hrb02.css';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {saveBonusData} from './hrb02_action';
+import {saveBonusData, updateF4All} from './hrb02_action';
 
 
 import Hrb02EditBonus from './hrb02EditBonus';
@@ -113,7 +113,7 @@ class Hrb02 extends Component {
     render(){
        
         
-        
+        let username = localStorage.getItem('username');
 
         
         return (
@@ -124,14 +124,21 @@ class Hrb02 extends Component {
                 </Header>
                 
                 <Grid textAlign='justified' >
-                    <Grid.Row  columns={1}>
-                        <Grid.Column mobile={16} tablet={16} computer={16}>
+                    <Grid.Row  columns={2}>
+                        <Grid.Column mobile={16} tablet={16} computer={3}>
                             <Button icon labelPosition='left' primary size='small' disabled={this.state.searchTerm.selectedBranchKey===null || !this.props.current} 
                             onClick={()=> this.props.saveBonusData(this.state.searchTerm.bukrs,this.state.searchTerm.selectedBranchKey,this.state.searchTerm.date,
                             this.props.table)}>
                                 <Icon name='save' size='large' />Сохранить
                             </Button>                          
                         </Grid.Column>
+                        {localStorage.getItem('username')==='azamat' && 
+                            <Grid.Column mobile={16} tablet={16} computer={3}>
+                                <Button icon labelPosition='left' primary size='small'  onClick={()=> this.props.updateF4All()}>
+                                    <Icon name='check' size='large' />Обновит F4
+                                </Button>                          
+                            </Grid.Column>
+                        } 
                     </Grid.Row>
                 </Grid> 
 
@@ -262,4 +269,4 @@ function mapStateToProps(state)
 }
 
 export default connect(mapStateToProps,{ fetchBonusData, f4FetchBonusTypeList, f4FetchCurrencyList, saveBonusData 
-    ,clearRedStateHrb02 ,f4ClearBonusTypeList, f4ClearCurrencyList}) (Hrb02);
+    ,clearRedStateHrb02 ,f4ClearBonusTypeList, f4ClearCurrencyList, updateF4All}) (Hrb02);
