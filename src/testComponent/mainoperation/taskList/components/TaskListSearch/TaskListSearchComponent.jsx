@@ -47,7 +47,7 @@ class TaskListSearchComponent extends Component {
       priorityId: values.priority,
       departmentId: 1, // "Отдел маркетинга"
     };
-    //console.log(paramsDict);
+    // console.log(paramsDict);
     const params = _.map(
       paramsDict,
       (val, key) =>
@@ -56,8 +56,9 @@ class TaskListSearchComponent extends Component {
       .filter(param => param)
       .join('&');
 
-    //console.log('PARAMS', params);
-    this.props.searchTasks(params);
+    // console.log('PARAMS', params);
+    // this.props.searchTasks(params);
+    return new Promise(resolve => this.props.searchTasks(params, resolve));
   }
 
   render() {
@@ -117,6 +118,7 @@ class TaskListSearchComponent extends Component {
                   <Form.Button
                     content="Поиск"
                     type="submit"
+                    loading={submitting}
                     disabled={pristine || submitting}
                     style={
                       { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
@@ -124,6 +126,7 @@ class TaskListSearchComponent extends Component {
                   <Form.Button
                     content="Сброс"
                     type="button"
+                    disabled={pristine || submitting}
                     style={
                       { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
                     onClick={reset}

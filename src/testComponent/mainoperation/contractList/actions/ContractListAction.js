@@ -61,7 +61,7 @@ export function clearContractListStore() {
   };
 }
 
-export function searchContracts(params) {
+export function searchContracts(params, resolve) {
   return (dispatch) => {
     axios.get(`${ROOT_URL}/api/call-center/out-calls?${params}`, {
       headers: { authorization: localStorage.getItem('token') },
@@ -71,6 +71,7 @@ export function searchContracts(params) {
           type: FOUND_CONTRACTS,
           payload: data,
         });
+        resolve();
       })
       .catch((error) => {
         console.log('ERROR in contract list search', error);

@@ -83,7 +83,7 @@ export function clearTaskListStore() {
   };
 }
 
-export function searchTasks(params) {
+export function searchTasks(params, resolve) {
   return (dispatch) => {
     axios.get(`${ROOT_URL}/api/tasks?${params}`, {
       headers: { authorization: localStorage.getItem('token') },
@@ -94,6 +94,7 @@ export function searchTasks(params) {
           type: FOUND_TASKS,
           payload: data,
         });
+        resolve();
       })
       .catch((error) => {
         console.log('ERROR in task list search', error);
