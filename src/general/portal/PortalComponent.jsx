@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Segment, Portal } from 'semantic-ui-react';
-
-const portalContentStyle = {
-  left: '50%',
-  position: 'absolute',
-  top: '50%',
-  zIndex: 1000,
-  transform: "translate(-50%, -50%)"
-};
+import { Button, Segment, Modal } from 'semantic-ui-react';
 
 export default class PortalComponent extends Component {
   constructor(props) {
@@ -38,13 +30,17 @@ export default class PortalComponent extends Component {
           onClick={this.handleClick}
         />
 
-        <Portal onClose={this.handleClose} open={open}>
+        <Modal
+          onClose={this.handleClose}
+          open={open}
+          closeIcon
+        >
           <Segment
-            style={ this.props.style || portalContentStyle }
+            style={ this.props.style }
           >
             {this.props.children}
           </Segment>
-        </Portal>
+        </Modal>
       </div>
     );
   }
