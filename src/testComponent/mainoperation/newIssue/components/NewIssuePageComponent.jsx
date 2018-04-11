@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, Accordion, Icon } from 'semantic-ui-react';
-// import { fetchContractById, fetchTasks } from '../actions';
 import { PersonalInfoPanelDisplay } from './PersonalInfoPanel';
 import { FinancialInfoPanelDisplay } from './FinancialInfoPanel';
 import { PurchasesPanelDisplay } from './PurchasesPanel';
 import { TaskPanelContainer } from './TaskPanel';
 import { OutCallDetailsPanelContainer } from './OutCallDetailsPanel';
 import { OutCallPanelContainer } from './OutCallPanel';
+import './styles.css';
 
 
 export default class NewIssuePage extends Component {

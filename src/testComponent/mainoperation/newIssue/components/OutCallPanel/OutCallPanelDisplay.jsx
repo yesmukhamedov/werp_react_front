@@ -9,7 +9,8 @@ import {
   Label,
 } from 'semantic-ui-react';
 import { OutCallPanelModalContainer } from '../OutCallPanelModal';
-import { formatDateTime } from '../../../../../utils/helpers';
+import { formatDateTime, extractName } from '../../../../../utils/helpers';
+import { outCallStatusColorMap } from '../../../../../utils/constants';
 
 const headerStyle = {
   fontSize: '14px',
@@ -89,7 +90,7 @@ class OutCallPanelDisplay extends PureComponent {
                         <Item.Header style={headerStyle}>
                           Дата создания:
                         </Item.Header>
-                        <Item.Description>{formatDateTime(createdAt)}</Item.Description>
+                        <Item.Description>{formatDateTime(createdAt) || <span>&mdash;</span>}</Item.Description>
                       </Item.Content>
                     </Item>
                     <Item>
@@ -97,7 +98,7 @@ class OutCallPanelDisplay extends PureComponent {
                         <Item.Header style={headerStyle}>
                           Дата обновления:
                         </Item.Header>
-                        <Item.Description>{formatDateTime(modifiedAt)}</Item.Description>
+                        <Item.Description>{formatDateTime(modifiedAt) || <span>&mdash;</span>}</Item.Description>
                       </Item.Content>
                     </Item>
                   </Item.Group>
@@ -108,7 +109,7 @@ class OutCallPanelDisplay extends PureComponent {
                       <Item.Content verticalAlign="middle">
                         <Item.Header style={headerStyle}>Открыл:</Item.Header>
                         <Item.Description>
-                          {(status.id !== 1000 ? `${operator.lastName} ${operator.firstName} ${operator.patronymic}` : '')}
+                          {(status.id !== 1000 ? extractName(operator, ['lastName', 'firstName', 'patronymic']) : <span>&mdash;</span>)}
                         </Item.Description>
                       </Item.Content>
                     </Item>
@@ -128,7 +129,10 @@ class OutCallPanelDisplay extends PureComponent {
                           Статус заявки:
                         </Item.Header>
                         <Item.Description>
-                          <Label color="blue">
+                          <Label
+                            color={outCallStatusColorMap[status.id]}
+                            size="tiny"
+                          >
                             {status && status[lang]}
                           </Label>
                         </Item.Description>

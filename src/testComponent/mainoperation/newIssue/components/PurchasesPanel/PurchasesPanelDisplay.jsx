@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Grid, Segment, Label, Form, Table, Header } from 'semantic-ui-react';
+import { Grid, Segment, Label, List, Table, Header } from 'semantic-ui-react';
 import { LEGACY_URL } from '../../../../../utils/constants';
 
 
@@ -30,7 +30,7 @@ const PurchasesPanelDisplay = (props) => {
                       <Table.Cell>
                         <Link target='_blank' to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=` + item.contractNumber}>
                           {item.contractNumber}
-                        </Link>                        
+                        </Link>
                       </Table.Cell>
                       <Table.Cell>{item.productName}</Table.Cell>
                     </Table.Row>
@@ -39,14 +39,14 @@ const PurchasesPanelDisplay = (props) => {
             </Table>
           </Grid.Column>
           <Grid.Column>
-            <Form>
-              <Form.Field
-                label="Дата возврата"
-                control="input"
-                value={cancelledAt}
-                width="6"
-              />
-            </Form>
+            <List>
+              <List.Item>
+                <List.Header className="list-header">
+                  Дата возврата:
+                </List.Header>
+                {cancelledAt || <span>&mdash;</span>}
+              </List.Item>
+            </List>
           </Grid.Column>
         </Grid.Row>
       </Grid>

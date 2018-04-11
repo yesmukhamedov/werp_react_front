@@ -60,6 +60,10 @@ export function formatDateTime(timeStr) {
   return formatDate(timeStr, 'DD.MM.YYYY HH:mm');
 }
 
+export function formatDMY(timeStr) {
+  return formatDate(timeStr, 'DD.MM.YYYY');
+}
+
 export function extractName(obj, param) {
   const extracted = param.map(p => obj[p]);
   return extracted.join(' ');

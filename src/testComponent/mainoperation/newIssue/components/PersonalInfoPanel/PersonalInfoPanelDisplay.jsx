@@ -1,13 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Segment, Label, Form, Grid, Item, List } from 'semantic-ui-react';
+import { Segment, Label, Grid, List } from 'semantic-ui-react';
 import PortalComponent from '../../../../../general/portal/PortalComponent';
 import { ContactsPanelDisplay } from '../ContactsPanel';
-import './panel.css';
-
-const headerStyle = {
-  fontSize: '14px',
-};
+import { extractName, formatDMY } from '../../../../../utils/helpers';
 
 const PersonalInfoPanelDisplay = (props) => {
   console.log('PIPD', props);
@@ -20,6 +16,7 @@ const PersonalInfoPanelDisplay = (props) => {
     clientStatus = '',
     issueType = '',
     contactDetails,
+    contractDate,
   } = props;
   return (
     <Segment raised>
@@ -34,19 +31,17 @@ const PersonalInfoPanelDisplay = (props) => {
                 <List.Header className="list-header">
                   Номер договора:
                 </List.Header>
-                {contractNumber || '--'}
+                {contractNumber || <span>&mdash;</span>}
               </List.Item>
               <List.Item>
                 <List.Header className="list-header">
                   Дата договора:
                 </List.Header>
-                {'--'}
+                {(contractDate && formatDMY(contractDate)) || <span>&mdash;</span>}
               </List.Item>
               <List.Item>
-                <List.Header className="list-header">
-                  Филиал:
-                </List.Header>
-                {branchName || '--'}
+                <List.Header className="list-header">Филиал:</List.Header>
+                {branchName || <span>&mdash;</span>}
               </List.Item>
             </List>
           </Grid.Column>
@@ -57,22 +52,24 @@ const PersonalInfoPanelDisplay = (props) => {
                   Ф.И.О. клиента:
                 </List.Header>
                 {clientFullName &&
-                  `${clientFullName.lastName || ''} ${clientFullName.firstName || ''} ${clientFullName.patronymic || ''}`}
+                  extractName(clientFullName, [
+                    'lastName',
+                    'firstName',
+                    'patronymic',
+                  ])}
               </List.Item>
               <List.Item>
-                <List.Header className="list-header">
-                  ИИН клиента:
-                </List.Header>
+                <List.Header className="list-header">ИИН клиента:</List.Header>
                 {clientIIN}
               </List.Item>
               <List.Item>
-                <List.Header className="list-header">
-                  Дилер:
-                </List.Header>
-                { dealerFullName &&
-                  `${dealerFullName.lastName ||
-                    ''} ${dealerFullName.firstName ||
-                    ''} ${dealerFullName.patronymic || ''}`}
+                <List.Header className="list-header">Дилер:</List.Header>
+                {dealerFullName &&
+                  extractName(dealerFullName, [
+                    'lastName',
+                    'firstName',
+                    'patronymic',
+                  ])}
               </List.Item>
             </List>
           </Grid.Column>
@@ -85,14 +82,13 @@ const PersonalInfoPanelDisplay = (props) => {
                 {clientStatus}
               </List.Item>
               <List.Item>
-                <List.Header className="list-header">
-                  Оформлен:
-                </List.Header>
-                {issueType || '--'}
+                <List.Header className="list-header">Оформлен:</List.Header>
+                {issueType || <span>&mdash;</span>}
               </List.Item>
               <PortalComponent
                 openLabel="Контактные данные"
                 closeLabel="Скрыть контактные данные"
+                title="Контактные данные"
               >
                 <ContactsPanelDisplay contactDetails={contactDetails} />
               </PortalComponent>
@@ -106,12 +102,14 @@ const PersonalInfoPanelDisplay = (props) => {
 
 PersonalInfoPanelDisplay.propTypes = {
   contractNumber: PropTypes.number.isRequired,
+  contractDate: PropTypes.string.isRequired,
   branchName: PropTypes.string.isRequired,
-  fullName: PropTypes.string.isRequired,
-  customerIIN: PropTypes.string.isRequired,
-  dealerName: PropTypes.string.isRequired,
-  customerStatus: PropTypes.string.isRequired,
-  filedBy: PropTypes.string.isRequired,
+  clientFullName: PropTypes.object.isRequired,
+  clientIIN: PropTypes.string.isRequired,
+  dealerFullName: PropTypes.object.isRequired,
+  clientStatus: PropTypes.string.isRequired,
+  issueType: PropTypes.object.isRequired,
+  contactDetails: PropTypes.object.isRequired,
 };
 
 export default PersonalInfoPanelDisplay;

@@ -1,10 +1,11 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { Segment, Label, Form, Grid, Loader, Input } from 'semantic-ui-react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { Grid, Label, List, Loader, Segment } from 'semantic-ui-react';
 import PortalComponentDisplay from '../../../../../general/portal/PortalComponent';
-import { PaymentBreakdownTableDisplay } from '../PaymentBreakdownTable';
 import { LEGACY_URL } from '../../../../../utils/constants';
+import { extractName } from '../../../../../utils/helpers';
+import { PaymentBreakdownTableDisplay } from '../PaymentBreakdownTable';
 
 const FinancialInfoPanelDisplay = (props) => {
   const { financialDetails = {} } = props;
@@ -27,79 +28,109 @@ const FinancialInfoPanelDisplay = (props) => {
         Финансовые данные клиента
       </Label>
       {financialDetails ? (
-        <Grid columns={4} divided stackable>
+        <Grid columns={3} divided stackable>
           <Grid.Row>
             <Grid.Column>
-              <Form>
-                <Form.Field
-                  label="Первоначальная сумма"
-                  control="input"
-                  value={initialPayment}
-                />
-                <Form.Field
-                  label="Остаток суммы"
-                  control="input"
-                  value={residualAmount}
-                />
-                <PortalComponentDisplay
-                  openLabel="Ежемесячный взнос"
-                  closeLabel="Скрыть ежемесячный взнос"
-                >
-                  <PaymentBreakdownTableDisplay
-                    monthlyPayments={monthlyPayments}
-                  />
-                </PortalComponentDisplay>
-              </Form>
-            </Grid.Column>
-            <Grid.Column>
-              <Form>
-                <Form.Field
-                  label="Скидка от дилера"
-                  control="input"
-                  value={dealerDiscount}
-                />
-                <Form.Field
-                  label="Скидка от рекомендателя"
-                  control="input"
-                  value={recommenderDiscount}
-                />
-                <Form.Field
-                  label="Оплата через"
-                  control="input"
-                  value={
-                    bankPartner && `${bankPartner.shortName}`
-                  }
-                />
-              </Form>
-            </Grid.Column>
-            <Grid.Column>
-              <Form>
-                <Form.Field
-                  label="Финансовый агент"
-                  control="input"
-                  value={
-                    financialAgent &&
-                    `${financialAgent.lastName || ''} ${financialAgent.firstName || ''} ${
-                      financialAgent.patronymic || ''}`
-                    }
-                />
-                {TextInputFormField(recommender)}
-              </Form>
-            </Grid.Column>
+              <List>
+                <List.Item>
+                  <List.Header className="list-header">
+                    Первоначальная сумма:
+                  </List.Header>
+                  {initialPayment || <span>&mdash;</span>}
+                </List.Item>
+                <List.Item>
+                  <List.Header className="list-header">
+                    Срок рассрочки:
+                  </List.Header>
+                  ?
+                </List.Item>
+                <List.Item>
+                  <List.Header className="list-header">
+                    Остаток суммы:
+                  </List.Header>
+                  {residualAmount || <span>&mdash;</span>}
+                </List.Item>
+              </List>
 
+              <PortalComponentDisplay
+                openLabel="Ежемесячный взнос"
+                closeLabel="Скрыть ежемесячный взнос"
+                title="График ежемесячного взноса"
+              >
+                <PaymentBreakdownTableDisplay
+                  monthlyPayments={monthlyPayments}
+                />
+              </PortalComponentDisplay>
+            </Grid.Column>
             <Grid.Column>
-              <Form>
-                <Form.Field
-                  label="Заводской номер аппарата"
-                  control="input"
-                  value={productSerialNumber}
-                />
-                <Form.Field
-                  label="Подарки"
-                  control="input"
-                  value={promotions && promotions.join(', ')}
-                />
-              </Form>
+              <List>
+                <List.Item>
+                  <List.Header className="list-header">
+                    Скидка от дилера:
+                  </List.Header>
+                  {dealerDiscount || <span>&mdash;</span>}
+                </List.Item>
+                <List.Item>
+                  <List.Header className="list-header">
+                    Скидка от рекомендателя:
+                  </List.Header>
+                  {recommenderDiscount || <span>&mdash;</span>}
+                </List.Item>
+                <List.Item>
+                  <List.Header className="list-header">
+                    Оплата через:
+                  </List.Header>
+                  {(bankPartner && `${bankPartner.shortName}`) || <span>&mdash;</span>}
+                </List.Item>
+                <List.Item>
+                  <List.Header className="list-header">
+                    Финансовый агент:
+                  </List.Header>
+                  {
+                    financialAgent &&
+                    extractName(financialAgent, ['lastName', 'firstName', 'patronymic'])
+                  }
+                </List.Item>
+              </List>
+            </Grid.Column>
+            <Grid.Column>
+              <List>
+                <List.Item>
+                  <List.Header className="list-header">
+                    Рекомендатель:
+                  </List.Header>
+                  {
+                    (recommender &&
+                    <Link target='_blank' to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=` + recommender.contractNumber}>
+                      {
+                        extractName(recommender, ['lastName', 'firstName', 'patronymic'])
+                      }
+                    </Link>) || <span>&mdash;</span>
+                  }
+                </List.Item>
+                <List.Item>
+                  <List.Header className="list-header">
+                    Дополнительная информация:
+                  </List.Header>
+                  ?
+                </List.Item>
+                <List.Item>
+                  <List.Header className="list-header">
+                    Заводской номер аппарата:
+                  </List.Header>
+                  {
+                    productSerialNumber || <span>&mdash;</span>
+                  }
+                </List.Item>
+                <List.Item>
+                  <List.Header className="list-header">
+                    Подарки:
+                  </List.Header>
+                  {
+                    (promotions && promotions.join(', ')) || <span>&mdash;</span>
+                  }
+                </List.Item>
+              </List>
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -109,27 +140,6 @@ const FinancialInfoPanelDisplay = (props) => {
     </Segment>
   );
 };
-
-function TextInputFormField(recommender) {
-  if (recommender && recommender.recommenderName) {
-    return (
-      <Form.Field>
-        <label>Рекомендатель</label>
-        <Link target='_blank' to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=` + recommender.contractNumber}>
-          {`${recommender.recommenderName.lastName || ''} ${recommender.recommenderName.firstName || ''} ${
-            recommender.recommenderName.patronymic || ''}`}
-        </Link>
-      </Form.Field>
-    );
-  }
-  return (
-    <Form.Field
-      label="Рекомендатель"
-      control="input"
-      value=""
-    />
-  );
-}
 
 FinancialInfoPanelDisplay.propTypes = {
   initialPayment: PropTypes.string.isRequired,

@@ -1,8 +1,10 @@
 import React, { PureComponent } from 'react';
 import { Link } from 'react-router-dom';
-import { Table, Button, Icon, Segment, Header } from 'semantic-ui-react';
+import PropTypes from 'prop-types';
+import { Table, Button, Icon, Segment, Header, Label } from 'semantic-ui-react';
 import { NewTaskModalContainer } from '../NewTaskModal';
 import { formatDateTime } from '../../../../../utils/helpers';
+import { outCallStatusColorMap } from '../../../../../utils/constants';
 
 class TaskPanelComponent extends PureComponent {
   constructor(props) {
@@ -24,7 +26,7 @@ class TaskPanelComponent extends PureComponent {
   }
 
   render() {
-    const { tasks, lang } = this.props;
+    const { tasks, lang, directories } = this.props;
     return (
       <Segment>
         <Header as="h3" dividing>
@@ -43,27 +45,44 @@ class TaskPanelComponent extends PureComponent {
           </Table.Header>
 
           <Table.Body>
-            {
-              tasks &&
+            {tasks &&
               tasks.map(task => (
                 <Table.Row>
                   <Table.Cell>
-                    <Link target="_blank" to={`/outCallTask/${task.id}`}>
+                    <Link
+                      target="_blank"
+                      to={`/crm/callcenter/ccastskedit/${task.id}`}
+                    >
                       {task.id}
                     </Link>
                   </Table.Cell>
-                  <Table.Cell>{task.status[lang]}</Table.Cell>
+                  <Table.Cell>
+                    {task.status && (
+                      <Label
+                        color={outCallStatusColorMap[task.status.id]}
+                        size="tiny"
+                      >
+                        {task.status[lang]}
+                      </Label>
+                    )}
+                  </Table.Cell>
                   <Table.Cell>{task.priority[lang]}</Table.Cell>
                   <Table.Cell>
-                    <Link target="_blank" to={`/outCallTask/${task.id}`}>
+                    <Link
+                      target="_blank"
+                      to={`/crm/callcenter/ccastskedit/${task.id}`}
+                    >
                       {task.title}
                     </Link>
                   </Table.Cell>
-                  <Table.Cell>{`${task.recipient.branch.value} - ${task.recipient.department.value} - ${task.recipient.position.value}`}</Table.Cell>
+                  <Table.Cell>
+                    {`${task.recipient.branch.value} - ${
+                      task.recipient.department.value
+                    } - ${task.recipient.position.value}`}
+                  </Table.Cell>
                   <Table.Cell>{formatDateTime(task.modifiedAt)}</Table.Cell>
                 </Table.Row>
-              ))
-            }
+              ))}
           </Table.Body>
 
           <Table.Footer>
@@ -86,11 +105,17 @@ class TaskPanelComponent extends PureComponent {
           isOpen={this.state.modalOpen}
           open={this.open}
           close={this.close}
-          {...this.props.directories}
+          {...directories}
         />
       </Segment>
     );
   }
 }
+
+TaskPanelComponent.propTypes = {
+  tasks: PropTypes.array.isRequired,
+  lang: PropTypes.object.isRequired,
+  directories: PropTypes.object.isRequired,
+};
 
 export default TaskPanelComponent;

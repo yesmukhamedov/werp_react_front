@@ -1,29 +1,27 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Form } from 'semantic-ui-react';
+import { List, Grid } from 'semantic-ui-react';
 
-const labels = {
-  home: 'Адрес домашний',
-  service: 'Адрес для клиента',
-  work: 'Адрес рабочий',
-};
 const renderContactItem = (item, label) =>
   (item ? (
-    <Form.Group>
-      <Form.Field
-        label={label}
-        control="input"
-        value={item.address}
-        width="8"
-      />
-      <Form.Field
-        label="Телефон"
-        control="input"
-        defaultValue={`${item.telHome || ''} ${item.telMob1 ||
-          ''} ${item.telMob2 || ''}`}
-        width="10"
-      />
-    </Form.Group>
+    <List>
+      <List.Item>
+        <List.Header className="list-header">{label}</List.Header>
+        {item.address}
+      </List.Item>
+      <List.Item>
+        <List.Header className="list-header">Домашний телефон:</List.Header>
+        {item.telHome}
+      </List.Item>
+      <List.Item>
+        <List.Header className="list-header">Мобильный телефон 1:</List.Header>
+        {item.telMob1}
+      </List.Item>
+      <List.Item>
+        <List.Header className="list-header">Мобильный телефон 2:</List.Header>
+        {item.telMob2}
+      </List.Item>
+    </List>
   ) : (
     ''
   ));
@@ -31,25 +29,26 @@ const renderContactItem = (item, label) =>
 const ContactsPanelDisplay = (props) => {
   const { contactDetails = {} } = props;
   const { home, service, work } = contactDetails;
+  const cols = Object.values(contactDetails).reduce((acc, cur) => {
+    return acc + ((cur && 1) || 0);
+  }, 0);
   return (
-    <div style={{ width: '600px' }}>
-      <h3>Контактные данные</h3>
-      <Form>
-        {renderContactItem(home, 'Адрес домашний')}
-        {renderContactItem(service, 'Адрес для клиента')}
-        {renderContactItem(work, 'Адрес рабочий')}
-      </Form>
+    <div>
+      <Grid divided="vertically">
+        <Grid.Row columns={cols}>
+          <Grid.Column>{renderContactItem(home, 'Адрес домашний')}</Grid.Column>
+          <Grid.Column>
+            {renderContactItem(service, 'Адрес для клиента')}
+          </Grid.Column>
+          <Grid.Column>{renderContactItem(work, 'Адрес рабочий')}</Grid.Column>
+        </Grid.Row>
+      </Grid>
     </div>
   );
 };
 
 ContactsPanelDisplay.propTypes = {
-  homeAddress: PropTypes.string.isRequired,
-  homePhone: PropTypes.string.isRequired,
-  clientAddress: PropTypes.string.isRequired,
-  clientPhone: PropTypes.string.isRequired,
-  workAddress: PropTypes.string.isRequired,
-  phonePhone: PropTypes.string.isRequired,
+  contactDetails: PropTypes.object.isRequired,
 };
 
 export default ContactsPanelDisplay;
