@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Segment, Label, Form, Grid, Loader } from 'semantic-ui-react';
+import { Segment, Label, Form, Grid, Loader, Input } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 import PortalComponentDisplay from '../../../../../general/portal/PortalComponent';
 import { PaymentBreakdownTableDisplay } from '../PaymentBreakdownTable';
+import { LEGACY_URL } from '../../../../../utils/constants';
 
 const FinancialInfoPanelDisplay = (props) => {
   const { financialDetails = {} } = props;
@@ -81,16 +83,7 @@ const FinancialInfoPanelDisplay = (props) => {
                       financialAgent.patronymic || ''}`
                     }
                 />
-                <Form.Field
-                  label="Рекомендатель"
-                  control="input"
-                  value={
-                    recommender &&
-                    recommender.recommenderName &&
-                      `${recommender.recommenderName.lastName || ''} ${recommender.recommenderName.firstName || ''} ${
-                        recommender.recommenderName.patronymic || ''}`
-                      }
-                />
+                {TextInputFormField(recommender)}
               </Form>
             </Grid.Column>
 
@@ -116,6 +109,27 @@ const FinancialInfoPanelDisplay = (props) => {
     </Segment>
   );
 };
+
+function TextInputFormField(recommender) {
+  if (recommender && recommender.recommenderName) {
+    return (
+      <Form.Field>
+        <label>Рекомендатель</label>
+        <Link target='_blank' to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=` + recommender.contractNumber}>
+          {`${recommender.recommenderName.lastName || ''} ${recommender.recommenderName.firstName || ''} ${
+            recommender.recommenderName.patronymic || ''}`}
+        </Link>
+      </Form.Field>
+    );
+  }
+  return (
+    <Form.Field
+      label="Рекомендатель"
+      control="input"
+      value=""
+    />
+  );
+}
 
 FinancialInfoPanelDisplay.propTypes = {
   initialPayment: PropTypes.string.isRequired,

@@ -87,7 +87,7 @@ class ContractListTableComponent extends Component {
             </div>
           );
         },
-        maxWidth: 270,
+        // maxWidth: 270,
       },
       {
         Header: 'Филиал',
@@ -97,7 +97,7 @@ class ContractListTableComponent extends Component {
       {
         Header: 'Продукт',
         accessor: 'productName',
-        maxWidth: 160,
+        maxWidth: 170,
       },
       {
         Header: 'ФИО Диллера',
@@ -110,7 +110,7 @@ class ContractListTableComponent extends Component {
             </div>
           );
         },
-        maxWidth: 270,
+        // maxWidth: 270,
       },
       {
         Header: 'Состояние',

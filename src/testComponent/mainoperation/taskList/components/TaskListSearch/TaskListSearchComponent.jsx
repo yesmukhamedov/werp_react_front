@@ -89,7 +89,7 @@ class TaskListSearchComponent extends Component {
               </Grid.Column>
               <Grid.Column width={3}>
                 <Field
-                  required
+                  // required
                   name="branch"
                   component={DropdownFormField}
                   label="Филиал"
@@ -155,9 +155,9 @@ function validate(formProps) {
     error.company = 'Выберите компанию';
   }
 
-  if (!formProps.branch) {
-    error.branch = 'Выберите филиал';
-  }
+  // if (!formProps.branch) {
+  //   error.branch = 'Выберите филиал';
+  // }
 
   return error;
 }

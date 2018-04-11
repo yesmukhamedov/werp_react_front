@@ -1,6 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { Grid, Segment, Label, Form, Table, Header } from 'semantic-ui-react';
+import { LEGACY_URL } from '../../../../../utils/constants';
+
 
 const PurchasesPanelDisplay = (props) => {
   const { otherPurchases, cancelledAt } = props;
@@ -24,7 +27,11 @@ const PurchasesPanelDisplay = (props) => {
                 {otherPurchases &&
                   otherPurchases.map((item, idx) => (
                     <Table.Row key={idx}>
-                      <Table.Cell>{item.contractNumber}</Table.Cell>
+                      <Table.Cell>
+                        <Link target='_blank' to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=` + item.contractNumber}>
+                          {item.contractNumber}
+                        </Link>                        
+                      </Table.Cell>
                       <Table.Cell>{item.productName}</Table.Cell>
                     </Table.Row>
                   ))}

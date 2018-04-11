@@ -8,7 +8,7 @@ const OutCallDetailsPanelDisplay = (props) => {
   return (
     <Segment raised>
       <Comment.Group style={{ maxWidth: '100%' }}>
-        <Header as="h3" dividing>Коментарий</Header>
+        <Header as="h3" dividing>Комментарии</Header>
         {
           comments &&
           comments.map((item, idx) => (
