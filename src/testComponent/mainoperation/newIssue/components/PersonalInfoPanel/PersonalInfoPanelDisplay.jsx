@@ -1,11 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Segment, Label, Form, Grid } from 'semantic-ui-react';
+import { Segment, Label, Form, Grid, Item, List } from 'semantic-ui-react';
 import PortalComponent from '../../../../../general/portal/PortalComponent';
 import { ContactsPanelDisplay } from '../ContactsPanel';
+import './panel.css';
+
+const headerStyle = {
+  fontSize: '14px',
+};
 
 const PersonalInfoPanelDisplay = (props) => {
-  console.log("PIPD", props);
+  console.log('PIPD', props);
   const {
     contractNumber = '',
     branchName = '',
@@ -21,70 +26,77 @@ const PersonalInfoPanelDisplay = (props) => {
       <Label color="red" ribbon>
         Данные клиента
       </Label>
-      <Grid columns={4} divided stackable>
+      <Grid columns={3} divided stackable>
         <Grid.Row>
           <Grid.Column>
-            <Form>
-              <Form.Field
-                label="Номер договора"
-                control="input"
-                value={contractNumber}
-              />
-              <Form.Field
-                label="Филиал"
-                control="input"
-                value={branchName}
-              />
-            </Form>
+            <List>
+              <List.Item>
+                <List.Header className="list-header">
+                  Номер договора:
+                </List.Header>
+                {contractNumber || '--'}
+              </List.Item>
+              <List.Item>
+                <List.Header className="list-header">
+                  Дата договора:
+                </List.Header>
+                {'--'}
+              </List.Item>
+              <List.Item>
+                <List.Header className="list-header">
+                  Филиал:
+                </List.Header>
+                {branchName || '--'}
+              </List.Item>
+            </List>
           </Grid.Column>
           <Grid.Column>
-            <Form>
-              <Form.Field
-                label="ФИО клиента"
-                control="input"
-                value={
-                  clientFullName &&
-                  `${clientFullName.lastName || ''} ${clientFullName.firstName || ''} ${clientFullName.patronymic || ''}`
-                }
-              />
-              <Form.Field
-                label="ИИН клиента"
-                control="input"
-                value={clientIIN}
-              />
-            </Form>
+            <List>
+              <List.Item>
+                <List.Header className="list-header">
+                  Ф.И.О. клиента:
+                </List.Header>
+                {clientFullName &&
+                  `${clientFullName.lastName || ''} ${clientFullName.firstName || ''} ${clientFullName.patronymic || ''}`}
+              </List.Item>
+              <List.Item>
+                <List.Header className="list-header">
+                  ИИН клиента:
+                </List.Header>
+                {clientIIN}
+              </List.Item>
+              <List.Item>
+                <List.Header className="list-header">
+                  Дилер:
+                </List.Header>
+                { dealerFullName &&
+                  `${dealerFullName.lastName ||
+                    ''} ${dealerFullName.firstName ||
+                    ''} ${dealerFullName.patronymic || ''}`}
+              </List.Item>
+            </List>
           </Grid.Column>
           <Grid.Column>
-            <Form>
-              <Form.Field
-                label="Дилер"
-                control="input"
-                value={
-                  dealerFullName &&
-                  `${dealerFullName.lastName || ''} ${dealerFullName.firstName || ''} ${dealerFullName.patronymic || ''}`
-                }
-              />
-              <Form.Field
-                label="Статус клиента"
-                control="input"
-                value={clientStatus}
-              />
-            </Form>
-          </Grid.Column>
-          <Grid.Column>
-            <Form>
-              <Form.Field
-                label="Оформлен"
-                control="input"
-                value={issueType}
-              />
+            <List>
+              <List.Item>
+                <List.Header className="list-header">
+                  Статус клиента:
+                </List.Header>
+                {clientStatus}
+              </List.Item>
+              <List.Item>
+                <List.Header className="list-header">
+                  Оформлен:
+                </List.Header>
+                {issueType || '--'}
+              </List.Item>
               <PortalComponent
                 openLabel="Контактные данные"
                 closeLabel="Скрыть контактные данные"
               >
                 <ContactsPanelDisplay contactDetails={contactDetails} />
               </PortalComponent>
-            </Form>
+            </List>
           </Grid.Column>
         </Grid.Row>
       </Grid>
