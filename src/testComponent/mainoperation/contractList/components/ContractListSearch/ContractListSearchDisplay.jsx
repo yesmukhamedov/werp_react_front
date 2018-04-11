@@ -34,12 +34,12 @@ class ContractListSearchDisplay extends Component {
       .filter(param => param)
       .join('&');
 
-    this.props.searchContracts(params);
+    return new Promise(resolve => this.props.searchContracts(params, resolve));
   }
 
   render() {
     const {
-      handleSubmit, pristine, submitting, reset
+      handleSubmit, pristine, submitting, reset,
     } = this.props;
     if (this.props.directories && this.props.companyOptions) {
       return (
@@ -93,6 +93,7 @@ class ContractListSearchDisplay extends Component {
                   <Form.Button
                     content="Поиск"
                     type="submit"
+                    loading={submitting}
                     disabled={pristine || submitting}
                     style={
                       { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
@@ -100,6 +101,7 @@ class ContractListSearchDisplay extends Component {
                   <Form.Button
                     content="Сброс"
                     type="button"
+                    disabled={pristine || submitting}
                     style={
                       { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
                     onClick={reset}
