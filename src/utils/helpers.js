@@ -56,7 +56,7 @@ export function formatDate(timeStr, form) {
   return moment(timeStr).local().format(form);
 }
 
-export function formatDateTime(timeStr) {
+export function formatDMYMS(timeStr) {
   return formatDate(timeStr, 'DD.MM.YYYY HH:mm');
 }
 
@@ -64,7 +64,11 @@ export function formatDMY(timeStr) {
   return formatDate(timeStr, 'DD.MM.YYYY');
 }
 
-export function extractName(obj, param) {
+export function extractByParams(obj, param) {
   const extracted = param.map(p => obj[p]);
   return extracted.join(' ');
+}
+
+export function extractLFP(obj) {
+  return extractByParams(obj, ['lastname', 'firstName', 'patronymic']);
 }

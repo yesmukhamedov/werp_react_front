@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Table, Button, Icon, Segment, Header, Label } from 'semantic-ui-react';
 import { NewTaskModalContainer } from '../NewTaskModal';
-import { formatDateTime } from '../../../../../utils/helpers';
+import { formatDMYMS } from '../../../../../utils/helpers';
 import { outCallStatusColorMap } from '../../../../../utils/constants';
 
 class TaskPanelComponent extends PureComponent {
@@ -80,7 +80,7 @@ class TaskPanelComponent extends PureComponent {
                       task.recipient.department.value
                     } - ${task.recipient.position.value}`}
                   </Table.Cell>
-                  <Table.Cell>{formatDateTime(task.modifiedAt)}</Table.Cell>
+                  <Table.Cell>{formatDMYMS(task.modifiedAt)}</Table.Cell>
                 </Table.Row>
               ))}
           </Table.Body>

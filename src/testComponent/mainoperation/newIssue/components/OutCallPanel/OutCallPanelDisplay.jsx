@@ -9,7 +9,7 @@ import {
   Label,
 } from 'semantic-ui-react';
 import { OutCallPanelModalContainer } from '../OutCallPanelModal';
-import { formatDateTime, extractName } from '../../../../../utils/helpers';
+import { formatDMYMS, extractLFP } from '../../../../../utils/helpers';
 import { outCallStatusColorMap } from '../../../../../utils/constants';
 
 const headerStyle = {
@@ -90,7 +90,7 @@ class OutCallPanelDisplay extends PureComponent {
                         <Item.Header style={headerStyle}>
                           Дата создания:
                         </Item.Header>
-                        <Item.Description>{formatDateTime(createdAt) || <span>&mdash;</span>}</Item.Description>
+                        <Item.Description>{formatDMYMS(createdAt) || <span>&mdash;</span>}</Item.Description>
                       </Item.Content>
                     </Item>
                     <Item>
@@ -98,7 +98,7 @@ class OutCallPanelDisplay extends PureComponent {
                         <Item.Header style={headerStyle}>
                           Дата обновления:
                         </Item.Header>
-                        <Item.Description>{formatDateTime(modifiedAt) || <span>&mdash;</span>}</Item.Description>
+                        <Item.Description>{formatDMYMS(modifiedAt) || <span>&mdash;</span>}</Item.Description>
                       </Item.Content>
                     </Item>
                   </Item.Group>
@@ -109,7 +109,7 @@ class OutCallPanelDisplay extends PureComponent {
                       <Item.Content verticalAlign="middle">
                         <Item.Header style={headerStyle}>Открыл:</Item.Header>
                         <Item.Description>
-                          {(status.id !== 1000 ? extractName(operator, ['lastName', 'firstName', 'patronymic']) : <span>&mdash;</span>)}
+                          {(status.id !== 1000 ? extractLFP(operator) : <span>&mdash;</span>)}
                         </Item.Description>
                       </Item.Content>
                     </Item>

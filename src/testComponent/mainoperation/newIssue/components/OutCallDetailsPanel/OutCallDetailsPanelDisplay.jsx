@@ -1,6 +1,6 @@
 import React from 'react';
 import { Segment, Comment, Header } from 'semantic-ui-react';
-import { formatDateTime } from '../../../../../utils/helpers';
+import { formatDMYMS } from '../../../../../utils/helpers';
 
 
 const OutCallDetailsPanelDisplay = (props) => {
@@ -18,7 +18,7 @@ const OutCallDetailsPanelDisplay = (props) => {
                   { item.author && `${item.author.lastName} ${item.author.firstName} ${item.author.patronymic}`}
                 </Comment.Author>
                 <Comment.Metadata>
-                  <div>{formatDateTime(item.createdAt)}</div>
+                  <div>{formatDMYMS(item.createdAt)}</div>
                 </Comment.Metadata>
                 <Comment.Text>
                   <p>{item.text}</p>
