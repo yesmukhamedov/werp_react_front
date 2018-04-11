@@ -107,3 +107,12 @@ export const MONTH_OPTIONS = [
     value: 12,
   },
 ];
+
+
+export const outCallStatusColorMap = {
+  0: 'grey',
+  2: 'green',
+  3: 'blue',
+  4: 'orange',
+  5: 'black',
+};
