@@ -1,5 +1,6 @@
 import React from 'react';
-import { Table } from 'semantic-ui-react'
+import { Table,Button } from 'semantic-ui-react'
+import {formatTimestamptToDate} from '../../../../../utils/helpers'
 
 /**
  * Список должностей сотрудника
@@ -11,21 +12,22 @@ export default function StaffSalariesTable(props){
 
     let tempContent = salaries.map(salary => {
         return (
-            <Table.Row key={salary.salaryId} className={salary.prev === true ? 'error':(salary.next === true?'success':'')}>
-                <Table.Cell>{salary.salaryId}</Table.Cell>
+            <Table.Row key={salary.id} className={salary.prev === true ? 'error':(salary.next === true?'success':'')}>
+                <Table.Cell>{salary.id}</Table.Cell>
                 <Table.Cell>{salary.statusName}</Table.Cell>
-                <Table.Cell>{salary.companyName}</Table.Cell>
+                <Table.Cell>{salary.bukrsName}</Table.Cell>
                 <Table.Cell>{salary.branchName}</Table.Cell>
                 <Table.Cell>{salary.departmentName}</Table.Cell>
-                <Table.Cell>{salary.beginDate}</Table.Cell>
-                <Table.Cell>{salary.endDate}</Table.Cell>
+                <Table.Cell>{formatTimestamptToDate(salary.begDate)}</Table.Cell>
+                <Table.Cell>{formatTimestamptToDate(salary.endDate)}</Table.Cell>
                 <Table.Cell>{salary.positionName}</Table.Cell>
                 <Table.Cell>{salary.amount}</Table.Cell>
                 <Table.Cell>{salary.waers}</Table.Cell>
                 <Table.Cell>{salary.note}</Table.Cell>
-                <Table.Cell>{salary.payrollDate}</Table.Cell>
+                <Table.Cell>{formatTimestamptToDate(salary.payrollDate)}</Table.Cell>
                 <Table.Cell>
-
+                    <Button icon={'pencil'} onClick={() => props.handleUpdate(salary)}>
+                    </Button>
                 </Table.Cell>
             </Table.Row>
         )

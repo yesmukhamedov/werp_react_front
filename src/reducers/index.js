@@ -21,6 +21,7 @@ import visitReducer from '../crm/mainoperation/visit/reducres/visitReducer';
 import { UNAUTH_USER } from '../actions/types';
 import f4_reducer from '../reference/f4/f4_reducer';
 import hrStaffReducer from '../hr/mainoperation/staff/reducers/hrStaffReducer';
+import hrPyramidReducer from '../hr/mainoperation/pyramid/reducers/hrPyramidReducer'
 import hrb02Reducer from '../hr/mainoperation/hrb02/hrb02_reducer';
 import kpiSettingReducer from '../crm/mainoperation/kpi/reducers/kpiSettingReducer'
 
@@ -46,7 +47,8 @@ const appReducer = combineReducers({
   outCalls: outCallsTransactionReducer,
   hrStaff: hrStaffReducer,
   hrb02: hrb02Reducer,
-    crmKpiSetting:kpiSettingReducer
+    crmKpiSetting:kpiSettingReducer,
+    hrPyramid:hrPyramidReducer
 });
 
 const rootReducer = (state, action) => {

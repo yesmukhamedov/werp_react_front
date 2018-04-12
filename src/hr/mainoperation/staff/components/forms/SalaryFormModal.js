@@ -3,6 +3,7 @@ import {Modal, Form, Input, TextArea, Button } from 'semantic-ui-react'
 import {toggleSalaryFormModal,createSalary,fetchBranchPyramids} from '../../actions/hrStaffAction'
 import { connect } from 'react-redux'
 import DatePicker from 'react-datepicker'
+import "react-datepicker/dist/react-datepicker.css"
 import moment from 'moment'
 
 
@@ -36,7 +37,6 @@ class SalaryFormModal extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.renderForm = this.renderForm.bind(this)
     this.saveData = this.saveData.bind(this)
-      this.validateData = this.validateData.bind(this)
       this.handleDate = this.handleDate.bind(this)
   }
 
@@ -297,20 +297,20 @@ class SalaryFormModal extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-      if(nextProps.salary !== this.state.localSalary){
-          let localSalary = Object.assign({}, this.props.salary);
+      if(nextProps.salary.id !== this.state.localSalary.id){
+          let localSalary = Object.assign({}, nextProps.salary);
+          if(localSalary.id){
+              this.props.fetchBranchPyramids(localSalary.branchId)
+          }
           this.setState({
               ...this.state,
               localSalary: localSalary
           })
       }
   }
-
-  validateData(){
-  }
-
   saveData () {
-
+        console.log(this.state.localSalary.id)
+      //this.props.createSalary(this.props.staffId,this.state.localSalary)
   }
 
   render () {
@@ -321,10 +321,10 @@ class SalaryFormModal extends Component {
           {this.renderForm()}
         </Modal.Content>
         <Modal.Actions>
-          <Button negative onClick={() => this.props.toggleSalaryFormtModal(false)}>Отмена</Button>
+          <Button negative onClick={() => this.props.toggleSalaryFormModal(false)}>Отмена</Button>
           <Button positive
                   icon='checkmark'
-                  onClick={() => this.props.createSalary(this.state.localSalary)}
+                  onClick={this.saveData}
                   labelPosition='right' content='Сохранить' />
         </Modal.Actions>
       </Modal>

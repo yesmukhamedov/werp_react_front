@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Container, Divider, Tab, Header,Button} from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import {fetchSingleStaff,fetchStaffSalaries,fetchStaffExpences,fetchStaffOffData,toggleSalaryFormModal} from '../actions/hrStaffAction'
+import {fetchSingleStaff,fetchStaffSalaries,fetchStaffExpences,fetchStaffOffData,toggleSalaryFormModal,fetchPyramids,setSalaryForUpdate} from '../actions/hrStaffAction'
 import StaffSalariesTable from './view/StaffSalariesTable'
 import StaffExpencesTable from './view/StaffExpencesTable'
 import StaffOffDataTable from './view/StaffOffDataTable'
@@ -21,6 +21,8 @@ class StaffViewPage extends Component{
         this.renderContactData = this.renderContactData.bind(this);
         this.renderExpensesData = this.renderExpensesData.bind(this);
         this.renderOfficialData = this.renderOfficialData.bind(this);
+        this.handleSalaryUpdate = this.handleSalaryUpdate.bind(this)
+        this.handleSalaryCreate = this.handleSalaryCreate.bind(this)
     }
 
   componentWillMount () {
@@ -33,6 +35,7 @@ class StaffViewPage extends Component{
       this.props.f4FetchPositionList('staff')
       this.props.f4FetchCurrencyList('staff')
       this.props.f4FetchDepartmentList()
+      this.props.fetchPyramids()
   }
 
   renderMainData () {
@@ -61,19 +64,30 @@ class StaffViewPage extends Component{
         return <StaffOffDataTable offData={this.props.staffOffData}/>
     }
 
-    renderSalaryData(){
+    handleSalaryUpdate(salary){
+        this.props.setSalaryForUpdate(salary)
+        this.props.toggleSalaryFormModal(true)
+    }
+
+    handleSalaryCreate(){
+        this.props.setSalaryForUpdate({})
+        this.props.toggleSalaryFormModal(true)
+    }
+
+    renderSalaryData(staffId){
         return <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
-                    <Button onClick={() => this.props.toggleSalaryFormModal(true)} floated={'right'} primary>Добавить</Button>
-                    <SalaryFormModal/>
-                <StaffSalariesTable salaries={this.props.staffSalaries}/>
+                    <Button onClick={this.handleSalaryCreate} floated={'right'} primary>Добавить</Button>
+                    <SalaryFormModal staffId={staffId}/>
+                <StaffSalariesTable handleUpdate={this.handleSalaryUpdate} salaries={this.props.staffSalaries}/>
             </Container>
     }
 
     renderProfile(){
+        const {staff} = this.props
         const panes = [
             {menuItem:'Основные данные',render:this.renderMainData},
             {menuItem:'Паспортные данные',render:this.renderPassportData},
-            {menuItem:'Должности',render:this.renderSalaryData},
+            {menuItem:'Должности',render:() => this.renderSalaryData(staff.id)},
             {menuItem:'Контакты',render:this.renderContactData},
             {menuItem:'Расходы',render:this.renderExpensesData},
             {menuItem:'Оф. данные',render:this.renderOfficialData},
@@ -82,7 +96,7 @@ class StaffViewPage extends Component{
             {menuItem:'Баланс',render:this.renderMainData},
             {menuItem:'Склад',render:this.renderMainData}
         ]
-        const {staff} = this.props
+
         return (
 
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
@@ -112,5 +126,6 @@ function mapStateToProps (state) {
 
 export default connect(mapStateToProps, {
     fetchSingleStaff,fetchStaffSalaries,fetchStaffExpences,fetchStaffOffData,
-    f4FetchBusinessAreaList,f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList,toggleSalaryFormModal
+    f4FetchBusinessAreaList,f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList,toggleSalaryFormModal,fetchPyramids,
+    setSalaryForUpdate
 })(StaffViewPage)

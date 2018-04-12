@@ -50,17 +50,17 @@ class StaffListTable extends Component {
 
                         return (
                             <Table.Row key={idx}>
-                                <Table.Cell>{item.staffId}</Table.Cell>
+                                <Table.Cell>{item.id}</Table.Cell>
                                 <Table.Cell>{item.lastname}</Table.Cell>
                                 <Table.Cell>{item.firstname}</Table.Cell>
                                 <Table.Cell>{item.middlename}</Table.Cell>
                                 <Table.Cell>{this.renderPositions(item.positions)}</Table.Cell>
                                 <Table.Cell width={2}>
-                                    <Link className={'ui icon button'} to={`/hr/staff/view/${item.staffId}`}>
+                                    <Link className={'ui icon button'} to={`/hr/staff/view/${item.id}`}>
                                         <Icon name='eye' />
                                     </Link>
 
-                                    <Link className={'ui icon button'} to={`/hr/staff/update/${item.staffId}`}>
+                                    <Link className={'ui icon button'} to={`/hr/staff/update/${item.id}`}>
                                         <Icon name='pencil' />
                                     </Link>
 

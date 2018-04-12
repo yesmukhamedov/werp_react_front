@@ -17,9 +17,13 @@ export const HR_STAFF_LIST_MODAL_OPENED = 'HR_STAFF_LIST_MODAL_OPENED'
 export const HR_STAFF_CLEAR_STATE = 'HR_STAFF_CLEAR_STATE';
 
 export const HR_SALARY_FORM_MODAL_OPENED = 'HR_SALARY_FORM_MODAL_OPENED'
-export const HR_SALARY_CREATE = 'HR_SALARY_CREATE'
+export const HR_SALARY_CREATED = 'HR_SALARY_CREATED'
 
 export const HR_PYRAMID_FETCH_BRANCH_PYRAMIDS = 'HR_PYRAMID_FETCH_BRANCH_PYRAMIDS'
+
+export const HR_PYRAMID_FETCH_PYRAMIDS = 'HR_PYRAMID_FETCH_PYRAMIDS'
+
+export const HR_SET_SALARY_FOR_UPDATE = 'HR_SET_SALARY_FOR_UPDATE'
 
 export function fetchCurrentStaffs(params){
     return function(dispatch){
@@ -82,10 +86,10 @@ export function createStaff(staff){
     }
 }
 
-export function createSalary(salary){
+export function createSalary(staffId,salary){
     return function (dispatch){
         dispatch(modifyLoader(true))
-        axios.post(`${ROOT_URL}/api/hr/salary`, salary,{
+        axios.post(`${ROOT_URL}/api/hr/salary/` + staffId, salary,{
             headers: {
                 authorization: localStorage.getItem('token')
             }
@@ -93,13 +97,21 @@ export function createSalary(salary){
             .then(({data}) => {
                 dispatch(modifyLoader(false))
                 dispatch({
-                    type:HR_SALARY_CREATE,
+                    type:HR_SALARY_CREATED,
                     payload:data
                 })
             }).catch((error) => {
             dispatch(modifyLoader(false))
-            handleError(error,dispatch)
+            //handleError(error,dispatch)
+            console.log(error)
         })
+    }
+}
+
+export function setSalaryForUpdate(salary){
+    return {
+        type:HR_SET_SALARY_FOR_UPDATE,
+        payload:salary
     }
 }
 
@@ -189,12 +201,28 @@ export function fetchStaffOffData(staffId){
 
 export function fetchBranchPyramids(branchId){
     return function(dispatch){
-        axios.get(`${ROOT_URL}/api/hr/pyramid/by-branch/` + branchId,{
+        axios.get(`${ROOT_URL}/api/hr/pyramid/tree/by-branch/` + branchId,{
             headers: {
                 authorization: localStorage.getItem('token')}
         }).then(({data}) => {
             dispatch({
                 type:HR_PYRAMID_FETCH_BRANCH_PYRAMIDS,
+                payload:data
+            })
+        }).catch((error) => {
+            handleError(error,dispatch)
+        })
+    }
+}
+
+export function fetchPyramids(){
+    return function(dispatch){
+        axios.get(`${ROOT_URL}/api/hr/pyramid/tree/by-branch/`,{
+            headers: {
+                authorization: localStorage.getItem('token')}
+        }).then(({data}) => {
+            dispatch({
+                type:HR_PYRAMID_FETCH_PYRAMIDS,
                 payload:data
             })
         }).catch((error) => {

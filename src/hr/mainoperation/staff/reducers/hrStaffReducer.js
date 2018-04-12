@@ -7,8 +7,10 @@ import {
     HR_STAFF_LIST_MODAL_OPENED,
     HR_STAFF_ALL_STAFFS,
     HR_SALARY_FORM_MODAL_OPENED,
-    HR_SALARY_CREATE,
-    HR_PYRAMID_FETCH_BRANCH_PYRAMIDS
+    HR_SALARY_CREATED,
+    HR_PYRAMID_FETCH_BRANCH_PYRAMIDS,
+    HR_PYRAMID_FETCH_PYRAMIDS,
+    HR_SET_SALARY_FOR_UPDATE
 } from '../actions/hrStaffAction';
 
 const INITIAL_STATE={
@@ -28,7 +30,8 @@ const INITIAL_STATE={
                     staffListModalOpened:false,
                     salaryFormModalOpened:false,
                     salary:{},
-                    branchPyramids:[]
+                    branchPyramids:[],
+                    pyramids: []
 
 };
 
@@ -57,9 +60,9 @@ export default function (state=INITIAL_STATE, action)
         case HR_SALARY_FORM_MODAL_OPENED:
             return {...state,salaryFormModalOpened:action.payload};
 
-        case HR_SALARY_CREATE:
-            let salaries = Object.assign({}, state.staffSalaries);
-            salaries.push(action.payload)
+        case HR_SALARY_CREATED:
+             let salaries = [...state.staffSalaries];
+             salaries.push(action.payload)
             return {...state,staffSalaries:salaries};
 
         case HR_STAFF_CLEAR_STATE:
@@ -67,6 +70,12 @@ export default function (state=INITIAL_STATE, action)
 
         case HR_PYRAMID_FETCH_BRANCH_PYRAMIDS:
             return {...state,branchPyramids:action.payload};
+
+        case HR_PYRAMID_FETCH_PYRAMIDS:
+            return {...state,pyramids:action.payload}
+
+        case HR_SET_SALARY_FOR_UPDATE:
+            return {...state,salary:action.payload}
 
         default:
             return state;

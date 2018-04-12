@@ -207,6 +207,11 @@ const AsyncAssignUserBranch = Loadable({
 loading: () => <LoadingPage />
 });
 
+const AsyncPyramidTreePage = Loadable({
+        loader: () => import('../hr/mainoperation/pyramid/components/PyramidTreePage' /* webpackChunkName: "ditaub" */),
+    loading: () => <LoadingPage />
+});
+
 
 
 const getComponent = {
@@ -270,6 +275,7 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/hr/staff/update/:id?" component={AsyncStaffUpdatePage} />
       <Route path="/hr/staff/view/:id" component={AsyncStaffViewPage} />
       <Route path="/crm/kpi/setting" component={AsyncKpiSettingPage} />
+        <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} />
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
