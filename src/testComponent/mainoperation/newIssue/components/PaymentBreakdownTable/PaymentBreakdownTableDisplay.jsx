@@ -20,8 +20,8 @@ const PaymentBreakdownTableDisplay = (props) => {
             <Table.Row key={idx}>
               <Table.Cell>{idx + 1}</Table.Cell>
               <Table.Cell>{formatDate(item.date, 'DD.MM.YYYY')}</Table.Cell>
-              <Table.Cell>{item.paidAmount}</Table.Cell>
               <Table.Cell>{item.toBePaidAmount}</Table.Cell>
+              <Table.Cell>{item.paidAmount}</Table.Cell>
             </Table.Row>
           ))}
       </Table.Body>
