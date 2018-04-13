@@ -11,11 +11,13 @@ const FinancialInfoPanelDisplay = (props) => {
   const { financialDetails = {} } = props;
   const {
     initialPayment,
+    installmentPlanDuration,
     residualAmount,
     dealerDiscount,
     recommenderDiscount,
     financialAgent,
     recommender,
+    additionalInfo,
     productSerialNumber,
     promotions,
     monthlyPayments,
@@ -42,7 +44,7 @@ const FinancialInfoPanelDisplay = (props) => {
                   <List.Header className="list-header">
                     Срок рассрочки:
                   </List.Header>
-                  ?
+                  {installmentPlanDuration || <span>&mdash;</span>}
                 </List.Item>
                 <List.Item>
                   <List.Header className="list-header">
@@ -112,7 +114,7 @@ const FinancialInfoPanelDisplay = (props) => {
                   <List.Header className="list-header">
                     Дополнительная информация:
                   </List.Header>
-                  ?
+                  {additionalInfo || <span>&mdash;</span>}
                 </List.Item>
                 <List.Item>
                   <List.Header className="list-header">
