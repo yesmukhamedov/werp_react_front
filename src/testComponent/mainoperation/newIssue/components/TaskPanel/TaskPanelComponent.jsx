@@ -36,7 +36,7 @@ class TaskPanelComponent extends PureComponent {
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell collapsing>#</Table.HeaderCell>
-              <Table.HeaderCell collapsing>Статус</Table.HeaderCell>
+              <Table.HeaderCell >Статус</Table.HeaderCell>
               <Table.HeaderCell collapsing>Приоритет</Table.HeaderCell>
               <Table.HeaderCell>Тема</Table.HeaderCell>
               <Table.HeaderCell>Назначена</Table.HeaderCell>
@@ -56,7 +56,7 @@ class TaskPanelComponent extends PureComponent {
                       {task.id}
                     </Link>
                   </Table.Cell>
-                  <Table.Cell>
+                  <Table.Cell collapsing>
                     {task.status && (
                       <Label
                         color={outCallStatusColorMap[task.status.id]}

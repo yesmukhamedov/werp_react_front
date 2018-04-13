@@ -103,7 +103,7 @@ const FinancialInfoPanelDisplay = (props) => {
                     (recommender &&
                     <Link target='_blank' to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=` + recommender.contractNumber}>
                       {
-                        extractLFP(recommender)
+                        extractLFP(recommender.recommenderName)
                       }
                     </Link>) || <span>&mdash;</span>
                   }

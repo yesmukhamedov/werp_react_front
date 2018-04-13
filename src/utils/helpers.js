@@ -70,5 +70,5 @@ export function extractByParams(obj, param) {
 }
 
 export function extractLFP(obj) {
-  return extractByParams(obj, ['lastname', 'firstName', 'patronymic']);
+  return extractByParams(obj, ['lastName', 'firstName', 'patronymic']);
 }
