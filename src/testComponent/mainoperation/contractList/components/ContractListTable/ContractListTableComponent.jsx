@@ -160,6 +160,12 @@ class ContractListTableComponent extends Component {
       columns={columns}
       pageSizeOptions={[10, 20, 30, 50]}
       defaultPageSize={10}
+      defaultSorted={[
+        {
+          id: 'contractDate',
+          desc: true,
+        },
+      ]}
       previousText="Предыдущий"
       nextText="Следующий"
       loadingText="Загружается..."

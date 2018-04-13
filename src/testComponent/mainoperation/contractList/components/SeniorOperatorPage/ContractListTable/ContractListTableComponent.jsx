@@ -5,10 +5,11 @@ import 'react-table/react-table.css';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 // import moment from 'moment';
-import { Icon } from 'semantic-ui-react';
+import { Icon, Label } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import OperatorEditModal from '../OperatorEdit/OperatorEditModal';
-import { formatDate } from '../../../../../../utils/helpers';
+import { formatDMY, formatDMYMS, extractLFP } from '../../../../../../utils/helpers';
+import { outCallStatusColorMap } from '../../../../../../utils/constants';
 
 class ContractListTableComponent extends Component {
   constructor(props) {
@@ -71,8 +72,7 @@ class ContractListTableComponent extends Component {
         accessor: 'contractDate',
         Cell: (props) => {
           const { contractDate } = props.original;
-          // return moment(contractDate).format('DD.MM.YYYY');
-          return formatDate(contractDate, 'DD.MM.YYYY');
+          return formatDMY(contractDate);
         },
         maxWidth: 110,
       },
@@ -106,7 +106,7 @@ class ContractListTableComponent extends Component {
           const { dealer } = props.original;
           return (
             <div>
-              {dealer && dealer.lastName} {dealer && dealer.firstName} {dealer && dealer.patronymic}
+              {dealer && extractLFP(dealer)}
             </div>
           );
         },
@@ -119,7 +119,12 @@ class ContractListTableComponent extends Component {
           const { status } = props.original;
           return (
             <div>
-              {status[this.props.lang]}
+              <Label
+                color={outCallStatusColorMap[status.id]}
+                size="mini"
+              >
+                {status[this.props.lang]}
+              </Label>
             </div>
           );
         },
@@ -135,8 +140,7 @@ class ContractListTableComponent extends Component {
         accessor: 'modifiedAt',
         Cell: (props) => {
           const { modifiedAt } = props.original;
-          // return moment(modifiedAt).utc().format('DD.MM.YYYY, hh:mm:ss');
-          return formatDate(modifiedAt, 'DD.MM.YYYY, hh:mm:ss');
+          return formatDMYMS(modifiedAt);
         },
         maxWidth: 160,
       },
@@ -149,7 +153,7 @@ class ContractListTableComponent extends Component {
           const { operator } = props.original;
           return (
             <div>
-              {operator && operator.lastName} {operator && operator.firstName} {operator && operator.patronymic}
+              {operator && extractLFP(operator)}
             </div>
           );
         },
@@ -187,6 +191,12 @@ class ContractListTableComponent extends Component {
           columns={columns}
           pageSizeOptions={[10, 20, 30, 50]}
           defaultPageSize={10}
+          defaultSorted={[
+            {
+              id: 'contractDate',
+              desc: true,
+            },
+          ]}
           previousText="Предыдущий"
           nextText="Следующий"
           loadingText="Загружается..."

@@ -3,9 +3,8 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Link } from 'react-router-dom';
-import moment from 'moment';
 import PropTypes from 'prop-types';
-import { formatDate } from '../../../../../utils/helpers';
+import { formatDMYMS } from '../../../../../utils/helpers';
 
 class TaskListTableComponent extends Component {
   constructor(props) {
@@ -73,7 +72,7 @@ class TaskListTableComponent extends Component {
       {
         Header: 'Назначена',
         accessor: 'recipient',
-        maxWidth: 270,
+        maxWidth: 290,
         Cell: (props) => {
           const { recipient } = props.original;
           return (
@@ -86,11 +85,10 @@ class TaskListTableComponent extends Component {
       {
         Header: 'Обновлено',
         accessor: 'modifiedAt',
-        maxWidth: 160,
+        maxWidth: 140,
         Cell: (props) => {
           const { modifiedAt } = props.original;
-          // return moment(modifiedAt, 'YYYY-MM-DDTHH:mm:ssZ').utc().format('DD.MM.YYYY, hh:mm:ss');
-          return formatDate(modifiedAt, 'DD.MM.YYYY, hh:mm:ss');
+          return formatDMYMS(modifiedAt);
         },
       },
     ];
@@ -100,6 +98,12 @@ class TaskListTableComponent extends Component {
       columns={columns}
       pageSizeOptions={[10, 20, 30, 50]}
       defaultPageSize={10}
+      defaultSorted={[
+        {
+          id: 'modifiedAt',
+          desc: true,
+        },
+      ]}
       previousText="Предыдущий"
       nextText="Следующий"
       loadingText="Загружается..."

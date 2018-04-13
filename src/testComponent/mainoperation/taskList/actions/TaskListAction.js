@@ -20,10 +20,16 @@ function getRefDirectory(name) {
   });
 }
 
+function getPositions() {
+  return axios.get(`${ROOT_URL}/api/call-center/out-calls/positions`, {
+    headers: { authorization: localStorage.getItem('token') },
+  });
+}
+
 export function getTaskDirectories(lang) {
   return (dispatch) => {
     axios.all([getTaskDirectory('status'), getTaskDirectory('priorities'),
-      getRefDirectory('branches/all'), getRefDirectory('departments'), getRefDirectory('positions')])
+      getRefDirectory('branches/all'), getRefDirectory('departments'), getPositions()])
       .then(axios.spread((
         { data: statusList }, { data: priorityList },
         { data: branchList }, { data: deptList }, { data: positionList },
