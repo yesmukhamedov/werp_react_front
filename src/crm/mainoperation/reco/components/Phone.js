@@ -8,6 +8,7 @@ import moment from 'moment'
 import {LOCATION_OPTIONS,CALL_RESULT_DEMO,CALL_RESULT_REFUSE,CALL_RESULT_RECALL,getReasonsByResultId} from '../../../crmUtil'
 import { connect } from 'react-redux'
 import {fetchPhoneNumberHistory,fetchCallResults,fetchSingleReco} from '../actions/recoAction'
+require('moment/locale/ru');
 
 class Phone extends Component {
   constructor (props) {
@@ -107,6 +108,7 @@ class Phone extends Component {
           <Form.Field error={this.state.errors.demoDate} required>
             <label>Дата-время демонстрации</label>
             <DatePicker
+                locale="ru"
               label=''
               placeholderText={'Дата-время демонстрации'}
               showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'

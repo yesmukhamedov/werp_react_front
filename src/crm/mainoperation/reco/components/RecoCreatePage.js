@@ -9,7 +9,7 @@ import moment from 'moment'
 import 'react-datepicker/dist/react-datepicker.css';
 import {RECO_SWITCH_OPTIONS,RECO_CALLER_OPTIONS} from '../../../crmUtil'
 import {fetchGroupDealers} from '../../demo/actions/demoAction';
-
+require('moment/locale/ru');
 
 class RecoCreatePage extends Component {
   constructor (props) {
@@ -273,6 +273,7 @@ class RecoCreatePage extends Component {
   renderCallDate (show, index) {
     if (show) {
       return <DatePicker
+          locale="ru"
         label=''
         placeholderText={'Дата-время звонка'}
         showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'
