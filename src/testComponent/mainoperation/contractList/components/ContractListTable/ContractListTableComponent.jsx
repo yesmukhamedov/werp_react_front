@@ -33,6 +33,15 @@ class ContractListTableComponent extends Component {
     }
     const columns = [
       {
+        Header: '#',
+        accessor: 'timestamp',
+        Cell: (props) => {
+          const { index } = props;
+          return <div>{index + 1}</div>;
+        },
+        maxWidth: 50,
+      },
+      {
         Header: 'SN договор',
         accessor: 'contractNumber',
         maxWidth: 100,
@@ -45,6 +54,12 @@ class ContractListTableComponent extends Component {
             </Link>
           );
         },
+        Footer: (
+          <span>
+            <strong>Всего:</strong>{' '}
+            {_.size(this.props.result)}
+          </span>
+        ),
       },
       {
         Header: 'Дата договора',
@@ -57,7 +72,7 @@ class ContractListTableComponent extends Component {
       },
       {
         Header: 'ФИО',
-        accessor: 'customer',
+        accessor: 'customer.lastName',
         Cell: (props) => {
           const { customer } = props.original;
           return (
@@ -80,7 +95,7 @@ class ContractListTableComponent extends Component {
       },
       {
         Header: 'ФИО Диллера',
-        accessor: 'dealer',
+        accessor: 'dealer.lastName',
         Cell: (props) => {
           const { dealer } = props.original;
           return (
@@ -160,12 +175,6 @@ class ContractListTableComponent extends Component {
       columns={columns}
       pageSizeOptions={[10, 20, 30, 50]}
       defaultPageSize={10}
-      defaultSorted={[
-        {
-          id: 'contractDate',
-          desc: true,
-        },
-      ]}
       previousText="Предыдущий"
       nextText="Следующий"
       loadingText="Загружается..."
