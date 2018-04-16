@@ -10,8 +10,6 @@ import Signout from '../components/Auth/Signout';
 import ForbiddenPage from '../general/forbidden';
 import LoadingPage from '../general/LoadingPage';
 
-// import NewIssuePageContainer from '../testComponent/mainoperation/newIssue/components/NewIssuePageContainer'
-
 const AsyncSettings = Loadable({
   loader: () =>
     import('../components/UserSettings/Settings' /* webpackChunkName: "Settings" */),
@@ -92,31 +90,31 @@ const AsyncSpListPage = Loadable({
 
 const AsyncContractListPage = Loadable({
   loader: () =>
-    import('../testComponent/mainoperation/contractList/components/ContractListPage' /* webpackChunkName: "ContractListPage" */),
+    import('../crm/callCenter/mainoperation/contractList/components/ContractListPage' /* webpackChunkName: "ContractListPage" */),
   loading: () => <LoadingPage />,
 });
 
 const AsyncSOContractListPage = Loadable({
   loader: () =>
-    import('../testComponent/mainoperation/contractList/components/SeniorOperatorPage/ContractListPage' /* webpackChunkName: "SOContractListPage" */),
+    import('../crm/callCenter/mainoperation/contractList/components/SeniorOperatorPage/ContractListPage' /* webpackChunkName: "SOContractListPage" */),
   loading: () => <LoadingPage />,
 });
 
 const AsyncTaskListPage = Loadable({
   loader: () =>
-    import('../testComponent/mainoperation/taskList/components/TaskListPage' /* webpackChunkName: "TaskListPage" */),
+    import('../crm/callCenter/mainoperation/taskList/components/TaskListPage' /* webpackChunkName: "TaskListPage" */),
   loading: () => <LoadingPage />,
 });
 
 const AsyncTaskPage = Loadable({
   loader: () =>
-    import('../testComponent/mainoperation/task/components/TaskPageContainer' /* webpackChunkName: "TaskPage" */),
+    import('../crm/callCenter/mainoperation/task/components/TaskPageContainer' /* webpackChunkName: "TaskPage" */),
   loading: () => <LoadingPage />,
 });
 
 const AsyncOutCallTaskPage = Loadable({
   loader: () =>
-    import('../testComponent/mainoperation/newIssue/components/TaskPanel/TaskView/TaskViewContainer' /* webpackChunkName: "OutCallTaskPage" */),
+    import('../crm/callCenter/mainoperation/newIssue/components/TaskPanel/TaskView/TaskViewContainer' /* webpackChunkName: "OutCallTaskPage" */),
   loading: () => <LoadingPage />,
 });
 
@@ -173,7 +171,7 @@ const AsyncKpiSettingPage = Loadable({
 
 const AsyncNewIssuePageContainer = Loadable({
   loader: () =>
-    import('../testComponent/mainoperation/newIssue/components/NewIssuePageContainer' /* webpackChunkName: "NewIssuePageTest" */),
+    import('../crm/callCenter/mainoperation/newIssue/components/NewIssuePageContainer' /* webpackChunkName: "NewIssuePageTest" */),
   loading: () => <LoadingPage />,
 });
 

@@ -7,11 +7,11 @@ import inboxReducer from './inbox';
 import ditUserBranchReducer from '../dit/userBranch/reducers/userBranch_reducer';
 import treeMenuReducer from './tree_menu';
 import notificationReducer from '../general/notification/notification_reducer';
-import contractListReducer from '../testComponent/mainoperation/contractList/reducers/ContractListReducer';
-import taskListReducer from '../testComponent/mainoperation/taskList/reducers/TaskListReducer';
-import taskReducer from '../testComponent/mainoperation/task/reducers/TaskReducer';
+import contractListReducer from '../crm/callCenter/mainoperation/contractList/reducers/ContractListReducer';
+import taskListReducer from '../crm/callCenter/mainoperation/taskList/reducers/TaskListReducer';
+import taskReducer from '../crm/callCenter/mainoperation/task/reducers/TaskReducer';
 
-import outCallsTransactionReducer from '../testComponent/mainoperation/newIssue/reducers';
+import outCallsTransactionReducer from '../crm/callCenter/mainoperation/newIssue/reducers';
 import userInfoReducer from '../general/userInfo/userInfo_reducer';
 import frcolnReducer from '../finance/report/frcoln/frcoln_reducer';
 import loaderReducer from '../general/loader/loader_reducer';
@@ -21,9 +21,9 @@ import visitReducer from '../crm/mainoperation/visit/reducres/visitReducer';
 import { UNAUTH_USER } from '../actions/types';
 import f4_reducer from '../reference/f4/f4_reducer';
 import hrStaffReducer from '../hr/mainoperation/staff/reducers/hrStaffReducer';
-import hrPyramidReducer from '../hr/mainoperation/pyramid/reducers/hrPyramidReducer'
+import hrPyramidReducer from '../hr/mainoperation/pyramid/reducers/hrPyramidReducer';
 import hrb02Reducer from '../hr/mainoperation/hrb02/hrb02_reducer';
-import kpiSettingReducer from '../crm/mainoperation/kpi/reducers/kpiSettingReducer'
+import kpiSettingReducer from '../crm/mainoperation/kpi/reducers/kpiSettingReducer';
 
 const appReducer = combineReducers({
   form,
