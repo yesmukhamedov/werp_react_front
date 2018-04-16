@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
-import { Tab,Header,Container,Icon,Segment } from 'semantic-ui-react'
+import { Tab,Header,Container,Icon,Segment,Label } from 'semantic-ui-react'
 import Phone from './Phone';
 import moment from 'moment';
 import { connect } from 'react-redux'
@@ -111,12 +111,7 @@ class RecoCurrentPage extends Component {
             {
               Header: 'Дата звонка',
               id: 'callDate',
-              accessor: (row) => {
-                if (row['callDate']) {
-                  return moment(row['callDate']).format('DD.MM.YYYY HH:mm')
-                }
-                return ''
-              }
+              accessor: (row) => this.renderDocDate(row)
             },
             {
               Header: 'Тел. номера',
@@ -185,6 +180,27 @@ class RecoCurrentPage extends Component {
           className='-striped -highlight' />
       </div>
     )
+  }
+
+  renderDocDate(row){
+      if (row['callDate']) {
+          let now = moment();
+          let docDate = moment(row['callDate']);
+          if(now.isAfter(docDate)){
+              return <Label color={'red'}>
+                  {docDate.format('DD.MM.YYYY HH:mm')}
+              </Label>
+          }else if(now.format('DD.MM.YYYY') === docDate.format('DD.MM.YYYY')){
+              return <Label color={'orange'}>
+                  {docDate.format('DD.MM.YYYY HH:mm')}
+              </Label>
+          }
+
+          return <Label color={'teal'}>
+              {docDate.format('DD.MM.YYYY HH:mm')}
+          </Label>
+      }
+      return ''
   }
 
   renderTabDemoDone () {

@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import {fetchBukrsPyramidsTree,pyramidTreeChanged,deletePyramid,blankItem,toggleFormModal} from  '../actions/hrPyramidAction'
 import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4'
 import {f4FetchPositionList,f4FetchBusinessAreaList,f4FetchDepartmentList} from '../../../../reference/f4/f4_action'
+import {fetchAllStaffs} from '../../staff/actions/hrStaffAction'
 import PyramidFormModal from './PyramidFormModal'
 
 class PyramidTreePage extends Component {
@@ -27,6 +28,7 @@ class PyramidTreePage extends Component {
       this.resetDelete = this.resetDelete.bind(this)
       this.deletePyramid = this.deletePyramid.bind(this)
       this.prepareForCreate = this.prepareForCreate.bind(this)
+      this.loadTreeData = this.loadTreeData.bind(this)
     }
 
     componentWillMount(){
@@ -54,7 +56,6 @@ class PyramidTreePage extends Component {
     }
 
     renderSearchPanel(){
-
         return <div>
             <Header as='h4' attached='top'>
                 Расширенный поиск
@@ -63,10 +64,15 @@ class PyramidTreePage extends Component {
                 <Form>
                     <BukrsF4 handleChange={this.handleDropdownChange} />
 
-                    <Button onClick={() => this.props.fetchBukrsPyramidsTree(this.state.bukrs)} type='submit'>Сформировать</Button>
+                    <Button onClick={() => this.loadTreeData()} type='submit'>Сформировать</Button>
                 </Form>
             </Segment>
         </div>
+    }
+
+    loadTreeData(){
+        this.props.fetchBukrsPyramidsTree(this.state.bukrs)
+        this.props.fetchAllStaffs({bukrs:this.state.bukrs})
     }
 
     onChanged(a){
@@ -137,10 +143,10 @@ class PyramidTreePage extends Component {
             <Grid.Column floated='left' width={4}>
                 {this.renderSearchPanel()}
                 {this.renderDeleteNotifyModal()}
-            <PyramidFormModal/>
             </Grid.Column>
 
             <Grid.Column floated='left' width={12}>
+                <PyramidFormModal/>
                 <div style={{ height: 1000 }}>
                     <SortableTree
                         getNodeKey={getNodeKey}
@@ -180,5 +186,5 @@ function mapStateToProps (state) {
 export default connect(mapStateToProps, {
     fetchBukrsPyramidsTree,pyramidTreeChanged,deletePyramid,blankItem,
     f4FetchPositionList,f4FetchDepartmentList,f4FetchBusinessAreaList,
-    toggleFormModal
+    toggleFormModal,fetchAllStaffs
 })(PyramidTreePage)

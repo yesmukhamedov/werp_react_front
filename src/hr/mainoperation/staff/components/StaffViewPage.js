@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Container, Divider, Tab, Header,Button} from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import {fetchSingleStaff,fetchStaffSalaries,fetchStaffExpences,fetchStaffOffData,toggleSalaryFormModal,fetchPyramids,setSalaryForUpdate} from '../actions/hrStaffAction'
+import {fetchSingleStaff,fetchStaffSalaries,fetchStaffExpences,fetchStaffOffData,toggleSalaryFormModal,setSalaryForUpdate} from '../actions/hrStaffAction'
 import StaffSalariesTable from './view/StaffSalariesTable'
 import StaffExpencesTable from './view/StaffExpencesTable'
 import StaffOffDataTable from './view/StaffOffDataTable'
@@ -35,7 +35,6 @@ class StaffViewPage extends Component{
       this.props.f4FetchPositionList('staff')
       this.props.f4FetchCurrencyList('staff')
       this.props.f4FetchDepartmentList()
-      this.props.fetchPyramids()
   }
 
   renderMainData () {
@@ -126,6 +125,5 @@ function mapStateToProps (state) {
 
 export default connect(mapStateToProps, {
     fetchSingleStaff,fetchStaffSalaries,fetchStaffExpences,fetchStaffOffData,
-    f4FetchBusinessAreaList,f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList,toggleSalaryFormModal,fetchPyramids,
-    setSalaryForUpdate
+    f4FetchBusinessAreaList,f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList,toggleSalaryFormModal,setSalaryForUpdate
 })(StaffViewPage)

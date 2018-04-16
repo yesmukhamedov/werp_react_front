@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table,Card } from 'semantic-ui-react'
+import { Table,Card, Icon } from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
 
 /**
@@ -34,8 +34,8 @@ export default function ChildRecosTable(props){
                             <Table.Cell>{idx+1}</Table.Cell>
                             <Table.Cell>{item.clientName}</Table.Cell>
                             <Table.Cell>{item.statusName}</Table.Cell>
-                            <Table.Cell><Link className={'ui icon button mini'} to={`/crm/reco/view/` + item.id}>
-                                Просмотр
+                            <Table.Cell><Link className={'ui icon button'} to={`/crm/reco/view/` + item.id}>
+                                <Icon name={'eye'}/>
                             </Link></Table.Cell>
                         </Table.Row>
                     })}

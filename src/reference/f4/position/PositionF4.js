@@ -10,8 +10,6 @@ class PositionF4 extends Component {
       options: [],
       selected: ''
     }
-
-    this.handleChange = this.handleChange.bind(this)
   }
 
   componentWillMount () {
@@ -43,13 +41,10 @@ class PositionF4 extends Component {
     })
   }
 
-  handleChange (e, v) {
-    this.props.handleChange(e, v)
-  }
-
   render () {
     return (
       <Form.Select
+          value={this.props.value || null}
         name='position'
         multiple={this.props.multiple || false}
         search={this.props.search}
@@ -58,7 +53,7 @@ class PositionF4 extends Component {
         selectOnBlur={false}
         options={this.state.options}
         placeholder='Должность'
-        onChange={this.handleChange} />
+        onChange={this.props.handleChange} />
     )
   }
 }

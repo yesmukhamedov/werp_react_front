@@ -3,11 +3,12 @@ import {Link} from 'react-router-dom'
 import { Header, Container,   Button, Segment, Grid, Table, Divider, Card } from 'semantic-ui-react'
 import moment from 'moment'
 import DemoCreateModal from '../../demo/components/DemoCreateModal'
-import {fetchSingleVisit,deleteVisit} from '../actions/visitAction'
+import {fetchSingleVisit,deleteVisit,modalToggle,setVisitForUpdate} from '../actions/visitAction'
 import { connect } from 'react-redux'
 import {toggleDemoCreateModal,fetchGroupDealers,fetchDemoResults,fetchReasons} from '../../demo/actions/demoAction'
 import ChildDemosTable from '../../demo/components/ChildDemosTable'
 import ChildRecosTable from '../../reco/components/ChildRecosTable'
+import VisitCreateModal from './VisitCreateModal'
 
 class VisitViewPage extends Component {
   constructor (props) {
@@ -20,9 +21,9 @@ class VisitViewPage extends Component {
     }
 
     this.renderActions = this.renderActions.bind(this)
-    this.onCloseUpdateModal = this.onCloseUpdateModal.bind(this)
     this.onCloseDemoCreateModal = this.onCloseDemoCreateModal.bind(this)
       this.deleteVisit = this.deleteVisit.bind(this)
+      this.toUpdate = this.toUpdate.bind(this)
   }
 
     componentWillMount(){
@@ -34,6 +35,10 @@ class VisitViewPage extends Component {
         this.props.fetchReasons()
     }
 
+    toUpdate(){
+        this.props.modalToggle(true),
+        this.props.setVisitForUpdate(this.props.visit)
+    }
   renderActions () {
     return <div>
       <Link className={'ui icon button'} to={`/crm/visit/archive`}>
@@ -45,6 +50,7 @@ class VisitViewPage extends Component {
       </Link>
 
       <Button onClick={() => this.props.toggleDemoCreateModal(true)}>Добавить демо</Button>
+        <Button onClick={this.toUpdate}>Редактировать</Button>
       <Button color={'red'} onClick={() => this.deleteVisit()}>Удалить</Button>
     </div>
   }
@@ -149,13 +155,6 @@ class VisitViewPage extends Component {
     </Card>
   }
 
-  onCloseUpdateModal () {
-    this.setState({
-      ...this.state,
-      updateModalOpened: false
-    })
-    this.loadItem(this.state.visit.id)
-  }
 
   onCloseDemoCreateModal () {
     this.setState({
@@ -175,7 +174,7 @@ class VisitViewPage extends Component {
           </Header>
         </Segment>
         {this.renderActions()}
-
+          <VisitCreateModal  fromComponent="view" />
         <DemoCreateModal
           parentId={0}
           visitId={this.props.visit.id}
@@ -191,8 +190,8 @@ class VisitViewPage extends Component {
             </Grid.Column>
 
             <Grid.Column width={8}>
-              {<ChildRecosTable items={visit.recos || []}/>}
-                {<ChildDemosTable items={visit.demos || []}/>}
+              {<ChildRecosTable items={visit.childRecos || []}/>}
+                {<ChildDemosTable items={visit.childDemos || []}/>}
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -202,13 +201,12 @@ class VisitViewPage extends Component {
 }
 function mapStateToProps (state) {
     return {
-        visit:state.crmVisit.visit,
-        loader:state.loader
+        visit:state.crmVisit.visit
     }
 }
 
 export default connect(mapStateToProps, {
     fetchSingleVisit,toggleDemoCreateModal,
     fetchGroupDealers,fetchDemoResults,
-    fetchReasons,deleteVisit
+    fetchReasons,deleteVisit,modalToggle,setVisitForUpdate
 })(VisitViewPage)

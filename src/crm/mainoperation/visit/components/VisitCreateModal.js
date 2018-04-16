@@ -1,38 +1,25 @@
 import React, {Component} from 'react'
 import {Modal,Form, Input, TextArea, Button } from 'semantic-ui-react'
 import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment'
 import axios from 'axios'
 import {ROOT_URL} from '../../../../utils/constants'
+import {fetchSingleVisit,createVisit,modalToggle,updateVisit} from '../actions/visitAction'
+import { connect } from 'react-redux'
 
 class VisitCreateModal extends Component {
   constructor (props) {
     super(props)
 
     this.state = {
-      opened: false,
-      visit: {
-        clientName: '',
-        visitorId: 0,
-        address: '',
-        docDate: null,
-        note: ''
-      },
-      loaded: false,
-      dealers: [],
-      errors: {
-        visitorId: false,
-        clientName: false,
-        docDate: false
-      }
+        localVisit:{id:null},
+        dealers: []
     }
 
-    this.close = this.close.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.onOpen = this.onOpen.bind(this)
-    this.saveData = this.saveData.bind(this)
     this.renderForm = this.renderForm.bind(this)
-    this.validateForm = this.validateForm.bind(this)
+      this.saveVisit = this.saveVisit.bind(this)
   }
 
   componentWillMount () {
@@ -66,16 +53,17 @@ class VisitCreateModal extends Component {
   }
 
   renderForm () {
+      let {localVisit} = this.state
     return <Form>
       <Form.Group widths='equal'>
-        <Form.Select error={this.state.errors.visitorId}
-          value={this.state.visit.visitorId}
+        <Form.Select
+          value={localVisit.visitorId}
           required fluid selection
           label='Посетитель' options={this.state.dealers}
           onChange={(e, v) => this.handleChange('visitorId', v)} />
 
-        <Form.Field error={this.state.errors.clientName} onChange={(e, o) => this.handleChange('clientName', o)}
-          value={this.state.visit.clientName}
+        <Form.Field onChange={(e, o) => this.handleChange('clientName', o)}
+          value={localVisit.clientName || ''}
           control={Input} required label='ФИО клиента' placeholder='ФИО клиента' />
       </Form.Group>
 
@@ -83,16 +71,16 @@ class VisitCreateModal extends Component {
         <Form.Field control={TextArea}
           onChange={(e, o) => this.handleChange('address', o)}
           label='Адрес' placeholder='Адрес'
-          value={this.state.visit.address}
+          value={localVisit.address || ''}
         />
 
-        <Form.Field error={this.state.errors.docDate} required>
+        <Form.Field required>
           <label>Дата визита</label>
           <DatePicker
             label=''
             placeholderText={'Дата-время демонстрации'}
             showMonthDropdown showYearDropdown dropdownMode='select'
-            dateFormat='DD.MM.YYYY' selected={this.state.visit.docDate ? moment(this.state.visit.docDate) : null}
+            dateFormat='DD.MM.YYYY' selected={localVisit.docDate ? moment(localVisit.docDate) : null}
             onChange={(v) => this.handleChange('docDate', v)} />
         </Form.Field>
       </Form.Group>
@@ -101,7 +89,7 @@ class VisitCreateModal extends Component {
         <Form.Field control={TextArea}
           onChange={(e, o) => this.handleChange('note', o)}
           label='Примечание' placeholder='Примечание'
-          value={this.state.visit.note}
+          value={localVisit.note || ''}
         />
         <Form.Field />
       </Form.Group>
@@ -109,24 +97,25 @@ class VisitCreateModal extends Component {
   }
 
   handleChange (fieldName, o) {
-    let {visit, errors} = this.state
+    let localVisit = Object.assign({}, this.state.localVisit)
     // console.log(o);
     switch (fieldName) {
       case 'docDate':
+          console.log(o.valueOf())
         if (o) {
-          visit[fieldName] = o.valueOf()
+            localVisit[fieldName] = o.valueOf()
         } else {
-          visit[fieldName] = null
+            localVisit[fieldName] = null
         }
         break
       case 'clientName':
       case 'note':
       case 'address':
-        visit[fieldName] = o.value
+          localVisit[fieldName] = o.value
         break
 
       case 'visitorId':
-        visit[fieldName] = o.value
+          localVisit[fieldName] = o.value
         break
 
         default:{}
@@ -134,90 +123,55 @@ class VisitCreateModal extends Component {
 
     this.setState({
       ...this.state,
-      visit: visit,
-      errors: errors
+        localVisit: localVisit
     })
   }
 
-  validateForm () {
-    let {visit, errors} = this.state
-      for(let k in errors){
-          if (errors.hasOwnProperty(k)) {
-              errors[k] = false
-          }
-      }
-
-    if (!visit.clientName || visit.clientName.length === 0) {
-      errors['clientName'] = true
-    }
-
-    if (!visit.docDate || visit.docDate.length === 0) {
-      errors['docDate'] = true
-    }
-
-    if (!visit.visitorId || visit.visitorId === 0) {
-      errors['visitorId'] = true
-    }
-
-    this.setState({
-      ...this.state,
-      errors: errors
-    })
-  }
-
-  saveData () {
-    this.validateForm()
-    let isValid = true
-    const {errors} = this.state;
-    for(let k in errors){
-        if (errors[k]) {
-            isValid = false
+    componentWillReceiveProps (nextProps) {
+        if(nextProps.visit.id !== this.state.localVisit.id){
+            let localVisit = Object.assign({}, nextProps.visit);
+            this.setState({
+                ...this.state,
+                localVisit: localVisit
+            })
         }
     }
 
-    if (!isValid) {
-      return
+    saveVisit(){
+        const {localVisit} = this.state
+        if(localVisit.id && typeof localVisit.id !== 'undefined'){
+            this.props.updateVisit(localVisit,this.props.fromComponent)
+        }else{
+            this.props.createVisit(localVisit,this.props.fromComponent)
+        }
     }
-    axios.post(`${ROOT_URL}/api/crm/visit/`, { ...this.state.visit }, {
-      headers: {
-        authorization: localStorage.getItem('token')
-      }
-    })
-      .then((response) => {
-        this.afterSave()
-      }).catch((error) => {
-        console.log(error)
-      })
-  }
-
-  afterSave () {
-    this.props.afterSave()
-    this.close()
-  }
-
-  close () {
-    this.props.onClose(false)
-  }
-
-  onOpen (e, data) {
-    console.log('OPENED')
-  }
 
   render () {
     const {modalOpened} = this.props
     return (
-      <Modal size={'small'} open={modalOpened} onOpen={this.onOpen}>
-        <Modal.Header>Добавление визита</Modal.Header>
+      <Modal size={'small'} open={modalOpened}>
+        <Modal.Header>{this.state.localVisit.id && this.state.localVisit.id > 0 ?'Редактирование визита':'Добавление визита'}</Modal.Header>
         <Modal.Content>
           {this.renderForm()}
         </Modal.Content>
         <Modal.Actions>
-          <Button negative onClick={this.close}>Отмена</Button>
-          <Button positive icon='checkmark' onClick={this.saveData} labelPosition='right' content='Сохранить' />
+          <Button negative onClick={() => this.props.modalToggle(false)}>Отмена</Button>
+          <Button positive icon='checkmark'
+                  onClick={this.saveVisit}
+                  labelPosition='right' content='Сохранить' />
         </Modal.Actions>
       </Modal>
     )
   }
 }
 
-export default VisitCreateModal
+
+
+function mapStateToProps (state) {
+    return {
+        modalOpened: state.crmVisit.modalOpened,
+        visit: state.crmVisit.visit
+    }
+}
+
+export default connect(mapStateToProps, {fetchSingleVisit,createVisit,modalToggle,updateVisit})(VisitCreateModal)

@@ -215,24 +215,6 @@ export function fetchBranchPyramids(branchId){
     }
 }
 
-export function fetchPyramids(){
-    return function(dispatch){
-        axios.get(`${ROOT_URL}/api/hr/pyramid/tree/by-branch/`,{
-            headers: {
-                authorization: localStorage.getItem('token')}
-        }).then(({data}) => {
-            dispatch({
-                type:HR_PYRAMID_FETCH_PYRAMIDS,
-                payload:data
-            })
-        }).catch((error) => {
-            handleError(error,dispatch)
-        })
-    }
-}
-
-
-
 export function toggleStaffListModal(flag){
     return {
         type: HR_STAFF_LIST_MODAL_OPENED,

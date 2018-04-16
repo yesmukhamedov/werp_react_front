@@ -2,11 +2,13 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
-import { Tab,Header,Container,Label,Icon,Button,Segment,Menu,Dropdown } from 'semantic-ui-react'
-import axios from 'axios';
-import {ROOT_URL} from '../../../../utils/constants';
+import { Header,Container,Icon,Button,Segment } from 'semantic-ui-react'
 import moment from 'moment';
 import VisitCreateModal from './VisitCreateModal';
+import {fetchArchive,modalToggle,setVisitForUpdate,blankForCreate} from '../actions/visitAction'
+import {fetchGroupDealers} from '../../demo/actions/demoAction'
+import { connect } from 'react-redux'
+import matchSorter from 'match-sorter';
 
 class VisitArchivePage extends Component{
 
@@ -16,88 +18,29 @@ class VisitArchivePage extends Component{
         this.state = {
             callResultOptions:[],
             callRefuseOptions:[],
-            items:[],
-            loading:false,
             showCreateModal:false
         }
 
     this.renderTable = this.renderTable.bind(this)
-    this.openCreateModal = this.openCreateModal.bind(this)
-    this.closeCreateModal = this.closeCreateModal.bind(this)
-    this.loadItems = this.loadItems.bind(this)
-  }
-
-  loadItems () {
-    axios.get(`${ROOT_URL}/api/crm/visit/archive`, {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((res) => {
-      this.setState({
-        ...this.state,
-        items: res.data,
-        loading: false
-      })
-    }).catch((e) => {
-      console.log(e)
-    })
+        this.toUpdate = this.toUpdate.bind(this)
+        this.toCreate = this.toCreate.bind(this)
   }
 
   componentWillMount () {
-    this.setState({...this.state, loading: true})
-
-    this.loadItems()
-    axios.get(`${ROOT_URL}/api/crm/call/results`, {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((res) => {
-      let loaded = Object.keys(res.data).map((k) => {
-        return {
-          key: k,
-          text: res.data[k],
-          value: k
-        }
-      })
-
-      this.setState({
-        ...this.state,
-        callResultOptions: loaded
-      })
-    }).catch((e) => {
-      console.log(e)
-    })
-
-    axios.get(`${ROOT_URL}/api/reference/reasons/1`, {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((res) => {
-      let loaded = res.data.map((item) => {
-        return {
-          key: item.id,
-          text: item.name,
-          value: item.id
-        }
-      })
-
-      this.setState({
-        ...this.state,
-        callRefuseOptions: loaded
-      })
-    }).catch((e) => {
-      console.log(e)
-    })
+    this.props.fetchArchive()
+      this.props.fetchGroupDealers()
   }
 
-  renderPhoneCall (e, d) {
-    console.log(e)
-    console.log(d)
+  toUpdate(visit){
+        this.props.setVisitForUpdate(visit)
+        this.props.modalToggle(true)
   }
 
   renderTable () {
     return (
       <div>
         <ReactTable
-          loading={this.state.loading}
-          data={this.state.items}
+          data={this.props.visits || []}
           columns={[
             {
               Header: '№',
@@ -106,33 +49,70 @@ class VisitArchivePage extends Component{
             },
             {
               Header: 'Клиент',
-              accessor: 'clientName'
+              accessor: 'clientName',
+                filterMethod: (filter, rows) =>
+                    matchSorter(rows, filter.value, { keys: ["clientName"] }),
+                filterAll: true,
             },
             {
               Header: 'Адрес',
-              accessor: 'address'
+              accessor: 'address',
+                filterMethod: (filter, rows) =>
+                    matchSorter(rows, filter.value, { keys: ["address"] }),
+                filterAll: true
             },
             {
               Header: 'Дата посещения',
               accessor: 'docDate',
+              filterMethod: (filter, rows) =>
+                    matchSorter(rows, filter.value, { keys: ["docDate"] }),
+                filterAll: true,
               Cell: row => moment(row.value).format('DD.MM.YYYY')
             },
             {
               Header: 'Посетитель',
-              accessor: 'visitorName',
-              minWidth: 150
+              accessor: 'visitorId',
+                minWidth: 150,
+                Cell: (row) => {
+                  return row.original.visitorName
+                },
+                filterMethod: (filter, d) => {
+                    if (filter.value == 0) {
+                        return true;
+                    }
+
+                    return filter.value == d[filter.id]
+                },
+                Filter: ({ filter, onChange }) =>
+                    <select
+                        onChange={event => onChange(event.target.value)}
+                        style={{ width: "100%" }}
+                        value={filter ? filter.value : "Все"}
+                    >
+                        {this.props.dealers.map((d) => {
+                            return <option key={d.key} value={d.key}>{d.text}</option>
+                        })}
+                    </select>
             },
             {
               Header: 'Примечание',
-              accessor: 'note'
+              accessor: 'note',
+                filterMethod: (filter, rows) =>
+                    matchSorter(rows, filter.value, { keys: ["note"] }),
+                filterAll: true
             },
             {
               Header: 'Действия',
               accessor: 'id',
               Cell: row => (
-                <Link className={'ui icon button mini'} to={`/crm/visit/view/` + row.value}>
-                                    Просмотр
-                </Link>
+                <div>
+                      <Link className={'ui icon button mini'} to={`/crm/visit/view/` + row.value}>
+                                        <Icon name={'eye'}/>
+                    </Link>
+                    <Button icon size={'mini'} onClick={() => this.toUpdate(row.original)}>
+                        <Icon name={'pencil'}/>
+                    </Button>
+                </div>
               ),
               filterable: false
             }
@@ -144,18 +124,9 @@ class VisitArchivePage extends Component{
     )
   }
 
-  openCreateModal () {
-    this.setState({
-      ...this.state,
-      showCreateModal: true
-    })
-  }
-
-  closeCreateModal () {
-    this.setState({
-      ...this.state,
-      showCreateModal: false
-    })
+  toCreate(){
+      this.props.blankForCreate()
+      this.props.modalToggle(true)
   }
 
   render () {
@@ -165,19 +136,22 @@ class VisitArchivePage extends Component{
           <Header as='h2' floated='left'>
                         Список визитов группы
           </Header>
-          <Button className={'ui icon button primary right floated'} onClick={this.openCreateModal}>
+          <Button className={'ui icon button primary right floated'} onClick={this.toCreate}>
             <Icon name='plus' /> Добавить
           </Button>
         </Segment>
         {this.renderTable()}
-        <VisitCreateModal
-          modalOpened={this.state.showCreateModal}
-          onClose={this.closeCreateModal}
-          afterSave={this.loadItems}
-        />
+        <VisitCreateModal fromComponent="archive" />
       </Container>
     )
   }
 }
 
-export default VisitArchivePage
+function mapStateToProps (state) {
+    return {
+        visits: state.crmVisit.visits,
+        dealers:state.crmDemo.dealers
+    }
+}
+
+export default connect(mapStateToProps, {fetchArchive,modalToggle,setVisitForUpdate,blankForCreate,fetchGroupDealers})(VisitArchivePage)
