@@ -7,8 +7,7 @@ import {ROOT_URL} from '../../../../utils/constants'
 import {toggleDemoCreateModal} from '../actions/demoAction'
 import { connect } from 'react-redux'
 import {DEMO_RESULT_CANCELLED,DEMO_RESULT_DONE,DEMO_RESULT_MOVED,getReasonsByResultId,LOCATION_OPTIONS} from '../../../crmUtil'
-
-
+require('moment/locale/ru');
 
 class DemoCreateModal extends Component {
   constructor (props) {
@@ -75,6 +74,7 @@ class DemoCreateModal extends Component {
         <Form.Field error={this.state.errors.dateTime} required>
           <label>Дата-время демонстрации</label>
           <DatePicker
+              locale="ru"
             label=''
             placeholderText={'Дата-время демонстрации'}
             showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'

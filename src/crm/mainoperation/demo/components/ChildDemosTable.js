@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table,Card } from 'semantic-ui-react'
+import { Table,Card,Icon } from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
 import moment from 'moment'
 
@@ -41,7 +41,9 @@ export default function ChildDemosTable(props){
                             <Table.Cell>{item.dateTime?moment(item.dateTime).format('DD.MM.YYYY HH:mm'):''}</Table.Cell>
                             <Table.Cell>{item.appointer}</Table.Cell>
                             <Table.Cell>{item.resultName}</Table.Cell>
-                            <Table.Cell>--</Table.Cell>
+                            <Table.Cell><Link className={'ui icon button'} to={`/crm/demo/view/` + item.id}>
+                                <Icon name={'eye'}/>
+                            </Link></Table.Cell>
                         </Table.Row>
                     })}
                 </Table.Body>

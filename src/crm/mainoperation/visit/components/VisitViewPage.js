@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 import { Header, Container,   Button, Segment, Grid, Table, Divider, Card } from 'semantic-ui-react'
 import moment from 'moment'
 import DemoCreateModal from '../../demo/components/DemoCreateModal'
-import {fetchSingleVisit} from '../actions/visitAction'
+import {fetchSingleVisit,deleteVisit} from '../actions/visitAction'
 import { connect } from 'react-redux'
 import {toggleDemoCreateModal,fetchGroupDealers,fetchDemoResults,fetchReasons} from '../../demo/actions/demoAction'
 import ChildDemosTable from '../../demo/components/ChildDemosTable'
@@ -15,12 +15,14 @@ class VisitViewPage extends Component {
     this.loadedSuccess = true
     this.state = {
       updateModalOpened: false,
-      demoCreateModalOpened: false
+      demoCreateModalOpened: false,
+        showDeleteModal: false
     }
 
     this.renderActions = this.renderActions.bind(this)
     this.onCloseUpdateModal = this.onCloseUpdateModal.bind(this)
     this.onCloseDemoCreateModal = this.onCloseDemoCreateModal.bind(this)
+      this.deleteVisit = this.deleteVisit.bind(this)
   }
 
     componentWillMount(){
@@ -43,7 +45,16 @@ class VisitViewPage extends Component {
       </Link>
 
       <Button onClick={() => this.props.toggleDemoCreateModal(true)}>Добавить демо</Button>
+      <Button color={'red'} onClick={() => this.deleteVisit()}>Удалить</Button>
     </div>
+  }
+
+  deleteVisit(){
+        if(!window.confirm('Действительно хотите удалить Визит?')){
+            return
+        }
+
+        this.props.deleteVisit(this.props.visit.id)
   }
 
   renderPhones (phones) {
@@ -196,4 +207,8 @@ function mapStateToProps (state) {
     }
 }
 
-export default connect(mapStateToProps, {fetchSingleVisit,toggleDemoCreateModal,fetchGroupDealers,fetchDemoResults,fetchReasons})(VisitViewPage)
+export default connect(mapStateToProps, {
+    fetchSingleVisit,toggleDemoCreateModal,
+    fetchGroupDealers,fetchDemoResults,
+    fetchReasons,deleteVisit
+})(VisitViewPage)

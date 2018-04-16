@@ -34,6 +34,11 @@ class DemoPrintPage extends Component{
         return <Table celled striped >
             <Table.Body>
                 <Table.Row>
+                    <Table.Cell colSpan={2}>
+                        <h3>Демокарта №{demo.id}</h3>
+                    </Table.Cell>
+                </Table.Row>
+                <Table.Row>
                     <Table.Cell>
                         <Header style={{marginLeft:20}} as={'h4'}>Дата-время проведения</Header>
                     </Table.Cell>

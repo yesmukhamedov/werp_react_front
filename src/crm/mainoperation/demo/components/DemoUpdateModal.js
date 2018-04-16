@@ -6,7 +6,7 @@ import moment from 'moment'
 import {fetchGroupDealers,fetchDemoResults,fetchReasons,updateDemo,toggleDemoUpdateModal} from '../actions/demoAction'
 import { connect } from 'react-redux'
 import {DEMO_RESULT_CANCELLED,DEMO_RESULT_DONE,DEMO_RESULT_MOVED,getReasonsByResultId,LOCATION_OPTIONS,DEMO_RESULT_SOLD,demoResultOptions} from '../../../crmUtil'
-
+require('moment/locale/ru');
 class DemoUpdateModal extends Component {
   constructor (props) {
     super(props)
@@ -60,6 +60,7 @@ class DemoUpdateModal extends Component {
           return <Form.Field error={this.state.errors.saleDate} required>
                   <label>Дата продажи</label>
                   <DatePicker
+                      locale="ru"
                       label=''
                       placeholderText={'Дата продажи'}
                       showMonthDropdown showYearDropdown dropdownMode='select'
@@ -81,7 +82,8 @@ class DemoUpdateModal extends Component {
         <Form.Field error={this.state.errors.dateTime} required>
           <label>Дата-время демонстрации</label>
           <DatePicker
-            label=''
+              locale="ru"
+              label=''
             placeholderText={'Дата-время демонстрации'}
             showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'
             dateFormat='DD.MM.YYYY HH:mm' selected={moment(localDemo.dateTime)}
