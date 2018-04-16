@@ -11,6 +11,10 @@ import {RECO_SWITCH_OPTIONS,RECO_CALLER_OPTIONS} from '../../../crmUtil'
 import {fetchGroupDealers} from '../../demo/actions/demoAction';
 require('moment/locale/ru');
 
+const pageStyle = {
+    fontSize: '12px'
+}
+
 class RecoCreatePage extends Component {
   constructor (props) {
     super(props)
@@ -321,8 +325,6 @@ class RecoCreatePage extends Component {
                                     onChange={this.handleChange} />
                         <Form.Input name={this.getItemName('districtName',index)} label="Район" placeholder="Район"
                                     onChange={this.handleChange} />
-                        <Form.Input name={this.getItemName('professionName',index)} label="Профессия" placeholder="Профессия"
-                                    onChange={this.handleChange} />
                         <Form.Input name={this.getItemName('relativeName',index)} label="Род. отношение" placeholder="Род. отношение"
                                     onChange={this.handleChange} />
                         <Form.Dropdown name={this.getItemName('switchDate',index)}
@@ -334,7 +336,8 @@ class RecoCreatePage extends Component {
                         <Form.Dropdown name={this.getItemName('callerIsDealer',index)} defaultValue="0" fluid selection label="Звонить будет"
                                        placeholder='Звонить будет' options={RECO_CALLER_OPTIONS}
                                        onChange={this.handleChange}  />
-                        <Form.TextArea name={this.getItemName('note',index)} label="Примечание" placeholder="Примечание"
+                        <Form.TextArea rows={1}
+                                       name={this.getItemName('note',index)} label="Примечание" placeholder="Примечание"
                                        onChange={this.handleChange}  />
                         <Form.Field>
                             <label>Тел. номер</label>
@@ -349,19 +352,6 @@ class RecoCreatePage extends Component {
                                    name={this.getItemName('phoneNumber2',index)}
                                    onChange={this.handleChange} value={this.state.itemPhones[index]['phoneNumber2']} />
                         </Form.Field>
-
-          <Form.Group inline>
-            <Form.Field name={this.getItemName('hasChild', index)} control={Checkbox} label='Ребенок' value='1'
-              onChange={this.handleChange} />
-            <Form.Field name={this.getItemName('hasAnimal', index)} control={Checkbox} label='Дом. жив.' value='1'
-              onChange={this.handleChange} />
-          </Form.Group>
-          <Form.Group inline>
-            <Form.Field name={this.getItemName('hasAllergy', index)} control={Checkbox} label='Аллергия' value='1'
-              onChange={this.handleChange} />
-            <Form.Field name={this.getItemName('hasAsthma', index)} control={Checkbox} label='Астма' value='1'
-              onChange={this.handleChange} />
-          </Form.Group>
 
           <label>Категория клиента</label>
           <Form.Group inline>
@@ -404,6 +394,7 @@ class RecoCreatePage extends Component {
           <Icon name='plus' />
                     Добавить
         </Button>
+          {this.state.reco.items.length}
 
         <Button onClick={this.validateAndSendData} primary floated='right'>Сохранить</Button>
       </Form>
@@ -412,7 +403,7 @@ class RecoCreatePage extends Component {
 
   render () {
     return (
-      <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
+      <Container className={'pageStyle'} fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
         <Segment padded size='small'>
           <Label attached='top'><Header as='h3'>Добавление рекомендации</Header></Label>
           {this.renderHeaderForm()}
