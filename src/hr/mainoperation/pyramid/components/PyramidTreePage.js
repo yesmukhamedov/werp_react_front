@@ -4,6 +4,7 @@ import {Container,Divider,Header,Button,Segment,Form,Grid,Input,Modal} from 'sem
 import SortableTree, {removeNodeAtPath} from 'react-sortable-tree'
 import 'react-sortable-tree/style.css'
 import { connect } from 'react-redux'
+import {bindActionCreators} from 'redux'
 
 import {fetchBukrsPyramidsTree,pyramidTreeChanged,deletePyramid,blankItem,toggleFormModal} from  '../actions/hrPyramidAction'
 import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4'
@@ -18,8 +19,8 @@ class PyramidTreePage extends Component {
           bukrs:null,
           showDeleteModal:false,
           nodeForDelete: null,
-          pathForDelete: null,
-          deleteNotifyTxt:''
+          deleteNotifyTxt:'',
+          updatedTree:[]
       }
 
       this.handleDropdownChange = this.handleDropdownChange.bind(this)
@@ -79,13 +80,13 @@ class PyramidTreePage extends Component {
         this.props.pyramidTreeChanged(a)
     }
 
-    showDeteleModal(node,path){
+    showDeteleModal(node,updatedTree){
         this.setState({
             ...this.state,
             showDeleteModal: true,
             nodeForDelete: node,
-            pathForDelete: path,
-            deleteNotifyTxt: 'Вы действительно хотите удалить ' + node.title + ' ?'
+            deleteNotifyTxt: 'Вы действительно хотите удалить ' + node.title + ' ?',
+            updatedTree: updatedTree
         })
     }
 
@@ -94,20 +95,18 @@ class PyramidTreePage extends Component {
             ...this.state,
             showDeleteModal: false,
             nodeForDelete: null,
-            pathForDelete: null,
-            deleteNotifyTxt: ''
+            deleteNotifyTxt: '',
+            updatedTree: []
         })
     }
 
     deletePyramid(){
-        const {pathForDelete,nodeForDelete} = this.state
-        const getNodeKey = ({ node: { id } }) => id
-        this.props.deletePyramid(nodeForDelete.id)
-        // this.props.pyramidTreeChanged(removeNodeAtPath({
-        //     treeData: this.props.treeData,
-        //     pathForDelete,
-        //     getNodeKey
-        // }))
+        const {nodeForDelete,updatedTree} = this.state
+        console.log(updatedTree)
+        this.props.deletePyramid(nodeForDelete.id,() => {
+            this.props.pyramidTreeChanged(updatedTree)
+        })
+
         this.resetDelete()
     }
 
@@ -162,7 +161,11 @@ class PyramidTreePage extends Component {
                                 />,
                                 <Button size={'mini'}>{node.children?node.children.length:0}</Button>,
                                 <Button icon={'trash'} color={'red'} size={'mini'}
-                                onClick={() => this.showDeteleModal(node,path)}
+                                onClick={() => this.showDeteleModal(node,removeNodeAtPath({
+                                    treeData: this.props.treeData,
+                                    path,
+                                    getNodeKey
+                                }))}
                                 />
                             ],
                         })}

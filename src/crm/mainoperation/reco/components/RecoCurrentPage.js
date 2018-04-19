@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import {fetchRecoCurrentData,fetchCallResults,fetchRecoStatuses} from '../actions/recoAction';
 import {fetchReasons} from '../../demo/actions/demoAction'
 import {RECO_CATEGORIES} from '../../../crmUtil'
+import matchSorter from 'match-sorter'
 
 class RecoCurrentPage extends Component {
   constructor (props) {
@@ -89,6 +90,7 @@ class RecoCurrentPage extends Component {
         <ReactTable
           defaultFilterMethod={(filter, row) => {
             const colName = filter.id === 'phoneNumbers' ? 'phonesAsStr' : filter.id
+
             if (filter.value && filter.value.length > 0 && row[colName] && row[colName]) {
               return row[colName].toLowerCase().includes(filter.value.toLowerCase())
             }
@@ -110,8 +112,17 @@ class RecoCurrentPage extends Component {
             },
             {
               Header: 'Дата звонка',
-              id: 'callDate',
-              accessor: (row) => this.renderDocDate(row)
+              id: 'callDateDiv',
+              accessor: (row) => this.renderDocDate(row),
+                filterMethod: (filter, row) => {
+                  if(row[filter.id] && typeof row[filter.id] === 'object' && row[filter.id]['props']){
+                      if(row[filter.id]['props']['children']){
+                          return row[filter.id]['props']['children'].includes(filter.value)
+                      }
+                  }
+
+                  return false
+                }
             },
             {
               Header: 'Тел. номера',
@@ -168,7 +179,7 @@ class RecoCurrentPage extends Component {
               Header: '',
               accessor: 'id',
               filterable: false,
-              Cell: ({value}) => <Link className={'ui icon button mini'} to={`/crm/reco/view/` + value}>
+              Cell: ({value}) => <Link target={'_blank'} className={'ui icon button mini'} to={`/crm/reco/view/` + value}>
                                 Просмотр
               </Link>
             }

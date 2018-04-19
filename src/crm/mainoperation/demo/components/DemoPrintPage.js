@@ -9,6 +9,10 @@ const headerStyle = {
     marginLeft:10
 }
 
+const printTable = {
+    fontSize: '10px'
+}
+
 class DemoPrintPage extends Component{
 
     constructor(props) {
@@ -35,11 +39,14 @@ class DemoPrintPage extends Component{
     }
 
     renderTable(demo){
-        return <Table celled striped >
+        return <Table celled striped className='printTable'>
                             <Table.Body>
                                 <Table.Row>
-                                    <Table.Cell colSpan={2}>
+                                    <Table.Cell>
                                         <h3>Демокарта №{demo.id}</h3>
+                                    </Table.Cell>
+                                    <Table.Cell>
+                                        <h4><i>Дилер:</i> {demo.dealerName}</h4>
                                     </Table.Cell>
                                 </Table.Row>
                                 <Table.Row>
@@ -49,14 +56,6 @@ class DemoPrintPage extends Component{
                                     <Table.Cell>
                                         {moment(demo.dateTime).format('DD.MM.YYYY H:mm')}
                                     </Table.Cell>
-
-                                    <Table.Cell style={{textAlign:'right'}} >
-                                        <Header style={{marginLeft:20}} as={'h4'}>ФИО дилера</Header>
-                                    </Table.Cell>
-                                    <Table.Cell>
-                                        {demo.dealerName}
-                                    </Table.Cell>
-
                                 </Table.Row>
 
                                 <Table.Row>
@@ -64,7 +63,8 @@ class DemoPrintPage extends Component{
                                         <Header style={{marginLeft:20}} as={'h4'}>Менеджер</Header>
                                     </Table.Cell>
                                     <Table.Cell>Man</Table.Cell>
-
+                                </Table.Row>
+                                <Table.Row>
                                     <Table.Cell style={{textAlign:'right'}}>
                                         <Header style={{marginLeft:20}} as={'h4'}>Демо секретарь</Header>
                                     </Table.Cell>
@@ -79,8 +79,10 @@ class DemoPrintPage extends Component{
                                         <Header style={{marginLeft:20}} as={'h4'}>ФИО рекомендателя</Header>
                                     </Table.Cell>
                                     <Table.Cell>{demo.recommender.name}</Table.Cell>
+                                </Table.Row>
+                                <Table.Row>
 
-                                    <Table.Cell style={{textAlign:'right'}}>
+                                <Table.Cell style={{textAlign:'right'}}>
                                         <Header style={{marginLeft:20}} as={'h4'}>ФИО клиента</Header>
                                     </Table.Cell>
                                     <Table.Cell>{demo.clientName}</Table.Cell>
@@ -92,6 +94,8 @@ class DemoPrintPage extends Component{
                                         <Header style={{marginLeft:20}} as={'h4'}>Тел. номер клиента</Header>
                                     </Table.Cell>
                                     <Table.Cell>{demo.phoneNumber}</Table.Cell>
+                                </Table.Row>
+                                <Table.Row>
 
                                     <Table.Cell style={{textAlign:'right'}}>
                                         <Header style={{marginLeft:20}} as={'h4'}>Примечание</Header>
@@ -106,7 +110,7 @@ class DemoPrintPage extends Component{
                                     <Table.Cell>
                                         <Header style={{marginLeft:20}} as={'h4'}>Адрес клиента</Header>
                                     </Table.Cell>
-                                    <Table.Cell colSpan={3}>{demo.address}</Table.Cell>
+                                    <Table.Cell>{demo.address}</Table.Cell>
                                 </Table.Row>
 
                                 <Table.Row>

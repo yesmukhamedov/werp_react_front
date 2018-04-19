@@ -38,7 +38,7 @@ export function pyramidTreeChanged(treeData){
     }
 }
 
-export function deletePyramid(id){
+export function deletePyramid(id,callback){
     return function(dispatch){
         dispatch(modifyLoader(true));
         axios.delete(`${ROOT_URL}/api/hr/pyramid/` + id,{
@@ -48,11 +48,12 @@ export function deletePyramid(id){
         })
             .then(() => {
                 dispatch(modifyLoader(false));
-                dispatch({
-                    type:HR_PYRAMID_TREE_DELETED,
-                    payload: id
-                })
+                if(callback){
+                    callback()
+                }
+
             }).catch((error) => {
+            dispatch(modifyLoader(false));
             handleError(error,dispatch)
         })
     }
@@ -75,6 +76,36 @@ export function blankItem(parentId){
                 })
             }).catch((error) => {
                 handleError(error,dispatch)
+        })
+    }
+}
+
+export function updatePyramid(p) {
+    return function (dispatch){
+        axios.put(`${ROOT_URL}/api/hr/pyramid/` + p.id, p, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        })
+            .then(({data}) => {
+                dispatch({});
+            }).catch((e) => {
+                handleError(e,dispatch)
+        })
+    }
+}
+
+export function createPyramid(p) {
+    return function (dispatch){
+        axios.post(`${ROOT_URL}/api/hr/pyramid`, p, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        })
+            .then(({data}) => {
+                dispatch({});
+            }).catch((e) => {
+            handleError(e,dispatch)
         })
     }
 }

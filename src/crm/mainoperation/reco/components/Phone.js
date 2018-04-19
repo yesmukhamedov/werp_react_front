@@ -52,7 +52,7 @@ class Phone extends Component {
         opened:true
     })
 
-
+      this.props.fetchPhoneNumberHistory(this.props.phoneId)
 
     axios.get(`${ROOT_URL}/api/crm/call/create/` + this.props.phoneId, {
       headers: {
@@ -113,7 +113,8 @@ class Phone extends Component {
               placeholderText={'Дата-время демонстрации'}
               showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'
               dateFormat='DD.MM.YYYY HH:mm' selected={this.state.call.demoDate}
-              onChange={(v) => this.handleChange('demoDate', v)} />
+              onChange={(v) => this.handleChange('demoDate', v)}
+                isClearable={true}/>
           </Form.Field>
         </Form.Group>
         <Form.Group widths='equal'>
@@ -135,7 +136,7 @@ class Phone extends Component {
       <Table.Body>
         <Table.Row>
           <Table.Cell>
-            <Header as={'H4'}>ФИО</Header>
+            <Header as={'h4'}>ФИО</Header>
           </Table.Cell>
           <Table.Cell>
             {recommender.clientName}
@@ -144,7 +145,7 @@ class Phone extends Component {
 
         <Table.Row>
           <Table.Cell>
-            <Header as={'H4'}>Род. отношение</Header>
+            <Header as={'h4'}>Род. отношение</Header>
           </Table.Cell>
           <Table.Cell>
             {recommender.relationName}
@@ -153,7 +154,7 @@ class Phone extends Component {
 
         <Table.Row>
           <Table.Cell>
-            <Header as={'H4'}>Тел. номера</Header>
+            <Header as={'h4'}>Тел. номера</Header>
           </Table.Cell>
           <Table.Cell>
             {recommender.phoneNumbers.map((item) => {
@@ -303,7 +304,7 @@ class Phone extends Component {
               <Table.Cell>{idx + 1}</Table.Cell>
               <Table.Cell>{item.bukrsName}</Table.Cell>
               <Table.Cell>{item.branchName}</Table.Cell>
-              <Table.Cell>{item.callDate}</Table.Cell>
+              <Table.Cell>{item.callDate ? moment(item.callDate).format('DD.MM.YYYY HH:mm'):''}</Table.Cell>
               <Table.Cell>{item.callerName}</Table.Cell>
               <Table.Cell>{item.note}</Table.Cell>
               <Table.Cell>{item.resultName}</Table.Cell>
