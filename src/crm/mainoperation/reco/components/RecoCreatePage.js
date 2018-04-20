@@ -272,14 +272,14 @@ class RecoCreatePage extends Component {
     if (!window.confirm('Вы действительно хотите удалить рекомендацию №' + (index + 1))) {
       return false
     }
+      let reco = Object.assign({}, this.state.reco)
+      let itemPhones = Object.assign([], this.state.itemPhones)
 
-    let {reco, itemPhones} = this.state
     if (reco['items'][index]) {
       reco.items.splice(index, 1)
-      itemPhones.splice(index, 1)
-
-      // delete reco.items[index];
-      // delete itemPhones[index];
+        if(itemPhones[index]){
+            itemPhones.splice(index, 1)
+        }
 
       this.setState({
         ...this.state,
