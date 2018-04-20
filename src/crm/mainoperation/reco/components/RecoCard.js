@@ -76,9 +76,11 @@ export default function RecoCard(props){
                         error={!item['clientName'] || item['clientName'].length === 0}
                         name={getItemName('clientName',index)}
                         label="ФИО супруг" placeholder="ФИО супруг"
-                        onChange={props.handleChange} />
+                        onChange={props.handleChange}
+                        value={item.clientName || ''}/>
 
                 <Form.Dropdown
+                    value={item.categoryId || 0}
                     error={!item.categoryId || item.categoryId === 0}
                     name={getItemName('categoryId',index)}
                     fluid selection
@@ -89,9 +91,11 @@ export default function RecoCard(props){
 
                 <Form.Input name={getItemName('districtName',index)}
                             label="Район" placeholder="Район"
-                            onChange={props.handleChange} />
+                            onChange={props.handleChange}
+                            value={item.districtName || ''}
+                />
 
-                <Form.Input name={getItemName('relativeName',index)}
+                <Form.Input value={item.relativeName || ''} name={getItemName('relativeName',index)}
                             label="Род. отношение" placeholder="Род. отношение"
                             onChange={props.handleChange} />
                 {/*<Form.Dropdown name={getItemName('switchDate',index)}*/}
@@ -110,7 +114,9 @@ export default function RecoCard(props){
                     options={RECO_CALLER_OPTIONS}
                    onChange={props.handleChange}  />
 
-                <Form.TextArea rows={1}
+                <Form.TextArea
+                            value={item.note || ''}
+                            rows={1}
                                name={getItemName('note',index)}
                                label="Примечание"
                                placeholder="Примечание"
