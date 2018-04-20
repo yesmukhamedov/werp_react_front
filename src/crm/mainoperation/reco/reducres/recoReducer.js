@@ -11,7 +11,9 @@ import {
     CRM_RECO_FETCH_SINGLE,
     CRM_RECO_UPDATE_MODAL_TOGGLE,
     CRM_RECO_UPDATE,
-    CRM_FETCH_PHONE_NUMBER_HISTORY
+    CRM_FETCH_PHONE_NUMBER_HISTORY,
+    CRM_RECO_CHECKED_PHONE_NUMBER,
+    CRM_RECO_CHECKING_PHONE_NUMBER
 } from '../actions/recoAction';
 
 const INITIAL_STATE={
@@ -30,7 +32,12 @@ const INITIAL_STATE={
                     },
                     reco:{},
                     updateModalOpened:false,
-                    phoneNumberHistory:[]
+                    phoneNumberHistory:[],
+                    recoHeader:{},
+                    recoCards:[],
+                    //Мгновенная проверка тел номера
+                    loadingPhones:{},
+                    phoneErrors:{}
 
 };
 
@@ -57,6 +64,22 @@ export default function (state=INITIAL_STATE, action)
 
         case CRM_FETCH_REASONS:
             return {...state,reasons:action.items};
+
+        case CRM_RECO_CHECKING_PHONE_NUMBER:
+            let loadingPhones = Object.assign({}, state.loadingPhones)
+            loadingPhones[action.payload] = true
+
+            return {...state,loadingPhones:loadingPhones};
+
+        case CRM_RECO_CHECKED_PHONE_NUMBER:
+            let phoneErrors = Object.assign({}, state.phoneErrors)
+            let loadedPhones = Object.assign({}, state.loadingPhones)
+            for(let key in action.payload){
+                phoneErrors[key] = parseInt(action.payload[key],10)
+                loadedPhones[key] = false
+            }
+
+            return {...state,phoneErrors:phoneErrors,loadingPhones:loadedPhones};
 
         case CRM_RECO_FETCH_ARCHIVE:
             return {

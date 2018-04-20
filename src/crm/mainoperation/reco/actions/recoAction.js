@@ -13,6 +13,11 @@ export const CRM_RECO_FETCH_CURRENT_NEW = 'CRM_RECO_FETCH_CURRENT_NEW';
 export const CRM_RECO_FETCH_CURRENT_DEMO_DONE = 'CRM_RECO_FETCH_CURRENT_DEMO_DONE';
 export const CRM_RECO_FETCH_CURRENT_MOVED = 'CRM_RECO_FETCH_CURRENT_MOVED';
 
+//After checked
+export const CRM_RECO_CHECKED_PHONE_NUMBER = 'CRM_RECO_CHECKED_PHONE_NUMBER';
+//Before check
+export const CRM_RECO_CHECKING_PHONE_NUMBER = 'CRM_RECO_CHECKING_PHONE_NUMBER';
+
 /**
  *
  */
@@ -170,6 +175,28 @@ export function fetchRecoArchive(params){
     }
 }
 
+export function checkPhoneNumber(staffId,phoneNumber){
+    return function (dispatch){
+        dispatch({
+            type:CRM_RECO_CHECKING_PHONE_NUMBER,
+            payload: phoneNumber
+        })
+        axios.get(`${ROOT_URL}/api/crm/phone/check/` + staffId + '/' + phoneNumber,{
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        }).then(({data}) => {
+            dispatch(modifyLoader(false));
+            dispatch({
+                type:CRM_RECO_CHECKED_PHONE_NUMBER,
+                payload: data
+            })
+        }).catch((e) => {
+            //handleError(e,dispatch)
+        })
+    }
+}
+
 export function fetchRecoStatuses(){
     return function (dispatch){
         axios.get(`${ROOT_URL}/api/crm/reco/statuses`,{
@@ -232,6 +259,22 @@ export function deleteReco(recoId){
         }).then((response) => {
             browserHistory.push('/crm/reco/current')
         }).catch(e => {
+            handleError(e,dispatch)
+        })
+    }
+}
+
+export function createRecoList(o){
+    return function (dispatch){
+        dispatch(modifyLoader(true))
+        axios.post(`${ROOT_URL}/api/crm/reco/create`, o, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        }).then(({}) => {
+                browserHistory.push('/crm/reco/current')
+            }).catch((e) => {
+            dispatch(modifyLoader(false))
             handleError(e,dispatch)
         })
     }
