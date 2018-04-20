@@ -9,12 +9,6 @@ import {
 import { ROOT_URL } from '../../../../../utils/constants';
 import { notify } from '../../../../../general/notification/notification_action';
 
-// .then((response) => {
-//   this.props.notify('success', 'Сервис пакет сохранен.', 'Успешно');
-// })
-// .catch((err) => {
-//   this.props.notify('error', `Не удалось сохранить новый сервис пакет! ${err}`, 'Ошибка');
-// });
 
 export function fetchContractById(contractNumber) {
   const req = axios.get(
@@ -33,7 +27,14 @@ export function fetchContractById(contractNumber) {
           payload: data,
         });
       })
-      .catch(err => dispatch(notify('error', `Не удалось получить детали контракта! ${err}`, 'Ошибка')));
+      .catch(({ response = {} }) => {
+        const { status } = response;
+        if (status === 403) {
+          dispatch(notify('error', `Не удалось получить детали контракта! Нет доступа. ${response}`, 'Ошибка'));
+        } else {
+          dispatch(notify('error', `Не удалось получить детали контракта! ${response}`, 'Ошибка'));
+        }
+      });
   };
 }
 
@@ -55,7 +56,14 @@ export function createOutCallFromContract({ contractNumber }) {
         });
         dispatch(notify('success', 'Заявка успешно привязана.', 'Успешно'));
       })
-      .catch(err => dispatch(notify('error', `Не удалось привязать заявку! ${err}`, 'Ошибка')));
+      .catch(({ response = {} }) => {
+        const { status } = response;
+        if (status === 403) {
+          dispatch(notify('error', `Не удалось привязать заявку! Нет доступа. ${response}`, 'Ошибка'));
+        } else {
+          dispatch(notify('error', `Не удалось привязать заявку! ${response}`, 'Ошибка'));
+        }
+      });
   };
 }
 
@@ -98,7 +106,14 @@ export function createNewTask(contractNumber, params) {
         });
         dispatch(notify('success', 'Задача успешно создана.', 'Успешно'));
       })
-      .catch(err => dispatch(notify('error', `Не удалось создать задачу! ${err}`, 'Ошибка')));
+      .catch(({ response = {} }) => {
+        const { status } = response;
+        if (status === 403) {
+          dispatch(notify('error', `Не удалось создать задачу! Нет доступа. ${response}`, 'Ошибка'));
+        } else {
+          dispatch(notify('error', `Не удалось создать задачу! ${response}`, 'Ошибка'));
+        }
+      });
   };
 }
 
@@ -119,7 +134,14 @@ export function fetchTasks(contractNumber) {
           payload: data,
         });
       })
-      .catch(err => dispatch(notify('error', `Не удалось получть список задач! ${err}`, 'Ошибка')));
+      .catch(({ response = {} }) => {
+        const { status } = response;
+        if (status === 403) {
+          dispatch(notify('error', `Не удалось получть список задач! Нет доступа. ${response}`, 'Ошибка'));
+        } else {
+          dispatch(notify('error', `Не удалось получть список задач! ${response}`, 'Ошибка'));
+        }
+      });
   };
 }
 
@@ -148,6 +170,13 @@ export function updateOutCall(newOutCallParams) {
         });
         dispatch(notify('success', 'Заявка успешно обновлена.', 'Успешно'));
       })
-      .catch(err => dispatch(notify('error', `Не удалось обновить заявку! ${err}`, 'Ошибка')));
+      .catch(({ response = {} }) => {
+        const { status } = response;
+        if (status === 403) {
+          dispatch(notify('error', `Не удалось обновить заявку! Нет доступа. ${response}`, 'Ошибка'));
+        } else {
+          dispatch(notify('error', `Не удалось обновить заявку! ${response}`, 'Ошибка'));
+        }
+      });
   };
 }
