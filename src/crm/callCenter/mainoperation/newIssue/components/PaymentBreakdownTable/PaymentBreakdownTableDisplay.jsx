@@ -3,7 +3,7 @@ import { Table, Header } from 'semantic-ui-react';
 import { formatDate } from '../../../../../../../src/utils/helpers';
 
 const PaymentBreakdownTableDisplay = (props) => {
-  const { monthlyPayments } = props;
+  const { monthlyPayments, currency } = props;
   return (
     <Table structured celled fixed>
       <Table.Header>
@@ -20,8 +20,8 @@ const PaymentBreakdownTableDisplay = (props) => {
             <Table.Row key={idx}>
               <Table.Cell>{idx + 1}</Table.Cell>
               <Table.Cell>{formatDate(item.date, 'DD.MM.YYYY')}</Table.Cell>
-              <Table.Cell>{item.toBePaidAmount}</Table.Cell>
-              <Table.Cell>{item.paidAmount}</Table.Cell>
+              <Table.Cell>{`${item.toBePaidAmount} ${currency}`} </Table.Cell>
+              <Table.Cell>{`${item.paidAmount} ${currency}`}</Table.Cell>
             </Table.Row>
           ))}
       </Table.Body>

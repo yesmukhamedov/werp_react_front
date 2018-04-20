@@ -22,6 +22,7 @@ const FinancialInfoPanelDisplay = (props) => {
     promotions,
     monthlyPayments,
     otherPurchases,
+    currency,
     bankPartner,
   } = financialDetails;
   return (
@@ -38,7 +39,7 @@ const FinancialInfoPanelDisplay = (props) => {
                   <List.Header className="list-header">
                     Первоначальная сумма:
                   </List.Header>
-                  {initialPayment || <span>&mdash;</span>}
+                  {(initialPayment && `${initialPayment} ${currency}`) || <span>&mdash;</span>}
                 </List.Item>
                 <List.Item>
                   <List.Header className="list-header">
@@ -50,7 +51,7 @@ const FinancialInfoPanelDisplay = (props) => {
                   <List.Header className="list-header">
                     Остаток суммы:
                   </List.Header>
-                  {residualAmount || <span>&mdash;</span>}
+                  {(residualAmount && `${residualAmount} ${currency}`) || <span>&mdash;</span>}
                 </List.Item>
               </List>
 
@@ -61,6 +62,7 @@ const FinancialInfoPanelDisplay = (props) => {
               >
                 <PaymentBreakdownTableDisplay
                   monthlyPayments={monthlyPayments}
+                  currency={currency}
                 />
               </PortalComponentDisplay>
             </Grid.Column>
@@ -70,7 +72,7 @@ const FinancialInfoPanelDisplay = (props) => {
                   <List.Header className="list-header">
                     Скидка от дилера:
                   </List.Header>
-                  {dealerDiscount || <span>&mdash;</span>}
+                  {(dealerDiscount && `${dealerDiscount} ${currency}`) || <span>&mdash;</span>}
                 </List.Item>
                 <List.Item>
                   <List.Header className="list-header">
