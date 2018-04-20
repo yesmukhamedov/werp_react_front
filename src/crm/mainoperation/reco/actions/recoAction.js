@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
-import { handleError } from '../../../../general/notification/notification_action';
+import { handleError,notify } from '../../../../general/notification/notification_action';
 import { modifyLoader } from '../../../../general/loader/loader_action';
 import browserHistory from '../../../../utils/history';
 
@@ -275,7 +275,8 @@ export function createRecoList(o){
                 browserHistory.push('/crm/reco/current')
             }).catch((e) => {
             dispatch(modifyLoader(false))
-            handleError(e,dispatch)
+            dispatch(notify('error',e.response.data.message,'Ошибка'));
+            //handleError(e,dispatch)
         })
     }
 }
