@@ -1,10 +1,21 @@
 import React from 'react'
-import {Modal } from 'semantic-ui-react'
+import {Modal,List } from 'semantic-ui-react'
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
 
 export default function StaffListModal (props) {
     const {staffs,opened} = props
+    const positionRenderer = (positions) => {
+        if(typeof positions !== 'undefined' && positions.length>0){
+            return <List bulleted>
+                {positions.map((p,idx) => {
+                    return <List.Item key={idx}>{p.positionName} ({p.branchName})</List.Item>;
+                })}
+            </List>
+        }
+
+        return '';
+    }
     const columns = [
         {
             Header: 'staffId',
@@ -21,6 +32,11 @@ export default function StaffListModal (props) {
         {
             Header:"Отчество",
             accessor:"middlename"
+        },
+        {
+            Header: "Должности",
+            id:"positions",
+            accessor: row => positionRenderer(row.positions)
         }
     ]
     return (
@@ -44,7 +60,6 @@ export default function StaffListModal (props) {
                     showPageSizeOptions= {false}
                     getTrProps={(state, rowInfo, column) => {
                         return {
-
                             onClick: (e, handleOriginal) => {
                                 props.onSelect(rowInfo.original);
                             },

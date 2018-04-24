@@ -113,8 +113,7 @@ class Phone extends Component {
               placeholderText={'Дата-время демонстрации'}
               showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'
               dateFormat='DD.MM.YYYY HH:mm' selected={this.state.call.demoDate}
-              onChange={(v) => this.handleChange('demoDate', v)}
-                isClearable={true}/>
+              onChange={(v) => this.handleChange('demoDate', v)}/>
           </Form.Field>
         </Form.Group>
         <Form.Group widths='equal'>

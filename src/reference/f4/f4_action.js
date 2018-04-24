@@ -32,6 +32,9 @@ export const F4_CLEAR_BUSINESS_AREA_LIST = 'F4_CLEAR_BUSINESS_AREA_LIST';
 export const F4_FETCH_DEPARTMENT_LIST = 'F4_FETCH_DEPARTMENT_LIST';
 export const F4_CLEAR_DEPARTMENT_LIST = 'F4_CLEAR_DEPARTMENT_LIST';
 
+export const F4_FETCH_EXPENSE_TYPES = 'F4_FETCH_EXPENSE_TYPES'
+export const F4_CLEAR_EXPENSE_TYPES = 'F4_CLEAR_EXPENSE_TYPES'
+
 export function f4FetchDepartmentList(){
     return function(dispatch) {
         axios.get(`${ROOT_URL}/api/reference/departments`, {
@@ -276,6 +279,25 @@ export function f4FetchBusinessAreaList() {
                 dispatch({
                     type: F4_FETCH_BUSINESS_AREA_LIST,
                     businessAreaList:data
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+}
+
+export function f4FetchExpenceTypes() {
+    return function(dispatch) {
+        axios.get(`${ROOT_URL}/api/reference/expence-types`, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        })
+            .then(({data}) => {
+                dispatch({
+                    type: F4_FETCH_EXPENSE_TYPES,
+                    payload:data
                 });
             })
             .catch(error => {

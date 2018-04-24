@@ -10,7 +10,12 @@ import {
     HR_SALARY_CREATED,
     HR_PYRAMID_FETCH_BRANCH_PYRAMIDS,
     HR_PYRAMID_FETCH_PYRAMIDS,
-    HR_SET_SALARY_FOR_UPDATE
+    HR_SET_SALARY_FOR_UPDATE,
+    HR_STAFF_FETCH_BLANK,
+    HR_SALARY_UPDATED,
+    HR_EXPENCE_FORM_MODAL_OPENED,
+    HR_EXPENCE_CREATED,
+    HR_EXPENCE_UPDATED
 } from '../actions/hrStaffAction';
 
 const INITIAL_STATE={
@@ -31,7 +36,10 @@ const INITIAL_STATE={
                     salaryFormModalOpened:false,
                     salary:{},
                     branchPyramids:[],
-                    pyramids: []
+                    pyramids: [],
+                    staffFormErrors:{},
+                    expence:{},
+                    expenceFormModalOpened:false
 
 };
 
@@ -48,6 +56,9 @@ export default function (state=INITIAL_STATE, action)
         case HR_STAFF_SINGLE_STAFF:
             return {...state,staff:action.payload};
 
+        case HR_STAFF_FETCH_BLANK:
+            return {...state,staff:action.payload}
+
         case HR_STAFF_FETCH_STAFF_SALARIES:
             return {...state,staffSalaries:action.payload};
 
@@ -63,7 +74,38 @@ export default function (state=INITIAL_STATE, action)
         case HR_SALARY_CREATED:
              let salaries = [...state.staffSalaries];
              salaries.push(action.payload)
-            return {...state,staffSalaries:salaries};
+            return {...state,staffSalaries:salaries,salaryFormModalOpened:false};
+
+        case HR_SALARY_UPDATED:
+            let stfSalaries = []
+            let sal = action.payload
+            for(let k in state.staffSalaries){
+                if(state.staffSalaries[k]['id'] === sal['id']){
+                    stfSalaries.push(sal)
+                }else{
+                    stfSalaries.push(state.staffSalaries[k])
+                }
+            }
+
+            return {...state,staffSalaries:stfSalaries,salaryFormModalOpened:false}
+
+        case HR_EXPENCE_CREATED:
+            let expences = [...state.staffExpences];
+            expences.push(action.payload)
+            return {...state,staffExpences:expences,expenceFormModalOpened:false};
+
+        case HR_EXPENCE_UPDATED:
+            let stfExpences = []
+            let exp = action.payload
+            for(let k in state.staffExpences){
+                if(state.staffExpences[k]['id'] === exp['id']){
+                    stfExpences.push(sal)
+                }else{
+                    stfExpences.push(state.staffExpences[k])
+                }
+            }
+
+            return {...state,staffExpences:stfExpences,expenceFormModalOpened:false}
 
         case HR_STAFF_CLEAR_STATE:
             return {...state,doneItems:[],movedItems:[],newItems:[],usedItems:[] };
@@ -76,6 +118,9 @@ export default function (state=INITIAL_STATE, action)
 
         case HR_SET_SALARY_FOR_UPDATE:
             return {...state,salary:action.payload}
+
+        case HR_EXPENCE_FORM_MODAL_OPENED:
+            return {...state,expenceFormModalOpened:action.payload}
 
         default:
             return state;

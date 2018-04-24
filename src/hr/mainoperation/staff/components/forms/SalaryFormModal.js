@@ -309,7 +309,13 @@ class SalaryFormModal extends Component {
       }
   }
   saveData () {
-        console.log(this.state.localSalary.id)
+        const {localSalary} = this.state
+      if(!localSalary.id || typeof localSalary.id === 'undefined'){
+            localSalary['staffId'] = this.props.staffId
+          this.props.createSalary(localSalary)
+      }else{
+          this.props.updateSalary(localSalary)
+      }
       //this.props.createSalary(this.props.staffId,this.state.localSalary)
   }
 

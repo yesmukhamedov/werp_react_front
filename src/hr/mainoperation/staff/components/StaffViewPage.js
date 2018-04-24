@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Container, Divider, Tab, Header,Button} from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import {fetchSingleStaff,fetchStaffSalaries,fetchStaffExpences,fetchStaffOffData,toggleSalaryFormModal,setSalaryForUpdate} from '../actions/hrStaffAction'
+import {fetchSingleStaff,fetchStaffSalaries,fetchStaffExpences,fetchStaffOffData,toggleSalaryFormModal,setSalaryForUpdate,toggleExpenceFormModal} from '../actions/hrStaffAction'
 import StaffSalariesTable from './view/StaffSalariesTable'
 import StaffExpencesTable from './view/StaffExpencesTable'
 import StaffOffDataTable from './view/StaffOffDataTable'
@@ -9,12 +9,12 @@ import StaffPassportTable from './view/StaffPassportTable'
 import StaffMainDataTable from './view/StaffMainDataTable'
 import StaffFilesTable from './view/StaffFilesTable'
 import SalaryFormModal from './forms/SalaryFormModal'
-import {f4FetchBusinessAreaList,f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList} from '../../../../reference/f4/f4_action'
+import ExpenceFormModal from  './forms/ExpenceFormModal'
+import {f4FetchBusinessAreaList,f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList,f4FetchExpenceTypes} from '../../../../reference/f4/f4_action'
 
 class StaffViewPage extends Component{
     constructor(props) {
         super(props)
-
         this.renderMainData = this.renderMainData.bind(this);
         this.renderPassportData = this.renderPassportData.bind(this);
         this.renderSalaryData = this.renderSalaryData.bind(this);
@@ -35,6 +35,7 @@ class StaffViewPage extends Component{
       this.props.f4FetchPositionList('staff')
       this.props.f4FetchCurrencyList('staff')
       this.props.f4FetchDepartmentList()
+      this.props.f4FetchExpenceTypes()
   }
 
   renderMainData () {
@@ -55,8 +56,12 @@ class StaffViewPage extends Component{
         return <StaffFilesTable files={[]} />
   }
 
-    renderExpensesData(){
-        return <StaffExpencesTable expences={this.props.staffExpences}/>
+    renderExpensesData(staffId){
+        return <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
+            <Button onClick={() => this.props.toggleExpenceFormModal(true)} floated={'right'} primary>Добавить</Button>
+            <ExpenceFormModal staffId={staffId}/>
+            <StaffExpencesTable expences={this.props.staffExpences}/>
+        </Container>
     }
 
     renderOfficialData(){
@@ -88,7 +93,7 @@ class StaffViewPage extends Component{
             {menuItem:'Паспортные данные',render:this.renderPassportData},
             {menuItem:'Должности',render:() => this.renderSalaryData(staff.id)},
             {menuItem:'Контакты',render:this.renderContactData},
-            {menuItem:'Расходы',render:this.renderExpensesData},
+            {menuItem:'Расходы',render:() => this.renderExpensesData(staff.id)},
             {menuItem:'Оф. данные',render:this.renderOfficialData},
             {menuItem:'Файлы',render:this.renderMainData},
             {menuItem:'Доп. данные',render:this.renderMainData},
@@ -125,5 +130,6 @@ function mapStateToProps (state) {
 
 export default connect(mapStateToProps, {
     fetchSingleStaff,fetchStaffSalaries,fetchStaffExpences,fetchStaffOffData,
-    f4FetchBusinessAreaList,f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList,toggleSalaryFormModal,setSalaryForUpdate
+    f4FetchBusinessAreaList,f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList,toggleSalaryFormModal,setSalaryForUpdate,
+    f4FetchExpenceTypes,toggleExpenceFormModal
 })(StaffViewPage)
