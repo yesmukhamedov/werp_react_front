@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Segment, Label, Grid, List } from 'semantic-ui-react';
 import PortalComponent from '../../../../../../general/portal/PortalComponent';
 import { ContactsPanelDisplay } from '../ContactsPanel';
-import { extractLFP, formatDMY } from '../../../../../../utils/helpers';
+import { constructFullName, formatDMY } from '../../../../../../utils/helpers';
 
 const PersonalInfoPanelDisplay = (props) => {
   console.log('PIPD', props);
@@ -52,7 +52,7 @@ const PersonalInfoPanelDisplay = (props) => {
                   Ф.И.О. клиента:
                 </List.Header>
                 {clientFullName &&
-                  extractLFP(clientFullName)}
+                  constructFullName(clientFullName)}
               </List.Item>
               <List.Item>
                 <List.Header className="list-header">ИИН клиента:</List.Header>
@@ -61,7 +61,7 @@ const PersonalInfoPanelDisplay = (props) => {
               <List.Item>
                 <List.Header className="list-header">Дилер:</List.Header>
                 {dealerFullName &&
-                  extractLFP(dealerFullName)}
+                  constructFullName(dealerFullName)}
               </List.Item>
             </List>
           </Grid.Column>

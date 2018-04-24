@@ -9,7 +9,7 @@ import {
   Label,
 } from 'semantic-ui-react';
 import { OutCallPanelModalContainer } from '../OutCallPanelModal';
-import { formatDMYMS, extractLFP } from '../../../../../../utils/helpers';
+import { formatDMYMS, constructFullName } from '../../../../../../utils/helpers';
 import { outCallStatusColorMap } from '../../../../../../utils/constants';
 
 const headerStyle = {
@@ -109,7 +109,7 @@ class OutCallPanelDisplay extends PureComponent {
                       <Item.Content verticalAlign="middle">
                         <Item.Header style={headerStyle}>Открыл:</Item.Header>
                         <Item.Description>
-                          {(status.id !== 1000 ? extractLFP(operator) : <span>&mdash;</span>)}
+                          {(status.id !== 1000 ? constructFullName(operator) : <span>&mdash;</span>)}
                         </Item.Description>
                       </Item.Content>
                     </Item>

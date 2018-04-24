@@ -69,6 +69,6 @@ export function extractByParams(obj, param) {
   return extracted.join(' ');
 }
 
-export function extractLFP(obj) {
+export function constructFullName(obj) {
   return extractByParams(obj, ['lastName', 'firstName', 'patronymic']);
 }

@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 import { Icon, Label } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import OperatorEditModal from '../OperatorEdit/OperatorEditModal';
-import { formatDMY, formatDMYMS, extractLFP } from '../../../../../../../utils/helpers';
+import { formatDMY, formatDMYMS, constructFullName } from '../../../../../../../utils/helpers';
 import { outCallStatusColorMap } from '../../../../../../../utils/constants';
 
 class ContractListTableComponent extends Component {
@@ -121,7 +121,7 @@ class ContractListTableComponent extends Component {
           const { dealer } = props.original;
           return (
             <div>
-              {dealer && extractLFP(dealer)}
+              {dealer && constructFullName(dealer)}
             </div>
           );
         },
@@ -168,7 +168,7 @@ class ContractListTableComponent extends Component {
           const { operator } = props.original;
           return (
             <div>
-              {operator && extractLFP(operator)}
+              {operator && constructFullName(operator)}
             </div>
           );
         },

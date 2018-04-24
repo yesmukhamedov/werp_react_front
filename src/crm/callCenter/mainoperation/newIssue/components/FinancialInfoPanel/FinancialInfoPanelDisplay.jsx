@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Grid, Label, List, Loader, Segment } from 'semantic-ui-react';
 import PortalComponentDisplay from '../../../../../../general/portal/PortalComponent';
 import { LEGACY_URL } from '../../../../../../utils/constants';
-import { extractLFP } from '../../../../../../utils/helpers';
+import { constructFullName } from '../../../../../../utils/helpers';
 import { PaymentBreakdownTableDisplay } from '../PaymentBreakdownTable';
 
 const FinancialInfoPanelDisplay = (props) => {
@@ -92,7 +92,7 @@ const FinancialInfoPanelDisplay = (props) => {
                   </List.Header>
                   {
                     financialAgent &&
-                    extractLFP(financialAgent)
+                    constructFullName(financialAgent)
                   }
                 </List.Item>
               </List>
@@ -107,7 +107,7 @@ const FinancialInfoPanelDisplay = (props) => {
                     (recommender &&
                     <Link target='_blank' to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=` + recommender.contractNumber}>
                       {
-                        extractLFP(recommender.recommenderName)
+                        constructFullName(recommender.recommenderName)
                       }
                     </Link>) || <span>&mdash;</span>
                   }
