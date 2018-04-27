@@ -10,6 +10,67 @@ import '../css/main-page.css'
 import {fetchGroupDealers} from '../../demo/actions/demoAction'
 import WspaceHeader from './WspaceHeader'
 import WspaceMenu from './WspaceMenu'
+import WspaceContent from  './WspaceContent'
+
+const ITEMS = {
+    all: [
+        {
+            id:1,
+            clientName: 'Testov test',
+            recommenderName: 'Бауыржан Иманкулов',
+            phones: [
+                '7052242645',
+                '705 224 26 45'
+            ]
+        },
+        {
+            id:2,
+            clientName: 'Асан',
+            recommenderName: 'Айнаш',
+            phones: [
+                '7052242645',
+                '705 224 26 45'
+            ]
+        },
+        {
+            id:3,
+            clientName: 'Ольга',
+            recommenderName: 'Димаш',
+            phones: [
+                '7052242645',
+                '705 224 26 45'
+            ]
+        },
+        {
+            id:4,
+            clientName: 'Асемгуль',
+            recommenderName: 'Димаш',
+            phones: [
+                '7052242645',
+                '705 224 26 45'
+            ]
+        },
+        {
+            id:5,
+            clientName: 'Аягоз',
+            recommenderName: 'Димаш',
+            phones: [
+                '7052242645',
+                '705 224 26 45'
+            ]
+        },
+        ,
+        {
+            id:6,
+            clientName: 'Сабира',
+            recommenderName: 'Димаш',
+            phones: [
+                '7052242645',
+                '705 224 26 45'
+            ]
+        }
+    ]
+}
 
 class WspaceMainPage extends Component {
   constructor (props) {
@@ -45,6 +106,10 @@ class WspaceMainPage extends Component {
               {currentStaff && currentStaff.text ?currentStaff.text:''}
           </Divider>
           <WspaceMenu/>
+          <Divider horizontal>
+              Текущие
+          </Divider>
+          <WspaceContent items={ITEMS['all']}/>
       </Container>
     )
   }

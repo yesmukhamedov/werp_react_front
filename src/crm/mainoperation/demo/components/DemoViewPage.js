@@ -131,7 +131,7 @@ class DemoViewPage extends Component {
   }
 
   render () {
-        const {demo} = this.props
+    const {demo,dealers} = this.props
     return (
       <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
         <Segment clearing>

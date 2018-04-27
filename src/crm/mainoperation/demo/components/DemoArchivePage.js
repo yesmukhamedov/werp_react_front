@@ -168,7 +168,7 @@ class DemoArchivePage extends Component{
                     <DemoResultLabel resultId={item.resultId} resultName={item.resultName}/>
                 </Table.Cell>
                 <Table.Cell>{item.dateTime?moment(item.dateTime).format('DD.MM.YYYY HH:mm'):''}</Table.Cell>
-                <Table.Cell><Link className={'ui icon button mini'} to={`/crm/demo/view/` + item.id}>
+                <Table.Cell><Link target={'_blank'} className={'ui icon button mini'} to={`/crm/demo/view/` + item.id}>
                     Просмотр
                 </Link></Table.Cell>
             </Table.Row>

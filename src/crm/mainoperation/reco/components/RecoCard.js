@@ -107,7 +107,7 @@ export default function RecoCard(props){
 
                 <Form.Dropdown
                     name={getItemName('callerIsDealer',index)}
-                    defaultValue="0"
+                    defaultValue={0}
                     fluid selection
                     label="Звонить будет"
                    placeholder='Звонить будет'

@@ -62,7 +62,7 @@ class DemoPrintPage extends Component{
                                     <Table.Cell>
                                         <Header style={{marginLeft:20}} as={'h4'}>Менеджер</Header>
                                     </Table.Cell>
-                                    <Table.Cell>Man</Table.Cell>
+                                    <Table.Cell></Table.Cell>
                                 </Table.Row>
                                 <Table.Row>
                                     <Table.Cell style={{textAlign:'right'}}>
@@ -80,6 +80,14 @@ class DemoPrintPage extends Component{
                                     </Table.Cell>
                                     <Table.Cell>{demo.recommender.name}</Table.Cell>
                                 </Table.Row>
+
+                                <Table.Row>
+                                    <Table.Cell>
+                                        <Header style={{marginLeft:20}} as={'h4'}>Род. отношение</Header>
+                                    </Table.Cell>
+                                    <Table.Cell>{demo.recommender.relative}</Table.Cell>
+                                </Table.Row>
+
                                 <Table.Row>
 
                                 <Table.Cell style={{textAlign:'right'}}>

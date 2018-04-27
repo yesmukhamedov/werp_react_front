@@ -56,7 +56,7 @@ class RecoCurrentPage extends Component {
     this.loadItems()
   }
 
-  renderPhoneNumbers (recoId, phones) {
+  renderPhoneNumbers (recoId, phones,clientName) {
     return <div>
       {phones.map((p) => {
         return <Phone
@@ -65,6 +65,7 @@ class RecoCurrentPage extends Component {
           key={p.id} phoneNumber={p.phoneNumber} phoneId={p.id}
           context='reco' contextId={recoId}
           onCallSaved={this.onCallSaved}
+          clientName={clientName}
         />
       })}
     </div>
@@ -127,7 +128,7 @@ class RecoCurrentPage extends Component {
             {
               Header: 'Тел. номера',
               id: 'phoneNumbers',
-              accessor: row => this.renderPhoneNumbers(row.id, row.phones)
+              accessor: row => this.renderPhoneNumbers(row.id, row.phones, row.clientName)
             },
             {
               Header: 'Отв. сотрудник',

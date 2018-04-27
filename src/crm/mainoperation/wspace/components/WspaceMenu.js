@@ -26,6 +26,11 @@ const MENU_ITEMS = [
         id: 'moved',
         name: 'Перенесенные',
         count: 0
+    },
+    {
+        id: 'demo',
+        name: 'Текущие демо',
+        count: 8
     }
 ]
 
@@ -41,9 +46,16 @@ export default function WspaceMenu (props) {
                     active={activeItem === m.id}
                     onClick={props.handleItemClick}>
                     {m.name}
-                    <Label color={m.count === 0?'grey':'olive'} size={'mini'}>{m.count}</Label>
+                    <Label color={m.count === 0?'grey':'red'} size={'mini'}>{m.count}</Label>
                 </Menu.Item>
             ))}
+            <Menu.Item
+                as='a'
+                name='info'
+                active={activeItem === 'info'}
+                onClick={props.handleItemClick}>
+                Доп. информация
+            </Menu.Item>
             <Menu.Item>
                 <Input icon='search' placeholder='Поиск...' />
             </Menu.Item>

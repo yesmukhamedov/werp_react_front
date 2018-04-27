@@ -80,7 +80,7 @@ class RecoArchivePage extends Component{
             </Table.Cell>
             <Table.Cell>{moment(item.docDate).format('DD.MM.YYYY')}</Table.Cell>
             <Table.Cell>
-                <Link className={'ui icon button mini'} to={`/crm/reco/view/` + item.id}>
+                <Link target={'_blank'} className={'ui icon button mini'} to={`/crm/reco/view/` + item.id}>
                     Просмотр
                 </Link>
             </Table.Cell>

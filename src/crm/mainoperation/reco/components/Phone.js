@@ -86,7 +86,7 @@ class Phone extends Component {
     return (
       <Modal size={'large'}
              open={this.state.opened} onClose={this.handleModalClose}>
-        <Modal.Header>Звонок по номеру: {this.props.phoneNumber}</Modal.Header>
+        <Modal.Header>Звонок по номеру: {this.props.phoneNumber} / Клиент: {this.props.clientName}</Modal.Header>
         <Modal.Content>
           <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
         </Modal.Content>

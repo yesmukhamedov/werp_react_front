@@ -65,7 +65,7 @@ class DemoCurrentPage extends Component{
                             accessor:'id',
                             filterable:false,
                             maxWidth:100,
-                            Cell: ({value}) => <Link className={'ui icon button mini'} to={`/crm/demo/view/` + value}>
+                            Cell: ({value}) => <Link target={'_blank'} className={'ui icon button mini'} to={`/crm/demo/view/` + value}>
                                 Просмотр
                             </Link>
                         }
