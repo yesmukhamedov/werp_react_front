@@ -210,6 +210,10 @@ const AsyncPyramidTreePage = Loadable({
     loading: () => <LoadingPage />
 });
 
+const AsyncCrmWspacePage = Loadable({
+    loader: () => import('../crm/mainoperation/wspace/components/WspaceMainPage' /* webpackChunkName: "WspaceMainPage" */),
+    loading: () => <LoadingPage />
+});
 
 
 const getComponent = {
@@ -274,6 +278,7 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/hr/staff/view/:id" component={AsyncStaffViewPage} />
       <Route path="/crm/kpi/setting" component={AsyncKpiSettingPage} />
         <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} />
+        <Route path="/crm/wspace" component={AsyncCrmWspacePage} />
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
