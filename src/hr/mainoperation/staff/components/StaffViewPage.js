@@ -1,41 +1,51 @@
 import React, {Component} from 'react'
 import {Container, Divider, Tab, Header,Button} from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import {fetchSingleStaff,fetchStaffSalaries,fetchStaffExpences,fetchStaffOffData,toggleSalaryFormModal,setSalaryForUpdate,toggleExpenceFormModal} from '../actions/hrStaffAction'
+import {fetchSingleStaff,toggleStaffDataFormModal,blankStaffData,fetchStaffData} from '../actions/hrStaffAction'
 import StaffSalariesTable from './view/StaffSalariesTable'
 import StaffExpencesTable from './view/StaffExpencesTable'
 import StaffOffDataTable from './view/StaffOffDataTable'
 import StaffPassportTable from './view/StaffPassportTable'
 import StaffMainDataTable from './view/StaffMainDataTable'
 import StaffFilesTable from './view/StaffFilesTable'
-import SalaryFormModal from './forms/SalaryFormModal'
-import ExpenceFormModal from  './forms/ExpenceFormModal'
-import {f4FetchBusinessAreaList,f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList,f4FetchExpenceTypes} from '../../../../reference/f4/f4_action'
+import StaffEducationTable from './view/StaffEducationTable'
+import StaffMatnrsTable from './view/StaffMatnrsTable'
+import {f4FetchBusinessAreaList,f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList,f4FetchExpenceTypes,f4FetchSubCompanies} from '../../../../reference/f4/f4_action'
+import {STAFF_DATA,OFF_DATA,EXPENCE_DATA,EDU_DATA,SALARY_DATA,MATNR_DATA} from '../../../hrUtil'
+import StaffDataFormHandler from './StaffDataFormHandler'
 
 class StaffViewPage extends Component{
     constructor(props) {
         super(props)
+        this.state = {
+            activeIndex:0,
+            localOffData:{}
+        }
         this.renderMainData = this.renderMainData.bind(this);
         this.renderPassportData = this.renderPassportData.bind(this);
-        this.renderSalaryData = this.renderSalaryData.bind(this);
         this.renderContactData = this.renderContactData.bind(this);
         this.renderExpensesData = this.renderExpensesData.bind(this);
         this.renderOfficialData = this.renderOfficialData.bind(this);
         this.handleSalaryUpdate = this.handleSalaryUpdate.bind(this)
         this.handleSalaryCreate = this.handleSalaryCreate.bind(this)
+        this.onTabChange = this.onTabChange.bind(this)
+        this.prepareToCreate = this.prepareToCreate.bind(this)
     }
 
   componentWillMount () {
       const id = parseInt(this.props.match.params.id, 10)
       this.props.fetchSingleStaff(id)
-      this.props.fetchStaffSalaries(id)
-      this.props.fetchStaffExpences(id)
-      this.props.fetchStaffOffData(id)
+      this.props.fetchStaffData(id,OFF_DATA)
+      this.props.fetchStaffData(id,EXPENCE_DATA)
+      this.props.fetchStaffData(id,EDU_DATA)
+      this.props.fetchStaffData(id,SALARY_DATA)
+      this.props.fetchStaffData(id,MATNR_DATA)
       this.props.f4FetchBusinessAreaList()
       this.props.f4FetchPositionList('staff')
       this.props.f4FetchCurrencyList('staff')
       this.props.f4FetchDepartmentList()
       this.props.f4FetchExpenceTypes()
+      this.props.f4FetchSubCompanies()
   }
 
   renderMainData () {
@@ -56,16 +66,38 @@ class StaffViewPage extends Component{
         return <StaffFilesTable files={[]} />
   }
 
+  prepareToCreate(){
+      const {staff} = this.props
+      this.props.blankStaffData(staff.id,STAFF_DATA[this.state.activeIndex])
+      this.props.toggleStaffDataFormModal(true)
+  }
+
     renderExpensesData(staffId){
         return <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
-            <Button onClick={() => this.props.toggleExpenceFormModal(true)} floated={'right'} primary>Добавить</Button>
-            <ExpenceFormModal staffId={staffId}/>
-            <StaffExpencesTable expences={this.props.staffExpences}/>
+            <Button onClick={this.prepareToCreate} floated={'right'} primary>Добавить</Button>
+            <StaffExpencesTable expences={this.props.staffDataList[EXPENCE_DATA] || []}/>
         </Container>
     }
 
     renderOfficialData(){
-        return <StaffOffDataTable offData={this.props.staffOffData}/>
+        return <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
+                    <Button onClick={this.prepareToCreate} floated={'right'} primary>Добавить</Button>
+                    <StaffOffDataTable offData={this.props.staffDataList[OFF_DATA] || []}/>
+            </Container>
+    }
+
+    renderEduData(items){
+        return <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
+            <Button onClick={this.prepareToCreate} floated={'right'} primary>Добавить</Button>
+            <StaffEducationTable items={items}/>
+        </Container>
+    }
+
+    renderMatnrsData(items){
+        return <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
+            <Button onClick={this.prepareToCreate} floated={'right'} primary>Добавить</Button>
+            <StaffMatnrsTable items={items}/>
+        </Container>
     }
 
     handleSalaryUpdate(salary){
@@ -78,37 +110,45 @@ class StaffViewPage extends Component{
         this.props.toggleSalaryFormModal(true)
     }
 
-    renderSalaryData(staffId){
+    renderSalaryData(items){
         return <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
-                    <Button onClick={this.handleSalaryCreate} floated={'right'} primary>Добавить</Button>
-                    <SalaryFormModal staffId={staffId}/>
-                <StaffSalariesTable handleUpdate={this.handleSalaryUpdate} salaries={this.props.staffSalaries}/>
+                    <Button onClick={this.prepareToCreate} floated={'right'} primary>Добавить</Button>
+                    <StaffSalariesTable items={items}/>
             </Container>
     }
 
+    onTabChange(e,d){
+        this.setState({
+            ...this.state,
+            activeIndex: d.activeIndex
+        })
+    }
+
     renderProfile(){
-        const {staff} = this.props
+        const {staff,staffDataList} = this.props
         const panes = [
             {menuItem:'Основные данные',render:this.renderMainData},
             {menuItem:'Паспортные данные',render:this.renderPassportData},
-            {menuItem:'Должности',render:() => this.renderSalaryData(staff.id)},
+            {menuItem:'Должности',render:() => this.renderSalaryData(staffDataList[SALARY_DATA])},
             {menuItem:'Контакты',render:this.renderContactData},
             {menuItem:'Расходы',render:() => this.renderExpensesData(staff.id)},
             {menuItem:'Оф. данные',render:this.renderOfficialData},
+            {menuItem:'Образование',render:() => this.renderEduData(staffDataList[EDU_DATA] || [])},
             {menuItem:'Файлы',render:this.renderMainData},
             {menuItem:'Доп. данные',render:this.renderMainData},
             {menuItem:'Баланс',render:this.renderMainData},
-            {menuItem:'Склад',render:this.renderMainData}
+            {menuItem:'Склад',render:() => this.renderMatnrsData(staffDataList[MATNR_DATA] || [])}
         ]
-
         return (
 
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
                 <Header as="h2" block>
                     Карточка сотрудника / {staff.lastname} {staff.firstname}
-        </Header>
+                </Header>
+                <StaffDataFormHandler
+                    activeData={STAFF_DATA[this.state.activeIndex]}/>
         <Divider />
-        <Tab panes={panes} menu={{ secondary: true, pointing: true }} />
+        <Tab onTabChange={this.onTabChange} panes={panes} menu={{ secondary: true, pointing: true }} />
       </Container>
     )
   }
@@ -120,16 +160,18 @@ class StaffViewPage extends Component{
 
 function mapStateToProps (state) {
     return {
-        staff:state.hrStaff.staff,
-        staffSalaries:state.hrStaff.staffSalaries,
-        staffExpences:state.hrStaff.staffExpences,
-        staffOffData:state.hrStaff.staffOffData,
-        salaryFormModalOpened:state.hrStaff.salaryFormModalOpened
+        staff: state.hrStaff.staff,
+        staffSalaries: state.hrStaff.staffSalaries,
+        staffExpences: state.hrStaff.staffExpences,
+        staffOffData: state.hrStaff.staffOffData,
+        salaryFormModalOpened: state.hrStaff.salaryFormModalOpened,
+        staffDataFormModalOpened: state.hrStaff.staffDataFormModalOpened,
+        staffData: state.hrStaff.staffData,
+        staffDataList: state.hrStaff.staffDataList
     }
 }
 
 export default connect(mapStateToProps, {
-    fetchSingleStaff,fetchStaffSalaries,fetchStaffExpences,fetchStaffOffData,
-    f4FetchBusinessAreaList,f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList,toggleSalaryFormModal,setSalaryForUpdate,
-    f4FetchExpenceTypes,toggleExpenceFormModal
+    fetchSingleStaff,f4FetchBusinessAreaList,f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList,
+    f4FetchExpenceTypes,toggleStaffDataFormModal,f4FetchSubCompanies,blankStaffData,fetchStaffData
 })(StaffViewPage)

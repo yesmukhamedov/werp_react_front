@@ -9,7 +9,8 @@ import {
         F4_FETCH_CITYREG_LIST,F4_CLEAR_CITYREG_LIST,
         F4_FETCH_BUSINESS_AREA_LIST,F4_CLEAR_BUSINESS_AREA_LIST,
     F4_FETCH_DEPARTMENT_LIST,F4_CLEAR_DEPARTMENT_LIST,
-    F4_FETCH_EXPENSE_TYPES,F4_CLEAR_EXPENSE_TYPES
+    F4_FETCH_EXPENSE_TYPES,F4_CLEAR_EXPENSE_TYPES,
+    F4_FETCH_SUB_COMPANIES,F4_CLEAR_SUB_COMPANIES
 } from './f4_action';
 
 const INITIAL_STATE={
@@ -23,7 +24,8 @@ const INITIAL_STATE={
                     cityregList:[],
                     businessAreaList:[],
                     departmentList:[],
-                    expenceTypes:[]
+                    expenceTypes:[],
+                    subCompanies:[]
     };
 
 export default function (state=INITIAL_STATE, action)
@@ -79,6 +81,12 @@ export default function (state=INITIAL_STATE, action)
 
         case F4_CLEAR_EXPENSE_TYPES:
             return {...state,expenceTypes:[]}
+
+        case F4_FETCH_SUB_COMPANIES:
+            return {...state,subCompanies: action.payload}
+
+        case F4_CLEAR_SUB_COMPANIES:
+            return {...state,subCompanies:[]}
 
         default:
             return state;

@@ -41,7 +41,7 @@ export default function WspaceMenu (props) {
                     active={activeItem === m.id}
                     onClick={props.handleItemClick}>
                     {m.name}
-                    <Label color={m.count === 0?'':'olive'} size={'mini'}>{m.count}</Label>
+                    <Label color={m.count === 0?'grey':'olive'} size={'mini'}>{m.count}</Label>
                 </Menu.Item>
             ))}
             <Menu.Item>

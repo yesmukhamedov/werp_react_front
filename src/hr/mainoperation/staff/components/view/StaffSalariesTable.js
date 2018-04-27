@@ -8,9 +8,11 @@ import {formatTimestamptToDate} from '../../../../../utils/helpers'
 
 export default function StaffSalariesTable(props){
 
-    const {salaries} = props
-
-    let tempContent = salaries.map(salary => {
+    const {items} = props
+    if(!items){
+        return (null)
+    }
+    let tempContent = items.map(salary => {
         return (
             <Table.Row key={salary.id} className={salary.prev === true ? 'error':(salary.next === true?'success':'')}>
                 <Table.Cell>{salary.id}</Table.Cell>

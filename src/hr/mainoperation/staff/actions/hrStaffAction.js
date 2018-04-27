@@ -3,6 +3,7 @@ import {ROOT_URL} from '../../../../utils/constants';
 import { modifyLoader } from '../../../../general/loader/loader_action';
 import {handleError,notify} from '../../../../general/notification/notification_action'
 import browserHistory from '../../../../utils/history';
+import {getStaffDataPostUri,getStaffDataFetchUri,getStaffDataBlankUri} from '../../../hrUtil'
 
 export const HR_STAFF_CURRENT_STAFFS = 'HR_STAFF_CURRENT_STAFFS';
 export const HR_STAFF_SINGLE_STAFF = 'HR_STAFF_SINGLE_STAFF';
@@ -27,9 +28,11 @@ export const HR_PYRAMID_FETCH_PYRAMIDS = 'HR_PYRAMID_FETCH_PYRAMIDS'
 
 export const HR_SET_SALARY_FOR_UPDATE = 'HR_SET_SALARY_FOR_UPDATE'
 
-export const HR_EXPENCE_FORM_MODAL_OPENED = 'HR_EXPENCE_FORM_MODAL_OPENED'
-export const HR_EXPENCE_CREATED = 'HR_EXPENCE_CREATED'
-export const HR_EXPENCE_UPDATED = 'HR_EXPENCE_UPDATED'
+export const HR_STAFF_DATA_BLANKED = 'HR_STAFF_DATA_BLANKED'
+export const HR_STAFF_DATA_CREATED = 'HR_STAFF_DATA_CREATED'
+export const HR_STAFF_DATA_FETCHED_LIST = 'HR_STAFF_DATA_FETCHED_LIST'
+
+export const HR_STAFF_DATA_FORM_MODAL_FLAG = 'HR_STAFF_DATA_FORM_MODAL_FLAG'
 
 export function fetchCurrentStaffs(params){
     return function(dispatch){
@@ -110,98 +113,26 @@ export function updateStaff(staff){
     }
 }
 
-
-
-export function createSalary(salary){
-    return function (dispatch){
-        dispatch(modifyLoader(true))
-        axios.post(`${ROOT_URL}/api/hr/salary`, salary,{
-            headers: {
-                authorization: localStorage.getItem('token')
-            }
-        })
-            .then(({data}) => {
-                dispatch(modifyLoader(false))
-                dispatch({
-                    type:HR_SALARY_CREATED,
-                    payload:data
-                })
-            }).catch((error) => {
-            dispatch(modifyLoader(false))
-            handleError(error,dispatch)
-        })
-    }
-}
-
-export function createExpence(exp){
-    return function (dispatch){
-        dispatch(modifyLoader(true))
-        axios.post(`${ROOT_URL}/api/hr/expence`, exp,{
-            headers: {
-                authorization: localStorage.getItem('token')
-            }
-        })
-            .then(({data}) => {
-                dispatch(modifyLoader(false))
-                dispatch({
-                    type:HR_EXPENCE_CREATED,
-                    payload:data
-                })
-            }).catch((error) => {
-            dispatch(modifyLoader(false))
-            handleError(error,dispatch)
-        })
-    }
-}
-
-export function updateSalary(salary){
-    return function (dispatch){
-        dispatch(modifyLoader(true))
-        axios.put(`${ROOT_URL}/api/hr/salary`, salary,{
-            headers: {
-                authorization: localStorage.getItem('token')
-            }
-        })
-            .then(({data}) => {
-                dispatch(modifyLoader(false))
-                dispatch({
-                    type:HR_SALARY_CREATED,
-                    payload:data
-                })
-            }).catch((error) => {
-            dispatch(modifyLoader(false))
-            handleError(error,dispatch)
-        })
-    }
-}
-
-export function updateExpence(exp){
-    return function (dispatch){
-        dispatch(modifyLoader(true))
-        axios.put(`${ROOT_URL}/api/hr/expence`, exp,{
-            headers: {
-                authorization: localStorage.getItem('token')
-            }
-        })
-            .then(({data}) => {
-                dispatch(modifyLoader(false))
-                dispatch({
-                    type:HR_EXPENCE_UPDATED,
-                    payload:data
-                })
-            }).catch((error) => {
-            dispatch(modifyLoader(false))
-            handleError(error,dispatch)
-        })
-    }
-}
-
-export function setSalaryForUpdate(salary){
-    return {
-        type:HR_SET_SALARY_FOR_UPDATE,
-        payload:salary
-    }
-}
+// export function updateExpence(exp){
+//     return function (dispatch){
+//         dispatch(modifyLoader(true))
+//         axios.put(`${ROOT_URL}/api/hr/expence`, exp,{
+//             headers: {
+//                 authorization: localStorage.getItem('token')
+//             }
+//         })
+//             .then(({data}) => {
+//                 dispatch(modifyLoader(false))
+//                 dispatch({
+//                     type:HR_EXPENCE_UPDATED,
+//                     payload:data
+//                 })
+//             }).catch((error) => {
+//             dispatch(modifyLoader(false))
+//             handleError(error,dispatch)
+//         })
+//     }
+// }
 
 export function fetchSingleStaff(staffId){
     return function(dispatch){
@@ -223,54 +154,6 @@ export function fetchSingleStaff(staffId){
     }
 }
 
-export function fetchStaffSalaries(staffId){
-    return function(dispatch){
-        axios.get(`${ROOT_URL}/api/hr/staff/` + staffId + `/salaries`, {
-            headers: {
-                authorization: localStorage.getItem('token')}
-        }).then(({data}) => {
-            dispatch({
-                type:HR_STAFF_FETCH_STAFF_SALARIES,
-                payload:data
-            })
-        }).catch((error) => {
-            handleError(error,dispatch)
-        })
-    }
-}
-
-export function fetchStaffExpences(staffId){
-    return function(dispatch){
-        axios.get(`${ROOT_URL}/api/hr/expence/by-staff/` + staffId,{
-            headers: {
-                authorization: localStorage.getItem('token')}
-        }).then(({data}) => {
-            dispatch({
-                type:HR_STAFF_FETCH_STAFF_EXPENCES,
-                payload:data
-            })
-        }).catch((error) => {
-            handleError(error,dispatch)
-        })
-    }
-}
-
-export function fetchBlankSalary(staffId){
-    return function(dispatch){
-        axios.get(`${ROOT_URL}/api/hr/staff/` + staffId + `/expenses`,{
-            headers: {
-                authorization: localStorage.getItem('token')}
-        }).then(({data}) => {
-            dispatch({
-                type:HR_STAFF_FETCH_STAFF_EXPENCES,
-                payload:data
-            })
-        }).catch((error) => {
-            handleError(error,dispatch)
-        })
-    }
-}
-
 export function fetchBlankStaff(){
     return function(dispatch){
         axios.get(`${ROOT_URL}/api/hr/staff/blank`,{
@@ -279,22 +162,6 @@ export function fetchBlankStaff(){
         }).then(({data}) => {
             dispatch({
                 type:HR_STAFF_FETCH_BLANK,
-                payload:data
-            })
-        }).catch((error) => {
-            handleError(error,dispatch)
-        })
-    }
-}
-
-export function fetchStaffOffData(staffId){
-    return function(dispatch){
-        axios.get(`${ROOT_URL}/api/hr/staff/` + staffId + `/official-data`,{
-            headers: {
-                authorization: localStorage.getItem('token')}
-        }).then(({data}) => {
-            dispatch({
-                type:HR_STAFF_FETCH_STAFF_OFF_DATA,
                 payload:data
             })
         }).catch((error) => {
@@ -333,9 +200,68 @@ export function toggleSalaryFormModal(flag){
     }
 }
 
-export function toggleExpenceFormModal(flag){
+export function toggleStaffDataFormModal(flag){
     return {
-        type: HR_EXPENCE_FORM_MODAL_OPENED,
+        type: HR_STAFF_DATA_FORM_MODAL_FLAG,
         payload: flag
+    }
+}
+
+export function blankStaffData(staffId,activeData){
+    let uri = `${ROOT_URL}/` + getStaffDataBlankUri(activeData) + staffId
+
+    return function(dispatch){
+        axios.get(uri,{
+            headers: {
+                authorization: localStorage.getItem('token')}
+        }).then(({data}) => {
+            dispatch({
+                type:HR_STAFF_DATA_BLANKED,
+                payload:data
+            })
+        }).catch((error) => {
+            handleError(error,dispatch)
+        })
+    }
+}
+
+export function createStaffData(postData,activeData){
+    let uri = `${ROOT_URL}` + getStaffDataPostUri(activeData)
+    return function (dispatch){
+        dispatch(modifyLoader(true))
+        axios.post(uri, postData,{
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        })
+            .then(({data}) => {
+                dispatch(modifyLoader(false))
+                dispatch({
+                    type:HR_STAFF_DATA_CREATED,
+                    payload:data,
+                    activeData: activeData
+                })
+            }).catch((error) => {
+                dispatch(modifyLoader(false))
+                handleError(error,dispatch)
+        })
+    }
+}
+
+export function fetchStaffData(staffId,activeData){
+    let uri = `${ROOT_URL}` + getStaffDataFetchUri(activeData,staffId)
+    return function(dispatch){
+        axios.get(uri,{
+            headers: {
+                authorization: localStorage.getItem('token')}
+        }).then(({data}) => {
+            dispatch({
+                type:HR_STAFF_DATA_FETCHED_LIST,
+                payload:data,
+                activeData: activeData
+            })
+        }).catch((error) => {
+            handleError(error,dispatch)
+        })
     }
 }

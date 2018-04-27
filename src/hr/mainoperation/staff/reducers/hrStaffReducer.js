@@ -13,10 +13,13 @@ import {
     HR_SET_SALARY_FOR_UPDATE,
     HR_STAFF_FETCH_BLANK,
     HR_SALARY_UPDATED,
-    HR_EXPENCE_FORM_MODAL_OPENED,
-    HR_EXPENCE_CREATED,
-    HR_EXPENCE_UPDATED
+    HR_STAFF_DATA_FORM_MODAL_FLAG,
+    HR_STAFF_DATA_BLANKED,
+    HR_STAFF_DATA_CREATED,
+    HR_STAFF_DATA_FETCHED_LIST
 } from '../actions/hrStaffAction';
+
+import {OFF_DATA} from '../../../hrUtil'
 
 const INITIAL_STATE={
                     currentStaffs:[],
@@ -38,8 +41,9 @@ const INITIAL_STATE={
                     branchPyramids:[],
                     pyramids: [],
                     staffFormErrors:{},
-                    expence:{},
-                    expenceFormModalOpened:false
+                    staffDataFormModalOpened: false,
+                    staffData:{},
+                    staffDataList:{}
 
 };
 
@@ -89,24 +93,6 @@ export default function (state=INITIAL_STATE, action)
 
             return {...state,staffSalaries:stfSalaries,salaryFormModalOpened:false}
 
-        case HR_EXPENCE_CREATED:
-            let expences = [...state.staffExpences];
-            expences.push(action.payload)
-            return {...state,staffExpences:expences,expenceFormModalOpened:false};
-
-        case HR_EXPENCE_UPDATED:
-            let stfExpences = []
-            let exp = action.payload
-            for(let k in state.staffExpences){
-                if(state.staffExpences[k]['id'] === exp['id']){
-                    stfExpences.push(sal)
-                }else{
-                    stfExpences.push(state.staffExpences[k])
-                }
-            }
-
-            return {...state,staffExpences:stfExpences,expenceFormModalOpened:false}
-
         case HR_STAFF_CLEAR_STATE:
             return {...state,doneItems:[],movedItems:[],newItems:[],usedItems:[] };
 
@@ -119,8 +105,23 @@ export default function (state=INITIAL_STATE, action)
         case HR_SET_SALARY_FOR_UPDATE:
             return {...state,salary:action.payload}
 
-        case HR_EXPENCE_FORM_MODAL_OPENED:
-            return {...state,expenceFormModalOpened:action.payload}
+        case HR_STAFF_DATA_FORM_MODAL_FLAG:
+            return {...state,staffDataFormModalOpened:action.payload}
+
+        case HR_STAFF_DATA_BLANKED:
+            return {...state,staffData: action.payload}
+
+        case HR_STAFF_DATA_CREATED:
+            let staffDataList = Object.assign({},state.staffDataList)
+            let tempData = staffDataList[action.activeData] || []
+            tempData.push(action.payload)
+            staffDataList[action.activeData] = tempData
+            return {...state,staffDataList:staffDataList,staffDataFormModalOpened: false}
+
+        case HR_STAFF_DATA_FETCHED_LIST:
+            let stfDataList = Object.assign({},state.staffDataList)
+            stfDataList[action.activeData] = action.payload
+            return {...state,staffDataList:stfDataList}
 
         default:
             return state;

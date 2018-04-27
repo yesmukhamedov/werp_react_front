@@ -2,7 +2,7 @@ import React from 'react';
 import { Table } from 'semantic-ui-react'
 
 /**
- * Список Expences
+ * Список OffData
  */
 
 export default function StaffOffDataTable(props){
@@ -13,7 +13,7 @@ export default function StaffOffDataTable(props){
         return (
             <Table.Row key={d.id}>
                 <Table.Cell>{d.subCompanyName}</Table.Cell>
-                <Table.Cell>{d.positionName}</Table.Cell>
+                <Table.Cell>{d.position}</Table.Cell>
                 <Table.Cell>{d.salary}</Table.Cell>
                 <Table.Cell>{d.pension}</Table.Cell>
                 <Table.Cell>{d.ipn}</Table.Cell>

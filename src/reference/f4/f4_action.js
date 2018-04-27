@@ -35,6 +35,9 @@ export const F4_CLEAR_DEPARTMENT_LIST = 'F4_CLEAR_DEPARTMENT_LIST';
 export const F4_FETCH_EXPENSE_TYPES = 'F4_FETCH_EXPENSE_TYPES'
 export const F4_CLEAR_EXPENSE_TYPES = 'F4_CLEAR_EXPENSE_TYPES'
 
+export const F4_FETCH_SUB_COMPANIES = 'F4_FETCH_SUB_COMPANIES'
+export const F4_CLEAR_SUB_COMPANIES = 'F4_CLEAR_SUB_COMPANIES'
+
 export function f4FetchDepartmentList(){
     return function(dispatch) {
         axios.get(`${ROOT_URL}/api/reference/departments`, {
@@ -297,6 +300,25 @@ export function f4FetchExpenceTypes() {
             .then(({data}) => {
                 dispatch({
                     type: F4_FETCH_EXPENSE_TYPES,
+                    payload:data
+                });
+            })
+            .catch(error => {
+                console.log(error);
+            });
+    }
+}
+
+export function f4FetchSubCompanies() {
+    return function(dispatch) {
+        axios.get(`${ROOT_URL}/api/reference/sub-companies`, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        })
+            .then(({data}) => {
+                dispatch({
+                    type: F4_FETCH_SUB_COMPANIES,
                     payload:data
                 });
             })
