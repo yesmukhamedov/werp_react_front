@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import {v4} from 'uuid'
 import { Header, Container, Label, Icon, Form, Grid, Segment, Dropdown, Button, Divider, List } from 'semantic-ui-react'
 import axios from 'axios'
 import {ROOT_URL} from '../../../../utils/constants'
@@ -8,7 +9,7 @@ import RecoCard from './RecoCard'
 import 'react-datepicker/dist/react-datepicker.css';
 import '../css/recoStyles.css';
 import {fetchGroupDealers} from '../../demo/actions/demoAction';
-import {checkPhoneNumber,createRecoList} from '../actions/recoAction'
+import {checkPhoneNumber,createRecoList,blankRecoItem} from '../actions/recoAction'
 require('moment/locale/ru');
 
 
@@ -30,7 +31,8 @@ class RecoCreatePage extends Component {
         responsibleId: 0,
         items: []
       },
-      itemPhones: []
+      itemPhones: [],
+        saveBtnDisabled: false
     }
 
     this.renderHeaderForm = this.renderHeaderForm.bind(this)
@@ -39,6 +41,7 @@ class RecoCreatePage extends Component {
     this.handleChangeDate = this.handleChangeDate.bind(this)
     this.validateAndSendData = this.validateAndSendData.bind(this)
     this.removeReco = this.removeReco.bind(this)
+      this.handleItemChange = this.handleItemChange.bind(this)
   }
 
   componentWillMount () {
@@ -56,94 +59,84 @@ class RecoCreatePage extends Component {
     })
   }
 
-  handleChange (p1, p2) {
-    const {name, value} = p2
-    let {reco, itemPhones} = this.state
+  handleItemChange (fieldName, id,value) {
+    let reco = Object.assign({},this.state.reco)
+    let item = {}
+    let index = -1
+    for(let k in reco['items']){
+        if(reco['items'][k]['id'] === id){
+            index = k
+            item = reco['items'][k]
+            break
+        }
+    }
+    if(index < 0){
+        return
+    }
 
-    let tempIndex = name.indexOf('[')
-    if (tempIndex > -1) {
-      const originalName = name.substring(0, tempIndex)
-      const itemIndex = name.substring(tempIndex + 1, name.indexOf(']'))
-      let item = reco['items'][itemIndex]
-      switch (originalName) {
-        case 'clientName':
-        case 'districtName':
-        case 'professionName':
-        case 'relativeName':
-        case 'note':
-        case 'switchDate':
-        case 'callerIsDealer':
-          item[originalName] = value
-          break
+      switch (fieldName) {
+          case 'phoneNumber1':
+          case 'phoneNumber2':
+              let displayName = 'displayPhone1'
+              if(fieldName === 'phoneNumber2'){
+                  displayName = 'displayPhone2'
+              }
+              const phonePattern = this.state.reco.phonePattern || '';
+              const ppLenght = phonePattern.replace(/[^0-9]+/g, '').length;
+              let v = value.replace(/[^0-9]+/g, '');
+              if(v.length === 0){
+                  item[displayName] = '';
+                  item[fieldName] = '';
+              } else {
+                  let temp = '';
+                  let userCounter = 0;
+                  for(let k = 0; k < phonePattern.length; k++) {
+                      const userChar = v.charAt(userCounter);
+                      userCounter++;
+                      if(!userChar){
+                          break;
+                      }
 
-          case 'categoryId':
-              item[originalName] = value
+                      const char = phonePattern.charAt(k);
+                      if(isNaN(char)) {
+                          temp += char;
+                          userCounter--;
+                      }else{
+                          temp += userChar;
+                      }
+                  }
+
+                  item[displayName] = temp;
+                  item[fieldName] = v.substring(0,ppLenght);
+                  if(item[fieldName].length === ppLenght && typeof this.props.phoneErrors[item[fieldName]] === 'undefined'){
+                      this.props.checkPhoneNumber(reco['responsibleId'],item[fieldName])
+                  }
+              }
+
               break
 
-        case 'callDate':
-          console.log(value)
-          break
-
-        case 'hasAnimal':
-        case 'hasChild':
-        case 'hasAsthma':
-        case 'hasAllergy':
-          if (p2.checked) {
-            item[originalName] = 1
-          } else {
-            item[originalName] = 0
-          }
-          break
-
-        case 'phoneNumber1':
-        case 'phoneNumber2':
-            const phonePattern = this.state.reco.phonePattern || '';
-            const ppLenght = phonePattern.replace(/[^0-9]+/g, '').length;
-            let v = value.replace(/[^0-9]+/g, '');
-            if(v.length === 0){
-                itemPhones[itemIndex][originalName] = '';
-                item[originalName] = '';
-            } else {
-                let temp = '';
-                let userCounter = 0;
-                for(let k = 0; k < phonePattern.length; k++) {
-                    const userChar = v.charAt(userCounter);
-                    userCounter++;
-                    if(!userChar){
-                        break;
-                    }
-
-                    const char = phonePattern.charAt(k);
-                    if(isNaN(char)) {
-                        temp += char;
-                        userCounter--;
-                    }else{
-                        temp += userChar;
-                    }
-                }
-
-                itemPhones[itemIndex][originalName] = temp;
-                item[originalName] = v.substring(0,ppLenght);
-                if(item[originalName].length === ppLenght && typeof this.props.phoneErrors[item[originalName]] === 'undefined'){
-                    this.props.checkPhoneNumber(reco['responsibleId'],item[originalName])
-                }
-            }
-
-            break
-
-        default:
-          break
+          default:
+              item[fieldName] = value
+              break
       }
 
-      reco['items'][itemIndex] = item
-    } else {
-      reco[name] = value
-    }
+      reco['items'][index] = item
 
     this.setState({
       ...this.state,
       reco: reco
     })
+  }
+
+  handleChange(e,data){
+      const {name,value} = data
+      let reco = Object.assign({},this.state.reco)
+      reco[name] = value
+
+      this.setState({
+          ...this.state,
+          reco: reco
+      })
   }
 
     handleChangeDate(m,index){
@@ -163,12 +156,13 @@ class RecoCreatePage extends Component {
   }
 
   addReco () {
-    let {reco, itemPhones} = this.state
+    let {reco} = this.state
       if(!reco['responsibleId'] || reco['responsibleId'] === null || reco['responsibleId'] === 0){
         return
       }
     let itemIndex = reco.items.length
     let form = {
+      id: v4(),
       clientName: '',
       districtName: '',
       professionName: '',
@@ -177,7 +171,9 @@ class RecoCreatePage extends Component {
       callerIsDealer: 0,
       note: '',
       phoneNumber1: '',
+        displayPhone1: '',
       phoneNumber2: '',
+        displayPhone2: '',
       hasChild: 0,
       hasAnimal: 0,
       hasAllergy: 0,
@@ -187,104 +183,64 @@ class RecoCreatePage extends Component {
     }
 
     reco['items'][itemIndex] = form
-    itemPhones[itemIndex] = {
-      phoneNumber1: '',
-      phoneNumber2: ''
-    }
     this.setState({
       ...this.state,
-      reco: reco,
-      itemPhones: itemPhones
+      reco: reco
     })
   }
 
   renderRecoForms () {
     let {items} = this.state.reco
-    return items.map((item, index) => {
+    return items.map((item,index) => {
         return <RecoCard handleChangeDate={this.handleChangeDate}
                          itemPhones={this.state.itemPhones}
                          phoneCode={this.state.reco['phoneCode']}
                          phonePattern={this.state.reco['phonePattern']}
-                         handleChange={this.handleChange}
+                         handleChange={this.handleItemChange}
                          removeReco={this.removeReco}
-                         key={index} item={item}
+                         key={item.id} item={item}
                          phoneErrors={this.props.phoneErrors}
                          loadingPhones={this.props.loadingPhones}
+                         recoErrors={this.props.recoErrors}
                          index={index}/>
       //return this.renderRecoForm(item, index)
     })
   }
 
-  validateAndSendData () {
-    let {reco} = this.state
-    let error = []
-    if (reco.responsibleId === 0 || reco.responsibleId == null) {
-      error.push('Выберите дилера')
-    }
-
-        if(!reco.tempRecommender || reco.tempRecommender.length === 0){
-            error.push("Введите ФИО рекомендателя");
+  validateAndSendData = e => {
+        e.preventDefault()
+        if(this.state.saveBtnDisabled){
+            return
         }
-        const phonePattern = reco.phonePattern.replace(/[^0-9]+/g, '');
-        let index = 1;
-        for(let k in reco.items){
-            let item = reco.items[k];
-            if(item.phoneNumber1.length === 0 && item.phoneNumber2.length === 0){
-                error.push("Введите хотя бы 1 Тел. номер в рекомендации №" + index);
-            }else{
-                if(item.phoneNumber1.length > 0 && item.phoneNumber1.length < phonePattern.length){
-                    error.push("Не правильно введен Тел. номер в рекомендации №" + index);
-                }
-
-                if(item.phoneNumber2.length > 0 && item.phoneNumber2.length < phonePattern.length){
-                    error.push("Не правильно введен Тел. номер в рекомендации №" + index);
-                }
-            }
-
-            if (item.clientName.length === 0) {
-                error.push('Введите ФИО супруг в рекомендации №' + index)
-            }
-
-            if (item.categoryId === 0) {
-                error.push('Выберите категорию в рекомендации №' + index)
-            }
-
-            index++;
-        }
-
-    this.setState({
-      ...this.state,
-      hasError: true
-    })
-
-    if (error.length > 0) {
-      this.props.notify('error', this.renderError(error), 'Ошибка')
-    } else {
-            this.props.createRecoList({ ...this.state.reco })
-    }
+        this.setState({
+            ...this.state,
+            saveBtnDisabled: true
+        })
+      //this.refs.btn.setAttribute("disabled", "disabled")
+      this.props.createRecoList({ ...this.state.reco },() => {
+          this.setState({
+              ...this.state,
+              saveBtnDisabled: false
+          })
+      })
   }
 
   renderError (error) {
     return <List items={error} />
   }
 
-  removeReco (index) {
+  removeReco (index,id) {
     if (!window.confirm('Вы действительно хотите удалить рекомендацию №' + (index + 1))) {
       return false
     }
       let reco = Object.assign({}, this.state.reco)
-      let itemPhones = Object.assign([], this.state.itemPhones)
 
     if (reco['items'][index]) {
       reco.items.splice(index, 1)
-        if(itemPhones[index]){
-            itemPhones.splice(index, 1)
-        }
 
       this.setState({
         ...this.state,
         reco: reco,
-        itemPhones: itemPhones,
         itemIndex: reco.items.length
       })
     }
@@ -320,7 +276,11 @@ class RecoCreatePage extends Component {
         </Button>
           {this.state.reco.items.length}
 
-        <Button onClick={this.validateAndSendData} primary floated='right'>Сохранить</Button>
+        <Button
+            //ref={btn => { this.btn = btn; }}
+            disabled={this.state.saveBtnDisabled}
+            onClick={this.validateAndSendData}
+                primary floated='right'>{this.state.saveBtnDisabled?'Ждите...':'Сохранить'}</Button>
       </Form>
     )
   }
@@ -346,8 +306,12 @@ const mapStateToProps = (state) => {
   return {
       dealers:state.crmDemo.dealers,
       phoneErrors: state.crmReco.phoneErrors,
-      loadingPhones: state.crmReco.loadingPhones
+      loadingPhones: state.crmReco.loadingPhones,
+      recoErrors: state.crmReco.recoErrors
   }
 }
 
-export default connect(mapStateToProps, { notify,fetchGroupDealers,checkPhoneNumber,createRecoList })(RecoCreatePage)
+export default connect(mapStateToProps, {
+    notify,fetchGroupDealers,checkPhoneNumber,createRecoList,
+    blankRecoItem
+})(RecoCreatePage)

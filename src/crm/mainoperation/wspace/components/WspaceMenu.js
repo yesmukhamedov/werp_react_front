@@ -3,41 +3,22 @@ import _ from 'lodash'
 import "react-table/react-table.css";
 import { Tab,Header,Container,Icon,Segment,Label,Accordion,Menu,Input } from 'semantic-ui-react'
 import moment from 'moment';
-import {RECO_CATEGORIES} from '../../../crmUtil'
+import {MENU_ITEMS} from '../wspaceUtil'
 import '../css/header-page.css'
 
-const MENU_ITEMS = [
-    {
-        id: 'all',
-        name: 'Все рек.',
-        count: 135
-    },
-    {
-        id: 'by_recommender',
-        name: 'По рекомендателям',
-        count: 55
-    },
-    {
-        id: 'new',
-        name: 'По дате',
-        count: 12
-    },
-    {
-        id: 'moved',
-        name: 'Перенесенные',
-        count: 0
-    },
-    {
-        id: 'demo',
-        name: 'Текущие демо',
-        count: 8
-    }
-]
+
 
 export default function WspaceMenu (props) {
-    const activeItem = 'all'
+    const activeItem = 'dashboard'
     return (
         <Menu stackable>
+            <Menu.Item
+                as='a'
+                name='dashboard'
+                active={activeItem === 'dashboard'}
+                onClick={props.handleItemClick}>
+                Dashboard
+            </Menu.Item>
             {MENU_ITEMS.map(m => (
                 <Menu.Item
                     as='a'

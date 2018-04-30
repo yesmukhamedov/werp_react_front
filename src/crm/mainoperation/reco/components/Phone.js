@@ -5,7 +5,7 @@ import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
 import {ROOT_URL} from '../../../../utils/constants'
 import moment from 'moment'
-import {LOCATION_OPTIONS,CALL_RESULT_DEMO,CALL_RESULT_REFUSE,CALL_RESULT_RECALL,getReasonsByResultId} from '../../../crmUtil'
+import {LOCATION_OPTIONS,CALL_RESULT_DEMO,CALL_RESULT_REFUSE,CALL_RESULT_RECALL} from '../../../crmUtil'
 import { connect } from 'react-redux'
 import {fetchPhoneNumberHistory,fetchCallResults,fetchSingleReco} from '../actions/recoAction'
 require('moment/locale/ru');
@@ -361,9 +361,22 @@ class Phone extends Component {
 
   renderCallResultDependentField () {
     if (this.state.call.callResultId === CALL_RESULT_REFUSE) {
+      let reasonOptions = []
+        if(this.props.reasons){
+            for (let k in this.props.reasons) {
+                if (this.props.reasons[k]['typeId'] === 1) {
+                    reasonOptions.push({
+                        key: this.props.reasons[k]['id'],
+                        text: this.props.reasons[k]['name'],
+                        value: this.props.reasons[k]['id']
+                    })
+                }
+            }
+        }
+
       // Otkaz
       return (
-        <Form.Select error={this.state.errors.callReasonId} required fluid label='Причина отказа' options={getReasonsByResultId(this.state.call.callResultId,this.props.reasons)}
+        <Form.Select error={this.state.errors.callReasonId} required fluid label='Причина отказа' options={reasonOptions}
           onChange={(e, v) => this.handleChange('callReasonId', v)} />
       )
     } else if (this.state.call.callResultId === CALL_RESULT_RECALL) {

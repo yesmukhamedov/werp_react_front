@@ -36,6 +36,9 @@ export const CRM_RECO_UPDATE_MODAL_TOGGLE = 'CRM_RECO_UPDATE_MODAL_TOGGLE'
 export const CRM_RECO_UPDATE = 'CRM_RECO_UPDATE';
 export const CRM_FETCH_PHONE_NUMBER_HISTORY = 'CRM_FETCH_PHONE_NUMBER_HISTORY'
 
+export const CRM_RECO_ITEM_BLANKED = 'CRM_RECO_ITEM_BLANKED'
+export const CRM_RECO_BAD_REQUEST = 'CRM_RECO_BAD_REQUEST'
+
 
 export function fetchPhoneNumberHistory(phoneId){
     return function (dispatch) {
@@ -264,7 +267,7 @@ export function deleteReco(recoId){
     }
 }
 
-export function createRecoList(o){
+export function createRecoList(o,callBackOnError){
     return function (dispatch){
         dispatch(modifyLoader(true))
         axios.post(`${ROOT_URL}/api/crm/reco/create`, o, {
@@ -274,9 +277,55 @@ export function createRecoList(o){
         }).then(({}) => {
                 browserHistory.push('/crm/reco/current')
             }).catch((e) => {
+            if(callBackOnError){
+                callBackOnError()
+            }
+            dispatch(modifyLoader(false))
+            if (e.response.status && e.response.status===400){
+                let data = e.response.data
+                let errors = {}
+                let errorsArr = []
+                for(let k in data){
+                    let temp = data[k].split(':')
+                    if(temp[1] && temp[0] && typeof temp[1] !== 'undefined'){
+                        errors[temp[0]] = temp[1]
+                        errorsArr.push(temp[1])
+                    }else{
+                        errors['common'] = temp[0]
+                        errorsArr.push(temp[0])
+                    }
+                }
+                dispatch({
+                    payload: errors,
+                    type: CRM_RECO_BAD_REQUEST
+                })
+
+                dispatch(notify('error',errorsArr.join(', '),'Ошибка'));
+            }else{
+                handleError(e,dispatch)
+            }
+
+            //handleError(e,dispatch)
+        })
+    }
+}
+
+export function blankRecoItem(){
+    return function(dispatch){
+        dispatch(modifyLoader(true))
+        axios.get(`${ROOT_URL}/api/crm/reco/blank-reco-item`,{
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        }).then(({data}) => {
+            dispatch(modifyLoader(false))
+            dispatch({
+                payload: data,
+                type: CRM_RECO_ITEM_BLANKED
+            })
+        }).catch((e) => {
             dispatch(modifyLoader(false))
             dispatch(notify('error',e.response.data.message,'Ошибка'));
-            //handleError(e,dispatch)
         })
     }
 }

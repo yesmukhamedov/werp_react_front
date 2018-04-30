@@ -1,5 +1,5 @@
 import React from 'react'
-import { Label, Form, Grid, Segment, Button, Input } from 'semantic-ui-react'
+import { Label, Form, Grid, Segment, Button, Input,Popup,Icon } from 'semantic-ui-react'
 import '../css/recoCard.css';
 import {RECO_CALLER_OPTIONS,RECO_CATEGORIES} from '../../../crmUtil'
 import moment from 'moment'
@@ -12,12 +12,8 @@ import DatePicker from 'react-datepicker'
 export default function RecoCard(props){
 
     //Single Card
-    const {item,index,phoneErrors,loadingPhones,phonePattern} = props;
+    const {item,index,phoneErrors,loadingPhones,phonePattern,recoErrors} = props;
     const patternLength = phonePattern.replace(/[^0-9]+/g, '').length
-
-    const getItemName = (name, index) => {
-        return name + '[' + index + ']'
-    }
 
     const phoneHasError = (name) => {
         let name2 = name === 'phoneNumber1'?'phoneNumber2':'phoneNumber1'
@@ -65,71 +61,67 @@ export default function RecoCard(props){
 
 
 
-    return <Grid.Column color={'grey'} key={index} floated='left' width={4}>
+    return <Grid.Column color={'grey'} key={item.id} floated='left' width={4}>
         <Segment padded size='small' className='card-segment'>
-            <Label as='a' color={'teal'} ribbon>№ {index+1}</Label>
+            {recoErrors[item.id]?<Popup
+                trigger={<Label as='a' color={'red'} ribbon>
+                    №{index+1} Ошибка <Icon name={'warning sign'} inverted/></Label>}
+                content={recoErrors[item.id]}
+                on='hover'
+            />:<Label as='a' color={'teal'} ribbon>№{index+1}</Label>}
+
             <Button
                 size={'mini'} color={'red'}
-                icon='delete' className='right floated' onClick={(e) => props.removeReco(index)}/>
+                icon='delete' className='right floated' onClick={(e) => props.removeReco(index,item.id)}/>
+            {recoErrors[item.id]?recoErrors[item.id]:''}
             <Form className='recoGrid'>
                 <Form.Input
                         error={!item['clientName'] || item['clientName'].length === 0}
-                        name={getItemName('clientName',index)}
                         label="ФИО супруг" placeholder="ФИО супруг"
-                        onChange={props.handleChange}
+                        onChange={(e,d) => props.handleChange('clientName',item.id,d.value)}
                         value={item.clientName || ''}/>
 
                 <Form.Dropdown
                     value={item.categoryId || 0}
                     error={!item.categoryId || item.categoryId === 0}
-                    name={getItemName('categoryId',index)}
                     fluid selection
                     label="Категория клиента"
                     placeholder='Категория клиента'
                     options={RECO_CATEGORIES}
-                    onChange={props.handleChange}  />
+                    onChange={(e,d) => props.handleChange('categoryId',item.id,d.value)}  />
 
-                <Form.Input name={getItemName('districtName',index)}
+                <Form.Input
                             label="Район" placeholder="Район"
-                            onChange={props.handleChange}
+                            onChange={(e,d) => props.handleChange('districtName',item.id,d.value)}
                             value={item.districtName || ''}
                 />
 
-                <Form.Input value={item.relativeName || ''} name={getItemName('relativeName',index)}
+                <Form.Input value={item.relativeName || ''}
                             label="Род. отношение" placeholder="Род. отношение"
-                            onChange={props.handleChange} />
-                {/*<Form.Dropdown name={getItemName('switchDate',index)}*/}
-                               {/*fluid selection label="Дата время звонка"*/}
-                               {/*placeholder='Дата время звонка'*/}
-                               {/*options={RECO_SWITCH_OPTIONS}*/}
-                               {/*onChange={props.handleChange}  />*/}
-                {/*{renderCallDate(item,index)}*/}
+                            onChange={(e,d) => props.handleChange('relativeName',item.id,d.value)} />
 
                 <Form.Dropdown
-                    name={getItemName('callerIsDealer',index)}
                     defaultValue={0}
                     fluid selection
                     label="Звонить будет"
                    placeholder='Звонить будет'
                     options={RECO_CALLER_OPTIONS}
-                   onChange={props.handleChange}  />
+                    onChange={(e,d) => props.handleChange('callerIsDealer',item.id,d.value)}  />
 
                 <Form.TextArea
                             value={item.note || ''}
                             rows={1}
-                               name={getItemName('note',index)}
-                               label="Примечание"
-                               placeholder="Примечание"
-                               onChange={props.handleChange}  />
+                           label="Примечание"
+                           placeholder="Примечание"
+                            onChange={(e,d) => props.handleChange('note',item.id,d.value)} />
 
                 <Form.Field error={phoneHasError('phoneNumber1')}>
                     <label>Тел. номер</label>
                     <Input
                         label={{ basic:true,content:props.phoneCode}}
                         placeholder={phonePattern}
-                        name={getItemName('phoneNumber1',index)}
-                        onChange={props.handleChange}
-                        value={props.itemPhones[index]['phoneNumber1']}
+                        onChange={(e,d) => props.handleChange('phoneNumber1',item.id,d.value)}
+                        value={item.displayPhone1 || ''}
                         loading={isPhoneLoading('phoneNumber1')}/>
                 </Form.Field>
 
@@ -138,13 +130,10 @@ export default function RecoCard(props){
                     <Input
                             label={{ basic:true,content:props.phoneCode}}
                            placeholder={phonePattern}
-                           name={getItemName('phoneNumber2',index)}
-                           onChange={props.handleChange}
-                           value={props.itemPhones[index]['phoneNumber2']}
+                            onChange={(e,d) => props.handleChange('phoneNumber2',item.id,d.value)}
+                           value={item.displayPhone2 || ''}
                            loading={isPhoneLoading('phoneNumber2')}/>
                 </Form.Field>
-
-
 
             </Form>
         </Segment>

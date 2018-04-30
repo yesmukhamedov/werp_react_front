@@ -13,7 +13,9 @@ import {
     CRM_RECO_UPDATE,
     CRM_FETCH_PHONE_NUMBER_HISTORY,
     CRM_RECO_CHECKED_PHONE_NUMBER,
-    CRM_RECO_CHECKING_PHONE_NUMBER
+    CRM_RECO_CHECKING_PHONE_NUMBER,
+    CRM_RECO_ITEM_BLANKED,
+    CRM_RECO_BAD_REQUEST
 } from '../actions/recoAction';
 
 const INITIAL_STATE={
@@ -37,12 +39,15 @@ const INITIAL_STATE={
                     recoCards:[],
                     //Мгновенная проверка тел номера
                     loadingPhones:{},
-                    phoneErrors:{}
+                    phoneErrors:{},
+                    recoBlankedItem:{},
+                    recoErrors:{}
 
 };
 
 export default function (state=INITIAL_STATE, action)
 {
+    //state.recoBlankedItem = {}
     switch(action.type)
     {
         case CRM_FETCH_PHONE_NUMBER_HISTORY:
@@ -108,6 +113,12 @@ export default function (state=INITIAL_STATE, action)
 
         case CRM_RECO_CLEAR_STATE:
             return {...state,doneItems:[],movedItems:[],newItems:[],usedItems:[] };
+
+        case CRM_RECO_ITEM_BLANKED:
+            return {...state,recoBlankedItem:action.payload };
+
+        case CRM_RECO_BAD_REQUEST:
+            return {...state,recoErrors:action.payload };
 
         default:
             return state;
