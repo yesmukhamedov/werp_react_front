@@ -5,12 +5,13 @@ import "react-table/react-table.css";
 import { Tab,Header,Container,Icon,Segment,Label,Divider } from 'semantic-ui-react'
 import moment from 'moment';
 import { connect } from 'react-redux'
-import {RECO_CATEGORIES} from '../../../crmUtil'
+import {MENU_DASHBOARD} from '../wspaceUtil'
 import '../css/main-page.css'
 import {fetchGroupDealers} from '../../demo/actions/demoAction'
 import WspaceHeader from './WspaceHeader'
 import WspaceMenu from './WspaceMenu'
 import WspaceContent from  './WspaceContent'
+import WspaceDashboard from './WspaceDashboard'
 
 const ITEMS = {
     all: [
@@ -76,7 +77,8 @@ class WspaceMainPage extends Component {
   constructor (props) {
     super(props)
       this.state = {
-        currentStaff:{}
+        currentStaff:{},
+        currentMenu: MENU_DASHBOARD
       }
 
       this.onSelectStaff = this.onSelectStaff.bind(this)
@@ -93,6 +95,20 @@ class WspaceMainPage extends Component {
       })
   }
 
+    onSelectMenu = (menu) => {
+        this.setState({
+            ...this.state,
+            currentMenu: menu
+        })
+    }
+
+  renderContent = () =>{
+      switch (this.state.currentMenu){
+          default:
+              return <WspaceDashboard/>
+      }
+}
+
   render () {
       const {currentStaff} = this.state
     return (
@@ -105,11 +121,13 @@ class WspaceMainPage extends Component {
           <Divider horizontal>
               {currentStaff && currentStaff.text ?currentStaff.text:''}
           </Divider>
-          <WspaceMenu/>
+          <WspaceMenu
+              activeItem={this.state.currentMenu}
+              handleItemClick={this.onSelectMenu}/>
           <Divider horizontal>
-              Текущие
+              Действии на сегодня
           </Divider>
-          <WspaceContent items={ITEMS['all']}/>
+          {this.renderContent()}
       </Container>
     )
   }

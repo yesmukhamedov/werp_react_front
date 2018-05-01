@@ -3,12 +3,13 @@ import ReactTable from 'react-table'
 import 'react-table/react-table.css'
 import { connect } from 'react-redux'
 import {Container, Header, Segment, Form, Divider, Table,Button,Icon} from 'semantic-ui-react'
-import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4'
 import BranchF4 from '../../../../reference/f4/branch/BranchF4'
 import YearF4 from '../../../../reference/f4/date/YearF4'
 import MonthF4 from '../../../../reference/f4/date/MonthF4'
-import {fetchItems,fetchIndicators,blankItem,toggleKpiSettingFormModal} from '../actions/kpiSettingAction'
+import {fetchItems,fetchIndicators,blankItem,toggleKpiSettingFormModal,setForUpdate} from '../actions/kpiSettingAction'
 import KpiFormModal from './KpiFormModal'
+
+const currentDate = new Date()
 
 class KpiSettingPage extends Component {
   constructor (props) {
@@ -16,13 +17,14 @@ class KpiSettingPage extends Component {
     this.state = {
       bukrs: null,
       branchId: null,
-      positionId:null
+      positionId:null,
+        year: currentDate.getFullYear(),
+        month: currentDate.getMonth() + 1
     }
 
     this.loadItems = this.loadItems.bind(this)
       this.renderDataTable = this.renderDataTable.bind(this)
       this.handleDropdownChange = this.handleDropdownChange.bind(this)
-      this.showFormModal = this.showFormModal.bind(this)
   }
 
   componentWillMount () {
@@ -45,12 +47,21 @@ class KpiSettingPage extends Component {
     });
   }
 
-  showFormModal(){
+  showFormModal = () =>{
       this.props.blankItem()
       this.props.toggleKpiSettingFormModal(true)
   }
 
-  renderIndicators(items){
+  setForUpdate = (setting) => {
+      this.props.setForUpdate(setting)
+      this.props.toggleKpiSettingFormModal(true)
+  }
+
+  renderIndicators(setting){
+      let {items} = setting
+      if(!items){
+          items = []
+      }
       return <Table>
           <Table.Header>
               <Table.Row>
@@ -73,7 +84,7 @@ class KpiSettingPage extends Component {
               <Table.Row>
                   <Table.HeaderCell />
                   <Table.HeaderCell colSpan='2'>
-                      <Button icon floated={'right'}>
+                      <Button onClick={() => this.setForUpdate(setting)} icon floated={'right'}>
                           <Icon name='pencil' />
                       </Button>
                   </Table.HeaderCell>
@@ -116,7 +127,7 @@ class KpiSettingPage extends Component {
             {
                 Header:'Индикаторы',
                 accessor:'items',
-                Cell:row => this.renderIndicators(row.value)
+                Cell:row => this.renderIndicators(row.original)
             }
         ]}
 
@@ -152,12 +163,16 @@ class KpiSettingPage extends Component {
     }
 
   renderSearchForm () {
+      let {companyOptions} = this.props
     return <Form>
       <Form.Group widths='equal'>
-        <BukrsF4 handleChange={this.handleDropdownChange} />
+          <Form.Select name='bukrs'
+                       label='Компания' options={companyOptions}
+                       placeholder='Компания' onChange={this.handleDropdownChange} />
+
         <BranchF4 search handleChange={this.handleDropdownChange} bukrs={this.state.bukrs} />
-        <YearF4 handleChange={this.handleDropdownChange} />
-        <MonthF4 handleChange={this.handleDropdownChange} />
+        <YearF4 value={this.state.year} handleChange={this.handleDropdownChange} />
+        <MonthF4 value={this.state.month} handleChange={this.handleDropdownChange} />
       </Form.Group>
       <Form.Button onClick={this.loadItems}>Сформировать</Form.Button>
     </Form>
@@ -167,7 +182,7 @@ class KpiSettingPage extends Component {
     return (
       <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
         <div>
-          <Header as='h2' attached='top'>Рейтинг сотрудников отдела маркетинга</Header>
+          <Header as='h2' attached='top'>Индикаторы KPI</Header>
           {this.renderSearchForm()}
             <Button icon primary floated={'right'} onClick={this.showFormModal}>
                 <Icon name='plus' /> Добавить
@@ -185,8 +200,12 @@ class KpiSettingPage extends Component {
 
 function mapStateToProps (state) {
     return {
-        items:state.crmKpiSetting.items
+        items:state.crmKpiSetting.items,
+        branchOptionsMarketing: state.userInfo.branchOptionsMarketing,
+        companyOptions: state.userInfo.companyOptions
     }
 }
 
-export default connect(mapStateToProps, {fetchItems,fetchIndicators,blankItem,toggleKpiSettingFormModal})(KpiSettingPage)
+export default connect(mapStateToProps, {
+    fetchItems,fetchIndicators,blankItem,toggleKpiSettingFormModal,setForUpdate
+})(KpiSettingPage)

@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-import axios from 'axios'
-import { connect } from 'react-redux'
 import { Form } from 'semantic-ui-react'
-import {ROOT_URL, MONTH_OPTIONS} from '../../../utils/constants'
+import {MONTH_OPTIONS} from '../../../utils/constants'
 
 const currentDate = new Date()
 
@@ -20,7 +18,7 @@ class MonthF4 extends Component {
   render () {
     return (
       <Form.Select
-        defaultValue={currentDate.getMonth() + 1}
+        value={this.props.value || currentDate.getMonth() + 1}
         name='month' label='Месяц'
         options={MONTH_OPTIONS} placeholder='Месяц' onChange={this.handleChange} />
     )

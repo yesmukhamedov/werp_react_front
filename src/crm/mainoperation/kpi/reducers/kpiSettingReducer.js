@@ -3,7 +3,8 @@ import {
     CRM_KPI_FETCH_INDICATORS,
     CRM_KPI_BLANK_ITEM,
     CRM_KPI_CLEAR_STATE,
-    CRM_KPI_FORM_MODAL_TOGGLE
+    CRM_KPI_FORM_MODAL_TOGGLE,
+    CRM_KPI_SET_FOR_UPDATE
 } from '../actions/kpiSettingAction';
 
 const INITIAL_STATE={
@@ -31,15 +32,16 @@ export default function (state=INITIAL_STATE, action)
             return {...state,openKpiFormModal:action.payload}
 
         case CRM_KPI_BLANK_ITEM:
+        case CRM_KPI_SET_FOR_UPDATE:
             return {...state,item:action.payload}
 
         case CRM_KPI_FETCH_INDICATORS:
             let indicatorOptions = []
             for(let k in action.payload){
                 indicatorOptions.push({
-                    key:k,
-                    text:action.payload[k],
-                    value:k
+                    key: parseInt(k,10),
+                    text: action.payload[k],
+                    value: parseInt(k,10)
                 })
             }
             return {...state,indicators:action.payload,indicatorOptions:indicatorOptions}

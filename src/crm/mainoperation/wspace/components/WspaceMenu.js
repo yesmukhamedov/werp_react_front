@@ -3,20 +3,20 @@ import _ from 'lodash'
 import "react-table/react-table.css";
 import { Tab,Header,Container,Icon,Segment,Label,Accordion,Menu,Input } from 'semantic-ui-react'
 import moment from 'moment';
-import {MENU_ITEMS} from '../wspaceUtil'
+import {MENU_ITEMS,MENU_DASHBOARD} from '../wspaceUtil'
 import '../css/header-page.css'
 
 
 
 export default function WspaceMenu (props) {
-    const activeItem = 'dashboard'
+    const {activeItem} = props
     return (
         <Menu stackable>
             <Menu.Item
                 as='a'
-                name='dashboard'
-                active={activeItem === 'dashboard'}
-                onClick={props.handleItemClick}>
+                name={MENU_DASHBOARD}
+                active={activeItem === MENU_DASHBOARD}
+                onClick={() => props.handleItemClick(MENU_DASHBOARD)}>
                 Dashboard
             </Menu.Item>
             {MENU_ITEMS.map(m => (
@@ -25,7 +25,7 @@ export default function WspaceMenu (props) {
                     key={m.id}
                     name={m.id}
                     active={activeItem === m.id}
-                    onClick={props.handleItemClick}>
+                    onClick={() => props.handleItemClick(m.id)}>
                     {m.name}
                     <Label color={m.count === 0?'grey':'red'} size={'mini'}>{m.count}</Label>
                 </Menu.Item>

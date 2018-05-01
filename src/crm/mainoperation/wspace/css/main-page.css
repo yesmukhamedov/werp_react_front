@@ -4,4 +4,11 @@
     margin-bottom: 2em;
     padding-left: 2em;
     padding-right: 2em;
+    padding-bottom: 20em;
+    background-color: #eeeeee;
+    min-height: 100% !important;
+}
+
+.dashboard-menu{
+    width: 100% !important;
 }

@@ -9,7 +9,6 @@ import { connect } from 'react-redux'
 import {fetchRecoCurrentData,fetchCallResults,fetchRecoStatuses} from '../actions/recoAction';
 import {fetchReasons} from '../../demo/actions/demoAction'
 import {RECO_CATEGORIES} from '../../../crmUtil'
-import matchSorter from 'match-sorter'
 
 class RecoCurrentPage extends Component {
   constructor (props) {

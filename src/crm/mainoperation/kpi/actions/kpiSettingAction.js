@@ -8,6 +8,7 @@ export const CRM_KPI_FETCH_INDICATORS = 'CRM_KPI_FETCH_INDICATORS';
 export const CRM_KPI_BLANK_ITEM = 'CRM_KPI_BLANK_ITEM';
 export const CRM_KPI_UPDATE_ITEM = 'CRM_KPI_UPDATE_ITEM';
 export const CRM_KPI_CREATE_ITEM = 'CRM_KPI_CREATE_ITEM';
+export const CRM_KPI_SET_FOR_UPDATE = 'CRM_KPI_SET_FOR_UPDATE'
 
 export const CRM_KPI_FORM_MODAL_TOGGLE = 'CRM_KPI_FORM_MODAL_TOGGLE';
 
@@ -39,7 +40,7 @@ export function fetchItems(params){
 export function fetchIndicators(){
 
     return function (dispatch){
-        axios.get(`${ROOT_URL}/api/crm/kpi/indicators`,{
+        axios.get(`${ROOT_URL}/api/crm/kpi/setting/indicators`,{
             headers: {
                 authorization: localStorage.getItem('token')
             }
@@ -57,7 +58,7 @@ export function fetchIndicators(){
 export function blankItem(){
 
     return function (dispatch){
-        axios.get(`${ROOT_URL}/api/crm/report/test`,{
+        axios.get(`${ROOT_URL}/api/crm/kpi/setting/blank`,{
             headers: {
                 authorization: localStorage.getItem('token')
             }
@@ -74,7 +75,7 @@ export function blankItem(){
 
 export function createItem(item){
     return function(dispatch){
-        axios.post(`${ROOT_URL}/api/crm/kpi`, { ...item }, {
+        axios.post(`${ROOT_URL}/api/crm/kpi/setting`, { ...item }, {
             headers: {
                 authorization: localStorage.getItem('token')
             }
@@ -92,7 +93,7 @@ export function createItem(item){
 
 export function updateItem(item){
     return function(dispatch){
-        axios.put(`${ROOT_URL}/api/crm/kpi/` + item.id, { ...item }, {
+        axios.put(`${ROOT_URL}/api/crm/kpi/setting`, { ...item }, {
             headers: {
                 authorization: localStorage.getItem('token')
             }
@@ -113,6 +114,15 @@ export function toggleKpiSettingFormModal(flag){
         dispatch({
             type: CRM_KPI_FORM_MODAL_TOGGLE,
             payload: flag
+        })
+    }
+}
+
+export function setForUpdate(item){
+    return function(dispatch){
+        dispatch({
+            type: CRM_KPI_SET_FOR_UPDATE,
+            payload: item
         })
     }
 }

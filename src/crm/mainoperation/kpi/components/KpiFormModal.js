@@ -1,12 +1,8 @@
 import React, {Component} from 'react'
-import {Modal, Form, Input, TextArea, Button } from 'semantic-ui-react'
-import DatePicker from 'react-datepicker'
+import {Modal, Form, Button } from 'semantic-ui-react'
 import "react-datepicker/dist/react-datepicker.css"
-import moment from 'moment'
 import { connect } from 'react-redux'
-import {toggleKpiSettingFormModal,createItem} from '../actions/kpiSettingAction'
-import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4'
-import BranchF4 from '../../../../reference/f4/branch/BranchF4'
+import {toggleKpiSettingFormModal,createItem,updateItem} from '../actions/kpiSettingAction'
 import YearF4 from '../../../../reference/f4/date/YearF4'
 import MonthF4 from '../../../../reference/f4/date/MonthF4'
 import PositionF4 from '../../../../reference/f4/position/PositionF4'
@@ -16,7 +12,9 @@ class KpiFormModal extends Component {
     super(props)
 
     this.state = {
-        localItem:{},
+        localItem:{
+            id: -1
+        },
       errors: {
         dealerId: false,
         resultId: false,
@@ -38,15 +36,47 @@ class KpiFormModal extends Component {
   componentWillMount () {
   }
 
+  branchOptions = (bukrs) => {
+      let {branchOptionsMarketing} = this.props
+      if(!branchOptionsMarketing || !branchOptionsMarketing[bukrs]){
+          return []
+      }
+
+      let out = [{
+          key: null,
+          value: null,
+          text: "Для всех филиалов"
+      }].concat(branchOptionsMarketing[bukrs])
+
+      return out
+  }
+
   renderUpdateForm () {
+      let {companyOptions} = this.props
       let {localItem} = this.state
     return <Form>
       <Form.Group widths='equal'>
-          <BukrsF4 handleChange={this.handleDropdownChange} />
-          <BranchF4 search handleChange={this.handleDropdownChange} bukrs={this.state.localItem.bukrs || ''} />
-          <YearF4 handleChange={this.handleDropdownChange} />
-          <MonthF4 handleChange={this.handleDropdownChange} />
-          <PositionF4 handleChange={this.handleDropdownChange} />
+
+          <Form.Select name='bukrs'
+                       label='Компания'
+                       options={companyOptions}
+                       value={localItem.bukrs}
+                       placeholder='Компания'
+                       onChange={this.handleDropdownChange} />
+
+          <Form.Select
+              name='branchId'
+              value={localItem.branchId}
+              search={true}
+              selection
+              label='Филиал'
+              options={this.branchOptions(localItem.bukrs)}
+              placeholder='Для всех филиалов'
+              onChange={this.handleDropdownChange} />
+
+          <YearF4 value={localItem.year} handleChange={this.handleDropdownChange} />
+          <MonthF4 value={localItem.month} handleChange={this.handleDropdownChange} />
+          <PositionF4 value={localItem.positionId} handleChange={this.handleDropdownChange} />
       </Form.Group>
 
         {this.renderIndicators(localItem.items || [])}
@@ -56,11 +86,29 @@ class KpiFormModal extends Component {
   renderIndicators(items){
       return items.map((item,idx) => {
           return <Form.Group widths='equal' key={idx}>
+
               <Form.Select name='indicatorId'
-                           label='Индикатор' value={item.indicatorId} options={this.props.indicatorOptions}
-                           placeholder='Индикатор' onChange={(e,o) => this.handleIndicatorChange('indicatorId',idx,o)} />
-              <Form.Input onChange={(e,o) => this.handleIndicatorChange('value',idx,o)} name="value" label='План' type='number' />
-              <Form.Input onChange={(e,o) => this.handleIndicatorChange('point',idx,o)} name="point" label='Балл' type='number' />
+                           label='Индикатор'
+                           value={item.indicatorId}
+                           options={this.props.indicatorOptions}
+                           placeholder='Индикатор'
+                           onChange={(e,o) => this.handleIndicatorChange('indicatorId',idx,o)} />
+
+              <Form.Input
+                  onChange={(e,o) => this.handleIndicatorChange('value',idx,o)}
+                  name="value"
+                  label='План'
+                  type='number'
+                  value={item.value || 0}
+              />
+
+              <Form.Input
+                  onChange={(e,o) => this.handleIndicatorChange('point',idx,o)}
+                  name="point"
+                  label='Балл'
+                  type='number'
+                  value={item.point || 0}
+              />
           </Form.Group>
       })
   }
@@ -95,12 +143,12 @@ class KpiFormModal extends Component {
 
     handleDropdownChange (e,o) {
       const {name,value} = o
-        console.log('ss')
       let localItem = Object.assign({}, this.state.localItem);
         switch (name){
             case 'bukrs':
             case 'year':
             case 'month':
+            case 'branchId':
                 localItem[name] = value
             break
 
@@ -108,9 +156,6 @@ class KpiFormModal extends Component {
                 localItem['positionId'] = value
                 break
 
-            case 'branch':
-                localItem['branchId'] = value
-                break
             default:{}
     }
 
@@ -120,10 +165,9 @@ class KpiFormModal extends Component {
     })
   }
 
-  componentWillReceiveProps (props) {
-      if(props.item !== this.state.localItem){
-          let localItem = Object.assign({}, this.props.item);
-          console.log(localItem)
+  componentWillReceiveProps (nextProps) {
+      if(nextProps.item.id !== this.state.localItem.id){
+          let localItem = Object.assign({}, nextProps.item);
           this.setState({
               ...this.state,
               localItem: localItem
@@ -132,7 +176,13 @@ class KpiFormModal extends Component {
   }
 
   saveItem () {
-    this.props.createItem(this.state.localItem)
+      let {localItem} = this.state
+      if(localItem.id && typeof localItem.id !== 'undefined' && localItem.id > 0){
+          this.props.updateItem(localItem)
+      }else{
+          this.props.createItem(localItem)
+      }
+
   }
 
   close () {
@@ -144,7 +194,7 @@ class KpiFormModal extends Component {
     return (
       <Modal size={'large'} open={open}>
         <Modal.Header>Добавление/Редактирование KPI настройки</Modal.Header>
-        <Modal.Content>
+        <Modal.Content scrolling>
           {this.renderUpdateForm()}
         </Modal.Content>
         <Modal.Actions>
@@ -161,8 +211,10 @@ function mapStateToProps (state) {
         open:state.crmKpiSetting.openKpiFormModal,
         item:state.crmKpiSetting.item,
         indicators:state.crmKpiSetting.indicators,
-        indicatorOptions:state.crmKpiSetting.indicatorOptions
+        indicatorOptions:state.crmKpiSetting.indicatorOptions,
+        branchOptionsMarketing: state.userInfo.branchOptionsMarketing,
+        companyOptions: state.userInfo.companyOptions
     }
 }
 
-export default connect(mapStateToProps, {toggleKpiSettingFormModal,createItem})(KpiFormModal)
+export default connect(mapStateToProps, {toggleKpiSettingFormModal,createItem,updateItem})(KpiFormModal)

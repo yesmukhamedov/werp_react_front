@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
-import axios from 'axios'
-import { connect } from 'react-redux'
 import { Form } from 'semantic-ui-react'
-import {ROOT_URL, YEAR_OPTIONS} from '../../../utils/constants'
+import {YEAR_OPTIONS} from '../../../utils/constants'
 
 const currentDate = new Date()
 
@@ -20,7 +18,8 @@ class YearF4 extends Component {
 
   render () {
     return (
-      <Form.Select defaultValue={currentDate.getFullYear()}
+      <Form.Select
+        value={this.props.value || currentDate.getFullYear()}
         name='year' label='Год'
         options={YEAR_OPTIONS} placeholder='Год'
         onChange={this.handleChange} />
