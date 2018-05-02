@@ -5,6 +5,7 @@ import 'react-table/react-table.css';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { formatDMYMS } from '../../../../../../utils/helpers';
+import { LEGACY_URL } from '../../../../../../utils/constants';
 
 class TaskListTableComponent extends Component {
   constructor(props) {
@@ -25,6 +26,19 @@ class TaskListTableComponent extends Component {
           const { id } = props.original;
           return (
             <Link target="_blank" to={`/general/gtskedit/${id}`}>
+              {id}
+            </Link>
+          );
+        },
+      },
+      {
+        Header: 'SN договор',
+        accessor: 'contractNumber',
+        maxWidth: 100,
+        Cell: (props) => {
+          const { id } = props.original;
+          return (
+            <Link target='_blank' to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=` + id}>
               {id}
             </Link>
           );

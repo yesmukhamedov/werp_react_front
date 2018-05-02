@@ -18,10 +18,11 @@ class ContractListSearchDisplay extends Component {
     const startDateUtc = moment.utc(values.startDate).format();
     const endDateUtc = moment.utc(values.endDate).format();
 
+    console.log("values.branch: ", values.branch)
     const paramsDict = {
       bukrs: values.company,
-      branchId: values.branch,
-      statusId: values.state,
+      branchId: values.branch !== -1 ? values.branch: undefined,
+      statusId: values.state !== -1 ? values.state: undefined,
       startDate: startDateUtc,
       endDate: endDateUtc,
     };
@@ -39,7 +40,7 @@ class ContractListSearchDisplay extends Component {
 
   render() {
     const {
-      handleSubmit, pristine, submitting, reset,
+      handleSubmit, pristine, submitting, reset, company, branchOptions,
     } = this.props;
     if (this.props.directories && this.props.companyOptions) {
       return (
@@ -61,7 +62,8 @@ class ContractListSearchDisplay extends Component {
                   name="branch"
                   component={DropdownFormField}
                   label="Филиал"
-                  opts={this.props.company ? this.props.branchOptions[this.props.company] : []}
+                  //opts={this.props.company ? this.props.branchOptions[this.props.company] : []}
+                  opts={company ? [{key:-1, text: "Все", value:-1}, ...branchOptions[company]] : []}
                 />
               </Grid.Column>
               <Grid.Column width={3}>
@@ -69,7 +71,8 @@ class ContractListSearchDisplay extends Component {
                   name="state"
                   component={DropdownFormField}
                   label="Состояние"
-                  opts={this.props.directories.stateOptions}
+                  //opts={this.props.directories.stateOptions}
+                  opts={[{key:-1, text: "Все", value:-1}, ...this.props.directories.stateOptions]}
                 />
               </Grid.Column>
               <Grid.Column width={2}>

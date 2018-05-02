@@ -2,8 +2,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 import { Form, Container, List, Grid, Header, Button, Segment, Dimmer, Loader, Label, Icon } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
+import { LEGACY_URL } from '../../../../../../utils/constants';
 
 class TaskInfoComponent extends Component {
   constructor(props) {
@@ -105,6 +107,9 @@ class TaskInfoComponent extends Component {
                       <List.Item>
                         <List.Header>Дата завершения:</List.Header>
                       </List.Item>
+                      <List.Item>
+                        <List.Header>Номер договора:</List.Header>
+                      </List.Item>
                     </List>
                   </Grid.Column>
                   <Grid.Column width={5}>
@@ -117,6 +122,13 @@ class TaskInfoComponent extends Component {
                       <List.Item>
                         <List.Content>
                           {closedAt}
+                        </List.Content>
+                      </List.Item>
+                      <List.Item>
+                        <List.Content>
+                          <Link target='_blank' to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=` + id}>
+                            {id}
+                          </Link>
                         </List.Content>
                       </List.Item>
                     </List>
