@@ -32,6 +32,7 @@ export function fetchItems(params){
                 meta:data['meta']
             })
         }).catch((e) => {
+            dispatch(modifyLoader(false));
             handleError(e,dispatch)
         })
     }

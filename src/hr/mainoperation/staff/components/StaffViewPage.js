@@ -95,7 +95,6 @@ class StaffViewPage extends Component{
 
     renderMatnrsData(items){
         return <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
-            <Button onClick={this.prepareToCreate} floated={'right'} primary>Добавить</Button>
             <StaffMatnrsTable items={items}/>
         </Container>
     }
