@@ -3,51 +3,26 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Field, reduxForm } from 'redux-form';
 import _ from 'lodash';
-import { Form, Dropdown, Grid, Segment, Dimmer, Loader, Label } from 'semantic-ui-react';
+import { Form, Grid, Segment, Dimmer, Loader, Label } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
 import { DropdownFormField } from '../../../../../../utils/formFields';
 
 class TaskListSearchComponent extends Component {
   constructor(props) {
     super(props);
-    // this.state = {
-    //   selectedStatus: undefined,
-    //   selectedPriority: undefined,
-    //   selectedCompany: undefined,
-    //   selectedBranch: undefined,
-    // };
 
-    // this.handleInputChange = this.handleInputChange.bind(this);
-    // this.handleResetChange = this.handleResetChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
   }
-
-  // handleInputChange(value, dataType) {
-  //   // console.log(dataType, value)
-  //   this.setState({
-  //     ...this.state,
-  //     [dataType]: value,
-  //   });
-  // }
-
-  // handleResetChange() {
-  //   this.setState({
-  //     selectedStatus: undefined,
-  //     selectedPriority: undefined,
-  //     selectedCompany: undefined,
-  //     selectedBranch: undefined,
-  //   });
-  // }
 
   handleSearch(values) {
     const paramsDict = {
       bukrs: values.company,
-      branchId: values.branch,
-      statusId: values.status,
-      priorityId: values.priority,
+      branchId: values.branch !== -1 ? values.branch : undefined,
+      statusId: values.status !== -1 ? values.status : undefined,
+      priorityId: values.priority !== -1 ? values.priority : undefined,
       departmentId: 1, // "Отдел маркетинга"
     };
-    // console.log(paramsDict);
+
     const params = _.map(
       paramsDict,
       (val, key) =>
@@ -56,15 +31,14 @@ class TaskListSearchComponent extends Component {
       .filter(param => param)
       .join('&');
 
-    // console.log('PARAMS', params);
-    // this.props.searchTasks(params);
     return new Promise(resolve => this.props.searchTasks(params, resolve));
   }
 
   render() {
     const {
-      handleSubmit, pristine, submitting, reset, directories, companyOptions, branchOptions
+      handleSubmit, pristine, submitting, reset, directories, companyOptions, branchOptions, company
     } = this.props;
+    const allOpt = { key: -1, text: 'Все', value: -1 };
     if (directories) {
       return (
         <Form onSubmit={handleSubmit(this.handleSearch)}>
@@ -90,11 +64,10 @@ class TaskListSearchComponent extends Component {
               </Grid.Column>
               <Grid.Column width={3}>
                 <Field
-                  // required
                   name="branch"
                   component={DropdownFormField}
                   label="Филиал"
-                  opts={this.props.company ? branchOptions[this.props.company] : []}
+                  opts={company ? [allOpt, ...branchOptions[company]] : []}
                 />
               </Grid.Column>
               <Grid.Column width={3}>
@@ -102,7 +75,7 @@ class TaskListSearchComponent extends Component {
                   name="status"
                   component={DropdownFormField}
                   label="Статус"
-                  opts={Object.values(directories.statusOptions)}
+                  opts={[allOpt, ...Object.values(directories.statusOptions)]}
                 />
               </Grid.Column>
               <Grid.Column width={3}>
@@ -110,7 +83,7 @@ class TaskListSearchComponent extends Component {
                   name="priority"
                   component={DropdownFormField}
                   label="Приоритет"
-                  opts={Object.values(directories.priorityOptions)}
+                  opts={[allOpt, ...Object.values(directories.priorityOptions)]}
                 />
               </Grid.Column>
               <Grid.Column width={2}>
@@ -157,10 +130,6 @@ function validate(formProps) {
   if (!formProps.company) {
     error.company = 'Выберите компанию';
   }
-
-  // if (!formProps.branch) {
-  //   error.branch = 'Выберите филиал';
-  // }
 
   return error;
 }

@@ -99,7 +99,7 @@ class TaskListTableComponent extends Component {
       {
         Header: 'Обновлено',
         accessor: 'modifiedAt',
-        maxWidth: 140,
+        maxWidth: 125,
         Cell: (props) => {
           const { modifiedAt } = props.original;
           return formatDMYMS(modifiedAt);
