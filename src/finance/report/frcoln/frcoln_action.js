@@ -11,7 +11,7 @@ export const CHANGE_ACTIVE_INDEX = 'CHANGE_ACTIVE_INDEX';
 export const CLEAR_STATE = 'CLEAR_STATE';
 
 
-export function frcolnSearchData(a_bukrs, a_branchList, a_status, a_date) {
+export function frcolnSearchData(a_bukrs, a_branchList, a_status, a_date, a_period) {
     
     
     let year = a_date.format('YYYY');
@@ -29,7 +29,8 @@ export function frcolnSearchData(a_bukrs, a_branchList, a_status, a_date) {
                 branchIds: a_branchList.join(),
                 year:year,
                 month:month,
-                status: a_status
+                status: a_status, 
+                period: a_period
             }
         })
         .then(({data}) => {
@@ -42,6 +43,7 @@ export function frcolnSearchData(a_bukrs, a_branchList, a_status, a_date) {
     
         })
         .catch(error => {
+            dispatch(modifyLoader(false));
             handleError(error,dispatch);               
                  
         });
@@ -49,7 +51,7 @@ export function frcolnSearchData(a_bukrs, a_branchList, a_status, a_date) {
 
 
 }
-export function frcolnFetchBranchData(a_bukrs, a_branchId, a_status, a_date, a_waers) {
+export function frcolnFetchBranchData(a_bukrs, a_branchId, a_status, a_date, a_waers, a_period) {
     let year = a_date.format('YYYY');
     let month = a_date.format('MM');
     // console.log(222);
@@ -65,7 +67,8 @@ export function frcolnFetchBranchData(a_bukrs, a_branchId, a_status, a_date, a_w
                 waers: a_waers,
                 year:year,
                 month:month,
-                status:a_status
+                status:a_status, 
+                period: a_period
             }
         })
         .then(({data}) => {
@@ -78,6 +81,7 @@ export function frcolnFetchBranchData(a_bukrs, a_branchId, a_status, a_date, a_w
     
         })
         .catch(error => {
+            dispatch(modifyLoader(false));
             handleError(error,dispatch); 
         });
     }    
@@ -85,7 +89,7 @@ export function frcolnFetchBranchData(a_bukrs, a_branchId, a_status, a_date, a_w
 
 }
 
-export function frcolnFetchCollectorData(a_bukrs, a_branchId, a_status, a_date, a_waers,a_staff_id, a_ps) {
+export function frcolnFetchCollectorData(a_bukrs, a_branchId, a_status, a_date, a_waers,a_staff_id, a_ps, a_period) {
     let year = a_date.format('YYYY');
     let month = a_date.format('MM');
 
@@ -103,7 +107,8 @@ export function frcolnFetchCollectorData(a_bukrs, a_branchId, a_status, a_date, 
                 month:month,
                 ps:a_ps,
                 staff_id:a_staff_id,
-                status:a_status
+                status:a_status, 
+                period: a_period
             }
         })
         .then(({data}) => {
@@ -115,6 +120,7 @@ export function frcolnFetchCollectorData(a_bukrs, a_branchId, a_status, a_date, 
     
         })
         .catch(error => {
+            dispatch(modifyLoader(false));
             handleError(error,dispatch); 
         });
     }    
@@ -122,7 +128,7 @@ export function frcolnFetchCollectorData(a_bukrs, a_branchId, a_status, a_date, 
 
 }
 
-export function frcolnSaveData(a_bukrs, a_date) {
+export function frcolnSaveData(a_bukrs, a_date, a_period ) {
     let year = a_date.format('YYYY');
     let month = a_date.format('MM');
 
@@ -136,7 +142,8 @@ export function frcolnSaveData(a_bukrs, a_date) {
             params:{
                 bukrs:a_bukrs,
                 year:year,
-                month:month 
+                month:month, 
+                period: a_period
             },  
             headers: {
                 authorization: localStorage.getItem('token')
@@ -156,6 +163,7 @@ export function frcolnSaveData(a_bukrs, a_date) {
                 
         })
         .catch(error => {
+            dispatch(modifyLoader(false));
             handleError(error,dispatch); 
         });
     }    
