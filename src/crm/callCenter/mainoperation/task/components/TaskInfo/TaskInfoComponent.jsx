@@ -34,10 +34,10 @@ class TaskInfoComponent extends Component {
   render() {
     if (this.props.id) {
       const {
-        id, title, author, status, priority, recipient, createdAt, description, TaskEditContainer, lang
+        contractNumber, title, author, status, priority, recipient, createdAt, description, TaskEditContainer, lang
       } = this.props;
       const closedAt =
-        (status.id === 5) ? moment(this.props.modifiedAt, 'YYYY-MM-DDTHH:mm:ssZ').format('DD.MM.YYYY, hh:mm:ss') : undefined;
+        (status.id === 5) ? moment(this.props.modifiedAt, 'YYYY-MM-DDTHH:mm:ssZ').format('DD.MM.YYYY, hh:mm:ss') : <span>&mdash;</span>;
       return (
         <Segment.Group>
           <Segment clearing>
@@ -126,8 +126,8 @@ class TaskInfoComponent extends Component {
                       </List.Item>
                       <List.Item>
                         <List.Content>
-                          <Link target='_blank' to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=` + id}>
-                            {id}
+                          <Link target='_blank' to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=` + contractNumber}>
+                            {contractNumber}
                           </Link>
                         </List.Content>
                       </List.Item>

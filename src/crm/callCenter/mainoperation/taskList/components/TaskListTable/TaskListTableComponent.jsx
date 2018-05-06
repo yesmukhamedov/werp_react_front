@@ -36,10 +36,10 @@ class TaskListTableComponent extends Component {
         accessor: 'contractNumber',
         maxWidth: 100,
         Cell: (props) => {
-          const { id } = props.original;
+          const { contractNumber } = props.original;
           return (
-            <Link target='_blank' to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=` + id}>
-              {id}
+            <Link target='_blank' to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=` + contractNumber}>
+              {contractNumber}
             </Link>
           );
         },
