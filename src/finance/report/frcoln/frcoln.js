@@ -18,7 +18,10 @@ const statusOptions = [
     { key: 1, text: 'Проблемный', value: 1 }
   ];
 
-
+  const periodOptions = [
+    { key: 0, text: 'На начало месяца', value: 'BEG' },
+    { key: 1, text: 'На конец месяца', value: 'END' }
+  ];
   
 
  
@@ -35,7 +38,7 @@ class Frcoln extends Component {
         this.searchCollectorInfo = this.searchCollectorInfo.bind(this);
 
         
-        this.state={searchTerm:{bukrs:'',branchList:[],date:moment(),status:0}, companyOptions:[], branchOptions:[]};
+        this.state={searchTerm:{bukrs:'',branchList:[],date:moment(),status:0, period:'END'}, companyOptions:[], branchOptions:[]};
         
         // ,tab2TableParams : {table:[], headers:headerObjectArray,columns:columnObjectArray, 
         //     pagination:true//,footers:footers//, paginationSize:5//,totalPages:undefined, currentPage:undefined//
@@ -51,9 +54,10 @@ class Frcoln extends Component {
     onInputChange(value,stateFieldName){
         // console.log(formatMoney(324234234.55));
         let waSearchTerm = Object.assign({}, this.state.searchTerm);
+        
+        this.props.clearState();
         if (stateFieldName==="bukrs")
         {               
-            this.props.clearState();
             waSearchTerm.bukrs=value;
             let branchOptions = this.props.branchOptions[value];
             this.setState({searchTerm:waSearchTerm,branchOptions:branchOptions?branchOptions:[]});
@@ -67,18 +71,19 @@ class Frcoln extends Component {
             
         }
         else if (stateFieldName==='branch') { 
-            this.props.clearState();
             waSearchTerm.branchList=value;
             this.setState({searchTerm:waSearchTerm});
         }
         else if (stateFieldName==='date') { 
-            this.props.clearState();
             waSearchTerm.date=value;
             this.setState({searchTerm:waSearchTerm});
         }
         else if (stateFieldName==='status') { 
-            this.props.clearState();
             waSearchTerm.status=value;
+            this.setState({searchTerm:waSearchTerm});
+        } 
+        else if (stateFieldName==='period') { 
+            waSearchTerm.period=value;
             this.setState({searchTerm:waSearchTerm});
         } 
         
@@ -86,21 +91,25 @@ class Frcoln extends Component {
     }
 
     onSearchClick(){
-        this.props.frcolnSearchData(this.state.searchTerm.bukrs,this.state.searchTerm.branchList,this.state.searchTerm.status,this.state.searchTerm.date);
+        this.props.frcolnSearchData(this.state.searchTerm.bukrs,this.state.searchTerm.branchList,this.state.searchTerm.status,this.state.searchTerm.date,this.state.searchTerm.period);
     }
 
     searchBranchInfo(branch_id,waers){
-        this.props.frcolnFetchBranchData(this.state.searchTerm.bukrs,branch_id,this.state.searchTerm.status,this.state.searchTerm.date,waers);
+        this.props.frcolnFetchBranchData(this.state.searchTerm.bukrs,branch_id,this.state.searchTerm.status,this.state.searchTerm.date,waers,this.state.searchTerm.period);
     }
 
     searchCollectorInfo(bukrs,branch_id,waers,staff_id, ps){
-        this.props.frcolnFetchCollectorData(bukrs,branch_id,this.state.searchTerm.status,this.state.searchTerm.date,waers,staff_id, ps);
+        this.props.frcolnFetchCollectorData(bukrs,branch_id,this.state.searchTerm.status,this.state.searchTerm.date,waers,staff_id, ps,this.state.searchTerm.period);
     }
 
     onSaveClick(){
-        if (this.props.tab2OutputTable!==null && this.props.tab2OutputTable.length>0)
+        if (this.props.tab2OutputTable!==null && this.props.tab2OutputTable.length>0 && this.state.searchTerm.period==='END')
         {
-            this.props.frcolnSaveData(this.state.searchTerm.bukrs,this.state.searchTerm.date);
+            this.props.frcolnSaveData(this.state.searchTerm.bukrs,this.state.searchTerm.date,this.state.searchTerm.period);
+        }
+        else if (this.props.tab2OutputTable===null || this.props.tab2OutputTable.length>0 || this.state.searchTerm.period==='BEG')
+        {
+            this.props.frcolnSaveData(this.state.searchTerm.bukrs,this.state.searchTerm.date,this.state.searchTerm.period);
         }
         else
         {
@@ -172,6 +181,20 @@ class Frcoln extends Component {
                                         <Table.Cell>
                                         </Table.Cell>
                                     </Table.Row>
+                                    
+                                    <Table.Row>
+                                        <Table.Cell>                                        
+                                            <Icon name='calendar' />
+                                            Период
+                                        </Table.Cell> 
+                                        <Table.Cell>
+                                            <Dropdown item options={periodOptions} value={this.state.searchTerm.period} 
+                                            onChange={(e, { value }) => this.onInputChange(value,'period')} />
+                                            
+                                        </Table.Cell> 
+                                        <Table.Cell>
+                                        </Table.Cell>
+                                    </Table.Row>
                                     <Table.Row>
                                     <Table.Cell>
                                     </Table.Cell> 
@@ -226,6 +249,10 @@ class Frcoln extends Component {
         let t1r2c13 = {Header: "Получен",accessor: "total_usd_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
         t1r2c13.Footer = (<span><strong>{new Intl.NumberFormat('ru-RU').format(_.sum(_.map(this.props.tab2OutputTable, d => d.total_usd_poluchen)))}</strong></span>);
         let t1r2c14 = {Header: "Процент",accessor: "total_usd_percentage",className:'clickableItem',Cell: ({value}) => <span>{new Intl.NumberFormat('ru-RU').format(value)} {'%'}</span>};
+        t1r2c14.Footer = (<span><strong>{new Intl.NumberFormat('ru-RU').format(
+            _.sum(_.map(this.props.tab2OutputTable, d => d.total_usd_poluchen))*100/_.sum(_.map(this.props.tab2OutputTable, d => d.total_usd_plan))
+    
+    )}  {'%'}</strong></span>);
         let t1r2c15 = {Header: "Город",accessor: "city_name",className:'clickableItem'};
         
         let t1r1c2={Header:({value}) => <b>В рассрочку</b>,columns:[]};
@@ -587,7 +614,7 @@ class Frcoln extends Component {
 
 function mapStateToProps(state)
 {
-    console.log(state);
+    // console.log(state);
     return { companyOptions:state.userInfo.companyOptions,branchOptions:state.userInfo.branchOptionsMarketing
         
         ,tab2OutputTable:state.frcoln.tab2OutputTable
