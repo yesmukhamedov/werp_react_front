@@ -20,8 +20,10 @@ class YearF4 extends Component {
     return (
       <Form.Select
         value={this.props.value || currentDate.getFullYear()}
-        name='year' label='Год'
-        options={YEAR_OPTIONS} placeholder='Год'
+        name={this.props.name || 'year'}
+        label={this.props.label || 'Год'}
+        options={YEAR_OPTIONS}
+        placeholder={this.props.placeholder || 'Год'}
         onChange={this.handleChange} />
     )
   }

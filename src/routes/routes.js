@@ -220,11 +220,21 @@ const AsyncFsis = Loadable({
   loading: () => <LoadingPage />
 });
 
+const AsyncHrTimesheetPage = Loadable({
+        loader: () => import('../hr/mainoperation/timesheet/components/TimesheetPage' /* webpackChunkName: "TimesheetPage" */),
+    loading: () => <LoadingPage />
+});
+
+const AsyncCrmReportPage = Loadable({
+        loader: () => import('../crm/report/general/components/CrmReportPage' /* webpackChunkName: "CrmReportPage" */),
+    loading: () => <LoadingPage />
+});
+
 
 const getComponent = {
     Ditaub:AsyncAssignUserBranch,
     Hrb02:AsyncHrb02,
-    
+
     Frcoln:AsyncFrcoln,
     // Fsis:AsyncFsis,
 
@@ -253,6 +263,8 @@ const getComponent = {
     HrStaffList:AsyncStaffListPage,
     HrStaffUpdate:AsyncStaffUpdatePage,
     HrStaffView:AsyncStaffViewPage,
+    HrTimesheetPage:AsyncHrTimesheetPage,
+    CrmReportPage: AsyncCrmReportPage,
 
     Ccaslt: AsyncContractListPage,
     Ccasao: AsyncSOContractListPage,
@@ -287,9 +299,12 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/crm/kpi/setting" component={AsyncKpiSettingPage} />
       <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} />
       <Route path="/crm/wspace" component={AsyncCrmWspacePage} />
-
+        <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} />
+        <Route path="/crm/wspace" component={AsyncCrmWspacePage} />
+        <Route path="/hr/staff/timesheet" component={AsyncHrTimesheetPage} />
+        <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
       <Route path="/finance/mainoperation/fcis" component={AsyncFsis} />
-      
+
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
         return (

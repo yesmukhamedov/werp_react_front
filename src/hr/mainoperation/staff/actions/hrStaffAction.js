@@ -87,7 +87,7 @@ export function createStaff(staff){
         })
             .then(({data}) => {
                 dispatch(modifyLoader(false))
-                browserHistory.push('/hr/staff/view/' + data['staffId'])
+                browserHistory.push('/hr/staff/view/' + data['id'])
             }).catch((error) => {
             dispatch(modifyLoader(false))
             dispatch(notify('error',error.response.data.message,'Ошибка'));

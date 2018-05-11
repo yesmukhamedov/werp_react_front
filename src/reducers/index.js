@@ -24,6 +24,8 @@ import hrStaffReducer from '../hr/mainoperation/staff/reducers/hrStaffReducer';
 import hrPyramidReducer from '../hr/mainoperation/pyramid/reducers/hrPyramidReducer';
 import hrb02Reducer from '../hr/mainoperation/hrb02/hrb02_reducer';
 import kpiSettingReducer from '../crm/mainoperation/kpi/reducers/kpiSettingReducer';
+import hrTimesheetReducer from '../hr/mainoperation/timesheet/reducers/hrTimesheetReducer'
+import crmReportReducer from '../crm/report/general/reducers/crmReportReducer'
 
 const appReducer = combineReducers({
   form,
@@ -48,7 +50,9 @@ const appReducer = combineReducers({
   hrStaff: hrStaffReducer,
   hrb02: hrb02Reducer,
     crmKpiSetting:kpiSettingReducer,
-    hrPyramid:hrPyramidReducer
+    hrPyramid:hrPyramidReducer,
+    hrTimesheet: hrTimesheetReducer,
+    crmReportReducer: crmReportReducer
 });
 
 const rootReducer = (state, action) => {
