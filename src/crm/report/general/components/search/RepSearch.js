@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
 import { connect } from 'react-redux'
-import {REP_894,REP_914} from '../../crmRepUtil'
+import {REP_894,REP_914,REP_934,REP_935} from '../../crmRepUtil'
 import {RepSearch894} from './RepSearchPanels'
 import {fetchItems} from '../../actions/crmReportAction'
 import moment from 'moment'
@@ -104,7 +104,9 @@ class RepSearch extends Component{
 
         const fetchItems = () => this.props.fetchItems(id,this.state.search)
         switch (id){
+            case REP_934:
             case REP_894:
+            case REP_935:
                 return <RepSearch894
                     handleDate = {this.handleDate}
                     fetchItems = {fetchItems}

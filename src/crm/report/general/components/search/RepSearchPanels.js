@@ -28,6 +28,12 @@ export function RepSearch894(props){
             </Form>
 }
 
+//Отчет Демо/Рекомендация
+export function RepSearch934(props){
+
+    return RepSearch894(props)
+}
+
 //
 export function RepSearch914(props){
     return <Form>

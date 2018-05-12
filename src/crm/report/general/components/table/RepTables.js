@@ -2,12 +2,13 @@ import React,{Component} from 'react'
 import { Table,Icon } from 'semantic-ui-react'
 import {YEAR_OPTIONS,MONTH_OPTIONS} from '../../../../../utils/constants'
 import moment from 'moment'
+import {REP_894,REP_934} from '../../crmRepUtil'
 import '../../css/repStyle.css'
 /**
  *Отчет Демо/Продажа
  */
 export function RepTable894(props){
-    let {items} = props
+    let {items,transactionId} = props
     if(!items){
         items = []
     }
@@ -18,13 +19,33 @@ export function RepTable894(props){
     for(let k = prevMonth; k <= currentMonth; k++){
         months.push(k)
     }
-    const renderMonthData = (monthData) => {
+    const renderMonthDataForSale = (monthData) => {
         monthData = monthData || {}
         return months.map((m => {
             let md = monthData[m]
 
             return [<Table.Cell key={m} width={1} className={md?md.demoSaleLevelClass:''}>{md?(md.demoCount + '/' + md.saleCount):''}</Table.Cell>,
                 <Table.Cell key={m+'d'} className={md?md.demoSaleLevelClass:''}>{md?md.demoSaleLevel+'-уровень':'Нет данных'}</Table.Cell>]
+        }))
+    }
+
+    const renderMonthDataForReco = (monthData) => {
+        monthData = monthData || {}
+        return months.map((m => {
+            let md = monthData[m]
+
+            return [<Table.Cell key={m} width={1} className={md?md.demoRecoLevelClass:''}>{md?(md.demoCount + '/' + md.recoCount):''}</Table.Cell>,
+                <Table.Cell key={m+'d'} className={md?md.demoRecoLevelClass:''}>{md?md.demoRecoLevel+'-уровень':'Нет данных'}</Table.Cell>]
+        }))
+    }
+
+    const renderMonthDataForDemo = (monthData) => {
+        monthData = monthData || {}
+        return months.map((m => {
+            let md = monthData[m]
+
+            return [<Table.Cell key={m} width={1} className={md?md.demoLevelClass:''}>{md?(md.demoCount):''}</Table.Cell>,
+                <Table.Cell key={m+'d'} className={md?md.demoLevelClass:''}>{md?md.demoLevel+'-уровень':'Нет данных'}</Table.Cell>]
         }))
     }
 
@@ -46,7 +67,9 @@ export function RepTable894(props){
                 {items.map((item => {
                     return <Table.Row key={item.staffId}>
                             <Table.Cell>{item.staffName}</Table.Cell>
-                            {renderMonthData(item.monthData)}
+                            {transactionId === REP_894?
+                                            renderMonthDataForSale(item.monthData):
+                                            (transactionId === REP_934?renderMonthDataForReco(item.monthData):renderMonthDataForDemo(item.monthData))}
                         </Table.Row>
                 }))}
 
