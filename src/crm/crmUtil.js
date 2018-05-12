@@ -27,18 +27,23 @@ export const LOCATION_OPTIONS = [
 export const RECO_CATEGORIES = [
     {
         key: 1,
-        text: '1-я категория',
+        text: 'Золото',
         value: 1
     },
     {
         key: 2,
-        text: '2-я категория',
+        text: 'Серебро',
         value: 2
     },
     {
         key: 3,
-        text: '3-я категория',
+        text: 'Бронза',
         value: 3
+    },
+    {
+        key: 4,
+        text: 'Олово',
+        value: 4
     }
 ]
 
