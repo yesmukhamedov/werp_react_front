@@ -18,11 +18,9 @@ class MonthF4 extends Component {
   render () {
     return (
       <Form.Select
-        value={this.props.value || currentDate.getMonth() + 1}
-        name={this.props.name || 'month'}
-        label={this.props.label || 'Месяц'}
-        options={MONTH_OPTIONS} placeholder={this.props.placeholder || 'Месяц'}
-        onChange={this.handleChange} />
+        defaultValue={currentDate.getMonth() + 1}
+        name='month' label='Месяц'
+        options={MONTH_OPTIONS} placeholder='Месяц' onChange={this.handleChange} />
     )
   }
 }
