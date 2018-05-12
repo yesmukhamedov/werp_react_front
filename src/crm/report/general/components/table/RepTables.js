@@ -88,10 +88,10 @@ export function RepTable914(props){
         <Table.Header>
             <Table.Row>
                 <Table.HeaderCell>ФИО</Table.HeaderCell>
-                <Table.HeaderCell>1-я категория</Table.HeaderCell>
-                <Table.HeaderCell>2-я категория</Table.HeaderCell>
-                <Table.HeaderCell>3-я категория</Table.HeaderCell>
-                <Table.HeaderCell>4-я категория</Table.HeaderCell>
+                <Table.HeaderCell>Золото</Table.HeaderCell>
+                <Table.HeaderCell>Серебро</Table.HeaderCell>
+                <Table.HeaderCell>Бронза</Table.HeaderCell>
+                <Table.HeaderCell>Олово</Table.HeaderCell>
             </Table.Row>
         </Table.Header>
 
