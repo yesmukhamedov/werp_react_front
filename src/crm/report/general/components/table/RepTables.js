@@ -99,7 +99,7 @@ export function RepTable914(props){
                 <Table.HeaderCell>Золото</Table.HeaderCell>
                 <Table.HeaderCell>Серебро</Table.HeaderCell>
                 <Table.HeaderCell>Бронза</Table.HeaderCell>
-                <Table.HeaderCell>Олово</Table.HeaderCell>
+                <Table.HeaderCell>Железо</Table.HeaderCell>
             </Table.Row>
         </Table.Header>
 
