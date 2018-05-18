@@ -1,84 +1,27 @@
 import React, {Component} from 'react'
-import {Link} from 'react-router-dom'
-import ReactTable from 'react-table';
+import _ from 'lodash'
 import "react-table/react-table.css";
 import { Tab,Header,Container,Icon,Segment,Label,Divider } from 'semantic-ui-react'
-import moment from 'moment';
 import { connect } from 'react-redux'
-import {MENU_DASHBOARD} from '../wspaceUtil'
+import {MENU_DASHBOARD,MENU_ALL_RECOS,MENU_ITEMS,MENU_BY_RECO,MENU_BY_DATE,MENU_MOVED,MENU_CURRENT_DEMO,ITEMS,RECO_ITEMS_TEMP} from '../wspaceUtil'
 import '../css/main-page.css'
 import {fetchGroupDealers} from '../../demo/actions/demoAction'
+import {toggleRecoListModal,setCurrentRecommender} from '../actions/wspaceAction'
 import WspaceHeader from './WspaceHeader'
 import WspaceMenu from './WspaceMenu'
-import WspaceContent from  './WspaceContent'
+import WspaceRecoList from  './WspaceRecoList'
 import WspaceDashboard from './WspaceDashboard'
+import WspaceRecoListModal from './WspaceRecoListModal'
 
-const ITEMS = {
-    all: [
-        {
-            id:1,
-            clientName: 'Testov test',
-            recommenderName: 'Бауыржан Иманкулов',
-            phones: [
-                '7052242645',
-                '705 224 26 45'
-            ]
-        },
-        {
-            id:2,
-            clientName: 'Асан',
-            recommenderName: 'Айнаш',
-            phones: [
-                '7052242645',
-                '705 224 26 45'
-            ]
-        },
-        {
-            id:3,
-            clientName: 'Ольга',
-            recommenderName: 'Димаш',
-            phones: [
-                '7052242645',
-                '705 224 26 45'
-            ]
-        },
-        {
-            id:4,
-            clientName: 'Асемгуль',
-            recommenderName: 'Димаш',
-            phones: [
-                '7052242645',
-                '705 224 26 45'
-            ]
-        },
-        {
-            id:5,
-            clientName: 'Аягоз',
-            recommenderName: 'Димаш',
-            phones: [
-                '7052242645',
-                '705 224 26 45'
-            ]
-        },
-        ,
-        {
-            id:6,
-            clientName: 'Сабира',
-            recommenderName: 'Димаш',
-            phones: [
-                '7052242645',
-                '705 224 26 45'
-            ]
-        }
-    ]
-}
+
 
 class WspaceMainPage extends Component {
   constructor (props) {
     super(props)
       this.state = {
         currentStaff:{},
-        currentMenu: MENU_DASHBOARD
+        currentMenu: MENU_DASHBOARD,
+          dividerTitle: 'Действии на сегодня'
       }
 
       this.onSelectStaff = this.onSelectStaff.bind(this)
@@ -96,17 +39,34 @@ class WspaceMainPage extends Component {
   }
 
     onSelectMenu = (menu) => {
+      let menuItem = _.find(MENU_ITEMS,{'name':menu})
+      let dividerTitle = menuItem?menuItem.pageLabel:'Все действии на сегодня'
         this.setState({
             ...this.state,
-            currentMenu: menu
+            currentMenu: menu,
+            dividerTitle: dividerTitle
         })
     }
 
   renderContent = () =>{
       switch (this.state.currentMenu){
+          case MENU_ALL_RECOS:
+          case MENU_BY_RECO:
+          case MENU_BY_DATE:
+          case MENU_MOVED:
+              return <WspaceRecoList openRecoListModal={this.openRecoListModal} menu={this.state.currentMenu} items={ITEMS[this.state.currentMenu]}/>
           default:
               return <WspaceDashboard/>
       }
+}
+
+openRecoListModal = (recommender) => {
+    this.props.setCurrentRecommender(recommender)
+    this.props.toggleRecoListModal(true)
+}
+
+closeRecoListModal = () => {
+    this.props.toggleRecoListModal(false)
 }
 
   render () {
@@ -124,10 +84,13 @@ class WspaceMainPage extends Component {
           <WspaceMenu
               activeItem={this.state.currentMenu}
               handleItemClick={this.onSelectMenu}/>
-          <Divider horizontal>
-              Действии на сегодня
-          </Divider>
+          <Divider horizontal>{this.state.dividerTitle}</Divider>
           {this.renderContent()}
+          <WspaceRecoListModal
+              items={RECO_ITEMS_TEMP}
+              recommender={this.props.currentRecommender}
+              closeRecoListModal={this.closeRecoListModal}
+              opened={this.props.recoListModalOpened} />
       </Container>
     )
   }
@@ -135,10 +98,12 @@ class WspaceMainPage extends Component {
 
 function mapStateToProps (state) {
     return {
-        dealers: state.crmDemo.dealers
+        dealers: state.crmDemo.dealers,
+        recoListModalOpened: state.crmWspaceReducer.recoListModalOpened,
+        currentRecommender: state.crmWspaceReducer.currentRecommender
     }
 }
 
 export default connect(mapStateToProps, {
-    fetchGroupDealers
+    fetchGroupDealers,toggleRecoListModal,setCurrentRecommender
 })(WspaceMainPage)

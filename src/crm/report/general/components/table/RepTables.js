@@ -25,6 +25,10 @@ export function RepTable894(props){
             let md = monthData[m]
 
             return [<Table.Cell key={m} width={1} className={md?md.demoSaleLevelClass:''}>{md?(md.demoCount + '/' + md.saleCount):''}</Table.Cell>,
+                <Table.Cell
+                    key={m+'avg'}
+                    width={1}
+                    className={md?md.demoSaleLevelClass:''}>{md?md.demoSaleAvg:''}</Table.Cell>,
                 <Table.Cell key={m+'d'} className={md?md.demoSaleLevelClass:''}>{md?md.demoSaleLevel+'-уровень':'Нет данных'}</Table.Cell>]
         }))
     }
@@ -35,6 +39,10 @@ export function RepTable894(props){
             let md = monthData[m]
 
             return [<Table.Cell key={m} width={1} className={md?md.demoRecoLevelClass:''}>{md?(md.demoCount + '/' + md.recoCount):''}</Table.Cell>,
+                <Table.Cell
+                    key={m+'avg'}
+                    width={1}
+                    className={md?md.demoRecoLevelClass:''}>{md?md.recoSaleAvg:''}</Table.Cell>,
                 <Table.Cell key={m+'d'} className={md?md.demoRecoLevelClass:''}>{md?md.demoRecoLevel+'-уровень':'Нет данных'}</Table.Cell>]
         }))
     }
@@ -55,7 +63,7 @@ export function RepTable894(props){
                 <Table.HeaderCell>ФИО</Table.HeaderCell>
                 {months.map((m => {
                     return <Table.HeaderCell
-                        colSpan={2}
+                        colSpan={3}
                         key={m}>{MONTH_OPTIONS[m-1]?MONTH_OPTIONS[m-1]['text']:''}
                         </Table.HeaderCell>
                 }))}

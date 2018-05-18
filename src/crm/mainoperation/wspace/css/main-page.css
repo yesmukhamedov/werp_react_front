@@ -12,3 +12,15 @@
 .dashboard-menu{
     width: 100% !important;
 }
+
+.reco-recall-date-today{
+    color:blue;
+    font-size:11px;
+    font-weight: bold;
+}
+
+.reco-recall-date-overdue{
+    color:red;
+    font-size:11px;
+    font-weight: bold;
+}

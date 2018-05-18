@@ -126,7 +126,7 @@ class PyramidFormModal extends Component {
   }
 
   componentWillReceiveProps (nextProps) {
-      if(nextProps.item.id !== this.state.localItem.id){
+      if(nextProps.item.id !== this.state.localItem.id || nextProps.parentId !== this.state.localItem.parentId){
           let localItem = Object.assign({}, nextProps.item);
           this.setState({
               ...this.state,

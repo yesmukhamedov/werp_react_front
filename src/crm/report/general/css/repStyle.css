@@ -4,5 +4,11 @@
 }
 
 .ui.table td.negative, .ui.table tr.negative{
-    background: #efe0e0 !important;
+    background: #f78484  !important;
+    color: #381110 !important;
 }
+
+.ui.table td.warning, .ui.table tr.warning{
+    background: #ceca2a !important;
+}
+

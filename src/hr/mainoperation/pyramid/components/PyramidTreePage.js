@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
-import {Link} from 'react-router-dom'
-import {Container,Divider,Header,Button,Segment,Form,Grid,Input,Modal} from 'semantic-ui-react';
-import SortableTree, {removeNodeAtPath} from 'react-sortable-tree'
+import {Container,Divider,Header,Button,Segment,Form,Grid,Modal} from 'semantic-ui-react';
+import SortableTree, {removeNodeAtPath,changeNodeAtPath} from 'react-sortable-tree'
 import 'react-sortable-tree/style.css'
 import { connect } from 'react-redux'
-import {bindActionCreators} from 'redux'
 
-import {fetchBukrsPyramidsTree,pyramidTreeChanged,deletePyramid,blankItem,toggleFormModal} from  '../actions/hrPyramidAction'
+import {fetchBukrsPyramidsTree,pyramidTreeChanged,deletePyramid,blankItem,toggleFormModal,removeStaffFromEmployee,fetchItem} from  '../actions/hrPyramidAction'
 import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4'
 import {f4FetchPositionList,f4FetchBusinessAreaList,f4FetchDepartmentList} from '../../../../reference/f4/f4_action'
 import {fetchAllStaffs} from '../../staff/actions/hrStaffAction'
@@ -20,6 +18,9 @@ class PyramidTreePage extends Component {
           showDeleteModal:false,
           nodeForDelete: null,
           deleteNotifyTxt:'',
+          removeNotifyTxt: '',
+          showRemoveModal:false,
+          nodeForRemove: null,
           updatedTree:[]
       }
 
@@ -90,12 +91,33 @@ class PyramidTreePage extends Component {
         })
     }
 
+    showRemoveModal = (node,updatedTree) =>{
+        console.log(node)
+        this.setState({
+            ...this.state,
+            showRemoveModal: true,
+            nodeForRemove: node,
+            removeNotifyTxt: 'Вы действительно хотите удалить сотрудника ' + node.title + ' ?',
+            updatedTree: updatedTree
+        })
+    }
+
     resetDelete(){
         this.setState({
             ...this.state,
             showDeleteModal: false,
             nodeForDelete: null,
             deleteNotifyTxt: '',
+            updatedTree: []
+        })
+    }
+
+    resetRemove = () => {
+        this.setState({
+            ...this.state,
+            showRemoveModal: false,
+            nodeForRemove: null,
+            removeNotifyTxt: '',
             updatedTree: []
         })
     }
@@ -110,6 +132,15 @@ class PyramidTreePage extends Component {
         this.resetDelete()
     }
 
+    removeStaff = () => {
+        const {nodeForRemove,updatedTree} = this.state
+        this.props.removeStaffFromEmployee(nodeForRemove.id,() => {
+            this.props.pyramidTreeChanged(updatedTree)
+        })
+
+        this.resetRemove()
+    }
+
     renderDeleteNotifyModal(){
         return <Modal open={this.state.showDeleteModal} size={'small'}>
             <Header>Предупреждение!</Header>
@@ -120,6 +151,21 @@ class PyramidTreePage extends Component {
                 <Button onClick={this.resetDelete}>Нет</Button>
                 <Button color='red' onClick={this.deletePyramid}>
                      Да
+                </Button>
+            </Modal.Actions>
+        </Modal>
+    }
+
+    renderRemoveNotifyModal = () => {
+        return <Modal open={this.state.showRemoveModal} size={'small'}>
+            <Header>Предупреждение (удаление сотрудника)!</Header>
+            <Modal.Content>
+                <h3>{this.state.removeNotifyTxt}</h3>
+            </Modal.Content>
+            <Modal.Actions>
+                <Button onClick={this.resetRemove}>Нет</Button>
+                <Button color='red' onClick={this.removeStaff}>
+                    Да
                 </Button>
             </Modal.Actions>
         </Modal>
@@ -142,6 +188,7 @@ class PyramidTreePage extends Component {
             <Grid.Column floated='left' width={4}>
                 {this.renderSearchPanel()}
                 {this.renderDeleteNotifyModal()}
+                {this.renderRemoveNotifyModal()}
             </Grid.Column>
 
             <Grid.Column floated='left' width={12}>
@@ -153,6 +200,12 @@ class PyramidTreePage extends Component {
                         onChange={treeData => this.onChanged(treeData)}
                         generateNodeProps={({ node, path }) => ({
                             buttons: [
+                                <Button icon={'pencil'} size={'mini'}
+                                        onClick={() => {
+                                            this.props.fetchItem(node.id)
+                                            this.props.toggleFormModal(true)
+                                        }}
+                                />,
                                 <Button icon={'plus'} size={'mini'}
                                 onClick={() => {
                                     this.props.blankItem(node.id)
@@ -166,7 +219,15 @@ class PyramidTreePage extends Component {
                                     path,
                                     getNodeKey
                                 }))}
-                                />
+                                />,
+                                <Button icon={'remove user'} size={'mini'} color={'red'} onClick={() =>
+                                    this.showRemoveModal(node, changeNodeAtPath({
+                                        treeData: this.props.treeData,
+                                        path,
+                                        getNodeKey,
+                                        newNode: {...node, title: ''}
+                                    }))
+                                }/>
                             ],
                         })}
                     />
@@ -189,5 +250,5 @@ function mapStateToProps (state) {
 export default connect(mapStateToProps, {
     fetchBukrsPyramidsTree,pyramidTreeChanged,deletePyramid,blankItem,
     f4FetchPositionList,f4FetchDepartmentList,f4FetchBusinessAreaList,
-    toggleFormModal,fetchAllStaffs
+    toggleFormModal,fetchAllStaffs,removeStaffFromEmployee,fetchItem
 })(PyramidTreePage)
