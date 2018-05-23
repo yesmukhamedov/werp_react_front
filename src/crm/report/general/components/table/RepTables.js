@@ -134,11 +134,10 @@ export function RepTable740(props){
                     <Label.Detail>{item.recoCount}</Label.Detail>
                 </Label>
                 {item.recosByCategory.map((rc) => {
-                    return <Label
+                    return <Label basic title={rc.name}
                         key={rc.id}
                         color={RECO_CATEGORY_COLORS[rc.id]}>
-                        {rc.name}
-                        <Label.Detail>{rc.count}</Label.Detail>
+                        {rc.count}
                         </Label>
                 })}
             </Label.Group>
