@@ -28,6 +28,39 @@ export function RepSearch894(props){
             </Form>
 }
 
+//Ежедневный демо-отчет для директоров
+export function RepSearch740(props){
+    return <Form>
+        <Form.Group widths='equal'>
+            {renderBukrsSelect(props)}
+            {renderBranchSelect(props,false)}
+
+            <Form.Select name='managerId'
+                                label='Менеджер'
+                                options={props.managerOptions}
+                                placeholder='Менеджер'
+                                onChange={props.handleChange} />
+
+            <Form.Field>
+                <label>Дата С</label>
+                <DatePicker
+                    label=""
+                    placeholderText={'Дата'}
+                    showMonthDropdown showYearDropdown dropdownMode="select"
+                    dateFormat="DD.MM.YYYY"
+                    selected={props.dateTo?moment(props.dateTo):null}
+                    onChange={(v) => props.handleDate(v,'dateTo')}
+                />
+            </Form.Field>
+        </Form.Group>
+        <Form.Group>
+            <Form.Button onClick={props.fetchItems}>
+                Сформировать
+            </Form.Button>
+        </Form.Group>
+    </Form>
+}
+
 //Отчет Демо/Рекомендация
 export function RepSearch934(props){
 
@@ -52,6 +85,7 @@ export function RepSearch914(props){
 function renderBranchSelect(props,multiple){
     return <Form.Select
         name='branchId'
+        search
         multiple={multiple}
         label='Филиал'
         options={props.branchOptions}

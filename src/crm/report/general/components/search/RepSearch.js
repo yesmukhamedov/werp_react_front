@@ -1,8 +1,9 @@
 import React,{Component} from 'react'
 import { connect } from 'react-redux'
-import {REP_894,REP_914,REP_934,REP_935} from '../../crmRepUtil'
-import {RepSearch894} from './RepSearchPanels'
+import {REP_894,REP_914,REP_934,REP_935,REP_740} from '../../crmRepUtil'
+import {RepSearch894,RepSearch740,RepSearch914} from './RepSearchPanels'
 import {fetchItems} from '../../actions/crmReportAction'
+import {fetchAllManagers} from '../../../../../hr/mainoperation/staff/actions/hrStaffAction'
 import moment from 'moment'
 
 class RepSearch extends Component{
@@ -12,8 +13,12 @@ class RepSearch extends Component{
 
         this.state = {
             search: {},
-            dateSelectedVals:{}
+            dateSelectedVals:{},
+            managersLoaded: false
         }
+    }
+
+    componentWillMount(){
     }
 
     branchOptions = (bukrs) => {
@@ -57,6 +62,19 @@ class RepSearch extends Component{
         return out
     }
 
+    managersByBranchOptions = (branchId) => {
+        if(!branchId){
+            return []
+        }
+
+        const {managersByBranchOptions} = this.props
+        if(!managersByBranchOptions){
+            return []
+        }
+
+        return managersByBranchOptions[branchId] || []
+    }
+
     handleChange = (e,d) => {
         const {name,value} = d
         let search = Object.assign({},this.state.search)
@@ -96,6 +114,16 @@ class RepSearch extends Component{
         this.props.loadItems(this.props.meta.id,this.state.search)
     }
 
+    componentWillReceiveProps(nextProps){
+        if(!this.state.managersLoaded && nextProps.meta.id === REP_740){
+            this.props.fetchAllManagers();
+            this.setState({
+                ...this.state,
+                managersLoaded: true
+            })
+        }
+    }
+
     render(){
         const {search,dateSelectedVals} = this.state
         const {id} = this.props.meta
@@ -115,8 +143,19 @@ class RepSearch extends Component{
                     businessAreaOptions = {this.businessAreaOptions(search['bukrs'])}
                     companyOptions={companyOptions} />
 
+            case REP_740:
+                return <RepSearch740
+                    handleDate={this.handleDate}
+                    dateTo={search['dateTo'] || null}
+                    fetchItems={fetchItems}
+                    handleChange = {this.handleChange}
+                    companyOptions={companyOptions}
+                    branchOptions = {filteredBranchOptions}
+                    managerOptions = {this.managersByBranchOptions(search['branchId'])}
+                />
+
             case REP_914:
-                return <RepSearch894
+                return <RepSearch914
                     handleDate = {this.handleDate}
                     fetchItems = {fetchItems}
                     handleChange = {this.handleChange}
@@ -131,15 +170,15 @@ class RepSearch extends Component{
 }
 
 function mapStateToProps (state) {
-    console.log(state)
     return {
         meta: state.crmReportReducer.meta,
         companyOptions: state.userInfo.companyOptions,
         branchOptions: state.userInfo.branchOptionsMarketing,
-        businessAreaList: state.f4.businessAreaList
+        businessAreaList: state.f4.businessAreaList,
+        managersByBranchOptions: state.hrStaff.managersByBranchOptions
     }
 }
 
 export default connect(mapStateToProps, {
-fetchItems
+fetchItems,fetchAllManagers
 })(RepSearch)

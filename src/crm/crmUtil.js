@@ -73,6 +73,13 @@ export const RECO_CALLER_OPTIONS = [
     }
 ]
 
+export const RECO_CATEGORY_COLORS = {
+    1: 'orange',
+    2: 'olive',
+    3: 'brown',
+    4: 'grey'
+}
+
 
 export function getReasonsByResultId (resultId,reasons) {
     let reasonTypeId = 0

@@ -1,8 +1,10 @@
 import React,{Component} from 'react'
-import { Table,Icon } from 'semantic-ui-react'
+import { Table,Icon,Label,Button,Message } from 'semantic-ui-react'
 import {YEAR_OPTIONS,MONTH_OPTIONS} from '../../../../../utils/constants'
 import moment from 'moment'
+import DemoResultLabel from '../../../../mainoperation/demo/components/DemoResultLabel'
 import {REP_894,REP_934} from '../../crmRepUtil'
+import {RECO_CATEGORY_COLORS} from '../../../../crmUtil'
 import '../../css/repStyle.css'
 /**
  *Отчет Демо/Продажа
@@ -111,6 +113,70 @@ export function RepTable914(props){
                     {cats.map((cat => {
                         return <Table.Cell key={cat}>{item.recos[cat] || '0'}</Table.Cell>
                     }))}
+                </Table.Row>
+            }))}
+
+        </Table.Body>
+    </Table>
+}
+
+export function RepTable740(props){
+    let cats = [1,2,3,4]
+    let {items} = props
+    if(!items){
+        items = []
+    }
+
+    const renderRecos = (item) => {
+        return <Label.Group>
+                <Label>
+                    Всего
+                    <Label.Detail>{item.recoCount}</Label.Detail>
+                </Label>
+                {item.recosByCategory.map((rc) => {
+                    return <Label
+                        key={rc.id}
+                        color={RECO_CATEGORY_COLORS[rc.id]}>
+                        {rc.name}
+                        <Label.Detail>{rc.count}</Label.Detail>
+                        </Label>
+                })}
+            </Label.Group>
+    }
+
+    return <Table  celled striped>
+        <Table.Header>
+            <Table.Row>
+                <Table.HeaderCell width={2}>Дилер</Table.HeaderCell>
+                <Table.HeaderCell width={2}>Категория</Table.HeaderCell>
+                <Table.HeaderCell width={2}>Дата-время</Table.HeaderCell>
+                <Table.HeaderCell width={2}>Результат</Table.HeaderCell>
+                <Table.HeaderCell width={3}>Кол. рек.</Table.HeaderCell>
+                <Table.HeaderCell width={4}>Примечание директора</Table.HeaderCell>
+                <Table.HeaderCell width={1}></Table.HeaderCell>
+            </Table.Row>
+        </Table.Header>
+
+        <Table.Body>
+
+            {items.map((item => {
+                return <Table.Row key={item.id}>
+                    <Table.Cell>{item.staffName}</Table.Cell>
+                    <Table.Cell>
+                        <Button size='tiny' basic color={RECO_CATEGORY_COLORS[item.categoryId] || 'grey'}>{item.categoryName}</Button>
+                    </Table.Cell>
+
+                    <Table.Cell>{item.dateTime}</Table.Cell>
+                    <Table.Cell>
+                        <DemoResultLabel resultId={item.resultId} resultName={item.resultName}/>
+                    </Table.Cell>
+                    <Table.Cell>{renderRecos(item)}</Table.Cell>
+                    <Table.Cell>
+                        {item.directorNote?<Message compact size={'small'}>{item.directorNote}</Message>:''}
+                    </Table.Cell>
+                    <Table.Cell>
+                        <a onClick={() => props.openModal(item.id,item.directorNote)}><Icon link={true} name={'pencil'}/></a>
+                    </Table.Cell>
                 </Table.Row>
             }))}
 

@@ -16,7 +16,8 @@ import {
     HR_STAFF_DATA_FORM_MODAL_FLAG,
     HR_STAFF_DATA_BLANKED,
     HR_STAFF_DATA_CREATED,
-    HR_STAFF_DATA_FETCHED_LIST
+    HR_STAFF_DATA_FETCHED_LIST,
+    HR_STAFF_FETCH_MANAGERS
 } from '../actions/hrStaffAction';
 
 import {OFF_DATA} from '../../../hrUtil'
@@ -43,7 +44,11 @@ const INITIAL_STATE={
                     staffFormErrors:{},
                     staffDataFormModalOpened: false,
                     staffData:{},
-                    staffDataList:{}
+                    staffDataList:{},
+
+                    //
+                    managers: [],
+                    managersByBranchOptions: []
 
 };
 
@@ -122,6 +127,23 @@ export default function (state=INITIAL_STATE, action)
             let stfDataList = Object.assign({},state.staffDataList)
             stfDataList[action.activeData] = action.payload
             return {...state,staffDataList:stfDataList}
+
+        case HR_STAFF_FETCH_MANAGERS:
+            let managersByBranch = {}
+            for(let key in action.payload){
+                let current = action.payload[key]
+                if(!managersByBranch[current['branchId']]){
+                    managersByBranch[current['branchId']] = []
+                }
+
+                managersByBranch[current['branchId']].push({
+                    text: current.staffName,
+                    key: current.staffId,
+                    value: current.staffId
+                })
+            }
+
+            return {...state,managers: action.payload,managersByBranchOptions: managersByBranch}
 
         default:
             return state;

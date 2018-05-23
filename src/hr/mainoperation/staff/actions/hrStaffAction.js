@@ -34,6 +34,9 @@ export const HR_STAFF_DATA_FETCHED_LIST = 'HR_STAFF_DATA_FETCHED_LIST'
 
 export const HR_STAFF_DATA_FORM_MODAL_FLAG = 'HR_STAFF_DATA_FORM_MODAL_FLAG'
 
+
+export const HR_STAFF_FETCH_MANAGERS = 'HR_STAFF_FETCH_MANAGERS'
+
 export function fetchCurrentStaffs(params){
     return function(dispatch){
         dispatch(modifyLoader(true));
@@ -259,6 +262,22 @@ export function fetchStaffData(staffId,activeData){
                 type:HR_STAFF_DATA_FETCHED_LIST,
                 payload:data,
                 activeData: activeData
+            })
+        }).catch((error) => {
+            handleError(error,dispatch)
+        })
+    }
+}
+
+export function fetchAllManagers(){
+    return function (dispatch){
+        axios.get(`${ROOT_URL}` + '/api/hr/salary/managers',{
+            headers: {
+                authorization: localStorage.getItem('token')}
+        }).then(({data}) => {
+            dispatch({
+                type:HR_STAFF_FETCH_MANAGERS,
+                payload:data
             })
         }).catch((error) => {
             handleError(error,dispatch)
