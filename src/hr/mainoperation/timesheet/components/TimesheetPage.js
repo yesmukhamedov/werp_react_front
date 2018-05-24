@@ -20,6 +20,7 @@ class TimesheetPage extends Component{
                 year: currentDate.getFullYear(),
                 month: currentDate.getMonth()+1
             },
+            selectedItems: {},
             leftPart: true,
             localItems: {}
         }
@@ -88,6 +89,27 @@ class TimesheetPage extends Component{
         return branchOptionsAll[bukrs] || []
     }
 
+    saveData = () => {
+        const {search,selectedItems}  =this.state
+        let data = []
+
+        for(let k in selectedItems){
+            let temp = Object.assign({},selectedItems[k])
+            temp['staffId'] = k
+            temp['year'] = search['year']
+            temp['month'] = search['month']
+
+            let tempDays = []
+            for(let t in temp['days']){
+                tempDays.push(temp['days'][t])
+            }
+
+            temp['days'] = tempDays
+            data.push(temp)
+        }
+        this.props.saveData(data)
+    }
+
     renderActionButtons(){
         return <div>
             <Button.Group>
@@ -105,7 +127,7 @@ class TimesheetPage extends Component{
                     icon='right chevron' />
             </Button.Group>
 
-            <Button onClick={() => this.props.saveData(this.state.localItems)} primary floated={'right'}>Сохранить</Button>
+            <Button onClick={this.saveData} primary floated={'right'}>Сохранить</Button>
             </div>
     }
 
@@ -142,29 +164,29 @@ class TimesheetPage extends Component{
         </Form>
     }
 
-    handleDayStatusChange = (staffId,dayNumber,value) => {
-        console.log('items',this.state.localItems)
-        let localItems = Object.assign({},this.state.localItems)
-        let item = Object.assign({},localItems[staffId])
-        let days = item['days'] || []
-        days[dayNumber-1] = {
-            number: dayNumber,
-            enabled: false,
-            status: value
+    handleDayStatusChange = (item,dayNumber,value) => {
+        const staffId = item.staffId
+        let selectedItems = Object.assign({},this.state.selectedItems)
+        if(!selectedItems[staffId]){
+            selectedItems[staffId] = {
+                bukrs: item.bukrs,
+                branchId: item.branchId,
+                departmentId: item.departmentId,
+                days: {}
+            }
         }
 
-        item['days'] = days
-        localItems[staffId] = item
+        selectedItems[staffId]['days'][dayNumber] = {number: dayNumber,status: value,enabled: true}
 
         this.setState({
             ...this.state,
-            localItems: localItems
+            selectedItems: selectedItems
         })
     }
 
     renderDaysCell = (item) => {
         let days = item.days || []
-        const {leftPart} = this.state
+        const {leftPart,selectedItems} = this.state
         let filteredDays = _.filter(days,function(o){
             if(leftPart){
                 return o.number <= 15
@@ -173,9 +195,14 @@ class TimesheetPage extends Component{
             }
         })
 
+        let staffSelectedItem = selectedItems[item.staffId] || {}
+        let staffDays = staffSelectedItem['days'] || {}
+        //let selectedItems[item.staffId + '_' + item.year + '_' + item.month]
+
     let content = filteredDays.map((day => {
+                let opValue = staffDays[day.number]?staffDays[day.number]['status'] : '' //(day) @ToDo
                 return <Table.Cell negative={day.status === 'MISSING'} key={day.number}>
-                    <select onChange={(e) => this.handleDayStatusChange(item.staffId,day.number,e.target.value)}>
+                    <select value={opValue} onChange={(e) => this.handleDayStatusChange(item,day.number,e.target.value)}>
                         {this.statuses().map((s => {
                             return <option key={s.key} value={s.value}>{s.text}</option>
                         }))}
@@ -258,6 +285,7 @@ class TimesheetPage extends Component{
             let update = true
             let localItems = Object.assign([],this.state.localItems)
             if(localItems && localItems.length > 0){
+                console.log(localItems)
                 let year = localItems[0]['year']
                 let month = localItems[0]['month']
                 for(let k in nextProps.items){

@@ -30,7 +30,7 @@ export function fetchItems(params){
 export function saveData(data){
     return function(dispatch){
         dispatch(modifyLoader(true));
-        axios.put(`${ROOT_URL}/api/hr/staff/timesheet`, { ...data }, {
+        axios.put(`${ROOT_URL}/api/hr/staff/timesheet`, data, {
             headers: {
                 authorization: localStorage.getItem('token')
             }
