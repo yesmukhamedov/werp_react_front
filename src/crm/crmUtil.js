@@ -1,4 +1,3 @@
-
 export const DEMO_RESULT_DONE = 1
 export const DEMO_RESULT_MOVED = 2
 export const DEMO_RESULT_CANCELLED = 3

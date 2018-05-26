@@ -4,7 +4,8 @@ import {YEAR_OPTIONS,MONTH_OPTIONS} from '../../../../../utils/constants'
 import moment from 'moment'
 import DemoResultLabel from '../../../../mainoperation/demo/components/DemoResultLabel'
 import {REP_894,REP_934} from '../../crmRepUtil'
-import {RECO_CATEGORY_COLORS} from '../../../../crmUtil'
+import {RECO_CATEGORY_COLORS,RECO_CATEGORIES} from '../../../../crmUtil'
+import {renderRecoCategoryBtn,renderRecoCategoryAsQty} from '../../../../CrmHelper'
 import '../../css/repStyle.css'
 /**
  *Отчет Демо/Продажа
@@ -88,7 +89,6 @@ export function RepTable894(props){
 }
 
 export function RepTable914(props){
-    let cats = [1,2,3,4]
     let {items} = props
     if(!items){
         items = []
@@ -110,8 +110,8 @@ export function RepTable914(props){
             {items.map((item => {
                 return <Table.Row key={item.staffId}>
                     <Table.Cell>{item.staffName}</Table.Cell>
-                    {cats.map((cat => {
-                        return <Table.Cell key={cat}>{item.recos[cat] || '0'}</Table.Cell>
+                    {RECO_CATEGORIES.map((cat => {
+                        return <Table.Cell key={cat.key}>{renderRecoCategoryAsQty(cat.key,item.recos[cat.key] || 0)}</Table.Cell>
                     }))}
                 </Table.Row>
             }))}
@@ -121,7 +121,6 @@ export function RepTable914(props){
 }
 
 export function RepTable740(props){
-    let cats = [1,2,3,4]
     let {items} = props
     if(!items){
         items = []
@@ -162,7 +161,7 @@ export function RepTable740(props){
                 return <Table.Row key={item.id}>
                     <Table.Cell>{item.staffName}</Table.Cell>
                     <Table.Cell>
-                        <Button size='tiny' basic color={RECO_CATEGORY_COLORS[item.categoryId] || 'grey'}>{item.categoryName}</Button>
+                        {renderRecoCategoryBtn(item.categoryId)}
                     </Table.Cell>
 
                     <Table.Cell>{item.dateTime}</Table.Cell>
