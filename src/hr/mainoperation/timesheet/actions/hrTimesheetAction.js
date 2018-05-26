@@ -28,6 +28,30 @@ export function fetchItems(params){
 }
 
 export function saveData(data){
+    let d = [
+        {
+            branchId:35,
+            bukrs:"1000",
+            departmentId:null,
+            month: 5,
+            staffId: "5645",
+            year: 2018,
+            days: [
+                {
+                    number: 1,
+                    enabled: false,
+                    status: "PRESENT"
+                }
+            ]
+        },
+        {
+            bukrs: "1000",
+            branchId: 35,
+            departmentId: null,
+            departmentName: null
+        }
+    ]
+    console.log(data)
     return function(dispatch){
         dispatch(modifyLoader(true));
         axios.put(`${ROOT_URL}/api/hr/staff/timesheet`, data, {

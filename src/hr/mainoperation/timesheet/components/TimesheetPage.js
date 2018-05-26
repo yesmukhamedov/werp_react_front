@@ -172,6 +172,7 @@ class TimesheetPage extends Component{
                 bukrs: item.bukrs,
                 branchId: item.branchId,
                 departmentId: item.departmentId,
+                positionId: item.positionId,
                 days: {}
             }
         }
@@ -200,8 +201,8 @@ class TimesheetPage extends Component{
         //let selectedItems[item.staffId + '_' + item.year + '_' + item.month]
 
     let content = filteredDays.map((day => {
-                let opValue = staffDays[day.number]?staffDays[day.number]['status'] : '' //(day) @ToDo
-                return <Table.Cell negative={day.status === 'MISSING'} key={day.number}>
+                let opValue = staffDays[day.number]?staffDays[day.number]['status'] : day['status'] //(day) @ToDo
+                return <Table.Cell negative={opValue === 'MISSING'} positive={opValue === 'PRESENT'} key={day.number}>
                     <select value={opValue} onChange={(e) => this.handleDayStatusChange(item,day.number,e.target.value)}>
                         {this.statuses().map((s => {
                             return <option key={s.key} value={s.value}>{s.text}</option>
@@ -282,26 +283,26 @@ class TimesheetPage extends Component{
 
     componentWillReceiveProps(nextProps){
         if(nextProps.items){
-            let update = true
-            let localItems = Object.assign([],this.state.localItems)
-            if(localItems && localItems.length > 0){
-                console.log(localItems)
-                let year = localItems[0]['year']
-                let month = localItems[0]['month']
-                for(let k in nextProps.items){
-                    if(nextProps.items[k]['year'] === year && nextProps.items[k]['month'] === month){
-                        update = false
-                        break
-                    }
-                }
-            }
-
-            if(update){
-                this.setState({
-                    ...this.state,
-                    localItems: nextProps.items
-                })
-            }
+            // let update = true
+            // let localItems = Object.assign([],this.state.localItems)
+            // if(localItems && localItems.length > 0){
+            //     console.log(localItems)
+            //     let year = localItems[0]['year']
+            //     let month = localItems[0]['month']
+            //     for(let k in nextProps.items){
+            //         if(nextProps.items[k]['year'] === year && nextProps.items[k]['month'] === month){
+            //             update = false
+            //             break
+            //         }
+            //     }
+            // }
+            //
+            // if(update){
+            //     this.setState({
+            //         ...this.state,
+            //         localItems: nextProps.items
+            //     })
+            // }
         }
     }
 
@@ -321,7 +322,6 @@ class TimesheetPage extends Component{
 }
 
 function mapStateToProps (state) {
-    console.log(state.hrTimesheet)
     return {
         companyOptions: state.userInfo.companyOptions,
         items: state.hrTimesheet.items,
