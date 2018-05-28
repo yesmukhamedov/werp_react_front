@@ -113,7 +113,7 @@ class Hrb02 extends Component {
     render(){
        
         
-        let username = localStorage.getItem('username');
+        const username = localStorage.getItem('username');
 
         
         return (
@@ -132,7 +132,7 @@ class Hrb02 extends Component {
                                 <Icon name='save' size='large' />Сохранить
                             </Button>                          
                         </Grid.Column>
-                        {localStorage.getItem('username')==='azamat' && 
+                        {username==='azamat' && 
                             <Grid.Column mobile={16} tablet={16} computer={3}>
                                 <Button icon labelPosition='left' primary size='small'  onClick={()=> this.props.updateF4All()}>
                                     <Icon name='check' size='large' />Обновит F4

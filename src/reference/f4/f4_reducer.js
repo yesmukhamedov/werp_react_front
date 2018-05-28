@@ -1,16 +1,17 @@
 import { 
-        F4_FETCH_MATNR_LIST, F4_CLEAR_MATNR_LIST
-        ,F4_FETCH_POSITION_LIST, F4_CLEAR_POSITION_LIST
-        ,F4_FETCH_CURRENCY_LIST, F4_CLEAR_CURRENCY_LIST
-        ,F4_FETCH_BONUSTYPE_LIST, F4_CLEAR_BONUSTYPE_LIST,
-        F4_FETCH_COUNTRY_LIST,F4_CLEAR_COUNTRY_LIST,
-        F4_FETCH_STATE_LIST,F4_CLEAR_STATE_LIST,
-        F4_FETCH_CITY_LIST,F4_CLEAR_CITY_LIST,
-        F4_FETCH_CITYREG_LIST,F4_CLEAR_CITYREG_LIST,
-        F4_FETCH_BUSINESS_AREA_LIST,F4_CLEAR_BUSINESS_AREA_LIST,
+    F4_FETCH_MATNR_LIST, F4_CLEAR_MATNR_LIST,
+    F4_FETCH_POSITION_LIST, F4_CLEAR_POSITION_LIST,
+    F4_FETCH_CURRENCY_LIST, F4_CLEAR_CURRENCY_LIST,
+    F4_FETCH_BONUSTYPE_LIST, F4_CLEAR_BONUSTYPE_LIST,
+    F4_FETCH_COUNTRY_LIST,F4_CLEAR_COUNTRY_LIST,
+    F4_FETCH_STATE_LIST,F4_CLEAR_STATE_LIST,
+    F4_FETCH_CITY_LIST,F4_CLEAR_CITY_LIST,
+    F4_FETCH_CITYREG_LIST,F4_CLEAR_CITYREG_LIST,
+    F4_FETCH_BUSINESS_AREA_LIST,F4_CLEAR_BUSINESS_AREA_LIST,
     F4_FETCH_DEPARTMENT_LIST,F4_CLEAR_DEPARTMENT_LIST,
     F4_FETCH_EXPENSE_TYPES,F4_CLEAR_EXPENSE_TYPES,
-    F4_FETCH_SUB_COMPANIES,F4_CLEAR_SUB_COMPANIES
+    F4_FETCH_SUB_COMPANIES,F4_CLEAR_SUB_COMPANIES,
+    F4_FETCH_EXCHANGERATE_NATIONAL, F4_CLEAR_EXCHANGERATE_NATIONAL
 } from './f4_action';
 
 const INITIAL_STATE={
@@ -24,6 +25,7 @@ const INITIAL_STATE={
                     cityregList:[],
                     businessAreaList:[],
                     departmentList:[],
+                    departmentOptions:[],
                     expenceTypes:[],
                     subCompanies:[]
     };
@@ -42,9 +44,16 @@ export default function (state=INITIAL_STATE, action)
         case F4_CLEAR_POSITION_LIST:
             return {...state,positionList:[]};
         case F4_FETCH_CURRENCY_LIST:
-            return {...state,currencyList:action.currencyList};
+            let currencyOptions = action.currencyList.map(item => {
+                return {
+                    key: item.id,
+                    value: item.currency,
+                    text: item.currency
+                }
+            });
+            return {...state,currencyList:action.currencyList, currencyOptions};
         case F4_CLEAR_CURRENCY_LIST:
-            return {...state,currencyList:[]};
+            return {...state,currencyList:[],currencyOptions:[]};
         case F4_FETCH_BONUSTYPE_LIST:
             return {...state,bonusTypeList:action.bonusTypeList};
         case F4_CLEAR_BONUSTYPE_LIST:
@@ -71,10 +80,22 @@ export default function (state=INITIAL_STATE, action)
         case F4_CLEAR_BUSINESS_AREA_LIST:
             return {...state,bussinessAreaList:[]}
 
+        case F4_FETCH_EXCHANGERATE_NATIONAL:
+            return {...state,exRateNational:action.exRateNational};
+        case F4_CLEAR_EXCHANGERATE_NATIONAL:
+            return {...state,exRateNational:[]}
+
         case F4_FETCH_DEPARTMENT_LIST:
-            return {...state,departmentList:action.departmentList};
+            let departmentOptions = action.departmentList.map(item => {
+                return {
+                    key: item.id,
+                    value: item.id,
+                    text: item.name_ru
+                }
+            });
+            return {...state,departmentList:action.departmentList, departmentOptions};
         case F4_CLEAR_DEPARTMENT_LIST:
-            return {...state,departmentList:[]}
+            return {...state,departmentList:[], departmentOptions:[]}
 
         case F4_FETCH_EXPENSE_TYPES:
             return {...state,expenceTypes: action.payload}

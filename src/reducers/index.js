@@ -27,6 +27,7 @@ import kpiSettingReducer from '../crm/mainoperation/kpi/reducers/kpiSettingReduc
 import hrTimesheetReducer from '../hr/mainoperation/timesheet/reducers/hrTimesheetReducer'
 import crmReportReducer from '../crm/report/general/reducers/crmReportReducer'
 import crmWspaceReducer from '../crm/mainoperation/wspace/reducers/wspaceReducer'
+import faReducer from '../finance/fa_reducer';
 
 const appReducer = combineReducers({
   form,
@@ -50,6 +51,7 @@ const appReducer = combineReducers({
   outCalls: outCallsTransactionReducer,
   hrStaff: hrStaffReducer,
   hrb02: hrb02Reducer,
+  fa:faReducer,
     crmKpiSetting:kpiSettingReducer,
     hrPyramid:hrPyramidReducer,
     hrTimesheet: hrTimesheetReducer,
