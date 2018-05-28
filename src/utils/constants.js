@@ -10,10 +10,9 @@ const isLocalIpAddress = () => {
 /**
  * Back-end URL of our server
  */
-export const ROOT_URL = 'http://192.168.0.23:23051'
-// export const ROOT_URL = isLocalIpAddress()
-//   ? process.env.REACT_APP_ROOT_URL_LOCAL
-//   : process.env.REACT_APP_ROOT_URL_REMOTE;
+export const ROOT_URL = isLocalIpAddress()
+  ? process.env.REACT_APP_ROOT_URL_LOCAL
+  : process.env.REACT_APP_ROOT_URL_REMOTE;
 
 /**
  * Back-end URL of the legacy (old) system
