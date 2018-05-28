@@ -29,6 +29,7 @@ class DemoUpdateModal extends Component {
     this.validateForm = this.validateForm.bind(this)
     this.renderUpdateForm = this.renderUpdateForm.bind(this)
     this.saveDemo = this.saveDemo.bind(this)
+      this.renderCallDateRow = this.renderCallDateRow.bind(this)
   }
 
   componentWillMount () {
@@ -72,6 +73,24 @@ class DemoUpdateModal extends Component {
       return null
   }
 
+  renderCallDateRow(){
+      let resultId = parseInt(this.state.localDemo.resultId,10);
+      if (resultId === DEMO_RESULT_MOVED) {
+          return <Form.Field>
+              <label>Дата перезвона</label>
+              <DatePicker
+                  locale="ru"
+                  label=''
+                  placeholderText={'Дата перезвона'}
+                  showMonthDropdown showYearDropdown dropdownMode='select'
+                  dateFormat='DD.MM.YYYY' selected={this.state.localDemo.recallDate?moment(this.state.localDemo.recallDate):null}
+                  onChange={(v) => this.handleChange('recallDate', v)} />
+          </Form.Field>
+      }
+
+      return null
+  }
+
   renderUpdateForm () {
       let {localDemo} = this.state
     return <Form>
@@ -99,6 +118,11 @@ class DemoUpdateModal extends Component {
         {this.renderReasonRow()}
         {this.renderSaleDateRow()}
       </Form.Group>
+
+        <Form.Group widths='equal'>
+            {this.renderCallDateRow()}
+            <Form.Field></Form.Field>
+        </Form.Group>
       <Form.Group widths='equal'>
         <Form.Field error={this.state.errors.address}
           required control={TextArea}
@@ -146,6 +170,7 @@ class DemoUpdateModal extends Component {
         switch (fieldName){
             case 'dateTime':
             case 'saleDate':
+            case 'recallDate':
                 if(o){
                     localDemo[fieldName] = o.valueOf();
                 }else{

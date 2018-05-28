@@ -1,6 +1,8 @@
 import React from 'react'
+import _ from 'lodash'
 import { Card,Image,Button,Label,Icon,Message,Popup } from 'semantic-ui-react'
 import {MENU_BY_RECO,MENU_BY_DATE,RECO_MODAL_ITEMS} from '../wspaceUtil'
+import {renderRecoCategoryBtn} from '../../../CrmHelper'
 
 export default function WspaceRecoCard(props){
         const {item,type} = props
@@ -37,7 +39,7 @@ function renderRecosInModal(props){
                            basic
                     />
 
-                    <span style={{float:'right'}}>{renderCategoryBtn(item.categoryId,item.categoryName)}</span>
+                    <span style={{float:'right'}}>{renderRecoCategoryBtn(item.categoryId,item.categoryName)}</span>
                 </Card.Meta>
                 <Card.Meta>
                     Род: {item.relativeName}
@@ -74,7 +76,7 @@ function renderByDate(props){
                         basic
                     />
 
-                <span style={{float:'right'}}>{renderCategoryBtn(item.categoryId,item.categoryName)}</span>
+                <span style={{float:'right'}}>{renderRecoCategoryBtn(item.categoryId,item.categoryName)}</span>
             </Card.Meta>
             <Card.Description>
                     <span style={{fontSize:'11px'}}>
@@ -101,16 +103,16 @@ function renderByReco(props){
             <Card.Meta>
                 <span style={{float:'left'}}>
                     <Popup
-                        trigger={<Label>{item.dateTime}</Label>}
+                        trigger={<Label>{item.demoDate}</Label>}
                         content="Дата-время демонстрации"
                         basic
                     />
                 </span>
-                <span style={{float:'right'}}>{renderCategoryBtn(item.categoryId,item.categoryName)}</span>
+                <span style={{float:'right'}}>{renderRecoCategoryBtn(item.categoryId,item.categoryName)}</span>
             </Card.Meta>
             <Card.Description>
                     <span style={{fontSize:'11px'}}>
-                    {item.shortAddress}
+                    {_.truncate(item.address,{length: 150})}
                 </span>
             </Card.Description>
         </Card.Content>
@@ -122,7 +124,7 @@ function renderByReco(props){
         </Card.Content>
         <Card.Content extra>
             <Label>
-                <Icon name='users' /> 23
+                <Icon name='users' /> {item.recoCount}
             </Label>
 
             <Label>
@@ -142,25 +144,4 @@ function renderPhone(phone){
         <Icon disabled name='phone' />
         {phone.phoneNumber}
     </Label>
-}
-
-function renderCategoryBtn(catId, catName){
-    let color = 'grey'
-    switch (catId){
-        case 1:
-            color = 'red'
-            break
-
-        case 2:
-            color = 'teal'
-            break
-
-        case 3:
-            color = 'brown'
-            break
-
-        default:{}
-    }
-
-    return <Button size={'mini'} basic color={color}>{catName}</Button>
 }

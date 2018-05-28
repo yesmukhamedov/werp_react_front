@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import {MENU_DASHBOARD,MENU_ALL_RECOS,MENU_ITEMS,MENU_BY_RECO,MENU_BY_DATE,MENU_MOVED,MENU_CURRENT_DEMO,ITEMS,RECO_ITEMS_TEMP} from '../wspaceUtil'
 import '../css/main-page.css'
 import {fetchGroupDealers} from '../../demo/actions/demoAction'
-import {toggleRecoListModal,setCurrentRecommender} from '../actions/wspaceAction'
+import {toggleRecoListModal,setCurrentRecommender,fetchRecosByReco} from '../actions/wspaceAction'
 import WspaceHeader from './WspaceHeader'
 import WspaceMenu from './WspaceMenu'
 import WspaceRecoList from  './WspaceRecoList'
@@ -32,6 +32,7 @@ class WspaceMainPage extends Component {
   }
 
   onSelectStaff(staff){
+      this.props.fetchRecosByReco(staff.key)
       this.setState({
           ...this.state,
           currentStaff: staff
@@ -49,12 +50,16 @@ class WspaceMainPage extends Component {
     }
 
   renderContent = () =>{
+      let menuItems = this.props.staffRecoData[this.state.currentMenu] || []
       switch (this.state.currentMenu){
           case MENU_ALL_RECOS:
           case MENU_BY_RECO:
           case MENU_BY_DATE:
           case MENU_MOVED:
-              return <WspaceRecoList openRecoListModal={this.openRecoListModal} menu={this.state.currentMenu} items={ITEMS[this.state.currentMenu]}/>
+              return <WspaceRecoList
+                        openRecoListModal={this.openRecoListModal}
+                        menu={this.state.currentMenu}
+                        items={menuItems}/>
           default:
               return <WspaceDashboard/>
       }
@@ -100,10 +105,11 @@ function mapStateToProps (state) {
     return {
         dealers: state.crmDemo.dealers,
         recoListModalOpened: state.crmWspaceReducer.recoListModalOpened,
-        currentRecommender: state.crmWspaceReducer.currentRecommender
+        currentRecommender: state.crmWspaceReducer.currentRecommender,
+        staffRecoData: state.crmWspaceReducer.staffRecoData
     }
 }
 
 export default connect(mapStateToProps, {
-    fetchGroupDealers,toggleRecoListModal,setCurrentRecommender
+    fetchGroupDealers,toggleRecoListModal,setCurrentRecommender,fetchRecosByReco
 })(WspaceMainPage)
