@@ -13,7 +13,6 @@ class RepSearch extends Component{
 
         this.state = {
             search: {},
-            dateSelectedVals:{},
             managersLoaded: false
         }
     }
@@ -96,7 +95,6 @@ class RepSearch extends Component{
 
     handleDate = (v,name) => {
         let search = Object.assign({},this.state.search)
-        let dateSelectedVals = Object.assign({},this.state.dateSelectedVals)
         if(v){
             search[name] = moment(v).format('YYYY-MM-DD').toString()
         }else{
@@ -105,8 +103,7 @@ class RepSearch extends Component{
         //search[name] = v ? v : null
         this.setState({
             ...this.state,
-            search: search,
-            dateSelectedVals: dateSelectedVals
+            search: search
         })
     }
 
@@ -122,10 +119,17 @@ class RepSearch extends Component{
                 managersLoaded: true
             })
         }
+
+        if(nextProps['match'] && nextProps['match']['params']){
+            this.setState({
+                ...this.state,
+                search: {}
+            })
+        }
     }
 
     render(){
-        const {search,dateSelectedVals} = this.state
+        const {search} = this.state
         const {id} = this.props.meta
         const {companyOptions,branchOptions,businessAreaList} = this.props
         let filteredBranchOptions = branchOptions?(branchOptions[search['bukrs']] || []):[]

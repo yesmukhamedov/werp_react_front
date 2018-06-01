@@ -8,6 +8,8 @@ export const CRM_REP_FETCH_META = 'CRM_REP_FETCH_META';
 export const CRM_REP_MODAL_TOGGLE = 'CRM_REP_MODAL_TOGGLE'
 export const CRM_REP_UPDATE_DIRECTOR_NOTE = 'CRM_REP_UPDATE_DIRECTOR_NOTE'
 
+export const CRM_REP_CLEAR_STATE = 'CRM_REP_CLEAR_STATE'
+
 export function fetchItems(id,params){
     return function (dispatch){
         dispatch(modifyLoader(true));
@@ -75,5 +77,11 @@ export function toggleRepModal(flag){
     return {
         type: CRM_REP_MODAL_TOGGLE,
         payload: flag
+    }
+}
+
+export function clearState(){
+    return {
+        type: CRM_REP_CLEAR_STATE
     }
 }
