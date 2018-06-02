@@ -26,6 +26,7 @@ import hrb02Reducer from '../hr/mainoperation/hrb02/hrb02_reducer';
 import kpiSettingReducer from '../crm/mainoperation/kpi/reducers/kpiSettingReducer';
 import hrTimesheetReducer from '../hr/mainoperation/timesheet/reducers/hrTimesheetReducer'
 import crmReportReducer from '../crm/report/general/reducers/crmReportReducer'
+import hrReportReducer from '../hr/report/general/reducers/hrReportReducer'
 import crmWspaceReducer from '../crm/mainoperation/wspace/reducers/wspaceReducer'
 import faReducer from '../finance/fa_reducer';
 
@@ -56,6 +57,7 @@ const appReducer = combineReducers({
     hrPyramid:hrPyramidReducer,
     hrTimesheet: hrTimesheetReducer,
     crmReportReducer: crmReportReducer,
+    hrReportReducer: hrReportReducer,
     crmWspaceReducer: crmWspaceReducer
 });
 

@@ -230,6 +230,11 @@ const AsyncCrmReportPage = Loadable({
     loading: () => <LoadingPage />
 });
 
+const AsyncHrReportPage = Loadable({
+        loader: () => import('../hr/report/general/components/HrReportPage' /* webpackChunkName: "HrReportPage" */),
+    loading: () => <LoadingPage />
+});
+
 
 const getComponent = {
     Ditaub:AsyncAssignUserBranch,
@@ -265,7 +270,7 @@ const getComponent = {
     HrStaffView:AsyncStaffViewPage,
     HrTimesheetPage:AsyncHrTimesheetPage,
     CrmReportPage: AsyncCrmReportPage,
-
+    HrReportPage: AsyncHrReportPage,
     Ccaslt: AsyncContractListPage,
     Ccasao: AsyncSOContractListPage,
     Ccasoc: AsyncNewIssuePageContainer,
@@ -303,6 +308,7 @@ const generateRoutes = (transactionRoutes) => {
         {/*<Route path="/crm/wspace" component={AsyncCrmWspacePage} />*/}
         <Route path="/hr/staff/timesheet" component={AsyncHrTimesheetPage} />
         <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
+        <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
       <Route path="/finance/mainoperation/fcis" component={AsyncFsis} />
 
       {/* dynamically generated URLs  */}
