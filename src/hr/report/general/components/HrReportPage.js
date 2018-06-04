@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { Header,Container,Segment,Divider } from 'semantic-ui-react'
 
 import {fetchItems,fetchMeta,clearState} from '../actions/hrReportAction'
-import {f4FetchBusinessAreaList} from '../../../../reference/f4/f4_action'
+import {f4FetchBusinessAreaList,f4FetchDepartmentList,f4FetchPositionList} from '../../../../reference/f4/f4_action'
 import RepSearch  from './search/HrRepSearch'
 import RepTable from './table/HrRepTable'
 
@@ -22,6 +22,8 @@ class HrReportPage extends Component{
         const id = parseInt(this.props.match.params.id, 10)
         this.props.fetchMeta(id)
         this.props.f4FetchBusinessAreaList()
+        this.props.f4FetchDepartmentList()
+        this.props.f4FetchPositionList('hr_rep')
     }
 
     componentWillReceiveProps(nextProps){
@@ -60,5 +62,5 @@ function mapStateToProps (state) {
 }
 
 export default connect(mapStateToProps, {
-    fetchItems,fetchMeta,f4FetchBusinessAreaList,clearState
+    fetchItems,fetchMeta,f4FetchBusinessAreaList,clearState,f4FetchDepartmentList,f4FetchPositionList
 })(HrReportPage)

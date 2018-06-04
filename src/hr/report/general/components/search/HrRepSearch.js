@@ -20,6 +20,24 @@ class HrRepSearch extends Component{
     componentWillMount(){
     }
 
+    positionOptions = () => {
+        const posList = this.props.positionList
+        if(!posList){
+            return []
+        }
+
+        let out = []
+        for(let k in posList){
+            out.push({
+                key: posList[k]['position_id'],
+                value: posList[k]['position_id'],
+                text:  posList[k]['text']
+            })
+        }
+
+        return out
+    }
+
     branchOptions = (bukrs) => {
         if(!bukrs){
             return []
@@ -137,6 +155,8 @@ class HrRepSearch extends Component{
                         dateTo={search['dateTo'] || null}
                         fetchItems = {fetchItems}
                         handleChange = {this.handleChange}
+                        departmentOptions={this.props.departmentOptions}
+                        positionOptions={this.positionOptions()}
                         branchOptions = {filteredBranchOptions}
                         businessAreaOptions = {this.businessAreaOptions(search['bukrs'])}
                         companyOptions={companyOptions} />
@@ -152,6 +172,8 @@ function mapStateToProps (state) {
         companyOptions: state.userInfo.companyOptions,
         branchOptions: state.userInfo.branchOptionsMarketing,
         businessAreaList: state.f4.businessAreaList,
+        departmentOptions: state.f4.departmentOptions,
+        positionList: state.f4.positionList,
         managersByBranchOptions: state.hrStaff.managersByBranchOptions
     }
 }

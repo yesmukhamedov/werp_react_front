@@ -16,6 +16,14 @@ export  function RepTable954(props){
         items = []
     }
 
+    const renderPositions = (positions) => {
+        return <ul>
+            {positions.map((pos => {
+                return <li key={pos.salaryId}>{pos.positionName} ({pos.branchName})</li>
+            }))}
+        </ul>
+    }
+
     const columns = [
         {
             Header: '#',
@@ -46,7 +54,8 @@ export  function RepTable954(props){
         },
         {
             Header: 'Должности',
-            accessor: 'middlename'
+            id: 'positions',
+            accessor: (row) => renderPositions(row.positions || [])
         }
     ];
     return (<ReactTable
