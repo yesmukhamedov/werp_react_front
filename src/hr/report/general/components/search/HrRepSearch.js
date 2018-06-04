@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
 import { connect } from 'react-redux'
-import {REP_954} from '../../hrRepUtil'
+import {REP_954,REP_955} from '../../hrRepUtil'
 import {RepSearch954} from './HrRepSearchPanels'
 import {fetchItems} from '../../actions/hrReportAction'
 import {fetchAllManagers} from '../../../../../hr/mainoperation/staff/actions/hrStaffAction'
@@ -130,6 +130,7 @@ class HrRepSearch extends Component{
         const fetchItems = () => this.props.fetchItems(id,this.state.search)
         switch (id){
             case REP_954:
+            case REP_955:
                 return <RepSearch954
                         handleDate = {this.handleDate}
                         dateFrom={search['dateFrom'] || null}
