@@ -1,7 +1,6 @@
 import React,{Component} from 'react'
 import { connect } from 'react-redux'
-import {REP_954} from '../../hrRepUtil'
-import { Modal,Form,TextArea,Button } from 'semantic-ui-react'
+import {REP_954,REP_955} from '../../hrRepUtil'
 import {RepTable954} from './HrRepTables'
 import {toggleRepModal,updateDirectorNote} from '../../actions/hrReportAction'
 
@@ -40,7 +39,9 @@ class HrRepTable extends Component{
         const {id} = this.props.meta
         switch (id){
             case REP_954:
+            case REP_955:
                 return <RepTable954 transactionId={id} items={this.props.items} />
+
             default:
                 return <h2>Report Table Not Found!</h2>
         }

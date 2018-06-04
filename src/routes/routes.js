@@ -306,7 +306,6 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/crm/wspace" component={AsyncCrmWspacePage} />
         <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} />
         {/*<Route path="/crm/wspace" component={AsyncCrmWspacePage} />*/}
-        <Route path="/hr/staff/timesheet" component={AsyncHrTimesheetPage} />
         <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
         <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
       <Route path="/finance/mainoperation/fcis" component={AsyncFsis} />

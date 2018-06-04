@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
-import {Container,Divider,Header,Button,Segment,Form,Grid,Table,Label,Menu,Icon} from 'semantic-ui-react';
+import {Container,Divider,Header,Button,Segment,Form,Table,Message} from 'semantic-ui-react';
 import YearF4 from '../../../../reference/f4/date/YearF4'
 import MonthF4 from '../../../../reference/f4/date/MonthF4'
-import {fetchItems,saveData} from '../actions/hrTimesheetAction'
+import {fetchItems,saveData,fetchStatuses} from '../actions/hrTimesheetAction'
 import moment from 'moment'
 
 const currentDate = new Date()
@@ -30,6 +30,7 @@ class TimesheetPage extends Component{
 
     componentWillMount(){
         this.loadItems()
+        this.props.fetchStatuses()
     }
 
     handleChange = (e,data) => {
@@ -44,37 +45,11 @@ class TimesheetPage extends Component{
     }
 
     loadItems = () => {
+        this.setState({
+            ...this.state,
+            selectedItems: {}
+        })
         this.props.fetchItems(this.state.search)
-    }
-
-    statuses = () => {
-        return [
-            {
-                key: null,
-                value: null,
-                text: ''
-            },
-            {
-                key: 'PRESENT',
-                value: 'PRESENT',
-                text: 'П.'
-            },
-            {
-                key: 'MISSING',
-                value: 'MISSING',
-                text: 'О.'
-            },
-            {
-                key: 'ILL',
-                value: 'ILL',
-                text: 'Б.'
-            },
-            {
-                key: 'BUSINESS_TRIP',
-                value: 'BUSINESS_TRIP',
-                text: 'К.'
-            }
-        ]
     }
 
     branchOptions = (bukrs) => {
@@ -177,7 +152,7 @@ class TimesheetPage extends Component{
             }
         }
 
-        selectedItems[staffId]['days'][dayNumber] = {number: dayNumber,status: value,enabled: true}
+        selectedItems[staffId]['days'][dayNumber] = {number: dayNumber,statusName: value,enabled: true}
 
         this.setState({
             ...this.state,
@@ -185,8 +160,21 @@ class TimesheetPage extends Component{
         })
     }
 
+    itemStatusCount = (item, status) => {
+        let days = item.days || []
+        let filteredDays = _.filter(days,function(o){
+            return o['status'] === status
+        })
+
+        return filteredDays.length
+    }
+
     renderDaysCell = (item) => {
         let days = item.days || []
+        let statuses = this.props.statuses
+        if(!statuses){
+            statuses = []
+        }
         const {leftPart,selectedItems} = this.state
         let filteredDays = _.filter(days,function(o){
             if(leftPart){
@@ -201,11 +189,12 @@ class TimesheetPage extends Component{
         //let selectedItems[item.staffId + '_' + item.year + '_' + item.month]
 
     let content = filteredDays.map((day => {
-                let opValue = staffDays[day.number]?staffDays[day.number]['status'] : day['status'] //(day) @ToDo
+                let opValue = staffDays[day.number]?staffDays[day.number]['statusName'] : (day['statusName']||'') //(day) @ToDo
                 return <Table.Cell negative={opValue === 'MISSING'} positive={opValue === 'PRESENT'} key={day.number}>
                     <select value={opValue} onChange={(e) => this.handleDayStatusChange(item,day.number,e.target.value)}>
-                        {this.statuses().map((s => {
-                            return <option key={s.key} value={s.value}>{s.text}</option>
+                        <option key={''} value={''}>-</option>
+                        {statuses.map((s => {
+                            return <option key={s.name} value={s.name}>{s.code}</option>
                         }))}
                     </select>
                 </Table.Cell>
@@ -250,10 +239,10 @@ class TimesheetPage extends Component{
                         {days.map((day => {
                             return <Table.HeaderCell key={day}>{day}</Table.HeaderCell>
                         }))}
-                        <Table.HeaderCell>П.</Table.HeaderCell>
-                        <Table.HeaderCell>Б.</Table.HeaderCell>
-                        <Table.HeaderCell>О.</Table.HeaderCell>
-                        <Table.HeaderCell>К.</Table.HeaderCell>
+                        {/*<Table.HeaderCell>П.</Table.HeaderCell>*/}
+                        {/*<Table.HeaderCell>Б.</Table.HeaderCell>*/}
+                        {/*<Table.HeaderCell>О.</Table.HeaderCell>*/}
+                        {/*<Table.HeaderCell>К.</Table.HeaderCell>*/}
                     </Table.Row>
                 </Table.Header>
 
@@ -263,10 +252,10 @@ class TimesheetPage extends Component{
                             <Table.Cell>{item.staffName}</Table.Cell>
                             <Table.Cell>{item.positionName}</Table.Cell>
                                 {this.renderDaysCell(item)}
-                            <Table.Cell>0</Table.Cell>
-                            <Table.Cell>0</Table.Cell>
-                            <Table.Cell>0</Table.Cell>
-                            <Table.Cell>0</Table.Cell>
+                            {/*<Table.Cell>{this.itemStatusCount(item,'PRESENT')}</Table.Cell>*/}
+                            {/*<Table.Cell>{this.itemStatusCount(item,'ILL')}</Table.Cell>*/}
+                            {/*<Table.Cell>{this.itemStatusCount(item,'MISSING')}</Table.Cell>*/}
+                            {/*<Table.Cell>{this.itemStatusCount(item,'BUSINESS_TRIP')}</Table.Cell>*/}
                         </Table.Row>
                     }))}
                 </Table.Body>
@@ -306,6 +295,21 @@ class TimesheetPage extends Component{
         }
     }
 
+    renderStatusDescriptions(){
+        let statuses = this.props.statuses
+        if(!statuses){
+            statuses = []
+        }
+        return <Message>
+                    <Message.Header>Обозначения и коды</Message.Header>
+                    <Message.List>
+                        {statuses.map((status => {
+                            return <Message.Item key={status.code}><strong>{status.code}</strong> - {status.description}</Message.Item>
+                        }))}
+                    </Message.List>
+                </Message>
+    }
+
     render () {
         return (
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
@@ -316,6 +320,7 @@ class TimesheetPage extends Component{
                 <Divider clearing />
                 {this.renderData()}
                 <Divider/>
+                {this.renderStatusDescriptions()}
             </Container>
         )
     }
@@ -325,10 +330,11 @@ function mapStateToProps (state) {
     return {
         companyOptions: state.userInfo.companyOptions,
         items: state.hrTimesheet.items,
+        statuses: state.hrTimesheet.statuses,
         branchOptionsAll: state.userInfo.branchOptionsAll
     }
 }
 
 export default connect(mapStateToProps, {
-    fetchItems,saveData
+    fetchItems,saveData,fetchStatuses
 })(TimesheetPage)
