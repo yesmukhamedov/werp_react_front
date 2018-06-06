@@ -32,13 +32,7 @@ export  function RepTable954(props){
                 const { index } = props;
                 return <div>{index + 1}</div>;
             },
-            maxWidth: 50,
-            Footer: (
-                <span>
-            <strong>Всего:</strong>{' '}
-                    {_.size(items)}
-          </span>
-            )
+            maxWidth: 50
         },
         {
             Header: 'Фамилия',
@@ -55,7 +49,13 @@ export  function RepTable954(props){
         {
             Header: 'Должности',
             id: 'positions',
-            accessor: (row) => renderPositions(row.positions || [])
+            accessor: (row) => renderPositions(row.positions || []),
+            Footer: (
+                <span>
+            <strong>Всего:</strong>{' '}
+                    {_.size(items)}
+          </span>
+            )
         }
     ];
     return (<ReactTable
