@@ -1,15 +1,13 @@
 import React,{Component} from 'react'
-import { Card,Image,Button,Modal, Segment, Statistic,Icon,Divider } from 'semantic-ui-react'
+import { Card,Button,Modal, Icon,Loader,Segment,Dimmer } from 'semantic-ui-react'
 import WspaceRecoCard from './WspaceRecoCard'
 import {RECO_MODAL_ITEMS} from '../wspaceUtil'
 
 export default function WspaceRecoListModal (props) {
-    let {opened,items,recommender} = props
+    let {opened,items,recommender,loaders} = props
     if(!items){
         items = []
     }
-
-    console.log(recommender.phones)
 
     return <Modal size={'fullscreen'}
                   open={opened} onClose={() => console.log('TEST')}>
@@ -39,11 +37,18 @@ export default function WspaceRecoListModal (props) {
             <br style={{clear:'both'}}/>
         </Modal.Header>
         <Modal.Content scrolling>
-            <Card.Group>
-                {items.map(item => (
-                    <WspaceRecoCard  type={RECO_MODAL_ITEMS} key={item.id} item={item}/>
-                ))}
-            </Card.Group>
+            {loaders[RECO_MODAL_ITEMS]?
+            <Segment>
+                <Dimmer active inverted>
+                    <Loader inverted>Загружаем...</Loader>
+                </Dimmer>
+            </Segment>
+                :<Card.Group>
+                    {loaders[RECO_MODAL_ITEMS]?<Loader active inline='centered'/>:items.map(item => (
+                            <WspaceRecoCard  type={RECO_MODAL_ITEMS} key={item.id} item={item}/>
+                        ))}
+                </Card.Group>}
+
         </Modal.Content>
         <Modal.Actions>
             <Button color='black' onClick={props.closeRecoListModal}>

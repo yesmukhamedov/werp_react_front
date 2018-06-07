@@ -17,7 +17,7 @@ export function RepSearch954(props){
     return <Form>
                 <Form.Group widths='equal'>
                     {renderBukrsSelect(props)}
-                    {renderBranchSelect(props,false)}
+                    {renderMultipleBranchSelect(props)}
                     <Form.Select
                         name='departmentId'
                         search={true}
@@ -28,8 +28,9 @@ export function RepSearch954(props){
                         onChange={props.handleChange} />
 
                     <Form.Select
-                        name='positionId'
+                        name='positionIds'
                         search={true}
+                        multiple={true}
                         label='Должность'
                         selectOnBlur={false}
                         options={props.positionOptions}
@@ -78,6 +79,17 @@ function renderBranchSelect(props,multiple){
         name='branchId'
         search
         multiple={multiple}
+        label='Филиал'
+        options={props.branchOptions}
+        placeholder='Филиал'
+        onChange={props.handleChange} />
+}
+
+function renderMultipleBranchSelect(props){
+    return <Form.Select
+        name='branchIds'
+        search
+        multiple={true}
         label='Филиал'
         options={props.branchOptions}
         placeholder='Филиал'

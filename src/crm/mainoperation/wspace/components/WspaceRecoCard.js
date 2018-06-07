@@ -1,8 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
-import { Card,Image,Button,Label,Icon,Message,Popup } from 'semantic-ui-react'
-import {MENU_BY_RECO,MENU_BY_DATE,RECO_MODAL_ITEMS} from '../wspaceUtil'
-import {renderRecoCategoryBtn} from '../../../CrmHelper'
+import { Card,Image,Button,Label,Icon,Message,Popup, Menu, Dropdown } from 'semantic-ui-react'
+import {MENU_BY_RECO,MENU_BY_DATE,RECO_MODAL_ITEMS,MENU_MOVED} from '../wspaceUtil'
+import {renderRecoCategoryBtn,renderDemoResultLabel} from '../../../CrmHelper'
 
 export default function WspaceRecoCard(props){
         const {item,type} = props
@@ -15,6 +15,9 @@ export default function WspaceRecoCard(props){
 
             case MENU_BY_DATE:
                 return renderByDate(props)
+
+            case MENU_MOVED:
+                return renderMovedReco(props)
 
             case RECO_MODAL_ITEMS:
                 return renderRecosInModal(props)
@@ -33,11 +36,11 @@ function renderRecosInModal(props){
                     {item.clientName}
                 </Card.Header>
                 <Card.Meta>
-                    <Popup style={{float:'left'}}
-                           trigger={<Label color={'blue'} size={'small'}>{item.dateTime}</Label>}
+                    {item.callDate?<Popup style={{float:'left'}}
+                           trigger={<Label color={'blue'} size={'small'}>{item.callDate}</Label>}
                            content="Дата-время перезвона"
                            basic
-                    />
+                    />:''}
 
                     <span style={{float:'right'}}>{renderRecoCategoryBtn(item.categoryId,item.categoryName)}</span>
                 </Card.Meta>
@@ -61,17 +64,34 @@ function renderRecosInModal(props){
 
 function renderByDate(props){
     const {item} = props
+    let barMenuItems = [
+        {
+            key: item.id,
+            value: item.id,
+            icon: 'archive',
+            value: item.id,
+            text: 'В архив'
+        }
+    ]
     return <Card>
         <Card.Content>
-            <Card.Header>
+            <Card.Header className="reco-card-header">
                 {item.clientName}
+                <Dropdown icon={'bars'} className='icon bar'>
+                    <Dropdown.Menu className='right'>
+                        <Dropdown.Item onClick={(e,d) => props.recoCardMenuHandle('to_archive',item.id)}>
+                            <Icon name={'archive'}/>
+                            В архив
+                        </Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
             </Card.Header>
             <Card.Meta>
                 {item.recommenderName}
             </Card.Meta>
             <Card.Meta>
                     <Popup style={{float:'left'}}
-                        trigger={<Label color={'blue'} size={'small'}>{item.dateTime}</Label>}
+                        trigger={<Label color={'blue'} size={'small'}>{item.callDate}</Label>}
                         content="Дата-время перезвона"
                         basic
                     />
@@ -97,8 +117,8 @@ function renderByReco(props){
     const {item} = props
     return <Card>
         <Card.Content>
-            <Card.Header>
-                {item.clientName}
+            <Card.Header className='reco-card-header'>
+                {_.truncate(item.clientName,{length: 20})}
             </Card.Header>
             <Card.Meta>
                 <span style={{float:'left'}}>
@@ -123,14 +143,52 @@ function renderByReco(props){
             {item.phones.map((p) => renderPhone(p))}
         </Card.Content>
         <Card.Content extra>
+            {renderDemoResultLabel(item.resultId,item.resultName)}
             <Label>
                 <Icon name='users' /> {item.recoCount}
             </Label>
-
-            <Label>
-                <Icon name='volume control phone' /> 23
+            <Label as={'a'} onClick={() => props.openRecoListModal(item)}>
+                <Icon name='unhide' /> Обзвонить
             </Label>
 
+        </Card.Content>
+    </Card>
+}
+
+function renderMovedReco(props){
+    const {item} = props
+    return <Card>
+        <Card.Content>
+            <Card.Header className='reco-card-header'>
+                {_.truncate(item.clientName,{length: 20})}
+            </Card.Header>
+            <Card.Meta>
+                <span style={{float:'left'}}>
+                    <Popup
+                        trigger={<Label>{item.demoDate}</Label>}
+                        content="Дата-время демонстрации"
+                        basic
+                    />
+                </span>
+                <span style={{float:'right'}}>{renderRecoCategoryBtn(item.categoryId,item.categoryName)}</span>
+            </Card.Meta>
+            <Card.Description>
+                    <span style={{fontSize:'11px'}}>
+                    {_.truncate(item.address,{length: 150})}
+                </span>
+            </Card.Description>
+        </Card.Content>
+        <Card.Content extra>
+
+        </Card.Content>
+        <Card.Content extra>
+            {item.phones.map((p) => renderPhone(p))}
+        </Card.Content>
+        <Card.Content extra>
+            {renderDemoResultLabel(item.resultId,item.resultName)}
+            <Label>
+                <Icon name='users' /> {item.recoCount}
+            </Label>
             <Label as={'a'} onClick={() => props.openRecoListModal(item)}>
                 <Icon name='unhide' /> Обзвонить
             </Label>
