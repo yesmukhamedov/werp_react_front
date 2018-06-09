@@ -9,6 +9,8 @@ export const WSP_FETCH_RECOS_BY_RECO = 'WSP_FETCH_RECOS_BY_RECO'
 export const WSP_FETCH_RECOS_BY_DATE = 'WSP_FETCH_RECOS_BY_DATE'
 export const WSP_FETCH_RECOS_MOVED = 'WSP_FETCH_RECOS_MOVED'
 export const WSP_FETCH_DEMO_RECOS = 'WSP_FETCH_DEMO_RECOS'
+export const WSP_FETCH_TODAY_CALLS = 'WSP_FETCH_TODAY_CALLS'
+export const WSP_FETCH_TODAY_DEMOS = 'WSP_FETCH_TODAY_DEMOS'
 export const WSP_LOADER_CHANGED = 'WSP_LOADER_CHANGED'
 
 export function toggleRecoListModal (flag){
@@ -104,6 +106,46 @@ export function fetchDemoRecos(demoId){
             })
         }).catch((e) => {
             dispatch(modifyLoader(RECO_MODAL_ITEMS,false));
+            handleError(e,dispatch)
+        })
+    }
+}
+
+export function fetchTodayCalls(){
+    return function (dispatch){
+        //dispatch(modifyLoader(RECO_MODAL_ITEMS,true));
+        axios.get(`${ROOT_URL}/api/crm/wspace/today-calls`,{
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        }).then(({data}) => {
+            //dispatch(modifyLoader(RECO_MODAL_ITEMS,false));
+            dispatch({
+                type: WSP_FETCH_TODAY_CALLS,
+                payload: data
+            })
+        }).catch((e) => {
+            //dispatch(modifyLoader(RECO_MODAL_ITEMS,false));
+            handleError(e,dispatch)
+        })
+    }
+}
+
+export function fetchTodayDemos(){
+    return function (dispatch){
+        //dispatch(modifyLoader(RECO_MODAL_ITEMS,true));
+        axios.get(`${ROOT_URL}/api/crm/wspace/today-demos`,{
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        }).then(({data}) => {
+            //dispatch(modifyLoader(RECO_MODAL_ITEMS,false));
+            dispatch({
+                type: WSP_FETCH_TODAY_CALLS,
+                payload: data
+            })
+        }).catch((e) => {
+            //dispatch(modifyLoader(RECO_MODAL_ITEMS,false));
             handleError(e,dispatch)
         })
     }

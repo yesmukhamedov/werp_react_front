@@ -5,7 +5,9 @@ import {
         WSP_FETCH_RECOS_BY_DATE,
         WSP_FETCH_RECOS_MOVED,
         WSP_FETCH_DEMO_RECOS,
-        WSP_LOADER_CHANGED
+        WSP_LOADER_CHANGED,
+        WSP_FETCH_TODAY_CALLS,
+        WSP_FETCH_TODAY_DEMOS
 } from '../actions/wspaceAction'
 
 
@@ -20,7 +22,10 @@ const INITIAL_STATE={
     currentRecommender:{},
     currentRecommenderRecos:[],
     staffRecoData: {},
-    loaders:{}
+    loaders:{},
+    todayCallsByResult:{},
+    dashboardCallMenus:[],
+    todayDemos: []
 };
 
 export default function (state=INITIAL_STATE, action)
@@ -49,6 +54,38 @@ export default function (state=INITIAL_STATE, action)
             let loaders = Object.assign({},state.loaders)
             loaders[action.key] = action.payload
             return {...state,loaders: loaders}
+
+        case WSP_FETCH_TODAY_CALLS:
+            let todayCalls = action.payload
+            let callsByResult = {}
+            let dashboardCallMenus = []
+            for(let k in todayCalls){
+                let temp = todayCalls[k]
+                if(!callsByResult[temp['resultName']]){
+                    callsByResult[temp['resultName']] = []
+                }
+
+                callsByResult[temp['resultName']].push(temp)
+            }
+
+            dashboardCallMenus.push({
+                'name': 'all',
+                'label': 'Все звонки',
+                'count': todayCalls.length
+            })
+
+            for(let res in callsByResult){
+                dashboardCallMenus.push({
+                    'name': res,
+                    'label': res,
+                    'count': callsByResult[res].length
+                })
+            }
+
+            callsByResult['all'] = todayCalls
+
+            return {...state,todayCallsByResult: callsByResult,dashboardCallMenus:dashboardCallMenus}
+
 
 
         default:

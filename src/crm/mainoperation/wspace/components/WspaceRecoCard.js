@@ -64,21 +64,25 @@ function renderRecosInModal(props){
 
 function renderByDate(props){
     const {item} = props
-    let barMenuItems = [
-        {
-            key: item.id,
-            value: item.id,
-            icon: 'archive',
-            value: item.id,
-            text: 'В архив'
-        }
-    ]
+    let {calls} = item
+    if(!calls){
+        calls = []
+    }
+
+    let lastNote = item.recoNote
+    if(calls[calls.length-1] && calls[calls.length-1]['note']){
+        lastNote = calls[calls.length-1]['note']
+    }
     return <Card>
         <Card.Content>
             <Card.Header className="reco-card-header">
-                {item.clientName}
+                {_.truncate(item.clientName,{length: 20})}
                 <Dropdown icon={'bars'} className='icon bar'>
                     <Dropdown.Menu className='right'>
+                        <Dropdown.Item onClick={(e,d) => props.recoCardMenuHandle('view',item.id)}>
+                            <Icon name={'eye'}/>
+                            Открыть
+                        </Dropdown.Item>
                         <Dropdown.Item onClick={(e,d) => props.recoCardMenuHandle('to_archive',item.id)}>
                             <Icon name={'archive'}/>
                             В архив
@@ -100,12 +104,9 @@ function renderByDate(props){
             </Card.Meta>
             <Card.Description>
                     <span style={{fontSize:'11px'}}>
-                        {item.note} <a href="#" onClick={() => console.log('Read More...')}>полностью</a>
+                        {lastNote}
                 </span>
             </Card.Description>
-        </Card.Content>
-        <Card.Content extra>
-
         </Card.Content>
         <Card.Content extra>
             {item.phones.map((p) => renderPhone(p))}
@@ -161,6 +162,14 @@ function renderMovedReco(props){
         <Card.Content>
             <Card.Header className='reco-card-header'>
                 {_.truncate(item.clientName,{length: 20})}
+                <Dropdown icon={'bars'} className='icon bar'>
+                    <Dropdown.Menu className='right'>
+                        <Dropdown.Item onClick={(e,d) => props.recoCardMenuHandle('to_archive',item.id)}>
+                            <Icon name={'archive'}/>
+                            В архив
+                        </Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
             </Card.Header>
             <Card.Meta>
                 <span style={{float:'left'}}>
@@ -183,16 +192,6 @@ function renderMovedReco(props){
         </Card.Content>
         <Card.Content extra>
             {item.phones.map((p) => renderPhone(p))}
-        </Card.Content>
-        <Card.Content extra>
-            {renderDemoResultLabel(item.resultId,item.resultName)}
-            <Label>
-                <Icon name='users' /> {item.recoCount}
-            </Label>
-            <Label as={'a'} onClick={() => props.openRecoListModal(item)}>
-                <Icon name='unhide' /> Обзвонить
-            </Label>
-
         </Card.Content>
     </Card>
 }

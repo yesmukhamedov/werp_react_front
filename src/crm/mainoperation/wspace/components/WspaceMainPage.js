@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 import {MENU_DASHBOARD,MENU_ALL_RECOS,MENU_ITEMS,MENU_BY_RECO,MENU_BY_DATE,MENU_MOVED,MENU_CURRENT_DEMO,ITEMS,RECO_ITEMS_TEMP} from '../wspaceUtil'
 import '../css/main-page.css'
 import {fetchGroupDealers} from '../../demo/actions/demoAction'
-import {toggleRecoListModal,setCurrentRecommender,fetchRecosByReco,fetchRecosByDate,fetchDemoRecos,archiveReco,fetchMovedRecos} from '../actions/wspaceAction'
+import {toggleRecoListModal,setCurrentRecommender,fetchRecosByReco,fetchRecosByDate,fetchDemoRecos,archiveReco,fetchMovedRecos,fetchTodayCalls,fetchTodayDemos} from '../actions/wspaceAction'
 import WspaceHeader from './WspaceHeader'
 import WspaceMenu from './WspaceMenu'
 import WspaceRecoList from  './WspaceRecoList'
@@ -29,6 +29,8 @@ class WspaceMainPage extends Component {
 
   componentWillMount () {
       this.props.fetchGroupDealers()
+      this.props.fetchTodayCalls()
+      this.props.fetchTodayDemos()
   }
 
   onSelectStaff(staff){
@@ -53,7 +55,12 @@ class WspaceMainPage extends Component {
 
     recoCardMenuHandle = (itemName,recoId) => {
         if(itemName === 'to_archive'){
-            this.props.archiveReco(recoId)
+            if(window.confirm('Действительно хотите закрыть рекомендацию?')){
+                this.props.archiveReco(recoId)
+            }
+        }else if(itemName === 'view'){
+            let win = window.open('/crm/reco/view/' + recoId,'_blank')
+            win.focus()
         }
     }
 
@@ -138,5 +145,6 @@ function mapStateToProps (state) {
 
 export default connect(mapStateToProps, {
     fetchGroupDealers,toggleRecoListModal,setCurrentRecommender,fetchRecosByReco,
-    fetchRecosByDate,fetchDemoRecos,archiveReco,fetchMovedRecos
+    fetchRecosByDate,fetchDemoRecos,archiveReco,fetchMovedRecos,fetchTodayCalls,
+    fetchTodayDemos
 })(WspaceMainPage)
