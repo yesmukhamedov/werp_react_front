@@ -99,6 +99,19 @@ class HrRepSearch extends Component{
         switch (name){
             case 'bukrs':
                 search['branchId'] = null
+                search['branchIds'] = null
+                search[name] = value
+                break
+
+            case 'branchIds':
+            case 'positionIds':
+                if(value && value.length > 0){
+                    search[name] = value.join(',')
+                }else{
+                    search[name] = null
+                }
+
+                break
 
             default:
                 search[name] = value

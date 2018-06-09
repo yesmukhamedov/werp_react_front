@@ -24,3 +24,14 @@
     font-size:11px;
     font-weight: bold;
 }
+
+.reco-card-header{
+    font-size: 16px !important;
+    margin-bottom: 5px;
+    border-bottom: 1px #dddddd dotted;
+}
+
+.reco-card-header .bar{
+    float: right;
+    cursor: pointer;
+}

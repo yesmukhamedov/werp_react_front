@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import _ from 'lodash'
 import "react-table/react-table.css";
-import { Tab,Header,Container,Icon,Segment,Label,Accordion,Menu,Input } from 'semantic-ui-react'
+import { Tab,Header,Container,Icon,Segment,Label,Accordion,Menu,Input,Loader } from 'semantic-ui-react'
 import moment from 'moment';
 import {MENU_ITEMS,MENU_DASHBOARD,MENU_ADD_INFO} from '../wspaceUtil'
 import '../css/header-page.css'
@@ -9,7 +9,8 @@ import '../css/header-page.css'
 
 
 export default function WspaceMenu (props) {
-    const {activeItem} = props
+    const {activeItem,items,loaders} = props
+
     return (
         <Menu stackable>
             <Menu.Item
@@ -19,15 +20,19 @@ export default function WspaceMenu (props) {
                 onClick={() => props.handleItemClick(MENU_DASHBOARD)}>
                 Dashboard
             </Menu.Item>
-            {MENU_ITEMS.map(m => (
+            {items.map(m => (
                 <Menu.Item
                     as='a'
                     key={m.name}
                     name={m.name}
                     active={activeItem === m.name}
                     onClick={() => props.handleItemClick(m.name)}>
-                    {m.label}
-                    <Label color={m.count === 0?'grey':'red'} size={'mini'}>{m.count}</Label>
+                    {loaders[m.name]?'':m.label}
+
+                    {loaders[m.name]?<Loader size={'mini'} active/>:<Label color={m.count === 0?'grey':'red'} size={'mini'}>
+                            {m.count}
+                        </Label>}
+
                 </Menu.Item>
             ))}
             <Menu.Item

@@ -1,12 +1,12 @@
 import React, {Component} from 'react'
 import _ from 'lodash'
 import "react-table/react-table.css";
-import { Tab,Header,Container,Icon,Segment,Label,Divider } from 'semantic-ui-react'
+import { Container,Divider } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import {MENU_DASHBOARD,MENU_ALL_RECOS,MENU_ITEMS,MENU_BY_RECO,MENU_BY_DATE,MENU_MOVED,MENU_CURRENT_DEMO,ITEMS,RECO_ITEMS_TEMP} from '../wspaceUtil'
 import '../css/main-page.css'
 import {fetchGroupDealers} from '../../demo/actions/demoAction'
-import {toggleRecoListModal,setCurrentRecommender,fetchRecosByReco} from '../actions/wspaceAction'
+import {toggleRecoListModal,setCurrentRecommender,fetchRecosByReco,fetchRecosByDate,fetchDemoRecos,archiveReco,fetchMovedRecos,fetchTodayCalls,fetchTodayDemos} from '../actions/wspaceAction'
 import WspaceHeader from './WspaceHeader'
 import WspaceMenu from './WspaceMenu'
 import WspaceRecoList from  './WspaceRecoList'
@@ -29,10 +29,14 @@ class WspaceMainPage extends Component {
 
   componentWillMount () {
       this.props.fetchGroupDealers()
+      this.props.fetchTodayCalls()
+      this.props.fetchTodayDemos()
   }
 
   onSelectStaff(staff){
       this.props.fetchRecosByReco(staff.key)
+      this.props.fetchRecosByDate(staff.key)
+      this.props.fetchMovedRecos(staff.key)
       this.setState({
           ...this.state,
           currentStaff: staff
@@ -49,6 +53,17 @@ class WspaceMainPage extends Component {
         })
     }
 
+    recoCardMenuHandle = (itemName,recoId) => {
+        if(itemName === 'to_archive'){
+            if(window.confirm('Действительно хотите закрыть рекомендацию?')){
+                this.props.archiveReco(recoId)
+            }
+        }else if(itemName === 'view'){
+            let win = window.open('/crm/reco/view/' + recoId,'_blank')
+            win.focus()
+        }
+    }
+
   renderContent = () =>{
       let menuItems = this.props.staffRecoData[this.state.currentMenu] || []
       switch (this.state.currentMenu){
@@ -57,6 +72,7 @@ class WspaceMainPage extends Component {
           case MENU_BY_DATE:
           case MENU_MOVED:
               return <WspaceRecoList
+                        recoCardMenuHandle={this.recoCardMenuHandle}
                         openRecoListModal={this.openRecoListModal}
                         menu={this.state.currentMenu}
                         items={menuItems}/>
@@ -68,6 +84,7 @@ class WspaceMainPage extends Component {
 openRecoListModal = (recommender) => {
     this.props.setCurrentRecommender(recommender)
     this.props.toggleRecoListModal(true)
+    this.props.fetchDemoRecos(recommender.id)
 }
 
 closeRecoListModal = () => {
@@ -76,6 +93,17 @@ closeRecoListModal = () => {
 
   render () {
       const {currentStaff} = this.state
+      let menuItems = []
+      for(let k in MENU_ITEMS){
+          let temp = MENU_ITEMS[k]
+          if(this.props.staffRecoData && this.props.staffRecoData[temp.name]){
+              temp['count'] = _.size(this.props.staffRecoData[temp.name])
+          }else{
+              temp['count'] = 0
+          }
+
+          menuItems.push(temp)
+      }
     return (
       <Container fluid className={'main-container'}>
           <WspaceHeader
@@ -87,12 +115,15 @@ closeRecoListModal = () => {
               {currentStaff && currentStaff.text ?currentStaff.text:''}
           </Divider>
           <WspaceMenu
+              loaders={this.props.loaders}
               activeItem={this.state.currentMenu}
+              items={menuItems}
               handleItemClick={this.onSelectMenu}/>
           <Divider horizontal>{this.state.dividerTitle}</Divider>
           {this.renderContent()}
           <WspaceRecoListModal
-              items={RECO_ITEMS_TEMP}
+              loaders={this.props.loaders}
+              items={this.props.currentRecommenderRecos}
               recommender={this.props.currentRecommender}
               closeRecoListModal={this.closeRecoListModal}
               opened={this.props.recoListModalOpened} />
@@ -106,10 +137,14 @@ function mapStateToProps (state) {
         dealers: state.crmDemo.dealers,
         recoListModalOpened: state.crmWspaceReducer.recoListModalOpened,
         currentRecommender: state.crmWspaceReducer.currentRecommender,
-        staffRecoData: state.crmWspaceReducer.staffRecoData
+        staffRecoData: state.crmWspaceReducer.staffRecoData,
+        currentRecommenderRecos: state.crmWspaceReducer.currentRecommenderRecos,
+        loaders: state.crmWspaceReducer.loaders
     }
 }
 
 export default connect(mapStateToProps, {
-    fetchGroupDealers,toggleRecoListModal,setCurrentRecommender,fetchRecosByReco
+    fetchGroupDealers,toggleRecoListModal,setCurrentRecommender,fetchRecosByReco,
+    fetchRecosByDate,fetchDemoRecos,archiveReco,fetchMovedRecos,fetchTodayCalls,
+    fetchTodayDemos
 })(WspaceMainPage)

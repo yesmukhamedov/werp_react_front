@@ -10,7 +10,13 @@ export default function WspaceRecoList(props){
 
     return <Card.Group>
         {items.map(item => (
-            <WspaceRecoCard openRecoListModal={props.openRecoListModal}  type={menu} key={item.id} item={item}/>
+            <WspaceRecoCard
+                openRecoListModal={props.openRecoListModal}
+                type={menu}
+                key={item.id}
+                item={item}
+                recoCardMenuHandle={props.recoCardMenuHandle}
+            />
         ))}
     </Card.Group>
 }

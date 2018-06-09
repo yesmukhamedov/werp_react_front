@@ -14,8 +14,8 @@ export default function WspaceDashboardMenu(props){
                 key={m.name}
                 name={m.name}
                 active={activeItem === m.name}
-                onClick={props.handleItemClick}>
-                <Label color='teal'>{m.count}</Label>
+                onClick={() => props.handleItemClick(m.name)}>
+                <Label>{m.count}</Label>
                 {m.label}
             </Menu.Item>
         ))}
