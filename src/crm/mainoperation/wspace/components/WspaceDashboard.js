@@ -27,6 +27,9 @@ class WspaceDashboard extends Component {
       let {todayCallsByResult} = this.props
     return <Grid>
         <Grid.Row>
+            <Grid.Column width={16}>
+                <h3>Звонки</h3>
+            </Grid.Column>
             <Grid.Column width={4}>
                 <WspaceDashboardMenu
                     items={this.props.dashboardCallMenus}
@@ -50,7 +53,7 @@ class WspaceDashboard extends Component {
             <Grid.Column width={16}>
                 <WspaceDashboardContent
                     contentName="demos"
-                    items={todayCallsByResult[this.state.currentMenuOfCalls] || []}/>
+                    items={[]}/>
             </Grid.Column>
         </Grid.Row>
     </Grid>
