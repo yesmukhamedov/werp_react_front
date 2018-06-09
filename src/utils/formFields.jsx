@@ -15,7 +15,7 @@ export const DropdownFormField = (props) => {
   } = props;
   // {console.log(touched, error)}
   return (
-    <Form.Field error={touched && error} required={required}>
+    <Form.Field required={required}>
       <label>{label}</label>
       
       <Dropdown
@@ -108,7 +108,7 @@ export const DatePickerFormField = (props) => {
     meta: { touched, error },
   } = props;
   return (
-    <Form.Field error={touched && error} required={required}>
+    <Form.Field required={required}>
       <label>{label}</label>
       <DatePicker
         {...input}

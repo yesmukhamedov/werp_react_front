@@ -118,6 +118,12 @@ const AsyncOutCallTaskPage = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncTaskMonitorPage = Loadable({
+  loader: () =>
+    import('../administration/tasks/mainoperation/taskMonitor/components/TaskMonitorContainer' /* webpackChunkName: "TaskMonitorPage" */),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncRecoCurrentPage = Loadable({
         loader: () => import('../crm/mainoperation/reco/components/RecoCurrentPage' /* webpackChunkName: "RecoCurrentPage" */),
     loading: () => <LoadingPage />
@@ -304,11 +310,12 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/crm/kpi/setting" component={AsyncKpiSettingPage} />
       <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} />
       <Route path="/crm/wspace" component={AsyncCrmWspacePage} />
-        <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} />
-        {/*<Route path="/crm/wspace" component={AsyncCrmWspacePage} />*/}
-        <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
-        <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
+      <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} />
+      {/*<Route path="/crm/wspace" component={AsyncCrmWspacePage} />*/}
+      <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
+      <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
       <Route path="/finance/mainoperation/fcis" component={AsyncFsis} />
+      <Route path="/administration/dtskrep" component={AsyncTaskMonitorPage} />
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {

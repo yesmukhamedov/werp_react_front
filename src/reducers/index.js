@@ -10,6 +10,7 @@ import notificationReducer from '../general/notification/notification_reducer';
 import contractListReducer from '../crm/callCenter/mainoperation/contractList/reducers/ContractListReducer';
 import taskListReducer from '../crm/callCenter/mainoperation/taskList/reducers/TaskListReducer';
 import taskReducer from '../crm/callCenter/mainoperation/task/reducers/TaskReducer';
+import taskMonitorReducer from '../administration/tasks/mainoperation/taskMonitor/reducers/TaskMonitorReducer';
 
 import outCallsTransactionReducer from '../crm/callCenter/mainoperation/newIssue/reducers';
 import userInfoReducer from '../general/userInfo/userInfo_reducer';
@@ -42,6 +43,7 @@ const appReducer = combineReducers({
   contractList: contractListReducer,
   taskList: taskListReducer,
   task: taskReducer,
+  taskMonitor: taskMonitorReducer,
   userInfo: userInfoReducer,
   frcoln: frcolnReducer,
   loader: loaderReducer,
@@ -52,13 +54,13 @@ const appReducer = combineReducers({
   outCalls: outCallsTransactionReducer,
   hrStaff: hrStaffReducer,
   hrb02: hrb02Reducer,
-  fa:faReducer,
-    crmKpiSetting:kpiSettingReducer,
-    hrPyramid:hrPyramidReducer,
-    hrTimesheet: hrTimesheetReducer,
-    crmReportReducer: crmReportReducer,
-    hrReportReducer: hrReportReducer,
-    crmWspaceReducer: crmWspaceReducer
+  fa: faReducer,
+  crmKpiSetting: kpiSettingReducer,
+  hrPyramid: hrPyramidReducer,
+  hrTimesheet: hrTimesheetReducer,
+  crmReportReducer: crmReportReducer,
+  hrReportReducer: hrReportReducer,
+  crmWspaceReducer: crmWspaceReducer
 });
 
 const rootReducer = (state, action) => {
