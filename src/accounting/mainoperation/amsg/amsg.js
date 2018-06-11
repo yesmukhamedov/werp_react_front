@@ -219,7 +219,7 @@ class Amsg extends Component {
                   <Loader size='massive' />
                 </Dimmer>
                 <Header as="h2" block>
-                  Счет фактура
+                  Договор продажи
                 </Header>
                 
                 <Segment padded size="small">
