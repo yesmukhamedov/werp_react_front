@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { connect } from 'react-redux'
 import { Table, Button, Modal, Dropdown, Icon } from 'semantic-ui-react'
 import DatePicker from 'react-datepicker'
@@ -15,7 +15,7 @@ const options = [
 ]
 
 // const arrayList= ;
-class CustomerF4 extends Component {
+class CustomerF4 extends PureComponent {
   componentWillMount () {
     this.fetchCountries().then(result => {
       // let data = result.data;
@@ -37,10 +37,11 @@ class CustomerF4 extends Component {
   }
   fetchCustomers () {
     let customer = Object.assign({}, this.state.customerSearchTerm)
-    if (customer.birthday) {
-      let strVal = customer.birthday.format('YYYY-MM-DD')
-      customer.birthday = moment.utc(strVal).format()
-    }
+    // if (customer.birthday) {
+    //   console.log(customer.birthday,'bbb')
+      // let strVal = customer.birthday.format('YYYY-MM-DD')
+      // customer.birthday = strVal;
+    // }
 
     if (!customer.country_id) customer.country_id = 0
 
@@ -93,6 +94,7 @@ class CustomerF4 extends Component {
       }
     } else if (stateFieldName === 'birthday') {
       waCustomerSearchTerm.birthday = value
+      
     } else if (stateFieldName === 'iin_bin') waCustomerSearchTerm.iin_bin = value
     else if (stateFieldName === 'name') waCustomerSearchTerm.name = value
     else if (stateFieldName === 'firstname') waCustomerSearchTerm.firstname = value
@@ -112,6 +114,7 @@ class CustomerF4 extends Component {
     this.close()
   }
   renderUsers () {
+    // moment.tz('Asia/Almaty').format('DD.MM.YYYY')
     return this.state.customerList.map((cus, idx) => {
       // console.log(cus);
       var wa_birthday
@@ -119,7 +122,7 @@ class CustomerF4 extends Component {
       var wa_fizYurText
       if (cus.fiz_yur === 1) { wa_fizYurText = 'Юр.' } else { wa_fizYurText = 'Физ.' }
       return (
-
+        
         <Table.Row key={idx} onClick={() => this.onRowSelect(cus)}>
           <Table.Cell>{wa_fizYurText}</Table.Cell>
           <Table.Cell>{cus.iin_bin}</Table.Cell>
@@ -141,8 +144,11 @@ class CustomerF4 extends Component {
       <div id=''>
 
         <Modal open={this.props.open} closeOnEscape={false} onClose={this.close} >
+          <Modal.Header>
+            <Icon name='filter' size='big' />
+            Контрагент
+          </Modal.Header>
           <Modal.Content>
-            <h3>Контрагент</h3>
 
             <Table compact collapsing sortable id='customerF4SearchForm'>
               <Table.Body>
@@ -185,11 +191,12 @@ class CustomerF4 extends Component {
                   <Table.Cell><Icon name='window close' onClick={() => this.clearSelectedCountry()} size='large' inverted className='clickableIcon' color='red' /></Table.Cell>
                   <Table.Cell>День рождения</Table.Cell>
                   <Table.Cell>
-                    <DatePicker
+                    <DatePicker className='date-auto-width'
                       showMonthDropdown showYearDropdown dropdownMode='select' // timezone="UTC"
-                      selected={this.state.customerSearchTerm.birthday}
+                      selected={this.state.customerSearchTerm.birthday?moment(this.state.customerSearchTerm.birthday, 'YYYY-MM-DD'):''}
                       onChange={(event) => this.onInputChange(event, 'birthday')} isClearable={!this.state.disableFiz}
-                      dateFormat='DD.MM.YYYY' disabled={this.state.disableFiz} />
+                      dateFormat='DD.MM.YYYY' disabled={this.state.disableFiz}  
+                      />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>

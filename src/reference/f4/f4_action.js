@@ -160,6 +160,36 @@ export function f4FetchMatnrList(trans) {
     }    
 }
 
+export function f4FetchPriceList(trans,bukrs,waers) {
+
+    return function(dispatch) {
+
+        axios.get(`${ROOT_URL}/api/reference/priceList`, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            },
+            params:{
+                trans:trans,
+                bukrs:bukrs,
+                waers:waers
+            }
+
+            
+        })
+        .then(({data}) => {
+            dispatch({
+                type: F4_FETCH_MATNR_LIST,
+                matnrList:data
+            });
+    
+        })
+        .catch(error => {
+            console.log(error);              
+                 
+        });
+    }    
+}
+
 export function f4ClearMatnrList() {
     const obj = {
         type: F4_CLEAR_MATNR_LIST

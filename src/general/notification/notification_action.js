@@ -32,6 +32,34 @@ export function handleError(error,dispatch) {
         dispatch(notify('error',error.response.data.message,'Ошибка'));
 
     } else {
-        Promise.resolve({ error }).then(response => dispatch(notify('error',error.response.data.message,'Ошибка')));
+        // const name = getNestedObject(error, ['error', 'response']);
+
+        const get = function(obj, key) {
+            return key.split(".").reduce(function(o, x) {
+                return (typeof o == "undefined" || o === null) ? o : o[x];
+            }, obj);
+        }
+        
+        let message = "";
+        if (get(error, 'error.response.data.message')!==undefined){
+            message = error.response.data.message;
+        }
+        else if (get(error, 'error.response.data')!==undefined){
+            message = error.response.data;
+        }
+        else if (get(error, 'error.response')!==undefined){
+            message = error.response;
+        }
+        else if (get(error, 'error')!==undefined){
+            message = error;
+        }
+        else 
+        {            
+            message = "TypeError, check console";
+            console.log(error);
+        }
+        
+        Promise.resolve({ error }).then(response => dispatch(notify('error',message,'Ошибка')));
     }
+    
 }

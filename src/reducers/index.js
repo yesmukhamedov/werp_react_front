@@ -30,6 +30,7 @@ import crmReportReducer from '../crm/report/general/reducers/crmReportReducer'
 import hrReportReducer from '../hr/report/general/reducers/hrReportReducer'
 import crmWspaceReducer from '../crm/mainoperation/wspace/reducers/wspaceReducer'
 import faReducer from '../finance/fa_reducer';
+import accountingReducer from '../accounting/accounting_reducer';
 
 const appReducer = combineReducers({
   form,
@@ -60,7 +61,8 @@ const appReducer = combineReducers({
   hrTimesheet: hrTimesheetReducer,
   crmReportReducer: crmReportReducer,
   hrReportReducer: hrReportReducer,
-  crmWspaceReducer: crmWspaceReducer
+  crmWspaceReducer: crmWspaceReducer,
+  accounting:accountingReducer
 });
 
 const rootReducer = (state, action) => {

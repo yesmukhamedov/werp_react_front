@@ -3,19 +3,17 @@ import { Modal, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
-import {f4FetchMatnrList, f4ClearMatnrList} from '../f4_action'
+import {f4FetchMatnrList, f4ClearMatnrList, f4FetchPriceList} from '../f4_action'
 import matchSorter from 'match-sorter';
 // import './notification.css'
 
 // const arrayList= ;
 class MatnrF4Modal extends PureComponent{
     
-    componentWillMount() {
-        this.props.f4FetchMatnrList(this.props.trans);
-    }
+
   
     componentWillUnmount(){
-        this.props.f4ClearMatnrList();
+        this.props.f4ClearMatnrList();    
     }
 
 
@@ -23,6 +21,21 @@ class MatnrF4Modal extends PureComponent{
         this.props.closeModal(false);
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.trans==='hrb02'){
+            this.props.f4FetchMatnrList(this.props.trans);
+        }
+        if (nextProps.trans==='amsg'){
+            // console.log("AMSG")
+            if(nextProps.bukrs !== this.props.bukrs || nextProps.waers !== this.props.waers) {
+                if (nextProps.bukrs!==null && nextProps.bukrs!==undefined && nextProps.bukrs.length!==0
+                    && nextProps.waers!==null && nextProps.waers!==undefined  && nextProps.waers.length!==0){
+                    this.props.f4FetchPriceList(nextProps.trans,nextProps.bukrs,nextProps.waers);
+                }
+            }
+        }
+        
+    }
 
 
     render () {
@@ -46,6 +59,28 @@ class MatnrF4Modal extends PureComponent{
             t1columns.push(t1r1c1);
             t1columns.push(t1r1c2);
             t1columns.push(t1r1c3);
+        }
+        else if (trans==='amsg'){
+            let t1r1c1 = {Header:({value}) => <b>ID</b>,accessor: "matnr",width: 100,className:'clickableItem'};
+            let t1r1c2 = {Header:({value}) => <b>Code</b>,accessor: "code",width: 150,className:'clickableItem'};
+            let t1r1c3 = {Header:({value}) => <b>Название</b>
+            //,accessor: "text45"
+            ,id: "text45",
+            accessor: d => d.text45,
+            filterMethod: (filter, rows) =>
+              matchSorter(rows, filter.value, { keys: ["text45"] }),
+            filterAll: true,className:'clickableItem'};
+            
+            let t1r1c4 = {Header:({value}) => <b>Сумма</b>,accessor: "price",width: 150,className:'clickableItem'};
+            let t1r1c5 = {Header:({value}) => <b>Валюта</b>,accessor: "waers",width: 100,className:'clickableItem'};
+    
+    
+            
+            t1columns.push(t1r1c1);
+            t1columns.push(t1r1c2);
+            t1columns.push(t1r1c3);
+            t1columns.push(t1r1c4);
+            t1columns.push(t1r1c5);
         }
         
 
@@ -102,4 +137,4 @@ function mapStateToProps (state) {
   return { table: state.f4.matnrList }
 }
 
-export default connect(mapStateToProps, {f4FetchMatnrList, f4ClearMatnrList })(MatnrF4Modal)
+export default connect(mapStateToProps, {f4FetchMatnrList, f4ClearMatnrList, f4FetchPriceList })(MatnrF4Modal)

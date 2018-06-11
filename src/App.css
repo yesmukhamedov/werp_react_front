@@ -50,3 +50,12 @@
 .clickableIcon:hover{  
   cursor: pointer;
 }
+
+.react-datepicker__input-container input.date-100-width{
+  width:100px;
+  padding-left: 5px; 
+}
+
+.react-datepicker__input-container input.date-auto-width{
+  padding-left: 5px; 
+}

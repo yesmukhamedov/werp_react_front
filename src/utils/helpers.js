@@ -72,3 +72,43 @@ export function extractByParams(obj, param) {
 export function constructFullName(obj) {
   return extractByParams(obj, ['lastName', 'firstName', 'patronymic']);
 }
+
+
+export function handleFocus(event) {
+  event.target.select();
+}
+
+export function moneyFormat(value){
+  let strValue = value.toString();
+  let newValue = '';
+  if (strValue.length>0){
+      let arr = strValue.split(".");
+      let integerNumber = '';
+      if(arr[0]!==null && arr[0]!==undefined){                
+          integerNumber = arr[0];
+          let length = integerNumber.length;
+          let count = 0;
+
+          for (let i = 1; i<=length;i++){
+              count++;
+              if (count===3){
+                  newValue =  " "+integerNumber[length-i] + newValue;
+                  count = 0;
+              }
+              else
+              {                        
+                  newValue =  integerNumber[length-i] + newValue;
+              }
+          }
+          if (newValue.charAt[0]!==null && newValue.charCodeAt(0)==32)
+          {
+              newValue = newValue.substr(1);
+          }
+      }
+      if (arr[1]!==null && arr[1]!==undefined){
+          newValue = newValue+"."+arr[1];
+      }
+      
+  }
+  return newValue;
+}

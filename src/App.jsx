@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Menu, Segment, Sidebar, Loader } from 'semantic-ui-react';
+import { Menu, Segment, Sidebar, Loader, Dimmer } from 'semantic-ui-react';
 import './App.css';
 import Signin from './components/Auth/Signin';
 import { fetchUnreadMessages } from './actions/inbox';
@@ -59,7 +59,10 @@ class App extends Component {
               />
             </Sidebar>
             <Sidebar.Pusher onClick={this.handlePusherClick}>
-              <Loader active={this.props.activeLoader} />
+
+              <Dimmer active={this.props.activeLoader}>
+                <Loader />
+              </Dimmer>
               {this.props.routes}
             </Sidebar.Pusher>
           </Sidebar.Pushable>

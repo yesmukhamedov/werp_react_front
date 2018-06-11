@@ -241,12 +241,17 @@ const AsyncHrReportPage = Loadable({
     loading: () => <LoadingPage />
 });
 
+const AsyncAmsg = Loadable({
+  loader: () => import('../accounting/mainoperation/amsg/amsg' /* webpackChunkName: "amsg" */),
+  loading: () => <LoadingPage />
+});
 
 const getComponent = {
     Ditaub:AsyncAssignUserBranch,
     Hrb02:AsyncHrb02,
 
     Frcoln:AsyncFrcoln,
+    Amsg:AsyncAmsg,
     // Fsis:AsyncFsis,
 
     SpNew: AsyncSpNewPage,

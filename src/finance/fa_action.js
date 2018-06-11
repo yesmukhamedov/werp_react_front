@@ -98,3 +98,9 @@ export function changefaBkpf(bkpf) {
     };
     return obj;
 }
+export function clearfaBkpf() {
+    const obj = {
+        type: CLEAR_FA_BKPF
+    };
+    return obj;
+}
