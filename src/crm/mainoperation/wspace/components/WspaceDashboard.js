@@ -24,7 +24,8 @@ class WspaceDashboard extends Component {
     }
 
   render () {
-      let {todayCallsByResult} = this.props
+      let {todayCallsByResult,todayDemos} = this.props
+
     return <Grid>
         <Grid.Row>
             <Grid.Column width={16}>
@@ -53,7 +54,7 @@ class WspaceDashboard extends Component {
             <Grid.Column width={16}>
                 <WspaceDashboardContent
                     contentName="demos"
-                    items={[]}/>
+                    items={todayDemos}/>
             </Grid.Column>
         </Grid.Row>
     </Grid>
@@ -64,6 +65,7 @@ function mapStateToProps (state) {
     return {
         dealers: state.crmDemo.dealers,
         todayCallsByResult: state.crmWspaceReducer.todayCallsByResult,
+        todayDemos: state.crmWspaceReducer.todayDemos,
         dashboardCallMenus: state.crmWspaceReducer.dashboardCallMenus
     }
 }

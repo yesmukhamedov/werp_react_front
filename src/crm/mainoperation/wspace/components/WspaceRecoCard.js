@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import { Card,Image,Button,Label,Icon,Message,Popup, Menu, Dropdown } from 'semantic-ui-react'
 import {MENU_BY_RECO,MENU_BY_DATE,RECO_MODAL_ITEMS,MENU_MOVED} from '../wspaceUtil'
-import {renderRecoCategoryBtn,renderDemoResultLabel} from '../../../CrmHelper'
+import {renderRecoCategoryBtn,renderDemoResultLabel,renderRecoStatusLabel} from '../../../CrmHelper'
 
 export default function WspaceRecoCard(props){
         const {item,type} = props
@@ -44,15 +44,21 @@ function renderRecosInModal(props){
 
                     <span style={{float:'right'}}>{renderRecoCategoryBtn(item.categoryId,item.categoryName)}</span>
                 </Card.Meta>
-                <Card.Meta>
-                    Род: {item.relativeName}
-                </Card.Meta>
                 <Card.Description>
                         <span style={{fontSize:'11px'}}>
                             {item.note} <a href="#" onClick={() => console.log('Read More...')}>полностью</a>
                     </span>
                 </Card.Description>
             </Card.Content>
+        <Card.Content extra  style={{fontSize:'11px',color:'black'}}>
+                <i>Статус:</i> {renderRecoStatusLabel(item.statusId,item.statusName)}
+
+            {item.relativeName?<strong><i>Род:</i></strong>:''}
+            {item.relativeName?' ' + item.relativeName+';':''}
+        </Card.Content>
+        <Card.Content extra>
+
+        </Card.Content>
             <Card.Content extra>
 
             </Card.Content>
@@ -91,20 +97,18 @@ function renderByDate(props){
                 </Dropdown>
             </Card.Header>
             <Card.Meta>
-                {item.recommenderName}
-            </Card.Meta>
-            <Card.Meta>
                     <Popup style={{float:'left'}}
-                        trigger={<Label color={'blue'} size={'small'}>{item.callDate}</Label>}
+                           trigger={<Label color={'blue'} size={'small'}><i>{item.callDate}</i></Label>}
                         content="Дата-время перезвона"
                         basic
                     />
 
                 <span style={{float:'right'}}>{renderRecoCategoryBtn(item.categoryId,item.categoryName)}</span>
             </Card.Meta>
-            <Card.Description>
+            <Card.Description style={{borderTop: '1px dotted #ddd',marginTop:'15px'}}>
                     <span style={{fontSize:'11px'}}>
-                        {lastNote}
+                        <strong><i>ОТ:</i></strong> {item.recommenderName}<br/>
+                        <strong><i>Прим:</i></strong>{lastNote}
                 </span>
             </Card.Description>
         </Card.Content>
@@ -124,21 +128,19 @@ function renderByReco(props){
             <Card.Meta>
                 <span style={{float:'left'}}>
                     <Popup
-                        trigger={<Label>{item.demoDate}</Label>}
+                        trigger={<Label><i>{item.demoDate}</i></Label>}
                         content="Дата-время демонстрации"
                         basic
                     />
                 </span>
                 <span style={{float:'right'}}>{renderRecoCategoryBtn(item.categoryId,item.categoryName)}</span>
             </Card.Meta>
-            <Card.Description>
-                    <span style={{fontSize:'11px'}}>
-                    {_.truncate(item.address,{length: 150})}
-                </span>
-            </Card.Description>
         </Card.Content>
         <Card.Content extra>
-
+            <span style={{fontSize:'11px',color:'black'}}>
+                        <strong><i>Адрес: </i></strong>
+                {_.truncate(item.address,{length: 150})}
+                </span>
         </Card.Content>
         <Card.Content extra>
             {item.phones.map((p) => renderPhone(p))}
@@ -173,16 +175,23 @@ function renderMovedReco(props){
             </Card.Header>
             <Card.Meta>
                 <span style={{float:'left'}}>
-                    <Popup
-                        trigger={<Label>{item.demoDate}</Label>}
-                        content="Дата-время демонстрации"
+                    {item.callDate?<Popup
+                        trigger={<Label color={'blue'}>{item.callDate}</Label>}
+                        content="Дата-время перезвона"
                         basic
-                    />
+                    />:''}
                 </span>
                 <span style={{float:'right'}}>{renderRecoCategoryBtn(item.categoryId,item.categoryName)}</span>
             </Card.Meta>
+            <Card.Description style={{marginTop:'45px'}}>
+                <span style={{display:'block',fontSize:'11px',borderTop:'1px dotted #ddd',marginTop:'3px'}}>
+                    <strong><i>Демо:</i></strong> {item.lastDemoDateTime}<br/>
+                    <strong><i>ОТ:</i></strong> {item.recommenderName}<br/>
+                </span>
+            </Card.Description>
             <Card.Description>
                     <span style={{fontSize:'11px'}}>
+                        <strong><i>Адрес:</i></strong>
                     {_.truncate(item.address,{length: 150})}
                 </span>
             </Card.Description>

@@ -141,7 +141,7 @@ export function fetchTodayDemos(){
         }).then(({data}) => {
             //dispatch(modifyLoader(RECO_MODAL_ITEMS,false));
             dispatch({
-                type: WSP_FETCH_TODAY_CALLS,
+                type: WSP_FETCH_TODAY_DEMOS,
                 payload: data
             })
         }).catch((e) => {

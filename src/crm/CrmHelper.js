@@ -25,6 +25,14 @@ const DEMO_RESULT_MINI_CONTRACT = 5;
 // Продан, но потом отменен
 const DEMO_RESULT_SOLD_CANCELLED = 6;
 
+
+
+/***************************/
+const RECO_STATUS_NEW = 0;
+const RECO_STATUS_PHONED = 1;
+const RECO_STATUS_DEMO_DONE = 2;
+
+
 export function renderRecoCategoryBtn(categoryId){
     let category = _.find(RECO_CATEGORIES,{'key': categoryId})
 
@@ -78,4 +86,31 @@ export function renderDemoResultLabel(resultId,resultName){
     }
 
     return <Label color={color} horizontal>{resultName}</Label>;
+}
+
+
+
+
+
+
+export function renderRecoStatusLabel(statusId,statusName) {
+    let color = '';
+    switch (statusId){
+        case RECO_STATUS_NEW:
+            color = 'blue';
+            break
+
+        case RECO_STATUS_PHONED:
+            color = 'green';
+            break;
+
+        case RECO_STATUS_DEMO_DONE:
+            color = 'teal';
+            break;
+
+        default:
+            color = 'grey';
+    }
+
+    return <Label color={color} horizontal>{statusName}</Label>;
 }

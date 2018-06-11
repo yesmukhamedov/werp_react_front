@@ -36,7 +36,7 @@ class WspaceMainPage extends Component {
   onSelectStaff(staff){
       this.props.fetchRecosByReco(staff.key)
       this.props.fetchRecosByDate(staff.key)
-      this.props.fetchMovedRecos(staff.key)
+      //this.props.fetchMovedRecos(staff.key)
       this.setState({
           ...this.state,
           currentStaff: staff

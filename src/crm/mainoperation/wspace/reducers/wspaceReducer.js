@@ -55,6 +55,9 @@ export default function (state=INITIAL_STATE, action)
             loaders[action.key] = action.payload
             return {...state,loaders: loaders}
 
+        case WSP_FETCH_TODAY_DEMOS:
+            return {...state,todayDemos: action.payload}
+
         case WSP_FETCH_TODAY_CALLS:
             let todayCalls = action.payload
             let callsByResult = {}
