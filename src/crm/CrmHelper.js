@@ -28,9 +28,17 @@ const DEMO_RESULT_SOLD_CANCELLED = 6;
 
 
 /***************************/
-const RECO_STATUS_NEW = 0;
-const RECO_STATUS_PHONED = 1;
-const RECO_STATUS_DEMO_DONE = 2;
+export const RECO_STATUS_NEW = 0;
+export const RECO_STATUS_PHONED = 1;
+export const RECO_STATUS_DEMO_DONE = 2;
+
+
+///**********************///
+export const CALL_RESULT_POSITIVE = 1;
+export const CALL_RESULT_REFUSE = 2;
+export const CALL_RESULT_RECALL = 3;
+export const CALL_RESULT_NOT_AVAILABLE = 4;
+export const CALL_RESULT_NO_ANSWER = 5;
 
 
 export function renderRecoCategoryBtn(categoryId){

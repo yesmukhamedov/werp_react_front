@@ -7,7 +7,10 @@ import {
         WSP_FETCH_DEMO_RECOS,
         WSP_LOADER_CHANGED,
         WSP_FETCH_TODAY_CALLS,
-        WSP_FETCH_TODAY_DEMOS
+        WSP_FETCH_TODAY_DEMOS,
+        WSP_FETCH_PHONE_NUMBER_HISTORY,
+        WSP_TOGGLE_PHONE_MODAL,
+        WSP_SET_CURRENT_PHONE
 } from '../actions/wspaceAction'
 
 
@@ -25,13 +28,21 @@ const INITIAL_STATE={
     loaders:{},
     todayCallsByResult:{},
     dashboardCallMenus:[],
-    todayDemos: []
+    todayDemos: [],
+    currentPhone:{},
+    phoneModalOpened: false,
+    phoneNumberHistory: [],
+    phoneNumberReco:{}
+
 };
 
 export default function (state=INITIAL_STATE, action)
 {
     switch(action.type)
     {
+        case WSP_SET_CURRENT_PHONE:
+            return {...state,currentPhone:action.payload}
+
         case WSP_SET_CURRENT_RECOMMENDER:
             return {...state,currentRecommender:action.payload}
 
@@ -57,6 +68,15 @@ export default function (state=INITIAL_STATE, action)
 
         case WSP_FETCH_TODAY_DEMOS:
             return {...state,todayDemos: action.payload}
+
+        case WSP_FETCH_PHONE_NUMBER_HISTORY:
+
+            return {...state,
+                    phoneNumberHistory: action.payload.calls,
+                    phoneNumberReco: action.payload.reco,
+                    currentRecommender:action.payload.recommender,
+                    phoneModalOpened:true
+            }
 
         case WSP_FETCH_TODAY_CALLS:
             let todayCalls = action.payload
@@ -89,7 +109,8 @@ export default function (state=INITIAL_STATE, action)
 
             return {...state,todayCallsByResult: callsByResult,dashboardCallMenus:dashboardCallMenus}
 
-
+        case WSP_TOGGLE_PHONE_MODAL:
+            return {...state,phoneModalOpened:action.payload}
 
 
         default:

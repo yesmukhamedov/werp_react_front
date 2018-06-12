@@ -12,6 +12,9 @@ export const WSP_FETCH_DEMO_RECOS = 'WSP_FETCH_DEMO_RECOS'
 export const WSP_FETCH_TODAY_CALLS = 'WSP_FETCH_TODAY_CALLS'
 export const WSP_FETCH_TODAY_DEMOS = 'WSP_FETCH_TODAY_DEMOS'
 export const WSP_LOADER_CHANGED = 'WSP_LOADER_CHANGED'
+export const WSP_FETCH_PHONE_NUMBER_HISTORY = 'WSP_FETCH_PHONE_NUMBER_HISTORY'
+export const WSP_TOGGLE_PHONE_MODAL = 'WSP_TOGGLE_PHONE_MODAL'
+export const WSP_SET_CURRENT_PHONE = 'WSP_SET_CURRENT_PHONE'
 
 export function toggleRecoListModal (flag){
     return {
@@ -167,10 +170,43 @@ export function archiveReco(recoId){
     }
 }
 
+export function fetchPhoneNumberHistory(phoneId){
+    return function (dispatch) {
+        dispatch(modifyLoader('PHONE_' + phoneId,true));
+        axios.get(`${ROOT_URL}/api/crm/wspace//phone-info/` + phoneId, {
+            headers: {
+                authorization: localStorage.getItem('token')}
+        }).then(({data}) => {
+            dispatch(modifyLoader('PHONE_' + phoneId,false));
+            dispatch({
+                type:WSP_FETCH_PHONE_NUMBER_HISTORY,
+                payload:data
+            })
+        }).catch((e) => {
+            dispatch(modifyLoader('PHONE_' + phoneId,false));
+            handleError(e,dispatch)
+        })
+    }
+}
+
 function modifyLoader(key,payload) {
     return {
         type: WSP_LOADER_CHANGED,
         key: key,
         payload: payload
+    }
+}
+
+export function togglePhoneModal(flag){
+    return {
+        type: WSP_TOGGLE_PHONE_MODAL,
+        payload: flag
+    }
+}
+
+export function setCurrentPhone(phone){
+    return {
+        type: WSP_SET_CURRENT_PHONE,
+        payload: phone
     }
 }

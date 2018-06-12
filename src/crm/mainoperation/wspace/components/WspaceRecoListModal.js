@@ -45,16 +45,19 @@ export default function WspaceRecoListModal (props) {
             </Segment>
                 :<Card.Group>
                     {loaders[RECO_MODAL_ITEMS]?<Loader active inline='centered'/>:items.map(item => (
-                            <WspaceRecoCard  type={RECO_MODAL_ITEMS} key={item.id} item={item}/>
+                            <WspaceRecoCard
+                                recoCardMenuHandle={props.recoCardMenuHandle}
+                                type={RECO_MODAL_ITEMS}
+                                key={item.id}
+                                item={item}/>
                         ))}
                 </Card.Group>}
 
         </Modal.Content>
         <Modal.Actions>
-            <Button color='black' onClick={props.closeRecoListModal}>
+            <Button onClick={props.closeRecoListModal}>
                 Закрыть
             </Button>
-            <Button positive icon='checkmark' labelPosition='right' content="Yep, that's me" onClick={props.closeRecoListModal} />
         </Modal.Actions>
     </Modal>
 }

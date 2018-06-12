@@ -1,8 +1,14 @@
 import React from 'react'
 import _ from 'lodash'
-import { Card,Image,Button,Label,Icon,Message,Popup, Menu, Dropdown } from 'semantic-ui-react'
+import { Card,Label,Icon,Popup, Dropdown,List } from 'semantic-ui-react'
 import {MENU_BY_RECO,MENU_BY_DATE,RECO_MODAL_ITEMS,MENU_MOVED} from '../wspaceUtil'
-import {renderRecoCategoryBtn,renderDemoResultLabel,renderRecoStatusLabel} from '../../../CrmHelper'
+import {
+        renderRecoCategoryBtn,renderDemoResultLabel,renderRecoStatusLabel,
+        RECO_STATUS_NEW,RECO_STATUS_DEMO_DONE,RECO_STATUS_PHONED,
+        CALL_RESULT_POSITIVE,CALL_RESULT_RECALL} from '../../../CrmHelper'
+import moment from 'moment'
+
+import WspacePhone from './WspacePhone'
 
 export default function WspaceRecoCard(props){
         const {item,type} = props
@@ -30,6 +36,13 @@ export default function WspaceRecoCard(props){
 
 function renderRecosInModal(props){
     const {item} = props
+    switch (item.statusId){
+        case RECO_STATUS_NEW:
+            return renderNewReco(item)
+
+        case RECO_STATUS_PHONED:
+            return renderPhonedReco(item,(e,v) => props.recoCardMenuHandle(e,v))
+    }
     return <Card>
             <Card.Content>
                 <Card.Header>
@@ -66,6 +79,112 @@ function renderRecosInModal(props){
                 {item.phones.map((p) => renderPhone(p))}
             </Card.Content>
         </Card>
+}
+
+function renderPhonedReco(item,recoCardMenuHandle){
+    let lastNote = ''
+    let recallDate = ''
+    for(let k in item.calls){
+        k = parseInt(k,10)
+        if(item.calls[k]['note']){
+            lastNote = item.calls[k]['note']
+        }
+
+        if(k === 0){
+            if(item.calls[k]['resultId'] === CALL_RESULT_RECALL){
+                recallDate = item.callDate
+            }
+        }
+    }
+    return <Card>
+        <Card.Content>
+            <Card.Header className="reco-card-header">
+                {_.truncate(item.clientName,{length: 20})}
+                <Dropdown icon={'bars'} className='icon bar'>
+                    <Dropdown.Menu className='right'>
+                        <Dropdown.Item onClick={(e,d) => recoCardMenuHandle('view',item.id)}>
+                            <Icon name={'eye'}/>
+                            Открыть
+                        </Dropdown.Item>
+                        <Dropdown.Item onClick={(e,d) => recoCardMenuHandle('to_archive',item.id)}>
+                            <Icon name={'archive'}/>
+                            В архив
+                        </Dropdown.Item>
+                    </Dropdown.Menu>
+                </Dropdown>
+            </Card.Header>
+            <Card.Meta>
+                <span style={{float:'left'}}>
+                    {recallDate?<Popup
+                            trigger={<Label color={'blue'}>{recallDate}</Label>}
+                            content="Дата-время перезвона"
+                            basic
+                        />:''}
+                </span>
+
+                <span style={{float:'right'}}>{renderRecoCategoryBtn(item.categoryId,item.categoryName)}</span>
+            </Card.Meta>
+        </Card.Content>
+        <Card.Content extra  style={{fontSize:'11px',color:'black'}}>
+            {item.relativeName?<strong><i>Род:</i></strong>:''}
+            {item.relativeName?' ' + item.relativeName+';':''}
+        </Card.Content>
+        <Card.Content extra  style={{fontSize:'11px',color:'black'}}>
+            <Popup
+                position='right center'
+                trigger={renderRecoStatusLabel(item.statusId,item.statusName)}>
+                <Popup.Content>
+                        <List celled style={{fontSize:'11px'}}>
+                            {item.calls.map(call => {
+                                return <List.Item key={call.id} style={{marginButtom: '5px'}}>
+                                            <List.Content>
+                                                <List.Header>{moment(call.dateTime).format('DD.MM.YYYY HH:mm')} ({call.resultName})</List.Header>
+                                                <List.Description>
+                                                    {call.note?<i>Прим:</i>:''} {call.note}
+                                                </List.Description>
+                                            </List.Content>
+                                        </List.Item>
+                            })}
+                        </List>
+                </Popup.Content>
+            </Popup>
+
+
+
+            {item.relativeName?<strong><i>Род:</i></strong>:''}
+            {item.relativeName?' ' + item.relativeName+';':''}
+        </Card.Content>
+        <Card.Content extra>
+            {item.phones.map((p) => renderPhone(p))}
+        </Card.Content>
+    </Card>
+}
+
+function renderNewReco(item){
+    return <Card>
+        <Card.Content>
+            <Card.Header>
+                {item.clientName}
+            </Card.Header>
+            <Card.Meta>
+                <span style={{float:'right'}}>{renderRecoCategoryBtn(item.categoryId,item.categoryName)}</span>
+            </Card.Meta>
+            <Card.Description>
+                        <span style={{fontSize:'11px'}}>
+                            {item.note} <a href="#" onClick={() => console.log('Read More...')}>полностью</a>
+                    </span>
+            </Card.Description>
+        </Card.Content>
+        <Card.Content extra  style={{fontSize:'11px',color:'black'}}>
+            {renderRecoStatusLabel(item.statusId,item.statusName)}<br/>
+
+            {item.relativeName?<strong><i>Род:</i></strong>:''}
+            {item.relativeName?' ' + item.relativeName+';':''}
+        </Card.Content>
+        <Card.Content extra>
+            {item.phones.map((p) => renderPhone(p))}
+        </Card.Content>
+    </Card>
 }
 
 function renderByDate(props){
@@ -206,8 +325,5 @@ function renderMovedReco(props){
 }
 
 function renderPhone(phone){
-    return <Label key={phone.id} as='a' horizontal onClick={() => console.log(phone.phoneNumber)}>
-        <Icon disabled name='phone' />
-        {phone.phoneNumber}
-    </Label>
+    return <WspacePhone key={phone.id} phone={phone}/>
 }

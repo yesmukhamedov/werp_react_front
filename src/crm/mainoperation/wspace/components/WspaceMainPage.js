@@ -12,7 +12,7 @@ import WspaceMenu from './WspaceMenu'
 import WspaceRecoList from  './WspaceRecoList'
 import WspaceDashboard from './WspaceDashboard'
 import WspaceRecoListModal from './WspaceRecoListModal'
-
+import WspacePhoneModal from  './WspacePhoneModal'
 
 
 class WspaceMainPage extends Component {
@@ -122,11 +122,14 @@ closeRecoListModal = () => {
           <Divider horizontal>{this.state.dividerTitle}</Divider>
           {this.renderContent()}
           <WspaceRecoListModal
+              recoCardMenuHandle={this.recoCardMenuHandle}
               loaders={this.props.loaders}
               items={this.props.currentRecommenderRecos}
               recommender={this.props.currentRecommender}
               closeRecoListModal={this.closeRecoListModal}
               opened={this.props.recoListModalOpened} />
+
+          <WspacePhoneModal/>
       </Container>
     )
   }
