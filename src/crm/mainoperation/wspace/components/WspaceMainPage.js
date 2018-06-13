@@ -7,6 +7,7 @@ import {MENU_DASHBOARD,MENU_ALL_RECOS,MENU_ITEMS,MENU_BY_RECO,MENU_BY_DATE,MENU_
 import '../css/main-page.css'
 import {fetchGroupDealers} from '../../demo/actions/demoAction'
 import {toggleRecoListModal,setCurrentRecommender,fetchRecosByReco,fetchRecosByDate,fetchDemoRecos,archiveReco,fetchMovedRecos,fetchTodayCalls,fetchTodayDemos} from '../actions/wspaceAction'
+import {fetchCallResults} from '../../reco/actions/recoAction'
 import WspaceHeader from './WspaceHeader'
 import WspaceMenu from './WspaceMenu'
 import WspaceRecoList from  './WspaceRecoList'
@@ -31,6 +32,7 @@ class WspaceMainPage extends Component {
       this.props.fetchGroupDealers()
       this.props.fetchTodayCalls()
       this.props.fetchTodayDemos()
+      this.props.fetchCallResults()
   }
 
   onSelectStaff(staff){
@@ -149,5 +151,5 @@ function mapStateToProps (state) {
 export default connect(mapStateToProps, {
     fetchGroupDealers,toggleRecoListModal,setCurrentRecommender,fetchRecosByReco,
     fetchRecosByDate,fetchDemoRecos,archiveReco,fetchMovedRecos,fetchTodayCalls,
-    fetchTodayDemos
+    fetchTodayDemos,fetchCallResults
 })(WspaceMainPage)
