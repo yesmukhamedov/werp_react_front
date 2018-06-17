@@ -11,6 +11,7 @@ import contractListReducer from '../crm/callCenter/mainoperation/contractList/re
 import taskListReducer from '../crm/callCenter/mainoperation/taskList/reducers/TaskListReducer';
 import taskReducer from '../crm/callCenter/mainoperation/task/reducers/TaskReducer';
 import taskMonitorReducer from '../administration/tasks/mainoperation/taskMonitor/reducers/TaskMonitorReducer';
+import deptTaskListReducer from '../administration/tasks/mainoperation/deptTaskList/reducers/DeptTaskListReducer';
 
 import outCallsTransactionReducer from '../crm/callCenter/mainoperation/newIssue/reducers';
 import userInfoReducer from '../general/userInfo/userInfo_reducer';
@@ -45,6 +46,7 @@ const appReducer = combineReducers({
   taskList: taskListReducer,
   task: taskReducer,
   taskMonitor: taskMonitorReducer,
+  deptTaskList: deptTaskListReducer,
   userInfo: userInfoReducer,
   frcoln: frcolnReducer,
   loader: loaderReducer,

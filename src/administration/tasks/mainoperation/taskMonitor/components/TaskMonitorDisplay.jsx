@@ -18,7 +18,7 @@ class TaskMonitorComponent extends Component {
   render() {
     return (
       <Container
-        fluid
+        // fluid
         style={{
           marginTop: '2em',
           marginBottom: '2em',

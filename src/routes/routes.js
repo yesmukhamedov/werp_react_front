@@ -124,6 +124,12 @@ const AsyncTaskMonitorPage = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncDeptTaskListPage = Loadable({
+  loader: () =>
+    import('../administration/tasks/mainoperation/deptTaskList/components/DeptTaskListContainer' /* webpackChunkName: "DepTaskListPage" */),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncRecoCurrentPage = Loadable({
         loader: () => import('../crm/mainoperation/reco/components/RecoCurrentPage' /* webpackChunkName: "RecoCurrentPage" */),
     loading: () => <LoadingPage />
@@ -321,6 +327,7 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
       <Route path="/finance/mainoperation/fcis" component={AsyncFsis} />
       <Route path="/administration/dtskrep" component={AsyncTaskMonitorPage} />
+      <Route path="/administration/dtskl"   component={AsyncDeptTaskListPage} />
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
