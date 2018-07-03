@@ -54,8 +54,8 @@ class RecoUpdateModal extends Component {
         <Form.Field error={this.state.errors.clientName} onChange={(e, o) => this.handleChange('clientName', o)}
           value={this.state.localReco.clientName}
           control={Input} required label='ФИО клиента' placeholder='ФИО клиента' />
-        <Form.Field onChange={(e, o) => this.handleChange('districtName', o)}
-          value={this.state.localReco.districtName || ''}
+        <Form.Field onChange={(e, o) => this.handleChange('district', o)}
+          value={this.state.localReco.district || ''}
           control={Input} label='Район' placeholder='Район' />
 
       </Form.Group>
@@ -103,7 +103,7 @@ class RecoUpdateModal extends Component {
     // console.log(o);
     switch (fieldName) {
       case 'clientName':
-      case 'districtName':
+      case 'district':
       case 'note':
         case 'relative':
         if (o.required && (!o.value || o.value.trim().length === 0)) {

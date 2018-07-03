@@ -1,17 +1,7 @@
 import React, {Component} from 'react';
-import { Header,Container,Table,Image,Card } from 'semantic-ui-react'
+import { Header,Table,Image,Card } from 'semantic-ui-react'
 import moment from 'moment'
-const hiddenTable = {
-    display:'none'
-}
 
-const headerStyle = {
-    marginLeft:10
-}
-
-const printTable = {
-    fontSize: '10px'
-}
 
 class DemoPrintPage extends Component{
 
@@ -30,15 +20,17 @@ class DemoPrintPage extends Component{
                 <Image src={'/assets/img/demo-card-logo-aura.png'}/>
                 </Card.Content>
                 <Card.Content>
-                {this.renderTable(demo)}
+                {this.renderTable(demo,this.props.recommender)}
                 <br/>
-                {this.renderTable(demo)}
+                {this.renderTable(demo,this.props.recommender)}
                 </Card.Content>
             </Card>
         )
     }
 
-    renderTable(demo){
+    renderTable(demo,recommender){
+        let parentReco = Object.assign({},demo.parentReco)
+        let phones = Object.assign([],parentReco.phones)
         return <Table celled striped className='printTable'>
                             <Table.Body>
                                 <Table.Row>
@@ -59,12 +51,6 @@ class DemoPrintPage extends Component{
                                 </Table.Row>
 
                                 <Table.Row>
-                                    <Table.Cell>
-                                        <Header style={{marginLeft:20}} as={'h4'}>Менеджер</Header>
-                                    </Table.Cell>
-                                    <Table.Cell></Table.Cell>
-                                </Table.Row>
-                                <Table.Row>
                                     <Table.Cell style={{textAlign:'right'}}>
                                         <Header style={{marginLeft:20}} as={'h4'}>Демо секретарь</Header>
                                     </Table.Cell>
@@ -76,16 +62,21 @@ class DemoPrintPage extends Component{
 
                                 <Table.Row>
                                     <Table.Cell>
-                                        <Header style={{marginLeft:20}} as={'h4'}>ФИО рекомендателя</Header>
+                                        <Header style={{marginLeft:20}} as={'h4'}>Рекомендатель</Header>
                                     </Table.Cell>
-                                    <Table.Cell>{demo.recommender.name}</Table.Cell>
+                                    <Table.Cell>
+                                        {recommender.clientName},
+                                        {recommender.phones?recommender.phones.map(p => {
+                                            return <span key={p.id} style={{marginLeft: '5px'}}>{p.phoneNumber}</span>
+                                        }):''}
+                                    </Table.Cell>
                                 </Table.Row>
 
                                 <Table.Row>
                                     <Table.Cell>
                                         <Header style={{marginLeft:20}} as={'h4'}>Род. отношение</Header>
                                     </Table.Cell>
-                                    <Table.Cell>{demo.recommender.relative}</Table.Cell>
+                                    <Table.Cell>{recommender.relative}</Table.Cell>
                                 </Table.Row>
 
                                 <Table.Row>
@@ -101,7 +92,11 @@ class DemoPrintPage extends Component{
                                     <Table.Cell>
                                         <Header style={{marginLeft:20}} as={'h4'}>Тел. номер клиента</Header>
                                     </Table.Cell>
-                                    <Table.Cell>{demo.phoneNumber}</Table.Cell>
+                                    <Table.Cell>
+                                        {phones.map(p => {
+                                            return <span key={p.id}>{p.phoneNumber} &nbsp;</span>
+                                        })}
+                                    </Table.Cell>
                                 </Table.Row>
                                 <Table.Row>
 

@@ -131,9 +131,25 @@ export function setVisitForUpdate(visit){
     }
 }
 
-export function blankForCreate(){
-    return {
-        type: CRM_VISIT_SET_FOR_CREATE,
-        payload: {}
+export function blankForCreate(staffId){
+    staffId = staffId || 0
+    return function(dispatch){
+        dispatch(modifyLoader(true))
+
+        axios.get(`${ROOT_URL}/api/crm/visit/blank/` + staffId, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        }).then(({data}) => {
+            dispatch(modifyLoader(false))
+            dispatch({
+                type: CRM_VISIT_SET_FOR_CREATE,
+                payload: data
+            })
+
+        }).catch((e) => {
+            dispatch(modifyLoader(false))
+            handleError(e,dispatch)
+        })
     }
 }

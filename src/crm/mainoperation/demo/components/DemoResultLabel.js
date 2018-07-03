@@ -25,6 +25,8 @@ const RESULT_MINI_CONTRACT = 5;
 
 // Продан, но потом отменен
 const RESULT_SOLD_CANCELLED = 6;
+//Старые, архивированные
+const RESULT_ARCHIVED = 7;
 
 
 export default function DemoResultLabel(props){
@@ -56,6 +58,10 @@ export default function DemoResultLabel(props){
         case RESULT_MINI_CONTRACT:
             color = 'teal';
             break;
+
+        case RESULT_ARCHIVED:
+            color = 'black'
+            break
 
         default:
             color = 'grey';

@@ -1,9 +1,6 @@
-import React, {Component} from 'react'
-import _ from 'lodash'
+import React from 'react'
 import "react-table/react-table.css";
-import { Tab,Header,Container,Icon,Segment,Label,Accordion } from 'semantic-ui-react'
-import moment from 'moment';
-import {RECO_CATEGORIES} from '../../../crmUtil'
+import { Container,Icon,Label } from 'semantic-ui-react'
 import '../css/header-page.css'
 
 export default function WspaceHeader (props) {

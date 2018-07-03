@@ -20,7 +20,6 @@ import {
     HR_STAFF_FETCH_MANAGERS
 } from '../actions/hrStaffAction';
 
-import {OFF_DATA} from '../../../hrUtil'
 
 const INITIAL_STATE={
                     currentStaffs:[],

@@ -1,6 +1,7 @@
 import React from 'react'
-import { Card,Image,Button } from 'semantic-ui-react'
+import { Card } from 'semantic-ui-react'
 import WspaceRecoCard from './WspaceRecoCard'
+
 
 export default function WspaceRecoList(props){
     const {items,menu} = props

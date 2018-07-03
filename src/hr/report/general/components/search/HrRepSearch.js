@@ -155,7 +155,7 @@ class HrRepSearch extends Component{
     render(){
         const {search} = this.state
         const {id} = this.props.meta
-        const {companyOptions,branchOptions,businessAreaList} = this.props
+        const {companyOptions,branchOptions} = this.props
         let filteredBranchOptions = branchOptions?(branchOptions[search['bukrs']] || []):[]
 
         const fetchItems = () => this.props.fetchItems(id,this.state.search)

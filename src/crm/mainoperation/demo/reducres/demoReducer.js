@@ -7,11 +7,14 @@ import {
     CRM_DEMO_FETCH_REASONS,
     CRM_DEMO_FETCH_SINGLE,
     CRM_DEMO_UPDATE,CRM_DEMO_UPDATE_MODAL_TOGGLE,
-    CRM_DEMO_CREATE_MODAL_TOGGLE
+    CRM_DEMO_CREATE_MODAL_TOGGLE,
+    CRM_DEMO_FETCH_CHILD_RECOS
 } from '../actions/demoAction';
 
 const INITIAL_STATE={
                     demo:{},
+                    recommender: {},
+                    childRecos: [],
                     childDemos:[],
                     demoResults:[],
                     callResults:[],
@@ -48,7 +51,7 @@ export default function (state=INITIAL_STATE, action)
             return {...state,reasons:action.items}
 
         case CRM_DEMO_FETCH_SINGLE:
-            return {...state,demo:action.item}
+            return {...state,demo:action.demo, recommender: action.recommender}
 
         case CRM_DEMO_UPDATE_MODAL_TOGGLE:
             return {...state,openDemoUpdateModal:action.payload}
@@ -61,6 +64,9 @@ export default function (state=INITIAL_STATE, action)
 
         case CRM_DEMO_CLEAR_STATE:
             return {...state,INITIAL_STATE }
+
+        case CRM_DEMO_FETCH_CHILD_RECOS:
+            return {...state, childRecos: action.payload }
 
         default:
             return state;

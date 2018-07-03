@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {Form, Input, TextArea } from 'semantic-ui-react'
 import "react-datepicker/dist/react-datepicker.css"
 

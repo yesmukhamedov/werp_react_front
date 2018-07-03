@@ -3,18 +3,23 @@ import _ from 'lodash'
 import "react-table/react-table.css";
 import { Container,Divider } from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import {MENU_DASHBOARD,MENU_ALL_RECOS,MENU_ITEMS,MENU_BY_RECO,MENU_BY_DATE,MENU_MOVED,MENU_CURRENT_DEMO,ITEMS,RECO_ITEMS_TEMP} from '../wspaceUtil'
+import {MENU_DASHBOARD,MENU_ALL_RECOS,MENU_ITEMS,MENU_BY_RECO,MENU_BY_DATE,MENU_MOVED,MENU_CURRENT_DEMO,MENU_CURRENT_VISIT} from '../wspaceUtil'
 import '../css/main-page.css'
 import {fetchGroupDealers} from '../../demo/actions/demoAction'
-import {toggleRecoListModal,setCurrentRecommender,fetchRecosByReco,fetchRecosByDate,fetchDemoRecos,archiveReco,fetchMovedRecos,fetchTodayCalls,fetchTodayDemos} from '../actions/wspaceAction'
+import {toggleRecoListModal,setCurrentRecommender,fetchRecosByReco,fetchRecosByDate,fetchDemoRecos,
+    archiveReco,fetchMovedRecos,fetchTodayCalls,fetchTodayDemos,fetchCurrentDemos,fetchCurrentVisits,fetchVisitRecos,
+    handleFilter} from '../actions/wspaceAction'
 import {fetchCallResults} from '../../reco/actions/recoAction'
+import {fetchReasons} from '../../demo/actions/demoAction'
 import WspaceHeader from './WspaceHeader'
 import WspaceMenu from './WspaceMenu'
 import WspaceRecoList from  './WspaceRecoList'
 import WspaceDashboard from './WspaceDashboard'
 import WspaceRecoListModal from './WspaceRecoListModal'
 import WspacePhoneModal from  './WspacePhoneModal'
-
+import WspaceDemoTable from './WspaceDemoTable'
+import WspaceVisitTable from './WspaceVisitTable'
+import WspaceRecoFilter from './WspaceRecoFilter'
 
 class WspaceMainPage extends Component {
   constructor (props) {
@@ -33,11 +38,14 @@ class WspaceMainPage extends Component {
       this.props.fetchTodayCalls()
       this.props.fetchTodayDemos()
       this.props.fetchCallResults()
+      this.props.fetchReasons()
   }
 
   onSelectStaff(staff){
       this.props.fetchRecosByReco(staff.key)
       this.props.fetchRecosByDate(staff.key)
+      this.props.fetchCurrentDemos(staff.key)
+      this.props.fetchCurrentVisits(staff.key)
       //this.props.fetchMovedRecos(staff.key)
       this.setState({
           ...this.state,
@@ -66,27 +74,122 @@ class WspaceMainPage extends Component {
         }
     }
 
+    doFilterData = (filters, items) => {
+        if(!filters){
+            return items
+        }
+
+        let out = items
+        if(filters.clientName){
+            out = _.filter(items, function (o){
+                return _.startsWith(_.toLower(o.clientName),_.toLower(filters.clientName))
+            })
+        }
+
+        if(filters.docDate){
+            if(this.state.currentMenu === MENU_BY_RECO){
+                out = _.filter(items,function(o){
+                    return _.startsWith(o.dateTimeStr,filters.docDate)
+                })
+            }else if(this.state.currentMenu === MENU_BY_DATE){
+                out = _.filter(items,function(o){
+                    return _.startsWith(o.callDateStr,filters.docDate)
+                })
+            }
+        }
+
+        if(filters.phoneNumber){
+            if(this.state.currentMenu === MENU_BY_RECO){
+
+            }else if(this.state.currentMenu === MENU_BY_DATE) {
+                out = _.filter(items, function (o){
+                    if(!o.phones){
+                        return false
+                    }
+
+                    let b = false
+                    for(let k in o.phones){
+                        if(_.startsWith(o.phones[k].phoneNumber,filters.phoneNumber)){
+                            b = true
+                            break
+                        }
+                    }
+
+                    return b
+                })
+            }
+        }
+
+        if(filters.categoryId){
+            if(this.state.currentMenu === MENU_BY_RECO) {
+                out = _.filter(items, function (o){
+                    if(!o.parentReco){
+                        return false
+                    }
+
+                    return o.parentReco.categoryId === filters.categoryId
+                })
+            }else {
+                out = _.filter(items, function (o){
+                    return o.categoryId === filters.categoryId
+                })
+            }
+        }
+
+        if(filters.resultId){
+            if(this.state.currentMenu === MENU_BY_RECO) {
+                out = _.filter(items, function (o){
+                    return o.resultId === filters.resultId
+                })
+            }
+        }
+
+        return out
+    }
+
   renderContent = () =>{
       let menuItems = this.props.staffRecoData[this.state.currentMenu] || []
+      let filters = this.props.filters[this.state.currentMenu] || {}
+      menuItems = this.doFilterData(filters,menuItems)
       switch (this.state.currentMenu){
           case MENU_ALL_RECOS:
           case MENU_BY_RECO:
           case MENU_BY_DATE:
           case MENU_MOVED:
-              return <WspaceRecoList
-                        recoCardMenuHandle={this.recoCardMenuHandle}
-                        openRecoListModal={this.openRecoListModal}
-                        menu={this.state.currentMenu}
-                        items={menuItems}/>
+              return<div>
+                  <WspaceRecoFilter
+                      handleFilter = {this.props.handleFilter}
+                      menu={this.state.currentMenu} filters={filters}/>
+                  <WspaceRecoList
+                            recoCardMenuHandle={this.recoCardMenuHandle}
+                            openRecoListModal={this.openRecoListModal}
+                            menu={this.state.currentMenu}
+                            items={menuItems}/>
+              </div>
+
+          case MENU_CURRENT_DEMO:
+              return <WspaceDemoTable items={menuItems}/>
+
+          case MENU_CURRENT_VISIT:
+              return <WspaceVisitTable
+                  openRecoListModal={this.openRecoListModal}
+                  items={menuItems} />
           default:
               return <WspaceDashboard/>
       }
 }
 
-openRecoListModal = (recommender) => {
-    this.props.setCurrentRecommender(recommender)
-    this.props.toggleRecoListModal(true)
-    this.props.fetchDemoRecos(recommender.id)
+openRecoListModal = (recommender,context) => {
+      if('visit' === context){
+          this.props.setCurrentRecommender(recommender)
+          this.props.fetchVisitRecos(recommender.id)
+          console.log(recommender)
+      }else{
+          this.props.setCurrentRecommender(recommender)
+          this.props.fetchDemoRecos(recommender.id)
+      }
+
+        this.props.toggleRecoListModal(true)
 }
 
 closeRecoListModal = () => {
@@ -138,18 +241,21 @@ closeRecoListModal = () => {
 }
 
 function mapStateToProps (state) {
+    let filters = state.crmWspaceReducer.filters
     return {
         dealers: state.crmDemo.dealers,
         recoListModalOpened: state.crmWspaceReducer.recoListModalOpened,
         currentRecommender: state.crmWspaceReducer.currentRecommender,
         staffRecoData: state.crmWspaceReducer.staffRecoData,
         currentRecommenderRecos: state.crmWspaceReducer.currentRecommenderRecos,
-        loaders: state.crmWspaceReducer.loaders
+        loaders: state.crmWspaceReducer.loaders,
+        filters: filters
     }
 }
 
 export default connect(mapStateToProps, {
     fetchGroupDealers,toggleRecoListModal,setCurrentRecommender,fetchRecosByReco,
     fetchRecosByDate,fetchDemoRecos,archiveReco,fetchMovedRecos,fetchTodayCalls,
-    fetchTodayDemos,fetchCallResults
+    fetchTodayDemos,fetchCallResults,fetchReasons,fetchCurrentDemos,fetchCurrentVisits,
+    fetchVisitRecos, handleFilter
 })(WspaceMainPage)

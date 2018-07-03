@@ -4,7 +4,7 @@ import { Header, Container, Button, Segment, Grid, Divider, Modal } from 'semant
 import ReactToPrint from "react-to-print";
 import DemoUpdateModal from './DemoUpdateModal'
 import DemoCreateModal from './DemoCreateModal'
-import {fetchDemo,toggleDemoUpdateModal,toggleDemoCreateModal,deleteDemo,clearState} from '../actions/demoAction'
+import {fetchDemo,toggleDemoUpdateModal,toggleDemoCreateModal,deleteDemo,clearState,fetchDemoChildRecos} from '../actions/demoAction'
 import { connect } from 'react-redux'
 import ChildDemosTable from './ChildDemosTable'
 import ChildRecosTable from '../../reco/components/ChildRecosTable'
@@ -34,6 +34,7 @@ class DemoViewPage extends Component {
   componentWillMount () {
       const id = parseInt(this.props.match.params.id, 10);
       this.props.fetchDemo(id)
+      this.props.fetchDemoChildRecos(id)
   }
 
     getSourceLink(demo){
@@ -131,7 +132,7 @@ class DemoViewPage extends Component {
   }
 
   render () {
-    const {demo,dealers} = this.props
+    const {demo} = this.props
     return (
       <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
         <Segment clearing>
@@ -157,14 +158,14 @@ class DemoViewPage extends Component {
             </Grid.Column>
 
             <Grid.Column width={8}>
-              {<ChildRecosTable items={demo.recos || []}/>}
+              {<ChildRecosTable items={this.props.childRecos || []}/>}
                 {<ChildDemosTable items={demo.childDemos || []}/>}
             </Grid.Column>
           </Grid.Row>
 
             <Grid.Column width={8}>
                 <h3>Версия для печати</h3>
-                <DemoPrintPage demo={demo} ref={el => (this.componentRef = el)}/>
+                <DemoPrintPage demo={demo} recommender={this.props.recommender} ref={el => (this.componentRef = el)}/>
             </Grid.Column>
             <Grid.Column width={8}>
             </Grid.Column>
@@ -178,8 +179,13 @@ function mapStateToProps (state) {
     return {
         dealers:state.crmDemo.dealers,
         loader:state.loader,
-        demo:state.crmDemo.demo
+        demo:state.crmDemo.demo,
+        recommender:state.crmDemo.recommender,
+        childRecos:state.crmDemo.childRecos
     }
 }
 
-export default connect(mapStateToProps, {fetchDemo,toggleDemoUpdateModal,toggleDemoCreateModal,deleteDemo,clearState})(DemoViewPage)
+export default connect(mapStateToProps, {
+    fetchDemo,toggleDemoUpdateModal,toggleDemoCreateModal,deleteDemo,clearState,
+    fetchDemoChildRecos
+})(DemoViewPage)
