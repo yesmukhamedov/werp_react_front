@@ -1,17 +1,18 @@
-import {  } from './accounting_action';
+import { FETCH_AMCDD, CLEAR_AMCDD, CHANGE_AMCDD } from './accounting_action';
 // import moment from 'moment';
-const INITIAL_STATE=    { 
-                        
+const INITIAL_STATE=    { dynamicObject:{}
                         };
 
 export default function (state=INITIAL_STATE, action)
 {
     switch(action.type)
     {
-        // case CHANGE_FA_BKPF:
-        //     return {...state, faForm:{...state.faForm,bkpf:action.bkpf}};    
-        // case CLEAR_FA_BKPF:            
-        //     return {...state, faForm:{...state.faForm,bkpf:{...this.state.faForm.initialBkpf}}};  
+        case FETCH_AMCDD:
+            return {...state, dynamicObject: action.data};  
+        case CHANGE_AMCDD:            
+                return {...state, dynamicObject: action.data};  
+        case CLEAR_AMCDD:            
+            return {...state, dynamicObject: {}};  
 
         default:
             return state;

@@ -7,6 +7,9 @@ export const CHANGE_FA_BKPF = 'CHANGE_FA_BKPF';
 export const CLEAR_FA_BKPF = 'CLEAR_FA_BKPF';
 export const FETCH_CASHBANKHKONTS_BY_BRANCH = 'FETCH_CASHBANKHKONTS_BY_BRANCH';
 export const CLEAR_CASHBANKHKONTS_BY_BRANCH = 'CLEAR_CASHBANKHKONTS_BY_BRANCH';
+export const FETCH_FMCP = 'FETCH_FMCP';
+export const CLEAR_FMCP = 'CLEAR_FMCP';
+export const CHANGE_FMCP = 'CHANGE_FMCP';
 
 export function fetchCashBankHkontsByBranch(a_bukrs,a_brnch) {
     
@@ -38,57 +41,7 @@ export function fetchCashBankHkontsByBranch(a_bukrs,a_brnch) {
 
 
 }
-// export function saveBonusData(a_bukrs, a_branchId, a_date, a_table) {
-    
-    
-//     let year = a_date.format('YYYY');
-//     let month = a_date.format('MM');
 
-//     // console.log(a_table,'table');
-
-//     return function(dispatch) {
-//         dispatch(modifyLoader(true));
-
-//         axios.post(`${ROOT_URL}/api/hr/hrb02/save`, 
-//                     {
-//                         bukrs:a_bukrs,
-//                         branchId:a_branchId,
-//                         year,
-//                         month: month,
-//                         // ,
-//                         table:a_table
-
-//                     },       
-//                     {            
-//                         headers: 
-//                         {                            
-// 				            // 'Content-Type': 'application/json;charset=UTF-8',
-//                             authorization: localStorage.getItem('token')
-//                         }
-//                     }
-//         )
-//         .then(({data}) => {
-//             dispatch(modifyLoader(false));
-//             if (data.saved)
-//             {
-//                 dispatch(notify('success','Сохранен.','Успешно'));
-//                 dispatch({
-//                     type: SAVE_BONUS_DATA,
-//                     table:data.table
-//                 });
-//             }            
-    
-//         })
-//         .catch(error => {
-//             // console.log(error);
-//             dispatch(modifyLoader(false));
-//             handleError(error,dispatch);               
-                 
-//         });
-//     }    
-
-
-// }
 
 
 export function changefaBkpf(bkpf) {
@@ -103,4 +56,93 @@ export function clearfaBkpf() {
         type: CLEAR_FA_BKPF
     };
     return obj;
+}
+
+
+
+export function fmcpFetch(a_zregOrConNum) {
+    
+    
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        axios.get(`${ROOT_URL}/api/finance/mainoperation/fmcp/fetch`, {
+            headers: 
+            {
+                authorization: localStorage.getItem('token')
+            },
+            params:
+            {
+                zregOrConNum: a_zregOrConNum
+            }
+        })
+        .then(({data}) => {
+            
+            dispatch(modifyLoader(false));
+            dispatch({
+                type: FETCH_FMCP,
+                data:data
+            });
+    
+        })
+        .catch(error => {
+            handleError(error,dispatch);
+            dispatch(modifyLoader(false));
+        });
+    }
+
+
+}
+export function fmcpChange(a_obj) {
+    const obj = {
+        type: CHANGE_FMCP,
+        data: a_obj
+    };
+    return obj;
+}
+
+
+export function fmcpClear() {
+    const obj = {
+        type: CLEAR_FMCP
+    };
+    return obj;
+}
+
+export function fmcpSave(a_contract) {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        
+        axios.post(`${ROOT_URL}/api/finance/mainoperation/fmcp/save`,
+            {           
+                ...a_contract
+            },       
+            {            
+                headers: 
+                {                            
+                    // 'Content-Type': 'application/json;charset=UTF-8',
+                    authorization: localStorage.getItem('token')
+                }
+            }        
+        ) 
+        
+        .then(({data}) => {
+            dispatch(modifyLoader(false));
+            if(data)
+            {
+                dispatch(notify('success','Сохранен.','Успешно'));
+                dispatch(fmcpFetch(a_contract.zregOrConNum));
+            }
+            else
+            {
+                dispatch(notify('info','Не сохранен.','Ошибка'));
+            }
+                
+        })
+        .catch(error => {
+            dispatch(modifyLoader(false));
+            handleError(error,dispatch); 
+        });
+    }    
+
+
 }

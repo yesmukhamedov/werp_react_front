@@ -3,7 +3,7 @@ import { Table, Icon, Segment, Label, Input } from 'semantic-ui-react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
-import {moneyFormat,handleFocus} from '../../../utils/helpers';
+import {moneyFormat,handleFocus, moneyInputHanler} from '../../../utils/helpers';
 import _ from "lodash";
 require('moment/locale/ru');
 
@@ -48,27 +48,35 @@ class AmsgPaySchedule extends PureComponent{
             }
             this.props.changePaymentSchedule('psRows',psRows); 
         }
-        else if (stateFieldName==='sum2'){      
-            if (value===''){
-                value = '0';
+        else if (stateFieldName==='sum2'){
+
+            let newVal = moneyInputHanler(value,2);
+            if (newVal!==undefined){                
+                psRows[idx].sum2 = newVal;
+                this.props.changePaymentSchedule('psRows',psRows);   
             }
-            value = value.replace(/\s+/g, '');
+
+
+            // if (value===''){
+            //     value = '0';
+            // }
+            // value = value.replace(/\s+/g, '');
             
-            if (value.charAt(value.length-1)==='.'){
-                psRows[idx].sum2 = value;
-                this.props.changePaymentSchedule('psRows',psRows);               
-                // this.setState({psRows});  
-            }else
-            {
-                value = parseFloat(value);
-                const dec1 = /^\$?[0-9]+(\.[0-9][0-9])?$/; //^[0-9\b]+$/;
-                const dec2 = /^\$?[0-9]+(\.[0-9])?$/; //^[0-9\b]+$/;
-                if (value === '' || dec1.test(value) || dec2.test(value)) {
-                    psRows[idx].sum2 = value;
-                    this.props.changePaymentSchedule('psRows',psRows);
-                    // this.setState({psRows});  
-                }
-            }
+            // if (value.charAt(value.length-1)==='.'){
+            //     psRows[idx].sum2 = value;
+            //     this.props.changePaymentSchedule('psRows',psRows);               
+            //     // this.setState({psRows});  
+            // }else
+            // {
+            //     // value = parseFloat(value);
+            //     const dec1 = /^\$?[0-9]+(\.[0-9][0-9])?$/; //^[0-9\b]+$/;
+            //     const dec2 = /^\$?[0-9]+(\.[0-9])?$/; //^[0-9\b]+$/;
+            //     if (value === '' || dec1.test(value) || dec2.test(value)) {
+            //         psRows[idx].sum2 = value;
+            //         this.props.changePaymentSchedule('psRows',psRows);
+            //         // this.setState({psRows});  
+            //     }
+            // }
             
         }
     }
@@ -150,7 +158,7 @@ class AmsgPaySchedule extends PureComponent{
                 <Table.Cell></Table.Cell>
                 <Table.Cell></Table.Cell>
                 <Table.Cell>
-                    <span><strong>{moneyFormat(_.sum(_.map(this.props.psRows, d => d.sum2)) )}   {this.props.waers} </strong></span>
+                    <span><strong>{moneyFormat(_.sum(_.map(this.props.psRows, d => parseFloat(d.sum2))) )}   {this.props.waers} </strong></span>
                 </Table.Cell>
                 <Table.Cell>
                     <span>
