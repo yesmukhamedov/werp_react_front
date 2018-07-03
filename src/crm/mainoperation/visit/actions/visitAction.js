@@ -85,7 +85,10 @@ export function createVisit(o){
             }
         }).then((response) => {
                 dispatch(modifyLoader(false))
-                dispatch(fetchArchive())
+                dispatch({
+                    type: CRM_VISIT_CREATE
+                })
+                //dispatch(fetchArchive())
 
             }).catch((e) => {
             dispatch(modifyLoader(false))
@@ -131,12 +134,11 @@ export function setVisitForUpdate(visit){
     }
 }
 
-export function blankForCreate(staffId){
-    staffId = staffId || 0
+export function blankForCreate(recoId){
     return function(dispatch){
         dispatch(modifyLoader(true))
 
-        axios.get(`${ROOT_URL}/api/crm/visit/blank/` + staffId, {
+        axios.get(`${ROOT_URL}/api/crm/visit/blank/` + recoId, {
             headers: {
                 authorization: localStorage.getItem('token')
             }
