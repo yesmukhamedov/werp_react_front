@@ -100,7 +100,7 @@ export function moneyFormat(value){
                   newValue =  integerNumber[length-i] + newValue;
               }
           }
-          if (newValue.charAt[0]!==null && newValue.charCodeAt(0)==32)
+          if (newValue.charAt[0]!==null && newValue.charCodeAt(0)===32)
           {
               newValue = newValue.substr(1);
           }
@@ -111,4 +111,92 @@ export function moneyFormat(value){
       
   }
   return newValue;
+}
+
+
+export function moneyInputHanler(value,decimal){ 
+
+  //replace all non-numeric characters but "." 
+  value = value.replace(/\s+/g, '');
+
+
+  //if empty put 0
+  if (value===''||value==='0'||value==='00'||value==='000'){
+    value = '0';
+    return value;
+  }
+
+  if (value.charAt(value.length-1)==='.'){
+    return value;  
+  }else
+  {
+    //remove leading zeros
+    if (!(value.startsWith("0."))){
+      value = value.replace(/^0+/, '');
+    }
+
+    // value = new Number(parseFloat(value)).toFixed(2);// parseFloat(value);
+    if (decimal===1){
+      const dec1 = /^\$?[0-9]+(\.[0-9])?$/; //^[0-9\b]+$/;
+      if (value === '' || dec1.test(value)) {
+          return value;
+      }
+    }
+    else if (decimal===2){
+      
+      const dec1 = /^\$?[0-9]+(\.[0-9][0-9])?$/; //^[0-9\b]+$/;
+      const dec2 = /^\$?[0-9]+(\.[0-9])?$/; //^[0-9\b]+$/;
+      if (value === '' || dec1.test(value) || dec2.test(value)) {
+          return value;
+      }
+    }
+    else if (decimal===3){
+      const dec1 = /^\$?[0-9]+(\.[0-9])?$/; //^[0-9\b]+$/;
+      const dec2 = /^\$?[0-9]+(\.[0-9][0-9])?$/; //^[0-9\b]+$/;
+      const dec3 = /^\$?[0-9]+(\.[0-9][0-9][0-9])?$/; //^[0-9\b]+$/;
+      if (value === '' || dec1.test(value) || dec2.test(value) || dec3.test(value)) {
+          return value;
+      }
+    }
+    else
+    {      
+      const dec1 = /^\d+$/;
+      if (value === '' || dec1.test(value)) {
+          return value;
+      }
+    }
+    return undefined;
+  }
+}
+
+
+
+export function isEmpty(obj) {
+  var hasOwnProperty = Object.prototype.hasOwnProperty;
+    // null and undefined are "empty"
+    if (obj == null) return true;
+
+    // Assume if it has a length property with a non-zero value
+    // that that property is correct.
+    if (obj.length > 0)    return false;
+    if (obj.length === 0)  return true;
+
+    // If it isn't an object at this point
+    // it is empty, but it can't be anything *but* empty
+    // Is it empty?  Depends on your application.
+    if (typeof obj !== "object") return true;
+
+    // Otherwise, does it have any properties of its own?
+    // Note that this doesn't handle
+    // toString and valueOf enumeration bugs in IE < 9
+    for (var key in obj) {
+        if (hasOwnProperty.call(obj, key)) return false;
+    }
+
+    return true;
+}
+export function checkNestedObject(obj, key) {
+  return key.split(".").reduce(function(o, x) {
+      return (typeof o === "undefined" || o === null) ? o : o[x];
+  }, obj);
 }

@@ -1,7 +1,9 @@
-import { CHANGE_FA_BKPF, CLEAR_FA_BKPF, FETCH_CASHBANKHKONTS_BY_BRANCH , CLEAR_CASHBANKHKONTS_BY_BRANCH  } from './fa_action';
-import moment from 'moment';
+import { CHANGE_FA_BKPF, CLEAR_FA_BKPF, FETCH_CASHBANKHKONTS_BY_BRANCH , CLEAR_CASHBANKHKONTS_BY_BRANCH,
+FETCH_FMCP, CHANGE_FMCP, CLEAR_FMCP
+} from './fa_action';
+
 const INITIAL_STATE=    { 
-                        faForm:
+                            faForm:
                             {  
                                 bkpf:
                                     {
@@ -33,7 +35,9 @@ const INITIAL_STATE=    {
                                     budat:'',
                                     zreg:''
                                 }
-                            }
+                            },
+                            dynamicObject:{}    
+
                         };
 
 export default function (state=INITIAL_STATE, action)
@@ -47,8 +51,13 @@ export default function (state=INITIAL_STATE, action)
         case FETCH_CASHBANKHKONTS_BY_BRANCH:
             return {...state, faForm:{...state.faForm,hkontOptions:action.hkontOptions}};   
         case CLEAR_CASHBANKHKONTS_BY_BRANCH:            
-                return {...state, faForm:{...state.faForm,hkontOptions:[]}};   
-
+                return {...state, faForm:{...state.faForm,hkontOptions:[]}};
+        case FETCH_FMCP:
+                return {...state, dynamicObject: action.data};  
+        case CHANGE_FMCP:            
+                return {...state, dynamicObject: action.data};  
+        case CLEAR_FMCP:            
+                return {...state, dynamicObject: {}};
         default:
             return state;
     }

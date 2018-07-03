@@ -252,12 +252,27 @@ const AsyncAmsg = Loadable({
   loading: () => <LoadingPage />
 });
 
+const AsyncAmcdd = Loadable({
+  loader: () => import('../accounting/mainoperation/amcdd/amcdd' /* webpackChunkName: "amcdd" */),
+  loading: () => <LoadingPage />
+});
+
+const AsyncFmcp = Loadable({
+  loader: () => import('../finance/mainoperation/fmcp/fmcp' /* webpackChunkName: "fmcp" */),
+  loading: () => <LoadingPage />
+});
+
 const getComponent = {
     Ditaub:AsyncAssignUserBranch,
     Hrb02:AsyncHrb02,
 
     Frcoln:AsyncFrcoln,
+    Fmcp: AsyncFmcp,
+    
     Amsg:AsyncAmsg,
+    Amcdd:AsyncAmcdd,
+
+
     // Fsis:AsyncFsis,
 
     SpNew: AsyncSpNewPage,
@@ -328,6 +343,7 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/finance/mainoperation/fcis" component={AsyncFsis} />
       <Route path="/administration/dtskrep" component={AsyncTaskMonitorPage} />
       <Route path="/administration/dtskl"   component={AsyncDeptTaskListPage} />
+      
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
