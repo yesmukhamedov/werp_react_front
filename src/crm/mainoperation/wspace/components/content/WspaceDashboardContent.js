@@ -2,7 +2,7 @@ import React from 'react'
 import _ from 'lodash'
 import { Table } from 'semantic-ui-react'
 //import {formatDMYMS} from '../../../../../utils/helpers'
-import WspaceDemoTabel from '../WspaceDemoTable'
+import WspaceDemoTable from '../WspaceDemoTable'
 import {Link} from 'react-router-dom'
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
@@ -16,7 +16,7 @@ export default function WspaceDashboardContent(props){
     if(contentName === 'calls'){
         return renderCallsTable(items)
     }else if(contentName === 'demos'){
-        return <WspaceDemoTabel items={items}/>
+        return <WspaceDemoTable items={items}/>
     }
 
     return (null)

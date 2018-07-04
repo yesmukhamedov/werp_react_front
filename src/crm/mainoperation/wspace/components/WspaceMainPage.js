@@ -8,7 +8,7 @@ import '../css/main-page.css'
 import {fetchGroupDealers} from '../../demo/actions/demoAction'
 import {toggleRecoListModal,setCurrentRecommender,fetchRecosByReco,fetchRecosByDate,fetchDemoRecos,
     archiveReco,fetchMovedRecos,fetchTodayCalls,fetchTodayDemos,fetchCurrentDemos,fetchCurrentVisits,fetchVisitRecos,
-    handleFilter} from '../actions/wspaceAction'
+    handleFilter,fetchKpi} from '../actions/wspaceAction'
 import {fetchCallResults} from '../../reco/actions/recoAction'
 import {fetchReasons} from '../../demo/actions/demoAction'
 import WspaceHeader from './WspaceHeader'
@@ -20,6 +20,7 @@ import WspacePhoneModal from  './WspacePhoneModal'
 import WspaceDemoTable from './WspaceDemoTable'
 import WspaceVisitTable from './WspaceVisitTable'
 import WspaceRecoFilter from './WspaceRecoFilter'
+import moment from 'moment'
 
 class WspaceMainPage extends Component {
   constructor (props) {
@@ -39,6 +40,8 @@ class WspaceMainPage extends Component {
       this.props.fetchTodayDemos()
       this.props.fetchCallResults()
       this.props.fetchReasons()
+      this.props.fetchKpi(moment().year(),moment().month()+1)
+
   }
 
   onSelectStaff(staff){
@@ -257,5 +260,5 @@ export default connect(mapStateToProps, {
     fetchGroupDealers,toggleRecoListModal,setCurrentRecommender,fetchRecosByReco,
     fetchRecosByDate,fetchDemoRecos,archiveReco,fetchMovedRecos,fetchTodayCalls,
     fetchTodayDemos,fetchCallResults,fetchReasons,fetchCurrentDemos,fetchCurrentVisits,
-    fetchVisitRecos, handleFilter
+    fetchVisitRecos, handleFilter, fetchKpi
 })(WspaceMainPage)

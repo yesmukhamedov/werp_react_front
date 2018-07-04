@@ -5,8 +5,9 @@ import { connect } from 'react-redux'
 import '../css/main-page.css'
 import WspaceDashboardMenu from './content/WspaceDashboardMenu'
 import WspaceDashboardContent from './content/WspaceDashboardContent'
-import {fetchTodayCalls,fetchTodayDemos,WSP_FETCH_TODAY_CALLS,WSP_FETCH_TODAY_DEMOS} from '../actions/wspaceAction'
-
+import WspaceKpiTable from './WspaceKpiTable'
+import {fetchTodayCalls,fetchTodayDemos,fetchKpi,WSP_FETCH_TODAY_CALLS,WSP_FETCH_TODAY_DEMOS,WSP_FETCH_KPI} from '../actions/wspaceAction'
+import moment from 'moment'
 
 class WspaceDashboard extends Component {
   constructor (props) {
@@ -24,9 +25,31 @@ class WspaceDashboard extends Component {
     }
 
   render () {
-      let {todayCallsByResult,todayDemos} = this.props
-
+      let {todayCallsByResult,todayDemos, kpiData} = this.props
+      let year = moment().year();
+      let month = moment().month()+1;
     return <Grid>
+        <Grid.Row>
+            <Grid.Column width={16}>
+                <Segment clearing>
+                    <Header as='h3' floated='left'>
+                        KPI
+                    </Header>
+                    <Button
+                        loading={this.props.loaders[WSP_FETCH_KPI]}
+                        onClick={() => this.props.fetchKpi(year,month)}
+                        floated={'right'}
+                        style={{marginRight:'3px'}}
+                        icon={'refresh'}
+                        size={'small'}/>
+                </Segment>
+            </Grid.Column>
+            <Grid.Column width={16}>
+                <WspaceKpiTable kpiData={kpiData}/>
+            </Grid.Column>
+        </Grid.Row>
+        <Divider/>
+
         <Grid.Row>
             <Grid.Column width={16}>
             <Segment clearing>
@@ -88,10 +111,11 @@ function mapStateToProps (state) {
         todayCallsByResult: state.crmWspaceReducer.todayCallsByResult,
         todayDemos: state.crmWspaceReducer.todayDemos,
         dashboardCallMenus: state.crmWspaceReducer.dashboardCallMenus,
+        kpiData: state.crmWspaceReducer.kpiData,
         loaders: state.crmWspaceReducer.loaders
     }
 }
 
 export default connect(mapStateToProps, {
-    fetchTodayCalls,fetchTodayDemos
+    fetchTodayCalls,fetchTodayDemos,fetchKpi
 })(WspaceDashboard)

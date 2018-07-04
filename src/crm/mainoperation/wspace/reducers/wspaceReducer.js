@@ -14,7 +14,7 @@ import {
         WSP_SAVED_CALL,
         WSP_FETCH_CURRENT_DEMOS,
         WSP_FETCH_CURRENT_VISITS,WSP_FETCH_VISIT_RECOS,
-        WSP_HANDLE_FILTER
+        WSP_HANDLE_FILTER,WSP_FETCH_KPI
 } from '../actions/wspaceAction'
 import _ from 'lodash'
 
@@ -39,7 +39,8 @@ const INITIAL_STATE={
     phoneNumberHistory: [],
     phoneNumberReco:{},
     callForm: {},
-    filters: {}
+    filters: {},
+    kpiData:{}
 
 };
 
@@ -47,6 +48,9 @@ export default function (state=INITIAL_STATE, action)
 {
     switch(action.type)
     {
+        case WSP_FETCH_KPI:
+            return {...state,kpiData: action.payload}
+
         case WSP_SET_CURRENT_PHONE:
             return {...state,currentPhone:action.payload}
 

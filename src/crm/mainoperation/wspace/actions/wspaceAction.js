@@ -20,6 +20,7 @@ export const WSP_SAVED_CALL = 'WSP_SAVED_CALL'
 export const WSP_FETCH_CURRENT_DEMOS = 'WSP_FETCH_CURRENT_DEMOS'
 export const WSP_FETCH_CURRENT_VISITS = 'WSP_FETCH_CURRENT_VISITS'
 export const WSP_HANDLE_FILTER = 'WSP_HANDLE_FILTER'
+export const WSP_FETCH_KPI = 'WSP_FETCH_KPI'
 
 export function toggleRecoListModal (flag){
     return {
@@ -174,6 +175,27 @@ export function fetchTodayDemos(){
             })
         }).catch((e) => {
             dispatch(modifyLoader(WSP_FETCH_TODAY_DEMOS,false));
+            handleError(e,dispatch)
+        })
+    }
+}
+
+export function fetchKpi(year, month){
+    return function (dispatch){
+        dispatch(modifyLoader(WSP_FETCH_KPI,true));
+        axios.get(`${ROOT_URL}/api/crm/wspace/kpi`,{
+            headers: {
+                authorization: localStorage.getItem('token')
+            },
+            params:{year: year, month: month}
+        }).then(({data}) => {
+            dispatch(modifyLoader(WSP_FETCH_KPI,false));
+            dispatch({
+                type: WSP_FETCH_KPI,
+                payload: data
+            })
+        }).catch((e) => {
+            dispatch(modifyLoader(WSP_FETCH_KPI,false));
             handleError(e,dispatch)
         })
     }
