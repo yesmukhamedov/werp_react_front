@@ -3,7 +3,6 @@ import { Table } from 'semantic-ui-react'
 
 export default function WspaceKpiTable(props){
     const {kpiData} = props
-    console.log('Hello',kpiData)
     if(!kpiData){
         return <h3>Нет данныхs!</h3>
     }
