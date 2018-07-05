@@ -188,7 +188,7 @@ class Fmcp extends Component {
                     <List.Item>
                       <List.Content>
                         <Input
-                          value={this.state.searchTerm.zregOrConNum} maxLength='10'
+                          value={this.state.searchTerm.zregOrConNum} maxLength='12'
                           placeholder={'Номер дог. или Рег. номер'} onFocus={handleFocus}
                           onChange={(e, { value }) => this.onInputChange(value,'zregOrConNum')}
                           />
@@ -217,7 +217,7 @@ class Fmcp extends Component {
                     </Grid.Row>
                 </Grid>
 
-                
+                <br /><br /><br /><br /><br />
                 
                 
                      
