@@ -31,6 +31,12 @@ class DemoPrintPage extends Component{
     renderTable(demo,recommender){
         let parentReco = Object.assign({},demo.parentReco)
         let phones = Object.assign([],parentReco.phones)
+        let recomName = ''
+        if(recommender.id){
+            recomName = recommender.clientName
+        }else{
+            recomName = parentReco.recommenderName
+        }
         return <Table celled striped className='printTable'>
                             <Table.Body>
                                 <Table.Row>
@@ -65,7 +71,7 @@ class DemoPrintPage extends Component{
                                         <Header style={{marginLeft:20}} as={'h4'}>Рекомендатель</Header>
                                     </Table.Cell>
                                     <Table.Cell>
-                                        {recommender.clientName},
+                                        {recomName},
                                         {recommender.phones?recommender.phones.map(p => {
                                             return <span key={p.id} style={{marginLeft: '5px'}}>{p.phoneNumber}</span>
                                         }):''}
@@ -76,7 +82,7 @@ class DemoPrintPage extends Component{
                                     <Table.Cell>
                                         <Header style={{marginLeft:20}} as={'h4'}>Род. отношение</Header>
                                     </Table.Cell>
-                                    <Table.Cell>{recommender.relative}</Table.Cell>
+                                    <Table.Cell>{parentReco.relative}</Table.Cell>
                                 </Table.Row>
 
                                 <Table.Row>
