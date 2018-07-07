@@ -53,7 +53,7 @@ class DeptTaskListTableDisplay extends Component {
       },
       {
         Header: 'Филиал',
-        accessor: 'branch',
+        accessor: 'recipient.branch.value',
         maxWidth: 160,
         Cell: (props) => {
           const { recipient } = props.original;
@@ -66,7 +66,7 @@ class DeptTaskListTableDisplay extends Component {
       },
       {
         Header: 'Отдел',
-        accessor: 'department',
+        accessor: 'recipient.department.value',
         Cell: (props) => {
           const { recipient } = props.original;
           return (
@@ -78,7 +78,15 @@ class DeptTaskListTableDisplay extends Component {
       },
       {
         Header: 'Тип',
-        accessor: 'type',
+        accessor: 'type.code',
+        Cell: (props) => {
+          const { type } = props.original;
+          return (
+            <div>
+              {type[lang]}
+            </div>
+          );
+        },
       },
       {
         Header: 'Название ',
@@ -147,7 +155,7 @@ class DeptTaskListTableDisplay extends Component {
           const { recipient } = props.original;
           return (
             <div>
-              {recipient.position.value}
+              {recipient.assignee}
             </div>
           );
         },

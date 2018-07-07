@@ -12,73 +12,63 @@ class TaskMonitorTableDisplay extends Component {
     this.state = {
       selectedIdx: undefined,
     };
-    this.deepCopy = this.deepCopy.bind(this);
-    this.mapToList = this.mapToList.bind(this);
-  }
-
-  deepCopy(task) {
-    return {
-      'branch': task.branch,
-      'department': task.department,
-      'type': task.type,
-      'status': task.status,
-      'amount': task.amount
-    };
-  }
-
-  mapToList(result, lang) {
-    const listOfTasks = [];
-    let singleObj = {};
-    Object.entries(result.data).forEach(
-      ([branch, value1]) => {
-        singleObj = {}
-        singleObj['branch'] = result.branchList[branch].value;
-        Object.entries(value1).forEach(
-          ([department, value2]) => {
-            singleObj['department'] = result.departmentList[department].value;
-            Object.entries(value2).forEach(
-              ([type, value3]) => {
-                singleObj['type'] = result.taskTypeList[type][lang];
-                Object.entries(value3).forEach(
-                  ([status, amount]) => {
-                    singleObj['status'] = result.taskStatusList[status][lang];
-                    singleObj['amount'] = amount;
-                    const temp = this.deepCopy(singleObj);
-                    listOfTasks.push(temp);
-                  }
-                )
-              }
-            )
-          }
-        )
-      }
-    )
-    // console.log(listOfTasks)
-    return listOfTasks;
   }
 
   render() {
-    const {lang, result} = this.props;
-    let listOfTasks = [];
-    if (result) {
-      listOfTasks = this.mapToList(result, lang);
-    }
+    const { lang, result } = this.props;
     const columns = [
       {
         Header: 'Филиал',
-        accessor: 'branch',
+        accessor: 'recipient.branch.value',
+        Cell: (props) => {
+          const { recipient } = props.original;
+          return (
+            <div>
+              {recipient.branch.value}
+            </div>
+          );
+        },
       },
       {
         Header: 'Отдел',
-        accessor: 'department',
+        accessor: 'recipient.department.value',
+        Cell: (props) => {
+          const { recipient } = props.original;
+          return (
+            <div>
+              {recipient.department.value}
+            </div>
+          );
+        },
       },
       {
         Header: 'Тип',
-        accessor: 'type',
+        accessor: 'type.code',
+        Cell: (props) => {
+          const { type } = props.original;
+          return (
+            <div>
+              {type[lang]}
+            </div>
+          );
+        },
       },
       {
         Header: 'Статус',
-        accessor: 'status',
+        accessor: 'status.id',
+        Cell: (props) => {
+          const { status } = props.original;
+          return (
+            <div>
+              <Label
+                color={outCallStatusColorMap[status.id]}
+                size="mini"
+              >
+                {status[lang]}
+              </Label>
+            </div>
+          );
+        },
       },
       {
         Header: 'Количество',
@@ -87,7 +77,7 @@ class TaskMonitorTableDisplay extends Component {
     ];
     return (<ReactTable
       loading={this.props.loading}
-      data={listOfTasks}
+      data={result ? result.data : undefined}
       columns={columns}
       pageSizeOptions={[10, 20, 30, 50]}
       defaultPageSize={10}
@@ -123,7 +113,7 @@ class TaskMonitorTableDisplay extends Component {
 }
 
 TaskMonitorTableDisplay.propTypes = {
-  result: PropTypes.object,
+  result: PropTypes.arrayOf(PropTypes.object),
 };
 
 export default TaskMonitorTableDisplay;

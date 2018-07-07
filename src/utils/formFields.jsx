@@ -11,6 +11,7 @@ export const DropdownFormField = (props) => {
     opts,
     disabled,
     required,
+    multiple,
     meta: { touched, error },
   } = props;
   // {console.log(touched, error)}
@@ -26,6 +27,7 @@ export const DropdownFormField = (props) => {
         value={input.value}
         onChange={(param, data) => input.onChange(data.value)}
         placeholder={label}
+        multiple={multiple}
       />
       {touched &&
         error && (

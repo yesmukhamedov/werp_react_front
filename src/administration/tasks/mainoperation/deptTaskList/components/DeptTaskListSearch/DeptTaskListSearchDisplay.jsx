@@ -24,7 +24,7 @@ class DeptTaskListSearchDisplay extends Component {
       bukrs: values.company,
       branchId: values.branch !== -1 ? values.branch : undefined,
       departmentId: values.department !== -1 ? values.department : undefined,
-      typeId: values.type !== -1 ? values.type : undefined,
+      type: values.type !== -1 ? values.type : undefined,
       endDateFrom: endDateFromUtc,
       endDateTo: endDateToUtc,
       startDateFrom: startDateFromUtc,
@@ -38,6 +38,8 @@ class DeptTaskListSearchDisplay extends Component {
     )
       .filter(param => param)
       .join('&');
+
+    console.log(params)
 
     return new Promise(resolve => this.props.searchTasks(params, resolve));
   }
@@ -73,6 +75,7 @@ class DeptTaskListSearchDisplay extends Component {
                     />
                     <Field
                       required
+                      // multiple
                       name="branch"
                       component={DropdownFormField}
                       label="Филиал"
@@ -105,14 +108,14 @@ class DeptTaskListSearchDisplay extends Component {
                       name="department"
                       component={DropdownFormField}
                       label="Отдел"
-                      opts={[allOpt, ...directories.departmentOptions]}
+                      opts={[allOpt, ...Object.values(directories.deptOptions)]}
                     />
                     <Field
                       required
                       name="type"
                       component={DropdownFormField}
                       label="Тип"
-                      opts={[allOpt, ...directories.typeOptions]}
+                      opts={[allOpt, ...Object.values(directories.typeOptions)]}
                     />
                   </Form.Group>
                 </Grid.Column>

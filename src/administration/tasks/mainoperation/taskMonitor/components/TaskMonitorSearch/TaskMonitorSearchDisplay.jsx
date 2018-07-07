@@ -105,14 +105,14 @@ class TaskMonitorSearchDisplay extends Component {
                       name="department"
                       component={DropdownFormField}
                       label="Отдел"
-                      opts={[allOpt, ...directories.departmentOptions]}
+                      opts={[allOpt, ...Object.values(directories.deptOptions)]}
                     />
                     <Field
                       required
                       name="type"
                       component={DropdownFormField}
                       label="Тип"
-                      opts={[allOpt, ...directories.typeOptions]}
+                      opts={[allOpt, ...Object.values(directories.typeOptions)]}
                     />
                   </Form.Group>
                 </Grid.Column>
