@@ -1,6 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
-import { Card,Table,Header } from 'semantic-ui-react'
+import { Table } from 'semantic-ui-react'
+//import {formatDMYMS} from '../../../../../utils/helpers'
+import WspaceDemoTable from '../WspaceDemoTable'
 import {Link} from 'react-router-dom'
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
@@ -12,57 +14,19 @@ export default function WspaceDashboardContent(props){
     }
 
     if(contentName === 'calls'){
-        return renderCallsTable(items);
+        return renderCallsTable(items)
     }else if(contentName === 'demos'){
-        return renderDemosTable(items)
+        return <WspaceDemoTable items={items}/>
     }
 
     return (null)
-}
-
-
-function renderDemosTable(items){
-    return <Table celled padded>
-        <Table.Header>
-            <Table.Row>
-                <Table.HeaderCell singleLine>Клиент</Table.HeaderCell>
-                <Table.HeaderCell>Адрес</Table.HeaderCell>
-                <Table.HeaderCell>Дата-время</Table.HeaderCell>
-                <Table.HeaderCell>Дилер</Table.HeaderCell>
-                <Table.HeaderCell>Примечание</Table.HeaderCell>
-                <Table.HeaderCell>Результат</Table.HeaderCell>
-                <Table.HeaderCell></Table.HeaderCell>
-            </Table.Row>
-        </Table.Header>
-
-        <Table.Body>
-            {items.map((item => {
-                return <Table.Row key={item.id}>
-                    <Table.Cell>{item.clientName}</Table.Cell>
-                    <Table.Cell>{item.address}</Table.Cell>
-                    <Table.Cell>{item.dateTime}</Table.Cell>
-                    <Table.Cell>{item.staffName}</Table.Cell>
-                    <Table.Cell>{item.note}</Table.Cell>
-                    <Table.Cell>{item.resultName}</Table.Cell>
-                    <Table.Cell>
-                        <Link
-                            target={'_blank'}
-                            className={'ui icon button mini'}
-                            to={`/crm/demo/view/` + item.id}>
-                            Просмотр
-                        </Link>
-                    </Table.Cell>
-                </Table.Row>
-            }))}
-        </Table.Body>
-    </Table>
 }
 
 function renderCallsTable (items){
     const columns = [
         {
             Header: 'Дата-время звонка',
-            accessor: 'dateTime',
+            accessor: 'dateTimeStr',
             maxWidth: 150
         },
         {
@@ -83,14 +47,13 @@ function renderCallsTable (items){
             accessor: (row) => <Link
                 target={'_blank'}
                 className={'ui icon button mini'}
-                to={`/crm/reco/view/` + row.recoId}>
+                to={`/crm/reco/view/` + row.contextId}>
                 Просмотр рек.
             </Link>,
             Footer: (
                 <span>
-            <strong>Всего:</strong>{' '}
-                    {_.size(items)}
-          </span>
+                    <strong>Всего:</strong>{' '}{_.size(items)}
+                </span>
             )
         }
     ];

@@ -49,7 +49,7 @@ class VisitViewPage extends Component {
                 Добавить рекомендации
       </Link>
 
-      <Button onClick={() => this.props.toggleDemoCreateModal(true)}>Добавить демо</Button>
+
         <Button onClick={this.toUpdate}>Редактировать</Button>
       <Button color={'red'} onClick={() => this.deleteVisit()}>Удалить</Button>
     </div>
@@ -190,7 +190,7 @@ class VisitViewPage extends Component {
             </Grid.Column>
 
             <Grid.Column width={8}>
-              {<ChildRecosTable items={visit.childRecos || []}/>}
+              {<ChildRecosTable items={visit.recos || []}/>}
                 {<ChildDemosTable items={visit.childDemos || []}/>}
             </Grid.Column>
           </Grid.Row>

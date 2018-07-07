@@ -1,12 +1,13 @@
 import React, {Component} from 'react'
 import "react-table/react-table.css";
-import { Grid,Divider } from 'semantic-ui-react'
+import { Grid,Divider,Button, Segment, Header } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import '../css/main-page.css'
-import {DASHBOARD_MENU_ITEMS} from '../wspaceUtil'
 import WspaceDashboardMenu from './content/WspaceDashboardMenu'
 import WspaceDashboardContent from './content/WspaceDashboardContent'
-
+import WspaceKpiTable from './WspaceKpiTable'
+import {fetchTodayCalls,fetchTodayDemos,fetchKpi,WSP_FETCH_TODAY_CALLS,WSP_FETCH_TODAY_DEMOS,WSP_FETCH_KPI} from '../actions/wspaceAction'
+import moment from 'moment'
 
 class WspaceDashboard extends Component {
   constructor (props) {
@@ -24,12 +25,44 @@ class WspaceDashboard extends Component {
     }
 
   render () {
-      let {todayCallsByResult,todayDemos} = this.props
-
+      let {todayCallsByResult,todayDemos, kpiData} = this.props
+      let year = moment().year();
+      let month = moment().month()+1;
     return <Grid>
         <Grid.Row>
             <Grid.Column width={16}>
-                <h3>Звонки</h3>
+                <Segment clearing>
+                    <Header as='h3' floated='left'>
+                        KPI
+                    </Header>
+                    <Button
+                        loading={this.props.loaders[WSP_FETCH_KPI]}
+                        onClick={() => this.props.fetchKpi(year,month)}
+                        floated={'right'}
+                        style={{marginRight:'3px'}}
+                        icon={'refresh'}
+                        size={'small'}/>
+                </Segment>
+            </Grid.Column>
+            <Grid.Column width={16}>
+                <WspaceKpiTable kpiData={kpiData}/>
+            </Grid.Column>
+        </Grid.Row>
+        <Divider/>
+
+        <Grid.Row>
+            <Grid.Column width={16}>
+            <Segment clearing>
+                <Header as='h3' floated='left'>
+                    Звонки
+                </Header>
+                <Button
+                    loading={this.props.loaders[WSP_FETCH_TODAY_CALLS]}
+                    onClick={this.props.fetchTodayCalls}
+                    floated={'right'}
+                    icon={'refresh'}
+                    size={'small'}/>
+            </Segment>
             </Grid.Column>
             <Grid.Column width={4}>
                 <WspaceDashboardMenu
@@ -49,7 +82,18 @@ class WspaceDashboard extends Component {
         <Divider/>
         <Grid.Row>
             <Grid.Column width={16}>
-                <h3>Демонстрации</h3>
+                <Segment clearing>
+                    <Header as='h3' floated='left'>
+                        Демонстрации
+                    </Header>
+                    <Button
+                        loading={this.props.loaders[WSP_FETCH_TODAY_DEMOS]}
+                        onClick={this.props.fetchTodayDemos}
+                        floated={'right'}
+                        style={{marginRight:'3px'}}
+                        icon={'refresh'}
+                        size={'small'}/>
+                </Segment>
             </Grid.Column>
             <Grid.Column width={16}>
                 <WspaceDashboardContent
@@ -66,9 +110,12 @@ function mapStateToProps (state) {
         dealers: state.crmDemo.dealers,
         todayCallsByResult: state.crmWspaceReducer.todayCallsByResult,
         todayDemos: state.crmWspaceReducer.todayDemos,
-        dashboardCallMenus: state.crmWspaceReducer.dashboardCallMenus
+        dashboardCallMenus: state.crmWspaceReducer.dashboardCallMenus,
+        kpiData: state.crmWspaceReducer.kpiData,
+        loaders: state.crmWspaceReducer.loaders
     }
 }
 
 export default connect(mapStateToProps, {
+    fetchTodayCalls,fetchTodayDemos,fetchKpi
 })(WspaceDashboard)

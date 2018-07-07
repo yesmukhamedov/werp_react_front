@@ -11,6 +11,7 @@ export default function DemoViewTable(props){
 
     //Single Demo
     const {demo} = props;
+    let call = Object.assign({},demo.call)
 
     return <Card fluid>
         <Card.Content>
@@ -60,7 +61,7 @@ export default function DemoViewTable(props){
                             <Header as={'h4'}>Номер телефона</Header>
                         </Table.Cell>
                         <Table.Cell>
-                            {demo.phoneNumber}
+                            {call.phoneNumber}
                         </Table.Cell>
                     </Table.Row>
 
@@ -161,17 +162,18 @@ export default function DemoViewTable(props){
 }
 
 function getSourceLink(demo){
-    if(demo.visitId > 0){
+    const call = Object.assign({},demo.call)
+    if(demo.context === 'visit'){
         return <Link className={'button'} to={`/crm/visit/view/` + demo.visitId}>
-            Визит № {demo.visitId}
+            Визит № {call.contextId}
         </Link>
-    }else if(demo.recoId > 0){
-        return <Link className={'button'} to={`/crm/reco/view/` + demo.recoId}>
-            Рекомендация № {demo.recoId}
+    }else if(call.context === 'reco'){
+        return <Link className={'button'} to={`/crm/reco/view/` + call.contextId}>
+            Рекомендация № {call.contextId}
         </Link>
-    }else if(demo.parentId > 0){
-        return <Link to={`/crm/demo/view/` + demo.parentId}>
-            Демо № {demo.parentId}
+    }else if(call.context === 'demo'){
+        return <Link to={`/crm/demo/view/` + call.contextId}>
+            Демо № {call.contextId}
         </Link>
     }else{
         return;

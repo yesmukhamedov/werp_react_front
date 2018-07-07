@@ -136,9 +136,6 @@ class VisitArchivePage extends Component{
           <Header as='h2' floated='left'>
                         Список визитов группы
           </Header>
-          <Button className={'ui icon button primary right floated'} onClick={this.toCreate}>
-            <Icon name='plus' /> Добавить
-          </Button>
         </Segment>
         {this.renderTable()}
         <VisitCreateModal fromComponent="archive" />

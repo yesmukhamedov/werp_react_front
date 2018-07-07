@@ -3,12 +3,39 @@ export const DEMO_RESULT_MOVED = 2
 export const DEMO_RESULT_CANCELLED = 3
 export const DEMO_RESULT_SOLD = 4
 
+export const DEMO_RESULT_OPTIONS = [
+    {
+        key: DEMO_RESULT_DONE,
+        value: DEMO_RESULT_DONE,
+        text: 'Пройден'
+    },
+
+    {
+        key: DEMO_RESULT_MOVED,
+        value: DEMO_RESULT_MOVED,
+        text: 'Перенос'
+    },
+
+    {
+        key: DEMO_RESULT_CANCELLED,
+        value: DEMO_RESULT_CANCELLED,
+        text: 'Отменен'
+    },
+
+    {
+        key: DEMO_RESULT_SOLD,
+        value: DEMO_RESULT_SOLD,
+        text: 'Продан'
+    }
+]
+
 
 //CALL RESULTS
 export const CALL_RESULT_DEMO = 1
 export const CALL_RESULT_REFUSE = 2
 export const CALL_RESULT_RECALL = 3
 export const CALL_RESULT_NOT_AVAILABLE = 4
+export const CALL_RESULT_NO_ANSWER = 5
 
 export const LOCATION_OPTIONS = [
     {
@@ -112,11 +139,27 @@ export function demoResultOptions(results){
 
     let out = Object.keys(results).map((k) => {
         return {
-            key: parseInt(k),
+            key: parseInt(k,10),
             text:results[k],
-            value: parseInt(k)
+            value: parseInt(k,10)
         }
     });
 
     return out;
+}
+
+export function callColor(resultId){
+    switch (resultId){
+        case CALL_RESULT_DEMO:
+            return 'green'
+
+        case CALL_RESULT_RECALL:
+            return 'brown'
+
+        case CALL_RESULT_REFUSE:
+            return 'red'
+
+        default:
+            return 'grey'
+    }
 }

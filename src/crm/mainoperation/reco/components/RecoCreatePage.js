@@ -10,13 +10,12 @@ import 'react-datepicker/dist/react-datepicker.css';
 import '../css/recoStyles.css';
 import {fetchGroupDealers} from '../../demo/actions/demoAction';
 import {checkPhoneNumber,createRecoList,blankRecoItem} from '../actions/recoAction'
+import DatePicker from 'react-datepicker'
+import moment from 'moment'
 require('moment/locale/ru');
 
+const DEFAULT_CONTEXT = 'aa'
 
-
-const pageStyle = {
-    fontSize: '12px'
-}
 
 class RecoCreatePage extends Component {
   constructor (props) {
@@ -24,7 +23,7 @@ class RecoCreatePage extends Component {
     this.loadedSuccess = true
     this.state = {
       reco: {
-        context: this.props.match.params.context || 'aa',
+        context: this.props.match.params.context || DEFAULT_CONTEXT,
         contextId: this.props.match.params.contextId || 0,
         tempRecommender: '',
         recommenderInfo: '',
@@ -46,7 +45,9 @@ class RecoCreatePage extends Component {
 
   componentWillMount () {
       this.props.fetchGroupDealers()
-    axios.get(`${ROOT_URL}/api/crm/reco/create?context=` + (this.props.match.params.context || 'aa') + `&contextId=` + (this.props.match.params.contextId || 0), {
+      let context = this.props.match.params.context
+      let contextId = this.props.match.params.contextId
+    axios.get(`${ROOT_URL}/api/crm/reco/create?context=` + (context || DEFAULT_CONTEXT) + `&contextId=` + (contextId || 0), {
       headers: {
         authorization: localStorage.getItem('token')}
     }).then((res) => {
@@ -126,6 +127,15 @@ class RecoCreatePage extends Component {
       ...this.state,
       reco: reco
     })
+  }
+
+  handleDocDate = (v) => {
+      let reco = Object.assign({},this.state.reco)
+      reco['docDate'] = v
+      this.setState({
+          ...this.state,
+          reco: reco
+      })
   }
 
   handleChange(e,data){
@@ -246,10 +256,32 @@ class RecoCreatePage extends Component {
     }
   }
 
+  isArchive = () => {
+        return this.state.reco.contextId === 0 || this.state.reco.context === DEFAULT_CONTEXT
+  }
+
+  renderDateField = () => {
+    if(this.isArchive()){
+        return <Form.Field width={6} error={!this.state.reco.docDate}>
+                    <label>Дата рекомендации</label>
+                    <DatePicker
+                        locale="ru"
+                        label=''
+                        placeholderText={'Дата рекомендации'}
+                        showMonthDropdown showYearDropdown dropdownMode='select'
+                        dateFormat='DD.MM.YYYY' selected={this.state.reco.docDate?moment(this.state.reco.docDate):null}
+                        onChange={(v) => this.handleDocDate(v)} />
+                </Form.Field>
+    }
+
+    return (null)
+  }
+
   renderHeaderForm () {
     return (
       <Form>
         <Form.Group widths='equal'>
+            {this.renderDateField()}
           <Form.Field>
             <label>Дилер</label>
             <Dropdown name='responsibleId'

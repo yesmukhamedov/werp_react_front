@@ -1,5 +1,5 @@
-import React,{Component} from 'react'
-import { Table,Icon,Label,Button,Message } from 'semantic-ui-react'
+import React from 'react'
+import { Label,Button } from 'semantic-ui-react'
 import _ from 'lodash'
 import {RECO_CATEGORIES,RECO_CATEGORY_COLORS} from './crmUtil'
 
@@ -24,6 +24,9 @@ const DEMO_RESULT_MINI_CONTRACT = 5;
 
 // Продан, но потом отменен
 const DEMO_RESULT_SOLD_CANCELLED = 6;
+
+// Архивированный
+const DEMO_RESULT_ARCHIVED = 7;
 
 
 
@@ -89,6 +92,10 @@ export function renderDemoResultLabel(resultId,resultName){
             color = 'teal';
             break;
 
+        case DEMO_RESULT_ARCHIVED:
+            color = 'black'
+            break
+
         default:
             color = 'grey';
     }
@@ -98,7 +105,36 @@ export function renderDemoResultLabel(resultId,resultName){
 
 
 
+export function renderCallResultLabel (resultId,resultName){
+    let color = ''
+    switch (resultId){
+        case CALL_RESULT_NOT_AVAILABLE:
+            color = 'yellow'
+            break
 
+        case CALL_RESULT_RECALL:
+            color = 'olive'
+            break
+
+        case CALL_RESULT_REFUSE:
+            color = 'red'
+            break
+
+        case CALL_RESULT_NO_ANSWER:
+            color = 'violet'
+            break
+
+        case CALL_RESULT_POSITIVE:
+            color = 'green'
+            break
+
+        default:
+            color = 'grey'
+            break
+    }
+
+    return <Label color={color} horizontal>{resultName}</Label>;
+}
 
 
 export function renderRecoStatusLabel(statusId,statusName) {

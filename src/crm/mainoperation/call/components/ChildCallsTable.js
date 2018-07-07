@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table,Card } from 'semantic-ui-react'
+import {renderCallResultLabel} from '../../../CrmHelper'
 import moment from 'moment'
 
 /**
@@ -36,11 +37,11 @@ export default function ChildCallsTable(props){
                         return <Table.Row key={idx}>
                             <Table.Cell>{idx+1}</Table.Cell>
                             <Table.Cell>{item.branchName}</Table.Cell>
-                            <Table.Cell>{item.callDate?moment(item.callDate).format('DD.MM.YYYY HH:mm'):''}</Table.Cell>
+                            <Table.Cell>{item.dateTime?moment(item.dateTime).format('DD.MM.YYYY HH:mm'):''}</Table.Cell>
                             <Table.Cell>{item.callerName}</Table.Cell>
                             <Table.Cell>{item.phoneNumber}</Table.Cell>
-                            <Table.Cell>{item.callResultName}</Table.Cell>
-                            <Table.Cell>{item.callNote}</Table.Cell>
+                            <Table.Cell>{renderCallResultLabel(item.resultId,item.resultName)}</Table.Cell>
+                            <Table.Cell>{item.note}</Table.Cell>
                         </Table.Row>
                     })}
                 </Table.Body>

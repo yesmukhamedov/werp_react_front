@@ -3,11 +3,14 @@ import {Link} from 'react-router-dom'
 import { Header,Container,Button,Segment,Grid,Divider,Modal } from 'semantic-ui-react'
 import RecoUpdateModal from './RecoUpdateModal';
 import {fetchSingleReco,toggleRecoUpdateModal,fetchCallResults,deleteReco} from '../actions/recoAction'
+import {blankForCreate,modalToggle} from '../../visit/actions/visitAction'
 import {fetchReasons} from '../../demo/actions/demoAction'
 import { connect } from 'react-redux'
 import ChildDemosTable from '../../demo/components/ChildDemosTable'
 import ChildCallsTable from '../../call/components/ChildCallsTable'
+import ChildVisitsTable from '../../visit/components/ChildVisitsTable'
 import RecoViewTable from './RecoViewTable'
+import VisitCreateModal from '../../visit/components/VisitCreateModal'
 
 class RecoViewPage extends Component {
   constructor (props) {
@@ -44,6 +47,11 @@ class RecoViewPage extends Component {
     })
   }
 
+  prepareForVisitCreate = () => {
+      this.props.blankForCreate(this.props.reco.id)
+      this.props.modalToggle(true)
+  }
+
     renderDeleteConfirmModal(){
         return <Modal open={this.state.showDeleteModal}>
             <Modal.Header>ПРЕДУПРЕЖДЕНИЕ!</Modal.Header>
@@ -69,6 +77,7 @@ class RecoViewPage extends Component {
             <Link className={'ui icon button'} to={`/crm/reco/archive`}>
                 В Архив
             </Link>
+            <Button onClick={this.prepareForVisitCreate}>Добавить визит</Button>
 
             <Button onClick={() => this.props.toggleRecoUpdateModal(true)}>Редактировать</Button>
             <Button color={'red'} onClick={() => this.deleteModalTrigger(true)}>Удалить</Button>
@@ -85,6 +94,7 @@ class RecoViewPage extends Component {
         {this.renderActions()}
         <RecoUpdateModal />
         <Divider />
+          <VisitCreateModal/>
         <Grid>
           <Grid.Row>
             <Grid.Column width={6}>
@@ -94,6 +104,7 @@ class RecoViewPage extends Component {
             <Grid.Column width={10}>
                 <ChildCallsTable items={reco.calls || []} />
                 <ChildDemosTable items={reco.demos || []}/>
+                <ChildVisitsTable items={reco.visits || []} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -110,4 +121,7 @@ function mapStateToProps (state) {
     }
 }
 
-export default connect(mapStateToProps, {fetchSingleReco,toggleRecoUpdateModal,fetchCallResults,fetchReasons,deleteReco})(RecoViewPage)
+export default connect(mapStateToProps, {
+        fetchSingleReco,toggleRecoUpdateModal,fetchCallResults,fetchReasons,deleteReco,
+        blankForCreate,modalToggle
+})(RecoViewPage)

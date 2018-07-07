@@ -75,7 +75,7 @@ class DemoUpdateModal extends Component {
 
   renderCallDateRow(){
       let resultId = parseInt(this.state.localDemo.resultId,10);
-      if (resultId === DEMO_RESULT_MOVED) {
+      if (resultId === DEMO_RESULT_MOVED || resultId === DEMO_RESULT_CANCELLED) {
           return <Form.Field>
               <label>Дата перезвона</label>
               <DatePicker

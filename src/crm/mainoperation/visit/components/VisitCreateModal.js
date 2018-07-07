@@ -13,7 +13,7 @@ class VisitCreateModal extends Component {
     super(props)
 
     this.state = {
-        localVisit:{id:null},
+        localVisit:{},
         dealers: []
     }
 
@@ -62,9 +62,8 @@ class VisitCreateModal extends Component {
           label='Посетитель' options={this.state.dealers}
           onChange={(e, v) => this.handleChange('visitorId', v)} />
 
-        <Form.Field onChange={(e, o) => this.handleChange('clientName', o)}
-          value={localVisit.clientName || ''}
-          control={Input} required label='ФИО клиента' placeholder='ФИО клиента' />
+        <Form.Field value={localVisit.clientName || ''}
+                    readOnly={true} control={Input} required label='ФИО клиента' placeholder='ФИО клиента' />
       </Form.Group>
 
       <Form.Group widths='equal'>
@@ -101,7 +100,6 @@ class VisitCreateModal extends Component {
     // console.log(o);
     switch (fieldName) {
       case 'docDate':
-          console.log(o.valueOf())
         if (o) {
             localVisit[fieldName] = o.valueOf()
         } else {

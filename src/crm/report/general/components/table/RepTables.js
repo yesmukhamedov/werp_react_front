@@ -1,6 +1,6 @@
-import React,{Component} from 'react'
-import { Table,Icon,Label,Button,Message } from 'semantic-ui-react'
-import {YEAR_OPTIONS,MONTH_OPTIONS} from '../../../../../utils/constants'
+import React from 'react'
+import { Table,Icon,Label,Message } from 'semantic-ui-react'
+import {MONTH_OPTIONS} from '../../../../../utils/constants'
 import moment from 'moment'
 import DemoResultLabel from '../../../../mainoperation/demo/components/DemoResultLabel'
 import {REP_894,REP_934} from '../../crmRepUtil'
@@ -15,9 +15,9 @@ export function RepTable894(props){
     if(!items){
         items = []
     }
-    let currentMonth = parseInt(moment().format('M'))
+    let currentMonth = parseInt(moment().format('M'),10)
     let date = moment().subtract(3,'month')
-    let prevMonth = parseInt(date.format('M'))
+    let prevMonth = parseInt(date.format('M'),10)
     let months = []
     for(let k = prevMonth; k <= currentMonth; k++){
         months.push(k)

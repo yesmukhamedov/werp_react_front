@@ -303,7 +303,7 @@ class Phone extends Component {
               <Table.Cell>{idx + 1}</Table.Cell>
               <Table.Cell>{item.bukrsName}</Table.Cell>
               <Table.Cell>{item.branchName}</Table.Cell>
-              <Table.Cell>{item.callDate ? moment(item.callDate).format('DD.MM.YYYY HH:mm'):''}</Table.Cell>
+              <Table.Cell>{item.dateTimeStr}</Table.Cell>
               <Table.Cell>{item.callerName}</Table.Cell>
               <Table.Cell>{item.note}</Table.Cell>
               <Table.Cell>{item.resultName}</Table.Cell>

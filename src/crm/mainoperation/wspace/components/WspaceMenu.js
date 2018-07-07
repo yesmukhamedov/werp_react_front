@@ -1,9 +1,7 @@
-import React, {Component} from 'react'
-import _ from 'lodash'
+import React from 'react'
 import "react-table/react-table.css";
-import { Tab,Header,Container,Icon,Segment,Label,Accordion,Menu,Input,Loader } from 'semantic-ui-react'
-import moment from 'moment';
-import {MENU_ITEMS,MENU_DASHBOARD,MENU_ADD_INFO} from '../wspaceUtil'
+import { Label,Menu,Loader } from 'semantic-ui-react'
+import {MENU_DASHBOARD,MENU_ADD_INFO} from '../wspaceUtil'
 import '../css/header-page.css'
 
 
@@ -41,9 +39,6 @@ export default function WspaceMenu (props) {
                 active={activeItem === 'info'}
                 onClick={props.handleItemClick}>
                 Доп. информация
-            </Menu.Item>
-            <Menu.Item>
-                <Input icon='search' placeholder='Поиск...' />
             </Menu.Item>
         </Menu>
     )

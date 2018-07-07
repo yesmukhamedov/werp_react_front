@@ -1,6 +1,6 @@
 import React from 'react'
 import {Menu, Label } from 'semantic-ui-react'
-
+import {callColor} from '../../../../crmUtil'
 export default function WspaceDashboardMenu(props){
     const {items,activeItem} = props
     if(!items){
@@ -15,7 +15,7 @@ export default function WspaceDashboardMenu(props){
                 name={m.name}
                 active={activeItem === m.name}
                 onClick={() => props.handleItemClick(m.name)}>
-                <Label>{m.count}</Label>
+                <Label color={callColor(m.resultId)}>{m.count}</Label>
                 {m.label}
             </Menu.Item>
         ))}

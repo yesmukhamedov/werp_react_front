@@ -26,7 +26,7 @@ class Amsg extends Component {
           
             enablePaySchedule:false,
             errors:[],
-            loading:false,
+            // loading:false,
 
             rows:[],
             
@@ -54,7 +54,7 @@ class Amsg extends Component {
     componentWillMount() {
         // console.log(this.props)
         // this.props.f4FetchBonusTypeList('hrb02');
-        this.props.f4FetchCurrencyList('fcis');
+        this.props.f4FetchCurrencyList('amsg');
         this.props.f4FetchDepartmentList();
         this.props.f4FetchBusinessAreaList2();
         this.props.f4FetchExchangeRateNational();
@@ -121,9 +121,11 @@ class Amsg extends Component {
     }
 
     save(){
-      this.setState({loading:true});
+      // this.setState({loading:true});
       let errors = [];
+      console.log(222222)
       errors = this.validate();
+      console.log(33333)
       if (errors===null || errors===undefined || errors.length===0){
         
         let bkpf = Object.assign({}, this.props.bkpf);        
@@ -133,7 +135,7 @@ class Amsg extends Component {
         this.props.amsgSave(bkpf,rows,psRows,customer.lifnr);
       }
       
-      this.setState({errors, loading:false});
+      this.setState({errors});
     }
     validate(){
       let errors = [];
@@ -144,6 +146,7 @@ class Amsg extends Component {
       if (dep===null || dep===undefined || !dep) { errors.push("Выберите отдел"); }
       if (waers===null || waers===undefined || !waers) { errors.push("Выберите валюту"); }
       if (bldat===null || bldat===undefined || !bldat) { errors.push("Выберите дату документа"); }
+      if (zreg===null || zreg===undefined || !zreg) { errors.push("Заполните рег.номер"); }
 
       const {customer, rows, psRows, enablePaySchedule} = this.state;
       
@@ -165,7 +168,6 @@ class Amsg extends Component {
 
       if (enablePaySchedule){
         if (psRows===null || psRows===undefined || psRows.length===0) { errors.push("Необходимо заполнить график платежей"); }
-        if (zreg===null || zreg===undefined || !zreg) { errors.push("Заполните рег.номер"); }
 
         for(let i = 0; i < psRows.length; i++){
           const {payment_date, sum2} = psRows[i];
@@ -215,9 +217,9 @@ class Amsg extends Component {
             
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
 
-                <Dimmer active={this.state.loading}>
+                {/* <Dimmer active={this.state.loading}>
                   <Loader size='massive' />
-                </Dimmer>
+                </Dimmer> */}
                 <Header as="h2" block>
                   Договор продажи
                 </Header>
@@ -226,8 +228,7 @@ class Amsg extends Component {
                   <List horizontal>
                     <List.Item>
                       <List.Content>
-                          <Button icon labelPosition='left' primary size='small' onClick={()=>this.save()}
-                          >
+                          <Button icon labelPosition='left' primary size='small' onClick={()=>this.save()}>
                             <Icon name='save' size='large' />Сохранить
                           </Button>
                       </List.Content>

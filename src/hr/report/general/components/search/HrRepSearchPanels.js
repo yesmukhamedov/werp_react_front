@@ -1,8 +1,7 @@
-import React,{Component} from 'react'
-import { Form,Button } from 'semantic-ui-react'
+import React from 'react'
+import { Form } from 'semantic-ui-react'
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"
-import {PositionF4} from '../../../../../reference/f4/position/PositionF4'
 import moment from 'moment'
 require('moment/locale/ru');
 

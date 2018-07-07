@@ -61,7 +61,7 @@ export default function RecoViewTable(props){
                             <Header as={'h4'}>Район</Header>
                         </Table.Cell>
                         <Table.Cell>
-                            {reco.districtName}
+                            {reco.district}
                         </Table.Cell>
                     </Table.Row>
 

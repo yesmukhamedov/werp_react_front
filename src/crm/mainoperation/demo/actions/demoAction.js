@@ -10,6 +10,8 @@ export const CRM_DEMO_FETCH_ARCHIVE = 'CRM_DEMO_FETCH_ARCHIVE';
 //Load Single Demo By Id
 export const CRM_DEMO_FETCH_SINGLE = 'CRM_DEMO_FETCH_SINGLE';
 export const CRM_DEMO_UPDATE = 'CRM_DEMO_UPDATE';
+
+export const CRM_DEMO_FETCH_CHILD_RECOS = 'CRM_DEMO_FETCH_CHILD_RECOS';
 /**
  *
  */
@@ -29,7 +31,7 @@ export function updateDemo(demo){
                 authorization: localStorage.getItem('token')
             }
         })
-            .then(({data}) => {
+            .then(({}) => {
                 dispatch({
                     type: CRM_DEMO_UPDATE,
                     item:demo
@@ -50,11 +52,33 @@ export function fetchDemo(id){
             dispatch(modifyLoader(false));
             dispatch({
                 type: CRM_DEMO_FETCH_SINGLE,
-                item:data['demo']
+                demo:data['demo'],
+                recommender: data['recommender']
             });
 
         })
             .catch(error => {
+                handleError(error,dispatch)
+            });
+    }
+}
+
+export function fetchDemoChildRecos(id){
+    return function (dispatch){
+        dispatch(modifyLoader(true));
+        axios.get(`${ROOT_URL}/api/crm/demo/` + id + '/child-recos', {
+            headers: {
+                authorization: localStorage.getItem('token')}
+        }).then(({data}) => {
+            dispatch(modifyLoader(false));
+            dispatch({
+                type: CRM_DEMO_FETCH_CHILD_RECOS,
+                payload:data
+            });
+
+        })
+            .catch(error => {
+                dispatch(modifyLoader(false));
                 handleError(error,dispatch)
             });
     }

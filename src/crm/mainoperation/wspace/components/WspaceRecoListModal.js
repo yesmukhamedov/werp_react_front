@@ -1,4 +1,4 @@
-import React,{Component} from 'react'
+import React from 'react'
 import { Card,Button,Modal, Icon,Loader,Segment,Dimmer } from 'semantic-ui-react'
 import WspaceRecoCard from './WspaceRecoCard'
 import {RECO_MODAL_ITEMS} from '../wspaceUtil'

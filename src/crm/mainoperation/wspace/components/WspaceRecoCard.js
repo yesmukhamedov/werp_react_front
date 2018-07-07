@@ -7,6 +7,7 @@ import {
         RECO_STATUS_NEW,RECO_STATUS_DEMO_DONE,RECO_STATUS_PHONED,
         CALL_RESULT_POSITIVE,CALL_RESULT_RECALL} from '../../../CrmHelper'
 import moment from 'moment'
+import {formatDMYMS} from '../../../../utils/helpers'
 
 import WspacePhone from './WspacePhone'
 
@@ -50,7 +51,7 @@ function renderRecosInModal(props){
                 </Card.Header>
                 <Card.Meta>
                     {item.callDate?<Popup style={{float:'left'}}
-                           trigger={<Label color={'blue'} size={'small'}>{item.callDate}</Label>}
+                           trigger={<Label color={'blue'} size={'small'}>{formatDMYMS(item.callDate)}</Label>}
                            content="Дата-время перезвона"
                            basic
                     />:''}
@@ -64,7 +65,7 @@ function renderRecosInModal(props){
                 </Card.Description>
             </Card.Content>
         <Card.Content extra  style={{fontSize:'11px',color:'black'}}>
-                <i>Статус:</i> {renderRecoStatusLabel(item.statusId,item.statusName)}
+                {renderRecoStatusLabel(item.statusId,item.statusName)}
 
             {item.relativeName?<strong><i>Род:</i></strong>:''}
             {item.relativeName?' ' + item.relativeName+';':''}
@@ -116,7 +117,7 @@ function renderPhonedReco(item,recoCardMenuHandle){
             <Card.Meta>
                 <span style={{float:'left'}}>
                     {recallDate?<Popup
-                            trigger={<Label color={'blue'}>{recallDate}</Label>}
+                            trigger={<Label color={'blue'}>{formatDMYMS(recallDate)}</Label>}
                             content="Дата-время перезвона"
                             basic
                         />:''}
@@ -171,7 +172,7 @@ function renderNewReco(item){
             </Card.Meta>
             <Card.Description>
                         <span style={{fontSize:'11px'}}>
-                            {item.note} <a href="#" onClick={() => console.log('Read More...')}>полностью</a>
+                            {item.note}
                     </span>
             </Card.Description>
         </Card.Content>
@@ -179,7 +180,8 @@ function renderNewReco(item){
             {renderRecoStatusLabel(item.statusId,item.statusName)}<br/>
 
             {item.relativeName?<strong><i>Род:</i></strong>:''}
-            {item.relativeName?' ' + item.relativeName+';':''}
+            {item.relativeName?' ' + item.relativeName+';':''}<br/>
+            {item.note?<strong><i>Прим: </i></strong>:''}
         </Card.Content>
         <Card.Content extra>
             {item.phones.map((p) => renderPhone(p))}
@@ -217,7 +219,7 @@ function renderByDate(props){
             </Card.Header>
             <Card.Meta>
                     <Popup style={{float:'left'}}
-                           trigger={<Label color={'blue'} size={'small'}><i>{item.callDate}</i></Label>}
+                           trigger={<Label color={'blue'} size={'small'}><i>{item.callDateStr}</i></Label>}
                         content="Дата-время перезвона"
                         basic
                     />
@@ -239,6 +241,10 @@ function renderByDate(props){
 
 function renderByReco(props){
     const {item} = props
+    let {parentReco} = item
+    if(!parentReco){
+        parentReco = {}
+    }
     return <Card>
         <Card.Content>
             <Card.Header className='reco-card-header'>
@@ -247,12 +253,12 @@ function renderByReco(props){
             <Card.Meta>
                 <span style={{float:'left'}}>
                     <Popup
-                        trigger={<Label><i>{item.demoDate}</i></Label>}
+                        trigger={<Label><i>{formatDMYMS(item.dateTime)}</i></Label>}
                         content="Дата-время демонстрации"
                         basic
                     />
                 </span>
-                <span style={{float:'right'}}>{renderRecoCategoryBtn(item.categoryId,item.categoryName)}</span>
+                <span style={{float:'right'}}>{renderRecoCategoryBtn(parentReco.categoryId,parentReco.categoryName)}</span>
             </Card.Meta>
         </Card.Content>
         <Card.Content extra>
@@ -260,9 +266,6 @@ function renderByReco(props){
                         <strong><i>Адрес: </i></strong>
                 {_.truncate(item.address,{length: 150})}
                 </span>
-        </Card.Content>
-        <Card.Content extra>
-            {item.phones.map((p) => renderPhone(p))}
         </Card.Content>
         <Card.Content extra>
             {renderDemoResultLabel(item.resultId,item.resultName)}
