@@ -41,7 +41,7 @@ class TaskMonitorTableDisplay extends Component {
                 singleObj['type'] = result.taskTypeList[type][lang];
                 Object.entries(value3).forEach(
                   ([status, amount]) => {
-                    singleObj['status'] = result.taskStatusList[status][lang];
+                    singleObj['status'] = result.taskStatusList[status].id;
                     singleObj['amount'] = amount;
                     const temp = this.deepCopy(singleObj);
                     listOfTasks.push(temp);
@@ -79,6 +79,19 @@ class TaskMonitorTableDisplay extends Component {
       {
         Header: 'Статус',
         accessor: 'status',
+        Cell: (props) => {
+          const { status } = props.original;
+          return (
+            <div>
+              <Label
+                color={outCallStatusColorMap[status]}
+                size="mini"
+              >
+                {result.taskStatusList[status][lang]}
+              </Label>
+            </div>
+          );
+        },
       },
       {
         Header: 'Количество',
@@ -107,7 +120,7 @@ class TaskMonitorTableDisplay extends Component {
       className="-highlight"
       getTrProps={(state, rowInfo) => ({
                             onClick: () => {
-                                this.setState({ ...this.state, selectedIdx: rowInfo.index });
+                                this.setState({ selectedIdx: rowInfo.index });
                             },
                             style: {
                                 background: (rowInfo === undefined ? '' : (this.state.selectedIdx === rowInfo.index ? 'rgba(241,250,229, 1)' : '')),

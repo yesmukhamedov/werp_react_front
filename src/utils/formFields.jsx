@@ -14,7 +14,7 @@ export const DropdownFormField = (props) => {
     multiple,
     meta: { touched, error },
   } = props;
-  // {console.log(touched, error)}
+
   return (
     <Form.Field required={required}>
       <label>{label}</label>
@@ -25,7 +25,17 @@ export const DropdownFormField = (props) => {
         options={opts}
         {...input}
         value={input.value}
-        onChange={(param, data) => input.onChange(data.value)}
+        // onChange={(param, data) => input.onChange(data.value)}
+        onChange={(param, data) => {
+            if (multiple) {
+              if (data.value.includes(-1)) {
+                data.value = [-1]
+                input.onChange(data.value)
+              }
+            }
+            input.onChange(data.value)
+          }
+        }
         placeholder={label}
         multiple={multiple}
       />
