@@ -190,7 +190,6 @@ class VisitCreateModal extends Component {
 
     componentWillUnmount(){
         this.props.visitModalClearState()
-        console.log('Test Unmount VisitCreateModal')
     }
 
   render () {

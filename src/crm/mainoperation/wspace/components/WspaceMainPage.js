@@ -8,7 +8,7 @@ import '../css/main-page.css'
 import {fetchGroupDealers} from '../../demo/actions/demoAction'
 import {toggleRecoListModal,setCurrentRecommender,fetchRecosByReco,fetchRecosByDate,fetchDemoRecos,
     archiveReco,fetchMovedRecos,fetchTodayCalls,fetchTodayDemos,fetchCurrentDemos,fetchCurrentVisits,fetchVisitRecos,
-    handleFilter,fetchKpi} from '../actions/wspaceAction'
+    handleFilter,fetchKpi,wspClearState} from '../actions/wspaceAction'
 import {blankForCreate,modalToggle} from '../../visit/actions/visitAction'
 import {fetchCallResults} from '../../reco/actions/recoAction'
 import {fetchReasons} from '../../demo/actions/demoAction'
@@ -210,6 +210,10 @@ closeRecoListModal = () => {
     this.props.toggleRecoListModal(false)
 }
 
+    componentWillUnmount(){
+      this.props.wspClearState()
+    }
+
   render () {
       const {currentStaff} = this.state
       let menuItems = []
@@ -271,5 +275,5 @@ export default connect(mapStateToProps, {
     fetchGroupDealers,toggleRecoListModal,setCurrentRecommender,fetchRecosByReco,
     fetchRecosByDate,fetchDemoRecos,archiveReco,fetchMovedRecos,fetchTodayCalls,
     fetchTodayDemos,fetchCallResults,fetchReasons,fetchCurrentDemos,fetchCurrentVisits,
-    fetchVisitRecos, handleFilter, fetchKpi,blankForCreate,modalToggle
+    fetchVisitRecos, handleFilter, fetchKpi,blankForCreate,modalToggle,wspClearState
 })(WspaceMainPage)

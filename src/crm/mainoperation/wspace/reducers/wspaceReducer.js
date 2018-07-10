@@ -14,7 +14,7 @@ import {
         WSP_SAVED_CALL,
         WSP_FETCH_CURRENT_DEMOS,
         WSP_FETCH_CURRENT_VISITS,WSP_FETCH_VISIT_RECOS,
-        WSP_HANDLE_FILTER,WSP_FETCH_KPI
+        WSP_HANDLE_FILTER,WSP_FETCH_KPI,WSP_CLEAR_STATE
 } from '../actions/wspaceAction'
 
 import {CRM_VISIT_CREATE} from '../../visit/actions/visitAction'
@@ -196,6 +196,28 @@ export default function (state=INITIAL_STATE, action)
             filters[key][name] = value
 
             return {...state, filters: filters}
+
+        case WSP_CLEAR_STATE:
+            return {...state,
+                byRecoItems:[],
+                recoItems: [],
+                phoneCode: '',
+                phonePattern: '',
+                recoListModalOpened: false,
+                currentRecommender:{},
+                currentRecommenderRecos:[],
+                staffRecoData: {},
+                loaders:{},
+                todayCallsByResult:{},
+                dashboardCallMenus:[],
+                todayDemos: [],
+                currentPhone:{},
+                phoneModalOpened: false,
+                phoneNumberHistory: [],
+                phoneNumberReco:{},
+                callForm: {},
+                filters: {},
+                kpiData:{}}
 
         default:
             return state;
