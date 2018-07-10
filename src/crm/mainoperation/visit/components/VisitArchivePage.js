@@ -109,9 +109,9 @@ class VisitArchivePage extends Component{
                       <Link className={'ui icon button mini'} to={`/crm/visit/view/` + row.value}>
                                         <Icon name={'eye'}/>
                     </Link>
-                    <Button icon size={'mini'} onClick={() => this.toUpdate(row.original)}>
-                        <Icon name={'pencil'}/>
-                    </Button>
+                    {/*<Button icon size={'mini'} onClick={() => this.toUpdate(row.original)}>*/}
+                        {/*<Icon name={'pencil'}/>*/}
+                    {/*</Button>*/}
                 </div>
               ),
               filterable: false
@@ -125,7 +125,7 @@ class VisitArchivePage extends Component{
   }
 
   toCreate(){
-      this.props.blankForCreate()
+      this.props.blankForCreate(0,0)
       this.props.modalToggle(true)
   }
 
@@ -136,6 +136,9 @@ class VisitArchivePage extends Component{
           <Header as='h2' floated='left'>
                         Список визитов группы
           </Header>
+            <Button className={'ui icon button primary right floated'} onClick={this.toCreate}>
+                <Icon name='plus' /> Добавить
+            </Button>
         </Segment>
         {this.renderTable()}
         <VisitCreateModal fromComponent="archive" />

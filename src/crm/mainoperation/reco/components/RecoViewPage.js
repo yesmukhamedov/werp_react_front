@@ -48,7 +48,7 @@ class RecoViewPage extends Component {
   }
 
   prepareForVisitCreate = () => {
-      this.props.blankForCreate(this.props.reco.id)
+      this.props.blankForCreate(this.props.reco.id,0)
       this.props.modalToggle(true)
   }
 

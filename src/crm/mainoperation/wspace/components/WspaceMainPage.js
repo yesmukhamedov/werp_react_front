@@ -9,6 +9,7 @@ import {fetchGroupDealers} from '../../demo/actions/demoAction'
 import {toggleRecoListModal,setCurrentRecommender,fetchRecosByReco,fetchRecosByDate,fetchDemoRecos,
     archiveReco,fetchMovedRecos,fetchTodayCalls,fetchTodayDemos,fetchCurrentDemos,fetchCurrentVisits,fetchVisitRecos,
     handleFilter,fetchKpi} from '../actions/wspaceAction'
+import {blankForCreate,modalToggle} from '../../visit/actions/visitAction'
 import {fetchCallResults} from '../../reco/actions/recoAction'
 import {fetchReasons} from '../../demo/actions/demoAction'
 import WspaceHeader from './WspaceHeader'
@@ -20,6 +21,8 @@ import WspacePhoneModal from  './WspacePhoneModal'
 import WspaceDemoTable from './WspaceDemoTable'
 import WspaceVisitTable from './WspaceVisitTable'
 import WspaceRecoFilter from './WspaceRecoFilter'
+import WspaceVisitTableHeader from './WspaceVisitTableHeader'
+
 import moment from 'moment'
 
 class WspaceMainPage extends Component {
@@ -150,6 +153,11 @@ class WspaceMainPage extends Component {
         return out
     }
 
+    prepareForCreateVisit = () => {
+        this.props.blankForCreate(0,this.state.currentStaff.key)
+        this.props.modalToggle(true)
+    }
+
   renderContent = () =>{
       let menuItems = this.props.staffRecoData[this.state.currentMenu] || []
       let filters = this.props.filters[this.state.currentMenu] || {}
@@ -174,9 +182,12 @@ class WspaceMainPage extends Component {
               return <WspaceDemoTable items={menuItems}/>
 
           case MENU_CURRENT_VISIT:
-              return <WspaceVisitTable
-                  openRecoListModal={this.openRecoListModal}
-                  items={menuItems} />
+              return <div>
+                      <WspaceVisitTableHeader prepareForCreate={this.prepareForCreateVisit} />
+                      <WspaceVisitTable
+                          openRecoListModal={this.openRecoListModal}
+                          items={menuItems} />
+                  </div>
           default:
               return <WspaceDashboard/>
       }
@@ -260,5 +271,5 @@ export default connect(mapStateToProps, {
     fetchGroupDealers,toggleRecoListModal,setCurrentRecommender,fetchRecosByReco,
     fetchRecosByDate,fetchDemoRecos,archiveReco,fetchMovedRecos,fetchTodayCalls,
     fetchTodayDemos,fetchCallResults,fetchReasons,fetchCurrentDemos,fetchCurrentVisits,
-    fetchVisitRecos, handleFilter, fetchKpi
+    fetchVisitRecos, handleFilter, fetchKpi,blankForCreate,modalToggle
 })(WspaceMainPage)

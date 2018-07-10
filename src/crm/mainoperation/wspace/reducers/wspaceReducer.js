@@ -16,6 +16,9 @@ import {
         WSP_FETCH_CURRENT_VISITS,WSP_FETCH_VISIT_RECOS,
         WSP_HANDLE_FILTER,WSP_FETCH_KPI
 } from '../actions/wspaceAction'
+
+import {CRM_VISIT_CREATE} from '../../visit/actions/visitAction'
+import {MENU_CURRENT_VISIT} from '../wspaceUtil'
 import _ from 'lodash'
 
 
@@ -48,6 +51,16 @@ export default function (state=INITIAL_STATE, action)
 {
     switch(action.type)
     {
+        case CRM_VISIT_CREATE:
+            let stfRecoData = Object.assign({},state.staffRecoData)
+            if(!stfRecoData[MENU_CURRENT_VISIT]){
+                stfRecoData[MENU_CURRENT_VISIT] = []
+            }
+
+            stfRecoData[MENU_CURRENT_VISIT].push(action.payload)
+
+            return {...state,staffRecoData: stfRecoData}
+
         case WSP_FETCH_KPI:
             return {...state,kpiData: action.payload}
 
