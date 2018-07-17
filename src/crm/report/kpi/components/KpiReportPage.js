@@ -24,6 +24,7 @@ class KpiReportPage extends Component {
       bukrs: '',
       branchId: 0,
       managerId: 0,
+    averageScore:0,
       breadcrumbs: [],
         year:0,
         month:0
@@ -109,6 +110,7 @@ class KpiReportPage extends Component {
       this.setState({
         ...this.state,
         items: res.data.items,
+          averageScore: res.data.averageScore,
         loading: false,
         context: res.data.context,
         contextId: res.data.contextId,
@@ -160,6 +162,15 @@ class KpiReportPage extends Component {
   }
 
   renderHeader () {
+      const {averageScore} = this.state
+      let scoreColor = ''
+      if(averageScore < 60){
+          scoreColor = 'red'
+      }else if( averageScore >= 60 && averageScore <= 80){
+          scoreColor = 'olive'
+      }else if( averageScore > 80) {
+          scoreColor = 'green'
+      }
     return (
       <Segment clearing>
           {this.renderSearchPanel()}
@@ -183,6 +194,10 @@ class KpiReportPage extends Component {
             })}
           </Breadcrumb>
         </Header>
+
+          <Button circular floated={'right'} color={scoreColor}>
+              {this.state.averageScore}
+          </Button>
 
         <Button onClick={() => this.changeRenderType('chart')} icon floated={'right'} active={this.state.renderType === 'chart'} size={this.state.renderType === 'chart' ? 'medium' : 'tiny'}>
           <Icon name='bar chart' />
