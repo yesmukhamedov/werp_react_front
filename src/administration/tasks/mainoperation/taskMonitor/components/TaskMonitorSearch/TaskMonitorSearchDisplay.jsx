@@ -22,8 +22,8 @@ class TaskMonitorSearchDisplay extends Component {
 
     const paramsDict = {
       bukrs: values.company,
-      branchIds: values.branch[0] !== -1 ? values.branch : undefined,
-      departmentIds: values.department[0] !== -1 ? values.department : undefined,
+      branchIds: values.branch, // values.branch[0] !== -1 ? values.branch : undefined,
+      departmentIds: values.department, // values.department[0] !== -1 ? values.department : undefined,
       types: values.type[0] !== -1 ? values.type : undefined,
       endDateFrom: endDateFromUtc,
       endDateTo: endDateToUtc,
@@ -39,7 +39,7 @@ class TaskMonitorSearchDisplay extends Component {
       .filter(param => param)
       .join('&');
 
-    // console.log("params:", params)
+    console.log("params:", params)
     return new Promise(resolve => this.props.searchTasks(params, resolve));
   }
 

@@ -15,16 +15,16 @@ class DeptTaskListSearchDisplay extends Component {
 
   handleSearch(values) {
     // console.log("values: ", values);
-    const endDateFromUtc = moment.utc(values.endDateFrom).format();
-    const endDateToUtc = moment.utc(values.endDateTo).format();
-    const startDateFromUtc = moment.utc(values.startDateFrom).format();
-    const startDateToUtc = moment.utc(values.startDateTo).format();
+    const endDateFromUtc = values.endDateFrom ? moment.utc(values.endDateFrom).format() : undefined;
+    const endDateToUtc = values.endDateTo ? moment.utc(values.endDateTo).format() : undefined;
+    const startDateFromUtc = values.startDateFrom ? moment.utc(values.startDateFrom).format() : undefined;
+    const startDateToUtc = values.startDateTo ? moment.utc(values.startDateTo).format() : undefined;
 
     const paramsDict = {
       bukrs: values.company,
-      branchId: values.branch !== -1 ? values.branch : undefined,
-      departmentId: values.department !== -1 ? values.department : undefined,
-      type: values.type !== -1 ? values.type : undefined,
+      branchIds: values.branch, // values.branch[0] !== -1 ? values.branch : undefined,
+      departmentIds: values.department, // values.department[0] !== -1 ? values.department : undefined,
+      types: values.type[0] !== -1 ? values.type : undefined,
       endDateFrom: endDateFromUtc,
       endDateTo: endDateToUtc,
       startDateFrom: startDateFromUtc,
@@ -75,7 +75,7 @@ class DeptTaskListSearchDisplay extends Component {
                     />
                     <Field
                       required
-                      // multiple
+                      multiple
                       name="branch"
                       component={DropdownFormField}
                       label="Филиал"
@@ -105,6 +105,7 @@ class DeptTaskListSearchDisplay extends Component {
                   <Form.Group widths="equal">
                     <Field
                       required
+                      multiple
                       name="department"
                       component={DropdownFormField}
                       label="Отдел"
@@ -112,6 +113,7 @@ class DeptTaskListSearchDisplay extends Component {
                     />
                     <Field
                       required
+                      multiple
                       name="type"
                       component={DropdownFormField}
                       label="Тип"
