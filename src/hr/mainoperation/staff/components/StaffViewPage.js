@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Container, Divider, Tab, Header,Button} from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import {fetchSingleStaff,toggleStaffDataFormModal,blankStaffData,fetchStaffData} from '../actions/hrStaffAction'
+import {fetchSingleStaff,toggleStaffDataFormModal,blankStaffData,fetchStaffData,setStaffDataForUpdate,deleteStaffData} from '../actions/hrStaffAction'
 import StaffSalariesTable from './view/StaffSalariesTable'
 import StaffExpencesTable from './view/StaffExpencesTable'
 import StaffOffDataTable from './view/StaffOffDataTable'
@@ -10,8 +10,9 @@ import StaffMainDataTable from './view/StaffMainDataTable'
 import StaffFilesTable from './view/StaffFilesTable'
 import StaffEducationTable from './view/StaffEducationTable'
 import StaffMatnrsTable from './view/StaffMatnrsTable'
+import StaffContactTable from './view/StaffContactTable'
 import {f4FetchBusinessAreaList,f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList,f4FetchExpenceTypes,f4FetchSubCompanies} from '../../../../reference/f4/f4_action'
-import {STAFF_DATA,OFF_DATA,EXPENCE_DATA,EDU_DATA,SALARY_DATA,MATNR_DATA} from '../../../hrUtil'
+import {STAFF_DATA,OFF_DATA,EXPENCE_DATA,EDU_DATA,SALARY_DATA,MATNR_DATA,CONTACT_DATA} from '../../../hrUtil'
 import StaffDataFormHandler from './StaffDataFormHandler'
 
 class StaffViewPage extends Component{
@@ -27,9 +28,10 @@ class StaffViewPage extends Component{
         this.renderExpensesData = this.renderExpensesData.bind(this);
         this.renderOfficialData = this.renderOfficialData.bind(this);
         this.handleSalaryUpdate = this.handleSalaryUpdate.bind(this)
-        this.handleSalaryCreate = this.handleSalaryCreate.bind(this)
         this.onTabChange = this.onTabChange.bind(this)
         this.prepareToCreate = this.prepareToCreate.bind(this)
+        this.prepareForUpdate = this.prepareForUpdate.bind(this)
+        this.prepareForDelete = this.prepareForDelete.bind(this)
     }
 
   componentWillMount () {
@@ -40,6 +42,7 @@ class StaffViewPage extends Component{
       this.props.fetchStaffData(id,EDU_DATA)
       this.props.fetchStaffData(id,SALARY_DATA)
       this.props.fetchStaffData(id,MATNR_DATA)
+      this.props.fetchStaffData(id,CONTACT_DATA)
       this.props.f4FetchBusinessAreaList()
       this.props.f4FetchPositionList('staff')
       this.props.f4FetchCurrencyList('staff')
@@ -57,9 +60,7 @@ class StaffViewPage extends Component{
   }
 
   renderContactData () {
-    return (
-      <h2>Contact</h2>
-    )
+    return <StaffContactTable addresses={this.props.staffDataList[CONTACT_DATA] || []}/>
   }
 
   renderFiles(){
@@ -72,10 +73,25 @@ class StaffViewPage extends Component{
       this.props.toggleStaffDataFormModal(true)
   }
 
+  prepareForUpdate(data){
+      this.props.setStaffDataForUpdate(data)
+      this.props.toggleStaffDataFormModal(true)
+  }
+
+  prepareForDelete (id){
+      if(!window.confirm('Вы действительно хотите удалить элемент?')){
+          return false
+      }
+
+      this.props.deleteStaffData(id,STAFF_DATA[this.state.activeIndex])
+  }
+
     renderExpensesData(staffId){
         return <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
             <Button onClick={this.prepareToCreate} floated={'right'} primary>Добавить</Button>
-            <StaffExpencesTable expences={this.props.staffDataList[EXPENCE_DATA] || []}/>
+            <StaffExpencesTable
+                handleDelete={this.prepareForDelete}
+                expences={this.props.staffDataList[EXPENCE_DATA] || []}/>
         </Container>
     }
 
@@ -104,15 +120,12 @@ class StaffViewPage extends Component{
         this.props.toggleSalaryFormModal(true)
     }
 
-    handleSalaryCreate(){
-        this.props.setSalaryForUpdate({})
-        this.props.toggleSalaryFormModal(true)
-    }
-
     renderSalaryData(items){
         return <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
                     <Button onClick={this.prepareToCreate} floated={'right'} primary>Добавить</Button>
-                    <StaffSalariesTable items={items}/>
+                    <StaffSalariesTable
+                        handleDelete={this.prepareForDelete}
+                        handleUpdate={this.prepareForUpdate} items={items}/>
             </Container>
     }
 
@@ -172,5 +185,6 @@ function mapStateToProps (state) {
 
 export default connect(mapStateToProps, {
     fetchSingleStaff,f4FetchBusinessAreaList,f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList,
-    f4FetchExpenceTypes,toggleStaffDataFormModal,f4FetchSubCompanies,blankStaffData,fetchStaffData
+    f4FetchExpenceTypes,toggleStaffDataFormModal,f4FetchSubCompanies,blankStaffData,fetchStaffData,
+    setStaffDataForUpdate,deleteStaffData
 })(StaffViewPage)

@@ -28,7 +28,8 @@ class DemoArchivePage extends Component{
                 dateFrom:null,
                 dateTo:null,
                 saleDateFr: null,
-                saleDateTo: null
+                saleDateTo: null,
+                address: ''
             },
             loading:false
         }
@@ -120,7 +121,7 @@ class DemoArchivePage extends Component{
                 </Form.Field>
             </Form.Group>
 
-            <Form.Group>
+            <Form.Group widths='equal'>
                 <Form.Field>
                     <label>Дата продажи С</label>
                     <DatePicker
@@ -143,6 +144,7 @@ class DemoArchivePage extends Component{
                         onChange={(v) => this.handleChangeDate('saleDateTo',v)}
                     />
                 </Form.Field>
+                <Form.Input fluid label='Адрес' placeholder='Адрес' onChange={(e,v) => this.handleChange('address',v)} />
                 <Form.Field>
                     <label>&nbsp;</label>
                     <Form.Button onClick={() => this.loadItems(0)}>Сформировать</Form.Button>

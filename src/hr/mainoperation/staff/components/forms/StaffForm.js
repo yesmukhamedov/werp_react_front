@@ -15,7 +15,7 @@ const genderOptions = [
  */
 
 export default function StaffForm(props){
-    const {staff,errors} = props
+    const {staff} = props
 
     return <Form>
         <div className='ui segments'>
@@ -26,7 +26,6 @@ export default function StaffForm(props){
                 <Form.Group widths='equal'>
                     <Form.Field
                         name="lastname"
-                        error={errors.lastname}
                         onChange={props.handleChange}
                         value={staff.lastname || ''}
                         control={Input}
@@ -34,7 +33,6 @@ export default function StaffForm(props){
 
                     <Form.Field
                         name="firstname"
-                        error={errors.firstname}
                         onChange={props.handleChange}
                         value={staff.firstname || ''}
                         control={Input}
@@ -51,12 +49,11 @@ export default function StaffForm(props){
                 <Form.Group widths='equal'>
                     <Form.Field
                         name="iinBin"
-                        error={errors.iinBin}
                         onChange={props.handleChange}
                         value={staff.iinBin || ''}
                         control={Input} required label='ИИН' placeholder='ИИН' />
 
-                    <Form.Field error={errors.birthday} required>
+                    <Form.Field required>
                         <label>Дата рождения</label>
                         <DatePicker
                             locale="ru"
@@ -69,7 +66,6 @@ export default function StaffForm(props){
                     </Form.Field>
                     <Form.Select
                         required
-                        error={errors.gender}
                         name="gender"
                         value={staff.gender}
                         label='Пол'
@@ -102,7 +98,6 @@ export default function StaffForm(props){
                 <Form.Group widths='equal'>
                     <Form.Field
                         name="passportId"
-                        error={errors.passportId}
                         onChange={props.handleChange}
                         value={staff.passportId || ''}
                         control={Input}
@@ -112,13 +107,12 @@ export default function StaffForm(props){
 
                     <Form.Field
                         name="passportGivenBy"
-                        error={errors.passportGivenBy}
                         onChange={props.handleChange}
                         value={staff.passportGivenBy || ''}
                         control={Input}
                         required label='Кем выдан' placeholder='Кем выдан' />
 
-                    <Form.Field error={errors.passportGivenDate} required>
+                    <Form.Field required>
                         <label>Дата выдачи</label>
                         <DatePicker
                             locale="ru"
@@ -130,7 +124,7 @@ export default function StaffForm(props){
                             dateFormat='DD.MM.YYYY' />
                     </Form.Field>
 
-                    <Form.Field error={errors.passportValidity} required>
+                    <Form.Field required>
                         <label>Срок действия уд.</label>
                         <DatePicker
                             locale="ru"
@@ -209,7 +203,6 @@ export default function StaffForm(props){
 
                     <Form.Field
                         name="mobile"
-                        error={errors.mobile}
                         onChange={props.handleChange}
                         value={staff.mobile || ''}
                         control={Input}

@@ -39,6 +39,8 @@ export const CRM_FETCH_PHONE_NUMBER_HISTORY = 'CRM_FETCH_PHONE_NUMBER_HISTORY'
 export const CRM_RECO_ITEM_BLANKED = 'CRM_RECO_ITEM_BLANKED'
 export const CRM_RECO_BAD_REQUEST = 'CRM_RECO_BAD_REQUEST'
 
+export const CRM_FETCH_PHONE_META = 'CRM_FETCH_PHONE_META'
+
 
 export function fetchPhoneNumberHistory(phoneId){
     return function (dispatch) {
@@ -274,7 +276,7 @@ export function createRecoList(o,callBackOnError){
             headers: {
                 authorization: localStorage.getItem('token')
             }
-        }).then(({}) => {
+        }).then(() => {
                 browserHistory.push('/crm/reco/current')
             }).catch((e) => {
             if(callBackOnError){
@@ -326,6 +328,24 @@ export function blankRecoItem(){
         }).catch((e) => {
             dispatch(modifyLoader(false))
             dispatch(notify('error',e.response.data.message,'Ошибка'));
+        })
+    }
+}
+
+export function fetchPhoneMeta(){
+    return function(dispatch){
+        axios.get(`${ROOT_URL}/api/crm/phone/meta`, {
+            headers: {
+                authorization: localStorage.getItem('token')}
+        }).then(({data}) => {
+
+            dispatch({
+                type: CRM_FETCH_PHONE_META,
+                payload:data
+            });
+
+        }).catch((e) => {
+            handleError(e,dispatch)
         })
     }
 }

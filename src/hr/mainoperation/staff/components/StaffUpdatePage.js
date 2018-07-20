@@ -12,33 +12,7 @@ class StaffUpdatePage extends Component {
         super(props)
         this.state = {
             localStaff:{},
-            staffListModalOpened:false,
-            errors:{
-                firstname:false,
-                middlename:false,
-                lastname:false,
-                iinBin:false,
-                birthday:false,
-                gender:false,
-                passportId:false,
-                passportGivenBy:false,
-                passportGivenDate:false,
-
-            },
-            livingAddressErrors:{
-                countryId:false,
-                stateId:false,
-                cityId:false,
-                regId:false,
-                street:false
-            },
-            regAddressErrors:{
-                countryId:false,
-                stateId:false,
-                cityId:false,
-                regId:false,
-                street:false
-            }
+            staffListModalOpened:false
         }
 
         this.handleAddressData = this.handleAddressData.bind(this)
@@ -230,69 +204,8 @@ class StaffUpdatePage extends Component {
         })
     }
 
-    validateAddress(address,errors){
-        // for(let k in errors){
-        //     if(errors.hasOwnProperty(k)){
-        //         errors[k] = false
-        //     }
-        // }
-        // let fields1 = ['countryId','cityId','stateId','regId']
-        // for(let k in fields1){
-        //     let field = fields1[k]
-        //     if(typeof address[field] === 'undefined' || parseInt(address[field],10) === 0){
-        //         errors[field] = true
-        //     }
-        // }
-    }
-
     submitForm () {
         let localStaff = Object.assign({}, this.state.localStaff);
-        let errors = Object.assign({}, this.state.errors);
-        let livingAddressErrors = Object.assign({}, this.state.livingAddressErrors);
-        let regAddressErrors = Object.assign({}, this.state.regAddressErrors);
-
-        for(let key in errors){
-            if(errors.hasOwnProperty(key)){
-                errors[key] = false
-            }
-        }
-
-        this.validateAddress(localStaff.livingAddress,livingAddressErrors)
-        let hasError = false
-        for(let k in errors){
-            if(errors.hasOwnProperty(k) && errors[k] === true){
-                hasError = true
-                break
-            }
-        }
-        if(!hasError){
-            for(let k in livingAddressErrors){
-                if(livingAddressErrors.hasOwnProperty(k) && livingAddressErrors[k] === true){
-                    hasError = true
-                    break
-                }
-            }
-        }
-
-        if(!hasError){
-            for(let k in regAddressErrors){
-                if(regAddressErrors.hasOwnProperty(k) && regAddressErrors[k] === true){
-                    hasError = true
-                    break
-                }
-            }
-        }
-
-
-        if(hasError){
-            this.setState({
-                ...this.state,
-                livingAddressErrors:livingAddressErrors,
-                regAddressErrors:regAddressErrors
-            })
-            return
-        }
-
         if(localStaff.id && localStaff.id > 0){
             this.props.updateStaff(localStaff)
         }else{
@@ -302,9 +215,10 @@ class StaffUpdatePage extends Component {
     }
 
     onScoutSelected(o){
-        let {localStaff} = this.state
+        let localStaff = Object.assign({},this.state.localStaff)
         localStaff['tsStaffId'] = o['staffId']
         localStaff['tsStaffName'] = o['lastname'] + ' ' + o['firstname']
+
         this.setState({
             ...this.state,
             localStaff:localStaff
@@ -327,12 +241,10 @@ class StaffUpdatePage extends Component {
     }
 
     renderForm(){
-        const {staffFormErrors} = this.props
-        let {localStaff,errors} = this.state
+        let {localStaff} = this.state
         let addresses = localStaff.addresses || []
         return <div>
         <StaffForm
-            errors={staffFormErrors}
             staff={localStaff}
             handleChange={this.handleChange}
             handleDate={this.handleDate}

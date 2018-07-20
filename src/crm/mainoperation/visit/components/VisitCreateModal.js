@@ -27,20 +27,21 @@ class VisitCreateModal extends Component {
 
   renderForm () {
       let localVisit = Object.assign({},this.state.localVisit)
-      let parentReco = Object.assign({},localVisit.parentReco)
-      let hidePhoneInput = this.state.isUpdate || (parentReco && parentReco.id && typeof parentReco.id !== 'undefined')
+      let client = Object.assign({},localVisit.client)
+      const {phoneMeta} = this.props
+      let hidePhoneInput = this.state.isUpdate || (client && client.id && typeof client.id !== 'undefined')
         return <Form>
           <Form.Group widths='equal'>
               {hidePhoneInput?'':<Form.Field>
                   <label>Тел. номер</label>
                   <Input
-                      label={{ basic:true,content:parentReco.phoneCode}}
-                      placeholder={parentReco.phonePattern}
+                      label={{ basic:true,content:phoneMeta.phoneCode}}
+                      placeholder={phoneMeta.phonePattern}
                       onChange={(e,v) => this.handleChange('phoneNumber',v)}
                       value={this.state.phoneNumberDisplay || ''}/>
               </Form.Field>}
 
-            <Form.Field value={parentReco.clientName || ''}
+            <Form.Field value={localVisit.clientName || ''}
                         onChange={(e, v) => this.handleChange('clientName', v)}
                         control={Input}
                         required label='ФИО клиента' placeholder='ФИО клиента' />
@@ -85,8 +86,9 @@ class VisitCreateModal extends Component {
 
   handleChange (fieldName, o) {
     let localVisit = Object.assign({}, this.state.localVisit)
-      let parentReco = Object.assign({},localVisit.parentReco)
+      let client = Object.assign({},localVisit.client)
       let {phoneNumber,phoneNumberDisplay} = this.state
+      const {phoneMeta} = this.props
     // console.log(o);
     switch (fieldName) {
       case 'docDate':
@@ -99,7 +101,7 @@ class VisitCreateModal extends Component {
 
         case 'phoneNumber':
             let value = o.value
-            const phonePattern = parentReco.phonePattern || '';
+            const phonePattern = phoneMeta.phonePattern || '';
             const ppLenght = phonePattern.replace(/[^0-9]+/g, '').length;
             let v = value.replace(/[^0-9]+/g, '');
             if(v.length === 0){
@@ -131,22 +133,14 @@ class VisitCreateModal extends Component {
             break
 
       case 'clientName':
-          parentReco[fieldName] = o.value
-            break
-
       case 'note':
       case 'address':
-          localVisit[fieldName] = o.value
-        break
-
-      case 'visitorId':
+        case 'visitorId':
           localVisit[fieldName] = o.value
         break
 
         default:{}
     }
-
-    localVisit['parentReco'] = parentReco
 
     this.setState({
       ...this.state,
@@ -171,15 +165,15 @@ class VisitCreateModal extends Component {
 
     saveVisit(){
       let localVisit = Object.assign({},this.state.localVisit)
-        let parentReco = Object.assign({},localVisit.parentReco)
+        let client = Object.assign({},localVisit.client)
         let phoneNumber = this.state.phoneNumber
 
         let phones = []
         if(phoneNumber){
           phones[0] = {phoneNumber: phoneNumber}
         }
-        parentReco['phones'] = phones
-        localVisit['parentReco'] = parentReco
+        client['phones'] = phones
+        localVisit['client'] = client
 
         if(this.state.isUpdate){
             this.props.updateVisit(localVisit,'view')
@@ -217,7 +211,8 @@ function mapStateToProps (state) {
     return {
         modalOpened: state.crmVisit.modalOpened,
         visit: state.crmVisit.visit,
-        dealers: state.crmDemo.dealers
+        dealers: state.crmDemo.dealers,
+        phoneMeta: state.crmReco.phoneMeta
     }
 }
 

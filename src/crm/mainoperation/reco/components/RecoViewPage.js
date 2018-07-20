@@ -48,7 +48,8 @@ class RecoViewPage extends Component {
   }
 
   prepareForVisitCreate = () => {
-      this.props.blankForCreate(this.props.reco.id,0)
+        let client = Object.assign({},this.props.reco.client)
+      this.props.blankForCreate(client.id,this.props.reco.responsibleId || 0)
       this.props.modalToggle(true)
   }
 
@@ -77,7 +78,7 @@ class RecoViewPage extends Component {
             <Link className={'ui icon button'} to={`/crm/reco/archive`}>
                 В Архив
             </Link>
-            <Button onClick={this.prepareForVisitCreate}>Добавить визит</Button>
+            {/*<Button onClick={this.prepareForVisitCreate}>Добавить визит</Button>*/}
 
             <Button onClick={() => this.props.toggleRecoUpdateModal(true)}>Редактировать</Button>
             <Button color={'red'} onClick={() => this.deleteModalTrigger(true)}>Удалить</Button>

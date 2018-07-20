@@ -7,6 +7,7 @@ import moment from 'moment';
 import VisitCreateModal from './VisitCreateModal';
 import {fetchArchive,modalToggle,setVisitForUpdate,blankForCreate} from '../actions/visitAction'
 import {fetchGroupDealers} from '../../demo/actions/demoAction'
+import {fetchPhoneMeta} from '../../reco/actions/recoAction'
 import { connect } from 'react-redux'
 import matchSorter from 'match-sorter';
 
@@ -29,6 +30,7 @@ class VisitArchivePage extends Component{
   componentWillMount () {
     this.props.fetchArchive()
       this.props.fetchGroupDealers()
+      this.props.fetchPhoneMeta()
   }
 
   toUpdate(visit){
@@ -154,4 +156,7 @@ function mapStateToProps (state) {
     }
 }
 
-export default connect(mapStateToProps, {fetchArchive,modalToggle,setVisitForUpdate,blankForCreate,fetchGroupDealers})(VisitArchivePage)
+export default connect(mapStateToProps, {
+    fetchArchive,modalToggle,setVisitForUpdate,blankForCreate,fetchGroupDealers,
+    fetchPhoneMeta
+})(VisitArchivePage)

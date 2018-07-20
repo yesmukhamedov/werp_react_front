@@ -15,7 +15,8 @@ import {
     CRM_RECO_CHECKED_PHONE_NUMBER,
     CRM_RECO_CHECKING_PHONE_NUMBER,
     CRM_RECO_ITEM_BLANKED,
-    CRM_RECO_BAD_REQUEST
+    CRM_RECO_BAD_REQUEST,
+    CRM_FETCH_PHONE_META
 } from '../actions/recoAction';
 
 const INITIAL_STATE={
@@ -41,7 +42,8 @@ const INITIAL_STATE={
                     loadingPhones:{},
                     phoneErrors:{},
                     recoBlankedItem:{},
-                    recoErrors:{}
+                    recoErrors:{},
+                    phoneMeta: {}
 
 };
 
@@ -50,6 +52,9 @@ export default function (state=INITIAL_STATE, action)
     //state.recoBlankedItem = {}
     switch(action.type)
     {
+        case CRM_FETCH_PHONE_META:
+            return {...state, phoneMeta: action.payload}
+
         case CRM_FETCH_PHONE_NUMBER_HISTORY:
             return {...state,phoneNumberHistory:action.payload};
         case CRM_RECO_FETCH_CURRENT_DEMO_DONE:

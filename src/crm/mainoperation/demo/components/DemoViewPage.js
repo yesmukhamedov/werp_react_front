@@ -57,7 +57,7 @@ class DemoViewPage extends Component {
 
     renderActions(){
         const {demo} = this.props
-        const notDemoDone = demo.resultId === 0
+        const notDemoDone = demo.resultId === 0 || demo.resultId === 7
         return <div>
             <Link className={'ui icon button'} to={`/crm/demo/current`}>
                 В список текущих

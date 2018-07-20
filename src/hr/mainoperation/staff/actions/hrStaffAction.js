@@ -30,7 +30,10 @@ export const HR_SET_SALARY_FOR_UPDATE = 'HR_SET_SALARY_FOR_UPDATE'
 
 export const HR_STAFF_DATA_BLANKED = 'HR_STAFF_DATA_BLANKED'
 export const HR_STAFF_DATA_CREATED = 'HR_STAFF_DATA_CREATED'
+export const HR_STAFF_DATA_UPDATED = 'HR_STAFF_DATA_UPDATED'
+export const HR_STAFF_DATA_DELETED = 'HR_STAFF_DATA_DELETED'
 export const HR_STAFF_DATA_FETCHED_LIST = 'HR_STAFF_DATA_FETCHED_LIST'
+export const HR_STAFF_SET_STAFF_DATA_FOR_UPDATE = 'HR_STAFF_SET_STAFF_DATA_FOR_UPDATE'
 
 export const HR_STAFF_DATA_FORM_MODAL_FLAG = 'HR_STAFF_DATA_FORM_MODAL_FLAG'
 
@@ -54,7 +57,8 @@ export function fetchCurrentStaffs(params){
                     meta:data['meta']
                 })
             }).catch((error) => {
-            handleError(error,dispatch)
+                dispatch(modifyLoader(false));
+                handleError(error,dispatch)
         })
     }
 }
@@ -75,6 +79,7 @@ export function fetchAllStaffs(params){
                     payload:data
                 })
             }).catch((error) => {
+            dispatch(modifyLoader(false));
             handleError(error,dispatch)
         })
     }
@@ -152,6 +157,7 @@ export function fetchSingleStaff(staffId){
                     payload:data
                 })
             }).catch((error) => {
+            dispatch(modifyLoader(false));
             handleError(error,dispatch)
         })
     }
@@ -211,7 +217,7 @@ export function toggleStaffDataFormModal(flag){
 }
 
 export function blankStaffData(staffId,activeData){
-    let uri = `${ROOT_URL}/` + getStaffDataBlankUri(activeData) + staffId
+    let uri = `${ROOT_URL}` + getStaffDataBlankUri(activeData) + staffId
 
     return function(dispatch){
         axios.get(uri,{
@@ -223,6 +229,7 @@ export function blankStaffData(staffId,activeData){
                 payload:data
             })
         }).catch((error) => {
+            console.log('error',error)
             handleError(error,dispatch)
         })
     }
@@ -247,6 +254,52 @@ export function createStaffData(postData,activeData){
             }).catch((error) => {
                 dispatch(modifyLoader(false))
                 handleError(error,dispatch)
+        })
+    }
+}
+
+export function updateStaffData(postData,activeData){
+    let uri = `${ROOT_URL}` + getStaffDataPostUri(activeData) + '/' + postData.id
+    return function (dispatch){
+        dispatch(modifyLoader(true))
+        axios.put(uri, postData,{
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        })
+            .then(({data}) => {
+                dispatch(modifyLoader(false))
+                dispatch({
+                    type:HR_STAFF_DATA_UPDATED,
+                    payload:data,
+                    activeData: activeData
+                })
+            }).catch((error) => {
+            dispatch(modifyLoader(false))
+            handleError(error,dispatch)
+        })
+    }
+}
+
+export function deleteStaffData(id,activeData){
+    let uri = `${ROOT_URL}` + getStaffDataPostUri(activeData) + '/' + id
+    return function (dispatch){
+        dispatch(modifyLoader(true))
+        axios.delete(uri,{
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        })
+            .then(({data}) => {
+                dispatch(modifyLoader(false))
+                dispatch({
+                    type:HR_STAFF_DATA_DELETED,
+                    payload:data,
+                    activeData: activeData
+                })
+            }).catch((error) => {
+            dispatch(modifyLoader(false))
+            handleError(error,dispatch)
         })
     }
 }
@@ -282,5 +335,12 @@ export function fetchAllManagers(){
         }).catch((error) => {
             handleError(error,dispatch)
         })
+    }
+}
+
+export function setStaffDataForUpdate (data){
+    return {
+        type: HR_STAFF_SET_STAFF_DATA_FOR_UPDATE,
+        payload: data
     }
 }

@@ -10,8 +10,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import '../css/recoStyles.css';
 import {fetchGroupDealers} from '../../demo/actions/demoAction';
 import {checkPhoneNumber,createRecoList,blankRecoItem} from '../actions/recoAction'
-import DatePicker from 'react-datepicker'
-import moment from 'moment'
 require('moment/locale/ru');
 
 const DEFAULT_CONTEXT = 'aa'
@@ -127,15 +125,6 @@ class RecoCreatePage extends Component {
       ...this.state,
       reco: reco
     })
-  }
-
-  handleDocDate = (v) => {
-      let reco = Object.assign({},this.state.reco)
-      reco['docDate'] = v
-      this.setState({
-          ...this.state,
-          reco: reco
-      })
   }
 
   handleChange(e,data){
@@ -260,28 +249,10 @@ class RecoCreatePage extends Component {
         return this.state.reco.contextId === 0 || this.state.reco.context === DEFAULT_CONTEXT
   }
 
-  renderDateField = () => {
-    if(this.isArchive()){
-        return <Form.Field width={6} error={!this.state.reco.docDate}>
-                    <label>Дата рекомендации</label>
-                    <DatePicker
-                        locale="ru"
-                        label=''
-                        placeholderText={'Дата рекомендации'}
-                        showMonthDropdown showYearDropdown dropdownMode='select'
-                        dateFormat='DD.MM.YYYY' selected={this.state.reco.docDate?moment(this.state.reco.docDate):null}
-                        onChange={(v) => this.handleDocDate(v)} />
-                </Form.Field>
-    }
-
-    return (null)
-  }
-
   renderHeaderForm () {
     return (
       <Form>
         <Form.Group widths='equal'>
-            {this.renderDateField()}
           <Form.Field>
             <label>Дилер</label>
             <Dropdown name='responsibleId'
@@ -321,7 +292,7 @@ class RecoCreatePage extends Component {
     return (
       <Container className={'pageStyle'} fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
         <Segment padded size='small'>
-          <Label attached='top'><Header as='h3'>Добавление рекомендации</Header></Label>
+          <Label attached='top'><Header as='h3'>Добавление рекомендации {this.isArchive()?' из архива':''}</Header></Label>
           {this.renderHeaderForm()}
           <Divider />
           <Grid className='recoGrid'>
