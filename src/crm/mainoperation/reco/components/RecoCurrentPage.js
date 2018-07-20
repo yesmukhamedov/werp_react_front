@@ -51,7 +51,6 @@ class RecoCurrentPage extends Component {
   }
 
   onCallSaved () {
-    console.log('TEST')
     this.loadItems()
   }
 
@@ -244,7 +243,7 @@ class RecoCurrentPage extends Component {
                         Текущие рекомендации
           </Header>
           <Link className={'ui icon button primary right floated'} to={`/crm/reco/create`}>
-            <Icon name='plus' /> Добавить
+            <Icon name='plus' /> Добавить из архива
           </Link>
         </Segment>
         <Tab menu={{ secondary: true, pointing: true }} panes={panes} />

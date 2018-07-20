@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import {toggleStaffDataFormModal,createStaffData,fetchBranchPyramids} from '../actions/hrStaffAction'
+import {toggleStaffDataFormModal,createStaffData,fetchBranchPyramids,updateStaffData} from '../actions/hrStaffAction'
 import OffDataForm from './forms/OffDataForm'
 import ExpenceForm from './forms/ExpenceForm'
 import EducationForm from './forms/EducationForm'
@@ -122,7 +122,7 @@ class StaffDataFormHandler extends Component {
         if(!this.state.localItem.id || typeof this.state.localItem.id === 'undefined'){
             this.props.createStaffData(this.state.localItem,this.props.activeData)
         }else{
-
+            this.props.updateStaffData(this.state.localItem,this.props.activeData)
         }
     }
 
@@ -157,5 +157,5 @@ function mapStateToProps (state) {
 }
 
 export default connect(mapStateToProps, {
-    toggleStaffDataFormModal,createStaffData,fetchBranchPyramids
+    toggleStaffDataFormModal,createStaffData,fetchBranchPyramids, updateStaffData
 })(StaffDataFormHandler)

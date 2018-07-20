@@ -10,7 +10,7 @@ export const EDIT_TASK_RECIPIENT = 'edit_task_recipient';
 
 export function searchTasks(params, resolve) {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/api/tasks?${params}`, {
+    axios.get(`${ROOT_URL}/api/dtskl/tasks?${params}`, {
       headers: { authorization: localStorage.getItem('token') },
     })
       .then(({ data }) => {
@@ -24,10 +24,11 @@ export function searchTasks(params, resolve) {
       .catch((error) => {
         console.log('ERROR in DEPT task list search', error);
         if (error.response) {
-          dispatch(notify('error', error.response.data.message, 'Ошибка'));
+          dispatch(notify('error', error.response.data.message, 'Ошибка...'));
         } else {
           Promise.resolve({ error }).then(response => dispatch(notify('error', response, 'Ошибка')));
         }
+        resolve();
       });
   };
 }

@@ -3,9 +3,7 @@ import {Modal,Form, Input, TextArea, Button } from 'semantic-ui-react'
 import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment'
-import axios from 'axios'
-import {ROOT_URL} from '../../../../utils/constants'
-import {fetchSingleVisit,createVisit,modalToggle,updateVisit} from '../actions/visitAction'
+import {fetchSingleVisit,createVisit,modalToggle,updateVisit,visitModalClearState} from '../actions/visitAction'
 import { connect } from 'react-redux'
 
 class VisitCreateModal extends Component {
@@ -13,8 +11,13 @@ class VisitCreateModal extends Component {
     super(props)
 
     this.state = {
-        localVisit:{},
-        dealers: []
+        localVisit:{
+            id: -1
+        },
+        phoneNumberDisplay: '',
+        phoneNumber: '',
+        dealers: [],
+        isUpdate: false
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -22,81 +25,70 @@ class VisitCreateModal extends Component {
       this.saveVisit = this.saveVisit.bind(this)
   }
 
-  componentWillMount () {
-    axios.get(`${ROOT_URL}/api/hr/pyramid/crm/group-dealers`, {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((res) => {
-      let loaded = res.data.map((item) => {
-        return {
-          key: item.staffId,
-          text: item.lastname + ' ' + item.firstname,
-          value: item.staffId
-        }
-      })
-      loaded.unshift({
-        key: 0,
-        text: 'Не выбрано',
-        value: 0
-      })
-      this.setState({
-        ...this.state,
-        dealers: loaded
-      })
-    }).catch((e) => {
-      console.log(e)
-    })
-  }
-
-  handleDate (p1, p2, p3) {
-    console.log(p1, p2, p3)
-  }
-
   renderForm () {
-      let {localVisit} = this.state
-    return <Form>
-      <Form.Group widths='equal'>
-        <Form.Select
-          value={localVisit.visitorId}
-          required fluid selection
-          label='Посетитель' options={this.state.dealers}
-          onChange={(e, v) => this.handleChange('visitorId', v)} />
+      let localVisit = Object.assign({},this.state.localVisit)
+      let client = Object.assign({},localVisit.client)
+      const {phoneMeta} = this.props
+      let hidePhoneInput = this.state.isUpdate || (client && client.id && typeof client.id !== 'undefined')
+        return <Form>
+          <Form.Group widths='equal'>
+              {hidePhoneInput?'':<Form.Field>
+                  <label>Тел. номер</label>
+                  <Input
+                      label={{ basic:true,content:phoneMeta.phoneCode}}
+                      placeholder={phoneMeta.phonePattern}
+                      onChange={(e,v) => this.handleChange('phoneNumber',v)}
+                      value={this.state.phoneNumberDisplay || ''}/>
+              </Form.Field>}
 
-        <Form.Field value={localVisit.clientName || ''}
-                    readOnly={true} control={Input} required label='ФИО клиента' placeholder='ФИО клиента' />
-      </Form.Group>
+            <Form.Field value={localVisit.clientName || ''}
+                        onChange={(e, v) => this.handleChange('clientName', v)}
+                        control={Input}
+                        required label='ФИО клиента' placeholder='ФИО клиента' />
+          </Form.Group>
 
-      <Form.Group widths='equal'>
-        <Form.Field control={TextArea}
-          onChange={(e, o) => this.handleChange('address', o)}
-          label='Адрес' placeholder='Адрес'
-          value={localVisit.address || ''}
-        />
+            <Form.Group widths='equal'>
+                <Form.Field required>
+                    <label>Дата визита</label>
+                    <DatePicker
+                        label=''
+                        placeholderText={'Дата-время демонстрации'}
+                        showMonthDropdown showYearDropdown dropdownMode='select'
+                        dateFormat='DD.MM.YYYY' selected={localVisit.docDate ? moment(localVisit.docDate) : null}
+                        onChange={(v) => this.handleChange('docDate', v)} />
+                </Form.Field>
 
-        <Form.Field required>
-          <label>Дата визита</label>
-          <DatePicker
-            label=''
-            placeholderText={'Дата-время демонстрации'}
-            showMonthDropdown showYearDropdown dropdownMode='select'
-            dateFormat='DD.MM.YYYY' selected={localVisit.docDate ? moment(localVisit.docDate) : null}
-            onChange={(v) => this.handleChange('docDate', v)} />
-        </Form.Field>
-      </Form.Group>
+                <Form.Select
+                    value={localVisit.visitorId}
+                    required fluid selection
+                    label='Посетитель' options={this.props.dealers}
+                    onChange={(e, v) => this.handleChange('visitorId', v)} />
 
-      <Form.Group widths='equal'>
-        <Form.Field control={TextArea}
-          onChange={(e, o) => this.handleChange('note', o)}
-          label='Примечание' placeholder='Примечание'
-          value={localVisit.note || ''}
-        />
-        <Form.Field />
-      </Form.Group>
-    </Form>
+            </Form.Group>
+
+          <Form.Group widths='equal'>
+            <Form.Field control={TextArea}
+              onChange={(e, o) => this.handleChange('address', o)}
+              label='Адрес' placeholder='Адрес'
+              value={localVisit.address || ''}
+            />
+
+              <Form.Field control={TextArea}
+                          onChange={(e, o) => this.handleChange('note', o)}
+                          label='Примечание' placeholder='Примечание'
+                          value={localVisit.note || ''}
+              />
+
+          </Form.Group>
+
+        </Form>
   }
 
   handleChange (fieldName, o) {
     let localVisit = Object.assign({}, this.state.localVisit)
+      let client = Object.assign({},localVisit.client)
+      let {phoneNumber,phoneNumberDisplay} = this.state
+      const {phoneMeta} = this.props
     // console.log(o);
     switch (fieldName) {
       case 'docDate':
@@ -106,13 +98,44 @@ class VisitCreateModal extends Component {
             localVisit[fieldName] = null
         }
         break
+
+        case 'phoneNumber':
+            let value = o.value
+            const phonePattern = phoneMeta.phonePattern || '';
+            const ppLenght = phonePattern.replace(/[^0-9]+/g, '').length;
+            let v = value.replace(/[^0-9]+/g, '');
+            if(v.length === 0){
+                phoneNumber = ''
+                phoneNumberDisplay = ''
+            } else {
+                let temp = '';
+                let userCounter = 0;
+                for (let k = 0; k < phonePattern.length; k++) {
+                    const userChar = v.charAt(userCounter);
+                    userCounter++;
+                    if (!userChar) {
+                        break;
+                    }
+
+                    const char = phonePattern.charAt(k);
+                    if (isNaN(char)) {
+                        temp += char;
+                        userCounter--;
+                    } else {
+                        temp += userChar;
+                    }
+                }
+                //console.log(phonePattern,temp)
+                phoneNumberDisplay = temp;
+                phoneNumber = v.substring(0, ppLenght)
+            }
+
+            break
+
       case 'clientName':
       case 'note':
       case 'address':
-          localVisit[fieldName] = o.value
-        break
-
-      case 'visitorId':
+        case 'visitorId':
           localVisit[fieldName] = o.value
         break
 
@@ -121,27 +144,46 @@ class VisitCreateModal extends Component {
 
     this.setState({
       ...this.state,
-        localVisit: localVisit
+        localVisit: localVisit,
+        phoneNumber: phoneNumber,
+        phoneNumberDisplay: phoneNumberDisplay
     })
   }
 
     componentWillReceiveProps (nextProps) {
         if(nextProps.visit.id !== this.state.localVisit.id){
-            let localVisit = Object.assign({}, nextProps.visit);
+            let localVisit = Object.assign({id: -1}, nextProps.visit);
             this.setState({
                 ...this.state,
-                localVisit: localVisit
+                localVisit: localVisit,
+                phoneNumberDisplay: '',
+                phoneNumber: '',
+                isUpdate: localVisit.id && typeof localVisit.id !== 'undefined'
             })
         }
     }
 
     saveVisit(){
-        const {localVisit} = this.state
-        if(localVisit.id && typeof localVisit.id !== 'undefined'){
-            this.props.updateVisit(localVisit,this.props.fromComponent)
-        }else{
-            this.props.createVisit(localVisit,this.props.fromComponent)
+      let localVisit = Object.assign({},this.state.localVisit)
+        let client = Object.assign({},localVisit.client)
+        let phoneNumber = this.state.phoneNumber
+
+        let phones = []
+        if(phoneNumber){
+          phones[0] = {phoneNumber: phoneNumber}
         }
+        client['phones'] = phones
+        localVisit['client'] = client
+
+        if(this.state.isUpdate){
+            this.props.updateVisit(localVisit,'view')
+        }else{
+            this.props.createVisit(localVisit)
+        }
+    }
+
+    componentWillUnmount(){
+        this.props.visitModalClearState()
     }
 
   render () {
@@ -168,8 +210,12 @@ class VisitCreateModal extends Component {
 function mapStateToProps (state) {
     return {
         modalOpened: state.crmVisit.modalOpened,
-        visit: state.crmVisit.visit
+        visit: state.crmVisit.visit,
+        dealers: state.crmDemo.dealers,
+        phoneMeta: state.crmReco.phoneMeta
     }
 }
 
-export default connect(mapStateToProps, {fetchSingleVisit,createVisit,modalToggle,updateVisit})(VisitCreateModal)
+export default connect(mapStateToProps, {
+    fetchSingleVisit,createVisit,modalToggle,updateVisit, visitModalClearState
+})(VisitCreateModal)

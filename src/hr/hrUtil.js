@@ -184,6 +184,9 @@ export const getStaffDataFetchUri = (staffData,staffId) => {
         case MATNR_DATA:
             return '/api/hr/staff/' + staffId + '/matnrs'
 
+        case CONTACT_DATA:
+            return '/api/hr/address/by-staff/' + staffId
+
         default:
             return ''
     }

@@ -8,7 +8,8 @@ import browserHistory from '../../../../utils/history';
  *
  */
 export const CRM_VISIT_FETCH_ARCHIVE = 'CRM_VISIT_FETCH_ARCHIVE';
-export const CRM_VISIT_CLEAR_STATE = 'CRM_VISIT_CLEAR_STATE';
+export const CRM_VISIT_CLEAR_STATE = 'CRM_VISIT_CLEAR_STATE'
+export const CRM_VISIT_MODAL_CLEAR = 'CRM_VISIT_MODAL_CLEAR'
 
 export const CRM_VISIT_FETCH_SINGLE = 'CRM_VISIT_FETCH_SINGLE'
 export const CRM_VISIT_DELETE = 'CRM_VISIT_DELETE'
@@ -83,16 +84,22 @@ export function createVisit(o){
             headers: {
                 authorization: localStorage.getItem('token')
             }
-        }).then((response) => {
+        }).then(({data}) => {
                 dispatch(modifyLoader(false))
                 dispatch({
-                    type: CRM_VISIT_CREATE
+                    type: CRM_VISIT_CREATE,
+                    payload: data
                 })
                 //dispatch(fetchArchive())
 
             }).catch((e) => {
             dispatch(modifyLoader(false))
-            handleError(e,dispatch)
+            if(e.response && e.response.data && e.response.data.recoId && e.response.status && e.response.status === 303){
+                dispatch(modalToggle(false))
+                browserHistory.push('/crm/reco/view/' + e.response.data.recoId)
+            }else {
+                handleError(e,dispatch)
+            }
         })
     }
 }
@@ -134,11 +141,11 @@ export function setVisitForUpdate(visit){
     }
 }
 
-export function blankForCreate(recoId){
+export function blankForCreate(recoId,staffId){
     return function(dispatch){
         dispatch(modifyLoader(true))
 
-        axios.get(`${ROOT_URL}/api/crm/visit/blank/` + recoId, {
+        axios.get(`${ROOT_URL}/api/crm/visit/blank/` + recoId + `/` + staffId, {
             headers: {
                 authorization: localStorage.getItem('token')
             }
@@ -153,5 +160,11 @@ export function blankForCreate(recoId){
             dispatch(modifyLoader(false))
             handleError(e,dispatch)
         })
+    }
+}
+
+export function visitModalClearState(){
+    return {
+        type: CRM_VISIT_MODAL_CLEAR
     }
 }

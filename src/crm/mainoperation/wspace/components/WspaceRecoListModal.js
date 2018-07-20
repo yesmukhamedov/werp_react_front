@@ -10,7 +10,7 @@ export default function WspaceRecoListModal (props) {
     }
 
     return <Modal size={'fullscreen'}
-                  open={opened} onClose={() => console.log('TEST')}>
+                  open={opened}>
         <Modal.Header>
             <span style={{fontSize: '15px',display:'block',float:'left',paddingRight:'5px',borderRight:'1px #ddd solid'}}>
                 <Icon name={'user'}/>

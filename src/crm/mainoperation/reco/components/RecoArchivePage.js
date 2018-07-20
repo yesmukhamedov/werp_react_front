@@ -1,12 +1,15 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
-import { Header,Container,Icon,Segment,Table,Form,Loader } from 'semantic-ui-react'
+import { Header,Container,Icon,Segment,Table,Form,Loader, Button } from 'semantic-ui-react'
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
 import moment from 'moment';
 import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4'
 import BranchF4 from '../../../../reference/f4/branch/BranchF4'
 import LazyPagination from '../../../../general/pagination/LazyPagination'
 import RecoStatusLabel from './RecoStatusLabel';
 import {fetchRecoArchive,fetchRecoStatuses} from '../actions/recoAction';
+import {fetchGroupDealers} from '../../demo/actions/demoAction'
 import { connect } from 'react-redux'
 
 class RecoArchivePage extends Component{
@@ -27,10 +30,12 @@ class RecoArchivePage extends Component{
         this.loadItems = this.loadItems.bind(this);
         this.handleDropdownChange = this.handleDropdownChange.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleChangeDate = this.handleChangeDate.bind(this)
     }
 
     componentWillMount(){
         this.props.fetchRecoStatuses()
+        this.props.fetchGroupDealers()
         this.loadItems(0);
     }
 
@@ -89,7 +94,7 @@ class RecoArchivePage extends Component{
 
     handleDropdownChange(e,o){
         let {name,value} = o;
-        let {queryParams} = this.state;
+        let queryParams = Object.assign({},this.state.queryParams);
         switch (name){
             case 'bukrs':
                 queryParams[name] = value;
@@ -122,6 +127,17 @@ class RecoArchivePage extends Component{
         })
     }
 
+    handleChangeDate(field,m){
+        let queryParams = Object.assign({},this.state.queryParams);
+        if(m){
+            queryParams[field] = m.format('YYYY-MM-DD');
+        }else {
+            queryParams[field] = null;
+        }
+
+        this.setState({...this.state,queryParams: queryParams});
+    }
+
 
     renderTableBody(){
         if(!this.props.items || this.props.items.length === 0){
@@ -140,6 +156,13 @@ class RecoArchivePage extends Component{
         )
     }
 
+    getDealersSelect (dealers){
+        return <Form.Select name="responsibleId" multiple={false}
+            search={true}
+            label='Дилер'
+            options={dealers || []} placeholder='Дилер' onChange={this.handleDropdownChange}  />
+    }
+
     renderSearchPanel(){
         return (
             <Form>
@@ -152,10 +175,40 @@ class RecoArchivePage extends Component{
                         search={true}
                         label='Статус'
                         options={this.props.statuses || []} placeholder='Статус' onChange={this.handleDropdownChange}  />
+
+                    {this.props.dealers?this.getDealersSelect(this.props.dealers):''}
+                </Form.Group>
+                <Form.Group widths='equal'>
+                    <Form.Field>
+                        <label>Дата С</label>
+                        <DatePicker
+                            label=""
+                            placeholderText={'Дата продажи С'}
+                            showMonthDropdown showYearDropdown dropdownMode="select"
+                            dateFormat="DD.MM.YYYY"
+                            selected={this.state.queryParams.docDateFrom?moment(this.state.queryParams.docDateFrom):null}
+                            onChange={(v) => this.handleChangeDate('docDateFrom',v)}
+                        />
+                    </Form.Field>
+                    <Form.Field>
+                        <label>Дата По</label>
+                        <DatePicker
+                            label=""
+                            placeholderText={'Дата продажи По'}
+                            showMonthDropdown showYearDropdown dropdownMode="select"
+                            dateFormat="DD.MM.YYYY"
+                            selected={this.state.queryParams.docDateTo?moment(this.state.queryParams.docDateTo):null}
+                            onChange={(v) => this.handleChangeDate('docDateTo',v)}
+                        />
+                    </Form.Field>
                     <Form.Input name="clientName" onChange={this.handleChange} fluid label='ФИО клиента' placeholder='ФИО клиента' />
                     <Form.Input name="phoneNumber" onChange={this.handleChange}  fluid label='Тел. номер' placeholder='Тел. номер' />
+                    <Form.Field>
+                        <label>&nbsp;</label>
+                        <Button onClick={() => this.loadItems(0)}>Поиск</Button>
+                    </Form.Field>
                 </Form.Group>
-                <Form.Button onClick={() => this.loadItems(0)}>Поиск</Form.Button>
+
             </Form>
         )
     }
@@ -207,7 +260,7 @@ class RecoArchivePage extends Component{
                         Архив рекомендации
                     </Header>
                     <Link className={'ui icon button primary right floated'} to={`/crm/reco/create`}>
-                        <Icon name='plus' /> Добавить
+                        <Icon name='plus' /> Добавить из архива
                     </Link>
                 </Segment>
                 {this.renderSearchPanel()}
@@ -222,8 +275,11 @@ function mapStateToProps (state) {
         items: state.crmReco.items,
         meta: state.crmReco.meta,
         statuses:state.crmReco.statuses,
-        loader:state.loader
+        loader:state.loader,
+        dealers: state.crmDemo.dealers
     }
 }
 
-export default connect(mapStateToProps, {fetchRecoArchive,fetchRecoStatuses})(RecoArchivePage)
+export default connect(mapStateToProps, {
+    fetchRecoArchive,fetchRecoStatuses, fetchGroupDealers
+})(RecoArchivePage)

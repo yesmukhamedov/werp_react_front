@@ -17,7 +17,9 @@ import {
     HR_STAFF_DATA_BLANKED,
     HR_STAFF_DATA_CREATED,
     HR_STAFF_DATA_FETCHED_LIST,
-    HR_STAFF_FETCH_MANAGERS
+    HR_STAFF_FETCH_MANAGERS,
+    HR_STAFF_SET_STAFF_DATA_FOR_UPDATE,
+    HR_STAFF_DATA_UPDATED
 } from '../actions/hrStaffAction';
 
 
@@ -115,12 +117,29 @@ export default function (state=INITIAL_STATE, action)
         case HR_STAFF_DATA_BLANKED:
             return {...state,staffData: action.payload}
 
+        case HR_STAFF_SET_STAFF_DATA_FOR_UPDATE:
+            return {...state, staffData: action.payload}
+
         case HR_STAFF_DATA_CREATED:
             let staffDataList = Object.assign({},state.staffDataList)
             let tempData = staffDataList[action.activeData] || []
             tempData.push(action.payload)
             staffDataList[action.activeData] = tempData
             return {...state,staffDataList:staffDataList,staffDataFormModalOpened: false}
+
+        case HR_STAFF_DATA_UPDATED:
+            let staffDataList1 = Object.assign({},state.staffDataList)
+            let tmpStfData = staffDataList1[action.activeData] || []
+            for(let k in tmpStfData){
+                if(tmpStfData[k]['id'] === action.payload.id){
+                    tmpStfData[k] = action.payload
+                    break
+                }
+            }
+
+            staffDataList1[action.activeData] = tmpStfData
+
+            return {...state,staffDataList:staffDataList1,staffDataFormModalOpened: false}
 
         case HR_STAFF_DATA_FETCHED_LIST:
             let stfDataList = Object.assign({},state.staffDataList)
