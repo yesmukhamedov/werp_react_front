@@ -10,6 +10,9 @@ import Signout from '../components/Auth/Signout';
 import ForbiddenPage from '../general/forbidden';
 import LoadingPage from '../general/LoadingPage';
 
+import { DtskcContainer } from '../general/dtskc/dtskcPage';
+// import TaskDispatcher from '../general/departmentTask/taskDispatcher/TaskDispatcherDisplay';
+
 const AsyncSettings = Loadable({
   loader: () =>
     import('../components/UserSettings/Settings' /* webpackChunkName: "Settings" */),
@@ -344,6 +347,9 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/administration/dtskrep" component={AsyncTaskMonitorPage} />
       <Route path="/administration/dtskl"   component={AsyncDeptTaskListPage} />
       
+
+      <Route path="/general/dtskc" component={DtskcContainer} />
+      {/* <Route path="/general/dtskdep" component={TaskDispatcher} /> */}
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {

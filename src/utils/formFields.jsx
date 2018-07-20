@@ -55,6 +55,7 @@ export const TextAreaFormField = (props) => {
     label,
     input,
     readOnly,
+    rows,
     meta: { touched, error },
   } = props;
   return (
@@ -66,6 +67,7 @@ export const TextAreaFormField = (props) => {
         value={input.value}
         onChange={(e, data) => input.onChange(data.value)}
         placeholder={label}
+        rows={rows}
       />
       {touched &&
         error && (
