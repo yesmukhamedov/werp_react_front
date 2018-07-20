@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'semantic-ui-react'
+import { Table, Button } from 'semantic-ui-react'
 
 /**
  * Список Expences
@@ -19,7 +19,7 @@ export default function StaffExpencesTable(props){
                 <Table.Cell>{exp.description}</Table.Cell>
                 <Table.Cell>{exp.expenseDate}</Table.Cell>
                 <Table.Cell>
-
+                    <Button size={'mini'} color={'red'} icon={'trash'} onClick={() => props.handleDelete(exp.id)}/>
                 </Table.Cell>
             </Table.Row>
         )

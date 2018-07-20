@@ -28,8 +28,9 @@ export default function StaffSalariesTable(props){
                 <Table.Cell>{salary.note}</Table.Cell>
                 <Table.Cell>{formatTimestamptToDate(salary.payrollDate)}</Table.Cell>
                 <Table.Cell>
-                    <Button icon={'pencil'} onClick={() => props.handleUpdate(salary)}>
+                    <Button size={'mini'} icon={'pencil'} onClick={() => props.handleUpdate(salary)}>
                     </Button>
+                    {salary.deletable?<Button size={'mini'} color={'red'} icon={'trash'} onClick={() => props.handleDelete(salary.id)} />:''}
                 </Table.Cell>
             </Table.Row>
         )

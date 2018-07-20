@@ -7,6 +7,7 @@ import moment from 'moment';
 import VisitCreateModal from './VisitCreateModal';
 import {fetchArchive,modalToggle,setVisitForUpdate,blankForCreate} from '../actions/visitAction'
 import {fetchGroupDealers} from '../../demo/actions/demoAction'
+import {fetchPhoneMeta} from '../../reco/actions/recoAction'
 import { connect } from 'react-redux'
 import matchSorter from 'match-sorter';
 
@@ -29,6 +30,7 @@ class VisitArchivePage extends Component{
   componentWillMount () {
     this.props.fetchArchive()
       this.props.fetchGroupDealers()
+      this.props.fetchPhoneMeta()
   }
 
   toUpdate(visit){
@@ -109,9 +111,9 @@ class VisitArchivePage extends Component{
                       <Link className={'ui icon button mini'} to={`/crm/visit/view/` + row.value}>
                                         <Icon name={'eye'}/>
                     </Link>
-                    <Button icon size={'mini'} onClick={() => this.toUpdate(row.original)}>
-                        <Icon name={'pencil'}/>
-                    </Button>
+                    {/*<Button icon size={'mini'} onClick={() => this.toUpdate(row.original)}>*/}
+                        {/*<Icon name={'pencil'}/>*/}
+                    {/*</Button>*/}
                 </div>
               ),
               filterable: false
@@ -125,7 +127,7 @@ class VisitArchivePage extends Component{
   }
 
   toCreate(){
-      this.props.blankForCreate()
+      this.props.blankForCreate(0,0)
       this.props.modalToggle(true)
   }
 
@@ -136,6 +138,9 @@ class VisitArchivePage extends Component{
           <Header as='h2' floated='left'>
                         Список визитов группы
           </Header>
+            <Button className={'ui icon button primary right floated'} onClick={this.toCreate}>
+                <Icon name='plus' /> Добавить
+            </Button>
         </Segment>
         {this.renderTable()}
         <VisitCreateModal fromComponent="archive" />
@@ -151,4 +156,7 @@ function mapStateToProps (state) {
     }
 }
 
-export default connect(mapStateToProps, {fetchArchive,modalToggle,setVisitForUpdate,blankForCreate,fetchGroupDealers})(VisitArchivePage)
+export default connect(mapStateToProps, {
+    fetchArchive,modalToggle,setVisitForUpdate,blankForCreate,fetchGroupDealers,
+    fetchPhoneMeta
+})(VisitArchivePage)

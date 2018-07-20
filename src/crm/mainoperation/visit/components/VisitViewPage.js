@@ -31,8 +31,8 @@ class VisitViewPage extends Component {
         this.props.fetchSingleVisit(id)
         //Для создания демо
         this.props.fetchGroupDealers()
-        this.props.fetchDemoResults()
-        this.props.fetchReasons()
+        //this.props.fetchDemoResults()
+        //this.props.fetchReasons()
     }
 
     toUpdate(){
@@ -77,6 +77,7 @@ class VisitViewPage extends Component {
 
   renderVisitTable () {
     let {visit} = this.props
+      let parentReco = Object.assign({},visit.parentReco)
     return <Card fluid>
       <Card.Content>
         <Card.Header>
@@ -139,6 +140,17 @@ class VisitViewPage extends Component {
                 {visit.clientName}
               </Table.Cell>
             </Table.Row>
+
+              <Table.Row>
+                  <Table.Cell>
+                      <Header as={'h4'}>Ссылка на рекомендацию</Header>
+                  </Table.Cell>
+                  <Table.Cell>
+                      {parentReco.id?<Link to={`/crm/reco/view/` + parentReco.id}>
+                          Рекомендация №{parentReco.id}
+                      </Link>:''}
+                  </Table.Cell>
+              </Table.Row>
 
             <Table.Row>
               <Table.Cell>

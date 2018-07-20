@@ -9,7 +9,7 @@ export const FOUND_MONITOR_TASKS = 'found_monitor_tasks';
 
 export function searchTasks(params, resolve) {
   return (dispatch) => {
-    axios.get(`${ROOT_URL}/api/tasks/monitor?${params}`, {
+    axios.get(`${ROOT_URL}/api/dtskl/monitor?${params}`, {
       headers: { authorization: localStorage.getItem('token') },
     })
       .then(({ data }) => {

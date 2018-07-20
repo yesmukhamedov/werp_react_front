@@ -6,7 +6,8 @@ import {
     CRM_VISIT_SET_FOR_UPDATE,
     CRM_VISIT_UPDATE,
     CRM_VISIT_SET_FOR_CREATE,
-    CRM_VISIT_CREATE
+    CRM_VISIT_CREATE,
+    CRM_VISIT_MODAL_CLEAR
 } from '../actions/visitAction';
 
 const INITIAL_STATE={
@@ -61,6 +62,9 @@ export default function (state=INITIAL_STATE, action)
 
         case CRM_VISIT_CLEAR_STATE:
             return {...state,doneItems:[],movedItems:[],newItems:[],usedItems:[] };
+
+        case CRM_VISIT_MODAL_CLEAR:
+            return {...state,modalOpened: false, visit:{}}
 
         default:
             return state;
