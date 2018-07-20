@@ -194,6 +194,15 @@ const validate = (values) => {
   if (!values.department) {
     errors.department = 'Объязательное поле для заполнения';
   }
+  if (!values.initiatorManager) {
+    errors.initiatorManager = 'Объязательное поле для заполнения';
+  }
+  if (!values.assigneeManager) {
+    errors.assigneeManager = 'Объязательное поле для заполнения';
+  }
+  if (!values.status) {
+    errors.status = 'Объязательное поле для заполнения';
+  }
   return errors;
 };
 
