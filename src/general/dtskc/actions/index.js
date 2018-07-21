@@ -134,6 +134,7 @@ export function createTask(formValues, successCallback) {
       // TODO: get rid of hardcoded value
       id: 2,
     },
+    bukrs: formValues.company,
     recipient: {
       branch: {
         id: formValues.branch,
