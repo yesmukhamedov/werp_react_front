@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Modal, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
@@ -8,16 +8,16 @@ import matchSorter from 'match-sorter';
 // import './notification.css'
 
 // const arrayList= ;
-class StaffF4Modal extends Component{
+class StaffF4Modal extends PureComponent{
     
     constructor(props){
 
         super(props);
-        // this.bonusEditModalOpenHandler=this.bonusEditModalOpenHandler.bind(this);
+        this.onInputChange=this.onInputChange.bind(this);
         
 
         
-        this.state={searchTerm:{bukrs:'',branch:null}, branchOptions:[]};
+        this.state={branchId};
         
     } 
     componentWillMount() {
@@ -27,6 +27,10 @@ class StaffF4Modal extends Component{
     componentWillUnmount(){
         // this.props.f4ClearMatnrList();
     }
+
+    onInputChange(value,stateFieldName){      
+        this.setState({ [stateFieldName]:value })
+      }
 
 
     close = () => {
@@ -59,6 +63,7 @@ class StaffF4Modal extends Component{
             t1columns.push(t1r1c3);
         }
         
+        const {bukrs, branchOptions} = this.props;
 
 
 
@@ -79,18 +84,18 @@ class StaffF4Modal extends Component{
                             </Table.Cell>
                             <Table.Cell>
                                 <Label.Group size='huge'>
-                                    <Label>{this.props.bukrs}</Label>
+                                    <Label>{bukrs}</Label>
                                 </Label.Group>
                             </Table.Cell>                            
                         </Table.Row>
                         <Table.Row>
                             <Table.Cell>
                                 <Icon name='browser' />     
-                                Компания
+                                Филиал
                             </Table.Cell>
                             <Table.Cell>
-                                <Dropdown placeholder='Все' fluid multiple search selection options={this.state.branchOptions} value={this.state.searchTerm.branchList} 
-                                         onChange={(e, { value }) => this.onInputChange(value,'branch')} />
+                                <Dropdown fluid selection options={branchOptions} value={this.state.branchId} 
+                                         onChange={(e, { value }) => this.onInputChange(value,'branchId')} />
                             </Table.Cell>                            
                         </Table.Row>
                     </Table.Body>                     

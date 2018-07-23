@@ -1,5 +1,6 @@
 import _ from 'lodash';
 import moment from 'moment';
+import {BigNumber} from 'bignumber.js';
 
 export function resetLocalStorage() {
   localStorage.removeItem('token');

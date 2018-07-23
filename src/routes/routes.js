@@ -215,6 +215,11 @@ const AsyncFrcoln = Loadable({
 loading: () => <LoadingPage />
 });
 
+const AsyncArli = Loadable({
+  loader: () => import('../accounting/report/arli/arli' /* webpackChunkName: "arli" */),
+loading: () => <LoadingPage />
+});
+
 const AsyncAssignUserBranch = Loadable({
   loader: () => import('../dit/userBranch/components/assign_user_branch' /* webpackChunkName: "ditaub" */),
 loading: () => <LoadingPage />
@@ -270,7 +275,9 @@ const getComponent = {
     Hrb02:AsyncHrb02,
 
     Frcoln:AsyncFrcoln,
+    // Frsr: AsyncFrsr,
     Fmcp: AsyncFmcp,
+
     
     Amsg:AsyncAmsg,
     Amcdd:AsyncAmcdd,
@@ -344,6 +351,7 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
       <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
       <Route path="/finance/mainoperation/fcis" component={AsyncFsis} />
+      <Route path="/accounting/report/arli" component={AsyncArli} />
       <Route path="/administration/dtskrep" component={AsyncTaskMonitorPage} />
       <Route path="/administration/dtskl"   component={AsyncDeptTaskListPage} />
       

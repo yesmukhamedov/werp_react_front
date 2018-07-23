@@ -72,7 +72,7 @@ class Amsg extends Component {
           this.initializePsRows();
         }
       }
-  }
+    }
     componentWillUnmount(){
       this.props.clearfaBkpf();
     }
