@@ -10,8 +10,9 @@ import Signout from '../components/Auth/Signout';
 import ForbiddenPage from '../general/forbidden';
 import LoadingPage from '../general/LoadingPage';
 
-import { DtskcContainer } from '../general/dtskc/dtskcPage';
-// import TaskDispatcher from '../general/departmentTask/taskDispatcher/TaskDispatcherDisplay';
+import DtskcContainer from '../general/dtskc/pages';
+import { DtskdepContainer } from '../general/dtskdep/pages';
+
 
 const AsyncSettings = Loadable({
   loader: () =>
@@ -346,7 +347,7 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/crm/kpi/setting" component={AsyncKpiSettingPage} />
       <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} />
       <Route path="/crm/wspace" component={AsyncCrmWspacePage} />
-      <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} />
+      {/* <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} /> */}
       {/*<Route path="/crm/wspace" component={AsyncCrmWspacePage} />*/}
       <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
       <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
@@ -356,7 +357,7 @@ const generateRoutes = (transactionRoutes) => {
       
 
       <Route path="/general/dtskc" component={DtskcContainer} />
-      {/* <Route path="/general/dtskdep" component={TaskDispatcher} /> */}
+      <Route path="/general/dtskdep" component={DtskdepContainer} />
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {

@@ -1,5 +1,12 @@
 import React from 'react';
-import { Form, TextArea, Dropdown, Input, Label, Checkbox } from 'semantic-ui-react';
+import {
+  Form,
+  TextArea,
+  Dropdown,
+  Input,
+  Label,
+  Checkbox,
+} from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
@@ -18,7 +25,7 @@ export const DropdownFormField = (props) => {
   return (
     <Form.Field required={required}>
       <label>{label}</label>
-      
+
       <Dropdown
         disabled={disabled}
         selection
@@ -27,15 +34,14 @@ export const DropdownFormField = (props) => {
         value={input.value}
         // onChange={(param, data) => input.onChange(data.value)}
         onChange={(param, data) => {
-            if (multiple) {
-              if (data.value.includes(-1)) {
-                data.value = [-1]
-                input.onChange(data.value)
-              }
+          if (multiple) {
+            if (data.value.includes(-1)) {
+              data.value = [-1];
+              input.onChange(data.value);
             }
-            input.onChange(data.value)
           }
-        }
+          input.onChange(data.value);
+        }}
         placeholder={label}
         multiple={multiple}
       />
@@ -44,8 +50,41 @@ export const DropdownFormField = (props) => {
           <Label basic color="red" pointing>
             {error}
           </Label>
-        )
-      }
+        )}
+    </Form.Field>
+  );
+};
+
+export const SearchableSingleDropdownFormField = (props) => {
+  const {
+    label,
+    input,
+    opts,
+    disabled,
+    required,
+    meta: { touched, error },
+  } = props;
+
+  return (
+    <Form.Field required={required}>
+      <label>{label}</label>
+      <Dropdown
+        disabled={disabled}
+        selection
+        options={opts}
+        {...input}
+        value={input.value}
+        onChange={(param, data) => input.onChange(data.value)}
+        placeholder={label}
+        search
+      />
+
+      {touched &&
+        (error && (
+          <Label basic color="red" pointing>
+            {error}
+          </Label>
+        ))}
     </Form.Field>
   );
 };
@@ -74,8 +113,7 @@ export const TextAreaFormField = (props) => {
           <Label basic color="red" pointing>
             {error}
           </Label>
-        )
-      }
+        )}
     </Form.Field>
   );
 };
@@ -86,10 +124,10 @@ export const TextInputFormField = (props) => {
     input,
     readOnly,
     meta: { touched, error },
-    defaultValue
+    defaultValue,
   } = props;
   // console.log(input.value,'input.value')
-  if (defaultValue!==null && (input.value===null || input.value==="")){
+  if (defaultValue !== null && (input.value === null || input.value === '')) {
     input.value = defaultValue;
   }
 
@@ -104,12 +142,11 @@ export const TextInputFormField = (props) => {
         placeholder={label}
       />
       {touched &&
-        (error &&
+        (error && (
           <Label basic color="red" pointing>
             {error}
           </Label>
-        )
-      }
+        ))}
     </Form.Field>
   );
 };
@@ -131,16 +168,14 @@ export const DatePickerFormField = (props) => {
         selected={input.value ? moment(input.value, 'YYYY-MM-DD') : null}
       />
       {touched &&
-        (error &&
+        (error && (
           <Label basic color="red" pointing>
             {error}
           </Label>
-        )
-      }
+        ))}
     </Form.Field>
   );
 };
-
 
 export const CheckBoxFormField = (props) => {
   const {
@@ -159,12 +194,11 @@ export const CheckBoxFormField = (props) => {
         onChange={(e, data) => input.onChange(data.value)}
       />
       {touched &&
-        (error &&
+        (error && (
           <Label basic color="red" pointing>
             {error}
           </Label>
-        )
-      }
+        ))}
     </Form.Field>
   );
 };
@@ -182,7 +216,7 @@ export const DatePickerFormField2 = (props) => {
     defaultValue,
     meta: { touched, error },
   } = props;
-  if (defaultValue!==null && (input.value===null || input.value==="")){
+  if (defaultValue !== null && (input.value === null || input.value === '')) {
     input.value = defaultValue;
   }
   // console.log(input)
@@ -190,23 +224,23 @@ export const DatePickerFormField2 = (props) => {
     <Form.Field error={touched && error} required={required}>
       <label>{label}</label>
 
-      <DatePicker 
-        showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"  
-        
-        {...input}      
+      <DatePicker
+        showMonthDropdown
+        showYearDropdown
+        dropdownMode="select" // timezone="UTC"
+        {...input}
         selected={input.value ? moment(input.value, dateFormat) : null}
-        locale={locale}//"ru"
-        dateFormat={dateFormat} //"DD.MM.YYYY"  
+        locale={locale} // "ru"
+        dateFormat={dateFormat} // "DD.MM.YYYY"
         disabled={disabled}
         readOnly={readOnly}
-        />
+      />
       {touched &&
-        (error &&
+        (error && (
           <Label basic color="red" pointing>
             {error}
           </Label>
-        )
-      }
+        ))}
     </Form.Field>
   );
 };

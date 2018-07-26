@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Table, Button, Icon, Segment, Header, Label } from 'semantic-ui-react';
@@ -6,7 +6,7 @@ import { NewTaskModalContainer } from '../NewTaskModal';
 import { formatDMYMS } from '../../../../../../utils/helpers';
 import { outCallStatusColorMap } from '../../../../../../utils/constants';
 
-class TaskPanelComponent extends PureComponent {
+class TaskPanelComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {

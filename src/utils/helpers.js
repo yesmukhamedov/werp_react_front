@@ -1,3 +1,4 @@
+import axios from 'axios';
 import _ from 'lodash';
 import moment from 'moment';
 import {BigNumber} from 'bignumber.js';
@@ -200,4 +201,11 @@ export function checkNestedObject(obj, key) {
   return key.split(".").reduce(function(o, x) {
       return (typeof o === "undefined" || o === null) ? o : o[x];
   }, obj);
+}
+
+
+export function GET(url) {
+  return axios.get(url, {
+    headers: { authorization: localStorage.getItem('token') },
+  });
 }

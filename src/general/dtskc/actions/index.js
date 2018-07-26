@@ -1,7 +1,7 @@
 import axios from 'axios';
 import _ from 'lodash';
 import { ROOT_URL } from '../../../utils/constants';
-import { constructFullName } from '../../../utils/helpers';
+import { constructFullName, GET } from '../../../utils/helpers';
 import { notify } from '../../../general/notification/notification_action';
 import {
   DTSKC_FETCH_REFERENCES,
@@ -15,11 +15,6 @@ const taskTypesUrl = `${ROOT_URL}/api/tasks/types`;
 const managersUrl = `${ROOT_URL}/api/task-admins`;
 const createTaskUrl = `${ROOT_URL}/api/tasks`;
 
-function getReference(url) {
-  return axios.get(url, {
-    headers: { authorization: localStorage.getItem('token') },
-  });
-}
 // api/users?active=true&branchId=104&departmentId=6&bukrs=2000
 export function fetchUsers(args) {
   const {
@@ -57,10 +52,10 @@ export function fetchReferences(lang) {
   return (dispatch) => {
     axios
       .all([
-        getReference(departmentsUrl),
-        getReference(statusUrl),
-        getReference(taskTypesUrl),
-        getReference(managersUrl),
+        GET(departmentsUrl),
+        GET(statusUrl),
+        GET(taskTypesUrl),
+        GET(managersUrl),
       ])
       .then(axios.spread((
         { data: deptList },
