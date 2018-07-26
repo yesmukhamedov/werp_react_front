@@ -270,6 +270,16 @@ const AsyncFmcp = Loadable({
   loading: () => <LoadingPage />
 });
 
+const AsyncHrRecruitmentPage = Loadable({
+        loader: () => import('../hr/mainoperation/document/components/HrRecruitmentPage' /* webpackChunkName: "HrRecruitmentPage" */),
+        loading: () => <LoadingPage />
+});
+
+const AsyncHrDocViewPage = Loadable({
+        loader: () => import('../hr/mainoperation/document/components/HrDocViewPage' /* webpackChunkName: "HrDocViewPage" */),
+    loading: () => <LoadingPage />
+});
+
 const getComponent = {
     Ditaub:AsyncAssignUserBranch,
     Hrb02:AsyncHrb02,
@@ -353,6 +363,8 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/finance/mainoperation/fcis" component={AsyncFsis} />
       <Route path="/administration/dtskrep" component={AsyncTaskMonitorPage} />
       <Route path="/administration/dtskl"   component={AsyncDeptTaskListPage} />
+        <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
+        <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />
       
 
       <Route path="/general/dtskc" component={DtskcContainer} />

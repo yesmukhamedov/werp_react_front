@@ -25,6 +25,13 @@ class PyramidFormModal extends Component {
 
   }
 
+  closeStaffListModal = () => {
+      this.setState({
+          ...this.state,
+          staffListModalOpened: false
+      })
+  }
+
   positionOptions = () => {
       if(!this.props.positionList){
           return []
@@ -185,7 +192,11 @@ class PyramidFormModal extends Component {
                 </Modal.Actions>
               </Modal>
 
-            <StaffListModal staffs={this.props.allStaffs} onSelect={this.onStaffSelect} opened={this.state.staffListModalOpened} />
+            <StaffListModal
+                close={this.closeStaffListModal}
+                staffs={this.props.allStaffs}
+                onSelect={this.onStaffSelect}
+                opened={this.state.staffListModalOpened} />
         </div>
     )
   }

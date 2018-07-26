@@ -92,7 +92,7 @@ export function blankItem(parentId){
         })
             .then(({data}) => {
                 dispatch(modifyLoader(false))
-                console.log(data)
+                //console.log(data)
                 dispatch({
                     type:HR_PYRAMID_BLANK_ITEM,
                     payload: data
