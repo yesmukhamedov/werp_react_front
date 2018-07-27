@@ -127,6 +127,7 @@ class Header2 extends Component {
                 <Form.Field>
                   <label>Дата начала действия</label>
                   <DatePicker
+                    autoComplete="off"
                     selected={startDate}
                     dateFormat="DD.MM.YYYY"
                     onChange={date => inputChange(date, 'startDate')}

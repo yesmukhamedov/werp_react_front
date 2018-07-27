@@ -42,6 +42,7 @@ export function RepSearch740(props){
             <Form.Field>
                 <label>Дата С</label>
                 <DatePicker
+                    autoComplete="off"
                     label=""
                     placeholderText={'Дата'}
                     showMonthDropdown showYearDropdown dropdownMode="select"

@@ -232,13 +232,15 @@ class FaHeader extends PureComponent{
                                             Дата проводки
                                         </Table.Cell>
                                         <Table.Cell>                                            
-                                            <DatePicker className='date-auto-width'
-                                            showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
-                                            selected={budat?moment(budat,"DD.MM.YYYY"):''} locale="ru" 
-                                            onChange={(event) => this.onInputChange(event,"budat")}
-                                            dateFormat="DD.MM.YYYY" 
-                                            readOnly={budatInfo?budatInfo.readOnly?budatInfo.readOnly:false:false}
-                                            disabled={budatInfo?budatInfo.disabled?budatInfo.disabled:false:false}/>
+                                            <DatePicker
+                                              className='date-auto-width'
+                                              autoComplete="off"
+                                              showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
+                                              selected={budat?moment(budat,"DD.MM.YYYY"):''} locale="ru" 
+                                              onChange={(event) => this.onInputChange(event,"budat")}
+                                              dateFormat="DD.MM.YYYY" 
+                                              readOnly={budatInfo?budatInfo.readOnly?budatInfo.readOnly:false:false}
+                                              disabled={budatInfo?budatInfo.disabled?budatInfo.disabled:false:false}/>
                                         </Table.Cell>                
                                     </Table.Row>
                                     
@@ -249,6 +251,7 @@ class FaHeader extends PureComponent{
                                         </Table.Cell>
                                         <Table.Cell>
                                             <DatePicker className='date-auto-width'
+                                            autoComplete="off"
                                             showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
                                             selected={bldat?moment(bldat,"DD.MM.YYYY"):''} locale="ru"
                                             onChange={(event) => this.onInputChange(event,"bldat")}

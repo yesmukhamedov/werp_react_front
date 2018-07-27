@@ -147,14 +147,18 @@ export default class SearchPanel extends Component {
                 </Form.Field>
                 с{' '}
                 <DatePicker
+                  autoComplete="off"
                   dateFormat="DD.MM.YYYY"
                   selected={startDate}
+                  autoComplete="off"
                   onChange={date => inputChange(date, 'startDate')}
                 />
                 до{' '}
                 <DatePicker
+                  autoComplete="off"
                   dateFormat="DD.MM.YYYY"
                   selected={endDate}
+                  autoComplete="off"
                   onChange={date => inputChange(date, 'endDate')}
                 />
                 <br />

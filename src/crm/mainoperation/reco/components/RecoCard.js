@@ -48,6 +48,7 @@ export default function RecoCard(props){
             return <DatePicker
                 locale="ru"
                 label=''
+                autoComplete="off"
                 placeholderText={'Дата-время звонка'}
                 showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'
                 dateFormat='DD.MM.YYYY HH:mm'

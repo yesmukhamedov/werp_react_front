@@ -108,7 +108,8 @@ class Phone extends Component {
           <Form.Field error={this.state.errors.demoDate} required>
             <label>Дата-время демонстрации</label>
             <DatePicker
-                locale="ru"
+              autoComplete="off"
+              locale="ru"
               label=''
               placeholderText={'Дата-время демонстрации'}
               showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'
@@ -173,6 +174,7 @@ class Phone extends Component {
         <Form.Field required error={this.state.errors.callDate}>
           <label>Дата-время звонка</label>
           <DatePicker
+            autoComplete="off"
             label=''
             placeholderText={'Дата-время звонка'}
             showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'
@@ -385,6 +387,7 @@ class Phone extends Component {
         <Form.Field error={this.state.errors.callRecallDate} required>
           <label>Дата-время перезвона</label>
           <DatePicker
+            autoComplete="off"
             label=''
             placeholderText={'Дата-время перезвона'}
             showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'

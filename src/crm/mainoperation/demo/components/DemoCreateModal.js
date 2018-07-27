@@ -74,8 +74,9 @@ class DemoCreateModal extends Component {
         <Form.Field error={this.state.errors.dateTime} required>
           <label>Дата-время демонстрации</label>
           <DatePicker
-              locale="ru"
+            locale="ru"
             label=''
+            autoComplete="off"
             placeholderText={'Дата-время демонстрации'}
             showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'
             dateFormat='DD.MM.YYYY HH:mm' selected={this.state.demo.dateTime ? moment(this.state.demo.dateTime) : null}

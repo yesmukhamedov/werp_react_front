@@ -182,6 +182,7 @@ class RecoArchivePage extends Component{
                     <Form.Field>
                         <label>Дата С</label>
                         <DatePicker
+                            autoComplete="off"
                             label=""
                             placeholderText={'Дата продажи С'}
                             showMonthDropdown showYearDropdown dropdownMode="select"
@@ -193,6 +194,7 @@ class RecoArchivePage extends Component{
                     <Form.Field>
                         <label>Дата По</label>
                         <DatePicker
+                            autoComplete="off"
                             label=""
                             placeholderText={'Дата продажи По'}
                             showMonthDropdown showYearDropdown dropdownMode="select"

@@ -133,6 +133,7 @@ class WspacePhoneModal extends Component{
                 <Form.Field required>
                     <label>Дата-время перезвона</label>
                     <DatePicker
+                        autoComplete="off"
                         label=''
                         placeholderText={'Дата-время перезвона'}
                         showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'
@@ -162,6 +163,7 @@ class WspacePhoneModal extends Component{
                     <Form.Field required>
                         <label>Дата-время демонстрации</label>
                         <DatePicker
+                            autoComplete="off"
                             locale="ru"
                             label=''
                             placeholderText={'Дата-время демонстрации'}
@@ -200,6 +202,7 @@ class WspacePhoneModal extends Component{
                     <Form.Field required>
                         <label>Дата-время звонка</label>
                         <DatePicker
+                            autoComplete="off"
                             label=''
                             placeholderText={'Дата-время звонка'}
                             showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'

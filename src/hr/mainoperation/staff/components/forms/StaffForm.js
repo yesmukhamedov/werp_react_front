@@ -56,6 +56,7 @@ export default function StaffForm(props){
                     <Form.Field required>
                         <label>Дата рождения</label>
                         <DatePicker
+                            autoComplete="off"
                             locale="ru"
                             placeholderText={'Дата рождения'}
                             showMonthDropdown showYearDropdown dropdownMode='select'
@@ -115,6 +116,7 @@ export default function StaffForm(props){
                     <Form.Field required>
                         <label>Дата выдачи</label>
                         <DatePicker
+                            autoComplete="off"
                             locale="ru"
                             label=''
                             selected={staff.passportGivenDate?moment(staff.passportGivenDate):null}
@@ -127,6 +129,7 @@ export default function StaffForm(props){
                     <Form.Field required>
                         <label>Срок действия уд.</label>
                         <DatePicker
+                            autoComplete="off"
                             locale="ru"
                             label=''
                             selected={staff.passportValidity?moment(staff.passportValidity):null}
@@ -155,6 +158,7 @@ export default function StaffForm(props){
                     <Form.Field>
                         <label>Дата выдачи(паспорт)</label>
                         <DatePicker
+                            autoComplete="off"
                             locale="ru"
                             label=''
                             selected={staff.passportGivenDate2?moment(staff.passportGivenDate2):null}
@@ -167,6 +171,7 @@ export default function StaffForm(props){
                     <Form.Field>
                         <label>Срок действия (паспорт)</label>
                         <DatePicker
+                            autoComplete="off"
                             label=''
                             selected={staff.passportValidity2?moment(staff.passportValidity2):null}
                             placeholderText={'Срок действия (паспорт)'}

@@ -187,6 +187,7 @@ class StaffForm extends Component {
               <Form.Field>
                 <label>Дата рождения</label>
                 <DatePicker
+                  autoComplete="off"
                   placeholderText={'Дата рождения'}
                   showMonthDropdown showYearDropdown dropdownMode='select'
                   selected={localStaff.birthday || null}
@@ -211,6 +212,7 @@ class StaffForm extends Component {
               <Form.Field>
                 <label>Дата выдачи</label>
                 <DatePicker
+                  autoComplete="off"
                   label=''
                   placeholderText={'Дата выдачи'}
                   showMonthDropdown showYearDropdown dropdownMode='select'
@@ -219,6 +221,7 @@ class StaffForm extends Component {
               <Form.Field>
                 <label>Срок действия уд.</label>
                 <DatePicker
+                  autoComplete="off"
                   label=''
                   placeholderText={'Срок действия уд.'}
                   showMonthDropdown showYearDropdown dropdownMode='select'
@@ -232,6 +235,7 @@ class StaffForm extends Component {
               <Form.Field>
                 <label>Дата выдачи(паспорт)</label>
                 <DatePicker
+                  autoComplete="off"
                   label=''
                   placeholderText={'Дата выдачи'}
                   showMonthDropdown showYearDropdown dropdownMode='select'
@@ -240,6 +244,7 @@ class StaffForm extends Component {
               <Form.Field>
                 <label>Срок действия (паспорт)</label>
                 <DatePicker
+                  autoComplete="off"
                   label=''
                   placeholderText={'Срок действия (паспорт)'}
                   showMonthDropdown showYearDropdown dropdownMode='select'

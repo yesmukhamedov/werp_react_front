@@ -126,6 +126,7 @@ class Arli extends Component {
                                     </Table.Cell> 
                                     <Table.Cell> с
                                         <DatePicker className='date-100-width'
+                                            autoComplete="off"
                                             showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
                                             selected={dateFrom} locale="ru"
                                             onChange={(event) => this.onInputChange(event,"dateFrom")}
@@ -133,6 +134,7 @@ class Arli extends Component {
                                     </Table.Cell> 
                                     <Table.Cell>по 
                                         <DatePicker className='date-100-width'
+                                            autoComplete="off"
                                             showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
                                             selected={dateTo} locale="ru"
                                             onChange={(event) => this.onInputChange(event,"dateTo")}

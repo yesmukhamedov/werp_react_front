@@ -299,11 +299,12 @@ class Serrep2 extends Component {
                             Месяц
                         </Grid.Column>
                         <Grid.Column mobile={16} tablet={8} computer={12}>
-                            <DatePicker 
-                                            showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
-                                            selected={this.state.searchTerm.date} locale="ru"
-                                            onChange={(event) => this.onInputChange(event,"date")} disabled={!this.state.searchTerm.archive}
-                                            dateFormat="MM.YYYY" />
+                            <DatePicker
+                              autoComplete="off"
+                              showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
+                              selected={this.state.searchTerm.date} locale="ru"
+                              onChange={(event) => this.onInputChange(event,"date")} disabled={!this.state.searchTerm.archive}
+                              dateFormat="MM.YYYY" />
 
                         </Grid.Column>
                         

@@ -114,6 +114,7 @@ class AmsgPaySchedule extends PureComponent{
                         </Table.Cell>
                         <Table.Cell>                    
                               <DatePicker className='date-auto-width'
+                              autoComplete="off"
                               showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
                               selected={item.payment_date?moment(item.payment_date, 'DD.MM.YYYY'):''} 
                               onChange={(e, {value}) => this.onInputChangePsRows(e,'payment_date',idx)} 

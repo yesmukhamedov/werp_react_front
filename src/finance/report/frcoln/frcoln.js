@@ -160,6 +160,7 @@ class Frcoln extends Component {
                                         </Table.Cell> 
                                         <Table.Cell>
                                             <DatePicker className='date-100-width'
+                                            autoComplete="off"
                                             showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
                                             selected={this.state.searchTerm.date} locale="ru"
                                             onChange={(event) => this.onInputChange(event,"date")}

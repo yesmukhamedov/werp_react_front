@@ -164,6 +164,7 @@ export const DatePickerFormField = (props) => {
       <DatePicker
         {...input}
         showYearDropdown
+        autoComplete="off"
         dateFormat="YYYY-MM-DD"
         selected={input.value ? moment(input.value, 'YYYY-MM-DD') : null}
       />
@@ -234,6 +235,7 @@ export const DatePickerFormField2 = (props) => {
         dateFormat={dateFormat} // "DD.MM.YYYY"
         disabled={disabled}
         readOnly={readOnly}
+        autoComplete="off"
       />
       {touched &&
         (error && (
