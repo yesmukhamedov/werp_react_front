@@ -2,6 +2,10 @@ import React from 'react'
 import {Segment,Label, Table } from 'semantic-ui-react'
 
 export default function HrDocApprovers (props) {
+    const {items} = props
+    if(!items){
+        return (null)
+    }
     return <Segment raised>
         <Label color="blue" ribbon>
             Согласующие
@@ -17,14 +21,15 @@ export default function HrDocApprovers (props) {
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                <Table.Row>
-                    <Table.Cell>1</Table.Cell>
-                    <Table.Cell>БАУЫРЖАНОВ БАКЫТЖАН</Table.Cell>
-                    <Table.Cell>Отдела маркетинга</Table.Cell>
-                    <Table.Cell>Стажер-дилер</Table.Cell>
-                    <Table.Cell>
-                    </Table.Cell>
-                </Table.Row>
+                {items.map((item,idx) => {
+                    return <Table.Row key={item.id}>
+                            <Table.Cell>{idx+1}</Table.Cell>
+                            <Table.Cell>{item.staffName}</Table.Cell>
+                            <Table.Cell>{item.positionName}</Table.Cell>
+                            <Table.Cell>{item.statusName}</Table.Cell>
+                            <Table.Cell></Table.Cell>
+                        </Table.Row>
+                })}
             </Table.Body>
         </Table>
     </Segment>

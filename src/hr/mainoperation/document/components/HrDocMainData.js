@@ -1,5 +1,6 @@
 import React from 'react'
 import {Segment,Grid,Label, List } from 'semantic-ui-react'
+import {formatDMYMS} from '../../../../utils/helpers'
 
 export default function HrDocMainData (props) {
     const {item} = props
@@ -22,7 +23,7 @@ export default function HrDocMainData (props) {
                             <List.Header className="list-header">
                                 Тип документа:
                             </List.Header>
-                            {'Заявление о приеме на работу' || <span>&mdash;</span>}
+                            {item.typeName || <span>&mdash;</span>}
                         </List.Item>
                         <List.Item>
                             <List.Header className="list-header">Компания:</List.Header>
@@ -40,11 +41,11 @@ export default function HrDocMainData (props) {
                         </List.Item>
                         <List.Item>
                             <List.Header className="list-header">Дата создания:</List.Header>
-                            2018-07-26 15:20:11.036
+                            {formatDMYMS(item.createdAt)}
                         </List.Item>
                         <List.Item>
                             <List.Header className="list-header">Статус:</List.Header>
-                            НА ИСПОЛНЕНИИ
+                            {item.statusName || <span>&mdash;</span>}
                         </List.Item>
                     </List>
                 </Grid.Column>
@@ -54,15 +55,11 @@ export default function HrDocMainData (props) {
                             <List.Header className="list-header">
                                 Ответственный:
                             </List.Header>
-                            АЯПОВ БАХТИЯР
+                            {item.responsibleName || <span>&mdash;</span>}
                         </List.Item>
                         <List.Item>
                             <List.Header className="list-header">Составил:</List.Header>
-                            УМБЕТАЛИЕВА ГУЛЬШАТ
-                        </List.Item>
-                        <List.Item>
-                            <List.Header className="list-header">Статус:</List.Header>
-                            НА ИСПОЛНЕНИИ
+                            {item.creatorName || <span>&mdash;</span>}
                         </List.Item>
                     </List>
                 </Grid.Column>

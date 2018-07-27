@@ -51,6 +51,15 @@ export const SALARY_TYPES = [
     }
 ]
 
+/**DOCUMENT TYPES****/
+export const DOC_TYPE_RECRUITMENT = 1;
+export const DOC_TYPE_TRANSFER = 2;
+export const DOC_TYPE_DISMISS = 3;
+export const DOC_TYPE_CHANGE_SALARY = 4;
+export const DOC_TYPE_BYPASS_SHEET = 5;
+
+/**END DOCUMENT TYPES***/
+
 export const OFF_DATA = 'OFF_DATA'
 export const MAIN_DATA = 'MAIN_DATA'
 export const PASSPORT_DATA = 'PASSPORT_DATA'

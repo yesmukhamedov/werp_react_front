@@ -2,11 +2,13 @@ import React from 'react'
 import {Button } from 'semantic-ui-react'
 
 export default function HrDocActions (props) {
-    return <div style={{'float':'left'}}>
-        <Button content='Добавить согласующих' />
-        <Button content='Проставить оклады' />
-        <Button content='**Отменить**' />
-        <Button content='Добавить должности' />
-        <Button content='В список' />
+    const {items} = props
+    if(!items){
+        return (null)
+    }
+    return <div style={{'float':'left','clear':'both'}}>
+        {items.map(item => {
+            return <Button key={item.actionType} content={item.label} onClick={() => props.handleAction(item.actionType)} />
+        })}
     </div>
 }
