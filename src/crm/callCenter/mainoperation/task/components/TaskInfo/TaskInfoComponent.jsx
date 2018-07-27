@@ -1,11 +1,11 @@
 /* eslint linebreak-style: ["error", "windows"] */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
 import { Form, Container, List, Grid, Header, Button, Segment, Dimmer, Loader, Label, Icon } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
 import { LEGACY_URL } from '../../../../../../utils/constants';
+import { formatDMYMS, constructFullName } from '../../../../../../utils/helpers';
 
 class TaskInfoComponent extends Component {
   constructor(props) {
@@ -34,10 +34,11 @@ class TaskInfoComponent extends Component {
   render() {
     if (this.props.id) {
       const {
-        contractNumber, title, author, status, priority, recipient, createdAt, description, TaskEditContainer, lang
+        contractNumber, title, author, authorsManager, 
+        status, priority, recipient, createdAt, description, 
+        TaskEditContainer, lang
       } = this.props;
-      const closedAt =
-        (status.id === 5) ? moment(this.props.modifiedAt, 'YYYY-MM-DDTHH:mm:ssZ').format('DD.MM.YYYY, hh:mm:ss') : <span>&mdash;</span>;
+      const closedAt = (status.id === 5) ? formatDMYMS(this.props.modifiedAt) : <span>&mdash;</span>;
       return (
         <Segment.Group>
           <Segment clearing>
@@ -61,7 +62,7 @@ class TaskInfoComponent extends Component {
                     <Header as="h3">
                       {title}
                       <Header.Subheader>
-                        Добавил(а) <a> {author.firstName} {author.lastName} {author.patronymic}</a>
+                        Добавил(а) <a> {author && constructFullName(author)}</a>
                       </Header.Subheader>
                     </Header>
                   </Grid.Column>
@@ -94,7 +95,9 @@ class TaskInfoComponent extends Component {
                       </List.Item>
                       <List.Item>
                         <List.Content>
-                          {recipient.branch.value} - {recipient.department.value} - {recipient.position.value}
+                          {recipient.branch && recipient.branch.value} - 
+                          {recipient.department && recipient.department.value} - 
+                          {recipient.position && recipient.position.value}
                         </List.Content>
                       </List.Item>
                     </List>
@@ -116,7 +119,7 @@ class TaskInfoComponent extends Component {
                     <List verticalAlign="middle" relaxed>
                       <List.Item>
                         <List.Content>
-                          {moment(createdAt, 'YYYY-MM-DDTHH:mm:ssZ').format('DD.MM.YYYY, hh:mm:ss')}
+                          {formatDMYMS(createdAt)}
                         </List.Content>
                       </List.Item>
                       <List.Item>
@@ -129,6 +132,40 @@ class TaskInfoComponent extends Component {
                           <Link target='_blank' to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=` + contractNumber}>
                             {contractNumber}
                           </Link>
+                        </List.Content>
+                      </List.Item>
+                    </List>
+                  </Grid.Column>
+                </Grid.Row>
+                <Grid.Row columns={2}>
+                  <Grid.Column width={4}>
+                    <List verticalAlign="middle" relaxed>
+                      <List.Item>
+                        <List.Header>Начальник отдела заказчика:</List.Header>
+                      </List.Item>
+                      <List.Item>
+                        <List.Header>Начальник отдела исполнителя:</List.Header>
+                      </List.Item>
+                      <List.Item>
+                        <List.Header>Исполнитель:</List.Header>
+                      </List.Item>
+                    </List>
+                  </Grid.Column>
+                  <Grid.Column>
+                    <List verticalAlign="middle" relaxed>
+                      <List.Item>
+                        <List.Content>
+                          {authorsManager ? constructFullName(authorsManager) : <span>&mdash;</span>}
+                        </List.Content>
+                      </List.Item>
+                      <List.Item>
+                        <List.Content>
+                          {recipient.assigneesManager ? recipient.assigneesManager.value : <span>&mdash;</span>}
+                        </List.Content>
+                      </List.Item>
+                      <List.Item>
+                        <List.Content>
+                          {recipient.assignee ? recipient.assignee.value : <span>&mdash;</span>}
                         </List.Content>
                       </List.Item>
                     </List>

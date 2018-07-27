@@ -132,8 +132,8 @@ class DeptTaskListTableDisplay extends Component {
         accessor: 'modifiedAt',
         // maxWidth: 125,
         Cell: (props) => {
-          const { modifiedAt } = props.original;
-          return formatDMYMS(modifiedAt);
+          const { modifiedAt, status } = props.original;
+          return (status.id === 5) ? formatDMYMS(modifiedAt) : undefined;
         },
       },
       {
@@ -155,7 +155,7 @@ class DeptTaskListTableDisplay extends Component {
           const { recipient } = props.original;
           return (
             <div>
-              {recipient.assignee}
+              {recipient.assignee && recipient.assignee.value}
             </div>
           );
         },
