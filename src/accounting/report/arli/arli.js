@@ -207,7 +207,7 @@ class Arli extends Component {
         
         let t1r1c5 = {Header:({value}) => <b>Дата документа</b>,accessor: "bldat",//Cell: obj => <span>{obj.original.bldat}</span>,
                                             filterMethod: (filter, rows) =>
-                                            matchSorter(rows, filter.value, { keys: ["_original.budat"] }),
+                                            matchSorter(rows, filter.value, { keys: ["_original.bldat"] }),
                                             filterAll: true, 
                                             width: 100};
 
