@@ -8,6 +8,9 @@ export const FETCH_AMCDD = 'FETCH_AMCDD';
 export const CLEAR_AMCDD = 'CLEAR_AMCDD';
 export const CHANGE_AMCDD = 'CHANGE_AMCDD';
 
+export const FETCH_DYNOBJ_ACC = 'FETCH_DYNOBJ_ACC';
+export const CHANGE_DYNOBJ_ACC = 'CHANGE_DYNOBJ_ACC';
+export const CLEAR_DYNOBJ_ACC = 'CLEAR_DYNOBJ_ACC';
 
 
 export function amsgSave(a_bkpf, a_rows, a_rowsPs, a_lifnr) {
@@ -142,3 +145,52 @@ export function amcddClear() {
 }
 
 
+export function changeDynObjAcc(a_obj) {
+    const obj = {
+        type: CHANGE_DYNOBJ_ACC,
+        data: a_obj
+    };
+    return obj;
+}
+export function clearDynObjAcc() {
+    const obj = {
+        type: CLEAR_DYNOBJ_ACC
+    };
+    return obj;
+}
+
+//ARLI/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export function fetchARLI(a_bukrs,a_branchList,a_dateFrom,a_dateTo, a_callBackFunc) {
+    
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        axios.get(`${ROOT_URL}/api/accounting/reports/arli/fetch`, {
+            headers: 
+            {
+                authorization: localStorage.getItem('token')
+            },
+            params:
+            {
+                bukrs: a_bukrs,
+                branchList: a_branchList,
+                dateFrom: a_dateFrom,
+                dateTo: a_dateTo
+            }
+        })
+        .then(({data}) => {
+            
+            dispatch(modifyLoader(false));
+            dispatch({
+                type: FETCH_DYNOBJ_ACC,
+                data:data
+            });
+            a_callBackFunc(1);
+    
+        })
+        .catch(error => {
+            handleError(error,dispatch);
+            dispatch(modifyLoader(false));
+        });
+    }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

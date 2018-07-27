@@ -27,6 +27,7 @@ export default function ExpenceForm (props) {
             <Form.Field required>
                 <label>Дата с</label>
                 <DatePicker
+                    autoComplete="off"
                     label=''
                     placeholderText={'Дата с'}
                     showMonthDropdown showYearDropdown dropdownMode='select'

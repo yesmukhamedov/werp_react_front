@@ -166,11 +166,12 @@ class Hrb02 extends Component {
                                 Дата
                             </Table.Cell>
                             <Table.Cell>
-                                <DatePicker 
-                                            showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
-                                            selected={this.state.searchTerm.date} locale="ru"
-                                            onChange={(event) => this.onInputChange(event,"date")}
-                                            dateFormat="MM.YYYY" />
+                                <DatePicker
+                                  autoComplete="off"
+                                  showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
+                                  selected={this.state.searchTerm.date} locale="ru"
+                                  onChange={(event) => this.onInputChange(event,"date")}
+                                  dateFormat="MM.YYYY" />
                             </Table.Cell>
 
 

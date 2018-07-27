@@ -61,6 +61,7 @@ class DemoUpdateModal extends Component {
           return <Form.Field error={this.state.errors.saleDate} required>
                   <label>Дата продажи</label>
                   <DatePicker
+                      autoComplete="off"
                       locale="ru"
                       label=''
                       placeholderText={'Дата продажи'}
@@ -79,6 +80,7 @@ class DemoUpdateModal extends Component {
           return <Form.Field>
               <label>Дата перезвона</label>
               <DatePicker
+                  autoComplete="off"
                   locale="ru"
                   label=''
                   placeholderText={'Дата перезвона'}
@@ -101,8 +103,9 @@ class DemoUpdateModal extends Component {
         <Form.Field error={this.state.errors.dateTime} required>
           <label>Дата-время демонстрации</label>
           <DatePicker
-              locale="ru"
-              label=''
+            autoComplete="off"
+            locale="ru"
+            label=''
             placeholderText={'Дата-время демонстрации'}
             showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'
             dateFormat='DD.MM.YYYY HH:mm' selected={moment(localDemo.dateTime)}

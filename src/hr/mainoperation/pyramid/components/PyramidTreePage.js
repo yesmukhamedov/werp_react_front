@@ -92,7 +92,7 @@ class PyramidTreePage extends Component {
     }
 
     showRemoveModal = (node,updatedTree) =>{
-        console.log(node)
+        //console.log(node)
         this.setState({
             ...this.state,
             showRemoveModal: true,

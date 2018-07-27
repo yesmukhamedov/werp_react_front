@@ -69,6 +69,9 @@ function renderRecosInModal(props){
 
             {item.relativeName?<strong><i>Род:</i></strong>:''}
             {item.relativeName?' ' + item.relativeName+';':''}
+            <br/>
+            {item.district?<strong><i>Район:</i></strong>:''}
+            {item.district?' ' + item.district+';':''}
         </Card.Content>
         <Card.Content extra>
 
@@ -129,6 +132,9 @@ function renderPhonedReco(item,recoCardMenuHandle){
         <Card.Content extra  style={{fontSize:'11px',color:'black'}}>
             {item.relativeName?<strong><i>Род:</i></strong>:''}
             {item.relativeName?' ' + item.relativeName+';':''}
+            <br/>
+            {item.district?<strong><i>Район:</i></strong>:''}
+            {item.district?' ' + item.district+';':''}
         </Card.Content>
         <Card.Content extra  style={{fontSize:'11px',color:'black'}}>
             <Popup
@@ -181,6 +187,9 @@ function renderNewReco(item){
 
             {item.relativeName?<strong><i>Род:</i></strong>:''}
             {item.relativeName?' ' + item.relativeName+';':''}<br/>
+            {item.district?<strong><i>Район:</i></strong>:''}
+            {item.district?' ' + item.district+';':''}<br/>
+
             {item.note?<strong><i>Прим: </i></strong>:''}
         </Card.Content>
         <Card.Content extra>

@@ -63,7 +63,7 @@ class Header extends Component {
               <div className="column">
                 <div className="field">
                   <label>Дата начала действия</label>
-                  <DatePicker />
+                  <DatePicker autoComplete="off" />
                 </div>
                 <div className="field">
                   <label>Категория</label>

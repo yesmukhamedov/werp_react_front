@@ -1,3 +1,3 @@
 import DtskcContainer from './DtskcContainer';
 
-export { DtskcContainer };
+export { DtskcContainer as default };

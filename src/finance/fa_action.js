@@ -7,13 +7,12 @@ export const CHANGE_FA_BKPF = 'CHANGE_FA_BKPF';
 export const CLEAR_FA_BKPF = 'CLEAR_FA_BKPF';
 export const FETCH_CASHBANKHKONTS_BY_BRANCH = 'FETCH_CASHBANKHKONTS_BY_BRANCH';
 export const CLEAR_CASHBANKHKONTS_BY_BRANCH = 'CLEAR_CASHBANKHKONTS_BY_BRANCH';
-export const FETCH_FMCP = 'FETCH_FMCP';
-export const CLEAR_FMCP = 'CLEAR_FMCP';
-export const CHANGE_FMCP = 'CHANGE_FMCP';
+
+export const FETCH_DYNOBJ_FI = 'FETCH_DYNOBJ_FI';
+export const CHANGE_DYNOBJ_FI = 'CHANGE_DYNOBJ_FI';
+export const CLEAR_DYNOBJ_FI = 'CLEAR_DYNOBJ_FI';
 
 export function fetchCashBankHkontsByBranch(a_bukrs,a_brnch) {
-    
-    
 
     return function(dispatch) {
 
@@ -57,11 +56,22 @@ export function clearfaBkpf() {
     };
     return obj;
 }
+export function changeDynObj(a_obj) {
+    const obj = {
+        type: CHANGE_DYNOBJ_FI,
+        data: a_obj
+    };
+    return obj;
+}
+export function clearDynObj() {
+    const obj = {
+        type: CLEAR_DYNOBJ_FI
+    };
+    return obj;
+}
 
-
-
-export function fmcpFetch(a_zregOrConNum) {
-    
+//FMCP/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export function fetchFMCP(a_zregOrConNum) {
     
     return function(dispatch) {
         dispatch(modifyLoader(true));
@@ -79,7 +89,7 @@ export function fmcpFetch(a_zregOrConNum) {
             
             dispatch(modifyLoader(false));
             dispatch({
-                type: FETCH_FMCP,
+                type: FETCH_DYNOBJ_FI,
                 data:data
             });
     
@@ -89,26 +99,9 @@ export function fmcpFetch(a_zregOrConNum) {
             dispatch(modifyLoader(false));
         });
     }
-
-
-}
-export function fmcpChange(a_obj) {
-    const obj = {
-        type: CHANGE_FMCP,
-        data: a_obj
-    };
-    return obj;
 }
 
-
-export function fmcpClear() {
-    const obj = {
-        type: CLEAR_FMCP
-    };
-    return obj;
-}
-
-export function fmcpSave(a_contract) {
+export function saveFMCP(a_contract) {
     return function(dispatch) {
         dispatch(modifyLoader(true));
         
@@ -130,7 +123,7 @@ export function fmcpSave(a_contract) {
             if(data)
             {
                 dispatch(notify('success','Сохранен.','Успешно'));
-                dispatch(fmcpFetch(a_contract.zregOrConNum));
+                dispatch(fetchFMCP(a_contract.zregOrConNum));
             }
             else
             {
@@ -146,3 +139,45 @@ export function fmcpSave(a_contract) {
 
 
 }
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//FCIS/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export function fcisSave(a_contract) {
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        
+        axios.post(`${ROOT_URL}/api/finance/mainoperation/fmcp/save`,
+            {           
+                ...a_contract
+            },       
+            {            
+                headers: 
+                {                            
+                    // 'Content-Type': 'application/json;charset=UTF-8',
+                    authorization: localStorage.getItem('token')
+                }
+            }        
+        ) 
+        
+        .then(({data}) => {
+            dispatch(modifyLoader(false));
+            if(data)
+            {
+                dispatch(notify('success','Сохранен.','Успешно'));
+                dispatch(fetchFMCP(a_contract.zregOrConNum));
+            }
+            else
+            {
+                dispatch(notify('info','Не сохранен.','Ошибка'));
+            }
+                
+        })
+        .catch(error => {
+            dispatch(modifyLoader(false));
+            handleError(error,dispatch); 
+        });
+    }    
+
+
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

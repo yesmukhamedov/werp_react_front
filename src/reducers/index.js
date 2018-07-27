@@ -33,6 +33,8 @@ import crmWspaceReducer from '../crm/mainoperation/wspace/reducers/wspaceReducer
 import faReducer from '../finance/fa_reducer';
 import accountingReducer from '../accounting/accounting_reducer';
 import dtskcTransactionReducer from '../general/dtskc/reducers';
+import dtskdeoTranscationReducer from '../general/dtskdep/reducers';
+import hrDocReducer from '../hr/mainoperation/document/reducers/hrDocReducer';
 
 const appReducer = combineReducers({
   form,
@@ -65,8 +67,10 @@ const appReducer = combineReducers({
   crmReportReducer: crmReportReducer,
   hrReportReducer: hrReportReducer,
   crmWspaceReducer: crmWspaceReducer,
-  accounting:accountingReducer,
+  accounting: accountingReducer,
   dtskcTransaction: dtskcTransactionReducer,
+  dtskdepTransaction: dtskdeoTranscationReducer,
+  hrDocReducer: hrDocReducer,
 });
 
 const rootReducer = (state, action) => {

@@ -1,67 +1,27 @@
 import React, { PureComponent } from 'react';
-import { connect } from 'react-redux';
-import { Table, Button, Dropdown, Icon, Container, Header, Grid,Segment, Input, Checkbox, TextArea, Label, List  } from 'semantic-ui-react';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import moment from 'moment';
+import { Table, Dropdown, Segment, Input, Label  } from 'semantic-ui-react';
+import {handleFocus, moneyFormat, isEmpty} from '../../../utils/helpers';
 require('moment/locale/ru');
 
-const hkont_hOptions = [
-    { key: 1, text: 'Оплатить долг', value: '33500002' },
-    { key: 2, text: 'Деньги на хранение', value: '33500001' }
-  ];
+
   
 
 class FcisPosition extends PureComponent{
     constructor(props){
 
         super(props);
-        this.onInputChange = this.onInputChange.bind(this);
-        
-        this.state = 
-        {
-            lifnr:'',
-            staffFio:'',
-            hkont_s:'',
-            hkont_h:'',
-            summa:0
-        };
         
     }
-
-    onInputChange(value,stateFieldName){
-      
-        this.setState({[stateFieldName]:value});
-    }
-    componentWillReceiveProps(nextProps) {
-        if(nextProps.brnch !== this.props.brnch) {
-            this.props.fetchCashBankHkontsByBranch(nextProps.bukrs,nextProps.brnch);
-          // nextProps.myProp has a different value than our current prop
-          // so we can perform some calculations based on the new value
-        //   this.props.getCashBankByBranch();
-        }
-      }
+    
     
     render(){
-        const {hkontOptions} = this.props;
-        const hkontOptions2 = hkontOptions.filter(item=>
-            (item.tovarcategory===this.state.searchTerm.selectedCategory)
-            ||(item.businessareaid===this.state.searchTerm.selectedCategory) ).map(item => {
-           return {
-               key: item.key,
-               text: item.text,
-               value: item.value
-           }
-           
-       });
+        const {hkontOptions_s,hkontOptions_h} = this.props;
+        const { lifnr, staffFio, hkont_s, hkont_h, summa, waers } = this.props;
 
-        const {
-            lifnr,
-            staffFio,
-            hkont_s,
-            hkont_h,
-            summa
-        } = this.state;
+        if (summa===undefined)
+        {
+            return '';
+        }
 
         return(
             <Segment padded size="small">
@@ -81,23 +41,32 @@ class FcisPosition extends PureComponent{
                                 <Table.Body>
                                     <Table.Row>
                                         <Table.Cell>
-                                            <Dropdown placeholder='Операция'   selection options={hkont_hOptions} 
-                                            value={hkont_h}  onChange={(e, { value }) => this.onInputChange(value,'hkont_h')} />  
+                                            <Dropdown placeholder='Операция'   selection options={hkontOptions_h?hkontOptions_h:[]} 
+                                            value={hkont_h}  onChange={(e, { value }) => this.props.onInputChange(value,'hkont_h')} />  
                                         </Table.Cell>
                                         <Table.Cell>
-                                            <Dropdown placeholder='Касса'   selection options={hkontOptions?hkontOptions:[]} 
-                                            value={hkont_s}  onChange={(e, { value }) => this.onInputChange(value,'hkont_s')} /> 
+                                            <Dropdown placeholder='Касса'   selection options={hkontOptions_s?hkontOptions_s:[]} 
+                                            value={hkont_s}  onChange={(e, { value }) => this.props.onInputChange(value,'hkont_s')} /> 
                                         </Table.Cell>
                                         <Table.Cell>
                                             h
                                         </Table.Cell>
                                         <Table.Cell>
-                                            <Input                                            
-                                            value={summa}
+                                        <Input labelPosition='left' color= 'teal' placeholder={'Сумма'}
+                                            value={moneyFormat(summa)} 
+                                            onFocus={handleFocus} 
+                                            maxLength='18'  onChange={(e, {value}) => this.props.onInputChange(value,'summa')}>
+                                            <Label basic>{waers}</Label>
+                                            <input />
+                                        </Input>
+                                                                                    
+                                          {/* <Input
                                             placeholder={'Сумма'}
-                                            onChange={(e, { value }) => this.onInputChange(value,'summa')}
-                                            type='number'
-                                            />
+                                            value={moneyFormat(summa)} 
+                                            onFocus={handleFocus} 
+                                            maxLength='18'  onChange={(e, {value}) => this.props.onInputChange(value,'summa')}
+                                          />  */}
+
                                         </Table.Cell>
                                     </Table.Row>                                    
                                 </Table.Body>                     

@@ -2,11 +2,12 @@ import React,{ Component } from 'react';
 import { connect } from 'react-redux';
 import { Container, Header, Segment, List, Input, Icon, Button, Label,Table, Grid, Dropdown } from 'semantic-ui-react';
 import OutputErrors from '../../../general/error/outputErrors';
-import {fmcpFetch, fmcpChange, fmcpClear, fmcpSave} from  '../../../finance/fa_action';
+import {fetchFMCP, changeDynObj, clearDynObj, saveFMCP} from  '../../../finance/fa_action';
 import _ from "lodash";
 import {handleFocus, isEmpty, moneyFormat, moneyInputHanler} from '../../../utils/helpers';
 import {LEGACY_URL} from "../../../utils/constants";
 import {Link} from 'react-router-dom';
+import {BigNumber} from 'bignumber.js';
 
 class Fmcp extends Component {
 
@@ -36,7 +37,7 @@ class Fmcp extends Component {
     }
 
     componentWillMount() {
-      this.props.fmcpChange({
+      this.props.changeDynObj({
         zregOrConNum:'',              
         lifnr:null, 
         lifnrName:'',
@@ -54,7 +55,7 @@ class Fmcp extends Component {
     }
 
     componentWillUnmount(){
-      this.props.fmcpClear();
+      this.props.clearDynObj();
     }
     
     
@@ -86,13 +87,13 @@ class Fmcp extends Component {
               contract = {...contract,psRows};
             }
             
-            this.props.fmcpChange({
+            this.props.changeDynObj({
               ...contract, summa:newVal
             });
           }
         }
         else if (stateFieldName === 'hkont_d'){
-          this.props.fmcpChange({
+          this.props.changeDynObj({
             ...this.props.contract, hkont_d:value
           });
         }
@@ -107,9 +108,11 @@ class Fmcp extends Component {
       if(sum2-paid>=newVal && newVal>=0){
         psRows[key].currentpaymentamount = newVal;
 
-        let summa = _.sum(_.map(psRows, d => parseFloat(d.currentpaymentamount)))
         
-        this.props.fmcpChange({
+        let summa = _.sum(_.map(psRows, d => parseFloat(d.currentpaymentamount)))
+        summa = new BigNumber(summa).toFixed(2);
+        
+        this.props.changeDynObj({
           ...this.props.contract,
           psRows,
           summa
@@ -127,13 +130,13 @@ class Fmcp extends Component {
       errors = this.validate();
       if (errors===null || errors===undefined || errors.length===0){        
         let contract = {...this.props.contract};
-        this.props.fmcpSave(contract);
+        this.props.saveFMCP(contract);
       }
       
       this.setState({errors});
     }
     fetch(a_zregOrConNum){
-      this.props.fmcpFetch(a_zregOrConNum);
+      this.props.fetchFMCP(a_zregOrConNum);
       this.setState({errors:[]});
     }
 
@@ -443,7 +446,7 @@ class Fmcp extends Component {
                                           Касса/Банк
                                         </Table.Cell>
 
-                                        <Table.Cell colSpan="2">    
+                                        <Table.Cell>    
                                           <Dropdown  selection options={hkontOptions?hkontOptions:[]} 
                                             value={hkont_d}  onChange={(e, { value }) => this.onInputChange(value,'hkont_d')} />
                                         </Table.Cell>
@@ -461,6 +464,11 @@ class Fmcp extends Component {
                                           /> 
 
 
+                                        </Table.Cell>
+
+                                    </Table.Row>
+                                    <Table.Row>
+                                        <Table.Cell>     
                                         </Table.Cell>
 
                                         <Table.Cell>                                          
@@ -497,4 +505,4 @@ function mapStateToProps(state)
 
 
 
-export default connect(mapStateToProps,{ fmcpFetch, fmcpChange, fmcpClear, fmcpSave }) (Fmcp);
+export default connect(mapStateToProps,{ fetchFMCP, changeDynObj, clearDynObj, saveFMCP }) (Fmcp);

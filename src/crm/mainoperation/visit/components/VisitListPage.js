@@ -225,6 +225,7 @@ class VisitListPage extends Component {
           <Form.Field>
             <label>Дата визита С:</label>
             <DatePicker
+              autoComplete="off"
               label=''
               placeholderText={'Дата визита С'}
               showMonthDropdown showYearDropdown dropdownMode='select'
@@ -235,6 +236,7 @@ class VisitListPage extends Component {
           <Form.Field>
             <label>Дата визита По:</label>
             <DatePicker
+              autoComplete="off"
               label=''
               placeholderText={'Дата визита По'}
               showMonthDropdown showYearDropdown dropdownMode='select'

@@ -10,8 +10,9 @@ import Signout from '../components/Auth/Signout';
 import ForbiddenPage from '../general/forbidden';
 import LoadingPage from '../general/LoadingPage';
 
-import { DtskcContainer } from '../general/dtskc/dtskcPage';
-// import TaskDispatcher from '../general/departmentTask/taskDispatcher/TaskDispatcherDisplay';
+import DtskcContainer from '../general/dtskc/pages';
+import { DtskdepContainer } from '../general/dtskdep/pages';
+
 
 const AsyncSettings = Loadable({
   loader: () =>
@@ -215,6 +216,11 @@ const AsyncFrcoln = Loadable({
 loading: () => <LoadingPage />
 });
 
+const AsyncArli = Loadable({
+  loader: () => import('../accounting/report/arli/arli' /* webpackChunkName: "arli" */),
+loading: () => <LoadingPage />
+});
+
 const AsyncAssignUserBranch = Loadable({
   loader: () => import('../dit/userBranch/components/assign_user_branch' /* webpackChunkName: "ditaub" */),
 loading: () => <LoadingPage />
@@ -265,12 +271,24 @@ const AsyncFmcp = Loadable({
   loading: () => <LoadingPage />
 });
 
+const AsyncHrRecruitmentPage = Loadable({
+        loader: () => import('../hr/mainoperation/document/components/HrRecruitmentPage' /* webpackChunkName: "HrRecruitmentPage" */),
+        loading: () => <LoadingPage />
+});
+
+const AsyncHrDocViewPage = Loadable({
+        loader: () => import('../hr/mainoperation/document/components/HrDocViewPage' /* webpackChunkName: "HrDocViewPage" */),
+    loading: () => <LoadingPage />
+});
+
 const getComponent = {
     Ditaub:AsyncAssignUserBranch,
     Hrb02:AsyncHrb02,
 
     Frcoln:AsyncFrcoln,
+    Arli: AsyncArli,
     Fmcp: AsyncFmcp,
+
     
     Amsg:AsyncAmsg,
     Amcdd:AsyncAmcdd,
@@ -339,17 +357,19 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/crm/kpi/setting" component={AsyncKpiSettingPage} />
       <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} />
       <Route path="/crm/wspace" component={AsyncCrmWspacePage} />
-      <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} />
+      {/* <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} /> */}
       {/*<Route path="/crm/wspace" component={AsyncCrmWspacePage} />*/}
       <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
       <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
       <Route path="/finance/mainoperation/fcis" component={AsyncFsis} />
       <Route path="/administration/dtskrep" component={AsyncTaskMonitorPage} />
       <Route path="/administration/dtskl"   component={AsyncDeptTaskListPage} />
+        <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
+        <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />
       
 
       <Route path="/general/dtskc" component={DtskcContainer} />
-      {/* <Route path="/general/dtskdep" component={TaskDispatcher} /> */}
+      <Route path="/general/dtskdep" component={DtskdepContainer} />
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {

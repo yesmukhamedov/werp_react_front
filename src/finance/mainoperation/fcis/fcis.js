@@ -1,84 +1,121 @@
 import React,{ Component } from 'react';
 import { connect } from 'react-redux';
-import { Table, Button, Dropdown, Icon, Container, Header, Grid,Segment, Form  } from 'semantic-ui-react';
-import { Field, reduxForm, formValueSelector } from 'redux-form';
-import {
-  DropdownFormField,
-  TextAreaFormField,
-  TextInputFormField,
-} from '../../../utils/formFields';
+import {  Container, Header  } from 'semantic-ui-react';
 import moment from 'moment';
 import FaHeader from '../../faHeader';
 import FcisPosition from './fcisPosition';
-import "react-table/react-table.css";
-// import {fetchBonusData,clearRedStateHrb02} from './hrb02_action'
-// import {f4FetchBonusTypeList,f4FetchCurrencyList,f4ClearBonusTypeList,f4ClearCurrencyList} from '../../../reference/f4/f4_action'
-// import './hrb02.css';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import {f4FetchDepartmentList, f4FetchCurrencyList, f4FetchBusinessAreaList2, f4FetchExchangeRateNational} from '../../../reference/f4/f4_action';
-import {changefaBkpf, fetchCashBankHkontsByBranch} from '../../fa_action'
+import {clearfaBkpf, changefaBkpf, fetchCashBankHkontsByBranch, changeDynObj, clearDynObj} from '../../fa_action';
+import {moneyInputHanler} from '../../../utils/helpers';
 
 
-// import Hrb02EditBonus from './hrb02EditBonus';
 require('moment/locale/ru');
 
-const categoryOptions = [
-    { key: 1, text: 'Уборочная система', value: 1 },
-    { key: 2, text: 'Система очистки воды', value: 2 },
-    { key: 5, text: 'Сервис', value: 5 }
-  ];
+const hkontOptions_h = [
+  { key: 1, text: 'Оплатить долг', value: '33500002' },
+  { key: 2, text: 'Деньги на хранение', value: '33500001' }
+];
   
 
  
 class Fcis extends Component {
 
 
-    // constructor(props){
+    constructor(props){
 
-    //     super(props);
-    //     this.bonusEditModalOpenHandler=this.bonusEditModalOpenHandler.bind(this);
+        super(props);
+        this.initializeBkpfBseg=this.initializeBkpfBseg.bind(this);
         
 
         
-    //     this.state={searchTerm:{bukrs:'',selectedCategory:1,date:moment(),selectedBranchKey:null}, companyOptions:[], branchOptions:[]
-    //     , bonusEditModalOpen:false, selectedBonus:null, selectedBonusIndex:null};
-        
-    // }
+    }
 
     componentWillMount() {
-        // console.log(this.props)
-        // this.props.f4FetchBonusTypeList('hrb02');
+        this.initializeBkpfBseg();
+
         this.props.f4FetchCurrencyList('fcis');
         this.props.f4FetchDepartmentList();
         this.props.f4FetchBusinessAreaList2();
         this.props.f4FetchExchangeRateNational();
+
+
         
+    }
+    
+    componentWillUnmount(){
+      this.props.clearfaBkpf();
+      this.props.clearDynObj();
     }
   
- 
+    componentWillReceiveProps(nextProps) {
+      if(nextProps.bkpf.brnch !== this.props.bkpf.brnch) {
+          this.props.fetchCashBankHkontsByBranch(nextProps.bkpf.bukrs,nextProps.bkpf.brnch);
+        // nextProps.myProp has a different value than our current prop
+        // so we can perform some calculations based on the new value
+      }
+    }
     
-    onInputChange(value,stateFieldName){
-        
-        
-        // console.log(this.state);
+    onInputChange(value,stateFieldName){      
+      let bseg = {...this.props.bseg};
+      if (stateFieldName === 'summa'){          
+        let newVal = moneyInputHanler(value,2);
+        if (newVal!==undefined){          
+          this.props.changeDynObj({
+            ...bseg, [stateFieldName]:newVal
+          });
+        }
+      }
+      else
+      {
+        this.props.changeDynObj({
+          ...bseg, [stateFieldName]:value
+        });
+      }
     }
 
 
-    
+    initializeBkpfBseg(){      
+      let bkpf = Object.assign({}, this.props.initialBkpf);
+      bkpf.blart="PN";
+      bkpf.budat=moment().format( "DD.MM.YYYY");
+      bkpf.bldat=moment().format( "DD.MM.YYYY");
+
+     
+      this.props.changefaBkpf(bkpf);
 
 
+      this.props.changeDynObj({
+        lifnr:'',
+        staffFio:'',
+        hkont_s:'',
+        hkont_h:'',
+        summa:0
+      });
+            
+            
+    }
 
-    // bonusEditModalOpenHandler(index,row){
-    //     this.setState({bonusEditModalOpen:true, selectedBonus:row, selectedBonusIndex:index});
-    // }
-    
-    
     
     render(){
-       
+      console.log(this.props.hkontOptions,'this.props.hkontOptions')
+      const bkpfInfo = {
+        bukrsInfo:            { readOnly:false, disabled:false },
+        brnchInfo:            { readOnly:false, disabled:false },
+        business_area_idInfo: { readOnly:true,  disabled:true },
+        depInfo:              { readOnly:false, disabled:false },
+        budatInfo:            { readOnly:false, disabled:true  },
+        bldatInfo:            { readOnly:false, disabled:false },
+        blartInfo:            { readOnly:true , disabled:false },
+        waersInfo:            { readOnly:false, disabled:false },
+        kursfInfo:            { readOnly:true , disabled:false },
+        bktxtInfo:            { readOnly:false, disabled:false }, 
+        officialInfo:         { readOnly:true , disabled:true  },
+        zregInfo:             { readOnly:true,  disabled:true }
         
-        let username = localStorage.getItem('username');
+      }
+
+      const {lifnr, staffFio, hkont_s, hkont_h, summa} = this.props.bseg;
+        
 
         return (
             
@@ -87,22 +124,11 @@ class Fcis extends Component {
                     Personel nakit tahsilati
                 </Header>
                 
-                <FaHeader {...this.props} />
-                <FcisPosition brnch={this.props.bkpf.brnch} bukrs={this.props.bkpf.bukrs} waers = {this.props.bkpf.waers}
-                
-                hkontOptions={this.props.hkontOptions} fetchCashBankHkontsByBranch={(bukrs, brnch)=>this.props.fetchCashBankHkontsByBranch(bukrs, brnch)}/>
-                {/* <form onSubmit={handleSubmit}> */}
-                    {/* <FcisHeader {...this.props}/> */}
-                    {/* <Field name="age" component="input" type="text" placeholder="Age" /> */}
-                   
-                {/* </form>  */}
-              
-       
-        
-
-
-        
-                     
+                <FaHeader {...this.props}  bkpfInfo={bkpfInfo}/>
+                <FcisPosition  hkontOptions_s={this.props.hkontOptions}  hkontOptions_h={hkontOptions_h} waers={this.props.bkpf.waers}
+                  lifnr={lifnr} staffFio={staffFio} hkont_s={hkont_s} hkont_h={hkont_h} summa={summa}
+                  onInputChange = {(value,stateFieldName)=>{this.onInputChange(value,stateFieldName)}}
+                />
             </Container>
 
         );
@@ -119,15 +145,18 @@ class Fcis extends Component {
 
   function mapStateToProps(state)
 {
-    console.log(state,'state');
-    return { companyOptions:state.userInfo.companyOptions,
-        branchOptions:state.userInfo.branchOptionsAll
-        ,currencyOptions:state.f4.currencyOptions
-        ,departmentOptions: state.f4.departmentOptions
-        ,businessAreaOptions:state.f4.businessAreaList
-        ,exRateNational:state.f4.exRateNational
-        ,bkpf:state.fa.faForm.bkpf
-        ,hkontOptions:state.fa.faForm.hkontOptions
+    // console.log(state,'state');
+    return {
+      companyOptions:state.userInfo.companyOptions
+      ,branchOptions:state.userInfo.branchOptionsAll
+      ,currencyOptions:state.f4.currencyOptions
+      ,departmentOptions: state.f4.departmentOptions
+      ,businessAreaOptions:state.f4.businessAreaList
+      ,exRateNational:state.f4.exRateNational
+      ,bkpf:state.fa.faForm.bkpf
+      ,initialBkpf:state.fa.faForm.initialBkpf
+      ,hkontOptions:state.fa.faForm.hkontOptions
+      ,bseg:state.fa.dynamicObject
     };
 }
 
@@ -136,26 +165,4 @@ class Fcis extends Component {
 
 
 export default connect(mapStateToProps,{ f4FetchDepartmentList, f4FetchCurrencyList, 
-  f4FetchBusinessAreaList2, f4FetchExchangeRateNational, changefaBkpf, fetchCashBankHkontsByBranch}) (Fcis);
-const validate = values => {
-    const errors = {}
-    console.log(values)
-    if (!values.username) {
-      errors.username = 'Required'
-    } else if (values.username.length > 15) {
-      errors.username = 'Must be 15 characters or less'
-    }
-    if (!values.email) {
-      errors.email = 'Required'
-    } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-      errors.email = 'Invalid email address'
-    }
-    if (!values.age) {
-      errors.age = 'Required'
-    } else if (isNaN(Number(values.age))) {
-      errors.age = 'Must be a number'
-    } else if (Number(values.age) < 18) {
-      errors.age = 'Sorry, you must be at least 18 years old'
-    }
-    return errors
-  }
+  f4FetchBusinessAreaList2, f4FetchExchangeRateNational, changefaBkpf, clearfaBkpf, fetchCashBankHkontsByBranch, changeDynObj, clearDynObj}) (Fcis);

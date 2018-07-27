@@ -285,12 +285,14 @@ class Serrep1 extends Component {
                                         Дата
                                     </Table.Cell> 
                                     <Table.Cell>
-                                        С <DatePicker 
+                                        С <DatePicker
+                                            autoComplete="off"
                                             showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
                                             selected={this.state.searchTerm.dateFrom} locale="ru"
                                             onChange={(event) => this.onInputChange(event,"dateFrom")} 
                                             dateFormat="DD.MM.YYYY" />
-                                            по <DatePicker 
+                                            по <DatePicker
+                                            autoComplete="off"
                                             showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
                                             selected={this.state.searchTerm.dateTo} locale="ru"
                                             onChange={(event) => this.onInputChange(event,"dateTo")} 

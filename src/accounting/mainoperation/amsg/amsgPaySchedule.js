@@ -20,20 +20,6 @@ class AmsgPaySchedule extends PureComponent{
         this.addOneMonthToLastRowAndReturnDateString = this.addOneMonthToLastRowAndReturnDateString.bind(this);
         
     }
-    componentWillMount() {
-        
-        // this.props.changePaymentSchedule('psRows',psRows);
-        // this.setState({psRows});
-
-    }
-    componentWillReceiveProps(nextProps) {
-        // if(nextProps.brnch !== this.props.brnch) {
-            // this.props.fetchCashBankHkontsByBranch(nextProps.bukrs,nextProps.brnch);
-          // nextProps.myProp has a different value than our current prop
-          // so we can perform some calculations based on the new value
-        //   this.props.getCashBankByBranch();
-        // }
-    }
     
 
 
@@ -128,6 +114,7 @@ class AmsgPaySchedule extends PureComponent{
                         </Table.Cell>
                         <Table.Cell>                    
                               <DatePicker className='date-auto-width'
+                              autoComplete="off"
                               showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
                               selected={item.payment_date?moment(item.payment_date, 'DD.MM.YYYY'):''} 
                               onChange={(e, {value}) => this.onInputChangePsRows(e,'payment_date',idx)} 

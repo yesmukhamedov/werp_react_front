@@ -192,6 +192,7 @@ class CustomerF4 extends PureComponent {
                   <Table.Cell>День рождения</Table.Cell>
                   <Table.Cell>
                     <DatePicker className='date-auto-width'
+                      autoComplete="off"
                       showMonthDropdown showYearDropdown dropdownMode='select' // timezone="UTC"
                       selected={this.state.customerSearchTerm.birthday?moment(this.state.customerSearchTerm.birthday, 'YYYY-MM-DD'):''}
                       onChange={(event) => this.onInputChange(event, 'birthday')} isClearable={!this.state.disableFiz}

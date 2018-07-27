@@ -1,5 +1,5 @@
 import React from 'react'
-import {Modal,List } from 'semantic-ui-react'
+import {Modal,List,Button } from 'semantic-ui-react'
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
 
@@ -40,10 +40,32 @@ export default function StaffListModal (props) {
         }
     ]
     return (
-        <Modal size={'large'} open={opened}>
+        <Modal size={'large'} open={opened}
+        closeOnEscape={true}
+        >
             <Modal.Header>Список сотрудников</Modal.Header>
             <Modal.Content>
                 <ReactTable
+                    defaultFilterMethod={(filter, row) => {
+                        const colName = filter.id
+                        if(colName === 'positions'){
+                            if(row._original && row._original.positions){
+                                let s = ''
+                                row._original.positions.map(p => {
+                                    s += p.positionName
+                                })
+
+                                if(!s){
+                                    return false
+                                }
+                                return s.toLowerCase().includes(filter.value.toLowerCase())
+                            }
+                        }
+
+                        if (filter.value && filter.value.length > 0 && row[colName] && row[colName]) {
+                            return row[colName].toLowerCase().includes(filter.value.toLowerCase())
+                        }
+                    }}
                     filterable
                     data={staffs || []}
                     columns={columns}
@@ -68,6 +90,9 @@ export default function StaffListModal (props) {
 
                 />
             </Modal.Content>
+            <Modal.Actions>
+                <Button onClick={props.close}>Закрыть</Button>
+            </Modal.Actions>
         </Modal>
     )
 }

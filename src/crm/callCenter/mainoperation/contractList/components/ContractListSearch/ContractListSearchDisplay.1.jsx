@@ -60,6 +60,7 @@ const ContractListSearchDisplay = (props) => {
               <Form.Field required>
                 <label>с</label>
                 <DatePicker
+                  autoComplete="off"
                   dateFormat="DD.MM.YYYY"
                   // dateFormat='LL'
                   selected={props.startDate}
@@ -72,6 +73,7 @@ const ContractListSearchDisplay = (props) => {
               <Form.Field required>
                 <label>до</label>
                 <DatePicker
+                  autoComplete="off"
                   dateFormat="DD.MM.YYYY"
                   // dateFormat='LL'
                   selected={props.endDate}

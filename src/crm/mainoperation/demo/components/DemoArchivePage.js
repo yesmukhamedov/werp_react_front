@@ -100,6 +100,7 @@ class DemoArchivePage extends Component{
                 <Form.Field>
                     <label>Дата С</label>
                     <DatePicker
+                        autoComplete="off"
                         label=""
                         placeholderText={'Дата-время демо'}
                         showMonthDropdown showYearDropdown dropdownMode="select"
@@ -111,6 +112,7 @@ class DemoArchivePage extends Component{
                 <Form.Field>
                     <label>Дата По</label>
                     <DatePicker
+                        autoComplete="off"
                         label=""
                         placeholderText={'Дата-время демо'}
                         showMonthDropdown showYearDropdown dropdownMode="select"
@@ -125,6 +127,7 @@ class DemoArchivePage extends Component{
                 <Form.Field>
                     <label>Дата продажи С</label>
                     <DatePicker
+                        autoComplete="off"
                         label=""
                         placeholderText={'Дата продажи С'}
                         showMonthDropdown showYearDropdown dropdownMode="select"
@@ -136,6 +139,7 @@ class DemoArchivePage extends Component{
                 <Form.Field>
                     <label>Дата продажи По</label>
                     <DatePicker
+                        autoComplete="off"
                         label=""
                         placeholderText={'Дата продажи По'}
                         showMonthDropdown showYearDropdown dropdownMode="select"
