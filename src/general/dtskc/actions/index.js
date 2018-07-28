@@ -154,6 +154,7 @@ export function createTask(formValues, successCallback) {
     authorsManager: {
       id: formValues.initiatorManager,
     },
+    estimatedAt: formValues.estimatedAt,
   };
 
   const request = axios.post(
