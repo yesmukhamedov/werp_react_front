@@ -78,6 +78,7 @@ class ContractListSearchDisplay extends Component {
                   name="startDate"
                   label="с"
                   component={DatePickerFormField}
+                  autoComplete="off"
                 />
               </Grid.Column>
               <Grid.Column width={2}>
@@ -86,6 +87,7 @@ class ContractListSearchDisplay extends Component {
                   name="endDate"
                   label="до"
                   component={DatePickerFormField}
+                  autoComplete="off"
                 />
               </Grid.Column>
               <Grid.Column width={2}>

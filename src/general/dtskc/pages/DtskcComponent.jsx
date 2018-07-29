@@ -152,6 +152,7 @@ class DtskcComponent extends Component {
                 component={DatePickerFormField}
                 label="Дата создания"
                 dateFormat="DD.MM.YYYY"
+                autoComplete="off"
                 disabled
               />
               <Field
@@ -159,6 +160,7 @@ class DtskcComponent extends Component {
                 component={DatePickerFormField}
                 label="Предполагаемая дата закрытия"
                 dateFormat="DD.MM.YYYY"
+                autoComplete="off"
               />
             </Form.Group>
             <AttachmentPanelDisplay />

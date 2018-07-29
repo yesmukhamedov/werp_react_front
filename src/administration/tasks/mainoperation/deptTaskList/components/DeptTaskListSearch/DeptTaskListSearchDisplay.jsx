@@ -90,12 +90,14 @@ class DeptTaskListSearchDisplay extends Component {
                       name="endDateFrom"
                       label="Дата завершения с"
                       component={DatePickerFormField}
+                      autoComplete="off"
                     />
                     <Field
                       required
                       name="endDateTo"
                       label="Дата завершения по"
                       component={DatePickerFormField}
+                      autoComplete="off"
                     />
                   </Form.Group>
                 </Grid.Column>
@@ -127,11 +129,13 @@ class DeptTaskListSearchDisplay extends Component {
                       name="startDateFrom"
                       label="Дата создания c"
                       component={DatePickerFormField}
+                      autoComplete="off"
                     />
                     <Field
                       name="startDateTo"
                       label="Дата создания по"
                       component={DatePickerFormField}
+                      autoComplete="off"
                     />
                   </Form.Group>
                 </Grid.Column>
