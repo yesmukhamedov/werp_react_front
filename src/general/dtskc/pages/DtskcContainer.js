@@ -7,8 +7,8 @@ import { fetchReferences, fetchUsers, createTask } from '../actions';
 const selector = formValueSelector('DtskcForm');
 
 const defaultDtskcFormData = {
-  createdAt: moment().format('DD.MM.YYYY'),
-  estimatedAt: moment().format('DD.MM.YYYY'),
+  createdAt: moment(),
+  estimatedAt: moment().add(3, 'days'),
 };
 
 const mapStateToProps = (state) => {
