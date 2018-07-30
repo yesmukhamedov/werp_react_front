@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 
-import { Header,Container,Segment,Divider,Button } from 'semantic-ui-react'
+import { Header,Container,Segment,Divider,Loader } from 'semantic-ui-react'
 import HrDocActions from './HrDocActions'
 import HrDocMainData from './HrDocMainData'
 import HrDocData from './HrDocData'
@@ -29,11 +29,13 @@ class HrDocViewPage extends Component{
                 <HrDocActions handleAction={this.handleAction} items={this.props.actions} />
             </Segment>
             <Divider clearing />
+            {this.props.pageLoading?<Loader inline='centered' active/>:<div>
+                    <HrDocMainData item={this.props.document}/>
+                    <HrDocData typeId={this.props.document.typeId} items={this.props.document.items}/>
+                    <HrDocApprovers items={this.props.document.approvers}/>
+                    <HrDocLog items={this.props.document.actionLogs}/>
+                </div>}
 
-            <HrDocMainData item={this.props.document}/>
-            <HrDocData typeId={this.props.document.typeId} items={this.props.document.items}/>
-            <HrDocApprovers items={this.props.document.approvers}/>
-            <HrDocLog items={this.props.document.actionLogs}/>
         </Container>
     }
 }
@@ -41,7 +43,8 @@ class HrDocViewPage extends Component{
 function mapStateToProps (state) {
     return {
         document:state.hrDocReducer.document,
-        actions: state.hrDocReducer.actions
+        actions: state.hrDocReducer.actions,
+        pageLoading: state.hrDocReducer.pageLoading
     }
 }
 

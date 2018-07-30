@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import { Header,Container,Icon,Segment,Divider,Tab } from 'semantic-ui-react'
+import { Header,Container,Icon,Segment,Divider,Tab,Loader } from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
@@ -31,6 +31,7 @@ class HrRecruitmentPage extends Component{
         const {items} = this.props;
 
         return <div>
+            {this.props.pageLoading?<Loader active inline='centered' />:
             <ReactTable
                 data={items || []}
                 columns={[
@@ -69,7 +70,7 @@ class HrRecruitmentPage extends Component{
 
                 indexKey="indexKey"
                 defaultPageSize={50}
-                className='-striped -highlight' />
+                className='-striped -highlight' />}
         </div>
     }
 
@@ -104,7 +105,8 @@ class HrRecruitmentPage extends Component{
 
 function mapStateToProps (state) {
     return {
-        items: state.hrDocReducer.items
+        items: state.hrDocReducer.items,
+        pageLoading: state.hrDocReducer.pageLoading
     }
 }
 
