@@ -1,5 +1,6 @@
 import axios from 'axios';
 import _ from 'lodash';
+import moment from 'moment';
 import { ROOT_URL } from '../../../utils/constants';
 import { constructFullName, GET } from '../../../utils/helpers';
 import { notify } from '../../../general/notification/notification_action';
@@ -154,6 +155,7 @@ export function createTask(formValues, successCallback) {
     authorsManager: {
       id: formValues.initiatorManager,
     },
+    estimatedAt: moment.utc(formValues.estimatedAt, 'DD.MM.YYYY').format(),
   };
 
   const request = axios.post(

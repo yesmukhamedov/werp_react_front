@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table,Card,Header } from 'semantic-ui-react'
 import Phone from './Phone'
+import {formatDMY} from '../../../../utils/helpers'
 
 /**
  * Компонент для рендеринга Таблицу одного Рекоменда
@@ -44,6 +45,15 @@ export default function RecoViewTable(props){
                         </Table.Cell>
                         <Table.Cell>
                             {reco.responsibleName}
+                        </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                        <Table.Cell>
+                            <Header as={'h4'}>Дата</Header>
+                        </Table.Cell>
+                        <Table.Cell>
+                            {formatDMY(reco.docDate)}
                         </Table.Cell>
                     </Table.Row>
 

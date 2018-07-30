@@ -2,7 +2,7 @@ import React from 'react'
 import {Segment,Label, Table } from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
 import {DOC_TYPE_RECRUITMENT} from '../../../hrUtil'
-import {formatDMY} from '../../../../utils/helpers'
+import {formatDMY,moneyFormat} from '../../../../utils/helpers'
 
 export default function HrDocData (props) {
     const {typeId,items} = props
@@ -44,7 +44,7 @@ function renderRecruitmentData (items){
                                 <Table.Cell>{item.positionName}</Table.Cell>
                                 <Table.Cell>{formatDMY(item.beginDate)}</Table.Cell>
                                 <Table.Cell>{item.managerName}</Table.Cell>
-                                <Table.Cell>{item.amount}</Table.Cell>
+                                <Table.Cell>{moneyFormat(item.amount)}</Table.Cell>
                                 <Table.Cell>
                                     <Link target={'_blank'} className={'ui icon button mini'} to={`/crm/demo/view/` + 12}>
                                         Просмотр

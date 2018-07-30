@@ -157,6 +157,10 @@ export const DatePickerFormField = (props) => {
     input,
     required,
     meta: { touched, error },
+    disabled,
+    readOnly,
+    dateFormat,
+    autoComplete,
   } = props;
   return (
     <Form.Field required={required}>
@@ -164,9 +168,11 @@ export const DatePickerFormField = (props) => {
       <DatePicker
         {...input}
         showYearDropdown
-        autoComplete="off"
-        dateFormat="YYYY-MM-DD"
+        dateFormat={dateFormat || 'YYYY-MM-DD'}
         selected={input.value ? moment(input.value, 'YYYY-MM-DD') : null}
+        autoComplete={autoComplete}
+        disabled={disabled}
+        readOnly={readOnly}
       />
       {touched &&
         (error && (
@@ -215,6 +221,7 @@ export const DatePickerFormField2 = (props) => {
     readOnly,
     disabled,
     defaultValue,
+    autoComplete,
     meta: { touched, error },
   } = props;
   if (defaultValue !== null && (input.value === null || input.value === '')) {
@@ -234,8 +241,8 @@ export const DatePickerFormField2 = (props) => {
         locale={locale} // "ru"
         dateFormat={dateFormat} // "DD.MM.YYYY"
         disabled={disabled}
+        autoComplete={autoComplete}
         readOnly={readOnly}
-        autoComplete="off"
       />
       {touched &&
         (error && (

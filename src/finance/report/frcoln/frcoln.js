@@ -440,9 +440,25 @@ class Frcoln extends Component {
         //table 5
         let t5columns = [];
         let t5r1c1 = {Header:({value}) => <b>SN номер</b>,accessor: "contract_number",
-        Cell: ({value}) => <Link target='_blank' className={'ui icon button'} to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=` + value}>
-                                {value}
-                            </Link>};
+        Cell: obj => 
+                <span>
+                    {obj.original.contract_number &&
+                        <Link target='_blank' className={'ui icon button'} to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=` + obj.original.contract_number}>
+                                {obj.original.contract_number}
+                        </Link> 
+                    }
+                    {obj.original.belnr && 
+                        <span>
+                            <Link target='_blank' className={'ui icon button'} 
+                                to={`${LEGACY_URL}/accounting/reports/fa03.xhtml?belnr=` + obj.original.belnr 
+                                +`&gjahr=` + obj.original.gjahr +`&bukrs=` + obj.original.bukrs}>
+                                {obj.original.belnr} 
+                            </Link>                            
+                            {obj.original.zreg}
+                        </span>
+                    }                                          
+                </span> 
+            };
         t5r1c1.Footer = (<span><strong>Количество: {new Intl.NumberFormat('ru-RU').format(this.props.tab4OutputTable.length)}</strong></span>);
         let t5r1c2 = {Header:({value}) => <b>Дата договора</b>, accessor: "contract_date"
                                     ,Cell: ({value}) => {

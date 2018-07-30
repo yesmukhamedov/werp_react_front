@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
-import { Container, Form, Button, Header, Segment } from 'semantic-ui-react';
 import { Field, reduxForm } from 'redux-form';
+import { Container, Form, Button, Header, Segment } from 'semantic-ui-react';
 import {
   DropdownFormField,
   TextAreaFormField,
   TextInputFormField,
+  DatePickerFormField,
 } from '../../../utils/formFields';
 import AttachmentPanelDisplay from './AttachmentsPanelDisplay';
 import browserHistory from '../../../utils/history';
 import './style.css';
-import { ROOT_URL } from '../../../utils/constants';
 
 class DtskcComponent extends Component {
   constructor(props) {
@@ -22,7 +22,7 @@ class DtskcComponent extends Component {
   componentWillMount() {
     const {
       fetchReferences,
-      lang
+      lang,
     } = this.props;
     fetchReferences(lang);
   }
@@ -81,7 +81,7 @@ class DtskcComponent extends Component {
               name="description"
               component={TextAreaFormField}
               label="Описание задачи"
-              rows="10"
+              rows="8"
             />
 
             <Form.Group widths="equal">
@@ -93,9 +93,9 @@ class DtskcComponent extends Component {
               />
               <Field
                 name="initiator"
-                component={DropdownFormField}
+                component={TextInputFormField}
                 label="Заказчик"
-                // opts={}
+                value="Nobody"
               />
             </Form.Group>
             <Form.Group widths="equal">
@@ -146,16 +146,21 @@ class DtskcComponent extends Component {
                 opts={managerOpts}
               />
             </Form.Group>
-            <Form.Group widths="equal">
+            <Form.Group widths="3">
               <Field
                 name="createdAt"
-                component={TextInputFormField}
+                component={DatePickerFormField}
                 label="Дата создания"
+                dateFormat="DD.MM.YYYY"
+                autoComplete="off"
+                disabled
               />
               <Field
-                name="closedAt"
-                component={TextInputFormField}
-                label="Дата закрытия"
+                name="estimatedAt"
+                component={DatePickerFormField}
+                label="Предполагаемая дата закрытия"
+                dateFormat="DD.MM.YYYY"
+                autoComplete="off"
               />
             </Form.Group>
             <AttachmentPanelDisplay />
