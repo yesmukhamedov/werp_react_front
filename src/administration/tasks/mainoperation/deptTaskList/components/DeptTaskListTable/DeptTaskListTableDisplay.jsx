@@ -129,11 +129,15 @@ class DeptTaskListTableDisplay extends Component {
       },
       {
         Header: 'Дата завершения',
-        accessor: 'modifiedAt',
+        accessor: 'estimatedAt',
         // maxWidth: 125,
         Cell: (props) => {
-          const { modifiedAt, status } = props.original;
-          return (status.id === 5) ? formatDMYMS(modifiedAt) : undefined;
+          const { estimatedAt } = props.original;
+          return (
+            <div>
+              { estimatedAt && formatDMYMS(estimatedAt) }
+            </div>
+          );
         },
       },
       {
@@ -163,10 +167,17 @@ class DeptTaskListTableDisplay extends Component {
       {
         accessor: 'id',
         maxWidth: 60,
-        Cell: () => (
-          <div style={{ textAlign: 'center' }}>
-            <Icon link name="edit" size="large" color="black" onClick={this.handleEditModal} />
-          </div>),
+        Cell: (props) => {
+          const { id } = props.original;
+          return (
+            <div style={{ textAlign: 'center' }}>
+              {/* <Icon link name="edit" size="large" color="black" onClick={this.handleEditModal} /> */}
+              <Link target="_blank" to={`/administration/dtskredit/${id}`}>
+                <Icon link name="edit" size="large" color="black" />
+              </Link>
+            </div>
+          );
+        },
       },
     ];
     return (

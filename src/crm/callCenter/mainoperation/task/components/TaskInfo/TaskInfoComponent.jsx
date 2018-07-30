@@ -96,8 +96,8 @@ class TaskInfoComponent extends Component {
                       <List.Item>
                         <List.Content>
                           {recipient.branch && recipient.branch.value} - 
-                          {recipient.department && recipient.department.value} - 
-                          {recipient.position && recipient.position.value}
+                          {recipient.department && recipient.department.value}
+                          {/* {recipient.position && recipient.position.value} */}
                         </List.Content>
                       </List.Item>
                     </List>

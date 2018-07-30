@@ -29,7 +29,7 @@ export function fetchTaskById(taskId) {
         if (error.response) {
           dispatch(notify('error', error.response.data.message, 'Ошибка'));
         } else {
-          Promise.resolve({ error }).then(response => dispatch(notify('error', error.response.data.message, 'Ошибка')));
+          Promise.resolve({ error }).then(response => dispatch(notify('error', response.data.message, 'Ошибка')));
         }
       });
   };
@@ -86,7 +86,7 @@ export function editTask(taskId, fields) {
         if (error.response) {
           dispatch(notify('error', error.response.data.message, 'Ошибка'));
         } else {
-          Promise.resolve({ error }).then(response => dispatch(notify('error', error.response.data.message, 'Ошибка')));
+          Promise.resolve({ error }).then(response => dispatch(notify('error', response.data.message, 'Ошибка')));
         }
       });
   };

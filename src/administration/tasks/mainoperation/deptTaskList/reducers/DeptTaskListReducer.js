@@ -3,6 +3,7 @@ import {
   CLEAR_DEPT_TASK_LIST,
   FOUND_DEPT_TASKS,
 } from '../actions/DeptTaskListAction';
+import { FETCH_TASK_DETAILS } from '../../../../../crm/callCenter/mainoperation/task/actions/TaskAction';
 
 export default function (state = {}, action) {
   // eslint-disable-next-line
@@ -13,6 +14,8 @@ export default function (state = {}, action) {
       return { ...state, result: action.payload };
     case CLEAR_DEPT_TASK_LIST:
       return { ...state, directories: undefined, result: undefined };
+    case FETCH_TASK_DETAILS:
+      return { ...state, taskDetails: action.payload };
   }
 
   return state;
