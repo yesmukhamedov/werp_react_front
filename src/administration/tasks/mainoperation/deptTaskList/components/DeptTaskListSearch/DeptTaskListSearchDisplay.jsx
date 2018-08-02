@@ -86,14 +86,14 @@ class DeptTaskListSearchDisplay extends Component {
                 <Grid.Column mobile={16} tablet={8} computer={4}>
                   <Form.Group widths="equal">
                     <Field
-                      required
+                      // required
                       name="endDateFrom"
                       label="Дата завершения с"
                       component={DatePickerFormField}
                       autoComplete="off"
                     />
                     <Field
-                      required
+                      // required
                       name="endDateTo"
                       label="Дата завершения по"
                       component={DatePickerFormField}
@@ -184,12 +184,12 @@ function validate(formProps) {
   if (!formProps.branch) {
     error.branch = 'Выберите филиал';
   }
-  if (!formProps.endDateFrom) {
-    error.endDateFrom = 'Выберите дату';
-  }
-  if (!formProps.endDateTo) {
-    error.endDateTo = 'Выберите дату';
-  }
+  // if (!formProps.endDateFrom) {
+  //   error.endDateFrom = 'Выберите дату';
+  // }
+  // if (!formProps.endDateTo) {
+  //   error.endDateTo = 'Выберите дату';
+  // }
   if (!formProps.department) {
     error.department = 'Выберите отдел';
   }

@@ -134,6 +134,12 @@ const AsyncDeptTaskListPage = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncTaskRecEditPage = Loadable({
+  loader: () =>
+    import('../administration/tasks/mainoperation/deptTaskList/components/DeptTaskListTable/RecipientEdit/RecipientEditContainer' /* webpackChunkName: "RecipientEditPage" */),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncRecoCurrentPage = Loadable({
         loader: () => import('../crm/mainoperation/reco/components/RecoCurrentPage' /* webpackChunkName: "RecoCurrentPage" */),
     loading: () => <LoadingPage />
@@ -364,9 +370,9 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/finance/mainoperation/fcis" component={AsyncFsis} />
       <Route path="/administration/dtskrep" component={AsyncTaskMonitorPage} />
       <Route path="/administration/dtskl"   component={AsyncDeptTaskListPage} />
-        <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
-        <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />
-      
+      <Route path="/administration/dtskredit/:id"   component={AsyncTaskRecEditPage} />
+      <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
+      <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />
 
       <Route path="/general/dtskc" component={DtskcContainer} />
       <Route path="/general/dtskdep" component={DtskdepContainer} />

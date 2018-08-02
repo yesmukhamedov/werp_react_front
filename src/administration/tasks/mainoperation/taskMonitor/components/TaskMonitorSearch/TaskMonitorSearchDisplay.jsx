@@ -85,14 +85,14 @@ class TaskMonitorSearchDisplay extends Component {
                 <Grid.Column>
                   <Form.Group>
                     <Field
-                      required
+                      // required
                       name="endDateFrom"
                       label="Дата завершения с"
                       component={DatePickerFormField}
                       autoComplete="off"
                     />
                     <Field
-                      required
+                      // required
                       name="endDateTo"
                       label="Дата завершения по"
                       component={DatePickerFormField}
@@ -183,12 +183,12 @@ function validate(formProps) {
   if (!formProps.branch || (formProps.branch && formProps.branch.length === 0)) {
     error.branch = 'Выберите филиал';
   }
-  if (!formProps.endDateFrom) {
-    error.endDateFrom = 'Выберите дату';
-  }
-  if (!formProps.endDateTo) {
-    error.endDateTo = 'Выберите дату';
-  }
+  // if (!formProps.endDateFrom) {
+  //   error.endDateFrom = 'Выберите дату';
+  // }
+  // if (!formProps.endDateTo) {
+  //   error.endDateTo = 'Выберите дату';
+  // }
   if (!formProps.department || (formProps.department && formProps.department.length === 0)) {
     error.department = 'Выберите отдел';
   }

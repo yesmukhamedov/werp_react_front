@@ -1,4 +1,5 @@
 import axios from 'axios';
+import moment from 'moment';
 import _ from 'lodash';
 import { ROOT_URL } from '../../../../../utils/constants';
 import { notify } from '../../../../../general/notification/notification_action';
@@ -110,11 +111,24 @@ export function getDeptTaskListDirectories(lang) {
   };
 }
 
-export function editRecipient(taskId) {
+export function editRecipient(taskId, fields, resolve) {
   const r = {
     id: taskId,
+    param: fields,
   };
   console.log(r);
+
+  const dirtyFields = {};
+  if (fields.recipient) {
+    dirtyFields.recipient = fields.recipient;
+  }
+  if (fields.expectedEndDate) {
+    const endDateFromUtc = moment.utc(fields.expectedEndDate).format();
+    dirtyFields.expectedEndDate = endDateFromUtc;
+  }
+  console.log(dirtyFields);
+
+  resolve();
   // return (dispatch) => {
   //   axios.put(
   //     `${ROOT_URL}/api/call-center/out-calls/operator/${contractNumber}`,

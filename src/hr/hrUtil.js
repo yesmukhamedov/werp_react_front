@@ -60,6 +60,26 @@ export const DOC_TYPE_BYPASS_SHEET = 5;
 
 /**END DOCUMENT TYPES***/
 
+/****DOCUMENT ACTIONS****/
+export const DOC_ACTION_GO_TO_LIST = 0;//В список
+export const DOC_ACTION_CREATE = 1;//Создание
+export const DOC_ACTION_UPDATE = 2;//Редактирование
+export const DOC_ACTION_VIEW = 3;//Просмотр
+export const DOC_ACTION_SEND = 4;// Отправить на просмотр
+export const DOC_ACTION_APPROVE = 5;
+export const DOC_ACTION_REFUSE = 6;
+export const DOC_ACTION_ADD_APPROVER = 7;// Добавление согласующих
+export const DOC_ACTION_SEND_TO_EXECUTION = 8;// Отправить на исполнение
+export const DOC_ACTION_SEND_TO_APPROVER = 9;// Отправить на согласование
+export const DOC_ACTION_CREATE_NEW_SALARY = 10;
+export const DOC_ACTION_ADD_AMOUNT = 11;
+export const DOC_ACTION_ADD_SALARY = 12;// Добавить Должности
+export const DOC_ACTION_DISMISS_EMPLOYEE = 13;// Уволить сотрудников
+export const DOC_ACTION_CANCEL = 14;// Отменить
+export const DOC_ACTION_COMPLETE_DOC = 15;// Завершить
+export const DOC_ACTION_CREATE_BYPASS_SHEET = 16;// Создать обходной лист
+/****END DOCUMENT ACTIONS***/
+
 export const OFF_DATA = 'OFF_DATA'
 export const MAIN_DATA = 'MAIN_DATA'
 export const PASSPORT_DATA = 'PASSPORT_DATA'
