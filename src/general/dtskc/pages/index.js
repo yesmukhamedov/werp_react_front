@@ -1,3 +1,4 @@
 import DtskcContainer from './DtskcContainer';
+import AttachmentPanelDisplay from './AttachmentPanelDisplay';
 
-export { DtskcContainer as default };
+export { DtskcContainer, AttachmentPanelDisplay };

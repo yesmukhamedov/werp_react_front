@@ -10,7 +10,7 @@ import Signout from '../components/Auth/Signout';
 import ForbiddenPage from '../general/forbidden';
 import LoadingPage from '../general/LoadingPage';
 
-import DtskcContainer from '../general/dtskc/pages';
+import { DtskcContainer } from '../general/dtskc/pages';
 import { DtskdepContainer } from '../general/dtskdep/pages';
 
 

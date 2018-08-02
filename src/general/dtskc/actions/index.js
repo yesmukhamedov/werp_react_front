@@ -119,6 +119,27 @@ export function fetchReferences(lang) {
   };
 }
 
+const dummyAttachment = [
+  {
+    fileName: 'hello.go',
+    fileDownloadUri: 'http://localhost:23051/file-storage/dxyzpmluvt-hello.go',
+    fileType: 'application/octet-stream',
+    size: 72,
+  },
+  {
+    fileName: 'lecture 1.pdf',
+    fileDownloadUri: 'http://localhost:23051/file-storage/fov6mdtyti-lecture%201.pdf',
+    fileType: 'application/pdf',
+    size: 968439,
+  },
+  {
+    fileName: 'lecture 2.pdf',
+    fileDownloadUri: 'http://localhost:23051/file-storage/rzhs9woiu6-lecture%202.pdf',
+    fileType: 'application/pdf',
+    size: 375178,
+  },
+];
+
 export function createTask(formValues, successCallback) {
   const newTask = {
     title: formValues.title,
@@ -156,6 +177,9 @@ export function createTask(formValues, successCallback) {
       id: formValues.initiatorManager,
     },
     estimatedAt: moment.utc(formValues.estimatedAt, 'DD.MM.YYYY').format(),
+    attachment: {
+      attachmentJson: JSON.stringify(formValues.uploadList),
+    },
   };
 
   const request = axios.post(

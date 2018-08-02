@@ -13,15 +13,34 @@ export function clearTaskStore() {
   };
 }
 
+function extractAttachments(attachment) {
+  const { attachmentJson, ...rest } = attachment;
+  if (attachmentJson) {
+    try {
+      const list = JSON.parse(attachmentJson);
+      return {
+        ...rest,
+        attachmentJson: list,
+      };
+    } catch (error) {
+      console.error('Could not parse attachment in extractAttachments()', error);
+    }
+  }
+  return {};
+}
+
 export function fetchTaskById(taskId) {
   return (dispatch) => {
     axios.get(`${ROOT_URL}/api/tasks/${taskId}`, {
       headers: { authorization: localStorage.getItem('token') },
     })
       .then(({ data }) => {
+        const { attachment, ...rest } = data;
+        const parsedAttachment = extractAttachments(attachment);
+
         dispatch({
           type: FETCH_TASK_DETAILS,
-          payload: data,
+          payload: { ...rest, attachment: parsedAttachment },
         });
       })
       .catch((error) => {
@@ -76,9 +95,13 @@ export function editTask(taskId, fields) {
       { headers: { authorization: localStorage.getItem('token') } },
     ).then(({ data }) => {
       // console.log('data: ', data);
+
+      const { attachment, ...rest } = data;
+      const parsedAttachment = extractAttachments(attachment);
+
       dispatch({
         type: EDIT_TASK,
-        payload: data,
+        payload: { ...rest, attachment: parsedAttachment },
       });
     })
       .catch((error) => {
