@@ -19,9 +19,7 @@ class RecipientEditDisplay extends Component {
     const { id: taskId } = this.props.match.params;
     if (taskId) {
       this.props.fetchTaskById(taskId);
-      this.setState({
-        taskId: taskId,
-      });
+      this.setState({ taskId });
     }
   }
 
@@ -35,9 +33,9 @@ class RecipientEditDisplay extends Component {
 
   render() {
     const {
-      handleSubmit, pristine, submitting, reset, companyOptions
+      handleSubmit, pristine, submitting, reset, assigneeOptions
     } = this.props;
-    if (companyOptions) {
+    if (assigneeOptions) {
       return (
         <Container
           style={{
@@ -72,14 +70,14 @@ class RecipientEditDisplay extends Component {
                         name="recipient"
                         component={DropdownFormField}
                         label="ФИО"
-                        opts={companyOptions}
+                        opts={assigneeOptions}
                       />
                     </Form.Group>
                   </Grid.Column>
                   <Grid.Column mobile={16} tablet={8} computer={4}>
                     <Form.Group widths="equal">
                       <Field
-                        // required
+                        autoComplete='off'
                         name="expectedEndDate"
                         label="Дата завершения"
                         component={DatePickerFormField}

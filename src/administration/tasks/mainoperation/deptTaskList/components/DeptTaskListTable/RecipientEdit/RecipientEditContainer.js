@@ -1,23 +1,19 @@
 import moment from 'moment';
 import { connect } from 'react-redux';
-import { formValueSelector } from 'redux-form';
-import { editRecipient } from '../../../actions/DeptTaskListAction';
-import { fetchTaskById } from '../../../../../../../crm/callCenter/mainoperation/task/actions/TaskAction';
+import { editRecipient, fetchTaskById } from '../../../actions/DeptTaskListAction';
 import RecipientEditDisplay from './RecipientEditDisplay';
 
-const selector = formValueSelector('deptTaskListSearchDisplay');
-
 function mapStateToProps(state) {
-  const company = selector(state, 'company');
-  const initialData = {
-    recipient: state.deptTaskList.taskDetails && state.deptTaskList.taskDetails.bukrs,
-  };
-  if (state.deptTaskList.taskDetails && state.deptTaskList.taskDetails.estimatedAt) {
-    initialData.expectedEndDate = moment(state.deptTaskList.taskDetails.estimatedAt, 'YYYY-MM-DDTHH:mm:ssZ').format('YYYY-MM-DD')
+  const initialData = {};
+  let assigneeOpts;
+  const details = state.deptTaskList.assigneeDetails;
+  if (details) {
+    assigneeOpts = details.assigneeOptions;
+    initialData.expectedEndDate = details.expectedEndDate && moment(details.expectedEndDate, 'YYYY-MM-DDTHH:mm:ssZ').format('YYYY-MM-DD');
+    initialData.recipient = details.recipient && details.recipient.id;
   }
   return {
-    company,
-    companyOptions: state.userInfo.companyOptions,
+    assigneeOptions: assigneeOpts,
     initialValues: initialData,
   };
 }
