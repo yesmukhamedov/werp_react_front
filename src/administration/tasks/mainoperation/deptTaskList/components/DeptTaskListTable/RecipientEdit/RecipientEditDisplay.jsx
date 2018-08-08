@@ -24,11 +24,9 @@ class RecipientEditDisplay extends Component {
   }
 
   handleFormSubmit(values, dispatch, props) {
-    // const endDateFromUtc = values.endDateFrom ? moment.utc(values.endDateFrom).format() : undefined;
     const dirtyFields = difference(values, props.initialValues);
-    // console.log("dirty:", dirtyFields)
-
-    return new Promise(resolve => this.props.editRecipient(this.state.taskId, dirtyFields, resolve));
+    return new Promise(resolve =>
+      this.props.editRecipient(this.state.taskId, dirtyFields, resolve));
   }
 
   render() {

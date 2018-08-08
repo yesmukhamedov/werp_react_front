@@ -39,7 +39,7 @@ class TaskMonitorSearchDisplay extends Component {
       .filter(param => param)
       .join('&');
 
-    console.log("params:", params)
+    // console.log("params:", params)
     return new Promise(resolve => this.props.searchTasks(params, resolve));
   }
 

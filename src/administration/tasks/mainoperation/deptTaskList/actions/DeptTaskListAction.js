@@ -2,7 +2,7 @@ import axios from 'axios';
 import moment from 'moment';
 import _ from 'lodash';
 import { ROOT_URL } from '../../../../../utils/constants';
-import { constructFullName, GET } from '../../../../../utils/helpers';
+import { constructFullName } from '../../../../../utils/helpers';
 import { notify } from '../../../../../general/notification/notification_action';
 
 export const DEPT_TASK_LIST_DIRECTORIES = 'dept_task_list_directories';
@@ -112,49 +112,53 @@ export function getDeptTaskListDirectories(lang) {
 }
 
 export function editRecipient(taskId, fields, resolve) {
-  const r = {
-    id: taskId,
-    param: fields,
-  };
-  console.log(r);
-
   const dirtyFields = {};
   if (fields.recipient) {
-    dirtyFields.recipient = fields.recipient;
+    dirtyFields.recipient = {};
+    dirtyFields.recipient.assignee = { id: fields.recipient };
   }
   if (fields.expectedEndDate) {
     const endDateFromUtc = moment.utc(fields.expectedEndDate).format();
-    dirtyFields.expectedEndDate = endDateFromUtc;
+    dirtyFields.estimatedAt = endDateFromUtc;
   }
-  console.log(dirtyFields);
+  return (dispatch) => {
+    axios.put(
+      `${ROOT_URL}/api/dtskl/tasks/${taskId}`,
+      dirtyFields,
+      { headers: { authorization: localStorage.getItem('token') } },
+    ).then(({ data }) => {
+      const editDetails = {
+        expectedEndDate: data.estimatedAt,
+        recipient: data.recipient.assignee,
+      };
 
-  resolve();
-  // return (dispatch) => {
-  //   axios.put(
-  //     `${ROOT_URL}/api/call-center/out-calls/operator/${contractNumber}`,
-  //     { operator: o },
-  //     { headers: { authorization: localStorage.getItem('token') } },
-  //   ).then(({ data }) => {
-  //     dispatch({
-  //       type: EDIT_TASK_RECIPIENT,
-  //       payload: data,
-  //     });
-  //   })
-  //     .catch((error) => {
-  //       console.log('ERROR in operator edit', error);
-  //       if (error.response) {
-  //         dispatch(notify('error', error.response.data.message, 'Ошибка'));
-  //       } else {
-  //         Promise.resolve({ error }).then(response => dispatch(notify('error', error.response.data.message, 'Ошибка')));
-  //       }
-  //     });
-  // };
+      dispatch({
+        type: EDIT_TASK_RECIPIENT,
+        payload: { ...editDetails },
+      });
+      dispatch(notify('success', 'Successufully updated.', 'Успешно'));
+      resolve();
+    })
+      .catch((error) => {
+        console.log('ERROR in task assignee edit', error);
+        if (error.response) {
+          dispatch(notify('error', error.response.data, 'Ошибка'));
+        } else {
+          Promise.resolve({ error }).then(response => dispatch(notify('error', response.data.message, 'Ошибка')));
+        }
+        resolve();
+      });
+  };
 }
 
 const assigneesUrl = `${ROOT_URL}/api/users?active=true`;
 
 export function fetchTaskById(taskId) {
   return async (dispatch) => {
+    function onError(error) {
+      dispatch(notify('error', error, 'Ошибка'));
+      return error;
+    }
     function onSuccess(success) {
       const {
         estimatedAt,
@@ -184,10 +188,6 @@ export function fetchTaskById(taskId) {
           });
         })
         .catch((error) => onError(error));
-    }
-    function onError(error) {
-      dispatch(notify('error', error, 'Ошибка'));
-      return error;
     }
     try {
       const success = await axios.get(`${ROOT_URL}/api/tasks/${taskId}`, {

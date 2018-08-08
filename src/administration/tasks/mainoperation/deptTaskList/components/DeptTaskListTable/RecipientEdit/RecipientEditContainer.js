@@ -12,6 +12,12 @@ function mapStateToProps(state) {
     initialData.expectedEndDate = details.expectedEndDate && moment(details.expectedEndDate, 'YYYY-MM-DDTHH:mm:ssZ').format('YYYY-MM-DD');
     initialData.recipient = details.recipient && details.recipient.id;
   }
+  const { editDetails } = state.deptTaskList;
+  if (editDetails) {
+    assigneeOpts = state.deptTaskList.assigneeDetails.assigneeOptions;
+    initialData.expectedEndDate = editDetails.expectedEndDate && moment(editDetails.expectedEndDate, 'YYYY-MM-DDTHH:mm:ssZ').format('YYYY-MM-DD');
+    initialData.recipient = editDetails.recipient && editDetails.recipient.id;
+  }
   return {
     assigneeOptions: assigneeOpts,
     initialValues: initialData,

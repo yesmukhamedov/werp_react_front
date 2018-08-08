@@ -1,9 +1,9 @@
 /* eslint linebreak-style: ["error", "windows"] */
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 import { Comment, Segment, Header } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
+import { formatDMYMS, constructFullName } from '../../../../../../utils/helpers';
 
 import TaskHistoryItemDisplay from './TaskHistoryContainer';
 
@@ -19,10 +19,10 @@ const TaskHistoryDisplay = (props) => {
             <Comment key={idx}>
               <Comment.Content>
                 <Comment.Author as="a">
-                  {item.author && `${item.author.lastName} ${item.author.firstName} ${item.author.patronymic}`}
+                  {item.author && constructFullName(item.author)}
                 </Comment.Author>
                 <Comment.Metadata>
-                  <div>{moment(item.createdAt, 'YYYY-MM-DDTHH:mm:ssZ').format('DD.MM.YYYY, hh:mm:ss')}</div>
+                  <div>{ formatDMYMS(item.createdAt)}</div>
                 </Comment.Metadata>
                 <TaskHistoryItemDisplay text={item.text} history={item.historyItem} />
               </Comment.Content>
