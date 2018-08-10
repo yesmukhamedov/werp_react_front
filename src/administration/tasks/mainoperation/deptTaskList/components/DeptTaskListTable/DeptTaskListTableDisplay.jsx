@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import { Link } from 'react-router-dom';
-import { Icon, Label } from 'semantic-ui-react';
+import { Icon, Label, Button } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import PropTypes from 'prop-types';
 import RecipientEditModal from './RecipientEdit/RecipientEditModal';
@@ -16,7 +16,6 @@ class DeptTaskListTableDisplay extends Component {
       selectedIdx: undefined,
       modalOpen: false,
       taskId: undefined,
-      recipientId: undefined,
     };
 
     this.handleEditModal = this.handleEditModal.bind(this);
@@ -166,15 +165,25 @@ class DeptTaskListTableDisplay extends Component {
       },
       {
         accessor: 'id',
-        maxWidth: 60,
+        maxWidth: 100,
         Cell: (props) => {
-          const { id } = props.original;
+          const { id, recipient, status } = props.original;
+          let disabled = false;
+          if (recipient.assignee || status.id === 5) {
+            disabled = true;
+          }
           return (
             <div style={{ textAlign: 'center' }}>
-              {/* <Icon link name="edit" size="large" color="black" onClick={this.handleEditModal} /> */}
-              <Link target="_blank" to={`/administration/dtskredit/${id}`}>
-                <Icon link name="edit" size="large" color="black" />
-              </Link>
+              <Button.Group icon>
+                <Link target="_blank" to={`/administration/dtskredit/${id}`}>
+                  <Button>
+                    <Icon link name="edit" color="black" />
+                  </Button>
+                </Link>
+                <Button onClick={this.handleEditModal} disabled={disabled}>
+                  <Icon link name="tag" color="black" />
+                </Button>
+              </Button.Group>
             </div>
           );
         },
@@ -201,7 +210,6 @@ class DeptTaskListTableDisplay extends Component {
                 this.setState({
                   selectedIdx: rowInfo.index,
                   taskId: rowInfo.original.id,
-                  recipientId: rowInfo.original.recipient && rowInfo.original.recipient.position.id,
                 });
             },
             style: {

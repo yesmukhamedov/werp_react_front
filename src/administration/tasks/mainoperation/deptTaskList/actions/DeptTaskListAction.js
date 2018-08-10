@@ -137,7 +137,9 @@ export function editRecipient(taskId, fields, resolve) {
         payload: { ...editDetails },
       });
       dispatch(notify('success', 'Successufully updated.', 'Успешно'));
-      resolve();
+      if (resolve) {
+        resolve();
+      }
     })
       .catch((error) => {
         console.log('ERROR in task assignee edit', error);
@@ -146,7 +148,9 @@ export function editRecipient(taskId, fields, resolve) {
         } else {
           Promise.resolve({ error }).then(response => dispatch(notify('error', response.data.message, 'Ошибка')));
         }
-        resolve();
+        if (resolve) {
+          resolve();
+        }
       });
   };
 }

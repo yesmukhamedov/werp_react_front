@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
+import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import jwt from 'jwt-simple';
 import { Button, Header, Icon, Modal, Form } from 'semantic-ui-react';
 import { editRecipient } from '../../../actions/DeptTaskListAction';
 import './settings.css';
-import { DropdownFormField } from '../../../../../../../utils/formFields';
 
 class RecipientEditModal extends Component {
   constructor(props) {
@@ -15,25 +15,23 @@ class RecipientEditModal extends Component {
     this.handleFormClose = this.handleFormClose.bind(this);
   }
 
-  handleFormSubmit(values) {
-    this.props.editRecipient(values.recipient);
-    this.props.handleClose();
-    this.clear();
+  handleFormSubmit() {
+    const token = localStorage.getItem('token');
+    if (token) {
+      const payload = jwt.decode(token, 'secret');
+      const field = { recipient: payload.userId };
+      this.props.editRecipient(this.props.taskId, field);
+      this.props.handleClose();
+    }
   }
 
   handleFormClose() {
     this.props.handleClose();
-    this.clear();
-  }
-
-  clear() {
-    const { reset } = this.props;
-    reset();
   }
 
   render() {
     const {
-      handleSubmit, directories, modalOpen, pristine, submitting,
+      handleSubmit, modalOpen,
     } = this.props;
     return (
       <Modal
@@ -57,14 +55,9 @@ class RecipientEditModal extends Component {
         <Modal.Content>
           <Modal.Description>
             <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
-              <Field
-                name="recipient"
-                component={DropdownFormField}
-                label="ФИО"
-                opts={directories ? directories.operatorOptions : []}
-              />
+              <h4>Вы точно хотите назначить себя исполнителем ?</h4>
               <div className="buttonGroup">
-                <Button color="teal" floated="right" type="submit" disabled={pristine || submitting}>
+                <Button color="teal" floated="right" type="submit">
                   <Icon name="checkmark" /> Да
                 </Button>
                 <Button
@@ -84,27 +77,15 @@ class RecipientEditModal extends Component {
   }
 }
 
-function mapStateToProps(state, props) {
-  const initialData = {
-    operator: props.operatorId,
-  };
-  return {
-    directories: state.contractList.directories,
-    initialValues: initialData,
-  };
-}
-
 RecipientEditModal.propTypes = {
   handleClose: PropTypes.func.isRequired,
   editRecipient: PropTypes.func.isRequired,
-  directories: PropTypes.object,
   modalOpen: PropTypes.bool,
   taskId: PropTypes.number,
 };
 
 RecipientEditModal = reduxForm({
   form: 'editRecipient',
-  enableReinitialize: true,
 })(RecipientEditModal);
 
-export default connect(mapStateToProps, { editRecipient })(RecipientEditModal);
+export default connect(null, { editRecipient })(RecipientEditModal);
