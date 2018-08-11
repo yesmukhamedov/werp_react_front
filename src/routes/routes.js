@@ -5,6 +5,7 @@ import RequireAuth from '../components/Auth/require_auth';
 import MainPanel from '../components/MainPanel/MainPanel';
 import Signin from '../components/Auth/Signin';
 import Signout from '../components/Auth/Signout';
+import persistPath from './PersistPath';
 
 
 import ForbiddenPage from '../general/forbidden';
@@ -338,15 +339,6 @@ const getComponent = {
     Gtskedit: AsyncTaskPage,
 }
 
-function persistPath(nextState, replace) {
-  console.log("Persist path: ", nextState.location.path)
-  try {
-    localStorage.setItem('currentPathName', nextState.location.pathname);
-  } catch (error) {
-    // Ignore write errors.
-  }
-}
-
 const generateRoutes = (transactionRoutes) => {
   return (
     <div>
@@ -368,8 +360,8 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
       <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
       <Route path="/finance/mainoperation/fcis" component={AsyncFsis} />
-      <Route path="/administration/dtskrep" component={AsyncTaskMonitorPage} />
-      <Route path="/administration/dtskl"   component={AsyncDeptTaskListPage} />
+      <Route path="/administration/dtskrep" component={persistPath(AsyncTaskMonitorPage)} />
+      <Route path="/administration/dtskl"   component={persistPath(AsyncDeptTaskListPage)} />
       <Route path="/administration/dtskredit/:id"   component={AsyncTaskRecEditPage} />
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
       <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />
@@ -382,9 +374,8 @@ const generateRoutes = (transactionRoutes) => {
         return (
           <Route
             path={`${route.url}`}
-            component={getComponent[route.component]}
+            component={persistPath(getComponent[route.component])}
             key={route.transactionCode}
-            onEnter={persistPath}
           />
         );
       })}
