@@ -35,7 +35,8 @@ class DeptTaskListTableDisplay extends Component {
   }
 
   render() {
-    const { lang } = this.props;
+    const { formatMessage } = this.props.intl;
+    const { lang, messages } = this.props;
     const columns = [
       {
         Header: '#',
@@ -51,7 +52,7 @@ class DeptTaskListTableDisplay extends Component {
         },
       },
       {
-        Header: 'Филиал',
+        Header: formatMessage(messages.branch),
         accessor: 'recipient.branch.value',
         maxWidth: 160,
         Cell: (props) => {
@@ -64,7 +65,7 @@ class DeptTaskListTableDisplay extends Component {
         },
       },
       {
-        Header: 'Отдел',
+        Header: formatMessage(messages.department),
         accessor: 'recipient.department.value',
         Cell: (props) => {
           const { recipient } = props.original;
@@ -76,7 +77,7 @@ class DeptTaskListTableDisplay extends Component {
         },
       },
       {
-        Header: 'Тип',
+        Header: formatMessage(messages.type),
         accessor: 'type.code',
         Cell: (props) => {
           const { type } = props.original;
@@ -88,7 +89,7 @@ class DeptTaskListTableDisplay extends Component {
         },
       },
       {
-        Header: 'Название ',
+        Header: formatMessage(messages.title),
         accessor: 'title',
         maxWidth: 380,
         Cell: (props) => {
@@ -101,7 +102,7 @@ class DeptTaskListTableDisplay extends Component {
         },
       },
       {
-        Header: 'Статус',
+        Header: formatMessage(messages.status),
         accessor: 'status.id',
         Cell: (props) => {
           const { status } = props.original;
@@ -118,7 +119,7 @@ class DeptTaskListTableDisplay extends Component {
         },
       },
       {
-        Header: 'Дата создания',
+        Header: formatMessage(messages.createdAt),
         accessor: 'createdAt',
         // maxWidth: 125,
         Cell: (props) => {
@@ -127,7 +128,7 @@ class DeptTaskListTableDisplay extends Component {
         },
       },
       {
-        Header: 'Дата завершения',
+        Header: formatMessage(messages.estimatedAt),
         accessor: 'estimatedAt',
         // maxWidth: 125,
         Cell: (props) => {
@@ -140,7 +141,7 @@ class DeptTaskListTableDisplay extends Component {
         },
       },
       {
-        Header: 'Заказчик',
+        Header: formatMessage(messages.author),
         accessor: 'author.id',
         Cell: (props) => {
           const { author } = props.original;
@@ -152,7 +153,7 @@ class DeptTaskListTableDisplay extends Component {
         },
       },
       {
-        Header: 'Исполнитель',
+        Header: formatMessage(messages.recipient),
         accessor: 'recipient',
         Cell: (props) => {
           const { recipient } = props.original;
