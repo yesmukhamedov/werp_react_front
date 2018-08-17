@@ -2,7 +2,7 @@
 
 #### Staging environment
 
-Run command in terminal
+Run command in the terminal
 ```
 npm run build:stage
 ``` 
