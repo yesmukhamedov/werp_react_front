@@ -1,7 +1,27 @@
 import moment from 'moment';
 import { connect } from 'react-redux';
+import { defineMessages, injectIntl } from 'react-intl';
 import { editRecipient, fetchTaskById } from '../../../actions/DeptTaskListAction';
 import RecipientEditDisplay from './RecipientEditDisplay';
+
+export const messages = defineMessages({
+  editHeader: {
+    id: 'Recipient.Edit.Header',
+    defaultMessage: 'Assign recipent',
+  },
+  editSubheader: {
+    id: 'Recipient.Edit.Subheader',
+    defaultMessage: 'Task #',
+  },
+  editRecipient: {
+    id: 'Recipient.Edit.Recipient',
+    defaultMessage: 'Recipient',
+  },
+  editExpEndDate: {
+    id: 'Recipient.Edit.ExpEndDate',
+    defaultMessage: 'Expected end date',
+  },
+});
 
 function mapStateToProps(state) {
   const initialData = {};
@@ -19,13 +39,14 @@ function mapStateToProps(state) {
     initialData.recipient = editDetails.recipient && editDetails.recipient.id;
   }
   return {
+    messages,
     assigneeOptions: assigneeOpts,
     initialValues: initialData,
   };
 }
 
 const RecipientEditContainer =
-  connect(mapStateToProps, { editRecipient, fetchTaskById })(RecipientEditDisplay);
+  connect(mapStateToProps, { editRecipient, fetchTaskById })(injectIntl(RecipientEditDisplay));
 
 export default RecipientEditContainer;
 

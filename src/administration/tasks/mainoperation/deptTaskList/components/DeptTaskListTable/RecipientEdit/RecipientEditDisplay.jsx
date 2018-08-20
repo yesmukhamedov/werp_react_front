@@ -30,8 +30,9 @@ class RecipientEditDisplay extends Component {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     const {
-      handleSubmit, pristine, submitting, reset, assigneeOptions
+      handleSubmit, pristine, submitting, reset, assigneeOptions, messages,
     } = this.props;
     if (assigneeOptions) {
       return (
@@ -52,9 +53,9 @@ class RecipientEditDisplay extends Component {
             >
               <Icon name="edit" />
               <Header.Content>
-                Назначить исполнителя
+                {formatMessage(messages.editHeader)}
                 <Header.Subheader>
-                  Задача # <a>{this.state.taskId}</a>
+                {formatMessage(messages.editSubheader)} <a>{this.state.taskId}</a>
                 </Header.Subheader>
               </Header.Content>
             </Header>
@@ -67,7 +68,7 @@ class RecipientEditDisplay extends Component {
                         // required
                         name="recipient"
                         component={DropdownFormField}
-                        label="ФИО"
+                        label={formatMessage(messages.editRecipient)}
                         opts={assigneeOptions}
                       />
                     </Form.Group>
@@ -77,7 +78,7 @@ class RecipientEditDisplay extends Component {
                       <Field
                         autoComplete='off'
                         name="expectedEndDate"
-                        label="Дата завершения"
+                        label={formatMessage(messages.editExpEndDate)}
                         component={DatePickerFormField}
                       />
                     </Form.Group>
@@ -119,22 +120,8 @@ class RecipientEditDisplay extends Component {
   }
 }
 
-function validate(formProps) {
-  const error = {};
-
-  if (!formProps.recipient) {
-    error.company = 'Выберите ';
-  }
-  if (!formProps.endDateFrom) {
-    error.endDateFrom = 'Выберите дату';
-  }
-
-  return error;
-}
-
 RecipientEditDisplay = reduxForm({
   form: 'recipientEditDisplay',
-  // validate,
   enableReinitialize: true,
 })(RecipientEditDisplay);
 

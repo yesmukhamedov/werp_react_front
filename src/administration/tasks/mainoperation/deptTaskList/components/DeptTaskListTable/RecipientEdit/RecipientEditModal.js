@@ -3,6 +3,7 @@ import { reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import jwt from 'jwt-simple';
+import { FormattedMessage } from 'react-intl';
 import { Button, Header, Icon, Modal, Form } from 'semantic-ui-react';
 import { editRecipient } from '../../../actions/DeptTaskListAction';
 import './settings.css';
@@ -55,7 +56,12 @@ class RecipientEditModal extends Component {
         <Modal.Content>
           <Modal.Description>
             <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
-              <h4>Вы точно хотите назначить себя исполнителем ?</h4>
+              <h4>
+                <FormattedMessage
+                  id="Recipient.Edit.Content"
+                  defaultMessage="Are you sure you want to assign yourself as a recipient ?" 
+                />
+              </h4>
               <div className="buttonGroup">
                 <Button color="teal" floated="right" type="submit">
                   <Icon name="checkmark" /> Да

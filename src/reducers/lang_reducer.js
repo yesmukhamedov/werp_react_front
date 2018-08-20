@@ -1,6 +1,6 @@
-import messagesEn from './../locales/en.json';
-import messagesRu from './../locales/ru.json';
-import messagesTr from './../locales/tr.json';
+import messagesEn from './../locales/new/en.json';
+import messagesRu from './../locales/new/ru.json';
+import messagesTr from './../locales/new/tr.json';
 import { CHANGE_LANGUAGE } from '../actions/types';
 
 export default function (state = { lang: 'en' }, action) {
