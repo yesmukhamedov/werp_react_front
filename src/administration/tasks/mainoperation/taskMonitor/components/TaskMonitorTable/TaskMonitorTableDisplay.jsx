@@ -58,26 +58,27 @@ class TaskMonitorTableDisplay extends Component {
   }
 
   render() {
-    const {lang, result} = this.props;
+    const { formatMessage } = this.props.intl;
+    const {lang, result, messages} = this.props;
     let listOfTasks = [];
     if (result) {
       listOfTasks = this.mapToList(result, lang);
     }
     const columns = [
       {
-        Header: 'Филиал',
+        Header: formatMessage(messages.branch),
         accessor: 'branch',
       },
       {
-        Header: 'Отдел',
+        Header: formatMessage(messages.department),
         accessor: 'department',
       },
       {
-        Header: 'Тип',
+        Header: formatMessage(messages.type),
         accessor: 'type',
       },
       {
-        Header: 'Статус',
+        Header: formatMessage(messages.status),
         accessor: 'status',
         Cell: (props) => {
           const { status } = props.original;
@@ -94,7 +95,7 @@ class TaskMonitorTableDisplay extends Component {
         },
       },
       {
-        Header: 'Количество',
+        Header: formatMessage(messages.amount),
         accessor: 'amount',
       },
     ];

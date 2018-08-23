@@ -19,25 +19,22 @@ class RecipientEditDisplay extends Component {
     const { id: taskId } = this.props.match.params;
     if (taskId) {
       this.props.fetchTaskById(taskId);
-      this.setState({
-        taskId: taskId,
-      });
+      this.setState({ taskId });
     }
   }
 
   handleFormSubmit(values, dispatch, props) {
-    // const endDateFromUtc = values.endDateFrom ? moment.utc(values.endDateFrom).format() : undefined;
     const dirtyFields = difference(values, props.initialValues);
-    // console.log("dirty:", dirtyFields)
-
-    return new Promise(resolve => this.props.editRecipient(this.state.taskId, dirtyFields, resolve));
+    return new Promise(resolve =>
+      this.props.editRecipient(this.state.taskId, dirtyFields, resolve));
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     const {
-      handleSubmit, pristine, submitting, reset, companyOptions
+      handleSubmit, pristine, submitting, reset, assigneeOptions, messages,
     } = this.props;
-    if (companyOptions) {
+    if (assigneeOptions) {
       return (
         <Container
           style={{
@@ -56,9 +53,9 @@ class RecipientEditDisplay extends Component {
             >
               <Icon name="edit" />
               <Header.Content>
-                Назначить исполнителя
+                {formatMessage(messages.editHeader)}
                 <Header.Subheader>
-                  Задача # <a>{this.state.taskId}</a>
+                {formatMessage(messages.editSubheader)} <a>{this.state.taskId}</a>
                 </Header.Subheader>
               </Header.Content>
             </Header>
@@ -71,17 +68,17 @@ class RecipientEditDisplay extends Component {
                         // required
                         name="recipient"
                         component={DropdownFormField}
-                        label="ФИО"
-                        opts={companyOptions}
+                        label={formatMessage(messages.editRecipient)}
+                        opts={assigneeOptions}
                       />
                     </Form.Group>
                   </Grid.Column>
                   <Grid.Column mobile={16} tablet={8} computer={4}>
                     <Form.Group widths="equal">
                       <Field
-                        // required
+                        autoComplete='off'
                         name="expectedEndDate"
-                        label="Дата завершения"
+                        label={formatMessage(messages.editExpEndDate)}
                         component={DatePickerFormField}
                       />
                     </Form.Group>
@@ -123,22 +120,8 @@ class RecipientEditDisplay extends Component {
   }
 }
 
-function validate(formProps) {
-  const error = {};
-
-  if (!formProps.recipient) {
-    error.company = 'Выберите ';
-  }
-  if (!formProps.endDateFrom) {
-    error.endDateFrom = 'Выберите дату';
-  }
-
-  return error;
-}
-
 RecipientEditDisplay = reduxForm({
   form: 'recipientEditDisplay',
-  // validate,
   enableReinitialize: true,
 })(RecipientEditDisplay);
 

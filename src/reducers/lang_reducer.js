@@ -1,17 +1,23 @@
-import localeData from './../locales/data.json'
-import {
-  CHANGE_LANGUAGE
-} from '../actions/types'
+import messagesEn from './../locales/new/en.json';
+import messagesRu from './../locales/new/ru.json';
+import messagesTr from './../locales/new/tr.json';
+import { CHANGE_LANGUAGE } from '../actions/types';
 
-export default function (state = {lang: 'en'}, action) {
+export default function (state = { lang: 'en' }, action) {
   // Try full locale, fallback to locale without region code, fallback to en
-  const messages = localeData[action.payload] || localeData.en
+  const messagesAll = {
+    en: messagesEn,
+    ru: messagesRu,
+    tr: messagesTr,
+  };
+
+  const messages = messagesAll[action.payload] || messagesAll.en;
 
   // eslint-disable-next-line
-    switch(action.type) {
-      case CHANGE_LANGUAGE:
-        return {...state, lang: action.payload, messages: messages }
-    }
+  switch (action.type) {
+    case CHANGE_LANGUAGE:
+      return { ...state, lang: action.payload, messages };
+  }
 
-  return state
+  return state;
 }

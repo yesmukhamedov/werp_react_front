@@ -39,15 +39,16 @@ class TaskMonitorSearchDisplay extends Component {
       .filter(param => param)
       .join('&');
 
-    console.log("params:", params)
+    // console.log("params:", params)
     return new Promise(resolve => this.props.searchTasks(params, resolve));
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     const {
-      handleSubmit, pristine, submitting, reset, company, directories, branchOptions, companyOptions
+      handleSubmit, pristine, submitting, reset, company, directories, branchOptions, companyOptions, messages,
     } = this.props;
-    const allOpt = { key: -1, text: 'Все', value: -1 };
+    const allOpt = { key: -1, text: formatMessage(messages.allOption), value: -1 };
     if (directories) {
       return (
         <Form onSubmit={handleSubmit(this.handleSearch)}>
@@ -55,7 +56,7 @@ class TaskMonitorSearchDisplay extends Component {
             <Label
               as="a"
               attached="top"
-              content="Мониторинг задач"
+              content={formatMessage(messages.taskMonitor)}
               icon="checkmark box"
               style={{
                 background: 'rgba(227,232,238, 1)',
@@ -69,7 +70,7 @@ class TaskMonitorSearchDisplay extends Component {
                       required
                       name="company"
                       component={DropdownFormField}
-                      label="Компания"
+                      label={formatMessage(messages.company)}
                       opts={companyOptions}
                     />
                     <Field
@@ -77,7 +78,7 @@ class TaskMonitorSearchDisplay extends Component {
                       multiple
                       name="branch"
                       component={DropdownFormField}
-                      label="Филиал"
+                      label={formatMessage(messages.branch)}
                       opts={company ? [allOpt, ...branchOptions[company]] : []}
                     />
                   </Form.Group>
@@ -87,14 +88,14 @@ class TaskMonitorSearchDisplay extends Component {
                     <Field
                       // required
                       name="endDateFrom"
-                      label="Дата завершения с"
+                      label={formatMessage(messages.endDateFrom)}
                       component={DatePickerFormField}
                       autoComplete="off"
                     />
                     <Field
                       // required
                       name="endDateTo"
-                      label="Дата завершения по"
+                      label={formatMessage(messages.endDateTo)}
                       component={DatePickerFormField}
                       autoComplete="off"
                     />
@@ -109,7 +110,7 @@ class TaskMonitorSearchDisplay extends Component {
                       multiple
                       name="department"
                       component={DropdownFormField}
-                      label="Отдел"
+                      label={formatMessage(messages.department)}
                       opts={[allOpt, ...Object.values(directories.deptOptions)]}
                     />
                     <Field
@@ -117,7 +118,7 @@ class TaskMonitorSearchDisplay extends Component {
                       multiple
                       name="type"
                       component={DropdownFormField}
-                      label="Тип"
+                      label={formatMessage(messages.type)}
                       opts={[allOpt, ...Object.values(directories.typeOptions)]}
                     />
                   </Form.Group>
@@ -126,13 +127,13 @@ class TaskMonitorSearchDisplay extends Component {
                   <Form.Group>
                     <Field
                       name="startDateFrom"
-                      label="Дата создания c"
+                      label={formatMessage(messages.startDateFrom)}
                       component={DatePickerFormField}
                       autoComplete="off"
                     />
                     <Field
                       name="startDateTo"
-                      label="Дата создания по"
+                      label={formatMessage(messages.startDateTo)}
                       component={DatePickerFormField}
                       autoComplete="off"
                     />
@@ -143,7 +144,7 @@ class TaskMonitorSearchDisplay extends Component {
                 <Grid.Column width={2} >
                   <Form.Group widths="equal">
                     <Form.Button
-                      content="Поиск"
+                      content={formatMessage(messages.search)}
                       type="submit"
                       loading={submitting}
                       disabled={pristine || submitting}
@@ -151,7 +152,7 @@ class TaskMonitorSearchDisplay extends Component {
                         { background: 'rgba(84,170,169, 1)', color: 'white' }}
                     />
                     <Form.Button
-                      content="Сброс"
+                      content={formatMessage(messages.reset)}
                       type="button"
                       disabled={pristine || submitting}
                       style={
@@ -174,14 +175,15 @@ class TaskMonitorSearchDisplay extends Component {
   }
 }
 
-function validate(formProps) {
+function validate(formProps, state) {
+  const { formatMessage } = state.intl;
   const error = {};
 
   if (!formProps.company) {
-    error.company = 'Выберите компанию';
+    error.company = formatMessage({ id: 'Form.CompanyError' });
   }
   if (!formProps.branch || (formProps.branch && formProps.branch.length === 0)) {
-    error.branch = 'Выберите филиал';
+    error.branch = formatMessage({ id: 'Form.BranchError' });
   }
   // if (!formProps.endDateFrom) {
   //   error.endDateFrom = 'Выберите дату';
@@ -190,10 +192,10 @@ function validate(formProps) {
   //   error.endDateTo = 'Выберите дату';
   // }
   if (!formProps.department || (formProps.department && formProps.department.length === 0)) {
-    error.department = 'Выберите отдел';
+    error.department = formatMessage({ id: 'Form.DepartmentError' });
   }
   if (!formProps.type || (formProps.type && formProps.type.length === 0)) {
-    error.type = 'Выберите тип';
+    error.type = formatMessage({ id: 'Form.TypeError' });
   }
 
   return error;

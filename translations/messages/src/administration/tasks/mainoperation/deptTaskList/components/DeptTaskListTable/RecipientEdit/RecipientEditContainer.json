@@ -1,0 +1,18 @@
+[
+  {
+    "id": "Recipient.Edit.Header",
+    "defaultMessage": "Assign recipent"
+  },
+  {
+    "id": "Recipient.Edit.Subheader",
+    "defaultMessage": "Task #"
+  },
+  {
+    "id": "Recipient.Edit.Recipient",
+    "defaultMessage": "Recipient"
+  },
+  {
+    "id": "Recipient.Edit.ExpEndDate",
+    "defaultMessage": "Expected end date"
+  }
+]
