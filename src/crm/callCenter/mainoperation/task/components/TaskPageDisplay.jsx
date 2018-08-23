@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Dimmer, Loader } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
-//import TaskInfoWrapper from './TaskInfo/TaskInfoWrapper';
+// import TaskInfoWrapper from './TaskInfo/TaskInfoWrapper';
 import TaskHistoryDisplay from './TaskHistory/TaskHistoryDisplay';
 
 class TaskPageDisplay extends Component {
@@ -18,7 +18,15 @@ class TaskPageDisplay extends Component {
   }
 
   render() {
-    const { taskDetails, TaskInfoWrapper } = this.props;
+    const {
+      taskDetails,
+      attachment,
+      TaskInfoWrapper,
+      toggleModal,
+      modalAttachment,
+      addUpload,
+      deleteUpload,
+    } = this.props;
     if (taskDetails) {
       return (
         <Container
@@ -30,7 +38,15 @@ class TaskPageDisplay extends Component {
             paddingRight: '2em',
           }}
         >
-          <TaskInfoWrapper lang={this.props.lang} {...taskDetails} />
+          <TaskInfoWrapper
+            lang={this.props.lang}
+            {...taskDetails}
+            attachment={attachment}
+            toggleModal={toggleModal}
+            modalAttachment={modalAttachment}
+            addUpload={addUpload}
+            deleteUpload={deleteUpload}
+          />
           <TaskHistoryDisplay {...taskDetails} />
         </Container>
       );

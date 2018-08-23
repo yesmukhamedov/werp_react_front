@@ -216,3 +216,9 @@ export function DELETE(url) {
   });
 }
 
+export function PUT(url, data) {
+  return axios.put(url, data, {
+    headers: { authorization: localStorage.getItem('token') },
+  });
+}
+
