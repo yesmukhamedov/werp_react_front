@@ -10,7 +10,7 @@ import '../../css/repStyle.css'
 /**
  *Отчет Демо/Продажа
  */
-export function RepTable894(props){
+export function RepTable894And934(props){
     let {items,transactionId} = props
     if(!items){
         items = []
@@ -86,6 +86,53 @@ export function RepTable894(props){
 
         </Table.Body>
     </Table>
+}
+
+export function RepTable894(props){
+    return <div>
+        <RepTable894And934 transactionId={props.transactionId} items={props.items} />
+        <RepTable894Descriptions />
+    </div>
+}
+
+export function RepTable894Descriptions (){
+    return <div className="ui info message" style={{width:'300px'}}>
+        <span>1-й уровень: 1/1 - 7/1 </span><br/>
+        <span>2-й уровень: 8/1 - 10/1 </span><br/>
+        <span>3-й уровень: 11/1 и больше </span>
+    </div>
+}
+
+export function RepTable934(props){
+
+    return <div>
+            <RepTable894And934 transactionId={props.transactionId} items={props.items} />
+            <RepTable934Descriptions />
+    </div>
+}
+
+export function RepTable934Descriptions (){
+    return <div className="ui info message" style={{width:'300px'}}>
+        <span>1-й уровень: 1/10 и больше </span><br/>
+        <span>2-й уровень: 1/9 - 1/7 </span><br/>
+        <span>3-й уровень: 1/6 и меньше </span>
+    </div>
+}
+
+export function RepTable935(props){
+
+    return <div>
+        <RepTable894And934 transactionId={props.transactionId} items={props.items} />
+        <RepTable935Descriptions />
+    </div>
+}
+
+export function RepTable935Descriptions (){
+    return <div className="ui info message" style={{width:'300px'}}>
+        <span>1-й уровень: 25 и больше </span><br/>
+        <span>2-й уровень: 24 - 20 </span><br/>
+        <span>3-й уровень: 19 и меньше </span>
+    </div>
 }
 
 export function RepTable914(props){
