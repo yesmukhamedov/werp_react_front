@@ -209,3 +209,10 @@ export function GET(url) {
     headers: { authorization: localStorage.getItem('token') },
   });
 }
+
+export function DELETE(url) {
+  return axios.delete(url, {
+    headers: { authorization: localStorage.getItem('token') },
+  });
+}
+

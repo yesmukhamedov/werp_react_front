@@ -13,7 +13,7 @@ export function searchTasks(params, resolve) {
       headers: { authorization: localStorage.getItem('token') },
     })
       .then(({ data }) => {
-        console.log(data);
+        // console.log(data);
         dispatch({
           type: FOUND_MONITOR_TASKS,
           payload: data,

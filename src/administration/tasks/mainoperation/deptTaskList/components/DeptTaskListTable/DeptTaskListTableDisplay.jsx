@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import { Link } from 'react-router-dom';
-import { Icon, Label } from 'semantic-ui-react';
+import { Icon, Label, Button } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import PropTypes from 'prop-types';
 import RecipientEditModal from './RecipientEdit/RecipientEditModal';
@@ -16,7 +16,6 @@ class DeptTaskListTableDisplay extends Component {
       selectedIdx: undefined,
       modalOpen: false,
       taskId: undefined,
-      recipientId: undefined,
     };
 
     this.handleEditModal = this.handleEditModal.bind(this);
@@ -36,7 +35,8 @@ class DeptTaskListTableDisplay extends Component {
   }
 
   render() {
-    const { lang } = this.props;
+    const { formatMessage } = this.props.intl;
+    const { lang, messages } = this.props;
     const columns = [
       {
         Header: '#',
@@ -52,7 +52,7 @@ class DeptTaskListTableDisplay extends Component {
         },
       },
       {
-        Header: 'Филиал',
+        Header: formatMessage(messages.branch),
         accessor: 'recipient.branch.value',
         maxWidth: 160,
         Cell: (props) => {
@@ -65,7 +65,7 @@ class DeptTaskListTableDisplay extends Component {
         },
       },
       {
-        Header: 'Отдел',
+        Header: formatMessage(messages.department),
         accessor: 'recipient.department.value',
         Cell: (props) => {
           const { recipient } = props.original;
@@ -77,7 +77,7 @@ class DeptTaskListTableDisplay extends Component {
         },
       },
       {
-        Header: 'Тип',
+        Header: formatMessage(messages.type),
         accessor: 'type.code',
         Cell: (props) => {
           const { type } = props.original;
@@ -89,7 +89,7 @@ class DeptTaskListTableDisplay extends Component {
         },
       },
       {
-        Header: 'Название ',
+        Header: formatMessage(messages.title),
         accessor: 'title',
         maxWidth: 380,
         Cell: (props) => {
@@ -102,7 +102,7 @@ class DeptTaskListTableDisplay extends Component {
         },
       },
       {
-        Header: 'Статус',
+        Header: formatMessage(messages.status),
         accessor: 'status.id',
         Cell: (props) => {
           const { status } = props.original;
@@ -119,7 +119,7 @@ class DeptTaskListTableDisplay extends Component {
         },
       },
       {
-        Header: 'Дата создания',
+        Header: formatMessage(messages.createdAt),
         accessor: 'createdAt',
         // maxWidth: 125,
         Cell: (props) => {
@@ -128,16 +128,20 @@ class DeptTaskListTableDisplay extends Component {
         },
       },
       {
-        Header: 'Дата завершения',
-        accessor: 'modifiedAt',
+        Header: formatMessage(messages.estimatedAt),
+        accessor: 'estimatedAt',
         // maxWidth: 125,
         Cell: (props) => {
-          const { modifiedAt, status } = props.original;
-          return (status.id === 5) ? formatDMYMS(modifiedAt) : undefined;
+          const { estimatedAt } = props.original;
+          return (
+            <div>
+              { estimatedAt && formatDMYMS(estimatedAt) }
+            </div>
+          );
         },
       },
       {
-        Header: 'Заказчик',
+        Header: formatMessage(messages.author),
         accessor: 'author.id',
         Cell: (props) => {
           const { author } = props.original;
@@ -149,7 +153,7 @@ class DeptTaskListTableDisplay extends Component {
         },
       },
       {
-        Header: 'Исполнитель',
+        Header: formatMessage(messages.recipient),
         accessor: 'recipient',
         Cell: (props) => {
           const { recipient } = props.original;
@@ -162,11 +166,28 @@ class DeptTaskListTableDisplay extends Component {
       },
       {
         accessor: 'id',
-        maxWidth: 60,
-        Cell: () => (
-          <div style={{ textAlign: 'center' }}>
-            <Icon link name="edit" size="large" color="black" onClick={this.handleEditModal} />
-          </div>),
+        maxWidth: 100,
+        Cell: (props) => {
+          const { id, recipient, status } = props.original;
+          let disabled = false;
+          if (recipient.assignee || status.id === 5) {
+            disabled = true;
+          }
+          return (
+            <div style={{ textAlign: 'center' }}>
+              <Button.Group icon>
+                <Link target="_blank" to={`/administration/dtskredit/${id}`}>
+                  <Button>
+                    <Icon link name="edit" color="black" />
+                  </Button>
+                </Link>
+                <Button onClick={this.handleEditModal} disabled={disabled}>
+                  <Icon link name="tag" color="black" />
+                </Button>
+              </Button.Group>
+            </div>
+          );
+        },
       },
     ];
     return (
@@ -190,7 +211,6 @@ class DeptTaskListTableDisplay extends Component {
                 this.setState({
                   selectedIdx: rowInfo.index,
                   taskId: rowInfo.original.id,
-                  recipientId: rowInfo.original.recipient && rowInfo.original.recipient.position.id,
                 });
             },
             style: {

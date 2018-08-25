@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Comment, List } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
+import { formatDMY } from '../../../../../../utils/helpers';
 
 const TaskHistoryItemDisplay = (props) => {
   let diff = {};
@@ -60,6 +61,18 @@ const TaskHistoryItemDisplay = (props) => {
                   <i>
                     {`Параметр Должность изменился с ${dir.posOptions[diff.position.from].text} 
                                                    на ${dir.posOptions[diff.position.to].text}`}
+                  </i>
+                </List.Item>}
+              {diff.estimatedAt &&
+                <List.Item as="li" value="-">
+                  <i>
+                    {`Параметр Дата завершения изменился с ${diff.estimatedAt.from !== 'null' ? formatDMY(diff.estimatedAt.from) : '---'} на ${formatDMY(diff.estimatedAt.to)}`}
+                  </i>
+                </List.Item>}
+              {diff.assignee &&
+                <List.Item as="li" value="-">
+                  <i>
+                    {`Параметр Исполнитель изменился с ${diff.assignee.from} на ${diff.assignee.to}`}
                   </i>
                 </List.Item>}
             </List>

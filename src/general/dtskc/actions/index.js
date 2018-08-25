@@ -156,6 +156,9 @@ export function createTask(formValues, successCallback) {
       id: formValues.initiatorManager,
     },
     estimatedAt: moment.utc(formValues.estimatedAt, 'DD.MM.YYYY').format(),
+    attachment: {
+      attachmentJson: JSON.stringify(formValues.uploadList),
+    },
   };
 
   const request = axios.post(

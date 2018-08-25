@@ -13,6 +13,7 @@
     "match-sorter": "^2.2.0",
     "moment": "^2.20.1",
     "prop-types": "^15.6.0",
+    "rc-upload": "^2.5.1",
     "react": "^16.2.0",
     "react-datepicker": "^0.56.0",
     "react-dom": "^16.2.0",
@@ -46,7 +47,7 @@
     "build:prod": "cross-env REACT_APP_LEGACY_URL_LOCAL=http://192.168.0.15:23029/werp REACT_APP_LEGACY_URL_REMOTE=http://werp.kz:23029/werp REACT_APP_ROOT_URL_LOCAL=http://192.168.0.15:23050 REACT_APP_ROOT_URL_REMOTE=http://werp.kz:23050 react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "translate": "cross-env NODE_ENV=production babel ./src > NUL",
+    "extract-messages": "cross-env NODE_ENV=production babel ./src > NUL",
     "build:langs": "cross-env NODE_ENV=production ./node_modules/.bin/babel-node src/utils/translator.js",
     "lint": "eslint . --ext .js,.jsx"
   },

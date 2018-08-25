@@ -1,39 +1,55 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Container, Form, Button, Header, Segment } from 'semantic-ui-react';
+import UploadPanelDisplay from './UploadPanelDisplay';
+import AttachmentPanelDisplay from './AttachmentPanelDisplay';
 import {
   DropdownFormField,
   TextAreaFormField,
   TextInputFormField,
   DatePickerFormField,
 } from '../../../utils/formFields';
-import AttachmentPanelDisplay from './AttachmentsPanelDisplay';
 import browserHistory from '../../../utils/history';
+import { DELETE } from '../../../utils/helpers';
 import './style.css';
 
 class DtskcComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      uploadList: [],
+    };
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
+    this.handleUploadDelete = this.handleUploadDelete.bind(this);
   }
 
   componentWillMount() {
-    const {
-      fetchReferences,
-      lang,
-    } = this.props;
+    const { fetchReferences, lang } = this.props;
     fetchReferences(lang);
   }
 
-  componentWillUnmount() {
+  componentWillUnmount() {}
 
+  handleUpload(upload) {
+    this.setState({ uploadList: [...this.state.uploadList, upload] });
+  }
+
+  handleUploadDelete(url) {
+    const req = DELETE(url);
+    req
+      .then(() => {
+        const newUploadList = this.state.uploadList.filter(el => el.fileDownloadUri !== url);
+        this.setState({ uploadList: newUploadList });
+      })
+      .catch(error => console.log('handleUploadDelete', error));
   }
 
   handleFormSubmit(formValues) {
     const { createTask } = this.props;
-    createTask(formValues, (data) => {
+    const { uploadList } = this.state;
+    createTask({ ...formValues, uploadList }, (data) => {
       const { id: taskId } = data;
       browserHistory.push(`/general/gtskedit/${taskId}`);
     });
@@ -119,11 +135,13 @@ class DtskcComponent extends Component {
                 component={DropdownFormField}
                 label="Департамент"
                 opts={deptOpts}
-                onChange={() => fetchUsers({
-                  branchId: selectedBranch,
-                  burks: selectedCompany,
-                  // departmentId: selectedDepartment,
-                })}
+                onChange={() =>
+                  fetchUsers({
+                    branchId: selectedBranch,
+                    burks: selectedCompany,
+                    // departmentId: selectedDepartment,
+                  })
+                }
               />
               <Field
                 name="assignee"
@@ -163,7 +181,7 @@ class DtskcComponent extends Component {
                 autoComplete="off"
               />
             </Form.Group>
-            <AttachmentPanelDisplay />
+
             <Button color="youtube">Очистить</Button>
             <Button
               positive
@@ -173,6 +191,14 @@ class DtskcComponent extends Component {
               type="submit"
             />
           </Form>
+        </Segment>
+        <Segment padded color="grey">
+          <AttachmentPanelDisplay
+            attachment={this.state.uploadList}
+            onDelete={this.handleUploadDelete}
+          >
+            <UploadPanelDisplay onUploadSuccess={this.handleUpload} />
+          </AttachmentPanelDisplay>
         </Segment>
       </Container>
     );

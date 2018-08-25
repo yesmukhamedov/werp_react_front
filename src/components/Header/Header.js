@@ -160,5 +160,7 @@ function mapStateToProps(state) {
 Header.propTypes = {
   intl: intlShape.isRequired,
 };
-  
-export default connect(mapStateToProps, {fetchUnreadMessages, breadcrumbChanged, fetchTreeMenu, fetchUserInfo})(injectIntl(Header));
+
+export default connect(mapStateToProps, {
+  fetchUnreadMessages, breadcrumbChanged, fetchTreeMenu, fetchUserInfo,
+})(injectIntl(Header));
