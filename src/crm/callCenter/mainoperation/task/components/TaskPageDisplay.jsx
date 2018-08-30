@@ -46,6 +46,7 @@ class TaskPageDisplay extends Component {
             modalAttachment={modalAttachment}
             addUpload={addUpload}
             deleteUpload={deleteUpload}
+            uploadable
           />
           <TaskHistoryDisplay {...taskDetails} />
         </Container>

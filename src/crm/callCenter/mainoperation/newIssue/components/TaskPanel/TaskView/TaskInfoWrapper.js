@@ -2,11 +2,11 @@ import React from 'react';
 import TaskInfoComponent from '../../../../task/components/TaskInfo/TaskInfoComponent';
 import TaskEditContainer from './TaskEditContainer';
 
-const TaskEditModalWrapper = props => (
+const TaskInfoWrapper = props => (
   <TaskInfoComponent
     TaskEditContainer={TaskEditContainer}
     {...props}
   />
 );
 
-export default TaskEditModalWrapper;
+export default TaskInfoWrapper;

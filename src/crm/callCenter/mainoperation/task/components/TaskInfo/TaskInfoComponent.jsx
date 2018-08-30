@@ -61,10 +61,11 @@ class TaskInfoComponent extends Component {
         createdAt,
         description,
         TaskEditContainer,
-        attachment,
+        attachment = {},
         lang,
         modalAttachment,
         toggleModal,
+        uploadble,
       } = this.props;
 
       const closedAt =
@@ -225,15 +226,22 @@ class TaskInfoComponent extends Component {
                     </Container>
                   </Grid.Column>
                 </Grid.Row>
-                <Grid.Row>
-                  <Grid.Column>
-                    <Button
-                      icon="setting"
-                      onClick={() => toggleModal(modalAttachment)}
-                    />
-                    <AttachmentPanelDisplay attachment={attachment.attachmentJson} />
-                  </Grid.Column>
-                </Grid.Row>
+                {
+                  uploadble &&
+                  <Grid.Row>
+                    <Grid.Column>
+                      <Button
+                        icon="edit"
+                        size="tiny"
+                        floated="right"
+                        color="twitter"
+                        content="Редактировать"
+                        onClick={() => toggleModal(modalAttachment)}
+                      />
+                      <AttachmentPanelDisplay attachment={attachment.attachmentJson} />
+                    </Grid.Column>
+                  </Grid.Row>
+                }
               </Grid>
             </Form>
           </Segment>

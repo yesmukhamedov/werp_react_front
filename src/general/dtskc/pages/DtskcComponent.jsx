@@ -191,7 +191,15 @@ class DtskcComponent extends Component {
               type="submit"
               floated="right"
             />
-            <Button color="youtube" floated="right" content="Отменить" />
+            <Button
+              color="youtube"
+              floated="right"
+              content="Отменить"
+              onClick={() => {
+                this.state.uploadList.forEach(el => this.handleUploadDelete(el.fileDownloadUri));
+                browserHistory.push('/');
+              }}
+            />
             <br />
             <br />
           </Form>

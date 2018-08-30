@@ -40,9 +40,11 @@ class TaskAttachmentModal extends Component {
       <Modal
         open={modalOpen}
         onClose={() => toggleModal(modalOpen)}
+        closeOnEscape={false}
+        closeOnDimmerClick={false}
         size="small"
       >
-        <Header icon="browser" content="Attachments" />
+        <Header icon="browser" content="Прикрепленные файлы" />
         <Modal.Content>
           {attachmentJson && (
             <List divided verticalAlign="middle">
@@ -60,9 +62,8 @@ class TaskAttachmentModal extends Component {
                         />
                       }
                     </List.Content>
-                    <List.Icon name="download" size="big" />
                     <List.Content as="a" target="_blank" href={fileDownloadUri}>
-                      {fileName}
+                      <List.Icon name="download" size="big" />{fileName}
                     </List.Content>
                   </List.Item>
                 );
@@ -78,13 +79,12 @@ class TaskAttachmentModal extends Component {
           <Button.Group floated="right">
             <Button
               color="green"
-              inverted
               onClick={() => {
                 synchronizeAttachments(attachment);
                 toggleModal(modalOpen);
               }}
             >
-              <Icon name="checkmark" /> Got it
+              <Icon name="checkmark" /> Ок
             </Button>
           </Button.Group>
         </Modal.Actions>

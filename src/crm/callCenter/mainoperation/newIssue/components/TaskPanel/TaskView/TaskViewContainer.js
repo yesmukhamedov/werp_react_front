@@ -6,7 +6,7 @@ import TaskInfoWrapper from './TaskInfoWrapper';
 
 function mapStateToProps(state) {
   return {
-    taskDetails: state.task.taskDetails,
+    taskDetails: state.gtskeditTransaction.taskDetails,
     lang: state.locales.lang,
     TaskInfoWrapper,
   };
