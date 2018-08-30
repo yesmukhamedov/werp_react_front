@@ -40,7 +40,9 @@ class DtskcComponent extends Component {
     const req = DELETE(url);
     req
       .then(() => {
-        const newUploadList = this.state.uploadList.filter(el => el.fileDownloadUri !== url);
+        const newUploadList = this.state.uploadList.filter(
+          el => el.fileDownloadUri !== url,
+        );
         this.setState({ uploadList: newUploadList });
       })
       .catch(error => console.log('handleUploadDelete', error));
@@ -49,7 +51,7 @@ class DtskcComponent extends Component {
   handleFormSubmit(formValues) {
     const { createTask } = this.props;
     const { uploadList } = this.state;
-    createTask({ ...formValues, uploadList }, (data) => {
+    createTask({ ...formValues, uploadList }, data => {
       const { id: taskId } = data;
       browserHistory.push(`/general/gtskedit/${taskId}`);
     });
@@ -81,7 +83,7 @@ class DtskcComponent extends Component {
         }}
       >
         <Header as="h2">Новая задача</Header>
-        <Segment raised>
+        <Segment attached="top">
           <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
             <Form.Group widths="2">
               <Field
@@ -181,18 +183,20 @@ class DtskcComponent extends Component {
                 autoComplete="off"
               />
             </Form.Group>
-
-            <Button color="youtube">Очистить</Button>
             <Button
               positive
               icon="checkmark"
               labelPosition="right"
               content="Создать"
               type="submit"
+              floated="right"
             />
+            <Button color="youtube" floated="right" content="Отменить" />
+            <br />
+            <br />
           </Form>
         </Segment>
-        <Segment padded color="grey">
+        <Segment attached="bottom">
           <AttachmentPanelDisplay
             attachment={this.state.uploadList}
             onDelete={this.handleUploadDelete}
@@ -205,7 +209,7 @@ class DtskcComponent extends Component {
   }
 }
 
-const validate = (values) => {
+const validate = values => {
   const errors = {};
   if (!values.title) {
     errors.title = 'Объязательное поле для заполнения';
