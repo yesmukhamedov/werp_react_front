@@ -1,6 +1,9 @@
 import { connect } from 'react-redux';
+import moment from 'moment';
 import { editTask } from '../../actions/TaskAction';
 import TaskEditModalWrapper from './TaskEditModalWrapper';
+// import { formatDMY } from '../../../../../../utils/helpers';
+
 
 function mapStateToProps(state, props) {
   const initialData = {
@@ -11,6 +14,7 @@ function mapStateToProps(state, props) {
     department: props.recipient.department.id,
     position: props.recipient.position.id,
     description: props.description,
+    estimatedAt: props.estimatedAt && moment(props.estimatedAt),
   };
   return {
     directories: state.taskList.directories,

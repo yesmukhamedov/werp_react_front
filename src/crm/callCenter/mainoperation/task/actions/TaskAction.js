@@ -1,8 +1,10 @@
 /* jshint esversion: 6 */
 import axios from 'axios';
+import moment from 'moment';
 import { ROOT_URL } from '../../../../../utils/constants';
 import { PUT } from '../../../../../utils/helpers';
 import { notify } from '../../../../../general/notification/notification_action';
+
 
 export const CLEAR_TASK_STORE = 'clear_task_store';
 export const FETCH_TASK_DETAILS = 'fetch_task_details';
@@ -102,6 +104,9 @@ export function editTask(taskId, fields) {
   }
   if (fields.description) {
     dirtyFields.description = fields.description;
+  }
+  if (fields.estimatedAt) {
+    dirtyFields.estimatedAt = moment.utc(fields.estimatedAt, 'DD.MM.YYYY').format();
   }
   if (fields.status) {
     const status = { id: fields.status };

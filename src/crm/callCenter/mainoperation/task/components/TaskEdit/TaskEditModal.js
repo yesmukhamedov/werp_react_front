@@ -8,6 +8,7 @@ import {
   DropdownFormField,
   TextAreaFormField,
   TextInputFormField,
+  DatePickerFormField,
 } from '../../../../../../utils/formFields';
 
 class TaskEditModal extends Component {
@@ -76,6 +77,14 @@ class TaskEditModal extends Component {
                   label="Приоритет"
                   disabled={this.props.fieldState.priority}
                   opts={directories && Object.values(directories.priorityOptions)}
+                />
+                <Field
+                  name="estimatedAt"
+                  component={DatePickerFormField}
+                  label="Предполагаемая дата закрытия"
+                  dateFormat="DD.MM.YYYY"
+                  autoComplete="off"
+                  disabled={this.props.fieldState.estimatedAt}
                 />
               </Form.Group>
               <Segment>

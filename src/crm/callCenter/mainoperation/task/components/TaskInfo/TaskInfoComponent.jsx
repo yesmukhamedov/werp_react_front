@@ -19,6 +19,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { LEGACY_URL } from '../../../../../../utils/constants';
 import {
   formatDMYMS,
+  formatDMY,
   constructFullName,
 } from '../../../../../../utils/helpers';
 import { AttachmentPanelDisplay } from '../../../../../../general/dtskc/pages';
@@ -66,11 +67,13 @@ class TaskInfoComponent extends Component {
         modalAttachment,
         toggleModal,
         uploadble,
+        estimatedAt,
+        modifiedAt
       } = this.props;
 
       const closedAt =
         status.id === 5 ? (
-          formatDMYMS(this.props.modifiedAt)
+          formatDMYMS(modifiedAt)
         ) : (
           <span>&mdash;</span>
         );
@@ -156,7 +159,9 @@ class TaskInfoComponent extends Component {
                         <List.Content>{formatDMYMS(createdAt)}</List.Content>
                       </List.Item>
                       <List.Item>
-                        <List.Content>{closedAt}</List.Content>
+                        <List.Content>
+                          { (estimatedAt ? formatDMY(estimatedAt) : <span>&mdash;</span>) }
+                        </List.Content>
                       </List.Item>
                       <List.Item>
                         <List.Content>
