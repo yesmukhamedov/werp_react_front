@@ -2,7 +2,7 @@ import React,{Component} from 'react'
 import { connect } from 'react-redux'
 import {REP_894,REP_914,REP_934,REP_935,REP_740} from '../../crmRepUtil'
 import { Modal,Form,TextArea,Button } from 'semantic-ui-react'
-import {RepTable894,RepTable914,RepTable740} from './RepTables'
+import {RepTable894,RepTable914,RepTable740,RepTable934,RepTable935} from './RepTables'
 import {toggleRepModal,updateDirectorNote} from '../../actions/crmReportAction'
 
 
@@ -62,9 +62,13 @@ class RepTable extends Component{
         const {id} = this.props.meta
         switch (id){
             case REP_894:
-            case REP_934:
-            case REP_935:
                 return <RepTable894 transactionId={id} items={this.props.items} />
+
+            case REP_934:
+                return <RepTable934 transactionId={id} items={this.props.items} />
+
+            case REP_935:
+                return <RepTable935 transactionId={id} items={this.props.items} />
 
             case REP_740:
                 return <div>
