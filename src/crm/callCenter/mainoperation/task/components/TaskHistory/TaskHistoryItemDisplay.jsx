@@ -59,7 +59,7 @@ const TaskHistoryItemDisplay = (props) => {
               {diff.position &&
                 <List.Item as="li" value="-">
                   <i>
-                    {`Параметр Должность изменился с ${dir.posOptions[diff.position.from].text} 
+                    {`Параметр Должность изменился с ${dir.posOptions[diff.position.from] && dir.posOptions[diff.position.from].text} 
                                                    на ${dir.posOptions[diff.position.to].text}`}
                   </i>
                 </List.Item>}

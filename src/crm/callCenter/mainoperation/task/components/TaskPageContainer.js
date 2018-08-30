@@ -1,19 +1,35 @@
 import { connect } from 'react-redux';
 import { getTaskDirectories } from '../../taskList/actions/TaskListAction';
-import { fetchTaskById, clearTaskStore } from '../actions/TaskAction';
+import {
+  fetchTaskById,
+  clearTaskStore,
+  toggleModal,
+  addUpload,
+  deleteUpload,
+} from '../actions/TaskAction';
 import TaskPageDisplay from './TaskPageDisplay';
 import TaskInfoWrapper from './TaskInfo/TaskInfoWrapper';
 
 function mapStateToProps(state) {
   return {
-    taskDetails: state.task.taskDetails,
+    taskDetails: state.gtskeditTransaction.taskDetails,
+    attachment: state.gtskeditTransaction.attachment,
     lang: state.locales.lang,
     TaskInfoWrapper,
-
+    modalAttachment: state.gtskeditTransaction.modalAttachment,
   };
 }
 
-const TaskPageContainer =
-  connect(mapStateToProps, { getTaskDirectories, fetchTaskById, clearTaskStore })(TaskPageDisplay);
+const TaskPageContainer = connect(
+  mapStateToProps,
+  {
+    getTaskDirectories,
+    fetchTaskById,
+    clearTaskStore,
+    toggleModal,
+    addUpload,
+    deleteUpload,
+  },
+)(TaskPageDisplay);
 
 export default TaskPageContainer;

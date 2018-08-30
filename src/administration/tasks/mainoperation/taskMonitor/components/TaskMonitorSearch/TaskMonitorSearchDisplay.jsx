@@ -180,10 +180,10 @@ function validate(formProps, state) {
   const error = {};
 
   if (!formProps.company) {
-    error.company = formatMessage({ id: 'Form.Company.Error' });
+    error.company = formatMessage({ id: 'Form.CompanyError' });
   }
   if (!formProps.branch || (formProps.branch && formProps.branch.length === 0)) {
-    error.branch = formatMessage({ id: 'Form.Branch.Error' });
+    error.branch = formatMessage({ id: 'Form.BranchError' });
   }
   // if (!formProps.endDateFrom) {
   //   error.endDateFrom = 'Выберите дату';
@@ -192,10 +192,10 @@ function validate(formProps, state) {
   //   error.endDateTo = 'Выберите дату';
   // }
   if (!formProps.department || (formProps.department && formProps.department.length === 0)) {
-    error.department = formatMessage({ id: 'Form.Department.Error' });
+    error.department = formatMessage({ id: 'Form.DepartmentError' });
   }
   if (!formProps.type || (formProps.type && formProps.type.length === 0)) {
-    error.type = formatMessage({ id: 'Form.Type.Error' });
+    error.type = formatMessage({ id: 'Form.TypeError' });
   }
 
   return error;

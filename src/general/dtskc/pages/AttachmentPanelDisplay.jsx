@@ -1,16 +1,21 @@
 import React from 'react';
-import { List, Container, Header, Button } from 'semantic-ui-react';
+import {
+  List,
+  Container,
+  Header,
+  Button,
+  Menu,
+  Segment,
+} from 'semantic-ui-react';
 
 const AttachmentPanelDisplay = (props) => {
-  const {
-    attachment,
-    children,
-    onDelete
-  } = props;
+  const { attachment, children, onDelete } = props;
   return (
     <Container className="attachment-panel">
-      <Header as="h4">Attachment panel</Header>
       {children}
+      <Header as="h5">Прикрепленные файлы</Header>
+      {/* <Segment attached="bottom"> */}
+
       {attachment && (
         <List divided verticalAlign="middle">
           {attachment.map((el, idx) => {
@@ -27,8 +32,8 @@ const AttachmentPanelDisplay = (props) => {
                     />
                   )}
                 </List.Content>
-                <List.Icon name="download" size="big" />
                 <List.Content as="a" target="_blank" href={fileDownloadUri}>
+                  <List.Icon name="download" size="large" />
                   {fileName}
                 </List.Content>
               </List.Item>
@@ -36,6 +41,7 @@ const AttachmentPanelDisplay = (props) => {
           })}
         </List>
       )}
+      {/* </Segment> */}
     </Container>
   );
 };

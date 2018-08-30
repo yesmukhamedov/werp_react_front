@@ -11,6 +11,7 @@ const TaskEditModalWrapper = (props) => {
     position: true,
     description: true,
     comment: false,
+    estimatedAt: true,
   };
   return (
     <TaskEditModal

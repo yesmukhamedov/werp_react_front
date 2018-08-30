@@ -27,7 +27,12 @@ const UploadPanelDisplay = (props) => {
       component="div"
       style={{ display: 'inline-block', marginBottom: '10px' }}
     >
-      <Button content="Upload file" icon="upload" labelPosition="left" />
+      <Button
+        content="Прикрепить файлы"
+        icon="upload"
+        size="small"
+        color="twitter"
+      />
     </Upload>
   );
 };

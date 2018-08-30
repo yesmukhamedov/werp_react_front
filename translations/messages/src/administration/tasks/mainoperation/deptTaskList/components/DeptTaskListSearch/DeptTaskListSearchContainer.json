@@ -8,7 +8,7 @@
     "defaultMessage": "Company"
   },
   {
-    "id": "Form.Company.Error",
+    "id": "Form.CompanyError",
     "defaultMessage": "Select company"
   },
   {
@@ -16,7 +16,7 @@
     "defaultMessage": "Branch"
   },
   {
-    "id": "Form.Branch.Error",
+    "id": "Form.BranchError",
     "defaultMessage": "Select branch"
   },
   {
@@ -32,7 +32,7 @@
     "defaultMessage": "Department"
   },
   {
-    "id": "Form.Department.Error",
+    "id": "Form.DepartmentError",
     "defaultMessage": "Select deparment"
   },
   {
@@ -40,7 +40,7 @@
     "defaultMessage": "Type"
   },
   {
-    "id": "Form.Type.Error",
+    "id": "Form.TypeError",
     "defaultMessage": "Select type"
   },
   {

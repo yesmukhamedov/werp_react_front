@@ -1,15 +1,58 @@
 /* jshint esversion: 6 */
 import axios from 'axios';
+import moment from 'moment';
 import { ROOT_URL } from '../../../../../utils/constants';
+import { PUT } from '../../../../../utils/helpers';
 import { notify } from '../../../../../general/notification/notification_action';
+
 
 export const CLEAR_TASK_STORE = 'clear_task_store';
 export const FETCH_TASK_DETAILS = 'fetch_task_details';
 export const EDIT_TASK = 'edit_task';
+export const TOGGLE_MODAL = 'TOGGLE_MODAL';
+export const ADD_UPLOADED = 'ADD_UPLOADED';
+export const DELETE_UPLOADED = 'DELETE_UPLOADED';
+
+const uploadUpdateUrl = `${ROOT_URL}/api/tasks/attachments`;
+
+export function addUpload(upload) {
+  return {
+    type: ADD_UPLOADED,
+    payload: upload,
+  };
+}
+
+export function deleteUpload(upload) {
+  return {
+    type: DELETE_UPLOADED,
+    payload: upload,
+  };
+}
+
+export function synchronizeAttachments({ attachmentJson: json, id, taskId }) {
+  const req = PUT(`${uploadUpdateUrl}/${taskId}`, {
+    id,
+    taskId,
+    attachmentJson: JSON.stringify(json),
+  });
+  return (dispatch) => {
+    req
+      .then(({ data }) => console.log(data))
+      .catch(error => console.log(error));
+  };
+}
+
 
 export function clearTaskStore() {
   return (dispatch) => {
     dispatch({ type: CLEAR_TASK_STORE });
+  };
+}
+
+export function toggleModal(modalState) {
+  return {
+    type: TOGGLE_MODAL,
+    payload: modalState,
   };
 }
 
@@ -61,6 +104,9 @@ export function editTask(taskId, fields) {
   }
   if (fields.description) {
     dirtyFields.description = fields.description;
+  }
+  if (fields.estimatedAt) {
+    dirtyFields.estimatedAt = moment.utc(fields.estimatedAt, 'DD.MM.YYYY').format();
   }
   if (fields.status) {
     const status = { id: fields.status };

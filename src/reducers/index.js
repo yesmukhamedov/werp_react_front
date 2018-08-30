@@ -47,7 +47,7 @@ const appReducer = combineReducers({
   notification: notificationReducer,
   contractList: contractListReducer,
   taskList: taskListReducer,
-  task: taskReducer,
+  gtskeditTransaction: taskReducer,
   taskMonitor: taskMonitorReducer,
   deptTaskList: deptTaskListReducer,
   userInfo: userInfoReducer,

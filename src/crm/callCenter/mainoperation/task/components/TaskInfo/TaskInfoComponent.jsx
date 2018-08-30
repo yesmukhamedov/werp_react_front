@@ -19,9 +19,11 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { LEGACY_URL } from '../../../../../../utils/constants';
 import {
   formatDMYMS,
+  formatDMY,
   constructFullName,
 } from '../../../../../../utils/helpers';
 import { AttachmentPanelDisplay } from '../../../../../../general/dtskc/pages';
+import { TaskAttachmentModalContainer } from '../TaskAttachmentModal';
 
 class TaskInfoComponent extends Component {
   constructor(props) {
@@ -62,12 +64,16 @@ class TaskInfoComponent extends Component {
         TaskEditContainer,
         attachment = {},
         lang,
+        modalAttachment,
+        toggleModal,
+        uploadble,
+        estimatedAt,
+        modifiedAt
       } = this.props;
 
-      const { attachmentJson = [] } = attachment;
       const closedAt =
         status.id === 5 ? (
-          formatDMYMS(this.props.modifiedAt)
+          formatDMYMS(modifiedAt)
         ) : (
           <span>&mdash;</span>
         );
@@ -153,7 +159,9 @@ class TaskInfoComponent extends Component {
                         <List.Content>{formatDMYMS(createdAt)}</List.Content>
                       </List.Item>
                       <List.Item>
-                        <List.Content>{closedAt}</List.Content>
+                        <List.Content>
+                          { (estimatedAt ? formatDMY(estimatedAt) : <span>&mdash;</span>) }
+                        </List.Content>
                       </List.Item>
                       <List.Item>
                         <List.Content>
@@ -223,11 +231,22 @@ class TaskInfoComponent extends Component {
                     </Container>
                   </Grid.Column>
                 </Grid.Row>
-                <Grid.Row>
-                  <Grid.Column>
-                    <AttachmentPanelDisplay attachment={attachmentJson} />
-                  </Grid.Column>
-                </Grid.Row>
+                {
+                  uploadble &&
+                  <Grid.Row>
+                    <Grid.Column>
+                      <Button
+                        icon="edit"
+                        size="tiny"
+                        floated="right"
+                        color="twitter"
+                        content="Редактировать"
+                        onClick={() => toggleModal(modalAttachment)}
+                      />
+                      <AttachmentPanelDisplay attachment={attachment.attachmentJson} />
+                    </Grid.Column>
+                  </Grid.Row>
+                }
               </Grid>
             </Form>
           </Segment>
@@ -236,6 +255,7 @@ class TaskInfoComponent extends Component {
             handleClose={this.handleModalClose}
             {...this.props}
           />
+          <TaskAttachmentModalContainer />
         </Segment.Group>
       );
     }

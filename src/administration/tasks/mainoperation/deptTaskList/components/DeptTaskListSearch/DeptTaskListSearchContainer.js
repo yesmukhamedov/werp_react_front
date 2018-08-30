@@ -16,7 +16,7 @@ export const messages = defineMessages({
     defaultMessage: 'Company',
   },
   companyError: {
-    id: 'Form.Company.Error',
+    id: 'Form.CompanyError',
     defaultMessage: 'Select company',
   },
   branch: {
@@ -24,7 +24,7 @@ export const messages = defineMessages({
     defaultMessage: 'Branch',
   },
   branchError: {
-    id: 'Form.Branch.Error',
+    id: 'Form.BranchError',
     defaultMessage: 'Select branch',
   },
   endDateFrom: {
@@ -40,7 +40,7 @@ export const messages = defineMessages({
     defaultMessage: 'Department',
   },
   departmentError: {
-    id: 'Form.Department.Error',
+    id: 'Form.DepartmentError',
     defaultMessage: 'Select deparment',
   },
   type: {
@@ -48,7 +48,7 @@ export const messages = defineMessages({
     defaultMessage: 'Type',
   },
   typeError: {
-    id: 'Form.Type.Error',
+    id: 'Form.TypeError',
     defaultMessage: 'Select type',
   },
   startDateFrom: {
