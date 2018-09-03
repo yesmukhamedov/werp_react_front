@@ -4,7 +4,10 @@ import {
     CRM_KPI_BLANK_ITEM,
     CRM_KPI_CLEAR_STATE,
     CRM_KPI_FORM_MODAL_TOGGLE,
-    CRM_KPI_SET_FOR_UPDATE
+    CRM_KPI_SET_FOR_UPDATE,
+    CRM_KPI_ITEM_CREATED,
+    CRM_KPI_ITEM_UPDATED,
+    CRM_KPI_ITEM_DELETED
 } from '../actions/kpiSettingAction';
 
 const INITIAL_STATE={
@@ -48,6 +51,26 @@ export default function (state=INITIAL_STATE, action)
 
         case CRM_KPI_CLEAR_STATE:
             return {...state,INITIAL_STATE }
+
+        case CRM_KPI_ITEM_CREATED:
+        case CRM_KPI_ITEM_UPDATED:
+        case CRM_KPI_ITEM_DELETED:
+            let newItems = []
+            for(let key in state.items){
+                if(state.items[key]['id'] === action.item.id){
+                    if(action.type !== CRM_KPI_ITEM_DELETED){
+                        newItems[key] = action.item
+                    }
+                }else {
+                    newItems[key] = state.items[key]
+                }
+            }
+
+            if(action.type === CRM_KPI_ITEM_CREATED){
+                newItems.push(action.item)
+            }
+
+            return {...state,openKpiFormModal: false, items: newItems}
 
         default:
             return state;

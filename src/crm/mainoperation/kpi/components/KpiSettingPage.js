@@ -6,7 +6,7 @@ import {Container, Header, Segment, Form, Divider, Table,Button,Icon} from 'sema
 import BranchF4 from '../../../../reference/f4/branch/BranchF4'
 import YearF4 from '../../../../reference/f4/date/YearF4'
 import MonthF4 from '../../../../reference/f4/date/MonthF4'
-import {fetchItems,fetchIndicators,blankItem,toggleKpiSettingFormModal,setForUpdate} from '../actions/kpiSettingAction'
+import {fetchItems,fetchIndicators,blankItem,toggleKpiSettingFormModal,setForUpdate,deleteItem} from '../actions/kpiSettingAction'
 import KpiFormModal from './KpiFormModal'
 
 const currentDate = new Date()
@@ -62,6 +62,16 @@ class KpiSettingPage extends Component {
       if(!items){
           items = []
       }
+      let showUpdate = true
+      if(setting.year < currentDate.getFullYear()){
+          showUpdate = false
+      }
+
+      if(setting.year === currentDate.getFullYear() && setting.month < currentDate.getMonth()+1){
+          showUpdate = false
+      }
+
+      let indicators = Object.assign({},this.props.indicators)
       return <Table>
           <Table.Header>
               <Table.Row>
@@ -73,7 +83,7 @@ class KpiSettingPage extends Component {
           <Table.Body>
               {items.map((row) => {
                   return <Table.Row key={row.id}>
-                      <Table.Cell>{row.indicatorName}</Table.Cell>
+                      <Table.Cell>{indicators[row.indicatorId]}</Table.Cell>
                       <Table.Cell>{row.value}</Table.Cell>
                       <Table.Cell>{row.point}</Table.Cell>
                   </Table.Row>
@@ -84,14 +94,23 @@ class KpiSettingPage extends Component {
               <Table.Row>
                   <Table.HeaderCell />
                   <Table.HeaderCell colSpan='2'>
+                      {showUpdate?
                       <Button onClick={() => this.setForUpdate(setting)} icon floated={'right'}>
                           <Icon name='pencil' />
-                      </Button>
+                      </Button>:''}
                   </Table.HeaderCell>
               </Table.Row>
           </Table.Footer>
       </Table>
   }
+
+    deleteSetting = (id) => {
+      if(!window.confirm('Действительно хотите удалить?')){
+          return;
+      }
+
+        this.props.deleteItem(id)
+    }
 
   renderDataTable () {
     const {items} = this.props;
@@ -99,6 +118,13 @@ class KpiSettingPage extends Component {
       <ReactTable
         data={items || []}
         columns={[
+            {
+                Header: '',
+                accessor: 'id',
+                filterable: false,
+                maxWidth: 150,
+                Cell: ({value}) => <Button icon={'trash'} onClick={() => this.deleteSetting(value)} />
+            },
           {
             Header: 'Компания',
             accessor: 'bukrsName',
@@ -202,10 +228,11 @@ function mapStateToProps (state) {
     return {
         items:state.crmKpiSetting.items,
         branchOptionsMarketing: state.userInfo.branchOptionsMarketing,
-        companyOptions: state.userInfo.companyOptions
+        companyOptions: state.userInfo.companyOptions,
+        indicators:state.crmKpiSetting.indicators
     }
 }
 
 export default connect(mapStateToProps, {
-    fetchItems,fetchIndicators,blankItem,toggleKpiSettingFormModal,setForUpdate
+    fetchItems,fetchIndicators,blankItem,toggleKpiSettingFormModal,setForUpdate,deleteItem
 })(KpiSettingPage)

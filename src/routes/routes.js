@@ -324,6 +324,7 @@ const getComponent = {
     CrmRecoView:AsyncRecoViewPage,
     CrmDemoView:AsyncDemoViewPage,
     CrmVisitView:AsyncVisitViewPage,
+    CrmKpiSetting: AsyncKpiSettingPage,
     OutCallTaskPage: AsyncOutCallTaskPage,
     HrStaffList:AsyncStaffListPage,
     HrStaffUpdate:AsyncStaffUpdatePage,
@@ -352,7 +353,6 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/newIssue/:id" component={AsyncNewIssuePageContainer} />
       <Route path="/hr/staff/update/:id?" component={AsyncStaffUpdatePage} />
       <Route path="/hr/staff/view/:id" component={AsyncStaffViewPage} />
-      <Route path="/crm/kpi/setting" component={AsyncKpiSettingPage} />
       <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} />
       <Route path="/crm/wspace" component={AsyncCrmWspacePage} />
       {/* <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} /> */}

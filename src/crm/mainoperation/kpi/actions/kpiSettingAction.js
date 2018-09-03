@@ -6,8 +6,9 @@ import {handleError} from '../../../../general/notification/notification_action'
 export const CRM_KPI_FETCH_ITEMS = 'CRM_KPI_FETCH_ITEMS';
 export const CRM_KPI_FETCH_INDICATORS = 'CRM_KPI_FETCH_INDICATORS';
 export const CRM_KPI_BLANK_ITEM = 'CRM_KPI_BLANK_ITEM';
-export const CRM_KPI_UPDATE_ITEM = 'CRM_KPI_UPDATE_ITEM';
-export const CRM_KPI_CREATE_ITEM = 'CRM_KPI_CREATE_ITEM';
+export const CRM_KPI_ITEM_UPDATED = 'CRM_KPI_ITEM_UPDATED';
+export const CRM_KPI_ITEM_CREATED = 'CRM_KPI_ITEM_CREATED';
+export const CRM_KPI_ITEM_DELETED = 'CRM_KPI_ITEM_DELETED';
 export const CRM_KPI_SET_FOR_UPDATE = 'CRM_KPI_SET_FOR_UPDATE'
 
 export const CRM_KPI_FORM_MODAL_TOGGLE = 'CRM_KPI_FORM_MODAL_TOGGLE';
@@ -83,8 +84,26 @@ export function createItem(item){
         })
             .then(({data}) => {
                 dispatch({
-                    type: CRM_KPI_CREATE_ITEM,
-                    item:item
+                    type: CRM_KPI_ITEM_CREATED,
+                    item:data
+                });
+            }).catch((error) => {
+            handleError(error,dispatch)
+        })
+    }
+}
+
+export function deleteItem(id){
+    return function(dispatch){
+        axios.delete(`${ROOT_URL}/api/crm/kpi/setting/` + id, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        })
+            .then(({data}) => {
+                dispatch({
+                    type: CRM_KPI_ITEM_DELETED,
+                    item:data
                 });
             }).catch((error) => {
             handleError(error,dispatch)
@@ -101,8 +120,8 @@ export function updateItem(item){
         })
             .then(({data}) => {
                 dispatch({
-                    type: CRM_KPI_UPDATE_ITEM,
-                    item:item
+                    type: CRM_KPI_ITEM_UPDATED,
+                    item:data
                 });
             }).catch((error) => {
             handleError(error,dispatch)

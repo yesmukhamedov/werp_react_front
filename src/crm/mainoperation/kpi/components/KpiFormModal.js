@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {Modal, Form, Button } from 'semantic-ui-react'
+import _ from 'lodash'
 import "react-datepicker/dist/react-datepicker.css"
 import { connect } from 'react-redux'
 import {toggleKpiSettingFormModal,createItem,updateItem} from '../actions/kpiSettingAction'
@@ -79,8 +80,61 @@ class KpiFormModal extends Component {
           <PositionF4 value={localItem.positionId} handleChange={this.handleDropdownChange} />
       </Form.Group>
 
+        <Form.Group>
+            <Button floated={'right'} onClick={this.addItem}>Добавить индикатор</Button>
+            <br/>
+        </Form.Group>
+
         {this.renderIndicators(localItem.items || [])}
     </Form>
+  }
+
+  removeItem = (indicatorId) => {
+      let localItem = Object.assign({},this.state.localItem)
+
+      localItem['items'] = _.remove(localItem.items,function (obj){
+          return obj.indicatorId !== indicatorId
+      })
+
+      this.setState({
+          ...this.state,
+          localItem: localItem
+      })
+  }
+
+  addItem = () => {
+      let localItem = Object.assign({},this.state.localItem)
+      let indicators = Object.assign({},this.props.indicators)
+
+      for(let k in localItem['items']){
+          delete indicators[localItem['items'][k]['indicatorId']]
+      }
+
+      let indicatorId = 0
+      for(let k in indicators){
+          indicatorId = k
+          break
+      }
+
+      if(indicatorId === 0){
+          window.alert('Все индикаторы выбраны')
+          return
+      }
+
+      localItem['items'].push({
+          id: null,
+          indicatorId: parseInt(indicatorId,10),
+          indicatorName: '',
+          doneValue: null,
+          point: null,
+          score: null,
+          value: null
+      })
+
+      this.setState({
+          ...this.state,
+          localItem: localItem
+      })
   }
 
   renderIndicators(items){
@@ -109,6 +163,11 @@ class KpiFormModal extends Component {
                   type='number'
                   value={item.point || 0}
               />
+
+              <Form.Field>
+                  <label>&nbsp;</label>
+                  <Button onClick={() => this.removeItem(item.indicatorId)} icon='trash'/>
+              </Form.Field>
           </Form.Group>
       })
   }
@@ -188,6 +247,10 @@ class KpiFormModal extends Component {
   close () {
     this.props.toggleKpiSettingFormModal(false)
   }
+
+  // copyData = () => {
+  //     let localItem = Object.assign({},this.state.localItem)
+  // }
 
   render () {
     const {open} = this.props
