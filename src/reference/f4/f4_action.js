@@ -42,6 +42,12 @@ export const F4_CLEAR_EXPENSE_TYPES = 'F4_CLEAR_EXPENSE_TYPES'
 export const F4_FETCH_SUB_COMPANIES = 'F4_FETCH_SUB_COMPANIES'
 export const F4_CLEAR_SUB_COMPANIES = 'F4_CLEAR_SUB_COMPANIES'
 
+
+export const F4_FETCH_WERKSBRANCH_LIST = 'F4_FETCH_WERKSBRANCH_LIST'
+export const F4_CLEAR_WERKSBRANCH_LIST = 'F4_CLEAR_WERKSBRANCH_LIST'
+
+
+
 export function f4FetchDepartmentList(){
     return function(dispatch) {
         axios.get(`${ROOT_URL}/api/reference/departments`, {
@@ -265,6 +271,38 @@ export function f4FetchCurrencyList(trans) {
 export function f4ClearCurrencyList() {
     const obj = {
         type: F4_CLEAR_CURRENCY_LIST
+    };
+    return obj;
+}
+
+export function f4FetchWerksBranchList() {
+
+    return function(dispatch) {
+
+        axios.get(`${ROOT_URL}/api/reference/werksBranchList`, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+
+            
+        })
+        .then(({data}) => {
+            dispatch({
+                type: F4_FETCH_WERKSBRANCH_LIST,
+                werksBranchList:data
+            });
+    
+        })
+        .catch(error => {
+            console.log(error);              
+                 
+        });
+    }    
+}
+
+export function f4ClearWerksBranchList() {
+    const obj = {
+        type: F4_CLEAR_WERKSBRANCH_LIST
     };
     return obj;
 }

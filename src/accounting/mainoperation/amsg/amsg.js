@@ -6,7 +6,7 @@ import AmsgPosition from './amsgPosition';
 import AmsgPaySchedule from './amsgPaySchedule';
 import OutputErrors from '../../../general/error/outputErrors';
 import moment from 'moment';
-import {f4FetchDepartmentList, f4FetchCurrencyList, f4FetchBusinessAreaList2, f4FetchExchangeRateNational } from '../../../reference/f4/f4_action';
+import {f4FetchDepartmentList, f4FetchCurrencyList, f4FetchBusinessAreaList2, f4FetchExchangeRateNational,f4FetchWerksBranchList } from '../../../reference/f4/f4_action';
 import {amsgSave} from  '../../../accounting/accounting_action';
 import {changefaBkpf, clearfaBkpf} from '../../../finance/fa_action';
  
@@ -39,7 +39,9 @@ class Amsg extends Component {
                 matnrName:'',
                 menge:0,
                 summa:0,
-                unitPrice:0
+                unitPrice:0,
+                werks:null,
+                minSumma:0
             },
 
             psRows:[],
@@ -58,6 +60,7 @@ class Amsg extends Component {
         this.props.f4FetchDepartmentList();
         this.props.f4FetchBusinessAreaList2();
         this.props.f4FetchExchangeRateNational();
+        this.props.f4FetchWerksBranchList();
         
         
         this.initializeBkpfBseg();
@@ -123,9 +126,9 @@ class Amsg extends Component {
     save(){
       // this.setState({loading:true});
       let errors = [];
-      console.log(222222)
+      // console.log(222222)
       errors = this.validate();
-      console.log(33333)
+      // console.log(33333)
       if (errors===null || errors===undefined || errors.length===0){
         
         let bkpf = Object.assign({}, this.props.bkpf);        
@@ -158,11 +161,13 @@ class Amsg extends Component {
       let totalPosition = 0;
       let totalSum2 = 0;
       for(let i = 0; i < rows.length; i++){
-        const {matnr, menge, summa} = rows[i];
+        const {matnr, menge, summa, werks, minSumma} = rows[i];
         let rowNum = i+1;
         if (matnr===null || matnr===undefined || !matnr) { errors.push("Выберите материал (Позиция-строка "+rowNum+")"); }
         if (menge===null || menge===undefined || !menge || menge<1) { errors.push("Количество меньше 1 (Позиция-строка "+rowNum+")"); }
-        if (summa===null || summa===undefined || !summa || summa<=0) { errors.push("Сумма 0 или отрицательная (Позиция-строка "+rowNum+")"); }
+        if (summa===null || summa===undefined || !summa || summa<=0) { errors.push("Сумма 0 или отрицательная (Позиция-строка "+rowNum+")"); }        
+        if (werks===null || werks===undefined || !werks) { errors.push("Выберите склад (Позиция-строка "+rowNum+")"); } 
+        if (parseFloat(minSumma)>parseFloat(summa)) { errors.push("Мин. сумма должна быть "+ minSumma +" (Позиция-строка "+rowNum+")"); } 
         totalPosition = totalPosition + parseFloat(summa);
       }
 
@@ -257,6 +262,7 @@ class Amsg extends Component {
                   customer={this.state.customer} 
                   emptyRow={this.state.emptyRow}
                   changeBseg={ (name,value)=> this.setState({[name]:value}) }
+                  werksBranchList={this.props.werksBranchList}
                 />
               
                 {this.state.enablePaySchedule && 
@@ -291,7 +297,8 @@ class Amsg extends Component {
         ,exRateNational:state.f4.exRateNational
         ,bkpf:state.fa.faForm.bkpf
         ,initialBkpf:state.fa.faForm.initialBkpf
-        ,hkontOptions:state.fa.faForm.hkontOptions
+        ,hkontOptions:state.fa.faForm.hkontOptions   
+        ,werksBranchList: state.f4.werksBranchList
     };
 }
 
@@ -299,5 +306,7 @@ class Amsg extends Component {
 
 
 
-export default connect(mapStateToProps,{ f4FetchDepartmentList, f4FetchCurrencyList, 
-  f4FetchBusinessAreaList2, f4FetchExchangeRateNational, changefaBkpf, clearfaBkpf, amsgSave }) (Amsg);
+export default connect(mapStateToProps,{  
+  changefaBkpf, clearfaBkpf, amsgSave,
+  f4FetchWerksBranchList, f4FetchDepartmentList, f4FetchCurrencyList, f4FetchBusinessAreaList2, f4FetchExchangeRateNational
+}) (Amsg);

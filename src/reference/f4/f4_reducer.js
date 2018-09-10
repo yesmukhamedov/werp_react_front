@@ -11,7 +11,8 @@ import {
     F4_FETCH_DEPARTMENT_LIST,F4_CLEAR_DEPARTMENT_LIST,
     F4_FETCH_EXPENSE_TYPES,F4_CLEAR_EXPENSE_TYPES,
     F4_FETCH_SUB_COMPANIES,F4_CLEAR_SUB_COMPANIES,
-    F4_FETCH_EXCHANGERATE_NATIONAL, F4_CLEAR_EXCHANGERATE_NATIONAL
+    F4_FETCH_EXCHANGERATE_NATIONAL, F4_CLEAR_EXCHANGERATE_NATIONAL,
+    F4_FETCH_WERKSBRANCH_LIST, F4_CLEAR_WERKSBRANCH_LIST
 } from './f4_action';
 
 const INITIAL_STATE={
@@ -27,7 +28,8 @@ const INITIAL_STATE={
                     departmentList:[],
                     departmentOptions:[],
                     expenceTypes:[],
-                    subCompanies:[]
+                    subCompanies:[],
+                    werksBranchList:[]
     };
 
 export default function (state=INITIAL_STATE, action)
@@ -108,6 +110,12 @@ export default function (state=INITIAL_STATE, action)
 
         case F4_CLEAR_SUB_COMPANIES:
             return {...state,subCompanies:[]}
+
+        case F4_FETCH_WERKSBRANCH_LIST:
+            return {...state,werksBranchList: action.werksBranchList}
+
+        case F4_CLEAR_WERKSBRANCH_LIST:
+            return {...state,werksBranchList:[]}            
 
         default:
             return state;

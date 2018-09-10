@@ -1,8 +1,9 @@
 import React, { PureComponent } from 'react';
-import { Table, Button, Icon, Input, Segment, Label } from 'semantic-ui-react';
+import { Table, Button, Icon, Input, Segment, Label, Dropdown } from 'semantic-ui-react';
 import MatnrF4Modal from '../../../reference/f4/matnr/matnrF4Modal';
 import CustomerF4Modal from '../../../reference/f4/Customer/customerF4'
-import {moneyFormat,handleFocus} from '../../../utils/helpers';
+import {moneyFormat,handleFocus, moneyInputHanler} from '../../../utils/helpers';
+
 import _ from "lodash";
   
 
@@ -41,14 +42,14 @@ class AmsgPosition extends PureComponent{
           // so we can perform some calculations based on the new value
         //   this.props.getCashBankByBranch();
         }
+        if(nextProps.waers !== this.props.waers) {            
+            this.props.changeBseg('rows',[Object.assign({}, this.props.emptyRow)]);
+        }
     }
 
     addRow(){
-        let row = Object.assign({}, this.props.emptyRow);
-        let rows = JSON.parse(JSON.stringify(this.props.rows));        
-        rows.push(row);
-        this.props.changeBseg('rows',rows);
-        // this.setState({rows});
+        const newRows = [...this.props.rows, Object.assign({}, this.props.emptyRow) ];
+        this.props.changeBseg('rows',newRows);
     }
     removeRow(idx){        
         let rows =  JSON.parse(JSON.stringify(this.props.rows));
@@ -69,7 +70,7 @@ class AmsgPosition extends PureComponent{
     }
 
     onInputChangeRows(value,stateFieldName,idx){        
-        let rows = JSON.parse(JSON.stringify(this.props.rows));        
+        let rows = [...this.props.rows];        
         if (stateFieldName==='matnr')
         {
             if (this.state.selectedRowIndex===null || this.state.selectedRowIndex===undefined){
@@ -80,7 +81,14 @@ class AmsgPosition extends PureComponent{
             rows[idx].matnrName = value.text45;
             rows[idx].menge = 1;
             rows[idx].summa = value.price;
+            rows[idx].minSumma = value.price;
             rows[idx].unitPrice = value.price;
+            this.props.changeBseg('rows',rows);
+            // this.setState({rows});  
+        }                
+        else if (stateFieldName==='werks')
+        {
+            rows[idx].werks = value;
             this.props.changeBseg('rows',rows);
             // this.setState({rows});  
         }
@@ -90,6 +98,7 @@ class AmsgPosition extends PureComponent{
             if (value === '' || re.test(value)) {
                 rows[idx].menge = value;            
                 rows[idx].summa = value*rows[idx].unitPrice;
+                rows[idx].minSumma = value*rows[idx].unitPrice;
                 this.props.changeBseg('rows',rows);
                 // this.setState({rows});  
             }
@@ -97,16 +106,30 @@ class AmsgPosition extends PureComponent{
         }
         else if (stateFieldName==='lifnr'){
             
-            let customer = Object.assign({}, this.props.customer);
-            
+            let customer = Object.assign({}, this.props.customer);            
             customer.lifnr = value.id;
             customer.lifnrName = value.fullFIO;
             this.props.changeBseg('customer',customer);
             
         }
+        else if (stateFieldName==='summa'){
+            let newVal = moneyInputHanler(value,2);                        
+            rows[idx].summa = newVal;
+            if (newVal!==undefined){            
+                this.props.changeBseg('rows',rows);
+            }
+        }
     }
     
     renderRows(){
+        const werksBranchOptions = this.props.werksBranchList.filter(wa=>wa.bukrs===this.props.bukrs && wa.branch_id===this.props.brnch)
+        .map((wa,idx)=>{
+            
+        // console.log(wa.branch_id,'wa.branch_id', wa.bukrs,'this.props.bukrs',this.props.bukrs,'key',idx);
+            return {key:idx,value:wa.werks, text:wa.werksName};
+        });
+        // console.log(this.props.werksBranchList,'this.props.werksBranchList');
+
         return this.props.rows.map((item, idx) => {
             return (
               <Table.Row key={idx}>
@@ -116,7 +139,14 @@ class AmsgPosition extends PureComponent{
                 <Table.Cell><Input value={new Intl.NumberFormat('ru-RU').format(item.menge)} maxLength='10'
                                     onChange={(e, {value}) => this.onInputChangeRows(value,'menge',idx)} onFocus={handleFocus} />
                                     </Table.Cell>
-                <Table.Cell><Input value={new Intl.NumberFormat('ru-RU').format(item.summa)}  readOnly /></Table.Cell>
+                <Table.Cell><Input 
+                                          value={moneyFormat(item.summa)}    
+                                          onFocus={handleFocus} 
+                                          maxLength='18'  onChange={(e, {value}) => this.onInputChangeRows(value,'summa',idx)} /></Table.Cell>
+                <Table.Cell><Dropdown placeholder='Филиал'  search selection options={werksBranchOptions} 
+                                            value={item.werks}  
+                                            onChange={(e, { value }) => this.onInputChangeRows(value,'werks',idx)}
+                                             /></Table.Cell>
                 <Table.Cell>
                             <Icon name='remove' onClick={() => this.removeRow(idx)} 
                                 size='large'  className='clickableIcon' color='red' /></Table.Cell>
@@ -130,8 +160,10 @@ class AmsgPosition extends PureComponent{
               <Table.Cell></Table.Cell>
               <Table.Cell></Table.Cell>
               <Table.Cell>
-                    <span><strong>{moneyFormat(_.sum(_.map(this.props.rows, d => d.summa)) )} {this.props.waers} </strong></span>
+                    <span><strong>{moneyFormat(_.sum(_.map(this.props.rows, d => parseFloat(d.summa)) ))} {this.props.waers} </strong></span>
                 </Table.Cell>
+              
+                <Table.Cell></Table.Cell>
               <Table.Cell>
                 <span>
                     <Icon name='add'  size='large'  className="clickableIcon" color="green" onClick={()=>this.addRow()}/>
@@ -182,6 +214,7 @@ class AmsgPosition extends PureComponent{
                                     <Table.HeaderCell>Материал</Table.HeaderCell>
                                     <Table.HeaderCell>Количество</Table.HeaderCell>
                                     <Table.HeaderCell>Сумма</Table.HeaderCell>
+                                    <Table.HeaderCell>Склад</Table.HeaderCell>
                                     <Table.HeaderCell></Table.HeaderCell>
                                 </Table.Row>
                             </Table.Header>
