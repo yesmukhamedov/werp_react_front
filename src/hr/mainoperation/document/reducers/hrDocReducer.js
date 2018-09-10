@@ -1,4 +1,7 @@
-import {HR_DOC_ITEMS_LOADED,HR_DOC_SINGLE_ITEM_LOADED,HR_DOC_PAGE_LOADING} from '../actions/hrDocAction'
+import {
+    HR_DOC_ITEMS_LOADED,HR_DOC_SINGLE_ITEM_LOADED,HR_DOC_PAGE_LOADING,
+    HR_DOC_SINGLE_ITEM_BLANKED
+} from '../actions/hrDocAction'
 const INITIAL_STATE={
     items: [],
     document:{},
@@ -15,6 +18,7 @@ export default function (state = INITIAL_STATE, action) {
             return {...state, items: action.payload}
 
         case HR_DOC_SINGLE_ITEM_LOADED:
+        case HR_DOC_SINGLE_ITEM_BLANKED:
             const {document,actions} = action.payload
             return {...state, document: document, actions: actions}
 

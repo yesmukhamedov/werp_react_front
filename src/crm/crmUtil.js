@@ -65,11 +65,6 @@ export const RECO_CATEGORIES = [
         key: 3,
         text: 'Бронза',
         value: 3
-    },
-    {
-        key: 4,
-        text: 'Железо',
-        value: 4
     }
 ]
 

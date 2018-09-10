@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import {fetchBukrsPyramidsTree,pyramidTreeChanged,deletePyramid,blankItem,toggleFormModal,removeStaffFromEmployee,fetchItem} from  '../actions/hrPyramidAction'
 import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4'
 import {f4FetchPositionList,f4FetchBusinessAreaList,f4FetchDepartmentList} from '../../../../reference/f4/f4_action'
-import {fetchAllStaffs} from '../../staff/actions/hrStaffAction'
+import {fetchAllCurrentStaffs} from '../../staff/actions/hrStaffAction'
 import PyramidFormModal from './PyramidFormModal'
 
 class PyramidTreePage extends Component {
@@ -74,7 +74,7 @@ class PyramidTreePage extends Component {
 
     loadTreeData(){
         this.props.fetchBukrsPyramidsTree(this.state.bukrs)
-        this.props.fetchAllStaffs({bukrs:this.state.bukrs})
+        this.props.fetchAllCurrentStaffs({bukrs:this.state.bukrs})
     }
 
     onChanged(a){
@@ -250,5 +250,5 @@ function mapStateToProps (state) {
 export default connect(mapStateToProps, {
     fetchBukrsPyramidsTree,pyramidTreeChanged,deletePyramid,blankItem,
     f4FetchPositionList,f4FetchDepartmentList,f4FetchBusinessAreaList,
-    toggleFormModal,fetchAllStaffs,removeStaffFromEmployee,fetchItem
+    toggleFormModal,fetchAllCurrentStaffs,removeStaffFromEmployee,fetchItem
 })(PyramidTreePage)

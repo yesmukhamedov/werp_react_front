@@ -36,7 +36,7 @@ export default function StaffListModal (props) {
         {
             Header: "Должности",
             id:"positions",
-            accessor: row => positionRenderer(row.positions)
+            accessor: row => positionRenderer(row.positions || [])
         }
     ]
     return (

@@ -7,6 +7,7 @@ import {getStaffDataPostUri,getStaffDataFetchUri,getStaffDataBlankUri} from '../
 
 export const HR_STAFF_CURRENT_STAFFS = 'HR_STAFF_CURRENT_STAFFS';
 export const HR_STAFF_SINGLE_STAFF = 'HR_STAFF_SINGLE_STAFF';
+export const HR_STAFF_ALL_CURRENT_STAFFS = 'HR_STAFF_ALL_CURRENT_STAFFS';
 export const HR_STAFF_ALL_STAFFS = 'HR_STAFF_ALL_STAFFS';
 export const HR_STAFF_FETCH_BLANK = 'HR_STAFF_FETCH_BLANK';
 
@@ -39,6 +40,7 @@ export const HR_STAFF_DATA_FORM_MODAL_FLAG = 'HR_STAFF_DATA_FORM_MODAL_FLAG'
 
 
 export const HR_STAFF_FETCH_MANAGERS = 'HR_STAFF_FETCH_MANAGERS'
+export const HR_STAFF_FETCH_DIRECTORS = 'HR_STAFF_FETCH_DIRECTORS'
 
 export function fetchCurrentStaffs(params){
     return function(dispatch){
@@ -63,7 +65,7 @@ export function fetchCurrentStaffs(params){
     }
 }
 
-export function fetchAllStaffs(params){
+export function fetchAllCurrentStaffs(params){
     return function(dispatch){
         dispatch(modifyLoader(true));
         axios.get(`${ROOT_URL}/api/hr/staff/current-all`,{
@@ -71,6 +73,28 @@ export function fetchAllStaffs(params){
                 authorization: localStorage.getItem('token')
             },
             params:params
+        })
+            .then(({data}) => {
+                dispatch(modifyLoader(false));
+                dispatch({
+                    type:HR_STAFF_ALL_CURRENT_STAFFS,
+                    payload:data
+                })
+            }).catch((error) => {
+            dispatch(modifyLoader(false));
+            handleError(error,dispatch)
+        })
+    }
+}
+
+//Только сотрудники, без должностей
+export function fetchAllStaffs(){
+    return function(dispatch){
+        dispatch(modifyLoader(true));
+        axios.get(`${ROOT_URL}/api/hr/staff/all`,{
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
         })
             .then(({data}) => {
                 dispatch(modifyLoader(false));
@@ -330,6 +354,22 @@ export function fetchAllManagers(){
         }).then(({data}) => {
             dispatch({
                 type:HR_STAFF_FETCH_MANAGERS,
+                payload:data
+            })
+        }).catch((error) => {
+            handleError(error,dispatch)
+        })
+    }
+}
+
+export function fetchAllDirectors(){
+    return function (dispatch){
+        axios.get(`${ROOT_URL}` + '/api/hr/salary/directors',{
+            headers: {
+                authorization: localStorage.getItem('token')}
+        }).then(({data}) => {
+            dispatch({
+                type:HR_STAFF_FETCH_DIRECTORS,
                 payload:data
             })
         }).catch((error) => {

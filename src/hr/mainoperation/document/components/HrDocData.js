@@ -1,5 +1,5 @@
 import React from 'react'
-import {Segment,Label, Table } from 'semantic-ui-react'
+import {Segment,Label, Table, Icon } from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
 import {DOC_TYPE_RECRUITMENT} from '../../../hrUtil'
 import {formatDMY,moneyFormat} from '../../../../utils/helpers'
@@ -32,6 +32,7 @@ function renderRecruitmentData (items){
                     <Table.HeaderCell>Дата начало</Table.HeaderCell>
                     <Table.HeaderCell>Менеджер</Table.HeaderCell>
                     <Table.HeaderCell>Оклад</Table.HeaderCell>
+                    <Table.HeaderCell>Прим.</Table.HeaderCell>
                     <Table.HeaderCell></Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
@@ -39,16 +40,21 @@ function renderRecruitmentData (items){
                 {items.map((item,idx) => {
                     return <Table.Row key={item.id}>
                                 <Table.Cell>{idx+1}</Table.Cell>
-                                <Table.Cell>{item.staffName}</Table.Cell>
+                                <Table.Cell>
+                                    {item.staffName}
+                                    &nbsp;
+                                    <Link target={'_blank'} className={'ui icon button mini right floated'} to={`/hr/staff/view/` + item.staffId}>
+                                        <Icon name={'eye'}/>
+                                    </Link>
+                                </Table.Cell>
                                 <Table.Cell>{item.departmentName}</Table.Cell>
                                 <Table.Cell>{item.positionName}</Table.Cell>
                                 <Table.Cell>{formatDMY(item.beginDate)}</Table.Cell>
                                 <Table.Cell>{item.managerName}</Table.Cell>
                                 <Table.Cell>{moneyFormat(item.amount)}</Table.Cell>
+                                <Table.Cell>{item.note}</Table.Cell>
                                 <Table.Cell>
-                                    <Link target={'_blank'} className={'ui icon button mini'} to={`/crm/demo/view/` + 12}>
-                                        Просмотр
-                                    </Link>
+
                                 </Table.Cell>
                             </Table.Row>
                 })}

@@ -90,7 +90,7 @@ class HrRecruitmentPage extends Component{
                     <Header as='h2' floated='left'>
                         Заявки о приеме на работу
                     </Header>
-                    <Link className={'ui icon button primary right floated'} to={`/hr/doc/recruitment/create`}>
+                    <Link className={'ui icon button primary right floated'} to={`/hr/doc/create/1`}>
                         <Icon name='plus' /> Добавить
                     </Link>
                 </Segment>

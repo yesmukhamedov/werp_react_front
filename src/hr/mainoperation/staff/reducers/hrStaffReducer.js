@@ -5,7 +5,7 @@ import {
     HR_STAFF_FETCH_STAFF_SALARIES,
     HR_STAFF_FETCH_STAFF_EXPENCES,
     HR_STAFF_LIST_MODAL_OPENED,
-    HR_STAFF_ALL_STAFFS,
+    HR_STAFF_ALL_CURRENT_STAFFS,
     HR_SALARY_FORM_MODAL_OPENED,
     HR_SALARY_CREATED,
     HR_PYRAMID_FETCH_BRANCH_PYRAMIDS,
@@ -19,14 +19,16 @@ import {
     HR_STAFF_DATA_FETCHED_LIST,
     HR_STAFF_FETCH_MANAGERS,
     HR_STAFF_SET_STAFF_DATA_FOR_UPDATE,
-    HR_STAFF_DATA_UPDATED
+    HR_STAFF_DATA_UPDATED,
+    HR_STAFF_ALL_STAFFS,
+    HR_STAFF_FETCH_DIRECTORS
 } from '../actions/hrStaffAction';
 
 
 const INITIAL_STATE={
                     currentStaffs:[],
                     staff:{},
-                    allStaffs:[],
+                    allCurrentStaffs:[],
                     staffSalaries:[],
                     staffExpences:[],
                     staffOffData:[],
@@ -49,7 +51,10 @@ const INITIAL_STATE={
 
                     //
                     managers: [],
-                    managersByBranchOptions: []
+                    managersByBranchOptions: [],
+
+                    directors:[],
+                    directorsByBranchOptions:[]
 
 };
 
@@ -60,8 +65,11 @@ export default function (state=INITIAL_STATE, action)
         case HR_STAFF_CURRENT_STAFFS:
             return {...state,currentStaffs:action.items,meta:action.meta};
 
+        case HR_STAFF_ALL_CURRENT_STAFFS:
+            return {...state,allCurrentStaffs:action.payload};
+
         case HR_STAFF_ALL_STAFFS:
-            return {...state,allStaffs:action.payload};
+            return {...state,allStaffs:action.payload}
 
         case HR_STAFF_SINGLE_STAFF:
             return {...state,staff:action.payload};
@@ -162,6 +170,23 @@ export default function (state=INITIAL_STATE, action)
             }
 
             return {...state,managers: action.payload,managersByBranchOptions: managersByBranch}
+
+        case HR_STAFF_FETCH_DIRECTORS:
+            let directorsByBranch = {}
+            for(let key in action.payload){
+                let current = action.payload[key]
+                if(!directorsByBranch[current['branchId']]){
+                    directorsByBranch[current['branchId']] = []
+                }
+
+                directorsByBranch[current['branchId']].push({
+                    text: current.staffName,
+                    key: current.staffId,
+                    value: current.staffId
+                })
+            }
+
+            return {...state,directors: action.payload,directorsByBranchOptions: directorsByBranch}
 
         default:
             return state;

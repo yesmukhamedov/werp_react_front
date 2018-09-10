@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import _ from 'lodash'
 import "react-table/react-table.css";
-import { Container,Divider } from 'semantic-ui-react'
+import { Container,Divider,Icon } from 'semantic-ui-react'
 import { connect } from 'react-redux'
 import {MENU_DASHBOARD,MENU_ALL_RECOS,MENU_ITEMS,MENU_BY_RECO,MENU_BY_DATE,MENU_MOVED,MENU_CURRENT_DEMO,MENU_CURRENT_VISIT} from '../wspaceUtil'
 import '../css/main-page.css'
@@ -22,6 +22,7 @@ import WspaceDemoTable from './WspaceDemoTable'
 import WspaceVisitTable from './WspaceVisitTable'
 import WspaceRecoFilter from './WspaceRecoFilter'
 import WspaceVisitTableHeader from './WspaceVisitTableHeader'
+import {Link} from 'react-router-dom'
 
 import moment from 'moment'
 
@@ -168,6 +169,11 @@ class WspaceMainPage extends Component {
           case MENU_BY_DATE:
           case MENU_MOVED:
               return<div>
+                  <div style={{display:'block',height:'20px'}}>
+                      <Link target={'blank'} className={'ui icon button primary right floated'} to={`/crm/reco/create`}>
+                          <Icon name='plus' /> Добавить из архива
+                      </Link>
+                  </div>
                   <WspaceRecoFilter
                       handleFilter = {this.props.handleFilter}
                       menu={this.state.currentMenu} filters={filters}/>

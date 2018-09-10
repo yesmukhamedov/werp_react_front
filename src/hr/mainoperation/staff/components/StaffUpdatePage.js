@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Container,Form, Button} from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import {fetchSingleStaff,createStaff,toggleStaffListModal,fetchAllStaffs,fetchBlankStaff,updateStaff} from '../actions/hrStaffAction'
+import {fetchSingleStaff,createStaff,toggleStaffListModal,fetchAllCurrentStaffs,fetchBlankStaff,updateStaff} from '../actions/hrStaffAction'
 import {f4FetchCountryList,f4FetchStateList,f4FetchCityList,f4FetchCityregList} from '../../../../reference/f4/f4_action'
 import StaffAddressForm from  './forms/StaffAddressForm'
 import StaffListModal from './StaffListModal'
@@ -34,7 +34,7 @@ class StaffUpdatePage extends Component {
         this.props.f4FetchStateList()
         this.props.f4FetchCityList()
         this.props.f4FetchCityregList()
-        this.props.fetchAllStaffs({})
+        this.props.fetchAllCurrentStaffs({})
     }
 
     componentWillReceiveProps (nextProps) {
@@ -295,7 +295,7 @@ function mapStateToProps (state) {
         staff:state.hrStaff.staff,
         staffFormErrors:state.hrStaff.staffFormErrors,
         staffListModalOpened: state.hrStaff.staffListModalOpened,
-        allStaffs:state.hrStaff.allStaffs,
+        allStaffs:state.hrStaff.allCurrentStaffs,
         countryList:state.f4.countryList,
         stateList:state.f4.stateList,
         cityList:state.f4.cityList,
@@ -305,5 +305,5 @@ function mapStateToProps (state) {
 
 export default connect(mapStateToProps, {
     fetchSingleStaff,f4FetchCountryList,f4FetchStateList,f4FetchCityList,f4FetchCityregList,createStaff,
-    toggleStaffListModal,fetchAllStaffs,fetchBlankStaff,updateStaff
+    toggleStaffListModal,fetchAllCurrentStaffs,fetchBlankStaff,updateStaff
 })(StaffUpdatePage)

@@ -70,7 +70,7 @@ export default function (state=INITIAL_STATE, action)
                 newItems.push(action.item)
             }
 
-            return {...state,openKpiFormModal: false, items: newItems}
+            return {...state,openKpiFormModal: false, items: newItems,item:{}}
 
         default:
             return state;

@@ -207,7 +207,7 @@ function mapStateToProps (state) {
         formModalOpened:state.hrPyramid.formModalOpened,
         positionList:state.f4.positionList,
         item:state.hrPyramid.item,
-        allStaffs:state.hrStaff.allStaffs,
+        allStaffs:state.hrStaff.allCurrentStaffs,
         businessAreaList: state.f4.businessAreaList
     }
 }

@@ -288,6 +288,11 @@ const AsyncHrDocViewPage = Loadable({
     loading: () => <LoadingPage />
 });
 
+const AsyncHrDocCreatePage = Loadable({
+        loader: () => import('../hr/mainoperation/document/components/HrDocCreatePage' /* webpackChunkName: "HrDocCreatePage" */),
+    loading: () => <LoadingPage />
+});
+
 const getComponent = {
     Ditaub:AsyncAssignUserBranch,
     Hrb02:AsyncHrb02,
@@ -364,6 +369,7 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/administration/dtskl"   component={persistPath(AsyncDeptTaskListPage)} />
       <Route path="/administration/dtskredit/:id"   component={AsyncTaskRecEditPage} />
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
+    <Route path="/hr/doc/create/:type" component={AsyncHrDocCreatePage} />
       <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />
 
       <Route path="/general/dtskc" component={DtskcContainer} />
