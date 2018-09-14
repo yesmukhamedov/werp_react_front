@@ -293,6 +293,11 @@ const AsyncHrDocCreatePage = Loadable({
     loading: () => <LoadingPage />
 });
 
+const AsyncMyDocsListPage = Loadable({
+        loader: () => import('../documents/mainoperation/components/MyDocsListPage' /* webpackChunkName: "MyDocsListPage" */),
+    loading: () => <LoadingPage />
+});
+
 const getComponent = {
     Ditaub:AsyncAssignUserBranch,
     Hrb02:AsyncHrb02,
@@ -375,6 +380,7 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/general/dtskc" component={DtskcContainer} />
       <Route path="/general/dtskdep" component={DtskdepContainer} />
 
+        <Route path="/documents/mydocs" component={AsyncMyDocsListPage}/>
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
         return (
