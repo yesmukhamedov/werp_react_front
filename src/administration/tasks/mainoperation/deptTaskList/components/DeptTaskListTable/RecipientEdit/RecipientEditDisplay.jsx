@@ -69,7 +69,7 @@ class RecipientEditDisplay extends Component {
                         name="recipient"
                         component={DropdownFormField}
                         label={formatMessage(messages.editRecipient)}
-                        opts={assigneeOptions}
+                        opts={assigneeOptions ? [{ key: -1, text: '', value: -1 }, ...assigneeOptions] : []}
                       />
                     </Form.Group>
                   </Grid.Column>

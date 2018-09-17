@@ -348,6 +348,7 @@ const getComponent = {
     Ccastskl: AsyncTaskListPage,
     Ccastskedit: AsyncOutCallTaskPage,
     Gtskedit: AsyncTaskPage,
+    Dtskredit: AsyncTaskRecEditPage,
 }
 
 const generateRoutes = (transactionRoutes) => {
@@ -372,7 +373,7 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/finance/mainoperation/fcis" component={AsyncFsis} />
       <Route path="/administration/dtskrep" component={persistPath(AsyncTaskMonitorPage)} />
       <Route path="/administration/dtskl"   component={persistPath(AsyncDeptTaskListPage)} />
-      <Route path="/administration/dtskredit/:id"   component={AsyncTaskRecEditPage} />
+      {/* <Route path="/administration/dtskredit/:id"   component={AsyncTaskRecEditPage} /> */}
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
     <Route path="/hr/doc/create/:type" component={AsyncHrDocCreatePage} />
       <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />

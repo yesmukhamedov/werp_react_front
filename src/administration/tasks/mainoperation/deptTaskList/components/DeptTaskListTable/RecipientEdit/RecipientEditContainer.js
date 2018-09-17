@@ -30,13 +30,13 @@ function mapStateToProps(state) {
   if (details) {
     assigneeOpts = details.assigneeOptions;
     initialData.expectedEndDate = details.expectedEndDate && moment(details.expectedEndDate, 'YYYY-MM-DDTHH:mm:ssZ').format('YYYY-MM-DD');
-    initialData.recipient = details.recipient && details.recipient.id;
+    initialData.recipient = details.recipient ? details.recipient.id : -1;
   }
   const { editDetails } = state.deptTaskList;
   if (editDetails) {
     assigneeOpts = state.deptTaskList.assigneeDetails.assigneeOptions;
     initialData.expectedEndDate = editDetails.expectedEndDate && moment(editDetails.expectedEndDate, 'YYYY-MM-DDTHH:mm:ssZ').format('YYYY-MM-DD');
-    initialData.recipient = editDetails.recipient && editDetails.recipient.id;
+    initialData.recipient = editDetails.recipient ? editDetails.recipient.id : -1;
   }
   return {
     messages,

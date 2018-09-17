@@ -6,14 +6,14 @@ import { withRouter } from 'react-router-dom';
 export default function (BaseComponent) {
   class PersistPath extends Component {
     componentWillMount() {
-      this.checkAuthentication(this.props);
+      this.persistCurrentPath(this.props);
     }
     componentWillReceiveProps(nextProps) {
       if (nextProps.location !== this.props.location) {
-        this.checkAuthentication(nextProps);
+        this.persistCurrentPath(nextProps);
       }
     }
-    checkAuthentication(params) {
+    persistCurrentPath(params) {
       try {
         localStorage.setItem('currentPathName', params.location.pathname);
       } catch (error) {
