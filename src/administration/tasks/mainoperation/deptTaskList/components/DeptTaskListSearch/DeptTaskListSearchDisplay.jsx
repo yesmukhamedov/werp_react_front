@@ -141,25 +141,37 @@ class DeptTaskListSearchDisplay extends Component {
                   </Form.Group>
                 </Grid.Column>
               </Grid.Row>
-              <Grid.Row style={{ padding: '3px' }}>
-                <Grid.Column width={2} >
-                  <Form.Group widths="equal">
-                    <Form.Button
-                      content={formatMessage(messages.search)}
-                      type="submit"
-                      loading={submitting}
-                      disabled={pristine || submitting}
+              <Grid.Row columns={3} style={{ padding: '3px' }}>
+                <Grid.Column mobile={16} tablet={8} computer={6}>
+                  <Form.Group >
+                    <Field
+                      required
+                      multiple
+                      name="status"
+                      component={DropdownFormField}
+                      label={formatMessage(messages.status)}
+                      opts={company ? [allOpt, ...branchOptions[company]] : []}
                       style={
-                        { background: 'rgba(84,170,169, 1)', color: 'white' }}
+                        { width:'263px'}}
                     />
-                    <Form.Button
-                      content={formatMessage(messages.reset)}
-                      type="button"
-                      disabled={pristine || submitting}
-                      style={
-                        { background: 'rgba(84,170,169, 1)', color: 'white' }}
-                      onClick={reset}
-                    />
+                    <Form.Group>
+                      <Form.Button
+                        content={formatMessage(messages.search)}
+                        type="submit"
+                        loading={submitting}
+                        disabled={pristine || submitting}
+                        style={
+                          { background: 'rgba(84,170,169, 1)', color: 'white', marginTop: '22px' }}
+                      />
+                      <Form.Button
+                        content={formatMessage(messages.reset)}
+                        type="button"
+                        disabled={pristine || submitting}
+                        style={
+                          { background: 'rgba(84,170,169, 1)', color: 'white', marginTop: '22px' }}
+                        onClick={reset}
+                      />
+                    </Form.Group>
                   </Form.Group>
                 </Grid.Column>
               </Grid.Row>

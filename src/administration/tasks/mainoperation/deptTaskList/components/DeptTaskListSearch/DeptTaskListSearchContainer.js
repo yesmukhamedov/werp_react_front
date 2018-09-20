@@ -27,6 +27,14 @@ export const messages = defineMessages({
     id: 'Form.BranchError',
     defaultMessage: 'Select branch',
   },
+  status: {
+    id: 'Form.Status',
+    defaultMessage: 'Status',
+  },
+  statusError: {
+    id: 'Form.StatusError',
+    defaultMessage: 'Select status',
+  },
   endDateFrom: {
     id: 'Form.endDateFrom',
     defaultMessage: 'End date from',
