@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react';
-import { Table, Dropdown, Segment, Input, Label  } from 'semantic-ui-react';
-import {handleFocus, moneyFormat, isEmpty} from '../../../utils/helpers';
+import { Table, Dropdown, Segment, Input, Label, Button } from 'semantic-ui-react';
+import {handleFocus, moneyFormat} from '../../../utils/helpers';
+import StaffF4Modal from '../../../reference/f4/staff/staffF4Modal'
 require('moment/locale/ru');
 
 
@@ -10,13 +11,20 @@ class FcisPosition extends PureComponent{
     constructor(props){
 
         super(props);
-        
+        this.staffF4ModalOpenHanlder = this.staffF4ModalOpenHanlder.bind(this);
+        this.state = 
+        {            
+            staffF4ModalOpen:false
+        };
     }
     
+    staffF4ModalOpenHanlder(bool){
+        this.setState({staffF4ModalOpen:bool});
+    }
     
     render(){
         const {hkontOptions_s,hkontOptions_h} = this.props;
-        const { lifnr, staffFio, hkont_s, hkont_h, summa, waers } = this.props;
+        const { staffFio, hkont_s, hkont_h, summa, waers, bukrs, branchOptions, companyOptions, brnch } = this.props;
 
         if (summa===undefined)
         {
@@ -25,10 +33,15 @@ class FcisPosition extends PureComponent{
 
         return(
             <Segment padded size="small">
-                
+                <StaffF4Modal open={this.state.staffF4ModalOpen} closeModal={(bool)=>this.staffF4ModalOpenHanlder(bool)} 
+                        onStaffSelect={(item)=>this.props.onInputChange(item,'lifnr')} trans={'fcis'} 
+                        brnch = {brnch} branchOptions={branchOptions} 
+                        bukrs={bukrs} companyOptions={companyOptions} bukrsDisabledParent={true}
+                        />
                 <Label color="red" ribbon>
                     Позиция
                 </Label>
+
                             <Table  >
                             <Table.Header>
                                 <Table.Row>
@@ -49,7 +62,8 @@ class FcisPosition extends PureComponent{
                                             value={hkont_s}  onChange={(e, { value }) => this.props.onInputChange(value,'hkont_s')} /> 
                                         </Table.Cell>
                                         <Table.Cell>
-                                            h
+                                        <span> {staffFio} <Button icon='external' 
+                                            onClick={()=>{this.staffF4ModalOpenHanlder(true)}} /></span>
                                         </Table.Cell>
                                         <Table.Cell>
                                         <Input labelPosition='left' color= 'teal' placeholder={'Сумма'}
@@ -59,14 +73,6 @@ class FcisPosition extends PureComponent{
                                             <Label basic>{waers}</Label>
                                             <input />
                                         </Input>
-                                                                                    
-                                          {/* <Input
-                                            placeholder={'Сумма'}
-                                            value={moneyFormat(summa)} 
-                                            onFocus={handleFocus} 
-                                            maxLength='18'  onChange={(e, {value}) => this.props.onInputChange(value,'summa')}
-                                          />  */}
-
                                         </Table.Cell>
                                     </Table.Row>                                    
                                 </Table.Body>                     

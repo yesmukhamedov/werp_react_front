@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { connect } from 'react-redux'
-import { Table, Button, Modal, Dropdown, Icon, Form, Label } from 'semantic-ui-react'
+import { Form } from 'semantic-ui-react'
 import {ROOT_URL} from '../../../utils/constants'
 
 const MODE_DROPDOWN = 0

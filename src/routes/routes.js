@@ -311,7 +311,8 @@ const getComponent = {
     Amcdd:AsyncAmcdd,
 
 
-    // Fsis:AsyncFsis,
+    Fcis:AsyncFsis,
+    
 
     SpNew: AsyncSpNewPage,
     SpView: AsyncSpViewPage,
@@ -370,7 +371,6 @@ const generateRoutes = (transactionRoutes) => {
       {/*<Route path="/crm/wspace" component={AsyncCrmWspacePage} />*/}
       <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
       <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
-      <Route path="/finance/mainoperation/fcis" component={AsyncFsis} />
       <Route path="/administration/dtskrep" component={persistPath(AsyncTaskMonitorPage)} />
       <Route path="/administration/dtskl"   component={persistPath(AsyncDeptTaskListPage)} />
       {/* <Route path="/administration/dtskredit/:id"   component={AsyncTaskRecEditPage} /> */}

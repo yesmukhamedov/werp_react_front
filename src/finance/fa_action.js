@@ -142,18 +142,16 @@ export function saveFMCP(a_contract) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //FCIS/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export function fcisSave(a_contract) {
-    return function(dispatch) {
-        dispatch(modifyLoader(true));
-        
-        axios.post(`${ROOT_URL}/api/finance/mainoperation/fmcp/save`,
-            {           
-                ...a_contract
+export function saveFcis(a_bkpf, a_bseg, initFcis) {
+    return function(dispatch) {        
+        axios.post(`${ROOT_URL}/api/finance/mainoperation/fcis/save`,
+            {            
+                bkpf:a_bkpf,
+                ...a_bseg
             },       
             {            
                 headers: 
                 {                            
-                    // 'Content-Type': 'application/json;charset=UTF-8',
                     authorization: localStorage.getItem('token')
                 }
             }        
@@ -164,7 +162,8 @@ export function fcisSave(a_contract) {
             if(data)
             {
                 dispatch(notify('success','Сохранен.','Успешно'));
-                dispatch(fetchFMCP(a_contract.zregOrConNum));
+                dispatch(clearfaBkpf());
+                initFcis();
             }
             else
             {
