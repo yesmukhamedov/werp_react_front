@@ -1,12 +1,14 @@
 import React,{ Component } from 'react';
 import { connect } from 'react-redux';
-import {  Container, Header  } from 'semantic-ui-react';
+import {  Container, Header, Segment, List, Button, Icon  } from 'semantic-ui-react';
 import moment from 'moment';
 import FaHeader from '../../faHeader';
 import FcisPosition from './fcisPosition';
 import {f4FetchDepartmentList, f4FetchCurrencyList, f4FetchBusinessAreaList2, f4FetchExchangeRateNational} from '../../../reference/f4/f4_action';
-import {clearfaBkpf, changefaBkpf, fetchCashBankHkontsByBranch, changeDynObj, clearDynObj} from '../../fa_action';
+import {clearfaBkpf, changefaBkpf, fetchCashBankHkontsByBranch, changeDynObj, clearDynObj, saveFcis} from '../../fa_action';
 import {moneyInputHanler} from '../../../utils/helpers';
+import OutputErrors from '../../../general/error/outputErrors';
+import { modifyLoader } from '../../../general/loader/loader_action';
 
 
 require('moment/locale/ru');
@@ -22,12 +24,12 @@ class Fcis extends Component {
 
 
     constructor(props){
-
         super(props);
         this.initializeBkpfBseg=this.initializeBkpfBseg.bind(this);
-        
-
-        
+        this.initialBseg=this.initialBseg.bind(this);
+        this.state={
+          errors:[]
+        }  
     }
 
     componentWillMount() {
@@ -38,8 +40,6 @@ class Fcis extends Component {
         this.props.f4FetchBusinessAreaList2();
         this.props.f4FetchExchangeRateNational();
 
-
-        
     }
     
     componentWillUnmount(){
@@ -50,8 +50,19 @@ class Fcis extends Component {
     componentWillReceiveProps(nextProps) {
       if(nextProps.bkpf.brnch !== this.props.bkpf.brnch) {
           this.props.fetchCashBankHkontsByBranch(nextProps.bkpf.bukrs,nextProps.bkpf.brnch);
+          this.props.changeDynObj({
+            ...this.props.bseg, hkont_s: ''
+          });
         // nextProps.myProp has a different value than our current prop
         // so we can perform some calculations based on the new value
+      }
+      if(nextProps.bkpf.waers !== this.props.bkpf.waers) {
+        this.props.fetchCashBankHkontsByBranch(nextProps.bkpf.bukrs,nextProps.bkpf.brnch);
+        this.props.changeDynObj({
+          ...this.props.bseg, hkont_s: ''
+        });
+      // nextProps.myProp has a different value than our current prop
+      // so we can perform some calculations based on the new value
       }
     }
     
@@ -65,6 +76,11 @@ class Fcis extends Component {
           });
         }
       }
+      else if (stateFieldName === 'lifnr'){
+        this.props.changeDynObj({
+          ...bseg, lifnr:value.customerId,staffFio:value.fio, staffId:value.staffId
+        });
+      }
       else
       {
         this.props.changeDynObj({
@@ -76,28 +92,58 @@ class Fcis extends Component {
 
     initializeBkpfBseg(){      
       let bkpf = Object.assign({}, this.props.initialBkpf);
-      bkpf.blart="PN";
+      bkpf.blart="S2";
       bkpf.budat=moment().format( "DD.MM.YYYY");
       bkpf.bldat=moment().format( "DD.MM.YYYY");
-
      
       this.props.changefaBkpf(bkpf);
-
-
+      this.initialBseg();
+    }
+    initialBseg(){
       this.props.changeDynObj({
         lifnr:'',
+        staffId:'',
         staffFio:'',
         hkont_s:'',
         hkont_h:'',
         summa:0
       });
-            
-            
     }
+    save(){      
+      this.props.modifyLoader(true);
+      let errors = [];
+      errors = this.validate();
+      if (errors===null || errors===undefined || errors.length===0){        
+        let bkpf = {...this.props.bkpf};        
+        let bseg = {...this.props.bseg};
+        this.props.saveFcis(bkpf, bseg, ()=>this.initializeBkpfBseg());
+      }
+      else{
+        this.props.modifyLoader(false);
+      }
+      
+      this.setState({errors});
+    }
+    validate(){
+      
+      let errors = [];
+      const {bukrs,brnch,dep,waers,bldat} = this.props.bkpf;
+      if (bukrs===null || bukrs===undefined || !bukrs) { errors.push("Выберите компанию"); }
+      if (brnch===null || brnch===undefined || !brnch) { errors.push("Выберите филиал"); }
+      if (dep===null || dep===undefined || !dep) { errors.push("Выберите отдел"); }
+      if (waers===null || waers===undefined || !waers) { errors.push("Выберите валюту"); }
+      if (bldat===null || bldat===undefined || !bldat) { errors.push("Выберите дату документа"); }
 
+      const {lifnr, hkont_s, hkont_h, summa} = this.props.bseg;
+      if (hkont_h===null || hkont_h===undefined || !hkont_h) { errors.push("Выберите операцию"); }
+      if (hkont_s===null || hkont_s===undefined || !hkont_s) { errors.push("Выберите кассу"); }
+      if (lifnr===null || lifnr===undefined || !lifnr) { errors.push("Выберите сотрудника"); }
+      if (summa===null || summa===undefined || !summa || parseFloat(summa)<=0) { errors.push("Сумма 0 или отрицательная "); }
+
+      return errors;
+    }
     
     render(){
-      console.log(this.props.hkontOptions,'this.props.hkontOptions')
       const bkpfInfo = {
         bukrsInfo:            { readOnly:false, disabled:false },
         brnchInfo:            { readOnly:false, disabled:false },
@@ -114,6 +160,15 @@ class Fcis extends Component {
         
       }
 
+      const {waers, bukrs, brnch} = this.props.bkpf;
+
+      const hkontOptions = this.props.hkontOptions.filter(wa=>wa.dynvalue===waers)
+       .map((wa,idx)=>{
+          return {key:idx,value:wa.value, text:wa.text};
+        });
+
+
+
       const {lifnr, staffFio, hkont_s, hkont_h, summa} = this.props.bseg;
         
 
@@ -121,12 +176,27 @@ class Fcis extends Component {
             
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
                 <Header as="h2" block>
-                    Personel nakit tahsilati
+                  Взнос в счет сотрудника
                 </Header>
+                <Segment padded size="small">
+                  <List horizontal>
+                    <List.Item>
+                      <List.Content>
+                          <Button icon labelPosition='left' primary size='small' onClick={()=>this.save()} disabled={this.props.activeLoader}>
+                            <Icon name='save' size='large' />Сохранить
+                          </Button>
+                      </List.Content>
+                    </List.Item>
+                  </List>             
+                </Segment>
+
+                <OutputErrors errors={this.state.errors}/>
                 
                 <FaHeader {...this.props}  bkpfInfo={bkpfInfo}/>
-                <FcisPosition  hkontOptions_s={this.props.hkontOptions}  hkontOptions_h={hkontOptions_h} waers={this.props.bkpf.waers}
+                <FcisPosition  hkontOptions_s={hkontOptions}  hkontOptions_h={hkontOptions_h} waers={waers}
                   lifnr={lifnr} staffFio={staffFio} hkont_s={hkont_s} hkont_h={hkont_h} summa={summa}
+                  brnch = {brnch} branchOptions={this.props.branchOptions} 
+                  bukrs={bukrs} companyOptions={this.props.companyOptions} 
                   onInputChange = {(value,stateFieldName)=>{this.onInputChange(value,stateFieldName)}}
                 />
             </Container>
@@ -135,8 +205,6 @@ class Fcis extends Component {
         
         
     }
-    
-    // handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex })
     
 };
 
@@ -164,5 +232,5 @@ class Fcis extends Component {
 
 
 
-export default connect(mapStateToProps,{ f4FetchDepartmentList, f4FetchCurrencyList, 
+export default connect(mapStateToProps,{ f4FetchDepartmentList, f4FetchCurrencyList, modifyLoader,saveFcis,
   f4FetchBusinessAreaList2, f4FetchExchangeRateNational, changefaBkpf, clearfaBkpf, fetchCashBankHkontsByBranch, changeDynObj, clearDynObj}) (Fcis);

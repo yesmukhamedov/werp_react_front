@@ -8,6 +8,7 @@ import OutputErrors from '../../../general/error/outputErrors';
 import moment from 'moment';
 import {f4FetchDepartmentList, f4FetchCurrencyList, f4FetchBusinessAreaList2, f4FetchExchangeRateNational,f4FetchWerksBranchList } from '../../../reference/f4/f4_action';
 import {amsgSave} from  '../../../accounting/accounting_action';
+import { modifyLoader } from '../../../general/loader/loader_action';
 import {changefaBkpf, clearfaBkpf} from '../../../finance/fa_action';
  
 class Amsg extends Component {
@@ -124,7 +125,8 @@ class Amsg extends Component {
     }
 
     save(){
-      // this.setState({loading:true});
+      // this.setState({loading:true});      
+      this.props.modifyLoader(true);
       let errors = [];
       // console.log(222222)
       errors = this.validate();
@@ -134,13 +136,17 @@ class Amsg extends Component {
         let bkpf = Object.assign({}, this.props.bkpf);        
         let rows = JSON.parse(JSON.stringify(this.state.rows));        
         let psRows = this.state.enablePaySchedule?JSON.parse(JSON.stringify(this.state.psRows)):[];
-        let customer = Object.assign({}, this.state.customer); 
+        let customer = Object.assign({}, this.state.customer);
         this.props.amsgSave(bkpf,rows,psRows,customer.lifnr);
+      }
+      else{
+        this.props.modifyLoader(false);
       }
       
       this.setState({errors});
     }
     validate(){
+      
       let errors = [];
       const {bukrs,brnch,business_area_id,dep,waers,bldat,zreg} = this.props.bkpf;
       if (bukrs===null || bukrs===undefined || !bukrs) { errors.push("Выберите компанию"); }
@@ -191,14 +197,7 @@ class Amsg extends Component {
     }
 
     
-
-
-
-    // bonusEditModalOpenHandler(index,row){
-    //     this.setState({bonusEditModalOpen:true, selectedBonus:row, selectedBonusIndex:index});
-    // }
-    
-    
+  
     
     render(){
 
@@ -233,7 +232,7 @@ class Amsg extends Component {
                   <List horizontal>
                     <List.Item>
                       <List.Content>
-                          <Button icon labelPosition='left' primary size='small' onClick={()=>this.save()}>
+                          <Button icon labelPosition='left' primary size='small' onClick={()=>this.save()} disabled={this.props.activeLoader}>
                             <Icon name='save' size='large' />Сохранить
                           </Button>
                       </List.Content>
@@ -299,6 +298,7 @@ class Amsg extends Component {
         ,initialBkpf:state.fa.faForm.initialBkpf
         ,hkontOptions:state.fa.faForm.hkontOptions   
         ,werksBranchList: state.f4.werksBranchList
+        ,activeLoader: state.loader.active
     };
 }
 
@@ -307,6 +307,6 @@ class Amsg extends Component {
 
 
 export default connect(mapStateToProps,{  
-  changefaBkpf, clearfaBkpf, amsgSave,
+  changefaBkpf, clearfaBkpf, amsgSave, modifyLoader,
   f4FetchWerksBranchList, f4FetchDepartmentList, f4FetchCurrencyList, f4FetchBusinessAreaList2, f4FetchExchangeRateNational
 }) (Amsg);

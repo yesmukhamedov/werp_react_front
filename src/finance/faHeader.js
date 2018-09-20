@@ -270,7 +270,7 @@ class FaHeader extends PureComponent{
                                         
                                         <Table.Cell>
                                             <TextArea style={{ maxHeight: 45,minHeight: 45, minWidth:180, maxWidth:180 }}
-                                                value={bktxt}
+                                                value={bktxt} maxLength='255'
                                                 onChange={(e, { value }) => this.onInputChange(value,"bktxt")}
                                                 placeholder={'Примечание'}
                                                 readOnly={bktxtInfo?bktxtInfo.readOnly?bktxtInfo.readOnly:false:false}

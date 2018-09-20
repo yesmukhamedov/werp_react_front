@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react';
-import { Modal, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
-import {f4FetchMatnrList, f4ClearMatnrList} from '../f4_action'
+import {f4FetchStaffList, f4ClearStaffList} from '../f4_action'
+import { Table, Modal, Dropdown, Icon, Input, Checkbox, Button } from 'semantic-ui-react'
 import matchSorter from 'match-sorter';
+import {Link} from 'react-router-dom'
+import {LEGACY_URL} from "../../../utils/constants"
 // import './notification.css'
 
 // const arrayList= ;
@@ -14,24 +16,53 @@ class StaffF4Modal extends PureComponent{
 
         super(props);
         this.onInputChange=this.onInputChange.bind(this);
-        
+        this.onSearch=this.onSearch.bind(this);
+        this.close = this.close.bind(this);
+        this.state = 
+        {        
+            bukrsDisabledState:false,
+            brnchDisabledState:false,
+            bukrsSV:'',
+            brnchSV:'',
+            fioSV:'',
+            iinBinSV:'',
+            unemployed:false,
+            loading:false
+        };
+
 
         
-        this.state={branchId};
         
     } 
-    componentWillMount() {
-        // this.props.f4FetchMatnrList(this.props.trans);
+
+    
+    componentWillReceiveProps(nextProps) {
+        
+        if(nextProps.bukrs !== this.props.bukrs) {      
+            this.setState({ bukrsSV:nextProps.bukrs })
+        }
+        if(nextProps.brnch !== this.props.brnch) {      
+            this.setState({ brnchSV:nextProps.brnch })
+        }
     }
   
     componentWillUnmount(){
-        // this.props.f4ClearMatnrList();
+        this.props.f4ClearStaffList();
     }
 
-    onInputChange(value,stateFieldName){      
-        this.setState({ [stateFieldName]:value })
-      }
-
+    onInputChange(value,stateFieldName){
+        if (stateFieldName==='unemployed'){
+            this.setState({unemployed:!this.state.unemployed,bukrsDisabledState:!this.state.unemployed,brnchDisabledState:!this.state.unemployed })
+        }
+        else{
+            this.setState({[stateFieldName]:value })
+        }
+    }
+  
+    onSearch(){
+        this.props.f4FetchStaffList(this.props.trans, this.state.bukrsSV, this.state.brnchSV, this.state.fioSV, this.state.iinBinSV, this.state.unemployed,
+        (value)=>this.setState({loading:value}));
+    }
 
     close = () => {
         this.props.closeModal(false);
@@ -42,30 +73,38 @@ class StaffF4Modal extends PureComponent{
     render () {
         let trans = this.props.trans;
         let t1columns = [];
-
-        if (trans==='hrb02')
+        if (trans==='fcis')
         {
-            let t1r1c1 = {Header:({value}) => <b>ID</b>,accessor: "staff_id",width: 100,className:'clickableItem'};
-            let t1r1c2 = {Header:({value}) => <b>ID</b>,accessor: "iin_bin",width: 100,className:'clickableItem'};
-            let t1r1c3 = {Header:({value}) => <b>Code</b>,accessor: "fio",width: 150,className:'clickableItem'};
-            let t1r1c4 = {Header:({value}) => <b>Название</b>
-            //,accessor: "text45"
-            ,id: "text45",
-            accessor: d => d.text45,
+            let t1r1c1 = {Header:({value}) => <b>ID</b>,accessor: "staffId",width: 100,className:'clickableItem',
+                Cell: obj => 
+                <span>
+                    <Link target='_blank' className={'ui icon button'} 
+                    to={`${LEGACY_URL}/hr/staff/View.xhtml?staffId=` + obj.original.staffId}>
+                            {obj.original.staffId}
+                    </Link>                                       
+                </span> 
+        
+            };
+            let t1r1c2 = {Header:({value}) => <b>ФИО</b>,width: 300,id: "fio",
+            accessor: d => d.fio,
             filterMethod: (filter, rows) =>
-              matchSorter(rows, filter.value, { keys: ["text45"] }),
+              matchSorter(rows, filter.value, { keys: ["fio"] }),
             filterAll: true,className:'clickableItem'};
+
+
+            let t1r1c3 = {Header:({value}) => <b>ИИН/БИН</b>,accessor: "iinBin",width: 150,className:'clickableItem'};
+
     
     
             
             t1columns.push(t1r1c1);
             t1columns.push(t1r1c2);
             t1columns.push(t1r1c3);
+            // t1columns.push(t1r1c4);
         }
         
-        const {bukrs, branchOptions} = this.props;
-
-
+        const {companyOptions, branchOptions, bukrsDisabledParent} = this.props;
+        const {bukrsDisabledState, brnchDisabledState, bukrsSV, brnchSV, fioSV, iinBinSV, unemployed} = this.state;
 
         return (
 
@@ -83,10 +122,20 @@ class StaffF4Modal extends PureComponent{
                                 Компания
                             </Table.Cell>
                             <Table.Cell>
-                                <Label.Group size='huge'>
-                                    <Label>{bukrs}</Label>
-                                </Label.Group>
-                            </Table.Cell>                            
+                                <Dropdown placeholder='Компания' selection options={companyOptions} value={bukrsSV} 
+                                            onChange={(e, { value }) => this.onInputChange(value,'bukrsSV')} 
+                                            disabled={bukrsDisabledParent?bukrsDisabledParent:bukrsDisabledState}
+                                            />
+                            </Table.Cell>
+                            <Table.Cell>
+                                ФИО
+                            </Table.Cell>
+                            <Table.Cell>
+                                <Input
+                                value={fioSV} placeholder={'ФИО'}
+                                onChange={(e, { value }) => this.onInputChange(value,'fioSV')}
+                                />
+                            </Table.Cell>                              
                         </Table.Row>
                         <Table.Row>
                             <Table.Cell>
@@ -94,9 +143,39 @@ class StaffF4Modal extends PureComponent{
                                 Филиал
                             </Table.Cell>
                             <Table.Cell>
-                                <Dropdown fluid selection options={branchOptions} value={this.state.branchId} 
-                                         onChange={(e, { value }) => this.onInputChange(value,'branchId')} />
+                                <Dropdown placeholder='Филиал'  search selection options={branchOptions[bukrsSV]?branchOptions[bukrsSV]:[]} 
+                                            value={brnchSV}  onChange={(e, { value }) => this.onInputChange(value,'brnchSV')}
+                                            disabled={brnchDisabledState} 
+                                            />
+                            </Table.Cell> 
+                            <Table.Cell> 
+                                ИИН/БИН
+                            </Table.Cell>
+                            <Table.Cell>
+                                <Input
+                                value={iinBinSV} placeholder={'ИИН/БИН'}
+                                onChange={(e, { value }) => this.onInputChange(value,'iinBinSV')}
+                                />
                             </Table.Cell>                            
+                        </Table.Row>                        
+                        <Table.Row>                                          
+                            <Table.Cell>
+                                Уволенный
+                            </Table.Cell>
+                            <Table.Cell>                                                                        
+                                <Checkbox
+                                checked={unemployed}
+                                onChange={(e, { value }) => this.onInputChange(value,"unemployed")}
+                                />
+                            </Table.Cell> 
+                            <Table.Cell>                                 
+                                <Button icon labelPosition='left' primary size='small' onClick={()=>{this.setState({loading:true});this.onSearch();}}
+                                loading={this.state.loading} disabled={this.state.loading}>
+                                    <Icon name='search' size='large' />Поиск
+                                </Button>
+                            </Table.Cell>
+                            <Table.Cell>
+                            </Table.Cell>         
                         </Table.Row>
                     </Table.Body>                     
                 </Table>     
@@ -121,7 +200,7 @@ class StaffF4Modal extends PureComponent{
                                 return {
                                   
                                   onClick: (e, handleOriginal) => {
-                                    this.props.selectItem(rowInfo.original);
+                                    this.props.onStaffSelect(rowInfo.original);
                                     this.props.closeModal(false);
                                   },
                                 };
@@ -137,7 +216,7 @@ class StaffF4Modal extends PureComponent{
 };
 // export default Notification;
 function mapStateToProps (state) {
-  return { table: state.f4.matnrList }
+  return { table: state.f4.staffList }
 }
 
-export default connect(mapStateToProps, {f4FetchMatnrList, f4ClearMatnrList })(StaffF4Modal)
+export default connect(mapStateToProps, {f4FetchStaffList, f4ClearStaffList })(StaffF4Modal)

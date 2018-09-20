@@ -1,34 +1,33 @@
 import axios from 'axios';
 import {ROOT_URL} from '../../utils/constants';
+import { handleError } from '../../general/notification/notification_action';
 
 export const F4_FETCH_MATNR_LIST = 'F4_FETCH_MATNR_LIST';
 export const F4_CLEAR_MATNR_LIST = 'F4_CLEAR_MATNR_LIST';
+
 export const F4_FETCH_POSITION_LIST = 'F4_FETCH_POSITION_LIST';
 export const F4_CLEAR_POSITION_LIST = 'F4_CLEAR_POSITION_LIST';
+
 export const F4_FETCH_CURRENCY_LIST = 'F4_FETCH_CURRENCY_LIST';
 export const F4_CLEAR_CURRENCY_LIST = 'F4_CLEAR_CURRENCY_LIST';
+
 export const F4_FETCH_BONUSTYPE_LIST = 'F4_FETCH_BONUSTYPE_LIST';
 export const F4_CLEAR_BONUSTYPE_LIST = 'F4_CLEAR_BONUSTYPE_LIST';
 
 export const F4_FETCH_COUNTRY_LIST = 'F4_FETCH_COUNTRY_LIST';
 export const F4_CLEAR_COUNTRY_LIST = 'F4_CLEAR_COUNTRY_LIST';
-
 //Районы в городе
 export const F4_FETCH_CITYREG_LIST = 'F4_FETCH_CITYREG_LIST';
 export const F4_CLEAR_CITYREG_LIST = 'F4_CLEAR_CITYREG_LIST';
-
 //Область
 export const F4_FETCH_STATE_LIST = 'F4_FETCH_STATE_LIST';
 export const F4_CLEAR_STATE_LIST = 'F4_CLEAR_STATE_LIST';
-
 //Города
 export const F4_FETCH_CITY_LIST = 'F4_FETCH_CITY_LIST';
 export const F4_CLEAR_CITY_LIST = 'F4_CLEAR_CITY_LIST';
-
 //
 export const F4_FETCH_BUSINESS_AREA_LIST = 'F4_FETCH_BUSINESS_AREA_LIST';
 export const F4_CLEAR_BUSINESS_AREA_LIST = 'F4_CLEAR_BUSINESS_AREA_LIST';
-
 //
 export const F4_FETCH_EXCHANGERATE_NATIONAL = 'F4_FETCH_EXCHANGERATE_NATIONAL';
 export const F4_CLEAR_EXCHANGERATE_NATIONAL = 'F4_CLEAR_EXCHANGERATE_NATIONAL';
@@ -42,9 +41,11 @@ export const F4_CLEAR_EXPENSE_TYPES = 'F4_CLEAR_EXPENSE_TYPES'
 export const F4_FETCH_SUB_COMPANIES = 'F4_FETCH_SUB_COMPANIES'
 export const F4_CLEAR_SUB_COMPANIES = 'F4_CLEAR_SUB_COMPANIES'
 
-
 export const F4_FETCH_WERKSBRANCH_LIST = 'F4_FETCH_WERKSBRANCH_LIST'
 export const F4_CLEAR_WERKSBRANCH_LIST = 'F4_CLEAR_WERKSBRANCH_LIST'
+
+export const F4_FETCH_STAFF_LIST = 'F4_FETCH_STAFF_LIST'
+export const F4_CLEAR_STAFF_LIST = 'F4_CLEAR_STAFF_LIST'
 
 
 
@@ -60,9 +61,10 @@ export function f4FetchDepartmentList(){
                 departmentList:data
             });
         })
-            .catch(error => {
-
-            });
+            
+        .catch(error => {
+            handleError(error,dispatch);
+        });
     }
 }
 
@@ -79,7 +81,7 @@ export function f4FetchCountryList(){
                 });
             })
             .catch(error => {
-
+                handleError(error,dispatch);
             });
     }
 }
@@ -97,7 +99,7 @@ export function f4FetchStateList(){
             });
         })
         .catch(error => {
-
+            handleError(error,dispatch);
         });
     }
 }
@@ -115,7 +117,7 @@ export function f4FetchCityList(){
             });
         })
         .catch(error => {
-
+            handleError(error,dispatch);
         });
     }
 }
@@ -132,9 +134,9 @@ export function f4FetchCityregList(){
                 cityregList:data
             });
         })
-            .catch(error => {
-
-            });
+        .catch(error => {
+            handleError(error,dispatch);
+        });
     }
 }
 
@@ -160,10 +162,16 @@ export function f4FetchMatnrList(trans) {
     
         })
         .catch(error => {
-            console.log(error);              
-                 
+            handleError(error,dispatch);
         });
     }    
+}
+
+export function f4ClearMatnrList() {
+    const obj = {
+        type: F4_CLEAR_MATNR_LIST
+    };
+    return obj;
 }
 
 export function f4FetchPriceList(trans,bukrs,waers) {
@@ -190,17 +198,9 @@ export function f4FetchPriceList(trans,bukrs,waers) {
     
         })
         .catch(error => {
-            console.log(error);              
-                 
+            handleError(error,dispatch);
         });
     }    
-}
-
-export function f4ClearMatnrList() {
-    const obj = {
-        type: F4_CLEAR_MATNR_LIST
-    };
-    return obj;
 }
 
 export function f4FetchPositionList(trans) {
@@ -225,8 +225,7 @@ export function f4FetchPositionList(trans) {
     
         })
         .catch(error => {
-            console.log(error);              
-                 
+            handleError(error,dispatch);
         });
     }    
 }
@@ -294,8 +293,7 @@ export function f4FetchWerksBranchList() {
     
         })
         .catch(error => {
-            console.log(error);              
-                 
+            handleError(error,dispatch);
         });
     }    
 }
@@ -329,8 +327,7 @@ export function f4FetchBonusTypeList(trans) {
     
         })
         .catch(error => {
-            console.log(error);              
-                 
+            handleError(error,dispatch);
         });
     }    
 }
@@ -357,7 +354,7 @@ export function f4FetchBusinessAreaList() {
                 });
             })
             .catch(error => {
-                console.log(error);
+                handleError(error,dispatch);
             });
     }
 }
@@ -376,7 +373,7 @@ export function f4FetchBusinessAreaList2() {
                 });
             })
             .catch(error => {
-                console.log(error);
+                handleError(error,dispatch);
             });
     }
 }
@@ -394,7 +391,7 @@ export function f4FetchExchangeRateNational() {
                 });
             })
             .catch(error => {
-                console.log(error);
+                handleError(error,dispatch);
             });
     }
 }
@@ -412,7 +409,7 @@ export function f4FetchExpenceTypes() {
                 });
             })
             .catch(error => {
-                console.log(error);
+                handleError(error,dispatch);
             });
     }
 }
@@ -431,7 +428,44 @@ export function f4FetchSubCompanies() {
                 });
             })
             .catch(error => {
-                console.log(error);
+                handleError(error,dispatch);
             });
     }
+}
+
+
+export function f4FetchStaffList(trans, bukrs, brnch, fio, iinBin, unemployed, stopLoading) {
+
+    return function(dispatch) {
+
+        axios.get(`${ROOT_URL}/api/reference/staffList`, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            },
+            params:{
+                trans:trans, bukrs:bukrs, brnch:brnch, fio:fio, iinBin:iinBin, unemployed:unemployed
+            }
+
+            
+        })
+        .then(({data}) => {
+            dispatch({
+                type: F4_FETCH_STAFF_LIST,
+                staffList:data
+            });
+            stopLoading(false);
+    
+        })        
+        .catch(error => {
+            handleError(error,dispatch); 
+            stopLoading(false);
+        });
+    }    
+}
+
+export function f4ClearStaffList() {
+    const obj = {
+        type: F4_CLEAR_STAFF_LIST
+    };
+    return obj;
 }
