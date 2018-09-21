@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Grid, Label, List, Loader, Segment } from 'semantic-ui-react';
+import { Grid, Label, List, Loader, Segment, Button } from 'semantic-ui-react';
 import PortalComponentDisplay from '../../../../../../general/portal/PortalComponent';
 import { LEGACY_URL } from '../../../../../../utils/constants';
 import { constructFullName } from '../../../../../../utils/helpers';
@@ -105,11 +104,13 @@ const FinancialInfoPanelDisplay = (props) => {
                   </List.Header>
                   {
                     (recommender &&
-                    <Link target='_blank' to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=` + recommender.contractNumber}>
-                      {
-                        constructFullName(recommender.recommenderName)
-                      }
-                    </Link>) || <span>&mdash;</span>
+                          <a target='_blank' href={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=` + recommender.contractNumber}>
+                                          <Button>{
+                                            constructFullName(recommender.recommenderName)
+                                          }</Button>
+                            </a>
+
+                    ) || <span>&mdash;</span>
                   }
                 </List.Item>
                 <List.Item>

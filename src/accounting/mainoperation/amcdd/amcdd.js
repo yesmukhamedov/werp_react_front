@@ -4,7 +4,6 @@ import { Container, Header, Segment, List, Input, Icon, Button, Label,Table, Gri
 import OutputErrors from '../../../general/error/outputErrors';
 import {amcddSave, amcddFetch, amcddChange, amcddClear} from  '../../../accounting/accounting_action';
 import {LEGACY_URL} from "../../../utils/constants";
-import {Link} from 'react-router-dom';
 
 import {handleFocus, isEmpty, moneyFormat, moneyInputHanler} from '../../../utils/helpers';
 
@@ -196,18 +195,19 @@ class Fmcp extends Component {
                               Номер договора или рег. номер
                             </Table.Cell>
                             <Table.Cell>
+
                               
-                            {contract.iscontractnumber && <Link target='_blank' className={'ui icon button'} 
-                                to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=` + contract.zregOrConNum}>
-                                {contract.zregOrConNum}
-                              </Link>
-                              }
+                              
+                            {contract.iscontractnumber && 
+                              <a target='_blank' href={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=` + contract.zregOrConNum}>
+                                <Button>{contract.zregOrConNum}</Button>
+                              </a>
+                            }
                               {contract.belnr && 
-                                <Link target='_blank' className={'ui icon button'} 
-                                to={`${LEGACY_URL}/accounting/reports/fa03.xhtml?belnr=` + contract.belnr 
-                                +`&gjahr=` + contract.gjahr +`&bukrs=` + contract.bukrs}>
-                                  Фин. док
-                                </Link>
+                                <a target='_blank' href={`${LEGACY_URL}/accounting/reports/fa03.xhtml?belnr=` + contract.belnr 
+                                  +`&gjahr=` + contract.gjahr +`&bukrs=` + contract.bukrs}>
+                                  <Button>Фин. док</Button>
+                                </a>                                
                               }
 
                             </Table.Cell>                

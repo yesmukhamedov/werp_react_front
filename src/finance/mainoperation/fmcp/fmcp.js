@@ -6,7 +6,6 @@ import {fetchFMCP, changeDynObj, clearDynObj, saveFMCP} from  '../../../finance/
 import _ from "lodash";
 import {handleFocus, isEmpty, moneyFormat, moneyInputHanler} from '../../../utils/helpers';
 import {LEGACY_URL} from "../../../utils/constants";
-import {Link} from 'react-router-dom';
 import {BigNumber} from 'bignumber.js';
 
 class Fmcp extends Component {
@@ -251,17 +250,17 @@ class Fmcp extends Component {
                               Номер договора или рег. номер
                             </Table.Cell>
                             <Table.Cell>
-                              {contract.iscontractnumber && <Link target='_blank' className={'ui icon button'} 
-                                to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=` + contract.zregOrConNum}>
-                                {contract.zregOrConNum}
-                              </Link>
+                              {contract.iscontractnumber && 
+                                <a target='_blank' href={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=` + contract.zregOrConNum}>
+                                  <Button>{contract.zregOrConNum}</Button>
+                                </a>
+                              
                               }
                               {contract.belnr && 
-                                <Link target='_blank' className={'ui icon button'} 
-                                to={`${LEGACY_URL}/accounting/reports/fa03.xhtml?belnr=` + contract.belnr 
+                                <a target='_blank' href={`${LEGACY_URL}/accounting/reports/fa03.xhtml?belnr=` + contract.belnr 
                                 +`&gjahr=` + contract.gjahr +`&bukrs=` + contract.bukrs}>
-                                  Фин. док
-                                </Link>
+                                  <Button>Фин. док</Button>
+                                </a>
                               }
                               
                             </Table.Cell>                
