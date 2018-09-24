@@ -3,7 +3,7 @@ import { Table,Icon,Label,Message } from 'semantic-ui-react'
 import {MONTH_OPTIONS} from '../../../../../utils/constants'
 import moment from 'moment'
 import DemoResultLabel from '../../../../mainoperation/demo/components/DemoResultLabel'
-import {REP_894,REP_934} from '../../crmRepUtil'
+import {REP_894,REP_934,REP_935} from '../../crmRepUtil'
 import {RECO_CATEGORY_COLORS,RECO_CATEGORIES} from '../../../../crmUtil'
 import {renderRecoCategoryBtn,renderRecoCategoryAsQty} from '../../../../CrmHelper'
 import '../../css/repStyle.css'
@@ -54,11 +54,12 @@ export function RepTable894And934(props){
         monthData = monthData || {}
         return months.map((m => {
             let md = monthData[m]
-
-            return [<Table.Cell key={m} width={1} className={md?md.demoLevelClass:''}>{md?(md.demoCount):''}</Table.Cell>,
+            return [<Table.Cell key={m} width={1} className={md?md.demoLevelClass:''}>{md?md.demoCount:''}</Table.Cell>,
                 <Table.Cell key={m+'d'} className={md?md.demoLevelClass:''}>{md?md.demoLevel+'-уровень':'Нет данных'}</Table.Cell>]
         }))
     }
+
+    const colSpan = transactionId === REP_935 ? 2: 3
 
     return <Table celled striped>
         <Table.Header>
@@ -66,7 +67,7 @@ export function RepTable894And934(props){
                 <Table.HeaderCell>ФИО</Table.HeaderCell>
                 {months.map((m => {
                     return <Table.HeaderCell
-                        colSpan={3}
+                        colSpan={colSpan}
                         key={m}>{MONTH_OPTIONS[m-1]?MONTH_OPTIONS[m-1]['text']:''}
                         </Table.HeaderCell>
                 }))}
