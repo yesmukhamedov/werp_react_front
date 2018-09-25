@@ -1,14 +1,14 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 
-import { Header,Container,Segment,Divider,Loader } from 'semantic-ui-react'
+import { Header,Container,Segment,Divider,Loader,Form,Modal,Button } from 'semantic-ui-react'
 import HrDocActions from './HrDocActions'
 import HrDocMainData from './HrDocMainData'
 import HrDocData from './HrDocData'
 import HrDocApprovers from './HrDocApprovers'
 import HrDocLog from './HrDocLog'
 import {fetchDocument,handleAction} from '../actions/hrDocAction'
-import {DOC_ACTION_GO_TO_LIST,DOC_ACTION_ADD_APPROVER} from '../../../hrUtil'
+import {DOC_ACTION_GO_TO_LIST,DOC_ACTION_ADD_APPROVER,DOC_ACTION_REJECT} from '../../../hrUtil'
 import browserHistory from '../../../../utils/history'
 import StaffListModal from '../../staff/components/StaffListModal'
 import {fetchAllCurrentStaffs,toggleStaffListModal} from '../../staff/actions/hrStaffAction'
@@ -21,7 +21,10 @@ class HrDocViewPage extends Component{
         super(props)
         this.state = {
             //Модальное окно для добавление Согласующих
-            approversModalOpened: false
+            approversModalOpened: false,
+            //Модальное окно для примечание, в случае отказа
+            rejectNoteModalOpened: false,
+            refuseNote:''
         }
     }
 
@@ -43,11 +46,23 @@ class HrDocViewPage extends Component{
                 this.props.toggleStaffListModal(true)
                 break
 
+            case DOC_ACTION_REJECT:
+                this.setState({
+                    rejectNoteModalOpened: true,
+                    refuseNote: ''
+                })
+                break
+
             default:
                 let document = Object.assign({},this.props.document)
                 this.props.handleAction(document,actionType)
                 break
         }
+    }
+
+    handleRejectAction = () => {
+        let document = Object.assign({},this.props.document)
+        this.props.handleAction(document,DOC_ACTION_REJECT, this.state.refuseNote)
     }
 
     addApprover = (staff) => {
@@ -84,11 +99,43 @@ class HrDocViewPage extends Component{
         }
     }
 
+    onRefuseModalNoteChange = (v) => {
+        this.setState({
+            refuseNote: v
+        })
+    }
+
+    renderRejectNoteModal = () => {
+        return <Modal open={this.state.rejectNoteModalOpened}
+                      onClose={this.close}
+                      dimmer={"inverted"} size='small' >
+                    <Modal.Header>
+                        Напишите причину отказа
+                    </Modal.Header>
+                    <Modal.Content>
+                        <Form>
+                            <Form.Group widths='equal'>
+                                <textarea className="ui fluid" onChange={(e) => this.onRefuseModalNoteChange(e.target.value)}></textarea>
+                            </Form.Group>
+                            <Form.Group widths='equal'>
+                                <Button primary onClick={this.handleRejectAction}>Отправить</Button>
+
+                                <Button color={'red'} onClick={() => this.setState({
+                                    rejectNoteModalOpened: false,
+                                    refuseNote: ''
+                                })}>Отмена</Button>
+                            </Form.Group>
+                        </Form>
+                    </Modal.Content>
+                </Modal>
+    }
+
     render (){
+        let document = Object.assign({},this.props.document)
         return <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
             <Segment clearing>
                 <Header as='h2' floated='left'>
-                    Просмотр документа Заявление о приеме на работу, №
+                    Просмотр документа Заявление о приеме на работу, № {document.id}
                 </Header>
                 <HrDocActions handleAction={this.handleAction} items={this.props.actions} />
             </Segment>
@@ -98,11 +145,12 @@ class HrDocViewPage extends Component{
                 close={() => this.props.toggleStaffListModal(false)}
                 opened={this.props.staffListModalOpened}
                 staffs={this.props.allCurrentStaffs} />
+            {this.renderRejectNoteModal()}
             {this.props.pageLoading?<Loader inline='centered' active/>:<div>
-                    <HrDocMainData item={this.props.document}/>
+                    <HrDocMainData item={document}/>
                     <HrDocData typeId={this.props.document.typeId} items={this.props.document.items}/>
-                    <HrDocApprovers items={this.props.document.approvers}/>
-                    <HrDocLog items={this.props.document.actionLogs}/>
+                    <HrDocApprovers items={this.props.approvers}/>
+                    <HrDocLog items={this.props.actionLogs}/>
                 </div>}
 
         </Container>
@@ -113,6 +161,8 @@ function mapStateToProps (state) {
     return {
         document:state.hrDocReducer.document,
         actions: state.hrDocReducer.actions,
+        approvers: state.hrDocReducer.approvers,
+        actionLogs: state.hrDocReducer.actionLogs,
         pageLoading: state.hrDocReducer.pageLoading,
         staffListModalOpened: state.hrStaff.staffListModalOpened,
         allCurrentStaffs: state.hrStaff.allCurrentStaffs

@@ -6,6 +6,8 @@ const INITIAL_STATE={
     items: [],
     document:{},
     actions:[],
+    approvers: [],
+    actionLogs: [],
     pageLoading: false
 }
 
@@ -19,8 +21,8 @@ export default function (state = INITIAL_STATE, action) {
 
         case HR_DOC_SINGLE_ITEM_LOADED:
         case HR_DOC_SINGLE_ITEM_BLANKED:
-            const {document,actions} = action.payload
-            return {...state, document: document, actions: actions}
+            const {document,actions,approvers,actionLogs} = action.payload
+            return {...state, document: document, actions: actions, approvers: approvers, actionLogs: actionLogs}
 
         default:
             return state

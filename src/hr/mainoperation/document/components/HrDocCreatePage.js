@@ -6,9 +6,9 @@ import HrDocActions from './HrDocActions'
 import {DOC_TYPE_RECRUITMENT,DOC_ACTION_SAVE} from '../../../hrUtil'
 import RecruitmentForm from './forms/RecruitmentForm'
 import {blankDocument,createDocument} from '../actions/hrDocAction'
-import {fetchAllStaffs,toggleStaffListModal,fetchAllManagers,fetchAllDirectors} from '../../staff/actions/hrStaffAction'
-import StaffListModal from '../../staff/components/StaffListModal'
+import {toggleStaffListModal,fetchAllManagers,fetchAllDirectors} from '../../staff/actions/hrStaffAction'
 import {f4FetchPositionList,f4FetchBusinessAreaList,f4FetchDepartmentList} from '../../../../reference/f4/f4_action'
+import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal'
 
 class HrDocCreatePage extends Component{
 
@@ -16,6 +16,7 @@ class HrDocCreatePage extends Component{
         super(props)
 
         this.state = {
+            staffListModalOpened: false,
             localDocument: {}
         }
     }
@@ -24,7 +25,6 @@ class HrDocCreatePage extends Component{
         let docType = parseInt(this.props.match.params.type,10)
         this.props.blankDocument(docType)
         if(DOC_TYPE_RECRUITMENT === docType){
-            this.props.fetchAllStaffs([])
             this.props.f4FetchPositionList('hr_document')
             this.props.f4FetchDepartmentList()
             this.props.fetchAllManagers()
@@ -65,7 +65,9 @@ class HrDocCreatePage extends Component{
     addItem = () => {
         let docType = parseInt(this.props.match.params.type,10)
         if(docType === DOC_TYPE_RECRUITMENT){
-            this.props.toggleStaffListModal(true)
+            this.setState({
+                staffListModalOpened: true
+            })
         }
     }
 
@@ -93,7 +95,7 @@ class HrDocCreatePage extends Component{
             let items = document.items || []
             items.push({
                 staffId: staff.staffId,
-                staffName: staff.lastname + ' ' + staff.firstname,
+                staffName: staff.fio,
                 amount: 0
 
             })
@@ -179,11 +181,17 @@ class HrDocCreatePage extends Component{
                 <Header as='h2' floated='left'>
                     {pageTitle}
                 </Header>
-                <StaffListModal
-                    onSelect={this.handleStaffSelect}
-                    close={() => this.props.toggleStaffListModal(false)}
-                    opened={this.props.staffListModalOpened}
-                    staffs={this.props.allStaffs} />
+                {/*<StaffListModal*/}
+                    {/*onSelect={this.handleStaffSelect}*/}
+                    {/*close={() => this.props.toggleStaffListModal(false)}*/}
+                    {/*opened={this.props.staffListModalOpened}*/}
+                    {/*staffs={this.props.allStaffs} />*/}
+                <StaffF4Modal open={this.state.staffListModalOpened}
+                              closeModal={() => this.setState({staffListModalOpened:false})}
+                              onStaffSelect={(item)=>this.handleStaffSelect(item)} trans={'fcis'}
+                              branchOptions={this.props.branchOptions}
+                              companyOptions={this.props.bukrsOptions} bukrsDisabledParent={false}
+                />
                 <HrDocActions isUpdate={true} handleAction={this.handleAction} items={this.props.actions} />
             </Segment>
             <Divider clearing />
@@ -209,6 +217,6 @@ function mapStateToProps (state) {
 }
 
 export default connect(mapStateToProps, {
-    blankDocument,fetchAllStaffs,toggleStaffListModal,createDocument,fetchAllDirectors,
+    blankDocument,toggleStaffListModal,createDocument,fetchAllDirectors,
     f4FetchPositionList,f4FetchBusinessAreaList,f4FetchDepartmentList,fetchAllManagers
 })(HrDocCreatePage)

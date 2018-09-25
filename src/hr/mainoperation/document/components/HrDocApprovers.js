@@ -24,7 +24,7 @@ export default function HrDocApprovers (props) {
                 {items.map((item,idx) => {
                     return <Table.Row key={item.id}>
                             <Table.Cell>{idx+1}</Table.Cell>
-                            <Table.Cell>{item.staffName}</Table.Cell>
+                            <Table.Cell>{item.title}</Table.Cell>
                             <Table.Cell>{item.positionName}</Table.Cell>
                             <Table.Cell>{item.statusName}</Table.Cell>
                             <Table.Cell></Table.Cell>
