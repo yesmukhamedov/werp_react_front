@@ -29,6 +29,7 @@ class HrDocCreatePage extends Component{
             this.props.f4FetchDepartmentList()
             this.props.fetchAllManagers()
             this.props.fetchAllDirectors()
+            this.props.f4FetchBusinessAreaList()
         }
     }
 
@@ -46,6 +47,26 @@ class HrDocCreatePage extends Component{
             return []
         }
         return branchOptions[bukrs]
+    }
+
+    getBusinessAreaOptions = (bukrs) => {
+        let businessAreaList = this.props.businessAreaList
+        if(!businessAreaList){
+            return []
+        }
+
+        let out = []
+        for(let k in businessAreaList){
+            if(businessAreaList[k]['bukrs'] === bukrs){
+                out.push({
+                    key: businessAreaList[k]['business_area_id'],
+                    value: businessAreaList[k]['business_area_id'],
+                    text: businessAreaList[k]['name']
+                })
+            }
+        }
+        console.log(out)
+        return out
     }
 
     getManagerOptions = (branchId) => {
@@ -168,6 +189,7 @@ class HrDocCreatePage extends Component{
                     positionList={this.props.positionList}
                     departmentList={this.props.departmentList}
                     branchOptions = {this.getBranchOptions(this.state.localDocument.bukrs)}
+                    businessAreaOptions = {this.getBusinessAreaOptions(this.state.localDocument.bukrs)}
                     directorOptions={this.getDirectorOptions(this.state.localDocument.branchId)}
                     managerOptions = {this.getManagerOptions(this.state.localDocument.branchId)}
                     bukrsOptions={this.props.bukrsOptions} document={this.state.localDocument}/>
@@ -188,7 +210,7 @@ class HrDocCreatePage extends Component{
                     {/*staffs={this.props.allStaffs} />*/}
                 <StaffF4Modal open={this.state.staffListModalOpened}
                               closeModal={() => this.setState({staffListModalOpened:false})}
-                              onStaffSelect={(item)=>this.handleStaffSelect(item)} trans={'fcis'}
+                              onStaffSelect={(item)=>this.handleStaffSelect(item)} trans={'hr_doc_create_' + currentType}
                               branchOptions={this.props.branchOptions}
                               companyOptions={this.props.bukrsOptions} bukrsDisabledParent={false}
                 />
@@ -212,7 +234,8 @@ function mapStateToProps (state) {
         directorsByBranchOptions: state.hrStaff.directorsByBranchOptions,
         allStaffs:state.hrStaff.allStaffs,
         departmentList:state.f4.departmentList,
-        positionList:state.f4.positionList
+        positionList:state.f4.positionList,
+        businessAreaList: state.f4.businessAreaList
     }
 }
 

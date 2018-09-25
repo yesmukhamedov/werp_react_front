@@ -7,8 +7,8 @@ import HrDocMainData from './HrDocMainData'
 import HrDocData from './HrDocData'
 import HrDocApprovers from './HrDocApprovers'
 import HrDocLog from './HrDocLog'
-import {fetchDocument,handleAction} from '../actions/hrDocAction'
-import {DOC_ACTION_GO_TO_LIST,DOC_ACTION_ADD_APPROVER,DOC_ACTION_REJECT} from '../../../hrUtil'
+import {fetchDocument,handleAction,localUpdateDocItems,toggleItemAmountEditMode,addAmount} from '../actions/hrDocAction'
+import {DOC_ACTION_GO_TO_LIST,DOC_ACTION_ADD_APPROVER,DOC_ACTION_REJECT,DOC_ACTION_ADD_AMOUNT} from '../../../hrUtil'
 import browserHistory from '../../../../utils/history'
 import StaffListModal from '../../staff/components/StaffListModal'
 import {fetchAllCurrentStaffs,toggleStaffListModal} from '../../staff/actions/hrStaffAction'
@@ -24,7 +24,9 @@ class HrDocViewPage extends Component{
             approversModalOpened: false,
             //Модальное окно для примечание, в случае отказа
             rejectNoteModalOpened: false,
-            refuseNote:''
+            refuseNote:'',
+            //Редактирование Оклада
+            amountEditMode: false
         }
     }
 
@@ -51,6 +53,10 @@ class HrDocViewPage extends Component{
                     rejectNoteModalOpened: true,
                     refuseNote: ''
                 })
+                break
+
+            case DOC_ACTION_ADD_AMOUNT:
+                this.props.toggleItemAmountEditMode(true)
                 break
 
             default:
@@ -130,6 +136,31 @@ class HrDocViewPage extends Component{
                 </Modal>
     }
 
+    handleAmountChange = (id,value) => {
+        let document = Object.assign({},this.props.document)
+        let items = document.items || []
+        let updatedItems = []
+        for(let k in items){
+            if(items[k]['id'] === id){
+                items[k]['amount'] = parseFloat(value)
+            }
+
+            updatedItems[k] = items[k]
+        }
+
+        this.props.localUpdateDocItems(updatedItems)
+    }
+
+    saveDocumentItems = () => {
+        let document = Object.assign({},this.props.document)
+        let items = document.items || []
+        let map = {}
+        for(let k in items){
+            map[items[k]['id']] = items[k]['amount']
+        }
+        this.props.addAmount(document,map)
+    }
+
     render (){
         let document = Object.assign({},this.props.document)
         return <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
@@ -148,7 +179,11 @@ class HrDocViewPage extends Component{
             {this.renderRejectNoteModal()}
             {this.props.pageLoading?<Loader inline='centered' active/>:<div>
                     <HrDocMainData item={document}/>
-                    <HrDocData typeId={this.props.document.typeId} items={this.props.document.items}/>
+                    <HrDocData
+                        saveDocumentItems={this.saveDocumentItems}
+                        handleAmountChange={this.handleAmountChange}
+                        amountEditMode={this.props.itemAmountEditMode}
+                        typeId={this.props.document.typeId} items={this.props.document.items}/>
                     <HrDocApprovers items={this.props.approvers}/>
                     <HrDocLog items={this.props.actionLogs}/>
                 </div>}
@@ -164,11 +199,13 @@ function mapStateToProps (state) {
         approvers: state.hrDocReducer.approvers,
         actionLogs: state.hrDocReducer.actionLogs,
         pageLoading: state.hrDocReducer.pageLoading,
+        itemAmountEditMode: state.hrDocReducer.itemAmountEditMode,
         staffListModalOpened: state.hrStaff.staffListModalOpened,
         allCurrentStaffs: state.hrStaff.allCurrentStaffs
     }
 }
 
 export default connect(mapStateToProps, {
-    fetchDocument,handleAction,fetchAllCurrentStaffs,toggleStaffListModal
+    fetchDocument,handleAction,fetchAllCurrentStaffs,toggleStaffListModal,localUpdateDocItems,
+    toggleItemAmountEditMode, addAmount
 })(HrDocViewPage)

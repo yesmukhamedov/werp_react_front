@@ -1,24 +1,29 @@
 import React from 'react'
-import {Segment,Label, Table, Icon } from 'semantic-ui-react'
+import {Segment,Label, Table, Icon, Button } from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
 import {DOC_TYPE_RECRUITMENT} from '../../../hrUtil'
 import {formatDMY,moneyFormat} from '../../../../utils/helpers'
 
 export default function HrDocData (props) {
-    const {typeId,items} = props
+    const {typeId} = props
     let table = ''
     if(typeId === DOC_TYPE_RECRUITMENT){
-        table = renderRecruitmentData(items)
+        table = renderRecruitmentData(props)
     }
     return <Segment raised>
         <Label color="blue" ribbon>
             Данные документа
         </Label>
+        {props.amountEditMode?
+            <Button color={'green'} onClick={props.saveDocumentItems} floated={'right'}>Сохранить изменения</Button>
+            :''}
         {table}
     </Segment>
 }
 
-function renderRecruitmentData (items){
+function renderRecruitmentData (props){
+    const items = props.items
+    const amountEditMode = props.amountEditMode || false
     if(!items){
         return (null)
     }
@@ -51,7 +56,7 @@ function renderRecruitmentData (items){
                                 <Table.Cell>{item.positionName}</Table.Cell>
                                 <Table.Cell>{formatDMY(item.beginDate)}</Table.Cell>
                                 <Table.Cell>{item.managerName}</Table.Cell>
-                                <Table.Cell>{moneyFormat(item.amount)}</Table.Cell>
+                                <Table.Cell>{amountEditMode ? <input onChange={(e) => props.handleAmountChange(item.id,e.target.value)} type="number" value={item.amount || 0}/>:moneyFormat(item.amount)}</Table.Cell>
                                 <Table.Cell>{item.note}</Table.Cell>
                                 <Table.Cell>
 

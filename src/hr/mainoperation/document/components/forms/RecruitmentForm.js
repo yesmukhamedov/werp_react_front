@@ -15,6 +15,7 @@ export default function RecruitmentForm (props){
     let positionList = props.positionList || []
     let managerOptions = props.managerOptions || []
     let directorOptions = props.directorOptions || []
+    let businessAreaOptions = props.businessAreaOptions || []
     return <div>
         <Segment raised>
             <Label color="blue" ribbon>
@@ -78,7 +79,9 @@ export default function RecruitmentForm (props){
                 <Label color="blue" ribbon>
                     Данные документа
                 </Label>
-                <Button primary onClick={props.addItem} floated={'right'}>Добавить</Button>
+
+                <Button disabled={document.bukrs === undefined || document.bukrs === null || document.bukrs.length === 0}
+                        primary onClick={props.addItem} floated={'right'}>Добавить</Button>
                 <br style={{clear:'both'}}/>
                 <Table celled>
                     <Table.Header>
@@ -88,7 +91,7 @@ export default function RecruitmentForm (props){
                             <Table.HeaderCell>Должность</Table.HeaderCell>
                             <Table.HeaderCell>Дата начало</Table.HeaderCell>
                             <Table.HeaderCell>Менеджер</Table.HeaderCell>
-                            <Table.HeaderCell>Оклад</Table.HeaderCell>
+                            <Table.HeaderCell>Бизнес сфера</Table.HeaderCell>
                             <Table.HeaderCell>Прим.</Table.HeaderCell>
                             <Table.HeaderCell></Table.HeaderCell>
                         </Table.Row>
@@ -130,7 +133,13 @@ export default function RecruitmentForm (props){
                                 <Table.Cell>
                                     <textarea className="ui fluid" onChange={(e) => props.handleItemChange(idx,'note',e.target.value)}></textarea>
                                 </Table.Cell>
-
+                                {<select className="ui fluid dropdown"
+                                         onChange={(e) => props.handleItemChange(idx,'businessAreaId',e.target.value)} style={{maxWidth:'200px'}} value={item.businessAreaId || ''}>
+                                    <option value="">Не выбрано</option>
+                                    {businessAreaOptions.map(bus => {
+                                        return <option key={bus.key} value={bus.value}>{bus.text}</option>
+                                    })}
+                                </select>}
                                 <Table.Cell>
                                     <Button onClick={() => props.removeItem(idx)} icon={'trash'}/>
                                 </Table.Cell>
