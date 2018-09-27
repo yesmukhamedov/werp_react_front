@@ -220,10 +220,10 @@ const addSalary = (document) => {
     }
 }
 
-export function addAmount(document,map) {
+export function addAmount(document,items) {
     return function (dispatch) {
         dispatch(setLoading(true))
-        axios.put(`${ROOT_URL}/api/hr/document/action-add-amount/` + document.id,{...map}, {
+        axios.put(`${ROOT_URL}/api/hr/document/action-add-amount/` + document.id,items, {
             headers: {
                 authorization: localStorage.getItem('token')
             }

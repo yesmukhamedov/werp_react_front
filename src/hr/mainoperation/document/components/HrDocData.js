@@ -24,6 +24,8 @@ export default function HrDocData (props) {
 function renderRecruitmentData (props){
     const items = props.items
     const amountEditMode = props.amountEditMode || false
+    const currencyList = props.currencyList || []
+
     if(!items){
         return (null)
     }
@@ -33,11 +35,12 @@ function renderRecruitmentData (props){
                     <Table.HeaderCell>№</Table.HeaderCell>
                     <Table.HeaderCell>Сотрудник</Table.HeaderCell>
                     <Table.HeaderCell>Департамент</Table.HeaderCell>
+                    <Table.HeaderCell>Бизнес сфера</Table.HeaderCell>
                     <Table.HeaderCell>Должность</Table.HeaderCell>
                     <Table.HeaderCell>Дата начало</Table.HeaderCell>
                     <Table.HeaderCell>Менеджер</Table.HeaderCell>
                     <Table.HeaderCell>Оклад</Table.HeaderCell>
-                    <Table.HeaderCell>Прим.</Table.HeaderCell>
+                    <Table.HeaderCell>{amountEditMode?'Валюта': 'Прим.'}</Table.HeaderCell>
                     <Table.HeaderCell></Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
@@ -53,11 +56,21 @@ function renderRecruitmentData (props){
                                     </Link>
                                 </Table.Cell>
                                 <Table.Cell>{item.departmentName}</Table.Cell>
+                                <Table.Cell>{item.businessAreaName}</Table.Cell>
                                 <Table.Cell>{item.positionName}</Table.Cell>
                                 <Table.Cell>{formatDMY(item.beginDate)}</Table.Cell>
                                 <Table.Cell>{item.managerName}</Table.Cell>
-                                <Table.Cell>{amountEditMode ? <input onChange={(e) => props.handleAmountChange(item.id,e.target.value)} type="number" value={item.amount || 0}/>:moneyFormat(item.amount)}</Table.Cell>
-                                <Table.Cell>{item.note}</Table.Cell>
+                                <Table.Cell>{amountEditMode ? <input onChange={(e) => props.handleItemChange('amount',item.id,e.target.value)}
+                                                                     type="number" value={item.amount || 0}/>:moneyFormat(item.amount) + ' ' + item.currency}</Table.Cell>
+                                <Table.Cell>{amountEditMode?
+                                    <select className="ui fluid dropdown"
+                                            onChange={(e) => props.handleItemChange('currency',item.id,e.target.value)} value={item.currency || ''}>
+                                        <option value="">Не выбрано</option>
+                                        {currencyList.map(c => {
+                                            return <option value={c.currency} key={c.currency_id}>{c.currency}</option>
+                                        })}
+                                    </select>
+                                    :item.note}</Table.Cell>
                                 <Table.Cell>
 
                                 </Table.Cell>

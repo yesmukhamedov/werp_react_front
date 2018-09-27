@@ -12,6 +12,7 @@ import {DOC_ACTION_GO_TO_LIST,DOC_ACTION_ADD_APPROVER,DOC_ACTION_REJECT,DOC_ACTI
 import browserHistory from '../../../../utils/history'
 import StaffListModal from '../../staff/components/StaffListModal'
 import {fetchAllCurrentStaffs,toggleStaffListModal} from '../../staff/actions/hrStaffAction'
+import {f4FetchCurrencyList} from '../../../../reference/f4/f4_action'
 
 let STAFF_MODAL_OPENED_ON_ACTION = -10
 
@@ -34,6 +35,7 @@ class HrDocViewPage extends Component{
         const id = parseInt(this.props.match.params.id,10)
         this.props.fetchDocument(id)
         this.props.fetchAllCurrentStaffs([])
+        this.props.f4FetchCurrencyList("hr_doc")
     }
 
     handleAction = (actionType) => {
@@ -136,13 +138,13 @@ class HrDocViewPage extends Component{
                 </Modal>
     }
 
-    handleAmountChange = (id,value) => {
+    handleItemChange = (fieldName,id,value) => {
         let document = Object.assign({},this.props.document)
         let items = document.items || []
         let updatedItems = []
         for(let k in items){
             if(items[k]['id'] === id){
-                items[k]['amount'] = parseFloat(value)
+                items[k][fieldName] = value
             }
 
             updatedItems[k] = items[k]
@@ -154,11 +156,7 @@ class HrDocViewPage extends Component{
     saveDocumentItems = () => {
         let document = Object.assign({},this.props.document)
         let items = document.items || []
-        let map = {}
-        for(let k in items){
-            map[items[k]['id']] = items[k]['amount']
-        }
-        this.props.addAmount(document,map)
+        this.props.addAmount(document,items)
     }
 
     render (){
@@ -181,9 +179,11 @@ class HrDocViewPage extends Component{
                     <HrDocMainData item={document}/>
                     <HrDocData
                         saveDocumentItems={this.saveDocumentItems}
-                        handleAmountChange={this.handleAmountChange}
+                        handleItemChange={this.handleItemChange}
                         amountEditMode={this.props.itemAmountEditMode}
-                        typeId={this.props.document.typeId} items={this.props.document.items}/>
+                        typeId={this.props.document.typeId}
+                        items={this.props.document.items}
+                        currencyList={this.props.currencyList}/>
                     <HrDocApprovers items={this.props.approvers}/>
                     <HrDocLog items={this.props.actionLogs}/>
                 </div>}
@@ -201,11 +201,12 @@ function mapStateToProps (state) {
         pageLoading: state.hrDocReducer.pageLoading,
         itemAmountEditMode: state.hrDocReducer.itemAmountEditMode,
         staffListModalOpened: state.hrStaff.staffListModalOpened,
-        allCurrentStaffs: state.hrStaff.allCurrentStaffs
+        allCurrentStaffs: state.hrStaff.allCurrentStaffs,
+        currencyList:state.f4.currencyList
     }
 }
 
 export default connect(mapStateToProps, {
     fetchDocument,handleAction,fetchAllCurrentStaffs,toggleStaffListModal,localUpdateDocItems,
-    toggleItemAmountEditMode, addAmount
+    toggleItemAmountEditMode, addAmount,f4FetchCurrencyList
 })(HrDocViewPage)

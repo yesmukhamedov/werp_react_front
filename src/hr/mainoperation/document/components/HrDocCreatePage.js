@@ -133,7 +133,9 @@ class HrDocCreatePage extends Component{
     handleDocumentChange = (fieldName,fieldValue) => {
         let doc = Object.assign({},this.state.localDocument)
         doc[fieldName] = fieldValue
-
+        if(fieldName === 'bukrs'){
+            doc['items'] = []
+        }
         this.setState({
             ...this.state,
             localDocument: doc
