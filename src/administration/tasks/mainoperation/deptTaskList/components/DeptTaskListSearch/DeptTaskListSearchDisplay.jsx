@@ -25,6 +25,7 @@ class DeptTaskListSearchDisplay extends Component {
       branchIds: values.branch, // values.branch[0] !== -1 ? values.branch : undefined,
       departmentIds: values.department, // values.department[0] !== -1 ? values.department : undefined,
       types: values.type[0] !== -1 ? values.type : undefined,
+      statusIds: values.status[0] !== -1 ? values.status : undefined,
       endDateFrom: endDateFromUtc,
       endDateTo: endDateToUtc,
       startDateFrom: startDateFromUtc,
@@ -143,35 +144,35 @@ class DeptTaskListSearchDisplay extends Component {
               </Grid.Row>
               <Grid.Row columns={3} style={{ padding: '3px' }}>
                 <Grid.Column mobile={16} tablet={8} computer={6}>
-                  <Form.Group >
+                  <Form.Group widths="equal">
                     <Field
                       required
                       multiple
                       name="status"
                       component={DropdownFormField}
                       label={formatMessage(messages.status)}
-                      opts={company ? [allOpt, ...branchOptions[company]] : []}
-                      style={
-                        { width:'263px'}}
+                      opts={[allOpt, ...Object.values(directories.statusOptions)]}
                     />
-                    <Form.Group>
-                      <Form.Button
-                        content={formatMessage(messages.search)}
-                        type="submit"
-                        loading={submitting}
-                        disabled={pristine || submitting}
-                        style={
-                          { background: 'rgba(84,170,169, 1)', color: 'white', marginTop: '22px' }}
-                      />
-                      <Form.Button
-                        content={formatMessage(messages.reset)}
-                        type="button"
-                        disabled={pristine || submitting}
-                        style={
-                          { background: 'rgba(84,170,169, 1)', color: 'white', marginTop: '22px' }}
-                        onClick={reset}
-                      />
-                    </Form.Group>
+                    <Form.Field>
+                      <Form.Group>
+                        <Form.Button
+                          content={formatMessage(messages.search)}
+                          type="submit"
+                          loading={submitting}
+                          disabled={pristine || submitting}
+                          style={
+                            { background: 'rgba(84,170,169, 1)', color: 'white', marginTop: '22px' }}
+                        />
+                        <Form.Button
+                          content={formatMessage(messages.reset)}
+                          type="button"
+                          disabled={pristine || submitting}
+                          style={
+                            { background: 'rgba(84,170,169, 1)', color: 'white', marginTop: '22px' }}
+                          onClick={reset}
+                        />
+                      </Form.Group>
+                    </Form.Field>
                   </Form.Group>
                 </Grid.Column>
               </Grid.Row>
@@ -198,12 +199,9 @@ function validate(formProps, state) {
   if (!formProps.branch) {
     error.branch = formatMessage({ id: 'Form.BranchError' });
   }
-  // if (!formProps.endDateFrom) {
-  //   error.endDateFrom = 'Выберите дату';
-  // }
-  // if (!formProps.endDateTo) {
-  //   error.endDateTo = 'Выберите дату';
-  // }
+  if (!formProps.status) {
+    error.status = formatMessage({ id: 'Form.StatusError' });
+  }
   if (!formProps.department) {
     error.department = formatMessage({ id: 'Form.DepartmentError' });
   }

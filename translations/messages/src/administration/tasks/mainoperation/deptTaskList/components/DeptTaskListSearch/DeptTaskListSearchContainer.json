@@ -20,6 +20,14 @@
     "defaultMessage": "Select branch"
   },
   {
+    "id": "Form.Status",
+    "defaultMessage": "Status"
+  },
+  {
+    "id": "Form.StatusError",
+    "defaultMessage": "Select status"
+  },
+  {
     "id": "Form.endDateFrom",
     "defaultMessage": "End date from"
   },

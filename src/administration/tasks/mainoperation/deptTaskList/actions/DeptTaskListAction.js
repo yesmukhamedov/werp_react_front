@@ -79,11 +79,16 @@ function getRefDirectory(name) {
 
 export function getDeptTaskListDirectories(lang) {
   return (dispatch) => {
-    axios.all([getTaskDirectory('types'), getRefDirectory('departments')])
-      .then(axios.spread(({ data: typeList }, { data: deptList },) => {
+    axios.all([getTaskDirectory('types'), getTaskDirectory('status'), getRefDirectory('departments')])
+      .then(axios.spread(({ data: typeList }, { data: statusList }, { data: deptList }) => {
         const typeOpts = typeList.map(item => ({
           key: item.code,
           value: item.code,
+          text: item[lang],
+        }));
+        const statusOpts = statusList.map(item => ({
+          key: item.id,
+          value: item.id,
           text: item[lang],
         }));
         const deptOpts = deptList.map(item => ({
@@ -93,6 +98,7 @@ export function getDeptTaskListDirectories(lang) {
         }));
         const directories = {
           typeOptions: _.mapKeys(typeOpts, 'key'),
+          statusOptions: _.mapKeys(statusOpts, 'key'),
           deptOptions: _.mapKeys(deptOpts, 'key'),
         };
         dispatch({
