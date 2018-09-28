@@ -10,8 +10,8 @@ import notificationReducer from '../general/notification/notification_reducer';
 import contractListReducer from '../crm/callCenter/mainoperation/contractList/reducers/ContractListReducer';
 import taskListReducer from '../crm/callCenter/mainoperation/taskList/reducers/TaskListReducer';
 import taskReducer from '../crm/callCenter/mainoperation/task/reducers/TaskReducer';
-import taskMonitorReducer from '../administration/tasks/mainoperation/taskMonitor/reducers/TaskMonitorReducer';
-import deptTaskListReducer from '../administration/tasks/mainoperation/deptTaskList/reducers/DeptTaskListReducer';
+import taskMonitorReducer from '../dit/tasks/mainoperation/taskMonitor/reducers/TaskMonitorReducer';
+import deptTaskListReducer from '../dit/tasks/mainoperation/deptTaskList/reducers/DeptTaskListReducer';
 
 import outCallsTransactionReducer from '../crm/callCenter/mainoperation/newIssue/reducers';
 import userInfoReducer from '../general/userInfo/userInfo_reducer';

@@ -125,19 +125,19 @@ const AsyncOutCallTaskPage = Loadable({
 
 const AsyncTaskMonitorPage = Loadable({
   loader: () =>
-    import('../administration/tasks/mainoperation/taskMonitor/components/TaskMonitorContainer' /* webpackChunkName: "TaskMonitorPage" */),
+    import('../dit/tasks/mainoperation/taskMonitor/components/TaskMonitorContainer' /* webpackChunkName: "TaskMonitorPage" */),
   loading: () => <LoadingPage />,
 });
 
 const AsyncDeptTaskListPage = Loadable({
   loader: () =>
-    import('../administration/tasks/mainoperation/deptTaskList/components/DeptTaskListContainer' /* webpackChunkName: "DepTaskListPage" */),
+    import('../dit/tasks/mainoperation/deptTaskList/components/DeptTaskListContainer' /* webpackChunkName: "DepTaskListPage" */),
   loading: () => <LoadingPage />,
 });
 
 const AsyncTaskRecEditPage = Loadable({
   loader: () =>
-    import('../administration/tasks/mainoperation/deptTaskList/components/DeptTaskListTable/RecipientEdit/RecipientEditContainer' /* webpackChunkName: "RecipientEditPage" */),
+    import('../dit/tasks/mainoperation/deptTaskList/components/DeptTaskListTable/RecipientEdit/RecipientEditContainer' /* webpackChunkName: "RecipientEditPage" */),
   loading: () => <LoadingPage />,
 });
 
@@ -371,9 +371,9 @@ const generateRoutes = (transactionRoutes) => {
       {/*<Route path="/crm/wspace" component={AsyncCrmWspacePage} />*/}
       <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
       <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
-      <Route path="/administration/dtskrep" component={persistPath(AsyncTaskMonitorPage)} />
-      <Route path="/administration/dtskl"   component={persistPath(AsyncDeptTaskListPage)} />
-      {/* <Route path="/administration/dtskredit/:id"   component={AsyncTaskRecEditPage} /> */}
+      <Route path="/dit/dtskrep" component={persistPath(AsyncTaskMonitorPage)} />
+      <Route path="/dit/dtskl"   component={persistPath(AsyncDeptTaskListPage)} />
+      <Route path="/dit/dtskredit/:id"   component={AsyncTaskRecEditPage} />
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
     <Route path="/hr/doc/create/:type" component={AsyncHrDocCreatePage} />
       <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />
