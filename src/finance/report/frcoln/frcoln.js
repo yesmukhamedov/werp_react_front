@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Table, Button, Dropdown, Icon, Container, Header, Grid, Divider, Segment, Menu } from 'semantic-ui-react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {Link} from 'react-router-dom'
 import moment from 'moment';
 import { notify } from '../../../general/notification/notification_action';
 import ReactTable from 'react-table';
@@ -443,17 +442,16 @@ class Frcoln extends Component {
         Cell: obj => 
                 <span>
                     {obj.original.contract_number &&
-                        <Link target='_blank' className={'ui icon button'} to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=` + obj.original.contract_number}>
-                                {obj.original.contract_number}
-                        </Link> 
+                        <a target='_blank' href={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=` + obj.original.contract_number}>
+                            <Button>{obj.original.contract_number}</Button>
+                        </a>
                     }
                     {obj.original.belnr && 
                         <span>
-                            <Link target='_blank' className={'ui icon button'} 
-                                to={`${LEGACY_URL}/accounting/reports/fa03.xhtml?belnr=` + obj.original.belnr 
+                            <a target='_blank' href={`${LEGACY_URL}/accounting/reports/fa03.xhtml?belnr=` + obj.original.belnr 
                                 +`&gjahr=` + obj.original.gjahr +`&bukrs=` + obj.original.bukrs}>
-                                {obj.original.belnr} 
-                            </Link>                            
+								<Button>{obj.original.belnr}</Button>
+                            </a>                           
                             {obj.original.zreg}
                         </span>
                     }                                          

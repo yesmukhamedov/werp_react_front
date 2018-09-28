@@ -1,7 +1,6 @@
 /* eslint linebreak-style: ["error", "windows"] */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import {
   Form,
   Container,
@@ -165,12 +164,9 @@ class TaskInfoComponent extends Component {
                       </List.Item>
                       <List.Item>
                         <List.Content>
-                          <Link
-                            target="_blank"
-                            to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=${contractNumber}`}
-                          >
-                            {contractNumber}
-                          </Link>
+                        <a target='_blank' href={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=${contractNumber}`}>
+								          <Button>{contractNumber}</Button>
+                            </a>
                         </List.Content>
                       </List.Item>
                     </List>

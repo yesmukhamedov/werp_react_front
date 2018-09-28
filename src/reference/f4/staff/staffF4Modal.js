@@ -5,7 +5,6 @@ import "react-table/react-table.css";
 import {f4FetchStaffList, f4ClearStaffList} from '../f4_action'
 import { Table, Modal, Dropdown, Icon, Input, Checkbox, Button } from 'semantic-ui-react'
 import matchSorter from 'match-sorter';
-import {Link} from 'react-router-dom'
 import {LEGACY_URL} from "../../../utils/constants"
 // import './notification.css'
 
@@ -73,15 +72,14 @@ class StaffF4Modal extends PureComponent{
     render () {
         let trans = this.props.trans;
         let t1columns = [];
-        if (trans==='fcis')
+        if (trans==='fcis' || trans === 'hr_doc_create_1')
         {
             let t1r1c1 = {Header:({value}) => <b>ID</b>,accessor: "staffId",width: 100,className:'clickableItem',
                 Cell: obj => 
                 <span>
-                    <Link target='_blank' className={'ui icon button'} 
-                    to={`${LEGACY_URL}/hr/staff/View.xhtml?staffId=` + obj.original.staffId}>
-                            {obj.original.staffId}
-                    </Link>                                       
+                    <a target='_blank' href={`${LEGACY_URL}/hr/staff/View.xhtml?staffId=` + obj.original.staffId}>
+								<Button>{obj.original.staffId}</Button>
+                            </a>                                      
                 </span> 
         
             };

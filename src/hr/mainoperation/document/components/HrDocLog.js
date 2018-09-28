@@ -23,7 +23,7 @@ export default function HrDocLog (props) {
             <Table.Body>
                 {items.map(item => {
                     return <Table.Row key={item.id}>
-                            <Table.Cell>{item.staffName}</Table.Cell>
+                            <Table.Cell>{item.creatorName}</Table.Cell>
                             <Table.Cell>{formatDMYMS(item.createdAt)}</Table.Cell>
                             <Table.Cell>{item.actionName}</Table.Cell>
                             <Table.Cell>{item.note}</Table.Cell>

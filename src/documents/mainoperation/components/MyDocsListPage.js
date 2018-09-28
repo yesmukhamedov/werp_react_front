@@ -41,6 +41,11 @@ class DocumentListPage extends Component{
                             maxWidth: 100
                         },
                         {
+                            Header: 'Тип документа',
+                            accessor: 'displayName',
+                            maxWidth: 200
+                        },
+                        {
                             Header: 'Компания',
                             accessor: 'bukrsName',
                             maxWidth: 150
@@ -60,7 +65,7 @@ class DocumentListPage extends Component{
                         },
                         {
                             Header: '',
-                            accessor: 'id',
+                            accessor: 'contextId',
                             filterable: false,
                             Cell: ({value}) => <Link target={'_blank'} className={'ui icon button mini'} to={`/hr/doc/view/` + value}>
                                 Просмотр

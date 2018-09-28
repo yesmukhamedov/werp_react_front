@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { formatDMYMS } from '../../../../../../utils/helpers';
 import { LEGACY_URL } from '../../../../../../utils/constants';
+import { Button } from 'semantic-ui-react';
 
 class TaskListTableComponent extends Component {
   constructor(props) {
@@ -38,9 +39,9 @@ class TaskListTableComponent extends Component {
         Cell: (props) => {
           const { contractNumber } = props.original;
           return (
-            <Link target='_blank' to={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=` + contractNumber}>
-              {contractNumber}
-            </Link>
+            <a target='_blank' href={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=` + contractNumber}>
+								<Button>{contractNumber}</Button>
+             </a>
           );
         },
       },

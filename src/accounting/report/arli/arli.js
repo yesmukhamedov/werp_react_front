@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Table, Button, Dropdown, Icon, Container, Header, Grid, Segment, Menu, Popup } from 'semantic-ui-react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {Link} from 'react-router-dom'
 import moment from 'moment';
 import ReactTable from 'react-table';
 import _ from "lodash";
@@ -39,10 +38,9 @@ const PopupInfo = (belnr,gjahr,dmbtr,wrbtr,dmbtr_paid,wrbtr_paid,iinBin,lifnrNam
                     <Table.Cell collapsing><p>{moneyFormat(dmbtr_paid)} USD</p></Table.Cell>
                     <Table.Cell collapsing><p>{moneyFormat(wrbtr_paid)} {waers}</p></Table.Cell>
                     <Table.Cell collapsing><p>
-                        <Link target='_blank' className={'ui icon button'} 
-                        to={`${LEGACY_URL}/accounting/other/fcus01.xhtml?customerId=` + lifnr}>
-                            {lifnr}
-                        </Link> </p>
+                        <a target='_blank' href={`${LEGACY_URL}/accounting/other/fcus01.xhtml?customerId=` + lifnr}>
+                                <Button>{lifnr}</Button>
+                              </a> </p>
                     </Table.Cell>
                     <Table.Cell collapsing><p>{iinBin}</p></Table.Cell>
                     <Table.Cell collapsing><p>{lifnrName}</p></Table.Cell>
@@ -178,11 +176,12 @@ class Arli extends Component {
                             matchSorter(rows, filter.value, { keys: ["branchName"] }),
                         filterAll: true, 
                         width: 100};
-        let t1r1c2 = {Header:({value}) => <b>Фин. док и Рег. номер</b>,accessor: "zreg",Cell: obj => (<span> <Link target='_blank' className={'ui icon button'} 
-                    to={`${LEGACY_URL}/accounting/reports/fa03.xhtml?belnr=` + obj.original.belnr 
+        let t1r1c2 = {Header:({value}) => <b>Фин. док и Рег. номер</b>,accessor: "zreg",Cell: obj => (<span> 
+
+                    <a target='_blank' href={`${LEGACY_URL}/accounting/reports/fa03.xhtml?belnr=` + obj.original.belnr 
                     +`&gjahr=` + obj.original.gjahr +`&bukrs=` + obj.original.bukrs}>
-                    {obj.original.belnr}
-                    </Link> 
+								<Button>{obj.original.belnr}</Button>
+                            </a>
                     {obj.original.zreg} 
                     {PopupInfo(
                         obj.original.belnr, obj.original.gjahr, obj.original.dmbtr, obj.original.wrbtr,
