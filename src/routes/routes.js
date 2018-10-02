@@ -298,6 +298,13 @@ const AsyncMyDocsListPage = Loadable({
     loading: () => <LoadingPage />
 });
 
+
+
+const AsyncFa03 = Loadable({
+  loader: () => import('../finance/mainoperation/fa03/fa03' /* webpackChunkName: "fa03" */),
+  loading: () => <LoadingPage />
+});
+
 const getComponent = {
     Ditaub:AsyncAssignUserBranch,
     Hrb02:AsyncHrb02,
@@ -380,6 +387,10 @@ const generateRoutes = (transactionRoutes) => {
 
       <Route path="/general/dtskc" component={DtskcContainer} />
       <Route path="/general/dtskdep" component={DtskdepContainer} />
+      <Route path="/finance/mainoperation/fa03" component={AsyncFa03} />
+
+
+      
 
         <Route path="/documents/mydocs" component={AsyncMyDocsListPage}/>
       {/* dynamically generated URLs  */}

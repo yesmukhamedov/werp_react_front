@@ -164,9 +164,11 @@ class TaskInfoComponent extends Component {
                       </List.Item>
                       <List.Item>
                         <List.Content>
-                        <a target='_blank' href={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=${contractNumber}`}>
-								          <Button>{contractNumber}</Button>
-                            </a>
+                        <Button onClick={
+                          () => window.open(`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=${contractNumber}`, "_blank")
+                        }>
+                        {contractNumber}
+                        </Button>
                         </List.Content>
                       </List.Item>
                     </List>

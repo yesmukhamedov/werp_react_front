@@ -199,6 +199,20 @@ class Fcis extends Component {
                   bukrs={bukrs} companyOptions={this.props.companyOptions} 
                   onInputChange = {(value,stateFieldName)=>{this.onInputChange(value,stateFieldName)}}
                 />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
             </Container>
 
         );
