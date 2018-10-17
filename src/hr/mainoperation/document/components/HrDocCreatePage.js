@@ -3,8 +3,11 @@ import { connect } from 'react-redux'
 import { Header,Container,Segment,Divider,Loader } from 'semantic-ui-react'
 import HrDocActions from './HrDocActions'
 
-import {DOC_TYPE_RECRUITMENT,DOC_ACTION_SAVE} from '../../../hrUtil'
+import {DOC_TYPE_RECRUITMENT,DOC_TYPE_TRANSFER,DOC_ACTION_SAVE} from '../../../hrUtil'
+import {DOC_TYPE_CHANGE_SALARY} from '../../../hrUtil'
 import RecruitmentForm from './forms/RecruitmentForm'
+import TransferForm from './forms/TransferForm'
+import SalaryChangeForm from './forms/SalaryChangeForm'
 import {blankDocument,createDocument} from '../actions/hrDocAction'
 import {toggleStaffListModal,fetchAllManagers,fetchAllDirectors} from '../../staff/actions/hrStaffAction'
 import {f4FetchPositionList,f4FetchBusinessAreaList,f4FetchDepartmentList} from '../../../../reference/f4/f4_action'
@@ -24,9 +27,14 @@ class HrDocCreatePage extends Component{
     componentWillMount(){
         let docType = parseInt(this.props.match.params.type,10)
         this.props.blankDocument(docType)
+        this.props.f4FetchDepartmentList()
         if(DOC_TYPE_RECRUITMENT === docType){
             this.props.f4FetchPositionList('hr_document')
-            this.props.f4FetchDepartmentList()
+            this.props.fetchAllManagers()
+            this.props.fetchAllDirectors()
+            this.props.f4FetchBusinessAreaList()
+        } else if(DOC_TYPE_TRANSFER === docType){
+            this.props.f4FetchPositionList('hr_document')
             this.props.fetchAllManagers()
             this.props.fetchAllDirectors()
             this.props.f4FetchBusinessAreaList()
@@ -65,7 +73,6 @@ class HrDocCreatePage extends Component{
                 })
             }
         }
-        console.log(out)
         return out
     }
 
@@ -85,10 +92,20 @@ class HrDocCreatePage extends Component{
 
     addItem = () => {
         let docType = parseInt(this.props.match.params.type,10)
-        if(docType === DOC_TYPE_RECRUITMENT){
-            this.setState({
-                staffListModalOpened: true
-            })
+        switch (docType){
+            case DOC_TYPE_RECRUITMENT:
+                    this.setState({
+                        staffListModalOpened: true
+                    })
+                break
+
+            case DOC_TYPE_TRANSFER:
+                    this.setState({
+                        staffListModalOpened: true
+                    })
+                break
+
+            default:{}
         }
     }
 
@@ -111,12 +128,29 @@ class HrDocCreatePage extends Component{
 
     handleStaffSelect = (staff) => {
         let docType = parseInt(this.props.match.params.type,10)
-        if(docType === DOC_TYPE_RECRUITMENT){
+        if(docType === DOC_TYPE_RECRUITMENT ){
             let document = Object.assign({},this.state.localDocument)
             let items = document.items || []
             items.push({
                 staffId: staff.staffId,
                 staffName: staff.fio,
+                amount: 0
+
+            })
+
+            this.setState({
+                ...this.state,
+                localDocument: document
+            })
+
+            this.props.toggleStaffListModal(false)
+        } else if(docType === DOC_TYPE_TRANSFER){
+            let document = Object.assign({},this.state.localDocument)
+            let items = document.items || []
+            items.push({
+                staffId: staff.staffId,
+                staffName: staff.fio,
+                salaryId: staff.salaryId,
                 amount: 0
 
             })
@@ -180,7 +214,7 @@ class HrDocCreatePage extends Component{
     render (){
         const currentType = parseInt(this.props.match.params.type,10)
         let form;
-        let pageTitle = 'Создание документа ';
+        let pageTitle = 'Создание документа ' + this.state.localDocument.typeName;
         switch (currentType){
             case DOC_TYPE_RECRUITMENT:
                 form = <RecruitmentForm
@@ -195,8 +229,38 @@ class HrDocCreatePage extends Component{
                     directorOptions={this.getDirectorOptions(this.state.localDocument.branchId)}
                     managerOptions = {this.getManagerOptions(this.state.localDocument.branchId)}
                     bukrsOptions={this.props.bukrsOptions} document={this.state.localDocument}/>
-                pageTitle += 'Заявление о приеме на работу'
+                break
 
+            case DOC_TYPE_TRANSFER:
+                form = <TransferForm
+                    handleItemChange={this.handleItemChange}
+                    handleDocumentChange={this.handleDocumentChange}
+                    addItem={this.addItem}
+                    removeItem={this.removeItem}
+                    positionList={this.props.positionList}
+                    departmentList={this.props.departmentList}
+                    branchOptions = {this.getBranchOptions(this.state.localDocument.bukrs)}
+                    businessAreaOptions = {this.getBusinessAreaOptions(this.state.localDocument.bukrs)}
+                    directorOptions={this.getDirectorOptions(this.state.localDocument.branchId)}
+                    managerOptions = {this.getManagerOptions(this.state.localDocument.branchId)}
+                    bukrsOptions={this.props.bukrsOptions} document={this.state.localDocument}/>
+                break
+
+            case DOC_TYPE_CHANGE_SALARY:
+                form = <SalaryChangeForm
+                    handleItemChange={this.handleItemChange}
+                    handleDocumentChange={this.handleDocumentChange}
+                    addItem={this.addItem}
+                    removeItem={this.removeItem}
+                    positionList={this.props.positionList}
+                    departmentList={this.props.departmentList}
+                    branchOptions = {this.getBranchOptions(this.state.localDocument.bukrs)}
+                    businessAreaOptions = {this.getBusinessAreaOptions(this.state.localDocument.bukrs)}
+                    directorOptions={this.getDirectorOptions(this.state.localDocument.branchId)}
+                    managerOptions = {this.getManagerOptions(this.state.localDocument.branchId)}
+                    bukrsOptions={this.props.bukrsOptions} document={this.state.localDocument}/>
+
+                break
             default:{}
         }
 
@@ -205,11 +269,6 @@ class HrDocCreatePage extends Component{
                 <Header as='h2' floated='left'>
                     {pageTitle}
                 </Header>
-                {/*<StaffListModal*/}
-                    {/*onSelect={this.handleStaffSelect}*/}
-                    {/*close={() => this.props.toggleStaffListModal(false)}*/}
-                    {/*opened={this.props.staffListModalOpened}*/}
-                    {/*staffs={this.props.allStaffs} />*/}
                 <StaffF4Modal open={this.state.staffListModalOpened}
                               closeModal={() => this.setState({staffListModalOpened:false})}
                               onStaffSelect={(item)=>this.handleStaffSelect(item)} trans={'hr_doc_create_' + currentType}
