@@ -10,6 +10,9 @@
 	"Form.CompanyError": "Select company",
 	"Form.Department": "Department",
 	"Form.DepartmentError": "Select deparment",
+	"Form.Year": "Year",
+	"Form.Month": "Month",
+	"Form.Form": "Form et",
 	"Form.Reset": "Reset",
 	"Form.Search": "Search",
 	"Form.StartDateFrom": "Start date from",
@@ -20,6 +23,7 @@
 	"Form.TypeError": "Select type",
 	"Form.endDateFrom": "End date from",
 	"Form.endDateTo": "End date to",
+	"Form.Save": "Save",
 	"Header.Menu.Inbox": "Gelen kutusu",
 	"Header.Menu.Logout": "Çıkış",
 	"Header.Menu.MenuLabel": "Menü",
@@ -38,5 +42,10 @@
 	"Table.Title": "Title",
 	"Table.Type": "Type",
 	"Table.createdAt": "Created at",
-	"Table.estimatedAt": "Estimated at"
+	"Table.estimatedAt": "Estimated at",
+	"Table.NameSurname": "Name Surname",
+	"Table.Position": "Position",
+
+	"Hr.Timetable.Header": "Табель учета рабочего времени сотрудников",
+	"Hr.Timetable.SignsAndCodes": "Signs and Codes"
 }

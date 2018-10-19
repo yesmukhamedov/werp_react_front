@@ -103,9 +103,9 @@ export default function TransferForm (props){
                             return <Table.Row key={item.staffId}>
                                 <Table.Cell>{idx+1}</Table.Cell>
                                 <Table.Cell>{item.staffName}</Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
+                                <Table.Cell>{item.positionName}</Table.Cell>
+                                <Table.Cell>{item.beginDate}</Table.Cell>
+                                <Table.Cell>{item.amount}</Table.Cell>
                                 <Table.Cell></Table.Cell>
                                 <Table.Cell></Table.Cell>
                                 <Table.Cell></Table.Cell>

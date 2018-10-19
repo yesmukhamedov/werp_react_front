@@ -17,6 +17,7 @@ class YearF4 extends Component {
   }
 
   render () {
+
     return (
       <Form.Select defaultValue={currentDate.getFullYear()}
         name='year' label='Год'

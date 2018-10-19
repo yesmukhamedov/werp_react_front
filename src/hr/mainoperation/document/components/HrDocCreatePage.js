@@ -11,7 +11,10 @@ import SalaryChangeForm from './forms/SalaryChangeForm'
 import {blankDocument,createDocument} from '../actions/hrDocAction'
 import {toggleStaffListModal,fetchAllManagers,fetchAllDirectors} from '../../staff/actions/hrStaffAction'
 import {f4FetchPositionList,f4FetchBusinessAreaList,f4FetchDepartmentList} from '../../../../reference/f4/f4_action'
+import {toggleSalaryListModal} from '../../salary/actions/hrSalaryAction'
 import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal'
+import SalaryListModal from '../../salary/components/SalaryListModal'
+
 
 class HrDocCreatePage extends Component{
 
@@ -38,6 +41,7 @@ class HrDocCreatePage extends Component{
             this.props.fetchAllManagers()
             this.props.fetchAllDirectors()
             this.props.f4FetchBusinessAreaList()
+        } else if(DOC_TYPE_CHANGE_SALARY === docType) {
         }
     }
 
@@ -105,6 +109,10 @@ class HrDocCreatePage extends Component{
                     })
                 break
 
+            case DOC_TYPE_CHANGE_SALARY:
+                this.props.toggleSalaryListModal(true)
+                break
+
             default:{}
         }
     }
@@ -128,9 +136,10 @@ class HrDocCreatePage extends Component{
 
     handleStaffSelect = (staff) => {
         let docType = parseInt(this.props.match.params.type,10)
+        let document = Object.assign({},this.state.localDocument)
+        let items = document.items || []
+
         if(docType === DOC_TYPE_RECRUITMENT ){
-            let document = Object.assign({},this.state.localDocument)
-            let items = document.items || []
             items.push({
                 staffId: staff.staffId,
                 staffName: staff.fio,
@@ -145,8 +154,6 @@ class HrDocCreatePage extends Component{
 
             this.props.toggleStaffListModal(false)
         } else if(docType === DOC_TYPE_TRANSFER){
-            let document = Object.assign({},this.state.localDocument)
-            let items = document.items || []
             items.push({
                 staffId: staff.staffId,
                 staffName: staff.fio,
@@ -161,6 +168,26 @@ class HrDocCreatePage extends Component{
             })
 
             this.props.toggleStaffListModal(false)
+        } else if(docType === DOC_TYPE_CHANGE_SALARY) {
+
+            items.push({
+                staffId: staff.staffId,
+                staffName: staff.staffName,
+                salaryId: staff.id,
+                amount: staff.amount,
+                positionName: staff.positionName,
+                positionId: staff.positionId,
+                beginDate: staff.begDate,
+                amount: staff.amount
+
+            })
+
+            this.setState({
+                ...this.state,
+                localDocument: document
+            })
+
+            this.props.toggleSalaryListModal(false)
         }
     }
 
@@ -264,17 +291,25 @@ class HrDocCreatePage extends Component{
             default:{}
         }
 
+        let modal;
+        if(DOC_TYPE_CHANGE_SALARY === currentType){
+            modal = <SalaryListModal onSelect={this.handleStaffSelect} />
+        } else if(DOC_TYPE_TRANSFER === currentType || DOC_TYPE_RECRUITMENT === currentType){
+            modal = <StaffF4Modal open={this.state.staffListModalOpened}
+                          closeModal={() => this.setState({staffListModalOpened:false})}
+                          onStaffSelect={(item)=>this.handleStaffSelect(item)} trans={'hr_doc_create_' + currentType}
+                          branchOptions={this.props.branchOptions}
+                          companyOptions={this.props.bukrsOptions} bukrsDisabledParent={false}
+            />
+        }
+
         return <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
             <Segment clearing>
                 <Header as='h2' floated='left'>
                     {pageTitle}
                 </Header>
-                <StaffF4Modal open={this.state.staffListModalOpened}
-                              closeModal={() => this.setState({staffListModalOpened:false})}
-                              onStaffSelect={(item)=>this.handleStaffSelect(item)} trans={'hr_doc_create_' + currentType}
-                              branchOptions={this.props.branchOptions}
-                              companyOptions={this.props.bukrsOptions} bukrsDisabledParent={false}
-                />
+
+                {modal}
                 <HrDocActions isUpdate={true} handleAction={this.handleAction} items={this.props.actions} />
             </Segment>
             <Divider clearing />
@@ -302,5 +337,6 @@ function mapStateToProps (state) {
 
 export default connect(mapStateToProps, {
     blankDocument,toggleStaffListModal,createDocument,fetchAllDirectors,
-    f4FetchPositionList,f4FetchBusinessAreaList,f4FetchDepartmentList,fetchAllManagers
+    f4FetchPositionList,f4FetchBusinessAreaList,f4FetchDepartmentList,fetchAllManagers,
+    toggleSalaryListModal
 })(HrDocCreatePage)

@@ -1,11 +1,13 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
+import { defineMessages, injectIntl } from 'react-intl';
 import {Container,Divider,Header,Button,Segment,Form,Table,Message} from 'semantic-ui-react';
 import YearF4 from '../../../../reference/f4/date/YearF4'
 import MonthF4 from '../../../../reference/f4/date/MonthF4'
 import {fetchItems,saveData,fetchStatuses} from '../actions/hrTimesheetAction'
 import moment from 'moment'
+import {YEAR_OPTIONS,MONTH_OPTIONS} from '../../../../utils/constants'
 
 const currentDate = new Date()
 class TimesheetPage extends Component{
@@ -29,7 +31,7 @@ class TimesheetPage extends Component{
     }
 
     componentWillMount(){
-        this.loadItems()
+        //this.loadItems()
         this.props.fetchStatuses()
     }
 
@@ -86,6 +88,7 @@ class TimesheetPage extends Component{
     }
 
     renderActionButtons(){
+        const {messages} = this.props.intl
         return <div>
             <Button.Group>
                 <Button
@@ -102,12 +105,13 @@ class TimesheetPage extends Component{
                     icon='right chevron' />
             </Button.Group>
 
-            <Button onClick={this.saveData} primary floated={'right'}>Сохранить</Button>
+            <Button onClick={this.saveData} primary floated={'right'}>{messages['Form.Save']}</Button>
             </div>
     }
 
     renderSearchForm () {
         let {companyOptions} = this.props
+        const {messages} = this.props.intl
         const {search} = this.state
         if(!companyOptions){
             companyOptions = []
@@ -121,21 +125,29 @@ class TimesheetPage extends Component{
         return <Form>
             <Form.Group widths='equal'>
                 {companyOptions.length === 1?'':<Form.Select name='bukrs'
-                             label='Компания' options={this.props.companyOptions}
-                             placeholder='Компания' onChange={this.handleChange} />}
+                             label={messages['Form.Company']} options={this.props.companyOptions}
+                             placeholder={messages['Form.Company']} onChange={this.handleChange} />}
 
                 <Form.Select
                     name='branchId'
                     search={true}
-                    label='Филиал'
+                    label={messages['Form.Branch']}
                     options={this.branchOptions(selectedBukrs)}
-                    placeholder='Филиал'
+                    placeholder={messages['Form.Branch']}
                     onChange={this.handleChange} />
 
-                <YearF4 value={search.year} handleChange={this.handleChange} />
-                <MonthF4 value={search.month} handleChange={this.handleChange} />
+                <Form.Select defaultValue={currentDate.getFullYear()}
+                             name='year' label={messages['Form.Year']}
+                             options={YEAR_OPTIONS} placeholder={messages['Form.Year']}
+                             onChange={this.handleChange} />
+
+                <Form.Select
+                    defaultValue={currentDate.getMonth() + 1}
+                    name='month' label={messages['Form.Month']}
+                    options={MONTH_OPTIONS} placeholder={messages['Form.Month']} onChange={this.handleChange} />
+
             </Form.Group>
-            <Form.Button onClick={this.loadItems}>Сформировать</Form.Button>
+            <Form.Button onClick={this.loadItems}>{messages['Form.Form']}</Form.Button>
         </Form>
     }
 
@@ -204,6 +216,7 @@ class TimesheetPage extends Component{
     }
 
     renderData(){
+        const {messages} = this.props.intl
         let {items} = this.props
         const {year,month} = this.state.search
         const {leftPart} = this.state
@@ -234,8 +247,8 @@ class TimesheetPage extends Component{
             <Table celled>
                 <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell>ФИО</Table.HeaderCell>
-                        <Table.HeaderCell>Должность</Table.HeaderCell>
+                        <Table.HeaderCell>{messages['Table.NameSurname']}</Table.HeaderCell>
+                        <Table.HeaderCell>{messages['Table.Position']}</Table.HeaderCell>
                         {days.map((day => {
                             return <Table.HeaderCell key={day}>{day}</Table.HeaderCell>
                         }))}
@@ -311,10 +324,11 @@ class TimesheetPage extends Component{
     }
 
     render () {
+        const {messages} = this.props.intl
         return (
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
                 <Segment clearing>
-                    <Header as='h3' attached='top'>Табель учета рабочего времени сотрудников</Header>
+                    <Header as='h3' attached='top'>{messages['Hr.Timetable.Header']}</Header>
                     {this.renderSearchForm()}
                 </Segment>
                 <Divider clearing />
@@ -337,4 +351,4 @@ function mapStateToProps (state) {
 
 export default connect(mapStateToProps, {
     fetchItems,saveData,fetchStatuses
-})(TimesheetPage)
+})(injectIntl(TimesheetPage))

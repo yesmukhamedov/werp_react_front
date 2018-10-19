@@ -10,8 +10,12 @@
 	"Form.CompanyError": "Выберите компанию",
 	"Form.Department": "Отдел",
 	"Form.DepartmentError": "Выберите отдел",
+	"Form.Year": "Год",
+	"Form.Month": "Месяц",
+	"Form.Form": "Сформировать",
 	"Form.Reset": "Сброс",
 	"Form.Search": "Поиск",
+	"Form.Save": "Сохранить",
 	"Form.StartDateFrom": "Дата создания c",
   "Form.StartDateTo": "Дата создания по",
   "Form.Status": "Статус",
@@ -40,5 +44,10 @@
 	"Table.Title": "Название",
 	"Table.Type": "Тип",
 	"Table.createdAt": "Дата создания",
-	"Table.estimatedAt": "Дата завершения"
+	"Table.estimatedAt": "Дата завершения",
+	"Table.NameSurname": "ФИО",
+	"Table.Position": "Должность",
+
+	"Hr.Timetable.Header": "Табель учета рабочего времени сотрудников",
+	"Hr.Timetable.SignsAndCodes": "Signs and Codes"
 }

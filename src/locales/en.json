@@ -14,8 +14,12 @@
   "Form.TypeError": "Select type",
   "Form.StartDateFrom": "Start date from",
   "Form.StartDateTo": "Start date to",
+  "Form.Year": "Year",
+  "Form.Month": "Month",
+  "Form.Form": "Form",
   "Form.Search": "Search",
   "Form.Reset": "Reset",
+  "Form.Save": "Save",
   "Form.All.Option": "All",
   "Table.Branch": "Branch",
   "Table.Department": "Department",
@@ -26,6 +30,8 @@
   "Table.estimatedAt": "Estimated at",
   "Table.Author": "Author",
   "Table.Recipient": "Recipient",
+  "Table.NameSurname": "Name Surname",
+  "Table.Position": "Position",
   "Recipient.Edit.Header": "Assign recipent",
   "Recipient.Edit.Subheader": "Task #",
   "Recipient.Edit.Recipient": "Recipient",
@@ -40,5 +46,8 @@
   "Header.Menu.MenuLabel": "Menu",
   "Header.Menu.Inbox": "Inbox",
   "Header.Menu.Settings": "Settings",
-  "Header.Menu.Logout": "Logout"
+  "Header.Menu.Logout": "Logout",
+
+  "Hr.Timetable.Header": "Personnel Time Table",
+  "Hr.Timetable.SignsAndCodes": "Signs and Codes"
 }

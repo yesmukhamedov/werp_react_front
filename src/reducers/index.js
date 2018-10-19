@@ -36,6 +36,7 @@ import dtskcTransactionReducer from '../general/dtskc/reducers';
 import dtskdeoTranscationReducer from '../general/dtskdep/reducers';
 import hrDocReducer from '../hr/mainoperation/document/reducers/hrDocReducer';
 import documentReducer from '../documents/mainoperation/reducers/documentReducer'
+import hrSalaryReducer from '../hr/mainoperation/salary/reducers/hrSalaryReducer'
 
 const appReducer = combineReducers({
   form,
@@ -72,7 +73,8 @@ const appReducer = combineReducers({
   dtskcTransaction: dtskcTransactionReducer,
   dtskdepTransaction: dtskdeoTranscationReducer,
   hrDocReducer: hrDocReducer,
-    documentReducer: documentReducer
+  documentReducer: documentReducer,
+  hrSalaryReducer: hrSalaryReducer
 });
 
 const rootReducer = (state, action) => {
