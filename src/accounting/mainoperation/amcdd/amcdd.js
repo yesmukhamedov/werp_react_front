@@ -7,6 +7,8 @@ import {LEGACY_URL} from "../../../utils/constants";
 
 import {handleFocus, isEmpty, moneyFormat, moneyInputHanler} from '../../../utils/helpers';
 
+import PaymentSchedule from '../../..//finance/mainoperation/fa03/paymentSchedule';
+
 class Fmcp extends Component {
 
 
@@ -17,7 +19,6 @@ class Fmcp extends Component {
         this.save=this.save.bind(this);
         this.fetch=this.fetch.bind(this);
         this.validate=this.validate.bind(this);
-        this.renderPaymentSchedule=this.renderPaymentSchedule.bind(this);
         this.renderMainInfo=this.renderMainInfo.bind(this);
         this.renderSave=this.renderSave.bind(this);
 
@@ -160,8 +161,8 @@ class Fmcp extends Component {
                           {this.renderMainInfo()}  
                           {this.renderSave()}
                         </Grid.Column>
-                        <Grid.Column mobile={16} tablet={16} computer={9}>
-                          {this.renderPaymentSchedule()}
+                        <Grid.Column mobile={16} tablet={16} computer={9}>                          
+                          <PaymentSchedule ps={this.props.contract.psRows} />
                         </Grid.Column>
                     </Grid.Row>
                 </Grid>
@@ -304,68 +305,7 @@ class Fmcp extends Component {
       )
     }
     
-    renderPaymentSchedule(){
-      
-      const {psRows} = this.props.contract;
-      if (isEmpty(psRows)){
-        return "";
-      }
-        return (
-            
-           
-                <Segment padded size="small">
-                
-                  <Label color="yellow" ribbon>
-                    График платежей
-                  </Label>
-                  <br />
-                  <br />
-                  <Table collapsing className='borderLess'>
-                  
-                                <Table.Header>
-                                    <Table.Row>
-                                        <Table.HeaderCell>Взнос</Table.HeaderCell>
-                                        <Table.HeaderCell>Дата платежа</Table.HeaderCell>
-                                        <Table.HeaderCell>Сумма оплаты</Table.HeaderCell>
-                                        <Table.HeaderCell>Оплачено</Table.HeaderCell>
-                                    </Table.Row>
-                                </Table.Header>
-                                <Table.Body>
-                                  {
-                                    psRows.map((item,key)=>
-                                    {
-                                      return (
-                                      <Table.Row key={key}>                                      
-                                        <Table.Cell textAlign="center">
-                                          {key>0?key:''} 
-                                          {item.is_firstpayment === 1?'Перв. взнос':''}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                          {item.payment_date}
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                          <Input
-                                            value={moneyFormat(item.sum2)}
-                                            readOnly={true}
-                                            />
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                          <Input
-                                            value={moneyFormat(item.paid)}
-                                            readOnly={true}
-                                            />
-                                        </Table.Cell>                
-                                      </Table.Row> )
-                                    })
-                                  }
-                                </Table.Body>                     
-                            </Table>            
-                </Segment>
-
-        );
-        
-        
-    }
+    
     renderSave(){
       
       const {summa} = this.props.contract;

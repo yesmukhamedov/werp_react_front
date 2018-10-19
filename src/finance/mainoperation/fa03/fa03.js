@@ -1,28 +1,46 @@
 import React,{ PureComponent } from 'react';
 import { connect } from 'react-redux';
-import {  Container, Header, List, Button, Table, Dropdown, Icon, Grid,Segment, Input, Checkbox, TextArea, Label  } from 'semantic-ui-react';
-import moment from 'moment';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import FaHeader from '../../faHeader';
-// import FcisPosition from './fcisPosition';
-import {f4FetchDepartmentList, f4FetchCurrencyList, f4FetchBusinessAreaList2, f4FetchExchangeRateNational} from '../../../reference/f4/f4_action';
-import {clearfaBkpf, changefaBkpf, fetchCashBankHkontsByBranch, changeDynObj, clearDynObj, saveFcis} from '../../fa_action';
-import {moneyInputHanler} from '../../../utils/helpers';
-import OutputErrors from '../../../general/error/outputErrors';
-import { modifyLoader } from '../../../general/loader/loader_action';
+import { Container, Button, Table, Dropdown, Icon, Grid, Segment, Input, Header, Label } from 'semantic-ui-react';
+import {handleFocus} from '../../../utils/helpers';
+import {clearDynObj, fetchFA03} from '../../fa_action';
+import Fa03Header from './fa03Header'
+import '../../fa.css'
+import Fa03Position from './fa03Position';
+import PaymentSchedule from './paymentSchedule';
+import Fa03RelatedDocs from './fa03RelatedDocs';
+import queryString from 'query-string';
 
 require('moment/locale/ru');
+
+  
+
 class Fa03 extends PureComponent {
     constructor(props){
         super(props);
-        this.initialize = this.initialize.bind(this);
+        this.onInputChange = this.onInputChange.bind(this);
+
+        
+
+        var date = new Date(), y = date.getFullYear();
+
         this.state={
-            errors:[]
+            errors:[],
+            searchParameters:{belnr:'1121100311',gjahr:y,bukrs:'1000'}
+            // 1121100555
+            // 1121100164
         }  
     }
 
     componentWillMount() {
+
+        let url = this.props.location.search;
+        let params = queryString.parse(url);
+
+        if (params.belnr && params.bukrs && params.gjahr){
+            let searchParameters = {belnr:params.belnr,gjahr:params.gjahr,bukrs:params.bukrs};
+            this.setState({searchParameters});
+            this.props.fetchFA03(searchParameters);
+        }
 
     }
     
@@ -30,256 +48,79 @@ class Fa03 extends PureComponent {
       this.props.clearDynObj();
     }
   
-    // componentWillReceiveProps(nextProps) {
-    // }
 
-    initialize(){
-        const bkpf =    
-        {   
-            bukrs:'', brnch:'', business_area:'', official:false, dep:'', waers:'', 
-            kursf:'', zreg:'', blart:'', budat:'', bldat:'', bktxt:'', contract_number:'', 
-            awkey:'', usnam:'', tcode:'',storno:'',docStorno:'',docOriginal:'',
-            
-            cpudt:'',awtyp:'',customer_id:'', payroll_id:'',invoice_id:'',log_doc:'',
-            closed:'',awkey2:'',dmbtr:'',dmbtr_paid:'',wrbtr:'',wrbtr_paid:''
-        };
-        return {bkpf};
+    onInputChange(value,stateFieldName){
+        let searchParameters = {...this.state.searchParameters,[stateFieldName]:value};
+        this.setState({searchParameters});
     }
-    render(){
-        //     // if (!this.props.bkpf){
-    //     //     const bkpf = {};
-    //     // }
-    //     // else{
 
-    //     // }
-    //     // console.log(this.props.bkpf,'this.props.bkpf')
-        
-        const {bkpf} =  !this.props.bkpf
-                        ?   this.initialize()
-                        :   this.props;
+    
+
+    
+
+    render(){
+        const {belnr,gjahr,bukrs} = this.state.searchParameters;
           return (
               
-            <Container>
-                <Segment padded size="small">
-                
-                <Label color="blue" ribbon>
-                    Заголовок
-                </Label>
-                 <Grid columns={3}  stackable>
-                    <Grid.Row>
-                        <Grid.Column mobile={16} tablet={16} computer={5}>
-                            <Table collapsing className='borderLess'>
-                                <Table.Body>
-                                    <Table.Row>
-                                        <Table.Cell>                                            
-                                            <Icon name='folder' /> Компания
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            <Input value={bkpf.bukrs} readOnly={true} />
-                                        </Table.Cell>                
-                                    </Table.Row>
-                                    
-                                    <Table.Row>
-                                        <Table.Cell>
-                                            <Icon name='browser' />
-                                            Филиал
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            <Input value={bkpf.brnch} readOnly={true} />
-                                        </Table.Cell>                
-                                    </Table.Row>
-                                    
-                                    <Table.Row>
-                                        <Table.Cell>
-                                            <Icon name='browser' />                            
-                                            Бизнес сфера
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            <Input value={bkpf.business_area} readOnly={true} />
-                                        </Table.Cell>                
-                                    </Table.Row>
-                                    
-                                    <Table.Row>
-                                        <Table.Cell>
-                                            Sn номер
-                                        </Table.Cell>
-                                        <Table.Cell>                                        
-                                            <Input value={bkpf.contract_number} readOnly={true} />
-                                        </Table.Cell>                
-                                    </Table.Row>
-                                    
-                                    <Table.Row>
-                                        <Table.Cell>
-                                            Пользователь
-                                        </Table.Cell>
-                                        <Table.Cell>                                        
-                                            <Input value={bkpf.usnam} readOnly={true} />
-                                        </Table.Cell>                
-                                    </Table.Row>
-                                    
-                                    <Table.Row>
-                                        <Table.Cell>
-                                            Официально
-                                        </Table.Cell>
-                                        <Table.Cell>                                        
-                                            <Checkbox checked={bkpf.official} readOnly={true} />
-                                        </Table.Cell>                
-                                    </Table.Row>
-                                </Table.Body>                     
-                            </Table>
-                            
-                                
-                        </Grid.Column>
-                        <Grid.Column mobile={16} tablet={16} computer={5}>
-                            <Table collapsing className='borderLess'>
-                                <Table.Body>
-                                    <Table.Row>
-                                        <Table.Cell>                                            
-                                            <Icon name='browser' /> Отдел
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            <Input value={bkpf.dep} readOnly={true} />
-                                        </Table.Cell>                
-                                    </Table.Row>
-                                    
-                                    <Table.Row>
-                                        <Table.Cell>
-                                            <Icon name='dollar' />
-                                            Валюта
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            <Input value={bkpf.waers} readOnly={true} />
-                                        </Table.Cell>                
-                                    </Table.Row>
-                                    
-                                    <Table.Row>
-                                        <Table.Cell>
-                                            <Icon name='exchange' />                            
-                                            Курс   
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            <Input value={bkpf.kursf} readOnly={true} />
-                                        </Table.Cell>                
-                                    </Table.Row>
-                                    
-                                    <Table.Row>
-                                        <Table.Cell>
-                                            <Icon name='wordpress forms' />                           
-                                            Рег. номер
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            <Input value={bkpf.zreg} readOnly={true} />
-                                        </Table.Cell>                
-                                    </Table.Row>
-                                    
-                                    <Table.Row>
-                                        <Table.Cell>
-                                            Код
-                                        </Table.Cell>
-                                        <Table.Cell>                                        
-                                            <Input value={bkpf.tcode} readOnly={true} />
-                                        </Table.Cell>                
-                                    </Table.Row>
-                                    
-                                    <Table.Row>
-                                        <Table.Cell>
-                                            Ссылка на документ
-                                        </Table.Cell>
-                                        <Table.Cell>                                        
-                                            <Input value={bkpf.awkey} readOnly={true} />
-                                        </Table.Cell>                
-                                    </Table.Row>   
-                                </Table.Body>                     
-                            </Table>
-                            
-                                
-                        </Grid.Column>
-                        <Grid.Column mobile={16} tablet={16} computer={5}>
-                        <Table collapsing className='borderLess'>
-                                <Table.Body>
-                                    <Table.Row>
-                                        <Table.Cell>
-                                            <Icon name='square outline' />
-                                            Вид документа
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            <Input value={bkpf.blart} readOnly={true} />
-                                        </Table.Cell>                
-                                    </Table.Row>
-                                    
-                                    <Table.Row>
-                                        <Table.Cell>
-                                            <Icon name='calendar' />    
-                                            Дата проводки
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            <DatePicker
-                                              className='date-auto-width'
-                                              autoComplete="off"
-                                              showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
-                                              selected={bkpf.budat?moment(bkpf.budat,"DD.MM.YYYY"):''} locale="ru" 
-                                              dateFormat="DD.MM.YYYY" readOnly={true} disabled={true}/>
-                                        </Table.Cell>                
-                                    </Table.Row>
-                                    
-                                    <Table.Row>
-                                        <Table.Cell>
-                                            <Icon name='calendar' />                           
-                                            Дата документа
-                                        </Table.Cell>
-                                        <Table.Cell>
-                                            <DatePicker
-                                              className='date-auto-width'
-                                              autoComplete="off"
-                                              showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
-                                              selected={bkpf.bldat?moment(bkpf.bldat,"DD.MM.YYYY"):''} locale="ru" 
-                                              dateFormat="DD.MM.YYYY" readOnly={true} disabled={true}/> 
-                                        </Table.Cell>                
-                                    </Table.Row>
-                                    
-                                    <Table.Row>
-                                        <Table.Cell>
-                                            Отменен
-                                        </Table.Cell>
-                                        <Table.Cell>                                        
-                                            <Input value={bkpf.storno} readOnly={true} />
-                                        </Table.Cell>                
-                                    </Table.Row>
-                                    
-                                    <Table.Row>
-                                        <Table.Cell>
-                                            Документ оригинал/Документ отмены
-                                        </Table.Cell>
-                                        <Table.Cell>                                        
-                                            <Input value={bkpf.business_area} readOnly={true} />
-                                        </Table.Cell>                
-                                    </Table.Row>                                    
-                                    
-                                    <Table.Row>
-                                        
-                                        <Table.Cell>
-                                            <Icon name='comments outline' />
-                                            Примечание
-                                        </Table.Cell>
-                                        
-                                        <Table.Cell>
-                                            <TextArea style={{ maxHeight: 45,minHeight: 45, minWidth:180, maxWidth:180 }}
-                                                value={bkpf.bktxt} maxLength='255' readOnly={true} disabled={true}
-                                            />
-                                        </Table.Cell>                
-                                    </Table.Row>
-                                </Table.Body>                     
-                            </Table>
-                            
-                            
-                                
-                        </Grid.Column>
-                    </Grid.Row>
+            <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}} >
+                <Header as="h2" block>
+                    Просмотр Фин. Док.
+                </Header>
+                <Segment padded size="small">                 
+                    <Label color="red" ribbon>
+                        Параметры поиска
+                    </Label>
                     
-                </Grid>    
-               
-            
-            </Segment>
+                    <Table collapsing >
+                        <Table.Body>
+                            <Table.Row>
+                                <Table.Cell>
+                                    <Icon name='folder' />
+                                    Компания
+                                </Table.Cell>                                      
+                                <Table.Cell>
+                                    <Dropdown placeholder='Компания' selection options={this.props.companyOptions} value={bukrs} 
+                                                onChange={(e, { value }) => this.onInputChange(value,'bukrs')} />
+                                </Table.Cell> 
+                                <Table.Cell>
+                                    Номер документа
+                                </Table.Cell>                                      
+                                <Table.Cell>
+                                    <Input value={belnr} onChange={(e, { value }) => this.onInputChange(value,'belnr')} onFocus={handleFocus} maxLength='10' />
+                                </Table.Cell> 
+                                <Table.Cell>
+                                    Год
+                                </Table.Cell>
+                                <Table.Cell>
+                                    <Input value={gjahr} onChange={(e, { value }) => this.onInputChange(value,'gjahr')} onFocus={handleFocus} maxLength='4'/>
+                                </Table.Cell>     
+                                <Table.Cell>
+                                    <Button icon labelPosition='left' primary size='small' onClick={()=>{
+                                        
+                                        this.props.fetchFA03(this.state.searchParameters)}}>
+                                        <Icon name='search' size='large' />Поиск
+                                    </Button>
+                                </Table.Cell>       
+                            </Table.Row> 
+                        </Table.Body>                     
+                    </Table>            
+                </Segment>               
+      
+                <Fa03RelatedDocs relatedDocs={this.props.relatedDocs}/>
+                <Fa03Header companyOptions={this.props.companyOptions}
+                    bkpf={this.props.bkpf}
+                    customerName={this.props.customerName}
+                    branchName={this.props.branchName}
+                    userFIO={this.props.userFIO}
+                    baName={this.props.baName}
+                    depName={this.props.depName}
+                    stornoOriginal={this.props.stornoOriginal}
+                    stornoOriginalBelnr={this.props.stornoOriginalBelnr}
+                    stornoOriginalGjahr={this.props.stornoOriginalGjahr}
+                    stornoOriginalBukrs={this.props.stornoOriginalBukrs}
+                />
+                <Fa03Position bseg={this.props.bseg} bkpf={this.props.bkpf} />
+                <PaymentSchedule ps={this.props.ps} />
             </Container>
   
           );
@@ -291,12 +132,23 @@ class Fa03 extends PureComponent {
 
 function mapStateToProps(state)
 {
-  // console.log(state,'state');
+//   console.log(state,'state');
   return {
+    companyOptions:state.userInfo.companyOptions,
     bkpf:state.fa.dynamicObject.bkpf,
+    customerName:state.fa.dynamicObject.customerName,
+    branchName:state.fa.dynamicObject.branchName,
+    userFIO:state.fa.dynamicObject.userFIO,
+    baName:state.fa.dynamicObject.baName,
+    depName:state.fa.dynamicObject.depName,
     bseg:state.fa.dynamicObject.bseg,
-    ps:state.fa.dynamicObject.ps
+    ps:state.fa.dynamicObject.ps,
+    stornoOriginal:state.fa.dynamicObject.stornoOriginal,
+    stornoOriginalBelnr:state.fa.dynamicObject.stornoOriginalBelnr, 
+    stornoOriginalGjahr:state.fa.dynamicObject.stornoOriginalGjahr, 
+    stornoOriginalBukrs:state.fa.dynamicObject.stornoOriginalBukrs,
+    relatedDocs:state.fa.dynamicObject.relatedDocs
   };
 }
 
-export default connect(mapStateToProps,{ changeDynObj, clearDynObj}) (Fa03);
+export default connect(mapStateToProps,{ fetchFA03, clearDynObj}) (Fa03);

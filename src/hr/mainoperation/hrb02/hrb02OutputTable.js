@@ -1,8 +1,9 @@
 import React,{ PureComponent } from 'react';
 import { connect } from 'react-redux';
-import ReactTable from 'react-table';
 import {Icon} from 'semantic-ui-react';
 import {onDeleteRow,onAddRow} from './hrb02_action';
+import ReactTable from 'react-table';
+import "react-table/react-table.css";
 
 
  

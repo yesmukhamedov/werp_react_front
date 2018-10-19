@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { Table, Button, Dropdown, Icon, Container, Header, Grid,  } from 'semantic-ui-react';
 import moment from 'moment';
 import Hrb02OutputTable from './hrb02OutputTable';
-import "react-table/react-table.css";
 import {fetchBonusData,clearRedStateHrb02} from './hrb02_action'
 import {f4FetchBonusTypeList,f4FetchCurrencyList,f4ClearBonusTypeList,f4ClearCurrencyList} from '../../../reference/f4/f4_action'
 import './hrb02.css';

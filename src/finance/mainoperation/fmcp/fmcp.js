@@ -243,7 +243,7 @@ class Fmcp extends Component {
           </Label>
           <br />
           <br />
-          <Table collapsing className='borderLess'>
+          <Table collapsing>
                     <Table.Body>
                         <Table.Row>
                             <Table.Cell>
@@ -373,7 +373,7 @@ class Fmcp extends Component {
                   </Label>
                   <br />
                   <br />
-                  <Table collapsing className='borderLess'>
+                  <Table collapsing>
                   
                                 <Table.Header>
                                     <Table.Row>
@@ -433,7 +433,7 @@ class Fmcp extends Component {
 
         return (
             
-                <Table collapsing className='borderLess'>
+                <Table collapsing >
                       <Table.Header>
                                     <Table.Row>
                                         <Table.HeaderCell colSpan="3">{<OutputErrors errors={this.state.errors}/>}</Table.HeaderCell>

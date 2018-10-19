@@ -180,3 +180,37 @@ export function saveFcis(a_bkpf, a_bseg, initFcis) {
 
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//FA03-FA02////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+export function fetchFA03(a_searchParameters) {
+    
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        dispatch(clearDynObj());
+        axios.get(`${ROOT_URL}/api/finance/mainoperation/fa03/fetch`, {
+            headers: 
+            {
+                authorization: localStorage.getItem('token')
+            },
+            params:
+            {
+                ...a_searchParameters
+            }
+        })
+        .then(({data}) => {
+            
+            dispatch(modifyLoader(false));
+            dispatch({
+                type: FETCH_DYNOBJ_FI,
+                data:data
+            });
+    
+        })
+        .catch(error => {
+            handleError(error,dispatch);
+            dispatch(modifyLoader(false));
+        });
+    }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
