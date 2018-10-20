@@ -77,8 +77,14 @@ export default function SalaryFormModal(props) {
 
         <Form.Group widths='equal'>
             <Form.Field required>
-                <label>Оклад</label>
-                <Input value={model.amount || 0} onChange={props.handleChange} type='number' name="amount"/>
+                <label>Дата увольнения</label>
+                <DatePicker
+                    autoComplete="off"
+                    label=''
+                    placeholderText={'Дата увольнения'}
+                    showMonthDropdown showYearDropdown dropdownMode='select'
+                    dateFormat='DD.MM.YYYY' selected={model.endDate ? moment(model.endDate) : null}
+                    onChange={(v) => props.handleDate('endDate', v)}/>
             </Form.Field>
 
             <Form.Select value={model.salaryType}
@@ -89,7 +95,10 @@ export default function SalaryFormModal(props) {
         </Form.Group>
 
         <Form.Group widths='equal'>
-            <Form.Field />
+            <Form.Field required>
+                <label>Оклад</label>
+                <Input value={model.amount || 0} onChange={props.handleChange} type='number' name="amount"/>
+            </Form.Field>
 
             <Form.Field
                 control={TextArea} value={model.note || ''}
