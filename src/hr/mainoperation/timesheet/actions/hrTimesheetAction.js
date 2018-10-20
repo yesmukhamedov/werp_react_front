@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
 import { modifyLoader } from '../../../../general/loader/loader_action';
-import {handleError,notify} from '../../../../general/notification/notification_action'
+import {handleError,notify,NOTIFY} from '../../../../general/notification/notification_action'
 
 export const HR_TIMESHEET_FETCH_ITEMS = 'HR_TIMESHEET_FETCH_ITEMS'
 export const HR_TIMESHEET_FETCH_STATUSES = 'HR_TIMESHEET_FETCH_STATUSES'
@@ -50,30 +50,6 @@ export function fetchStatuses(){
 }
 
 export function saveData(data){
-    let d = [
-        {
-            branchId:35,
-            bukrs:"1000",
-            departmentId:null,
-            month: 5,
-            staffId: "5645",
-            year: 2018,
-            days: [
-                {
-                    number: 1,
-                    enabled: false,
-                    status: "PRESENT"
-                }
-            ]
-        },
-        {
-            bukrs: "1000",
-            branchId: 35,
-            departmentId: null,
-            departmentName: null
-        }
-    ]
-    console.log(data)
     return function(dispatch){
         dispatch(modifyLoader(true));
         axios.put(`${ROOT_URL}/api/hr/staff/timesheet`, data, {
@@ -83,6 +59,7 @@ export function saveData(data){
         })
             .then(({data}) => {
                 dispatch(modifyLoader(false));
+                dispatch(notify(NOTIFY,'Сохранено успешно'));
             }).catch((error) => {
                 dispatch(modifyLoader(false));
                 handleError(error,dispatch)
