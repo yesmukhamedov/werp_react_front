@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom'
 import {formatDMYMS} from '../../../../utils/helpers'
 
 export default function WspaceVisitTable(props){
-    const {items} = props
+    const {items, messages} = props
     if(!items){
         return <h3>Нет данных!</h3>
     }
@@ -12,12 +12,12 @@ export default function WspaceVisitTable(props){
     return <Table celled padded>
         <Table.Header>
             <Table.Row>
-                <Table.HeaderCell singleLine>Клиент</Table.HeaderCell>
-                <Table.HeaderCell>Адрес</Table.HeaderCell>
-                <Table.HeaderCell>Дата посещения</Table.HeaderCell>
-                <Table.HeaderCell>Посетитель</Table.HeaderCell>
-                <Table.HeaderCell>Примечание</Table.HeaderCell>
-                <Table.HeaderCell>Действия</Table.HeaderCell>
+                <Table.HeaderCell singleLine>{messages['Table.Client']}</Table.HeaderCell>
+                <Table.HeaderCell>{messages['Table.Address']}</Table.HeaderCell>
+                <Table.HeaderCell>{messages['Table.VisitDate']}</Table.HeaderCell>
+                <Table.HeaderCell>{messages['Table.Visitor']}</Table.HeaderCell>
+                <Table.HeaderCell>{messages['Table.Note']}</Table.HeaderCell>
+                <Table.HeaderCell>{messages['Table.Actions']}</Table.HeaderCell>
             </Table.Row>
         </Table.Header>
 
@@ -34,11 +34,11 @@ export default function WspaceVisitTable(props){
                             target={'_blank'}
                             className={'ui icon button mini'}
                             to={`/crm/visit/view/` + item.id}>
-                            Просмотр
+                            {messages['Table.View']}
                         </Link>
 
                         <Label as={'a'} onClick={() => props.openRecoListModal(item,'visit')}>
-                            <Icon name='unhide' /> Обзвонить
+                            <Icon name='unhide' /> {messages['Table.RingUp']}
                         </Label>
                     </Table.Cell>
                 </Table.Row>

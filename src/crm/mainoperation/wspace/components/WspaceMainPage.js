@@ -23,6 +23,7 @@ import WspaceVisitTable from './WspaceVisitTable'
 import WspaceRecoFilter from './WspaceRecoFilter'
 import WspaceVisitTableHeader from './WspaceVisitTableHeader'
 import {Link} from 'react-router-dom'
+import { injectIntl } from 'react-intl';
 
 import moment from 'moment'
 
@@ -61,8 +62,9 @@ class WspaceMainPage extends Component {
   }
 
     onSelectMenu = (menu) => {
+      const {messages} = this.props.intl
       let menuItem = _.find(MENU_ITEMS,{'name':menu})
-      let dividerTitle = menuItem?menuItem.pageLabel:'Все действии на сегодня'
+      let dividerTitle = menuItem?messages[menuItem.pageLabel]:messages['Crm.Wspace.TodayActions']
         this.setState({
             ...this.state,
             currentMenu: menu,
@@ -160,6 +162,7 @@ class WspaceMainPage extends Component {
     }
 
   renderContent = () =>{
+      const {messages} = this.props.intl;
       let menuItems = this.props.staffRecoData[this.state.currentMenu] || []
       let filters = this.props.filters[this.state.currentMenu] || {}
       menuItems = this.doFilterData(filters,menuItems)
@@ -171,10 +174,11 @@ class WspaceMainPage extends Component {
               return<div>
                   <div style={{display:'block',height:'20px'}}>
                       <Link target={'blank'} className={'ui icon button primary right floated'} to={`/crm/reco/create`}>
-                          <Icon name='plus' /> Добавить из архива
+                          <Icon name='plus' /> {messages['Crm.Wspace.CreateFromArchive']}
                       </Link>
                   </div>
                   <WspaceRecoFilter
+                      messages={messages}
                       handleFilter = {this.props.handleFilter}
                       menu={this.state.currentMenu} filters={filters}/>
                   <WspaceRecoList
@@ -185,12 +189,15 @@ class WspaceMainPage extends Component {
               </div>
 
           case MENU_CURRENT_DEMO:
-              return <WspaceDemoTable items={menuItems}/>
+              return <WspaceDemoTable
+                        messages={messages}
+                        items={menuItems}/>
 
           case MENU_CURRENT_VISIT:
               return <div>
-                      <WspaceVisitTableHeader prepareForCreate={this.prepareForCreateVisit} />
+                      <WspaceVisitTableHeader messages={messages} prepareForCreate={this.prepareForCreateVisit} />
                       <WspaceVisitTable
+                          messages={messages}
                           openRecoListModal={this.openRecoListModal}
                           items={menuItems} />
                   </div>
@@ -237,6 +244,8 @@ closeRecoListModal = () => {
 
           menuItems.push(temp)
       }
+      const {messages} = this.props.intl
+
     return (
       <Container fluid className={'main-container'}>
           <WspaceHeader
@@ -248,6 +257,7 @@ closeRecoListModal = () => {
               {currentStaff && currentStaff.text ?currentStaff.text:''}
           </Divider>
           <WspaceMenu
+              messages={messages}
               loaders={this.props.loaders}
               activeItem={this.state.currentMenu}
               items={menuItems}
@@ -287,4 +297,4 @@ export default connect(mapStateToProps, {
     fetchTodayDemos,fetchCallResults,fetchReasons,fetchCurrentDemos,fetchCurrentVisits,
     fetchVisitRecos, handleFilter, fetchKpi,blankForCreate,modalToggle,wspClearState,
     fetchPhoneMeta
-})(WspaceMainPage)
+})(injectIntl(WspaceMainPage))

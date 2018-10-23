@@ -19,32 +19,32 @@ export const MENU_ITEMS = [
     // },
     {
         name: MENU_BY_RECO,
-        label: 'По рекомендателям',
-        pageLabel: 'Рекомендации по рекомендателям',
+        label: 'Crm.Wspace.Menu.ByRecommender',
+        pageLabel: 'Crm.Wspace.RecoByReco',
         count: 55
     },
     {
         name: MENU_BY_DATE,
-        label: 'По дате',
-        pageLabel: 'Рекомендации по дате',
+        label: 'Crm.Wspace.Menu.ByDate',
+        pageLabel: 'Crm.Wspace.RecoByDate',
         count: 12
     },
     {
         name: MENU_MOVED,
-        label: 'Перенесенные',
-        pageLabel: 'Перенесенные рекомендации',
+        label: 'Crm.Wspace.Menu.Moved',
+        pageLabel: 'Crm.Wspace.MovedReco',
         count: 0
     },
     {
         name: MENU_CURRENT_DEMO,
-        label: 'Текущие демо',
-        pageLabel: 'Текущие демонстрации',
+        label: 'Crm.Wspace.Menu.CurrentDemo',
+        pageLabel: 'Crm.Wspace.CurrentDemo',
         count: 0
     },
     {
         name: MENU_CURRENT_VISIT,
-        label: 'Текущие визиты',
-        pageLabel: 'Текущие визиты',
+        label: 'Crm.Wspace.Menu.CurrentVisits',
+        pageLabel: 'Crm.Wspace.CurrentVisits',
         count: 0
     }
 ]

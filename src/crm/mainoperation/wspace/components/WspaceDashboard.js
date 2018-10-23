@@ -8,6 +8,7 @@ import WspaceDashboardContent from './content/WspaceDashboardContent'
 import WspaceKpiTable from './WspaceKpiTable'
 import {fetchTodayCalls,fetchTodayDemos,fetchKpi,WSP_FETCH_TODAY_CALLS,WSP_FETCH_TODAY_DEMOS,WSP_FETCH_KPI} from '../actions/wspaceAction'
 import moment from 'moment'
+import { injectIntl } from 'react-intl'
 
 class WspaceDashboard extends Component {
   constructor (props) {
@@ -25,6 +26,7 @@ class WspaceDashboard extends Component {
     }
 
   render () {
+      const {messages} = this.props.intl
       let {todayCallsByResult,todayDemos, kpiData} = this.props
       let year = moment().year();
       let month = moment().month()+1;
@@ -54,7 +56,7 @@ class WspaceDashboard extends Component {
             <Grid.Column width={16}>
             <Segment clearing>
                 <Header as='h3' floated='left'>
-                    Звонки
+                    {messages['Crm.Calls']}
                 </Header>
                 <Button
                     loading={this.props.loaders[WSP_FETCH_TODAY_CALLS]}
@@ -74,6 +76,7 @@ class WspaceDashboard extends Component {
 
             <Grid.Column width={12}>
                 <WspaceDashboardContent
+                    messages={messages}
                     contentName="calls"
                     items={todayCallsByResult[this.state.currentMenuOfCalls] || []}/>
             </Grid.Column>
@@ -84,7 +87,7 @@ class WspaceDashboard extends Component {
             <Grid.Column width={16}>
                 <Segment clearing>
                     <Header as='h3' floated='left'>
-                        Демонстрации
+                        {messages['Crm.Demonstrations']}
                     </Header>
                     <Button
                         loading={this.props.loaders[WSP_FETCH_TODAY_DEMOS]}
@@ -97,6 +100,7 @@ class WspaceDashboard extends Component {
             </Grid.Column>
             <Grid.Column width={16}>
                 <WspaceDashboardContent
+                    messages={messages}
                     contentName="demos"
                     items={todayDemos}/>
             </Grid.Column>
@@ -118,4 +122,4 @@ function mapStateToProps (state) {
 
 export default connect(mapStateToProps, {
     fetchTodayCalls,fetchTodayDemos,fetchKpi
-})(WspaceDashboard)
+})(injectIntl(WspaceDashboard))

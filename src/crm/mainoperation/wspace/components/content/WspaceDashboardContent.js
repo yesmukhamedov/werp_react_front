@@ -8,47 +8,47 @@ import ReactTable from 'react-table';
 import "react-table/react-table.css";
 
 export default function WspaceDashboardContent(props){
-    const {items,contentName} = props
+    const {items,contentName,messages} = props
     if(!items){
         return (null)
     }
 
     if(contentName === 'calls'){
-        return renderCallsTable(items)
+        return renderCallsTable(items,messages)
     }else if(contentName === 'demos'){
-        return <WspaceDemoTable items={items}/>
+        return <WspaceDemoTable messages={messages} items={items}/>
     }
 
     return (null)
 }
 
-function renderCallsTable (items){
+function renderCallsTable (items,messages){
     const columns = [
         {
-            Header: 'Дата-время звонка',
+            Header: messages['Table.DateTime'],
             accessor: 'dateTimeStr',
             maxWidth: 150
         },
         {
-            Header: 'Номер',
+            Header: messages['Table.PhoneNumber'],
             accessor: 'phoneNumber'
         },
         {
-            Header: 'Результат',
+            Header: messages['Table.Result'],
             accessor: 'resultName'
         },
         {
-            Header: 'Примечание',
+            Header: messages['Table.Note'],
             accessor: 'note'
         },
         {
-            Header: 'Ссылка',
+            Header: messages['Table.Link'],
             id: 'recoId',
             accessor: (row) => <Link
                 target={'_blank'}
                 className={'ui icon button mini'}
                 to={`/crm/reco/view/` + row.contextId}>
-                Просмотр рек.
+                {messages['Table.ViewReco']}
             </Link>,
             Footer: (
                 <span>

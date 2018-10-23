@@ -10,6 +10,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import '../css/recoStyles.css';
 import {fetchGroupDealers} from '../../demo/actions/demoAction';
 import {checkPhoneNumber,createRecoList,blankRecoItem} from '../actions/recoAction'
+import { injectIntl } from 'react-intl'
 require('moment/locale/ru');
 
 const DEFAULT_CONTEXT = 'aa'
@@ -189,9 +190,10 @@ class RecoCreatePage extends Component {
   }
 
   renderRecoForms () {
+        const {messages} = this.props.intl
     let {items} = this.state.reco
     return items.map((item,index) => {
-        return <RecoCard handleChangeDate={this.handleChangeDate}
+        return <RecoCard messages={messages} handleChangeDate={this.handleChangeDate}
                          itemPhones={this.state.itemPhones}
                          phoneCode={this.state.reco['phoneCode']}
                          phonePattern={this.state.reco['phonePattern']}
@@ -249,12 +251,12 @@ class RecoCreatePage extends Component {
         return this.state.reco.contextId === 0 || this.state.reco.context === DEFAULT_CONTEXT
   }
 
-  renderHeaderForm () {
+  renderHeaderForm (messages) {
     return (
       <Form>
         <Form.Group widths='equal'>
           <Form.Field>
-            <label>Дилер</label>
+            <label>{messages['Form.Dealer']}</label>
             <Dropdown name='responsibleId'
               error={!this.state.reco.responsibleId || this.state.reco.responsibleId === null || this.state.reco.responsibleId === 0}
               placeholder='Выберите дилера'
@@ -270,12 +272,12 @@ class RecoCreatePage extends Component {
             name='tempRecommender'
             value={this.state.reco.tempRecommender || ''}
             readOnly={this.state.reco.contextId > 0}
-            onChange={this.handleChange} label='ФИО рекомендателя' />
-          {this.state.reco.contextId > 0 ? '' : <Form.TextArea name='recommenderInfo' onChange={this.handleChange} label='Доп. данные рекомендателя' />}
+            onChange={this.handleChange} label={messages['Form.RecommenderFullName']} />
+          {this.state.reco.contextId > 0 ? '' : <Form.TextArea name='recommenderInfo' onChange={this.handleChange} label={messages['Form.RecommenderAddData']} />}
         </Form.Group>
         <Button icon labelPosition='left' onClick={this.addReco}>
           <Icon name='plus' />
-                    Добавить
+            {messages['Table.Add']}
         </Button>
           {this.state.reco.items.length}
 
@@ -283,17 +285,20 @@ class RecoCreatePage extends Component {
             //ref={btn => { this.btn = btn; }}
             disabled={this.state.saveBtnDisabled}
             onClick={this.validateAndSendData}
-                primary floated='right'>{this.state.saveBtnDisabled?'Ждите...':'Сохранить'}</Button>
+                primary floated='right'>
+                {this.state.saveBtnDisabled ? messages['Form.Wait']:messages['Form.Save']}
+            </Button>
       </Form>
     )
   }
 
   render () {
+        const {messages} = this.props.intl
     return (
       <Container className={'pageStyle'} fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
         <Segment padded size='small'>
-          <Label attached='top'><Header as='h3'>Добавление рекомендации {this.isArchive()?' из архива':''}</Header></Label>
-          {this.renderHeaderForm()}
+          <Label attached='top'><Header as='h3'>{this.isArchive()?messages['Form.CreatingRecoFromArchive']:messages['Form.CreatingReco']}</Header></Label>
+          {this.renderHeaderForm(messages)}
           <Divider />
           <Grid className='recoGrid'>
             {this.renderRecoForms()}
@@ -317,4 +322,4 @@ const mapStateToProps = (state) => {
 export default connect(mapStateToProps, {
     notify,fetchGroupDealers,checkPhoneNumber,createRecoList,
     blankRecoItem
-})(RecoCreatePage)
+})(injectIntl(RecoCreatePage))

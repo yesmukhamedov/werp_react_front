@@ -5,7 +5,7 @@ import DemoResultLabel from '../../demo/components/DemoResultLabel'
 import {renderRecoCategoryBtn} from '../../../CrmHelper'
 
 export default function WspaceDemoTable(props){
-    const {items,menu} = props
+    const {items,menu,messages} = props
     if(!items){
         return <h3>Нет данных!</h3>
     }
@@ -13,13 +13,13 @@ export default function WspaceDemoTable(props){
     return <Table celled padded>
         <Table.Header>
             <Table.Row>
-                <Table.HeaderCell singleLine>Клиент</Table.HeaderCell>
-                <Table.HeaderCell>Адрес</Table.HeaderCell>
-                <Table.HeaderCell>Дата-время</Table.HeaderCell>
-                <Table.HeaderCell>Дилер</Table.HeaderCell>
-                <Table.HeaderCell>Категория</Table.HeaderCell>
-                <Table.HeaderCell>Примечание</Table.HeaderCell>
-                <Table.HeaderCell>Результат</Table.HeaderCell>
+                <Table.HeaderCell singleLine>{messages['Table.Client']}</Table.HeaderCell>
+                <Table.HeaderCell>{messages['Table.Address']}</Table.HeaderCell>
+                <Table.HeaderCell>{messages['Table.DateTime']}</Table.HeaderCell>
+                <Table.HeaderCell>{messages['Table.Dealer']}</Table.HeaderCell>
+                <Table.HeaderCell>{messages['Table.Category']}</Table.HeaderCell>
+                <Table.HeaderCell>{messages['Table.Note']}</Table.HeaderCell>
+                <Table.HeaderCell>{messages['Table.Result']}</Table.HeaderCell>
                 <Table.HeaderCell></Table.HeaderCell>
             </Table.Row>
         </Table.Header>
@@ -41,7 +41,7 @@ export default function WspaceDemoTable(props){
                             target={'_blank'}
                             className={'ui icon button mini'}
                             to={`/crm/demo/view/` + item.id}>
-                            Просмотр
+                            {messages['Table.View']}
                         </Link>
                     </Table.Cell>
                 </Table.Row>

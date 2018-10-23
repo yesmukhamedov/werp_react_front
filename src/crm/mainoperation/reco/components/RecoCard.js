@@ -12,7 +12,7 @@ import DatePicker from 'react-datepicker'
 export default function RecoCard(props){
 
     //Single Card
-    const {item,index,phoneErrors,loadingPhones,phonePattern,recoErrors} = props;
+    const {item,index,phoneErrors,loadingPhones,phonePattern,recoErrors,messages} = props;
     const patternLength = phonePattern.replace(/[^0-9]+/g, '').length
 
     const phoneHasError = (name) => {
@@ -66,7 +66,7 @@ export default function RecoCard(props){
         <Segment padded size='small' className='card-segment'>
             {recoErrors[item.id]?<Popup
                 trigger={<Label as='a' color={'red'} ribbon>
-                    №{index+1} Ошибка <Icon name={'warning sign'} inverted/></Label>}
+                    №{index+1} {messages['Form.Reco.Error']} <Icon name={'warning sign'} inverted/></Label>}
                 content={recoErrors[item.id]}
                 on='hover'
             />:<Label as='a' color={'teal'} ribbon>№{index+1}</Label>}
@@ -78,7 +78,7 @@ export default function RecoCard(props){
             <Form className='recoGrid'>
                 <Form.Input
                         error={!item['clientName'] || item['clientName'].length === 0}
-                        label="ФИО супруг" placeholder="ФИО супруг"
+                        label={messages['Form.Reco.RecoName']} placeholder={messages['Form.Reco.RecoName']}
                         onChange={(e,d) => props.handleChange('clientName',item.id,d.value)}
                         value={item.clientName || ''}/>
 
@@ -86,38 +86,38 @@ export default function RecoCard(props){
                     value={item.categoryId || 0}
                     error={!item.categoryId || item.categoryId === 0}
                     fluid selection
-                    label="Категория клиента"
-                    placeholder='Категория клиента'
+                    label={messages['Form.Reco.Category']}
+                    placeholder={messages['Form.Reco.Category']}
                     options={RECO_CATEGORIES}
                     onChange={(e,d) => props.handleChange('categoryId',item.id,d.value)}  />
 
                 <Form.Input
-                            label="Район" placeholder="Район"
+                            label={messages['Form.Reco.District']} placeholder={messages['Form.Reco.District']}
                             onChange={(e,d) => props.handleChange('districtName',item.id,d.value)}
                             value={item.districtName || ''}
                 />
 
                 <Form.Input value={item.relativeName || ''}
-                            label="Род. отношение" placeholder="Род. отношение"
+                            label={messages['Form.Reco.Relative']} placeholder={messages['Form.Reco.Relative']}
                             onChange={(e,d) => props.handleChange('relativeName',item.id,d.value)} />
 
                 <Form.Dropdown
                     defaultValue={0}
                     fluid selection
-                    label="Звонить будет"
-                   placeholder='Звонить будет'
+                    label={messages['Form.Reco.CallerIs']}
+                   placeholder={messages['Form.Reco.CallerIs']}
                     options={RECO_CALLER_OPTIONS}
                     onChange={(e,d) => props.handleChange('callerIsDealer',item.id,d.value)}  />
 
                 <Form.TextArea
                             value={item.note || ''}
                             rows={1}
-                           label="Примечание"
-                           placeholder="Примечание"
+                           label={messages['Form.Reco.Note']}
+                           placeholder={messages['Form.Reco.Note']}
                             onChange={(e,d) => props.handleChange('note',item.id,d.value)} />
 
                 <Form.Field error={phoneHasError('phoneNumber1')}>
-                    <label>Тел. номер</label>
+                    <label>{messages['Form.Reco.PhoneNumber']}</label>
                     <Input
                         label={{ basic:true,content:props.phoneCode}}
                         placeholder={phonePattern}
@@ -127,7 +127,7 @@ export default function RecoCard(props){
                 </Form.Field>
 
                 <Form.Field error={phoneHasError('phoneNumber2')}>
-                    <label>Тел. номер</label>
+                    <label>{messages['Form.Reco.PhoneNumber']}</label>
                     <Input
                             label={{ basic:true,content:props.phoneCode}}
                            placeholder={phonePattern}

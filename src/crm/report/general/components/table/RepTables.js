@@ -16,10 +16,19 @@ export function RepTable894And934(props){
         items = []
     }
     let currentMonth = parseInt(moment().format('M'),10)
-    let date = moment().subtract(3,'month')
+    let date;
+    //to skip August
+    if(currentMonth >= 8 && currentMonth < 12){
+        date = moment().subtract(4,'month')
+    } else {
+        date = moment().subtract(3,'month')
+    }
     let prevMonth = parseInt(date.format('M'),10)
     let months = []
     for(let k = prevMonth; k <= currentMonth; k++){
+        if(k === 8){
+            continue
+        }
         months.push(k)
     }
     const renderMonthDataForSale = (monthData) => {
