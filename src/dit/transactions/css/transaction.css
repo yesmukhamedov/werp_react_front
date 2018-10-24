@@ -1,0 +1,18 @@
+#transaction{
+    margin: 0%;
+    padding: 0%;
+}
+
+#table_style .list_table_header {
+    background-color:  #dddddd;
+    padding-left: 1%;
+    padding-right:1%;
+    padding-top: 2%;
+}
+
+.new_Form_Transaction{
+    margin-top: 5%;
+}
+h2{
+    text-align: center;
+}
