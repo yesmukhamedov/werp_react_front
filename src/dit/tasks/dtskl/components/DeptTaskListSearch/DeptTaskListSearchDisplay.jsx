@@ -4,9 +4,9 @@ import moment from 'moment';
 import _ from 'lodash';
 import { Form, Grid, Segment, Dimmer, Loader, Label } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
-import { DropdownFormField, DatePickerFormField } from '../../../../../../utils/formFields';
+import { DropdownFormField, DatePickerFormField } from '../../../../../utils/formFields';
 
-class TaskMonitorSearchDisplay extends Component {
+class DeptTaskListSearchDisplay extends Component {
   constructor(props) {
     super(props);
 
@@ -40,7 +40,8 @@ class TaskMonitorSearchDisplay extends Component {
       .filter(param => param)
       .join('&');
 
-    // console.log("params:", params)
+    console.log(params)
+
     return new Promise(resolve => this.props.searchTasks(params, resolve));
   }
 
@@ -57,15 +58,15 @@ class TaskMonitorSearchDisplay extends Component {
             <Label
               as="a"
               attached="top"
-              content={formatMessage(messages.taskMonitor)}
+              content={formatMessage(messages.taskList)}
               icon="checkmark box"
               style={{
                 background: 'rgba(227,232,238, 1)',
               }}
             />
             <Grid stackable divided>
-              <Grid.Row columns={2} style={{ padding: '3px' }}>
-                <Grid.Column>
+              <Grid.Row columns={3} style={{ padding: '3px' }}>
+                <Grid.Column mobile={16} tablet={8} computer={6}>
                   <Form.Group widths="equal">
                     <Field
                       required
@@ -84,8 +85,8 @@ class TaskMonitorSearchDisplay extends Component {
                     />
                   </Form.Group>
                 </Grid.Column>
-                <Grid.Column>
-                  <Form.Group>
+                <Grid.Column mobile={16} tablet={8} computer={4}>
+                  <Form.Group widths="equal">
                     <Field
                       // required
                       name="endDateFrom"
@@ -103,8 +104,8 @@ class TaskMonitorSearchDisplay extends Component {
                   </Form.Group>
                 </Grid.Column>
               </Grid.Row>
-              <Grid.Row columns={2} style={{ padding: '3px' }}>
-                <Grid.Column>
+              <Grid.Row columns={3} style={{ padding: '3px' }}>
+                <Grid.Column mobile={16} tablet={8} computer={6}>
                   <Form.Group widths="equal">
                     <Field
                       required
@@ -124,8 +125,8 @@ class TaskMonitorSearchDisplay extends Component {
                     />
                   </Form.Group>
                 </Grid.Column>
-                <Grid.Column >
-                  <Form.Group>
+                <Grid.Column mobile={16} tablet={8} computer={4}>
+                  <Form.Group widths="equal">
                     <Field
                       name="startDateFrom"
                       label={formatMessage(messages.startDateFrom)}
@@ -141,8 +142,8 @@ class TaskMonitorSearchDisplay extends Component {
                   </Form.Group>
                 </Grid.Column>
               </Grid.Row>
-              <Grid.Row columns={2} style={{ padding: '3px' }}>
-                <Grid.Column>
+              <Grid.Row columns={3} style={{ padding: '3px' }}>
+                <Grid.Column mobile={16} tablet={8} computer={6}>
                   <Form.Group widths="equal">
                     <Field
                       required
@@ -182,7 +183,7 @@ class TaskMonitorSearchDisplay extends Component {
     }
     return (
       <Dimmer active>
-        <Loader indeterminate>Fetching directories....</Loader>
+        <Loader indeterminate>Fetching directories..</Loader>
       </Dimmer>
     );
   }
@@ -195,25 +196,25 @@ function validate(formProps, state) {
   if (!formProps.company) {
     error.company = formatMessage({ id: 'Form.CompanyError' });
   }
-  if (!formProps.branch || (formProps.branch && formProps.branch.length === 0)) {
+  if (!formProps.branch) {
     error.branch = formatMessage({ id: 'Form.BranchError' });
   }
   if (!formProps.status) {
     error.status = formatMessage({ id: 'Form.StatusError' });
   }
-  if (!formProps.department || (formProps.department && formProps.department.length === 0)) {
+  if (!formProps.department) {
     error.department = formatMessage({ id: 'Form.DepartmentError' });
   }
-  if (!formProps.type || (formProps.type && formProps.type.length === 0)) {
+  if (!formProps.type) {
     error.type = formatMessage({ id: 'Form.TypeError' });
   }
 
   return error;
 }
 
-TaskMonitorSearchDisplay = reduxForm({
-  form: 'taskMonitorSearchDisplay',
+DeptTaskListSearchDisplay = reduxForm({
+  form: 'deptTaskListSearchDisplay',
   validate,
-})(TaskMonitorSearchDisplay);
+})(DeptTaskListSearchDisplay);
 
-export default TaskMonitorSearchDisplay;
+export default DeptTaskListSearchDisplay;

@@ -125,19 +125,19 @@ const AsyncOutCallTaskPage = Loadable({
 
 const AsyncTaskMonitorPage = Loadable({
   loader: () =>
-    import('../dit/tasks/mainoperation/taskMonitor/components/TaskMonitorContainer' /* webpackChunkName: "TaskMonitorPage" */),
+    import('../dit/tasks/dtskrep/components/TaskMonitorContainer' /* webpackChunkName: "TaskMonitorPage" */),
   loading: () => <LoadingPage />,
 });
 
 const AsyncDeptTaskListPage = Loadable({
   loader: () =>
-    import('../dit/tasks/mainoperation/deptTaskList/components/DeptTaskListContainer' /* webpackChunkName: "DepTaskListPage" */),
+    import('../dit/tasks/dtskl/components/DeptTaskListContainer' /* webpackChunkName: "DepTaskListPage" */),
   loading: () => <LoadingPage />,
 });
 
 const AsyncTaskRecEditPage = Loadable({
   loader: () =>
-    import('../dit/tasks/mainoperation/deptTaskList/components/DeptTaskListTable/RecipientEdit/RecipientEditContainer' /* webpackChunkName: "RecipientEditPage" */),
+    import('../dit/tasks/dtskl/components/DeptTaskListTable/RecipientEdit/RecipientEditContainer' /* webpackChunkName: "RecipientEditPage" */),
   loading: () => <LoadingPage />,
 });
 
@@ -312,15 +312,12 @@ const getComponent = {
     Frcoln:AsyncFrcoln,
     Arli: AsyncArli,
     Fmcp: AsyncFmcp,
-
-    
+  
     Amsg:AsyncAmsg,
     Amcdd:AsyncAmcdd,
 
-
     Fcis:AsyncFsis,
     
-
     SpNew: AsyncSpNewPage,
     SpView: AsyncSpViewPage,
     SpList: AsyncSpListPage,
@@ -382,17 +379,13 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/dit/dtskl"   component={persistPath(AsyncDeptTaskListPage)} />
       <Route path="/dit/dtskredit/:id"   component={AsyncTaskRecEditPage} />
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
-    <Route path="/hr/doc/create/:type" component={AsyncHrDocCreatePage} />
+      <Route path="/hr/doc/create/:type" component={AsyncHrDocCreatePage} />
       <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />
-
       <Route path="/general/dtskc" component={DtskcContainer} />
       <Route path="/general/dtskdep" component={DtskdepContainer} />
       <Route path="/finance/mainoperation/fa03" component={AsyncFa03} />
+      <Route path="/documents/mydocs" component={AsyncMyDocsListPage}/>
 
-
-      
-
-        <Route path="/documents/mydocs" component={AsyncMyDocsListPage}/>
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
         return (

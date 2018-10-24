@@ -3,7 +3,7 @@ import ReactTable from 'react-table';
 import { Label } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import PropTypes from 'prop-types';
-import { outCallStatusColorMap } from '../../../../../../utils/constants';
+import { outCallStatusColorMap } from '../../../../../utils/constants';
 
 
 class TaskMonitorTableDisplay extends Component {

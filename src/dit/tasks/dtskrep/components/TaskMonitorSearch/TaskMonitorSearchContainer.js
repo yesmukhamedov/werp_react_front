@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
 import { defineMessages, injectIntl } from 'react-intl';
 import { searchTasks } from '../../actions/TaskMonitorAction';
-import { messages } from '../../../deptTaskList/components/DeptTaskListSearch/DeptTaskListSearchContainer';
+import { messages } from '../../../dtskl/components/DeptTaskListSearch/DeptTaskListSearchContainer';
 import TaskMonitorSearchDisplay from './TaskMonitorSearchDisplay';
 
 const selector = formValueSelector('taskMonitorSearchDisplay');

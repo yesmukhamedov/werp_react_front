@@ -1,13 +1,14 @@
 import axios from 'axios';
 import moment from 'moment';
 import _ from 'lodash';
-import { ROOT_URL } from '../../../../../utils/constants';
-import { constructFullName } from '../../../../../utils/helpers';
-import { notify } from '../../../../../general/notification/notification_action';
+import { ROOT_URL } from '../../../../utils/constants';
+import { constructFullName } from '../../../../utils/helpers';
+import { notify } from '../../../../general/notification/notification_action';
 
 export const DEPT_TASK_LIST_DIRECTORIES = 'dept_task_list_directories';
 export const CLEAR_DEPT_TASK_LIST = 'clear_dept_task_list';
 export const FOUND_DEPT_TASKS = 'found_dept_tasks';
+export const FETCH_PRIVATE_TASKS = 'fetch_private_tasks';
 export const EDIT_TASK_RECIPIENT = 'edit_task_recipient';
 export const FETCH_ASSIGNEE_DETAILS = 'fetch_assignee_details';
 
@@ -36,9 +37,32 @@ export function searchTasks(params, resolve) {
   };
 }
 
+export function fetchPrivateTasks() {
+  return (dispatch) => {
+    axios.get(`${ROOT_URL}/api/dtskl/privateTasks`, {
+      headers: { authorization: localStorage.getItem('token') },
+    })
+      .then(({ data }) => {
+        // console.log(data);
+        dispatch({
+          type: FETCH_PRIVATE_TASKS,
+          payload: data,
+        });
+      })
+      .catch((error) => {
+        console.log('ERROR in private task list fetch', error);
+        if (error.response) {
+          dispatch(notify('error', error.response.data.message, 'Ошибка...'));
+        } else {
+          Promise.resolve({ error }).then(response => dispatch(notify('error', response, 'Ошибка')));
+        }
+      });
+  };
+}
+
 export function clearDeptTaskListStore() {
   return (dispatch) => {
-    dispatch({ type: DEPT_TASK_LIST_DIRECTORIES });
+    dispatch({ type: CLEAR_DEPT_TASK_LIST });
   };
 }
 

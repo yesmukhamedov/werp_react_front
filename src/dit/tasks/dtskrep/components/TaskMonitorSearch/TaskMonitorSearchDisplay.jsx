@@ -4,9 +4,9 @@ import moment from 'moment';
 import _ from 'lodash';
 import { Form, Grid, Segment, Dimmer, Loader, Label } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
-import { DropdownFormField, DatePickerFormField } from '../../../../../../utils/formFields';
+import { DropdownFormField, DatePickerFormField } from '../../../../../utils/formFields';
 
-class DeptTaskListSearchDisplay extends Component {
+class TaskMonitorSearchDisplay extends Component {
   constructor(props) {
     super(props);
 
@@ -40,8 +40,7 @@ class DeptTaskListSearchDisplay extends Component {
       .filter(param => param)
       .join('&');
 
-    // console.log(params)
-
+    // console.log("params:", params)
     return new Promise(resolve => this.props.searchTasks(params, resolve));
   }
 
@@ -58,15 +57,15 @@ class DeptTaskListSearchDisplay extends Component {
             <Label
               as="a"
               attached="top"
-              content={formatMessage(messages.taskList)}
+              content={formatMessage(messages.taskMonitor)}
               icon="checkmark box"
               style={{
                 background: 'rgba(227,232,238, 1)',
               }}
             />
             <Grid stackable divided>
-              <Grid.Row columns={3} style={{ padding: '3px' }}>
-                <Grid.Column mobile={16} tablet={8} computer={6}>
+              <Grid.Row columns={2} style={{ padding: '3px' }}>
+                <Grid.Column>
                   <Form.Group widths="equal">
                     <Field
                       required
@@ -85,8 +84,8 @@ class DeptTaskListSearchDisplay extends Component {
                     />
                   </Form.Group>
                 </Grid.Column>
-                <Grid.Column mobile={16} tablet={8} computer={4}>
-                  <Form.Group widths="equal">
+                <Grid.Column>
+                  <Form.Group>
                     <Field
                       // required
                       name="endDateFrom"
@@ -104,8 +103,8 @@ class DeptTaskListSearchDisplay extends Component {
                   </Form.Group>
                 </Grid.Column>
               </Grid.Row>
-              <Grid.Row columns={3} style={{ padding: '3px' }}>
-                <Grid.Column mobile={16} tablet={8} computer={6}>
+              <Grid.Row columns={2} style={{ padding: '3px' }}>
+                <Grid.Column>
                   <Form.Group widths="equal">
                     <Field
                       required
@@ -125,8 +124,8 @@ class DeptTaskListSearchDisplay extends Component {
                     />
                   </Form.Group>
                 </Grid.Column>
-                <Grid.Column mobile={16} tablet={8} computer={4}>
-                  <Form.Group widths="equal">
+                <Grid.Column >
+                  <Form.Group>
                     <Field
                       name="startDateFrom"
                       label={formatMessage(messages.startDateFrom)}
@@ -142,8 +141,8 @@ class DeptTaskListSearchDisplay extends Component {
                   </Form.Group>
                 </Grid.Column>
               </Grid.Row>
-              <Grid.Row columns={3} style={{ padding: '3px' }}>
-                <Grid.Column mobile={16} tablet={8} computer={6}>
+              <Grid.Row columns={2} style={{ padding: '3px' }}>
+                <Grid.Column>
                   <Form.Group widths="equal">
                     <Field
                       required
@@ -183,7 +182,7 @@ class DeptTaskListSearchDisplay extends Component {
     }
     return (
       <Dimmer active>
-        <Loader indeterminate>Fetching directories..</Loader>
+        <Loader indeterminate>Fetching directories....</Loader>
       </Dimmer>
     );
   }
@@ -196,25 +195,25 @@ function validate(formProps, state) {
   if (!formProps.company) {
     error.company = formatMessage({ id: 'Form.CompanyError' });
   }
-  if (!formProps.branch) {
+  if (!formProps.branch || (formProps.branch && formProps.branch.length === 0)) {
     error.branch = formatMessage({ id: 'Form.BranchError' });
   }
   if (!formProps.status) {
     error.status = formatMessage({ id: 'Form.StatusError' });
   }
-  if (!formProps.department) {
+  if (!formProps.department || (formProps.department && formProps.department.length === 0)) {
     error.department = formatMessage({ id: 'Form.DepartmentError' });
   }
-  if (!formProps.type) {
+  if (!formProps.type || (formProps.type && formProps.type.length === 0)) {
     error.type = formatMessage({ id: 'Form.TypeError' });
   }
 
   return error;
 }
 
-DeptTaskListSearchDisplay = reduxForm({
-  form: 'deptTaskListSearchDisplay',
+TaskMonitorSearchDisplay = reduxForm({
+  form: 'taskMonitorSearchDisplay',
   validate,
-})(DeptTaskListSearchDisplay);
+})(TaskMonitorSearchDisplay);
 
-export default DeptTaskListSearchDisplay;
+export default TaskMonitorSearchDisplay;

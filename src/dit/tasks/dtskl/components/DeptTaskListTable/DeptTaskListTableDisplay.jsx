@@ -5,8 +5,8 @@ import { Icon, Label, Button } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import PropTypes from 'prop-types';
 import RecipientEditModal from './RecipientEdit/RecipientEditModal';
-import { outCallStatusColorMap } from '../../../../../../utils/constants';
-import { formatDMYMS, constructFullName } from '../../../../../../utils/helpers';
+import { outCallStatusColorMap } from '../../../../../utils/constants';
+import { formatDMYMS, constructFullName } from '../../../../../utils/helpers';
 
 
 class DeptTaskListTableDisplay extends Component {
@@ -175,7 +175,7 @@ class DeptTaskListTableDisplay extends Component {
           }
           return (
             <div style={{ textAlign: 'center' }}>
-              <Button.Group icon>
+              <Button.Group icon size='mini'>
                 <Link target="_blank" to={`/dit/dtskredit/${id}`}>
                   <Button>
                     <Icon link name="edit" color="black" />

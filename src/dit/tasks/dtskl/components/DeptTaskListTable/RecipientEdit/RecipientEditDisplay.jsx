@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Form, Grid, Segment, Dimmer, Loader, Container, Header, Icon } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
-import { DropdownFormField, DatePickerFormField } from '../../../../../../../utils/formFields';
-import { difference } from '../../../../../../../utils/helpers';
+import { DropdownFormField, DatePickerFormField } from '../../../../../../utils/formFields';
+import { difference } from '../../../../../../utils/helpers';
 
 class RecipientEditDisplay extends Component {
   constructor(props) {

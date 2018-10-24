@@ -1,7 +1,7 @@
 import axios from 'axios';
 import _ from 'lodash';
-import { ROOT_URL } from '../../../../../utils/constants';
-import { notify } from '../../../../../general/notification/notification_action';
+import { ROOT_URL } from '../../../../utils/constants';
+import { notify } from '../../../../general/notification/notification_action';
 
 export const MONITOR_TASK_LIST_DIRECTORIES = 'monitor_task_list_directories';
 export const CLEAR_MONITOR_TASK_LIST = 'clear_monitor_task_list';

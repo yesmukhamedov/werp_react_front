@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { defineMessages, injectIntl } from 'react-intl';
 import TaskMonitorTableDisplay from './TaskMonitorTableDisplay';
-import { messages } from '../../../deptTaskList/components/DeptTaskListTable/DeptTaskListTableContainer';
+import { messages } from '../../../dtskl/components/DeptTaskListTable/DeptTaskListTableContainer';
 
 const msg = defineMessages({
   amount: {

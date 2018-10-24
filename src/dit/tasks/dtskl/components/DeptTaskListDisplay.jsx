@@ -1,8 +1,30 @@
 import React, { Component } from 'react';
-import { Container } from 'semantic-ui-react';
+import { Container, Tab } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import DeptTaskListSearch from './DeptTaskListSearch/DeptTaskListSearchContainer';
 import DeptTaskListTable from './DeptTaskListTable/DeptTaskListTableContainer';
+import PrivateTaskListTable from './PrivateTaskListTable/PrivateTaskListTableContainer';
+
+const panes = [
+  {
+    menuItem: 'Мои задачи',
+    pane: (
+      <Tab.Pane key="tab1">
+        <PrivateTaskListTable />
+      </Tab.Pane>
+    ),
+  },
+  {
+    menuItem: 'Все задачи',
+    pane: (
+      <Tab.Pane key="tab2">
+        <DeptTaskListSearch />
+        <br />
+        <DeptTaskListTable />
+      </Tab.Pane>
+    ),
+  },
+];
 
 class DeptTaskListDisplay extends Component {
   componentWillMount() {
@@ -25,9 +47,10 @@ class DeptTaskListDisplay extends Component {
           paddingRight: '2em',
         }}
       >
-        <DeptTaskListSearch />
+        {/* <DeptTaskListSearch />
         <br />
-        <DeptTaskListTable />
+        <DeptTaskListTable /> */}
+        <Tab panes={panes} renderActiveOnly={false} />
       </Container>
     );
   }
