@@ -1,0 +1,38 @@
+[
+  {
+    "id": "Table.Branch",
+    "defaultMessage": "Branch"
+  },
+  {
+    "id": "Table.Department",
+    "defaultMessage": "Department"
+  },
+  {
+    "id": "Table.Type",
+    "defaultMessage": "Type"
+  },
+  {
+    "id": "Table.Title",
+    "defaultMessage": "Title"
+  },
+  {
+    "id": "Table.Status",
+    "defaultMessage": "Status"
+  },
+  {
+    "id": "Table.createdAt",
+    "defaultMessage": "Created at"
+  },
+  {
+    "id": "Table.estimatedAt",
+    "defaultMessage": "Estimated at"
+  },
+  {
+    "id": "Table.Author",
+    "defaultMessage": "Author"
+  },
+  {
+    "id": "Table.Recipient",
+    "defaultMessage": "Recipient"
+  }
+]

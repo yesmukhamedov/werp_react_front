@@ -1,0 +1,181 @@
+import React from 'react';
+import { Table,Card,Header } from 'semantic-ui-react'
+import {Link} from 'react-router-dom'
+import moment from 'moment'
+
+/**
+ * Компонент для рендеринга Таблицу одного демо
+ */
+
+export default function DemoViewTable(props){
+
+    //Single Demo
+    const {demo} = props;
+    let call = Object.assign({},demo.call)
+
+    return <Card fluid>
+        <Card.Content>
+            <Card.Header>Основная информация</Card.Header>
+        </Card.Content>
+        <Card.Content>
+            <Table celled striped>
+                <Table.Body>
+                    <Table.Row>
+                        <Table.Cell>
+                            <Header as={'h4'}>Компания</Header>
+                        </Table.Cell>
+                        <Table.Cell>
+                            {demo.bukrsName}
+                        </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                        <Table.Cell>
+                            <Header as={'h4'}>Филиал</Header>
+                        </Table.Cell>
+                        <Table.Cell>
+                            {demo.branchName}
+                        </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                        <Table.Cell>
+                            <Header as={'h4'}>Дилер</Header>
+                        </Table.Cell>
+                        <Table.Cell>
+                            {demo.dealerName}
+                        </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                        <Table.Cell>
+                            <Header as={'h4'}>Назначел(а)</Header>
+                        </Table.Cell>
+                        <Table.Cell>
+                            {demo.appointerName}
+                        </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                        <Table.Cell>
+                            <Header as={'h4'}>Номер телефона</Header>
+                        </Table.Cell>
+                        <Table.Cell>
+                            {call.phoneNumber}
+                        </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                        <Table.Cell>
+                            <Header as={'h4'}>Источник</Header>
+                        </Table.Cell>
+                        <Table.Cell>
+                            {getSourceLink(demo)}
+                        </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                        <Table.Cell>
+                            <Header as={'h4'}>Дата-время проведения</Header>
+                        </Table.Cell>
+                        <Table.Cell>
+                            {moment(demo.dateTime).format('DD.MM.YYYY H:mm')}
+                        </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                        <Table.Cell>
+                            <Header as={'h4'}>Клиент</Header>
+                        </Table.Cell>
+                        <Table.Cell>
+                            {demo.clientName}
+                        </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                        <Table.Cell>
+                            <Header as={'h4'}>Адрес</Header>
+                        </Table.Cell>
+                        <Table.Cell>
+                            {demo.address}
+                        </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                        <Table.Cell>
+                            <Header as={'h4'}>Результат демо</Header>
+                        </Table.Cell>
+                        <Table.Cell>
+                            {demo.resultName}
+                        </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                        <Table.Cell>
+                            <Header as={'h4'}>Причина</Header>
+                        </Table.Cell>
+                        <Table.Cell>
+                            {demo.reasonName}
+                        </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                        <Table.Cell>
+                            <Header as={'h4'}>Примечание</Header>
+                        </Table.Cell>
+                        <Table.Cell>
+                            {demo.note}
+                        </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                        <Table.Cell>
+                            <Header as={'h4'}>№ договора</Header>
+                        </Table.Cell>
+                        <Table.Cell>
+                            {demo.contractNumber}
+                        </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                        <Table.Cell>
+                            <Header as={'h4'}>Дата продажи</Header>
+                        </Table.Cell>
+                        <Table.Cell>
+                            {demo.saleDate ? moment(demo.saleDate).format('DD.MM.YYYY') : ''}
+                        </Table.Cell>
+                    </Table.Row>
+
+                    <Table.Row>
+                        <Table.Cell>
+                            <Header as={'h4'}>Дата-время создания</Header>
+                        </Table.Cell>
+                        <Table.Cell>
+                            {moment(demo.createdAt).format('DD.MM.YYYY H:mm')}
+                        </Table.Cell>
+                    </Table.Row>
+
+                </Table.Body>
+            </Table>
+        </Card.Content>
+    </Card>
+}
+
+function getSourceLink(demo){
+    const call = Object.assign({},demo.call)
+    if(demo.context === 'visit'){
+        return <Link className={'button'} to={`/crm/visit/view/` + demo.visitId}>
+            Визит № {call.contextId}
+        </Link>
+    }else if(call.context === 'reco'){
+        return <Link className={'button'} to={`/crm/reco/view/` + call.contextId}>
+            Рекомендация № {call.contextId}
+        </Link>
+    }else if(call.context === 'demo'){
+        return <Link to={`/crm/demo/view/` + call.contextId}>
+            Демо № {call.contextId}
+        </Link>
+    }else{
+        return;
+    }
+}

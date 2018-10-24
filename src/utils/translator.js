@@ -29,4 +29,4 @@ const defaultMessages = globSync(filePattern)
 
 mkdirpSync(outputLanguageDataDir);
 
-fs.writeFileSync(outputLanguageDataDir + 'data.json', `{ "en": ${JSON.stringify(defaultMessages, null, 2)} }`);
+fs.writeFileSync(outputLanguageDataDir + 'en.json', `${JSON.stringify(defaultMessages, null, 2)}`);

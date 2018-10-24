@@ -1,0 +1,37 @@
+.main-container{
+    /*border:solid 1px red;*/
+    margin-top: 1em;
+    margin-bottom: 2em;
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 20em;
+    background-color: #eeeeee;
+    min-height: 100% !important;
+}
+
+.dashboard-menu{
+    width: 100% !important;
+}
+
+.reco-recall-date-today{
+    color:blue;
+    font-size:11px;
+    font-weight: bold;
+}
+
+.reco-recall-date-overdue{
+    color:red;
+    font-size:11px;
+    font-weight: bold;
+}
+
+.reco-card-header{
+    font-size: 16px !important;
+    margin-bottom: 5px;
+    border-bottom: 1px #dddddd dotted;
+}
+
+.reco-card-header .bar{
+    float: right;
+    cursor: pointer;
+}

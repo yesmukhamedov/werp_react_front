@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
-import {changeLanguage} from '../../actions/language';
+import changeLanguage from '../../actions/language';
 import { Dropdown } from 'semantic-ui-react';
 import './Header.css';
 
-const options = [{key:'en', value:'en', flag:'us', text:'English'},
-                 {key:'ru', value:'ru', flag:'ru', text:'Русский'},
-                 {key:'kk', value:'kk', flag:'kz', text:'Қазақша'}];
+const options = [
+                 {key:'en', value:'en', flag:'us', text:'English'},
+                 {key:'ru', value:'ru', flag:'ru', text:'Русский'},                 
+                 {key:'tr', value:'tr', flag:'tr', text:'Türkçe'}];
 
 class LanguageSwitcher extends Component {
 

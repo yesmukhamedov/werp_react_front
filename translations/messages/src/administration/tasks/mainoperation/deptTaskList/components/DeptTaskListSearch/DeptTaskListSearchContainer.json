@@ -1,0 +1,74 @@
+[
+  {
+    "id": "Form.TaskListLabel",
+    "defaultMessage": "Task list"
+  },
+  {
+    "id": "Form.Company",
+    "defaultMessage": "Company"
+  },
+  {
+    "id": "Form.CompanyError",
+    "defaultMessage": "Select company"
+  },
+  {
+    "id": "Form.Branch",
+    "defaultMessage": "Branch"
+  },
+  {
+    "id": "Form.BranchError",
+    "defaultMessage": "Select branch"
+  },
+  {
+    "id": "Form.Status",
+    "defaultMessage": "Status"
+  },
+  {
+    "id": "Form.StatusError",
+    "defaultMessage": "Select status"
+  },
+  {
+    "id": "Form.endDateFrom",
+    "defaultMessage": "End date from"
+  },
+  {
+    "id": "Form.endDateTo",
+    "defaultMessage": "End date to"
+  },
+  {
+    "id": "Form.Department",
+    "defaultMessage": "Department"
+  },
+  {
+    "id": "Form.DepartmentError",
+    "defaultMessage": "Select deparment"
+  },
+  {
+    "id": "Form.Type",
+    "defaultMessage": "Type"
+  },
+  {
+    "id": "Form.TypeError",
+    "defaultMessage": "Select type"
+  },
+  {
+    "id": "Form.StartDateFrom",
+    "defaultMessage": "Start date from"
+  },
+  {
+    "id": "Form.StartDateTo",
+    "defaultMessage": "Start date to"
+  },
+  {
+    "id": "Form.Search",
+    "defaultMessage": "Search"
+  },
+  {
+    "id": "Form.Reset",
+    "defaultMessage": "Reset"
+  },
+  {
+    "id": "Form.All.Option",
+    "defaultMessage": "All"
+  }
+]
