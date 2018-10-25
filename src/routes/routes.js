@@ -385,6 +385,10 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/general/dtskdep" component={DtskdepContainer} />
       <Route path="/finance/mainoperation/fa03" component={AsyncFa03} />
       <Route path="/documents/mydocs" component={AsyncMyDocsListPage}/>
+      
+      {/* Transactions */}
+      <Route path="/dit/transaction/list" component={trlist} />
+      <Route path="/dit/transaction/update/:id?" component={trupdate} />
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
