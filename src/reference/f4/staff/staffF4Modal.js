@@ -83,14 +83,14 @@ class StaffF4Modal extends PureComponent{
                 </span> 
         
             };
-            let t1r1c2 = {Header:({value}) => <b>ФИО</b>,width: 300,id: "fio",
+            let t1r1c2 = {Header:({value}) => <b>{messages['fio']}</b>,width: 300,id: "fio",
             accessor: d => d.fio,
             filterMethod: (filter, rows) =>
               matchSorter(rows, filter.value, { keys: ["fio"] }),
             filterAll: true,className:'clickableItem'};
 
 
-            let t1r1c3 = {Header:({value}) => <b>ИИН/БИН</b>,accessor: "iinBin",width: 150,className:'clickableItem'};
+            let t1r1c3 = {Header:({value}) => <b>{messages['iinBin']}</b>,accessor: "iinBin",width: 150,className:'clickableItem'};
 
     
     
@@ -101,7 +101,7 @@ class StaffF4Modal extends PureComponent{
             // t1columns.push(t1r1c4);
         }
         
-        const {companyOptions, branchOptions, bukrsDisabledParent} = this.props;
+        const {companyOptions, branchOptions, bukrsDisabledParent, messages} = this.props;
         const {bukrsDisabledState, brnchDisabledState, bukrsSV, brnchSV, fioSV, iinBinSV, unemployed} = this.state;
 
         return (
@@ -109,7 +109,7 @@ class StaffF4Modal extends PureComponent{
             <Modal open={this.props.open} onClose={this.close}  dimmer={"inverted"} size='small' >
                 <Modal.Header>
                     <Icon name='filter' size='big' />
-                    Сотрудники
+                    {messages['staff']}
                 </Modal.Header>
                 <Modal.Content>
                 <Table collapsing>
@@ -117,20 +117,20 @@ class StaffF4Modal extends PureComponent{
                         <Table.Row>
                             <Table.Cell>
                                 <Icon name='folder' />
-                                Компания
+                                {messages['bukrs']}
                             </Table.Cell>
                             <Table.Cell>
-                                <Dropdown placeholder='Компания' selection options={companyOptions} value={bukrsSV} 
+                                <Dropdown placeholder={messages['bukrs']} selection options={companyOptions} value={bukrsSV} 
                                             onChange={(e, { value }) => this.onInputChange(value,'bukrsSV')} 
                                             disabled={bukrsDisabledParent?bukrsDisabledParent:bukrsDisabledState}
                                             />
                             </Table.Cell>
                             <Table.Cell>
-                                ФИО
+                            {messages['fio']}
                             </Table.Cell>
                             <Table.Cell>
                                 <Input
-                                value={fioSV} placeholder={'ФИО'}
+                                value={fioSV} placeholder={messages['fio']}
                                 onChange={(e, { value }) => this.onInputChange(value,'fioSV')}
                                 />
                             </Table.Cell>                              
@@ -138,27 +138,27 @@ class StaffF4Modal extends PureComponent{
                         <Table.Row>
                             <Table.Cell>
                                 <Icon name='browser' />     
-                                Филиал
+                                {messages['brnch']}
                             </Table.Cell>
                             <Table.Cell>
-                                <Dropdown placeholder='Филиал'  search selection options={branchOptions[bukrsSV]?branchOptions[bukrsSV]:[]} 
+                                <Dropdown placeholder={messages['brnch']}  search selection options={branchOptions[bukrsSV]?branchOptions[bukrsSV]:[]} 
                                             value={brnchSV}  onChange={(e, { value }) => this.onInputChange(value,'brnchSV')}
                                             disabled={brnchDisabledState} 
                                             />
                             </Table.Cell> 
                             <Table.Cell> 
-                                ИИН/БИН
+                            {messages['iinBin']}
                             </Table.Cell>
                             <Table.Cell>
                                 <Input
-                                value={iinBinSV} placeholder={'ИИН/БИН'}
+                                value={iinBinSV} placeholder={messages['iinBin']}
                                 onChange={(e, { value }) => this.onInputChange(value,'iinBinSV')}
                                 />
                             </Table.Cell>                            
                         </Table.Row>                        
                         <Table.Row>                                          
                             <Table.Cell>
-                                Уволенный
+                            {messages['dismissed']}
                             </Table.Cell>
                             <Table.Cell>                                                                        
                                 <Checkbox
@@ -169,7 +169,7 @@ class StaffF4Modal extends PureComponent{
                             <Table.Cell>                                 
                                 <Button icon labelPosition='left' primary size='small' onClick={()=>{this.setState({loading:true});this.onSearch();}}
                                 loading={this.state.loading} disabled={this.state.loading}>
-                                    <Icon name='search' size='large' />Поиск
+                                    <Icon name='search' size='large' />{messages['search']}
                                 </Button>
                             </Table.Cell>
                             <Table.Cell>
@@ -185,14 +185,14 @@ class StaffF4Modal extends PureComponent{
                             defaultPageSize={10}
                             showPagination={true}
                             // style={{ height: '400px' }}
-                            loadingText= 'Loading...'
-                            noDataText= 'Нет записей'
                             className="-striped -highlight"
-                            previousText={'Пред.'}
-                            nextText={'След.'}
-                            rowsText={'строк'}
-                            pageText={'Страница'}
-                            ofText={'из'}
+                            loadingText= {messages['loadingText']}
+                            noDataText= {messages['noDataText']}
+                            previousText={messages['previousText']}
+                            nextText={messages['nextText']}
+                            rowsText={messages['rowsText']}
+                            pageText={messages['pageText']}
+                            ofText={messages['ofText']}
                             showPageSizeOptions= {false}
                             getTrProps={(state, rowInfo, column) => {
                                 return {

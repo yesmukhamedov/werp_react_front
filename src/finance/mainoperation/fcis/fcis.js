@@ -9,6 +9,7 @@ import {clearfaBkpf, changefaBkpf, fetchCashBankHkontsByBranch, changeDynObj, cl
 import {moneyInputHanler} from '../../../utils/helpers';
 import OutputErrors from '../../../general/error/outputErrors';
 import { modifyLoader } from '../../../general/loader/loader_action';
+import { injectIntl } from 'react-intl';
 
 
 require('moment/locale/ru');
@@ -170,20 +171,21 @@ class Fcis extends Component {
 
 
       const {lifnr, staffFio, hkont_s, hkont_h, summa} = this.props.bseg;
-        
+      
+      const {messages} = this.props.intl 
 
         return (
             
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
                 <Header as="h2" block>
-                  Взнос в счет сотрудника
+                  {messages['transNameFcis']} 
                 </Header>
                 <Segment padded size="small">
                   <List horizontal>
                     <List.Item>
                       <List.Content>
                           <Button icon labelPosition='left' primary size='small' onClick={()=>this.save()} disabled={this.props.activeLoader}>
-                            <Icon name='save' size='large' />Сохранить
+                            <Icon name='save' size='large' /> {messages['save']} 
                           </Button>
                       </List.Content>
                     </List.Item>
@@ -192,11 +194,11 @@ class Fcis extends Component {
 
                 <OutputErrors errors={this.state.errors}/>
                 
-                <FaHeader {...this.props}  bkpfInfo={bkpfInfo}/>
+                <FaHeader {...this.props}  bkpfInfo={bkpfInfo} messages={messages}/>
                 <FcisPosition  hkontOptions_s={hkontOptions}  hkontOptions_h={hkontOptions_h} waers={waers}
                   lifnr={lifnr} staffFio={staffFio} hkont_s={hkont_s} hkont_h={hkont_h} summa={summa}
                   brnch = {brnch} branchOptions={this.props.branchOptions} 
-                  bukrs={bukrs} companyOptions={this.props.companyOptions} 
+                  bukrs={bukrs} companyOptions={this.props.companyOptions} messages={messages}
                   onInputChange = {(value,stateFieldName)=>{this.onInputChange(value,stateFieldName)}}
                 />
                 <br />
@@ -247,4 +249,4 @@ class Fcis extends Component {
 
 
 export default connect(mapStateToProps,{ f4FetchDepartmentList, f4FetchCurrencyList, modifyLoader,saveFcis,
-  f4FetchBusinessAreaList2, f4FetchExchangeRateNational, changefaBkpf, clearfaBkpf, fetchCashBankHkontsByBranch, changeDynObj, clearDynObj}) (Fcis);
+  f4FetchBusinessAreaList2, f4FetchExchangeRateNational, changefaBkpf, clearfaBkpf, fetchCashBankHkontsByBranch, changeDynObj, clearDynObj}) (injectIntl(Fcis));

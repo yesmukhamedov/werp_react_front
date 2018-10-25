@@ -11,16 +11,9 @@ import '../frcoln/frcoln.css';
 import "react-table/react-table.css";
 import {frcolnSearchData, frcolnFetchBranchData, changeTab, frcolnFetchCollectorData, clearState, frcolnSaveData} from './frcoln_action';
 import {LEGACY_URL} from "../../../utils/constants"
+import { injectIntl } from 'react-intl';
 require('moment/locale/ru');
-const statusOptions = [
-    { key: 0, text: 'Стандарт', value: 0 },
-    { key: 1, text: 'Проблемный', value: 1 }
-  ];
 
-  const periodOptions = [
-    { key: 0, text: 'На начало месяца', value: 'BEG' },
-    { key: 1, text: 'На конец месяца', value: 'END' }
-  ];
   
 
  
@@ -121,6 +114,16 @@ class Frcoln extends Component {
 
 
     renderTab1(){
+        const {messages} = this.props.intl 
+        const statusOptions = [
+            { key: 0, text: messages['standard'], value: 0 },
+            { key: 1, text: messages['problem'], value: 1 }
+          ];
+        
+          const periodOptions = [
+            { key: 0, text: messages['onBegOfMonth'], value: 'BEG' },
+            { key: 1, text: messages['onEndOfMonth'], value: 'END' }
+          ];
         return (
         // <Tab.Pane>
             
@@ -131,11 +134,10 @@ class Frcoln extends Component {
                                 <Table.Body>
                                 <Table.Row>
                                     <Table.Cell  collapsing>
-                                        <Icon name='folder' />
-                                        Компанияl
+                                        <Icon name='folder' /> {messages['bukrs']}
                                     </Table.Cell>
                                     <Table.Cell>
-                                    <Dropdown fluid placeholder='Компания' selection options={this.props.companyOptions} value={this.state.searchTerm.bukrs} 
+                                    <Dropdown fluid placeholder={messages['bukrs']} selection options={this.props.companyOptions} value={this.state.searchTerm.bukrs} 
                                         onChange={(e, { value }) => this.onInputChange(value,'bukrs')} />
                                         {/* <BukrsF4n handleChange={(value, fieldname)=> this.onInputChange(value,fieldname)} fluid={true}/>                                         */}
                                     </Table.Cell>
@@ -144,10 +146,10 @@ class Frcoln extends Component {
                                     <Table.Row>
                                     <Table.Cell>
                                         <Icon name='browser' />                                    
-                                        Филиал
+                                        {messages['brnch']}
                                     </Table.Cell> 
                                     <Table.Cell>
-                                    <Dropdown placeholder='Все' fluid multiple search selection options={this.state.branchOptions} value={this.state.searchTerm.branchList} 
+                                    <Dropdown placeholder={messages['all']} fluid multiple search selection options={this.state.branchOptions} value={this.state.searchTerm.branchList} 
                                             onChange={(e, { value }) => this.onInputChange(value,'branch')} />                                        
                                     </Table.Cell>
                                     <Table.Cell></Table.Cell>
@@ -155,7 +157,7 @@ class Frcoln extends Component {
                                     <Table.Row>
                                         <Table.Cell>                                        
                                             <Icon name='calendar' />
-                                            Дата
+                                            {messages['date']}
                                         </Table.Cell> 
                                         <Table.Cell>
                                             <DatePicker className='date-100-width'
@@ -171,7 +173,7 @@ class Frcoln extends Component {
                                     <Table.Row>
                                         <Table.Cell>                                        
                                             <Icon name='options' />
-                                            Статус
+                                            {messages['state1']}
                                         </Table.Cell> 
                                         <Table.Cell>
                                             <Dropdown item options={statusOptions} value={this.state.searchTerm.status} 
@@ -185,7 +187,7 @@ class Frcoln extends Component {
                                     <Table.Row>
                                         <Table.Cell>                                        
                                             <Icon name='calendar' />
-                                            Период
+                                            {messages['period']}
                                         </Table.Cell> 
                                         <Table.Cell>
                                             <Dropdown item options={periodOptions} value={this.state.searchTerm.period} 
@@ -201,7 +203,7 @@ class Frcoln extends Component {
                                     <Table.Cell>
                                         <Button icon labelPosition='left' primary size='small' onClick={this.onSearchClick.bind(this)}>
                                             <Icon name='search' size='large' />
-                                            Поиск
+                                            {messages['search']}
                                         </Button>
                                     </Table.Cell>
                                     <Table.Cell></Table.Cell>
@@ -228,38 +230,40 @@ class Frcoln extends Component {
     
     render(){
         //initialize columns
-        //table 1
+        //table 1 branches
 
+        const {messages,locale} = this.props.intl 
+        const numFormLocale = locale+'-RU';
         // t2r2c3.className=('clickableItem');
         let t1columns = [];
-        let t1r2c1 = {Header:({value}) => <b>Филиал</b>,accessor: "branch_name",className:'clickableItem'};
-        let t1r2c2 = {Header:({value}) => <b>Кол. дог.</b>,accessor: "contract_amount",className:'clickableItem', Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t1r2c3 = {Header:({value}) => <b>Валюта</b>,accessor: "waers",className:'clickableItem'};
-        let t1r2c4 = {Header: "План",accessor: "ras_plan",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t1r2c5 = {Header: "Получен",accessor: "ras_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t1r2c6 = {Header: "План",accessor: "one_month_plan",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t1r2c7 = {Header: "Получен",accessor: "one_month_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t1r2c8 = {Header: "План",accessor: "ras_usd_plan",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t1r2c9 = {Header: "Получен",accessor: "ras_usd_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t1r2c10 = {Header: "План",accessor: "one_month_usd_plan",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t1r2c11 = {Header: "Получен",accessor: "one_month_usd_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
+        let t1r2c1 = {Header:({value}) => <b>{messages['brnch']}</b>,accessor: "branch_name",className:'clickableItem'};
+        let t1r2c2 = {Header:({value}) => <b>{messages['numOfSalesContracts']}</b>,accessor: "contract_amount",className:'clickableItem', Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t1r2c3 = {Header:({value}) => <b>{messages['waers']}</b>,accessor: "waers",className:'clickableItem'};
+        let t1r2c4 = {Header:<b>{messages['plan']}</b>,accessor: "ras_plan",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t1r2c5 = {Header:<b>{messages['collected']}</b>,accessor: "ras_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t1r2c6 = {Header:<b>{messages['plan']}</b>,accessor: "one_month_plan",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t1r2c7 = {Header:<b>{messages['collected']}</b>,accessor: "one_month_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t1r2c8 = {Header:<b>{messages['plan']}</b>,accessor: "ras_usd_plan",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t1r2c9 = {Header:<b>{messages['collected']}</b>,accessor: "ras_usd_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t1r2c10 = {Header:<b>{messages['plan']}</b>,accessor: "one_month_usd_plan",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t1r2c11 = {Header:<b>{messages['collected']}</b>,accessor: "one_month_usd_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
 
-        let t1r2c12 = {Header: "План",accessor: "total_usd_plan",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        t1r2c12.Footer = (<span><strong>{new Intl.NumberFormat('ru-RU').format(_.sum(_.map(this.props.tab2OutputTable, d => d.total_usd_plan)))}</strong></span>);
-        let t1r2c13 = {Header: "Получен",accessor: "total_usd_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        t1r2c13.Footer = (<span><strong>{new Intl.NumberFormat('ru-RU').format(_.sum(_.map(this.props.tab2OutputTable, d => d.total_usd_poluchen)))}</strong></span>);
-        let t1r2c14 = {Header: "Процент",accessor: "total_usd_percentage",className:'clickableItem',Cell: ({value}) => <span>{new Intl.NumberFormat('ru-RU').format(value)} {'%'}</span>};
-        t1r2c14.Footer = (<span><strong>{new Intl.NumberFormat('ru-RU').format(
+        let t1r2c12 = {Header:<b>{messages['plan']}</b>,accessor: "total_usd_plan",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        t1r2c12.Footer = (<span><strong>{new Intl.NumberFormat(numFormLocale).format(_.sum(_.map(this.props.tab2OutputTable, d => d.total_usd_plan)))}</strong></span>);
+        let t1r2c13 = {Header:<b>{messages['collected']}</b>,accessor: "total_usd_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        t1r2c13.Footer = (<span><strong>{new Intl.NumberFormat(numFormLocale).format(_.sum(_.map(this.props.tab2OutputTable, d => d.total_usd_poluchen)))}</strong></span>);
+        let t1r2c14 = {Header: <b>{messages['percent']}</b>,accessor: "total_usd_percentage",className:'clickableItem',Cell: ({value}) => <span>{new Intl.NumberFormat(numFormLocale).format(value)} {'%'}</span>};
+        t1r2c14.Footer = (<span><strong>{new Intl.NumberFormat(numFormLocale).format(
             _.sum(_.map(this.props.tab2OutputTable, d => d.total_usd_poluchen))*100/_.sum(_.map(this.props.tab2OutputTable, d => d.total_usd_plan))
     
     )}  {'%'}</strong></span>);
-        let t1r2c15 = {Header: "Город",accessor: "city_name",className:'clickableItem'};
+        let t1r2c15 = {Header: <b>{messages['city']}</b>,accessor: "city_name",className:'clickableItem'};
         
-        let t1r1c2={Header:({value}) => <b>В рассрочку</b>,columns:[]};
-        let t1r1c3={Header:({value}) => <b>В течении 1 месяца</b>,columns:[]};
-        let t1r1c4={Header:({value}) => <b>В рассрочку USD</b>,columns:[]};
-        let t1r1c5={Header:({value}) => <b>В течении 1 месяца USD</b>,columns:[]};
-        let t1r1c6={Header:({value}) => <b>Всего</b>,columns:[]};
+        let t1r1c2={Header:({value}) => <b>{messages['installments']}</b>,columns:[]};
+        let t1r1c3={Header:({value}) => <b>{messages['in1Month']}</b>,columns:[]};
+        let t1r1c4={Header:({value}) => <b>{messages['installments']} USD</b>,columns:[]};
+        let t1r1c5={Header:({value}) => <b>{messages['in1Month']} USD</b>,columns:[]};
+        let t1r1c6={Header:({value}) => <b>{messages['overallSum']}</b>,columns:[]};
 
         t1r1c2.columns.push(t1r2c4);
         t1r1c2.columns.push(t1r2c5);
@@ -283,31 +287,31 @@ class Frcoln extends Component {
         t1columns.push(t1r1c5);
         t1columns.push(t1r1c6);
 
-        //table 2
+        //table 2 Branches Overall Amount
         let t2columns = [];
-        let t2r2c1 = {Header:({value}) => <b>Валюта</b>,accessor: "waers"};
-        let t2r2c2 = {Header:({value}) => <b>Кол. дог.</b>,accessor: "contract_amount", Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t2r2c3 = {Header: "План",accessor: "ras_plan",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t2r2c4 = {Header: "Получен",accessor: "ras_poluchen",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t2r2c5 = {Header: "План",accessor: "one_month_plan",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t2r2c6 = {Header: "Получен",accessor: "one_month_poluchen",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t2r2c7 = {Header: "План",accessor: "ras_usd_plan",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t2r2c8 = {Header: "Получен",accessor: "ras_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t2r2c9 = {Header: "План",accessor: "one_month_usd_plan",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t2r2c10 = {Header: "Получен",accessor: "one_month_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
+        let t2r2c1 = {Header:({value}) => <b>{messages['waers']}</b>,accessor: "waers"};
+        let t2r2c2 = {Header:({value}) => <b>{messages['numOfSalesContracts']}</b>,accessor: "contract_amount", Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t2r2c3 = {Header:<b>{messages['plan']}</b>,accessor: "ras_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t2r2c4 = {Header:<b>{messages['collected']}</b>,accessor: "ras_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t2r2c5 = {Header:<b>{messages['plan']}</b>,accessor: "one_month_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t2r2c6 = {Header:<b>{messages['collected']}</b>,accessor: "one_month_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t2r2c7 = {Header:<b>{messages['plan']}</b>,accessor: "ras_usd_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t2r2c8 = {Header:<b>{messages['collected']}</b>,accessor: "ras_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t2r2c9 = {Header:<b>{messages['plan']}</b>,accessor: "one_month_usd_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t2r2c10 = {Header:<b>{messages['collected']}</b>,accessor: "one_month_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
 
         
 
-        let t2r2c11 = {Header: "План",id: "total_usd_plan",accessor:row=><span>{new Intl.NumberFormat('ru-RU').format(row.ras_usd_plan + row.one_month_usd_plan)}</span>};
-        t2r2c11.Footer = (<span><strong>{new Intl.NumberFormat('ru-RU').format(_.sum(_.map(this.props.tab2TotalTable, d => d.ras_usd_plan+d.one_month_usd_plan)))}</strong></span>);
-        let t2r2c12 = {Header: "Получен",id: "total_usd_poluchen",accessor: row=><span>{new Intl.NumberFormat('ru-RU').format(row.ras_usd_poluchen + row.one_month_usd_poluchen)}</span>};
-        t2r2c12.Footer = (<span><strong>{new Intl.NumberFormat('ru-RU').format(_.sum(_.map(this.props.tab2TotalTable, d => d.ras_usd_poluchen+d.one_month_usd_poluchen)))}</strong></span>);
+        let t2r2c11 = {Header:<b>{messages['plan']}</b>,id: "total_usd_plan",accessor:row=><span>{new Intl.NumberFormat(numFormLocale).format(row.ras_usd_plan + row.one_month_usd_plan)}</span>};
+        t2r2c11.Footer = (<span><strong>{new Intl.NumberFormat(numFormLocale).format(_.sum(_.map(this.props.tab2TotalTable, d => d.ras_usd_plan+d.one_month_usd_plan)))}</strong></span>);
+        let t2r2c12 = {Header:<b>{messages['collected']}</b>,id: "total_usd_poluchen",accessor: row=><span>{new Intl.NumberFormat(numFormLocale).format(row.ras_usd_poluchen + row.one_month_usd_poluchen)}</span>};
+        t2r2c12.Footer = (<span><strong>{new Intl.NumberFormat(numFormLocale).format(_.sum(_.map(this.props.tab2TotalTable, d => d.ras_usd_poluchen+d.one_month_usd_poluchen)))}</strong></span>);
 
-        let t2r1c2={Header:({value}) => <b>В рассрочку</b>,columns:[]};
-        let t2r1c3={Header:({value}) => <b>В течении 1 месяца</b>,columns:[]};
-        let t2r1c4={Header:({value}) => <b>В рассрочку USD</b>,columns:[]};
-        let t2r1c5={Header:({value}) => <b>В течении 1 месяца USD</b>,columns:[]};
-        let t2r1c6={Header:({value}) => <b>Всего</b>,columns:[]};
+        let t2r1c2={Header:({value}) => <b>{messages['installments']}</b>,columns:[]};
+        let t2r1c3={Header:({value}) => <b>{messages['in1Month']}</b>,columns:[]};
+        let t2r1c4={Header:({value}) => <b>{messages['installments']} USD</b>,columns:[]};
+        let t2r1c5={Header:({value}) => <b>{messages['in1Month']} USD</b>,columns:[]};
+        let t2r1c6={Header:({value}) => <b>{messages['overallSum']}</b>,columns:[]};
 
 
         t2r1c2.columns.push(t2r2c3);
@@ -330,41 +334,41 @@ class Frcoln extends Component {
         t2columns.push(t2r1c6);
         
         
-        //table 3
+        //table 3 Fin Agent
         let t3columns = [];
-        let t3r2c1 = {Header:({value}) => <b>Филиал</b>,accessor: "branch_name"};
-        let t3r2c2 = {Header:({value}) => <b>ФИО</b>,accessor: "collector_name"};
-        let t3r2c3 = {Header:({value}) => <b>Кол. дог.</b>,accessor: "contract_amount", Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t3r2c4 = {Header:({value}) => <b>Валюта</b>,accessor: "waers"};
-        let t3r2c5 = {Header: "План",accessor: "ras_plan",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t3r2c6 = {Header: "Получен",accessor: "ras_poluchen",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t3r2c7 = {Header: "План",accessor: "one_month_plan",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t3r2c8 = {Header: "Получен",accessor: "one_month_poluchen",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t3r2c9 = {Header: "План",accessor: "ras_usd_plan",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t3r2c10 = {Header: "Получен",accessor: "ras_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t3r2c11 = {Header: "План",accessor: "one_month_usd_plan",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t3r2c12 = {Header: "Получен",accessor: "one_month_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t3r2c13 = {Header: "Детали",id: "rasPer",accessor:((row) =>  (        
+        let t3r2c1 = {Header:({value}) => <b>{messages['brnch']}</b>,accessor: "branch_name"};
+        let t3r2c2 = {Header:({value}) => <b>{messages['fio']}</b>,accessor: "collector_name"};
+        let t3r2c3 = {Header:({value}) => <b>{messages['numOfSalesContracts']}</b>,accessor: "contract_amount", Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t3r2c4 = {Header:({value}) => <b>{messages['waers']}</b>,accessor: "waers"};
+        let t3r2c5 = {Header: <b>{messages['plan']}</b>,accessor: "ras_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t3r2c6 = {Header: <b>{messages['collected']}</b>,accessor: "ras_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t3r2c7 = {Header: <b>{messages['plan']}</b>,accessor: "one_month_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t3r2c8 = {Header: <b>{messages['collected']}</b>,accessor: "one_month_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t3r2c9 = {Header: <b>{messages['plan']}</b>,accessor: "ras_usd_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t3r2c10 = {Header: <b>{messages['collected']}</b>,accessor: "ras_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t3r2c11 = {Header: <b>{messages['plan']}</b>,accessor: "one_month_usd_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t3r2c12 = {Header: <b>{messages['collected']}</b>,accessor: "one_month_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t3r2c13 = {Header: <b>{messages['details']}</b>,id: "rasPer",accessor:((row) =>  (        
                                                             <Button   primary size='small' 
                                                             onClick={()=>this.searchCollectorInfo(row.bukrs,row.branch_id,row.waers,row.staff_id, 2)}>
-                                                                Показать
+                                                            {messages['show']}
                                                             </Button>
                                                             ))};
-        let t3r2c14 = {Header: "Процент",accessor: "ras_percentage",Cell: ({value}) => (<span>{new Intl.NumberFormat('ru-RU').format(value)} {'%'}</span>)};
-        let t3r2c15 = {Header: "Детали",id: "onePer",accessor:((row) =>  (        
+        let t3r2c14 = {Header: <b>{messages['percent']}</b>,accessor: "ras_percentage",Cell: ({value}) => (<span>{new Intl.NumberFormat(numFormLocale).format(value)} {'%'}</span>)};
+        let t3r2c15 = {Header: <b>{messages['details']}</b>,id: "onePer",accessor:((row) =>  (        
             <Button   primary size='small' 
             onClick={()=>this.searchCollectorInfo(row.bukrs,row.branch_id,row.waers,row.staff_id, 1)}>
-                Показать
+                {messages['show']}
             </Button>
             ))};
-        let t3r2c16 = {Header: "Процент",accessor: "one_month_percentage",Cell: ({value}) => (<span>{new Intl.NumberFormat('ru-RU').format(value)} {'%'}</span>)};
+        let t3r2c16 = {Header: <b>{messages['percent']}</b>,accessor: "one_month_percentage",Cell: ({value}) => (<span>{new Intl.NumberFormat(numFormLocale).format(value)} {'%'}</span>)};
 
         
         
-        let t3r1c2={Header:({value}) => <b>В рассрочку</b>,columns:[]};
-        let t3r1c3={Header:({value}) => <b>В течении 1 месяца</b>,columns:[]};
-        let t3r1c4={Header:({value}) => <b>В рассрочку USD</b>,columns:[]};
-        let t3r1c5={Header:({value}) => <b>В течении 1 месяца USD</b>,columns:[]};
+        let t3r1c2={Header:({value}) => <b>{messages['installments']}</b>,columns:[]};
+        let t3r1c3={Header:({value}) => <b>{messages['in1Month']}</b>,columns:[]};
+        let t3r1c4={Header:({value}) => <b>{messages['installments']} USD</b>,columns:[]};
+        let t3r1c5={Header:({value}) => <b>{messages['in1Month']} USD</b>,columns:[]};
 
         t3r1c2.columns.push(t3r2c13);
         t3r1c2.columns.push(t3r2c5);
@@ -390,31 +394,31 @@ class Frcoln extends Component {
         t3columns.push(t3r1c4);
         t3columns.push(t3r1c5);
 
-        //table 4
+        //table 4  Fin Agent Overall Amount
         let t4columns = [];
-        let t4r2c1 = {Header:({value}) => <b>Валюта</b>,accessor: "waers"};
-        let t4r2c2 = {Header:({value}) => <b>Кол. дог.</b>,accessor: "contract_amount", Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t4r2c3 = {Header: "План",accessor: "ras_plan",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t4r2c4 = {Header: "Получен",accessor: "ras_poluchen",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t4r2c5 = {Header: "План",accessor: "one_month_plan",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t4r2c6 = {Header: "Получен",accessor: "one_month_poluchen",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t4r2c7 = {Header: "План",accessor: "ras_usd_plan",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t4r2c8 = {Header: "Получен",accessor: "ras_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t4r2c9 = {Header: "План",accessor: "one_month_usd_plan",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        let t4r2c10 = {Header: "Получен",accessor: "one_month_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
+        let t4r2c1 = {Header:({value}) => <b>{messages['waers']}</b>,accessor: "waers"};
+        let t4r2c2 = {Header:({value}) => <b>{messages['numOfSalesContracts']}</b>,accessor: "contract_amount", Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t4r2c3 = {Header: <b>{messages['plan']}</b>,accessor: "ras_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t4r2c4 = {Header: <b>{messages['collected']}</b>,accessor: "ras_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t4r2c5 = {Header: <b>{messages['plan']}</b>,accessor: "one_month_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t4r2c6 = {Header: <b>{messages['collected']}</b>,accessor: "one_month_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t4r2c7 = {Header: <b>{messages['plan']}</b>,accessor: "ras_usd_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t4r2c8 = {Header: <b>{messages['collected']}</b>,accessor: "ras_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t4r2c9 = {Header: <b>{messages['plan']}</b>,accessor: "one_month_usd_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t4r2c10 = {Header: <b>{messages['collected']}</b>,accessor: "one_month_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
 
         
 
-        let t4r2c11 = {Header: "План",id: "total_usd_plan",accessor:row=><span>{new Intl.NumberFormat('ru-RU').format(row.ras_usd_plan + row.one_month_usd_plan)}</span>};
-        t4r2c11.Footer = (<span><strong>{new Intl.NumberFormat('ru-RU').format(_.sum(_.map(this.props.tab2TotalTable, d => d.ras_usd_plan+d.one_month_usd_plan)))}</strong></span>);
-        let t4r2c12 = {Header: "Получен",id: "total_usd_poluchen",accessor: row=><span>{new Intl.NumberFormat('ru-RU').format(row.ras_usd_poluchen + row.one_month_usd_poluchen)}</span>};
-        t4r2c12.Footer = (<span><strong>{new Intl.NumberFormat('ru-RU').format(_.sum(_.map(this.props.tab2TotalTable, d => d.ras_usd_poluchen+d.one_month_usd_poluchen)))}</strong></span>);
+        let t4r2c11 = {Header: <b>{messages['plan']}</b>,id: "total_usd_plan",accessor:row=><span>{new Intl.NumberFormat(numFormLocale).format(row.ras_usd_plan + row.one_month_usd_plan)}</span>};
+        t4r2c11.Footer = (<span><strong>{new Intl.NumberFormat(numFormLocale).format(_.sum(_.map(this.props.tab2TotalTable, d => d.ras_usd_plan+d.one_month_usd_plan)))}</strong></span>);
+        let t4r2c12 = {Header: <b>{messages['collected']}</b>,id: "total_usd_poluchen",accessor: row=><span>{new Intl.NumberFormat(numFormLocale).format(row.ras_usd_poluchen + row.one_month_usd_poluchen)}</span>};
+        t4r2c12.Footer = (<span><strong>{new Intl.NumberFormat(numFormLocale).format(_.sum(_.map(this.props.tab2TotalTable, d => d.ras_usd_poluchen+d.one_month_usd_poluchen)))}</strong></span>);
 
-        let t4r1c2={Header:({value}) => <b>В рассрочку</b>,columns:[]};
-        let t4r1c3={Header:({value}) => <b>В течении 1 месяца</b>,columns:[]};
-        let t4r1c4={Header:({value}) => <b>В рассрочку USD</b>,columns:[]};
-        let t4r1c5={Header:({value}) => <b>В течении 1 месяца USD</b>,columns:[]};
-        let t4r1c6={Header:({value}) => <b>Всего</b>,columns:[]};
+        let t4r1c2={Header:({value}) => <b>{messages['installments']}</b>,columns:[]};
+        let t4r1c3={Header:({value}) => <b>{messages['in1Month']}</b>,columns:[]};
+        let t4r1c4={Header:({value}) => <b>{messages['installments']} USD</b>,columns:[]};
+        let t4r1c5={Header:({value}) => <b>{messages['in1Month']} USD</b>,columns:[]};
+        let t4r1c6={Header:({value}) => <b>{messages['overallSum']}</b>,columns:[]};
 
 
         t4r1c2.columns.push(t4r2c3);
@@ -438,7 +442,7 @@ class Frcoln extends Component {
             
         //table 5
         let t5columns = [];
-        let t5r1c1 = {Header:({value}) => <b>SN номер</b>,accessor: "contract_number",
+        let t5r1c1 = {Header:({value}) => <b>{messages['snNum']}</b>,accessor: "contract_number",
         Cell: obj => 
                 <span>
                     {obj.original.contract_number &&
@@ -457,8 +461,8 @@ class Frcoln extends Component {
                     }                                          
                 </span> 
             };
-        t5r1c1.Footer = (<span><strong>Количество: {new Intl.NumberFormat('ru-RU').format(this.props.tab4OutputTable.length)}</strong></span>);
-        let t5r1c2 = {Header:({value}) => <b>Дата договора</b>, accessor: "contract_date"
+        t5r1c1.Footer = (<span><strong>{messages['count']}: {new Intl.NumberFormat(numFormLocale).format(this.props.tab4OutputTable.length)}</strong></span>);
+        let t5r1c2 = {Header:({value}) => <b>{messages['contractDate']}</b>, accessor: "contract_date"
                                     ,Cell: ({value}) => {
                                         if(value){
                                             return moment(value).format('DD.MM.YYYY');
@@ -473,13 +477,13 @@ class Frcoln extends Component {
                                       }
 
                     };
-        let t5r1c3 = {Header:({value}) => <b>ФИО</b>,accessor: "fio"};
-        let t5r1c4 = {Header:({value}) => <b>Валюта</b>,accessor: "waers"};
-        let t5r1c5 = {Header: "План",accessor: "plan",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        t5r1c5.Footer = (<span><strong>{new Intl.NumberFormat('ru-RU').format(_.sum(_.map(this.props.tab4OutputTable, d => d.plan)))}</strong></span>);
+        let t5r1c3 = {Header:({value}) => <b>{messages['fio']}</b>,accessor: "fio"};
+        let t5r1c4 = {Header:({value}) => <b>{messages['waers']}</b>,accessor: "waers"};
+        let t5r1c5 = {Header:<b>{messages['plan']}</b> ,accessor: "plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        t5r1c5.Footer = (<span><strong>{new Intl.NumberFormat(numFormLocale).format(_.sum(_.map(this.props.tab4OutputTable, d => d.plan)))}</strong></span>);
 
-        let t5r1c6 = {Header: "Получен",accessor: "poluchen",Cell: ({value}) => (new Intl.NumberFormat('ru-RU').format(value))};
-        t5r1c6.Footer = (<span><strong>{new Intl.NumberFormat('ru-RU').format(_.sum(_.map(this.props.tab4OutputTable, d => d.poluchen)))}</strong></span>);
+        let t5r1c6 = {Header: <b>{messages['collected']}</b> ,accessor: "poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        t5r1c6.Footer = (<span><strong>{new Intl.NumberFormat(numFormLocale).format(_.sum(_.map(this.props.tab4OutputTable, d => d.poluchen)))}</strong></span>);
 
 
         
@@ -493,7 +497,7 @@ class Frcoln extends Component {
 
 
 
-
+       
         return (
             // <ExcelFile>
             //     <ExcelSheet data={dataSet1} name="Employees">
@@ -506,15 +510,15 @@ class Frcoln extends Component {
             // </ExcelFile>
             
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
-                <Header as="h2" block>
-                    Статистика взносщиков
+                <Header as="h2" block>                    
+                    {messages['transNameFrcoln']}
                 </Header>
 
                 <Menu pointing stackable>
-                    <Menu.Item name='Параметры поиска' active={this.props.activeIndex === 0}  onClick={()=>{this.handleTabChange(0)}} />
-                    <Menu.Item name='Филиалы' active={this.props.activeIndex === 1} onClick={()=>{this.handleTabChange(1)}} />
-                    <Menu.Item name='Коллекторы' active={this.props.activeIndex === 2} onClick={()=>{this.handleTabChange(2)}} />
-                    <Menu.Item name='Договора' active={this.props.activeIndex === 3} onClick={()=>{this.handleTabChange(3)}} />
+                    <Menu.Item name={messages['searchParameters']} active={this.props.activeIndex === 0}  onClick={()=>{this.handleTabChange(0)}} />
+                    <Menu.Item name={messages['branches']} active={this.props.activeIndex === 1} onClick={()=>{this.handleTabChange(1)}} />
+                    <Menu.Item name={messages['finAgents']} active={this.props.activeIndex === 2} onClick={()=>{this.handleTabChange(2)}} />
+                    <Menu.Item name={messages['salesContracts']} active={this.props.activeIndex === 3} onClick={()=>{this.handleTabChange(3)}} />
                     
                 </Menu>
                 
@@ -522,7 +526,7 @@ class Frcoln extends Component {
                 <Segment.Group className={this.props.activeIndex===1?'show':'hide'}>
                     <Segment>
                         <Button icon labelPosition='left' primary size='small' onClick={()=> this.onSaveClick()}>
-                            <Icon name='save' size='large' />Сохранить
+                            <Icon name='save' size='large' />{messages['save']}
                         </Button>
                     </Segment>
                     <Segment>                    
@@ -544,18 +548,19 @@ class Frcoln extends Component {
                             columns={t1columns}
                             pageSize={this.props.tab2OutputTable.length===0?5:this.props.tab2OutputTable.length}
                             showPagination={false}
-                            loadingText= 'Loading...'
-                            noDataText= 'Нет записей'
+                            loadingText= {messages['loadingText']}
+                            noDataText= {messages['noDataText']}
                             className="-striped -highlight">
                         </ReactTable>
-                        <Divider horizontal>Общее количество</Divider>
+                        <Divider horizontal>{messages['overallAmount']}</Divider>
                         <ReactTable
                             data={this.props.tab2TotalTable}
                             columns={t2columns}
 
                             pageSize={this.props.tab2TotalTable.length===0?5:this.props.tab2TotalTable.length}
                             showPagination={false}
-                            loadingText= 'Loading...'
+                            loadingText= {messages['loadingText']}
+                            noDataText= {messages['noDataText']}
                             className="-striped -highlight">
                         </ReactTable>
                     </Segment>
@@ -567,19 +572,20 @@ class Frcoln extends Component {
                         columns={t3columns}
                         pageSize={this.props.tab3OutputTable.length===0?5:this.props.tab3OutputTable.length}
                         showPagination={false}
-                        loadingText= 'Loading...'
-                        noDataText= 'Нет записей'
+                        loadingText= {messages['loadingText']}
+                        noDataText= {messages['noDataText']}
                         className="-striped -highlight">
         
                     </ReactTable>
-                    <Divider horizontal>Общее количество</Divider>
+                    <Divider horizontal>{messages['overallAmount']}</Divider>
                     <ReactTable
                         data={this.props.tab3TotalTable}
                         columns={t4columns}
 
                         pageSize={this.props.tab3TotalTable.length===0?5:this.props.tab3TotalTable.length}
                         showPagination={false}
-                        loadingText= 'Loading...'
+                        loadingText= {messages['loadingText']}
+                        noDataText= {messages['noDataText']}
                         className="-striped -highlight">
                     </ReactTable>
                 </Segment>
@@ -590,14 +596,16 @@ class Frcoln extends Component {
                         columns={t5columns}
                         defaultPageSize={20}
                         showPagination={true}
-                        loadingText= 'Loading...'
-                        noDataText= 'Нет записей'
                         className="-striped -highlight"
-                        previousText={'Пред.'}
-                        nextText={'След.'}
-                        rowsText={'строк'}
-                        pageText={'Страница'}
-                        ofText={'из'}
+
+                        
+                            loadingText= {messages['loadingText']}
+                            noDataText= {messages['noDataText']}
+                            previousText={messages['previousText']}
+                            nextText={messages['nextText']}
+                            rowsText={messages['rowsText']}
+                            pageText={messages['pageText']}
+                            ofText={messages['ofText']}
                         >
         
                     </ReactTable>
@@ -640,4 +648,4 @@ function mapStateToProps(state)
         ,activeIndex:state.frcoln.activeIndex};
 }
 
-export default connect(mapStateToProps,{ notify, frcolnSearchData, frcolnFetchBranchData, changeTab, frcolnFetchCollectorData, frcolnSaveData, clearState }) (Frcoln);
+export default connect(mapStateToProps,{ notify, frcolnSearchData, frcolnFetchBranchData, changeTab, frcolnFetchCollectorData, frcolnSaveData, clearState }) (injectIntl(Frcoln));
