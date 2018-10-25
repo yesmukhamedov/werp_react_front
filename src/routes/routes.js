@@ -305,6 +305,18 @@ const AsyncFa03 = Loadable({
   loading: () => <LoadingPage />
 });
 
+
+const trlist = Loadable({
+  loader: () => import('../dit/transactions/components/list' /* webpackChunkName: "trlist" */),
+  loading: () => <LoadingPage />
+});
+
+const trupdate = Loadable({
+  loader: () => import('../dit/transactions/components/listTableUpdate' /* webpackChunkName: "trlist" */),
+  loading: () => <LoadingPage />
+});
+
+
 const getComponent = {
     Ditaub:AsyncAssignUserBranch,
     Hrb02:AsyncHrb02,
