@@ -9,6 +9,7 @@ import DemoResultLabel from './DemoResultLabel';
 import {fetchDemoArchive,fetchDemoResults,fetchGroupDealers} from '../actions/demoAction'
 import { connect } from 'react-redux'
 import {demoResultOptions} from '../../../crmUtil'
+import { injectIntl } from 'react-intl'
 
 class DemoArchivePage extends Component{
 
@@ -91,18 +92,28 @@ class DemoArchivePage extends Component{
         this.setState({...this.state,searchModel:searchModel});
     }
 
-    renderSearchForm(){
+    renderSearchForm(messages){
         return <Form>
             <Form.Group widths='equal'>
-                <Form.Select fluid label='Дилер' options={this.props.dealers} placeholder='Дилер' onChange={(e,v) => this.handleChange('dealerId',v)} />
-                <Form.Select fluid label='Результат' options={demoResultOptions(this.props.demoResults)} placeholder='Результат' onChange={(e,v) => this.handleChange('resultId',v)} />
-                <Form.Input fluid label='ФИО клиента' placeholder='ФИО клиента' onChange={(e,v) => this.handleChange('clientName',v)} />
+                <Form.Select fluid label={messages['Form.Dealer']}
+                             options={this.props.dealers}
+                             placeholder={messages['Form.Dealer']}
+                             onChange={(e,v) => this.handleChange('dealerId',v)} />
+
+                <Form.Select fluid label={messages['Form.Result']}
+                             options={demoResultOptions(this.props.demoResults)}
+                             placeholder={messages['Form.Result']}
+                             onChange={(e,v) => this.handleChange('resultId',v)} />
+
+                <Form.Input fluid label={messages['Form.ClientFullName']}
+                            placeholder={messages['Form.ClientFullName']}
+                            onChange={(e,v) => this.handleChange('clientName',v)} />
                 <Form.Field>
-                    <label>Дата С</label>
+                    <label>{messages['Form.DemoDateFrom']}</label>
                     <DatePicker
                         autoComplete="off"
                         label=""
-                        placeholderText={'Дата-время демо'}
+                        placeholderText={messages['Form.DemoDateFrom']}
                         showMonthDropdown showYearDropdown dropdownMode="select"
                         dateFormat="DD.MM.YYYY"
                         selected={this.state.searchModel.dateFrom?moment(this.state.searchModel.dateFrom):null}
@@ -110,11 +121,11 @@ class DemoArchivePage extends Component{
                     />
                 </Form.Field>
                 <Form.Field>
-                    <label>Дата По</label>
+                    <label>{messages['Form.DemoDateTo']}</label>
                     <DatePicker
                         autoComplete="off"
                         label=""
-                        placeholderText={'Дата-время демо'}
+                        placeholderText={messages['Form.DemoDateTo']}
                         showMonthDropdown showYearDropdown dropdownMode="select"
                         dateFormat="DD.MM.YYYY"
                         selected={this.state.searchModel.dateTo?moment(this.state.searchModel.dateTo):null}
@@ -125,11 +136,11 @@ class DemoArchivePage extends Component{
 
             <Form.Group widths='equal'>
                 <Form.Field>
-                    <label>Дата продажи С</label>
+                    <label>{messages['Form.SaleDateFrom']}</label>
                     <DatePicker
                         autoComplete="off"
                         label=""
-                        placeholderText={'Дата продажи С'}
+                        placeholderText={messages['Form.SaleDateFrom']}
                         showMonthDropdown showYearDropdown dropdownMode="select"
                         dateFormat="DD.MM.YYYY"
                         selected={this.state.searchModel.saleDateFr?moment(this.state.searchModel.saleDateFr):null}
@@ -137,27 +148,27 @@ class DemoArchivePage extends Component{
                     />
                 </Form.Field>
                 <Form.Field>
-                    <label>Дата продажи По</label>
+                    <label>{messages['Form.SaleDateTo']}</label>
                     <DatePicker
                         autoComplete="off"
                         label=""
-                        placeholderText={'Дата продажи По'}
+                        placeholderText={messages['Form.SaleDateTo']}
                         showMonthDropdown showYearDropdown dropdownMode="select"
                         dateFormat="DD.MM.YYYY"
                         selected={this.state.searchModel.saleDateTo?moment(this.state.searchModel.saleDateTo):null}
                         onChange={(v) => this.handleChangeDate('saleDateTo',v)}
                     />
                 </Form.Field>
-                <Form.Input fluid label='Адрес' placeholder='Адрес' onChange={(e,v) => this.handleChange('address',v)} />
+                <Form.Input fluid label={messages['Form.Address']} placeholder={messages['Form.Address']} onChange={(e,v) => this.handleChange('address',v)} />
                 <Form.Field>
                     <label>&nbsp;</label>
-                    <Form.Button onClick={() => this.loadItems(0)}>Сформировать</Form.Button>
+                    <Form.Button onClick={() => this.loadItems(0)}>{messages['Form.Form']}</Form.Button>
                 </Form.Field>
             </Form.Group>
         </Form>
     }
 
-    renderTableBody(){
+    renderTableBody(messages){
         if(this.props.items.length === 0){
             return <Table.Row>
                 <Table.Cell colSpan={8}>Нет данных</Table.Cell>
@@ -175,13 +186,13 @@ class DemoArchivePage extends Component{
                 </Table.Cell>
                 <Table.Cell>{item.dateTime?moment(item.dateTime).format('DD.MM.YYYY HH:mm'):''}</Table.Cell>
                 <Table.Cell><Link target={'_blank'} className={'ui icon button mini'} to={`/crm/demo/view/` + item.id}>
-                    Просмотр
+                    {messages['Table.View']}
                 </Link></Table.Cell>
             </Table.Row>
         })
     }
 
-    renderTable(){
+    renderTable(messages){
         if(this.props.loader.active){
             return <Loader active={true} />
         }
@@ -189,17 +200,17 @@ class DemoArchivePage extends Component{
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell>№</Table.HeaderCell>
-                    <Table.HeaderCell>Филиал</Table.HeaderCell>
-                    <Table.HeaderCell>Клиент</Table.HeaderCell>
-                    <Table.HeaderCell>Отв. сотрудник</Table.HeaderCell>
-                    <Table.HeaderCell>Назначел(а)</Table.HeaderCell>
-                    <Table.HeaderCell>Результат</Table.HeaderCell>
-                    <Table.HeaderCell>Дата-время демо</Table.HeaderCell>
+                    <Table.HeaderCell>{messages['Table.Branch']}</Table.HeaderCell>
+                    <Table.HeaderCell>{messages['Table.Client']}</Table.HeaderCell>
+                    <Table.HeaderCell>{messages['Table.ResponsibleStaff']}</Table.HeaderCell>
+                    <Table.HeaderCell>{messages['Table.AppointerStaff']}</Table.HeaderCell>
+                    <Table.HeaderCell>{messages['Table.Result']}</Table.HeaderCell>
+                    <Table.HeaderCell>{messages['Table.DateTime']}</Table.HeaderCell>
                     <Table.HeaderCell></Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                {this.renderTableBody()}
+                {this.renderTableBody(messages)}
             </Table.Body>
             <Table.Footer>
                 <Table.Row>
@@ -219,17 +230,18 @@ class DemoArchivePage extends Component{
     }
 
     render(){
+        const {messages} = this.props.intl
         return (
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
                 <Segment clearing>
                     <Header as='h2' floated='left'>
-                        Архив демонстрации группы
+                        {messages['Crm.DemoArchiveTitle']}
                     </Header>
                 </Segment>
                 <Segment clearing>
-                    {this.renderSearchForm()}
+                    {this.renderSearchForm(messages)}
                 </Segment>
-                {this.renderTable()}
+                {this.renderTable(messages)}
             </Container>
         )
     }
@@ -245,4 +257,4 @@ function mapStateToProps (state) {
     }
 }
 
-export default connect(mapStateToProps, {fetchDemoArchive,fetchDemoResults,fetchGroupDealers})(DemoArchivePage)
+export default connect(mapStateToProps, {fetchDemoArchive,fetchDemoResults,fetchGroupDealers})(injectIntl(DemoArchivePage))

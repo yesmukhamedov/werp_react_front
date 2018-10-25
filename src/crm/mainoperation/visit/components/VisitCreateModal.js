@@ -5,6 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment'
 import {fetchSingleVisit,createVisit,modalToggle,updateVisit,visitModalClearState} from '../actions/visitAction'
 import { connect } from 'react-redux'
+import { injectIntl } from 'react-intl'
 
 class VisitCreateModal extends Component {
   constructor (props) {
@@ -25,7 +26,7 @@ class VisitCreateModal extends Component {
       this.saveVisit = this.saveVisit.bind(this)
   }
 
-  renderForm () {
+  renderForm (messages) {
       let localVisit = Object.assign({},this.state.localVisit)
       let client = Object.assign({},localVisit.client)
       const {phoneMeta} = this.props
@@ -33,7 +34,7 @@ class VisitCreateModal extends Component {
         return <Form>
           <Form.Group widths='equal'>
               {hidePhoneInput?'':<Form.Field>
-                  <label>Тел. номер</label>
+                  <label>{messages['Form.PhoneNumber']}</label>
                   <Input
                       label={{ basic:true,content:phoneMeta.phoneCode}}
                       placeholder={phoneMeta.phonePattern}
@@ -44,15 +45,15 @@ class VisitCreateModal extends Component {
             <Form.Field value={localVisit.clientName || ''}
                         onChange={(e, v) => this.handleChange('clientName', v)}
                         control={Input}
-                        required label='ФИО клиента' placeholder='ФИО клиента' />
+                        required label={messages['Form.ClientFullName']} placeholder={messages['Form.ClientFullName']} />
           </Form.Group>
 
             <Form.Group widths='equal'>
                 <Form.Field required>
-                    <label>Дата визита</label>
+                    <label>{messages['Form.Date']}</label>
                     <DatePicker
                         label=''
-                        placeholderText={'Дата-время демонстрации'}
+                        placeholderText={messages['Form.Date']}
                         showMonthDropdown showYearDropdown dropdownMode='select'
                         dateFormat='DD.MM.YYYY' selected={localVisit.docDate ? moment(localVisit.docDate) : null}
                         onChange={(v) => this.handleChange('docDate', v)} />
@@ -61,7 +62,7 @@ class VisitCreateModal extends Component {
                 <Form.Select
                     value={localVisit.visitorId}
                     required fluid selection
-                    label='Посетитель' options={this.props.dealers}
+                    label={messages['Form.Visitor']} options={this.props.dealers}
                     onChange={(e, v) => this.handleChange('visitorId', v)} />
 
             </Form.Group>
@@ -69,13 +70,13 @@ class VisitCreateModal extends Component {
           <Form.Group widths='equal'>
             <Form.Field control={TextArea}
               onChange={(e, o) => this.handleChange('address', o)}
-              label='Адрес' placeholder='Адрес'
+              label={messages['Form.Address']} placeholder={messages['Form.Address']}
               value={localVisit.address || ''}
             />
 
               <Form.Field control={TextArea}
                           onChange={(e, o) => this.handleChange('note', o)}
-                          label='Примечание' placeholder='Примечание'
+                          label={messages['Form.Note']} placeholder={messages['Form.Note']}
                           value={localVisit.note || ''}
               />
 
@@ -188,17 +189,18 @@ class VisitCreateModal extends Component {
 
   render () {
     const {modalOpened} = this.props
+      const {messages} = this.props.intl
     return (
       <Modal size={'small'} open={modalOpened}>
-        <Modal.Header>{this.state.localVisit.id && this.state.localVisit.id > 0 ?'Редактирование визита':'Добавление визита'}</Modal.Header>
+        <Modal.Header>{this.state.localVisit.id && this.state.localVisit.id > 0 ?messages['Form.Visit.Editing']:messages['Form.Visit.Creating']}</Modal.Header>
         <Modal.Content>
-          {this.renderForm()}
+          {this.renderForm(messages)}
         </Modal.Content>
         <Modal.Actions>
           <Button negative onClick={() => this.props.modalToggle(false)}>Отмена</Button>
           <Button positive icon='checkmark'
                   onClick={this.saveVisit}
-                  labelPosition='right' content='Сохранить' />
+                  labelPosition='right' content={messages['Form.Save']} />
         </Modal.Actions>
       </Modal>
     )
@@ -218,4 +220,4 @@ function mapStateToProps (state) {
 
 export default connect(mapStateToProps, {
     fetchSingleVisit,createVisit,modalToggle,updateVisit, visitModalClearState
-})(VisitCreateModal)
+})(injectIntl(VisitCreateModal))
