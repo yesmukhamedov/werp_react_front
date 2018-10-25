@@ -1,15 +1,13 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
-import { defineMessages, injectIntl } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import {Container,Divider,Header,Button,Segment,Form,Table,Message} from 'semantic-ui-react';
-import YearF4 from '../../../../reference/f4/date/YearF4'
-import MonthF4 from '../../../../reference/f4/date/MonthF4'
 import {fetchItems,saveData,fetchStatuses} from '../actions/hrTimesheetAction'
 import moment from 'moment'
 import 'moment/locale/ru'
 import 'moment/locale/tr'
-import {YEAR_OPTIONS,MONTH_OPTIONS} from '../../../../utils/constants'
+import {YEAR_OPTIONS} from '../../../../utils/constants'
 import {monthsArrayToOptions} from '../../../../utils/helpers'
 
 const currentDate = new Date()
