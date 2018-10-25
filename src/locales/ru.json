@@ -88,6 +88,9 @@
 	"Crm.Wspace.CurrentDemo": "Текущие демонстрации",
 	"Crm.Wspace.CurrentVisits": "Текущие визиты",
 	"Crm.Wspace.CreateFromArchive": "Добавить из архива",
+	"Crm.DemoArchiveTitle": "Архив демонстрации группы",
+	"Crm.RecoArchiveTitle": "Архив рекомендации группы",
+	"Crm.VisitArchiveTitle": "Архив визитов группы",
 
 	"Form.CreatingReco": "Добавление рекомендации",
 	"Form.CreatingRecoFromArchive": "Добавление рекомендации из архива",
@@ -95,6 +98,14 @@
 	"Form.RecommenderFullName": "ФИО рекомендателя",
 	"Form.RecommenderAddData": "Доп. данные рекомендателя",
 	"Form.Wait": "Ждите...",
+	"Form.ClientFullName": "ФИО клиента",
+	"Form.DateFrom": "Дата с",
+	"Form.DateTo": "Дата по",
+	"Form.DemoDateFrom": "Дата демо с",
+	"Form.DemoDateTo": "Дата демо по",
+	"Form.SaleDateFrom": "Дата продажи с",
+	"Form.SaleDateTo": "Дата продажи по",
+	"Form.Address": "Адрес",
 
 	"Form.Reco.RecoName": "ФИО клиента",
 	"Form.Reco.Category": "Категория",
@@ -103,5 +114,13 @@
 	"Form.Reco.CallerIs": "Звонить будет",
 	"Form.Reco.Note": "Примечание",
 	"Form.Reco.PhoneNumber": "Тел. номер",
-	"Form.Reco.Error": "Ошибка"
+	"Form.Reco.Error": "Ошибка",
+	"Form.Visit.Creating": "Добавление визита",
+	"Form.Visit.Editing": "Редактирование визита",
+	"Form.PhoneNumber": "Тел. номер",
+
+	"Table.ResponsibleStaff": "Отв. сотрудник",
+	"Table.AppointerStaff": "Назначел(а)",
+	"Table.ClientFullName": "ФИО клиента",
+	"Table.Date": "Дата"
 }

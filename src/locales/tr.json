@@ -86,6 +86,9 @@
 	"Crm.Wspace.CurrentDemo": "Current demonstrations",
 	"Crm.Wspace.CurrentVisits": "Current visits",
 	"Crm.Wspace.CreateFromArchive": "Create from archive",
+	"Crm.DemoArchiveTitle": "Group demo archive",
+	"Crm.RecoArchiveTitle": "Group recommendations archive",
+	"Crm.VisitArchiveTitle": "Group visits archive",
 
 	"Form.CreatingReco": "Creating recommendation",
 	"Form.CreatingRecoFromArchive": "Creating recommendation from archive",
@@ -93,6 +96,14 @@
 	"Form.RecommenderFullName": "Recommender fullname",
 	"Form.RecommenderAddData": "Recommender additional data",
 	"Form.Wait": "Wait...",
+	"Form.ClientFullName": "Client fullname",
+	"Form.DateFrom": "Date from",
+	"Form.DateTo": "Date to",
+	"Form.DemoDateFrom": "Demo date from",
+	"Form.DemoDateTo": "Demo date to",
+	"Form.SaleDateFrom": "Sale date from",
+	"Form.SaleDateTo": "Sale date to",
+	"Form.Address": "Address",
 
 	"Form.Reco.RecoName": "Fullname",
 	"Form.Reco.Category": "Category",
@@ -101,5 +112,13 @@
 	"Form.Reco.CallerIs": "Caller is",
 	"Form.Reco.Note": "Note",
 	"Form.Reco.PhoneNumber": "Phone number",
-	"Form.Reco.Error": "Error"
+	"Form.Reco.Error": "Error",
+	"Form.Visit.Creating": "Creating visit",
+	"Form.Visit.Editing": "Editing visit",
+	"Form.PhoneNumber": "Phone number",
+
+	"Table.ResponsibleStaff": "Responsible staff",
+	"Table.AppointerStaff": "Appointer",
+	"Table.ClientFullName": "Client fullname",
+	"Table.Date": "Date"
 }
