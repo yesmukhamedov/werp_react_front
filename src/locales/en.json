@@ -122,5 +122,7 @@
   "Table.ResponsibleStaff": "Responsible staff",
   "Table.AppointerStaff": "Appointer",
   "Table.ClientFullName": "Client fullname",
-  "Table.Date": "Date"
+  "Table.Date": "Date",
+
+  "Hr.Timesheet.StatusDescriptionTitle": "Signs and codes"
 }

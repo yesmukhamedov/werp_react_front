@@ -122,5 +122,7 @@
 	"Table.ResponsibleStaff": "Отв. сотрудник",
 	"Table.AppointerStaff": "Назначел(а)",
 	"Table.ClientFullName": "ФИО клиента",
-	"Table.Date": "Дата"
+	"Table.Date": "Дата",
+
+	"Hr.Timesheet.StatusDescriptionTitle": "Обозначения и коды"
 }
