@@ -167,9 +167,7 @@ class TimesheetPage extends Component{
             }
         }
 
-        console.log(value.length)
         if(value.length === 0){
-            console.log('GGGG')
             delete selectedItems[staffId]['days'][dayNumber]
         } else {
             selectedItems[staffId]['days'][dayNumber] = {number: dayNumber,statusName: value,enabled: true}
