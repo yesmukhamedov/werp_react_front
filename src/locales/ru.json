@@ -124,5 +124,100 @@
 	"Table.ClientFullName": "ФИО клиента",
 	"Table.Date": "Дата",
 
-	"Hr.Timesheet.StatusDescriptionTitle": "Обозначения и коды"
+	"Hr.Timesheet.StatusDescriptionTitle": "Обозначения и коды",
+
+	"awkey"           : "Ссылка на документ",
+	"awtyp"           : "Тип операции(Клиент, Поставщик)",
+	"belnr"           : "Номер документа",
+	"bktxt"           : "Примечание",
+	"blart"           : "Вид документа",
+	"bldat"           : "Дата документа",
+	"brnch"           : "Филиал",
+	"budat"           : "Дата проводки",
+	"bukrs"           : "Компания",
+	"business_area"   : "Бинзесс сфера",
+	"contract_number" : "SN номер",
+	"customer_id"     : "Контрагент",
+	"gjahr"           : "Год",
+	"kursf"           : "Курс",
+	"monat"           : "Месяц",
+	"stblg"           : "Номер документа отмены",
+	"stjah"           : "Год документа отмены",
+	"storno"          : "Сторно",
+	"tcode"           : "Транзакция",
+	"usnam"           : "Пользователь",
+	"waers"           : "Валюта",
+	"official"        : "Oфициально",
+	"dep"             : "Отдел",
+	"zreg"            : "Рег. номер"
+
+
+	,"dealer"		: "Дилер"
+	,"finAgent"		: "Фин. агент"
+	,"fioClient"		: "ФИО клиента"
+	,"price"	: "Цена"
+	,"paid":"Оплачено"
+	,"remainder":"Остаток"
+	,"cashBank":"Касса/Банк"
+	,"amount":"Сумма"
+	,"monthlyPayment":"Ежемес. Платеж"
+	,"firstPayment":"Перв. платеж"
+	,"paymentDate":"Дата платежа"
+	,"paymentAmount":"Сумма платежа"
+	,"paymentSchedule":"График платежей"
+	,"save":"Сохранить"
+	,"search":"Поиск"
+	,"searchOptions":"Параметры поиска"
+	,"mainInfos":"Основные инфо"
+	,"finDoc":"Фин. док"
+
+	,"regNumOrConNum":"Номер договора или рег. номер"
+	,"transNameFmcp":"Взнос по договору"
+	,"transNameFcis":"Взнос в счет сотрудника"
+	,"header":"Заголовок"
+	,"position":"Позиция"
+	,"operation":"Операция"
+	,"employee":"Сотрудник"
+  
+	,"staff":"Сотрудники"
+	,"iinBin":"ИИН/БИН"
+	,"dismissed":"Уволенный"
+	,"fio":"ФИО"
+
+	,"loadingText":"Загрузка..."
+	,"noDataText":"Нет записей"
+	,"previousText":"Пред."
+	,"nextText":"След."
+	,"rowsText":"строк"
+	,"pageText":"Страница"
+	,"ofText":"из"
+
+	,"transNameFrcoln":"Статистика взносщиков"
+	,"all":"Все"
+	,"date":"Дата"
+	,"state1":"Статус"
+	,"onBegOfMonth":"На начало месяца"
+	,"onEndOfMonth":"На конец месяца"
+	,"installments":"В рассрочку"
+	,"in1Month":"В течении 1 месяца"
+	,"overallSum":"Всего"
+	,"numOfSalesContracts":"Кол. дог."
+	,"plan":"План"
+	,"collected":"Получен"
+	,"details":"Детали"
+	,"city":"Город"
+	,"percent":"Процент"
+	,"overallAmount":"Общее количество"
+	,"standard":"Стандарт"
+	,"problem":"Проблемный"
+	,"branches":"Филиалы"
+	,"finAgents":"Фин. агенты"
+	,"salesContracts":"Договора"
+	,"contractDate":"Дата договора"
+	,"snNum":"SN номер"
+	,"count":"Количество"
+	,"period":"Период"
+	,"show":"Показать"
+
+
 }

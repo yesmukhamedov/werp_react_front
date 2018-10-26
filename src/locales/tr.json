@@ -122,5 +122,103 @@
 	"Table.ClientFullName": "Client fullname",
 	"Table.Date": "Date",
 
-	"Hr.Timesheet.StatusDescriptionTitle": "Signs and codes"
+	"Hr.Timesheet.StatusDescriptionTitle": "Signs and codes",
+
+
+	
+  
+	"awkey"           : "Belge referansı",
+	"awtyp"           : "Operasyon tipi",
+	"belnr"           : "Belge Numarası",
+	"bktxt"           : "Açıklama",
+	"blart"           : "Belge Tipi",
+	"bldat"           : "Belge Tarihi",
+	"brnch"           : "Şube",
+	"budat"           : "Kayıt Tarihi",
+	"bukrs"           : "Firma",
+	"business_area"   : "Business area",
+	"contract_number" : "Sözleşme numarası",
+	"customer_id"     : "Cari Hesap",
+	"gjahr"           : "Belge Tarihi-Yıl",
+	"kursf"           : "Döviz Kuru",
+	"monat"           : "Ay",
+	"stblg"           : "Belge iptal numarası",
+	"stjah"           : "Belge iptal tarihi-yıl",
+	"storno"          : "Storno",
+	"tcode"           : "Işlem",
+	"usnam"           : "Kullanıcı",
+	"waers"           : "Döviz",
+	"official"        : "Official",
+	"dep"             : "Department",
+	"zreg"            : "Reg. number"
+
+
+	,"dealer"		: "Dealer"
+	,"finAgent"		: "Fin. agent"
+	,"fioClient"		: "Client Name"
+	,"price"	: "Price"
+	,"paid":"Paid"
+	,"remainder":"Remainder"
+	,"cashBank":"Cash/Bank"
+	,"amount":"Amount"
+	,"monthlyPayment":"Monthly Payment"
+	,"firstPayment":"First payment"
+	,"paymentDate":"Payment Date"
+	,"paymentAmount":"Payment Amount"
+	,"paymentSchedule":"Payment Schedule"
+	,"save":"Save"
+	,"search":"Search"
+	,"searchOptions":"Search Options"
+	,"mainInfos":"Main info"
+	,"finDoc":"Fin. doc"
+
+
+	
+	,"regNumOrConNum":"Reg. num or Contract Num"
+	,"transNameFmcp":"Receipt from Sales Contract"
+	,"transNameFcis":"Employee acc.cash inquiry"
+	,"header":"Header"
+	,"position":"Position"
+	,"operation":"Operation"
+	,"employee":"Employee"
+  
+	,"staff":"Staff"
+	,"iinBin":"Iin/Bin"
+	,"dismissed":"Dismissed"
+	,"fio":"Full name"
+  
+	,"loadingText":"Loading..."
+	,"noDataText":"No rows found"
+	,"previousText":"Previous"
+	,"nextText":"Next"
+	,"rowsText":"rows"
+	,"pageText":"Page"
+	,"ofText":"of"
+
+	,"transNameFrcoln":"Collectors Statistics"
+	,"all":"All"
+	,"date":"Date"
+	,"state1":"State"
+	,"onBegOfMonth":"Till the beginning of the month"
+	,"onEndOfMonth":"Till the end of the month"
+	,"installments":"Installments"
+	,"in1Month":"In 1 month"
+	,"overallSum":"Overall Sum"
+	,"numOfSalesContracts":"Num. of Contracts"
+	,"plan":"Plan"
+	,"collected":"Collected"
+	,"details":"Details"
+	,"city":"City"
+	,"percent":"Percent"
+	,"overallAmount":"Overall Amount"
+	,"standard":"Standard"
+	,"problem":"Problem"
+	,"branches":"Branches"
+	,"finAgents":"Fin. agents"
+	,"salesContracts":"Sales Contracts"
+	,"contractDate":"Contract Date"
+	,"snNum":"SN number"
+	,"count":"Count"
+	,"period":"Period"
+	,"show":"Show"
 }

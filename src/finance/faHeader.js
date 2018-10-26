@@ -51,8 +51,7 @@ class FaHeader extends PureComponent{
     
     render(){
         // console.log(this.props)
-        const {companyOptions, branchOptions, departmentOptions, businessAreaOptions, currencyOptions} = this.props;
-        
+        const {companyOptions, branchOptions, departmentOptions, businessAreaOptions, currencyOptions, messages} = this.props;
         // let wabkpf = Object.assign({}, this.props.bkpf);
 
         const {bukrs,
@@ -83,7 +82,7 @@ class FaHeader extends PureComponent{
             <Segment padded size="small">
                 
                 <Label color="blue" ribbon>
-                    Заголовок
+                    {messages['header']}
                 </Label>
                 <Grid columns={3}  stackable>
                     <Grid.Row>
@@ -92,11 +91,11 @@ class FaHeader extends PureComponent{
                                 <Table.Body>
                                     <Table.Row>
                                         <Table.Cell>                                            
-                                            <Icon name='folder' /> Компания
+                                            <Icon name='folder' /> {messages['bukrs']} 
                                         </Table.Cell>
                                         <Table.Cell>
                                             
-                                            <Dropdown placeholder='Компания' selection options={companyOptions} value={bukrs} 
+                                            <Dropdown placeholder={messages['bukrs']}  selection options={companyOptions} value={bukrs} 
                                             onChange={(e, { value }) => this.onInputChange(value,'bukrs')} 
                                             readOnly={bukrsInfo?bukrsInfo.readOnly?bukrsInfo.readOnly:false:false}
                                             disabled={bukrsInfo?bukrsInfo.disabled?bukrsInfo.disabled:false:false}
@@ -107,10 +106,10 @@ class FaHeader extends PureComponent{
                                     <Table.Row>
                                         <Table.Cell>
                                             <Icon name='browser' />
-                                            Филиал
+                                            {messages['brnch']} 
                                         </Table.Cell>
                                         <Table.Cell>                                            
-                                            <Dropdown placeholder='Филиал'  search selection options={branchOptions[bukrs]?branchOptions[bukrs]:[]} 
+                                            <Dropdown placeholder={messages['brnch']}   search selection options={branchOptions[bukrs]?branchOptions[bukrs]:[]} 
                                             value={brnch}  onChange={(e, { value }) => this.onInputChange(value,'brnch')}
                                             disabled={brnchInfo?brnchInfo.disabled?brnchInfo.disabled:false:false} />
                                         </Table.Cell>                
@@ -119,10 +118,10 @@ class FaHeader extends PureComponent{
                                     <Table.Row>
                                         <Table.Cell>
                                             <Icon name='browser' />                            
-                                            Бизнес сфера
+                                            {messages['business_area']} 
                                         </Table.Cell>
                                         <Table.Cell>
-                                            <Dropdown placeholder='Бизнес сфера'  search selection options={bukrs ? businessAreaOptions[bukrs]? businessAreaOptions[bukrs]:[] :[]} 
+                                            <Dropdown placeholder={messages['business_area']}  search selection options={bukrs ? businessAreaOptions[bukrs]? businessAreaOptions[bukrs]:[] :[]} 
                                             value={business_area_id}  onChange={(e, { value }) => this.onInputChange(value,'business_area_id')} 
                                             disabled={business_area_idInfo?business_area_idInfo.disabled?business_area_idInfo.disabled:false:false}/> 
                                         </Table.Cell>                
@@ -130,7 +129,7 @@ class FaHeader extends PureComponent{
                                     
                                     <Table.Row>
                                         <Table.Cell>
-                                            Официально
+                                        {messages['official']}
                                         </Table.Cell>
                                         <Table.Cell>                                        
                                             <Checkbox
@@ -151,10 +150,10 @@ class FaHeader extends PureComponent{
                                 <Table.Body>
                                     <Table.Row>
                                         <Table.Cell>                                            
-                                            <Icon name='browser' /> Отдел
+                                            <Icon name='browser' /> {messages['dep']}
                                         </Table.Cell>
                                         <Table.Cell>
-                                            <Dropdown placeholder='Отдел'  search selection options={departmentOptions} 
+                                            <Dropdown placeholder={messages['dep']}  search selection options={departmentOptions} 
                                             value={dep}  onChange={(e, { value }) => this.onInputChange(value,'dep')} 
                                             disabled={depInfo?depInfo.disabled?depInfo.disabled:false:false}/>
                                         </Table.Cell>                
@@ -163,10 +162,10 @@ class FaHeader extends PureComponent{
                                     <Table.Row>
                                         <Table.Cell>
                                             <Icon name='dollar' />
-                                            Валюта
+                                            {messages['waers']}
                                         </Table.Cell>
                                         <Table.Cell>
-                                            <Dropdown placeholder='Валюта'  search selection options={currencyOptions?currencyOptions:[]} 
+                                            <Dropdown placeholder={messages['waers']}  search selection options={currencyOptions?currencyOptions:[]} 
                                             value={waers}  onChange={(e, { value }) => this.onInputChange(value,'waers')} 
                                             disabled={waersInfo?waersInfo.disabled?waersInfo.disabled:false:false}/>  
                                         </Table.Cell>                
@@ -175,12 +174,12 @@ class FaHeader extends PureComponent{
                                     <Table.Row>
                                         <Table.Cell>
                                             <Icon name='exchange' />                            
-                                            Курс   
+                                            {messages['kursf']}   
                                         </Table.Cell>
                                         <Table.Cell>   
                                             <Input
                                             value={kursf}
-                                            placeholder={'Курс'}     
+                                            placeholder={messages['kursf']}    
                                             onChange={(e, { value }) => this.onInputChange(value,'kursf')}                                            
                                             readOnly={kursfInfo?kursfInfo.readOnly?kursfInfo.readOnly:false:false}
                                             disabled={kursfInfo?kursfInfo.disabled?kursfInfo.disabled:false:false}                                
@@ -191,12 +190,12 @@ class FaHeader extends PureComponent{
                                     <Table.Row>
                                         <Table.Cell>
                                             <Icon name='wordpress forms' />                           
-                                            Рег. номер
+                                            {messages['zreg']}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <Input
                                             value={zreg} maxLength='10'
-                                            placeholder={'Рег. номер'}
+                                            placeholder={messages['zreg']}
                                             onChange={(e, { value }) => this.onInputChange(value,'zreg')}
                                             readOnly={zregInfo?zregInfo.readOnly?zregInfo.readOnly:false:false}
                                             disabled={zregInfo?zregInfo.disabled?zregInfo.disabled:false:false}
@@ -214,12 +213,12 @@ class FaHeader extends PureComponent{
                                     <Table.Row>
                                         <Table.Cell>
                                             <Icon name='square outline' />
-                                            Вид документа
+                                            {messages['blart']}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <Input                                            
                                             value={blart}
-                                            placeholder={'Вид документа'}
+                                            placeholder={messages['blart']}
                                             readOnly={blartInfo?blartInfo.readOnly?blartInfo.readOnly:false:false}
                                             disabled={blartInfo?blartInfo.disabled?blartInfo.disabled:false:false}
                                             />
@@ -229,7 +228,7 @@ class FaHeader extends PureComponent{
                                     <Table.Row>
                                         <Table.Cell>
                                             <Icon name='calendar' />    
-                                            Дата проводки
+                                            {messages['budat']}
                                         </Table.Cell>
                                         <Table.Cell>                                            
                                             <DatePicker
@@ -247,7 +246,7 @@ class FaHeader extends PureComponent{
                                     <Table.Row>
                                         <Table.Cell>
                                             <Icon name='calendar' />                           
-                                            Дата документа
+                                            {messages['bldat']}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <DatePicker className='date-auto-width'
@@ -265,14 +264,14 @@ class FaHeader extends PureComponent{
                                         
                                         <Table.Cell>
                                             <Icon name='comments outline' />
-                                            Примечание
+                                            {messages['bktxt']}
                                         </Table.Cell>
                                         
                                         <Table.Cell>
                                             <TextArea style={{ maxHeight: 45,minHeight: 45, minWidth:180, maxWidth:180 }}
                                                 value={bktxt} maxLength='255'
                                                 onChange={(e, { value }) => this.onInputChange(value,"bktxt")}
-                                                placeholder={'Примечание'}
+                                                placeholder={messages['bktxt']}
                                                 readOnly={bktxtInfo?bktxtInfo.readOnly?bktxtInfo.readOnly:false:false}
                                                 disabled={bktxtInfo?bktxtInfo.disabled?bktxtInfo.disabled:false:false}
                                             />

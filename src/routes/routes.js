@@ -305,6 +305,18 @@ const AsyncFa03 = Loadable({
   loading: () => <LoadingPage />
 });
 
+
+const trlist = Loadable({
+  loader: () => import('../dit/transactions/components/list' /* webpackChunkName: "trlist" */),
+  loading: () => <LoadingPage />
+});
+
+const trupdate = Loadable({
+  loader: () => import('../dit/transactions/components/listTableUpdate' /* webpackChunkName: "trlist" */),
+  loading: () => <LoadingPage />
+});
+
+
 const getComponent = {
     Ditaub:AsyncAssignUserBranch,
     Hrb02:AsyncHrb02,
@@ -385,6 +397,10 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/general/dtskdep" component={DtskdepContainer} />
       <Route path="/finance/mainoperation/fa03" component={AsyncFa03} />
       <Route path="/documents/mydocs" component={AsyncMyDocsListPage}/>
+      
+      {/* Transactions */}
+      <Route path="/dit/transaction/list" component={trlist} />
+      <Route path="/dit/transaction/update/:id?" component={trupdate} />
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {

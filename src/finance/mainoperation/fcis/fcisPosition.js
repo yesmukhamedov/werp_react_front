@@ -24,7 +24,7 @@ class FcisPosition extends PureComponent{
     
     render(){
         const {hkontOptions_s,hkontOptions_h} = this.props;
-        const { staffFio, hkont_s, hkont_h, summa, waers, bukrs, branchOptions, companyOptions, brnch } = this.props;
+        const { staffFio, hkont_s, hkont_h, summa, waers, bukrs, branchOptions, companyOptions, brnch, messages } = this.props;
 
         if (summa===undefined)
         {
@@ -35,30 +35,30 @@ class FcisPosition extends PureComponent{
             <Segment padded size="small">
                 <StaffF4Modal open={this.state.staffF4ModalOpen} closeModal={(bool)=>this.staffF4ModalOpenHanlder(bool)} 
                         onStaffSelect={(item)=>this.props.onInputChange(item,'lifnr')} trans={'fcis'} 
-                        brnch = {brnch} branchOptions={branchOptions} 
+                        brnch = {brnch} branchOptions={branchOptions}  messages={messages}
                         bukrs={bukrs} companyOptions={companyOptions} bukrsDisabledParent={true}
                         />
                 <Label color="red" ribbon>
-                    Позиция
+                    {messages['position']}
                 </Label>
 
                             <Table  >
                             <Table.Header>
                                 <Table.Row>
-                                    <Table.HeaderCell>Операция</Table.HeaderCell>
-                                    <Table.HeaderCell>Касса</Table.HeaderCell>
-                                    <Table.HeaderCell>Сотрудник</Table.HeaderCell>
-                                    <Table.HeaderCell>Сумма</Table.HeaderCell>
+                                    <Table.HeaderCell>{messages['operation']}</Table.HeaderCell>
+                                    <Table.HeaderCell>{messages['cashBank']}</Table.HeaderCell>
+                                    <Table.HeaderCell>{messages['employee']}</Table.HeaderCell>
+                                    <Table.HeaderCell>{messages['amount']}</Table.HeaderCell>
                                 </Table.Row>
                             </Table.Header>
                                 <Table.Body>
                                     <Table.Row>
                                         <Table.Cell>
-                                            <Dropdown placeholder='Операция'   selection options={hkontOptions_h?hkontOptions_h:[]} 
+                                            <Dropdown placeholder={messages['operation']}   selection options={hkontOptions_h?hkontOptions_h:[]} 
                                             value={hkont_h}  onChange={(e, { value }) => this.props.onInputChange(value,'hkont_h')} />  
                                         </Table.Cell>
                                         <Table.Cell>
-                                            <Dropdown placeholder='Касса'   selection options={hkontOptions_s?hkontOptions_s:[]} 
+                                            <Dropdown placeholder={messages['cashBank']}   selection options={hkontOptions_s?hkontOptions_s:[]} 
                                             value={hkont_s}  onChange={(e, { value }) => this.props.onInputChange(value,'hkont_s')} /> 
                                         </Table.Cell>
                                         <Table.Cell>
