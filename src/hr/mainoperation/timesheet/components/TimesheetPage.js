@@ -167,11 +167,7 @@ class TimesheetPage extends Component{
             }
         }
 
-        if(value.length === 0){
-            delete selectedItems[staffId]['days'][dayNumber]
-        } else {
-            selectedItems[staffId]['days'][dayNumber] = {number: dayNumber,statusName: value,enabled: true}
-        }
+        selectedItems[staffId]['days'][dayNumber] = {number: dayNumber,statusName: value,enabled: true}
 
         this.setState({
             ...this.state,
@@ -212,7 +208,6 @@ class TimesheetPage extends Component{
                 let opValue = staffDays[day.number]?staffDays[day.number]['statusName'] : (day['statusName']||'') //(day) @ToDo
                 return <Table.Cell negative={opValue === 'MISSING'} positive={opValue === 'PRESENT'} key={day.number}>
                     <select value={opValue} onChange={(e) => this.handleDayStatusChange(item,day.number,e.target.value)}>
-                        <option key={''} value={''}>-</option>
                         {statuses.map((s => {
                             return <option key={s.name} value={s.name}>{this.statusCodeByLocale(s,locale)}</option>
                         }))}
