@@ -224,4 +224,6 @@
 	,"count":"Count"
 	,"period":"Period"
 	,"show":"Show"
+	,"payDebt":"Pay debt"
+	,"toEmployeeAccount":"To employee account"
 }

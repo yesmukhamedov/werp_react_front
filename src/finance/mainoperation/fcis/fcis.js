@@ -5,7 +5,7 @@ import moment from 'moment';
 import FaHeader from '../../faHeader';
 import FcisPosition from './fcisPosition';
 import {f4FetchDepartmentList, f4FetchCurrencyList, f4FetchBusinessAreaList2, f4FetchExchangeRateNational} from '../../../reference/f4/f4_action';
-import {clearfaBkpf, changefaBkpf, fetchCashBankHkontsByBranch, changeDynObj, clearDynObj, saveFcis} from '../../fa_action';
+import {clearfaBkpf, changefaBkpf, fetchCashBankHkontsByBranch, changeDynObj, clearDynObj, saveFcis, fetchHkonts} from '../../fa_action';
 import {moneyInputHanler} from '../../../utils/helpers';
 import OutputErrors from '../../../general/error/outputErrors';
 import { modifyLoader } from '../../../general/loader/loader_action';
@@ -14,10 +14,7 @@ import { injectIntl } from 'react-intl';
 
 require('moment/locale/ru');
 
-const hkontOptions_h = [
-  { key: 1, text: 'Оплатить долг', value: '33500002' },
-  { key: 2, text: 'Деньги на хранение', value: '33500001' }
-];
+
   
 
  
@@ -49,6 +46,7 @@ class Fcis extends Component {
     }
   
     componentWillReceiveProps(nextProps) {
+      
       if(nextProps.bkpf.brnch !== this.props.bkpf.brnch) {
           this.props.fetchCashBankHkontsByBranch(nextProps.bkpf.bukrs,nextProps.bkpf.brnch);
           this.props.changeDynObj({
@@ -126,20 +124,24 @@ class Fcis extends Component {
       this.setState({errors});
     }
     validate(){
+      // getter
+      // console.log(localStorage.getItem('language'),'error');
       
+      const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+      const language = localStorage.getItem('language');
       let errors = [];
       const {bukrs,brnch,dep,waers,bldat} = this.props.bkpf;
-      if (bukrs===null || bukrs===undefined || !bukrs) { errors.push("Выберите компанию"); }
-      if (brnch===null || brnch===undefined || !brnch) { errors.push("Выберите филиал"); }
-      if (dep===null || dep===undefined || !dep) { errors.push("Выберите отдел"); }
-      if (waers===null || waers===undefined || !waers) { errors.push("Выберите валюту"); }
-      if (bldat===null || bldat===undefined || !bldat) { errors.push("Выберите дату документа"); }
+      if (bukrs===null || bukrs===undefined || !bukrs) { errors.push(errorTable['5'+language]); }
+      if (brnch===null || brnch===undefined || !brnch) { errors.push(errorTable['7'+language]); }
+      if (dep===null || dep===undefined || !dep) { errors.push(errorTable['4'+language]); }
+      if (waers===null || waers===undefined || !waers) { errors.push(errorTable['1'+language]); }
+      if (bldat===null || bldat===undefined || !bldat) { errors.push(errorTable['15'+language]);}
 
       const {lifnr, hkont_s, hkont_h, summa} = this.props.bseg;
-      if (hkont_h===null || hkont_h===undefined || !hkont_h) { errors.push("Выберите операцию"); }
-      if (hkont_s===null || hkont_s===undefined || !hkont_s) { errors.push("Выберите кассу"); }
-      if (lifnr===null || lifnr===undefined || !lifnr) { errors.push("Выберите сотрудника"); }
-      if (summa===null || summa===undefined || !summa || parseFloat(summa)<=0) { errors.push("Сумма 0 или отрицательная "); }
+      if (hkont_h===null || hkont_h===undefined || !hkont_h) { errors.push(errorTable['16'+language]); }
+      if (hkont_s===null || hkont_s===undefined || !hkont_s) { errors.push(errorTable['3'+language]); }
+      if (lifnr===null || lifnr===undefined || !lifnr) { errors.push(errorTable['63'+language]); }
+      if (summa===null || summa===undefined || !summa || parseFloat(summa)<=0) { errors.push(errorTable['61'+language]); }
 
       return errors;
     }
@@ -173,6 +175,12 @@ class Fcis extends Component {
       const {lifnr, staffFio, hkont_s, hkont_h, summa} = this.props.bseg;
       
       const {messages} = this.props.intl 
+
+      const hkontOptions_h = [
+        { key: 1, text: messages['payDebt'], value: '33500002' },
+        { key: 2, text: messages['toEmployeeAccount'], value: '33500001' }
+      ];
+
 
         return (
             
@@ -249,4 +257,4 @@ class Fcis extends Component {
 
 
 export default connect(mapStateToProps,{ f4FetchDepartmentList, f4FetchCurrencyList, modifyLoader,saveFcis,
-  f4FetchBusinessAreaList2, f4FetchExchangeRateNational, changefaBkpf, clearfaBkpf, fetchCashBankHkontsByBranch, changeDynObj, clearDynObj}) (injectIntl(Fcis));
+  f4FetchBusinessAreaList2, f4FetchExchangeRateNational, changefaBkpf, clearfaBkpf, fetchCashBankHkontsByBranch, changeDynObj, clearDynObj, fetchHkonts}) (injectIntl(Fcis));

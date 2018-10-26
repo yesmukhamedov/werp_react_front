@@ -29,7 +29,7 @@ export function handleError(error,dispatch) {
             //this.context.router.push('/forbidden');
             browserHistory.push('/forbidden')
         }
-        dispatch(notify('error',error.response.data.message,'Ошибка'));
+        dispatch(notify('error',error.response.data.message,'Error'));
 
     } else {
         // const name = getNestedObject(error, ['error', 'response']);
@@ -59,7 +59,7 @@ export function handleError(error,dispatch) {
             console.log(error);
         }
         
-        Promise.resolve({ error }).then(response => dispatch(notify('error',message,'Ошибка')));
+        Promise.resolve({ error }).then(response => dispatch(notify('error',message,'Error')));
     }
     
 }

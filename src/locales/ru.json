@@ -167,7 +167,7 @@
 	,"paymentSchedule":"График платежей"
 	,"save":"Сохранить"
 	,"search":"Поиск"
-	,"searchOptions":"Параметры поиска"
+	,"searchParameters":"Параметры поиска"
 	,"mainInfos":"Основные инфо"
 	,"finDoc":"Фин. док"
 
@@ -218,6 +218,8 @@
 	,"count":"Количество"
 	,"period":"Период"
 	,"show":"Показать"
+	,"payDebt":"Оплатить долг"
+	,"toEmployeeAccount":"Деньги на хранение"
 
 
 }

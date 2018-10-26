@@ -168,7 +168,7 @@
 	,"paymentSchedule":"Payment Schedule"
 	,"save":"Save"
 	,"search":"Search"
-	,"searchOptions":"Search Options"
+	,"searchParameters":"Search Options"
 	,"mainInfos":"Main info"
 	,"finDoc":"Fin. doc"
 
@@ -221,4 +221,6 @@
 	,"count":"Count"
 	,"period":"Period"
 	,"show":"Show"
+	,"payDebt":"Pay debt"
+	,"toEmployeeAccount":"To employee account"
 }

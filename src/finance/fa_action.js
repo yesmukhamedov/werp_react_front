@@ -8,6 +8,8 @@ export const CLEAR_FA_BKPF = 'CLEAR_FA_BKPF';
 export const FETCH_CASHBANKHKONTS_BY_BRANCH = 'FETCH_CASHBANKHKONTS_BY_BRANCH';
 export const CLEAR_CASHBANKHKONTS_BY_BRANCH = 'CLEAR_CASHBANKHKONTS_BY_BRANCH';
 
+
+
 export const FETCH_DYNOBJ_FI = 'FETCH_DYNOBJ_FI';
 export const CHANGE_DYNOBJ_FI = 'CHANGE_DYNOBJ_FI';
 export const CLEAR_DYNOBJ_FI = 'CLEAR_DYNOBJ_FI';
@@ -214,3 +216,32 @@ export function fetchFA03(a_searchParameters) {
     }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export function fetchHkonts(a_bukrs, al_hkont) {
+    
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        axios.get(`${ROOT_URL}/api/finance/mainoperation/hkonts/`+a_bukrs, {
+            headers: 
+            {
+                authorization: localStorage.getItem('token')
+            },
+            params:
+            {
+                hkonts:al_hkont.join()
+            }
+        })
+        .then(({data}) => {
+            
+            dispatch(modifyLoader(false));
+            dispatch({
+                type: FETCH_DYNOBJ_FI,
+                data:data
+            });
+    
+        })
+        .catch(error => {
+            handleError(error,dispatch);
+            dispatch(modifyLoader(false));
+        });
+    }
+}

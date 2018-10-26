@@ -145,11 +145,13 @@ class Fmcp extends Component {
     validate(){
       let errors = [];
       const {price, paid, zregOrConNum, psRows, summa,hkont_d} = this.props.contract;
+      const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+      const language = localStorage.getItem('language');
 
-      if (zregOrConNum===null || zregOrConNum===undefined || !zregOrConNum) { errors.push("Выберите договор"); }      
-      if (hkont_d===null || hkont_d===undefined || !hkont_d) { errors.push("Выберите Касса/Банк"); }
-      if (summa===null || summa===undefined || !summa || summa<=0) { errors.push("Сумма 0 или отрицательная"); }
-      if (price-paid < summa) { errors.push("Сумма платежа больше чем остаток."); }
+      if (zregOrConNum===null || zregOrConNum===undefined || !zregOrConNum) { errors.push(errorTable['17'+language]); }      
+      if (hkont_d===null || hkont_d===undefined || !hkont_d) { errors.push(errorTable['3'+language]); }
+      if (summa===null || summa===undefined || !summa || summa<=0) { errors.push(errorTable['61'+language]); }
+      if (price-paid < summa) { errors.push(errorTable['18'+language]); }
 
       let psPaid = 0;
       let psCurrentpaymentamount = 0;
@@ -160,8 +162,8 @@ class Fmcp extends Component {
           psPaid = psPaid + waPsRows.paid;
           psCurrentpaymentamount = parseFloat(psCurrentpaymentamount) + parseFloat(waPsRows.currentpaymentamount);
         }
-        if (paid !== psPaid) { errors.push("Сумма взноса и оплаченная сумма не равны. Обратитесь к администратору."); }
-        if (parseFloat(summa) !== psCurrentpaymentamount) { errors.push("Сумма взноса и оплачиваемая сумма не равны. Обратитесь к администратору."); }
+        if (paid !== psPaid) { errors.push(errorTable['19'+language]); }
+        if (parseFloat(summa) !== psCurrentpaymentamount) { errors.push(errorTable['19'+language]); }
 
       }
 
