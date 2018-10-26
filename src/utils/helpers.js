@@ -222,3 +222,16 @@ export function PUT(url, data) {
   });
 }
 
+export function monthsArrayToOptions (months){
+    let out = []
+    for(let k in months){
+        out.push({
+            key: (parseInt(k,10)+1),
+            text: months[k],
+            value: (parseInt(k,10)+1),
+        })
+    }
+
+    return out
+}
+

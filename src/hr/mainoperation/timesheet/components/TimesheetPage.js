@@ -1,13 +1,14 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import _ from 'lodash'
-import { defineMessages, injectIntl } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import {Container,Divider,Header,Button,Segment,Form,Table,Message} from 'semantic-ui-react';
-import YearF4 from '../../../../reference/f4/date/YearF4'
-import MonthF4 from '../../../../reference/f4/date/MonthF4'
 import {fetchItems,saveData,fetchStatuses} from '../actions/hrTimesheetAction'
 import moment from 'moment'
-import {YEAR_OPTIONS,MONTH_OPTIONS} from '../../../../utils/constants'
+import 'moment/locale/ru'
+import 'moment/locale/tr'
+import {YEAR_OPTIONS} from '../../../../utils/constants'
+import {monthsArrayToOptions} from '../../../../utils/helpers'
 
 const currentDate = new Date()
 class TimesheetPage extends Component{
@@ -111,7 +112,7 @@ class TimesheetPage extends Component{
 
     renderSearchForm () {
         let {companyOptions} = this.props
-        const {messages} = this.props.intl
+        const {messages,locale} = this.props.intl
         const {search} = this.state
         if(!companyOptions){
             companyOptions = []
@@ -121,6 +122,8 @@ class TimesheetPage extends Component{
         if(companyOptions.length === 1){
             selectedBukrs = companyOptions[0]['value']
         }
+
+        moment.locale(locale)
 
         return <Form>
             <Form.Group widths='equal'>
@@ -144,7 +147,7 @@ class TimesheetPage extends Component{
                 <Form.Select
                     defaultValue={currentDate.getMonth() + 1}
                     name='month' label={messages['Form.Month']}
-                    options={MONTH_OPTIONS} placeholder={messages['Form.Month']} onChange={this.handleChange} />
+                    options={monthsArrayToOptions(moment.months())} placeholder={messages['Form.Month']} onChange={this.handleChange} />
 
             </Form.Group>
             <Form.Button onClick={this.loadItems}>{messages['Form.Form']}</Form.Button>
@@ -184,6 +187,7 @@ class TimesheetPage extends Component{
     renderDaysCell = (item) => {
         let days = item.days || []
         let statuses = this.props.statuses
+        const {locale} = this.props.intl
         if(!statuses){
             statuses = []
         }
@@ -204,9 +208,8 @@ class TimesheetPage extends Component{
                 let opValue = staffDays[day.number]?staffDays[day.number]['statusName'] : (day['statusName']||'') //(day) @ToDo
                 return <Table.Cell negative={opValue === 'MISSING'} positive={opValue === 'PRESENT'} key={day.number}>
                     <select value={opValue} onChange={(e) => this.handleDayStatusChange(item,day.number,e.target.value)}>
-                        <option key={''} value={''}>-</option>
                         {statuses.map((s => {
-                            return <option key={s.name} value={s.name}>{s.code}</option>
+                            return <option key={s.name} value={s.name}>{this.statusCodeByLocale(s,locale)}</option>
                         }))}
                     </select>
                 </Table.Cell>
@@ -216,7 +219,7 @@ class TimesheetPage extends Component{
     }
 
     renderData(){
-        const {messages} = this.props.intl
+        const {messages,locale} = this.props.intl
         let {items} = this.props
         const {year,month} = this.state.search
         const {leftPart} = this.state
@@ -283,6 +286,16 @@ class TimesheetPage extends Component{
         </Container>
     }
 
+    statusCodeByLocale = (status, locale) => {
+        if(locale === 'en'){
+            return status.codeEn
+        } else if(locale === 'tr') {
+            return status.codeTr
+        }
+
+        return status.code
+    }
+
     componentWillReceiveProps(nextProps){
         if(nextProps.items){
             // let update = true
@@ -309,15 +322,19 @@ class TimesheetPage extends Component{
     }
 
     renderStatusDescriptions(){
+        const {locale,messages} = this.props.intl
         let statuses = this.props.statuses
         if(!statuses){
             statuses = []
         }
         return <Message>
-                    <Message.Header>Обозначения и коды</Message.Header>
+                    <Message.Header>{messages['Hr.Timesheet.StatusDescriptionTitle']}</Message.Header>
                     <Message.List>
                         {statuses.map((status => {
-                            return <Message.Item key={status.code}><strong>{status.code}</strong> - {status.description}</Message.Item>
+                            return <Message.Item key={status.code}>
+                                    <strong>{this.statusCodeByLocale(status,locale)}</strong>
+                                     - {locale === 'en' ? status.descriptionEn : (locale === 'tr' ? status.descriptionTr : status.description)}
+                                </Message.Item>
                         }))}
                     </Message.List>
                 </Message>

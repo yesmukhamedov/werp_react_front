@@ -7,6 +7,8 @@ import _ from "lodash";
 import {handleFocus, isEmpty, moneyFormat, moneyInputHanler} from '../../../utils/helpers';
 import {LEGACY_URL} from "../../../utils/constants";
 import {BigNumber} from 'bignumber.js';
+import { injectIntl } from 'react-intl'
+
 
 class Fmcp extends Component {
 
@@ -143,11 +145,13 @@ class Fmcp extends Component {
     validate(){
       let errors = [];
       const {price, paid, zregOrConNum, psRows, summa,hkont_d} = this.props.contract;
+      const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+      const language = localStorage.getItem('language');
 
-      if (zregOrConNum===null || zregOrConNum===undefined || !zregOrConNum) { errors.push("Выберите договор"); }      
-      if (hkont_d===null || hkont_d===undefined || !hkont_d) { errors.push("Выберите Касса/Банк"); }
-      if (summa===null || summa===undefined || !summa || summa<=0) { errors.push("Сумма 0 или отрицательная"); }
-      if (price-paid < summa) { errors.push("Сумма платежа больше чем остаток."); }
+      if (zregOrConNum===null || zregOrConNum===undefined || !zregOrConNum) { errors.push(errorTable['17'+language]); }      
+      if (hkont_d===null || hkont_d===undefined || !hkont_d) { errors.push(errorTable['3'+language]); }
+      if (summa===null || summa===undefined || !summa || summa<=0) { errors.push(errorTable['61'+language]); }
+      if (price-paid < summa) { errors.push(errorTable['18'+language]); }
 
       let psPaid = 0;
       let psCurrentpaymentamount = 0;
@@ -158,8 +162,8 @@ class Fmcp extends Component {
           psPaid = psPaid + waPsRows.paid;
           psCurrentpaymentamount = parseFloat(psCurrentpaymentamount) + parseFloat(waPsRows.currentpaymentamount);
         }
-        if (paid !== psPaid) { errors.push("Сумма взноса и оплаченная сумма не равны. Обратитесь к администратору."); }
-        if (parseFloat(summa) !== psCurrentpaymentamount) { errors.push("Сумма взноса и оплачиваемая сумма не равны. Обратитесь к администратору."); }
+        if (paid !== psPaid) { errors.push(errorTable['19'+language]); }
+        if (parseFloat(summa) !== psCurrentpaymentamount) { errors.push(errorTable['19'+language]); }
 
       }
 
@@ -172,17 +176,18 @@ class Fmcp extends Component {
       if (isEmpty(contract)){
         return "";
       }
+      const {messages} = this.props.intl
         return (
             
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
-                <Header as="h2" block>
-                  Взнос по договору
+                <Header as="h2" block>                  
+                  {messages['transNameFmcp']}
                 </Header>
                 
                 <Segment padded size="small">
                 
                   <Label color="red" ribbon>
-                    Параметры поиска
+                    {messages['searchParameters']}
                   </Label>
                   <br />
                   <br />
@@ -191,7 +196,7 @@ class Fmcp extends Component {
                       <List.Content>
                         <Input
                           value={this.state.searchTerm.zregOrConNum} maxLength='12'
-                          placeholder={'Номер дог. или Рег. номер'} onFocus={handleFocus}
+                          placeholder={messages['regNumOrConNum']} onFocus={handleFocus}
                           onChange={(e, { value }) => this.onInputChange(value,'zregOrConNum')}
                           />
                       </List.Content>
@@ -199,7 +204,7 @@ class Fmcp extends Component {
                     <List.Item>
                       <List.Content>
                           <Button icon labelPosition='left' primary size='small' onClick={()=>this.fetch(this.state.searchTerm.zregOrConNum)}>
-                            <Icon name='search' size='large' />Поиск
+                            <Icon name='search' size='large' /> {messages['search']}
                           </Button>
                       </List.Content>
                     </List.Item>
@@ -234,12 +239,12 @@ class Fmcp extends Component {
       const {contract} = this.props;
 
       
-
+      const {messages} = this.props.intl
       return (
         <Segment padded size="small">
                   
           <Label color="green" ribbon>
-            Основные инфо
+            {messages['mainInfos']}
           </Label>
           <br />
           <br />
@@ -247,7 +252,7 @@ class Fmcp extends Component {
                     <Table.Body>
                         <Table.Row>
                             <Table.Cell>
-                              Номер договора или рег. номер
+                              {messages['regNumOrConNum']}
                             </Table.Cell>
                             <Table.Cell>
                               {contract.iscontractnumber && 
@@ -259,7 +264,7 @@ class Fmcp extends Component {
                               {contract.belnr && 
                                 <a target='_blank' href={`${LEGACY_URL}/accounting/reports/fa03.xhtml?belnr=` + contract.belnr 
                                 +`&gjahr=` + contract.gjahr +`&bukrs=` + contract.bukrs}>
-                                  <Button>Фин. док</Button>
+                                  <Button>{messages['finDoc']}</Button>
                                 </a>
                               }
                               
@@ -268,7 +273,7 @@ class Fmcp extends Component {
                         
                         <Table.Row>
                             <Table.Cell>
-                              ФИО клиента
+                              {messages['fioClient']}
                             </Table.Cell>
                             <Table.Cell>
                               <Input fluid
@@ -280,7 +285,7 @@ class Fmcp extends Component {
                         
                         <Table.Row>
                             <Table.Cell>
-                              Дилер
+                              {messages['dealer']}
                             </Table.Cell>
                             <Table.Cell width="10">
                               <Input fluid
@@ -292,7 +297,7 @@ class Fmcp extends Component {
                         
                         <Table.Row>
                             <Table.Cell>
-                              Фин. агент
+                              {messages['finAgent']}
                             </Table.Cell>
                             <Table.Cell>
                               <Input fluid
@@ -303,8 +308,8 @@ class Fmcp extends Component {
                         </Table.Row>
                         
                         <Table.Row>
-                            <Table.Cell>
-                            Валюта
+                            <Table.Cell>                              
+                              {messages['waers']}
                             </Table.Cell>
                             <Table.Cell>
                               <Input fluid
@@ -316,7 +321,7 @@ class Fmcp extends Component {
                         
                         <Table.Row>
                             <Table.Cell>
-                              Цена
+                              {messages['price']}
                             </Table.Cell>
                             <Table.Cell>
                               <Input fluid
@@ -328,7 +333,7 @@ class Fmcp extends Component {
                         
                         <Table.Row>
                             <Table.Cell>
-                              Оплачено
+                              {messages['paid']}
                             </Table.Cell>
                             <Table.Cell>
                               <Input fluid
@@ -340,7 +345,7 @@ class Fmcp extends Component {
                         
                         <Table.Row>
                             <Table.Cell>
-                              Остаток
+                              {messages['remainder']}
                             </Table.Cell>
                             <Table.Cell>
                               <Input fluid
@@ -363,13 +368,15 @@ class Fmcp extends Component {
       if (isEmpty(psRows)){
         return "";
       }
+
+      const {messages} = this.props.intl
         return (
             
            
                 <Segment padded size="small">
                 
                   <Label color="yellow" ribbon>
-                    График платежей
+                    {messages['paymentSchedule']}
                   </Label>
                   <br />
                   <br />
@@ -377,11 +384,11 @@ class Fmcp extends Component {
                   
                                 <Table.Header>
                                     <Table.Row>
-                                        <Table.HeaderCell>Взнос</Table.HeaderCell>
-                                        <Table.HeaderCell>Дата платежа</Table.HeaderCell>
-                                        <Table.HeaderCell>Сумма оплаты</Table.HeaderCell>
-                                        <Table.HeaderCell>Оплачено</Table.HeaderCell>
-                                        <Table.HeaderCell>Оплачиваемая сумма</Table.HeaderCell>
+                                        <Table.HeaderCell>{messages['monthlyPayment']}</Table.HeaderCell>
+                                        <Table.HeaderCell>{messages['paymentDate']}</Table.HeaderCell>
+                                        <Table.HeaderCell>{messages['paymentAmount']}</Table.HeaderCell>
+                                        <Table.HeaderCell>{messages['paid']}</Table.HeaderCell>
+                                        <Table.HeaderCell>{messages['amount']}</Table.HeaderCell>
                                     </Table.Row>
                                 </Table.Header>
                                 <Table.Body>
@@ -392,7 +399,7 @@ class Fmcp extends Component {
                                       <Table.Row key={key}>                                      
                                         <Table.Cell textAlign="center">
                                           {key>0?key:''} 
-                                          {item.is_firstpayment === 1?'Перв. взнос':''}
+                                          {item.is_firstpayment === 1? messages['firstPayment']:''}
                                         </Table.Cell>
                                         <Table.Cell>
                                           {item.payment_date}
@@ -429,8 +436,9 @@ class Fmcp extends Component {
     }
     renderSave(){
       
+      const {messages} = this.props.intl
       const {hkontOptions,summa, hkont_d} = this.props.contract;
-
+      console.log(this.props);
         return (
             
                 <Table collapsing >
@@ -442,7 +450,7 @@ class Fmcp extends Component {
                                 <Table.Body>
                                     <Table.Row>
                                         <Table.Cell>
-                                          Касса/Банк
+                                          {messages['cashBank']}
                                         </Table.Cell>
 
                                         <Table.Cell>    
@@ -452,7 +460,7 @@ class Fmcp extends Component {
                                     </Table.Row>
                                     <Table.Row>
                                         <Table.Cell>
-                                          Сумма платежа
+                                          {messages['amount']}
                                         </Table.Cell>
 
                                         <Table.Cell>                                          
@@ -472,7 +480,7 @@ class Fmcp extends Component {
 
                                         <Table.Cell>                                          
                                           <Button icon labelPosition='left' primary size='small' onClick={()=>this.save()}>
-                                            <Icon name='save' size='large' />Сохранить
+                                            <Icon name='save' size='large' />{messages['save']}
                                           </Button>
                                         </Table.Cell>  
 
@@ -504,4 +512,4 @@ function mapStateToProps(state)
 
 
 
-export default connect(mapStateToProps,{ fetchFMCP, changeDynObj, clearDynObj, saveFMCP }) (Fmcp);
+export default connect(mapStateToProps,{ fetchFMCP, changeDynObj, clearDynObj, saveFMCP }) (injectIntl(Fmcp));

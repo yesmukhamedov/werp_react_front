@@ -43,6 +43,8 @@ export function signinUser({ username, password }, language) {
         // - save the JWT token
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('username', username);
+        localStorage.setItem('language', language);
+        localStorage.setItem('errorTableString', JSON.stringify(response.data.errorTable));
         // - update state to indicate user is authenticated
         dispatch(authUser(username));
         // - redirect to the route '/'

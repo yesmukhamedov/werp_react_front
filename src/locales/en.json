@@ -88,6 +88,9 @@
   "Crm.Wspace.CurrentDemo": "Current demonstrations",
   "Crm.Wspace.CurrentVisits": "Current visits",
   "Crm.Wspace.CreateFromArchive": "Create from archive",
+  "Crm.DemoArchiveTitle": "Group demo archive",
+  "Crm.RecoArchiveTitle": "Group recommendations archive",
+  "Crm.VisitArchiveTitle": "Group visits archive",
 
   "Form.CreatingReco": "Creating recommendation",
   "Form.CreatingRecoFromArchive": "Creating recommendation from archive",
@@ -95,6 +98,14 @@
   "Form.RecommenderFullName": "Recommender fullname",
   "Form.RecommenderAddData": "Recommender additional data",
   "Form.Wait": "Wait...",
+  "Form.ClientFullName": "Client fullname",
+  "Form.DateFrom": "Date from",
+  "Form.DateTo": "Date to",
+  "Form.DemoDateFrom": "Demo date from",
+  "Form.DemoDateTo": "Demo date to",
+  "Form.SaleDateFrom": "Sale date from",
+  "Form.SaleDateTo": "Sale date to",
+  "Form.Address": "Address",
 
   "Form.Reco.RecoName": "Fullname",
   "Form.Reco.Category": "Category",
@@ -103,5 +114,116 @@
   "Form.Reco.CallerIs": "Caller is",
   "Form.Reco.Note": "Note",
   "Form.Reco.PhoneNumber": "Phone number",
-  "Form.Reco.Error": "Error"
+  "Form.Reco.Error": "Error",
+  "Form.Visit.Creating": "Creating visit",
+  "Form.Visit.Editing": "Editing visit",
+  "Form.PhoneNumber": "Phone number",
+
+  "Table.ResponsibleStaff": "Responsible staff",
+  "Table.AppointerStaff": "Appointer",
+  "Table.ClientFullName": "Client fullname",
+  "Table.Date": "Date",
+
+  "Hr.Timesheet.StatusDescriptionTitle": "Signs and codes",
+
+
+
+  "awkey"           : "Reference document number and year",
+  "awtyp"           : "Operation type",
+  "belnr"           : "Document number",
+  "bktxt"           : "Description",
+  "blart"           : "Document type",
+  "bldat"           : "Document date",
+  "brnch"           : "Branch",
+  "budat"           : "Posting date",
+  "bukrs"           : "Company",
+  "business_area"   : "Business area",
+  "contract_number" : "Contract number",
+  "customer_id"     : "Customer ID",
+  "gjahr"           : "Document year",
+  "kursf"           : "Exchange rate",
+  "monat"           : "Month",
+  "stblg"           : "Canceled document number",
+  "stjah"           : "Canceled document year",
+  "storno"          : "Storno",
+  "tcode"           : "Transaction",
+  "usnam"           : "User ID",
+  "waers"           : "Currency",
+  "official"        : "Official",
+	"dep"             : "Department",
+	"zreg"            : "Reg. number"
+
+
+  ,"dealer"		: "Dealer"
+	,"finAgent"		: "Fin. agent"
+	,"fioClient"		: "Client Name"
+	,"price"	: "Price"
+	,"paid":"Paid"
+	,"remainder":"Remainder"
+	,"cashBank":"Cash/Bank"
+	,"amount":"Amount"
+	,"monthlyPayment":"Monthly Payment"
+	,"firstPayment":"First payment"
+	,"paymentDate":"Payment Date"
+	,"paymentAmount":"Payment Amount"
+	,"paymentSchedule":"Payment Schedule"
+	,"save":"Save"
+	,"search":"Search"
+	,"searchParameters":"Search Parameters"
+	,"mainInfos":"Main info"
+	,"finDoc":"Fin. doc"
+
+  
+  ,"regNumOrConNum":"Reg. num or Contract Num"
+  ,"transNameFmcp":"Receipt from Sales Contract"
+  ,"transNameFcis":"Employee acc.cash inquiry"
+  ,"header":"Header"
+	,"position":"Position"
+	,"operation":"Operation"
+  ,"employee":"Employee"
+  
+  ,"staff":"Staff"
+  ,"iinBin":"Iin/Bin"
+  ,"dismissed":"Dismissed"
+  ,"fio":"Full name"
+
+  ,"loadingText":"Loading..."
+  ,"noDataText":"No rows found"
+  ,"previousText":"Previous"
+  ,"nextText":"Next"
+  ,"rowsText":"rows"
+  ,"pageText":"Page"
+  ,"ofText":"of"
+
+  
+  
+
+	,"transNameFrcoln":"Collectors Statistics"
+	,"all":"All"
+	,"date":"Date"
+	,"state1":"State"
+	,"onBegOfMonth":"Till the beginning of the month"
+	,"onEndOfMonth":"Till the end of the month"
+	,"installments":"Installments"
+	,"in1Month":"In 1 month"
+	,"overallSum":"Overall Sum"
+	,"numOfSalesContracts":"Num. of Contracts"
+	,"plan":"Plan"
+	,"collected":"Collected"
+	,"details":"Details"
+	,"city":"City"
+	,"percent":"Percent"
+	,"overallAmount":"Overall Amount"
+	,"standard":"Standard"
+	,"problem":"Problem"
+	,"branches":"Branches"
+	,"finAgents":"Fin. agents"
+	,"salesContracts":"Sales Contracts"
+	,"contractDate":"Contract Date"
+	,"snNum":"SN number"
+	,"count":"Count"
+	,"period":"Period"
+	,"show":"Show"
+	,"payDebt":"Pay debt"
+	,"toEmployeeAccount":"To employee account"
 }

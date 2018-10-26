@@ -10,6 +10,7 @@ import {fetchGroupDealers} from '../../demo/actions/demoAction'
 import {fetchPhoneMeta} from '../../reco/actions/recoAction'
 import { connect } from 'react-redux'
 import matchSorter from 'match-sorter';
+import { injectIntl } from 'react-intl'
 
 class VisitArchivePage extends Component{
 
@@ -38,7 +39,7 @@ class VisitArchivePage extends Component{
         this.props.modalToggle(true)
   }
 
-  renderTable () {
+  renderTable (messages) {
     return (
       <div>
         <ReactTable
@@ -50,21 +51,21 @@ class VisitArchivePage extends Component{
               maxWidth: 70
             },
             {
-              Header: 'Клиент',
+              Header: messages['Table.Client'],
               accessor: 'clientName',
                 filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["clientName"] }),
                 filterAll: true,
             },
             {
-              Header: 'Адрес',
+              Header: messages['Table.Address'],
               accessor: 'address',
                 filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["address"] }),
                 filterAll: true
             },
             {
-              Header: 'Дата посещения',
+              Header: messages['Table.Date'],
               accessor: 'docDate',
               filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["docDate"] }),
@@ -72,7 +73,7 @@ class VisitArchivePage extends Component{
               Cell: row => moment(row.value).format('DD.MM.YYYY')
             },
             {
-              Header: 'Посетитель',
+              Header: messages['Table.Visitor'],
               accessor: 'visitorId',
                 minWidth: 150,
                 Cell: (row) => {
@@ -97,14 +98,14 @@ class VisitArchivePage extends Component{
                     </select>
             },
             {
-              Header: 'Примечание',
+              Header: messages['Table.Note'],
               accessor: 'note',
                 filterMethod: (filter, rows) =>
                     matchSorter(rows, filter.value, { keys: ["note"] }),
                 filterAll: true
             },
             {
-              Header: 'Действия',
+              Header: messages['Table.Actions'],
               accessor: 'id',
               Cell: row => (
                 <div>
@@ -132,17 +133,18 @@ class VisitArchivePage extends Component{
   }
 
   render () {
+      const {messages} = this.props.intl
     return (
       <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
         <Segment clearing>
           <Header as='h2' floated='left'>
-                        Список визитов группы
+              {messages['Crm.VisitArchiveTitle']}
           </Header>
             <Button className={'ui icon button primary right floated'} onClick={this.toCreate}>
-                <Icon name='plus' /> Добавить
+                <Icon name='plus' /> {messages['Table.Add']}
             </Button>
         </Segment>
-        {this.renderTable()}
+        {this.renderTable(messages)}
         <VisitCreateModal fromComponent="archive" />
       </Container>
     )
@@ -159,4 +161,4 @@ function mapStateToProps (state) {
 export default connect(mapStateToProps, {
     fetchArchive,modalToggle,setVisitForUpdate,blankForCreate,fetchGroupDealers,
     fetchPhoneMeta
-})(VisitArchivePage)
+})(injectIntl(VisitArchivePage))

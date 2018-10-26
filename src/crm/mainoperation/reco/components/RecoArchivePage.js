@@ -11,6 +11,7 @@ import RecoStatusLabel from './RecoStatusLabel';
 import {fetchRecoArchive,fetchRecoStatuses} from '../actions/recoAction';
 import {fetchGroupDealers} from '../../demo/actions/demoAction'
 import { connect } from 'react-redux'
+import { injectIntl } from 'react-intl'
 
 class RecoArchivePage extends Component{
 
@@ -58,17 +59,17 @@ class RecoArchivePage extends Component{
         this.props.fetchRecoArchive(params)
     }
 
-    renderTableHeader(){
+    renderTableHeader(messages){
         return (
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell>№</Table.HeaderCell>
-                    <Table.HeaderCell>ФИО супруг</Table.HeaderCell>
-                    <Table.HeaderCell>Отв. сотрудник</Table.HeaderCell>
-                    <Table.HeaderCell>Категория</Table.HeaderCell>
-                    <Table.HeaderCell>Статус</Table.HeaderCell>
-                    <Table.HeaderCell>Дата рекомендации</Table.HeaderCell>
-                    <Table.HeaderCell>Действия</Table.HeaderCell>
+                    <Table.HeaderCell>{messages['Table.ClientFullName']}</Table.HeaderCell>
+                    <Table.HeaderCell>{messages['Table.ResponsibleStaff']}</Table.HeaderCell>
+                    <Table.HeaderCell>{messages['Table.Category']}</Table.HeaderCell>
+                    <Table.HeaderCell>{messages['Table.Status']}</Table.HeaderCell>
+                    <Table.HeaderCell>{messages['Table.Date']}</Table.HeaderCell>
+                    <Table.HeaderCell>{messages['Table.Actions']}</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
         )
@@ -156,14 +157,14 @@ class RecoArchivePage extends Component{
         )
     }
 
-    getDealersSelect (dealers){
+    getDealersSelect (dealers, messages){
         return <Form.Select name="responsibleId" multiple={false}
             search={true}
-            label='Дилер'
-            options={dealers || []} placeholder='Дилер' onChange={this.handleDropdownChange}  />
+            label={messages['Form.Dealer']}
+            options={dealers || []} placeholder={messages['Form.Dealer']} onChange={this.handleDropdownChange}  />
     }
 
-    renderSearchPanel(){
+    renderSearchPanel(messages){
         return (
             <Form>
                 <Form.Group widths='equal'>
@@ -173,18 +174,18 @@ class RecoArchivePage extends Component{
                         name="statusIds"
                         multiple={true}
                         search={true}
-                        label='Статус'
-                        options={this.props.statuses || []} placeholder='Статус' onChange={this.handleDropdownChange}  />
+                        label={messages['Form.Status']}
+                        options={this.props.statuses || []} placeholder={messages['Form.Status']} onChange={this.handleDropdownChange}  />
 
-                    {this.props.dealers?this.getDealersSelect(this.props.dealers):''}
+                    {this.props.dealers?this.getDealersSelect(this.props.dealers,messages):''}
                 </Form.Group>
                 <Form.Group widths='equal'>
                     <Form.Field>
-                        <label>Дата С</label>
+                        <label>{messages['Form.SaleDateFrom']}</label>
                         <DatePicker
                             autoComplete="off"
                             label=""
-                            placeholderText={'Дата продажи С'}
+                            placeholderText={messages['Form.SaleDateFrom']}
                             showMonthDropdown showYearDropdown dropdownMode="select"
                             dateFormat="DD.MM.YYYY"
                             selected={this.state.queryParams.docDateFrom?moment(this.state.queryParams.docDateFrom):null}
@@ -192,22 +193,22 @@ class RecoArchivePage extends Component{
                         />
                     </Form.Field>
                     <Form.Field>
-                        <label>Дата По</label>
+                        <label>{messages['Form.SaleDateTo']}</label>
                         <DatePicker
                             autoComplete="off"
                             label=""
-                            placeholderText={'Дата продажи По'}
+                            placeholderText={messages['Form.SaleDateTo']}
                             showMonthDropdown showYearDropdown dropdownMode="select"
                             dateFormat="DD.MM.YYYY"
                             selected={this.state.queryParams.docDateTo?moment(this.state.queryParams.docDateTo):null}
                             onChange={(v) => this.handleChangeDate('docDateTo',v)}
                         />
                     </Form.Field>
-                    <Form.Input name="clientName" onChange={this.handleChange} fluid label='ФИО клиента' placeholder='ФИО клиента' />
-                    <Form.Input name="phoneNumber" onChange={this.handleChange}  fluid label='Тел. номер' placeholder='Тел. номер' />
+                    <Form.Input name="clientName" onChange={this.handleChange} fluid label={messages['Form.ClientFullName']} placeholder={messages['Form.ClientFullName']} />
+                    <Form.Input name="phoneNumber" onChange={this.handleChange}  fluid label={messages['Form.Reco.PhoneNumber']} placeholder={messages['Form.Reco.PhoneNumber']} />
                     <Form.Field>
                         <label>&nbsp;</label>
-                        <Button onClick={() => this.loadItems(0)}>Поиск</Button>
+                        <Button onClick={() => this.loadItems(0)}>{messages['Form.Search']}</Button>
                     </Form.Field>
                 </Form.Group>
 
@@ -244,10 +245,10 @@ class RecoArchivePage extends Component{
         </Table.Body>
     }
 
-    renderTable(){
+    renderTable(messages){
         return (
             <Table celled>
-                {this.renderTableHeader()}
+                {this.renderTableHeader(messages)}
                 {this.props.loader.active?this.renderLoader():this.renderTableBody()}
                 {this.renderTableFooter()}
             </Table>
@@ -255,18 +256,19 @@ class RecoArchivePage extends Component{
     }
 
     render(){
+        const {messages} = this.props.intl
         return (
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
                 <Segment clearing>
                     <Header as='h2' floated='left'>
-                        Архив рекомендации
+                        {messages['Crm.RecoArchiveTitle']}
                     </Header>
                     <Link className={'ui icon button primary right floated'} to={`/crm/reco/create`}>
-                        <Icon name='plus' /> Добавить из архива
+                        <Icon name='plus' /> {messages['Crm.Wspace.CreateFromArchive']}
                     </Link>
                 </Segment>
-                {this.renderSearchPanel()}
-                {this.renderTable()}
+                {this.renderSearchPanel(messages)}
+                {this.renderTable(messages)}
             </Container>
         )
     }
@@ -284,4 +286,4 @@ function mapStateToProps (state) {
 
 export default connect(mapStateToProps, {
     fetchRecoArchive,fetchRecoStatuses, fetchGroupDealers
-})(RecoArchivePage)
+})(injectIntl(RecoArchivePage))
