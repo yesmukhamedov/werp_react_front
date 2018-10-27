@@ -10,6 +10,7 @@ import {f4FetchDepartmentList, f4FetchCurrencyList, f4FetchBusinessAreaList2, f4
 import {amsgSave} from  '../../../accounting/accounting_action';
 import { modifyLoader } from '../../../general/loader/loader_action';
 import {changefaBkpf, clearfaBkpf} from '../../../finance/fa_action';
+import { injectIntl } from 'react-intl';
  
 class Amsg extends Component {
 
@@ -216,6 +217,7 @@ class Amsg extends Component {
           zregInfo:             { readOnly:false, disabled:false }
           
         }
+        const {messages} = this.props.intl 
 
         return (
             
@@ -252,7 +254,7 @@ class Amsg extends Component {
 
                 <OutputErrors errors={this.state.errors}/>
                 
-                <FaHeader {...this.props} bkpfInfo={bkpfInfo}/>
+                <FaHeader {...this.props} bkpfInfo={bkpfInfo} messages={messages}/>
                 <AmsgPosition 
                   brnch={this.props.bkpf.brnch} 
                   bukrs={this.props.bkpf.bukrs} 
@@ -309,4 +311,4 @@ class Amsg extends Component {
 export default connect(mapStateToProps,{  
   changefaBkpf, clearfaBkpf, amsgSave, modifyLoader,
   f4FetchWerksBranchList, f4FetchDepartmentList, f4FetchCurrencyList, f4FetchBusinessAreaList2, f4FetchExchangeRateNational
-}) (Amsg);
+}) (injectIntl(Amsg));
