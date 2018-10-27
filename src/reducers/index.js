@@ -34,6 +34,7 @@ import faReducer from '../finance/fa_reducer';
 import accountingReducer from '../accounting/accounting_reducer';
 import dtskcTransactionReducer from '../general/dtskc/reducers';
 import dtskdeoTranscationReducer from '../general/dtskdep/reducers';
+import messgrTransactionReducer from '../dit/message/messgr/reducers';
 import hrDocReducer from '../hr/mainoperation/document/reducers/hrDocReducer';
 import documentReducer from '../documents/mainoperation/reducers/documentReducer'
 import hrSalaryReducer from '../hr/mainoperation/salary/reducers/hrSalaryReducer'
@@ -73,6 +74,7 @@ const appReducer = combineReducers({
   accounting: accountingReducer,
   dtskcTransaction: dtskcTransactionReducer,
   dtskdepTransaction: dtskdeoTranscationReducer,
+  messgrTransaction: messgrTransactionReducer,
   hrDocReducer: hrDocReducer,
   documentReducer: documentReducer,
   hrSalaryReducer: hrSalaryReducer,
