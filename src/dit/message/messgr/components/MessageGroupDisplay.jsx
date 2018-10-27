@@ -60,6 +60,8 @@ export default class MessageGroupDisplay extends Component {
                 </Header.Content>
               </Header>
               <Button
+                style={{ background: 'rgba(84,170,169, 1)', color: 'white' }}
+                size="tiny"
                 floated="right"
                 onClick={() => this.open('add', null)}
                 icon="plus"
