@@ -1,10 +1,10 @@
 import React from 'react';
 import ReactTable from 'react-table';
-import { Button } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 
 const MessageGroupTableDisplay = (props) => {
-  const { messageGroupList = [], removeMessageGroup, fetchMessageGroups } = props;
+  const { messageGroupList = [], removeMessageGroup, fetchMessageGroups, open } = props;
 
   const columns = [
     {
@@ -17,14 +17,31 @@ const MessageGroupTableDisplay = (props) => {
       accessor: 'groupName',
     },
     {
-      maxWidth: 50,
-      Cell: row => (
-        <Button
-          icon="remove"
-          size="mini"
-          onClick={() => removeMessageGroup(row.original.groupId, () => fetchMessageGroups())}
-        />
-      ),
+      accessor: 'groupId',
+      maxWidth: 100,
+      Cell: (row) => {
+        const { groupId, groupName } = row.original;
+        const modalData = {
+          groupId,
+          groupName,
+        };
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <Button.Group icon size="mini">
+              <Button
+                icon="edit"
+                size="mini"
+                onClick={() => open('edit', modalData)}
+              />
+              <Button
+                icon="remove"
+                size="mini"
+                onClick={() => removeMessageGroup(groupId, () => fetchMessageGroups())}
+              />
+            </Button.Group>
+          </div>
+        );
+      },
     },
   ];
 

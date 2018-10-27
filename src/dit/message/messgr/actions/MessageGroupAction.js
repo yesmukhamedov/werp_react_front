@@ -69,3 +69,26 @@ export function createMessageGroup(groupName, successCallback) {
       });
   };
 }
+
+export function updateMessageGroup(groupId, groupName, successCallback) {
+  const req = axios.put(
+    `${messageGroupUrl}/${groupId}`, groupName,
+    {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    },
+  );
+  return (dispatch) => {
+    req
+      .then(() => {
+        dispatch(notify('success', 'Message group was updated.', 'Успешно'));
+        if (successCallback) {
+          successCallback();
+        }
+      })
+      .catch(({ response = {} }) => {
+        dispatch(notify('error', `Message group was not updated! ${response}`, 'Ошибка'));
+      });
+  };
+}

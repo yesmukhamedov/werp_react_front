@@ -15,6 +15,8 @@ export default class MessageGroupDisplay extends Component {
     super(props);
     this.state = {
       modalOpen: false,
+      modalType: '',
+      modalData: null, 
     };
 
     this.open = this.open.bind(this);
@@ -26,8 +28,8 @@ export default class MessageGroupDisplay extends Component {
     fetchMessageGroups();
   }
 
-  open() {
-    this.setState({ modalOpen: true });
+  open(modalType, modalData) {
+    this.setState({ modalOpen: true, modalType, modalData });
   }
 
   close() {
@@ -59,7 +61,7 @@ export default class MessageGroupDisplay extends Component {
               </Header>
               <Button
                 floated="right"
-                onClick={this.open}
+                onClick={() => this.open('add', null)}
                 icon="plus"
                 labelPosition="left"
                 content="Добавить"
@@ -69,15 +71,16 @@ export default class MessageGroupDisplay extends Component {
           <Grid.Row>
             <Grid.Column>
               <Segment>
-                <MessageGroupTableContainer />
+                <MessageGroupTableContainer open={this.open} />
               </Segment>
             </Grid.Column>
           </Grid.Row>
         </Grid>
         <AddMessageGroupModalContainer
-          open={this.open}
           close={this.close}
           isOpen={this.state.modalOpen}
+          modalType={this.state.modalType}
+          modalData={this.state.modalData}
         />
       </Container>
     );

@@ -11,11 +11,8 @@ import { TextInputFormField } from '../../../../../utils/formFields';
 
 const validate = (values) => {
   const errors = {};
-  if (!values.user) {
-    errors.user = 'Объязательное поле для заполнения';
-  }
-  if (!values.department) {
-    errors.department = 'Объязательное поле для заполнения';
+  if (!values.groupName) {
+    errors.groupName = 'Объязательное поле для заполнения';
   }
   return errors;
 };
@@ -29,8 +26,12 @@ class AddMessageGroupModalDisplay extends PureComponent {
   }
 
   handleFormSubmit(formValues) {
-    const { createMessageGroup, fetchMessageGroups } = this.props;
-    createMessageGroup(formValues, () => fetchMessageGroups());
+    const { createMessageGroup, updateMessageGroup, fetchMessageGroups, modalType, modalData } = this.props;
+    if (modalType === 'add') {
+      createMessageGroup(formValues, () => fetchMessageGroups());
+    } else if (modalType === 'edit') {
+      updateMessageGroup(modalData.groupId, formValues, () => fetchMessageGroups());
+    }
     this.handleFormClose();
   }
 
@@ -43,11 +44,14 @@ class AddMessageGroupModalDisplay extends PureComponent {
     const {
       isOpen,
       close,
+      modalType,
       handleSubmit,
+      pristine, 
+      submitting 
     } = this.props;
     return (
       <Modal size="tiny" open={isOpen} onClose={close}>
-        <Modal.Header>Add message group</Modal.Header>
+        <Modal.Header>{modalType === 'add' ? 'Add' : 'Edit'} message group</Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
@@ -67,9 +71,10 @@ class AddMessageGroupModalDisplay extends PureComponent {
                 positive
                 icon="checkmark"
                 labelPosition="right"
-                content="Создать"
+                content="OK"
                 type="submit"
                 float="left"
+                disabled={pristine || submitting}
               />
             </Form>
           </Modal.Description>
@@ -82,4 +87,5 @@ class AddMessageGroupModalDisplay extends PureComponent {
 export default reduxForm({
   form: 'MessgrAddMessageGroupForm',
   validate,
+  enableReinitialize: true,
 })(AddMessageGroupModalDisplay);
