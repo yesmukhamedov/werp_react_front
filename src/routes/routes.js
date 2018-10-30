@@ -324,6 +324,7 @@ const trupdate = Loadable({
 
 
 const getComponent = {
+    DitTransactionList:trlist,
     Ditaub:AsyncAssignUserBranch,
     Hrb02:AsyncHrb02,
 
