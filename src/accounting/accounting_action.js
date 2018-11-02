@@ -172,7 +172,7 @@ export function fetchARLI(a_bukrs,a_branchList,a_dateFrom,a_dateTo, a_callBackFu
             params:
             {
                 bukrs: a_bukrs,
-                branchList: a_branchList,
+                branchList: a_branchList.join(),
                 dateFrom: a_dateFrom,
                 dateTo: a_dateTo
             }

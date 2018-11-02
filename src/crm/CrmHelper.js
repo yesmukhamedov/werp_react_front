@@ -44,9 +44,16 @@ export const CALL_RESULT_NOT_AVAILABLE = 4;
 export const CALL_RESULT_NO_ANSWER = 5;
 
 
-export function renderRecoCategoryBtn(categoryId){
-    let category = _.find(RECO_CATEGORIES,{'key': categoryId})
+export function renderRecoCategoryBtn(categoryId, categoryName){
+    if(categoryName){
+        return <Button
+            size='tiny'
+            basic color={RECO_CATEGORY_COLORS[categoryId] || 'grey'}>
+            {categoryName}
+        </Button>
+    }
 
+    let category = _.find(RECO_CATEGORIES,{'key': categoryId})
     return <Button
         size='tiny'
         basic color={RECO_CATEGORY_COLORS[categoryId] || 'grey'}>

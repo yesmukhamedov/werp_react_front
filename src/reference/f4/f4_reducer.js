@@ -90,11 +90,12 @@ export default function (state=INITIAL_STATE, action)
             return {...state,exRateNational:[]}
 
         case F4_FETCH_DEPARTMENT_LIST:
+            let language = localStorage.getItem('language');
             let departmentOptions = action.departmentList.map(item => {
                 return {
                     key: item.id,
                     value: item.id,
-                    text: item.name_ru
+                    text: item['name_'+language]
                 }
             });
             return {...state,departmentList:action.departmentList, departmentOptions};

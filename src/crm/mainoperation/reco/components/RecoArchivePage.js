@@ -75,7 +75,7 @@ class RecoArchivePage extends Component{
         )
     }
 
-    renderTableRow(item){
+    renderTableRow(item,messages){
         return <Table.Row key={item.id}>
             <Table.Cell>{item.id}</Table.Cell>
             <Table.Cell>{item.clientName}</Table.Cell>
@@ -87,7 +87,7 @@ class RecoArchivePage extends Component{
             <Table.Cell>{moment(item.docDate).format('DD.MM.YYYY')}</Table.Cell>
             <Table.Cell>
                 <Link target={'_blank'} className={'ui icon button mini'} to={`/crm/reco/view/` + item.id}>
-                    Просмотр
+                    {messages['Table.View']}
                 </Link>
             </Table.Cell>
         </Table.Row>
@@ -140,7 +140,7 @@ class RecoArchivePage extends Component{
     }
 
 
-    renderTableBody(){
+    renderTableBody(messages){
         if(!this.props.items || this.props.items.length === 0){
             return <Table.Body>
                 <Table.Row>
@@ -151,7 +151,7 @@ class RecoArchivePage extends Component{
         return (
             <Table.Body>
                 {this.props.items.map((item) => {
-                    return this.renderTableRow(item);
+                    return this.renderTableRow(item,messages);
                 })}
             </Table.Body>
         )
@@ -216,12 +216,12 @@ class RecoArchivePage extends Component{
         )
     }
 
-    renderTableFooter(){
+    renderTableFooter(messages){
         return (
             <Table.Footer>
                 <Table.Row>
                     <Table.HeaderCell colSpan='2'>
-                        Количество: {this.props.meta.totalRows}
+                        {messages['overallSum']}: {this.props.meta.totalRows}
                     </Table.HeaderCell>
                     <Table.HeaderCell colSpan='6'>
                         <LazyPagination
@@ -249,8 +249,8 @@ class RecoArchivePage extends Component{
         return (
             <Table celled>
                 {this.renderTableHeader(messages)}
-                {this.props.loader.active?this.renderLoader():this.renderTableBody()}
-                {this.renderTableFooter()}
+                {this.props.loader.active?this.renderLoader():this.renderTableBody(messages)}
+                {this.renderTableFooter(messages)}
             </Table>
         )
     }

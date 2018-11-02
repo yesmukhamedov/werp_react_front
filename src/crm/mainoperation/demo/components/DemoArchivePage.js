@@ -215,7 +215,7 @@ class DemoArchivePage extends Component{
             <Table.Footer>
                 <Table.Row>
                     <Table.HeaderCell colSpan='2'>
-                        Количество: {this.props.meta.totalRows}
+                        {messages['overallSum']}: {this.props.meta.totalRows}
                     </Table.HeaderCell>
                     <Table.HeaderCell colSpan='6'>
                         <LazyPagination

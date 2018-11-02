@@ -22,6 +22,7 @@ export const WSP_FETCH_CURRENT_VISITS = 'WSP_FETCH_CURRENT_VISITS'
 export const WSP_HANDLE_FILTER = 'WSP_HANDLE_FILTER'
 export const WSP_FETCH_KPI = 'WSP_FETCH_KPI'
 export const WSP_CLEAR_STATE = 'WSP_CLEAR_STATE'
+export const WSP_RECO_ARCHIVED = 'WSP_RECO_ARCHIVED'
 
 export function toggleRecoListModal (flag){
     return {
@@ -211,6 +212,10 @@ export function archiveReco(recoId){
             }
         }).then(({data}) => {
             dispatch(modifyLoader(false));
+            dispatch({
+                type: WSP_RECO_ARCHIVED,
+                payload: recoId
+            })
         }).catch((e) => {
             dispatch(modifyLoader(false));
             handleError(e,dispatch)

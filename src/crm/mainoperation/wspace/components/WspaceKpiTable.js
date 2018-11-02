@@ -2,7 +2,7 @@ import React from 'react'
 import { Table } from 'semantic-ui-react'
 
 export default function WspaceKpiTable(props){
-    const {kpiData} = props
+    const {kpiData, messages} = props
     if(!kpiData){
         return <h3>Нет данныхs!</h3>
     }
@@ -12,11 +12,11 @@ export default function WspaceKpiTable(props){
     return <Table celled padded>
         <Table.Header>
             <Table.Row>
-                <Table.HeaderCell singleLine>ФИО</Table.HeaderCell>
-                <Table.HeaderCell>Категория</Table.HeaderCell>
-                <Table.HeaderCell>Балл за звонок</Table.HeaderCell>
-                <Table.HeaderCell>Количество звонков</Table.HeaderCell>
-                <Table.HeaderCell>Набранный балл ({kpiData.totalScore})</Table.HeaderCell>
+                <Table.HeaderCell singleLine>{messages['fio']}</Table.HeaderCell>
+                <Table.HeaderCell>{messages['Table.Category']}</Table.HeaderCell>
+                <Table.HeaderCell>{messages['Crm.PointPerCall']}</Table.HeaderCell>
+                <Table.HeaderCell>{messages['Crm.CallCount']}</Table.HeaderCell>
+                <Table.HeaderCell>{messages['Crm.Score']} ({kpiData.totalScore})</Table.HeaderCell>
             </Table.Row>
         </Table.Header>
 

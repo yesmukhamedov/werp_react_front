@@ -125,6 +125,49 @@
 	"Table.Date": "Дата",
 
 	"Hr.Timesheet.StatusDescriptionTitle": "Обозначения и коды",
+	"Crm.Recommendation": "Рекомендация",
+	"Crm.ToCurrentList": "В список текущих",
+	"Crm.ToList": "В список",
+	"Crm.ToArchiveList": "В Архив",
+	"Crm.ToEdit": "Редактировать",
+	"Crm.ToPrint": "Печать",
+	"Crm.ToAddReco":"Добавить рекомендации",
+	"Crm.ToAddDemo":"Добавить демо",
+	"Crm.ToDelete": "Удалить",
+	"Crm.BasicInfo": "Основная информация",
+	"Crm.Owner": "Владелец",
+	"Crm.OwnerBranch": "Филиал владельца",
+	"Crm.AddInfo": "Additional info",
+	"Crm.DemoDateTime": "Дата-время демонстрации",
+	"Crm.Democard": "Демокарта",
+	"Crm.Source": "Источник",
+	"Crm.Reason": "Причина",
+	"Crm.DateOfSale": "Дата продажи",
+	"Crm.Demo": "Демо",
+	"Crm.Visit": "Визит",
+	"Crm.VersionForPrint": "Версия для печати",
+	"Crm.DemoSecretary": "Демо секретарь",
+	"Crm.ListOfRecommendations": "Список рекомендации",
+	"Crm.DemoEdition": "Редактирование демонстрации",
+	"Crm.Location": "Местоположение",
+	"Crm.HistoryOfNumber": "История номера",
+	"Crm.AddingCall": "Добавление звонка",
+	"Crm.CallDateTime": "Дата-время звонка",
+	"Crm.Called": "Звонил",
+	"Crm.RejectionReason": "Причина отказа",
+	"Crm.RecallDateTime": "Дата-время перезвона",
+	"Crm.NoteForCall": "Примечание звонка",
+	"Crm.NoteForDemo": "Примечание для демо",
+	"Crm.ResultOfCall": "Результат звонка",
+	"Crm.Open": "Открыть",
+	"Crm.ToArchive": "Отправить в архив",
+	"Crm.From": "ОТ",
+	"Crm.PointPerCall": "Балл за звонок",
+	"Crm.CallCount": "Количество звонков",
+	"Crm.Score": "Набранный балл",
+	"Crm.ConfirmDelete": "Действительно хотите удалить?",
+	"Crm.VisitInfo": "Данные по визиту",
+	"Crm.Select": "Выберите",
 
 	"awkey"           : "Ссылка на документ",
 	"awtyp"           : "Тип операции(Клиент, Поставщик)",
@@ -219,7 +262,9 @@
 	,"period":"Период"
 	,"show":"Показать"
 	,"payDebt":"Оплатить долг"
-	,"toEmployeeAccount":"Деньги на хранение"
+	,"toEmployeeAccount":"Деньги на хранение",
+	"cancel": "Отмена",
+	"close": "Закрыть"
 
 
 }

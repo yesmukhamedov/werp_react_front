@@ -11,6 +11,7 @@ import ChildCallsTable from '../../call/components/ChildCallsTable'
 import ChildVisitsTable from '../../visit/components/ChildVisitsTable'
 import RecoViewTable from './RecoViewTable'
 import VisitCreateModal from '../../visit/components/VisitCreateModal'
+import { injectIntl } from 'react-intl'
 
 class RecoViewPage extends Component {
   constructor (props) {
@@ -69,37 +70,38 @@ class RecoViewPage extends Component {
     </Modal>
   }
 
-    renderActions(){
+    renderActions(messages){
         return <div>
             <Link className={'ui icon button'} to={`/crm/reco/current`}>
-                В список текущих
+                {messages['Crm.ToCurrentList']}
             </Link>
 
             <Link className={'ui icon button'} to={`/crm/reco/archive`}>
-                В Архив
+                {messages['Crm.ToArchiveList']}
             </Link>
             {/*<Button onClick={this.prepareForVisitCreate}>Добавить визит</Button>*/}
 
-            <Button onClick={() => this.props.toggleRecoUpdateModal(true)}>Редактировать</Button>
-            <Button color={'red'} onClick={() => this.deleteModalTrigger(true)}>Удалить</Button>
+            <Button onClick={() => this.props.toggleRecoUpdateModal(true)}>{messages['Crm.ToEdit']}</Button>
+            <Button color={'red'} onClick={() => this.deleteModalTrigger(true)}>{messages['Crm.ToDelete']}</Button>
     </div>
   }
 
   render () {
         const {reco} = this.props
+      const {messages} = this.props.intl
     return (
       <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
         <Segment clearing>
-          <Header as='h2' floated='left'>Рекомендация № {this.props.reco.id}</Header>
+          <Header as='h2' floated='left'>{messages['Crm.Recommendation']} № {this.props.reco.id}</Header>
         </Segment>
-        {this.renderActions()}
+        {this.renderActions(messages)}
         <RecoUpdateModal />
         <Divider />
           <VisitCreateModal/>
         <Grid>
           <Grid.Row>
             <Grid.Column width={6}>
-                <RecoViewTable reco={reco}/>
+                <RecoViewTable reco={reco} messages={messages}/>
             </Grid.Column>
 
             <Grid.Column width={10}>
@@ -125,4 +127,4 @@ function mapStateToProps (state) {
 export default connect(mapStateToProps, {
         fetchSingleReco,toggleRecoUpdateModal,fetchCallResults,fetchReasons,deleteReco,
         blankForCreate,modalToggle
-})(RecoViewPage)
+})(injectIntl(RecoViewPage))

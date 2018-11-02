@@ -30,6 +30,7 @@ class VisitCreateModal extends Component {
       let localVisit = Object.assign({},this.state.localVisit)
       let client = Object.assign({},localVisit.client)
       const {phoneMeta} = this.props
+      const {locale} = this.props.intl
       let hidePhoneInput = this.state.isUpdate || (client && client.id && typeof client.id !== 'undefined')
         return <Form>
           <Form.Group widths='equal'>
@@ -52,6 +53,7 @@ class VisitCreateModal extends Component {
                 <Form.Field required>
                     <label>{messages['Form.Date']}</label>
                     <DatePicker
+                        locale={locale}
                         label=''
                         placeholderText={messages['Form.Date']}
                         showMonthDropdown showYearDropdown dropdownMode='select'
@@ -62,7 +64,7 @@ class VisitCreateModal extends Component {
                 <Form.Select
                     value={localVisit.visitorId}
                     required fluid selection
-                    label={messages['Form.Visitor']} options={this.props.dealers}
+                    label={messages['Table.Visitor']} options={this.props.dealers}
                     onChange={(e, v) => this.handleChange('visitorId', v)} />
 
             </Form.Group>
@@ -76,7 +78,7 @@ class VisitCreateModal extends Component {
 
               <Form.Field control={TextArea}
                           onChange={(e, o) => this.handleChange('note', o)}
-                          label={messages['Form.Note']} placeholder={messages['Form.Note']}
+                          label={messages['Table.Note']} placeholder={messages['Table.Note']}
                           value={localVisit.note || ''}
               />
 
@@ -197,7 +199,7 @@ class VisitCreateModal extends Component {
           {this.renderForm(messages)}
         </Modal.Content>
         <Modal.Actions>
-          <Button negative onClick={() => this.props.modalToggle(false)}>Отмена</Button>
+          <Button negative onClick={() => this.props.modalToggle(false)}>{messages['cancel']}</Button>
           <Button positive icon='checkmark'
                   onClick={this.saveVisit}
                   labelPosition='right' content={messages['Form.Save']} />

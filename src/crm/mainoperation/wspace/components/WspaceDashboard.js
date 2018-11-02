@@ -47,7 +47,7 @@ class WspaceDashboard extends Component {
                 </Segment>
             </Grid.Column>
             <Grid.Column width={16}>
-                <WspaceKpiTable kpiData={kpiData}/>
+                <WspaceKpiTable messages={messages} kpiData={kpiData}/>
             </Grid.Column>
         </Grid.Row>
         <Divider/>

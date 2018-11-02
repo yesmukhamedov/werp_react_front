@@ -310,7 +310,10 @@ const AsyncMyDocsListPage = Loadable({
     loading: () => <LoadingPage />
 });
 
-
+const AsyncFa02 = Loadable({
+  loader: () => import('../finance/mainoperation/fa02/fa02' /* webpackChunkName: "fa02" */),
+  loading: () => <LoadingPage />
+});
 
 const AsyncFa03 = Loadable({
   loader: () => import('../finance/mainoperation/fa03/fa03' /* webpackChunkName: "fa03" */),
@@ -330,6 +333,7 @@ const trupdate = Loadable({
 
 
 const getComponent = {
+    DitTransactionList:trlist,
     Ditaub:AsyncAssignUserBranch,
     Hrb02:AsyncHrb02,
 
@@ -410,6 +414,7 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/general/dtskc" component={DtskcContainer} />
       <Route path="/general/dtskdep" component={DtskdepContainer} />
       <Route path="/finance/mainoperation/fa03" component={AsyncFa03} />
+      <Route path="/finance/mainoperation/fa02" component={AsyncFa02} />
       <Route path="/documents/mydocs" component={AsyncMyDocsListPage}/>
       
       {/* Transactions */}
