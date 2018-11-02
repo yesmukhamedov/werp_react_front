@@ -7,6 +7,9 @@ class DemoPrintPage extends Component{
 
     constructor(props) {
         super(props)
+        this.state = {
+            messages: props.messages
+        }
     }
 
     render(){
@@ -14,21 +17,22 @@ class DemoPrintPage extends Component{
         if(!demo.id){
             return null
         }
+        const {messages} = this.state
         return (
             <Card fluid>
                 <Card.Content>
                 <Image src={'/assets/img/demo-card-logo-aura.png'}/>
                 </Card.Content>
                 <Card.Content>
-                {this.renderTable(demo,this.props.recommender)}
+                {this.renderTable(demo,this.props.recommender,messages)}
                 <br/>
-                {this.renderTable(demo,this.props.recommender)}
+                {this.renderTable(demo,this.props.recommender,messages)}
                 </Card.Content>
             </Card>
         )
     }
 
-    renderTable(demo,recommender){
+    renderTable(demo,recommender, messages){
         let parentReco = Object.assign({},demo.parentReco)
         let phones = Object.assign([],parentReco.phones)
         let recomName = ''
@@ -41,15 +45,15 @@ class DemoPrintPage extends Component{
                             <Table.Body>
                                 <Table.Row>
                                     <Table.Cell>
-                                        <h3>Демокарта №{demo.id}</h3>
+                                        <h3>{messages['Crm.Democard']} №{demo.id}</h3>
                                     </Table.Cell>
                                     <Table.Cell>
-                                        <h4><i>Дилер:</i> {demo.dealerName}</h4>
+                                        <h4><i>{messages['dealer']}:</i> {demo.dealerName}</h4>
                                     </Table.Cell>
                                 </Table.Row>
                                 <Table.Row>
                                     <Table.Cell>
-                                        <Header style={{marginLeft:20}} as={'h4'}>Дата-время проведения</Header>
+                                        <Header style={{marginLeft:20}} as={'h4'}>{messages['Crm.DemoDateTime']}</Header>
                                     </Table.Cell>
                                     <Table.Cell>
                                         {moment(demo.dateTime).format('DD.MM.YYYY H:mm')}
@@ -58,7 +62,7 @@ class DemoPrintPage extends Component{
 
                                 <Table.Row>
                                     <Table.Cell style={{textAlign:'right'}}>
-                                        <Header style={{marginLeft:20}} as={'h4'}>Демо секретарь</Header>
+                                        <Header style={{marginLeft:20}} as={'h4'}>{messages['Crm.DemoSecretary']}</Header>
                                     </Table.Cell>
                                     <Table.Cell>
                                         {demo.appointerName}
@@ -68,7 +72,7 @@ class DemoPrintPage extends Component{
 
                                 <Table.Row>
                                     <Table.Cell>
-                                        <Header style={{marginLeft:20}} as={'h4'}>Рекомендатель</Header>
+                                        <Header style={{marginLeft:20}} as={'h4'}>{messages['Form.RecommenderFullName']}</Header>
                                     </Table.Cell>
                                     <Table.Cell>
                                         {recomName},
@@ -80,7 +84,7 @@ class DemoPrintPage extends Component{
 
                                 <Table.Row>
                                     <Table.Cell>
-                                        <Header style={{marginLeft:20}} as={'h4'}>Род. отношение</Header>
+                                        <Header style={{marginLeft:20}} as={'h4'}>{messages['Form.Reco.Relative']}</Header>
                                     </Table.Cell>
                                     <Table.Cell>{parentReco.relative}</Table.Cell>
                                 </Table.Row>
@@ -88,7 +92,7 @@ class DemoPrintPage extends Component{
                                 <Table.Row>
 
                                 <Table.Cell style={{textAlign:'right'}}>
-                                        <Header style={{marginLeft:20}} as={'h4'}>ФИО клиента</Header>
+                                        <Header style={{marginLeft:20}} as={'h4'}>{messages['Table.ClientFullName']}</Header>
                                     </Table.Cell>
                                     <Table.Cell>{demo.clientName}</Table.Cell>
 
@@ -96,7 +100,7 @@ class DemoPrintPage extends Component{
 
                                 <Table.Row>
                                     <Table.Cell>
-                                        <Header style={{marginLeft:20}} as={'h4'}>Тел. номер клиента</Header>
+                                        <Header style={{marginLeft:20}} as={'h4'}>{messages['Table.PhoneNumber']}</Header>
                                     </Table.Cell>
                                     <Table.Cell>
                                         {phones.map(p => {
@@ -107,7 +111,7 @@ class DemoPrintPage extends Component{
                                 <Table.Row>
 
                                     <Table.Cell style={{textAlign:'right'}}>
-                                        <Header style={{marginLeft:20}} as={'h4'}>Примечание</Header>
+                                        <Header style={{marginLeft:20}} as={'h4'}>{messages['Table.Note']}</Header>
                                     </Table.Cell>
                                     <Table.Cell>
                                         {demo.note}
@@ -117,7 +121,7 @@ class DemoPrintPage extends Component{
 
                                 <Table.Row>
                                     <Table.Cell>
-                                        <Header style={{marginLeft:20}} as={'h4'}>Адрес клиента</Header>
+                                        <Header style={{marginLeft:20}} as={'h4'}>{messages['Table.Address']}</Header>
                                     </Table.Cell>
                                     <Table.Cell>{demo.address}</Table.Cell>
                                 </Table.Row>

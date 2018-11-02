@@ -8,6 +8,7 @@ import moment from 'moment'
 import "react-datepicker/dist/react-datepicker.css"
 import {CALL_RESULT_REFUSE,CALL_RESULT_RECALL,CALL_RESULT_DEMO,LOCATION_OPTIONS,CALL_RESULT_NOT_AVAILABLE,CALL_RESULT_NO_ANSWER} from '../../../crmUtil'
 import {renderCallResultLabel} from '../../../CrmHelper'
+import { injectIntl } from 'react-intl'
 require('moment/locale/ru');
 
 class WspacePhoneModal extends Component{
@@ -74,11 +75,13 @@ class WspacePhoneModal extends Component{
             historyItems = []
         }
 
+        const {messages} = this.props.intl
+
         return <Table celled>
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell>#</Table.HeaderCell>
-                    <Table.HeaderCell>Компания</Table.HeaderCell>
+                    <Table.HeaderCell>{messages['bukrs']}</Table.HeaderCell>
                     <Table.HeaderCell>Филиал</Table.HeaderCell>
                     <Table.HeaderCell>Дата-время звонка</Table.HeaderCell>
                     <Table.HeaderCell>Звонил</Table.HeaderCell>
@@ -274,28 +277,29 @@ class WspacePhoneModal extends Component{
     }
 
     render (){
+        const {messages} = this.props.intl
         const {reco, currentPhone,recommender} = this.props
         const panes = [
-            { menuItem: 'История номера', render: this.renderNumberHistory },
-            { menuItem: 'Добавление звонка', render: this.renderCallForm}
+            { menuItem: messages['Crm.HistoryOfNumber'], render: this.renderNumberHistory },
+            { menuItem: messages['Crm.AddingCall'], render: this.renderCallForm}
         ]
         return <Modal size={'fullscreen'} open={this.props.opened} closeOnDimmerClick={false} onClose={this.handleClose}>
                     <Modal.Header>
                         <Grid centered columns={2}>
                             <Grid.Column style={{fontSize:'12px'}}>
                                 <Segment>
-                                    Рекомендатель: <i style={{fontWeight:'normal'}}>{recommender.clientName}</i><br/>
-                                    Тел. ном: {recommender.phones?recommender.phones.map(p => <span key={p.id} style={{marginRight:'5px'}}>{p.phoneNumber}</span>):''}<br/>
-                                    Адр.: <i style={{fontWeight:'normal'}}>{recommender.address}</i><br/>
-                                    Результат: <i style={{fontWeight:'normal'}}>{recommender.demoResultName}</i><br/>
-                                    Доп. инфо: <i style={{fontWeight:'normal'}}>{recommender.addInfo}</i><br/>
+                                    {messages['RecommenderFullName']}: <i style={{fontWeight:'normal'}}>{recommender.clientName}</i><br/>
+                                    {messages['Table.PhoneNumber']}: {recommender.phones?recommender.phones.map(p => <span key={p.id} style={{marginRight:'5px'}}>{p.phoneNumber}</span>):''}<br/>
+                                    {messages['Table.Address']}: <i style={{fontWeight:'normal'}}>{recommender.address}</i><br/>
+                                    {messages['Table.Result']}: <i style={{fontWeight:'normal'}}>{recommender.demoResultName}</i><br/>
+                                    {messages['Crm.AddInfo']}: <i style={{fontWeight:'normal'}}>{recommender.addInfo}</i><br/>
                                 </Segment>
                             </Grid.Column>
                             <Grid.Column style={{fontSize:'12px'}}>
                                 <Segment>
-                                    Клиент: <i style={{fontWeight:'normal'}}>{reco.clientName}</i><br/>
-                                    Тек. номер: <i style={{fontWeight:'normal'}}>{currentPhone.phoneNumber}</i><br/>
-                                    Проф: <i style={{fontWeight:'normal'}}>{reco.profession}</i>; Род: <i style={{fontWeight:'normal'}}>{reco.relativeName}</i>
+                                    {messages['fioClient']}: <i style={{fontWeight:'normal'}}>{reco.clientName}</i><br/>
+                                    {messages['Table.PhoneNumber']}: <i style={{fontWeight:'normal'}}>{currentPhone.phoneNumber}</i><br/>
+                                    Prof: <i style={{fontWeight:'normal'}}>{reco.profession}</i>; {messages['Form.Reco.Relative']}: <i style={{fontWeight:'normal'}}>{reco.relativeName}</i>
 
                                 </Segment>
                             </Grid.Column>
@@ -305,7 +309,7 @@ class WspacePhoneModal extends Component{
                         <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
                     </Modal.Content>
                     <Modal.Actions>
-                        <Button onClick={this.handleClose} negative>Закрыть</Button>
+                        <Button onClick={this.handleClose} negative>{messages['close']}</Button>
                     </Modal.Actions>
                 </Modal>
     }
@@ -327,4 +331,4 @@ function mapStateToProps (state){
 
 export default connect(mapStateToProps,{
     togglePhoneModal,saveCall
-})(WspacePhoneModal)
+})(injectIntl(WspacePhoneModal))

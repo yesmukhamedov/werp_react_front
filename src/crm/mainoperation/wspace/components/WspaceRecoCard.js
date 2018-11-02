@@ -249,7 +249,7 @@ function renderByDate(props){
 }
 
 function renderByReco(props){
-    const {item} = props
+    const {item,messages} = props
     let {parentReco} = item
     if(!parentReco){
         parentReco = {}
@@ -263,7 +263,7 @@ function renderByReco(props){
                 <span style={{float:'left'}}>
                     <Popup
                         trigger={<Label><i>{formatDMYMS(item.dateTime)}</i></Label>}
-                        content="Дата-время демонстрации"
+                        content={messages['Crm.DemoDateTime']}
                         basic
                     />
                 </span>
@@ -272,7 +272,7 @@ function renderByReco(props){
         </Card.Content>
         <Card.Content extra>
             <span style={{fontSize:'11px',color:'black'}}>
-                        <strong><i>Адрес: </i></strong>
+                        <strong><i>{messages['Table.Address']}: </i></strong>
                 {_.truncate(item.address,{length: 150})}
                 </span>
         </Card.Content>
@@ -282,7 +282,7 @@ function renderByReco(props){
                 <Icon name='users' /> {item.recoCount}
             </Label>
             <Label as={'a'} onClick={() => props.openRecoListModal(item)}>
-                <Icon name='unhide' /> Обзвонить
+                <Icon name='unhide' /> {messages['Table.RingUp']}
             </Label>
 
         </Card.Content>
@@ -290,7 +290,7 @@ function renderByReco(props){
 }
 
 function renderMovedReco(props){
-    const {item} = props
+    const {item,messages} = props
     return <Card>
         <Card.Content>
             <Card.Header className='reco-card-header'>

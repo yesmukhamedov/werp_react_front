@@ -125,6 +125,32 @@
 	"Table.Date": "Дата",
 
 	"Hr.Timesheet.StatusDescriptionTitle": "Обозначения и коды",
+	"Crm.Recommendation": "Рекомендация",
+	"Crm.ToCurrentList": "В список текущих",
+	"Crm.ToArchiveList": "В Архив",
+	"Crm.ToEdit": "Редактировать",
+	"Crm.ToPrint": "Печать",
+	"Crm.ToAddReco":"Добавить рекомендации",
+	"Crm.ToAddDemo":"Добавить демо",
+	"Crm.ToDelete": "Удалить",
+	"Crm.BasicInfo": "Основная информация",
+	"Crm.Owner": "Владелец",
+	"Crm.OwnerBranch": "Филиал владельца",
+	"Crm.AddInfo": "Additional info",
+	"Crm.DemoDateTime": "Дата-время демонстрации",
+	"Crm.Democard": "Демокарта",
+	"Crm.Source": "Источник",
+	"Crm.Reason": "Причина",
+	"Crm.DateOfSale": "Дата продажи",
+	"Crm.Demo": "Демо",
+	"Crm.Visit": "Визит",
+	"Crm.VersionForPrint": "Версия для печати",
+	"Crm.DemoSecretary": "Демо секретарь",
+	"Crm.ListOfRecommendations": "Список рекомендации",
+	"Crm.DemoEdition": "Редактирование демонстрации",
+	"Crm.Location": "Местоположение",
+	"Crm.HistoryOfNumber": "История номера",
+	"Crm.AddingCall": "Добавление звонка",
 
 	"awkey"           : "Ссылка на документ",
 	"awtyp"           : "Тип операции(Клиент, Поставщик)",
@@ -219,7 +245,9 @@
 	,"period":"Период"
 	,"show":"Показать"
 	,"payDebt":"Оплатить долг"
-	,"toEmployeeAccount":"Деньги на хранение"
+	,"toEmployeeAccount":"Деньги на хранение",
+	"cancel": "Отмена",
+	"close": "Закрыть"
 
 
 }

@@ -182,6 +182,7 @@ class WspaceMainPage extends Component {
                       handleFilter = {this.props.handleFilter}
                       menu={this.state.currentMenu} filters={filters}/>
                   <WspaceRecoList
+                            messages={messages}
                             recoCardMenuHandle={this.recoCardMenuHandle}
                             openRecoListModal={this.openRecoListModal}
                             menu={this.state.currentMenu}

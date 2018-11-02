@@ -10,12 +10,12 @@ import moment from 'moment'
 export default function ChildDemosTable(props){
 
     //Список демо
-    const {items} = props;
+    const {items, messages} = props;
 
     return <Card fluid>
         <Card.Content>
             <Card.Header>
-                Демонстрации
+                {messages['Crm.Demonstrations']}
             </Card.Header>
         </Card.Content>
         <Card.Content>
@@ -23,11 +23,11 @@ export default function ChildDemosTable(props){
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell>#</Table.HeaderCell>
-                        <Table.HeaderCell>Филиал</Table.HeaderCell>
-                        <Table.HeaderCell>Клиент</Table.HeaderCell>
-                        <Table.HeaderCell>Дата-время</Table.HeaderCell>
-                        <Table.HeaderCell>Звонил(а)</Table.HeaderCell>
-                        <Table.HeaderCell>Результат</Table.HeaderCell>
+                        <Table.HeaderCell>{messages['brnch']}</Table.HeaderCell>
+                        <Table.HeaderCell>{messages['fioClient']}</Table.HeaderCell>
+                        <Table.HeaderCell>{messages['Crm.DemoDateTime']}</Table.HeaderCell>
+                        <Table.HeaderCell>{messages['Table.AppointerStaff']}</Table.HeaderCell>
+                        <Table.HeaderCell>{messages['Table.Result']}</Table.HeaderCell>
                         <Table.HeaderCell></Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>

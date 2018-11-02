@@ -123,8 +123,32 @@
 	"Table.Date": "Date",
 
 	"Hr.Timesheet.StatusDescriptionTitle": "Signs and codes",
-
-
+	"Crm.Recommendation": "Recommendation",
+	"Crm.ToCurrentList": "List of current recommendations",
+	"Crm.ToArchiveList": "List of archived",
+	"Crm.ToEdit": "Edit",
+	"Crm.ToDelete": "Delete",
+	"Crm.ToPrint": "Print",
+	"Crm.ToAddReco":"Add recommendations",
+	"Crm.ToAddDemo":"Add demo",
+	"Crm.BasicInfo": "Basic info",
+	"Crm.Owner": "Owner",
+	"Crm.OwnerBranch": "Branch of the owner",
+	"Crm.AddInfo": "Additional info",
+	"Crm.DemoDateTime": "Date time of demo",
+	"Crm.Democard": "Demo Card",
+	"Crm.Source": "Source",
+	"Crm.Reason": "Reason of",
+	"Crm.DateOfSale": "Date of sale",
+	"Crm.Demo": "Demo",
+	"Crm.Visit": "Visit",
+	"Crm.VersionForPrint": "Version for print",
+	"Crm.DemoSecretary": "Demo secretary",
+	"Crm.ListOfRecommendations": "List of recommendations",
+	"Crm.DemoEdition": "Editing demo",
+	"Crm.Location": "Location",
+	"Crm.HistoryOfNumber": "Call history of number",
+	"Crm.AddingCall": "Add call",
 	
   
 	"awkey"           : "Belge referansı",
@@ -222,5 +246,7 @@
 	,"period":"Period"
 	,"show":"Show"
 	,"payDebt":"Pay debt"
-	,"toEmployeeAccount":"To employee account"
+	,"toEmployeeAccount":"To employee account",
+	"cancel": "Cancel",
+	"close": "Close"
 }

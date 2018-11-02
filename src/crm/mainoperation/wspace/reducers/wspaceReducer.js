@@ -14,7 +14,8 @@ import {
         WSP_SAVED_CALL,
         WSP_FETCH_CURRENT_DEMOS,
         WSP_FETCH_CURRENT_VISITS,WSP_FETCH_VISIT_RECOS,
-        WSP_HANDLE_FILTER,WSP_FETCH_KPI,WSP_CLEAR_STATE
+        WSP_HANDLE_FILTER,WSP_FETCH_KPI,WSP_CLEAR_STATE,
+        WSP_RECO_ARCHIVED
 } from '../actions/wspaceAction'
 
 import {CRM_VISIT_CREATE} from '../../visit/actions/visitAction'
@@ -144,12 +145,27 @@ export default function (state=INITIAL_STATE, action)
         case WSP_TOGGLE_PHONE_MODAL:
             return {...state,phoneModalOpened:action.payload}
 
+        case WSP_RECO_ARCHIVED:
+            return {...state,currentRecommenderRecos: removeRecoFromListById(action.payload,state.currentRecommenderRecos)}
+
         case WSP_SAVED_CALL:
             let demoDto = Object.assign({},action.payload.demo)
             let callDto = Object.assign({},action.payload.call)
             let todCalls = Object.assign({},state.todayCallsByResult)
             let dashbCallMenu = Object.assign([],state.dashboardCallMenus)
             let todDemos = Object.assign([],state.todayDemos)
+
+            let currentRecommenderRecos = state.currentRecommenderRecos;
+            if(action.payload.reco && action.payload.reco.id){
+                currentRecommenderRecos = []
+                for(let k in state.currentRecommenderRecos){
+                    if(state.currentRecommenderRecos[k]['id'] === action.payload.reco.id){
+                        currentRecommenderRecos[k] = action.payload.reco
+                    } else {
+                        currentRecommenderRecos[k] = state.currentRecommenderRecos[k]
+                    }
+                }
+            }
 
             if(demoDto && demoDto['id']){
                 todDemos.push(demoDto)
@@ -184,7 +200,13 @@ export default function (state=INITIAL_STATE, action)
                 //todCalls.push(callDto)
             }
 
-            return {...state, phoneModalOpened: false, todayCallsByResult: todCalls, dashboardCallMenus:dashbCallMenu, todayDemos: todDemos}
+            return {...state,
+                        phoneModalOpened: false,
+                        todayCallsByResult: todCalls,
+                        dashboardCallMenus:dashbCallMenu,
+                        todayDemos: todDemos,
+                        currentRecommenderRecos:currentRecommenderRecos
+            }
 
         case WSP_HANDLE_FILTER:
             let {key,name,value} = action
@@ -222,5 +244,18 @@ export default function (state=INITIAL_STATE, action)
         default:
             return state;
     }
+}
+
+const removeRecoFromListById = (recoId, recoList) => {
+    let out = []
+    for(let k in recoList){
+        if(recoList[k]['id'] === recoId){
+            continue
+        }
+
+        out.push(recoList[k])
+    }
+
+    return out
 }
 
