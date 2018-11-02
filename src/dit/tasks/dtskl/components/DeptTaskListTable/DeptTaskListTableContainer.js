@@ -39,6 +39,34 @@ export const messages = defineMessages({
     id: 'Table.Recipient',
     defaultMessage: 'Recipient',
   },
+  loadingText: {
+    id: 'Table.Loading',
+    defaultMessage: "Loading..."
+  },
+  noDataText: {
+    id: 'Table.NoData',
+    defaultMessage: "No rows found"
+  },
+  previousText : {
+    id: 'Table.Previous',
+    defaultMessage: "Previous"
+  },
+  nextText: {
+    id: 'Table.Next',
+    defaultMessage: "Next"
+  },
+  rowsText: {
+    id: 'Table.Rows',
+    defaultMessage: "rows"
+  },
+  pageText: {
+    id: 'Table.Page',
+    defaultMessage: "Page"
+  },
+  ofText: {
+    id: 'Table.Of',
+    defaultMessage: "of"
+  }
 });
 
 function mapStateToProps(state) {

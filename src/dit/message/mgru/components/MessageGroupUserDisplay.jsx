@@ -7,10 +7,10 @@ import {
   Grid,
   Icon,
 } from 'semantic-ui-react';
-import MessageGroupTableContainer from './MessageGroupTable/MessageGroupTableContainer';
-import AddMessageGroupModalContainer from './MessageGroupModal/AddMessageGroupModalContainer';
+import MessageGroupUserTableContainer from './MessageGroupUserTable/MessageGroupUserTableContainer';
+import AddMessageGroupUserModalContainer from './MessageGroupUserModal/AddMessageGroupUserModalContainer';
 
-export default class MessageGroupDisplay extends Component {
+export default class MessageGroupUserDisplay extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -24,8 +24,8 @@ export default class MessageGroupDisplay extends Component {
   }
 
   componentWillMount() {
-    const { fetchMessageGroups } = this.props;
-    fetchMessageGroups();
+    const { fetchMessageGroupUsers } = this.props;
+    fetchMessageGroupUsers();
   }
 
   open(modalType, modalData) {
@@ -39,7 +39,7 @@ export default class MessageGroupDisplay extends Component {
   render() {
     return (
       <Container
-        text
+        // text
         style={{
           marginTop: '2em',
           marginBottom: '2em',
@@ -53,9 +53,9 @@ export default class MessageGroupDisplay extends Component {
               <Header as="h2">
                 <Icon name="settings" />
                 <Header.Content>
-                  Группа сообщения
+                  Получатели
                   <Header.Subheader>
-                    Управление группой сообщений
+                    Управление получателями в группе
                   </Header.Subheader>
                 </Header.Content>
               </Header>
@@ -73,12 +73,12 @@ export default class MessageGroupDisplay extends Component {
           <Grid.Row>
             <Grid.Column>
               <Segment>
-                <MessageGroupTableContainer open={this.open} />
+                <MessageGroupUserTableContainer open={this.open} />
               </Segment>
             </Grid.Column>
           </Grid.Row>
         </Grid>
-        <AddMessageGroupModalContainer
+        <AddMessageGroupUserModalContainer
           close={this.close}
           isOpen={this.state.modalOpen}
           modalType={this.state.modalType}

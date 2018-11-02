@@ -147,6 +147,12 @@ const AsyncMessageGroupPage = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncMessageGroupUserPage = Loadable({
+  loader: () =>
+    import('../dit/message/mgru/components/MessageGroupUserContainer' /* webpackChunkName: "MessageGroupUserPage" */),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncRecoCurrentPage = Loadable({
         loader: () => import('../crm/mainoperation/reco/components/RecoCurrentPage' /* webpackChunkName: "RecoCurrentPage" */),
     loading: () => <LoadingPage />
@@ -396,7 +402,8 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/dit/dtskrep" component={persistPath(AsyncTaskMonitorPage)} />
       <Route path="/dit/dtskl"   component={persistPath(AsyncDeptTaskListPage)} />
       <Route path="/dit/dtskredit/:id"   component={AsyncTaskRecEditPage} />
-      <Route path="/dit/messgr"   component={persistPath(AsyncMessageGroupPage)} />
+      <Route path="/dit/messgr" component={persistPath(AsyncMessageGroupPage)} />
+      <Route path="/dit/mgru" component={persistPath(AsyncMessageGroupUserPage)} />
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
       <Route path="/hr/doc/create/:type" component={AsyncHrDocCreatePage} />
       <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />

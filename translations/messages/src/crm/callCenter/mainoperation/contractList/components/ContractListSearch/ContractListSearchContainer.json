@@ -1,0 +1,18 @@
+[
+  {
+    "id": "Form.State",
+    "defaultMessage": "State"
+  },
+  {
+    "id": "Form.DateFrom",
+    "defaultMessage": "From"
+  },
+  {
+    "id": "Form.DateTo",
+    "defaultMessage": "To"
+  },
+  {
+    "id": "Form.DateError",
+    "defaultMessage": "Select date"
+  }
+]

@@ -34,5 +34,33 @@
   {
     "id": "Table.Recipient",
     "defaultMessage": "Recipient"
+  },
+  {
+    "id": "Table.Loading",
+    "defaultMessage": "Loading..."
+  },
+  {
+    "id": "Table.NoData",
+    "defaultMessage": "No rows found"
+  },
+  {
+    "id": "Table.Previous",
+    "defaultMessage": "Previous"
+  },
+  {
+    "id": "Table.Next",
+    "defaultMessage": "Next"
+  },
+  {
+    "id": "Table.Rows",
+    "defaultMessage": "rows"
+  },
+  {
+    "id": "Table.Page",
+    "defaultMessage": "Page"
+  },
+  {
+    "id": "Table.Of",
+    "defaultMessage": "of"
   }
 ]

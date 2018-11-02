@@ -1,0 +1,42 @@
+[
+  {
+    "id": "Table.SnContract",
+    "defaultMessage": "SN contract"
+  },
+  {
+    "id": "Table.Priority",
+    "defaultMessage": "Priority"
+  },
+  {
+    "id": "Table.Modified",
+    "defaultMessage": "Modified"
+  },
+  {
+    "id": "Table.Total",
+    "defaultMessage": "Total"
+  },
+  {
+    "id": "Table.ContractDate",
+    "defaultMessage": "Contract date"
+  },
+  {
+    "id": "Table.Fio",
+    "defaultMessage": "FIO"
+  },
+  {
+    "id": "Table.Product",
+    "defaultMessage": "Product"
+  },
+  {
+    "id": "Table.DealerFio",
+    "defaultMessage": "Dealer fio"
+  },
+  {
+    "id": "Table.Operator",
+    "defaultMessage": "Operator"
+  },
+  {
+    "id": "Table.All",
+    "defaultMessage": "All"
+  }
+]

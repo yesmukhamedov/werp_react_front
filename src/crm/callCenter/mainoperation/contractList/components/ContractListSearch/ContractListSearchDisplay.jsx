@@ -38,8 +38,9 @@ class ContractListSearchDisplay extends Component {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     const {
-      handleSubmit, pristine, submitting, reset, company, branchOptions,
+      handleSubmit, pristine, submitting, reset, company, branchOptions, messages,
     } = this.props;
     const allOpt = { key: -1, text: 'Все', value: -1 };
     if (this.props.directories && this.props.companyOptions) {
@@ -52,7 +53,7 @@ class ContractListSearchDisplay extends Component {
                   required
                   name="company"
                   component={DropdownFormField}
-                  label="Компания"
+                  label={formatMessage(messages.company)}
                   opts={this.props.companyOptions}
                 />
               </Grid.Column>
@@ -60,7 +61,7 @@ class ContractListSearchDisplay extends Component {
                 <Field
                   name="branch"
                   component={DropdownFormField}
-                  label="Филиал"
+                  label={formatMessage(messages.branch)}
                   opts={company ? [allOpt, ...branchOptions[company]] : []}
                 />
               </Grid.Column>
@@ -68,7 +69,7 @@ class ContractListSearchDisplay extends Component {
                 <Field
                   name="state"
                   component={DropdownFormField}
-                  label="Состояние"
+                  label={formatMessage(messages.state)}
                   opts={[allOpt, ...this.props.directories.stateOptions]}
                 />
               </Grid.Column>
@@ -76,7 +77,7 @@ class ContractListSearchDisplay extends Component {
                 <Field
                   required
                   name="startDate"
-                  label="с"
+                  label={formatMessage(messages.dateFrom)}
                   component={DatePickerFormField}
                   autoComplete="off"
                 />
@@ -85,7 +86,7 @@ class ContractListSearchDisplay extends Component {
                 <Field
                   required
                   name="endDate"
-                  label="до"
+                  label={formatMessage(messages.dateTo)}
                   component={DatePickerFormField}
                   autoComplete="off"
                 />
@@ -93,7 +94,7 @@ class ContractListSearchDisplay extends Component {
               <Grid.Column width={2}>
                 <Form.Group widths="equal">
                   <Form.Button
-                    content="Поиск"
+                    content={formatMessage(messages.search)}
                     type="submit"
                     loading={submitting}
                     disabled={pristine || submitting}
@@ -101,7 +102,7 @@ class ContractListSearchDisplay extends Component {
                       { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
                   />
                   <Form.Button
-                    content="Сброс"
+                    content={formatMessage(messages.search)}
                     type="button"
                     disabled={pristine || submitting}
                     style={
@@ -129,11 +130,12 @@ ContractListSearchDisplay.propTypes = {
   branchOptions: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
 };
 
-function validate(formProps) {
+function validate(formProps, state) {
+  const { formatMessage } = state.intl;
   const error = {};
 
   if (!formProps.company) {
-    error.company = 'Выберите компанию';
+    error.company = formatMessage({ id: 'Form.CompanyError' });
   }
 
   // if (!formProps.branch) {
@@ -141,11 +143,11 @@ function validate(formProps) {
   // }
 
   if (!formProps.startDate) {
-    error.startDate = 'Выберите дату';
+    error.startDate = formatMessage({ id: 'Form.DateError' });
   }
 
   if (!formProps.endDate) {
-    error.endDate = 'Выберите дату';
+    error.endDate = formatMessage({ id: 'Form.DateError' });
   }
 
   return error;
