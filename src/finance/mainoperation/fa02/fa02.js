@@ -2,26 +2,21 @@ import React,{ PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Container, Button, Table, Dropdown, Icon, Grid, Segment, Input, Header, Label } from 'semantic-ui-react';
 import {handleFocus} from '../../../utils/helpers';
-import {clearDynObj, fetchFA03} from '../../fa_action';
-import Fa03Header from './fa03Header'
+import {clearDynObj, fetchFA03, changeDynObj, saveFA02, cancelFA02} from '../../fa_action';
+import Fa03Header from '../fa03/fa03Header'
 import '../../fa.css'
-import Fa03Position from './fa03Position';
-import PaymentSchedule from './paymentSchedule';
-import Fa03RelatedDocs from './fa03RelatedDocs';
+import Fa03Position from '../fa03/fa03Position';
+import PaymentSchedule from '../fa03/paymentSchedule';
+import Fa03RelatedDocs from '../fa03/fa03RelatedDocs';
 import queryString from 'query-string';
-import { Link } from 'react-router-dom';
 import { modifyLoader } from '../../../general/loader/loader_action';
 
 require('moment/locale/ru');
-
-  
-
-class Fa03 extends PureComponent {
+class Fa02 extends PureComponent {
     constructor(props){
         super(props);
         this.onInputChange = this.onInputChange.bind(this);
-
-        
+        this.onInputChangeData = this.onInputChangeData.bind(this);        
 
         var date = new Date(), y = date.getFullYear();
 
@@ -56,9 +51,24 @@ class Fa03 extends PureComponent {
         this.setState({searchParameters});
     }
 
-    
-
-    
+    onInputChangeData(value,stateFieldName,index){
+        // let bkpf = {};
+        // let bseg = [];
+        let faDynamicObject = {};
+        // console.log(value,stateFieldName,index)
+        if (stateFieldName==="bktxt"){
+            faDynamicObject = {...this.props.faDynamicObject};
+            faDynamicObject.bkpf[stateFieldName]=value;
+            this.props.changeDynObj(faDynamicObject)
+        }
+        else if (stateFieldName==="sgtxt"){
+            faDynamicObject = {...this.props.faDynamicObject};
+            faDynamicObject.bseg[index][stateFieldName]=value;
+            this.props.changeDynObj(faDynamicObject)
+        }
+        // let searchParameters = {...this.state.searchParameters,[stateFieldName]:value};
+        // this.setState({searchParameters});
+    }    
 
     render(){
         const {belnr,gjahr,bukrs} = this.state.searchParameters;
@@ -66,19 +76,36 @@ class Fa03 extends PureComponent {
               
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}} >
                 <Header as="h2" block>
-                    Просмотр Фин. Док.
+                    Изменить Фин. Док.
                 </Header>
-                
                 <Segment padded size="small">
-                    <Link className={'ui icon button primary'}  to={`/finance/mainoperation/fa02?belnr=`+belnr+`&bukrs=`+bukrs+`&gjahr=`+gjahr}>
-                        Edit
-                    </Link>                               
+                    <Button icon labelPosition='left' primary size='small' onClick={()=>{
+                                        this.props.modifyLoader(true);
+                                        this.props.saveFA02(
+                            this.props.faDynamicObject.bkpf.bukrs, 
+                            this.props.faDynamicObject.bkpf.belnr,
+                            this.props.faDynamicObject.bkpf.gjahr,
+                            this.props.faDynamicObject.bkpf.bktxt,
+                            this.props.faDynamicObject.bseg
+                            )}}>
+                        <Icon name='save' size='large' />Сохранить
+                    </Button>
+                    
+                    <Button icon labelPosition='left' primary size='small' onClick={()=>{ 
+                        this.props.modifyLoader(true);
+                        this.props.cancelFA02(
+                            this.props.faDynamicObject.bkpf.bukrs, 
+                            this.props.faDynamicObject.bkpf.belnr,
+                            this.props.faDynamicObject.bkpf.gjahr)
+                            
+                            }}>
+                        <Icon name='save' size='large' />Cancel
+                    </Button>                                    
                 </Segment>
                 <Segment padded size="small">                 
                     <Label color="red" ribbon>
                         Параметры поиска
                     </Label>
-
                     
                     <Table collapsing >
                         <Table.Body>
@@ -105,7 +132,7 @@ class Fa03 extends PureComponent {
                                 </Table.Cell>     
                                 <Table.Cell>
                                     <Button icon labelPosition='left' primary size='small' onClick={()=>{
-                                        this.props.modifyLoader(true);                                                                   
+                                        this.props.modifyLoader(true);
                                         this.props.fetchFA03(this.state.searchParameters)}}>
                                         <Icon name='search' size='large' />Поиск
                                     </Button>
@@ -127,8 +154,11 @@ class Fa03 extends PureComponent {
                     stornoOriginalBelnr={this.props.stornoOriginalBelnr}
                     stornoOriginalGjahr={this.props.stornoOriginalGjahr}
                     stornoOriginalBukrs={this.props.stornoOriginalBukrs}
+                    onInputChangeData={(value,stateFieldName,index)=>this.onInputChangeData(value,stateFieldName,index)}
+                    trans = "FA02"
                 />
-                <Fa03Position bseg={this.props.bseg} bkpf={this.props.bkpf} />
+                <Fa03Position bseg={this.props.bseg} bkpf={this.props.bkpf} 
+                onInputChangeData={(value,stateFieldName,index)=>this.onInputChangeData(value,stateFieldName,index)}  trans = "FA02"/>
                 <PaymentSchedule ps={this.props.ps} />
             </Container>
   
@@ -156,8 +186,9 @@ function mapStateToProps(state)
     stornoOriginalBelnr:state.fa.dynamicObject.stornoOriginalBelnr, 
     stornoOriginalGjahr:state.fa.dynamicObject.stornoOriginalGjahr, 
     stornoOriginalBukrs:state.fa.dynamicObject.stornoOriginalBukrs,
-    relatedDocs:state.fa.dynamicObject.relatedDocs
+    relatedDocs:state.fa.dynamicObject.relatedDocs,
+    faDynamicObject:state.fa.dynamicObject
   };
 }
 
-export default connect(mapStateToProps,{ fetchFA03, clearDynObj, modifyLoader}) (Fa03);
+export default connect(mapStateToProps,{ fetchFA03, clearDynObj, changeDynObj, saveFA02, cancelFA02, modifyLoader}) (Fa02);
