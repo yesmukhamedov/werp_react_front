@@ -33,7 +33,7 @@ class WspaceMainPage extends Component {
       this.state = {
         currentStaff:{},
         currentMenu: MENU_DASHBOARD,
-          dividerTitle: 'Действии на сегодня'
+          dividerTitle: '#'
       }
 
       this.onSelectStaff = this.onSelectStaff.bind(this)
@@ -266,6 +266,7 @@ closeRecoListModal = () => {
           <Divider horizontal>{this.state.dividerTitle}</Divider>
           {this.renderContent()}
           <WspaceRecoListModal
+              messages={messages}
               recoCardMenuHandle={this.recoCardMenuHandle}
               loaders={this.props.loaders}
               items={this.props.currentRecommenderRecos}

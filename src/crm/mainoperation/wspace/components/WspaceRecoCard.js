@@ -36,13 +36,13 @@ export default function WspaceRecoCard(props){
 }
 
 function renderRecosInModal(props){
-    const {item} = props
+    const {item, messages} = props
     switch (item.statusId){
         case RECO_STATUS_NEW:
-            return renderNewReco(item)
+            return renderNewReco(item,messages)
 
         case RECO_STATUS_PHONED:
-            return renderPhonedReco(item,(e,v) => props.recoCardMenuHandle(e,v))
+            return renderPhonedReco(item,(e,v) => props.recoCardMenuHandle(e,v),messages)
     }
     return <Card>
             <Card.Content>
@@ -52,7 +52,7 @@ function renderRecosInModal(props){
                 <Card.Meta>
                     {item.callDate?<Popup style={{float:'left'}}
                            trigger={<Label color={'blue'} size={'small'}>{formatDMYMS(item.callDate)}</Label>}
-                           content="Дата-время перезвона"
+                           content={messages['Crm.RecallDateTime']}
                            basic
                     />:''}
 
@@ -60,17 +60,17 @@ function renderRecosInModal(props){
                 </Card.Meta>
                 <Card.Description>
                         <span style={{fontSize:'11px'}}>
-                            {item.note} <a href="#" onClick={() => console.log('Read More...')}>полностью</a>
+                            {item.note}
                     </span>
                 </Card.Description>
             </Card.Content>
         <Card.Content extra  style={{fontSize:'11px',color:'black'}}>
                 {renderRecoStatusLabel(item.statusId,item.statusName)}
 
-            {item.relativeName?<strong><i>Род:</i></strong>:''}
+            {item.relativeName?<strong><i>{messages['Form.Reco.Relative']}:</i></strong>:''}
             {item.relativeName?' ' + item.relativeName+';':''}
             <br/>
-            {item.district?<strong><i>Район:</i></strong>:''}
+            {item.district?<strong><i>{messages['Form.Reco.District']}:</i></strong>:''}
             {item.district?' ' + item.district+';':''}
         </Card.Content>
         <Card.Content extra>
@@ -85,7 +85,7 @@ function renderRecosInModal(props){
         </Card>
 }
 
-function renderPhonedReco(item,recoCardMenuHandle){
+function renderPhonedReco(item,recoCardMenuHandle, messages){
     let lastNote = ''
     let recallDate = ''
     for(let k in item.calls){
@@ -108,11 +108,11 @@ function renderPhonedReco(item,recoCardMenuHandle){
                     <Dropdown.Menu className='right'>
                         <Dropdown.Item onClick={(e,d) => recoCardMenuHandle('view',item.id)}>
                             <Icon name={'eye'}/>
-                            Открыть
+                            {messages['Crm.Open']}
                         </Dropdown.Item>
                         <Dropdown.Item onClick={(e,d) => recoCardMenuHandle('to_archive',item.id)}>
                             <Icon name={'archive'}/>
-                            В архив
+                            {messages['Crm.ToArchive']}
                         </Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
@@ -121,7 +121,7 @@ function renderPhonedReco(item,recoCardMenuHandle){
                 <span style={{float:'left'}}>
                     {recallDate?<Popup
                             trigger={<Label color={'blue'}>{formatDMYMS(recallDate)}</Label>}
-                            content="Дата-время перезвона"
+                            content={messages['Crm.RecallDateTime']}
                             basic
                         />:''}
                 </span>
@@ -130,10 +130,10 @@ function renderPhonedReco(item,recoCardMenuHandle){
             </Card.Meta>
         </Card.Content>
         <Card.Content extra  style={{fontSize:'11px',color:'black'}}>
-            {item.relativeName?<strong><i>Род:</i></strong>:''}
+            {item.relativeName?<strong><i>{messages['Form.Reco.Relative']}:</i></strong>:''}
             {item.relativeName?' ' + item.relativeName+';':''}
             <br/>
-            {item.district?<strong><i>Район:</i></strong>:''}
+            {item.district?<strong><i>{messages['Form.Reco.District']}:</i></strong>:''}
             {item.district?' ' + item.district+';':''}
         </Card.Content>
         <Card.Content extra  style={{fontSize:'11px',color:'black'}}>
@@ -158,7 +158,7 @@ function renderPhonedReco(item,recoCardMenuHandle){
 
 
 
-            {item.relativeName?<strong><i>Род:</i></strong>:''}
+            {item.relativeName?<strong><i>{messages['Form.Reco.Relative']}:</i></strong>:''}
             {item.relativeName?' ' + item.relativeName+';':''}
         </Card.Content>
         <Card.Content extra>
@@ -167,7 +167,7 @@ function renderPhonedReco(item,recoCardMenuHandle){
     </Card>
 }
 
-function renderNewReco(item){
+function renderNewReco(item, messages){
     return <Card>
         <Card.Content>
             <Card.Header>
@@ -185,12 +185,12 @@ function renderNewReco(item){
         <Card.Content extra  style={{fontSize:'11px',color:'black'}}>
             {renderRecoStatusLabel(item.statusId,item.statusName)}<br/>
 
-            {item.relativeName?<strong><i>Род:</i></strong>:''}
+            {item.relativeName?<strong><i>{messages['Form.Reco.Relative']}:</i></strong>:''}
             {item.relativeName?' ' + item.relativeName+';':''}<br/>
-            {item.district?<strong><i>Район:</i></strong>:''}
+            {item.district?<strong><i>{messages['Form.Reco.District']}:</i></strong>:''}
             {item.district?' ' + item.district+';':''}<br/>
 
-            {item.note?<strong><i>Прим: </i></strong>:''}
+            {item.note?<strong><i>{messages['Table.Note']}: </i></strong>:''}
         </Card.Content>
         <Card.Content extra>
             {item.phones.map((p) => renderPhone(p))}
@@ -199,7 +199,7 @@ function renderNewReco(item){
 }
 
 function renderByDate(props){
-    const {item} = props
+    const {item, messages} = props
     let {calls} = item
     if(!calls){
         calls = []
@@ -217,11 +217,11 @@ function renderByDate(props){
                     <Dropdown.Menu className='right'>
                         <Dropdown.Item onClick={(e,d) => props.recoCardMenuHandle('view',item.id)}>
                             <Icon name={'eye'}/>
-                            Открыть
+                            {messages['Crm.Open']}
                         </Dropdown.Item>
                         <Dropdown.Item onClick={(e,d) => props.recoCardMenuHandle('to_archive',item.id)}>
                             <Icon name={'archive'}/>
-                            В архив
+                            {messages['Crm.ToArchive']}
                         </Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
@@ -229,7 +229,7 @@ function renderByDate(props){
             <Card.Meta>
                     <Popup style={{float:'left'}}
                            trigger={<Label color={'blue'} size={'small'}><i>{item.callDateStr}</i></Label>}
-                        content="Дата-время перезвона"
+                        content={messages['Crm.RecallDateTime']}
                         basic
                     />
 
@@ -237,8 +237,8 @@ function renderByDate(props){
             </Card.Meta>
             <Card.Description style={{borderTop: '1px dotted #ddd',marginTop:'15px'}}>
                     <span style={{fontSize:'11px'}}>
-                        <strong><i>ОТ:</i></strong> {item.recommenderName}<br/>
-                        <strong><i>Прим:</i></strong>{lastNote}
+                        <strong><i>{messages['Crm.From']}:</i></strong> {item.recommenderName}<br/>
+                        <strong><i>{messages['Table.Note']}:</i></strong>{lastNote}
                 </span>
             </Card.Description>
         </Card.Content>
