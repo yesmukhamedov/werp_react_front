@@ -3,6 +3,8 @@ import { Field, reduxForm } from 'redux-form';
 import { Container, Form, Button, Header, Segment } from 'semantic-ui-react';
 import UploadPanelDisplay from './UploadPanelDisplay';
 import AttachmentPanelDisplay from './AttachmentPanelDisplay';
+import AssigneePanelDisplay from './AssigneePanelDisplay';
+import AssigneeModalContainer from './AssigneeModal/AssigneeModalContainer';
 import {
   DropdownFormField,
   TextAreaFormField,
@@ -71,6 +73,8 @@ class DtskcComponent extends Component {
       selectedDepartment,
       fetchUsers,
       handleSubmit,
+      assigneeModal,
+      toggleAssigneeModal,
       reset,
     } = this.props;
     return (
@@ -118,11 +122,10 @@ class DtskcComponent extends Component {
             </Form.Group>
             <Form.Group widths="equal">
               <Field
-                name="branch"
+                name="status"
                 component={DropdownFormField}
-                label="Филиал"
-                disabled={!selectedCompany}
-                opts={selectedCompany && branchOpts[selectedCompany]}
+                label="Статус"
+                opts={statusOpts}
               />
               <Field
                 name="initiatorManager"
@@ -132,7 +135,7 @@ class DtskcComponent extends Component {
               />
             </Form.Group>
             <Form.Group widths="equal">
-              <Field
+              {/* <Field
                 name="department"
                 component={DropdownFormField}
                 label="Департамент"
@@ -144,28 +147,28 @@ class DtskcComponent extends Component {
                     // departmentId: selectedDepartment,
                   })
                 }
-              />
-              <Field
+              /> */}
+              {/* <Field
                 name="assignee"
                 component={DropdownFormField}
                 label="Исполнитель"
                 opts={assigneeOpts}
-              />
-            </Form.Group>
-            <Form.Group widths="equal">
-              <Field
-                name="status"
+              /> */}
+              {/* <Field
+                name="branch"
                 component={DropdownFormField}
-                label="Статус"
-                opts={statusOpts}
-              />
-              <Field
+                label="Филиал"
+                disabled={!selectedCompany}
+                opts={selectedCompany && branchOpts[selectedCompany]}
+              /> */}
+              {/* <Field
                 name="assigneeManager"
                 component={DropdownFormField}
                 label="Начальник отдела исполнителя"
                 opts={managerOpts}
-              />
+              /> */}
             </Form.Group>
+
             <Form.Group widths="3">
               <Field
                 name="createdAt"
@@ -183,6 +186,10 @@ class DtskcComponent extends Component {
                 autoComplete="off"
               />
             </Form.Group>
+            <AssigneePanelDisplay
+              modalState={assigneeModal}
+              toggleModal={toggleAssigneeModal}
+            />
             <Button
               positive
               icon="checkmark"
@@ -212,6 +219,7 @@ class DtskcComponent extends Component {
             <UploadPanelDisplay onUploadSuccess={this.handleUpload} />
           </AttachmentPanelDisplay>
         </Segment>
+        <AssigneeModalContainer />
       </Container>
     );
   }

@@ -7,6 +7,7 @@ import { notify } from '../../../general/notification/notification_action';
 import {
   DTSKC_FETCH_REFERENCES,
   DTSKC_FETCH_ASSIGNEES,
+  DTSKC_ASSIGNEE_MODAL_TOGGLE,
 } from './actionTypes';
 
 const statusUrl = `${ROOT_URL}/api/tasks/status`;
@@ -181,5 +182,12 @@ export function createTask(formValues, successCallback) {
           dispatch(notify('error', error.response.data.message, 'Ошибка'));
         }
       });
+  };
+}
+
+export function toggleAssigneeModal(modalState) {
+  return {
+    type: DTSKC_ASSIGNEE_MODAL_TOGGLE,
+    payload: modalState,
   };
 }
