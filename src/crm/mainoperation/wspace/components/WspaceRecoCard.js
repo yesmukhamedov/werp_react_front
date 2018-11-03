@@ -299,7 +299,7 @@ function renderMovedReco(props){
                     <Dropdown.Menu className='right'>
                         <Dropdown.Item onClick={(e,d) => props.recoCardMenuHandle('to_archive',item.id)}>
                             <Icon name={'archive'}/>
-                            В архив
+                            {messages['Crm.ToArchive']}
                         </Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
@@ -308,7 +308,7 @@ function renderMovedReco(props){
                 <span style={{float:'left'}}>
                     {item.callDate?<Popup
                         trigger={<Label color={'blue'}>{item.callDate}</Label>}
-                        content="Дата-время перезвона"
+                        content={messages['Crm.RecallDateTime']}
                         basic
                     />:''}
                 </span>
@@ -316,13 +316,13 @@ function renderMovedReco(props){
             </Card.Meta>
             <Card.Description style={{marginTop:'45px'}}>
                 <span style={{display:'block',fontSize:'11px',borderTop:'1px dotted #ddd',marginTop:'3px'}}>
-                    <strong><i>Демо:</i></strong> {item.lastDemoDateTime}<br/>
-                    <strong><i>ОТ:</i></strong> {item.recommenderName}<br/>
+                    <strong><i>{messages['Crm.Demo']}:</i></strong> {item.lastDemoDateTime}<br/>
+                    <strong><i>{messages['Crm.From']}:</i></strong> {item.recommenderName}<br/>
                 </span>
             </Card.Description>
             <Card.Description>
                     <span style={{fontSize:'11px'}}>
-                        <strong><i>Адрес:</i></strong>
+                        <strong><i>{messages['Table.Address']}:</i></strong>
                     {_.truncate(item.address,{length: 150})}
                 </span>
             </Card.Description>

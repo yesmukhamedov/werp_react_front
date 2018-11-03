@@ -124,7 +124,7 @@ export default function (state=INITIAL_STATE, action)
 
             dashboardCallMenus.push({
                 'name': 'all',
-                'label': 'Все звонки',
+                'label': 'All calls',
                 'count': todayCalls.length,
                 'resultId': 0
             })
