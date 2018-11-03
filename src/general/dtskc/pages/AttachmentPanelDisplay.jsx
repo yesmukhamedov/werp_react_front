@@ -1,21 +1,20 @@
 import React from 'react';
+import { injectIntl } from 'react-intl';
 import {
   List,
   Container,
   Header,
   Button,
-  Menu,
-  Segment,
 } from 'semantic-ui-react';
+// import { messages } from '../../../locales/defineMessages';
 
 const AttachmentPanelDisplay = (props) => {
-  const { attachment, children, onDelete } = props;
+  const { attachment, children, onDelete, intl } = props;
+  const { messages } = intl;
   return (
     <Container className="attachment-panel">
       {children}
-      <Header as="h5">Прикрепленные файлы</Header>
-      {/* <Segment attached="bottom"> */}
-
+      <Header as="h5">{messages.H__ATTACHED_FILES}</Header>
       {attachment && (
         <List divided verticalAlign="middle">
           {attachment.map((el, idx) => {
@@ -41,9 +40,8 @@ const AttachmentPanelDisplay = (props) => {
           })}
         </List>
       )}
-      {/* </Segment> */}
     </Container>
   );
 };
 
-export default AttachmentPanelDisplay;
+export default injectIntl(AttachmentPanelDisplay);

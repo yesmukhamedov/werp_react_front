@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Icon, Button, Header, List } from 'semantic-ui-react';
+import { injectIntl } from 'react-intl';
 import { DELETE } from '../../../../../../utils/helpers';
 import UploadPanelDisplay from '../../../../../../general/dtskc/pages/UploadPanelDisplay';
 
@@ -34,7 +35,9 @@ class TaskAttachmentModal extends Component {
       addUpload,
       deleteUpload,
       synchronizeAttachments,
+      intl,
     } = this.props;
+    const { messages } = intl;
     const { attachmentJson } = attachment;
     return (
       <Modal
@@ -44,7 +47,7 @@ class TaskAttachmentModal extends Component {
         closeOnDimmerClick={false}
         size="small"
       >
-        <Header icon="browser" content="Прикрепленные файлы" />
+        <Header icon="browser" content={messages.H__ATTACHED_FILES} />
         <Modal.Content>
           {attachmentJson && (
             <List divided verticalAlign="middle">
@@ -74,7 +77,7 @@ class TaskAttachmentModal extends Component {
         </Modal.Content>
         <Modal.Actions>
           <Button.Group floated="left">
-            <UploadPanelDisplay onUploadSuccess={upload => addUpload(upload)} />
+            <UploadPanelDisplay onUploadSuccess={upload => addUpload(upload)} messages={messages} />
           </Button.Group>
           <Button.Group floated="right">
             <Button
@@ -84,7 +87,7 @@ class TaskAttachmentModal extends Component {
                 toggleModal(modalOpen);
               }}
             >
-              <Icon name="checkmark" /> Ок
+              <Icon name="checkmark" />{messages.BTN__OK}
             </Button>
           </Button.Group>
         </Modal.Actions>
@@ -93,4 +96,4 @@ class TaskAttachmentModal extends Component {
   }
 }
 
-export default TaskAttachmentModal;
+export default injectIntl(TaskAttachmentModal);

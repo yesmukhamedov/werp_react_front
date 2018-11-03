@@ -241,7 +241,7 @@ class TaskInfoComponent extends Component {
                         size="tiny"
                         floated="right"
                         color="twitter"
-                        content="Редактировать"
+                        content={formatMessage(messages.edit)}
                         onClick={() => toggleModal(modalAttachment)}
                       />
                       <AttachmentPanelDisplay attachment={attachment.attachmentJson} />

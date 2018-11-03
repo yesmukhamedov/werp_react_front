@@ -12,7 +12,7 @@ const TaskHistoryItemDisplay = (props) => {
   } catch (e) {
     diff = {};
   }
-  const { dir } = props;
+  const { dir, messages } = props;
   return (
     <div>
       {
@@ -22,57 +22,57 @@ const TaskHistoryItemDisplay = (props) => {
             <List as="ol">
               {diff.title &&
                 <List.Item as="li" value="-">
-                  <i>{`Параметр Тема изменился с ${diff.title.from} на ${diff.title.to}`}</i>
+                  <i>{`${messages.TX__TITLE_CHANGED} ${diff.title.from} ${messages.TX__TO} ${diff.title.to}`}</i>
                 </List.Item>}
               {diff.description &&
                 <List.Item as="li" value="-">
-                  <i>{`Параметр Описание изменился с ${diff.description.from} на ${diff.description.to}`}</i>
+                  <i>{`${messages.TX__DESCRIPTION_CHANGED} ${diff.description.from} ${messages.TX__TO} ${diff.description.to}`}</i>
                 </List.Item>}
               {diff.status &&
                 <List.Item as="li" value="-">
                   <i>
-                    {`Параметр Статус изменился с ${dir.statusOptions[diff.status.from].text} 
-                                                на ${dir.statusOptions[diff.status.to].text}`}
+                    {`${messages.TX__STATUS_CHANGED} ${dir.statusOptions[diff.status.from].text} 
+                                                ${messages.TX__TO} ${dir.statusOptions[diff.status.to].text}`}
                   </i>
                 </List.Item>}
               {diff.priority &&
                 <List.Item as="li" value="-">
                   <i>
-                    {`Параметр Приоритет изменился с ${dir.priorityOptions[diff.priority.from].text} 
-                                                   на ${dir.priorityOptions[diff.priority.to].text}`}
+                    {`${messages.TX__PRIORITY_CHANGED} ${dir.priorityOptions[diff.priority.from].text} 
+                                                   ${messages.TX__TO} ${dir.priorityOptions[diff.priority.to].text}`}
                   </i>
                 </List.Item>}
               {diff.branch &&
                 <List.Item as="li" value="-">
                   <i>
-                    {`Параметр Филиал изменился с ${dir.branchOptions[diff.branch.from] && dir.branchOptions[diff.branch.from].text} 
-                                            на ${dir.branchOptions[diff.branch.to] && dir.branchOptions[diff.branch.to].text}`}
+                    {`${messages.TX__BRANCH_CHANGED} ${dir.branchOptions[diff.branch.from] && dir.branchOptions[diff.branch.from].text} 
+                                            ${messages.TX__TO} ${dir.branchOptions[diff.branch.to] && dir.branchOptions[diff.branch.to].text}`}
                   </i>
                 </List.Item>}
               {diff.department &&
                 <List.Item as="li" value="-">
                   <i>
-                    {`Параметр Департамент изменился с ${dir.deptOptions[diff.department.from].text} 
-                                                     на ${dir.deptOptions[diff.department.to].text}`}
+                    {`${messages.TX__DEPARTMENT_CHANGED} ${dir.deptOptions[diff.department.from].text} 
+                                                     ${messages.TX__TO} ${dir.deptOptions[diff.department.to].text}`}
                   </i>
                 </List.Item>}
               {diff.position &&
                 <List.Item as="li" value="-">
                   <i>
-                    {`Параметр Должность изменился с ${dir.posOptions[diff.position.from] && dir.posOptions[diff.position.from].text} 
-                                                   на ${dir.posOptions[diff.position.to].text}`}
+                    {`${messages.TX__POSITION_CHANGED} ${dir.posOptions[diff.position.from] && dir.posOptions[diff.position.from].text} 
+                                                   ${messages.TX__TO} ${dir.posOptions[diff.position.to].text}`}
                   </i>
                 </List.Item>}
               {diff.estimatedAt &&
                 <List.Item as="li" value="-">
                   <i>
-                    {`Параметр Дата завершения изменился с ${diff.estimatedAt.from !== 'null' ? formatDMY(diff.estimatedAt.from) : '---'} на ${formatDMY(diff.estimatedAt.to)}`}
+                    {`${messages.TX__ENDDATE_CHANGED} ${diff.estimatedAt.from !== 'null' ? formatDMY(diff.estimatedAt.from) : '---'} ${messages.TX__TO} ${formatDMY(diff.estimatedAt.to)}`}
                   </i>
                 </List.Item>}
               {diff.assignee &&
                 <List.Item as="li" value="-">
                   <i>
-                    {`Параметр Исполнитель изменился с ${diff.assignee.from} на ${diff.assignee.to}`}
+                    {`${messages.TX__ASSIGNEE_CHANGED} ${diff.assignee.from} ${messages.TX__TO} ${diff.assignee.to}`}
                   </i>
                 </List.Item>}
             </List>
