@@ -418,7 +418,6 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/documents/mydocs" component={AsyncMyDocsListPage}/>
       
       {/* Transactions */}
-      <Route path="/dit/transaction/list" component={trlist} />
       <Route path="/dit/transaction/update/:id?" component={trupdate} />
 
       {/* dynamically generated URLs  */}
