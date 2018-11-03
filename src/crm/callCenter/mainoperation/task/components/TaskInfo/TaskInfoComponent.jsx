@@ -67,8 +67,11 @@ class TaskInfoComponent extends Component {
         toggleModal,
         uploadble,
         estimatedAt,
-        modifiedAt
+        modifiedAt,
+        messages,
       } = this.props;
+
+      const { formatMessage } = this.props.intl;
 
       const closedAt =
         status.id === 5 ? (
@@ -81,7 +84,7 @@ class TaskInfoComponent extends Component {
         <Segment.Group>
           <Segment clearing>
             <Header as="h2" floated="left">
-              Задача #{' '}
+              {formatMessage(messages.task)} # {' '}
               <Label as="a" basic size="big">
                 {this.props.id}
               </Label>
@@ -91,7 +94,7 @@ class TaskInfoComponent extends Component {
                 style={{ background: 'rgba(84,170,169, 1)', color: 'white' }}
                 onClick={this.handleEditModal}
               >
-                <Icon name="edit" />Редактировать
+                <Icon name="edit" />{formatMessage(messages.edit)}
               </Button>
             </Header>
           </Segment>
@@ -103,7 +106,7 @@ class TaskInfoComponent extends Component {
                     <Header as="h3">
                       {title}
                       <Header.Subheader>
-                        Добавил(а) <a> {author && constructFullName(author)}</a>
+                      {formatMessage(messages.addedBy)} <a> {author && constructFullName(author)}</a>
                       </Header.Subheader>
                     </Header>
                   </Grid.Column>
@@ -112,13 +115,13 @@ class TaskInfoComponent extends Component {
                   <Grid.Column width={2}>
                     <List verticalAlign="middle" relaxed>
                       <List.Item>
-                        <List.Header>Статус:</List.Header>
+                        <List.Header>{formatMessage(messages.status)}:</List.Header>
                       </List.Item>
                       <List.Item>
-                        <List.Header>Приоритет:</List.Header>
+                        <List.Header>{formatMessage(messages.priority)}:</List.Header>
                       </List.Item>
                       <List.Item>
-                        <List.Header>Назначена:</List.Header>
+                        <List.Header>{formatMessage(messages.assign)}:</List.Header>
                       </List.Item>
                     </List>
                   </Grid.Column>
@@ -142,13 +145,13 @@ class TaskInfoComponent extends Component {
                   <Grid.Column width={3}>
                     <List verticalAlign="middle" relaxed>
                       <List.Item>
-                        <List.Header>Дата начала:</List.Header>
+                        <List.Header>{formatMessage(messages.startDate)}:</List.Header>
                       </List.Item>
                       <List.Item>
-                        <List.Header>Дата завершения:</List.Header>
+                        <List.Header>{formatMessage(messages.endDate)}:</List.Header>
                       </List.Item>
                       <List.Item>
-                        <List.Header>Номер договора:</List.Header>
+                        <List.Header>{formatMessage(messages.contractNumber)}:</List.Header>
                       </List.Item>
                     </List>
                   </Grid.Column>
@@ -178,13 +181,13 @@ class TaskInfoComponent extends Component {
                   <Grid.Column width={4}>
                     <List verticalAlign="middle" relaxed>
                       <List.Item>
-                        <List.Header>Начальник отдела заказчика:</List.Header>
+                        <List.Header>{formatMessage(messages.authorsManager)}:</List.Header>
                       </List.Item>
                       <List.Item>
-                        <List.Header>Начальник отдела исполнителя:</List.Header>
+                        <List.Header>{formatMessage(messages.assigneesManager)}:</List.Header>
                       </List.Item>
                       <List.Item>
-                        <List.Header>Исполнитель:</List.Header>
+                        <List.Header>{formatMessage(messages.assignee)}:</List.Header>
                       </List.Item>
                     </List>
                   </Grid.Column>
@@ -224,7 +227,7 @@ class TaskInfoComponent extends Component {
                   <Grid.Column>
                     {/* <Form.TextArea label="Описание" value={description} /> */}
                     <Container>
-                      <Header as="h4">Описание</Header>
+                      <Header as="h4">{formatMessage(messages.description)}</Header>
                       <p>{description}</p>
                     </Container>
                   </Grid.Column>

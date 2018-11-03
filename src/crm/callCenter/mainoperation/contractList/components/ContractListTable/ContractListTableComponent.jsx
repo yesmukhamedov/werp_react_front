@@ -73,7 +73,7 @@ class ContractListTableComponent extends Component {
         maxWidth: 110,
       },
       {
-        Header: formatMessage(messages.fio),
+        Header: formatMessage(messages.fullName),
         accessor: 'customer.lastName',
         Cell: (props) => {
           const { customer } = props.original;
@@ -96,7 +96,7 @@ class ContractListTableComponent extends Component {
         maxWidth: 170,
       },
       {
-        Header: formatMessage(messages.dealerFio),
+        Header: formatMessage(messages.dealerFullname),
         accessor: 'dealer.lastName',
         Cell: (props) => {
           const { dealer } = props.original;
@@ -166,7 +166,7 @@ class ContractListTableComponent extends Component {
             style={{ width: '100%' }}
             value={filter ? filter.value : '0'}
           >
-            <option value="0">{formatMessage(messages.all)}</option>
+            <option value="0">{formatMessage(messages.allOption)}</option>
             {options}
            </select>),
       },

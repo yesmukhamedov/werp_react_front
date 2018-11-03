@@ -1,4 +1,5 @@
 {
+	"Task.Company": "Компания",
 	"Auth.Signin.Header": "Войдите в свой аккаунт",
 	"Auth.Signin.Login": "Войти",
 	"Auth.Signin.Password": "Пароль",

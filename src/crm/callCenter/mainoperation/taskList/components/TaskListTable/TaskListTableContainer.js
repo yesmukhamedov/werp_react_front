@@ -1,12 +1,11 @@
 import { connect } from 'react-redux';
 import { defineMessages, injectIntl } from 'react-intl';
 import TaskListTableComponent from './TaskListTableComponent';
-import { messages } from '../../../../../../dit/tasks/dtskl/components/DeptTaskListTable/DeptTaskListTableContainer';
-import { msg } from '../../../contractList/components/ContractListTable/ContractListTableContainer';
+import { messages } from '../../../../../../locales/defineMessages';
 
 function mapStateToProps(state) {
   return {
-    messages: Object.assign(msg, messages),
+    messages,
     result: state.taskList.result,
     lang: state.locales.lang,
   };

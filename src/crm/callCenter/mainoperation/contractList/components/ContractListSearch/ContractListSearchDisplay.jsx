@@ -135,7 +135,7 @@ function validate(formProps, state) {
   const error = {};
 
   if (!formProps.company) {
-    error.company = formatMessage({ id: 'Form.CompanyError' });
+    error.company = formatMessage({ id: 'Task.CompanyError' });
   }
 
   // if (!formProps.branch) {
@@ -143,11 +143,11 @@ function validate(formProps, state) {
   // }
 
   if (!formProps.startDate) {
-    error.startDate = formatMessage({ id: 'Form.DateError' });
+    error.startDate = formatMessage({ id: 'Task.DateError' });
   }
 
   if (!formProps.endDate) {
-    error.endDate = formatMessage({ id: 'Form.DateError' });
+    error.endDate = formatMessage({ id: 'Task.DateError' });
   }
 
   return error;

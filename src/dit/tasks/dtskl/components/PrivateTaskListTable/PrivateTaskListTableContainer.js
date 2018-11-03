@@ -2,7 +2,9 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import PrivateTaskListTableDisplay from './PrivateTaskListTableDisplay';
 import { fetchPrivateTasks } from '../../actions/DeptTaskListAction';
-import { messages } from '../DeptTaskListTable/DeptTaskListTableContainer';
+// import { messages } from '../DeptTaskListTable/DeptTaskListTableContainer';
+import { messages } from '../../../../../locales/defineMessages';
+
 
 function mapStateToProps(state) {
   return {
