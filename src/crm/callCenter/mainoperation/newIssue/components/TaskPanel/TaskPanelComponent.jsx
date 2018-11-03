@@ -26,21 +26,21 @@ class TaskPanelComponent extends Component {
   }
 
   render() {
-    const { tasks, lang, directories } = this.props;
+    const { tasks, lang, directories, messages } = this.props;
     return (
       <Segment>
         <Header as="h3" dividing>
-          Задачи
+          {messages.H__TASKS}
         </Header>
         <Table structured celled>
           <Table.Header>
             <Table.Row>
               <Table.HeaderCell collapsing>#</Table.HeaderCell>
-              <Table.HeaderCell >Статус</Table.HeaderCell>
-              <Table.HeaderCell collapsing>Приоритет</Table.HeaderCell>
-              <Table.HeaderCell>Тема</Table.HeaderCell>
-              <Table.HeaderCell>Назначена</Table.HeaderCell>
-              <Table.HeaderCell collapsing>Обновлена</Table.HeaderCell>
+              <Table.HeaderCell>{messages.TBL_H__STATUS}</Table.HeaderCell>
+              <Table.HeaderCell collapsing>{messages.TBL_H__PRIORITY}</Table.HeaderCell>
+              <Table.HeaderCell>{messages.TBL_H__TITLE}</Table.HeaderCell>
+              <Table.HeaderCell>{messages.TBL_H__ASSIGNED_TO}</Table.HeaderCell>
+              <Table.HeaderCell collapsing>{messages.TBL_H__MODIFIED_DATE}</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
 
@@ -95,7 +95,7 @@ class TaskPanelComponent extends Component {
                   size="small"
                   onClick={this.open}
                 >
-                  <Icon name="file text" /> Новая задача
+                  <Icon name="file text" />{messages.BTN__NEW_TASK}
                 </Button>
               </Table.HeaderCell>
             </Table.Row>
@@ -106,6 +106,7 @@ class TaskPanelComponent extends Component {
           open={this.open}
           close={this.close}
           {...directories}
+          messages={messages}
         />
       </Segment>
     );

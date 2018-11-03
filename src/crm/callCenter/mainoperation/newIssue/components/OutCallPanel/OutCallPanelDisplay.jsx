@@ -41,6 +41,7 @@ class OutCallPanelDisplay extends PureComponent {
       statusOptions,
       createOutCallFromContract,
       lang,
+      messages,
     } = this.props;
     const {
       status = {},
@@ -54,7 +55,7 @@ class OutCallPanelDisplay extends PureComponent {
         <Segment.Group>
           <Segment clearing>
             <Header as="h3" floated="left">
-              Заявка #&nbsp;
+              {messages.H__ORDER_NUMBER}&nbsp;
               <Label as="a" basic size="big">
                 {outCallInfo.outCallId}
               </Label>
@@ -67,14 +68,14 @@ class OutCallPanelDisplay extends PureComponent {
                     style={{ background: 'rgba(84,170,169, 1)', color: 'white' }}
                     onClick={() => createOutCallFromContract({ contractNumber })}
                   >
-                    <Icon name="add" />Привязать мне
+                    <Icon name="add" />{messages.BTN__ASSIGN}
                   </Button>
                   :
                   <Button
                     style={{ background: 'rgba(84,170,169, 1)', color: 'white' }}
                     onClick={this.open}
                   >
-                    <Icon name="edit" />Редактировать
+                    <Icon name="edit" />{messages.BTN__EDIT}
                   </Button>
                 )
               }
@@ -88,7 +89,7 @@ class OutCallPanelDisplay extends PureComponent {
                     <Item>
                       <Item.Content verticalAlign="middle">
                         <Item.Header style={headerStyle}>
-                          Дата создания:
+                          {messages.L__CREATE_DATE}:
                         </Item.Header>
                         <Item.Description>{formatDMYMS(createdAt) || <span>&mdash;</span>}</Item.Description>
                       </Item.Content>
@@ -96,7 +97,7 @@ class OutCallPanelDisplay extends PureComponent {
                     <Item>
                       <Item.Content verticalAlign="middle">
                         <Item.Header style={headerStyle}>
-                          Дата обновления:
+                          {messages.L__MODIFIED_DATE}:
                         </Item.Header>
                         <Item.Description>{formatDMYMS(modifiedAt) || <span>&mdash;</span>}</Item.Description>
                       </Item.Content>
@@ -107,7 +108,7 @@ class OutCallPanelDisplay extends PureComponent {
                   <Item.Group>
                     <Item>
                       <Item.Content verticalAlign="middle">
-                        <Item.Header style={headerStyle}>Открыл:</Item.Header>
+                        <Item.Header style={headerStyle}>{messages.L__ORDER_ISSUER}:</Item.Header>
                         <Item.Description>
                           {(status.id !== 1000 ? constructFullName(operator) : <span>&mdash;</span>)}
                         </Item.Description>
@@ -126,7 +127,7 @@ class OutCallPanelDisplay extends PureComponent {
                     <Item>
                       <Item.Content verticalAlign="middle">
                         <Item.Header style={headerStyle}>
-                          Статус заявки:
+                          {messages.L__ORDER_STATUS}:
                         </Item.Header>
                         <Item.Description>
                           <Label
@@ -150,6 +151,7 @@ class OutCallPanelDisplay extends PureComponent {
           close={this.close}
           statusOptions={statusOptions}
           contractNumber={contractNumber}
+          messages={messages}
         />
       </div>
     );

@@ -73,32 +73,33 @@ class NewTaskModalComponent extends PureComponent {
       deptOptions,
       posOptions,
       bukrs,
+      messages,
     } = this.props;
     const filteredBranchOpts =
       Object.values(branchOptions).filter(b => b.bukrs === bukrs);
     return (
       <Modal open={isOpen} onClose={this.handleFormClose}>
-        <Modal.Header>Новая задача</Modal.Header>
+        <Modal.Header>{messages.H__NEW_TASK}</Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
-              <Field name="title" component={TextInputFormField} label="Тема" />
+              <Field name="title" component={TextInputFormField} label={messages.L__TITLE} />
               <Field
                 name="description"
                 component={TextAreaFormField}
-                label="Описание задачи"
+                label={messages.L__TASK_DESCRIPTION}
               />
               <Form.Group widths="equal">
                 <Field
                   name="status"
                   component={DropdownFormField}
-                  label="Статус"
+                  label={messages.L__STATUS}
                   opts={statusOptions}
                 />
                 <Field
                   name="priority"
                   component={DropdownFormField}
-                  label="Приоритет"
+                  label={messages.L__PRIORITY}
                   opts={priorityOptions}
                 />
               </Form.Group>
@@ -106,30 +107,30 @@ class NewTaskModalComponent extends PureComponent {
                 <Field
                   name="branch"
                   component={DropdownFormField}
-                  label="Филиал"
+                  label={messages.L__BRANCH}
                   opts={filteredBranchOpts}
                 />
                 <Field
                   name="department"
                   component={DropdownFormField}
-                  label="Департамент"
+                  label={messages.L__DEPARTMENT}
                   opts={deptOptions}
                 />
                 <Field
                   name="position"
                   component={DropdownFormField}
-                  label="Должность"
+                  label={messages.L__POSITION}
                   opts={posOptions}
                 />
               </Form.Group>
               <Button color="youtube" onClick={this.handleFormClose}>
-                Отменить
+                {messages.BTN__CANCEL}
               </Button>
               <Button
                 positive
                 icon="checkmark"
                 labelPosition="right"
-                content="Создать"
+                content={messages.BTN__CREATE}
                 type="submit"
               />
             </Form>

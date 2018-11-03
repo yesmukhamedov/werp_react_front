@@ -17,11 +17,12 @@ const PersonalInfoPanelDisplay = (props) => {
     issueType = '',
     contactDetails,
     contractDate,
+    messages,
   } = props;
   return (
     <Segment raised>
       <Label color="red" ribbon>
-        Данные клиента
+        {messages.L__CLIENT_INFO}
       </Label>
       <Grid columns={3} divided stackable>
         <Grid.Row>
@@ -29,18 +30,18 @@ const PersonalInfoPanelDisplay = (props) => {
             <List>
               <List.Item>
                 <List.Header className="list-header">
-                  Номер договора:
+                  {messages.L__CONTRACT_NUMBER}:
                 </List.Header>
                 {contractNumber || <span>&mdash;</span>}
               </List.Item>
               <List.Item>
                 <List.Header className="list-header">
-                  Дата договора:
+                  {messages.L__CONTRACT_DATE}:
                 </List.Header>
                 {(contractDate && formatDMY(contractDate)) || <span>&mdash;</span>}
               </List.Item>
               <List.Item>
-                <List.Header className="list-header">Филиал:</List.Header>
+                <List.Header className="list-header">{messages.L__BRANCH}:</List.Header>
                 {branchName || <span>&mdash;</span>}
               </List.Item>
             </List>
@@ -49,17 +50,17 @@ const PersonalInfoPanelDisplay = (props) => {
             <List>
               <List.Item>
                 <List.Header className="list-header">
-                  Ф.И.О. клиента:
+                  {messages.L__CLIENT_FULLNAME}:
                 </List.Header>
                 {clientFullName &&
                   constructFullName(clientFullName)}
               </List.Item>
               <List.Item>
-                <List.Header className="list-header">ИИН клиента:</List.Header>
+                <List.Header className="list-header">{messages.L__CLIENT_IIN}:</List.Header>
                 {clientIIN}
               </List.Item>
               <List.Item>
-                <List.Header className="list-header">Дилер:</List.Header>
+                <List.Header className="list-header">{messages.L__DEALER}:</List.Header>
                 {dealerFullName &&
                   constructFullName(dealerFullName)}
               </List.Item>
@@ -69,18 +70,18 @@ const PersonalInfoPanelDisplay = (props) => {
             <List>
               <List.Item>
                 <List.Header className="list-header">
-                  Статус клиента:
+                  {messages.L__CLIENT_STATUS}:
                 </List.Header>
                 {clientStatus}
               </List.Item>
               <List.Item>
-                <List.Header className="list-header">Оформлен:</List.Header>
+                <List.Header className="list-header">{messages.L__ISSUED_TO}:</List.Header>
                 {issueType || <span>&mdash;</span>}
               </List.Item>
               <PortalComponent
-                openLabel="Контактные данные"
-                closeLabel="Скрыть контактные данные"
-                title="Контактные данные"
+                openLabel={messages.BTN__CONTACT_INFO}
+                closeLabel={messages.BTN__HIDE_CONTACT_INFO}
+                title={messages.BTN__CONTACT_INFO}
               >
                 <ContactsPanelDisplay contactDetails={contactDetails} />
               </PortalComponent>

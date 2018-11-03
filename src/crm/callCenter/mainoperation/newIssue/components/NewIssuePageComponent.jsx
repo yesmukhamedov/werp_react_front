@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
 import { Container, Accordion, Icon } from 'semantic-ui-react';
 import { PersonalInfoPanelDisplay } from './PersonalInfoPanel';
 import { FinancialInfoPanelDisplay } from './FinancialInfoPanel';
@@ -10,7 +10,7 @@ import { OutCallPanelContainer } from './OutCallPanel';
 import './styles.css';
 
 
-export default class NewIssuePage extends Component {
+class NewIssuePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -34,8 +34,6 @@ export default class NewIssuePage extends Component {
     this.setState({
       ...this.state,
       [field]: value,
-    }, () => {
-      console.log("STATE AFTER", this.state);
     });
   }
 
@@ -43,6 +41,7 @@ export default class NewIssuePage extends Component {
 
   render() {
     const { contractDetails, directories, outCallInfo, contractNumber }  = this.props;
+    const { messages } = this.props.intl;
     return (
       <Container>
         <Accordion fluid styled style={{ marginTop: '20px', marginBottom: '20px' }}>
@@ -52,22 +51,28 @@ export default class NewIssuePage extends Component {
             onClick={ this.handleAccordionClick }
           >
             <Icon name="dropdown" />
-            Детальная информация по договору
+            {messages.L__CONTRACT_INFO}
           </Accordion.Title>
           <Accordion.Content active={this.state.showDetailedInfo}>
-            <PersonalInfoPanelDisplay {...contractDetails} />
-            <FinancialInfoPanelDisplay {...contractDetails} />
-            <PurchasesPanelDisplay {...contractDetails} />
+            <PersonalInfoPanelDisplay {...contractDetails} messages={messages} />
+            <FinancialInfoPanelDisplay {...contractDetails} messages={messages} />
+            <PurchasesPanelDisplay {...contractDetails} messages={messages} />
           </Accordion.Content>
         </Accordion>
         <OutCallPanelContainer
           outCallId={contractNumber}
           outCallInfo={outCallInfo}
           statusOptions={directories.statusOptions}
+          messages={messages}
         />
-        <TaskPanelContainer directories={directories} />
-        <OutCallDetailsPanelContainer />
+        <TaskPanelContainer
+          directories={directories}
+          messages={messages}
+        />
+        <OutCallDetailsPanelContainer messages={messages} />
       </Container>
     );
   }
 }
+
+export default injectIntl(NewIssuePage);
