@@ -164,7 +164,7 @@ export function fetchGroupDealers(){
             });
             loaded.unshift({
                 key:0,
-                text:'Не выбрано',
+                text:'',
                 value:0
             });
             dispatch({

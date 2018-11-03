@@ -237,7 +237,7 @@ class WspacePhoneModal extends Component{
                 </Form.Group>
                 <Divider />
                 {this.renderDemoForm()}
-                <Form.Field control={Button} color='blue' content='Сохранить' onClick={this.saveCall} />
+                <Form.Field control={Button} color='blue' content={messages['save']} onClick={this.saveCall} />
             </Form>
     }
 

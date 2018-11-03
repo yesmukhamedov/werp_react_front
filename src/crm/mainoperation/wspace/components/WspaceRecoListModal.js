@@ -57,7 +57,7 @@ export default function WspaceRecoListModal (props) {
         </Modal.Content>
         <Modal.Actions>
             <Button onClick={props.closeRecoListModal}>
-                Закрыть
+                {messages['close']}
             </Button>
         </Modal.Actions>
     </Modal>

@@ -11,6 +11,7 @@ export default function WspaceHeader (props) {
     return (
         <Container fluid className={'header-container'}>
             {dealers.map(d => (
+                d.text.length === 0 ? '':
                 <Label as='a'
                        onClick={() => props.onSelect(d)}
                        size={currentId === d.key?'large':'small'}
