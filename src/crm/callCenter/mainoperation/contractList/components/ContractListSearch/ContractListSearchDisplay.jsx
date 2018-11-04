@@ -102,7 +102,7 @@ class ContractListSearchDisplay extends Component {
                       { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
                   />
                   <Form.Button
-                    content={formatMessage(messages.search)}
+                    content={formatMessage(messages.reset)}
                     type="button"
                     disabled={pristine || submitting}
                     style={
