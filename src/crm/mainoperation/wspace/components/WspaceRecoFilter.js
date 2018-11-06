@@ -2,21 +2,29 @@ import React from 'react'
 import {Segment,Form} from 'semantic-ui-react'
 import 'react-datepicker/dist/react-datepicker.css';
 import {MENU_BY_RECO} from '../wspaceUtil'
-import {RECO_CATEGORIES,DEMO_RESULT_OPTIONS} from '../../../crmUtil'
+import {RECO_CATEGORIES,DEMO_RESULT_OPTIONS,getRecoCategoriesOptionsByLanguage} from '../../../crmUtil'
 
 export default function WspaceRecoFilter (props){
-    const {filters, menu, messages} = props
+    const {filters, menu, messages, locale, demoResults} = props
     let cats = [{
         key: null,
-        text: 'Категория',
+        text: messages['Form.Category'],
         value: null
-    }].concat(RECO_CATEGORIES)
+    }].concat(getRecoCategoriesOptionsByLanguage(locale))
 
+    let tempDemoResults = []
+    for(let k in demoResults){
+        tempDemoResults.push({
+            key: parseInt(k,10),
+            text: demoResults[k],
+            value: parseInt(k,10)
+        })
+    }
     const resultOptions = [{
         key: null,
-        text: 'Результат',
+        text: messages['Form.Result'],
         value: null
-    }].concat(DEMO_RESULT_OPTIONS)
+    }].concat(tempDemoResults)
 
     return <Segment padded>
                 <Form>
