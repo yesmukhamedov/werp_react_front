@@ -222,6 +222,12 @@
 
 	"Crm.Calls": "Звонки",
 	"Crm.Demonstrations": "Демонстрации",
+	"Crm.Visits": "Визиты",
+	"Crm.Caller": "Звонил(а)",
+	"Crm.DeleteWarningHeader": "ПРЕДУПРЕЖДЕНИЕ",
+	"Crm.Reco.DeleteWarningTxt1": "Удалятся все демонстрации, рекомендации и звонки связанные с данной рекомендацией",
+	"Crm.Reco.DeleteWarningTxt2": "Удалятся: Демо, Звонки, Тел. номера связанные с данной рекомендацией",
+	"Crm.AdditionDemoFromDemo":"Добавление демо от демо",
 
 	"Crm.Wspace.Menu.ByRecommender": "По рекомендателям",
 	"Crm.Wspace.Menu.ByDate":"По дате",

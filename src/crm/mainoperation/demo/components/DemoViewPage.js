@@ -102,17 +102,18 @@ class DemoViewPage extends Component {
     }
 
     renderDeleteConfirmModal(){
+        const {messages} = this.props.intl
         return <Modal open={this.state.showDeleteModal}>
-            <Modal.Header>ПРЕДУПРЕЖДЕНИЕ!</Modal.Header>
+            <Modal.Header>{messages['Crm.DeleteWarningHeader']}!</Modal.Header>
             <Modal.Content>
-                <p>Удалятся все демонстрации, рекомендации и звонки связанные с данной демо!</p>
-                <p>Удалятся: Демо, Звонки, Тел. номера связанные с данной демо!</p>
+                <p>{messages['Crm.Demo.DeleteWarningTxt1']}!</p>
+                <p>{messages['Crm.Demo.DeleteWarningTxt2']}!</p>
             </Modal.Content>
             <Modal.Actions>
                 <Button onClick={() => this.deleteModalTrigger(false)} negative>
-                    Отмена
+                    {messages['cancel']}
                 </Button>
-                <Button onClick={() => this.props.deleteDemo(this.props.demo.id)} positive icon='checkmark' labelPosition='right' content='Удалить' />
+                <Button onClick={() => this.props.deleteDemo(this.props.demo.id)} positive icon='checkmark' labelPosition='right' content={messages['Crm.ToDelete']} />
             </Modal.Actions>
         </Modal>
     }

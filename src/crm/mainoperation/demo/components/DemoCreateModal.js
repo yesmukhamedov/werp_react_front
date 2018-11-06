@@ -6,7 +6,8 @@ import axios from 'axios'
 import {ROOT_URL} from '../../../../utils/constants'
 import {toggleDemoCreateModal} from '../actions/demoAction'
 import { connect } from 'react-redux'
-import {DEMO_RESULT_CANCELLED,DEMO_RESULT_DONE,DEMO_RESULT_MOVED,getReasonsByResultId,LOCATION_OPTIONS} from '../../../crmUtil'
+import {DEMO_RESULT_CANCELLED,DEMO_RESULT_DONE,DEMO_RESULT_MOVED,getReasonsByResultId,LOCATION_OPTIONS,getLocationOptionsByLanguage} from '../../../crmUtil'
+import { injectIntl } from 'react-intl'
 require('moment/locale/ru');
 
 class DemoCreateModal extends Component {
@@ -49,7 +50,7 @@ class DemoCreateModal extends Component {
 
   }
 
-  renderReasonRow () {
+  renderReasonRow (messages) {
     let resultId = this.state.demo.resultId
       if(resultId){
         resultId = parseInt(resultId,10)
@@ -58,26 +59,26 @@ class DemoCreateModal extends Component {
       return <Form.Select error={this.state.errors.reasonId}
         value={this.state.demo.reasonId}
         required fluid selection
-        label='Причина' options={getReasonsByResultId(resultId,this.props.reasons)}
+        label={messages['Crm.Reason']} options={getReasonsByResultId(resultId,this.props.reasons)}
         onChange={(e, v) => this.handleChange('reasonId', v)} />
     }
 
     return <Form.Field />
   }
 
-  renderUpdateForm () {
+  renderUpdateForm (messages,locale) {
     return <Form>
       <Form.Group widths='equal'>
         <Form.Field error={this.state.errors.clientName} onChange={(e, o) => this.handleChange('clientName', o)}
           value={this.state.demo.clientName}
-          control={Input} required label='ФИО клиента' placeholder='ФИО клиента' />
+          control={Input} required label={messages['Form.ClientFullName']} placeholder={messages['Form.ClientFullName']} />
         <Form.Field error={this.state.errors.dateTime} required>
-          <label>Дата-время демонстрации</label>
+          <label>{messages['Crm.DemoDateTime']}</label>
           <DatePicker
-            locale="ru"
+            locale={locale}
             label=''
             autoComplete="off"
-            placeholderText={'Дата-время демонстрации'}
+            placeholderText={messages['Crm.DemoDateTime']}
             showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'
             dateFormat='DD.MM.YYYY HH:mm' selected={this.state.demo.dateTime ? moment(this.state.demo.dateTime) : null}
             onChange={(v) => this.handleChange('dateTime', v)} />
@@ -87,34 +88,34 @@ class DemoCreateModal extends Component {
         <Form.Select error={this.state.errors.resultId}
           value={this.state.demo.resultId}
           required fluid selection
-          label='Результат' options={this.resultsOptions()}
+          label={messages['Form.Result']} options={this.resultsOptions()}
           onChange={(e, v) => this.handleChange('resultId', v)} />
-        {this.renderReasonRow()}
+        {this.renderReasonRow(messages)}
       </Form.Group>
       <Form.Group widths='equal'>
         <Form.Field error={this.state.errors.address}
           required control={TextArea}
           onChange={(e, o) => this.handleChange('address', o)}
-          label='Адрес' placeholder='Адрес'
+          label={messages['Table.Address']} placeholder={messages['Table.Address']}
           value={this.state.demo.address}
         />
         <Form.Select error={this.state.errors.locationId}
           value={this.state.demo.locationId}
           required fluid selection
-          label='Местоположение' options={LOCATION_OPTIONS}
+          label={messages['Crm.Location']} options={getLocationOptionsByLanguage(locale)}
           onChange={(e, v) => this.handleChange('locationId', v)} />
       </Form.Group>
       <Form.Group widths='equal'>
         <Form.Select error={this.state.errors.dealerId}
           value={this.state.demo.dealerId}
           required fluid selection
-          label='Дилер' options={this.props.dealers}
+          label={messages['dealer']} options={this.props.dealers}
           onChange={(e, v) => this.handleChange('dealerId', v)} />
 
         <Form.Field control={TextArea}
           onChange={(e, o) => this.handleChange('note', o)}
-          label='Примечание для демо'
-          placeholder='Примечание для демо'
+          label={messages['Crm.NoteForDemo']}
+          placeholder={messages['Crm.NoteForDemo']}
           value={this.state.demo.note || ''}
         />
       </Form.Group>
@@ -249,15 +250,16 @@ class DemoCreateModal extends Component {
 
   render () {
     const {openDemoCreateModal} = this.props
+      const {messages,locale} = this.props.intl
     return (
       <Modal size={'small'} open={openDemoCreateModal}>
-        <Modal.Header>Добавление демо от демо</Modal.Header>
+        <Modal.Header>{messages['Crm.AdditionDemoFromDemo']}</Modal.Header>
         <Modal.Content>
-          {this.renderUpdateForm()}
+          {this.renderUpdateForm(messages,locale)}
         </Modal.Content>
         <Modal.Actions>
-          <Button negative onClick={this.close}>Отмена</Button>
-          <Button positive icon='checkmark' onClick={this.saveDemo} labelPosition='right' content='Сохранить' />
+          <Button negative onClick={this.close}>{messages['cancel']}</Button>
+          <Button positive icon='checkmark' onClick={this.saveDemo} labelPosition='right' content={messages['save']} />
         </Modal.Actions>
       </Modal>
     )
@@ -274,4 +276,4 @@ function mapStateToProps (state) {
     }
 }
 
-export default connect(mapStateToProps, {toggleDemoCreateModal})(DemoCreateModal)
+export default connect(mapStateToProps, {toggleDemoCreateModal})(injectIntl(DemoCreateModal))

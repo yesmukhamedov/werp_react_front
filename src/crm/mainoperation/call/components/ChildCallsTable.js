@@ -10,12 +10,12 @@ import moment from 'moment'
 export default function ChildCallsTable(props){
 
     //Список звонков
-    const {items} = props;
+    const {items, messages} = props;
 
     return <Card fluid>
         <Card.Content>
             <Card.Header>
-                Звонки
+                {messages['Crm.Calls']}
             </Card.Header>
         </Card.Content>
         <Card.Content>
@@ -23,12 +23,12 @@ export default function ChildCallsTable(props){
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell>#</Table.HeaderCell>
-                        <Table.HeaderCell>Филиал</Table.HeaderCell>
-                        <Table.HeaderCell>Дата-время звонка</Table.HeaderCell>
-                        <Table.HeaderCell>Звонил(а)</Table.HeaderCell>
-                        <Table.HeaderCell>Номер</Table.HeaderCell>
-                        <Table.HeaderCell>Результат</Table.HeaderCell>
-                        <Table.HeaderCell>Примечание</Table.HeaderCell>
+                        <Table.HeaderCell>{messages['brnch']}</Table.HeaderCell>
+                        <Table.HeaderCell>{messages['Crm.CallDateTime']}</Table.HeaderCell>
+                        <Table.HeaderCell>{messages['Crm.Caller']}</Table.HeaderCell>
+                        <Table.HeaderCell>{messages['Form.PhoneNumber']}</Table.HeaderCell>
+                        <Table.HeaderCell>{messages['Crm.ResultOfCall']}</Table.HeaderCell>
+                        <Table.HeaderCell>{messages['Table.Note']}</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
 

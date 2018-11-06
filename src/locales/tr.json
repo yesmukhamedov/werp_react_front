@@ -157,6 +157,12 @@
 
 	"Crm.Calls": "Calls",
 	"Crm.Demonstrations": "Demonstrations",
+	"Crm.Visits": "Visits",
+	"Crm.Caller": "Called",
+	"Crm.DeleteWarningHeader": "Warning",
+	"Crm.Reco.DeleteWarningTxt1": "All demonstrations, recommendations and calls associated with this recommendation will delete",
+	"Crm.Reco.DeleteWarningTxt2": "Will be deleted: Demonstrations, Calls, Phone numbers associated with this recommendation",
+	"Crm.AdditionDemoFromDemo":"Addition demo from demo",
 
 	"Crm.Wspace.Menu.ByRecommender": "By recommender",
 	"Crm.Wspace.Menu.ByDate":"By date",
