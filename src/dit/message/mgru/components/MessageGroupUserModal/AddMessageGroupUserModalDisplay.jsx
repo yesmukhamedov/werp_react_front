@@ -6,16 +6,11 @@ import {
   Divider,
 } from 'semantic-ui-react';
 import { Field, reduxForm } from 'redux-form';
-import { TextInputFormField, DropdownFormField } from '../../../../../utils/formFields';
-
-
-const validate = (values) => {
-  const errors = {};
-  if (!values.groupName) {
-    errors.groupName = 'Объязательное поле для заполнения';
-  }
-  return errors;
-};
+import { 
+  TextInputFormField, 
+  DropdownFormField,
+  SearchableSingleDropdownFormField
+} from '../../../../../utils/formFields';
 
 class AddMessageGroupUserModalDisplay extends PureComponent {
   constructor(props) {
@@ -30,7 +25,7 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
     if (modalType === 'add') {
       createMessageGroupUser(formValues, () => fetchMessageGroupUsers());
     } else if (modalType === 'edit') {
-      updateMessageGroupUser(modalData.groupId, formValues, () => fetchMessageGroupUsers());
+      updateMessageGroupUser(modalData.mguId, formValues, () => fetchMessageGroupUsers());
     }
     this.handleFormClose();
   }
@@ -46,43 +41,67 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
       close,
       modalType,
       handleSubmit,
+      selectedCompany,
+      selectedDepartment,
+      branchOptions,
+      companyOptions,
+      reference,
       pristine, 
       submitting 
     } = this.props;
     return (
-      <Modal size="tiny" open={isOpen} onClose={close}>
+      <Modal size="tiny" open={isOpen} onClose={this.handleFormClose}>
         <Modal.Header>{modalType === 'add' ? 'Add' : 'Edit'} message group user</Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
               <Field
+                required
                 name="messageGroup"
                 component={DropdownFormField}
                 label="Группа"
-                opts={[]}
+                opts={reference && reference.messgrOptions}
               />
-              <Field
-                name="userName"
+              {/* <Field
+                name="user"
                 component={TextInputFormField}
                 label="Пользователь"
+              /> */}
+              <Field
+                name="user"
+                component={SearchableSingleDropdownFormField}
+                label="Пользователь"
+                opts={reference && reference.userOptions}
               />
               <Field
+                required
+                name="company"
+                component={DropdownFormField}
+                label="Компания"
+                opts={companyOptions}
+              />
+              <Field
+                required
                 name="branch"
                 component={DropdownFormField}
                 label="Филиал"
-                opts={[]}
+                disabled={!selectedCompany}
+                opts={selectedCompany && branchOptions[selectedCompany]}
               />
               <Field
+                required
                 name="department"
                 component={DropdownFormField}
                 label="Отдел"
-                opts={[]}
+                opts={reference && reference.deptOptions}
               />
               <Field
+                required
                 name="supervisor"
                 component={DropdownFormField}
                 label="Начальник отдела"
-                opts={[]}
+                // disabled={!selectedDepartment}
+                opts={reference && reference.taskAdminOptions}
               />
               <Divider />
               <Button
@@ -106,6 +125,19 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
       </Modal>
     );
   }
+}
+
+const validate = props => {
+  const errors = {}
+  const fields = ['messageGroup', 'branch', 'department', 'supervisor'];
+
+  fields.forEach((f) => {
+    if(!(f in props)) {
+      errors[f] = `${f} is required`;
+    }
+  });
+
+  return errors
 }
 
 export default reduxForm({
