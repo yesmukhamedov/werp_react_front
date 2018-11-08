@@ -14,7 +14,7 @@ import {f4FetchPositionList,f4FetchBusinessAreaList,f4FetchDepartmentList} from 
 import {toggleSalaryListModal} from '../../salary/actions/hrSalaryAction'
 import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal'
 import SalaryListModal from '../../salary/components/SalaryListModal'
-
+import { injectIntl } from 'react-intl'
 
 class HrDocCreatePage extends Component{
 
@@ -240,6 +240,7 @@ class HrDocCreatePage extends Component{
 
     render (){
         const currentType = parseInt(this.props.match.params.type,10)
+        const {messages, locale} = this.props.intl
         let form;
         let pageTitle = 'Создание документа ' + this.state.localDocument.typeName;
         switch (currentType){
@@ -296,6 +297,7 @@ class HrDocCreatePage extends Component{
             modal = <SalaryListModal onSelect={this.handleStaffSelect} />
         } else if(DOC_TYPE_TRANSFER === currentType || DOC_TYPE_RECRUITMENT === currentType){
             modal = <StaffF4Modal open={this.state.staffListModalOpened}
+                                  messages={messages}
                           closeModal={() => this.setState({staffListModalOpened:false})}
                           onStaffSelect={(item)=>this.handleStaffSelect(item)} trans={'hr_doc_create_' + currentType}
                           branchOptions={this.props.branchOptions}
@@ -339,4 +341,4 @@ export default connect(mapStateToProps, {
     blankDocument,toggleStaffListModal,createDocument,fetchAllDirectors,
     f4FetchPositionList,f4FetchBusinessAreaList,f4FetchDepartmentList,fetchAllManagers,
     toggleSalaryListModal
-})(HrDocCreatePage)
+})(injectIntl(HrDocCreatePage))

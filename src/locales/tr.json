@@ -157,6 +157,12 @@
 
 	"Crm.Calls": "Calls",
 	"Crm.Demonstrations": "Demonstrations",
+	"Crm.Visits": "Visits",
+	"Crm.Caller": "Called",
+	"Crm.DeleteWarningHeader": "Warning",
+	"Crm.Reco.DeleteWarningTxt1": "All demonstrations, recommendations and calls associated with this recommendation will delete",
+	"Crm.Reco.DeleteWarningTxt2": "Will be deleted: Demonstrations, Calls, Phone numbers associated with this recommendation",
+	"Crm.AdditionDemoFromDemo":"Addition demo from demo",
 
 	"Crm.Wspace.Menu.ByRecommender": "By recommender",
 	"Crm.Wspace.Menu.ByDate":"By date",
@@ -251,6 +257,7 @@
 	"Crm.ConfirmDelete": "Are you sure you want to delete this item?",
 	"Crm.VisitInfo": "Basic info of the visit",
 	"Crm.Select": "Select",
+	"Crm.EditReco": "Editing recommendation",
   
 	"awkey"           : "Belge referansı",
 	"awtyp"           : "Operasyon tipi",

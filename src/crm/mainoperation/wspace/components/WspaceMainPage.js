@@ -11,7 +11,7 @@ import {toggleRecoListModal,setCurrentRecommender,fetchRecosByReco,fetchRecosByD
     handleFilter,fetchKpi,wspClearState} from '../actions/wspaceAction'
 import {blankForCreate,modalToggle} from '../../visit/actions/visitAction'
 import {fetchCallResults,fetchPhoneMeta} from '../../reco/actions/recoAction'
-import {fetchReasons} from '../../demo/actions/demoAction'
+import {fetchReasons,fetchDemoResults} from '../../demo/actions/demoAction'
 import WspaceHeader from './WspaceHeader'
 import WspaceMenu from './WspaceMenu'
 import WspaceRecoList from  './WspaceRecoList'
@@ -46,6 +46,7 @@ class WspaceMainPage extends Component {
       this.props.fetchCallResults()
       this.props.fetchReasons()
       this.props.fetchKpi(moment().year(),moment().month()+1)
+      this.props.fetchDemoResults()
 
   }
 
@@ -145,7 +146,7 @@ class WspaceMainPage extends Component {
             }
         }
 
-        if(filters.resultId){
+        if(filters.resultId != undefined && filters.resultId != null){
             if(this.state.currentMenu === MENU_BY_RECO) {
                 out = _.filter(items, function (o){
                     return o.resultId === filters.resultId
@@ -178,6 +179,8 @@ class WspaceMainPage extends Component {
                       </Link>
                   </div>
                   <WspaceRecoFilter
+                      demoResults={this.props.demoResults}
+                      locale={this.props.intl.locale}
                       messages={messages}
                       handleFilter = {this.props.handleFilter}
                       menu={this.state.currentMenu} filters={filters}/>
@@ -284,6 +287,7 @@ function mapStateToProps (state) {
     let filters = state.crmWspaceReducer.filters
     return {
         dealers: state.crmDemo.dealers,
+        demoResults: state.crmDemo.demoResults,
         recoListModalOpened: state.crmWspaceReducer.recoListModalOpened,
         currentRecommender: state.crmWspaceReducer.currentRecommender,
         staffRecoData: state.crmWspaceReducer.staffRecoData,
@@ -298,5 +302,5 @@ export default connect(mapStateToProps, {
     fetchRecosByDate,fetchDemoRecos,archiveReco,fetchMovedRecos,fetchTodayCalls,
     fetchTodayDemos,fetchCallResults,fetchReasons,fetchCurrentDemos,fetchCurrentVisits,
     fetchVisitRecos, handleFilter, fetchKpi,blankForCreate,modalToggle,wspClearState,
-    fetchPhoneMeta
+    fetchPhoneMeta, fetchDemoResults
 })(injectIntl(WspaceMainPage))
