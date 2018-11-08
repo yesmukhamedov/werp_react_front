@@ -257,6 +257,7 @@
 	"Crm.ConfirmDelete": "Are you sure you want to delete this item?",
 	"Crm.VisitInfo": "Basic info of the visit",
 	"Crm.Select": "Select",
+	"Crm.EditReco": "Editing recommendation",
   
 	"awkey"           : "Belge referansı",
 	"awtyp"           : "Operasyon tipi",
