@@ -147,6 +147,12 @@ const AsyncMessageGroupPage = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncMessageGroupUserPage = Loadable({
+  loader: () =>
+    import('../dit/message/mgru/components/MessageGroupUserContainer' /* webpackChunkName: "MessageGroupUserPage" */),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncRecoCurrentPage = Loadable({
         loader: () => import('../crm/mainoperation/reco/components/RecoCurrentPage' /* webpackChunkName: "RecoCurrentPage" */),
     loading: () => <LoadingPage />
@@ -304,7 +310,10 @@ const AsyncMyDocsListPage = Loadable({
     loading: () => <LoadingPage />
 });
 
-
+const AsyncFa02 = Loadable({
+  loader: () => import('../finance/mainoperation/fa02/fa02' /* webpackChunkName: "fa02" */),
+  loading: () => <LoadingPage />
+});
 
 const AsyncFa03 = Loadable({
   loader: () => import('../finance/mainoperation/fa03/fa03' /* webpackChunkName: "fa03" */),
@@ -397,17 +406,18 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/dit/dtskrep" component={persistPath(AsyncTaskMonitorPage)} />
       <Route path="/dit/dtskl"   component={persistPath(AsyncDeptTaskListPage)} />
       <Route path="/dit/dtskredit/:id"   component={AsyncTaskRecEditPage} />
-      <Route path="/dit/messgr"   component={persistPath(AsyncMessageGroupPage)} />
+      <Route path="/dit/messgr" component={persistPath(AsyncMessageGroupPage)} />
+      <Route path="/dit/mgru" component={persistPath(AsyncMessageGroupUserPage)} />
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
       <Route path="/hr/doc/create/:type" component={AsyncHrDocCreatePage} />
       <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />
       <Route path="/general/dtskc" component={DtskcContainer} />
       <Route path="/general/dtskdep" component={DtskdepContainer} />
       <Route path="/finance/mainoperation/fa03" component={AsyncFa03} />
+      <Route path="/finance/mainoperation/fa02" component={AsyncFa02} />
       <Route path="/documents/mydocs" component={AsyncMyDocsListPage}/>
       
       {/* Transactions */}
-      <Route path="/dit/transaction/list" component={trlist} />
       <Route path="/dit/transaction/update/:id?" component={trupdate} />
 
       {/* dynamically generated URLs  */}

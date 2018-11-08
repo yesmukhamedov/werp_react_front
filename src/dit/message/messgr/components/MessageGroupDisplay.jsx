@@ -53,9 +53,9 @@ export default class MessageGroupDisplay extends Component {
               <Header as="h2">
                 <Icon name="settings" />
                 <Header.Content>
-                  Группы получателей
+                  Группа сообщения
                   <Header.Subheader>
-                    Управление группой получателей
+                    Управление группой сообщений
                   </Header.Subheader>
                 </Header.Content>
               </Header>

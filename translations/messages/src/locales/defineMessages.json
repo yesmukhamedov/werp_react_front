@@ -1,0 +1,254 @@
+[
+  {
+    "id": "Task.Branch",
+    "defaultMessage": "Branch"
+  },
+  {
+    "id": "Task.Department",
+    "defaultMessage": "Department"
+  },
+  {
+    "id": "Task.Type",
+    "defaultMessage": "Type"
+  },
+  {
+    "id": "Task.Title",
+    "defaultMessage": "Title"
+  },
+  {
+    "id": "Task.Status",
+    "defaultMessage": "Status"
+  },
+  {
+    "id": "Task.createdAt",
+    "defaultMessage": "Created at"
+  },
+  {
+    "id": "Task.estimatedAt",
+    "defaultMessage": "Estimated at"
+  },
+  {
+    "id": "Task.Author",
+    "defaultMessage": "Author"
+  },
+  {
+    "id": "Task.Recipient",
+    "defaultMessage": "Recipient"
+  },
+  {
+    "id": "Table.Loading",
+    "defaultMessage": "Loading..."
+  },
+  {
+    "id": "Table.NoData",
+    "defaultMessage": "No rows found"
+  },
+  {
+    "id": "Table.Previous",
+    "defaultMessage": "Previous"
+  },
+  {
+    "id": "Table.Next",
+    "defaultMessage": "Next"
+  },
+  {
+    "id": "Table.Rows",
+    "defaultMessage": "rows"
+  },
+  {
+    "id": "Table.Page",
+    "defaultMessage": "Page"
+  },
+  {
+    "id": "Table.Of",
+    "defaultMessage": "of"
+  },
+  {
+    "id": "Task.TaskListLabel",
+    "defaultMessage": "Task list"
+  },
+  {
+    "id": "Task.Company",
+    "defaultMessage": "Company"
+  },
+  {
+    "id": "Task.CompanyError",
+    "defaultMessage": "Select company"
+  },
+  {
+    "id": "Task.BranchError",
+    "defaultMessage": "Select branch"
+  },
+  {
+    "id": "Task.StatusError",
+    "defaultMessage": "Select status"
+  },
+  {
+    "id": "Task.endDateFrom",
+    "defaultMessage": "End date from"
+  },
+  {
+    "id": "Task.endDateTo",
+    "defaultMessage": "End date to"
+  },
+  {
+    "id": "Task.DepartmentError",
+    "defaultMessage": "Select deparment"
+  },
+  {
+    "id": "Task.TypeError",
+    "defaultMessage": "Select type"
+  },
+  {
+    "id": "Task.StartDateFrom",
+    "defaultMessage": "Start date from"
+  },
+  {
+    "id": "Task.StartDateTo",
+    "defaultMessage": "Start date to"
+  },
+  {
+    "id": "Button.Search",
+    "defaultMessage": "Search"
+  },
+  {
+    "id": "Button.Reset",
+    "defaultMessage": "Reset"
+  },
+  {
+    "id": "Button.Yes",
+    "defaultMessage": "Yes"
+  },
+  {
+    "id": "Button.No",
+    "defaultMessage": "No"
+  },
+  {
+    "id": "Select.All",
+    "defaultMessage": "All"
+  },
+  {
+    "id": "Recipient.Edit.Header",
+    "defaultMessage": "Assign recipent"
+  },
+  {
+    "id": "Recipient.Edit.Subheader",
+    "defaultMessage": "Task #"
+  },
+  {
+    "id": "Task.ExpEndDate",
+    "defaultMessage": "Expected end date"
+  },
+  {
+    "id": "Task.MonitorLabel",
+    "defaultMessage": "Task monitor"
+  },
+  {
+    "id": "Table.Amount",
+    "defaultMessage": "Amount"
+  },
+  {
+    "id": "Task.State",
+    "defaultMessage": "State"
+  },
+  {
+    "id": "Task.DateFrom",
+    "defaultMessage": "From"
+  },
+  {
+    "id": "Task.DateTo",
+    "defaultMessage": "To"
+  },
+  {
+    "id": "Task.DateError",
+    "defaultMessage": "Select date"
+  },
+  {
+    "id": "Contract.SnContract",
+    "defaultMessage": "SN contract"
+  },
+  {
+    "id": "Task.Priority",
+    "defaultMessage": "Priority"
+  },
+  {
+    "id": "Task.Modified",
+    "defaultMessage": "Modified"
+  },
+  {
+    "id": "Total",
+    "defaultMessage": "Total"
+  },
+  {
+    "id": "Contract.Date",
+    "defaultMessage": "Contract date"
+  },
+  {
+    "id": "Person.Fullname",
+    "defaultMessage": "Fullname"
+  },
+  {
+    "id": "Product",
+    "defaultMessage": "Product"
+  },
+  {
+    "id": "Dealer.Fullname",
+    "defaultMessage": "Dealer fullname"
+  },
+  {
+    "id": "Operator",
+    "defaultMessage": "Operator"
+  },
+  {
+    "id": "Operator.Header.Assign",
+    "defaultMessage": "Assign operator"
+  },
+  {
+    "id": "Contract",
+    "defaultMessage": "Contract"
+  },
+  {
+    "id": "Contract.Number",
+    "defaultMessage": "Contract number"
+  },
+  {
+    "id": "Task",
+    "defaultMessage": "Task"
+  },
+  {
+    "id": "Button.Edit",
+    "defaultMessage": "Edit"
+  },
+  {
+    "id": "Task.AddedBy",
+    "defaultMessage": "Added by"
+  },
+  {
+    "id": "Task.Assign",
+    "defaultMessage": "Assigned to"
+  },
+  {
+    "id": "Task.StartDate",
+    "defaultMessage": "Start date"
+  },
+  {
+    "id": "Task.EndDate",
+    "defaultMessage": "End date"
+  },
+  {
+    "id": "Author.Manager",
+    "defaultMessage": "Authors manager"
+  },
+  {
+    "id": "Assignee.Manager",
+    "defaultMessage": "Assignees manager"
+  },
+  {
+    "id": "Assignee",
+    "defaultMessage": "Assignee"
+  },
+  {
+    "id": "Task.Description",
+    "defaultMessage": "Description"
+  }
+]

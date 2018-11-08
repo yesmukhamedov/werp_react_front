@@ -10,12 +10,12 @@ import moment from 'moment'
 export default function ChildVisitsTable(props){
 
     //Visits List
-    const {items} = props;
+    const {items, messages} = props;
 
     return <Card fluid>
         <Card.Content>
             <Card.Header>
-                Визиты
+                {messages['Crm.Visits']}
             </Card.Header>
         </Card.Content>
         <Card.Content>
@@ -23,10 +23,10 @@ export default function ChildVisitsTable(props){
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell>#</Table.HeaderCell>
-                        <Table.HeaderCell>Филиал</Table.HeaderCell>
-                        <Table.HeaderCell>Посетитель</Table.HeaderCell>
-                        <Table.HeaderCell>Дата</Table.HeaderCell>
-                        <Table.HeaderCell>Примеч.</Table.HeaderCell>
+                        <Table.HeaderCell>{messages['brnch']}</Table.HeaderCell>
+                        <Table.HeaderCell>{messages['Table.Visitor']}</Table.HeaderCell>
+                        <Table.HeaderCell>{messages['Table.Date']}</Table.HeaderCell>
+                        <Table.HeaderCell>{messages['Table.Note']}</Table.HeaderCell>
                         <Table.HeaderCell></Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>

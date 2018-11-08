@@ -35,10 +35,11 @@ class TaskListSearchComponent extends Component {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     const {
-      handleSubmit, pristine, submitting, reset, directories, companyOptions, branchOptions, company
+      handleSubmit, pristine, submitting, reset, directories, companyOptions, branchOptions, company, messages
     } = this.props;
-    const allOpt = { key: -1, text: 'Все', value: -1 };
+    const allOpt = { key: -1, text: formatMessage(messages.allOption), value: -1 };
     if (directories) {
       return (
         <Form onSubmit={handleSubmit(this.handleSearch)}>
@@ -46,7 +47,7 @@ class TaskListSearchComponent extends Component {
             <Label
               as="a"
               attached="top"
-              content="Задачи"
+              content={formatMessage(messages.taskList)}
               icon="checkmark box"
               style={{
                 background: 'rgba(227,232,238, 1)',
@@ -58,7 +59,7 @@ class TaskListSearchComponent extends Component {
                   required
                   name="company"
                   component={DropdownFormField}
-                  label="Компания"
+                  label={formatMessage(messages.company)}
                   opts={companyOptions}
                 />
               </Grid.Column>
@@ -66,7 +67,7 @@ class TaskListSearchComponent extends Component {
                 <Field
                   name="branch"
                   component={DropdownFormField}
-                  label="Филиал"
+                  label={formatMessage(messages.branch)}
                   opts={company ? [allOpt, ...branchOptions[company]] : []}
                 />
               </Grid.Column>
@@ -74,7 +75,7 @@ class TaskListSearchComponent extends Component {
                 <Field
                   name="status"
                   component={DropdownFormField}
-                  label="Статус"
+                  label={formatMessage(messages.status)}
                   opts={[allOpt, ...Object.values(directories.statusOptions)]}
                 />
               </Grid.Column>
@@ -82,14 +83,14 @@ class TaskListSearchComponent extends Component {
                 <Field
                   name="priority"
                   component={DropdownFormField}
-                  label="Приоритет"
+                  label={formatMessage(messages.priority)}
                   opts={[allOpt, ...Object.values(directories.priorityOptions)]}
                 />
               </Grid.Column>
               <Grid.Column width={2}>
                 <Form.Group widths="equal">
                   <Form.Button
-                    content="Поиск"
+                    content={formatMessage(messages.search)}
                     type="submit"
                     loading={submitting}
                     disabled={pristine || submitting}
@@ -97,7 +98,7 @@ class TaskListSearchComponent extends Component {
                       { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
                   />
                   <Form.Button
-                    content="Сброс"
+                    content={formatMessage(messages.reset)}
                     type="button"
                     disabled={pristine || submitting}
                     style={
@@ -124,11 +125,12 @@ TaskListSearchComponent.propTypes = {
   directories: PropTypes.object,
 };
 
-function validate(formProps) {
+function validate(formProps, state) {
+  const { formatMessage } = state.intl;
   const error = {};
 
   if (!formProps.company) {
-    error.company = 'Выберите компанию';
+    error.company = formatMessage({ id: 'Form.CompanyError' });
   }
 
   return error;

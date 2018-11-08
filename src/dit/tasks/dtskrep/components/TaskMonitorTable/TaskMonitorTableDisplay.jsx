@@ -111,13 +111,13 @@ class TaskMonitorTableDisplay extends Component {
       //     desc: true,
       //   },
       // ]}
-      previousText="Предыдущий"
-      nextText="Следующий"
-      loadingText="Загружается..."
-      noDataText="Нет записей"
-      pageText="Страница"
-      ofText="из"
-      rowsText="записей"
+      previousText={formatMessage(messages.previousText)}
+      nextText={formatMessage(messages.nextText)}
+      loadingText={formatMessage(messages.loadingText)}
+      noDataText={formatMessage(messages.noDataText)}
+      pageText={formatMessage(messages.pageText)}
+      ofText={formatMessage(messages.ofText)}
+      rowsText={formatMessage(messages.rowsText)}
       className="-highlight"
       getTrProps={(state, rowInfo) => ({
                             onClick: () => {

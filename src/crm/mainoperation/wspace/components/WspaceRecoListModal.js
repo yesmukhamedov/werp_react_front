@@ -4,7 +4,7 @@ import WspaceRecoCard from './WspaceRecoCard'
 import {RECO_MODAL_ITEMS} from '../wspaceUtil'
 
 export default function WspaceRecoListModal (props) {
-    let {opened,items,recommender,loaders} = props
+    let {opened,items,recommender,loaders,messages} = props
     if(!items){
         items = []
     }
@@ -46,6 +46,7 @@ export default function WspaceRecoListModal (props) {
                 :<Card.Group>
                     {loaders[RECO_MODAL_ITEMS]?<Loader active inline='centered'/>:items.map(item => (
                             <WspaceRecoCard
+                                messages={messages}
                                 recoCardMenuHandle={props.recoCardMenuHandle}
                                 type={RECO_MODAL_ITEMS}
                                 key={item.id}
@@ -56,7 +57,7 @@ export default function WspaceRecoListModal (props) {
         </Modal.Content>
         <Modal.Actions>
             <Button onClick={props.closeRecoListModal}>
-                Закрыть
+                {messages['close']}
             </Button>
         </Modal.Actions>
     </Modal>

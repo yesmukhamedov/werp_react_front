@@ -1,0 +1,293 @@
+{
+  "Auth.Signin.Header": "Log-in to your account",
+  "Auth.Signin.Username": "Username",
+  "Auth.Signin.Password": "Password",
+  "Auth.Signin.Login": "Login",
+  "Header.Menu.MenuLabel": "Menu",
+  "Header.Menu.Inbox": "Inbox",
+  "Header.Menu.Settings": "Settings",
+  "Header.Menu.Logout": "Logout",
+  "Form.State": "State",
+  "Form.DateFrom": "From",
+  "Form.DateTo": "To",
+  "Form.DateError": "Select date",
+  "Table.SnContract": "SN contract",
+  "Table.Priority": "Priority",
+  "Table.Modified": "Modified",
+  "Table.Total": "Total",
+  "Table.ContractDate": "Contract date",
+  "Table.Fio": "FIO",
+  "Table.Product": "Product",
+  "Table.DealerFio": "Dealer fio",
+  "Table.Operator": "Operator",
+  "Table.All": "All",
+  "Form.Priority": "Priority",
+  "Form.TaskListLabel": "Task list",
+  "Form.Company": "Company",
+  "Form.CompanyError": "Select company",
+  "Form.Branch": "Branch",
+  "Form.BranchError": "Select branch",
+  "Form.Status": "Status",
+  "Form.StatusError": "Select status",
+  "Form.endDateFrom": "End date from",
+  "Form.endDateTo": "End date to",
+  "Form.Department": "Department",
+  "Form.DepartmentError": "Select deparment",
+  "Form.Type": "Type",
+  "Form.TypeError": "Select type",
+  "Form.StartDateFrom": "Start date from",
+  "Form.StartDateTo": "Start date to",
+  "Form.Search": "Search",
+  "Form.Reset": "Reset",
+  "Form.All.Option": "All",
+  "Table.Branch": "Branch",
+  "Table.Department": "Department",
+  "Table.Type": "Type",
+  "Table.Title": "Title",
+  "Table.Status": "Status",
+  "Table.createdAt": "Created at",
+  "Table.estimatedAt": "Estimated at",
+  "Table.Author": "Author",
+  "Table.Recipient": "Recipient",
+  "Table.Loading": "Loading...",
+  "Table.NoData": "No rows found",
+  "Table.Previous": "Previous",
+  "Table.Next": "Next",
+  "Table.Rows": "rows",
+  "Table.Page": "Page",
+  "Table.Of": "of",
+  "Recipient.Edit.Header": "Assign recipent",
+  "Recipient.Edit.Subheader": "Task #",
+  "Recipient.Edit.Recipient": "Recipient",
+  "Recipient.Edit.ExpEndDate": "Expected end date",
+  "Recipient.Edit.Content": "Are you sure you want to assign yourself as a recipient ?",
+  "Form.TaskMonitorLabel": "Task monitor",
+  "Table.Amount": "Amount",
+
+  "Form.Year": "Year",
+  "Form.Month": "Month",
+  "Form.Form": "Form",
+  "Form.Save": "Save",
+  "Form.Client": "Client",
+  "Form.Category": "Category",
+  "Form.Result": "Result",
+  "Form.Date": "Date",
+  "Form.MobNumber": "Mob. number",
+  "Table.NameSurname": "Name Surname",
+  "Table.Position": "Position",
+  "Table.Client": "Client",
+  "Table.Address": "Address",
+  "Table.DateTime": "Date time",
+  "Table.Dealer": "Dealer",
+  "Table.Category": "Category",
+  "Table.Note": "Note",
+  "Table.Result": "Result",
+  "Table.VisitDate": "Visit date",
+  "Table.Visitor": "Visitor",
+  "Table.Actions": "Actions",
+  "Table.View": "View",
+  "Table.RingUp": "Ring up",
+  "Table.Add": "Add",
+  "Table.PhoneNumber": "Phone number",
+  "Table.Link": "Link",
+  "Table.ViewReco": "View rec.",
+
+  "Hr.Timetable.Header": "Personnel Time Table",
+  "Hr.Timetable.SignsAndCodes": "Signs and Codes",
+
+  "Crm.Calls": "Calls",
+  "Crm.Demonstrations": "Demonstrations",
+
+  "Crm.Wspace.Menu.ByRecommender": "By recommender",
+  "Crm.Wspace.Menu.ByDate":"By date",
+  "Crm.Wspace.Menu.Moved": "Moved",
+  "Crm.Wspace.Menu.CurrentDemo": "Current demo",
+  "Crm.Wspace.Menu.CurrentVisits": "Current visits",
+  "Crm.Wspace.Menu.AddInfo": "Additional info",
+  "Crm.Wspace.TodayActions": "Today actions",
+  "Crm.Wspace.RecoByReco": "Recommendations by recommender",
+  "Crm.Wspace.RecoByDate": "Recommendations by date",
+  "Crm.Wspace.MovedReco": "Moved recommendations",
+  "Crm.Wspace.CurrentDemo": "Current demonstrations",
+  "Crm.Wspace.CurrentVisits": "Current visits",
+  "Crm.Wspace.CreateFromArchive": "Create from archive",
+  "Crm.DemoArchiveTitle": "Group demo archive",
+  "Crm.RecoArchiveTitle": "Group recommendations archive",
+  "Crm.VisitArchiveTitle": "Group visits archive",
+
+  "Form.CreatingReco": "Creating recommendation",
+  "Form.CreatingRecoFromArchive": "Creating recommendation from archive",
+  "Form.Dealer": "Dealer",
+  "Form.RecommenderFullName": "Recommender fullname",
+  "Form.RecommenderAddData": "Recommender additional data",
+  "Form.Wait": "Wait...",
+  "Form.ClientFullName": "Client fullname",
+  "Form.DemoDateFrom": "Demo date from",
+  "Form.DemoDateTo": "Demo date to",
+  "Form.SaleDateFrom": "Sale date from",
+  "Form.SaleDateTo": "Sale date to",
+  "Form.Address": "Address",
+
+  "Form.Reco.RecoName": "Fullname",
+  "Form.Reco.Category": "Category",
+  "Form.Reco.District": "District",
+  "Form.Reco.Relative": "Relative",
+  "Form.Reco.CallerIs": "Caller is",
+  "Form.Reco.Note": "Note",
+  "Form.Reco.PhoneNumber": "Phone number",
+  "Form.Reco.Error": "Error",
+  "Form.Visit.Creating": "Creating visit",
+  "Form.Visit.Editing": "Editing visit",
+  "Form.PhoneNumber": "Phone number",
+
+  "Table.ResponsibleStaff": "Responsible staff",
+  "Table.AppointerStaff": "Appointer",
+  "Table.ClientFullName": "Client fullname",
+  "Table.Date": "Date",
+
+  "Hr.Timesheet.StatusDescriptionTitle": "Signs and codes",
+  "Crm.Recommendation": "Recommendation",
+  "Crm.ToCurrentList": "List of current recommendations",
+  "Crm.ToList": "To list",
+  "Crm.ToArchiveList": "List of archived",
+  "Crm.ToEdit": "Edit",
+  "Crm.ToDelete": "Delete",
+  "Crm.ToPrint": "Print",
+  "Crm.ToAddReco":"Add recommendations",
+  "Crm.ToAddDemo":"Add demo",
+  "Crm.BasicInfo": "Basic info",
+  "Crm.Owner": "Owner",
+  "Crm.OwnerBranch": "Branch of the owner",
+  "Crm.AddInfo": "Additional info",
+  "Crm.DemoDateTime": "Date time of demo",
+  "Crm.Democard": "Demo Card",
+  "Crm.Source": "Source",
+  "Crm.Reason": "Reason of",
+  "Crm.DateOfSale": "Date of sale",
+  "Crm.Demo": "Demo",
+  "Crm.Visit": "Visit",
+  "Crm.VersionForPrint": "Version for print",
+  "Crm.DemoSecretary": "Demo secretary",
+  "Crm.ListOfRecommendations": "List of recommendations",
+  "Crm.DemoEdition": "Editing demo",
+  "Crm.Location": "Location",
+  "Crm.HistoryOfNumber": "Call history of number",
+  "Crm.AddingCall": "Add call",
+  "Crm.CallDateTime": "Date time of call",
+  "Crm.Called": "Called",
+  "Crm.RejectionReason": "Reason of rejection",
+  "Crm.RecallDateTime": "Recall date time",
+  "Crm.NoteForCall": "Note for call",
+  "Crm.NoteForDemo": "Note for demo",
+  "Crm.ResultOfCall": "Result of the call",
+  "Crm.Open": "Open",
+  "Crm.ToArchive": "Send to archive",
+  "Crm.From": "From",
+  "Crm.PointPerCall": "Point per call",
+  "Crm.CallCount": "Number of calls",
+  "Crm.Score": "Score",
+  "Crm.ConfirmDelete": "Are you sure you want to delete this item?",
+  "Crm.VisitInfo": "Basic info of the visit",
+  "Crm.Select": "Select",
+
+  "awkey"           : "Reference document number and year",
+  "awtyp"           : "Operation type",
+  "belnr"           : "Document number",
+  "bktxt"           : "Description",
+  "blart"           : "Document type",
+  "bldat"           : "Document date",
+  "brnch"           : "Branch",
+  "budat"           : "Posting date",
+  "bukrs"           : "Company",
+  "business_area"   : "Business area",
+  "contract_number" : "Contract number",
+  "customer_id"     : "Customer ID",
+  "gjahr"           : "Document year",
+  "kursf"           : "Exchange rate",
+  "monat"           : "Month",
+  "stblg"           : "Canceled document number",
+  "stjah"           : "Canceled document year",
+  "storno"          : "Storno",
+  "tcode"           : "Transaction",
+  "usnam"           : "User ID",
+  "waers"           : "Currency",
+  "official"        : "Official",
+	"dep"             : "Department",
+	"zreg"            : "Reg. number"
+
+
+  ,"dealer"		: "Dealer"
+	,"finAgent"		: "Fin. agent"
+	,"fioClient"		: "Client Name"
+	,"price"	: "Price"
+	,"paid":"Paid"
+	,"remainder":"Remainder"
+	,"cashBank":"Cash/Bank"
+	,"amount":"Amount"
+	,"monthlyPayment":"Monthly Payment"
+	,"firstPayment":"First payment"
+	,"paymentDate":"Payment Date"
+	,"paymentAmount":"Payment Amount"
+	,"paymentSchedule":"Payment Schedule"
+	,"save":"Save"
+	,"search":"Search"
+	,"searchParameters":"Search Parameters"
+	,"mainInfos":"Main info"
+	,"finDoc":"Fin. doc"
+
+  
+  ,"regNumOrConNum":"Reg. num or Contract Num"
+  ,"transNameFmcp":"Receipt from Sales Contract"
+  ,"transNameFcis":"Employee acc.cash inquiry"
+  ,"header":"Header"
+	,"position":"Position"
+	,"operation":"Operation"
+  ,"employee":"Employee"
+  
+  ,"staff":"Staff"
+  ,"iinBin":"Iin/Bin"
+  ,"dismissed":"Dismissed"
+  ,"fio":"Full name"
+
+  ,"loadingText":"Loading..."
+  ,"noDataText":"No rows found"
+  ,"previousText":"Previous"
+  ,"nextText":"Next"
+  ,"rowsText":"rows"
+  ,"pageText":"Page"
+  ,"ofText":"of"
+
+  
+  
+
+	,"transNameFrcoln":"Collectors Statistics"
+	,"all":"All"
+	,"date":"Date"
+	,"state1":"State"
+	,"onBegOfMonth":"Till the beginning of the month"
+	,"onEndOfMonth":"Till the end of the month"
+	,"installments":"Installments"
+	,"in1Month":"In 1 month"
+	,"overallSum":"Overall Sum"
+	,"numOfSalesContracts":"Num. of Contracts"
+	,"plan":"Plan"
+	,"collected":"Collected"
+	,"details":"Details"
+	,"city":"City"
+	,"percent":"Percent"
+	,"overallAmount":"Overall Amount"
+	,"standard":"Standard"
+	,"problem":"Problem"
+	,"branches":"Branches"
+	,"finAgents":"Fin. agents"
+	,"salesContracts":"Sales Contracts"
+	,"contractDate":"Contract Date"
+	,"snNum":"SN number"
+	,"count":"Count"
+	,"period":"Period"
+	,"show":"Show"
+	,"payDebt":"Pay debt"
+	,"toEmployeeAccount":"To employee account",
+  "cancel": "Cancel",
+  "close": "Close"
+}

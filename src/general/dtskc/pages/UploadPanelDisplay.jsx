@@ -4,10 +4,9 @@ import { ROOT_URL } from '../../../utils/constants';
 import Upload from 'rc-upload';
 
 const UploadPanelDisplay = (props) => {
-  const { onUploadSuccess } = props;
+  const { onUploadSuccess, messages } = props;
   const uploaderProps = {
     action: `${ROOT_URL}/api/attachment/upload-file`,
-    // type: 'drag',
     accept: '.pdf',
     multiple: true,
     headers: {
@@ -28,7 +27,7 @@ const UploadPanelDisplay = (props) => {
       style={{ display: 'inline-block', marginBottom: '10px' }}
     >
       <Button
-        content="Прикрепить файлы"
+        content={messages.BTN__ATTACH_FILE}
         icon="upload"
         size="small"
         color="twitter"

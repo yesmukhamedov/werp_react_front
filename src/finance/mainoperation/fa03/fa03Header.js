@@ -97,6 +97,13 @@ class Fa03Header extends PureComponent{
         if (bkpf.storno===1 || bkpf.blart==='ST'){
             backgroundColor = '#F54C4C';
         }
+
+        
+        let readOnlyValue=true;
+        if (this.props.trans==="FA02")
+        {
+            readOnlyValue = false;
+        }
         
         return(
             <Segment padded size="small"  style={{backgroundColor}}>                
@@ -334,7 +341,8 @@ class Fa03Header extends PureComponent{
                                         
                                         <Table.Cell>
                                             <TextArea style={{ maxHeight: 45,minHeight: 45, minWidth:180, maxWidth:180 }}
-                                                value={!bkpf.bktxt?'':bkpf.bktxt} maxLength='255' readOnly={true} 
+                                                value={!bkpf.bktxt?'':bkpf.bktxt} maxLength='255' readOnly={readOnlyValue}
+                                                onChange={(e, { value }) => this.props.onInputChangeData(value,'bktxt','')} 
                                             />
                                         </Table.Cell>                
                                     </Table.Row>

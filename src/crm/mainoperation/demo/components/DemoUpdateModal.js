@@ -5,8 +5,10 @@ import "react-datepicker/dist/react-datepicker.css"
 import moment from 'moment'
 import {fetchGroupDealers,fetchDemoResults,fetchReasons,updateDemo,toggleDemoUpdateModal} from '../actions/demoAction'
 import { connect } from 'react-redux'
-import {DEMO_RESULT_CANCELLED,DEMO_RESULT_DONE,DEMO_RESULT_MOVED,getReasonsByResultId,LOCATION_OPTIONS,DEMO_RESULT_SOLD,demoResultOptions} from '../../../crmUtil'
+import {DEMO_RESULT_CANCELLED,DEMO_RESULT_DONE,DEMO_RESULT_MOVED,getReasonsByResultId,getLocationOptionsByLanguage,DEMO_RESULT_SOLD,demoResultOptions} from '../../../crmUtil'
+import { injectIntl } from 'react-intl'
 require('moment/locale/ru');
+
 class DemoUpdateModal extends Component {
   constructor (props) {
     super(props)
@@ -38,7 +40,7 @@ class DemoUpdateModal extends Component {
     this.props.fetchReasons()
   }
 
-  renderReasonRow () {
+  renderReasonRow (messages) {
     let resultId = this.state.localDemo.resultId
     if(resultId){
         resultId = parseInt(resultId,10);
@@ -48,7 +50,7 @@ class DemoUpdateModal extends Component {
        name="reasonId"
         value={this.state.localDemo.reasonId}
         required fluid selection
-        label='Причина' options={getReasonsByResultId(resultId,this.props.reasons)}
+        label={messages['Crm.Reason']} options={getReasonsByResultId(resultId,this.props.reasons)}
         onChange={(e, v) => this.handleChange('reasonId', v)} />
     }
 
@@ -57,14 +59,15 @@ class DemoUpdateModal extends Component {
 
   renderSaleDateRow(){
       let resultId = parseInt(this.state.localDemo.resultId,10);
+      const {messages, locale} = this.props.intl
       if (resultId === DEMO_RESULT_SOLD) {
           return <Form.Field error={this.state.errors.saleDate} required>
-                  <label>Дата продажи</label>
+                  <label>{messages['Crm.DateOfSale']}</label>
                   <DatePicker
                       autoComplete="off"
-                      locale="ru"
+                      locale={locale}
                       label=''
-                      placeholderText={'Дата продажи'}
+                      placeholderText={messages['Crm.DateOfSale']}
                       showMonthDropdown showYearDropdown dropdownMode='select'
                       dateFormat='DD.MM.YYYY' selected={this.state.localDemo.saleDate?moment(this.state.localDemo.saleDate):null}
                       onChange={(v) => this.handleChange('saleDate', v)} />
@@ -76,14 +79,15 @@ class DemoUpdateModal extends Component {
 
   renderCallDateRow(){
       let resultId = parseInt(this.state.localDemo.resultId,10);
+      const {messages,locale} = this.props.intl
       if (resultId === DEMO_RESULT_MOVED || resultId === DEMO_RESULT_CANCELLED) {
           return <Form.Field>
-              <label>Дата перезвона</label>
+              <label>{messages['Crm.RecallDateTime']}</label>
               <DatePicker
                   autoComplete="off"
-                  locale="ru"
+                  locale={locale}
                   label=''
-                  placeholderText={'Дата перезвона'}
+                  placeholderText={messages['Crm.RecallDateTime']}
                   showMonthDropdown showYearDropdown dropdownMode='select'
                   dateFormat='DD.MM.YYYY' selected={this.state.localDemo.recallDate?moment(this.state.localDemo.recallDate):null}
                   onChange={(v) => this.handleChange('recallDate', v)} />
@@ -93,20 +97,21 @@ class DemoUpdateModal extends Component {
       return null
   }
 
-  renderUpdateForm () {
+  renderUpdateForm (messages) {
       let {localDemo} = this.state
+      const {locale} = this.props.intl
     return <Form>
       <Form.Group widths='equal'>
         <Form.Field error={this.state.errors.clientName} onChange={(e, o) => this.handleChange('clientName', o)}
           value={localDemo.clientName}
-          control={Input} required label='ФИО клиента' placeholder='ФИО клиента' />
+          control={Input} required label={messages['fioClient']} placeholder={messages['fioClient']} />
         <Form.Field error={this.state.errors.dateTime} required>
-          <label>Дата-время демонстрации</label>
+          <label>{messages['Crm.DemoDateTime']}</label>
           <DatePicker
             autoComplete="off"
-            locale="ru"
+            locale={locale}
             label=''
-            placeholderText={'Дата-время демонстрации'}
+            placeholderText={messages['Crm.DemoDateTime']}
             showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'
             dateFormat='DD.MM.YYYY HH:mm' selected={moment(localDemo.dateTime)}
             onChange={(v) => this.handleChange('dateTime', v)} />
@@ -116,9 +121,9 @@ class DemoUpdateModal extends Component {
         <Form.Select error={this.state.errors.resultId}
           value={localDemo.resultId}
           required fluid selection
-          label='Результат' options={demoResultOptions(this.props.demoResults)}
+          label={messages['Table.Result']} options={demoResultOptions(this.props.demoResults)}
           onChange={(e, v) => this.handleChange('resultId', v)} />
-        {this.renderReasonRow()}
+        {this.renderReasonRow(messages)}
         {this.renderSaleDateRow()}
       </Form.Group>
 
@@ -130,26 +135,26 @@ class DemoUpdateModal extends Component {
         <Form.Field error={this.state.errors.address}
           required control={TextArea}
           onChange={(e, o) => this.handleChange('address', o)}
-          label='Адрес' placeholder='Адрес'
+          label={messages['Table.Address']} placeholder={messages['Table.Address']}
           value={localDemo.address}
         />
         <Form.Select error={this.state.errors.locationId}
           value={localDemo.locationId}
           required fluid selection
-          label='Местоположение' options={LOCATION_OPTIONS}
+          label={messages['Crm.Location']} options={getLocationOptionsByLanguage(locale)}
           onChange={(e, v) => this.handleChange('locationId', v)} />
       </Form.Group>
       <Form.Group widths='equal'>
         <Form.Select error={this.state.errors.dealerId}
           value={localDemo.dealerId}
           required fluid selection
-          label='Дилер' options={this.props.dealers}
+          label={messages['dealer']} options={this.props.dealers}
           onChange={(e, v) => this.handleChange('dealerId', v)} />
 
         <Form.Field control={TextArea}
           onChange={(e, o) => this.handleChange('note', o)}
-          label='Примечание для демо'
-          placeholder='Примечание для демо'
+          label={messages['Table.Note']}
+          placeholder={messages['Table.Note']}
           value={localDemo.note || ''}
         />
       </Form.Group>
@@ -284,16 +289,17 @@ class DemoUpdateModal extends Component {
 
   render () {
     const {openDemoUpdateModal, demo} = this.props
+      const {messages} = this.props.intl
     demo['recos'] = []
     return (
       <Modal size={'small'} open={openDemoUpdateModal}>
-        <Modal.Header>Редактирование демонстрации</Modal.Header>
+        <Modal.Header>{messages['Crm.DemoEdition']}</Modal.Header>
         <Modal.Content>
-          {this.renderUpdateForm()}
+          {this.renderUpdateForm(messages)}
         </Modal.Content>
         <Modal.Actions>
-          <Button negative onClick={() => this.props.toggleDemoUpdateModal(false)}>Отмена</Button>
-          <Button positive icon='checkmark' onClick={this.saveDemo} labelPosition='right' content='Сохранить' />
+          <Button negative onClick={() => this.props.toggleDemoUpdateModal(false)}>{messages['cancel']}</Button>
+          <Button positive icon='checkmark' onClick={this.saveDemo} labelPosition='right' content={messages['save']} />
         </Modal.Actions>
       </Modal>
     )
@@ -311,4 +317,4 @@ function mapStateToProps (state) {
     }
 }
 
-export default connect(mapStateToProps, {fetchGroupDealers,fetchDemoResults,fetchReasons,updateDemo,toggleDemoUpdateModal})(DemoUpdateModal)
+export default connect(mapStateToProps, {fetchGroupDealers,fetchDemoResults,fetchReasons,updateDemo,toggleDemoUpdateModal,getLocationOptionsByLanguage})(injectIntl(DemoUpdateModal))

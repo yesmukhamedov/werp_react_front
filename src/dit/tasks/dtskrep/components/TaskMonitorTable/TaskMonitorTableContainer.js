@@ -1,18 +1,12 @@
 import { connect } from 'react-redux';
 import { defineMessages, injectIntl } from 'react-intl';
 import TaskMonitorTableDisplay from './TaskMonitorTableDisplay';
-import { messages } from '../../../dtskl/components/DeptTaskListTable/DeptTaskListTableContainer';
-
-const msg = defineMessages({
-  amount: {
-    id: 'Table.Amount',
-    defaultMessage: 'Amount',
-  },
-});
+// import { messages } from '../../../dtskl/components/DeptTaskListTable/DeptTaskListTableContainer';
+import { messages } from '../../../../../locales/defineMessages';
 
 function mapStateToProps(state) {
   return {
-    messages: Object.assign(msg, messages),
+    messages,
     result: state.taskMonitor.result,
     lang: state.locales.lang,
   };

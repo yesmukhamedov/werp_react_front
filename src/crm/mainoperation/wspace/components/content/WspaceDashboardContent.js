@@ -52,7 +52,7 @@ function renderCallsTable (items,messages){
             </Link>,
             Footer: (
                 <span>
-                    <strong>Всего:</strong>{' '}{_.size(items)}
+                    <strong>{messages['overallSum']}:</strong>{' '}{_.size(items)}
                 </span>
             )
         }
@@ -63,13 +63,13 @@ function renderCallsTable (items,messages){
                     columns={columns}
                     pageSizeOptions={[10, 20, 30, 50]}
                     defaultPageSize={10}
-                    previousText="Предыдущий"
-                    nextText="Следующий"
-                    loadingText="Загружается..."
-                    noDataText="Нет записей"
-                    pageText="Страница"
-                    ofText="из"
-                    rowsText="записей"
+                    previousText={messages['previousText']}
+                    nextText={messages['nextText']}
+                    loadingText={messages['loadingText']}
+                    noDataText={messages['noDataText']}
+                    pageText={messages['pageText']}
+                    ofText={messages['ofText']}
+                    rowsText={messages['rowsText']}
                     className="-striped -highlight"
                 />
         </div>

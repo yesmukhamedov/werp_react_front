@@ -190,10 +190,12 @@ class RecoCreatePage extends Component {
   }
 
   renderRecoForms () {
-        const {messages} = this.props.intl
+        const {messages,locale} = this.props.intl
     let {items} = this.state.reco
     return items.map((item,index) => {
-        return <RecoCard messages={messages} handleChangeDate={this.handleChangeDate}
+        return <RecoCard messages={messages}
+                         locale={locale}
+                         handleChangeDate={this.handleChangeDate}
                          itemPhones={this.state.itemPhones}
                          phoneCode={this.state.reco['phoneCode']}
                          phonePattern={this.state.reco['phonePattern']}
@@ -230,8 +232,8 @@ class RecoCreatePage extends Component {
     return <List items={error} />
   }
 
-  removeReco (index,id) {
-    if (!window.confirm('Вы действительно хотите удалить рекомендацию №' + (index + 1))) {
+  removeReco (index,id, message) {
+    if (!window.confirm(message['Crm.ConfirmDelete'])) {
       return false
     }
       let reco = Object.assign({}, this.state.reco)
@@ -259,7 +261,7 @@ class RecoCreatePage extends Component {
             <label>{messages['Form.Dealer']}</label>
             <Dropdown name='responsibleId'
               error={!this.state.reco.responsibleId || this.state.reco.responsibleId === null || this.state.reco.responsibleId === 0}
-              placeholder='Выберите дилера'
+              placeholder={messages['Crm.Select']}
               fluid selection search
               value={this.state.reco.responsibleId}
               selectOnBlur={false}

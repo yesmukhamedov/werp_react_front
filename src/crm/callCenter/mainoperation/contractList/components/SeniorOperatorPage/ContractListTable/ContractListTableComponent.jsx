@@ -4,7 +4,6 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
-// import moment from 'moment';
 import { Icon, Label } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import OperatorEditModal from '../OperatorEdit/OperatorEditModal';
@@ -52,6 +51,8 @@ class ContractListTableComponent extends Component {
         }
       });
     }
+    const { formatMessage } = this.props.intl;
+    const { messages } = this.props;
     const columns = [
       {
         Header: '#',
@@ -63,7 +64,7 @@ class ContractListTableComponent extends Component {
         maxWidth: 50,
       },
       {
-        Header: 'SN договор',
+        Header: formatMessage(messages.snContract),
         accessor: 'contractNumber',
         maxWidth: 100,
         filterable: true,
@@ -77,13 +78,13 @@ class ContractListTableComponent extends Component {
         },
         Footer: (
           <span>
-            <strong>Всего:</strong>{' '}
+            <strong>{formatMessage(messages.total)}:</strong>{' '}
             {_.size(this.props.result)}
           </span>
         ),
       },
       {
-        Header: 'Дата договора',
+        Header: formatMessage(messages.contractDate),
         accessor: 'contractDate',
         Cell: (props) => {
           const { contractDate } = props.original;
@@ -92,7 +93,7 @@ class ContractListTableComponent extends Component {
         maxWidth: 110,
       },
       {
-        Header: 'ФИО',
+        Header: formatMessage(messages.fullName),
         accessor: 'customer.lastName',
         Cell: (props) => {
           const { customer } = props.original;
@@ -105,17 +106,17 @@ class ContractListTableComponent extends Component {
         // maxWidth: 270,
       },
       {
-        Header: 'Филиал',
+        Header: formatMessage(messages.branch),
         accessor: 'companyBranchName',
         maxWidth: 160,
       },
       {
-        Header: 'Продукт',
+        Header: formatMessage(messages.product),
         accessor: 'productName',
         maxWidth: 170,
       },
       {
-        Header: 'ФИО Диллера',
+        Header: formatMessage(messages.dealerFullname),
         accessor: 'dealer.lastName',
         Cell: (props) => {
           const { dealer } = props.original;
@@ -128,7 +129,7 @@ class ContractListTableComponent extends Component {
         // maxWidth: 270,
       },
       {
-        Header: 'Состояние',
+        Header: formatMessage(messages.status),
         accessor: 'status.id',
         Cell: (props) => {
           const { status } = props.original;
@@ -151,7 +152,7 @@ class ContractListTableComponent extends Component {
       //   maxWidth: 160,
       // },
       {
-        Header: 'Обновлено',
+        Header: formatMessage(messages.modified),
         accessor: 'modifiedAt',
         Cell: (props) => {
           const { modifiedAt } = props.original;
@@ -160,7 +161,7 @@ class ContractListTableComponent extends Component {
         maxWidth: 160,
       },
       {
-        Header: 'Оператор',
+        Header: formatMessage(messages.operator),
         accessor: 'operator.id',
         id: 'opr',
         maxWidth: 270,
@@ -185,7 +186,7 @@ class ContractListTableComponent extends Component {
             style={{ width: '100%' }}
             value={filter ? filter.value : '0'}
           >
-            <option value="0">Все</option>
+            <option value="0">{formatMessage(messages.allOption)}</option>
             {options}
            </select>),
       },
@@ -206,13 +207,13 @@ class ContractListTableComponent extends Component {
           columns={columns}
           pageSizeOptions={[10, 20, 30, 50]}
           defaultPageSize={10}
-          previousText="Предыдущий"
-          nextText="Следующий"
-          loadingText="Загружается..."
-          noDataText="Нет записей"
-          pageText="Страница"
-          ofText="из"
-          rowsText="записей"
+          previousText={formatMessage(messages.previousText)}
+          nextText={formatMessage(messages.nextText)}
+          loadingText={formatMessage(messages.loadingText)}
+          noDataText={formatMessage(messages.noDataText)}
+          pageText={formatMessage(messages.pageText)}
+          ofText={formatMessage(messages.ofText)}
+          rowsText={formatMessage(messages.rowsText)}
           className="-highlight"
           getTrProps={(state, rowInfo) => ({
             onClick: () => {

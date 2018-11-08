@@ -66,37 +66,38 @@ class OutCallPanelModalComponent extends PureComponent {
       reset,
       statusOptions,
       selectedStatus,
+      messages,
     } = this.props;
     return (
       <Modal open={isOpen} onClose={close}>
-        <Modal.Header>Изменения заявки</Modal.Header>
+        <Modal.Header>{messages.H__ORDER_EDIT}</Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
               <Field
                 name="status"
                 component={DropdownFormField}
-                label="Статус"
+                label={messages.L__STATUS}
                 opts={statusOptions}
                 value={selectedStatus}
               />
               <Field
                 name="description"
                 component={TextAreaFormField}
-                label="Описание изменения"
+                label={messages.L__EDIT_DESCRIPTION}
               />
 
               <Button
                 color="youtube"
                 float="right"
-                content="Отменить"
+                content={messages.BTN__CANCEL}
                 onClick={this.handleFormClose}
               />
               <Button
                 positive
                 icon="checkmark"
                 labelPosition="right"
-                content="Создать"
+                content={messages.BTN__CREATE}
                 type="submit"
                 float="left"
               />

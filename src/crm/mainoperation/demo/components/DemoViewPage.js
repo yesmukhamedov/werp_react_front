@@ -10,6 +10,7 @@ import ChildDemosTable from './ChildDemosTable'
 import ChildRecosTable from '../../reco/components/ChildRecosTable'
 import DemoViewTable from './DemoViewTable'
 import DemoPrintPage from './DemoPrintPage'
+import { injectIntl } from 'react-intl'
 
 class DemoViewPage extends Component {
   constructor (props) {
@@ -55,27 +56,27 @@ class DemoViewPage extends Component {
         }
     }
 
-    renderActions(){
+    renderActions(messages){
         const {demo} = this.props
         const notDemoDone = demo.resultId === 0 || demo.resultId === 7
         return <div>
             <Link className={'ui icon button'} to={`/crm/demo/current`}>
-                В список текущих
+                {messages['Crm.ToCurrentList']}
             </Link>
 
             <Link className={'ui icon button'} to={`/crm/demo/archive`}>
-                В Архив
+                {messages['Crm.ToArchiveList']}
             </Link>
             <ReactToPrint
-                trigger={() => <Button>Печать</Button>}
+                trigger={() => <Button>{messages['Crm.ToPrint']}</Button>}
                 content={() => this.componentRef}
             />
-            <Button onClick={this.openUpdateModal}>Редактировать</Button>
+            <Button onClick={this.openUpdateModal}>{messages['Crm.ToEdit']}</Button>
             {notDemoDone ?'':<Link className={'ui icon button'} to={`/crm/reco/create/demo/` + demo.id}>
-                    Добавить рекомендации
+                    {messages['Crm.ToAddReco']}
                 </Link>}
-            {notDemoDone?'':<Button onClick={this.openCreateModal}>Добавить демо</Button>}
-            <Button color={'red'} onClick={() => this.deleteModalTrigger(true)}>Удалить</Button>
+            {notDemoDone?'':<Button onClick={this.openCreateModal}>{messages['Crm.ToAddDemo']}</Button>}
+            <Button color={'red'} onClick={() => this.deleteModalTrigger(true)}>{messages['Crm.ToDelete']}</Button>
         </div>
     }
 
@@ -101,17 +102,18 @@ class DemoViewPage extends Component {
     }
 
     renderDeleteConfirmModal(){
+        const {messages} = this.props.intl
         return <Modal open={this.state.showDeleteModal}>
-            <Modal.Header>ПРЕДУПРЕЖДЕНИЕ!</Modal.Header>
+            <Modal.Header>{messages['Crm.DeleteWarningHeader']}!</Modal.Header>
             <Modal.Content>
-                <p>Удалятся все демонстрации, рекомендации и звонки связанные с данной демо!</p>
-                <p>Удалятся: Демо, Звонки, Тел. номера связанные с данной демо!</p>
+                <p>{messages['Crm.Demo.DeleteWarningTxt1']}!</p>
+                <p>{messages['Crm.Demo.DeleteWarningTxt2']}!</p>
             </Modal.Content>
             <Modal.Actions>
                 <Button onClick={() => this.deleteModalTrigger(false)} negative>
-                    Отмена
+                    {messages['cancel']}
                 </Button>
-                <Button onClick={() => this.props.deleteDemo(this.props.demo.id)} positive icon='checkmark' labelPosition='right' content='Удалить' />
+                <Button onClick={() => this.props.deleteDemo(this.props.demo.id)} positive icon='checkmark' labelPosition='right' content={messages['Crm.ToDelete']} />
             </Modal.Actions>
         </Modal>
     }
@@ -133,14 +135,15 @@ class DemoViewPage extends Component {
 
   render () {
     const {demo} = this.props
+      const {messages} = this.props.intl
     return (
       <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
         <Segment clearing>
           <Header as='h2' floated='left'>
-                        Демокарта № {this.props.demo.id}
+              {messages['Crm.Democard']} № {this.props.demo.id}
           </Header>
         </Segment>
-        {this.renderActions()}
+        {this.renderActions(messages)}
           {this.renderDeleteConfirmModal()}
         <DemoUpdateModal />
         <DemoCreateModal
@@ -154,18 +157,18 @@ class DemoViewPage extends Component {
         <Grid>
           <Grid.Row>
             <Grid.Column width={8}>
-              {<DemoViewTable demo={demo}/>}
+              {<DemoViewTable messages={messages} demo={demo}/>}
             </Grid.Column>
 
             <Grid.Column width={8}>
-              {<ChildRecosTable items={this.props.childRecos || []}/>}
-                {<ChildDemosTable items={demo.childDemos || []}/>}
+              {<ChildRecosTable messages={messages} items={this.props.childRecos || []}/>}
+                {<ChildDemosTable messages={messages} items={demo.childDemos || []}/>}
             </Grid.Column>
           </Grid.Row>
 
             <Grid.Column width={8}>
-                <h3>Версия для печати</h3>
-                <DemoPrintPage demo={demo} recommender={this.props.recommender} ref={el => (this.componentRef = el)}/>
+                <h3>{messages['Crm.VersionForPrint']}</h3>
+                <DemoPrintPage messages={messages} demo={demo} recommender={this.props.recommender} ref={el => (this.componentRef = el)}/>
             </Grid.Column>
             <Grid.Column width={8}>
             </Grid.Column>
@@ -188,4 +191,4 @@ function mapStateToProps (state) {
 export default connect(mapStateToProps, {
     fetchDemo,toggleDemoUpdateModal,toggleDemoCreateModal,deleteDemo,clearState,
     fetchDemoChildRecos
-})(DemoViewPage)
+})(injectIntl(DemoViewPage))

@@ -10,19 +10,19 @@ import moment from 'moment'
 export default function DemoViewTable(props){
 
     //Single Demo
-    const {demo} = props;
+    const {demo, messages} = props;
     let call = Object.assign({},demo.call)
 
     return <Card fluid>
         <Card.Content>
-            <Card.Header>Основная информация</Card.Header>
+            <Card.Header>{messages['Crm.BasicInfo']}</Card.Header>
         </Card.Content>
         <Card.Content>
             <Table celled striped>
                 <Table.Body>
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Компания</Header>
+                            <Header as={'h4'}>{messages['bukrs']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {demo.bukrsName}
@@ -31,7 +31,7 @@ export default function DemoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Филиал</Header>
+                            <Header as={'h4'}>{messages['brnch']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {demo.branchName}
@@ -40,7 +40,7 @@ export default function DemoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Дилер</Header>
+                            <Header as={'h4'}>{messages['dealer']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {demo.dealerName}
@@ -49,7 +49,7 @@ export default function DemoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Назначел(а)</Header>
+                            <Header as={'h4'}>{messages['Table.AppointerStaff']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {demo.appointerName}
@@ -58,7 +58,7 @@ export default function DemoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Номер телефона</Header>
+                            <Header as={'h4'}>{messages['Table.PhoneNumber']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {call.phoneNumber}
@@ -67,16 +67,16 @@ export default function DemoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Источник</Header>
+                            <Header as={'h4'}>{messages['Crm.Source']}</Header>
                         </Table.Cell>
                         <Table.Cell>
-                            {getSourceLink(demo)}
+                            {getSourceLink(demo, messages)}
                         </Table.Cell>
                     </Table.Row>
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Дата-время проведения</Header>
+                            <Header as={'h4'}>{messages['Crm.DemoDateTime']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {moment(demo.dateTime).format('DD.MM.YYYY H:mm')}
@@ -85,7 +85,7 @@ export default function DemoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Клиент</Header>
+                            <Header as={'h4'}>{messages['Table.Client']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {demo.clientName}
@@ -94,7 +94,7 @@ export default function DemoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Адрес</Header>
+                            <Header as={'h4'}>{messages['Table.Address']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {demo.address}
@@ -103,7 +103,7 @@ export default function DemoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Результат демо</Header>
+                            <Header as={'h4'}>{messages['Table.Result']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {demo.resultName}
@@ -112,7 +112,7 @@ export default function DemoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Причина</Header>
+                            <Header as={'h4'}>{messages['Crm.Reason']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {demo.reasonName}
@@ -121,7 +121,7 @@ export default function DemoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Примечание</Header>
+                            <Header as={'h4'}>{messages['Table.Note']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {demo.note}
@@ -130,7 +130,7 @@ export default function DemoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>№ договора</Header>
+                            <Header as={'h4'}>№ {messages['contract_number']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {demo.contractNumber}
@@ -139,7 +139,7 @@ export default function DemoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Дата продажи</Header>
+                            <Header as={'h4'}>{messages['Crm.DateOfSale']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {demo.saleDate ? moment(demo.saleDate).format('DD.MM.YYYY') : ''}
@@ -148,7 +148,7 @@ export default function DemoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Дата-время создания</Header>
+                            <Header as={'h4'}>{messages['Table.createdAt']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {moment(demo.createdAt).format('DD.MM.YYYY H:mm')}
@@ -161,19 +161,19 @@ export default function DemoViewTable(props){
     </Card>
 }
 
-function getSourceLink(demo){
+function getSourceLink(demo, messages){
     const call = Object.assign({},demo.call)
     if(demo.context === 'visit'){
         return <Link className={'button'} to={`/crm/visit/view/` + demo.visitId}>
-            Визит № {call.contextId}
+            {messages['Crm.Visit']} № {call.contextId}
         </Link>
     }else if(call.context === 'reco'){
         return <Link className={'button'} to={`/crm/reco/view/` + call.contextId}>
-            Рекомендация № {call.contextId}
+            {messages['Crm.Recommendation']} № {call.contextId}
         </Link>
     }else if(call.context === 'demo'){
         return <Link to={`/crm/demo/view/` + call.contextId}>
-            Демо № {call.contextId}
+            {messages['Crm.Demo']} № {call.contextId}
         </Link>
     }else{
         return;

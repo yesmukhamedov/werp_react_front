@@ -10,12 +10,12 @@ import {formatDMY} from '../../../../utils/helpers'
 export default function RecoViewTable(props){
 
     //Single Reco
-    const {reco} = props
+    const {reco,messages} = props
 
     return <Card fluid>
         <Card.Content>
             <Card.Header>
-                Основная информация
+                {messages['Crm.BasicInfo']}
             </Card.Header>
         </Card.Content>
         <Card.Content>
@@ -23,7 +23,7 @@ export default function RecoViewTable(props){
                 <Table.Body>
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Компания</Header>
+                            <Header as={'h4'}>{messages['bukrs']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {reco.bukrsName}
@@ -32,7 +32,7 @@ export default function RecoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Филиал</Header>
+                            <Header as={'h4'}>{messages['brnch']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {reco.branchName}
@@ -41,7 +41,7 @@ export default function RecoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Ответсвенный сотрудник</Header>
+                            <Header as={'h4'}>{messages['Table.ResponsibleStaff']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {reco.responsibleName}
@@ -50,7 +50,7 @@ export default function RecoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Дата</Header>
+                            <Header as={'h4'}>{messages['Table.Date']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {formatDMY(reco.docDate)}
@@ -59,7 +59,7 @@ export default function RecoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>ФИО супруг</Header>
+                            <Header as={'h4'}>{messages['Table.ClientFullName']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {reco.clientName}
@@ -68,7 +68,7 @@ export default function RecoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Район</Header>
+                            <Header as={'h4'}>{messages['Form.Reco.District']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {reco.district}
@@ -77,7 +77,7 @@ export default function RecoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Тел номера</Header>
+                            <Header as={'h4'}>{messages['Form.Reco.PhoneNumber']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {<div>
@@ -95,7 +95,7 @@ export default function RecoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Рекомендатель</Header>
+                            <Header as={'h4'}>{messages['Form.RecommenderFullName']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {reco.recommenderName}
@@ -104,7 +104,7 @@ export default function RecoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Владелец</Header>
+                            <Header as={'h4'}>{messages['Crm.Owner']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {reco.ownerName}
@@ -113,7 +113,7 @@ export default function RecoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Филиал владельца</Header>
+                            <Header as={'h4'}>{messages['Crm.OwnerBranch']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {reco.ownerBranchName}
@@ -122,7 +122,7 @@ export default function RecoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Род. отношение</Header>
+                            <Header as={'h4'}>{messages['Form.Reco.Relative']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {reco.relative}
@@ -131,7 +131,7 @@ export default function RecoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Звонит будет</Header>
+                            <Header as={'h4'}>{messages['Form.Reco.CallerIs']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {reco.callerIsDealer === 1?'ДИЛЕР':'СЕКРЕТАРЬ'}
@@ -140,7 +140,7 @@ export default function RecoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Примечание</Header>
+                            <Header as={'h4'}>{messages['Form.Reco.Note']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {reco.note}
@@ -149,7 +149,7 @@ export default function RecoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Доп. данные</Header>
+                            <Header as={'h4'}>{messages['Crm.AddInfo']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {''}
@@ -158,7 +158,7 @@ export default function RecoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Категория</Header>
+                            <Header as={'h4'}>{messages['Form.Category']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {reco.categoryName}
@@ -167,7 +167,7 @@ export default function RecoViewTable(props){
 
                     <Table.Row>
                         <Table.Cell>
-                            <Header as={'h4'}>Статус</Header>
+                            <Header as={'h4'}>{messages['Form.Status']}</Header>
                         </Table.Cell>
                         <Table.Cell>
                             {reco.statusName}

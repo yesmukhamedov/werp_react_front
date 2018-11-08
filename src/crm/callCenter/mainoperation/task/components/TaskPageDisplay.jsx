@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Dimmer, Loader } from 'semantic-ui-react';
+import { injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 // import TaskInfoWrapper from './TaskInfo/TaskInfoWrapper';
 import TaskHistoryDisplay from './TaskHistory/TaskHistoryDisplay';
@@ -26,7 +27,9 @@ class TaskPageDisplay extends Component {
       modalAttachment,
       addUpload,
       deleteUpload,
+      intl,
     } = this.props;
+    const { messages } = intl;
     if (taskDetails) {
       return (
         <Container
@@ -48,7 +51,7 @@ class TaskPageDisplay extends Component {
             deleteUpload={deleteUpload}
             uploadable
           />
-          <TaskHistoryDisplay {...taskDetails} />
+          <TaskHistoryDisplay {...taskDetails} messages={messages} />
         </Container>
       );
     }
@@ -69,4 +72,4 @@ TaskPageDisplay.propTypes = {
   lang: PropTypes.string,
 };
 
-export default TaskPageDisplay;
+export default injectIntl(TaskPageDisplay);

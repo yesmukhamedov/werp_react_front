@@ -6,8 +6,9 @@ import {togglePhoneModal,saveCall} from '../actions/wspaceAction'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
 import "react-datepicker/dist/react-datepicker.css"
-import {CALL_RESULT_REFUSE,CALL_RESULT_RECALL,CALL_RESULT_DEMO,LOCATION_OPTIONS,CALL_RESULT_NOT_AVAILABLE,CALL_RESULT_NO_ANSWER} from '../../../crmUtil'
+import {CALL_RESULT_REFUSE,CALL_RESULT_RECALL,CALL_RESULT_DEMO,CALL_RESULT_NOT_AVAILABLE,CALL_RESULT_NO_ANSWER,getLocationOptionsByLanguage} from '../../../crmUtil'
 import {renderCallResultLabel} from '../../../CrmHelper'
+import { injectIntl } from 'react-intl'
 require('moment/locale/ru');
 
 class WspacePhoneModal extends Component{
@@ -74,16 +75,18 @@ class WspacePhoneModal extends Component{
             historyItems = []
         }
 
+        const {messages} = this.props.intl
+
         return <Table celled>
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell>#</Table.HeaderCell>
-                    <Table.HeaderCell>Компания</Table.HeaderCell>
-                    <Table.HeaderCell>Филиал</Table.HeaderCell>
-                    <Table.HeaderCell>Дата-время звонка</Table.HeaderCell>
-                    <Table.HeaderCell>Звонил</Table.HeaderCell>
-                    <Table.HeaderCell>Примечание</Table.HeaderCell>
-                    <Table.HeaderCell>Результат</Table.HeaderCell>
+                    <Table.HeaderCell>{messages['bukrs']}</Table.HeaderCell>
+                    <Table.HeaderCell>{messages['brnch']}</Table.HeaderCell>
+                    <Table.HeaderCell>{messages['Crm.CallDateTime']}</Table.HeaderCell>
+                    <Table.HeaderCell>{messages['Crm.Called']}</Table.HeaderCell>
+                    <Table.HeaderCell>{messages['Table.Note']}</Table.HeaderCell>
+                    <Table.HeaderCell>{messages['Table.Result']}</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
 
@@ -105,9 +108,9 @@ class WspacePhoneModal extends Component{
         </Table>
     }
 
-    renderCallResultDependentField = () => {
+    renderCallResultDependentField = (messages) => {
         const {callForm} = this.state
-
+        const {locale} = this.props.intl
         if (callForm.resultId === CALL_RESULT_REFUSE) {
             let reasonOptions = []
             if(this.props.reasons){
@@ -124,18 +127,19 @@ class WspacePhoneModal extends Component{
 
             // Otkaz
             return (
-                <Form.Select required fluid label='Причина отказа' options={reasonOptions}
+                <Form.Select required fluid label={messages['Crm.RejectionReason']} options={reasonOptions}
                              onChange={(e, v) => this.handleChange('callReasonId', v)} />
             )
         } else if (callForm.resultId === CALL_RESULT_RECALL || callForm.resultId === CALL_RESULT_NOT_AVAILABLE || callForm.resultId === CALL_RESULT_NO_ANSWER) {
             // Perzvonit'
             return (
                 <Form.Field required>
-                    <label>Дата-время перезвона</label>
+                    <label>{messages['Crm.RecallDateTime']}</label>
                     <DatePicker
+                        locale={locale}
                         autoComplete="off"
                         label=''
-                        placeholderText={'Дата-время перезвона'}
+                        placeholderText={messages['Crm.RecallDateTime']}
                         showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'
                         dateFormat='DD.MM.YYYY HH:mm' selected={callForm.recallDateTime}
                         onChange={(v) => this.handleChange('callRecallDateTime', v)} />
@@ -148,6 +152,7 @@ class WspacePhoneModal extends Component{
 
     renderDemoForm = () => {
         let callForm = Object.assign({},this.state.callForm);
+        const {messages,locale} = this.props.intl
         if (!callForm.resultId || callForm.resultId !== CALL_RESULT_DEMO) {
             return null
         }
@@ -158,53 +163,55 @@ class WspacePhoneModal extends Component{
                 <Form.Group widths='equal'>
                     <Form.Field onChange={(e, o) => this.handleChange('demoClientName', o)}
                                 value={demoForm.clientName || ''}
-                                control={Input} required label='ФИО клиента' placeholder='ФИО клиента' />
+                                control={Input} required label={messages['fioClient']} placeholder={messages['fioClient']} />
 
                     <Form.Field required>
-                        <label>Дата-время демонстрации</label>
+                        <label>{messages['Crm.DemoDateTime']}</label>
                         <DatePicker
                             autoComplete="off"
-                            locale="ru"
+                            locale={locale}
                             label=''
-                            placeholderText={'Дата-время демонстрации'}
+                            placeholderText={messages['Crm.DemoDateTime']}
                             showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'
                             dateFormat='DD.MM.YYYY HH:mm' selected={demoForm.dateTime || null}
                             onChange={(v) => this.handleChange('demoDateTime', v)}/>
                     </Form.Field>
 
-                    <Form.Select required fluid selection label='Местоположение' options={LOCATION_OPTIONS}
+                    <Form.Select required fluid selection label={messages['Crm.Location']} options={getLocationOptionsByLanguage(locale)}
                                  onChange={(e, v) => this.handleChange('demoLocationId', v)} />
 
                     <Form.Select
                         value={demoForm.dealerId}
                         required fluid selection
-                                 label='Дилер' options={this.props.dealers}
+                                 label={messages['dealer']} options={this.props.dealers}
 
                                  onChange={(e, v) => this.handleChange('demoDealerId', v)} />
                 </Form.Group>
 
                 <Form.Group widths='equal'>
-                    <Form.Field required control={TextArea} onChange={(e, o) => this.handleChange('demoAddress', o)} label='Адрес' placeholder='Адрес' />
-                    <Form.Field control={TextArea} onChange={(e, o) => this.handleChange('demoNote', o)} label='Примечание для демо' placeholder='Примечание для демо' />
+                    <Form.Field required control={TextArea} onChange={(e, o) => this.handleChange('demoAddress', o)} label={messages['Table.Address']} placeholder={messages['Table.Address']} />
+                    <Form.Field control={TextArea} onChange={(e, o) => this.handleChange('demoNote', o)} label={messages['Crm.NoteForDemo']} placeholder={messages['Crm.NoteForDemo']} />
                 </Form.Group>
             </div>
     }
 
     renderCallForm = () => {
         let callForm = Object.assign({},this.state.callForm)
+        const {messages,locale} = this.props.intl
         return <Form>
                 <Form.Group widths='equal'>
                     <Form.Field
                         value={this.props.currentPhone.phoneNumber}
                         readOnly control={Input}
-                        label='Тел. номер' placeholder='Тел. номер' />
+                        label={messages['Table.PhoneNumber']} placeholder={messages['Table.PhoneNumber']} />
 
                     <Form.Field required>
-                        <label>Дата-время звонка</label>
+                        <label>{messages['Crm.CallDateTime']}</label>
                         <DatePicker
+                            locale={locale}
                             autoComplete="off"
                             label=''
-                            placeholderText={'Дата-время звонка'}
+                            placeholderText={messages['Crm.CallDateTime']}
                             showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'
                             dateFormat='DD.MM.YYYY HH:mm' selected={callForm.dateTime?moment(callForm.dateTime):null}
                             onChange={(v) => this.handleChange('dateTime', v)} />
@@ -214,23 +221,23 @@ class WspacePhoneModal extends Component{
                         required
                         name='resultId'
                         fluid selection
-                        label='Результат звонка'
+                        label={messages['Crm.ResultOfCall']}
                         options={this.props.callResultOptions || []}
                         onChange={(e, v) => this.handleChange('callResultId', v)} />
 
-                    {this.renderCallResultDependentField()}
+                    {this.renderCallResultDependentField(messages)}
                 </Form.Group>
 
                 <Form.Group widths='equal'>
                     <Form.Field
                         control={TextArea}
                         onChange={(e, o) => this.handleChange('callNote', o)}
-                        label='Примечание звонка' placeholder='Примечание звонка' />
+                        label={messages['Crm.NoteForCall']} placeholder={messages['Crm.NoteForCall']} />
                     <Form.Field />
                 </Form.Group>
                 <Divider />
                 {this.renderDemoForm()}
-                <Form.Field control={Button} color='blue' content='Сохранить' onClick={this.saveCall} />
+                <Form.Field control={Button} color='blue' content={messages['save']} onClick={this.saveCall} />
             </Form>
     }
 
@@ -274,28 +281,29 @@ class WspacePhoneModal extends Component{
     }
 
     render (){
+        const {messages} = this.props.intl
         const {reco, currentPhone,recommender} = this.props
         const panes = [
-            { menuItem: 'История номера', render: this.renderNumberHistory },
-            { menuItem: 'Добавление звонка', render: this.renderCallForm}
+            { menuItem: messages['Crm.HistoryOfNumber'], render: this.renderNumberHistory },
+            { menuItem: messages['Crm.AddingCall'], render: this.renderCallForm}
         ]
         return <Modal size={'fullscreen'} open={this.props.opened} closeOnDimmerClick={false} onClose={this.handleClose}>
                     <Modal.Header>
                         <Grid centered columns={2}>
                             <Grid.Column style={{fontSize:'12px'}}>
                                 <Segment>
-                                    Рекомендатель: <i style={{fontWeight:'normal'}}>{recommender.clientName}</i><br/>
-                                    Тел. ном: {recommender.phones?recommender.phones.map(p => <span key={p.id} style={{marginRight:'5px'}}>{p.phoneNumber}</span>):''}<br/>
-                                    Адр.: <i style={{fontWeight:'normal'}}>{recommender.address}</i><br/>
-                                    Результат: <i style={{fontWeight:'normal'}}>{recommender.demoResultName}</i><br/>
-                                    Доп. инфо: <i style={{fontWeight:'normal'}}>{recommender.addInfo}</i><br/>
+                                    {messages['Form.RecommenderFullName']}: <i style={{fontWeight:'normal'}}>{recommender.clientName}</i><br/>
+                                    {messages['Table.PhoneNumber']}: {recommender.phones?recommender.phones.map(p => <span key={p.id} style={{marginRight:'5px'}}>{p.phoneNumber}</span>):''}<br/>
+                                    {messages['Table.Address']}: <i style={{fontWeight:'normal'}}>{recommender.address}</i><br/>
+                                    {messages['Table.Result']}: <i style={{fontWeight:'normal'}}>{recommender.demoResultName}</i><br/>
+                                    {messages['Crm.AddInfo']}: <i style={{fontWeight:'normal'}}>{recommender.addInfo}</i><br/>
                                 </Segment>
                             </Grid.Column>
                             <Grid.Column style={{fontSize:'12px'}}>
                                 <Segment>
-                                    Клиент: <i style={{fontWeight:'normal'}}>{reco.clientName}</i><br/>
-                                    Тек. номер: <i style={{fontWeight:'normal'}}>{currentPhone.phoneNumber}</i><br/>
-                                    Проф: <i style={{fontWeight:'normal'}}>{reco.profession}</i>; Род: <i style={{fontWeight:'normal'}}>{reco.relativeName}</i>
+                                    {messages['fioClient']}: <i style={{fontWeight:'normal'}}>{reco.clientName}</i><br/>
+                                    {messages['Table.PhoneNumber']}: <i style={{fontWeight:'normal'}}>{currentPhone.phoneNumber}</i><br/>
+                                    Prof: <i style={{fontWeight:'normal'}}>{reco.profession}</i>; {messages['Form.Reco.Relative']}: <i style={{fontWeight:'normal'}}>{reco.relativeName}</i>
 
                                 </Segment>
                             </Grid.Column>
@@ -305,7 +313,7 @@ class WspacePhoneModal extends Component{
                         <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
                     </Modal.Content>
                     <Modal.Actions>
-                        <Button onClick={this.handleClose} negative>Закрыть</Button>
+                        <Button onClick={this.handleClose} negative>{messages['close']}</Button>
                     </Modal.Actions>
                 </Modal>
     }
@@ -326,5 +334,5 @@ function mapStateToProps (state){
 }
 
 export default connect(mapStateToProps,{
-    togglePhoneModal,saveCall
-})(WspacePhoneModal)
+    togglePhoneModal,saveCall,getLocationOptionsByLanguage
+})(injectIntl(WspacePhoneModal))

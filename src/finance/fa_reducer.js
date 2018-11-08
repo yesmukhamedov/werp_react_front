@@ -37,7 +37,6 @@ import { CHANGE_FA_BKPF, CLEAR_FA_BKPF, FETCH_CASHBANKHKONTS_BY_BRANCH , CLEAR_C
                                     }
                                 },
                                 dynamicObject:{} ,
-                                additionalDynamicObject:{}   
     
                             };
     
@@ -54,9 +53,9 @@ import { CHANGE_FA_BKPF, CLEAR_FA_BKPF, FETCH_CASHBANKHKONTS_BY_BRANCH , CLEAR_C
             case CLEAR_CASHBANKHKONTS_BY_BRANCH:            
                     return {...state, faForm:{...state.faForm,hkontOptions:[]}};
             case FETCH_DYNOBJ_FI:
-                    return {...state, dynamicObject: {...action.data}};  
-            case CHANGE_DYNOBJ_FI:            
-                    return {...state, dynamicObject: {...action.data}};  
+                    return {...state, dynamicObject: {...state.dynamicObject,...action.data}};  
+            case CHANGE_DYNOBJ_FI:
+                    return {...state, dynamicObject: {...state.dynamicObject,...action.data}};  
             case CLEAR_DYNOBJ_FI:            
                     return {...state, dynamicObject: {}};
 

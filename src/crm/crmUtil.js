@@ -68,6 +68,30 @@ export const RECO_CATEGORIES = [
     }
 ]
 
+export const getRecoCategoriesOptionsByLanguage = (language) => {
+    if("en" === language || "tr" === language){
+        return [
+            {
+                key: 1,
+                text: 'Gold',
+                value: 1
+            },
+            {
+                key: 2,
+                text: 'Silver',
+                value: 2
+            },
+            {
+                key: 3,
+                text: 'Bronze',
+                value: 3
+            }
+        ]
+    }
+
+    return RECO_CATEGORIES
+}
+
 export const RECO_SWITCH_OPTIONS = [
     {
         key: 0,
@@ -101,6 +125,68 @@ export const RECO_CATEGORY_COLORS = {
     4: 'grey'
 }
 
+export const getCallerOptionsByLanguage = (language) => {
+    if("en" === language || "tr" == language){
+        return [
+            {
+                key: 0,
+                text: 'Demo Secretary',
+                value: 0
+            },
+            {
+                key: 1,
+                text: 'Dealer',
+                value: 1
+            }
+        ]
+    }
+
+    return RECO_CALLER_OPTIONS;
+}
+
+export const getLocationOptionsByLanguage = (language) => {
+    console.log(language)
+    if("en" === language){
+        return [
+            {
+                key: 1,
+                text: 'City',
+                value: 1
+            },
+            {
+                key: 2,
+                text: 'Countryside',
+                value: 2
+            }
+        ]
+    } else if("tr" === language){
+        return [
+            {
+                key: 1,
+                text: 'City',
+                value: 1
+            },
+            {
+                key: 2,
+                text: 'Countryside',
+                value: 2
+            }
+        ]
+    }
+
+    return [
+        {
+            key: 1,
+            text: 'Город',
+            value: 1
+        },
+        {
+            key: 2,
+            text: 'ЗАгород',
+            value: 2
+        }
+    ]
+}
 
 export function getReasonsByResultId (resultId,reasons) {
     let reasonTypeId = 0

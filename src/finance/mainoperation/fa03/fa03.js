@@ -9,6 +9,8 @@ import Fa03Position from './fa03Position';
 import PaymentSchedule from './paymentSchedule';
 import Fa03RelatedDocs from './fa03RelatedDocs';
 import queryString from 'query-string';
+import { Link } from 'react-router-dom';
+import { modifyLoader } from '../../../general/loader/loader_action';
 
 require('moment/locale/ru');
 
@@ -66,10 +68,17 @@ class Fa03 extends PureComponent {
                 <Header as="h2" block>
                     Просмотр Фин. Док.
                 </Header>
+                
+                <Segment padded size="small">
+                    <Link className={'ui icon button primary'}  to={`/finance/mainoperation/fa02?belnr=`+belnr+`&bukrs=`+bukrs+`&gjahr=`+gjahr}>
+                        Edit
+                    </Link>                               
+                </Segment>
                 <Segment padded size="small">                 
                     <Label color="red" ribbon>
                         Параметры поиска
                     </Label>
+
                     
                     <Table collapsing >
                         <Table.Body>
@@ -96,7 +105,7 @@ class Fa03 extends PureComponent {
                                 </Table.Cell>     
                                 <Table.Cell>
                                     <Button icon labelPosition='left' primary size='small' onClick={()=>{
-                                        
+                                        this.props.modifyLoader(true);                                                                   
                                         this.props.fetchFA03(this.state.searchParameters)}}>
                                         <Icon name='search' size='large' />Поиск
                                     </Button>
@@ -151,4 +160,4 @@ function mapStateToProps(state)
   };
 }
 
-export default connect(mapStateToProps,{ fetchFA03, clearDynObj}) (Fa03);
+export default connect(mapStateToProps,{ fetchFA03, clearDynObj, modifyLoader}) (Fa03);

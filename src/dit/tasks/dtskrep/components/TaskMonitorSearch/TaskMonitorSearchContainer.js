@@ -2,23 +2,17 @@ import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
 import { defineMessages, injectIntl } from 'react-intl';
 import { searchTasks } from '../../actions/TaskMonitorAction';
-import { messages } from '../../../dtskl/components/DeptTaskListSearch/DeptTaskListSearchContainer';
+// import { messages } from '../../../dtskl/components/DeptTaskListSearch/DeptTaskListSearchContainer';
 import TaskMonitorSearchDisplay from './TaskMonitorSearchDisplay';
+import { messages } from '../../../../../locales/defineMessages';
 
 const selector = formValueSelector('taskMonitorSearchDisplay');
-
-const msg = defineMessages({
-  taskMonitor: {
-    id: 'Form.TaskMonitorLabel',
-    defaultMessage: 'Task monitor',
-  },
-});
 
 function mapStateToProps(state) {
   const company = selector(state, 'company');
   return {
     company,
-    messages: Object.assign(msg, messages),
+    messages,
     directories: state.taskMonitor.directories,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,

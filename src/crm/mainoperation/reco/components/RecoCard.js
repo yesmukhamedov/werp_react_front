@@ -1,7 +1,7 @@
 import React from 'react'
 import { Label, Form, Grid, Segment, Button, Input,Popup,Icon } from 'semantic-ui-react'
 import '../css/recoCard.css';
-import {RECO_CALLER_OPTIONS,RECO_CATEGORIES} from '../../../crmUtil'
+import {getCallerOptionsByLanguage,getRecoCategoriesOptionsByLanguage} from '../../../crmUtil'
 import moment from 'moment'
 import DatePicker from 'react-datepicker'
 
@@ -12,7 +12,7 @@ import DatePicker from 'react-datepicker'
 export default function RecoCard(props){
 
     //Single Card
-    const {item,index,phoneErrors,loadingPhones,phonePattern,recoErrors,messages} = props;
+    const {item,index,phoneErrors,loadingPhones,phonePattern,recoErrors,messages,locale} = props;
     const patternLength = phonePattern.replace(/[^0-9]+/g, '').length
 
     const phoneHasError = (name) => {
@@ -46,10 +46,10 @@ export default function RecoCard(props){
     const renderCallDate = (item, index) => {
         if (item.switchDate === 1) {
             return <DatePicker
-                locale="ru"
+                locale={locale}
                 label=''
                 autoComplete="off"
-                placeholderText={'Дата-время звонка'}
+                placeholderText={messages['Crm.CallDateTime']}
                 showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'
                 dateFormat='DD.MM.YYYY HH:mm'
                 selected={item.callDate ? moment(item.callDate) : null}
@@ -73,7 +73,7 @@ export default function RecoCard(props){
 
             <Button
                 size={'mini'} color={'red'}
-                icon='delete' className='right floated' onClick={(e) => props.removeReco(index,item.id)}/>
+                icon='delete' className='right floated' onClick={(e) => props.removeReco(index,item.id,messages)}/>
             {recoErrors[item.id]?recoErrors[item.id]:''}
             <Form className='recoGrid'>
                 <Form.Input
@@ -88,7 +88,7 @@ export default function RecoCard(props){
                     fluid selection
                     label={messages['Form.Reco.Category']}
                     placeholder={messages['Form.Reco.Category']}
-                    options={RECO_CATEGORIES}
+                    options={getRecoCategoriesOptionsByLanguage(locale)}
                     onChange={(e,d) => props.handleChange('categoryId',item.id,d.value)}  />
 
                 <Form.Input
@@ -106,7 +106,7 @@ export default function RecoCard(props){
                     fluid selection
                     label={messages['Form.Reco.CallerIs']}
                    placeholder={messages['Form.Reco.CallerIs']}
-                    options={RECO_CALLER_OPTIONS}
+                    options={getCallerOptionsByLanguage(locale)}
                     onChange={(e,d) => props.handleChange('callerIsDealer',item.id,d.value)}  />
 
                 <Form.TextArea

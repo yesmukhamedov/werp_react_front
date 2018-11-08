@@ -184,11 +184,77 @@ export function saveFcis(a_bkpf, a_bseg, initFcis) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //FA03-FA02////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+export function saveFA02(a_bukrs, a_belnr, a_gjahr, a_bktxt, al_bseg ) {    
+    return function(dispatch) {        
+        axios.post(`${ROOT_URL}/api/finance/mainoperation/fa02/save`,
+            {     
+                bukrs:a_bukrs,
+                belnr:a_belnr,
+                gjahr:a_gjahr,
+                bktxt:a_bktxt,
+                bseg:al_bseg
+            },       
+            {            
+                headers: 
+                {                            
+                    authorization: localStorage.getItem('token')
+                }
+            }        
+        ) 
+        
+        .then(({data}) => {
+            dispatch(modifyLoader(false));
+            dispatch(notify(data.type,data.message,data.header));
+                
+        })
+        .catch(error => {
+            dispatch(modifyLoader(false));
+            handleError(error,dispatch); 
+        });
+    }    
+}
 
+export function cancelFA02(a_bukrs, a_belnr, a_gjahr) {    
+    return function(dispatch) {        
+        axios.post(`${ROOT_URL}/api/finance/mainoperation/fa02/cancel`,
+            {                     
+                bukrs:a_bukrs,
+                belnr:a_belnr,
+                gjahr:a_gjahr
+            },       
+            {            
+                headers: 
+                {                            
+                    authorization: localStorage.getItem('token')
+                }
+            }        
+        ) 
+        
+        .then(({data}) => {
+            dispatch(modifyLoader(false));
+            dispatch(notify(data.type,data.message,data.header));
+
+            
+            if (data.result){
+                let searchParameters = {                                     
+                    bukrs:a_bukrs,
+                    belnr:a_belnr,
+                    gjahr:a_gjahr
+                };
+                dispatch(fetchFA03(searchParameters));
+
+            }
+                
+        })
+        .catch(error => {
+            dispatch(modifyLoader(false));
+            handleError(error,dispatch); 
+        });
+    }    
+}
 export function fetchFA03(a_searchParameters) {
     
     return function(dispatch) {
-        dispatch(modifyLoader(true));
         dispatch(clearDynObj());
         axios.get(`${ROOT_URL}/api/finance/mainoperation/fa03/fetch`, {
             headers: 

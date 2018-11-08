@@ -4,7 +4,7 @@ import WspaceRecoCard from './WspaceRecoCard'
 
 
 export default function WspaceRecoList(props){
-    const {items,menu} = props
+    const {items,menu,messages} = props
     if(!items){
         return <h3>Нет данных!</h3>
     }
@@ -12,6 +12,7 @@ export default function WspaceRecoList(props){
     return <Card.Group>
         {items.map(item => (
             <WspaceRecoCard
+                messages={messages}
                 openRecoListModal={props.openRecoListModal}
                 type={menu}
                 key={item.id}

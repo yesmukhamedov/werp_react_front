@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import PropTypes from 'prop-types';
+import { injectIntl } from 'react-intl';
 import { Button, Header, Icon, Modal, Form, Segment } from 'semantic-ui-react';
 import './settings.css';
 import { difference } from '../../../../../../utils/helpers';
@@ -38,8 +39,9 @@ class TaskEditModal extends Component {
 
   render() {
     const {
-      handleSubmit, directories, modalOpen, pristine, submitting 
+      handleSubmit, directories, modalOpen, pristine, submitting, intl, 
     } = this.props;
+    const { messages } = intl;
     return (
       <Modal
         open={modalOpen}
@@ -52,14 +54,14 @@ class TaskEditModal extends Component {
       >
         <Header
           icon="edit"
-          content="Редактировать задачу"
+          content={messages.H__TASK_EDIT}
         />
         <Modal.Content>
           <Modal.Description>
             <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
               <Field
                 name="title"
-                label="Тема"
+                label={messages.L__TITLE}
                 readOnly={this.props.fieldState.title}
                 component={TextInputFormField}
               />
@@ -67,47 +69,47 @@ class TaskEditModal extends Component {
                 <Field
                   name="status"
                   component={DropdownFormField}
-                  label="Статус"
+                  label={messages.L__STATUS}
                   disabled={this.props.fieldState.status}
                   opts={directories && Object.values(directories.statusOptions)}
                 />
                 <Field
                   name="priority"
                   component={DropdownFormField}
-                  label="Приоритет"
+                  label={messages.L__PRIORITY}
                   disabled={this.props.fieldState.priority}
                   opts={directories && Object.values(directories.priorityOptions)}
                 />
                 <Field
                   name="estimatedAt"
                   component={DatePickerFormField}
-                  label="Предполагаемая дата закрытия"
+                  label={messages.L__ESTIMATED_ENDDATE}
                   dateFormat="DD.MM.YYYY"
                   autoComplete="off"
                   disabled={this.props.fieldState.estimatedAt}
                 />
               </Form.Group>
               <Segment>
-                <Header as="h5" > Назначена </Header>
+                <Header as="h5" >{messages.H__ASSIGNED_TO}</Header>
                 <Form.Group widths="equal">
                   <Field
                     name="branch"
                     component={DropdownFormField}
-                    label="Филиал"
+                    label={messages.L__BRANCH}
                     disabled={this.props.fieldState.branch}
                     opts={directories && Object.values(directories.branchOptions)}
                   />
                   <Field
                     name="department"
                     component={DropdownFormField}
-                    label="Департамент"
+                    label={messages.L__DEPARTMENT}
                     disabled={this.props.fieldState.department}
                     opts={directories && Object.values(directories.deptOptions)}
                   />
                   <Field
                     name="position"
                     component={DropdownFormField}
-                    label="Должность"
+                    label={messages.L__POSITION}
                     disabled={this.props.fieldState.position}
                     opts={directories && Object.values(directories.posOptions)}
                   />
@@ -115,19 +117,19 @@ class TaskEditModal extends Component {
               </Segment>
               <Field
                 name="description"
-                label="Описание"
+                label={messages.L__DESCRIPTION}
                 readOnly={this.props.fieldState.description}
                 component={TextAreaFormField}
               />
               <Field
                 name="comment"
-                label="Примечания"
+                label={messages.L__COMMENT}
                 readOnly={this.props.fieldState.comment}
                 component={TextAreaFormField}
               />
               <div className="buttonGroup">
                 <Button color="teal" floated="right" type="submit" disabled={pristine || submitting}>
-                  <Icon name="checkmark" /> Yes
+                  <Icon name="checkmark" />{messages.BTN__YES}
                 </Button>
                 <Button
                   color="youtube"
@@ -135,7 +137,7 @@ class TaskEditModal extends Component {
                   onClick={this.handleFormClose}
                   inverted
                 >
-                  <Icon name="remove" /> No
+                  <Icon name="remove" />{messages.BTN__NO}
                 </Button>
               </div>
             </Form>
@@ -174,4 +176,4 @@ TaskEditModal = reduxForm({
   enableReinitialize: true,
 })(TaskEditModal);
 
-export default TaskEditModal;
+export default injectIntl(TaskEditModal);

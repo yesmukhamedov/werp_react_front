@@ -1,7 +1,7 @@
 
 
 import React, { PureComponent } from 'react';
-import { Popup, Segment, Label  } from 'semantic-ui-react';
+import { Popup, Segment, Label, Input } from 'semantic-ui-react';
 import {moneyFormat} from '../../../utils/helpers';
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
@@ -24,6 +24,13 @@ class Fa03Position extends PureComponent{
             return '';
         }
 
+        
+        let readOnlyValue=true;
+        if (this.props.trans==="FA02")
+        {
+            readOnlyValue = false;
+        }
+
         let columns = [];
 
         let col01 = {Header:({value}) => <b>Поз.</b>,accessor: "buzei", width: 40};
@@ -40,7 +47,13 @@ class Fa03Position extends PureComponent{
         let col09 = {Header:({value}) => <b>Колич.</b>,accessor: "menge", width: 80};
         let col10 = {Header:({value}) => <b>Е.И.</b>,accessor: "meins", width: 100};
         let col11 = {Header:({value}) => <b>Контрагент</b>,accessor: "lifnrName", width: 160};
-        let col12 = {Header:({value}) => <b>Примечание</b>,accessor: "sgtxt", width: 200};
+        let col12 = {Header:({value}) => <b>Примечание</b>,accessor: "sgtxt", 
+        // Cell: (obj) =>  <input onChange={(e, { value }) => this.props.onInputChangeData(value,'bktxt','') />,
+       
+        Cell: (obj) => (<span>
+            <Input value={obj.original.sgtxt}  maxLength='45' readOnly={readOnlyValue} onChange={(e, { value }) => this.props.onInputChangeData(value,'sgtxt',obj.index)}/>
+            </span>)
+        ,width: 200};
         
        
         columns.push(col01);            

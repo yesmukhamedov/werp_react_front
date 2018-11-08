@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { injectIntl } from 'react-intl';
 import { Button, Header, Icon, Modal, Form } from 'semantic-ui-react';
 import { editOperator } from '../../../actions/ContractListAction';
 import './settings.css';
 import { DropdownFormField } from '../../../../../../../utils/formFields';
+import { messages } from '../../../../../../../locales/defineMessages';
 
 class OperatorEditModal extends Component {
   constructor(props) {
@@ -35,6 +37,7 @@ class OperatorEditModal extends Component {
     const {
       handleSubmit, directories, modalOpen, pristine, submitting,
     } = this.props;
+    const { formatMessage } = this.props.intl;
     return (
       <Modal
         open={modalOpen}
@@ -48,9 +51,9 @@ class OperatorEditModal extends Component {
         <Header>
           <Icon name="edit" />
           <Header.Content>
-            Назначить оператора
+            {formatMessage(messages.assignOperator)}
             <Header.Subheader>
-              Договор # <a>{this.props.contractNumber}</a>
+            {formatMessage(messages.contract)} # <a>{this.props.contractNumber}</a>
             </Header.Subheader>
           </Header.Content>
         </Header>
@@ -60,12 +63,12 @@ class OperatorEditModal extends Component {
               <Field
                 name="operator"
                 component={DropdownFormField}
-                label="ФИО"
+                label={formatMessage(messages.fullName)}
                 opts={directories ? directories.operatorOptions : []}
               />
               <div className="buttonGroup">
                 <Button color="teal" floated="right" type="submit" disabled={pristine || submitting}>
-                  <Icon name="checkmark" /> Yes
+                  <Icon name="checkmark" /> {formatMessage(messages.yes)}
                 </Button>
                 <Button
                   color="youtube"
@@ -73,7 +76,7 @@ class OperatorEditModal extends Component {
                   onClick={this.handleFormClose}
                   inverted
                 >
-                  <Icon name="remove" /> No
+                  <Icon name="remove" /> {formatMessage(messages.no)}
                 </Button>
               </div>
             </Form>
@@ -108,4 +111,4 @@ OperatorEditModal = reduxForm({
   enableReinitialize: true,
 })(OperatorEditModal);
 
-export default connect(mapStateToProps, { editOperator })(OperatorEditModal);
+export default connect(mapStateToProps, { editOperator })(injectIntl(OperatorEditModal));

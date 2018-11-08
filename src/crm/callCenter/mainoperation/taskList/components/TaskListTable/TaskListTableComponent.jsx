@@ -17,7 +17,8 @@ class TaskListTableComponent extends Component {
   }
 
   render() {
-    const { lang } = this.props;
+    const { formatMessage } = this.props.intl;
+    const {lang, messages} = this.props;
     const columns = [
       {
         Header: '#',
@@ -33,7 +34,7 @@ class TaskListTableComponent extends Component {
         },
       },
       {
-        Header: 'SN договор',
+        Header: formatMessage(messages.snContract),
         accessor: 'contractNumber',
         maxWidth: 100,
         Cell: (props) => {
@@ -46,7 +47,7 @@ class TaskListTableComponent extends Component {
         },
       },
       {
-        Header: 'Статус',
+        Header: formatMessage(messages.status),
         accessor: 'status.id',
         maxWidth: 120,
         Cell: (props) => {
@@ -59,7 +60,7 @@ class TaskListTableComponent extends Component {
         },
       },
       {
-        Header: 'Приоритет',
+        Header: formatMessage(messages.priority),
         accessor: 'priority',
         maxWidth: 120,
         Cell: (props) => {
@@ -72,7 +73,7 @@ class TaskListTableComponent extends Component {
         },
       },
       {
-        Header: 'Тема',
+        Header: formatMessage(messages.title),
         accessor: 'title',
         maxWidth: 380,
         Cell: (props) => {
@@ -85,7 +86,7 @@ class TaskListTableComponent extends Component {
         },
       },
       {
-        Header: 'Назначена',
+        Header: formatMessage(messages.recipient),
         accessor: 'recipient',
         maxWidth: 290,
         Cell: (props) => {
@@ -98,7 +99,7 @@ class TaskListTableComponent extends Component {
         },
       },
       {
-        Header: 'Обновлено',
+        Header: formatMessage(messages.modified),
         accessor: 'modifiedAt',
         maxWidth: 125,
         Cell: (props) => {
@@ -119,13 +120,13 @@ class TaskListTableComponent extends Component {
           desc: true,
         },
       ]}
-      previousText="Предыдущий"
-      nextText="Следующий"
-      loadingText="Загружается..."
-      noDataText="Нет записей"
-      pageText="Страница"
-      ofText="из"
-      rowsText="записей"
+      previousText={formatMessage(messages.previousText)}
+      nextText={formatMessage(messages.nextText)}
+      loadingText={formatMessage(messages.loadingText)}
+      noDataText={formatMessage(messages.noDataText)}
+      pageText={formatMessage(messages.pageText)}
+      ofText={formatMessage(messages.ofText)}
+      rowsText={formatMessage(messages.rowsText)}
       className="-highlight"
       getTrProps={(state, rowInfo) => ({
                             onClick: () => {

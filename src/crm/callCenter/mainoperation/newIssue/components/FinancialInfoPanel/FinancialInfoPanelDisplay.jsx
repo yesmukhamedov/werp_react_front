@@ -7,7 +7,7 @@ import { constructFullName } from '../../../../../../utils/helpers';
 import { PaymentBreakdownTableDisplay } from '../PaymentBreakdownTable';
 
 const FinancialInfoPanelDisplay = (props) => {
-  const { financialDetails = {} } = props;
+  const { financialDetails = {}, messages } = props;
   const {
     initialPayment,
     installmentPlanDuration,
@@ -27,7 +27,7 @@ const FinancialInfoPanelDisplay = (props) => {
   return (
     <Segment raised>
       <Label color="blue" ribbon>
-        Финансовые данные клиента
+        {messages.L__CLIENT_FINANCE_INFO}
       </Label>
       {financialDetails ? (
         <Grid columns={3} divided stackable>
@@ -36,28 +36,28 @@ const FinancialInfoPanelDisplay = (props) => {
               <List>
                 <List.Item>
                   <List.Header className="list-header">
-                    Первоначальная сумма:
+                    {messages.L__INITIAL_AMOUNT}:
                   </List.Header>
                   {(initialPayment && `${initialPayment} ${currency}`) || <span>&mdash;</span>}
                 </List.Item>
                 <List.Item>
                   <List.Header className="list-header">
-                    Срок рассрочки:
+                    {messages.L__INSTALLMENT_TERM}:
                   </List.Header>
                   {installmentPlanDuration || <span>&mdash;</span>}
                 </List.Item>
                 <List.Item>
                   <List.Header className="list-header">
-                    Остаток суммы:
+                    {messages.L__REMAINING_AMOUNT}:
                   </List.Header>
                   {(residualAmount && `${residualAmount} ${currency}`) || <span>&mdash;</span>}
                 </List.Item>
               </List>
 
               <PortalComponentDisplay
-                openLabel="Ежемесячный взнос"
-                closeLabel="Скрыть ежемесячный взнос"
-                title="График ежемесячного взноса"
+                openLabel={messages.H__MONTHLY_INSTALLMENT_SCHEDULE}
+                closeLabel={messages.H__MONTHLY_INSTALLMENT_SCHEDULE}
+                title={messages.H__MONTHLY_INSTALLMENT_SCHEDULE}
               >
                 <PaymentBreakdownTableDisplay
                   monthlyPayments={monthlyPayments}
@@ -69,25 +69,25 @@ const FinancialInfoPanelDisplay = (props) => {
               <List>
                 <List.Item>
                   <List.Header className="list-header">
-                    Скидка от дилера:
+                    {messages.L__DEALER_DISCOUNT}:
                   </List.Header>
                   {(dealerDiscount && `${dealerDiscount} ${currency}`) || <span>&mdash;</span>}
                 </List.Item>
                 <List.Item>
                   <List.Header className="list-header">
-                    Скидка от рекомендателя:
+                    {messages.L__RECOMMENDER_DISCOUNT}:
                   </List.Header>
                   {recommenderDiscount || <span>&mdash;</span>}
                 </List.Item>
                 <List.Item>
                   <List.Header className="list-header">
-                    Оплата через:
+                    {messages.L__PAY_VIA}:
                   </List.Header>
                   {(bankPartner && `${bankPartner.shortName}`) || <span>&mdash;</span>}
                 </List.Item>
                 <List.Item>
                   <List.Header className="list-header">
-                    Финансовый агент:
+                    {messages.L__FINANCIAL_AGENT}:
                   </List.Header>
                   {
                     financialAgent &&
@@ -100,7 +100,7 @@ const FinancialInfoPanelDisplay = (props) => {
               <List>
                 <List.Item>
                   <List.Header className="list-header">
-                    Рекомендатель:
+                    {messages.L__RECOMMENDER}:
                   </List.Header>
                   {
                     (recommender &&
@@ -115,13 +115,13 @@ const FinancialInfoPanelDisplay = (props) => {
                 </List.Item>
                 <List.Item>
                   <List.Header className="list-header">
-                    Дополнительная информация:
+                    {messages.L__SUPPLEMENTAL_INFO}:
                   </List.Header>
                   {additionalInfo || <span>&mdash;</span>}
                 </List.Item>
                 <List.Item>
                   <List.Header className="list-header">
-                    Заводской номер аппарата:
+                    {messages.L__PRODUCT_SERIAL_NUMBER}:
                   </List.Header>
                   {
                     productSerialNumber || <span>&mdash;</span>
@@ -129,7 +129,7 @@ const FinancialInfoPanelDisplay = (props) => {
                 </List.Item>
                 <List.Item>
                   <List.Header className="list-header">
-                    Подарки:
+                    {messages.L__GIFTS}:
                   </List.Header>
                   {
                     (promotions && promotions.join(', ')) || <span>&mdash;</span>

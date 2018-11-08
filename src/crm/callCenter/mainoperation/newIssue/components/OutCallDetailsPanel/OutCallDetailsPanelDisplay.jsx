@@ -4,11 +4,11 @@ import { formatDMYMS } from '../../../../../../utils/helpers';
 
 
 const OutCallDetailsPanelDisplay = (props) => {
-  const { comments } = props;
+  const { comments, messages } = props;
   return (
     <Segment raised>
       <Comment.Group style={{ maxWidth: '100%' }}>
-        <Header as="h3" dividing>Комментарии</Header>
+        <Header as="h3" dividing>{messages.H__COMMENTS}</Header>
         {
           comments &&
           comments.map((item, idx) => (

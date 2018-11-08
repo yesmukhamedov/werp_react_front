@@ -9,12 +9,12 @@ import {Link} from 'react-router-dom'
 export default function ChildRecosTable(props){
 
     //Список рекомендации
-    const {items} = props;
+    const {items,messages} = props;
 
     return <Card fluid>
         <Card.Content>
             <Card.Header>
-                Рекомендации
+                {messages['Crm.ListOfRecommendations']}
             </Card.Header>
         </Card.Content>
         <Card.Content>
@@ -22,8 +22,8 @@ export default function ChildRecosTable(props){
                 <Table.Header>
                     <Table.Row>
                         <Table.HeaderCell>#</Table.HeaderCell>
-                        <Table.HeaderCell>ФИО супруг</Table.HeaderCell>
-                        <Table.HeaderCell>Статус</Table.HeaderCell>
+                        <Table.HeaderCell>{messages['fioClient']}</Table.HeaderCell>
+                        <Table.HeaderCell>{messages['Table.Status']}</Table.HeaderCell>
                         <Table.HeaderCell />
                     </Table.Row>
                 </Table.Header>

@@ -4,8 +4,7 @@ import {fetchSingleReco,toggleRecoUpdateModal,updateReco} from '../actions/recoA
 import {fetchGroupDealers} from '../../demo/actions/demoAction'
 import {RECO_CATEGORIES} from '../../../crmUtil'
 import { connect } from 'react-redux'
-
-
+import { injectIntl } from 'react-intl'
 
 const callerIsDealer = [
   {
@@ -48,22 +47,22 @@ class RecoUpdateModal extends Component {
     console.log(p1, p2, p3)
   }
 
-  renderUpdateForm () {
+  renderUpdateForm (messages) {
     return <Form>
       <Form.Group widths='equal'>
         <Form.Field error={this.state.errors.clientName} onChange={(e, o) => this.handleChange('clientName', o)}
           value={this.state.localReco.clientName}
-          control={Input} required label='ФИО клиента' placeholder='ФИО клиента' />
+          control={Input} required label={messages['Form.ClientFullName']} placeholder={messages['Form.ClientFullName']} />
         <Form.Field onChange={(e, o) => this.handleChange('district', o)}
           value={this.state.localReco.district || ''}
-          control={Input} label='Район' placeholder='Район' />
+          control={Input} label={messages['Form.Reco.District']} placeholder={messages['Form.Reco.District']} />
 
       </Form.Group>
 
         <Form.Group widths='equal'>
             <Form.Field required onChange={(e, o) => this.handleChange('relative', o)}
                         value={this.state.localReco.relative || ''}
-                        control={Input} label='Род. отношения' placeholder='Род. отношения' />
+                        control={Input} label={messages['Form.Reco.Relative']} placeholder={messages['Form.Reco.Relative']} />
             <Form.Field />
 
         </Form.Group>
@@ -72,25 +71,25 @@ class RecoUpdateModal extends Component {
         <Form.Select error={this.state.errors.categoryId}
           value={this.state.localReco.categoryId}
           required fluid selection
-          label='Категория' options={RECO_CATEGORIES}
+          label={messages['Form.Category']} options={RECO_CATEGORIES}
           onChange={(e, v) => this.handleChange('categoryId', v)} />
         <Form.Select error={this.state.errors.callerIsDealer}
           value={this.state.localReco.callerIsDealer}
           required fluid selection
-          label='Звонить будет' options={callerIsDealer}
+          label={messages['Form.Reco.CallerIs']} options={callerIsDealer}
           onChange={(e, v) => this.handleChange('callerIsDealer', v)} />
       </Form.Group>
       <Form.Group widths='equal'>
         <Form.Select error={this.state.errors.responsibleId}
           value={this.state.localReco.responsibleId}
           required fluid selection
-          label='Дилер' options={this.props.dealers}
+          label={messages['dealer']} options={this.props.dealers}
           onChange={(e, v) => this.handleChange('responsibleId', v)} />
 
         <Form.Field control={TextArea}
           onChange={(e, o) => this.handleChange('note', o)}
-          label='Примечание для демо'
-          placeholder='Примечание для демо'
+          label={messages['Table.Note']}
+          placeholder={messages['Table.Note']}
           value={this.state.localReco.note || ''}
         />
       </Form.Group>
@@ -178,15 +177,16 @@ class RecoUpdateModal extends Component {
   }
 
   render () {
+      const {messages} = this.props.intl
     return (
       <Modal size={'small'} open={this.props.updateModalOpened}>
-        <Modal.Header>Редактирование рекомендации</Modal.Header>
+        <Modal.Header>{messages['Crm.EditReco']}</Modal.Header>
         <Modal.Content>
-          {this.renderUpdateForm()}
+          {this.renderUpdateForm(messages)}
         </Modal.Content>
         <Modal.Actions>
-          <Button negative onClick={() => this.props.toggleRecoUpdateModal(false)}>Отмена</Button>
-          <Button positive icon='checkmark' onClick={() => this.props.updateReco(this.state.localReco)} labelPosition='right' content='Сохранить' />
+          <Button negative onClick={() => this.props.toggleRecoUpdateModal(false)}>{messages['cancel']}</Button>
+          <Button positive icon='checkmark' onClick={() => this.props.updateReco(this.state.localReco)} labelPosition='right' content={messages['save']} />
         </Modal.Actions>
       </Modal>
     )
@@ -201,4 +201,5 @@ function mapStateToProps (state) {
     }
 }
 
-export default connect(mapStateToProps, {fetchSingleReco,toggleRecoUpdateModal,updateReco,fetchGroupDealers})(RecoUpdateModal)
+export default connect(mapStateToProps, {fetchSingleReco,toggleRecoUpdateModal,updateReco,fetchGroupDealers})
+(injectIntl(RecoUpdateModal))

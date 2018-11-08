@@ -8,11 +8,11 @@ import { formatDMYMS, constructFullName } from '../../../../../../utils/helpers'
 import TaskHistoryItemDisplay from './TaskHistoryContainer';
 
 const TaskHistoryDisplay = (props) => {
-  const { history } = props;
+  const { history, messages } = props;
   return (
     <Segment padded color="grey">
       <Comment.Group style={{ maxWidth: '100%' }}>
-        <Header as="h3" dividing>История</Header>
+        <Header as="h3" dividing>{messages.H__HISTORY}</Header>
         {
           history &&
           history.map((item, idx) => (
@@ -24,7 +24,7 @@ const TaskHistoryDisplay = (props) => {
                 <Comment.Metadata>
                   <div>{ formatDMYMS(item.createdAt)}</div>
                 </Comment.Metadata>
-                <TaskHistoryItemDisplay text={item.text} history={item.historyItem} />
+                <TaskHistoryItemDisplay text={item.text} history={item.historyItem} messages={messages} />
               </Comment.Content>
             </Comment>
           ))

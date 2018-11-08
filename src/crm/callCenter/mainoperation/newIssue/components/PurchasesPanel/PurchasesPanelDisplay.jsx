@@ -5,21 +5,21 @@ import { LEGACY_URL } from '../../../../../../utils/constants';
 
 
 const PurchasesPanelDisplay = (props) => {
-  const { otherPurchases, cancelledAt } = props;
+  const { otherPurchases, cancelledAt, messages } = props;
   return (
     <Segment raised>
       <Label color="olive" ribbon>
-        Другие покупки
+        {messages.L__PURCHASES}
       </Label>
       <Grid divided="vertically">
         <Grid.Row columns={2}>
           <Grid.Column>
-            <Header as="h4">Продукты</Header>
+            <Header as="h4">{messages.L__PRODUCTS}</Header>
             <Table celled structured>
               <Table.Header>
                 <Table.Row>
-                  <Table.HeaderCell># Договора</Table.HeaderCell>
-                  <Table.HeaderCell>Продукт</Table.HeaderCell>
+                  <Table.HeaderCell>{messages.TBL_H__CONTRACT_NUMBER}</Table.HeaderCell>
+                  <Table.HeaderCell>{messages.TBL_H__PRODUCT}</Table.HeaderCell>
                 </Table.Row>
               </Table.Header>
               <Table.Body>
@@ -41,7 +41,7 @@ const PurchasesPanelDisplay = (props) => {
             <List>
               <List.Item>
                 <List.Header className="list-header">
-                  Дата возврата:
+                  {messages.L__RETURN_DATE}:
                 </List.Header>
                 {cancelledAt || <span>&mdash;</span>}
               </List.Item>
