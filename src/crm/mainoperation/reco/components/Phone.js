@@ -5,9 +5,10 @@ import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
 import {ROOT_URL} from '../../../../utils/constants'
 import moment from 'moment'
-import {LOCATION_OPTIONS,CALL_RESULT_DEMO,CALL_RESULT_REFUSE,CALL_RESULT_RECALL} from '../../../crmUtil'
+import {getLocationOptionsByLanguage,CALL_RESULT_DEMO,CALL_RESULT_REFUSE,CALL_RESULT_RECALL} from '../../../crmUtil'
 import { connect } from 'react-redux'
 import {fetchPhoneNumberHistory,fetchCallResults,fetchSingleReco} from '../actions/recoAction'
+import { injectIntl } from 'react-intl'
 require('moment/locale/ru');
 
 class Phone extends Component {
@@ -77,16 +78,16 @@ class Phone extends Component {
     })
   }
 
-  renderCallModal () {
+  renderCallModal (messages) {
     const panes = [
-      { menuItem: 'История номера', render: this.renderNumberHistory },
-      { menuItem: 'Добавление звонка', render: this.renderCallForm},
-      { menuItem: 'Данные рекомендателя', render: this.renderRecommenderInfo }
+      { menuItem: messages['Crm.HistoryOfNumber'], render: this.renderNumberHistory },
+      { menuItem: messages['Crm.AddingCall'], render: this.renderCallForm},
+      { menuItem: messages['Form.RecommenderAddData'], render: this.renderRecommenderInfo }
     ]
     return (
       <Modal size={'large'}
              open={this.state.opened} onClose={this.handleModalClose}>
-        <Modal.Header>Звонок по номеру: {this.props.phoneNumber} / Клиент: {this.props.clientName}</Modal.Header>
+        <Modal.Header>{messages['Form.PhoneNumber']}: {this.props.phoneNumber} / {messages['Table.ClientFullName']}: {this.props.clientName}</Modal.Header>
         <Modal.Content>
           <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
         </Modal.Content>
@@ -94,7 +95,7 @@ class Phone extends Component {
     )
   }
 
-  renderDemoForm () {
+  renderDemoForm (messages, locale) {
     let callResultId = parseInt(this.state.call.callResultId,10);
     if (!this.state.call.callResultId || callResultId !== CALL_RESULT_DEMO) {
       return null
@@ -104,26 +105,27 @@ class Phone extends Component {
         <Form.Group widths='equal'>
           <Form.Field error={this.state.errors.demoClientName} onChange={(e, o) => this.handleChange('demoClientName', o)}
             value={this.state.call.demoClientName || ''}
-            control={Input} required label='ФИО клиента' placeholder='ФИО клиента' />
+            control={Input} required label={messages['fioClient']} placeholder={messages['fioClient']} />
           <Form.Field error={this.state.errors.demoDate} required>
-            <label>Дата-время демонстрации</label>
+            <label>{messages['Crm.DemoDateTime']}</label>
             <DatePicker
               autoComplete="off"
-              locale="ru"
+              locale={locale}
               label=''
-              placeholderText={'Дата-время демонстрации'}
+              placeholderText={messages['Crm.DemoDateTime']}
               showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'
               dateFormat='DD.MM.YYYY HH:mm' selected={this.state.call.demoDate}
               onChange={(v) => this.handleChange('demoDate', v)}/>
           </Form.Field>
         </Form.Group>
         <Form.Group widths='equal'>
-          <Form.Field error={this.state.errors.demoAddress} required control={TextArea} onChange={(e, o) => this.handleChange('demoAddress', o)} label='Адрес' placeholder='Адрес' />
-          <Form.Select error={this.state.errors.demoLocationId} required fluid selection label='Местоположение' options={LOCATION_OPTIONS}
+          <Form.Field error={this.state.errors.demoAddress} required control={TextArea} onChange={(e, o) => this.handleChange('demoAddress', o)}
+                      label={messages['Table.Address']} placeholder={messages['Table.Address']} />
+          <Form.Select error={this.state.errors.demoLocationId} required fluid selection label={messages['Crm.Location']} options={getLocationOptionsByLanguage(locale)}
             onChange={(e, v) => this.handleChange('demoLocationId', v)} />
         </Form.Group>
         <Form.Group widths='equal'>
-          <Form.Field control={TextArea} onChange={(e, o) => this.handleChange('demoNote', o)} label='Примечание для демо' placeholder='Примечание для демо' />
+          <Form.Field control={TextArea} onChange={(e, o) => this.handleChange('demoNote', o)} label={messages['Crm.NoteForDemo']} placeholder={messages['Crm.NoteForDemo']} />
           <Form.Field />
         </Form.Group>
       </div>
@@ -132,11 +134,12 @@ class Phone extends Component {
 
   renderRecommenderInfo () {
     let {recommender} = this.state
+      const {messages} = this.props.intl
     return <Table celled striped>
       <Table.Body>
         <Table.Row>
           <Table.Cell>
-            <Header as={'h4'}>ФИО</Header>
+            <Header as={'h4'}>{messages['fioClient']}</Header>
           </Table.Cell>
           <Table.Cell>
             {recommender.clientName}
@@ -145,7 +148,7 @@ class Phone extends Component {
 
         <Table.Row>
           <Table.Cell>
-            <Header as={'h4'}>Род. отношение</Header>
+            <Header as={'h4'}>{messages['Form.Reco.Relative']}</Header>
           </Table.Cell>
           <Table.Cell>
             {recommender.relationName}
@@ -154,7 +157,7 @@ class Phone extends Component {
 
         <Table.Row>
           <Table.Cell>
-            <Header as={'h4'}>Тел. номера</Header>
+            <Header as={'h4'}>{messages['Form.Reco.PhoneNumber']}</Header>
           </Table.Cell>
           <Table.Cell>
             {recommender.phoneNumbers.map((item) => {
@@ -168,33 +171,36 @@ class Phone extends Component {
   }
 
   renderCallForm () {
+    const {messages,locale} = this.props.intl
+      let call = Object.assign({},this.state.call)
     return <Form>
       <Form.Group widths='equal'>
         <Form.Input fluid label='Тел. номер' placeholder={this.state.call.phoneNumber} readOnly />
         <Form.Field required error={this.state.errors.callDate}>
-          <label>Дата-время звонка</label>
+          <label>{messages['Crm.CallDateTime']}</label>
           <DatePicker
+              locale={locale}
             autoComplete="off"
             label=''
-            placeholderText={'Дата-время звонка'}
+            placeholderText={messages['Crm.CallDateTime']}
             showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'
             dateFormat='DD.MM.YYYY HH:mm' selected={this.state.call.callDate}
             onChange={(v) => this.handleChange('callDate', v)} />
         </Form.Field>
       </Form.Group>
       <Form.Group widths='equal'>
-        <Form.Select error={this.state.errors.callResultId} required name='resultId' fluid selection label='Результат звонка' options={this.props.callResultOptions}
+        <Form.Select error={this.state.errors.callResultId} required name='resultId' fluid selection label={messages['Crm.ResultOfCall']} options={this.props.callResultOptions}
           onChange={(e, v) => this.handleChange('callResultId', v)} />
 
         {this.renderCallResultDependentField()}
       </Form.Group>
       <Form.Group widths='equal'>
-        <Form.Field control={TextArea} onChange={(e, o) => this.handleChange('callNote', o)} label='Примечание звонка' placeholder='Примечание звонка' />
+        <Form.Field control={TextArea} onChange={(e, o) => this.handleChange('callNote', o)} label={messages['Crm.NoteForCall']} placeholder={messages['Crm.NoteForCall']} />
         <Form.Field />
       </Form.Group>
       <Divider />
-      {this.renderDemoForm()}
-      <Form.Field control={Button} content='Сохранить' onClick={this.saveCall} />
+      {this.renderDemoForm(messages,locale)}
+      <Form.Field control={Button} content={messages['save']} onClick={this.saveCall} />
     </Form>
   }
 
@@ -285,16 +291,17 @@ class Phone extends Component {
   }
 
   renderNumberHistory () {
+    const {messages} = this.props.intl
     return <Table celled>
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell>#</Table.HeaderCell>
-          <Table.HeaderCell>Компания</Table.HeaderCell>
-          <Table.HeaderCell>Филиал</Table.HeaderCell>
-          <Table.HeaderCell>Дата-время звонка</Table.HeaderCell>
-          <Table.HeaderCell>Звонил</Table.HeaderCell>
-          <Table.HeaderCell>Примечание</Table.HeaderCell>
-          <Table.HeaderCell>Результат</Table.HeaderCell>
+          <Table.HeaderCell>{messages['bukrs']}</Table.HeaderCell>
+          <Table.HeaderCell>{messages['brnch']}</Table.HeaderCell>
+          <Table.HeaderCell>{messages['Crm.CallDateTime']}</Table.HeaderCell>
+          <Table.HeaderCell>{messages['Crm.Called']}</Table.HeaderCell>
+          <Table.HeaderCell>{messages['Table.Note']}</Table.HeaderCell>
+          <Table.HeaderCell>{messages['Table.Result']}</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
 
@@ -402,6 +409,7 @@ class Phone extends Component {
 
   render () {
     const {phoneNumber} = this.props
+    const {messages} = this.props.intl
     return (
       <p>
         {this.state.buttonLoading ? <Button loading>Loading</Button> : <Label as='button' horizontal onClick={this.handlePhoneClick}>
@@ -409,7 +417,7 @@ class Phone extends Component {
           {phoneNumber}
         </Label>}
 
-        {this.renderCallModal()}
+        {this.renderCallModal(messages)}
       </p>
     )
   }
@@ -423,4 +431,4 @@ function mapStateToProps (state) {
     }
 }
 
-export default connect(mapStateToProps, {fetchPhoneNumberHistory,fetchCallResults,fetchSingleReco})(Phone)
+export default connect(mapStateToProps, {fetchPhoneNumberHistory,fetchCallResults,fetchSingleReco})(injectIntl(Phone))
