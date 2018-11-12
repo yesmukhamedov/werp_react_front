@@ -10,6 +10,7 @@ import {fetchDemoArchive,fetchDemoResults,fetchGroupDealers} from '../actions/de
 import { connect } from 'react-redux'
 import {demoResultOptions} from '../../../crmUtil'
 import { injectIntl } from 'react-intl'
+import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4'
 
 class DemoArchivePage extends Component{
 
@@ -75,9 +76,13 @@ class DemoArchivePage extends Component{
     }
 
     handleChange(fieldName,o){
-        let {searchModel} = this.state;
+        let searchModel = Object.assign({},this.state.searchModel);
         let {value} = o;
         searchModel[fieldName] = value;
+
+        if('bukrs' === fieldName){
+            searchModel['branchIds'] = []
+        }
         this.setState({...this.state,searchModel:searchModel});
     }
 
@@ -92,9 +97,30 @@ class DemoArchivePage extends Component{
         this.setState({...this.state,searchModel:searchModel});
     }
 
+    getBranchOptions = (bukrs) => {
+        if(!bukrs){
+            return []
+        }
+
+        return this.props.branchOptions[bukrs] || []
+    }
+
     renderSearchForm(messages){
+        const {companyOptions} = this.props
         return <Form>
             <Form.Group widths='equal'>
+                <Form.Select name='bukrs'
+                             label={messages['Form.Company']} options={companyOptions}
+                             placeholder={messages['Form.Company']} onChange={(e,v) => this.handleChange('bukrs',v)} />
+
+                <Form.Select
+                    name='branch'
+                    multiple={true}
+                    search={true}
+                    selection
+                    value={this.state.searchModel.branchIds || []}
+                    label={messages['brnch']}
+                    options={this.getBranchOptions(this.state.searchModel.bukrs)} placeholder={messages['brnch']} onChange={(e,v) => this.handleChange('branchIds',v)} />
                 <Form.Select fluid label={messages['Form.Dealer']}
                              options={this.props.dealers}
                              placeholder={messages['Form.Dealer']}
@@ -108,6 +134,9 @@ class DemoArchivePage extends Component{
                 <Form.Input fluid label={messages['Form.ClientFullName']}
                             placeholder={messages['Form.ClientFullName']}
                             onChange={(e,v) => this.handleChange('clientName',v)} />
+            </Form.Group>
+
+            <Form.Group widths='equal'>
                 <Form.Field>
                     <label>{messages['Form.DemoDateFrom']}</label>
                     <DatePicker
@@ -132,9 +161,6 @@ class DemoArchivePage extends Component{
                         onChange={(v) => this.handleChangeDate('dateTo',v)}
                     />
                 </Form.Field>
-            </Form.Group>
-
-            <Form.Group widths='equal'>
                 <Form.Field>
                     <label>{messages['Form.SaleDateFrom']}</label>
                     <DatePicker
@@ -253,7 +279,9 @@ function mapStateToProps (state) {
         loader:state.loader,
         meta:state.crmDemo.meta,
         dealers:state.crmDemo.dealers,
-        demoResults:state.crmDemo.demoResults
+        demoResults:state.crmDemo.demoResults,
+        companyOptions: state.userInfo.companyOptions,
+        branchOptions: state.userInfo.branchOptionsMarketing
     }
 }
 

@@ -83,6 +83,7 @@ export default function RecoViewTable(props){
                             {<div>
                                 {reco.phones ? reco.phones.map((p) => {
                                     return <Phone
+                                        clientName={reco.clientName}
                                         key={p.id}
                                         phoneNumber={p.phoneNumber}
                                         phoneId={p.id}

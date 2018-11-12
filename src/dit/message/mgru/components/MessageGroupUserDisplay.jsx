@@ -24,8 +24,9 @@ export default class MessageGroupUserDisplay extends Component {
   }
 
   componentWillMount() {
-    const { fetchMessageGroupUsers } = this.props;
+    const { fetchMessageGroupUsers, fetchReferences, lang  } = this.props;
     fetchMessageGroupUsers();
+    fetchReferences(lang);
   }
 
   open(modalType, modalData) {

@@ -5,7 +5,7 @@ import 'react-table/react-table.css';
 import { constructFullName } from '../../../../../utils/helpers';
 
 const MessageGroupUserTableDisplay = (props) => {
-  const { messageGroupUserList = [], removeMessageGroupUser, fetchMessageGroupUsers, open } = props;
+  const { messageGroupUserList = [], removeMessageGroupUser, fetchMessageGroupUsers, open, lang } = props;
 
   const columns = [
     // {
@@ -15,7 +15,7 @@ const MessageGroupUserTableDisplay = (props) => {
     // },
     {
       Header: 'Группа',
-      id: 'groupName',
+      id: 'groupId',
       accessor: 'messageGroup.groupName',
     },
     {
@@ -29,33 +29,47 @@ const MessageGroupUserTableDisplay = (props) => {
     },
     {
       Header: 'Филиал',
-      accessor: 'user.branchId',
+      accessor: 'branch.id',
       maxWidth: 160,
       Cell: (props) => {
-        const { user } = props.original;
+        const { branch } = props.original;
         return (
           <div>
-            {user.branchId}
+            {branch.value}
           </div>
         );
       },
     },
     {
       Header: 'Отдел',
-      accessor: 'user.departmentId',
+      accessor: 'department.id',
+      Cell: (props) => {
+        const { department } = props.original;
+        return (
+          <div>
+            {department[lang]}
+          </div>
+        );
+      },
     },
     {
       Header: 'Начальник отдела',
-      accessor: 'supervisorId',
+      id: 'supervisor.id',
+      accessor: item => constructFullName(item.supervisor),
     },
     {
       accessor: 'mguId',
       maxWidth: 100,
       Cell: (row) => {
-        const { mguId, groupName } = row.original;
+        const { mguId, messageGroup, user, branch, department, supervisor } = row.original;
         const modalData = {
           mguId,
-          groupName,
+          groupId: messageGroup.groupId,
+          userId: user.id,
+          companyId: user.bukrs,
+          branchId: branch.id,
+          departmentId: department.id,
+          supervisorId: supervisor.id
         };
         return (
           <div style={{ textAlign: 'center' }}>
@@ -83,7 +97,7 @@ const MessageGroupUserTableDisplay = (props) => {
       columns={columns}
       pageSizeOptions={[10, 15, 20]}
       defaultPageSize={10}
-      defaultSorted={[{ id: 'groupName' }]}
+      defaultSorted={[{ id: 'groupId' }]}
       previousText="Предыдущий"
       nextText="Следующий"
       loadingText="Загружается..."
