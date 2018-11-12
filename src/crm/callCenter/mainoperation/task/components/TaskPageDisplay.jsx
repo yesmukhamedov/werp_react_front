@@ -4,6 +4,7 @@ import { injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 // import TaskInfoWrapper from './TaskInfo/TaskInfoWrapper';
 import TaskHistoryDisplay from './TaskHistory/TaskHistoryDisplay';
+import TaskApproverContainer from './TaskApprover/TaskApproverContainer';
 
 class TaskPageDisplay extends Component {
   componentWillMount() {
@@ -41,6 +42,7 @@ class TaskPageDisplay extends Component {
             paddingRight: '2em',
           }}
         >
+          {taskDetails.authorsManager && <TaskApproverContainer {...taskDetails}/> }
           <TaskInfoWrapper
             lang={this.props.lang}
             {...taskDetails}

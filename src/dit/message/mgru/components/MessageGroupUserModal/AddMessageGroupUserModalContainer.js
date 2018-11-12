@@ -3,13 +3,13 @@ import { formValueSelector } from 'redux-form';
 import AddMessageGroupUserModalDisplay from './AddMessageGroupUserModalDisplay';
 import { createMessageGroupUser, fetchMessageGroupUsers, updateMessageGroupUser } from '../../actions/MessageGroupUserAction';
 
-const selector = formValueSelector('MgruAddMessageGroupUserForm');
+const selector = formValueSelector('mgruAddMessageGroupUserForm');
 
 function mapStateToProps(state, props) {
   const initialData = {}
   if (props.modalData !== null) {
     initialData.messageGroup = props.modalData.groupId;
-    initialData.user = props.modalData.userId;
+    // initialData.user = props.modalData.userId;
     initialData.company = props.modalData.companyId;
     initialData.branch = props.modalData.branchId;
     initialData.department = props.modalData.departmentId;

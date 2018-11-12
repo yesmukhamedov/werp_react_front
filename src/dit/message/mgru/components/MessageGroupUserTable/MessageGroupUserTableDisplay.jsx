@@ -17,15 +17,25 @@ const MessageGroupUserTableDisplay = (props) => {
       Header: 'Группа',
       id: 'groupId',
       accessor: 'messageGroup.groupName',
+      maxWidth: 100,
     },
     {
       Header: 'Username',
       accessor: 'user.username',
+      maxWidth: 100,
     },
     {
       Header: 'Пользователь',
       id: 'fullName',
-      accessor: item => constructFullName(item.user),
+      // accessor: item => constructFullName(item.user),
+      Cell: (props) => {
+        const { user } = props.original;
+        return (
+          <div>
+            {user && constructFullName(user)}
+          </div>
+        );
+      },
     },
     {
       Header: 'Филиал',
@@ -43,6 +53,7 @@ const MessageGroupUserTableDisplay = (props) => {
     {
       Header: 'Отдел',
       accessor: 'department.id',
+      maxWidth: 160,
       Cell: (props) => {
         const { department } = props.original;
         return (
@@ -59,14 +70,14 @@ const MessageGroupUserTableDisplay = (props) => {
     },
     {
       accessor: 'mguId',
-      maxWidth: 100,
+      maxWidth: 50,
       Cell: (row) => {
         const { mguId, messageGroup, user, branch, department, supervisor } = row.original;
         const modalData = {
           mguId,
           groupId: messageGroup.groupId,
-          userId: user.id,
-          companyId: user.bukrs,
+          // userId: user.id,
+          // companyId: user.bukrs,
           branchId: branch.id,
           departmentId: department.id,
           supervisorId: supervisor.id
@@ -74,11 +85,11 @@ const MessageGroupUserTableDisplay = (props) => {
         return (
           <div style={{ textAlign: 'center' }}>
             <Button.Group icon size="mini">
-              <Button
+              {/* <Button
                 icon="edit"
                 size="mini"
                 onClick={() => open('edit', modalData)}
-              />
+              /> */}
               <Button
                 icon="remove"
                 size="mini"
