@@ -8,12 +8,12 @@ import {
   Divider,
   Search,
 } from 'semantic-ui-react';
-import { Field, reduxForm, change } from 'redux-form';
+import { Field, reduxForm, change, untouch } from 'redux-form';
 import { DropdownFormField } from '../../../../../utils/formFields';
 import { ROOT_URL } from '../../../../../utils/constants';
 
-const userSearchUrl = `${ROOT_URL}/api/mgru/users`;
-const searchByKeywordUrl = `${ROOT_URL}/api/tasks/assignee`;
+// const userSearchUrl = `${ROOT_URL}/api/mgru/users`;
+const userSearchUrl = `${ROOT_URL}/api/tasks/assignee`;
 
 class AddMessageGroupUserModalDisplay extends PureComponent {
   constructor(props) {
@@ -24,10 +24,32 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
       results: [], 
       value: '' ,
       userId: '',
+      branchOptions: [],
+      departmentOptions: [],
+      selectedCompany: ''
     };
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleFormClose = this.handleFormClose.bind(this);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.branchOptions !== this.state.branchOptions) {
+      if(nextProps.selectedCompany !== this.state.selectedCompany) {
+        this.props.reset()
+        this.props.dispatch(change('mgruAddMessageGroupUserForm', 'company', nextProps.selectedCompany));
+        this.setState({ 
+          branchOptions: nextProps.branchOptions,          
+          selectedCompany: nextProps.selectedCompany,
+          isLoading: false, results: [], value: '', userId: '',
+         });
+        if (nextProps.reference) {
+          this.setState({
+            departmentOptions: nextProps.reference.deptOptions
+          })
+        }
+      }      
+    }
   }
 
   handleFormSubmit(formValues) {
@@ -47,7 +69,21 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
     this.resetComponent();
   }
 
-  resetComponent = () => this.setState({ isLoading: false, results: [], value: '', userId: '' })
+  resetComponent() {
+    const { reference, branchOptions } = this.props;
+    this.setState({ 
+      isLoading: false, results: [], value: '', userId: '',
+      branchOptions, departmentOptions: reference.deptOptions,
+    })    
+  }
+
+  resetFields() {
+    const fields = ['branch','department','supervisor',]
+    for (var i = 0; i < fields.length; i++) {
+        this.props.dispatch(change('mgruAddMessageGroupUserForm',fields[i],null))
+        this.props.dispatch(untouch('mgruAddMessageGroupUserForm',fields[i]))
+    }
+  }
 
   handleResultSelect = (e, { result }) => {
     this.setState({ value: result.title, userId: result.userid })
@@ -58,10 +94,19 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
 
     req
       .then(({ data }) => {
-        // console.log("user: ", data)
-        this.props.dispatch(change('mgruAddMessageGroupUserForm', 'company', data.bukrs));
-        this.props.dispatch(change('mgruAddMessageGroupUserForm', 'branch', data.branchId));
-        this.props.dispatch(change('mgruAddMessageGroupUserForm', 'department', data.departmentId));
+        const { reference, branchOptions } = this.props;  
+        let branchMap = {};
+        Object.keys(branchOptions).forEach(id => {
+            const valueMap = branchOptions[id];
+            branchMap[valueMap.key] = valueMap;
+        });
+        const filteredBranchOpts = data.map(el => branchMap[el.branchId]);
+        const filteredDepOpts = data.map(el => reference.deptOptions[el.departmentId]);  
+        this.setState({
+          branchOptions: filteredBranchOpts,
+          departmentOptions: filteredDepOpts,
+        });
+        this.resetFields()
       })
       .catch(error => {        
           console.log(error);
@@ -69,7 +114,10 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
   }
 
   handleSearchChange = (e, { value }) => {
-    const paramsDict = { keyword: value };
+    const { selectedCompany } = this.props;
+    const paramsDict = { 
+      keyword: value,
+      bukrs: selectedCompany };
     const params = _.map(
       paramsDict,
       (val, key) =>
@@ -85,7 +133,7 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
     // save the new request for cancellation
     this._source = axios.CancelToken.source();
 
-    const req = axios.get(`${searchByKeywordUrl}?${params}`, {
+    const req = axios.get(`${userSearchUrl}?${params}`, {
       headers: { authorization: localStorage.getItem('token') },
       cancelToken: this._source.token,
     })
@@ -107,6 +155,7 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
       })
       .catch(error => {        
         this.resetComponent()
+        this.resetFields()
         if (axios.isCancel(error)) {            
           console.log('Request canceled', error);
         } else {
@@ -118,12 +167,11 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
   render() {
     const {
       isOpen,
-      close,
       modalType,
       handleSubmit,
       selectedCompany,
       selectedDepartment,
-      branchOptions,
+      // branchOptions,
       companyOptions,
       reference,
       pristine, 
@@ -138,24 +186,6 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
             <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
               <Field
                 required
-                name="messageGroup"
-                component={DropdownFormField}
-                label="Группа"
-                opts={reference && reference.messgrOptions}
-              />
-              <Form.Field>
-                <label>Пользователь</label>
-                <Search
-                    loading={isLoading}
-                    onResultSelect={this.handleResultSelect}
-                    onSearchChange={_.debounce(this.handleSearchChange, 800, { leading: true })}
-                    results={results}
-                    fluid
-                    // value={value}
-                />
-              </Form.Field>
-              <Field
-                required
                 name="company"
                 component={DropdownFormField}
                 label="Компания"
@@ -163,26 +193,49 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
               />
               <Field
                 required
+                disabled={!selectedCompany}
+                name="messageGroup"
+                component={DropdownFormField}
+                label="Группа"
+                opts={reference && reference.messgrOptions}
+              />
+              <Form.Field disabled={!selectedCompany}>
+                <label>Пользователь</label>
+                <Search
+                    loading={isLoading}
+                    onResultSelect={this.handleResultSelect}
+                    onSearchChange={_.debounce(this.handleSearchChange, 800, { leading: true })}
+                    results={results}
+                    value={value}
+                    fluid
+                />
+              </Form.Field>
+              <Field
+                required
                 name="branch"
                 component={DropdownFormField}
                 label="Филиал"
                 disabled={!selectedCompany}
-                opts={selectedCompany && branchOptions[selectedCompany]}
+                opts={this.state.branchOptions}
               />
               <Field
                 required
                 name="department"
                 component={DropdownFormField}
                 label="Отдел"
-                opts={reference && reference.deptOptions}
+                disabled={!selectedCompany}
+                opts={this.state.departmentOptions}
               />
               <Field
                 required
                 name="supervisor"
                 component={DropdownFormField}
                 label="Начальник отдела"
-                // disabled={!selectedDepartment}
-                opts={reference && reference.taskAdminOptions}
+                disabled={!selectedDepartment}
+                opts={reference && 
+                  Object.values(reference.taskAdminOptions).filter(
+                    el => el.departmentId === selectedDepartment)
+                  }
               />
               <Divider />
               <Button

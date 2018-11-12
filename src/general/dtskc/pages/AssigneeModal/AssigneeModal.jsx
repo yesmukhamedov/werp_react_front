@@ -18,7 +18,7 @@ import AssigneeOtherPane from './AssigneeOtherPaneComponent';
 import AssigneeSearchPaneComponent from'./AssigneeSearchPaneComponent';
 import { GET } from '../../../../utils/helpers';
 import { ROOT_URL } from '../../../../utils/constants';
-import './style.css';
+// import './style.css';
 
 const assigneeSearchUrl = `${ROOT_URL}/api/tasks/assignee?keyword=`;
 

@@ -17,13 +17,14 @@ function mapStateToProps(state, props) {
   } 
   const selectedCompany = selector(state, 'company');
   const selectedDepartment = selector(state, 'department');
+  const branchOpts = (selectedCompany ? state.userInfo.branchOptionsAll[selectedCompany] : {});
   return {
     initialValues: initialData,
     selectedCompany,
     selectedDepartment,
     reference: state.mgruTransaction.mgru.reference,
     companyOptions: state.userInfo.companyOptions,
-    branchOptions: state.userInfo.branchOptionsAll,
+    branchOptions: branchOpts,
   };
 }
 
