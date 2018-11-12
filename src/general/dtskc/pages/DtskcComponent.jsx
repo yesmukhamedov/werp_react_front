@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { injectIntl } from 'react-intl';
 import { Container, Form, Button, Header, Segment } from 'semantic-ui-react';
 import UploadPanelDisplay from './UploadPanelDisplay';
 import AttachmentPanelDisplay from './AttachmentPanelDisplay';
@@ -76,7 +77,9 @@ class DtskcComponent extends Component {
       assigneeModal,
       toggleAssigneeModal,
       reset,
+      intl,
     } = this.props;
+    const { messages } = intl;
     return (
       <Container
         style={{
@@ -216,7 +219,10 @@ class DtskcComponent extends Component {
             attachment={this.state.uploadList}
             onDelete={this.handleUploadDelete}
           >
-            <UploadPanelDisplay onUploadSuccess={this.handleUpload} />
+            <UploadPanelDisplay
+              onUploadSuccess={this.handleUpload}
+              messages={messages}
+            />
           </AttachmentPanelDisplay>
         </Segment>
         <AssigneeModalContainer />
@@ -260,4 +266,4 @@ const validate = values => {
 export default reduxForm({
   form: 'DtskcForm',
   validate,
-})(DtskcComponent);
+})(injectIntl(DtskcComponent));
