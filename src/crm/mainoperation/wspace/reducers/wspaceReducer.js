@@ -19,7 +19,7 @@ import {
 } from '../actions/wspaceAction'
 
 import {CRM_VISIT_CREATE} from '../../visit/actions/visitAction'
-import {MENU_CURRENT_VISIT} from '../wspaceUtil'
+import {MENU_CURRENT_VISIT,MENU_BY_DATE} from '../wspaceUtil'
 import _ from 'lodash'
 
 
@@ -146,7 +146,12 @@ export default function (state=INITIAL_STATE, action)
             return {...state,phoneModalOpened:action.payload}
 
         case WSP_RECO_ARCHIVED:
-            return {...state,currentRecommenderRecos: removeRecoFromListById(action.payload,state.currentRecommenderRecos)}
+            let stfRecoDataTemp = Object.assign({},state.staffRecoData)
+            stfRecoDataTemp[MENU_BY_DATE] = removeRecoFromListById(action.payload,stfRecoDataTemp[MENU_BY_DATE]);
+            return {...state,
+                    currentRecommenderRecos: removeRecoFromListById(action.payload,state.currentRecommenderRecos),
+                    staffRecoData: stfRecoDataTemp
+                }
 
         case WSP_SAVED_CALL:
             let demoDto = Object.assign({},action.payload.demo)
