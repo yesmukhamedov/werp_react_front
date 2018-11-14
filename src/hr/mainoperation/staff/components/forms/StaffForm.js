@@ -191,22 +191,6 @@ export default function StaffForm(props){
             <div className='ui secondary segment'>
                 <Form.Group widths='equal'>
                     <Form.Field
-                        name="homephone"
-                        onChange={props.handleChange}
-                        value={staff.homephone || ''}
-                        control={Input}
-                        label='Домашний телефон'
-                        placeholder='Домашний телефон' />
-
-                    <Form.Field
-                        name="workphone"
-                        onChange={props.handleChange}
-                        value={staff.workphone || ''}
-                        control={Input}
-                        label='Рабочий телефон'
-                        placeholder='Рабочий телефон' />
-
-                    <Form.Field
                         name="mobile"
                         onChange={props.handleChange}
                         value={staff.mobile || ''}
@@ -222,6 +206,24 @@ export default function StaffForm(props){
                         control={Input}
                         label='Мобильный2'
                         placeholder='Мобильный2' />
+
+                    <Form.Field
+                        name="homephone"
+                        onChange={props.handleChange}
+                        value={staff.homephone || ''}
+                        control={Input}
+                        label='Домашний телефон'
+                        placeholder='Домашний телефон' />
+
+                    <Form.Field
+                        name="workphone"
+                        onChange={props.handleChange}
+                        value={staff.workphone || ''}
+                        control={Input}
+                        label='Рабочий телефон'
+                        placeholder='Рабочий телефон' />
+
+
                 </Form.Group>
 
                 <Form.Group widths='equal'>
