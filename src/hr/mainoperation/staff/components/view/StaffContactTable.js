@@ -18,10 +18,9 @@ export default function StaffContactTable(props){
             <Table.Row key={d.id}>
                 <Table.Cell>{d.typeName}</Table.Cell>
                 <Table.Cell>{d.countryName}</Table.Cell>
-                <Table.Cell>{d.salary}</Table.Cell>
-                <Table.Cell>{d.pension}</Table.Cell>
-                <Table.Cell>{d.ipn}</Table.Cell>
-                <Table.Cell>{d.note}</Table.Cell>
+                <Table.Cell>{d.stateName}</Table.Cell>
+                <Table.Cell>{d.address}</Table.Cell>
+                <Table.Cell>{d.telMob1}</Table.Cell>
                 <Table.Cell></Table.Cell>
             </Table.Row>
         )
@@ -32,7 +31,6 @@ export default function StaffContactTable(props){
                 <Table.HeaderCell>Тип</Table.HeaderCell>
                 <Table.HeaderCell>Страна</Table.HeaderCell>
                 <Table.HeaderCell>Область</Table.HeaderCell>
-                <Table.HeaderCell>Город</Table.HeaderCell>
                 <Table.HeaderCell>Адрес</Table.HeaderCell>
                 <Table.HeaderCell>Тел номер</Table.HeaderCell>
                 <Table.HeaderCell></Table.HeaderCell>
