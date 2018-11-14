@@ -9,6 +9,7 @@ import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4'
 import {f4FetchPositionList,f4FetchBusinessAreaList,f4FetchDepartmentList} from '../../../../reference/f4/f4_action'
 import {fetchAllCurrentStaffs} from '../../staff/actions/hrStaffAction'
 import PyramidFormModal from './PyramidFormModal'
+import {notify} from '../../../../general/notification/notification_action'
 
 class PyramidTreePage extends Component {
   constructor (props) {
@@ -73,6 +74,10 @@ class PyramidTreePage extends Component {
     }
 
     loadTreeData(){
+        if(!this.state.bukrs){
+            this.props.notify('error','Выберите компанию','Ошибка')
+            return
+        }
         this.props.fetchBukrsPyramidsTree(this.state.bukrs)
         this.props.fetchAllCurrentStaffs({bukrs:this.state.bukrs})
     }
@@ -250,5 +255,5 @@ function mapStateToProps (state) {
 export default connect(mapStateToProps, {
     fetchBukrsPyramidsTree,pyramidTreeChanged,deletePyramid,blankItem,
     f4FetchPositionList,f4FetchDepartmentList,f4FetchBusinessAreaList,
-    toggleFormModal,fetchAllCurrentStaffs,removeStaffFromEmployee,fetchItem
+    toggleFormModal,fetchAllCurrentStaffs,removeStaffFromEmployee,fetchItem,notify
 })(PyramidTreePage)
