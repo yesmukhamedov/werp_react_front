@@ -259,6 +259,10 @@
 	"Crm.Select": "Select",
 	"Crm.EditReco": "Editing recommendation",
 	"Crm.CurrentRecommendations": "Current recommendations",
+	"Crm.Used": "Used",
+	"Crm.New": "New",
+	"Crm.DemoDone": "Demo done (for recall)",
+	"Crm.Moved": "Moved",
   
 	"awkey"           : "Belge referansı",
 	"awtyp"           : "Operasyon tipi",
