@@ -53,7 +53,7 @@ class AssigneeSearchPaneComponent extends Component {
     );
 
   handleSearchChange = (e, { value }) => {
-    const { selectedCompany } = this.props;
+    const { selectedCompany, lang } = this.props;
 
     // cancel the previous request
     if (typeof this._source != typeof undefined) {
@@ -77,7 +77,7 @@ class AssigneeSearchPaneComponent extends Component {
           const assignees = data.map((el, idx) => ({
             key: idx,
             title: el.fio,
-            description: el.text,
+            description: el[lang],
             price: '',
             image: '',
             userId: el.userId,

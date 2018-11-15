@@ -24,6 +24,7 @@ const mapStateToProps = (state) => {
     modalOpen: state.dtskcTransaction.dtskc.assigneeModal,
     deptOpts: state.dtskcTransaction.dtskc.reference.deptOptions,
     groupOpts: state.dtskcTransaction.dtskc.reference.groupOptions,
+    lang: state.locales.lang,
   };
 };
 
