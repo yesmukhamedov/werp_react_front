@@ -258,6 +258,7 @@
 	"Crm.VisitInfo": "Basic info of the visit",
 	"Crm.Select": "Select",
 	"Crm.EditReco": "Editing recommendation",
+	"Crm.CurrentRecommendations": "Current recommendations",
   
 	"awkey"           : "Belge referansı",
 	"awtyp"           : "Operasyon tipi",
