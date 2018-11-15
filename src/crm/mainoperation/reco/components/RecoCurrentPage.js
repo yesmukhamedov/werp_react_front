@@ -8,7 +8,8 @@ import moment from 'moment';
 import { connect } from 'react-redux'
 import {fetchRecoCurrentData,fetchCallResults,fetchRecoStatuses} from '../actions/recoAction';
 import {fetchReasons} from '../../demo/actions/demoAction'
-import {RECO_CATEGORIES} from '../../../crmUtil'
+import {getRecoCategoriesOptionsByLanguage} from '../../../crmUtil'
+import { injectIntl } from 'react-intl'
 
 class RecoCurrentPage extends Component {
   constructor (props) {
@@ -70,6 +71,7 @@ class RecoCurrentPage extends Component {
   }
 
   renderTable (items) {
+      const {messages,locale} = this.props.intl
       let statusOptions = [];
       if (this.props.statuses) {
           statusOptions = this.props.statuses.map(o =>
@@ -78,7 +80,7 @@ class RecoCurrentPage extends Component {
               </option>));
       }
 
-      let categoryOptions = RECO_CATEGORIES.map(o =>
+      let categoryOptions = getRecoCategoriesOptionsByLanguage(locale).map(o =>
           (
               <option value={o.text} key={o.value}>
                   {o.text}
@@ -97,7 +99,7 @@ class RecoCurrentPage extends Component {
           data={items}
           columns={[
             {
-              Header: 'Клиент',
+              Header: messages['fioClient'],
               accessor: 'clientName'
             },
             {
@@ -106,11 +108,11 @@ class RecoCurrentPage extends Component {
               show: false
             },
             {
-              Header: 'Рекомендатель',
+              Header: messages['L__RECOMMENDER'],
               accessor: 'recommenderName'
             },
             {
-              Header: 'Дата звонка',
+              Header: messages['Crm.CallDateTime'],
               id: 'callDateDiv',
               accessor: (row) => this.renderDocDate(row),
                 filterMethod: (filter, row) => {
@@ -124,20 +126,20 @@ class RecoCurrentPage extends Component {
                 }
             },
             {
-              Header: 'Тел. номера',
+              Header: messages['Form.PhoneNumber'],
               id: 'phoneNumbers',
               accessor: row => this.renderPhoneNumbers(row.id, row.phones, row.clientName)
             },
             {
-              Header: 'Отв. сотрудник',
+              Header: messages['Table.ResponsibleStaff'],
               accessor: 'responsibleName'
             },
             {
-              Header: 'Примечание',
+              Header: messages['Table.Note'],
               accessor: 'note'
             },
             {
-              Header: 'Категория',
+              Header: messages['Table.Category'],
               accessor: 'categoryName',
                 filterMethod: (filter, row) => {
                     if (filter.value === '0') {
@@ -151,12 +153,12 @@ class RecoCurrentPage extends Component {
                         style={{ width: "100%" }}
                         value={filter ? filter.value : 0}
                     >
-                        <option value={0}>Все</option>
+                        <option value={0}>{messages['all']}</option>
                         {categoryOptions}
                     </select>
             },
             {
-              Header: 'Статус',
+              Header: messages['Form.Status'],
               accessor: 'statusName',
                 filterMethod: (filter, row) => {
                     if (filter.value === '0') {
@@ -170,7 +172,7 @@ class RecoCurrentPage extends Component {
                         style={{ width: "100%" }}
                         value={filter ? filter.value : 0}
                     >
-                        <option value={0}>Все</option>
+                        <option value={0}>{messages['all']}</option>
                         {statusOptions}
                     </select>
             },
@@ -179,12 +181,12 @@ class RecoCurrentPage extends Component {
               accessor: 'id',
               filterable: false,
               Cell: ({value}) => <Link target={'_blank'} className={'ui icon button mini'} to={`/crm/reco/view/` + value}>
-                                Просмотр
+                  {messages['Table.View']}
               </Link>
             }
           ]}
-          previousText={'Пред.'}
-          nextText={'След.'}
+          previousText={messages['previousText']}
+          nextText={messages['nextText']}
           defaultPageSize={50}
           filterable
           className='-striped -highlight' />
@@ -230,20 +232,19 @@ class RecoCurrentPage extends Component {
   }
 
   render () {
+      const {messages} = this.props.intl
     const panes = [
-      { menuItem: 'Использованные', render: this.renderTabUsed },
-      { menuItem: 'Новые', render: this.renderTabNew },
-      { menuItem: 'Пройденные (для перезвона)', render: this.renderTabDemoDone },
-      { menuItem: 'Перенесенные', render: this.renderTableMoved }
+      { menuItem: messages['Crm.Used'], render: this.renderTabUsed },
+      { menuItem: messages['Crm.New'], render: this.renderTabNew },
+      { menuItem: messages['Crm.DemoDone'], render: this.renderTabDemoDone },
+      { menuItem: messages['Crm.Moved'], render: this.renderTableMoved }
     ]
     return (
       <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
         <Segment clearing>
-          <Header as='h2' floated='left'>
-                        Текущие рекомендации
-          </Header>
+          <Header as='h2' floated='left'>{messages['Crm.CurrentRecommendations']}</Header>
           <Link className={'ui icon button primary right floated'} to={`/crm/reco/create`}>
-            <Icon name='plus' /> Добавить из архива
+            <Icon name='plus' /> {messages['Crm.Wspace.CreateFromArchive']}
           </Link>
         </Segment>
         <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
@@ -264,4 +265,4 @@ function mapStateToProps (state) {
     }
 }
 
-export default connect(mapStateToProps, {fetchRecoCurrentData,fetchReasons,fetchCallResults,fetchRecoStatuses})(RecoCurrentPage)
+export default connect(mapStateToProps, {fetchRecoCurrentData,fetchReasons,fetchCallResults,fetchRecoStatuses})(injectIntl(RecoCurrentPage))
