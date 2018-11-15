@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
-import { Form, Button } from 'semantic-ui-react';
+import { Form, Button, Segment } from 'semantic-ui-react';
+import hash from 'object-hash';
 
 class AssigneeOtherPane extends Component {
   state = {
     selectedBranch: '',
     selectedDepartment: '',
     selectedManager: '',
-  }
+  };
 
-  handleChange = (e, {name, value}) => {
-    switch(name) {
+  handleChange = (e, { name, value }) => {
+    console.log("handleChange", name, value);
+    switch (name) {
       case 'selectedDepartment': {
         this.setState({
           selectedManager: '',
@@ -18,16 +20,49 @@ class AssigneeOtherPane extends Component {
         break;
       }
       default:
-      this.setState({ [name]: value})
+        this.setState({ [name]: value });
     }
+  };
+
+  handleSubmit = () => {
+    const { addAssigneePerson, toggleAssigneeModal: hideModal } = this.props;
+    const recipient = {
+      branch: {
+        id: this.state.selectedBranch,
+      },
+      department: {
+        id: this.state.selectedDepartment,
+      },
+      position: {},
+      assignee: {},
+      assigneeManager: {
+        id: this.state.selectedManager,
+      },
+    }
+    const assigneePerson = {
+      id: hash(recipient),
+      recipient,  
+    }
+    addAssigneePerson(assigneePerson);
+    hideModal();
   }
 
-  render() {
+  renderErrorSection() {
+    return (
+      <Segment inverted color="red" secondary>
+        Please choose company first!!!
+      </Segment>
+    );
+  }
+
+  renderForm() {
     const {
       managerOpts,
       branchOpts,
       deptOpts,
+      addAssigneePerson,
     } = this.props;
+    const { selectedDepartment } = this.state;
     return (
       <Form>
         <Form.Group widths="equal">
@@ -36,6 +71,7 @@ class AssigneeOtherPane extends Component {
             placeholder="Branch"
             name="selectedBranch"
             options={branchOpts}
+            onChange={this.handleChange}
           />
           <Form.Select
             label="Department"
@@ -47,17 +83,20 @@ class AssigneeOtherPane extends Component {
           <Form.Select
             label="Assignee Manager"
             placeholder="Assignee Manager"
-            options={Object.values(managerOpts).filter(el => el.departmentId === this.state.selectedDepartment)}
+            options={selectedDepartment && managerOpts[selectedDepartment]}
             name="selectedManager"
             onChange={this.handleChange}
           />
         </Form.Group>
-        <Button>Add assignee</Button>
+        <Button onClick={this.handleSubmit}>Add assignee</Button>
       </Form>
     );
   }
-}
 
-// const filterBy = (list, param) => 
+  render() {
+    const { selectedCompany } = this.props;
+    return selectedCompany ? this.renderForm() : this.renderErrorSection();
+  }
+}
 
 export default AssigneeOtherPane;

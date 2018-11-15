@@ -1,20 +1,88 @@
-import React from 'react';
-import { Form, Select, Button } from 'semantic-ui-react';
+import React, { Component } from 'react';
+import { Form, Button, Segment } from 'semantic-ui-react';
+import hash from 'object-hash';
+import { GET } from '../../../../utils/helpers';
+import { ROOT_URL } from '../../../../utils/constants';
 
-const genderOptions = [
-  { key: 'm', text: 'Male', value: 'male' },
-  { key: 'f', text: 'Female', value: 'female' },
-];
+class AssigneeGroupPane extends Component {
+  state = {
+    selectedGroup: '',
+    recipientList: [],
+  }
 
-const AssigneeGroupPane = props => (
-  <Form success>
-    <Form.Select
-      options={genderOptions}
-      label="Groups"
-      placeholder="Select group from the list"
-    />
-    <Button>Add group</Button>
-  </Form>
-);
+  fetchGroupsMembers = (groupId) => {
+    const groupMembersUrl = `${ROOT_URL}/api/mgru?groupId=${groupId}`;
+    const { groupOpts } = this.props;
+    const req = GET(groupMembersUrl);
+    req
+      .then(({ data }) => {
+        const recipientList = data.map(el => {
+          const { branch, department, supervisor, user, messageGroup } = el;
+          return {
+            branch: {
+              id: branch.id,
+            },
+            department: {
+              id: department.id,
+            },
+            position: {
+              id: 38,
+            },
+            assignee: {
+              id: user.id,
+            },
+            assigneeManager: {
+              id: supervisor.id,
+            },
+          };
+        });
+        this.setState({
+          recipientList,
+          groupDetail: groupOpts[this.state.selectedGroup],
+        });
+      })
+      .catch( err => console.log(err));
+  }
+
+  handleChange = (_, { name, value }) => { 
+    this.setState({ [name]: value });
+    this.fetchGroupsMembers(value);
+  }
+
+  handleSubmit = () => {
+    const { addAssigneeGroup, toggleAssigneeModal: hideModal } = this.props;
+    const { groupDetail, recipientList } = this.state;
+    const assigneeGroup = { groupDetail, recipientList }
+    addAssigneeGroup({ id: hash(assigneeGroup), ...assigneeGroup });
+    hideModal();
+  }
+
+  renderGroupMembers = () => (
+    <Segment>
+      <ul>
+        {this.state.recipientList.map(member => <li>{JSON.stringify(member)}</li>)}
+      </ul>
+    </Segment>
+  );
+
+  render() {
+    const { groupOpts } = this.props;
+    return (
+      <Form success>
+        <Form.Select
+          options={groupOpts}
+          label="Groups"
+          name="selectedGroup"
+          placeholder="Select group from the list"
+          onChange={this.handleChange}
+        />
+        {this.renderGroupMembers()}
+        <Button onClick={this.handleSubmit}>
+          Add group
+        </Button>
+      </Form>
+    );
+  }
+}
 
 export default AssigneeGroupPane;

@@ -1,24 +1,37 @@
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
+import { groupBy } from 'lodash';
 import AssigneeModal from './AssigneeModal';
-import { toggleAssigneeModal } from '../../actions';
+import {
+  toggleAssigneeModal,
+  addAssigneeGroup,
+  addAssigneePerson,
+} from '../../actions';
 
 
 const selector = formValueSelector('DtskcForm');
 
 const mapStateToProps = (state) => {
   const selectedCompany = selector(state, 'company');
-  const branchOpts = (selectedCompany ? state.userInfo.branchOptionsNormalized[selectedCompany] : {});
+  const branchOptsNormalized = (selectedCompany ? state.userInfo.branchOptionsNormalized[selectedCompany] : {});
+  const branchOpts = (selectedCompany ? state.userInfo.branchOptionsAll[selectedCompany] : {});
+  const managerOpts = groupBy(state.dtskcTransaction.dtskc.reference.managerOptions, 'departmentId');
   return {
     selectedCompany,
     branchOpts,
+    branchOptsNormalized,
+    managerOpts,
     modalOpen: state.dtskcTransaction.dtskc.assigneeModal,
     deptOpts: state.dtskcTransaction.dtskc.reference.deptOptions,
-    managerOpts: state.dtskcTransaction.dtskc.reference.managerOptions,
+    groupOpts: state.dtskcTransaction.dtskc.reference.groupOptions,
   };
 };
 
 export default connect(
   mapStateToProps,
-  { toggleAssigneeModal },
+  {
+    toggleAssigneeModal,
+    addAssigneeGroup,
+    addAssigneePerson,
+  },
 )(AssigneeModal);

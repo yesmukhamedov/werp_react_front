@@ -43,9 +43,7 @@ class DtskcComponent extends Component {
     const req = DELETE(url);
     req
       .then(() => {
-        const newUploadList = this.state.uploadList.filter(
-          el => el.fileDownloadUri !== url,
-        );
+        const newUploadList = this.state.uploadList.filter(el => el.fileDownloadUri !== url);
         this.setState({ uploadList: newUploadList });
       })
       .catch(error => console.log('handleUploadDelete', error));
@@ -62,21 +60,17 @@ class DtskcComponent extends Component {
 
   render() {
     const {
-      branchOpts,
       companyOpts,
-      deptOpts,
       statusOpts,
-      assigneeOpts,
       taskTypeOpts,
       managerOpts,
-      selectedCompany,
-      selectedBranch,
-      selectedDepartment,
-      fetchUsers,
       handleSubmit,
       assigneeModal,
       toggleAssigneeModal,
-      reset,
+      assigneeGroups,
+      assignees,
+      removeAssigneeGroup,
+      removeAssigneePerson,
       intl,
     } = this.props;
     const { messages } = intl;
@@ -137,42 +131,7 @@ class DtskcComponent extends Component {
                 opts={managerOpts}
               />
             </Form.Group>
-            <Form.Group widths="equal">
-              {/* <Field
-                name="department"
-                component={DropdownFormField}
-                label="Департамент"
-                opts={deptOpts}
-                onChange={() =>
-                  fetchUsers({
-                    branchId: selectedBranch,
-                    burks: selectedCompany,
-                    // departmentId: selectedDepartment,
-                  })
-                }
-              /> */}
-              {/* <Field
-                name="assignee"
-                component={DropdownFormField}
-                label="Исполнитель"
-                opts={assigneeOpts}
-              /> */}
-              {/* <Field
-                name="branch"
-                component={DropdownFormField}
-                label="Филиал"
-                disabled={!selectedCompany}
-                opts={selectedCompany && branchOpts[selectedCompany]}
-              /> */}
-              {/* <Field
-                name="assigneeManager"
-                component={DropdownFormField}
-                label="Начальник отдела исполнителя"
-                opts={managerOpts}
-              /> */}
-            </Form.Group>
-
-            <Form.Group widths="3">
+            <Form.Group widths="2">
               <Field
                 name="createdAt"
                 component={DatePickerFormField}
@@ -192,6 +151,10 @@ class DtskcComponent extends Component {
             <AssigneePanelDisplay
               modalState={assigneeModal}
               toggleModal={toggleAssigneeModal}
+              groups={Object.values(assigneeGroups)}
+              persons={Object.values(assignees)}
+              removeGroup={removeAssigneeGroup}
+              removePerson={removeAssigneePerson}
             />
             <Button
               positive

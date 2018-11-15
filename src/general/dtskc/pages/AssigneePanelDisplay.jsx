@@ -1,8 +1,15 @@
 import React from 'react';
 import { Table, Button, Icon } from 'semantic-ui-react';
 
-const AssigneePanelDisplay = (props) => {
-  const { toggleModal, modalState } = props;
+const AssigneePanelDisplay = props => {
+  const {
+    toggleModal,
+    groups,
+    persons,
+    removeGroup,
+    removePerson,
+  } = props;
+
   return (
     <Table color="grey">
       <Table.Header fullWidth>
@@ -10,23 +17,29 @@ const AssigneePanelDisplay = (props) => {
           <Table.HeaderCell>Assignee Panel</Table.HeaderCell>
         </Table.Row>
       </Table.Header>
-
       <Table.Body>
-        <Table.Row>
-          <Table.Cell>John Lilki</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Jamie Harington</Table.Cell>
-        </Table.Row>
-        <Table.Row>
-          <Table.Cell>Jill Lewis</Table.Cell>
-        </Table.Row>
+        {groups.map(({ id, groupDetail }) => (
+          <Table.Row key={id}>
+            <Table.Cell>{JSON.stringify(groupDetail)}</Table.Cell>
+            <Table.Cell>
+              <Button icon="delete" onClick={() => removeGroup(id)} />
+            </Table.Cell>
+          </Table.Row>
+        ))}
+        {persons.map(({ id, recipient }) => (
+          <Table.Row key={(id, recipient)}>
+            <Table.Cell>{JSON.stringify(recipient)}</Table.Cell>
+            <Table.Cell>
+              <Button icon="delete" onClick={() => removePerson(id)} />
+            </Table.Cell>
+          </Table.Row>
+        ))}
       </Table.Body>
       <Table.Footer fullWidth>
         <Table.Row>
           <Table.HeaderCell>
             <Button
-              onClick={() => toggleModal(modalState)}
+              onClick={toggleModal}
               floated="right"
               labelPosition="left"
               size="small"
