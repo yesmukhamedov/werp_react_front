@@ -26,7 +26,8 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
       userId: '',
       branchOptions: [],
       departmentOptions: [],
-      selectedCompany: ''
+      selectedCompany: '',
+      selectedDepartment: ''
     };
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -49,6 +50,11 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
           })
         }
       }      
+    }
+    if (nextProps.selectedDepartment !== this.state.selectedDepartment) {
+      this.setState({selectedDepartment: nextProps.selectedDepartment})
+      this.props.dispatch(change('mgruAddMessageGroupUserForm', 'supervisor',null))
+      this.props.dispatch(untouch('mgruAddMessageGroupUserForm', 'supervisor'))
     }
   }
 
@@ -103,8 +109,8 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
         const filteredBranchOpts = data.map(el => branchMap[el.branchId]);
         const filteredDepOpts = data.map(el => reference.deptOptions[el.departmentId]);  
         this.setState({
-          branchOptions: filteredBranchOpts,
-          departmentOptions: filteredDepOpts,
+          branchOptions: filteredBranchOpts.filter(el => el !== undefined),
+          departmentOptions: [...new Set(filteredDepOpts)],
         });
         this.resetFields()
       })

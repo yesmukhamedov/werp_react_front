@@ -15,7 +15,7 @@ export default function (state = {}, action) {
     case FOUND_DEPT_TASKS:
       return { ...state, result: action.payload };
     case FETCH_PRIVATE_TASKS:
-      return { ...state, privateTasks: action.payload };
+      return { ...state, privateTasks: action.payload, size: action.payload.length};
     case CLEAR_DEPT_TASK_LIST:
       return {
         ...state, directories: undefined, result: undefined, privateTasks: undefined,

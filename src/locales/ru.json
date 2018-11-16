@@ -84,6 +84,8 @@
 	"L__COMMENT":"Коментарий",
 	"BTN__YES":"Да",
 	"BTN__NO":"Нет",
+	"BTN_APPROVE": "Одобрить",
+    "BTN_REJECT": "Отклонить",
 
 
 

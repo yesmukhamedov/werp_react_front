@@ -83,6 +83,8 @@
 	"L__COMMENT":"Коментарий",
 	"BTN__YES":"Да",
 	"BTN__NO":"Нет",
+	"BTN_APPROVE": "Approve",
+    "BTN_REJECT": "Reject",
 
 	"Auth.Signin.Header": "Hesabınıza giriş yapın",
 	"Auth.Signin.Login": "Giriş",
