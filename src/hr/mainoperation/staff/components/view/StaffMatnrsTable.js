@@ -15,7 +15,7 @@ export default function StaffMatnrsTable(props){
                 <Table.Cell>{item.werksName}</Table.Cell>
                 <Table.Cell>{item.matnrName}</Table.Cell>
                 <Table.Cell>{item.code}</Table.Cell>
-                <Table.Cell>{item.barcode}</Table.Cell>
+                <Table.Cell>{(!item.barcode || item.barcode === 'null') ? '' : item.barcode}</Table.Cell>
                 <Table.Cell>{item.qty}</Table.Cell>
                 <Table.Cell>{item.statusName}</Table.Cell>
             </Table.Row>

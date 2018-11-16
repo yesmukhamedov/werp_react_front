@@ -2,7 +2,7 @@ import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
 import { handleError } from '../../../../general/notification/notification_action'
 import browserHistory from '../../../../utils/history';
-import {DOC_ACTION_SEND,DOC_ACTION_APPROVE,DOC_ACTION_REJECT,DOC_ACTION_CANCEL,DOC_ACTION_ADD_SALARY} from '../../../hrUtil'
+import {DOC_ACTION_SEND,DOC_ACTION_APPROVE,DOC_ACTION_REJECT,DOC_ACTION_CANCEL,DOC_ACTION_ADD_SALARY,DOC_ACTION_SAVE} from '../../../hrUtil'
 
 export const HR_DOC_ITEMS_LOADED = 'HR_DOC_ITEMS_LOADED'
 export const HR_DOC_SINGLE_ITEM_LOADED = 'HR_DOC_SINGLE_ITEM_LOADED'
@@ -109,6 +109,13 @@ export function handleAction (document,actionType, additionalData){
         case DOC_ACTION_ADD_SALARY:
             return addSalary(document,additionalData);
 
+        case DOC_ACTION_SAVE:
+            if(document.id && parseInt(document.id,10) > 0){
+                return updateDocument(document);
+            }
+
+            alert("Unkown Save");
+
         default:
             alert('Unknown Action!')
     }
@@ -130,6 +137,27 @@ export function handleAction (document,actionType, additionalData){
 }
 
 /****DOCUMENT ACTIONS ***/
+//Action Update
+const updateDocument = (document) => {
+    return function (dispatch) {
+        dispatch(setLoading(true))
+        axios.put(`${ROOT_URL}/api/hr/document`, { ...document }, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        }).then(({data}) => {
+            dispatch(setLoading(false))
+            browserHistory.push('/hr/doc/view/' + data.id)
+            // dispatch({
+            //     type:HR_DOC_CREATED,
+            //     payload: data
+            // })
+        }).catch((e) => {
+            dispatch(setLoading(false))
+            handleError(e,dispatch)
+        })
+    }
+}
 //Action Send
 const sendDocument = (document) => {
     return function (dispatch) {

@@ -34,7 +34,6 @@ export default function (state=INITIAL_STATE, action)
             let updatedNode = action.payload
             let path = [updatedNode.id]
             let parentId = updatedNode.parentId
-            console.log(state.treeData)
             while(parentId){
 
             }
