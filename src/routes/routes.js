@@ -305,6 +305,11 @@ const AsyncHrDocCreatePage = Loadable({
     loading: () => <LoadingPage />
 });
 
+const AsyncHrDocUpdatePage = Loadable({
+        loader: () => import('../hr/mainoperation/document/components/HrDocUpdatePage' /* webpackChunkName: "HrDocUpdatePage" */),
+    loading: () => <LoadingPage />
+});
+
 const AsyncMyDocsListPage = Loadable({
         loader: () => import('../documents/mainoperation/components/MyDocsListPage' /* webpackChunkName: "MyDocsListPage" */),
     loading: () => <LoadingPage />
@@ -410,6 +415,7 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/dit/mgru" component={persistPath(AsyncMessageGroupUserPage)} />
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
       <Route path="/hr/doc/create/:type" component={AsyncHrDocCreatePage} />
+        <Route path="/hr/doc/update/:id" component={AsyncHrDocUpdatePage} />
       <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />
       <Route path="/general/dtskc" component={DtskcContainer} />
       <Route path="/general/dtskdep" component={DtskdepContainer} />
