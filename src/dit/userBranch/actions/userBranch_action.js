@@ -140,6 +140,29 @@ export function saveUserBranchCustomers (ubcList) {
       })
   }
 }
+
+export function sendTestSms () {
+  return function (dispatch) {
+    axios.get(`${ROOT_URL}/dit/userBranch/testSms`, {
+      headers: 
+      {
+          authorization: localStorage.getItem('token')
+      }
+  })
+      .then(response => {        
+        dispatch(notify('success', 'Сохранен.', 'Успешно'))
+      })
+      .catch(error => {
+        if (error.response) {
+          dispatch(notify('error', error.response.data.message, 'Ошибка'))
+        } else {
+          Promise.resolve({ error }).then(response => dispatch(notify('error', error.response.data.message, 'Ошибка')))
+        }
+      })
+  }
+}
+
+
 export function markBranch (idx) {
   const obj = {
     type: MARK_BRANCH,
