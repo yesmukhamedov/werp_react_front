@@ -32,7 +32,7 @@ class TaskPageDisplay extends Component {
     } = this.props;
     const { messages } = intl;
     if (taskDetails) {
-      const showApprovalPanel = (taskDetails.status.id === 1000) ? true : false;
+      const showApprovalPanel = (taskDetails.approved === 0) ? true : false;
       return (
         <Container
           // fluid
