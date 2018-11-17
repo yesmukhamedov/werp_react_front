@@ -4,6 +4,7 @@ import { injectIntl } from 'react-intl';
 import PropTypes from 'prop-types';
 // import TaskInfoWrapper from './TaskInfo/TaskInfoWrapper';
 import TaskHistoryDisplay from './TaskHistory/TaskHistoryDisplay';
+import TaskApproverContainer from './TaskApprover/TaskApproverContainer';
 
 class TaskPageDisplay extends Component {
   componentWillMount() {
@@ -31,6 +32,7 @@ class TaskPageDisplay extends Component {
     } = this.props;
     const { messages } = intl;
     if (taskDetails) {
+      const showApprovalPanel = (taskDetails.approved === 0) ? true : false;
       return (
         <Container
           // fluid
@@ -41,6 +43,7 @@ class TaskPageDisplay extends Component {
             paddingRight: '2em',
           }}
         >
+          {showApprovalPanel &&  <TaskApproverContainer {...taskDetails}/>}
           <TaskInfoWrapper
             lang={this.props.lang}
             {...taskDetails}

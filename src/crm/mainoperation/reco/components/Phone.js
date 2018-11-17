@@ -175,7 +175,7 @@ class Phone extends Component {
       let call = Object.assign({},this.state.call)
     return <Form>
       <Form.Group widths='equal'>
-        <Form.Input fluid label='Тел. номер' placeholder={this.state.call.phoneNumber} readOnly />
+        <Form.Input fluid label={messages['Form.PhoneNumber']} placeholder={this.state.call.phoneNumber} readOnly />
         <Form.Field required error={this.state.errors.callDate}>
           <label>{messages['Crm.CallDateTime']}</label>
           <DatePicker
@@ -369,6 +369,7 @@ class Phone extends Component {
   }
 
   renderCallResultDependentField () {
+    const {messages,locale} = this.props.intl
     if (this.state.call.callResultId === CALL_RESULT_REFUSE) {
       let reasonOptions = []
         if(this.props.reasons){
@@ -385,18 +386,19 @@ class Phone extends Component {
 
       // Otkaz
       return (
-        <Form.Select error={this.state.errors.callReasonId} required fluid label='Причина отказа' options={reasonOptions}
+        <Form.Select error={this.state.errors.callReasonId} required fluid label={messages['Crm.RejectionReason']} options={reasonOptions}
           onChange={(e, v) => this.handleChange('callReasonId', v)} />
       )
     } else if (this.state.call.callResultId === CALL_RESULT_RECALL) {
       // Perzvonit'
       return (
         <Form.Field error={this.state.errors.callRecallDate} required>
-          <label>Дата-время перезвона</label>
+          <label>{messages['Crm.RecallDateTime']}</label>
           <DatePicker
+              locale={locale}
             autoComplete="off"
             label=''
-            placeholderText={'Дата-время перезвона'}
+            placeholderText={messages['Crm.RecallDateTime']}
             showMonthDropdown showYearDropdown showTimeSelect dropdownMode='select'
             dateFormat='DD.MM.YYYY HH:mm' selected={this.state.call.callRecallDate}
             onChange={(v) => this.handleChange('callRecallDate', v)} />

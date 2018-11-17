@@ -7,6 +7,8 @@ import {
   DELETE_UPLOADED,
 } from '../actions/TaskAction';
 
+import { FETCH_TASK_DOC_STATUS } from '../actions/TaskApproverAction';
+
 const initialState = {
   modalAttachment: false,
   attachment: {},
@@ -22,6 +24,8 @@ export default function (state = initialState, action) {
         taskDetails: rest,
         attachment,
       };
+    case FETCH_TASK_DOC_STATUS:
+      return { ...state, taskDocStatus: action.payload};  
     case EDIT_TASK:
       return { ...state, taskDetails: action.payload };
     case CLEAR_TASK_STORE:

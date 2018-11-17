@@ -142,6 +142,15 @@ class VisitViewPage extends Component {
               </Table.Cell>
             </Table.Row>
 
+            <Table.Row>
+              <Table.Cell>
+                <Header as={'h4'}>{messages['Table.PhoneNumber']}</Header>
+              </Table.Cell>
+              <Table.Cell>
+                  {(visit.client && visit.client.phones)?this.renderPhones(visit.client.phones):''}
+              </Table.Cell>
+            </Table.Row>
+
               <Table.Row>
                   <Table.Cell>
                       <Header as={'h4'}>{messages['Table.Link']}</Header>

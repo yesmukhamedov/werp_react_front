@@ -84,6 +84,8 @@
 	"L__COMMENT":"Коментарий",
 	"BTN__YES":"Да",
 	"BTN__NO":"Нет",
+	"BTN_APPROVE": "Одобрить",
+    "BTN_REJECT": "Отклонить",
 
 
 
@@ -143,8 +145,8 @@
 	"Task.Assign": "Назначен(а)",
 	"Task.StartDate": "Дата начало",
 	"Task.EndDate": "Дата завершения",
-	"Author.Manager": "Начальник заказчика",
-	"Assignee.Manager": "Начальние исполнителя",
+	"Author.Manager": "Начальник отдела заказчика",
+	"Assignee.Manager": "Начальник отдела исполнителя",
 	"Assignee": "Исполнитель",
 	"Task.Description": "Описание",
 	"Auth.Signin.Header": "Войдите в свой аккаунт",
@@ -323,6 +325,11 @@
 	"Crm.VisitInfo": "Данные по визиту",
 	"Crm.Select": "Выберите",
 	"Crm.EditReco": "Редактирование рекомендации",
+	"Crm.CurrentRecommendations": "Текущие рекомендации",
+	"Crm.Used": "Использованные",
+	"Crm.New": "Новые",
+	"Crm.DemoDone": "Пройденные (для перезвона)",
+	"Crm.Moved": "Перенесенные",
 
 	"awkey"           : "Ссылка на документ",
 	"awtyp"           : "Тип операции(Клиент, Поставщик)",

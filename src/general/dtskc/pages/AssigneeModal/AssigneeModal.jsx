@@ -14,7 +14,9 @@ import {
 } from 'semantic-ui-react';
 import AssigneeGroupPane from './AssigneeGroupPane';
 import AssigneeOtherPane from './AssigneeOtherPaneComponent';
-import AssigneeSearchPane from './AssigneeSearchPaneComponent';
+import AssigneeSearchPaneComponent from'./AssigneeSearchPaneComponent';
+import { GET } from '../../../../utils/helpers';
+import { ROOT_URL } from '../../../../utils/constants';
 
 
 const panes = [

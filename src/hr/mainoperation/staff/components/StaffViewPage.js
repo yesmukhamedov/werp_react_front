@@ -147,7 +147,7 @@ class StaffViewPage extends Component{
             {menuItem:'Оф. данные',render:this.renderOfficialData},
             {menuItem:'Образование',render:() => this.renderEduData(staffDataList[EDU_DATA] || [])},
             {menuItem:'Файлы',render:this.renderMainData},
-            {menuItem:'Доп. данные',render:this.renderMainData},
+            //{menuItem:'Доп. данные',render:this.renderMainData},
             {menuItem:'Баланс',render:this.renderMainData},
             {menuItem:'Склад',render:() => this.renderMatnrsData(staffDataList[MATNR_DATA] || [])}
         ]

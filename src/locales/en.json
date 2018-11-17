@@ -83,7 +83,9 @@
 	"L__DESCRIPTION":"Description",
 	"L__COMMENT":"Comments",
 	"BTN__YES":"Yes",
-	"BTN__NO":"No",
+  "BTN__NO":"No",
+  "BTN_APPROVE": "Approve",
+  "BTN_REJECT": "Reject",
   
   "Auth.Signin.Header": "Log-in to your account",
   "Auth.Signin.Username": "Username",
@@ -341,7 +343,11 @@
   "Crm.VisitInfo": "Basic info of the visit",
   "Crm.Select": "Select",
   "Crm.EditReco": "Editing recommendation",
-
+  "Crm.CurrentRecommendations": "Current recommendations",
+  "Crm.Used": "Used",
+  "Crm.New": "New",
+  "Crm.DemoDone": "Demo done (for recall)",
+  "Crm.Moved": "Moved",
 
   "awkey"           : "Reference document number and year",
   "awtyp"           : "Operation type",

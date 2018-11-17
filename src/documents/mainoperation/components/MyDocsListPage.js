@@ -67,9 +67,11 @@ class DocumentListPage extends Component{
                             Header: '',
                             accessor: 'contextId',
                             filterable: false,
-                            Cell: ({value}) => <Link target={'_blank'} className={'ui icon button mini'} to={`/hr/doc/view/` + value}>
-                                Просмотр
-                            </Link>
+                            Cell: (props) => {
+                                return <Link target={'_blank'} className={'ui icon button mini'} to={getDocViewLink(props.original.context,props.original.contextId)}>
+                                        Просмотр
+                                        </Link>
+                            }
                         }
                     ]}
 
