@@ -11,6 +11,7 @@ export const MD_HR_DOCUMENT_REC = 'HR_DOCUMENT_REC'
 export const MD_HR_DOCUMENT_TRANS = 'HR_DOCUMENT_TRANS'
 export const MD_HR_DOCUMENT_CHANGE_SALARY = 'HR_DOCUMENT_CHANGE_SALARY'
 export const MD_HR_DOCUMENT_DISMISS = 'HR_DOCUMENT_DISMISS'
+export const MD_TASK = 'TASK'
 
 export const getMdContexts = () => {
     let out = {}
@@ -18,6 +19,7 @@ export const getMdContexts = () => {
     out[MD_HR_DOCUMENT_TRANS] = 'Заявки о переводе',
     out[MD_HR_DOCUMENT_CHANGE_SALARY] = 'Заявки об изменении оклада',
     out[MD_HR_DOCUMENT_DISMISS] = 'Заявки об увольнении'
+    out[MD_TASK] = 'Задачи'
 
     return out
 }
@@ -41,6 +43,8 @@ export const getDocViewLink = (context,contextId) => {
         case MD_HR_DOCUMENT_DISMISS:
             return '/hr/doc/view/' + contextId
 
+        case MD_TASK:
+            return '/general/gtskedit/' + contextId
         default:
             return ''
     }
