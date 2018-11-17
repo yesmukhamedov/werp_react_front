@@ -4,7 +4,7 @@ import hash from 'object-hash';
 import { GET } from '../../../../utils/helpers';
 import { ROOT_URL } from '../../../../utils/constants';
 
-class AssigneeGroupPane extends Component {
+class AssigneeGroupPaneComponent extends Component {
   state = {
     selectedGroup: '',
     recipientList: [],
@@ -86,4 +86,4 @@ class AssigneeGroupPane extends Component {
   }
 }
 
-export default AssigneeGroupPane;
+export default AssigneeGroupPaneComponent;

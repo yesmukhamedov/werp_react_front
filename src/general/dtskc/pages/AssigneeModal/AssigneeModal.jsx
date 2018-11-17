@@ -1,30 +1,15 @@
 import React, { Component } from 'react';
-import { debounce } from 'lodash';
-import {
-  Modal,
-  Form,
-  Input,
-  Select,
-  TextArea,
-  Button,
-  Divider,
-  Search,
-  Tab,
-  Label,
-} from 'semantic-ui-react';
-import AssigneeGroupPane from './AssigneeGroupPane';
-import AssigneeOtherPane from './AssigneeOtherPaneComponent';
-import AssigneeSearchPaneComponent from'./AssigneeSearchPaneComponent';
-import { GET } from '../../../../utils/helpers';
-import { ROOT_URL } from '../../../../utils/constants';
-
+import { Modal, Tab } from 'semantic-ui-react';
+import AssigneeGroupPaneComponent from './AssigneeGroupPaneComponent';
+import AssigneeOtherPaneComponent from './AssigneeOtherPaneComponent';
+import AssigneeSearchPaneComponent from './AssigneeSearchPaneComponent';
 
 const panes = [
   {
     menuItem: 'Добавить по группе',
     render: props => (
       <Tab.Pane attached={false}>
-        <AssigneeGroupPane {...props} />
+        <AssigneeGroupPaneComponent {...props} />
       </Tab.Pane>
     ),
   },
@@ -32,7 +17,7 @@ const panes = [
     menuItem: 'Добавить по исполнителю',
     render: props => (
       <Tab.Pane attached={false}>
-        <AssigneeSearchPane {...props} />
+        <AssigneeSearchPaneComponent {...props} />
       </Tab.Pane>
     ),
   },
@@ -40,7 +25,7 @@ const panes = [
     menuItem: 'Добавить по филиалу (филиал-отдел-менеджер исполнителя)',
     render: props => (
       <Tab.Pane attached={false}>
-        <AssigneeOtherPane {...props} />
+        <AssigneeOtherPaneComponent {...props} />
       </Tab.Pane>
     ),
   },
