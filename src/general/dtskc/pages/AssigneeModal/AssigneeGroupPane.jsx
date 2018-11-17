@@ -29,9 +29,9 @@ class AssigneeGroupPane extends Component {
               id: 38,
             },
             assignee: {
-              id: user.id,
+              id: user && user.id,
             },
-            assigneeManager: {
+            assigneesManager: {
               id: supervisor.id,
             },
           };
@@ -75,6 +75,7 @@ class AssigneeGroupPane extends Component {
           name="selectedGroup"
           placeholder="Select group from the list"
           onChange={this.handleChange}
+          required
         />
         {this.renderGroupMembers()}
         <Button onClick={this.handleSubmit}>

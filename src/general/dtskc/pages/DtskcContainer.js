@@ -9,29 +9,27 @@ import {
   toggleAssigneeModal,
   removeAssigneeGroup,
   removeAssigneePerson,
+  clearTransaction,
 } from '../actions';
-
-const selector = formValueSelector('DtskcForm');
 
 const defaultDtskcFormData = {
   createdAt: moment(),
   estimatedAt: moment().add(3, 'days'),
 };
 
-const mapStateToProps = (state) => {
-  return {
-    companyOpts: state.userInfo.companyOptions,
-    statusOpts: state.dtskcTransaction.dtskc.reference.statusOptions,
-    taskTypeOpts: state.dtskcTransaction.dtskc.reference.taskTypeOptions,
-    managerOpts: state.dtskcTransaction.dtskc.reference.managerOptions,
-    groupOpts: state.dtskcTransaction.dtskc.reference.groupOptions,
-    lang: state.locales.lang,
-    initialValues: defaultDtskcFormData,
-    assigneeModal: state.dtskcTransaction.dtskc.assigneeModal,
-    assigneeGroups: state.dtskcTransaction.dtskc.assigneeGroups,
-    assignees: state.dtskcTransaction.dtskc.assignees,
-  };
-};
+const mapStateToProps = state => ({
+  companyOpts: state.userInfo.companyOptions,
+  statusOpts: state.dtskcTransaction.dtskc.reference.statusOptions,
+  taskTypeOpts: state.dtskcTransaction.dtskc.reference.taskTypeOptions,
+  managerOpts: state.dtskcTransaction.dtskc.reference.managerOptions,
+  groupOpts: state.dtskcTransaction.dtskc.reference.groupOptions,
+  lang: state.locales.lang,
+  initialValues: defaultDtskcFormData,
+  assigneeModal: state.dtskcTransaction.dtskc.assigneeModal,
+  assigneeGroups: state.dtskcTransaction.dtskc.assigneeGroups,
+  assignees: state.dtskcTransaction.dtskc.assignees,
+  userId: state.auth.userId,
+});
 
 export default connect(
   mapStateToProps,
@@ -42,5 +40,6 @@ export default connect(
     toggleAssigneeModal,
     removeAssigneeGroup,
     removeAssigneePerson,
+    clearTransaction,
   },
 )(DtskcComponent);

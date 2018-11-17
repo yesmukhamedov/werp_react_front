@@ -12,6 +12,7 @@ import {
   DTSKC_ADD_ASSIGNEE_PERSON,
   DTSKC_REMOVE_ASSIGNEE_GROUP,
   DTSKC_REMOVE_ASSIGNEE_PERSON,
+  CLEAR_TRANSACTION,
 } from './actionTypes';
 
 const statusUrl = `${ROOT_URL}/api/tasks/status`;
@@ -147,24 +148,7 @@ export function createTask(formValues, successCallback) {
       id: 2,
     },
     bukrs: formValues.company,
-    recipient: {
-      branch: {
-        id: formValues.branch,
-      },
-      department: {
-        id: formValues.department,
-      },
-      // TODO: what does *position* mean
-      position: {
-        id: 38,
-      },
-      assignee: {
-        id: formValues.assignee,
-      },
-      assigneesManager: {
-        id: formValues.assigneeManager,
-      },
-    },
+    recipient: [...formValues.allRecipients],
     type: {
       code: formValues.taskType,
     },
@@ -224,5 +208,9 @@ export const removeAssigneeGroup = id => ({
 export const removeAssigneePerson = id => ({
   type: DTSKC_REMOVE_ASSIGNEE_PERSON,
   payload: id,
+});
+
+export const clearTransaction = () => ({
+  type: CLEAR_TRANSACTION,
 });
 

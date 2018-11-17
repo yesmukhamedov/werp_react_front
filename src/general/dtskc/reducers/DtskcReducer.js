@@ -7,6 +7,7 @@ import {
   DTSKC_ADD_ASSIGNEE_PERSON,
   DTSKC_REMOVE_ASSIGNEE_GROUP,
   DTSKC_REMOVE_ASSIGNEE_PERSON,
+  CLEAR_TRANSACTION,
 } from '../actions/actionTypes';
 
 const initialState = {
@@ -70,6 +71,8 @@ const DtskcReducer = (prevState = initialState, action) => {
         assignees: omit(prevState.assignees, id),
       };
     }
+    case CLEAR_TRANSACTION:
+      return initialState;
     default:
       break;
   }
