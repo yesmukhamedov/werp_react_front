@@ -36,6 +36,11 @@ class AssigneeOtherPane extends Component {
       assigneesManager: {
         id: this.state.selectedManager,
       },
+      meta: {
+        branch: this.state.selectedBranch,
+        department: this.state.selectedDepartment,
+        supervisor: this.state.selectedManager,
+      }
     }
     const assigneePerson = {
       id: hash(recipient),

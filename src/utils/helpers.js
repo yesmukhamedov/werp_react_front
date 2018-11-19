@@ -67,7 +67,7 @@ export function formatDMY(timeStr) {
 }
 
 export function extractByParams(obj, param) {
-  const extracted = param.map(p => obj[p]);
+  const extracted = _.map(param, p => obj[p]);
   return extracted.join(' ');
 }
 

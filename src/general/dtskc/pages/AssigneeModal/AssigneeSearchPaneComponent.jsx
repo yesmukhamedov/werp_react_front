@@ -146,6 +146,12 @@ class AssigneeSearchPaneComponent extends Component {
       assigneesManager: {
         id: this.state.selectedManager,
       },
+      meta: {
+        branch: this.state.selectedBranch,
+        department: this.state.selectedDepartment,
+        supervisor: this.state.selectedManager,
+        user: this.state.selectedAssigneeId,
+      }
     }
     const assigneePerson = {
       id: hash(recipient),

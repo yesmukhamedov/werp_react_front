@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
-import { Form, Button, Segment } from 'semantic-ui-react';
+import { Form, Button, Segment, Label, List } from 'semantic-ui-react';
 import hash from 'object-hash';
-import { GET } from '../../../../utils/helpers';
+import { GET, constructFullName } from '../../../../utils/helpers';
 import { ROOT_URL } from '../../../../utils/constants';
 
 class AssigneeGroupPaneComponent extends Component {
   state = {
     selectedGroup: '',
     recipientList: [],
-  }
+  };
 
-  fetchGroupsMembers = (groupId) => {
+  fetchGroupsMembers = groupId => {
     const groupMembersUrl = `${ROOT_URL}/api/mgru?groupId=${groupId}`;
-    const { groupOpts } = this.props;
+    const { groupOpts, lang } = this.props;
     const req = GET(groupMembersUrl);
     req
       .then(({ data }) => {
@@ -31,6 +31,12 @@ class AssigneeGroupPaneComponent extends Component {
             assigneesManager: {
               id: supervisor.id,
             },
+            meta: {
+              branch: branch.value,
+              department: department[lang],
+              supervisor: supervisor && constructFullName(supervisor),
+              user: user && constructFullName(user),
+            },
           };
         });
         this.setState({
@@ -38,27 +44,43 @@ class AssigneeGroupPaneComponent extends Component {
           groupDetail: groupOpts[this.state.selectedGroup],
         });
       })
-      .catch( err => console.log(err));
-  }
+      .catch(err => console.log(err));
+  };
 
-  handleChange = (_, { name, value }) => { 
+  handleChange = (_, { name, value }) => {
     this.setState({ [name]: value });
     this.fetchGroupsMembers(value);
-  }
+  };
 
   handleSubmit = () => {
     const { addAssigneeGroup, toggleAssigneeModal: hideModal } = this.props;
     const { groupDetail, recipientList } = this.state;
-    const assigneeGroup = { groupDetail, recipientList }
+    const assigneeGroup = { groupDetail, recipientList };
     addAssigneeGroup({ id: hash(assigneeGroup), ...assigneeGroup });
     hideModal();
-  }
+  };
 
   renderGroupMembers = () => (
     <Segment>
-      <ul>
-        {this.state.recipientList.map(member => <li>{JSON.stringify(member)}</li>)}
-      </ul>
+      <List divided selection>
+        {this.state.recipientList.map(member => {
+          const { id, meta } = member;
+          return (
+            <List.Item key={id}>
+              <List.Content>
+                <List.Header>{meta.user}</List.Header>
+                <Label color="yellow" horizontal>
+                  {meta.branch}
+                </Label>
+                <Label color="blue" horizontal>
+                  {meta.department}
+                </Label>
+                - {meta.supervisor}
+              </List.Content>
+            </List.Item>
+          );
+        })}
+      </List>
     </Segment>
   );
 
@@ -75,9 +97,7 @@ class AssigneeGroupPaneComponent extends Component {
           required
         />
         {this.renderGroupMembers()}
-        <Button onClick={this.handleSubmit}>
-          Add group
-        </Button>
+        <Button onClick={this.handleSubmit}>Add group</Button>
       </Form>
     );
   }
