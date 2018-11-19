@@ -103,7 +103,7 @@ class MessageGroupUserSearchDisplay extends Component {
     const { formatMessage } = this.props.intl;
     const { reference, handleSubmit, submitting, pristine, reset, messages } = this.props;
     const { isLoading, value, results } = this.state
-    const allOpt = { key: -1, text: formatMessage(messages.allOption), value: -1 };
+    const allOpt = { key: -1, text: formatMessage({id: 'Select.All'}), value: -1 };
     if (reference) {
       return (
         <Form onSubmit={handleSubmit(this.handleSearch)}>
@@ -111,11 +111,11 @@ class MessageGroupUserSearchDisplay extends Component {
                 <Field
                     name="messageGroup"
                     component={DropdownFormField}
-                    label="Группа"
+                    label={messages.L__GROUP}
                     opts={reference ? [allOpt, ...Object.values(reference.messgrOptions)] : []}
                 />
                 <Form.Field>
-                    <label>Пользователь</label>
+                    <label>{messages.L__USER}</label>
                     <Search
                         loading={isLoading}
                         onResultSelect={this.handleResultSelect}
@@ -126,7 +126,7 @@ class MessageGroupUserSearchDisplay extends Component {
                 </Form.Field>
                 <Form.Group widths="equal">
                     <Form.Button
-                    content={formatMessage(messages.search)}
+                    content={messages.search}
                     // content="Search"
                     type="submit"
                     loading={submitting}

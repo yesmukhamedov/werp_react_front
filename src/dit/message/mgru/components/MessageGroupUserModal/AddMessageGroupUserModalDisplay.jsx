@@ -181,12 +181,14 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
       companyOptions,
       reference,
       pristine, 
-      submitting 
+      submitting,
+      messages
     } = this.props;
     const { isLoading, value, results } = this.state
+    const { formatMessage } = this.props.intl;
     return (
       <Modal size="tiny" open={isOpen} onClose={this.handleFormClose}>
-        <Modal.Header>{modalType === 'add' ? 'Add' : 'Edit'} message group user</Modal.Header>
+        <Modal.Header>{modalType === 'add' ? messages.BTN__ADD : messages.BTN__EDIT}</Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
@@ -194,7 +196,7 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
                 required
                 name="company"
                 component={DropdownFormField}
-                label="Компания"
+                label={messages.bukrs}
                 opts={companyOptions}
               />
               <Field
@@ -202,11 +204,11 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
                 disabled={!selectedCompany}
                 name="messageGroup"
                 component={DropdownFormField}
-                label="Группа"
+                label={messages.L__GROUP}
                 opts={reference && reference.messgrOptions}
               />
               <Form.Field disabled={!selectedCompany}>
-                <label>Пользователь</label>
+                <label>{messages.L__USER}</label>
                 <Search
                     loading={isLoading}
                     onResultSelect={this.handleResultSelect}
@@ -220,7 +222,7 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
                 required
                 name="branch"
                 component={DropdownFormField}
-                label="Филиал"
+                label={messages.L__BRANCH}
                 disabled={!selectedCompany}
                 opts={this.state.branchOptions}
               />
@@ -228,7 +230,7 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
                 required
                 name="department"
                 component={DropdownFormField}
-                label="Отдел"
+                label={formatMessage({ id: 'Table.Department' })}
                 disabled={!selectedCompany}
                 opts={this.state.departmentOptions}
               />
@@ -236,7 +238,7 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
                 required
                 name="supervisor"
                 component={DropdownFormField}
-                label="Начальник отдела"
+                label={messages.TBL_H__MANAGER}
                 disabled={!selectedDepartment}
                 opts={reference && 
                   Object.values(reference.taskAdminOptions).filter(
@@ -247,7 +249,7 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
               <Button
                 color="youtube"
                 float="right"
-                content="Отменить"
+                content={messages.BTN__CANCEL}
                 onClick={this.handleFormClose}
               />
               <Button

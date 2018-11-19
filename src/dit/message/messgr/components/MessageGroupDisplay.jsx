@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { injectIntl } from 'react-intl';
 import {
   Container,
   Header,
@@ -10,7 +11,7 @@ import {
 import MessageGroupTableContainer from './MessageGroupTable/MessageGroupTableContainer';
 import AddMessageGroupModalContainer from './MessageGroupModal/AddMessageGroupModalContainer';
 
-export default class MessageGroupDisplay extends Component {
+class MessageGroupDisplay extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -37,6 +38,7 @@ export default class MessageGroupDisplay extends Component {
   }
 
   render() {
+    const { messages } = this.props.intl;
     return (
       <Container
         text
@@ -53,9 +55,9 @@ export default class MessageGroupDisplay extends Component {
               <Header as="h2">
                 <Icon name="settings" />
                 <Header.Content>
-                  Группа сообщения
+                  {messages.L__GROUP_MESSAGE}
                   <Header.Subheader>
-                    Управление группой сообщений
+                    {messages.L__GROUP_MESSAGE_MANAGE}
                   </Header.Subheader>
                 </Header.Content>
               </Header>
@@ -66,14 +68,14 @@ export default class MessageGroupDisplay extends Component {
                 onClick={() => this.open('add', null)}
                 icon="plus"
                 labelPosition="left"
-                content="Добавить"
+                content={messages.BTN__ADD}
               />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
             <Grid.Column>
               <Segment>
-                <MessageGroupTableContainer open={this.open} />
+                <MessageGroupTableContainer open={this.open} messages={messages}/>
               </Segment>
             </Grid.Column>
           </Grid.Row>
@@ -83,8 +85,11 @@ export default class MessageGroupDisplay extends Component {
           isOpen={this.state.modalOpen}
           modalType={this.state.modalType}
           modalData={this.state.modalData}
+          messages={messages}
         />
       </Container>
     );
   }
 }
+
+export default injectIntl(MessageGroupDisplay)

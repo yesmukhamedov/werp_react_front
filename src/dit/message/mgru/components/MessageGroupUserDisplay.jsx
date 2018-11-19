@@ -41,6 +41,7 @@ export default class MessageGroupUserDisplay extends Component {
   }
 
   render() {
+    const { messages } = this.props.intl;
     return (
       <Container
         style={{
@@ -56,9 +57,9 @@ export default class MessageGroupUserDisplay extends Component {
               <Header as="h2">
                 <Icon name="settings" />
                 <Header.Content>
-                  Получатели
+                  {messages.L__RECEIVERS}
                   <Header.Subheader>
-                    Управление получателями в группе
+                    {messages.L__RECERIVERS_MANAGE}
                   </Header.Subheader>
                 </Header.Content>
               </Header>              
@@ -66,7 +67,7 @@ export default class MessageGroupUserDisplay extends Component {
           </Grid.Row>
           <Grid.Row style={{ paddingBottom: '0.5em'}}>          
             <Grid.Column floated='left' width={8}>
-              <MessageGroupUserSearchContainer />
+              <MessageGroupUserSearchContainer messages={messages}/>
             </Grid.Column>
             <Grid.Column floated='right' width={5}>
               <Button
@@ -75,14 +76,14 @@ export default class MessageGroupUserDisplay extends Component {
                 onClick={() => this.open('add', null)}
                 icon="plus"
                 labelPosition="left"
-                content="Добавить"
+                content={messages.BTN__ADD}
               />
             </Grid.Column>          
           </Grid.Row>
           <Grid.Row style={{ paddingTop: '0em'}}>
             <Grid.Column>
               <Segment>
-                <MessageGroupUserTableContainer open={this.open} />
+                <MessageGroupUserTableContainer open={this.open} messages={messages}/>
               </Segment>
             </Grid.Column>
           </Grid.Row>
@@ -92,6 +93,7 @@ export default class MessageGroupUserDisplay extends Component {
           isOpen={this.state.modalOpen}
           modalType={this.state.modalType}
           modalData={this.state.modalData}
+          messages={messages}
         />
       </Container>
     );

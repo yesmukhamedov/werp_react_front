@@ -5,13 +5,13 @@ import DeptTaskListSearch from './DeptTaskListSearch/DeptTaskListSearchContainer
 import DeptTaskListTable from './DeptTaskListTable/DeptTaskListTableContainer';
 import PrivateTaskListTable from './PrivateTaskListTable/PrivateTaskListTableContainer';
 
-function panes(size) { 
+function panes(size, messages) { 
   const p = [
     {
       menuItem: (
         <Menu.Item key='messages'>
           <Icon name='tasks' />
-            Мои задачи
+            {messages.H__MY_TASKS}
           <Label color='grey'><Icon name='mail' />{size}</Label>
         </Menu.Item>),
       pane: (
@@ -23,7 +23,7 @@ function panes(size) {
     {
       menuItem: (
         <Menu.Item key='messages2'>
-          <Icon name='list' />Все задачи
+          <Icon name='list' />{messages.H__ALL_TASKS}
         </Menu.Item>),
       pane: (
         <Tab.Pane key="tab2">
@@ -51,6 +51,7 @@ class DeptTaskListDisplay extends Component {
   render() {
     const color = 'blue'
     const {size} = this.props
+    const {messages} = this.props.intl;
     return (
       <Container
         fluid
@@ -61,7 +62,7 @@ class DeptTaskListDisplay extends Component {
           paddingRight: '2em',
         }}
       >
-        <Tab menu={{ color, attached: false, tabular: false }} panes={panes(size)} renderActiveOnly={false} />
+        <Tab menu={{ color, attached: false, tabular: false }} panes={panes(size, messages)} renderActiveOnly={false} />
       </Container>
     );
   }
