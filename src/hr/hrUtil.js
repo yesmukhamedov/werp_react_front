@@ -89,8 +89,9 @@ export const CONTACT_DATA = 'CONTACT_DATA'
 export const EXPENCE_DATA = 'EXPENCE_DATA'
 export const EDU_DATA = 'EDU_DATA'
 export const MATNR_DATA = 'MATNR_DATA'
+export const FILE_DATA = 'FILE_DATA'
 
-export const STAFF_DATA = [MAIN_DATA,PASSPORT_DATA,SALARY_DATA,CONTACT_DATA,EXPENCE_DATA,OFF_DATA,EDU_DATA,MATNR_DATA]
+export const STAFF_DATA = [MAIN_DATA,PASSPORT_DATA,SALARY_DATA,CONTACT_DATA,EXPENCE_DATA,OFF_DATA,EDU_DATA,MATNR_DATA,FILE_DATA]
 
 export const currencyOptions = (currencyList) => {
     if(!currencyList){
@@ -216,6 +217,9 @@ export const getStaffDataFetchUri = (staffData,staffId) => {
 
         case CONTACT_DATA:
             return '/api/hr/address/by-staff/' + staffId
+
+        case FILE_DATA:
+            return '/api/hr/file/by-staff/' + staffId
 
         default:
             return ''

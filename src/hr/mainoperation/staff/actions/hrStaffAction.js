@@ -346,6 +346,19 @@ export function fetchStaffData(staffId,activeData){
     }
 }
 
+export function downloadFile(fileId){
+    return function (dispatch){
+        axios.post(`${ROOT_URL}` + '/api/hr/file/download/' + fileId,{},{
+            headers: {
+                authorization: localStorage.getItem('token')}
+        }).then(({data}) => {
+            console.log(data)
+        }).catch((error) => {
+            handleError(error,dispatch)
+        })
+    }
+}
+
 export function fetchAllManagers(){
     return function (dispatch){
         axios.get(`${ROOT_URL}` + '/api/hr/salary/managers',{

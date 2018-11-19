@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Container, Divider, Tab, Header,Button} from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import {fetchSingleStaff,toggleStaffDataFormModal,blankStaffData,fetchStaffData,setStaffDataForUpdate,deleteStaffData} from '../actions/hrStaffAction'
+import {fetchSingleStaff,toggleStaffDataFormModal,blankStaffData,fetchStaffData,setStaffDataForUpdate,deleteStaffData,downloadFile} from '../actions/hrStaffAction'
 import StaffSalariesTable from './view/StaffSalariesTable'
 import StaffExpencesTable from './view/StaffExpencesTable'
 import StaffOffDataTable from './view/StaffOffDataTable'
@@ -12,7 +12,7 @@ import StaffEducationTable from './view/StaffEducationTable'
 import StaffMatnrsTable from './view/StaffMatnrsTable'
 import StaffContactTable from './view/StaffContactTable'
 import {f4FetchBusinessAreaList,f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList,f4FetchExpenceTypes,f4FetchSubCompanies} from '../../../../reference/f4/f4_action'
-import {STAFF_DATA,OFF_DATA,EXPENCE_DATA,EDU_DATA,SALARY_DATA,MATNR_DATA,CONTACT_DATA} from '../../../hrUtil'
+import {STAFF_DATA,OFF_DATA,EXPENCE_DATA,EDU_DATA,SALARY_DATA,MATNR_DATA,CONTACT_DATA,FILE_DATA} from '../../../hrUtil'
 import StaffDataFormHandler from './StaffDataFormHandler'
 
 class StaffViewPage extends Component{
@@ -43,6 +43,7 @@ class StaffViewPage extends Component{
       this.props.fetchStaffData(id,SALARY_DATA)
       this.props.fetchStaffData(id,MATNR_DATA)
       this.props.fetchStaffData(id,CONTACT_DATA)
+      this.props.fetchStaffData(id,FILE_DATA)
       this.props.f4FetchBusinessAreaList()
       this.props.f4FetchPositionList('staff')
       this.props.f4FetchCurrencyList('staff')
@@ -63,8 +64,8 @@ class StaffViewPage extends Component{
     return <StaffContactTable addresses={this.props.staffDataList[CONTACT_DATA] || []}/>
   }
 
-  renderFiles(){
-        return <StaffFilesTable files={[]} />
+  renderFiles(files){
+        return <StaffFilesTable downloadFile={this.props.downloadFile} files={files} />
   }
 
   prepareToCreate(){
@@ -146,7 +147,7 @@ class StaffViewPage extends Component{
             {menuItem:'Расходы',render:() => this.renderExpensesData(staff.id)},
             {menuItem:'Оф. данные',render:this.renderOfficialData},
             {menuItem:'Образование',render:() => this.renderEduData(staffDataList[EDU_DATA] || [])},
-            {menuItem:'Файлы',render:this.renderMainData},
+            {menuItem:'Файлы',render:() => this.renderFiles(staffDataList[FILE_DATA] || [])},
             //{menuItem:'Доп. данные',render:this.renderMainData},
             {menuItem:'Баланс',render:this.renderMainData},
             {menuItem:'Склад',render:() => this.renderMatnrsData(staffDataList[MATNR_DATA] || [])}
@@ -186,5 +187,5 @@ function mapStateToProps (state) {
 export default connect(mapStateToProps, {
     fetchSingleStaff,f4FetchBusinessAreaList,f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList,
     f4FetchExpenceTypes,toggleStaffDataFormModal,f4FetchSubCompanies,blankStaffData,fetchStaffData,
-    setStaffDataForUpdate,deleteStaffData
+    setStaffDataForUpdate,deleteStaffData,downloadFile
 })(StaffViewPage)
