@@ -12,7 +12,7 @@ function mapStateToProps(state, props) {
     priority: props.priority.id,
     branch: props.recipient.branch.id,
     department: props.recipient.department.id,
-    position: props.recipient.position.id,
+    position: props.recipient.position && props.recipient.position.id,
     description: props.description,
     estimatedAt: props.estimatedAt && moment(props.estimatedAt),
   };

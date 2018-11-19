@@ -36,7 +36,7 @@ export function fetchUserInfo() {
           } else if (error.response.status && error.response.status === 500) {
             // blog post has been created, navigate the user to the index
             // We navigate by calling this.context.router.push with the new path to navigate to
-            this.context.router.push('');
+            this.context.router.push('/');
           }
           dispatch(notify('error', error.response.data.message, 'Ошибка'));
         }

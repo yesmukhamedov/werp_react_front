@@ -8,6 +8,11 @@ import {
   DTSKC_FETCH_REFERENCES,
   DTSKC_FETCH_ASSIGNEES,
   DTSKC_ASSIGNEE_MODAL_TOGGLE,
+  DTSKC_ADD_ASSIGNEE_GROUP,
+  DTSKC_ADD_ASSIGNEE_PERSON,
+  DTSKC_REMOVE_ASSIGNEE_GROUP,
+  DTSKC_REMOVE_ASSIGNEE_PERSON,
+  CLEAR_TRANSACTION,
 } from './actionTypes';
 
 const statusUrl = `${ROOT_URL}/api/tasks/status`;
@@ -15,16 +20,14 @@ const departmentsUrl = `${ROOT_URL}/api/reference/departments`;
 const assigneesUrl = `${ROOT_URL}/api/users?active=true`;
 const taskTypesUrl = `${ROOT_URL}/api/tasks/types`;
 const managersUrl = `${ROOT_URL}/api/task-admins`;
+const groupsUrl = `${ROOT_URL}/api/messgr`;
 const createTaskUrl = `${ROOT_URL}/api/tasks`;
 
-// api/users?active=true&branchId=104&departmentId=6&bukrs=2000
 export function fetchUsers(args) {
   const {
     branchId,
     burks,
-    // departmentId,
   } = args;
-  // &departmentId=${departmentId}
   return (dispatch) => {
     axios
       .get(`${assigneesUrl}&branchId=${branchId}&bukrs=${burks}`, {
@@ -58,12 +61,14 @@ export function fetchReferences(lang) {
         GET(statusUrl),
         GET(taskTypesUrl),
         GET(managersUrl),
+        GET(groupsUrl),
       ])
       .then(axios.spread((
         { data: deptList },
         { data: statusList },
         { data: taskTypeList },
         { data: managersList },
+        { data: groupList },
       ) => {
         const deptOpts = deptList.map(item => ({
           key: item.dep_id,
@@ -95,11 +100,19 @@ export function fetchReferences(lang) {
           text: `${constructFullName(user)} - ${department[lang]}`,
         }));
 
+
+        const groupOpts = groupList.map(({ groupId, groupName }) => ({
+          key: groupId,
+          value: groupId,
+          text: groupName,
+        }));
+
         const directories = {
           deptOptions: _.mapKeys(deptOpts, 'key'),
           statusOptions: _.mapKeys(statusOpts, 'key'),
           taskTypeOptions: _.mapKeys(taskTypeOpts, 'key'),
           managerOptions: _.mapKeys(managerOpts, 'key'),
+          groupOptions: _.mapKeys(groupOpts, 'key'),
         };
 
         dispatch({
@@ -132,24 +145,7 @@ export function createTask(formValues, successCallback) {
       id: 2,
     },
     bukrs: formValues.company,
-    recipient: {
-      branch: {
-        id: formValues.branch,
-      },
-      department: {
-        id: formValues.department,
-      },
-      // TODO: what does *position* mean
-      position: {
-        id: 38,
-      },
-      assignee: {
-        id: formValues.assignee,
-      },
-      assigneesManager: {
-        id: formValues.assigneeManager,
-      },
-    },
+    recipient: [...formValues.allRecipients],
     type: {
       code: formValues.taskType,
     },
@@ -161,6 +157,8 @@ export function createTask(formValues, successCallback) {
       attachmentJson: JSON.stringify(formValues.uploadList),
     },
   };
+
+  console.log("ALL_RECIPIENTS", formValues.allRecipients);
 
   const request = axios.post(
     createTaskUrl,
@@ -185,9 +183,33 @@ export function createTask(formValues, successCallback) {
   };
 }
 
-export function toggleAssigneeModal(modalState) {
+export function toggleAssigneeModal() {
   return {
     type: DTSKC_ASSIGNEE_MODAL_TOGGLE,
-    payload: modalState,
   };
 }
+
+export const addAssigneeGroup = group => ({
+  type: DTSKC_ADD_ASSIGNEE_GROUP,
+  payload: group,
+});
+
+export const addAssigneePerson = person => ({
+  type: DTSKC_ADD_ASSIGNEE_PERSON,
+  payload: person,
+});
+
+export const removeAssigneeGroup = id => ({
+  type: DTSKC_REMOVE_ASSIGNEE_GROUP,
+  payload: id,
+});
+
+export const removeAssigneePerson = id => ({
+  type: DTSKC_REMOVE_ASSIGNEE_PERSON,
+  payload: id,
+});
+
+export const clearTransaction = () => ({
+  type: CLEAR_TRANSACTION,
+});
+

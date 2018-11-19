@@ -18,10 +18,10 @@ export function usersError(error) {
   };
 }
 
-export function authUser(username) {
+export function authUser(payload) {
   return {
     type: AUTH_USER,
-    payload: username,
+    payload,
   };
 }
 
@@ -41,12 +41,13 @@ export function signinUser({ username, password }, language) {
       .then((response) => {
         // If request is good...
         // - save the JWT token
-        localStorage.setItem('token', response.data.token);
+        const { token, userId } = response.data;
+        localStorage.setItem('token', token);
         localStorage.setItem('username', username);
         localStorage.setItem('language', language);
         localStorage.setItem('errorTableString', JSON.stringify(response.data.errorTable));
         // - update state to indicate user is authenticated
-        dispatch(authUser(username));
+        dispatch(authUser({ username, userId }));
         // - redirect to the route '/'
         path = localStorage.getItem('currentPathName');
         if (path) {

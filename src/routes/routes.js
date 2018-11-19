@@ -11,7 +11,7 @@ import persistPath from './PersistPath';
 import ForbiddenPage from '../general/forbidden';
 import LoadingPage from '../general/LoadingPage';
 
-import { DtskcContainer } from '../general/dtskc/pages';
+import { DtskcContainer, DtskcSummaryDisplay } from '../general/dtskc/pages';
 import { DtskdepContainer } from '../general/dtskdep/pages';
 
 
@@ -336,6 +336,11 @@ const trupdate = Loadable({
   loading: () => <LoadingPage />
 });
 
+// const AsyncDtskcSummary = Loadable({
+//   loader: () => import('../general/dtskc/pages/DtskcSummaryDisplay' /* webpackChunkName: "DtskcSummary" */),
+//   loading: () => <LoadingPage />
+// });
+
 
 const getComponent = {
     DitTransactionList:trlist,
@@ -387,6 +392,7 @@ const getComponent = {
     Ccastskedit: AsyncOutCallTaskPage,
     Gtskedit: AsyncTaskPage,
     Dtskredit: AsyncTaskRecEditPage,
+    // DtskcSummary: AsyncDtskcSummary,
 }
 
 const generateRoutes = (transactionRoutes) => {
@@ -422,6 +428,7 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/finance/mainoperation/fa03" component={AsyncFa03} />
       <Route path="/finance/mainoperation/fa02" component={AsyncFa02} />
       <Route path="/documents/mydocs" component={AsyncMyDocsListPage}/>
+      <Route path="/general/summary" component={DtskcSummaryDisplay} />
       
       {/* Transactions */}
       <Route path="/dit/transaction/update/:id?" component={trupdate} />

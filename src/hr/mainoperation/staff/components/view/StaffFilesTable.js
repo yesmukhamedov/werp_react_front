@@ -1,22 +1,21 @@
 import React from 'react';
-import { Table } from 'semantic-ui-react'
+import { Table, Button } from 'semantic-ui-react'
 
 
 export default function StaffFilesTable(props){
 
     const {files} = props
 
-    let tempContent = files.map(exp => {
+    let tempContent = files.map(file => {
         return (
-            <Table.Row key={exp.id}>
-                <Table.Cell>{exp.id}</Table.Cell>
-                <Table.Cell>{exp.typeName}</Table.Cell>
-                <Table.Cell>{exp.amount}</Table.Cell>
-                <Table.Cell>{exp.currency}</Table.Cell>
-                <Table.Cell>{exp.description}</Table.Cell>
-                <Table.Cell>{exp.expenseDate}</Table.Cell>
+            <Table.Row key={file.id}>
+                <Table.Cell>{file.file_name}</Table.Cell>
+                <Table.Cell>{file.file_size}</Table.Cell>
+                <Table.Cell>{file.created_date}</Table.Cell>
                 <Table.Cell>
-
+                    <Button onClick={() => props.downloadFile(file.id)}>Скачать</Button>
+                    {file.image ? <Button>Просмотр</Button>:''}
+                    <Button>Удалить</Button>
                 </Table.Cell>
             </Table.Row>
         )
@@ -24,12 +23,9 @@ export default function StaffFilesTable(props){
     return <Table celled>
             <Table.Header>
                 <Table.Row>
-                    <Table.HeaderCell>ID</Table.HeaderCell>
-                    <Table.HeaderCell>Тип расхода</Table.HeaderCell>
-                    <Table.HeaderCell>Сумма</Table.HeaderCell>
-                    <Table.HeaderCell>Валюта</Table.HeaderCell>
-                    <Table.HeaderCell>Примечание</Table.HeaderCell>
-                    <Table.HeaderCell>Дата</Table.HeaderCell>
+                    <Table.HeaderCell>Название файла</Table.HeaderCell>
+                    <Table.HeaderCell>Размер</Table.HeaderCell>
+                    <Table.HeaderCell>Дата загрузки</Table.HeaderCell>
                     <Table.HeaderCell>Действия</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>

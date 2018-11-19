@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { injectIntl } from 'react-intl';
 import { Container, Form, Button, Header, Segment } from 'semantic-ui-react';
+import _ from 'lodash';
 import UploadPanelDisplay from './UploadPanelDisplay';
 import AttachmentPanelDisplay from './AttachmentPanelDisplay';
 import AssigneePanelDisplay from './AssigneePanelDisplay';
@@ -52,31 +53,41 @@ class DtskcComponent extends Component {
   }
 
   handleFormSubmit(formValues) {
-    const { createTask } = this.props;
+    const {
+      createTask,
+      assigneeGroups,
+      assignees,
+      clearTransaction,
+      reset,
+    } = this.props;
+    const allRecipients = _.concat(
+      _.flatMap(_.map(assigneeGroups, 'recipientList')),
+      _.map(assignees, 'recipient'),
+    );
     const { uploadList } = this.state;
-    createTask({ ...formValues, uploadList }, data => {
-      const { id: taskId } = data;
-      browserHistory.push(`/general/gtskedit/${taskId}`);
+    createTask({ ...formValues, uploadList, allRecipients }, data => {
+      // reset();
+      browserHistory.push({
+        pathname: '/general/summary',
+        state: { createdTasks: data },
+      })
     });
   }
 
   render() {
     const {
-      branchOpts,
       companyOpts,
-      deptOpts,
       statusOpts,
-      assigneeOpts,
       taskTypeOpts,
       managerOpts,
-      selectedCompany,
-      selectedBranch,
-      selectedDepartment,
-      fetchUsers,
       handleSubmit,
       assigneeModal,
       toggleAssigneeModal,
-      reset,
+      assigneeGroups,
+      assignees,
+      removeAssigneeGroup,
+      removeAssigneePerson,
+      userId,
       intl,
     } = this.props;
     const { messages } = intl;
@@ -116,12 +127,16 @@ class DtskcComponent extends Component {
                 label="Компания"
                 opts={companyOpts}
               />
-              <Field
+              {/* <Field
                 name="initiator"
                 component={TextInputFormField}
                 label="Заказчик"
-                value="Nobody"
-              />
+                disabled
+              /> */}
+              <Form.Field>
+                <label>Заказчик</label>
+                <input value={userId} disabled />
+              </Form.Field>
             </Form.Group>
             <Form.Group widths="equal">
               <Field
@@ -137,42 +152,7 @@ class DtskcComponent extends Component {
                 opts={managerOpts}
               />
             </Form.Group>
-            <Form.Group widths="equal">
-              {/* <Field
-                name="department"
-                component={DropdownFormField}
-                label="Департамент"
-                opts={deptOpts}
-                onChange={() =>
-                  fetchUsers({
-                    branchId: selectedBranch,
-                    burks: selectedCompany,
-                    // departmentId: selectedDepartment,
-                  })
-                }
-              /> */}
-              {/* <Field
-                name="assignee"
-                component={DropdownFormField}
-                label="Исполнитель"
-                opts={assigneeOpts}
-              /> */}
-              {/* <Field
-                name="branch"
-                component={DropdownFormField}
-                label="Филиал"
-                disabled={!selectedCompany}
-                opts={selectedCompany && branchOpts[selectedCompany]}
-              /> */}
-              {/* <Field
-                name="assigneeManager"
-                component={DropdownFormField}
-                label="Начальник отдела исполнителя"
-                opts={managerOpts}
-              /> */}
-            </Form.Group>
-
-            <Form.Group widths="3">
+            <Form.Group widths="2">
               <Field
                 name="createdAt"
                 component={DatePickerFormField}
@@ -189,10 +169,6 @@ class DtskcComponent extends Component {
                 autoComplete="off"
               />
             </Form.Group>
-            <AssigneePanelDisplay
-              modalState={assigneeModal}
-              toggleModal={toggleAssigneeModal}
-            />
             <Button
               positive
               icon="checkmark"
@@ -206,7 +182,9 @@ class DtskcComponent extends Component {
               floated="right"
               content="Отменить"
               onClick={() => {
-                this.state.uploadList.forEach(el => this.handleUploadDelete(el.fileDownloadUri));
+                this.state.uploadList.forEach(el =>
+                  this.handleUploadDelete(el.fileDownloadUri),
+                );
                 browserHistory.push('/');
               }}
             />
@@ -214,6 +192,14 @@ class DtskcComponent extends Component {
             <br />
           </Form>
         </Segment>
+        <AssigneePanelDisplay
+          modalState={assigneeModal}
+          toggleModal={toggleAssigneeModal}
+          groups={Object.values(assigneeGroups)}
+          persons={Object.values(assignees)}
+          removeGroup={removeAssigneeGroup}
+          removePerson={removeAssigneePerson}
+        />
         <Segment attached="bottom">
           <AttachmentPanelDisplay
             attachment={this.state.uploadList}
