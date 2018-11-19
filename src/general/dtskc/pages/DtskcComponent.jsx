@@ -66,8 +66,11 @@ class DtskcComponent extends Component {
     );
     const { uploadList } = this.state;
     createTask({ ...formValues, uploadList, allRecipients }, data => {
-      reset();
-      browserHistory.push(`/general/dtskc`);
+      // reset();
+      browserHistory.push({
+        pathname: '/general/summary',
+        state: { createdTasks: data },
+      })
     });
   }
 
