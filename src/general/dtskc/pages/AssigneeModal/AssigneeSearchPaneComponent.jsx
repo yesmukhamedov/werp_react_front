@@ -140,11 +140,10 @@ class AssigneeSearchPaneComponent extends Component {
       department: {
         id: this.state.selectedDepartment,
       },
-      position: {},
       assignee: {
         id: this.state.selectedAssigneeId,
       },
-      assigneeManager: {
+      assigneesManager: {
         id: this.state.selectedManager,
       },
     }

@@ -44,7 +44,9 @@ class DtskcComponent extends Component {
     const req = DELETE(url);
     req
       .then(() => {
-        const newUploadList = this.state.uploadList.filter(el => el.fileDownloadUri !== url);
+        const newUploadList = this.state.uploadList.filter(
+          el => el.fileDownloadUri !== url,
+        );
         this.setState({ uploadList: newUploadList });
       })
       .catch(error => console.log('handleUploadDelete', error));
@@ -58,9 +60,10 @@ class DtskcComponent extends Component {
       clearTransaction,
       reset,
     } = this.props;
-    const groupRecipients = _.map(assigneeGroups, 'recipientList');
-    const personRecipients = _.map(assignees, pr => [pr.recipient]);
-    const allRecipients = _.flattenDeep(groupRecipients, personRecipients);
+    const allRecipients = _.concat(
+      _.flatMap(_.map(assigneeGroups, 'recipientList')),
+      _.map(assignees, 'recipient'),
+    );
     const { uploadList } = this.state;
     createTask({ ...formValues, uploadList, allRecipients }, data => {
       reset();
@@ -176,7 +179,9 @@ class DtskcComponent extends Component {
               floated="right"
               content="Отменить"
               onClick={() => {
-                this.state.uploadList.forEach(el => this.handleUploadDelete(el.fileDownloadUri));
+                this.state.uploadList.forEach(el =>
+                  this.handleUploadDelete(el.fileDownloadUri),
+                );
                 browserHistory.push('/');
               }}
             />

@@ -23,14 +23,11 @@ const managersUrl = `${ROOT_URL}/api/task-admins`;
 const groupsUrl = `${ROOT_URL}/api/messgr`;
 const createTaskUrl = `${ROOT_URL}/api/tasks`;
 
-// api/users?active=true&branchId=104&departmentId=6&bukrs=2000
 export function fetchUsers(args) {
   const {
     branchId,
     burks,
-    // departmentId,
   } = args;
-  // &departmentId=${departmentId}
   return (dispatch) => {
     axios
       .get(`${assigneesUrl}&branchId=${branchId}&bukrs=${burks}`, {
@@ -160,6 +157,8 @@ export function createTask(formValues, successCallback) {
       attachmentJson: JSON.stringify(formValues.uploadList),
     },
   };
+
+  console.log("ALL_RECIPIENTS", formValues.allRecipients);
 
   const request = axios.post(
     createTaskUrl,

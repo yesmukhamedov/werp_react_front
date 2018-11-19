@@ -25,9 +25,6 @@ class AssigneeGroupPaneComponent extends Component {
             department: {
               id: department.id,
             },
-            position: {
-              id: 38,
-            },
             assignee: {
               id: user && user.id,
             },
