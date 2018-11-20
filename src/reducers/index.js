@@ -9,7 +9,7 @@ import treeMenuReducer from './tree_menu';
 import notificationReducer from '../general/notification/notification_reducer';
 import contractListReducer from '../crm/callCenter/mainoperation/contractList/reducers/ContractListReducer';
 import taskListReducer from '../crm/callCenter/mainoperation/taskList/reducers/TaskListReducer';
-import taskReducer from '../crm/callCenter/mainoperation/task/reducers/TaskReducer';
+import taskReducer from '../dit/tasks/dtskedit/reducers/TaskReducer';
 import taskMonitorReducer from '../dit/tasks/dtskrep/reducers/TaskMonitorReducer';
 import deptTaskListReducer from '../dit/tasks/dtskl/reducers/DeptTaskListReducer';
 

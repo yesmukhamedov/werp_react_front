@@ -8,8 +8,8 @@ import {
   Segment,
   Checkbox,
 } from 'semantic-ui-react';
-import { constructFullName } from '../../../../../../utils/helpers';
-import { TOKEN_PASSWORD } from '../../../../../../utils/constants'
+import { constructFullName } from '../../../../../utils/helpers';
+import { TOKEN_PASSWORD } from '../../../../../utils/constants';
 
 class TaskApproverDisplay extends Component {
   constructor(props) {

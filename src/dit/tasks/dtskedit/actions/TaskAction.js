@@ -1,9 +1,9 @@
 /* jshint esversion: 6 */
 import axios from 'axios';
 import moment from 'moment';
-import { ROOT_URL } from '../../../../../utils/constants';
-import { PUT } from '../../../../../utils/helpers';
-import { notify } from '../../../../../general/notification/notification_action';
+import { ROOT_URL } from '../../../../utils/constants';
+import { PUT } from '../../../../utils/helpers';
+import { notify } from '../../../../general/notification/notification_action';
 
 
 export const CLEAR_TASK_STORE = 'clear_task_store';

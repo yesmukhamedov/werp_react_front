@@ -113,7 +113,7 @@ const AsyncTaskListPage = Loadable({
 
 const AsyncTaskPage = Loadable({
   loader: () =>
-    import('../crm/callCenter/mainoperation/task/components/TaskPageContainer' /* webpackChunkName: "TaskPage" */),
+    import('../dit/tasks/dtskedit/components/TaskPageContainer' /* webpackChunkName: "TaskPage" */),
   loading: () => <LoadingPage />,
 });
 

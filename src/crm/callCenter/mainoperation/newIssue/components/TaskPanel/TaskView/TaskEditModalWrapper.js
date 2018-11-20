@@ -1,5 +1,5 @@
 import React from 'react';
-import TaskEditModal from '../../../../task/components/TaskEdit/TaskEditModal';
+import TaskEditModal from '../../../../../../../dit/tasks/dtskedit/components/TaskEdit/TaskEditModal';
 
 const TaskEditModalWrapper = (props) => {
   const fieldState = {

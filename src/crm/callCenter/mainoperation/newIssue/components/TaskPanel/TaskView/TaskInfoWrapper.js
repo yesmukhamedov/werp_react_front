@@ -1,6 +1,6 @@
 import React from 'react';
 import { injectIntl } from 'react-intl';
-import TaskInfoComponent from '../../../../task/components/TaskInfo/TaskInfoComponent';
+import TaskInfoComponent from '../../../../../../../dit/tasks/dtskedit/components/TaskInfo/TaskInfoComponent';
 import TaskEditContainer from './TaskEditContainer';
 import { messages } from '../../../../../../../locales/defineMessages';
 

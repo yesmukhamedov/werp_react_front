@@ -1,8 +1,8 @@
 /* jshint esversion: 6 */
 import axios from 'axios';
 import _ from 'lodash';
-import { ROOT_URL } from '../../../../../utils/constants';
-import { notify } from '../../../../../general/notification/notification_action';
+import { ROOT_URL } from '../../../../utils/constants';
+import { notify } from '../../../../general/notification/notification_action';
 
 export const FETCH_TASK_DOC_STATUS = 'fetch_task_doc_status';
 
@@ -11,7 +11,7 @@ const taskApproveUrl = `${ROOT_URL}/api/tasks`;
 export function fetchTaskDocStatus(taskId, authorsManager, recipient) {
   const paramsDict = {
     authorsManager: authorsManager && authorsManager.id,
-    assigneesManager: recipient.assigneesManager && recipient.assigneesManager.id
+    assigneesManager: recipient.assigneesManager && recipient.assigneesManager.id,
   };
 
   const params = _.map(

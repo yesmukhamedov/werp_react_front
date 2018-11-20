@@ -55,6 +55,7 @@ const MessageGroupUserTableDisplay = (props) => {
     {
       accessor: 'mguId',
       maxWidth: 50,
+      filterable: false,
       Cell: (row) => {
         const { mguId, messageGroup, user, branch, department, supervisor } = row.original;
         const modalData = {
