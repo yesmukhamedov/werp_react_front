@@ -3,7 +3,7 @@ import { Form, Search, Segment, Button } from 'semantic-ui-react';
 import hash from 'object-hash';
 import axios from 'axios';
 import { ROOT_URL } from '../../../../utils/constants';
-import { GET } from '../../../../utils/helpers';
+import { GET, constructFullName } from '../../../../utils/helpers';
 
 const assigneeSearchUrl = `${ROOT_URL}/api/tasks/assignee?keyword=`;
 const assigneeDetailsUrl = `${ROOT_URL}/api/tasks/assignee`;
@@ -45,7 +45,7 @@ class AssigneeSearchPaneComponent extends Component {
     this.setState(
       {
         selectedAssignee: result.title,
-        selectedAssigneeId: result.userId,
+        selectedAssigneeId: result,
       },
       () => {
         this.fetchAssigneeDetails(result.userId);
@@ -132,25 +132,29 @@ class AssigneeSearchPaneComponent extends Component {
   };
 
   handleSubmit = () => {
-    const { addAssigneePerson, toggleAssigneeModal: hideModal } = this.props;
+    const {
+      addAssigneePerson,
+      toggleAssigneeModal: hideModal,
+      branchOptsNormalized: branchOpts,
+    } = this.props;
     const recipient = {
       branch: {
         id: this.state.selectedBranch,
       },
       department: {
-        id: this.state.selectedDepartment,
+        id: this.state.selectedDepartment.depId,
       },
       assignee: {
-        id: this.state.selectedAssigneeId,
+        id: this.state.selectedAssigneeId.userId,
       },
       assigneesManager: {
-        id: this.state.selectedManager,
+        id: this.state.selectedManager.id,
       },
       meta: {
-        branch: this.state.selectedBranch,
+        branch: branchOpts[this.state.selectedBranch][0],
         department: this.state.selectedDepartment,
-        supervisor: this.state.selectedManager,
-        user: this.state.selectedAssigneeId,
+        supervisor: constructFullName(this.state.selectedManager),
+        user: this.state.selectedAssigneeId.title,
       }
     }
     const assigneePerson = {
@@ -203,7 +207,7 @@ class AssigneeSearchPaneComponent extends Component {
             <Form.Select
               label="Assignee Manager"
               placeholder="Assignee Manager"
-              options={selectedDepartment && managerOpts[selectedDepartment]}
+              options={selectedDepartment && managerOpts[selectedDepartment.depId]}
               name="selectedManager"
               onChange={this.handleChange}
             />

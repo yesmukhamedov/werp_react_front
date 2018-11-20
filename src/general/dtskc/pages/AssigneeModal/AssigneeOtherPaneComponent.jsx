@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Button, Segment } from 'semantic-ui-react';
 import hash from 'object-hash';
+import { constructFullName } from '../../../../utils/helpers';
 
 class AssigneeOtherPane extends Component {
   state = {
@@ -25,21 +26,25 @@ class AssigneeOtherPane extends Component {
   };
 
   handleSubmit = () => {
-    const { addAssigneePerson, toggleAssigneeModal: hideModal } = this.props;
+    const {
+      addAssigneePerson,
+      toggleAssigneeModal: hideModal,
+      branchOptsNormalized: branchOpts,
+    } = this.props;
     const recipient = {
       branch: {
         id: this.state.selectedBranch,
       },
       department: {
-        id: this.state.selectedDepartment,
+        id: this.state.selectedDepartment.depId,
       },
       assigneesManager: {
-        id: this.state.selectedManager,
+        id: this.state.selectedManager.id,
       },
       meta: {
-        branch: this.state.selectedBranch,
+        branch: branchOpts[this.state.selectedBranch][0],
         department: this.state.selectedDepartment,
-        supervisor: this.state.selectedManager,
+        supervisor: constructFullName(this.state.selectedManager),
       }
     }
     const assigneePerson = {
@@ -86,7 +91,7 @@ class AssigneeOtherPane extends Component {
           <Form.Select
             label="Assignee Manager"
             placeholder="Assignee Manager"
-            options={selectedDepartment && managerOpts[selectedDepartment]}
+            options={selectedDepartment && managerOpts[selectedDepartment.depId]}
             name="selectedManager"
             onChange={this.handleChange}
           />

@@ -88,6 +88,7 @@ class DtskcComponent extends Component {
       removeAssigneeGroup,
       removeAssigneePerson,
       userId,
+      lang,
       intl,
     } = this.props;
     const { messages } = intl;
@@ -199,6 +200,7 @@ class DtskcComponent extends Component {
           persons={Object.values(assignees)}
           removeGroup={removeAssigneeGroup}
           removePerson={removeAssigneePerson}
+          lang={lang}
         />
         <Segment attached="bottom">
           <AttachmentPanelDisplay

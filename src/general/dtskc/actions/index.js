@@ -72,7 +72,13 @@ export function fetchReferences(lang) {
       ) => {
         const deptOpts = deptList.map(item => ({
           key: item.dep_id,
-          value: item.dep_id,
+          value: {
+            depId: item.dep_id,
+            id: item.id,
+            ru: item.name_ru,
+            en: item.name_en,
+            tr: item.name_tr,
+          },
           text:
                 lang === 'ru'
                   ? item.name_ru
@@ -96,7 +102,7 @@ export function fetchReferences(lang) {
         const managerOpts = managersList.map(({ id, department, user }) => ({
           key: id,
           departmentId: department.id,
-          value: user.id,
+          value: user,
           text: `${constructFullName(user)} - ${department[lang]}`,
         }));
 
@@ -150,7 +156,7 @@ export function createTask(formValues, successCallback) {
       code: formValues.taskType,
     },
     authorsManager: {
-      id: formValues.initiatorManager,
+      id: formValues.initiatorManager.id,
     },
     estimatedAt: moment.utc(formValues.estimatedAt, 'DD.MM.YYYY').format(),
     attachment: {
