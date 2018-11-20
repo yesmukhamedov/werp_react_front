@@ -96,7 +96,14 @@
 	"L__RECERIVERS_MANAGE": "Управление получателями в группе",
 	"L__GROUP": "Группа",
 	"L__USER": "Пользователь",
-
+	"L__TYPE": "Тип",
+	"L__COMPANY": "Компания",
+	"L__ASSIGNER": "Заказчик",
+	"L__ASSIGNER_MANAGER": "Начальник заказчика",
+	"TBL_H__ASSIGNEE": "Исполнитель",
+	"TBL_H__ASSIGNEE_MANAGER": "Менеджер исполнителя",
+	"TBL_H__BRANCH": "Филиал",
+	"TBL_H__DEPARTMENT": "Департамент",
 
 	"Task.Branch": "Филиал",
 	"Task.Department": "Отдел",

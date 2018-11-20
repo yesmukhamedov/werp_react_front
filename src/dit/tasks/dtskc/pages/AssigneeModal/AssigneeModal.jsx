@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal, Tab } from 'semantic-ui-react';
+
 import AssigneeGroupPaneComponent from './AssigneeGroupPaneComponent';
 import AssigneeOtherPaneComponent from './AssigneeOtherPaneComponent';
 import AssigneeSearchPaneComponent from './AssigneeSearchPaneComponent';

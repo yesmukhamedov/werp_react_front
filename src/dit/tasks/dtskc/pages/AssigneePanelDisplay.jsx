@@ -3,6 +3,7 @@ import { Table, Button, Icon, Segment, List, Label } from 'semantic-ui-react';
 
 const AssigneePanelDisplay = (props) => {
   const {
+    messages,
     toggleModal,
     groups,
     persons,
@@ -18,10 +19,10 @@ const AssigneePanelDisplay = (props) => {
           <Table.HeaderCell textAlign="left" width="1">
             Тип
           </Table.HeaderCell>
-          <Table.HeaderCell fullWidth>Исполнитель</Table.HeaderCell>
-          <Table.HeaderCell fullWidth>Менеджер исполнителя</Table.HeaderCell>
-          <Table.HeaderCell fullWidth>Филиал</Table.HeaderCell>
-          <Table.HeaderCell fullWidth>Департамент</Table.HeaderCell>
+          <Table.HeaderCell fullWidth>{messages.TBL_H__ASSIGNEE}</Table.HeaderCell>
+          <Table.HeaderCell fullWidth>{messages.TBL_H__ASSIGNEE_MANAGER}</Table.HeaderCell>
+          <Table.HeaderCell fullWidth>{messages.TBL_H__BRANCH}</Table.HeaderCell>
+          <Table.HeaderCell fullWidth>{messages.TBL_H__DEPARTMENT}</Table.HeaderCell>
           <Table.HeaderCell textAlign="right" />
         </Table.Row>
       </Table.Header>
@@ -65,7 +66,7 @@ const AssigneePanelDisplay = (props) => {
               primary
               icon
             >
-              <Icon name="user" /> Add Assignee
+              <Icon name="user" />{messages.BTN__ADD}
             </Button>
           </Table.HeaderCell>
         </Table.Row>

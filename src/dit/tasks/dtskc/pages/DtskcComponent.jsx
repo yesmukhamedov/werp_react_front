@@ -66,11 +66,10 @@ class DtskcComponent extends Component {
     );
     const { uploadList } = this.state;
     createTask({ ...formValues, uploadList, allRecipients }, data => {
-      // reset();
       browserHistory.push({
         pathname: '/general/summary',
         state: { createdTasks: data },
-      })
+      });
     });
   }
 
@@ -101,23 +100,23 @@ class DtskcComponent extends Component {
           paddingRight: '2em',
         }}
       >
-        <Header as="h2">Новая задача</Header>
+        <Header as="h2">{messages.H__NEW_TASK}</Header>
         <Segment attached="top">
           <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
             <Form.Group widths="2">
               <Field
                 name="taskType"
                 component={DropdownFormField}
-                label="Тип"
+                label={messages.L__TYPE}
                 opts={taskTypeOpts}
               />
             </Form.Group>
 
-            <Field name="title" component={TextInputFormField} label="Тема" />
+            <Field name="title" component={TextInputFormField} label={messages.L__TITLE} />
             <Field
               name="description"
               component={TextAreaFormField}
-              label="Описание задачи"
+              label={messages.L__TASK_DESCRIPTION}
               rows="8"
             />
 
@@ -125,17 +124,11 @@ class DtskcComponent extends Component {
               <Field
                 name="company"
                 component={DropdownFormField}
-                label="Компания"
+                label={messages.L__COMPANY}
                 opts={companyOpts}
               />
-              {/* <Field
-                name="initiator"
-                component={TextInputFormField}
-                label="Заказчик"
-                disabled
-              /> */}
               <Form.Field>
-                <label>Заказчик</label>
+                <label>{messages.L__ASSIGNER}</label>
                 <input value={userId} disabled />
               </Form.Field>
             </Form.Group>
@@ -143,13 +136,13 @@ class DtskcComponent extends Component {
               <Field
                 name="status"
                 component={DropdownFormField}
-                label="Статус"
+                label={messages.L__STATUS}
                 opts={statusOpts}
               />
               <Field
                 name="initiatorManager"
                 component={DropdownFormField}
-                label="Начальник отдела заказчика"
+                label={messages.L__ASSIGNER_MANAGER}
                 opts={managerOpts}
               />
             </Form.Group>
@@ -157,7 +150,7 @@ class DtskcComponent extends Component {
               <Field
                 name="createdAt"
                 component={DatePickerFormField}
-                label="Дата создания"
+                label={messages.L__CREATE_DATE}
                 dateFormat="DD.MM.YYYY"
                 autoComplete="off"
                 disabled
@@ -165,7 +158,7 @@ class DtskcComponent extends Component {
               <Field
                 name="estimatedAt"
                 component={DatePickerFormField}
-                label="Предполагаемая дата закрытия"
+                label={messages.L__ESTIMATED_ENDDATE}
                 dateFormat="DD.MM.YYYY"
                 autoComplete="off"
               />
@@ -174,14 +167,14 @@ class DtskcComponent extends Component {
               positive
               icon="checkmark"
               labelPosition="right"
-              content="Создать"
+              content={messages.BTN__CREATE}
               type="submit"
               floated="right"
             />
             <Button
               color="youtube"
               floated="right"
-              content="Отменить"
+              content={messages.BTN__CANCEL}
               onClick={() => {
                 this.state.uploadList.forEach(el =>
                   this.handleUploadDelete(el.fileDownloadUri),
@@ -201,11 +194,13 @@ class DtskcComponent extends Component {
           removeGroup={removeAssigneeGroup}
           removePerson={removeAssigneePerson}
           lang={lang}
+          messages={messages}
         />
         <Segment attached="bottom">
           <AttachmentPanelDisplay
             attachment={this.state.uploadList}
             onDelete={this.handleUploadDelete}
+            messages={messages}
           >
             <UploadPanelDisplay
               onUploadSuccess={this.handleUpload}
