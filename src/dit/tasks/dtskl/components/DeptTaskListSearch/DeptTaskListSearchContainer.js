@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
-import { defineMessages, injectIntl } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import { searchTasks } from '../../actions/DeptTaskListAction';
 import DeptTaskListSearchDisplay from './DeptTaskListSearchDisplay';
 import { messages } from '../../../../../locales/defineMessages';

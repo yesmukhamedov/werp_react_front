@@ -5,7 +5,13 @@ import 'react-table/react-table.css';
 import { constructFullName } from '../../../../../utils/helpers';
 
 const MessageGroupUserTableDisplay = (props) => {
-  const { messageGroupUserList = [], removeMessageGroupUser, fetchMessageGroupUsers, open, lang } = props;
+  const { 
+    messageGroupUserList = [], 
+    removeMessageGroupUser, 
+    fetchMessageGroupUsers, 
+    open, lang,
+    messages } = props;
+  const {formatMessage} = props.intl;
 
   const columns = [
     // {
@@ -14,7 +20,7 @@ const MessageGroupUserTableDisplay = (props) => {
     //   maxWidth: 50,
     // },
     {
-      Header: 'Группа',
+      Header: messages.L__GROUP,
       id: 'groupId',
       accessor: 'messageGroup.groupName',
       maxWidth: 100,
@@ -25,7 +31,7 @@ const MessageGroupUserTableDisplay = (props) => {
       maxWidth: 100,
     },
     {
-      Header: 'Пользователь',
+      Header: messages.L__USER,
       id: 'fullName',
       // accessor: item => constructFullName(item.user),
       Cell: (props) => {
@@ -38,7 +44,7 @@ const MessageGroupUserTableDisplay = (props) => {
       },
     },
     {
-      Header: 'Филиал',
+      Header: messages.L__BRANCH,
       accessor: 'branch.id',
       maxWidth: 160,
       Cell: (props) => {
@@ -51,7 +57,7 @@ const MessageGroupUserTableDisplay = (props) => {
       },
     },
     {
-      Header: 'Отдел',
+      Header: formatMessage({ id: 'Table.Department' }),
       accessor: 'department.id',
       maxWidth: 160,
       Cell: (props) => {
@@ -64,7 +70,7 @@ const MessageGroupUserTableDisplay = (props) => {
       },
     },
     {
-      Header: 'Начальник отдела',
+      Header: messages.TBL_H__MANAGER,
       id: 'supervisor.id',
       accessor: item => constructFullName(item.supervisor),
     },
@@ -109,13 +115,13 @@ const MessageGroupUserTableDisplay = (props) => {
       pageSizeOptions={[10, 15, 20]}
       defaultPageSize={10}
       defaultSorted={[{ id: 'groupId' }]}
-      previousText="Предыдущий"
-      nextText="Следующий"
-      loadingText="Загружается..."
-      noDataText="Нет записей"
-      pageText="Страница"
-      ofText="из"
-      rowsText="записей"
+      previousText={messages.previousText}
+      nextText={messages.nextText}
+      loadingText={messages.loadingText}
+      noDataText={messages.noDataText}
+      pageText={messages.pageText}
+      ofText={messages.ofText}
+      rowsText={messages.rowsText}
       className="-highlight"
       getTheadProps={() => ({
         style: {

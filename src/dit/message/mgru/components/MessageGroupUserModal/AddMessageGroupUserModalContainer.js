@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
+import { injectIntl } from 'react-intl';
 import AddMessageGroupUserModalDisplay from './AddMessageGroupUserModalDisplay';
 import { createMessageGroupUser, fetchMessageGroupUsers, updateMessageGroupUser } from '../../actions/MessageGroupUserAction';
 
@@ -32,4 +33,4 @@ export default connect(mapStateToProps, {
   createMessageGroupUser,
   updateMessageGroupUser,
   fetchMessageGroupUsers,
-})(AddMessageGroupUserModalDisplay);
+})(injectIntl(AddMessageGroupUserModalDisplay));

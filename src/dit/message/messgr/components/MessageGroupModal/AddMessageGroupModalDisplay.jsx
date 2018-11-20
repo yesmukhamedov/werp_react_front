@@ -47,24 +47,25 @@ class AddMessageGroupModalDisplay extends PureComponent {
       modalType,
       handleSubmit,
       pristine, 
-      submitting 
+      submitting,
+      messages 
     } = this.props;
     return (
       <Modal size="tiny" open={isOpen} onClose={close}>
-        <Modal.Header>{modalType === 'add' ? 'Add' : 'Edit'} message group</Modal.Header>
+        <Modal.Header>{modalType === 'add' ? messages.BTN__ADD : messages.BTN__EDIT}</Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
               <Field
                 name="groupName"
                 component={TextInputFormField}
-                label="Название"
+                label={messages.L__TITLE}
               />
               <Divider />
               <Button
                 color="youtube"
                 float="right"
-                content="Отменить"
+                content={messages.BTN__CANCEL}
                 onClick={this.handleFormClose}
               />
               <Button

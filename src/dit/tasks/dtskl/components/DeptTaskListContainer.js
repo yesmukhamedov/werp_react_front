@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
 import * as actions from '../actions/DeptTaskListAction';
 import DeptTaskListDisplay from './DeptTaskListDisplay';
 
@@ -9,6 +10,6 @@ function mapStateToProps(state) {
   };
 }
 
-const DeptTaskListContainer = connect(mapStateToProps, actions)(DeptTaskListDisplay);
+const DeptTaskListContainer = connect(mapStateToProps, actions)(injectIntl(DeptTaskListDisplay));
 
 export default DeptTaskListContainer;

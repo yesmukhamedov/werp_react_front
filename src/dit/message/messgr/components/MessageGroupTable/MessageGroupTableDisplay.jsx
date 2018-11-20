@@ -4,7 +4,7 @@ import { Button, Icon } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 
 const MessageGroupTableDisplay = (props) => {
-  const { messageGroupList = [], removeMessageGroup, fetchMessageGroups, open } = props;
+  const { messageGroupList = [], removeMessageGroup, fetchMessageGroups, open, messages} = props;
 
   const columns = [
     {
@@ -13,7 +13,7 @@ const MessageGroupTableDisplay = (props) => {
       maxWidth: 50,
     },
     {
-      Header: 'Название',
+      Header: messages.L__TITLE,
       accessor: 'groupName',
     },
     {
@@ -52,13 +52,13 @@ const MessageGroupTableDisplay = (props) => {
       pageSizeOptions={[7, 10, 15, 20]}
       defaultPageSize={7}
       defaultSorted={[{ id: 'groupId' }]}
-      previousText="Предыдущий"
-      nextText="Следующий"
-      loadingText="Загружается..."
-      noDataText="Нет записей"
-      pageText="Страница"
-      ofText="из"
-      rowsText="записей"
+      previousText={messages.previousText}
+      nextText={messages.nextText}
+      loadingText={messages.loadingText}
+      noDataText={messages.noDataText}
+      pageText={messages.pageText}
+      ofText={messages.ofText}
+      rowsText={messages.rowsText}
       className="-highlight"
       getTheadProps={() => ({
         style: {
