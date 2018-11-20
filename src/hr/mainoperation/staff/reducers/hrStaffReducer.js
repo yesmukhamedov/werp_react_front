@@ -22,7 +22,8 @@ import {
     HR_STAFF_DATA_UPDATED,
     HR_STAFF_ALL_STAFFS,
     HR_STAFF_FETCH_DIRECTORS,
-    HR_STAFF_FILE_UPLOADED
+    HR_STAFF_FILE_UPLOADED,
+    HR_STAFF_FILE_DELETED
 } from '../actions/hrStaffAction';
 
 import {FILE_DATA} from '../../../hrUtil'
@@ -192,8 +193,27 @@ export default function (state=INITIAL_STATE, action)
 
         case HR_STAFF_FILE_UPLOADED:
             let stfDataList1 = Object.assign({},state.staffDataList)
-            stfDataList1[FILE_DATA] = action.payload
+            if(!stfDataList1[FILE_DATA]){
+                stfDataList1[FILE_DATA] = []
+            }
+
+            stfDataList1[FILE_DATA].push(action.payload)
             return {...state,staffDataList:stfDataList1}
+
+        case HR_STAFF_FILE_DELETED:
+            let stfDataList2 = Object.assign({},state.staffDataList)
+
+            let newStfDataList2 = []
+            for(let kk in stfDataList2[FILE_DATA]){
+                if(parseInt(stfDataList2[FILE_DATA][kk]['id'],10) === parseInt(action.payload,10)){
+                    continue
+                }
+
+                newStfDataList2.push(stfDataList2[FILE_DATA][kk])
+            }
+
+            stfDataList2[FILE_DATA] = newStfDataList2
+            return {...state,staffDataList:stfDataList2}
 
         default:
             return state;
