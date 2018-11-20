@@ -18,7 +18,7 @@ export default class MessageGroupUserDisplay extends Component {
     this.state = {
       modalOpen: false,
       modalType: '',
-      modalData: null, 
+      modalData: null,
     };
 
     this.open = this.open.bind(this);
@@ -62,12 +62,12 @@ export default class MessageGroupUserDisplay extends Component {
                     {messages.L__RECERIVERS_MANAGE}
                   </Header.Subheader>
                 </Header.Content>
-              </Header>              
+              </Header>
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row style={{ paddingBottom: '0.5em'}}>          
+          <Grid.Row style={{ paddingBottom: '0.5em'}}>
             <Grid.Column floated='left' width={8}>
-              <MessageGroupUserSearchContainer messages={messages}/>
+              <MessageGroupUserSearchContainer messages={messages} />
             </Grid.Column>
             <Grid.Column floated='right' width={5}>
               <Button

@@ -33,46 +33,24 @@ const MessageGroupUserTableDisplay = (props) => {
     {
       Header: messages.L__USER,
       id: 'fullName',
-      // accessor: item => constructFullName(item.user),
-      Cell: (props) => {
-        const { user } = props.original;
-        return (
-          <div>
-            {user && constructFullName(user)}
-          </div>
-        );
-      },
+      accessor: item => item.user && constructFullName(item.user),
     },
     {
       Header: messages.L__BRANCH,
-      accessor: 'branch.id',
+      id: 'branchName',
+      accessor: item => item.branch && item.branch.value,
       maxWidth: 160,
-      Cell: (props) => {
-        const { branch } = props.original;
-        return (
-          <div>
-            {branch.value}
-          </div>
-        );
-      },
     },
     {
       Header: formatMessage({ id: 'Table.Department' }),
-      accessor: 'department.id',
+      id: 'departmentName',
+      accessor: item => item.department[lang],
       maxWidth: 160,
-      Cell: (props) => {
-        const { department } = props.original;
-        return (
-          <div>
-            {department[lang]}
-          </div>
-        );
-      },
     },
     {
       Header: messages.TBL_H__MANAGER,
-      id: 'supervisor.id',
-      accessor: item => constructFullName(item.supervisor),
+      id: 'supervisorName',
+      accessor: item => item.supervisor && constructFullName(item.supervisor),
     },
     {
       accessor: 'mguId',
@@ -112,6 +90,11 @@ const MessageGroupUserTableDisplay = (props) => {
     <ReactTable
       data={messageGroupUserList}
       columns={columns}
+      filterable
+      defaultFilterMethod={(filter, row, column) => {
+        const id = filter.pivotId || filter.id
+        return row[id] !== undefined ? String(row[id]).toLowerCase().startsWith(filter.value) : true
+      }}
       pageSizeOptions={[10, 15, 20]}
       defaultPageSize={10}
       defaultSorted={[{ id: 'groupId' }]}
