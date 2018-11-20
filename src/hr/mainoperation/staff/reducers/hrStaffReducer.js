@@ -21,9 +21,11 @@ import {
     HR_STAFF_SET_STAFF_DATA_FOR_UPDATE,
     HR_STAFF_DATA_UPDATED,
     HR_STAFF_ALL_STAFFS,
-    HR_STAFF_FETCH_DIRECTORS
+    HR_STAFF_FETCH_DIRECTORS,
+    HR_STAFF_FILE_UPLOADED
 } from '../actions/hrStaffAction';
 
+import {FILE_DATA} from '../../../hrUtil'
 
 const INITIAL_STATE={
                     currentStaffs:[],
@@ -187,6 +189,11 @@ export default function (state=INITIAL_STATE, action)
             }
 
             return {...state,directors: action.payload,directorsByBranchOptions: directorsByBranch}
+
+        case HR_STAFF_FILE_UPLOADED:
+            let stfDataList1 = Object.assign({},state.staffDataList)
+            stfDataList1[FILE_DATA] = action.payload
+            return {...state,staffDataList:stfDataList1}
 
         default:
             return state;
