@@ -402,9 +402,13 @@ const getComponent = {
     Ccasoc: AsyncNewIssuePageContainer,
     Ccastskl: AsyncTaskListPage,
     Ccastskedit: AsyncOutCallTaskPage,
-    Gtskedit: AsyncTaskPage,
+    Dtskedit: AsyncTaskPage,
     Dtskredit: AsyncTaskRecEditPage,
     DtskcSummary: AsyncDtskcSummary,
+    Dtskrep: AsyncTaskMonitorPage,
+    Dtskdep: AsyncDtskdep,
+    Dtskl: AsyncDeptTaskListPage,
+    Dtskc: AsyncDtskc,
 }
 
 const generateRoutes = (transactionRoutes) => {
@@ -426,22 +430,16 @@ const generateRoutes = (transactionRoutes) => {
       {/*<Route path="/crm/wspace" component={AsyncCrmWspacePage} />*/}
       <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
       <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
-      <Route path="/dit/dtskrep" component={persistPath(AsyncTaskMonitorPage)} />
-      <Route path="/dit/dtskl"   component={persistPath(AsyncDeptTaskListPage)} />
-      <Route path="/dit/dtskredit/:id"   component={AsyncTaskRecEditPage} />
       <Route path="/dit/messgr" component={persistPath(AsyncMessageGroupPage)} />
       <Route path="/dit/mgru" component={persistPath(AsyncMessageGroupUserPage)} />
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
       <Route path="/hr/doc/create/:type" component={AsyncHrDocCreatePage} />
       <Route path="/hr/doc/update/:id" component={AsyncHrDocUpdatePage} />
       <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />
-      <Route path="/general/dtskc" component={AsyncDtskc} />
-      <Route path="/general/dtskdep" component={AsyncDtskdep} />
-      <Route path="/general/summary" component={AsyncDtskcSummary} />
       <Route path="/finance/mainoperation/fa03" component={AsyncFa03} />
       <Route path="/finance/mainoperation/fa02" component={AsyncFa02} />
       <Route path="/documents/mydocs" component={AsyncMyDocsListPage}/>
-      
+      <Route path="/general/summary" component={AsyncDtskcSummary}/>
       
       {/* Transactions */}
       <Route path="/dit/transaction/update/:id?" component={trupdate} />

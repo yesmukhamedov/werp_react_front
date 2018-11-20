@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Form, Button, Segment, Label, List } from 'semantic-ui-react';
 import hash from 'object-hash';
+import _ from 'lodash';
 import { GET, constructFullName } from '../../../../../utils/helpers';
 import { ROOT_URL } from '../../../../../utils/constants';
+
 
 class AssigneeGroupPaneComponent extends Component {
   state = {
@@ -12,11 +14,12 @@ class AssigneeGroupPaneComponent extends Component {
 
   fetchGroupsMembers = groupId => {
     const groupMembersUrl = `${ROOT_URL}/api/mgru?groupId=${groupId}`;
-    const { groupOpts, lang } = this.props;
+    const { groupOpts, lang, selectedCompany } = this.props;
     const req = GET(groupMembersUrl);
     req
       .then(({ data }) => {
-        const recipientList = data.map(el => {
+        const filteredData = _.filter(data, el => !el.user || el.user.bukrs === selectedCompany);
+        const recipientList = filteredData.map(el => {
           const { branch, department, supervisor, user, messageGroup } = el;
           return {
             branch: {
@@ -36,9 +39,11 @@ class AssigneeGroupPaneComponent extends Component {
               department: department[lang],
               supervisor: supervisor && constructFullName(supervisor),
               user: user && constructFullName(user),
+              bukrs: user && user,
             },
           };
         });
+
         this.setState({
           recipientList,
           groupDetail: groupOpts[this.state.selectedGroup],
@@ -84,7 +89,15 @@ class AssigneeGroupPaneComponent extends Component {
     </Segment>
   );
 
-  render() {
+  renderErrorSection() {
+    return (
+      <Segment inverted color="red" secondary>
+        Please choose company first!!!
+      </Segment>
+    );
+  }
+
+  renderForm() {
     const { groupOpts } = this.props;
     return (
       <Form success>
@@ -100,6 +113,11 @@ class AssigneeGroupPaneComponent extends Component {
         <Button onClick={this.handleSubmit}>Add group</Button>
       </Form>
     );
+  }
+
+  render() {
+    const { selectedCompany } = this.props;
+    return selectedCompany ? this.renderForm() : this.renderErrorSection();
   }
 }
 
