@@ -27,7 +27,7 @@ class TaskListTableComponent extends Component {
         Cell: (props) => {
           const { id } = props.original;
           return (
-            <Link target="_blank" to={`/general/gtskedit/${id}`}>
+            <Link target="_blank" to={`/general/dtskedit/${id}`}>
               {id}
             </Link>
           );
@@ -41,7 +41,7 @@ class TaskListTableComponent extends Component {
           const { contractNumber } = props.original;
           return (
             <a target='_blank' href={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=` + contractNumber}>
-								<Button>{contractNumber}</Button>
+								<Button size='mini'>{contractNumber}</Button>
              </a>
           );
         },
@@ -79,7 +79,7 @@ class TaskListTableComponent extends Component {
         Cell: (props) => {
           const { title, id } = props.original;
           return (
-            <Link target="_blank" to={`/general/gtskedit/${id}`}>
+            <Link target="_blank" to={`/general/dtskedit/${id}`}>
               {title}
             </Link>
           );

@@ -390,8 +390,12 @@ const getComponent = {
     Ccasoc: AsyncNewIssuePageContainer,
     Ccastskl: AsyncTaskListPage,
     Ccastskedit: AsyncOutCallTaskPage,
-    Gtskedit: AsyncTaskPage,
+    Dtskedit: AsyncTaskPage,
     Dtskredit: AsyncTaskRecEditPage,
+    Dtskrep: AsyncTaskMonitorPage,
+    Dtskdep: DtskdepContainer,
+    Dtskl: AsyncDeptTaskListPage,
+    Dtskc: DtskcContainer,
     // DtskcSummary: AsyncDtskcSummary,
 }
 
@@ -414,17 +418,17 @@ const generateRoutes = (transactionRoutes) => {
       {/*<Route path="/crm/wspace" component={AsyncCrmWspacePage} />*/}
       <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
       <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
-      <Route path="/dit/dtskrep" component={persistPath(AsyncTaskMonitorPage)} />
-      <Route path="/dit/dtskl"   component={persistPath(AsyncDeptTaskListPage)} />
-      <Route path="/dit/dtskredit/:id"   component={AsyncTaskRecEditPage} />
+      {/* <Route path="/dit/dtskrep" component={persistPath(AsyncTaskMonitorPage)} /> */}
+      {/* <Route path="/dit/dtskl"   component={persistPath(AsyncDeptTaskListPage)} /> */}
+      {/* <Route path="/dit/dtskredit/:id"   component={AsyncTaskRecEditPage} /> */}
       <Route path="/dit/messgr" component={persistPath(AsyncMessageGroupPage)} />
       <Route path="/dit/mgru" component={persistPath(AsyncMessageGroupUserPage)} />
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
       <Route path="/hr/doc/create/:type" component={AsyncHrDocCreatePage} />
         <Route path="/hr/doc/update/:id" component={AsyncHrDocUpdatePage} />
       <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />
-      <Route path="/general/dtskc" component={DtskcContainer} />
-      <Route path="/general/dtskdep" component={DtskdepContainer} />
+      {/* <Route path="/general/dtskc" component={DtskcContainer} /> */}
+      {/* <Route path="/general/dtskdep" component={DtskdepContainer} /> */}
       <Route path="/finance/mainoperation/fa03" component={AsyncFa03} />
       <Route path="/finance/mainoperation/fa02" component={AsyncFa02} />
       <Route path="/documents/mydocs" component={AsyncMyDocsListPage}/>

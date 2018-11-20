@@ -44,7 +44,7 @@ export const getDocViewLink = (context,contextId) => {
             return '/hr/doc/view/' + contextId
 
         case MD_TASK:
-            return '/general/gtskedit/' + contextId
+            return '/general/dtskedit/' + contextId
         default:
             return ''
     }

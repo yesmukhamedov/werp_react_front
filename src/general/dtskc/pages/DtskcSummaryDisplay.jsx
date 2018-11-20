@@ -29,7 +29,7 @@ const DtskcSummary = (props) => {
             state.createdTasks.map(task => (
               <Table.Row>
                 <Table.Cell>
-                  <Link to={`/general/gtskedit/${task.id}`}>{task.id}</Link>
+                  <Link to={`/general/dtskedit/${task.id}`}>{task.id}</Link>
                 </Table.Cell>
                 <Table.Cell>{task.title}</Table.Cell>
                 <Table.Cell textAlign="right">{JSON.stringify(task)}</Table.Cell>
