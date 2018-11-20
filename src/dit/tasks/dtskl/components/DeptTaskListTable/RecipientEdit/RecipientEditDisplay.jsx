@@ -55,7 +55,7 @@ class RecipientEditDisplay extends Component {
               <Header.Content>
                 {formatMessage(messages.editHeader)}
                 <Header.Subheader>
-                {formatMessage(messages.editSubheader)} <a>{this.state.taskId}</a>
+                  {formatMessage(messages.editSubheader)} <a>{this.state.taskId}</a>
                 </Header.Subheader>
               </Header.Content>
             </Header>
@@ -68,7 +68,7 @@ class RecipientEditDisplay extends Component {
                         // required
                         name="recipient"
                         component={DropdownFormField}
-                        label={formatMessage(messages.editRecipient)}
+                        label={formatMessage({id: 'Recipient.Edit.Recipient'})}
                         opts={assigneeOptions ? [{ key: -1, text: '', value: -1 }, ...assigneeOptions] : []}
                       />
                     </Form.Group>
@@ -78,7 +78,7 @@ class RecipientEditDisplay extends Component {
                       <Field
                         autoComplete='off'
                         name="expectedEndDate"
-                        label={formatMessage(messages.editExpEndDate)}
+                        label={formatMessage(messages.expEndDate)}
                         component={DatePickerFormField}
                       />
                     </Form.Group>
