@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Icon, Button, Header, List } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
 import { DELETE } from '../../../../../../utils/helpers';
-import UploadPanelDisplay from '../../../../../../general/dtskc/pages/UploadPanelDisplay';
+import UploadPanelDisplay from '../../../../../../dit/tasks/dtskc/pages/UploadPanelDisplay';
 
 class TaskAttachmentModal extends Component {
   constructor(props) {

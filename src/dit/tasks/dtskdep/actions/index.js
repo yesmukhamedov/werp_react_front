@@ -1,8 +1,8 @@
 import axios from 'axios';
 import _ from 'lodash';
-import { ROOT_URL } from '../../../utils/constants';
-import { constructFullName, GET } from '../../../utils/helpers';
-import { notify } from '../../../general/notification/notification_action';
+import { ROOT_URL } from '../../../../utils/constants';
+import { constructFullName, GET } from '../../../../utils/helpers';
+import { notify } from '../../../../general/notification/notification_action';
 
 /* action types */
 export const DTSKDEP_ADD_TASK_ADMIN = 'DTSKDEP_ADD_TASK_ADMIN';

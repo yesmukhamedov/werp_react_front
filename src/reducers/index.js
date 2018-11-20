@@ -12,7 +12,6 @@ import taskListReducer from '../crm/callCenter/mainoperation/taskList/reducers/T
 import taskReducer from '../crm/callCenter/mainoperation/task/reducers/TaskReducer';
 import taskMonitorReducer from '../dit/tasks/dtskrep/reducers/TaskMonitorReducer';
 import deptTaskListReducer from '../dit/tasks/dtskl/reducers/DeptTaskListReducer';
-
 import outCallsTransactionReducer from '../crm/callCenter/mainoperation/newIssue/reducers';
 import userInfoReducer from '../general/userInfo/userInfo_reducer';
 import frcolnReducer from '../finance/report/frcoln/frcoln_reducer';
@@ -32,8 +31,8 @@ import hrReportReducer from '../hr/report/general/reducers/hrReportReducer';
 import crmWspaceReducer from '../crm/mainoperation/wspace/reducers/wspaceReducer';
 import faReducer from '../finance/fa_reducer';
 import accountingReducer from '../accounting/accounting_reducer';
-import dtskcTransactionReducer from '../general/dtskc/reducers';
-import dtskdeoTranscationReducer from '../general/dtskdep/reducers';
+import dtskcTransactionReducer from '../dit/tasks/dtskc/reducers';
+import dtskdepTranscationReducer from '../dit/tasks/dtskdep/reducers';
 import messgrTransactionReducer from '../dit/message/messgr/reducers';
 import mgruTransactionReducer from '../dit/message/mgru/reducers';
 import hrDocReducer from '../hr/mainoperation/document/reducers/hrDocReducer';
@@ -74,7 +73,7 @@ const appReducer = combineReducers({
   crmWspaceReducer: crmWspaceReducer,
   accounting: accountingReducer,
   dtskcTransaction: dtskcTransactionReducer,
-  dtskdepTransaction: dtskdeoTranscationReducer,
+  dtskdepTransaction: dtskdepTranscationReducer,
   messgrTransaction: messgrTransactionReducer,
   mgruTransaction: mgruTransactionReducer,
   hrDocReducer: hrDocReducer,

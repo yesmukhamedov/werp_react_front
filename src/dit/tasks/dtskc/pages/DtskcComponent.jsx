@@ -12,9 +12,9 @@ import {
   TextAreaFormField,
   TextInputFormField,
   DatePickerFormField,
-} from '../../../utils/formFields';
-import browserHistory from '../../../utils/history';
-import { DELETE } from '../../../utils/helpers';
+} from '../../../../utils/formFields';
+import browserHistory from '../../../../utils/history';
+import { DELETE } from '../../../../utils/helpers';
 import './style.css';
 
 class DtskcComponent extends Component {

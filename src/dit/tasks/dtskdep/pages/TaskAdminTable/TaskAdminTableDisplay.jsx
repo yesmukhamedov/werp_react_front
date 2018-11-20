@@ -2,7 +2,7 @@ import React from 'react';
 import ReactTable from 'react-table';
 import { Button } from 'semantic-ui-react';
 import 'react-table/react-table.css';
-import { constructFullName } from '../../../../utils/helpers';
+import { constructFullName } from '../../../../../utils/helpers';
 
 const TaskAdminTableDisplay = (props) => {
   const { taskAdminList = [], lang, removeTaskAdmin, fetchTaskAdmins } = props;

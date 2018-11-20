@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Form, Button, Segment, Label, List } from 'semantic-ui-react';
 import hash from 'object-hash';
-import { GET, constructFullName } from '../../../../utils/helpers';
-import { ROOT_URL } from '../../../../utils/constants';
+import { GET, constructFullName } from '../../../../../utils/helpers';
+import { ROOT_URL } from '../../../../../utils/constants';
 
 class AssigneeGroupPaneComponent extends Component {
   state = {

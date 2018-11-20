@@ -21,7 +21,7 @@ import {
   formatDMY,
   constructFullName,
 } from '../../../../../../utils/helpers';
-import { AttachmentPanelDisplay } from '../../../../../../general/dtskc/pages';
+import { AttachmentPanelDisplay } from '../../../../../../dit/tasks/dtskc/pages';
 import { TaskAttachmentModalContainer } from '../TaskAttachmentModal';
 
 class TaskInfoComponent extends Component {

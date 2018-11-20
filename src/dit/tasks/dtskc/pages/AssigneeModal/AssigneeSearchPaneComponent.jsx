@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Form, Search, Segment, Button } from 'semantic-ui-react';
 import hash from 'object-hash';
 import axios from 'axios';
-import { ROOT_URL } from '../../../../utils/constants';
-import { GET, constructFullName } from '../../../../utils/helpers';
+import { ROOT_URL } from '../../../../../utils/constants';
+import { GET, constructFullName } from '../../../../../utils/helpers';
 
 const assigneeSearchUrl = `${ROOT_URL}/api/tasks/assignee?keyword=`;
 const assigneeDetailsUrl = `${ROOT_URL}/api/tasks/assignee`;

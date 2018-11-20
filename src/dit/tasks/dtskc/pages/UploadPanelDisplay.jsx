@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from 'semantic-ui-react';
-import { ROOT_URL } from '../../../utils/constants';
+import { ROOT_URL } from '../../../../utils/constants';
 import Upload from 'rc-upload';
 
 const UploadPanelDisplay = (props) => {

@@ -7,12 +7,8 @@ import Signin from '../components/Auth/Signin';
 import Signout from '../components/Auth/Signout';
 import persistPath from './PersistPath';
 
-
 import ForbiddenPage from '../general/forbidden';
 import LoadingPage from '../general/LoadingPage';
-
-import { DtskcContainer, DtskcSummaryDisplay } from '../general/dtskc/pages';
-import { DtskdepContainer } from '../general/dtskdep/pages';
 
 
 const AsyncSettings = Loadable({
@@ -336,10 +332,26 @@ const trupdate = Loadable({
   loading: () => <LoadingPage />
 });
 
-// const AsyncDtskcSummary = Loadable({
-//   loader: () => import('../general/dtskc/pages/DtskcSummaryDisplay' /* webpackChunkName: "DtskcSummary" */),
-//   loading: () => <LoadingPage />
-// });
+// import { DtskcContainer, DtskcSummaryDisplay } from '../general/dtskc/pages';
+// import { DtskdepContainer } from '../general/dtskdep/pages';
+
+const AsyncDtskc = Loadable({
+  loader: () =>
+    import('../dit/tasks/dtskc/pages' /* webpackChunkName: "Dtskc" */),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncDtskcSummary = Loadable({
+  loader: () =>
+    import('../dit/tasks/dtskc/pages' /* webpackChunkName: "DtskcSummary" */),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncDtskdep = Loadable({
+  loader: () =>
+    import('../dit/tasks/dtskdep/pages' /* webpackChunkName: "Dtskdep" */),
+  loading: () => <LoadingPage />,
+});
 
 
 const getComponent = {
@@ -392,7 +404,7 @@ const getComponent = {
     Ccastskedit: AsyncOutCallTaskPage,
     Gtskedit: AsyncTaskPage,
     Dtskredit: AsyncTaskRecEditPage,
-    // DtskcSummary: AsyncDtskcSummary,
+    DtskcSummary: AsyncDtskcSummary,
 }
 
 const generateRoutes = (transactionRoutes) => {
@@ -421,14 +433,15 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/dit/mgru" component={persistPath(AsyncMessageGroupUserPage)} />
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
       <Route path="/hr/doc/create/:type" component={AsyncHrDocCreatePage} />
-        <Route path="/hr/doc/update/:id" component={AsyncHrDocUpdatePage} />
+      <Route path="/hr/doc/update/:id" component={AsyncHrDocUpdatePage} />
       <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />
-      <Route path="/general/dtskc" component={DtskcContainer} />
-      <Route path="/general/dtskdep" component={DtskdepContainer} />
+      <Route path="/dit/dtskc" component={AsyncDtskc} />
+      <Route path="/dit/dtskdep" component={AsyncDtskdep} />
+      <Route path="/dit/summary" component={AsyncDtskcSummary} />
       <Route path="/finance/mainoperation/fa03" component={AsyncFa03} />
       <Route path="/finance/mainoperation/fa02" component={AsyncFa02} />
       <Route path="/documents/mydocs" component={AsyncMyDocsListPage}/>
-      <Route path="/general/summary" component={DtskcSummaryDisplay} />
+      
       
       {/* Transactions */}
       <Route path="/dit/transaction/update/:id?" component={trupdate} />

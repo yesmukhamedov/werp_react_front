@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Button, Segment } from 'semantic-ui-react';
 import hash from 'object-hash';
-import { constructFullName } from '../../../../utils/helpers';
+import { constructFullName } from '../../../../../utils/helpers';
 
 class AssigneeOtherPane extends Component {
   state = {

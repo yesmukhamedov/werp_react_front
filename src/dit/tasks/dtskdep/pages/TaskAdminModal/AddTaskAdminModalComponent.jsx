@@ -9,7 +9,7 @@ import { Field, reduxForm } from 'redux-form';
 import {
   DropdownFormField,
   SearchableSingleDropdownFormField
-} from '../../../../utils/formFields';
+} from '../../../../../utils/formFields';
 
 
 const validate = (values) => {
