@@ -2,7 +2,7 @@ import React from 'react';
 import { injectIntl } from 'react-intl';
 import TaskInfoComponent from './TaskInfoComponent';
 import TaskEditContainer from '../TaskEdit/TaskEditContainer';
-import { messages } from '../../../../../../locales/defineMessages';
+import { messages } from '../../../../../locales/defineMessages';
 
 const TaskInfoWrapper = props => (
   <TaskInfoComponent

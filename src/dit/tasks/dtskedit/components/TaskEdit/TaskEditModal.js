@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import { injectIntl } from 'react-intl';
 import { Button, Header, Icon, Modal, Form, Segment } from 'semantic-ui-react';
 import './settings.css';
-import { difference } from '../../../../../../utils/helpers';
+import { difference } from '../../../../../utils/helpers';
 import {
   DropdownFormField,
   TextAreaFormField,
   TextInputFormField,
   DatePickerFormField,
-} from '../../../../../../utils/formFields';
+} from '../../../../../utils/formFields';
 
 class TaskEditModal extends Component {
   constructor(props) {

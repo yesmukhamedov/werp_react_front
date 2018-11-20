@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { getTaskDirectories } from '../../../../taskList/actions/TaskListAction';
-import { fetchTaskById, clearTaskStore } from '../../../../task/actions/TaskAction';
-import TaskPageDisplay from '../../../../task/components/TaskPageDisplay';
+import { fetchTaskById, clearTaskStore } from '../../../../../../../dit/tasks/dtskedit/actions/TaskAction';
+import TaskPageDisplay from '../../../../../../../dit/tasks/dtskedit/components/TaskPageDisplay';
 import TaskInfoWrapper from './TaskInfoWrapper';
 
 function mapStateToProps(state) {

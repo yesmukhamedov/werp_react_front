@@ -41,7 +41,8 @@ export const HR_STAFF_DATA_FORM_MODAL_FLAG = 'HR_STAFF_DATA_FORM_MODAL_FLAG'
 
 export const HR_STAFF_FETCH_MANAGERS = 'HR_STAFF_FETCH_MANAGERS'
 export const HR_STAFF_FETCH_DIRECTORS = 'HR_STAFF_FETCH_DIRECTORS'
-
+export const HR_STAFF_FILE_UPLOADED = 'HR_STAFF_FILE_UPLOADED'
+export const HR_STAFF_FILE_DELETED = 'HR_STAFF_FILE_DELETED'
 export function fetchCurrentStaffs(params){
     return function(dispatch){
         dispatch(modifyLoader(true));
@@ -356,6 +357,29 @@ export function downloadFile(fileId){
         }).catch((error) => {
             handleError(error,dispatch)
         })
+    }
+}
+
+export function deleteFile(staffId,fileId){
+    return function (dispatch){
+        axios.delete(`${ROOT_URL}` + '/api/hr/file/' + staffId + '/' + fileId,{
+            headers: {
+                authorization: localStorage.getItem('token')}
+        }).then(({data}) => {
+            dispatch({
+                type:HR_STAFF_FILE_DELETED,
+                payload:fileId
+            })
+        }).catch((error) => {
+            handleError(error,dispatch)
+        })
+    }
+}
+
+export function addUploadedFile (file){
+    return {
+        type: HR_STAFF_FILE_UPLOADED,
+        payload: file
     }
 }
 

@@ -1,7 +1,9 @@
 import React, {Component} from 'react'
 import {Container, Divider, Tab, Header,Button} from 'semantic-ui-react'
 import { connect } from 'react-redux'
-import {fetchSingleStaff,toggleStaffDataFormModal,blankStaffData,fetchStaffData,setStaffDataForUpdate,deleteStaffData,downloadFile} from '../actions/hrStaffAction'
+import {fetchSingleStaff,toggleStaffDataFormModal,blankStaffData,
+    fetchStaffData,setStaffDataForUpdate,deleteStaffData,downloadFile,addUploadedFile,
+    deleteFile} from '../actions/hrStaffAction'
 import StaffSalariesTable from './view/StaffSalariesTable'
 import StaffExpencesTable from './view/StaffExpencesTable'
 import StaffOffDataTable from './view/StaffOffDataTable'
@@ -65,8 +67,16 @@ class StaffViewPage extends Component{
   }
 
   renderFiles(files){
-        return <StaffFilesTable downloadFile={this.props.downloadFile} files={files} />
+        return <StaffFilesTable
+                    staffId={this.props.staff.id}
+                    onUploadSuccess={this.onUploadSuccess}
+                    deleteFile={this.props.deleteFile}
+                    downloadFile={this.props.downloadFile} files={files} />
   }
+
+    onUploadSuccess = (response) => {
+      this.props.addUploadedFile(response)
+    }
 
   prepareToCreate(){
       const {staff} = this.props
@@ -187,5 +197,5 @@ function mapStateToProps (state) {
 export default connect(mapStateToProps, {
     fetchSingleStaff,f4FetchBusinessAreaList,f4FetchPositionList,f4FetchCurrencyList,f4FetchDepartmentList,
     f4FetchExpenceTypes,toggleStaffDataFormModal,f4FetchSubCompanies,blankStaffData,fetchStaffData,
-    setStaffDataForUpdate,deleteStaffData,downloadFile
+    setStaffDataForUpdate,deleteStaffData,downloadFile,addUploadedFile,deleteFile
 })(StaffViewPage)

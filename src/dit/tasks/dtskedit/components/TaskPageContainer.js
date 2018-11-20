@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
-import { getTaskDirectories } from '../../taskList/actions/TaskListAction';
+import { getTaskDirectories } from '../../../../crm/callCenter/mainoperation/taskList/actions/TaskListAction';
+
 import {
   fetchTaskById,
   clearTaskStore,

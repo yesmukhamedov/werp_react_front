@@ -109,7 +109,7 @@ const AsyncTaskListPage = Loadable({
 
 const AsyncTaskPage = Loadable({
   loader: () =>
-    import('../crm/callCenter/mainoperation/task/components/TaskPageContainer' /* webpackChunkName: "TaskPage" */),
+    import('../dit/tasks/dtskedit/components/TaskPageContainer' /* webpackChunkName: "TaskPage" */),
   loading: () => <LoadingPage />,
 });
 
@@ -337,19 +337,19 @@ const trupdate = Loadable({
 
 const AsyncDtskc = Loadable({
   loader: () =>
-    import('../dit/tasks/dtskc/pages' /* webpackChunkName: "Dtskc" */),
+    import('../dit/tasks/dtskc/pages/DtskcContainer' /* webpackChunkName: "Dtskc" */),
   loading: () => <LoadingPage />,
 });
 
 const AsyncDtskcSummary = Loadable({
   loader: () =>
-    import('../dit/tasks/dtskc/pages' /* webpackChunkName: "DtskcSummary" */),
+    import('../dit/tasks/dtskc/pages/DtskcSummaryDisplay' /* webpackChunkName: "DtskcSummary" */),
   loading: () => <LoadingPage />,
 });
 
 const AsyncDtskdep = Loadable({
   loader: () =>
-    import('../dit/tasks/dtskdep/pages' /* webpackChunkName: "Dtskdep" */),
+    import('../dit/tasks/dtskdep/pages/DtskdepContainer' /* webpackChunkName: "Dtskdep" */),
   loading: () => <LoadingPage />,
 });
 
@@ -435,9 +435,9 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/hr/doc/create/:type" component={AsyncHrDocCreatePage} />
       <Route path="/hr/doc/update/:id" component={AsyncHrDocUpdatePage} />
       <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />
-      <Route path="/dit/dtskc" component={AsyncDtskc} />
-      <Route path="/dit/dtskdep" component={AsyncDtskdep} />
-      <Route path="/dit/summary" component={AsyncDtskcSummary} />
+      <Route path="/general/dtskc" component={AsyncDtskc} />
+      <Route path="/general/dtskdep" component={AsyncDtskdep} />
+      <Route path="/general/summary" component={AsyncDtskcSummary} />
       <Route path="/finance/mainoperation/fa03" component={AsyncFa03} />
       <Route path="/finance/mainoperation/fa02" component={AsyncFa02} />
       <Route path="/documents/mydocs" component={AsyncMyDocsListPage}/>

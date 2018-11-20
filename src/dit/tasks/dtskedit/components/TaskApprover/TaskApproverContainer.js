@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import TaskApproverDisplay from './TaskApproverDisplay';
 import { fetchTaskDocStatus, approve, reject } from '../../actions/TaskApproverAction';
-import { messages as msg} from '../../../../../../locales/defineMessages';
+import { messages as msg} from '../../../../../locales/defineMessages';
 import { injectIntl } from 'react-intl';
 
 const mapStateToProps = state => ({

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { editTask } from '../../../../task/actions/TaskAction';
+import { editTask } from '../../../../../../../dit/tasks/dtskedit/actions/TaskAction';
 import TaskEditModalWrapper from './TaskEditModalWrapper';
 
 function mapStateToProps(state, props) {
