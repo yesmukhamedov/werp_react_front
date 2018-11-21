@@ -2,14 +2,19 @@ import React, { Component } from 'react';
 import { Form, Button, Segment, Label, List } from 'semantic-ui-react';
 import hash from 'object-hash';
 import _ from 'lodash';
-import WarnSegment from './WarnSegment';
+import WarnMessage from './WarnMessage';
 import { GET, constructFullName } from '../../../../../utils/helpers';
 import { ROOT_URL } from '../../../../../utils/constants';
 
 class AssigneeGroupPaneComponent extends Component {
   state = {
-    selectedGroup: '',
-    recipientList: [],
+    data: {
+      selectedGroup: undefined,
+      recipientList: [],
+    },
+    isLoading: false,
+    isSubmittable: false,
+    errors: {},
   };
 
   fetchGroupsMembers = groupId => {
@@ -48,21 +53,32 @@ class AssigneeGroupPaneComponent extends Component {
         });
 
         this.setState({
-          recipientList,
-          groupDetail: groupOpts[this.state.selectedGroup],
+          ...this.state,
+          data: {
+            ...this.state.data,
+            recipientList,
+            groupDetail: groupOpts[this.state.data.selectedGroup],
+          },
+          isLoading: false,
+          isSubmittable: (recipientList.length > 0),
         });
       })
       .catch(err => console.log(err));
   };
 
   handleChange = (_, { name, value }) => {
-    this.setState({ [name]: value });
+    this.setState({
+      ...this.state,
+      data: { ...this.state.data, [name]: value },
+      isLoading: true,
+    });
     this.fetchGroupsMembers(value);
   };
 
   handleSubmit = () => {
     const { addAssigneeGroup, toggleAssigneeModal: hideModal } = this.props;
-    const { groupDetail, recipientList } = this.state;
+    const { data } = this.state;
+    const { groupDetail, recipientList } = data;
     const assigneeGroup = { groupDetail, recipientList };
     addAssigneeGroup({ id: hash(assigneeGroup), ...assigneeGroup });
     hideModal();
@@ -71,7 +87,7 @@ class AssigneeGroupPaneComponent extends Component {
   renderGroupMembers = () => (
     <Segment>
       <List divided selection>
-        {this.state.recipientList.map(member => {
+        {this.state.data.recipientList.map(member => {
           const { id, meta } = member;
           return (
             <List.Item key={id}>
@@ -94,18 +110,24 @@ class AssigneeGroupPaneComponent extends Component {
 
   renderForm() {
     const { groupOpts, messages } = this.props;
+    const { isLoading, isSubmittable } = this.state;
     return (
-      <Form success>
+      <Form loading={isLoading}>
         <Form.Select
           options={groupOpts}
           label={messages.L__GROUP}
-          name={messages.TX__SELECT_GROUP}
+          name="selectedGroup"
           placeholder={messages.TX__SELECT_GROUP}
           onChange={this.handleChange}
           required
         />
         {this.renderGroupMembers()}
-        <Button onClick={this.handleSubmit}>{messages.BTN__ADD}</Button>
+        <Button
+          onClick={this.handleSubmit}
+          disabled={!isSubmittable}
+        >
+          {messages.BTN__ADD}
+        </Button>
       </Form>
     );
   }
@@ -115,7 +137,7 @@ class AssigneeGroupPaneComponent extends Component {
     return selectedCompany ? (
       this.renderForm()
     ) : (
-      <WarnSegment message={messages.TX__WARN_SELECT_COMPANY} />
+      <WarnMessage header={messages.TX__WARN_SELECT_COMPANY} />
     );
   }
 }

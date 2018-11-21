@@ -7,6 +7,7 @@ import UploadPanelDisplay from './UploadPanelDisplay';
 import AttachmentPanelDisplay from './AttachmentPanelDisplay';
 import AssigneePanelDisplay from './AssigneePanelDisplay';
 import AssigneeModalContainer from './AssigneeModal/AssigneeModalContainer';
+import WarnMessage from './AssigneeModal/WarnMessage';
 import {
   DropdownFormField,
   TextAreaFormField,
@@ -22,6 +23,8 @@ class DtskcComponent extends Component {
     super(props);
     this.state = {
       uploadList: [],
+      errors: {},
+      isLoading: false,
     };
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -53,24 +56,30 @@ class DtskcComponent extends Component {
   }
 
   handleFormSubmit(formValues) {
-    const {
-      createTask,
-      assigneeGroups,
-      assignees,
-      clearTransaction,
-      reset,
-    } = this.props;
+    const { createTask, assigneeGroups, assignees } = this.props;
     const allRecipients = _.concat(
       _.flatMap(_.map(assigneeGroups, 'recipientList')),
       _.map(assignees, 'recipient'),
     );
-    const { uploadList } = this.state;
-    createTask({ ...formValues, uploadList, allRecipients }, data => {
-      browserHistory.push({
-        pathname: '/general/summary',
-        state: { createdTasks: data },
+
+    if (allRecipients.length > 0) {
+      const { uploadList } = this.state;
+      this.setState({ isLoading: true }, () =>
+        createTask({ ...formValues, uploadList, allRecipients }, data => {
+          browserHistory.push({
+            pathname: '/general/summary',
+            state: { createdTasks: data },
+          });
+        }),
+      );
+    } else {
+      this.setState({
+        ...this.setState,
+        errors: {
+          assigneeTable: 'Cannot create task without any assignee',
+        },
       });
-    });
+    }
   }
 
   render() {
@@ -90,6 +99,7 @@ class DtskcComponent extends Component {
       lang,
       intl,
     } = this.props;
+    const { isLoading } = this.state;
     const { messages } = intl;
     return (
       <Container
@@ -102,7 +112,10 @@ class DtskcComponent extends Component {
       >
         <Header as="h2">{messages.H__NEW_TASK}</Header>
         <Segment attached="top">
-          <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
+          <Form
+            onSubmit={handleSubmit(this.handleFormSubmit)}
+            loading={isLoading}
+          >
             <Form.Group widths="2">
               <Field
                 name="taskType"
@@ -112,7 +125,11 @@ class DtskcComponent extends Component {
               />
             </Form.Group>
 
-            <Field name="title" component={TextInputFormField} label={messages.L__TITLE} />
+            <Field
+              name="title"
+              component={TextInputFormField}
+              label={messages.L__TITLE}
+            />
             <Field
               name="description"
               component={TextAreaFormField}
@@ -195,7 +212,11 @@ class DtskcComponent extends Component {
           removePerson={removeAssigneePerson}
           lang={lang}
           messages={messages}
-        />
+        >
+          {this.state.errors.assigneeTable && (
+            <WarnMessage content={messages.TX__ERROR_NO_ASSIGNEE} />
+          )}
+        </AssigneePanelDisplay>
         <Segment attached="bottom">
           <AttachmentPanelDisplay
             attachment={this.state.uploadList}
@@ -214,39 +235,40 @@ class DtskcComponent extends Component {
   }
 }
 
-const validate = values => {
+function validate(values, state) {
+  const { messages } = state.intl;
   const errors = {};
   if (!values.title) {
-    errors.title = 'Объязательное поле для заполнения';
+    errors.title = messages.TX__REQUIRED_FIELD;
   }
   if (!values.description) {
-    errors.description = 'Объязательное поле для заполнения';
+    errors.description = messages.TX__REQUIRED_FIELD;
   }
   if (!values.company) {
-    errors.company = 'Объязательное поле для заполнения';
+    errors.company = messages.TX__REQUIRED_FIELD;
   }
   if (!values.taskType) {
-    errors.taskType = 'Объязательное поле для заполнения';
+    errors.taskType = messages.TX__REQUIRED_FIELD;
   }
   if (!values.branch) {
-    errors.branch = 'Объязательное поле для заполнения';
+    errors.branch = messages.TX__REQUIRED_FIELD;
   }
   if (!values.department) {
-    errors.department = 'Объязательное поле для заполнения';
+    errors.department = messages.TX__REQUIRED_FIELD;
   }
   if (!values.initiatorManager) {
-    errors.initiatorManager = 'Объязательное поле для заполнения';
+    errors.initiatorManager = messages.TX__REQUIRED_FIELD;
   }
   if (!values.assigneeManager) {
-    errors.assigneeManager = 'Объязательное поле для заполнения';
+    errors.assigneeManager = messages.TX__REQUIRED_FIELD;
   }
   if (!values.status) {
-    errors.status = 'Объязательное поле для заполнения';
+    errors.status = messages.TX__REQUIRED_FIELD;
   }
   return errors;
 };
 
-export default reduxForm({
+export default injectIntl(reduxForm({
   form: 'DtskcForm',
   validate,
-})(injectIntl(DtskcComponent));
+})(DtskcComponent));

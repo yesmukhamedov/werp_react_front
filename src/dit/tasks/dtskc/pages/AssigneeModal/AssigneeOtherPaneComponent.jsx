@@ -1,30 +1,44 @@
 import React, { Component } from 'react';
 import { Form, Button } from 'semantic-ui-react';
 import hash from 'object-hash';
-import WarnSegment from './WarnSegment';
+import WarnMessage from './WarnMessage';
 import { constructFullName } from '../../../../../utils/helpers';
 
 class AssigneeOtherPane extends Component {
   state = {
-    selectedBranch: '',
-    selectedDepartment: '',
-    selectedManager: '',
+    data: {
+      selectedBranch: '',
+      selectedDepartment: '',
+      selectedManager: '',
+    },
+    errors: {},
+    isSubmittable: false,
   };
 
-  handleChange = (e, { name, value }) => {
-    console.log('handleChange', name, value);
-    switch (name) {
-      case 'selectedDepartment': {
-        this.setState({
-          selectedManager: '',
-          [name]: value,
-        });
-        break;
-      }
-      default:
-        this.setState({ [name]: value });
+  handleChange = (_, { name, value }) => {
+    let data = {
+      ...this.state.data,
+      [name]: value,
+    };
+    if (name === 'selectedDepartment') {
+      data.selectedManager = '';
     }
+
+    this.setState({
+      ...this.state,
+      data,
+      isSubmittable: this.validate(data),
+    });
   };
+
+  validate = ({
+    selectedBranch,
+    selectedDepartment,
+    selectedManager,
+  }) =>
+    !!selectedBranch &&
+    !!selectedDepartment &&
+    !!selectedManager;
 
   handleSubmit = () => {
     const {
@@ -34,18 +48,18 @@ class AssigneeOtherPane extends Component {
     } = this.props;
     const recipient = {
       branch: {
-        id: this.state.selectedBranch,
+        id: this.state.data.selectedBranch,
       },
       department: {
-        id: this.state.selectedDepartment.depId,
+        id: this.state.data.selectedDepartment.depId,
       },
       assigneesManager: {
-        id: this.state.selectedManager.id,
+        id: this.state.data.selectedManager.id,
       },
       meta: {
-        branch: branchOpts[this.state.selectedBranch][0],
-        department: this.state.selectedDepartment,
-        supervisor: constructFullName(this.state.selectedManager),
+        branch: branchOpts[this.state.data.selectedBranch][0],
+        department: this.state.data.selectedDepartment,
+        supervisor: constructFullName(this.state.data.selectedManager),
       },
     };
     const assigneePerson = {
@@ -58,7 +72,8 @@ class AssigneeOtherPane extends Component {
 
   renderForm() {
     const { managerOpts, branchOpts, deptOpts, messages } = this.props;
-    const { selectedDepartment } = this.state;
+    const { data, isSubmittable } = this.state;
+    const { selectedDepartment } = data;
     return (
       <Form>
         <Form.Group widths="equal">
@@ -86,7 +101,9 @@ class AssigneeOtherPane extends Component {
             onChange={this.handleChange}
           />
         </Form.Group>
-        <Button onClick={this.handleSubmit}>{messages.BTN__ADD}</Button>
+        <Button disabled={!isSubmittable} onClick={this.handleSubmit}>
+          {messages.BTN__ADD}
+        </Button>
       </Form>
     );
   }
@@ -96,7 +113,7 @@ class AssigneeOtherPane extends Component {
     return selectedCompany ? (
       this.renderForm()
     ) : (
-      <WarnSegment message={messages.TX__WARN_SELECT_COMPANY} />
+      <WarnMessage header={messages.TX__WARN_SELECT_COMPANY} />
     );
   }
 }

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Form, Search, Segment, Button } from 'semantic-ui-react';
 import hash from 'object-hash';
 import axios from 'axios';
-import WarnSegment from './WarnSegment';
+import WarnMessage from './WarnMessage';
 import { ROOT_URL } from '../../../../../utils/constants';
 import { GET, constructFullName } from '../../../../../utils/helpers';
 import { defineMessages } from 'react-intl';
@@ -11,11 +11,16 @@ const assigneeSearchUrl = `${ROOT_URL}/api/tasks/assignee?keyword=`;
 const assigneeDetailsUrl = `${ROOT_URL}/api/tasks/assignee`;
 
 const initialState = {
-  selectedAssignee: '',
-  selectedAssigneeId: '',
-  selectedBranch: '',
-  selectedDepartment: '',
-  selectedManager: '',
+  data: {
+    selectedAssignee: '',
+    selectedAssigneeId: '',
+    selectedBranch: '',
+    selectedDepartment: '',
+    selectedManager: '',
+  },
+  errors: {},
+  isLoading: false,
+  isSubmittable: false,
   assigneesList: [],
   branchOptions: [],
   departmentOptions: [],
@@ -30,24 +35,42 @@ class AssigneeSearchPaneComponent extends Component {
   resetComponent = () => this.setState(initialState);
 
   handleChange = (e, { name, value }) => {
-    switch (name) {
-      case 'selectedDepartment': {
-        this.setState({
-          selectedManager: '',
-          [name]: value,
-        });
-        break;
-      }
-      default:
-        this.setState({ [name]: value });
+    let data = {
+      ...this.state.data,
+      [name]: value,
+    };
+    if (name === 'selectedDepartment') {
+      data.selectedManager = '';
     }
+
+    this.setState({
+      ...this.state,
+      data,
+      isSubmittable: this.validate(data),
+    });
   };
+
+  validate = ({
+    selectedAssignee,
+    selectedBranch,
+    selectedDepartment,
+    selectedManager,
+  }) =>
+    !!selectedAssignee &&
+    !!selectedBranch &&
+    !!selectedDepartment &&
+    !!selectedManager;
 
   handleResultSelect = (e, { result }) =>
     this.setState(
       {
-        selectedAssignee: result.title,
-        selectedAssigneeId: result,
+        ...this.state,
+        data: {
+          ...this.state.data,
+          selectedAssignee: result.title,
+          selectedAssigneeId: result,
+        },
+        isLoading: true,
       },
       () => {
         this.fetchAssigneeDetails(result.userId);
@@ -85,8 +108,12 @@ class AssigneeSearchPaneComponent extends Component {
             userId: el.userId,
           }));
           this.setState({
+            ...this.state,
             assigneesList: assignees,
-            selectedAssignee: value,
+            data: {
+              ...this.state.data,
+              selectedAssignee: value,
+            },
           });
         })
         .catch(error => {
@@ -126,6 +153,7 @@ class AssigneeSearchPaneComponent extends Component {
           ...this.state,
           branchOptions: Object.values(filteredBranchOpts),
           departmentOptions: Object.values(filteredDepOpts),
+          isLoading: false,
         });
       })
       .catch(error => {
@@ -145,22 +173,22 @@ class AssigneeSearchPaneComponent extends Component {
     } = this.props;
     const recipient = {
       branch: {
-        id: this.state.selectedBranch,
+        id: this.state.data.selectedBranch,
       },
       department: {
-        id: this.state.selectedDepartment.depId,
+        id: this.state.data.selectedDepartment.depId,
       },
       assignee: {
-        id: this.state.selectedAssigneeId.userId,
+        id: this.state.data.selectedAssigneeId.userId,
       },
       assigneesManager: {
-        id: this.state.selectedManager.id,
+        id: this.state.data.selectedManager.id,
       },
       meta: {
-        branch: branchOpts[this.state.selectedBranch][0],
-        department: this.state.selectedDepartment,
-        supervisor: constructFullName(this.state.selectedManager),
-        user: this.state.selectedAssigneeId.title,
+        branch: branchOpts[this.state.data.selectedBranch][0],
+        department: this.state.data.selectedDepartment,
+        supervisor: constructFullName(this.state.data.selectedManager),
+        user: this.state.data.selectedAssigneeId.title,
       },
     };
     const assigneePerson = {
@@ -173,10 +201,11 @@ class AssigneeSearchPaneComponent extends Component {
 
   renderForm() {
     const { managerOpts, messages } = this.props;
-    const { selectedDepartment } = this.state;
+    const { data, isLoading, isSubmittable } = this.state;
+    const { selectedDepartment } = data;
     return (
       <div>
-        <Form>
+        <Form loading={isLoading}>
           <Form.Field>
             <Search
               onResultSelect={this.handleResultSelect}
@@ -209,7 +238,9 @@ class AssigneeSearchPaneComponent extends Component {
               onChange={this.handleChange}
             />
           </Form.Group>
-          <Button onClick={this.handleSubmit}>{messages.BTN__ADD}</Button>
+          <Button disabled={!isSubmittable} onClick={this.handleSubmit}>
+            {messages.BTN__ADD}
+          </Button>
         </Form>
       </div>
     );
@@ -220,7 +251,7 @@ class AssigneeSearchPaneComponent extends Component {
     return selectedCompany ? (
       this.renderForm()
     ) : (
-      <WarnSegment message={messages.TX__WARN_SELECT_COMPANY} />
+      <WarnMessage header={messages.TX__WARN_SELECT_COMPANY} />
     );
   }
 }

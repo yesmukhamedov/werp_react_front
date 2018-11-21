@@ -111,6 +111,8 @@
 	"TX__WARN_SELECT_COMPANY": "Company must be selected first",
 	"TX__SELECT_GROUP": "Select group",
 	"L__ASSIGNEE_MANAGER": "Assignee manager",
+	"TX__ERROR_NO_ASSIGNEE": "Error! Assignee must be selected",
+	"TX__REQUIRED_FIELD": "Required field",
 	
 	"Auth.Signin.Header": "Log-in to your account",
 	"Auth.Signin.Username": "Username",

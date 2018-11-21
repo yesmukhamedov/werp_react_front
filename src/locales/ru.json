@@ -111,6 +111,8 @@
 	"TX__WARN_SELECT_COMPANY": "Необходимо выбрать компанию из списка",
 	"TX__SELECT_GROUP": "Выбрать группу",
 	"L__ASSIGNEE_MANAGER": "Менеджер исполнителя",
+	"TX__ERROR_NO_ASSIGNEE": "Ошибка! Необходимо выбрать исполнителя",
+	"TX__REQUIRED_FIELD": "Объязательное поле для заполнения",
 
 	"Task.Branch": "Филиал",
 	"Task.Department": "Отдел",
