@@ -6,6 +6,8 @@ import {f4FetchStaffList, f4ClearStaffList} from '../f4_action'
 import { Table, Modal, Dropdown, Icon, Input, Checkbox, Button } from 'semantic-ui-react'
 import matchSorter from 'match-sorter';
 import {LEGACY_URL} from "../../../utils/constants"
+import { injectIntl } from 'react-intl';
+import { messages } from '../../../locales/defineMessages';
 // import './notification.css'
 
 // const arrayList= ;
@@ -70,7 +72,11 @@ class StaffF4Modal extends PureComponent{
 
 
     render () {
-        let trans = this.props.trans;
+        let trans = this.props.trans;        
+        const {companyOptions, branchOptions, bukrsDisabledParent} = this.props;
+        const {bukrsDisabledState, brnchDisabledState, bukrsSV, brnchSV, fioSV, iinBinSV, unemployed} = this.state;
+        const {formatMessage} = this.props.intl;
+
         let t1columns = [];
         if (trans==='fcis' || trans.startsWith('hr_doc_create_'))
         {
@@ -83,14 +89,14 @@ class StaffF4Modal extends PureComponent{
                 </span> 
         
             };
-            let t1r1c2 = {Header:({value}) => <b>{messages['fio']}</b>,width: 300,id: "fio",
+            let t1r1c2 = {Header:({value}) => <b>{formatMessage(messages.fio)}</b>,width: 300,id: "fio",
             accessor: d => d.fio,
             filterMethod: (filter, rows) =>
               matchSorter(rows, filter.value, { keys: ["fio"] }),
             filterAll: true,className:'clickableItem'};
 
 
-            let t1r1c3 = {Header:({value}) => <b>{messages['iinBin']}</b>,accessor: "iinBin",width: 150,className:'clickableItem'};
+            let t1r1c3 = {Header:({value}) => <b>{formatMessage(messages.iinBin)}</b>,accessor: "iinBin",width: 150,className:'clickableItem'};
 
     
     
@@ -101,15 +107,13 @@ class StaffF4Modal extends PureComponent{
             // t1columns.push(t1r1c4);
         }
         
-        const {companyOptions, branchOptions, bukrsDisabledParent, messages} = this.props;
-        const {bukrsDisabledState, brnchDisabledState, bukrsSV, brnchSV, fioSV, iinBinSV, unemployed} = this.state;
 
         return (
 
             <Modal open={this.props.open} onClose={this.close}  dimmer={"inverted"} size='small' >
                 <Modal.Header>
                     <Icon name='filter' size='big' />
-                    {messages['staff']}
+                    {formatMessage(messages.staff)}
                 </Modal.Header>
                 <Modal.Content>
                 <Table collapsing>
@@ -117,20 +121,20 @@ class StaffF4Modal extends PureComponent{
                         <Table.Row>
                             <Table.Cell>
                                 <Icon name='folder' />
-                                {messages['bukrs']}
+                                {formatMessage(messages.bukrs)}
                             </Table.Cell>
                             <Table.Cell>
-                                <Dropdown placeholder={messages['bukrs']} selection options={companyOptions} value={bukrsSV} 
+                                <Dropdown placeholder={formatMessage(messages.bukrs)} selection options={companyOptions} value={bukrsSV} 
                                             onChange={(e, { value }) => this.onInputChange(value,'bukrsSV')} 
                                             disabled={bukrsDisabledParent?bukrsDisabledParent:bukrsDisabledState}
                                             />
                             </Table.Cell>
                             <Table.Cell>
-                            {messages['fio']}
+                            {formatMessage(messages.fio)}
                             </Table.Cell>
                             <Table.Cell>
                                 <Input
-                                value={fioSV} placeholder={messages['fio']}
+                                value={fioSV} placeholder={formatMessage(messages.fio)}
                                 onChange={(e, { value }) => this.onInputChange(value,'fioSV')}
                                 />
                             </Table.Cell>                              
@@ -138,27 +142,27 @@ class StaffF4Modal extends PureComponent{
                         <Table.Row>
                             <Table.Cell>
                                 <Icon name='browser' />     
-                                {messages['brnch']}
+                                {formatMessage(messages.brnch)}
                             </Table.Cell>
                             <Table.Cell>
-                                <Dropdown placeholder={messages['brnch']}  search selection options={branchOptions[bukrsSV]?branchOptions[bukrsSV]:[]} 
+                                <Dropdown placeholder={formatMessage(messages.brnch)}  search selection options={branchOptions[bukrsSV]?branchOptions[bukrsSV]:[]} 
                                             value={brnchSV}  onChange={(e, { value }) => this.onInputChange(value,'brnchSV')}
                                             disabled={brnchDisabledState} 
                                             />
                             </Table.Cell> 
                             <Table.Cell> 
-                            {messages['iinBin']}
+                            {formatMessage(messages.iinBin)}
                             </Table.Cell>
                             <Table.Cell>
                                 <Input
-                                value={iinBinSV} placeholder={messages['iinBin']}
+                                value={iinBinSV} placeholder={formatMessage(messages.iinBin)}
                                 onChange={(e, { value }) => this.onInputChange(value,'iinBinSV')}
                                 />
                             </Table.Cell>                            
                         </Table.Row>                        
                         <Table.Row>                                          
                             <Table.Cell>
-                            {messages['dismissed']}
+                            {formatMessage(messages.dismissed)}
                             </Table.Cell>
                             <Table.Cell>                                                                        
                                 <Checkbox
@@ -169,7 +173,7 @@ class StaffF4Modal extends PureComponent{
                             <Table.Cell>                                 
                                 <Button icon labelPosition='left' primary size='small' onClick={()=>{this.setState({loading:true});this.onSearch();}}
                                 loading={this.state.loading} disabled={this.state.loading}>
-                                    <Icon name='search' size='large' />{messages['search']}
+                                    <Icon name='search' size='large' />{formatMessage(messages.search)}
                                 </Button>
                             </Table.Cell>
                             <Table.Cell>
@@ -186,13 +190,13 @@ class StaffF4Modal extends PureComponent{
                             showPagination={true}
                             // style={{ height: '400px' }}
                             className="-striped -highlight"
-                            loadingText= {messages['loadingText']}
-                            noDataText= {messages['noDataText']}
-                            previousText={messages['previousText']}
-                            nextText={messages['nextText']}
-                            rowsText={messages['rowsText']}
-                            pageText={messages['pageText']}
-                            ofText={messages['ofText']}
+                            loadingText= {formatMessage(messages.loadingText)}
+                            noDataText= {formatMessage(messages.noDataText)}
+                            previousText={formatMessage(messages.previousText)}
+                            nextText={formatMessage(messages.nextText)}
+                            rowsText={formatMessage(messages.rowsText)}
+                            pageText={formatMessage(messages.pageText)}
+                            ofText={formatMessage(messages.ofText)}
                             showPageSizeOptions= {false}
                             getTrProps={(state, rowInfo, column) => {
                                 return {
@@ -217,4 +221,4 @@ function mapStateToProps (state) {
   return { table: state.f4.staffList }
 }
 
-export default connect(mapStateToProps, {f4FetchStaffList, f4ClearStaffList })(StaffF4Modal)
+export default connect(mapStateToProps, {f4FetchStaffList, f4ClearStaffList })(injectIntl(StaffF4Modal))

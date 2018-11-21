@@ -10,6 +10,7 @@ import {moneyInputHanler} from '../../../utils/helpers';
 import OutputErrors from '../../../general/error/outputErrors';
 import { modifyLoader } from '../../../general/loader/loader_action';
 import { injectIntl } from 'react-intl';
+import { messages } from '../../../locales/defineMessages';
 
 
 require('moment/locale/ru');
@@ -174,11 +175,11 @@ class Fcis extends Component {
 
       const {lifnr, staffFio, hkont_s, hkont_h, summa} = this.props.bseg;
       
-      const {messages} = this.props.intl 
+      const {formatMessage} = this.props.intl;
 
       const hkontOptions_h = [
-        { key: 1, text: messages['payDebt'], value: '33500002' },
-        { key: 2, text: messages['toEmployeeAccount'], value: '33500001' }
+        { key: 1, text:  formatMessage(messages.payDebt), value: '33500002' },
+        { key: 2, text: formatMessage(messages.toEmployeeAccount), value: '33500001' }
       ];
 
 
@@ -186,14 +187,14 @@ class Fcis extends Component {
             
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
                 <Header as="h2" block>
-                  {messages['transNameFcis']} 
+                  {formatMessage(messages.transNameFcis)} 
                 </Header>
                 <Segment padded size="small">
                   <List horizontal>
                     <List.Item>
                       <List.Content>
                           <Button icon labelPosition='left' primary size='small' onClick={()=>this.save()} disabled={this.props.activeLoader}>
-                            <Icon name='save' size='large' /> {messages['save']} 
+                            <Icon name='save' size='large' /> {formatMessage(messages.save)} 
                           </Button>
                       </List.Content>
                     </List.Item>
@@ -202,11 +203,11 @@ class Fcis extends Component {
 
                 <OutputErrors errors={this.state.errors}/>
                 
-                <FaHeader {...this.props}  bkpfInfo={bkpfInfo} messages={messages}/>
+                <FaHeader {...this.props}  bkpfInfo={bkpfInfo}/>
                 <FcisPosition  hkontOptions_s={hkontOptions}  hkontOptions_h={hkontOptions_h} waers={waers}
                   lifnr={lifnr} staffFio={staffFio} hkont_s={hkont_s} hkont_h={hkont_h} summa={summa}
                   brnch = {brnch} branchOptions={this.props.branchOptions} 
-                  bukrs={bukrs} companyOptions={this.props.companyOptions} messages={messages}
+                  bukrs={bukrs} companyOptions={this.props.companyOptions}
                   onInputChange = {(value,stateFieldName)=>{this.onInputChange(value,stateFieldName)}}
                 />
                 <br />
