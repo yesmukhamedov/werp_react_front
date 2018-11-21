@@ -252,5 +252,375 @@ export const messages = defineMessages({
     description: {
       id: 'Task.Description',
       defaultMessage: 'Description',
-    }
+    },
+
+
+    //Azamat///////////////////////////////////////////
+
+    
+    awkey: {
+      id: 'awkey',
+      defaultMessage: 'Reference document number and year',
+    },
+    awtyp: {
+      id: 'awtyp',
+      defaultMessage: 'Operation type',
+    },
+    belnr: {
+      id: 'belnr',
+      defaultMessage: 'Document number',
+    },
+    bktxt: {
+      id: 'bktxt',
+      defaultMessage: 'Description',
+    },
+    blart: {
+      id: 'blart',
+      defaultMessage: 'Document type',
+    },
+    bldat: {
+      id: 'bldat',
+      defaultMessage: 'Document date',
+    },
+    brnch: {
+      id: 'brnch',
+      defaultMessage: 'Branch',
+    },
+    budat: {
+      id: 'budat',
+      defaultMessage: 'Posting date',
+    },
+    bukrs: {
+      id: 'bukrs',
+      defaultMessage: 'Company',
+    },
+    business_area: {
+      id: 'business_area',
+      defaultMessage: 'Business area',
+    },
+    contract_number: {
+      id: 'contract_number',
+      defaultMessage: 'Contract number',
+    },
+    customer_id: {
+      id: 'customer_id',
+      defaultMessage: 'Customer ID',
+    },
+    gjahr: {
+      id: 'gjahr',
+      defaultMessage: 'Document year',
+    },
+    kursf: {
+      id: 'kursf',
+      defaultMessage: 'Exchange rate',
+    },
+    monat: {
+      id: 'monat',
+      defaultMessage: 'Month',
+    },
+    stblg: {
+      id: 'stblg',
+      defaultMessage: 'Canceled document number',
+    },
+    stjah: {
+      id: 'stjah',
+      defaultMessage: 'Canceled document year',
+    },
+    storno: {
+      id: 'storno',
+      defaultMessage: 'Storno',
+    },
+    tcode: {
+      id: 'tcode',
+      defaultMessage: 'Transaction',
+    },
+    usnam: {
+      id: 'usnam',
+      defaultMessage: 'User ID',
+    },
+    waers: {
+      id: 'waers',
+      defaultMessage: 'Currency',
+    },
+    official: {
+      id: 'official',
+      defaultMessage: 'Official',
+    },
+    dep: {
+      id: 'dep',
+      defaultMessage: 'Department',
+    },
+    zreg: {
+      id: 'zreg',
+      defaultMessage: 'Reg. number',
+    },
+    dealer: {
+      id: 'dealer',
+      defaultMessage: 'Dealer',
+    },
+    finAgent: {
+      id: 'finAgent',
+      defaultMessage: 'Fin. agent',
+    },
+    fioClient: {
+      id: 'fioClient',
+      defaultMessage: 'Client Name',
+    },
+    price: {
+      id: 'price',
+      defaultMessage: 'Price',
+    },
+    paid: {
+      id: 'paid',
+      defaultMessage: 'Paid',
+    },
+    remainder: {
+      id: 'remainder',
+      defaultMessage: 'Remainder',
+    },
+    cashBank: {
+      id: 'cashBank',
+      defaultMessage: 'Cash/Bank',
+    },
+    amount: {
+      id: 'amount',
+      defaultMessage: 'Amount',
+    },
+    monthlyPayment: {
+      id: 'monthlyPayment',
+      defaultMessage: 'Monthly Payment',
+    },
+    firstPayment: {
+      id: 'firstPayment',
+      defaultMessage: 'First payment',
+    },
+    paymentDate: {
+      id: 'paymentDate',
+      defaultMessage: 'Payment Date',
+    },
+    paymentAmount: {
+      id: 'paymentAmount',
+      defaultMessage: 'Payment Amount',
+    },
+    paymentSchedule: {
+      id: 'paymentSchedule',
+      defaultMessage: 'Payment Schedule',
+    },
+    save: {
+      id: 'save',
+      defaultMessage: 'Save',
+    },
+    search: {
+      id: 'search',
+      defaultMessage: 'Search',
+    },
+    searchParameters: {
+      id: 'searchParameters',
+      defaultMessage: 'Search Parameters',
+    },
+    mainInfos: {
+      id: 'mainInfos',
+      defaultMessage: 'Main info',
+    },
+    finDoc: {
+      id: 'finDoc',
+      defaultMessage: 'Fin. doc',
+    },
+    regNumOrConNum: {
+      id: 'regNumOrConNum',
+      defaultMessage: 'Reg. num or Contract Num',
+    },
+    transNameFmcp: {
+      id: 'transNameFmcp',
+      defaultMessage: 'Receipt from Sales Contract',
+    },
+    transNameFcis: {
+      id: 'transNameFcis',
+      defaultMessage: 'Employee acc.cash inquiry',
+    },
+    header: {
+      id: 'header',
+      defaultMessage: 'Header',
+    },
+    position: {
+      id: 'position',
+      defaultMessage: 'Position',
+    },
+    operation: {
+      id: 'operation',
+      defaultMessage: 'Operation',
+    },
+    employee: {
+      id: 'employee',
+      defaultMessage: 'Employee',
+    },
+    staff: {
+      id: 'staff',
+      defaultMessage: 'Staff',
+    },
+    iinBin: {
+      id: 'iinBin',
+      defaultMessage: 'Iin/Bin',
+    },
+    dismissed: {
+      id: 'dismissed',
+      defaultMessage: 'Dismissed',
+    },
+    fio: {
+      id: 'fio',
+      defaultMessage: 'Full name',
+    },
+    loadingText: {
+      id: 'loadingText',
+      defaultMessage: 'Loading...',
+    },
+    noDataText: {
+      id: 'noDataText',
+      defaultMessage: 'No rows found',
+    },
+    previousText: {
+      id: 'previousText',
+      defaultMessage: 'Previous',
+    },
+    nextText: {
+      id: 'nextText',
+      defaultMessage: 'Next',
+    },
+    rowsText: {
+      id: 'rowsText',
+      defaultMessage: 'rows',
+    },
+    pageText: {
+      id: 'pageText',
+      defaultMessage: 'Page',
+    },
+    ofText: {
+      id: 'ofText',
+      defaultMessage: 'of',
+    },
+    transNameFrcoln: {
+      id: 'transNameFrcoln',
+      defaultMessage: 'Collectors Statistics',
+    },
+    all: {
+      id: 'all',
+      defaultMessage: 'All',
+    },
+    date: {
+      id: 'date',
+      defaultMessage: 'Date',
+    },
+    state1: {
+      id: 'state1',
+      defaultMessage: 'State',
+    },
+    onBegOfMonth: {
+      id: 'onBegOfMonth',
+      defaultMessage: 'Till the beginning of the month',
+    },
+    onEndOfMonth: {
+      id: 'onEndOfMonth',
+      defaultMessage: 'Till the end of the month',
+    },
+    installments: {
+      id: 'installments',
+      defaultMessage: 'Installments',
+    },
+    in1Month: {
+      id: 'in1Month',
+      defaultMessage: 'In 1 month',
+    },
+    overallSum: {
+      id: 'overallSum',
+      defaultMessage: 'Overall Sum',
+    },
+    numOfSalesContracts: {
+      id: 'numOfSalesContracts',
+      defaultMessage: 'Num. of Contracts',
+    },
+    plan: {
+      id: 'plan',
+      defaultMessage: 'Plan',
+    },
+    collected: {
+      id: 'collected',
+      defaultMessage: 'Collected',
+    },
+    details: {
+      id: 'details',
+      defaultMessage: 'Details',
+    },
+    city: {
+      id: 'city',
+      defaultMessage: 'City',
+    },
+    percent: {
+      id: 'percent',
+      defaultMessage: 'Percent',
+    },
+    overallAmount: {
+      id: 'overallAmount',
+      defaultMessage: 'Overall Amount',
+    },
+    standard: {
+      id: 'standard',
+      defaultMessage: 'Standard',
+    },
+    problem: {
+      id: 'problem',
+      defaultMessage: 'Problem',
+    },
+    branches: {
+      id: 'branches',
+      defaultMessage: 'Branches',
+    },
+    finAgents: {
+      id: 'finAgents',
+      defaultMessage: 'Fin. agents',
+    },
+    salesContracts: {
+      id: 'salesContracts',
+      defaultMessage: 'Sales Contracts',
+    },
+    contractDate: {
+      id: 'contractDate',
+      defaultMessage: 'Contract Date',
+    },
+    snNum: {
+      id: 'snNum',
+      defaultMessage: 'SN number',
+    },
+    count: {
+      id: 'count',
+      defaultMessage: 'Count',
+    },
+    period: {
+      id: 'period',
+      defaultMessage: 'Period',
+    },
+    show: {
+      id: 'show',
+      defaultMessage: 'Show',
+    },
+    payDebt: {
+      id: 'payDebt',
+      defaultMessage: 'Pay debt',
+    },
+    toEmployeeAccount: {
+      id: 'toEmployeeAccount',
+      defaultMessage: 'To employee account',
+    },
+    cancel: {
+      id: 'cancel',
+      defaultMessage: 'Cancel',
+    },
+    close: {
+      id: 'close',
+      defaultMessage: 'Close',
+    },
+
+
+
+
+
   });
