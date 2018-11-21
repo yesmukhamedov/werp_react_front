@@ -46,6 +46,7 @@ export function signinUser({ username, password }, language) {
         localStorage.setItem('username', username);
         localStorage.setItem('language', language);
         localStorage.setItem('errorTableString', JSON.stringify(response.data.errorTable));
+        localStorage.setItem('internalNumber',response.data.internalNumber)
         // - update state to indicate user is authenticated
         dispatch(authUser({ username, userId }));
         // - redirect to the route '/'
