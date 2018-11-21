@@ -208,7 +208,7 @@ class DtskcComponent extends Component {
             />
           </AttachmentPanelDisplay>
         </Segment>
-        <AssigneeModalContainer />
+        <AssigneeModalContainer messages={messages} />
       </Container>
     );
   }

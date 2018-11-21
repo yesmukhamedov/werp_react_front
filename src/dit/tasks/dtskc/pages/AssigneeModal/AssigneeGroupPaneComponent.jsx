@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { Form, Button, Segment, Label, List } from 'semantic-ui-react';
 import hash from 'object-hash';
 import _ from 'lodash';
+import WarnSegment from './WarnSegment';
 import { GET, constructFullName } from '../../../../../utils/helpers';
 import { ROOT_URL } from '../../../../../utils/constants';
-
 
 class AssigneeGroupPaneComponent extends Component {
   state = {
@@ -18,9 +18,12 @@ class AssigneeGroupPaneComponent extends Component {
     const req = GET(groupMembersUrl);
     req
       .then(({ data }) => {
-        const filteredData = _.filter(data, el => !el.user || el.user.bukrs === selectedCompany);
+        const filteredData = _.filter(
+          data,
+          el => !el.user || el.user.bukrs === selectedCompany,
+        );
         const recipientList = filteredData.map(el => {
-          const { branch, department, supervisor, user, messageGroup } = el;
+          const { branch, department, supervisor, user } = el;
           return {
             branch: {
               id: branch.id,
@@ -89,35 +92,31 @@ class AssigneeGroupPaneComponent extends Component {
     </Segment>
   );
 
-  renderErrorSection() {
-    return (
-      <Segment inverted color="red" secondary>
-        Please choose company first!!!
-      </Segment>
-    );
-  }
-
   renderForm() {
-    const { groupOpts } = this.props;
+    const { groupOpts, messages } = this.props;
     return (
       <Form success>
         <Form.Select
           options={groupOpts}
-          label="Groups"
-          name="selectedGroup"
-          placeholder="Select group from the list"
+          label={messages.L__GROUP}
+          name={messages.TX__SELECT_GROUP}
+          placeholder={messages.TX__SELECT_GROUP}
           onChange={this.handleChange}
           required
         />
         {this.renderGroupMembers()}
-        <Button onClick={this.handleSubmit}>Add group</Button>
+        <Button onClick={this.handleSubmit}>{messages.BTN__ADD}</Button>
       </Form>
     );
   }
 
   render() {
-    const { selectedCompany } = this.props;
-    return selectedCompany ? this.renderForm() : this.renderErrorSection();
+    const { selectedCompany, messages } = this.props;
+    return selectedCompany ? (
+      this.renderForm()
+    ) : (
+      <WarnSegment message={messages.TX__WARN_SELECT_COMPANY} />
+    );
   }
 }
 

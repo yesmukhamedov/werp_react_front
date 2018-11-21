@@ -104,6 +104,13 @@
 	"TBL_H__ASSIGNEE_MANAGER": "Assignee manager",
 	"TBL_H__BRANCH": "Branch",
 	"TBL_H__DEPARTMENT": "Department",
+	"H__ADD_ASSIGNEE_GROUP": "Add assignee by group",
+  "H__ADD_ASSIGNEE_BY_SEARCH": "Add assignee by search",
+	"H__ADD_ASSIGNEE_BY_SELECT": "Add assignee by select",
+	"H__SELECT_ASSIGNEE": "Select assignee",
+	"TX__WARN_SELECT_COMPANY": "Company must be selected first",
+	"TX__SELECT_GROUP": "Select group",
+	"L__ASSIGNEE_MANAGER": "Assignee manager",
 	
 	"Auth.Signin.Header": "Log-in to your account",
 	"Auth.Signin.Username": "Username",

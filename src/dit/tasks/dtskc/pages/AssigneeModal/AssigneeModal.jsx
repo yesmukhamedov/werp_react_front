@@ -5,32 +5,35 @@ import AssigneeGroupPaneComponent from './AssigneeGroupPaneComponent';
 import AssigneeOtherPaneComponent from './AssigneeOtherPaneComponent';
 import AssigneeSearchPaneComponent from './AssigneeSearchPaneComponent';
 
-const panes = [
-  {
-    menuItem: 'Добавить по группе',
-    render: props => (
-      <Tab.Pane attached={false}>
-        <AssigneeGroupPaneComponent {...props} />
-      </Tab.Pane>
-    ),
-  },
-  {
-    menuItem: 'Добавить по исполнителю',
-    render: props => (
-      <Tab.Pane attached={false}>
-        <AssigneeSearchPaneComponent {...props} />
-      </Tab.Pane>
-    ),
-  },
-  {
-    menuItem: 'Добавить по филиалу (филиал-отдел-менеджер исполнителя)',
-    render: props => (
-      <Tab.Pane attached={false}>
-        <AssigneeOtherPaneComponent {...props} />
-      </Tab.Pane>
-    ),
-  },
-];
+const panes = (props) => {
+  const { messages } = props;
+  return [
+    {
+      menuItem: messages.H__ADD_ASSIGNEE_GROUP,
+      render: props => (
+        <Tab.Pane attached={false}>
+          <AssigneeGroupPaneComponent {...props} />
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: messages.H__ADD_ASSIGNEE_BY_SEARCH,
+      render: props => (
+        <Tab.Pane attached={false}>
+          <AssigneeSearchPaneComponent {...props} />
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: messages.H__ADD_ASSIGNEE_BY_SELECT,
+      render: props => (
+        <Tab.Pane attached={false}>
+          <AssigneeOtherPaneComponent {...props} />
+        </Tab.Pane>
+      ),
+    },
+  ];
+};
 
 class AssigneeModal extends Component {
   constructor(props) {
@@ -43,13 +46,17 @@ class AssigneeModal extends Component {
   }
 
   render() {
-    const { modalOpen, toggleAssigneeModal } = this.props;
+    const { modalOpen, toggleAssigneeModal, messages } = this.props;
     return (
       <Modal open={modalOpen} onClose={() => toggleAssigneeModal(modalOpen)}>
-        <Modal.Header>Select assignees</Modal.Header>
+        <Modal.Header>{messages.H__SELECT_ASSIGNEE}</Modal.Header>
         <Modal.Content>
           <Modal.Description>
-            <Tab menu={{ attached: false }} panes={panes} {...this.props} />
+            <Tab
+              menu={{ attached: false }}
+              panes={panes(this.props)}
+              {...this.props}
+            />
           </Modal.Description>
         </Modal.Content>
       </Modal>

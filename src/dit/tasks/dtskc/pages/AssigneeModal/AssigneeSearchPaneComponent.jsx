@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { Form, Search, Segment, Button } from 'semantic-ui-react';
 import hash from 'object-hash';
 import axios from 'axios';
+import WarnSegment from './WarnSegment';
 import { ROOT_URL } from '../../../../../utils/constants';
 import { GET, constructFullName } from '../../../../../utils/helpers';
+import { defineMessages } from 'react-intl';
 
 const assigneeSearchUrl = `${ROOT_URL}/api/tasks/assignee?keyword=`;
 const assigneeDetailsUrl = `${ROOT_URL}/api/tasks/assignee`;
@@ -103,7 +105,11 @@ class AssigneeSearchPaneComponent extends Component {
     const req = GET(`${assigneeDetailsUrl}/${userId}`);
     req
       .then(({ data }) => {
-        const { branchOptsNormalized: branchOpts, deptOpts, selectedCompany } = this.props;
+        const {
+          branchOptsNormalized: branchOpts,
+          deptOpts,
+          selectedCompany,
+        } = this.props;
 
         const filteredData = data.filter(el => el.bukrsId === selectedCompany);
         let filteredBranchOpts = {};
@@ -155,30 +161,19 @@ class AssigneeSearchPaneComponent extends Component {
         department: this.state.selectedDepartment,
         supervisor: constructFullName(this.state.selectedManager),
         user: this.state.selectedAssigneeId.title,
-      }
-    }
+      },
+    };
     const assigneePerson = {
       id: hash(recipient),
-      recipient,  
-    }
+      recipient,
+    };
     addAssigneePerson(assigneePerson);
     hideModal();
-  }
-
-  renderErrorSection() {
-    return (
-      <Segment inverted color="red" secondary>
-        Please choose company first!!!
-      </Segment>
-    );
-  }
+  };
 
   renderForm() {
-    const { managerOpts } = this.props;
-    const {
-      selectedBranch,
-      selectedDepartment,
-    } = this.state;
+    const { managerOpts, messages } = this.props;
+    const { selectedDepartment } = this.state;
     return (
       <div>
         <Form>
@@ -191,36 +186,42 @@ class AssigneeSearchPaneComponent extends Component {
           </Form.Field>
           <Form.Group widths="equal">
             <Form.Select
-              label="Branch"
-              placeholder="Branch"
-              options={ this.state.branchOptions}
+              label={messages.L__BRANCH}
+              placeholder={messages.L__BRANCH}
+              options={this.state.branchOptions}
               onChange={this.handleChange}
               name="selectedBranch"
             />
             <Form.Select
-              label="Department"
-              placeholder="Department"
-              options={ this.state.departmentOptions}
+              label={messages.L__DEPARTMENT}
+              placeholder={messages.L__DEPARTMENT}
+              options={this.state.departmentOptions}
               name="selectedDepartment"
               onChange={this.handleChange}
             />
             <Form.Select
-              label="Assignee Manager"
-              placeholder="Assignee Manager"
-              options={selectedDepartment && managerOpts[selectedDepartment.depId]}
+              label={messages.L__ASSIGNEE_MANAGER}
+              placeholder={messages.L__ASSIGNEE_MANAGER}
+              options={
+                selectedDepartment && managerOpts[selectedDepartment.depId]
+              }
               name="selectedManager"
               onChange={this.handleChange}
             />
           </Form.Group>
-          <Button onClick={this.handleSubmit}>Add assignee</Button>
+          <Button onClick={this.handleSubmit}>{messages.BTN__ADD}</Button>
         </Form>
       </div>
     );
   }
 
   render() {
-    const { selectedCompany } = this.props;
-    return selectedCompany ? this.renderForm() : this.renderErrorSection();
+    const { selectedCompany, messages } = this.props;
+    return selectedCompany ? (
+      this.renderForm()
+    ) : (
+      <WarnSegment message={messages.TX__WARN_SELECT_COMPANY} />
+    );
   }
 }
 

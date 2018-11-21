@@ -104,6 +104,13 @@
 	"TBL_H__ASSIGNEE_MANAGER": "Менеджер исполнителя",
 	"TBL_H__BRANCH": "Филиал",
 	"TBL_H__DEPARTMENT": "Департамент",
+	"H__ADD_ASSIGNEE_GROUP": "Добавить исполнителя по группе",
+  "H__ADD_ASSIGNEE_BY_SEARCH": "Добавить исполнителя путем поиска",
+	"H__ADD_ASSIGNEE_BY_SELECT": "Добавить исполнителя путем выборки",
+	"H__SELECT_ASSIGNEE": "Выбрать исполнителя",
+	"TX__WARN_SELECT_COMPANY": "Необходимо выбрать компанию из списка",
+	"TX__SELECT_GROUP": "Выбрать группу",
+	"L__ASSIGNEE_MANAGER": "Менеджер исполнителя",
 
 	"Task.Branch": "Филиал",
 	"Task.Department": "Отдел",
