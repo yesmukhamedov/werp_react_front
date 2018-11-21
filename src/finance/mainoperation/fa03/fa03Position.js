@@ -5,6 +5,8 @@ import { Popup, Segment, Label, Input } from 'semantic-ui-react';
 import {moneyFormat} from '../../../utils/helpers';
 import ReactTable from 'react-table';
 import "react-table/react-table.css";
+import { injectIntl } from 'react-intl';
+import { messages } from '../../../locales/defineMessages';
 
 
 const PopupHkontInfo = (hkont,hkontName) => (
@@ -24,6 +26,7 @@ class Fa03Position extends PureComponent{
             return '';
         }
 
+        const {formatMessage} = this.props.intl;
         
         let readOnlyValue=true;
         if (this.props.trans==="FA02")
@@ -32,22 +35,22 @@ class Fa03Position extends PureComponent{
         }
 
         let columns = [];
-
-        let col01 = {Header:({value}) => <b>Поз.</b>,accessor: "buzei", width: 40};
-        let col02 = {Header:({value}) => <b>КП</b>,accessor: "bschl", width: 40};
-        let col03 = {Header:({value}) => <b>Счет Г.К.</b>,accessor: "hkontName"
+        
+        let col01 = {Header:({value}) => <b>{formatMessage(messages.buzei)}</b>,accessor: "buzei", width: 40};
+        let col02 = {Header:({value}) => <b>{formatMessage(messages.bschl)}</b>,accessor: "bschl", width: 40};
+        let col03 = {Header:({value}) => <b>{formatMessage(messages.hkont)}</b>,accessor: "hkontName"
             ,Cell: (obj) => (<span>{PopupHkontInfo(obj.original.hkont,obj.original.hkontName)}</span>), width: 100};
-        let col04 = {Header:({value}) => <b>Сумма во внутренной валюте</b>,accessor: "dmbtr"
+        let col04 = {Header:({value}) => <b>{formatMessage(messages.amount)} {formatMessage(messages.inLocalCurrency)}</b>,accessor: "dmbtr"
             ,Cell: ({value}) => <span> {moneyFormat(value)} {"USD"} </span> , width: 240};
-        let col05 = {Header:({value}) => <b>Сумма в валюте</b>,accessor: "wrbtr"
+        let col05 = {Header:({value}) => <b>{formatMessage(messages.amount)} {formatMessage(messages.inDocumentCurrency)}</b>,accessor: "wrbtr"
             ,Cell: ({value}) => <span> {moneyFormat(value)} {this.props.bkpf.waers}</span>, width: 240};
-        let col06 = {Header:({value}) => <b>Д/К</b>,accessor: "shkzg", width: 40};
-        let col07 = {Header:({value}) => <b>Материал</b>,accessor: "matnrName", width: 200};
-        let col08 = {Header:({value}) => <b>Склад</b>,accessor: "werksName", width: 150};
-        let col09 = {Header:({value}) => <b>Колич.</b>,accessor: "menge", width: 80};
-        let col10 = {Header:({value}) => <b>Е.И.</b>,accessor: "meins", width: 100};
-        let col11 = {Header:({value}) => <b>Контрагент</b>,accessor: "lifnrName", width: 160};
-        let col12 = {Header:({value}) => <b>Примечание</b>,accessor: "sgtxt", 
+        let col06 = {Header:({value}) => <b>{formatMessage(messages.shkzg)}</b>,accessor: "shkzg", width: 40};
+        let col07 = {Header:({value}) => <b>{formatMessage(messages.matnr)}</b>,accessor: "matnrName", width: 200};
+        let col08 = {Header:({value}) => <b>{formatMessage(messages.werks)}</b>,accessor: "werksName", width: 150};
+        let col09 = {Header:({value}) => <b>{formatMessage(messages.menge)}</b>,accessor: "menge", width: 80};
+        let col10 = {Header:({value}) => <b>{formatMessage(messages.meins)}</b>,accessor: "meins", width: 100};
+        let col11 = {Header:({value}) => <b>{formatMessage(messages.customer)}</b>,accessor: "lifnrName", width: 160};
+        let col12 = {Header:({value}) => <b>{formatMessage(messages.bktxt)}</b>,accessor: "sgtxt", 
         // Cell: (obj) =>  <input onChange={(e, { value }) => this.props.onInputChangeData(value,'bktxt','') />,
        
         Cell: (obj) => (<span>
@@ -74,7 +77,7 @@ class Fa03Position extends PureComponent{
 
             <Segment padded size="small">                
                 <Label color="green" ribbon>
-                    Позиция
+                    {formatMessage(messages.buzeiFullText)}
                 </Label>
                 <br />
                 <br />
@@ -101,4 +104,4 @@ class Fa03Position extends PureComponent{
 }
 
 
-export default (Fa03Position)
+export default (injectIntl(Fa03Position))

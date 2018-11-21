@@ -3,6 +3,8 @@
 import React, { PureComponent } from 'react';
 import { Table, Segment, Label, Input } from 'semantic-ui-react';
 import { moneyFormat} from '../../../utils/helpers';
+import { injectIntl } from 'react-intl';
+import { messages } from '../../../locales/defineMessages';
 
 class PaymentSchedule extends PureComponent{
     
@@ -14,19 +16,20 @@ class PaymentSchedule extends PureComponent{
         if (!this.props.ps || this.props.ps.length===0){
             return '';
         }
+        const {formatMessage} = this.props.intl;
         
         return (
             <Segment padded size="small">                
                 <Label color="orange" ribbon>
-                    График платежей
+                    {formatMessage(messages.paymentSchedule)}
                 </Label> 
                 <Table collapsing >                    
                     <Table.Header>
                         <Table.Row>
-                            <Table.HeaderCell>Взнос</Table.HeaderCell>
-                            <Table.HeaderCell>Дата платежа</Table.HeaderCell>
-                            <Table.HeaderCell>Сумма оплаты</Table.HeaderCell>
-                            <Table.HeaderCell>Оплачено</Table.HeaderCell>
+                            <Table.HeaderCell>{formatMessage(messages.monthlyPayment)}</Table.HeaderCell>
+                            <Table.HeaderCell>{formatMessage(messages.paymentDate)}</Table.HeaderCell>
+                            <Table.HeaderCell>{formatMessage(messages.paymentAmount)}</Table.HeaderCell>
+                            <Table.HeaderCell>{formatMessage(messages.paid)}</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
@@ -37,7 +40,7 @@ class PaymentSchedule extends PureComponent{
                                     <Table.Row key={key}>                                      
                                         <Table.Cell textAlign="center">
                                             {key>0?key:''} 
-                                            {item.is_firstpayment === 1?'Перв. взнос':''}
+                                            {item.is_firstpayment === 1?formatMessage(messages.firstPayment):''}
                                         </Table.Cell>
                                         <Table.Cell>
                                             {item.payment_date}
@@ -69,4 +72,4 @@ class PaymentSchedule extends PureComponent{
 }
 
 
-export default (PaymentSchedule)
+export default (injectIntl(PaymentSchedule))

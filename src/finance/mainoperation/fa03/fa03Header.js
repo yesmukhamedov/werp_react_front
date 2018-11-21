@@ -7,39 +7,12 @@ import moment from 'moment';
 import DatePicker from "react-datepicker";
 import { Link } from 'react-router-dom';
 import "react-datepicker/dist/react-datepicker.css";
+import { injectIntl } from 'react-intl';
+import { messages } from '../../../locales/defineMessages';
 require('moment/locale/ru');
 
 
-const PopupBkpfInfo = (waers,cpudt,awtyp,customer_id,payroll_id,invoice_id,log_doc,closed,awkey2,dmbtr,dmbtr_paid,wrbtr,wrbtr_paid) => (
-    <Popup trigger={<span><Button icon labelPosition='left' primary size='small'>
-                <Icon name='info' size='large' />Доп. инфо
-            </Button></span>} flowing   on='click'>
-        <Table  compact>
-            <Table.Body>
-                <Table.Row><Table.Cell>Отк./Зак.</Table.Cell><Table.Cell>{closed===1?'Закрыт':'Открыт'}</Table.Cell></Table.Row>
-                <Table.Row><Table.Cell>Время</Table.Cell><Table.Cell>
-                    <DatePicker
-                        className='date-auto-width'
-                        autoComplete="off"
-                        showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
-                        selected={cpudt?moment(cpudt):''} locale="ru" 
-                        dateFormat="DD.MM.YYYY" readOnly={true} disabled={true}/> 
-                
-                </Table.Cell></Table.Row>
-                <Table.Row><Table.Cell>Тип</Table.Cell><Table.Cell>{awtyp}</Table.Cell></Table.Row>
-                <Table.Row><Table.Cell>Контрагент ID</Table.Cell><Table.Cell>{customer_id}</Table.Cell></Table.Row>
-                <Table.Row><Table.Cell>Накладная ID</Table.Cell><Table.Cell>{invoice_id}</Table.Cell></Table.Row>
-                <Table.Row><Table.Cell>Платежная ведомость ID</Table.Cell><Table.Cell>{payroll_id}</Table.Cell></Table.Row>
-                <Table.Row><Table.Cell>Док. лог.</Table.Cell><Table.Cell>{log_doc}</Table.Cell></Table.Row>
-                <Table.Row><Table.Cell>Ссылка на док 2</Table.Cell><Table.Cell>{awkey2}</Table.Cell></Table.Row>
-                <Table.Row><Table.Cell>Сумма ВВ</Table.Cell><Table.Cell>USD {moneyFormat(dmbtr)}</Table.Cell></Table.Row>
-                <Table.Row><Table.Cell>Оплачено ВВ</Table.Cell><Table.Cell>USD {moneyFormat(dmbtr_paid)}</Table.Cell></Table.Row>
-                <Table.Row><Table.Cell>Сумма В</Table.Cell><Table.Cell>{waers} {moneyFormat(wrbtr)}</Table.Cell></Table.Row>
-                <Table.Row><Table.Cell>Оплачено В</Table.Cell><Table.Cell>{waers} {moneyFormat(wrbtr_paid)}</Table.Cell></Table.Row>
-            </Table.Body>
-        </Table>
-    </Popup>
-)  
+  
 
 class Fa03Header extends PureComponent{
     
@@ -67,6 +40,7 @@ class Fa03Header extends PureComponent{
         const {bkpf} =  !this.props.bkpf
                         ?   this.initializeBkpf()
                         :   this.props;
+        const {formatMessage} = this.props.intl;
 
         const customerName =  !this.props.customerName?'':this.props.customerName;
         const branchName =  !this.props.branchName?'':this.props.branchName;
@@ -81,8 +55,8 @@ class Fa03Header extends PureComponent{
         const stornoOriginalBukrs =  !this.props.stornoOriginalBukrs?'':this.props.stornoOriginalBukrs;
 
         let docName = "";
-        if (stornoOriginal==="storno") docName = "Документ отмены";
-        if (stornoOriginal==="original") docName = "Документ оригинал";
+        if (stornoOriginal==="storno") docName = formatMessage(messages.cancelDocument);
+        if (stornoOriginal==="original") docName = formatMessage(messages.originalDocument);
 
         
         let awkeyBelnr = "";
@@ -104,12 +78,44 @@ class Fa03Header extends PureComponent{
         {
             readOnlyValue = false;
         }
+        const PopupBkpfInfo = (waers,cpudt,awtyp,customer_id,payroll_id,invoice_id,log_doc,closed,awkey2,dmbtr,dmbtr_paid,wrbtr,wrbtr_paid) => (
+            <Popup trigger={<span><Button icon labelPosition='left' primary size='small'>
+                        <Icon name='info' size='large' />{formatMessage(messages.extraInfo)}
+                    </Button></span>} flowing   on='click'>
+                <Table  compact>
+                    <Table.Body>
+                        <Table.Row><Table.Cell>{formatMessage(messages.openClose)}</Table.Cell><Table.Cell>{closed===1?formatMessage(messages.close):formatMessage(messages.open)}</Table.Cell></Table.Row>
+                        <Table.Row><Table.Cell>{formatMessage(messages.time)}</Table.Cell><Table.Cell>
+                            <DatePicker
+                                className='date-auto-width'
+                                autoComplete="off"
+                                showMonthDropdown showYearDropdown dropdownMode="select" //timezone="UTC"
+                                selected={cpudt?moment(cpudt):''} locale="ru" 
+                                dateFormat="DD.MM.YYYY" readOnly={true} disabled={true}/> 
+                        
+                        </Table.Cell></Table.Row>
+                        <Table.Row><Table.Cell>{formatMessage(messages.awtyp)}</Table.Cell><Table.Cell>{awtyp}</Table.Cell></Table.Row>
+                        <Table.Row><Table.Cell>{formatMessage(messages.customer_id)}</Table.Cell><Table.Cell>{customer_id}</Table.Cell></Table.Row>
+                        <Table.Row><Table.Cell>{formatMessage(messages.invoice)} ID</Table.Cell><Table.Cell>{invoice_id}</Table.Cell></Table.Row>
+                        <Table.Row><Table.Cell>{formatMessage(messages.payroll)} ID</Table.Cell><Table.Cell>{payroll_id}</Table.Cell></Table.Row>
+                        <Table.Row><Table.Cell>{formatMessage(messages.logDoc)}</Table.Cell><Table.Cell>{log_doc}</Table.Cell></Table.Row>
+                        <Table.Row><Table.Cell>{formatMessage(messages.awkey)} 2</Table.Cell><Table.Cell>{awkey2}</Table.Cell></Table.Row>
+                        <Table.Row><Table.Cell>{formatMessage(messages.amount)} {formatMessage(messages.inLocalCurrency)}</Table.Cell><Table.Cell>USD {moneyFormat(dmbtr)}</Table.Cell></Table.Row>
+                        <Table.Row><Table.Cell>{formatMessage(messages.paid)} {formatMessage(messages.inLocalCurrency)}</Table.Cell><Table.Cell>USD {moneyFormat(dmbtr_paid)}</Table.Cell></Table.Row>
+                        <Table.Row><Table.Cell>{formatMessage(messages.amount)} {formatMessage(messages.inDocumentCurrency)}</Table.Cell><Table.Cell>{waers} {moneyFormat(wrbtr)}</Table.Cell></Table.Row>
+                        <Table.Row><Table.Cell>{formatMessage(messages.paid)} {formatMessage(messages.inDocumentCurrency)}</Table.Cell><Table.Cell>{waers} {moneyFormat(wrbtr_paid)}</Table.Cell></Table.Row>
+                    </Table.Body>
+                </Table>
+            </Popup>
+        )
         
         return(
             <Segment padded size="small"  style={{backgroundColor}}>                
                     <Label color="blue" ribbon>
-                        Заголовок
-                    </Label>                   
+                        {formatMessage(messages.header)}
+                    </Label> 
+                    <br />
+                    <br />
                     <Grid columns={3}  stackable>
                     <Grid.Row>
                         <Grid.Column mobile={16} tablet={16} computer={5}>
@@ -117,7 +123,7 @@ class Fa03Header extends PureComponent{
                                 <Table.Body>
                                     <Table.Row>
                                         <Table.Cell>                                            
-                                            <Icon name='folder' /> Компания
+                                            <Icon name='folder' /> {formatMessage(messages.bukrs)}
                                         </Table.Cell>
                                         <Table.Cell>
                                         {(bkpf.bukrs!==undefined && companyOptions.filter(item=>item.value===bkpf.bukrs).map(item => {
@@ -133,7 +139,7 @@ class Fa03Header extends PureComponent{
                                     <Table.Row>
                                         <Table.Cell>
                                             <Icon name='browser' />
-                                            Филиал
+                                            {formatMessage(messages.brnch)}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <Input value={branchName} readOnly={true} />
@@ -143,7 +149,7 @@ class Fa03Header extends PureComponent{
                                     <Table.Row>
                                         <Table.Cell>
                                             <Icon name='browser' />                            
-                                            Бизнес сфера
+                                            {formatMessage(messages.business_area)}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <Input value={baName} readOnly={true} />
@@ -152,7 +158,7 @@ class Fa03Header extends PureComponent{
                                     
                                     <Table.Row>
                                         <Table.Cell>
-                                            Sn номер
+                                            {formatMessage(messages.snNum)}
                                         </Table.Cell>
                                         <Table.Cell>                                        
                                             <Input value={!bkpf.contract_number?'':bkpf.contract_number} readOnly={true} />
@@ -161,7 +167,7 @@ class Fa03Header extends PureComponent{
                                     
                                     <Table.Row>
                                         <Table.Cell>
-                                            Контрагент
+                                            {formatMessage(messages.customer)}
                                         </Table.Cell>
                                         <Table.Cell>                                            
                                             <Input value={customerName} readOnly={true} />
@@ -170,7 +176,7 @@ class Fa03Header extends PureComponent{
                                     
                                     <Table.Row>
                                         <Table.Cell>
-                                            Официально
+                                            {formatMessage(messages.official)}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <Checkbox checked={bkpf.official===1?true:false} readOnly={true} /> 
@@ -194,7 +200,7 @@ class Fa03Header extends PureComponent{
                                 <Table.Body>
                                     <Table.Row>
                                         <Table.Cell>                                            
-                                            <Icon name='browser' /> Отдел
+                                            <Icon name='browser' /> {formatMessage(messages.dep)}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <Input value={depName} readOnly={true} />
@@ -204,7 +210,7 @@ class Fa03Header extends PureComponent{
                                     <Table.Row>
                                         <Table.Cell>
                                             <Icon name='dollar' />
-                                            Валюта
+                                            {formatMessage(messages.waers)}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <Input value={bkpf.waers} readOnly={true} />
@@ -214,7 +220,7 @@ class Fa03Header extends PureComponent{
                                     <Table.Row>
                                         <Table.Cell>
                                             <Icon name='exchange' />                            
-                                            Курс   
+                                            {formatMessage(messages.kursf)}   
                                         </Table.Cell>
                                         <Table.Cell>
                                             <Input value={bkpf.kursf} readOnly={true} />
@@ -224,7 +230,7 @@ class Fa03Header extends PureComponent{
                                     <Table.Row>
                                         <Table.Cell>
                                             <Icon name='wordpress forms' />                           
-                                            Рег. номер
+                                            {formatMessage(messages.zreg)}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <Input value={!bkpf.zreg?'':bkpf.zreg} readOnly={true} />
@@ -233,7 +239,7 @@ class Fa03Header extends PureComponent{
                                     
                                     <Table.Row>
                                         <Table.Cell>
-                                            Код
+                                            {formatMessage(messages.tcode)}
                                         </Table.Cell>
                                         <Table.Cell>                                        
                                             <Input value={bkpf.tcode} readOnly={true} />
@@ -242,7 +248,7 @@ class Fa03Header extends PureComponent{
                                     
                                     <Table.Row>
                                         <Table.Cell>
-                                            Отменен
+                                            {formatMessage(messages.storno)}
                                         </Table.Cell>
                                         <Table.Cell>                                            
                                             <Checkbox checked={bkpf.storno===1?true:false} readOnly={true} />
@@ -273,7 +279,7 @@ class Fa03Header extends PureComponent{
                                     <Table.Row>
                                         <Table.Cell>
                                             <Icon name='square outline' />
-                                            Вид документа
+                                            {formatMessage(messages.blart)}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <Input value={bkpf.blart} readOnly={true} />
@@ -283,7 +289,7 @@ class Fa03Header extends PureComponent{
                                     <Table.Row>
                                         <Table.Cell>
                                             <Icon name='calendar' />    
-                                            Дата проводки
+                                            {formatMessage(messages.budat)}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <DatePicker
@@ -298,7 +304,7 @@ class Fa03Header extends PureComponent{
                                     <Table.Row>
                                         <Table.Cell>
                                             <Icon name='calendar' />                           
-                                            Дата документа
+                                            {formatMessage(messages.bldat)}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <DatePicker
@@ -312,7 +318,7 @@ class Fa03Header extends PureComponent{
                                     
                                     <Table.Row>
                                         <Table.Cell>
-                                            Ссылка на документ
+                                            {formatMessage(messages.awkey)}
                                         </Table.Cell>
                                         <Table.Cell>
                                             
@@ -326,7 +332,7 @@ class Fa03Header extends PureComponent{
                                     
                                     <Table.Row>
                                         <Table.Cell>
-                                            Пользователь
+                                            {formatMessage(messages.user)}
                                         </Table.Cell>
                                         <Table.Cell>
                                             <Input value={userFIO} readOnly={true} />
@@ -336,7 +342,7 @@ class Fa03Header extends PureComponent{
                                     <Table.Row>                                        
                                         <Table.Cell>
                                             <Icon name='comments outline' />
-                                            Примечание
+                                            {formatMessage(messages.bktxt)}
                                         </Table.Cell>
                                         
                                         <Table.Cell>
@@ -362,4 +368,4 @@ class Fa03Header extends PureComponent{
 }
 
 
-export default (Fa03Header)
+export default (injectIntl(Fa03Header))

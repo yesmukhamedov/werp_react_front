@@ -4,9 +4,11 @@ import React, { Component } from 'react';
 import { Table, Segment, Label, Accordion, Icon } from 'semantic-ui-react';
 import { moneyFormat} from '../../../utils/helpers';
 import { Link } from 'react-router-dom';
+import { injectIntl } from 'react-intl';
+import { messages } from '../../../locales/defineMessages';
 
 
-export default class Fa03RelatedDocs extends Component {
+class Fa03RelatedDocs extends Component {
   state = { activeIndex: 1 }
 
   handleClick = (e, titleProps) => {
@@ -22,6 +24,7 @@ export default class Fa03RelatedDocs extends Component {
     if (!this.props.relatedDocs || this.props.relatedDocs.length===0){
         return "";
     }
+    const {formatMessage} = this.props.intl;
     
     return (
     
@@ -30,23 +33,23 @@ export default class Fa03RelatedDocs extends Component {
         <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
         <Label color="yellow" ribbon>
           <Icon name='dropdown' />
-                Документы
+                {formatMessage(messages.documents)}
             </Label>
         </Accordion.Title>
         <Accordion.Content active={activeIndex === 0}>
         <Table collapsing >                    
                 <Table.Header>
                     <Table.Row>
-                        <Table.HeaderCell>Номер документа</Table.HeaderCell>
-                        <Table.HeaderCell>Год</Table.HeaderCell>
-                        <Table.HeaderCell>Вид документа</Table.HeaderCell>
-                        <Table.HeaderCell>Дата проводки</Table.HeaderCell>
-                        <Table.HeaderCell>Дата документа</Table.HeaderCell>
-                        <Table.HeaderCell>Сумма вв</Table.HeaderCell>
-                        <Table.HeaderCell>Сумма в</Table.HeaderCell>
-                        <Table.HeaderCell>Статус</Table.HeaderCell>
-                        <Table.HeaderCell>Код</Table.HeaderCell>
-                        <Table.HeaderCell>Пользователь</Table.HeaderCell>
+                        <Table.HeaderCell>{formatMessage(messages.belnr)}</Table.HeaderCell>
+                        <Table.HeaderCell>{formatMessage(messages.gjahr)}</Table.HeaderCell>
+                        <Table.HeaderCell>{formatMessage(messages.blart)}</Table.HeaderCell>
+                        <Table.HeaderCell>{formatMessage(messages.budat)}</Table.HeaderCell>
+                        <Table.HeaderCell>{formatMessage(messages.bldat)}</Table.HeaderCell>
+                        <Table.HeaderCell>{formatMessage(messages.amount)} {formatMessage(messages.inLocalCurrency)}</Table.HeaderCell>
+                        <Table.HeaderCell>{formatMessage(messages.amount)} {formatMessage(messages.inDocumentCurrency)}</Table.HeaderCell>
+                        <Table.HeaderCell>{formatMessage(messages.status)}</Table.HeaderCell>
+                        <Table.HeaderCell>{formatMessage(messages.tcode)}</Table.HeaderCell>
+                        <Table.HeaderCell>{formatMessage(messages.user)}</Table.HeaderCell>
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
@@ -79,7 +82,7 @@ export default class Fa03RelatedDocs extends Component {
                                         {moneyFormat(item.wrbtr)}
                                     </Table.Cell>
                                     <Table.Cell>
-                                        <font color="red">{item.storno===0?'':'отменен'}</font>                                        
+                                        <font color="red">{item.storno===0?'':formatMessage(messages.canceled)}</font>                                        
                                     </Table.Cell>
                                     <Table.Cell>
                                         {item.tcode}
@@ -102,3 +105,6 @@ export default class Fa03RelatedDocs extends Component {
     )
   }
 }
+
+
+export default (injectIntl(Fa03RelatedDocs))

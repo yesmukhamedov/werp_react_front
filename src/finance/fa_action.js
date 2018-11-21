@@ -252,6 +252,35 @@ export function cancelFA02(a_bukrs, a_belnr, a_gjahr) {
         });
     }    
 }
+export function fetchFA02(a_searchParameters) {
+    
+    return function(dispatch) {
+        dispatch(clearDynObj());
+        axios.get(`${ROOT_URL}/api/finance/mainoperation/fa02/fetch`, {
+            headers: 
+            {
+                authorization: localStorage.getItem('token')
+            },
+            params:
+            {
+                ...a_searchParameters
+            }
+        })
+        .then(({data}) => {
+            
+            dispatch(modifyLoader(false));
+            dispatch({
+                type: FETCH_DYNOBJ_FI,
+                data:data
+            });
+    
+        })
+        .catch(error => {
+            handleError(error,dispatch);
+            dispatch(modifyLoader(false));
+        });
+    }
+}
 export function fetchFA03(a_searchParameters) {
     
     return function(dispatch) {

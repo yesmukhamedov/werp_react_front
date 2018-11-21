@@ -7,7 +7,9 @@ import _ from "lodash";
 import {handleFocus, isEmpty, moneyFormat, moneyInputHanler} from '../../../utils/helpers';
 import {LEGACY_URL} from "../../../utils/constants";
 import {BigNumber} from 'bignumber.js';
-import { injectIntl } from 'react-intl'
+import { injectIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
+import { messages } from '../../../locales/defineMessages';
 
 
 class Fmcp extends Component {
@@ -176,18 +178,18 @@ class Fmcp extends Component {
       if (isEmpty(contract)){
         return "";
       }
-      const {messages} = this.props.intl
+      const {formatMessage} = this.props.intl;
         return (
             
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
                 <Header as="h2" block>                  
-                  {messages['transNameFmcp']}
+                  {formatMessage(messages.transNameFmcp)}
                 </Header>
                 
                 <Segment padded size="small">
                 
                   <Label color="red" ribbon>
-                    {messages['searchParameters']}
+                    {formatMessage(messages.searchParameters)}
                   </Label>
                   <br />
                   <br />
@@ -196,7 +198,7 @@ class Fmcp extends Component {
                       <List.Content>
                         <Input
                           value={this.state.searchTerm.zregOrConNum} maxLength='12'
-                          placeholder={messages['regNumOrConNum']} onFocus={handleFocus}
+                          placeholder={formatMessage(messages.regNumOrConNum)} onFocus={handleFocus}
                           onChange={(e, { value }) => this.onInputChange(value,'zregOrConNum')}
                           />
                       </List.Content>
@@ -204,7 +206,7 @@ class Fmcp extends Component {
                     <List.Item>
                       <List.Content>
                           <Button icon labelPosition='left' primary size='small' onClick={()=>this.fetch(this.state.searchTerm.zregOrConNum)}>
-                            <Icon name='search' size='large' /> {messages['search']}
+                            <Icon name='search' size='large' /> {formatMessage(messages.search)}
                           </Button>
                       </List.Content>
                     </List.Item>
@@ -239,12 +241,12 @@ class Fmcp extends Component {
       const {contract} = this.props;
 
       
-      const {messages} = this.props.intl
+      const {formatMessage} = this.props.intl
       return (
         <Segment padded size="small">
                   
           <Label color="green" ribbon>
-            {messages['mainInfos']}
+            {formatMessage(messages.mainInfos)}
           </Label>
           <br />
           <br />
@@ -252,7 +254,7 @@ class Fmcp extends Component {
                     <Table.Body>
                         <Table.Row>
                             <Table.Cell>
-                              {messages['regNumOrConNum']}
+                              {formatMessage(messages.regNumOrConNum)}
                             </Table.Cell>
                             <Table.Cell>
                               {contract.iscontractnumber && 
@@ -262,10 +264,10 @@ class Fmcp extends Component {
                               
                               }
                               {contract.belnr && 
-                                <a target='_blank' href={`${LEGACY_URL}/accounting/reports/fa03.xhtml?belnr=` + contract.belnr 
-                                +`&gjahr=` + contract.gjahr +`&bukrs=` + contract.bukrs}>
-                                  <Button>{messages['finDoc']}</Button>
-                                </a>
+                              <Link target='_blank' className={'ui icon button primary'}  to={`/finance/mainoperation/fa03?belnr=`+contract.belnr
+                                +`&bukrs=`+contract.bukrs+`&gjahr=`+contract.gjahr}>
+                                {formatMessage(messages.finDoc)}
+                              </Link> 
                               }
                               
                             </Table.Cell>                
@@ -273,7 +275,7 @@ class Fmcp extends Component {
                         
                         <Table.Row>
                             <Table.Cell>
-                              {messages['fioClient']}
+                              {formatMessage(messages.fioClient)}
                             </Table.Cell>
                             <Table.Cell>
                               <Input fluid
@@ -285,7 +287,7 @@ class Fmcp extends Component {
                         
                         <Table.Row>
                             <Table.Cell>
-                              {messages['dealer']}
+                              {formatMessage(messages.dealer)}
                             </Table.Cell>
                             <Table.Cell width="10">
                               <Input fluid
@@ -297,7 +299,7 @@ class Fmcp extends Component {
                         
                         <Table.Row>
                             <Table.Cell>
-                              {messages['finAgent']}
+                              {formatMessage(messages.finAgent)}
                             </Table.Cell>
                             <Table.Cell>
                               <Input fluid
@@ -309,7 +311,7 @@ class Fmcp extends Component {
                         
                         <Table.Row>
                             <Table.Cell>                              
-                              {messages['waers']}
+                              {formatMessage(messages.waers)}
                             </Table.Cell>
                             <Table.Cell>
                               <Input fluid
@@ -321,7 +323,7 @@ class Fmcp extends Component {
                         
                         <Table.Row>
                             <Table.Cell>
-                              {messages['price']}
+                              {formatMessage(messages.price)}
                             </Table.Cell>
                             <Table.Cell>
                               <Input fluid
@@ -333,7 +335,7 @@ class Fmcp extends Component {
                         
                         <Table.Row>
                             <Table.Cell>
-                              {messages['paid']}
+                              {formatMessage(messages.paid)}
                             </Table.Cell>
                             <Table.Cell>
                               <Input fluid
@@ -345,7 +347,7 @@ class Fmcp extends Component {
                         
                         <Table.Row>
                             <Table.Cell>
-                              {messages['remainder']}
+                              {formatMessage(messages.remainder)}
                             </Table.Cell>
                             <Table.Cell>
                               <Input fluid
@@ -369,14 +371,14 @@ class Fmcp extends Component {
         return "";
       }
 
-      const {messages} = this.props.intl
+      const {formatMessage} = this.props.intl
         return (
             
            
                 <Segment padded size="small">
                 
                   <Label color="yellow" ribbon>
-                    {messages['paymentSchedule']}
+                    {formatMessage(messages.paymentSchedule)}
                   </Label>
                   <br />
                   <br />
@@ -384,11 +386,11 @@ class Fmcp extends Component {
                   
                                 <Table.Header>
                                     <Table.Row>
-                                        <Table.HeaderCell>{messages['monthlyPayment']}</Table.HeaderCell>
-                                        <Table.HeaderCell>{messages['paymentDate']}</Table.HeaderCell>
-                                        <Table.HeaderCell>{messages['paymentAmount']}</Table.HeaderCell>
-                                        <Table.HeaderCell>{messages['paid']}</Table.HeaderCell>
-                                        <Table.HeaderCell>{messages['amount']}</Table.HeaderCell>
+                                        <Table.HeaderCell>{formatMessage(messages.monthlyPayment)}</Table.HeaderCell>
+                                        <Table.HeaderCell>{formatMessage(messages.paymentDate)}</Table.HeaderCell>
+                                        <Table.HeaderCell>{formatMessage(messages.paymentAmount)}</Table.HeaderCell>
+                                        <Table.HeaderCell>{formatMessage(messages.paid)}</Table.HeaderCell>
+                                        <Table.HeaderCell>{formatMessage(messages.amount)}</Table.HeaderCell>
                                     </Table.Row>
                                 </Table.Header>
                                 <Table.Body>
@@ -399,7 +401,7 @@ class Fmcp extends Component {
                                       <Table.Row key={key}>                                      
                                         <Table.Cell textAlign="center">
                                           {key>0?key:''} 
-                                          {item.is_firstpayment === 1? messages['firstPayment']:''}
+                                          {item.is_firstpayment === 1? formatMessage(messages.firstPayment):''}
                                         </Table.Cell>
                                         <Table.Cell>
                                           {item.payment_date}
@@ -436,7 +438,7 @@ class Fmcp extends Component {
     }
     renderSave(){
       
-      const {messages} = this.props.intl
+      const {formatMessage} = this.props.intl
       const {hkontOptions,summa, hkont_d} = this.props.contract;
       console.log(this.props);
         return (
@@ -450,7 +452,7 @@ class Fmcp extends Component {
                                 <Table.Body>
                                     <Table.Row>
                                         <Table.Cell>
-                                          {messages['cashBank']}
+                                          {formatMessage(messages.cashBank)}
                                         </Table.Cell>
 
                                         <Table.Cell>    
@@ -460,7 +462,7 @@ class Fmcp extends Component {
                                     </Table.Row>
                                     <Table.Row>
                                         <Table.Cell>
-                                          {messages['amount']}
+                                          {formatMessage(messages.amount)}
                                         </Table.Cell>
 
                                         <Table.Cell>                                          
@@ -480,7 +482,7 @@ class Fmcp extends Component {
 
                                         <Table.Cell>                                          
                                           <Button icon labelPosition='left' primary size='small' onClick={()=>this.save()}>
-                                            <Icon name='save' size='large' />{messages['save']}
+                                            <Icon name='save' size='large' />{formatMessage(messages.save)}
                                           </Button>
                                         </Table.Cell>  
 

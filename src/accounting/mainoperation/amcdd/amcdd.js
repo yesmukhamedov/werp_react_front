@@ -6,8 +6,9 @@ import {amcddSave, amcddFetch, amcddChange, amcddClear} from  '../../../accounti
 import {LEGACY_URL} from "../../../utils/constants";
 
 import {handleFocus, isEmpty, moneyFormat, moneyInputHanler} from '../../../utils/helpers';
+import { Link } from 'react-router-dom';
 
-import PaymentSchedule from '../../..//finance/mainoperation/fa03/paymentSchedule';
+import PaymentSchedule from '../../../finance/mainoperation/fa03/paymentSchedule';
 
 class Fmcp extends Component {
 
@@ -205,10 +206,10 @@ class Fmcp extends Component {
                               </a>
                             }
                               {contract.belnr && 
-                                <a target='_blank' href={`${LEGACY_URL}/accounting/reports/fa03.xhtml?belnr=` + contract.belnr 
-                                  +`&gjahr=` + contract.gjahr +`&bukrs=` + contract.bukrs}>
-                                  <Button>Фин. док</Button>
-                                </a>                                
+                              
+                                <Link target='_blank' className={'ui icon button primary'}  to={`/finance/mainoperation/fa03?belnr=`+contract.belnr+`&bukrs=`+contract.bukrs+`&gjahr=`+contract.gjahr}>
+                                    Фин. док
+                                </Link>                                      
                               }
 
                             </Table.Cell>                

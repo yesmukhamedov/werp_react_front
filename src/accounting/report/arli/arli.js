@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import moment from 'moment';
 import ReactTable from 'react-table';
+import { Link } from 'react-router-dom';
 import _ from "lodash";
 import "react-table/react-table.css";
 import {fetchARLI,clearDynObjAcc} from '../../accounting_action';
@@ -178,10 +179,13 @@ class Arli extends Component {
                         width: 100};
         let t1r1c2 = {Header:({value}) => <b>Фин. док и Рег. номер</b>,accessor: "zreg",Cell: obj => (<span> 
 
-                    <a target='_blank' href={`${LEGACY_URL}/accounting/reports/fa03.xhtml?belnr=` + obj.original.belnr 
-                    +`&gjahr=` + obj.original.gjahr +`&bukrs=` + obj.original.bukrs}>
-								<Button>{obj.original.belnr}</Button>
-                            </a>
+                    
+                    <Link target='_blank' className={'ui icon button primary'}  to={`/finance/mainoperation/fa03?belnr=`+obj.original.belnr+`&bukrs=`
+                    +obj.original.bukrs+`&gjahr=`+obj.original.gjahr}>
+                        {obj.original.belnr}
+                    </Link>    
+
+
                     {obj.original.zreg} 
                     {PopupInfo(
                         obj.original.belnr, obj.original.gjahr, obj.original.dmbtr, obj.original.wrbtr,

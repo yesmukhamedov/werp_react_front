@@ -367,7 +367,7 @@
 	"bukrs"           : "Компания",
 	"business_area"   : "Бинзесс сфера",
 	"contract_number" : "SN номер",
-	"customer_id"     : "Контрагент",
+	"customer_id"     : "Контрагент ID",
 	"gjahr"           : "Год",
 	"kursf"           : "Курс",
 	"monat"           : "Месяц",
@@ -375,7 +375,7 @@
 	"stjah"           : "Год документа отмены",
 	"storno"          : "Сторно",
 	"tcode"           : "Транзакция",
-	"usnam"           : "Пользователь",
+	"usnam"           : "Пользователь ID",
 	"waers"           : "Валюта",
 	"official"        : "Oфициально",
 	"dep"             : "Отдел",
@@ -447,11 +447,38 @@
 	,"snNum":"SN номер"
 	,"count":"Количество"
 	,"period":"Период"
-	,"show":"Показать"
+	,"toShow":"Показать"
 	,"payDebt":"Оплатить долг"
-	,"toEmployeeAccount":"Деньги на хранение",
-	"cancel": "Отмена",
-	"close": "Закрыть"
+	,"toEmployeeAccount":"Деньги на хранение"
+	,"cancel": "Отмена"
+	,"toClose": "Закрыть"
 
-
+	,"transNameFa03":"Просмотр Фин. Док."
+	,"transNameFa02":"Изменить Фин. Док."
+	,"toStorn":"Сторнировать"
+	,"inLocalCurrency":"во вн. Валюте"
+	,"inDocumentCurrency":"в Валюте"
+	,"extraInfo":"Доп. инфо"
+	,"openClose":"Отк./Зак."
+	,"open":"Открыт"
+	,"close":"Закрыт"
+	,"time":"Время"
+	,"invoice":"Накладная"
+	,"payroll":"Платежная ведомость"
+	,"logDoc":"Док. лог."
+	,"customer":"Контрагент"
+	,"user":"Пользователь"
+	,"cancelDocument":"Документ отмены"
+	,"originalDocument":"Документ оригинал"
+	,"buzei":"Поз."
+	,"bschl":"КП"
+	,"hkont":"Счет Г.К."
+	,"shkzg":"Д/К"
+	,"matnr":"Материал"
+	,"werks":"Склад"
+	,"menge":"Колич."
+	,"meins":"Е.И."
+	,"buzeiFullText":"Позиция"
+	,"documents":"Документы"
+	,"canceled":"Отменен"
 }

@@ -12,6 +12,8 @@ import "react-table/react-table.css";
 import {frcolnSearchData, frcolnFetchBranchData, changeTab, frcolnFetchCollectorData, clearState, frcolnSaveData} from './frcoln_action';
 import {LEGACY_URL} from "../../../utils/constants"
 import { injectIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
+import { messages } from '../../../locales/defineMessages';
 require('moment/locale/ru');
 
   
@@ -114,15 +116,15 @@ class Frcoln extends Component {
 
 
     renderTab1(){
-        const {messages} = this.props.intl 
+        const {formatMessage} = this.props.intl 
         const statusOptions = [
-            { key: 0, text: messages['standard'], value: 0 },
-            { key: 1, text: messages['problem'], value: 1 }
+            { key: 0, text: formatMessage(messages.standard), value: 0 },
+            { key: 1, text: formatMessage(messages.problem), value: 1 }
           ];
         
           const periodOptions = [
-            { key: 0, text: messages['onBegOfMonth'], value: 'BEG' },
-            { key: 1, text: messages['onEndOfMonth'], value: 'END' }
+            { key: 0, text: formatMessage(messages.onBegOfMonth), value: 'BEG' },
+            { key: 1, text: formatMessage(messages.onEndOfMonth), value: 'END' }
           ];
         return (
         // <Tab.Pane>
@@ -134,10 +136,10 @@ class Frcoln extends Component {
                                 <Table.Body>
                                 <Table.Row>
                                     <Table.Cell  collapsing>
-                                        <Icon name='folder' /> {messages['bukrs']}
+                                        <Icon name='folder' /> {formatMessage(messages.bukrs)}
                                     </Table.Cell>
                                     <Table.Cell>
-                                    <Dropdown fluid placeholder={messages['bukrs']} selection options={this.props.companyOptions} value={this.state.searchTerm.bukrs} 
+                                    <Dropdown fluid placeholder={formatMessage(messages.bukrs)} selection options={this.props.companyOptions} value={this.state.searchTerm.bukrs} 
                                         onChange={(e, { value }) => this.onInputChange(value,'bukrs')} />
                                         {/* <BukrsF4n handleChange={(value, fieldname)=> this.onInputChange(value,fieldname)} fluid={true}/>                                         */}
                                     </Table.Cell>
@@ -146,10 +148,10 @@ class Frcoln extends Component {
                                     <Table.Row>
                                     <Table.Cell>
                                         <Icon name='browser' />                                    
-                                        {messages['brnch']}
+                                        {formatMessage(messages.brnch)}
                                     </Table.Cell> 
                                     <Table.Cell>
-                                    <Dropdown placeholder={messages['all']} fluid multiple search selection options={this.state.branchOptions} value={this.state.searchTerm.branchList} 
+                                    <Dropdown placeholder={formatMessage(messages.all)} fluid multiple search selection options={this.state.branchOptions} value={this.state.searchTerm.branchList} 
                                             onChange={(e, { value }) => this.onInputChange(value,'branch')} />                                        
                                     </Table.Cell>
                                     <Table.Cell></Table.Cell>
@@ -157,7 +159,7 @@ class Frcoln extends Component {
                                     <Table.Row>
                                         <Table.Cell>                                        
                                             <Icon name='calendar' />
-                                            {messages['date']}
+                                            {formatMessage(messages.date)}
                                         </Table.Cell> 
                                         <Table.Cell>
                                             <DatePicker className='date-100-width'
@@ -173,7 +175,7 @@ class Frcoln extends Component {
                                     <Table.Row>
                                         <Table.Cell>                                        
                                             <Icon name='options' />
-                                            {messages['state1']}
+                                            {formatMessage(messages.state1)}
                                         </Table.Cell> 
                                         <Table.Cell>
                                             <Dropdown item options={statusOptions} value={this.state.searchTerm.status} 
@@ -187,7 +189,7 @@ class Frcoln extends Component {
                                     <Table.Row>
                                         <Table.Cell>                                        
                                             <Icon name='calendar' />
-                                            {messages['period']}
+                                            {formatMessage(messages.period)}
                                         </Table.Cell> 
                                         <Table.Cell>
                                             <Dropdown item options={periodOptions} value={this.state.searchTerm.period} 
@@ -203,7 +205,7 @@ class Frcoln extends Component {
                                     <Table.Cell>
                                         <Button icon labelPosition='left' primary size='small' onClick={this.onSearchClick.bind(this)}>
                                             <Icon name='search' size='large' />
-                                            {messages['search']}
+                                            {formatMessage(messages.search)}
                                         </Button>
                                     </Table.Cell>
                                     <Table.Cell></Table.Cell>
@@ -232,38 +234,38 @@ class Frcoln extends Component {
         //initialize columns
         //table 1 branches
 
-        const {messages,locale} = this.props.intl 
+        const {formatMessage,locale} = this.props.intl 
         const numFormLocale = locale+'-RU';
         // t2r2c3.className=('clickableItem');
         let t1columns = [];
-        let t1r2c1 = {Header:({value}) => <b>{messages['brnch']}</b>,accessor: "branch_name",className:'clickableItem'};
-        let t1r2c2 = {Header:({value}) => <b>{messages['numOfSalesContracts']}</b>,accessor: "contract_amount",className:'clickableItem', Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t1r2c3 = {Header:({value}) => <b>{messages['waers']}</b>,accessor: "waers",className:'clickableItem'};
-        let t1r2c4 = {Header:<b>{messages['plan']}</b>,accessor: "ras_plan",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t1r2c5 = {Header:<b>{messages['collected']}</b>,accessor: "ras_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t1r2c6 = {Header:<b>{messages['plan']}</b>,accessor: "one_month_plan",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t1r2c7 = {Header:<b>{messages['collected']}</b>,accessor: "one_month_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t1r2c8 = {Header:<b>{messages['plan']}</b>,accessor: "ras_usd_plan",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t1r2c9 = {Header:<b>{messages['collected']}</b>,accessor: "ras_usd_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t1r2c10 = {Header:<b>{messages['plan']}</b>,accessor: "one_month_usd_plan",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t1r2c11 = {Header:<b>{messages['collected']}</b>,accessor: "one_month_usd_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t1r2c1 = {Header:({value}) => <b>{formatMessage(messages.brnch)}</b>,accessor: "branch_name",className:'clickableItem'};
+        let t1r2c2 = {Header:({value}) => <b>{formatMessage(messages.numOfSalesContracts)}</b>,accessor: "contract_amount",className:'clickableItem', Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t1r2c3 = {Header:({value}) => <b>{formatMessage(messages.waers)}</b>,accessor: "waers",className:'clickableItem'};
+        let t1r2c4 = {Header:<b>{formatMessage(messages.plan)}</b>,accessor: "ras_plan",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t1r2c5 = {Header:<b>{formatMessage(messages.collected)}</b>,accessor: "ras_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t1r2c6 = {Header:<b>{formatMessage(messages.plan)}</b>,accessor: "one_month_plan",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t1r2c7 = {Header:<b>{formatMessage(messages.collected)}</b>,accessor: "one_month_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t1r2c8 = {Header:<b>{formatMessage(messages.plan)}</b>,accessor: "ras_usd_plan",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t1r2c9 = {Header:<b>{formatMessage(messages.collected)}</b>,accessor: "ras_usd_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t1r2c10 = {Header:<b>{formatMessage(messages.plan)}</b>,accessor: "one_month_usd_plan",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t1r2c11 = {Header:<b>{formatMessage(messages.collected)}</b>,accessor: "one_month_usd_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
 
-        let t1r2c12 = {Header:<b>{messages['plan']}</b>,accessor: "total_usd_plan",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t1r2c12 = {Header:<b>{formatMessage(messages.plan)}</b>,accessor: "total_usd_plan",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
         t1r2c12.Footer = (<span><strong>{new Intl.NumberFormat(numFormLocale).format(_.sum(_.map(this.props.tab2OutputTable, d => d.total_usd_plan)))}</strong></span>);
-        let t1r2c13 = {Header:<b>{messages['collected']}</b>,accessor: "total_usd_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t1r2c13 = {Header:<b>{formatMessage(messages.collected)}</b>,accessor: "total_usd_poluchen",className:'clickableItem',Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
         t1r2c13.Footer = (<span><strong>{new Intl.NumberFormat(numFormLocale).format(_.sum(_.map(this.props.tab2OutputTable, d => d.total_usd_poluchen)))}</strong></span>);
-        let t1r2c14 = {Header: <b>{messages['percent']}</b>,accessor: "total_usd_percentage",className:'clickableItem',Cell: ({value}) => <span>{new Intl.NumberFormat(numFormLocale).format(value)} {'%'}</span>};
+        let t1r2c14 = {Header: <b>{formatMessage(messages.percent)}</b>,accessor: "total_usd_percentage",className:'clickableItem',Cell: ({value}) => <span>{new Intl.NumberFormat(numFormLocale).format(value)} {'%'}</span>};
         t1r2c14.Footer = (<span><strong>{new Intl.NumberFormat(numFormLocale).format(
             _.sum(_.map(this.props.tab2OutputTable, d => d.total_usd_poluchen))*100/_.sum(_.map(this.props.tab2OutputTable, d => d.total_usd_plan))
     
     )}  {'%'}</strong></span>);
-        let t1r2c15 = {Header: <b>{messages['city']}</b>,accessor: "city_name",className:'clickableItem'};
+        let t1r2c15 = {Header: <b>{formatMessage(messages.city)}</b>,accessor: "city_name",className:'clickableItem'};
         
-        let t1r1c2={Header:({value}) => <b>{messages['installments']}</b>,columns:[]};
-        let t1r1c3={Header:({value}) => <b>{messages['in1Month']}</b>,columns:[]};
-        let t1r1c4={Header:({value}) => <b>{messages['installments']} USD</b>,columns:[]};
-        let t1r1c5={Header:({value}) => <b>{messages['in1Month']} USD</b>,columns:[]};
-        let t1r1c6={Header:({value}) => <b>{messages['overallSum']}</b>,columns:[]};
+        let t1r1c2={Header:({value}) => <b>{formatMessage(messages.installments)}</b>,columns:[]};
+        let t1r1c3={Header:({value}) => <b>{formatMessage(messages.in1Month)}</b>,columns:[]};
+        let t1r1c4={Header:({value}) => <b>{formatMessage(messages.installments)} USD</b>,columns:[]};
+        let t1r1c5={Header:({value}) => <b>{formatMessage(messages.in1Month)} USD</b>,columns:[]};
+        let t1r1c6={Header:({value}) => <b>{formatMessage(messages.overallSum)}</b>,columns:[]};
 
         t1r1c2.columns.push(t1r2c4);
         t1r1c2.columns.push(t1r2c5);
@@ -289,29 +291,29 @@ class Frcoln extends Component {
 
         //table 2 Branches Overall Amount
         let t2columns = [];
-        let t2r2c1 = {Header:({value}) => <b>{messages['waers']}</b>,accessor: "waers"};
-        let t2r2c2 = {Header:({value}) => <b>{messages['numOfSalesContracts']}</b>,accessor: "contract_amount", Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t2r2c3 = {Header:<b>{messages['plan']}</b>,accessor: "ras_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t2r2c4 = {Header:<b>{messages['collected']}</b>,accessor: "ras_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t2r2c5 = {Header:<b>{messages['plan']}</b>,accessor: "one_month_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t2r2c6 = {Header:<b>{messages['collected']}</b>,accessor: "one_month_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t2r2c7 = {Header:<b>{messages['plan']}</b>,accessor: "ras_usd_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t2r2c8 = {Header:<b>{messages['collected']}</b>,accessor: "ras_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t2r2c9 = {Header:<b>{messages['plan']}</b>,accessor: "one_month_usd_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t2r2c10 = {Header:<b>{messages['collected']}</b>,accessor: "one_month_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t2r2c1 = {Header:({value}) => <b>{formatMessage(messages.waers)}</b>,accessor: "waers"};
+        let t2r2c2 = {Header:({value}) => <b>{formatMessage(messages.numOfSalesContracts)}</b>,accessor: "contract_amount", Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t2r2c3 = {Header:<b>{formatMessage(messages.plan)}</b>,accessor: "ras_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t2r2c4 = {Header:<b>{formatMessage(messages.collected)}</b>,accessor: "ras_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t2r2c5 = {Header:<b>{formatMessage(messages.plan)}</b>,accessor: "one_month_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t2r2c6 = {Header:<b>{formatMessage(messages.collected)}</b>,accessor: "one_month_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t2r2c7 = {Header:<b>{formatMessage(messages.plan)}</b>,accessor: "ras_usd_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t2r2c8 = {Header:<b>{formatMessage(messages.collected)}</b>,accessor: "ras_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t2r2c9 = {Header:<b>{formatMessage(messages.plan)}</b>,accessor: "one_month_usd_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t2r2c10 = {Header:<b>{formatMessage(messages.collected)}</b>,accessor: "one_month_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
 
         
 
-        let t2r2c11 = {Header:<b>{messages['plan']}</b>,id: "total_usd_plan",accessor:row=><span>{new Intl.NumberFormat(numFormLocale).format(row.ras_usd_plan + row.one_month_usd_plan)}</span>};
+        let t2r2c11 = {Header:<b>{formatMessage(messages.plan)}</b>,id: "total_usd_plan",accessor:row=><span>{new Intl.NumberFormat(numFormLocale).format(row.ras_usd_plan + row.one_month_usd_plan)}</span>};
         t2r2c11.Footer = (<span><strong>{new Intl.NumberFormat(numFormLocale).format(_.sum(_.map(this.props.tab2TotalTable, d => d.ras_usd_plan+d.one_month_usd_plan)))}</strong></span>);
-        let t2r2c12 = {Header:<b>{messages['collected']}</b>,id: "total_usd_poluchen",accessor: row=><span>{new Intl.NumberFormat(numFormLocale).format(row.ras_usd_poluchen + row.one_month_usd_poluchen)}</span>};
+        let t2r2c12 = {Header:<b>{formatMessage(messages.collected)}</b>,id: "total_usd_poluchen",accessor: row=><span>{new Intl.NumberFormat(numFormLocale).format(row.ras_usd_poluchen + row.one_month_usd_poluchen)}</span>};
         t2r2c12.Footer = (<span><strong>{new Intl.NumberFormat(numFormLocale).format(_.sum(_.map(this.props.tab2TotalTable, d => d.ras_usd_poluchen+d.one_month_usd_poluchen)))}</strong></span>);
 
-        let t2r1c2={Header:({value}) => <b>{messages['installments']}</b>,columns:[]};
-        let t2r1c3={Header:({value}) => <b>{messages['in1Month']}</b>,columns:[]};
-        let t2r1c4={Header:({value}) => <b>{messages['installments']} USD</b>,columns:[]};
-        let t2r1c5={Header:({value}) => <b>{messages['in1Month']} USD</b>,columns:[]};
-        let t2r1c6={Header:({value}) => <b>{messages['overallSum']}</b>,columns:[]};
+        let t2r1c2={Header:({value}) => <b>{formatMessage(messages.installments)}</b>,columns:[]};
+        let t2r1c3={Header:({value}) => <b>{formatMessage(messages.in1Month)}</b>,columns:[]};
+        let t2r1c4={Header:({value}) => <b>{formatMessage(messages.installments)} USD</b>,columns:[]};
+        let t2r1c5={Header:({value}) => <b>{formatMessage(messages.in1Month)} USD</b>,columns:[]};
+        let t2r1c6={Header:({value}) => <b>{formatMessage(messages.overallSum)}</b>,columns:[]};
 
 
         t2r1c2.columns.push(t2r2c3);
@@ -336,39 +338,39 @@ class Frcoln extends Component {
         
         //table 3 Fin Agent
         let t3columns = [];
-        let t3r2c1 = {Header:({value}) => <b>{messages['brnch']}</b>,accessor: "branch_name"};
-        let t3r2c2 = {Header:({value}) => <b>{messages['fio']}</b>,accessor: "collector_name"};
-        let t3r2c3 = {Header:({value}) => <b>{messages['numOfSalesContracts']}</b>,accessor: "contract_amount", Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t3r2c4 = {Header:({value}) => <b>{messages['waers']}</b>,accessor: "waers"};
-        let t3r2c5 = {Header: <b>{messages['plan']}</b>,accessor: "ras_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t3r2c6 = {Header: <b>{messages['collected']}</b>,accessor: "ras_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t3r2c7 = {Header: <b>{messages['plan']}</b>,accessor: "one_month_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t3r2c8 = {Header: <b>{messages['collected']}</b>,accessor: "one_month_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t3r2c9 = {Header: <b>{messages['plan']}</b>,accessor: "ras_usd_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t3r2c10 = {Header: <b>{messages['collected']}</b>,accessor: "ras_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t3r2c11 = {Header: <b>{messages['plan']}</b>,accessor: "one_month_usd_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t3r2c12 = {Header: <b>{messages['collected']}</b>,accessor: "one_month_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t3r2c13 = {Header: <b>{messages['details']}</b>,id: "rasPer",accessor:((row) =>  (        
+        let t3r2c1 = {Header:({value}) => <b>{formatMessage(messages.brnch)}</b>,accessor: "branch_name"};
+        let t3r2c2 = {Header:({value}) => <b>{formatMessage(messages.fio)}</b>,accessor: "collector_name"};
+        let t3r2c3 = {Header:({value}) => <b>{formatMessage(messages.numOfSalesContracts)}</b>,accessor: "contract_amount", Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t3r2c4 = {Header:({value}) => <b>{formatMessage(messages.waers)}</b>,accessor: "waers"};
+        let t3r2c5 = {Header: <b>{formatMessage(messages.plan)}</b>,accessor: "ras_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t3r2c6 = {Header: <b>{formatMessage(messages.collected)}</b>,accessor: "ras_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t3r2c7 = {Header: <b>{formatMessage(messages.plan)}</b>,accessor: "one_month_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t3r2c8 = {Header: <b>{formatMessage(messages.collected)}</b>,accessor: "one_month_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t3r2c9 = {Header: <b>{formatMessage(messages.plan)}</b>,accessor: "ras_usd_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t3r2c10 = {Header: <b>{formatMessage(messages.collected)}</b>,accessor: "ras_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t3r2c11 = {Header: <b>{formatMessage(messages.plan)}</b>,accessor: "one_month_usd_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t3r2c12 = {Header: <b>{formatMessage(messages.collected)}</b>,accessor: "one_month_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t3r2c13 = {Header: <b>{formatMessage(messages.details)}</b>,id: "rasPer",accessor:((row) =>  (        
                                                             <Button   primary size='small' 
                                                             onClick={()=>this.searchCollectorInfo(row.bukrs,row.branch_id,row.waers,row.staff_id, 2)}>
-                                                            {messages['show']}
+                                                            {formatMessage(messages.toShow)}
                                                             </Button>
                                                             ))};
-        let t3r2c14 = {Header: <b>{messages['percent']}</b>,accessor: "ras_percentage",Cell: ({value}) => (<span>{new Intl.NumberFormat(numFormLocale).format(value)} {'%'}</span>)};
-        let t3r2c15 = {Header: <b>{messages['details']}</b>,id: "onePer",accessor:((row) =>  (        
+        let t3r2c14 = {Header: <b>{formatMessage(messages.percent)}</b>,accessor: "ras_percentage",Cell: ({value}) => (<span>{new Intl.NumberFormat(numFormLocale).format(value)} {'%'}</span>)};
+        let t3r2c15 = {Header: <b>{formatMessage(messages.details)}</b>,id: "onePer",accessor:((row) =>  (        
             <Button   primary size='small' 
             onClick={()=>this.searchCollectorInfo(row.bukrs,row.branch_id,row.waers,row.staff_id, 1)}>
-                {messages['show']}
+                {formatMessage(messages.toShow)}
             </Button>
             ))};
-        let t3r2c16 = {Header: <b>{messages['percent']}</b>,accessor: "one_month_percentage",Cell: ({value}) => (<span>{new Intl.NumberFormat(numFormLocale).format(value)} {'%'}</span>)};
+        let t3r2c16 = {Header: <b>{formatMessage(messages.percent)}</b>,accessor: "one_month_percentage",Cell: ({value}) => (<span>{new Intl.NumberFormat(numFormLocale).format(value)} {'%'}</span>)};
 
         
         
-        let t3r1c2={Header:({value}) => <b>{messages['installments']}</b>,columns:[]};
-        let t3r1c3={Header:({value}) => <b>{messages['in1Month']}</b>,columns:[]};
-        let t3r1c4={Header:({value}) => <b>{messages['installments']} USD</b>,columns:[]};
-        let t3r1c5={Header:({value}) => <b>{messages['in1Month']} USD</b>,columns:[]};
+        let t3r1c2={Header:({value}) => <b>{formatMessage(messages.installments)}</b>,columns:[]};
+        let t3r1c3={Header:({value}) => <b>{formatMessage(messages.in1Month)}</b>,columns:[]};
+        let t3r1c4={Header:({value}) => <b>{formatMessage(messages.installments)} USD</b>,columns:[]};
+        let t3r1c5={Header:({value}) => <b>{formatMessage(messages.in1Month)} USD</b>,columns:[]};
 
         t3r1c2.columns.push(t3r2c13);
         t3r1c2.columns.push(t3r2c5);
@@ -396,29 +398,29 @@ class Frcoln extends Component {
 
         //table 4  Fin Agent Overall Amount
         let t4columns = [];
-        let t4r2c1 = {Header:({value}) => <b>{messages['waers']}</b>,accessor: "waers"};
-        let t4r2c2 = {Header:({value}) => <b>{messages['numOfSalesContracts']}</b>,accessor: "contract_amount", Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t4r2c3 = {Header: <b>{messages['plan']}</b>,accessor: "ras_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t4r2c4 = {Header: <b>{messages['collected']}</b>,accessor: "ras_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t4r2c5 = {Header: <b>{messages['plan']}</b>,accessor: "one_month_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t4r2c6 = {Header: <b>{messages['collected']}</b>,accessor: "one_month_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t4r2c7 = {Header: <b>{messages['plan']}</b>,accessor: "ras_usd_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t4r2c8 = {Header: <b>{messages['collected']}</b>,accessor: "ras_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t4r2c9 = {Header: <b>{messages['plan']}</b>,accessor: "one_month_usd_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
-        let t4r2c10 = {Header: <b>{messages['collected']}</b>,accessor: "one_month_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t4r2c1 = {Header:({value}) => <b>{formatMessage(messages.waers)}</b>,accessor: "waers"};
+        let t4r2c2 = {Header:({value}) => <b>{formatMessage(messages.numOfSalesContracts)}</b>,accessor: "contract_amount", Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t4r2c3 = {Header: <b>{formatMessage(messages.plan)}</b>,accessor: "ras_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t4r2c4 = {Header: <b>{formatMessage(messages.collected)}</b>,accessor: "ras_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t4r2c5 = {Header: <b>{formatMessage(messages.plan)}</b>,accessor: "one_month_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t4r2c6 = {Header: <b>{formatMessage(messages.collected)}</b>,accessor: "one_month_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t4r2c7 = {Header: <b>{formatMessage(messages.plan)}</b>,accessor: "ras_usd_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t4r2c8 = {Header: <b>{formatMessage(messages.collected)}</b>,accessor: "ras_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t4r2c9 = {Header: <b>{formatMessage(messages.plan)}</b>,accessor: "one_month_usd_plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t4r2c10 = {Header: <b>{formatMessage(messages.collected)}</b>,accessor: "one_month_usd_poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
 
         
 
-        let t4r2c11 = {Header: <b>{messages['plan']}</b>,id: "total_usd_plan",accessor:row=><span>{new Intl.NumberFormat(numFormLocale).format(row.ras_usd_plan + row.one_month_usd_plan)}</span>};
+        let t4r2c11 = {Header: <b>{formatMessage(messages.plan)}</b>,id: "total_usd_plan",accessor:row=><span>{new Intl.NumberFormat(numFormLocale).format(row.ras_usd_plan + row.one_month_usd_plan)}</span>};
         t4r2c11.Footer = (<span><strong>{new Intl.NumberFormat(numFormLocale).format(_.sum(_.map(this.props.tab2TotalTable, d => d.ras_usd_plan+d.one_month_usd_plan)))}</strong></span>);
-        let t4r2c12 = {Header: <b>{messages['collected']}</b>,id: "total_usd_poluchen",accessor: row=><span>{new Intl.NumberFormat(numFormLocale).format(row.ras_usd_poluchen + row.one_month_usd_poluchen)}</span>};
+        let t4r2c12 = {Header: <b>{formatMessage(messages.collected)}</b>,id: "total_usd_poluchen",accessor: row=><span>{new Intl.NumberFormat(numFormLocale).format(row.ras_usd_poluchen + row.one_month_usd_poluchen)}</span>};
         t4r2c12.Footer = (<span><strong>{new Intl.NumberFormat(numFormLocale).format(_.sum(_.map(this.props.tab2TotalTable, d => d.ras_usd_poluchen+d.one_month_usd_poluchen)))}</strong></span>);
 
-        let t4r1c2={Header:({value}) => <b>{messages['installments']}</b>,columns:[]};
-        let t4r1c3={Header:({value}) => <b>{messages['in1Month']}</b>,columns:[]};
-        let t4r1c4={Header:({value}) => <b>{messages['installments']} USD</b>,columns:[]};
-        let t4r1c5={Header:({value}) => <b>{messages['in1Month']} USD</b>,columns:[]};
-        let t4r1c6={Header:({value}) => <b>{messages['overallSum']}</b>,columns:[]};
+        let t4r1c2={Header:({value}) => <b>{formatMessage(messages.installments)}</b>,columns:[]};
+        let t4r1c3={Header:({value}) => <b>{formatMessage(messages.in1Month)}</b>,columns:[]};
+        let t4r1c4={Header:({value}) => <b>{formatMessage(messages.installments)} USD</b>,columns:[]};
+        let t4r1c5={Header:({value}) => <b>{formatMessage(messages.in1Month)} USD</b>,columns:[]};
+        let t4r1c6={Header:({value}) => <b>{formatMessage(messages.overallSum)}</b>,columns:[]};
 
 
         t4r1c2.columns.push(t4r2c3);
@@ -442,7 +444,7 @@ class Frcoln extends Component {
             
         //table 5
         let t5columns = [];
-        let t5r1c1 = {Header:({value}) => <b>{messages['snNum']}</b>,accessor: "contract_number",
+        let t5r1c1 = {Header:({value}) => <b>{formatMessage(messages.snNum)}</b>,accessor: "contract_number",
         Cell: obj => 
                 <span>
                     {obj.original.contract_number &&
@@ -452,17 +454,17 @@ class Frcoln extends Component {
                     }
                     {obj.original.belnr && 
                         <span>
-                            <a target='_blank' href={`${LEGACY_URL}/accounting/reports/fa03.xhtml?belnr=` + obj.original.belnr 
-                                +`&gjahr=` + obj.original.gjahr +`&bukrs=` + obj.original.bukrs}>
-								<Button>{obj.original.belnr}</Button>
-                            </a>                           
+                            <Link target='_blank' className={'ui icon button primary'}  to={`/finance/mainoperation/fa03?belnr=`+obj.original.belnr+`&bukrs=`
+                            +obj.original.bukrs+`&gjahr=`+obj.original.gjahr}>
+                                {obj.original.belnr}
+                            </Link>                          
                             {obj.original.zreg}
                         </span>
                     }                                          
                 </span> 
             };
-        t5r1c1.Footer = (<span><strong>{messages['count']}: {new Intl.NumberFormat(numFormLocale).format(this.props.tab4OutputTable.length)}</strong></span>);
-        let t5r1c2 = {Header:({value}) => <b>{messages['contractDate']}</b>, accessor: "contract_date"
+        t5r1c1.Footer = (<span><strong>{formatMessage(messages.count)}: {new Intl.NumberFormat(numFormLocale).format(this.props.tab4OutputTable.length)}</strong></span>);
+        let t5r1c2 = {Header:({value}) => <b>{formatMessage(messages.contractDate)}</b>, accessor: "contract_date"
                                     ,Cell: ({value}) => {
                                         if(value){
                                             return moment(value).format('DD.MM.YYYY');
@@ -477,12 +479,12 @@ class Frcoln extends Component {
                                       }
 
                     };
-        let t5r1c3 = {Header:({value}) => <b>{messages['fio']}</b>,accessor: "fio"};
-        let t5r1c4 = {Header:({value}) => <b>{messages['waers']}</b>,accessor: "waers"};
-        let t5r1c5 = {Header:<b>{messages['plan']}</b> ,accessor: "plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t5r1c3 = {Header:({value}) => <b>{formatMessage(messages.fio)}</b>,accessor: "fio"};
+        let t5r1c4 = {Header:({value}) => <b>{formatMessage(messages.waers)}</b>,accessor: "waers"};
+        let t5r1c5 = {Header:<b>{formatMessage(messages.plan)}</b> ,accessor: "plan",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
         t5r1c5.Footer = (<span><strong>{new Intl.NumberFormat(numFormLocale).format(_.sum(_.map(this.props.tab4OutputTable, d => d.plan)))}</strong></span>);
 
-        let t5r1c6 = {Header: <b>{messages['collected']}</b> ,accessor: "poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
+        let t5r1c6 = {Header: <b>{formatMessage(messages.collected)}</b> ,accessor: "poluchen",Cell: ({value}) => (new Intl.NumberFormat(numFormLocale).format(value))};
         t5r1c6.Footer = (<span><strong>{new Intl.NumberFormat(numFormLocale).format(_.sum(_.map(this.props.tab4OutputTable, d => d.poluchen)))}</strong></span>);
 
 
@@ -511,14 +513,14 @@ class Frcoln extends Component {
             
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
                 <Header as="h2" block>                    
-                    {messages['transNameFrcoln']}
+                    {formatMessage(messages.transNameFrcoln)}
                 </Header>
 
                 <Menu pointing stackable>
-                    <Menu.Item name={messages['searchParameters']} active={this.props.activeIndex === 0}  onClick={()=>{this.handleTabChange(0)}} />
-                    <Menu.Item name={messages['branches']} active={this.props.activeIndex === 1} onClick={()=>{this.handleTabChange(1)}} />
-                    <Menu.Item name={messages['finAgents']} active={this.props.activeIndex === 2} onClick={()=>{this.handleTabChange(2)}} />
-                    <Menu.Item name={messages['salesContracts']} active={this.props.activeIndex === 3} onClick={()=>{this.handleTabChange(3)}} />
+                    <Menu.Item name={formatMessage(messages.searchParameters)} active={this.props.activeIndex === 0}  onClick={()=>{this.handleTabChange(0)}} />
+                    <Menu.Item name={formatMessage(messages.branches)} active={this.props.activeIndex === 1} onClick={()=>{this.handleTabChange(1)}} />
+                    <Menu.Item name={formatMessage(messages.finAgents)} active={this.props.activeIndex === 2} onClick={()=>{this.handleTabChange(2)}} />
+                    <Menu.Item name={formatMessage(messages.salesContracts)} active={this.props.activeIndex === 3} onClick={()=>{this.handleTabChange(3)}} />
                     
                 </Menu>
                 
@@ -526,7 +528,7 @@ class Frcoln extends Component {
                 <Segment.Group className={this.props.activeIndex===1?'show':'hide'}>
                     <Segment>
                         <Button icon labelPosition='left' primary size='small' onClick={()=> this.onSaveClick()}>
-                            <Icon name='save' size='large' />{messages['save']}
+                            <Icon name='save' size='large' />{formatMessage(messages.save)}
                         </Button>
                     </Segment>
                     <Segment>                    
@@ -548,19 +550,19 @@ class Frcoln extends Component {
                             columns={t1columns}
                             pageSize={this.props.tab2OutputTable.length===0?5:this.props.tab2OutputTable.length}
                             showPagination={false}
-                            loadingText= {messages['loadingText']}
-                            noDataText= {messages['noDataText']}
+                            loadingText= {formatMessage(messages.loadingText)}
+                            noDataText= {formatMessage(messages.noDataText)}
                             className="-striped -highlight">
                         </ReactTable>
-                        <Divider horizontal>{messages['overallAmount']}</Divider>
+                        <Divider horizontal>{formatMessage(messages.overallAmount)}</Divider>
                         <ReactTable
                             data={this.props.tab2TotalTable}
                             columns={t2columns}
 
                             pageSize={this.props.tab2TotalTable.length===0?5:this.props.tab2TotalTable.length}
                             showPagination={false}
-                            loadingText= {messages['loadingText']}
-                            noDataText= {messages['noDataText']}
+                            loadingText= {formatMessage(messages.loadingText)}
+                            noDataText= {formatMessage(messages.noDataText)}
                             className="-striped -highlight">
                         </ReactTable>
                     </Segment>
@@ -572,20 +574,20 @@ class Frcoln extends Component {
                         columns={t3columns}
                         pageSize={this.props.tab3OutputTable.length===0?5:this.props.tab3OutputTable.length}
                         showPagination={false}
-                        loadingText= {messages['loadingText']}
-                        noDataText= {messages['noDataText']}
+                        loadingText= {formatMessage(messages.loadingText)}
+                        noDataText= {formatMessage(messages.noDataText)}
                         className="-striped -highlight">
         
                     </ReactTable>
-                    <Divider horizontal>{messages['overallAmount']}</Divider>
+                    <Divider horizontal>{formatMessage(messages.overallAmount)}</Divider>
                     <ReactTable
                         data={this.props.tab3TotalTable}
                         columns={t4columns}
 
                         pageSize={this.props.tab3TotalTable.length===0?5:this.props.tab3TotalTable.length}
                         showPagination={false}
-                        loadingText= {messages['loadingText']}
-                        noDataText= {messages['noDataText']}
+                        loadingText= {formatMessage(messages.loadingText)}
+                        noDataText= {formatMessage(messages.noDataText)}
                         className="-striped -highlight">
                     </ReactTable>
                 </Segment>
@@ -599,13 +601,13 @@ class Frcoln extends Component {
                         className="-striped -highlight"
 
                         
-                            loadingText= {messages['loadingText']}
-                            noDataText= {messages['noDataText']}
-                            previousText={messages['previousText']}
-                            nextText={messages['nextText']}
-                            rowsText={messages['rowsText']}
-                            pageText={messages['pageText']}
-                            ofText={messages['ofText']}
+                            loadingText= {formatMessage(messages.loadingText)}
+                            noDataText= {formatMessage(messages.noDataText)}
+                            previousText={formatMessage(messages.previousText)}
+                            nextText={formatMessage(messages.nextText)}
+                            rowsText={formatMessage(messages.rowsText)}
+                            pageText={formatMessage(messages.pageText)}
+                            ofText={formatMessage(messages.ofText)}
                         >
         
                     </ReactTable>

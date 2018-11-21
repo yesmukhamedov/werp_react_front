@@ -5,7 +5,7 @@ import "react-table/react-table.css";
 import {f4FetchStaffList, f4ClearStaffList} from '../f4_action'
 import { Table, Modal, Dropdown, Icon, Input, Checkbox, Button } from 'semantic-ui-react'
 import matchSorter from 'match-sorter';
-import {LEGACY_URL} from "../../../utils/constants"
+import {LEGACY_URL} from "../../../utils/constants";
 import { injectIntl } from 'react-intl';
 import { messages } from '../../../locales/defineMessages';
 // import './notification.css'

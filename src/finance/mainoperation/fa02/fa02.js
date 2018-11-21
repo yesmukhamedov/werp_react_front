@@ -2,7 +2,7 @@ import React,{ PureComponent } from 'react';
 import { connect } from 'react-redux';
 import { Container, Button, Table, Dropdown, Icon, Grid, Segment, Input, Header, Label } from 'semantic-ui-react';
 import {handleFocus} from '../../../utils/helpers';
-import {clearDynObj, fetchFA03, changeDynObj, saveFA02, cancelFA02} from '../../fa_action';
+import {clearDynObj, fetchFA02, changeDynObj, saveFA02, cancelFA02} from '../../fa_action';
 import Fa03Header from '../fa03/fa03Header'
 import '../../fa.css'
 import Fa03Position from '../fa03/fa03Position';
@@ -10,6 +10,8 @@ import PaymentSchedule from '../fa03/paymentSchedule';
 import Fa03RelatedDocs from '../fa03/fa03RelatedDocs';
 import queryString from 'query-string';
 import { modifyLoader } from '../../../general/loader/loader_action';
+import { injectIntl } from 'react-intl';
+import { messages } from '../../../locales/defineMessages';
 
 require('moment/locale/ru');
 class Fa02 extends PureComponent {
@@ -36,7 +38,7 @@ class Fa02 extends PureComponent {
         if (params.belnr && params.bukrs && params.gjahr){
             let searchParameters = {belnr:params.belnr,gjahr:params.gjahr,bukrs:params.bukrs};
             this.setState({searchParameters});
-            this.props.fetchFA03(searchParameters);
+            this.props.fetchFA02(searchParameters);
         }
 
     }
@@ -72,11 +74,12 @@ class Fa02 extends PureComponent {
 
     render(){
         const {belnr,gjahr,bukrs} = this.state.searchParameters;
+        const {formatMessage} = this.props.intl;
           return (
               
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}} >
                 <Header as="h2" block>
-                    Изменить Фин. Док.
+                    {formatMessage(messages.transNameFa02)}
                 </Header>
                 <Segment padded size="small">
                     <Button icon labelPosition='left' primary size='small' onClick={()=>{
@@ -88,7 +91,7 @@ class Fa02 extends PureComponent {
                             this.props.faDynamicObject.bkpf.bktxt,
                             this.props.faDynamicObject.bseg
                             )}}>
-                        <Icon name='save' size='large' />Сохранить
+                        <Icon name='save' size='large' />{formatMessage(messages.save)}
                     </Button>
                     
                     <Button icon labelPosition='left' primary size='small' onClick={()=>{ 
@@ -99,12 +102,12 @@ class Fa02 extends PureComponent {
                             this.props.faDynamicObject.bkpf.gjahr)
                             
                             }}>
-                        <Icon name='save' size='large' />Cancel
+                        <Icon name='cancel' size='large' />{formatMessage(messages.toStorn)}
                     </Button>                                    
                 </Segment>
                 <Segment padded size="small">                 
                     <Label color="red" ribbon>
-                        Параметры поиска
+                        {formatMessage(messages.searchParameters)}
                     </Label>
                     
                     <Table collapsing >
@@ -112,20 +115,20 @@ class Fa02 extends PureComponent {
                             <Table.Row>
                                 <Table.Cell>
                                     <Icon name='folder' />
-                                    Компания
+                                    {formatMessage(messages.bukrs)}
                                 </Table.Cell>                                      
                                 <Table.Cell>
-                                    <Dropdown placeholder='Компания' selection options={this.props.companyOptions} value={bukrs} 
+                                    <Dropdown placeholder={formatMessage(messages.bukrs)} selection options={this.props.companyOptions} value={bukrs} 
                                                 onChange={(e, { value }) => this.onInputChange(value,'bukrs')} />
                                 </Table.Cell> 
                                 <Table.Cell>
-                                    Номер документа
+                                    {formatMessage(messages.belnr)}
                                 </Table.Cell>                                      
                                 <Table.Cell>
                                     <Input value={belnr} onChange={(e, { value }) => this.onInputChange(value,'belnr')} onFocus={handleFocus} maxLength='10' />
                                 </Table.Cell> 
                                 <Table.Cell>
-                                    Год
+                                    {formatMessage(messages.gjahr)}
                                 </Table.Cell>
                                 <Table.Cell>
                                     <Input value={gjahr} onChange={(e, { value }) => this.onInputChange(value,'gjahr')} onFocus={handleFocus} maxLength='4'/>
@@ -133,8 +136,8 @@ class Fa02 extends PureComponent {
                                 <Table.Cell>
                                     <Button icon labelPosition='left' primary size='small' onClick={()=>{
                                         this.props.modifyLoader(true);
-                                        this.props.fetchFA03(this.state.searchParameters)}}>
-                                        <Icon name='search' size='large' />Поиск
+                                        this.props.fetchFA02(this.state.searchParameters)}}>
+                                        <Icon name='search' size='large' />{formatMessage(messages.search)}
                                     </Button>
                                 </Table.Cell>       
                             </Table.Row> 
@@ -191,4 +194,4 @@ function mapStateToProps(state)
   };
 }
 
-export default connect(mapStateToProps,{ fetchFA03, clearDynObj, changeDynObj, saveFA02, cancelFA02, modifyLoader}) (Fa02);
+export default connect(mapStateToProps,{ fetchFA02, clearDynObj, changeDynObj, saveFA02, cancelFA02, modifyLoader}) (injectIntl(Fa02));

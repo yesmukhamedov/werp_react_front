@@ -598,8 +598,8 @@ export const messages = defineMessages({
       id: 'period',
       defaultMessage: 'Period',
     },
-    show: {
-      id: 'show',
+    toShow: {
+      id: 'toShow',
       defaultMessage: 'Show',
     },
     payDebt: {
@@ -614,12 +614,124 @@ export const messages = defineMessages({
       id: 'cancel',
       defaultMessage: 'Cancel',
     },
+    toClose: {
+      id: 'toClose',
+      defaultMessage: 'Close',
+    },
+    transNameFa03: {
+      id: 'transNameFa03',
+      defaultMessage: 'View Fin. Doc.',
+    },
+    transNameFa02: {
+      id: 'transNameFa02',
+      defaultMessage: 'Edit Fin. Doc.',
+    },
+    toStorn: {
+      id: 'toStorn',
+      defaultMessage: 'Storn',
+    },
+    inLocalCurrency: {
+      id: 'inLocalCurrency',
+      defaultMessage: 'in Loc. Cur',
+    },
+    inDocumentCurrency: {
+      id: 'inDocumentCurrency',
+      defaultMessage: 'in Doc. Cur',
+    },
+    extraInfo: {
+      id: 'extraInfo',
+      defaultMessage: 'Extra Info',
+    },
+    openClose: {
+      id: 'openClose',
+      defaultMessage: 'Open/Close',
+    },
+    open: {
+      id: 'open',
+      defaultMessage: 'Open',
+    },
     close: {
       id: 'close',
       defaultMessage: 'Close',
     },
+    time: {
+      id: 'time',
+      defaultMessage: 'Time',
+    },
+    invoice: {
+      id: 'invoice',
+      defaultMessage: 'Invoice',
+    },
+    payroll: {
+      id: 'payroll',
+      defaultMessage: 'Payroll',
+    },
+    logDoc: {
+      id: 'logDoc',
+      defaultMessage: 'Log. Doc.',
+    },
+    customer: {
+      id: 'customer',
+      defaultMessage: 'Customer',
+    },
+    user: {
+      id: 'user',
+      defaultMessage: 'User',
+    },
+    cancelDocument: {
+      id: 'cancelDocument',
+      defaultMessage: 'Cancel document',
+    },
+    originalDocument: {
+      id: 'originalDocument',
+      defaultMessage: 'Original document',
+    },
+    buzei: {
+      id: 'buzei',
+      defaultMessage: 'Pos.',
+    },
+    bschl: {
+      id: 'bschl',
+      defaultMessage: 'PK',
+    },
+    hkont: {
+      id: 'hkont',
+      defaultMessage: 'GL account',
+    },
+    shkzg: {
+      id: 'shkzg',
+      defaultMessage: 'D/C',
+    },
+    matnr: {
+      id: 'matnr',
+      defaultMessage: 'Material',
+    },
+    werks: {
+      id: 'werks',
+      defaultMessage: 'Warehouse',
+    },
+    menge: {
+      id: 'menge',
+      defaultMessage: 'Quantity',
+    },
+    meins: {
+      id: 'meins',
+      defaultMessage: 'U.M.',
+    },
+    buzeiFullText: {
+      id: 'buzeiFullText',
+      defaultMessage: 'Position',
+    },
+    documents: {
+      id: 'documents',
+      defaultMessage: 'Documents',
+    },
+    canceled: {
+      id: 'canceled',
+      defaultMessage: 'Canceled',
+    },
 
-
+   ////////////////////////////////////////////////////
 
 
 

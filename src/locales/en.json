@@ -376,7 +376,7 @@
   "Crm.DemoDone": "Demo done (for recall)",
   "Crm.Moved": "Moved",
 
-  "awkey"           : "Reference document number and year",
+  "awkey"           : "Ref. doc. num. & year",
   "awtyp"           : "Operation type",
   "belnr"           : "Document number",
   "bktxt"           : "Description",
@@ -471,9 +471,38 @@
 	,"snNum":"SN number"
 	,"count":"Count"
 	,"period":"Period"
-	,"show":"Show"
+	,"toShow":"Show"
 	,"payDebt":"Pay debt"
-	,"toEmployeeAccount":"To employee account",
-  "cancel": "Cancel",
-  "close": "Close"
+	,"toEmployeeAccount":"To employee account"
+  ,"cancel": "Cancel"
+  ,"toClose": "Close"
+
+  ,"transNameFa03":"View Fin. Doc."
+	,"transNameFa02":"Edit Fin. Doc."
+	,"toStorn":"Storn"
+	,"inLocalCurrency":"in Loc. Cur"
+	,"inDocumentCurrency":"in Doc. Cur"
+	,"extraInfo":"Extra Info"
+	,"openClose":"Open/Close"
+	,"open":"Open"
+	,"close":"Close"
+	,"time":"Time"
+	,"invoice":"Invoice"
+	,"payroll":"Payroll"
+	,"logDoc":"Log. Doc."
+  ,"customer":"Customer"
+	,"user":"User"
+  ,"cancelDocument":"Cancel document"
+  ,"originalDocument":"Original document"
+  ,"buzei":"Pos."
+  ,"bschl":"PK"
+  ,"hkont":"GL account"
+  ,"shkzg":"D/C"
+  ,"matnr":"Material"
+  ,"werks":"Warehouse"
+  ,"menge":"Quantity"
+  ,"meins":"U.M."
+	,"buzeiFullText":"Position"
+  ,"documents":"Documents"
+	,"canceled":"Canceled"
 }

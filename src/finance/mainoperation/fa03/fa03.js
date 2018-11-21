@@ -11,6 +11,8 @@ import Fa03RelatedDocs from './fa03RelatedDocs';
 import queryString from 'query-string';
 import { Link } from 'react-router-dom';
 import { modifyLoader } from '../../../general/loader/loader_action';
+import { injectIntl } from 'react-intl';
+import { messages } from '../../../locales/defineMessages';
 
 require('moment/locale/ru');
 
@@ -62,21 +64,22 @@ class Fa03 extends PureComponent {
 
     render(){
         const {belnr,gjahr,bukrs} = this.state.searchParameters;
+        const {formatMessage} = this.props.intl;
           return (
               
             <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}} >
                 <Header as="h2" block>
-                    Просмотр Фин. Док.
+                    {formatMessage(messages.transNameFa03)}
                 </Header>
                 
                 <Segment padded size="small">
                     <Link className={'ui icon button primary'}  to={`/finance/mainoperation/fa02?belnr=`+belnr+`&bukrs=`+bukrs+`&gjahr=`+gjahr}>
-                        Edit
+                        {formatMessage(messages.edit)}
                     </Link>                               
                 </Segment>
                 <Segment padded size="small">                 
                     <Label color="red" ribbon>
-                        Параметры поиска
+                        {formatMessage(messages.searchParameters)}
                     </Label>
 
                     
@@ -85,20 +88,20 @@ class Fa03 extends PureComponent {
                             <Table.Row>
                                 <Table.Cell>
                                     <Icon name='folder' />
-                                    Компания
+                                    {formatMessage(messages.bukrs)}
                                 </Table.Cell>                                      
                                 <Table.Cell>
-                                    <Dropdown placeholder='Компания' selection options={this.props.companyOptions} value={bukrs} 
+                                    <Dropdown placeholder={formatMessage(messages.bukrs)} selection options={this.props.companyOptions} value={bukrs} 
                                                 onChange={(e, { value }) => this.onInputChange(value,'bukrs')} />
                                 </Table.Cell> 
                                 <Table.Cell>
-                                    Номер документа
+                                    {formatMessage(messages.belnr)}
                                 </Table.Cell>                                      
                                 <Table.Cell>
                                     <Input value={belnr} onChange={(e, { value }) => this.onInputChange(value,'belnr')} onFocus={handleFocus} maxLength='10' />
                                 </Table.Cell> 
                                 <Table.Cell>
-                                    Год
+                                    {formatMessage(messages.gjahr)}
                                 </Table.Cell>
                                 <Table.Cell>
                                     <Input value={gjahr} onChange={(e, { value }) => this.onInputChange(value,'gjahr')} onFocus={handleFocus} maxLength='4'/>
@@ -107,7 +110,7 @@ class Fa03 extends PureComponent {
                                     <Button icon labelPosition='left' primary size='small' onClick={()=>{
                                         this.props.modifyLoader(true);                                                                   
                                         this.props.fetchFA03(this.state.searchParameters)}}>
-                                        <Icon name='search' size='large' />Поиск
+                                        <Icon name='search' size='large' />{formatMessage(messages.search)}
                                     </Button>
                                 </Table.Cell>       
                             </Table.Row> 
@@ -160,4 +163,4 @@ function mapStateToProps(state)
   };
 }
 
-export default connect(mapStateToProps,{ fetchFA03, clearDynObj, modifyLoader}) (Fa03);
+export default connect(mapStateToProps,{ fetchFA03, clearDynObj, modifyLoader}) (injectIntl(Fa03));
