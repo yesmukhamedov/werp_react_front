@@ -29,7 +29,7 @@ class Fa03 extends PureComponent {
 
         this.state={
             errors:[],
-            searchParameters:{belnr:'1121100311',gjahr:y,bukrs:'1000'}
+            searchParameters:{belnr:'',gjahr:y,bukrs:''}
             // 1121100555
             // 1121100164
         }  
