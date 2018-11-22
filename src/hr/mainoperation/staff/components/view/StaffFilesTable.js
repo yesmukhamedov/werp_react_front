@@ -2,6 +2,7 @@ import React from 'react';
 import { Table, Button } from 'semantic-ui-react'
 import Upload from 'rc-upload';
 import { ROOT_URL } from '../../../../../utils/constants'
+import {Link} from 'react-router-dom'
 
 export default function StaffFilesTable(props){
 
@@ -38,7 +39,9 @@ export default function StaffFilesTable(props){
                 <Table.Cell>{file.file_size}</Table.Cell>
                 <Table.Cell>{file.created_date}</Table.Cell>
                 <Table.Cell>
-                    <Button onClick={() => props.downloadFile(file.id)}>Скачать</Button>
+                    <a href={`${ROOT_URL}/hr/file/download/` + file.id} className={'ui icon button mini right floated'}>
+                        Скачать
+                    </a>
                     {file.image ? <Button>Просмотр</Button>:''}
                     <Button onClick={() => deleteConfirm(file.id)}>Удалить</Button>
                 </Table.Cell>
