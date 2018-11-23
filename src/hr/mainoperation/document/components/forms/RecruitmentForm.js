@@ -93,6 +93,7 @@ export default function RecruitmentForm (props){
                             <Table.HeaderCell>Дата начало</Table.HeaderCell>
                             <Table.HeaderCell>Менеджер</Table.HeaderCell>
                             <Table.HeaderCell>Бизнес сфера</Table.HeaderCell>
+                            <Table.HeaderCell>Тип</Table.HeaderCell>
                             <Table.HeaderCell>Прим.</Table.HeaderCell>
                             <Table.HeaderCell></Table.HeaderCell>
                         </Table.Row>
@@ -135,6 +136,14 @@ export default function RecruitmentForm (props){
                                         {businessAreaOptions.map(bus => {
                                             return <option key={bus.key} value={bus.value}>{bus.text}</option>
                                         })}
+                                    </select>}
+                                </Table.Cell>
+                                <Table.Cell>
+                                    {<select className="ui fluid dropdown"
+                                             onChange={(e) => props.handleItemChange(idx,'additional',e.target.value)}
+                                             style={{maxWidth:'200px'}} value={item.additional || ''}>
+                                        <option value="0">Не выбрано</option>
+                                        <option value="1">Доп. работа</option>
                                     </select>}
                                 </Table.Cell>
                                 <Table.Cell>

@@ -164,7 +164,7 @@ class HrDocViewPage extends Component{
         return <Container fluid style={{ marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'}}>
             <Segment clearing>
                 <Header as='h2' floated='left'>
-                    Просмотр документа Заявление о приеме на работу, № {document.id}
+                    Просмотр документа {document.typeName}, № {document.id}
                 </Header>
                 <HrDocActions handleAction={this.handleAction} items={this.props.actions} />
             </Segment>

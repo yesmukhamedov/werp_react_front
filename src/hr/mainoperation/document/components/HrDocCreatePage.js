@@ -15,6 +15,7 @@ import {toggleSalaryListModal} from '../../salary/actions/hrSalaryAction'
 import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal'
 import SalaryListModal from '../../salary/components/SalaryListModal'
 import { injectIntl } from 'react-intl'
+import 'react-datepicker/dist/react-datepicker.css';
 
 class HrDocCreatePage extends Component{
 

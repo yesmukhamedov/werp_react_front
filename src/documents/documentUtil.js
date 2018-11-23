@@ -64,6 +64,9 @@ export const getDocCreateLink = (context) => {
         case MD_HR_DOCUMENT_DISMISS:
             return '/hr/doc/create/4'
 
+        case MD_TASK:
+            return '/dit/task/dtskc'
+
 
         default:
             return ''
