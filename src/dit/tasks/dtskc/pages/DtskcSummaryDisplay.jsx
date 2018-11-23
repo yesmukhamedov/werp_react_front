@@ -29,7 +29,7 @@ const DtskcSummary = (props) => {
             state.createdTasks.map(task => (
               <Table.Row>
                 <Table.Cell>
-                  {/* <Link to={`/general/dtskedit/${task.id}`}>{task.id}</Link> */}
+                  {/* <Link to={`/dit/task/dtskedit/${task.id}`}>{task.id}</Link> */}
                   {task.id}
                 </Table.Cell>
                 <Table.Cell>{task.title}</Table.Cell>

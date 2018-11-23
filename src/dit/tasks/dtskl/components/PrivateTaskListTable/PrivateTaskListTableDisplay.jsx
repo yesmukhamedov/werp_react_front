@@ -31,7 +31,7 @@ class PrivateTaskListTableDisplay extends Component {
         Cell: (props) => {
           const { id } = props.original;
           return (
-            <Link target="_blank" to={`/general/dtskedit/${id}`}>
+            <Link target="_blank" to={`/dit/task/dtskedit/${id}`}>
               {id}
             </Link>
           );
@@ -81,7 +81,7 @@ class PrivateTaskListTableDisplay extends Component {
         Cell: (props) => {
           const { title, id } = props.original;
           return (
-            <Link target="_blank" to={`/general/dtskedit/${id}`}>
+            <Link target="_blank" to={`/dit/task/dtskedit/${id}`}>
               {title}
             </Link>
           );
