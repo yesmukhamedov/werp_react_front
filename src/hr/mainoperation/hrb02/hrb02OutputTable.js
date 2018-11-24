@@ -91,7 +91,7 @@ class Hrb02OutputTable extends PureComponent {
     render(){
         // console.log('render')
        
-        if (this.props.table && this.props.table.length===0) return "";
+        // if (this.props.table && this.props.table.length===0) return "";
         let t1columns = this.fillTableColumns();
 
         
