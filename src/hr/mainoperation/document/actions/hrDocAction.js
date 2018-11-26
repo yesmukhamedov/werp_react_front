@@ -2,7 +2,7 @@ import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
 import { handleError } from '../../../../general/notification/notification_action'
 import browserHistory from '../../../../utils/history';
-import {DOC_ACTION_SEND,DOC_ACTION_APPROVE,DOC_ACTION_REJECT,DOC_ACTION_CANCEL,DOC_ACTION_ADD_SALARY,DOC_ACTION_SAVE} from '../../../hrUtil'
+import {DOC_ACTION_SEND,DOC_ACTION_APPROVE,DOC_ACTION_REJECT,DOC_ACTION_CANCEL,DOC_ACTION_ADD_SALARY,DOC_ACTION_SAVE,DOC_ACTION_ADD_APPROVER} from '../../../hrUtil'
 
 export const HR_DOC_ITEMS_LOADED = 'HR_DOC_ITEMS_LOADED'
 export const HR_DOC_SINGLE_ITEM_LOADED = 'HR_DOC_SINGLE_ITEM_LOADED'
@@ -115,6 +115,9 @@ export function handleAction (document,actionType, additionalData){
             }
 
             alert("Unkown Save");
+
+        case DOC_ACTION_ADD_APPROVER:
+            return addApprover(document,additionalData)
 
         default:
             alert('Unknown Action!')
@@ -235,6 +238,24 @@ const addSalary = (document) => {
     return function (dispatch) {
         dispatch(setLoading(true))
         axios.put(`${ROOT_URL}/api/hr/document/action-add-salary/` + document.id,{}, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        }).then(({data}) => {
+            dispatch(setLoading(false))
+            window.document.location.reload(true);
+        }).catch((e) => {
+            dispatch(setLoading(false))
+            handleError(e,dispatch)
+        })
+    }
+}
+
+//Action Add Salary
+const addApprover = (document, staff) => {
+    return function (dispatch) {
+        dispatch(setLoading(true))
+        axios.put(`${ROOT_URL}/api/hr/document/action-add-approver/` + document.id,{salaryId: staff.salaryId}, {
             headers: {
                 authorization: localStorage.getItem('token')
             }

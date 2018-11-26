@@ -78,7 +78,7 @@ class StaffF4Modal extends PureComponent{
         const {formatMessage} = this.props.intl;
 
         let t1columns = [];
-        if (trans==='fcis' || trans.startsWith('hr_doc_create_'))
+        if (trans==='fcis' || trans.startsWith('hr_doc_create_') || trans === 'hr_doc_approvers')
         {
             let t1r1c1 = {Header:({value}) => <b>ID</b>,accessor: "staffId",width: 100,className:'clickableItem',
                 Cell: obj => 

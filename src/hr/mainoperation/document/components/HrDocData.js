@@ -1,7 +1,7 @@
 import React from 'react'
 import {Segment,Label, Table, Icon, Button } from 'semantic-ui-react'
 import {Link} from 'react-router-dom'
-import {DOC_TYPE_RECRUITMENT,DOC_TYPE_TRANSFER} from '../../../hrUtil'
+import {DOC_TYPE_RECRUITMENT,DOC_TYPE_TRANSFER,DOC_TYPE_DISMISS} from '../../../hrUtil'
 import {formatDMY,moneyFormat} from '../../../../utils/helpers'
 
 export default function HrDocData (props) {
@@ -14,6 +14,10 @@ export default function HrDocData (props) {
 
         case DOC_TYPE_TRANSFER:
             table = renderTransferData(props)
+            break
+
+        case DOC_TYPE_DISMISS:
+            table = renderDismissData(props)
             break
 
         default:{}
@@ -142,6 +146,44 @@ function renderTransferData (props){
                     <Table.Cell>
 
                     </Table.Cell>
+                </Table.Row>
+            })}
+        </Table.Body>
+    </Table>
+}
+
+
+function renderDismissData (props){
+    const items = props.items
+    const amountEditMode = props.amountEditMode || false
+
+    if(!items){
+        return (null)
+    }
+    return <Table celled>
+        <Table.Header>
+            <Table.Row>
+                <Table.HeaderCell>№</Table.HeaderCell>
+                <Table.HeaderCell>Сотрудник снимается с должности</Table.HeaderCell>
+                <Table.HeaderCell>Дата увольнения</Table.HeaderCell>
+                <Table.HeaderCell>Примечание</Table.HeaderCell>
+                <Table.HeaderCell></Table.HeaderCell>
+            </Table.Row>
+        </Table.Header>
+        <Table.Body>
+            {items.map((item,idx) => {
+                return <Table.Row key={item.id}>
+                    <Table.Cell>{idx+1}</Table.Cell>
+                    <Table.Cell>
+                        {item.staffName} ({item.positionName})
+                        &nbsp;
+                        <Link target={'_blank'} className={'ui icon button mini right floated'} to={`/hr/staff/view/` + item.staffId}>
+                            <Icon name={'eye'}/>
+                        </Link>
+                    </Table.Cell>
+                    <Table.Cell>{formatDMY(item.endDate)}</Table.Cell>
+                    <Table.Cell>{item.note}</Table.Cell>
+                    <Table.Cell></Table.Cell>
                 </Table.Row>
             })}
         </Table.Body>

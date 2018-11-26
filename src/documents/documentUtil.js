@@ -58,10 +58,10 @@ export const getDocCreateLink = (context) => {
         case MD_HR_DOCUMENT_TRANS:
             return '/hr/doc/create/2'
 
-        case MD_HR_DOCUMENT_CHANGE_SALARY:
+        case MD_HR_DOCUMENT_DISMISS:
             return '/hr/doc/create/3'
 
-        case MD_HR_DOCUMENT_DISMISS:
+        case MD_HR_DOCUMENT_CHANGE_SALARY:
             return '/hr/doc/create/4'
 
         case MD_TASK:

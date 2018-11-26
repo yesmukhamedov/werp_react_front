@@ -13,6 +13,7 @@ import browserHistory from '../../../../utils/history'
 import StaffListModal from '../../staff/components/StaffListModal'
 import {fetchAllCurrentStaffs,toggleStaffListModal} from '../../staff/actions/hrStaffAction'
 import {f4FetchCurrencyList} from '../../../../reference/f4/f4_action'
+import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal'
 
 let STAFF_MODAL_OPENED_ON_ACTION = -10
 
@@ -47,7 +48,9 @@ class HrDocViewPage extends Component{
 
             case DOC_ACTION_ADD_APPROVER:
                 STAFF_MODAL_OPENED_ON_ACTION = actionType
-                this.props.toggleStaffListModal(true)
+                this.setState({
+                    approversModalOpened: true
+                })
                 break
 
             case DOC_ACTION_REJECT:
@@ -92,7 +95,7 @@ class HrDocViewPage extends Component{
 
         console.log(document,staff)
 
-        this.props.handleAction(document,DOC_ACTION_ADD_APPROVER);
+        this.props.handleAction(document,DOC_ACTION_ADD_APPROVER,staff);
     }
 
     handleStaffSelect = (staff) => {
@@ -169,11 +172,13 @@ class HrDocViewPage extends Component{
                 <HrDocActions handleAction={this.handleAction} items={this.props.actions} />
             </Segment>
             <Divider clearing />
-            <StaffListModal
-                onSelect={this.handleStaffSelect}
-                close={() => this.props.toggleStaffListModal(false)}
-                opened={this.props.staffListModalOpened}
-                staffs={this.props.allCurrentStaffs} />
+            <StaffF4Modal open={this.state.approversModalOpened}
+                          messages={[]}
+                          closeModal={() => this.setState({approversModalOpened:false})}
+                          onStaffSelect={(item)=>this.handleStaffSelect(item)} trans={'hr_doc_approvers'}
+                          branchOptions={this.props.branchOptions}
+                          companyOptions={this.props.bukrsOptions} bukrsDisabledParent={false}
+            />
             {this.renderRejectNoteModal()}
             {this.props.pageLoading?<Loader inline='centered' active/>:<div>
                     <HrDocMainData item={document}/>
@@ -202,7 +207,9 @@ function mapStateToProps (state) {
         itemAmountEditMode: state.hrDocReducer.itemAmountEditMode,
         staffListModalOpened: state.hrStaff.staffListModalOpened,
         allCurrentStaffs: state.hrStaff.allCurrentStaffs,
-        currencyList:state.f4.currencyList
+        currencyList:state.f4.currencyList,
+        bukrsOptions: state.userInfo.companyOptions,
+        branchOptions: state.userInfo.branchOptionsAll
     }
 }
 
