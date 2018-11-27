@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
 import TaskAdminTableDisplay from './TaskAdminTableDisplay';
 import { removeTaskAdmin, fetchTaskAdmins } from '../../actions';
 
@@ -10,4 +11,4 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   removeTaskAdmin,
   fetchTaskAdmins,
-})(TaskAdminTableDisplay);
+})(injectIntl(TaskAdminTableDisplay));

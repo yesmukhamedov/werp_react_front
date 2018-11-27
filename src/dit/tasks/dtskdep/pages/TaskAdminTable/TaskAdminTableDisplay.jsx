@@ -5,8 +5,9 @@ import 'react-table/react-table.css';
 import { constructFullName } from '../../../../../utils/helpers';
 
 const TaskAdminTableDisplay = (props) => {
-  const { taskAdminList = [], lang, removeTaskAdmin, fetchTaskAdmins } = props;
-
+  const { taskAdminList = [], lang, removeTaskAdmin, fetchTaskAdmins, messages } = props;
+  const {formatMessage} = props.intl;
+  
   const columns = [
     {
       Header: '#',
@@ -14,12 +15,12 @@ const TaskAdminTableDisplay = (props) => {
       maxWidth: 50,
     },
     {
-      Header: 'Пользователь',
+      Header: messages.L__USER,
       id: 'fullName',
       accessor: item => constructFullName(item.user),
     },
     {
-      Header: 'Отдел',
+      Header: formatMessage({ id: 'Table.Department' }),
       id: 'department',
       accessor: item => item.department[lang],
     },
@@ -42,13 +43,13 @@ const TaskAdminTableDisplay = (props) => {
       pageSizeOptions={[15, 20, 30, 50]}
       defaultPageSize={15}
       defaultSorted={[{ id: 'id' }]}
-      previousText="Предыдущий"
-      nextText="Следующий"
-      loadingText="Загружается..."
-      noDataText="Нет записей"
-      pageText="Страница"
-      ofText="из"
-      rowsText="записей"
+      previousText={messages.previousText}
+      nextText={messages.nextText}
+      loadingText={messages.loadingText}
+      noDataText={messages.noDataText}
+      pageText={messages.pageText}
+      ofText={messages.ofText}
+      rowsText={messages.rowsText}
       className="-highlight"
       getTheadProps={() => ({
         style: {

@@ -18,7 +18,7 @@ const usersUrl = `${ROOT_URL}/api/users?active=true`;
 const createTaskAdminUrl = `${ROOT_URL}/api/task-admins`;
 const removeTaskAdminUrl = `${ROOT_URL}/api/task-admins`;
 
-export function createTaskAdmin(params, successCallback) {
+export function createTaskAdmin(params, userId, successCallback) {
   const req = axios.post(
     createTaskAdminUrl,
     {
@@ -26,7 +26,7 @@ export function createTaskAdmin(params, successCallback) {
         id: params.department,
       },
       user: {
-        id: params.user,
+        id: userId,
       },
     },
     {
@@ -106,8 +106,14 @@ export function fetchTaskAdmins(lang) {
 export function fetchReferences(lang) {
   return (dispatch) => {
     axios
-      .all([GET(departmentsUrl), GET(usersUrl)])
-      .then(axios.spread(({ data: deptList }, { data: userList }) => {
+      .all([
+        GET(departmentsUrl), 
+        // GET(usersUrl)
+      ])
+      .then(axios.spread((
+        { data: deptList } 
+        // { data: userList }
+        ) => {
         const deptOpts = deptList.map(item => ({
           key: item.dep_id,
           value: item.dep_id,
@@ -119,15 +125,15 @@ export function fetchReferences(lang) {
                     : item.name_tr,
         }));
 
-        const userOpts = userList.users.map(item => ({
-          key: item.id,
-          value: item.id,
-          text: constructFullName(item),
-        }));
+        // const userOpts = userList.users.map(item => ({
+        //   key: item.id,
+        //   value: item.id,
+        //   text: constructFullName(item),
+        // }));
 
         const directories = {
           deptOptions: _.mapKeys(deptOpts, 'key'),
-          userOptions: _.mapKeys(userOpts, 'key'),
+          // userOptions: _.mapKeys(userOpts, 'key'),
         };
 
         dispatch({

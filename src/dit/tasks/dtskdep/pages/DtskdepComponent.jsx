@@ -36,6 +36,7 @@ export default class DtskdepComponent extends Component {
   }
 
   render() {
+    const { messages } = this.props.intl;
     return (
       <Container
         style={{
@@ -51,9 +52,9 @@ export default class DtskdepComponent extends Component {
               <Header as="h2">
                 <Icon name="settings" />
                 <Header.Content>
-                  Администраторы задач
+                  {messages.L__TASK_ADMINS}
                   <Header.Subheader>
-                    Управление распределением задач
+                    {messages.L__TASK_ADMINS_MANAGE}
                   </Header.Subheader>
                 </Header.Content>
               </Header>
@@ -62,14 +63,14 @@ export default class DtskdepComponent extends Component {
                 onClick={this.open}
                 icon="user plus"
                 labelPosition="left"
-                content="Добавить"
+                content={messages.BTN__ADD}
               />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
             <Grid.Column>
               <Segment>
-                <TaskAdminTable />
+                <TaskAdminTable messages={messages}/>
               </Segment>
             </Grid.Column>
           </Grid.Row>

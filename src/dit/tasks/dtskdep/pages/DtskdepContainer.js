@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import DtskdepComponent from './DtskdepComponent';
+import { injectIntl } from 'react-intl';
 import { fetchReferences, fetchTaskAdmins } from '../actions';
 
 const mapStateToProps = state => ({
@@ -10,4 +11,4 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   fetchReferences,
   fetchTaskAdmins,
-})(DtskdepComponent);
+})(injectIntl(DtskdepComponent));
