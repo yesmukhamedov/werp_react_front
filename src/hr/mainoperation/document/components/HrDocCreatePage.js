@@ -147,6 +147,13 @@ class HrDocCreatePage extends Component{
         let document = Object.assign({},this.state.localDocument)
         let items = document.items || []
 
+        for(let k in items){
+            if(items[k]['staffId'] === staff.staffId){
+                this.props.notify('error','Сотрудник уже добавлен в список!');
+                return
+            }
+        }
+
         if(docType === DOC_TYPE_RECRUITMENT ){
             items.push({
                 staffId: staff.staffId,
@@ -245,6 +252,10 @@ class HrDocCreatePage extends Component{
             }
         }
 
+        if(fieldName === 'branchId'){
+            items[index]['managerId'] = null
+        }
+
         items[index][fieldName] = fieldValue
         doc['items'] = items
         this.setState({
@@ -296,7 +307,7 @@ class HrDocCreatePage extends Component{
                     branchOptions = {this.getBranchOptions(this.state.localDocument.bukrs)}
                     businessAreaOptions = {this.getBusinessAreaOptions(this.state.localDocument.bukrs)}
                     directorOptions={this.getDirectorOptions(this.state.localDocument.branchId)}
-                    managerOptions = {this.getManagerOptions(this.state.localDocument.branchId)}
+                    getManagerOptions = {this.getManagerOptions}
                     bukrsOptions={this.props.bukrsOptions} document={this.state.localDocument}/>
                 break
 

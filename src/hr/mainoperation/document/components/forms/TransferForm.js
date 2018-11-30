@@ -87,10 +87,13 @@ export default function TransferForm (props){
                 <Table celled>
                     <Table.Header>
                         <Table.Row>
-                            <Table.HeaderCell>№</Table.HeaderCell>
-                            <Table.HeaderCell>Сотрудник снимается с должности</Table.HeaderCell>
-                            <Table.HeaderCell>Новый филиал</Table.HeaderCell>
-                            <Table.HeaderCell>Новая должность</Table.HeaderCell>
+                            <Table.HeaderCell rowSpan={2}>№</Table.HeaderCell>
+                            <Table.HeaderCell rowSpan={2}>Сотрудник снимается с должности</Table.HeaderCell>
+                            <Table.HeaderCell colSpan={7}>НОВАЯ ДОЛЖНОСТЬ</Table.HeaderCell>
+                        </Table.Row>
+                        <Table.Row>
+                            <Table.HeaderCell>Филиал</Table.HeaderCell>
+                            <Table.HeaderCell>Должность</Table.HeaderCell>
                             <Table.HeaderCell>Департамент</Table.HeaderCell>
                             <Table.HeaderCell>Дата начало</Table.HeaderCell>
                             <Table.HeaderCell>Менеджер</Table.HeaderCell>
@@ -99,6 +102,7 @@ export default function TransferForm (props){
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
+
                         {items.map((item,idx) => {
                             return <Table.Row key={item.staffId}>
                                 <Table.Cell>{idx+1}</Table.Cell>
@@ -144,7 +148,7 @@ export default function TransferForm (props){
                                 <Table.Cell>
                                     {<select className="ui fluid dropdown" onChange={(e) => props.handleItemChange(idx,'managerId',e.target.value)} style={{maxWidth:'200px'}} value={item.managerId || ''}>
                                     <option value="">Не выбрано</option>
-                                    {managerOptions.map(manager => {
+                                    {props.getManagerOptions(item.branchId).map(manager => {
                                         return <option key={manager.key} value={manager.value}>{manager.text}</option>
                                     })}
                                     </select>}

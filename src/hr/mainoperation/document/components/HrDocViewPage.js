@@ -93,8 +93,6 @@ class HrDocViewPage extends Component{
 
         document['approvers'] = approvers
 
-        console.log(document,staff)
-
         this.props.handleAction(document,DOC_ACTION_ADD_APPROVER,staff);
     }
 
