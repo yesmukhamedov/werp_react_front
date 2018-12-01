@@ -47,7 +47,6 @@ function renderRecruitmentData (props){
                 <Table.Row>
                     <Table.HeaderCell>№</Table.HeaderCell>
                     <Table.HeaderCell>Сотрудник</Table.HeaderCell>
-                    <Table.HeaderCell>Департамент</Table.HeaderCell>
                     <Table.HeaderCell>Бизнес сфера</Table.HeaderCell>
                     <Table.HeaderCell>Должность</Table.HeaderCell>
                     <Table.HeaderCell>Дата начало</Table.HeaderCell>
@@ -68,7 +67,6 @@ function renderRecruitmentData (props){
                                         <Icon name={'eye'}/>
                                     </Link>
                                 </Table.Cell>
-                                <Table.Cell>{item.departmentName}</Table.Cell>
                                 <Table.Cell>{item.businessAreaName}</Table.Cell>
                                 <Table.Cell>{item.positionName}</Table.Cell>
                                 <Table.Cell>{formatDMY(item.beginDate)}</Table.Cell>
@@ -104,14 +102,16 @@ function renderTransferData (props){
     return <Table celled>
         <Table.Header>
             <Table.Row>
-                <Table.HeaderCell>№</Table.HeaderCell>
-                <Table.HeaderCell>Сотрудник снимается с должности</Table.HeaderCell>
-                <Table.HeaderCell>Новый филиал</Table.HeaderCell>
-                <Table.HeaderCell>Департамент</Table.HeaderCell>
+                <Table.HeaderCell rowSpan={2}>№</Table.HeaderCell>
+                <Table.HeaderCell rowSpan={2}>Сотрудник снимается с должности</Table.HeaderCell>
+                <Table.HeaderCell colSpan={7}>НОВАЯ ДОЛЖНОСТЬ</Table.HeaderCell>
+            </Table.Row>
+            <Table.Row>
+                <Table.HeaderCell>Филиал</Table.HeaderCell>
                 <Table.HeaderCell>Должность</Table.HeaderCell>
+                <Table.HeaderCell>Департамент</Table.HeaderCell>
                 <Table.HeaderCell>Дата начало</Table.HeaderCell>
                 <Table.HeaderCell>Менеджер</Table.HeaderCell>
-                <Table.HeaderCell>Оклад</Table.HeaderCell>
                 <Table.HeaderCell>{amountEditMode?'Валюта': 'Прим.'}</Table.HeaderCell>
                 <Table.HeaderCell></Table.HeaderCell>
             </Table.Row>
@@ -142,10 +142,9 @@ function renderTransferData (props){
                                 return <option value={c.currency} key={c.currency_id}>{c.currency}</option>
                             })}
                         </select>
-                        :item.note}</Table.Cell>
-                    <Table.Cell>
-
+                        :item.note}
                     </Table.Cell>
+                    <Table.Cell></Table.Cell>
                 </Table.Row>
             })}
         </Table.Body>

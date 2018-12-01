@@ -40,8 +40,10 @@ export default function HrDocMainData (props) {
                             {item.branchName || <span>&mdash;</span>}
                         </List.Item>
                         <List.Item>
-                            <List.Header className="list-header">Дата создания:</List.Header>
-                            {formatDMYMS(item.createdAt)}
+                            <List.Header className="list-header">
+                                Департамент:
+                            </List.Header>
+                            {item.departmentName || <span>&mdash;</span>}
                         </List.Item>
                         <List.Item>
                             <List.Header className="list-header">Статус:</List.Header>
@@ -51,6 +53,10 @@ export default function HrDocMainData (props) {
                 </Grid.Column>
                 <Grid.Column>
                     <List>
+                        <List.Item>
+                            <List.Header className="list-header">Дата создания:</List.Header>
+                            {formatDMYMS(item.createdAt)}
+                        </List.Item>
                         <List.Item>
                             <List.Header className="list-header">
                                 Ответственный:
