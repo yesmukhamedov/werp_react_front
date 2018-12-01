@@ -19,7 +19,7 @@ class AssigneeGroupPaneComponent extends Component {
 
   fetchGroupsMembers = groupId => {
     const { groupOpts, lang, selectedCompany } = this.props;
-    const groupMembersUrl = `${ROOT_URL}/api/mgru?groupId=${groupId}&bukrsId=${selectedCompany}`;
+    const groupMembersUrl = `${ROOT_URL}/api/mgru/filter?groupId=${groupId}&bukrsId=${selectedCompany}`;
     const req = GET(groupMembersUrl);
     req
       .then(({ data }) => {

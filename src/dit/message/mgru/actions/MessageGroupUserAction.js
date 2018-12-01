@@ -7,7 +7,7 @@ import { notify } from '../../../../general/notification/notification_action';
 /* action URLs */
 const messageGroupUserUrl = `${ROOT_URL}/api/mgru`;
 const departmentsUrl = `${ROOT_URL}/api/reference/departments`;
-const taskAdminUrl = `${ROOT_URL}/api/task-admins`;
+const taskAdminUrl = `${ROOT_URL}/api/task-admins/all`;
 // const usersUrl = `${ROOT_URL}/api/users?active=true`;
 const messageGroupUrl = `${ROOT_URL}/api/messgr`;
 

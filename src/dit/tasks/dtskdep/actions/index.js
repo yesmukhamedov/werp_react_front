@@ -11,7 +11,7 @@ export const DTSKDEP_FETCH_REFERENCES = 'DTSKDEP_FETCH_REFERENCES';
 export const DTSKDEP_FETCH_TASKADMINS = 'DTSKDEP_FETCH_TASKADMINS';
 
 const departmentsUrl = `${ROOT_URL}/api/reference/departments`;
-const taskAdminUrl = `${ROOT_URL}/api/task-admins`;
+const taskAdminUrl = `${ROOT_URL}/api/task-admins/all`;
 const usersUrl = `${ROOT_URL}/api/users?active=true`;
 
 
