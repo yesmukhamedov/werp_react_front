@@ -19,18 +19,18 @@ const statusUrl = `${ROOT_URL}/api/tasks/status`;
 const departmentsUrl = `${ROOT_URL}/api/reference/departments`;
 const assigneesUrl = `${ROOT_URL}/api/users?active=true`;
 const taskTypesUrl = `${ROOT_URL}/api/tasks/types`;
-const managersUrl = `${ROOT_URL}/api/task-admins`;
+const managersUrl = `${ROOT_URL}/api/task-admins/all`;
 const groupsUrl = `${ROOT_URL}/api/messgr`;
 const createTaskUrl = `${ROOT_URL}/api/tasks`;
 
 export function fetchUsers(args) {
   const {
     branchId,
-    burks,
+    bukrs,
   } = args;
   return (dispatch) => {
     axios
-      .get(`${assigneesUrl}&branchId=${branchId}&bukrs=${burks}`, {
+      .get(`${assigneesUrl}&branchId=${branchId}&bukrs=${bukrs}`, {
         headers: { authorization: localStorage.getItem('token') },
       })
       .then(({ data }) => {

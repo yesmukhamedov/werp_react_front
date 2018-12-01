@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { defineMessages, injectIntl } from 'react-intl';
+import { injectIntl } from 'react-intl';
 import TaskListTableComponent from './TaskListTableComponent';
 import { messages } from '../../../../../../locales/defineMessages';
 
