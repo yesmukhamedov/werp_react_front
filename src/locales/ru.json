@@ -483,5 +483,23 @@
 	,"meins":"Е.И."
 	,"buzeiFullText":"Позиция"
 	,"documents":"Документы"
-	,"canceled":"Отменен"
+	,"canceled":"Отменен"  
+
+	
+	,"name":"Название"
+	,"firstname":"Имя"
+	,"lastname":"Фамилия"
+	,"middlename":"Отчество"
+	,"country":"Страна"
+	,"dateOfBirth":"День рождения"
+	,"passportNumber":"Номер паспорта"
+	,"fizYur":"Физ/Юр"
+	,"fiz":"Физ"
+	,"yur":"Юр"
+	
+	,"toCreatInvoice":"Создать счет-фактуру"
+	,"transNameAmpi":"Счет-фактура от постащика"
+	,"transNameAmri":"Счет-фактура клиенту"
+	,"transNameFaci01":"Платеж от контрагента"
+	,"transNameFaco01":"Оплата контрагенту"
 }

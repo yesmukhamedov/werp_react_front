@@ -251,11 +251,6 @@ const AsyncCrmWspacePage = Loadable({
     loading: () => <LoadingPage />
 });
 
-const AsyncFsis = Loadable({
-  loader: () => import('../finance/mainoperation/fcis/fcis' /* webpackChunkName: "fcis" */),
-  loading: () => <LoadingPage />
-});
-
 const AsyncHrTimesheetPage = Loadable({
         loader: () => import('../hr/mainoperation/timesheet/components/TimesheetPage' /* webpackChunkName: "TimesheetPage" */),
     loading: () => <LoadingPage />
@@ -281,8 +276,33 @@ const AsyncAmcdd = Loadable({
   loading: () => <LoadingPage />
 });
 
+const AsyncAmpi = Loadable({
+  loader: () => import('../accounting/mainoperation/ampi/ampi' /* webpackChunkName: "ampi" */),
+  loading: () => <LoadingPage />
+});
+
+const AsyncAmri = Loadable({
+  loader: () => import('../accounting/mainoperation/amri/amri' /* webpackChunkName: "amri" */),
+  loading: () => <LoadingPage />
+});
+
 const AsyncFmcp = Loadable({
   loader: () => import('../finance/mainoperation/fmcp/fmcp' /* webpackChunkName: "fmcp" */),
+  loading: () => <LoadingPage />
+});
+
+const AsyncFcis = Loadable({
+  loader: () => import('../finance/mainoperation/fcis/fcis' /* webpackChunkName: "fcis" */),
+  loading: () => <LoadingPage />
+});
+
+const AsyncFaci01 = Loadable({
+  loader: () => import('../finance/mainoperation/faci01/faci01' /* webpackChunkName: "faci01" */),
+  loading: () => <LoadingPage />
+});
+
+const AsyncFaco01 = Loadable({
+  loader: () => import('../finance/mainoperation/faco01/faco01' /* webpackChunkName: "faco01" */),
   loading: () => <LoadingPage />
 });
 
@@ -362,11 +382,19 @@ const getComponent = {
     Frcoln:AsyncFrcoln,
     Arli: AsyncArli,
     Fmcp: AsyncFmcp,
+    Faci01: AsyncFaci01,
+    Faco01: AsyncFaco01,
   
     Amsg:AsyncAmsg,
     Amcdd:AsyncAmcdd,
+    Ampi: AsyncAmpi,
+    Amri: AsyncAmri,
 
-    Fcis:AsyncFsis,
+
+    
+    // Ampi:AsyncAmpi,
+
+    Fcis:AsyncFcis,
     Fa03:AsyncFa03,
     Fa02:AsyncFa02,
     

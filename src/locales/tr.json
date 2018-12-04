@@ -508,5 +508,21 @@
 	  ,"buzeiFullText":"Position"
 	  ,"documents":"Documents"
 	  ,"canceled":"Canceled"
+	    
+	,"name":"Name"
+	,"firstname":"Firstname"
+	,"lastname":"Lastname"
+	,"middlename":"Middlename"
+	,"country":"Country"
+	,"dateOfBirth":"Date of birth"
+	,"passportNumber":"Passport number"
+	,"fizYur":"Ind/Leg Entity"
+	,"fiz":"Ind. Entity"
+	,"yur":"Leg. Entity"	
 
+	,"toCreatInvoice":"Create Invoice"
+	,"transNameAmpi":"Payment Invoice"
+	,"transNameAmri":"Receipt Invoice"
+	,"transNameFaci01":"Cash Receipts From Contragents"
+	,"transNameFaco01":"Payments to Contragents"
   }

@@ -7,6 +7,8 @@ export const CHANGE_FA_BKPF = 'CHANGE_FA_BKPF';
 export const CLEAR_FA_BKPF = 'CLEAR_FA_BKPF';
 export const FETCH_CASHBANKHKONTS_BY_BRANCH = 'FETCH_CASHBANKHKONTS_BY_BRANCH';
 export const CLEAR_CASHBANKHKONTS_BY_BRANCH = 'CLEAR_CASHBANKHKONTS_BY_BRANCH';
+export const FETCH_EXPENSEHKONTS_BY_BUKRS = 'FETCH_EXPENSEHKONTS_BY_BUKRS';
+export const CLEAR_EXPENSEHKONTS_BY_BUKRS = 'CLEAR_EXPENSEHKONTS_BY_BUKRS';
 
 
 
@@ -42,7 +44,62 @@ export function fetchCashBankHkontsByBranch(a_bukrs,a_brnch) {
 
 
 }
+export function fetchExpenseHkontsByBukrs(a_bukrs) {
 
+    return function(dispatch) {
+
+        axios.get(`${ROOT_URL}/api/finance/mainoperation/fetchExpenseHkontsByBukrs`, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            },
+            params:{
+                bukrs: a_bukrs
+            }
+        })
+        .then(({data}) => {
+            dispatch({
+                type: FETCH_EXPENSEHKONTS_BY_BUKRS,
+                hkontOptions:data.hkontOptions
+            });
+    
+        })
+        .catch(error => {
+            handleError(error,dispatch);               
+                 
+        });
+    }    
+
+
+}
+
+
+export function fetchIncomeHkontsByBukrs(a_bukrs) {
+
+    return function(dispatch) {
+
+        axios.get(`${ROOT_URL}/api/finance/mainoperation/fetchIncomeHkontsByBukrs`, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            },
+            params:{
+                bukrs: a_bukrs
+            }
+        })
+        .then(({data}) => {
+            dispatch({
+                type: FETCH_EXPENSEHKONTS_BY_BUKRS,
+                hkontOptions:data.hkontOptions
+            });
+    
+        })
+        .catch(error => {
+            handleError(error,dispatch);               
+                 
+        });
+    }    
+
+
+}
 
 
 export function changefaBkpf(bkpf) {
@@ -104,6 +161,8 @@ export function fetchFMCP(a_zregOrConNum) {
 }
 
 export function saveFMCP(a_contract) {
+    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+    const language = localStorage.getItem('language');
     return function(dispatch) {
         dispatch(modifyLoader(true));
         
@@ -124,12 +183,12 @@ export function saveFMCP(a_contract) {
             dispatch(modifyLoader(false));
             if(data)
             {
-                dispatch(notify('success','Сохранен.','Успешно'));
+                dispatch(notify('success',errorTable['104'+language] ,errorTable['101'+language] ));
                 dispatch(fetchFMCP(a_contract.zregOrConNum));
             }
             else
             {
-                dispatch(notify('info','Не сохранен.','Ошибка'));
+                dispatch(notify('info',errorTable['133'+language] ,errorTable['132'+language] ));
             }
                 
         })
@@ -145,6 +204,8 @@ export function saveFMCP(a_contract) {
 //FCIS/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 export function saveFcis(a_bkpf, a_bseg, initFcis) {
+    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+    const language = localStorage.getItem('language');
     return function(dispatch) {        
         axios.post(`${ROOT_URL}/api/finance/mainoperation/fcis/save`,
             {            
@@ -163,13 +224,13 @@ export function saveFcis(a_bkpf, a_bseg, initFcis) {
             dispatch(modifyLoader(false));
             if(data)
             {
-                dispatch(notify('success','Сохранен.','Успешно'));
+                dispatch(notify('success',errorTable['104'+language] ,errorTable['101'+language] ));
                 dispatch(clearfaBkpf());
                 initFcis();
             }
             else
             {
-                dispatch(notify('info','Не сохранен.','Ошибка'));
+                dispatch(notify('info',errorTable['133'+language] ,errorTable['132'+language] ));
             }
                 
         })
@@ -311,32 +372,46 @@ export function fetchFA03(a_searchParameters) {
     }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-export function fetchHkonts(a_bukrs, al_hkont) {
-    
-    return function(dispatch) {
-        dispatch(modifyLoader(true));
-        axios.get(`${ROOT_URL}/api/finance/mainoperation/hkonts/`+a_bukrs, {
-            headers: 
-            {
-                authorization: localStorage.getItem('token')
-            },
-            params:
-            {
-                hkonts:al_hkont.join()
-            }
-        })
+
+export function saveFiSrcDocs(args,tcode, initFun) {
+    let url = '';
+    if (tcode==='FACI01') url = `${ROOT_URL}/api/finance/mainoperation/faci01/save`;
+    else if (tcode==='FACO01') url = `${ROOT_URL}/api/finance/mainoperation/faco01/save`;
+
+
+    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+    const language = localStorage.getItem('language');
+    return function(dispatch) {        
+        axios.post(url,
+            {            
+                ...args
+            },       
+            {            
+                headers: 
+                {                            
+                    authorization: localStorage.getItem('token')
+                }
+            }        
+        ) 
+        
         .then(({data}) => {
-            
             dispatch(modifyLoader(false));
-            dispatch({
-                type: FETCH_DYNOBJ_FI,
-                data:data
-            });
-    
+            if(data)
+            {
+                dispatch(notify('success',errorTable['104'+language] ,errorTable['101'+language] ));
+                initFun();
+            }
+            else
+            {
+                dispatch(notify('error',errorTable['133'+language] ,errorTable['132'+language] ));
+            }
+                
         })
         .catch(error => {
-            handleError(error,dispatch);
             dispatch(modifyLoader(false));
+            handleError(error,dispatch); 
         });
-    }
+    }    
+
+
 }

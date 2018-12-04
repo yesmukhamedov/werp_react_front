@@ -13,6 +13,9 @@ export function notify (a_notify_type, a_notify_text, a_notify_header) {
 }
 
 export function handleError(error,dispatch) {
+    
+    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+    const language = localStorage.getItem('language');
     if(error.response) {
         // console.log(error);
         if (error.response.status && error.response.status===403)
@@ -29,7 +32,7 @@ export function handleError(error,dispatch) {
             //this.context.router.push('/forbidden');
             browserHistory.push('/forbidden')
         }
-        dispatch(notify('error',error.response.data.message,'Error'));
+        dispatch(notify('error',error.response.data.message,errorTable['132'+language]));
 
     } else {
         // const name = getNestedObject(error, ['error', 'response']);
@@ -59,7 +62,7 @@ export function handleError(error,dispatch) {
             console.log(error);
         }
         
-        Promise.resolve({ error }).then(response => dispatch(notify('error',message,'Error')));
+        Promise.resolve({ error }).then(response => dispatch(notify('error',message,errorTable['132'+language])));
     }
     
 }

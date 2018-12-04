@@ -69,13 +69,11 @@ class FcisPosition extends PureComponent{
                                             onClick={()=>{this.staffF4ModalOpenHanlder(true)}} /></span>
                                         </Table.Cell>
                                         <Table.Cell>
-                                        <Input labelPosition='left' color= 'teal' placeholder={'Сумма'}
+                                        <Input label={waers} labelPosition='left' color= 'teal' 
                                             value={moneyFormat(summa)} 
                                             onFocus={handleFocus} 
-                                            maxLength='18'  onChange={(e, {value}) => this.props.onInputChange(value,'summa')}>
-                                            <Label basic>{waers}</Label>
-                                            <input />
-                                        </Input>
+                                            maxLength='18'  onChange={(e, {value}) => this.props.onInputChange(value,'summa')} />
+                                            
                                         </Table.Cell>
                                     </Table.Row>                                    
                                 </Table.Body>                     

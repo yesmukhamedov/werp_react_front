@@ -5,7 +5,7 @@ import moment from 'moment';
 import FaHeader from '../../faHeader';
 import FcisPosition from './fcisPosition';
 import {f4FetchDepartmentList, f4FetchCurrencyList, f4FetchBusinessAreaList2, f4FetchExchangeRateNational} from '../../../reference/f4/f4_action';
-import {clearfaBkpf, changefaBkpf, fetchCashBankHkontsByBranch, changeDynObj, clearDynObj, saveFcis, fetchHkonts} from '../../fa_action';
+import {clearfaBkpf, changefaBkpf, fetchCashBankHkontsByBranch, changeDynObj, clearDynObj, saveFcis } from '../../fa_action';
 import {moneyInputHanler} from '../../../utils/helpers';
 import OutputErrors from '../../../general/error/outputErrors';
 import { modifyLoader } from '../../../general/loader/loader_action';
@@ -258,4 +258,4 @@ class Fcis extends Component {
 
 
 export default connect(mapStateToProps,{ f4FetchDepartmentList, f4FetchCurrencyList, modifyLoader,saveFcis,
-  f4FetchBusinessAreaList2, f4FetchExchangeRateNational, changefaBkpf, clearfaBkpf, fetchCashBankHkontsByBranch, changeDynObj, clearDynObj, fetchHkonts}) (injectIntl(Fcis));
+  f4FetchBusinessAreaList2, f4FetchExchangeRateNational, changefaBkpf, clearfaBkpf, fetchCashBankHkontsByBranch, changeDynObj, clearDynObj }) (injectIntl(Fcis));

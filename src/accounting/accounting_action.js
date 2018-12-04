@@ -14,6 +14,8 @@ export const CLEAR_DYNOBJ_ACC = 'CLEAR_DYNOBJ_ACC';
 
 
 export function amsgSave(a_bkpf, a_rows, a_rowsPs, a_lifnr) {
+    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+    const language = localStorage.getItem('language');
     return function(dispatch) {
         dispatch(modifyLoader(true));
         
@@ -39,12 +41,12 @@ export function amsgSave(a_bkpf, a_rows, a_rowsPs, a_lifnr) {
             dispatch(modifyLoader(false));
             if(data)
             {
-                dispatch(notify('success','Сохранен.','Успешно'));
+                dispatch(notify('success',errorTable['104'+language] ,errorTable['101'+language] ));
                 dispatch(clearfaBkpf());
             }
             else
             {
-                dispatch(notify('info','Не сохранен.','Ошибка'));
+                dispatch(notify('info',errorTable['133'+language] ,errorTable['132'+language] ));
             }
                 
         })
@@ -58,6 +60,8 @@ export function amsgSave(a_bkpf, a_rows, a_rowsPs, a_lifnr) {
 }
 
 export function amcddSave(a_contract) {
+    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+    const language = localStorage.getItem('language');
     return function(dispatch) {
         dispatch(modifyLoader(true));
         
@@ -78,12 +82,12 @@ export function amcddSave(a_contract) {
             dispatch(modifyLoader(false));
             if(data)
             {
-                dispatch(notify('success','Сохранен.','Успешно'));
+                dispatch(notify('success',errorTable['104'+language] ,errorTable['101'+language] ));
                 dispatch(amcddFetch(a_contract.zregOrConNum));
             }
             else
             {
-                dispatch(notify('info','Не сохранен.','Ошибка'));
+                dispatch(notify('info',errorTable['133'+language] ,errorTable['132'+language] ));
             }
                 
         })
@@ -98,6 +102,8 @@ export function amcddSave(a_contract) {
 
 export function amcddFetch(a_zregOrConNum) {
     
+    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+    const language = localStorage.getItem('language');
     
     return function(dispatch) {
         dispatch(modifyLoader(true));
@@ -194,3 +200,46 @@ export function fetchARLI(a_bukrs,a_branchList,a_dateFrom,a_dateTo, a_callBackFu
     }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export function saveAccSrcDocs(args,tcode, initFun) {
+    let url = '';
+    if (tcode==='AMPI') url = `${ROOT_URL}/api/accounting/mainoperation/ampi/save`;
+    else if (tcode==='AMRI') url = `${ROOT_URL}/api/accounting/mainoperation/amri/save`;
+
+
+    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+    const language = localStorage.getItem('language');
+    return function(dispatch) {        
+        axios.post(url,
+            {            
+                ...args
+            },       
+            {            
+                headers: 
+                {                            
+                    authorization: localStorage.getItem('token')
+                }
+            }        
+        ) 
+        
+        .then(({data}) => {
+            dispatch(modifyLoader(false));
+            if(data)
+            {
+                dispatch(notify('success',errorTable['104'+language] ,errorTable['101'+language] ));
+                initFun();
+            }
+            else
+            {
+                dispatch(notify('error',errorTable['133'+language] ,errorTable['132'+language] ));
+            }
+                
+        })
+        .catch(error => {
+            dispatch(modifyLoader(false));
+            handleError(error,dispatch); 
+        });
+    }    
+
+
+}
+

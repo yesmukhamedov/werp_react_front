@@ -730,6 +730,71 @@ export const messages = defineMessages({
       id: 'canceled',
       defaultMessage: 'Canceled',
     },
+    transNameAmae: {
+      id: 'transNameAmae',
+      defaultMessage: 'Services (Recieved) Invoice',
+    },
+    name: {
+      id: 'name',
+      defaultMessage: 'Name',
+    },
+    firstname: {
+      id: 'firstname',
+      defaultMessage: 'Firstname',
+    },
+    lastname: {
+      id: 'lastname',
+      defaultMessage: 'Lastname',
+    },
+    middlename: {
+      id: 'middlename',
+      defaultMessage: 'Middlename',
+    },
+    country: {
+      id: 'country',
+      defaultMessage: 'Country',
+    },
+    dateOfBirth: {
+      id: 'dateOfBirth',
+      defaultMessage: 'Date of birth',
+    },
+    passportNumber: {
+      id: 'passportNumber',
+      defaultMessage: 'Passport number',
+    },
+    fizYur: {
+      id: 'fizYur',
+      defaultMessage: 'Ind/Leg Entity',
+    },
+    fiz: {
+      id: 'fiz',
+      defaultMessage: 'Ind. Entity',
+    },
+    yur: {
+      id: 'yur',
+      defaultMessage: 'Leg. Entity',
+    },
+    toCreatInvoice: {
+      id: 'toCreatInvoice',
+      defaultMessage: 'Create Invoice',
+    },
+    transNameAmpi: {
+      id: 'transNameAmpi',
+      defaultMessage: 'Payment Invoice',
+    },
+    transNameAmri: {
+      id: 'transNameAmri',
+      defaultMessage: 'Receipt Invoice',
+    },
+    transNameFaci01: {
+      id: 'transNameFaci01',
+      defaultMessage: 'Cash Receipts From Contragents',
+    },
+    transNameFaco01: {
+      id: 'transNameFaco01',
+      defaultMessage: 'Payments to Contragents',
+    },
+
 
     ///Onlasyn
 
