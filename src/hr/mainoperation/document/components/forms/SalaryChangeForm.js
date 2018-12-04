@@ -6,17 +6,14 @@ import DatePicker from 'react-datepicker'
 import moment from 'moment'
 require('moment/locale/ru')
 
-export default function TransferForm (props){
+export default function SalaryChangeForm (props){
     let document = Object.assign({},props.document)
     let bukrsOptions = props.bukrsOptions || []
     let branchOptions = props.branchOptions || []
     let items = document.items || []
     let departmentList = props.departmentList || []
-    let positionList = props.positionList || []
-    let managerOptions = props.managerOptions || []
     let directorOptions = props.directorOptions || []
-    let businessAreaOptions = props.businessAreaOptions || []
-
+    let currencyList=props.currencyList || []
     return <div>
         <Segment raised>
             <Label color="blue" ribbon>
@@ -90,10 +87,9 @@ export default function TransferForm (props){
                             <Table.HeaderCell>№</Table.HeaderCell>
                             <Table.HeaderCell>Сотрудник</Table.HeaderCell>
                             <Table.HeaderCell>Должность</Table.HeaderCell>
-                            <Table.HeaderCell>Текущий дата начало работы</Table.HeaderCell>
-                            <Table.HeaderCell>Текущий оклад</Table.HeaderCell>
-                            <Table.HeaderCell>Новый Оклад</Table.HeaderCell>
                             <Table.HeaderCell>Новая дата</Table.HeaderCell>
+                            <Table.HeaderCell>Новый Оклад</Table.HeaderCell>
+                            <Table.HeaderCell>Валюта</Table.HeaderCell>
                             <Table.HeaderCell>Прим.</Table.HeaderCell>
                             <Table.HeaderCell></Table.HeaderCell>
                         </Table.Row>
@@ -104,11 +100,28 @@ export default function TransferForm (props){
                                 <Table.Cell>{idx+1}</Table.Cell>
                                 <Table.Cell>{item.staffName}</Table.Cell>
                                 <Table.Cell>{item.positionName}</Table.Cell>
-                                <Table.Cell>{item.beginDate}</Table.Cell>
-                                <Table.Cell>{item.amount}</Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
-                                <Table.Cell></Table.Cell>
+                                <Table.Cell>{
+                                    <DatePicker
+                                        locale="ru"
+                                        label=''
+                                        autoComplete="off"
+                                        placeholderText={'Дата начала'}
+                                        showMonthDropdown showYearDropdown dropdownMode='select'
+                                        dateFormat='DD.MM.YYYY' selected={item.beginDate ? moment(item.beginDate) : null}
+                                        onChange={(v) => props.handleItemChange(idx,'beginDate',v)} />
+                                }</Table.Cell>
+                                <Table.Cell>
+                                    <input type="text" value={item.amount || 0} onChange={(e) => props.handleItemChange(idx,'amount',e.target.value)} />
+                                </Table.Cell>
+                                <Table.Cell><select className="ui fluid" onChange={(e) => props.handleItemChange(idx,'currency',e.target.value)}>
+                                    <option>Не выбрано</option>
+                                    {currencyList.map(c => {
+                                        return <option key={c.currency} value={c.currency}>{c.text20}</option>
+                                    })}
+                                </select></Table.Cell>
+                                <Table.Cell>
+                                    <textarea className="ui fluid" onChange={(e) => props.handleItemChange(idx,'note',e.target.value)}></textarea>
+                                </Table.Cell>
                                 <Table.Cell>
                                     <Button onClick={() => props.removeItem(idx)} icon={'trash'}/>
                                 </Table.Cell>

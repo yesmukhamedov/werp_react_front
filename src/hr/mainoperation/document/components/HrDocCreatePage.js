@@ -11,7 +11,7 @@ import SalaryChangeForm from './forms/SalaryChangeForm'
 import DismissForm from './forms/DismissForm'
 import {blankDocument,createDocument} from '../actions/hrDocAction'
 import {toggleStaffListModal,fetchAllManagers,fetchAllDirectors} from '../../staff/actions/hrStaffAction'
-import {f4FetchPositionList,f4FetchBusinessAreaList,f4FetchDepartmentList} from '../../../../reference/f4/f4_action'
+import {f4FetchPositionList,f4FetchBusinessAreaList,f4FetchDepartmentList,f4FetchCurrencyList} from '../../../../reference/f4/f4_action'
 import {toggleSalaryListModal} from '../../salary/actions/hrSalaryAction'
 import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal'
 import SalaryListModal from '../../salary/components/SalaryListModal'
@@ -47,6 +47,7 @@ class HrDocCreatePage extends Component{
             this.props.fetchAllDirectors()
             this.props.f4FetchBusinessAreaList()
         } else if(DOC_TYPE_CHANGE_SALARY === docType) {
+            this.props.f4FetchCurrencyList('hr_doc')
         }
 
         this.props.fetchAllCurrentStaffs([])
@@ -211,8 +212,9 @@ class HrDocCreatePage extends Component{
                 amount: staff.amount,
                 positionName: staff.positionName,
                 positionId: staff.positionId,
-                beginDate: staff.begDate,
-                amount: staff.amount
+                beginDate: null,
+                amount: 0,
+                currency: staff.currency
 
             })
 
@@ -323,7 +325,8 @@ class HrDocCreatePage extends Component{
                     businessAreaOptions = {this.getBusinessAreaOptions(this.state.localDocument.bukrs)}
                     directorOptions={this.getDirectorOptions(this.state.localDocument.branchId)}
                     managerOptions = {this.getManagerOptions(this.state.localDocument.branchId)}
-                    bukrsOptions={this.props.bukrsOptions} document={this.state.localDocument}/>
+                    bukrsOptions={this.props.bukrsOptions} document={this.state.localDocument}
+                    currencyList={this.props.currencyList}/>
 
                 break
 
@@ -396,12 +399,13 @@ function mapStateToProps (state) {
         allCurrentStaffs: state.hrStaff.allCurrentStaffs,
         departmentList:state.f4.departmentList,
         positionList:state.f4.positionList,
-        businessAreaList: state.f4.businessAreaList
+        businessAreaList: state.f4.businessAreaList,
+        currencyList:state.f4.currencyList,
     }
 }
 
 export default connect(mapStateToProps, {
     blankDocument,toggleStaffListModal,createDocument,fetchAllDirectors,
     f4FetchPositionList,f4FetchBusinessAreaList,f4FetchDepartmentList,fetchAllManagers,
-    toggleSalaryListModal,fetchAllCurrentStaffs,notify
+    toggleSalaryListModal,fetchAllCurrentStaffs,notify,f4FetchCurrencyList
 })(injectIntl(HrDocCreatePage))
