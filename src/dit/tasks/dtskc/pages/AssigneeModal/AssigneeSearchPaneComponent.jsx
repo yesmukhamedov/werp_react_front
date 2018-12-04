@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, Search, Segment, Button } from 'semantic-ui-react';
 import hash from 'object-hash';
 import axios from 'axios';
+import _ from 'lodash';
 import WarnMessage from './WarnMessage';
 import { ROOT_URL } from '../../../../../utils/constants';
 import { GET, constructFullName } from '../../../../../utils/helpers';
@@ -129,30 +130,30 @@ class AssigneeSearchPaneComponent extends Component {
   };
 
   fetchAssigneeDetails = userId => {
-    const req = GET(`${assigneeDetailsUrl}/${userId}`);
+    const {
+      branchOptsNormalized: branchOpts,
+      deptOpts,
+      selectedCompany,
+    } = this.props;
+
+    const req = GET(`${assigneeDetailsUrl}/${userId}?bukrs=${selectedCompany}`);
     req
       .then(({ data }) => {
-        const {
-          branchOptsNormalized: branchOpts,
-          deptOpts,
-          selectedCompany,
-        } = this.props;
-
-        const filteredData = data.filter(el => el.bukrsId === selectedCompany);
+        const { branchId, departmentId } = data;
         let filteredBranchOpts = {};
         let filteredDepOpts = {};
 
-        filteredData.forEach(
-          el => (filteredBranchOpts[el.branchId] = branchOpts[el.branchId][0]),
+        branchId.forEach(
+          el => (filteredBranchOpts[el] = branchOpts[el][0]),
         );
-        filteredData.forEach(
-          el => (filteredDepOpts[el.departmentId] = deptOpts[el.departmentId]),
+        departmentId.forEach(
+          el => (filteredDepOpts[el] = deptOpts[el]),
         );
 
         this.setState({
           ...this.state,
-          branchOptions: Object.values(filteredBranchOpts),
-          departmentOptions: Object.values(filteredDepOpts),
+          branchOptions: _.values(filteredBranchOpts),
+          departmentOptions: _.values(filteredDepOpts),
           isLoading: false,
         });
       })
