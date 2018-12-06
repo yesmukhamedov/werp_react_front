@@ -3,12 +3,13 @@ import { connect } from 'react-redux'
 import { Header,Container,Segment,Divider,Loader } from 'semantic-ui-react'
 import HrDocActions from './HrDocActions'
 
-import {DOC_TYPE_RECRUITMENT,DOC_TYPE_TRANSFER,DOC_ACTION_SAVE,DOC_TYPE_CHANGE_SALARY,DOC_TYPE_DISMISS} from '../../../hrUtil'
+import {DOC_TYPE_RECRUITMENT,DOC_TYPE_TRANSFER,DOC_ACTION_SAVE,DOC_TYPE_CHANGE_SALARY,DOC_TYPE_DISMISS,DOC_TYPE_EXCLUDE_FROM_KPI} from '../../../hrUtil'
 import {} from '../../../hrUtil'
 import RecruitmentForm from './forms/RecruitmentForm'
 import TransferForm from './forms/TransferForm'
 import SalaryChangeForm from './forms/SalaryChangeForm'
 import DismissForm from './forms/DismissForm'
+import ExcludeFromKpiForm from './forms/ExcludeFromKpiForm'
 import {blankDocument,createDocument} from '../actions/hrDocAction'
 import {toggleStaffListModal,fetchAllManagers,fetchAllDirectors} from '../../staff/actions/hrStaffAction'
 import {f4FetchPositionList,f4FetchBusinessAreaList,f4FetchDepartmentList,f4FetchCurrencyList} from '../../../../reference/f4/f4_action'
@@ -19,6 +20,7 @@ import {fetchAllCurrentStaffs} from '../../staff/actions/hrStaffAction'
 import StaffListModal from '../../staff/components/StaffListModal'
 import {notify} from '../../../../general/notification/notification_action'
 import { injectIntl } from 'react-intl'
+import moment from 'moment'
 import 'react-datepicker/dist/react-datepicker.css';
 
 class HrDocCreatePage extends Component{
@@ -48,6 +50,8 @@ class HrDocCreatePage extends Component{
             this.props.f4FetchBusinessAreaList()
         } else if(DOC_TYPE_CHANGE_SALARY === docType) {
             this.props.f4FetchCurrencyList('hr_doc')
+        } else if(DOC_TYPE_EXCLUDE_FROM_KPI === docType){
+            this.props.fetchAllDirectors()
         }
 
         this.props.fetchAllCurrentStaffs([])
@@ -113,6 +117,7 @@ class HrDocCreatePage extends Component{
 
             case DOC_TYPE_TRANSFER:
             case DOC_TYPE_DISMISS:
+            case DOC_TYPE_EXCLUDE_FROM_KPI:
                     this.setState({
                         staffListModalOpened: true
                     })
@@ -174,6 +179,22 @@ class HrDocCreatePage extends Component{
                 staffId: staff.staffId,
                 staffName: staff.fio,
                 salaryId: staff.salaryId,
+                amount: 0
+
+            })
+
+            this.setState({
+                ...this.state,
+                localDocument: document
+            })
+
+            this.props.toggleStaffListModal(false)
+        } else if(docType === DOC_TYPE_EXCLUDE_FROM_KPI){
+            items.push({
+                staffId: staff.staffId,
+                staffName: staff.fio,
+                beginDate: moment().startOf('month'),
+                endDate: moment().endOf('month'),
                 amount: 0
 
             })
@@ -346,6 +367,23 @@ class HrDocCreatePage extends Component{
                     bukrsOptions={this.props.bukrsOptions} document={this.state.localDocument}
                 />
                 break
+
+            case DOC_TYPE_EXCLUDE_FROM_KPI:
+                form = <ExcludeFromKpiForm
+                    fetchCurrentStaffs={[]}
+                    handleItemChange={this.handleItemChange}
+                    handleDocumentChange={this.handleDocumentChange}
+                    addItem={this.addItem}
+                    removeItem={this.removeItem}
+                    positionList={this.props.positionList}
+                    departmentList={this.props.departmentList}
+                    branchOptions = {this.getBranchOptions(this.state.localDocument.bukrs)}
+                    businessAreaOptions = {this.getBusinessAreaOptions(this.state.localDocument.bukrs)}
+                    directorOptions={this.getDirectorOptions(this.state.localDocument.branchId)}
+                    managerOptions = {this.getManagerOptions(this.state.localDocument.branchId)}
+                    bukrsOptions={this.props.bukrsOptions} document={this.state.localDocument}
+                />
+                break
             default:{}
         }
 
@@ -361,6 +399,14 @@ class HrDocCreatePage extends Component{
                           companyOptions={this.props.bukrsOptions} bukrsDisabledParent={false}
             />
         } else if(DOC_TYPE_DISMISS === currentType){
+            modal = <StaffF4Modal open={this.state.staffListModalOpened}
+                                  messages={messages}
+                                  closeModal={() => this.setState({staffListModalOpened:false})}
+                                  onStaffSelect={(item)=>this.handleStaffSelect(item)} trans={'hr_doc_create_' + currentType}
+                                  branchOptions={this.props.branchOptions}
+                                  companyOptions={this.props.bukrsOptions} bukrsDisabledParent={false}
+            />
+        } else if(DOC_TYPE_EXCLUDE_FROM_KPI === currentType) {
             modal = <StaffF4Modal open={this.state.staffListModalOpened}
                                   messages={messages}
                                   closeModal={() => this.setState({staffListModalOpened:false})}

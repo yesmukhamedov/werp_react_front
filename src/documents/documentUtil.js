@@ -11,6 +11,7 @@ export const MD_HR_DOCUMENT_REC = 'HR_DOCUMENT_REC'
 export const MD_HR_DOCUMENT_TRANS = 'HR_DOCUMENT_TRANS'
 export const MD_HR_DOCUMENT_CHANGE_SALARY = 'HR_DOCUMENT_CHANGE_SALARY'
 export const MD_HR_DOCUMENT_DISMISS = 'HR_DOCUMENT_DISMISS'
+export const MD_HR_EXCLUDE_FROM_KPI = 'HR_EXCLUDE_FROM_KPI'
 export const MD_TASK = 'TASK'
 
 export const getMdContexts = () => {
@@ -19,6 +20,7 @@ export const getMdContexts = () => {
     out[MD_HR_DOCUMENT_TRANS] = 'Заявки о переводе',
     out[MD_HR_DOCUMENT_CHANGE_SALARY] = 'Заявки об изменении оклада',
     out[MD_HR_DOCUMENT_DISMISS] = 'Заявки об увольнении'
+    out[MD_HR_EXCLUDE_FROM_KPI] = 'Заявки на исключение сотрудника из KPI'
     out[MD_TASK] = 'Задачи'
 
     return out
@@ -63,6 +65,9 @@ export const getDocCreateLink = (context) => {
 
         case MD_HR_DOCUMENT_CHANGE_SALARY:
             return '/hr/doc/create/4'
+
+        case MD_HR_EXCLUDE_FROM_KPI:
+            return '/hr/doc/create/7'
 
         case MD_TASK:
             return '/dit/task/dtskc'
