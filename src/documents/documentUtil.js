@@ -43,6 +43,7 @@ export const getDocViewLink = (context,contextId) => {
         case MD_HR_DOCUMENT_TRANS:
         case MD_HR_DOCUMENT_CHANGE_SALARY:
         case MD_HR_DOCUMENT_DISMISS:
+        case MD_HR_EXCLUDE_FROM_KPI:
             return '/hr/doc/view/' + contextId
 
         case MD_TASK:

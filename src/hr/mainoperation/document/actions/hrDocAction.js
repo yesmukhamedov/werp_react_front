@@ -2,7 +2,11 @@ import axios from 'axios';
 import {ROOT_URL} from '../../../../utils/constants';
 import { handleError } from '../../../../general/notification/notification_action'
 import browserHistory from '../../../../utils/history';
-import {DOC_ACTION_SEND,DOC_ACTION_APPROVE,DOC_ACTION_REJECT,DOC_ACTION_CANCEL,DOC_ACTION_ADD_SALARY,DOC_ACTION_SAVE,DOC_ACTION_ADD_APPROVER,DOC_ACTION_UPDATE} from '../../../hrUtil'
+import {
+        DOC_ACTION_SEND,DOC_ACTION_APPROVE,DOC_ACTION_REJECT,
+        DOC_ACTION_CANCEL,DOC_ACTION_ADD_SALARY,DOC_ACTION_SAVE,
+        DOC_ACTION_ADD_APPROVER,DOC_ACTION_UPDATE,DOC_ACTION_COMPLETE_DOC
+} from '../../../hrUtil'
 
 export const HR_DOC_ITEMS_LOADED = 'HR_DOC_ITEMS_LOADED'
 export const HR_DOC_SINGLE_ITEM_LOADED = 'HR_DOC_SINGLE_ITEM_LOADED'
@@ -123,6 +127,10 @@ export function handleAction (document,actionType, additionalData){
             window.location = '/hr/doc/update/' + document.id
             break
 
+        case DOC_ACTION_COMPLETE_DOC:
+            return completeDocument(document);
+            break
+
         default:
             alert('Unknown Action! ' + actionType)
     }
@@ -206,6 +214,24 @@ const cancelDocument = (document) => {
     return function (dispatch) {
         dispatch(setLoading(true))
         axios.put(`${ROOT_URL}/api/hr/document/action-cancel/` + document.id,{}, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        }).then(({data}) => {
+            dispatch(setLoading(false))
+            window.document.location.reload(true);
+        }).catch((e) => {
+            dispatch(setLoading(false))
+            handleError(e,dispatch)
+        })
+    }
+}
+
+//Action Complete document
+const completeDocument = (document, note) => {
+    return function (dispatch) {
+        dispatch(setLoading(true))
+        axios.put(`${ROOT_URL}/api/hr/document/action-complete-doc/` + document.id,{}, {
             headers: {
                 authorization: localStorage.getItem('token')
             }
