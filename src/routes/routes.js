@@ -439,6 +439,8 @@ const getComponent = {
     Dtskdep: AsyncDtskdep,
     Dtskl: AsyncDeptTaskListPage,
     Dtskc: AsyncDtskc,
+    Messgr: AsyncMessageGroupPage,
+    Mgru: AsyncMessageGroupUserPage,
 }
 
 const generateRoutes = (transactionRoutes) => {
@@ -460,8 +462,6 @@ const generateRoutes = (transactionRoutes) => {
       {/*<Route path="/crm/wspace" component={AsyncCrmWspacePage} />*/}
       <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
       <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
-      <Route path="/dit/messgr" component={persistPath(AsyncMessageGroupPage)} />
-      <Route path="/dit/mgru" component={persistPath(AsyncMessageGroupUserPage)} />
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
       <Route path="/hr/doc/create/:type" component={AsyncHrDocCreatePage} />
       <Route path="/hr/doc/update/:id" component={AsyncHrDocUpdatePage} />
