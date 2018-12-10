@@ -176,7 +176,7 @@ class DeptTaskListTableDisplay extends Component {
           return (
             <div style={{ textAlign: 'center' }}>
               <Button.Group icon size='mini'>
-                <Link target="_blank" to={`/dit/dtskredit/${id}`}>
+                <Link target="_blank" to={`/dit/task/dtskredit/${id}`}>
                   <Button>
                     <Icon link name="edit" color="black" />
                   </Button>
