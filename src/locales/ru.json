@@ -499,7 +499,7 @@
 	
 	,"toCreatInvoice":"Создать счет-фактуру"
 	,"transNameAmpi":"Счет-фактура от постащика"
-	,"transNameAmri":"Счет-фактура клиенту"
+	,"transNameAmri":"Прочие доходы (СФ)"
 	,"transNameFaci01":"Платеж от контрагента"
 	,"transNameFaco01":"Оплата контрагенту"
 }
