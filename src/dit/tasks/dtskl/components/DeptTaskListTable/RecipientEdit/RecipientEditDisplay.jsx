@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { Form, Grid, Segment, Dimmer, Loader, Container, Header, Icon } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
-import { DropdownFormField, DatePickerFormField } from '../../../../../../utils/formFields';
+import { SearchableSingleDropdownFormField, DatePickerFormField } from '../../../../../../utils/formFields';
 import { difference } from '../../../../../../utils/helpers';
 
 class RecipientEditDisplay extends Component {
@@ -67,7 +67,7 @@ class RecipientEditDisplay extends Component {
                       <Field
                         // required
                         name="recipient"
-                        component={DropdownFormField}
+                        component={SearchableSingleDropdownFormField}
                         label={formatMessage({id: 'Recipient.Edit.Recipient'})}
                         opts={assigneeOptions ? [{ key: -1, text: '', value: -1 }, ...assigneeOptions] : []}
                       />

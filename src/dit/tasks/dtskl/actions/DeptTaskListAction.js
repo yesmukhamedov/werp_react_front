@@ -185,7 +185,7 @@ export function editRecipient(taskId, fields, resolve) {
   };
 }
 
-const assigneesUrl = `${ROOT_URL}/api/users?active=true`;
+const assigneesUrl = `${ROOT_URL}/api/users/assignee`;
 
 export function fetchTaskById(taskId) {
   return async (dispatch) => {
@@ -200,14 +200,14 @@ export function fetchTaskById(taskId) {
         recipient,
       } = success.data;
       axios
-        .get(`${assigneesUrl}&branchId=${recipient.branch.id}&bukrs=${bukrs}`, {
+        .get(`${assigneesUrl}?branchId=${recipient.branch.id}&bukrs=${bukrs}`, {
           headers: { authorization: localStorage.getItem('token') },
         })
         .then(({ data }) => {
-          const assigneesOpts = data.users.map(item => ({
-            key: item.id,
-            value: item.id,
-            text: constructFullName(item),
+          const assigneesOpts = data.map(item => ({
+            key: item.userId,
+            value: item.userId,
+            text: item.fio,
           }));
 
           const assigneeDetails = {
