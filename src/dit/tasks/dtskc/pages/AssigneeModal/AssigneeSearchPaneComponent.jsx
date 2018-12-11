@@ -149,10 +149,9 @@ class AssigneeSearchPaneComponent extends Component {
         departmentId.forEach(
           el => (filteredDepOpts[el] = deptOpts[el]),
         );
-
         this.setState({
           ...this.state,
-          branchOptions: _.values(filteredBranchOpts),
+          branchOptions: _.values(_.sortBy(filteredBranchOpts, ['text'])),
           departmentOptions: _.values(filteredDepOpts),
           isLoading: false,
         });
