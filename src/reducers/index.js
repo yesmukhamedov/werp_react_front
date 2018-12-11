@@ -39,6 +39,7 @@ import hrDocReducer from '../hr/mainoperation/document/reducers/hrDocReducer';
 import documentReducer from '../documents/mainoperation/reducers/documentReducer'
 import hrSalaryReducer from '../hr/mainoperation/salary/reducers/hrSalaryReducer'
 import transactionReducer from '../dit/transactions/reducers/transactionReducer';
+import logisticsReducer from '../logistics/mainoperation/reducers/logisticsReducer';
 
 const appReducer = combineReducers({
   form,
@@ -79,7 +80,8 @@ const appReducer = combineReducers({
   hrDocReducer: hrDocReducer,
   documentReducer: documentReducer,
   hrSalaryReducer: hrSalaryReducer,
-  transactionReducer: transactionReducer
+  transactionReducer: transactionReducer,
+    logisticsReducer
 });
 
 const rootReducer = (state, action) => {
