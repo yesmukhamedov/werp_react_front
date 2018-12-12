@@ -188,9 +188,8 @@ function mapStateToProps(state, props) {
     return {
       initialValues: initialData,
     };
-  } 
-    return {};
-  
+  }
+  return {};
 }
 
 UserModal = reduxForm({
@@ -199,4 +198,7 @@ UserModal = reduxForm({
   enableReinitialize: true,
 })(UserModal);
 
-export default connect(mapStateToProps, actions)(UserModal);
+export default connect(
+  mapStateToProps,
+  actions,
+)(UserModal);

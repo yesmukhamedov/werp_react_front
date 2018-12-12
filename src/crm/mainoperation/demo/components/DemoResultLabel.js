@@ -1,5 +1,5 @@
 import React from 'react';
-import { Label } from 'semantic-ui-react'
+import { Label } from 'semantic-ui-react';
 
 /**
  * Результаты демо
@@ -25,47 +25,49 @@ const RESULT_MINI_CONTRACT = 5;
 
 // Продан, но потом отменен
 const RESULT_SOLD_CANCELLED = 6;
-//Старые, архивированные
+// Старые, архивированные
 const RESULT_ARCHIVED = 7;
 
+export default function DemoResultLabel(props) {
+  const { resultName, resultId } = props;
+  let color = '';
+  switch (resultId) {
+    case RESULT_UNKNOWN:
+      color = 'grey';
+      break;
 
-export default function DemoResultLabel(props){
+    case RESULT_DONE:
+      color = 'blue';
+      break;
 
-    const {resultName,resultId} = props;
-    let color = '';
-    switch (resultId){
-        case RESULT_UNKNOWN:
-            color = 'grey';
-            break
+    case RESULT_MOVED:
+      color = 'orange';
+      break;
 
-        case RESULT_DONE:
-            color = 'blue';
-            break;
+    case RESULT_CANCELLED:
+    case RESULT_SOLD_CANCELLED:
+      color = 'yellow';
+      break;
 
-        case RESULT_MOVED:
-            color = 'orange';
-            break;
+    case RESULT_SOLD:
+      color = 'green';
+      break;
 
-        case RESULT_CANCELLED:
-        case RESULT_SOLD_CANCELLED:
-            color = 'yellow';
-            break;
+    case RESULT_MINI_CONTRACT:
+      color = 'teal';
+      break;
 
-        case RESULT_SOLD:
-            color = 'green';
-            break;
+    case RESULT_ARCHIVED:
+      color = 'black';
+      break;
 
-        case RESULT_MINI_CONTRACT:
-            color = 'teal';
-            break;
+    default:
+      color = 'grey';
+  }
 
-        case RESULT_ARCHIVED:
-            color = 'black'
-            break
-
-        default:
-            color = 'grey';
-    }
-
-    return <Label color={color} horizontal>{resultName}</Label>;
+  return (
+    <Label color={color} horizontal>
+      {resultName}
+    </Label>
+  );
 }

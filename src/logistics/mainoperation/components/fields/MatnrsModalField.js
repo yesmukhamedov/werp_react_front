@@ -1,19 +1,17 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
-class MatnrsModalField extends Component{
-    constructor (props) {
-        super(props)
+class MatnrsModalField extends Component {
+  constructor(props) {
+    super(props);
 
-        this.state = {}
-    }
+    this.state = {};
+  }
 
-    componentWillMount(){}
+  componentWillMount() {}
 
-    render (){
-        return <div>
-            Hello world!
-        </div>
-    }
+  render() {
+    return <div>Hello world!</div>;
+  }
 }
 
 export default MatnrsModalField;

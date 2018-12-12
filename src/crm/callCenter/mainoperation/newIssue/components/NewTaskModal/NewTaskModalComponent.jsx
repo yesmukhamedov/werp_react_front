@@ -7,7 +7,7 @@ import {
   TextInputFormField,
 } from '../../../../../../utils/formFields';
 
-const validate = (values) => {
+const validate = values => {
   const errors = {};
   if (!values.title) {
     errors.title = 'Объязательное поле для заполнения';
@@ -41,10 +41,7 @@ class NewTaskModalComponent extends PureComponent {
   }
 
   handleFormSubmit(values, dispatch, props) {
-    const { 
-      contractNumber,
-      createNewTask,
-    } = this.props;
+    const { contractNumber, createNewTask } = this.props;
 
     createNewTask(contractNumber, values);
 
@@ -75,15 +72,20 @@ class NewTaskModalComponent extends PureComponent {
       bukrs,
       messages,
     } = this.props;
-    const filteredBranchOpts =
-      Object.values(branchOptions).filter(b => b.bukrs === bukrs);
+    const filteredBranchOpts = Object.values(branchOptions).filter(
+      b => b.bukrs === bukrs,
+    );
     return (
       <Modal open={isOpen} onClose={this.handleFormClose}>
         <Modal.Header>{messages.H__NEW_TASK}</Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
-              <Field name="title" component={TextInputFormField} label={messages.L__TITLE} />
+              <Field
+                name="title"
+                component={TextInputFormField}
+                label={messages.L__TITLE}
+              />
               <Field
                 name="description"
                 component={TextAreaFormField}

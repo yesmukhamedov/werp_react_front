@@ -37,10 +37,14 @@ class TaskPanelComponent extends Component {
             <Table.Row>
               <Table.HeaderCell collapsing>#</Table.HeaderCell>
               <Table.HeaderCell>{messages.TBL_H__STATUS}</Table.HeaderCell>
-              <Table.HeaderCell collapsing>{messages.TBL_H__PRIORITY}</Table.HeaderCell>
+              <Table.HeaderCell collapsing>
+                {messages.TBL_H__PRIORITY}
+              </Table.HeaderCell>
               <Table.HeaderCell>{messages.TBL_H__TITLE}</Table.HeaderCell>
               <Table.HeaderCell>{messages.TBL_H__ASSIGNED_TO}</Table.HeaderCell>
-              <Table.HeaderCell collapsing>{messages.TBL_H__MODIFIED_DATE}</Table.HeaderCell>
+              <Table.HeaderCell collapsing>
+                {messages.TBL_H__MODIFIED_DATE}
+              </Table.HeaderCell>
             </Table.Row>
           </Table.Header>
 
@@ -95,7 +99,8 @@ class TaskPanelComponent extends Component {
                   size="small"
                   onClick={this.open}
                 >
-                  <Icon name="file text" />{messages.BTN__NEW_TASK}
+                  <Icon name="file text" />
+                  {messages.BTN__NEW_TASK}
                 </Button>
               </Table.HeaderCell>
             </Table.Row>

@@ -1,44 +1,43 @@
 import React from 'react';
-import { Table } from 'semantic-ui-react'
-import {formatTimestamptToDate} from '../../../../../utils/helpers'
+import { Table } from 'semantic-ui-react';
+import { formatTimestamptToDate } from '../../../../../utils/helpers';
 
+export default function StaffMainDataTable(props) {
+  const { staff } = props;
 
-export default function StaffMainDataTable(props){
+  return (
+    <Table celled striped>
+      <Table.Body>
+        <Table.Row>
+          <Table.Cell>Фамилия</Table.Cell>
+          <Table.Cell>{staff.lastname}</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>Имя</Table.Cell>
+          <Table.Cell>{staff.firstname}</Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>Отчество</Table.Cell>
+          <Table.Cell>{staff.middlename}</Table.Cell>
+        </Table.Row>
 
-    const {staff} = props
+        <Table.Row>
+          <Table.Cell>ИИН</Table.Cell>
+          <Table.Cell>{staff.iin}</Table.Cell>
+        </Table.Row>
 
-    return (
-        <Table celled striped>
-            <Table.Body>
-                <Table.Row>
-                    <Table.Cell>Фамилия</Table.Cell>
-                    <Table.Cell>{staff.lastname}</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                    <Table.Cell>Имя</Table.Cell>
-                    <Table.Cell>{staff.firstname}</Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                    <Table.Cell>Отчество</Table.Cell>
-                    <Table.Cell>{staff.middlename}</Table.Cell>
-                </Table.Row>
+        <Table.Row>
+          <Table.Cell>Дата рождения</Table.Cell>
+          <Table.Cell>{formatTimestamptToDate(staff.birthday)}</Table.Cell>
+        </Table.Row>
 
-                <Table.Row>
-                    <Table.Cell>ИИН</Table.Cell>
-                    <Table.Cell>{staff.iin}</Table.Cell>
-                </Table.Row>
-
-                <Table.Row>
-                    <Table.Cell>Дата рождения</Table.Cell>
-                    <Table.Cell>{formatTimestamptToDate(staff.birthday)}</Table.Cell>
-                </Table.Row>
-
-                <Table.Row>
-                    <Table.Cell>Пол</Table.Cell>
-                    <Table.Cell>{staff.gender === 'male' ? 'Мужской' : 'Женский'}</Table.Cell>
-                </Table.Row>
-
-            </Table.Body>
-        </Table>
-    )
+        <Table.Row>
+          <Table.Cell>Пол</Table.Cell>
+          <Table.Cell>
+            {staff.gender === 'male' ? 'Мужской' : 'Женский'}
+          </Table.Cell>
+        </Table.Row>
+      </Table.Body>
+    </Table>
+  );
 }

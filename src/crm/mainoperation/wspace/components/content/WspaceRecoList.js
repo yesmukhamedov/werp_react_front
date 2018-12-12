@@ -1,6 +1,3 @@
-import React,{Component} from 'react'
+import React, { Component } from 'react';
 
-class WspaceRecoList extends Component{
-
-}
-
+class WspaceRecoList extends Component {}

@@ -13,10 +13,11 @@ export const EDIT_TASK_RECIPIENT = 'edit_task_recipient';
 export const FETCH_ASSIGNEE_DETAILS = 'fetch_assignee_details';
 
 export function searchTasks(params, resolve) {
-  return (dispatch) => {
-    axios.get(`${ROOT_URL}/api/dtskl/tasks?${params}`, {
-      headers: { authorization: localStorage.getItem('token') },
-    })
+  return dispatch => {
+    axios
+      .get(`${ROOT_URL}/api/dtskl/tasks?${params}`, {
+        headers: { authorization: localStorage.getItem('token') },
+      })
       .then(({ data }) => {
         // console.log(data);
         dispatch({
@@ -25,12 +26,14 @@ export function searchTasks(params, resolve) {
         });
         resolve();
       })
-      .catch((error) => {
+      .catch(error => {
         console.log('ERROR in DEPT task list search', error);
         if (error.response) {
           dispatch(notify('error', error.response.data.message, 'Ошибка...'));
         } else {
-          Promise.resolve({ error }).then(response => dispatch(notify('error', response, 'Ошибка')));
+          Promise.resolve({ error }).then(response =>
+            dispatch(notify('error', response, 'Ошибка')),
+          );
         }
         resolve();
       });
@@ -38,10 +41,11 @@ export function searchTasks(params, resolve) {
 }
 
 export function fetchPrivateTasks() {
-  return (dispatch) => {
-    axios.get(`${ROOT_URL}/api/dtskl/privateTasks`, {
-      headers: { authorization: localStorage.getItem('token') },
-    })
+  return dispatch => {
+    axios
+      .get(`${ROOT_URL}/api/dtskl/privateTasks`, {
+        headers: { authorization: localStorage.getItem('token') },
+      })
       .then(({ data }) => {
         // console.log(data);
         dispatch({
@@ -49,25 +53,27 @@ export function fetchPrivateTasks() {
           payload: data,
         });
       })
-      .catch((error) => {
+      .catch(error => {
         console.log('ERROR in private task list fetch', error);
         if (error.response) {
           dispatch(notify('error', error.response.data.message, 'Ошибка...'));
         } else {
-          Promise.resolve({ error }).then(response => dispatch(notify('error', response, 'Ошибка')));
+          Promise.resolve({ error }).then(response =>
+            dispatch(notify('error', response, 'Ошибка')),
+          );
         }
       });
   };
 }
 
 export function clearDeptTaskListStore() {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({ type: CLEAR_DEPT_TASK_LIST });
   };
 }
 
 export function getDeptTaskListDirectoriesOld(lang) {
-  return (dispatch) => {
+  return dispatch => {
     const directories = {
       departmentOptions: [
         { key: 1, value: 1, text: 'First dept' },
@@ -102,40 +108,56 @@ function getRefDirectory(name) {
 }
 
 export function getDeptTaskListDirectories(lang) {
-  return (dispatch) => {
-    axios.all([getTaskDirectory('types'), getTaskDirectory('status'), getRefDirectory('departments')])
-      .then(axios.spread(({ data: typeList }, { data: statusList }, { data: deptList }) => {
-        const typeOpts = typeList.map(item => ({
-          key: item.code,
-          value: item.code,
-          text: item[lang],
-        }));
-        const statusOpts = statusList.map(item => ({
-          key: item.id,
-          value: item.id,
-          text: item[lang],
-        }));
-        const deptOpts = deptList.map(item => ({
-          key: item.dep_id,
-          value: item.dep_id,
-          text: (lang === 'ru') ? item.name_ru : (lang === 'en' ? item.name_en : item.name_tr),
-        }));
-        const directories = {
-          typeOptions: _.mapKeys(typeOpts, 'key'),
-          statusOptions: _.mapKeys(statusOpts, 'key'),
-          deptOptions: _.mapKeys(deptOpts, 'key'),
-        };
-        dispatch({
-          type: DEPT_TASK_LIST_DIRECTORIES,
-          payload: directories,
-        });
-      }))
-      .catch((error) => {
+  return dispatch => {
+    axios
+      .all([
+        getTaskDirectory('types'),
+        getTaskDirectory('status'),
+        getRefDirectory('departments'),
+      ])
+      .then(
+        axios.spread(
+          ({ data: typeList }, { data: statusList }, { data: deptList }) => {
+            const typeOpts = typeList.map(item => ({
+              key: item.code,
+              value: item.code,
+              text: item[lang],
+            }));
+            const statusOpts = statusList.map(item => ({
+              key: item.id,
+              value: item.id,
+              text: item[lang],
+            }));
+            const deptOpts = deptList.map(item => ({
+              key: item.dep_id,
+              value: item.dep_id,
+              text:
+                lang === 'ru'
+                  ? item.name_ru
+                  : lang === 'en'
+                  ? item.name_en
+                  : item.name_tr,
+            }));
+            const directories = {
+              typeOptions: _.mapKeys(typeOpts, 'key'),
+              statusOptions: _.mapKeys(statusOpts, 'key'),
+              deptOptions: _.mapKeys(deptOpts, 'key'),
+            };
+            dispatch({
+              type: DEPT_TASK_LIST_DIRECTORIES,
+              payload: directories,
+            });
+          },
+        ),
+      )
+      .catch(error => {
         console.log('Error in department task list directories', error);
         if (error.response) {
           dispatch(notify('error', error.response.data.message, 'Ошибка'));
         } else {
-          Promise.resolve({ error }).then(response => dispatch(notify('error', response, 'Ошибка')));
+          Promise.resolve({ error }).then(response =>
+            dispatch(notify('error', response, 'Ошибка')),
+          );
         }
       });
   };
@@ -151,32 +173,34 @@ export function editRecipient(taskId, fields, resolve) {
     const endDateFromUtc = moment.utc(fields.expectedEndDate).format();
     dirtyFields.estimatedAt = endDateFromUtc;
   }
-  return (dispatch) => {
-    axios.put(
-      `${ROOT_URL}/api/dtskl/tasks/${taskId}`,
-      dirtyFields,
-      { headers: { authorization: localStorage.getItem('token') } },
-    ).then(({ data }) => {
-      const editDetails = {
-        expectedEndDate: data.estimatedAt,
-        recipient: data.recipient.assignee,
-      };
+  return dispatch => {
+    axios
+      .put(`${ROOT_URL}/api/dtskl/tasks/${taskId}`, dirtyFields, {
+        headers: { authorization: localStorage.getItem('token') },
+      })
+      .then(({ data }) => {
+        const editDetails = {
+          expectedEndDate: data.estimatedAt,
+          recipient: data.recipient.assignee,
+        };
 
-      dispatch({
-        type: EDIT_TASK_RECIPIENT,
-        payload: { ...editDetails },
-      });
-      dispatch(notify('success', 'Successufully updated.', 'Успешно'));
-      if (resolve) {
-        resolve();
-      }
-    })
-      .catch((error) => {
+        dispatch({
+          type: EDIT_TASK_RECIPIENT,
+          payload: { ...editDetails },
+        });
+        dispatch(notify('success', 'Successufully updated.', 'Успешно'));
+        if (resolve) {
+          resolve();
+        }
+      })
+      .catch(error => {
         console.log('ERROR in task assignee edit', error);
         if (error.response) {
           dispatch(notify('error', error.response.data, 'Ошибка'));
         } else {
-          Promise.resolve({ error }).then(response => dispatch(notify('error', response.data.message, 'Ошибка')));
+          Promise.resolve({ error }).then(response =>
+            dispatch(notify('error', response.data.message, 'Ошибка')),
+          );
         }
         if (resolve) {
           resolve();
@@ -188,17 +212,13 @@ export function editRecipient(taskId, fields, resolve) {
 const assigneesUrl = `${ROOT_URL}/api/users/assignee`;
 
 export function fetchTaskById(taskId) {
-  return async (dispatch) => {
+  return async dispatch => {
     function onError(error) {
       dispatch(notify('error', error, 'Ошибка'));
       return error;
     }
     function onSuccess(success) {
-      const {
-        estimatedAt,
-        bukrs,
-        recipient,
-      } = success.data;
+      const { estimatedAt, bukrs, recipient } = success.data;
       axios
         .get(`${assigneesUrl}?branchId=${recipient.branch.id}&bukrs=${bukrs}`, {
           headers: { authorization: localStorage.getItem('token') },
@@ -221,7 +241,7 @@ export function fetchTaskById(taskId) {
             payload: { ...assigneeDetails },
           });
         })
-        .catch((error) => onError(error));
+        .catch(error => onError(error));
     }
     try {
       const success = await axios.get(`${ROOT_URL}/api/tasks/${taskId}`, {

@@ -1,7 +1,4 @@
-import {
-  DTSKDEP_FETCH_REFERENCES,
-  DTSKDEP_FETCH_TASKADMINS,
-} from '../actions';
+import { DTSKDEP_FETCH_REFERENCES, DTSKDEP_FETCH_TASKADMINS } from '../actions';
 
 const initialState = {
   reference: {
@@ -14,7 +11,7 @@ const dtskdepReducer = (prevState = initialState, action) => {
     case DTSKDEP_FETCH_REFERENCES:
       return {
         ...prevState,
-        reference: {...action.payload},
+        reference: { ...action.payload },
       };
     case DTSKDEP_FETCH_TASKADMINS:
       return {

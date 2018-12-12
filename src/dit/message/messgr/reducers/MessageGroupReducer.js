@@ -1,6 +1,4 @@
-import {
-  MESSGR_FETCH_MESSAGE_GROUPS,
-} from '../actions/MessageGroupAction';
+import { MESSGR_FETCH_MESSAGE_GROUPS } from '../actions/MessageGroupAction';
 
 const messageGroupReducer = (prevState = {}, action) => {
   switch (action.type) {

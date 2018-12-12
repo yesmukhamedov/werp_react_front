@@ -6,27 +6,25 @@ import jwt from 'jwt-simple';
 import { defineMessages, intlShape, injectIntl } from 'react-intl';
 import LanguageSwitcher from './LanguageSwitcher';
 import TransactionSearchbar from './TransactionSearchbar';
-import { fetchUnreadMessages } from "../../actions/inbox";
-import { breadcrumbChanged } from "../../actions/tree_menu";
-import { calcBreadcrumb } from "../../utils/helpers";
-import {fetchTreeMenu} from '../../actions/tree_menu';
-import {fetchUserInfo} from '../../general/userInfo/userInfo_action';
+import { fetchUnreadMessages } from '../../actions/inbox';
+import { breadcrumbChanged } from '../../actions/tree_menu';
+import { calcBreadcrumb } from '../../utils/helpers';
+import { fetchTreeMenu } from '../../actions/tree_menu';
+import { fetchUserInfo } from '../../general/userInfo/userInfo_action';
 
 class Header extends Component {
-    componentWillMount() {
-        if (this.props.authenticated) {
-            const token = localStorage.getItem('token');
-            if (token) {
-              const payload = jwt.decode(token, 'secret')
-              const userId = payload.userId
-              this.props.fetchUnreadMessages({userId});
-              this.props.fetchTreeMenu(userId);
-              this.props.fetchUserInfo();
-            }             
-        }
+  componentWillMount() {
+    if (this.props.authenticated) {
+      const token = localStorage.getItem('token');
+      if (token) {
+        const payload = jwt.decode(token, 'secret');
+        const userId = payload.userId;
+        this.props.fetchUnreadMessages({ userId });
+        this.props.fetchTreeMenu(userId);
+        this.props.fetchUserInfo();
+      }
     }
-  
-
+  }
 
   handleTransactionSelected(transactionCode) {
     const leafNode = this.props.transactions[transactionCode];
@@ -55,15 +53,19 @@ class Header extends Component {
       }
       for (let i = 1; i < len; i++) {
         const last = i === len - 1;
-        items.push(<Breadcrumb.Divider icon="right chevron" key={`d${  i}`} />);
+        items.push(<Breadcrumb.Divider icon="right chevron" key={`d${i}`} />);
         if (last) {
-          items.push(<Breadcrumb.Section active key={i}>
+          items.push(
+            <Breadcrumb.Section active key={i}>
               {breadcrumb[i]}
-            </Breadcrumb.Section>,);
+            </Breadcrumb.Section>,
+          );
         } else {
-          items.push(<Breadcrumb.Section link key={i}>
+          items.push(
+            <Breadcrumb.Section link key={i}>
               {breadcrumb[i]}
-            </Breadcrumb.Section>,);
+            </Breadcrumb.Section>,
+          );
         }
       }
     }
@@ -161,6 +163,12 @@ Header.propTypes = {
   intl: intlShape.isRequired,
 };
 
-export default connect(mapStateToProps, {
-  fetchUnreadMessages, breadcrumbChanged, fetchTreeMenu, fetchUserInfo,
-})(injectIntl(Header));
+export default connect(
+  mapStateToProps,
+  {
+    fetchUnreadMessages,
+    breadcrumbChanged,
+    fetchTreeMenu,
+    fetchUserInfo,
+  },
+)(injectIntl(Header));

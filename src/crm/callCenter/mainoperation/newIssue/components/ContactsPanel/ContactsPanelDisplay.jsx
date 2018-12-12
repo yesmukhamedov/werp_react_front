@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { List, Grid } from 'semantic-ui-react';
 
 const renderContactItem = (item, label) =>
-  (item ? (
+  item ? (
     <List>
       <List.Item>
         <List.Header className="list-header">{label}</List.Header>
@@ -24,14 +24,15 @@ const renderContactItem = (item, label) =>
     </List>
   ) : (
     ''
-  ));
+  );
 
-const ContactsPanelDisplay = (props) => {
+const ContactsPanelDisplay = props => {
   const { contactDetails = {} } = props;
   const { home, service, work } = contactDetails;
-  const cols = Object.values(contactDetails).reduce((acc, cur) => {
-    return acc + ((cur && 1) || 0);
-  }, 0);
+  const cols = Object.values(contactDetails).reduce(
+    (acc, cur) => acc + ((cur && 1) || 0),
+    0,
+  );
   return (
     <div>
       <Grid divided="vertically">

@@ -32,7 +32,7 @@ class TaskPageDisplay extends Component {
     } = this.props;
     const { messages } = intl;
     if (taskDetails) {
-      const showApprovalPanel = (taskDetails.approved === 0) ? true : false;
+      const showApprovalPanel = taskDetails.approved === 0;
       return (
         <Container
           // fluid
@@ -43,7 +43,7 @@ class TaskPageDisplay extends Component {
             paddingRight: '2em',
           }}
         >
-          {showApprovalPanel &&  <TaskApproverContainer {...taskDetails}/>}
+          {showApprovalPanel && <TaskApproverContainer {...taskDetails} />}
           <TaskInfoWrapper
             lang={this.props.lang}
             {...taskDetails}

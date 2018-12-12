@@ -7,7 +7,6 @@ import ContractListTable from './ContractListTable/ContractListTableContainer';
 import ContractListSearch from './ContractListSearch/ContractListSearchContainer';
 
 class ContractListPageComponent extends Component {
-
   componentWillMount() {
     const { lang } = this.props;
     this.props.getDirectories(lang);
@@ -56,10 +55,8 @@ class ContractListPageComponent extends Component {
       endDate: endDateUtc,
     };
     // console.log(paramsDict);
-    const params = _.map(
-      paramsDict,
-      (val, key) =>
-        (val ? `${key}=${val}` : val === false ? `${key}=${val}` : ''),
+    const params = _.map(paramsDict, (val, key) =>
+      val ? `${key}=${val}` : val === false ? `${key}=${val}` : '',
     )
       .filter(param => param)
       .join('&');

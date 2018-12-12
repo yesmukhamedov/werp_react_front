@@ -7,7 +7,7 @@ import {
   TextInputFormField,
 } from '../../../utils/formFields';
 
-const TaskCreateDisplay = (props) => {
+const TaskCreateDisplay = props => {
   console.log(props);
   return (
     <Container
@@ -38,7 +38,7 @@ const TaskCreateDisplay = (props) => {
             label="Приоритет"
             // opts={}
           />
-      
+
           <Field
             name="branch"
             component={DropdownFormField}
@@ -58,9 +58,7 @@ const TaskCreateDisplay = (props) => {
             // opts={}
           />
         </Form.Group>
-        <Button color="youtube">
-          Отменить
-        </Button>
+        <Button color="youtube">Отменить</Button>
         <Button
           positive
           icon="checkmark"
@@ -73,7 +71,7 @@ const TaskCreateDisplay = (props) => {
   );
 };
 
-const validate = (values) => {
+const validate = values => {
   const errors = {};
   if (!values.title) {
     errors.title = 'Объязательное поле для заполнения';

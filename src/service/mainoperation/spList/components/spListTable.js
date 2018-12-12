@@ -116,35 +116,33 @@ class SpListTable extends Component {
         ofText="из"
         rowsText="записей"
         className="-highlight"
-        getTrProps={(state, rowInfo, column) => {
-          return {
-            style: {
-              background:
-                rowInfo === undefined
-                  ? ''
-                  : this.state.selectedIdx === rowInfo.index
-                    ? 'rgba(60, 143, 255, 0.5)'
-                    : !rowInfo.original.active
-                      ? 'rgba(241, 241, 241, 0.8)'
-                      : '',
-            },
-            onClick: (e, handleOriginal) => {
-              console.log('A Td Element was clicked!');
-              console.log('it produced this event:', e);
-              console.log('It was in this column:', column);
-              console.log('It was in this row:', rowInfo);
+        getTrProps={(state, rowInfo, column) => ({
+          style: {
+            background:
+              rowInfo === undefined
+                ? ''
+                : this.state.selectedIdx === rowInfo.index
+                ? 'rgba(60, 143, 255, 0.5)'
+                : !rowInfo.original.active
+                ? 'rgba(241, 241, 241, 0.8)'
+                : '',
+          },
+          onClick: (e, handleOriginal) => {
+            console.log('A Td Element was clicked!');
+            console.log('it produced this event:', e);
+            console.log('It was in this column:', column);
+            console.log('It was in this row:', rowInfo);
 
-              let { index } = rowInfo;
+            const { index } = rowInfo;
 
-              // IMPORTANT! React-Table uses onClick internally to trigger
-              // events like expanding SubComponents and pivots.
-              // By default a custom 'onClick' handler will override this functionality.
-              // If you want to fire the original onClick handler, call the
-              // 'handleOriginal' function.
-              this.setState({ ...this.state, selectedIdx: index });
-            },
-          };
-        }}
+            // IMPORTANT! React-Table uses onClick internally to trigger
+            // events like expanding SubComponents and pivots.
+            // By default a custom 'onClick' handler will override this functionality.
+            // If you want to fire the original onClick handler, call the
+            // 'handleOriginal' function.
+            this.setState({ ...this.state, selectedIdx: index });
+          },
+        })}
       />
     );
   }

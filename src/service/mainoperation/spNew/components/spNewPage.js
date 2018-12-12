@@ -42,48 +42,62 @@ class SpNewPage extends Component {
   }
 
   componentWillMount() {
-    axios.all([
-      axios.get(`${ROOT_URL}/api/reference/countries`, {
-        headers: { authorization: localStorage.getItem('token') },
-      }),
-      axios.get(`${ROOT_URL}/api/reference/companies`, {
-        headers: { authorization: localStorage.getItem('token') },
-      }),
-      axios.get(`${ROOT_URL}/api/reference/product-categories`, {
-        headers: { authorization: localStorage.getItem('token') },
-      }),
-    ])
-      .then(axios.spread(({ data: countryList }, { data: companyList }, { data: categoryList }) => {
-        const newCountryOptions = countryList.map(item => ({
-          key: item.countryId,
-          text: item.country,
-          value: item.countryId,
-        }));
+    axios
+      .all([
+        axios.get(`${ROOT_URL}/api/reference/countries`, {
+          headers: { authorization: localStorage.getItem('token') },
+        }),
+        axios.get(`${ROOT_URL}/api/reference/companies`, {
+          headers: { authorization: localStorage.getItem('token') },
+        }),
+        axios.get(`${ROOT_URL}/api/reference/product-categories`, {
+          headers: { authorization: localStorage.getItem('token') },
+        }),
+      ])
+      .then(
+        axios.spread(
+          (
+            { data: countryList },
+            { data: companyList },
+            { data: categoryList },
+          ) => {
+            const newCountryOptions = countryList.map(item => ({
+              key: item.countryId,
+              text: item.country,
+              value: item.countryId,
+            }));
 
-        const newCompanyOptions = companyList.map(item => ({
-          key: item.id,
-          value: item.id,
-          text: item.name,
-        }));
+            const newCompanyOptions = companyList.map(item => ({
+              key: item.id,
+              value: item.id,
+              text: item.name,
+            }));
 
-        const newCategoryOptions = categoryList.map(item => ({
-          key: item.id,
-          value: item.id,
-          text: item.label,
-        }));
-        const countryDict = new Map(countryList.map(i => [i.countryId, i.currency]));
+            const newCategoryOptions = categoryList.map(item => ({
+              key: item.id,
+              value: item.id,
+              text: item.label,
+            }));
+            const countryDict = new Map(
+              countryList.map(i => [i.countryId, i.currency]),
+            );
 
-        this.setState({
-          ...this.state,
-          countryOptions: newCountryOptions,
-          companyOptions: newCompanyOptions,
-          categoryOptions: newCategoryOptions,
-          countryDict,
-        }, () => {
-          console.log('spNewPage state ', this.state);
-        });
-      }))
-      .catch((err) => {
+            this.setState(
+              {
+                ...this.state,
+                countryOptions: newCountryOptions,
+                companyOptions: newCompanyOptions,
+                categoryOptions: newCategoryOptions,
+                countryDict,
+              },
+              () => {
+                console.log('spNewPage state ', this.state);
+              },
+            );
+          },
+        ),
+      )
+      .catch(err => {
         console.log('Error in spNewPage', err);
       });
   }
@@ -118,7 +132,7 @@ class SpNewPage extends Component {
     };
 
     // construct spareParts
-    const spareParts = this.state.sparePartList.map((sp) => {
+    const spareParts = this.state.sparePartList.map(sp => {
       sp.operType = {
         operTypeId: sp.operTypeId,
       };
@@ -144,16 +158,25 @@ class SpNewPage extends Component {
       transactionId: null,
     };
 
-    axios.post(`${ROOT_URL}/api/service/packets`, { ...newServicePacket }, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    })
-      .then((response) => {
+    axios
+      .post(
+        `${ROOT_URL}/api/service/packets`,
+        { ...newServicePacket },
+        {
+          headers: {
+            authorization: localStorage.getItem('token'),
+          },
+        },
+      )
+      .then(response => {
         this.props.notify('success', 'Сервис пакет сохранен.', 'Успешно');
       })
-      .catch((err) => {
-        this.props.notify('error', `Не удалось сохранить новый сервис пакет! ${err}`, 'Ошибка');
+      .catch(err => {
+        this.props.notify(
+          'error',
+          `Не удалось сохранить новый сервис пакет! ${err}`,
+          'Ошибка',
+        );
       });
 
     console.log('DS to Store:', newServicePacket);
@@ -192,14 +215,18 @@ class SpNewPage extends Component {
         };
         break;
       }
-      default: {}
+      default: {
+      }
     }
 
-    this.setState({
-      ...this.state,
-      [dataType]: value,
-      ...clearedFileds,
-    }, () => console.log('handled field ', dataType, ' state ', this.state));
+    this.setState(
+      {
+        ...this.state,
+        [dataType]: value,
+        ...clearedFileds,
+      },
+      () => console.log('handled field ', dataType, ' state ', this.state),
+    );
   }
 
   calculateTotalSum(list) {
@@ -207,11 +234,15 @@ class SpNewPage extends Component {
   }
 
   fetchCategories(companyId, categoryId) {
-    axios.get(`${ROOT_URL}/api/reference/products?categoryId=${categoryId}&companyId=${companyId}`, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    })
+    axios
+      .get(
+        `${ROOT_URL}/api/reference/products?categoryId=${categoryId}&companyId=${companyId}`,
+        {
+          headers: {
+            authorization: localStorage.getItem('token'),
+          },
+        },
+      )
       .then(({ data }) => {
         const newProductOptions = data.map(item => ({
           key: item.id,
@@ -224,29 +255,46 @@ class SpNewPage extends Component {
           productOptions: newProductOptions,
         });
       })
-      .catch((err) => {
-        this.props.notify('error', `Не удалось подгрузить категории ${err}`, 'Ошибка');
+      .catch(err => {
+        this.props.notify(
+          'error',
+          `Не удалось подгрузить категории ${err}`,
+          'Ошибка',
+        );
       });
   }
 
   fetchReferenceList(companyId, countryId, productId) {
-    axios.all([
-      axios.get(`${ROOT_URL}/api/reference/spare-part-warranties?productId=${productId}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      }),
-      axios.get(`${ROOT_URL}/api/reference/spare-part-prices?companyId=${companyId}&countryId=${countryId}&productId=${productId}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      }),
-    ])
-      .then(axios.spread(({ data: warranties }, { data: spareParts }) => {
-        this.setState({
-          ...this.state,
-          sparePartOptions: spareParts,
-          warrantyOptions: warranties,
-        });
-      }))
-      .catch((err) => {
-        this.props.notify('error', `Не удалось подгрузить справочники ${err}`, 'Ошибка');
+    axios
+      .all([
+        axios.get(
+          `${ROOT_URL}/api/reference/spare-part-warranties?productId=${productId}`,
+          {
+            headers: { authorization: localStorage.getItem('token') },
+          },
+        ),
+        axios.get(
+          `${ROOT_URL}/api/reference/spare-part-prices?companyId=${companyId}&countryId=${countryId}&productId=${productId}`,
+          {
+            headers: { authorization: localStorage.getItem('token') },
+          },
+        ),
+      ])
+      .then(
+        axios.spread(({ data: warranties }, { data: spareParts }) => {
+          this.setState({
+            ...this.state,
+            sparePartOptions: spareParts,
+            warrantyOptions: warranties,
+          });
+        }),
+      )
+      .catch(err => {
+        this.props.notify(
+          'error',
+          `Не удалось подгрузить справочники ${err}`,
+          'Ошибка',
+        );
       });
   }
 
@@ -255,8 +303,11 @@ class SpNewPage extends Component {
       <Container
         fluid
         style={{
- marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em' 
-}}
+          marginTop: '2em',
+          marginBottom: '2em',
+          paddingLeft: '2em',
+          paddingRight: '2em',
+        }}
       >
         <Header
           countryOpts={this.state.countryOptions}
@@ -278,20 +329,44 @@ class SpNewPage extends Component {
           saveServicePacket={this.saveServicePacket}
         />
         <p>
-          --<br />--<br />
+          --
+          <br />
+          --
+          <br />
         </p>
-        <SparePartList data={this.state.sparePartOptions} saveChange={this.handleInputChange} totalSum={this.state.totalSum} />
+        <SparePartList
+          data={this.state.sparePartOptions}
+          saveChange={this.handleInputChange}
+          totalSum={this.state.totalSum}
+        />
         <p>
-          --<br />--<br />
+          --
+          <br />
+          --
+          <br />
         </p>
-        <WarrantyList data={this.state.warrantyOptions} saveChange={this.handleInputChange} />
+        <WarrantyList
+          data={this.state.warrantyOptions}
+          saveChange={this.handleInputChange}
+        />
         <p>
-          --<br />--<br />
+          --
+          <br />
+          --
+          <br />
         </p>
-        <BonusPanel masterBonus={this.state.masterBonus} operatorBonus={this.state.operatorBonus} totalSum={this.state.totalSum} inputChange={this.handleInputChange} />
-      </Container>);
+        <BonusPanel
+          masterBonus={this.state.masterBonus}
+          operatorBonus={this.state.operatorBonus}
+          totalSum={this.state.totalSum}
+          inputChange={this.handleInputChange}
+        />
+      </Container>
+    );
   }
 }
 
-export default connect(null, { notify })(SpNewPage);
-
+export default connect(
+  null,
+  { notify },
+)(SpNewPage);

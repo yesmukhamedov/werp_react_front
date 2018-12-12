@@ -4,10 +4,16 @@ import { Button } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import { constructFullName } from '../../../../../utils/helpers';
 
-const TaskAdminTableDisplay = (props) => {
-  const { taskAdminList = [], lang, removeTaskAdmin, fetchTaskAdmins, messages } = props;
-  const {formatMessage} = props.intl;
-  
+const TaskAdminTableDisplay = props => {
+  const {
+    taskAdminList = [],
+    lang,
+    removeTaskAdmin,
+    fetchTaskAdmins,
+    messages,
+  } = props;
+  const { formatMessage } = props.intl;
+
   const columns = [
     {
       Header: '#',
@@ -30,7 +36,9 @@ const TaskAdminTableDisplay = (props) => {
         <Button
           icon="remove user"
           size="mini"
-          onClick={() => removeTaskAdmin(row.original.id, () => fetchTaskAdmins(lang))}
+          onClick={() =>
+            removeTaskAdmin(row.original.id, () => fetchTaskAdmins(lang))
+          }
         />
       ),
     },

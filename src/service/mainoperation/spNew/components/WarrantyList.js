@@ -17,9 +17,13 @@ export default class WarrantyList extends Component {
     };
 
     // handler for adding empty item to list
-    this.handleAddEmptyWarrantyListItem = this.handleAddEmptyWarrantyListItem.bind(this);
+    this.handleAddEmptyWarrantyListItem = this.handleAddEmptyWarrantyListItem.bind(
+      this,
+    );
     // handler for removing item from list
-    this.handleRemoveWarrantyListItem = this.handleRemoveWarrantyListItem.bind(this);
+    this.handleRemoveWarrantyListItem = this.handleRemoveWarrantyListItem.bind(
+      this,
+    );
     // handler for selecting item from reference modal
     this.handleSelectWarrantyItem = this.handleSelectWarrantyItem.bind(this);
     this.updateCellData = this.updateCellData.bind(this);
@@ -66,9 +70,13 @@ export default class WarrantyList extends Component {
   }
 
   handleRemoveWarrantyListItem(uuid) {
-    const newWarrantyList = this.state.warrantyList.filter(item => item.uuid !== uuid,);
+    const newWarrantyList = this.state.warrantyList.filter(
+      item => item.uuid !== uuid,
+    );
 
-    const newSelectedReferenceItems = this.state.selectedReferenceItems.filter(item => item.uuid !== uuid,);
+    const newSelectedReferenceItems = this.state.selectedReferenceItems.filter(
+      item => item.uuid !== uuid,
+    );
     this.setState(
       {
         ...this.state,
@@ -88,7 +96,7 @@ export default class WarrantyList extends Component {
       'sourceID',
       this.state.sourceSparePartUUID,
     );
-    const newWarrantyList = this.state.warrantyList.map((item) => {
+    const newWarrantyList = this.state.warrantyList.map(item => {
       if (item.uuid === this.state.sourceSparePartUUID) {
         return {
           ...item,

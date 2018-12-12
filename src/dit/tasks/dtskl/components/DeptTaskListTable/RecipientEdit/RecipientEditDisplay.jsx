@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import { Form, Grid, Segment, Dimmer, Loader, Container, Header, Icon } from 'semantic-ui-react';
+import {
+  Form,
+  Grid,
+  Segment,
+  Dimmer,
+  Loader,
+  Container,
+  Header,
+  Icon,
+} from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
-import { SearchableSingleDropdownFormField, DatePickerFormField } from '../../../../../../utils/formFields';
+import {
+  SearchableSingleDropdownFormField,
+  DatePickerFormField,
+} from '../../../../../../utils/formFields';
 import { difference } from '../../../../../../utils/helpers';
 
 class RecipientEditDisplay extends Component {
@@ -26,13 +38,19 @@ class RecipientEditDisplay extends Component {
   handleFormSubmit(values, dispatch, props) {
     const dirtyFields = difference(values, props.initialValues);
     return new Promise(resolve =>
-      this.props.editRecipient(this.state.taskId, dirtyFields, resolve));
+      this.props.editRecipient(this.state.taskId, dirtyFields, resolve),
+    );
   }
 
   render() {
     const { formatMessage } = this.props.intl;
     const {
-      handleSubmit, pristine, submitting, reset, assigneeOptions, messages,
+      handleSubmit,
+      pristine,
+      submitting,
+      reset,
+      assigneeOptions,
+      messages,
     } = this.props;
     if (assigneeOptions) {
       return (
@@ -55,28 +73,41 @@ class RecipientEditDisplay extends Component {
               <Header.Content>
                 {formatMessage(messages.editHeader)}
                 <Header.Subheader>
-                  {formatMessage(messages.editSubheader)} <a>{this.state.taskId}</a>
+                  {formatMessage(messages.editSubheader)}{' '}
+                  <a>{this.state.taskId}</a>
                 </Header.Subheader>
               </Header.Content>
             </Header>
             <Segment attached>
               <Grid stackable>
-                <Grid.Row columns={3} style={{ marginTop: '2em', padding: '3px' }}>
+                <Grid.Row
+                  columns={3}
+                  style={{ marginTop: '2em', padding: '3px' }}
+                >
                   <Grid.Column mobile={16} tablet={8} computer={6}>
                     <Form.Group widths="equal">
                       <Field
                         // required
                         name="recipient"
                         component={SearchableSingleDropdownFormField}
-                        label={formatMessage({id: 'Recipient.Edit.Recipient'})}
-                        opts={assigneeOptions ? [{ key: -1, text: '', value: -1 }, ...assigneeOptions] : []}
+                        label={formatMessage({
+                          id: 'Recipient.Edit.Recipient',
+                        })}
+                        opts={
+                          assigneeOptions
+                            ? [
+                                { key: -1, text: '', value: -1 },
+                                ...assigneeOptions,
+                              ]
+                            : []
+                        }
                       />
                     </Form.Group>
                   </Grid.Column>
                   <Grid.Column mobile={16} tablet={8} computer={4}>
                     <Form.Group widths="equal">
                       <Field
-                        autoComplete='off'
+                        autoComplete="off"
                         name="expectedEndDate"
                         label={formatMessage(messages.expEndDate)}
                         component={DatePickerFormField}
@@ -85,22 +116,26 @@ class RecipientEditDisplay extends Component {
                   </Grid.Column>
                 </Grid.Row>
                 <Grid.Row style={{ padding: '3px' }}>
-                  <Grid.Column width={2} >
+                  <Grid.Column width={2}>
                     <Form.Group widths="equal">
                       <Form.Button
                         content="Изменить"
                         type="submit"
                         loading={submitting}
                         disabled={pristine || submitting}
-                        style={
-                          { background: 'rgba(84,170,169, 1)', color: 'white' }}
+                        style={{
+                          background: 'rgba(84,170,169, 1)',
+                          color: 'white',
+                        }}
                       />
                       <Form.Button
                         content="Сброс"
                         type="button"
                         disabled={pristine || submitting}
-                        style={
-                          { background: 'rgba(84,170,169, 1)', color: 'white' }}
+                        style={{
+                          background: 'rgba(84,170,169, 1)',
+                          color: 'white',
+                        }}
                         onClick={reset}
                       />
                     </Form.Group>

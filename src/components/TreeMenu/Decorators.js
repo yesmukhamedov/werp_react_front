@@ -45,9 +45,7 @@ Toggle.propTypes = {
   style: PropTypes.object,
 };
 
-const Header = ({
- node, style, terminal, lang 
-}) => {
+const Header = ({ node, style, terminal, lang }) => {
   const nodeName = node.translations[this.a.lang];
   return (
     <div style={style.base}>
@@ -74,9 +72,7 @@ Header.propTypes = {
 
 class Container extends React.Component {
   render() {
-    const {
- style, decorators, onClick, node 
-} = this.props;
+    const { style, decorators, onClick, node } = this.props;
     return (
       <div
         onClick={onClick}

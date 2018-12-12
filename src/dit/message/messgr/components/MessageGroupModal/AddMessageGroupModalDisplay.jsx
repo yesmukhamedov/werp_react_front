@@ -1,15 +1,9 @@
 import React, { PureComponent } from 'react';
-import {
-  Modal,
-  Button,
-  Form,
-  Divider,
-} from 'semantic-ui-react';
+import { Modal, Button, Form, Divider } from 'semantic-ui-react';
 import { Field, reduxForm } from 'redux-form';
 import { TextInputFormField } from '../../../../../utils/formFields';
 
-
-const validate = (values) => {
+const validate = values => {
   const errors = {};
   if (!values.groupName) {
     errors.groupName = 'Объязательное поле для заполнения';
@@ -26,11 +20,19 @@ class AddMessageGroupModalDisplay extends PureComponent {
   }
 
   handleFormSubmit(formValues) {
-    const { createMessageGroup, updateMessageGroup, fetchMessageGroups, modalType, modalData } = this.props;
+    const {
+      createMessageGroup,
+      updateMessageGroup,
+      fetchMessageGroups,
+      modalType,
+      modalData,
+    } = this.props;
     if (modalType === 'add') {
       createMessageGroup(formValues, () => fetchMessageGroups());
     } else if (modalType === 'edit') {
-      updateMessageGroup(modalData.groupId, formValues, () => fetchMessageGroups());
+      updateMessageGroup(modalData.groupId, formValues, () =>
+        fetchMessageGroups(),
+      );
     }
     this.handleFormClose();
   }
@@ -46,13 +48,15 @@ class AddMessageGroupModalDisplay extends PureComponent {
       close,
       modalType,
       handleSubmit,
-      pristine, 
+      pristine,
       submitting,
-      messages 
+      messages,
     } = this.props;
     return (
       <Modal size="tiny" open={isOpen} onClose={close}>
-        <Modal.Header>{modalType === 'add' ? messages.BTN__ADD : messages.BTN__EDIT}</Modal.Header>
+        <Modal.Header>
+          {modalType === 'add' ? messages.BTN__ADD : messages.BTN__EDIT}
+        </Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <Form onSubmit={handleSubmit(this.handleFormSubmit)}>

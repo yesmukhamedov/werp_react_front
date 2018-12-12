@@ -26,7 +26,7 @@ export const LEGACY_URL = isLocalIpAddress()
  * @type {number} in seconds
  */
 export const TOKEN_REFRESH_LIMIT = 10;
-export const TOKEN_PASSWORD = 'secret';  // so genious :)
+export const TOKEN_PASSWORD = 'secret'; // so genious :)
 
 export const YEAR_OPTIONS = [
   {
@@ -108,7 +108,6 @@ export const MONTH_OPTIONS = [
     value: 12,
   },
 ];
-
 
 export const outCallStatusColorMap = {
   0: 'grey',

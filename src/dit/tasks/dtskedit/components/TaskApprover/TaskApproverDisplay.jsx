@@ -19,7 +19,7 @@ class TaskApproverDisplay extends Component {
       approvedAuthor: false,
       rejectedAuthor: false,
       approvedAssignee: false,
-      rejectedAsesignee: false
+      rejectedAsesignee: false,
     };
 
     this.handleApprove = this.handleApprove.bind(this);
@@ -35,12 +35,12 @@ class TaskApproverDisplay extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.taskDocStatus !== this.state.taskDocStatus) {
-      this.setState({ 
+      this.setState({
         authorDocStatus: nextProps.taskDocStatus,
-        approvedAuthor: (nextProps.taskDocStatus.authorsManager === 2) ? true : false,
-        rejectedAuthor: (nextProps.taskDocStatus.authorsManager === 3) ? true : false,
-        approvedAssignee: (nextProps.taskDocStatus.assigneesManager === 2) ? true : false,
-        rejectedAsesignee: (nextProps.taskDocStatus.assigneesManager === 3) ? true : false,
+        approvedAuthor: nextProps.taskDocStatus.authorsManager === 2,
+        rejectedAuthor: nextProps.taskDocStatus.authorsManager === 3,
+        approvedAssignee: nextProps.taskDocStatus.assigneesManager === 2,
+        rejectedAsesignee: nextProps.taskDocStatus.assigneesManager === 3,
       });
     }
   }
@@ -54,38 +54,54 @@ class TaskApproverDisplay extends Component {
   }
 
   getTaskDoc() {
-    const { bukrs, recipient, id, author} = this.props;
+    const { bukrs, recipient, id, author } = this.props;
     const task = {
-      bukrs: bukrs,
+      bukrs,
       branchId: recipient.branch.id,
       contextId: id,
       responsibleId: author.id,
-      createdBy: author.id
-    }
-    return task
+      createdBy: author.id,
+    };
+    return task;
   }
 
   handleApprove() {
-    const { id, authorsManager, recipient, approve, fetchTaskDocStatus } = this.props
-    approve(this.getTaskDoc(), () => fetchTaskDocStatus(id, authorsManager, recipient));
+    const {
+      id,
+      authorsManager,
+      recipient,
+      approve,
+      fetchTaskDocStatus,
+    } = this.props;
+    approve(this.getTaskDoc(), () =>
+      fetchTaskDocStatus(id, authorsManager, recipient),
+    );
   }
 
   handleReject() {
-    const { id, authorsManager, recipient, reject, fetchTaskDocStatus } = this.props;
-    reject(this.getTaskDoc(), () => fetchTaskDocStatus(id, authorsManager, recipient));
+    const {
+      id,
+      authorsManager,
+      recipient,
+      reject,
+      fetchTaskDocStatus,
+    } = this.props;
+    reject(this.getTaskDoc(), () =>
+      fetchTaskDocStatus(id, authorsManager, recipient),
+    );
   }
 
   render() {
-      const { msg, authorsManager, recipient } = this.props;
-      const { formatMessage, messages } = this.props.intl;
-      return (
-        <Segment.Group>
-          <Segment padded color="grey">
-            <Form>
-              <Grid stackable>
-                <Grid.Row columns={2}>
-                  <Grid.Column>
-                    { authorsManager && 
+    const { msg, authorsManager, recipient } = this.props;
+    const { formatMessage, messages } = this.props.intl;
+    return (
+      <Segment.Group>
+        <Segment padded color="grey">
+          <Form>
+            <Grid stackable>
+              <Grid.Row columns={2}>
+                <Grid.Column>
+                  {authorsManager && (
                     <div>
                       <Header as="h3">
                         {authorsManager ? (
@@ -94,63 +110,100 @@ class TaskApproverDisplay extends Component {
                           <span>&mdash;</span>
                         )}
                         <Header.Subheader>
-                        {formatMessage(msg.authorsManager)}
+                          {formatMessage(msg.authorsManager)}
                         </Header.Subheader>
                       </Header>
-                      <Button size='tiny'
-                              style={{ background: 'rgba(84,170,169, 1)', color: 'white' }}
-                              onClick={this.handleApprove}
-                              disabled={this.getUserId() !== authorsManager.id || this.state.approvedAuthor}
-                              >
-                              {messages.BTN_APPROVE}        
+                      <Button
+                        size="tiny"
+                        style={{
+                          background: 'rgba(84,170,169, 1)',
+                          color: 'white',
+                        }}
+                        onClick={this.handleApprove}
+                        disabled={
+                          this.getUserId() !== authorsManager.id ||
+                          this.state.approvedAuthor
+                        }
+                      >
+                        {messages.BTN_APPROVE}
                       </Button>
-                      <Button size='tiny'
-                          style={{ background: 'rgba(84,170,169, 1)', color: 'white' }}
-                          onClick={this.handleReject}
-                          disabled={this.getUserId() !== authorsManager.id || this.state.approvedAuthor}
-                          >
-                          {messages.BTN_REJECT}
+                      <Button
+                        size="tiny"
+                        style={{
+                          background: 'rgba(84,170,169, 1)',
+                          color: 'white',
+                        }}
+                        onClick={this.handleReject}
+                        disabled={
+                          this.getUserId() !== authorsManager.id ||
+                          this.state.approvedAuthor
+                        }
+                      >
+                        {messages.BTN_REJECT}
                       </Button>
-                      <Checkbox style={{ paddingLeft: '5px', paddingTop: '5px' }} 
-                          checked={this.state.approvedAuthor} indeterminate={this.state.rejectedAuthor}/>
-                    </div> }
-                  </Grid.Column>
-                  <Grid.Column>
-                    { recipient.assigneesManager && <div>
+                      <Checkbox
+                        style={{ paddingLeft: '5px', paddingTop: '5px' }}
+                        checked={this.state.approvedAuthor}
+                        indeterminate={this.state.rejectedAuthor}
+                      />
+                    </div>
+                  )}
+                </Grid.Column>
+                <Grid.Column>
+                  {recipient.assigneesManager && (
+                    <div>
                       <Header as="h3">
                         {recipient.assigneesManager ? (
                           recipient.assigneesManager.value
-                          ) : (
+                        ) : (
                           <span>&mdash;</span>
                         )}
                         <Header.Subheader>
-                        {formatMessage(msg.assigneesManager)}
+                          {formatMessage(msg.assigneesManager)}
                         </Header.Subheader>
                       </Header>
-                      <Button size='tiny'
-                              style={{ background: 'rgba(84,170,169, 1)', color: 'white' }}
-                              onClick={this.handleApprove}
-                              disabled={this.getUserId() !== recipient.assigneesManager.id || this.state.approvedAssignee}
-                              >
-                              {messages.BTN_APPROVE}        
+                      <Button
+                        size="tiny"
+                        style={{
+                          background: 'rgba(84,170,169, 1)',
+                          color: 'white',
+                        }}
+                        onClick={this.handleApprove}
+                        disabled={
+                          this.getUserId() !== recipient.assigneesManager.id ||
+                          this.state.approvedAssignee
+                        }
+                      >
+                        {messages.BTN_APPROVE}
                       </Button>
-                      <Button size='tiny'
-                          style={{ background: 'rgba(84,170,169, 1)', color: 'white' }}
-                          onClick={this.handleReject}
-                          disabled={this.getUserId() !== recipient.assigneesManager.id || this.state.approvedAssignee}
-                          >
-                          {messages.BTN_REJECT}        
+                      <Button
+                        size="tiny"
+                        style={{
+                          background: 'rgba(84,170,169, 1)',
+                          color: 'white',
+                        }}
+                        onClick={this.handleReject}
+                        disabled={
+                          this.getUserId() !== recipient.assigneesManager.id ||
+                          this.state.approvedAssignee
+                        }
+                      >
+                        {messages.BTN_REJECT}
                       </Button>
-                      <Checkbox style={{ paddingLeft: '5px', paddingTop: '5px' }} 
-                          checked={this.state.approvedAssignee} indeterminate={this.state.rejectedAsesignee}/>
-                    </div> }
-                  </Grid.Column>
-                </Grid.Row>
-              </Grid>
-            </Form>
-          </Segment>
-        </Segment.Group>
-      );
+                      <Checkbox
+                        style={{ paddingLeft: '5px', paddingTop: '5px' }}
+                        checked={this.state.approvedAssignee}
+                        indeterminate={this.state.rejectedAsesignee}
+                      />
+                    </div>
+                  )}
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          </Form>
+        </Segment>
+      </Segment.Group>
+    );
   }
 }
 

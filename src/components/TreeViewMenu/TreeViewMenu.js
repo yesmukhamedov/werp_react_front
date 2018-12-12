@@ -40,7 +40,7 @@ export default class TreeViewMenu extends Component {
 
   traverse(node, i) {
     if (node.leaf) {
-      let nodeName = node.translations[this.props.lang];
+      const nodeName = node.translations[this.props.lang];
       return (
         <div
           key={node.name}
@@ -61,32 +61,31 @@ export default class TreeViewMenu extends Component {
           )}
         </div>
       );
-    } else {
-      if (!node.hasOwnProperty('collapse')) {
-        node.collapse = true;
-      }
-      node.children.forEach(child => {
-        child.parent = node;
-      });
-      const label = (
-        <span
-          className={`node ${
-            node === this.state.selectedNode ? 'node-active' : ''
-          }`}
-          key={node.name}
-          onClick={() => {
-            this.handleClick(node);
-          }}
-        >
-          {node.translations[this.props.lang]}
-        </span>
-      );
-      return (
-        <TreeView key={node.name} nodeLabel={label} collapsed={node.collapse}>
-          {node.children.map((el, i) => this.traverse(el, i))}
-        </TreeView>
-      );
     }
+    if (!node.hasOwnProperty('collapse')) {
+      node.collapse = true;
+    }
+    node.children.forEach(child => {
+      child.parent = node;
+    });
+    const label = (
+      <span
+        className={`node ${
+          node === this.state.selectedNode ? 'node-active' : ''
+        }`}
+        key={node.name}
+        onClick={() => {
+          this.handleClick(node);
+        }}
+      >
+        {node.translations[this.props.lang]}
+      </span>
+    );
+    return (
+      <TreeView key={node.name} nodeLabel={label} collapsed={node.collapse}>
+        {node.children.map((el, i) => this.traverse(el, i))}
+      </TreeView>
+    );
   }
 
   render() {

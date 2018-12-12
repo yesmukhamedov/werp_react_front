@@ -14,7 +14,9 @@ function isAlmostExpired(dispatch) {
       const tokenPayload = jwt.decode(token, 'secret');
       const exp = moment.utc(tokenPayload.exp * 1000);
       const now = moment.utc();
-      const refreshTime = moment.utc(tokenPayload.exp * 1000).subtract(TOKEN_REFRESH_LIMIT, 'm');
+      const refreshTime = moment
+        .utc(tokenPayload.exp * 1000)
+        .subtract(TOKEN_REFRESH_LIMIT, 'm');
 
       if (exp.isAfter(now)) {
         if (now.isAfter(refreshTime)) {
@@ -27,15 +29,17 @@ function isAlmostExpired(dispatch) {
       if (error.response) {
         dispatch(notify('error', error.response.data.message, 'Ошибка'));
       } else {
-        Promise.resolve({ error }).then(response => dispatch(notify('error', response, 'Ошибка')));
+        Promise.resolve({ error }).then(response =>
+          dispatch(notify('error', response, 'Ошибка')),
+        );
       }
       signoutUser(dispatch, error.message);
     }
   } else return false;
 }
 
-export default function ({ dispatch }) {
-  return next => (action) => {
+export default function({ dispatch }) {
+  return next => action => {
     if (isAlmostExpired(dispatch)) {
       tokenRefresh(dispatch, action);
     }
@@ -50,13 +54,13 @@ function tokenRefresh(dispatch, action) {
         authorization: localStorage.getItem('token'),
       },
     })
-    .then((response) => {
+    .then(response => {
       // If request is good...
       // - save the refreshed JWT token
       localStorage.setItem('token', response.data.token);
       dispatch(action);
     })
-    .catch((error) => {
+    .catch(error => {
       // If request is bad...
       // - Show an error to the user
       const msg = "Can't refresh token. Please sign in again";
@@ -64,7 +68,8 @@ function tokenRefresh(dispatch, action) {
         console.log(msg + error.response.data.message);
       } else {
         Promise.resolve({ error }).then(response =>
-          console.log(msg + response.error.message), );
+          console.log(msg + response.error.message),
+        );
       }
     });
 }

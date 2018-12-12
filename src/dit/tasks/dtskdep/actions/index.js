@@ -14,7 +14,6 @@ const departmentsUrl = `${ROOT_URL}/api/reference/departments`;
 const taskAdminUrl = `${ROOT_URL}/api/task-admins/all`;
 const usersUrl = `${ROOT_URL}/api/users?active=true`;
 
-
 const createTaskAdminUrl = `${ROOT_URL}/api/task-admins`;
 const removeTaskAdminUrl = `${ROOT_URL}/api/task-admins`;
 
@@ -35,7 +34,7 @@ export function createTaskAdmin(params, userId, successCallback) {
       },
     },
   );
-  return (dispatch) => {
+  return dispatch => {
     req
       .then(() => {
         dispatch(notify('success', 'Task admin was created.', 'Успешно'));
@@ -44,21 +43,20 @@ export function createTaskAdmin(params, userId, successCallback) {
         }
       })
       .catch(({ response = {} }) => {
-        dispatch(notify('error', `Task admin was not created! ${response}`, 'Ошибка'));
+        dispatch(
+          notify('error', `Task admin was not created! ${response}`, 'Ошибка'),
+        );
       });
   };
 }
 
 export function removeTaskAdmin(taskAdminId, successCallback) {
-  const req = axios.delete(
-    `${removeTaskAdminUrl}/${taskAdminId}`,
-    {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
+  const req = axios.delete(`${removeTaskAdminUrl}/${taskAdminId}`, {
+    headers: {
+      authorization: localStorage.getItem('token'),
     },
-  );
-  return (dispatch) => {
+  });
+  return dispatch => {
     req
       .then(() => {
         dispatch(notify('success', 'Task admin was deleted.', 'Успешно'));
@@ -67,14 +65,16 @@ export function removeTaskAdmin(taskAdminId, successCallback) {
         }
       })
       .catch(({ response = {} }) => {
-        dispatch(notify('error', `Task admin was not deleted! ${response}`, 'Ошибка'));
+        dispatch(
+          notify('error', `Task admin was not deleted! ${response}`, 'Ошибка'),
+        );
       });
   };
 }
 
 export function fetchTaskAdmins(lang) {
   const req = GET(taskAdminUrl);
-  return (dispatch) => {
+  return dispatch => {
     req
       .then(({ data: taskAdminList }) => {
         const taskAdminOpts = taskAdminList.map(({ id, department, user }) => ({
@@ -94,7 +94,7 @@ export function fetchTaskAdmins(lang) {
           payload: directories,
         });
       })
-      .catch((error) => {
+      .catch(error => {
         if (error.response) {
           dispatch(notify('error', error.response.data.message, 'Ошибка'));
           console.log(error.response, 'Ошибка');
@@ -104,44 +104,46 @@ export function fetchTaskAdmins(lang) {
 }
 
 export function fetchReferences(lang) {
-  return (dispatch) => {
+  return dispatch => {
     axios
       .all([
-        GET(departmentsUrl), 
+        GET(departmentsUrl),
         // GET(usersUrl)
       ])
-      .then(axios.spread((
-        { data: deptList } 
-        // { data: userList }
-        ) => {
-        const deptOpts = deptList.map(item => ({
-          key: item.dep_id,
-          value: item.dep_id,
-          text:
+      .then(
+        axios.spread(({ data: deptList }) =>
+          // { data: userList }
+          {
+            const deptOpts = deptList.map(item => ({
+              key: item.dep_id,
+              value: item.dep_id,
+              text:
                 lang === 'ru'
                   ? item.name_ru
                   : lang === 'en'
-                    ? item.name_en
-                    : item.name_tr,
-        }));
+                  ? item.name_en
+                  : item.name_tr,
+            }));
 
-        // const userOpts = userList.users.map(item => ({
-        //   key: item.id,
-        //   value: item.id,
-        //   text: constructFullName(item),
-        // }));
+            // const userOpts = userList.users.map(item => ({
+            //   key: item.id,
+            //   value: item.id,
+            //   text: constructFullName(item),
+            // }));
 
-        const directories = {
-          deptOptions: _.mapKeys(deptOpts, 'key'),
-          // userOptions: _.mapKeys(userOpts, 'key'),
-        };
+            const directories = {
+              deptOptions: _.mapKeys(deptOpts, 'key'),
+              // userOptions: _.mapKeys(userOpts, 'key'),
+            };
 
-        dispatch({
-          type: DTSKDEP_FETCH_REFERENCES,
-          payload: directories,
-        });
-      }))
-      .catch((error) => {
+            dispatch({
+              type: DTSKDEP_FETCH_REFERENCES,
+              payload: directories,
+            });
+          },
+        ),
+      )
+      .catch(error => {
         if (error.response) {
           dispatch(notify('error', error.response.data.message, 'Ошибка'));
           console.log(error.response, 'Ошибка');

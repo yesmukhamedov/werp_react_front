@@ -266,9 +266,11 @@ function validate(values, state) {
     errors.status = messages.TX__REQUIRED_FIELD;
   }
   return errors;
-};
+}
 
-export default injectIntl(reduxForm({
-  form: 'DtskcForm',
-  validate,
-})(DtskcComponent));
+export default injectIntl(
+  reduxForm({
+    form: 'DtskcForm',
+    validate,
+  })(DtskcComponent),
+);

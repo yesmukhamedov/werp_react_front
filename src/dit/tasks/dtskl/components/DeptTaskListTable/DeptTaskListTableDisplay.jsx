@@ -8,7 +8,6 @@ import RecipientEditModal from './RecipientEdit/RecipientEditModal';
 import { outCallStatusColorMap } from '../../../../../utils/constants';
 import { formatDMYMS, constructFullName } from '../../../../../utils/helpers';
 
-
 class DeptTaskListTableDisplay extends Component {
   constructor(props) {
     super(props);
@@ -42,7 +41,7 @@ class DeptTaskListTableDisplay extends Component {
         Header: '#',
         accessor: 'id',
         maxWidth: 50,
-        Cell: (props) => {
+        Cell: props => {
           const { id } = props.original;
           return (
             <Link target="_blank" to={`/dit/task/dtskedit/${id}`}>
@@ -55,44 +54,32 @@ class DeptTaskListTableDisplay extends Component {
         Header: formatMessage(messages.branch),
         accessor: 'recipient.branch.value',
         maxWidth: 160,
-        Cell: (props) => {
+        Cell: props => {
           const { recipient } = props.original;
-          return (
-            <div>
-              {recipient.branch.value}
-            </div>
-          );
+          return <div>{recipient.branch.value}</div>;
         },
       },
       {
         Header: formatMessage(messages.department),
         accessor: 'recipient.department.value',
-        Cell: (props) => {
+        Cell: props => {
           const { recipient } = props.original;
-          return (
-            <div>
-              {recipient.department.value}
-            </div>
-          );
+          return <div>{recipient.department.value}</div>;
         },
       },
       {
         Header: formatMessage(messages.type),
         accessor: 'type.code',
-        Cell: (props) => {
+        Cell: props => {
           const { type } = props.original;
-          return (
-            <div>
-              {type[lang]}
-            </div>
-          );
+          return <div>{type[lang]}</div>;
         },
       },
       {
         Header: formatMessage(messages.title),
         accessor: 'title',
         maxWidth: 380,
-        Cell: (props) => {
+        Cell: props => {
           const { title, id } = props.original;
           return (
             <Link target="_blank" to={`/dit/task/dtskedit/${id}`}>
@@ -104,14 +91,11 @@ class DeptTaskListTableDisplay extends Component {
       {
         Header: formatMessage(messages.status),
         accessor: 'status.id',
-        Cell: (props) => {
+        Cell: props => {
           const { status } = props.original;
           return (
             <div>
-              <Label
-                color={outCallStatusColorMap[status.id]}
-                size="mini"
-              >
+              <Label color={outCallStatusColorMap[status.id]} size="mini">
                 {status[lang]}
               </Label>
             </div>
@@ -122,7 +106,7 @@ class DeptTaskListTableDisplay extends Component {
         Header: formatMessage(messages.createdAt),
         accessor: 'createdAt',
         // maxWidth: 125,
-        Cell: (props) => {
+        Cell: props => {
           const { createdAt } = props.original;
           return formatDMYMS(createdAt);
         },
@@ -131,43 +115,31 @@ class DeptTaskListTableDisplay extends Component {
         Header: formatMessage(messages.estimatedAt),
         accessor: 'estimatedAt',
         // maxWidth: 125,
-        Cell: (props) => {
+        Cell: props => {
           const { estimatedAt } = props.original;
-          return (
-            <div>
-              { estimatedAt && formatDMYMS(estimatedAt) }
-            </div>
-          );
+          return <div>{estimatedAt && formatDMYMS(estimatedAt)}</div>;
         },
       },
       {
         Header: formatMessage(messages.author),
         accessor: 'author.id',
-        Cell: (props) => {
+        Cell: props => {
           const { author } = props.original;
-          return (
-            <div>
-              {author && constructFullName(author)}
-            </div>
-          );
+          return <div>{author && constructFullName(author)}</div>;
         },
       },
       {
         Header: formatMessage(messages.recipient),
         accessor: 'recipient',
-        Cell: (props) => {
+        Cell: props => {
           const { recipient } = props.original;
-          return (
-            <div>
-              {recipient.assignee && recipient.assignee.value}
-            </div>
-          );
+          return <div>{recipient.assignee && recipient.assignee.value}</div>;
         },
       },
       {
         accessor: 'id',
         maxWidth: 100,
-        Cell: (props) => {
+        Cell: props => {
           const { id, recipient, status } = props.original;
           let disabled = false;
           if (recipient.assignee || status.id === 5) {
@@ -175,7 +147,7 @@ class DeptTaskListTableDisplay extends Component {
           }
           return (
             <div style={{ textAlign: 'center' }}>
-              <Button.Group icon size='mini'>
+              <Button.Group icon size="mini">
                 <Link target="_blank" to={`/dit/task/dtskredit/${id}`}>
                   <Button>
                     <Icon link name="edit" color="black" />
@@ -208,13 +180,18 @@ class DeptTaskListTableDisplay extends Component {
           className="-highlight"
           getTrProps={(state, rowInfo) => ({
             onClick: () => {
-                this.setState({
-                  selectedIdx: rowInfo.index,
-                  taskId: rowInfo.original.id,
-                });
+              this.setState({
+                selectedIdx: rowInfo.index,
+                taskId: rowInfo.original.id,
+              });
             },
             style: {
-                background: (rowInfo === undefined ? '' : (this.state.selectedIdx === rowInfo.index ? 'rgba(241,250,229, 1)' : '')),
+              background:
+                rowInfo === undefined
+                  ? ''
+                  : this.state.selectedIdx === rowInfo.index
+                  ? 'rgba(241,250,229, 1)'
+                  : '',
             },
           })}
           getTheadProps={() => ({

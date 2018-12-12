@@ -1,78 +1,82 @@
-import React, { Component } from 'react'
-import axios from 'axios'
-import { Form } from 'semantic-ui-react'
-import {ROOT_URL} from '../../../utils/constants'
+import React, { Component } from 'react';
+import axios from 'axios';
+import { Form } from 'semantic-ui-react';
+import { ROOT_URL } from '../../../utils/constants';
 
-const bukrsBranches = {}
+const bukrsBranches = {};
 class BranchF4 extends Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       options: [],
       selected: '',
       selectedName: '',
-      selectedBukrs: this.props.bukrs
-    }
+      selectedBukrs: this.props.bukrs,
+    };
 
-    this.handleChange = this.handleChange.bind(this)
+    this.handleChange = this.handleChange.bind(this);
   }
 
-  loadItems (bukrs) {
+  loadItems(bukrs) {
     if (!bukrs || bukrs.length === 0) {
-      console.log('ERR')
-      return
+      console.log('ERR');
+      return;
     }
-    axios.get(`${ROOT_URL}/api/reference/branches/` + bukrs, {
-      headers: {
-        authorization: localStorage.getItem('token')
-      }
-    }).then((res) => {
-      let loaded = res.data.map((b) => {
-        return {
+    axios
+      .get(`${ROOT_URL}/api/reference/branches/${bukrs}`, {
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
+      })
+      .then(res => {
+        const loaded = res.data.map(b => ({
           key: b.branch_id,
           text: b.text45,
-          value: b.branch_id
-        }
-      })
+          value: b.branch_id,
+        }));
 
-      this.setState({
-        ...this.state,
-        options: loaded
+        this.setState({
+          ...this.state,
+          options: loaded,
+        });
+        bukrsBranches[bukrs] = loaded;
       })
-      bukrsBranches[bukrs] = loaded
-    }).catch((e) => {
-      console.log(e)
-    })
+      .catch(e => {
+        console.log(e);
+      });
   }
 
-  handleChange (e, v) {
-    this.props.handleChange(e, v)
+  handleChange(e, v) {
+    this.props.handleChange(e, v);
   }
 
-  componentWillReceiveProps (props) {
+  componentWillReceiveProps(props) {
     if (props.bukrs && props.bukrs.length > 0) {
       if (bukrsBranches[props.bukrs]) {
         this.setState({
           ...this.state,
-          options: bukrsBranches[props.bukrs]
-        })
+          options: bukrsBranches[props.bukrs],
+        });
       } else {
-        this.loadItems(props.bukrs)
+        this.loadItems(props.bukrs);
       }
     }
   }
 
-  render () {
+  render() {
     return (
       <Form.Select
-        name='branch'
+        name="branch"
         multiple={this.props.multiple}
         search={this.props.search}
         selection
-        label='Филиал'
-        options={this.state.options} placeholder='Филиал' onChange={this.handleChange} />
-    )
+        label="Филиал"
+        options={this.state.options}
+        placeholder="Филиал"
+        onChange={this.handleChange}
+      />
+    );
   }
 }
 
-export default BranchF4
+export default BranchF4;

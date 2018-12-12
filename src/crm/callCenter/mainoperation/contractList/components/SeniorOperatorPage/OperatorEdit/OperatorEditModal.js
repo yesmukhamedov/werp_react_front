@@ -35,7 +35,11 @@ class OperatorEditModal extends Component {
 
   render() {
     const {
-      handleSubmit, directories, modalOpen, pristine, submitting,
+      handleSubmit,
+      directories,
+      modalOpen,
+      pristine,
+      submitting,
     } = this.props;
     const { formatMessage } = this.props.intl;
     return (
@@ -53,7 +57,8 @@ class OperatorEditModal extends Component {
           <Header.Content>
             {formatMessage(messages.assignOperator)}
             <Header.Subheader>
-            {formatMessage(messages.contract)} # <a>{this.props.contractNumber}</a>
+              {formatMessage(messages.contract)} #{' '}
+              <a>{this.props.contractNumber}</a>
             </Header.Subheader>
           </Header.Content>
         </Header>
@@ -67,7 +72,12 @@ class OperatorEditModal extends Component {
                 opts={directories ? directories.operatorOptions : []}
               />
               <div className="buttonGroup">
-                <Button color="teal" floated="right" type="submit" disabled={pristine || submitting}>
+                <Button
+                  color="teal"
+                  floated="right"
+                  type="submit"
+                  disabled={pristine || submitting}
+                >
                   <Icon name="checkmark" /> {formatMessage(messages.yes)}
                 </Button>
                 <Button
@@ -111,4 +121,7 @@ OperatorEditModal = reduxForm({
   enableReinitialize: true,
 })(OperatorEditModal);
 
-export default connect(mapStateToProps, { editOperator })(injectIntl(OperatorEditModal));
+export default connect(
+  mapStateToProps,
+  { editOperator },
+)(injectIntl(OperatorEditModal));

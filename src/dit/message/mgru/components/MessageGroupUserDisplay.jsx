@@ -26,7 +26,7 @@ export default class MessageGroupUserDisplay extends Component {
   }
 
   componentWillMount() {
-    const { fetchMessageGroupUsers, fetchReferences, lang  } = this.props;
+    const { fetchMessageGroupUsers, fetchReferences, lang } = this.props;
     fetchMessageGroupUsers();
     fetchReferences(lang);
   }
@@ -65,25 +65,32 @@ export default class MessageGroupUserDisplay extends Component {
               </Header>
             </Grid.Column>
           </Grid.Row>
-          <Grid.Row style={{ paddingBottom: '0.5em'}}>
-            <Grid.Column floated='left' width={8}>
+          <Grid.Row style={{ paddingBottom: '0.5em' }}>
+            <Grid.Column floated="left" width={8}>
               <MessageGroupUserSearchContainer messages={messages} />
             </Grid.Column>
-            <Grid.Column floated='right' width={5}>
+            <Grid.Column floated="right" width={5}>
               <Button
-                style={{ marginTop: '1.7em', background: 'rgba(84,170,169, 1)', color: 'white' }}
+                style={{
+                  marginTop: '1.7em',
+                  background: 'rgba(84,170,169, 1)',
+                  color: 'white',
+                }}
                 floated="right"
                 onClick={() => this.open('add', null)}
                 icon="plus"
                 labelPosition="left"
                 content={messages.BTN__ADD}
               />
-            </Grid.Column>          
+            </Grid.Column>
           </Grid.Row>
-          <Grid.Row style={{ paddingTop: '0em'}}>
+          <Grid.Row style={{ paddingTop: '0em' }}>
             <Grid.Column>
               <Segment>
-                <MessageGroupUserTableContainer open={this.open} messages={messages}/>
+                <MessageGroupUserTableContainer
+                  open={this.open}
+                  messages={messages}
+                />
               </Segment>
             </Grid.Column>
           </Grid.Row>
@@ -99,4 +106,3 @@ export default class MessageGroupUserDisplay extends Component {
     );
   }
 }
-

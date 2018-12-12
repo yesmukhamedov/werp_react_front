@@ -5,7 +5,6 @@ import TaskMonitorSearch from './TaskMonitorSearch/TaskMonitorSearchContainer';
 import TaskMonitorTable from './TaskMonitorTable/TaskMonitorTableContainer';
 
 class TaskMonitorComponent extends Component {
-
   componentWillMount() {
     const { lang } = this.props;
     this.props.getTaskMonitorDirectories(lang);

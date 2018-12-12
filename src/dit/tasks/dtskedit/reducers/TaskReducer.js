@@ -14,7 +14,7 @@ const initialState = {
   attachment: {},
 };
 
-export default function (state = initialState, action) {
+export default function(state = initialState, action) {
   const { id, taskId, attachmentJson = [] } = state.attachment;
   switch (action.type) {
     case FETCH_TASK_DETAILS:
@@ -25,7 +25,7 @@ export default function (state = initialState, action) {
         attachment,
       };
     case FETCH_TASK_DOC_STATUS:
-      return { ...state, taskDocStatus: action.payload};
+      return { ...state, taskDocStatus: action.payload };
     case EDIT_TASK:
       return { ...state, taskDetails: action.payload };
     case CLEAR_TASK_STORE:
@@ -41,7 +41,9 @@ export default function (state = initialState, action) {
         },
       };
     case DELETE_UPLOADED:
-      const json = attachmentJson.filter(el => el.fileDownloadUri != action.payload );
+      const json = attachmentJson.filter(
+        el => el.fileDownloadUri != action.payload,
+      );
       return { ...state, attachment: { id, taskId, attachmentJson: json } };
     default:
       return state;

@@ -6,7 +6,7 @@ import { LEGACY_URL } from '../../../../../../utils/constants';
 import { constructFullName } from '../../../../../../utils/helpers';
 import { PaymentBreakdownTableDisplay } from '../PaymentBreakdownTable';
 
-const FinancialInfoPanelDisplay = (props) => {
+const FinancialInfoPanelDisplay = props => {
   const { financialDetails = {}, messages } = props;
   const {
     initialPayment,
@@ -38,7 +38,9 @@ const FinancialInfoPanelDisplay = (props) => {
                   <List.Header className="list-header">
                     {messages.L__INITIAL_AMOUNT}:
                   </List.Header>
-                  {(initialPayment && `${initialPayment} ${currency}`) || <span>&mdash;</span>}
+                  {(initialPayment && `${initialPayment} ${currency}`) || (
+                    <span>&mdash;</span>
+                  )}
                 </List.Item>
                 <List.Item>
                   <List.Header className="list-header">
@@ -50,7 +52,9 @@ const FinancialInfoPanelDisplay = (props) => {
                   <List.Header className="list-header">
                     {messages.L__REMAINING_AMOUNT}:
                   </List.Header>
-                  {(residualAmount && `${residualAmount} ${currency}`) || <span>&mdash;</span>}
+                  {(residualAmount && `${residualAmount} ${currency}`) || (
+                    <span>&mdash;</span>
+                  )}
                 </List.Item>
               </List>
 
@@ -71,7 +75,9 @@ const FinancialInfoPanelDisplay = (props) => {
                   <List.Header className="list-header">
                     {messages.L__DEALER_DISCOUNT}:
                   </List.Header>
-                  {(dealerDiscount && `${dealerDiscount} ${currency}`) || <span>&mdash;</span>}
+                  {(dealerDiscount && `${dealerDiscount} ${currency}`) || (
+                    <span>&mdash;</span>
+                  )}
                 </List.Item>
                 <List.Item>
                   <List.Header className="list-header">
@@ -83,16 +89,15 @@ const FinancialInfoPanelDisplay = (props) => {
                   <List.Header className="list-header">
                     {messages.L__PAY_VIA}:
                   </List.Header>
-                  {(bankPartner && `${bankPartner.shortName}`) || <span>&mdash;</span>}
+                  {(bankPartner && `${bankPartner.shortName}`) || (
+                    <span>&mdash;</span>
+                  )}
                 </List.Item>
                 <List.Item>
                   <List.Header className="list-header">
                     {messages.L__FINANCIAL_AGENT}:
                   </List.Header>
-                  {
-                    financialAgent &&
-                    constructFullName(financialAgent)
-                  }
+                  {financialAgent && constructFullName(financialAgent)}
                 </List.Item>
               </List>
             </Grid.Column>
@@ -102,16 +107,18 @@ const FinancialInfoPanelDisplay = (props) => {
                   <List.Header className="list-header">
                     {messages.L__RECOMMENDER}:
                   </List.Header>
-                  {
-                    (recommender &&
-                          <a target='_blank' href={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=` + recommender.contractNumber}>
-                                          <Button>{
-                                            constructFullName(recommender.recommenderName)
-                                          }</Button>
-                            </a>
-
-                    ) || <span>&mdash;</span>
-                  }
+                  {(recommender && (
+                    <a
+                      target="_blank"
+                      href={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=${
+                        recommender.contractNumber
+                      }`}
+                    >
+                      <Button>
+                        {constructFullName(recommender.recommenderName)}
+                      </Button>
+                    </a>
+                  )) || <span>&mdash;</span>}
                 </List.Item>
                 <List.Item>
                   <List.Header className="list-header">
@@ -123,17 +130,15 @@ const FinancialInfoPanelDisplay = (props) => {
                   <List.Header className="list-header">
                     {messages.L__PRODUCT_SERIAL_NUMBER}:
                   </List.Header>
-                  {
-                    productSerialNumber || <span>&mdash;</span>
-                  }
+                  {productSerialNumber || <span>&mdash;</span>}
                 </List.Item>
                 <List.Item>
                   <List.Header className="list-header">
                     {messages.L__GIFTS}:
                   </List.Header>
-                  {
-                    (promotions && promotions.join(', ')) || <span>&mdash;</span>
-                  }
+                  {(promotions && promotions.join(', ')) || (
+                    <span>&mdash;</span>
+                  )}
                 </List.Item>
               </List>
             </Grid.Column>

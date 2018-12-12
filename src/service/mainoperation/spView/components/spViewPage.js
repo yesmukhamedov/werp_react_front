@@ -1,5 +1,14 @@
 import React, { Component } from 'react';
-import { Table, Label, Input, Form, Grid, Header, Segment, Container } from 'semantic-ui-react';
+import {
+  Table,
+  Label,
+  Input,
+  Form,
+  Grid,
+  Header,
+  Segment,
+  Container,
+} from 'semantic-ui-react';
 import axios from 'axios';
 import moment from 'moment';
 import { ROOT_URL } from '../../../../utils/constants';
@@ -14,16 +23,20 @@ export default class extends Component {
 
   componentWillMount() {
     const id = parseInt(this.props.match.params.id, 10);
-    axios.get(`${ROOT_URL}/api/service/packets/${id}`, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    })
-      .then(({ data }) => {
-        this.setState({ servicePacketData: data });
-      }, () => {
-        console.log('SPVIEW state:', this.state);
+    axios
+      .get(`${ROOT_URL}/api/service/packets/${id}`, {
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
       })
+      .then(
+        ({ data }) => {
+          this.setState({ servicePacketData: data });
+        },
+        () => {
+          console.log('SPVIEW state:', this.state);
+        },
+      )
       .catch(err => console.log(err));
   }
 
@@ -48,9 +61,15 @@ export default class extends Component {
     } = servicePacket;
 
     return (
-      <Container fluid style={{
- marginTop: '2em', marginBottom: '2em', paddingLeft: '2em', paddingRight: '2em'
- }}>
+      <Container
+        fluid
+        style={{
+          marginTop: '2em',
+          marginBottom: '2em',
+          paddingLeft: '2em',
+          paddingRight: '2em',
+        }}
+      >
         <Form>
           <Segment padded size="small">
             <Label attached="top">
@@ -157,14 +176,12 @@ export default class extends Component {
                   <Table.Cell>{totalPrice}</Table.Cell>
                 </Table.Row>
               );
-            },)}
+            })}
           </Table.Body>
           <Table.Footer fullWidth>
             <Table.Row>
-              <Table.HeaderCell
-                colSpan="6"
-                style={{textAlign: 'right' }}
-              >Total
+              <Table.HeaderCell colSpan="6" style={{ textAlign: 'right' }}>
+                Total
               </Table.HeaderCell>
               <Table.HeaderCell>{totalPrice}</Table.HeaderCell>
             </Table.Row>
@@ -182,11 +199,7 @@ export default class extends Component {
           </Table.Header>
           <Table.Body>
             {sparePartsWithWarranty.map((item, idx) => {
-              const {
-                code = '',
-                description = '',
-                warrantyMonths = '',
-              } = item;
+              const { code = '', description = '', warrantyMonths = '' } = item;
               return (
                 <Table.Row key={idx}>
                   <Table.Cell>{idx + 1}</Table.Cell>
@@ -205,7 +218,7 @@ export default class extends Component {
               <Segment padded>
                 <Form>
                   <Form.Input
-label="Сумма к оплате"
+                    label="Сумма к оплате"
                     placeholder="Сумма к оплате"
                     value={totalPrice}
                   />

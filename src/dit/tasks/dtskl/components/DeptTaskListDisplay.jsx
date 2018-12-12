@@ -5,15 +5,19 @@ import DeptTaskListSearch from './DeptTaskListSearch/DeptTaskListSearchContainer
 import DeptTaskListTable from './DeptTaskListTable/DeptTaskListTableContainer';
 import PrivateTaskListTable from './PrivateTaskListTable/PrivateTaskListTableContainer';
 
-function panes(size, messages) { 
+function panes(size, messages) {
   const p = [
     {
       menuItem: (
-        <Menu.Item key='messages'>
-          <Icon name='tasks' />
-            {messages.H__MY_TASKS}
-          <Label color='grey'><Icon name='mail' />{size}</Label>
-        </Menu.Item>),
+        <Menu.Item key="messages">
+          <Icon name="tasks" />
+          {messages.H__MY_TASKS}
+          <Label color="grey">
+            <Icon name="mail" />
+            {size}
+          </Label>
+        </Menu.Item>
+      ),
       pane: (
         <Tab.Pane key="tab1">
           <PrivateTaskListTable />
@@ -22,16 +26,17 @@ function panes(size, messages) {
     },
     {
       menuItem: (
-        <Menu.Item key='messages2'>
-          <Icon name='list' />{messages.H__ALL_TASKS}
-        </Menu.Item>),
+        <Menu.Item key="messages2">
+          <Icon name="list" />
+          {messages.H__ALL_TASKS}
+        </Menu.Item>
+      ),
       pane: (
         <Tab.Pane key="tab2">
           <DeptTaskListSearch />
           <br />
           <DeptTaskListTable />
         </Tab.Pane>
-        
       ),
     },
   ];
@@ -49,9 +54,9 @@ class DeptTaskListDisplay extends Component {
   }
 
   render() {
-    const color = 'blue'
-    const {size} = this.props
-    const {messages} = this.props.intl;
+    const color = 'blue';
+    const { size } = this.props;
+    const { messages } = this.props.intl;
     return (
       <Container
         fluid
@@ -62,7 +67,11 @@ class DeptTaskListDisplay extends Component {
           paddingRight: '2em',
         }}
       >
-        <Tab menu={{ color, attached: false, tabular: false }} panes={panes(size, messages)} renderActiveOnly={false} />
+        <Tab
+          menu={{ color, attached: false, tabular: false }}
+          panes={panes(size, messages)}
+          renderActiveOnly={false}
+        />
       </Container>
     );
   }

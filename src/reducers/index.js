@@ -36,8 +36,8 @@ import dtskdepTranscationReducer from '../dit/tasks/dtskdep/reducers';
 import messgrTransactionReducer from '../dit/message/messgr/reducers';
 import mgruTransactionReducer from '../dit/message/mgru/reducers';
 import hrDocReducer from '../hr/mainoperation/document/reducers/hrDocReducer';
-import documentReducer from '../documents/mainoperation/reducers/documentReducer'
-import hrSalaryReducer from '../hr/mainoperation/salary/reducers/hrSalaryReducer'
+import documentReducer from '../documents/mainoperation/reducers/documentReducer';
+import hrSalaryReducer from '../hr/mainoperation/salary/reducers/hrSalaryReducer';
 import transactionReducer from '../dit/transactions/reducers/transactionReducer';
 import logisticsReducer from '../logistics/mainoperation/reducers/logisticsReducer';
 
@@ -69,19 +69,19 @@ const appReducer = combineReducers({
   crmKpiSetting: kpiSettingReducer,
   hrPyramid: hrPyramidReducer,
   hrTimesheet: hrTimesheetReducer,
-  crmReportReducer: crmReportReducer,
-  hrReportReducer: hrReportReducer,
-  crmWspaceReducer: crmWspaceReducer,
+  crmReportReducer,
+  hrReportReducer,
+  crmWspaceReducer,
   accounting: accountingReducer,
   dtskcTransaction: dtskcTransactionReducer,
   dtskdepTransaction: dtskdepTranscationReducer,
   messgrTransaction: messgrTransactionReducer,
   mgruTransaction: mgruTransactionReducer,
-  hrDocReducer: hrDocReducer,
-  documentReducer: documentReducer,
-  hrSalaryReducer: hrSalaryReducer,
-  transactionReducer: transactionReducer,
-    logisticsReducer
+  hrDocReducer,
+  documentReducer,
+  hrSalaryReducer,
+  transactionReducer,
+  logisticsReducer,
 });
 
 const rootReducer = (state, action) => {

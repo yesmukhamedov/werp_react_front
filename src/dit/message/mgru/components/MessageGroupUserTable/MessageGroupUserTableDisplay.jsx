@@ -4,14 +4,16 @@ import { Button, Icon } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import { constructFullName } from '../../../../../utils/helpers';
 
-const MessageGroupUserTableDisplay = (props) => {
-  const { 
-    messageGroupUserList = [], 
-    removeMessageGroupUser, 
-    fetchMessageGroupUsers, 
-    open, lang,
-    messages } = props;
-  const {formatMessage} = props.intl;
+const MessageGroupUserTableDisplay = props => {
+  const {
+    messageGroupUserList = [],
+    removeMessageGroupUser,
+    fetchMessageGroupUsers,
+    open,
+    lang,
+    messages,
+  } = props;
+  const { formatMessage } = props.intl;
 
   const columns = [
     // {
@@ -56,8 +58,15 @@ const MessageGroupUserTableDisplay = (props) => {
       accessor: 'mguId',
       maxWidth: 50,
       filterable: false,
-      Cell: (row) => {
-        const { mguId, messageGroup, user, branch, department, supervisor } = row.original;
+      Cell: row => {
+        const {
+          mguId,
+          messageGroup,
+          user,
+          branch,
+          department,
+          supervisor,
+        } = row.original;
         const modalData = {
           mguId,
           groupId: messageGroup.groupId,
@@ -65,7 +74,7 @@ const MessageGroupUserTableDisplay = (props) => {
           // companyId: user.bukrs,
           branchId: branch.id,
           departmentId: department.id,
-          supervisorId: supervisor.id
+          supervisorId: supervisor.id,
         };
         return (
           <div style={{ textAlign: 'center' }}>
@@ -78,7 +87,9 @@ const MessageGroupUserTableDisplay = (props) => {
               <Button
                 icon="remove"
                 size="mini"
-                onClick={() => removeMessageGroupUser(mguId, () => fetchMessageGroupUsers())}
+                onClick={() =>
+                  removeMessageGroupUser(mguId, () => fetchMessageGroupUsers())
+                }
               />
             </Button.Group>
           </div>
@@ -93,8 +104,12 @@ const MessageGroupUserTableDisplay = (props) => {
       columns={columns}
       filterable
       defaultFilterMethod={(filter, row, column) => {
-        const id = filter.pivotId || filter.id
-        return row[id] !== undefined ? String(row[id]).toLowerCase().startsWith(filter.value) : true
+        const id = filter.pivotId || filter.id;
+        return row[id] !== undefined
+          ? String(row[id])
+              .toLowerCase()
+              .startsWith(filter.value)
+          : true;
       }}
       pageSizeOptions={[10, 15, 20]}
       defaultPageSize={10}

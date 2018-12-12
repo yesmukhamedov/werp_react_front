@@ -1,14 +1,9 @@
 import React from 'react';
 import { injectIntl } from 'react-intl';
-import {
-  List,
-  Container,
-  Header,
-  Button,
-} from 'semantic-ui-react';
+import { List, Container, Header, Button } from 'semantic-ui-react';
 // import { messages } from '../../../locales/defineMessages';
 
-const AttachmentPanelDisplay = (props) => {
+const AttachmentPanelDisplay = props => {
   const { attachment, children, onDelete, intl } = props;
   const { messages } = intl;
   return (

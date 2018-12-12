@@ -16,8 +16,12 @@ export default class SparePartList extends Component {
       selectedReferenceItems: [],
     };
 
-    this.handleAddEmptySparePartListItem = this.handleAddEmptySparePartListItem.bind(this);
-    this.handleRemoveSparePartListItem = this.handleRemoveSparePartListItem.bind(this);
+    this.handleAddEmptySparePartListItem = this.handleAddEmptySparePartListItem.bind(
+      this,
+    );
+    this.handleRemoveSparePartListItem = this.handleRemoveSparePartListItem.bind(
+      this,
+    );
     this.updateCellData = this.updateCellData.bind(this);
 
     this.selectSparePartItem = this.selectSparePartItem.bind(this);
@@ -40,25 +44,35 @@ export default class SparePartList extends Component {
       code: '',
       submittable: false,
     };
-    this.setState({
-      ...this.state,
-      sparePartList: [...this.state.sparePartList, listItem],
-    }, () => {
-      this.props.saveChange(this.state.sparePartList, 'sparePartList');
-    });
+    this.setState(
+      {
+        ...this.state,
+        sparePartList: [...this.state.sparePartList, listItem],
+      },
+      () => {
+        this.props.saveChange(this.state.sparePartList, 'sparePartList');
+      },
+    );
   }
 
   handleRemoveSparePartListItem(uuid) {
-    const newSparePartList = this.state.sparePartList.filter(item => item.uuid !== uuid );
-    const newSelectedReferenceItems = this.state.selectedReferenceItems.filter(item => item.uuid !== uuid );
+    const newSparePartList = this.state.sparePartList.filter(
+      item => item.uuid !== uuid,
+    );
+    const newSelectedReferenceItems = this.state.selectedReferenceItems.filter(
+      item => item.uuid !== uuid,
+    );
 
-    this.setState({
-      ...this.state,
-      sparePartList: newSparePartList,
-      selectedReferenceItems: newSelectedReferenceItems,
-    }, () => {
-      this.props.saveChange(this.state.sparePartList, 'sparePartList');
-    });
+    this.setState(
+      {
+        ...this.state,
+        sparePartList: newSparePartList,
+        selectedReferenceItems: newSelectedReferenceItems,
+      },
+      () => {
+        this.props.saveChange(this.state.sparePartList, 'sparePartList');
+      },
+    );
   }
 
   handleSparePartTypeChange(e, data) {
@@ -66,7 +80,7 @@ export default class SparePartList extends Component {
   }
 
   selectSparePartItem(selectedItem) {
-    const newSparePartListModal = this.state.sparePartList.map((item) => {
+    const newSparePartListModal = this.state.sparePartList.map(item => {
       if (item.uuid === this.state.sourceSparePartUUID) {
         return {
           ...item,
@@ -83,17 +97,23 @@ export default class SparePartList extends Component {
       return item;
     });
 
-    const newSelectedReferenceItems = [...this.state.selectedReferenceItems, { id: selectedItem.id, uuid: this.state.sourceSparePartUUID }];
+    const newSelectedReferenceItems = [
+      ...this.state.selectedReferenceItems,
+      { id: selectedItem.id, uuid: this.state.sourceSparePartUUID },
+    ];
 
-    this.setState({
-      ...this.state,
-      sparePartList: newSparePartListModal,
-      sourceSparePartUUID: undefined,
-      sparePartListModal: false,
-      selectedReferenceItems: newSelectedReferenceItems,
-    }, () => {
-      this.props.saveChange(this.state.sparePartList, 'sparePartList');
-    });
+    this.setState(
+      {
+        ...this.state,
+        sparePartList: newSparePartListModal,
+        sourceSparePartUUID: undefined,
+        sparePartListModal: false,
+        selectedReferenceItems: newSelectedReferenceItems,
+      },
+      () => {
+        this.props.saveChange(this.state.sparePartList, 'sparePartList');
+      },
+    );
   }
 
   updateCellData(index, dataType, value) {
@@ -136,12 +156,15 @@ export default class SparePartList extends Component {
       return el;
     });
 
-    this.setState({
-      ...this.state,
-      sparePartList: updateSparePartList,
-    }, () => {
-      this.props.saveChange(this.state.sparePartList, 'sparePartList');
-    });
+    this.setState(
+      {
+        ...this.state,
+        sparePartList: updateSparePartList,
+      },
+      () => {
+        this.props.saveChange(this.state.sparePartList, 'sparePartList');
+      },
+    );
   }
 
   openSparePartListModal(uuid) {
@@ -161,7 +184,11 @@ export default class SparePartList extends Component {
   }
 
   render() {
-    const filteredReferenceList = _.differenceBy(this.props.data, this.state.selectedReferenceItems, 'id');
+    const filteredReferenceList = _.differenceBy(
+      this.props.data,
+      this.state.selectedReferenceItems,
+      'id',
+    );
     return (
       <div>
         <Table celled color="black" striped>
@@ -205,12 +232,15 @@ export default class SparePartList extends Component {
                 handleTypeChange={this.handleSparePartTypeChange}
               />
             ))}
-
           </Table.Body>
           <Table.Footer fullWidth>
             <Table.Row>
-              <Table.HeaderCell colSpan="8" style={{ textAlign: 'right' }}>Total</Table.HeaderCell>
-              <Table.HeaderCell style={{ textAlign: 'center' }}>{this.props.totalSum}</Table.HeaderCell>
+              <Table.HeaderCell colSpan="8" style={{ textAlign: 'right' }}>
+                Total
+              </Table.HeaderCell>
+              <Table.HeaderCell style={{ textAlign: 'center' }}>
+                {this.props.totalSum}
+              </Table.HeaderCell>
             </Table.Row>
           </Table.Footer>
         </Table>
@@ -232,13 +262,16 @@ const columns = [
   {
     Header: 'Код',
     accessor: 'code',
-  }, {
+  },
+  {
     Header: 'Цена',
     accessor: 'price',
-  }, {
+  },
+  {
     Header: 'Название',
     accessor: 'name',
-  }, {
+  },
+  {
     Header: 'Валюта',
     accessor: 'currency',
   },

@@ -1,10 +1,8 @@
 import React from 'react';
 import { Table, Input, Button, Icon } from 'semantic-ui-react';
 
-const WarrantyListItem = (props) => {
-  const {
- uuid, description, code, warrantyMonths 
-} = props.data;
+const WarrantyListItem = props => {
+  const { uuid, description, code, warrantyMonths } = props.data;
   return (
     <Table.Row>
       <Table.Cell>{props.idx + 1}</Table.Cell>

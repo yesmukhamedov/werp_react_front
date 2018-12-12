@@ -39,7 +39,12 @@ class TaskEditModal extends Component {
 
   render() {
     const {
-      handleSubmit, directories, modalOpen, pristine, submitting, intl, 
+      handleSubmit,
+      directories,
+      modalOpen,
+      pristine,
+      submitting,
+      intl,
     } = this.props;
     const { messages } = intl;
     return (
@@ -50,12 +55,9 @@ class TaskEditModal extends Component {
         closeOnRootNodeClick={false}
         dimmer="blurring"
         closeIcon
-      // size="tiny"
+        // size="tiny"
       >
-        <Header
-          icon="edit"
-          content={messages.H__TASK_EDIT}
-        />
+        <Header icon="edit" content={messages.H__TASK_EDIT} />
         <Modal.Content>
           <Modal.Description>
             <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
@@ -78,7 +80,9 @@ class TaskEditModal extends Component {
                   component={DropdownFormField}
                   label={messages.L__PRIORITY}
                   disabled={this.props.fieldState.priority}
-                  opts={directories && Object.values(directories.priorityOptions)}
+                  opts={
+                    directories && Object.values(directories.priorityOptions)
+                  }
                 />
                 <Field
                   name="estimatedAt"
@@ -90,14 +94,16 @@ class TaskEditModal extends Component {
                 />
               </Form.Group>
               <Segment>
-                <Header as="h5" >{messages.H__ASSIGNED_TO}</Header>
+                <Header as="h5">{messages.H__ASSIGNED_TO}</Header>
                 <Form.Group widths="equal">
                   <Field
                     name="branch"
                     component={DropdownFormField}
                     label={messages.L__BRANCH}
                     disabled={this.props.fieldState.branch}
-                    opts={directories && Object.values(directories.branchOptions)}
+                    opts={
+                      directories && Object.values(directories.branchOptions)
+                    }
                   />
                   <Field
                     name="department"
@@ -128,8 +134,14 @@ class TaskEditModal extends Component {
                 component={TextAreaFormField}
               />
               <div className="buttonGroup">
-                <Button color="teal" floated="right" type="submit" disabled={pristine || submitting}>
-                  <Icon name="checkmark" />{messages.BTN__YES}
+                <Button
+                  color="teal"
+                  floated="right"
+                  type="submit"
+                  disabled={pristine || submitting}
+                >
+                  <Icon name="checkmark" />
+                  {messages.BTN__YES}
                 </Button>
                 <Button
                   color="youtube"
@@ -137,7 +149,8 @@ class TaskEditModal extends Component {
                   onClick={this.handleFormClose}
                   inverted
                 >
-                  <Icon name="remove" />{messages.BTN__NO}
+                  <Icon name="remove" />
+                  {messages.BTN__NO}
                 </Button>
               </div>
             </Form>

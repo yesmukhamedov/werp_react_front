@@ -5,7 +5,6 @@ import ContractListTable from './ContractListTable/ContractListTableContainer';
 import ContractListSearch from '../ContractListSearch/ContractListSearchContainer';
 
 class ContractListPageComponent extends Component {
-
   componentWillMount() {
     const { lang } = this.props;
     this.props.getDirectories(lang);

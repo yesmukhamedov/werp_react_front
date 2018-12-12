@@ -23,10 +23,8 @@ class TaskListSearchComponent extends Component {
       departmentId: 1, // "Отдел маркетинга"
     };
 
-    const params = _.map(
-      paramsDict,
-      (val, key) =>
-        (val ? `${key}=${val}` : val === false ? `${key}=${val}` : ''),
+    const params = _.map(paramsDict, (val, key) =>
+      val ? `${key}=${val}` : val === false ? `${key}=${val}` : '',
     )
       .filter(param => param)
       .join('&');
@@ -37,9 +35,21 @@ class TaskListSearchComponent extends Component {
   render() {
     const { formatMessage } = this.props.intl;
     const {
-      handleSubmit, pristine, submitting, reset, directories, companyOptions, branchOptions, company, messages
+      handleSubmit,
+      pristine,
+      submitting,
+      reset,
+      directories,
+      companyOptions,
+      branchOptions,
+      company,
+      messages,
     } = this.props;
-    const allOpt = { key: -1, text: formatMessage(messages.allOption), value: -1 };
+    const allOpt = {
+      key: -1,
+      text: formatMessage(messages.allOption),
+      value: -1,
+    };
     if (directories) {
       return (
         <Form onSubmit={handleSubmit(this.handleSearch)}>
@@ -94,15 +104,21 @@ class TaskListSearchComponent extends Component {
                     type="submit"
                     loading={submitting}
                     disabled={pristine || submitting}
-                    style={
-                      { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
+                    style={{
+                      marginTop: '1.6em',
+                      background: 'rgba(84,170,169, 1)',
+                      color: 'white',
+                    }}
                   />
                   <Form.Button
                     content={formatMessage(messages.reset)}
                     type="button"
                     disabled={pristine || submitting}
-                    style={
-                      { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
+                    style={{
+                      marginTop: '1.6em',
+                      background: 'rgba(84,170,169, 1)',
+                      color: 'white',
+                    }}
                     onClick={reset}
                   />
                 </Form.Group>

@@ -70,7 +70,7 @@ export default class DtskdepComponent extends Component {
           <Grid.Row>
             <Grid.Column>
               <Segment>
-                <TaskAdminTable messages={messages}/>
+                <TaskAdminTable messages={messages} />
               </Segment>
             </Grid.Column>
           </Grid.Row>

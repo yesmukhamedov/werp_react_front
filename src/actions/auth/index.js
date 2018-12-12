@@ -33,20 +33,23 @@ export function authError(error) {
 }
 
 export function signinUser({ username, password }, language) {
-  return (dispatch) => {
+  return dispatch => {
     // Submit username/password to the server
     let path = null;
     axios
       .post(`${ROOT_URL}/signin`, { username, password, language })
-      .then((response) => {
+      .then(response => {
         // If request is good...
         // - save the JWT token
         const { token, userId } = response.data;
         localStorage.setItem('token', token);
         localStorage.setItem('username', username);
         localStorage.setItem('language', language);
-        localStorage.setItem('errorTableString', JSON.stringify(response.data.errorTable));
-        localStorage.setItem('internalNumber',response.data.internalNumber)
+        localStorage.setItem(
+          'errorTableString',
+          JSON.stringify(response.data.errorTable),
+        );
+        localStorage.setItem('internalNumber', response.data.internalNumber);
         // - update state to indicate user is authenticated
         dispatch(authUser({ username, userId }));
         // - redirect to the route '/'
@@ -57,21 +60,22 @@ export function signinUser({ username, password }, language) {
           browserHistory.push('/');
         }
       })
-      .catch((error) => {
+      .catch(error => {
         // If request is bad...
         // - Show an error to the user
         if (error.response) {
           dispatch(authError(error.response.data.message));
         } else if (error.stack) {
           Promise.resolve({ error }).then(response =>
-            dispatch(authError(response.error.message)));
+            dispatch(authError(response.error.message)),
+          );
         }
       });
   };
 }
 
 export function signoutUser() {
-  return (dispatch) => {
+  return dispatch => {
     resetLocalStorage();
     localStorage.removeItem('currentPathName');
     dispatch({ type: UNAUTH_USER });
@@ -84,22 +88,23 @@ export function signoutUser() {
 }
 
 export function fetchUsers() {
-  return (dispatch) => {
+  return dispatch => {
     axios
       .get(`${ROOT_URL}/users`)
-      .then((response) => {
+      .then(response => {
         dispatch({
           type: FETCH_USERS,
           payload: response,
         });
       })
-      .catch((error) => {
+      .catch(error => {
         const msg = "Can't fetch all users. ";
         if (error.response) {
           dispatch(usersError(msg + error.response.data.message));
         } else {
           Promise.resolve({ error }).then(response =>
-            dispatch(usersError(msg + response.error.message)));
+            dispatch(usersError(msg + response.error.message)),
+          );
         }
       });
   };

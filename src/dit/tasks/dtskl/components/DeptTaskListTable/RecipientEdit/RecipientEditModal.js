@@ -31,9 +31,7 @@ class RecipientEditModal extends Component {
   }
 
   render() {
-    const {
-      handleSubmit, modalOpen,
-    } = this.props;
+    const { handleSubmit, modalOpen } = this.props;
     return (
       <Modal
         open={modalOpen}
@@ -59,7 +57,7 @@ class RecipientEditModal extends Component {
               <h4>
                 <FormattedMessage
                   id="Recipient.Edit.Content"
-                  defaultMessage="Are you sure you want to assign yourself as a recipient ?" 
+                  defaultMessage="Are you sure you want to assign yourself as a recipient ?"
                 />
               </h4>
               <div className="buttonGroup">
@@ -94,4 +92,7 @@ RecipientEditModal = reduxForm({
   form: 'editRecipient',
 })(RecipientEditModal);
 
-export default connect(null, { editRecipient })(RecipientEditModal);
+export default connect(
+  null,
+  { editRecipient },
+)(RecipientEditModal);

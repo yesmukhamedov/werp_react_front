@@ -33,76 +33,98 @@ export default class SpList extends Component {
     this.handleInputChange = this.handleInputChange.bind(this);
     this.fetchCategories = this.fetchCategories.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
-    this.handleActivateServicePacket = this.handleActivateServicePacket.bind(this);
+    this.handleActivateServicePacket = this.handleActivateServicePacket.bind(
+      this,
+    );
   }
 
   componentWillMount() {
-    axios.all([
-      axios.get(`${ROOT_URL}/api/reference/countries`, {
-        headers: {authorization: localStorage.getItem('token') },
-      }),
-      axios.get(`${ROOT_URL}/api/reference/companies`, {
-        headers: {authorization: localStorage.getItem('token') },
-      }),
-      axios.get(`${ROOT_URL}/api/reference/product-categories`, {
-        headers: {authorization: localStorage.getItem('token') },
-      }),
-    ])
-      .then(axios.spread(({ data: countryList }, { data: companyList }, { data: categoryList }) => {
-        const newCountryOptions = countryList.map((item) => ({
-            key: item.countryId,
-            text: item.country,
-            value: item.countryId
-          }));
+    axios
+      .all([
+        axios.get(`${ROOT_URL}/api/reference/countries`, {
+          headers: { authorization: localStorage.getItem('token') },
+        }),
+        axios.get(`${ROOT_URL}/api/reference/companies`, {
+          headers: { authorization: localStorage.getItem('token') },
+        }),
+        axios.get(`${ROOT_URL}/api/reference/product-categories`, {
+          headers: { authorization: localStorage.getItem('token') },
+        }),
+      ])
+      .then(
+        axios.spread(
+          (
+            { data: countryList },
+            { data: companyList },
+            { data: categoryList },
+          ) => {
+            const newCountryOptions = countryList.map(item => ({
+              key: item.countryId,
+              text: item.country,
+              value: item.countryId,
+            }));
 
-        const newCompanyOptions = companyList.map((item) => ({
-            key: item.id,
-            value: item.id,
-            text: item.name
-          }));
+            const newCompanyOptions = companyList.map(item => ({
+              key: item.id,
+              value: item.id,
+              text: item.name,
+            }));
 
-        const newCategoryOptions = categoryList.map((item) => ({
-            key: item.id,
-            value: item.id,
-            text: item.label
-          }));
+            const newCategoryOptions = categoryList.map(item => ({
+              key: item.id,
+              value: item.id,
+              text: item.label,
+            }));
 
-        this.setState({
-          ...this.state,
-          countryOptions: [
-            {
-              key: -1,
-              value: -1,
-              text: 'Все страны',
-            }, ...newCountryOptions,
-          ],
-          companyOptions: newCompanyOptions,
-          categoryOptions: [{
-            key: -1,
-            value: -1,
-            text: 'Все категории',
-          }, ...newCategoryOptions],
-        }, () => {
-          console.log('spListPage state ', this.state);
-        });
-      }))
-      .catch((err) => {
+            this.setState(
+              {
+                ...this.state,
+                countryOptions: [
+                  {
+                    key: -1,
+                    value: -1,
+                    text: 'Все страны',
+                  },
+                  ...newCountryOptions,
+                ],
+                companyOptions: newCompanyOptions,
+                categoryOptions: [
+                  {
+                    key: -1,
+                    value: -1,
+                    text: 'Все категории',
+                  },
+                  ...newCategoryOptions,
+                ],
+              },
+              () => {
+                console.log('spListPage state ', this.state);
+              },
+            );
+          },
+        ),
+      )
+      .catch(err => {
         console.log('Error in spListPage', err);
       });
   }
 
   fetchCategories(companyId, categoryId) {
-    axios.get(`${ROOT_URL}/api/reference/products?categoryId=${categoryId}&companyId=${companyId}`, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    })
+    axios
+      .get(
+        `${ROOT_URL}/api/reference/products?categoryId=${categoryId}&companyId=${companyId}`,
+        {
+          headers: {
+            authorization: localStorage.getItem('token'),
+          },
+        },
+      )
       .then(({ data }) => {
-        const newProductOptions = data.map((item) => ({
-            key: item.id,
-            value: item.id,
-            text: item.name
-          }));
+        const newProductOptions = data.map(item => ({
+          key: item.id,
+          value: item.id,
+          text: item.name,
+        }));
 
         this.setState({
           ...this.state,
@@ -111,7 +133,9 @@ export default class SpList extends Component {
               key: -1,
               value: -1,
               text: 'Все продукты',
-            }, ...newProductOptions],
+            },
+            ...newProductOptions,
+          ],
         });
       })
       .catch(err => console.log(err));
@@ -144,14 +168,18 @@ export default class SpList extends Component {
         };
         break;
       }
-      default: {}
+      default: {
+      }
     }
 
-    this.setState({
-      ...this.state,
-      [dataType]: value,
-      ...clearedFileds,
-    }, () => console.log('handled field ', dataType, ' state ', this.state));
+    this.setState(
+      {
+        ...this.state,
+        [dataType]: value,
+        ...clearedFileds,
+      },
+      () => console.log('handled field ', dataType, ' state ', this.state),
+    );
   }
 
   handleSearch() {
@@ -180,28 +208,36 @@ export default class SpList extends Component {
       status: this.state.selectedStatus,
     };
 
-    const params = _.map(paramsDict, (val, key) => (val ? `${key}=${val}` : val === false ? `${key}=${val}` : ``))
+    const params = _.map(paramsDict, (val, key) =>
+      val ? `${key}=${val}` : val === false ? `${key}=${val}` : '',
+    )
       .filter(param => param)
       .join('&');
 
     console.log('PARAMS', params);
-    axios.get(`${ROOT_URL}/api/service/packets?${params}`, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    })
+    axios
+      .get(`${ROOT_URL}/api/service/packets?${params}`, {
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
+      })
       .then(({ data }) => this.setState({ ...this.state, result: data }))
       .catch(err => console.log('ERROR in SPLIST PAGE', err));
   }
 
   handleActivateServicePacket(id, activationState) {
-    axios.put(`${ROOT_URL}/api/service/packets/${id}`, { active: !activationState }, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    })
+    axios
+      .put(
+        `${ROOT_URL}/api/service/packets/${id}`,
+        { active: !activationState },
+        {
+          headers: {
+            authorization: localStorage.getItem('token'),
+          },
+        },
+      )
       .then(() => {
-        const newResult = this.state.result.map((item) => {
+        const newResult = this.state.result.map(item => {
           if (item.id === id) {
             return {
               ...item,
@@ -213,7 +249,13 @@ export default class SpList extends Component {
 
         this.setState({ ...this.state, result: newResult });
       })
-      .catch(err => console.log('ERROR could not change activation state of %d with error %s', id, JSON.stringify(err)));
+      .catch(err =>
+        console.log(
+          'ERROR could not change activation state of %d with error %s',
+          id,
+          JSON.stringify(err),
+        ),
+      );
   }
 
   render() {
@@ -224,10 +266,9 @@ export default class SpList extends Component {
           marginTop: '2em',
           marginBottom: '2em',
           paddingLeft: '2em',
-          paddingRight: '2em' 
-}}
+          paddingRight: '2em',
+        }}
       >
-
         <SearchPanel
           countryOpts={this.state.countryOptions}
           companyOpts={this.state.companyOptions}
