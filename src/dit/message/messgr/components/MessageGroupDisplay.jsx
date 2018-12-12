@@ -17,7 +17,7 @@ class MessageGroupDisplay extends Component {
     this.state = {
       modalOpen: false,
       modalType: '',
-      modalData: null, 
+      modalData: null,
     };
 
     this.open = this.open.bind(this);
@@ -75,7 +75,10 @@ class MessageGroupDisplay extends Component {
           <Grid.Row>
             <Grid.Column>
               <Segment>
-                <MessageGroupTableContainer open={this.open} messages={messages}/>
+                <MessageGroupTableContainer
+                  open={this.open}
+                  messages={messages}
+                />
               </Segment>
             </Grid.Column>
           </Grid.Row>
@@ -92,4 +95,4 @@ class MessageGroupDisplay extends Component {
   }
 }
 
-export default injectIntl(MessageGroupDisplay)
+export default injectIntl(MessageGroupDisplay);
