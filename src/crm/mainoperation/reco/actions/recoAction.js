@@ -48,7 +48,9 @@ export function fetchPhoneNumberHistory(phoneId) {
   return function(dispatch) {
     axios
       .get(`${ROOT_URL}/api/crm/call/number-history/${phoneId}`, {
-        headers: { authorization: localStorage.getItem('token') },
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
       })
       .then(({ data }) => {
         dispatch({
@@ -91,7 +93,9 @@ export function fetchSingleReco(id) {
     dispatch(modifyLoader(true));
     axios
       .get(`${ROOT_URL}/api/crm/reco/${id}`, {
-        headers: { authorization: localStorage.getItem('token') },
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
       })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
@@ -111,7 +115,9 @@ export function fetchRecoCurrentData(type) {
     dispatch(modifyLoader(true));
     axios
       .get(`${ROOT_URL}/api/crm/reco/current/${type}`, {
-        headers: { authorization: localStorage.getItem('token') },
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
       })
       .then(({ data }) => {
         let actionType;
@@ -148,7 +154,9 @@ export function fetchCallResults() {
   return function(dispatch) {
     axios
       .get(`${ROOT_URL}/api/crm/call/results`, {
-        headers: { authorization: localStorage.getItem('token') },
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
       })
       .then(({ data }) => {
         const loaded = Object.keys(data).map(k => ({
@@ -221,7 +229,9 @@ export function fetchRecoStatuses() {
   return function(dispatch) {
     axios
       .get(`${ROOT_URL}/api/crm/reco/statuses`, {
-        headers: { authorization: localStorage.getItem('token') },
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
       })
       .then(res => {
         const loaded = Object.keys(res.data).map(k => ({
@@ -244,7 +254,9 @@ export function fetchReasons(typeId) {
   return function(dispatch) {
     axios
       .get(`${ROOT_URL}/api/reference/reasons/${typeId}`, {
-        headers: { authorization: localStorage.getItem('token') },
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
       })
       .then(({ data }) => {
         const loaded = data.map(item => ({
@@ -275,7 +287,9 @@ export function deleteReco(recoId) {
   return function(dispatch) {
     axios
       .delete(`${ROOT_URL}/api/crm/reco/${recoId}`, {
-        headers: { authorization: localStorage.getItem('token') },
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
       })
       .then(response => {
         browserHistory.push('/crm/reco/current');
@@ -284,6 +298,27 @@ export function deleteReco(recoId) {
         handleError(e, dispatch);
       });
   };
+}
+
+export function createRecoListNew(o) {
+  return dispatch =>
+    axios.post(`${ROOT_URL}/api/crm/reco/create`, o, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    });
+}
+
+export function blankReco(context, contextId) {
+  return dispatch =>
+    axios.get(
+      `${ROOT_URL}/api/crm/reco/create?context=${context}&contextId=${contextId}`,
+      {
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
+      },
+    );
 }
 
 export function createRecoList(o, callBackOnError) {
@@ -359,7 +394,9 @@ export function fetchPhoneMeta() {
   return function(dispatch) {
     axios
       .get(`${ROOT_URL}/api/crm/phone/meta`, {
-        headers: { authorization: localStorage.getItem('token') },
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
       })
       .then(({ data }) => {
         dispatch({
