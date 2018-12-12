@@ -24,10 +24,7 @@ const groupsUrl = `${ROOT_URL}/api/messgr`;
 const createTaskUrl = `${ROOT_URL}/api/tasks`;
 
 export function fetchUsers(args) {
-  const {
-    branchId,
-    bukrs,
-  } = args;
+  const { branchId, bukrs } = args;
   return (dispatch) => {
     axios
       .get(`${assigneesUrl}&branchId=${branchId}&bukrs=${bukrs}`, {
@@ -79,12 +76,7 @@ export function fetchReferences(lang) {
             en: item.name_en,
             tr: item.name_tr,
           },
-          text:
-                lang === 'ru'
-                  ? item.name_ru
-                  : lang === 'en'
-                    ? item.name_en
-                    : item.name_tr,
+          text: lang === 'ru' ? item.name_ru : lang === 'en' ? item.name_en : item.name_tr,
         }));
 
         const statusOpts = statusList.map(item => ({
@@ -105,7 +97,6 @@ export function fetchReferences(lang) {
           value: user,
           text: `${constructFullName(user)} - ${department[lang]}`,
         }));
-
 
         const groupOpts = groupList.map(({ groupId, groupName }) => ({
           key: groupId,
@@ -159,22 +150,19 @@ export function createTask(formValues, successCallback) {
       id: formValues.initiatorManager.id,
     },
     estimatedAt: moment.utc(formValues.estimatedAt, 'DD.MM.YYYY').format(),
-    attachment: {
-      attachmentJson: JSON.stringify(formValues.uploadList),
-    },
+    attachment: (formValues.uploadList.length > 0 ?
+      {
+        attachmentJson: JSON.stringify(formValues.uploadList),
+      } : null),
   };
 
-  console.log("ALL_RECIPIENTS", formValues.allRecipients);
+  console.log('ALL_RECIPIENTS', formValues.allRecipients);
 
-  const request = axios.post(
-    createTaskUrl,
-    newTask,
-    {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
+  const request = axios.post(createTaskUrl, newTask, {
+    headers: {
+      authorization: localStorage.getItem('token'),
     },
-  );
+  });
   return (dispatch) => {
     request
       .then(({ data }) => {
@@ -218,4 +206,3 @@ export const removeAssigneePerson = id => ({
 export const clearTransaction = () => ({
   type: CLEAR_TRANSACTION,
 });
-

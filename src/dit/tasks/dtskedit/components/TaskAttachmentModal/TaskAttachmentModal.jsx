@@ -28,6 +28,7 @@ class TaskAttachmentModal extends Component {
 
   render() {
     const {
+      taskId,
       modalOpen,
       attachment,
       toggleModal,
@@ -65,18 +66,26 @@ class TaskAttachmentModal extends Component {
                       }
                     </List.Content>
                     <List.Content as="a" target="_blank" href={fileDownloadUri}>
-                      <List.Icon name="download" size="big" />{fileName}
+                      <List.Icon name="download" size="big" />
+                      {fileName}
                     </List.Content>
                   </List.Item>
                 );
               })}
             </List>
           )}
-
         </Modal.Content>
         <Modal.Actions>
           <Button.Group floated="left">
-            <UploadPanelDisplay onUploadSuccess={upload => addUpload(upload)} messages={messages} />
+            <UploadPanelDisplay
+              onUploadSuccess={upload =>
+                addUpload({
+                  taskId,
+                  attachmentJson: upload,
+                })
+              }
+              messages={messages}
+            />
           </Button.Group>
           <Button.Group floated="right">
             <Button
@@ -86,7 +95,8 @@ class TaskAttachmentModal extends Component {
                 toggleModal(modalOpen);
               }}
             >
-              <Icon name="checkmark" />{messages.BTN__OK}
+              <Icon name="checkmark" />
+              {messages.BTN__OK}
             </Button>
           </Button.Group>
         </Modal.Actions>

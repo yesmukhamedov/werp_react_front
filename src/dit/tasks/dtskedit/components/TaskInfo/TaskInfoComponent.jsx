@@ -134,7 +134,7 @@ class TaskInfoComponent extends Component {
                       </List.Item>
                       <List.Item>
                         <List.Content>
-                          {recipient.branch && recipient.branch.value} - 
+                          {recipient.branch && recipient.branch.value} -
                           {recipient.department && recipient.department.value}
                           {/* {recipient.position && recipient.position.value} */}
                         </List.Content>
@@ -255,7 +255,7 @@ class TaskInfoComponent extends Component {
             handleClose={this.handleModalClose}
             {...this.props}
           />
-          <TaskAttachmentModalContainer />
+          <TaskAttachmentModalContainer taskId={this.props.id} />
         </Segment.Group>
       );
     }
