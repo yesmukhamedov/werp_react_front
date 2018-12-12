@@ -1,7 +1,8 @@
-import {LOG_WERKS_REQUEST_LIST_FETCHED} from '../actions/logisticsActionTypes';
+import {LOG_WERKS_REQUEST_LIST_FETCHED,LOG_WERKS_REQUEST_BLANKED} from '../actions/logisticsActionTypes';
 
 const INITIAL_STATE={
-    werksRequests: []
+    werksRequests: [],
+    werksRequestModel:{}
 };
 
 export default function (state=INITIAL_STATE, action)
@@ -10,6 +11,9 @@ export default function (state=INITIAL_STATE, action)
     {
         case LOG_WERKS_REQUEST_LIST_FETCHED:
             return {...state,werksRequests:action.payload}
+
+        case LOG_WERKS_REQUEST_BLANKED:
+            return {...state,werksRequestModel:action.payload}
 
         default:
             return state;

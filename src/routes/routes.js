@@ -379,6 +379,12 @@ const AsyncLogWerksRequestList = Loadable({
     loading: () => <LoadingPage />,
 });
 
+const AsyncLogWerksRequestForm = Loadable({
+        loader: () =>
+        import('../logistics/mainoperation/components/WerksRequestFormPage' /* webpackChunkName: "WerksRequestListPage" */),
+    loading: () => <LoadingPage />,
+});
+
 
 const getComponent = {
     DitTransactionList:trlist,
@@ -475,6 +481,8 @@ const generateRoutes = (transactionRoutes) => {
       <Route path="/documents/mydocs" component={AsyncMyDocsListPage}/>
       <Route path="/general/summary" component={AsyncDtskcSummary}/>
         <Route path="/logistics/werks/requests" component={AsyncLogWerksRequestList}/>
+        <Route path="/logistics/werks/requests/create" component={AsyncLogWerksRequestForm}/>
+        <Route path="/logistics/werks/requests/update/:id" component={AsyncLogWerksRequestForm}/>
       
       {/* Transactions */}
       <Route path="/dit/transaction/update/:id?" component={trupdate} />

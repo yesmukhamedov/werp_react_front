@@ -269,6 +269,26 @@ export function deleteReco(recoId){
     }
 }
 
+export function createRecoListNew(o){
+    return dispatch => {
+        return axios.post(`${ROOT_URL}/api/crm/reco/create`,o,{
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        })
+    }
+}
+
+export function blankReco(context,contextId){
+    return dispatch => {
+        return axios.get(`${ROOT_URL}/api/crm/reco/create?context=` + context + '&contextId=' + contextId,{
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        })
+    }
+}
+
 export function createRecoList(o,callBackOnError){
     return function (dispatch){
         dispatch(modifyLoader(true))

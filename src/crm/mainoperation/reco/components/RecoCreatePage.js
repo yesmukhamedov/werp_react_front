@@ -9,7 +9,7 @@ import RecoCard from './RecoCard'
 import 'react-datepicker/dist/react-datepicker.css';
 import '../css/recoStyles.css';
 import {fetchGroupDealers} from '../../demo/actions/demoAction';
-import {checkPhoneNumber,createRecoList,blankRecoItem} from '../actions/recoAction'
+import {checkPhoneNumber,createRecoListNew,blankRecoItem,blankReco} from '../actions/recoAction'
 import { injectIntl } from 'react-intl'
 require('moment/locale/ru');
 
@@ -30,7 +30,8 @@ class RecoCreatePage extends Component {
         items: []
       },
       itemPhones: [],
-        saveBtnDisabled: false
+        saveBtnDisabled: false,
+        errors:{}
     }
 
     this.renderHeaderForm = this.renderHeaderForm.bind(this)
@@ -46,33 +47,21 @@ class RecoCreatePage extends Component {
       this.props.fetchGroupDealers()
       let context = this.props.match.params.context
       let contextId = this.props.match.params.contextId
-    axios.get(`${ROOT_URL}/api/crm/reco/create?context=` + (context || DEFAULT_CONTEXT) + `&contextId=` + (contextId || 0), {
-      headers: {
-        authorization: localStorage.getItem('token')}
-    }).then((res) => {
-      this.setState({
-        ...this.state,
-        reco: res.data
-      })
-    }).catch((e) => {
-      console.log(e)
-    })
+
+        this.props.blankReco(context || DEFAULT_CONTEXT,contextId || 0).then((res) => {
+          this.setState({
+            ...this.state,
+            reco: res.data
+          })
+        }).catch((e) => {
+          console.log(e)
+        })
   }
 
-  handleItemChange (fieldName, id,value) {
+  handleItemChange (fieldName, index,value) {
     let reco = Object.assign({},this.state.reco)
-    let item = {}
-    let index = -1
-    for(let k in reco['items']){
-        if(reco['items'][k]['id'] === id){
-            index = k
-            item = reco['items'][k]
-            break
-        }
-    }
-    if(index < 0){
-        return
-    }
+    let items = reco['items'];
+    let item = items[index] || {};
 
       switch (fieldName) {
           case 'phoneNumber1':
@@ -162,7 +151,6 @@ class RecoCreatePage extends Component {
       }
     let itemIndex = reco.items.length
     let form = {
-      id: v4(),
       clientName: '',
       districtName: '',
       professionName: '',
@@ -191,7 +179,8 @@ class RecoCreatePage extends Component {
 
   renderRecoForms () {
         const {messages,locale} = this.props.intl
-    let {items} = this.state.reco
+    let {items} = this.state.reco;
+    const {errors} = this.state;
     return items.map((item,index) => {
         return <RecoCard messages={messages}
                          locale={locale}
@@ -201,16 +190,19 @@ class RecoCreatePage extends Component {
                          phonePattern={this.state.reco['phonePattern']}
                          handleChange={this.handleItemChange}
                          removeReco={this.removeReco}
-                         key={item.id} item={item}
+                         key={index} item={item}
                          phoneErrors={this.props.phoneErrors}
                          loadingPhones={this.props.loadingPhones}
                          recoErrors={this.props.recoErrors}
-                         index={index}/>
+                         index={index}
+                         errors={errors}
+        />
       //return this.renderRecoForm(item, index)
     })
   }
 
   validateAndSendData = e => {
+        let _this = this;
         e.preventDefault()
         if(this.state.saveBtnDisabled){
             return
@@ -220,10 +212,23 @@ class RecoCreatePage extends Component {
             saveBtnDisabled: true
         })
       //this.refs.btn.setAttribute("disabled", "disabled")
-      this.props.createRecoList({ ...this.state.reco },() => {
+      this.props.createRecoListNew(this.state.reco).then(({data}) => {
           this.setState({
               ...this.state,
               saveBtnDisabled: false
+          })
+          window.location.pathname = '/crm/reco/current';
+      }).catch(function(error){
+          let stateErrors = {}
+          if(error && error.response && error.response.status){
+              if(400 === error.response.status){
+                  stateErrors = error.response.data;
+              }
+          }
+          _this.setState({
+              ..._this.state,
+              saveBtnDisabled: false,
+              errors: stateErrors
           })
       })
   }
@@ -254,6 +259,7 @@ class RecoCreatePage extends Component {
   }
 
   renderHeaderForm (messages) {
+        const {errors} = this.state
     return (
       <Form>
         <Form.Group widths='equal'>
@@ -267,14 +273,19 @@ class RecoCreatePage extends Component {
               selectOnBlur={false}
               options={this.props.dealers}
               onChange={this.handleChange} />
+              <div style={{color:'red'}}>{errors['responsibleId']}</div>
           </Form.Field>
 
+            <Form.Field>
+                <label>{messages['Form.RecommenderFullName']}</label>
           <Form.Input
               error={!this.state.reco.tempRecommender || this.state.reco.tempRecommender.length === 0}
             name='tempRecommender'
             value={this.state.reco.tempRecommender || ''}
             readOnly={this.state.reco.contextId > 0}
-            onChange={this.handleChange} label={messages['Form.RecommenderFullName']} />
+            onChange={this.handleChange} />
+            <div style={{color:'red'}}>{errors['tempRecommender']}</div>
+            </Form.Field>
           {this.state.reco.contextId > 0 ? '' : <Form.TextArea name='recommenderInfo' onChange={this.handleChange} label={messages['Form.RecommenderAddData']} />}
         </Form.Group>
         <Button icon labelPosition='left' onClick={this.addReco}>
@@ -282,7 +293,6 @@ class RecoCreatePage extends Component {
             {messages['Table.Add']}
         </Button>
           {this.state.reco.items.length}
-
         <Button
             //ref={btn => { this.btn = btn; }}
             disabled={this.state.saveBtnDisabled}
@@ -290,6 +300,7 @@ class RecoCreatePage extends Component {
                 primary floated='right'>
                 {this.state.saveBtnDisabled ? messages['Form.Wait']:messages['Form.Save']}
             </Button>
+          <div style={{color:'red',margin:'auto',width:'200px'}}>{errors['items']}</div>
       </Form>
     )
   }
@@ -303,6 +314,7 @@ class RecoCreatePage extends Component {
           {this.renderHeaderForm(messages)}
           <Divider />
           <Grid className='recoGrid'>
+
             {this.renderRecoForms()}
           </Grid>
         </Segment>
@@ -322,6 +334,6 @@ const mapStateToProps = (state) => {
 }
 
 export default connect(mapStateToProps, {
-    notify,fetchGroupDealers,checkPhoneNumber,createRecoList,
-    blankRecoItem
+    notify,fetchGroupDealers,checkPhoneNumber,createRecoListNew,
+    blankRecoItem,blankReco
 })(injectIntl(RecoCreatePage))

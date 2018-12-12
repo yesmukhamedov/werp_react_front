@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Header,Container,Segment,Divider,Tab,Loader } from 'semantic-ui-react'
+import { Header,Container,Segment,Divider,Tab,Loader,Icon } from 'semantic-ui-react'
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
 import {Link} from 'react-router-dom'
@@ -111,6 +111,9 @@ class WerksRequestListPage extends Component{
                 <Header as='h2' floated='left'>
                     Внутренние заявки
                 </Header>
+                <Link className={'ui icon button primary right floated'} to={`/logistics/werks/requests/create`}>
+                    <Icon name='plus' /> Добавить
+                </Link>
             </Segment>
             <Divider clearing />
             <Segment attached>
