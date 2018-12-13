@@ -244,12 +244,6 @@ const AsyncFrcoln = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncArli = Loadable({
-  loader: () =>
-    import('../accounting/report/arli/arli' /* webpackChunkName: "arli" */),
-  loading: () => <LoadingPage />,
-});
-
 const AsyncAssignUserBranch = Loadable({
   loader: () =>
     import('../dit/userBranch/components/assign_user_branch' /* webpackChunkName: "ditaub" */),
@@ -311,13 +305,15 @@ const AsyncAmri = Loadable({
 });
 
 const AsyncArli = Loadable({
-  loader: () => import('../accounting/report/arli/arli' /* webpackChunkName: "arli" */),
-  loading: () => <LoadingPage />
+  loader: () =>
+    import('../accounting/report/arli/arli' /* webpackChunkName: "arli" */),
+  loading: () => <LoadingPage />,
 });
 
 const AsyncArep1 = Loadable({
-  loader: () => import('../accounting/report/arep1/arep1' /* webpackChunkName: "arep1" */),
-  loading: () => <LoadingPage />
+  loader: () =>
+    import('../accounting/report/arep1/arep1' /* webpackChunkName: "arep1" */),
+  loading: () => <LoadingPage />,
 });
 
 const AsyncFmcp = Loadable({
@@ -432,72 +428,72 @@ const AsyncLogWerksRequestForm = Loadable({
 });
 
 const getComponent = {
-    DitTransactionList:trlist,
-    Ditaub:AsyncAssignUserBranch,
-    Hrb02:AsyncHrb02,
+  DitTransactionList: trlist,
+  Ditaub: AsyncAssignUserBranch,
+  Hrb02: AsyncHrb02,
 
-    Frcoln:AsyncFrcoln,
-    Fmcp: AsyncFmcp,
-    Faci01: AsyncFaci01,
-    Faco01: AsyncFaco01,
-  
-    Amsg:AsyncAmsg,
-    Amcdd:AsyncAmcdd,
-    Ampi: AsyncAmpi,
-    Amri: AsyncAmri,
-    Arli: AsyncArli,
-    Arep1: AsyncArep1,
+  Frcoln: AsyncFrcoln,
+  Fmcp: AsyncFmcp,
+  Faci01: AsyncFaci01,
+  Faco01: AsyncFaco01,
 
-    Fcis:AsyncFcis,
-    Fa03:AsyncFa03,
-    Fa02:AsyncFa02,
-    
-    SpNew: AsyncSpNewPage,
-    SpView: AsyncSpViewPage,
-    SpList: AsyncSpListPage,
-    LogRepAccStaff: AsyncAccountabilityStaffListPage,
-    LogRepAccStaffDetail: AsyncAccountabilityStaffDetailPage,
-    Serrep1: AsyncSerrep1,
-    Serrep2: AsyncSerrep2,
-    Serrep4: AsyncSerrep4,
-    Serrep3: AsyncSerrep3,
-    CrmRepKpi: AsyncKpiReportPage,
-    CrmRepKpiRtg: AsyncKpiRatingReportPage,
-    Prcltgs:AsyncPrcltgs,
-    CrmRecoCurrent:AsyncRecoCurrentPage,
-    CrmRecoArchive:AsyncRecoArchivePage,
-    CrmRecoCreate: AsyncRecoCreatePage,
-    CrmDemoCurrent:AsyncDemoCurrentPage,
-    CrmDemoArchive:AsyncDemoArchivePage,
-    CrmVisitArchive : AsyncVisitArchivePage,
-    CrmRecoView:AsyncRecoViewPage,
-    CrmDemoView:AsyncDemoViewPage,
-    CrmVisitView:AsyncVisitViewPage,
-    CrmKpiSetting: AsyncKpiSettingPage,
-    OutCallTaskPage: AsyncOutCallTaskPage,
-    HrStaffList:AsyncStaffListPage,
-    HrStaffUpdate:AsyncStaffUpdatePage,
-    HrStaffView:AsyncStaffViewPage,
-    HrTimesheetPage:AsyncHrTimesheetPage,
-    CrmReportPage: AsyncCrmReportPage,
-    HrReportPage: AsyncHrReportPage,
-    Ccaslt: AsyncContractListPage,
-    Ccasao: AsyncSOContractListPage,
-    Ccasoc: AsyncNewIssuePageContainer,
-    Ccastskl: AsyncTaskListPage,
-    Ccastskedit: AsyncOutCallTaskPage,
-    Dtskedit: AsyncTaskPage,
-    Dtskredit: AsyncTaskRecEditPage,
-    DtskcSummary: AsyncDtskcSummary,
-    Dtskrep: AsyncTaskMonitorPage,
-    Dtskdep: AsyncDtskdep,
-    Dtskl: AsyncDeptTaskListPage,
-    Dtskc: AsyncDtskc,
-    Messgr: AsyncMessageGroupPage,
-    Mgru: AsyncMessageGroupUserPage,
-}
+  Amsg: AsyncAmsg,
+  Amcdd: AsyncAmcdd,
+  Ampi: AsyncAmpi,
+  Amri: AsyncAmri,
+  Arli: AsyncArli,
+  Arep1: AsyncArep1,
 
-const generateRoutes = (transactionRoutes) => {
+  Fcis: AsyncFcis,
+  Fa03: AsyncFa03,
+  Fa02: AsyncFa02,
+
+  SpNew: AsyncSpNewPage,
+  SpView: AsyncSpViewPage,
+  SpList: AsyncSpListPage,
+  LogRepAccStaff: AsyncAccountabilityStaffListPage,
+  LogRepAccStaffDetail: AsyncAccountabilityStaffDetailPage,
+  Serrep1: AsyncSerrep1,
+  Serrep2: AsyncSerrep2,
+  Serrep4: AsyncSerrep4,
+  Serrep3: AsyncSerrep3,
+  CrmRepKpi: AsyncKpiReportPage,
+  CrmRepKpiRtg: AsyncKpiRatingReportPage,
+  Prcltgs: AsyncPrcltgs,
+  CrmRecoCurrent: AsyncRecoCurrentPage,
+  CrmRecoArchive: AsyncRecoArchivePage,
+  CrmRecoCreate: AsyncRecoCreatePage,
+  CrmDemoCurrent: AsyncDemoCurrentPage,
+  CrmDemoArchive: AsyncDemoArchivePage,
+  CrmVisitArchive: AsyncVisitArchivePage,
+  CrmRecoView: AsyncRecoViewPage,
+  CrmDemoView: AsyncDemoViewPage,
+  CrmVisitView: AsyncVisitViewPage,
+  CrmKpiSetting: AsyncKpiSettingPage,
+  OutCallTaskPage: AsyncOutCallTaskPage,
+  HrStaffList: AsyncStaffListPage,
+  HrStaffUpdate: AsyncStaffUpdatePage,
+  HrStaffView: AsyncStaffViewPage,
+  HrTimesheetPage: AsyncHrTimesheetPage,
+  CrmReportPage: AsyncCrmReportPage,
+  HrReportPage: AsyncHrReportPage,
+  Ccaslt: AsyncContractListPage,
+  Ccasao: AsyncSOContractListPage,
+  Ccasoc: AsyncNewIssuePageContainer,
+  Ccastskl: AsyncTaskListPage,
+  Ccastskedit: AsyncOutCallTaskPage,
+  Dtskedit: AsyncTaskPage,
+  Dtskredit: AsyncTaskRecEditPage,
+  DtskcSummary: AsyncDtskcSummary,
+  Dtskrep: AsyncTaskMonitorPage,
+  Dtskdep: AsyncDtskdep,
+  Dtskl: AsyncDeptTaskListPage,
+  Dtskc: AsyncDtskc,
+  Messgr: AsyncMessageGroupPage,
+  Mgru: AsyncMessageGroupUserPage,
+};
+
+const generateRoutes = transactionRoutes => {
   return (
     <div>
       <Route exact path="/" component={MainPanel} />
@@ -535,11 +531,6 @@ const generateRoutes = (transactionRoutes) => {
         component={AsyncLogWerksRequestForm}
       />
 
-      
-
-
-      
-      
       {/* Transactions */}
       <Route path="/dit/transaction/update/:id?" component={trupdate} />
 
