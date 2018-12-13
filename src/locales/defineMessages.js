@@ -792,6 +792,34 @@ export const messages = defineMessages({
     id: 'transNameFaco01',
     defaultMessage: 'Payments to Contragents',
   },
+  transNameArep1: {
+    id: 'transNameArep1',
+    defaultMessage: 'General Ledger',
+  },
+  include: {
+    id: 'include',
+    defaultMessage: 'Include',
+  },
+  between: {
+    id: 'between',
+    defaultMessage: 'Between',
+  },
+  from: {
+    id: 'from',
+    defaultMessage: 'From ',
+  },
+  to: {
+    id: 'to',
+    defaultMessage: ' to ',
+  },
+  withoutStorno: {
+    id: 'withoutStorno',
+    defaultMessage: ' Without Storno ',
+  },
+  result: {
+    id: 'result',
+    defaultMessage: 'Result',
+  },
 
   // /Onlasyn
 

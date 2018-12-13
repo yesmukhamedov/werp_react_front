@@ -157,17 +157,17 @@ class Fa03Position extends PureComponent {
           data={this.props.bseg}
           columns={columns}
           showPagination={this.props.bseg.length > 10}
-          loadingText="Loading..."
           className="-striped -highlight"
           defaultPageSize={
             this.props.bseg.length < 11 ? this.props.bseg.length : 10
           }
-          noDataText="Нет записей"
-          previousText="Пред."
-          nextText="След."
-          rowsText="строк"
-          pageText="Страница"
-          ofText="из"
+          loadingText= {formatMessage(messages.loadingText)}
+          noDataText= {formatMessage(messages.noDataText)}
+          previousText={formatMessage(messages.previousText)}
+          nextText={formatMessage(messages.nextText)}
+          rowsText={formatMessage(messages.rowsText)}
+          pageText={formatMessage(messages.pageText)}
+          ofText={formatMessage(messages.ofText)}
         />
       </Segment>
     );

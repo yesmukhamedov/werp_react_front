@@ -258,3 +258,87 @@ export function saveAccSrcDocs(args, tcode, initFun) {
       });
   };
 }
+//AREP1/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export function fetchArep1Total(bukrs,
+    branchList,
+    budatFrom,
+    budatTo,
+    bldatFrom,
+    bldatTo,
+    hkontRadio,
+    hkontList,
+    hkontFrom,
+    hkontTo,
+    disableBudat,
+    disableStorno) {
+    
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        axios.get(`${ROOT_URL}/api/accounting/reports/arep1/getTotal`, {
+            headers: 
+            {
+                authorization: localStorage.getItem('token')
+            },
+            params:
+            {
+                bukrs,
+                branchList:branchList.join(),
+                budatFrom,
+                budatTo,
+                bldatFrom,
+                bldatTo,
+                hkontRadio,
+                hkontList:hkontList.join(),
+                hkontFrom,
+                hkontTo,
+                disableBudat,
+                disableStorno
+                
+            }
+        })
+        .then(({data}) => {
+            
+            dispatch(modifyLoader(false));
+            dispatch({
+                type: FETCH_DYNOBJ_ACC,
+                data:data
+            });
+    
+        })
+        .catch(error => {
+            handleError(error,dispatch);
+            dispatch(modifyLoader(false));
+        });
+    }
+}
+export function fetchArep1Detail(bukrs,branchId,hkont,bldatFrom,bldatTo,disableBudat,budatFrom,budatTo,disableStorno,waers) {
+    
+    return function(dispatch) {
+        dispatch(modifyLoader(true));
+        axios.get(`${ROOT_URL}/api/accounting/reports/arep1/getDetail`, {
+            headers: 
+            {
+                authorization: localStorage.getItem('token')
+            },
+            params:
+            {
+                bukrs,branchId,hkont,bldatFrom,bldatTo,disableBudat,budatFrom,budatTo,disableStorno,waers
+                
+            }
+        })
+        .then(({data}) => {
+            
+            dispatch(modifyLoader(false));
+            dispatch({
+                type: FETCH_DYNOBJ_ACC,
+                data:data
+            });
+    
+        })
+        .catch(error => {
+            handleError(error,dispatch);
+            dispatch(modifyLoader(false));
+        });
+    }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

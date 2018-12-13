@@ -502,4 +502,12 @@
 	,"transNameAmri":"Прочие доходы (СФ)"
 	,"transNameFaci01":"Платеж от контрагента"
 	,"transNameFaco01":"Оплата контрагенту"
+
+	,"transNameArep1":"Счет Гл. Книги"
+	,"include":"Включительно"
+	,"between":"Между"
+	,"from":" C "
+	,"to":" по "
+    ,"withoutStorno":" Без сторно "
+	,"result":"Результат"
 }

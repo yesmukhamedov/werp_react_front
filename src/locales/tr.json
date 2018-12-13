@@ -525,4 +525,12 @@
 	,"transNameAmri":"Receipt Invoice"
 	,"transNameFaci01":"Cash Receipts From Contragents"
 	,"transNameFaco01":"Payments to Contragents"
+
+	,"transNameArep1":"General Ledger"
+	,"include":"Include"
+	,"between":"Between"
+	,"from":" From "
+	,"to":" to "
+    ,"withoutStorno":"Without Storno"
+	,"result":"Result"
   }

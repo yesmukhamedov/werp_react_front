@@ -9,20 +9,22 @@ import {
 // import moment from 'moment';
 const INITIAL_STATE = { dynamicObject: {} };
 
-export default function(state = INITIAL_STATE, action) {
-  switch (action.type) {
-    case FETCH_AMCDD:
-      return { ...state, dynamicObject: action.data };
-    case CHANGE_AMCDD:
-      return { ...state, dynamicObject: action.data };
-    case CLEAR_AMCDD:
-      return { ...state, dynamicObject: {} };
-    case FETCH_DYNOBJ_ACC:
-      return { ...state, dynamicObject: action.data };
-    case CHANGE_DYNOBJ_ACC:
-      return { ...state, dynamicObject: action.data };
-    case CLEAR_DYNOBJ_ACC:
-      return { ...state, dynamicObject: {} };
+export default function (state=INITIAL_STATE, action)
+{
+    switch(action.type)
+    {
+        case FETCH_AMCDD:
+            return {...state, dynamicObject: action.data};  
+        case CHANGE_AMCDD:            
+                return {...state, dynamicObject: action.data};  
+        case CLEAR_AMCDD:            
+            return {...state, dynamicObject: {}};
+        case FETCH_DYNOBJ_ACC:
+            return {...state, dynamicObject: {...state.dynamicObject,...action.data}};  
+        case CHANGE_DYNOBJ_ACC:            
+            return {...state, dynamicObject: {...state.dynamicObject,...action.data}};  
+        case CLEAR_DYNOBJ_ACC:            
+            return {...state, dynamicObject: {}};
 
     default:
       return state;
