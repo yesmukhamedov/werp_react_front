@@ -10,7 +10,6 @@ import persistPath from './PersistPath';
 import ForbiddenPage from '../general/forbidden';
 import LoadingPage from '../general/LoadingPage';
 
-
 const AsyncSettings = Loadable({
   loader: () =>
     import('../components/UserSettings/Settings' /* webpackChunkName: "Settings" */),
@@ -424,7 +423,13 @@ const AsyncLogWerksRequestList = Loadable({
 
 const AsyncLogWerksRequestForm = Loadable({
   loader: () =>
-    import('../logistics/mainoperation/components/WerksRequestFormPage' /* webpackChunkName: "WerksRequestListPage" */),
+    import('../logistics/mainoperation/components/WerksRequestFormPage' /* webpackChunkName: "WerksRequestFormPage" */),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncLogWerksRequestView = Loadable({
+  loader: () =>
+    import('../logistics/mainoperation/components/WerksRequestViewPage' /* webpackChunkName: "WerksRequestViewPage" */),
   loading: () => <LoadingPage />,
 });
 
@@ -521,15 +526,24 @@ const generateRoutes = transactionRoutes => {
       <Route path="/general/summary" component={AsyncDtskcSummary} />
       <Route
         path="/logistics/werks/requests"
+        exact={true}
         component={AsyncLogWerksRequestList}
       />
       <Route
         path="/logistics/werks/requests/create"
+        exact={true}
         component={AsyncLogWerksRequestForm}
       />
       <Route
         path="/logistics/werks/requests/update/:id"
+        exact={true}
         component={AsyncLogWerksRequestForm}
+      />
+
+      <Route
+        path="/logistics/werks/requests/:id"
+        exact={true}
+        component={AsyncLogWerksRequestView}
       />
 
       {/* Transactions */}
