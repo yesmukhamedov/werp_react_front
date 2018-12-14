@@ -44,8 +44,37 @@ export const F4_CLEAR_SUB_COMPANIES = 'F4_CLEAR_SUB_COMPANIES';
 export const F4_FETCH_WERKSBRANCH_LIST = 'F4_FETCH_WERKSBRANCH_LIST';
 export const F4_CLEAR_WERKSBRANCH_LIST = 'F4_CLEAR_WERKSBRANCH_LIST';
 
-export const F4_FETCH_STAFF_LIST = 'F4_FETCH_STAFF_LIST';
-export const F4_CLEAR_STAFF_LIST = 'F4_CLEAR_STAFF_LIST';
+export const F4_FETCH_STAFF_LIST = 'F4_FETCH_STAFF_LIST'
+export const F4_CLEAR_STAFF_LIST = 'F4_CLEAR_STAFF_LIST'
+
+export const F4_FETCH_BUKRS_BRANCHES = 'F4_FETCH_BUKRS_BRANCHES'
+export const F4_CLEAR_BUKRS_BRANCHES = 'F4_CLEAR_BUKRS_BRANCHES'
+
+export function f4FetchBranchesByBukrs(bukrs){
+    return function(dispatch) {
+        axios.get(`${ROOT_URL}/api/reference/branches/` + bukrs, {
+            headers: {
+                authorization: localStorage.getItem('token')
+            }
+        }).then(({data}) => {
+            dispatch({
+                type: F4_FETCH_BUKRS_BRANCHES,
+                payload:data
+            });
+        })
+
+            .catch(error => {
+                handleError(error,dispatch);
+            });
+    }
+}
+
+export function f4ClearBranchesByBukrs(){
+    return {
+        type: F4_CLEAR_BUKRS_BRANCHES,
+        payload: []
+    }
+}
 
 export function f4FetchDepartmentList() {
   return function(dispatch) {
