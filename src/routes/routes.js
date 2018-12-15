@@ -541,7 +541,7 @@ const generateRoutes = transactionRoutes => {
       />
 
       <Route
-        path="/logistics/werks/requests/:id"
+        path="/logistics/werks/requests/view/:id"
         exact={true}
         component={AsyncLogWerksRequestView}
       />

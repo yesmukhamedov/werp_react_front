@@ -105,10 +105,7 @@ class WerksRequestListPage extends Component {
                     <Link
                       target={'_blank'}
                       className={'ui icon button mini'}
-                      to={this.getDocViewLink(
-                        props.original.context,
-                        props.original.contextId,
-                      )}
+                      to={'/logistics/werks/requests/view/' + props.original.id}
                     >
                       Просмотр
                     </Link>

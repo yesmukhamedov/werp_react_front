@@ -182,7 +182,7 @@ class WerksRequestFormPage extends Component {
     this.props
       .createWerksRequest(this.state.model)
       .then(({ data }) => {
-        window.location.pathname = '/logistics/werks/requests/' + data.id;
+        window.location.pathname = '/logistics/werks/requests/view/' + data.id;
       })
       .catch(error => {
         let stateErrors = {};
