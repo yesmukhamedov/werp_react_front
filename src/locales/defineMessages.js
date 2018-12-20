@@ -820,7 +820,26 @@ export const messages = defineMessages({
     id: 'result',
     defaultMessage: 'Result',
   },
-
+  transNameFaia: {
+    id: 'transNameFaia',
+    defaultMessage: 'Work Advances',
+  },
+  receipt: {
+    id: 'receipt',
+    defaultMessage: 'Receipt',
+  },
+  issue: {
+    id: 'issue',
+    defaultMessage: 'Issue',
+  },
+  balance: {
+    id: 'balance',
+    defaultMessage: 'Balance',
+  },
+  employeesOnAccount: {
+    id: 'employeesOnAccount',
+    defaultMessage: 'Employees on account',
+  },
   // /Onlasyn
 
   Form: {

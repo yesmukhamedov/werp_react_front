@@ -7,64 +7,98 @@ import {
   List,
   Button,
   Icon,
+  Table,
+  Dropdown,
+  Input,
+  Label,
 } from 'semantic-ui-react';
 import moment from 'moment';
 import FaHeader from '../../faHeader';
-import FcisPosition from './fcisPosition';
 import {
   f4FetchDepartmentList,
   f4FetchCurrencyList,
-  f4FetchBusinessAreaList2,
   f4FetchExchangeRateNational,
 } from '../../../reference/f4/f4_action';
 import {
   clearfaBkpf,
   changefaBkpf,
   fetchCashBankHkontsByBranch,
-  changeDynObj,
-  clearDynObj,
-  saveFcis,
+  saveFaia,
 } from '../../fa_action';
-import { moneyInputHanler } from '../../../utils/helpers';
+import {
+  moneyInputHanler,
+  handleFocus,
+  moneyFormat,
+} from '../../../utils/helpers';
 import OutputErrors from '../../../general/error/outputErrors';
 import { modifyLoader } from '../../../general/loader/loader_action';
 import { injectIntl } from 'react-intl';
 import { messages } from '../../../locales/defineMessages';
+import StaffF4Modal from '../../../reference/f4/staff/staffF4Modal';
+import WorkAccList from './workAccList';
+import CashBankBalance from '../../../reference/f4/cashBankBalance/cashBankBalance';
 
 require('moment/locale/ru');
 
-class Fcis extends Component {
+class Faia extends Component {
   constructor(props) {
     super(props);
     this.initializeBkpfBseg = this.initializeBkpfBseg.bind(this);
     this.initialBseg = this.initialBseg.bind(this);
+    this.staffF4ModalOpenHanlder = this.staffF4ModalOpenHanlder.bind(this);
     this.state = {
       errors: [],
+      staffF4ModalOpen: false,
+      lifnr: '',
+      staffId: '',
+      staffFio: '',
+      hkont: '',
+      shkzg: '',
+      summa: 0,
+      showCBB: false,
+      showWAL: false,
     };
   }
+
   componentDidMount() {
     this.initializeBkpfBseg();
 
-    this.props.f4FetchCurrencyList('fcis');
+    this.props.f4FetchCurrencyList('faia');
     this.props.f4FetchDepartmentList();
-    this.props.f4FetchBusinessAreaList2();
     this.props.f4FetchExchangeRateNational();
   }
 
   componentWillUnmount() {
     this.props.clearfaBkpf();
-    this.props.clearDynObj();
   }
 
   componentWillReceiveProps(nextProps) {
+    if (nextProps.bkpf.bukrs !== this.props.bkpf.bukrs) {
+      this.setState({
+        staffF4ModalOpen: false,
+        lifnr: '',
+        staffId: '',
+        staffFio: '',
+        hkont: '',
+        shkzg: '',
+        summa: 0,
+      });
+      // nextProps.myProp has a different value than our current prop
+      // so we can perform some calculations based on the new value
+    }
     if (nextProps.bkpf.brnch !== this.props.bkpf.brnch) {
       this.props.fetchCashBankHkontsByBranch(
         nextProps.bkpf.bukrs,
         nextProps.bkpf.brnch,
       );
-      this.props.changeDynObj({
-        ...this.props.bseg,
-        hkont_s: '',
+      this.setState({
+        staffF4ModalOpen: false,
+        lifnr: '',
+        staffId: '',
+        staffFio: '',
+        hkont: '',
+        shkzg: '',
+        summa: 0,
       });
       // nextProps.myProp has a different value than our current prop
       // so we can perform some calculations based on the new value
@@ -74,9 +108,8 @@ class Fcis extends Component {
         nextProps.bkpf.bukrs,
         nextProps.bkpf.brnch,
       );
-      this.props.changeDynObj({
-        ...this.props.bseg,
-        hkont_s: '',
+      this.setState({
+        hkont: '',
       });
       // nextProps.myProp has a different value than our current prop
       // so we can perform some calculations based on the new value
@@ -84,33 +117,31 @@ class Fcis extends Component {
   }
 
   onInputChange(value, stateFieldName) {
-    const bseg = { ...this.props.bseg };
     if (stateFieldName === 'summa') {
       const newVal = moneyInputHanler(value, 2);
       if (newVal !== undefined) {
-        this.props.changeDynObj({
-          ...bseg,
+        this.setState({
           [stateFieldName]: newVal,
         });
       }
     } else if (stateFieldName === 'lifnr') {
-      this.props.changeDynObj({
-        ...bseg,
+      this.setState({
         lifnr: value.customerId,
         staffFio: value.fio,
         staffId: value.staffId,
       });
     } else {
-      this.props.changeDynObj({
-        ...bseg,
+      this.setState({
         [stateFieldName]: value,
       });
     }
   }
-
+  staffF4ModalOpenHanlder(bool) {
+    this.setState({ staffF4ModalOpen: bool });
+  }
   initializeBkpfBseg() {
     const bkpf = Object.assign({}, this.props.initialBkpf);
-    bkpf.blart = 'S2';
+    bkpf.blart = 'IA';
     bkpf.budat = moment().format('DD.MM.YYYY');
     bkpf.bldat = moment().format('DD.MM.YYYY');
 
@@ -118,12 +149,14 @@ class Fcis extends Component {
     this.initialBseg();
   }
   initialBseg() {
-    this.props.changeDynObj({
+    this.setState({
+      errors: [],
+      staffF4ModalOpen: false,
       lifnr: '',
       staffId: '',
       staffFio: '',
-      hkont_s: '',
-      hkont_h: '',
+      hkont: '',
+      shkzg: '',
       summa: 0,
     });
   }
@@ -133,8 +166,8 @@ class Fcis extends Component {
     errors = this.validate();
     if (errors === null || errors === undefined || errors.length === 0) {
       const bkpf = { ...this.props.bkpf };
-      const bseg = { ...this.props.bseg };
-      this.props.saveFcis(bkpf, bseg, () => this.initializeBkpfBseg());
+      const bseg = { ...this.state };
+      this.props.saveFaia(bkpf, bseg, () => this.initializeBkpfBseg());
     } else {
       this.props.modifyLoader(false);
     }
@@ -165,11 +198,11 @@ class Fcis extends Component {
       errors.push(errorTable[`15${language}`]);
     }
 
-    const { lifnr, hkont_s, hkont_h, summa } = this.props.bseg;
-    if (hkont_h === null || hkont_h === undefined || !hkont_h) {
+    const { lifnr, shkzg, hkont, summa } = this.state;
+    if (shkzg === null || shkzg === undefined || !shkzg) {
       errors.push(errorTable[`16${language}`]);
     }
-    if (hkont_s === null || hkont_s === undefined || !hkont_s) {
+    if (hkont === null || hkont === undefined || !hkont) {
       errors.push(errorTable[`3${language}`]);
     }
     if (lifnr === null || lifnr === undefined || !lifnr) {
@@ -188,6 +221,18 @@ class Fcis extends Component {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
+    const { waers, bukrs, brnch } = this.props.bkpf;
+    const {
+      staffF4ModalOpen,
+      lifnr,
+      staffFio,
+      shkzg,
+      hkont,
+      summa,
+      showCBB,
+      showWAL,
+    } = this.state;
     const bkpfInfo = {
       bukrsInfo: { readOnly: false, disabled: false },
       brnchInfo: { readOnly: false, disabled: false },
@@ -203,23 +248,13 @@ class Fcis extends Component {
       zregInfo: { readOnly: true, disabled: true },
     };
 
-    const { waers, bukrs, brnch } = this.props.bkpf;
-
     const hkontOptions = this.props.hkontOptions
       .filter(wa => wa.dynvalue === waers)
       .map((wa, idx) => ({ key: idx, value: wa.value, text: wa.text }));
 
-    const { lifnr, staffFio, hkont_s, hkont_h, summa } = this.props.bseg;
-
-    const { formatMessage } = this.props.intl;
-
-    const hkontOptions_h = [
-      { key: 1, text: formatMessage(messages.payDebt), value: '33500002' },
-      {
-        key: 2,
-        text: formatMessage(messages.toEmployeeAccount),
-        value: '33500001',
-      },
+    const shkzgOptions = [
+      { key: 1, text: formatMessage(messages.receipt), value: 'S' },
+      { key: 2, text: formatMessage(messages.issue), value: 'H' },
     ];
 
     return (
@@ -232,8 +267,19 @@ class Fcis extends Component {
           paddingRight: '2em',
         }}
       >
+        <StaffF4Modal
+          open={staffF4ModalOpen}
+          closeModal={bool => this.staffF4ModalOpenHanlder(bool)}
+          onStaffSelect={item => this.onInputChange(item, 'lifnr')}
+          trans="faia"
+          brnch={brnch}
+          branchOptions={this.props.branchOptions}
+          bukrs={bukrs}
+          companyOptions={this.props.companyOptions}
+          bukrsDisabledParent
+        />
         <Header as="h2" block>
-          {formatMessage(messages.transNameFcis)}
+          {formatMessage(messages.transNameFaia)}
         </Header>
         <Segment padded size="small">
           <List horizontal>
@@ -252,29 +298,118 @@ class Fcis extends Component {
                 </Button>
               </List.Content>
             </List.Item>
+            <List.Item>
+              <List.Content>
+                <Button
+                  content={
+                    formatMessage(messages.balance) +
+                    ' ' +
+                    formatMessage(messages.cashBank)
+                  }
+                  onClick={() =>
+                    this.setState({ showCBB: !this.state.showCBB })
+                  }
+                  color={this.state.showCBB ? 'red' : 'green'}
+                />
+              </List.Content>
+            </List.Item>
+            <List.Item>
+              <List.Content>
+                <Button
+                  content={formatMessage(messages.employeesOnAccount)}
+                  onClick={() =>
+                    this.setState({ showWAL: !this.state.showWAL })
+                  }
+                  color={this.state.showWAL ? 'red' : 'green'}
+                />
+              </List.Content>
+            </List.Item>
           </List>
         </Segment>
 
+        <CashBankBalance bukrs={bukrs} brnch={brnch} show={showCBB} />
+        <WorkAccList bukrs={bukrs} brnch={brnch} show={showWAL} />
         <OutputErrors errors={this.state.errors} />
-
         <FaHeader {...this.props} bkpfInfo={bkpfInfo} />
-        <FcisPosition
-          hkontOptions_s={hkontOptions}
-          hkontOptions_h={hkontOptions_h}
-          waers={waers}
-          lifnr={lifnr}
-          staffFio={staffFio}
-          hkont_s={hkont_s}
-          hkont_h={hkont_h}
-          summa={summa}
-          brnch={brnch}
-          branchOptions={this.props.branchOptions}
-          bukrs={bukrs}
-          companyOptions={this.props.companyOptions}
-          onInputChange={(value, stateFieldName) => {
-            this.onInputChange(value, stateFieldName);
-          }}
-        />
+
+        <Segment padded size="small">
+          <Label color="red" ribbon>
+            {formatMessage(messages.position)}
+          </Label>
+
+          <Table>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>
+                  {formatMessage(messages.operation)}
+                </Table.HeaderCell>
+                <Table.HeaderCell>
+                  {formatMessage(messages.cashBank)}
+                </Table.HeaderCell>
+                <Table.HeaderCell>
+                  {formatMessage(messages.employee)}
+                </Table.HeaderCell>
+                <Table.HeaderCell>
+                  {formatMessage(messages.amount)}
+                </Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              <Table.Row>
+                <Table.Cell>
+                  <Dropdown
+                    placeholder={formatMessage(messages.operation)}
+                    selection
+                    options={shkzgOptions || []}
+                    value={shkzg}
+                    onChange={(e, { value }) =>
+                      this.onInputChange(value, 'shkzg')
+                    }
+                  />
+                </Table.Cell>
+                <Table.Cell>
+                  <Dropdown
+                    placeholder={formatMessage(messages.cashBank)}
+                    selection
+                    options={hkontOptions || []}
+                    value={hkont}
+                    onChange={(e, { value }) =>
+                      this.onInputChange(value, 'hkont')
+                    }
+                  />
+                </Table.Cell>
+                <Table.Cell>
+                  <span>
+                    {' '}
+                    {staffFio}{' '}
+                    <Button
+                      icon="external"
+                      onClick={() => {
+                        this.staffF4ModalOpenHanlder(true);
+                      }}
+                    />
+                  </span>
+                </Table.Cell>
+                <Table.Cell>
+                  <Input
+                    label={waers}
+                    labelPosition="left"
+                    color="teal"
+                    value={moneyFormat(summa)}
+                    onFocus={handleFocus}
+                    maxLength="18"
+                    onChange={(e, { value }) =>
+                      this.onInputChange(value, 'summa')
+                    }
+                  />
+                </Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          </Table>
+        </Segment>
+
+        {/* <WorkAccList bukrs={this.props.bkpf.bukrs} brnch={this.props.bkpf.brnch}/> */}
+
         <br />
         <br />
         <br />
@@ -316,13 +451,10 @@ export default connect(
     f4FetchDepartmentList,
     f4FetchCurrencyList,
     modifyLoader,
-    saveFcis,
-    f4FetchBusinessAreaList2,
+    saveFaia,
     f4FetchExchangeRateNational,
     changefaBkpf,
     clearfaBkpf,
     fetchCashBankHkontsByBranch,
-    changeDynObj,
-    clearDynObj,
   },
-)(injectIntl(Fcis));
+)(injectIntl(Faia));

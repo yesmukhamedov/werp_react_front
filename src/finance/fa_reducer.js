@@ -8,6 +8,8 @@ import {
   CLEAR_DYNOBJ_FI,
   FETCH_EXPENSEHKONTS_BY_BUKRS,
   CLEAR_EXPENSEHKONTS_BY_BUKRS,
+  FETCH_WORK_ACCOUNTABLE_LIST,
+  CLEAR_WORK_ACCOUNTABLE_LIST,
 } from './fa_action';
 
 const INITIAL_STATE = {
@@ -44,6 +46,7 @@ const INITIAL_STATE = {
     },
   },
   dynamicObject: {},
+  workAccountableList: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -81,6 +84,11 @@ export default function(state = INITIAL_STATE, action) {
       };
     case CLEAR_DYNOBJ_FI:
       return { ...state, dynamicObject: {} };
+
+    case FETCH_WORK_ACCOUNTABLE_LIST:
+      return { ...state, workAccountableList: action.data };
+    case CLEAR_WORK_ACCOUNTABLE_LIST:
+      return { ...state, workAccountableList: [] };
 
     default:
       return state;

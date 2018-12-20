@@ -340,6 +340,12 @@ const AsyncFaco01 = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncFaia = Loadable({
+  loader: () =>
+    import('../finance/mainoperation/faia/faia' /* webpackChunkName: "faia" */),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncHrRecruitmentPage = Loadable({
   loader: () =>
     import('../hr/mainoperation/document/components/HrRecruitmentPage' /* webpackChunkName: "HrRecruitmentPage" */),
@@ -438,11 +444,6 @@ const getComponent = {
   Ditaub: AsyncAssignUserBranch,
   Hrb02: AsyncHrb02,
 
-  Frcoln: AsyncFrcoln,
-  Fmcp: AsyncFmcp,
-  Faci01: AsyncFaci01,
-  Faco01: AsyncFaco01,
-
   Amsg: AsyncAmsg,
   Amcdd: AsyncAmcdd,
   Ampi: AsyncAmpi,
@@ -450,9 +451,14 @@ const getComponent = {
   Arli: AsyncArli,
   Arep1: AsyncArep1,
 
+  Frcoln: AsyncFrcoln,
+  Fmcp: AsyncFmcp,
+  Faci01: AsyncFaci01,
+  Faco01: AsyncFaco01,
   Fcis: AsyncFcis,
   Fa03: AsyncFa03,
   Fa02: AsyncFa02,
+  Faia: AsyncFaia,
 
   SpNew: AsyncSpNewPage,
   SpView: AsyncSpViewPage,
@@ -524,6 +530,7 @@ const generateRoutes = transactionRoutes => {
       <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />
       <Route path="/documents/mydocs" component={AsyncMyDocsListPage} />
       <Route path="/general/summary" component={AsyncDtskcSummary} />
+
       <Route
         path="/logistics/werks/requests"
         exact={true}
