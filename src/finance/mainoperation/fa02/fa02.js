@@ -6,7 +6,6 @@ import {
   Table,
   Dropdown,
   Icon,
-  Grid,
   Segment,
   Input,
   Header,

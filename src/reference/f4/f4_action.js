@@ -44,36 +44,48 @@ export const F4_CLEAR_SUB_COMPANIES = 'F4_CLEAR_SUB_COMPANIES';
 export const F4_FETCH_WERKSBRANCH_LIST = 'F4_FETCH_WERKSBRANCH_LIST';
 export const F4_CLEAR_WERKSBRANCH_LIST = 'F4_CLEAR_WERKSBRANCH_LIST';
 
-export const F4_FETCH_STAFF_LIST = 'F4_FETCH_STAFF_LIST'
-export const F4_CLEAR_STAFF_LIST = 'F4_CLEAR_STAFF_LIST'
+export const F4_FETCH_STAFF_LIST = 'F4_FETCH_STAFF_LIST';
+export const F4_CLEAR_STAFF_LIST = 'F4_CLEAR_STAFF_LIST';
 
-export const F4_FETCH_BUKRS_BRANCHES = 'F4_FETCH_BUKRS_BRANCHES'
-export const F4_CLEAR_BUKRS_BRANCHES = 'F4_CLEAR_BUKRS_BRANCHES'
+export const F4_FETCH_BUKRS_BRANCHES = 'F4_FETCH_BUKRS_BRANCHES';
+export const F4_CLEAR_BUKRS_BRANCHES = 'F4_CLEAR_BUKRS_BRANCHES';
 
-export function f4FetchBranchesByBukrs(bukrs){
-    return function(dispatch) {
-        axios.get(`${ROOT_URL}/api/reference/branches/` + bukrs, {
-            headers: {
-                authorization: localStorage.getItem('token')
-            }
-        }).then(({data}) => {
-            dispatch({
-                type: F4_FETCH_BUKRS_BRANCHES,
-                payload:data
-            });
-        })
+export const F4_FETCH_CASHBANK_BALANCE_LIST = 'F4_FETCH_CASHBANK_BALANCE_LIST';
+export const F4_CLEAR_CASHBANK_BALANCE_LIST = 'F4_CLEAR_CASHBANK_BALANCE_LIST';
 
-            .catch(error => {
-                handleError(error,dispatch);
-            });
-    }
+export function f4ClearAnyObject(a_const) {
+  const obj = {
+    type: a_const,
+  };
+  return obj;
 }
 
-export function f4ClearBranchesByBukrs(){
-    return {
-        type: F4_CLEAR_BUKRS_BRANCHES,
-        payload: []
-    }
+export function f4FetchBranchesByBukrs(bukrs) {
+  return function(dispatch) {
+    axios
+      .get(`${ROOT_URL}/api/reference/branches/` + bukrs, {
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
+      })
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_BUKRS_BRANCHES,
+          payload: data,
+        });
+      })
+
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4ClearBranchesByBukrs() {
+  return {
+    type: F4_CLEAR_BUKRS_BRANCHES,
+    payload: [],
+  };
 }
 
 export function f4FetchDepartmentList() {
@@ -490,4 +502,27 @@ export function f4ClearStaffList() {
     type: F4_CLEAR_STAFF_LIST,
   };
   return obj;
+}
+
+///////////////////////////////////////////////////////////////////////
+export function f4FetchCashBankBalanceList(a_bukrs, a_branch, a_callBackFun) {
+  return function(dispatch) {
+    axios
+      .get(`${ROOT_URL}/api/reference/cashBankBalance`, {
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
+        params: {
+          bukrs: a_bukrs,
+          branch: a_branch,
+        },
+      })
+      .then(({ data }) => {
+        a_callBackFun();
+        dispatch({
+          type: F4_FETCH_CASHBANK_BALANCE_LIST,
+          data: data.cashBankBalanceList,
+        });
+      });
+  };
 }

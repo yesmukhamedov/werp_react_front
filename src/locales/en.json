@@ -1,92 +1,92 @@
 {
-  "L__CONTRACT_INFO":"Detailed information on contract",
-	"L__CLIENT_INFO":"Client information",
-	"L__CLIENT_FINANCE_INFO": "Client financial information",
-	"L__PURCHASES": "Other purchases",
-	"L__CONTRACT_NUMBER": "Contract number",
-	"L__CONTRACT_DATE": "Contract date",
-	"L__BRANCH": "Branch",
-	"L__CLIENT_FULLNAME": "Client's fullname",
-	"L__CLIENT_IIN": "Client's IIN",
-	"L__DEALER": "Dealer",
-	"L__CLIENT_STATUS": "Client's status",
-	"L__ISSUED_TO": "Issued to",
-	"L__INITIAL_AMOUNT": "Initial amount",
-	"L__INSTALLMENT_TERM": "Installment term",
-	"L__REMAINING_AMOUNT": "Remaining amount",
-	"L__DEALER_DISCOUNT": "Dealer discount",
-	"L__RECOMMENDER_DISCOUNT": "Recommender discount",
-	"L__PAY_VIA": "Make payment via",
-	"L__FINANCIAL_AGENT": "Financial agent",
-	"L__RECOMMENDER": "Recommender",
-	"L__SUPPLEMENTAL_INFO": "Supplemental information",
-	"L__PRODUCT_SERIAL_NUMBER": "Product partnumber",
-	"L__GIFTS": "Gifts",
-	"L__PRODUCTS": "Products",
-	"L__RETURN_DATE": "Return date",
-	"TBL_H__CONTRACT_NUMBER": "Contract #",
-	"TBL_H__PRODUCT": "Product",
-	"H__ORDER_NUMBER": "Order #",
-	"BTN__ASSIGN": "Assign to me",
-	"BTN__EDIT": "Edit",
-	"L__CREATE_DATE": "Created date",
-	"L__MODIFIED_DATE": "Modified date",
-	"L__ORDER_ISSUER": "Order issuer",
-	"L__ORDER_STATUS": "Order status",
+  "L__CONTRACT_INFO": "Detailed information on contract",
+  "L__CLIENT_INFO": "Client information",
+  "L__CLIENT_FINANCE_INFO": "Client financial information",
+  "L__PURCHASES": "Other purchases",
+  "L__CONTRACT_NUMBER": "Contract number",
+  "L__CONTRACT_DATE": "Contract date",
+  "L__BRANCH": "Branch",
+  "L__CLIENT_FULLNAME": "Client's fullname",
+  "L__CLIENT_IIN": "Client's IIN",
+  "L__DEALER": "Dealer",
+  "L__CLIENT_STATUS": "Client's status",
+  "L__ISSUED_TO": "Issued to",
+  "L__INITIAL_AMOUNT": "Initial amount",
+  "L__INSTALLMENT_TERM": "Installment term",
+  "L__REMAINING_AMOUNT": "Remaining amount",
+  "L__DEALER_DISCOUNT": "Dealer discount",
+  "L__RECOMMENDER_DISCOUNT": "Recommender discount",
+  "L__PAY_VIA": "Make payment via",
+  "L__FINANCIAL_AGENT": "Financial agent",
+  "L__RECOMMENDER": "Recommender",
+  "L__SUPPLEMENTAL_INFO": "Supplemental information",
+  "L__PRODUCT_SERIAL_NUMBER": "Product partnumber",
+  "L__GIFTS": "Gifts",
+  "L__PRODUCTS": "Products",
+  "L__RETURN_DATE": "Return date",
+  "TBL_H__CONTRACT_NUMBER": "Contract #",
+  "TBL_H__PRODUCT": "Product",
+  "H__ORDER_NUMBER": "Order #",
+  "BTN__ASSIGN": "Assign to me",
+  "BTN__EDIT": "Edit",
+  "L__CREATE_DATE": "Created date",
+  "L__MODIFIED_DATE": "Modified date",
+  "L__ORDER_ISSUER": "Order issuer",
+  "L__ORDER_STATUS": "Order status",
   "H__TASKS": "Tasks",
   "H__MY_TASKS": "My tasks",
   "H__ALL_TASKS": "All tasks",
-	"TBL_H__STATUS": "Status",
-	"TBL_H__PRIORITY": "Priority",
-	"TBL_H__TITLE": "Title",
-	"TBL_H__ASSIGNED_TO": "Assigned to",
-	"TBL_H__MODIFIED_DATE": "Modified date",
-	"BTN__NEW_TASK": "New task",
-	"H__COMMENTS": "Comments",
-	"H__ORDER_EDIT": "Order edit",
-	"L__STATUS": "Status",
-	"L__EDIT_DESCRIPTION": "Edit description",
-	"BTN__CANCEL": "Cancel",
-	"BTN__CREATE": "Create",
-	"H__NEW_TASK": "New Task",
-	"L__TITLE": "Title",
-	"L__TASK_DESCRIPTION": "Task description",
-	"L__PRIORITY": "Priority",
-	"L__DEPARTMENT": "Department",
-	"L__POSITION": "Position",
+  "TBL_H__STATUS": "Status",
+  "TBL_H__PRIORITY": "Priority",
+  "TBL_H__TITLE": "Title",
+  "TBL_H__ASSIGNED_TO": "Assigned to",
+  "TBL_H__MODIFIED_DATE": "Modified date",
+  "BTN__NEW_TASK": "New task",
+  "H__COMMENTS": "Comments",
+  "H__ORDER_EDIT": "Order edit",
+  "L__STATUS": "Status",
+  "L__EDIT_DESCRIPTION": "Edit description",
+  "BTN__CANCEL": "Cancel",
+  "BTN__CREATE": "Create",
+  "H__NEW_TASK": "New Task",
+  "L__TITLE": "Title",
+  "L__TASK_DESCRIPTION": "Task description",
+  "L__PRIORITY": "Priority",
+  "L__DEPARTMENT": "Department",
+  "L__POSITION": "Position",
   "BTN__CONTACT_INFO": "Show contact details",
-	"BTN__HIDE_CONTACT_INFO": "Hide contact details",
-	"L__HOME_ADDRESS": "Home address",
-	"L__WORK_ADDRESS": "Work address",
-	"L__HOME_PHONE": "Home phone",
-	"L__MOBILE_PHONE1": "Mobile phone 1",
-	"L__MOBILE_PHONE2": "Mobile phone 2",
-	"H__MONTHLY_INSTALLMENT_SCHEDULE": "Monthly installment schedule",
-	"TBL_H__DATE": "Date",
-	"TBL_H__AMOUNT": "Amount",
+  "BTN__HIDE_CONTACT_INFO": "Hide contact details",
+  "L__HOME_ADDRESS": "Home address",
+  "L__WORK_ADDRESS": "Work address",
+  "L__HOME_PHONE": "Home phone",
+  "L__MOBILE_PHONE1": "Mobile phone 1",
+  "L__MOBILE_PHONE2": "Mobile phone 2",
+  "H__MONTHLY_INSTALLMENT_SCHEDULE": "Monthly installment schedule",
+  "TBL_H__DATE": "Date",
+  "TBL_H__AMOUNT": "Amount",
   "TBL_H__PAID": "Paid",
   "TBL_H__MANAGER": "Department manager",
   "H__HISTORY": "Task history",
-	"TX__TITLE_CHANGED": "TITLE has changed from",
-	"TX__DESCRIPTION_CHANGED": "DESCRIPTION  has changed from",
-	"TX__STATUS_CHANGED": "STATUS  has changed from",
-	"TX__PRIORITY_CHANGED":"PRIORITY has changed from",
-	"TX__BRANCH_CHANGED": "BRANCH has changed from",
-	"TX__DEPARTMENT_CHANGED": "DEPARTMENT has changed from",
-	"TX__POSITION_CHANGED": "POSITION has changed from",
-	"TX__ENDDATE_CHANGED": "END DATE  has changed from",
-	"TX__ASSIGNEE_CHANGED": "ASSIGNEE  has changed from",
+  "TX__TITLE_CHANGED": "TITLE has changed from",
+  "TX__DESCRIPTION_CHANGED": "DESCRIPTION  has changed from",
+  "TX__STATUS_CHANGED": "STATUS  has changed from",
+  "TX__PRIORITY_CHANGED": "PRIORITY has changed from",
+  "TX__BRANCH_CHANGED": "BRANCH has changed from",
+  "TX__DEPARTMENT_CHANGED": "DEPARTMENT has changed from",
+  "TX__POSITION_CHANGED": "POSITION has changed from",
+  "TX__ENDDATE_CHANGED": "END DATE  has changed from",
+  "TX__ASSIGNEE_CHANGED": "ASSIGNEE  has changed from",
   "TX__TO": "to",
   "H__ATTACHED_FILES": "Attached files",
   "BTN__OK": "OK",
   "BTN__ATTACH_FILE": "Attach file",
   "H__TASK_EDIT": "Edit Task",
-	"L__ESTIMATED_ENDDATE":"Estimated end date",
-	"H__ASSIGNED_TO":"Assigned to",
-	"L__DESCRIPTION":"Description",
-	"L__COMMENT":"Comments",
-	"BTN__YES":"Yes",
-  "BTN__NO":"No",
+  "L__ESTIMATED_ENDDATE": "Estimated end date",
+  "H__ASSIGNED_TO": "Assigned to",
+  "L__DESCRIPTION": "Description",
+  "L__COMMENT": "Comments",
+  "BTN__YES": "Yes",
+  "BTN__NO": "No",
   "BTN_APPROVE": "Approve",
   "BTN_REJECT": "Reject",
   "L__GROUP_MESSAGE": "Group message",
@@ -116,7 +116,7 @@
   "TX__REQUIRED_FIELD": "Required field",
   "L__TASK_ADMINS": "Task admins",
   "L__TASK_ADMINS_MANAGE": "Task distribution management",
-  
+
   "Auth.Signin.Header": "Log-in to your account",
   "Auth.Signin.Username": "Username",
   "Auth.Signin.Password": "Password",
@@ -279,10 +279,10 @@
   "Crm.Demo.DeleteWarningTxt1": "All demonstrations, recommendations and calls associated with this demonstration will be deleted",
   "Crm.Demo.DeleteWarningTxt2": "Will be deleted: Demonstrations, Recommendations, Calls, Phone numbers associated with this demo",
 
-  "Crm.AdditionDemoFromDemo":"Addition demo from demo",
+  "Crm.AdditionDemoFromDemo": "Addition demo from demo",
 
   "Crm.Wspace.Menu.ByRecommender": "By recommender",
-  "Crm.Wspace.Menu.ByDate":"By date",
+  "Crm.Wspace.Menu.ByDate": "By date",
   "Crm.Wspace.Menu.Moved": "Moved",
   "Crm.Wspace.Menu.CurrentDemo": "Current demo",
   "Crm.Wspace.Menu.CurrentVisits": "Current visits",
@@ -336,8 +336,8 @@
   "Crm.ToEdit": "Edit",
   "Crm.ToDelete": "Delete",
   "Crm.ToPrint": "Print",
-  "Crm.ToAddReco":"Add recommendations",
-  "Crm.ToAddDemo":"Add demo",
+  "Crm.ToAddReco": "Add recommendations",
+  "Crm.ToAddDemo": "Add demo",
   "Crm.BasicInfo": "Basic info",
   "Crm.Owner": "Owner",
   "Crm.OwnerBranch": "Branch of the owner",
@@ -379,161 +379,159 @@
   "Crm.DemoDone": "Demo done (for recall)",
   "Crm.Moved": "Moved",
 
-  "awkey"           : "Ref. doc. num. & year",
-  "awtyp"           : "Operation type",
-  "belnr"           : "Document number",
-  "bktxt"           : "Description",
-  "blart"           : "Document type",
-  "bldat"           : "Document date",
-  "brnch"           : "Branch",
-  "budat"           : "Posting date",
-  "bukrs"           : "Company",
-  "business_area"   : "Business area",
-  "contract_number" : "Contract number",
-  "customer_id"     : "Customer ID",
-  "gjahr"           : "Document year",
-  "kursf"           : "Exchange rate",
-  "monat"           : "Month",
-  "stblg"           : "Canceled document number",
-  "stjah"           : "Canceled document year",
-  "storno"          : "Storno",
-  "tcode"           : "Transaction",
-  "usnam"           : "User ID",
-  "waers"           : "Currency",
-  "official"        : "Official",
-	"dep"             : "Department",
-	"zreg"            : "Reg. number"
+  "awkey": "Ref. doc. num. & year",
+  "awtyp": "Operation type",
+  "belnr": "Document number",
+  "bktxt": "Description",
+  "blart": "Document type",
+  "bldat": "Document date",
+  "brnch": "Branch",
+  "budat": "Posting date",
+  "bukrs": "Company",
+  "business_area": "Business area",
+  "contract_number": "Contract number",
+  "customer_id": "Customer ID",
+  "gjahr": "Document year",
+  "kursf": "Exchange rate",
+  "monat": "Month",
+  "stblg": "Canceled document number",
+  "stjah": "Canceled document year",
+  "storno": "Storno",
+  "tcode": "Transaction",
+  "usnam": "User ID",
+  "waers": "Currency",
+  "official": "Official",
+  "dep": "Department",
+  "zreg": "Reg. number",
 
+  "dealer": "Dealer",
+  "finAgent": "Fin. agent",
+  "fioClient": "Client Name",
+  "price": "Price",
+  "paid": "Paid",
+  "remainder": "Remainder",
+  "cashBank": "Cash/Bank",
+  "amount": "Amount",
+  "monthlyPayment": "Monthly Payment",
+  "firstPayment": "First payment",
+  "paymentDate": "Payment Date",
+  "paymentAmount": "Payment Amount",
+  "paymentSchedule": "Payment Schedule",
+  "save": "Save",
+  "search": "Search",
+  "searchParameters": "Search Parameters",
+  "mainInfos": "Main info",
+  "finDoc": "Fin. doc",
 
-  ,"dealer"		: "Dealer"
-	,"finAgent"		: "Fin. agent"
-	,"fioClient"		: "Client Name"
-	,"price"	: "Price"
-	,"paid":"Paid"
-	,"remainder":"Remainder"
-	,"cashBank":"Cash/Bank"
-	,"amount":"Amount"
-	,"monthlyPayment":"Monthly Payment"
-	,"firstPayment":"First payment"
-	,"paymentDate":"Payment Date"
-	,"paymentAmount":"Payment Amount"
-	,"paymentSchedule":"Payment Schedule"
-	,"save":"Save"
-	,"search":"Search"
-	,"searchParameters":"Search Parameters"
-	,"mainInfos":"Main info"
-	,"finDoc":"Fin. doc"
+  "regNumOrConNum": "Reg. num or Contract Num",
+  "transNameFmcp": "Receipt from Sales Contract",
+  "transNameFcis": "Employee acc.cash inquiry",
+  "header": "Header",
+  "position": "Position",
+  "operation": "Operation",
+  "employee": "Employee",
 
-  
-  ,"regNumOrConNum":"Reg. num or Contract Num"
-  ,"transNameFmcp":"Receipt from Sales Contract"
-  ,"transNameFcis":"Employee acc.cash inquiry"
-  ,"header":"Header"
-	,"position":"Position"
-	,"operation":"Operation"
-  ,"employee":"Employee"
-  
-  ,"staff":"Staff"
-  ,"iinBin":"Iin/Bin"
-  ,"dismissed":"Dismissed"
-  ,"fio":"Full name"
+  "staff": "Staff",
+  "iinBin": "Iin/Bin",
+  "dismissed": "Dismissed",
+  "fio": "Full name",
 
-  ,"loadingText":"Loading..."
-  ,"noDataText":"No rows found"
-  ,"previousText":"Previous"
-  ,"nextText":"Next"
-  ,"rowsText":"rows"
-  ,"pageText":"Page"
-  ,"ofText":"of"
+  "loadingText": "Loading...",
+  "noDataText": "No rows found",
+  "previousText": "Previous",
+  "nextText": "Next",
+  "rowsText": "rows",
+  "pageText": "Page",
+  "ofText": "of",
 
-  
-  
+  "transNameFrcoln": "Collectors Statistics",
+  "all": "All",
+  "date": "Date",
+  "state1": "State",
+  "onBegOfMonth": "Till the beginning of the month",
+  "onEndOfMonth": "Till the end of the month",
+  "installments": "Installments",
+  "in1Month": "In 1 month",
+  "overallSum": "Overall Sum",
+  "numOfSalesContracts": "Num. of Contracts",
+  "plan": "Plan",
+  "collected": "Collected",
+  "details": "Details",
+  "city": "City",
+  "percent": "Percent",
+  "overallAmount": "Overall Amount",
+  "standard": "Standard",
+  "problem": "Problem",
+  "branches": "Branches",
+  "finAgents": "Fin. agents",
+  "salesContracts": "Sales Contracts",
+  "contractDate": "Contract Date",
+  "snNum": "SN number",
+  "count": "Count",
+  "period": "Period",
+  "toShow": "Show",
+  "payDebt": "Pay debt",
+  "toEmployeeAccount": "To employee account",
+  "cancel": "Cancel",
+  "toClose": "Close",
 
-	,"transNameFrcoln":"Collectors Statistics"
-	,"all":"All"
-	,"date":"Date"
-	,"state1":"State"
-	,"onBegOfMonth":"Till the beginning of the month"
-	,"onEndOfMonth":"Till the end of the month"
-	,"installments":"Installments"
-	,"in1Month":"In 1 month"
-	,"overallSum":"Overall Sum"
-	,"numOfSalesContracts":"Num. of Contracts"
-	,"plan":"Plan"
-	,"collected":"Collected"
-	,"details":"Details"
-	,"city":"City"
-	,"percent":"Percent"
-	,"overallAmount":"Overall Amount"
-	,"standard":"Standard"
-	,"problem":"Problem"
-	,"branches":"Branches"
-	,"finAgents":"Fin. agents"
-	,"salesContracts":"Sales Contracts"
-	,"contractDate":"Contract Date"
-	,"snNum":"SN number"
-	,"count":"Count"
-	,"period":"Period"
-	,"toShow":"Show"
-	,"payDebt":"Pay debt"
-	,"toEmployeeAccount":"To employee account"
-  ,"cancel": "Cancel"
-  ,"toClose": "Close"
+  "transNameFa03": "View Fin. Doc.",
+  "transNameFa02": "Edit Fin. Doc.",
+  "toStorn": "Storn",
+  "inLocalCurrency": "in Loc. Cur",
+  "inDocumentCurrency": "in Doc. Cur",
+  "extraInfo": "Extra Info",
+  "openClose": "Open/Close",
+  "open": "Open",
+  "close": "Close",
+  "time": "Time",
+  "invoice": "Invoice",
+  "payroll": "Payroll",
+  "logDoc": "Log. Doc.",
+  "customer": "Customer",
+  "user": "User",
+  "cancelDocument": "Cancel document",
+  "originalDocument": "Original document",
+  "buzei": "Pos.",
+  "bschl": "PK",
+  "hkont": "GL account",
+  "shkzg": "D/C",
+  "matnr": "Material",
+  "werks": "Warehouse",
+  "menge": "Quantity",
+  "meins": "U.M.",
+  "buzeiFullText": "Position",
+  "documents": "Documents",
+  "canceled": "Canceled",
 
-  ,"transNameFa03":"View Fin. Doc."
-	,"transNameFa02":"Edit Fin. Doc."
-	,"toStorn":"Storn"
-	,"inLocalCurrency":"in Loc. Cur"
-	,"inDocumentCurrency":"in Doc. Cur"
-	,"extraInfo":"Extra Info"
-	,"openClose":"Open/Close"
-	,"open":"Open"
-	,"close":"Close"
-	,"time":"Time"
-	,"invoice":"Invoice"
-	,"payroll":"Payroll"
-	,"logDoc":"Log. Doc."
-  ,"customer":"Customer"
-	,"user":"User"
-  ,"cancelDocument":"Cancel document"
-  ,"originalDocument":"Original document"
-  ,"buzei":"Pos."
-  ,"bschl":"PK"
-  ,"hkont":"GL account"
-  ,"shkzg":"D/C"
-  ,"matnr":"Material"
-  ,"werks":"Warehouse"
-  ,"menge":"Quantity"
-  ,"meins":"U.M."
-	,"buzeiFullText":"Position"
-  ,"documents":"Documents"
-  ,"canceled":"Canceled"
-  
-  
-	,"name":"Name"
-	,"firstname":"Firstname"
-	,"lastname":"Lastname"
-	,"middlename":"Middlename"
-	,"country":"Country"
-	,"dateOfBirth":"Date of birth"
-	,"passportNumber":"Passport number"
-	,"fizYur":"Ind/Leg Entity"
-	,"fiz":"Ind. Entity"
-  ,"yur":"Leg. Entity"
+  "name": "Name",
+  "firstname": "Firstname",
+  "lastname": "Lastname",
+  "middlename": "Middlename",
+  "country": "Country",
+  "dateOfBirth": "Date of birth",
+  "passportNumber": "Passport number",
+  "fizYur": "Ind/Leg Entity",
+  "fiz": "Ind. Entity",
+  "yur": "Leg. Entity",
 
-  ,"toCreatInvoice":"Create Invoice"
-	,"transNameAmpi":"Payment Invoice"
-	,"transNameAmri":"Receipt Invoice"
-	,"transNameFaci01":"Cash Receipts From Contragents"
-  ,"transNameFaco01":"Payments to Contragents"
-  
+  "toCreatInvoice": "Create Invoice",
+  "transNameAmpi": "Payment Invoice",
+  "transNameAmri": "Receipt Invoice",
+  "transNameFaci01": "Cash Receipts From Contragents",
+  "transNameFaco01": "Payments to Contragents",
 
-  ,"transNameArep1":"General Ledger"
-	,"include":"Include"
-	,"between":"Between"
-	,"from":" From "
-	,"to":" to "
-  ,"withoutStorno":" Without Storno "
-	,"result":"Result"
-  
+  "transNameArep1": "General Ledger",
+  "include": "Include",
+  "between": "Between",
+  "from": " From ",
+  "to": " to ",
+  "withoutStorno": " Without Storno ",
+  "result": "Result",
+
+  "transNameFaia": "Work Advances",
+  "receipt": "Receipt",
+  "issue": "Issue",
+  "balance": "Balance",
+  "employeesOnAccount": "Employees on account"
 }

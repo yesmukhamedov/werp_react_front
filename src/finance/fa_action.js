@@ -12,6 +12,8 @@ export const FETCH_CASHBANKHKONTS_BY_BRANCH = 'FETCH_CASHBANKHKONTS_BY_BRANCH';
 export const CLEAR_CASHBANKHKONTS_BY_BRANCH = 'CLEAR_CASHBANKHKONTS_BY_BRANCH';
 export const FETCH_EXPENSEHKONTS_BY_BUKRS = 'FETCH_EXPENSEHKONTS_BY_BUKRS';
 export const CLEAR_EXPENSEHKONTS_BY_BUKRS = 'CLEAR_EXPENSEHKONTS_BY_BUKRS';
+export const FETCH_WORK_ACCOUNTABLE_LIST = 'FETCH_WORK_ACCOUNTABLE_LIST';
+export const CLEAR_WORK_ACCOUNTABLE_LIST = 'CLEAR_WORK_ACCOUNTABLE_LIST';
 
 export const FETCH_DYNOBJ_FI = 'FETCH_DYNOBJ_FI';
 export const CHANGE_DYNOBJ_FI = 'CHANGE_DYNOBJ_FI';
@@ -112,6 +114,13 @@ export function changeDynObj(a_obj) {
 export function clearDynObj() {
   const obj = {
     type: CLEAR_DYNOBJ_FI,
+  };
+  return obj;
+}
+
+export function clearAnyObject(a_const) {
+  const obj = {
+    type: a_const,
   };
   return obj;
 }
@@ -410,3 +419,77 @@ export function saveFiSrcDocs(args, tcode, initFun) {
       });
   };
 }
+///////////////////////////////////////////////////////////////////////
+// FAIA/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+export function fetchFaiaWorkAccList(a_bukrs, a_branch, a_callBackFun) {
+  return function(dispatch) {
+    axios
+      .get(
+        `${ROOT_URL}/api/finance/mainoperation/faia/fetchWorkAccountableList`,
+        {
+          headers: {
+            authorization: localStorage.getItem('token'),
+          },
+          params: {
+            bukrs: a_bukrs,
+            branch: a_branch,
+          },
+        },
+      )
+      .then(({ data }) => {
+        a_callBackFun();
+        dispatch({
+          type: FETCH_WORK_ACCOUNTABLE_LIST,
+          data: data.workAccountableList,
+        });
+      });
+  };
+}
+
+export function saveFaia(a_bkpf, a_bseg, initFaia) {
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
+  return function(dispatch) {
+    axios
+      .post(
+        `${ROOT_URL}/api/finance/mainoperation/faia/save`,
+        {
+          bkpf: a_bkpf,
+          ...a_bseg,
+        },
+        {
+          headers: {
+            authorization: localStorage.getItem('token'),
+          },
+        },
+      )
+
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        if (data) {
+          dispatch(
+            notify(
+              'success',
+              errorTable[`104${language}`],
+              errorTable[`101${language}`],
+            ),
+          );
+          dispatch(clearfaBkpf());
+          initFaia();
+        } else {
+          dispatch(
+            notify(
+              'info',
+              errorTable[`133${language}`],
+              errorTable[`132${language}`],
+            ),
+          );
+        }
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
