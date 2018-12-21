@@ -20,7 +20,7 @@ export const getMdContexts = () => {
   (out[MD_HR_DOCUMENT_TRANS] = 'Заявки о переводе'),
     (out[MD_HR_DOCUMENT_CHANGE_SALARY] = 'Заявки об изменении оклада'),
     (out[MD_HR_DOCUMENT_DISMISS] = 'Заявки об увольнении');
-  out[MD_HR_EXCLUDE_FROM_KPI] = 'Заявки на исключение сотрудника из KPI';
+  //out[MD_HR_EXCLUDE_FROM_KPI] = 'Заявки на исключение сотрудника из KPI';
   out[MD_TASK] = 'Задачи';
 
   return out;
