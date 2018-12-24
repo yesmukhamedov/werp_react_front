@@ -503,6 +503,7 @@ const getComponent = {
   Dtskc: AsyncDtskc,
   Messgr: AsyncMessageGroupPage,
   Mgru: AsyncMessageGroupUserPage,
+  MyDocs: AsyncMyDocsListPage,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -528,7 +529,6 @@ const generateRoutes = transactionRoutes => {
       <Route path="/hr/doc/create/:type" component={AsyncHrDocCreatePage} />
       <Route path="/hr/doc/update/:id" component={AsyncHrDocUpdatePage} />
       <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />
-      <Route path="/documents/mydocs" component={AsyncMyDocsListPage} />
       <Route path="/general/summary" component={AsyncDtskcSummary} />
 
       <Route
