@@ -33,6 +33,7 @@ import {
   F4_CLEAR_BUKRS_BRANCHES,
   F4_FETCH_CASHBANK_BALANCE_LIST,
   F4_CLEAR_CASHBANK_BALANCE_LIST,
+  F4_FETCH_SUB_COMPANY_TYPES,
 } from './f4_action';
 
 const INITIAL_STATE = {
@@ -53,6 +54,7 @@ const INITIAL_STATE = {
   staffList: [],
   bukrsBranches: [],
   cashBankBalanceList: [],
+  subCompanyTypes: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -156,6 +158,9 @@ export default function(state = INITIAL_STATE, action) {
 
     case F4_CLEAR_CASHBANK_BALANCE_LIST:
       return { ...state, cashBankBalanceList: [] };
+
+    case F4_FETCH_SUB_COMPANY_TYPES:
+      return { ...state, subCompanyTypes: action.payload };
 
     default:
       return state;

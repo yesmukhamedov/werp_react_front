@@ -53,6 +53,9 @@ export const F4_CLEAR_BUKRS_BRANCHES = 'F4_CLEAR_BUKRS_BRANCHES';
 export const F4_FETCH_CASHBANK_BALANCE_LIST = 'F4_FETCH_CASHBANK_BALANCE_LIST';
 export const F4_CLEAR_CASHBANK_BALANCE_LIST = 'F4_CLEAR_CASHBANK_BALANCE_LIST';
 
+export const F4_FETCH_SUB_COMPANY_TYPES = 'F4_FETCH_SUB_COMPANY_TYPES';
+export const F4_CLEAR_SUB_COMPANY_TYPES = 'F4_CLEAR_SUB_COMPANY_TYPES';
+
 export function f4ClearAnyObject(a_const) {
   const obj = {
     type: a_const,
@@ -450,6 +453,26 @@ export function f4FetchSubCompanies() {
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_SUB_COMPANIES,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchSubCompanyTypes() {
+  return function(dispatch) {
+    axios
+      .get(`${ROOT_URL}/api/reference/sub-company-types`, {
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
+      })
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_SUB_COMPANY_TYPES,
           payload: data,
         });
       })

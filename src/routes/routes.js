@@ -439,6 +439,12 @@ const AsyncLogWerksRequestView = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncRefSubCompanyListPage = Loadable({
+  loader: () =>
+    import('../reference/mainoperation/components/SubCompanyListPage' /* webpackChunkName: "SubCompanyListPage" */),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   DitTransactionList: trlist,
   Ditaub: AsyncAssignUserBranch,
@@ -530,6 +536,10 @@ const generateRoutes = transactionRoutes => {
       <Route path="/hr/doc/update/:id" component={AsyncHrDocUpdatePage} />
       <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />
       <Route path="/general/summary" component={AsyncDtskcSummary} />
+      <Route
+        path="/reference/sub-companies"
+        component={AsyncRefSubCompanyListPage}
+      />
 
       <Route
         path="/logistics/werks/requests"
