@@ -130,7 +130,7 @@ export const subCompanyOptions = subCompanies => {
     out.push({
       key: subCompanies[k].sc_id,
       value: subCompanies[k].sc_id,
-      text: subCompanies[k].name_ru,
+      text: subCompanies[k].nameRu,
     });
   }
 
