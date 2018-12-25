@@ -17,6 +17,7 @@ import {
   f4FetchSubCompanies,
   f4FetchSubCompanyTypes,
 } from '../../f4/f4_action';
+import StaffListModal from '../../../hr/mainoperation/staff/components/StaffListModal';
 import {
   blankSubCompany,
   createSubCompany,
@@ -229,6 +230,17 @@ class SubCompanyListPage extends Component {
           options={this.props.types}
           onChange={(e, v) => this.handleChange('type', v.value)}
         />
+
+        <div className="ui action input">
+          <button className="ui icon button">
+            <i className="trash icon" />
+          </button>
+
+          <input type="text" placeholder="Директор..." />
+          <button className="ui icon button">
+            <i className="search icon" />
+          </button>
+        </div>
       </Form>
     );
   }

@@ -138,48 +138,21 @@ export function fetchItem(id) {
 }
 
 export function updatePyramid(p) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    axios
-      .put(`${ROOT_URL}/api/hr/pyramid/${p.id}`, p, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: HR_PYRAMID_ITEM_UPDATED,
-          payload: data,
-        });
-      })
-      .catch(e => {
-        dispatch(modifyLoader(false));
-        console.log(e);
-        // handleError(e,dispatch)
-      });
-  };
+  return dispatch =>
+    axios.put(`${ROOT_URL}/api/hr/pyramid/${p.id}`, p, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    });
 }
 
 export function createPyramid(p) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    axios
-      .post(`${ROOT_URL}/api/hr/pyramid`, p, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
-      .then(() => {
-        dispatch(modifyLoader(false));
-        console.log('OK');
-        // dispatch({});
-      })
-      .catch(e => {
-        dispatch(modifyLoader(false));
-        handleError(e, dispatch);
-      });
-  };
+  return dispatch =>
+    axios.post(`${ROOT_URL}/api/hr/pyramid`, p, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    });
 }
 
 export function toggleFormModal(flag) {

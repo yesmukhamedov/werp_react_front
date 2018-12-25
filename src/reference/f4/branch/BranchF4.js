@@ -66,6 +66,7 @@ class BranchF4 extends Component {
   render() {
     return (
       <Form.Select
+        value={this.props.value || ''}
         name="branch"
         multiple={this.props.multiple}
         search={this.props.search}
