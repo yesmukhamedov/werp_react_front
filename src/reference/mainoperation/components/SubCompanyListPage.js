@@ -24,6 +24,7 @@ import {
   updateSubCompany,
   fetchSubCompany,
 } from '../actions/referenceAction';
+import { fetchAllCurrentStaffs } from '../../../hr/mainoperation/staff/actions/hrStaffAction';
 
 class SubCompanyListPage extends Component {
   constructor(props) {
@@ -31,6 +32,7 @@ class SubCompanyListPage extends Component {
     this.state = {
       model: {},
       modalOpened: false,
+      staffModalOpened: false,
       errors: {},
     };
 
@@ -40,11 +42,13 @@ class SubCompanyListPage extends Component {
     this.handleFormClose = this.handleFormClose.bind(this);
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleDirectorSelect = this.handleDirectorSelect.bind(this);
   }
 
   componentWillMount() {
     this.props.f4FetchSubCompanies();
     this.props.f4FetchSubCompanyTypes();
+    this.props.fetchAllCurrentStaffs();
   }
 
   blankItem() {
@@ -96,7 +100,7 @@ class SubCompanyListPage extends Component {
             },
             {
               Header: 'Директор',
-              accessor: 'note',
+              accessor: 'director.lf',
             },
             {
               Header: '',
@@ -139,23 +143,15 @@ class SubCompanyListPage extends Component {
         errors: errors,
       });
     } else {
+      let resp = null;
       if (model.new) {
-        this.props
-          .createSubCompany(model)
-          .then(res => {
-            this.setState({
-              ...this.state,
-              modalOpened: false,
-              model: {},
-            });
-            this.props.f4FetchSubCompanies();
-          })
-          .catch(e => {
-            console.log(e);
-          });
+        resp = this.props.createSubCompany(model);
       } else {
-        this.props
-          .updateSubCompany(model)
+        resp = this.props.updateSubCompany(model);
+      }
+
+      if (resp) {
+        resp
           .then(res => {
             this.setState({
               ...this.state,
@@ -169,6 +165,26 @@ class SubCompanyListPage extends Component {
           });
       }
     }
+  }
+
+  handleDirectorSelect(staff) {
+    let model = Object.assign({}, this.state.model);
+    if (staff) {
+      model['directorId'] = staff['staffId'];
+      model['director'] = {
+        staff_id: staff['staffId'],
+        lf: staff['lastname'] + ' ' + staff['firstname'],
+      };
+    } else {
+      model['directorId'] = null;
+      model['director'] = null;
+    }
+
+    this.setState({
+      ...this.state,
+      model: model,
+      staffModalOpened: false,
+    });
   }
 
   handleFormClose() {
@@ -232,12 +248,25 @@ class SubCompanyListPage extends Component {
         />
 
         <div className="ui action input">
-          <button className="ui icon button">
+          <button
+            className="ui icon button"
+            onClick={() => this.handleDirectorSelect(null)}
+          >
             <i className="trash icon" />
           </button>
 
-          <input type="text" placeholder="Директор..." />
-          <button className="ui icon button">
+          <input
+            readOnly
+            value={model['director'] ? model['director']['lf'] : ''}
+            type="text"
+            placeholder="Директор..."
+          />
+          <button
+            onClick={() =>
+              this.setState({ ...this.state, staffModalOpened: true })
+            }
+            className="ui icon button"
+          >
             <i className="search icon" />
           </button>
         </div>
@@ -315,6 +344,14 @@ class SubCompanyListPage extends Component {
         </Segment>
         {this.renderTable(this.props.items || [])}
         {this.renderFormModal()}
+        <StaffListModal
+          onSelect={this.handleDirectorSelect}
+          staffs={this.props.currentStaffs}
+          close={() =>
+            this.setState({ ...this.state, staffModalOpened: false })
+          }
+          opened={this.state.staffModalOpened}
+        />
       </Container>
     );
   }
@@ -324,6 +361,9 @@ function mapStateToProps(state) {
   return {
     items: state.f4.subCompanies,
     types: state.f4.subCompanyTypes,
+    branchOptionsAll: state.userInfo.branchOptionsAll,
+    companyOptions: state.userInfo.companyOptions,
+    currentStaffs: state.hrStaff.allCurrentStaffs,
   };
 }
 
@@ -336,5 +376,6 @@ export default connect(
     createSubCompany,
     updateSubCompany,
     fetchSubCompany,
+    fetchAllCurrentStaffs,
   },
 )(injectIntl(SubCompanyListPage));
