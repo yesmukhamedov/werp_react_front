@@ -56,6 +56,9 @@ export const F4_CLEAR_CASHBANK_BALANCE_LIST = 'F4_CLEAR_CASHBANK_BALANCE_LIST';
 export const F4_FETCH_SUB_COMPANY_TYPES = 'F4_FETCH_SUB_COMPANY_TYPES';
 export const F4_CLEAR_SUB_COMPANY_TYPES = 'F4_CLEAR_SUB_COMPANY_TYPES';
 
+export const F4_FETCH_HKONT_LIST = 'F4_FETCH_HKONT_LIST';
+export const F4_CLEAR_HKONT_LIST = 'F4_CLEAR_HKONT_LIST';
+
 export function f4ClearAnyObject(a_const) {
   const obj = {
     type: a_const,
@@ -545,6 +548,29 @@ export function f4FetchCashBankBalanceList(a_bukrs, a_branch, a_callBackFun) {
         dispatch({
           type: F4_FETCH_CASHBANK_BALANCE_LIST,
           data: data.cashBankBalanceList,
+        });
+      });
+  };
+}
+
+///////////////////////////////////////////////////////////////////////
+export function f4FetchHkontList(a_bukrs, a_tcode, a_branch) {
+  return function(dispatch) {
+    axios
+      .get(`${ROOT_URL}/api/reference/fetchHkontList`, {
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
+        params: {
+          bukrs: a_bukrs,
+          branch: a_branch,
+          tcode: a_tcode,
+        },
+      })
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_HKONT_LIST,
+          data: data.hkontOptions,
         });
       });
   };

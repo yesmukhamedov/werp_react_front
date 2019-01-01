@@ -346,6 +346,18 @@ const AsyncFaia = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncFaicfp = Loadable({
+  loader: () =>
+    import('../finance/mainoperation/faicfp/faicfp' /* webpackChunkName: "faicfp" */),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncFaicfp2 = Loadable({
+  loader: () =>
+    import('../finance/mainoperation/faicfp2/faicfp2' /* webpackChunkName: "faicfp2" */),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncHrRecruitmentPage = Loadable({
   loader: () =>
     import('../hr/mainoperation/document/components/HrRecruitmentPage' /* webpackChunkName: "HrRecruitmentPage" */),
@@ -465,6 +477,7 @@ const getComponent = {
   Fa03: AsyncFa03,
   Fa02: AsyncFa02,
   Faia: AsyncFaia,
+  // Faicfp: AsyncFaicfp,
 
   SpNew: AsyncSpNewPage,
   SpView: AsyncSpViewPage,
@@ -540,6 +553,8 @@ const generateRoutes = transactionRoutes => {
         path="/reference/sub-companies"
         component={AsyncRefSubCompanyListPage}
       />
+      <Route path="/finance/mainoperation/faicfp" component={AsyncFaicfp} />
+      <Route path="/finance/mainoperation/faicfp2" component={AsyncFaicfp2} />
 
       <Route
         path="/logistics/werks/requests"

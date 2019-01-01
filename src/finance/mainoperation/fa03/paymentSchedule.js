@@ -5,10 +5,6 @@ import { injectIntl } from 'react-intl';
 import { messages } from '../../../locales/defineMessages';
 
 class PaymentSchedule extends PureComponent {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     if (!this.props.ps || this.props.ps.length === 0) {
       return '';

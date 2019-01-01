@@ -18,6 +18,7 @@ import { injectIntl } from 'react-intl';
 import { messages } from '../locales/defineMessages';
 
 require('moment/locale/ru');
+require('moment/locale/tr');
 
 class FaHeader extends PureComponent {
   constructor(props) {
@@ -65,7 +66,7 @@ class FaHeader extends PureComponent {
     } = this.props;
 
     const { formatMessage } = this.props.intl;
-
+    const language = localStorage.getItem('language');
     // let wabkpf = Object.assign({}, this.props.bkpf);
 
     const {
@@ -179,8 +180,10 @@ class FaHeader extends PureComponent {
                         selection
                         options={
                           bukrs
-                            ? businessAreaOptions[bukrs]
+                            ? businessAreaOptions
                               ? businessAreaOptions[bukrs]
+                                ? businessAreaOptions[bukrs]
+                                : []
                               : []
                             : []
                         }
@@ -387,7 +390,7 @@ class FaHeader extends PureComponent {
                         showYearDropdown
                         dropdownMode="select" // timezone="UTC"
                         selected={budat ? moment(budat, 'DD.MM.YYYY') : ''}
-                        locale="ru"
+                        locale={language}
                         onChange={event => this.onInputChange(event, 'budat')}
                         dateFormat="DD.MM.YYYY"
                         readOnly={
@@ -421,7 +424,7 @@ class FaHeader extends PureComponent {
                         showYearDropdown
                         dropdownMode="select" // timezone="UTC"
                         selected={bldat ? moment(bldat, 'DD.MM.YYYY') : ''}
-                        locale="ru"
+                        locale={language}
                         onChange={event => this.onInputChange(event, 'bldat')}
                         dateFormat="DD.MM.YYYY"
                         readOnly={

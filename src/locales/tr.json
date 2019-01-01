@@ -533,5 +533,9 @@
   "receipt": "Receipt",
   "issue": "Issue",
   "balance": "Balance",
-  "employeesOnAccount": "Employees on account"
+  "employeesOnAccount": "Employees on account",
+
+  "transNameFaicfp": "Fond Transfer Inside Company",
+  "incoming": "Incoming",
+  "outgoing": "Outgoing"
 }

@@ -840,6 +840,18 @@ export const messages = defineMessages({
     id: 'employeesOnAccount',
     defaultMessage: 'Employees on account',
   },
+  transNameFaicfp: {
+    id: 'transNameFaicfp',
+    defaultMessage: 'Fond Transfer Inside Company',
+  },
+  incoming: {
+    id: 'incoming',
+    defaultMessage: 'Incoming',
+  },
+  outgoing: {
+    id: 'outgoing',
+    defaultMessage: 'Outgoing',
+  },
   // /Onlasyn
 
   Form: {

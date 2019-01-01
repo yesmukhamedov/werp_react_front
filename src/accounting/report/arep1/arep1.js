@@ -31,7 +31,7 @@ import {
 } from '../../accounting_action';
 import { moneyFormat } from '../../../utils/helpers';
 import { BigNumber } from 'bignumber.js';
-import matchSorter from 'match-sorter';
+import matchSorter, { rankings } from 'match-sorter';
 import { injectIntl } from 'react-intl';
 import { messages } from '../../../locales/defineMessages';
 require('moment/locale/ru');
@@ -72,6 +72,7 @@ class Arep1 extends Component {
         enableBudat: false,
         disableStorno: true,
       },
+      filteredData: [],
       activeIndex: 0,
     };
   }
@@ -636,7 +637,9 @@ class Arep1 extends Component {
       Header: ({ value }) => <b>{formatMessage(messages.brnch)}</b>,
       accessor: 'branchName',
       filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['branchName'] }),
+        matchSorter(rows, filter.value, {
+          keys: [{ threshold: rankings.CONTAINS, key: 'branchName' }],
+        }),
       filterAll: true,
       width: 100,
     };
@@ -689,14 +692,18 @@ class Arep1 extends Component {
       Header: ({ value }) => <b>{formatMessage(messages.name)}</b>,
       accessor: 'hkontName',
       filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['hkontName'] }),
+        matchSorter(rows, filter.value, {
+          keys: [{ threshold: rankings.CONTAINS, key: 'hkontName' }],
+        }),
       filterAll: true,
     };
     let t1r1c6 = {
       Header: ({ value }) => <b>{formatMessage(messages.hkont)}</b>,
       accessor: 'hkont',
       filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['hkont'] }),
+        matchSorter(rows, filter.value, {
+          keys: [{ threshold: rankings.CONTAINS, key: 'hkont' }],
+        }),
       filterAll: true,
       width: 100,
     };
@@ -809,10 +816,20 @@ class Arep1 extends Component {
     let t1r1c12 = {
       Header: ({ value }) => <b>{formatMessage(messages.customer)}</b>,
       accessor: 'customerName',
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, {
+          keys: [{ threshold: rankings.CONTAINS, key: 'customerName' }],
+        }),
+      filterAll: true,
     };
     let t1r1c13 = {
       Header: ({ value }) => <b>{formatMessage(messages.bktxt)}</b>,
       accessor: 'bktxt',
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, {
+          keys: [{ threshold: rankings.CONTAINS, key: 'bktxt' }],
+        }),
+      filterAll: true,
     };
 
     t1columns.push(t1r1c1);

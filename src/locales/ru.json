@@ -513,5 +513,9 @@
   "receipt": "Получение",
   "issue": "Выдача",
   "balance": "Баланс",
-  "employeesOnAccount": "Подотчетники"
+  "employeesOnAccount": "Подотчетники",
+
+  "transNameFaicfp": "Внутренние переводы денег",
+  "incoming": "Входящий",
+  "outgoing": "Исходящий"
 }

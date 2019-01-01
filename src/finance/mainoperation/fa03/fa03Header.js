@@ -20,6 +20,7 @@ import { injectIntl } from 'react-intl';
 import { messages } from '../../../locales/defineMessages';
 
 require('moment/locale/ru');
+require('moment/locale/tr');
 
 class Fa03Header extends PureComponent {
   constructor(props) {
@@ -70,6 +71,7 @@ class Fa03Header extends PureComponent {
     const { bkpf } = !this.props.bkpf ? this.initializeBkpf() : this.props;
     const { formatMessage } = this.props.intl;
 
+    const language = localStorage.getItem('language');
     const customerName = !this.props.customerName
       ? ''
       : this.props.customerName;
@@ -164,7 +166,7 @@ class Fa03Header extends PureComponent {
                   showYearDropdown
                   dropdownMode="select" // timezone="UTC"
                   selected={cpudt ? moment(cpudt) : ''}
-                  locale="ru"
+                  locale={language}
                   dateFormat="DD.MM.YYYY"
                   readOnly
                   disabled
@@ -429,7 +431,7 @@ class Fa03Header extends PureComponent {
                         showYearDropdown
                         dropdownMode="select" // timezone="UTC"
                         selected={bkpf.budat ? moment(bkpf.budat) : ''}
-                        locale="ru"
+                        locale={language}
                         dateFormat="DD.MM.YYYY"
                         readOnly
                         disabled
@@ -450,7 +452,7 @@ class Fa03Header extends PureComponent {
                         showYearDropdown
                         dropdownMode="select" // timezone="UTC"
                         selected={bkpf.bldat ? moment(bkpf.bldat) : ''}
-                        locale="ru"
+                        locale={language}
                         dateFormat="DD.MM.YYYY"
                         readOnly
                         disabled
