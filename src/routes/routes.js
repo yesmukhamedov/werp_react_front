@@ -457,6 +457,12 @@ const AsyncRefSubCompanyListPage = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncRefLeaveReasonListPage = Loadable({
+  loader: () =>
+    import('../reference/mainoperation/components/LeaveReasonListPage' /* webpackChunkName: "LeaveReasonListPage" */),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   DitTransactionList: trlist,
   Ditaub: AsyncAssignUserBranch,
@@ -553,11 +559,15 @@ const generateRoutes = transactionRoutes => {
         path="/reference/sub-companies"
         component={AsyncRefSubCompanyListPage}
       />
+      <Route
+        path="/reference/leave-reasons"
+        component={AsyncRefLeaveReasonListPage}
+      />
       <Route path="/finance/mainoperation/faicfp" component={AsyncFaicfp} />
       <Route path="/finance/mainoperation/faicfp2" component={AsyncFaicfp2} />
 
       <Route
-        path="/logistics/werks/requests"
+        path="/logistics/werks/requests/:type(in|out|all)"
         exact={true}
         component={AsyncLogWerksRequestList}
       />

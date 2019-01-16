@@ -36,3 +36,48 @@ export const updateSubCompany = o => {
       },
     });
 };
+
+export const blankLeaveReason = () => {
+  return dispatch =>
+    axios.get(`${ROOT_URL}/api/reference/leave-reasons/blank`, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    });
+};
+
+export const fetchLeaveReasons = () => {
+  return dispatch =>
+    axios.get(`${ROOT_URL}/api/reference/leave-reasons`, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    });
+};
+
+export const fetchLeaveReason = id => {
+  return dispatch =>
+    axios.get(`${ROOT_URL}/api/reference/leave-reasons/` + id, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    });
+};
+
+export const createLeaveReason = o => {
+  return dispatch =>
+    axios.post(`${ROOT_URL}/api/reference/leave-reasons`, o, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    });
+};
+
+export const updateLeaveReason = o => {
+  return dispatch =>
+    axios.put(`${ROOT_URL}/api/reference/leave-reasons`, o, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    });
+};
