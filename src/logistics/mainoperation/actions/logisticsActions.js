@@ -12,13 +12,14 @@ import {
   LOG_WERKS_REQUEST_FETCHED,
 } from './logisticsActionTypes';
 
-export function fetchWerksRequestsByStatus(status) {
+export function fetchWerksRequestsIn(params) {
   return function(dispatch) {
     axios
-      .get(`${ROOT_URL}/api/logistics/werks-request/by-status/${status}`, {
+      .get(`${ROOT_URL}/api/logistics/werks-request/in`, {
         headers: {
           authorization: localStorage.getItem('token'),
         },
+        params: params,
       })
       .then(({ data }) => {
         dispatch({

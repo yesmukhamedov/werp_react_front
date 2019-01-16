@@ -8,33 +8,60 @@ import {
   Tab,
   Loader,
   Icon,
+  Form,
+  Input,
+  Button,
+  Label,
 } from 'semantic-ui-react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Link } from 'react-router-dom';
-import { fetchWerksRequestsByStatus } from '../actions/logisticsActions';
+import { fetchWerksRequestsIn } from '../actions/logisticsActions';
 import { formatDMYMS } from '../../../utils/helpers';
+import BukrsF4 from '../../../reference/f4/bukrs/BukrsF4';
+import BranchF4 from '../../../reference/f4/branch/BranchF4';
+import moment from 'moment';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import {
   WERKS_REQUEST_STATUS_NEW,
   WERKS_REQUEST_STATUS_CLOSED,
 } from '../../logUtil';
+require('moment/locale/ru');
+
+const TYPE_IN = 'in';
+const TYPE_OUT = 'out';
 
 class WerksRequestListPage extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      type: '',
+      queryParams: {
+        page: 0,
+      },
+    };
 
     this.loadItems = this.loadItems.bind(this);
     this.renderDataTable = this.renderDataTable.bind(this);
+    this.handleChangeDate = this.handleChangeDate.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentWillMount() {
     this.loadItems(WERKS_REQUEST_STATUS_NEW);
   }
 
+  componentDidMount() {
+    this.setState({
+      ...this.state,
+      type: this.props.match.params.type,
+    });
+  }
+
   loadItems(statusId) {
-    this.props.fetchWerksRequestsByStatus(statusId);
+    this.props.fetchWerksRequestsIn(this.state.queryParams);
   }
 
   onTabChange = (e, data) => {
@@ -47,6 +74,27 @@ class WerksRequestListPage extends Component {
 
   getDocViewLink() {
     return '';
+  }
+
+  handleChangeDate(fieldName, v) {
+    let queryParams = Object.assign({}, this.state.queryParams);
+    queryParams[fieldName] = v;
+    this.setState({
+      ...this.state,
+      queryParams: queryParams,
+    });
+  }
+
+  handleChange(e, o) {
+    let queryParams = Object.assign({}, this.state.queryParams);
+    const { name, value } = o;
+
+    queryParams[name] = value;
+    console.log(queryParams);
+    this.setState({
+      ...this.state,
+      queryParams: queryParams,
+    });
   }
 
   renderDataTable() {
@@ -122,6 +170,75 @@ class WerksRequestListPage extends Component {
     );
   }
 
+  renderSearchPanel() {
+    let queryParams = Object.assign({}, this.state.queryParams);
+    return (
+      <div>
+        <Header as="h4" attached="top">
+          Панель поиска
+        </Header>
+        <Segment attached>
+          <Form>
+            <Form.Group widths="equal">
+              <BukrsF4 handleChange={this.handleChange} />
+              <BranchF4
+                search
+                multiple={false}
+                handleChange={this.handleChange}
+                bukrs={queryParams['bukrs'] || ''}
+              />
+              <Form.Field>
+                <label>Дата с</label>
+                <DatePicker
+                  locale={'ru'}
+                  autoComplete="off"
+                  label=""
+                  placeholderText={'Дата с'}
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  dateFormat="DD.MM.YYYY"
+                  selected={
+                    queryParams['dateFrom']
+                      ? moment(queryParams['dateFrom'])
+                      : null
+                  }
+                  onChange={v => this.handleChangeDate('dateFrom', v)}
+                />
+              </Form.Field>
+
+              <Form.Field>
+                <label>Дата по</label>
+                <DatePicker
+                  locale={'ru'}
+                  label=""
+                  autoComplete="off"
+                  placeholderText="Дата по"
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select"
+                  dateFormat="DD.MM.YYYY"
+                  selected={
+                    queryParams['dateTo'] ? moment(queryParams['dateTo']) : null
+                  }
+                  onChange={v => this.handleChangeDate('dateTo', v)}
+                />
+              </Form.Field>
+            </Form.Group>
+
+            <Button
+              loading={this.state.btnLoading}
+              onClick={() => this.loadItems(WERKS_REQUEST_STATUS_NEW)}
+              type="submit"
+            >
+              Сформировать
+            </Button>
+          </Form>
+        </Segment>
+      </div>
+    );
+  }
+
   render() {
     let panes = [
       { menuItem: 'Новые', render: () => this.renderDataTable() },
@@ -140,7 +257,8 @@ class WerksRequestListPage extends Component {
       >
         <Segment clearing>
           <Header as="h2" floated="left">
-            Внутренние заявки
+            Внутренние заявки /{' '}
+            {this.state.type === TYPE_IN ? 'Входящие' : 'Исходящие'}
           </Header>
           <Link
             className={'ui icon button primary right floated'}
@@ -150,13 +268,8 @@ class WerksRequestListPage extends Component {
           </Link>
         </Segment>
         <Divider clearing />
-        <Segment attached>
-          <Tab
-            onTabChange={this.onTabChange}
-            menu={{ secondary: true, pointing: true }}
-            panes={panes}
-          />
-        </Segment>
+        <Segment attached>{this.renderSearchPanel()}</Segment>
+        <Segment attached>{this.renderDataTable()}</Segment>
       </Container>
     );
   }
@@ -171,6 +284,6 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {
-    fetchWerksRequestsByStatus,
+    fetchWerksRequestsIn,
   },
 )(WerksRequestListPage);
