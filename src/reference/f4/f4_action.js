@@ -59,6 +59,8 @@ export const F4_CLEAR_SUB_COMPANY_TYPES = 'F4_CLEAR_SUB_COMPANY_TYPES';
 export const F4_FETCH_HKONT_LIST = 'F4_FETCH_HKONT_LIST';
 export const F4_CLEAR_HKONT_LIST = 'F4_CLEAR_HKONT_LIST';
 
+export const F4_FETCH_LEAVE_REASON_OPTIONS = 'F4_FETCH_LEAVE_REASON_OPTIONS';
+
 export function f4ClearAnyObject(a_const) {
   const obj = {
     type: a_const,
@@ -476,6 +478,26 @@ export function f4FetchSubCompanyTypes() {
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_SUB_COMPANY_TYPES,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchLeaveReasonOptions() {
+  return function(dispatch) {
+    axios
+      .get(`${ROOT_URL}/api/reference/leave-reasons?mode=options`, {
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
+      })
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_LEAVE_REASON_OPTIONS,
           payload: data,
         });
       })
