@@ -1,11 +1,19 @@
 import React from 'react';
-import { Segment, Label, Table } from 'semantic-ui-react';
+import { Segment, Label, Table, Button, Icon } from 'semantic-ui-react';
 
 export default function HrDocApprovers(props) {
-  const { items } = props;
+  const { items, showRemoveButtons } = props;
   if (!items) {
     return null;
   }
+
+  const removeApprover = id => {
+    if (!window.confirm('Действительно хотите удалить согласующего?')) {
+      return false;
+    }
+
+    props.removeApprover(id);
+  };
   return (
     <Segment raised>
       <Label color="blue" ribbon>
@@ -28,7 +36,20 @@ export default function HrDocApprovers(props) {
               <Table.Cell>{item.title}</Table.Cell>
               <Table.Cell>{item.positionName}</Table.Cell>
               <Table.Cell>{item.statusName}</Table.Cell>
-              <Table.Cell />
+              <Table.Cell>
+                {showRemoveButtons ? (
+                  <Button
+                    negative
+                    size="mini"
+                    icon={true}
+                    onClick={() => removeApprover(item.id)}
+                  >
+                    <Icon name="trash" />
+                  </Button>
+                ) : (
+                  ''
+                )}
+              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
