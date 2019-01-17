@@ -219,8 +219,7 @@ function renderTransferData(props) {
           <Table.Row key={item.id}>
             <Table.Cell>{idx + 1}</Table.Cell>
             <Table.Cell>
-              {item.staffName}
-              &nbsp;
+              {item.staffName} ({item.salaryPositionName}) &nbsp;
               <Link
                 target="_blank"
                 className="ui icon button mini right floated"
