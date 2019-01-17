@@ -330,6 +330,7 @@ function renderChangeSalaryData(props) {
           <Table.HeaderCell>№</Table.HeaderCell>
           <Table.HeaderCell>ФИО сотрудника</Table.HeaderCell>
           <Table.HeaderCell>Должность</Table.HeaderCell>
+          <Table.HeaderCell>Тек. оклад</Table.HeaderCell>
           <Table.HeaderCell>Новый оклад</Table.HeaderCell>
           <Table.HeaderCell>Валюта</Table.HeaderCell>
           <Table.HeaderCell>Дата с</Table.HeaderCell>
@@ -353,6 +354,7 @@ function renderChangeSalaryData(props) {
               </Link>
             </Table.Cell>
             <Table.Cell>{item.positionName}</Table.Cell>
+            <Table.Cell>{item.currentSalary['amount']}</Table.Cell>
             <Table.Cell>{item.amount}</Table.Cell>
             <Table.Cell>{item.currency}</Table.Cell>
             <Table.Cell>{formatDMY(item.beginDate)}</Table.Cell>
