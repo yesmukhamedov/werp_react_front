@@ -19,8 +19,8 @@ const statusUrl = `${ROOT_URL}/api/tasks/status`;
 const departmentsUrl = `${ROOT_URL}/api/reference/departments`;
 const assigneesUrl = `${ROOT_URL}/api/users?active=true`;
 const taskTypesUrl = `${ROOT_URL}/api/tasks/types`;
-const managersUrl = `${ROOT_URL}/api/task-admins/all`;
-const groupsUrl = `${ROOT_URL}/api/messgr`;
+const managersUrl = `${ROOT_URL}/api/task-admins/all?ref=ext`;
+const groupsUrl = `${ROOT_URL}/api/messgr?ref=ext`;
 const createTaskUrl = `${ROOT_URL}/api/tasks`;
 
 export function fetchUsers(args) {
