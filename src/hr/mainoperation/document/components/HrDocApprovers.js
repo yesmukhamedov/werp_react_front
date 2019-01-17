@@ -1,6 +1,8 @@
 import React from 'react';
 import { Segment, Label, Table, Button, Icon } from 'semantic-ui-react';
 
+const APPROVE_STATUS_NONE = 0;
+const APPROVE_STATUS_VIEW = 1;
 export default function HrDocApprovers(props) {
   const { items, showRemoveButtons } = props;
   if (!items) {
@@ -37,7 +39,9 @@ export default function HrDocApprovers(props) {
               <Table.Cell>{item.positionName}</Table.Cell>
               <Table.Cell>{item.statusName}</Table.Cell>
               <Table.Cell>
-                {showRemoveButtons ? (
+                {showRemoveButtons &&
+                (item['statusId'] === APPROVE_STATUS_NONE ||
+                  item['statusId'] === APPROVE_STATUS_VIEW) ? (
                   <Button
                     negative
                     size="mini"

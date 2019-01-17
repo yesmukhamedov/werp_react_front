@@ -205,7 +205,11 @@ class HrDocViewPage extends Component {
         window.location.reload();
       })
       .catch(e => {
-        console.log(e.response);
+        if (e.response && e.response.data && e.response.data.message) {
+          window.alert(e.response.data.message);
+        } else {
+          window.alert('Ошибка! Обратитесь администратору!');
+        }
       });
   };
 
