@@ -3,6 +3,7 @@ import { Field, reduxForm } from 'redux-form';
 import { injectIntl } from 'react-intl';
 import { Container, Form, Button, Header, Segment } from 'semantic-ui-react';
 import _ from 'lodash';
+import moment from 'moment';
 import UploadPanelDisplay from './UploadPanelDisplay';
 import AttachmentPanelDisplay from './AttachmentPanelDisplay';
 import AssigneePanelDisplay from './AssigneePanelDisplay';
@@ -64,17 +65,48 @@ class DtskcComponent extends Component {
 
     if (allRecipients.length > 0) {
       const { uploadList } = this.state;
-      this.setState({ isLoading: true }, () =>
-        createTask({ ...formValues, uploadList, allRecipients }, data => {
+      this.setState({ isLoading: true });
+
+      const newTask = {
+        title: formValues.title,
+        description: formValues.description,
+        status: {
+          id: formValues.status,
+        },
+        priority: {
+          // TODO: get rid of hardcoded value
+          id: 2,
+        },
+        bukrs: formValues.company,
+        recipient: [...allRecipients],
+        type: {
+          code: formValues.taskType,
+        },
+        authorsManager: {
+          id: formValues.initiatorManager.id,
+        },
+        estimatedAt: moment.utc(formValues.estimatedAt, 'DD.MM.YYYY').format(),
+        attachment:
+          uploadList.length > 0
+            ? {
+                attachmentJson: JSON.stringify(uploadList),
+              }
+            : null,
+      };
+
+      createTask(newTask)
+        .then(data => {
           browserHistory.push({
             pathname: '/general/summary',
             state: { createdTasks: data },
           });
-        }),
-      );
+        })
+        .catch(() =>
+          this.setState({ ...this.state, error: {}, isLoading: false }),
+        );
     } else {
       this.setState({
-        ...this.setState,
+        ...this.state,
         errors: {
           assigneeTable: 'Cannot create task without any assignee',
         },

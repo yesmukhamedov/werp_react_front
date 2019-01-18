@@ -14,6 +14,7 @@ import {
   DTSKC_REMOVE_ASSIGNEE_PERSON,
   CLEAR_TRANSACTION,
 } from './actionTypes';
+import api from './api';
 
 const statusUrl = `${ROOT_URL}/api/tasks/status`;
 const departmentsUrl = `${ROOT_URL}/api/reference/departments`;
@@ -21,7 +22,6 @@ const assigneesUrl = `${ROOT_URL}/api/users?active=true`;
 const taskTypesUrl = `${ROOT_URL}/api/tasks/types`;
 const managersUrl = `${ROOT_URL}/api/task-admins/all?ref=ext`;
 const groupsUrl = `${ROOT_URL}/api/messgr?ref=ext`;
-const createTaskUrl = `${ROOT_URL}/api/tasks`;
 
 export function fetchUsers(args) {
   const { branchId, bukrs } = args;
@@ -141,54 +141,17 @@ export function fetchReferences(lang) {
   };
 }
 
-export function createTask(formValues, successCallback) {
-  const newTask = {
-    title: formValues.title,
-    description: formValues.description,
-    status: {
-      id: formValues.status,
-    },
-    priority: {
-      // TODO: get rid of hardcoded value
-      id: 2,
-    },
-    bukrs: formValues.company,
-    recipient: [...formValues.allRecipients],
-    type: {
-      code: formValues.taskType,
-    },
-    authorsManager: {
-      id: formValues.initiatorManager.id,
-    },
-    estimatedAt: moment.utc(formValues.estimatedAt, 'DD.MM.YYYY').format(),
-    attachment:
-      formValues.uploadList.length > 0
-        ? {
-            attachmentJson: JSON.stringify(formValues.uploadList),
-          }
-        : null,
-  };
-
-  console.log('ALL_RECIPIENTS', formValues.allRecipients);
-
-  const request = axios.post(createTaskUrl, newTask, {
-    headers: {
-      authorization: localStorage.getItem('token'),
-    },
-  });
-  return dispatch => {
-    request
-      .then(({ data }) => {
-        if (successCallback) successCallback(data);
-        dispatch(notify('success', 'Задача успешно создана.', 'Успешно'));
-      })
-      .catch(error => {
-        if (error.response) {
-          dispatch(notify('error', error.response.data.message, 'Ошибка'));
-        }
-      });
-  };
-}
+export const createTask = newTask => dispatch =>
+  api.task
+    .create(newTask)
+    .then(data => {
+      dispatch(notify('success', 'Задача успешно создана.', 'Успешно'));
+      return data;
+    })
+    .catch(error => {
+      dispatch(notify('error', error.response.data.message, 'Ошибка'));
+      return new Promise((res, rej) => rej(error));
+    });
 
 export function toggleAssigneeModal() {
   return {
