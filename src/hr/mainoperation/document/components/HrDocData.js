@@ -200,6 +200,7 @@ function renderTransferData(props) {
           <Table.HeaderCell rowSpan={2}>
             Сотрудник снимается с должности
           </Table.HeaderCell>
+          <Table.HeaderCell rowSpan={2}>Стар. Менеджер</Table.HeaderCell>
           <Table.HeaderCell colSpan={7}>НОВАЯ ДОЛЖНОСТЬ</Table.HeaderCell>
         </Table.Row>
         <Table.Row>
@@ -219,7 +220,8 @@ function renderTransferData(props) {
           <Table.Row key={item.id}>
             <Table.Cell>{idx + 1}</Table.Cell>
             <Table.Cell>
-              {item.staffName} ({item.salaryPositionName}) &nbsp;
+              {item.staffName}
+              <br /> ({item.salaryPositionName}) &nbsp;
               <Link
                 target="_blank"
                 className="ui icon button mini right floated"
@@ -228,6 +230,7 @@ function renderTransferData(props) {
                 <Icon name="eye" />
               </Link>
             </Table.Cell>
+            <Table.Cell>{item.oldManagerName}</Table.Cell>
             <Table.Cell>{item.branchName}</Table.Cell>
             <Table.Cell>{item.departmentName}</Table.Cell>
             <Table.Cell>{item.positionName}</Table.Cell>
