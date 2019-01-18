@@ -367,6 +367,16 @@ const addApprover = (document, staff) =>
       });
   };
 
+export function removeApprove(id) {
+  return dispatch => {
+    return axios.delete(`${ROOT_URL}/api/hr/document/approver/` + id, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    });
+  };
+}
+
 export function addAmount(document, items) {
   return function(dispatch) {
     dispatch(setLoading(true));
