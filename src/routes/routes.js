@@ -370,15 +370,9 @@ const AsyncHrDocViewPage = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncHrDocCreatePage = Loadable({
+const AsyncHrDocFormPage = Loadable({
   loader: () =>
-    import('../hr/mainoperation/document/components/HrDocCreatePage' /* webpackChunkName: "HrDocCreatePage" */),
-  loading: () => <LoadingPage />,
-});
-
-const AsyncHrDocUpdatePage = Loadable({
-  loader: () =>
-    import('../hr/mainoperation/document/components/HrDocUpdatePage' /* webpackChunkName: "HrDocUpdatePage" */),
+    import('../hr/mainoperation/document/components/HrDocFormPage' /* webpackChunkName: "HrDocFormPage" */),
   loading: () => <LoadingPage />,
 });
 
@@ -551,8 +545,16 @@ const generateRoutes = transactionRoutes => {
       <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
       <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
-      <Route path="/hr/doc/create/:type" component={AsyncHrDocCreatePage} />
-      <Route path="/hr/doc/update/:id" component={AsyncHrDocUpdatePage} />
+      <Route
+        path="/hr/doc/:action(create)/:type"
+        exact={true}
+        component={AsyncHrDocFormPage}
+      />
+      <Route
+        path="/hr/doc/:action(update)/:id"
+        exact={true}
+        component={AsyncHrDocFormPage}
+      />
       <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />
       <Route path="/general/summary" component={AsyncDtskcSummary} />
       <Route

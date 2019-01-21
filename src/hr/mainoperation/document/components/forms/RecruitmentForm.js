@@ -288,7 +288,9 @@ export default function RecruitmentForm(props) {
                     onChange={e =>
                       props.handleItemChange(idx, 'note', e.target.value)
                     }
-                  />
+                  >
+                    {item['note']}
+                  </textarea>
                 </Table.Cell>
                 <Table.Cell>
                   <Button onClick={() => props.removeItem(idx)} icon="trash" />

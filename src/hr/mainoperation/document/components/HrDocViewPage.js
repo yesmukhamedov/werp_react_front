@@ -29,6 +29,7 @@ import {
   DOC_ACTION_ADD_APPROVER,
   DOC_ACTION_REJECT,
   DOC_ACTION_ADD_AMOUNT,
+  DOC_CREATE_PROBLEM_DOC,
 } from '../../../hrUtil';
 import browserHistory from '../../../../utils/history';
 import StaffListModal from '../../staff/components/StaffListModal';
@@ -38,6 +39,7 @@ import {
 } from '../../staff/actions/hrStaffAction';
 import { f4FetchCurrencyList } from '../../../../reference/f4/f4_action';
 import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal';
+import ProblemDocModal from './modals/ProblemDocModal';
 
 let STAFF_MODAL_OPENED_ON_ACTION = -10;
 const DOC_STATUS_ON_EXECUTION = 4;
@@ -53,6 +55,8 @@ class HrDocViewPage extends Component {
       refuseNote: '',
       //Редактирование Оклада
       amountEditMode: false,
+      problemDocModel: {},
+      problemDocModalOpened: false,
     };
   }
 
@@ -85,6 +89,17 @@ class HrDocViewPage extends Component {
 
       case DOC_ACTION_ADD_AMOUNT:
         this.props.toggleItemAmountEditMode(true);
+        break;
+
+      case DOC_CREATE_PROBLEM_DOC:
+        const { propDoc } = this.props;
+        this.setState({
+          ...this.state,
+          problemDocModalOpened: true,
+          problemDocModel: {
+            parentId: propDoc['id'],
+          },
+        });
         break;
 
       default:
@@ -230,6 +245,7 @@ class HrDocViewPage extends Component {
             Просмотр документа {document.typeName}, № {document.id}
           </Header>
           <HrDocActions
+            action="view"
             handleAction={this.handleAction}
             items={this.props.actions}
           />
@@ -265,6 +281,11 @@ class HrDocViewPage extends Component {
               items={this.props.approvers}
             />
             <HrDocLog items={this.props.actionLogs} />
+            <ProblemDocModal
+              open={this.state.problemDocModalOpened}
+              model={this.state.problemDocModel}
+              document={document}
+            />
           </div>
         )}
       </Container>

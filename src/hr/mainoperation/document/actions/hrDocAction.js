@@ -136,6 +136,8 @@ export function handleAction(document, actionType, additionalData) {
     case DOC_ACTION_SAVE:
       if (document.id && parseInt(document.id, 10) > 0) {
         return updateDocument(document);
+      } else {
+        return createDocument(document);
       }
 
       alert('Unkown Save');

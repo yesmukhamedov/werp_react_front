@@ -20,7 +20,7 @@ import moment from 'moment';
 
 require('moment/locale/ru');
 
-export default function DismissForm(props) {
+export default function ProblemDocForm(props) {
   const document = Object.assign({}, props.document);
   const bukrsOptions = props.bukrsOptions || [];
   const branchOptions = props.branchOptions || [];
@@ -200,7 +200,6 @@ export default function DismissForm(props) {
                     onChange={e =>
                       props.handleItemChange(idx, 'note', e.target.value)
                     }
-                    value={item['note']}
                   />
                 </Table.Cell>
                 <Table.Cell>

@@ -14,6 +14,7 @@ import {
   f4FetchStateList,
   f4FetchCityList,
   f4FetchCityregList,
+  f4FetchSubCompanies,
 } from '../../../../reference/f4/f4_action';
 import StaffAddressForm from './forms/StaffAddressForm';
 import StaffListModal from './StaffListModal';
@@ -47,6 +48,7 @@ class StaffUpdatePage extends Component {
     this.props.f4FetchCityList();
     this.props.f4FetchCityregList();
     this.props.fetchAllCurrentStaffs({});
+    this.props.f4FetchSubCompanies();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -330,6 +332,7 @@ function mapStateToProps(state) {
     stateList: state.f4.stateList,
     cityList: state.f4.cityList,
     cityregList: state.f4.cityregList,
+    subCompanies: state.f4.subCompanies,
   };
 }
 
@@ -346,5 +349,6 @@ export default connect(
     fetchAllCurrentStaffs,
     fetchBlankStaff,
     updateStaff,
+    f4FetchSubCompanies,
   },
 )(StaffUpdatePage);

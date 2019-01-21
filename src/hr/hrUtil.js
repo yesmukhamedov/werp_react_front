@@ -79,6 +79,7 @@ export const DOC_ACTION_CANCEL = 14; // Отменить
 export const DOC_ACTION_COMPLETE_DOC = 15; // Завершить
 export const DOC_ACTION_CREATE_BYPASS_SHEET = 16; // Создать обходной лист
 export const DOC_ACTION_SAVE = 17; // Сохранение документа
+export const DOC_CREATE_PROBLEM_DOC = 18; // Создание документа Проблемный
 /** **END DOCUMENT ACTIONS** */
 
 export const OFF_DATA = 'OFF_DATA';

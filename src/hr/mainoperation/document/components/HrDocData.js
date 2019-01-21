@@ -289,7 +289,8 @@ function renderDismissData(props) {
       <Table.Header>
         <Table.Row>
           <Table.HeaderCell>№</Table.HeaderCell>
-          <Table.HeaderCell>Сотрудник снимается с должности</Table.HeaderCell>
+          <Table.HeaderCell>Сотрудник увольняется с должности</Table.HeaderCell>
+          <Table.HeaderCell>Дата начала</Table.HeaderCell>
           <Table.HeaderCell>Дата увольнения</Table.HeaderCell>
           <Table.HeaderCell>Примечание</Table.HeaderCell>
           <Table.HeaderCell />
@@ -300,7 +301,11 @@ function renderDismissData(props) {
           <Table.Row key={item.id}>
             <Table.Cell>{idx + 1}</Table.Cell>
             <Table.Cell>
-              {item.staffName} ({item.positionName}) &nbsp;
+              {item.staffName}
+              {item.currentSalary
+                ? '(' + item['currentSalary']['positionName'] + ')'
+                : ''}
+              &nbsp;
               <Link
                 target="_blank"
                 className="ui icon button mini right floated"
@@ -308,6 +313,9 @@ function renderDismissData(props) {
               >
                 <Icon name="eye" />
               </Link>
+            </Table.Cell>
+            <Table.Cell>
+              {item['currentSalary'] ? item['currentSalary']['beginDate'] : ''}
             </Table.Cell>
             <Table.Cell>{formatDMY(item.endDate)}</Table.Cell>
             <Table.Cell>{item.note}</Table.Cell>

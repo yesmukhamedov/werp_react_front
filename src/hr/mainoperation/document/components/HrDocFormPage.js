@@ -1,23 +1,26 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Header, Container, Segment, Divider, Loader } from 'semantic-ui-react';
+import { Header, Container, Segment, Divider } from 'semantic-ui-react';
 import HrDocActions from './HrDocActions';
 
 import {
   DOC_TYPE_RECRUITMENT,
   DOC_TYPE_TRANSFER,
   DOC_ACTION_SAVE,
+  DOC_TYPE_CHANGE_SALARY,
   DOC_TYPE_DISMISS,
+  DOC_TYPE_EXCLUDE_FROM_KPI,
 } from '../../../hrUtil';
-import { DOC_TYPE_CHANGE_SALARY } from '../../../hrUtil';
+import {} from '../../../hrUtil';
 import RecruitmentForm from './forms/RecruitmentForm';
 import TransferForm from './forms/TransferForm';
 import SalaryChangeForm from './forms/SalaryChangeForm';
 import DismissForm from './forms/DismissForm';
+import ExcludeFromKpiForm from './forms/ExcludeFromKpiForm';
 import {
-  createDocument,
-  fetchDocument,
+  blankDocument,
   handleAction,
+  fetchDocument,
 } from '../actions/hrDocAction';
 import {
   toggleStaffListModal,
@@ -28,14 +31,19 @@ import {
   f4FetchPositionList,
   f4FetchBusinessAreaList,
   f4FetchDepartmentList,
+  f4FetchCurrencyList,
 } from '../../../../reference/f4/f4_action';
 import { toggleSalaryListModal } from '../../salary/actions/hrSalaryAction';
 import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal';
 import SalaryListModal from '../../salary/components/SalaryListModal';
+import { fetchAllCurrentStaffs } from '../../staff/actions/hrStaffAction';
+import StaffListModal from '../../staff/components/StaffListModal';
+import { notify } from '../../../../general/notification/notification_action';
 import { injectIntl } from 'react-intl';
+import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 
-class HrDocUpdatePage extends Component {
+class HrDocFormPage extends Component {
   constructor(props) {
     super(props);
 
@@ -46,8 +54,35 @@ class HrDocUpdatePage extends Component {
   }
 
   componentWillMount() {
-    let id = parseInt(this.props.match.params.id, 10);
-    this.props.fetchDocument(id);
+    let action = this.props.match.params.action;
+    if (action === 'create') {
+      let docType = parseInt(this.props.match.params.type, 10);
+      this.props.blankDocument(docType);
+      this.loadReferences(docType);
+    } else if (action === 'update') {
+      let docId = parseInt(this.props.match.params.id, 10);
+      this.props.fetchDocument(docId);
+    }
+  }
+
+  loadReferences(docType) {
+    this.props.f4FetchDepartmentList();
+    if (DOC_TYPE_RECRUITMENT === docType) {
+      this.props.f4FetchPositionList('hr_document');
+      this.props.fetchAllManagers();
+      this.props.f4FetchBusinessAreaList();
+    } else if (DOC_TYPE_TRANSFER === docType) {
+      this.props.f4FetchPositionList('hr_document');
+      this.props.fetchAllManagers();
+      this.props.f4FetchBusinessAreaList();
+    } else if (DOC_TYPE_CHANGE_SALARY === docType) {
+      this.props.f4FetchCurrencyList('hr_doc');
+    } else if (DOC_TYPE_EXCLUDE_FROM_KPI === docType) {
+    } else if (DOC_TYPE_DISMISS === docType) {
+    }
+
+    this.props.fetchAllCurrentStaffs([]);
+    this.props.fetchAllDirectors();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -58,22 +93,7 @@ class HrDocUpdatePage extends Component {
       this.setState({
         localDocument: Object.assign({}, nextProps.document),
       });
-
-      this.props.f4FetchDepartmentList();
-      if (DOC_TYPE_RECRUITMENT === nextProps.document.typeId) {
-        this.props.f4FetchPositionList('hr_document');
-        this.props.fetchAllManagers();
-        this.props.fetchAllDirectors();
-        this.props.f4FetchBusinessAreaList();
-      } else if (DOC_TYPE_TRANSFER === nextProps.document.typeId) {
-        this.props.f4FetchPositionList('hr_document');
-        this.props.fetchAllManagers();
-        this.props.fetchAllDirectors();
-        this.props.f4FetchBusinessAreaList();
-      } else if (DOC_TYPE_CHANGE_SALARY === nextProps.document.typeId) {
-      } else if (DOC_TYPE_DISMISS === nextProps.document.typeId) {
-        this.props.fetchAllDirectors();
-      }
+      this.loadReferences(nextProps['document']['typeId']);
     }
   }
 
@@ -119,8 +139,8 @@ class HrDocUpdatePage extends Component {
   };
 
   addItem = () => {
-    let docType = parseInt(this.props.match.params.type, 10);
-    switch (docType) {
+    const { localDocument } = this.state;
+    switch (localDocument['typeId']) {
       case DOC_TYPE_RECRUITMENT:
         this.setState({
           staffListModalOpened: true,
@@ -129,6 +149,7 @@ class HrDocUpdatePage extends Component {
 
       case DOC_TYPE_TRANSFER:
       case DOC_TYPE_DISMISS:
+      case DOC_TYPE_EXCLUDE_FROM_KPI:
         this.setState({
           staffListModalOpened: true,
         });
@@ -161,9 +182,16 @@ class HrDocUpdatePage extends Component {
   };
 
   handleStaffSelect = staff => {
-    let docType = parseInt(this.props.match.params.type, 10);
     let document = Object.assign({}, this.state.localDocument);
+    let docType = document['typeId'];
     let items = document.items || [];
+
+    for (let k in items) {
+      if (items[k]['staffId'] === staff.staffId) {
+        this.props.notify('error', 'Сотрудник уже добавлен в список!');
+        return;
+      }
+    }
 
     if (docType === DOC_TYPE_RECRUITMENT) {
       items.push({
@@ -192,6 +220,43 @@ class HrDocUpdatePage extends Component {
       });
 
       this.props.toggleStaffListModal(false);
+    } else if (docType === DOC_TYPE_EXCLUDE_FROM_KPI) {
+      items.push({
+        staffId: staff.staffId,
+        staffName: staff.fio,
+        beginDate: moment().startOf('month'),
+        endDate: moment().endOf('month'),
+        amount: 0,
+      });
+
+      this.setState({
+        ...this.state,
+        localDocument: document,
+      });
+
+      this.props.toggleStaffListModal(false);
+    } else if (docType === DOC_TYPE_DISMISS) {
+      console.log(items, staff);
+      if (items && items.length > 0) {
+        this.props.notify(
+          'error',
+          'В одном документе уволить можно только одного сотрудника!',
+        );
+        return;
+      }
+      items.push({
+        staffId: staff.staffId,
+        staffName: staff.fio,
+        salaryId: staff.salaryId,
+        amount: 0,
+      });
+
+      this.setState({
+        ...this.state,
+        localDocument: document,
+      });
+
+      this.props.toggleStaffListModal(false);
     } else if (docType === DOC_TYPE_CHANGE_SALARY) {
       items.push({
         staffId: staff.staffId,
@@ -200,8 +265,9 @@ class HrDocUpdatePage extends Component {
         amount: staff.amount,
         positionName: staff.positionName,
         positionId: staff.positionId,
-        beginDate: staff.begDate,
-        amount: staff.amount,
+        beginDate: null,
+        amount: 0,
+        currency: staff.currency,
       });
 
       this.setState({
@@ -232,7 +298,7 @@ class HrDocUpdatePage extends Component {
       return;
     }
 
-    if (fieldName === 'beginDate') {
+    if (fieldName === 'beginDate' || fieldName === 'endDate') {
       if (fieldValue) {
         fieldValue = fieldValue.valueOf();
       } else {
@@ -240,9 +306,12 @@ class HrDocUpdatePage extends Component {
       }
     }
 
+    if (fieldName === 'branchId') {
+      items[index]['managerId'] = null;
+    }
+
     items[index][fieldName] = fieldValue;
     doc['items'] = items;
-
     this.setState({
       ...this.state,
       localDocument: doc,
@@ -254,16 +323,11 @@ class HrDocUpdatePage extends Component {
   };
 
   render() {
+    const { localDocument } = this.state;
+    const currentType = localDocument['typeId'];
     const { messages, locale } = this.props.intl;
-    let localDocument = Object.assign({}, this.state.localDocument);
     let form;
-    let pageTitle = localDocument.id
-      ? 'Редактирование документа ' +
-        localDocument.typeName +
-        ' №' +
-        localDocument.id
-      : '';
-    const currentType = localDocument.typeId;
+    let pageTitle = 'Создание документа ' + this.state.localDocument.typeName;
     switch (currentType) {
       case DOC_TYPE_RECRUITMENT:
         form = (
@@ -310,9 +374,7 @@ class HrDocUpdatePage extends Component {
             directorOptions={this.getDirectorOptions(
               this.state.localDocument.branchId,
             )}
-            managerOptions={this.getManagerOptions(
-              this.state.localDocument.branchId,
-            )}
+            getManagerOptions={this.getManagerOptions}
             bukrsOptions={this.props.bukrsOptions}
             document={this.state.localDocument}
           />
@@ -342,6 +404,7 @@ class HrDocUpdatePage extends Component {
             )}
             bukrsOptions={this.props.bukrsOptions}
             document={this.state.localDocument}
+            currencyList={this.props.currencyList}
           />
         );
 
@@ -375,6 +438,33 @@ class HrDocUpdatePage extends Component {
         );
         break;
 
+      case DOC_TYPE_EXCLUDE_FROM_KPI:
+        form = (
+          <ExcludeFromKpiForm
+            fetchCurrentStaffs={[]}
+            handleItemChange={this.handleItemChange}
+            handleDocumentChange={this.handleDocumentChange}
+            addItem={this.addItem}
+            removeItem={this.removeItem}
+            positionList={this.props.positionList}
+            departmentList={this.props.departmentList}
+            branchOptions={this.getBranchOptions(
+              this.state.localDocument.bukrs,
+            )}
+            businessAreaOptions={this.getBusinessAreaOptions(
+              this.state.localDocument.bukrs,
+            )}
+            directorOptions={this.getDirectorOptions(
+              this.state.localDocument.branchId,
+            )}
+            managerOptions={this.getManagerOptions(
+              this.state.localDocument.branchId,
+            )}
+            bukrsOptions={this.props.bukrsOptions}
+            document={this.state.localDocument}
+          />
+        );
+        break;
       default: {
       }
     }
@@ -411,6 +501,19 @@ class HrDocUpdatePage extends Component {
           bukrsDisabledParent={false}
         />
       );
+    } else if (DOC_TYPE_EXCLUDE_FROM_KPI === currentType) {
+      modal = (
+        <StaffF4Modal
+          open={this.state.staffListModalOpened}
+          messages={messages}
+          closeModal={() => this.setState({ staffListModalOpened: false })}
+          onStaffSelect={item => this.handleStaffSelect(item)}
+          trans={'hr_doc_create_' + currentType}
+          branchOptions={this.props.branchOptions}
+          companyOptions={this.props.bukrsOptions}
+          bukrsDisabledParent={false}
+        />
+      );
     }
 
     return (
@@ -430,9 +533,9 @@ class HrDocUpdatePage extends Component {
 
           {modal}
           <HrDocActions
-            isUpdate={true}
+            action={this.props.match.params.action}
             handleAction={this.handleAction}
-            items={[]}
+            items={this.props.actions}
           />
         </Segment>
         <Divider clearing />
@@ -453,24 +556,30 @@ function mapStateToProps(state) {
     managersByBranchOptions: state.hrStaff.managersByBranchOptions,
     directorsByBranchOptions: state.hrStaff.directorsByBranchOptions,
     allStaffs: state.hrStaff.allStaffs,
+    allCurrentStaffs: state.hrStaff.allCurrentStaffs,
     departmentList: state.f4.departmentList,
     positionList: state.f4.positionList,
     businessAreaList: state.f4.businessAreaList,
+    currencyList: state.f4.currencyList,
+    loader: state.loader,
   };
 }
 
 export default connect(
   mapStateToProps,
   {
+    blankDocument,
     toggleStaffListModal,
-    createDocument,
+    handleAction,
     fetchAllDirectors,
     f4FetchPositionList,
     f4FetchBusinessAreaList,
     f4FetchDepartmentList,
     fetchAllManagers,
     toggleSalaryListModal,
+    fetchAllCurrentStaffs,
+    notify,
+    f4FetchCurrencyList,
     fetchDocument,
-    handleAction,
   },
-)(injectIntl(HrDocUpdatePage));
+)(injectIntl(HrDocFormPage));
