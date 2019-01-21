@@ -8,11 +8,7 @@ import {
   Table,
   Button,
 } from 'semantic-ui-react';
-import {
-  blankDocument,
-  handleAction,
-  fetchDocument,
-} from '../actions/hrDocAction';
+import { handleAction, fetchDocument } from '../actions/hrDocAction';
 import {
   toggleStaffListModal,
   fetchAllManagers,
@@ -29,8 +25,10 @@ import { fetchAllCurrentStaffs } from '../../staff/actions/hrStaffAction';
 import { notify } from '../../../../general/notification/notification_action';
 import { injectIntl } from 'react-intl';
 import DatePicker from 'react-datepicker';
+import { DOC_ACTION_ADD_SALARY } from '../../../hrUtil';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
+require('moment/locale/ru');
 
 class SalaryCreatePage extends Component {
   constructor(props) {
@@ -55,6 +53,7 @@ class SalaryCreatePage extends Component {
     this.props.f4FetchBusinessAreaList();
     this.props.fetchAllCurrentStaffs([]);
     this.props.fetchAllDirectors();
+    this.props.f4FetchCurrencyList('hr_doc');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -135,12 +134,13 @@ class SalaryCreatePage extends Component {
     const { localDocument } = this.state;
     const items = localDocument['items'] || [];
     const { messages, locale } = this.props.intl;
-    const { positionList } = this.props;
-    let pageTitle = 'Добавление должностей ';
+    const { positionList, currencyList } = this.props;
+    let pageTitle = 'Добавление должностей Док №' + localDocument['id'];
     let managerOptions = this.getManagerOptions(localDocument['branchId']);
     let businessAreaOptions = this.getBusinessAreaOptions(
       localDocument['bukrs'],
     );
+
     return (
       <Container
         fluid
@@ -165,9 +165,10 @@ class SalaryCreatePage extends Component {
                 <Table.HeaderCell>Дата начало</Table.HeaderCell>
                 <Table.HeaderCell>Менеджер</Table.HeaderCell>
                 <Table.HeaderCell>Бизнес сфера</Table.HeaderCell>
+                <Table.HeaderCell>Оклад</Table.HeaderCell>
+                <Table.HeaderCell>Валюта</Table.HeaderCell>
                 <Table.HeaderCell>Тип</Table.HeaderCell>
                 <Table.HeaderCell>Прим.</Table.HeaderCell>
-                <Table.HeaderCell />
               </Table.Row>
             </Table.Header>
             <Table.Body>
@@ -210,7 +211,7 @@ class SalaryCreatePage extends Component {
                         dropdownMode="select"
                         dateFormat="DD.MM.YYYY"
                         selected={
-                          item.beginDate ? moment(item.beginDate) : null
+                          item['beginDate'] ? moment(item['beginDate']) : null
                         }
                         onChange={v =>
                           this.handleItemChange(idx, 'beginDate', v)
@@ -265,6 +266,32 @@ class SalaryCreatePage extends Component {
                     }
                   </Table.Cell>
                   <Table.Cell>
+                    <input
+                      type="number"
+                      value={item.amount || 0}
+                      onChange={e =>
+                        this.handleItemChange(idx, 'amount', e.target.value)
+                      }
+                    />
+                  </Table.Cell>
+                  <Table.Cell>
+                    <select
+                      className="ui fluid dropdown"
+                      onChange={e =>
+                        this.handleItemChange(idx, 'currency', e.target.value)
+                      }
+                      style={{ maxWidth: '200px' }}
+                      value={item['currency'] || ''}
+                    >
+                      <option value="">Не выбрано</option>
+                      {currencyList.map(cur => (
+                        <option key={cur.currency} value={cur.currency}>
+                          {cur.currency}
+                        </option>
+                      ))}
+                    </select>
+                  </Table.Cell>
+                  <Table.Cell>
                     {
                       <select
                         className="ui fluid dropdown"
@@ -293,15 +320,24 @@ class SalaryCreatePage extends Component {
                       {item['note']}
                     </textarea>
                   </Table.Cell>
-                  <Table.Cell>
-                    <Button onClick={() => this.removeItem(idx)} icon="trash" />
-                  </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>
           </Table>
         </Segment>
         <Divider clearing />
+        <Button
+          primary
+          onClick={() =>
+            this.props.handleAction(
+              localDocument,
+              DOC_ACTION_ADD_SALARY,
+              localDocument['items'],
+            )
+          }
+        >
+          Сохранить
+        </Button>
       </Container>
     );
   }
@@ -329,7 +365,6 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {
-    blankDocument,
     toggleStaffListModal,
     handleAction,
     fetchAllDirectors,

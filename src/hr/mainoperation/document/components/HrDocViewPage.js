@@ -30,6 +30,7 @@ import {
   DOC_ACTION_REJECT,
   DOC_ACTION_ADD_AMOUNT,
   DOC_CREATE_PROBLEM_DOC,
+  DOC_ACTION_ADD_SALARY,
 } from '../../../hrUtil';
 import browserHistory from '../../../../utils/history';
 import StaffListModal from '../../staff/components/StaffListModal';
@@ -71,6 +72,10 @@ class HrDocViewPage extends Component {
     switch (actionType) {
       case DOC_ACTION_GO_TO_LIST:
         browserHistory.push('/hr/doc/recruitment');
+        break;
+
+      case DOC_ACTION_ADD_SALARY:
+        browserHistory.push('/hr/doc/salary-create/' + this.props.document.id);
         break;
 
       case DOC_ACTION_ADD_APPROVER:

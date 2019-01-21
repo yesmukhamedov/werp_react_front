@@ -322,13 +322,13 @@ const rejectDocument = (document, note) =>
   };
 
 // Action Add Salary
-const addSalary = document =>
+const addSalary = (document, additionalData) =>
   function(dispatch) {
     dispatch(setLoading(true));
     axios
       .put(
         `${ROOT_URL}/api/hr/document/action-add-salary/${document.id}`,
-        {},
+        additionalData,
         {
           headers: {
             authorization: localStorage.getItem('token'),
@@ -337,7 +337,8 @@ const addSalary = document =>
       )
       .then(({ data }) => {
         dispatch(setLoading(false));
-        window.document.location.reload(true);
+        browserHistory.push(`/hr/doc/view/${document.id}`);
+        //window.document.location.reload(true);
       })
       .catch(e => {
         dispatch(setLoading(false));
