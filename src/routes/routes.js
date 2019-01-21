@@ -457,6 +457,12 @@ const AsyncRefLeaveReasonListPage = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncHrDocSalaryCreatePage = Loadable({
+  loader: () =>
+    import('../hr/mainoperation/document/components/SalaryCreatePage' /* webpackChunkName: "SalaryCreatePage" */),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   DitTransactionList: trlist,
   Ditaub: AsyncAssignUserBranch,
@@ -556,6 +562,11 @@ const generateRoutes = transactionRoutes => {
         component={AsyncHrDocFormPage}
       />
       <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />
+      <Route
+        path="/hr/doc/salary-create/:id"
+        exact={true}
+        component={AsyncHrDocSalaryCreatePage}
+      />
       <Route path="/general/summary" component={AsyncDtskcSummary} />
       <Route
         path="/reference/sub-companies"
