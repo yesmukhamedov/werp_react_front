@@ -15,7 +15,7 @@ export default function ProblemDocModal(props) {
       <Header content={'Добавление документа "Проблемный сотрудник"'} />
       <Modal.Content>
         <Modal.Description>
-          <ProblemDocForm document={props.document} model={props['model']} />
+          <ProblemDocForm {...props} />
         </Modal.Description>
       </Modal.Content>
 

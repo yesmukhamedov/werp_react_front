@@ -315,7 +315,9 @@ function renderDismissData(props) {
               </Link>
             </Table.Cell>
             <Table.Cell>
-              {item['currentSalary'] ? item['currentSalary']['beginDate'] : ''}
+              {item['currentSalary']
+                ? formatDMY(item['currentSalary']['begDate'])
+                : ''}
             </Table.Cell>
             <Table.Cell>{formatDMY(item.endDate)}</Table.Cell>
             <Table.Cell>{item.note}</Table.Cell>

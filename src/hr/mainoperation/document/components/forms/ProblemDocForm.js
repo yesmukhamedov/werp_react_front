@@ -30,6 +30,7 @@ export default function ProblemDocForm(props) {
   const managerOptions = props.managerOptions || [];
   const directorOptions = props.directorOptions || [];
   const businessAreaOptions = props.businessAreaOptions || [];
+  const problemOptions = props.problemOptions || [];
 
   return (
     <div>
@@ -147,19 +148,6 @@ export default function ProblemDocForm(props) {
         <Label color="blue" ribbon>
           Данные документа
         </Label>
-
-        <Button
-          disabled={
-            document.bukrs === undefined ||
-            document.bukrs === null ||
-            document.bukrs.length === 0
-          }
-          primary
-          onClick={props.addItem}
-          floated="right"
-        >
-          Добавить
-        </Button>
         <br style={{ clear: 'both' }} />
         <Table celled>
           <Table.Header>
@@ -169,6 +157,7 @@ export default function ProblemDocForm(props) {
                 Сотрудник снимается с должности
               </Table.HeaderCell>
               <Table.HeaderCell>Дата увольнения</Table.HeaderCell>
+              <Table.HeaderCell>Тип проблемы</Table.HeaderCell>
               <Table.HeaderCell>Примечание</Table.HeaderCell>
               <Table.HeaderCell />
             </Table.Row>
@@ -177,7 +166,12 @@ export default function ProblemDocForm(props) {
             {items.map((item, idx) => (
               <Table.Row key={item.staffId}>
                 <Table.Cell>{idx + 1}</Table.Cell>
-                <Table.Cell>{item.staffName}</Table.Cell>
+                <Table.Cell>
+                  {item.staffName}
+                  {item['currentSalary']
+                    ? '(' + item['currentSalary']['positionName'] + ')'
+                    : ''}
+                </Table.Cell>
                 <Table.Cell>
                   {
                     <DatePicker
@@ -193,6 +187,23 @@ export default function ProblemDocForm(props) {
                       onChange={v => props.handleItemChange(idx, 'endDate', v)}
                     />
                   }
+                </Table.Cell>
+                <Table.Cell>
+                  <div className="field">
+                    <select
+                      onChange={e =>
+                        props.handleDocumentChange('problemId', e.target.value)
+                      }
+                      value={item.problemId || ''}
+                    >
+                      <option value="">Не выбрано</option>
+                      {problemOptions.map(p => (
+                        <option key={p.key} value={p.value}>
+                          {p.text}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </Table.Cell>
                 <Table.Cell>
                   <textarea

@@ -46,12 +46,13 @@ export const blankLeaveReason = () => {
     });
 };
 
-export const fetchLeaveReasons = () => {
+export const fetchLeaveReasons = params => {
   return dispatch =>
     axios.get(`${ROOT_URL}/api/reference/leave-reasons`, {
       headers: {
         authorization: localStorage.getItem('token'),
       },
+      params: params,
     });
 };
 
@@ -76,6 +77,52 @@ export const createLeaveReason = o => {
 export const updateLeaveReason = o => {
   return dispatch =>
     axios.put(`${ROOT_URL}/api/reference/leave-reasons`, o, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    });
+};
+
+export const blankStaffProblem = () => {
+  return dispatch =>
+    axios.get(`${ROOT_URL}/api/reference/staff-problems/blank`, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    });
+};
+
+export const fetchStaffProblems = params => {
+  return dispatch =>
+    axios.get(`${ROOT_URL}/api/reference/staff-problems`, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+      params: params,
+    });
+};
+
+export const fetchStaffProblem = id => {
+  return dispatch =>
+    axios.get(`${ROOT_URL}/api/reference/staff-problems/` + id, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    });
+};
+
+export const createStaffProblem = o => {
+  return dispatch =>
+    axios.post(`${ROOT_URL}/api/reference/staff-problems`, o, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    });
+};
+
+export const updateStaffProblem = o => {
+  return dispatch =>
+    axios.put(`${ROOT_URL}/api/reference/staff-problems`, o, {
       headers: {
         authorization: localStorage.getItem('token'),
       },

@@ -457,6 +457,12 @@ const AsyncRefLeaveReasonListPage = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncRefStaffProblemListPage = Loadable({
+  loader: () =>
+    import('../reference/mainoperation/components/StaffProblemListPage' /* webpackChunkName: "StaffProblemListPage" */),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncHrDocSalaryCreatePage = Loadable({
   loader: () =>
     import('../hr/mainoperation/document/components/SalaryCreatePage' /* webpackChunkName: "SalaryCreatePage" */),
@@ -575,6 +581,10 @@ const generateRoutes = transactionRoutes => {
       <Route
         path="/reference/leave-reasons"
         component={AsyncRefLeaveReasonListPage}
+      />
+      <Route
+        path="/reference/staff-problems"
+        component={AsyncRefStaffProblemListPage}
       />
       <Route path="/finance/mainoperation/faicfp" component={AsyncFaicfp} />
       <Route path="/finance/mainoperation/faicfp2" component={AsyncFaicfp2} />

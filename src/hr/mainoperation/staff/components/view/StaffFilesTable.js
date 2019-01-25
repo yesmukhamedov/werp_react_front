@@ -29,6 +29,13 @@ export default function StaffFilesTable(props) {
     props.deleteFile(staffId, fileId);
   };
 
+  const showPreviewWindow = id => {
+    window.open(
+      `${ROOT_URL}/hr/file/download/${id}`,
+      'height=570,width=520,scrollbars=yes,status=yes',
+    );
+  };
+
   const tempContent = files.map((file, idx) => (
     <Table.Row key={file.id}>
       <Table.Cell>{idx + 1}</Table.Cell>
@@ -36,14 +43,28 @@ export default function StaffFilesTable(props) {
       <Table.Cell>{file.file_size}</Table.Cell>
       <Table.Cell>{file.created_date}</Table.Cell>
       <Table.Cell>
-        <a
-          href={`${ROOT_URL}/hr/file/download/${file.id}`}
+        {file.image || file.pdf ? (
+          <Button
+            className="ui icon button mini left floated"
+            onClick={() => showPreviewWindow(file.id)}
+          >
+            Просмотр
+          </Button>
+        ) : (
+          <a
+            href={`${ROOT_URL}/hr/file/download/${file.id}`}
+            className="ui icon button mini left floated"
+          >
+            Скачать
+          </a>
+        )}
+        <Button
+          color="red"
           className="ui icon button mini right floated"
+          onClick={() => deleteConfirm(file.id)}
         >
-          Скачать
-        </a>
-        {file.image ? <Button>Просмотр</Button> : ''}
-        <Button onClick={() => deleteConfirm(file.id)}>Удалить</Button>
+          Удалить
+        </Button>
       </Table.Cell>
     </Table.Row>
   ));

@@ -29,7 +29,10 @@ import {
   f4FetchBusinessAreaList,
   f4FetchDepartmentList,
 } from '../../../../reference/f4/f4_action';
-import { toggleSalaryListModal } from '../../salary/actions/hrSalaryAction';
+import {
+  toggleSalaryListModal,
+  fetchCurrentSalaries,
+} from '../../salary/actions/hrSalaryAction';
 import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal';
 import SalaryListModal from '../../salary/components/SalaryListModal';
 import { injectIntl } from 'react-intl';
@@ -218,6 +221,10 @@ class HrDocUpdatePage extends Component {
     doc[fieldName] = fieldValue;
     if (fieldName === 'bukrs' || fieldName === 'branchId') {
       doc['items'] = [];
+      if (fieldName === 'branchId') {
+        console.log('TEST');
+        this.props.fetchCurrentSalaries();
+      }
     }
     this.setState({
       ...this.state,
@@ -472,5 +479,6 @@ export default connect(
     toggleSalaryListModal,
     fetchDocument,
     handleAction,
+    fetchCurrentSalaries,
   },
 )(injectIntl(HrDocUpdatePage));

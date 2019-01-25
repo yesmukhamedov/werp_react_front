@@ -57,6 +57,7 @@ export const DOC_TYPE_DISMISS = 3;
 export const DOC_TYPE_CHANGE_SALARY = 4;
 export const DOC_TYPE_BYPASS_SHEET = 5;
 export const DOC_TYPE_EXCLUDE_FROM_KPI = 7;
+export const DOC_TYPE_PROBLEM_STAFF = 8;
 
 /** END DOCUMENT TYPES** */
 

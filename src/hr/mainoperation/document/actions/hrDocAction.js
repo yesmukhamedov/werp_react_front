@@ -88,6 +88,17 @@ export function blankDocument(type) {
   };
 }
 
+export function getBlankDocument(type, params) {
+  return dispatch => {
+    return axios.get(`${ROOT_URL}/api/hr/document/blank/` + type, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+      params: params,
+    });
+  };
+}
+
 export function createDocument(document) {
   return function(dispatch) {
     dispatch(setLoading(true));

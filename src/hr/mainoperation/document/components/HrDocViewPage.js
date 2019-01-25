@@ -23,6 +23,7 @@ import {
   toggleItemAmountEditMode,
   addAmount,
   removeApprove,
+  getBlankDocument,
 } from '../actions/hrDocAction';
 import {
   DOC_ACTION_GO_TO_LIST,
@@ -31,6 +32,8 @@ import {
   DOC_ACTION_ADD_AMOUNT,
   DOC_CREATE_PROBLEM_DOC,
   DOC_ACTION_ADD_SALARY,
+  DOC_TYPE_DISMISS,
+  DOC_TYPE_PROBLEM_STAFF,
 } from '../../../hrUtil';
 import browserHistory from '../../../../utils/history';
 import StaffListModal from '../../staff/components/StaffListModal';
@@ -39,6 +42,7 @@ import {
   toggleStaffListModal,
 } from '../../staff/actions/hrStaffAction';
 import { f4FetchCurrencyList } from '../../../../reference/f4/f4_action';
+import { fetchStaffProblems } from '../../../../reference/mainoperation/actions/referenceAction';
 import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal';
 import ProblemDocModal from './modals/ProblemDocModal';
 
@@ -58,7 +62,12 @@ class HrDocViewPage extends Component {
       amountEditMode: false,
       problemDocModel: {},
       problemDocModalOpened: false,
+      problems: [],
     };
+
+    this.handleProblemDocModalClose = this.handleProblemDocModalClose.bind(
+      this,
+    );
   }
 
   componentWillMount() {
@@ -66,6 +75,14 @@ class HrDocViewPage extends Component {
     this.props.fetchDocument(id);
     this.props.fetchAllCurrentStaffs([]);
     this.props.f4FetchCurrencyList('hr_doc');
+  }
+
+  componentDidMount() {
+    this.props.fetchStaffProblems({ mode: 'options' }).then(({ data }) => {
+      this.setState({
+        problems: data,
+      });
+    });
   }
 
   handleAction = actionType => {
@@ -97,14 +114,17 @@ class HrDocViewPage extends Component {
         break;
 
       case DOC_CREATE_PROBLEM_DOC:
-        const { propDoc } = this.props;
-        this.setState({
-          ...this.state,
-          problemDocModalOpened: true,
-          problemDocModel: {
-            parentId: propDoc['id'],
-          },
-        });
+        const propDoc = Object.assign({}, this.props.document);
+        this.props
+          .getBlankDocument(DOC_TYPE_PROBLEM_STAFF, { parentId: propDoc['id'] })
+          .then(({ data }) => {
+            this.setState({
+              ...this.state,
+              problemDocModalOpened: true,
+              problemDocModel: data['document'],
+            });
+          });
+
         break;
 
       default:
@@ -156,6 +176,13 @@ class HrDocViewPage extends Component {
       refuseNote: v,
     });
   };
+
+  handleProblemDocModalClose() {
+    this.setState({
+      ...this.state,
+      problemDocModalOpened: false,
+    });
+  }
 
   renderRejectNoteModal = () => {
     return (
@@ -233,6 +260,14 @@ class HrDocViewPage extends Component {
       });
   };
 
+  getBranchOptions = bukrs => {
+    if (!bukrs || !this.props.branchOptions) {
+      return [];
+    }
+
+    return this.props.branchOptions[bukrs] || [];
+  };
+
   render() {
     let document = Object.assign({}, this.props.document);
     return (
@@ -287,9 +322,14 @@ class HrDocViewPage extends Component {
             />
             <HrDocLog items={this.props.actionLogs} />
             <ProblemDocModal
+              branchOptions={this.getBranchOptions(
+                this.state.problemDocModel['bukrs'],
+              )}
+              bukrsOptions={this.props.bukrsOptions}
               open={this.state.problemDocModalOpened}
-              model={this.state.problemDocModel}
-              document={document}
+              document={this.state.problemDocModel}
+              handleFormClose={this.handleProblemDocModalClose}
+              problemOptions={this.state.problems}
             />
           </div>
         )}
@@ -326,5 +366,7 @@ export default connect(
     addAmount,
     f4FetchCurrencyList,
     removeApprove,
+    getBlankDocument,
+    fetchStaffProblems,
   },
 )(HrDocViewPage);

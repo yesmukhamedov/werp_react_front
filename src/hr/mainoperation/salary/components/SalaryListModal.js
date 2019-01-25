@@ -39,7 +39,7 @@ class SalaryListModal extends PureComponent {
     ];
 
     const salaries = this.props.currentSalaries || [];
-
+    const { showSearchPanel } = this.props;
     return (
       <Modal size="large" open={this.props.salaryListModalOpened} closeOnEscape>
         <Modal.Header>Список должностей</Modal.Header>
@@ -50,21 +50,25 @@ class SalaryListModal extends PureComponent {
                 <Table.Cell />
                 <Table.Cell />
                 <Table.Cell>
-                  <Button
-                    icon
-                    labelPosition="left"
-                    primary
-                    size="small"
-                    onClick={() => {
-                      this.props.toggleSalaryListModalLoading(true);
-                      this.props.fetchCurrentSalaries([]);
-                    }}
-                    loading={this.props.salaryListModalLoading}
-                    disabled={this.props.salaryListModalLoading}
-                  >
-                    <Icon name="search" size="large" />
-                    Поиск
-                  </Button>
+                  {showSearchPanel ? (
+                    <Button
+                      icon
+                      labelPosition="left"
+                      primary
+                      size="small"
+                      onClick={() => {
+                        this.props.toggleSalaryListModalLoading(true);
+                        this.props.fetchCurrentSalaries([]);
+                      }}
+                      loading={this.props.salaryListModalLoading}
+                      disabled={this.props.salaryListModalLoading}
+                    >
+                      <Icon name="search" size="large" />
+                      Поиск
+                    </Button>
+                  ) : (
+                    ''
+                  )}
                 </Table.Cell>
                 <Table.Cell />
               </Table.Row>

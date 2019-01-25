@@ -184,7 +184,12 @@ export default function TransferForm(props) {
             {items.map((item, idx) => (
               <Table.Row key={item.staffId}>
                 <Table.Cell>{idx + 1}</Table.Cell>
-                <Table.Cell>{item.staffName}</Table.Cell>
+                <Table.Cell>
+                  {item.staffName}
+                  {item['currentSalary']
+                    ? '(' + item['currentSalary']['positionName'] + ')'
+                    : ''}
+                </Table.Cell>
                 <Table.Cell>
                   {
                     <select

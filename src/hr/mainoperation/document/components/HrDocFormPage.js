@@ -33,11 +33,13 @@ import {
   f4FetchDepartmentList,
   f4FetchCurrencyList,
 } from '../../../../reference/f4/f4_action';
-import { toggleSalaryListModal } from '../../salary/actions/hrSalaryAction';
+import {
+  toggleSalaryListModal,
+  fetchCurrentSalaries,
+} from '../../salary/actions/hrSalaryAction';
 import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal';
 import SalaryListModal from '../../salary/components/SalaryListModal';
 import { fetchAllCurrentStaffs } from '../../staff/actions/hrStaffAction';
-import StaffListModal from '../../staff/components/StaffListModal';
 import { notify } from '../../../../general/notification/notification_action';
 import { injectIntl } from 'react-intl';
 import moment from 'moment';
@@ -148,13 +150,13 @@ class HrDocFormPage extends Component {
         break;
 
       case DOC_TYPE_TRANSFER:
-      case DOC_TYPE_DISMISS:
       case DOC_TYPE_EXCLUDE_FROM_KPI:
         this.setState({
           staffListModalOpened: true,
         });
         break;
 
+      case DOC_TYPE_DISMISS:
       case DOC_TYPE_CHANGE_SALARY:
         this.props.toggleSalaryListModal(true);
         break;
@@ -188,6 +190,7 @@ class HrDocFormPage extends Component {
 
     for (let k in items) {
       if (items[k]['staffId'] === staff.staffId) {
+        this.props.toggleSalaryListModal(false);
         this.props.notify('error', 'Сотрудник уже добавлен в список!');
         return;
       }
@@ -235,29 +238,20 @@ class HrDocFormPage extends Component {
       });
 
       this.props.toggleStaffListModal(false);
-    } else if (docType === DOC_TYPE_DISMISS) {
-      console.log(items, staff);
-      if (items && items.length > 0) {
-        this.props.notify(
-          'error',
-          'В одном документе уволить можно только одного сотрудника!',
-        );
-        return;
+    } else if (
+      docType === DOC_TYPE_CHANGE_SALARY ||
+      docType === DOC_TYPE_DISMISS
+    ) {
+      if (docType === DOC_TYPE_DISMISS) {
+        if (items && items.length > 0) {
+          this.props.toggleSalaryListModal(false);
+          this.props.notify(
+            'error',
+            'В одном документе уволить можно только одного сотрудника!',
+          );
+          return;
+        }
       }
-      items.push({
-        staffId: staff.staffId,
-        staffName: staff.fio,
-        salaryId: staff.salaryId,
-        amount: 0,
-      });
-
-      this.setState({
-        ...this.state,
-        localDocument: document,
-      });
-
-      this.props.toggleStaffListModal(false);
-    } else if (docType === DOC_TYPE_CHANGE_SALARY) {
       items.push({
         staffId: staff.staffId,
         staffName: staff.staffName,
@@ -268,6 +262,9 @@ class HrDocFormPage extends Component {
         beginDate: null,
         amount: 0,
         currency: staff.currency,
+        currentSalary: {
+          positionName: staff.positionName,
+        },
       });
 
       this.setState({
@@ -284,6 +281,9 @@ class HrDocFormPage extends Component {
     doc[fieldName] = fieldValue;
     if (fieldName === 'bukrs' || fieldName === 'branchId') {
       doc['items'] = [];
+      if (doc['typeId'] === DOC_TYPE_DISMISS && fieldName === 'branchId') {
+        this.props.fetchCurrentSalaries({ branchIds: fieldValue });
+      }
     }
     this.setState({
       ...this.state,
@@ -470,25 +470,15 @@ class HrDocFormPage extends Component {
     }
 
     let modal;
-    if (DOC_TYPE_CHANGE_SALARY === currentType) {
+    if (
+      DOC_TYPE_CHANGE_SALARY === currentType ||
+      DOC_TYPE_DISMISS === currentType
+    ) {
       modal = <SalaryListModal onSelect={this.handleStaffSelect} />;
     } else if (
       DOC_TYPE_TRANSFER === currentType ||
       DOC_TYPE_RECRUITMENT === currentType
     ) {
-      modal = (
-        <StaffF4Modal
-          open={this.state.staffListModalOpened}
-          messages={messages}
-          closeModal={() => this.setState({ staffListModalOpened: false })}
-          onStaffSelect={item => this.handleStaffSelect(item)}
-          trans={'hr_doc_create_' + currentType}
-          branchOptions={this.props.branchOptions}
-          companyOptions={this.props.bukrsOptions}
-          bukrsDisabledParent={false}
-        />
-      );
-    } else if (DOC_TYPE_DISMISS === currentType) {
       modal = (
         <StaffF4Modal
           open={this.state.staffListModalOpened}
@@ -581,5 +571,6 @@ export default connect(
     notify,
     f4FetchCurrencyList,
     fetchDocument,
+    fetchCurrentSalaries,
   },
 )(injectIntl(HrDocFormPage));

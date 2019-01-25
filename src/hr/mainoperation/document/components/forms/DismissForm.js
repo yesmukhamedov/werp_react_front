@@ -150,9 +150,9 @@ export default function DismissForm(props) {
 
         <Button
           disabled={
-            document.bukrs === undefined ||
-            document.bukrs === null ||
-            document.bukrs.length === 0
+            document.branchId === undefined ||
+            document.branchId === null ||
+            document.branchId.length === 0
           }
           primary
           onClick={props.addItem}
@@ -177,7 +177,13 @@ export default function DismissForm(props) {
             {items.map((item, idx) => (
               <Table.Row key={item.staffId}>
                 <Table.Cell>{idx + 1}</Table.Cell>
-                <Table.Cell>{item.staffName}</Table.Cell>
+                <Table.Cell>
+                  {item.staffName}
+                  {item['currentSalary'] &&
+                  item['currentSalary']['positionName']
+                    ? '(' + item['currentSalary']['positionName'] + ')'
+                    : ''}
+                </Table.Cell>
                 <Table.Cell>
                   {
                     <DatePicker
