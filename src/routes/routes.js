@@ -536,6 +536,9 @@ const getComponent = {
   Mgru: AsyncMessageGroupUserPage,
   MyDocs: AsyncMyDocsListPage,
   PyramidTreePage: AsyncPyramidTreePage,
+  RefLeaveReason: AsyncRefLeaveReasonListPage,
+  RefStaffProblem: AsyncRefStaffProblemListPage,
+  RefSubCompany: AsyncRefSubCompanyListPage,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -575,18 +578,7 @@ const generateRoutes = transactionRoutes => {
         component={AsyncHrDocSalaryCreatePage}
       />
       <Route path="/general/summary" component={AsyncDtskcSummary} />
-      <Route
-        path="/reference/sub-companies"
-        component={AsyncRefSubCompanyListPage}
-      />
-      <Route
-        path="/reference/leave-reasons"
-        component={AsyncRefLeaveReasonListPage}
-      />
-      <Route
-        path="/reference/staff-problems"
-        component={AsyncRefStaffProblemListPage}
-      />
+
       <Route path="/finance/mainoperation/faicfp" component={AsyncFaicfp} />
       <Route path="/finance/mainoperation/faicfp2" component={AsyncFaicfp2} />
 
