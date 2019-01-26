@@ -29,7 +29,7 @@ export default function DismissForm(props) {
   const positionList = props.positionList || [];
   const managerOptions = props.managerOptions || [];
   const directorOptions = props.directorOptions || [];
-  const businessAreaOptions = props.businessAreaOptions || [];
+  const reasonOptions = props.leaveReasons || [];
 
   return (
     <div>
@@ -169,6 +169,7 @@ export default function DismissForm(props) {
                 Сотрудник снимается с должности
               </Table.HeaderCell>
               <Table.HeaderCell>Дата увольнения</Table.HeaderCell>
+              <Table.HeaderCell>Причина увольнения</Table.HeaderCell>
               <Table.HeaderCell>Примечание</Table.HeaderCell>
               <Table.HeaderCell />
             </Table.Row>
@@ -199,6 +200,25 @@ export default function DismissForm(props) {
                       onChange={v => props.handleItemChange(idx, 'endDate', v)}
                     />
                   }
+                </Table.Cell>
+                <Table.Cell>
+                  <select
+                    onChange={e =>
+                      props.handleItemChange(
+                        idx,
+                        'leaveReasonId',
+                        e.target.value,
+                      )
+                    }
+                    value={item.leaveReasonId || ''}
+                  >
+                    <option value="">Не выбрано</option>
+                    {reasonOptions.map(r => (
+                      <option key={r.key} value={r.value}>
+                        {r.text}
+                      </option>
+                    ))}
+                  </select>
                 </Table.Cell>
                 <Table.Cell>
                   <textarea

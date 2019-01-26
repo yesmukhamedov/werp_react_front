@@ -535,6 +535,7 @@ const getComponent = {
   Messgr: AsyncMessageGroupPage,
   Mgru: AsyncMessageGroupUserPage,
   MyDocs: AsyncMyDocsListPage,
+  PyramidTreePage: AsyncPyramidTreePage,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -550,7 +551,7 @@ const generateRoutes = transactionRoutes => {
       <Route path="/newIssue/:id" component={AsyncNewIssuePageContainer} />
       <Route path="/hr/staff/update/:id?" component={AsyncStaffUpdatePage} />
       <Route path="/hr/staff/view/:id" component={AsyncStaffViewPage} />
-      <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} />
+      {/*<Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} />*/}
       <Route path="/crm/wspace" component={AsyncCrmWspacePage} />
       {/* <Route path="/hr/pyramid/tree" component={AsyncPyramidTreePage} /> */}
       {/*<Route path="/crm/wspace" component={AsyncCrmWspacePage} />*/}

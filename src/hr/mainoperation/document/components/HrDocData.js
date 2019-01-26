@@ -292,6 +292,7 @@ function renderDismissData(props) {
           <Table.HeaderCell>Сотрудник увольняется с должности</Table.HeaderCell>
           <Table.HeaderCell>Дата начала</Table.HeaderCell>
           <Table.HeaderCell>Дата увольнения</Table.HeaderCell>
+          <Table.HeaderCell>Причина увольнения</Table.HeaderCell>
           <Table.HeaderCell>Примечание</Table.HeaderCell>
           <Table.HeaderCell />
         </Table.Row>
@@ -320,6 +321,7 @@ function renderDismissData(props) {
                 : ''}
             </Table.Cell>
             <Table.Cell>{formatDMY(item.endDate)}</Table.Cell>
+            <Table.Cell>{item.leaveReasonName || ''}</Table.Cell>
             <Table.Cell>{item.note}</Table.Cell>
             <Table.Cell />
           </Table.Row>

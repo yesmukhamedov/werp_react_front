@@ -45,6 +45,7 @@ import { f4FetchCurrencyList } from '../../../../reference/f4/f4_action';
 import { fetchStaffProblems } from '../../../../reference/mainoperation/actions/referenceAction';
 import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal';
 import ProblemDocModal from './modals/ProblemDocModal';
+import { notify } from '../../../../general/notification/notification_action';
 
 let STAFF_MODAL_OPENED_ON_ACTION = -10;
 const DOC_STATUS_ON_EXECUTION = 4;
@@ -66,6 +67,10 @@ class HrDocViewPage extends Component {
     };
 
     this.handleProblemDocModalClose = this.handleProblemDocModalClose.bind(
+      this,
+    );
+    this.handleProblemDocChange = this.handleProblemDocChange.bind(this);
+    this.handleProblemDocItemChange = this.handleProblemDocItemChange.bind(
       this,
     );
   }
@@ -114,6 +119,7 @@ class HrDocViewPage extends Component {
         break;
 
       case DOC_CREATE_PROBLEM_DOC:
+        let _this = this;
         const propDoc = Object.assign({}, this.props.document);
         this.props
           .getBlankDocument(DOC_TYPE_PROBLEM_STAFF, { parentId: propDoc['id'] })
@@ -123,6 +129,11 @@ class HrDocViewPage extends Component {
               problemDocModalOpened: true,
               problemDocModel: data['document'],
             });
+          })
+          .catch(e => {
+            if (e.response && e.response.data && e.response.status === 403) {
+              _this.props.notify('error', e.response.data.message);
+            }
           });
 
         break;
@@ -245,6 +256,15 @@ class HrDocViewPage extends Component {
     this.props.addAmount(document, items);
   };
 
+  handleProblemDocItemChange(idx, fieldName, value) {
+    console.log(idx, fieldName);
+  }
+
+  handleProblemDocChange(e) {
+    const { name, value } = e.target;
+    console.log(name, value);
+  }
+
   removeApprover = id => {
     this.props
       .removeApprove(id)
@@ -322,6 +342,8 @@ class HrDocViewPage extends Component {
             />
             <HrDocLog items={this.props.actionLogs} />
             <ProblemDocModal
+              handleItemChange={this.handleProblemDocItemChange}
+              handleDocumentChange={this.handleProblemDocChange}
               branchOptions={this.getBranchOptions(
                 this.state.problemDocModel['bukrs'],
               )}
@@ -368,5 +390,6 @@ export default connect(
     removeApprove,
     getBlankDocument,
     fetchStaffProblems,
+    notify,
   },
 )(HrDocViewPage);

@@ -33,6 +33,7 @@ import {
   f4FetchDepartmentList,
   f4FetchCurrencyList,
 } from '../../../../reference/f4/f4_action';
+import { fetchLeaveReasons } from '../../../../reference/mainoperation/actions/referenceAction';
 import {
   toggleSalaryListModal,
   fetchCurrentSalaries,
@@ -52,6 +53,7 @@ class HrDocFormPage extends Component {
     this.state = {
       staffListModalOpened: false,
       localDocument: {},
+      leaveReasons: [],
     };
   }
 
@@ -85,6 +87,12 @@ class HrDocFormPage extends Component {
 
     this.props.fetchAllCurrentStaffs([]);
     this.props.fetchAllDirectors();
+    this.props.fetchLeaveReasons({ mode: 'options' }).then(({ data }) => {
+      this.setState({
+        ...this.state,
+        leaveReasons: data,
+      });
+    });
   }
 
   componentWillReceiveProps(nextProps) {
@@ -434,6 +442,7 @@ class HrDocFormPage extends Component {
             )}
             bukrsOptions={this.props.bukrsOptions}
             document={this.state.localDocument}
+            leaveReasons={this.state.leaveReasons}
           />
         );
         break;
@@ -572,5 +581,6 @@ export default connect(
     f4FetchCurrencyList,
     fetchDocument,
     fetchCurrentSalaries,
+    fetchLeaveReasons,
   },
 )(injectIntl(HrDocFormPage));
