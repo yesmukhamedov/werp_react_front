@@ -15,6 +15,7 @@ import {
   moneyFormat,
 } from '../../../../../utils/helpers';
 import { Link } from 'react-router-dom';
+import ProblemDocItemForm from './ProblemDocItemForm';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
@@ -144,6 +145,11 @@ export default function ProblemDocForm(props) {
           </Form.Group>
         </Form>
       </Segment>
+      <ProblemDocItemForm
+        problemOptions={props.problemOptions}
+        items={items}
+        handleItemChange={props.handleItemChange}
+      />
       <Segment raised>
         <Label color="blue" ribbon>
           Данные документа
@@ -192,7 +198,7 @@ export default function ProblemDocForm(props) {
                   <div className="field">
                     <select
                       onChange={e =>
-                        props.handleDocumentChange('problemId', e.target.value)
+                        props.handleItemChange(idx, 'problemId', e.target.value)
                       }
                       value={item.problemId || ''}
                     >

@@ -34,6 +34,7 @@ import {
   DOC_ACTION_ADD_SALARY,
   DOC_TYPE_DISMISS,
   DOC_TYPE_PROBLEM_STAFF,
+  DOC_ACTION_SAVE,
 } from '../../../hrUtil';
 import browserHistory from '../../../../utils/history';
 import StaffListModal from '../../staff/components/StaffListModal';
@@ -69,8 +70,10 @@ class HrDocViewPage extends Component {
     this.handleProblemDocModalClose = this.handleProblemDocModalClose.bind(
       this,
     );
-    this.handleProblemDocChange = this.handleProblemDocChange.bind(this);
     this.handleProblemDocItemChange = this.handleProblemDocItemChange.bind(
+      this,
+    );
+    this.handleProblemDocFormSubmit = this.handleProblemDocFormSubmit.bind(
       this,
     );
   }
@@ -257,12 +260,28 @@ class HrDocViewPage extends Component {
   };
 
   handleProblemDocItemChange(idx, fieldName, value) {
-    console.log(idx, fieldName);
+    let problemDocModel = Object.assign({}, this.state.problemDocModel);
+    let items = problemDocModel['items'] || [];
+    if (fieldName === 'beginDate' || fieldName === 'endDate') {
+      if (value) {
+        value = value.valueOf();
+      } else {
+        value = null;
+      }
+    }
+
+    items[idx][fieldName] = value;
+    problemDocModel['items'] = items;
+
+    this.setState({
+      ...this.state,
+      problemDocModel: problemDocModel,
+    });
   }
 
-  handleProblemDocChange(e) {
-    const { name, value } = e.target;
-    console.log(name, value);
+  handleProblemDocFormSubmit() {
+    const { problemDocModel } = this.state;
+    this.props.handleAction(problemDocModel, DOC_ACTION_SAVE, {});
   }
 
   removeApprover = id => {
@@ -343,15 +362,11 @@ class HrDocViewPage extends Component {
             <HrDocLog items={this.props.actionLogs} />
             <ProblemDocModal
               handleItemChange={this.handleProblemDocItemChange}
-              handleDocumentChange={this.handleProblemDocChange}
-              branchOptions={this.getBranchOptions(
-                this.state.problemDocModel['bukrs'],
-              )}
-              bukrsOptions={this.props.bukrsOptions}
               open={this.state.problemDocModalOpened}
               document={this.state.problemDocModel}
               handleFormClose={this.handleProblemDocModalClose}
               problemOptions={this.state.problems}
+              handleFormSubmit={this.handleProblemDocFormSubmit}
             />
           </div>
         )}

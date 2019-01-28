@@ -114,7 +114,13 @@ export function createDocument(document) {
       )
       .then(({ data }) => {
         dispatch(setLoading(false));
-        browserHistory.push(`/hr/doc/view/${data.id}`);
+        if (data['typeId'] === 8) {
+          //Staff Problem Doc
+          window.location.href = `/hr/doc/view/${data.id}`;
+        } else {
+          browserHistory.push(`/hr/doc/view/${data.id}`);
+        }
+
         // dispatch({
         //     type:HR_DOC_CREATED,
         //     payload: data

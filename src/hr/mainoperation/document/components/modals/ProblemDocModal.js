@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button, Icon, Header } from 'semantic-ui-react';
 
-import ProblemDocForm from '../forms/ProblemDocForm';
+import ProblemDocItemForm from '../forms/ProblemDocItemForm';
 
 export default function ProblemDocModal(props) {
   return (
@@ -9,13 +9,15 @@ export default function ProblemDocModal(props) {
       open={props['open']}
       closeOnEscape={false}
       closeOnRootNodeClick={false}
-      dimmer="blurring"
-      closeIcon
     >
       <Header content={'Добавление документа "Проблемный сотрудник"'} />
       <Modal.Content>
         <Modal.Description>
-          <ProblemDocForm {...props} />
+          <ProblemDocItemForm
+            problemOptions={props.problemOptions}
+            items={props.document.items}
+            handleItemChange={props.handleItemChange}
+          />
         </Modal.Description>
       </Modal.Content>
 

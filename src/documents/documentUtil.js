@@ -13,6 +13,7 @@ export const MD_HR_DOCUMENT_CHANGE_SALARY = 'HR_DOCUMENT_CHANGE_SALARY';
 export const MD_HR_DOCUMENT_DISMISS = 'HR_DOCUMENT_DISMISS';
 export const MD_HR_EXCLUDE_FROM_KPI = 'HR_EXCLUDE_FROM_KPI';
 export const MD_TASK = 'TASK';
+export const MD_HR_DOCUMENT_PROBLEM_STAFF = 'HR_DOCUMENT_PROBLEM_STAFF';
 
 export const getMdContexts = () => {
   const out = {};
@@ -42,6 +43,7 @@ export const getDocViewLink = (context, contextId) => {
     case MD_HR_DOCUMENT_CHANGE_SALARY:
     case MD_HR_DOCUMENT_DISMISS:
     case MD_HR_EXCLUDE_FROM_KPI:
+    case MD_HR_DOCUMENT_PROBLEM_STAFF:
       return `/hr/doc/view/${contextId}`;
 
     case MD_TASK:
