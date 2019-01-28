@@ -8,8 +8,6 @@ import {
   Icon,
   Button,
   Checkbox,
-  Dimmer,
-  Loader,
 } from 'semantic-ui-react';
 import FaHeader from '../../../finance/faHeader';
 import AmsgPosition from './amsgPosition';

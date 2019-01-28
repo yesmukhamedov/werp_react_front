@@ -16,6 +16,7 @@ import {
   f4FetchCurrencyList,
   f4FetchBusinessAreaList2,
   f4FetchExchangeRateNational,
+  f4ClearAnyObject,
 } from '../../../reference/f4/f4_action';
 import {
   clearfaBkpf,
@@ -54,6 +55,8 @@ class Fcis extends Component {
   componentWillUnmount() {
     this.props.clearfaBkpf();
     this.props.clearDynObj();
+    this.props.f4ClearAnyObject('F4_CLEAR_CURRENCY_LIST');
+    this.props.f4ClearAnyObject('F4_CLEAR_EXCHANGERATE_NATIONAL');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -80,6 +83,16 @@ class Fcis extends Component {
       });
       // nextProps.myProp has a different value than our current prop
       // so we can perform some calculations based on the new value
+    }
+
+    if (
+      nextProps.reset !== null &&
+      nextProps.reset !== undefined &&
+      nextProps.reset === true
+    ) {
+      // console.log(nextProps,'nextProps')
+      this.props.changeDynObj({ reset: false });
+      this.initializeBkpfBseg();
     }
   }
 
@@ -132,9 +145,9 @@ class Fcis extends Component {
     let errors = [];
     errors = this.validate();
     if (errors === null || errors === undefined || errors.length === 0) {
-      const bkpf = { ...this.props.bkpf };
-      const bseg = { ...this.props.bseg };
-      this.props.saveFcis(bkpf, bseg, () => this.initializeBkpfBseg());
+      const bkpf = JSON.parse(JSON.stringify(this.props.bkpf));
+      const bseg = JSON.parse(JSON.stringify(this.props.bseg));
+      this.props.saveFcis(bkpf, bseg);
     } else {
       this.props.modifyLoader(false);
     }
@@ -307,6 +320,7 @@ function mapStateToProps(state) {
     initialBkpf: state.fa.faForm.initialBkpf,
     hkontOptions: state.fa.faForm.hkontOptions,
     bseg: state.fa.dynamicObject,
+    reset: state.fa.dynamicObject.reset,
   };
 }
 
@@ -315,6 +329,7 @@ export default connect(
   {
     f4FetchDepartmentList,
     f4FetchCurrencyList,
+    f4ClearAnyObject,
     modifyLoader,
     saveFcis,
     f4FetchBusinessAreaList2,

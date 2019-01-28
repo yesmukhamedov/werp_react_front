@@ -124,6 +124,32 @@ export function clearAnyObject(a_const) {
   };
   return obj;
 }
+export function fetchDynamicFAGM(url, params) {
+  let fullUrl = `${ROOT_URL}` + url;
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    axios
+      .get(fullUrl, {
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
+        params: {
+          ...params,
+        },
+      })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_DYNOBJ_FI,
+          data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+        dispatch(modifyLoader(false));
+      });
+  };
+}
 
 // FMCP/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export function fetchFMCP(a_zregOrConNum) {
@@ -202,7 +228,7 @@ export function saveFMCP(a_contract) {
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FCIS/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export function saveFcis(a_bkpf, a_bseg, initFcis) {
+export function saveFcis(a_bkpf, a_bseg) {
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
   return function(dispatch) {
@@ -231,7 +257,7 @@ export function saveFcis(a_bkpf, a_bseg, initFcis) {
             ),
           );
           dispatch(clearfaBkpf());
-          initFcis();
+          dispatch(changeDynObj({ reset: true }));
         } else {
           dispatch(
             notify(
@@ -369,12 +395,16 @@ export function fetchFA03(a_searchParameters) {
 }
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export function saveFiSrcDocs(args, tcode, initFun) {
+export function saveFiSrcDocs(args, tcode) {
   let url = '';
   if (tcode === 'FACI01')
     url = `${ROOT_URL}/api/finance/mainoperation/faci01/save`;
   else if (tcode === 'FACO01')
     url = `${ROOT_URL}/api/finance/mainoperation/faco01/save`;
+  else if (tcode === 'FAICFP2')
+    url = `${ROOT_URL}/api/finance/mainoperation/faicfp2/save`;
+  else if (tcode === 'FAICFP')
+    url = `${ROOT_URL}/api/finance/mainoperation/faicfp/save`;
 
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
@@ -402,7 +432,7 @@ export function saveFiSrcDocs(args, tcode, initFun) {
               errorTable[`101${language}`],
             ),
           );
-          initFun();
+          dispatch(changeDynObj({ reset: true }));
         } else {
           dispatch(
             notify(
@@ -446,7 +476,7 @@ export function fetchFaiaWorkAccList(a_bukrs, a_branch, a_callBackFun) {
   };
 }
 
-export function saveFaia(a_bkpf, a_bseg, initFaia) {
+export function saveFaia(a_bkpf, a_bseg) {
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
   return function(dispatch) {
@@ -475,7 +505,7 @@ export function saveFaia(a_bkpf, a_bseg, initFaia) {
             ),
           );
           dispatch(clearfaBkpf());
-          initFaia();
+          dispatch(changeDynObj({ reset: true }));
         } else {
           dispatch(
             notify(

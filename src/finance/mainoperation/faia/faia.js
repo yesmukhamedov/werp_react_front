@@ -18,12 +18,15 @@ import {
   f4FetchDepartmentList,
   f4FetchCurrencyList,
   f4FetchExchangeRateNational,
+  f4ClearAnyObject,
 } from '../../../reference/f4/f4_action';
 import {
   clearfaBkpf,
   changefaBkpf,
   fetchCashBankHkontsByBranch,
   saveFaia,
+  changeDynObj,
+  clearDynObj,
 } from '../../fa_action';
 import {
   moneyInputHanler,
@@ -70,6 +73,9 @@ class Faia extends Component {
 
   componentWillUnmount() {
     this.props.clearfaBkpf();
+    this.props.clearDynObj();
+    this.props.f4ClearAnyObject('F4_CLEAR_CURRENCY_LIST');
+    this.props.f4ClearAnyObject('F4_CLEAR_EXCHANGERATE_NATIONAL');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -113,6 +119,16 @@ class Faia extends Component {
       });
       // nextProps.myProp has a different value than our current prop
       // so we can perform some calculations based on the new value
+    }
+
+    if (
+      nextProps.reset !== null &&
+      nextProps.reset !== undefined &&
+      nextProps.reset === true
+    ) {
+      // console.log(nextProps,'nextProps')
+      this.props.changeDynObj({ reset: false });
+      this.initializeBkpfBseg();
     }
   }
 
@@ -165,9 +181,9 @@ class Faia extends Component {
     let errors = [];
     errors = this.validate();
     if (errors === null || errors === undefined || errors.length === 0) {
-      const bkpf = { ...this.props.bkpf };
-      const bseg = { ...this.state };
-      this.props.saveFaia(bkpf, bseg, () => this.initializeBkpfBseg());
+      const bkpf = JSON.parse(JSON.stringify(this.props.bkpf));
+      const bseg = JSON.parse(JSON.stringify(this.state));
+      this.props.saveFaia(bkpf, bseg);
     } else {
       this.props.modifyLoader(false);
     }
@@ -442,6 +458,7 @@ function mapStateToProps(state) {
     initialBkpf: state.fa.faForm.initialBkpf,
     hkontOptions: state.fa.faForm.hkontOptions,
     bseg: state.fa.dynamicObject,
+    reset: state.fa.dynamicObject.reset,
   };
 }
 
@@ -450,11 +467,14 @@ export default connect(
   {
     f4FetchDepartmentList,
     f4FetchCurrencyList,
+    f4ClearAnyObject,
     modifyLoader,
     saveFaia,
     f4FetchExchangeRateNational,
     changefaBkpf,
     clearfaBkpf,
     fetchCashBankHkontsByBranch,
+    changeDynObj,
+    clearDynObj,
   },
 )(injectIntl(Faia));

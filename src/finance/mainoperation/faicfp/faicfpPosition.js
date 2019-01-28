@@ -16,7 +16,7 @@ class FaicfpPosition extends PureComponent {
     const { bseg, cashBankHkontOptions, hkontOptions, waers } = this.props;
     const { formatMessage } = this.props.intl;
 
-    if (bseg[0] === undefined || bseg[1] === undefined) {
+    if (bseg === undefined || bseg[0] === undefined || bseg[1] === undefined) {
       return '';
     }
 
@@ -38,10 +38,10 @@ class FaicfpPosition extends PureComponent {
                 {formatMessage(messages.hkont)}
               </Table.HeaderCell>
               <Table.HeaderCell>
-                {formatMessage(messages.amount)}
+                {formatMessage(messages.shkzg)}
               </Table.HeaderCell>
               <Table.HeaderCell>
-                {formatMessage(messages.shkzg)}
+                {formatMessage(messages.amount)}
               </Table.HeaderCell>
             </Table.Row>
           </Table.Header>
@@ -59,6 +59,16 @@ class FaicfpPosition extends PureComponent {
                 />
               </Table.Cell>
               <Table.Cell>
+                <Dropdown
+                  selection
+                  options={shkzgOptions || []}
+                  value={bseg[0].shkzg}
+                  onChange={(e, { value }) =>
+                    this.props.onInputChange(value, 'shkzg', 0)
+                  }
+                />
+              </Table.Cell>
+              <Table.Cell>
                 <Input
                   label={waers}
                   labelPosition="left"
@@ -68,16 +78,6 @@ class FaicfpPosition extends PureComponent {
                   maxLength="18"
                   onChange={(e, { value }) =>
                     this.props.onInputChange(value, 'summa', 0)
-                  }
-                />
-              </Table.Cell>
-              <Table.Cell>
-                <Dropdown
-                  selection
-                  options={shkzgOptions || []}
-                  value={bseg[0].shkzg}
-                  onChange={(e, { value }) =>
-                    this.props.onInputChange(value, 'shkzg', 0)
                   }
                 />
               </Table.Cell>
@@ -96,26 +96,20 @@ class FaicfpPosition extends PureComponent {
                 />
               </Table.Cell>
               <Table.Cell>
-                <Input
-                  label={waers}
-                  labelPosition="left"
-                  color="teal"
-                  value={moneyFormat(bseg[0].summa)}
-                  maxLength="18"
+                <Dropdown
+                  selection
+                  options={shkzgOptions || []}
+                  value={bseg[1].shkzg}
                   disabled={true}
                 />
               </Table.Cell>
               <Table.Cell>
-                <Dropdown
-                  selection
-                  options={shkzgOptions || []}
-                  value={
-                    bseg[0].shkzg === 'S'
-                      ? 'H'
-                      : bseg[0].shkzg === 'H'
-                      ? 'S'
-                      : ''
-                  }
+                <Input
+                  label={waers}
+                  labelPosition="left"
+                  color="teal"
+                  value={moneyFormat(bseg[1].summa)}
+                  maxLength="18"
                   disabled={true}
                 />
               </Table.Cell>

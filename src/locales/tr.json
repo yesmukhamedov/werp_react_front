@@ -537,5 +537,6 @@
 
   "transNameFaicfp": "Fond Transfer Inside Company",
   "incoming": "Incoming",
-  "outgoing": "Outgoing"
+  "outgoing": "Outgoing",
+  "transNameFaicfp2": "Cash Withdrawal and Deposit"
 }

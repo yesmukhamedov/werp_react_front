@@ -26,6 +26,7 @@ import {
   fetchExpenseHkontsByBukrs,
   fetchCashBankHkontsByBranch,
   saveFiSrcDocs,
+  clearAnyObject,
 } from '../../fa_action';
 import { moneyInputHanler } from '../../../utils/helpers';
 import { handleFocus, moneyFormat } from '../../../utils/helpers';
@@ -45,6 +46,10 @@ class Faco01 extends Component {
     this.customerF4ModalOpenHanlder = this.customerF4ModalOpenHanlder.bind(
       this,
     );
+    this.onInputChange = this.onInputChange.bind(this);
+    this.save = this.save.bind(this);
+    this.validate = this.validate.bind(this);
+
     this.state = {
       customerF4ModalOpen: false,
       errors: [],
@@ -57,7 +62,7 @@ class Faco01 extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.initializeBkpfBseg();
 
     this.props.f4FetchCurrencyList('faco01');
@@ -67,6 +72,11 @@ class Faco01 extends Component {
 
   componentWillUnmount() {
     this.props.clearfaBkpf();
+    this.props.clearAnyObject('CLEAR_CASHBANKHKONTS_BY_BRANCH');
+    this.props.clearAnyObject('CLEAR_EXPENSEHKONTS_BY_BUKRS');
+    this.props.f4ClearAnyObject('F4_CLEAR_CURRENCY_LIST');
+    this.props.f4ClearAnyObject('F4_CLEAR_EXCHANGERATE_NATIONAL');
+
     // this.props.clearDynObj();
   }
 
@@ -86,6 +96,16 @@ class Faco01 extends Component {
         nextProps.bkpf.bukrs,
         nextProps.bkpf.brnch,
       );
+    }
+
+    if (
+      nextProps.reset !== null &&
+      nextProps.reset !== undefined &&
+      nextProps.reset === true
+    ) {
+      // console.log(nextProps,'nextProps')
+      this.props.changeDynObj({ reset: false });
+      this.initializeBkpfBseg();
     }
   }
   customerF4ModalOpenHanlder(bool) {
@@ -134,7 +154,8 @@ class Faco01 extends Component {
     let errors = [];
     errors = this.validate();
     if (errors === null || errors === undefined || errors.length === 0) {
-      const bkpf = { ...this.props.bkpf };
+      // const bkpf = { ...this.props.bkpf };
+      const bkpf = JSON.parse(JSON.stringify(this.props.bkpf));
       const args = {
         bkpf,
         amount: this.state.amount,
@@ -143,7 +164,7 @@ class Faco01 extends Component {
         hkont_h: this.state.hkont_h,
         withInvoice: this.state.withInvoice,
       };
-      this.props.saveFiSrcDocs(args, 'FACO01', () => this.initializeBkpfBseg());
+      this.props.saveFiSrcDocs(args, 'FACO01');
     } else {
       this.props.modifyLoader(false);
     }
@@ -391,6 +412,7 @@ function mapStateToProps(state) {
     hkontOptions: state.fa.faForm.hkontOptions,
     hkontOptions2: state.fa.faForm.hkontOptions2,
     bseg: state.fa.dynamicObject,
+    reset: state.fa.dynamicObject.reset,
   };
 }
 
@@ -403,6 +425,7 @@ export default connect(
     f4FetchExchangeRateNational,
     changefaBkpf,
     clearfaBkpf,
+    clearAnyObject,
     fetchExpenseHkontsByBukrs,
     fetchCashBankHkontsByBranch,
     saveFiSrcDocs,

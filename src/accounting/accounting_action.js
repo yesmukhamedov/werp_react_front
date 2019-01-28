@@ -115,9 +115,6 @@ export function amcddSave(a_contract) {
 }
 
 export function amcddFetch(a_zregOrConNum) {
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-  const language = localStorage.getItem('language');
-
   return function(dispatch) {
     dispatch(modifyLoader(true));
     axios

@@ -48,6 +48,9 @@ class FaHeader extends PureComponent {
       if (value !== null && value !== undefined) {
         wabkpf[stateFieldName] = value.format('DD.MM.YYYY');
       } else wabkpf[stateFieldName] = '';
+    } else if (stateFieldName === 'bukrs') {
+      wabkpf[stateFieldName] = value;
+      wabkpf['brnch'] = '';
     } else {
       wabkpf[stateFieldName] = value;
     }
@@ -117,7 +120,7 @@ class FaHeader extends PureComponent {
                       <Dropdown
                         placeholder={formatMessage(messages.bukrs)}
                         selection
-                        options={companyOptions}
+                        options={companyOptions ? companyOptions : []}
                         value={bukrs}
                         onChange={(e, { value }) =>
                           this.onInputChange(value, 'bukrs')
@@ -151,7 +154,11 @@ class FaHeader extends PureComponent {
                         search
                         selection
                         options={
-                          branchOptions[bukrs] ? branchOptions[bukrs] : []
+                          branchOptions
+                            ? branchOptions[bukrs]
+                              ? branchOptions[bukrs]
+                              : []
+                            : []
                         }
                         value={brnch}
                         onChange={(e, { value }) =>
@@ -242,7 +249,7 @@ class FaHeader extends PureComponent {
                         placeholder={formatMessage(messages.dep)}
                         search
                         selection
-                        options={departmentOptions}
+                        options={departmentOptions ? departmentOptions : []}
                         value={dep}
                         onChange={(e, { value }) =>
                           this.onInputChange(value, 'dep')
