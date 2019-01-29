@@ -9,6 +9,7 @@ import persistPath from './PersistPath';
 
 import ForbiddenPage from '../general/forbidden';
 import LoadingPage from '../general/LoadingPage';
+import { AsyncHrDocAllDocsPage } from '../hr/hrLoader';
 
 const AsyncSettings = Loadable({
   loader: () =>
@@ -573,6 +574,11 @@ const generateRoutes = transactionRoutes => {
         component={AsyncHrDocFormPage}
       />
       <Route path="/hr/doc/view/:id" component={AsyncHrDocViewPage} />
+      <Route
+        path="/hr/doc/all"
+        exact={true}
+        component={AsyncHrDocAllDocsPage}
+      />
       <Route
         path="/hr/doc/salary-create/:id"
         exact={true}

@@ -46,6 +46,28 @@ export function fetchRecruitmentItems(statusId) {
   };
 }
 
+export function fetchAllHrDocs(params) {
+  return function(dispatch) {
+    dispatch(setLoading(true));
+    axios
+      .get(`${ROOT_URL}/api/hr/document/all`, {
+        headers: { authorization: localStorage.getItem('token') },
+        params: params,
+      })
+      .then(({ data }) => {
+        dispatch(setLoading(false));
+        dispatch({
+          type: HR_DOC_ITEMS_LOADED,
+          payload: data,
+        });
+      })
+      .catch(e => {
+        dispatch(setLoading(false));
+        handleError(e, dispatch);
+      });
+  };
+}
+
 export function fetchDocument(id) {
   return function(dispatch) {
     dispatch(setLoading(true));

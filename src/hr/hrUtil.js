@@ -105,6 +105,102 @@ export const STAFF_DATA = [
   FILE_DATA,
 ];
 
+export const documentTypeOptions = (firstBlankElement = false) => {
+  let out = [];
+  if (firstBlankElement) {
+    out.push({
+      key: null,
+      value: null,
+      text: 'Не выбрано',
+    });
+  }
+  out.push({
+    key: DOC_TYPE_RECRUITMENT,
+    value: DOC_TYPE_RECRUITMENT,
+    text: 'Прием на работу',
+  });
+
+  out.push({
+    key: DOC_TYPE_TRANSFER,
+    value: DOC_TYPE_TRANSFER,
+    text: 'Перевод',
+  });
+
+  out.push({
+    key: DOC_TYPE_DISMISS,
+    value: DOC_TYPE_DISMISS,
+    text: 'Увольнение',
+  });
+
+  out.push({
+    key: DOC_TYPE_CHANGE_SALARY,
+    value: DOC_TYPE_CHANGE_SALARY,
+    text: 'Изменение оклада',
+  });
+
+  out.push({
+    key: DOC_TYPE_PROBLEM_STAFF,
+    value: DOC_TYPE_PROBLEM_STAFF,
+    text: 'Проблемный сотрудник',
+  });
+
+  return out;
+};
+
+export const documentStatusOptions = (firstBlankElement = false) => {
+  let out = [];
+  if (firstBlankElement) {
+    out.push({
+      key: null,
+      value: null,
+      text: 'Не выбрано',
+    });
+  }
+  out.push({
+    key: 1,
+    value: 1,
+    text: 'На создании',
+  });
+
+  out.push({
+    key: 3,
+    value: 3,
+    text: 'На согласовании',
+  });
+
+  out.push({
+    key: 4,
+    value: 4,
+    text: 'На исполнении',
+  });
+
+  out.push({
+    key: 5,
+    value: 5,
+    text: 'Закрытый',
+  });
+
+  out.push({
+    key: 6,
+    value: 6,
+    text: 'Отказан',
+  });
+
+  out.push({
+    key: 7,
+    value: 7,
+    text: 'Отменен',
+  });
+
+  out.push({
+    key: 8,
+    value: 8,
+    text: 'В ожидании',
+  });
+
+  return out;
+};
+
 export const currencyOptions = currencyList => {
   if (!currencyList) {
     return [];
