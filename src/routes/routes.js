@@ -489,7 +489,8 @@ const getComponent = {
   Fa03: AsyncFa03,
   Fa02: AsyncFa02,
   Faia: AsyncFaia,
-  // Faicfp: AsyncFaicfp,
+  Faicfp: AsyncFaicfp,
+  Faicfp2: AsyncFaicfp2,
 
   SpNew: AsyncSpNewPage,
   SpView: AsyncSpViewPage,
@@ -578,9 +579,6 @@ const generateRoutes = transactionRoutes => {
         component={AsyncHrDocSalaryCreatePage}
       />
       <Route path="/general/summary" component={AsyncDtskcSummary} />
-
-      <Route path="/finance/mainoperation/faicfp" component={AsyncFaicfp} />
-      <Route path="/finance/mainoperation/faicfp2" component={AsyncFaicfp2} />
 
       <Route
         path="/logistics/werks/requests/:type(in|out|all)"
