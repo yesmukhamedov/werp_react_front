@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button } from 'semantic-ui-react';
 import ReactTable from 'react-table';
+import 'react-table/react-table.css';
 
 class SubSection extends Component {
   constructor(props) {
