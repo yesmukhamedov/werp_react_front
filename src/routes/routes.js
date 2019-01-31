@@ -470,6 +470,31 @@ const AsyncHrDocSalaryCreatePage = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const aesmain = Loadable({
+  loader: () =>
+    import('../aes/mainoperations/components' /* webpackChunkName: "aes" */),
+  loading: () => <LoadingPage />,
+});
+const addchange = Loadable({
+  loader: () =>
+    import('../aes/mainoperations/components/AddChange/addChange' /* webpackChunkName: "aes" */),
+  loading: () => <LoadingPage />,
+});
+const approve = Loadable({
+  loader: () =>
+    import('../aes/mainoperations/components/ApprReject/approv' /* webpackChunkName: "aes" */),
+  loading: () => <LoadingPage />,
+});
+const aesnew = Loadable({
+  loader: () =>
+    import('../aes/mainoperations/components/newAesTypes/aesnew' /* webpackChunkName: "aes" */),
+  loading: () => <LoadingPage />,
+});
+const replist = Loadable({
+  loader: () =>
+    import('../aes/mainoperations/components/Report/reportList' /* webpackChunkName: "aes" */),
+  loading: () => <LoadingPage />,
+});
 const getComponent = {
   DitTransactionList: trlist,
   Ditaub: AsyncAssignUserBranch,
@@ -610,6 +635,13 @@ const generateRoutes = transactionRoutes => {
 
       {/* Transactions */}
       <Route path="/dit/transaction/update/:id?" component={trupdate} />
+
+      {/* AES */}
+      <Route path="/aes/main" component={aesmain} />
+      <Route path="/aes/mainoperation/addchange" component={addchange} />
+      <Route path="/aes/mainoperation/aesnew" component={aesnew} />
+      <Route path="/aes/mainoperation/approval" component={approve} />
+      <Route path="/aes/mainoperation/replist" component={replist} />
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
