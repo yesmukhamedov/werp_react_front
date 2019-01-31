@@ -576,5 +576,10 @@
   "buying_date_to": "Date of buying to",
   "preview": "Preview",
   "send_for_appr": "Send for approval",
-  "report": "Report"
+  "report": "Report",
+
+  "posList": "List of positions",
+  "add_Position": "Add new position",
+  "change": "Change",
+  "changePos": "Change position"
 }

@@ -42,6 +42,7 @@ import transactionReducer from '../dit/transactions/reducers/transactionReducer'
 import logisticsReducer from '../logistics/mainoperation/reducers/logisticsReducer';
 
 import aesReducer from '../aes/mainoperations/reducers/aesReducer';
+import hrPosReducer from '../hr/mainoperation/position/positionReducer';
 
 const appReducer = combineReducers({
   form,
@@ -85,6 +86,7 @@ const appReducer = combineReducers({
   transactionReducer,
   logisticsReducer,
   aesReducer: aesReducer,
+  hrPosReducer: hrPosReducer,
 });
 
 const rootReducer = (state, action) => {

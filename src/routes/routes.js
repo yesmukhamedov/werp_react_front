@@ -495,6 +495,13 @@ const replist = Loadable({
     import('../aes/mainoperations/components/Report/reportList' /* webpackChunkName: "aes" */),
   loading: () => <LoadingPage />,
 });
+
+const positionList = Loadable({
+  loader: () =>
+    import('../hr/mainoperation/position/list' /* webpackChunkName: "aes" */),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   DitTransactionList: trlist,
   Ditaub: AsyncAssignUserBranch,
@@ -588,6 +595,9 @@ const generateRoutes = transactionRoutes => {
       <Route path="/crm/report/view/:id" component={AsyncCrmReportPage} />
       <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
+
+      {/* HR Position list */}
+      <Route path="/hr/mainoperation/position/list" component={positionList} />
       <Route
         path="/hr/doc/:action(create)/:type"
         exact={true}
