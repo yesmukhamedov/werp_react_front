@@ -153,6 +153,8 @@ class Faicfp2 extends Component {
         );
         this.initializeBseg();
         this.initializeCashBanks();
+      } else {
+        bkpf[stateFieldName] = value;
       }
 
       this.setState({ bkpf });
