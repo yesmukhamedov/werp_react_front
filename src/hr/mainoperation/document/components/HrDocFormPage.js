@@ -289,7 +289,11 @@ class HrDocFormPage extends Component {
     doc[fieldName] = fieldValue;
     if (fieldName === 'bukrs' || fieldName === 'branchId') {
       doc['items'] = [];
-      if (doc['typeId'] === DOC_TYPE_DISMISS && fieldName === 'branchId') {
+      if (
+        (doc['typeId'] === DOC_TYPE_DISMISS ||
+          doc['typeId'] === DOC_TYPE_CHANGE_SALARY) &&
+        fieldName === 'branchId'
+      ) {
         this.props.fetchCurrentSalaries({ branchIds: fieldValue });
       }
     }
