@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Table, Icon, Form, Button, Modal } from 'semantic-ui-react';
-import moment from 'moment';
 
 class Preview extends Component {
   constructor(props) {

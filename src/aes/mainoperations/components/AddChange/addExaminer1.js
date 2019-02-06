@@ -6,6 +6,7 @@ import {
 } from '../../../../reference/f4/f4_action';
 import { Dropdown, Table, Icon, Button } from 'semantic-ui-react';
 import ReactTable from 'react-table';
+import 'react-table/react-table.css';
 import matchSorter from 'match-sorter';
 
 class AddExaminer1 extends Component {

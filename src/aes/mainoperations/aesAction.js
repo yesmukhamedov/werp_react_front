@@ -1,10 +1,10 @@
 import axios from 'axios';
-import { ROOT_URL } from '../../../utils/constants';
+import { ROOT_URL } from '../../utils/constants';
 import {
   handleError,
   notify,
-} from '../../../general/notification/notification_action';
-import { modifyLoader } from '../../../general/loader/loader_action';
+} from '../../general/notification/notification_action';
+import { modifyLoader } from '../../general/loader/loader_action';
 export const AES_BLANK = 'AES_BLANK';
 //******************************AES ADD*/
 export const APPR_REJ = 'APPR_REJ';

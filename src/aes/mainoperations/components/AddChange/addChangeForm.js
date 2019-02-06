@@ -7,7 +7,6 @@ import {
   Grid,
   Header,
   Segment,
-  Input,
   Table,
   Modal,
   Button,

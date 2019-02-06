@@ -28,7 +28,7 @@ import {
   newStatus,
   newCompBr,
   fetchCCBranch,
-} from '../../actions/aesAction';
+} from '../../aesAction';
 
 class AesNew extends Component {
   constructor(props) {
@@ -128,7 +128,6 @@ class AesNew extends Component {
           branchOptns={this.getBranches()}
           depOptns={this.getDepartments()}
           loadCCBranch={this.loadCCBranch}
-          queryParams={this.state.queryParams}
           inputChange={this.handleInputChange}
           //------ last button options
           osList={this.getOs()}
@@ -140,6 +139,7 @@ class AesNew extends Component {
           listStatus={this.getStatus()}
           compbranchOpts={this.getCompBr()}
           messages={messages}
+          {...this.state}
         />
         <Segment padded size="small" color={'grey'}>
           <Grid columns={8}>

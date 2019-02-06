@@ -41,7 +41,7 @@ import hrSalaryReducer from '../hr/mainoperation/salary/reducers/hrSalaryReducer
 import transactionReducer from '../dit/transactions/reducers/transactionReducer';
 import logisticsReducer from '../logistics/mainoperation/reducers/logisticsReducer';
 
-import aesReducer from '../aes/mainoperations/reducers/aesReducer';
+import aesReducer from '../aes/mainoperations/aesReducer';
 import hrPosReducer from '../hr/mainoperation/position/positionReducer';
 
 const appReducer = combineReducers({

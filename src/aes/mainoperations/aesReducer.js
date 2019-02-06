@@ -15,7 +15,7 @@ import {
   APPR_REJ,
   COMP_BR,
   CURRENT_ALL,
-} from '../actions/aesAction';
+} from './aesAction';
 
 const INITIAL_STATE = {
   listBranches: [],

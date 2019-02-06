@@ -11,7 +11,7 @@ import {
   newAes,
   fetchReport,
   fetchCompBranch,
-} from '../../actions/aesAction';
+} from '../../aesAction';
 import {
   Label,
   Container,
@@ -19,7 +19,6 @@ import {
   Button,
   Icon,
   Segment,
-  Input,
   Table,
 } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
@@ -151,10 +150,16 @@ class Report extends Component {
   };
 
   render() {
-    const { btTo, btFrom, dateFrom, dateTo } = this.state.queryParams;
+    const {
+      btTo,
+      btFrom,
+      dateFrom,
+      dateTo,
+      branch_id,
+    } = this.state.queryParams;
     const { listAes } = this.props;
     const { messages } = this.props.intl;
-
+    const isEnabledSe2 = branch_id != null;
     return (
       <Container
         fluid
@@ -226,7 +231,11 @@ class Report extends Component {
               <Table.Row>
                 <Table.Cell width={3}>
                   <span>
-                    <Button icon="external" onClick={this.show('owner')} />
+                    <Button
+                      icon="external"
+                      disabled={!isEnabledSe2}
+                      onClick={this.show('owner')}
+                    />
                     {this.state.queryParams.se0_name}
                   </span>
                 </Table.Cell>
@@ -340,7 +349,7 @@ class Report extends Component {
             </Modal.Content>
             <Modal.Actions>
               <Button color="red" onClick={this.close}>
-                Отменить
+                {messages['cancel']}
               </Button>
             </Modal.Actions>
           </Modal>

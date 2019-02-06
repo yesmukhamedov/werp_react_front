@@ -11,7 +11,7 @@ import {
   fetchCCBranch,
   fetchAll,
   fetchCompBranch,
-} from '../../actions/aesAction';
+} from '../../aesAction';
 import AddChangeForm from './addChangeForm';
 import { injectIntl } from 'react-intl';
 
@@ -55,7 +55,6 @@ class AddChange extends Component {
       se1_id,
       buying_time,
     } = this.state.queryParams;
-    console.log(this.state.queryParams);
     if (bukrs === null || bukrs === undefined || !bukrs) {
       errors.push(errorTable['5' + language]);
     }
