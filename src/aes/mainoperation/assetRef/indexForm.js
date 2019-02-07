@@ -8,7 +8,7 @@ import {
   Segment,
 } from 'semantic-ui-react';
 
-export default function AesForm(props) {
+export default function IndexForm(props) {
   return (
     <Form>
       <Segment padded size="small">

@@ -470,29 +470,23 @@ const AsyncHrDocSalaryCreatePage = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const aesmain = Loadable({
+const assetmod = Loadable({
   loader: () =>
-    import('../aes/mainoperations/components' /* webpackChunkName: "aes" */),
+    import('../aes/mainoperation/assetMod' /* webpackChunkName: "aes" */),
   loading: () => <LoadingPage />,
 });
-const addchange = Loadable({
+const assetapr = Loadable({
   loader: () =>
-    import('../aes/mainoperations/components/AddChange/addChange' /* webpackChunkName: "aes" */),
+    import('../aes/mainoperation/assetapr' /* webpackChunkName: "aes" */),
   loading: () => <LoadingPage />,
 });
-const approve = Loadable({
+const assetref = Loadable({
   loader: () =>
-    import('../aes/mainoperations/components/ApprReject/approv' /* webpackChunkName: "aes" */),
+    import('../aes/mainoperation/assetRef' /* webpackChunkName: "aes" */),
   loading: () => <LoadingPage />,
 });
-const aesnew = Loadable({
-  loader: () =>
-    import('../aes/mainoperations/components/newAesTypes/aesnew' /* webpackChunkName: "aes" */),
-  loading: () => <LoadingPage />,
-});
-const replist = Loadable({
-  loader: () =>
-    import('../aes/mainoperations/components/Report/reportList' /* webpackChunkName: "aes" */),
+const aesreport = Loadable({
+  loader: () => import('../aes/report/aesReport' /* webpackChunkName: "aes" */),
   loading: () => <LoadingPage />,
 });
 
@@ -643,11 +637,10 @@ const generateRoutes = transactionRoutes => {
       <Route path="/dit/transaction/update/:id?" component={trupdate} />
 
       {/* AES */}
-      <Route path="/aes/main" component={aesmain} />
-      <Route path="/aes/mainoperation/addchange" component={addchange} />
-      <Route path="/aes/mainoperation/aesnew" component={aesnew} />
-      <Route path="/aes/mainoperation/approval" component={approve} />
-      <Route path="/aes/mainoperation/replist" component={replist} />
+      <Route path="/aes/mainoperation/assetmod" component={assetmod} />
+      <Route path="/aes/mainoperation/assetref" component={assetref} />
+      <Route path="/aes/mainoperation/assetapr" component={assetapr} />
+      <Route path="/aes/report/assetrep" component={aesreport} />
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {

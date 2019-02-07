@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {
   f4FetchWerksBranchList,
   f4FetchStaffList,
-} from '../../../../reference/f4/f4_action';
+} from '../../../reference/f4/f4_action';
 import { Dropdown, Table, Icon, Button } from 'semantic-ui-react';
 import ReactTable from 'react-table';
 import matchSorter from 'match-sorter';

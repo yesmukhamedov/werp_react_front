@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import {
   f4FetchWerksBranchList,
   f4FetchStaffList,
-} from '../../../../reference/f4/f4_action';
+} from '../../../reference/f4/f4_action';
 import { Dropdown, Table, Icon, Button } from 'semantic-ui-react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import matchSorter from 'match-sorter';
 
-class AddExaminer2 extends Component {
+class AddExaminer3 extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,9 +18,8 @@ class AddExaminer2 extends Component {
       branchOptions: [],
     };
   }
-
-  sEximaner2(se2) {
-    this.props.se2(se2);
+  sEximaner3(se3) {
+    this.props.se3(se3);
     this.props.handleClose();
   }
 
@@ -40,7 +39,7 @@ class AddExaminer2 extends Component {
           return (
             <Button
               style={{ backgroundColor: 'white', color: '#2D2727' }}
-              onClick={this.sEximaner2.bind(this, props.original)}
+              onClick={this.sEximaner3.bind(this, props.original)}
             >
               <Icon name="selected radio" />
               {props.value}
@@ -58,7 +57,7 @@ class AddExaminer2 extends Component {
           return (
             <Button
               style={{ backgroundColor: 'white', color: '#2D2727' }}
-              onClick={this.sEximaner2.bind(this, props.original)}
+              onClick={this.sEximaner3.bind(this, props.original)}
             >
               {props.value}
             </Button>
@@ -172,4 +171,4 @@ export default connect(
     f4FetchWerksBranchList,
     f4FetchStaffList,
   },
-)(AddExaminer2);
+)(AddExaminer3);

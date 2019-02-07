@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Form, Button, Input, Icon } from 'semantic-ui-react';
-import OutputErrors from '../../../../../general/error/outputErrors';
+import OutputErrors from '../../../../general/error/outputErrors';
 
-class AddOsDetail extends Component {
+class AddRoomNum extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      errors: [],
       modalForm: {},
     };
     this.handleChange = this.handleChange.bind(this);
@@ -31,7 +30,7 @@ class AddOsDetail extends Component {
     let errors = [];
     errors = this.validate();
     if (errors === null || errors === undefined || errors.length === 0) {
-      this.props.newDetail(modalForm);
+      this.newRoomNum(modalForm);
       this.props.handleClose();
     }
     this.setState({ errors });
@@ -40,18 +39,21 @@ class AddOsDetail extends Component {
     const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
     const language = localStorage.getItem('language');
     let errors = [];
-    const { detail_name, detail_code } = this.state.modalForm;
-
-    if (detail_name === null || detail_name === undefined || !detail_name) {
+    const { room_name, room_code } = this.state.modalForm;
+    if (room_name === null || room_name === undefined || !room_name) {
       errors.push(errorTable['139' + language]);
     }
-    if (detail_code === null || detail_code === undefined || !detail_code) {
+    if (room_code === null || room_code === undefined || !room_code) {
       errors.push(errorTable['137' + language]);
     }
     return errors;
   }
+  newRoomNum(newRnum) {
+    this.props.newRnum(newRnum);
+  }
 
   renderForm() {
+    let { transaction, errors } = this.state;
     const { messages } = this.props;
     return (
       <Form>
@@ -60,14 +62,14 @@ class AddOsDetail extends Component {
             <Form.Group widths="equal">
               <Form.Field
                 required
-                onChange={(e, o) => this.handleChange('detail_name', o)}
+                onChange={(e, o) => this.handleChange('room_name', o)}
                 control={Input}
-                label={messages['os_det']}
+                label={messages['rnum']}
               />
 
               <Form.Field
                 required
-                onChange={(e, o) => this.handleChange('detail_code', o)}
+                onChange={(e, o) => this.handleChange('room_code', o)}
                 control={Input}
                 label={messages['code']}
               />
@@ -110,4 +112,4 @@ class AddOsDetail extends Component {
   }
 }
 
-export default AddOsDetail;
+export default AddRoomNum;

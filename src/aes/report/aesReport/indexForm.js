@@ -9,7 +9,7 @@ import {
   Input,
 } from 'semantic-ui-react';
 
-export default function ReportForm(props) {
+export default function IndexForm(props) {
   return (
     <Segment padded size="small">
       <Label attached="top">

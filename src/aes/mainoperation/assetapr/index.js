@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import {
   f4FetchDepartmentList,
   f4FetchCountryList,
-} from '../../../../reference/f4/f4_action';
+} from '../../../reference/f4/f4_action';
 import {
   fetchAll,
   fetchAes,
@@ -11,15 +11,14 @@ import {
   fetchCCBranch,
 } from '../../aesAction';
 import { Container, Button } from 'semantic-ui-react';
-import ApprForm from './apprForm';
+import IndexForm from './indexForm';
 import SubSection from './subSection';
 import { injectIntl } from 'react-intl';
 
-class Approve extends Component {
+class AssetApr extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      depOptions: [],
       queryParams: {},
     };
 
@@ -91,7 +90,7 @@ class Approve extends Component {
           paddingRight: '2em',
         }}
       >
-        <ApprForm
+        <IndexForm
           companyOpts={this.getCompanyOptions()}
           countryOpts={this.getCountryOptions()}
           branchOptns={this.getBranches()}
@@ -212,7 +211,7 @@ class Approve extends Component {
     let out = listOs.map(os => {
       return {
         key: parseInt(os.id, 10),
-        text: os.os_name,
+        text: `${os.os_name} ${parseInt(os.os_code, 10)}`,
         value: parseInt(os.os_code, 10),
       };
     });
@@ -220,14 +219,14 @@ class Approve extends Component {
   }
 
   getType1() {
-    if (!this.props.listType1) {
+    if (!this.props.listAll.listType1) {
       return [];
     }
-    const { listType1 } = this.props;
+    const { listType1 } = this.props.listAll;
     let out = listType1.map(type1 => {
       return {
-        key: parseInt(type1.id, 10),
-        text: type1.type1_name,
+        key: parseInt(type1.id, 10) ? parseInt(type1.id, 10) : Math.random(),
+        text: `${type1.type1_name} ${parseInt(type1.type1_code, 10)}`,
         value: parseInt(type1.type1_code, 10),
       };
     });
@@ -242,7 +241,7 @@ class Approve extends Component {
     let out = listType2.map(type2 => {
       return {
         key: parseInt(type2.id, 10),
-        text: type2.type2_name,
+        text: `${type2.type2_name} ${parseInt(type2.type2_code, 10)}`,
         value: parseInt(type2.type2_code, 10),
       };
     });
@@ -257,7 +256,7 @@ class Approve extends Component {
     let out = listType3.map(type3 => {
       return {
         key: parseInt(type3.id, 10),
-        text: type3.type3_name,
+        text: `${type3.type3_name} ${parseInt(type3.type3_code, 10)}`,
         value: parseInt(type3.type3_code, 10),
       };
     });
@@ -272,7 +271,7 @@ class Approve extends Component {
     let out = listDetail.map(detail => {
       return {
         key: parseInt(detail.id, 10),
-        text: detail.detail_name,
+        text: `${detail.detail_name} ${parseInt(detail.detail_code, 10)}`,
         value: parseInt(detail.detail_code, 10),
       };
     });
@@ -287,7 +286,7 @@ class Approve extends Component {
     let out = listRooms.map(room => {
       return {
         key: parseInt(room.id, 10),
-        text: room.room_name,
+        text: `${room.room_name} ${parseInt(room.room_code, 10)}`,
         value: parseInt(room.room_code, 10),
       };
     });
@@ -302,7 +301,7 @@ class Approve extends Component {
     let out = listStatus.map(st => {
       return {
         key: parseInt(st.id, 10),
-        text: st.status_name,
+        text: `${st.status_name} ${parseInt(st.status_code, 10)}`,
         value: parseInt(st.status_code, 10),
       };
     });
@@ -348,4 +347,4 @@ export default connect(
     fetchAes,
     saveApprRej,
   },
-)(injectIntl(Approve));
+)(injectIntl(AssetApr));

@@ -4,7 +4,7 @@ import {
   f4FetchDepartmentList,
   f4FetchCountryList,
   f4FetchStaffList,
-} from '../../../../reference/f4/f4_action';
+} from '../../../reference/f4/f4_action';
 import {
   fetchCCBranch,
   fetchAll,
@@ -24,13 +24,13 @@ import {
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-import ReportForm from './reportForm';
+import IndexForm from './indexForm';
 import AddOwner from './addOwner';
 import AddExaminer1 from './addExaminer1';
 import SubSection from './subSection';
 import { injectIntl } from 'react-intl';
 
-class Report extends Component {
+class AesReport extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -170,7 +170,7 @@ class Report extends Component {
           paddingRight: '2em',
         }}
       >
-        <ReportForm
+        <IndexForm
           companyOptions={this.getCompanyOptions()}
           countryOptions={this.getCountryOptions()}
           branchOptions={this.getBranches()}
@@ -593,4 +593,4 @@ export default connect(
     newAes,
     fetchReport,
   },
-)(injectIntl(Report));
+)(injectIntl(AesReport));

@@ -17,10 +17,11 @@ import AddExaminer1 from './addExaminer1';
 import AddExaminer2 from './addExaminer2';
 import AddExaminer3 from './addExaminer3';
 import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import Preview from './preview';
-import OutputErrors from '../../../../general/error/outputErrors';
+import OutputErrors from '../../../general/error/outputErrors';
 
-class AddChangeForm extends Component {
+class IndexForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -510,4 +511,4 @@ class AddChangeForm extends Component {
     );
   }
 }
-export default AddChangeForm;
+export default IndexForm;

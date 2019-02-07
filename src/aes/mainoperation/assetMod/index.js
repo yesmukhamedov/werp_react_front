@@ -4,7 +4,7 @@ import {
   f4FetchDepartmentList,
   f4FetchCountryList,
   f4FetchStaffList,
-} from '../../../../reference/f4/f4_action';
+} from '../../../reference/f4/f4_action';
 import {
   fetchBlank,
   newAes,
@@ -12,16 +12,15 @@ import {
   fetchAll,
   fetchCompBranch,
 } from '../../aesAction';
-import AddChangeForm from './addChangeForm';
+import IndexForm from './indexForm';
 import { injectIntl } from 'react-intl';
 
-class AddChange extends Component {
+class AssetMod extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: false,
       comp: '',
-      countryOptions: [],
       queryParams: {},
     };
 
@@ -217,7 +216,7 @@ class AddChange extends Component {
 
     return (
       <div>
-        <AddChangeForm //place options
+        <IndexForm //place options
           companyOpts={this.getCompanyOptions()}
           countryOpts={this.getCountryOptions()}
           branchOptns={this.getBranches()}
@@ -491,4 +490,4 @@ export default connect(
     fetchCCBranch,
     newAes,
   },
-)(injectIntl(AddChange));
+)(injectIntl(AssetMod));

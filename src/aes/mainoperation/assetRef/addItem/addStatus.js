@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Form, Button, Input, Icon } from 'semantic-ui-react';
-import OutputErrors from '../../../../../general/error/outputErrors';
+import OutputErrors from '../../../../general/error/outputErrors';
 
-class AddOsName extends Component {
+class AddStatus extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +30,7 @@ class AddOsName extends Component {
     let errors = [];
     errors = this.validate();
     if (errors === null || errors === undefined || errors.length === 0) {
-      this.props.newOs(modalForm);
+      this.newStatus(modalForm);
       this.props.handleClose();
     }
     this.setState({ errors });
@@ -39,15 +39,19 @@ class AddOsName extends Component {
     const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
     const language = localStorage.getItem('language');
     let errors = [];
-    const { os_name, os_code } = this.state.modalForm;
-    if (os_name === null || os_name === undefined || !os_name) {
+    const { status_name, status_code } = this.state.modalForm;
+    if (status_name === null || status_name === undefined || !status_name) {
       errors.push(errorTable['139' + language]);
     }
-    if (os_code === null || os_code === undefined || !os_code) {
+    if (status_code === null || status_code === undefined || !status_code) {
       errors.push(errorTable['137' + language]);
     }
     return errors;
   }
+  newStatus(newStatus) {
+    this.props.newStatus(newStatus);
+  }
+
   renderForm() {
     const { messages } = this.props;
     return (
@@ -57,13 +61,14 @@ class AddOsName extends Component {
             <Form.Group widths="equal">
               <Form.Field
                 required
-                onChange={(e, o) => this.handleChange('os_name', o)}
+                onChange={(e, o) => this.handleChange('status_name', o)}
                 control={Input}
-                label={messages['os_name']}
+                label={messages['state1']}
               />
+
               <Form.Field
                 required
-                onChange={(e, o) => this.handleChange('os_code', o)}
+                onChange={(e, o) => this.handleChange('status_code', o)}
                 control={Input}
                 label={messages['code']}
               />
@@ -106,4 +111,4 @@ class AddOsName extends Component {
   }
 }
 
-export default AddOsName;
+export default AddStatus;

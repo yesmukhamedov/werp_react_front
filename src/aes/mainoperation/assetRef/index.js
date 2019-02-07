@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import {
   f4FetchDepartmentList,
   f4FetchCountryList,
-} from '../../../../reference/f4/f4_action';
+} from '../../../reference/f4/f4_action';
 import { Container, Modal, Button, Segment, Grid } from 'semantic-ui-react';
-import AesForm from './aesForm';
+import IndexForm from './indexForm';
 import AddOsName from './addItem/addOsName';
 import AddType1 from './addItem/addType1';
 import AddType2 from './addItem/addType2';
@@ -30,7 +30,7 @@ import {
   fetchCCBranch,
 } from '../../aesAction';
 
-class AesNew extends Component {
+class AssetRef extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -122,7 +122,7 @@ class AesNew extends Component {
           paddingRight: '2em',
         }}
       >
-        <AesForm
+        <IndexForm
           countryOpts={this.getCountryOptions()}
           companyOpts={this.getCompanyOptions()}
           branchOptns={this.getBranches()}
@@ -498,4 +498,4 @@ export default connect(
     newStatus,
     newCompBr,
   },
-)(injectIntl(AesNew));
+)(injectIntl(AssetRef));

@@ -14,7 +14,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 
-export default function ApprForm(props) {
+export default function IndexForm(props) {
   return (
     <Form>
       <Segment padded size="small">

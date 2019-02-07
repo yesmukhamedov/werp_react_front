@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Button, Input, Icon } from 'semantic-ui-react';
-import OutputErrors from '../../../../../general/error/outputErrors';
+import OutputErrors from '../../../../general/error/outputErrors';
 
 class AddStatus extends Component {
   constructor(props) {
@@ -41,8 +41,9 @@ class AddStatus extends Component {
     const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
     const language = localStorage.getItem('language');
     let errors = [];
-    const { code } = this.state.modalForm;
-    if (code === null || code === undefined || !code) {
+    const { compbr_code } = this.state.modalForm;
+
+    if (compbr_code === null || compbr_code === undefined || !compbr_code) {
       errors.push(errorTable['137' + language]);
     }
     return errors;

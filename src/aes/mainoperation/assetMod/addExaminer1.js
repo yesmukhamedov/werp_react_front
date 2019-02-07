@@ -3,13 +3,13 @@ import { connect } from 'react-redux';
 import {
   f4FetchWerksBranchList,
   f4FetchStaffList,
-} from '../../../../reference/f4/f4_action';
+} from '../../../reference/f4/f4_action';
 import { Dropdown, Table, Icon, Button } from 'semantic-ui-react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import matchSorter from 'match-sorter';
 
-class AddExaminer3 extends Component {
+class AddExaminer1 extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -18,19 +18,20 @@ class AddExaminer3 extends Component {
       branchOptions: [],
     };
   }
-  sEximaner3(se3) {
-    this.props.se3(se3);
+
+  sEximaner1(se1) {
+    this.props.se1(se1);
     this.props.handleClose();
   }
 
   render() {
     let staffList;
+    const { messages } = this.props;
     if (!this.state.branch_id) {
       staffList = [];
     } else {
       staffList = this.props.staffList;
     }
-    const { messages } = this.props;
     const columns = [
       {
         Header: messages['nomination'],
@@ -39,7 +40,7 @@ class AddExaminer3 extends Component {
           return (
             <Button
               style={{ backgroundColor: 'white', color: '#2D2727' }}
-              onClick={this.sEximaner3.bind(this, props.original)}
+              onClick={this.sEximaner1.bind(this, props.original)}
             >
               <Icon name="selected radio" />
               {props.value}
@@ -57,7 +58,7 @@ class AddExaminer3 extends Component {
           return (
             <Button
               style={{ backgroundColor: 'white', color: '#2D2727' }}
-              onClick={this.sEximaner3.bind(this, props.original)}
+              onClick={this.sEximaner1.bind(this, props.original)}
             >
               {props.value}
             </Button>
@@ -121,7 +122,7 @@ class AddExaminer3 extends Component {
 
   loadBranches(key) {
     const branchOptions = this.props.branchOptions;
-    if (!this.props.branchOptions) {
+    if (!branchOptions) {
       return [];
     }
     let map = [];
@@ -136,6 +137,7 @@ class AddExaminer3 extends Component {
         }
       }
     }
+    console.log('branch ', map);
     this.setState({
       ...this.state,
       bukrs: key,
@@ -171,4 +173,4 @@ export default connect(
     f4FetchWerksBranchList,
     f4FetchStaffList,
   },
-)(AddExaminer3);
+)(AddExaminer1);

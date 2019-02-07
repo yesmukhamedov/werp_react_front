@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Form, Button, Input, Icon } from 'semantic-ui-react';
-import OutputErrors from '../../../../../general/error/outputErrors';
+import OutputErrors from '../../../../general/error/outputErrors';
 
-class AddType1 extends Component {
+class AddOsDetail extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      errors: [],
       modalForm: {},
     };
     this.handleChange = this.handleChange.bind(this);
@@ -30,7 +31,7 @@ class AddType1 extends Component {
     let errors = [];
     errors = this.validate();
     if (errors === null || errors === undefined || errors.length === 0) {
-      this.newType1(modalForm);
+      this.props.newDetail(modalForm);
       this.props.handleClose();
     }
     this.setState({ errors });
@@ -39,17 +40,15 @@ class AddType1 extends Component {
     const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
     const language = localStorage.getItem('language');
     let errors = [];
-    const { type1_name, type1_code } = this.state.modalForm;
-    if (type1_name === null || type1_name === undefined || !type1_name) {
+    const { detail_name, detail_code } = this.state.modalForm;
+
+    if (detail_name === null || detail_name === undefined || !detail_name) {
       errors.push(errorTable['139' + language]);
     }
-    if (type1_code === null || type1_code === undefined || !type1_code) {
+    if (detail_code === null || detail_code === undefined || !detail_code) {
       errors.push(errorTable['137' + language]);
     }
     return errors;
-  }
-  newType1(newType1) {
-    this.props.newType1(newType1);
   }
 
   renderForm() {
@@ -61,14 +60,14 @@ class AddType1 extends Component {
             <Form.Group widths="equal">
               <Form.Field
                 required
-                onChange={(e, o) => this.handleChange('type1_name', o)}
+                onChange={(e, o) => this.handleChange('detail_name', o)}
                 control={Input}
-                label={messages['type1']}
+                label={messages['os_det']}
               />
 
               <Form.Field
                 required
-                onChange={(e, o) => this.handleChange('type1_code', o)}
+                onChange={(e, o) => this.handleChange('detail_code', o)}
                 control={Input}
                 label={messages['code']}
               />
@@ -111,4 +110,4 @@ class AddType1 extends Component {
   }
 }
 
-export default AddType1;
+export default AddOsDetail;
