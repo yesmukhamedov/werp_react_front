@@ -491,7 +491,7 @@ const assetref = Loadable({
     import('../aes/mainoperation/assetRef' /* webpackChunkName: "aes" */),
   loading: () => <LoadingPage />,
 });
-const aesreport = Loadable({
+const aesreport1 = Loadable({
   loader: () => import('../aes/report/aesReport' /* webpackChunkName: "aes" */),
   loading: () => <LoadingPage />,
 });
@@ -575,6 +575,10 @@ const getComponent = {
   RefStaffProblem: AsyncRefStaffProblemListPage,
   RefSubCompany: AsyncRefSubCompanyListPage,
   HrDocAllDocsPage: AsyncHrDocAllDocsPage,
+  Assetref: assetref,
+  Assetmod: assetmod,
+  Assetapr: assetapr,
+  Aesreport1: aesreport1,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -642,12 +646,6 @@ const generateRoutes = transactionRoutes => {
 
       {/* Transactions */}
       <Route path="/dit/transaction/update/:id?" component={trupdate} />
-
-      {/* AES */}
-      <Route path="/aes/mainoperation/assetmod" component={assetmod} />
-      <Route path="/aes/mainoperation/assetref" component={assetref} />
-      <Route path="/aes/mainoperation/assetapr" component={assetapr} />
-      <Route path="/aes/report/assetrep" component={aesreport} />
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
