@@ -120,6 +120,20 @@ class CrmRepDemoSalePage extends Component {
             ))}
           </Table.Body>
         </Table>
+        <hr />
+        {this.renderDescription()}
+      </div>
+    );
+  };
+
+  renderDescription = () => {
+    return (
+      <div className="ui info message" style={{ width: '300px' }}>
+        <span>1-й уровень: 1/1 - 7/1 </span>
+        <br />
+        <span>2-й уровень: 8/1 - 10/1 </span>
+        <br />
+        <span>3-й уровень: 11/1 и больше </span>
       </div>
     );
   };
