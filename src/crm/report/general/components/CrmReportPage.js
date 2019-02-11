@@ -4,10 +4,11 @@ import { Header, Container, Segment, Divider } from 'semantic-ui-react';
 
 import { fetchItems, fetchMeta, clearState } from '../actions/crmReportAction';
 import { f4FetchBusinessAreaList } from '../../../../reference/f4/f4_action';
-import { REP_SALE_DEMO_ID } from '../crmRepUtil';
+import { REP_SALE_DEMO_ID, REP_DEMO_ID } from '../crmRepUtil';
 import RepSearch from './search/RepSearch';
 import RepTable from './table/RepTable';
 import CrmRepDemoSalePage from './CrmRepDemoSalePage';
+import CrmRepDemoPage from './CrmRepDemoPage';
 
 class CrmReportPage extends Component {
   constructor(props) {
@@ -63,14 +64,8 @@ class CrmReportPage extends Component {
           </Header>
         </Segment>
         <Divider />
-        {meta['id'] === REP_SALE_DEMO_ID ? (
-          <CrmRepDemoSalePage />
-        ) : (
-          <div>
-            <RepSearch />
-            <RepTable />
-          </div>
-        )}
+        {meta['id'] === REP_SALE_DEMO_ID ? <CrmRepDemoSalePage /> : ''}
+        {meta['id'] === REP_DEMO_ID ? <CrmRepDemoPage /> : ''}
       </Container>
     );
   }

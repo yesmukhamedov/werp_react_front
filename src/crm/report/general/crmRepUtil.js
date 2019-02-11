@@ -7,6 +7,7 @@ export const REP_934 = 934;
 export const REP_935 = 935;
 
 export const REP_SALE_DEMO_ID = 894;
+export const REP_DEMO_ID = 935;
 
 export const countedYearMonthsMap = () => {
   const out = [];
