@@ -4,11 +4,12 @@ import { Header, Container, Segment, Divider } from 'semantic-ui-react';
 
 import { fetchItems, fetchMeta, clearState } from '../actions/crmReportAction';
 import { f4FetchBusinessAreaList } from '../../../../reference/f4/f4_action';
-import { REP_SALE_DEMO_ID, REP_DEMO_ID } from '../crmRepUtil';
+import { REP_SALE_DEMO_ID, REP_DEMO_ID, REP_DEMO_RECO_ID } from '../crmRepUtil';
 import RepSearch from './search/RepSearch';
 import RepTable from './table/RepTable';
 import CrmRepDemoSalePage from './CrmRepDemoSalePage';
 import CrmRepDemoPage from './CrmRepDemoPage';
+import CrmRepDemoRecoPage from './CrmRepDemoRecoPage';
 
 class CrmReportPage extends Component {
   constructor(props) {
@@ -46,6 +47,16 @@ class CrmReportPage extends Component {
     }
   }
 
+  renderContent = id => {
+    if (REP_SALE_DEMO_ID === id) {
+      return <CrmRepDemoSalePage />;
+    } else if (REP_DEMO_ID === id) {
+      return <CrmRepDemoPage />;
+    } else if (REP_DEMO_RECO_ID === id) {
+      return <CrmRepDemoRecoPage />;
+    }
+  };
+
   render() {
     const { meta } = this.props;
     return (
@@ -64,8 +75,7 @@ class CrmReportPage extends Component {
           </Header>
         </Segment>
         <Divider />
-        {meta['id'] === REP_SALE_DEMO_ID ? <CrmRepDemoSalePage /> : ''}
-        {meta['id'] === REP_DEMO_ID ? <CrmRepDemoPage /> : ''}
+        {this.renderContent(meta['id'])}
       </Container>
     );
   }

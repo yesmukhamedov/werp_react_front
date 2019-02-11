@@ -3,11 +3,11 @@ import { Tab, Table, Button, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
 import { RepSearch894 } from './search/RepSearchPanels';
-import { countedYearMonthsMap, REP_DEMO_ID } from '../crmRepUtil';
+import { countedYearMonthsMap, REP_DEMO_RECO_ID } from '../crmRepUtil';
 import { fetchItems, fetchChildItems } from '../actions/crmReportAction';
 import { MONTH_OPTIONS } from '../../../../utils/constants';
 
-class CrmRepDemoPage extends Component {
+class CrmRepDemoRecoPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -57,22 +57,18 @@ class CrmRepDemoPage extends Component {
         const md = monthData[m.y + '_' + m.m];
 
         return [
-          <Table.Cell
-            key={m}
-            width={1}
-            className={md ? md.demoAvgLevelClass : ''}
-          >
-            {md ? `${md.demoCount}` + '/' + `${md.staffCount}` : ''}
+          <Table.Cell key={m} width={1} className={md ? md.levelAvgClass : ''}>
+            {md ? `${md.demoCount}/${md.recoCount}` : ''}
           </Table.Cell>,
           <Table.Cell
             key={`${m}avg`}
             width={1}
-            className={md ? md.demoAvgLevelClass : ''}
+            className={md ? md.levelAvgClass : ''}
           >
-            {md ? md.demoAvg : ''}
+            {md ? md.recoPerDemoAvg : ''}
           </Table.Cell>,
-          <Table.Cell key={`${m}d`} className={md ? md.demoAvgLevelClass : ''}>
-            {md ? `${md.demoLevel}-уровень` : 'Нет данных'}
+          <Table.Cell key={`${m}d`} className={md ? md.levelAvgClass : ''}>
+            {md ? `${md.levelAvg}-уровень` : 'Нет данных'}
           </Table.Cell>,
         ];
       });
@@ -117,6 +113,20 @@ class CrmRepDemoPage extends Component {
             ))}
           </Table.Body>
         </Table>
+        <hr />
+        {this.renderDescription()}
+      </div>
+    );
+  };
+
+  renderDescription = () => {
+    return (
+      <div className="ui info message" style={{ width: '300px' }}>
+        <span>1-й уровень: 1/10 и больше </span>
+        <br />
+        <span>2-й уровень: 1/9 - 1/7 </span>
+        <br />
+        <span>3-й уровень: 1/6 и меньше </span>
       </div>
     );
   };
@@ -153,7 +163,7 @@ class CrmRepDemoPage extends Component {
       headers[activeIndex] = headers[2] + ' / Дилеры группы: ' + contextName;
     }
 
-    this.props.fetchChildItems(REP_DEMO_ID, params).then(({ data }) => {
+    this.props.fetchChildItems(REP_DEMO_RECO_ID, params).then(({ data }) => {
       if (context === 'bukrs') {
         bukrsItems = data;
       } else if (context === 'branch') {
@@ -177,7 +187,7 @@ class CrmRepDemoPage extends Component {
     this.setState({ ...this.state, activeIndex: activeIndex });
 
   fetchMainItems = () => {
-    this.props.fetchItems(REP_DEMO_ID, {});
+    this.props.fetchItems(REP_DEMO_RECO_ID, {});
     this.setState({
       ...this.state,
       branchItems: [],
@@ -247,4 +257,4 @@ export default connect(
     fetchItems,
     fetchChildItems,
   },
-)(CrmRepDemoPage);
+)(CrmRepDemoRecoPage);

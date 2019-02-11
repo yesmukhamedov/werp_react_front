@@ -6,7 +6,6 @@ import { RepSearch894 } from './search/RepSearchPanels';
 import { REP_SALE_DEMO_ID, countedYearMonthsMap } from '../crmRepUtil';
 import { fetchItems, fetchChildItems } from '../actions/crmReportAction';
 import { MONTH_OPTIONS } from '../../../../utils/constants';
-import moment from 'moment';
 
 class CrmRepDemoSalePage extends Component {
   constructor(props) {
