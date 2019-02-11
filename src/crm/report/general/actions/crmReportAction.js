@@ -34,6 +34,16 @@ export function fetchItems(id, params) {
   };
 }
 
+export function fetchChildItems(id, params) {
+  return dispatch =>
+    axios.get(`${ROOT_URL}/api/crm/report/` + id, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+      params: params,
+    });
+}
+
 export function fetchMeta(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));

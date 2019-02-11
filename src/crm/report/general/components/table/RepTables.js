@@ -18,22 +18,23 @@ export function RepTable894And934(props) {
   if (!items) {
     items = [];
   }
-  const currentMonth = parseInt(moment().format('M'), 10);
-  let date;
-  // to skip August
-  if (currentMonth >= 8 && currentMonth < 12) {
-    date = moment().subtract(4, 'month');
-  } else {
-    date = moment().subtract(3, 'month');
-  }
-  const prevMonth = parseInt(date.format('M'), 10);
   const months = [];
-  for (let k = prevMonth; k <= currentMonth; k++) {
-    if (k === 8) {
-      continue;
+  let mCounter = 0;
+  let date = moment();
+  while (true) {
+    let tempMonth = parseInt(date.format('M'), 10);
+    if (tempMonth === 8 || tempMonth === 1) {
+    } else {
+      months.push(tempMonth);
+      mCounter++;
     }
-    months.push(k);
+
+    date = date.subtract(1, 'month');
+    if (mCounter === 4) {
+      break;
+    }
   }
+
   const renderMonthDataForSale = monthData => {
     monthData = monthData || {};
     return months.map(m => {
@@ -104,12 +105,11 @@ export function RepTable894And934(props) {
   };
 
   const colSpan = transactionId === REP_935 ? 2 : 3;
-
   return (
     <Table celled striped>
       <Table.Header>
         <Table.Row>
-          <Table.HeaderCell>ФИО</Table.HeaderCell>
+          <Table.HeaderCell>Филиал</Table.HeaderCell>
           {months.map(m => (
             <Table.HeaderCell colSpan={colSpan} key={m}>
               {MONTH_OPTIONS[m - 1] ? MONTH_OPTIONS[m - 1].text : ''}
@@ -120,8 +120,8 @@ export function RepTable894And934(props) {
 
       <Table.Body>
         {items.map(item => (
-          <Table.Row key={item.staffId}>
-            <Table.Cell>{item.staffName}</Table.Cell>
+          <Table.Row key={item.contextId}>
+            <Table.Cell>{item.contextName}</Table.Cell>
             {transactionId === REP_894
               ? renderMonthDataForSale(item.monthData)
               : transactionId === REP_934

@@ -16,6 +16,24 @@ export function RepSearch894(props) {
   return (
     <Form>
       <Form.Group widths="equal">
+        <Form.Select
+          name="bukrs"
+          options={props.companyOptions}
+          placeholder="Компания"
+          onChange={props.handleChange}
+        />
+        <Form.Button label={' '} onClick={props.fetchItems}>
+          Сформировать
+        </Form.Button>
+      </Form.Group>
+    </Form>
+  );
+}
+
+export function RepSearch935(props) {
+  return (
+    <Form>
+      <Form.Group widths="equal">
         {renderBukrsSelect(props)}
         {renderBranchSelect(props, false)}
       </Form.Group>
