@@ -15,7 +15,6 @@ import {
   Checkbox,
   Radio,
   List,
-  Image,
 } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -72,7 +71,6 @@ class Arep1 extends Component {
         enableBudat: false,
         disableStorno: true,
       },
-      filteredData: [],
       activeIndex: 0,
     };
   }
@@ -524,7 +522,21 @@ class Arep1 extends Component {
 
   renderOutputTableBody() {
     const { outputTable } = this.props;
-    if (!outputTable) return '';
+    if (!outputTable)
+      return (
+        <Table.Row>
+          <Table.Cell />
+          <Table.Cell />
+          <Table.Cell />
+          <Table.Cell />
+          <Table.Cell />
+          <Table.Cell />
+          <Table.Cell />
+          <Table.Cell />
+          <Table.Cell />
+        </Table.Row>
+      );
+
     return outputTable.map((wa, idx) => {
       return (
         <Table.Row key={idx}>

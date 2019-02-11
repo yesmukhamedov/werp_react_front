@@ -359,6 +359,12 @@ const AsyncFaicfp2 = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncFrep1 = Loadable({
+  loader: () =>
+    import('../finance/report/frep1/frep1' /* webpackChunkName: "frep1" */),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncHrRecruitmentPage = Loadable({
   loader: () =>
     import('../hr/mainoperation/document/components/HrRecruitmentPage' /* webpackChunkName: "HrRecruitmentPage" */),
@@ -518,6 +524,7 @@ const getComponent = {
   Faia: AsyncFaia,
   Faicfp: AsyncFaicfp,
   Faicfp2: AsyncFaicfp2,
+  Frep1: AsyncFrep1,
 
   SpNew: AsyncSpNewPage,
   SpView: AsyncSpViewPage,

@@ -19,6 +19,7 @@ import {
   f4FetchDepartmentList,
   f4FetchCurrencyList,
   f4FetchExchangeRateNational,
+  f4ClearAnyObject,
 } from '../../../reference/f4/f4_action';
 import {
   clearfaBkpf,
@@ -429,5 +430,6 @@ export default connect(
     fetchExpenseHkontsByBukrs,
     fetchCashBankHkontsByBranch,
     saveFiSrcDocs,
+    f4ClearAnyObject,
   },
 )(injectIntl(Faco01));

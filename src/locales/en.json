@@ -539,6 +539,7 @@
   "incoming": "Incoming",
   "outgoing": "Outgoing",
   "transNameFaicfp2": "Cash Withdrawal and Deposit",
+  "transNameFrep1": "Report of Inside Company Fund Transfers",
 
   "asset_mant": "Asset management",
   "add_assets": "Adding fixed assets",

@@ -856,6 +856,11 @@ export const messages = defineMessages({
     id: 'transNameFaicfp2',
     defaultMessage: 'Cash Withdrawal and Deposit',
   },
+  transNameFrep1: {
+    id: 'transNameFrep1',
+    defaultMessage: 'Report of Inside Company Fund Transfers',
+  },
+
   // /Onlasyn
 
   Form: {
