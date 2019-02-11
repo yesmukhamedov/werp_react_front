@@ -28,7 +28,6 @@ export const CURRENT_ALL = 'CURRENT_ALL';
 export function fetchCCBranch(bukrs, country_id) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    console.log('coutry_id ', country_id);
     axios
       .post(
         `${ROOT_URL}/api/aes/cc/fetch`,
@@ -52,13 +51,12 @@ export function fetchCCBranch(bukrs, country_id) {
   };
 }
 
-export function fetchCompBranch(bukrs, branch_id) {
+export function fetchCompBrCode(bukrs, branch_id) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    console.log('compbr in action: ', bukrs, branch_id);
     axios
       .post(
-        `${ROOT_URL}/api/aes/cb/fetch`,
+        `${ROOT_URL}/api/aes/cbcode/fetch`,
         { bukrs, branch_id },
         {
           headers: {
@@ -113,7 +111,6 @@ export function fetchAes(aes) {
       })
       .then(({ data }) => {
         modifyLoader(false);
-        console.log('Aes1 ', data);
         dispatch({
           type: CURRENT_AES,
           payload: data,
@@ -128,7 +125,6 @@ export function fetchAes(aes) {
 export function fetchReport(aes) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    console.log('aes in action ', aes);
     axios
       .post(`${ROOT_URL}/api/aes/report`, aes, {
         headers: {
@@ -137,7 +133,6 @@ export function fetchReport(aes) {
       })
       .then(({ data }) => {
         modifyLoader(false);
-        console.log('data ', data);
         dispatch({
           type: CURRENT_AES,
           payload: data,
@@ -150,6 +145,8 @@ export function fetchReport(aes) {
 }
 
 export function newAes(newAes) {
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
   return function(dispatch) {
     dispatch(modifyLoader(true));
     axios
@@ -160,13 +157,26 @@ export function newAes(newAes) {
       })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        console.log('data ', data);
         if (data) {
-          dispatch(notify('success', 'Сохранен.', 'Успешно'));
+          dispatch(
+            notify(
+              'success',
+              errorTable[`104${language}`],
+              errorTable[`101${language}`],
+            ),
+          );
           dispatch({
             type: NEW_AES,
             payload: data,
           });
+        } else {
+          dispatch(
+            notify(
+              'info',
+              errorTable[`133${language}`],
+              errorTable[`132${language}`],
+            ),
+          );
         }
       })
       .catch(error => {
@@ -177,6 +187,8 @@ export function newAes(newAes) {
 }
 
 export function saveApprRej(apprRej, rejected) {
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
   return function(dispatch) {
     dispatch(modifyLoader(false));
     axios
@@ -192,13 +204,25 @@ export function saveApprRej(apprRej, rejected) {
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
-          dispatch(notify('success', 'Сохранен.', 'Успешно'));
+          dispatch(
+            notify(
+              'success',
+              errorTable[`104${language}`],
+              errorTable[`101${language}`],
+            ),
+          );
           dispatch({
             type: APPR_REJ,
             payload: [],
           });
         } else {
-          dispatch(notify('info', 'Не сохранен.', 'Ошибка'));
+          dispatch(
+            notify(
+              'info',
+              errorTable[`133${language}`],
+              errorTable[`132${language}`],
+            ),
+          );
         }
       })
       .catch(e => {
@@ -234,6 +258,8 @@ export function fetchAll() {
 //**************************** create new Items ******************************* */
 
 export function newOs(newOs) {
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
   return function(dispatch) {
     dispatch(modifyLoader(false));
     axios
@@ -245,13 +271,25 @@ export function newOs(newOs) {
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
-          dispatch(notify('success', 'Сохранен.', 'Успешно'));
+          dispatch(
+            notify(
+              'success',
+              errorTable[`104${language}`],
+              errorTable[`101${language}`],
+            ),
+          );
           dispatch({
             type: NEW_OS,
             payload: newOs,
           });
         } else {
-          dispatch(notify('info', 'Не сохранен.', 'Ошибка'));
+          dispatch(
+            notify(
+              'info',
+              errorTable[`133${language}`],
+              errorTable[`132${language}`],
+            ),
+          );
         }
       })
       .catch(e => {
@@ -261,6 +299,8 @@ export function newOs(newOs) {
 }
 
 export function newType1(newType1) {
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
   return function(dispatch) {
     dispatch(modifyLoader(false));
     axios
@@ -272,13 +312,25 @@ export function newType1(newType1) {
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
-          dispatch(notify('success', 'Сохранен.', 'Успешно'));
+          dispatch(
+            notify(
+              'success',
+              errorTable[`104${language}`],
+              errorTable[`101${language}`],
+            ),
+          );
           dispatch({
             type: NEW_TYPE1,
             payload: newType1,
           });
         } else {
-          dispatch(notify('info', 'Не сохранен.', 'Ошибка'));
+          dispatch(
+            notify(
+              'info',
+              errorTable[`133${language}`],
+              errorTable[`132${language}`],
+            ),
+          );
         }
       })
       .catch(e => {
@@ -287,6 +339,8 @@ export function newType1(newType1) {
   };
 }
 export function newType2(newType2) {
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
   return function(dispatch) {
     dispatch(modifyLoader(false));
     axios
@@ -298,13 +352,25 @@ export function newType2(newType2) {
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
-          dispatch(notify('success', 'Сохранен.', 'Успешно'));
+          dispatch(
+            notify(
+              'success',
+              errorTable[`104${language}`],
+              errorTable[`101${language}`],
+            ),
+          );
           dispatch({
             type: NEW_TYPE2,
             payload: newType2,
           });
         } else {
-          dispatch(notify('info', 'Не сохранен.', 'Ошибка'));
+          dispatch(
+            notify(
+              'info',
+              errorTable[`133${language}`],
+              errorTable[`132${language}`],
+            ),
+          );
         }
       })
       .catch(e => {
@@ -313,6 +379,8 @@ export function newType2(newType2) {
   };
 }
 export function newType3(newType3) {
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
   return function(dispatch) {
     dispatch(modifyLoader(false));
     axios
@@ -324,13 +392,25 @@ export function newType3(newType3) {
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
-          dispatch(notify('success', 'Сохранен.', 'Успешно'));
+          dispatch(
+            notify(
+              'success',
+              errorTable[`104${language}`],
+              errorTable[`101${language}`],
+            ),
+          );
           dispatch({
             type: NEW_TYPE3,
             payload: newType3,
           });
         } else {
-          dispatch(notify('info', 'Не сохранен.', 'Ошибка'));
+          dispatch(
+            notify(
+              'info',
+              errorTable[`133${language}`],
+              errorTable[`132${language}`],
+            ),
+          );
         }
       })
       .catch(e => {
@@ -339,6 +419,8 @@ export function newType3(newType3) {
   };
 }
 export function newDetail(newDetail) {
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
   return function(dispatch) {
     dispatch(modifyLoader(false));
     axios
@@ -350,13 +432,25 @@ export function newDetail(newDetail) {
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
-          dispatch(notify('success', 'Сохранен.', 'Успешно'));
+          dispatch(
+            notify(
+              'success',
+              errorTable[`104${language}`],
+              errorTable[`101${language}`],
+            ),
+          );
           dispatch({
             type: NEW_DETAIL,
             payload: newDetail,
           });
         } else {
-          dispatch(notify('info', 'Не сохранен.', 'Ошибка'));
+          dispatch(
+            notify(
+              'info',
+              errorTable[`133${language}`],
+              errorTable[`132${language}`],
+            ),
+          );
         }
       })
       .catch(e => {
@@ -365,6 +459,8 @@ export function newDetail(newDetail) {
   };
 }
 export function newRnum(newRnum) {
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
   return function(dispatch) {
     dispatch(modifyLoader(false));
     axios
@@ -376,13 +472,25 @@ export function newRnum(newRnum) {
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
-          dispatch(notify('success', 'Сохранен.', 'Успешно'));
+          dispatch(
+            notify(
+              'success',
+              errorTable[`104${language}`],
+              errorTable[`101${language}`],
+            ),
+          );
           dispatch({
             type: NEW_RNUM,
             payload: newRnum,
           });
         } else {
-          dispatch(notify('info', 'Не сохранен.', 'Ошибка'));
+          dispatch(
+            notify(
+              'info',
+              errorTable[`133${language}`],
+              errorTable[`132${language}`],
+            ),
+          );
         }
       })
       .catch(e => {
@@ -392,6 +500,8 @@ export function newRnum(newRnum) {
 }
 
 export function newStatus(newStatus) {
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
   return function(dispatch) {
     dispatch(modifyLoader(false));
     axios
@@ -403,13 +513,25 @@ export function newStatus(newStatus) {
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
-          dispatch(notify('success', 'Сохранен.', 'Успешно'));
+          dispatch(
+            notify(
+              'success',
+              errorTable[`104${language}`],
+              errorTable[`101${language}`],
+            ),
+          );
           dispatch({
             type: NEW_STATUS,
             payload: newStatus,
           });
         } else {
-          dispatch(notify('info', 'Не сохранен.', 'Ошибка'));
+          dispatch(
+            notify(
+              'info',
+              errorTable[`133${language}`],
+              errorTable[`132${language}`],
+            ),
+          );
         }
       })
       .catch(e => {
@@ -419,6 +541,8 @@ export function newStatus(newStatus) {
 }
 
 export function newCompBr(newCompBr) {
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
   return function(dispatch) {
     dispatch(modifyLoader(false));
     axios
@@ -430,13 +554,25 @@ export function newCompBr(newCompBr) {
       .then(({ data }) => {
         modifyLoader(false);
         if (data) {
-          dispatch(notify('success', 'Сохранен.', 'Успешно'));
+          dispatch(
+            notify(
+              'success',
+              errorTable[`104${language}`],
+              errorTable[`101${language}`],
+            ),
+          );
           dispatch({
             type: NEW_COMP_BR,
             payload: newCompBr,
           });
         } else {
-          dispatch(notify('info', 'Не сохранен.', 'Ошибка'));
+          dispatch(
+            notify(
+              'info',
+              errorTable[`133${language}`],
+              errorTable[`132${language}`],
+            ),
+          );
         }
       })
       .catch(error => {

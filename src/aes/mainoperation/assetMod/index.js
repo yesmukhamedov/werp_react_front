@@ -10,7 +10,7 @@ import {
   newAes,
   fetchCCBranch,
   fetchAll,
-  fetchCompBranch,
+  fetchCompBrCode,
 } from '../../aesAction';
 import IndexForm from './indexForm';
 import { injectIntl } from 'react-intl';
@@ -336,7 +336,7 @@ class AssetMod extends Component {
         false,
         value => this.setState({ loading: false }),
       );
-      this.props.fetchCompBranch(queryParams.bukrs, branch_id);
+      this.props.fetchCompBrCode(queryParams.bukrs, branch_id);
     }
   }
 
@@ -484,7 +484,7 @@ export default connect(
     f4FetchCountryList,
     f4FetchDepartmentList,
     fetchAll,
-    fetchCompBranch,
+    fetchCompBrCode,
     fetchBlank,
     f4FetchStaffList,
     fetchCCBranch,

@@ -33,11 +33,11 @@ export default function(state = INITIAL_STATE, action) {
       console.log('action payload2 ', action.payload);
       return { ...state, listBranches: action.payload };
     case NEW_COMP_BR:
-      let newCB = Object.assign([], state.listAll.listCompBranches);
+      let newCB = Object.assign([], state.listAll.listCompBranchCodes);
       newCB.push(action.payload);
       return {
         ...state,
-        listAll: { ...state.listAll, listCompBranches: newCB },
+        listAll: { ...state.listAll, listCompBranchCodes: newCB },
       };
     case NEW_OS:
       let newOs = Object.assign([], state.listAll.listOs);

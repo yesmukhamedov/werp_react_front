@@ -137,7 +137,7 @@ class AssetRef extends Component {
           listDetail={this.getDetail()}
           listRoom={this.getRoom()}
           listStatus={this.getStatus()}
-          compbranchOpts={this.getCompBr()}
+          compbranchOpts={this.getCompBrCodes()}
           messages={messages}
           {...this.state}
         />
@@ -456,12 +456,12 @@ class AssetRef extends Component {
     });
     return out;
   }
-  getCompBr() {
-    if (!this.props.listAll.listCompBranches) {
+  getCompBrCodes() {
+    if (!this.props.listAll.listCompBranchCodes) {
       return [];
     }
-    const { listCompBranches } = this.props.listAll;
-    let out = listCompBranches.map(c => {
+    const { listCompBranchCodes } = this.props.listAll;
+    let out = listCompBranchCodes.map(c => {
       return {
         key: parseInt(c.id, 10) ? parseInt(c.id, 10) : Math.random(),
         text: c.compbr_code,

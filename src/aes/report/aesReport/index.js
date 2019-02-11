@@ -10,7 +10,7 @@ import {
   fetchAll,
   newAes,
   fetchReport,
-  fetchCompBranch,
+  fetchCompBrCode,
 } from '../../aesAction';
 import {
   Label,
@@ -458,7 +458,7 @@ class AesReport extends Component {
         false,
         value => this.setState({ loading: false }),
       );
-      this.props.fetchCompBranch(queryParams.bukrs, branch_id);
+      this.props.fetchCompBrCode(queryParams.bukrs, branch_id);
     }
   }
   /*************************************************************************************GET OS  */
@@ -587,7 +587,7 @@ export default connect(
     f4FetchCountryList,
     f4FetchDepartmentList,
     fetchCCBranch,
-    fetchCompBranch,
+    fetchCompBrCode,
     fetchAll,
     f4FetchStaffList,
     newAes,
