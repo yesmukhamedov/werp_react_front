@@ -88,8 +88,9 @@ class TaskListTableComponent extends Component {
           const { recipient } = props.original;
           return (
             <div>
-              {recipient.branch.value}/{recipient.department.value}/
-              {recipient.position.value}
+              {recipient.branch && recipient.branch.value}/
+              {recipient.department && recipient.department.value}/
+              {recipient.position && recipient.position.value}
             </div>
           );
         },
