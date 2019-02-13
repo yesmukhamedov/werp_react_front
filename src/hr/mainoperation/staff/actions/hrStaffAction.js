@@ -210,17 +210,20 @@ export function fetchSingleStaff(staffId) {
 
 export function fetchBlankStaff() {
   return function(dispatch) {
+    dispatch(modifyLoader(true));
     axios
       .get(`${ROOT_URL}/api/hr/staff/blank`, {
         headers: { authorization: localStorage.getItem('token') },
       })
       .then(({ data }) => {
+        dispatch(modifyLoader(false));
         dispatch({
           type: HR_STAFF_FETCH_BLANK,
           payload: data,
         });
       })
       .catch(error => {
+        dispatch(modifyLoader(false));
         handleError(error, dispatch);
       });
   };

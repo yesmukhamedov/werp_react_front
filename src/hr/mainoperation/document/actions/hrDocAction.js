@@ -12,6 +12,7 @@ import {
   DOC_ACTION_ADD_APPROVER,
   DOC_ACTION_UPDATE,
   DOC_ACTION_COMPLETE_DOC,
+  DOC_ACTION_DISMISS_EMPLOYEE,
 } from '../../../hrUtil';
 
 export const HR_DOC_ITEMS_LOADED = 'HR_DOC_ITEMS_LOADED';
@@ -189,6 +190,7 @@ export function handleAction(document, actionType, additionalData) {
       break;
 
     case DOC_ACTION_COMPLETE_DOC:
+    case DOC_ACTION_DISMISS_EMPLOYEE:
       return completeDocument(document);
       break;
 

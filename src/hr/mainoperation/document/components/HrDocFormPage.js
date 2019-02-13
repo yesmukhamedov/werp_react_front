@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Header, Container, Segment, Divider } from 'semantic-ui-react';
+import { Header, Container, Segment, Divider, Loader } from 'semantic-ui-react';
 import HrDocActions from './HrDocActions';
 
 import {
@@ -54,6 +54,7 @@ class HrDocFormPage extends Component {
       staffListModalOpened: false,
       localDocument: {},
       leaveReasons: [],
+      pageLoading: true,
     };
   }
 
@@ -100,10 +101,18 @@ class HrDocFormPage extends Component {
       nextProps.document &&
       nextProps.document.id !== this.state.localDocument.id
     ) {
+      let localDocument = Object.assign({}, nextProps.document);
       this.setState({
-        localDocument: Object.assign({}, nextProps.document),
+        localDocument: localDocument,
+        pageLoading: false,
       });
-      this.loadReferences(nextProps['document']['typeId']);
+      if (localDocument['typeId'] === DOC_TYPE_DISMISS) {
+        this.props.fetchCurrentSalaries({
+          branchIds: localDocument['branchId'],
+        });
+      }
+
+      this.loadReferences(localDocument['typeId']);
     }
   }
 
@@ -335,7 +344,7 @@ class HrDocFormPage extends Component {
   };
 
   render() {
-    const { localDocument } = this.state;
+    const { localDocument, pageLoading } = this.state;
     const currentType = localDocument['typeId'];
     const { messages, locale } = this.props.intl;
     let form;
@@ -517,6 +526,10 @@ class HrDocFormPage extends Component {
           bukrsDisabledParent={false}
         />
       );
+    }
+
+    if (pageLoading) {
+      return <Loader active inline="centered" />;
     }
 
     return (

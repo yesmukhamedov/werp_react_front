@@ -93,7 +93,7 @@ class SalaryListModal extends PureComponent {
             filterable
             data={salaries || []}
             columns={columns}
-            defaultPageSize={20}
+            defaultPageSize={10}
             showPagination
             loadingText="Loading..."
             noDataText="Нет записей"
