@@ -33,6 +33,10 @@ class SalaryListModal extends PureComponent {
         accessor: 'positionName',
       },
       {
+        Header: 'Филиал',
+        accessor: 'branchName',
+      },
+      {
         Header: 'Отдел',
         accessor: 'departmentName',
       },

@@ -31,7 +31,6 @@ export default function StaffForm(props) {
               onChange={props.handleChange}
               value={staff.lastname || ''}
               control={Input}
-              required
               label="Фамилия"
               placeholder="Фамилия"
             />
@@ -41,7 +40,6 @@ export default function StaffForm(props) {
               onChange={props.handleChange}
               value={staff.firstname || ''}
               control={Input}
-              required
               label="Имя"
               placeholder="Имя"
             />
@@ -62,7 +60,6 @@ export default function StaffForm(props) {
               onChange={props.handleChange}
               value={staff.iinBin || ''}
               control={Input}
-              required
               label="ИИН"
               placeholder="ИИН"
             />
@@ -82,7 +79,6 @@ export default function StaffForm(props) {
               />
             </Form.Field>
             <Form.Select
-              required
               name="gender"
               value={staff.gender}
               label="Пол"
@@ -122,7 +118,6 @@ export default function StaffForm(props) {
               onChange={props.handleChange}
               value={staff.passportId || ''}
               control={Input}
-              required
               label="Номер уд. личности"
               placeholder="Номер уд. личности"
             />
@@ -132,7 +127,6 @@ export default function StaffForm(props) {
               onChange={props.handleChange}
               value={staff.passportGivenBy || ''}
               control={Input}
-              required
               label="Кем выдан"
               placeholder="Кем выдан"
             />
@@ -248,7 +242,6 @@ export default function StaffForm(props) {
               onChange={props.handleChange}
               value={staff.mobile || ''}
               control={Input}
-              required
               label="Мобильный"
               placeholder="Мобильный"
             />

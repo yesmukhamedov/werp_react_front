@@ -18,7 +18,12 @@ import {
 } from '../../../../reference/f4/f4_action';
 import StaffAddressForm from './forms/StaffAddressForm';
 import StaffListModal from './StaffListModal';
+import SalaryListModal from '../../salary/components/SalaryListModal';
 import StaffForm from './forms/StaffForm';
+import {
+  toggleSalaryListModal,
+  fetchCurrentSalaries,
+} from '../../salary/actions/hrSalaryAction';
 
 class StaffUpdatePage extends Component {
   constructor(props) {
@@ -47,8 +52,12 @@ class StaffUpdatePage extends Component {
     this.props.f4FetchStateList();
     this.props.f4FetchCityList();
     this.props.f4FetchCityregList();
-    this.props.fetchAllCurrentStaffs({});
+    //this.props.fetchAllCurrentStaffs({});
     this.props.f4FetchSubCompanies();
+  }
+
+  componentDidMount() {
+    this.props.fetchCurrentSalaries();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -229,13 +238,13 @@ class StaffUpdatePage extends Component {
   onScoutSelected(o) {
     const localStaff = Object.assign({}, this.state.localStaff);
     localStaff.tsStaffId = o.staffId;
-    localStaff.tsStaffName = `${o.lastname} ${o.firstname}`;
+    localStaff.tsStaffName = o.staffName;
 
     this.setState({
       ...this.state,
       localStaff,
     });
-    this.props.toggleStaffListModal(false);
+    this.props.toggleSalaryListModal(false);
   }
 
   removeScout() {
@@ -260,7 +269,7 @@ class StaffUpdatePage extends Component {
           handleChange={this.handleChange}
           handleDate={this.handleDate}
           removeScout={this.removeScout}
-          onClickScoutBtn={() => this.props.toggleStaffListModal(true)}
+          onClickScoutBtn={() => this.props.toggleSalaryListModal(true)}
         />
         <br />
         <Form>
@@ -312,11 +321,7 @@ class StaffUpdatePage extends Component {
             : 'Добавление нового сотрудника'}
         </h2>
         {this.renderForm()}
-        <StaffListModal
-          opened={this.props.staffListModalOpened}
-          staffs={this.props.allStaffs}
-          onSelect={this.onScoutSelected}
-        />
+        <SalaryListModal onSelect={this.onScoutSelected} />
       </Container>
     );
   }
@@ -350,5 +355,7 @@ export default connect(
     fetchBlankStaff,
     updateStaff,
     f4FetchSubCompanies,
+    toggleSalaryListModal,
+    fetchCurrentSalaries,
   },
 )(StaffUpdatePage);
