@@ -75,7 +75,7 @@ class CrmRepDemoSalePage extends Component {
             key={`${m}d`}
             className={md ? md.demoSaleAvgLevelClass : ''}
           >
-            {md ? `${md.demoSaleLevel}-уровень` : 'Нет данных'}
+            {md ? `${md.demoSaleLevelAvg}-уровень` : 'Нет данных'}
           </Table.Cell>,
         ];
       });
