@@ -88,7 +88,7 @@ export default function StaffForm(props) {
             />
 
             <Form.Field>
-              <label>Scouted By</label>
+              <label>TS сотрудник</label>
               <Button.Group>
                 <Button
                   onClick={() => props.onClickScoutBtn()}
@@ -101,6 +101,23 @@ export default function StaffForm(props) {
                   labelPosition="left"
                 />
                 <Button onClick={props.removeScout} icon="remove" />
+              </Button.Group>
+            </Form.Field>
+
+            <Form.Field>
+              <label>Фирма</label>
+              <Button.Group>
+                <Button
+                  onClick={props.onClickSubCompanyBtn}
+                  content={
+                    staff.subCompanyName && staff.subCompanyName.length > 0
+                      ? staff.subCompanyName
+                      : 'Не выбрано'
+                  }
+                  icon="search"
+                  labelPosition="left"
+                />
+                <Button onClick={props.removeSubCompany} icon="remove" />
               </Button.Group>
             </Form.Field>
           </Form.Group>

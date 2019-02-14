@@ -17,7 +17,7 @@ import {
   f4FetchSubCompanies,
 } from '../../../../reference/f4/f4_action';
 import StaffAddressForm from './forms/StaffAddressForm';
-import StaffListModal from './StaffListModal';
+import SubCompanyListModal from '../../../../reference/mainoperation/components/SubCompanyListModal';
 import SalaryListModal from '../../salary/components/SalaryListModal';
 import StaffForm from './forms/StaffForm';
 import {
@@ -31,6 +31,7 @@ class StaffUpdatePage extends Component {
     this.state = {
       localStaff: {},
       staffListModalOpened: false,
+      subCompanyModalOpened: false,
     };
 
     this.handleAddressData = this.handleAddressData.bind(this);
@@ -39,6 +40,8 @@ class StaffUpdatePage extends Component {
     this.onScoutSelected = this.onScoutSelected.bind(this);
     this.removeScout = this.removeScout.bind(this);
     this.handleDate = this.handleDate.bind(this);
+    this.onSubCompanySelect = this.onSubCompanySelect.bind(this);
+    this.removeSubCompany = this.removeSubCompany.bind(this);
   }
 
   componentWillMount() {
@@ -248,8 +251,8 @@ class StaffUpdatePage extends Component {
   }
 
   removeScout() {
-    const { localStaff } = this.state;
-    localStaff.tsStaffId = 0;
+    let localStaff = Object.assign({}, this.state.localStaff);
+    localStaff.tsStaffId = null;
     localStaff.tsStaffName = '';
     this.setState({
       ...this.state,
@@ -257,7 +260,36 @@ class StaffUpdatePage extends Component {
     });
   }
 
-  onClickScoutBtn() {}
+  toggelSubCompanyModal = flag => {
+    this.setState({
+      ...this.state,
+      subCompanyModalOpened: flag,
+    });
+  };
+
+  onSubCompanySelect(subCompany) {
+    let localStaff = Object.assign({}, this.state.localStaff);
+    localStaff.subCompanyId = subCompany['id'];
+    localStaff.subCompanyName = subCompany['nameRu'];
+
+    this.setState({
+      ...this.state,
+      localStaff: localStaff,
+      subCompanyModalOpened: false,
+    });
+
+    //this.toggelSubCompanyModal(false);
+  }
+
+  removeSubCompany() {
+    let localStaff = Object.assign({}, this.state.localStaff);
+    localStaff.subCompanyId = null;
+    localStaff.subCompanyName = null;
+    this.setState({
+      ...this.state,
+      localStaff,
+    });
+  }
 
   renderForm() {
     const { localStaff } = this.state;
@@ -270,6 +302,8 @@ class StaffUpdatePage extends Component {
           handleDate={this.handleDate}
           removeScout={this.removeScout}
           onClickScoutBtn={() => this.props.toggleSalaryListModal(true)}
+          onClickSubCompanyBtn={() => this.toggelSubCompanyModal(true)}
+          removeSubCompany={this.removeSubCompany}
         />
         <br />
         <Form>
@@ -322,6 +356,12 @@ class StaffUpdatePage extends Component {
         </h2>
         {this.renderForm()}
         <SalaryListModal onSelect={this.onScoutSelected} />
+        <SubCompanyListModal
+          onSelect={this.onSubCompanySelect}
+          closeModal={() => this.toggelSubCompanyModal(false)}
+          opened={this.state.subCompanyModalOpened}
+          items={this.props.subCompanies}
+        />
       </Container>
     );
   }

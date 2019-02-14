@@ -37,6 +37,21 @@ export default function StaffMainDataTable(props) {
             {staff.gender === 'male' ? 'Мужской' : 'Женский'}
           </Table.Cell>
         </Table.Row>
+
+        <Table.Row>
+          <Table.Cell>Оф. фирма</Table.Cell>
+          <Table.Cell>{staff.subCompanyName}</Table.Cell>
+        </Table.Row>
+
+        <Table.Row>
+          <Table.Cell>TS сотрудник</Table.Cell>
+          <Table.Cell>{staff.tsStaffName}</Table.Cell>
+        </Table.Row>
+
+        <Table.Row>
+          <Table.Cell>TS Date</Table.Cell>
+          <Table.Cell>{staff.tsDate}</Table.Cell>
+        </Table.Row>
       </Table.Body>
     </Table>
   );
