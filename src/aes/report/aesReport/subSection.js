@@ -8,9 +8,9 @@ export default function SubSection(props) {
       return {
         style: {
           background:
-            rowInfo.original.apprej == 0
+            rowInfo.original.apprej === 0
               ? '#ff4d4d'
-              : rowInfo.original.apprej == 1
+              : rowInfo.original.apprej === 1
               ? '#4d94ff'
               : '#f2f2f2',
         },

@@ -1,8 +1,8 @@
 import {
   REF_CURRENT_TRANSACTIONS,
-  CREATE_TRANSACTION,
+  NEW_TRANSACTION,
   TRANSACTION_UPDATE,
-} from '../actions/transactionAction';
+} from './transactionAction';
 
 const INITIAL_STATE = {
   currentTransactions: [],
@@ -13,7 +13,7 @@ export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     case REF_CURRENT_TRANSACTIONS:
       return { ...state, currentTransactions: action.items };
-    case CREATE_TRANSACTION:
+    case NEW_TRANSACTION:
       const newTr = Object.assign([], state.currentTransactions);
       newTr.push(action.payload);
       return { ...state, currentTransactions: newTr };

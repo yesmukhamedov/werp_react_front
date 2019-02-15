@@ -402,14 +402,13 @@ const AsyncFa03 = Loadable({
 });
 
 const trlist = Loadable({
-  loader: () =>
-    import('../dit/transactions/components/list' /* webpackChunkName: "trlist" */),
+  loader: () => import('../dit/transactions/' /* webpackChunkName: "trlist" */),
   loading: () => <LoadingPage />,
 });
 
 const trupdate = Loadable({
   loader: () =>
-    import('../dit/transactions/components/listTableUpdate' /* webpackChunkName: "trlist" */),
+    import('../dit/transactions/updateTransaction' /* webpackChunkName: "trlist" */),
   loading: () => <LoadingPage />,
 });
 
@@ -499,6 +498,11 @@ const aesreport1 = Loadable({
 const positionList = Loadable({
   loader: () =>
     import('../hr/mainoperation/position/list' /* webpackChunkName: "aes" */),
+  loading: () => <LoadingPage />,
+});
+
+const menu = Loadable({
+  loader: () => import('../dit/menu/' /* webpackChunkName: menu */),
   loading: () => <LoadingPage />,
 });
 
@@ -646,6 +650,9 @@ const generateRoutes = transactionRoutes => {
 
       {/* Transactions */}
       <Route path="/dit/transaction/update/:id?" component={trupdate} />
+
+      {/* Menu */}
+      <Route path="/dit/menu/list" component={menu} />
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {

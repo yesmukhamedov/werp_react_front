@@ -38,11 +38,12 @@ import mgruTransactionReducer from '../dit/message/mgru/reducers';
 import hrDocReducer from '../hr/mainoperation/document/reducers/hrDocReducer';
 import documentReducer from '../documents/mainoperation/reducers/documentReducer';
 import hrSalaryReducer from '../hr/mainoperation/salary/reducers/hrSalaryReducer';
-import transactionReducer from '../dit/transactions/reducers/transactionReducer';
+import transactionReducer from '../dit/transactions/transactionReducer';
 import logisticsReducer from '../logistics/mainoperation/reducers/logisticsReducer';
 
 import aesReducer from '../aes/aesReducer';
 import hrPosReducer from '../hr/mainoperation/position/positionReducer';
+import menuReducer from '../dit/menu/menuReducer';
 
 const appReducer = combineReducers({
   form,
@@ -87,6 +88,7 @@ const appReducer = combineReducers({
   logisticsReducer,
   aesReducer: aesReducer,
   hrPosReducer: hrPosReducer,
+  menuReducer: menuReducer,
 });
 
 const rootReducer = (state, action) => {

@@ -1,22 +1,13 @@
 import React, { Component } from 'react';
-import { Icon, Segment, Form, Button, Input, Grid } from 'semantic-ui-react';
-import ListTabale from './listTable';
-import '../css/transaction.css';
+import { Icon, Form, Button, Input } from 'semantic-ui-react';
 
-class ListTableUpdate extends Component {
+class UpdateTransaction extends Component {
   constructor(props, context) {
     super(props);
     this.state = {
       transaction: {},
-      // transaction:{transaction_code: '', name_ru: '', name_en: '', name_tr: '', transaction_id:'', url:'', front_url:''},
-      errors: {
-        transaction_code: false,
-        name_ru: false,
-        url: false,
-      },
     };
     this.handleChange = this.handleChange.bind(this);
-    // this.validateForm = this.validateForm.bind(this)
     this.saveForm = this.saveForm.bind(this);
   }
 
@@ -36,7 +27,7 @@ class ListTableUpdate extends Component {
 
   saveForm() {
     const transaction = Object.assign({}, this.state.transaction);
-    const props = this.props.props;
+    const props = this.props.transaction;
     const transaction_code = 'transaction_code';
     const name_ru = 'name_ru';
     const name_en = 'name_en';
@@ -66,34 +57,33 @@ class ListTableUpdate extends Component {
 
     const transaction_id = 'transaction_id';
     transaction[transaction_id] = props.transaction_id;
-    this.props.newTransaction(transaction);
+    this.props.updTransaction(transaction);
     this.props.handleClose();
   }
 
   renderForm() {
-    const transaction = this.props.props;
-    const localDemo = this.state.localDemo;
+    const { messages, transaction } = this.props;
     return (
       <Form>
         <div className="ui segments">
           <div className="ui segment">
-            <h3>Основные данные</h3>
+            <h3>{messages['mainInfos']}</h3>
           </div>
           <div className="ui secondary segment">
             <Form.Group widths="equal">
               <Form.Field
+                required
                 onChange={(e, o) => this.handleChange('transaction_code', o)}
                 defaultValue={transaction.transaction_code}
                 control={Input}
-                required
-                label="Tr Code"
+                label={messages['code']}
               />
               <Form.Field
+                required
                 onChange={(e, o) => this.handleChange('name_ru', o)}
                 defaultValue={transaction.name_ru}
                 control={Input}
-                required
-                label="Название (рус)"
+                label={messages['L__TITLE'] + ' (ru)'}
               />
             </Form.Group>
 
@@ -102,30 +92,29 @@ class ListTableUpdate extends Component {
                 onChange={(e, o) => this.handleChange('name_en', o)}
                 defaultValue={transaction.name_en}
                 control={Input}
-                label="Название (En)"
+                label={messages['L__TITLE'] + ' (en)'}
               />
-
               <Form.Field
                 onChange={(e, o) => this.handleChange('name_tr', o)}
                 defaultValue={transaction.name_tr}
                 control={Input}
-                label="Название (Tr)"
+                label={messages['L__TITLE'] + ' (tr)'}
               />
             </Form.Group>
+
             <Form.Group widths="equal">
               <Form.Field
+                required
                 onChange={(e, o) => this.handleChange('url', o)}
                 defaultValue={transaction.url}
                 control={Input}
-                required
                 label="URL"
               />
-
               <Form.Field
                 onChange={(e, o) => this.handleChange('front_url', o)}
                 defaultValue={transaction.front_url}
                 control={Input}
-                label="Род. папка"
+                label={messages['parDir']}
               />
             </Form.Group>
           </div>
@@ -137,7 +126,7 @@ class ListTableUpdate extends Component {
           className={this.state.sendingData ? 'loading' : ''}
           color="teal"
         >
-          Изменить
+          {messages['change']}
         </Button>
         <Button
           floated="right"
@@ -146,7 +135,7 @@ class ListTableUpdate extends Component {
         >
           {' '}
           <Icon name="remove" />
-          Отмена
+          {messages['cancel']}
         </Button>
       </Form>
     );
@@ -155,7 +144,9 @@ class ListTableUpdate extends Component {
   render() {
     return (
       <div className="new_Form_Transaction">
-        <h2>Редактирование транзакции</h2>
+        <h2 style={{ textAlign: 'center' }}>
+          {this.props.messages['L__EDIT_DESCRIPTION']}
+        </h2>
         <div className="ui grid">
           <div className="two wide column" />
           <div className="twelve wide column">{this.renderForm()}</div>
@@ -166,4 +157,4 @@ class ListTableUpdate extends Component {
   }
 }
 
-export default ListTableUpdate;
+export default UpdateTransaction;
