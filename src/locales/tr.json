@@ -582,5 +582,8 @@
   "posList": "List of positions",
   "add_Position": "Add new position",
   "change": "Change",
-  "changePos": "Change position"
+  "changePos": "Change position",
+  "trList": "List of transactions",
+  "addNewTr": "Add mew transaction",
+  "parDir": "Parent Dir."
 }
