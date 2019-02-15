@@ -297,7 +297,8 @@ class PyramidTreePage extends Component {
                       }}
                     />,
                     <Button size={'mini'}>
-                      {node.children ? node.children.length : 0}
+                      {node.children ? node.children.length : 0}/
+                      {node.childLimit || '-'}
                     </Button>,
                     <Button
                       icon={'trash'}

@@ -108,9 +108,7 @@ class PyramidFormModal extends Component {
             placeholder="Должность"
             onChange={this.handleChange}
           />
-        </Form.Group>
 
-        <Form.Group widths="equal">
           <Form.Field
             value={localItem.bukrsName || ''}
             control={Input}
@@ -119,6 +117,9 @@ class PyramidFormModal extends Component {
             label="Компания"
             placeholder="Компания"
           />
+        </Form.Group>
+
+        <Form.Group widths="equal">
           <Form.Select
             value={localItem.businessAreaId}
             name="businessAreaId"
@@ -137,13 +138,22 @@ class PyramidFormModal extends Component {
             handleChange={this.handleChange}
             bukrs={localItem.bukrs}
           />
+
+          <Form.Field
+            name="childLimit"
+            onChange={this.handleChange}
+            value={localItem.childLimit || ''}
+            control={Input}
+            type="number"
+            label="Лимит"
+            placeholder="Лимит"
+          />
         </Form.Group>
       </Form>
     );
   }
 
   handleChange(e, o) {
-    console.log(e, o);
     let localItem = Object.assign({}, this.state.localItem);
     const { name, value } = o;
     if (name === 'branch') {
