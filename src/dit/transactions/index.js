@@ -14,7 +14,7 @@ import {
   fetchCurrentTransactions,
   newTransaction,
   updateTransaction,
-} from './transactionAction';
+} from '../transactionAction';
 import { injectIntl } from 'react-intl';
 
 class List extends Component {
