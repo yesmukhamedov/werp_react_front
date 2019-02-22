@@ -51,7 +51,7 @@ class Fmcp extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.changeDynObj({
       zregOrConNum: '',
       lifnr: null,

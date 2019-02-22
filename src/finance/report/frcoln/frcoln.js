@@ -73,6 +73,7 @@ class Frcoln extends Component {
     this.props.clearState();
     if (stateFieldName === 'bukrs') {
       waSearchTerm.bukrs = value;
+      waSearchTerm.branchList = [];
       const branchOptions = this.props.branchOptions[value];
       this.setState({
         searchTerm: waSearchTerm,

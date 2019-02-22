@@ -83,6 +83,8 @@ export function handleFocus(event) {
 }
 
 export function moneyFormat(value) {
+  if (!value) return '0';
+
   const strValue = value.toString();
   let newValue = '';
   if (strValue.length > 0) {

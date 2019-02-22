@@ -520,6 +520,12 @@
   "outgoing": "Исходящий",
   "transNameFaicfp2": "Пополнение и Снятие Касса/Банк",
   "transNameFrep1": "Отчет Внутр. Переводы",
+  "cashAccount": "Касса",
+  "bankAccount": "Банк",
+  "rfcojJustServices": "Только сервисы",
+  "rfcojExcludeServices": "Исключить сервисы",
+  "transNameRfcoj": "Журнал Кассовых Ордер",
+  "service": "Сервис",
 
   "asset_mant": "Управление основными средствами",
   "add_assets": "Добавление основных средств",
