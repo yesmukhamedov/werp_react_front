@@ -860,6 +860,30 @@ export const messages = defineMessages({
     id: 'transNameFrep1',
     defaultMessage: 'Report of Inside Company Fund Transfers',
   },
+  cashAccount: {
+    id: 'cashAccount',
+    defaultMessage: 'Cash Account',
+  },
+  bankAccount: {
+    id: 'bankAccount',
+    defaultMessage: 'Bank Account',
+  },
+  rfcojJustServices: {
+    id: 'rfcojJustServices',
+    defaultMessage: 'Just Services',
+  },
+  rfcojExcludeServices: {
+    id: 'rfcojExcludeServices',
+    defaultMessage: 'Exclude services',
+  },
+  transNameRfcoj: {
+    id: 'transNameRfcoj',
+    defaultMessage: 'Cash operation report',
+  },
+  service: {
+    id: 'service',
+    defaultMessage: 'Service',
+  },
 
   // /Onlasyn
 

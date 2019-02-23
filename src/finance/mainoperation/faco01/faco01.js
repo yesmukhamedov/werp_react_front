@@ -28,6 +28,7 @@ import {
   fetchCashBankHkontsByBranch,
   saveFiSrcDocs,
   clearAnyObject,
+  changeDynObj,
 } from '../../fa_action';
 import { moneyInputHanler } from '../../../utils/helpers';
 import { handleFocus, moneyFormat } from '../../../utils/helpers';
@@ -422,8 +423,8 @@ export default connect(
   {
     f4FetchDepartmentList,
     f4FetchCurrencyList,
-    modifyLoader,
     f4FetchExchangeRateNational,
+    modifyLoader,
     changefaBkpf,
     clearfaBkpf,
     clearAnyObject,
@@ -431,5 +432,6 @@ export default connect(
     fetchCashBankHkontsByBranch,
     saveFiSrcDocs,
     f4ClearAnyObject,
+    changeDynObj,
   },
 )(injectIntl(Faco01));

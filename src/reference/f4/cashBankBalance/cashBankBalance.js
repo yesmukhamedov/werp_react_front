@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { Segment, Table, Input } from 'semantic-ui-react';
+import { Segment, Table, Input, Grid } from 'semantic-ui-react';
 import { moneyFormat } from '../../../utils/helpers';
 import 'react-table/react-table.css';
 import { injectIntl } from 'react-intl';
@@ -44,36 +44,81 @@ class CashBankBalance extends PureComponent {
     if (!cashBankBalanceList || show === false) {
       return '';
     }
+
     return (
       <Segment loading={loading}>
-        <Table collapsing>
-          <Table.Header>
-            <Table.Row>
-              <Table.HeaderCell>
-                {formatMessage(messages.cashBank)}
-              </Table.HeaderCell>
-              <Table.HeaderCell>
-                {formatMessage(messages.amount)}
-              </Table.HeaderCell>
-            </Table.Row>
-          </Table.Header>
-          <Table.Body>
-            {cashBankBalanceList.map((item, key) => (
-              <Table.Row key={key}>
-                <Table.Cell textAlign="center">{item.hkont_name}</Table.Cell>
-                <Table.Cell>
-                  <Input
-                    label={item.waers}
-                    labelPosition="left"
-                    color="teal"
-                    value={moneyFormat(item.amount)}
-                    readOnly
-                  />
-                </Table.Cell>
-              </Table.Row>
-            ))}
-          </Table.Body>
-        </Table>
+        <Grid>
+          <Grid.Row>
+            <Grid.Column mobile={16} tablet={16} computer={7}>
+              <Table collapsing>
+                <Table.Header>
+                  <Table.Row>
+                    <Table.HeaderCell>
+                      {formatMessage(messages.cashAccount)}
+                    </Table.HeaderCell>
+                    <Table.HeaderCell>
+                      {formatMessage(messages.amount)}
+                    </Table.HeaderCell>
+                  </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                  {cashBankBalanceList
+                    .filter(wa => wa.hkont.startsWith('1010'))
+                    .map((item, key) => (
+                      <Table.Row key={key}>
+                        <Table.Cell textAlign="center">
+                          {item.hkont_name}
+                        </Table.Cell>
+                        <Table.Cell>
+                          <Input
+                            label={item.waers}
+                            labelPosition="left"
+                            color="teal"
+                            value={moneyFormat(item.amount)}
+                            readOnly
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                    ))}
+                </Table.Body>
+              </Table>
+            </Grid.Column>
+            <Grid.Column mobile={16} tablet={16} computer={9}>
+              <Table collapsing>
+                <Table.Header>
+                  <Table.Row>
+                    <Table.HeaderCell>
+                      {formatMessage(messages.bankAccount)}
+                    </Table.HeaderCell>
+                    <Table.HeaderCell>
+                      {formatMessage(messages.amount)}
+                    </Table.HeaderCell>
+                  </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                  {cashBankBalanceList
+                    .filter(wa => wa.hkont.startsWith('1030'))
+                    .map((item, key) => (
+                      <Table.Row key={key}>
+                        <Table.Cell textAlign="center">
+                          {item.hkont_name}
+                        </Table.Cell>
+                        <Table.Cell>
+                          <Input
+                            label={item.waers}
+                            labelPosition="left"
+                            color="teal"
+                            value={moneyFormat(item.amount)}
+                            readOnly
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                    ))}
+                </Table.Body>
+              </Table>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </Segment>
     );
   }

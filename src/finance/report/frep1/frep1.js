@@ -80,6 +80,7 @@ class Frep1 extends Component {
         searchTerm: {
           ...this.state.searchTerm,
           [stateFieldName]: value,
+          branchList: [],
           hkontList: [],
         },
       });

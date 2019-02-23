@@ -141,11 +141,11 @@ class Arep1 extends Component {
     let filename = '';
     let tablename = '';
     if (a_type === 'total') {
-      url = `${ROOT_URL}/api/accounting/reports/downloadTotal`;
+      url = `${ROOT_URL}/api/accounting/reports/arep1/downloadTotal`;
       filename = 'Arep1Total.xls';
       tablename = 'outputTable';
     } else if (a_type === 'detail') {
-      url = `${ROOT_URL}/api/accounting/reports/downloadDetail`;
+      url = `${ROOT_URL}/api/accounting/reports/arep1/downloadDetail`;
       filename = 'Arep1Detail.xls';
       tablename = 'outputTableDetail';
     }

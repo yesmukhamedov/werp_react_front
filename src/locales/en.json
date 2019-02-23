@@ -540,6 +540,12 @@
   "outgoing": "Outgoing",
   "transNameFaicfp2": "Cash Withdrawal and Deposit",
   "transNameFrep1": "Report of Inside Company Fund Transfers",
+  "cashAccount": "Cash Account",
+  "bankAccount": "Bank Account",
+  "rfcojJustServices": "Just Services",
+  "rfcojExcludeServices": "Exclude services",
+  "transNameRfcoj": "Cash operation report",
+  "service": "Service",
 
   "asset_mant": "Asset management",
   "add_assets": "Adding fixed assets",
