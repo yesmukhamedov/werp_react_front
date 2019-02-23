@@ -38,7 +38,7 @@ import mgruTransactionReducer from '../dit/message/mgru/reducers';
 import hrDocReducer from '../hr/mainoperation/document/reducers/hrDocReducer';
 import documentReducer from '../documents/mainoperation/reducers/documentReducer';
 import hrSalaryReducer from '../hr/mainoperation/salary/reducers/hrSalaryReducer';
-import transactionReducer from '../dit/transactions/transactionReducer';
+import transactionReducer from '../dit/transactionReducer';
 import logisticsReducer from '../logistics/mainoperation/reducers/logisticsReducer';
 
 import aesReducer from '../aes/aesReducer';

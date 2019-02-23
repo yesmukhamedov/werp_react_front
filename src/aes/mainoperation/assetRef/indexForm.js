@@ -65,22 +65,23 @@ export default function IndexForm(props) {
                   options={props.branchOptns}
                   onChange={(e, { value }) => {
                     props.inputChange(value, 'branch_id');
+                    props.loadCompBr(value);
                   }}
                 />
               </Form.Field>
             </Grid.Column>
             <Grid.Column>
               <Form.Field>
-                <label>{props.messages['compbr_code']}</label>
-                <Dropdown
-                  fluid
-                  search
-                  selection
-                  value={props.queryParams.compbr_code}
-                  options={props.compbranchOpts}
-                  onChange={(e, { value }) => {
-                    props.inputChange(value, 'compbr_code');
-                  }}
+                <Form.Input
+                  required
+                  value={
+                    props.compbranch.length
+                      ? props.compbranch[0].compbr_code
+                      : props.compbranch.compbr_code
+                      ? props.compbranch.compbr_code
+                      : props.compbranch
+                  }
+                  label={props.messages['compbr_code']}
                 />
               </Form.Field>
             </Grid.Column>
@@ -137,7 +138,8 @@ export default function IndexForm(props) {
                   value={props.queryParams.os_name}
                   options={props.osList}
                   onChange={(e, { value }) => {
-                    props.inputChange(value, 'os_name');
+                    props.inputChange(value, 'os_id');
+                    props.findType1(value);
                   }}
                 />
               </Form.Field>
@@ -152,7 +154,8 @@ export default function IndexForm(props) {
                   value={props.queryParams.type1_name}
                   options={props.listType1}
                   onChange={(e, { value }) => {
-                    props.inputChange(value, 'type1_name');
+                    props.inputChange(value, 'type1_id');
+                    props.findType2(value);
                   }}
                 />
               </Form.Field>
@@ -167,7 +170,8 @@ export default function IndexForm(props) {
                   value={props.queryParams.type2_name}
                   options={props.listType2}
                   onChange={(e, { value }) => {
-                    props.inputChange(value, 'type2_name');
+                    props.inputChange(value, 'type2_id');
+                    props.findType3(value);
                   }}
                 />
               </Form.Field>
@@ -182,7 +186,8 @@ export default function IndexForm(props) {
                   value={props.queryParams.type3_name}
                   options={props.listType3}
                   onChange={(e, { value }) => {
-                    props.inputChange(value, 'type3_name');
+                    props.inputChange(value, 'type3_id');
+                    props.findDetail(value);
                   }}
                 />
               </Form.Field>
@@ -197,7 +202,7 @@ export default function IndexForm(props) {
                   value={props.queryParams.detail_name}
                   options={props.listDetail}
                   onChange={(e, { value }) => {
-                    props.inputChange(value, 'detail_name');
+                    props.inputChange(value, 'detail_id');
                   }}
                 />
               </Form.Field>

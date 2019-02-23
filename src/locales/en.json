@@ -564,7 +564,7 @@
   "inventory_code": "Inventory code",
   "compbr_code": "Comp. & Branch codes",
   "add_compbr_code": "Add Comp. & Branch code",
-  "add_room": "Add room",
+  "add_room": "Add room code",
   "add_os": "Add Os",
   "add_type1": "Add Type 1",
   "add_type2": "Add Type 2",
@@ -585,5 +585,6 @@
   "changePos": "Change position",
   "trList": "List of transactions",
   "addNewTr": "Add mew transaction",
-  "parDir": "Parent Dir."
+  "parDir": "Parent Dir.",
+  "stopAction": "Stop the action"
 }

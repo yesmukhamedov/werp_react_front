@@ -9,6 +9,7 @@ import {
   fetchAes,
   saveApprRej,
   fetchCCBranch,
+  findObject,
 } from '../../aesAction';
 import { Container, Button } from 'semantic-ui-react';
 import IndexForm from './indexForm';
@@ -31,6 +32,22 @@ class AssetApr extends Component {
 
   Search() {
     this.props.fetchAes(this.state.queryParams);
+  }
+
+  /****************************find sub items  */
+
+  findType1(os_id) {
+    this.props.findObject('/api/aes/find/type1/', os_id);
+  }
+
+  findType2(type1_id) {
+    this.props.findObject('/api/aes/find/type2/', type1_id);
+  }
+  findType3(type2_id) {
+    this.props.findObject('/api/aes/find/type3/', type2_id);
+  }
+  findDetail(type3_id) {
+    this.props.findObject('/api/aes/find/det/', type3_id);
   }
 
   handleInputChange(value, dataType) {
@@ -80,6 +97,7 @@ class AssetApr extends Component {
   }
   render() {
     const { messages } = this.props.intl;
+    console.log('props ', this.props);
     return (
       <Container
         fluid
@@ -112,6 +130,11 @@ class AssetApr extends Component {
           inputChange={this.handleInputChange}
           listAes={this.props.listAes}
           messages={messages}
+          //find sub items
+          findType1={this.findType1.bind(this)}
+          findType2={this.findType2.bind(this)}
+          findType3={this.findType3.bind(this)}
+          findDetail={this.findDetail.bind(this)}
         />
         <br />
         <SubSection
@@ -171,9 +194,7 @@ class AssetApr extends Component {
     for (let item in branchOptions) {
       map.push({
         key: branchOptions[item]['id'],
-        text: `${branchOptions[item]['branch_name']} ${
-          branchOptions[item]['id']
-        }`,
+        text: `${branchOptions[item]['branch_name']}`,
         value: branchOptions[item]['id'],
       });
     }
@@ -346,5 +367,6 @@ export default connect(
     fetchAll,
     fetchAes,
     saveApprRej,
+    findObject,
   },
 )(injectIntl(AssetApr));

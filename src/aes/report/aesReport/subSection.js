@@ -76,12 +76,12 @@ export default function SubSection(props) {
     },
     {
       Header: props.messages['rnum'],
-      accessor: 'room_name',
+      accessor: 'room_code',
       minWidth: 100,
       maxWidth: 250,
     },
     {
-      Header: props.messages['status1'],
+      Header: props.messages['TBL_H__STATUS'],
       accessor: 'status_name',
       minWidth: 100,
       maxWidth: 250,

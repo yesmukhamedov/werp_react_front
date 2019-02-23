@@ -585,5 +585,6 @@
   "changePos": "Change position",
   "trList": "List of transactions",
   "addNewTr": "Add mew transaction",
-  "parDir": "Parent Dir."
+  "parDir": "Parent Dir.",
+  "stopAction": "Stop the action"
 }

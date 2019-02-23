@@ -4,30 +4,18 @@ import {
   f4FetchDepartmentList,
   f4FetchCountryList,
 } from '../../../reference/f4/f4_action';
-import { Container, Modal, Button, Segment, Grid } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 import IndexForm from './indexForm';
-import AddOsName from './addItem/addOsName';
-import AddType1 from './addItem/addType1';
-import AddType2 from './addItem/addType2';
-import AddType3 from './addItem/addType3';
-import AddOsDetail from './addItem/addOsDetail';
-import AddRoomNum from './addItem/addRoomNum';
-import AddStatus from './addItem/addStatus';
-import AddCompBr from './addItem/addCompBr';
+import MainSubField from './modItems/mainSubField';
 import { injectIntl } from 'react-intl';
-
 import _ from 'lodash';
 import {
   fetchAll,
-  newOs,
-  newType1,
-  newType2,
-  newType3,
-  newDetail,
-  newRnum,
-  newStatus,
-  newCompBr,
   fetchCCBranch,
+  newObject,
+  disableObject,
+  findCompBrCode,
+  findObject,
 } from '../../aesAction';
 
 class AssetRef extends Component {
@@ -41,45 +29,72 @@ class AssetRef extends Component {
 
     this.loadCCBranch = this.loadCCBranch.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
-
-    // add new Items
-    this.newOs = this.newOs.bind(this);
-    this.newType1 = this.newType1.bind(this);
-    this.newType2 = this.newType2.bind(this);
-    this.newType3 = this.newType3.bind(this);
-    this.newDetail = this.newDetail.bind(this);
-    this.newRnum = this.newRnum.bind(this);
-    this.newStatus = this.newStatus.bind(this);
-    this.newCompBr = this.newCompBr.bind(this);
+    this.loadCompBr = this.loadCompBr.bind(this);
   }
 
   newOs(newOs) {
-    this.props.newOs(newOs);
+    this.props.newObject('/api/aes/os/save', newOs, 'NEW_OS');
   }
   newType1(newtype1) {
-    this.props.newType1(newtype1);
+    this.props.newObject('/api/aes/type1/save', newtype1, 'NEW_TYPE1');
   }
   newType2(newtype2) {
-    this.props.newType2(newtype2);
+    this.props.newObject('/api/aes/type2/save', newtype2, 'NEW_TYPE2');
   }
   newType3(newType3) {
-    this.props.newType3(newType3);
+    this.props.newObject('/api/aes/type3/save', newType3, 'NEW_TYPE3');
   }
   newDetail(newDetail) {
-    this.props.newDetail(newDetail);
+    this.props.newObject('/api/aes/detail/save', newDetail, 'NEW_DETAIL');
   }
   newRnum(newRnum) {
-    this.props.newRnum(newRnum);
+    this.props.newObject('/api/aes/room/save', newRnum, 'NEW_RNUM');
   }
   newStatus(newStatus) {
-    this.props.newStatus(newStatus);
+    this.props.newObject('/api/aes/status/save', newStatus, 'NEW_STATUS');
   }
   newCompBr(newCompBr) {
-    this.props.newCompBr(newCompBr);
+    this.props.newObject('/api/aes/compbr/save', newCompBr, 'COMP_BR');
+  }
+
+  /****************************find sub items  */
+
+  findType1(os_id) {
+    this.props.findObject('/api/aes/find/type1/', os_id);
+  }
+
+  findType2(type1_id) {
+    this.props.findObject('/api/aes/find/type2/', type1_id);
+  }
+  findType3(type2_id) {
+    this.props.findObject('/api/aes/find/type3/', type2_id);
+  }
+  findDetail(type3_id) {
+    this.props.findObject('/api/aes/find/det/', type3_id);
+  }
+
+  /******************************************************************* CALL DISABLE FUNCTION */
+  disableOs(os) {
+    console.log('os ', os);
+    this.props.disableObject('/api/aes/os/disable', os, 'DIS_OS');
+  }
+  disableType1(type1) {
+    this.props.disableObject('/api/aes/type1/disable', type1, 'DIS_TYPE1');
+  }
+  disableType2(type2) {
+    this.props.disableObject('/api/aes/type2/disable', type2, 'DIS_TYPE2');
+  }
+  disableType3(type3) {
+    this.props.disableObject('/api/aes/type3/disable', type3, 'DIS_TYPE3');
+  }
+  disableDetail(det) {
+    this.props.disableObject('/api/aes/det/disable', det, 'DIS_DET');
   }
 
   handleInputChange(value, dataType) {
     let { queryParams } = this.state;
+    console.log('value ', value);
+    console.log('dataType ', dataType);
     switch (dataType) {
       case 'bukrs':
         queryParams['bukrs'] = value;
@@ -110,8 +125,8 @@ class AssetRef extends Component {
   }
 
   render() {
-    const { open, dimmer } = this.state;
     const { messages } = this.props.intl;
+    console.log('propss ', this.props);
     return (
       <Container
         fluid
@@ -128,6 +143,7 @@ class AssetRef extends Component {
           branchOptns={this.getBranches()}
           depOptns={this.getDepartments()}
           loadCCBranch={this.loadCCBranch}
+          compbranch={this.props.compBrAes}
           inputChange={this.handleInputChange}
           //------ last button options
           osList={this.getOs()}
@@ -137,130 +153,39 @@ class AssetRef extends Component {
           listDetail={this.getDetail()}
           listRoom={this.getRoom()}
           listStatus={this.getStatus()}
-          compbranchOpts={this.getCompBrCodes()}
+          loadCompBr={this.loadCompBr}
+          //find sub items
+          findType1={this.findType1.bind(this)}
+          findType2={this.findType2.bind(this)}
+          findType3={this.findType3.bind(this)}
+          findDetail={this.findDetail.bind(this)}
           messages={messages}
           {...this.state}
         />
-        <Segment padded size="small" color={'grey'}>
-          <Grid columns={8}>
-            <Grid.Row>
-              <Grid.Column>
-                <Button color="teal" onClick={this.show('comp_br')}>
-                  {messages['add_compbr_code']}
-                </Button>
-              </Grid.Column>
-              <Grid.Column>
-                <Button color="teal" onClick={this.show('room_num')}>
-                  {messages['add_room']}
-                </Button>
-              </Grid.Column>
-              <Grid.Column>
-                <Button color="teal" onClick={this.show('os_name')}>
-                  {messages['add_os']}
-                </Button>
-              </Grid.Column>
-              <Grid.Column>
-                <Button color="teal" onClick={this.show('type1')}>
-                  {messages['add_type1']}
-                </Button>
-              </Grid.Column>
-              <Grid.Column>
-                <Button color="teal" onClick={this.show('type2')}>
-                  {messages['add_type2']}
-                </Button>
-              </Grid.Column>
-              <Grid.Column>
-                <Button color="teal" onClick={this.show('type3')}>
-                  {messages['add_type3']}
-                </Button>
-              </Grid.Column>
-              <Grid.Column>
-                <Button color="teal" onClick={this.show('os_detail')}>
-                  {messages['add_det']}
-                </Button>
-              </Grid.Column>
-              <Grid.Column>
-                <Button color="teal" onClick={this.show('status')}>
-                  {messages['add_cond']}
-                </Button>
-              </Grid.Column>
-            </Grid.Row>
-          </Grid>
-        </Segment>
-        <Modal open={open} onClose={this.close}>
-          <Modal.Header>
-            {(this.state.comp == 'os_name' && messages['add_os']) ||
-              (this.state.comp == 'type1' && messages['add_type1']) ||
-              (this.state.comp == 'type2' && messages['add_type2']) ||
-              (this.state.comp == 'type3' && messages['add_type3']) ||
-              (this.state.comp == 'os_detail' && messages['add_det']) ||
-              (this.state.comp == 'room_num' && messages['add_room']) ||
-              (this.state.comp == 'status' && messages['add_cond']) ||
-              messages['add_compbr_code']}
-          </Modal.Header>
-          <Modal.Content image>
-            <Modal.Description>
-              {(this.state.comp == 'os_name' && (
-                <AddOsName
-                  messages={messages}
-                  handleClose={this.close}
-                  newOs={this.newOs}
-                />
-              )) ||
-                (this.state.comp == 'type1' && (
-                  <AddType1
-                    messages={messages}
-                    handleClose={this.close}
-                    newType1={this.newType1}
-                  />
-                )) ||
-                (this.state.comp == 'type2' && (
-                  <AddType2
-                    messages={messages}
-                    handleClose={this.close}
-                    newType2={this.newType2}
-                  />
-                )) ||
-                (this.state.comp == 'type3' && (
-                  <AddType3
-                    messages={messages}
-                    handleClose={this.close}
-                    newType3={this.newType3}
-                  />
-                )) ||
-                (this.state.comp == 'os_detail' && (
-                  <AddOsDetail
-                    messages={messages}
-                    handleClose={this.close}
-                    newDetail={this.newDetail}
-                  />
-                )) ||
-                (this.state.comp == 'room_num' && (
-                  <AddRoomNum
-                    messages={messages}
-                    handleClose={this.close}
-                    newRnum={this.newRnum}
-                  />
-                )) ||
-                (this.state.comp == 'status' && (
-                  <AddStatus
-                    messages={messages}
-                    handleClose={this.close}
-                    newStatus={this.newStatus}
-                  />
-                )) ||
-                (this.state.comp == 'comp_br' && (
-                  <AddCompBr
-                    messages={messages}
-                    handleClose={this.close}
-                    newCompBr={this.newCompBr}
-                    bukrs={this.state.queryParams.bukrs}
-                    branch_id={this.state.queryParams.branch_id}
-                  />
-                ))}
-            </Modal.Description>
-          </Modal.Content>
-        </Modal>
+        <MainSubField
+          messages={messages}
+          osList={this.getOs()}
+          listType1={this.getType1()}
+          listType2={this.getType2()}
+          listType3={this.getType3()}
+          listDetail={this.getDetail()}
+          show={this.show.bind(this)}
+          close={this.close.bind(this)}
+          newCompBr={this.newCompBr.bind(this)}
+          newStatus={this.newStatus.bind(this)}
+          newRnum={this.newRnum.bind(this)}
+          newOs={this.newOs.bind(this)}
+          newType1={this.newType1.bind(this)}
+          newType2={this.newType2.bind(this)}
+          newType3={this.newType3.bind(this)}
+          newDetail={this.newDetail.bind(this)}
+          selOs={this.disableOs.bind(this)}
+          selType1={this.disableType1.bind(this)}
+          selType2={this.disableType2.bind(this)}
+          selType3={this.disableType3.bind(this)}
+          selDetail={this.disableDetail.bind(this)}
+          {...this.state}
+        />
       </Container>
     );
   }
@@ -289,7 +214,7 @@ class AssetRef extends Component {
     let out = companyOptions.map(c => {
       return {
         key: parseInt(c.key, 10),
-        text: `${c.text} ${parseInt(c.value, 10)}`,
+        text: `${c.text}`,
         value: parseInt(c.value, 10),
       };
     });
@@ -304,7 +229,7 @@ class AssetRef extends Component {
     let out = countryList.map(c => {
       return {
         key: parseInt(c.countryId, 10),
-        text: `${c.country} ${parseInt(c.countryId, 10)}`,
+        text: `${c.country}`,
         value: parseInt(c.countryId, 10),
       };
     });
@@ -313,7 +238,6 @@ class AssetRef extends Component {
 
   getBranches() {
     const branchOptions = this.props.branchOptions;
-
     if (!this.props.branchOptions) {
       return [];
     }
@@ -321,13 +245,18 @@ class AssetRef extends Component {
     for (let item in branchOptions) {
       map.push({
         key: branchOptions[item]['id'],
-        text: `${branchOptions[item]['branch_name']} ${
-          branchOptions[item]['id']
-        }`,
+        text: `${branchOptions[item]['branch_name']}`,
         value: branchOptions[item]['id'],
       });
     }
     return map;
+  }
+
+  loadCompBr(branch_id) {
+    const queryParams = this.state.queryParams;
+    if (queryParams.bukrs && queryParams.branch_id) {
+      this.props.findCompBrCode(queryParams.bukrs, branch_id);
+    }
   }
 
   getDepartments() {
@@ -351,6 +280,7 @@ class AssetRef extends Component {
       ? this.props.fetchCCBranch(queryParams.bukrs, queryParams.country_id)
       : '';
   }
+
   /****************************get items  */
   getOs() {
     if (!this.props.listAll.listOs) {
@@ -359,9 +289,9 @@ class AssetRef extends Component {
     const { listOs } = this.props.listAll;
     let out = listOs.map(os => {
       return {
-        key: parseInt(os.id, 10) ? parseInt(os.id, 10) : Math.random(),
+        key: parseInt(os.id, 10),
         text: `${os.os_name} ${parseInt(os.os_code, 10)}`,
-        value: parseInt(os.os_code, 10),
+        value: parseInt(os.id, 10),
       };
     });
     return out;
@@ -374,9 +304,9 @@ class AssetRef extends Component {
     const { listType1 } = this.props.listAll;
     let out = listType1.map(type1 => {
       return {
-        key: parseInt(type1.id, 10) ? parseInt(type1.id, 10) : Math.random(),
+        key: parseInt(type1.id, 10),
         text: `${type1.type1_name} ${parseInt(type1.type1_code, 10)}`,
-        value: parseInt(type1.type1_code, 10),
+        value: parseInt(type1.id, 10),
       };
     });
     return out;
@@ -389,9 +319,9 @@ class AssetRef extends Component {
     const { listType2 } = this.props.listAll;
     let out = listType2.map(type2 => {
       return {
-        key: parseInt(type2.id, 10) ? parseInt(type2.id, 10) : Math.random(),
+        key: parseInt(type2.id, 10),
         text: `${type2.type2_name} ${parseInt(type2.type2_code, 10)}`,
-        value: parseInt(type2.type2_code, 10),
+        value: parseInt(type2.id, 10),
       };
     });
     return out;
@@ -404,9 +334,9 @@ class AssetRef extends Component {
     const { listType3 } = this.props.listAll;
     let out = listType3.map(type3 => {
       return {
-        key: parseInt(type3.id, 10) ? parseInt(type3.id, 10) : Math.random(),
+        key: parseInt(type3.id, 10),
         text: `${type3.type3_name} ${parseInt(type3.type3_code, 10)}`,
-        value: parseInt(type3.type3_code, 10),
+        value: parseInt(type3.id, 10),
       };
     });
     return out;
@@ -419,9 +349,9 @@ class AssetRef extends Component {
     const { listDetail } = this.props.listAll;
     let out = listDetail.map(detail => {
       return {
-        key: parseInt(detail.id, 10) ? parseInt(detail.id, 10) : Math.random(),
+        key: parseInt(detail.id, 10),
         text: `${detail.detail_name} ${parseInt(detail.detail_code, 10)}`,
-        value: parseInt(detail.detail_code, 10),
+        value: parseInt(detail.id, 10),
       };
     });
     return out;
@@ -435,7 +365,7 @@ class AssetRef extends Component {
     let out = listRoom.map(room => {
       return {
         key: parseInt(room.id, 10) ? parseInt(room.id, 10) : Math.random(),
-        text: `${room.room_name} ${parseInt(room.room_code, 10)}`,
+        text: `${parseInt(room.room_code, 10)}`,
         value: parseInt(room.room_code, 10),
       };
     });
@@ -456,20 +386,6 @@ class AssetRef extends Component {
     });
     return out;
   }
-  getCompBrCodes() {
-    if (!this.props.listAll.listCompBranchCodes) {
-      return [];
-    }
-    const { listCompBranchCodes } = this.props.listAll;
-    let out = listCompBranchCodes.map(c => {
-      return {
-        key: parseInt(c.id, 10) ? parseInt(c.id, 10) : Math.random(),
-        text: c.compbr_code,
-        value: parseInt(c.compbr_code, 10),
-      };
-    });
-    return out;
-  }
 }
 
 function mapStateToProps(state) {
@@ -479,6 +395,7 @@ function mapStateToProps(state) {
     countryList: state.f4.countryList,
     listAll: state.aesReducer.listAll,
     branchOptions: state.aesReducer.listBranches,
+    compBrAes: state.aesReducer.compBrAes,
   };
 }
 
@@ -489,13 +406,9 @@ export default connect(
     f4FetchDepartmentList,
     f4FetchCountryList,
     fetchCCBranch,
-    newOs,
-    newType1,
-    newType2,
-    newType3,
-    newDetail,
-    newRnum,
-    newStatus,
-    newCompBr,
+    findCompBrCode,
+    findObject,
+    newObject,
+    disableObject,
   },
 )(injectIntl(AssetRef));

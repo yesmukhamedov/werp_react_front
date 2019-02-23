@@ -10,7 +10,8 @@ import {
   fetchAll,
   newAes,
   fetchReport,
-  fetchCompBrCode,
+  findCompBrCode,
+  findObject,
 } from '../../aesAction';
 import {
   Label,
@@ -46,6 +47,22 @@ class AesReport extends Component {
     this.loadCompBr = this.loadCompBr.bind(this);
     this.se0 = this.se0.bind(this);
     this.se1 = this.se1.bind(this);
+  }
+
+  /****************************find sub items  */
+
+  findType1(os_id) {
+    this.props.findObject('/api/aes/find/type1/', os_id);
+  }
+
+  findType2(type1_id) {
+    this.props.findObject('/api/aes/find/type2/', type1_id);
+  }
+  findType3(type2_id) {
+    this.props.findObject('/api/aes/find/type3/', type2_id);
+  }
+  findDetail(type3_id) {
+    this.props.findObject('/api/aes/find/det/', type3_id);
   }
 
   defaultSearch() {
@@ -160,6 +177,7 @@ class AesReport extends Component {
     const { listAes } = this.props;
     const { messages } = this.props.intl;
     const isEnabledSe2 = branch_id != null;
+    console.log('this props ', this.props);
     return (
       <Container
         fluid
@@ -190,6 +208,11 @@ class AesReport extends Component {
           queryParams={this.state.queryParams}
           localParams={this.state.localParams}
           messages={messages}
+          //find sub items
+          findType1={this.findType1.bind(this)}
+          findType2={this.findType2.bind(this)}
+          findType3={this.findType3.bind(this)}
+          findDetail={this.findDetail.bind(this)}
         />
 
         <Segment padded size="small">
@@ -370,7 +393,6 @@ class AesReport extends Component {
   componentWillMount() {
     this.props.f4FetchCountryList();
     this.props.f4FetchDepartmentList();
-
     this.props.fetchAll();
   }
 
@@ -458,7 +480,7 @@ class AesReport extends Component {
         false,
         value => this.setState({ loading: false }),
       );
-      this.props.fetchCompBrCode(queryParams.bukrs, branch_id);
+      this.props.findCompBrCode(queryParams.bukrs, branch_id);
     }
   }
   /*************************************************************************************GET OS  */
@@ -471,7 +493,7 @@ class AesReport extends Component {
       return {
         key: parseInt(os.id, 10),
         text: `${os.os_name} ${parseInt(os.os_code, 10)}`,
-        value: parseInt(os.os_code, 10),
+        value: parseInt(os.id, 10),
       };
     });
     return out;
@@ -486,7 +508,7 @@ class AesReport extends Component {
       return {
         key: parseInt(type1.id, 10),
         text: `${type1.type1_name} ${parseInt(type1.type1_code, 10)}`,
-        value: parseInt(type1.type1_code, 10),
+        value: parseInt(type1.id, 10),
       };
     });
     return out;
@@ -501,7 +523,7 @@ class AesReport extends Component {
       return {
         key: parseInt(type2.id, 10),
         text: `${type2.type2_name} ${parseInt(type2.type2_code, 10)}`,
-        value: parseInt(type2.type2_code, 10),
+        value: parseInt(type2.id, 10),
       };
     });
     return out;
@@ -516,7 +538,7 @@ class AesReport extends Component {
       return {
         key: parseInt(type3.id, 10),
         text: `${type3.type3_name} ${parseInt(type3.type3_code, 10)}`,
-        value: parseInt(type3.type3_code, 10),
+        value: parseInt(type3.id, 10),
       };
     });
     return out;
@@ -531,7 +553,7 @@ class AesReport extends Component {
       return {
         key: parseInt(detail.id, 10),
         text: `${detail.detail_name} ${parseInt(detail.detail_code, 10)}`,
-        value: parseInt(detail.detail_code, 10),
+        value: parseInt(detail.id, 10),
       };
     });
     return out;
@@ -545,7 +567,7 @@ class AesReport extends Component {
     let out = listRoom.map(room => {
       return {
         key: parseInt(room.id, 10),
-        text: `${room.room_name} ${parseInt(room.room_code, 10)}`,
+        text: `${parseInt(room.room_code, 10)}`,
         value: parseInt(room.room_code, 10),
       };
     });
@@ -587,10 +609,11 @@ export default connect(
     f4FetchCountryList,
     f4FetchDepartmentList,
     fetchCCBranch,
-    fetchCompBrCode,
+    findCompBrCode,
     fetchAll,
     f4FetchStaffList,
     newAes,
     fetchReport,
+    findObject,
   },
 )(injectIntl(AesReport));

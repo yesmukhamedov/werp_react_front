@@ -140,12 +140,12 @@ class SubSection extends Component {
       },
       {
         Header: messages['rnum'],
-        accessor: 'room_name',
+        accessor: 'room_code',
         minWidth: 100,
         maxWidth: 250,
       },
       {
-        Header: messages['status1'],
+        Header: messages['TBL_H__STATUS'],
         accessor: 'status_name',
         minWidth: 100,
         maxWidth: 250,

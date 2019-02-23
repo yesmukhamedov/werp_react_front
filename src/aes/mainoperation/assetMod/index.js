@@ -10,7 +10,8 @@ import {
   newAes,
   fetchCCBranch,
   fetchAll,
-  fetchCompBrCode,
+  findCompBrCode,
+  findObject,
 } from '../../aesAction';
 import IndexForm from './indexForm';
 import { injectIntl } from 'react-intl';
@@ -211,9 +212,25 @@ class AssetMod extends Component {
     });
   }
 
+  /****************************find sub items  */
+
+  findType1(os_id) {
+    this.props.findObject('/api/aes/find/type1/', os_id);
+  }
+
+  findType2(type1_id) {
+    this.props.findObject('/api/aes/find/type2/', type1_id);
+  }
+  findType3(type2_id) {
+    this.props.findObject('/api/aes/find/type3/', type2_id);
+  }
+  findDetail(type3_id) {
+    this.props.findObject('/api/aes/find/det/', type3_id);
+  }
+
   render() {
     const { messages } = this.props.intl;
-
+    console.log('this.props ', this.props);
     return (
       <div>
         <IndexForm //place options
@@ -239,6 +256,11 @@ class AssetMod extends Component {
           compbranch={this.props.compBrAes}
           messages={messages}
           errors={this.state.errors}
+          //find sub items
+          findType1={this.findType1.bind(this)}
+          findType2={this.findType2.bind(this)}
+          findType3={this.findType3.bind(this)}
+          findDetail={this.findDetail.bind(this)}
         />
       </div>
     );
@@ -259,7 +281,7 @@ class AssetMod extends Component {
     let out = companyOptions.map(c => {
       return {
         key: parseInt(c.key, 10),
-        text: `${c.text} ${parseInt(c.value, 10)}`,
+        text: `${c.text}`,
         value: parseInt(c.value, 10),
       };
     });
@@ -273,7 +295,7 @@ class AssetMod extends Component {
     let out = countryList.map(c => {
       return {
         key: parseInt(c.countryId, 10),
-        text: `${c.country} ${parseInt(c.countryId, 10)}`,
+        text: `${c.country}`,
         currency: c.currency,
         value: parseInt(c.countryId, 10),
       };
@@ -291,9 +313,7 @@ class AssetMod extends Component {
     for (let item in branchOptions) {
       map.push({
         key: branchOptions[item]['id'],
-        text: `${branchOptions[item]['branch_name']} ${
-          branchOptions[item]['id']
-        }`,
+        text: `${branchOptions[item]['branch_name']}`,
         value: branchOptions[item]['id'],
       });
     }
@@ -310,7 +330,7 @@ class AssetMod extends Component {
     for (let k in depOptions) {
       map.push({
         key: depOptions[k]['key'],
-        text: `${depOptions[k]['text']} ${depOptions[k]['value']}`,
+        text: `${depOptions[k]['text']}`,
         value: depOptions[k]['value'],
       });
     }
@@ -336,7 +356,7 @@ class AssetMod extends Component {
         false,
         value => this.setState({ loading: false }),
       );
-      this.props.fetchCompBrCode(queryParams.bukrs, branch_id);
+      this.props.findCompBrCode(queryParams.bukrs, branch_id);
     }
   }
 
@@ -424,7 +444,7 @@ class AssetMod extends Component {
     let out = listRoom.map(room => {
       return {
         key: parseInt(room.id, 10),
-        text: `${room.room_name} ${parseInt(room.room_code, 10)}`,
+        text: `${parseInt(room.room_code, 10)}`,
         value: parseInt(room.id, 10),
       };
     });
@@ -484,10 +504,11 @@ export default connect(
     f4FetchCountryList,
     f4FetchDepartmentList,
     fetchAll,
-    fetchCompBrCode,
+    findCompBrCode,
     fetchBlank,
     f4FetchStaffList,
     fetchCCBranch,
     newAes,
+    findObject,
   },
 )(injectIntl(AssetMod));
