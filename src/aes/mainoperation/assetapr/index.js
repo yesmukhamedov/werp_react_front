@@ -10,6 +10,7 @@ import {
   saveApprRej,
   fetchCCBranch,
   findObject,
+  unmountAll,
 } from '../../aesAction';
 import { Container, Button } from 'semantic-ui-react';
 import IndexForm from './indexForm';
@@ -154,6 +155,11 @@ class AssetApr extends Component {
     this.props.f4FetchDepartmentList();
     this.props.fetchAll();
   }
+
+  componentWillUnmount() {
+    this.props.unmountAll();
+  }
+
   getCompanyOptions() {
     const { companyOptions } = this.props;
     if (!companyOptions) {
@@ -368,5 +374,6 @@ export default connect(
     fetchAes,
     saveApprRej,
     findObject,
+    unmountAll,
   },
 )(injectIntl(AssetApr));

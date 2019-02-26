@@ -16,6 +16,7 @@ import {
   disableObject,
   findCompBrCode,
   findObject,
+  unmountAll,
 } from '../../aesAction';
 
 class AssetRef extends Component {
@@ -204,6 +205,10 @@ class AssetRef extends Component {
     this.props.f4FetchCountryList();
     this.props.f4FetchDepartmentList();
     this.props.fetchAll();
+  }
+
+  componentWillUnmount() {
+    this.props.unmountAll();
   }
 
   getCompanyOptions() {
@@ -410,5 +415,6 @@ export default connect(
     findObject,
     newObject,
     disableObject,
+    unmountAll,
   },
 )(injectIntl(AssetRef));
