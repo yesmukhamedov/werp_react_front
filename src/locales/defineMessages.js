@@ -912,6 +912,22 @@ export const messages = defineMessages({
     id: 'blartDP',
     defaultMessage: 'Service and other Receipts',
   },
+  frep5CtStandard: {
+    id: 'frep5CtStandard',
+    defaultMessage: 'Standard',
+  },
+  frep5CtBu: {
+    id: 'frep5CtBu',
+    defaultMessage: 'Second Hand',
+  },
+  frep5CtPresent: {
+    id: 'frep5CtPresent',
+    defaultMessage: 'Present',
+  },
+  frep5CtService: {
+    id: 'frep5CtService',
+    defaultMessage: 'Service',
+  },
 
   // /Onlasyn
 

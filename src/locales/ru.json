@@ -533,6 +533,10 @@
   "blartCF": "Перв. взносы",
   "blartCP": "Взносы",
   "blartDP": "Сервис и другие доходы",
+  "frep5CtStandard": "Стандарт",
+  "frep5CtBu": "Б/У",
+  "frep5CtPresent": "Подарок",
+  "frep5CtService": "Сервис",
 
   "asset_mant": "Управление основными средствами",
   "add_assets": "Добавление основных средств",

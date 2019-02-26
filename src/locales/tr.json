@@ -553,6 +553,10 @@
   "blartCF": "First Installments",
   "blartCP": "Collections",
   "blartDP": "Service and other Receipts",
+  "frep5CtStandard": "Standard",
+  "frep5CtBu": "Second Hand",
+  "frep5CtPresent": "Present",
+  "frep5CtService": "Service",
 
   "asset_mant": "Asset management",
   "add_assets": "Adding fixed assets",

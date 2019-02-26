@@ -18,7 +18,6 @@ import { fetchDynamicFAGM, clearDynObj } from '../../fa_action';
 import { moneyFormat } from '../../../utils/helpers';
 import { injectIntl } from 'react-intl';
 import { messages } from '../../../locales/defineMessages';
-import { excelDownload } from '../../../utils/helpers';
 import { Link } from 'react-router-dom';
 import matchSorter, { rankings } from 'match-sorter';
 import ReactTable from 'react-table';
@@ -47,7 +46,8 @@ class Frep4 extends Component {
     this.getDetail = this.getDetail.bind(this);
     this.onFilterChangeReactTable = this.onFilterChangeReactTable.bind(this);
     this.validate = this.validate.bind(this);
-    this.exportExcel = this.exportExcel.bind(this);
+    this.renderTotal = this.renderTotal.bind(this);
+    this.renderDetail = this.renderDetail.bind(this);
 
     this.state = {
       searchTerm: {
@@ -113,28 +113,7 @@ class Frep4 extends Component {
       });
     }
   }
-  exportExcel() {
-    const { formatMessage } = this.props.intl;
-    let excelHeaders = [];
-    excelHeaders.push(formatMessage(messages.city));
-    excelHeaders.push(formatMessage(messages.waers));
-    excelHeaders.push(formatMessage(messages.hkont));
-    excelHeaders.push(formatMessage(messages.name));
-    excelHeaders.push('USD');
-    excelHeaders.push('KZT');
-    excelHeaders.push('UZS');
-    excelHeaders.push('KGS');
-    excelHeaders.push('AZN');
-    excelHeaders.push('MYR');
-    excelHeaders.push(formatMessage(messages.overallSum) + ' USD');
-    excelDownload(
-      '/api/finance/reports/Frep4/downloadExcel',
-      'Frep4.xls',
-      'outputTable',
-      this.props.outputTable,
-      excelHeaders,
-    );
-  }
+
   renderSearchTab() {
     const language = localStorage.getItem('language');
     const { formatMessage } = this.props.intl;
@@ -149,8 +128,8 @@ class Frep4 extends Component {
 
     const blartOptions = [
       { key: 0, text: formatMessage(messages.all), value: '0' },
-      { key: 1, text: formatMessage(messages.blartCF), value: 'CP' },
-      { key: 2, text: formatMessage(messages.blartCP), value: 'CF' },
+      { key: 1, text: formatMessage(messages.blartCF), value: 'CF' },
+      { key: 2, text: formatMessage(messages.blartCP), value: 'CP' },
       { key: 3, text: formatMessage(messages.blartDP), value: 'DP' },
     ];
     return (
@@ -273,7 +252,26 @@ class Frep4 extends Component {
       </Grid>
     );
   }
+  validate() {
+    // getter
+    // console.log(localStorage.getItem('language'),'error');
 
+    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+    const language = localStorage.getItem('language');
+    const errors = [];
+    const { bukrs, bldatFrom, bldatTo } = this.state.searchTerm;
+    if (bukrs === null || bukrs === undefined || !bukrs) {
+      errors.push(errorTable[`5${language}`]);
+    }
+    if (bldatFrom === null || bldatFrom === undefined || !bldatFrom) {
+      errors.push(errorTable[`13${language}`]);
+    }
+    if (bldatTo === null || bldatTo === undefined || !bldatTo) {
+      errors.push(errorTable[`14${language}`]);
+    }
+
+    return errors;
+  }
   searchFrep4() {
     this.props.modifyLoader(true);
     let errors = [];
@@ -295,6 +293,60 @@ class Frep4 extends Component {
 
     this.setState({ errors });
   }
+  renderTotal() {
+    const { formatMessage } = this.props.intl;
+    const { outputTable } = this.props;
+    if (!outputTable) return '';
+
+    return (
+      <Table compact>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>{formatMessage(messages.brnch)}</Table.HeaderCell>
+            <Table.HeaderCell>{formatMessage(messages.name)}</Table.HeaderCell>
+            <Table.HeaderCell>{formatMessage(messages.hkont)}</Table.HeaderCell>
+            <Table.HeaderCell>{formatMessage(messages.waers)}</Table.HeaderCell>
+            <Table.HeaderCell>
+              {formatMessage(messages.amount)} USD
+            </Table.HeaderCell>
+            <Table.HeaderCell>
+              {formatMessage(messages.amount)}{' '}
+              {formatMessage(messages.inDocumentCurrency)}
+            </Table.HeaderCell>
+            <Table.HeaderCell />
+          </Table.Row>
+        </Table.Header>
+
+        <Table.Body>
+          {outputTable &&
+            outputTable.map((wa, idx) => {
+              return (
+                <Table.Row key={idx} className={wa.hkont ? '' : 'subtotalRow'}>
+                  <Table.Cell>{wa.branchName}</Table.Cell>
+                  <Table.Cell>{wa.hkontName}</Table.Cell>
+                  <Table.Cell>{wa.hkont}</Table.Cell>
+                  <Table.Cell>{wa.waers}</Table.Cell>
+                  <Table.Cell>{moneyFormat(wa.dmbtr)}</Table.Cell>
+                  <Table.Cell>{moneyFormat(wa.wrbtr)}</Table.Cell>
+                  <Table.Cell>
+                    {wa.hkont !== null && (
+                      <Icon
+                        name="search"
+                        className="clickableIcon"
+                        size="large"
+                        onClick={() =>
+                          this.getDetail(wa.branchId, wa.hkont, wa.waers)
+                        }
+                      />
+                    )}
+                  </Table.Cell>
+                </Table.Row>
+              );
+            })}
+        </Table.Body>
+      </Table>
+    );
+  }
   getDetail(branchId, hkont, waers) {
     this.props.modifyLoader(true);
     this.props.fetchDynamicFAGM('/api/finance/reports/frep4/searchDetail', {
@@ -311,46 +363,13 @@ class Frep4 extends Component {
       activeIndex: 2,
     });
   }
-  onFilterChangeReactTable() {
-    if (
-      this.reactTable &&
-      this.reactTable.getResolvedState() &&
-      this.reactTable.getResolvedState().sortedData &&
-      this.reactTable.getResolvedState().sortedData.length > 0
-    ) {
-      let temp = [...this.reactTable.getResolvedState().sortedData];
-
-      let totalDmbtr = 0,
-        totalWrbtr = 0;
-      for (let i = 0; i < temp.length; i++) {
-        let wa = temp[i];
-        totalDmbtr = totalDmbtr + wa.dmbtr;
-        totalWrbtr = totalWrbtr + wa.wrbtr;
-      }
-
-      totalDmbtr = new BigNumber(totalDmbtr).toFixed(2);
-      totalWrbtr = new BigNumber(totalWrbtr).toFixed(2);
-      this.setState({ totalDmbtr, totalWrbtr });
-    }
-  }
-  validate() {
-    // getter
-    // console.log(localStorage.getItem('language'),'error');
-
-    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-    const language = localStorage.getItem('language');
-    const errors = [];
-    const { bukrs } = this.state.searchTerm;
-    if (bukrs === null || bukrs === undefined || !bukrs) {
-      errors.push(errorTable[`5${language}`]);
-    }
-
-    return errors;
-  }
-  render() {
+  renderDetail() {
     const { formatMessage } = this.props.intl;
-    const { activeIndex, totalDmbtr, totalWrbtr } = this.state;
-    const { outputTable, outputTableDetail } = this.props;
+    const { totalDmbtr, totalWrbtr } = this.state;
+    const { outputTableDetail } = this.props;
+
+    if (!outputTableDetail) return '';
+
     let t1columns = [];
     let t1r1c1 = {
       Header: ({ value }) => <b>{formatMessage(messages.brnch)}</b>,
@@ -497,6 +516,54 @@ class Frep4 extends Component {
     t1columns.push(t1r1c10);
 
     return (
+      <ReactTable
+        filterable
+        ref={r => (this.reactTable = r)}
+        data={outputTableDetail ? outputTableDetail : []}
+        columns={t1columns}
+        pageSize={20}
+        showPagination={true}
+        className="-striped -highlight"
+        loadingText={formatMessage(messages.loadingText)}
+        noDataText={formatMessage(messages.noDataText)}
+        previousText={formatMessage(messages.previousText)}
+        nextText={formatMessage(messages.nextText)}
+        rowsText={formatMessage(messages.rowsText)}
+        pageText={formatMessage(messages.pageText)}
+        ofText={formatMessage(messages.ofText)}
+        // filtered={this.state.filtered}
+        onFilteredChange={filtered => this.onFilterChangeReactTable()}
+      />
+    );
+  }
+  onFilterChangeReactTable() {
+    if (
+      this.reactTable &&
+      this.reactTable.getResolvedState() &&
+      this.reactTable.getResolvedState().sortedData &&
+      this.reactTable.getResolvedState().sortedData.length > 0
+    ) {
+      let temp = [...this.reactTable.getResolvedState().sortedData];
+
+      let totalDmbtr = 0,
+        totalWrbtr = 0;
+      for (let i = 0; i < temp.length; i++) {
+        let wa = temp[i];
+        totalDmbtr = totalDmbtr + wa.dmbtr;
+        totalWrbtr = totalWrbtr + wa.wrbtr;
+      }
+
+      totalDmbtr = new BigNumber(totalDmbtr).toFixed(2);
+      totalWrbtr = new BigNumber(totalWrbtr).toFixed(2);
+      this.setState({ totalDmbtr, totalWrbtr });
+    }
+  }
+
+  render() {
+    const { formatMessage } = this.props.intl;
+    const { activeIndex } = this.state;
+
+    return (
       <Container
         fluid
         style={{
@@ -533,7 +600,7 @@ class Frep4 extends Component {
             onClick={() => {
               this.setState({ activeIndex: 2 });
             }}
-            icon="bar chart"
+            icon="list layout"
           />
         </Menu>
 
@@ -542,95 +609,10 @@ class Frep4 extends Component {
           {this.renderSearchTab()}
         </Segment>
         <Segment className={activeIndex === 1 ? 'show' : 'hide'}>
-          {outputTable && outputTable.length > 0 && (
-            <Menu stackable size="small">
-              <Menu.Item>
-                <img
-                  className="clickableItem"
-                  src="/assets/img/xlsx_export_icon.png"
-                  onClick={() => this.exportExcel()}
-                />
-              </Menu.Item>
-            </Menu>
-          )}
-          {outputTable && (
-            <Table compact>
-              <Table.Header>
-                <Table.Row>
-                  <Table.HeaderCell>
-                    {formatMessage(messages.brnch)}
-                  </Table.HeaderCell>
-                  <Table.HeaderCell>
-                    {formatMessage(messages.name)}
-                  </Table.HeaderCell>
-                  <Table.HeaderCell>
-                    {formatMessage(messages.hkont)}
-                  </Table.HeaderCell>
-                  <Table.HeaderCell>
-                    {formatMessage(messages.waers)}
-                  </Table.HeaderCell>
-                  <Table.HeaderCell>
-                    {formatMessage(messages.amount)} USD
-                  </Table.HeaderCell>
-                  <Table.HeaderCell>
-                    {formatMessage(messages.amount)}{' '}
-                    {formatMessage(messages.inDocumentCurrency)}
-                  </Table.HeaderCell>
-                  <Table.HeaderCell />
-                </Table.Row>
-              </Table.Header>
-
-              <Table.Body>
-                {outputTable.map((wa, idx) => {
-                  return (
-                    <Table.Row
-                      key={idx}
-                      className={wa.hkont ? '' : 'subtotalRow'}
-                    >
-                      <Table.Cell>{wa.branchName}</Table.Cell>
-                      <Table.Cell>{wa.hkontName}</Table.Cell>
-                      <Table.Cell>{wa.hkont}</Table.Cell>
-                      <Table.Cell>{wa.waers}</Table.Cell>
-                      <Table.Cell>{moneyFormat(wa.dmbtr)}</Table.Cell>
-                      <Table.Cell>{moneyFormat(wa.wrbtr)}</Table.Cell>
-                      <Table.Cell>
-                        {wa.hkont !== null && (
-                          <Icon
-                            name="search"
-                            className="clickableIcon"
-                            size="large"
-                            onClick={() =>
-                              this.getDetail(wa.branchId, wa.hkont, wa.waers)
-                            }
-                          />
-                        )}
-                      </Table.Cell>
-                    </Table.Row>
-                  );
-                })}
-              </Table.Body>
-            </Table>
-          )}
+          {this.renderTotal()}
         </Segment>
         <Segment className={activeIndex === 2 ? 'show' : 'hide'}>
-          <ReactTable
-            filterable
-            ref={r => (this.reactTable = r)}
-            data={outputTableDetail ? outputTableDetail : []}
-            columns={t1columns}
-            pageSize={20}
-            showPagination={false}
-            className="-striped -highlight"
-            loadingText={formatMessage(messages.loadingText)}
-            noDataText={formatMessage(messages.noDataText)}
-            previousText={formatMessage(messages.previousText)}
-            nextText={formatMessage(messages.nextText)}
-            rowsText={formatMessage(messages.rowsText)}
-            pageText={formatMessage(messages.pageText)}
-            ofText={formatMessage(messages.ofText)}
-            // filtered={this.state.filtered}
-            onFilteredChange={filtered => this.onFilterChangeReactTable()}
-          />
+          {this.renderDetail()}
         </Segment>
       </Container>
     );
