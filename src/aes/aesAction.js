@@ -8,7 +8,6 @@ import { modifyLoader } from '../general/loader/loader_action';
 export const AES_BLANK = 'AES_BLANK';
 //******************************AES ADD*/
 export const APPR_REJ = 'APPR_REJ';
-export const CREATE_ABS_CAT = 'CREATE_ABS_CAT';
 export const NEW_AES = 'NEW_AES';
 export const NEW_OS = 'NEW_OS';
 export const NEW_TYPE1 = 'NEW_TYPE1';
@@ -26,12 +25,12 @@ export const CURRENT_ALL = 'CURRENT_ALL';
 /************************** staffs */
 export const CLEAR_ALL = 'CLEAR_ALL';
 export const CLEAR_T3_OSDET = 'CLEAR_T3_OSDET';
-export const FETCH_DYNOBJ_FI = 'FETCH_DYNOBJ_FI';
 export const DIS_DET = 'DIS_DET';
 export const DIS_OS = 'DIS_OS';
 export const DIS_TYPE1 = 'DIS_TYPE1';
 export const DIS_TYPE2 = 'DIS_TYPE2';
 export const DIS_TYPE3 = 'DIS_TYPE3';
+export const UNMOUNT_ALL = 'UNMOUNT_ALL';
 
 export function fetchCCBranch(bukrs, country_id) {
   return function(dispatch) {
@@ -253,6 +252,14 @@ export function clearT3Osdet(a_obj) {
   };
   return obj;
 }
+
+export function unmountAll() {
+  const obj = {
+    type: UNMOUNT_ALL,
+  };
+  return obj;
+}
+
 export function findObject(url, params) {
   let fullUrl = `${ROOT_URL}` + url + `/${params}`;
   return function(dispatch) {
@@ -391,31 +398,6 @@ export function disableObject(url, params, type) {
       });
   };
 }
-
-/*
-export function findType1(os_id){
-  return function(dispatch) {
-    dispatch(modifyLoader(false));
-    axios
-      .get(`${ROOT_URL}/api/aes/find/type1/${os_id}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));        
-        dispatch({
-          type: CURRENT_TYPE1,
-          payload: data,
-        }); 
-      })
-    .catch(e => {
-      handleError(e, dispatch);
-    });
-  };
-}
-
-*/
 
 /*
 export function newOs(newOs) {

@@ -21,6 +21,7 @@ import {
   DIS_TYPE3,
   DIS_DET,
   CLEAR_ALL,
+  UNMOUNT_ALL,
   CLEAR_T3_OSDET,
 } from './aesAction';
 
@@ -68,6 +69,10 @@ export default function(state = INITIAL_STATE, action) {
       return { ...state, queryParams: action.payload, compBrAes: [] };
     case APPR_REJ:
       return { ...state, listAes: action.payload };
+    case UNMOUNT_ALL:
+      console.log('unmount calisti');
+      return { ...state, listAll: {} };
+
     /************************************************************************** SAVING ITEMS */
     case NEW_OS:
       let newOs = Object.assign([], state.listAll.listOs);

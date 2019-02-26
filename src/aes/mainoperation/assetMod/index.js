@@ -12,6 +12,7 @@ import {
   fetchAll,
   findCompBrCode,
   findObject,
+  unmountAll,
 } from '../../aesAction';
 import IndexForm from './indexForm';
 import { injectIntl } from 'react-intl';
@@ -273,6 +274,10 @@ class AssetMod extends Component {
     this.props.fetchAll();
   }
 
+  componentWillUnmount() {
+    this.props.unmountAll();
+  }
+
   getCompanyOptions() {
     const { companyOptions } = this.props;
     if (!companyOptions) {
@@ -504,11 +509,12 @@ export default connect(
     f4FetchCountryList,
     f4FetchDepartmentList,
     fetchAll,
-    findCompBrCode,
     fetchBlank,
     f4FetchStaffList,
     fetchCCBranch,
+    findCompBrCode,
     newAes,
     findObject,
+    unmountAll,
   },
 )(injectIntl(AssetMod));

@@ -12,6 +12,7 @@ import {
   fetchReport,
   findCompBrCode,
   findObject,
+  unmountAll,
 } from '../../aesAction';
 import {
   Label,
@@ -396,6 +397,10 @@ class AesReport extends Component {
     this.props.fetchAll();
   }
 
+  componentWillUnmount() {
+    this.props.unmountAll();
+  }
+
   getCompanyOptions() {
     const { companyOptions } = this.props;
     if (!companyOptions) {
@@ -615,5 +620,6 @@ export default connect(
     newAes,
     fetchReport,
     findObject,
+    unmountAll,
   },
 )(injectIntl(AesReport));
