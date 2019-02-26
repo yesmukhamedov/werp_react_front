@@ -1,7 +1,7 @@
 import axios from 'axios';
+import { ROOT_URL } from '../utils/constants';
 import _ from 'lodash';
 import moment from 'moment';
-import { BigNumber } from 'bignumber.js';
 
 export function resetLocalStorage() {
   localStorage.removeItem('token');
@@ -225,4 +225,38 @@ export function monthsArrayToOptions(months) {
   }
 
   return out;
+}
+
+export function excelDownload(
+  a_url,
+  filename,
+  outputTableName,
+  outputTable,
+  excelHeaders,
+) {
+  let url = '';
+  url = `${ROOT_URL}` + a_url;
+  // console.log(a_url, filename, outputTable, excelHeaders);
+  return axios
+    .post(
+      url,
+      {
+        [outputTableName]: outputTable,
+        excelHeaders,
+      },
+      {
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
+        responseType: 'blob',
+      },
+    )
+    .then(response => {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+    });
 }

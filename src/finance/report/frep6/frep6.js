@@ -18,9 +18,7 @@ import { fetchDynamicFAGM, clearDynObj } from '../../fa_action';
 import { moneyFormat } from '../../../utils/helpers';
 import { injectIntl } from 'react-intl';
 import { messages } from '../../../locales/defineMessages';
-import '../frep6/frep6.css';
-import axios from 'axios';
-import { ROOT_URL } from '../../../utils/constants';
+import { excelDownload } from '../../../utils/helpers';
 require('moment/locale/ru');
 require('moment/locale/tr');
 
@@ -31,7 +29,7 @@ class Frep6 extends Component {
     this.renderSearchTab = this.renderSearchTab.bind(this);
     this.searchFrep6 = this.searchFrep6.bind(this);
     this.validate = this.validate.bind(this);
-    this.excelDownload = this.excelDownload.bind(this);
+    this.exportExcel = this.exportExcel.bind(this);
 
     this.state = {
       searchTerm: {
@@ -70,7 +68,28 @@ class Frep6 extends Component {
       });
     }
   }
-
+  exportExcel() {
+    const { formatMessage } = this.props.intl;
+    let excelHeaders = [];
+    excelHeaders.push(formatMessage(messages.city));
+    excelHeaders.push(formatMessage(messages.waers));
+    excelHeaders.push(formatMessage(messages.hkont));
+    excelHeaders.push(formatMessage(messages.name));
+    excelHeaders.push('USD');
+    excelHeaders.push('KZT');
+    excelHeaders.push('UZS');
+    excelHeaders.push('KGS');
+    excelHeaders.push('AZN');
+    excelHeaders.push('MYR');
+    excelHeaders.push(formatMessage(messages.overallSum) + ' USD');
+    excelDownload(
+      '/api/finance/reports/frep6/downloadExcel',
+      'frep6.xls',
+      'outputTable',
+      this.props.outputTable,
+      excelHeaders,
+    );
+  }
   renderSearchTab() {
     const { formatMessage } = this.props.intl;
     const { branchOptions, companyOptions } = this.props;
@@ -166,36 +185,7 @@ class Frep6 extends Component {
       </Grid>
     );
   }
-  excelDownload() {
-    let url = '';
-    let filename = '';
-    let tablename = '';
 
-    url = `${ROOT_URL}/api/finance/reports/frep6/downloadExcel`;
-    filename = 'frep6.xls';
-    tablename = 'outputTable';
-    return axios
-      .post(
-        url,
-        {
-          [tablename]: this.props[tablename],
-        },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-          responseType: 'blob',
-        },
-      )
-      .then(response => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', filename);
-        document.body.appendChild(link);
-        link.click();
-      });
-  }
   searchFrep6() {
     this.props.modifyLoader(true);
     let errors = [];
@@ -245,7 +235,7 @@ class Frep6 extends Component {
         }}
       >
         <Header as="h2" block>
-          {formatMessage(messages.transNameFrep1)}
+          {formatMessage(messages.transNameFrep6)}
         </Header>
 
         <Menu pointing stackable>
@@ -278,7 +268,7 @@ class Frep6 extends Component {
                 <img
                   className="clickableItem"
                   src="/assets/img/xlsx_export_icon.png"
-                  onClick={() => this.excelDownload()}
+                  onClick={() => this.exportExcel()}
                 />
               </Menu.Item>
             </Menu>

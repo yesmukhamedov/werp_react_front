@@ -19,8 +19,12 @@
 }
 
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .wrapper {
@@ -29,39 +33,49 @@
 }
 
 /*.react-datepicker-time__header{*/
-  /*width: 100px !important;*/
+/*width: 100px !important;*/
 /*}*/
 
 /*.react-datepicker__time-list{*/
-  /*width: 100px !important;*/
+/*width: 100px !important;*/
 /*}*/
 
-.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box{
+.react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box {
   width: 100px !important;
 }
 
-.react-datepicker__time-container .react-datepicker__time .react-datepicker__time-box ul.react-datepicker__time-list li.react-datepicker__time-list-item{
+.react-datepicker__time-container
+  .react-datepicker__time
+  .react-datepicker__time-box
+  ul.react-datepicker__time-list
+  li.react-datepicker__time-list-item {
   padding: 5px 0px !important;
 }
 
-.clickableItem:hover{
+.clickableItem:hover {
   cursor: pointer;
 }
-.clickableIcon:hover{  
+.clickableIcon:hover {
   cursor: pointer;
 }
 
-.react-datepicker__input-container input.date-100-width{
-  width:100px;
-  padding-left: 5px; 
+.react-datepicker__input-container input.date-100-width {
+  width: 100px;
+  padding-left: 5px;
 }
 
-.react-datepicker__input-container input.date-auto-width{
-  padding-left: 5px; 
+.react-datepicker__input-container input.date-auto-width {
+  padding-left: 5px;
 }
-.hide{
+.hide {
   display: none;
 }
-.show{
+.show {
   display: inherit;
+}
+.subtotalRow {
+  background-color: rgb(193, 239, 253);
+  font-weight: bold;
 }

@@ -884,6 +884,34 @@ export const messages = defineMessages({
     id: 'service',
     defaultMessage: 'Service',
   },
+  transNameFrep6: {
+    id: 'transNameFrep6',
+    defaultMessage: 'Balance Cash/Bank',
+  },
+  transNameFrep4: {
+    id: 'transNameFrep4',
+    defaultMessage: 'Receipt Cash/Bank',
+  },
+  transNameFrep5: {
+    id: 'transNameFrep5',
+    defaultMessage: 'Sales report',
+  },
+  transNameFrep7: {
+    id: 'transNameFrep7',
+    defaultMessage: 'Balance Employee',
+  },
+  blartCF: {
+    id: 'blartCF',
+    defaultMessage: 'First Installments',
+  },
+  blartCP: {
+    id: 'blartCP',
+    defaultMessage: 'Collections',
+  },
+  blartDP: {
+    id: 'blartDP',
+    defaultMessage: 'Service and other Receipts',
+  },
 
   // /Onlasyn
 

@@ -33,7 +33,6 @@ import { injectIntl } from 'react-intl';
 import { messages } from '../../../locales/defineMessages';
 import CashBankBalance from '../../../reference/f4/cashBankBalance/cashBankBalance';
 import { LinkToDmsc03, LinkToCustomerHrc03 } from '../../../utils/outlink';
-import { LEGACY_URL } from '../../../utils/constants';
 require('moment/locale/ru');
 require('moment/locale/tr');
 
@@ -524,10 +523,8 @@ class Rfcoj extends Component {
         <span>
           {obj.original.customerName && (
             <LinkToCustomerHrc03
-              url={`${LEGACY_URL}/hr/customer/hrc03.xhtml?customerId=${
-                obj.original.customerId
-              }`}
-              value={obj.original.customerName}
+              customerId={obj.original.customerId}
+              customerName={obj.original.customerName}
             />
           )}
         </span>
@@ -545,14 +542,7 @@ class Rfcoj extends Component {
       accessor: 'snNum',
       Cell: obj => (
         <span>
-          {obj.original.snNum && (
-            <LinkToDmsc03
-              url={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=${
-                obj.original.snNum
-              }`}
-              value={obj.original.snNum}
-            />
-          )}
+          {obj.original.snNum && <LinkToDmsc03 snNum={obj.original.snNum} />}
         </span>
       ),
       width: 90,

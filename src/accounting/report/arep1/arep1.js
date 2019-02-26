@@ -33,6 +33,7 @@ import { BigNumber } from 'bignumber.js';
 import matchSorter, { rankings } from 'match-sorter';
 import { injectIntl } from 'react-intl';
 import { messages } from '../../../locales/defineMessages';
+import { excelDownload } from '../../../utils/helpers';
 require('moment/locale/ru');
 
 class Arep1 extends Component {
@@ -51,7 +52,7 @@ class Arep1 extends Component {
     this.fetchHkontOptions = this.fetchHkontOptions.bind(this);
     this.renderOutputTable = this.renderOutputTable.bind(this);
     this.renderOutputTableBody = this.renderOutputTableBody.bind(this);
-    this.excelDownload = this.excelDownload.bind(this);
+    this.exportExcel = this.exportExcel.bind(this);
 
     this.state = {
       searchTerm: {
@@ -136,40 +137,51 @@ class Arep1 extends Component {
       });
   }
 
-  excelDownload(a_type) {
-    let url = '';
-    let filename = '';
-    let tablename = '';
+  exportExcel(a_type) {
+    const { formatMessage } = this.props.intl;
+    let excelHeaders = [];
+
     if (a_type === 'total') {
-      url = `${ROOT_URL}/api/accounting/reports/arep1/downloadTotal`;
-      filename = 'Arep1Total.xls';
-      tablename = 'outputTable';
+      excelHeaders.push(formatMessage(messages.brnch));
+      excelHeaders.push(formatMessage(messages.name));
+      excelHeaders.push(formatMessage(messages.hkont));
+      excelHeaders.push(formatMessage(messages.waers));
+      excelHeaders.push(formatMessage(messages.amount));
+      excelHeaders.push(formatMessage(messages.amount));
+      excelHeaders.push(formatMessage(messages.amount) + ' USD');
+      excelHeaders.push(formatMessage(messages.amount) + ' USD');
+
+      excelDownload(
+        '/api/accounting/reports/arep1/downloadTotal',
+        'Arep1Total.xls',
+        'outputTable',
+        this.props.outputTable,
+        excelHeaders,
+      );
     } else if (a_type === 'detail') {
-      url = `${ROOT_URL}/api/accounting/reports/arep1/downloadDetail`;
-      filename = 'Arep1Detail.xls';
-      tablename = 'outputTableDetail';
+      excelHeaders.push(formatMessage(messages.brnch));
+      excelHeaders.push(formatMessage(messages.belnr));
+      excelHeaders.push(formatMessage(messages.gjahr));
+      excelHeaders.push(formatMessage(messages.budat));
+      excelHeaders.push(formatMessage(messages.bldat));
+      excelHeaders.push(formatMessage(messages.name));
+      excelHeaders.push(formatMessage(messages.hkont));
+      excelHeaders.push(formatMessage(messages.waers));
+      excelHeaders.push(formatMessage(messages.amount));
+      excelHeaders.push(formatMessage(messages.amount));
+      excelHeaders.push(formatMessage(messages.amount) + ' USD');
+      excelHeaders.push(formatMessage(messages.amount) + ' USD');
+      excelHeaders.push(formatMessage(messages.customer));
+      excelHeaders.push(formatMessage(messages.bktxt));
+
+      excelDownload(
+        '/api/accounting/reports/arep1/downloadDetail',
+        'Arep1Detail.xls',
+        'outputTableDetail',
+        this.props.outputTableDetail,
+        excelHeaders,
+      );
     }
-    return axios
-      .post(
-        url,
-        {
-          [tablename]: this.props[tablename],
-        },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-          responseType: 'blob',
-        },
-      )
-      .then(response => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', filename);
-        document.body.appendChild(link);
-        link.click();
-      });
   }
 
   getTotal() {
@@ -906,7 +918,7 @@ class Arep1 extends Component {
                 <img
                   className="clickableItem"
                   src="/assets/img/xlsx_export_icon.png"
-                  onClick={() => this.excelDownload('total')}
+                  onClick={() => this.exportExcel('total')}
                 />
               </Menu.Item>
             </Menu>
@@ -921,7 +933,7 @@ class Arep1 extends Component {
                   <img
                     className="clickableItem"
                     src="/assets/img/xlsx_export_icon.png"
-                    onClick={() => this.excelDownload('detail')}
+                    onClick={() => this.exportExcel('detail')}
                   />
                 </Menu.Item>
               </Menu>
