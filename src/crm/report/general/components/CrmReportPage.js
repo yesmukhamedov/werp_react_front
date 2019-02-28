@@ -4,12 +4,18 @@ import { Header, Container, Segment, Divider } from 'semantic-ui-react';
 
 import { fetchItems, fetchMeta, clearState } from '../actions/crmReportAction';
 import { f4FetchBusinessAreaList } from '../../../../reference/f4/f4_action';
-import { REP_SALE_DEMO_ID, REP_DEMO_ID, REP_DEMO_RECO_ID } from '../crmRepUtil';
+import {
+  REP_SALE_DEMO_ID,
+  REP_DEMO_ID,
+  REP_DEMO_RECO_ID,
+  REP_REC_SEARCH_ID,
+} from '../crmRepUtil';
 import RepSearch from './search/RepSearch';
 import RepTable from './table/RepTable';
 import CrmRepDemoSalePage from './CrmRepDemoSalePage';
 import CrmRepDemoPage from './CrmRepDemoPage';
 import CrmRepDemoRecoPage from './CrmRepDemoRecoPage';
+import CrmRepRecommenderSearchPage from './CrmRepRecommenderSearchPage';
 
 class CrmReportPage extends Component {
   constructor(props) {
@@ -54,6 +60,8 @@ class CrmReportPage extends Component {
       return <CrmRepDemoPage />;
     } else if (REP_DEMO_RECO_ID === id) {
       return <CrmRepDemoRecoPage />;
+    } else if (REP_REC_SEARCH_ID === id) {
+      return <CrmRepRecommenderSearchPage />;
     }
   };
 

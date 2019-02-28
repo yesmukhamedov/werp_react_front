@@ -8,6 +8,7 @@ import {
   CRM_VISIT_SET_FOR_CREATE,
   CRM_VISIT_CREATE,
   CRM_VISIT_MODAL_CLEAR,
+  CRM_VISIT_FETCH_CHILD_RECOS,
 } from '../actions/visitAction';
 
 const INITIAL_STATE = {
@@ -29,6 +30,7 @@ const INITIAL_STATE = {
   updateModalOpened: false,
   phoneNumberHistory: [],
   modalOpened: false,
+  childRecos: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -67,6 +69,9 @@ export default function(state = INITIAL_STATE, action) {
 
     case CRM_VISIT_MODAL_CLEAR:
       return { ...state, modalOpened: false, visit: {} };
+
+    case CRM_VISIT_FETCH_CHILD_RECOS:
+      return { ...state, childRecos: action.payload };
 
     default:
       return state;

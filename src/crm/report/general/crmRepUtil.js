@@ -9,6 +9,8 @@ export const REP_935 = 935;
 export const REP_SALE_DEMO_ID = 894;
 export const REP_DEMO_ID = 935;
 export const REP_DEMO_RECO_ID = 934;
+//Поиск рекомендателя
+export const REP_REC_SEARCH_ID = 1216;
 
 export const countedYearMonthsMap = () => {
   const out = [];

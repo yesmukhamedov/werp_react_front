@@ -18,6 +18,7 @@ export const CRM_VISIT_UPDATE = 'CRM_VISIT_UPDATE';
 export const CRM_VISIT_MODAL_TOGGLE = 'CRM_VISIT_MODAL_TOGGLE';
 export const CRM_VISIT_SET_FOR_UPDATE = 'CRM_VISIT_SET_FOR_UPDATE';
 export const CRM_VISIT_SET_FOR_CREATE = 'CRM_VISIT_SET_FOR_CREATE';
+export const CRM_VISIT_FETCH_CHILD_RECOS = 'CRM_VISIT_FETCH_CHILD_RECOS';
 
 export function fetchArchive() {
   return function(dispatch) {
@@ -174,6 +175,27 @@ export function blankForCreate(recoId, staffId) {
       .catch(e => {
         dispatch(modifyLoader(false));
         handleError(e, dispatch);
+      });
+  };
+}
+
+export function fetchVisitChildRecos(id) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    axios
+      .get(`${ROOT_URL}/api/crm/visit/${id}/child-recos`, {
+        headers: { authorization: localStorage.getItem('token') },
+      })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: CRM_VISIT_FETCH_CHILD_RECOS,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
       });
   };
 }

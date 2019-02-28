@@ -108,3 +108,13 @@ export function clearState() {
     type: CRM_REP_CLEAR_STATE,
   };
 }
+
+export function fetchDemoRecommender(demoId) {
+  return dispatch =>
+    axios.get(`${ROOT_URL}/api/crm/report/find-recommender`, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+      params: { demoId: demoId },
+    });
+}
