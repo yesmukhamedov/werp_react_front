@@ -1,5 +1,14 @@
 import React from 'react';
-import { Form, Input, Button } from 'semantic-ui-react';
+import {
+  Form,
+  Input,
+  Button,
+  Icon,
+  Segment,
+  Header,
+  Grid,
+} from 'semantic-ui-react';
+import ExperienceForm from '../forms/ExperienceForm';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
@@ -17,7 +26,7 @@ const genderOptions = [
 
 export default function StaffForm(props) {
   const { staff } = props;
-
+  const experiences = staff.experiences || [];
   return (
     <Form>
       <div className="ui segments">
@@ -319,6 +328,48 @@ export default function StaffForm(props) {
               placeholder="Доп. email"
             />
           </Form.Group>
+        </div>
+      </div>
+
+      <div className="ui segments">
+        <Segment clearing>
+          <Header as="h3" floated="left">
+            Стаж работы
+          </Header>
+          <Button
+            loading={props.experienceBlanking}
+            onClick={props.addExperienceRow}
+            floated={'right'}
+            style={{ marginRight: '3px' }}
+            icon={'plus'}
+            size={'small'}
+          />
+        </Segment>
+        <div className="ui secondary segment">
+          {experiences.map((e, idx) => {
+            return (
+              <Grid key={idx} columns={2}>
+                <Grid.Row>
+                  <Grid.Column width={14}>
+                    <ExperienceForm
+                      index={idx}
+                      handleChange={props.handleExperienceData}
+                      key={idx}
+                      model={e}
+                    />
+                  </Grid.Column>
+                  <Grid.Column width={2}>
+                    <Button
+                      onClick={() => props.removeExperienceRow(idx)}
+                      style={{ marginTop: '25px' }}
+                      icon={'trash'}
+                      size={'small'}
+                    />
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
+            );
+          })}
         </div>
       </div>
     </Form>

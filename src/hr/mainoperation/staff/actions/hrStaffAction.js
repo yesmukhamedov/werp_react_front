@@ -148,7 +148,7 @@ export function updateStaff(staff) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     axios
-      .put(`${ROOT_URL}/api/hr/staff/${staff.id}`, staff, {
+      .put(`${ROOT_URL}/api/hr/staff`, staff, {
         headers: {
           authorization: localStorage.getItem('token'),
         },
@@ -469,4 +469,13 @@ export function setStaffDataForUpdate(data) {
     type: HR_STAFF_SET_STAFF_DATA_FOR_UPDATE,
     payload: data,
   };
+}
+
+export function blankStaffExperience() {
+  return dispatch =>
+    axios.get(`${ROOT_URL}/api/hr/staff/blank-experience`, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    });
 }

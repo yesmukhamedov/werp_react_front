@@ -8,6 +8,7 @@ import {
   fetchAllCurrentStaffs,
   fetchBlankStaff,
   updateStaff,
+  blankStaffExperience,
 } from '../actions/hrStaffAction';
 import {
   f4FetchCountryList,
@@ -32,6 +33,7 @@ class StaffUpdatePage extends Component {
       localStaff: {},
       staffListModalOpened: false,
       subCompanyModalOpened: false,
+      experienceBlanking: false,
     };
 
     this.handleAddressData = this.handleAddressData.bind(this);
@@ -42,6 +44,7 @@ class StaffUpdatePage extends Component {
     this.handleDate = this.handleDate.bind(this);
     this.onSubCompanySelect = this.onSubCompanySelect.bind(this);
     this.removeSubCompany = this.removeSubCompany.bind(this);
+    this.handleExperienceData = this.handleExperienceData.bind(this);
   }
 
   componentWillMount() {
@@ -201,6 +204,70 @@ class StaffUpdatePage extends Component {
     });
   }
 
+  handleExperienceData(fieldName, fieldValue, index) {
+    const localStaff = Object.assign({}, this.state.localStaff);
+    let experiences = localStaff.experiences;
+    let currentExp = experiences[index];
+    if (fieldName === 'fromDate' || fieldName === 'toDate') {
+      if (fieldValue) {
+        currentExp[fieldName] = fieldValue.valueOf();
+      } else {
+        currentExp[fieldName] = null;
+      }
+    } else {
+      currentExp[fieldName] = fieldValue;
+    }
+
+    experiences[index] = currentExp;
+    localStaff.experiences = experiences;
+
+    this.setState({
+      ...this.state,
+      localStaff,
+    });
+  }
+
+  addExperienceRow = () => {
+    this.setState({
+      ...this.state,
+      experienceBlanking: true,
+    });
+
+    let localStaff = Object.assign({}, this.state.localStaff);
+    let exps = localStaff.experiences;
+    this.props
+      .blankStaffExperience()
+      .then(({ data }) => {
+        localStaff.experiences.push(data);
+        this.setState({
+          ...this.state,
+          localStaff: localStaff,
+          experienceBlanking: false,
+        });
+      })
+      .catch(e => {
+        alert('Error ' + e.toString());
+      });
+  };
+
+  removeExperienceRow = idx => {
+    let localStaff = Object.assign({}, this.state.localStaff);
+    let exps2 = [];
+    for (let k in localStaff.experiences) {
+      if (parseInt(k) === parseInt(idx)) continue;
+
+      exps2.push(localStaff.experiences[k]);
+    }
+
+    console.log(idx, exps2);
+    localStaff.experiences = exps2;
+
+    this.setState({
+      ...this.state,
+      localStaff: localStaff,
+    });
+  };
+
   handleChange(e, data) {
     const localStaff = Object.assign({}, this.state.localStaff);
     const { name, value } = data;
@@ -297,6 +364,10 @@ class StaffUpdatePage extends Component {
     return (
       <div>
         <StaffForm
+          handleExperienceData={this.handleExperienceData}
+          experienceBlanking={this.state.experienceBlanking}
+          addExperienceRow={this.addExperienceRow}
+          removeExperienceRow={this.removeExperienceRow}
           staff={localStaff}
           handleChange={this.handleChange}
           handleDate={this.handleDate}
@@ -397,5 +468,6 @@ export default connect(
     f4FetchSubCompanies,
     toggleSalaryListModal,
     fetchCurrentSalaries,
+    blankStaffExperience,
   },
 )(StaffUpdatePage);
