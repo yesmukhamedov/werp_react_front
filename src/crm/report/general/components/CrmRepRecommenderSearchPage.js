@@ -188,12 +188,50 @@ class CrmRepRecommenderSearchPage extends Component {
     );
   };
 
+  renderRecoRow = (item, idx, firstCreatedAt) => {
+    return (
+      <Table.Row key={item.id}>
+        <Table.Cell>{idx + 1}</Table.Cell>
+        <Table.Cell>{item.clientName}</Table.Cell>
+        <Table.Cell>{item.statusName}</Table.Cell>
+        <Table.Cell
+          style={{
+            backgroundColor: firstCreatedAt === item.createdAt ? '' : '#ddd',
+          }}
+        >
+          {item.createdAt}
+          <br />
+          {item.updatedAt}
+        </Table.Cell>
+        <Table.Cell>
+          <ul>
+            {item.childDemos.map(cd => {
+              return (
+                <li
+                  key={cd.id}
+                  style={
+                    parseInt(cd.id) === parseInt(this.state.demoId)
+                      ? { backgroundColor: 'yellow' }
+                      : {}
+                  }
+                >
+                  {cd.id} - {cd.resultName}
+                </li>
+              );
+            })}
+          </ul>
+        </Table.Cell>
+      </Table.Row>
+    );
+  };
+
   renderChildRecos = () => {
     let recos = this.props.demoChildRecos || [];
     if (this.state.recommender.context === 'visit') {
       recos = this.props.visitChildRecos || [];
     }
-    const { demoId } = this.state;
+    let firstCreatedAt = null;
+    let dateColorMap = {};
     return (
       <Card fluid>
         <Card.Content>
@@ -212,36 +250,12 @@ class CrmRepRecommenderSearchPage extends Component {
             </Table.Header>
 
             <Table.Body>
-              {recos.map((item, idx) => (
-                <Table.Row key={item.id}>
-                  <Table.Cell>{idx + 1}</Table.Cell>
-                  <Table.Cell>{item.clientName}</Table.Cell>
-                  <Table.Cell>{item.statusName}</Table.Cell>
-                  <Table.Cell>
-                    {item.createdAt}
-                    <br />
-                    {item.updatedAt}
-                  </Table.Cell>
-                  <Table.Cell>
-                    <ul>
-                      {item.childDemos.map(cd => {
-                        return (
-                          <li
-                            key={cd.id}
-                            style={
-                              parseInt(cd.id) === parseInt(demoId)
-                                ? { backgroundColor: 'yellow' }
-                                : {}
-                            }
-                          >
-                            {cd.id} - {cd.resultName}
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </Table.Cell>
-                </Table.Row>
-              ))}
+              {recos.map((item, idx) => {
+                if (!firstCreatedAt) {
+                  firstCreatedAt = item.createdAt;
+                }
+                return this.renderRecoRow(item, idx, firstCreatedAt);
+              })}
             </Table.Body>
           </Table>
         </Card.Content>
