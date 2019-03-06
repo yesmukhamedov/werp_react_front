@@ -131,7 +131,7 @@ class Faco01 extends Component {
   }
 
   initializeBkpfBseg() {
-    const bkpf = Object.assign({}, this.props.initialBkpf);
+    let bkpf = Object.assign({}, this.props.initialBkpf);
     bkpf.blart = 'KP';
     bkpf.budat = moment().format('DD.MM.YYYY');
     bkpf.bldat = moment().format('DD.MM.YYYY');
