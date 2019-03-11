@@ -38,7 +38,7 @@ import {
   F4_CLEAR_HKONT_LIST,
   F4_FETCH_LEAVE_REASON_OPTIONS,
   F4_FETCH_COMPANY_OPTIONS,
-  F4_FETCH_BRANCH_OPTIONS_BY_COMPANY,
+  F4_FETCH_BRANCH_OPTIONS,
 } from './f4_action';
 
 const INITIAL_STATE = {
@@ -63,7 +63,7 @@ const INITIAL_STATE = {
   hkontList: [],
   leaveReasonOptions: [],
   companyOptions: [],
-  branchOptionsByCompany: [],
+  branchOptions: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -183,8 +183,8 @@ export default function(state = INITIAL_STATE, action) {
     case F4_FETCH_COMPANY_OPTIONS:
       return { ...state, companyOptions: action.payload };
 
-    case F4_FETCH_BRANCH_OPTIONS_BY_COMPANY:
-      return { ...state, branchOptionsByCompany: action.payload };
+    case F4_FETCH_BRANCH_OPTIONS:
+      return { ...state, branchOptions: action.payload };
 
     default:
       return state;

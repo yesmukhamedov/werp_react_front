@@ -60,8 +60,7 @@ export const F4_FETCH_HKONT_LIST = 'F4_FETCH_HKONT_LIST';
 export const F4_CLEAR_HKONT_LIST = 'F4_CLEAR_HKONT_LIST';
 
 export const F4_FETCH_COMPANY_OPTIONS = 'F4_FETCH_COMPANY_OPTIONS';
-export const F4_FETCH_BRANCH_OPTIONS_BY_COMPANY =
-  'F4_FETCH_BRANCH_OPTIONS_BY_COMPANY';
+export const F4_FETCH_BRANCH_OPTIONS = 'F4_FETCH_BRANCH_OPTIONS';
 
 export const F4_FETCH_LEAVE_REASON_OPTIONS = 'F4_FETCH_LEAVE_REASON_OPTIONS';
 
@@ -93,17 +92,18 @@ export function f4FetchCompanyOptions() {
   };
 }
 
-export function f4FetchBranchOptionsByCompany() {
+export function f4FetchBranchOptions(params = {}) {
   return function(dispatch) {
     axios
-      .get(`${ROOT_URL}/api/reference/branches/all`, {
+      .get(`${ROOT_URL}/api/reference/branches/all?dto-type=options`, {
         headers: {
           authorization: localStorage.getItem('token'),
         },
+        params: params,
       })
       .then(({ data }) => {
         dispatch({
-          type: F4_FETCH_BRANCH_OPTIONS_BY_COMPANY,
+          type: F4_FETCH_BRANCH_OPTIONS,
           payload: data,
         });
       })
@@ -641,5 +641,12 @@ export function f4FetchHkontList(a_bukrs, a_tcode, a_branch) {
           data: data.hkontOptions,
         });
       });
+  };
+}
+
+export function f4ClearBranchOptions() {
+  return {
+    type: F4_FETCH_BRANCH_OPTIONS,
+    payload: [],
   };
 }

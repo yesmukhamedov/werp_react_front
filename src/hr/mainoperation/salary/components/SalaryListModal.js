@@ -18,6 +18,10 @@ import {
   toggleSalaryListModal,
   toggleSalaryListModalLoading,
 } from '../actions/hrSalaryAction';
+import {
+  f4FetchBranchOptions,
+  f4ClearBranchOptions,
+} from '../../../../reference/f4/f4_action';
 
 class SalaryListModal extends Component {
   constructor(props) {
@@ -26,7 +30,9 @@ class SalaryListModal extends Component {
     this.state = {
       loading: false,
       items: [],
-      queryParams: {},
+      queryParams: {
+        showAll: props.showAll || false,
+      },
     };
 
     this.renderItems = this.renderItems.bind(this);
@@ -35,10 +41,12 @@ class SalaryListModal extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
-  loadItems() {}
+  loadItems() {
+    this.props.fetchCurrentSalaries(this.state.queryParams);
+  }
 
   renderItems() {
-    const { items } = this.state;
+    const { currentSalaries } = this.props;
 
     const columns = [
       {
@@ -80,7 +88,7 @@ class SalaryListModal extends Component {
           }
         }}
         filterable
-        data={items || []}
+        data={currentSalaries || []}
         columns={columns}
         defaultPageSize={10}
         showPagination
@@ -102,15 +110,19 @@ class SalaryListModal extends Component {
     );
   }
 
-  getBukrsBranches = () => {
-    return [];
-  };
-
   handleChange(e, o) {
     const { name, type, value } = o;
     let queryParams = Object.assign({}, this.state.queryParams);
     queryParams[name] = value;
-
+    if (name === 'bukrs') {
+      let params = {};
+      if (value == null || value.length === 0) {
+        this.props.f4ClearBranchOptions();
+      } else {
+        params['bukrs'] = value;
+        this.props.f4FetchBranchOptions(params);
+      }
+    }
     this.setState({
       ...this.state,
       queryParams,
@@ -119,10 +131,6 @@ class SalaryListModal extends Component {
 
   renderSearchPanel() {
     const { companyOptions, branchOptions } = this.props;
-    const { queryParams } = this.state;
-    //const
-
-    const genders = [];
     return (
       <div>
         <Segment attached>
@@ -145,26 +153,6 @@ class SalaryListModal extends Component {
                 placeholder="Филиал"
                 onChange={this.handleChange}
               />
-
-              <Form.Field>
-                <label>Фамилия</label>
-                <Input
-                  name="lastName"
-                  placeholder="Фамилия"
-                  onChange={this.handleChange}
-                />
-              </Form.Field>
-
-              <Form.Field>
-                <label>Имя</label>
-                <Input
-                  name="firstName"
-                  placeholder="Имя"
-                  onChange={this.handleChange}
-                />
-              </Form.Field>
-            </Form.Group>
-            <Form.Group>
               <Button
                 loading={this.state.btnLoading}
                 onClick={this.loadItems}
@@ -173,61 +161,14 @@ class SalaryListModal extends Component {
                 Сформировать
               </Button>
             </Form.Group>
+            <Form.Group />
           </Form>
         </Segment>
       </div>
     );
   }
 
-  renderSearchPanel1() {
-    let showSearchPanel = false;
-    return (
-      <Table collapsing>
-        <Table.Body>
-          <Table.Row>
-            <Table.Cell>
-              <Form.Select
-                name="branch"
-                multiple
-                search
-                selection
-                label="Филиал"
-                options={this.getBukrsBranches(this.state.queryParams.bukrs)}
-                placeholder="Филиал"
-                onChange={this.handleDropdownChange}
-              />
-            </Table.Cell>
-            <Table.Cell />
-            <Table.Cell>
-              {showSearchPanel ? (
-                <Button
-                  icon
-                  labelPosition="left"
-                  primary
-                  size="small"
-                  onClick={() => {
-                    this.props.toggleSalaryListModalLoading(true);
-                    this.props.fetchCurrentSalaries([]);
-                  }}
-                  loading={this.props.salaryListModalLoading}
-                  disabled={this.props.salaryListModalLoading}
-                >
-                  <Icon name="search" size="large" />
-                  Поиск
-                </Button>
-              ) : (
-                ''
-              )}
-            </Table.Cell>
-            <Table.Cell />
-          </Table.Row>
-        </Table.Body>
-      </Table>
-    );
-  }
-
   render() {
-    const { showSearchPanel } = this.props;
     return (
       <Modal size="large" open={this.props.salaryListModalOpened} closeOnEscape>
         <Modal.Header>Список должностей</Modal.Header>
@@ -251,10 +192,18 @@ function mapStateToProps(state) {
     currentSalaries: state.hrSalaryReducer.currentSalaries,
     salaryListModalOpened: state.hrSalaryReducer.salaryListModalOpened,
     salaryListModalLoading: state.hrSalaryReducer.salaryListModalLoading,
+    companyOptions: state.f4.companyOptions,
+    branchOptions: state.f4.branchOptions,
   };
 }
 
 export default connect(
   mapStateToProps,
-  { fetchCurrentSalaries, toggleSalaryListModal, toggleSalaryListModalLoading },
+  {
+    fetchCurrentSalaries,
+    toggleSalaryListModal,
+    toggleSalaryListModalLoading,
+    f4FetchBranchOptions,
+    f4ClearBranchOptions,
+  },
 )(SalaryListModal);
