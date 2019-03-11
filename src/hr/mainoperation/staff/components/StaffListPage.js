@@ -73,7 +73,23 @@ class StaffListPage extends Component {
     });
   }
 
+  getBukrsBranches = bukrs => {
+    const { branchOptionsAll } = this.props;
+    if (!bukrs || !branchOptionsAll || !branchOptionsAll[bukrs]) {
+      return [];
+    }
+
+    return branchOptionsAll[bukrs];
+  };
+
   renderSearchPanel() {
+    const genders = [
+      { key: '', text: 'Не выбрано', value: '' },
+      { key: 'non_select', text: 'Без значение', value: 'non_select' },
+      { key: 'male', text: 'Муж', value: 'male' },
+      { key: 'female', text: 'Жен', value: 'female' },
+    ];
+    const companyOptions = this.props.companyOptions || [];
     return (
       <div>
         <Header as="h4" attached="top">
@@ -81,12 +97,22 @@ class StaffListPage extends Component {
         </Header>
         <Segment attached>
           <Form>
-            <BukrsF4 handleChange={this.handleDropdownChange} />
-            <BranchF4
-              search
+            <Form.Select
+              name="bukrs"
+              label="Компания"
+              options={companyOptions}
+              placeholder="Компания"
+              onChange={this.handleDropdownChange}
+            />
+            <Form.Select
+              name="branch"
               multiple
-              handleChange={this.handleDropdownChange}
-              bukrs={this.state.queryParams.bukrs}
+              search
+              selection
+              label="Филиал"
+              options={this.getBukrsBranches(this.state.queryParams.bukrs)}
+              placeholder="Филиал"
+              onChange={this.handleDropdownChange}
             />
             <PositionF4 handleChange={this.handleDropdownChange} />
             <Form.Field>
@@ -106,7 +132,13 @@ class StaffListPage extends Component {
                 onChange={this.inputChanged}
               />
             </Form.Field>
-
+            <Form.Select
+              name="gender"
+              label="Пол"
+              options={genders}
+              placeholder="Пол"
+              onChange={this.handleDropdownChange}
+            />
             <Button
               loading={this.state.btnLoading}
               onClick={() => this.loadItems(0)}
@@ -122,15 +154,15 @@ class StaffListPage extends Component {
 
   handleDropdownChange(e, o) {
     const { name, value } = o;
-    const { queryParams } = this.state;
+    let queryParams = Object.assign({}, this.state.queryParams);
     switch (name) {
       case 'bukrs':
         queryParams[name] = value;
-        queryParams.branchIds = [];
+        queryParams['branchIds'] = [];
         break;
 
       case 'branch':
-        queryParams.branchIds = value;
+        queryParams['branchIds'] = value;
         break;
 
       case 'position':
@@ -148,7 +180,7 @@ class StaffListPage extends Component {
 
     this.setState({
       ...this.state,
-      queryParams,
+      queryParams: queryParams,
     });
   }
 
@@ -198,6 +230,8 @@ function mapStateToProps(state) {
   return {
     currentStaffs: state.hrStaff.currentStaffs,
     meta: state.hrStaff.meta,
+    companyOptions: state.userInfo.companyOptions,
+    branchOptionsAll: state.userInfo.branchOptionsAll,
   };
 }
 

@@ -59,6 +59,10 @@ export const F4_CLEAR_SUB_COMPANY_TYPES = 'F4_CLEAR_SUB_COMPANY_TYPES';
 export const F4_FETCH_HKONT_LIST = 'F4_FETCH_HKONT_LIST';
 export const F4_CLEAR_HKONT_LIST = 'F4_CLEAR_HKONT_LIST';
 
+export const F4_FETCH_COMPANY_OPTIONS = 'F4_FETCH_COMPANY_OPTIONS';
+export const F4_FETCH_BRANCH_OPTIONS_BY_COMPANY =
+  'F4_FETCH_BRANCH_OPTIONS_BY_COMPANY';
+
 export const F4_FETCH_LEAVE_REASON_OPTIONS = 'F4_FETCH_LEAVE_REASON_OPTIONS';
 
 export function f4ClearAnyObject(a_const) {
@@ -66,6 +70,48 @@ export function f4ClearAnyObject(a_const) {
     type: a_const,
   };
   return obj;
+}
+
+export function f4FetchCompanyOptions() {
+  return function(dispatch) {
+    axios
+      .get(`${ROOT_URL}/api/reference/companies/all?dto-type=options`, {
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
+      })
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_COMPANY_OPTIONS,
+          payload: data,
+        });
+      })
+
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchBranchOptionsByCompany() {
+  return function(dispatch) {
+    axios
+      .get(`${ROOT_URL}/api/reference/branches/all`, {
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
+      })
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_BRANCH_OPTIONS_BY_COMPANY,
+          payload: data,
+        });
+      })
+
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
 }
 
 export function f4FetchBranchesByBukrs(bukrs) {

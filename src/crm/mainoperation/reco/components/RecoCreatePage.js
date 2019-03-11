@@ -237,33 +237,37 @@ class RecoCreatePage extends Component {
     if (this.state.saveBtnDisabled) {
       return;
     }
-    this.setState({
-      ...this.state,
-      saveBtnDisabled: true,
-    });
+    this.setState(
+      {
+        ...this.state,
+        saveBtnDisabled: true,
+      },
+      () => {
+        this.props
+          .createRecoListNew(this.state.reco)
+          .then(({ data }) => {
+            this.setState({
+              ...this.state,
+              saveBtnDisabled: false,
+            });
+            window.location.pathname = '/crm/reco/current';
+          })
+          .catch(function(error) {
+            let stateErrors = {};
+            if (error && error.response && error.response.status) {
+              if (400 === error.response.status) {
+                stateErrors = error.response.data;
+              }
+            }
+            _this.setState({
+              ..._this.state,
+              saveBtnDisabled: false,
+              errors: stateErrors,
+            });
+          });
+      },
+    );
     //this.refs.btn.setAttribute("disabled", "disabled")
-    this.props
-      .createRecoListNew(this.state.reco)
-      .then(({ data }) => {
-        this.setState({
-          ...this.state,
-          saveBtnDisabled: false,
-        });
-        window.location.pathname = '/crm/reco/current';
-      })
-      .catch(function(error) {
-        let stateErrors = {};
-        if (error && error.response && error.response.status) {
-          if (400 === error.response.status) {
-            stateErrors = error.response.data;
-          }
-        }
-        _this.setState({
-          ..._this.state,
-          saveBtnDisabled: false,
-          errors: stateErrors,
-        });
-      });
   };
 
   renderError(error) {

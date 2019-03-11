@@ -16,6 +16,8 @@ import {
   f4FetchCityList,
   f4FetchCityregList,
   f4FetchSubCompanies,
+  f4FetchCompanyOptions,
+  f4FetchBranchOptionsByCompany,
 } from '../../../../reference/f4/f4_action';
 import StaffAddressForm from './forms/StaffAddressForm';
 import SubCompanyListModal from '../../../../reference/mainoperation/components/SubCompanyListModal';
@@ -64,6 +66,8 @@ class StaffUpdatePage extends Component {
 
   componentDidMount() {
     this.props.fetchCurrentSalaries();
+    this.props.f4FetchCompanyOptions();
+    this.props.f4FetchBranchOptionsByCompany();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -426,7 +430,10 @@ class StaffUpdatePage extends Component {
             : 'Добавление нового сотрудника'}
         </h2>
         {this.renderForm()}
-        <SalaryListModal onSelect={this.onScoutSelected} />
+        <SalaryListModal
+          companyOptions={this.props.companyOptions}
+          onSelect={this.onScoutSelected}
+        />
         <SubCompanyListModal
           onSelect={this.onSubCompanySelect}
           closeModal={() => this.toggelSubCompanyModal(false)}
@@ -449,6 +456,8 @@ function mapStateToProps(state) {
     cityList: state.f4.cityList,
     cityregList: state.f4.cityregList,
     subCompanies: state.f4.subCompanies,
+    companyOptions: state.f4.companyOptions,
+    branchOptions: state.f4.branchOptionsByCompany,
   };
 }
 
@@ -460,6 +469,8 @@ export default connect(
     f4FetchStateList,
     f4FetchCityList,
     f4FetchCityregList,
+    f4FetchCompanyOptions,
+    f4FetchBranchOptionsByCompany,
     createStaff,
     toggleStaffListModal,
     fetchAllCurrentStaffs,
