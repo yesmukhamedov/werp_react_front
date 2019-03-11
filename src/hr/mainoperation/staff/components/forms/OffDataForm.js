@@ -4,7 +4,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 export default function OffDataForm(props) {
   const { model } = props;
-
+  console.log(props.subCompanyOptions);
   return (
     <Form>
       <Form.Group widths="equal">

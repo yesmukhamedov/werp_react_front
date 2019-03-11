@@ -45,7 +45,9 @@ export default function StaffMainDataTable(props) {
 
         <Table.Row>
           <Table.Cell>TS сотрудник</Table.Cell>
-          <Table.Cell>{staff.tsStaffName}</Table.Cell>
+          <Table.Cell>
+            {staff.tsStaffName} ({staff.tsIsActive === 1 ? 'ВКЛ' : 'ОТКЛ'})
+          </Table.Cell>
         </Table.Row>
 
         <Table.Row>

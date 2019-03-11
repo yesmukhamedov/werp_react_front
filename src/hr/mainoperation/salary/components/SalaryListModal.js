@@ -42,7 +42,18 @@ class SalaryListModal extends Component {
   }
 
   loadItems() {
-    this.props.fetchCurrentSalaries(this.state.queryParams);
+    const { queryParams } = this.state;
+    let params = {};
+    for (let k in queryParams) {
+      if (k === 'branchIds') {
+        if (queryParams[k].length > 0) {
+          params[k] = queryParams[k].join(',');
+        }
+      } else {
+        params[k] = queryParams[k];
+      }
+    }
+    this.props.fetchCurrentSalaries(params);
   }
 
   renderItems() {
@@ -144,7 +155,7 @@ class SalaryListModal extends Component {
                 onChange={this.handleChange}
               />
               <Form.Select
-                name="branch"
+                name="branchIds"
                 multiple
                 search
                 selection

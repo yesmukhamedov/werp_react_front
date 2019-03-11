@@ -80,6 +80,7 @@ class StaffDataFormHandler extends Component {
     const { name, value } = d;
     const localItem = Object.assign({}, this.state.localItem);
     localItem[name] = value;
+    console.log(localItem);
     this.setState({
       ...this.state,
       localItem,

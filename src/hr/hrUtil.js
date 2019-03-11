@@ -226,8 +226,8 @@ export const subCompanyOptions = subCompanies => {
   const out = [];
   for (const k in subCompanies) {
     out.push({
-      key: subCompanies[k].sc_id,
-      value: subCompanies[k].sc_id,
+      key: subCompanies[k].id,
+      value: subCompanies[k].id,
       text: subCompanies[k].nameRu,
     });
   }
