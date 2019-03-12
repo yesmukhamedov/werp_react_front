@@ -208,7 +208,23 @@ export function saveFMCP(a_contract) {
               errorTable[`101${language}`],
             ),
           );
-          dispatch(fetchFMCP(a_contract.zregOrConNum));
+          dispatch(
+            changeDynObj({
+              zregOrConNum: '',
+              lifnr: null,
+              lifnrName: '',
+              psRows: [],
+              price: 0,
+              paid: 0,
+              waers: '',
+              dealerName: '',
+              collectorName: '',
+              iscontractnumber: false,
+              summa: 0,
+              hkont_d: '',
+            }),
+          );
+          // dispatch(fetchFMCP(a_contract.zregOrConNum));
         } else {
           dispatch(
             notify(

@@ -171,7 +171,7 @@ class AmsgPosition extends PureComponent {
         </Table.Cell>
         <Table.Cell>
           <Dropdown
-            placeholder="Филиал"
+            placeholder="Склад"
             search
             selection
             options={werksBranchOptions}

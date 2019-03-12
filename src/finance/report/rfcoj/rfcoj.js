@@ -33,6 +33,7 @@ import { injectIntl } from 'react-intl';
 import { messages } from '../../../locales/defineMessages';
 import CashBankBalance from '../../../reference/f4/cashBankBalance/cashBankBalance';
 import { LinkToDmsc03, LinkToCustomerHrc03 } from '../../../utils/outlink';
+import { BigNumber } from 'bignumber.js';
 require('moment/locale/ru');
 require('moment/locale/tr');
 
@@ -94,6 +95,11 @@ class Rfcoj extends Component {
 
       if (totalIn > totalOut) net = totalIn - totalOut;
       else if (totalOut > totalIn) net = totalOut - totalIn;
+
+      totalIn = new BigNumber(totalIn).toFixed(2);
+      totalOut = new BigNumber(totalOut).toFixed(2);
+      net = new BigNumber(net).toFixed(2);
+
       this.setState({
         outputTableState: tempOutputTable,
         totalIn,
@@ -359,6 +365,11 @@ class Rfcoj extends Component {
       }
       if (totalIn > totalOut) net = totalIn - totalOut;
       else if (totalOut > totalIn) net = totalOut - totalIn;
+
+      totalIn = new BigNumber(totalIn).toFixed(2);
+      totalOut = new BigNumber(totalOut).toFixed(2);
+      net = new BigNumber(net).toFixed(2);
+
       this.setState({ totalIn, totalOut, net });
 
       // console.log(this.reactTable.getResolvedState().sortedData,'this.reactTable.getResolvedState()')
