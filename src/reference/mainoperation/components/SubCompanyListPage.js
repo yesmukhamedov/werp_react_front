@@ -17,7 +17,6 @@ import {
   f4FetchSubCompanies,
   f4FetchSubCompanyTypes,
 } from '../../f4/f4_action';
-import StaffListModal from '../../../hr/mainoperation/staff/components/StaffListModal';
 import {
   blankSubCompany,
   createSubCompany,
@@ -25,6 +24,7 @@ import {
   fetchSubCompany,
 } from '../actions/referenceAction';
 import { fetchAllCurrentStaffs } from '../../../hr/mainoperation/staff/actions/hrStaffAction';
+import StaffF4Modal from '../../../reference/f4/staff/staffF4Modal';
 
 class SubCompanyListPage extends Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class SubCompanyListPage extends Component {
     this.state = {
       model: {},
       modalOpened: false,
-      staffModalOpened: false,
+      staffListModalOpened: false,
       errors: {},
     };
 
@@ -173,7 +173,7 @@ class SubCompanyListPage extends Component {
       model['directorId'] = staff['staffId'];
       model['director'] = {
         staff_id: staff['staffId'],
-        lf: staff['lastname'] + ' ' + staff['firstname'],
+        lf: staff['fio'],
       };
     } else {
       model['directorId'] = null;
@@ -263,7 +263,7 @@ class SubCompanyListPage extends Component {
           />
           <button
             onClick={() =>
-              this.setState({ ...this.state, staffModalOpened: true })
+              this.setState({ ...this.state, staffListModalOpened: true })
             }
             className="ui icon button"
           >
@@ -280,7 +280,7 @@ class SubCompanyListPage extends Component {
         open={this.state.modalOpened}
         closeOnEscape={false}
         closeOnRootNodeClick={false}
-        dimmer="blurring"
+        dimmer="inverted"
         closeIcon
         size="tiny"
       >
@@ -344,13 +344,15 @@ class SubCompanyListPage extends Component {
         </Segment>
         {this.renderTable(this.props.items || [])}
         {this.renderFormModal()}
-        <StaffListModal
-          onSelect={this.handleDirectorSelect}
-          staffs={this.props.currentStaffs}
-          close={() =>
-            this.setState({ ...this.state, staffModalOpened: false })
-          }
-          opened={this.state.staffModalOpened}
+        <StaffF4Modal
+          open={this.state.staffListModalOpened}
+          messages={messages}
+          closeModal={() => this.setState({ staffListModalOpened: false })}
+          onStaffSelect={item => this.handleDirectorSelect(item)}
+          trans={'hr_doc_create_1'}
+          branchOptions={this.props.branchOptionsAll}
+          companyOptions={this.props.companyOptions}
+          bukrsDisabledParent={false}
         />
       </Container>
     );
