@@ -17,6 +17,7 @@ import {
   f4FetchCityregList,
   f4FetchSubCompanies,
   f4FetchCompanyOptions,
+  f4FetchNationalityOptions,
 } from '../../../../reference/f4/f4_action';
 import StaffAddressForm from './forms/StaffAddressForm';
 import SubCompanyListModal from '../../../../reference/mainoperation/components/SubCompanyListModal';
@@ -62,6 +63,7 @@ class StaffUpdatePage extends Component {
 
   componentDidMount() {
     this.props.f4FetchCompanyOptions();
+    this.props.f4FetchNationalityOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -373,6 +375,7 @@ class StaffUpdatePage extends Component {
           onClickScoutBtn={() => this.props.toggleSalaryListModal(true)}
           onClickSubCompanyBtn={() => this.toggelSubCompanyModal(true)}
           removeSubCompany={this.removeSubCompany}
+          nationalityOptions={this.props.nationalityOptions || []}
         />
         <br />
         <Form>
@@ -447,6 +450,7 @@ function mapStateToProps(state) {
     cityList: state.f4.cityList,
     cityregList: state.f4.cityregList,
     subCompanies: state.f4.subCompanies,
+    nationalityOptions: state.f4.nationalityOptions,
   };
 }
 
@@ -467,5 +471,6 @@ export default connect(
     f4FetchSubCompanies,
     toggleSalaryListModal,
     blankStaffExperience,
+    f4FetchNationalityOptions,
   },
 )(StaffUpdatePage);

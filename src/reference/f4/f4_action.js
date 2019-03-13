@@ -64,6 +64,11 @@ export const F4_FETCH_BRANCH_OPTIONS = 'F4_FETCH_BRANCH_OPTIONS';
 
 export const F4_FETCH_LEAVE_REASON_OPTIONS = 'F4_FETCH_LEAVE_REASON_OPTIONS';
 
+export const F4_FETCH_NATIONALITIES = 'F4_FETCH_NATIONALITIES';
+export const F4_CLEAR_NATIONALITIES = 'F4_CLEAR_NATIONALITIES';
+
+export const F4_FETCH_NATIONALITY_OPTIONS = 'F4_FETCH_NATIONALITY_OPTIONS';
+
 export function f4ClearAnyObject(a_const) {
   const obj = {
     type: a_const,
@@ -504,6 +509,46 @@ export function f4FetchSubCompanies() {
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_SUB_COMPANIES,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchNationalities() {
+  return function(dispatch) {
+    axios
+      .get(`${ROOT_URL}/api/reference/nationalities`, {
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
+      })
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_NATIONALITIES,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchNationalityOptions() {
+  return function(dispatch) {
+    axios
+      .get(`${ROOT_URL}/api/reference/nationalities?dto-type=options`, {
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
+      })
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_NATIONALITY_OPTIONS,
           payload: data,
         });
       })

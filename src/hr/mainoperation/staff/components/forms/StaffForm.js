@@ -25,7 +25,7 @@ const genderOptions = [
  */
 
 export default function StaffForm(props) {
-  const { staff } = props;
+  const { staff, nationalityOptions } = props;
   const experiences = staff.experiences || [];
   return (
     <Form>
@@ -60,6 +60,14 @@ export default function StaffForm(props) {
               control={Input}
               label="Отчество"
               placeholder="Отчество"
+            />
+            <Form.Select
+              name="nationalityId"
+              value={staff.nationalityId}
+              label="Национальность"
+              options={nationalityOptions}
+              placeholder="Национальность"
+              onChange={props.handleChange}
             />
           </Form.Group>
 

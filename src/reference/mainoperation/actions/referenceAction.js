@@ -37,6 +37,23 @@ export const updateSubCompany = o => {
     });
 };
 
+export const saveNationality = o => {
+  if (o.new) {
+    return dispatch =>
+      axios.post(`${ROOT_URL}/api/reference/nationalities`, o, {
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
+      });
+  }
+  return dispatch =>
+    axios.put(`${ROOT_URL}/api/reference/nationalities`, o, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    });
+};
+
 export const blankLeaveReason = () => {
   return dispatch =>
     axios.get(`${ROOT_URL}/api/reference/leave-reasons/blank`, {

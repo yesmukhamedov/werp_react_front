@@ -39,6 +39,8 @@ import {
   F4_FETCH_LEAVE_REASON_OPTIONS,
   F4_FETCH_COMPANY_OPTIONS,
   F4_FETCH_BRANCH_OPTIONS,
+  F4_FETCH_NATIONALITIES,
+  F4_FETCH_NATIONALITY_OPTIONS,
 } from './f4_action';
 
 const INITIAL_STATE = {
@@ -55,6 +57,8 @@ const INITIAL_STATE = {
   departmentOptions: [],
   expenceTypes: [],
   subCompanies: [],
+  nationalities: [],
+  nationalityOptions: [],
   werksBranchList: [],
   staffList: [],
   bukrsBranches: [],
@@ -185,6 +189,12 @@ export default function(state = INITIAL_STATE, action) {
 
     case F4_FETCH_BRANCH_OPTIONS:
       return { ...state, branchOptions: action.payload };
+
+    case F4_FETCH_NATIONALITIES:
+      return { ...state, nationalities: action.payload };
+
+    case F4_FETCH_NATIONALITY_OPTIONS:
+      return { ...state, nationalityOptions: action.payload };
 
     default:
       return state;

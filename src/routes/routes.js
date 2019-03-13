@@ -487,6 +487,12 @@ const AsyncRefSubCompanyListPage = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncRefNationalityListPage = Loadable({
+  loader: () =>
+    import('../reference/mainoperation/components/NationalityListPage' /* webpackChunkName: "NationalityListPage" */),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncRefLeaveReasonListPage = Loadable({
   loader: () =>
     import('../reference/mainoperation/components/LeaveReasonListPage' /* webpackChunkName: "LeaveReasonListPage" */),
@@ -642,6 +648,11 @@ const generateRoutes = transactionRoutes => {
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
       {/* <Route path="/finance/report/frep6" component={AsyncFrep6} /> */}
       <Route path="/finance/report/frep7" component={AsyncFrep7} />
+
+      <Route
+        path="/reference/nationalities"
+        component={AsyncRefNationalityListPage}
+      />
 
       {/* HR Position list */}
       <Route path="/hr/mainoperation/position/list" component={positionList} />
