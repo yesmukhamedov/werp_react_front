@@ -96,10 +96,6 @@ class Rfcoj extends Component {
       if (totalIn > totalOut) net = totalIn - totalOut;
       else if (totalOut > totalIn) net = totalOut - totalIn;
 
-      totalIn = new BigNumber(totalIn).toFixed(2);
-      totalOut = new BigNumber(totalOut).toFixed(2);
-      net = new BigNumber(net).toFixed(2);
-
       this.setState({
         outputTableState: tempOutputTable,
         totalIn,
@@ -366,10 +362,6 @@ class Rfcoj extends Component {
       if (totalIn > totalOut) net = totalIn - totalOut;
       else if (totalOut > totalIn) net = totalOut - totalIn;
 
-      totalIn = new BigNumber(totalIn).toFixed(2);
-      totalOut = new BigNumber(totalOut).toFixed(2);
-      net = new BigNumber(net).toFixed(2);
-
       this.setState({ totalIn, totalOut, net });
 
       // console.log(this.reactTable.getResolvedState().sortedData,'this.reactTable.getResolvedState()')
@@ -464,7 +456,9 @@ class Rfcoj extends Component {
     t1r1c4.Footer = (
       <span>
         <strong>
-          <font color={'green'}>{totalIn ? moneyFormat(totalIn) : ''}</font>
+          <font color={'green'}>
+            {totalIn ? moneyFormat(new BigNumber(totalIn).toFixed(2)) : ''}
+          </font>
         </strong>
       </span>
     );
@@ -484,7 +478,7 @@ class Rfcoj extends Component {
         <strong>
           <font color={'red'}>
             {totalOut > 0 ? '-' : ''}
-            {totalOut ? moneyFormat(totalOut) : ''}
+            {totalOut ? moneyFormat(new BigNumber(totalOut).toFixed(2)) : ''}
           </font>
         </strong>
       </span>
@@ -509,7 +503,7 @@ class Rfcoj extends Component {
         <strong>
           <font color={totalIn > totalOut ? 'green' : 'red'}>
             {totalIn < totalOut ? '-' : ''}
-            {net ? moneyFormat(net) : ''}
+            {net ? moneyFormat(new BigNumber(net).toFixed(2)) : ''}
           </font>
         </strong>
       </span>
