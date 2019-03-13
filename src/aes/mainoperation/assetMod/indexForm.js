@@ -295,7 +295,7 @@ class IndexForm extends Component {
                 </Grid.Column>
                 <Grid.Column>
                   <Form.Field required>
-                    <label>{messages['state1']}</label>
+                    <label>{messages['Task.State']}</label>
                     <Dropdown
                       fluid
                       search

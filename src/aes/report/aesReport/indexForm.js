@@ -87,7 +87,7 @@ export default function IndexForm(props) {
           </Grid.Column>
           <Grid.Column>
             <Form.Field>
-              <label>{props.messages['state1']}</label>
+              <label>{props.messages['Task.State']}</label>
               <Dropdown
                 fluid
                 search
