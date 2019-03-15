@@ -20,6 +20,7 @@ import ReactTable from 'react-table';
 import { Link } from 'react-router-dom';
 import _ from 'lodash';
 import 'react-table/react-table.css';
+import { excelDownload } from '../../../utils/helpers';
 
 import {
   f4FetchCurrencyList,
@@ -47,6 +48,7 @@ class Frep1 extends Component {
     this.renderSearchTab = this.renderSearchTab.bind(this);
     this.searchFrep1 = this.searchFrep1.bind(this);
     this.validate = this.validate.bind(this);
+    this.exportExcel = this.exportExcel.bind(this);
 
     this.state = {
       searchTerm: {
@@ -92,6 +94,26 @@ class Frep1 extends Component {
     }
   }
 
+  exportExcel() {
+    const { formatMessage } = this.props.intl;
+    let excelHeaders = [];
+    excelHeaders.push(formatMessage(messages.brnch));
+    excelHeaders.push(formatMessage(messages.belnr));
+    excelHeaders.push(formatMessage(messages.gjahr));
+    excelHeaders.push(formatMessage(messages.hkont));
+    excelHeaders.push(formatMessage(messages.cashBank));
+    excelHeaders.push(formatMessage(messages.budat));
+    excelHeaders.push(formatMessage(messages.amount));
+    excelHeaders.push(formatMessage(messages.waers));
+    excelHeaders.push(formatMessage(messages.bktxt));
+    excelDownload(
+      '/api/finance/reports/frep1/downloadExcel',
+      'frep1.xls',
+      'outputTable',
+      this.props.outputTable,
+      excelHeaders,
+    );
+  }
   renderSearchTab() {
     const language = localStorage.getItem('language');
     const { formatMessage } = this.props.intl;
@@ -491,6 +513,17 @@ class Frep1 extends Component {
           {this.renderSearchTab()}
         </Segment>
         <Segment className={activeIndex === 1 ? 'show' : 'hide'}>
+          {outputTable && outputTable.length > 0 && (
+            <Menu stackable size="small">
+              <Menu.Item>
+                <img
+                  className="clickableItem"
+                  src="/assets/img/xlsx_export_icon.png"
+                  onClick={() => this.exportExcel()}
+                />
+              </Menu.Item>
+            </Menu>
+          )}
           <ReactTable
             filterable
             data={outputTable ? outputTable : []}
