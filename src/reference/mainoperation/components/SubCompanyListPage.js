@@ -83,6 +83,10 @@ class SubCompanyListPage extends Component {
           data={items}
           columns={[
             {
+              Header: 'Компания',
+              accessor: 'company.name',
+            },
+            {
               Header: 'Название',
               accessor: 'nameRu',
             },
@@ -134,6 +138,11 @@ class SubCompanyListPage extends Component {
 
     if (!model['type']) {
       errors['type'] = true;
+      hasError = true;
+    }
+
+    if (!model['bukrs']) {
+      errors['bukrs'] = true;
       hasError = true;
     }
 
@@ -208,6 +217,17 @@ class SubCompanyListPage extends Component {
     const { model, errors } = this.state;
     return (
       <Form>
+        <Form.Select
+          error={errors['bukrs']}
+          required
+          name="bukrs"
+          fluid
+          label="Компания"
+          value={model['bukrs']}
+          options={this.props.companyOptions}
+          onChange={(e, v) => this.handleChange('bukrs', v.value)}
+        />
+
         <Form.Field
           error={errors['nameRu']}
           value={model.nameRu || ''}
