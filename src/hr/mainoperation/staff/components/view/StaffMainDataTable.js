@@ -54,6 +54,21 @@ export default function StaffMainDataTable(props) {
           <Table.Cell>TS Date</Table.Cell>
           <Table.Cell>{staff.tsDate}</Table.Cell>
         </Table.Row>
+
+        <Table.Row>
+          <Table.Cell>Национальность</Table.Cell>
+          <Table.Cell>{''}</Table.Cell>
+        </Table.Row>
+
+        <Table.Row>
+          <Table.Cell>Семейное положение</Table.Cell>
+          <Table.Cell>{staff.maritalStatusName}</Table.Cell>
+        </Table.Row>
+
+        <Table.Row>
+          <Table.Cell>Судимый</Table.Cell>
+          <Table.Cell>{staff.convicted === 0 ? 'НЕТ' : 'ДА'}</Table.Cell>
+        </Table.Row>
       </Table.Body>
     </Table>
   );

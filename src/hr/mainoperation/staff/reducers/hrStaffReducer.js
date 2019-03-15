@@ -24,6 +24,8 @@ import {
   HR_STAFF_FETCH_DIRECTORS,
   HR_STAFF_FILE_UPLOADED,
   HR_STAFF_FILE_DELETED,
+  HR_STAFF_MARITAL_STATUSES,
+  HR_STAFF_MARITAL_STATUS_OPTIONS,
 } from '../actions/hrStaffAction';
 
 import { FILE_DATA } from '../../../hrUtil';
@@ -58,6 +60,8 @@ const INITIAL_STATE = {
 
   directors: [],
   directorsByBranchOptions: [],
+  maritalStatuses: [],
+  maritalStatusOptions: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -240,6 +244,12 @@ export default function(state = INITIAL_STATE, action) {
 
       stfDataList2[FILE_DATA] = newStfDataList2;
       return { ...state, staffDataList: stfDataList2 };
+
+    case HR_STAFF_MARITAL_STATUSES:
+      return { ...state, maritalStatuses: action.payload };
+
+    case HR_STAFF_MARITAL_STATUS_OPTIONS:
+      return { ...state, maritalStatusOptions: action.payload };
 
     default:
       return state;

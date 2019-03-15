@@ -51,6 +51,10 @@ export const HR_STAFF_FETCH_MANAGERS = 'HR_STAFF_FETCH_MANAGERS';
 export const HR_STAFF_FETCH_DIRECTORS = 'HR_STAFF_FETCH_DIRECTORS';
 export const HR_STAFF_FILE_UPLOADED = 'HR_STAFF_FILE_UPLOADED';
 export const HR_STAFF_FILE_DELETED = 'HR_STAFF_FILE_DELETED';
+export const HR_STAFF_MARITAL_STATUSES = 'HR_STAFF_MARITAL_STATUSES';
+export const HR_STAFF_MARITAL_STATUS_OPTIONS =
+  'HR_STAFF_MARITAL_STATUS_OPTIONS';
+
 export function fetchCurrentStaffs(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
@@ -478,4 +482,40 @@ export function blankStaffExperience() {
         authorization: localStorage.getItem('token'),
       },
     });
+}
+
+export function fetchMaritalStatuses() {
+  return function(dispatch) {
+    axios
+      .get(`${ROOT_URL}` + '/api/hr/staff/marital-statuses', {
+        headers: { authorization: localStorage.getItem('token') },
+      })
+      .then(({ data }) => {
+        dispatch({
+          type: HR_STAFF_MARITAL_STATUSES,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchMaritalStatusOptions() {
+  return function(dispatch) {
+    axios
+      .get(`${ROOT_URL}` + '/api/hr/staff/marital-statuses?dto-type=options', {
+        headers: { authorization: localStorage.getItem('token') },
+      })
+      .then(({ data }) => {
+        dispatch({
+          type: HR_STAFF_MARITAL_STATUS_OPTIONS,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
 }

@@ -20,12 +20,17 @@ const genderOptions = [
   { key: 'female', text: 'Женский', value: 'female' },
 ];
 
+const yesNoOptions = [
+  { key: 1, text: 'Да', value: 1 },
+  { key: 0, text: 'Нет', value: 0 },
+];
+
 /**
  * Функция для рендеринга формы сотрудника
  */
 
 export default function StaffForm(props) {
-  const { staff, nationalityOptions } = props;
+  const { staff, nationalityOptions, maritalStatusOptions } = props;
   const experiences = staff.experiences || [];
   return (
     <Form>
@@ -137,6 +142,26 @@ export default function StaffForm(props) {
                 <Button onClick={props.removeSubCompany} icon="remove" />
               </Button.Group>
             </Form.Field>
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Select
+              name="convicted"
+              value={staff.convicted}
+              label="Судимый"
+              options={yesNoOptions}
+              placeholder="Судимый"
+              onChange={props.handleChange}
+            />
+
+            <Form.Select
+              name="maritalStatus"
+              value={staff.maritalStatus}
+              label="Семейное положение"
+              options={maritalStatusOptions}
+              placeholder="Семейное положение"
+              onChange={props.handleChange}
+            />
           </Form.Group>
         </div>
       </div>

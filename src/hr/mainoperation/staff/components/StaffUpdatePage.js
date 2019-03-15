@@ -9,6 +9,7 @@ import {
   fetchBlankStaff,
   updateStaff,
   blankStaffExperience,
+  fetchMaritalStatusOptions,
 } from '../actions/hrStaffAction';
 import {
   f4FetchCountryList,
@@ -64,6 +65,7 @@ class StaffUpdatePage extends Component {
   componentDidMount() {
     this.props.f4FetchCompanyOptions();
     this.props.f4FetchNationalityOptions();
+    this.props.fetchMaritalStatusOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -376,6 +378,7 @@ class StaffUpdatePage extends Component {
           onClickSubCompanyBtn={() => this.toggelSubCompanyModal(true)}
           removeSubCompany={this.removeSubCompany}
           nationalityOptions={this.props.nationalityOptions || []}
+          maritalStatusOptions={this.props.maritalStatusOptions}
         />
         <br />
         <Form>
@@ -451,6 +454,7 @@ function mapStateToProps(state) {
     cityregList: state.f4.cityregList,
     subCompanies: state.f4.subCompanies,
     nationalityOptions: state.f4.nationalityOptions,
+    maritalStatusOptions: state.hrStaff.maritalStatusOptions,
   };
 }
 
@@ -472,5 +476,6 @@ export default connect(
     toggleSalaryListModal,
     blankStaffExperience,
     f4FetchNationalityOptions,
+    fetchMaritalStatusOptions,
   },
 )(StaffUpdatePage);
