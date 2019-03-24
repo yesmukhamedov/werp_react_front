@@ -12,6 +12,8 @@ export const BLANK_ITEM = 'BLANK_ITEM';
 export const NEW_PYR = 'NEW_PYR';
 export const DELETE_ITEM = 'DELETE_ITEM';
 export const NODE_UPDATE = 'NODE_UPDATE';
+export const ALL_TRANSACTIONS = 'ALL_TRANSACTIONS';
+export const ON_MOVE = 'ON_MOVE';
 
 export function fetchCurrentMenu() {
   return function(dispatch) {
@@ -24,7 +26,6 @@ export function fetchCurrentMenu() {
       })
       .then(({ data }) => {
         modifyLoader(false);
-        console.log(data);
         dispatch({
           type: REF_CURRENT_MENU,
           payload: data,
@@ -37,8 +38,6 @@ export function fetchCurrentMenu() {
 }
 
 export function onMoveNode(node, changeNode) {
-  console.log('in action ', node);
-  console.log('in action ', changeNode);
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
   return function(dispatch) {
@@ -63,6 +62,10 @@ export function onMoveNode(node, changeNode) {
               errorTable[`101${language}`],
             ),
           );
+          dispatch({
+            type: ON_MOVE,
+            payload: { node, changeNode },
+          });
         } else {
           dispatch(
             notify(
@@ -119,7 +122,6 @@ export function fetchBlank(parentId) {
       })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        console.log(data);
         dispatch({
           type: BLANK_ITEM,
           payload: data,
@@ -174,7 +176,6 @@ export function newPyramid(newNode) {
 }
 
 export function deletePyramid(node) {
-  console.log('node ', node);
   return function(dispatch) {
     dispatch(modifyLoader(true));
     axios

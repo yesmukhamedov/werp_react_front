@@ -190,7 +190,7 @@ class IndexForm extends Component {
                   </Form.Field>
                 </Grid.Column>
                 <Grid.Column>
-                  <Form.Field>
+                  <Form.Field required>
                     <label>{messages['rnum']}</label>
                     <Dropdown
                       fluid
@@ -205,7 +205,7 @@ class IndexForm extends Component {
                   </Form.Field>
                 </Grid.Column>
                 <Grid.Column>
-                  <Form.Field>
+                  <Form.Field required>
                     <label>{messages['os_name']}</label>
                     <Dropdown
                       fluid

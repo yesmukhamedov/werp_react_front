@@ -603,5 +603,9 @@
   "trList": "List of transactions",
   "addNewTr": "Add mew transaction",
   "parDir": "Parent Dir.",
-  "stopAction": "Stop the action"
+  "stopAction": "Stop the action",
+  "menu_list": "Menu list",
+  "menuAddhiechy": "Hiyerarşiye menü ekle",
+  "select_transaction": "Select Transaction",
+  "enter_nomination": "Enter the nomination"
 }

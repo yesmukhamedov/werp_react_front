@@ -8,7 +8,7 @@ import { Container } from 'semantic-ui-react';
 import IndexForm from './indexForm';
 import MainSubField from './modItems/mainSubField';
 import { injectIntl } from 'react-intl';
-import _ from 'lodash';
+
 import {
   fetchAll,
   fetchCCBranch,
@@ -94,8 +94,6 @@ class AssetRef extends Component {
 
   handleInputChange(value, dataType) {
     let { queryParams } = this.state;
-    console.log('value ', value);
-    console.log('dataType ', dataType);
     switch (dataType) {
       case 'bukrs':
         queryParams['bukrs'] = value;
@@ -114,9 +112,9 @@ class AssetRef extends Component {
         break;
       case 'compbr_code':
         queryParams['compbr_code'] = value;
+        break;
       default:
         queryParams[dataType] = value;
-        break;
     }
 
     this.setState({
@@ -127,7 +125,6 @@ class AssetRef extends Component {
 
   render() {
     const { messages } = this.props.intl;
-    console.log('propss ', this.props);
     return (
       <Container
         fluid

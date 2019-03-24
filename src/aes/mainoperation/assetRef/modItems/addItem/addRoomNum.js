@@ -41,7 +41,7 @@ class AddRoomNum extends Component {
     let errors = [];
     const { room_code } = this.state.modalForm;
     if (room_code === null || room_code === undefined || !room_code) {
-      errors.push(errorTable['137' + language]);
+      errors.push(errorTable['134' + language]);
     }
     return errors;
   }

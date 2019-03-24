@@ -40,11 +40,15 @@ class AddOsName extends Component {
     const language = localStorage.getItem('language');
     let errors = [];
     const { os_name, os_code } = this.state.modalForm;
-    if (os_name === null || os_name === undefined || !os_name) {
-      errors.push(errorTable['139' + language]);
-    }
-    if (os_code === null || os_code === undefined || !os_code) {
-      errors.push(errorTable['137' + language]);
+    if (
+      os_name === null ||
+      os_name === undefined ||
+      !os_name ||
+      os_code === null ||
+      os_code === undefined ||
+      !os_code
+    ) {
+      errors.push(errorTable['134' + language]);
     }
     return errors;
   }
@@ -78,7 +82,7 @@ class AddOsName extends Component {
           color="teal"
         >
           <Icon name="checkmark" />
-          Сохранить
+          {messages['save']}
         </Button>
         <Button
           floated="right"
@@ -87,7 +91,7 @@ class AddOsName extends Component {
         >
           {' '}
           <Icon name="remove" />
-          Отмена
+          {messages['cancel']}
         </Button>
       </Form>
     );

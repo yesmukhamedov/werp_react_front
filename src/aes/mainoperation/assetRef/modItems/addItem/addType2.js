@@ -41,11 +41,15 @@ class AddType2 extends Component {
     const language = localStorage.getItem('language');
     let errors = [];
     const { type2_name, type2_code } = this.state.modalForm;
-    if (type2_name === null || type2_name === undefined || !type2_name) {
-      errors.push(errorTable['139' + language]);
-    }
-    if (type2_code === null || type2_code === undefined || !type2_code) {
-      errors.push(errorTable['137' + language]);
+    if (
+      type2_name === null ||
+      type2_name === undefined ||
+      !type2_name ||
+      type2_code === null ||
+      type2_code === undefined ||
+      !type2_code
+    ) {
+      errors.push(errorTable['134' + language]);
     }
     return errors;
   }
@@ -84,7 +88,7 @@ class AddType2 extends Component {
           color="teal"
         >
           <Icon name="checkmark" />
-          Сохранить
+          {messages['save']}
         </Button>
         <Button
           floated="right"
@@ -93,7 +97,7 @@ class AddType2 extends Component {
         >
           {' '}
           <Icon name="remove" />
-          Отмена
+          {messages['cancel']}
         </Button>
       </Form>
     );

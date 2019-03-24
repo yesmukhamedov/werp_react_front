@@ -5,6 +5,8 @@ import {
   DELETE_ITEM,
   NEW_PYR,
   NODE_UPDATE,
+  ALL_TRANSACTIONS,
+  ON_MOVE,
 } from './menuAction';
 
 import {
@@ -16,17 +18,25 @@ const getNodeKey = ({ node: { id } }) => id;
 const INITIAL_STATE = {
   treeData: [],
   item: [],
+  allTransaction: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
+    case ON_MOVE:
+      const { node, changeNode } = action.payload;
+      const x = node.sort_order;
+      const y = changeNode.sort_order;
+      node.sort_order = y;
+      changeNode.sort_order = x;
+      return { ...state };
     case NODE_UPDATE:
-      const node = action.payload;
+      const item = action.payload;
       const a = changeNodeAtPath({
         treeData: state.treeData,
-        path: node.path,
+        path: item.path,
         getNodeKey,
-        newNode: node,
+        newNode: item,
       });
       return { ...state, treeData: a };
     case REF_CURRENT_MENU:
@@ -36,22 +46,20 @@ export default function(state = INITIAL_STATE, action) {
       return { ...state, item: action.payload };
     case NEW_PYR:
       const nodeItem = action.payload;
-      const newNode2 = {};
-      newNode2.id = nodeItem.id;
-      newNode2.expanded = false;
-      newNode2.children = [];
-      newNode2.parentKey = nodeItem.parent_id;
-      newNode2.title = nodeItem.name_ru;
-      newNode2.subtitle = [nodeItem.name_en + ' ', nodeItem.name_tr];
-      console.log('nodeItem ', nodeItem);
-      console.log('newNode2 ', newNode2);
+      const treeNode = {};
+      treeNode.id = nodeItem.id;
+      treeNode.expanded = false;
+      treeNode.children = [];
+      treeNode.parentKey = nodeItem.parent_id;
+      treeNode.title = nodeItem.name_ru;
+      treeNode.subtitle = [nodeItem.name_en + ' ', nodeItem.name_tr];
       let newTree = addNodeUnderParent({
         treeData: state.treeData,
-        newNode: newNode2,
-        parentKey: newNode2.parentKey,
+        newNode: treeNode,
+        parentKey: treeNode.parentKey,
         getNodeKey: getNodeKey,
       });
-      console.log(' newTree ', newTree.treeData);
+
       return { ...state, treeData: newTree.treeData };
     case DELETE_ITEM:
       const delItem = action.payload;
@@ -61,6 +69,8 @@ export default function(state = INITIAL_STATE, action) {
         getNodeKey,
       });
       return { ...state, treeData: del };
+    case ALL_TRANSACTIONS:
+      return { ...state, allTransaction: action.payload };
     default:
       return state;
   }

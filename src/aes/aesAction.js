@@ -265,8 +265,6 @@ export function findObject(url, params) {
   return function(dispatch) {
     if (url === '/api/aes/find/type1/') dispatch(clearAll([]));
     if (url === '/api/aes/find/type2/') dispatch(clearT3Osdet([]));
-    console.log('url ', url);
-    console.log('params ', params);
     axios
       .get(fullUrl, {
         headers: {
@@ -274,7 +272,6 @@ export function findObject(url, params) {
         },
       })
       .then(({ data }) => {
-        console.log('data ', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: CURRENT_ALL,
@@ -328,7 +325,6 @@ export function newObject(url, params, type) {
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
-          console.log('data ', data);
           dispatch(
             notify(
               'success',
@@ -360,8 +356,6 @@ export function disableObject(url, params, type) {
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
   let fullUrl = `${ROOT_URL}` + url + `/${params.key}`;
-  console.log('params ', params);
-  console.log('fullUrl ', fullUrl);
   return function(dispatch) {
     axios
       .put(fullUrl, params, {

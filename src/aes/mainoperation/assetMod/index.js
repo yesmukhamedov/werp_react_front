@@ -16,6 +16,8 @@ import {
 } from '../../aesAction';
 import IndexForm from './indexForm';
 import { injectIntl } from 'react-intl';
+import moment from 'moment';
+import { isNumber } from 'util';
 
 class AssetMod extends Component {
   constructor(props) {
@@ -36,7 +38,14 @@ class AssetMod extends Component {
     let errors = [];
     errors = this.validate();
     if (errors === null || errors === undefined || errors.length === 0) {
-      this.props.newAes(this.state.queryParams);
+      let { queryParams } = this.state;
+      queryParams['updated_date'] = moment({
+        hour: 0,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+      });
+      this.props.newAes(queryParams);
     }
     this.setState({ errors });
   }
@@ -55,6 +64,8 @@ class AssetMod extends Component {
       se0_id,
       se1_id,
       buying_time,
+      room_code,
+      os_name,
     } = this.state.queryParams;
     if (bukrs === null || bukrs === undefined || !bukrs) {
       errors.push(errorTable['5' + language]);
@@ -62,17 +73,23 @@ class AssetMod extends Component {
     if (branch_id === null || branch_id === undefined || !branch_id) {
       errors.push(errorTable['7' + language]);
     }
-    if (country_id === null || country_id === undefined || !country_id) {
+    if (
+      country_id === null ||
+      country_id === undefined ||
+      !country_id ||
+      status_id === null ||
+      status_id === undefined ||
+      !status_id ||
+      room_code === null ||
+      os_name === null
+    ) {
       errors.push(errorTable['138' + language]);
     }
     if (dep_id === null || dep_id === undefined || !dep_id) {
       errors.push(errorTable['4' + language]);
     }
-    if (status_id === null || status_id === undefined || !status_id) {
-      errors.push(errorTable['136' + language]);
-    }
     if (quantity === null || quantity === undefined || !quantity) {
-      errors.push(errorTable['134' + language]);
+      errors.push(errorTable['139' + language]);
     }
     if (price === null || bukrs === undefined || !bukrs) {
       errors.push(errorTable['61' + language]);
@@ -95,40 +112,48 @@ class AssetMod extends Component {
       case 'bukrs':
         queryParams.bukrs = value;
         this.props.companyOptions.some(c => {
-          if (c.key == value) {
+          if (Number(c.key) === value) {
             queryParams.bukrs_name = c.text;
             queryParams.bukrs_code = c.value;
             return true;
+          } else {
+            return false;
           }
         });
         break;
       case 'country_id':
         queryParams.country_id = value;
         this.props.countryList.some(c => {
-          if (c.countryId == value) {
+          if (c.countryId === value) {
             queryParams.country_name = c.country;
             queryParams.currency = c.currency;
             return true;
+          } else {
+            return false;
           }
         });
         break;
       case 'branch_id':
         queryParams.branch_id = value;
         this.props.branchOptions.some(c => {
-          if (c.id == value) {
+          if (c.id === value) {
             queryParams.branch_code = value;
             queryParams.branch_name = c.branch_name;
             return true;
+          } else {
+            return false;
           }
         });
         break;
       case 'dep_id':
         queryParams.dep_id = value;
         this.props.departmentOptions.some(function(c) {
-          if (c.key == value) {
+          if (c.key === value) {
             queryParams.dep_name = c.text;
             queryParams.dep_code = c.value;
             return true;
+          } else {
+            return false;
           }
         });
         break;
@@ -151,50 +176,62 @@ class AssetMod extends Component {
         queryParams[dataType] = value;
         if (dataType === 'os_id') {
           this.props.listAll.listOs.some(c => {
-            if (c.id == value) {
+            if (c.id === value) {
               queryParams.os_name = c.os_name;
               queryParams.os_code = c.os_code;
               return true;
+            } else {
+              return false;
             }
           });
         } else if (dataType === 'type1_id') {
           this.props.listAll.listType1.some(c => {
-            if (c.id == value) {
+            if (c.id === value) {
               queryParams.type1_name = c.type1_name;
               queryParams.type1_code = c.type1_code;
               return true;
+            } else {
+              return false;
             }
           });
         } else if (dataType === 'type2_id') {
           this.props.listAll.listType2.some(c => {
-            if (c.id == value) {
+            if (c.id === value) {
               queryParams.type2_name = c.type2_name;
               queryParams.type2_code = c.type2_code;
               return true;
+            } else {
+              return false;
             }
           });
         } else if (dataType === 'type3_id') {
           this.props.listAll.listType3.some(c => {
-            if (c.id == value) {
+            if (c.id === value) {
               queryParams.type3_name = c.type3_name;
               queryParams.type3_code = c.type3_code;
               return true;
+            } else {
+              return false;
             }
           });
         } else if (dataType === 'detail_id') {
           this.props.listAll.listDetail.some(c => {
-            if (c.id == value) {
+            if (c.id === value) {
               queryParams.detail_name = c.detail_name;
               queryParams.detail_code = c.detail_code;
               return true;
+            } else {
+              return false;
             }
           });
         } else if (dataType === 'room_id') {
           this.props.listAll.listRoom.some(c => {
-            if (c.id == value) {
+            if (c.id === value) {
               queryParams.room_name = c.room_name;
               queryParams.room_code = c.room_code;
               return true;
+            } else {
+              return false;
             }
           });
         } else if (dataType === 'status_id') {
@@ -203,6 +240,8 @@ class AssetMod extends Component {
               queryParams.status_name = c.status_name;
               queryParams.status_code = c.status_code;
               return true;
+            } else {
+              return false;
             }
           });
         }
@@ -231,7 +270,6 @@ class AssetMod extends Component {
 
   render() {
     const { messages } = this.props.intl;
-    console.log('this.props ', this.props);
     return (
       <div>
         <IndexForm //place options
@@ -352,7 +390,7 @@ class AssetMod extends Component {
   loadCompBr(branch_id) {
     const queryParams = this.props.queryParams;
     if (queryParams.bukrs && queryParams.branch_id) {
-      const staffs = this.props.f4FetchStaffList(
+      this.props.f4FetchStaffList(
         'fcis',
         queryParams.bukrs_code,
         queryParams.branch_id,

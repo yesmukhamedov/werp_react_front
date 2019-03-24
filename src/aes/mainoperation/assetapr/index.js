@@ -98,7 +98,6 @@ class AssetApr extends Component {
   }
   render() {
     const { messages } = this.props.intl;
-    console.log('props ', this.props);
     return (
       <Container
         fluid
@@ -216,7 +215,7 @@ class AssetApr extends Component {
     for (let k in depOptions) {
       map.push({
         key: depOptions[k]['key'],
-        text: `${depOptions[k]['text']} ${depOptions[k]['value']}`,
+        text: `${depOptions[k]['text']}`,
         value: depOptions[k]['value'],
       });
     }

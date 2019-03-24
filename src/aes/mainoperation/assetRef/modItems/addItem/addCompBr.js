@@ -44,7 +44,7 @@ class AddStatus extends Component {
     const { compbr_code } = this.state.modalForm;
 
     if (compbr_code === null || compbr_code === undefined || !compbr_code) {
-      errors.push(errorTable['137' + language]);
+      errors.push(errorTable['134' + language]);
     }
     return errors;
   }
@@ -54,7 +54,6 @@ class AddStatus extends Component {
 
   renderForm() {
     const { bukrs, branch_id, messages } = this.props;
-    console.log('this.props22 ', this.props);
     return (
       <Form>
         <div className="ui segments">
@@ -85,7 +84,7 @@ class AddStatus extends Component {
           color="teal"
         >
           <Icon name="checkmark" />
-          Сохранить
+          {messages['save']}
         </Button>
         <Button
           floated="right"
@@ -94,7 +93,7 @@ class AddStatus extends Component {
         >
           {' '}
           <Icon name="remove" />
-          Отмена
+          {messages['cancel']}
         </Button>
       </Form>
     );

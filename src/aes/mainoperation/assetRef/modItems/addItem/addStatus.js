@@ -40,11 +40,15 @@ class AddStatus extends Component {
     const language = localStorage.getItem('language');
     let errors = [];
     const { status_name, status_code } = this.state.modalForm;
-    if (status_name === null || status_name === undefined || !status_name) {
-      errors.push(errorTable['139' + language]);
-    }
-    if (status_code === null || status_code === undefined || !status_code) {
-      errors.push(errorTable['137' + language]);
+    if (
+      status_name === null ||
+      status_name === undefined ||
+      !status_name ||
+      status_code === null ||
+      status_code === undefined ||
+      !status_code
+    ) {
+      errors.push(errorTable['134' + language]);
     }
     return errors;
   }
@@ -83,7 +87,7 @@ class AddStatus extends Component {
           color="teal"
         >
           <Icon name="checkmark" />
-          Сохранить
+          {messages['save']}
         </Button>
         <Button
           floated="right"
@@ -92,7 +96,7 @@ class AddStatus extends Component {
         >
           {' '}
           <Icon name="remove" />
-          Отмена
+          {messages['cancel']}
         </Button>
       </Form>
     );

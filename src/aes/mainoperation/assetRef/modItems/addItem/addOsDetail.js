@@ -43,11 +43,15 @@ class AddOsDetail extends Component {
     let errors = [];
     const { detail_name, detail_code } = this.state.modalForm;
 
-    if (detail_name === null || detail_name === undefined || !detail_name) {
-      errors.push(errorTable['139' + language]);
-    }
-    if (detail_code === null || detail_code === undefined || !detail_code) {
-      errors.push(errorTable['137' + language]);
+    if (
+      detail_name === null ||
+      detail_name === undefined ||
+      !detail_name ||
+      detail_code === null ||
+      detail_code === undefined ||
+      !detail_code
+    ) {
+      errors.push(errorTable['134' + language]);
     }
     return errors;
   }
@@ -83,7 +87,7 @@ class AddOsDetail extends Component {
           color="teal"
         >
           <Icon name="checkmark" />
-          Сохранить
+          {messages['save']}
         </Button>
         <Button
           floated="right"
@@ -92,7 +96,7 @@ class AddOsDetail extends Component {
         >
           {' '}
           <Icon name="remove" />
-          Отмена
+          {messages['cancel']}
         </Button>
       </Form>
     );

@@ -542,6 +542,11 @@ const menu = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const testUser = Loadable({
+  loader: () => import('../testUser/user' /* webpackChunkName: menu */),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   DitTransactionList: trlist,
   Ditaub: AsyncAssignUserBranch,
@@ -701,6 +706,9 @@ const generateRoutes = transactionRoutes => {
 
       {/* Menu */}
       <Route path="/dit/menu/list" component={menu} />
+
+      {/* TEST USER */}
+      <Route path="/dit/user/main" component={testUser} />
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {

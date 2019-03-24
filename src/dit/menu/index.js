@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Header, Segment, Button, Container, Modal } from 'semantic-ui-react';
+import {
+  Header,
+  Segment,
+  Button,
+  Container,
+  Modal,
+  Icon,
+} from 'semantic-ui-react';
 import AddNode from './addNode';
 import {
   fetchCurrentMenu,
@@ -11,28 +18,24 @@ import {
   updateNodeItem,
   onMoveNode,
 } from './menuAction';
-import SortableTree, {
-  removeNodeAtPath,
-  addNodeUnderParent,
-  changeNodeAtPath,
-} from 'react-sortable-tree';
+import { fetchCurrentTransactions } from '../transactionAction';
+import SortableTree from 'react-sortable-tree';
 import 'react-sortable-tree/style.css';
 import OutputErrors from '../../general/error/outputErrors';
 import UpdateMenuNode from './updateNode';
-
-const getNodeKey = ({ node: { id } }) => id;
+import { injectIntl } from 'react-intl';
 
 class Menu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showDeleteModal: false,
       showUpdateModal: false,
+      showAddModal: false,
+      showDeleteModal: false,
       nodeForDelete: null,
       deleteNotifyTxt: '',
       removeNotifyTxt: '',
       nodeForEdit: {},
-      addModalOpened: false,
     };
     this.onChanged = this.onChanged.bind(this);
   }
@@ -61,26 +64,19 @@ class Menu extends Component {
     });
   }
 
-  submitUpdate() {
-    const nodeForEdit = Object.assign({}, this.state.nodeForEdit);
-    nodeForEdit.path = this.state.currentItemPath;
-
-    this.props.updateNodeItem(nodeForEdit);
-    this.setState({
-      ...this.state,
-      showUpdateModal: false,
-    });
-    // this.props.pyramidTreeChanged(a || this.props.treeData);
-  }
-
   newNode(node) {
     node.path = this.state.currentItemPath;
-    console.log('node ', node);
     this.props.newPyramid(node);
   }
 
+  addFormModal(truefalse) {
+    this.setState({
+      ...this.state,
+      showAddModal: truefalse,
+    });
+  }
+
   onChanged(a) {
-    console.log('a ', a);
     this.props.pyramidTreeChanged(a);
   }
 
@@ -127,7 +123,7 @@ class Menu extends Component {
 
   render() {
     const treeData = this.props.treeData || [];
-
+    const { messages } = this.props.intl;
     return (
       <div>
         <div id="transaction">
@@ -142,8 +138,20 @@ class Menu extends Component {
           >
             <Segment clearing>
               <Header as="h2" floated="left">
-                Список меню
+                {messages['menu_list']}
               </Header>
+              <Button
+                floated="right"
+                color="teal"
+                onClick={() => {
+                  this.props.fetchBlank(0);
+                  this.props.fetchCurrentTransactions();
+                  this.addFormModal(true);
+                }}
+              >
+                {' '}
+                <Icon name="plus" /> {messages['BTN__ADD']}
+              </Button>
             </Segment>
             <OutputErrors errors={this.state.errors} />
           </Container>
@@ -153,10 +161,12 @@ class Menu extends Component {
             </div>
             <div className="twelve wide column">
               <AddNode
-                addModalOpened={this.state.addModalOpened}
+                showAddModal={this.state.showAddModal}
                 addFormModal={this.addFormModal.bind(this)}
                 newNode={this.newNode.bind(this)}
                 item={this.props.item}
+                currentTransactions={this.props.currentTransactions}
+                messages={messages}
               />
 
               <Segment clearing>
@@ -188,6 +198,7 @@ class Menu extends Component {
                               currentItemPath: path,
                             });
                             this.props.fetchBlank(node.id);
+                            this.props.fetchCurrentTransactions();
                             this.addFormModal(true);
                           }}
                         />,
@@ -216,6 +227,7 @@ class Menu extends Component {
                 showUpdateModal={this.state.showUpdateModal}
                 close={this.close.bind(this)}
                 handleChange={this.handleChange.bind(this)}
+                messages={messages}
               />
             </div>
           </div>
@@ -224,37 +236,31 @@ class Menu extends Component {
     );
   }
 
-  addFormModal(truefalse) {
+  /****************************************************************** UPDATE NODE */
+  submitUpdate() {
+    const nodeForEdit = Object.assign({}, this.state.nodeForEdit);
+    nodeForEdit.path = this.state.currentItemPath;
+    this.props.updateNodeItem(nodeForEdit);
     this.setState({
       ...this.state,
-      addModalOpened: truefalse,
+      showUpdateModal: false,
     });
   }
 
-  resetDelete() {
+  showUpdateModal(node) {
     this.setState({
       ...this.state,
-      showDeleteModal: false,
-      nodeForDelete: null,
-      deleteNotifyTxt: '',
-      updatedTree: [],
+      showUpdateModal: true,
+      nodeForEdit: node,
     });
   }
+  close = () => this.setState({ showUpdateModal: false });
 
-  deletePyramid() {
-    const { nodeForDelete } = this.state;
-    console.log('nodeForDelete ', nodeForDelete);
-    this.props.deletePyramid(nodeForDelete);
-    this.resetDelete();
-  }
-
+  /****************************************************************** DELETE NODE */
   showDeteleModal(node, path) {
     const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
     const language = localStorage.getItem('language');
-    console.log('node2 ', node);
-    console.log('path2 ', path);
     node.path = path;
-    console.log('node3 ', node);
     let errors = [];
     if (node.children === undefined || node.children.length == 0) {
       this.setState({
@@ -273,37 +279,46 @@ class Menu extends Component {
   renderDeleteNotifyModal() {
     return (
       <Modal open={this.state.showDeleteModal} size={'small'}>
-        <Header>Предупреждение!</Header>
+        <Header>{this.props.intl.messages['Crm.DeleteWarningHeader']} !</Header>
         <Modal.Content>
           <h3>
-            {'Вы действительно хотите удалить '} {this.state.deleteNotifyTxt}{' '}
-            {' ?'}{' '}
+            {this.props.intl.messages['Crm.ConfirmDelete']}{' '}
+            {this.state.deleteNotifyTxt}
           </h3>
         </Modal.Content>
         <Modal.Actions>
-          <Button onClick={this.resetDelete.bind(this)}>Нет</Button>
+          <Button onClick={this.resetDelete.bind(this)}>
+            {this.props.intl.messages['BTN__NO']}
+          </Button>
           <Button color="red" onClick={this.deletePyramid.bind(this)}>
-            Да
+            {this.props.intl.messages['BTN__YES']}
           </Button>
         </Modal.Actions>
       </Modal>
     );
   }
-
-  showUpdateModal(node) {
+  resetDelete() {
     this.setState({
       ...this.state,
-      showUpdateModal: true,
-      nodeForEdit: node,
+      showDeleteModal: false,
+      nodeForDelete: null,
+      deleteNotifyTxt: '',
+      updatedTree: [],
     });
   }
-  close = () => this.setState({ showUpdateModal: false });
+
+  deletePyramid() {
+    const { nodeForDelete } = this.state;
+    this.props.deletePyramid(nodeForDelete);
+    this.resetDelete();
+  }
 }
 
 function mapStateToProps(state) {
   return {
     treeData: state.menuReducer.treeData,
     item: state.menuReducer.item,
+    currentTransactions: state.transactionReducer.currentTransactions,
   };
 }
 
@@ -317,5 +332,6 @@ export default connect(
     newPyramid,
     deletePyramid,
     updateNodeItem,
+    fetchCurrentTransactions,
   },
-)(Menu);
+)(injectIntl(Menu));

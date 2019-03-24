@@ -137,7 +137,6 @@ class AddExaminer1 extends Component {
         }
       }
     }
-    console.log('branch ', map);
     this.setState({
       ...this.state,
       bukrs: key,

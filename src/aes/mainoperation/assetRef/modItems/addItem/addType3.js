@@ -41,11 +41,15 @@ class AddType3 extends Component {
     const language = localStorage.getItem('language');
     let errors = [];
     const { type3_name, type3_code } = this.state.modalForm;
-    if (type3_name === null || type3_name === undefined || !type3_name) {
-      errors.push(errorTable['139' + language]);
-    }
-    if (type3_code === null || type3_code === undefined || !type3_code) {
-      errors.push(errorTable['137' + language]);
+    if (
+      type3_name === null ||
+      type3_name === undefined ||
+      !type3_name ||
+      type3_code === null ||
+      type3_code === undefined ||
+      !type3_code
+    ) {
+      errors.push(errorTable['134' + language]);
     }
     return errors;
   }
@@ -84,7 +88,7 @@ class AddType3 extends Component {
           color="teal"
         >
           <Icon name="checkmark" />
-          Сохранить
+          {messages['save']}
         </Button>
         <Button
           floated="right"
@@ -93,7 +97,7 @@ class AddType3 extends Component {
         >
           {' '}
           <Icon name="remove" />
-          Отмена
+          {messages['cancel']}
         </Button>
       </Form>
     );

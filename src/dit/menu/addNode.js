@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
 import { Modal, Form, Input, Button } from 'semantic-ui-react';
+import TransactionSelect from './transactionSelect';
 
 class AddNode extends Component {
   constructor(props) {
     super(props);
-    this.state = { modalForm: {} };
+    this.state = {
+      modalForm: {},
+      transaction: {},
+      openTransactionModal: false,
+    };
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -15,63 +20,127 @@ class AddNode extends Component {
     } else {
       modalForm[fieldName] = null;
     }
-    modalForm['parent_id'] = this.props.item.id;
-    modalForm['sort_order'] = this.props.item.max_sort_order + 1;
-    modalForm['transaction_id'] = 0;
+
     this.setState({
       ...this.state,
       modalForm: modalForm,
     });
   }
+  selectedTrId(tr) {
+    let modalForm = Object.assign({}, this.state.modalForm);
+    modalForm['transaction_id'] = tr.transaction_id;
+    modalForm['name_ru'] = tr.name_ru;
+    modalForm['name_en'] = tr.name_en;
+    modalForm['name_tr'] = tr.name_tr;
+    this.setState({
+      ...this.state,
+      modalForm: modalForm,
+      transaction: tr,
+      openTransactionModal: false,
+    });
+  }
+  removeTransaction() {
+    this.setState({
+      ...this.state,
+      transaction: {},
+      modalForm: {},
+    });
+  }
 
   submitForm() {
     let modalForm = Object.assign({}, this.state.modalForm);
-    console.log('modalForm ', modalForm);
+    modalForm['parent_id'] = this.props.item.parent_id;
+    modalForm['sort_order'] = this.props.item.sort_order + 1;
     this.props.newNode(modalForm);
+    this.props.addFormModal(false);
   }
 
-  renderForm() {
-    return (
-      <Form>
-        <Form.Group widths="equal">
-          <Form.Field
-            required
-            onChange={(e, o) => this.handleChange('name_ru', o)}
-            control={Input}
-            label={'name_ru'}
-          />
-          <Form.Field
-            required
-            onChange={(e, o) => this.handleChange('name_en', o)}
-            control={Input}
-            label={'name_en'}
-          />
-          <Form.Field
-            required
-            onChange={(e, o) => this.handleChange('name_tr', o)}
-            control={Input}
-            label={'name_tr'}
-          />
-        </Form.Group>
-      </Form>
-    );
+  transactionModal(trueFalse) {
+    this.setState({
+      ...this.state,
+      openTransactionModal: trueFalse,
+    });
   }
+
   render() {
+    const { messages } = this.props;
     return (
       <div>
-        <Modal size={'small'} open={this.props.addModalOpened}>
-          <Modal.Header>Добавление меню в иерархию</Modal.Header>
-          <Modal.Content>{this.renderForm()}</Modal.Content>
+        <Modal
+          size={'small'}
+          open={this.props.showAddModal}
+          onClose={() => this.props.addFormModal(false)}
+        >
+          <Modal.Header>{messages['menuAddhiechy']}</Modal.Header>
+          <Modal.Content>
+            <Form>
+              <Form.Group widths="equal">
+                <div className="field">
+                  <label>{messages['select_transaction']}</label>
+                  <div className="ui action left icon input">
+                    <Button
+                      onClick={() => {
+                        this.transactionModal(true);
+                      }}
+                      icon="linkify"
+                    />
+                    <input
+                      readOnly
+                      placeholder="Транзакция..."
+                      type="text"
+                      value={this.state.transaction.name_ru || ''}
+                    />
+                    <Button
+                      onClick={() => this.removeTransaction()}
+                      icon={'trash'}
+                    />
+                  </div>
+                </div>
+              </Form.Group>
+              <h3>{messages['enter_nomination']}</h3>
+              <Form.Group widths="equal">
+                <Form.Field
+                  required
+                  onChange={(e, o) => this.handleChange('name_ru', o)}
+                  defaultValue={this.state.modalForm.name_ru}
+                  control={Input}
+                  label={messages['L__TITLE'] + ' (ru)'}
+                />
+                <Form.Field
+                  required
+                  onChange={(e, o) => this.handleChange('name_en', o)}
+                  defaultValue={this.state.modalForm.name_en}
+                  control={Input}
+                  label={messages['L__TITLE'] + ' (en)'}
+                />
+                <Form.Field
+                  required
+                  onChange={(e, o) => this.handleChange('name_tr', o)}
+                  defaultValue={this.state.modalForm.name_tr}
+                  control={Input}
+                  label={messages['L__TITLE'] + ' (tr)'}
+                />
+              </Form.Group>
+            </Form>
+
+            <TransactionSelect
+              openTr={this.state.openTransactionModal}
+              transactionModal={this.transactionModal.bind(this)}
+              currentTransactions={this.props.currentTransactions}
+              selectedTrId={this.selectedTrId.bind(this)}
+              messages={this.props.messages}
+            />
+          </Modal.Content>
           <Modal.Actions>
             <Button negative onClick={() => this.props.addFormModal(false)}>
-              Отмена
+              {messages['BTN__CANCEL']}
             </Button>
             <Button
               positive
               icon="checkmark"
               onClick={this.submitForm.bind(this)}
               labelPosition="right"
-              content="Сохранить"
+              content={messages['save']}
             />
           </Modal.Actions>
         </Modal>

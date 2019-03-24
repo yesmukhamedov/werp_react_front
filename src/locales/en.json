@@ -603,5 +603,8 @@
   "trList": "List of transactions",
   "addNewTr": "Add mew transaction",
   "parDir": "Parent Dir.",
-  "stopAction": "Stop the action"
+  "stopAction": "Stop the action",
+  "menu_list": "Menu list",
+  "menuAddhiechy": "Add menu to hierarchy",
+  "select_transaction": "Select Transaction"
 }

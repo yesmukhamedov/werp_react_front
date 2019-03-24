@@ -97,11 +97,10 @@ class AesReport extends Component {
   }
 
   se0(se0) {
-    console.log('se0 ', se0);
     const queryParams = this.state.queryParams;
     queryParams['se0_id'] = se0.staffId;
-    (queryParams['se0_name'] = se0.fio),
-      this.setState({ ...this.state, queryParams: queryParams });
+    queryParams['se0_name'] = se0.fio;
+    this.setState({ ...this.state, queryParams: queryParams });
   }
 
   se1(se1) {
@@ -178,7 +177,6 @@ class AesReport extends Component {
     const { listAes } = this.props;
     const { messages } = this.props.intl;
     const isEnabledSe2 = branch_id != null;
-    console.log('this props ', this.props);
     return (
       <Container
         fluid
@@ -347,12 +345,12 @@ class AesReport extends Component {
           </Table>
           <Modal open={this.state.open} onClose={this.close} size="large">
             <Modal.Header>
-              {(this.state.comp == 'owner' && messages['owner']) ||
-                (this.state.comp == 'examiner1' && messages['examiner1'])}
+              {(this.state.comp === 'owner' && messages['owner']) ||
+                (this.state.comp === 'examiner1' && messages['examiner1'])}
             </Modal.Header>
             <Modal.Content>
               <Modal.Description>
-                {(this.state.comp == 'owner' && (
+                {(this.state.comp === 'owner' && (
                   <AddOwner
                     messages={messages}
                     open={true}
@@ -361,7 +359,7 @@ class AesReport extends Component {
                     staffList={this.props.staffList}
                   />
                 )) ||
-                  (this.state.comp == 'examiner1' && (
+                  (this.state.comp === 'examiner1' && (
                     <AddExaminer1
                       messages={messages}
                       handleClose={this.close}
