@@ -542,10 +542,6 @@ const menu = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const testUser = Loadable({
-  loader: () => import('../testUser/user' /* webpackChunkName: menu */),
-  loading: () => <LoadingPage />,
-});
 
 const getComponent = {
   DitTransactionList: trlist,
