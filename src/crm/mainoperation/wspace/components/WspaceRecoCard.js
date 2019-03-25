@@ -316,7 +316,11 @@ function renderByDate(props) {
             style={{ float: 'left' }}
             trigger={
               <Label color="blue" size="small">
-                <i>{item.callDateStr}</i>
+                <i>
+                  {item.callDate
+                    ? moment(item.callDate).format('DD.MM.YYYY HH:mm')
+                    : ''}
+                </i>
               </Label>
             }
             content={messages['Crm.RecallDateTime']}
