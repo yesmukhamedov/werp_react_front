@@ -56,8 +56,8 @@ class Frep1 extends Component {
         branchList: [],
         hkontList: [],
         waers: '',
-        budatFrom: moment(firstDay),
-        budatTo: moment(lastDay),
+        bldatFrom: moment(firstDay),
+        bldatTo: moment(lastDay),
       },
       activeIndex: 0,
       errors: [],
@@ -102,7 +102,7 @@ class Frep1 extends Component {
     excelHeaders.push(formatMessage(messages.gjahr));
     excelHeaders.push(formatMessage(messages.hkont));
     excelHeaders.push(formatMessage(messages.cashBank));
-    excelHeaders.push(formatMessage(messages.budat));
+    excelHeaders.push(formatMessage(messages.bldat));
     excelHeaders.push(formatMessage(messages.amount));
     excelHeaders.push(formatMessage(messages.waers));
     excelHeaders.push(formatMessage(messages.bktxt));
@@ -126,8 +126,8 @@ class Frep1 extends Component {
     const {
       bukrs,
       branchList,
-      budatFrom,
-      budatTo,
+      bldatFrom,
+      bldatTo,
       waers,
       hkontList,
     } = this.state.searchTerm;
@@ -219,7 +219,7 @@ class Frep1 extends Component {
                   <Table.Cell>
                     <span>
                       <Icon name="calendar" />
-                      {formatMessage(messages.budat)}
+                      {formatMessage(messages.bldat)}
                     </span>
                   </Table.Cell>
                   <Table.Cell>
@@ -231,9 +231,9 @@ class Frep1 extends Component {
                       showMonthDropdown
                       showYearDropdown
                       dropdownMode="select" //timezone="UTC"
-                      selected={budatFrom}
+                      selected={bldatFrom}
                       locale={language}
-                      onChange={event => this.onInputChange(event, 'budatFrom')}
+                      onChange={event => this.onInputChange(event, 'bldatFrom')}
                       dateFormat="DD.MM.YYYY"
                     />
                   </Table.Cell>
@@ -245,9 +245,9 @@ class Frep1 extends Component {
                       showMonthDropdown
                       showYearDropdown
                       dropdownMode="select" //timezone="UTC"
-                      selected={budatTo}
+                      selected={bldatTo}
                       locale={language}
-                      onChange={event => this.onInputChange(event, 'budatTo')}
+                      onChange={event => this.onInputChange(event, 'bldatTo')}
                       dateFormat="DD.MM.YYYY"
                     />
                   </Table.Cell>
@@ -285,8 +285,8 @@ class Frep1 extends Component {
       this.props.fetchDynamicFAGM('/api/finance/reports/frep1/search', {
         ...this.state.searchTerm,
         branchList: this.state.searchTerm.branchList.join(),
-        budatFrom: this.state.searchTerm.budatFrom.format('YYYY-MM-DD'),
-        budatTo: this.state.searchTerm.budatTo.format('YYYY-MM-DD'),
+        bldatFrom: this.state.searchTerm.bldatFrom.format('YYYY-MM-DD'),
+        bldatTo: this.state.searchTerm.bldatTo.format('YYYY-MM-DD'),
         hkontList: this.state.searchTerm.hkontList.join(),
       });
 
@@ -311,8 +311,8 @@ class Frep1 extends Component {
       branchList,
       hkontList,
       waers,
-      budatFrom,
-      budatTo,
+      bldatFrom,
+      bldatTo,
     } = this.state.searchTerm;
     if (bukrs === null || bukrs === undefined || !bukrs) {
       errors.push(errorTable[`5${language}`]);
@@ -331,10 +331,10 @@ class Frep1 extends Component {
     if (waers === null || waers === undefined || !waers) {
       errors.push(errorTable[`1${language}`]);
     }
-    if (budatFrom === null || budatFrom === undefined || !budatFrom) {
+    if (bldatFrom === null || bldatFrom === undefined || !bldatFrom) {
       errors.push(errorTable[`13${language}`]);
     }
-    if (budatTo === null || budatTo === undefined || !budatTo) {
+    if (bldatTo === null || bldatTo === undefined || !bldatTo) {
       errors.push(errorTable[`14${language}`]);
     }
     return errors;
@@ -414,10 +414,10 @@ class Frep1 extends Component {
     );
 
     let t1r1c6 = {
-      Header: ({ value }) => <b>{formatMessage(messages.budat)}</b>,
-      accessor: 'budat', //Cell: obj => <span>{obj.original.budat}</span>,
+      Header: ({ value }) => <b>{formatMessage(messages.bldat)}</b>,
+      accessor: 'bldat', //Cell: obj => <span>{obj.original.bldat}</span>,
       filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['_original.budat'] }),
+        matchSorter(rows, filter.value, { keys: ['_original.bldat'] }),
       filterAll: true,
       width: 100,
     };
