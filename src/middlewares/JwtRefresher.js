@@ -58,7 +58,6 @@ function tokenRefresh(dispatch, action) {
       // If request is good...
       // - save the refreshed JWT token
       localStorage.setItem('token', response.data.token);
-      dispatch(action);
     })
     .catch(error => {
       // If request is bad...
