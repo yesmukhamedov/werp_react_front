@@ -531,8 +531,8 @@ const AsyncPositionList = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const menu = Loadable({
-  loader: () => import('../dit/menu/' /* webpackChunkName: menu */),
+const AsyncMenu = Loadable({
+  loader: () => import('../dit/menu/' /* webpackChunkName: "menu" */),
   loading: () => <LoadingPage />,
 });
 
@@ -618,6 +618,7 @@ const getComponent = {
   Assetmod: assetmod,
   Assetapr: assetapr,
   Aesreport1: aesreport1,
+  Dmulist: AsyncMenu,
   Poslt: AsyncPositionList,
 };
 
@@ -688,9 +689,6 @@ const generateRoutes = transactionRoutes => {
         exact={true}
         component={AsyncLogWerksRequestView}
       />
-
-      {/* Menu */}
-      <Route path="/dit/menu/list" component={menu} />
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
