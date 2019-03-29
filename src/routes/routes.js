@@ -525,9 +525,9 @@ const aesreport1 = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const positionList = Loadable({
+const AsyncPositionList = Loadable({
   loader: () =>
-    import('../hr/mainoperation/position/list' /* webpackChunkName: "aes" */),
+    import('../hr/reference/position' /* webpackChunkName: "position" */),
   loading: () => <LoadingPage />,
 });
 
@@ -618,6 +618,7 @@ const getComponent = {
   Assetmod: assetmod,
   Assetapr: assetapr,
   Aesreport1: aesreport1,
+  Poslt: AsyncPositionList,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -648,8 +649,6 @@ const generateRoutes = transactionRoutes => {
         component={AsyncRefNationalityListPage}
       />
 
-      {/* HR Position list */}
-      <Route path="/hr/mainoperation/position/list" component={positionList} />
       <Route
         path="/hr/doc/:action(create)/:type"
         exact={true}

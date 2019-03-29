@@ -19,7 +19,6 @@ export default function(state = INITIAL_STATE, action) {
     case POSITION_UPDATE:
       const updatedItem = action.payload;
       const newItems = [];
-      console.log(updatedItem);
       for (const k in state.currentPosition) {
         if (state.currentPosition[k].position_id === updatedItem.position_id) {
           newItems.push(updatedItem);
