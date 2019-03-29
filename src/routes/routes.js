@@ -505,22 +505,22 @@ const AsyncHrDocSalaryCreatePage = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const assetmod = Loadable({
+const AsyncAssetmod = Loadable({
   loader: () =>
     import('../aes/mainoperation/assetMod' /* webpackChunkName: "aes" */),
   loading: () => <LoadingPage />,
 });
-const assetapr = Loadable({
+const AsyncAssetapr = Loadable({
   loader: () =>
     import('../aes/mainoperation/assetapr' /* webpackChunkName: "aes" */),
   loading: () => <LoadingPage />,
 });
-const assetref = Loadable({
+const AsyncAssetref = Loadable({
   loader: () =>
     import('../aes/mainoperation/assetRef' /* webpackChunkName: "aes" */),
   loading: () => <LoadingPage />,
 });
-const aesreport1 = Loadable({
+const AsyncAesreport1 = Loadable({
   loader: () => import('../aes/report/aesReport' /* webpackChunkName: "aes" */),
   loading: () => <LoadingPage />,
 });
@@ -614,10 +614,10 @@ const getComponent = {
   RefStaffProblem: AsyncRefStaffProblemListPage,
   RefSubCompany: AsyncRefSubCompanyListPage,
   HrDocAllDocsPage: AsyncHrDocAllDocsPage,
-  Assetref: assetref,
-  Assetmod: assetmod,
-  Assetapr: assetapr,
-  Aesreport1: aesreport1,
+  Assetref: AsyncAssetref,
+  Assetmod: AsyncAssetmod,
+  Assetapr: AsyncAssetapr,
+  Aesreport1: AsyncAesreport1,
   Dmulist: AsyncMenu,
   Poslt: AsyncPositionList,
 };
