@@ -76,7 +76,6 @@ class AssetRef extends Component {
 
   /******************************************************************* CALL DISABLE FUNCTION */
   disableOs(os) {
-    console.log('os ', os);
     this.props.disableObject('/api/aes/os/disable', os, 'DIS_OS');
   }
   disableType1(type1) {

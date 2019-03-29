@@ -70,7 +70,6 @@ export default function(state = INITIAL_STATE, action) {
     case APPR_REJ:
       return { ...state, listAes: action.payload };
     case UNMOUNT_ALL:
-      console.log('unmount calisti');
       return { ...state, listAll: {} };
 
     /************************************************************************** SAVING ITEMS */
