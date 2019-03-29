@@ -431,14 +431,8 @@ const AsyncFa03 = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const trlist = Loadable({
-  loader: () => import('../dit/transactions/' /* webpackChunkName: "trlist" */),
-  loading: () => <LoadingPage />,
-});
-
-const trupdate = Loadable({
-  loader: () =>
-    import('../dit/transactions/updateTransaction' /* webpackChunkName: "trlist" */),
+const AsyncTransaction = Loadable({
+  loader: () => import('../dit/transaction/' /* webpackChunkName: "trlist" */),
   loading: () => <LoadingPage />,
 });
 
@@ -542,9 +536,8 @@ const menu = Loadable({
   loading: () => <LoadingPage />,
 });
 
-
 const getComponent = {
-  DitTransactionList: trlist,
+  Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
   Hrb02: AsyncHrb02,
 
@@ -697,12 +690,9 @@ const generateRoutes = transactionRoutes => {
         component={AsyncLogWerksRequestView}
       />
 
-      {/* Transactions */}
-      <Route path="/dit/transaction/update/:id?" component={trupdate} />
-
       {/* Menu */}
       <Route path="/dit/menu/list" component={menu} />
-      
+
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
         return (

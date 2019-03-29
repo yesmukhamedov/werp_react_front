@@ -20,7 +20,6 @@ export default function(state = INITIAL_STATE, action) {
     case TRANSACTION_UPDATE:
       const updatedItem = action.payload;
       const newItems = [];
-      console.log(updatedItem);
       for (const k in state.currentTransactions) {
         if (
           state.currentTransactions[k].transaction_id ===
