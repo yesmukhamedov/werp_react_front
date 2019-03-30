@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import TreeView from 'react-treeview';
 import 'react-treeview/react-treeview.css';
+import classNames from 'classnames';
 import './TreeViewMenu.css';
 import { LEGACY_URL } from '../../utils/constants';
 import { calcBreadcrumb } from '../../utils/helpers';
@@ -89,8 +90,9 @@ export default class TreeViewMenu extends Component {
   }
 
   render() {
+    const { visible } = this.props;
     return (
-      <div className="menu-container">
+      <div className={classNames(`menu-container ${visible ? '' : 'hidden'}`)}>
         {this.state.list.map(el => this.traverse(el))}
       </div>
     );

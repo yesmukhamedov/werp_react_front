@@ -1,58 +1,69 @@
 .menu-container {
-    text-align: left;
-    min-width: 200px;
+  text-align: left;
+  min-width: 200px;
+  position: absolute;
+  background-color: #42d4f4;
+  border: 1px solid black;
+  z-index: 10;
 }
 
-.node, .tree-view_children .leaf {
-    -moz-transition: all 0.5s;
-    -o-transition: all 0.5s;
-    -ms-transition: all 0.5s;
-    -webkit-transition: all 0.5s;
-    transition: all 0.5s;
-    border-radius: 3px;
-  }
-  
-  .info, .node:hover, .tree-view_children .leaf:hover {
-    background-color: #42d4f4;
-    cursor: pointer;
-  }
+.hidden {
+  display: none;
+}
 
-  .node-active {
-    background-color: #42d4f4; 
-  }
-  
-  .node {
-    padding: 2px 10px 2px 5px;
-    font: 14px Helvetica, Arial, sans-serif;
-    /* -webkit-user-select: none;
+.node,
+.tree-view_children .leaf {
+  -moz-transition: all 0.5s;
+  -o-transition: all 0.5s;
+  -ms-transition: all 0.5s;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+  border-radius: 3px;
+}
+
+.info,
+.node:hover,
+.tree-view_children .leaf:hover {
+  background-color: #42d4f4;
+  cursor: pointer;
+}
+
+.node-active {
+  background-color: #42d4f4;
+}
+
+.node {
+  padding: 2px 10px 2px 5px;
+  font: 14px Helvetica, Arial, sans-serif;
+  /* -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;  */
-  }
-  
-  .tree-view_arrow {
-    -moz-transition: all 0.1s;
-    -o-transition: all 0.1s;
-    -ms-transition: all 0.1s;
-    -webkit-transition: all 0.1s;
-    transition: all 0.1s;
-  }
-  
-  .tree-view_arrow-empty {
-    color: yellow;
-  }
+}
 
-  .tree-view_arrow:after {
-    content: '▾';
-    font-size: 20px;
-  }
-  
-  /* style for the children nodes container */
-  .tree-view_children {
-    margin-left: 20px;
-    margin-right: 10px;
-  }
+.tree-view_arrow {
+  -moz-transition: all 0.1s;
+  -o-transition: all 0.1s;
+  -ms-transition: all 0.1s;
+  -webkit-transition: all 0.1s;
+  transition: all 0.1s;
+}
 
-  .tree-view_children a {
-    color: black;
-  }
+.tree-view_arrow-empty {
+  color: yellow;
+}
+
+.tree-view_arrow:after {
+  content: '▾';
+  font-size: 20px;
+}
+
+/* style for the children nodes container */
+.tree-view_children {
+  margin-left: 20px;
+  margin-right: 10px;
+}
+
+.tree-view_children a {
+  color: black;
+}

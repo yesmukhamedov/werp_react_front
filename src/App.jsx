@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Menu, Segment, Sidebar, Loader, Dimmer } from 'semantic-ui-react';
+import { Loader, Dimmer } from 'semantic-ui-react';
 import './App.css';
 import Signin from './components/Auth/Signin';
 import { fetchUnreadMessages } from './actions/inbox';
@@ -17,14 +17,6 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = { menuVisible: false };
-
-    this.handlePusherClick = this.handlePusherClick.bind(this);
-  }
-
-  handlePusherClick() {
-    if (this.state.menuVisible) {
-      this.setState({ ...this.state, menuVisible: false });
-    }
   }
 
   render() {
@@ -35,37 +27,23 @@ class App extends Component {
         <div className="wrapper">
           <Header
             unread={this.props.unread}
+            menuTouched={this.state.menuVisible}
             toggleMenu={() =>
               this.setState({ menuVisible: !this.state.menuVisible })
             }
           />
           <Notification />
-          <Sidebar.Pushable as={Segment} attached="bottom">
-            <Sidebar
-              as={Menu}
-              animation="overlay"
-              visible={this.state.menuVisible}
-              icon="labeled"
-              vertical
-            >
-              <TreeViewMenu
-                lang={this.props.lang}
-                list={this.props.treeMenu}
-                transactions={this.props.transactions}
-                breadcrumbChanged={this.props.breadcrumbChanged}
-                toggleMenu={() =>
-                  this.setState({ menuVisible: !this.state.menuVisible })
-                }
-              />
-            </Sidebar>
-            <Sidebar.Pusher onClick={this.handlePusherClick}>
-
-              <Dimmer active={this.props.activeLoader}>
-                <Loader />
-              </Dimmer>
-              {this.props.routes}
-            </Sidebar.Pusher>
-          </Sidebar.Pushable>
+          <TreeViewMenu
+            visible={this.state.menuVisible}
+            lang={this.props.lang}
+            list={this.props.treeMenu}
+            transactions={this.props.transactions}
+            breadcrumbChanged={this.props.breadcrumbChanged}
+          />
+          <Dimmer active={this.props.activeLoader}>
+            <Loader />
+          </Dimmer>
+          {this.props.routes}
         </div>
       );
     }
@@ -86,9 +64,12 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {
-  fetchUnreadMessages,
-  fetchTreeMenu,
-  fetchAvailableRoutes,
-  breadcrumbChanged,
-})(App);
+export default connect(
+  mapStateToProps,
+  {
+    fetchUnreadMessages,
+    fetchTreeMenu,
+    fetchAvailableRoutes,
+    breadcrumbChanged,
+  },
+)(App);

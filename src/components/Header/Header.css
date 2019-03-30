@@ -1,6 +1,10 @@
 .ui.kirt {
-    background: rgba(26, 29, 26, 0.05);
-    margin-bottom: 15px;
+  background: rgba(26, 29, 26, 0.05);
+  margin-bottom: 15px;
+}
+
+.touched {
+  border: 1px solid #42d4f4;
 }
 
 /* .ui.green.button, .ui.green.buttons .button {
