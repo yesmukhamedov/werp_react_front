@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Container, Table } from 'semantic-ui-react';
 import { constructFullName } from '../../../../utils/helpers';
 
-const DtskcSummary = (props) => {
+const DtskcSummary = props => {
   const { location = {} } = props;
   const { state = {} } = location;
 
@@ -44,25 +44,26 @@ const DtskcSummary = (props) => {
   );
 };
 
-const renderTaskAssignee = (task) => {
+const renderTaskAssignee = task => {
   const { recipient } = task;
-  const {
-    assignee,
-    assigneesManager,
-    branch,
-    department,
-  } = recipient;
+  const { assignee, assigneesManager, branch, department } = recipient;
   return (
-    <Table.Row>
+    <Table.Row key={task.id}>
       <Table.Cell>
         {/* <Link to={`/dit/task/dtskedit/${task.id}`}>{task.id}</Link> */}
         {task.id}
       </Table.Cell>
       <Table.Cell>{task.title}</Table.Cell>
-      <Table.Cell>{(assignee ? constructFullName(assignee) : <span>&mdash;</span>)}</Table.Cell>
-      <Table.Cell>{(assigneesManager ? assigneesManager.value : <span>&mdash;</span>)}</Table.Cell>
-      <Table.Cell>{(branch ? branch.value : <span>&mdash;</span>)}</Table.Cell>
-      <Table.Cell>{(department ? department.value : <span>&mdash;</span>)}</Table.Cell>
+      <Table.Cell>
+        {assignee ? constructFullName(assignee) : <span>&mdash;</span>}
+      </Table.Cell>
+      <Table.Cell>
+        {assigneesManager ? assigneesManager.value : <span>&mdash;</span>}
+      </Table.Cell>
+      <Table.Cell>{branch ? branch.value : <span>&mdash;</span>}</Table.Cell>
+      <Table.Cell>
+        {department ? department.value : <span>&mdash;</span>}
+      </Table.Cell>
     </Table.Row>
   );
 };

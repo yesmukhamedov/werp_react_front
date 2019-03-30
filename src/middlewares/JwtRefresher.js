@@ -4,86 +4,73 @@ import moment from 'moment';
 import browserHistory from '../utils/history';
 import { ROOT_URL, TOKEN_REFRESH_LIMIT } from '../utils/constants';
 import { resetLocalStorage } from '../utils/helpers';
-import { UNAUTH_USER, AUTH_ERROR, CHANGE_LANGUAGE } from '../actions/types';
-import { notify } from '../general/notification/notification_action';
+import { UNAUTH_USER, AUTH_ERROR } from '../actions/types';
 
-function isAlmostExpired(dispatch) {
-  const token = localStorage.getItem('token');
-  if (token) {
-    try {
-      const tokenPayload = jwt.decode(token, 'secret');
-      const exp = moment.utc(tokenPayload.exp * 1000);
-      const now = moment.utc();
-      const refreshTime = moment
-        .utc(tokenPayload.exp * 1000)
-        .subtract(TOKEN_REFRESH_LIMIT, 'm');
-
-      if (exp.isAfter(now)) {
-        if (now.isAfter(refreshTime)) {
-          return true;
-        }
-      }
-      return false;
-    } catch (error) {
-      console.log(error);
-      if (error.response) {
-        dispatch(notify('error', error.response.data.message, 'Ошибка'));
-      } else {
-        Promise.resolve({ error }).then(response =>
-          dispatch(notify('error', response, 'Ошибка')),
-        );
-      }
-      signoutUser(dispatch, error.message);
-    }
-  } else return false;
-}
-
-export default function({ dispatch }) {
-  return next => action => {
-    if (isAlmostExpired(dispatch)) {
-      tokenRefresh(dispatch, action);
-    }
-    return next(action);
-  };
-}
-
-function tokenRefresh(dispatch, action) {
-  axios
-    .get(`${ROOT_URL}/tokenRefresh`, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    })
-    .then(response => {
-      // If request is good...
-      // - save the refreshed JWT token
-      localStorage.setItem('token', response.data.token);
-      dispatch(action);
-    })
-    .catch(error => {
-      // If request is bad...
-      // - Show an error to the user
-      const msg = "Can't refresh token. Please sign in again";
-      if (error.response) {
-        console.log(msg + error.response.data.message);
-      } else {
-        Promise.resolve({ error }).then(response =>
-          console.log(msg + response.error.message),
-        );
-      }
-    });
-}
-
-function signoutUser(dispatch, errorMsg) {
+const signoutUser = (dispatch, errorMsg) => {
   resetLocalStorage();
   dispatch({ type: UNAUTH_USER });
-  dispatch({
-    type: CHANGE_LANGUAGE,
-    payload: 'ru',
-  });
-  dispatch({
-    type: AUTH_ERROR,
-    payload: errorMsg,
-  });
+  dispatch({ type: AUTH_ERROR, payload: errorMsg });
   browserHistory.push('/');
-}
+};
+
+const tokenRefresherMiddleware = ({ dispatch }) => next => action => {
+  let isRenewingToken = false;
+  const token = localStorage.getItem('token');
+  const formAction =
+    (action.meta && action.meta.form) || typeof action === 'function';
+
+  if (formAction || !token) {
+    return next(action);
+  }
+
+  if (!isRenewingToken) {
+    console.log('user action', action.type);
+    try {
+      const tokenPayload = jwt.decode(token, 'secret'); // TODO: move secret to constant
+      console.log('tokenPayload', tokenPayload);
+
+      const exp = moment.utc(tokenPayload.exp * 1000);
+      const now = moment.utc();
+
+      const remainedUntilRefresh = exp.diff(now, 's');
+      console.log('DIFF', remainedUntilRefresh);
+
+      if (remainedUntilRefresh < TOKEN_REFRESH_LIMIT) {
+        isRenewingToken = true;
+
+        console.log('renewing token with user action', action.type);
+        axios
+          .get(`${ROOT_URL}/tokenRefresh`, {
+            headers: { authorization: token },
+          })
+          .then(({ data }) => {
+            // If request is good...
+            // - save the refreshed JWT token
+            localStorage.setItem('token', data.token);
+            isRenewingToken = false;
+          })
+          .catch(error => {
+            // If request is bad...
+            // - Show an error to the user
+            isRenewingToken = false;
+            throw new Error(
+              `Can't refresh token. Please sign in again ${JSON.stringify(
+                error,
+              )}`,
+            );
+          });
+      } else {
+        console.log(
+          `${action.type} tried to renew token but skipped due to ongoing call`,
+        );
+      }
+    } catch (error) {
+      isRenewingToken = false;
+      signoutUser(dispatch, error.message);
+    }
+  }
+
+  next(action);
+};
+
+export default tokenRefresherMiddleware;

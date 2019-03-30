@@ -6,7 +6,7 @@ import moment from 'moment';
 export function resetLocalStorage() {
   localStorage.removeItem('token');
   localStorage.removeItem('username');
-  localStorage.removeItem('lang');
+  // localStorage.removeItem('lang');
 }
 
 /**
@@ -235,7 +235,7 @@ export function excelDownload(
   excelHeaders,
 ) {
   let url = '';
-  url = `${ROOT_URL}` + a_url;
+  url = `${ROOT_URL}${a_url}`;
   // console.log(a_url, filename, outputTable, excelHeaders);
   return axios
     .post(
