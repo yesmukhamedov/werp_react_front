@@ -17,7 +17,11 @@ export default function(state = {}, action) {
         authenticated: true,
       };
     case UNAUTH_USER:
-      return { ...state, authenticated: false };
+      return {
+        ...state,
+        authenticated: false,
+        locale: state.locale,
+      };
     case AUTH_ERROR:
       return { ...state, error: action.payload };
     case FETCH_MESSAGE:

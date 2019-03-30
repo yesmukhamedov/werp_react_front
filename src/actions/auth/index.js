@@ -2,14 +2,7 @@ import axios from 'axios';
 import browserHistory from '../../utils/history';
 import { ROOT_URL } from '../../utils/constants';
 import { resetLocalStorage } from '../../utils/helpers';
-import {
-  AUTH_USER,
-  UNAUTH_USER,
-  AUTH_ERROR,
-  FETCH_USERS,
-  USERS_ERROR,
-  CHANGE_LANGUAGE,
-} from '../types';
+import { AUTH_USER, AUTH_ERROR, FETCH_USERS, USERS_ERROR } from '../types';
 
 export function usersError(error) {
   return {
@@ -78,11 +71,6 @@ export function signoutUser() {
   return dispatch => {
     resetLocalStorage();
     localStorage.removeItem('currentPathName');
-    dispatch({ type: UNAUTH_USER });
-    dispatch({
-      type: CHANGE_LANGUAGE,
-      payload: 'ru',
-    });
     browserHistory.push('/');
   };
 }

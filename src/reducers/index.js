@@ -86,17 +86,10 @@ const appReducer = combineReducers({
   hrSalaryReducer,
   transactionReducer,
   logisticsReducer,
-  aesReducer: aesReducer,
-  hrPosReducer: hrPosReducer,
-  menuReducer: menuReducer,
+  aesReducer,
+  hrPosReducer,
+  menuReducer,
 });
 
-const rootReducer = (state, action) => {
-  if (action.type === UNAUTH_USER) {
-    state = undefined;
-  }
-
-  return appReducer(state, action);
-};
-
+const rootReducer = (state, action) => appReducer(state, action);
 export default rootReducer;

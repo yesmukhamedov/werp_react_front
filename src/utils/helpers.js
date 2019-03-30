@@ -6,7 +6,6 @@ import moment from 'moment';
 export function resetLocalStorage() {
   localStorage.removeItem('token');
   localStorage.removeItem('username');
-  // localStorage.removeItem('lang');
 }
 
 /**
