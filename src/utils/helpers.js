@@ -196,8 +196,12 @@ export function checkNestedObject(obj, key) {
 }
 
 export function GET(url) {
+  const { locales } = JSON.parse(localStorage.getItem('lang'));
   return axios.get(url, {
-    headers: { authorization: localStorage.getItem('token') },
+    headers: {
+      authorization: localStorage.getItem('token'),
+      'Content-Language': locales.lang,
+    },
   });
 }
 
