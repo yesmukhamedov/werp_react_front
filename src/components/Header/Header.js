@@ -106,16 +106,20 @@ class Header extends Component {
             <Dropdown.Menu>
               <Dropdown.Item>
                 <Link to="/settings">
-                  <Icon name="settings" />
-                  {formatMessage(messages.settings)}
+                  <div>
+                    <Icon name="settings" />
+                    {formatMessage(messages.settings)}
+                  </div>
                 </Link>
               </Dropdown.Item>
               {/* <Dropdown.Item as={Link} to='/settings' icon='setting' text={formatMessage(messages.settings)} /> */}
               <Dropdown.Divider />
               <Dropdown.Item>
                 <Link to="/signout">
-                  <Icon name="log out" />
-                  {formatMessage(messages.logout)}
+                  <div>
+                    <Icon name="log out" />
+                    {formatMessage(messages.logout)}
+                  </div>
                 </Link>
               </Dropdown.Item>
               {/* <Dropdown.Item as={Link} to='/signout' icon='log out' text={formatMessage(messages.logout)} /> */}

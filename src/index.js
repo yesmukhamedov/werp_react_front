@@ -40,11 +40,13 @@ const store = createStore(
   composeEnhancers(applyMiddleware(JwtRefresher, reduxThunk)),
 );
 
-store.subscribe(throttle(() => {
-  saveLang({
-    locales: store.getState().locales,
-  });
-}, 1000));
+store.subscribe(
+  throttle(() => {
+    saveLang({
+      locales: store.getState().locales,
+    });
+  }, 1000),
+);
 
 const token = localStorage.getItem('token');
 // If we have a token, consider the user to be signed in
@@ -52,7 +54,7 @@ if (token) {
   // we need to update application state
   store.dispatch({
     type: AUTH_USER,
-    payload: localStorage.getItem('username'),
+    payload: { username: localStorage.getItem('username') },
   });
 } else {
   store.dispatch({
