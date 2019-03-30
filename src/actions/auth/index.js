@@ -79,9 +79,10 @@ export function signoutUser() {
     resetLocalStorage();
     localStorage.removeItem('currentPathName');
     dispatch({ type: UNAUTH_USER });
+    let lang = localStorage.getItem('language');
     dispatch({
       type: CHANGE_LANGUAGE,
-      payload: 'ru',
+      payload: lang,
     });
     browserHistory.push('/');
   };
