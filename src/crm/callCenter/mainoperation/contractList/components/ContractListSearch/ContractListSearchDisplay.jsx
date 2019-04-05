@@ -5,7 +5,10 @@ import moment from 'moment';
 import _ from 'lodash';
 import { Form, Grid, Segment, Dimmer, Loader } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
-import { DropdownFormField, DatePickerFormField } from '../../../../../../utils/formFields';
+import {
+  DropdownFormField,
+  DatePickerFormField,
+} from '../../../../../../utils/formFields';
 
 class ContractListSearchDisplay extends Component {
   constructor(props) {
@@ -20,16 +23,14 @@ class ContractListSearchDisplay extends Component {
 
     const paramsDict = {
       bukrs: values.company,
-      branchId: values.branch !== -1 ? values.branch : undefined,
+      branchId: values.branch, // !== -1 ? values.branch : undefined,
       statusId: values.state !== -1 ? values.state : undefined,
       startDate: startDateUtc,
       endDate: endDateUtc,
     };
 
-    const params = _.map(
-      paramsDict,
-      (val, key) =>
-        (val ? `${key}=${val}` : val === false ? `${key}=${val}` : ''),
+    const params = _.map(paramsDict, (val, key) =>
+      val ? `${key}=${val}` : val === false ? `${key}=${val}` : '',
     )
       .filter(param => param)
       .join('&');
@@ -40,7 +41,13 @@ class ContractListSearchDisplay extends Component {
   render() {
     const { formatMessage } = this.props.intl;
     const {
-      handleSubmit, pristine, submitting, reset, company, branchOptions, messages,
+      handleSubmit,
+      pristine,
+      submitting,
+      reset,
+      company,
+      branchOptions,
+      messages,
     } = this.props;
     const allOpt = { key: -1, text: 'Все', value: -1 };
     if (this.props.directories && this.props.companyOptions) {
@@ -98,15 +105,21 @@ class ContractListSearchDisplay extends Component {
                     type="submit"
                     loading={submitting}
                     disabled={pristine || submitting}
-                    style={
-                      { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
+                    style={{
+                      marginTop: '1.6em',
+                      background: 'rgba(84,170,169, 1)',
+                      color: 'white',
+                    }}
                   />
                   <Form.Button
                     content={formatMessage(messages.reset)}
                     type="button"
                     disabled={pristine || submitting}
-                    style={
-                      { marginTop: '1.6em', background: 'rgba(84,170,169, 1)', color: 'white' }}
+                    style={{
+                      marginTop: '1.6em',
+                      background: 'rgba(84,170,169, 1)',
+                      color: 'white',
+                    }}
                     onClick={reset}
                   />
                 </Form.Group>
@@ -127,7 +140,10 @@ class ContractListSearchDisplay extends Component {
 ContractListSearchDisplay.propTypes = {
   directories: PropTypes.object,
   companyOptions: PropTypes.arrayOf(PropTypes.object),
-  branchOptions: PropTypes.oneOfType([PropTypes.object, PropTypes.arrayOf(PropTypes.object)]),
+  branchOptions: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.arrayOf(PropTypes.object),
+  ]),
 };
 
 function validate(formProps, state) {
