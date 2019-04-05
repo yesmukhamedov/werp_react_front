@@ -102,7 +102,7 @@ class Header extends Component {
 
           <LanguageSwitcher />
 
-          <Dropdown item text={this.props.username}>
+          <Dropdown item text={localStorage.getItem('username')}>
             <Dropdown.Menu>
               <Dropdown.Item>
                 <Link to="/settings">

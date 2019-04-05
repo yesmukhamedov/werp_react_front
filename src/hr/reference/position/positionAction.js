@@ -89,7 +89,6 @@ export function updatePosition(update) {
       )
       .then(response => {
         if (response) {
-          console.log('resp ', response);
           dispatch(
             notify(
               'success',

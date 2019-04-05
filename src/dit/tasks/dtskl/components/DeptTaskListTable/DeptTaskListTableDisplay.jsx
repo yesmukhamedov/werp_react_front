@@ -122,7 +122,7 @@ class DeptTaskListTableDisplay extends Component {
       },
       {
         Header: formatMessage(messages.author),
-        accessor: 'author.id',
+        accessor: 'author.lastName',
         Cell: props => {
           const { author } = props.original;
           return <div>{author && constructFullName(author)}</div>;
@@ -130,7 +130,7 @@ class DeptTaskListTableDisplay extends Component {
       },
       {
         Header: formatMessage(messages.recipient),
-        accessor: 'recipient',
+        accessor: 'recipient.assignee.value',
         Cell: props => {
           const { recipient } = props.original;
           return <div>{recipient.assignee && recipient.assignee.value}</div>;

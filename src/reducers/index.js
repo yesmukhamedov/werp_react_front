@@ -42,7 +42,7 @@ import transactionReducer from '../dit/transactionReducer';
 import logisticsReducer from '../logistics/mainoperation/reducers/logisticsReducer';
 
 import aesReducer from '../aes/aesReducer';
-import hrPosReducer from '../hr/mainoperation/position/positionReducer';
+import hrPosReducer from '../hr/reference/position/positionReducer';
 import menuReducer from '../dit/menu/menuReducer';
 
 const appReducer = combineReducers({

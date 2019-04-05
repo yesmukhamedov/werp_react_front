@@ -431,14 +431,8 @@ const AsyncFa03 = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const trlist = Loadable({
-  loader: () => import('../dit/transactions/' /* webpackChunkName: "trlist" */),
-  loading: () => <LoadingPage />,
-});
-
-const trupdate = Loadable({
-  loader: () =>
-    import('../dit/transactions/updateTransaction' /* webpackChunkName: "trlist" */),
+const AsyncTransaction = Loadable({
+  loader: () => import('../dit/transaction/' /* webpackChunkName: "trlist" */),
   loading: () => <LoadingPage />,
 });
 
@@ -511,40 +505,39 @@ const AsyncHrDocSalaryCreatePage = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const assetmod = Loadable({
+const AsyncAssetmod = Loadable({
   loader: () =>
     import('../aes/mainoperation/assetMod' /* webpackChunkName: "aes" */),
   loading: () => <LoadingPage />,
 });
-const assetapr = Loadable({
+const AsyncAssetapr = Loadable({
   loader: () =>
     import('../aes/mainoperation/assetapr' /* webpackChunkName: "aes" */),
   loading: () => <LoadingPage />,
 });
-const assetref = Loadable({
+const AsyncAssetref = Loadable({
   loader: () =>
     import('../aes/mainoperation/assetRef' /* webpackChunkName: "aes" */),
   loading: () => <LoadingPage />,
 });
-const aesreport1 = Loadable({
+const AsyncAesreport1 = Loadable({
   loader: () => import('../aes/report/aesReport' /* webpackChunkName: "aes" */),
   loading: () => <LoadingPage />,
 });
 
-const positionList = Loadable({
+const AsyncPositionList = Loadable({
   loader: () =>
-    import('../hr/mainoperation/position/list' /* webpackChunkName: "aes" */),
+    import('../hr/reference/position' /* webpackChunkName: "position" */),
   loading: () => <LoadingPage />,
 });
 
-const menu = Loadable({
-  loader: () => import('../dit/menu/' /* webpackChunkName: menu */),
+const AsyncMenu = Loadable({
+  loader: () => import('../dit/menu/' /* webpackChunkName: "menu" */),
   loading: () => <LoadingPage />,
 });
-
 
 const getComponent = {
-  DitTransactionList: trlist,
+  Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
   Hrb02: AsyncHrb02,
 
@@ -621,10 +614,12 @@ const getComponent = {
   RefStaffProblem: AsyncRefStaffProblemListPage,
   RefSubCompany: AsyncRefSubCompanyListPage,
   HrDocAllDocsPage: AsyncHrDocAllDocsPage,
-  Assetref: assetref,
-  Assetmod: assetmod,
-  Assetapr: assetapr,
-  Aesreport1: aesreport1,
+  Assetref: AsyncAssetref,
+  Assetmod: AsyncAssetmod,
+  Assetapr: AsyncAssetapr,
+  Aesreport1: AsyncAesreport1,
+  Dmulist: AsyncMenu,
+  Poslt: AsyncPositionList,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -655,8 +650,6 @@ const generateRoutes = transactionRoutes => {
         component={AsyncRefNationalityListPage}
       />
 
-      {/* HR Position list */}
-      <Route path="/hr/mainoperation/position/list" component={positionList} />
       <Route
         path="/hr/doc/:action(create)/:type"
         exact={true}
@@ -697,12 +690,6 @@ const generateRoutes = transactionRoutes => {
         component={AsyncLogWerksRequestView}
       />
 
-      {/* Transactions */}
-      <Route path="/dit/transaction/update/:id?" component={trupdate} />
-
-      {/* Menu */}
-      <Route path="/dit/menu/list" component={menu} />
-      
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
         return (

@@ -50,7 +50,7 @@ export default function EditMenuNode(props) {
 
               <Button floated="right" negative onClick={props.close}>
                 {' '}
-                {props.messages['change']}
+                {props.messages['cancel']}
               </Button>
             </Form>
             <br />

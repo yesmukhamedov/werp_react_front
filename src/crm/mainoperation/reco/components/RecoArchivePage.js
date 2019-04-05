@@ -194,15 +194,27 @@ class RecoArchivePage extends Component {
   }
 
   renderSearchPanel(messages) {
+    const { queryParams } = this.state;
+    const { companyOptions, branchOptions } = this.props;
     return (
       <Form>
         <Form.Group widths="equal">
-          <BukrsF4 handleChange={this.handleDropdownChange} />
-          <BranchF4
-            search
+          <Form.Select
+            name="bukrs"
+            label="Компания"
+            options={companyOptions}
+            placeholder="Компания"
+            onChange={this.handleDropdownChange}
+          />
+          <Form.Select
+            name="branch"
             multiple
-            handleChange={this.handleDropdownChange}
-            bukrs={this.state.queryParams.bukrs}
+            search
+            selection
+            label="Филиал"
+            options={branchOptions[queryParams['bukrs']] || []}
+            placeholder="Филиал"
+            onChange={this.handleDropdownChange}
           />
           <Form.Select
             name="statusIds"
@@ -361,6 +373,8 @@ function mapStateToProps(state) {
     statuses: state.crmReco.statuses,
     loader: state.loader,
     dealers: state.crmDemo.dealers,
+    companyOptions: state.userInfo.companyOptions,
+    branchOptions: state.userInfo.branchOptionsMarketing,
   };
 }
 
