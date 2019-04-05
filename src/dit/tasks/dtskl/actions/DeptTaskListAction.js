@@ -2,7 +2,7 @@ import axios from 'axios';
 import moment from 'moment';
 import _ from 'lodash';
 import { ROOT_URL } from '../../../../utils/constants';
-import { constructFullName } from '../../../../utils/helpers';
+import apiClient from '../../../../utils/apiClient';
 import { notify } from '../../../../general/notification/notification_action';
 
 export const DEPT_TASK_LIST_DIRECTORIES = 'dept_task_list_directories';
@@ -14,10 +14,8 @@ export const FETCH_ASSIGNEE_DETAILS = 'fetch_assignee_details';
 
 export function searchTasks(params, resolve) {
   return dispatch => {
-    axios
-      .get(`${ROOT_URL}/api/dtskl/tasks?${params}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    apiClient
+      .get(`${ROOT_URL}/api/dtskl/tasks?${params}`)
       .then(({ data }) => {
         // console.log(data);
         dispatch({
@@ -42,10 +40,8 @@ export function searchTasks(params, resolve) {
 
 export function fetchPrivateTasks() {
   return dispatch => {
-    axios
-      .get(`${ROOT_URL}/api/dtskl/privateTasks`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    apiClient
+      .get(`${ROOT_URL}/api/dtskl/privateTasks`)
       .then(({ data }) => {
         // console.log(data);
         dispatch({
@@ -96,15 +92,11 @@ export function getDeptTaskListDirectoriesOld(lang) {
 }
 
 function getTaskDirectory(name) {
-  return axios.get(`${ROOT_URL}/api/tasks/${name}`, {
-    headers: { authorization: localStorage.getItem('token') },
-  });
+  return apiClient.get(`${ROOT_URL}/api/tasks/${name}`);
 }
 
 function getRefDirectory(name) {
-  return axios.get(`${ROOT_URL}/api/reference/${name}`, {
-    headers: { authorization: localStorage.getItem('token') },
-  });
+  return apiClient.get(`${ROOT_URL}/api/reference/${name}`);
 }
 
 export function getDeptTaskListDirectories(lang) {
@@ -174,10 +166,8 @@ export function editRecipient(taskId, fields, resolve) {
     dirtyFields.estimatedAt = endDateFromUtc;
   }
   return dispatch => {
-    axios
-      .put(`${ROOT_URL}/api/dtskl/tasks/${taskId}`, dirtyFields, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    apiClient
+      .put(`${ROOT_URL}/api/dtskl/tasks/${taskId}`, dirtyFields)
       .then(({ data }) => {
         const editDetails = {
           expectedEndDate: data.estimatedAt,
@@ -219,10 +209,8 @@ export function fetchTaskById(taskId) {
     }
     function onSuccess(success) {
       const { estimatedAt, bukrs, recipient } = success.data;
-      axios
-        .get(`${assigneesUrl}?branchId=${recipient.branch.id}&bukrs=${bukrs}`, {
-          headers: { authorization: localStorage.getItem('token') },
-        })
+      apiClient
+        .get(`${assigneesUrl}?branchId=${recipient.branch.id}&bukrs=${bukrs}`)
         .then(({ data }) => {
           const assigneesOpts = data.map(item => ({
             key: item.userId,
@@ -244,9 +232,7 @@ export function fetchTaskById(taskId) {
         .catch(error => onError(error));
     }
     try {
-      const success = await axios.get(`${ROOT_URL}/api/tasks/${taskId}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      });
+      const success = await apiClient.get(`${ROOT_URL}/api/tasks/${taskId}`);
       return onSuccess(success);
     } catch (error) {
       return onError(error);

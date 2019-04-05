@@ -10,10 +10,11 @@ export const loadLang = () => {
   }
 };
 
-export const saveLang = (lang) => {
+export const saveLang = lang => {
   try {
     const serializedLang = JSON.stringify(lang);
     localStorage.setItem('lang', serializedLang);
+    localStorage.setItem('language', lang.locales.lang);
   } catch (error) {
     // Ignore write errors.
   }
