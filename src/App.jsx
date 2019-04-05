@@ -39,6 +39,9 @@ class App extends Component {
             list={this.props.treeMenu}
             transactions={this.props.transactions}
             breadcrumbChanged={this.props.breadcrumbChanged}
+            toggleMenu={() =>
+              this.setState({ menuVisible: !this.state.menuVisible })
+            }
           />
           <Dimmer active={this.props.activeLoader}>
             <Loader />
