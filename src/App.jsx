@@ -19,8 +19,13 @@ class App extends Component {
     this.state = { menuVisible: false };
   }
 
+  toggleMenu = () => this.setState({ menuVisible: !this.state.menuVisible });
+
+  hideMenu = () => this.setState({ menuVisible: false });
+
   render() {
     const token = localStorage.getItem('token');
+
     // If we have a token, consider the user to be signed in
     if (token) {
       return (
@@ -28,9 +33,7 @@ class App extends Component {
           <Header
             unread={this.props.unread}
             menuTouched={this.state.menuVisible}
-            toggleMenu={() =>
-              this.setState({ menuVisible: !this.state.menuVisible })
-            }
+            toggleMenu={this.toggleMenu}
           />
           <Notification />
           <TreeViewMenu
@@ -39,14 +42,12 @@ class App extends Component {
             list={this.props.treeMenu}
             transactions={this.props.transactions}
             breadcrumbChanged={this.props.breadcrumbChanged}
-            toggleMenu={() =>
-              this.setState({ menuVisible: !this.state.menuVisible })
-            }
+            toggleMenu={this.toggleMenu}
           />
           <Dimmer active={this.props.activeLoader}>
             <Loader />
           </Dimmer>
-          {this.props.routes}
+          <main onClick={this.hideMenu}>{this.props.routes}</main>
         </div>
       );
     }
