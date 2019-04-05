@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import { Link } from 'react-router-dom';
 import { Label } from 'semantic-ui-react';
+import matchSorter from 'match-sorter';
 import 'react-table/react-table.css';
 import PropTypes from 'prop-types';
 import { outCallStatusColorMap } from '../../../../../utils/constants';
 import { formatDMYMS, constructFullName } from '../../../../../utils/helpers';
-
 
 class PrivateTaskListTableDisplay extends Component {
   constructor(props) {
@@ -22,13 +22,25 @@ class PrivateTaskListTableDisplay extends Component {
 
   render() {
     const { formatMessage } = this.props.intl;
-    const { lang, messages } = this.props;
+    const { lang, messages, directories } = this.props;
+    let options;
+    if (directories) {
+      options = Object.values(directories.statusOptions).map(status => {
+        if (status) {
+          return (
+            <option value={status.value} key={status.key}>
+              {status.text}
+            </option>
+          );
+        }
+      });
+    }
     const columns = [
       {
         Header: '#',
         accessor: 'id',
         maxWidth: 50,
-        Cell: (props) => {
+        Cell: props => {
           const { id } = props.original;
           return (
             <Link target="_blank" to={`/dit/task/dtskedit/${id}`}>
@@ -41,44 +53,32 @@ class PrivateTaskListTableDisplay extends Component {
         Header: formatMessage(messages.branch),
         accessor: 'recipient.branch.value',
         maxWidth: 160,
-        Cell: (props) => {
+        Cell: props => {
           const { recipient } = props.original;
-          return (
-            <div>
-              {recipient.branch.value}
-            </div>
-          );
+          return <div>{recipient.branch.value}</div>;
         },
       },
       {
         Header: formatMessage(messages.department),
         accessor: 'recipient.department.value',
-        Cell: (props) => {
+        Cell: props => {
           const { recipient } = props.original;
-          return (
-            <div>
-              {recipient.department.value}
-            </div>
-          );
+          return <div>{recipient.department.value}</div>;
         },
       },
       {
         Header: formatMessage(messages.type),
         accessor: 'type.code',
-        Cell: (props) => {
+        Cell: props => {
           const { type } = props.original;
-          return (
-            <div>
-              {type[lang]}
-            </div>
-          );
+          return <div>{type[lang]}</div>;
         },
       },
       {
         Header: formatMessage(messages.title),
         accessor: 'title',
         maxWidth: 380,
-        Cell: (props) => {
+        Cell: props => {
           const { title, id } = props.original;
           return (
             <Link target="_blank" to={`/dit/task/dtskedit/${id}`}>
@@ -90,25 +90,40 @@ class PrivateTaskListTableDisplay extends Component {
       {
         Header: formatMessage(messages.status),
         accessor: 'status.id',
-        Cell: (props) => {
+        Cell: props => {
           const { status } = props.original;
           return (
             <div>
-              <Label
-                color={outCallStatusColorMap[status.id]}
-                size="mini"
-              >
+              <Label color={outCallStatusColorMap[status.id]} size="mini">
                 {status[lang]}
               </Label>
             </div>
           );
         },
+        filterable: true,
+        filterMethod: (filter, row) => {
+          if (filter.value === '0') {
+            return true;
+          }
+          return String(row[filter.id]) === filter.value;
+        },
+        Filter: ({ filter, onChange }) => (
+          <select
+            onChange={event => onChange(event.target.value)}
+            style={{ width: '100%' }}
+            value={filter ? filter.value : '0'}
+            // multiple={true}
+          >
+            <option value="0">{formatMessage(messages.allOption)}</option>
+            {options}
+          </select>
+        ),
       },
       {
         Header: formatMessage(messages.createdAt),
         accessor: 'createdAt',
         // maxWidth: 125,
-        Cell: (props) => {
+        Cell: props => {
           const { createdAt } = props.original;
           return formatDMYMS(createdAt);
         },
@@ -117,37 +132,25 @@ class PrivateTaskListTableDisplay extends Component {
         Header: formatMessage(messages.estimatedAt),
         accessor: 'estimatedAt',
         // maxWidth: 125,
-        Cell: (props) => {
+        Cell: props => {
           const { estimatedAt } = props.original;
-          return (
-            <div>
-              { estimatedAt && formatDMYMS(estimatedAt) }
-            </div>
-          );
+          return <div>{estimatedAt && formatDMYMS(estimatedAt)}</div>;
         },
       },
       {
         Header: formatMessage(messages.author),
-        accessor: 'author.id',
-        Cell: (props) => {
+        accessor: 'author.lastName',
+        Cell: props => {
           const { author } = props.original;
-          return (
-            <div>
-              {author && constructFullName(author)}
-            </div>
-          );
+          return <div>{author && constructFullName(author)}</div>;
         },
       },
       {
         Header: formatMessage(messages.recipient),
-        accessor: 'recipient',
-        Cell: (props) => {
+        accessor: 'recipient.assignee.value',
+        Cell: props => {
           const { recipient } = props.original;
-          return (
-            <div>
-              {recipient.assignee && recipient.assignee.value}
-            </div>
-          );
+          return <div>{recipient.assignee && recipient.assignee.value}</div>;
         },
       },
     ];
@@ -169,12 +172,17 @@ class PrivateTaskListTableDisplay extends Component {
           className="-highlight"
           getTrProps={(state, rowInfo) => ({
             onClick: () => {
-                this.setState({
-                  selectedIdx: rowInfo.index,
-                });
+              this.setState({
+                selectedIdx: rowInfo.index,
+              });
             },
             style: {
-                background: (rowInfo === undefined ? '' : (this.state.selectedIdx === rowInfo.index ? 'rgba(241,250,229, 1)' : '')),
+              background:
+                rowInfo === undefined
+                  ? ''
+                  : this.state.selectedIdx === rowInfo.index
+                  ? 'rgba(241,250,229, 1)'
+                  : '',
             },
           })}
           getTheadProps={() => ({
