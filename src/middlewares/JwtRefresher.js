@@ -24,21 +24,17 @@ const tokenRefresherMiddleware = ({ dispatch }) => next => action => {
   }
 
   if (!isRenewingToken) {
-    console.log('user action', action.type);
     try {
-      const tokenPayload = jwt.decode(token, 'secret'); // TODO: move secret to constant
-      console.log('tokenPayload', tokenPayload);
+      const tokenPayload = jwt.decode(token, 'secret');
 
       const exp = moment.utc(tokenPayload.exp * 1000);
       const now = moment.utc();
 
       const remainedUntilRefresh = exp.diff(now, 's');
-      console.log('DIFF', remainedUntilRefresh);
 
       if (remainedUntilRefresh < TOKEN_REFRESH_LIMIT) {
         isRenewingToken = true;
 
-        console.log('renewing token with user action', action.type);
         axios
           .get(`${ROOT_URL}/tokenRefresh`, {
             headers: { authorization: token },
@@ -59,10 +55,6 @@ const tokenRefresherMiddleware = ({ dispatch }) => next => action => {
               )}`,
             );
           });
-      } else {
-        console.log(
-          `${action.type} tried to renew token but skipped due to ongoing call`,
-        );
       }
     } catch (error) {
       isRenewingToken = false;
