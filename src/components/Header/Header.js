@@ -11,6 +11,7 @@ import { breadcrumbChanged } from '../../actions/tree_menu';
 import { calcBreadcrumb } from '../../utils/helpers';
 import { fetchTreeMenu } from '../../actions/tree_menu';
 import { fetchUserInfo } from '../../general/userInfo/userInfo_action';
+import { signoutUser } from '../../actions/auth';
 
 class Header extends Component {
   componentWillMount() {
@@ -104,25 +105,10 @@ class Header extends Component {
 
           <Dropdown item text={localStorage.getItem('username')}>
             <Dropdown.Menu>
-              <Dropdown.Item>
-                <Link to="/settings">
-                  <div>
-                    <Icon name="settings" />
-                    {formatMessage(messages.settings)}
-                  </div>
-                </Link>
+              <Dropdown.Item onClick={this.props.signOut}>
+                <Icon name="log out" />
+                {formatMessage(messages.logout)}
               </Dropdown.Item>
-              {/* <Dropdown.Item as={Link} to='/settings' icon='setting' text={formatMessage(messages.settings)} /> */}
-              <Dropdown.Divider />
-              <Dropdown.Item>
-                <Link to="/signout">
-                  <div>
-                    <Icon name="log out" />
-                    {formatMessage(messages.logout)}
-                  </div>
-                </Link>
-              </Dropdown.Item>
-              {/* <Dropdown.Item as={Link} to='/signout' icon='log out' text={formatMessage(messages.logout)} /> */}
             </Dropdown.Menu>
           </Dropdown>
         </Menu.Menu>
@@ -174,5 +160,6 @@ export default connect(
     breadcrumbChanged,
     fetchTreeMenu,
     fetchUserInfo,
+    signOut: signoutUser,
   },
 )(injectIntl(Header));
