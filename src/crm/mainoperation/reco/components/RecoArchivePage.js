@@ -102,7 +102,7 @@ class RecoArchivePage extends Component {
             statusName={item.statusName}
           />
         </Table.Cell>
-        <Table.Cell>{moment(item.docDate).format('DD.MM.YYYY')}</Table.Cell>
+        <Table.Cell>{item.docDate}</Table.Cell>
         <Table.Cell>
           <Link
             target="_blank"

@@ -21,6 +21,7 @@ import {
 import { fetchReasons } from '../../demo/actions/demoAction';
 import { getRecoCategoriesOptionsByLanguage } from '../../../crmUtil';
 import { injectIntl } from 'react-intl';
+import { fetchDemoPrices } from '../../../../reference/mainoperation/actions/referenceAction';
 
 class RecoCurrentPage extends Component {
   constructor(props) {
@@ -33,6 +34,7 @@ class RecoCurrentPage extends Component {
       // newItems: [],
       // doneItems: [],
       // movedItems: []
+      demoPriceOptions: [],
     };
 
     this.renderTabUsed = this.renderTabUsed.bind(this);
@@ -55,6 +57,15 @@ class RecoCurrentPage extends Component {
     this.props.fetchRecoStatuses();
   }
 
+  componentDidMount() {
+    this.props.fetchDemoPrices({ 'dto-type': 'options' }).then(({ data }) => {
+      this.setState({
+        ...this.state,
+        demoPriceOptions: data,
+      });
+    });
+  }
+
   renderPhoneCall(e, d) {
     console.log(e);
     console.log(d);
@@ -69,6 +80,7 @@ class RecoCurrentPage extends Component {
       <div>
         {phones.map(p => (
           <Phone
+            demoPriceOptions={this.state.demoPriceOptions}
             callRefuseOptions={this.props.callResults}
             callResultOptions={this.props.callResults}
             key={p.id}
@@ -234,17 +246,36 @@ class RecoCurrentPage extends Component {
 
   renderDocDate(row) {
     if (row.callDate) {
-      const now = moment();
-      const docDate = moment(row.callDate);
-      if (now.isAfter(docDate)) {
-        return <Label color="red">{docDate.format('DD.MM.YYYY HH:mm')}</Label>;
-      } else if (now.format('DD.MM.YYYY') === docDate.format('DD.MM.YYYY')) {
-        return (
-          <Label color="orange">{docDate.format('DD.MM.YYYY HH:mm')}</Label>
-        );
+      return row.callDate;
+      // const now = moment();
+      {
+        /*const docDate = moment(row.callDate);*/
+      }
+      {
+        /*if (now.isAfter(docDate)) {*/
+      }
+      {
+        /*return <Label color="red">{docDate.format('DD.MM.YYYY HH:mm')}</Label>;*/
+      }
+      {
+        /*} else if (now.format('DD.MM.YYYY') === docDate.format('DD.MM.YYYY')) {*/
+      }
+      {
+        /*return (*/
+      }
+      {
+        /*<Label color="orange">{docDate.format('DD.MM.YYYY HH:mm')}</Label>*/
+      }
+      {
+        /*);*/
+      }
+      {
+        /*}*/
       }
 
-      return <Label color="teal">{docDate.format('DD.MM.YYYY HH:mm')}</Label>;
+      {
+        /*return <Label color="teal">{docDate.format('DD.MM.YYYY HH:mm')}</Label>;*/
+      }
     }
     return '';
   }
@@ -319,5 +350,6 @@ export default connect(
     fetchReasons,
     fetchCallResults,
     fetchRecoStatuses,
+    fetchDemoPrices,
   },
 )(injectIntl(RecoCurrentPage));

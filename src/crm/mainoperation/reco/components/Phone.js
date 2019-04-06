@@ -191,7 +191,16 @@ class Phone extends Component {
             label={messages['Crm.NoteForDemo']}
             placeholder={messages['Crm.NoteForDemo']}
           />
-          <Form.Field />
+
+          <Form.Select
+            error={this.state.errors.priceDistrictId}
+            required
+            fluid
+            selection
+            label={'Район'}
+            options={this.props.demoPriceOptions}
+            onChange={(e, v) => this.handleChange('priceDistrictId', v)}
+          />
         </Form.Group>
       </div>
     );
@@ -438,6 +447,10 @@ class Phone extends Component {
 
       case 'callReasonId':
         call[fieldName] = parseInt(o.value, 10);
+        break;
+
+      case 'priceDistrictId':
+        call[fieldName] = o.value;
         break;
 
       case 'callResultId':

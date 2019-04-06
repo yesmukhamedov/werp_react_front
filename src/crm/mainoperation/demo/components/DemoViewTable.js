@@ -126,6 +126,15 @@ export default function DemoViewTable(props) {
 
             <Table.Row>
               <Table.Cell>
+                <Header as="h4">{'Район и сумма'}</Header>
+              </Table.Cell>
+              <Table.Cell>
+                {demo.priceDistrictName + '; ' + demo.price}
+              </Table.Cell>
+            </Table.Row>
+
+            <Table.Row>
+              <Table.Cell>
                 <Header as="h4">{messages['Table.createdAt']}</Header>
               </Table.Cell>
               <Table.Cell>

@@ -155,7 +155,7 @@ function renderPhonedReco(item, recoCardMenuHandle, messages) {
           <span style={{ float: 'left' }}>
             {recallDate ? (
               <Popup
-                trigger={<Label color="blue">{formatDMYMS(recallDate)}</Label>}
+                trigger={<Label color="blue">{recallDate}</Label>}
                 content={messages['Crm.RecallDateTime']}
                 basic
               />
@@ -316,11 +316,7 @@ function renderByDate(props) {
             style={{ float: 'left' }}
             trigger={
               <Label color="blue" size="small">
-                <i>
-                  {item.callDate
-                    ? moment(item.callDate).format('DD.MM.YYYY HH:mm')
-                    : ''}
-                </i>
+                <i>{item.callDate}</i>
               </Label>
             }
             content={messages['Crm.RecallDateTime']}
@@ -369,7 +365,7 @@ function renderByReco(props) {
             <Popup
               trigger={
                 <Label>
-                  <i>{formatDMYMS(item.dateTime)}</i>
+                  <i>{item.dateTime}</i>
                 </Label>
               }
               content={messages['Crm.DemoDateTime']}

@@ -43,7 +43,7 @@ class DemoCurrentPage extends Component {
             {
               Header: 'Дата-время',
               accessor: 'dateTime',
-              Cell: row => moment(row.value).format('DD.MM.YYYY HH:mm'),
+              //Cell: row => moment(row.value).format('DD.MM.YYYY HH:mm'),
             },
             {
               Header: 'Дилер',

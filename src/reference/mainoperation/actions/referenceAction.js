@@ -73,6 +73,25 @@ export const fetchLeaveReasons = params => {
     });
 };
 
+export const blankDemoPrice = () => {
+  return dispatch =>
+    axios.get(`${ROOT_URL}/api/reference/demo-prices/blank`, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    });
+};
+
+export const fetchDemoPrices = params => {
+  return dispatch =>
+    axios.get(`${ROOT_URL}/api/reference/demo-prices`, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+      params: params,
+    });
+};
+
 export const fetchLeaveReason = id => {
   return dispatch =>
     axios.get(`${ROOT_URL}/api/reference/leave-reasons/` + id, {
@@ -94,6 +113,33 @@ export const createLeaveReason = o => {
 export const updateLeaveReason = o => {
   return dispatch =>
     axios.put(`${ROOT_URL}/api/reference/leave-reasons`, o, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    });
+};
+
+export const fetchDemoPrice = id => {
+  return dispatch =>
+    axios.get(`${ROOT_URL}/api/reference/demo-prices/` + id, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    });
+};
+
+export const createDemoPrice = o => {
+  return dispatch =>
+    axios.post(`${ROOT_URL}/api/reference/demo-prices`, o, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    });
+};
+
+export const updateDemoPrice = o => {
+  return dispatch =>
+    axios.put(`${ROOT_URL}/api/reference/demo-prices`, o, {
       headers: {
         authorization: localStorage.getItem('token'),
       },

@@ -38,6 +38,7 @@ export default function RecoCard(props) {
     locale,
     errors,
   } = props;
+
   const patternLength = phonePattern.replace(/[^0-9]+/g, '').length;
   const errorKey = `items[${index}].`;
   const phoneHasError = name => {
