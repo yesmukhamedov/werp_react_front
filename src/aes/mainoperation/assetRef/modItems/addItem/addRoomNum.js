@@ -39,8 +39,15 @@ class AddRoomNum extends Component {
     const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
     const language = localStorage.getItem('language');
     let errors = [];
-    const { room_code } = this.state.modalForm;
-    if (room_code === null || room_code === undefined || !room_code) {
+    const { rnum, rname } = this.state.modalForm;
+    if (
+      rnum === null ||
+      rnum === undefined ||
+      !rnum ||
+      rname === null ||
+      rname === undefined ||
+      !rname
+    ) {
       errors.push(errorTable['134' + language]);
     }
     return errors;
@@ -58,9 +65,15 @@ class AddRoomNum extends Component {
             <Form.Group widths="equal">
               <Form.Field
                 required
-                onChange={(e, o) => this.handleChange('room_code', o)}
+                onChange={(e, o) => this.handleChange('rname', o)}
                 control={Input}
-                label={messages['code']}
+                label={messages['nomination']}
+              />
+              <Form.Field
+                required
+                onChange={(e, o) => this.handleChange('rnum', o)}
+                control={Input}
+                label={messages['rnum']}
               />
             </Form.Group>
           </div>

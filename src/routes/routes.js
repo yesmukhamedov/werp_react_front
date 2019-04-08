@@ -493,12 +493,6 @@ const AsyncRefLeaveReasonListPage = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncRefDemoPriceListPage = Loadable({
-  loader: () =>
-    import('../reference/mainoperation/components/DemoPriceListPage' /* webpackChunkName: "DemoPriceListPage" */),
-  loading: () => <LoadingPage />,
-});
-
 const AsyncRefStaffProblemListPage = Loadable({
   loader: () =>
     import('../reference/mainoperation/components/StaffProblemListPage' /* webpackChunkName: "StaffProblemListPage" */),
@@ -539,6 +533,11 @@ const AsyncPositionList = Loadable({
 
 const AsyncMenu = Loadable({
   loader: () => import('../dit/menu/' /* webpackChunkName: "menu" */),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncUsers = Loadable({
+  loader: () => import('../dit/duserlist' /* webpackChunkName: sysUsers */),
   loading: () => <LoadingPage />,
 });
 
@@ -626,6 +625,7 @@ const getComponent = {
   Aesreport1: AsyncAesreport1,
   Dmulist: AsyncMenu,
   Poslt: AsyncPositionList,
+  Duserlist: AsyncUsers,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -650,10 +650,6 @@ const generateRoutes = transactionRoutes => {
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
       {/* <Route path="/finance/report/frep6" component={AsyncFrep6} /> */}
       <Route path="/finance/report/frep7" component={AsyncFrep7} />
-      <Route
-        path="/reference/demo-prices"
-        component={AsyncRefDemoPriceListPage}
-      />
 
       <Route
         path="/reference/nationalities"

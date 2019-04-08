@@ -39,24 +39,29 @@ class NewTransaction extends Component {
     const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
     const language = localStorage.getItem('language');
     let errors = [];
-    const { transaction_code, name_ru, url } = this.state.modalForm;
+    const {
+      transaction_code,
+      name_ru,
+      url,
+      front_component,
+    } = this.state.modalForm;
     if (
       transaction_code === null ||
       transaction_code === undefined ||
-      !transaction_code
-    ) {
-      errors.push(errorTable['137' + language]);
-    }
-    if (
+      !transaction_code ||
       name_ru === null ||
       name_ru === undefined ||
       !name_ru ||
       url === null ||
       url === undefined ||
-      !url
+      !url ||
+      front_component === null ||
+      front_component === undefined ||
+      !front_component
     ) {
-      errors.push(errorTable['139' + language]);
+      errors.push(errorTable['134' + language]);
     }
+
     return errors;
   }
   newTransaction(transaction) {
@@ -110,16 +115,15 @@ class NewTransaction extends Component {
               <Form.Field
                 onChange={(e, o) => this.handleChange('front_url', o)}
                 control={Input}
-                label={messages['parDir']}
+                label="FRONT URL"
               />
             </Form.Group>
-            <Form.Group widths="equal">
-              <Form.Field
-                onChange={(e, o) => this.handleChange('front_component', o)}
-                control={Input}
-                label={messages['parDir']}
-              />
-            </Form.Group>
+            <Form.Field
+              required
+              onChange={(e, o) => this.handleChange('front_component', o)}
+              control={Input}
+              label={messages['parDir']}
+            />
           </div>
         </div>
         <OutputErrors errors={this.state.errors} />

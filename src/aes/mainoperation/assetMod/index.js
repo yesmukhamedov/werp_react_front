@@ -17,7 +17,6 @@ import {
 import IndexForm from './indexForm';
 import { injectIntl } from 'react-intl';
 import moment from 'moment';
-import { isNumber } from 'util';
 
 class AssetMod extends Component {
   constructor(props) {
@@ -487,8 +486,8 @@ class AssetMod extends Component {
     let out = listRoom.map(room => {
       return {
         key: parseInt(room.id, 10),
-        text: `${parseInt(room.room_code, 10)}`,
-        value: parseInt(room.id, 10),
+        text: `${room.rname} ${parseInt(room.rnum, 10)}`,
+        value: parseInt(room.rnum, 10),
       };
     });
     return out;

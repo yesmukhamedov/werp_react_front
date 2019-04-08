@@ -570,8 +570,8 @@ class AesReport extends Component {
     let out = listRoom.map(room => {
       return {
         key: parseInt(room.id, 10),
-        text: `${parseInt(room.room_code, 10)}`,
-        value: parseInt(room.room_code, 10),
+        text: `${room.rname} ${parseInt(room.rnum, 10)}`,
+        value: parseInt(room.rnum, 10),
       };
     });
     return out;

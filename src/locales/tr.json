@@ -602,10 +602,12 @@
   "changePos": "Change position",
   "trList": "List of transactions",
   "addNewTr": "Add mew transaction",
-  "parDir": "Parent Dir.",
+  "parDir": "Ön bileşen",
   "stopAction": "Stop the action",
   "menu_list": "Menu list",
   "menuAddhiechy": "Hiyerarşiye menü ekle",
   "select_transaction": "Select Transaction",
-  "enter_nomination": "Enter the nomination"
+  "enter_nomination": "Enter the nomination",
+  "role": "Role",
+  "sys_users": "Sistem kullanıcıları"
 }

@@ -65,7 +65,7 @@ class List extends Component {
                 {messages['trList']}
               </Header>
               <Modal
-                size="fullscreen"
+                size="large"
                 trigger={
                   <Button
                     floated="right"
@@ -93,7 +93,6 @@ class List extends Component {
           </Container>
           <div className="ui grid">
             <div className="two wide column" />
-
             <div className="twelve wide column">
               <ListTable
                 transactions={this.props.currentTransactions}

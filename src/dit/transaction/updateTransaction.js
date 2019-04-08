@@ -34,6 +34,7 @@ class UpdateTransaction extends Component {
     const name_tr = 'name_tr';
     const url = 'url';
     const front_url = 'front_url';
+    const front_component = 'front_component';
 
     if (!transaction.transaction_code) {
       transaction[transaction_code] = props.transaction_code;
@@ -53,6 +54,10 @@ class UpdateTransaction extends Component {
     }
     if (!transaction.front_url) {
       transaction[front_url] = props.front_url;
+    }
+
+    if (!transaction.front_component) {
+      transaction[front_component] = props.front_component;
     }
 
     const transaction_id = 'transaction_id';
@@ -114,29 +119,33 @@ class UpdateTransaction extends Component {
                 onChange={(e, o) => this.handleChange('front_url', o)}
                 defaultValue={transaction.front_url}
                 control={Input}
-                label={messages['parDir']}
+                label="FRONT URL"
               />
             </Form.Group>
+            <Form.Field
+              required
+              onChange={(e, o) => this.handleChange('front_component', o)}
+              defaultValue={transaction.front_component}
+              control={Input}
+              label={messages['parDir']}
+            />
           </div>
         </div>
 
-        <Button
-          onClick={this.saveForm}
-          floated="right"
-          className={this.state.sendingData ? 'loading' : ''}
-          color="teal"
-        >
+        <Button color="teal" floated="right" onClick={this.saveForm}>
           {messages['change']}
         </Button>
+
         <Button
+          negative
           floated="right"
           onClick={() => this.props.handleClose()}
-          negative
         >
-          {' '}
           <Icon name="remove" />
           {messages['cancel']}
         </Button>
+        <br />
+        <br />
       </Form>
     );
   }
@@ -147,11 +156,7 @@ class UpdateTransaction extends Component {
         <h2 style={{ textAlign: 'center' }}>
           {this.props.messages['L__EDIT_DESCRIPTION']}
         </h2>
-        <div className="ui grid">
-          <div className="two wide column" />
-          <div className="twelve wide column">{this.renderForm()}</div>
-          <div className="two wide column" />
-        </div>
+        {this.renderForm()}
       </div>
     );
   }

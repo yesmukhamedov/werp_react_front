@@ -131,7 +131,7 @@ export function newAes(newAes) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     axios
-      .post(`${ROOT_URL}/api/aes/save`, newAes, {
+      .post(`${ROOT_URL}/api/aes/aes/save`, newAes, {
         headers: {
           authorization: localStorage.getItem('token'),
         },

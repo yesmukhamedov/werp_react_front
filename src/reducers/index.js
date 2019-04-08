@@ -40,10 +40,10 @@ import documentReducer from '../documents/mainoperation/reducers/documentReducer
 import hrSalaryReducer from '../hr/mainoperation/salary/reducers/hrSalaryReducer';
 import transactionReducer from '../dit/transactionReducer';
 import logisticsReducer from '../logistics/mainoperation/reducers/logisticsReducer';
-
 import aesReducer from '../aes/aesReducer';
 import hrPosReducer from '../hr/reference/position/positionReducer';
 import menuReducer from '../dit/menu/menuReducer';
+import sysUsrReducer from '../dit/duserlist/systemUserReducer';
 
 const appReducer = combineReducers({
   form,
@@ -86,10 +86,18 @@ const appReducer = combineReducers({
   hrSalaryReducer,
   transactionReducer,
   logisticsReducer,
-  aesReducer,
-  hrPosReducer,
-  menuReducer,
+  aesReducer: aesReducer,
+  hrPosReducer: hrPosReducer,
+  menuReducer: menuReducer,
+  sysUsrReducer: sysUsrReducer,
 });
 
-const rootReducer = (state, action) => appReducer(state, action);
+const rootReducer = (state, action) => {
+  if (action.type === UNAUTH_USER) {
+    state = undefined;
+  }
+
+  return appReducer(state, action);
+};
+
 export default rootReducer;

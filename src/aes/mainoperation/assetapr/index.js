@@ -305,15 +305,15 @@ class AssetApr extends Component {
   }
 
   getRoom() {
-    if (!this.props.listAll.listRooms) {
+    if (!this.props.listAll.listRoom) {
       return [];
     }
-    const { listRooms } = this.props.listAll;
-    let out = listRooms.map(room => {
+    const { listRoom } = this.props.listAll;
+    let out = listRoom.map(room => {
       return {
         key: parseInt(room.id, 10),
-        text: `${room.room_name} ${parseInt(room.room_code, 10)}`,
-        value: parseInt(room.room_code, 10),
+        text: `${room.rname} ${parseInt(room.rnum, 10)}`,
+        value: parseInt(room.rnum, 10),
       };
     });
     return out;

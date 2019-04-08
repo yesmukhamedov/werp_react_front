@@ -82,7 +82,7 @@ class SubSection extends Component {
 
   render() {
     const { listAes, messages } = this.props;
-
+    console.log(this.props);
     const columns = [
       {
         Header: messages['bukrs'],
@@ -140,7 +140,7 @@ class SubSection extends Component {
       },
       {
         Header: messages['rnum'],
-        accessor: 'room_code',
+        accessor: 'rname',
         minWidth: 100,
         maxWidth: 250,
       },

@@ -96,7 +96,7 @@ class ListTable extends Component {
             />
             {
               <Modal
-                size="fullscreen"
+                size="large"
                 open={this.state.modalOpen}
                 onClose={this.handleClose}
               >

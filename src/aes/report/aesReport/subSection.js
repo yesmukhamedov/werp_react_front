@@ -76,7 +76,7 @@ export default function SubSection(props) {
     },
     {
       Header: props.messages['rnum'],
-      accessor: 'room_code',
+      accessor: 'rname',
       minWidth: 100,
       maxWidth: 250,
     },

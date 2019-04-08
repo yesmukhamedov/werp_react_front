@@ -349,7 +349,7 @@ export default function IndexForm(props) {
                   <strong key={i}>
                     {code.country_id}-{code.dep_id}-{code.os_code}-
                     {code.type1_code}-{code.type2_code}-{code.type3_code}-
-                    {code.detail_code}-{code.room_code}-{code.status_code}
+                    {code.detail_code}-{code.rnum}-{code.status_code}
                     <br />
                   </strong>
                 ))}
