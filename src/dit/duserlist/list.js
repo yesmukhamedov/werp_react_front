@@ -12,6 +12,7 @@ class List extends Component {
       showUpdate: false,
       row: {
         rname: [],
+        internal_number: '',
       },
       passtype: 'password',
     };
@@ -65,6 +66,9 @@ class List extends Component {
             return false;
           }
         });
+        break;
+      case 'internal_number':
+        row.internal_number = o.value;
         break;
       case 'role_id':
         row.rids = o.value;
@@ -141,6 +145,33 @@ class List extends Component {
         filterMethod: (filter, rows) =>
           matchSorter(rows, filter.value, { keys: ['username'] }),
         filterAll: true,
+      },
+      {
+        Header: messages['role'],
+        accessor: 'internal_number',
+        /* Cell: ({ value }) => (value === "null" ? "" : value), */
+        Cell: props => {
+          return (
+            <Button
+              style={{
+                visibility:
+                  props.original.internal_number != 0 ? 'visible' : 'hidden',
+                backgroundColor:
+                  props.original.active === false ? '#ff4d4d' : 'white',
+                color: props.original.active === false ? 'white' : 'black',
+              }}
+              onClick={this.updateRow.bind(this, props.original)}
+            >
+              {props.value}
+            </Button>
+          );
+        },
+        filterMethod: (filter, rows) =>
+          matchSorter(rows, filter.value, { keys: ['internal_number'] }),
+        filterAll: true,
+        width: 100,
+        maxWidth: 200,
+        minWidth: 100,
       },
       {
         Header: messages['L__COMPANY'],

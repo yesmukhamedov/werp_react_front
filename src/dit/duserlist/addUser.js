@@ -17,6 +17,7 @@ class AddUser extends Component {
       sysUser: {
         password: '',
         username: '',
+        internal_number: '',
         rname: [],
       },
       radioCheck: {
@@ -50,6 +51,9 @@ class AddUser extends Component {
     switch (fieldName) {
       case 'username':
         sysUser.username = o.value;
+        break;
+      case 'internal_number':
+        sysUser.internal_number = o.value;
         break;
       case 'password':
         sysUser['password'] = o.value;
@@ -128,7 +132,14 @@ class AddUser extends Component {
     const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
     const language = localStorage.getItem('language');
     let errors = [];
-    const { username, password, bukrs, branchId, rids } = this.state.sysUser;
+    const {
+      username,
+      password,
+      internal_number,
+      bukrs,
+      branchId,
+      rids,
+    } = this.state.sysUser;
 
     if (
       username === null ||
@@ -136,7 +147,10 @@ class AddUser extends Component {
       !username ||
       password === null ||
       password === undefined ||
-      !password
+      !password ||
+      internal_number === null ||
+      internal_number === undefined ||
+      !internal_number
     ) {
       errors.push(errorTable['134' + language]);
     }
@@ -267,8 +281,14 @@ class AddUser extends Component {
               onChange={(e, o) => this.inputChange('branch_id', o)}
             />
           </Form.Field>
+          <Form.Field
+            required
+            defaultValue={this.state.sysUser.internal_number}
+            onChange={(e, o) => this.inputChange('internal_number', o)}
+            control={Input}
+            label={messages['internal_number']}
+          />
         </Form.Group>
-
         <Form.Field>
           Selected value:<b>{String(this.state.radioCheck.checked)}</b>
         </Form.Field>

@@ -34,13 +34,13 @@ export function fetchAll() {
   };
 }
 
-export function saveNewUser(newTr) {
+export function saveNewUser(newUser) {
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
   return function(dispatch) {
     dispatch(modifyLoader(false));
     axios
-      .post(`${ROOT_URL}/api/users/user/save`, newTr, {
+      .post(`${ROOT_URL}/api/users/user/save`, newUser, {
         headers: {
           authorization: localStorage.getItem('token'),
         },
@@ -57,7 +57,7 @@ export function saveNewUser(newTr) {
           );
           dispatch({
             type: NEW_USER,
-            payload: newTr,
+            payload: newUser,
           });
         } else {
           dispatch(

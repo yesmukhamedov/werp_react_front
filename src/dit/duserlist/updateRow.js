@@ -63,6 +63,13 @@ export default function Update(props) {
                   text={props.row.branchname}
                 />
               </Form.Field>
+              <Form.Field
+                required
+                defaultValue={props.row.internal_number}
+                onChange={(e, o) => props.handleChange('internal_number', o)}
+                control={Input}
+                label={props.messages['internal_number']}
+              />
             </Form.Group>
             <Form.Group widths="equal">
               <Form.Field

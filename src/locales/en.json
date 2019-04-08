@@ -608,5 +608,6 @@
   "menuAddhiechy": "Add menu to hierarchy",
   "select_transaction": "Select Transaction",
   "role": "Role",
-  "sys_users": "System users"
+  "sys_users": "System users",
+  "internal_number": "internal number"
 }

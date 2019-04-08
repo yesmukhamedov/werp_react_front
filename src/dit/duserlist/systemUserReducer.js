@@ -29,6 +29,7 @@ export default function(state = INITIAL_STATE, action) {
       user['is_root'] = userActiveChange.is_root;
       user['rids'] = userActiveChange.rids;
       user['rname'] = userActiveChange.rname;
+      user['internal_number'] = userActiveChange.internal_number;
       newUser.push(user);
       return { ...state, listAll: { ...state.listAll, users: newUser } };
     case ROW_UPDATE:
