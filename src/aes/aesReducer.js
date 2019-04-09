@@ -143,7 +143,7 @@ export default function(state = INITIAL_STATE, action) {
       const newDet = [];
       for (const k in state.listAll.listDetail) {
         if (state.listAll.listDetail[k].id !== disDet.key) {
-          newOss.push(state.listAll.listDetail[k]);
+          newDet.push(state.listAll.listDetail[k]);
         }
       }
       return { ...state, listAll: { ...state.listAll, listDetail: newDet } };
