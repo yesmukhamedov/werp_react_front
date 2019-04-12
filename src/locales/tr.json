@@ -558,6 +558,21 @@
   "frep5CtPresent": "Present",
   "frep5CtService": "Service",
 
+  "balanceAccount": "Balance account",
+  "depositAccount": "Deposit account",
+  "blockedAccount": "Blocked account",
+  "advancePaymentRequestAccount": "Advance Payment Request Account",
+  "debtAccount": "Debt account",
+  "doubtfulDebtAccount": "Doubtful debt account",
+  "noResultsMessage": "No results found.",
+
+  "fahrb_op_pay_loan": "Pay loan",
+  "fahrb_op_from_loan_to_balance": "Transfer from loan to balance account",
+  "fahrb_op_from_balance_to_loan": "Transfer from balance to loan account",
+  "fahrb_op_from_loan_to_doubtful": "Transfer from loan to doubtful",
+  "fahrb_op_from_doubtful_to_loan": "Transfer from doubtful to loan",
+  "transNameFahrb": "Employee debt transfer",
+
   "asset_mant": "Asset management",
   "add_assets": "Adding fixed assets",
   "midify_assets": "Modifying fixed assets",

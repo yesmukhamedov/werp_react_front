@@ -389,11 +389,24 @@ const AsyncFrep7 = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncFahrb = Loadable({
+  loader: () =>
+    import('../finance/mainoperation/fahrb/fahrb' /* webpackChunkName: "fahrb" */),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncRfcoj = Loadable({
   loader: () =>
     import('../finance/report/rfcoj/rfcoj' /* webpackChunkName: "rfcoj" */),
   loading: () => <LoadingPage />,
 });
+
+const AsyncHrrsb = Loadable({
+  loader: () =>
+    import('../hr/report/hrrsb/hrrsb' /* webpackChunkName: "hrrsb" */),
+  loading: () => <LoadingPage />,
+});
+
 
 const AsyncHrRecruitmentPage = Loadable({
   loader: () =>
@@ -563,12 +576,14 @@ const getComponent = {
   Faia: AsyncFaia,
   Faicfp: AsyncFaicfp,
   Faicfp2: AsyncFaicfp2,
+  Fahrb: AsyncFahrb,
   Frep1: AsyncFrep1,
   Frep4: AsyncFrep4,
   Frep5: AsyncFrep5,
   Frep6: AsyncFrep6,
   Frep7: AsyncFrep7,
   Rfcoj: AsyncRfcoj,
+  Hrrsb: AsyncHrrsb,
 
   SpNew: AsyncSpNewPage,
   SpView: AsyncSpViewPage,
@@ -650,6 +665,12 @@ const generateRoutes = transactionRoutes => {
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
       {/* <Route path="/finance/report/frep6" component={AsyncFrep6} /> */}
       <Route path="/finance/report/frep7" component={AsyncFrep7} />
+      <Route path="/hr/report/hrrsb" component={AsyncHrrsb} />      
+
+      <Route
+        path="/reference/demo-prices"
+        component={AsyncRefDemoPriceListPage}
+      />
 
       <Route
         path="/reference/nationalities"

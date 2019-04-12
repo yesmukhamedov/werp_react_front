@@ -928,6 +928,58 @@ export const messages = defineMessages({
     id: 'frep5CtService',
     defaultMessage: 'Service',
   },
+  balanceAccount: {
+    id: 'balanceAccount',
+    defaultMessage: 'Balance account',
+  },
+  depositAccount: {
+    id: 'depositAccount',
+    defaultMessage: 'Deposit account',
+  },
+  blockedAccount: {
+    id: 'blockedAccount',
+    defaultMessage: 'Blocked account',
+  },
+  advancePaymentRequestAccount: {
+    id: 'advancePaymentRequestAccount',
+    defaultMessage: 'Advance Payment Request Account',
+  },
+  debtAccount: {
+    id: 'debtAccount',
+    defaultMessage: 'Debt account',
+  },
+  doubtfulDebtAccount: {
+    id: 'doubtfulDebtAccount',
+    defaultMessage: 'Doubtful debt account',
+  },
+  noResultsMessage: {
+    id: 'noResultsMessage',
+    defaultMessage: 'No results found.',
+  },
+  fahrb_op_pay_loan: {
+    id: 'fahrb_op_pay_loan',
+    defaultMessage: 'Pay loan',
+  },
+  fahrb_op_from_loan_to_balance: {
+    id: 'fahrb_op_from_loan_to_balance',
+    defaultMessage: 'Transfer from loan to balance account',
+  },
+  fahrb_op_from_balance_to_loan: {
+    id: 'fahrb_op_from_balance_to_loan',
+    defaultMessage: 'Transfer from balance to loan account',
+  },
+  fahrb_op_from_loan_to_doubtful: {
+    id: 'fahrb_op_from_loan_to_doubtful',
+    defaultMessage: 'Transfer from loan to doubtful',
+  },
+  fahrb_op_from_doubtful_to_loan: {
+    id: 'fahrb_op_from_doubtful_to_loan',
+    defaultMessage: 'Transfer from doubtful to loan',
+  },
+  transNameFahrb: {
+    id: 'transNameFahrb',
+    defaultMessage: 'Employee debt transfer',
+  },
 
   // /Onlasyn
 

@@ -538,4 +538,55 @@ export function saveFaia(a_bkpf, a_bseg) {
       });
   };
 }
+
+export function saveFahrb(a_searchParameters) {
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
+  return function(dispatch) {
+    axios
+      .post(
+        `${ROOT_URL}/api/finance/mainoperation/fahrb/save`,
+        {
+          ...a_searchParameters,
+        },
+        {
+          headers: {
+            authorization: localStorage.getItem('token'),
+          },
+        },
+      )
+
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+
+        if (data.result) {
+          dispatch(
+            notify(
+              'success',
+              errorTable[`104${language}`],
+              errorTable[`101${language}`],
+            ),
+          );
+
+          dispatch(modifyLoader(false));
+          dispatch({
+            type: FETCH_DYNOBJ_FI,
+            data,
+          });
+        } else {
+          dispatch(
+            notify(
+              'info',
+              errorTable[`133${language}`],
+              errorTable[`132${language}`],
+            ),
+          );
+        }
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
