@@ -1,10 +1,13 @@
 .menu-container {
+  padding: 10px 5px;
+  top: 63px;
   text-align: left;
   min-width: 200px;
-  position: absolute;
+  position: fixed;
   background-color: white;
-  /* border: 1px solid black; */
-  z-index: 10;
+  border: 1px lightgrey solid;
+  border-radius: 3px;
+  z-index: 5;
 }
 
 .hidden {
@@ -19,6 +22,7 @@
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
   border-radius: 3px;
+  width: 100%;
 }
 
 .info,
@@ -38,10 +42,12 @@
 .node {
   padding: 2px 10px 2px 5px;
   font: 14px Helvetica, Arial, sans-serif;
-  /* -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;  */
+  /* display: inline-block; */
+  /* width: 100%; */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 .tree-view_arrow {
@@ -62,6 +68,7 @@
 }
 
 /* style for the children nodes container */
+
 .tree-view_children {
   margin-left: 20px;
   margin-right: 10px;

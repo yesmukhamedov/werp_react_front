@@ -7,6 +7,14 @@
   border: 1px solid #42d4f4;
 }
 
+.nav-bar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  background-color: #fff;
+}
+
 /* .ui.green.button, .ui.green.buttons .button {
     background-color: rgba(0,0,0,.05);
     color: #767676;

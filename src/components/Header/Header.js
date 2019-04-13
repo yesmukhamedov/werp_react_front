@@ -19,7 +19,7 @@ class Header extends Component {
       const token = localStorage.getItem('token');
       if (token) {
         const payload = jwt.decode(token, 'secret');
-        const userId = payload.userId;
+        const { userId } = payload;
         this.props.fetchUnreadMessages({ userId });
         this.props.fetchTreeMenu(userId);
         this.props.fetchUserInfo();
@@ -35,7 +35,7 @@ class Header extends Component {
 
   renderBreadcrumb(translations) {
     const len = translations ? translations.length : 0;
-    const lang = this.props.lang;
+    const { lang } = this.props;
     const items = [];
     if (len > 0) {
       const breadcrumb = translations.map(t => t[lang]);
@@ -77,42 +77,44 @@ class Header extends Component {
   render() {
     const { formatMessage } = this.props.intl;
     return (
-      <Menu secondary attached="top">
-        <Menu.Item onClick={this.props.toggleMenu}>
-          <Icon name="sidebar" />
-          {formatMessage(messages.menu)}
-        </Menu.Item>
-
-        <Menu.Item>
-          {/* <Input action={{ type: 'submit', content: 'Go' }} placeholder='Navigate to...' /> */}
-          <TransactionSearchbar
-            transactions={this.props.transactions}
-            transactionSelected={this.handleTransactionSelected.bind(this)}
-          />
-        </Menu.Item>
-
-        <Menu.Item>{this.renderBreadcrumb(this.props.breadcrumb)}</Menu.Item>
-
-        <Menu.Menu position="right">
-          <Menu.Item>
-            {formatMessage(messages.inbox)}
-            <Label color="teal" circular>
-              {this.props.unread}
-            </Label>
+      <header className="nav-bar">
+        <Menu secondary attached="top">
+          <Menu.Item onClick={this.props.toggleMenu}>
+            <Icon name="sidebar" />
+            {formatMessage(messages.menu)}
           </Menu.Item>
 
-          <LanguageSwitcher />
+          <Menu.Item>
+            {/* <Input action={{ type: 'submit', content: 'Go' }} placeholder='Navigate to...' /> */}
+            <TransactionSearchbar
+              transactions={this.props.transactions}
+              transactionSelected={this.handleTransactionSelected.bind(this)}
+            />
+          </Menu.Item>
 
-          <Dropdown item text={localStorage.getItem('username')}>
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={this.props.signOut}>
-                <Icon name="log out" />
-                {formatMessage(messages.logout)}
-              </Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </Menu.Menu>
-      </Menu>
+          <Menu.Item>{this.renderBreadcrumb(this.props.breadcrumb)}</Menu.Item>
+
+          <Menu.Menu position="right">
+            <Menu.Item>
+              {formatMessage(messages.inbox)}
+              <Label color="teal" circular>
+                {this.props.unread}
+              </Label>
+            </Menu.Item>
+
+            <LanguageSwitcher />
+
+            <Dropdown item text={localStorage.getItem('username')}>
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={this.props.signOut}>
+                  <Icon name="log out" />
+                  {formatMessage(messages.logout)}
+                </Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
+          </Menu.Menu>
+        </Menu>
+      </header>
     );
   }
 }

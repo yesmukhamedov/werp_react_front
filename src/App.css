@@ -1,44 +1,7 @@
-/* .App {
-  text-align: center;
-} */
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .wrapper {
   width: 100%;
   height: 100%;
 }
-
-/*.react-datepicker-time__header{*/
-/*width: 100px !important;*/
-/*}*/
-
-/*.react-datepicker__time-list{*/
-/*width: 100px !important;*/
-/*}*/
 
 .react-datepicker__time-container
   .react-datepicker__time
@@ -57,6 +20,7 @@
 .clickableItem:hover {
   cursor: pointer;
 }
+
 .clickableIcon:hover {
   cursor: pointer;
 }
@@ -69,16 +33,25 @@
 .react-datepicker__input-container input.date-auto-width {
   padding-left: 5px;
 }
+
 .hide {
   display: none;
 }
+
 .show {
   display: inherit;
 }
+
 .subtotalRow {
   background-color: rgb(193, 239, 253);
   font-weight: bold;
 }
+
 .underlinedText {
   text-decoration: underline;
+}
+
+main {
+  margin-top: 65px;
+  height: 100%;
 }

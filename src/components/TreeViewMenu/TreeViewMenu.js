@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import './TreeViewMenu.css';
 import { LEGACY_URL } from '../../utils/constants';
 import { calcBreadcrumb } from '../../utils/helpers';
+import browserHistory from '../../utils/history';
 
 export default class TreeViewMenu extends Component {
   constructor(props) {
@@ -36,6 +37,7 @@ export default class TreeViewMenu extends Component {
       const breadcrumb = calcBreadcrumb(node);
       this.props.breadcrumbChanged(breadcrumb);
       this.props.toggleMenu();
+      browserHistory.push(node.link);
     }
   }
 

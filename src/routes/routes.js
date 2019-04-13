@@ -407,7 +407,6 @@ const AsyncHrrsb = Loadable({
   loading: () => <LoadingPage />,
 });
 
-
 const AsyncHrRecruitmentPage = Loadable({
   loader: () =>
     import('../hr/mainoperation/document/components/HrRecruitmentPage' /* webpackChunkName: "HrRecruitmentPage" */),
@@ -665,12 +664,12 @@ const generateRoutes = transactionRoutes => {
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
       {/* <Route path="/finance/report/frep6" component={AsyncFrep6} /> */}
       <Route path="/finance/report/frep7" component={AsyncFrep7} />
-      <Route path="/hr/report/hrrsb" component={AsyncHrrsb} />      
+      <Route path="/hr/report/hrrsb" component={AsyncHrrsb} />
 
-      <Route
+      {/* <Route
         path="/reference/demo-prices"
         component={AsyncRefDemoPriceListPage}
-      />
+      /> */}
 
       <Route
         path="/reference/nationalities"
