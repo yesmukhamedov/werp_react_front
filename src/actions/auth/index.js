@@ -3,6 +3,10 @@ import browserHistory from '../../utils/history';
 import { ROOT_URL } from '../../utils/constants';
 import { resetLocalStorage } from '../../utils/helpers';
 import { AUTH_USER, AUTH_ERROR, FETCH_USERS, USERS_ERROR } from '../types';
+import {
+  setAuthorizationHeader,
+  setContentLanguageHeader,
+} from '../../utils/setHeaders';
 
 export function usersError(error) {
   return {
@@ -43,6 +47,8 @@ export function signinUser({ username, password }, language) {
           JSON.stringify(response.data.errorTable),
         );
         localStorage.setItem('internalNumber', response.data.internalNumber);
+        //setAuthorizationHeader(token);
+        //setContentLanguageHeader(language);
         // - update state to indicate user is authenticated
         dispatch(authUser({ username, userId }));
         // - redirect to the route '/'
@@ -69,6 +75,7 @@ export function signinUser({ username, password }, language) {
 
 export function signoutUser() {
   return dispatch => {
+    //setAuthorizationHeader();
     resetLocalStorage();
     localStorage.removeItem('currentPathName');
     browserHistory.push('/');

@@ -91,7 +91,7 @@ export function moneyFormat(value) {
     let integerNumber = '';
     if (arr[0] !== null && arr[0] !== undefined) {
       integerNumber = arr[0];
-      const length = integerNumber.length;
+      const { length } = integerNumber;
       let count = 0;
 
       for (let i = 1; i <= length; i++) {
@@ -166,7 +166,7 @@ export function moneyInputHanler(value, decimal) {
 }
 
 export function isEmpty(obj) {
-  const hasOwnProperty = Object.prototype.hasOwnProperty;
+  const { hasOwnProperty } = Object.prototype;
   // null and undefined are "empty"
   if (obj == null) return true;
 

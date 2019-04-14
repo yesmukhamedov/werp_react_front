@@ -4,6 +4,7 @@ import moment from 'moment';
 import browserHistory from '../utils/history';
 import { ROOT_URL, TOKEN_REFRESH_LIMIT } from '../utils/constants';
 import { resetLocalStorage } from '../utils/helpers';
+import { setAuthorizationHeader } from '../utils/setHeaders';
 import { UNAUTH_USER, AUTH_ERROR } from '../actions/types';
 
 const signoutUser = (dispatch, errorMsg) => {
@@ -43,6 +44,7 @@ const tokenRefresherMiddleware = ({ dispatch }) => next => action => {
             // If request is good...
             // - save the refreshed JWT token
             localStorage.setItem('token', data.token);
+            // setAuthorizationHeader(data.token);
             isRenewingToken = false;
           })
           .catch(error => {

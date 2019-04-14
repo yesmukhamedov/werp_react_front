@@ -15,7 +15,7 @@ import 'semantic-ui-css/semantic.min.css';
 
 import generateRoutes from './routes/routes';
 import reducers from './reducers';
-import { AUTH_USER, CHANGE_LANGUAGE } from './actions/types';
+import { AUTH_USER } from './actions/types';
 import ConnectedIntlProvider from './ConnectedIntlProvider';
 import JwtRefresher from './middlewares/JwtRefresher';
 import AppWrapper from './AppWrapper';
@@ -24,6 +24,10 @@ import './index.css';
 
 import { ROOT_URL } from './utils/constants';
 import { loadLang, saveLang } from './utils/localStorage';
+import {
+  setAuthorizationHeader,
+  setContentLanguageHeader,
+} from './utils/setHeaders';
 
 const promise = axios.get(`${ROOT_URL}/routes`);
 
@@ -52,14 +56,11 @@ const token = localStorage.getItem('token');
 // If we have a token, consider the user to be signed in
 if (token) {
   // we need to update application state
+  //setAuthorizationHeader(token);
+  //setContentLanguageHeader(persistedLang.lang);
   store.dispatch({
     type: AUTH_USER,
     payload: { username: localStorage.getItem('username') },
-  });
-} else {
-  store.dispatch({
-    type: CHANGE_LANGUAGE,
-    payload: 'ru',
   });
 }
 
