@@ -553,6 +553,11 @@ const AsyncUsers = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncRoles = Loadable({
+  loader: () => import('../dit/role/drole' /* webpackChunkName: roles */),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
@@ -640,6 +645,7 @@ const getComponent = {
   Dmulist: AsyncMenu,
   Poslt: AsyncPositionList,
   Duserlist: AsyncUsers,
+  Drlist: AsyncRoles,
 };
 
 const generateRoutes = transactionRoutes => {
