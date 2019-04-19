@@ -652,6 +652,7 @@ const getComponent = {
   Poslt: AsyncPositionList,
   Duserlist: AsyncUsers,
   Drlist: AsyncRoles,
+  RefDemoPriceList: AsyncRefDemoPriceListPage,
 };
 
 const generateRoutes = transactionRoutes => {
