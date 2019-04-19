@@ -677,13 +677,6 @@ const generateRoutes = transactionRoutes => {
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
       <Route path="/hr/report/hrrsb" component={AsyncHrrsb} />
 
-      {
-        <Route
-          path="/reference/demo-prices"
-          component={AsyncRefDemoPriceListPage}
-        />
-      }
-
       <Route
         path="/reference/nationalities"
         component={AsyncRefNationalityListPage}
