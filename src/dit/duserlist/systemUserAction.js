@@ -10,6 +10,7 @@ export const ALL_SYSTEM_USERS = 'ALL_SYSTEM_USERS';
 export const NEW_USER = 'NEW_USER';
 export const ROW_UPDATE = 'ROW_UPDATE';
 export const STAFF_SEARCH = 'STAFF_SEARCH';
+export const FETCH_BUKRS_BRANCHES = 'FETCH_BUKRS_BRANCHES';
 
 export function fetchAll() {
   return function(dispatch) {
@@ -134,6 +135,27 @@ export function searchStaff(sstaff) {
       })
       .catch(e => {
         handleError(e, dispatch);
+      });
+  };
+}
+
+export function fetchBrchesByBukrs(bukrs) {
+  return function(dispatch) {
+    axios
+      .get(`${ROOT_URL}/api/users/branches/` + bukrs, {
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
+      })
+      .then(({ data }) => {
+        dispatch({
+          type: FETCH_BUKRS_BRANCHES,
+          payload: data,
+        });
+      })
+
+      .catch(error => {
+        handleError(error, dispatch);
       });
   };
 }

@@ -3,6 +3,7 @@ import {
   NEW_USER,
   STAFF_SEARCH,
   ROW_UPDATE,
+  FETCH_BUKRS_BRANCHES,
 } from './systemUserAction';
 
 const INITIAL_STATE = {
@@ -43,6 +44,8 @@ export default function(state = INITIAL_STATE, action) {
         }
       }
       return { ...state, listAll: { ...state.listAll, users: newRows } };
+    case FETCH_BUKRS_BRANCHES:
+      return { ...state, bukrsBranches: action.payload };
     default:
       return state;
   }

@@ -74,7 +74,7 @@ class AddUser extends Component {
         break;
       case 'bukrs':
         sysUser['bukrs'] = o.value;
-        this.props.f4FetchBranchesByBukrs(o.value);
+        this.props.fetchBrchesByBukrs(o.value);
         o.options.some(c => {
           if (Number(c.key) === o.value) {
             sysUser['bukrsname'] = c.text;
@@ -123,7 +123,7 @@ class AddUser extends Component {
 
     if (errors === null || errors === undefined || errors.length === 0) {
       this.props.newUser(sysUser);
-      this.props.close();
+      //    this.props.close();
     }
     this.setState({ errors });
   }
@@ -194,11 +194,7 @@ class AddUser extends Component {
   render() {
     const { messages } = this.props;
     return (
-      <Modal
-        size={'small'}
-        open={this.props.showAdd}
-        onClose={() => this.props.close()}
-      >
+      <Modal size={'small'} open={this.props.showAdd}>
         <Modal.Header>{messages['BTN__ADD']}</Modal.Header>
         <Modal.Content>
           <Modal.Description>
@@ -282,7 +278,6 @@ class AddUser extends Component {
             />
           </Form.Field>
           <Form.Field
-            required
             defaultValue={this.state.sysUser.internal_number}
             onChange={(e, o) => this.inputChange('internal_number', o)}
             control={Input}

@@ -8,15 +8,13 @@ import {
   Container,
   Modal,
 } from 'semantic-ui-react';
-import {
-  f4FetchCompanyOptions,
-  f4FetchBranchesByBukrs,
-} from '../../reference/f4/f4_action';
+import { f4FetchCompanyOptions } from '../../reference/f4/f4_action';
 import {
   fetchAll,
   saveNewUser,
   updateRow,
   searchStaff,
+  fetchBrchesByBukrs,
 } from './systemUserAction';
 import { injectIntl } from 'react-intl';
 import List from './list';
@@ -153,7 +151,7 @@ class SystemUsers extends Component {
             submitUpdate={this.submitUpdate.bind(this)}
             companyOpts={this.getCompanyOptions()}
             branchOptions={this.getBranchOptions()}
-            f4FetchBranchesByBukrs={this.props.f4FetchBranchesByBukrs}
+            fetchBrchesByBukrs={this.props.fetchBrchesByBukrs}
           />
 
           <AddUser
@@ -166,7 +164,7 @@ class SystemUsers extends Component {
             messages={messages}
             username={this.state.username}
             newUser={this.newUser.bind(this)}
-            f4FetchBranchesByBukrs={this.props.f4FetchBranchesByBukrs}
+            fetchBrchesByBukrs={this.props.fetchBrchesByBukrs}
           />
         </div>
       </Container>
@@ -208,18 +206,17 @@ class SystemUsers extends Component {
     return out;
   }
   getBranchOptions() {
-    let out = [];
     const { branchOptions } = this.props;
     if (!branchOptions) {
       return [];
     }
-    for (let k in branchOptions) {
-      out.push({
-        key: branchOptions[k]['branch_id'],
-        text: branchOptions[k]['text45'],
-        value: branchOptions[k]['branch_id'],
-      });
-    }
+    let out = branchOptions.map(c => {
+      return {
+        key: parseInt(c.branch_id, 10),
+        text: `${c.text45}`,
+        value: parseInt(c.branch_id, 10),
+      };
+    });
     return out;
   }
 }
@@ -228,7 +225,7 @@ function mapStateToProps(state) {
   return {
     listAll: state.sysUsrReducer.listAll,
     companyOptions: state.userInfo.companyOptions,
-    branchOptions: state.f4.bukrsBranches,
+    branchOptions: state.sysUsrReducer.bukrsBranches,
     staffs: state.sysUsrReducer.staffs,
   };
 }
@@ -238,9 +235,9 @@ export default connect(
   {
     fetchAll,
     f4FetchCompanyOptions,
-    f4FetchBranchesByBukrs,
     updateRow,
     searchStaff,
     saveNewUser,
+    fetchBrchesByBukrs,
   },
 )(injectIntl(SystemUsers));
