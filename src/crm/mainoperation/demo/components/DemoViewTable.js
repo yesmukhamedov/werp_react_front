@@ -129,7 +129,9 @@ export default function DemoViewTable(props) {
                 <Header as="h4">{'Район и сумма'}</Header>
               </Table.Cell>
               <Table.Cell>
-                {demo.priceDistrictName + '; ' + demo.price}
+                {demo.priceDistrictName
+                  ? demo.priceDistrictName + '; ' + demo.price
+                  : ''}
               </Table.Cell>
             </Table.Row>
 

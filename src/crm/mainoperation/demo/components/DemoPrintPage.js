@@ -140,6 +140,19 @@ class DemoPrintPage extends Component {
             <Table.Cell>{demo.address}</Table.Cell>
           </Table.Row>
 
+          <Table.Row>
+            <Table.Cell>
+              <Header style={{ marginLeft: 20 }} as="h4">
+                Район и сумма
+              </Header>
+            </Table.Cell>
+            <Table.Cell>
+              {demo.priceDistrictName
+                ? demo.priceDistrictName + '; ' + demo.price
+                : ''}
+            </Table.Cell>
+          </Table.Row>
+
           <Table.Row />
         </Table.Body>
       </Table>
