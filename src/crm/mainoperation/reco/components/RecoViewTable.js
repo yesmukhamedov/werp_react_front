@@ -9,7 +9,7 @@ import { formatDMY } from '../../../../utils/helpers';
 
 export default function RecoViewTable(props) {
   // Single Reco
-  const { reco, messages } = props;
+  const { reco, messages, demoPriceOptions } = props;
 
   return (
     <Card fluid>
@@ -71,6 +71,7 @@ export default function RecoViewTable(props) {
                     {reco.phones
                       ? reco.phones.map(p => (
                           <Phone
+                            demoPriceOptions={demoPriceOptions || []}
                             clientName={reco.clientName}
                             key={p.id}
                             phoneNumber={p.phoneNumber}
