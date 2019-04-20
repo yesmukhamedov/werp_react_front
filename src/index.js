@@ -28,6 +28,7 @@ import {
   setAuthorizationHeader,
   setContentLanguageHeader,
 } from './utils/setHeaders';
+import { DEFAULT_LANGUAGE } from './utils/constants';
 import changeLanguage from './actions/language';
 
 const promise = axios.get(`${ROOT_URL}/routes`);
@@ -54,14 +55,14 @@ store.subscribe(
 );
 
 const token = localStorage.getItem('token');
-const language = localStorage.getItem('language');
+const language = localStorage.getItem('language') || DEFAULT_LANGUAGE;
 
 store.dispatch(changeLanguage(language));
 // If we have a token, consider the user to be signed in
 if (token) {
   // we need to update application state
-  //setAuthorizationHeader(token);
-  //setContentLanguageHeader(persistedLang.lang);
+  // setAuthorizationHeader(token);
+  // setContentLanguageHeader(persistedLang.lang);
   store.dispatch({
     type: AUTH_USER,
     payload: { username: localStorage.getItem('username') },

@@ -5,7 +5,7 @@ import browserHistory from '../utils/history';
 import { ROOT_URL, TOKEN_REFRESH_LIMIT } from '../utils/constants';
 import { resetLocalStorage } from '../utils/helpers';
 import { setAuthorizationHeader } from '../utils/setHeaders';
-import { UNAUTH_USER, AUTH_ERROR } from '../actions/types';
+import { UNAUTH_USER, AUTH_ERROR, CHANGE_LANGUAGE } from '../actions/types';
 
 const signoutUser = (dispatch, errorMsg) => {
   resetLocalStorage();
@@ -14,11 +14,39 @@ const signoutUser = (dispatch, errorMsg) => {
   browserHistory.push('/');
 };
 
+const requestToken = (token, language) => {
+  axios
+    .get(`${ROOT_URL}/tokenRefresh`, {
+      headers: { authorization: token },
+      params: {
+        language,
+      },
+    })
+    .then(({ data }) => {
+      // If request is good...
+      // - save the refreshed JWT token
+      localStorage.setItem('token', data.token);
+      // setAuthorizationHeader(data.token);
+    })
+    .catch(error => {
+      // If request is bad...
+      // - Show an error to the user
+      throw new Error(
+        `Can't refresh token. Please sign in again ${JSON.stringify(error)}`,
+      );
+    });
+};
+
 const tokenRefresherMiddleware = ({ dispatch }) => next => action => {
   let isRenewingToken = false;
   const token = localStorage.getItem('token');
   const formAction =
     (action.meta && action.meta.form) || typeof action === 'function';
+
+  if (action.type === CHANGE_LANGUAGE) {
+    token && requestToken(token, action.payload);
+    return next(action);
+  }
 
   if (formAction || !token) {
     return next(action);
@@ -35,28 +63,8 @@ const tokenRefresherMiddleware = ({ dispatch }) => next => action => {
 
       if (remainedUntilRefresh < TOKEN_REFRESH_LIMIT) {
         isRenewingToken = true;
-
-        axios
-          .get(`${ROOT_URL}/tokenRefresh`, {
-            headers: { authorization: token },
-          })
-          .then(({ data }) => {
-            // If request is good...
-            // - save the refreshed JWT token
-            localStorage.setItem('token', data.token);
-            // setAuthorizationHeader(data.token);
-            isRenewingToken = false;
-          })
-          .catch(error => {
-            // If request is bad...
-            // - Show an error to the user
-            isRenewingToken = false;
-            throw new Error(
-              `Can't refresh token. Please sign in again ${JSON.stringify(
-                error,
-              )}`,
-            );
-          });
+        requestToken(token, tokenPayload.language);
+        isRenewingToken = false;
       }
     } catch (error) {
       isRenewingToken = false;
