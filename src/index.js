@@ -28,6 +28,7 @@ import {
   setAuthorizationHeader,
   setContentLanguageHeader,
 } from './utils/setHeaders';
+import changeLanguage from './actions/language';
 
 const promise = axios.get(`${ROOT_URL}/routes`);
 
@@ -53,6 +54,9 @@ store.subscribe(
 );
 
 const token = localStorage.getItem('token');
+const language = localStorage.getItem('language');
+
+store.dispatch(changeLanguage(language));
 // If we have a token, consider the user to be signed in
 if (token) {
   // we need to update application state

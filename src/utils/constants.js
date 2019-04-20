@@ -3,7 +3,7 @@
  * @returns {boolean} True if client is in local network, False otherwise
  */
 const isLocalIpAddress = () => {
-  const hostname = window.location.hostname;
+  const { hostname } = window.location;
   return hostname.includes('localhost') || hostname.includes('192.168');
 };
 
@@ -116,3 +116,5 @@ export const outCallStatusColorMap = {
   4: 'orange',
   5: 'black',
 };
+
+export const DEFAULT_LANGUAGE = 'ru';
