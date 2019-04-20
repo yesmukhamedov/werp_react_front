@@ -112,6 +112,7 @@ export function pyramidTreeChanged(treeData) {
 }
 
 export function fetchBlank(parentId) {
+  console.log('parentId ', parentId);
   return function(dispatch) {
     dispatch(modifyLoader(true));
     axios
@@ -121,6 +122,7 @@ export function fetchBlank(parentId) {
         },
       })
       .then(({ data }) => {
+        console.log('data ', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: BLANK_ITEM,
@@ -135,6 +137,7 @@ export function fetchBlank(parentId) {
 }
 
 export function newPyramid(newNode) {
+  console.log('newNode ', newNode);
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
   return function(dispatch) {

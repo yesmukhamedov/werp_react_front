@@ -51,6 +51,10 @@ class AddNode extends Component {
     let modalForm = Object.assign({}, this.state.modalForm);
     modalForm['parent_id'] = this.props.item.parent_id;
     modalForm['sort_order'] = this.props.item.sort_order + 1;
+    this.props.item.tree_id === null
+      ? (modalForm['tree_id'] = this.props.item.parent_id)
+      : (modalForm['tree_id'] = this.props.item.tree_id);
+    console.log(modalForm);
     this.props.newNode(modalForm);
     this.props.addFormModal(false);
   }

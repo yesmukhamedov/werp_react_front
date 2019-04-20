@@ -329,7 +329,7 @@ class Hrrsb extends Component {
     let errors = [];
     errors = this.validate();
     if (errors === null || errors === undefined || errors.length === 0) {
-      this.props.fetchDynamicFAGM('/api/finance/reports/Hrrsb/search', {
+      this.props.fetchDynamicFAGM('/api/finance/reports/hrrsb/search', {
         ...this.state.searchTerm,
         branchList: this.state.searchTerm.branchList.join(),
         balanceType: this.state.searchTerm.balanceType.join(),

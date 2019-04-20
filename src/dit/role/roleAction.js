@@ -6,17 +6,16 @@ import {
   notify,
 } from '../../general/notification/notification_action';
 
-export const ALL_SYSTEM_USERS = 'ALL_SYSTEM_USERS';
-export const NEW_USER = 'NEW_USER';
-export const ROW_UPDATE = 'ROW_UPDATE';
-export const STAFF_SEARCH = 'STAFF_SEARCH';
-export const FETCH_BUKRS_BRANCHES = 'FETCH_BUKRS_BRANCHES';
+export const ALL_ROLE = 'ALL_ROLE';
+export const ROLE_ACCESS = 'ROLE_ACCESS';
+export const ROLE_NAME_UPDATE = 'ROLE_NAME_UPDATE';
+export const ROLE_NEW = 'ROLE_NEW';
 
 export function fetchAll() {
   return function(dispatch) {
     dispatch(modifyLoader(false));
     axios
-      .get(`${ROOT_URL}/api/users/list`, {
+      .get(`${ROOT_URL}/api/dit/role/list`, {
         headers: {
           authorization: localStorage.getItem('token'),
         },
@@ -24,7 +23,7 @@ export function fetchAll() {
       .then(({ data }) => {
         modifyLoader(false);
         dispatch({
-          type: ALL_SYSTEM_USERS,
+          type: ALL_ROLE,
           payload: data,
         });
       })
@@ -34,13 +33,57 @@ export function fetchAll() {
   };
 }
 
-export function saveNewUser(newUser) {
+export function getRoleAccesses(role_id) {
+  return function(dispatch) {
+    axios
+      .get(`${ROOT_URL}/api/dit/role/accesses/${role_id}`, {
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
+      })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: ROLE_ACCESS,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function shortAccess(role_id) {
+  return function(dispatch) {
+    axios
+      .get(`${ROOT_URL}/api/dit/role/shortAccess/${role_id}`, {
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
+      })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: ROLE_ACCESS,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function saveRoles(newRoles) {
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
   return function(dispatch) {
-    dispatch(modifyLoader(false));
+    dispatch(modifyLoader(true));
     axios
-      .post(`${ROOT_URL}/api/users/user/save`, newUser, {
+      .post(`${ROOT_URL}/api/dit/role/save_roles`, newRoles, {
         headers: {
           authorization: localStorage.getItem('token'),
         },
@@ -56,8 +99,8 @@ export function saveNewUser(newUser) {
             ),
           );
           dispatch({
-            type: NEW_USER,
-            payload: newUser,
+            type: ROLE_ACCESS,
+            payload: newRoles,
           });
         } else {
           dispatch(
@@ -76,12 +119,13 @@ export function saveNewUser(newUser) {
   };
 }
 
-export function updateRow(row) {
+export function updRNomination(role) {
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
   return function(dispatch) {
+    dispatch(modifyLoader(true));
     axios
-      .put(`${ROOT_URL}/api/users/update`, row, {
+      .put(`${ROOT_URL}/api/dit/role/update`, role, {
         headers: {
           authorization: localStorage.getItem('token'),
         },
@@ -97,8 +141,8 @@ export function updateRow(row) {
             ),
           );
           dispatch({
-            type: ROW_UPDATE,
-            payload: row,
+            type: ROLE_NAME_UPDATE,
+            payload: role,
           });
         } else {
           dispatch(
@@ -117,44 +161,43 @@ export function updateRow(row) {
   };
 }
 
-export function searchStaff(sstaff) {
+export function newRole(role) {
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
   return function(dispatch) {
-    dispatch(modifyLoader(false));
+    dispatch(modifyLoader(true));
     axios
-      .post(`${ROOT_URL}/api/users/search`, sstaff, {
+      .post(`${ROOT_URL}/api/dit/role/newrole`, role, {
         headers: {
           authorization: localStorage.getItem('token'),
         },
       })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        dispatch({
-          type: STAFF_SEARCH,
-          payload: data,
-        });
+        if (data) {
+          dispatch(
+            notify(
+              'success',
+              errorTable[`104${language}`],
+              errorTable[`101${language}`],
+            ),
+          );
+          dispatch({
+            type: ROLE_NEW,
+            payload: role,
+          });
+        } else {
+          dispatch(
+            notify(
+              'info',
+              errorTable[`133${language}`],
+              errorTable[`132${language}`],
+            ),
+          );
+        }
       })
-      .catch(e => {
-        handleError(e, dispatch);
-      });
-  };
-}
-
-export function fetchBrchesByBukrs(bukrs) {
-  return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/users/branches/` + bukrs, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
-      .then(({ data }) => {
-        dispatch({
-          type: FETCH_BUKRS_BRANCHES,
-          payload: data,
-        });
-      })
-
       .catch(error => {
+        dispatch(modifyLoader(false));
         handleError(error, dispatch);
       });
   };

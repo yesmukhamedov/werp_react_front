@@ -6,6 +6,7 @@ import matchSorter from 'match-sorter';
 
 export default function TransactionSelect(props) {
   const selectedRow = tr => {
+    console.log('tr ', tr);
     props.selectedTrId(tr);
   };
 

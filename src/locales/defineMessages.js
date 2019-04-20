@@ -952,9 +952,37 @@ export const messages = defineMessages({
     id: 'doubtfulDebtAccount',
     defaultMessage: 'Doubtful debt account',
   },
+  balanceAccountMin: {
+    id: 'balanceAccountMin',
+    defaultMessage: 'Balance',
+  },
+  depositAccountMin: {
+    id: 'depositAccountMin',
+    defaultMessage: 'Deposit',
+  },
+  blockedAccountMin: {
+    id: 'blockedAccountMin',
+    defaultMessage: 'Blocked',
+  },
+  advancePaymentRequestAccountMin: {
+    id: 'advancePaymentRequestAccountMin',
+    defaultMessage: 'Adv. req.',
+  },
+  debtAccountMin: {
+    id: 'debtAccountMin',
+    defaultMessage: 'Debt',
+  },
+  doubtfulDebtAccountMin: {
+    id: 'doubtfulDebtAccountMin',
+    defaultMessage: 'Doubt. debt',
+  },
   noResultsMessage: {
     id: 'noResultsMessage',
-    defaultMessage: 'No results found.',
+    defaultMessage: 'No results found',
+  },
+  branchesOff: {
+    id: 'branchesOff',
+    defaultMessage: 'No branches',
   },
   fahrb_op_pay_loan: {
     id: 'fahrb_op_pay_loan',

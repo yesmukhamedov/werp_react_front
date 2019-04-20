@@ -26,7 +26,7 @@ class List extends Component {
     if (row.is_root === 1) row['rootChecked'] = true;
     else row['rootChecked'] = false;
     this.setState({ showUpdate: true, row: row });
-    this.props.f4FetchBranchesByBukrs(row.bukrs);
+    this.props.fetchBrchesByBukrs(row.bukrs);
   }
 
   handleChange(fieldName, o) {

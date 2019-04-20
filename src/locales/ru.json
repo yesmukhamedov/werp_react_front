@@ -544,7 +544,14 @@
   "advancePaymentRequestAccount": "Запрос на аванс",
   "debtAccount": "Долг",
   "doubtfulDebtAccount": "Неопределенный долг",
-  "noResultsMessage": "Нет данных.",
+  "balanceAccountMin": "Баланс",
+  "depositAccountMin": "Депозит",
+  "blockedAccountMin": "Заблок.",
+  "advancePaymentRequestAccountMin": "Зап.аванс.",
+  "debtAccountMin": "Долг",
+  "doubtfulDebtAccountMin": "Неопр. долг",
+  "noResultsMessage": "Данных нет",
+  "branchesOff": "Без филиалов",
 
   "fahrb_op_pay_loan": "Оплатить долг",
   "fahrb_op_from_loan_to_balance": "Перевод с долг. счета на баланс",
@@ -605,5 +612,6 @@
   "enter_nomination": "Введите наименование",
   "role": "Роль",
   "sys_users": "Пользователи системы",
-  "internal_number": "внутренний номер"
+  "internal_number": "внутренний номер",
+  "lst_roles": "Список ролей"
 }
