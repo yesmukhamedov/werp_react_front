@@ -15,6 +15,8 @@ import {
   updateRow,
   searchStaff,
   fetchBrchesByBukrs,
+  showAddModal,
+  showUpdateModal,
 } from './systemUserAction';
 import { injectIntl } from 'react-intl';
 import List from './list';
@@ -26,7 +28,6 @@ class SystemUsers extends Component {
     super(props);
     this.state = {
       showStaff: false,
-      showAdd: false,
       searchSt: {
         firstname: '',
         lastname: '',
@@ -66,17 +67,13 @@ class SystemUsers extends Component {
       ...this.state,
       selStaff: staff,
       showStaff: false,
-      showAdd: true,
       username: usname,
     });
+    this.props.showAddModal(true);
   }
 
-  close = () =>
-    this.setState({
-      ...this.state,
-      showNewUser: false,
-      showAdd: false,
-    });
+  close = () => this.props.shoAddModal(false);
+  openShowModal = () => this.props.showModal(true);
 
   handleChange(fieldName, o) {
     let searchSt = Object.assign({}, this.state.searchSt);
@@ -152,15 +149,18 @@ class SystemUsers extends Component {
             companyOpts={this.getCompanyOptions()}
             branchOptions={this.getBranchOptions()}
             fetchBrchesByBukrs={this.props.fetchBrchesByBukrs}
+            showUpdateModal={this.props.showUpdateModal}
+            close={this.close.bind(this)}
+            updateModalOpened={this.props.updateModalOpened}
           />
 
           <AddUser
             selStaff={this.state.selStaff}
             roles={this.getRoles()}
             close={this.close.bind(this)}
+            showAdd={this.props.addModalOpened}
             companyOpts={this.getCompanyOptions()}
             branchOptions={this.getBranchOptions()}
-            showAdd={this.state.showAdd}
             messages={messages}
             username={this.state.username}
             newUser={this.newUser.bind(this)}
@@ -227,6 +227,8 @@ function mapStateToProps(state) {
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.sysUsrReducer.bukrsBranches,
     staffs: state.sysUsrReducer.staffs,
+    addModalOpened: state.sysUsrReducer.addModalOpened,
+    updateModalOpened: state.sysUsrReducer.updateModalOpened,
   };
 }
 
@@ -239,5 +241,7 @@ export default connect(
     searchStaff,
     saveNewUser,
     fetchBrchesByBukrs,
+    showAddModal,
+    showUpdateModal,
   },
 )(injectIntl(SystemUsers));

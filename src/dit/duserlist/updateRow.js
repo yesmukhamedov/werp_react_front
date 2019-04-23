@@ -11,7 +11,7 @@ import {
 
 export default function Update(props) {
   return (
-    <Modal size={'small'} open={props.showUpdate}>
+    <Modal size={'small'} open={props.updateModalOpened}>
       <Modal.Header>{props.messages['change']}</Modal.Header>
       <Modal.Content>
         <Modal.Description>

@@ -9,7 +9,6 @@ class List extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showUpdate: false,
       row: {
         rname: [],
         internal_number: '',
@@ -19,14 +18,15 @@ class List extends Component {
   }
 
   close() {
-    this.setState({ showUpdate: false });
+    this.props.showUpdateModal(false);
   }
 
   updateRow(row) {
     if (row.is_root === 1) row['rootChecked'] = true;
     else row['rootChecked'] = false;
-    this.setState({ showUpdate: true, row: row });
+    this.setState({ row: row });
     this.props.fetchBrchesByBukrs(row.bukrs);
+    this.props.showUpdateModal(true);
   }
 
   handleChange(fieldName, o) {
@@ -96,7 +96,6 @@ class List extends Component {
 
   submitUpdate() {
     this.props.submitUpdate(this.state.row);
-    this.setState({ showUpdate: false });
   }
 
   render() {
@@ -147,7 +146,7 @@ class List extends Component {
         filterAll: true,
       },
       {
-        Header: messages['role'],
+        Header: messages['internal_number'],
         accessor: 'internal_number',
         /* Cell: ({ value }) => (value === "null" ? "" : value), */
         Cell: props => {
@@ -292,6 +291,7 @@ class List extends Component {
           roles={this.props.roles}
           handleChange={this.handleChange.bind(this)}
           submitUpdate={this.submitUpdate.bind(this)}
+          updateModalOpened={this.props.updateModalOpened}
           close={this.close.bind(this)}
           {...this.state}
           iconClicked={this.iconClicked.bind(this)}

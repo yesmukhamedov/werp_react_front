@@ -11,6 +11,21 @@ export const NEW_USER = 'NEW_USER';
 export const ROW_UPDATE = 'ROW_UPDATE';
 export const STAFF_SEARCH = 'STAFF_SEARCH';
 export const FETCH_BUKRS_BRANCHES = 'FETCH_BUKRS_BRANCHES';
+export const SHOW_MODAL = 'SHOW_MODAL';
+export const SHOW_UPDATE_MODAL = 'SHOW_UPDATE_MODAL';
+
+export function showAddModal(flag) {
+  return {
+    type: SHOW_MODAL,
+    payload: flag,
+  };
+}
+export function showUpdateModal(flag) {
+  return {
+    type: SHOW_UPDATE_MODAL,
+    payload: flag,
+  };
+}
 
 export function fetchAll() {
   return function(dispatch) {
