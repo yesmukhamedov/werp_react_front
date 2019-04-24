@@ -632,5 +632,6 @@
   "role": "Role",
   "sys_users": "System users",
   "internal_number": "internal number",
-  "lst_roles": "List of roles"
+  "lst_roles": "List of roles",
+  "event_log": "Event log"
 }

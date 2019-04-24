@@ -37,7 +37,7 @@ class ListRole extends Component {
       case 'read':
         accessTypes.some(c => {
           if (c.transaction_id === o.transaction_id) {
-            c.acces = 'read';
+            c.acces == 'read' ? (c.acces = '') : (c.acces = 'read');
             c.role_id = row.role_id;
             return true;
           } else {
@@ -48,7 +48,7 @@ class ListRole extends Component {
       case 'write':
         accessTypes.some(c => {
           if (c.transaction_id === o.transaction_id) {
-            c.acces = 'write';
+            c.acces == 'write' ? (c.acces = '') : (c.acces = 'write');
             c.role_id = row.role_id;
             return true;
           } else {
@@ -59,7 +59,7 @@ class ListRole extends Component {
       case 'all':
         accessTypes.some(c => {
           if (c.transaction_id === o.transaction_id) {
-            c.acces = 'all';
+            c.acces == 'all' ? (c.acces = '') : (c.acces = 'all');
             c.role_id = row.role_id;
             return true;
           } else {
@@ -170,53 +170,48 @@ class ListRole extends Component {
     ];
     return (
       <div>
-        <div id="table_style">
-          <div className="list_table_header" />
-          <div>
-            <ReactTable
-              columns={columns}
-              data={listAll.roles}
-              resolveData={data => data.map(row => row)}
-              filterable
-              rowsText={messages['rowsText']}
-              pageText={messages['pageText']}
-              ofText={messages['ofText']}
-              previousText={messages['previousText']}
-              nextText={messages['nextText']}
-              noDataText={messages['loadingText']}
-            />
-            {
-              <Modal
-                size="large"
-                open={this.state.modalOpen}
-                onClose={this.handleClose.bind(this)}
-              >
-                <Modal.Header>
-                  {'Права'} "{this.state.row.text45}"{' '}
-                </Modal.Header>
-                <Modal.Content>
-                  <Update
-                    messages={messages}
-                    accessTypes={this.state.accessTypes}
-                    handleCheckBox={this.handleCheckBox.bind(this)}
-                  />
-                </Modal.Content>
-                <Modal.Actions>
-                  <Button negative onClick={this.handleClose.bind(this)}>
-                    {messages['BTN__CANCEL']}{' '}
-                  </Button>
-                  <Button
-                    icon="checkmark"
-                    content={messages['save']}
-                    onClick={this.saveRoles.bind(this)}
-                    color="teal"
-                  />
-                </Modal.Actions>
-              </Modal>
-            }
-            {this.renderName()}
-          </div>
-        </div>
+        <ReactTable
+          columns={columns}
+          data={listAll.roles}
+          resolveData={data => data.map(row => row)}
+          filterable
+          rowsText={messages['rowsText']}
+          pageText={messages['pageText']}
+          ofText={messages['ofText']}
+          previousText={messages['previousText']}
+          nextText={messages['nextText']}
+          noDataText={messages['loadingText']}
+        />
+        {
+          <Modal
+            size="fullscreen"
+            open={this.state.modalOpen}
+            onClose={this.handleClose.bind(this)}
+          >
+            <Modal.Header>
+              {'Права'} "{this.state.row.text45}"{' '}
+            </Modal.Header>
+            <Modal.Content>
+              <Update
+                messages={messages}
+                accessTypes={this.state.accessTypes}
+                handleCheckBox={this.handleCheckBox.bind(this)}
+              />
+            </Modal.Content>
+            <Modal.Actions>
+              <Button negative onClick={this.handleClose.bind(this)}>
+                {messages['BTN__CANCEL']}{' '}
+              </Button>
+              <Button
+                icon="checkmark"
+                content={messages['save']}
+                onClick={this.saveRoles.bind(this)}
+                color="teal"
+              />
+            </Modal.Actions>
+          </Modal>
+        }
+        {this.renderName()}
       </div>
     );
   }
@@ -265,6 +260,10 @@ class ListRole extends Component {
 
   updRNomination() {
     this.props.updRNomination(this.state.roleName);
+    this.setState({
+      ...this.state,
+      roleNameShow: false,
+    });
   }
 
   resetroleNameShow(role) {

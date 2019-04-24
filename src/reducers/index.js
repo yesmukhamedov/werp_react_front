@@ -45,6 +45,7 @@ import hrPosReducer from '../hr/reference/position/positionReducer';
 import menuReducer from '../dit/menu/menuReducer';
 import sysUsrReducer from '../dit/duserlist/systemUserReducer';
 import ditRole from '../dit/role/roleReducer';
+import ditEventLog from '../dit/eventlog/eventLogReducer';
 
 const appReducer = combineReducers({
   form,
@@ -92,6 +93,7 @@ const appReducer = combineReducers({
   menuReducer: menuReducer,
   sysUsrReducer: sysUsrReducer,
   ditRole: ditRole,
+  ditEventLog: ditEventLog,
 });
 
 const rootReducer = (state, action) => {

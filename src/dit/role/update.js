@@ -23,6 +23,27 @@ export default function Update(props) {
       filterAll: true,
     },
     {
+      Header: messages['code'],
+      accessor: 'transaction_code',
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, { keys: ['transaction_code'] }),
+      filterAll: true,
+    },
+    {
+      Header: messages['parDir'],
+      accessor: 'front_component',
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, { keys: ['front_component'] }),
+      filterAll: true,
+    },
+    {
+      Header: 'FRONT URL',
+      accessor: 'front_url',
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, { keys: ['front_url'] }),
+      filterAll: true,
+    },
+    {
       Header: 'Menu Info',
       accessor: 'menuInfo',
       filterMethod: (filter, rows) =>
@@ -36,17 +57,16 @@ export default function Update(props) {
         return (
           <div>
             <Checkbox
-              radio
               label="read"
+              style={{ paddingLeft: 20 }}
               name="checkboxRadioGroup"
               value="read"
               checked={pr.value === 'read'}
               onChange={(e, o) => props.handleCheckBox('read', pr.original)}
             />
-            <br />
             <Checkbox
-              radio
               label="write"
+              style={{ paddingLeft: 20 }}
               name="checkboxRadioGroup"
               value="write"
               checked={pr.value === 'write'}
@@ -54,10 +74,9 @@ export default function Update(props) {
                 props.handleCheckBox('write', pr.original);
               }}
             />
-            <br />
             <Checkbox
-              radio
               label="all"
+              style={{ paddingLeft: 20 }}
               name="checkboxRadioGroup"
               value="all"
               checked={pr.value === 'all'}
@@ -68,9 +87,6 @@ export default function Update(props) {
           </div>
         );
       },
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
       filterAll: false,
     },
   ];

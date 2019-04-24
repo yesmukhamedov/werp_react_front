@@ -633,5 +633,6 @@
   "role": "Role",
   "sys_users": "Sistem kullanıcıları",
   "internal_number": "internal number",
-  "lst_roles": "List of roles"
+  "lst_roles": "List of roles",
+  "event_log": "Olay günlüğü"
 }

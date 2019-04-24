@@ -564,6 +564,11 @@ const AsyncRoles = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncEventLog = Loadable({
+  loader: () => import('../dit/eventlog/' /* webpackChunkName: roles */),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
@@ -658,6 +663,8 @@ const getComponent = {
 const generateRoutes = transactionRoutes => {
   return (
     <div>
+      <Route path="/dit/eventlog" component={AsyncEventLog} />
+
       <Route exact path="/" component={MainPanel} />
       <Route path="/settings" component={AsyncSettings} />
       <Route path="/signin" component={Signin} />
