@@ -71,3 +71,68 @@ export function RepTable954(props) {
     />
   );
 }
+
+export const RepTable1256 = props => {
+  let { items } = props;
+  if (!items) {
+    items = [];
+  }
+
+  const columns = [
+    {
+      Header: 'ФИО рекомендателя',
+      accessor: 'recommenderName',
+    },
+    {
+      Header: 'Филиал рекомендателя',
+      accessor: 'recommenderBranchName',
+      maxWidth: 150,
+    },
+    {
+      Header: 'Должность рекомендателя',
+      accessor: 'recommenderPositionName',
+    },
+    {
+      Header: 'ФИО претендента',
+      accessor: 'applicantName',
+    },
+    {
+      Header: 'Филиал претендента',
+      accessor: 'applicantBranchName',
+      maxWidth: 150,
+    },
+    {
+      Header: 'Претендуемая должность',
+      accessor: 'applicantPositionName',
+    },
+    {
+      Header: 'TS дата',
+      accessor: 'tsDate',
+      maxWidth: 100,
+    },
+    {
+      Header: 'Количество продаж',
+      accessor: 'saleCount',
+      maxWidth: 70,
+    },
+  ];
+  return (
+    <div style={{ marginTop: '10px' }}>
+      <div>Количество: {items ? items.length : 0}</div>
+      <ReactTable
+        data={items}
+        columns={columns}
+        pageSizeOptions={[10, 20, 30, 50]}
+        defaultPageSize={50}
+        previousText="Предыдущий"
+        nextText="Следующий"
+        loadingText="Загружается..."
+        noDataText="Нет записей"
+        pageText="Страница"
+        ofText="из"
+        rowsText="записей"
+        className="-highlight"
+      />
+    </div>
+  );
+};
