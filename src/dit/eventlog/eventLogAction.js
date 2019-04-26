@@ -6,23 +6,22 @@ import {
   notify,
 } from '../../general/notification/notification_action';
 
+import axiosInstance from '../../utils/apiClient';
+
 export const ALL_EVETNT = 'ALL_EVETNT';
 
-export function fetchAll() {
+export function fetchAll(page) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    axios
-      .get(`${ROOT_URL}/api/eventlog/all`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    axiosInstance
+      .get(`${ROOT_URL}/api/eventlog/all?${page}`)
       .then(({ data }) => {
-        console.log('data', data);
         modifyLoader(false);
+        console.log(data);
         dispatch({
           type: ALL_EVETNT,
-          payload: data,
+          items: data.items,
+          meta: data.meta,
         });
       })
       .catch(error => {
@@ -30,3 +29,27 @@ export function fetchAll() {
       });
   };
 }
+/*
+export function fetchAll(page) {
+  return function(dispatch) {
+    dispatch(modifyLoader(false));
+    axios
+      .get(`${ROOT_URL}/api/eventlog/all?${page}`, {
+        headers: {
+          authorization: localStorage.getItem('token'),
+        },
+      })
+      .then(({ data }) => {
+        modifyLoader(false);
+        dispatch({
+          type: ALL_EVETNT,
+          items: data.items,
+          meta: data.meta,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+*/
