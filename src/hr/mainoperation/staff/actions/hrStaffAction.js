@@ -11,6 +11,7 @@ import {
   getStaffDataFetchUri,
   getStaffDataBlankUri,
 } from '../../../hrUtil';
+import { doGet, doPost, doPut } from '../../../../utils/apiActions';
 
 export const HR_STAFF_CURRENT_STAFFS = 'HR_STAFF_CURRENT_STAFFS';
 export const HR_STAFF_SINGLE_STAFF = 'HR_STAFF_SINGLE_STAFF';
@@ -128,38 +129,15 @@ export function fetchAllStaffs() {
   };
 }
 
-export function createStaff(staff) {
+export function saveStaff(staff) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .post(`${ROOT_URL}/api/hr/staff`, staff, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    const uri = 'hr/staff';
+    let prom = staff.new ? doPost(uri, staff) : doPut(uri, staff);
+    prom
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         browserHistory.push(`/hr/staff/view/${data.id}`);
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        dispatch(notify('error', error.response.data.message, 'Ошибка'));
-      });
-  };
-}
-
-export function updateStaff(staff) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    axios
-      .put(`${ROOT_URL}/api/hr/staff`, staff, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
-      .then(() => {
-        dispatch(modifyLoader(false));
-        browserHistory.push(`/hr/staff/view/${staff.id}`);
       })
       .catch(error => {
         dispatch(modifyLoader(false));
@@ -192,12 +170,7 @@ export function updateStaff(staff) {
 export function fetchSingleStaff(staffId) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/hr/staff/${staffId}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`hr/staff/${staffId}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
