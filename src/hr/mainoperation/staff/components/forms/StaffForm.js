@@ -9,6 +9,7 @@ import {
   Grid,
 } from 'semantic-ui-react';
 import ExperienceForm from '../forms/ExperienceForm';
+import StaffAddresses from '../forms/StaffAddresses';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
@@ -405,6 +406,12 @@ export default function StaffForm(props) {
           })}
         </div>
       </div>
+
+      <StaffAddresses
+        updateAddresses={props.updateAddresses}
+        addresses={staff.addresses || []}
+        customerId={staff['customerId']}
+      />
     </Form>
   );
 }

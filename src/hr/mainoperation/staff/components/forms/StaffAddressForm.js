@@ -12,6 +12,8 @@ export default function StaffAddressForm(props) {
     stateOptions,
     cityOptions,
     regionOptions,
+    addressTypeOptions,
+    index,
   } = props;
   if (!address) {
     return '';
@@ -20,10 +22,19 @@ export default function StaffAddressForm(props) {
     <div>
       <Form.Group widths="equal">
         <Form.Select
+          name="type"
+          value={address.type}
+          required
+          onChange={(e, data) => props.handleChange(index, data)}
+          label="Тип адреса"
+          options={addressTypeOptions}
+          placeholder="Тип адреса"
+        />
+        <Form.Select
           name="countryId"
           value={address.countryId}
           required
-          onChange={(e, data) => props.handleChange(address.type, data)}
+          onChange={(e, data) => props.handleChange(index, data)}
           label="Страна"
           options={countryOptions}
           placeholder="Страна"
@@ -32,7 +43,7 @@ export default function StaffAddressForm(props) {
         <Form.Select
           value={address.stateId}
           name="stateId"
-          onChange={(e, data) => props.handleChange(address.type, data)}
+          onChange={(e, data) => props.handleChange(index, data)}
           required
           label="Область"
           options={stateOptions}
@@ -43,7 +54,7 @@ export default function StaffAddressForm(props) {
           value={address.cityId}
           required
           name="cityId"
-          onChange={(e, data) => props.handleChange(address.type, data)}
+          onChange={(e, data) => props.handleChange(index, data)}
           label="Город"
           options={cityOptions}
           placeholder="Город"
@@ -53,7 +64,7 @@ export default function StaffAddressForm(props) {
           value={address.regId}
           required
           name="regId"
-          onChange={(e, data) => props.handleChange(address.type, data)}
+          onChange={(e, data) => props.handleChange(index, data)}
           label="Район"
           options={regionOptions}
           placeholder="Район"
@@ -63,7 +74,7 @@ export default function StaffAddressForm(props) {
       <Form.Group widths="equal">
         <Form.Field
           name="microdistrict"
-          onChange={(e, data) => props.handleChange(address.type, data)}
+          onChange={(e, data) => props.handleChange(index, data)}
           value={address.microdistrict || ''}
           control={Input}
           label="Микрорайон"
@@ -72,7 +83,7 @@ export default function StaffAddressForm(props) {
 
         <Form.Field
           name="village"
-          onChange={(e, data) => props.handleChange(address.type, data)}
+          onChange={(e, data) => props.handleChange(index, data)}
           value={address.village || ''}
           control={Input}
           label="Поселок"
@@ -83,7 +94,7 @@ export default function StaffAddressForm(props) {
       <Form.Group widths="equal">
         <Form.Field
           name="avenue"
-          onChange={(e, data) => props.handleChange(address.type, data)}
+          onChange={(e, data) => props.handleChange(index, data)}
           value={address.avenue || ''}
           control={Input}
           label="Проспект"
@@ -92,7 +103,7 @@ export default function StaffAddressForm(props) {
 
         <Form.Field
           name="street"
-          onChange={(e, data) => props.handleChange(address.type, data)}
+          onChange={(e, data) => props.handleChange(index, data)}
           value={address.street || ''}
           control={Input}
           label="Ул.(просп./мкр.)"
@@ -101,7 +112,7 @@ export default function StaffAddressForm(props) {
 
         <Form.Field
           name="apNumber"
-          onChange={(e, data) => props.handleChange(address.type, data)}
+          onChange={(e, data) => props.handleChange(index, data)}
           value={address.apNumber || ''}
           control={Input}
           label="Дом"
@@ -110,7 +121,7 @@ export default function StaffAddressForm(props) {
 
         <Form.Field
           name="flatNumber"
-          onChange={(e, data) => props.handleChange(address.type, data)}
+          onChange={(e, data) => props.handleChange(index, data)}
           value={address.flatNumber || ''}
           control={Input}
           label="квартира №"

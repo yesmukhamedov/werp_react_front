@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { ROOT_URL } from '../../utils/constants';
 import { handleError } from '../../general/notification/notification_action';
+import { doGet } from '../../utils/apiActions';
 
 export const F4_FETCH_MATNR_LIST = 'F4_FETCH_MATNR_LIST';
 export const F4_CLEAR_MATNR_LIST = 'F4_CLEAR_MATNR_LIST';
@@ -68,6 +69,8 @@ export const F4_FETCH_NATIONALITIES = 'F4_FETCH_NATIONALITIES';
 export const F4_CLEAR_NATIONALITIES = 'F4_CLEAR_NATIONALITIES';
 
 export const F4_FETCH_NATIONALITY_OPTIONS = 'F4_FETCH_NATIONALITY_OPTIONS';
+
+export const F4_FETCH_ADDR_TYPE_OPTIONS = 'F4_FETCH_ADDR_TYPE_OPTIONS';
 
 export function f4ClearAnyObject(a_const) {
   const obj = {
@@ -549,6 +552,22 @@ export function f4FetchNationalityOptions() {
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_NATIONALITY_OPTIONS,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+//Address Types
+export function f4FetchAddrTypeOptions() {
+  return function(dispatch) {
+    doGet('reference/address-types?dto-type=options')
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_ADDR_TYPE_OPTIONS,
           payload: data,
         });
       })

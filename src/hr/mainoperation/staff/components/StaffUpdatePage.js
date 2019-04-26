@@ -3,13 +3,12 @@ import { Container, Form, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import {
   fetchSingleStaff,
-  createStaff,
   toggleStaffListModal,
   fetchAllCurrentStaffs,
   fetchBlankStaff,
-  updateStaff,
   blankStaffExperience,
   fetchMaritalStatusOptions,
+  saveStaff,
 } from '../actions/hrStaffAction';
 import {
   f4FetchCountryList,
@@ -19,11 +18,13 @@ import {
   f4FetchSubCompanies,
   f4FetchCompanyOptions,
   f4FetchNationalityOptions,
+  f4FetchAddrTypeOptions,
 } from '../../../../reference/f4/f4_action';
 import StaffAddressForm from './forms/StaffAddressForm';
 import SubCompanyListModal from '../../../../reference/mainoperation/components/SubCompanyListModal';
 import SalaryListModal from '../../salary/components/SalaryListModal';
 import StaffForm from './forms/StaffForm';
+
 import { toggleSalaryListModal } from '../../salary/actions/hrSalaryAction';
 
 class StaffUpdatePage extends Component {
@@ -36,7 +37,6 @@ class StaffUpdatePage extends Component {
       experienceBlanking: false,
     };
 
-    this.handleAddressData = this.handleAddressData.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.onScoutSelected = this.onScoutSelected.bind(this);
@@ -66,6 +66,7 @@ class StaffUpdatePage extends Component {
     this.props.f4FetchCompanyOptions();
     this.props.f4FetchNationalityOptions();
     this.props.fetchMaritalStatusOptions();
+    this.props.f4FetchAddrTypeOptions();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -76,134 +77,6 @@ class StaffUpdatePage extends Component {
         localStaff,
       });
     }
-  }
-
-  getStateOptions(countryId) {
-    if (!this.props.stateList) {
-      return [];
-    }
-
-    const { stateList } = this.props;
-
-    const map = [];
-    for (const k in stateList) {
-      if (stateList[k].countryid === countryId) {
-        map.push({
-          key: stateList[k].idstate,
-          text: stateList[k].statename,
-          value: stateList[k].idstate,
-        });
-      }
-    }
-
-    return map;
-  }
-
-  getCityOptions(stateId) {
-    if (!this.props.cityList) {
-      return [];
-    }
-
-    const { cityList } = this.props;
-    const map = [];
-    for (const k in cityList) {
-      if (cityList[k].stateid === stateId) {
-        map.push({
-          key: cityList[k].idcity,
-          text: cityList[k].name,
-          value: cityList[k].idcity,
-        });
-      }
-    }
-
-    return map;
-  }
-
-  getRegionOptions(cityId) {
-    if (!this.props.cityregList) {
-      return [];
-    }
-
-    const { cityregList } = this.props;
-
-    const map = [];
-    for (const k in cityregList) {
-      if (cityregList[k].city_id === cityId) {
-        map.push({
-          key: cityregList[k].idcityreg,
-          value: cityregList[k].idcityreg,
-          text: cityregList[k].regname,
-        });
-      }
-    }
-
-    return map;
-  }
-
-  getCountryOptions() {
-    if (!this.props.countryList) {
-      return [];
-    }
-
-    const { countryList } = this.props;
-    const out = countryList.map(c => ({
-      key: parseInt(c.countryId, 10),
-      text: c.country,
-      value: parseInt(c.countryId, 10),
-    }));
-
-    return out;
-  }
-
-  handleAddressData(type, data) {
-    const localStaff = Object.assign({}, this.state.localStaff);
-    if (!localStaff.addresses) {
-      return;
-    }
-
-    const addresses = localStaff.addresses;
-    let selectedAddress = null;
-    let index = -1;
-    for (const k in addresses) {
-      if (addresses[k].type === type) {
-        selectedAddress = addresses[k];
-        index = k;
-        break;
-      }
-    }
-
-    if (index < 0) {
-      return;
-    }
-
-    const { name, value } = data;
-    switch (name) {
-      case 'countryId':
-      case 'stateId':
-      case 'cityId':
-      case 'regId':
-        selectedAddress[name] = value;
-        break;
-
-      case 'microdistrict':
-      case 'village':
-      case 'avenue':
-      case 'street':
-      case 'apNumber':
-      case 'flatNumber':
-        selectedAddress[name] = value;
-        break;
-      default: {
-      }
-    }
-
-    addresses[index] = selectedAddress;
-    localStaff.addresses = addresses;
-
-    this.setState({
-      ...this.state,
-      localStaff,
-    });
   }
 
   handleExperienceData(fieldName, fieldValue, index) {
@@ -261,7 +134,6 @@ class StaffUpdatePage extends Component {
       exps2.push(localStaff.experiences[k]);
     }
 
-    console.log(idx, exps2);
     localStaff.experiences = exps2;
 
     this.setState({
@@ -300,11 +172,7 @@ class StaffUpdatePage extends Component {
 
   submitForm() {
     const localStaff = Object.assign({}, this.state.localStaff);
-    if (localStaff.id && localStaff.id > 0) {
-      this.props.updateStaff(localStaff);
-    } else {
-      this.props.createStaff(localStaff);
-    }
+    this.props.saveStaff(localStaff);
   }
 
   onScoutSelected(o) {
@@ -360,12 +228,22 @@ class StaffUpdatePage extends Component {
     });
   }
 
+  updateAddresses = addresses => {
+    let localStaff = Object.assign({}, this.state.localStaff);
+    localStaff.addresses = addresses;
+    this.setState({
+      ...this.state,
+      localStaff,
+    });
+  };
+
   renderForm() {
     const { localStaff } = this.state;
     const addresses = localStaff.addresses || [];
     return (
       <div>
         <StaffForm
+          updateAddresses={this.updateAddresses}
           handleExperienceData={this.handleExperienceData}
           experienceBlanking={this.state.experienceBlanking}
           addExperienceRow={this.addExperienceRow}
@@ -380,26 +258,6 @@ class StaffUpdatePage extends Component {
           nationalityOptions={this.props.nationalityOptions || []}
           maritalStatusOptions={this.props.maritalStatusOptions}
         />
-        <br />
-        <Form>
-          {addresses.map((address, idx) => (
-            <div key={address.type} className="ui segments">
-              <div className="ui segment">
-                <h3>{address.typeName}</h3>
-              </div>
-              <div className="ui secondary segment">
-                <StaffAddressForm
-                  countryOptions={this.getCountryOptions()}
-                  stateOptions={this.getStateOptions(address.countryId || 0)}
-                  cityOptions={this.getCityOptions(address.stateId || 0)}
-                  regionOptions={this.getRegionOptions(address.cityId || 0)}
-                  handleChange={this.handleAddressData}
-                  address={address}
-                />
-              </div>
-            </div>
-          ))}
-        </Form>
         <br />
         <Button
           onClick={this.submitForm}
@@ -467,15 +325,15 @@ export default connect(
     f4FetchCityList,
     f4FetchCityregList,
     f4FetchCompanyOptions,
-    createStaff,
+    saveStaff,
     toggleStaffListModal,
     fetchAllCurrentStaffs,
     fetchBlankStaff,
-    updateStaff,
     f4FetchSubCompanies,
     toggleSalaryListModal,
     blankStaffExperience,
     f4FetchNationalityOptions,
     fetchMaritalStatusOptions,
+    f4FetchAddrTypeOptions,
   },
 )(StaffUpdatePage);
