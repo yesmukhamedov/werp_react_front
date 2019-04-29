@@ -2,16 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
   Header,
-  Icon,
   Segment,
   Button,
   Container,
   Table,
-  Menu,
-  Label,
   Grid,
-  Form,
-  Select,
   Dropdown,
 } from 'semantic-ui-react';
 import { fetchAll } from './eventLogAction';

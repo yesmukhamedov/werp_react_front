@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { ROOT_URL } from '../../utils/constants';
 import { modifyLoader } from '../../general/loader/loader_action';
 import {
@@ -17,7 +16,6 @@ export function fetchAll(page) {
       .get(`${ROOT_URL}/api/eventlog/all?${page}`)
       .then(({ data }) => {
         modifyLoader(false);
-        console.log(data);
         dispatch({
           type: ALL_EVETNT,
           items: data.items,
@@ -29,27 +27,3 @@ export function fetchAll(page) {
       });
   };
 }
-/*
-export function fetchAll(page) {
-  return function(dispatch) {
-    dispatch(modifyLoader(false));
-    axios
-      .get(`${ROOT_URL}/api/eventlog/all?${page}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
-      .then(({ data }) => {
-        modifyLoader(false);
-        dispatch({
-          type: ALL_EVETNT,
-          items: data.items,
-          meta: data.meta,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
-}
-*/
