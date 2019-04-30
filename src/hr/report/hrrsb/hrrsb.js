@@ -1,688 +1,797 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import {
-  Table,
-  Button,
-  Dropdown,
-  Icon,
-  Container,
-  Header,
-  Grid,
-  Segment,
-  Menu,
-} from 'semantic-ui-react';
-import 'react-datepicker/dist/react-datepicker.css';
-import { modifyLoader } from '../../../general/loader/loader_action';
-import OutputErrors from '../../../general/error/outputErrors';
-import { fetchDynamicFAGM, clearDynObj } from '../../../finance/fa_action';
-import {
-  f4FetchCurrencyList,
-  f4FetchExchangeRateNational,
-  f4FetchHkontList,
-  f4ClearAnyObject,
-} from '../../../reference/f4/f4_action';
-import { moneyFormat } from '../../../utils/helpers';
-import { injectIntl } from 'react-intl';
-import { messages } from '../../../locales/defineMessages';
-import { Link } from 'react-router-dom';
-import matchSorter, { rankings } from 'match-sorter';
-import ReactTable from 'react-table';
-import 'react-table/react-table.css';
-import { LinkToDmsc03 } from '../../../utils/outlink';
-import { BigNumber } from 'bignumber.js';
-import { excelDownload } from '../../../utils/helpers';
+// import React, { Component } from 'react';
+// import { connect } from 'react-redux';
+// import {
+//   Table,
+//   Button,
+//   Dropdown,
+//   Icon,
+//   Container,
+//   Header,
+//   Grid,
+//   Segment,
+//   Menu,
+//   Checkbox,
+//   List,
+// } from 'semantic-ui-react';
+// import { modifyLoader } from '../../../general/loader/loader_action';
+// import OutputErrors from '../../../general/error/outputErrors';
+// import { fetchDynamicFAGM, clearDynObj, changeDynObj } from '../../fa_action';
+// import { moneyFormat } from '../../../utils/helpers';
+// import { injectIntl } from 'react-intl';
+// import { messages } from '../../../locales/defineMessages';
+// import ReactTable from 'react-table';
+// import 'react-table/react-table.css';
+// import { LinkToStaffCardView } from '../../../utils/outlink';
+// import { excelDownload } from '../../../utils/helpers';
 
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment';
-require('moment/locale/ru');
-require('moment/locale/tr');
+// class Hrrsb extends Component {
+//   constructor(props) {
+//     super(props);
+//     this.onInputChange = this.onInputChange.bind(this);
+//     this.renderSearchTab = this.renderSearchTab.bind(this);
+//     this.searchFrep7 = this.searchFrep7.bind(this);
+//     this.getDetail = this.getDetail.bind(this);
+//     this.validate = this.validate.bind(this);
+//     this.renderTotal = this.renderTotal.bind(this);
+//     this.renderDetail = this.renderDetail.bind(this);
+//     this.exportExcel = this.exportExcel.bind(this);
 
-class Hrrsb extends Component {
-  constructor(props) {
-    var date = new Date(),
-      y = date.getFullYear(),
-      m = date.getMonth();
-    var firstDay = new Date(y, m, 1);
-    var lastDay = new Date(y, m + 1, 0);
+//     this.state = {
+//       searchTerm: {
+//         bukrs: '',
+//         branchList: [],
+//         dismissed: false,
+//         branchesOff: false,
+//       },
+//       activeIndex: 0,
+//       errors: [],
+//     };
+//   }
 
-    super(props);
-    this.onInputChange = this.onInputChange.bind(this);
-    this.renderSearchTab = this.renderSearchTab.bind(this);
-    this.searchHrrsb = this.searchHrrsb.bind(this);
-    this.getDetail = this.getDetail.bind(this);
-    this.onFilterChangeReactTable = this.onFilterChangeReactTable.bind(this);
-    this.validate = this.validate.bind(this);
-    this.renderTotal = this.renderTotal.bind(this);
-    this.renderDetail = this.renderDetail.bind(this);
-    this.exportExcel = this.exportExcel.bind(this);
+//   componentDidMount() {
+//     this.props.clearDynObj();
+//     this.props.fetchDynamicFAGM(
+//       '/api/finance/reports/frep7/canReadDismissed',
+//       {},
+//     );
+//   }
+//   componentWillReceiveProps(nextProps) {}
+//   componentWillUnmount() {
+//     this.props.clearDynObj();
+//   }
+//   onInputChange(value, stateFieldName) {
+//     const { canReadDismissed } = this.props;
+//     this.props.clearDynObj();
+//     this.props.changeDynObj({ canReadDismissed });
 
-    this.state = {
-      searchTerm: {
-        bukrs: '',
-        waers: '',
-        balanceType: '0',
-        dateFrom: moment(firstDay),
-        dateTo: moment(lastDay),
-      },
-      errors: [],
-    };
-  }
+//     if (stateFieldName === 'bukrs') {
+//       this.setState({
+//         searchTerm: {
+//           ...this.state.searchTerm,
+//           [stateFieldName]: value,
+//           branchList: [],
+//         },
+//       });
+//     } else if (stateFieldName === 'dismissed') {
+//       let dismissedNewVal = !this.state.searchTerm.dismissed;
+//       let branchesOff = this.state.searchTerm.branchesOff;
+//       if (!dismissedNewVal) {
+//         branchesOff = false;
+//       }
+//       this.setState({
+//         searchTerm: {
+//           ...this.state.searchTerm,
+//           dismissed: dismissedNewVal,
+//           branchesOff,
+//         },
+//       });
+//     } else if (stateFieldName === 'branchesOff') {
+//       let branchesOffNewVal = !this.state.searchTerm.branchesOff;
+//       let branchList = JSON.parse(
+//         JSON.stringify(this.state.searchTerm.branchList),
+//       );
 
-  componentDidMount() {
-    this.props.clearDynObj();
-    this.props.f4FetchCurrencyList('hrrsb');
-  }
-  componentWillReceiveProps(nextProps) {
-    // if (nextProps.outputTableDetail !== this.props.outputTableDetail) {
-    //   if (
-    //     nextProps.outputTableDetail === null ||
-    //     nextProps.outputTableDetail === undefined ||
-    //     nextProps.outputTableDetail === []
-    //   ) {
-    //     this.setState({ totalDmbtr: 0, totalWrbtr: 0 });
-    //   } else {
-    //     let temp = [...nextProps.outputTableDetail];
-    //     let totalDmbtr = 0,
-    //       totalWrbtr = 0;
-    //     for (let i = 0; i < temp.length; i++) {
-    //       let wa = temp[i];
-    //       totalDmbtr = totalDmbtr + wa.dmbtr;
-    //       totalWrbtr = totalWrbtr + wa.wrbtr;
-    //     }
-    //     totalDmbtr = new BigNumber(totalDmbtr).toFixed(2);
-    //     totalWrbtr = new BigNumber(totalWrbtr).toFixed(2);
-    //     this.setState({ totalDmbtr, totalWrbtr });
-    //   }
-    // }
-  }
-  componentWillUnmount() {
-    this.props.clearDynObj();
-  }
-  onInputChange(value, stateFieldName) {
-    this.setState({
-      searchTerm: { ...this.state.searchTerm, [stateFieldName]: value },
-    });
-    // this.props.clearDynObj();
-    // if (stateFieldName === 'bukrs') {
-    //   this.setState({
-    //     searchTerm: {
-    //       ...this.state.searchTerm,
-    //       [stateFieldName]: value,
-    //       branchList: [],
-    //       balanceType: ['0'],
-    //     },
-    //     totalDmbtr: 0,
-    //     totalWrbtr: 0,
-    //   });
-    // } else {
-    //   this.setState({
-    //     searchTerm: { ...this.state.searchTerm, [stateFieldName]: value },
-    //     totalDmbtr: 0,
-    //     totalWrbtr: 0,
-    //   });
-    // }
-  }
-  exportExcel() {
-    // const { formatMessage } = this.props.intl;
-    // let excelHeaders = [];
-    // excelHeaders.push(formatMessage(messages.brnch));
-    // excelHeaders.push(formatMessage(messages.waers));
-    // excelHeaders.push(formatMessage(messages.in1Month));
-    // excelHeaders.push(formatMessage(messages.installments));
-    // excelHeaders.push(formatMessage(messages.overallSum));
-    // excelHeaders.push(formatMessage(messages.menge));
-    // excelHeaders.push(formatMessage(messages.amount) + ' USD');
-    // excelHeaders.push(
-    //   formatMessage(messages.amount) +
-    //     ' ' +
-    //     formatMessage(messages.inDocumentCurrency),
-    // );
-    // excelDownload(
-    //   '/api/finance/reports/Hrrsb/downloadExcel',
-    //   'HrrsbTotal.xls',
-    //   'outputTable',
-    //   this.props.outputTable,
-    //   excelHeaders,
-    // );
-  }
-  renderSearchTab() {
-    const language = localStorage.getItem('language');
-    const { formatMessage } = this.props.intl;
-    const { currencyOptions, companyOptions } = this.props;
-    const {
-      bukrs,
-      waers,
-      balanceType,
-      dateFrom,
-      dateTo,
-    } = this.state.searchTerm;
+//       if (branchesOffNewVal) {
+//         branchList = [];
+//       }
+//       this.setState({
+//         searchTerm: {
+//           ...this.state.searchTerm,
+//           branchList,
+//           branchesOff: branchesOffNewVal,
+//         },
+//       });
+//     } else {
+//       this.setState({
+//         searchTerm: { ...this.state.searchTerm, [stateFieldName]: value },
+//       });
+//     }
+//   }
+//   exportExcel(a_type) {
+//     const { formatMessage } = this.props.intl;
+//     let excelHeaders = [];
 
-    const staffAccountOptions = [
-      { key: 0, text: formatMessage(messages.balanceAccount), value: '0' },
-      { key: 1, text: formatMessage(messages.depositAccount), value: '1' },
-      { key: 2, text: formatMessage(messages.blockedAccount), value: '2' },
-      {
-        key: 3,
-        text: formatMessage(messages.advancePaymentRequestAccount),
-        value: '3',
-      },
-      { key: 4, text: formatMessage(messages.debtAccount), value: '4' },
-      { key: 5, text: formatMessage(messages.doubtfulDebtAccount), value: '5' },
-    ];
+//     if (a_type === 'total') {
+//       excelHeaders.push(formatMessage(messages.waers));
+//       excelHeaders.push(formatMessage(messages.brnch));
+//       excelHeaders.push(formatMessage(messages.balanceAccountMin));
+//       excelHeaders.push(formatMessage(messages.depositAccountMin));
+//       excelHeaders.push(formatMessage(messages.debtAccountMin));
+//       excelHeaders.push(formatMessage(messages.doubtfulDebtAccountMin));
+//       excelHeaders.push(formatMessage(messages.blockedAccountMin));
+//       excelHeaders.push(
+//         formatMessage(messages.advancePaymentRequestAccountMin),
+//       );
+//       excelHeaders.push(formatMessage(messages.balanceAccountMin) + ' $');
+//       excelHeaders.push(formatMessage(messages.depositAccountMin) + ' $');
+//       excelHeaders.push(formatMessage(messages.debtAccountMin) + ' $');
+//       excelHeaders.push(formatMessage(messages.doubtfulDebtAccountMin) + ' $');
+//       excelHeaders.push(formatMessage(messages.blockedAccountMin) + ' $');
+//       excelHeaders.push(
+//         formatMessage(messages.advancePaymentRequestAccountMin) + ' $',
+//       );
 
-    return (
-      <Grid>
-        <Grid.Row>
-          <Grid.Column mobile={16} tablet={16} computer={4}>
-            <Table compact>
-              <Table.Body>
-                <Table.Row>
-                  <Table.Cell collapsing>
-                    <Icon name="folder" />
-                    {formatMessage(messages.bukrs)}
-                  </Table.Cell>
-                  <Table.Cell colSpan="2">
-                    <Dropdown
-                      fluid
-                      placeholder={formatMessage(messages.bukrs)}
-                      selection
-                      options={companyOptions}
-                      value={bukrs}
-                      onChange={(e, { value }) =>
-                        this.onInputChange(value, 'bukrs')
-                      }
-                      noResultsMessage={formatMessage(
-                        messages.noResultsMessage,
-                      )}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>
-                    <Icon name="browser" />
-                    {formatMessage(messages.type)}
-                  </Table.Cell>
-                  <Table.Cell colSpan="2">
-                    <Dropdown
-                      selection
-                      options={staffAccountOptions || []}
-                      value={balanceType}
-                      onChange={(e, { value }) =>
-                        this.onInputChange(value, 'balanceType')
-                      }
-                      noResultsMessage={formatMessage(
-                        messages.noResultsMessage,
-                      )}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>
-                    <Icon name="browser" />
-                    {formatMessage(messages.waers)}
-                  </Table.Cell>
-                  <Table.Cell colSpan="2">
-                    <Dropdown
-                      placeholder={formatMessage(messages.waers)}
-                      search
-                      selection
-                      options={currencyOptions || []}
-                      value={waers}
-                      onChange={(e, { value }) =>
-                        this.onInputChange(value, 'waers')
-                      }
-                      noResultsMessage={formatMessage(
-                        messages.noResultsMessage,
-                      )}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>
-                    <span>
-                      <Icon name="calendar" />
-                      {formatMessage(messages.date)}
-                    </span>
-                  </Table.Cell>
-                  <Table.Cell>
-                    {' '}
-                    {formatMessage(messages.from)}
-                    <DatePicker
-                      className="date-100-width"
-                      autoComplete="off"
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select" //timezone="UTC"
-                      selected={dateFrom}
-                      locale={language}
-                      onChange={event => this.onInputChange(event, 'dateFrom')}
-                      dateFormat="DD.MM.YYYY"
-                    />
-                  </Table.Cell>
-                  <Table.Cell>
-                    {formatMessage(messages.to)}
-                    <DatePicker
-                      className="date-100-width"
-                      autoComplete="off"
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select" //timezone="UTC"
-                      selected={dateTo}
-                      locale={language}
-                      onChange={event => this.onInputChange(event, 'dateTo')}
-                      dateFormat="DD.MM.YYYY"
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell />
-                  <Table.Cell colSpan="2">
-                    <Button
-                      icon
-                      labelPosition="left"
-                      primary
-                      size="small"
-                      onClick={() => this.searchHrrsb()}
-                    >
-                      <Icon name="search" size="large" />
-                      {formatMessage(messages.search)}
-                    </Button>
-                  </Table.Cell>
-                </Table.Row>
-              </Table.Body>
-            </Table>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    );
-  }
-  validate() {
-    // getter
-    // console.log(localStorage.getItem('language'),'error');
+//       excelDownload(
+//         '/api/finance/reports/frep7/downloadExcel',
+//         'Frep7Total.xls',
+//         'outputTable',
+//         this.props.outputTable,
+//         excelHeaders,
+//       );
+//     } else if (a_type === 'detail') {
+//       excelHeaders.push(formatMessage(messages.fio));
+//       excelHeaders.push(formatMessage(messages.waers));
+//       excelHeaders.push(formatMessage(messages.balanceAccountMin));
+//       excelHeaders.push(formatMessage(messages.depositAccountMin));
+//       excelHeaders.push(formatMessage(messages.debtAccountMin));
+//       excelHeaders.push(formatMessage(messages.doubtfulDebtAccountMin));
+//       excelHeaders.push(formatMessage(messages.blockedAccountMin));
+//       excelHeaders.push(
+//         formatMessage(messages.advancePaymentRequestAccountMin),
+//       );
+//       excelHeaders.push(formatMessage(messages.balanceAccountMin) + ' $');
+//       excelHeaders.push(formatMessage(messages.depositAccountMin) + ' $');
+//       excelHeaders.push(formatMessage(messages.debtAccountMin) + ' $');
+//       excelHeaders.push(formatMessage(messages.doubtfulDebtAccountMin) + ' $');
+//       excelHeaders.push(formatMessage(messages.blockedAccountMin) + ' $');
+//       excelHeaders.push(
+//         formatMessage(messages.advancePaymentRequestAccountMin) + ' $',
+//       );
 
-    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-    const language = localStorage.getItem('language');
-    const errors = [];
-    const { bukrs, dateFrom, dateTo, balanceType } = this.state.searchTerm;
-    if (bukrs === null || bukrs === undefined || !bukrs) {
-      errors.push(errorTable[`5${language}`]);
-    }
-    if (
-      balanceType === null ||
-      balanceType === undefined ||
-      balanceType.length === 0
-    ) {
-      errors.push(errorTable[`27${language}`]);
-    }
-    if (dateFrom === null || dateFrom === undefined || !dateFrom) {
-      errors.push(errorTable[`13${language}`]);
-    }
-    if (dateTo === null || dateTo === undefined || !dateTo) {
-      errors.push(errorTable[`14${language}`]);
-    }
+//       excelDownload(
+//         '/api/finance/reports/frep7/downloadExcelDetail',
+//         'Frep7Detail.xls',
+//         'outputTableDetail',
+//         this.props.outputTableDetail,
+//         excelHeaders,
+//       );
+//     }
+//   }
 
-    return errors;
-  }
-  searchHrrsb() {
-    this.props.modifyLoader(true);
-    let errors = [];
-    errors = this.validate();
-    if (errors === null || errors === undefined || errors.length === 0) {
-      this.props.fetchDynamicFAGM('/api/finance/reports/hrrsb/search', {
-        ...this.state.searchTerm,
-        branchList: this.state.searchTerm.branchList.join(),
-        balanceType: this.state.searchTerm.balanceType.join(),
-        dateFrom: this.state.searchTerm.dateFrom.format('YYYY-MM-DD'),
-        dateTo: this.state.searchTerm.dateTo.format('YYYY-MM-DD'),
-      });
-    } else {
-      this.props.modifyLoader(false);
-    }
+//   renderSearchTab() {
+//     const { formatMessage } = this.props.intl;
+//     const { branchOptions, companyOptions, canReadDismissed } = this.props;
+//     const { bukrs, branchList, dismissed, branchesOff } = this.state.searchTerm;
 
-    this.setState({ errors });
-  }
-  renderTotal() {
-    const { formatMessage } = this.props.intl;
-    const { outputTable } = this.props;
-    if (!outputTable) return '';
+//     return (
+//       <Grid>
+//         <Grid.Row>
+//           <Grid.Column mobile={16} tablet={16} computer={4}>
+//             <Table compact>
+//               <Table.Body>
+//                 <Table.Row>
+//                   <Table.Cell collapsing>
+//                     <Icon name="folder" />
+//                     {formatMessage(messages.bukrs)}
+//                   </Table.Cell>
+//                   <Table.Cell colSpan="2">
+//                     <Dropdown
+//                       fluid
+//                       placeholder={formatMessage(messages.bukrs)}
+//                       selection
+//                       options={companyOptions || []}
+//                       value={bukrs}
+//                       onChange={(e, { value }) =>
+//                         this.onInputChange(value, 'bukrs')
+//                       }
+//                     />
+//                   </Table.Cell>
+//                 </Table.Row>
+//                 <Table.Row>
+//                   <Table.Cell collapsing>
+//                     <Icon name="browser" />
+//                     {formatMessage(messages.brnch)}
+//                   </Table.Cell>
+//                   <Table.Cell colSpan="2">
+//                     <Dropdown
+//                       placeholder={formatMessage(messages.all)}
+//                       fluid
+//                       multiple
+//                       search
+//                       selection
+//                       disabled={branchesOff}
+//                       options={bukrs ? branchOptions[bukrs] : []}
+//                       value={branchList}
+//                       onChange={(e, { value }) =>
+//                         this.onInputChange(value, 'branchList')
+//                       }
+//                       noResultsMessage={null}
+//                     />
+//                   </Table.Cell>
+//                 </Table.Row>
+//                 {canReadDismissed && (
+//                   <Table.Row>
+//                     <Table.Cell collapsing />
+//                     <Table.Cell colSpan="2">
+//                       <List>
+//                         <List.Item>
+//                           <Checkbox
+//                             checked={dismissed}
+//                             label={formatMessage(messages.dismissed)}
+//                             onChange={(e, { value }) =>
+//                               this.onInputChange(value, 'dismissed')
+//                             }
+//                           />
+//                         </List.Item>
+//                         <List.Item>
+//                           <Checkbox
+//                             checked={branchesOff}
+//                             disabled={!dismissed}
+//                             label={formatMessage(messages.branchesOff)}
+//                             toggle
+//                             onChange={(e, { value }) =>
+//                               this.onInputChange(value, 'branchesOff')
+//                             }
+//                           />
+//                         </List.Item>
+//                       </List>
+//                     </Table.Cell>
+//                   </Table.Row>
+//                 )}
 
-    return (
-      <Table compact celled>
-        <Table.Header>
-          <Table.Row textAlign="center">
-            <Table.HeaderCell rowSpan="2">
-              {formatMessage(messages.brnch)}
-            </Table.HeaderCell>
-            <Table.HeaderCell rowSpan="2">
-              {formatMessage(messages.waers)}
-            </Table.HeaderCell>
-            <Table.HeaderCell colSpan="3">
-              {formatMessage(messages.in1Month)}
-            </Table.HeaderCell>
-            <Table.HeaderCell colSpan="3">
-              {formatMessage(messages.installments)}
-            </Table.HeaderCell>
-            <Table.HeaderCell colSpan="3">
-              {formatMessage(messages.overallSum)}
-            </Table.HeaderCell>
-          </Table.Row>
-          <Table.Row textAlign="center">
-            <Table.HeaderCell>{formatMessage(messages.menge)}</Table.HeaderCell>
-            <Table.HeaderCell>
-              {formatMessage(messages.amount)} USD
-            </Table.HeaderCell>
-            <Table.HeaderCell>
-              {formatMessage(messages.amount)}{' '}
-              {formatMessage(messages.inDocumentCurrency)}
-            </Table.HeaderCell>
-            <Table.HeaderCell>{formatMessage(messages.menge)}</Table.HeaderCell>
-            <Table.HeaderCell>
-              {formatMessage(messages.amount)} USD
-            </Table.HeaderCell>
-            <Table.HeaderCell>
-              {formatMessage(messages.amount)}{' '}
-              {formatMessage(messages.inDocumentCurrency)}
-            </Table.HeaderCell>
-            <Table.HeaderCell>{formatMessage(messages.menge)}</Table.HeaderCell>
-            <Table.HeaderCell>
-              {formatMessage(messages.amount)} USD
-            </Table.HeaderCell>
-            <Table.HeaderCell>
-              {formatMessage(messages.amount)}{' '}
-              {formatMessage(messages.inDocumentCurrency)}
-            </Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
+//                 <Table.Row>
+//                   <Table.Cell />
+//                   <Table.Cell colSpan="2">
+//                     <Button
+//                       icon
+//                       labelPosition="left"
+//                       primary
+//                       size="small"
+//                       onClick={() => this.searchFrep7()}
+//                     >
+//                       <Icon name="search" size="large" />
+//                       {formatMessage(messages.search)}
+//                     </Button>
+//                   </Table.Cell>
+//                 </Table.Row>
+//               </Table.Body>
+//             </Table>
+//           </Grid.Column>
+//         </Grid.Row>
+//       </Grid>
+//     );
+//   }
+//   validate() {
+//     const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+//     const language = localStorage.getItem('language');
+//     const errors = [];
+//     const { bukrs } = this.state.searchTerm;
+//     if (bukrs === null || bukrs === undefined || !bukrs) {
+//       errors.push(errorTable[`5${language}`]);
+//     }
 
-        <Table.Body>
-          {outputTable &&
-            outputTable.map((wa, idx) => {
-              return (
-                <Table.Row
-                  key={idx}
-                  className={wa.branchName ? '' : 'subtotalRow'}
-                >
-                  <Table.Cell>{wa.branchName}</Table.Cell>
-                  <Table.Cell>{wa.waers}</Table.Cell>
-                  <Table.Cell>
-                    {wa.branchName && wa.nalKol > 0 && (
-                      <a
-                        className="clickableIcon underlinedText"
-                        onClick={() => this.getDetail(wa.branchId, wa.waers, 1)}
-                      >
-                        {wa.nalKol}
-                      </a>
-                    )}
-                    {(!wa.branchName || wa.nalKol === 0) && wa.nalKol}
-                  </Table.Cell>
-                  <Table.Cell>{moneyFormat(wa.nalDmbtr)}</Table.Cell>
-                  <Table.Cell>{moneyFormat(wa.nalWrbtr)}</Table.Cell>
-                  <Table.Cell>
-                    {wa.branchName && wa.rasKol > 0 && (
-                      <a
-                        className="clickableIcon underlinedText"
-                        onClick={() => this.getDetail(wa.branchId, wa.waers, 2)}
-                      >
-                        {wa.rasKol}
-                      </a>
-                    )}
-                    {(!wa.branchName || wa.rasKol === 0) && wa.rasKol}
-                  </Table.Cell>
-                  <Table.Cell>{moneyFormat(wa.rasDmbtr)}</Table.Cell>
-                  <Table.Cell>{moneyFormat(wa.rasWrbtr)}</Table.Cell>
-                  <Table.Cell>{wa.totKol}</Table.Cell>
-                  <Table.Cell>{moneyFormat(wa.totDmbtr)}</Table.Cell>
-                  <Table.Cell>{moneyFormat(wa.totWrbtr)}</Table.Cell>
-                </Table.Row>
-              );
-            })}
-        </Table.Body>
-      </Table>
-    );
-  }
-  getDetail(branchId, waers, ps) {
-    this.props.modifyLoader(true);
-    this.props.fetchDynamicFAGM('/api/finance/reports/Hrrsb/searchDetail', {
-      bukrs: this.state.searchTerm.bukrs,
-      brnch: branchId,
-      waers: waers,
-      ps: ps,
-      balanceType: this.state.searchTerm.balanceType.join(),
-      dateFrom: this.state.searchTerm.dateFrom.format('YYYY-MM-DD'),
-      dateTo: this.state.searchTerm.dateTo.format('YYYY-MM-DD'),
-    });
-  }
-  renderDetail() {
-    const { formatMessage } = this.props.intl;
-    const { totalDmbtr, totalWrbtr } = this.state;
-    const { outputTableDetail } = this.props;
+//     return errors;
+//   }
+//   searchFrep7() {
+//     this.props.modifyLoader(true);
+//     let errors = [];
+//     errors = this.validate();
+//     if (errors === null || errors === undefined || errors.length === 0) {
+//       this.props.fetchDynamicFAGM('/api/finance/reports/frep7/search', {
+//         bukrs: this.state.searchTerm.bukrs,
+//         branchList: this.state.searchTerm.branchList.join(),
+//         dismissed: this.state.searchTerm.dismissed ? 1 : 0,
+//         branchesOff: this.state.searchTerm.branchesOff ? 1 : 0,
+//       });
 
-    if (!outputTableDetail) return '';
+//       this.setState({
+//         activeIndex: 1,
+//       });
+//     } else {
+//       this.props.modifyLoader(false);
+//     }
 
-    let t1columns = [];
-    let t1r1c1 = {
-      Header: ({ value }) => <b>{formatMessage(messages.brnch)}</b>,
-      accessor: 'branchName',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, {
-          keys: [{ threshold: rankings.CONTAINS, key: 'branchName' }],
-        }),
-      filterAll: true,
-      width: 170,
-    };
-    let t1r1c2 = {
-      Header: ({ value }) => <b>{formatMessage(messages.belnr)}</b>,
-      accessor: 'belnr',
-      Cell: obj => (
-        <span>
-          <Link
-            target="_blank"
-            to={
-              `/finance/mainoperation/fa03?belnr=` +
-              obj.original.belnr +
-              `&bukrs=` +
-              obj.original.bukrs +
-              `&gjahr=` +
-              obj.original.gjahr
-            }
-          >
-            {obj.original.belnr}
-          </Link>
-        </span>
-      ),
-      width: 100,
-    };
-    let t1r1c3 = {
-      Header: ({ value }) => <b>{formatMessage(messages.gjahr)}</b>,
-      accessor: 'gjahr',
-      Cell: ({ value }) => <span>{value}</span>,
-      width: 140,
-    };
+//     this.setState({ errors });
+//   }
+//   renderTotal() {
+//     const { formatMessage } = this.props.intl;
+//     const { outputTable } = this.props;
+//     if (!outputTable) return '';
 
-    let t1r1c4 = {
-      Header: ({ value }) => <b>{formatMessage(messages.waers)}</b>,
-      accessor: 'waers',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, {
-          keys: [{ threshold: rankings.CONTAINS, key: 'waers' }],
-        }),
-      filterAll: true,
-      width: 70,
-    };
+//     return (
+//       <Table compact celled>
+//         <Table.Header>
+//           <Table.Row textAlign="center">
+//             <Table.HeaderCell>{formatMessage(messages.waers)}</Table.HeaderCell>
+//             <Table.HeaderCell>{formatMessage(messages.brnch)}</Table.HeaderCell>
+//             <Table.HeaderCell>
+//               {formatMessage(messages.balanceAccountMin)}
+//             </Table.HeaderCell>
+//             <Table.HeaderCell>
+//               {formatMessage(messages.depositAccountMin)}
+//             </Table.HeaderCell>
+//             <Table.HeaderCell>
+//               {formatMessage(messages.debtAccountMin)}
+//             </Table.HeaderCell>
+//             <Table.HeaderCell>
+//               {formatMessage(messages.doubtfulDebtAccountMin)}
+//             </Table.HeaderCell>
+//             <Table.HeaderCell>
+//               {formatMessage(messages.blockedAccountMin)}
+//             </Table.HeaderCell>
+//             <Table.HeaderCell>
+//               {formatMessage(messages.advancePaymentRequestAccountMin)}
+//             </Table.HeaderCell>
+//             <Table.HeaderCell>
+//               {formatMessage(messages.balanceAccountMin)} $
+//             </Table.HeaderCell>
+//             <Table.HeaderCell>
+//               {formatMessage(messages.depositAccountMin)} $
+//             </Table.HeaderCell>
+//             <Table.HeaderCell>
+//               {formatMessage(messages.debtAccountMin)} $
+//             </Table.HeaderCell>
+//             <Table.HeaderCell>
+//               {formatMessage(messages.doubtfulDebtAccountMin)} $
+//             </Table.HeaderCell>
+//             <Table.HeaderCell>
+//               {formatMessage(messages.blockedAccountMin)} $
+//             </Table.HeaderCell>
+//             <Table.HeaderCell>
+//               {formatMessage(messages.advancePaymentRequestAccountMin)} $
+//             </Table.HeaderCell>
+//           </Table.Row>
+//         </Table.Header>
 
-    let t1r1c5 = {
-      Header: ({ value }) => <b>{formatMessage(messages.amount)} USD</b>,
-      accessor: 'dmbtr',
-      Cell: obj => <span>{moneyFormat(obj.original.dmbtr)}</span>,
-      width: 140,
-    };
+//         <Table.Body>
+//           {outputTable &&
+//             outputTable.map((wa, idx) => {
+//               // console.log(wa.branchName.length);
+//               return (
+//                 <Table.Row
+//                   key={idx}
+//                   className={
+//                     wa.branchName && wa.waers
+//                       ? ''
+//                       : !wa.branchName && wa.waers
+//                       ? 'subtotalRow'
+//                       : 'totalRow'
+//                   }
+//                 >
+//                   <Table.Cell>{wa.waers}</Table.Cell>
+//                   <Table.Cell>
+//                     {wa.branchName}
 
-    t1r1c5.Footer = (
-      <span>
-        <strong>
-          <font>
-            {totalDmbtr
-              ? // new Intl.NumberFormat('ru').format(totalDmbtr)
-                moneyFormat(totalDmbtr)
-              : ''}
-          </font>
-        </strong>
-      </span>
-    );
+//                     {wa.branchName && (
+//                       <Icon
+//                         name="search"
+//                         className="clickableIcon"
+//                         size="large"
+//                         onClick={() =>
+//                           this.getDetail(
+//                             wa.bukrs,
+//                             wa.branchId,
+//                             wa.waers,
+//                             wa.branchName,
+//                           )
+//                         }
+//                       />
+//                     )}
+//                   </Table.Cell>
+//                   <Table.Cell>{moneyFormat(wa.balance)}</Table.Cell>
+//                   <Table.Cell>{moneyFormat(wa.deposit)}</Table.Cell>
+//                   <Table.Cell>{moneyFormat(wa.debt)}</Table.Cell>
+//                   <Table.Cell>{moneyFormat(wa.doubtDebt)}</Table.Cell>
+//                   <Table.Cell>{moneyFormat(wa.block)}</Table.Cell>
+//                   <Table.Cell>{moneyFormat(wa.advReq)}</Table.Cell>
+//                   <Table.Cell>{moneyFormat(wa.balanceUsd)} $</Table.Cell>
+//                   <Table.Cell>{moneyFormat(wa.depositUsd)} $</Table.Cell>
+//                   <Table.Cell>{moneyFormat(wa.debtUsd)} $</Table.Cell>
+//                   <Table.Cell>{moneyFormat(wa.doubtDebtUsd)} $</Table.Cell>
+//                   <Table.Cell>{moneyFormat(wa.blockUsd)} $</Table.Cell>
+//                   <Table.Cell>{moneyFormat(wa.advReqUsd)} $</Table.Cell>
+//                 </Table.Row>
+//               );
+//             })}
+//         </Table.Body>
+//       </Table>
+//     );
+//   }
+//   getDetail(bukrs, branchId, waers, branchName) {
+//     this.props.modifyLoader(true);
+//     this.props.fetchDynamicFAGM('/api/finance/reports/frep7/searchDetail', {
+//       bukrs: bukrs,
+//       branchId: branchId,
+//       waers: waers,
+//       branchName: branchName,
+//     });
 
-    let t1r1c6 = {
-      Header: ({ value }) => (
-        <b>
-          {formatMessage(messages.amount)}{' '}
-          {formatMessage(messages.inDocumentCurrency)}
-        </b>
-      ),
-      accessor: 'wrbtr',
-      Cell: obj => <span>{moneyFormat(obj.original.wrbtr)}</span>,
-      width: 140,
-    };
+//     this.setState({
+//       activeIndex: 2,
+//     });
+//   }
+//   renderDetail() {
+//     const { formatMessage } = this.props.intl;
+//     const { outputTableDetail, detailTotal } = this.props;
 
-    t1r1c6.Footer = (
-      <span>
-        <strong>
-          <font>{totalWrbtr ? moneyFormat(totalWrbtr) : ''}</font>
-        </strong>
-      </span>
-    );
+//     if (!outputTableDetail) return '';
 
-    let t1r1c7 = {
-      Header: ({ value }) => <b>{formatMessage(messages.contractDate)}</b>,
-      accessor: 'conDate', //Cell: obj => <span>{obj.original.budat}</span>,
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['_original.conDate'] }),
-      filterAll: true,
-      width: 100,
-    };
+//     let t1columns = [];
+//     let t1r1c1 = {
+//       Header: ({ value }) => <b>{formatMessage(messages.fio)}</b>,
+//       accessor: 'staffFio',
+//       Cell: obj => (
+//         <span>
+//           <LinkToStaffCardView
+//             staffId={obj.original.staffId}
+//             staffFio={obj.original.fio}
+//           />
+//         </span>
+//       ),
 
-    let t1r1c8 = {
-      Header: ({ value }) => <b>{formatMessage(messages.snNum)}</b>,
-      accessor: 'contractNumber',
-      Cell: obj => (
-        <span>
-          {obj.original.contractNumber && (
-            <LinkToDmsc03 snNum={obj.original.contractNumber} />
-          )}
-        </span>
-      ),
-      width: 90,
-    };
+//       width: 250,
+//       minResizeWidth: 250,
+//     };
+//     let t1r1c2 = {
+//       Header: ({ value }) => <b>{formatMessage(messages.waers)}</b>,
+//       accessor: 'waers',
+//       width: 80,
+//       minResizeWidth: 80,
+//     };
+//     let t1r1c3 = {
+//       Header: ({ value }) => <b>{formatMessage(messages.balanceAccountMin)}</b>,
+//       accessor: 'balance',
+//       Cell: obj => <span>{moneyFormat(obj.original.balance)}</span>,
+//       width: 140,
+//       minResizeWidth: 140,
+//     };
 
-    t1columns.push(t1r1c1);
-    t1columns.push(t1r1c2);
-    t1columns.push(t1r1c3);
-    t1columns.push(t1r1c4);
-    t1columns.push(t1r1c5);
-    t1columns.push(t1r1c6);
-    t1columns.push(t1r1c7);
-    t1columns.push(t1r1c8);
+//     let t1r1c4 = {
+//       Header: ({ value }) => <b>{formatMessage(messages.depositAccountMin)}</b>,
+//       accessor: 'deposit',
+//       Cell: obj => <span>{moneyFormat(obj.original.deposit)}</span>,
+//       width: 140,
+//       minResizeWidth: 140,
+//     };
+//     let t1r1c5 = {
+//       Header: ({ value }) => <b>{formatMessage(messages.debtAccountMin)}</b>,
+//       accessor: 'debt',
+//       Cell: obj => <span>{moneyFormat(obj.original.debt)}</span>,
+//       width: 140,
+//       minResizeWidth: 140,
+//     };
+//     let t1r1c6 = {
+//       Header: ({ value }) => (
+//         <b>{formatMessage(messages.doubtfulDebtAccountMin)}</b>
+//       ),
+//       accessor: 'doubtDebt',
+//       Cell: obj => <span>{moneyFormat(obj.original.doubtDebt)}</span>,
+//       width: 140,
+//       minResizeWidth: 140,
+//     };
+//     let t1r1c7 = {
+//       Header: ({ value }) => <b>{formatMessage(messages.blockedAccountMin)}</b>,
+//       accessor: 'block',
+//       Cell: obj => <span>{moneyFormat(obj.original.block)}</span>,
+//       width: 140,
+//       minResizeWidth: 140,
+//     };
+//     let t1r1c8 = {
+//       Header: ({ value }) => (
+//         <b>{formatMessage(messages.advancePaymentRequestAccountMin)}</b>
+//       ),
+//       accessor: 'advReq',
+//       Cell: obj => <span>{moneyFormat(obj.original.advReq)}</span>,
+//       width: 140,
+//       minResizeWidth: 140,
+//     };
+//     let t1r1c9 = {
+//       Header: ({ value }) => (
+//         <b>{formatMessage(messages.balanceAccountMin)} $</b>
+//       ),
+//       accessor: 'balanceUsd',
+//       Cell: obj => <span>{moneyFormat(obj.original.balanceUsd)} $</span>,
+//       width: 140,
+//       minResizeWidth: 140,
+//     };
+//     let t1r1c10 = {
+//       Header: ({ value }) => (
+//         <b>{formatMessage(messages.depositAccountMin)} $</b>
+//       ),
+//       accessor: 'depositUsd',
+//       Cell: obj => <span>{moneyFormat(obj.original.depositUsd)} $</span>,
+//       width: 140,
+//       minResizeWidth: 140,
+//     };
+//     let t1r1c11 = {
+//       Header: ({ value }) => <b>{formatMessage(messages.debtAccountMin)} $</b>,
+//       accessor: 'debtUsd',
+//       Cell: obj => <span>{moneyFormat(obj.original.debtUsd)} $</span>,
+//       width: 140,
+//       minResizeWidth: 140,
+//     };
+//     let t1r1c12 = {
+//       Header: ({ value }) => (
+//         <b>{formatMessage(messages.doubtfulDebtAccountMin)} $</b>
+//       ),
+//       accessor: 'doubtDebtUsd',
+//       Cell: obj => <span>{moneyFormat(obj.original.doubtDebtUsd)} $</span>,
+//       width: 140,
+//       minResizeWidth: 140,
+//     };
+//     let t1r1c13 = {
+//       Header: ({ value }) => (
+//         <b>{formatMessage(messages.blockedAccountMin)} $</b>
+//       ),
+//       accessor: 'blockUsd',
+//       Cell: obj => <span>{moneyFormat(obj.original.blockUsd)} $</span>,
+//       width: 140,
+//       minResizeWidth: 140,
+//     };
+//     let t1r1c14 = {
+//       Header: ({ value }) => (
+//         <b>{formatMessage(messages.advancePaymentRequestAccountMin)} $</b>
+//       ),
+//       accessor: 'advReqUsd',
+//       Cell: obj => <span>{moneyFormat(obj.original.advReqUsd)} $</span>,
+//       width: 140,
+//       minResizeWidth: 140,
+//     };
 
-    return (
-      <ReactTable
-        filterable
-        ref={r => (this.reactTable = r)}
-        data={outputTableDetail ? outputTableDetail : []}
-        columns={t1columns}
-        pageSize={20}
-        showPagination={true}
-        className="-striped -highlight"
-        loadingText={formatMessage(messages.loadingText)}
-        noDataText={formatMessage(messages.noDataText)}
-        previousText={formatMessage(messages.previousText)}
-        nextText={formatMessage(messages.nextText)}
-        rowsText={formatMessage(messages.rowsText)}
-        pageText={formatMessage(messages.pageText)}
-        ofText={formatMessage(messages.ofText)}
-        // filtered={this.state.filtered}
-        onFilteredChange={filtered => this.onFilterChangeReactTable()}
-      />
-    );
-  }
-  onFilterChangeReactTable() {
-    if (
-      this.reactTable &&
-      this.reactTable.getResolvedState() &&
-      this.reactTable.getResolvedState().sortedData &&
-      this.reactTable.getResolvedState().sortedData.length > 0
-    ) {
-      let temp = [...this.reactTable.getResolvedState().sortedData];
+//     t1r1c3.Footer = (
+//       <span>
+//         <strong>
+//           <font>
+//             {detailTotal.balance ? moneyFormat(detailTotal.balance) : ''}
+//           </font>
+//         </strong>
+//       </span>
+//     );
+//     t1r1c4.Footer = (
+//       <span>
+//         <strong>
+//           <font>
+//             {detailTotal.deposit ? moneyFormat(detailTotal.deposit) : ''}
+//           </font>
+//         </strong>
+//       </span>
+//     );
+//     t1r1c5.Footer = (
+//       <span>
+//         <strong>
+//           <font>{detailTotal.debt ? moneyFormat(detailTotal.debt) : ''}</font>
+//         </strong>
+//       </span>
+//     );
+//     t1r1c6.Footer = (
+//       <span>
+//         <strong>
+//           <font>
+//             {detailTotal.doubtDebt ? moneyFormat(detailTotal.doubtDebt) : ''}
+//           </font>
+//         </strong>
+//       </span>
+//     );
+//     t1r1c7.Footer = (
+//       <span>
+//         <strong>
+//           <font>{detailTotal.block ? moneyFormat(detailTotal.block) : ''}</font>
+//         </strong>
+//       </span>
+//     );
+//     t1r1c8.Footer = (
+//       <span>
+//         <strong>
+//           <font>
+//             {detailTotal.advReq ? moneyFormat(detailTotal.advReq) : ''}
+//           </font>
+//         </strong>
+//       </span>
+//     );
+//     t1r1c9.Footer = (
+//       <span>
+//         <strong>
+//           <font>
+//             {detailTotal.balanceUsd ? moneyFormat(detailTotal.balanceUsd) : ''}
+//           </font>
+//         </strong>
+//       </span>
+//     );
+//     t1r1c10.Footer = (
+//       <span>
+//         <strong>
+//           <font>
+//             {detailTotal.depositUsd ? moneyFormat(detailTotal.depositUsd) : ''}
+//           </font>
+//         </strong>
+//       </span>
+//     );
+//     t1r1c11.Footer = (
+//       <span>
+//         <strong>
+//           <font>
+//             {detailTotal.debtUsd ? moneyFormat(detailTotal.debtUsd) : ''}
+//           </font>
+//         </strong>
+//       </span>
+//     );
+//     t1r1c12.Footer = (
+//       <span>
+//         <strong>
+//           <font>
+//             {detailTotal.doubtDebtUsd
+//               ? moneyFormat(detailTotal.doubtDebtUsd)
+//               : ''}
+//           </font>
+//         </strong>
+//       </span>
+//     );
+//     t1r1c13.Footer = (
+//       <span>
+//         <strong>
+//           <font>
+//             {detailTotal.blockUsd ? moneyFormat(detailTotal.blockUsd) : ''}
+//           </font>
+//         </strong>
+//       </span>
+//     );
+//     t1r1c14.Footer = (
+//       <span>
+//         <strong>
+//           <font>
+//             {detailTotal.advReqUsd ? moneyFormat(detailTotal.advReqUsd) : ''}
+//           </font>
+//         </strong>
+//       </span>
+//     );
 
-      let totalDmbtr = 0,
-        totalWrbtr = 0;
-      for (let i = 0; i < temp.length; i++) {
-        let wa = temp[i];
-        totalDmbtr = totalDmbtr + wa.dmbtr;
-        totalWrbtr = totalWrbtr + wa.wrbtr;
-      }
+//     t1columns.push(t1r1c1);
+//     t1columns.push(t1r1c2);
+//     t1columns.push(t1r1c3);
+//     t1columns.push(t1r1c4);
+//     t1columns.push(t1r1c5);
+//     t1columns.push(t1r1c6);
+//     t1columns.push(t1r1c7);
+//     t1columns.push(t1r1c8);
+//     t1columns.push(t1r1c9);
+//     t1columns.push(t1r1c10);
+//     t1columns.push(t1r1c11);
+//     t1columns.push(t1r1c12);
+//     t1columns.push(t1r1c13);
+//     t1columns.push(t1r1c14);
 
-      totalDmbtr = new BigNumber(totalDmbtr).toFixed(2);
-      totalWrbtr = new BigNumber(totalWrbtr).toFixed(2);
-      this.setState({ totalDmbtr, totalWrbtr });
-    }
-  }
+//     return (
+//       <ReactTable
+//         data={outputTableDetail ? outputTableDetail : []}
+//         columns={t1columns}
+//         pageSize={50}
+//         // defaultPageSize={100}
+//         showPagination={true}
+//         className="-striped -highlight"
+//         loadingText={formatMessage(messages.loadingText)}
+//         noDataText={formatMessage(messages.noDataText)}
+//         previousText={formatMessage(messages.previousText)}
+//         nextText={formatMessage(messages.nextText)}
+//         rowsText={formatMessage(messages.rowsText)}
+//         pageText={formatMessage(messages.pageText)}
+//         ofText={formatMessage(messages.ofText)}
+//       />
+//     );
+//   }
 
-  render() {
-    const { formatMessage } = this.props.intl;
-    const { outputTable } = this.props;
+//   render() {
+//     const { formatMessage } = this.props.intl;
+//     const { activeIndex } = this.state;
+//     const { outputTable, outputTableDetail } = this.props;
 
-    return (
-      <Container
-        fluid
-        style={{
-          marginTop: '2em',
-          marginBottom: '2em',
-          paddingLeft: '2em',
-          paddingRight: '2em',
-        }}
-      >
-        <Header as="h2" block>
-          {/* {formatMessage(messages.transNameHrrsb)} */}
-        </Header>
+//     return (
+//       <Container
+//         fluid
+//         style={{
+//           marginTop: '2em',
+//           marginBottom: '2em',
+//           paddingLeft: '2em',
+//           paddingRight: '2em',
+//         }}
+//       >
+//         <Header as="h2" block>
+//           {formatMessage(messages.transNameFrep7)}
+//         </Header>
 
-        <Segment>
-          <OutputErrors errors={this.state.errors} />
-          {this.renderSearchTab()}
-          {outputTable && outputTable.length > 0 && (
-            <Menu stackable size="small">
-              <Menu.Item>
-                <img
-                  className="clickableItem"
-                  src="/assets/img/xlsx_export_icon.png"
-                  onClick={() => this.exportExcel()}
-                />
-              </Menu.Item>
-            </Menu>
-          )}
-          {this.renderTotal()}
-          {this.renderDetail()}
-        </Segment>
-      </Container>
-    );
-  }
-}
+//         <Menu pointing stackable>
+//           <Menu.Item
+//             name={formatMessage(messages.searchParameters)}
+//             active={activeIndex === 0}
+//             onClick={() => {
+//               this.setState({ activeIndex: 0 });
+//             }}
+//             icon="search"
+//           />
+//           <Menu.Item
+//             name={formatMessage(messages.result)}
+//             active={activeIndex === 1}
+//             onClick={() => {
+//               this.setState({ activeIndex: 1 });
+//             }}
+//             icon="bar chart"
+//           />
+//           <Menu.Item
+//             name={formatMessage(messages.details)}
+//             active={activeIndex === 2}
+//             onClick={() => {
+//               this.setState({ activeIndex: 2 });
+//             }}
+//             icon="list layout"
+//           />
+//         </Menu>
 
-function mapStateToProps(state) {
-  // console.log(state,'state')
-  return {
-    companyOptions: state.userInfo.companyOptions,
-    currencyOptions: state.f4.currencyOptions,
-    outputTable: state.fa.dynamicObject.outputTable,
-    outputTableDetail: state.fa.dynamicObject.outputTableDetail,
-  };
-}
+//         <Segment className={activeIndex === 0 ? 'show' : 'hide'}>
+//           <OutputErrors errors={this.state.errors} />
+//           {this.renderSearchTab()}
+//         </Segment>
+//         <Segment className={activeIndex === 1 ? 'show' : 'hide'}>
+//           {outputTable && outputTable.length > 0 && (
+//             <Menu stackable size="small">
+//               <Menu.Item>
+//                 <img
+//                   className="clickableItem"
+//                   src="/assets/img/xlsx_export_icon.png"
+//                   onClick={() => this.exportExcel('total')}
+//                 />
+//               </Menu.Item>
+//             </Menu>
+//           )}
+//           {this.renderTotal()}
+//         </Segment>
+//         <Segment className={activeIndex === 2 ? 'show' : 'hide'}>
+//           {outputTableDetail && outputTableDetail.length > 0 && (
+//             <Menu stackable size="small">
+//               <Menu.Item>
+//                 <img
+//                   className="clickableItem"
+//                   src="/assets/img/xlsx_export_icon.png"
+//                   onClick={() => this.exportExcel('detail')}
+//                 />
+//               </Menu.Item>
+//             </Menu>
+//           )}
+//           {this.renderDetail()}
+//         </Segment>
+//       </Container>
+//     );
+//   }
+// }
 
-export default connect(
-  mapStateToProps,
-  {
-    modifyLoader,
-    f4FetchCurrencyList,
-    //cleared by dynamic clear function
-    clearDynObj,
-    fetchDynamicFAGM,
-  },
-)(injectIntl(Hrrsb));
+// function mapStateToProps(state) {
+//   // console.log(state,'state')
+//   return {
+//     companyOptions: state.userInfo.companyOptions,
+//     branchOptions: state.userInfo.branchOptionsAll,
+//     outputTable: state.fa.dynamicObject.outputTable,
+//     outputTableDetail: state.fa.dynamicObject.outputTableDetail,
+//     detailTotal: state.fa.dynamicObject.detailTotal,
+//     canReadDismissed: state.fa.dynamicObject.canReadDismissed,
+//   };
+// }
+
+// export default connect(
+//   mapStateToProps,
+//   {
+//     modifyLoader,
+
+//     //cleared by dynamic clear function
+//     clearDynObj,
+//     fetchDynamicFAGM,
+//     changeDynObj,
+//   },
+// )(injectIntl(Hrrsb));

@@ -580,6 +580,8 @@
   "fahrb_op_from_doubtful_to_loan": "Transfer from doubtful to loan",
   "transNameFahrb": "Employee debt transfer",
 
+  "type": "Type",
+
   "asset_mant": "Asset management",
   "add_assets": "Adding fixed assets",
   "midify_assets": "Modifying fixed assets",

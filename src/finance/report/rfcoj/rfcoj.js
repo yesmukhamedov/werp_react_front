@@ -9,6 +9,7 @@ import {
   Header,
   Grid,
   Divider,
+  Menu,
 } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -30,9 +31,9 @@ import {
 import { moneyFormat } from '../../../utils/helpers';
 import matchSorter, { rankings } from 'match-sorter';
 import { injectIntl } from 'react-intl';
-import { messages } from '../../../locales/defineMessages';
 import CashBankBalance from '../../../reference/f4/cashBankBalance/cashBankBalance';
 import { LinkToDmsc03, LinkToCustomerHrc03 } from '../../../utils/outlink';
+import { excelDownload } from '../../../utils/helpers';
 import { BigNumber } from 'bignumber.js';
 require('moment/locale/ru');
 require('moment/locale/tr');
@@ -51,6 +52,7 @@ class Rfcoj extends Component {
     this.searchRfcoj = this.searchRfcoj.bind(this);
     this.validate = this.validate.bind(this);
     this.onFilterChangeReactTable = this.onFilterChangeReactTable.bind(this);
+    this.exportExcel = this.exportExcel.bind(this);
 
     this.state = {
       searchTerm: {
@@ -73,7 +75,7 @@ class Rfcoj extends Component {
   componentDidMount() {}
   componentWillReceiveProps(nextProps) {
     if (nextProps.outputTable !== this.props.outputTable) {
-      const { formatMessage } = this.props.intl;
+      const { messages } = this.props.intl;
 
       let totalIn = 0,
         totalOut = 0,
@@ -86,9 +88,7 @@ class Rfcoj extends Component {
             else totalOut = totalOut + wa.summa;
 
             obj.shkzgName =
-              wa.shkzg === 'S'
-                ? formatMessage(messages.incoming)
-                : formatMessage(messages.outgoing);
+              wa.shkzg === 'S' ? messages['incoming'] : messages['outgoing'];
             return obj;
           })
         : [];
@@ -143,8 +143,8 @@ class Rfcoj extends Component {
 
   renderSearchTab() {
     const language = localStorage.getItem('language');
-    const { formatMessage } = this.props.intl;
     const { branchOptions, companyOptions, hkontOptions } = this.props;
+    const { messages } = this.props.intl;
     const {
       bukrs,
       branchId,
@@ -156,16 +156,16 @@ class Rfcoj extends Component {
     } = this.state.searchTerm;
 
     const shkzgOptions = [
-      { key: 0, text: formatMessage(messages.all), value: '0' },
-      { key: 1, text: formatMessage(messages.incoming), value: 'S' },
-      { key: 2, text: formatMessage(messages.outgoing), value: 'H' },
+      { key: 0, text: messages['all'], value: '0' },
+      { key: 1, text: messages['incoming'], value: 'S' },
+      { key: 2, text: messages['outgoing'], value: 'H' },
     ];
     const serviceOptions = [
-      { key: 0, text: formatMessage(messages.all), value: '2' },
-      { key: 1, text: formatMessage(messages.rfcojJustServices), value: '1' },
+      { key: 0, text: messages['all'], value: '2' },
+      { key: 1, text: messages['rfcojJustServices'], value: '1' },
       {
         key: 2,
-        text: formatMessage(messages.rfcojExcludeServices),
+        text: messages['rfcojExcludeServices'],
         value: '0',
       },
     ];
@@ -178,12 +178,12 @@ class Rfcoj extends Component {
                 <Table.Row>
                   <Table.Cell>
                     <Icon name="folder" />
-                    {formatMessage(messages.bukrs)}
+                    {messages['bukrs']}
                   </Table.Cell>
                   <Table.Cell colSpan="2">
                     <Dropdown
                       fluid
-                      placeholder={formatMessage(messages.bukrs)}
+                      placeholder={messages['bukrs']}
                       selection
                       options={companyOptions || []}
                       value={bukrs}
@@ -196,11 +196,11 @@ class Rfcoj extends Component {
                 <Table.Row>
                   <Table.Cell>
                     <Icon name="browser" />
-                    {formatMessage(messages.brnch)}
+                    {messages['brnch']}
                   </Table.Cell>
                   <Table.Cell colSpan="2">
                     <Dropdown
-                      placeholder={formatMessage(messages.brnch)}
+                      placeholder={messages['brnch']}
                       fluid
                       search
                       selection
@@ -216,11 +216,11 @@ class Rfcoj extends Component {
                 <Table.Row>
                   <Table.Cell>
                     <Icon name="browser" />
-                    {formatMessage(messages.cashBank)}
+                    {messages['cashBank']}
                   </Table.Cell>
                   <Table.Cell colSpan="2">
                     <Dropdown
-                      placeholder={formatMessage(messages.cashBank)}
+                      placeholder={messages['cashBank']}
                       selection
                       options={hkontOptions || []}
                       value={hkont}
@@ -232,7 +232,7 @@ class Rfcoj extends Component {
                 </Table.Row>
 
                 <Table.Row>
-                  <Table.Cell>{formatMessage(messages.type)}</Table.Cell>
+                  <Table.Cell>{messages['type']}</Table.Cell>
                   <Table.Cell colSpan="2">
                     <Dropdown
                       fluid
@@ -248,7 +248,7 @@ class Rfcoj extends Component {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>{formatMessage(messages.service)}</Table.Cell>
+                  <Table.Cell>{messages['service']}</Table.Cell>
                   <Table.Cell colSpan="2">
                     <Dropdown
                       fluid
@@ -267,12 +267,12 @@ class Rfcoj extends Component {
                   <Table.Cell>
                     <span>
                       <Icon name="calendar" />
-                      {formatMessage(messages.bldat)}
+                      {messages['bldat']}
                     </span>
                   </Table.Cell>
                   <Table.Cell>
                     {' '}
-                    {formatMessage(messages.from)}
+                    {messages['from']}
                     <DatePicker
                       className="date-100-width"
                       autoComplete="off"
@@ -286,7 +286,7 @@ class Rfcoj extends Component {
                     />
                   </Table.Cell>
                   <Table.Cell>
-                    {formatMessage(messages.to)}
+                    {messages['to']}
                     <DatePicker
                       className="date-100-width"
                       autoComplete="off"
@@ -313,7 +313,7 @@ class Rfcoj extends Component {
                       onClick={() => this.searchRfcoj()}
                     >
                       <Icon name="search" size="large" />
-                      {formatMessage(messages.search)}
+                      {messages['search']}
                     </Button>
                   </Table.Cell>
                 </Table.Row>
@@ -399,15 +399,41 @@ class Rfcoj extends Component {
     return errors;
   }
 
+  exportExcel() {
+    const { messages } = this.props.intl;
+    const { outputTableState } = this.state;
+    let excelHeaders = [];
+
+    excelHeaders.push(messages['belnr']);
+    excelHeaders.push(messages['gjahr']);
+    excelHeaders.push(messages['blart']);
+    excelHeaders.push(messages['bldat']);
+    excelHeaders.push(messages['shkzg']);
+    excelHeaders.push(messages['amount']);
+    excelHeaders.push(messages['waers']);
+    excelHeaders.push(messages['customer']);
+    excelHeaders.push(messages['snNum']);
+    excelHeaders.push(messages['bktxt']);
+    excelHeaders.push(messages['usnam']);
+
+    excelDownload(
+      '/api/finance/reports/rfcoj/downloadExcel',
+      'Rfcoj.xls',
+      'outputTable',
+      outputTableState,
+      excelHeaders,
+    );
+  }
+
   render() {
-    const { formatMessage } = this.props.intl;
+    const { messages } = this.props.intl;
     const { bukrs, branchId } = this.state.searchTerm;
     const { totalIn, totalOut, net, outputTableState } = this.state;
 
     let t1columns = [];
 
     let t1r1c1 = {
-      Header: ({ value }) => <b>{formatMessage(messages.belnr)}</b>,
+      Header: ({ value }) => <b>{messages['belnr']}</b>,
       accessor: 'belnr',
       Cell: obj => (
         <span>
@@ -427,15 +453,16 @@ class Rfcoj extends Component {
         </span>
       ),
       width: 100,
+      minResizeWidth: 140,
     };
     let t1r1c2 = {
-      Header: ({ value }) => <b>{formatMessage(messages.gjahr)}</b>,
+      Header: ({ value }) => <b>{messages['gjahr']}</b>,
       accessor: 'gjahr',
       Cell: ({ value }) => <span>{value}</span>,
       width: 60,
     };
     let t1r1c3 = {
-      Header: ({ value }) => <b>{formatMessage(messages.blart)}</b>,
+      Header: ({ value }) => <b>{messages['blart']}</b>,
       accessor: 'blartName',
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, {
@@ -443,14 +470,16 @@ class Rfcoj extends Component {
         }),
       filterAll: true,
       width: 170,
+      minResizeWidth: 140,
     };
     let t1r1c4 = {
-      Header: ({ value }) => <b>{formatMessage(messages.bldat)}</b>,
+      Header: ({ value }) => <b>{messages['bldat']}</b>,
       accessor: 'bldat', //Cell: obj => <span>{obj.original.budat}</span>,
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['_original.bldat'] }),
       filterAll: true,
       width: 140,
+      minResizeWidth: 140,
     };
 
     t1r1c4.Footer = (
@@ -463,7 +492,7 @@ class Rfcoj extends Component {
       </span>
     );
     let t1r1c5 = {
-      Header: ({ value }) => <b>{formatMessage(messages.shkzg)}</b>,
+      Header: ({ value }) => <b>{messages['shkzg']}</b>,
       accessor: 'shkzgName',
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, {
@@ -471,6 +500,7 @@ class Rfcoj extends Component {
         }),
       filterAll: true,
       width: 140,
+      minResizeWidth: 140,
     };
 
     t1r1c5.Footer = (
@@ -485,7 +515,7 @@ class Rfcoj extends Component {
     );
 
     let t1r1c6 = {
-      Header: ({ value }) => <b>{formatMessage(messages.amount)}</b>,
+      Header: ({ value }) => <b>{messages['amount']}</b>,
       accessor: 'summa',
       Cell: obj => (
         <span>
@@ -496,6 +526,7 @@ class Rfcoj extends Component {
         </span>
       ),
       width: 140,
+      minResizeWidth: 140,
     };
 
     t1r1c6.Footer = (
@@ -510,7 +541,7 @@ class Rfcoj extends Component {
     );
 
     let t1r1c7 = {
-      Header: ({ value }) => <b>{formatMessage(messages.waers)}</b>,
+      Header: ({ value }) => <b>{messages['waers']}</b>,
       accessor: 'waers',
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, {
@@ -518,10 +549,11 @@ class Rfcoj extends Component {
         }),
       filterAll: true,
       width: 70,
+      minResizeWidth: 70,
     };
 
     let t1r1c8 = {
-      Header: ({ value }) => <b>{formatMessage(messages.customer)}</b>,
+      Header: ({ value }) => <b>{messages['customer']}</b>,
       accessor: 'customerName',
 
       Cell: obj => (
@@ -540,10 +572,11 @@ class Rfcoj extends Component {
           keys: [{ threshold: rankings.CONTAINS, key: 'customerName' }],
         }),
       filterAll: true,
+      minResizeWidth: 140,
     };
 
     let t1r1c9 = {
-      Header: ({ value }) => <b>{formatMessage(messages.snNum)}</b>,
+      Header: ({ value }) => <b>{messages['snNum']}</b>,
       accessor: 'snNum',
       Cell: obj => (
         <span>
@@ -551,20 +584,22 @@ class Rfcoj extends Component {
         </span>
       ),
       width: 90,
+      minResizeWidth: 90,
     };
 
     let t1r1c10 = {
-      Header: ({ value }) => <b>{formatMessage(messages.bktxt)}</b>,
+      Header: ({ value }) => <b>{messages['bktxt']}</b>,
       accessor: 'bktxt',
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, {
           keys: [{ threshold: rankings.CONTAINS, key: 'bktxt' }],
         }),
       filterAll: true,
+      minResizeWidth: 140,
     };
 
     let t1r1c11 = {
-      Header: ({ value }) => <b>{formatMessage(messages.usnam)}</b>,
+      Header: ({ value }) => <b>{messages['usnam']}</b>,
       accessor: 'userFio',
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, {
@@ -572,6 +607,7 @@ class Rfcoj extends Component {
         }),
       filterAll: true,
       width: 180,
+      minResizeWidth: 180,
     };
 
     t1columns.push(t1r1c1);
@@ -596,12 +632,12 @@ class Rfcoj extends Component {
         }}
       >
         <Header as="h2" block>
-          {formatMessage(messages.transNameRfcoj)}
+          {messages['transNameRfcoj']}
         </Header>
         <Divider horizontal>
           <Header as="h4">
             <Icon name="search" />
-            {formatMessage(messages.searchParameters)}
+            {messages['searchParameters']}
           </Header>
         </Divider>
         <Grid>
@@ -624,9 +660,20 @@ class Rfcoj extends Component {
         <Divider horizontal>
           <Header as="h4">
             <Icon name="bar chart" />
-            {formatMessage(messages.result)}
+            {messages['result']}
           </Header>
         </Divider>
+        {outputTableState && outputTableState.length > 0 && (
+          <Menu stackable size="small">
+            <Menu.Item>
+              <img
+                className="clickableItem"
+                src="/assets/img/xlsx_export_icon.png"
+                onClick={() => this.exportExcel()}
+              />
+            </Menu.Item>
+          </Menu>
+        )}
 
         <ReactTable
           filterable
@@ -636,13 +683,13 @@ class Rfcoj extends Component {
           pageSize={20}
           showPagination={true}
           className="-striped -highlight"
-          loadingText={formatMessage(messages.loadingText)}
-          noDataText={formatMessage(messages.noDataText)}
-          previousText={formatMessage(messages.previousText)}
-          nextText={formatMessage(messages.nextText)}
-          rowsText={formatMessage(messages.rowsText)}
-          pageText={formatMessage(messages.pageText)}
-          ofText={formatMessage(messages.ofText)}
+          loadingText={messages['loadingText']}
+          noDataText={messages['noDataText']}
+          previousText={messages['previousText']}
+          nextText={messages['nextText']}
+          rowsText={messages['rowsText']}
+          pageText={messages['pageText']}
+          ofText={messages['ofText']}
           // filtered={this.state.filtered}
           onFilteredChange={filtered => this.onFilterChangeReactTable()}
         />

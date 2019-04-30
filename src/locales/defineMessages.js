@@ -9,10 +9,6 @@ export const messages = defineMessages({
     id: 'Task.Department',
     defaultMessage: 'Department',
   },
-  type: {
-    id: 'Task.Type',
-    defaultMessage: 'Type',
-  },
   title: {
     id: 'Task.Title',
     defaultMessage: 'Title',
@@ -1007,6 +1003,11 @@ export const messages = defineMessages({
   transNameFahrb: {
     id: 'transNameFahrb',
     defaultMessage: 'Employee debt transfer',
+  },
+
+  type: {
+    id: 'type',
+    defaultMessage: 'Type',
   },
 
   // /Onlasyn
