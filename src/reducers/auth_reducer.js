@@ -20,7 +20,6 @@ export default function(state = {}, action) {
       return {
         ...state,
         authenticated: false,
-        locale: state.locale,
       };
     case AUTH_ERROR:
       return { ...state, error: action.payload };

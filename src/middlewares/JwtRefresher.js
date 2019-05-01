@@ -44,8 +44,13 @@ const tokenRefresherMiddleware = ({ dispatch }) => next => action => {
     (action.meta && action.meta.form) || typeof action === 'function';
 
   if (action.type === CHANGE_LANGUAGE) {
-    token && requestToken(token, action.payload);
-    return next(action);
+    try {
+      jwt.decode(token, 'secret');
+      token && requestToken(token, action.payload);
+      return next(action);
+    } catch (error) {
+      return next(action);
+    }
   }
 
   if (formAction || !token) {
