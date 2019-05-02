@@ -25,7 +25,7 @@ class EventLog extends Component {
   }
 
   onPaginationItemClick(page) {
-    this.loadItems(page);
+    this.loadItems(page, this.state.bukrs);
   }
 
   loadItems(page, bukrs = '0000') {

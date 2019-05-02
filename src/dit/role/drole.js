@@ -11,7 +11,6 @@ import {
 import {
   fetchAll,
   getRoleAccesses,
-  shortAccess,
   saveRoles,
   updRNomination,
   newRole,
@@ -99,7 +98,6 @@ class Roles extends Component {
             messages={messages}
             getRoleAccesses={this.props.getRoleAccesses}
             roles={this.props.allRole}
-            shortAccess={this.props.shortAccess}
             listAll={this.props.listAll}
             accessTypes={this.props.accessTypes}
             saveRoles={this.saveRoles.bind(this)}
@@ -123,7 +121,6 @@ export default connect(
   {
     fetchAll,
     getRoleAccesses,
-    shortAccess,
     saveRoles,
     updRNomination,
     newRole,

@@ -85,11 +85,6 @@ class ListRole extends Component {
     this.setState({ modalOpen: false });
   }
 
-  shortAccess(role) {
-    this.props.shortAccess(role.role_id);
-    this.setState({ modalOpen: true, row: role });
-  }
-
   updateRow(role) {
     this.props.getRoleAccesses(role.role_id);
     this.setState({ modalOpen: true, row: role });
@@ -158,7 +153,7 @@ class ListRole extends Component {
           <Button
             icon="external"
             floated="left"
-            onClick={this.shortAccess.bind(this, props.original)}
+            onClick={this.updateRow.bind(this, props.original)}
           />
         ),
         width: 100,

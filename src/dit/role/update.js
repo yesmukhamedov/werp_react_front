@@ -16,7 +16,7 @@ export default function Update(props) {
       minWidth: 100,
     },
     {
-      Header: messages['role'],
+      Header: messages['tcode'],
       accessor: 'tr_type',
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['tr_type'] }),

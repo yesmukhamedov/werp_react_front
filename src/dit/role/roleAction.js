@@ -55,28 +55,6 @@ export function getRoleAccesses(role_id) {
   };
 }
 
-export function shortAccess(role_id) {
-  return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/dit/role/shortAccess/${role_id}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: ROLE_ACCESS,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
-}
-
 export function saveRoles(newRoles) {
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
