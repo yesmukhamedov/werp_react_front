@@ -665,16 +665,12 @@ const getComponent = {
   Drlist: AsyncRoles,
   RefDemoPriceList: AsyncRefDemoPriceListPage,
   Eventlog: AsyncEventLog,
+  Lplist: AsyncPriceList,
 };
 
 const generateRoutes = transactionRoutes => {
   return (
     <div>
-      <Route
-        exact
-        path="/marketing/otheroperation/pricelist"
-        component={AsyncPriceList}
-      />
       <Route exact path="/" component={MainPanel} />
       <Route path="/settings" component={AsyncSettings} />
       <Route path="/signin" component={Signin} />
