@@ -146,10 +146,7 @@ class AddUser extends Component {
       !username ||
       password === null ||
       password === undefined ||
-      !password ||
-      internal_number === null ||
-      internal_number === undefined ||
-      !internal_number
+      !password
     ) {
       errors.push(errorTable['134' + language]);
     }

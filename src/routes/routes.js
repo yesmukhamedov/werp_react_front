@@ -569,6 +569,12 @@ const AsyncEventLog = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncPriceList = Loadable({
+  loader: () =>
+    import('../marketing/otheroperation/pricelist' /* webpackChunkName: pricelist */),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
@@ -664,6 +670,11 @@ const getComponent = {
 const generateRoutes = transactionRoutes => {
   return (
     <div>
+      <Route
+        exact
+        path="/marketing/otheroperation/pricelist"
+        component={AsyncPriceList}
+      />
       <Route exact path="/" component={MainPanel} />
       <Route path="/settings" component={AsyncSettings} />
       <Route path="/signin" component={Signin} />

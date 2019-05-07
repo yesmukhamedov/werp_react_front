@@ -72,7 +72,7 @@ class SystemUsers extends Component {
     this.props.showAddModal(true);
   }
 
-  close = () => this.props.shoAddModal(false);
+  close = () => this.props.showAddModal(false);
   openShowModal = () => this.props.showModal(true);
 
   handleChange(fieldName, o) {
