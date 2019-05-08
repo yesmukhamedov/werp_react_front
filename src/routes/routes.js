@@ -700,6 +700,17 @@ const generateRoutes = transactionRoutes => {
       <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
       <Route path="/hr/report/hrrsb" component={AsyncHrrsb} />
+      <Route
+        path="/hr/exitinterviews"
+        exact={true}
+        component={AsyncExitInterviewListPage}
+      />
+
+      <Route
+        path="/hr/exitinterviews/create"
+        exact={true}
+        component={AsyncExitInterviewCreatePage}
+      />
 
       <Route
         path="/reference/nationalities"
