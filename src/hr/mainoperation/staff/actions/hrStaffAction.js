@@ -56,6 +56,8 @@ export const HR_STAFF_MARITAL_STATUSES = 'HR_STAFF_MARITAL_STATUSES';
 export const HR_STAFF_MARITAL_STATUS_OPTIONS =
   'HR_STAFF_MARITAL_STATUS_OPTIONS';
 
+export const HR_EXIT_INTERVIEWS = 'HR_EXIT_INTERVIEWS';
+
 export function fetchCurrentStaffs(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
@@ -79,6 +81,33 @@ export function fetchCurrentStaffs(params) {
         handleError(error, dispatch);
       });
   };
+}
+
+export function fetchExitInterviews(params) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('hr/exit-interviews', params)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: HR_EXIT_INTERVIEWS,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function blankExitInterview(staffId) {
+  return dispatch =>
+    axios.get(`${ROOT_URL}/api/hr/exit-interviews/blank/` + staffId, {
+      headers: {
+        authorization: localStorage.getItem('token'),
+      },
+    });
 }
 
 export function fetchAllCurrentStaffs(params) {
@@ -138,6 +167,24 @@ export function saveStaff(staff) {
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         browserHistory.push(`/hr/staff/view/${data.id}`);
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        dispatch(notify('error', error.response.data.message, 'Ошибка'));
+      });
+  };
+}
+
+export function saveExitInterview(model) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    const uri = 'hr/exit-interviews';
+    let prom = model.new ? doPost(uri, model) : doPut(uri, model);
+    prom
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        //browserHistory.push(`/hr/exitinterviews/view/${data.id}`);
+        browserHistory.push(`/hr/exitinterviews`);
       })
       .catch(error => {
         dispatch(modifyLoader(false));

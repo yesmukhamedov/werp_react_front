@@ -26,6 +26,7 @@ import {
   HR_STAFF_FILE_DELETED,
   HR_STAFF_MARITAL_STATUSES,
   HR_STAFF_MARITAL_STATUS_OPTIONS,
+  HR_EXIT_INTERVIEWS,
 } from '../actions/hrStaffAction';
 
 import { FILE_DATA } from '../../../hrUtil';
@@ -62,6 +63,7 @@ const INITIAL_STATE = {
   directorsByBranchOptions: [],
   maritalStatuses: [],
   maritalStatusOptions: [],
+  exitInterviews: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -250,6 +252,9 @@ export default function(state = INITIAL_STATE, action) {
 
     case HR_STAFF_MARITAL_STATUS_OPTIONS:
       return { ...state, maritalStatusOptions: action.payload };
+
+    case HR_EXIT_INTERVIEWS:
+      return { ...state, exitInterviews: action.payload };
 
     default:
       return state;

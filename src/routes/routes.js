@@ -575,6 +575,18 @@ const AsyncPriceList = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncExitInterviewListPage = Loadable({
+  loader: () =>
+    import('../hr/mainoperation/staff/components/ExitInterviewListPage' /* webpackChunkName: "ExitInterviewListPage" */),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncExitInterviewCreatePage = Loadable({
+  loader: () =>
+    import('../hr/mainoperation/staff/components/ExitInterviewCreatePage' /* webpackChunkName: "ExitInterviewCreatePage" */),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
@@ -665,7 +677,6 @@ const getComponent = {
   Drlist: AsyncRoles,
   RefDemoPriceList: AsyncRefDemoPriceListPage,
   Eventlog: AsyncEventLog,
-  Lplist: AsyncPriceList,
 };
 
 const generateRoutes = transactionRoutes => {
