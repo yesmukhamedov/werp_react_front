@@ -15,6 +15,7 @@ import 'semantic-ui-css/semantic.min.css';
 
 import generateRoutes from './routes/routes';
 import reducers from './reducers';
+import browserHistory from './utils/history';
 import { AUTH_USER } from './actions/types';
 import ConnectedIntlProvider from './ConnectedIntlProvider';
 import JwtRefresher from './middlewares/JwtRefresher';
@@ -56,6 +57,7 @@ store.subscribe(
 
 const token = localStorage.getItem('token');
 const language = localStorage.getItem('language') || DEFAULT_LANGUAGE;
+// const lastUrl = localStorage.getItem('currentPathName');
 
 store.dispatch(changeLanguage(language));
 // If we have a token, consider the user to be signed in
@@ -67,6 +69,12 @@ if (token) {
     type: AUTH_USER,
     payload: { username: localStorage.getItem('username') },
   });
+  const path = localStorage.getItem('currentPathName');
+  if (path) {
+    browserHistory.push(path);
+  } else {
+    browserHistory.push('/');
+  }
 }
 
 promise.then(({ data: transactionRoutes }) => {

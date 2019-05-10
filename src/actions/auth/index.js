@@ -16,9 +16,11 @@ export function usersError(error) {
 }
 
 export function authUser(payload) {
-  return {
-    type: AUTH_USER,
-    payload,
+  return dispatch => {
+    dispatch({
+      type: AUTH_USER,
+      payload,
+    });
   };
 }
 
@@ -32,7 +34,6 @@ export function authError(error) {
 export function signinUser({ username, password }, language) {
   return dispatch => {
     // Submit username/password to the server
-    let path = null;
     axios
       .post(`${ROOT_URL}/signin`, { username, password, language })
       .then(response => {
@@ -47,12 +48,12 @@ export function signinUser({ username, password }, language) {
           JSON.stringify(response.data.errorTable),
         );
         localStorage.setItem('internalNumber', response.data.internalNumber);
-        //setAuthorizationHeader(token);
-        //setContentLanguageHeader(language);
+        // setAuthorizationHeader(token);
+        // setContentLanguageHeader(language);
         // - update state to indicate user is authenticated
         dispatch(authUser({ username, userId }));
         // - redirect to the route '/'
-        path = localStorage.getItem('currentPathName');
+        const path = localStorage.getItem('currentPathName');
         if (path) {
           browserHistory.push(path);
         } else {
@@ -75,7 +76,7 @@ export function signinUser({ username, password }, language) {
 
 export function signoutUser() {
   return dispatch => {
-    //setAuthorizationHeader();
+    // setAuthorizationHeader();
     resetLocalStorage();
     localStorage.removeItem('currentPathName');
     browserHistory.push('/');

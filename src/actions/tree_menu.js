@@ -3,12 +3,12 @@ import { BREADCRUMB, TREE_MENU, ROUTES } from './types';
 import { ROOT_URL } from '../utils/constants';
 
 export function fetchTreeMenu(userId) {
-  return (dispatch) => {
+  return dispatch => {
     // const url = `https://private-876aa-auraerpapi.apiary-mock.com/api/v1/menu-tree`;
     const url = `${ROOT_URL}/users/${userId}/menu-tree`;
     axios
       .get(url)
-      .then((response) => {
+      .then(response => {
         // If request is good...
 
         dispatch({
@@ -21,14 +21,14 @@ export function fetchTreeMenu(userId) {
 }
 
 export function fetchAvailableRoutes() {
-  return (dispatch) => {
+  return dispatch => {
     axios
       .get(`${ROOT_URL}/api/routes`, {
         headers: {
           authorization: localStorage.getItem('token'),
         },
       })
-      .then((response) => {
+      .then(response => {
         // If request is good...
         dispatch({
           type: ROUTES,
@@ -44,7 +44,12 @@ export function fetchAvailableRoutes() {
  * @param breadcrumb - array of menu item node names in user's selected language.
  */
 export function breadcrumbChanged(breadcrumb) {
-  return (dispatch) => {
+  try {
+    localStorage.setItem('breadcrumb', JSON.stringify(breadcrumb));
+  } catch (error) {
+    console.log('Could not persist breadcrumbs to local storage');
+  }
+  return dispatch => {
     dispatch({
       type: BREADCRUMB,
       payload: breadcrumb,

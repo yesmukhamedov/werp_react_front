@@ -40,7 +40,11 @@ const prepareTransactions = data => {
   return map;
 };
 
-export default function(state = {}, action) {
+const initialState = {
+  breadcrumb: JSON.parse(localStorage.getItem('breadcrumb')),
+};
+
+export default function(state = initialState, action) {
   switch (action.type) {
     case TREE_MENU:
       return {
