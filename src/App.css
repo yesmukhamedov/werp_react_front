@@ -46,6 +46,7 @@
   background-color: rgb(193, 239, 253);
   font-weight: bold;
 }
+
 .totalRow {
   background-color: #58d68d;
   font-weight: bold;
@@ -58,4 +59,11 @@
 main {
   margin-top: 90px;
   height: 100%;
+}
+
+@media only screen and (max-width: 766px) {
+  main {
+    margin-top: 280px;
+    height: 100%;
+  }
 }

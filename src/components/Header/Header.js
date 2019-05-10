@@ -78,7 +78,7 @@ class Header extends Component {
     const { formatMessage } = this.props.intl;
     return (
       <header className="nav-bar">
-        <Menu secondary attached="top">
+        <Menu secondary attached="top" stackable>
           <Menu.Item onClick={this.props.toggleMenu}>
             <Icon name="sidebar" />
             {formatMessage(messages.menu)}
