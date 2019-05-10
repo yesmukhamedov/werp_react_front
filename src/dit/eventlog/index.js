@@ -9,7 +9,7 @@ import {
   Grid,
   Dropdown,
 } from 'semantic-ui-react';
-import { fetchAll } from './eventLogAction';
+import { fetchEvAll } from '../transactionAction';
 import LazyPagination from '../../general/pagination/LazyPagination';
 import { injectIntl } from 'react-intl';
 
@@ -33,7 +33,7 @@ class EventLog extends Component {
     temp.push('page=' + page);
     temp.push('bukrs=' + bukrs);
     let q = temp.join('&');
-    this.props.fetchAll(q);
+    this.props.fetchEvAll(q);
   }
 
   componentWillMount() {
@@ -184,12 +184,12 @@ class EventLog extends Component {
 function mapStateToProps(state) {
   return {
     companyOptions: state.userInfo.companyOptions,
-    items: state.ditEventLog.items,
-    meta: state.ditEventLog.meta,
+    items: state.transactionReducer.items,
+    meta: state.transactionReducer.meta,
   };
 }
 
 export default connect(
   mapStateToProps,
-  { fetchAll },
+  { fetchEvAll },
 )(injectIntl(EventLog));
