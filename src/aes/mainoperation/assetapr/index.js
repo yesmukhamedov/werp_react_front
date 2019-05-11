@@ -38,17 +38,17 @@ class AssetApr extends Component {
   /****************************find sub items  */
 
   findType1(os_id) {
-    this.props.findObject('/api/aes/find/type1/', os_id);
+    this.props.findObject('aes/find/type1/', os_id);
   }
 
   findType2(type1_id) {
-    this.props.findObject('/api/aes/find/type2/', type1_id);
+    this.props.findObject('aes/find/type2/', type1_id);
   }
   findType3(type2_id) {
-    this.props.findObject('/api/aes/find/type3/', type2_id);
+    this.props.findObject('aes/find/type3/', type2_id);
   }
   findDetail(type3_id) {
-    this.props.findObject('/api/aes/find/det/', type3_id);
+    this.props.findObject('aes/find/det/', type3_id);
   }
 
   handleInputChange(value, dataType) {
