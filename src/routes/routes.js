@@ -677,6 +677,7 @@ const getComponent = {
   Drlist: AsyncRoles,
   RefDemoPriceList: AsyncRefDemoPriceListPage,
   Eventlog: AsyncEventLog,
+  Lplist: AsyncPriceList,
 };
 
 const generateRoutes = transactionRoutes => {

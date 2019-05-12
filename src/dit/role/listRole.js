@@ -96,7 +96,7 @@ class ListRole extends Component {
   };
 
   render() {
-    const { listAll, messages } = this.props;
+    const { listRoles, messages } = this.props;
     const columns = [
       {
         Header: 'ID',
@@ -167,7 +167,7 @@ class ListRole extends Component {
       <div>
         <ReactTable
           columns={columns}
-          data={listAll.roles}
+          data={listRoles.roles}
           resolveData={data => data.map(row => row)}
           filterable
           rowsText={messages['rowsText']}

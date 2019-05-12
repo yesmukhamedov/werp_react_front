@@ -46,7 +46,7 @@ class List extends Component {
         break;
       case 'bukrs':
         row.bukrs = o.value;
-        this.props.f4FetchBranchesByBukrs(row.bukrs);
+        this.props.fetchBrchesByBukrs(row.bukrs);
         o.options.some(c => {
           if (Number(c.key) === o.value) {
             row.bukrsname = c.text;

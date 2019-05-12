@@ -9,12 +9,12 @@ import {
   Modal,
 } from 'semantic-ui-react';
 import {
-  fetchAll,
+  fetchRoles,
   getRoleAccesses,
   saveRoles,
   updRNomination,
   newRole,
-} from './roleAction';
+} from '../transactionAction';
 import ListRole from './listRole';
 import AddRole from './addrole';
 import { injectIntl } from 'react-intl';
@@ -30,7 +30,7 @@ class Roles extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchAll();
+    this.props.fetchRoles();
   }
 
   handleOpen() {
@@ -98,7 +98,7 @@ class Roles extends Component {
             messages={messages}
             getRoleAccesses={this.props.getRoleAccesses}
             roles={this.props.allRole}
-            listAll={this.props.listAll}
+            listRoles={this.props.listRoles}
             accessTypes={this.props.accessTypes}
             saveRoles={this.saveRoles.bind(this)}
             updRNomination={this.updRNomination.bind(this)}
@@ -111,15 +111,15 @@ class Roles extends Component {
 
 function mapStateToProps(state) {
   return {
-    listAll: state.ditRole.listAll,
-    accessTypes: state.ditRole.accessTypes,
+    listRoles: state.transactionReducer.listRoles,
+    accessTypes: state.transactionReducer.accessTypes,
   };
 }
 
 export default connect(
   mapStateToProps,
   {
-    fetchAll,
+    fetchRoles,
     getRoleAccesses,
     saveRoles,
     updRNomination,

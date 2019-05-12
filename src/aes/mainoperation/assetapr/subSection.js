@@ -82,7 +82,6 @@ class SubSection extends Component {
 
   render() {
     const { listAes, messages } = this.props;
-    console.log(this.props);
     const columns = [
       {
         Header: messages['bukrs'],
@@ -139,10 +138,12 @@ class SubSection extends Component {
         maxWidth: 250,
       },
       {
+        id: messages['rnum'],
         Header: messages['rnum'],
-        accessor: 'rname',
-        minWidth: 100,
-        maxWidth: 250,
+        accessor: row => `${row.rname} ${row.rnum}`,
+        filterMethod: (filter, row) =>
+          row._original.rname.startsWith(filter.value) ||
+          row._original.rnum.startsWith(filter.value),
       },
       {
         Header: messages['TBL_H__STATUS'],

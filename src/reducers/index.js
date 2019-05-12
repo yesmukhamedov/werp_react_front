@@ -43,9 +43,6 @@ import logisticsReducer from '../logistics/mainoperation/reducers/logisticsReduc
 import aesReducer from '../aes/aesReducer';
 import hrPosReducer from '../hr/reference/position/positionReducer';
 import menuReducer from '../dit/menu/menuReducer';
-import sysUsrReducer from '../dit/duserlist/systemUserReducer';
-import ditRole from '../dit/role/roleReducer';
-import ditEventLog from '../dit/eventlog/eventLogReducer';
 import markprList from '../marketing/otheroperation/pricelist/pricelistReducer';
 
 const appReducer = combineReducers({
@@ -92,9 +89,6 @@ const appReducer = combineReducers({
   aesReducer: aesReducer,
   hrPosReducer: hrPosReducer,
   menuReducer: menuReducer,
-  sysUsrReducer: sysUsrReducer,
-  ditRole: ditRole,
-  ditEventLog: ditEventLog,
   markprList: markprList,
 });
 

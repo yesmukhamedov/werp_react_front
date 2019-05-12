@@ -5,6 +5,8 @@ import {
   notify,
 } from '../general/notification/notification_action';
 import { modifyLoader } from '../general/loader/loader_action';
+import { doGet, doPut, doPost } from '../utils/apiActions';
+
 export const AES_BLANK = 'AES_BLANK';
 //******************************AES ADD*/
 export const APPR_REJ = 'APPR_REJ';
@@ -35,16 +37,7 @@ export const UNMOUNT_ALL = 'UNMOUNT_ALL';
 export function fetchCCBranch(bukrs, country_id) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    axios
-      .post(
-        `${ROOT_URL}/api/aes/cc/fetch`,
-        { bukrs, country_id },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPost(`aes/cc/fetch`, { bukrs, country_id })
       .then(({ data }) => {
         modifyLoader(false);
         dispatch({
@@ -61,12 +54,7 @@ export function fetchCCBranch(bukrs, country_id) {
 export function fetchBlank() {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    axios
-      .get(`${ROOT_URL}/api/aes/aes/blank`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`aes/aes/blank`)
       .then(({ data }) => {
         modifyLoader(false);
         dispatch({
@@ -83,13 +71,7 @@ export function fetchBlank() {
 export function fetchAes(aes) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-
-    axios
-      .post(`${ROOT_URL}/api/aes/appr`, aes, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doPost(`aes/appr`, aes)
       .then(({ data }) => {
         modifyLoader(false);
         dispatch({
@@ -106,12 +88,7 @@ export function fetchAes(aes) {
 export function fetchReport(aes) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    axios
-      .post(`${ROOT_URL}/api/aes/report`, aes, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doPost(`aes/report`, aes)
       .then(({ data }) => {
         modifyLoader(false);
         dispatch({
@@ -126,38 +103,19 @@ export function fetchReport(aes) {
 }
 
 export function newAes(newAes) {
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-  const language = localStorage.getItem('language');
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .post(`${ROOT_URL}/api/aes/aes/save`, newAes, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doPost(`aes/aes/save`, newAes)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
-          dispatch(
-            notify(
-              'success',
-              errorTable[`104${language}`],
-              errorTable[`101${language}`],
-            ),
-          );
+          dispatch(successed());
           dispatch({
             type: NEW_AES,
             payload: data,
           });
         } else {
-          dispatch(
-            notify(
-              'info',
-              errorTable[`133${language}`],
-              errorTable[`132${language}`],
-            ),
-          );
+          dispatch(notSuccessed());
         }
       })
       .catch(error => {
@@ -168,42 +126,19 @@ export function newAes(newAes) {
 }
 
 export function saveApprRej(apprRej, rejected) {
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-  const language = localStorage.getItem('language');
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    axios
-      .put(
-        `${ROOT_URL}/api/aes/apprjec`,
-        { apprRej, rejected },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPut('aes/apprjec', { apprRej, rejected })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
-          dispatch(
-            notify(
-              'success',
-              errorTable[`104${language}`],
-              errorTable[`101${language}`],
-            ),
-          );
+          dispatch(successed());
           dispatch({
             type: APPR_REJ,
             payload: [],
           });
         } else {
-          dispatch(
-            notify(
-              'info',
-              errorTable[`133${language}`],
-              errorTable[`132${language}`],
-            ),
-          );
+          dispatch(notSuccessed());
         }
       })
       .catch(e => {
@@ -217,12 +152,7 @@ export function saveApprRej(apprRej, rejected) {
 export function fetchAll() {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    axios
-      .get(`${ROOT_URL}/api/aes/list/all`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`aes/list/all`)
       .then(({ data }) => {
         modifyLoader(false);
         dispatch({
@@ -261,16 +191,11 @@ export function unmountAll() {
 }
 
 export function findObject(url, params) {
-  let fullUrl = `${ROOT_URL}` + url + `/${params}`;
+  let fullUrl = url + `/${params}`;
   return function(dispatch) {
-    if (url === '/api/aes/find/type1/') dispatch(clearAll([]));
-    if (url === '/api/aes/find/type2/') dispatch(clearT3Osdet([]));
-    axios
-      .get(fullUrl, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    if (url === 'aes/find/type1/') dispatch(clearAll([]));
+    if (url === 'aes/find/type2/') dispatch(clearT3Osdet([]));
+    doGet(fullUrl)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -288,16 +213,7 @@ export function findObject(url, params) {
 export function findCompBrCode(bukrs, branch_id) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    axios
-      .post(
-        `${ROOT_URL}/api/aes/cbcode/fetch`,
-        { bukrs, branch_id },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPost(`aes/cbcode/fetch`, { bukrs, branch_id })
       .then(({ data }) => {
         modifyLoader(false);
         dispatch({
@@ -312,38 +228,19 @@ export function findCompBrCode(bukrs, branch_id) {
 }
 
 export function newObject(url, params, type) {
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-  const language = localStorage.getItem('language');
-  let fullUrl = `${ROOT_URL}` + url;
+  let fullUrl = url;
   return function(dispatch) {
-    axios
-      .post(fullUrl, params, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doPost(fullUrl, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
-          dispatch(
-            notify(
-              'success',
-              errorTable[`104${language}`],
-              errorTable[`101${language}`],
-            ),
-          );
+          dispatch(successed());
           dispatch({
             type: type,
             payload: data,
           });
         } else {
-          dispatch(
-            notify(
-              'info',
-              errorTable[`133${language}`],
-              errorTable[`132${language}`],
-            ),
-          );
+          dispatch(notSuccessed());
         }
       })
       .catch(e => {
@@ -353,44 +250,45 @@ export function newObject(url, params, type) {
 }
 
 export function disableObject(url, params, type) {
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-  const language = localStorage.getItem('language');
-  let fullUrl = `${ROOT_URL}` + url + `/${params.key}`;
+  let fullUrl = url + `/${params.key}`;
   return function(dispatch) {
-    axios
-      .put(fullUrl, params, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doPut(fullUrl, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
-          dispatch(
-            notify(
-              'success',
-              errorTable[`104${language}`],
-              errorTable[`101${language}`],
-            ),
-          );
+          dispatch(successed());
           dispatch({
             type: type,
             payload: params,
           });
         } else {
-          dispatch(
-            notify(
-              'info',
-              errorTable[`133${language}`],
-              errorTable[`132${language}`],
-            ),
-          );
+          dispatch(notSuccessed());
         }
       })
       .catch(e => {
         handleError(e, dispatch);
       });
   };
+}
+
+export function successed() {
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
+  return notify(
+    'success',
+    errorTable[`104${language}`],
+    errorTable[`101${language}`],
+  );
+}
+
+export function notSuccessed() {
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
+  return notify(
+    'info',
+    errorTable[`133${language}`],
+    errorTable[`132${language}`],
+  );
 }
 
 /*

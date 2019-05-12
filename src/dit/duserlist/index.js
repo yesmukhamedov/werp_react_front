@@ -10,14 +10,14 @@ import {
 } from 'semantic-ui-react';
 import { f4FetchCompanyOptions } from '../../reference/f4/f4_action';
 import {
-  fetchAll,
+  fetchSUserAll,
   saveNewUser,
   updateRow,
   searchStaff,
   fetchBrchesByBukrs,
   showAddModal,
   showUpdateModal,
-} from './systemUserAction';
+} from '../transactionAction';
 import { injectIntl } from 'react-intl';
 import List from './list';
 import SearchSt from './searchSrtaff';
@@ -40,7 +40,7 @@ class SystemUsers extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchAll();
+    this.props.fetchSUserAll();
   }
 
   handleOpen() {
@@ -171,17 +171,17 @@ class SystemUsers extends Component {
     );
   }
   getUsers() {
-    if (!this.props.listAll.users) {
+    if (!this.props.lSUsers.users) {
       return [];
     }
-    const { users } = this.props.listAll;
+    const { users } = this.props.lSUsers;
     return users;
   }
   getRoles() {
-    if (!this.props.listAll.roles) {
+    if (!this.props.lSUsers.roles) {
       return [];
     }
-    const { roles } = this.props.listAll;
+    const { roles } = this.props.lSUsers;
     let out = roles.map(c => {
       return {
         key: parseInt(c.role_id, 10),
@@ -223,19 +223,19 @@ class SystemUsers extends Component {
 
 function mapStateToProps(state) {
   return {
-    listAll: state.sysUsrReducer.listAll,
+    lSUsers: state.transactionReducer.lSUsers,
     companyOptions: state.userInfo.companyOptions,
-    branchOptions: state.sysUsrReducer.bukrsBranches,
-    staffs: state.sysUsrReducer.staffs,
-    addModalOpened: state.sysUsrReducer.addModalOpened,
-    updateModalOpened: state.sysUsrReducer.updateModalOpened,
+    branchOptions: state.transactionReducer.bukrsBranches,
+    staffs: state.transactionReducer.staffs,
+    addModalOpened: state.transactionReducer.addModalOpened,
+    updateModalOpened: state.transactionReducer.updateModalOpened,
   };
 }
 
 export default connect(
   mapStateToProps,
   {
-    fetchAll,
+    fetchSUserAll,
     f4FetchCompanyOptions,
     updateRow,
     searchStaff,

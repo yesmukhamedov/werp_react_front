@@ -34,61 +34,61 @@ class AssetRef extends Component {
   }
 
   newOs(newOs) {
-    this.props.newObject('/api/aes/os/save', newOs, 'NEW_OS');
+    this.props.newObject('aes/os/save', newOs, 'NEW_OS');
   }
   newType1(newtype1) {
-    this.props.newObject('/api/aes/type1/save', newtype1, 'NEW_TYPE1');
+    this.props.newObject('aes/type1/save', newtype1, 'NEW_TYPE1');
   }
   newType2(newtype2) {
-    this.props.newObject('/api/aes/type2/save', newtype2, 'NEW_TYPE2');
+    this.props.newObject('aes/type2/save', newtype2, 'NEW_TYPE2');
   }
   newType3(newType3) {
-    this.props.newObject('/api/aes/type3/save', newType3, 'NEW_TYPE3');
+    this.props.newObject('aes/type3/save', newType3, 'NEW_TYPE3');
   }
   newDetail(newDetail) {
-    this.props.newObject('/api/aes/detail/save', newDetail, 'NEW_DETAIL');
+    this.props.newObject('aes/detail/save', newDetail, 'NEW_DETAIL');
   }
   newRnum(newRnum) {
-    this.props.newObject('/api/aes/room/save', newRnum, 'NEW_RNUM');
+    this.props.newObject('aes/room/save', newRnum, 'NEW_RNUM');
   }
   newStatus(newStatus) {
-    this.props.newObject('/api/aes/status/save', newStatus, 'NEW_STATUS');
+    this.props.newObject('aes/status/save', newStatus, 'NEW_STATUS');
   }
   newCompBr(newCompBr) {
-    this.props.newObject('/api/aes/compbr/save', newCompBr, 'COMP_BR');
+    this.props.newObject('aes/compbr/save', newCompBr, 'COMP_BR');
   }
 
   /****************************find sub items  */
 
   findType1(os_id) {
-    this.props.findObject('/api/aes/find/type1/', os_id);
+    this.props.findObject('aes/find/type1/', os_id);
   }
 
   findType2(type1_id) {
-    this.props.findObject('/api/aes/find/type2/', type1_id);
+    this.props.findObject('aes/find/type2/', type1_id);
   }
   findType3(type2_id) {
-    this.props.findObject('/api/aes/find/type3/', type2_id);
+    this.props.findObject('aes/find/type3/', type2_id);
   }
   findDetail(type3_id) {
-    this.props.findObject('/api/aes/find/det/', type3_id);
+    this.props.findObject('aes/find/det/', type3_id);
   }
 
   /******************************************************************* CALL DISABLE FUNCTION */
   disableOs(os) {
-    this.props.disableObject('/api/aes/os/disable', os, 'DIS_OS');
+    this.props.disableObject('aes/os/disable', os, 'DIS_OS');
   }
   disableType1(type1) {
-    this.props.disableObject('/api/aes/type1/disable', type1, 'DIS_TYPE1');
+    this.props.disableObject('aes/type1/disable', type1, 'DIS_TYPE1');
   }
   disableType2(type2) {
-    this.props.disableObject('/api/aes/type2/disable', type2, 'DIS_TYPE2');
+    this.props.disableObject('aes/type2/disable', type2, 'DIS_TYPE2');
   }
   disableType3(type3) {
-    this.props.disableObject('/api/aes/type3/disable', type3, 'DIS_TYPE3');
+    this.props.disableObject('aes/type3/disable', type3, 'DIS_TYPE3');
   }
   disableDetail(det) {
-    this.props.disableObject('/api/aes/det/disable', det, 'DIS_DET');
+    this.props.disableObject('aes/det/disable', det, 'DIS_DET');
   }
 
   handleInputChange(value, dataType) {

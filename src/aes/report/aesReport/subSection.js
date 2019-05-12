@@ -75,10 +75,12 @@ export default function SubSection(props) {
       maxWidth: 250,
     },
     {
+      id: props.messages['rnum'],
       Header: props.messages['rnum'],
-      accessor: 'rname',
-      minWidth: 100,
-      maxWidth: 250,
+      accessor: row => `${row.rname} ${row.rnum}`,
+      filterMethod: (filter, row) =>
+        row._original.rname.startsWith(filter.value) ||
+        row._original.rnum.startsWith(filter.value),
     },
     {
       Header: props.messages['TBL_H__STATUS'],
