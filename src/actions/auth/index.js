@@ -2,7 +2,13 @@ import axios from 'axios';
 import browserHistory from '../../utils/history';
 import { ROOT_URL } from '../../utils/constants';
 import { resetLocalStorage } from '../../utils/helpers';
-import { AUTH_USER, AUTH_ERROR, FETCH_USERS, USERS_ERROR } from '../types';
+import {
+  AUTH_USER,
+  AUTH_ERROR,
+  FETCH_USERS,
+  USERS_ERROR,
+  UNAUTH_USER,
+} from '../types';
 import {
   setAuthorizationHeader,
   setContentLanguageHeader,
@@ -75,11 +81,15 @@ export function signinUser({ username, password }, language) {
 }
 
 export function signoutUser() {
+  // setAuthorizationHeader();
+  resetLocalStorage();
+  localStorage.removeItem('currentPathName');
+  localStorage.removeItem('breadcrumb');
+  browserHistory.push('/');
   return dispatch => {
-    // setAuthorizationHeader();
-    resetLocalStorage();
-    localStorage.removeItem('currentPathName');
-    browserHistory.push('/');
+    dispatch({
+      type: UNAUTH_USER,
+    });
   };
 }
 

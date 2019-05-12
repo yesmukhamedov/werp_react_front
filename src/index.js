@@ -69,12 +69,6 @@ if (token) {
     type: AUTH_USER,
     payload: { username: localStorage.getItem('username') },
   });
-  const path = localStorage.getItem('currentPathName');
-  if (path) {
-    browserHistory.push(path);
-  } else {
-    browserHistory.push('/');
-  }
 }
 
 promise.then(({ data: transactionRoutes }) => {

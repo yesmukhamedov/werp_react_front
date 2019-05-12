@@ -1,4 +1,10 @@
-import { TREE_MENU, AUTH_USER, BREADCRUMB, ROUTES } from '../actions/types';
+import {
+  TREE_MENU,
+  AUTH_USER,
+  BREADCRUMB,
+  ROUTES,
+  UNAUTH_USER,
+} from '../actions/types';
 
 /**
  * Recursively adds parent links to child fields
@@ -55,6 +61,8 @@ export default function(state = initialState, action) {
       };
     case AUTH_USER:
       return { ...state, refetch: true };
+    case UNAUTH_USER:
+      return {};
     case BREADCRUMB:
       return { ...state, breadcrumb: action.payload };
     case ROUTES:
