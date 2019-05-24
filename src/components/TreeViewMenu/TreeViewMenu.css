@@ -7,7 +7,7 @@
   background-color: white;
   border: 1px lightgrey solid;
   border-radius: 3px;
-  z-index: 5;
+  z-index: 10;
 }
 
 .hidden {

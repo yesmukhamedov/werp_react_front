@@ -56,8 +56,8 @@ class VisitViewPage extends Component {
   }
 
   toUpdate() {
-    this.props.modalToggle(true),
-      this.props.setVisitForUpdate(this.props.visit);
+    this.props.modalToggle(true);
+    this.props.setVisitForUpdate(this.props.visit);
   }
   renderActions(messages) {
     return (

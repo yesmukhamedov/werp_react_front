@@ -44,6 +44,7 @@ import aesReducer from '../aes/aesReducer';
 import hrPosReducer from '../hr/reference/position/positionReducer';
 import menuReducer from '../dit/menu/menuReducer';
 import markprList from '../marketing/otheroperation/pricelist/pricelistReducer';
+import hrReducer from '../hr/hr_reducer';
 
 const appReducer = combineReducers({
   form,
@@ -90,6 +91,7 @@ const appReducer = combineReducers({
   hrPosReducer: hrPosReducer,
   menuReducer: menuReducer,
   markprList: markprList,
+  hr: hrReducer,
 });
 
 const rootReducer = (state, action) => {

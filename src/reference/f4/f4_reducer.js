@@ -42,6 +42,8 @@ import {
   F4_FETCH_NATIONALITIES,
   F4_FETCH_NATIONALITY_OPTIONS,
   F4_FETCH_ADDR_TYPE_OPTIONS,
+  F4_FETCH_CONTYPE_LIST,
+  F4_CLEAR_CONTYPE_LIST,
 } from './f4_action';
 
 const INITIAL_STATE = {
@@ -70,6 +72,7 @@ const INITIAL_STATE = {
   companyOptions: [],
   branchOptions: [],
   addressTypeOptions: [],
+  contractTypeList: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -200,6 +203,12 @@ export default function(state = INITIAL_STATE, action) {
 
     case F4_FETCH_ADDR_TYPE_OPTIONS:
       return { ...state, addressTypeOptions: action.payload };
+
+    case F4_FETCH_CONTYPE_LIST:
+      return { ...state, contractTypeList: action.data };
+
+    case F4_CLEAR_CONTYPE_LIST:
+      return { ...state, contractTypeList: [] };
 
     default:
       return state;

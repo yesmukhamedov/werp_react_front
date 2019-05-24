@@ -60,6 +60,9 @@ export const F4_CLEAR_SUB_COMPANY_TYPES = 'F4_CLEAR_SUB_COMPANY_TYPES';
 export const F4_FETCH_HKONT_LIST = 'F4_FETCH_HKONT_LIST';
 export const F4_CLEAR_HKONT_LIST = 'F4_CLEAR_HKONT_LIST';
 
+export const F4_FETCH_CONTYPE_LIST = 'F4_FETCH_CONTYPE_LIST';
+export const F4_CLEAR_CONTYPE_LIST = 'F4_CLEAR_CONTYPE_LIST';
+
 export const F4_FETCH_COMPANY_OPTIONS = 'F4_FETCH_COMPANY_OPTIONS';
 export const F4_FETCH_BRANCH_OPTIONS = 'F4_FETCH_BRANCH_OPTIONS';
 
@@ -712,5 +715,22 @@ export function f4ClearBranchOptions() {
   return {
     type: F4_FETCH_BRANCH_OPTIONS,
     payload: [],
+  };
+}
+
+export function f4FetchConTypeList() {
+  console.log('action ct list');
+  return function(dispatch) {
+    console.log('axios ct list');
+    doGet('reference/fetchContractTypeList')
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_CONTYPE_LIST,
+          data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
   };
 }

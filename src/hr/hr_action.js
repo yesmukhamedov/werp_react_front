@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { ROOT_URL } from '../utils/constants';
+import { doGet } from '../utils/apiActions';
 import { handleError } from '../general/notification/notification_action';
 import { modifyLoader } from '../general/loader/loader_action';
 
@@ -22,19 +21,10 @@ export function clearDynObjHr() {
   return obj;
 }
 
-export function fetchDynamicFAGM(url, params) {
-  let fullUrl = `${ROOT_URL}` + url;
+export function fetchDynObjHr(url, params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(fullUrl, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          ...params,
-        },
-      })
+    doGet(url, { ...params })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

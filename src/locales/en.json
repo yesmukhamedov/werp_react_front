@@ -564,12 +564,14 @@
   "advancePaymentRequestAccount": "Advance Payment Request Account",
   "debtAccount": "Debt account",
   "doubtfulDebtAccount": "Doubtful debt account",
+
   "balanceAccountMin": "Balance",
   "depositAccountMin": "Deposit",
   "blockedAccountMin": "Blocked",
   "advancePaymentRequestAccountMin": "Adv. req.",
   "debtAccountMin": "Debt",
   "doubtfulDebtAccountMin": "Doubt. debt",
+
   "noResultsMessage": "No results found",
   "branchesOff": "No branches",
 
@@ -581,6 +583,12 @@
   "transNameFahrb": "Employee debt transfer",
 
   "type": "Type",
+
+  "expenseDate": "Expense date",
+  "givenDate": "Given date",
+  "bonusType": "Bonus type",
+  "operationType": "Operation type",
+  "employeePosition": "Должность",
 
   "asset_mant": "Asset management",
   "add_assets": "Adding fixed assets",

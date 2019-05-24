@@ -582,6 +582,12 @@
 
   "type": "Type",
 
+  "expenseDate": "Expense date",
+  "givenDate": "Given date",
+  "bonusType": "Bonus type",
+  "operationType": "Operation type",
+  "employeePosition": "Должность",
+
   "asset_mant": "Asset management",
   "add_assets": "Adding fixed assets",
   "midify_assets": "Modifying fixed assets",
