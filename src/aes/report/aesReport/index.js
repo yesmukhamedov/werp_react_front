@@ -464,11 +464,12 @@ class AesReport extends Component {
     }
     return map;
   }
+
   loadCCBranch(country_id) {
     const queryParams = this.state.queryParams;
-    queryParams.bukrs && queryParams.country_id
-      ? this.props.fetchCCBranch(queryParams.bukrs, queryParams.country_id)
-      : '';
+    if (queryParams.bukrs && queryParams.country_id) {
+      this.props.fetchCCBranch(queryParams.bukrs, queryParams.country_id);
+    }
   }
 
   loadCompBr(branch_id) {

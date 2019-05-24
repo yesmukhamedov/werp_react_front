@@ -381,9 +381,9 @@ class AssetMod extends Component {
 
   loadCCBranch(country_id) {
     const queryParams = this.state.queryParams;
-    queryParams.bukrs && country_id
-      ? this.props.fetchCCBranch(queryParams.bukrs, queryParams.country_id)
-      : '';
+    if (queryParams.bukrs && country_id) {
+      this.props.fetchCCBranch(queryParams.bukrs, queryParams.country_id);
+    }
   }
 
   loadCompBr(branch_id) {

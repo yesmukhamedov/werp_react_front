@@ -224,9 +224,9 @@ class AssetApr extends Component {
 
   loadCCBranch(country_id) {
     const queryParams = this.state.queryParams;
-    queryParams.bukrs && queryParams.country_id
-      ? this.props.fetchCCBranch(queryParams.bukrs, queryParams.country_id)
-      : '';
+    if (queryParams.bukrs && queryParams.country_id) {
+      this.props.fetchCCBranch(queryParams.bukrs, queryParams.country_id);
+    }
   }
   /*************************************************************************************GET OS  */
   getOs() {

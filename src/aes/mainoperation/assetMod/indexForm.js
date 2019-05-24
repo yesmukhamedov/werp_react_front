@@ -50,8 +50,8 @@ class IndexForm extends Component {
   se0(se0) {
     let queryParams = this.props.queryParams;
     queryParams.se0_id = se0.staffId;
-    (queryParams.se0_name = se0.fio),
-      this.setState({ ...this.state, queryParams: queryParams });
+    queryParams.se0_name = se0.fio;
+    this.setState({ ...this.state, queryParams: queryParams });
   }
 
   se1(se1) {
@@ -64,15 +64,15 @@ class IndexForm extends Component {
   se2(se2) {
     let queryParams = this.props.queryParams;
     queryParams.se2_id = se2.staffId;
-    (queryParams.se2_name = se2.fio),
-      this.setState({ ...this.state, queryParams: queryParams });
+    queryParams.se2_name = se2.fio;
+    this.setState({ ...this.state, queryParams: queryParams });
   }
 
   se3(se3) {
     let queryParams = this.props.queryParams;
     queryParams.se3_id = se3.staffId;
-    (queryParams.se3_name = se3.fio),
-      this.setState({ ...this.state, queryParams: queryParams });
+    queryParams.se3_name = se3.fio;
+    this.setState({ ...this.state, queryParams: queryParams });
   }
   clichAChange() {
     this.props.clichAChange();
