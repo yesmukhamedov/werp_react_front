@@ -53,7 +53,15 @@ export function signinUser({ username, password }, language) {
           'errorTableString',
           JSON.stringify(response.data.errorTable),
         );
-        localStorage.setItem('internalNumber', response.data.internalNumber);
+        if (
+          response.data.internalNumber &&
+          response.data.internalNumber.length > 0
+        ) {
+          localStorage.setItem('internalNumber', response.data.internalNumber);
+        } else {
+          localStorage.removeItem('internalNumber');
+        }
+
         // setAuthorizationHeader(token);
         // setContentLanguageHeader(language);
         // - update state to indicate user is authenticated

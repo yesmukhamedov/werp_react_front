@@ -29,7 +29,21 @@ import {
   fetchCallResults,
   fetchSingleReco,
 } from '../actions/recoAction';
+import {
+  createCall,
+  setCallingFlag,
+  registerCall,
+  saveCall,
+  callInfo,
+  setCallStatus,
+} from '../../call/actions/callAction';
 import { injectIntl } from 'react-intl';
+import {
+  CALL_STATUS_DURING_CALL,
+  CALL_STATUS_CALLING,
+  CALL_STATUS_FINISHED,
+  CALL_STATUS_NOTHING,
+} from '../../call/callConstant';
 
 require('moment/locale/ru');
 
@@ -38,11 +52,18 @@ class Phone extends Component {
     super(props);
 
     this.state = {
+      calling: false,
       callModalOpen: false,
       recommender: {},
       opened: false,
       buttonLoading: false,
       call: {},
+      callContinue: false,
+      duration: {
+        h: 0,
+        m: 0,
+        s: 0,
+      },
       errors: {
         callResultId: false,
         callReasonId: false,
@@ -62,10 +83,17 @@ class Phone extends Component {
     this.saveCall = this.saveCall.bind(this);
     this.closeModal = this.closeModal.bind(this);
     this.renderRecommenderInfo = this.renderRecommenderInfo.bind(this);
+    this.renderCallFormNew = this.renderCallFormNew.bind(this);
+    this.renderCallFormOld = this.renderCallFormOld.bind(this);
+    this.checkCallInfo = this.checkCallInfo.bind(this);
   }
 
   componentWillMount() {
     // this.props.fetchCallResults()
+  }
+
+  componentDidMount() {
+    //console.log('DID Phone');
   }
 
   handlePhoneClick() {
@@ -103,6 +131,7 @@ class Phone extends Component {
   }
 
   renderCallModal(messages) {
+    let internalNumber = localStorage.getItem('internalNumber');
     const panes = [
       {
         menuItem: messages['Crm.HistoryOfNumber'],
@@ -116,6 +145,9 @@ class Phone extends Component {
     ];
     return (
       <Modal
+        closeOnEscape={false}
+        closeOnDocumentClick={false}
+        closeOnDimmerClick={false}
         size="large"
         open={this.state.opened}
         onClose={this.handleModalClose}
@@ -239,7 +271,181 @@ class Phone extends Component {
     );
   }
 
+  checkCallInfo(callInfo, timer) {
+    if (!callInfo['success']) {
+      clearInterval(timer);
+      let duration = {
+        h: 0,
+        m: 0,
+        s: 0,
+      };
+
+      this.setState({
+        ...this.state,
+        callContinue: false,
+        duration: duration,
+      });
+      this.props.setCallStatus(CALL_STATUS_FINISHED);
+    } else if (callInfo['call'] && callInfo['call']['answer_time'] != null) {
+      this.props.setCallStatus(CALL_STATUS_DURING_CALL);
+      let duration = Object.assign({}, this.state.duration);
+      duration['s']++;
+      if (duration['s'] === 60) {
+        duration['m']++;
+        duration['s'] = 0;
+
+        if (duration['m'] === 60) {
+          duration['h']++;
+          duration['m'] = 0;
+        }
+      }
+
+      this.setState({
+        ...this.state,
+        duration: duration,
+        callContinue: true,
+      });
+    }
+  }
+
+  createCall = e => {
+    e.preventDefault();
+    let internalNumber = localStorage.getItem('internalNumber');
+    this.props.setCallStatus(CALL_STATUS_CALLING);
+    this.props
+      .createCall(internalNumber, this.state.call.phoneNumber)
+      .then(({ data }) => {
+        let call = Object.assign({}, this.state.call);
+        call['cdrId'] = data['callId']['id'];
+        this.props
+          .registerCall(call)
+          .then(({ data }) => {
+            this.props.setCallingFlag(false);
+            this.setState({
+              ...this.state,
+              call: data,
+            });
+            let tm = setInterval(() => {
+              this.props.callInfo(internalNumber).then(({ data }) => {
+                this.checkCallInfo(data, tm);
+              });
+            }, 1000);
+          })
+          .catch(e => {
+            console.log('regError', e.response);
+            this.props.setCallStatus(CALL_STATUS_NOTHING);
+          });
+      })
+      .catch(e => {
+        console.log('error', e.response);
+        this.props.setCallStatus(CALL_STATUS_NOTHING);
+      });
+  };
+
+  renderDurationLabel = () => {
+    const { duration } = this.state;
+
+    return (
+      <Label>
+        <Icon name="clock" />
+        {duration['h'] < 10 ? '0' + duration['h'] : duration['h']}:
+        {duration['m'] < 10 ? '0' + duration['m'] : duration['m']}:
+        {duration['s'] < 10 ? '0' + duration['s'] : duration['s']}
+      </Label>
+    );
+  };
+
+  renderCallFormNew() {
+    const { messages, locale } = this.props.intl;
+    const call = Object.assign({}, this.state.call);
+    const { callStatus } = this.props;
+    return (
+      <Form>
+        <Form.Group widths="equal">
+          <Form.Input
+            fluid
+            label={messages['Form.PhoneNumber']}
+            placeholder={this.state.call.phoneNumber}
+            readOnly
+          />
+          <Form.Field error={this.state.errors.callDate}>
+            <label>&nbsp;</label>
+            {callStatus === CALL_STATUS_DURING_CALL ? (
+              this.renderDurationLabel()
+            ) : callStatus === CALL_STATUS_NOTHING ||
+              callStatus === CALL_STATUS_CALLING ? (
+              <Button
+                loading={callStatus === CALL_STATUS_CALLING}
+                onClick={this.createCall}
+              >
+                Звонок
+              </Button>
+            ) : callStatus === CALL_STATUS_FINISHED ? (
+              <h4>Пожалуйста, сохраните результат звонка</h4>
+            ) : (
+              ''
+            )}
+          </Form.Field>
+        </Form.Group>
+        <Form.Group widths="equal">
+          <Form.Select
+            error={this.state.errors.callResultId}
+            required
+            name="resultId"
+            fluid
+            selection
+            label={messages['Crm.ResultOfCall']}
+            options={this.props.callResultOptions}
+            onChange={(e, v) => this.handleChange('callResultId', v)}
+          />
+
+          {this.renderCallResultDependentField()}
+        </Form.Group>
+        <Form.Group widths="equal">
+          <Form.Field
+            control={TextArea}
+            onChange={(e, o) => this.handleChange('callNote', o)}
+            label={messages['Crm.NoteForCall']}
+            placeholder={messages['Crm.NoteForCall']}
+          />
+          <Form.Field />
+        </Form.Group>
+        <Divider />
+        {this.renderDemoForm(messages, locale)}
+
+        <div>
+          {callStatus === CALL_STATUS_NOTHING ? (
+            <Button color="red" onClick={this.closeModal}>
+              {messages.close}
+            </Button>
+          ) : (
+            ''
+          )}
+
+          <Button positive={true} floated={'right'} onClick={this.saveCall}>
+            {messages.save}
+          </Button>
+
+          {/*<Form.Field*/}
+          {/*control={Button}*/}
+          {/*content={messages.save}*/}
+          {/*onClick={this.saveCall}*/}
+          {/*/>*/}
+        </div>
+      </Form>
+    );
+  }
+
   renderCallForm() {
+    let internalNumber = localStorage.getItem('internalNumber');
+    if (internalNumber != null && internalNumber.length > 0) {
+      return this.renderCallFormNew();
+    }
+
+    return this.renderCallFormOld();
+  }
+
+  renderCallFormOld() {
     const { messages, locale } = this.props.intl;
     const call = Object.assign({}, this.state.call);
     return (
@@ -359,27 +565,41 @@ class Phone extends Component {
     }
 
     if (!isValid) {
+      console.log(this.state.errors);
       return;
     }
-    axios
-      .post(
-        `${ROOT_URL}/api/crm/call/${this.props.phoneId}`,
-        { ...this.state.call },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
-      .then(response => {
+
+    this.props
+      .saveCall(this.props.phoneId, this.state.call)
+      .then(({ data }) => {
         if (this.props.recoId) {
           this.props.fetchSingleReco(this.props.recoId);
         }
         this.closeModal();
       })
-      .catch(error => {
-        console.log(error);
+      .catch(e => {
+        alert('Error');
       });
+    // return;
+    // axios
+    //   .post(
+    //     `${ROOT_URL}/api/crm/call/${this.props.phoneId}`,
+    //     { ...this.state.call },
+    //     {
+    //       headers: {
+    //         authorization: localStorage.getItem('token'),
+    //       },
+    //     },
+    //   )
+    //   .then(response => {
+    //     if (this.props.recoId) {
+    //       this.props.fetchSingleReco(this.props.recoId);
+    //     }
+    //     this.closeModal();
+    //   })
+    //   .catch(error => {
+    //     console.log(error);
+    //   });
   }
 
   closeModal() {
@@ -388,6 +608,8 @@ class Phone extends Component {
       opened: false,
       buttonLoading: false,
     });
+
+    this.props.setCallStatus(CALL_STATUS_NOTHING);
 
     if (this.props.onCloseModal) {
       this.props.onCloseModal();
@@ -407,6 +629,7 @@ class Phone extends Component {
             <Table.HeaderCell>{messages['Crm.Called']}</Table.HeaderCell>
             <Table.HeaderCell>{messages['Table.Note']}</Table.HeaderCell>
             <Table.HeaderCell>{messages['Table.Result']}</Table.HeaderCell>
+            <Table.HeaderCell />
           </Table.Row>
         </Table.Header>
 
@@ -420,6 +643,19 @@ class Phone extends Component {
               <Table.Cell>{item.callerName}</Table.Cell>
               <Table.Cell>{item.note}</Table.Cell>
               <Table.Cell>{item.resultName}</Table.Cell>
+              <Table.Cell>
+                {item.recordFile && item.recordFile.length > 0 ? (
+                  <audio controls>
+                    <source
+                      src={`${ROOT_URL}` + '/media/call-record/' + item.cdrId}
+                      type="audio/x-wav"
+                    />
+                    Your browser does not support the audio element.
+                  </audio>
+                ) : (
+                  ''
+                )}
+              </Table.Cell>
             </Table.Row>
           ))}
         </Table.Body>
@@ -547,6 +783,10 @@ class Phone extends Component {
       </p>
     );
   }
+
+  componentWillUnmount() {
+    this.props.setCallStatus(CALL_STATUS_NOTHING);
+  }
 }
 
 function mapStateToProps(state) {
@@ -554,10 +794,23 @@ function mapStateToProps(state) {
     historyItems: state.crmReco.phoneNumberHistory,
     callResultOptions: state.crmReco.callResultOptions,
     reasons: state.crmDemo.reasons,
+    calling: state.callReducer.calling,
+    createdCallData: state.callReducer.createdCallData,
+    callStatus: state.callReducer.callStatus,
   };
 }
 
 export default connect(
   mapStateToProps,
-  { fetchPhoneNumberHistory, fetchCallResults, fetchSingleReco },
+  {
+    fetchPhoneNumberHistory,
+    fetchCallResults,
+    fetchSingleReco,
+    createCall,
+    setCallingFlag,
+    registerCall,
+    saveCall,
+    callInfo,
+    setCallStatus,
+  },
 )(injectIntl(Phone));
