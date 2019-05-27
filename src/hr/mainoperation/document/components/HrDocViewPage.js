@@ -37,7 +37,6 @@ import {
   DOC_ACTION_SAVE,
 } from '../../../hrUtil';
 import browserHistory from '../../../../utils/history';
-import StaffListModal from '../../staff/components/StaffListModal';
 import {
   fetchAllCurrentStaffs,
   toggleStaffListModal,
@@ -76,16 +75,26 @@ class HrDocViewPage extends Component {
     this.handleProblemDocFormSubmit = this.handleProblemDocFormSubmit.bind(
       this,
     );
+
+    this.handleAction = this.handleAction.bind(this);
+    this.handleRejectAction = this.handleRejectAction.bind(this);
+    this.addApprover = this.addApprover.bind(this);
+    this.handleStaffSelect = this.handleStaffSelect.bind(this);
+    this.onRefuseModalNoteChange = this.onRefuseModalNoteChange.bind(this);
+    this.renderRejectNoteModal = this.renderRejectNoteModal.bind(this);
+    this.saveDocumentItems = this.saveDocumentItems.bind(this);
+    this.removeApprover = this.removeApprover.bind(this);
+    this.handleItemChange = this.handleItemChange.bind(this);
   }
 
-  componentWillMount() {
+  componentWillMount() {}
+
+  componentDidMount() {
     const id = parseInt(this.props.match.params.id, 10);
     this.props.fetchDocument(id);
     this.props.fetchAllCurrentStaffs([]);
     this.props.f4FetchCurrencyList('hr_doc');
-  }
 
-  componentDidMount() {
     this.props.fetchStaffProblems({ mode: 'options' }).then(({ data }) => {
       this.setState({
         problems: data,
@@ -93,7 +102,7 @@ class HrDocViewPage extends Component {
     });
   }
 
-  handleAction = actionType => {
+  handleAction(actionType) {
     switch (actionType) {
       case DOC_ACTION_GO_TO_LIST:
         browserHistory.push('/hr/doc/recruitment');
@@ -146,14 +155,14 @@ class HrDocViewPage extends Component {
         this.props.handleAction(document, actionType);
         break;
     }
-  };
+  }
 
-  handleRejectAction = () => {
+  handleRejectAction() {
     let document = Object.assign({}, this.props.document);
     this.props.handleAction(document, DOC_ACTION_REJECT, this.state.refuseNote);
-  };
+  }
 
-  addApprover = staff => {
+  addApprover(staff) {
     let document = Object.assign({}, this.props.document);
     let approvers = document.approvers || [];
     let positions = staff.positions || [];
@@ -171,9 +180,9 @@ class HrDocViewPage extends Component {
     document['approvers'] = approvers;
 
     this.props.handleAction(document, DOC_ACTION_ADD_APPROVER, staff);
-  };
+  }
 
-  handleStaffSelect = staff => {
+  handleStaffSelect(staff) {
     switch (STAFF_MODAL_OPENED_ON_ACTION) {
       case DOC_ACTION_ADD_APPROVER:
         this.addApprover(staff);
@@ -183,13 +192,13 @@ class HrDocViewPage extends Component {
         console.log(staff);
         break;
     }
-  };
+  }
 
-  onRefuseModalNoteChange = v => {
+  onRefuseModalNoteChange(v) {
     this.setState({
       refuseNote: v,
     });
-  };
+  }
 
   handleProblemDocModalClose() {
     this.setState({
@@ -198,7 +207,7 @@ class HrDocViewPage extends Component {
     });
   }
 
-  renderRejectNoteModal = () => {
+  renderRejectNoteModal() {
     return (
       <Modal
         open={this.state.rejectNoteModalOpened}
@@ -236,9 +245,9 @@ class HrDocViewPage extends Component {
         </Modal.Content>
       </Modal>
     );
-  };
+  }
 
-  handleItemChange = (fieldName, id, value) => {
+  handleItemChange(fieldName, id, value) {
     let document = Object.assign({}, this.props.document);
     let items = document.items || [];
     let updatedItems = [];
@@ -251,13 +260,13 @@ class HrDocViewPage extends Component {
     }
 
     this.props.localUpdateDocItems(updatedItems);
-  };
+  }
 
-  saveDocumentItems = () => {
+  saveDocumentItems() {
     let document = Object.assign({}, this.props.document);
     let items = document.items || [];
     this.props.addAmount(document, items);
-  };
+  }
 
   handleProblemDocItemChange(idx, fieldName, value) {
     let problemDocModel = Object.assign({}, this.state.problemDocModel);
@@ -284,7 +293,7 @@ class HrDocViewPage extends Component {
     this.props.handleAction(problemDocModel, DOC_ACTION_SAVE, {});
   }
 
-  removeApprover = id => {
+  removeApprover(id) {
     this.props
       .removeApprove(id)
       .then(({ data }) => {
@@ -297,15 +306,7 @@ class HrDocViewPage extends Component {
           window.alert('Ошибка! Обратитесь администратору!');
         }
       });
-  };
-
-  getBranchOptions = bukrs => {
-    if (!bukrs || !this.props.branchOptions) {
-      return [];
-    }
-
-    return this.props.branchOptions[bukrs] || [];
-  };
+  }
 
   render() {
     let document = Object.assign({}, this.props.document);
