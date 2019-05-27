@@ -187,6 +187,7 @@ export function handleAction(document, actionType, additionalData) {
 
     case DOC_ACTION_UPDATE:
       window.location = `/hr/doc/update/${document.id}`;
+      return { type: null, payload: null };
       break;
 
     case DOC_ACTION_COMPLETE_DOC:
@@ -197,6 +198,8 @@ export function handleAction(document, actionType, additionalData) {
     default:
       alert(`Unknown Action! ${actionType}`);
   }
+
+  return { type: null, payload: null };
 
   // return function (dispatch) {
   //     dispatch(setLoading(true))
