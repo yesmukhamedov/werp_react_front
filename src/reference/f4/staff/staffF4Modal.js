@@ -12,10 +12,9 @@ import {
   Checkbox,
   Button,
 } from 'semantic-ui-react';
-import matchSorter from 'match-sorter';
-import { LEGACY_URL } from '../../../utils/constants';
+import matchSorter, { rankings } from 'match-sorter';
 import { injectIntl } from 'react-intl';
-import { messages } from '../../../locales/defineMessages';
+import { LinkToStaffCardViewID } from '../../../utils/outlink';
 // import './notification.css'
 
 // const arrayList= ;
@@ -93,10 +92,12 @@ class StaffF4Modal extends PureComponent {
 
   render() {
     const {
-      companyOptions,
+      companyOptions = [],
       branchOptions,
       bukrsDisabledParent,
       trans,
+      unemployedDisabledParent,
+      intl: { messages },
     } = this.props;
     const {
       bukrsDisabledState,
@@ -108,47 +109,50 @@ class StaffF4Modal extends PureComponent {
       iinBinSV,
       unemployed,
     } = this.state;
-    const { formatMessage } = this.props.intl;
 
     let t1columns = [];
+    let t1r1c1 = {},
+      t1r1c2 = {},
+      t1r1c3 = {},
+      t1r1c4 = {};
+
     if (
       trans === 'fcis' ||
+      trans === 'mmcc01' ||
+      trans === 'mmcc02' ||
       trans === 'faia' ||
       trans.startsWith('hr_doc_create_') ||
       trans === 'hr_doc_approvers'
     ) {
-      let t1r1c1 = {
+      t1r1c1 = {
         Header: ({ value }) => <b>ID</b>,
         accessor: 'staffId',
         width: 100,
         className: 'clickableItem',
         Cell: obj => (
           <span>
-            <a
-              target="_blank"
-              href={
-                `${LEGACY_URL}/hr/staff/View.xhtml?staffId=` +
-                obj.original.staffId
-              }
-            >
-              <Button>{obj.original.staffId}</Button>
-            </a>
+            <LinkToStaffCardViewID
+              staffId={obj.original.staffId}
+              staffFio={obj.original.fio}
+            />
           </span>
         ),
       };
-      let t1r1c2 = {
-        Header: ({ value }) => <b>{formatMessage(messages.fio)}</b>,
+      t1r1c2 = {
+        Header: ({ value }) => <b>{messages['fio']}</b>,
         width: 300,
         id: 'fio',
         accessor: d => d.fio,
         filterMethod: (filter, rows) =>
-          matchSorter(rows, filter.value, { keys: ['fio'] }),
+          matchSorter(rows, filter.value, {
+            keys: [{ threshold: rankings.CONTAINS, key: 'fio' }],
+          }),
         filterAll: true,
         className: 'clickableItem',
       };
 
-      let t1r1c3 = {
-        Header: ({ value }) => <b>{formatMessage(messages.iinBin)}</b>,
+      t1r1c3 = {
+        Header: ({ value }) => <b>{messages['iinBin']}</b>,
         accessor: 'iinBin',
         width: 150,
         className: 'clickableItem',
@@ -160,6 +164,22 @@ class StaffF4Modal extends PureComponent {
       // t1columns.push(t1r1c4);
     }
 
+    if (trans === 'mmcc01' || trans === 'mmcc02') {
+      t1r1c4 = {
+        Header: ({ value }) => <b>{messages['position']}</b>,
+        id: 'positionName',
+        accessor: d => d.positionName,
+        filterMethod: (filter, rows) =>
+          matchSorter(rows, filter.value, {
+            keys: [{ threshold: rankings.CONTAINS, key: 'positionName' }],
+          }),
+        filterAll: true,
+        className: 'clickableItem',
+      };
+
+      t1columns.push(t1r1c4);
+    }
+
     return (
       <Modal
         open={this.props.open}
@@ -169,7 +189,7 @@ class StaffF4Modal extends PureComponent {
       >
         <Modal.Header>
           <Icon name="filter" size="big" />
-          {formatMessage(messages.staff)}
+          {messages['staff']}
         </Modal.Header>
         <Modal.Content>
           <Table collapsing>
@@ -177,11 +197,11 @@ class StaffF4Modal extends PureComponent {
               <Table.Row>
                 <Table.Cell>
                   <Icon name="folder" />
-                  {formatMessage(messages.bukrs)}
+                  {messages['bukrs']}
                 </Table.Cell>
                 <Table.Cell>
                   <Dropdown
-                    placeholder={formatMessage(messages.bukrs)}
+                    placeholder={messages['bukrs']}
                     selection
                     options={companyOptions}
                     value={bukrsSV}
@@ -195,11 +215,11 @@ class StaffF4Modal extends PureComponent {
                     }
                   />
                 </Table.Cell>
-                <Table.Cell>{formatMessage(messages.fio)}</Table.Cell>
+                <Table.Cell>{messages['fio']}</Table.Cell>
                 <Table.Cell>
                   <Input
                     value={fioSV}
-                    placeholder={formatMessage(messages.fio)}
+                    placeholder={messages['fio']}
                     onChange={(e, { value }) =>
                       this.onInputChange(value, 'fioSV')
                     }
@@ -209,11 +229,11 @@ class StaffF4Modal extends PureComponent {
               <Table.Row>
                 <Table.Cell>
                   <Icon name="browser" />
-                  {formatMessage(messages.brnch)}
+                  {messages['brnch']}
                 </Table.Cell>
                 <Table.Cell>
                   <Dropdown
-                    placeholder={formatMessage(messages.brnch)}
+                    placeholder={messages['brnch']}
                     search
                     selection
                     options={
@@ -226,11 +246,11 @@ class StaffF4Modal extends PureComponent {
                     disabled={brnchDisabledState}
                   />
                 </Table.Cell>
-                <Table.Cell>{formatMessage(messages.iinBin)}</Table.Cell>
+                <Table.Cell>{messages['iinBin']}</Table.Cell>
                 <Table.Cell>
                   <Input
                     value={iinBinSV}
-                    placeholder={formatMessage(messages.iinBin)}
+                    placeholder={messages['iinBin']}
                     onChange={(e, { value }) =>
                       this.onInputChange(value, 'iinBinSV')
                     }
@@ -238,14 +258,18 @@ class StaffF4Modal extends PureComponent {
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
-                <Table.Cell>{formatMessage(messages.dismissed)}</Table.Cell>
+                <Table.Cell>{messages['dismissed']}</Table.Cell>
                 <Table.Cell>
                   <Checkbox
                     checked={unemployed}
                     onChange={(e, { value }) =>
                       this.onInputChange(value, 'unemployed')
                     }
-                    disabled={unemployedDisabledState}
+                    disabled={
+                      unemployedDisabledParent
+                        ? unemployedDisabledParent
+                        : unemployedDisabledState
+                    }
                   />
                 </Table.Cell>
                 <Table.Cell>
@@ -262,7 +286,7 @@ class StaffF4Modal extends PureComponent {
                     disabled={this.state.loading}
                   >
                     <Icon name="search" size="large" />
-                    {formatMessage(messages.search)}
+                    {messages['search']}
                   </Button>
                 </Table.Cell>
                 <Table.Cell />
@@ -278,13 +302,13 @@ class StaffF4Modal extends PureComponent {
             showPagination={true}
             // style={{ height: '400px' }}
             className="-striped -highlight"
-            loadingText={formatMessage(messages.loadingText)}
-            noDataText={formatMessage(messages.noDataText)}
-            previousText={formatMessage(messages.previousText)}
-            nextText={formatMessage(messages.nextText)}
-            rowsText={formatMessage(messages.rowsText)}
-            pageText={formatMessage(messages.pageText)}
-            ofText={formatMessage(messages.ofText)}
+            loadingText={messages['loadingText']}
+            noDataText={messages['noDataText']}
+            previousText={messages['previousText']}
+            nextText={messages['nextText']}
+            rowsText={messages['rowsText']}
+            pageText={messages['pageText']}
+            ofText={messages['ofText']}
             showPageSizeOptions={false}
             getTrProps={(state, rowInfo, column) => {
               return {

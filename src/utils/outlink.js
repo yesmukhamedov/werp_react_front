@@ -33,3 +33,14 @@ export const LinkToStaffCardView = props => {
     </a>
   );
 };
+
+export const LinkToStaffCardViewID = props => {
+  const { staffId, staffFio } = props;
+  const url = `${LEGACY_URL}/hr/staff/View.xhtml?staffId=${staffId}`;
+  return (
+    <a target="_blank" href={url}>
+      {' '}
+      {staffId}{' '}
+    </a>
+  );
+};

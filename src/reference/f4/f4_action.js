@@ -63,6 +63,12 @@ export const F4_CLEAR_HKONT_LIST = 'F4_CLEAR_HKONT_LIST';
 export const F4_FETCH_CONTYPE_LIST = 'F4_FETCH_CONTYPE_LIST';
 export const F4_CLEAR_CONTYPE_LIST = 'F4_CLEAR_CONTYPE_LIST';
 
+export const F4_FETCH_BRANCHES = 'F4_FETCH_BRANCHES';
+export const F4_CLEAR_BRANCHES = 'F4_CLEAR_BRANCHES';
+
+export const F4_FETCH_CUSTOMERS = 'F4_FETCH_CUSTOMERS';
+export const F4_CLEAR_CUSTOMERS = 'F4_CLEAR_CUSTOMERS';
+
 export const F4_FETCH_COMPANY_OPTIONS = 'F4_FETCH_COMPANY_OPTIONS';
 export const F4_FETCH_BRANCH_OPTIONS = 'F4_FETCH_BRANCH_OPTIONS';
 
@@ -84,12 +90,7 @@ export function f4ClearAnyObject(a_const) {
 
 export function f4FetchCompanyOptions() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/companies/all?dto-type=options`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet('/reference/companies/all?dto-type=options')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_COMPANY_OPTIONS,
@@ -105,13 +106,7 @@ export function f4FetchCompanyOptions() {
 
 export function f4FetchBranchOptions(params = {}) {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/branches/all?dto-type=options`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: params,
-      })
+    doGet('/reference/branches/all?dto-type=options')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_BRANCH_OPTIONS,
@@ -155,12 +150,7 @@ export function f4ClearBranchesByBukrs() {
 
 export function f4FetchDepartmentList() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/departments`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet('/reference/departments')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_DEPARTMENT_LIST,
@@ -176,12 +166,7 @@ export function f4FetchDepartmentList() {
 
 export function f4FetchCountryList() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/countries`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet('/reference/countries')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_COUNTRY_LIST,
@@ -196,12 +181,7 @@ export function f4FetchCountryList() {
 
 export function f4FetchStateList() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/states`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet('/reference/states')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_STATE_LIST,
@@ -216,12 +196,7 @@ export function f4FetchStateList() {
 
 export function f4FetchCityList() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/cities`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet('/reference/cities')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_CITY_LIST,
@@ -236,12 +211,7 @@ export function f4FetchCityList() {
 
 export function f4FetchCityregList() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/regions`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet('/reference/regions')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_CITYREG_LIST,
@@ -256,15 +226,7 @@ export function f4FetchCityregList() {
 
 export function f4FetchMatnrList(trans) {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/matnrList`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          trans,
-        },
-      })
+    doGet('/reference/matnrList', { trans })
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_MATNR_LIST,
@@ -286,17 +248,7 @@ export function f4ClearMatnrList() {
 
 export function f4FetchPriceList(trans, bukrs, waers) {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/priceList`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          trans,
-          bukrs,
-          waers,
-        },
-      })
+    doGet('/reference/priceList', { trans, bukrs, waers })
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_MATNR_LIST,
@@ -311,15 +263,7 @@ export function f4FetchPriceList(trans, bukrs, waers) {
 
 export function f4FetchPositionList(trans) {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/positionList`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          trans,
-        },
-      })
+    doGet('/reference/positionList', { trans })
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_POSITION_LIST,
@@ -341,15 +285,7 @@ export function f4ClearPositionList() {
 
 export function f4FetchCurrencyList(trans) {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/currencyList`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          trans,
-        },
-      })
+    doGet('/reference/currencyList', { trans })
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_CURRENCY_LIST,
@@ -371,12 +307,7 @@ export function f4ClearCurrencyList() {
 
 export function f4FetchWerksBranchList() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/werksBranchList`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet('/reference/werksBranchList')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_WERKSBRANCH_LIST,
@@ -398,15 +329,7 @@ export function f4ClearWerksBranchList() {
 
 export function f4FetchBonusTypeList(trans) {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/bonusTypeList`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          trans,
-        },
-      })
+    doGet('/reference/bonusTypeList')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_BONUSTYPE_LIST,
@@ -428,12 +351,7 @@ export function f4ClearBonusTypeList() {
 
 export function f4FetchBusinessAreaList() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/business-areas`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet('/reference/business-areas')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_BUSINESS_AREA_LIST,
@@ -448,12 +366,7 @@ export function f4FetchBusinessAreaList() {
 
 export function f4FetchBusinessAreaList2() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/businessAreas`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet('/reference/businessAreas')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_BUSINESS_AREA_LIST,
@@ -467,12 +380,7 @@ export function f4FetchBusinessAreaList2() {
 }
 export function f4FetchExchangeRateNational() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/exchangeRateNational`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet('/reference/exchangeRateNational')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_EXCHANGERATE_NATIONAL,
@@ -486,12 +394,7 @@ export function f4FetchExchangeRateNational() {
 }
 export function f4FetchExpenceTypes() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/expence-types`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet('/reference/expence-types')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_EXPENSE_TYPES,
@@ -506,12 +409,7 @@ export function f4FetchExpenceTypes() {
 
 export function f4FetchSubCompanies() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/sub-companies`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet('/reference/sub-companies')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_SUB_COMPANIES,
@@ -526,12 +424,7 @@ export function f4FetchSubCompanies() {
 
 export function f4FetchNationalities() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/nationalities`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet('/reference/nationalities')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_NATIONALITIES,
@@ -546,12 +439,7 @@ export function f4FetchNationalities() {
 
 export function f4FetchNationalityOptions() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/nationalities?dto-type=options`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet('/reference/nationalities?dto-type=options')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_NATIONALITY_OPTIONS,
@@ -582,12 +470,7 @@ export function f4FetchAddrTypeOptions() {
 
 export function f4FetchSubCompanyTypes() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/sub-company-types`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet('reference/sub-company-types')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_SUB_COMPANY_TYPES,
@@ -602,12 +485,7 @@ export function f4FetchSubCompanyTypes() {
 
 export function f4FetchLeaveReasonOptions() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/leave-reasons?mode=options`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet('reference/leave-reasons?mode=options')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_LEAVE_REASON_OPTIONS,
@@ -630,20 +508,14 @@ export function f4FetchStaffList(
   stopLoading,
 ) {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/staffList`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          trans,
-          bukrs,
-          brnch,
-          fio,
-          iinBin,
-          unemployed,
-        },
-      })
+    doGet('reference/staffList', {
+      trans,
+      bukrs,
+      brnch,
+      fio,
+      iinBin,
+      unemployed,
+    })
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_STAFF_LIST,
@@ -668,46 +540,32 @@ export function f4ClearStaffList() {
 ///////////////////////////////////////////////////////////////////////
 export function f4FetchCashBankBalanceList(a_bukrs, a_branch, a_callBackFun) {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/cashBankBalance`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          bukrs: a_bukrs,
-          branch: a_branch,
-        },
-      })
-      .then(({ data }) => {
-        a_callBackFun();
-        dispatch({
-          type: F4_FETCH_CASHBANK_BALANCE_LIST,
-          data: data.cashBankBalanceList,
-        });
+    doGet('reference/cashBankBalance', {
+      bukrs: a_bukrs,
+      branch: a_branch,
+    }).then(({ data }) => {
+      a_callBackFun();
+      dispatch({
+        type: F4_FETCH_CASHBANK_BALANCE_LIST,
+        data: data.cashBankBalanceList,
       });
+    });
   };
 }
 
 ///////////////////////////////////////////////////////////////////////
 export function f4FetchHkontList(a_bukrs, a_tcode, a_branch) {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/fetchHkontList`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          bukrs: a_bukrs,
-          branch: a_branch,
-          tcode: a_tcode,
-        },
-      })
-      .then(({ data }) => {
-        dispatch({
-          type: F4_FETCH_HKONT_LIST,
-          data: data.hkontOptions,
-        });
+    doGet('reference/fetchHkontList', {
+      bukrs: a_bukrs,
+      branch: a_branch,
+      tcode: a_tcode,
+    }).then(({ data }) => {
+      dispatch({
+        type: F4_FETCH_HKONT_LIST,
+        data: data.hkontOptions,
       });
+    });
   };
 }
 
@@ -719,9 +577,7 @@ export function f4ClearBranchOptions() {
 }
 
 export function f4FetchConTypeList() {
-  console.log('action ct list');
   return function(dispatch) {
-    console.log('axios ct list');
     doGet('reference/fetchContractTypeList')
       .then(({ data }) => {
         dispatch({
@@ -730,6 +586,38 @@ export function f4FetchConTypeList() {
         });
       })
       .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchBranches(params = {}) {
+  return function(dispatch) {
+    doGet('reference/branches/all')
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_BRANCHES,
+          data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchCustomers(params = {}, setIsLoading) {
+  return function(dispatch) {
+    doGet('reference/FETCH_CUSTOMERS', params)
+      .then(({ data }) => {
+        setIsLoading(false);
+        dispatch({
+          type: F4_FETCH_CUSTOMERS,
+          data,
+        });
+      })
+      .catch(error => {
+        setIsLoading(false);
         handleError(error, dispatch);
       });
   };
