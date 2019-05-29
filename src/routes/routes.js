@@ -737,6 +737,14 @@ const AsyncExitInterviewCreatePage = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncContract = Loadable({
+  loader: () =>
+    import(
+      '../marketing/report/contract' /* webpackChunkName: "ExitInterviewCreatePage" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
@@ -829,6 +837,7 @@ const getComponent = {
   RefDemoPriceList: AsyncRefDemoPriceListPage,
   Eventlog: AsyncEventLog,
   Lplist: AsyncPriceList,
+  Dmsclist: AsyncContract,
 };
 
 const generateRoutes = transactionRoutes => {

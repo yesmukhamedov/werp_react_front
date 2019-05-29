@@ -642,5 +642,9 @@
   "sys_users": "Sistem kullanıcıları",
   "internal_number": "internal number",
   "lst_roles": "List of roles",
-  "event_log": "Olay günlüğü"
+  "event_log": "Olay günlüğü",
+  "contract_lst": "Contract list",
+  "collector": "Collector",
+  "fin_status": "Fin. status",
+  "phys_status": "Phys. status"
 }

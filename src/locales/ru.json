@@ -622,5 +622,9 @@
   "sys_users": "Пользователи системы",
   "internal_number": "внутренний номер",
   "lst_roles": "Список ролей",
-  "event_log": "Журнал событии"
+  "event_log": "Журнал событии",
+  "contract_lst": "Список договоров",
+  "collector": "Взносщик",
+  "fin_status": "Фин. статус",
+  "phys_status": "Физ.статус"
 }

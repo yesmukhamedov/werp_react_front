@@ -16,7 +16,7 @@ import {
   updateRow,
   fetchBrchesByBukrs,
   savePrice,
-} from './pricelistAction';
+} from './../../pricelistAction';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import RenderPrListTable from './renderPrListTable';
 import NewPrice from './newPrice';

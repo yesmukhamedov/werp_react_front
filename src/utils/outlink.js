@@ -44,3 +44,25 @@ export const LinkToStaffCardViewID = props => {
     </a>
   );
 };
+
+export const ContractNumber = props => {
+  const { contract_number } = props;
+  const url = `${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=${contract_number}`;
+  return (
+    <a target="_blank" href={url}>
+      {' '}
+      {contract_number}{' '}
+    </a>
+  );
+};
+
+export const CustomerID = props => {
+  const { customerId, custFio } = props;
+  const url = `${LEGACY_URL}/hr/customer/hrc03.xhtml?customerId=${customerId}`;
+  return (
+    <a target="_blank" href={url}>
+      {' '}
+      {custFio}{' '}
+    </a>
+  );
+};

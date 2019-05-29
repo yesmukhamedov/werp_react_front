@@ -1,16 +1,86 @@
-import { modifyLoader } from '../../../general/loader/loader_action';
+import { modifyLoader } from '../general/loader/loader_action';
 import {
   handleError,
   notify,
-} from '../../../general/notification/notification_action';
+} from '../general/notification/notification_action';
 
-import { doGet, doPost, doPut } from '../../../utils/apiActions';
+import { doGet, doPost, doPut } from '../utils/apiActions';
 
 export const ALL_PRLIST = 'ALL_PRLIST';
 export const ALL_MATNR = 'ALL_MATNR';
 export const UPD_PRLIST = 'UPD_PRLIST';
 export const FETCH_BUKRS_BRANCHES = 'FETCH_BUKRS_BRANCHES';
+export const FETCH_DEALER_SECR = 'FETCH_DEALER_SECR';
 export const NEW_PRICE = 'NEW_PRICE';
+export const CONT_LIST = 'CONT_LIST';
+export const ALL_LAZY_CUST = 'ALL_LAZY_CUST';
+
+/******************************************************************** CONTRACT */
+
+export function fByLazyCustomer(searchForm, page) {
+  console.log('search ', searchForm);
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`marketing/contract/getlazycust?${page}`, searchForm)
+      .then(({ data }) => {
+        console.log('data in act ', data);
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: ALL_LAZY_CUST,
+          lazyitems: data.lazyitems,
+          lazymeta: data.lazymeta,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchDeContr(branchId) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`marketing/contract/getbybranch/` + branchId)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_DEALER_SECR,
+          dealers: data.dealers,
+          demosec: data.demosec,
+          collectors: data.collectors,
+          contstatus: data.contstatus,
+          contlaststate: data.contlaststate,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchAllCont(searchPms) {
+  console.log('searchPms ', searchPms);
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`marketing/contract/list`, searchPms)
+      .then(({ data }) => {
+        console.log(data);
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: CONT_LIST,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+/****************************************************** PRICE LIST */
 
 export function fetchAll(bukrs) {
   return function(dispatch) {
