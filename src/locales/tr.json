@@ -647,5 +647,8 @@
   "collector": "Collector",
   "fin_status": "Fin. status",
   "phys_status": "Phys. status",
-  "LGI_POSTING_TRADE_IN": "Оприходования материалов по Trade In"
+  "LGI_POSTING_TRADE_IN": "Оприходования материалов по Trade In",
+  "sender_whouse": "Склад отправитель",
+  "receiver_whouse": "Склад получатель",
+  "doc_date": "Дата документа"
 }
