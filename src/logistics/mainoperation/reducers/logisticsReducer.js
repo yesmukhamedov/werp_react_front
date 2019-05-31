@@ -5,6 +5,7 @@ import {
   LOG_MATNRS_LOADING,
   LOG_WERKS_REQUEST_ITEM_BLANKED,
   LOG_WERKS_REQUEST_FETCHED,
+  LOG_INVOICES_FETCHED,
 } from '../actions/logisticsActionTypes';
 
 const INITIAL_STATE = {
@@ -13,6 +14,7 @@ const INITIAL_STATE = {
   werksRequestItemModel: {},
   matnrs: [],
   matnrsLoading: false,
+  invoicePage: {},
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -32,6 +34,9 @@ export default function(state = INITIAL_STATE, action) {
 
     case LOG_WERKS_REQUEST_ITEM_BLANKED:
       return { ...state, werksRequestItemModel: action.payload };
+
+    case LOG_INVOICES_FETCHED:
+      return { ...state, invoicePage: action.payload };
 
     default:
       return state;

@@ -611,6 +611,14 @@ const AsyncLogWerksRequestForm = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncLogInvoicesList = Loadable({
+  loader: () =>
+    import(
+      '../logistics/mainoperation/components/InvoiceListPage' /* webpackChunkName: "InvoiceListPage" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncLogWerksRequestView = Loadable({
   loader: () =>
     import(
@@ -921,6 +929,12 @@ const generateRoutes = transactionRoutes => {
         path="/logistics/werks/requests/view/:id"
         exact={true}
         component={AsyncLogWerksRequestView}
+      />
+
+      <Route
+        path="/logistics/invoices/:doctype(postings-trade-in|postings)"
+        exact={true}
+        component={AsyncLogInvoicesList}
       />
 
       {/* dynamically generated URLs  */}

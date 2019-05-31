@@ -10,7 +10,9 @@ import {
   LOG_MATNRS_LOADING,
   LOG_WERKS_REQUEST_ITEM_BLANKED,
   LOG_WERKS_REQUEST_FETCHED,
+  LOG_INVOICES_FETCHED,
 } from './logisticsActionTypes';
+import { doPut, doGet } from '../../../utils/apiActions';
 
 export function fetchWerksRequestsIn(params) {
   return function(dispatch) {
@@ -124,5 +126,29 @@ export function setMatnrListLoading(flag) {
   return {
     type: LOG_MATNRS_LOADING,
     payload: flag,
+  };
+}
+
+export function doAction(docId) {
+  doPut('api/logistics/invoices/do-action/' + docId)
+    .then(({ data }) => {})
+    .catch(e => {});
+}
+
+export function fetchInvoices(params = {}) {
+  return function(dispatch) {
+    dispatch(setMatnrListLoading(true));
+    doGet('logistics/invoices', params)
+      .then(({ data }) => {
+        dispatch(setMatnrListLoading(false));
+        dispatch({
+          type: LOG_INVOICES_FETCHED,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(setMatnrListLoading(false));
+        handleError(error, dispatch);
+      });
   };
 }
