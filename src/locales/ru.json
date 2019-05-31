@@ -626,5 +626,6 @@
   "contract_lst": "Список договоров",
   "collector": "Взносщик",
   "fin_status": "Фин. статус",
-  "phys_status": "Физ.статус"
+  "phys_status": "Физ.статус",
+  "LGI_POSTING_TRADE_IN": "Оприходования материалов по Trade In"
 }

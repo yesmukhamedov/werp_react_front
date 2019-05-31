@@ -646,5 +646,6 @@
   "contract_lst": "Contract list",
   "collector": "Collector",
   "fin_status": "Fin. status",
-  "phys_status": "Phys. status"
+  "phys_status": "Phys. status",
+  "LGI_POSTING_TRADE_IN": "Оприходования материалов по Trade In"
 }
