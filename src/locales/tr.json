@@ -650,5 +650,7 @@
   "LGI_POSTING_TRADE_IN": "Оприходования материалов по Trade In",
   "sender_whouse": "Склад отправитель",
   "receiver_whouse": "Склад получатель",
-  "doc_date": "Дата документа"
+  "doc_date": "Дата документа",
+  "goods_code": "Код товара",
+  "serial_number": "Серийный номер"
 }
