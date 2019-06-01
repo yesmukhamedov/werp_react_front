@@ -648,9 +648,10 @@
   "fin_status": "Fin. status",
   "phys_status": "Phys. status",
   "LGI_POSTING_TRADE_IN": "Оприходования материалов по Trade In",
-  "sender_whouse": "Склад отправитель",
-  "receiver_whouse": "Склад получатель",
-  "doc_date": "Дата документа",
-  "goods_code": "Код товара",
-  "serial_number": "Серийный номер"
+  "sender_whouse": "Gonderici deposu",
+  "receiver_whouse": "Alıcı Depo",
+  "doc_date": "Document Date",
+  "goods_code": "Code of goods",
+  "serial_number": "Serial number",
+  "kind": "tur"
 }

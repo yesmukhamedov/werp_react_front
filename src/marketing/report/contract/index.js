@@ -7,13 +7,15 @@ import {
   fetchDeContr,
   fByLazyCustomer,
 } from '../../pricelistAction';
-import { Container, Segment, Tab, Button } from 'semantic-ui-react';
+import { Container, Segment, Tab, Button, Menu } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
 import DefSearch from './defSearch';
 import List from './list';
 import SearchByContDet from './searchByContDet';
 import SearchOpt from './searchOpt';
 import SearchByNum from './searchByNum';
+import { messages } from '../../../locales/defineMessages';
+import { excelDownload } from '../../../utils/helpers';
 
 class ListContracts extends Component {
   constructor() {
@@ -21,8 +23,10 @@ class ListContracts extends Component {
     this.state = {
       searchPms: {},
       row: '',
+      activeIndex: 1,
     };
     this.selectCustRow = this.selectCustRow.bind(this);
+    this.exportExcel = this.exportExcel.bind(this);
   }
 
   componentWillMount() {
@@ -91,9 +95,36 @@ class ListContracts extends Component {
     this.props.fetchAllCont(this.state.searchPms);
   }
 
+  exportExcel() {
+    const { formatMessage } = this.props.intl;
+    let excelHeaders = [];
+    excelHeaders.push(formatMessage(messages.branch));
+    excelHeaders.push(formatMessage(messages.contractNumber));
+    excelHeaders.push(formatMessage(messages.contractDate));
+    excelHeaders.push('Ф.И.О. клиента');
+    excelHeaders.push(formatMessage(messages.snNum));
+    excelHeaders.push(formatMessage(messages.status));
+    excelHeaders.push('Физ.статус');
+    excelHeaders.push(formatMessage(messages.dealer));
+    excelHeaders.push('Взносщик');
+    excelHeaders.push('Вид');
+    excelHeaders.push(formatMessage(messages.price));
+    excelHeaders.push(formatMessage(messages.paid));
+    excelHeaders.push(formatMessage(messages.remainder));
+    excelHeaders.push(formatMessage(messages.extraInfo));
+    excelDownload(
+      '/api/marketing/contract/list/downloadExcel',
+      'mcontrrep.xls',
+      'outputTable',
+      this.props.contlist,
+      excelHeaders,
+    );
+  }
+
   render() {
     const { messages } = this.props.intl;
-
+    const { activeIndex } = this.state;
+    const { contlist } = this.props;
     return (
       <div>
         <Container
@@ -126,7 +157,17 @@ class ListContracts extends Component {
               {messages['search']}
             </Button>
           </Segment>
-
+          <Segment className={activeIndex === 1 ? 'show' : 'hide'}>
+            <Menu stackable size="small">
+              <Menu.Item>
+                <img
+                  className="clickableItem"
+                  src="/assets/img/xlsx_export_icon.png"
+                  onClick={() => this.exportExcel()}
+                />
+              </Menu.Item>
+            </Menu>
+          </Segment>
           <List messages={messages} contlist={this.props.contlist} />
         </Container>
       </div>

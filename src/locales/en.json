@@ -649,9 +649,10 @@
   "fin_status": "Fin. status",
   "phys_status": "Phys. status",
   "LGI_POSTING_TRADE_IN": "Posting Trade In",
-  "sender_whouse": "Склад отправитель",
-  "receiver_whouse": "Склад получатель",
-  "doc_date": "Дата документа",
+  "sender_whouse": "Warehouse mailer",
+  "receiver_whouse": "Recipient Warehouse",
+  "doc_date": "Document Date",
   "goods_code": "Code of goods",
-  "serial_number": "Serial number"
+  "serial_number": "Serial number",
+  "kind": "Kind"
 }

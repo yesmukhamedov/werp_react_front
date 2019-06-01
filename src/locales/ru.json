@@ -632,5 +632,6 @@
   "receiver_whouse": "Склад получатель",
   "doc_date": "Дата документа",
   "goods_code": "Код товара",
-  "serial_number": "Серийный номер"
+  "serial_number": "Серийный номер",
+  "kind": "Вид"
 }

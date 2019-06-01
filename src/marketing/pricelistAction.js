@@ -18,12 +18,10 @@ export const ALL_LAZY_CUST = 'ALL_LAZY_CUST';
 /******************************************************************** CONTRACT */
 
 export function fByLazyCustomer(searchForm, page) {
-  console.log('search ', searchForm);
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`marketing/contract/getlazycust?${page}`, searchForm)
       .then(({ data }) => {
-        console.log('data in act ', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: ALL_LAZY_CUST,
@@ -61,12 +59,10 @@ export function fetchDeContr(branchId) {
 }
 
 export function fetchAllCont(searchPms) {
-  console.log('searchPms ', searchPms);
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`marketing/contract/list`, searchPms)
       .then(({ data }) => {
-        console.log(data);
         dispatch(modifyLoader(false));
         dispatch({
           type: CONT_LIST,
