@@ -17,7 +17,11 @@ import {
 import { modifyLoader } from '../../../../general/loader/loader_action';
 import OutputErrors from '../../../../general/error/outputErrors';
 import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal';
-import { LinkToStaffCardView } from '../../../../utils/outlink';
+import CustomerF4Modal from '../../../../reference/f4/Customer/customerF4WithCreationPage';
+import {
+  LinkToStaffCardView,
+  LinkToCustomerHrc03,
+} from '../../../../utils/outlink';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
@@ -107,6 +111,7 @@ const Mmcc01 = props => {
   const [contractTypeOpts, setContractTypeOpts] = useState([]);
   const [staffF4ModalOpen, setStaffF4ModalOpen] = useState(false);
   const [staffF4ModalPosition, setStaffF4ModalPosition] = useState('');
+  const [customerF4ModalOpen, setCustomerF4ModalOpen] = useState(false);
 
   const language = localStorage.getItem('language');
 
@@ -227,6 +232,12 @@ const Mmcc01 = props => {
     } else if (stateFieldName === 'collectorRemove') {
       wa.collector = '';
       wa.collectorName = '';
+    } else if (stateFieldName === 'customer') {
+      wa.customerId = value.id;
+      wa.customerName = value.fullFIO;
+    } else if (stateFieldName === 'customerRemove') {
+      wa.customerId = '';
+      wa.customerName = '';
     } else wa[stateFieldName] = value;
     setContract(wa);
   }
@@ -244,6 +255,7 @@ const Mmcc01 = props => {
       <Header as="h2" block>
         {' New Contract '}
       </Header>
+
       <StaffF4Modal
         open={staffF4ModalOpen}
         closeModal={bool => setStaffF4ModalOpen(bool)}
@@ -255,6 +267,12 @@ const Mmcc01 = props => {
         companyOptions={companyOptions}
         bukrsDisabledParent
         unemployedDisabledParent
+      />
+
+      <CustomerF4Modal
+        open={customerF4ModalOpen}
+        onCloseCustomerF4={bool => setCustomerF4ModalOpen(bool)}
+        onCustomerSelect={item => onInputChange(item, 'customer')}
       />
       <Grid>
         <Grid.Row>
@@ -373,7 +391,7 @@ const Mmcc01 = props => {
                       dropdownMode="select" // timezone="UTC"
                       selected={
                         contract.contractDate
-                          ? moment(contract.contractDate, 'DD.MM.YYYY')
+                          ? moment(contract.contractDate)
                           : ''
                       }
                       locale={language}
@@ -390,19 +408,24 @@ const Mmcc01 = props => {
                 <Table.Row>
                   <Table.Cell>{'Customer'}</Table.Cell>
                   <Table.Cell>
-                    <Input value={contract.customerName} readOnly />
+                    <span>
+                      <LinkToCustomerHrc03
+                        customerId={contract.customerId}
+                        customerName={contract.customerName}
+                      />
+                    </span>
                     <Icon
                       name="clone"
                       size="large"
                       className="clickableIcon"
-                      // onClick={event => this.editPrice(idx)}
+                      onClick={() => setCustomerF4ModalOpen(true)}
                     />
                     <Icon
                       name="remove"
                       size="large"
                       className="clickableIcon"
                       color="red"
-                      // onClick={event => this.removePrice(idx, wa)}
+                      onClick={event => onInputChange('', 'customerRemove')}
                     />
                   </Table.Cell>
                 </Table.Row>
@@ -423,7 +446,6 @@ const Mmcc01 = props => {
                         setStaffF4ModalOpen(true);
                         setStaffF4ModalPosition('demoSc');
                       }}
-                      // onClick={event => this.editPrice(idx)}
                     />
                     <Icon
                       name="remove"

@@ -15,26 +15,29 @@ export function notify(a_notify_type, a_notify_text, a_notify_header) {
 export function handleError(error, dispatch) {
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
+
   if (error.response) {
     // console.log(error);
     if (error.response.status && error.response.status === 403) {
-      // blog post has been created, navigate the user to the index
-      // We navigate by calling this.context.router.push with the new path to navigate to
-      // this.context.router.push('/forbidden');
       browserHistory.push('/forbidden');
     } else if (error.response.status && error.response.status === 500) {
-      // blog post has been created, navigate the user to the index
-      // We navigate by calling this.context.router.push with the new path to navigate to
-      // this.context.router.push('/forbidden');
       browserHistory.push('/forbidden');
-    }
-    dispatch(
-      notify(
-        'error',
-        error.response.data.message,
-        errorTable[`132${language}`],
-      ),
-    );
+    } else if (error.response.status && error.response.status === 400) {
+      dispatch(
+        notify(
+          'error',
+          errorTable[`153${language}`],
+          errorTable[`132${language}`],
+        ),
+      );
+    } else
+      dispatch(
+        notify(
+          'error',
+          error.response.data.message,
+          errorTable[`132${language}`],
+        ),
+      );
   } else {
     // const name = getNestedObject(error, ['error', 'response']);
 

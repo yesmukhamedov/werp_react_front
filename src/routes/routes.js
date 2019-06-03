@@ -511,6 +511,30 @@ const AsyncHrrsb = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncHrc01 = Loadable({
+  loader: () =>
+    import(
+      '../hr/mainoperation/customer/hrc01' /* webpackChunkName: "hrc01" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncHrc02 = Loadable({
+  loader: () =>
+    import(
+      '../hr/mainoperation/customer/hrc02' /* webpackChunkName: "hrc02" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncHrc03 = Loadable({
+  loader: () =>
+    import(
+      '../hr/mainoperation/customer/hrc03' /* webpackChunkName: "hrc03" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncMmcc01 = Loadable({
   loader: () =>
     import(
@@ -869,6 +893,9 @@ const generateRoutes = transactionRoutes => {
       <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
       <Route path="/hr/report/hrrsb" component={AsyncHrrsb} />
+      <Route path="/hr/mainoperation/customer/hrc01" component={AsyncHrc01} />
+      <Route path="/hr/mainoperation/customer/hrc02" component={AsyncHrc02} />
+      <Route path="/hr/mainoperation/customer/hrc03" component={AsyncHrc03} />
       <Route
         path="/marketing/mainoperation/contract/mmcc01"
         component={AsyncMmcc01}
