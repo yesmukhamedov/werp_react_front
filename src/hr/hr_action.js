@@ -12,6 +12,9 @@ export const CLEAR_DYNOBJ_HR = 'CLEAR_DYNOBJ_HR';
 export const POST_NEW_CUSTOMER = 'POST_NEW_CUSTOMER';
 export const UPDATE_CUSTOMER = 'UPDATE_CUSTOMER';
 
+const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+const language = localStorage.getItem('language');
+
 export function changeDynObjHr(a_obj) {
   const obj = {
     type: CHANGE_DYNOBJ_HR,
@@ -46,8 +49,6 @@ export function fetchDynObjHr(url, params) {
 }
 
 export function saveHrc01(url, body, params, setIsLoading, clearCustomer) {
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-  const language = localStorage.getItem('language');
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doPost(url, body, { ...params })
@@ -76,8 +77,6 @@ export function saveHrc01(url, body, params, setIsLoading, clearCustomer) {
 }
 
 export function saveHrc02(url, body, params, setIsLoading) {
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-  const language = localStorage.getItem('language');
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doPost(url, body, { ...params })

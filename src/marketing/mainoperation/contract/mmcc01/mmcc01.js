@@ -13,11 +13,13 @@ import {
   Dropdown,
   Input,
   Button,
+  Label,
 } from 'semantic-ui-react';
 import { modifyLoader } from '../../../../general/loader/loader_action';
 import OutputErrors from '../../../../general/error/outputErrors';
 import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal';
 import CustomerF4Modal from '../../../../reference/f4/Customer/customerF4WithCreationPage';
+import AddressF4Modal from '../../../../reference/f4/address/addressF4WithCreationPage';
 import {
   LinkToStaffCardView,
   LinkToCustomerHrc03,
@@ -112,6 +114,11 @@ const Mmcc01 = props => {
   const [staffF4ModalOpen, setStaffF4ModalOpen] = useState(false);
   const [staffF4ModalPosition, setStaffF4ModalPosition] = useState('');
   const [customerF4ModalOpen, setCustomerF4ModalOpen] = useState(false);
+  const [addrHome, setAddrHome] = useState({});
+  const [addrWork, setAddrWork] = useState({});
+  const [addrService, setAddrService] = useState({});
+  const [addressF4ModalOpen, setAddressF4ModalOpen] = useState(false);
+  const [addressF4ModalType, setAddressF4ModalType] = useState('');
 
   const language = localStorage.getItem('language');
 
@@ -238,6 +245,32 @@ const Mmcc01 = props => {
     } else if (stateFieldName === 'customerRemove') {
       wa.customerId = '';
       wa.customerName = '';
+
+      //removing customer addresses
+      wa.addrHomeId = '';
+      setAddrHome({});
+      wa.addrWorkId = '';
+      setAddrWork({});
+      wa.addrServiceId = '';
+      setAddrService({});
+    } else if (stateFieldName === 'addrHomeId') {
+      wa.addrHomeId = value.addr_id;
+      setAddrHome(value);
+    } else if (stateFieldName === 'addrHomeIdRemove') {
+      wa.addrHomeId = '';
+      setAddrHome({});
+    } else if (stateFieldName === 'addrWorkId') {
+      wa.addrWorkId = value.addr_id;
+      setAddrWork(value);
+    } else if (stateFieldName === 'addrWorkIdRemove') {
+      wa.addrWorkId = '';
+      setAddrWork({});
+    } else if (stateFieldName === 'addrServiceId') {
+      wa.addrServiceId = value.addr_id;
+      setAddrService(value);
+    } else if (stateFieldName === 'addrServiceIdRemove') {
+      wa.addrServiceId = '';
+      setAddrService({});
     } else wa[stateFieldName] = value;
     setContract(wa);
   }
@@ -274,6 +307,15 @@ const Mmcc01 = props => {
         onCloseCustomerF4={bool => setCustomerF4ModalOpen(bool)}
         onCustomerSelect={item => onInputChange(item, 'customer')}
       />
+      <AddressF4Modal
+        open={addressF4ModalOpen}
+        customerId={contract.customerId}
+        customerName={contract.customerName}
+        onCloseAddressF4={bool => setAddressF4ModalOpen(bool)}
+        onAddressSelect={item => onInputChange(item, addressF4ModalType)}
+      />
+
+      {/* <Rfadd01 customerId={contract.customerId} customerName={contract.customerName}/> */}
       <Grid>
         <Grid.Row>
           <Grid.Column mobile={16} tablet={16} computer={16}>
@@ -519,12 +561,176 @@ const Mmcc01 = props => {
               </Table.Body>
             </Table>
           </Grid.Column>
-          {/* <Grid.Column mobile={16} tablet={8} computer={12}>
-            <Segment>
+          <Grid.Column mobile={16} tablet={8} computer={12}>
+            <Segment padded size="small">
+              <Label color="orange" ribbon>
+                {messages['contactInfo']}
+              </Label>
+              <Segment padded size="small">
+                <Label color="blue" ribbon>
+                  {messages['addressHome']}
+                </Label>
+                <Table collapsing className="borderLess">
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell>{messages['address']}</Table.Cell>
+                      <Table.Cell>
+                        <span>{addrHome.address}</span>
+                        <Icon
+                          name="clone"
+                          size="large"
+                          className="clickableIcon"
+                          onClick={() => {
+                            setAddressF4ModalOpen(true);
+                            setAddressF4ModalType('addrHomeId');
+                          }}
+                        />
+                        <Icon
+                          name="remove"
+                          size="large"
+                          className="clickableIcon"
+                          color="red"
+                          onClick={event =>
+                            onInputChange('remove', 'addrHomeIdRemove')
+                          }
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>{messages['telDom']}</Table.Cell>
+                      <Table.Cell>
+                        <span>{addrHome.telDom}</span>
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>{messages['telMob1']}</Table.Cell>
+                      <Table.Cell>
+                        <span>{addrHome.telMob1}</span>
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>{messages['telMob2']}</Table.Cell>
+                      <Table.Cell>
+                        <span>{addrHome.telMob2}</span>
+                      </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+              </Segment>
+              <Segment padded size="small">
+                <Label color="blue" ribbon>
+                  {messages['addressWork']}
+                </Label>
+                <Table collapsing className="borderLess">
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell>{messages['address']}</Table.Cell>
+                      <Table.Cell>
+                        <span>{addrWork.address}</span>
+                        <Icon
+                          name="clone"
+                          size="large"
+                          className="clickableIcon"
+                          onClick={() => {
+                            setAddressF4ModalOpen(true);
+                            setAddressF4ModalType('addrWorkId');
+                          }}
+                        />
+                        <Icon
+                          name="remove"
+                          size="large"
+                          className="clickableIcon"
+                          color="red"
+                          onClick={event =>
+                            onInputChange('remove', 'addrWorkIdRemove')
+                          }
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>{messages['telDom']}</Table.Cell>
+                      <Table.Cell>
+                        <span>{addrWork.telDom}</span>
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>{messages['telMob1']}</Table.Cell>
+                      <Table.Cell>
+                        <span>{addrWork.telMob1}</span>
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>{messages['telMob2']}</Table.Cell>
+                      <Table.Cell>
+                        <span>{addrWork.telMob2}</span>
+                      </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+              </Segment>
+              <Segment padded size="small">
+                <Label color="blue" ribbon>
+                  {messages['addressService']}
+                </Label>
+                <Table collapsing className="borderLess">
+                  <Table.Body>
+                    <Table.Row>
+                      <Table.Cell>{messages['address']}</Table.Cell>
+                      <Table.Cell>
+                        <span>{addrService.address}</span>
+                        <Icon
+                          name="clone"
+                          size="large"
+                          className="clickableIcon"
+                          onClick={() => {
+                            setAddressF4ModalOpen(true);
+                            setAddressF4ModalType('addrServiceId');
+                          }}
+                        />
+                        <Icon
+                          name="remove"
+                          size="large"
+                          className="clickableIcon"
+                          color="red"
+                          onClick={event =>
+                            onInputChange('remove', 'addrServiceIdRemove')
+                          }
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>{messages['telDom']}</Table.Cell>
+                      <Table.Cell>
+                        <span>{addrService.telDom}</span>
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>{messages['telMob1']}</Table.Cell>
+                      <Table.Cell>
+                        <span>{addrService.telMob1}</span>
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>{messages['telMob2']}</Table.Cell>
+                      <Table.Cell>
+                        <span>{addrService.telMob2}</span>
+                      </Table.Cell>
+                    </Table.Row>
+                  </Table.Body>
+                </Table>
+              </Segment>
+            </Segment>
+
+            {/* const [addrHome, setAddrHome] = useState({});
+  const [addrWork, setAddrWork] = useState({});
+  const [addrService, setAddrService] = useState({});
+  const [addressF4ModalOpen, setAddressF4ModalOpen] = useState(false);
+  const [addressF4ModalType, setAddressF4ModalType] = useState(''); */}
+            {/* <Segment>
                <OutputErrors errors={this.state.errors} /> 
               Detail
-            </Segment>
-          </Grid.Column> */}
+            </Segment> */}
+          </Grid.Column>
         </Grid.Row>
       </Grid>
     </Container>

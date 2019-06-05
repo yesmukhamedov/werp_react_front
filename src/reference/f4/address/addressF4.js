@@ -2,15 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Modal, Icon } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
-import CustomerSearchPage from './customerSearchPage';
+import AddressSearchPage from './addressSearchPage';
 
-const CustomerF4 = props => {
+const AddressF4 = props => {
   const {
     intl: { messages },
   } = props;
 
   function close() {
-    props.onCloseCustomerF4(false);
+    props.onCloseAddressF4(false);
   }
 
   return (
@@ -22,11 +22,12 @@ const CustomerF4 = props => {
     >
       <Modal.Header>
         <Icon name="filter" size="big" />
-        {messages['customer']}
+        {messages['address']}
       </Modal.Header>
       <Modal.Content>
-        <CustomerSearchPage
-          onCustomerSelect={props.onCustomerSelect}
+        <AddressSearchPage
+          onAddressSelect={props.onAddressSelect}
+          customerId={props.customerId}
           close={() => close()}
         />
       </Modal.Content>
@@ -41,4 +42,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {},
-)(injectIntl(CustomerF4));
+)(injectIntl(AddressF4));

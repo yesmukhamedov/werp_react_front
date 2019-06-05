@@ -14,7 +14,7 @@ import {
   f4FetchCustomers,
 } from '../f4_action';
 
-const CustomerF4Page = props => {
+const CustomerSearchPage = props => {
   const emptyCustomerSearchTerm = {
     fiz_yur: 2,
     iin_bin: '',
@@ -44,7 +44,7 @@ const CustomerF4Page = props => {
 
   //componentDidMount
   useEffect(() => {
-    props.f4FetchCountryList();
+    if (!countries || countries.length === 0) props.f4FetchCountryList();
     //unmount
     return () => {
       props.f4ClearAnyObject('F4_CLEAR_CUSTOMERS');
@@ -389,4 +389,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   { f4FetchCountryList, f4ClearAnyObject, f4FetchCustomers },
-)(injectIntl(CustomerF4Page));
+)(injectIntl(CustomerSearchPage));

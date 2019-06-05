@@ -543,6 +543,18 @@ const AsyncMmcc01 = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncRfadd01 = Loadable({
+  loader: () =>
+    import('../reference/f4/address/rfadd01' /* webpackChunkName: "rfadd01" */),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncRfadd02 = Loadable({
+  loader: () =>
+    import('../reference/f4/address/rfadd02' /* webpackChunkName: "rfadd02" */),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncHrRecruitmentPage = Loadable({
   loader: () =>
     import(
@@ -896,6 +908,8 @@ const generateRoutes = transactionRoutes => {
       <Route path="/hr/mainoperation/customer/hrc01" component={AsyncHrc01} />
       <Route path="/hr/mainoperation/customer/hrc02" component={AsyncHrc02} />
       <Route path="/hr/mainoperation/customer/hrc03" component={AsyncHrc03} />
+      <Route path="/reference/f4/address/rfadd01" component={AsyncRfadd01} />
+      <Route path="/reference/f4/address/rfadd02" component={AsyncRfadd02} />
       <Route
         path="/marketing/mainoperation/contract/mmcc01"
         component={AsyncMmcc01}

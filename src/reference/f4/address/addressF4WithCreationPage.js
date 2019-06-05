@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Modal, Icon, Tab } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
-import CustomerSearchPage from './customerSearchPage';
-import Hrc01 from '../../../hr/mainoperation/customer/hrc01';
+import AddressSearchPage from './addressSearchPage';
+import Rfadd01 from './rfadd01';
 
-const CustomerF4WithCreationPage = props => {
+const AddressF4WithCreationPage = props => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const handleTabChange = (e, { activeIndex }) => setActiveIndex(activeIndex);
   const {
     intl: { messages },
   } = props;
 
   function close() {
-    props.onCloseCustomerF4(false);
+    props.onCloseAddressF4(false);
   }
 
   const panes = [
@@ -20,8 +21,9 @@ const CustomerF4WithCreationPage = props => {
       menuItem: { key: 'search', icon: 'users', content: messages['search'] },
       render: () => (
         <Tab.Pane>
-          <CustomerSearchPage
-            onCustomerSelect={props.onCustomerSelect}
+          <AddressSearchPage
+            onAddressSelect={props.onAddressSelect}
+            customerId={props.customerId}
             close={() => close()}
           />
         </Tab.Pane>
@@ -31,13 +33,14 @@ const CustomerF4WithCreationPage = props => {
       menuItem: { key: 'create', icon: 'edit', content: messages['create'] },
       render: () => (
         <Tab.Pane>
-          <Hrc01 />
+          <Rfadd01
+            customerId={props.customerId}
+            customerName={props.customerName}
+          />
         </Tab.Pane>
       ),
     },
   ];
-
-  const handleTabChange = (e, { activeIndex }) => setActiveIndex(activeIndex);
 
   return (
     <Modal
@@ -48,7 +51,7 @@ const CustomerF4WithCreationPage = props => {
     >
       <Modal.Header>
         <Icon name="filter" size="big" />
-        {messages['customer']}
+        {messages['address']}
       </Modal.Header>
       <Modal.Content>
         <Tab
@@ -69,4 +72,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {},
-)(injectIntl(CustomerF4WithCreationPage));
+)(injectIntl(AddressF4WithCreationPage));

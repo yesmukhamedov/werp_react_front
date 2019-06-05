@@ -48,6 +48,8 @@ import {
   F4_CLEAR_BRANCHES,
   F4_FETCH_CUSTOMERS,
   F4_CLEAR_CUSTOMERS,
+  F4_FETCH_ADDRESSES,
+  F4_CLEAR_ADDRESSES,
 } from './f4_action';
 
 const INITIAL_STATE = {
@@ -78,6 +80,7 @@ const INITIAL_STATE = {
   addressTypeOptions: [],
   contractTypeList: [],
   branches: [],
+  addresses: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -226,6 +229,12 @@ export default function(state = INITIAL_STATE, action) {
 
     case F4_CLEAR_CUSTOMERS:
       return { ...state, customers: [] };
+
+    case F4_FETCH_ADDRESSES:
+      return { ...state, addresses: action.data };
+
+    case F4_CLEAR_ADDRESSES:
+      return { ...state, addresses: [] };
 
     default:
       return state;

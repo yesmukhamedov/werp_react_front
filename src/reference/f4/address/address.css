@@ -1,0 +1,12 @@
+.reqTxt {
+  color: red;
+}
+
+.reqOneTxt {
+  color: #4183c4;
+}
+
+.infoTxt.reqOneTxt,
+.infoTxt.reqTxt {
+  font-size: 11px;
+}

@@ -1,7 +1,11 @@
 import axios from 'axios';
 import { ROOT_URL } from '../../utils/constants';
-import { handleError } from '../../general/notification/notification_action';
-import { doGet } from '../../utils/apiActions';
+import {
+  handleError,
+  notify,
+} from '../../general/notification/notification_action';
+import { doGet, doPost } from '../../utils/apiActions';
+import { modifyLoader } from '../../general/loader/loader_action';
 
 export const F4_FETCH_MATNR_LIST = 'F4_FETCH_MATNR_LIST';
 export const F4_CLEAR_MATNR_LIST = 'F4_CLEAR_MATNR_LIST';
@@ -69,6 +73,12 @@ export const F4_CLEAR_BRANCHES = 'F4_CLEAR_BRANCHES';
 export const F4_FETCH_CUSTOMERS = 'F4_FETCH_CUSTOMERS';
 export const F4_CLEAR_CUSTOMERS = 'F4_CLEAR_CUSTOMERS';
 
+export const F4_FETCH_ADDRESSES = 'F4_FETCH_ADDRESSES';
+export const F4_CLEAR_ADDRESSES = 'F4_CLEAR_ADDRESSES';
+
+export const POST_NEW_ADDRESS = 'POST_NEW_ADDRESS';
+export const UPDATE_ADDRESS = 'UPDATE_ADDRESS';
+
 export const F4_FETCH_COMPANY_OPTIONS = 'F4_FETCH_COMPANY_OPTIONS';
 export const F4_FETCH_BRANCH_OPTIONS = 'F4_FETCH_BRANCH_OPTIONS';
 
@@ -80,6 +90,9 @@ export const F4_CLEAR_NATIONALITIES = 'F4_CLEAR_NATIONALITIES';
 export const F4_FETCH_NATIONALITY_OPTIONS = 'F4_FETCH_NATIONALITY_OPTIONS';
 
 export const F4_FETCH_ADDR_TYPE_OPTIONS = 'F4_FETCH_ADDR_TYPE_OPTIONS';
+
+const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+const language = localStorage.getItem('language');
 
 export function f4ClearAnyObject(a_const) {
   const obj = {
@@ -619,6 +632,76 @@ export function f4FetchCustomers(params = {}, setIsLoading) {
       .catch(error => {
         setIsLoading(false);
         handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchAddresses(params = {}) {
+  return function(dispatch) {
+    doGet('reference/address/FETCH_ADDRESSES', params)
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_ADDRESSES,
+          data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function saveRfadd01(url, body, params, setIsLoading, clearAddress) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost(url, body, { ...params })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        setIsLoading(false);
+        clearAddress();
+        dispatch({
+          type: POST_NEW_ADDRESS,
+          data,
+        });
+        dispatch(
+          notify(
+            'success',
+            errorTable[`104${language}`],
+            errorTable[`101${language}`],
+          ),
+        );
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+        dispatch(modifyLoader(false));
+        setIsLoading(false);
+      });
+  };
+}
+
+export function saveRfadd02(url, body, params, setIsLoading) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost(url, body, { ...params })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        setIsLoading(false);
+        dispatch({
+          type: UPDATE_ADDRESS,
+          data,
+        });
+        dispatch(
+          notify(
+            'success',
+            errorTable[`104${language}`],
+            errorTable[`101${language}`],
+          ),
+        );
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+        dispatch(modifyLoader(false));
+        setIsLoading(false);
       });
   };
 }
