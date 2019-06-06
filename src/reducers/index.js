@@ -43,7 +43,7 @@ import logisticsReducer from '../logistics/mainoperation/reducers/logisticsReduc
 import aesReducer from '../aes/aesReducer';
 import hrPosReducer from '../hr/reference/position/positionReducer';
 import menuReducer from '../dit/menu/menuReducer';
-import markprList from '../marketing/pricelistReducer';
+import markprList from '../marketing/marketingReducer';
 import hrReducer from '../hr/hr_reducer';
 import callReducer from '../crm/mainoperation/call/reducers/callReducer';
 

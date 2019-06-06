@@ -1,13 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Grid,
-  Dropdown,
-  Button,
-  Icon,
-  Label,
-  Input,
-  Form,
-} from 'semantic-ui-react';
+import { Grid, Input, Form } from 'semantic-ui-react';
 
 class SearchByNum extends Component {
   constructor(props) {

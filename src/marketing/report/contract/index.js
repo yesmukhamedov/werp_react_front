@@ -6,7 +6,7 @@ import {
   fetchAllCont,
   fetchDeContr,
   fByLazyCustomer,
-} from '../../pricelistAction';
+} from '../../marketingAction';
 import { Container, Segment, Tab, Button, Menu } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
 import DefSearch from './defSearch';

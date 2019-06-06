@@ -7,7 +7,7 @@ import {
   CONT_LIST,
   FETCH_DEALER_SECR,
   ALL_LAZY_CUST,
-} from './pricelistAction';
+} from './marketingAction';
 
 const INITIAL_STATE = {
   items: [],
