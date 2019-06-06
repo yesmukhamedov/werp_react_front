@@ -751,8 +751,7 @@ const AsyncMenu = Loadable({
 });
 
 const AsyncUsers = Loadable({
-  loader: () =>
-    import('../dit/dituserlist' /* webpackChunkName: dituserlist */),
+  loader: () => import('../dit/duserlist' /* webpackChunkName: sysUsers */),
   loading: () => <LoadingPage />,
 });
 
