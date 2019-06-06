@@ -224,15 +224,15 @@ function mapStateToProps(state) {
   return {
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
-    branchOptions: state.markprList.bukrsBranches,
-    contlist: state.markprList.contlist,
-    dealers: state.markprList.dealers,
-    demosec: state.markprList.demosec,
-    collectors: state.markprList.collectors,
-    lazyitems: state.markprList.lazyitems,
-    lazymeta: state.markprList.lazymeta,
-    contstatus: state.markprList.contstatus,
-    contlaststate: state.markprList.contlaststate,
+    branchOptions: state.markReducer.bukrsBranches,
+    contlist: state.markReducer.contlist,
+    dealers: state.markReducer.dealers,
+    demosec: state.markReducer.demosec,
+    collectors: state.markReducer.collectors,
+    lazyitems: state.markReducer.lazyitems,
+    lazymeta: state.markReducer.lazymeta,
+    contstatus: state.markReducer.contstatus,
+    contlaststate: state.markReducer.contlaststate,
   };
 }
 

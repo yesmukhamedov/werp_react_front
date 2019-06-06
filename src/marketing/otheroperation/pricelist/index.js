@@ -212,10 +212,10 @@ function mapStateToProps(state) {
   return {
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
-    branchOptions: state.markprList.bukrsBranches,
-    items: state.markprList.items,
-    totalRows: state.markprList.totalRows,
-    matrn: state.markprList.matrn,
+    branchOptions: state.markReducer.bukrsBranches,
+    items: state.markReducer.items,
+    totalRows: state.markReducer.totalRows,
+    matrn: state.markReducer.matrn,
   };
 }
 
