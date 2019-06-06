@@ -27,12 +27,16 @@ import {
   WERKS_REQUEST_STATUS_NEW,
   WERKS_REQUEST_STATUS_CLOSED,
   Doctype,
+  getUriByDoctype,
+  getDoctypeByUri,
 } from '../../logUtil';
 import { injectIntl } from 'react-intl';
+
 require('moment/locale/ru');
 
 const TYPE_IN = 'in';
 const TYPE_OUT = 'out';
+
 class InvoiceListPage extends Component {
   constructor(props) {
     super(props);
@@ -51,12 +55,10 @@ class InvoiceListPage extends Component {
   }
 
   componentDidMount() {
-    if (this.props.match.params.doctype === 'postings-trade-in') {
-      this.setState({
-        ...this.state,
-        doctype: Doctype.LGI_POSTING_TRADE_IN,
-      });
-    }
+    this.setState({
+      ...this.state,
+      doctype: getDoctypeByUri(this.props.match.params.doctype),
+    });
   }
 
   loadItems() {
@@ -117,18 +119,15 @@ class InvoiceListPage extends Component {
               },
               {
                 Header: messages['receiver_whouse'],
-                accessor: 'toWhouse',
-                maxWidth: 250,
+                accessor: 'toWerksName',
               },
               {
-                Header: 'Филиал исполнитель',
-                accessor: 'resBranchName',
-                maxWidth: 250,
+                Header: 'Контрагент',
+                accessor: 'customerName',
               },
               {
-                Header: 'Автор',
-                accessor: 'creatorName',
-                maxWidth: 250,
+                Header: 'Дата документа',
+                accessor: 'invoiceDate',
               },
               {
                 Header: 'Дата создания',
@@ -257,7 +256,7 @@ class InvoiceListPage extends Component {
           </Header>
           <Link
             className={'ui icon button primary right floated'}
-            to={`/logistics/werks/requests/create`}
+            to={`/logistics/invoices/` + getUriByDoctype(doctype) + `/create`}
           >
             <Icon name="plus" /> Добавить
           </Link>
