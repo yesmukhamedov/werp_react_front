@@ -13,7 +13,7 @@ const EnumFormField = props => {
         search={search}
         defaultValue={value}
         onChange={(e, d) => props.handleChange(d)}
-        options={options}
+        options={options || []}
         error={error ? true : false}
       />
       <div style={{ color: 'red', fontSize: '11px', marginTop: '-10px' }}>

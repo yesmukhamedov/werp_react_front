@@ -17,7 +17,7 @@ export const getUriByDoctype = doctype => {
 
 export const getDoctypeByUri = uri => {
   switch (uri) {
-    case '':
+    case 'postings-trade-in':
       return Doctype.LGI_POSTING_TRADE_IN;
 
     default:

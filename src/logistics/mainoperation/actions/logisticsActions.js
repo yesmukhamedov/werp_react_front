@@ -1,8 +1,12 @@
 import axios from 'axios';
 import { ROOT_URL } from '../../../utils/constants';
 import { modifyLoader } from '../../../general/loader/loader_action';
-import { handleError } from '../../../general/notification/notification_action';
+import {
+  handleError,
+  notify,
+} from '../../../general/notification/notification_action';
 
+import browserHistory from '../../../utils/history';
 import {
   LOG_WERKS_REQUEST_LIST_FETCHED,
   LOG_WERKS_REQUEST_BLANKED,
@@ -11,8 +15,11 @@ import {
   LOG_WERKS_REQUEST_ITEM_BLANKED,
   LOG_WERKS_REQUEST_FETCHED,
   LOG_INVOICES_FETCHED,
+  LOG_INVOICE_BLANKED,
+  LOG_INVOICE_FETCHED,
 } from './logisticsActionTypes';
-import { doPut, doGet } from '../../../utils/apiActions';
+import { doPut, doGet, doPost } from '../../../utils/apiActions';
+import { getUriByDoctype } from '../../logUtil';
 
 export function fetchWerksRequestsIn(params) {
   return function(dispatch) {
@@ -149,6 +156,57 @@ export function fetchInvoices(params = {}) {
       .catch(error => {
         dispatch(setMatnrListLoading(false));
         handleError(error, dispatch);
+      });
+  };
+}
+
+export function blankInvoice(doctype) {
+  return function(dispatch) {
+    doGet('logistics/invoices/blank', { doctype: doctype })
+      .then(({ data }) => {
+        dispatch({
+          type: LOG_INVOICE_BLANKED,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchInvoice(id, params = {}) {
+  return function(dispatch) {
+    doGet('logistics/invoices/' + id, params)
+      .then(({ data }) => {
+        dispatch({
+          type: LOG_INVOICE_FETCHED,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function saveInvoice(invoice) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    const uri = 'logistics/invoices';
+    let prom = invoice.new ? doPost(uri, invoice) : doPut(uri, invoice);
+    prom
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        browserHistory.push(
+          `/logistics/invoices/` +
+            getUriByDoctype(invoice.doctype) +
+            `/view/${data.id}`,
+        );
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        dispatch(notify('error', error.response.data.message, 'Ошибка'));
       });
   };
 }

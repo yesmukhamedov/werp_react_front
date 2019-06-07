@@ -685,5 +685,7 @@
   "doc_date": "Document Date",
   "goods_code": "Code of goods",
   "serial_number": "Serial number",
-  "kind": "tur"
+  "kind": "tur",
+  "list_of_goods": "List of goods",
+  "name_of_goods": "Name of goods"
 }

@@ -254,12 +254,16 @@ class InvoiceListPage extends Component {
           <Header as="h2" floated="left">
             {messages[doctype]}
           </Header>
-          <Link
-            className={'ui icon button primary right floated'}
-            to={`/logistics/invoices/` + getUriByDoctype(doctype) + `/create`}
-          >
-            <Icon name="plus" /> Добавить
-          </Link>
+          {doctype ? (
+            <Link
+              className={'ui icon button primary right floated'}
+              to={`/logistics/invoices/` + getUriByDoctype(doctype) + `/create`}
+            >
+              <Icon name="plus" /> Добавить
+            </Link>
+          ) : (
+            ''
+          )}
         </Segment>
         <Divider clearing />
         <Segment attached>{this.renderSearchPanel()}</Segment>
