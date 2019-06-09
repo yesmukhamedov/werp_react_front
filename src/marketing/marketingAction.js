@@ -15,6 +15,10 @@ export const NEW_PRICE = 'NEW_PRICE';
 export const CONT_LIST = 'CONT_LIST';
 export const ALL_LAZY_CUST = 'ALL_LAZY_CUST';
 
+export const FETCH_DYNOBJ_MARKETING = 'FETCH_DYNOBJ_MARKETING';
+export const CHANGE_DYNOBJ_MARKETING = 'CHANGE_DYNOBJ_MARKETING';
+export const CLEAR_DYNOBJ_MARKETING = 'CLEAR_DYNOBJ_MARKETING';
+
 /******************************************************************** CONTRACT */
 
 export function fByLazyCustomer(searchForm, page) {
@@ -186,4 +190,36 @@ export function savePrice(price) {
         handleError(error, dispatch);
       });
   };
+}
+
+export function fetchDynObjMarketing(url, params = {}, setIsLoading) {
+  setIsLoading(true);
+  return function(dispatch) {
+    doGet(url, params)
+      .then(({ data }) => {
+        setIsLoading(false);
+        dispatch({
+          type: FETCH_DYNOBJ_MARKETING,
+          data,
+        });
+      })
+      .catch(error => {
+        setIsLoading(false);
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function changeDynObjMarketing(a_obj) {
+  const obj = {
+    type: CHANGE_DYNOBJ_MARKETING,
+    data: a_obj,
+  };
+  return obj;
+}
+export function clearDynObjMarketing() {
+  const obj = {
+    type: CLEAR_DYNOBJ_MARKETING,
+  };
+  return obj;
 }

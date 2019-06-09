@@ -7,6 +7,9 @@ import {
   CONT_LIST,
   FETCH_DEALER_SECR,
   ALL_LAZY_CUST,
+  FETCH_DYNOBJ_MARKETING,
+  CHANGE_DYNOBJ_MARKETING,
+  CLEAR_DYNOBJ_MARKETING,
 } from './marketingAction';
 
 const INITIAL_STATE = {
@@ -19,6 +22,8 @@ const INITIAL_STATE = {
     perPage: 0,
     page: 0,
   },
+
+  dynamicObject: {},
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -68,6 +73,20 @@ export default function(state = INITIAL_STATE, action) {
         contstatus: action.contstatus,
         contlaststate: action.contlaststate,
       };
+
+    case FETCH_DYNOBJ_MARKETING:
+      return {
+        ...state,
+        dynamicObject: { ...state.dynamicObject, ...action.data },
+      };
+    case CHANGE_DYNOBJ_MARKETING:
+      return {
+        ...state,
+        dynamicObject: { ...state.dynamicObject, ...action.data },
+      };
+    case CLEAR_DYNOBJ_MARKETING:
+      return { ...state, dynamicObject: {} };
+
     default:
       return state;
   }

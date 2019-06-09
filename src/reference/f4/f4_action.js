@@ -422,7 +422,7 @@ export function f4FetchExpenceTypes() {
 
 export function f4FetchSubCompanies() {
   return function(dispatch) {
-    doGet('/reference/sub-companies')
+    doGet('reference/sub-companies')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_SUB_COMPANIES,

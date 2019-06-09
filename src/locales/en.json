@@ -622,6 +622,14 @@
   "fieldsReqToFill": "Fields marked * Required to fill.",
   "fieldsReqToFillAtLeastOne": "Fields marked with blue * enough to fill one",
 
+  "priceList": "Price list",
+  "termInMonth": "Term in month",
+  "premTermInMonth": "Premium",
+  "registeredTo": "Registered to",
+  "minPrepayment": "Min. prepayment amount",
+  "dealerDiscount": "Dealer's discount",
+  "finance": "Finance",
+
   "asset_mant": "Asset management",
   "add_assets": "Adding fixed assets",
   "midify_assets": "Modifying fixed assets",

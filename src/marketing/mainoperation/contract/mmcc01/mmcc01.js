@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import axios from 'axios';
 
 import {
   Container,
@@ -20,13 +19,11 @@ import OutputErrors from '../../../../general/error/outputErrors';
 import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal';
 import CustomerF4Modal from '../../../../reference/f4/Customer/customerF4WithCreationPage';
 import AddressF4Modal from '../../../../reference/f4/address/addressF4WithCreationPage';
+import Fin01 from './fin01';
 import {
   LinkToStaffCardView,
   LinkToCustomerHrc03,
 } from '../../../../utils/outlink';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment';
 
 //
 import {
@@ -35,6 +32,15 @@ import {
   f4ClearAnyObject,
 } from '../../../../reference/f4/f4_action';
 
+import {
+  handleFocus,
+  moneyFormat,
+  moneyInputHanler,
+} from '../../../../utils/helpers';
+
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
 require('moment/locale/ru');
 require('moment/locale/tr');
 
@@ -119,6 +125,7 @@ const Mmcc01 = props => {
   const [addrService, setAddrService] = useState({});
   const [addressF4ModalOpen, setAddressF4ModalOpen] = useState(false);
   const [addressF4ModalType, setAddressF4ModalType] = useState('');
+  const [ps, setPs] = useState([]);
 
   const language = localStorage.getItem('language');
 
@@ -172,10 +179,6 @@ const Mmcc01 = props => {
     if (stateFieldName === 'bukrs') {
       wa = { ...emptyContract };
       wa[stateFieldName] = value;
-      wa.branchId = '';
-      wa.servBranchId = '';
-      wa.finBranchId = '';
-      wa.contractTypeId = '';
     } else if (stateFieldName === 'branchId') {
       wa = { ...emptyContract };
       wa.bukrs = contract.bukrs;
@@ -221,6 +224,12 @@ const Mmcc01 = props => {
         });
 
       setContractTypeOpts(waConOptions);
+    } else if (stateFieldName === 'contractDate') {
+      if (value !== null && value !== undefined) {
+        wa[stateFieldName] = value.format('DD.MM.YYYY');
+
+        addMonthToAndAfterPsRows(value, 0);
+      } else wa[stateFieldName] = '';
     } else if (stateFieldName === 'demoSc') {
       wa.demoSc = value.staffId;
       wa.demoScName = value.fio;
@@ -271,9 +280,99 @@ const Mmcc01 = props => {
     } else if (stateFieldName === 'addrServiceIdRemove') {
       wa.addrServiceId = '';
       setAddrService({});
+    } else if (stateFieldName === 'contractTypeId') {
+      wa[stateFieldName] = value;
+      wa.price = '';
+      wa.firstPayment = '';
+      wa.waers = '';
+      wa.priceListId = '';
+      setPs([]);
     } else wa[stateFieldName] = value;
     setContract(wa);
   }
+
+  const onFinInputChange = (value, stateFieldName, id) => {
+    // console.log(value, stateFieldName, id)
+    let wa = Object.assign({}, contract);
+    if (stateFieldName === 'price') {
+      wa.price = value.price;
+      wa.firstPayment = value.firstPayment;
+      wa.waers = value.waers;
+      wa.priceListId = value.priceListId;
+      let ps = [
+        {
+          paymentScheduleId: 0,
+          sum2: wa.firstPayment,
+          isFirstPayment: 1,
+          paymentDate: wa.contractDate,
+        },
+      ];
+      let month = value.month;
+
+      let lastPsId = 1;
+      let lastPaymentDate = wa.contractDate;
+
+      // console.log(month,'month')
+      for (let i = 1; i <= month; i++) {
+        // console.log(i,'i')
+
+        let date = moment(lastPaymentDate, 'DD.MM.YYYY')
+          .add(1, 'M')
+          .format('DD.MM.YYYY');
+
+        let psRow = {
+          paymentScheduleId: lastPsId,
+          sum2: value.remain / value.month,
+          isFirstPayment: 0,
+          paymentDate: date,
+        };
+
+        // console.log(wa,'wa')
+        // console.log(lastPsId,lastPaymentDate,'lastPsId,lastPaymentDate')
+        ps.push(psRow);
+
+        lastPsId += 1;
+        lastPaymentDate = date;
+      }
+
+      setPs(ps);
+      setContract(wa);
+    } else if (stateFieldName === 'dealerSubtract') {
+      const newVal = parseFloat(moneyInputHanler(value, 2));
+      wa[stateFieldName] = newVal;
+      setContract(wa);
+    } else if (stateFieldName === 'sum2') {
+      const newVal = parseFloat(moneyInputHanler(value, 2));
+      const idx = ps.findIndex(item => item.paymentScheduleId === id);
+      const oldItem = ps[idx];
+      const newItem = { ...oldItem, sum2: newVal };
+      const newArray = [...ps.slice(0, idx), newItem, ...ps.slice(idx + 1)];
+      setPs(newArray);
+    } else if (stateFieldName === 'paymentDate') {
+      const idx = ps.findIndex(item => item.paymentScheduleId === id);
+      addMonthToAndAfterPsRows(value, idx);
+    } else {
+      wa[stateFieldName] = value;
+      setContract(wa);
+    }
+  };
+
+  const addMonthToAndAfterPsRows = (paymentDate, idx) => {
+    if (ps && ps.length > 0) {
+      const newArray = JSON.parse(JSON.stringify(ps));
+      let lastPaymentDate = paymentDate.format('DD.MM.YYYY');
+      newArray[idx].paymentDate = lastPaymentDate;
+      let addMonth = 0;
+
+      for (let nextIdx = idx + 1; nextIdx < ps.length; nextIdx++) {
+        addMonth += 1;
+        newArray[nextIdx].paymentDate = moment(lastPaymentDate, 'DD.MM.YYYY')
+          .add(addMonth, 'M')
+          .format('DD.MM.YYYY');
+      }
+      setPs(newArray);
+    }
+  };
 
   return (
     <Container
@@ -318,7 +417,7 @@ const Mmcc01 = props => {
       {/* <Rfadd01 customerId={contract.customerId} customerName={contract.customerName}/> */}
       <Grid>
         <Grid.Row>
-          <Grid.Column mobile={16} tablet={16} computer={16}>
+          <Grid.Column mobile={16} tablet={16} computer={4}>
             {/* <button onClick={fetchCTList}>get CT List</button> */}
 
             {/* {console.log(finBranches, 'main render')} */}
@@ -433,16 +532,11 @@ const Mmcc01 = props => {
                       dropdownMode="select" // timezone="UTC"
                       selected={
                         contract.contractDate
-                          ? moment(contract.contractDate)
+                          ? moment(contract.contractDate, 'DD.MM.YYYY')
                           : ''
                       }
                       locale={language}
-                      onChange={value =>
-                        onInputChange(
-                          value.format('DD.MM.YYYY'),
-                          'contractDate',
-                        )
-                      }
+                      onChange={event => onInputChange(event, 'contractDate')}
                       dateFormat="DD.MM.YYYY"
                     />
                   </Table.Cell>
@@ -561,7 +655,7 @@ const Mmcc01 = props => {
               </Table.Body>
             </Table>
           </Grid.Column>
-          <Grid.Column mobile={16} tablet={8} computer={12}>
+          <Grid.Column mobile={16} tablet={8} computer={4}>
             <Segment padded size="small">
               <Label color="orange" ribbon>
                 {messages['contactInfo']}
@@ -730,6 +824,21 @@ const Mmcc01 = props => {
                <OutputErrors errors={this.state.errors} /> 
               Detail
             </Segment> */}
+          </Grid.Column>
+
+          <Grid.Column mobile={16} tablet={8} computer={4}>
+            <Fin01
+              bukrs={contract.bukrs}
+              onFinInputChange={onFinInputChange}
+              branchId={contract.branchId}
+              contractTypeId={contract.contractTypeId}
+              tcode={'MMCC01'}
+              price={contract.price}
+              firstPayment={contract.firstPayment}
+              waers={contract.waers}
+              dealerSubtract={contract.dealerSubtract}
+              ps={ps}
+            />
           </Grid.Column>
         </Grid.Row>
       </Grid>

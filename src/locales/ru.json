@@ -600,6 +600,14 @@
   "fieldsReqToFill": "Поля помеченные * объязательны к заполнению.",
   "fieldsReqToFillAtLeastOne": "Поля помеченные синей * достаточно заполнить только одну.",
 
+  "priceList": "Прайс лист",
+  "termInMonth": "Срок (месяц)",
+  "premTermInMonth": "Премия",
+  "registeredTo": "Оформлен на",
+  "minPrepayment": "Мин. сумма предоплаты",
+  "dealerDiscount": "Скидка от дилера",
+  "finance": "Финанс",
+
   "asset_mant": "Управление основными средствами",
   "add_assets": "Добавление основных средств",
   "midify_assets": "Изменения основных средств",

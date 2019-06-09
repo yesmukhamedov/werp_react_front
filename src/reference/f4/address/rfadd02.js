@@ -104,7 +104,7 @@ const Rfadd02 = props => {
 
   const stateOptions = () => {
     let waStateOptions = stateList
-      .filter(item => item.countryid == address.countryId)
+      .filter(item => item.countryid === address.countryId)
       .sort((a, b) => (a.statename > b.statename ? 1 : -1))
       .map(item => (
         <option value={item.idstate} key={item.idstate}>
@@ -115,7 +115,7 @@ const Rfadd02 = props => {
   };
   const cityOptions = () => {
     let waCityOptions = cityList
-      .filter(item => item.stateid == address.stateId)
+      .filter(item => item.stateid === address.stateId)
       .sort((a, b) => (a.name > b.name ? 1 : -1))
       .map(item => (
         <option value={item.idcity} key={item.idcity}>
@@ -126,7 +126,7 @@ const Rfadd02 = props => {
   };
   const regionOptions = () => {
     let waRegionOptions = regionList
-      .filter(item => item.city_id == address.cityId)
+      .filter(item => item.city_id === address.cityId)
       .sort((a, b) => (a.regname > b.regname ? 1 : -1))
       .map(item => (
         <option value={item.idcityreg} key={item.idcityreg}>
