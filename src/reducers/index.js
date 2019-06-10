@@ -42,7 +42,6 @@ import transactionReducer from '../dit/transactionReducer';
 import logisticsReducer from '../logistics/mainoperation/reducers/logisticsReducer';
 import aesReducer from '../aes/aesReducer';
 import hrPosReducer from '../hr/reference/position/positionReducer';
-import menuReducer from '../dit/menu/menuReducer';
 import marketingReducer from '../marketing/marketingReducer';
 import hrReducer from '../hr/hr_reducer';
 import callReducer from '../crm/mainoperation/call/reducers/callReducer';
@@ -90,7 +89,6 @@ const appReducer = combineReducers({
   logisticsReducer,
   aesReducer: aesReducer,
   hrPosReducer: hrPosReducer,
-  menuReducer: menuReducer,
   marketing: marketingReducer,
   hr: hrReducer,
   callReducer: callReducer,

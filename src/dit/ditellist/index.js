@@ -9,7 +9,7 @@ import {
   Grid,
   Dropdown,
 } from 'semantic-ui-react';
-import { fetchEvAll } from '../transactionAction';
+import { fetchAllEvents } from '../transactionAction';
 import LazyPagination from '../../general/pagination/LazyPagination';
 import { injectIntl } from 'react-intl';
 
@@ -33,14 +33,14 @@ class EventLog extends Component {
     temp.push('page=' + page);
     temp.push('bukrs=' + bukrs);
     let q = temp.join('&');
-    this.props.fetchEvAll(q);
+    this.props.fetchAllEvents(q);
   }
 
   componentWillMount() {
     this.loadItems(0);
   }
 
-  inputChange(fieldName, o) {
+  inputChange(o) {
     let bukrs = this.state.bukrs;
     if (o) {
       bukrs = o.value;
@@ -63,7 +63,6 @@ class EventLog extends Component {
     const { messages } = this.props.intl;
     const isEnabled =
       this.state.bukrs === undefined || this.state.bukrs === null;
-
     return (
       <Container
         fluid
@@ -88,7 +87,7 @@ class EventLog extends Component {
                 selection
                 search
                 options={this.getCompanyOptions()}
-                onChange={(e, o) => this.inputChange('bukrs', o)}
+                onChange={(e, o) => this.inputChange(o)}
               />
               <br />
               <Button
@@ -129,14 +128,14 @@ class EventLog extends Component {
         <Table.Footer>
           <Table.Row>
             <Table.HeaderCell colSpan="2">
-              {messages['overallSum']}: {this.props.meta.totalRows}
+              {messages['overallSum']}: {this.props.evRowPr.totalRows}
             </Table.HeaderCell>
             <Table.HeaderCell colSpan="6">
               <LazyPagination
                 onItemClick={this.onPaginationItemClick}
-                totalRows={this.props.meta.totalRows}
-                currentPage={this.props.meta.page}
-                perPage={this.props.meta.perPage}
+                totalRows={this.props.evRowPr.totalRows}
+                currentPage={this.props.evRowPr.page}
+                perPage={this.props.evRowPr.perPage}
               />
             </Table.HeaderCell>
           </Table.Row>
@@ -147,19 +146,19 @@ class EventLog extends Component {
 
   renderTableBody(messages) {
     if (
-      this.props.items.length === 0 ||
-      this.props.items.length === undefined
+      this.props.events.length === 0 ||
+      this.props.events.length === undefined
     ) {
       return [];
     }
-    return this.props.items.map(item => {
+    return this.props.events.map(ev => {
       return (
-        <Table.Row key={item.id}>
-          <Table.Cell>{item.id}</Table.Cell>
-          <Table.Cell>{item.typeName}</Table.Cell>
-          <Table.Cell>{item.msg}</Table.Cell>
-          <Table.Cell>{item.staff.fullFIO}</Table.Cell>
-          <Table.Cell>{item.datetime}</Table.Cell>
+        <Table.Row key={ev.id}>
+          <Table.Cell>{ev.id}</Table.Cell>
+          <Table.Cell>{ev.typeName}</Table.Cell>
+          <Table.Cell>{ev.msg}</Table.Cell>
+          <Table.Cell>{ev.staff.fullFIO}</Table.Cell>
+          <Table.Cell>{ev.datetime}</Table.Cell>
         </Table.Row>
       );
     });
@@ -184,12 +183,12 @@ class EventLog extends Component {
 function mapStateToProps(state) {
   return {
     companyOptions: state.userInfo.companyOptions,
-    items: state.transactionReducer.items,
-    meta: state.transactionReducer.meta,
+    events: state.transactionReducer.events,
+    evRowPr: state.transactionReducer.evRowPr,
   };
 }
 
 export default connect(
   mapStateToProps,
-  { fetchEvAll },
+  { fetchAllEvents },
 )(injectIntl(EventLog));

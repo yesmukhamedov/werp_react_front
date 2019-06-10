@@ -25,7 +25,7 @@ class List extends Component {
     if (row.is_root === 1) row['rootChecked'] = true;
     else row['rootChecked'] = false;
     this.setState({ row: row });
-    this.props.fetchBrchesByBukrs(row.bukrs);
+    this.props.getBrByBukrSysUser(row.bukrs);
     this.props.showUpdateModal(true);
   }
 
@@ -46,7 +46,7 @@ class List extends Component {
         break;
       case 'bukrs':
         row.bukrs = o.value;
-        this.props.fetchBrchesByBukrs(row.bukrs);
+        this.props.getBrByBukrSysUser(row.bukrs);
         o.options.some(c => {
           if (Number(c.key) === o.value) {
             row.bukrsname = c.text;

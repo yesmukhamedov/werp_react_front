@@ -17,26 +17,6 @@ export default function Update(props) {
         <Modal.Description>
           <Form>
             <Form.Group widths="equal">
-              <Form.Field
-                value={props.row.fullname}
-                readOnly
-                control={Input}
-                label={props.messages['fio']}
-              />
-              <Form.Field required>
-                <label>{props.messages['role']}</label>
-                <Dropdown
-                  fluid
-                  search
-                  selection
-                  multiple
-                  defaultValue={props.row.rids}
-                  options={props.roles}
-                  onChange={(e, o) => props.handleChange('role_id', o)}
-                />
-              </Form.Field>
-            </Form.Group>
-            <Form.Group widths="equal">
               <Form.Field required>
                 <label>{props.messages['L__COMPANY']} </label>
                 <Dropdown
@@ -71,6 +51,27 @@ export default function Update(props) {
                 label={props.messages['internal_number']}
               />
             </Form.Group>
+            <Form.Group widths="equal">
+              <Form.Field
+                value={props.row.fullname}
+                readOnly
+                control={Input}
+                label={props.messages['fio']}
+              />
+              <Form.Field required>
+                <label>{props.messages['role']}</label>
+                <Dropdown
+                  fluid
+                  search
+                  selection
+                  multiple
+                  defaultValue={props.row.rids}
+                  options={props.roles}
+                  onChange={(e, o) => props.handleChange('role_id', o)}
+                />
+              </Form.Field>
+            </Form.Group>
+
             <Form.Group widths="equal">
               <Form.Field
                 required

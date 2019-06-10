@@ -11,13 +11,13 @@ import {
 import AddNode from './addNode';
 import {
   fetchCurrentMenu,
-  pyramidTreeChanged,
-  fetchBlank,
-  newPyramid,
-  deletePyramid,
-  updateNodeItem,
-  onMoveNode,
-} from './menuAction';
+  treeMenuChanged,
+  getBlankMenu,
+  newMenuNode,
+  deleteMenuNode,
+  updMenuNode,
+  onMoveMenuNode,
+} from './../transactionAction';
 import { fetchCurrentTransactions } from '../transactionAction';
 import SortableTree from 'react-sortable-tree';
 import 'react-sortable-tree/style.css';
@@ -66,7 +66,7 @@ class Menu extends Component {
 
   newNode(node) {
     node.path = this.state.currentItemPath;
-    this.props.newPyramid(node);
+    this.props.newMenuNode(node);
   }
 
   addFormModal(truefalse) {
@@ -77,7 +77,7 @@ class Menu extends Component {
   }
 
   onChanged(a) {
-    this.props.pyramidTreeChanged(a);
+    this.props.treeMenuChanged(a);
   }
 
   changeWeight = ({ ...args }) => {
@@ -95,7 +95,7 @@ class Menu extends Component {
               break;
             }
           }
-          this.props.onMoveNode(args.node, changeNode);
+          this.props.onMoveMenuNode(args.node, changeNode);
         } else {
           for (let x = args.nextParentNode.children.length - 1; x >= 0; x--) {
             if (args.nextParentNode.children[x].id === args.node.id) {
@@ -103,16 +103,16 @@ class Menu extends Component {
               break;
             }
           }
-          this.props.onMoveNode(args.node, changeNode);
+          this.props.onMoveMenuNode(args.node, changeNode);
         }
       } else {
         if (args.prevTreeIndex > args.nextTreeIndex) {
-          this.props.onMoveNode(
+          this.props.onMoveMenuNode(
             args.node,
             this.props.treeData[args.treeIndex + 1],
           );
         } else {
-          this.props.onMoveNode(
+          this.props.onMoveMenuNode(
             args.node,
             this.props.treeData[args.treeIndex - 1],
           );
@@ -144,12 +144,11 @@ class Menu extends Component {
                 floated="right"
                 color="teal"
                 onClick={() => {
-                  this.props.fetchBlank(0);
+                  this.props.getBlankMenu(0);
                   this.props.fetchCurrentTransactions();
                   this.addFormModal(true);
                 }}
               >
-                {' '}
                 <Icon name="plus" /> {messages['BTN__ADD']}
               </Button>
             </Segment>
@@ -164,7 +163,7 @@ class Menu extends Component {
                 showAddModal={this.state.showAddModal}
                 addFormModal={this.addFormModal.bind(this)}
                 newNode={this.newNode.bind(this)}
-                item={this.props.item}
+                blankMenuNode={this.props.blankMenuNode}
                 currentTransactions={this.props.currentTransactions}
                 messages={messages}
               />
@@ -197,7 +196,7 @@ class Menu extends Component {
                               ...this.state,
                               currentItemPath: path,
                             });
-                            this.props.fetchBlank(node.id);
+                            this.props.getBlankMenu(node.id);
                             this.props.fetchCurrentTransactions();
                             this.addFormModal(true);
                           }}
@@ -240,7 +239,7 @@ class Menu extends Component {
   submitUpdate() {
     const nodeForEdit = Object.assign({}, this.state.nodeForEdit);
     nodeForEdit.path = this.state.currentItemPath;
-    this.props.updateNodeItem(nodeForEdit);
+    this.props.updMenuNode(nodeForEdit);
     this.setState({
       ...this.state,
       showUpdateModal: false,
@@ -309,15 +308,15 @@ class Menu extends Component {
 
   deletePyramid() {
     const { nodeForDelete } = this.state;
-    this.props.deletePyramid(nodeForDelete);
+    this.props.deleteMenuNode(nodeForDelete);
     this.resetDelete();
   }
 }
 
 function mapStateToProps(state) {
   return {
-    treeData: state.menuReducer.treeData,
-    item: state.menuReducer.item,
+    treeData: state.transactionReducer.treeData,
+    blankMenuNode: state.transactionReducer.blankMenuNode,
     currentTransactions: state.transactionReducer.currentTransactions,
   };
 }
@@ -325,13 +324,13 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {
-    onMoveNode,
+    onMoveMenuNode,
     fetchCurrentMenu,
-    pyramidTreeChanged,
-    fetchBlank,
-    newPyramid,
-    deletePyramid,
-    updateNodeItem,
+    treeMenuChanged,
+    getBlankMenu,
+    newMenuNode,
+    deleteMenuNode,
+    updMenuNode,
     fetchCurrentTransactions,
   },
 )(injectIntl(Menu));

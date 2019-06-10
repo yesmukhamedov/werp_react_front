@@ -84,7 +84,7 @@ class ListTable extends Component {
           <div>
             <ReactTable
               columns={columns}
-              data={transactions.currentTransactions}
+              data={transactions.currTrans}
               resolveData={data => data.map(row => row)}
               filterable
               rowsText={messages['rowsText']}

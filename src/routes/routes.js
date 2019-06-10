@@ -745,23 +745,24 @@ const AsyncPositionList = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncMenu = Loadable({
-  loader: () => import('../dit/menu/' /* webpackChunkName: "menu" */),
+const AsyncEventLog = Loadable({
+  loader: () => import('../dit/ditellist/' /* webpackChunkName: ditellist */),
   loading: () => <LoadingPage />,
 });
 
 const AsyncUsers = Loadable({
-  loader: () => import('../dit/duserlist' /* webpackChunkName: sysUsers */),
+  loader: () =>
+    import('../dit/dituserlist' /* webpackChunkName: dituserlist */),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncMenu = Loadable({
+  loader: () => import('../dit/dmulist/' /* webpackChunkName: "dmulist" */),
   loading: () => <LoadingPage />,
 });
 
 const AsyncRoles = Loadable({
-  loader: () => import('../dit/role/drole' /* webpackChunkName: roles */),
-  loading: () => <LoadingPage />,
-});
-
-const AsyncEventLog = Loadable({
-  loader: () => import('../dit/eventlog/' /* webpackChunkName: roles */),
+  loader: () => import('../dit/drlist/' /* webpackChunkName: drlist */),
   loading: () => <LoadingPage />,
 });
 

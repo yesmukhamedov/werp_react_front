@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Icon, Form, Button, Input } from 'semantic-ui-react';
 
 class UpdateTransaction extends Component {
-  constructor(props, context) {
+  constructor(props) {
     super(props);
     this.state = {
       transaction: {},

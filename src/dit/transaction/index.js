@@ -95,7 +95,7 @@ class List extends Component {
             <div className="two wide column" />
             <div className="twelve wide column">
               <ListTable
-                transactions={this.props.currentTransactions}
+                transactions={this.props.currTrans}
                 updTransaction={this.updTransaction}
                 messages={messages}
               />
@@ -110,7 +110,7 @@ class List extends Component {
 
 function mapStateToProps(state) {
   return {
-    currentTransactions: state.transactionReducer,
+    currTrans: state.transactionReducer,
   };
 }
 

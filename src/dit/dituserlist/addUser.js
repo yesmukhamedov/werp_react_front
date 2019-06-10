@@ -47,7 +47,6 @@ class AddUser extends Component {
   inputChange(fieldName, o) {
     let sysUser = Object.assign({}, this.state.sysUser);
     let radioCheck = Object.assign({}, this.state.radioCheck);
-
     switch (fieldName) {
       case 'username':
         sysUser.username = o.value;
@@ -74,7 +73,7 @@ class AddUser extends Component {
         break;
       case 'bukrs':
         sysUser['bukrs'] = o.value;
-        this.props.fetchBrchesByBukrs(o.value);
+        this.props.getBrByBukrSysUser(o.value);
         o.options.some(c => {
           if (Number(c.key) === o.value) {
             sysUser['bukrsname'] = c.text;
@@ -189,6 +188,7 @@ class AddUser extends Component {
 
   render() {
     const { messages } = this.props;
+
     return (
       <Modal size={'small'} open={this.props.showAdd}>
         <Modal.Header>{messages['BTN__ADD']}</Modal.Header>
@@ -203,55 +203,9 @@ class AddUser extends Component {
   }
   renderForm() {
     const { messages } = this.props;
+    const { sysUser } = this.state;
     return (
       <Form>
-        <Form.Group widths="equal">
-          <Form.Field
-            required
-            defaultValue={this.state.sysUser.username}
-            onChange={(e, o) => this.inputChange('username', o)}
-            control={Input}
-            label={messages['L__USER']}
-          />
-          <Form.Field required>
-            <label>Enter Password</label>
-            <Input
-              style={{ width: '75%' }}
-              value={this.state.sysUser.password}
-              type={this.state.hidden ? 'password' : 'text'}
-              icon={{
-                name: 'eye',
-                circular: true,
-                link: true,
-                onClick: this.toggleShow,
-              }}
-              onChange={(e, o) => this.inputChange('password', o)}
-            />
-            <Button color="teal" onClick={this.randomGenerate.bind(this)}>
-              <Icon name="refresh" />
-            </Button>
-          </Form.Field>
-        </Form.Group>
-        <Form.Group widths="equal">
-          <Form.Field
-            readOnly
-            control={Input}
-            value={this.props.selStaff.fullFIO}
-            label={messages['fio']}
-          />
-          <Form.Field required>
-            <label>{messages['role']}</label>
-            <Dropdown
-              fluid
-              search
-              selection
-              multiple
-              options={this.props.roles}
-              defaultValue={this.props.rids}
-              onChange={(e, o) => this.inputChange('rids', o)}
-            />
-          </Form.Field>
-        </Form.Group>
         <Form.Group widths="equal">
           <Form.Field required>
             <label>{messages['L__COMPANY']} </label>
@@ -279,6 +233,53 @@ class AddUser extends Component {
             control={Input}
             label={messages['internal_number']}
           />
+        </Form.Group>
+        <Form.Group widths="equal">
+          <Form.Field
+            readOnly
+            control={Input}
+            value={this.props.selStaff.fullFIO}
+            label={messages['fio']}
+          />
+          <Form.Field required>
+            <label>{messages['role']}</label>
+            <Dropdown
+              fluid
+              search
+              selection
+              multiple
+              options={this.props.roles}
+              defaultValue={this.props.rids}
+              onChange={(e, o) => this.inputChange('rids', o)}
+            />
+          </Form.Field>
+        </Form.Group>
+        <Form.Group widths="equal">
+          <Form.Field
+            required
+            value={sysUser.username}
+            onChange={(e, o) => this.inputChange('username', o)}
+            control={Input}
+            label={messages['L__USER']}
+          />
+          <Form.Field required>
+            <label>Enter Password</label>
+            <Input
+              style={{ width: '75%' }}
+              value={sysUser.password}
+              type={this.state.hidden ? 'password' : 'text'}
+              icon={{
+                name: 'eye',
+                circular: true,
+                link: true,
+                onClick: this.toggleShow,
+              }}
+              onChange={(e, o) => this.inputChange('password', o)}
+            />
+            <Button color="teal" onClick={this.randomGenerate.bind(this)}>
+              <Icon name="refresh" />
+            </Button>
+          </Form.Field>
         </Form.Group>
         <Form.Field>
           Selected value:<b>{String(this.state.radioCheck.checked)}</b>

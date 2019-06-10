@@ -9,7 +9,7 @@ import {
   Modal,
 } from 'semantic-ui-react';
 import {
-  fetchRoles,
+  fetchAllRoles,
   getRoleAccesses,
   saveRoles,
   updRNomination,
@@ -30,7 +30,7 @@ class Roles extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchRoles();
+    this.props.fetchAllRoles();
   }
 
   handleOpen() {
@@ -119,7 +119,7 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {
-    fetchRoles,
+    fetchAllRoles,
     getRoleAccesses,
     saveRoles,
     updRNomination,

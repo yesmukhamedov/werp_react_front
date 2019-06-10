@@ -11,10 +11,10 @@ import {
 import { f4FetchCompanyOptions } from '../../reference/f4/f4_action';
 import {
   fetchSUserAll,
-  saveNewUser,
-  updateRow,
-  searchStaff,
-  fetchBrchesByBukrs,
+  saveNewSUser,
+  updateSUserRow,
+  searchStaffforSUser,
+  getBrByBukrSysUser,
   showAddModal,
   showUpdateModal,
 } from '../transactionAction';
@@ -51,11 +51,11 @@ class SystemUsers extends Component {
   }
 
   submitUpdate(row) {
-    this.props.updateRow(row);
+    this.props.updateSUserRow(row);
   }
 
   submitSearch() {
-    this.props.searchStaff(this.state.searchSt);
+    this.props.searchStaffforSUser(this.state.searchSt);
   }
 
   selectedStaff(staff) {
@@ -89,7 +89,7 @@ class SystemUsers extends Component {
   }
 
   newUser(sysUser) {
-    this.props.saveNewUser(sysUser);
+    this.props.saveNewSUser(sysUser);
   }
 
   render() {
@@ -148,7 +148,7 @@ class SystemUsers extends Component {
             submitUpdate={this.submitUpdate.bind(this)}
             companyOpts={this.getCompanyOptions()}
             branchOptions={this.getBranchOptions()}
-            fetchBrchesByBukrs={this.props.fetchBrchesByBukrs}
+            getBrByBukrSysUser={this.props.getBrByBukrSysUser}
             showUpdateModal={this.props.showUpdateModal}
             close={this.close.bind(this)}
             updateModalOpened={this.props.updateModalOpened}
@@ -164,7 +164,7 @@ class SystemUsers extends Component {
             messages={messages}
             username={this.state.username}
             newUser={this.newUser.bind(this)}
-            fetchBrchesByBukrs={this.props.fetchBrchesByBukrs}
+            getBrByBukrSysUser={this.props.getBrByBukrSysUser}
           />
         </div>
       </Container>
@@ -237,10 +237,10 @@ export default connect(
   {
     fetchSUserAll,
     f4FetchCompanyOptions,
-    updateRow,
-    searchStaff,
-    saveNewUser,
-    fetchBrchesByBukrs,
+    updateSUserRow,
+    searchStaffforSUser,
+    saveNewSUser,
+    getBrByBukrSysUser,
     showAddModal,
     showUpdateModal,
   },
