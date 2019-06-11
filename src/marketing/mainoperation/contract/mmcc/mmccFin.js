@@ -3,7 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import PriceListF4Modal from '../priceListF4';
-import { handleFocus, moneyFormat } from '../../../../utils/helpers';
+import {
+  handleFocus,
+  moneyFormat,
+  stringYYYYMMDDToMoment,
+  momentToStringYYYYMMDD,
+} from '../../../../utils/helpers';
 import { f4FetchSubCompanies } from '../../../../reference/f4/f4_action';
 import { fetchDynObjMarketing } from '../../../marketingAction';
 import {
@@ -21,7 +26,7 @@ import moment from 'moment';
 require('moment/locale/ru');
 require('moment/locale/tr');
 
-const Fin01 = props => {
+const MmccFin = props => {
   const {
     bukrs,
     contractTypeId,
@@ -58,7 +63,9 @@ const Fin01 = props => {
       bukrs &&
       bukrs.length === 4 &&
       subCompanies &&
-      subCompanies.length > 0
+      subCompanies.length > 0 &&
+      branchId &&
+      branchId > 0
     ) {
       let waSubCompaniesOptions = subCompanies
         .filter(item => item.bukrs === bukrs)
@@ -73,7 +80,7 @@ const Fin01 = props => {
 
       setSubCompaniesOptions(waSubCompaniesOptions);
     }
-  }, [bukrs]);
+  }, [bukrs, branchId]);
 
   //componentWillRecieveProps
   useEffect(() => {
@@ -119,12 +126,10 @@ const Fin01 = props => {
                       showMonthDropdown
                       showYearDropdown
                       dropdownMode="select" // timezone="UTC"
-                      selected={
-                        paymentDate ? moment(paymentDate, 'DD.MM.YYYY') : ''
-                      }
+                      selected={stringYYYYMMDDToMoment(paymentDate)}
                       onChange={(e, { value }) =>
                         props.onFinInputChange(
-                          e,
+                          momentToStringYYYYMMDD(e),
                           'paymentDate',
                           paymentScheduleId,
                         )
@@ -166,90 +171,89 @@ const Fin01 = props => {
         isLoadingPriceList={isLoadingPriceList}
       />
 
-      <Segment padded size="small">
+      {/* <Segment padded size="small">
         <Label color="orange" ribbon>
           {messages['finance']}
-        </Label>
-        <Table collapsing>
-          <Table.Body>
-            <Table.Row>
-              <Table.Cell>{messages['registeredTo']}</Table.Cell>
-              <Table.Cell>
-                <Dropdown
-                  search
-                  noResultsMessage={messages['noResultsMessage']}
-                  selection
-                  options={subCompaniesOptions}
-                  value={legalEntityId}
-                  onChange={(e, { value }) => {
-                    props.onFinInputChange(value, 'legalEntityId', '');
-                  }}
-                />
-              </Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell>{messages['price']}</Table.Cell>
-              <Table.Cell>
-                <Input
-                  color="teal"
-                  label={waers}
-                  labelPosition="left"
-                  value={moneyFormat(price)}
-                  maxLength="18"
-                />
-                <Icon
-                  name="clone"
-                  size="large"
-                  className="clickableIcon"
-                  disabled={contractDate ? false : true}
-                  onClick={() => setPriceListF4ModalOpen(true)}
-                />
-              </Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell>{messages['minPrepayment']}</Table.Cell>
-              <Table.Cell>
-                <Input
-                  color="teal"
-                  label={waers}
-                  labelPosition="left"
-                  value={moneyFormat(firstPayment)}
-                  maxLength="18"
-                />
-              </Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell>{messages['remainder']}</Table.Cell>
-              <Table.Cell>
-                <Input
-                  color="teal"
-                  label={waers}
-                  labelPosition="left"
-                  value={moneyFormat(price - firstPayment)}
-                  maxLength="18"
-                />
-              </Table.Cell>
-            </Table.Row>
-            <Table.Row>
-              <Table.Cell>{messages['dealerDiscount']}</Table.Cell>
-              <Table.Cell>
-                <Input
-                  color="teal"
-                  label={waers}
-                  labelPosition="left"
-                  value={moneyFormat(dealerSubtract)}
-                  maxLength="18"
-                  onFocus={handleFocus}
-                  onChange={(e, { value }) =>
-                    props.onFinInputChange(value, 'dealerSubtract', '')
-                  }
-                />
-              </Table.Cell>
-            </Table.Row>
-          </Table.Body>
-        </Table>
-        {paymentScheduleOutput()}
-      </Segment>
+        </Label> */}
+      <Table collapsing>
+        <Table.Body>
+          <Table.Row>
+            <Table.Cell>{messages['registeredTo']}</Table.Cell>
+            <Table.Cell>
+              <Dropdown
+                search
+                noResultsMessage={messages['noResultsMessage']}
+                selection
+                options={subCompaniesOptions}
+                value={legalEntityId}
+                onChange={(e, { value }) => {
+                  props.onFinInputChange(value, 'legalEntityId', '');
+                }}
+              />
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>{messages['price']}</Table.Cell>
+            <Table.Cell>
+              <Input
+                color="teal"
+                label={waers}
+                labelPosition="left"
+                value={moneyFormat(price)}
+                maxLength="18"
+              />
+              <Icon
+                name="clone"
+                size="large"
+                className="clickableIcon"
+                onClick={() => setPriceListF4ModalOpen(true)}
+              />
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>{messages['minPrepayment']}</Table.Cell>
+            <Table.Cell>
+              <Input
+                color="teal"
+                label={waers}
+                labelPosition="left"
+                value={moneyFormat(firstPayment)}
+                maxLength="18"
+              />
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>{messages['remainder']}</Table.Cell>
+            <Table.Cell>
+              <Input
+                color="teal"
+                label={waers}
+                labelPosition="left"
+                value={moneyFormat(price - firstPayment)}
+                maxLength="18"
+              />
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>{messages['dealerDiscount']}</Table.Cell>
+            <Table.Cell>
+              <Input
+                color="teal"
+                label={waers}
+                labelPosition="left"
+                value={moneyFormat(dealerSubtract)}
+                maxLength="18"
+                onFocus={handleFocus}
+                onChange={(e, { value }) =>
+                  props.onFinInputChange(value, 'dealerSubtract', '')
+                }
+              />
+            </Table.Cell>
+          </Table.Row>
+        </Table.Body>
+      </Table>
+      {paymentScheduleOutput()}
+      {/* </Segment> */}
     </div>
   );
 };
@@ -269,4 +273,4 @@ export default connect(
     f4FetchSubCompanies,
     fetchDynObjMarketing,
   },
-)(injectIntl(Fin01));
+)(injectIntl(MmccFin));

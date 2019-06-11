@@ -11,9 +11,9 @@ const CustomerF4WithCreationPage = props => {
     intl: { messages },
   } = props;
 
-  function close() {
+  const close = () => {
     props.onCloseCustomerF4(false);
-  }
+  };
 
   const panes = [
     {

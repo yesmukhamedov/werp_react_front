@@ -12,9 +12,9 @@ const AddressF4WithCreationPage = props => {
     intl: { messages },
   } = props;
 
-  function close() {
+  const close = () => {
     props.onCloseAddressF4(false);
-  }
+  };
 
   const panes = [
     {

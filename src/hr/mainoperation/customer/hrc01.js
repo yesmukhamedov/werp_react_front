@@ -5,7 +5,6 @@ import CustomerForm from './customerForm';
 import { Container, Header } from 'semantic-ui-react';
 import OutputErrors from '../../../general/error/outputErrors';
 import { saveHrc01 } from '../../hr_action';
-import moment from 'moment';
 
 const Hrc01 = props => {
   const emptyCustomer = {
@@ -19,12 +18,10 @@ const Hrc01 = props => {
     passportId: '',
     countryId: '',
     customerId: '',
-    birthdayYYYYMMDD: '',
     director: '',
     accountant: '',
     passportIssuedBy: '',
     passportDateOfIssue: '',
-    passportDateOfIssueYYYYMMDD: '',
   };
 
   const [errors, setErrors] = useState([]);
@@ -43,9 +40,9 @@ const Hrc01 = props => {
         waCustomer.fizYur = value;
       } else if (stateFieldName === 'birthday') {
         waCustomer.birthday = value;
-        waCustomer.birthdayYYYYMMDD = value
-          ? moment(value).format('YYYY-MM-DD')
-          : null;
+        // waCustomer.birthday = value
+        //   ? moment(value).format('YYYY-MM-DD')
+        //   : null;
       } else if (stateFieldName === 'iinBin') waCustomer.iinBin = value;
       else if (stateFieldName === 'name') waCustomer.name = value;
       else if (stateFieldName === 'firstname') waCustomer.firstname = value;
@@ -56,9 +53,9 @@ const Hrc01 = props => {
         waCustomer.passportIssuedBy = value;
       else if (stateFieldName === 'passportDateOfIssue') {
         waCustomer.passportDateOfIssue = value;
-        waCustomer.passportDateOfIssueYYYYMMDD = value
-          ? moment(value).format('YYYY-MM-DD')
-          : null;
+        // waCustomer.passportDateOfIssue = value
+        //   ? moment(value).format('YYYY-MM-DD')
+        //   : null;
       } else if (stateFieldName === 'countryId') waCustomer.countryId = value;
       else if (stateFieldName === 'director') waCustomer.director = value;
       else if (stateFieldName === 'accountant') waCustomer.accountant = value;
@@ -96,15 +93,13 @@ const Hrc01 = props => {
       iinBin,
       firstname,
       lastname,
-      middlename,
-      birthdayYYYYMMDD,
       countryId,
       passportId,
       passportIssuedBy,
-      passportDateOfIssueYYYYMMDD,
       name,
       director,
-      accountant,
+      birthday,
+      passportDateOfIssue,
     } = cus;
     if (fizYur === null || fizYur === undefined || !fizYur) {
       errors.push(errorTable[`142${language}`]);
@@ -130,9 +125,9 @@ const Hrc01 = props => {
         errors.push(errorTable[`145${language}`]);
       }
       if (
-        birthdayYYYYMMDD === null ||
-        birthdayYYYYMMDD === undefined ||
-        birthdayYYYYMMDD.length === 0
+        birthday === null ||
+        birthday === undefined ||
+        birthday.length === 0
       ) {
         errors.push(errorTable[`146${language}`]);
       }
@@ -158,9 +153,9 @@ const Hrc01 = props => {
         errors.push(errorTable[`149${language}`]);
       }
       if (
-        passportDateOfIssueYYYYMMDD === null ||
-        passportDateOfIssueYYYYMMDD === undefined ||
-        passportDateOfIssueYYYYMMDD.length === 0
+        passportDateOfIssue === null ||
+        passportDateOfIssue === undefined ||
+        passportDateOfIssue.length === 0
       ) {
         errors.push(errorTable[`150${language}`]);
       }

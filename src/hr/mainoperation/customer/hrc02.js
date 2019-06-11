@@ -5,7 +5,6 @@ import CustomerForm from './customerForm';
 import { Container, Header } from 'semantic-ui-react';
 import queryString from 'query-string';
 import { fetchDynObjHr, changeDynObjHr, saveHrc02 } from '../../hr_action';
-import moment from 'moment';
 import OutputErrors from '../../../general/error/outputErrors';
 
 const Hrc02 = props => {
@@ -40,9 +39,9 @@ const Hrc02 = props => {
       waCustomer.fizYur = value;
     } else if (stateFieldName === 'birthday') {
       waCustomer.birthday = value;
-      waCustomer.birthdayYYYYMMDD = value
-        ? moment(value).format('YYYY-MM-DD')
-        : null;
+      // waCustomer.birthday = value
+      //   ? moment(value).format('YYYY-MM-DD')
+      //   : null;
     } else if (stateFieldName === 'iinBin') waCustomer.iinBin = value;
     else if (stateFieldName === 'name') waCustomer.name = value;
     else if (stateFieldName === 'firstname') waCustomer.firstname = value;
@@ -53,9 +52,9 @@ const Hrc02 = props => {
       waCustomer.passportIssuedBy = value;
     else if (stateFieldName === 'passportDateOfIssue') {
       waCustomer.passportDateOfIssue = value;
-      waCustomer.passportDateOfIssueYYYYMMDD = value
-        ? moment(value).format('YYYY-MM-DD')
-        : null;
+      // waCustomer.passportDateOfIssue = value
+      //   ? moment(value).format('YYYY-MM-DD')
+      //   : null;
     } else if (stateFieldName === 'countryId') waCustomer.countryId = value;
     else if (stateFieldName === 'director') waCustomer.director = value;
     else if (stateFieldName === 'accountant') waCustomer.accountant = value;
@@ -95,12 +94,11 @@ const Hrc02 = props => {
       iinBin,
       firstname,
       lastname,
-      middlename,
-      birthdayYYYYMMDD,
+      birthday,
       countryId,
       passportId,
       passportIssuedBy,
-      passportDateOfIssueYYYYMMDD,
+      passportDateOfIssue,
       name,
       director,
     } = cus;
@@ -128,9 +126,9 @@ const Hrc02 = props => {
         errors.push(errorTable[`145${language}`]);
       }
       if (
-        birthdayYYYYMMDD === null ||
-        birthdayYYYYMMDD === undefined ||
-        birthdayYYYYMMDD.length === 0
+        birthday === null ||
+        birthday === undefined ||
+        birthday.length === 0
       ) {
         errors.push(errorTable[`146${language}`]);
       }
@@ -156,9 +154,9 @@ const Hrc02 = props => {
         errors.push(errorTable[`149${language}`]);
       }
       if (
-        passportDateOfIssueYYYYMMDD === null ||
-        passportDateOfIssueYYYYMMDD === undefined ||
-        passportDateOfIssueYYYYMMDD.length === 0
+        passportDateOfIssue === null ||
+        passportDateOfIssue === undefined ||
+        passportDateOfIssue.length === 0
       ) {
         errors.push(errorTable[`150${language}`]);
       }

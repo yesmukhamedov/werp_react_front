@@ -203,6 +203,7 @@ class StaffF4Modal extends PureComponent {
                   <Dropdown
                     placeholder={messages['bukrs']}
                     selection
+                    noResultsMessage={messages['noResultsMessage']}
                     options={companyOptions}
                     value={bukrsSV}
                     onChange={(e, { value }) =>
@@ -236,6 +237,7 @@ class StaffF4Modal extends PureComponent {
                     placeholder={messages['brnch']}
                     search
                     selection
+                    noResultsMessage={messages['noResultsMessage']}
                     options={
                       branchOptions[bukrsSV] ? branchOptions[bukrsSV] : []
                     }

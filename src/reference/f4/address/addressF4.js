@@ -9,9 +9,9 @@ const AddressF4 = props => {
     intl: { messages },
   } = props;
 
-  function close() {
+  const close = () => {
     props.onCloseAddressF4(false);
-  }
+  };
 
   return (
     <Modal

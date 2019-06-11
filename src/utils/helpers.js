@@ -125,6 +125,7 @@ export function moneyInputHanler(value, decimal) {
   }
 
   if (value.charAt(value.length - 1) === '.') {
+    if (decimal === 0) return value.slice(0, -1);
     return value;
   }
   // remove leading zeros
@@ -137,13 +138,14 @@ export function moneyInputHanler(value, decimal) {
     const dec1 = /^\$?[0-9]+(\.[0-9])?$/; // ^[0-9\b]+$/;
     if (value === '' || dec1.test(value)) {
       return value;
-    }
+    } else return value.slice(0, -1);
   } else if (decimal === 2) {
-    const dec1 = /^\$?[0-9]+(\.[0-9][0-9])?$/; // ^[0-9\b]+$/;
-    const dec2 = /^\$?[0-9]+(\.[0-9])?$/; // ^[0-9\b]+$/;
+    const dec1 = /^\$?[0-9]+(\.[0-9])?$/; // ^[0-9\b]+$/;
+    const dec2 = /^\$?[0-9]+(\.[0-9][0-9])?$/; // ^[0-9\b]+$/;
+
     if (value === '' || dec1.test(value) || dec2.test(value)) {
       return value;
-    }
+    } else return value.slice(0, -1);
   } else if (decimal === 3) {
     const dec1 = /^\$?[0-9]+(\.[0-9])?$/; // ^[0-9\b]+$/;
     const dec2 = /^\$?[0-9]+(\.[0-9][0-9])?$/; // ^[0-9\b]+$/;
@@ -155,7 +157,17 @@ export function moneyInputHanler(value, decimal) {
       dec3.test(value)
     ) {
       return value;
-    }
+    } else return value.slice(0, -1);
+
+    // if (value === '') {
+    //   return value;
+    // } else if (dec1.test(value) && dec2.test(value)) {
+    //   return value;
+    // }else if (dec1.test(value)) {
+    //   return parseFloat(value).toFixed(1);
+    // } else if (dec2.test(value)) {
+    //   return parseFloat(value).toFixed(2);
+    // } else return value.slice(0, -1);
   } else {
     const dec1 = /^\d+$/;
     if (value === '' || dec1.test(value)) {
@@ -228,6 +240,13 @@ export function monthsArrayToOptions(months) {
   }
 
   return out;
+}
+
+export function stringYYYYMMDDToMoment(stringVal) {
+  return stringVal ? moment(stringVal, 'YYYY-MM-DD') : '';
+}
+export function momentToStringYYYYMMDD(momentVal) {
+  return momentVal ? momentVal.format('YYYY-MM-DD') : '';
 }
 
 export function excelDownload(

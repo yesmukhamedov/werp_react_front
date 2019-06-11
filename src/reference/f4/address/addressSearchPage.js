@@ -4,11 +4,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { injectIntl } from 'react-intl';
 
-import {
-  f4ClearAnyObject,
-  f4FetchAddresses,
-  f4FetchAddrTypeOptions,
-} from '../f4_action';
+import { f4ClearAnyObject, f4FetchAddresses } from '../f4_action';
 
 const AddressSearchPage = props => {
   const {
@@ -17,14 +13,6 @@ const AddressSearchPage = props => {
     intl: { messages },
     addresses = [],
   } = props;
-
-  //componentDidMount
-  useEffect(() => {
-    if (!addressTypes || addressTypes.length === 0)
-      props.f4FetchAddrTypeOptions();
-    //unmount
-    return () => {};
-  }, []);
 
   //componentWillRecieveProps
   useEffect(() => {
@@ -35,9 +23,18 @@ const AddressSearchPage = props => {
   }, [customerId]);
 
   const getAddressTypeName = id => {
-    return addressTypes
-      .filter(item => item.value === id)
-      .map(item => item.text);
+    switch (id) {
+      case 1:
+        return messages['homeAddress'];
+      case 2:
+        return messages['workAddress'];
+      case 3:
+        return messages['registrationAddress'];
+      case 4:
+        return messages['additionalAddress'];
+      default:
+        return messages['noDataText'];
+    }
   };
 
   const getColumns = () => {
@@ -130,11 +127,10 @@ const AddressSearchPage = props => {
 function mapStateToProps(state) {
   return {
     addresses: state.f4.addresses,
-    addressTypes: state.f4.addressTypeOptions,
   };
 }
 
 export default connect(
   mapStateToProps,
-  { f4ClearAnyObject, f4FetchAddresses, f4FetchAddrTypeOptions },
+  { f4ClearAnyObject, f4FetchAddresses },
 )(injectIntl(AddressSearchPage));

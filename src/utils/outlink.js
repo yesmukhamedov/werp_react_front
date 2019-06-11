@@ -66,3 +66,14 @@ export const CustomerID = props => {
     </a>
   );
 };
+
+export const LinkToMatnrHistory = props => {
+  const { matnrListId, viewText } = props;
+  const url = `${LEGACY_URL}/logistics/werks/matnrHistory.xhtml?matnrListId=${matnrListId}`;
+  return (
+    <a target="_blank" href={url}>
+      {' '}
+      {matnrListId}{' '}
+    </a>
+  );
+};

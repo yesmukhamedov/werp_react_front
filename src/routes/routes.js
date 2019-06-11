@@ -535,10 +535,10 @@ const AsyncHrc03 = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncMmcc01 = Loadable({
+const AsyncMmcc = Loadable({
   loader: () =>
     import(
-      '../marketing/mainoperation/contract/mmcc01/mmcc01' /* webpackChunkName: "mmcc01" */
+      '../marketing/mainoperation/contract/mmcc/mmcc' /* webpackChunkName: "mmcc" */
     ),
   loading: () => <LoadingPage />,
 });
@@ -828,7 +828,7 @@ const getComponent = {
   Frep7: AsyncFrep7,
   Rfcoj: AsyncRfcoj,
   Hrrsb: AsyncHrrsb,
-  Mmcc01: AsyncMmcc01,
+  Mmcc: AsyncMmcc,
 
   SpNew: AsyncSpNewPage,
   SpView: AsyncSpViewPage,
@@ -920,8 +920,8 @@ const generateRoutes = transactionRoutes => {
       <Route path="/reference/f4/address/rfadd01" component={AsyncRfadd01} />
       <Route path="/reference/f4/address/rfadd02" component={AsyncRfadd02} />
       <Route
-        path="/marketing/mainoperation/contract/mmcc01"
-        component={AsyncMmcc01}
+        path="/marketing/mainoperation/contract/mmcc"
+        component={AsyncMmcc}
       />
 
       <Route

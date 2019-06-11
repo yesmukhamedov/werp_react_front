@@ -19,8 +19,7 @@ const PriceListF4 = props => {
       t1r1c3 = {},
       t1r1c4 = {},
       t1r1c5 = {},
-      t1r1c6 = {},
-      t1r1c7 = {};
+      t1r1c6 = {};
 
     t1r1c1 = {
       Header: ({ value }) => <b>{messages['waers']}</b>,

@@ -3,8 +3,11 @@ import { connect } from 'react-redux';
 import { Table, Dropdown, Button, Icon, Input } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment';
 import { injectIntl } from 'react-intl';
+import {
+  stringYYYYMMDDToMoment,
+  momentToStringYYYYMMDD,
+} from '../../../utils/helpers';
 
 import {
   f4FetchCountryList,
@@ -53,9 +56,9 @@ const CustomerForm = props => {
     setCountryList(waCountryList);
   }, [countries]);
 
-  function onInputChange(value, stateFieldName) {
+  const onInputChange = (value, stateFieldName) => {
     props.onInputChange(value, stateFieldName);
-  }
+  };
 
   const saveButton = () => {
     if (!trans) return null;
@@ -222,8 +225,10 @@ const CustomerForm = props => {
               showMonthDropdown
               showYearDropdown
               dropdownMode="select" // timezone="UTC"
-              selected={customer.birthday ? moment(customer.birthday) : ''}
-              onChange={event => onInputChange(event, 'birthday')}
+              selected={stringYYYYMMDDToMoment(customer.birthday)}
+              onChange={event =>
+                onInputChange(momentToStringYYYYMMDD(event), 'birthday')
+              }
               isClearable
               dateFormat="DD.MM.YYYY"
               locale={language}
@@ -275,12 +280,13 @@ const CustomerForm = props => {
               showMonthDropdown
               showYearDropdown
               dropdownMode="select" // timezone="UTC"
-              selected={
-                customer.passportDateOfIssue
-                  ? moment(customer.passportDateOfIssue)
-                  : ''
+              selected={stringYYYYMMDDToMoment(customer.passportDateOfIssue)}
+              onChange={event =>
+                onInputChange(
+                  momentToStringYYYYMMDD(event),
+                  'passportDateOfIssue',
+                )
               }
-              onChange={event => onInputChange(event, 'passportDateOfIssue')}
               isClearable
               dateFormat="DD.MM.YYYY"
               locale={language}

@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Table, Button, Modal, Dropdown, Icon } from 'semantic-ui-react';
+import { Table, Button, Dropdown, Icon } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { injectIntl } from 'react-intl';
+import {
+  stringYYYYMMDDToMoment,
+  momentToStringYYYYMMDD,
+} from '../../../utils/helpers';
 
 import {
   f4FetchCountryList,
@@ -66,51 +70,53 @@ const CustomerSearchPage = props => {
     setCountryList(waCountryList);
   }, [countries]);
 
-  function onInputChange(value, stateFieldName) {
-    const waCustomerSearchTerm = Object.assign({}, customerSearchTerm);
-    // console.log(waCustomerSearchTerm);
-    // console.log(value);
-    if (stateFieldName === 'fiz_yur') {
-      waCustomerSearchTerm.fiz_yur = value;
-      if (value === 1) {
-        setDisableFiz(true);
-        setDisableYur(false);
-        waCustomerSearchTerm.firstname = '';
-        waCustomerSearchTerm.lastname = '';
-        waCustomerSearchTerm.middlename = '';
-        waCustomerSearchTerm.passport_id = '';
-        waCustomerSearchTerm.birthday = '';
-      } else {
-        setDisableFiz(false);
-        setDisableYur(true);
-        waCustomerSearchTerm.name = '';
-      }
-    } else if (stateFieldName === 'birthday') {
-      waCustomerSearchTerm.birthdayMoment = value;
-      waCustomerSearchTerm.birthday = value
-        ? moment(value).format('YYYY-MM-DD')
-        : null;
+  const onInputChange = (value, stateFieldName) => {
+    setCustomerSearchTerm(prev => {
+      const waCustomerSearchTerm = Object.assign({}, prev);
+      // console.log(waCustomerSearchTerm);
       // console.log(value);
-      // console.log(moment(value).format('YYYY-MM-DD'),'moment');
-    } else if (stateFieldName === 'iin_bin')
-      waCustomerSearchTerm.iin_bin = value;
-    else if (stateFieldName === 'name') waCustomerSearchTerm.name = value;
-    else if (stateFieldName === 'firstname')
-      waCustomerSearchTerm.firstname = value;
-    else if (stateFieldName === 'lastname')
-      waCustomerSearchTerm.lastname = value;
-    else if (stateFieldName === 'middlename')
-      waCustomerSearchTerm.middlename = value;
-    else if (stateFieldName === 'passport_id')
-      waCustomerSearchTerm.passport_id = value;
-    else if (stateFieldName === 'country_id')
-      waCustomerSearchTerm.country_id = value;
-    else if (stateFieldName === 'country_idRemove')
-      waCustomerSearchTerm.country_id = '';
+      if (stateFieldName === 'fiz_yur') {
+        waCustomerSearchTerm.fiz_yur = value;
+        if (value === 1) {
+          setDisableFiz(true);
+          setDisableYur(false);
+          waCustomerSearchTerm.firstname = '';
+          waCustomerSearchTerm.lastname = '';
+          waCustomerSearchTerm.middlename = '';
+          waCustomerSearchTerm.passport_id = '';
+          waCustomerSearchTerm.birthday = '';
+        } else {
+          setDisableFiz(false);
+          setDisableYur(true);
+          waCustomerSearchTerm.name = '';
+        }
+      } else if (stateFieldName === 'birthday') {
+        waCustomerSearchTerm.birthdayMoment = value;
+        waCustomerSearchTerm.birthday = value;
+        // ? moment(value).format('YYYY-MM-DD')
+        // : null;
+        // console.log(value);
+        // console.log(moment(value).format('YYYY-MM-DD'),'moment');
+      } else if (stateFieldName === 'iin_bin')
+        waCustomerSearchTerm.iin_bin = value;
+      else if (stateFieldName === 'name') waCustomerSearchTerm.name = value;
+      else if (stateFieldName === 'firstname')
+        waCustomerSearchTerm.firstname = value;
+      else if (stateFieldName === 'lastname')
+        waCustomerSearchTerm.lastname = value;
+      else if (stateFieldName === 'middlename')
+        waCustomerSearchTerm.middlename = value;
+      else if (stateFieldName === 'passport_id')
+        waCustomerSearchTerm.passport_id = value;
+      else if (stateFieldName === 'country_id')
+        waCustomerSearchTerm.country_id = value;
+      else if (stateFieldName === 'country_idRemove')
+        waCustomerSearchTerm.country_id = '';
 
-    setCustomerSearchTerm(waCustomerSearchTerm);
-    props.f4ClearAnyObject('F4_CLEAR_CUSTOMERS');
-  }
+      props.f4ClearAnyObject('F4_CLEAR_CUSTOMERS');
+      return waCustomerSearchTerm;
+    });
+  };
 
   const fizYurText = { [1]: messages['yur'], [2]: messages['fiz'] };
 
@@ -162,7 +168,7 @@ const CustomerSearchPage = props => {
       Cell: obj => (
         <span>
           {obj.original.birthday
-            ? moment(obj.original.birthday).format('DD.MM.YYYY')
+            ? moment(new Date(obj.original.birthday)).format('DD.MM.YYYY')
             : ''}
         </span>
       ),
@@ -297,12 +303,12 @@ const CustomerSearchPage = props => {
                 showMonthDropdown
                 showYearDropdown
                 dropdownMode="select" // timezone="UTC"
-                selected={
-                  customerSearchTerm.birthdayMoment
-                    ? moment(customerSearchTerm.birthdayMoment)
-                    : ''
+                selected={stringYYYYMMDDToMoment(
+                  customerSearchTerm.birthdayMoment,
+                )}
+                onChange={event =>
+                  onInputChange(momentToStringYYYYMMDD(event), 'birthday')
                 }
-                onChange={event => onInputChange(event, 'birthday')}
                 isClearable={!disableFiz}
                 dateFormat="DD.MM.YYYY"
                 disabled={disableFiz}

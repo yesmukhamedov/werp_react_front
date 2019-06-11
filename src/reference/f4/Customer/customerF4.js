@@ -9,9 +9,9 @@ const CustomerF4 = props => {
     intl: { messages },
   } = props;
 
-  function close() {
+  const close = () => {
     props.onCloseCustomerF4(false);
-  }
+  };
 
   return (
     <Modal
