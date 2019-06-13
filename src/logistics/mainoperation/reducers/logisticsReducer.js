@@ -8,6 +8,7 @@ import {
   LOG_INVOICES_FETCHED,
   LOG_INVOICE_BLANKED,
   LOG_INVOICE_FETCHED,
+  LOG_SET_INVOICE_MODEL,
 } from '../actions/logisticsActionTypes';
 
 const INITIAL_STATE = {
@@ -41,6 +42,7 @@ export default function(state = INITIAL_STATE, action) {
     case LOG_INVOICES_FETCHED:
       return { ...state, invoicePage: action.payload };
 
+    case LOG_SET_INVOICE_MODEL:
     case LOG_INVOICE_BLANKED:
     case LOG_INVOICE_FETCHED:
       return { ...state, invoiceModel: action.payload };

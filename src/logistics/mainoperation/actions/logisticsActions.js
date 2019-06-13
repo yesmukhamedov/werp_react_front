@@ -17,9 +17,10 @@ import {
   LOG_INVOICES_FETCHED,
   LOG_INVOICE_BLANKED,
   LOG_INVOICE_FETCHED,
+  LOG_SET_INVOICE_MODEL,
 } from './logisticsActionTypes';
 import { doPut, doGet, doPost } from '../../../utils/apiActions';
-import { getUriByDoctype } from '../../logUtil';
+import { ACTION_UPDATE, getUriByDoctype } from '../../logUtil';
 
 export function fetchWerksRequestsIn(params) {
   return function(dispatch) {
@@ -136,10 +137,35 @@ export function setMatnrListLoading(flag) {
   };
 }
 
-export function doAction(docId) {
-  doPut('api/logistics/invoices/do-action/' + docId)
-    .then(({ data }) => {})
-    .catch(e => {});
+export function doAction(model) {
+  if (ACTION_UPDATE === model.action) {
+    window.location =
+      `/logistics/invoices/` +
+      getUriByDoctype(model.doctype) +
+      `/update/${model.docId}`;
+
+    return function(dispatch) {
+      dispatch({
+        type: null,
+        payload: null,
+      });
+    };
+  }
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPut('logistics/invoices/do-action', model)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        window.location =
+          `/logistics/invoices/` +
+          getUriByDoctype(model.doctype) +
+          `/view/${model.docId}`;
+      })
+      .catch(e => {
+        dispatch(modifyLoader(false));
+        handleError(e, dispatch);
+      });
+  };
 }
 
 export function fetchInvoices(params = {}) {
@@ -190,6 +216,13 @@ export function fetchInvoice(id, params = {}) {
   };
 }
 
+export function setInvoiceModel(model) {
+  return {
+    type: LOG_SET_INVOICE_MODEL,
+    payload: model,
+  };
+}
+
 export function saveInvoice(invoice) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
@@ -198,11 +231,10 @@ export function saveInvoice(invoice) {
     prom
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        browserHistory.push(
+        window.location =
           `/logistics/invoices/` +
-            getUriByDoctype(invoice.doctype) +
-            `/view/${data.id}`,
-        );
+          getUriByDoctype(invoice.doctype) +
+          `/view/${data.id}`;
       })
       .catch(error => {
         dispatch(modifyLoader(false));

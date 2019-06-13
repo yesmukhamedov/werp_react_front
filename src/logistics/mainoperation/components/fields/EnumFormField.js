@@ -11,7 +11,8 @@ const EnumFormField = props => {
         name={fieldName}
         multiple={multiple}
         search={search}
-        defaultValue={value}
+        selected={value}
+        value={value}
         onChange={(e, d) => props.handleChange(d)}
         options={options || []}
         error={error ? true : false}

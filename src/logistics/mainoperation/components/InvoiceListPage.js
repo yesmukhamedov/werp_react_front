@@ -130,6 +130,10 @@ class InvoiceListPage extends Component {
                 accessor: 'invoiceDate',
               },
               {
+                Header: 'Статус',
+                accessor: 'statusName',
+              },
+              {
                 Header: 'Дата создания',
                 accessor: 'createdAt',
               },

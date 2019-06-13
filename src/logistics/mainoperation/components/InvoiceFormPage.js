@@ -23,6 +23,7 @@ import {
   fetchInvoices,
   fetchMatnrs,
   saveInvoice,
+  setInvoiceModel,
 } from '../actions/logisticsActions';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
@@ -35,6 +36,7 @@ import { f4FetchWerksBranchList } from '../../../reference/f4/f4_action';
 import CustomerF4Modal from '../../../reference/f4/Customer/customerF4WithCreationPage';
 import StaffF4Modal from '../../../reference/f4/staff/staffF4Modal';
 import _ from 'lodash';
+import ActionButtons from './ActionButtons';
 
 require('moment/locale/ru');
 
@@ -97,6 +99,7 @@ class InvoiceFormPage extends Component {
     if ('view' === action) {
       this.props.fetchInvoice(this.props.match.params.id, { mode: 'detail' });
     } else if (action === 'update') {
+      this.props.fetchInvoice(this.props.match.params.id, {});
       this.props.f4FetchWerksBranchList();
     } else {
       this.props.blankInvoice(doctype);
@@ -192,6 +195,9 @@ class InvoiceFormPage extends Component {
     model[name] = value;
     if (name === 'bukrs') {
       model['toWerks'] = null;
+      model['branchId'] = null;
+      model['responsibleId'] = null;
+      model['responsibleName'] = null;
     }
 
     this.setState({
@@ -402,6 +408,10 @@ class InvoiceFormPage extends Component {
     );
   }
 
+  componentWillUnmount() {
+    this.props.setInvoiceModel({});
+  }
+
   render() {
     const { messages } = this.props.intl;
     const { model, action } = this.state;
@@ -418,6 +428,15 @@ class InvoiceFormPage extends Component {
           <Grid celled>
             <Grid.Row>
               <Grid.Column width={6}>
+                <ActionButtons
+                  doctype={model.doctype}
+                  docId={model.id}
+                  actionButtons={model.actionButtons || []}
+                />
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column width={6}>
                 <Form>
                   {action === 'view' ? (
                     this.renderViewForm(messages['bukrs'], model['bukrsName'])
@@ -426,7 +445,7 @@ class InvoiceFormPage extends Component {
                       error={errors['bukrs']}
                       label={messages['bukrs']}
                       fieldName="bukrs"
-                      value={model['bukrs']}
+                      value={model['bukrs'] || ''}
                       handleChange={this.handleChange}
                       options={this.props.companyOptions}
                     />
@@ -493,9 +512,8 @@ class InvoiceFormPage extends Component {
                       error={errors['toWerks']}
                       label={messages['receiver_whouse']}
                       fieldName="toWerks"
-                      search={true}
                       handleChange={this.handleChange}
-                      value={model['branchId']}
+                      value={model['toWerks']}
                       options={this.werksOptions(model['branchId'])}
                     />
                   )}
@@ -564,18 +582,16 @@ class InvoiceFormPage extends Component {
                     </Form.Field>
                   )}
 
-                  {action === 'view' ? (
-                    this.renderViewForm(messages['bktxt'], model['note'])
-                  ) : (
-                    <Form.Field>
-                      <label>{messages['bktxt']}</label>
-                      <TextArea
-                        onChange={this.handleChange}
-                        placeholder={'...'}
-                        value={model['note'] || ''}
-                      />
-                    </Form.Field>
-                  )}
+                  <Form.Field>
+                    <label>{messages['bktxt']}</label>
+                    <TextArea
+                      readOnly={action === 'view'}
+                      name="note"
+                      onChange={(e, d) => this.handleChange(d)}
+                      placeholder={'...'}
+                      value={model['note'] || ''}
+                    />
+                  </Form.Field>
 
                   {action === 'view' ? (
                     ''
@@ -668,5 +684,6 @@ export default connect(
     blankInvoice,
     saveInvoice,
     fetchInvoice,
+    setInvoiceModel,
   },
 )(injectIntl(InvoiceFormPage));

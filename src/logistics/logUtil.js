@@ -5,6 +5,8 @@ export const Doctype = {
   LGI_POSTING_TRADE_IN: 'LGI_POSTING_TRADE_IN',
 };
 
+export const ACTION_UPDATE = 'UPDATE';
+
 export const getUriByDoctype = doctype => {
   switch (doctype) {
     case Doctype.LGI_POSTING_TRADE_IN:
