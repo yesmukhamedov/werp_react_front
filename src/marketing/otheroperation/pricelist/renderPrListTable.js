@@ -59,8 +59,8 @@ class RenderPListTable extends Component {
   };
 
   render() {
-    const { messages, items } = this.props;
-    if (items.length === 0 || items.length === undefined) {
+    const { messages, pritms } = this.props;
+    if (pritms.length === 0 || pritms.length === undefined) {
       return [];
     }
     const columns = [
@@ -225,12 +225,11 @@ class RenderPListTable extends Component {
         minWidth: 100,
       },
     ];
-
     return (
       <div style={{ backgroundColor: 'white', color: 'black' }}>
         <ReactTable
           columns={columns}
-          data={items}
+          data={pritms}
           resolveData={data => data.map(row => row)}
           filterable
           rowsText={messages['rowsText']}

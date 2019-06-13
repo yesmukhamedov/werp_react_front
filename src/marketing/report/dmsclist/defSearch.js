@@ -17,23 +17,8 @@ export default function DefSearch(props) {
     return out;
   };
 
-  const getBranchOptions = () => {
-    const { branchOptions } = props;
-    if (!branchOptions) {
-      return [];
-    }
-    let out = branchOptions.map(c => {
-      return {
-        key: parseInt(c.branch_id, 10),
-        text: `${c.text45}`,
-        value: parseInt(c.branch_id, 10),
-      };
-    });
-    return out;
-  };
+  const { messages, branchOptions, searchPms } = props;
 
-  const { messages } = props;
-  const { bukrs, branchId } = props.searchPms;
   return (
     <Form>
       <Segment clearing>
@@ -47,7 +32,7 @@ export default function DefSearch(props) {
                 fluid
                 selection
                 search
-                value={bukrs}
+                value={searchPms.bukrs}
                 options={getCompanyOptions()}
                 onChange={(e, o) => props.inputChange('bukrs', o)}
                 placeholder={messages['bukrs']}
@@ -58,8 +43,8 @@ export default function DefSearch(props) {
                 fluid
                 selection
                 search
-                value={branchId}
-                options={getBranchOptions()}
+                value={searchPms.branchId}
+                options={searchPms.bukrs ? branchOptions[searchPms.bukrs] : []}
                 onChange={(e, o) => props.inputChange('branchId', o)}
                 placeholder={messages['L__BRANCH']}
               />

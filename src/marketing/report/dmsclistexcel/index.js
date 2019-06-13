@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import {
-  fetchBrchesByBukrs,
-  fetchAllCont,
-  fetchDeContr,
-  fByLazyCustomer,
-} from '../../marketingAction';
+  f4FetchCountryList,
+  f4FetchWerksBranchList,
+} from '../../../reference/f4/f4_action';
+import { getByDefSearchOpts, getContByOpts } from '../../marketingAction';
 import { Container, Segment, Tab, Button, Menu } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
 import DefSearch from './defSearch';
@@ -17,11 +15,13 @@ import SearchByNum from './searchByNum';
 import { messages } from '../../../locales/defineMessages';
 import { excelDownload } from '../../../utils/helpers';
 
-class ListContracts extends Component {
+class DmscListExcel extends Component {
   constructor() {
     super();
     this.state = {
-      searchPms: {},
+      searchPms: {
+        bukrs: '',
+      },
       row: '',
       activeIndex: 1,
     };
@@ -43,12 +43,11 @@ class ListContracts extends Component {
     const searchPms = Object.assign({}, this.state.searchPms);
     switch (fieldName) {
       case 'bukrs':
-        searchPms['bukrs'] = o.value;
-        this.props.fetchBrchesByBukrs(o.value);
+        searchPms.bukrs = o.value;
         break;
       case 'branchId':
         searchPms['branchId'] = o.value;
-        this.props.fetchDeContr(o.value);
+        this.props.getByDefSearchOpts(o.value);
         break;
       case 'dealerId':
         searchPms['dealerId'] = o.value;
@@ -91,29 +90,29 @@ class ListContracts extends Component {
     this.setState({ ...this.state, searchPms });
   }
 
-  searchBukrBr() {
-    this.props.fetchAllCont(this.state.searchPms);
+  searchContract() {
+    this.props.getContByOpts(this.state.searchPms);
   }
 
-  exportExcel() {
-    const { formatMessage } = this.props.intl;
+  exportExcel(messages) {
     let excelHeaders = [];
-    excelHeaders.push(formatMessage(messages.branch));
-    excelHeaders.push(formatMessage(messages.contractNumber));
-    excelHeaders.push(formatMessage(messages.contractDate));
-    excelHeaders.push('Ф.И.О. клиента');
-    excelHeaders.push(formatMessage(messages.snNum));
-    excelHeaders.push(formatMessage(messages.status));
-    excelHeaders.push('Физ.статус');
-    excelHeaders.push(formatMessage(messages.dealer));
-    excelHeaders.push('Взносщик');
-    excelHeaders.push('Вид');
-    excelHeaders.push(formatMessage(messages.price));
-    excelHeaders.push(formatMessage(messages.paid));
-    excelHeaders.push(formatMessage(messages.remainder));
-    excelHeaders.push(formatMessage(messages.extraInfo));
+    excelHeaders.push(messages['L__BRANCH']);
+    excelHeaders.push(messages['L__CONTRACT_NUMBER']);
+    excelHeaders.push(messages['L__CONTRACT_DATE']);
+    excelHeaders.push(messages['L__CLIENT_FULLNAME']);
+    excelHeaders.push(messages['snNum']);
+    excelHeaders.push(messages['L__STATUS']);
+    excelHeaders.push(messages['phys_status']);
+    excelHeaders.push(messages['L__DEALER']);
+    excelHeaders.push(messages['collector']);
+    excelHeaders.push(messages['kind']);
+    excelHeaders.push(messages['price']);
+    excelHeaders.push(messages['paid']);
+    excelHeaders.push(messages['remainder']);
+    excelHeaders.push(messages['extraInfo']);
+
     excelDownload(
-      '/api/marketing/contract/list/downloadExcel',
+      '/api/marketing/dmsclist/report/dmsclistexcel',
       'mcontrrep.xls',
       'outputTable',
       this.props.contlist,
@@ -124,7 +123,7 @@ class ListContracts extends Component {
   render() {
     const { messages } = this.props.intl;
     const { activeIndex } = this.state;
-    const { contlist } = this.props;
+
     return (
       <div>
         <Container
@@ -152,7 +151,7 @@ class ListContracts extends Component {
             <Button
               color="teal"
               floated="right"
-              onClick={() => this.searchBukrBr()}
+              onClick={() => this.searchContract()}
             >
               {messages['search']}
             </Button>
@@ -163,7 +162,7 @@ class ListContracts extends Component {
                 <img
                   className="clickableItem"
                   src="/assets/img/xlsx_export_icon.png"
-                  onClick={() => this.exportExcel()}
+                  onClick={() => this.exportExcel(messages)}
                 />
               </Menu.Item>
             </Menu>
@@ -224,15 +223,15 @@ function mapStateToProps(state) {
   return {
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
-    branchOptions: state.markReducer.bukrsBranches,
-    contlist: state.markReducer.contlist,
-    dealers: state.markReducer.dealers,
-    demosec: state.markReducer.demosec,
-    collectors: state.markReducer.collectors,
-    lazyitems: state.markReducer.lazyitems,
-    lazymeta: state.markReducer.lazymeta,
-    contstatus: state.markReducer.contstatus,
-    contlaststate: state.markReducer.contlaststate,
+    branchOptions: state.userInfo.branchOptionsAll,
+    contlist: state.marketing.contlist,
+    dealers: state.marketing.dealers,
+    demosec: state.marketing.demosec,
+    collectors: state.marketing.collectors,
+    lazyitems: state.marketing.lazyitems,
+    lazymeta: state.marketing.lazymeta,
+    contstatus: state.marketing.contstatus,
+    contlaststate: state.marketing.contlaststate,
   };
 }
 
@@ -240,9 +239,8 @@ export default connect(
   mapStateToProps,
   {
     f4FetchCountryList,
-    fetchBrchesByBukrs,
-    fetchAllCont,
-    fetchDeContr,
-    fByLazyCustomer,
+    f4FetchWerksBranchList,
+    getContByOpts,
+    getByDefSearchOpts,
   },
-)(injectIntl(ListContracts));
+)(injectIntl(DmscListExcel));

@@ -11,13 +11,15 @@ import {
 } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
 import {
-  fetchAll,
+  getLazyPrList,
   getAllMatnr,
-  updateRow,
-  fetchBrchesByBukrs,
+  updPrListRow,
   savePrice,
 } from './../../marketingAction';
-import { f4FetchCountryList } from '../../../reference/f4/f4_action';
+import {
+  f4FetchCountryList,
+  f4FetchWerksBranchList,
+} from '../../../reference/f4/f4_action';
 import RenderPrListTable from './renderPrListTable';
 import NewPrice from './newPrice';
 
@@ -32,7 +34,7 @@ class PriceList extends Component {
     this.updateRow = this.updateRow.bind(this);
   }
 
-  inputChange(fieldName, o) {
+  inputChange(o) {
     let bukrs = this.state.bukrs;
     if (o) {
       bukrs = o.value;
@@ -50,7 +52,7 @@ class PriceList extends Component {
     let temp = [];
     temp.push('bukrs=' + bukrs);
     let q = temp.join('&');
-    this.props.fetchAll(q);
+    this.props.getLazyPrList(q);
   }
 
   submitButton() {
@@ -66,7 +68,7 @@ class PriceList extends Component {
   }
   //*********************************** END NEW PRICE  */
   updateRow(updRow) {
-    this.props.updateRow(updRow);
+    this.props.updPrListRow(updRow);
   }
 
   showAddModal = () => {
@@ -116,7 +118,7 @@ class PriceList extends Component {
                 selection
                 search
                 options={this.getCompanyOptions()}
-                onChange={(e, o) => this.inputChange('bukrs', o)}
+                onChange={(e, o) => this.inputChange(o)}
               />
               <br />
               <Button
@@ -134,24 +136,24 @@ class PriceList extends Component {
             <Segment tertiary>
               <RenderPrListTable
                 messages={messages}
-                items={this.props.items}
+                pritms={this.props.pritms}
                 updateRow={this.updateRow}
               />
             </Segment>
             <i>
-              <strong>Total Rows: {this.props.totalRows}</strong>
+              <strong>Total Rows: {this.props.prtotRws}</strong>
             </i>
           </Grid.Column>
         </Grid>
 
         <NewPrice
           {...this.state}
-          fetchBrchesByBukrs={this.props.fetchBrchesByBukrs}
+          fetchBrchesByBukrs={this.props.f4FetchWerksBranchList}
           countryOpts={this.getCountryOptions()}
           messages={messages}
           close={this.close.bind(this)}
           getCompanyOptions={this.getCompanyOptions()}
-          branchOptions={this.getBranchOptions()}
+          branchOptions={this.props.branchOptions}
           allMatnr={this.getAllMatnr.bind(this)}
           matrn={this.props.matrn}
           addNPrice={this.addNPrice.bind(this)}
@@ -191,31 +193,16 @@ class PriceList extends Component {
     });
     return out;
   }
-
-  getBranchOptions() {
-    const { branchOptions } = this.props;
-    if (!branchOptions) {
-      return [];
-    }
-    let out = branchOptions.map(c => {
-      return {
-        key: parseInt(c.branch_id, 10),
-        text: `${c.text45}`,
-        value: parseInt(c.branch_id, 10),
-      };
-    });
-    return out;
-  }
 }
 
 function mapStateToProps(state) {
   return {
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
-    branchOptions: state.markReducer.bukrsBranches,
-    items: state.markReducer.items,
-    totalRows: state.markReducer.totalRows,
-    matrn: state.markReducer.matrn,
+    branchOptions: state.userInfo.branchOptionsAll,
+    pritms: state.marketing.pritms,
+    prtotRws: state.marketing.prtotRws,
+    matrn: state.marketing.matrn,
   };
 }
 
@@ -223,10 +210,10 @@ export default connect(
   mapStateToProps,
   {
     f4FetchCountryList,
-    fetchAll,
+    getLazyPrList,
     getAllMatnr,
-    updateRow,
-    fetchBrchesByBukrs,
+    updPrListRow,
+    f4FetchWerksBranchList,
     savePrice,
   },
 )(injectIntl(PriceList));

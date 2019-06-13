@@ -10,8 +10,9 @@ class NewPrice extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      modalForm: {},
-      bukrs: '',
+      modalForm: {
+        bukrs: '',
+      },
       showMatnrModal: false,
       row: '',
     };
@@ -93,8 +94,7 @@ class NewPrice extends Component {
     const modalForm = Object.assign({}, this.state.modalForm);
     switch (fieldName) {
       case 'bukrs':
-        modalForm['bukrs'] = o.value;
-        this.props.fetchBrchesByBukrs(o.value);
+        modalForm.bukrs = o.value;
         break;
       case 'country_id':
         modalForm['country_id'] = o.value;
@@ -118,14 +118,12 @@ class NewPrice extends Component {
     }
     this.setState({
       ...this.state,
-      bukrs: bukrs,
       modalForm,
     });
   }
 
   render() {
     const { messages, showAddModal, countryOpts } = this.props;
-
     return (
       <div>
         <Modal size={'small'} open={showAddModal}>
@@ -158,7 +156,7 @@ class NewPrice extends Component {
 
   renderForm(messages, countryOpts) {
     const { row, modalForm } = this.state;
-
+    const { getCompanyOptions, branchOptions } = this.props;
     return (
       <Form>
         <Form.Group widths="equal">
@@ -168,8 +166,8 @@ class NewPrice extends Component {
               fluid
               search
               selection
-              value={modalForm.bukrs}
-              options={this.props.getCompanyOptions}
+              value={modalForm.text}
+              options={getCompanyOptions}
               onChange={(e, o) => this.handleChange('bukrs', o)}
             />
           </Form.Field>
@@ -179,8 +177,8 @@ class NewPrice extends Component {
               fluid
               search
               selection
-              value={modalForm.brnch_id}
-              options={this.props.branchOptions}
+              value={modalForm.text}
+              options={modalForm.bukrs ? branchOptions[modalForm.bukrs] : []}
               onChange={(e, o) => this.handleChange('branch_id', o)}
             />
           </Form.Field>

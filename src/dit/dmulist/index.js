@@ -164,7 +164,7 @@ class Menu extends Component {
                 addFormModal={this.addFormModal.bind(this)}
                 newNode={this.newNode.bind(this)}
                 blankMenuNode={this.props.blankMenuNode}
-                currentTransactions={this.props.currentTransactions}
+                currTrans={this.props.currTrans}
                 messages={messages}
               />
 
@@ -317,7 +317,7 @@ function mapStateToProps(state) {
   return {
     treeData: state.transactionReducer.treeData,
     blankMenuNode: state.transactionReducer.blankMenuNode,
-    currentTransactions: state.transactionReducer.currentTransactions,
+    currTrans: state.transactionReducer.currTrans,
   };
 }
 

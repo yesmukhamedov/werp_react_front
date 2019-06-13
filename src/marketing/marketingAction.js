@@ -6,48 +6,28 @@ import {
 
 import { doGet, doPost, doPut } from '../utils/apiActions';
 
-export const ALL_PRLIST = 'ALL_PRLIST';
-export const ALL_MATNR = 'ALL_MATNR';
-export const UPD_PRLIST = 'UPD_PRLIST';
-export const FETCH_BUKRS_BRANCHES = 'FETCH_BUKRS_BRANCHES';
-export const FETCH_DEALER_SECR = 'FETCH_DEALER_SECR';
+/******************************************************************** PRICE LIST */
+export const GET_PRLIST = 'GET_PRLIST';
+export const GET_MATNRS = 'GET_MATNRS';
 export const NEW_PRICE = 'NEW_PRICE';
-export const CONT_LIST = 'CONT_LIST';
-export const ALL_LAZY_CUST = 'ALL_LAZY_CUST';
+export const UPD_PRLIST = 'UPD_PRLIST';
 
 export const FETCH_DYNOBJ_MARKETING = 'FETCH_DYNOBJ_MARKETING';
 export const CHANGE_DYNOBJ_MARKETING = 'CHANGE_DYNOBJ_MARKETING';
 export const CLEAR_DYNOBJ_MARKETING = 'CLEAR_DYNOBJ_MARKETING';
 
-/******************************************************************** CONTRACT */
+/******************************************************************** DMSCLIST */
+export const GET_CONT_DMSC_SEAR_OPTS = 'GET_CONT_DMSC_SEAR_OPTS';
+export const CONT_DMSC_LIST = 'CONT_DMSC_LIST';
 
-export function fByLazyCustomer(searchForm, page) {
+export function getByDefSearchOpts(branchId) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`marketing/contract/getlazycust?${page}`, searchForm)
+    doGet(`marketing/dmsclist/getbybranch/` + branchId)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: ALL_LAZY_CUST,
-          lazyitems: data.lazyitems,
-          lazymeta: data.lazymeta,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
-}
-
-export function fetchDeContr(branchId) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`marketing/contract/getbybranch/` + branchId)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: FETCH_DEALER_SECR,
+          type: GET_CONT_DMSC_SEAR_OPTS,
           dealers: data.dealers,
           demosec: data.demosec,
           collectors: data.collectors,
@@ -62,14 +42,14 @@ export function fetchDeContr(branchId) {
   };
 }
 
-export function fetchAllCont(searchPms) {
+export function getContByOpts(searchPms) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`marketing/contract/list`, searchPms)
+    doGet(`marketing/dmsclist/searchbyparams`, searchPms)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: CONT_LIST,
+          type: CONT_DMSC_LIST,
           payload: data,
         });
       })
@@ -82,16 +62,16 @@ export function fetchAllCont(searchPms) {
 
 /****************************************************** PRICE LIST */
 
-export function fetchAll(bukrs) {
+export function getLazyPrList(bukrs) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`pricelist/all?${bukrs}`)
+    doGet(`pricelist/matnrpricelazy?${bukrs}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: ALL_PRLIST,
-          items: data.items,
-          totalRows: data.totalRows,
+          type: GET_PRLIST,
+          pritms: data.pritms,
+          prtotRws: data.prtotRws,
         });
       })
       .catch(error => {
@@ -104,11 +84,11 @@ export function fetchAll(bukrs) {
 export function getAllMatnr() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`pricelist/allmatnr`)
+    doGet(`pricelist/matnrs`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: ALL_MATNR,
+          type: GET_MATNRS,
           payload: data,
         });
       })
@@ -119,7 +99,30 @@ export function getAllMatnr() {
   };
 }
 
-export function updateRow(row) {
+export function savePrice(price) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost(`pricelist/newprice/`, price)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        if (data) {
+          dispatch(successed());
+          dispatch({
+            type: NEW_PRICE,
+            payload: price,
+          });
+        } else {
+          dispatch(notSuccessed());
+        }
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function updPrListRow(row) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doPut('pricelist/update', row)
@@ -133,61 +136,6 @@ export function updateRow(row) {
       .catch(error => {
         dispatch(modifyLoader(false));
         dispatch(notify('error', error.response.data.message, 'Ошибка'));
-      });
-  };
-}
-
-export function fetchBrchesByBukrs(bukrs) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`users/branches/` + bukrs)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: FETCH_BUKRS_BRANCHES,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
-}
-
-export function savePrice(price) {
-  return function(dispatch) {
-    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-    const language = localStorage.getItem('language');
-    dispatch(modifyLoader(true));
-    doPost(`pricelist/newprice/`, price)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        if (data) {
-          dispatch(
-            notify(
-              'success',
-              errorTable[`104${language}`],
-              errorTable[`101${language}`],
-            ),
-          );
-          dispatch({
-            type: NEW_PRICE,
-            payload: price,
-          });
-        } else {
-          dispatch(
-            notify(
-              'info',
-              errorTable[`133${language}`],
-              errorTable[`132${language}`],
-            ),
-          );
-        }
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
       });
   };
 }
@@ -222,4 +170,24 @@ export function clearDynObjMarketing() {
     type: CLEAR_DYNOBJ_MARKETING,
   };
   return obj;
+}
+
+export function successed() {
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
+  return notify(
+    'success',
+    errorTable[`104${language}`],
+    errorTable[`101${language}`],
+  );
+}
+
+export function notSuccessed() {
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
+  return notify(
+    'info',
+    errorTable[`104${language}`],
+    errorTable[`101${language}`],
+  );
 }

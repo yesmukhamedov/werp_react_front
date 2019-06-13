@@ -9,7 +9,7 @@ export default function TransactionSelect(props) {
     props.selectedTrId(tr);
   };
 
-  const { openTr, currentTransactions, messages } = props;
+  const { openTr, currTrans, messages } = props;
   const columns = [
     {
       Header: 'ID',
@@ -81,7 +81,7 @@ export default function TransactionSelect(props) {
       <Modal.Content>
         <ReactTable
           columns={columns}
-          data={currentTransactions}
+          data={currTrans}
           resolveData={data => data.map(row => row)}
           filterable
           rowsText={messages['rowsText']}

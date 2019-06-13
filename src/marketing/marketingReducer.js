@@ -1,24 +1,21 @@
 import {
-  ALL_PRLIST,
-  UPD_PRLIST,
-  FETCH_BUKRS_BRANCHES,
-  ALL_MATNR,
+  GET_PRLIST,
+  GET_MATNRS,
   NEW_PRICE,
-  CONT_LIST,
-  FETCH_DEALER_SECR,
-  ALL_LAZY_CUST,
+  UPD_PRLIST,
+  CONT_DMSC_LIST,
+  GET_CONT_DMSC_SEAR_OPTS,
   FETCH_DYNOBJ_MARKETING,
   CHANGE_DYNOBJ_MARKETING,
   CLEAR_DYNOBJ_MARKETING,
 } from './marketingAction';
 
 const INITIAL_STATE = {
-  items: [],
-  totalRows: 0,
+  pritms: [],
   contlist: [],
   lazyitems: [],
   lazymeta: {
-    totalRows: 0,
+    prtotRws: 0,
     perPage: 0,
     page: 0,
   },
@@ -28,43 +25,34 @@ const INITIAL_STATE = {
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case ALL_LAZY_CUST:
-      return {
-        ...state,
-        lazyitems: action.lazyitems,
-        lazymeta: action.lazymeta,
-      };
-    case CONT_LIST:
-      return { ...state, contlist: action.payload };
-    case ALL_PRLIST:
-      return { ...state, items: action.items, totalRows: action.totalRows };
-    case UPD_PRLIST:
-      const updatedRow = action.payload;
-      const newRow = [];
-      for (const k in state.items) {
-        if (state.items[k].price_list_id === updatedRow.price_list_id) {
-          newRow.push(updatedRow);
-        } else {
-          newRow.push(state.items[k]);
-        }
-      }
-      return { ...state, items: newRow };
-    case FETCH_BUKRS_BRANCHES:
-      return { ...state, bukrsBranches: action.payload };
-    case ALL_MATNR:
+    /******************************************************************        PRICE        */
+    case GET_PRLIST:
+      return { ...state, pritms: action.pritms, prtotRws: action.prtotRws };
+    case GET_MATNRS:
       return { ...state, matrn: action.payload };
     case NEW_PRICE:
-      const newItems = Object.assign([], state.items);
-      if (newItems.length > 0) {
+      const newPrice = Object.assign([], state.pritms);
+      if (newPrice.length > 0) {
         const price = action.payload;
         price['price_list_id'] = Math.random();
         price['from_date'] = '';
         price['active'] = 'true';
-        newItems.push(price);
+        newPrice.push(price);
       }
-      return { ...state, items: newItems };
+      return { ...state, pritms: newPrice };
+    case UPD_PRLIST:
+      const updPrRow = [];
+      for (const key in state.pritms) {
+        if (state.pritms[key].price_list_id === action.payload.price_list_id) {
+          updPrRow[key] = action.payload;
+        } else {
+          updPrRow[key] = state.pritms[key];
+        }
+      }
+      return { ...state, pritms: updPrRow };
+
     /************************************************     CONTRACT LIST        */
-    case FETCH_DEALER_SECR:
+    case GET_CONT_DMSC_SEAR_OPTS:
       return {
         ...state,
         dealers: action.dealers,
@@ -74,6 +62,10 @@ export default function(state = INITIAL_STATE, action) {
         contlaststate: action.contlaststate,
       };
 
+    case CONT_DMSC_LIST:
+      return { ...state, contlist: action.payload };
+
+    /************************************************  END CONTRACT LIST        */
     case FETCH_DYNOBJ_MARKETING:
       return {
         ...state,

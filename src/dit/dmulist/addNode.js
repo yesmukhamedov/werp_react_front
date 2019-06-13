@@ -129,7 +129,7 @@ class AddNode extends Component {
             <TransactionSelect
               openTr={this.state.openTransactionModal}
               transactionModal={this.transactionModal.bind(this)}
-              currentTransactions={this.props.currentTransactions}
+              currTrans={this.props.currTrans}
               selectedTrId={this.selectedTrId.bind(this)}
               messages={this.props.messages}
             />

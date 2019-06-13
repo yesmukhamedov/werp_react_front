@@ -790,10 +790,18 @@ const AsyncExitInterviewCreatePage = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncContract = Loadable({
+const AsyncDmscList = Loadable({
   loader: () =>
     import(
-      '../marketing/report/contract' /* webpackChunkName: "ExitInterviewCreatePage" */
+      '../marketing/report/dmsclist' /* webpackChunkName: "ExitInterviewCreatePage" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncDmscListExcel = Loadable({
+  loader: () =>
+    import(
+      '../marketing/report/dmsclistexcel' /* webpackChunkName: "dmsclistexcel" */
     ),
   loading: () => <LoadingPage />,
 });
@@ -890,7 +898,8 @@ const getComponent = {
   RefDemoPriceList: AsyncRefDemoPriceListPage,
   Eventlog: AsyncEventLog,
   Lplist: AsyncPriceList,
-  Dmsclist: AsyncContract,
+  Dmsclist: AsyncDmscList,
+  DmscLstExcel: AsyncDmscListExcel,
 };
 
 const generateRoutes = transactionRoutes => {
