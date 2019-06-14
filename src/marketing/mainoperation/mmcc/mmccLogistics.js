@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
-import { fetchDynObjMarketing } from '../../../marketingAction';
-import MatnrListF4Modal from '../matnrListF4';
-import PromoListF4Modal from '../promoListF4';
+import { fetchDynObjMarketing } from '../../marketingAction';
+import MatnrListF4Modal from '../contractAdditionaComponents/matnrListF4';
+import PromoListF4Modal from '../contractAdditionaComponents/promoListF4';
 import {
   Segment,
   Table,
@@ -20,7 +20,7 @@ import {
 import {
   stringYYYYMMDDToMoment,
   momentToStringYYYYMMDD,
-} from '../../../../utils/helpers';
+} from '../../../utils/helpers';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';

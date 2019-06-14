@@ -538,7 +538,15 @@ const AsyncHrc03 = Loadable({
 const AsyncMmcc = Loadable({
   loader: () =>
     import(
-      '../marketing/mainoperation/contract/mmcc/mmcc' /* webpackChunkName: "mmcc" */
+      '../marketing/mainoperation/mmcc/mmcc' /* webpackChunkName: "mmcc" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncMmcr = Loadable({
+  loader: () =>
+    import(
+      '../marketing/mainoperation/mmcr/mmcr' /* webpackChunkName: "mmcr" */
     ),
   loading: () => <LoadingPage />,
 });
@@ -928,10 +936,8 @@ const generateRoutes = transactionRoutes => {
       <Route path="/hr/mainoperation/customer/hrc03" component={AsyncHrc03} />
       <Route path="/reference/f4/address/rfadd01" component={AsyncRfadd01} />
       <Route path="/reference/f4/address/rfadd02" component={AsyncRfadd02} />
-      <Route
-        path="/marketing/mainoperation/contract/mmcc"
-        component={AsyncMmcc}
-      />
+      <Route path="/marketing/mainoperation/mmcc" component={AsyncMmcc} />
+      <Route path="/marketing/mainoperation/mmcr" component={AsyncMmcr} />
 
       <Route
         path="/hr/exitinterviews"

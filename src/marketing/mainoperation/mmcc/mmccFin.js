@@ -2,15 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import PriceListF4Modal from '../priceListF4';
+import PriceListF4Modal from '../contractAdditionaComponents/priceListF4';
 import {
   handleFocus,
   moneyFormat,
   stringYYYYMMDDToMoment,
   momentToStringYYYYMMDD,
-} from '../../../../utils/helpers';
-import { f4FetchSubCompanies } from '../../../../reference/f4/f4_action';
-import { fetchDynObjMarketing } from '../../../marketingAction';
+} from '../../../utils/helpers';
+import { f4FetchSubCompanies } from '../../../reference/f4/f4_action';
+import { fetchDynObjMarketing } from '../../marketingAction';
 import {
   Segment,
   Table,

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import AddressF4Modal from '../../../../reference/f4/address/addressF4WithCreationPage';
+import AddressF4Modal from '../../../reference/f4/address/addressF4WithCreationPage';
 
 import { Segment, Table, Icon, Label } from 'semantic-ui-react';
 

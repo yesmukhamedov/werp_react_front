@@ -14,8 +14,8 @@ import {
   Tab,
   Label,
 } from 'semantic-ui-react';
-import { modifyLoader } from '../../../../general/loader/loader_action';
-import OutputErrors from '../../../../general/error/outputErrors';
+import { modifyLoader } from '../../../general/loader/loader_action';
+import OutputErrors from '../../../general/error/outputErrors';
 import MmccFin from './mmccFin';
 import MmccLogistics from './mmccLogistics';
 import MmccContactDetails from './mmccContactDetails';
@@ -26,7 +26,7 @@ import {
   f4FetchConTypeList,
   f4FetchBranches,
   f4ClearAnyObject,
-} from '../../../../reference/f4/f4_action';
+} from '../../../reference/f4/f4_action';
 
 import {
   handleFocus,
@@ -34,13 +34,13 @@ import {
   moneyInputHanler,
   stringYYYYMMDDToMoment,
   momentYYYYMMDDToString,
-} from '../../../../utils/helpers';
+} from '../../../utils/helpers';
 
 import moment from 'moment';
 require('moment/locale/ru');
 require('moment/locale/tr');
 
-const Mmcc01 = props => {
+const Mmcc = props => {
   // function Mmcc01() {
 
   const emptyContract = {
@@ -84,6 +84,7 @@ const Mmcc01 = props => {
     dealerSubtract: '',
     discountFromRef: '',
     info: '',
+    info2: '',
     bankPartnerId: '',
     awkey: '',
     warStart: '',
@@ -105,7 +106,6 @@ const Mmcc01 = props => {
     tradeInTovarSerial: '',
   };
 
-  const [activeIndex, setActiveIndex] = useState(1);
   const [contract, setContract] = useState({ ...emptyContract });
   const {
     contractTypeList,
@@ -589,4 +589,4 @@ export default connect(
     f4FetchBranches,
     f4ClearAnyObject,
   },
-)(injectIntl(Mmcc01));
+)(injectIntl(Mmcc));

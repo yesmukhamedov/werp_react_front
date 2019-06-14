@@ -8,7 +8,7 @@ import { Segment, Table, Icon, Dropdown, Label } from 'semantic-ui-react';
 import {
   LinkToStaffCardView,
   LinkToCustomerHrc03,
-} from '../../../../utils/outlink';
+} from '../../../utils/outlink';
 
 import {
   handleFocus,
@@ -16,10 +16,10 @@ import {
   moneyInputHanler,
   stringYYYYMMDDToMoment,
   momentToStringYYYYMMDD,
-} from '../../../../utils/helpers';
+} from '../../../utils/helpers';
 
-import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal';
-import CustomerF4Modal from '../../../../reference/f4/Customer/customerF4WithCreationPage';
+import StaffF4Modal from '../../../reference/f4/staff/staffF4Modal';
+import CustomerF4Modal from '../../../reference/f4/Customer/customerF4WithCreationPage';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
