@@ -3,15 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
-import {
-  Segment,
-  Table,
-  Icon,
-  Dropdown,
-  Label,
-  Input,
-  Button,
-} from 'semantic-ui-react';
+import { Segment, Table, Icon, Label, Input, Button } from 'semantic-ui-react';
 
 import {
   LinkToStaffCardView,
@@ -19,20 +11,8 @@ import {
   ContractNumber,
 } from '../../../utils/outlink';
 
-import {
-  handleFocus,
-  moneyFormat,
-  moneyInputHanler,
-  stringYYYYMMDDToMoment,
-  momentToStringYYYYMMDD,
-} from '../../../utils/helpers';
+import { handleFocus } from '../../../utils/helpers';
 import { fetchDynObjMarketing } from '../../marketingAction';
-
-import StaffF4Modal from '../../../reference/f4/staff/staffF4Modal';
-import CustomerF4Modal from '../../../reference/f4/Customer/customerF4WithCreationPage';
-
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 
 const MmcrBasicInfo = props => {
   const [contractNumberSearch, setContractNumberSearch] = useState('');
@@ -172,23 +152,23 @@ const MmcrBasicInfo = props => {
             </Table.Cell>
           </Table.Row>
           <Table.Row>
-            <Table.Cell>{messages['demoSecretary']}</Table.Cell>
-            <Table.Cell>
-              <span>
-                <LinkToStaffCardView
-                  staffId={contract.demoSc}
-                  staffFio={contract.demoScName}
-                />
-              </span>
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
             <Table.Cell>{messages['dealer']}</Table.Cell>
             <Table.Cell>
               <span>
                 <LinkToStaffCardView
                   staffId={contract.dealer}
                   staffFio={contract.dealerName}
+                />
+              </span>
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>{messages['demoSecretary']}</Table.Cell>
+            <Table.Cell>
+              <span>
+                <LinkToStaffCardView
+                  staffId={contract.demoSc}
+                  staffFio={contract.demoScName}
                 />
               </span>
             </Table.Cell>
@@ -236,8 +216,6 @@ function mapStateToProps(state) {
   // console.log(state,'state')
   return {
     language: state.locales.lang,
-    companyOptions: state.userInfo.companyOptions,
-    branchOptions: state.userInfo.branchOptionsMarketing,
   };
 }
 

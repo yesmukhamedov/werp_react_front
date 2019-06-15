@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
-import { fetchDynObjMarketing } from '../../marketingAction';
-import { Segment, Table, Input, Label, List } from 'semantic-ui-react';
+import { Segment, Label, List } from 'semantic-ui-react';
 
-const McrExtraInfo = props => {
+const MmcrExtraInfo = props => {
   const {
     contract = {},
     language,
@@ -23,13 +22,17 @@ const McrExtraInfo = props => {
           <List.Item>
             <List.Content>
               <List.Header as="a">info 1</List.Header>
-              <List.Description>{contract.info}</List.Description>
+              <List.Description>
+                {contract.info ? contract.info : messages['empty']}
+              </List.Description>
             </List.Content>
           </List.Item>
           <List.Item>
             <List.Content>
               <List.Header as="a">info 2</List.Header>
-              <List.Description>{contract.info2}</List.Description>
+              <List.Description>
+                {contract.info2 ? contract.info2 : messages['empty']}
+              </List.Description>
             </List.Content>
           </List.Item>
         </List>
@@ -48,4 +51,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {},
-)(injectIntl(McrExtraInfo));
+)(injectIntl(MmcrExtraInfo));

@@ -1,52 +1,21 @@
 //Contract payment schedule creation
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import PriceListF4Modal from '../contractAdditionaComponents/priceListF4';
-import {
-  handleFocus,
-  moneyFormat,
-  stringYYYYMMDDToMoment,
-  momentToStringYYYYMMDD,
-} from '../../../utils/helpers';
-import { f4FetchSubCompanies } from '../../../reference/f4/f4_action';
-import { fetchDynObjMarketing } from '../../marketingAction';
-import {
-  Segment,
-  Table,
-  Icon,
-  Dropdown,
-  Input,
-  Label,
-} from 'semantic-ui-react';
+import { moneyFormat } from '../../../utils/helpers';
+import { Segment, Table, Input, Label } from 'semantic-ui-react';
 
-import { LinkToFa03 } from '../../../utils/outlink';
+import { LinkToFa03AwkeyBukrs } from '../../../utils/outlink';
 
 const MmcrFin = props => {
   const {
     contract = {},
-    bukrs,
-    contractTypeId,
-    branchId,
     ps = [],
-    price,
-    firstPayment,
-    legalEntityId,
-    legalEntityName,
-    dealerSubtract,
-    tcode,
-    contractDate,
-    waers,
-    paymentSchedule,
-    priceList = [],
-    language,
     intl: { messages },
-    subCompanies = [],
   } = props;
 
   const paymentScheduleOutput = () => {
     let count = 0;
-    // console.log('paymentSchedule',ps)
     return (
       <Segment padded size="small">
         <Label color="blue" ribbon>
@@ -153,7 +122,10 @@ const MmcrFin = props => {
             <Table.Cell>{messages['awkey']}</Table.Cell>
             <Table.Cell>
               <span>
-                <LinkToFa03 awkey={contract.awkey} bukrs={contract.bukrs} />
+                <LinkToFa03AwkeyBukrs
+                  awkey={contract.awkey}
+                  bukrs={contract.bukrs}
+                />
               </span>
             </Table.Cell>
           </Table.Row>
@@ -179,8 +151,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  {
-    f4FetchSubCompanies,
-    fetchDynObjMarketing,
-  },
+  {},
 )(injectIntl(MmcrFin));

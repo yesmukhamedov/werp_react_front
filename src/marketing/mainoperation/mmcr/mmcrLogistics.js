@@ -1,27 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
-import { fetchDynObjMarketing } from '../../marketingAction';
 import { Segment, Table, Input, Label, List } from 'semantic-ui-react';
 
 const MmcrLogistics = props => {
   const {
     contract = {},
-    bukrs = '',
-    branchId = '',
-    tcode = '',
-    dealer = '',
-    contractTypeId = '',
-    tovarSerial = '',
-    matnrReleaseDate = '',
     tradeIn = 0,
-    tradeInMatnrListId = 0,
-    tradeInTovarSerial = '',
     contractPromoList = [],
-    matnrList = [],
-    promoList = [],
-    language,
     intl: { messages },
   } = props;
 
@@ -101,7 +88,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  {
-    fetchDynObjMarketing,
-  },
+  {},
 )(injectIntl(MmcrLogistics));

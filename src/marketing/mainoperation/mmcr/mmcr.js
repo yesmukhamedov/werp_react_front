@@ -2,45 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
-import {
-  Container,
-  Header,
-  Grid,
-  Segment,
-  Table,
-  Icon,
-  Dropdown,
-  Input,
-  Tab,
-  Label,
-} from 'semantic-ui-react';
-import { modifyLoader } from '../../../general/loader/loader_action';
-import OutputErrors from '../../../general/error/outputErrors';
+import { Container, Header, Grid, Tab } from 'semantic-ui-react';
 import MmcrFin from './mmcrFin';
 import MmcrLogistics from './mmcrLogistics';
 import MmcrContactDetails from './mmcrContactDetails';
 import MmcrBasicInfo from './mmcrBasicInfo';
 import McrExtraInfo from './mmcrExtraInfo';
+import MmcrContractHistory from './mmcrContractHistory';
+import MmcrSourceDocs from './mmcrSourceDocs';
 import queryString from 'query-string';
-
-//
-import {
-  f4FetchConTypeList,
-  f4FetchBranches,
-  f4ClearAnyObject,
-} from '../../../reference/f4/f4_action';
-
-import {
-  handleFocus,
-  moneyFormat,
-  moneyInputHanler,
-  stringYYYYMMDDToMoment,
-  momentYYYYMMDDToString,
-} from '../../../utils/helpers';
-
-import moment from 'moment';
-require('moment/locale/ru');
-require('moment/locale/tr');
 
 const Mmcr = props => {
   const emptyContract = {
@@ -118,15 +88,15 @@ const Mmcr = props => {
   const [ps, setPs] = useState([]);
   const [contractPromoList, setContractPromoList] = useState([]);
   const [contract, setContract] = useState({ ...emptyContract });
+  const [totalSourceDoscPayment, setTotalSourceDoscPayment] = useState(0);
+  const [sourceDocs, setSourceDocs] = useState([]);
+  const [contractHistory, setContractHistory] = useState([]);
   const [urlContractNumber, setUrlContractNumber] = useState('');
 
   const {
     mmcr,
     intl: { messages },
   } = props;
-
-  // const [ps, setPs] = useState([]);
-  // const [contractPromoList, setContractPromoList] = useState([]);
 
   //componentDidMount
   useEffect(() => {
@@ -149,6 +119,12 @@ const Mmcr = props => {
     if (mmcr && mmcr.addrHome) setAddrHome({ ...mmcr.addrHome });
     if (mmcr && mmcr.addrService) setAddrService({ ...mmcr.addrService });
     if (mmcr && mmcr.addrWork) setAddrWork({ ...mmcr.addrWork });
+    if (mmcr && mmcr.contractHistory)
+      setContractHistory([...mmcr.contractHistory]);
+    if (mmcr && mmcr.sourceDocs) {
+      setSourceDocs([...mmcr.sourceDocs]);
+      setTotalSourceDoscPayment(mmcr.totalSourceDoscPayment);
+    }
   }, [mmcr]);
 
   const panes = [
@@ -193,6 +169,38 @@ const Mmcr = props => {
         </Tab.Pane>
       ),
     },
+    {
+      menuItem: {
+        key: 'MmcrSourceDocs',
+        icon: 'file',
+        content: messages['sourceDoucments-Mid'],
+      },
+      pane: (
+        <Tab.Pane key={4}>
+          <MmcrSourceDocs
+            tcode={'MMCR'}
+            sourceDocs={sourceDocs}
+            totalSourceDoscPayment={totalSourceDoscPayment}
+            waers={contract.waers}
+          />
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: {
+        key: 'MmcrContractHistory',
+        icon: 'history',
+        content: messages['actionHistry'],
+      },
+      pane: (
+        <Tab.Pane key={5}>
+          <MmcrContractHistory
+            tcode={'MMCR'}
+            contractHistory={contractHistory}
+          />
+        </Tab.Pane>
+      ),
+    },
   ];
 
   return (
@@ -209,10 +217,9 @@ const Mmcr = props => {
         {messages['transNameMmcr']}
       </Header>
 
-      {/* <Rfadd01 customerId={contract.customerId} customerName={contract.customerName}/> */}
       <Grid>
         <Grid.Row>
-          <Grid.Column mobile={16} tablet={16} computer={5}>
+          <Grid.Column mobile={16} tablet={5} computer={5}>
             <MmcrBasicInfo
               contract={contract}
               urlContractNumber={urlContractNumber}
@@ -220,7 +227,7 @@ const Mmcr = props => {
             />
             <McrExtraInfo contract={contract} tcode="MMCR" />
           </Grid.Column>
-          <Grid.Column mobile={16} tablet={8} computer={8}>
+          <Grid.Column mobile={16} tablet={11} computer={11}>
             <Tab
               menu={{ attached: true, tabular: false, pointing: true }}
               panes={panes}
@@ -233,49 +240,17 @@ const Mmcr = props => {
   );
 };
 
-// function onInputChange(value, stateFieldName) {
-//   const wa = Object.assign({}, contract);
-//   wa[stateFieldName] = value;
-//   setContract(wa);
-// }
-
 function mapStateToProps(state) {
   // console.log(state, 'state');
   return {
     language: state.locales.lang,
-    contractTypeList: state.f4.contractTypeList,
-    branches: state.f4.branches,
     mmcr: state.marketing.dynamicObject.mmcr,
-    // contract: state.marketing.dynamicObject.mmcr
-    //          ?state.marketing.dynamicObject.mmcr.contract
-    //          ?state.marketing.dynamicObject.mmcr.contract:'':'',
-    // ps: state.marketing.dynamicObject.mmcr
-    //          ?state.marketing.dynamicObject.mmcr.ps
-    //          ?state.marketing.dynamicObject.mmcr.ps:'':'',
-    // addrHome: state.marketing.dynamicObject.mmcr
-    //          ?state.marketing.dynamicObject.mmcr.addrHome
-    //          ?state.marketing.dynamicObject.mmcr.addrHome:'':'',
-    // addrService: state.marketing.dynamicObject.mmcr
-    //          ?state.marketing.dynamicObject.mmcr.addrService
-    //          ?state.marketing.dynamicObject.mmcr.addrService:'':'',
-    // addrWork: state.marketing.dynamicObject.mmcr
-    //          ?state.marketing.dynamicObject.mmcr.addrWork
-    //          ?state.marketing.dynamicObject.mmcr.addrWork:'':'',
-    // ps: state.marketing.dynamicObject.mmcr.ps,
-    // addrHome: state.marketing.dynamicObject.mmcr.addrHome,
-    // addrService: state.marketing.dynamicObject.mmcr.addrService,
-    // addrWork: state.marketing.dynamicObject.mmcr.addrWork,
   };
 }
 
 export default connect(
   mapStateToProps,
   {
-    modifyLoader,
-
     //reference
-    f4FetchConTypeList,
-    f4FetchBranches,
-    f4ClearAnyObject,
   },
 )(injectIntl(Mmcr));

@@ -1,17 +1,17 @@
 //Contract contact details
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
-import { Segment, Table, Icon, Label } from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
 
 const MmcrContactDetails = props => {
   const {
     addrHome = {},
     addrWork = {},
     addrService = {},
-    contract = {},
     intl: { messages },
+    language,
   } = props;
   return (
     <div>

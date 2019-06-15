@@ -46,7 +46,7 @@ export const LinkToStaffCardViewID = props => {
 };
 
 export const ContractNumber = props => {
-  const { contract_number, customerFio = '' } = props;
+  const { contract_number = '', customerFio = '' } = props;
   // const url = `${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=${contract_number}`;
   const url = `/marketing/mainoperation/mmcr?contractNumber=${contract_number}`;
   return (
@@ -79,7 +79,7 @@ export const LinkToMatnrHistory = props => {
   );
 };
 
-export const LinkToFa03 = props => {
+export const LinkToFa03AwkeyBukrs = props => {
   const { awkey = '', bukrs = '' } = props;
   let belnr = '',
     gjahr = '';
@@ -93,6 +93,18 @@ export const LinkToFa03 = props => {
     <a target="_blank" href={url}>
       {' '}
       {awkey}{' '}
+    </a>
+  );
+};
+
+export const LinkToFa03BelnrBukrsGjahr = props => {
+  const { belnr = '', bukrs = '', gjahr = '' } = props;
+
+  const url = `/finance/mainoperation/fa03?belnr=${belnr}&bukrs=${bukrs}&gjahr=${gjahr}`;
+  return (
+    <a target="_blank" href={url}>
+      {' '}
+      {belnr}{' '}
     </a>
   );
 };
