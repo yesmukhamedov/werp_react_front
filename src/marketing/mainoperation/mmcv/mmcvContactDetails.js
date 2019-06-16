@@ -5,7 +5,7 @@ import { injectIntl } from 'react-intl';
 
 import { Table } from 'semantic-ui-react';
 
-const MmcrContactDetails = props => {
+const MmcvContactDetails = props => {
   const {
     addrHome = {},
     addrWork = {},
@@ -89,4 +89,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {},
-)(injectIntl(MmcrContactDetails));
+)(injectIntl(MmcvContactDetails));

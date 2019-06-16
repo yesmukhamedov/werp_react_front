@@ -5,7 +5,7 @@ import { Table } from 'semantic-ui-react';
 import { LinkToFa03BelnrBukrsGjahr } from '../../../utils/outlink';
 import { moneyFormat } from '../../../utils/helpers';
 
-const MmcrSourceDocs = props => {
+const MmcvSourceDocs = props => {
   const {
     sourceDocs = [],
     totalSourceDoscPayment = 0,
@@ -80,4 +80,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {},
-)(injectIntl(MmcrSourceDocs));
+)(injectIntl(MmcvSourceDocs));

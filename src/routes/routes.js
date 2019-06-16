@@ -543,10 +543,50 @@ const AsyncMmcc = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncMmcr = Loadable({
+const AsyncMmcv = Loadable({
   loader: () =>
     import(
-      '../marketing/mainoperation/mmcr/mmcr' /* webpackChunkName: "mmcr" */
+      '../marketing/mainoperation/mmcv/mmcv' /* webpackChunkName: "mmcv" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncMmcecd = Loadable({
+  loader: () =>
+    import(
+      '../marketing/mainoperation/mmcecd/mmcecd' /* webpackChunkName: "mmcecd" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncMmcef = Loadable({
+  loader: () =>
+    import(
+      '../marketing/mainoperation/mmcef/mmcef' /* webpackChunkName: "mmcef" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncMmcefa = Loadable({
+  loader: () =>
+    import(
+      '../marketing/mainoperation/mmcefa/mmcefa' /* webpackChunkName: "mmcefa" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncMmcei = Loadable({
+  loader: () =>
+    import(
+      '../marketing/mainoperation/mmcei/mmcei' /* webpackChunkName: "mmcei" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncMmcel = Loadable({
+  loader: () =>
+    import(
+      '../marketing/mainoperation/mmcel/mmcel' /* webpackChunkName: "mmcel" */
     ),
   loading: () => <LoadingPage />,
 });
@@ -937,7 +977,12 @@ const generateRoutes = transactionRoutes => {
       <Route path="/reference/f4/address/rfadd01" component={AsyncRfadd01} />
       <Route path="/reference/f4/address/rfadd02" component={AsyncRfadd02} />
       <Route path="/marketing/mainoperation/mmcc" component={AsyncMmcc} />
-      <Route path="/marketing/mainoperation/mmcr" component={AsyncMmcr} />
+      <Route path="/marketing/mainoperation/mmcv" component={AsyncMmcv} />
+      <Route path="/marketing/mainoperation/mmcecd" component={AsyncMmcecd} />
+      <Route path="/marketing/mainoperation/mmcef" component={AsyncMmcef} />
+      <Route path="/marketing/mainoperation/mmcefa" component={AsyncMmcefa} />
+      <Route path="/marketing/mainoperation/mmcei" component={AsyncMmcei} />
+      <Route path="/marketing/mainoperation/mmcel" component={AsyncMmcel} />
 
       <Route
         path="/hr/exitinterviews"

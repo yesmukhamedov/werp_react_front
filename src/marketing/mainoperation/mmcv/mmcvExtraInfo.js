@@ -4,7 +4,7 @@ import { injectIntl } from 'react-intl';
 
 import { Segment, Label, List } from 'semantic-ui-react';
 
-const MmcrExtraInfo = props => {
+const MmcvExtraInfo = props => {
   const {
     contract = {},
     language,
@@ -51,4 +51,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {},
-)(injectIntl(MmcrExtraInfo));
+)(injectIntl(MmcvExtraInfo));

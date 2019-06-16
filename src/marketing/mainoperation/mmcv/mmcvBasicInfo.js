@@ -8,13 +8,13 @@ import { Segment, Table, Icon, Label, Input, Button } from 'semantic-ui-react';
 import {
   LinkToStaffCardView,
   LinkToCustomerHrc03,
-  ContractNumber,
+  LinkToMmcv,
 } from '../../../utils/outlink';
 
 import { handleFocus } from '../../../utils/helpers';
 import { fetchDynObjMarketing } from '../../marketingAction';
 
-const MmcrBasicInfo = props => {
+const MmcvBasicInfo = props => {
   const [contractNumberSearch, setContractNumberSearch] = useState('');
   const [isLoadingContract, setIsLoadingContract] = useState(false);
 
@@ -35,7 +35,7 @@ const MmcrBasicInfo = props => {
 
   const onSearchContract = contractNumber => {
     props.fetchDynObjMarketing(
-      'marketing/contract/fetchContractByContractNumber',
+      'marketing/contract/mmcv/fetchContract',
       { contractNumber, tcode },
       bool => setIsLoadingContract(bool),
     );
@@ -199,7 +199,7 @@ const MmcrBasicInfo = props => {
             <Table.Cell>{messages['recommender']}</Table.Cell>
             <Table.Cell>
               <span>
-                <ContractNumber
+                <LinkToMmcv
                   contract_number={contract.refContractNumber}
                   customerFio={contract.refCustomerName}
                 />
@@ -222,4 +222,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   { fetchDynObjMarketing },
-)(injectIntl(MmcrBasicInfo));
+)(injectIntl(MmcvBasicInfo));

@@ -4,7 +4,7 @@ import { injectIntl } from 'react-intl';
 
 import { Segment, Table, Input, Label, List } from 'semantic-ui-react';
 
-const MmcrLogistics = props => {
+const MmcvLogistics = props => {
   const {
     contract = {},
     tradeIn = 0,
@@ -89,4 +89,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {},
-)(injectIntl(MmcrLogistics));
+)(injectIntl(MmcvLogistics));

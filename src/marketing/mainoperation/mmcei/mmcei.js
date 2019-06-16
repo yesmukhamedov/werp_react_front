@@ -1,5 +1,5 @@
-//Marketing mainoperation contract edit contact details
-//mmcecd
+//Marketing mainoperation contract edit info
+//mmcei
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
@@ -18,7 +18,7 @@ import { handleFocus } from '../../../utils/helpers';
 import { fetchDynObjMarketing, onSaveMmcTrans } from '../../marketingAction';
 import { LinkToCustomerHrc03, LinkToMmcv } from '../../../utils/outlink';
 
-const Mmcecd = props => {
+const Mmcei = props => {
   const emptyContract = {
     contractNumber: '',
     bukrs: '',
@@ -33,7 +33,7 @@ const Mmcecd = props => {
     info2: '',
   };
 
-  const tcode = 'MMCECD';
+  const tcode = 'MMCEI';
 
   const [contract, setContract] = useState({ ...emptyContract });
   const [newContract, setNewContract] = useState({ ...emptyContract });
@@ -43,7 +43,7 @@ const Mmcecd = props => {
   const [isDisabledSaveButton, setIsDisabledSaveButton] = useState(true);
 
   const {
-    mmcecd,
+    mmcei,
     intl: { messages },
     language,
   } = props;
@@ -63,16 +63,16 @@ const Mmcecd = props => {
 
   //componentWillRecieveProps
   useEffect(() => {
-    if (mmcecd && mmcecd.contract) {
-      setContract({ ...mmcecd.contract });
-      setNewContract({ ...mmcecd.contract });
+    if (mmcei && mmcei.contract) {
+      setContract({ ...mmcei.contract });
+      setNewContract({ ...mmcei.contract });
       setIsDisabledSaveButton(true);
     }
-  }, [mmcecd]);
+  }, [mmcei]);
 
   const onSearchContract = contractNumber => {
     props.fetchDynObjMarketing(
-      'marketing/contract/mmcecd/fetchContract',
+      'marketing/contract/mmcei/fetchContract',
       { contractNumber, tcode },
       bool => setIsLoadingContract(bool),
     );
@@ -96,7 +96,7 @@ const Mmcecd = props => {
 
   const onSave = () => {
     props.onSaveMmcTrans(
-      'marketing/contract/mmcecd/saveContract',
+      'marketing/contract/mmcei/saveContract',
       { contract, newContract },
       { tcode },
       setIsSavingContract,
@@ -114,7 +114,7 @@ const Mmcecd = props => {
       }}
     >
       <Header as="h2" block>
-        {messages['transNameMmcecd']}
+        {messages['transNameMmcei']}
       </Header>
       <Grid>
         <Grid.Row>
@@ -251,7 +251,7 @@ function mapStateToProps(state) {
   // console.log(state, 'state');
   return {
     language: state.locales.lang,
-    mmcecd: state.marketing.dynamicObject.mmcecd,
+    mmcei: state.marketing.dynamicObject.mmcei,
   };
 }
 
@@ -261,4 +261,4 @@ export default connect(
     fetchDynObjMarketing,
     onSaveMmcTrans,
   },
-)(injectIntl(Mmcecd));
+)(injectIntl(Mmcei));

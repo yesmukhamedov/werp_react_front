@@ -103,6 +103,13 @@ const MmccFin = props => {
           {messages['paymentSchedule']}
         </Label>
         <Table collapsing>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell />
+              <Table.HeaderCell>{messages['date']}</Table.HeaderCell>
+              <Table.HeaderCell>{messages['amount']}</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
           <Table.Body>
             {ps.map(item => {
               const {
@@ -178,21 +185,6 @@ const MmccFin = props => {
       <Table collapsing>
         <Table.Body>
           <Table.Row>
-            <Table.Cell>{messages['registeredTo']}</Table.Cell>
-            <Table.Cell>
-              <Dropdown
-                search
-                noResultsMessage={messages['noResultsMessage']}
-                selection
-                options={subCompaniesOptions}
-                value={legalEntityId}
-                onChange={(e, { value }) => {
-                  props.onFinInputChange(value, 'legalEntityId', '');
-                }}
-              />
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
             <Table.Cell>{messages['price']}</Table.Cell>
             <Table.Cell>
               <Input
@@ -247,6 +239,21 @@ const MmccFin = props => {
                 onChange={(e, { value }) =>
                   props.onFinInputChange(value, 'dealerSubtract', '')
                 }
+              />
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>{messages['registeredTo']}</Table.Cell>
+            <Table.Cell>
+              <Dropdown
+                search
+                noResultsMessage={messages['noResultsMessage']}
+                selection
+                options={subCompaniesOptions}
+                value={legalEntityId}
+                onChange={(e, { value }) => {
+                  props.onFinInputChange(value, 'legalEntityId', '');
+                }}
               />
             </Table.Cell>
           </Table.Row>

@@ -7,7 +7,7 @@ import { Segment, Table, Input, Label } from 'semantic-ui-react';
 
 import { LinkToFa03AwkeyBukrs } from '../../../utils/outlink';
 
-const MmcrFin = props => {
+const MmcvFin = props => {
   const {
     contract = {},
     ps = [],
@@ -22,6 +22,15 @@ const MmcrFin = props => {
           {messages['paymentSchedule']}
         </Label>
         <Table collapsing>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell />
+              <Table.HeaderCell>{messages['date']}</Table.HeaderCell>
+              <Table.HeaderCell>{messages['amount']}</Table.HeaderCell>
+              <Table.HeaderCell>{messages['paid']}</Table.HeaderCell>
+              <Table.HeaderCell />
+            </Table.Row>
+          </Table.Header>
           <Table.Body>
             {ps &&
               ps.map(item => {
@@ -152,4 +161,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {},
-)(injectIntl(MmcrFin));
+)(injectIntl(MmcvFin));

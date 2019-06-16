@@ -3,16 +3,16 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
 import { Container, Header, Grid, Tab } from 'semantic-ui-react';
-import MmcrFin from './mmcrFin';
-import MmcrLogistics from './mmcrLogistics';
-import MmcrContactDetails from './mmcrContactDetails';
-import MmcrBasicInfo from './mmcrBasicInfo';
-import McrExtraInfo from './mmcrExtraInfo';
-import MmcrContractHistory from './mmcrContractHistory';
-import MmcrSourceDocs from './mmcrSourceDocs';
+import MmcvFin from './mmcvFin';
+import MmcvLogistics from './mmcvLogistics';
+import MmcvContactDetails from './mmcvContactDetails';
+import MmcvBasicInfo from './mmcvBasicInfo';
+import MmcvExtraInfo from './mmcvExtraInfo';
+import MmcvContractHistory from './mmcvContractHistory';
+import MmcvSourceDocs from './mmcvSourceDocs';
 import queryString from 'query-string';
 
-const Mmcr = props => {
+const Mmcv = props => {
   const emptyContract = {
     bukrs: '',
     bukrsName: '',
@@ -61,6 +61,7 @@ const Mmcr = props => {
     dealerSubtract: '',
     discountFromRef: '',
     info: '',
+    info2: '',
     bankPartnerId: '',
     awkey: '',
     warStart: '',
@@ -94,7 +95,7 @@ const Mmcr = props => {
   const [urlContractNumber, setUrlContractNumber] = useState('');
 
   const {
-    mmcr,
+    mmcv,
     intl: { messages },
   } = props;
 
@@ -110,33 +111,33 @@ const Mmcr = props => {
     return () => {};
   }, []);
 
-  //componentDidMount
+  //componentWillRecieveProps
   useEffect(() => {
-    if (mmcr && mmcr.contract) setContract({ ...mmcr.contract });
-    if (mmcr && mmcr.ps) setPs([...mmcr.ps]);
-    if (mmcr && mmcr.contractPromoList)
-      setContractPromoList([...mmcr.contractPromoList]);
-    if (mmcr && mmcr.addrHome) setAddrHome({ ...mmcr.addrHome });
-    if (mmcr && mmcr.addrService) setAddrService({ ...mmcr.addrService });
-    if (mmcr && mmcr.addrWork) setAddrWork({ ...mmcr.addrWork });
-    if (mmcr && mmcr.contractHistory)
-      setContractHistory([...mmcr.contractHistory]);
-    if (mmcr && mmcr.sourceDocs) {
-      setSourceDocs([...mmcr.sourceDocs]);
-      setTotalSourceDoscPayment(mmcr.totalSourceDoscPayment);
+    if (mmcv && mmcv.contract) setContract({ ...mmcv.contract });
+    if (mmcv && mmcv.ps) setPs([...mmcv.ps]);
+    if (mmcv && mmcv.contractPromoList)
+      setContractPromoList([...mmcv.contractPromoList]);
+    if (mmcv && mmcv.addrHome) setAddrHome({ ...mmcv.addrHome });
+    if (mmcv && mmcv.addrService) setAddrService({ ...mmcv.addrService });
+    if (mmcv && mmcv.addrWork) setAddrWork({ ...mmcv.addrWork });
+    if (mmcv && mmcv.contractHistory)
+      setContractHistory([...mmcv.contractHistory]);
+    if (mmcv && mmcv.sourceDocs) {
+      setSourceDocs([...mmcv.sourceDocs]);
+      setTotalSourceDoscPayment(mmcv.totalSourceDoscPayment);
     }
-  }, [mmcr]);
+  }, [mmcv]);
 
   const panes = [
     {
       menuItem: {
-        key: 'MmcrContactDetails',
+        key: 'MmcvContactDetails',
         icon: 'address card',
         content: messages['contactDetails'],
       },
       pane: (
         <Tab.Pane key={1}>
-          <MmcrContactDetails
+          <MmcvContactDetails
             addrHome={addrHome}
             addrWork={addrWork}
             addrService={addrService}
@@ -146,23 +147,23 @@ const Mmcr = props => {
       ),
     },
     {
-      menuItem: { key: 'MmcrFin', icon: 'money', content: messages['price'] },
+      menuItem: { key: 'MmcvFin', icon: 'money', content: messages['price'] },
       pane: (
         <Tab.Pane key={2}>
-          <MmcrFin tcode={'MMCR'} contract={contract} ps={ps} />
+          <MmcvFin tcode={'MMCV'} contract={contract} ps={ps} />
         </Tab.Pane>
       ),
     },
     {
       menuItem: {
-        key: 'MmcrLogistics',
+        key: 'MmcvLogistics',
         icon: 'shopping cart',
         content: messages['goods'],
       },
       pane: (
         <Tab.Pane key={3}>
-          <MmcrLogistics
-            tcode={'MMCR'}
+          <MmcvLogistics
+            tcode={'MMCV'}
             contract={contract}
             contractPromoList={contractPromoList}
           />
@@ -171,14 +172,14 @@ const Mmcr = props => {
     },
     {
       menuItem: {
-        key: 'MmcrSourceDocs',
+        key: 'MmcvSourceDocs',
         icon: 'file',
         content: messages['sourceDoucments-Mid'],
       },
       pane: (
         <Tab.Pane key={4}>
-          <MmcrSourceDocs
-            tcode={'MMCR'}
+          <MmcvSourceDocs
+            tcode={'MMCV'}
             sourceDocs={sourceDocs}
             totalSourceDoscPayment={totalSourceDoscPayment}
             waers={contract.waers}
@@ -188,14 +189,14 @@ const Mmcr = props => {
     },
     {
       menuItem: {
-        key: 'MmcrContractHistory',
+        key: 'MmcvContractHistory',
         icon: 'history',
         content: messages['actionHistry'],
       },
       pane: (
         <Tab.Pane key={5}>
-          <MmcrContractHistory
-            tcode={'MMCR'}
+          <MmcvContractHistory
+            tcode={'MMCV'}
             contractHistory={contractHistory}
           />
         </Tab.Pane>
@@ -214,18 +215,18 @@ const Mmcr = props => {
       }}
     >
       <Header as="h2" block>
-        {messages['transNameMmcr']}
+        {messages['transNameMmcv']}
       </Header>
 
       <Grid>
         <Grid.Row>
           <Grid.Column mobile={16} tablet={5} computer={5}>
-            <MmcrBasicInfo
+            <MmcvBasicInfo
               contract={contract}
               urlContractNumber={urlContractNumber}
-              tcode="MMCR"
+              tcode="MMCV"
             />
-            <McrExtraInfo contract={contract} tcode="MMCR" />
+            <MmcvExtraInfo contract={contract} tcode="MMCV" />
           </Grid.Column>
           <Grid.Column mobile={16} tablet={11} computer={11}>
             <Tab
@@ -244,7 +245,7 @@ function mapStateToProps(state) {
   // console.log(state, 'state');
   return {
     language: state.locales.lang,
-    mmcr: state.marketing.dynamicObject.mmcr,
+    mmcv: state.marketing.dynamicObject.mmcv,
   };
 }
 
@@ -253,4 +254,4 @@ export default connect(
   {
     //reference
   },
-)(injectIntl(Mmcr));
+)(injectIntl(Mmcv));

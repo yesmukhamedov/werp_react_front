@@ -20,6 +20,9 @@ export const CLEAR_DYNOBJ_MARKETING = 'CLEAR_DYNOBJ_MARKETING';
 export const GET_CONT_DMSC_SEAR_OPTS = 'GET_CONT_DMSC_SEAR_OPTS';
 export const CONT_DMSC_LIST = 'CONT_DMSC_LIST';
 
+const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+const language = localStorage.getItem('language');
+
 export function getByDefSearchOpts(branchId) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
@@ -183,11 +186,37 @@ export function successed() {
 }
 
 export function notSuccessed() {
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-  const language = localStorage.getItem('language');
   return notify(
     'info',
     errorTable[`104${language}`],
     errorTable[`101${language}`],
   );
+}
+
+export function onSaveMmcTrans(url, body, params, setIsSaving) {
+  setIsSaving(true);
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost(url, body, { ...params })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        setIsSaving(false);
+        dispatch({
+          type: FETCH_DYNOBJ_MARKETING,
+          data,
+        });
+        dispatch(
+          notify(
+            'success',
+            errorTable[`104${language}`],
+            errorTable[`101${language}`],
+          ),
+        );
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+        dispatch(modifyLoader(false));
+        setIsSaving(false);
+      });
+  };
 }

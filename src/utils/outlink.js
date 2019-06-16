@@ -45,25 +45,14 @@ export const LinkToStaffCardViewID = props => {
   );
 };
 
-export const ContractNumber = props => {
+export const LinkToMmcv = props => {
   const { contract_number = '', customerFio = '' } = props;
   // const url = `${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=${contract_number}`;
-  const url = `/marketing/mainoperation/mmcr?contractNumber=${contract_number}`;
+  const url = `/marketing/mainoperation/mmcv?contractNumber=${contract_number}`;
   return (
     <a target="_blank" href={url}>
       {' '}
       {contract_number} {customerFio}
-    </a>
-  );
-};
-
-export const CustomerID = props => {
-  const { customerId, custFio } = props;
-  const url = `${LEGACY_URL}/hr/customer/hrc03.xhtml?customerId=${customerId}`;
-  return (
-    <a target="_blank" href={url}>
-      {' '}
-      {custFio}{' '}
     </a>
   );
 };

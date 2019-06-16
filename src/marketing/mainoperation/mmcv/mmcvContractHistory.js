@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { Table } from 'semantic-ui-react';
 
-const MmcrContractHistory = props => {
+const MmcvContractHistory = props => {
   const {
     contractHistory = [],
     language,
@@ -45,7 +45,7 @@ const MmcrContractHistory = props => {
         <Table.Body>
           {contractHistory.map(item => {
             return (
-              <Table.Row>
+              <Table.Row key={item.id}>
                 <Table.Cell>{item.id}</Table.Cell>
                 <Table.Cell>{item.recDate}</Table.Cell>
                 <Table.Cell>{item.operOnText}</Table.Cell>
@@ -72,4 +72,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {},
-)(injectIntl(MmcrContractHistory));
+)(injectIntl(MmcvContractHistory));
