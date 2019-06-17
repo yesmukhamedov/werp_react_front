@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Modal, Icon, Checkbox, List, Button } from 'semantic-ui-react';
+import {
+  Modal,
+  Icon,
+  Checkbox,
+  List,
+  Button,
+  Loader,
+  Dimmer,
+} from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
@@ -10,6 +18,7 @@ const PromoListF4 = props => {
   const {
     intl: { messages },
     promoList = [],
+    isLoadingPromoList = false,
   } = props;
 
   const [localPromoList, setLocalPromoList] = useState([]);
@@ -197,6 +206,9 @@ const PromoListF4 = props => {
         {messages['promotion']}
       </Modal.Header>
       <Modal.Content>
+        <Dimmer active={isLoadingPromoList}>
+          <Loader />
+        </Dimmer>
         <List>
           <List.Item>
             <ReactTable

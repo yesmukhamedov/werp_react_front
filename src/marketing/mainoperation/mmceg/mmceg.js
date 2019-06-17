@@ -42,7 +42,7 @@ const Mmceg = props => {
     matnrReleaseDate: '',
   };
 
-  const tcode = 'Mmceg';
+  const tcode = 'MMCEG';
 
   const [contract, setContract] = useState({ ...emptyContract });
   const [newContract, setNewContract] = useState({ ...emptyContract });
@@ -86,6 +86,25 @@ const Mmceg = props => {
       setNewContract({ ...mmceg.contract });
       setContractPromoList([...mmceg.contractPromoList]);
       setNewContractPromoList([...mmceg.contractPromoList]);
+
+      const { bukrs, branchId, contractTypeId } = mmceg.contract;
+      //get Price List
+      if (branchId && branchId > 0) {
+        props.fetchDynObjMarketing(
+          'marketing/contract/promoF4/fetch_promo_list',
+          { bukrs, tcode, branchId },
+          bool => setIsLoadingPromoList(bool),
+        );
+      }
+
+      //get Price List
+      if (branchId && branchId > 0 && contractTypeId && contractTypeId > 0) {
+        props.fetchDynObjMarketing(
+          'marketing/contract/matnrF4/fetch_matnr_list',
+          { bukrs, tcode, branchId, contractTypeId },
+          bool => setIsLoadingMatnrList(bool),
+        );
+      }
     }
   }, [mmceg]);
 
@@ -98,11 +117,19 @@ const Mmceg = props => {
   };
 
   const onInputChange = (value, fieldName) => {
-    setNewContract(prev => {
-      const waNewContract = { ...prev, [fieldName]: value };
-
-      return waNewContract;
-    });
+    if (fieldName === 'tovarSerial') {
+      setNewContract(prev => {
+        return {
+          ...prev,
+          tovarSerial: value.tovarSerial,
+          matnrListId: value.matnrListId,
+        };
+      });
+    } else if (fieldName === 'promo') {
+      setNewContractPromoList(prev => {
+        return [...value];
+      });
+    }
   };
 
   const renderMatnrButtons = () => {
@@ -124,7 +151,7 @@ const Mmceg = props => {
             name="clone"
             size="large"
             className="clickableIcon"
-            onClick={() => setPromoListF4ModalOpen(true)}
+            onClick={() => setMatnrListF4ModalOpen(true)}
           />
           <Button
             primary
@@ -146,7 +173,7 @@ const Mmceg = props => {
           name="clone"
           size="large"
           className="clickableIcon"
-          onClick={() => setMatnrListF4ModalOpen(true)}
+          onClick={() => setPromoListF4ModalOpen(true)}
         />
       );
     }
@@ -158,7 +185,7 @@ const Mmceg = props => {
             name="clone"
             size="large"
             className="clickableIcon"
-            onClick={() => setMatnrListF4ModalOpen(true)}
+            onClick={() => setPromoListF4ModalOpen(true)}
           />
           <Button
             primary
@@ -214,16 +241,14 @@ const Mmceg = props => {
         open={matnrListF4ModalOpen}
         matnrList={matnrList}
         onCloseMatnrF4={bool => setMatnrListF4ModalOpen(bool)}
-        onMatnrSelect={item =>
-          props.onLogisticsInputChange(item, 'tovarSerial')
-        }
+        onMatnrSelect={item => onInputChange(item, 'tovarSerial')}
         isLoadingMatnrList={isLoadingMatnrList}
       />
       <PromoListF4Modal
         open={promoListF4ModalOpen}
         promoList={promoList}
         onClosePromoF4={bool => setPromoListF4ModalOpen(bool)}
-        onPromoSelect={item => props.onLogisticsInputChange(item, 'promo')}
+        onPromoSelect={item => onInputChange(item, 'promo')}
         isLoadingPromoList={isLoadingPromoList}
       />
       <Grid>
@@ -373,6 +398,8 @@ function mapStateToProps(state) {
   return {
     language: state.locales.lang,
     mmceg: state.marketing.dynamicObject.mmceg,
+    matnrList: state.marketing.dynamicObject.matnrList,
+    promoList: state.marketing.dynamicObject.promoList,
   };
 }
 

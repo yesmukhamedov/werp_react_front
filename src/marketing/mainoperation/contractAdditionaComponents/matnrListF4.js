@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Modal, Icon } from 'semantic-ui-react';
+import { Modal, Icon, Loader, Dimmer } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
@@ -11,6 +11,7 @@ const MatnrListF4 = props => {
   const {
     intl: { messages },
     matnrList = [],
+    isLoadingMatnrList = false,
   } = props;
 
   const getColumns = () => {
@@ -93,7 +94,11 @@ const MatnrListF4 = props => {
         <Icon name="filter" size="big" />
         {messages['goodsInStock']}
       </Modal.Header>
+
       <Modal.Content>
+        <Dimmer active={isLoadingMatnrList}>
+          <Loader />
+        </Dimmer>
         <ReactTable
           filterable
           data={matnrList}
