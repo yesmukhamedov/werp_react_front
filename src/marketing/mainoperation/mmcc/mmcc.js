@@ -172,13 +172,13 @@ const Mmcc = props => {
     setFinBranches(waFinBranches);
   }, [branches]);
 
-  const onBasicInfoInputChange = (value, stateFieldName) => {
+  const onBasicInfoInputChange = (value, fieldName) => {
     // let wa = Object.assign({}, contract);
-    if (stateFieldName === 'bukrs') {
+    if (fieldName === 'bukrs') {
       setContract(prev => {
-        return { ...emptyContract, [stateFieldName]: value };
+        return { ...emptyContract, [fieldName]: value };
       });
-    } else if (stateFieldName === 'branchId') {
+    } else if (fieldName === 'branchId') {
       //get the selected branch
       let waSelectedBranch = {};
       branches
@@ -228,40 +228,40 @@ const Mmcc = props => {
         setContractTypeOpts(waConOptions);
         return wa;
       });
-    } else if (stateFieldName === 'contractDate') {
+    } else if (fieldName === 'contractDate') {
       setContract(prev => {
         return { ...prev, contractDate: value };
       });
       addMonthToAndAfterPsRows(value, 0);
-    } else if (stateFieldName === 'demoSc') {
+    } else if (fieldName === 'demoSc') {
       setContract(prev => {
         return { ...prev, demoSc: value.staffId, demoScName: value.fio };
       });
-    } else if (stateFieldName === 'dealer') {
+    } else if (fieldName === 'dealer') {
       setContract(prev => {
         return { ...prev, dealer: value.staffId, dealerName: value.fio };
       });
-    } else if (stateFieldName === 'collector') {
+    } else if (fieldName === 'collector') {
       setContract(prev => {
         return { ...prev, collector: value.staffId, collectorName: value.fio };
       });
-    } else if (stateFieldName === 'demoScRemove') {
+    } else if (fieldName === 'demoScRemove') {
       setContract(prev => {
         return { ...prev, demoSc: '', demoScName: '' };
       });
-    } else if (stateFieldName === 'dealerRemove') {
+    } else if (fieldName === 'dealerRemove') {
       setContract(prev => {
         return { ...prev, dealer: '', dealerName: '' };
       });
-    } else if (stateFieldName === 'collectorRemove') {
+    } else if (fieldName === 'collectorRemove') {
       setContract(prev => {
         return { ...prev, collector: '', collectorName: '' };
       });
-    } else if (stateFieldName === 'customer') {
+    } else if (fieldName === 'customer') {
       setContract(prev => {
         return { ...prev, customerId: value.id, customerName: value.fullFIO };
       });
-    } else if (stateFieldName === 'customerRemove') {
+    } else if (fieldName === 'customerRemove') {
       setContract(prev => {
         return {
           ...prev,
@@ -277,7 +277,27 @@ const Mmcc = props => {
       setAddrHome({});
       setAddrWork({});
       setAddrService({});
-    } else if (stateFieldName === 'contractTypeId') {
+    } else if (fieldName === 'refContractId') {
+      setContract(prev => {
+        return {
+          ...prev,
+          refContractId: value.contractId,
+          refContractNumber: value.contractNumber,
+          refCustomerId: value.customerId,
+          refCustomerName: value.customerName,
+        };
+      });
+    } else if (fieldName === 'refContractIdRemove') {
+      setContract(prev => {
+        return {
+          ...prev,
+          refContractId: '',
+          refContractNumber: '',
+          refCustomerId: '',
+          refCustomerName: '',
+        };
+      });
+    } else if (fieldName === 'contractTypeId') {
       setContract(prev => {
         return {
           ...prev,
@@ -291,39 +311,39 @@ const Mmcc = props => {
       setPs([]);
     } else
       setContract(prev => {
-        return { ...prev, [stateFieldName]: value };
+        return { ...prev, [fieldName]: value };
       });
 
     // console.log(wa,'wa');
   };
 
-  const onConDetInputChange = (value, stateFieldName) => {
-    if (stateFieldName === 'addrHomeId') {
+  const onConDetInputChange = (value, fieldName) => {
+    if (fieldName === 'addrHomeId') {
       setContract(prev => {
         return { ...prev, addrHomeId: value.addr_id };
       });
       setAddrHome(value);
-    } else if (stateFieldName === 'addrHomeIdRemove') {
+    } else if (fieldName === 'addrHomeIdRemove') {
       setContract(prev => {
         return { ...prev, addrHomeId: '' };
       });
       setAddrHome({});
-    } else if (stateFieldName === 'addrWorkId') {
+    } else if (fieldName === 'addrWorkId') {
       setContract(prev => {
         return { ...prev, addrWorkId: value.addr_id };
       });
       setAddrWork(value);
-    } else if (stateFieldName === 'addrWorkIdRemove') {
+    } else if (fieldName === 'addrWorkIdRemove') {
       setContract(prev => {
         return { ...prev, addrWorkId: '' };
       });
       setAddrWork({});
-    } else if (stateFieldName === 'addrServiceId') {
+    } else if (fieldName === 'addrServiceId') {
       setContract(prev => {
         return { ...prev, addrServiceId: value.addr_id };
       });
       setAddrService(value);
-    } else if (stateFieldName === 'addrServiceIdRemove') {
+    } else if (fieldName === 'addrServiceIdRemove') {
       setContract(prev => {
         return { ...prev, addrServiceId: '' };
       });
@@ -331,10 +351,10 @@ const Mmcc = props => {
     }
   };
 
-  const onFinInputChange = (value, stateFieldName, id) => {
-    // console.log(value, stateFieldName, id)
+  const onFinInputChange = (value, fieldName, id) => {
+    // console.log(value, fieldName, id)
     // let wa = Object.assign({}, contract);
-    if (stateFieldName === 'price') {
+    if (fieldName === 'price') {
       setContract(prev => {
         let ps = [
           {
@@ -381,12 +401,12 @@ const Mmcc = props => {
           priceListId: value.priceListId,
         };
       });
-    } else if (stateFieldName === 'dealerSubtract') {
+    } else if (fieldName === 'dealerSubtract') {
       setContract(prev => {
         return { ...prev, dealerSubtract: moneyInputHanler(value, 0) };
       });
       // console.log(newVal,'newVal');
-    } else if (stateFieldName === 'sum2') {
+    } else if (fieldName === 'sum2') {
       setPs(prev => {
         const newVal = moneyInputHanler(value, 0);
         const idx = prev.findIndex(item => item.paymentScheduleId === id);
@@ -400,17 +420,17 @@ const Mmcc = props => {
 
         return newArray;
       });
-    } else if (stateFieldName === 'paymentDate') {
+    } else if (fieldName === 'paymentDate') {
       const idx = ps.findIndex(item => item.paymentScheduleId === id);
       addMonthToAndAfterPsRows(value, idx);
-    } else if (stateFieldName === 'legalEntityId') {
+    } else if (fieldName === 'legalEntityId') {
       setContract(prev => {
         return { ...prev, legalEntityId: value };
       });
       // console.log(newVal,'newVal');
     } else
       setContract(prev => {
-        return { ...prev, [stateFieldName]: value };
+        return { ...prev, [fieldName]: value };
       });
   };
 
@@ -435,11 +455,11 @@ const Mmcc = props => {
     }
   };
 
-  const onLogisticsInputChange = (value, stateFieldName) => {
-    // console.log(value, stateFieldName)
+  const onLogisticsInputChange = (value, fieldName) => {
+    // console.log(value, fieldName)
     // let wa = Object.assign({}, contract);
 
-    if (stateFieldName === 'tovarSerial') {
+    if (fieldName === 'tovarSerial') {
       setContract(prev => {
         return {
           ...prev,
@@ -447,15 +467,15 @@ const Mmcc = props => {
           matnrListId: value.matnrListId,
         };
       });
-    } else if (stateFieldName === 'removeTovarSerial') {
+    } else if (fieldName === 'removeTovarSerial') {
       setContract(prev => {
         return { ...prev, tovarSerial: '', matnrListId: '' };
       });
-    } else if (stateFieldName === 'promo') {
+    } else if (fieldName === 'promo') {
       setContractPromoList(prev => {
         return [...value];
       });
-    } else if (stateFieldName === 'removePromo') {
+    } else if (fieldName === 'removePromo') {
       setContractPromoList(prev => {
         const idx = prev.findIndex(item => item.id === value);
         const newArray = [...prev.slice(0, idx), ...prev.slice(idx + 1)];
@@ -463,7 +483,7 @@ const Mmcc = props => {
       });
     } else
       setContract(prev => {
-        return { ...prev, [stateFieldName]: value };
+        return { ...prev, [fieldName]: value };
       });
   };
 
@@ -569,9 +589,9 @@ const Mmcc = props => {
   );
 };
 
-// function onInputChange(value, stateFieldName) {
+// function onInputChange(value, fieldName) {
 //   const wa = Object.assign({}, contract);
-//   wa[stateFieldName] = value;
+//   wa[fieldName] = value;
 //   setContract(wa);
 // }
 

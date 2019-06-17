@@ -8,6 +8,7 @@ import { Segment, Table, Icon, Dropdown, Label } from 'semantic-ui-react';
 import {
   LinkToStaffCardView,
   LinkToCustomerHrc03,
+  LinkToMmcv,
 } from '../../../utils/outlink';
 
 import {
@@ -20,6 +21,7 @@ import {
 
 import StaffF4Modal from '../../../reference/f4/staff/staffF4Modal';
 import CustomerF4Modal from '../../../reference/f4/Customer/customerF4WithCreationPage';
+import RecommenderF4Modal from '../contractAdditionaComponents/recommenderF4';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -28,6 +30,7 @@ const MmccBasicInfo = props => {
   const [staffF4ModalOpen, setStaffF4ModalOpen] = useState(false);
   const [staffF4ModalPosition, setStaffF4ModalPosition] = useState('');
   const [customerF4ModalOpen, setCustomerF4ModalOpen] = useState(false);
+  const [recommenderF4ModalOpen, setRecommenderF4ModalOpen] = useState(false);
 
   const {
     contract = {},
@@ -67,6 +70,16 @@ const MmccBasicInfo = props => {
         onCustomerSelect={item =>
           props.onBasicInfoInputChange(item, 'customer')
         }
+      />
+
+      <RecommenderF4Modal
+        open={recommenderF4ModalOpen}
+        onCloseRecommenderListF4={bool => setRecommenderF4ModalOpen(bool)}
+        onRecommenderSelect={item =>
+          props.onBasicInfoInputChange(item, 'refContractId')
+        }
+        trans="MMCC"
+        bukrs={contract.bukrs}
       />
 
       <Table collapsing className="borderLess">
@@ -304,7 +317,29 @@ const MmccBasicInfo = props => {
           </Table.Row>
           <Table.Row>
             <Table.Cell>{messages['recommender']}</Table.Cell>
-            <Table.Cell />
+            <Table.Cell>
+              <span>
+                <LinkToMmcv
+                  contract_number={contract.refContractNumber}
+                  customerFio={contract.refCustomerName}
+                />
+              </span>
+              <Icon
+                name="clone"
+                size="large"
+                className="clickableIcon"
+                onClick={() => setRecommenderF4ModalOpen(true)}
+              />
+              <Icon
+                name="remove"
+                size="large"
+                className="clickableIcon"
+                color="red"
+                onClick={event =>
+                  props.onBasicInfoInputChange('remove', 'refContractIdRemove')
+                }
+              />
+            </Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table>
