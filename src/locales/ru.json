@@ -630,6 +630,7 @@
   "section": "Секция",
   "newValue": "Новое значение",
   "oldValue": "Старое значение",
+  "toWriteOff": "Списать",
 
   "transNameFmcp": "FMCP: Взнос по договору",
   "transNameFcis": "FCIS: Взнос в счет сотрудника",

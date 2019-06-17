@@ -159,7 +159,7 @@ const Mmceg = props => {
             loading={isSavingContract}
             onClick={() => onWriteOffMatnr()}
           >
-            {messages['writeOff']}
+            {messages['toWriteOff']}
           </Button>
         </span>
       );
@@ -193,7 +193,7 @@ const Mmceg = props => {
             loading={isSavingContract}
             onClick={() => onWriteOffContractPromo()}
           >
-            {messages['writeOff']}
+            {messages['toWriteOff']}
           </Button>
         </span>
       );
