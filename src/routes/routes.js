@@ -583,10 +583,10 @@ const AsyncMmcei = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncMmcel = Loadable({
+const AsyncMmceg = Loadable({
   loader: () =>
     import(
-      '../marketing/mainoperation/mmcel/mmcel' /* webpackChunkName: "mmcel" */
+      '../marketing/mainoperation/mmceg/mmceg' /* webpackChunkName: "mmceg" */
     ),
   loading: () => <LoadingPage />,
 });
@@ -979,7 +979,7 @@ const generateRoutes = transactionRoutes => {
       <Route path="/marketing/mainoperation/mmcef" component={AsyncMmcef} />
       <Route path="/marketing/mainoperation/mmcefa" component={AsyncMmcefa} />
       <Route path="/marketing/mainoperation/mmcei" component={AsyncMmcei} />
-      <Route path="/marketing/mainoperation/mmcel" component={AsyncMmcel} />
+      <Route path="/marketing/mainoperation/mmceg" component={AsyncMmceg} />
 
       <Route
         path="/hr/exitinterviews"

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
 import { Segment, Table, Input, Label, List } from 'semantic-ui-react';
+import { getTradeIn } from '../contractAdditionaComponents/marketingConstants';
 
 const MmcvLogistics = props => {
   const {
@@ -11,14 +12,6 @@ const MmcvLogistics = props => {
     contractPromoList = [],
     intl: { messages },
   } = props;
-
-  const getTradeIn = id => {
-    if (!id) return '';
-    else if (id === 0) return '';
-    else if (id === 1) return 'Trade-in 1';
-    else if (id === 2) return 'Trade-in 2';
-    else if (id === 3) return 'Trade-in 3';
-  };
 
   return (
     <div>
