@@ -9,12 +9,12 @@ import {
   Modal,
 } from 'semantic-ui-react';
 import {
-  fetchAllRoles,
-  getRoleAccesses,
-  saveRoles,
-  updRNomination,
-  newRole,
-} from '../transactionAction';
+  fetchDrlstAll,
+  getDrAccesses,
+  saveDrLst,
+  updDrNomin,
+  newDrole,
+} from '../ditAction';
 import ListRole from './listRole';
 import AddRole from './addrole';
 import { injectIntl } from 'react-intl';
@@ -30,7 +30,7 @@ class Roles extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchAllRoles();
+    this.props.fetchDrlstAll();
   }
 
   handleOpen() {
@@ -40,16 +40,16 @@ class Roles extends Component {
     this.setState({ showRole: false });
   }
 
-  saveRoles(roles) {
-    this.props.saveRoles(roles);
+  saveDrLst(roles) {
+    this.props.saveDrLst(roles);
   }
 
-  updRNomination(role) {
-    this.props.updRNomination(role);
+  updDrNomin(role) {
+    this.props.updDrNomin(role);
   }
 
   newRole(role) {
-    this.props.newRole(role);
+    this.props.newDrole(role);
   }
 
   render() {
@@ -96,12 +96,12 @@ class Roles extends Component {
         <div style={{ paddingLeft: '4em', paddingRight: '4em' }}>
           <ListRole
             messages={messages}
-            getRoleAccesses={this.props.getRoleAccesses}
+            getDrAccesses={this.props.getDrAccesses}
             roles={this.props.allRole}
             listRoles={this.props.listRoles}
             accessTypes={this.props.accessTypes}
-            saveRoles={this.saveRoles.bind(this)}
-            updRNomination={this.updRNomination.bind(this)}
+            saveDrLst={this.saveDrLst.bind(this)}
+            updDrNomin={this.updDrNomin.bind(this)}
           />
         </div>
       </Container>
@@ -111,18 +111,18 @@ class Roles extends Component {
 
 function mapStateToProps(state) {
   return {
-    listRoles: state.transactionReducer.listRoles,
-    accessTypes: state.transactionReducer.accessTypes,
+    listRoles: state.ditReducer.listRoles,
+    accessTypes: state.ditReducer.accessTypes,
   };
 }
 
 export default connect(
   mapStateToProps,
   {
-    fetchAllRoles,
-    getRoleAccesses,
-    saveRoles,
-    updRNomination,
-    newRole,
+    fetchDrlstAll,
+    getDrAccesses,
+    saveDrLst,
+    updDrNomin,
+    newDrole,
   },
 )(injectIntl(Roles));

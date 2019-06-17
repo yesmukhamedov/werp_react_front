@@ -648,10 +648,9 @@ const AsyncFa03 = Loadable({
 });
 
 const AsyncTransaction = Loadable({
-  loader: () => import('../dit/transaction/' /* webpackChunkName: "trlist" */),
+  loader: () => import('../dit/dtrlist/' /* webpackChunkName: "trlist" */),
   loading: () => <LoadingPage />,
 });
-
 // import { DtskcContainer, DtskcSummaryDisplay } from '../general/dtskc/pages';
 // import { DtskdepContainer } from '../general/dtskdep/pages';
 

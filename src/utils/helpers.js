@@ -282,3 +282,26 @@ export function excelDownload(
       link.click();
     });
 }
+
+export function justNumbers(format, value) {
+  value = format.replace(/\D/g, '');
+  return value.substring(0, 11);
+}
+export function numberSimplify(format, justnumbers) {
+  let value = format.replace(/\D/g, '');
+  let nums = value.substring(0, 11);
+  justnumbers =
+    '( ' +
+    nums.slice(0, 3) +
+    ' ) ' +
+    nums.slice(3, 6) +
+    ' ' +
+    nums.slice(6, 9) +
+    ' ' +
+    nums.slice(9, 11);
+  if (justnumbers.length > 7) {
+    return justnumbers;
+  } else {
+    return '';
+  }
+}

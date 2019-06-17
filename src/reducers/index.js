@@ -38,7 +38,7 @@ import mgruTransactionReducer from '../dit/message/mgru/reducers';
 import hrDocReducer from '../hr/mainoperation/document/reducers/hrDocReducer';
 import documentReducer from '../documents/mainoperation/reducers/documentReducer';
 import hrSalaryReducer from '../hr/mainoperation/salary/reducers/hrSalaryReducer';
-import transactionReducer from '../dit/transactionReducer';
+import ditReducer from '../dit/ditReducer';
 import logisticsReducer from '../logistics/mainoperation/reducers/logisticsReducer';
 import aesReducer from '../aes/aesReducer';
 import hrPosReducer from '../hr/reference/position/positionReducer';
@@ -85,7 +85,7 @@ const appReducer = combineReducers({
   hrDocReducer,
   documentReducer,
   hrSalaryReducer,
-  transactionReducer,
+  ditReducer,
   logisticsReducer,
   aesReducer: aesReducer,
   hrPosReducer: hrPosReducer,

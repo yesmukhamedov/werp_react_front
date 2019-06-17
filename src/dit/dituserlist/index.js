@@ -10,14 +10,14 @@ import {
 } from 'semantic-ui-react';
 import { f4FetchCompanyOptions } from '../../reference/f4/f4_action';
 import {
-  fetchSUserAll,
-  saveNewSUser,
-  updateSUserRow,
-  searchStaffforSUser,
-  getBrByBukrSysUser,
+  fetchDSUserAll,
+  saveNewDSUser,
+  updateDSUserRow,
+  searchStafforDSUser,
+  getBrByBukrDSysUser,
   showAddModal,
   showUpdateModal,
-} from '../transactionAction';
+} from '../ditAction';
 import { injectIntl } from 'react-intl';
 import List from './list';
 import SearchSt from './searchSrtaff';
@@ -40,7 +40,7 @@ class SystemUsers extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchSUserAll();
+    this.props.fetchDSUserAll();
   }
 
   handleOpen() {
@@ -51,11 +51,11 @@ class SystemUsers extends Component {
   }
 
   submitUpdate(row) {
-    this.props.updateSUserRow(row);
+    this.props.updateDSUserRow(row);
   }
 
   submitSearch() {
-    this.props.searchStaffforSUser(this.state.searchSt);
+    this.props.searchStafforDSUser(this.state.searchSt);
   }
 
   selectedStaff(staff) {
@@ -89,7 +89,7 @@ class SystemUsers extends Component {
   }
 
   newUser(sysUser) {
-    this.props.saveNewSUser(sysUser);
+    this.props.saveNewDSUser(sysUser);
   }
 
   render() {
@@ -148,7 +148,7 @@ class SystemUsers extends Component {
             submitUpdate={this.submitUpdate.bind(this)}
             companyOpts={this.getCompanyOptions()}
             branchOptions={this.getBranchOptions()}
-            getBrByBukrSysUser={this.props.getBrByBukrSysUser}
+            getBrByBukrSysUser={this.props.getBrByBukrDSysUser}
             showUpdateModal={this.props.showUpdateModal}
             close={this.close.bind(this)}
             updateModalOpened={this.props.updateModalOpened}
@@ -164,7 +164,7 @@ class SystemUsers extends Component {
             messages={messages}
             username={this.state.username}
             newUser={this.newUser.bind(this)}
-            getBrByBukrSysUser={this.props.getBrByBukrSysUser}
+            getBrByBukrSysUser={this.props.getBrByBukrDSysUser}
           />
         </div>
       </Container>
@@ -223,24 +223,24 @@ class SystemUsers extends Component {
 
 function mapStateToProps(state) {
   return {
-    lSUsers: state.transactionReducer.lSUsers,
+    lSUsers: state.ditReducer.lSUsers,
     companyOptions: state.userInfo.companyOptions,
-    branchOptions: state.transactionReducer.bukrsBranches,
-    staffs: state.transactionReducer.staffs,
-    addModalOpened: state.transactionReducer.addModalOpened,
-    updateModalOpened: state.transactionReducer.updateModalOpened,
+    branchOptions: state.ditReducer.bukrsBranches,
+    staffs: state.ditReducer.staffs,
+    addModalOpened: state.ditReducer.addModalOpened,
+    updateModalOpened: state.ditReducer.updateModalOpened,
   };
 }
 
 export default connect(
   mapStateToProps,
   {
-    fetchSUserAll,
+    fetchDSUserAll,
     f4FetchCompanyOptions,
-    updateSUserRow,
-    searchStaffforSUser,
-    saveNewSUser,
-    getBrByBukrSysUser,
+    updateDSUserRow,
+    searchStafforDSUser,
+    saveNewDSUser,
+    getBrByBukrDSysUser,
     showAddModal,
     showUpdateModal,
   },

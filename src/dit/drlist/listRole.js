@@ -77,7 +77,7 @@ class ListRole extends Component {
   }
 
   saveRoles() {
-    this.props.saveRoles(this.state.accessTypes);
+    this.props.saveDrLst(this.state.accessTypes);
     this.setState({ modalOpen: false });
   }
 
@@ -86,7 +86,7 @@ class ListRole extends Component {
   }
 
   updateRow(role) {
-    this.props.getRoleAccesses(role.role_id);
+    this.props.getDrAccesses(role.role_id);
     this.setState({ modalOpen: true, row: role });
   }
 
@@ -254,7 +254,7 @@ class ListRole extends Component {
   }
 
   updRNomination() {
-    this.props.updRNomination(this.state.roleName);
+    this.props.updDrNomin(this.state.roleName);
     this.setState({
       ...this.state,
       roleNameShow: false,

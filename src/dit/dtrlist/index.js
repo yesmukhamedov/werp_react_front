@@ -10,11 +10,7 @@ import {
 } from 'semantic-ui-react';
 import ListTable from './listTable';
 import NewTransaction from './newTransaction';
-import {
-  fetchCurrentTransactions,
-  newTransaction,
-  updateTransaction,
-} from '../transactionAction';
+import { fetchCurrDtrLst, newDtr, updDtr } from '../ditAction';
 import { injectIntl } from 'react-intl';
 
 class List extends Component {
@@ -29,7 +25,7 @@ class List extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchCurrentTransactions();
+    this.props.fetchCurrDtrLst();
   }
 
   handleOpen = () => this.setState({ modalOpen: true });
@@ -39,11 +35,11 @@ class List extends Component {
   }
 
   newTransaction(localTransaction) {
-    this.props.newTransaction(localTransaction);
+    this.props.newDtr(localTransaction);
   }
 
   updTransaction(updateTransaction) {
-    this.props.updateTransaction(updateTransaction);
+    this.props.updDtr(updateTransaction);
   }
 
   render() {
@@ -110,11 +106,11 @@ class List extends Component {
 
 function mapStateToProps(state) {
   return {
-    currTrans: state.transactionReducer,
+    currTrans: state.ditReducer,
   };
 }
 
 export default connect(
   mapStateToProps,
-  { fetchCurrentTransactions, newTransaction, updateTransaction },
+  { fetchCurrDtrLst, newDtr, updDtr },
 )(injectIntl(List));

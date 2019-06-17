@@ -1,36 +1,36 @@
 import {
-  /***************************  EVENT  */
-  ALL_EVETNT,
+  /***************************  DIT_ELLST  */
+  DIT_ELLST,
 
-  /***************************  SYSTEM USER  */
-  ALL_SYSTEM_USERS,
-  NEW_SYS_USER,
-  STAFF_FOR_SYS_USER,
-  UPDATE_SYS_USER,
-  BRANCHES_FOR_SYS_USER,
-  SHOW_SYS_USER,
-  SHOW_SYS_USER_UPDATE,
+  /***************************  DIT_USER_LST  */
+  ALL_DIT_USR_LST,
+  NEW_DIT_USR_LST,
+  STAFF_FOR_DIT_USR_LST,
+  UPD_DIT_USR_LST,
+  BRNCHS_FOR_DIT_USR_LST,
+  SHOW_DIT_USER_LST,
+  SHOW_DIT_USR_UPD,
 
-  /***************************  MENU */
-  ALL_MENU_NODES,
-  NEW_MENU_NODE,
-  ON_MENU_NODE_MOVE,
-  TREE_MENU_CHANGED,
-  BLANK_MENU_NODE,
-  MENU_NODE_UPD,
-  DELETE_MENU_NODE,
+  /***************************  D_MU_LST */
+  ALL_DMU_LST,
+  NEW_DMU_LST,
+  ON_DMU_LST_MOVE,
+  TREE_DMU_LST_CHANGED,
+  BLANK_DMU_LST_NODE,
+  DMU_LST_NODE_UPD,
+  DEL_DMU_LST_NODE,
 
-  /***************************  ROLES  */
-  ALL_ROLE,
-  ROLE_ACCESS,
-  ROLE_NAME_UPDATE,
-  ROLE_NEW,
+  /***************************  DRLST  */
+  ALL_DR_LIST,
+  DR_ACCESS,
+  DR_NAME_UPD,
+  DR_NEW,
 
-  /***************************  ROLES  */
-  ALL_CURRENT_TRANSACTIONS,
-  NEW_TRANSACTION,
-  TRANSACTION_UPDATE,
-} from './transactionAction';
+  /***************************  DRLST  */
+  ALL_CURR_DTR,
+  NEW_DTR,
+  UPD_DTR,
+} from './ditAction';
 
 import {
   addNodeUnderParent,
@@ -57,17 +57,17 @@ const INITIAL_STATE = {
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-    /******************************************************************        EVENT        */
-    case ALL_EVETNT:
+    /******************************************************************        DIT_ELLST        */
+    case DIT_ELLST:
       return { ...state, events: action.events, evRowPr: action.evRowPr };
 
-    /******************************************************************        SYSTEM USER        */
+    /******************************************************************        DIT_USER_LST        */
 
-    case ALL_SYSTEM_USERS:
+    case ALL_DIT_USR_LST:
       return { ...state, lSUsers: { ...state.lSUsers, ...action.payload } };
-    case STAFF_FOR_SYS_USER:
+    case STAFF_FOR_DIT_USR_LST:
       return { ...state, staffs: action.payload };
-    case NEW_SYS_USER:
+    case NEW_DIT_USR_LST:
       const newUser = Object.assign([], state.lSUsers.users);
       const user = {};
       const userActiveChange = action.payload;
@@ -86,7 +86,7 @@ export default function(state = INITIAL_STATE, action) {
         lSUsers: { ...state.lSUsers, users: newUser },
         addModalOpened: false,
       };
-    case UPDATE_SYS_USER:
+    case UPD_DIT_USR_LST:
       const updatedRow = action.payload;
       const newRows = [];
       for (const r in state.lSUsers.users) {
@@ -101,23 +101,23 @@ export default function(state = INITIAL_STATE, action) {
         lSUsers: { ...state.lSUsers, users: newRows },
         updateModalOpened: false,
       };
-    case BRANCHES_FOR_SYS_USER:
+    case BRNCHS_FOR_DIT_USR_LST:
       return { ...state, bukrsBranches: action.payload };
-    case SHOW_SYS_USER:
+    case SHOW_DIT_USER_LST:
       return { ...state, addModalOpened: action.payload };
-    case SHOW_SYS_USER_UPDATE:
+    case SHOW_DIT_USR_UPD:
       return { ...state, updateModalOpened: action.payload };
 
-    /******************************************************************        MENU       */
+    /******************************************************************        DMULST       */
 
-    case ON_MENU_NODE_MOVE:
+    case ON_DMU_LST_MOVE:
       const { node, changeNode } = action.payload;
       const x = node.sort_order;
       const y = changeNode.sort_order;
       node.sort_order = y;
       changeNode.sort_order = x;
       return { ...state };
-    case MENU_NODE_UPD:
+    case DMU_LST_NODE_UPD:
       const nMenuUpd = action.payload;
       const menuTreeUpd = changeNodeAtPath({
         treeData: state.treeData,
@@ -126,12 +126,12 @@ export default function(state = INITIAL_STATE, action) {
         newNode: nMenuUpd,
       });
       return { ...state, treeData: menuTreeUpd };
-    case ALL_MENU_NODES:
-    case TREE_MENU_CHANGED:
+    case ALL_DMU_LST:
+    case TREE_DMU_LST_CHANGED:
       return { ...state, treeData: action.payload };
-    case BLANK_MENU_NODE:
+    case BLANK_DMU_LST_NODE:
       return { ...state, blankMenuNode: action.payload };
-    case NEW_MENU_NODE:
+    case NEW_DMU_LST:
       const mnuNode = action.payload;
       const newMenuN = {};
       newMenuN.id = mnuNode.id;
@@ -160,7 +160,7 @@ export default function(state = INITIAL_STATE, action) {
         });
       }
       return { ...state, treeData: newTree.treeData };
-    case DELETE_MENU_NODE:
+    case DEL_DMU_LST_NODE:
       const delNode = action.payload;
       let delMenuN = removeNodeAtPath({
         treeData: state.treeData,
@@ -169,13 +169,13 @@ export default function(state = INITIAL_STATE, action) {
       });
       return { ...state, treeData: delMenuN };
 
-    /******************************************************************        ROLES       */
+    /******************************************************************        DRLIST       */
 
-    case ALL_ROLE:
+    case ALL_DR_LIST:
       return { ...state, listRoles: { ...state.listRoles, ...action.payload } };
-    case ROLE_ACCESS:
+    case DR_ACCESS:
       return { ...state, accessTypes: action.payload };
-    case ROLE_NAME_UPDATE:
+    case DR_NAME_UPD:
       const updatedRole = action.payload;
       const newRoles = [];
       for (const k in state.listRoles.roles) {
@@ -186,20 +186,20 @@ export default function(state = INITIAL_STATE, action) {
         }
       }
       return { ...state, listRoles: { ...state.listRoles, roles: newRoles } };
-    case ROLE_NEW:
+    case DR_NEW:
       const allRoles = Object.assign([], state.listRoles.roles);
       allRoles.push(action.payload);
       return { ...state, listRoles: { ...state.listRoles, roles: allRoles } };
 
-    /******************************************************************        TRANSACTIONS       */
+    /******************************************************************        DTRLST       */
 
-    case ALL_CURRENT_TRANSACTIONS:
+    case ALL_CURR_DTR:
       return { ...state, currTrans: action.payload };
-    case NEW_TRANSACTION:
+    case NEW_DTR:
       const newTr = Object.assign([], state.currTrans);
       newTr.push(action.payload);
       return { ...state, currTrans: newTr };
-    case TRANSACTION_UPDATE:
+    case UPD_DTR:
       const updatedItem = action.payload;
       const newItems = [];
       for (const k in state.currTrans) {

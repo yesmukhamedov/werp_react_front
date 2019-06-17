@@ -10,15 +10,15 @@ import {
 } from 'semantic-ui-react';
 import AddNode from './addNode';
 import {
-  fetchCurrentMenu,
-  treeMenuChanged,
-  getBlankMenu,
-  newMenuNode,
-  deleteMenuNode,
-  updMenuNode,
-  onMoveMenuNode,
-} from './../transactionAction';
-import { fetchCurrentTransactions } from '../transactionAction';
+  fetchCurrDmulst,
+  treeDmuChanged,
+  getBlankDmu,
+  newDmuNode,
+  deleteDmuNode,
+  updDmuNode,
+  onMoveDmuNode,
+} from './../ditAction';
+import { fetchCurrDtrLst } from '../ditAction';
 import SortableTree from 'react-sortable-tree';
 import 'react-sortable-tree/style.css';
 import OutputErrors from '../../general/error/outputErrors';
@@ -41,7 +41,7 @@ class Menu extends Component {
   }
 
   componentWillMount() {
-    this.props.fetchCurrentMenu();
+    this.props.fetchCurrDmulst();
   }
 
   handleChange(fieldName, o) {
@@ -66,7 +66,7 @@ class Menu extends Component {
 
   newNode(node) {
     node.path = this.state.currentItemPath;
-    this.props.newMenuNode(node);
+    this.props.newDmuNode(node);
   }
 
   addFormModal(truefalse) {
@@ -77,7 +77,7 @@ class Menu extends Component {
   }
 
   onChanged(a) {
-    this.props.treeMenuChanged(a);
+    this.props.treeDmuChanged(a);
   }
 
   changeWeight = ({ ...args }) => {
@@ -95,7 +95,7 @@ class Menu extends Component {
               break;
             }
           }
-          this.props.onMoveMenuNode(args.node, changeNode);
+          this.props.onMoveDmuNode(args.node, changeNode);
         } else {
           for (let x = args.nextParentNode.children.length - 1; x >= 0; x--) {
             if (args.nextParentNode.children[x].id === args.node.id) {
@@ -103,16 +103,16 @@ class Menu extends Component {
               break;
             }
           }
-          this.props.onMoveMenuNode(args.node, changeNode);
+          this.props.onMoveDmuNode(args.node, changeNode);
         }
       } else {
         if (args.prevTreeIndex > args.nextTreeIndex) {
-          this.props.onMoveMenuNode(
+          this.props.onMoveDmuNode(
             args.node,
             this.props.treeData[args.treeIndex + 1],
           );
         } else {
-          this.props.onMoveMenuNode(
+          this.props.onMoveDmuNode(
             args.node,
             this.props.treeData[args.treeIndex - 1],
           );
@@ -144,8 +144,8 @@ class Menu extends Component {
                 floated="right"
                 color="teal"
                 onClick={() => {
-                  this.props.getBlankMenu(0);
-                  this.props.fetchCurrentTransactions();
+                  this.props.getBlankDmu(0);
+                  this.props.fetchCurrDtrLst();
                   this.addFormModal(true);
                 }}
               >
@@ -196,8 +196,8 @@ class Menu extends Component {
                               ...this.state,
                               currentItemPath: path,
                             });
-                            this.props.getBlankMenu(node.id);
-                            this.props.fetchCurrentTransactions();
+                            this.props.getBlankDmu(node.id);
+                            this.props.fetchCurrDtrLst();
                             this.addFormModal(true);
                           }}
                         />,
@@ -239,7 +239,7 @@ class Menu extends Component {
   submitUpdate() {
     const nodeForEdit = Object.assign({}, this.state.nodeForEdit);
     nodeForEdit.path = this.state.currentItemPath;
-    this.props.updMenuNode(nodeForEdit);
+    this.props.updDmuNode(nodeForEdit);
     this.setState({
       ...this.state,
       showUpdateModal: false,
@@ -308,29 +308,29 @@ class Menu extends Component {
 
   deletePyramid() {
     const { nodeForDelete } = this.state;
-    this.props.deleteMenuNode(nodeForDelete);
+    this.props.deleteDmuNode(nodeForDelete);
     this.resetDelete();
   }
 }
 
 function mapStateToProps(state) {
   return {
-    treeData: state.transactionReducer.treeData,
-    blankMenuNode: state.transactionReducer.blankMenuNode,
-    currTrans: state.transactionReducer.currTrans,
+    treeData: state.ditReducer.treeData,
+    blankMenuNode: state.ditReducer.blankMenuNode,
+    currTrans: state.ditReducer.currTrans,
   };
 }
 
 export default connect(
   mapStateToProps,
   {
-    onMoveMenuNode,
-    fetchCurrentMenu,
-    treeMenuChanged,
-    getBlankMenu,
-    newMenuNode,
-    deleteMenuNode,
-    updMenuNode,
-    fetchCurrentTransactions,
+    onMoveDmuNode,
+    fetchCurrDmulst,
+    treeDmuChanged,
+    getBlankDmu,
+    newDmuNode,
+    deleteDmuNode,
+    updDmuNode,
+    fetchCurrDtrLst,
   },
 )(injectIntl(Menu));
