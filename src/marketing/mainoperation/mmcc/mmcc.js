@@ -36,6 +36,11 @@ import {
   momentYYYYMMDDToString,
 } from '../../../utils/helpers';
 
+import {
+  serviceBA,
+  marketingBA,
+} from '../contractAdditionaComponents/marketingConstants';
+
 import moment from 'moment';
 require('moment/locale/ru');
 require('moment/locale/tr');
@@ -122,8 +127,8 @@ const Mmcc = props => {
   const [ps, setPs] = useState([]);
   const [contractPromoList, setContractPromoList] = useState([]);
 
-  const serviceBA = [5, 6, 9];
-  const marketingBA = [1, 2, 3, 4, 7, 8];
+  // const serviceBA = [5, 6, 9];
+  // const marketingBA = [1, 2, 3, 4, 7, 8];
 
   //componentDidMount
   useEffect(() => {

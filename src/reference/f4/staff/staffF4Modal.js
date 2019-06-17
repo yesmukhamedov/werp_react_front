@@ -46,6 +46,12 @@ class StaffF4Modal extends PureComponent {
         unemployedDisabledState: true,
       });
     }
+    if (trans === 'mmcef') {
+      this.setState({
+        brnchDisabledState: true,
+        unemployedDisabledState: true,
+      });
+    }
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.bukrs !== this.props.bukrs) {
@@ -118,8 +124,8 @@ class StaffF4Modal extends PureComponent {
 
     if (
       trans === 'fcis' ||
-      trans === 'mmcc01' ||
-      trans === 'mmcc02' ||
+      trans === 'mmcc' ||
+      trans === 'mmcef' ||
       trans === 'faia' ||
       trans.startsWith('hr_doc_create_') ||
       trans === 'hr_doc_approvers'
@@ -164,7 +170,7 @@ class StaffF4Modal extends PureComponent {
       // t1columns.push(t1r1c4);
     }
 
-    if (trans === 'mmcc01' || trans === 'mmcc02') {
+    if (trans === 'mmcc' || trans === 'mmcef') {
       t1r1c4 = {
         Header: ({ value }) => <b>{messages['position']}</b>,
         id: 'positionName',

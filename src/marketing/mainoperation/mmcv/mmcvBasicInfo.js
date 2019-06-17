@@ -25,6 +25,7 @@ const MmcvBasicInfo = props => {
     intl: { messages },
     language,
   } = props;
+
   //componentWillRecieveProps
   useEffect(() => {
     if (urlContractNumber && urlContractNumber.length > 0) {

@@ -52,7 +52,7 @@ const MmccBasicInfo = props => {
         onStaffSelect={item =>
           props.onBasicInfoInputChange(item, staffF4ModalPosition)
         }
-        trans="mmcc01"
+        trans="mmcc"
         brnch={contract.branchId}
         branchOptions={branchOptions}
         bukrs={contract.bukrs}
@@ -216,35 +216,6 @@ const MmccBasicInfo = props => {
             </Table.Cell>
           </Table.Row>
           <Table.Row>
-            <Table.Cell>{messages['demoSecretary']}</Table.Cell>
-            <Table.Cell>
-              <span>
-                <LinkToStaffCardView
-                  staffId={contract.demoSc}
-                  staffFio={contract.demoScName}
-                />
-              </span>
-              <Icon
-                name="clone"
-                size="large"
-                className="clickableIcon"
-                onClick={() => {
-                  setStaffF4ModalOpen(true);
-                  setStaffF4ModalPosition('demoSc');
-                }}
-              />
-              <Icon
-                name="remove"
-                size="large"
-                className="clickableIcon"
-                color="red"
-                onClick={event =>
-                  props.onBasicInfoInputChange('', 'demoScRemove')
-                }
-              />
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
             <Table.Cell>{messages['dealer']}</Table.Cell>
             <Table.Cell>
               <span>
@@ -269,6 +240,35 @@ const MmccBasicInfo = props => {
                 color="red"
                 onClick={event =>
                   props.onBasicInfoInputChange('remove', 'dealerRemove')
+                }
+              />
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>{messages['demoSecretary']}</Table.Cell>
+            <Table.Cell>
+              <span>
+                <LinkToStaffCardView
+                  staffId={contract.demoSc}
+                  staffFio={contract.demoScName}
+                />
+              </span>
+              <Icon
+                name="clone"
+                size="large"
+                className="clickableIcon"
+                onClick={() => {
+                  setStaffF4ModalOpen(true);
+                  setStaffF4ModalPosition('demoSc');
+                }}
+              />
+              <Icon
+                name="remove"
+                size="large"
+                className="clickableIcon"
+                color="red"
+                onClick={event =>
+                  props.onBasicInfoInputChange('', 'demoScRemove')
                 }
               />
             </Table.Cell>

@@ -12,7 +12,6 @@ const PromoListF4 = props => {
     promoList = [],
   } = props;
 
-  const [selectedPromoList, setSelectedPromoList] = useState([]);
   const [localPromoList, setLocalPromoList] = useState([]);
 
   //componentWillRecieveProps

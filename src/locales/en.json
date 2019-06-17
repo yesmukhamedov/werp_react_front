@@ -682,6 +682,7 @@
   "transNameMmcv": "MMCV: View Contract",
   "transNameMmcei": "MMCEI: Contract - edit info",
   "transNameMmcecd": "MMCECD: Contract - edit contact details",
+  "transNameMmcef": "MMCEF: Contract - edit for Finance manager",
 
   "asset_mant": "Asset management",
   "add_assets": "Adding fixed assets",

@@ -67,6 +67,9 @@ export const F4_CLEAR_HKONT_LIST = 'F4_CLEAR_HKONT_LIST';
 export const F4_FETCH_CONTYPE_LIST = 'F4_FETCH_CONTYPE_LIST';
 export const F4_CLEAR_CONTYPE_LIST = 'F4_CLEAR_CONTYPE_LIST';
 
+export const F4_FETCH_CONSTATUS_LIST = 'F4_FETCH_CONSTATUS_LIST';
+export const F4_CLEAR_CONSTATUS_LIST = 'F4_CLEAR_CONSTATUS_LIST';
+
 export const F4_FETCH_BRANCHES = 'F4_FETCH_BRANCHES';
 export const F4_CLEAR_BRANCHES = 'F4_CLEAR_BRANCHES';
 
@@ -595,6 +598,21 @@ export function f4FetchConTypeList() {
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_CONTYPE_LIST,
+          data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchConStatusList() {
+  return function(dispatch) {
+    doGet('reference/fetchContractStatusList')
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_CONSTATUS_LIST,
           data,
         });
       })

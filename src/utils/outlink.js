@@ -72,6 +72,9 @@ export const LinkToFa03AwkeyBukrs = props => {
   const { awkey = '', bukrs = '' } = props;
   let belnr = '',
     gjahr = '';
+
+  if (awkey === null || bukrs === null) return '';
+
   if (awkey.toString().length === 14) {
     belnr = awkey.toString().slice(0, 10);
     gjahr = awkey.toString().slice(10);
