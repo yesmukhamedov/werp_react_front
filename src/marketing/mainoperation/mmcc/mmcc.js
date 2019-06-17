@@ -481,6 +481,27 @@ const Mmcc = props => {
         const newArray = [...prev.slice(0, idx), ...prev.slice(idx + 1)];
         return newArray;
       });
+    } else if (fieldName === 'tradeInTovarSerial') {
+      setContract(prev => {
+        return {
+          ...prev,
+          tradeInTovarSerial: value.tovarSerial,
+          tradeInMatnrListId: value.matnrListId,
+        };
+      });
+    } else if (fieldName === 'removeTradeInTovarSerial') {
+      setContract(prev => {
+        return { ...prev, tradeInTovarSerial: '', tradeInTovarSerial: '' };
+      });
+    } else if (fieldName === 'tradeIn') {
+      setContract(prev => {
+        return {
+          ...prev,
+          [fieldName]: value,
+          tradeInTovarSerial: '',
+          tradeInTovarSerial: '',
+        };
+      });
     } else
       setContract(prev => {
         return { ...prev, [fieldName]: value };
@@ -543,6 +564,7 @@ const Mmcc = props => {
             contractTypeId={contract.contractTypeId}
             tcode={'MMCC'}
             tovarSerial={contract.tovarSerial}
+            tradeInTovarSerial={contract.tradeInTovarSerial}
             contractPromoList={contractPromoList}
           />
         </Tab.Pane>

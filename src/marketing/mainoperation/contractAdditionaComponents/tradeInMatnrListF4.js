@@ -5,21 +5,18 @@ import { injectIntl } from 'react-intl';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import matchSorter, { rankings } from 'match-sorter';
-import { LinkToMatnrHistory } from '../../../utils/outlink';
 
 const TradeInMatnrListF4 = props => {
   const {
     intl: { messages },
-    matnrList = [],
-    isLoadingMatnrList = false,
+    tradeInMatnrList = [],
+    isLoadingTradeInMatnrList = false,
   } = props;
 
   const getColumns = () => {
     let t1columns = [];
     let t1r1c1 = {},
-      t1r1c2 = {},
-      t1r1c3 = {},
-      t1r1c4 = {};
+      t1r1c2 = {};
 
     t1r1c1 = {
       Header: ({ value }) => <b>{messages['name']}</b>,
@@ -45,41 +42,9 @@ const TradeInMatnrListF4 = props => {
         }),
       filterAll: true,
     };
-    t1r1c3 = {
-      Header: ({ value }) => <b>{messages['employeesOnAccount']}</b>,
-      accessor: 'staffFio',
-      width: 240,
-      className: 'clickableItem',
-      Cell: obj => <span>{obj.original.staffFio}</span>,
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, {
-          keys: [{ threshold: rankings.CONTAINS, key: 'staffFio' }],
-        }),
-      filterAll: true,
-    };
-    t1r1c4 = {
-      Header: ({ value }) => <b>{messages['extraInfo']}</b>,
-      accessor: 'matnrListId',
-      width: 120,
-      Cell: obj => (
-        <span>
-          <LinkToMatnrHistory
-            matnrListId={obj.original.matnrListId}
-            viewText={messages['view']}
-          />{' '}
-        </span>
-      ),
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, {
-          keys: [{ threshold: rankings.CONTAINS, key: 'matnrListId' }],
-        }),
-      filterAll: true,
-    };
 
     t1columns.push(t1r1c1);
     t1columns.push(t1r1c2);
-    t1columns.push(t1r1c3);
-    t1columns.push(t1r1c4);
 
     return t1columns;
   };
@@ -88,7 +53,7 @@ const TradeInMatnrListF4 = props => {
       open={props.open}
       closeOnEscape={false}
       dimmer={'inverted'}
-      onClose={() => props.onCloseMatnrF4(false)}
+      onClose={() => props.onCloseTradeInMatnrF4(false)}
     >
       <Modal.Header>
         <Icon name="filter" size="big" />
@@ -96,12 +61,12 @@ const TradeInMatnrListF4 = props => {
       </Modal.Header>
 
       <Modal.Content>
-        <Dimmer active={isLoadingMatnrList}>
+        <Dimmer active={isLoadingTradeInMatnrList}>
           <Loader />
         </Dimmer>
         <ReactTable
           filterable
-          data={matnrList}
+          data={tradeInMatnrList}
           columns={getColumns()}
           defaultPageSize={10}
           showPagination
@@ -117,11 +82,11 @@ const TradeInMatnrListF4 = props => {
           getTrProps={(state, rowInfo, column) => {
             return {
               onClick: (e, handleOriginal) => {
-                if (props.onMatnrSelect) {
-                  props.onMatnrSelect(rowInfo.original);
+                if (props.onTradeInMatnrSelect) {
+                  props.onTradeInMatnrSelect(rowInfo.original);
                 }
-                if (props.onCloseMatnrF4) {
-                  props.onCloseMatnrF4(false);
+                if (props.onCloseTradeInMatnrF4) {
+                  props.onCloseTradeInMatnrF4(false);
                 }
               },
             };

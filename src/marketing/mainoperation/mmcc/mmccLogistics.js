@@ -4,6 +4,7 @@ import { injectIntl } from 'react-intl';
 
 import { fetchDynObjMarketing } from '../../marketingAction';
 import MatnrListF4Modal from '../contractAdditionaComponents/matnrListF4';
+import TradeInMatnrListF4Modal from '../contractAdditionaComponents/tradeInMatnrListF4';
 import PromoListF4Modal from '../contractAdditionaComponents/promoListF4';
 import {
   Segment,
@@ -37,19 +38,26 @@ const MmccLogistics = props => {
     tovarSerial = '',
     matnrReleaseDate = '',
     tradeIn = 0,
-    tradeInMatnrListId = 0,
     tradeInTovarSerial = '',
     contractPromoList = [],
     matnrList = [],
     promoList = [],
+    tradeInMatnrList = [],
     language,
     intl: { messages },
   } = props;
 
   const [isLoadingMatnrList, setIsLoadingMatnrList] = useState(false);
+  const [isLoadingTradeInMatnrList, setIsLoadingTradeInMatnrList] = useState(
+    false,
+  );
   const [isLoadingPromoList, setIsLoadingPromoList] = useState(false);
   const [matnrListF4ModalOpen, setMatnrListF4ModalOpen] = useState(false);
   const [promoListF4ModalOpen, setPromoListF4ModalOpen] = useState(false);
+  const [
+    tradeInMatnrListF4ModalOpen,
+    setTradeInMatnrListF4ModalOpen,
+  ] = useState(false);
 
   //componentWillRecieveProps
   useEffect(() => {
@@ -57,6 +65,11 @@ const MmccLogistics = props => {
     if (branchId && branchId > 0 && contractTypeId && contractTypeId > 0) {
       props.fetchDynObjMarketing(
         'marketing/contract/matnrF4/fetch_matnr_list',
+        { bukrs, tcode, branchId, contractTypeId },
+        bool => setIsLoadingMatnrList(bool),
+      );
+      props.fetchDynObjMarketing(
+        'marketing/contract/tradeInMatnrF4/fetch_tradeInMatnr_list',
         { bukrs, tcode, branchId, contractTypeId },
         bool => setIsLoadingMatnrList(bool),
       );
@@ -98,6 +111,15 @@ const MmccLogistics = props => {
         }
         isLoadingMatnrList={isLoadingMatnrList}
       />
+      <TradeInMatnrListF4Modal
+        open={tradeInMatnrListF4ModalOpen}
+        tradeInMatnrList={tradeInMatnrList}
+        onCloseTradeInMatnrF4={bool => setTradeInMatnrListF4ModalOpen(bool)}
+        onTradeInMatnrSelect={item =>
+          props.onLogisticsInputChange(item, 'tradeInTovarSerial')
+        }
+        isLoadingTradeInMatnrList={isLoadingTradeInMatnrList}
+      />
       <PromoListF4Modal
         open={promoListF4ModalOpen}
         promoList={promoList}
@@ -133,7 +155,7 @@ const MmccLogistics = props => {
                   name="clone"
                   size="large"
                   className="clickableIcon"
-                  onClick={() => setMatnrListF4ModalOpen(true)}
+                  onClick={() => setTradeInMatnrListF4ModalOpen(true)}
                 />
                 <Icon
                   name="remove"
@@ -141,7 +163,10 @@ const MmccLogistics = props => {
                   className="clickableIcon"
                   color="red"
                   onClick={event =>
-                    props.onLogisticsInputChange('remove', 'removeTovarSerial')
+                    props.onLogisticsInputChange(
+                      'remove',
+                      'removeTradeInTovarSerial',
+                    )
                   }
                 />
               </Table.Cell>
@@ -246,6 +271,7 @@ function mapStateToProps(state) {
   return {
     language: state.locales.lang,
     matnrList: state.marketing.dynamicObject.matnrList,
+    tradeInMatnrList: state.marketing.dynamicObject.tradeInMatnrList,
     promoList: state.marketing.dynamicObject.promoList,
   };
 }
