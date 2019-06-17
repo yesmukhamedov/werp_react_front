@@ -93,7 +93,6 @@ class ListContracts extends Component {
 
   render() {
     const { messages } = this.props.intl;
-
     return (
       <div>
         <Container
@@ -126,7 +125,10 @@ class ListContracts extends Component {
               {messages['search']}
             </Button>
           </Segment>
-          <List messages={messages} contlist={this.props.contlist} />
+          <List
+            messages={messages}
+            dmsclists={this.props.dynObjDmsc.dmsclists}
+          />
         </Container>
       </div>
     );
@@ -183,14 +185,11 @@ function mapStateToProps(state) {
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,
-    contlist: state.marketing.contlist,
-    dealers: state.marketing.dealers,
-    demosec: state.marketing.demosec,
-    collectors: state.marketing.collectors,
     lazyitems: state.marketing.lazyitems,
     lazymeta: state.marketing.lazymeta,
     contstatus: state.marketing.contstatus,
     contlaststate: state.marketing.contlaststate,
+    dynObjDmsc: state.marketing.dynObjDmsc,
   };
 }
 

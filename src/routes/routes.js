@@ -792,31 +792,31 @@ const AsyncPositionList = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncEventLog = Loadable({
-  loader: () => import('../dit/ditellist/' /* webpackChunkName: ditellist */),
+const AsyncDitEllist = Loadable({
+  loader: () => import('../dit/ditellist/' /* webpackChunkName: "ditellist" */),
   loading: () => <LoadingPage />,
 });
 
-const AsyncUsers = Loadable({
+const AsyncDitUserList = Loadable({
   loader: () =>
-    import('../dit/dituserlist' /* webpackChunkName: dituserlist */),
+    import('../dit/dituserlist' /* webpackChunkName: "dituserlist" */),
   loading: () => <LoadingPage />,
 });
 
-const AsyncMenu = Loadable({
+const AsyncDmuList = Loadable({
   loader: () => import('../dit/dmulist/' /* webpackChunkName: "dmulist" */),
   loading: () => <LoadingPage />,
 });
 
-const AsyncRoles = Loadable({
-  loader: () => import('../dit/drlist/' /* webpackChunkName: drlist */),
+const AsyncDrList = Loadable({
+  loader: () => import('../dit/drlist/' /* webpackChunkName: "drlist" */),
   loading: () => <LoadingPage />,
 });
 
-const AsyncPriceList = Loadable({
+const AsyncLPList = Loadable({
   loader: () =>
     import(
-      '../marketing/otheroperation/pricelist' /* webpackChunkName: pricelist */
+      '../marketing/otheroperation/lplist' /* webpackChunkName: "lplist" */
     ),
   loading: () => <LoadingPage />,
 });
@@ -839,9 +839,7 @@ const AsyncExitInterviewCreatePage = Loadable({
 
 const AsyncDmscList = Loadable({
   loader: () =>
-    import(
-      '../marketing/report/dmsclist' /* webpackChunkName: "ExitInterviewCreatePage" */
-    ),
+    import('../marketing/report/dmsclist' /* webpackChunkName: "dmsclist" */),
   loading: () => <LoadingPage />,
 });
 
@@ -938,13 +936,13 @@ const getComponent = {
   Assetmod: AsyncAssetmod,
   Assetapr: AsyncAssetapr,
   Aesreport1: AsyncAesreport1,
-  Dmulist: AsyncMenu,
+  Dmulist: AsyncDmuList,
   Poslt: AsyncPositionList,
-  Duserlist: AsyncUsers,
-  Drlist: AsyncRoles,
+  Duserlist: AsyncDitUserList,
+  Drlist: AsyncDrList,
   RefDemoPriceList: AsyncRefDemoPriceListPage,
-  Eventlog: AsyncEventLog,
-  Lplist: AsyncPriceList,
+  Eventlog: AsyncDitEllist,
+  Lplist: AsyncLPList,
   Dmsclist: AsyncDmscList,
   DmscLstExcel: AsyncDmscListExcel,
 };

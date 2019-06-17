@@ -5,7 +5,7 @@ import matchSorter from 'match-sorter';
 import { LinkToMmcv, LinkToCustomerHrc03 } from '../../../utils/outlink';
 
 export default function List(props) {
-  const { contlist, messages } = props;
+  const { dmsclists, messages } = props;
   const columns = [
     {
       Header: messages['L__BRANCH'],
@@ -141,13 +141,13 @@ export default function List(props) {
   ];
   return (
     <div>
-      {contlist === undefined || contlist.length == 0 ? (
+      {dmsclists === undefined || dmsclists.length == 0 ? (
         ''
       ) : (
         <ReactTable
           filterable
           columns={columns}
-          data={contlist}
+          data={dmsclists}
           resolveData={data => data.map(row => row)}
           rowsText={messages['rowsText']}
           pageText={messages['pageText']}

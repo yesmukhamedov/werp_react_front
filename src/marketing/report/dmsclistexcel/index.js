@@ -112,10 +112,10 @@ class DmscListExcel extends Component {
     excelHeaders.push(messages['extraInfo']);
 
     excelDownload(
-      '/api/marketing/dmsclist/report/dmsclistexcel',
+      '/api/marketing/contract/report/dmsclistexcel',
       'mcontrrep.xls',
       'outputTable',
-      this.props.contlist,
+      this.props.dynObjDmsc.dmsclists,
       excelHeaders,
     );
   }
@@ -167,7 +167,10 @@ class DmscListExcel extends Component {
               </Menu.Item>
             </Menu>
           </Segment>
-          <List messages={messages} contlist={this.props.contlist} />
+          <List
+            messages={messages}
+            dmsclists={this.props.dynObjDmsc.dmsclists}
+          />
         </Container>
       </div>
     );
@@ -224,7 +227,6 @@ function mapStateToProps(state) {
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,
-    contlist: state.marketing.contlist,
     dealers: state.marketing.dealers,
     demosec: state.marketing.demosec,
     collectors: state.marketing.collectors,

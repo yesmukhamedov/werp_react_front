@@ -26,16 +26,12 @@ const language = localStorage.getItem('language');
 export function getByDefSearchOpts(branchId) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`marketing/dmsclist/getbybranch/` + branchId)
+    doGet(`marketing/contract/getbybranch/` + branchId)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
           type: GET_CONT_DMSC_SEAR_OPTS,
-          dealers: data.dealers,
-          demosec: data.demosec,
-          collectors: data.collectors,
-          contstatus: data.contstatus,
-          contlaststate: data.contlaststate,
+          payload: data,
         });
       })
       .catch(error => {
@@ -48,7 +44,7 @@ export function getByDefSearchOpts(branchId) {
 export function getContByOpts(searchPms) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`marketing/dmsclist/searchbyparams`, searchPms)
+    doGet(`marketing/contract/searchbyparams`, searchPms)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

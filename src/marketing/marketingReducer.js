@@ -12,14 +12,13 @@ import {
 
 const INITIAL_STATE = {
   pritms: [],
-  contlist: [],
   lazyitems: [],
   lazymeta: {
     prtotRws: 0,
     perPage: 0,
     page: 0,
   },
-
+  dynObjDmsc: [],
   dynamicObject: {},
 };
 
@@ -53,17 +52,11 @@ export default function(state = INITIAL_STATE, action) {
 
     /************************************************     CONTRACT LIST        */
     case GET_CONT_DMSC_SEAR_OPTS:
+    case CONT_DMSC_LIST:
       return {
         ...state,
-        dealers: action.dealers,
-        demosec: action.demosec,
-        collectors: action.collectors,
-        contstatus: action.contstatus,
-        contlaststate: action.contlaststate,
+        dynObjDmsc: { ...state.dynObjDmsc, ...action.payload },
       };
-
-    case CONT_DMSC_LIST:
-      return { ...state, contlist: action.payload };
 
     /************************************************  END CONTRACT LIST        */
     case FETCH_DYNOBJ_MARKETING:

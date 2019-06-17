@@ -39,13 +39,10 @@ class SearchOpt extends Component {
       dealers,
       demosec,
       collectors,
-      searchPms,
-      messages,
-      inputChange,
       contstatus,
       contlaststate,
-    } = this.props;
-
+    } = this.props.dynObjDmsc;
+    const { messages, inputChange, searchPms } = this.props;
     return (
       <div>
         <Form>
