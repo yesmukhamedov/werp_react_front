@@ -90,7 +90,7 @@ const Mmceg = props => {
       setNewContract({ ...mmceg.contract });
       setContractPromoList([...mmceg.contractPromoList]);
       setNewContractPromoList([...mmceg.contractPromoList]);
-      console.log(mmceg.contract, 'mmceg.contract');
+      // console.log(mmceg.contract, 'mmceg.contract');
 
       const { bukrs, branchId, contractTypeId } = mmceg.contract;
       //get Price List
@@ -164,7 +164,7 @@ const Mmceg = props => {
             loading={isSavingContract}
             onClick={() => onWriteOffMatnr()}
           >
-            {messages['toWriteOff']}
+            {messages['save']}
           </Button>
         </span>
       );
