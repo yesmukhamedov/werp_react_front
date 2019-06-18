@@ -41,7 +41,7 @@ export const NEW_DTR = 'NEW_DTR';
 export function fetchAllEllist(page) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`eventlog/getAllEvent?${page}`)
+    doGet(`ditellist/getallellist?${page}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -75,7 +75,7 @@ export function showUpdateModal(flag) {
 export function fetchDSUserAll() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`users/fetchDSUserAll`)
+    doGet(`dituserlist/fetchDSUserAll`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -93,7 +93,7 @@ export function fetchDSUserAll() {
 export function saveNewDSUser(newUser) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    doPost(`users/saveNewSUser`, newUser)
+    doPost(`dituserlist/saveNewSUser`, newUser)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
@@ -115,7 +115,7 @@ export function saveNewDSUser(newUser) {
 
 export function updateDSUserRow(row) {
   return function(dispatch) {
-    doPut('users/update/system/user', row)
+    doPut('dituserlist/upd/system/user', row)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
@@ -138,7 +138,7 @@ export function updateDSUserRow(row) {
 export function searchStafforDSUser(sstaff) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    doPost(`users/searchStaff/forsysuser`, sstaff)
+    doPost(`dituserlist/searchStaff/forsysuser`, sstaff)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -154,7 +154,7 @@ export function searchStafforDSUser(sstaff) {
 
 export function getBrByBukrDSysUser(bukrs) {
   return function(dispatch) {
-    doGet(`users/branches/${bukrs}`)
+    doGet(`dituserlist/branchesbybukrs/${bukrs}`)
       .then(({ data }) => {
         dispatch({
           type: BRNCHS_FOR_DIT_USR_LST,
@@ -172,7 +172,7 @@ export function getBrByBukrDSysUser(bukrs) {
 export function fetchCurrDmulst() {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    doGet(`dit/menu/list`)
+    doGet(`dit/dmulist/getall`)
       .then(({ data }) => {
         modifyLoader(false);
         dispatch({
@@ -189,7 +189,7 @@ export function fetchCurrDmulst() {
 export function newDmuNode(newNode) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    doPost(`dit/menu/save`, newNode)
+    doPost(`dit/dmulist/savenewdmu`, newNode)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
@@ -211,7 +211,7 @@ export function newDmuNode(newNode) {
 export function onMoveDmuNode(node, changeNode) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    doPost(`dit/menu/move`, { node, changeNode })
+    doPost(`dit/dmulist/movenode`, { node, changeNode })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
@@ -232,7 +232,7 @@ export function onMoveDmuNode(node, changeNode) {
 
 export function updDmuNode(node) {
   return function(dispatch) {
-    doPut(`dit/menu/update/${node.id}`, node)
+    doPut(`dit/dmulist/update/${node.id}`, node)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -257,7 +257,7 @@ export function treeDmuChanged(treeMenu) {
 export function getBlankDmu(parentId) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`dit/menu/blank/${parentId}`)
+    doGet(`dit/dmulist/blankdmu/${parentId}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -275,7 +275,7 @@ export function getBlankDmu(parentId) {
 export function deleteDmuNode(nMenu) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`dit/menu/delete/${nMenu.id}`)
+    doPost(`dit/dmulist/deletenode/${nMenu.id}`)
       .then(() => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -295,7 +295,7 @@ export function deleteDmuNode(nMenu) {
 export function fetchDrlstAll() {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    doGet(`dit/role/all/roles`)
+    doGet(`dit/drlist/drlistall`)
       .then(({ data }) => {
         modifyLoader(false);
         dispatch({
@@ -311,7 +311,7 @@ export function fetchDrlstAll() {
 
 export function getDrAccesses(role_id) {
   return function(dispatch) {
-    doGet(`dit/role/accesses/${role_id}`)
+    doGet(`dit/drlist/draccesses/${role_id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -329,7 +329,7 @@ export function getDrAccesses(role_id) {
 export function saveDrLst(newRoles) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`dit/role/save_roles`, newRoles)
+    doPost(`dit/drlist/drsave_roles`, newRoles)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
@@ -352,7 +352,7 @@ export function saveDrLst(newRoles) {
 export function updDrNomin(role) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPut('dit/role/update', role)
+    doPut('dit/drlist/drupdate', role)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
@@ -375,7 +375,7 @@ export function updDrNomin(role) {
 export function newDrole(role) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`dit/role/newrole`, role)
+    doPost(`dit/drlist/newdr`, role)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
@@ -400,7 +400,7 @@ export function newDrole(role) {
 export function fetchCurrDtrLst() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`/dit/transactions/list`)
+    doGet(`/dit/dtrlist/trall`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -418,7 +418,7 @@ export function fetchCurrDtrLst() {
 export function newDtr(newTr) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    doPost(`/dit/transactions/list`, newTr)
+    doPost(`/dit/dtrlist/newtr`, newTr)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
@@ -441,18 +441,13 @@ export function newDtr(newTr) {
 export function updDtr(row) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPut('dit/transactions/list/update', row)
+    doPut('dit/dtrlist/trupdate', row)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        if (data) {
-          dispatch(successed());
-          dispatch({
-            type: UPD_DTR,
-            payload: row,
-          });
-        } else {
-          dispatch(notSuccessed());
-        }
+        dispatch({
+          type: UPD_DTR,
+          payload: row,
+        });
       })
       .catch(error => {
         dispatch(modifyLoader(false));

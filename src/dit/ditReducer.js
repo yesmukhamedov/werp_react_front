@@ -52,7 +52,7 @@ const INITIAL_STATE = {
   treeData: [],
   listRoles: [],
   accessTypes: [],
-  currTrans: [],
+  dynObjTrLst: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -192,24 +192,29 @@ export default function(state = INITIAL_STATE, action) {
       return { ...state, listRoles: { ...state.listRoles, roles: allRoles } };
 
     /******************************************************************        DTRLST       */
-
     case ALL_CURR_DTR:
-      return { ...state, currTrans: action.payload };
+      return {
+        ...state,
+        dynObjTrLst: [...state.dynObjTrLst, ...action.payload],
+      };
     case NEW_DTR:
-      const newTr = Object.assign([], state.currTrans);
-      newTr.push(action.payload);
-      return { ...state, currTrans: newTr };
+      return {
+        ...state,
+        dynObjTrLst: [...state.dynObjTrLst, { ...action.payload }],
+      };
     case UPD_DTR:
-      const updatedItem = action.payload;
-      const newItems = [];
-      for (const k in state.currTrans) {
-        if (state.currTrans[k].transaction_id === updatedItem.transaction_id) {
-          newItems.push(updatedItem);
-        } else {
-          newItems.push(state.currTrans[k]);
-        }
-      }
-      return { ...state, currTrans: newItems };
+      const updDtr = { ...action.payload };
+      const idx = [...state.dynObjTrLst].findIndex(
+        el => el.transaction_id === updDtr.transaction_id,
+      );
+      return {
+        ...state,
+        dynObjTrLst: [
+          ...state.dynObjTrLst.slice(0, idx),
+          updDtr,
+          ...state.dynObjTrLst.slice(idx + 1),
+        ],
+      };
     default:
       return state;
   }

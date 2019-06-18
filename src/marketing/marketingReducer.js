@@ -11,13 +11,7 @@ import {
 } from './marketingAction';
 
 const INITIAL_STATE = {
-  pritms: [],
-  lazyitems: [],
-  lazymeta: {
-    prtotRws: 0,
-    perPage: 0,
-    page: 0,
-  },
+  dynObjLpList: [],
   dynObjDmsc: [],
   dynamicObject: {},
 };
@@ -26,29 +20,48 @@ export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     /******************************************************************        PRICE        */
     case GET_PRLIST:
-      return { ...state, pritms: action.pritms, prtotRws: action.prtotRws };
+      return {
+        ...state,
+        dynObjLpList: { ...state.dynObjLpList, ...action.payload },
+      };
     case GET_MATNRS:
-      return { ...state, matrn: action.payload };
+      return {
+        ...state,
+        dynObjLpList: { ...state.dynObjLpList, ...action.payload },
+      };
     case NEW_PRICE:
-      const newPrice = Object.assign([], state.pritms);
-      if (newPrice.length > 0) {
-        const price = action.payload;
+      if (Object.keys(state.dynObjLpList).length > 0) {
+        const price = { ...action.payload };
+        const trow = state.dynObjLpList.prtotRws + 1;
         price['price_list_id'] = Math.random();
         price['from_date'] = '';
         price['active'] = 'true';
-        newPrice.push(price);
+        return {
+          ...state,
+          dynObjLpList: {
+            pritms: [...state.dynObjLpList.pritms, price],
+            prtotRws: trow,
+          },
+        };
       }
-      return { ...state, pritms: newPrice };
+      return { ...state, dynObjLpList: { ...state.dynObjLpList } };
     case UPD_PRLIST:
-      const updPrRow = [];
-      for (const key in state.pritms) {
-        if (state.pritms[key].price_list_id === action.payload.price_list_id) {
-          updPrRow[key] = action.payload;
-        } else {
-          updPrRow[key] = state.pritms[key];
-        }
-      }
-      return { ...state, pritms: updPrRow };
+      const updPrlst = { ...action.payload };
+      const idx = [...state.dynObjLpList.pritms].findIndex(
+        el => el.price_list_id === updPrlst.price_list_id,
+      );
+      const { prtotRws } = { ...state.dynObjLpList };
+      return {
+        ...state.dynObjLpList,
+        dynObjLpList: {
+          pritms: [
+            ...state.dynObjLpList.pritms.slice(0, idx),
+            updPrlst,
+            ...state.dynObjLpList.pritms.slice(idx + 1),
+          ],
+          prtotRws: prtotRws,
+        },
+      };
 
     /************************************************     CONTRACT LIST        */
     case GET_CONT_DMSC_SEAR_OPTS:

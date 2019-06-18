@@ -5,7 +5,7 @@ import 'react-table/react-table.css';
 import matchSorter from 'match-sorter';
 
 export default function Matrn(props) {
-  const { messages, matrn, showMatnrModal } = props;
+  const { messages, matnr, showMatnrModal } = props;
 
   const selectedRow = row => {
     props.selRow(row);
@@ -94,7 +94,7 @@ export default function Matrn(props) {
           >
             <ReactTable
               columns={columns}
-              data={matrn}
+              data={matnr}
               resolveData={data => data.map(row => row)}
               filterable
               rowsText={messages['rowsText']}

@@ -91,7 +91,7 @@ class List extends Component {
             <div className="two wide column" />
             <div className="twelve wide column">
               <ListTable
-                transactions={this.props.currTrans}
+                dynObjTrLst={this.props.dynObjTrLst}
                 updTransaction={this.updTransaction}
                 messages={messages}
               />
@@ -106,7 +106,7 @@ class List extends Component {
 
 function mapStateToProps(state) {
   return {
-    currTrans: state.ditReducer,
+    dynObjTrLst: state.ditReducer.dynObjTrLst,
   };
 }
 

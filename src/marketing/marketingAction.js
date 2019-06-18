@@ -20,13 +20,10 @@ export const CLEAR_DYNOBJ_MARKETING = 'CLEAR_DYNOBJ_MARKETING';
 export const GET_CONT_DMSC_SEAR_OPTS = 'GET_CONT_DMSC_SEAR_OPTS';
 export const CONT_DMSC_LIST = 'CONT_DMSC_LIST';
 
-const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-const language = localStorage.getItem('language');
-
 export function getByDefSearchOpts(branchId) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`marketing/contract/getbybranch/` + branchId)
+    doGet(`marketing/contract/dmsclistbybranch/` + branchId)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -44,7 +41,7 @@ export function getByDefSearchOpts(branchId) {
 export function getContByOpts(searchPms) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`marketing/contract/searchbyparams`, searchPms)
+    doGet(`marketing/contract/dmsclistsearbyprms`, searchPms)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -59,18 +56,17 @@ export function getContByOpts(searchPms) {
   };
 }
 
-/****************************************************** PRICE LIST */
+/****************************************************** LP_LIST */
 
 export function getLazyPrList(bukrs) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`pricelist/matnrpricelazy?${bukrs}`)
+    doGet(`lplist/matnrlpricelazy?${bukrs}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
           type: GET_PRLIST,
-          pritms: data.pritms,
-          prtotRws: data.prtotRws,
+          payload: data,
         });
       })
       .catch(error => {
@@ -83,7 +79,7 @@ export function getLazyPrList(bukrs) {
 export function getAllMatnr() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`pricelist/matnrs`)
+    doGet(`lplist/lpmatnrs`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -101,7 +97,7 @@ export function getAllMatnr() {
 export function savePrice(price) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`pricelist/newprice/`, price)
+    doPost(`lplist/lpnew/`, price)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
@@ -124,13 +120,18 @@ export function savePrice(price) {
 export function updPrListRow(row) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPut('pricelist/update', row)
+    doPut('lplist/lpupdate', row)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        dispatch({
-          type: UPD_PRLIST,
-          payload: row,
-        });
+        if (data) {
+          dispatch(successed());
+          dispatch({
+            type: UPD_PRLIST,
+            payload: row,
+          });
+        } else {
+          dispatch(notSuccessed());
+        }
       })
       .catch(error => {
         dispatch(modifyLoader(false));
@@ -171,24 +172,6 @@ export function clearDynObjMarketing() {
   return obj;
 }
 
-export function successed() {
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-  const language = localStorage.getItem('language');
-  return notify(
-    'success',
-    errorTable[`104${language}`],
-    errorTable[`101${language}`],
-  );
-}
-
-export function notSuccessed() {
-  return notify(
-    'info',
-    errorTable[`104${language}`],
-    errorTable[`101${language}`],
-  );
-}
-
 export function onSaveMmcTrans(url, body, params, setIsSaving) {
   setIsSaving(true);
   return function(dispatch) {
@@ -215,4 +198,23 @@ export function onSaveMmcTrans(url, body, params, setIsSaving) {
         setIsSaving(false);
       });
   };
+}
+
+const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+const language = localStorage.getItem('language');
+
+export function successed() {
+  return notify(
+    'success',
+    errorTable[`104${language}`],
+    errorTable[`101${language}`],
+  );
+}
+
+export function notSuccessed() {
+  return notify(
+    'info',
+    errorTable[`104${language}`],
+    errorTable[`101${language}`],
+  );
 }

@@ -23,7 +23,12 @@ class ListTable extends Component {
   }
 
   render() {
-    const { transactions, messages } = this.props;
+    const { dynObjTrLst, messages } = this.props;
+
+    if (Object.keys(dynObjTrLst).length === 0) {
+      return [];
+    }
+
     const columns = [
       {
         Header: 'ID',
@@ -84,7 +89,7 @@ class ListTable extends Component {
           <div>
             <ReactTable
               columns={columns}
-              data={transactions.currTrans}
+              data={dynObjTrLst}
               resolveData={data => data.map(row => row)}
               filterable
               rowsText={messages['rowsText']}

@@ -123,7 +123,7 @@ class NewPrice extends Component {
   }
 
   render() {
-    const { messages, showAddModal, countryOpts } = this.props;
+    const { messages, showAddModal, countryOpts, matnr } = this.props;
     return (
       <div>
         <Modal size={'small'} open={showAddModal}>
@@ -144,7 +144,7 @@ class NewPrice extends Component {
           </Modal.Actions>
         </Modal>
         <Matrn
-          matrn={this.props.matrn}
+          matnr={matnr}
           messages={messages}
           showMatnrModal={this.state.showMatnrModal}
           selRow={this.selRowMatnr.bind(this)}

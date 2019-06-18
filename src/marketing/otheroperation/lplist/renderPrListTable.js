@@ -59,8 +59,9 @@ class RenderPListTable extends Component {
   };
 
   render() {
-    const { messages, pritms } = this.props;
-    if (pritms.length === 0 || pritms.length === undefined) {
+    const { pritms, messages } = this.props;
+
+    if (pritms === undefined || pritms.length === 0) {
       return [];
     }
     const columns = [

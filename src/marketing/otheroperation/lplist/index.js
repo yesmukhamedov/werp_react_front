@@ -85,6 +85,8 @@ class PriceList extends Component {
   render() {
     const { messages } = this.props.intl;
     const isEnabled = this.state.bukrs.length === 0;
+    const { pritms, prtotRws, matnr } = this.props.dynObjLpList;
+
     return (
       <Container
         fluid
@@ -136,12 +138,12 @@ class PriceList extends Component {
             <Segment tertiary>
               <RenderPrListTable
                 messages={messages}
-                pritms={this.props.pritms}
+                pritms={pritms}
                 updateRow={this.updateRow}
               />
             </Segment>
             <i>
-              <strong>Total Rows: {this.props.prtotRws}</strong>
+              <strong>Total Rows: {prtotRws}</strong>
             </i>
           </Grid.Column>
         </Grid>
@@ -155,9 +157,9 @@ class PriceList extends Component {
           getCompanyOptions={this.getCompanyOptions()}
           branchOptions={this.props.branchOptions}
           allMatnr={this.getAllMatnr.bind(this)}
-          matrn={this.props.matrn}
           addNPrice={this.addNPrice.bind(this)}
           errors={this.state.errors}
+          matnr={matnr}
         />
       </Container>
     );
@@ -200,9 +202,7 @@ function mapStateToProps(state) {
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,
-    pritms: state.marketing.pritms,
-    prtotRws: state.marketing.prtotRws,
-    matrn: state.marketing.matrn,
+    dynObjLpList: state.marketing.dynObjLpList,
   };
 }
 
