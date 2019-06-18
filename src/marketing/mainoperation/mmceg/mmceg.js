@@ -18,7 +18,11 @@ import {
 import queryString from 'query-string';
 import { handleFocus } from '../../../utils/helpers';
 import { fetchDynObjMarketing, onSaveMmcTrans } from '../../marketingAction';
-import { LinkToCustomerHrc03, LinkToMmcv } from '../../../utils/outlink';
+import {
+  LinkToCustomerHrc03,
+  LinkToMmcv,
+  LinkToStaffCardView,
+} from '../../../utils/outlink';
 import { getTradeIn } from '../contractAdditionaComponents/marketingConstants';
 import MatnrListF4Modal from '../contractAdditionaComponents/matnrListF4';
 import PromoListF4Modal from '../contractAdditionaComponents/promoListF4';
@@ -315,6 +319,17 @@ const Mmceg = props => {
                       <LinkToCustomerHrc03
                         customerId={contract.customerId}
                         customerName={contract.customerName}
+                      />
+                    </span>
+                  </Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>{messages['dealer']}</Table.Cell>
+                  <Table.Cell>
+                    <span>
+                      <LinkToStaffCardView
+                        staffId={contract.dealer}
+                        staffFio={contract.dealerName}
                       />
                     </span>
                   </Table.Cell>
