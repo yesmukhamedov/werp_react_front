@@ -86,6 +86,7 @@ const Mmceg = props => {
       setNewContract({ ...mmceg.contract });
       setContractPromoList([...mmceg.contractPromoList]);
       setNewContractPromoList([...mmceg.contractPromoList]);
+      console.log(mmceg.contract, 'mmceg.contract');
 
       const { bukrs, branchId, contractTypeId } = mmceg.contract;
       //get Price List
