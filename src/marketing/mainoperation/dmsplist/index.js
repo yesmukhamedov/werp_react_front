@@ -1,67 +1,33 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+//
 import {
-  Header,
-  Segment,
-  Button,
-  Container,
-  Input,
-  Dropdown,
-  Icon,
-} from 'semantic-ui-react';
+  getDmsplist,
+  f4FetchBranches,
+  f4ClearAnyObject,
+} from '../../marketingAction';
+
 import { injectIntl } from 'react-intl';
 
-class Dmsplist extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-    this.inputChange = this.inputChange.bind(this);
-  }
+function Dmsplist(props) {
+  const [count, setCount] = useState(0);
 
-  inputChange(value, fieldName) {
-    let inputValue = this.state.inputValue;
-    let numValue = this.state.numValue;
-    console.log('value ', value);
-    console.log('fieldName ', fieldName);
-    console.log('num ', numValue);
-    switch (fieldName) {
-      case 'inputValue':
-        inputValue = value;
-        break;
-      case 'numValue':
-        numValue = value;
-        break;
-    }
-    this.setState({
-      ...this.state,
-      numValue: numValue,
-      inputValue: inputValue,
-    });
-  }
-
-  render() {
-    const { messages } = this.props.intl;
-    console.log('numValue 2 ', this.state.numValue);
-    return (
-      <Container
-        fluid
-        style={{
-          marginTop: '2em',
-          marginBottom: '2em',
-          paddingLeft: '2em',
-          paddingRight: '2em',
-        }}
-      >
-        <Segment clearing>
-          {' '}
-          <Header as="h2" floated="left">
-            {' '}
-            промоакции
-          </Header>
-        </Segment>
-      </Container>
-    );
-  }
+  //componentDidMount
+  useEffect(() => {
+    props.getDmsplist();
+    //unmount
+    return () => {};
+  }, []);
+  console.log('effect', count);
+  return (
+    <div>
+      <p>You clicked {count} times</p>
+      <button onClick={() => setCount(count + 1)}>Click me</button>
+    </div>
+  );
 }
 
-export default connect()(injectIntl(Dmsplist));
+export default connect(
+  '',
+  { getDmsplist },
+)(injectIntl(Dmsplist));

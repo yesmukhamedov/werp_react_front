@@ -9,7 +9,7 @@ import { doGet, doPost, doPut } from '../utils/apiActions';
 /******************************************************************** PRICE LIST */
 export const GET_PRLIST = 'GET_PRLIST';
 export const GET_MATNRS = 'GET_MATNRS';
-export const NEW_PRICE = 'NEW_PRICE';
+export const NEW_PR = 'NEW_PR';
 export const UPD_PRLIST = 'UPD_PRLIST';
 
 export const FETCH_DYNOBJ_MARKETING = 'FETCH_DYNOBJ_MARKETING';
@@ -20,13 +20,16 @@ export const CLEAR_DYNOBJ_MARKETING = 'CLEAR_DYNOBJ_MARKETING';
 export const GET_CONT_DMSC_SEAR_OPTS = 'GET_CONT_DMSC_SEAR_OPTS';
 export const CONT_DMSC_LIST = 'CONT_DMSC_LIST';
 
+/******************************************************************** DMSCLIST */
+export const GET_DMSP_LST = 'GET_DMSP_LST';
+
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 
 export function getByDefSearchOpts(branchId) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`marketing/contract/dmsclistbybranch/` + branchId)
+    doGet(`marketing/report/dmsclistbybranch/` + branchId)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -44,7 +47,7 @@ export function getByDefSearchOpts(branchId) {
 export function getContByOpts(searchPms) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`marketing/contract/dmsclistsearbyprms`, searchPms)
+    doGet(`marketing/report/dmsclistbyprms`, searchPms)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -106,7 +109,7 @@ export function savePrice(price) {
         if (data) {
           dispatch(successed());
           dispatch({
-            type: NEW_PRICE,
+            type: NEW_PR,
             payload: price,
           });
         } else {
@@ -139,6 +142,27 @@ export function updPrListRow(row) {
       .catch(error => {
         dispatch(modifyLoader(false));
         dispatch(notify('error', error.response.data.message, 'Ошибка'));
+      });
+  };
+}
+
+/****************************************************** END LP_LIST */
+
+export function getDmsplist() {
+  console.log('dsmplist in action ');
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`marketing/mainoperation/dmsplist/`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: GET_DMSP_LST,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
       });
   };
 }

@@ -7,12 +7,11 @@ import {
 import { getByDefSearchOpts, getContByOpts } from '../../marketingAction';
 import { Container, Segment, Tab, Button, Menu } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
-import DefSearch from './defSearch';
-import List from './list';
-import SearchByContDet from './searchByContDet';
-import SearchOpt from './searchOpt';
-import SearchByNum from './searchByNum';
-import { messages } from '../../../locales/defineMessages';
+import DefSearch from './../dmsclist/defSearch';
+import List from './../dmsclist/list';
+import SearchByContDet from './../dmsclist/searchByContDet';
+import SearchOpt from './../dmsclist/searchOpt';
+import SearchByNum from './../dmsclist/searchByNum';
 import { excelDownload } from '../../../utils/helpers';
 
 class DmscListExcel extends Component {
@@ -112,7 +111,7 @@ class DmscListExcel extends Component {
     excelHeaders.push(messages['extraInfo']);
 
     excelDownload(
-      '/api/marketing/contract/report/dmsclistexcel',
+      '/api/marketing/report/dmsclistexcel',
       'mcontrrep.xls',
       'outputTable',
       this.props.dynObjDmsc.dmsclists,
@@ -123,7 +122,9 @@ class DmscListExcel extends Component {
   render() {
     const { messages } = this.props.intl;
     const { activeIndex } = this.state;
-
+    const isEnabled =
+      this.state.searchPms.branchId === undefined ||
+      this.state.searchPms.branchId === null;
     return (
       <div>
         <Container
@@ -151,6 +152,7 @@ class DmscListExcel extends Component {
             <Button
               color="teal"
               floated="right"
+              disabled={isEnabled}
               onClick={() => this.searchContract()}
             >
               {messages['search']}
@@ -227,13 +229,7 @@ function mapStateToProps(state) {
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,
-    dealers: state.marketing.dealers,
-    demosec: state.marketing.demosec,
-    collectors: state.marketing.collectors,
-    lazyitems: state.marketing.lazyitems,
-    lazymeta: state.marketing.lazymeta,
-    contstatus: state.marketing.contstatus,
-    contlaststate: state.marketing.contlaststate,
+    dynObjDmsc: state.marketing.dynObjDmsc,
   };
 }
 

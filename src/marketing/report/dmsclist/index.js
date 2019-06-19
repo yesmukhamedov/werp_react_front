@@ -93,6 +93,9 @@ class ListContracts extends Component {
 
   render() {
     const { messages } = this.props.intl;
+    const isEnabled =
+      this.state.searchPms.branchId === undefined ||
+      this.state.searchPms.branchId === null;
     return (
       <div>
         <Container
@@ -120,6 +123,7 @@ class ListContracts extends Component {
             <Button
               color="teal"
               floated="right"
+              disabled={isEnabled}
               onClick={() => this.searchContract()}
             >
               {messages['search']}

@@ -1,7 +1,7 @@
 import {
   GET_PRLIST,
   GET_MATNRS,
-  NEW_PRICE,
+  NEW_PR,
   UPD_PRLIST,
   CONT_DMSC_LIST,
   GET_CONT_DMSC_SEAR_OPTS,
@@ -29,7 +29,7 @@ export default function(state = INITIAL_STATE, action) {
         ...state,
         dynObjLpList: { ...state.dynObjLpList, ...action.payload },
       };
-    case NEW_PRICE:
+    case NEW_PR:
       if (Object.keys(state.dynObjLpList).length > 0) {
         const price = { ...action.payload };
         const trow = state.dynObjLpList.prtotRws + 1;
