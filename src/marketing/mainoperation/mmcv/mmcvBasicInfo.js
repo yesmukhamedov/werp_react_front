@@ -8,11 +8,12 @@ import { Segment, Table, Icon, Label, Input, Button } from 'semantic-ui-react';
 import {
   LinkToStaffCardView,
   LinkToCustomerHrc03,
-  LinkToMmcv,
+  LinkToMmcvNewTab,
 } from '../../../utils/outlink';
 
 import { handleFocus } from '../../../utils/helpers';
 import { fetchDynObjMarketing } from '../../marketingAction';
+import { getTradeIn } from '../contractAdditionaComponents/marketingConstants';
 
 const MmcvBasicInfo = props => {
   const [contractNumberSearch, setContractNumberSearch] = useState('');
@@ -112,6 +113,12 @@ const MmcvBasicInfo = props => {
             </Table.Cell>
           </Table.Row>
           <Table.Row>
+            <Table.Cell>Trade-in</Table.Cell>
+            <Table.Cell>
+              <Input value={getTradeIn(contract.tradeIn)} />
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
             <Table.Cell>{messages['status']}</Table.Cell>
             <Table.Cell>
               <Input value={contract.contractStatusName} />
@@ -200,8 +207,8 @@ const MmcvBasicInfo = props => {
             <Table.Cell>{messages['recommender']}</Table.Cell>
             <Table.Cell>
               <span>
-                <LinkToMmcv
-                  contract_number={contract.refContractNumber}
+                <LinkToMmcvNewTab
+                  contractNumber={contract.refContractNumber}
                   customerFio={contract.refCustomerName}
                 />
               </span>

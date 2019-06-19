@@ -7,3 +7,10 @@ export const getTradeIn = id => {
   else if (id === 2) return 'Trade-in 2';
   else if (id === 3) return 'Trade-in 3';
 };
+
+export const tradeInOptions = [
+  { key: 0, text: '', value: 0 },
+  { key: 1, text: 'Trade-in 1', value: 1 },
+  { key: 2, text: 'Trade-in 2', value: 2 },
+  { key: 3, text: 'Trade-in 3', value: 3 },
+];

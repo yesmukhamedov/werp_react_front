@@ -18,7 +18,7 @@ import {
   stringYYYYMMDDToMoment,
   momentToStringYYYYMMDD,
 } from '../../../utils/helpers';
-import { LinkToStaffCardView, LinkToMmcv } from '../../../utils/outlink';
+import { LinkToStaffCardView, LinkToMmcvNewTab } from '../../../utils/outlink';
 
 import StaffF4Modal from '../../../reference/f4/staff/staffF4Modal';
 import RecommenderF4Modal from '../contractAdditionaComponents/recommenderF4';
@@ -373,8 +373,8 @@ const MmcefModifyData = props => {
             <Table.Cell>{messages['recommender']}</Table.Cell>
             <Table.Cell>
               <span>
-                <LinkToMmcv
-                  contract_number={newContract.refContractNumber}
+                <LinkToMmcvNewTab
+                  contractNumber={newContract.refContractNumber}
                   customerFio={newContract.refCustomerName}
                 />
               </span>

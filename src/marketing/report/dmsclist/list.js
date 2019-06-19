@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import matchSorter from 'match-sorter';
-import { LinkToMmcv, LinkToCustomerHrc03 } from '../../../utils/outlink';
+import { LinkToMmcvNewTab, LinkToCustomerHrc03 } from '../../../utils/outlink';
 
 export default function List(props) {
   const { dmsclists, messages } = props;
@@ -24,7 +24,7 @@ export default function List(props) {
       Cell: obj => (
         <span>
           {obj.original.contract_number && (
-            <LinkToMmcv contract_number={obj.original.contract_number} />
+            <LinkToMmcvNewTab contractNumber={obj.original.contract_number} />
           )}
         </span>
       ),

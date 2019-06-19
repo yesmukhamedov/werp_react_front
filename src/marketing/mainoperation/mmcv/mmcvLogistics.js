@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
 import { Segment, Table, Input, Label, List } from 'semantic-ui-react';
-import { getTradeIn } from '../contractAdditionaComponents/marketingConstants';
 
 const MmcvLogistics = props => {
   const {
@@ -27,12 +26,6 @@ const MmcvLogistics = props => {
             <Table.Cell>{messages['productSerialNumber']}</Table.Cell>
             <Table.Cell>
               <Input value={contract.tovarSerial} />
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Trade-in</Table.Cell>
-            <Table.Cell>
-              <Input value={getTradeIn(contract.tradeIn)} />
             </Table.Cell>
           </Table.Row>
           {tradeIn !== undefined && tradeIn !== null && tradeIn > 0 && (

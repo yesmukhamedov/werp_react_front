@@ -1,12 +1,14 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { injectIntl } from 'react-intl';
+import { Dimmer, Loader } from 'semantic-ui-react';
 
 import { f4ClearAnyObject, f4FetchAddresses } from '../f4_action';
 
 const AddressSearchPage = props => {
+  const [isLoadingAddresses, setIsLoadingAddresses] = useState(false);
   const {
     addressTypes,
     customerId = 0,
@@ -18,7 +20,9 @@ const AddressSearchPage = props => {
   useEffect(() => {
     //getting all addresses
     if (customerId && customerId > 0) {
-      props.f4FetchAddresses({ customerId });
+      props.f4FetchAddresses({ customerId }, bool =>
+        setIsLoadingAddresses(bool),
+      );
     } else props.f4ClearAnyObject('F4_CLEAR_ADDRESSES');
   }, [customerId]);
 
@@ -93,6 +97,9 @@ const AddressSearchPage = props => {
 
   return (
     <div>
+      <Dimmer active={isLoadingAddresses}>
+        <Loader />
+      </Dimmer>
       <ReactTable
         data={addresses}
         columns={getColumns()}

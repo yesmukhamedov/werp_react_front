@@ -1,5 +1,5 @@
 //Contract basic info
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
@@ -8,13 +8,10 @@ import { Segment, Table, Icon, Dropdown, Label } from 'semantic-ui-react';
 import {
   LinkToStaffCardView,
   LinkToCustomerHrc03,
-  LinkToMmcv,
+  LinkToMmcvNewTab,
 } from '../../../utils/outlink';
 
 import {
-  handleFocus,
-  moneyFormat,
-  moneyInputHanler,
   stringYYYYMMDDToMoment,
   momentToStringYYYYMMDD,
 } from '../../../utils/helpers';
@@ -22,6 +19,7 @@ import {
 import StaffF4Modal from '../../../reference/f4/staff/staffF4Modal';
 import CustomerF4Modal from '../../../reference/f4/Customer/customerF4WithCreationPage';
 import RecommenderF4Modal from '../contractAdditionaComponents/recommenderF4';
+import { tradeInOptions } from '../contractAdditionaComponents/marketingConstants';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -33,7 +31,25 @@ const MmccBasicInfo = props => {
   const [recommenderF4ModalOpen, setRecommenderF4ModalOpen] = useState(false);
 
   const {
-    contract = {},
+    contract: {
+      branchId,
+      bukrs,
+      servBranchId,
+      finBranchId,
+      contractTypeId,
+      contractDate,
+      customerId,
+      customerName,
+      dealer,
+      dealerName,
+      demoSc,
+      demoScName,
+      collector,
+      collectorName,
+      refContractNumber,
+      refCustomerName,
+      tradeIn,
+    } = {},
     companyOptions = [],
     branchOptions = [],
     serBranches = [],
@@ -56,9 +72,9 @@ const MmccBasicInfo = props => {
           props.onBasicInfoInputChange(item, staffF4ModalPosition)
         }
         trans="mmcc"
-        brnch={contract.branchId}
+        brnch={branchId}
         branchOptions={branchOptions}
-        bukrs={contract.bukrs}
+        bukrs={bukrs}
         companyOptions={companyOptions}
         bukrsDisabledParent
         unemployedDisabledParent
@@ -79,7 +95,7 @@ const MmccBasicInfo = props => {
           props.onBasicInfoInputChange(item, 'refContractId')
         }
         trans="MMCC"
-        bukrs={contract.bukrs}
+        bukrs={bukrs}
       />
 
       <Table collapsing className="borderLess">
@@ -92,7 +108,7 @@ const MmccBasicInfo = props => {
                 selection
                 noResultsMessage={messages['noResultsMessage']}
                 options={companyOptions ? companyOptions : []}
-                value={contract.bukrs}
+                value={bukrs}
                 onChange={(e, { value }) => {
                   props.onBasicInfoInputChange(value, 'bukrs');
                 }}
@@ -109,12 +125,12 @@ const MmccBasicInfo = props => {
                 noResultsMessage={messages['noResultsMessage']}
                 options={
                   branchOptions
-                    ? branchOptions[contract.bukrs]
-                      ? branchOptions[contract.bukrs]
+                    ? branchOptions[bukrs]
+                      ? branchOptions[bukrs]
                       : []
                     : []
                 }
-                value={contract.branchId}
+                value={branchId}
                 onChange={(e, { value }) =>
                   props.onBasicInfoInputChange(value, 'branchId')
                 }
@@ -131,12 +147,12 @@ const MmccBasicInfo = props => {
                 noResultsMessage={messages['noResultsMessage']}
                 options={
                   serBranches
-                    ? serBranches[contract.bukrs]
-                      ? serBranches[contract.bukrs]
+                    ? serBranches[bukrs]
+                      ? serBranches[bukrs]
                       : []
                     : []
                 }
-                value={contract.servBranchId}
+                value={servBranchId}
                 onChange={(e, { value }) =>
                   props.onBasicInfoInputChange(value, 'servBranchId')
                 }
@@ -153,12 +169,12 @@ const MmccBasicInfo = props => {
                 noResultsMessage={messages['noResultsMessage']}
                 options={
                   finBranches
-                    ? finBranches[contract.bukrs]
-                      ? finBranches[contract.bukrs]
+                    ? finBranches[bukrs]
+                      ? finBranches[bukrs]
                       : []
                     : []
                 }
-                value={contract.finBranchId}
+                value={finBranchId}
                 onChange={(e, { value }) =>
                   props.onBasicInfoInputChange(value, 'finBranchId')
                 }
@@ -174,10 +190,24 @@ const MmccBasicInfo = props => {
                 selection
                 noResultsMessage={messages['noResultsMessage']}
                 options={contractTypeOpts ? contractTypeOpts : []}
-                value={contract.contractTypeId}
+                value={contractTypeId}
                 onChange={(e, { value }) =>
                   props.onBasicInfoInputChange(value, 'contractTypeId')
                 }
+              />
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Trade-in</Table.Cell>
+            <Table.Cell>
+              <Dropdown
+                noResultsMessage={messages['noResultsMessage']}
+                selection
+                options={tradeInOptions}
+                value={tradeIn}
+                onChange={(e, { value }) => {
+                  props.onBasicInfoInputChange(value, 'tradeIn');
+                }}
               />
             </Table.Cell>
           </Table.Row>
@@ -190,7 +220,7 @@ const MmccBasicInfo = props => {
                 showMonthDropdown
                 showYearDropdown
                 dropdownMode="select" // timezone="UTC"
-                selected={stringYYYYMMDDToMoment(contract.contractDate)}
+                selected={stringYYYYMMDDToMoment(contractDate)}
                 locale={language}
                 onChange={event =>
                   props.onBasicInfoInputChange(
@@ -207,8 +237,8 @@ const MmccBasicInfo = props => {
             <Table.Cell>
               <span>
                 <LinkToCustomerHrc03
-                  customerId={contract.customerId}
-                  customerName={contract.customerName}
+                  customerId={customerId}
+                  customerName={customerName}
                 />
               </span>
               <Icon
@@ -232,10 +262,7 @@ const MmccBasicInfo = props => {
             <Table.Cell>{messages['dealer']}</Table.Cell>
             <Table.Cell>
               <span>
-                <LinkToStaffCardView
-                  staffId={contract.dealer}
-                  staffFio={contract.dealerName}
-                />
+                <LinkToStaffCardView staffId={dealer} staffFio={dealerName} />
               </span>
               <Icon
                 name="clone"
@@ -261,10 +288,7 @@ const MmccBasicInfo = props => {
             <Table.Cell>{messages['demoSecretary']}</Table.Cell>
             <Table.Cell>
               <span>
-                <LinkToStaffCardView
-                  staffId={contract.demoSc}
-                  staffFio={contract.demoScName}
-                />
+                <LinkToStaffCardView staffId={demoSc} staffFio={demoScName} />
               </span>
               <Icon
                 name="clone"
@@ -291,8 +315,8 @@ const MmccBasicInfo = props => {
             <Table.Cell>
               <span>
                 <LinkToStaffCardView
-                  staffId={contract.collector}
-                  staffFio={contract.collectorName}
+                  staffId={collector}
+                  staffFio={collectorName}
                 />
               </span>
               <Icon
@@ -319,9 +343,9 @@ const MmccBasicInfo = props => {
             <Table.Cell>{messages['recommender']}</Table.Cell>
             <Table.Cell>
               <span>
-                <LinkToMmcv
-                  contract_number={contract.refContractNumber}
-                  customerFio={contract.refCustomerName}
+                <LinkToMmcvNewTab
+                  contractNumber={refContractNumber}
+                  customerFio={refCustomerName}
                 />
               </span>
               <Icon

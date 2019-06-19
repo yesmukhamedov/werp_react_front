@@ -20,7 +20,7 @@ import { handleFocus } from '../../../utils/helpers';
 import { fetchDynObjMarketing, onSaveMmcTrans } from '../../marketingAction';
 import {
   LinkToCustomerHrc03,
-  LinkToMmcv,
+  LinkToMmcvNewTab,
   LinkToStaffCardView,
 } from '../../../utils/outlink';
 import { getTradeIn } from '../contractAdditionaComponents/marketingConstants';
@@ -290,7 +290,9 @@ const Mmceg = props => {
                   <Table.Cell>{messages['snNum']}</Table.Cell>
                   <Table.Cell>
                     <span>
-                      <LinkToMmcv contract_number={contract.contractNumber} />
+                      <LinkToMmcvNewTab
+                        contractNumber={contract.contractNumber}
+                      />
                     </span>
                   </Table.Cell>
                 </Table.Row>

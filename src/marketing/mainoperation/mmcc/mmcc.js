@@ -7,9 +7,9 @@ import {
   Header,
   Grid,
   Segment,
-  Table,
+  List,
   Icon,
-  Dropdown,
+  Button,
   Input,
   Tab,
   Label,
@@ -20,6 +20,9 @@ import MmccFin from './mmccFin';
 import MmccLogistics from './mmccLogistics';
 import MmccContactDetails from './mmccContactDetails';
 import MmccBasicInfo from './mmccBasicInfo';
+import { onSaveContractMmcc } from '../../marketingAction';
+import { validateOnSaveMmcc } from '../contractAdditionaComponents/contractValidation';
+import browserHistory from '../../../utils/history';
 
 //
 import {
@@ -39,6 +42,7 @@ import {
 import {
   serviceBA,
   marketingBA,
+  tradeInOptions,
 } from '../contractAdditionaComponents/marketingConstants';
 
 import moment from 'moment';
@@ -126,6 +130,8 @@ const Mmcc = props => {
   const [addrService, setAddrService] = useState({});
   const [ps, setPs] = useState([]);
   const [contractPromoList, setContractPromoList] = useState([]);
+  const [isSavingContract, setIsSavingContract] = useState(false);
+  const tcode = 'MMCC';
 
   // const serviceBA = [5, 6, 9];
   // const marketingBA = [1, 2, 3, 4, 7, 8];
@@ -228,6 +234,27 @@ const Mmcc = props => {
         setContractTypeOpts(waConOptions);
         return wa;
       });
+    } else if (fieldName === 'contractTypeId') {
+      setContract(prev => {
+        return {
+          ...prev,
+          contractTypeId: value,
+          price: '',
+          firstPayment: '',
+          waers: '',
+          priceListId: '',
+        };
+      });
+      setPs([]);
+    } else if (fieldName === 'tradeIn') {
+      setContract(prev => {
+        return {
+          ...prev,
+          [fieldName]: value,
+          tradeInTovarSerial: '',
+          tradeInTovarSerial: '',
+        };
+      });
     } else if (fieldName === 'contractDate') {
       setContract(prev => {
         return { ...prev, contractDate: value };
@@ -297,18 +324,6 @@ const Mmcc = props => {
           refCustomerName: '',
         };
       });
-    } else if (fieldName === 'contractTypeId') {
-      setContract(prev => {
-        return {
-          ...prev,
-          contractTypeId: value,
-          price: '',
-          firstPayment: '',
-          waers: '',
-          priceListId: '',
-        };
-      });
-      setPs([]);
     } else
       setContract(prev => {
         return { ...prev, [fieldName]: value };
@@ -399,6 +414,7 @@ const Mmcc = props => {
           firstPayment: value.firstPayment,
           waers: value.waers,
           priceListId: value.priceListId,
+          paymentSchedule: month,
         };
       });
     } else if (fieldName === 'dealerSubtract') {
@@ -493,19 +509,34 @@ const Mmcc = props => {
       setContract(prev => {
         return { ...prev, tradeInTovarSerial: '', tradeInTovarSerial: '' };
       });
-    } else if (fieldName === 'tradeIn') {
-      setContract(prev => {
-        return {
-          ...prev,
-          [fieldName]: value,
-          tradeInTovarSerial: '',
-          tradeInTovarSerial: '',
-        };
-      });
     } else
       setContract(prev => {
         return { ...prev, [fieldName]: value };
       });
+  };
+
+  const redirectToMmcv = contractNumber => {
+    browserHistory.push(
+      `/marketing/mainoperation/mmcv?contractNumber=${contractNumber}`,
+    );
+  };
+  const onSave = () => {
+    props.modifyLoader(true);
+    let errors = [];
+    errors = validateOnSaveMmcc();
+    if (errors === null || errors === undefined || errors.length === 0) {
+      props.onSaveContractMmcc(
+        'marketing/contract/mmcc/saveContract',
+        {
+          contract,
+          ps,
+          contractPromoList,
+        },
+        { tcode },
+        setIsSavingContract,
+        redirectToMmcv,
+      );
+    } else props.modifyLoader(false);
   };
 
   const panes = [
@@ -532,16 +563,9 @@ const Mmcc = props => {
       pane: (
         <Tab.Pane key={2}>
           <MmccFin
-            bukrs={contract.bukrs}
+            contract={contract}
             onFinInputChange={onFinInputChange}
-            branchId={contract.branchId}
-            contractTypeId={contract.contractTypeId}
-            tcode={'MMCC'}
-            price={contract.price}
-            firstPayment={contract.firstPayment}
-            waers={contract.waers}
-            dealerSubtract={contract.dealerSubtract}
-            legalEntityId={contract.legalEntityId}
+            tcode={tcode}
             ps={ps}
           />
         </Tab.Pane>
@@ -557,15 +581,9 @@ const Mmcc = props => {
         <Tab.Pane key={3}>
           <MmccLogistics
             onLogisticsInputChange={onLogisticsInputChange}
-            tradeIn={contract.tradeIn}
-            matnrReleaseDate={contract.matnrReleaseDate}
-            bukrs={contract.bukrs}
-            branchId={contract.branchId}
-            contractTypeId={contract.contractTypeId}
-            tcode={'MMCC'}
-            tovarSerial={contract.tovarSerial}
-            tradeInTovarSerial={contract.tradeInTovarSerial}
             contractPromoList={contractPromoList}
+            tcode={tcode}
+            contract={contract}
           />
         </Tab.Pane>
       ),
@@ -585,6 +603,24 @@ const Mmcc = props => {
       <Header as="h2" block>
         {messages['transNameMmcc']}
       </Header>
+
+      <Segment padded size="small">
+        <List horizontal>
+          <List.Item>
+            <List.Content>
+              <Button
+                icon
+                labelPosition="left"
+                primary
+                size="small"
+                onClick={onSave}
+              >
+                <Icon name="save" size="large" /> {messages['save']}
+              </Button>
+            </List.Content>
+          </List.Item>
+        </List>
+      </Segment>
 
       {/* <Rfadd01 customerId={contract.customerId} customerName={contract.customerName}/> */}
       <Grid>
@@ -630,7 +666,7 @@ export default connect(
   mapStateToProps,
   {
     modifyLoader,
-
+    onSaveContractMmcc,
     //reference
     f4FetchConTypeList,
     f4FetchBranches,

@@ -654,16 +654,19 @@ export function f4FetchCustomers(params = {}, setIsLoading) {
   };
 }
 
-export function f4FetchAddresses(params = {}) {
+export function f4FetchAddresses(params = {}, setIsLoading) {
+  setIsLoading(true);
   return function(dispatch) {
     doGet('reference/address/FETCH_ADDRESSES', params)
       .then(({ data }) => {
+        setIsLoading(false);
         dispatch({
           type: F4_FETCH_ADDRESSES,
           data,
         });
       })
       .catch(error => {
+        setIsLoading(false);
         handleError(error, dispatch);
       });
   };

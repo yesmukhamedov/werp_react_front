@@ -6,17 +6,7 @@ import { fetchDynObjMarketing } from '../../marketingAction';
 import MatnrListF4Modal from '../contractAdditionaComponents/matnrListF4';
 import TradeInMatnrListF4Modal from '../contractAdditionaComponents/tradeInMatnrListF4';
 import PromoListF4Modal from '../contractAdditionaComponents/promoListF4';
-import {
-  Segment,
-  Table,
-  Icon,
-  Dropdown,
-  Input,
-  Label,
-  List,
-  Button,
-  Image,
-} from 'semantic-ui-react';
+import { Segment, Table, Icon, Input, Label, List } from 'semantic-ui-react';
 
 import {
   stringYYYYMMDDToMoment,
@@ -30,15 +20,16 @@ require('moment/locale/tr');
 
 const MmccLogistics = props => {
   const {
-    bukrs = '',
-    branchId = '',
+    contract: {
+      bukrs = '',
+      branchId = '',
+      tradeIn = 0,
+      matnrReleaseDate = '',
+      contractTypeId = '',
+      tovarSerial = '',
+      tradeInTovarSerial = '',
+    } = {},
     tcode = '',
-    dealer = '',
-    contractTypeId = '',
-    tovarSerial = '',
-    matnrReleaseDate = '',
-    tradeIn = 0,
-    tradeInTovarSerial = '',
     contractPromoList = [],
     matnrList = [],
     promoList = [],
@@ -71,7 +62,7 @@ const MmccLogistics = props => {
       props.fetchDynObjMarketing(
         'marketing/contract/tradeInMatnrF4/fetch_tradeInMatnr_list',
         { bukrs, tcode, branchId, contractTypeId },
-        bool => setIsLoadingMatnrList(bool),
+        bool => setIsLoadingTradeInMatnrList(bool),
       );
     }
   }, [branchId, contractTypeId]);
@@ -87,20 +78,12 @@ const MmccLogistics = props => {
       );
     }
   }, [branchId]);
-
-  const tradeInOptions = [
-    { key: 0, text: '', value: 0 },
-    { key: 1, text: 'Trade-in 1', value: 1 },
-    { key: 2, text: 'Trade-in 2', value: 2 },
-    { key: 3, text: 'Trade-in 3', value: 3 },
-  ];
-
   return (
     <div>
       {/* <Segment padded size="small">
-        <Label color="orange" ribbon>
-          {messages['logistics']}
-        </Label> */}
+          <Label color="orange" ribbon>
+            {messages['logistics']}
+          </Label> */}
 
       <MatnrListF4Modal
         open={matnrListF4ModalOpen}
@@ -130,20 +113,6 @@ const MmccLogistics = props => {
 
       <Table collapsing>
         <Table.Body>
-          <Table.Row>
-            <Table.Cell>Trade-in</Table.Cell>
-            <Table.Cell>
-              <Dropdown
-                noResultsMessage={messages['noResultsMessage']}
-                selection
-                options={tradeInOptions}
-                value={tradeIn}
-                onChange={(e, { value }) => {
-                  props.onLogisticsInputChange(value, 'tradeIn');
-                }}
-              />
-            </Table.Cell>
-          </Table.Row>
           {tradeIn !== undefined && tradeIn !== null && tradeIn > 0 && (
             <Table.Row>
               <Table.Cell>

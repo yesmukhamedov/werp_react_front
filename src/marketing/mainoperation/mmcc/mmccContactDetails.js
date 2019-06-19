@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import AddressF4Modal from '../../../reference/f4/address/addressF4WithCreationPage';
 
-import { Segment, Table, Icon, Label } from 'semantic-ui-react';
+import { Table, Icon } from 'semantic-ui-react';
 
 const MmccContactDetails = props => {
   const [addressF4ModalOpen, setAddressF4ModalOpen] = useState(false);
@@ -14,7 +14,7 @@ const MmccContactDetails = props => {
     addrHome = {},
     addrWork = {},
     addrService = {},
-    contract = {},
+    contract: { customerId, customerName } = {},
     intl: { messages },
   } = props;
   return (
@@ -25,8 +25,8 @@ const MmccContactDetails = props => {
     <div>
       <AddressF4Modal
         open={addressF4ModalOpen}
-        customerId={contract.customerId}
-        customerName={contract.customerName}
+        customerId={customerId}
+        customerName={customerName}
         onCloseAddressF4={bool => setAddressF4ModalOpen(bool)}
         onAddressSelect={item =>
           props.onConDetInputChange(item, addressF4ModalType)

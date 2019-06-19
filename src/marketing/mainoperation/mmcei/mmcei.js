@@ -16,7 +16,7 @@ import {
 import queryString from 'query-string';
 import { handleFocus } from '../../../utils/helpers';
 import { fetchDynObjMarketing, onSaveMmcTrans } from '../../marketingAction';
-import { LinkToCustomerHrc03, LinkToMmcv } from '../../../utils/outlink';
+import { LinkToCustomerHrc03, LinkToMmcvNewTab } from '../../../utils/outlink';
 
 const Mmcei = props => {
   const emptyContract = {
@@ -150,7 +150,9 @@ const Mmcei = props => {
                   <Table.Cell>{messages['snNum']}</Table.Cell>
                   <Table.Cell>
                     <span>
-                      <LinkToMmcv contract_number={contract.contractNumber} />
+                      <LinkToMmcvNewTab
+                        contractNumber={contract.contractNumber}
+                      />
                     </span>
                   </Table.Cell>
                 </Table.Row>

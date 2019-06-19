@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { LEGACY_URL } from '../utils/constants';
 
 export const LinkToDmsc03 = props => {
@@ -45,7 +46,7 @@ export const LinkToStaffCardViewID = props => {
   );
 };
 
-export const LinkToMmcv = props => {
+export const LinkToMmcvNewTab = props => {
   const { contract_number = '', customerFio = '' } = props;
   // const url = `${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=${contract_number}`;
   const url = `/marketing/mainoperation/mmcv?contractNumber=${contract_number}`;
@@ -98,5 +99,17 @@ export const LinkToFa03BelnrBukrsGjahr = props => {
       {' '}
       {belnr}{' '}
     </a>
+  );
+};
+
+export const LinkToMmcv = props => {
+  const { contractNumber = '', customerFio = '' } = props;
+  // const url = `${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=${contract_number}`;
+  const url = `/marketing/mainoperation/mmcv?contractNumber=${contractNumber}`;
+  return (
+    <Link to={url}>
+      {' '}
+      {contractNumber} {customerFio}
+    </Link>
   );
 };

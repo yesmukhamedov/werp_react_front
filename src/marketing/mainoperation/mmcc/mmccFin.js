@@ -28,18 +28,19 @@ require('moment/locale/tr');
 
 const MmccFin = props => {
   const {
-    bukrs,
-    contractTypeId,
-    branchId,
+    contract: {
+      bukrs,
+      branchId,
+      contractTypeId,
+      price,
+      firstPayment,
+      waers,
+      dealerSubtract,
+      legalEntityId,
+      paymentSchedule,
+    } = {},
     ps = [],
-    price,
-    firstPayment,
-    legalEntityId,
-    dealerSubtract,
     tcode,
-    contractDate,
-    waers,
-    paymentSchedule,
     priceList = [],
     language,
     intl: { messages },
@@ -184,6 +185,12 @@ const MmccFin = props => {
         </Label> */}
       <Table collapsing>
         <Table.Body>
+          <Table.Row>
+            <Table.Cell>{messages['termInMonth']}</Table.Cell>
+            <Table.Cell>
+              <Input value={paymentSchedule} />
+            </Table.Cell>
+          </Table.Row>
           <Table.Row>
             <Table.Cell>{messages['price']}</Table.Cell>
             <Table.Cell>
