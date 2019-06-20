@@ -3,6 +3,7 @@ import { ROOT_URL } from '../../../../utils/constants';
 import { modifyLoader } from '../../../../general/loader/loader_action';
 import { handleError } from '../../../../general/notification/notification_action';
 import browserHistory from '../../../../utils/history';
+import { doGet } from '../../../../utils/apiActions';
 
 export const CRM_DEMO_FETCH_CURRENT = 'CRM_DEMO_FETCH_CURRENT';
 export const CRM_DEMO_FETCH_ARCHIVE = 'CRM_DEMO_FETCH_ARCHIVE';
@@ -119,6 +120,24 @@ export function fetchDemoArchive(q) {
           authorization: localStorage.getItem('token'),
         },
       })
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: CRM_DEMO_FETCH_ARCHIVE,
+          items: data.items,
+          meta: data.meta,
+        });
+      })
+      .catch(e => {
+        handleError(e, dispatch);
+      });
+  };
+}
+
+export function fetchSoldDemos(params) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('crm/demo/sold-demos', params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

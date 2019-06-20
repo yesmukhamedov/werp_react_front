@@ -227,6 +227,14 @@ const AsyncDemoArchivePage = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncDemoSoldDemosPage = Loadable({
+  loader: () =>
+    import(
+      '../crm/mainoperation/demo/components/DemoSoldDemosPage' /* webpackChunkName: "DemoSoldDemosPage" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncVisitArchivePage = Loadable({
   loader: () =>
     import(
@@ -993,6 +1001,8 @@ const generateRoutes = transactionRoutes => {
       <Route path="/marketing/mainoperation/mmcefa" component={AsyncMmcefa} />
       <Route path="/marketing/mainoperation/mmcei" component={AsyncMmcei} />
       <Route path="/marketing/mainoperation/mmceg" component={AsyncMmceg} />
+
+      <Route path="/crm/demo/sold-demos" component={AsyncDemoSoldDemosPage} />
 
       <Route
         path="/hr/exitinterviews"

@@ -275,6 +275,8 @@
   "Crm.DemoArchiveTitle": "Архив демонстрации группы",
   "Crm.RecoArchiveTitle": "Архив рекомендации группы",
   "Crm.VisitArchiveTitle": "Архив визитов группы",
+  "Crm.DemoSoldTitle": "Список проданных демо",
+  "Crm.DemoSoldRegister": "Зарегистрировать",
 
   "Form.CreatingReco": "Добавление рекомендации",
   "Form.CreatingRecoFromArchive": "Добавление рекомендации из архива",
