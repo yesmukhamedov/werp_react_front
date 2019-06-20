@@ -251,10 +251,18 @@ const Mmcc = props => {
         return {
           ...prev,
           [fieldName]: value,
+          tradeInMatnrListId: '',
           tradeInTovarSerial: '',
-          tradeInTovarSerial: '',
+          price: '',
+          firstPayment: '',
+          waers: '',
+          priceListId: '',
+          tovarSerial: '',
+          matnrListId: '',
         };
       });
+
+      setPs([]);
     } else if (fieldName === 'contractDate') {
       setContract(prev => {
         return { ...prev, contractDate: value };
@@ -436,6 +444,12 @@ const Mmcc = props => {
 
         return newArray;
       });
+      if (id === 0) {
+        setContract(prev => {
+          const newVal = moneyInputHanler(value, 0);
+          return { ...prev, firstPayment: newVal };
+        });
+      }
     } else if (fieldName === 'paymentDate') {
       const idx = ps.findIndex(item => item.paymentScheduleId === id);
       addMonthToAndAfterPsRows(value, idx);

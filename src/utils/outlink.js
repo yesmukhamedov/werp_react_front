@@ -47,13 +47,13 @@ export const LinkToStaffCardViewID = props => {
 };
 
 export const LinkToMmcvNewTab = props => {
-  const { contract_number = '', customerFio = '' } = props;
+  const { contractNumber = '', customerFio = '' } = props;
   // const url = `${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=${contract_number}`;
-  const url = `/marketing/mainoperation/mmcv?contractNumber=${contract_number}`;
+  const url = `/marketing/mainoperation/mmcv?contractNumber=${contractNumber}`;
   return (
     <a target="_blank" href={url} rel="noopener noreferrer">
       {' '}
-      {contract_number} {customerFio}
+      {contractNumber} {customerFio}
     </a>
   );
 };

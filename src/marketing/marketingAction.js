@@ -241,7 +241,7 @@ export function onSaveContractMmcc(
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         setIsSaving(false);
-        redirectToMmcv();
+        redirectToMmcv(data.contractNumber);
         dispatch(
           notify(
             'success',
