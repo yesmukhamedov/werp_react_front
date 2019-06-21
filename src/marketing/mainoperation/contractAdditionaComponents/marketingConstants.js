@@ -9,8 +9,7 @@ export const getTradeIn = id => {
 };
 
 export const tradeInOptions = [
-  { key: 0, text: '', value: 0 },
+  { key: 0, text: '----------', value: 0 },
   { key: 1, text: 'Trade-in 1', value: 1 },
   { key: 2, text: 'Trade-in 2', value: 2 },
-  { key: 3, text: 'Trade-in 3', value: 3 },
 ];

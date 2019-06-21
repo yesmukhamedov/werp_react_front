@@ -4,9 +4,11 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
 import { Table } from 'semantic-ui-react';
+import { LinkToMmcecd } from '../../../utils/outlink';
 
 const MmcvContactDetails = props => {
   const {
+    contract,
     addrHome = {},
     addrWork = {},
     addrService = {},
@@ -15,6 +17,10 @@ const MmcvContactDetails = props => {
   } = props;
   return (
     <div>
+      <LinkToMmcecd
+        text={messages['toEdit']}
+        contractNumber={contract.contractNumber}
+      />
       <Table collapsing className="borderLess">
         <Table.Header>
           <Table.Row>

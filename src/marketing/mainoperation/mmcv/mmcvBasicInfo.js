@@ -9,6 +9,7 @@ import {
   LinkToStaffCardView,
   LinkToCustomerHrc03,
   LinkToMmcvNewTab,
+  LinkToMmcef,
 } from '../../../utils/outlink';
 
 import { handleFocus } from '../../../utils/helpers';
@@ -56,6 +57,10 @@ const MmcvBasicInfo = props => {
       <Label color="orange" ribbon>
         {messages['basicInfo']}
       </Label>
+      <LinkToMmcef
+        text={messages['toEdit']}
+        contractNumber={contract.contractNumber}
+      />
 
       <Table collapsing className="borderLess">
         <Table.Body>

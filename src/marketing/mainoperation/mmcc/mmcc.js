@@ -20,7 +20,10 @@ import MmccFin from './mmccFin';
 import MmccLogistics from './mmccLogistics';
 import MmccContactDetails from './mmccContactDetails';
 import MmccBasicInfo from './mmccBasicInfo';
-import { onSaveContractMmcc } from '../../marketingAction';
+import {
+  onSaveContractMmcc,
+  changeDynObjMarketing,
+} from '../../marketingAction';
 import { validateOnSaveMmcc } from '../contractAdditionaComponents/contractValidation';
 import browserHistory from '../../../utils/history';
 
@@ -184,6 +187,11 @@ const Mmcc = props => {
       setContract(prev => {
         return { ...emptyContract, [fieldName]: value };
       });
+      setPs([]);
+      setContractTypeOpts([]);
+      props.changeDynObjMarketing({ priceList: [] });
+      props.changeDynObjMarketing({ matnrList: [] });
+      props.changeDynObjMarketing({ promoList: [] });
     } else if (fieldName === 'branchId') {
       //get the selected branch
       let waSelectedBranch = {};
@@ -231,7 +239,11 @@ const Mmcc = props => {
             };
           });
 
+        setPs([]);
         setContractTypeOpts(waConOptions);
+        props.changeDynObjMarketing({ priceList: [] });
+        props.changeDynObjMarketing({ matnrList: [] });
+        props.changeDynObjMarketing({ promoList: [] });
         return wa;
       });
     } else if (fieldName === 'contractTypeId') {
@@ -246,6 +258,9 @@ const Mmcc = props => {
         };
       });
       setPs([]);
+      props.changeDynObjMarketing({ priceList: [] });
+      props.changeDynObjMarketing({ matnrList: [] });
+      props.changeDynObjMarketing({ promoList: [] });
     } else if (fieldName === 'tradeIn') {
       setContract(prev => {
         return {
@@ -668,7 +683,7 @@ const Mmcc = props => {
 // }
 
 function mapStateToProps(state) {
-  // console.log(state, 'state');
+  console.log(state, 'state');
   return {
     language: state.locales.lang,
     contractTypeList: state.f4.contractTypeList,
@@ -681,6 +696,7 @@ export default connect(
   {
     modifyLoader,
     onSaveContractMmcc,
+    changeDynObjMarketing,
     //reference
     f4FetchConTypeList,
     f4FetchBranches,

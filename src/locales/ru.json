@@ -631,6 +631,7 @@
   "newValue": "Новое значение",
   "oldValue": "Старое значение",
   "toWriteOff": "Списать",
+  "toEdit": "Редактировать",
 
   "transNameFmcp": "FMCP: Взнос по договору",
   "transNameFcis": "FCIS: Взнос в счет сотрудника",

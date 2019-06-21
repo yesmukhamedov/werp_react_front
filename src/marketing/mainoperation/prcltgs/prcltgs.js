@@ -17,6 +17,10 @@ import axios from 'axios';
 import { ROOT_URL } from '../../../utils/constants';
 import { notify } from '../../../general/notification/notification_action';
 import { fetchBukrsOptions } from '../../../reference/f4/bukrs/BukrsOptions';
+import {
+  getTradeIn,
+  tradeInOptions,
+} from '../contractAdditionaComponents/marketingConstants';
 import './prcltgs.css';
 
 require('moment/locale/ru');
@@ -72,7 +76,6 @@ class Prcltgs extends Component {
 
     this.state = {
       searchTerm: { bukrs: '', branchList: [], selectedCategory: 3 },
-      companyOptions: [],
       branchOptions: [],
       selectedBranchKey: null,
       branchList: [],
@@ -100,16 +103,7 @@ class Prcltgs extends Component {
     });
   }
 
-  componentWillMount() {
-    this.setState({ loading: true });
-    fetchBukrsOptions().then(returnValue => {
-      this.setState({ companyOptions: returnValue, loading: false });
-    });
-
-    if (this.state.companyOptions.size === 1) {
-      this.onInputChange(this.state.companyOptions[0].value, 'bukrs');
-    }
-  }
+  componentDidMount() {}
   fetchUserBranches(bukrs) {
     this.setState({ loading: true });
     axios
@@ -182,6 +176,8 @@ class Prcltgs extends Component {
     const priceList = this.state.priceList.slice();
     if (fieldName === 'premDiv') {
       obj.premDiv = value;
+    } else if (fieldName === 'tradeIn') {
+      obj.tradeIn = value;
     } else if (fieldName === 'matnr') {
       obj.matnr = value;
       this.state.matnrOptions
@@ -480,6 +476,7 @@ class Prcltgs extends Component {
   }
 
   renderTablePriceListHeaders() {
+    // console.log(this.state.priceList,'this.state.priceList')
     return this.state.priceList.map((wa, idx) => (
       // console.log(wa);
       <Table.Row
@@ -527,6 +524,20 @@ class Prcltgs extends Component {
               value={wa.premDiv}
               onChange={(e, { value }) =>
                 this.onInputChangePrice(value, 'premDiv', idx, wa)
+              }
+            />
+          )}
+        </Table.Cell>
+        <Table.Cell className="clickable">
+          {idx !== this.state.editPriceListIndex && getTradeIn(wa.tradeIn)}
+          {idx === this.state.editPriceListIndex && (
+            <Dropdown
+              compact
+              selection
+              options={tradeInOptions}
+              value={wa.tradeIn}
+              onChange={(e, { value }) =>
+                this.onInputChangePrice(value, 'tradeIn', idx, wa)
               }
             />
           )}
@@ -629,6 +640,7 @@ class Prcltgs extends Component {
   }
 
   render() {
+    const { companyOptions = [] } = this.props;
     return (
       <Container
         fluid
@@ -668,7 +680,7 @@ class Prcltgs extends Component {
                 placeholder="Компания"
                 fluid
                 selection
-                options={this.state.companyOptions}
+                options={companyOptions}
                 value={this.state.searchTerm.bukrs}
                 onChange={(e, { value }) => this.onInputChange(value, 'bukrs')}
               />
@@ -714,6 +726,7 @@ class Prcltgs extends Component {
                     <Table.HeaderCell>Остаток</Table.HeaderCell>
                     <Table.HeaderCell>Срок (месяц)</Table.HeaderCell>
                     <Table.HeaderCell>Премия</Table.HeaderCell>
+                    <Table.HeaderCell>Trade-In</Table.HeaderCell>
                     <Table.HeaderCell>Создал</Table.HeaderCell>
                     <Table.HeaderCell />
                   </Table.Row>
@@ -721,6 +734,7 @@ class Prcltgs extends Component {
                 <Table.Body>{this.renderTablePriceListHeaders()}</Table.Body>
                 <Table.Footer>
                   <Table.Row>
+                    <Table.HeaderCell />
                     <Table.HeaderCell />
                     <Table.HeaderCell />
                     <Table.HeaderCell />
@@ -777,7 +791,9 @@ class Prcltgs extends Component {
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    companyOptions: state.userInfo.companyOptions,
+  };
 }
 
 export default connect(

@@ -4,7 +4,8 @@ import { LEGACY_URL } from '../utils/constants';
 
 export const LinkToDmsc03 = props => {
   const { snNum } = props;
-  const url = `${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=${snNum}`;
+  // const url = `${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=${snNum}`;
+  const url = `/marketing/mainoperation/mmcv?contractNumber=${snNum}`;
   return (
     <a target="_blank" href={url} rel="noopener noreferrer">
       {' '}
@@ -111,5 +112,60 @@ export const LinkToMmcv = props => {
       {' '}
       {contractNumber} {customerFio}
     </Link>
+  );
+};
+
+export const LinkToEditPrice = props => {
+  const { contractNumber = '' } = props;
+  // const url = `${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=${contract_number}`;
+  const url = `${LEGACY_URL}/dms/contract/editpricedmsc.xhtml?contract_number=${contractNumber}`;
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      {'Edit Price'}
+    </a>
+  );
+};
+
+export const LinkToMmcef = props => {
+  const { contractNumber = '', text } = props;
+  const url = `${LEGACY_URL}/dms/contract/dmsc02.xhtml?contract_number=${contractNumber}`;
+  // const url = `/marketing/mainoperation/mmcv?contractNumber=${contractNumber}`;
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      {text}
+    </a>
+  );
+};
+
+export const LinkToMmcei = props => {
+  const { contractNumber = '', text } = props;
+  const url = `/marketing/mainoperation/mmcei?contractNumber=${contractNumber}`;
+  // const url = `/marketing/mainoperation/mmcv?contractNumber=${contractNumber}`;
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      {text}
+    </a>
+  );
+};
+
+export const LinkToMmcecd = props => {
+  const { contractNumber = '', text } = props;
+  const url = `/marketing/mainoperation/mmcecd?contractNumber=${contractNumber}`;
+  // const url = `/marketing/mainoperation/mmcv?contractNumber=${contractNumber}`;
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      {text}
+    </a>
+  );
+};
+
+export const LinkToMmceg = props => {
+  const { contractNumber = '', text } = props;
+  const url = `/marketing/mainoperation/mmceg?contractNumber=${contractNumber}`;
+  // const url = `/marketing/mainoperation/mmcv?contractNumber=${contractNumber}`;
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      {text}
+    </a>
   );
 };

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
 import { Segment, Label, List } from 'semantic-ui-react';
+import { LinkToMmcei } from '../../../utils/outlink';
 
 const MmcvExtraInfo = props => {
   const {
@@ -17,6 +18,10 @@ const MmcvExtraInfo = props => {
         <Label color="orange" ribbon>
           {messages['extraInfo']}
         </Label>
+        <LinkToMmcei
+          text={messages['toEdit']}
+          contractNumber={contract.contractNumber}
+        />
 
         <List verticalAlign="middle" celled size={'large'}>
           <List.Item>

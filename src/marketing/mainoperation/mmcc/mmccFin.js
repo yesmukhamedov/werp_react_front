@@ -38,6 +38,7 @@ const MmccFin = props => {
       dealerSubtract,
       legalEntityId,
       paymentSchedule,
+      tradeIn,
     } = {},
     ps = [],
     tcode,
@@ -173,7 +174,9 @@ const MmccFin = props => {
     <div>
       <PriceListF4Modal
         open={priceListF4ModalOpen}
-        priceList={priceList}
+        priceList={priceList
+          .filter(item => item.tradeIn === tradeIn)
+          .map(item => item)}
         onClosePriceListF4={bool => setPriceListF4ModalOpen(bool)}
         onPriceSelect={item => props.onFinInputChange(item, 'price', '')}
         isLoadingPriceList={isLoadingPriceList}

@@ -652,6 +652,7 @@
   "newValue": "New value",
   "oldValue": "Old value",
   "toWriteOff": "Write off",
+  "toEdit": "Edit",
 
   "transNameFmcp": "FMCP: Receipt from Sales Contract",
   "transNameFcis": "FCIS: Employee acc.cash inquiry",

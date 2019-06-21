@@ -5,7 +5,7 @@ import { injectIntl } from 'react-intl';
 import { moneyFormat } from '../../../utils/helpers';
 import { Segment, Table, Input, Label } from 'semantic-ui-react';
 
-import { LinkToFa03AwkeyBukrs } from '../../../utils/outlink';
+import { LinkToFa03AwkeyBukrs, LinkToEditPrice } from '../../../utils/outlink';
 
 const MmcvFin = props => {
   const {
@@ -69,6 +69,10 @@ const MmcvFin = props => {
 
   return (
     <div>
+      <LinkToEditPrice
+        text={messages['toEdit']}
+        contractNumber={contract.contractNumber}
+      />
       <Table collapsing>
         <Table.Body>
           <Table.Row>

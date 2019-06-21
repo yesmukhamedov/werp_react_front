@@ -5,6 +5,7 @@ import { injectIntl } from 'react-intl';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { moneyFormat } from '../../../utils/helpers';
+import { getTradeIn } from '../contractAdditionaComponents/marketingConstants';
 
 const PriceListF4 = props => {
   const {
@@ -19,7 +20,8 @@ const PriceListF4 = props => {
       t1r1c3 = {},
       t1r1c4 = {},
       t1r1c5 = {},
-      t1r1c6 = {};
+      t1r1c6 = {},
+      t1r1c7 = {};
 
     t1r1c1 = {
       Header: ({ value }) => <b>{messages['waers']}</b>,
@@ -63,6 +65,13 @@ const PriceListF4 = props => {
       className: 'clickableItem',
       Cell: obj => <span>{obj.original.premDiv}</span>,
     };
+    t1r1c7 = {
+      Header: ({ value }) => <b>Trade-In</b>,
+      accessor: 'tradeIn',
+      width: 160,
+      className: 'clickableItem',
+      Cell: obj => <span>{getTradeIn(obj.original.tradeIn)}</span>,
+    };
 
     t1columns.push(t1r1c1);
     t1columns.push(t1r1c2);
@@ -70,6 +79,7 @@ const PriceListF4 = props => {
     t1columns.push(t1r1c4);
     t1columns.push(t1r1c5);
     t1columns.push(t1r1c6);
+    t1columns.push(t1r1c7);
 
     return t1columns;
   };

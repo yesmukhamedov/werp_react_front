@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
 import { Segment, Table, Input, Label, List } from 'semantic-ui-react';
+import { LinkToMmceg } from '../../../utils/outlink';
 
 const MmcvLogistics = props => {
   const {
@@ -14,6 +15,10 @@ const MmcvLogistics = props => {
 
   return (
     <div>
+      <LinkToMmceg
+        text={messages['toEdit']}
+        contractNumber={contract.contractNumber}
+      />
       <Table collapsing>
         <Table.Body>
           <Table.Row>
