@@ -297,6 +297,8 @@
   "Crm.DemoArchiveTitle": "Group demo archive",
   "Crm.RecoArchiveTitle": "Group recommendations archive",
   "Crm.VisitArchiveTitle": "Group visits archive",
+  "Crm.DemoSoldTitle": "List of sold demos",
+  "Crm.DemoSoldRegister": "Register",
 
   "Form.CreatingReco": "Creating recommendation",
   "Form.CreatingRecoFromArchive": "Creating recommendation from archive",
