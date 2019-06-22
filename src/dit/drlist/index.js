@@ -10,9 +10,9 @@ import {
 } from 'semantic-ui-react';
 import {
   fetchDrlstAll,
-  getDrAccesses,
+  getDrlstAccesses,
   saveDrLst,
-  updDrNomin,
+  updDrlstNomin,
   newDrole,
 } from '../ditAction';
 import ListRole from './listRole';
@@ -45,7 +45,7 @@ class Roles extends Component {
   }
 
   updDrNomin(role) {
-    this.props.updDrNomin(role);
+    this.props.updDrlstNomin(role);
   }
 
   newRole(role) {
@@ -96,7 +96,7 @@ class Roles extends Component {
         <div style={{ paddingLeft: '4em', paddingRight: '4em' }}>
           <ListRole
             messages={messages}
-            getDrAccesses={this.props.getDrAccesses}
+            getDrAccesses={this.props.getDrlstAccesses}
             roles={this.props.allRole}
             listRoles={this.props.listRoles}
             accessTypes={this.props.accessTypes}
@@ -120,9 +120,9 @@ export default connect(
   mapStateToProps,
   {
     fetchDrlstAll,
-    getDrAccesses,
+    getDrlstAccesses,
     saveDrLst,
-    updDrNomin,
+    updDrlstNomin,
     newDrole,
   },
 )(injectIntl(Roles));

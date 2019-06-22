@@ -1,30 +1,30 @@
 import {
-  /***************************  DIT_ELLST  */
-  DIT_ELLST,
+  /***************************  DITELLST  */
+  ALL_DITELLST,
 
-  /***************************  DIT_USER_LST  */
-  ALL_DIT_USR_LST,
-  NEW_DIT_USR_LST,
-  STAFF_FOR_DIT_USR_LST,
-  UPD_DIT_USR_LST,
-  BRNCHS_FOR_DIT_USR_LST,
-  SHOW_DIT_USER_LST,
-  SHOW_DIT_USR_UPD,
+  /***************************  DITUSERLST  */
+  ALL_DITUSRLST,
+  NEW_DITUSRLST,
+  STAFF_FOR_DITUSRLST,
+  UPD_DITUSRLST,
+  BRNCHS_FOR_DITUSRLST,
+  SHOW_DITUSERLST,
+  SHOW_DITUSR_UPD,
 
-  /***************************  D_MU_LST */
-  ALL_DMU_LST,
-  NEW_DMU_LST,
-  ON_DMU_LST_MOVE,
-  TREE_DMU_LST_CHANGED,
-  BLANK_DMU_LST_NODE,
+  /***************************  DMULST */
+  ALL_DMULST,
+  NEW_DMULST,
+  ON_DMULST_MOVE,
+  TREE_DMULST_CHANGED,
+  BLANK_DMULST_NODE,
   DMU_LST_NODE_UPD,
-  DEL_DMU_LST_NODE,
+  DEL_DMULST_NODE,
 
   /***************************  DRLST  */
-  ALL_DR_LIST,
-  DR_ACCESS,
-  DR_NAME_UPD,
-  DR_NEW,
+  ALL_DRLIST,
+  ACCESS_DRLST,
+  UPD_DR_LST_NAME,
+  NEW_DR_LST,
 
   /***************************  DRLST  */
   ALL_CURR_DTR,
@@ -58,16 +58,16 @@ const INITIAL_STATE = {
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     /******************************************************************        DIT_ELLST        */
-    case DIT_ELLST:
+    case ALL_DITELLST:
       return { ...state, events: action.events, evRowPr: action.evRowPr };
 
     /******************************************************************        DIT_USER_LST        */
 
-    case ALL_DIT_USR_LST:
+    case ALL_DITUSRLST:
       return { ...state, lSUsers: { ...state.lSUsers, ...action.payload } };
-    case STAFF_FOR_DIT_USR_LST:
+    case STAFF_FOR_DITUSRLST:
       return { ...state, staffs: action.payload };
-    case NEW_DIT_USR_LST:
+    case NEW_DITUSRLST:
       const newUser = Object.assign([], state.lSUsers.users);
       const user = {};
       const userActiveChange = action.payload;
@@ -86,7 +86,7 @@ export default function(state = INITIAL_STATE, action) {
         lSUsers: { ...state.lSUsers, users: newUser },
         addModalOpened: false,
       };
-    case UPD_DIT_USR_LST:
+    case UPD_DITUSRLST:
       const updatedRow = action.payload;
       const newRows = [];
       for (const r in state.lSUsers.users) {
@@ -101,16 +101,16 @@ export default function(state = INITIAL_STATE, action) {
         lSUsers: { ...state.lSUsers, users: newRows },
         updateModalOpened: false,
       };
-    case BRNCHS_FOR_DIT_USR_LST:
+    case BRNCHS_FOR_DITUSRLST:
       return { ...state, bukrsBranches: action.payload };
-    case SHOW_DIT_USER_LST:
+    case SHOW_DITUSERLST:
       return { ...state, addModalOpened: action.payload };
-    case SHOW_DIT_USR_UPD:
+    case SHOW_DITUSR_UPD:
       return { ...state, updateModalOpened: action.payload };
 
     /******************************************************************        DMULST       */
 
-    case ON_DMU_LST_MOVE:
+    case ON_DMULST_MOVE:
       const { node, changeNode } = action.payload;
       const x = node.sort_order;
       const y = changeNode.sort_order;
@@ -126,12 +126,12 @@ export default function(state = INITIAL_STATE, action) {
         newNode: nMenuUpd,
       });
       return { ...state, treeData: menuTreeUpd };
-    case ALL_DMU_LST:
-    case TREE_DMU_LST_CHANGED:
+    case ALL_DMULST:
+    case TREE_DMULST_CHANGED:
       return { ...state, treeData: action.payload };
-    case BLANK_DMU_LST_NODE:
+    case BLANK_DMULST_NODE:
       return { ...state, blankMenuNode: action.payload };
-    case NEW_DMU_LST:
+    case NEW_DMULST:
       const mnuNode = action.payload;
       const newMenuN = {};
       newMenuN.id = mnuNode.id;
@@ -160,7 +160,7 @@ export default function(state = INITIAL_STATE, action) {
         });
       }
       return { ...state, treeData: newTree.treeData };
-    case DEL_DMU_LST_NODE:
+    case DEL_DMULST_NODE:
       const delNode = action.payload;
       let delMenuN = removeNodeAtPath({
         treeData: state.treeData,
@@ -171,11 +171,11 @@ export default function(state = INITIAL_STATE, action) {
 
     /******************************************************************        DRLIST       */
 
-    case ALL_DR_LIST:
+    case ALL_DRLIST:
       return { ...state, listRoles: { ...state.listRoles, ...action.payload } };
-    case DR_ACCESS:
+    case ACCESS_DRLST:
       return { ...state, accessTypes: action.payload };
-    case DR_NAME_UPD:
+    case UPD_DR_LST_NAME:
       const updatedRole = action.payload;
       const newRoles = [];
       for (const k in state.listRoles.roles) {
@@ -186,7 +186,7 @@ export default function(state = INITIAL_STATE, action) {
         }
       }
       return { ...state, listRoles: { ...state.listRoles, roles: newRoles } };
-    case DR_NEW:
+    case NEW_DR_LST:
       const allRoles = Object.assign([], state.listRoles.roles);
       allRoles.push(action.payload);
       return { ...state, listRoles: { ...state.listRoles, roles: allRoles } };

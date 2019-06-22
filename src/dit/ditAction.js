@@ -6,46 +6,46 @@ import {
 import { doGet, doPut, doPost } from '../utils/apiActions';
 
 /*******************************************************************    DIT_ELLST              */
-export const DIT_ELLST = 'DIT_ELLST';
+export const ALL_DITELLST = 'ALL_DITELLST';
 
-/*******************************************************************    DIT_USER_LST            */
-export const ALL_DIT_USR_LST = 'ALL_DIT_USR_LST';
-export const NEW_DIT_USR_LST = 'NEW_DIT_USR_LST';
-export const UPD_DIT_USR_LST = 'UPD_DIT_USR_LST';
-export const STAFF_FOR_DIT_USR_LST = 'STAFF_FOR_DIT_USR_LST';
-export const BRNCHS_FOR_DIT_USR_LST = 'BRNCHS_FOR_DIT_USR_LST';
-export const SHOW_DIT_USER_LST = 'SHOW_DIT_USER_LST';
-export const SHOW_DIT_USR_UPD = 'SHOW_DIT_USR_UPD';
+/*******************************************************************    DIT_USERLST            */
+export const ALL_DITUSRLST = 'ALL_DITUSRLST';
+export const NEW_DITUSRLST = 'NEW_DITUSRLST';
+export const UPD_DITUSRLST = 'UPD_DITUSRLST';
+export const STAFF_FOR_DITUSRLST = 'STAFF_FOR_DITUSRLST';
+export const BRNCHS_FOR_DITUSRLST = 'BRNCHS_FOR_DITUSRLST';
+export const SHOW_DITUSERLST = 'SHOW_DITUSERLST';
+export const SHOW_DITUSR_UPD = 'SHOW_DITUSR_UPD';
 
 /*******************************************************************    DMU_LST                 */
-export const ALL_DMU_LST = 'ALL_DMU_LST';
-export const NEW_DMU_LST = 'NEW_DMU_LST';
-export const ON_DMU_LST_MOVE = 'ON_DMU_LST_MOVE';
-export const TREE_DMU_LST_CHANGED = 'TREE_DMU_LST_CHANGED';
-export const BLANK_DMU_LST_NODE = 'BLANK_DMU_LST_NODE';
+export const ALL_DMULST = 'ALL_DMULST';
+export const NEW_DMULST = 'NEW_DMULST';
+export const ON_DMULST_MOVE = 'ON_DMULST_MOVE';
+export const TREE_DMULST_CHANGED = 'TREE_DMULST_CHANGED';
+export const BLANK_DMULST_NODE = 'BLANK_DMULST_NODE';
 export const DMU_LST_NODE_UPD = 'DMU_LST_NODE_UPD';
-export const DEL_DMU_LST_NODE = 'DEL_DMU_LST_NODE';
+export const DEL_DMULST_NODE = 'DEL_DMULST_NODE';
 
 /*******************************************************************    DRLIST                     */
-export const ALL_DR_LIST = 'ALL_DR_LIST';
-export const DR_ACCESS = 'DR_ACCESS';
-export const DR_NAME_UPD = 'DR_NAME_UPD';
-export const DR_NEW = 'DR_NEW';
+export const ALL_DRLIST = 'ALL_DRLIST';
+export const ACCESS_DRLST = 'ACCESS_DRLST';
+export const UPD_DR_LST_NAME = 'UPD_DR_LST_NAME';
+export const NEW_DR_LST = 'NEW_DR_LST';
 
 /*******************************************************************    TRANSACTIOS               */
 export const ALL_CURR_DTR = 'ALL_CURR_DTR';
 export const UPD_DTR = 'UPD_DTR';
 export const NEW_DTR = 'NEW_DTR';
 
-/*******************************************************************    DIT_ELLST                 */
+/*******************************************************************    DITELLST                 */
 export function fetchAllEllist(page) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`ditellist/getallellist?${page}`)
+    doGet(`ditellist/ditellistAll?${page}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: DIT_ELLST,
+          type: ALL_DITELLST,
           events: data.events,
           evRowPr: data.evRowPr,
         });
@@ -61,13 +61,13 @@ export function fetchAllEllist(page) {
 
 export function showAddModal(flag) {
   return {
-    type: SHOW_DIT_USER_LST,
+    type: SHOW_DITUSERLST,
     payload: flag,
   };
 }
 export function showUpdateModal(flag) {
   return {
-    type: SHOW_DIT_USR_UPD,
+    type: SHOW_DITUSR_UPD,
     payload: flag,
   };
 }
@@ -75,11 +75,11 @@ export function showUpdateModal(flag) {
 export function fetchDSUserAll() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`dituserlist/fetchDSUserAll`)
+    doGet(`dituserlist/ditSUserAll`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: ALL_DIT_USR_LST,
+          type: ALL_DITUSRLST,
           payload: data,
         });
       })
@@ -93,13 +93,13 @@ export function fetchDSUserAll() {
 export function saveNewDSUser(newUser) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    doPost(`dituserlist/saveNewSUser`, newUser)
+    doPost(`dituserlist/ditsaveSUser`, newUser)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
           dispatch(successed());
           dispatch({
-            type: NEW_DIT_USR_LST,
+            type: NEW_DITUSRLST,
             payload: newUser,
           });
         } else {
@@ -115,13 +115,13 @@ export function saveNewDSUser(newUser) {
 
 export function updateDSUserRow(row) {
   return function(dispatch) {
-    doPut('dituserlist/upd/system/user', row)
+    doPut('dituserlist/ditupdSUser', row)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
           dispatch(successed());
           dispatch({
-            type: UPD_DIT_USR_LST,
+            type: UPD_DITUSRLST,
             payload: row,
           });
         } else {
@@ -138,11 +138,11 @@ export function updateDSUserRow(row) {
 export function searchStafforDSUser(sstaff) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    doPost(`dituserlist/searchStaff/forsysuser`, sstaff)
+    doPost(`dituserlist/ditsearchStaff/forSUser`, sstaff)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: STAFF_FOR_DIT_USR_LST,
+          type: STAFF_FOR_DITUSRLST,
           payload: data,
         });
       })
@@ -154,10 +154,10 @@ export function searchStafforDSUser(sstaff) {
 
 export function getBrByBukrDSysUser(bukrs) {
   return function(dispatch) {
-    doGet(`dituserlist/branchesbybukrs/${bukrs}`)
+    doGet(`dituserlist/ditbranchesbybukrs/${bukrs}`)
       .then(({ data }) => {
         dispatch({
-          type: BRNCHS_FOR_DIT_USR_LST,
+          type: BRNCHS_FOR_DITUSRLST,
           payload: data,
         });
       })
@@ -172,11 +172,11 @@ export function getBrByBukrDSysUser(bukrs) {
 export function fetchCurrDmulst() {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    doGet(`dit/dmulist/getall`)
+    doGet(`dit/dmulist/dmulstAll`)
       .then(({ data }) => {
         modifyLoader(false);
         dispatch({
-          type: ALL_DMU_LST,
+          type: ALL_DMULST,
           payload: data,
         });
       })
@@ -189,13 +189,13 @@ export function fetchCurrDmulst() {
 export function newDmuNode(newNode) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    doPost(`dit/dmulist/savenewdmu`, newNode)
+    doPost(`dit/dmulist/dmusavenew`, newNode)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
           dispatch(successed());
           dispatch({
-            type: NEW_DMU_LST,
+            type: NEW_DMULST,
             payload: data,
           });
         } else {
@@ -211,13 +211,13 @@ export function newDmuNode(newNode) {
 export function onMoveDmuNode(node, changeNode) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    doPost(`dit/dmulist/movenode`, { node, changeNode })
+    doPost(`dit/dmulist/dmumovenode`, { node, changeNode })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
           dispatch(successed());
           dispatch({
-            type: ON_DMU_LST_MOVE,
+            type: ON_DMULST_MOVE,
             payload: { node, changeNode },
           });
         } else {
@@ -232,7 +232,7 @@ export function onMoveDmuNode(node, changeNode) {
 
 export function updDmuNode(node) {
   return function(dispatch) {
-    doPut(`dit/dmulist/update/${node.id}`, node)
+    doPut(`dit/dmulist/dmuupdate/${node.id}`, node)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -249,7 +249,7 @@ export function updDmuNode(node) {
 
 export function treeDmuChanged(treeMenu) {
   return {
-    type: TREE_DMU_LST_CHANGED,
+    type: TREE_DMULST_CHANGED,
     payload: treeMenu,
   };
 }
@@ -257,11 +257,11 @@ export function treeDmuChanged(treeMenu) {
 export function getBlankDmu(parentId) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`dit/dmulist/blankdmu/${parentId}`)
+    doGet(`dit/dmulist/dmublank/${parentId}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: BLANK_DMU_LST_NODE,
+          type: BLANK_DMULST_NODE,
           payload: data,
         });
       })
@@ -275,11 +275,11 @@ export function getBlankDmu(parentId) {
 export function deleteDmuNode(nMenu) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`dit/dmulist/deletenode/${nMenu.id}`)
+    doPost(`dit/dmulist/dmudeletenode/${nMenu.id}`)
       .then(() => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: DEL_DMU_LST_NODE,
+          type: DEL_DMULST_NODE,
           payload: nMenu,
         });
       })
@@ -295,11 +295,11 @@ export function deleteDmuNode(nMenu) {
 export function fetchDrlstAll() {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    doGet(`dit/drlist/drlistall`)
+    doGet(`dit/drlist/drlstAll`)
       .then(({ data }) => {
         modifyLoader(false);
         dispatch({
-          type: ALL_DR_LIST,
+          type: ALL_DRLIST,
           payload: data,
         });
       })
@@ -309,13 +309,13 @@ export function fetchDrlstAll() {
   };
 }
 
-export function getDrAccesses(role_id) {
+export function getDrlstAccesses(role_id) {
   return function(dispatch) {
-    doGet(`dit/drlist/draccesses/${role_id}`)
+    doGet(`dit/drlist/drlstaccesses/${role_id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: DR_ACCESS,
+          type: ACCESS_DRLST,
           payload: data,
         });
       })
@@ -329,13 +329,13 @@ export function getDrAccesses(role_id) {
 export function saveDrLst(newRoles) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`dit/drlist/drsave_roles`, newRoles)
+    doPost(`dit/drlist/drlstsave_roles`, newRoles)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
           dispatch(successed());
           dispatch({
-            type: DR_ACCESS,
+            type: ACCESS_DRLST,
             payload: newRoles,
           });
         } else {
@@ -349,16 +349,16 @@ export function saveDrLst(newRoles) {
   };
 }
 
-export function updDrNomin(role) {
+export function updDrlstNomin(role) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPut('dit/drlist/drupdate', role)
+    doPut('dit/drlist/drlstupdate', role)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
           dispatch(successed());
           dispatch({
-            type: DR_NAME_UPD,
+            type: UPD_DR_LST_NAME,
             payload: role,
           });
         } else {
@@ -375,13 +375,13 @@ export function updDrNomin(role) {
 export function newDrole(role) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`dit/drlist/newdr`, role)
+    doPost(`dit/drlist/drlstnew`, role)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
           dispatch(successed());
           dispatch({
-            type: DR_NEW,
+            type: NEW_DR_LST,
             payload: role,
           });
         } else {

@@ -1,13 +1,14 @@
 import {
-  GET_PRLIST,
+  GET_LPLST,
   GET_MATNRS,
-  NEW_PR,
-  UPD_PRLIST,
-  CONT_DMSC_LIST,
-  GET_CONT_DMSC_SEAR_OPTS,
+  NEW_LPLST,
+  UPD_LPLST,
+  GET_CONT_DMSC_LST,
+  GET_CONT_DMSC_DEF,
   FETCH_DYNOBJ_MARKETING,
   CHANGE_DYNOBJ_MARKETING,
   CLEAR_DYNOBJ_MARKETING,
+  ALL_DMSP_LST,
 } from './marketingAction';
 
 const INITIAL_STATE = {
@@ -18,8 +19,8 @@ const INITIAL_STATE = {
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-    /******************************************************************        PRICE        */
-    case GET_PRLIST:
+    /******************************************************************        LPLIST        */
+    case GET_LPLST:
       return {
         ...state,
         dynObjLpList: { ...state.dynObjLpList, ...action.payload },
@@ -29,7 +30,7 @@ export default function(state = INITIAL_STATE, action) {
         ...state,
         dynObjLpList: { ...state.dynObjLpList, ...action.payload },
       };
-    case NEW_PR:
+    case NEW_LPLST:
       if (Object.keys(state.dynObjLpList).length > 0) {
         const price = { ...action.payload };
         const trow = state.dynObjLpList.prtotRws + 1;
@@ -45,7 +46,7 @@ export default function(state = INITIAL_STATE, action) {
         };
       }
       return { ...state, dynObjLpList: { ...state.dynObjLpList } };
-    case UPD_PRLIST:
+    case UPD_LPLST:
       const updPrlst = { ...action.payload };
       const idx = [...state.dynObjLpList.pritms].findIndex(
         el => el.price_list_id === updPrlst.price_list_id,
@@ -64,14 +65,20 @@ export default function(state = INITIAL_STATE, action) {
       };
 
     /************************************************     CONTRACT LIST        */
-    case GET_CONT_DMSC_SEAR_OPTS:
-    case CONT_DMSC_LIST:
+    case GET_CONT_DMSC_DEF:
+    case GET_CONT_DMSC_LST:
       return {
         ...state,
         dynObjDmsc: { ...state.dynObjDmsc, ...action.payload },
       };
 
     /************************************************  END CONTRACT LIST        */
+
+    /********************************************************   DMSP_LST        */
+    case ALL_DMSP_LST:
+      return { ...state, dynDmsplst: [...state.dynDmsplst, ...action.payload] };
+
+    /********************************************************  END DMSP_LST    */
     case FETCH_DYNOBJ_MARKETING:
       return {
         ...state,

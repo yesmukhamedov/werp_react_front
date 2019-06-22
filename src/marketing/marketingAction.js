@@ -6,22 +6,22 @@ import {
 
 import { doGet, doPost, doPut } from '../utils/apiActions';
 
-/******************************************************************** PRICE LIST */
-export const GET_PRLIST = 'GET_PRLIST';
+/******************************************************************** LPLIST */
+export const GET_LPLST = 'GET_LPLST';
 export const GET_MATNRS = 'GET_MATNRS';
-export const NEW_PR = 'NEW_PR';
-export const UPD_PRLIST = 'UPD_PRLIST';
+export const NEW_LPLST = 'NEW_LPLST';
+export const UPD_LPLST = 'UPD_LPLST';
 
 export const FETCH_DYNOBJ_MARKETING = 'FETCH_DYNOBJ_MARKETING';
 export const CHANGE_DYNOBJ_MARKETING = 'CHANGE_DYNOBJ_MARKETING';
 export const CLEAR_DYNOBJ_MARKETING = 'CLEAR_DYNOBJ_MARKETING';
 
 /******************************************************************** DMSCLIST */
-export const GET_CONT_DMSC_SEAR_OPTS = 'GET_CONT_DMSC_SEAR_OPTS';
-export const CONT_DMSC_LIST = 'CONT_DMSC_LIST';
+export const GET_CONT_DMSC_DEF = 'GET_CONT_DMSC_DEF';
+export const GET_CONT_DMSC_LST = 'GET_CONT_DMSC_LST';
 
 /******************************************************************** DMSCLIST */
-export const GET_DMSP_LST = 'GET_DMSP_LST';
+export const ALL_DMSP_LST = 'ALL_DMSP_LST';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
@@ -33,7 +33,7 @@ export function getByDefSearchOpts(branchId) {
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: GET_CONT_DMSC_SEAR_OPTS,
+          type: GET_CONT_DMSC_DEF,
           payload: data,
         });
       })
@@ -51,7 +51,7 @@ export function getContByOpts(searchPms) {
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: CONT_DMSC_LIST,
+          type: GET_CONT_DMSC_LST,
           payload: data,
         });
       })
@@ -71,7 +71,7 @@ export function getLazyPrList(bukrs) {
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: GET_PRLIST,
+          type: GET_LPLST,
           payload: data,
         });
       })
@@ -109,7 +109,7 @@ export function savePrice(price) {
         if (data) {
           dispatch(successed());
           dispatch({
-            type: NEW_PR,
+            type: NEW_LPLST,
             payload: price,
           });
         } else {
@@ -132,7 +132,7 @@ export function updPrListRow(row) {
         if (data) {
           dispatch(successed());
           dispatch({
-            type: UPD_PRLIST,
+            type: UPD_LPLST,
             payload: row,
           });
         } else {
@@ -156,7 +156,7 @@ export function getDmsplist() {
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: GET_DMSP_LST,
+          type: ALL_DMSP_LST,
           payload: data,
         });
       })
