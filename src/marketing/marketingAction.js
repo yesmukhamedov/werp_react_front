@@ -148,11 +148,10 @@ export function updPrListRow(row) {
 
 /****************************************************** END LP_LIST */
 
-export function getDmsplist() {
-  console.log('dsmplist in action ');
+export function fetchDmsplist() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`marketing/mainoperation/dmsplist/`)
+    doGet(`marketing/mainoperaton/dmsplist`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

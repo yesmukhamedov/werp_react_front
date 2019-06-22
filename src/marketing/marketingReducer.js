@@ -15,6 +15,7 @@ const INITIAL_STATE = {
   dynObjLpList: [],
   dynObjDmsc: [],
   dynamicObject: {},
+  dynDmsplst: [],
 };
 
 export default function(state = INITIAL_STATE, action) {

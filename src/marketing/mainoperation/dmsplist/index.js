@@ -1,8 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import {
+  Header,
+  Icon,
+  Segment,
+  Button,
+  Container,
+  Modal,
+} from 'semantic-ui-react';
+import List from './list';
 //
 import {
-  getDmsplist,
+  fetchDmsplist,
   f4FetchBranches,
   f4ClearAnyObject,
 } from '../../marketingAction';
@@ -10,24 +19,37 @@ import {
 import { injectIntl } from 'react-intl';
 
 function Dmsplist(props) {
-  const [count, setCount] = useState(0);
-
   //componentDidMount
   useEffect(() => {
-    props.getDmsplist();
+    props.fetchDmsplist();
     //unmount
     return () => {};
   }, []);
-  console.log('effect', count);
+  const { messages } = props.intl;
   return (
     <div>
-      <p>You clicked {count} times</p>
-      <button onClick={() => setCount(count + 1)}>Click me</button>
+      <Container
+        fluid
+        style={{
+          marginTop: '2em',
+          marginBottom: '2em',
+          paddingLeft: '4em',
+          paddingRight: '4em',
+        }}
+      >
+        <List messages={messages} dynDmsplst={props.dynDmsplst} />
+      </Container>
     </div>
   );
 }
 
+function mapStateToProps(state) {
+  return {
+    dynDmsplst: state.marketing.dynDmsplst,
+  };
+}
+
 export default connect(
-  '',
-  { getDmsplist },
+  mapStateToProps,
+  { fetchDmsplist },
 )(injectIntl(Dmsplist));
