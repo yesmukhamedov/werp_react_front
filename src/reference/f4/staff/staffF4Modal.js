@@ -127,6 +127,7 @@ class StaffF4Modal extends PureComponent {
       trans === 'mmcc' ||
       trans === 'mmcef' ||
       trans === 'faia' ||
+      trans === 'LG_POS_TRD_IN' ||
       trans.startsWith('hr_doc_create_') ||
       trans === 'hr_doc_approvers'
     ) {
