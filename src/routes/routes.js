@@ -961,6 +961,7 @@ const getComponent = {
   Lplist: AsyncLPList,
   Dmsclist: AsyncDmscList,
   DmscLstExcel: AsyncDmscListExcel,
+  CrmSoldDemos: AsyncDemoSoldDemosPage,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1001,8 +1002,6 @@ const generateRoutes = transactionRoutes => {
       <Route path="/marketing/mainoperation/mmcefa" component={AsyncMmcefa} />
       <Route path="/marketing/mainoperation/mmcei" component={AsyncMmcei} />
       <Route path="/marketing/mainoperation/mmceg" component={AsyncMmceg} />
-
-      <Route path="/crm/demo/sold-demos" component={AsyncDemoSoldDemosPage} />
 
       <Route
         path="/hr/exitinterviews"
