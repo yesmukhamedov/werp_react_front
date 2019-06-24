@@ -898,6 +898,10 @@ const getComponent = {
   Rfcoj: AsyncRfcoj,
   Hrrsb: AsyncHrrsb,
   Mmcc: AsyncMmcc,
+  Mmcv: AsyncMmcv,
+  Mmcecd: AsyncMmcecd,
+  Mmcei: AsyncMmcei,
+  Mmceg: AsyncMmceg,
 
   SpNew: AsyncSpNewPage,
   SpView: AsyncSpViewPage,
