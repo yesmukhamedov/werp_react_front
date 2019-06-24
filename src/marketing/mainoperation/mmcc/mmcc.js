@@ -26,6 +26,7 @@ import {
 } from '../../marketingAction';
 import { validateOnSaveMmcc } from '../contractAdditionaComponents/contractValidation';
 import browserHistory from '../../../utils/history';
+import queryString from 'query-string';
 
 //
 import {
@@ -134,6 +135,7 @@ const Mmcc = props => {
   const [ps, setPs] = useState([]);
   const [contractPromoList, setContractPromoList] = useState([]);
   const [isSavingContract, setIsSavingContract] = useState(false);
+  const [demoId, setDemoId] = useState('');
   const tcode = 'MMCC';
 
   // const serviceBA = [5, 6, 9];
@@ -143,6 +145,14 @@ const Mmcc = props => {
   useEffect(() => {
     props.f4FetchConTypeList();
     props.f4FetchBranches();
+
+    const url = props.location.search;
+    const params = queryString.parse(url);
+
+    if (params.demoId) {
+      setDemoId(params.demoId);
+    }
+
     //unmount
     return () => {
       props.f4ClearAnyObject('F4_CLEAR_CONTYPE_LIST');
@@ -561,7 +571,7 @@ const Mmcc = props => {
           ps,
           contractPromoList,
         },
-        { tcode },
+        { tcode, demoId },
         setIsSavingContract,
         redirectToMmcv,
       );
@@ -683,7 +693,7 @@ const Mmcc = props => {
 // }
 
 function mapStateToProps(state) {
-  console.log(state, 'state');
+  // console.log(state, 'state');
   return {
     language: state.locales.lang,
     contractTypeList: state.f4.contractTypeList,

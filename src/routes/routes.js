@@ -990,7 +990,8 @@ const generateRoutes = transactionRoutes => {
       <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
       <Route path="/hr/report/hrrsb" component={AsyncHrrsb} />
-      <Route path="/hr/mainoperation/customer/hrc01" component={AsyncHrc01} />
+
+      {/* <Route path="/hr/mainoperation/customer/hrc01" component={AsyncHrc01} />
       <Route path="/hr/mainoperation/customer/hrc02" component={AsyncHrc02} />
       <Route path="/hr/mainoperation/customer/hrc03" component={AsyncHrc03} />
       <Route path="/reference/f4/address/rfadd01" component={AsyncRfadd01} />
@@ -998,10 +999,11 @@ const generateRoutes = transactionRoutes => {
       <Route path="/marketing/mainoperation/mmcc" component={AsyncMmcc} />
       <Route path="/marketing/mainoperation/mmcv" component={AsyncMmcv} />
       <Route path="/marketing/mainoperation/mmcecd" component={AsyncMmcecd} />
+      <Route path="/marketing/mainoperation/mmcei" component={AsyncMmcei} />
+      <Route path="/marketing/mainoperation/mmceg" component={AsyncMmceg} /> */}
+
       <Route path="/marketing/mainoperation/mmcef" component={AsyncMmcef} />
       <Route path="/marketing/mainoperation/mmcefa" component={AsyncMmcefa} />
-      <Route path="/marketing/mainoperation/mmcei" component={AsyncMmcei} />
-      <Route path="/marketing/mainoperation/mmceg" component={AsyncMmceg} />
 
       <Route
         path="/hr/exitinterviews"
