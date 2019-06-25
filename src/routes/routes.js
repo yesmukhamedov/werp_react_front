@@ -1078,6 +1078,7 @@ const generateRoutes = transactionRoutes => {
       {transactionRoutes.map(route => {
         return (
           <Route
+            exact={true}
             path={`${route.url}`}
             component={persistPath(getComponent[route.component])}
             key={route.transactionCode}
