@@ -9,6 +9,7 @@ import {
   LOG_INVOICE_BLANKED,
   LOG_INVOICE_FETCHED,
   LOG_SET_INVOICE_MODEL,
+  LOG_INVOICES_FETCHED_BY_STATUS,
 } from '../actions/logisticsActionTypes';
 
 const INITIAL_STATE = {
@@ -19,6 +20,7 @@ const INITIAL_STATE = {
   matnrsLoading: false,
   invoicePage: {},
   invoiceModel: {},
+  invoicePageByStatus: {},
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -46,6 +48,11 @@ export default function(state = INITIAL_STATE, action) {
     case LOG_INVOICE_BLANKED:
     case LOG_INVOICE_FETCHED:
       return { ...state, invoiceModel: action.payload };
+
+    case LOG_INVOICES_FETCHED_BY_STATUS:
+      let temp = Object.assign({}, state.invoicePageByStatus);
+      temp[action.status] = action.data;
+      return { ...state, invoicePageByStatus: temp };
 
     default:
       return state;
