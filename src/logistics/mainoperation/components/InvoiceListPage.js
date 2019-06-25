@@ -57,7 +57,7 @@ class InvoiceListPage extends Component {
   componentDidMount() {
     this.setState({
       ...this.state,
-      doctype: getDoctypeByUri(this.props.match.params.doctype),
+      doctype: 'LGI_POSTING_TRADE_IN', //getDoctypeByUri(this.props.match.params.doctype),
     });
   }
 
