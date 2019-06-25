@@ -68,10 +68,11 @@ class InvoiceListPage extends Component {
   }
 
   onTabChange = (e, data) => {
+    console.log(data);
     if (data.activeIndex === 0) {
-      this.loadItems(WERKS_REQUEST_STATUS_NEW);
+      //this.loadItems(WERKS_REQUEST_STATUS_NEW);
     } else {
-      this.loadItems(WERKS_REQUEST_STATUS_CLOSED);
+      //this.loadItems(WERKS_REQUEST_STATUS_CLOSED);
     }
   };
 
@@ -81,7 +82,14 @@ class InvoiceListPage extends Component {
 
   handleChangeDate(fieldName, v) {
     let queryParams = Object.assign({}, this.state.queryParams);
+    // if(v && v != null){
+    //     queryParams[fieldName] = v.valueOf();
+    // } else {
+    //     queryParams[fieldName] = null;
+    // }
+
     queryParams[fieldName] = v;
+
     this.setState({
       ...this.state,
       queryParams: queryParams,
@@ -93,7 +101,6 @@ class InvoiceListPage extends Component {
     const { name, value } = o;
 
     queryParams[name] = value;
-    console.log(queryParams);
     this.setState({
       ...this.state,
       queryParams: queryParams,
@@ -166,8 +173,9 @@ class InvoiceListPage extends Component {
     );
   }
 
-  renderSearchPanel() {
+  renderSearchPanel(messages) {
     let queryParams = Object.assign({}, this.state.queryParams);
+    const { companyOptions, branchOptions } = this.props;
     return (
       <div>
         <Header as="h4" attached="top">
@@ -176,20 +184,32 @@ class InvoiceListPage extends Component {
         <Segment attached>
           <Form>
             <Form.Group widths="equal">
-              <BukrsF4 handleChange={this.handleChange} />
-              <BranchF4
-                search
-                multiple={false}
-                handleChange={this.handleChange}
-                bukrs={queryParams['bukrs'] || ''}
+              <Form.Select
+                name="bukrs"
+                label={messages['L__COMPANY']}
+                options={companyOptions}
+                placeholder={messages['L__COMPANY']}
+                onChange={this.handleChange}
               />
+              <Form.Select
+                value={queryParams['branchId'] || ''}
+                name="branchId"
+                multiple={false}
+                search
+                selection
+                label={messages['L__BRANCH']}
+                options={branchOptions[queryParams['bukrs']] || []}
+                placeholder={messages['L__BRANCH']}
+                onChange={this.handleChange}
+              />
+
               <Form.Field>
-                <label>Дата с</label>
+                <label>{messages['Form.DateFrom']}</label>
                 <DatePicker
                   locale={'ru'}
                   autoComplete="off"
                   label=""
-                  placeholderText={'Дата с'}
+                  placeholderText={messages['Form.DateFrom']}
                   showMonthDropdown
                   showYearDropdown
                   dropdownMode="select"
@@ -204,12 +224,12 @@ class InvoiceListPage extends Component {
               </Form.Field>
 
               <Form.Field>
-                <label>Дата по</label>
+                <label>{messages['Form.DateTo']}</label>
                 <DatePicker
                   locale={'ru'}
                   label=""
                   autoComplete="off"
-                  placeholderText="Дата по"
+                  placeholderText={messages['Form.DateTo']}
                   showMonthDropdown
                   showYearDropdown
                   dropdownMode="select"
@@ -224,7 +244,7 @@ class InvoiceListPage extends Component {
 
             <Button
               loading={this.state.btnLoading}
-              onClick={() => this.loadItems(WERKS_REQUEST_STATUS_NEW)}
+              onClick={() => this.loadItems()}
               type="submit"
             >
               Сформировать
@@ -236,13 +256,14 @@ class InvoiceListPage extends Component {
   }
 
   render() {
-    let panes = [
-      { menuItem: 'Новые', render: () => this.renderDataTable() },
-      { menuItem: 'Закрытые', render: this.renderDataTable },
-    ];
-
     const { messages } = this.props.intl;
     const { doctype } = this.state;
+
+    const panes = [
+      { menuItem: messages['new_items'], render: this.renderDataTable },
+      { menuItem: messages['closed_items'], render: this.renderDataTable },
+      { menuItem: messages['deleted_items'], render: this.renderDataTable },
+    ];
 
     return (
       <Container
@@ -270,8 +291,10 @@ class InvoiceListPage extends Component {
           )}
         </Segment>
         <Divider clearing />
-        <Segment attached>{this.renderSearchPanel()}</Segment>
-        <Segment attached>{this.renderDataTable()}</Segment>
+        <Segment attached>{this.renderSearchPanel(messages)}</Segment>
+        <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
+
+        {/*<Segment attached>{this.renderDataTable()}</Segment>*/}
       </Container>
     );
   }
@@ -280,6 +303,8 @@ class InvoiceListPage extends Component {
 function mapStateToProps(state) {
   return {
     page: state.logisticsReducer.invoicePage,
+    companyOptions: state.userInfo.companyOptions,
+    branchOptions: state.userInfo.branchOptionsMarketing,
   };
 }
 
