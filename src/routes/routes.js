@@ -966,6 +966,8 @@ const getComponent = {
   Dmsclist: AsyncDmscList,
   DmscLstExcel: AsyncDmscListExcel,
   CrmSoldDemos: AsyncDemoSoldDemosPage,
+  LogInvoiceForm: AsyncLogInvoicesForm,
+  LogInvoiceList: AsyncLogInvoicesList,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1064,12 +1066,6 @@ const generateRoutes = transactionRoutes => {
         path="/logistics/werks/requests/view/:id"
         exact={true}
         component={AsyncLogWerksRequestView}
-      />
-
-      <Route
-        path="/logistics/invoices/:doctype(postings-trade-in|postings)"
-        exact={true}
-        component={AsyncLogInvoicesList}
       />
 
       <Route
