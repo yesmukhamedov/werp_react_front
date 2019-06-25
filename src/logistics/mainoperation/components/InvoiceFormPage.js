@@ -352,13 +352,25 @@ class InvoiceFormPage extends Component {
               <Table.Row key={idx}>
                 <Table.Cell>{m.matnrName}</Table.Cell>
                 <Table.Cell>
-                  {m.barcode}
                   {action === 'view' ? (
-                    ''
+                    m.barcode
                   ) : (
-                    <Button icon onClick={() => this.generateSerialnumber(idx)}>
-                      <Icon name="random" />
-                    </Button>
+                    <div>
+                      <input
+                        onChange={e =>
+                          this.handleItemChange('barcode', e.target.value, idx)
+                        }
+                        type="text"
+                        name="barcode"
+                        value={m.barcode || ''}
+                      />
+                      <Button
+                        icon
+                        onClick={() => this.generateSerialnumber(idx)}
+                      >
+                        <Icon name="random" />
+                      </Button>
+                    </div>
                   )}
                 </Table.Cell>
                 <Table.Cell>
@@ -438,6 +450,12 @@ class InvoiceFormPage extends Component {
             <Grid.Row>
               <Grid.Column width={6}>
                 <Form>
+                  {action === 'view'
+                    ? this.renderViewForm('Тип документа', model['doctypeName'])
+                    : ''}
+                  {action === 'view'
+                    ? this.renderViewForm('№ документа', model['id'])
+                    : ''}
                   {action === 'view' ? (
                     this.renderViewForm(messages['bukrs'], model['bukrsName'])
                   ) : (
@@ -652,7 +670,7 @@ class InvoiceFormPage extends Component {
           open={this.state.staffModalOpen}
           closeModal={bool => {}}
           onStaffSelect={this.onStaffSelect}
-          trans="mmcc01"
+          trans="LG_POS_TRD_IN"
           brnch={model['branchId']}
           branchOptions={branchOptions}
           bukrs={model['bukrs']}
