@@ -755,5 +755,8 @@
   "serial_number": "Serial number",
   "kind": "tur",
   "list_of_goods": "List of goods",
-  "name_of_goods": "Name of goods"
+  "name_of_goods": "Name of goods",
+  "new_items": "New",
+  "closed_items": "Closed",
+  "deleted_items": "Deleted"
 }

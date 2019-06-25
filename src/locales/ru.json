@@ -734,5 +734,8 @@
   "serial_number": "Серийный номер",
   "kind": "Вид",
   "list_of_goods": "Список товаров",
-  "name_of_goods": "Наименование товара"
+  "name_of_goods": "Наименование товара",
+  "new_items": "Новые",
+  "closed_items": "Закрытые",
+  "deleted_items": "Удаленные"
 }
