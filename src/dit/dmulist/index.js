@@ -317,7 +317,7 @@ function mapStateToProps(state) {
   return {
     treeData: state.ditReducer.treeData,
     blankMenuNode: state.ditReducer.blankMenuNode,
-    currTrans: state.ditReducer.currTrans,
+    currTrans: state.ditReducer.dynObjTrLst,
   };
 }
 

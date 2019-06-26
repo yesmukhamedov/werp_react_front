@@ -25,6 +25,19 @@ function Dmsplist(props) {
     //unmount
     return () => {};
   }, []);
+
+  const [state, setState] = useState({
+    showStaff: false,
+  });
+
+  const handleOpen = () => {
+    setState({ showStaff: true });
+  };
+
+  const handleClose = () => {
+    setState({ showStaff: true });
+  };
+
   const { messages } = props.intl;
   return (
     <div>
@@ -37,6 +50,29 @@ function Dmsplist(props) {
           paddingRight: '4em',
         }}
       >
+        <Segment clearing>
+          <Header as="h2" floated="left">
+            {messages['sys_users']}
+          </Header>
+          <Modal
+            trigger={
+              <Button
+                floated="right"
+                onClick={handleOpen.bind(this)}
+                color="teal"
+              >
+                <Icon name="plus" />
+                {messages['BTN__ADD']}
+              </Button>
+            }
+            open={state.showStaff}
+            onClose={handleClose.bind(this)}
+          >
+            <Modal.Header>{messages['addNewTr']}</Modal.Header>
+            <Modal.Content>{'Добавить'}</Modal.Content>
+          </Modal>
+        </Segment>
+
         <List messages={messages} dynDmsplst={props.dynDmsplst} />
       </Container>
     </div>

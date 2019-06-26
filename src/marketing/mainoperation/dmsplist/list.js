@@ -2,6 +2,14 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import matchSorter from 'match-sorter';
+import {
+  Header,
+  Icon,
+  Segment,
+  Button,
+  Container,
+  RightAlign,
+} from 'semantic-ui-react';
 
 export default function List(props) {
   console.log('props ', props);
@@ -34,12 +42,21 @@ export default function List(props) {
     {
       Header: 'from dealer',
       accessor: 'fromDealer',
+      style: { textAlign: 'right' },
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['fromDealer'] }),
       filterAll: true,
-      width: 250,
-      minWidth: 200,
-      maxWidth: 250,
+      minWidth: 90,
+      maxWidth: 100,
+    },
+    {
+      Header: messages['wears'],
+      accessor: 'fdCurrency',
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, { keys: ['fdCurrency'] }),
+      filterAll: true,
+      minWidth: 90,
+      maxWidth: 100,
     },
     {
       Header: messages['country'],

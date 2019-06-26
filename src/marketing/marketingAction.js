@@ -17,8 +17,8 @@ export const CHANGE_DYNOBJ_MARKETING = 'CHANGE_DYNOBJ_MARKETING';
 export const CLEAR_DYNOBJ_MARKETING = 'CLEAR_DYNOBJ_MARKETING';
 
 /******************************************************************** DMSCLIST */
-export const GET_CONT_DMSC_DEF = 'GET_CONT_DMSC_DEF';
-export const GET_CONT_DMSC_LST = 'GET_CONT_DMSC_LST';
+export const GET_CONT_DMSCLST_DEF = 'GET_CONT_DMSCLST_DEF';
+export const GET_CONT_DMSCLST = 'GET_CONT_DMSCLST';
 
 /******************************************************************** DMSCLIST */
 export const ALL_DMSP_LST = 'ALL_DMSP_LST';
@@ -33,7 +33,7 @@ export function getByDefSearchOpts(branchId) {
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: GET_CONT_DMSC_DEF,
+          type: GET_CONT_DMSCLST_DEF,
           payload: data,
         });
       })
@@ -51,7 +51,7 @@ export function getContByOpts(searchPms) {
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: GET_CONT_DMSC_LST,
+          type: GET_CONT_DMSCLST,
           payload: data,
         });
       })
@@ -103,7 +103,7 @@ export function getAllMatnr() {
 export function savePrice(price) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`lplist/lpnew/`, price)
+    doPost(`lplist/lpnew`, price)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {

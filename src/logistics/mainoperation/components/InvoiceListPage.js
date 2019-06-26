@@ -16,7 +16,11 @@ import {
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Link } from 'react-router-dom';
-import { fetchInvoices } from '../actions/logisticsActions';
+import {
+  fetchInvoices,
+  fetchInvoicesByStatus,
+  setInvoicePage,
+} from '../actions/logisticsActions';
 import { formatDMYMS } from '../../../utils/helpers';
 import BukrsF4 from '../../../reference/f4/bukrs/BukrsF4';
 import BranchF4 from '../../../reference/f4/branch/BranchF4';
@@ -34,8 +38,9 @@ import { injectIntl } from 'react-intl';
 
 require('moment/locale/ru');
 
-const TYPE_IN = 'in';
-const TYPE_OUT = 'out';
+const STATUS_NEW = 1;
+const STATUS_DONE = 2;
+const STATUS_DELETED = 6;
 
 class InvoiceListPage extends Component {
   constructor(props) {
@@ -43,6 +48,7 @@ class InvoiceListPage extends Component {
 
     this.state = {
       doctype: null,
+      currentStatus: STATUS_NEW,
       queryParams: {
         page: 0,
       },
@@ -52,28 +58,35 @@ class InvoiceListPage extends Component {
     this.renderDataTable = this.renderDataTable.bind(this);
     this.handleChangeDate = this.handleChangeDate.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.onTabChange = this.onTabChange.bind(this);
   }
 
   componentDidMount() {
     this.setState({
       ...this.state,
-      doctype: getDoctypeByUri(this.props.match.params.doctype),
+      doctype: 'LGI_POSTING_TRADE_IN', //getDoctypeByUri(this.props.match.params.doctype),
     });
   }
 
   loadItems() {
     let params = Object.assign({}, this.state.queryParams);
     params['doctype'] = this.state.doctype;
-    this.props.fetchInvoices(params);
+    this.props.fetchInvoicesByStatus(this.state.currentStatus, params);
   }
 
-  onTabChange = (e, data) => {
-    if (data.activeIndex === 0) {
-      this.loadItems(WERKS_REQUEST_STATUS_NEW);
-    } else {
-      this.loadItems(WERKS_REQUEST_STATUS_CLOSED);
+  onTabChange(e, data) {
+    let status = STATUS_NEW;
+    if (data.activeIndex === 1) {
+      status = STATUS_DONE;
+    } else if (data.activeIndex === 2) {
+      status = STATUS_DELETED;
     }
-  };
+
+    this.setState({
+      ...this.state,
+      currentStatus: status,
+    });
+  }
 
   getDocViewLink() {
     return '';
@@ -81,7 +94,12 @@ class InvoiceListPage extends Component {
 
   handleChangeDate(fieldName, v) {
     let queryParams = Object.assign({}, this.state.queryParams);
-    queryParams[fieldName] = v;
+    if (v && v != null) {
+      queryParams[fieldName] = v.format('YYYY-MM-DD');
+    } else {
+      queryParams[fieldName] = null;
+    }
+
     this.setState({
       ...this.state,
       queryParams: queryParams,
@@ -93,7 +111,6 @@ class InvoiceListPage extends Component {
     const { name, value } = o;
 
     queryParams[name] = value;
-    console.log(queryParams);
     this.setState({
       ...this.state,
       queryParams: queryParams,
@@ -102,7 +119,8 @@ class InvoiceListPage extends Component {
 
   renderDataTable() {
     const { messages } = this.props.intl;
-    const { page } = this.props;
+    const { pageByStatus } = this.props;
+    const page = pageByStatus[this.state.currentStatus] || {};
     let items = page['content'] || [];
     return (
       <div>
@@ -166,8 +184,9 @@ class InvoiceListPage extends Component {
     );
   }
 
-  renderSearchPanel() {
+  renderSearchPanel(messages) {
     let queryParams = Object.assign({}, this.state.queryParams);
+    const { companyOptions, branchOptions } = this.props;
     return (
       <div>
         <Header as="h4" attached="top">
@@ -176,55 +195,67 @@ class InvoiceListPage extends Component {
         <Segment attached>
           <Form>
             <Form.Group widths="equal">
-              <BukrsF4 handleChange={this.handleChange} />
-              <BranchF4
-                search
-                multiple={false}
-                handleChange={this.handleChange}
-                bukrs={queryParams['bukrs'] || ''}
+              <Form.Select
+                name="bukrs"
+                label={messages['L__COMPANY']}
+                options={companyOptions || []}
+                placeholder={messages['L__COMPANY']}
+                onChange={this.handleChange}
               />
+              <Form.Select
+                value={queryParams['branchId'] || ''}
+                name="branchId"
+                multiple={false}
+                search
+                selection
+                label={messages['L__BRANCH']}
+                options={branchOptions[queryParams['bukrs']] || []}
+                placeholder={messages['L__BRANCH']}
+                onChange={this.handleChange}
+              />
+
               <Form.Field>
-                <label>Дата с</label>
+                <label>{messages['Form.DateFrom']}</label>
                 <DatePicker
                   locale={'ru'}
                   autoComplete="off"
                   label=""
-                  placeholderText={'Дата с'}
+                  placeholderText={messages['Form.DateFrom']}
                   showMonthDropdown
                   showYearDropdown
                   dropdownMode="select"
                   dateFormat="DD.MM.YYYY"
                   selected={
-                    queryParams['dateFrom']
-                      ? moment(queryParams['dateFrom'])
+                    queryParams['fromDate']
+                      ? moment(queryParams['fromDate'])
                       : null
                   }
-                  onChange={v => this.handleChangeDate('dateFrom', v)}
+                  onChange={v => this.handleChangeDate('fromDate', v)}
                 />
               </Form.Field>
 
               <Form.Field>
-                <label>Дата по</label>
+                <label>{messages['Form.DateTo']}</label>
                 <DatePicker
                   locale={'ru'}
                   label=""
                   autoComplete="off"
-                  placeholderText="Дата по"
+                  placeholderText={messages['Form.DateTo']}
                   showMonthDropdown
                   showYearDropdown
                   dropdownMode="select"
                   dateFormat="DD.MM.YYYY"
                   selected={
-                    queryParams['dateTo'] ? moment(queryParams['dateTo']) : null
+                    queryParams['toDate'] ? moment(queryParams['toDate']) : null
                   }
-                  onChange={v => this.handleChangeDate('dateTo', v)}
+                  onChange={v => this.handleChangeDate('toDate', v)}
                 />
               </Form.Field>
             </Form.Group>
 
             <Button
               loading={this.state.btnLoading}
-              onClick={() => this.loadItems(WERKS_REQUEST_STATUS_NEW)}
+              onClick={() => this.loadItems()}
               type="submit"
             >
               Сформировать
@@ -236,13 +267,14 @@ class InvoiceListPage extends Component {
   }
 
   render() {
-    let panes = [
-      { menuItem: 'Новые', render: () => this.renderDataTable() },
-      { menuItem: 'Закрытые', render: this.renderDataTable },
-    ];
-
     const { messages } = this.props.intl;
     const { doctype } = this.state;
+
+    const panes = [
+      { menuItem: messages['new_items'], render: this.renderDataTable },
+      { menuItem: messages['closed_items'], render: this.renderDataTable },
+      { menuItem: messages['deleted_items'], render: this.renderDataTable },
+    ];
 
     return (
       <Container
@@ -270,8 +302,14 @@ class InvoiceListPage extends Component {
           )}
         </Segment>
         <Divider clearing />
-        <Segment attached>{this.renderSearchPanel()}</Segment>
-        <Segment attached>{this.renderDataTable()}</Segment>
+        <Segment attached>{this.renderSearchPanel(messages)}</Segment>
+        <Tab
+          onTabChange={this.onTabChange}
+          menu={{ secondary: true, pointing: true }}
+          panes={panes}
+        />
+
+        {/*<Segment attached>{this.renderDataTable()}</Segment>*/}
       </Container>
     );
   }
@@ -280,6 +318,9 @@ class InvoiceListPage extends Component {
 function mapStateToProps(state) {
   return {
     page: state.logisticsReducer.invoicePage,
+    pageByStatus: state.logisticsReducer.invoicePageByStatus,
+    companyOptions: state.userInfo.companyOptions,
+    branchOptions: state.userInfo.branchOptionsMarketing,
   };
 }
 
@@ -287,5 +328,7 @@ export default connect(
   mapStateToProps,
   {
     fetchInvoices,
+    setInvoicePage,
+    fetchInvoicesByStatus,
   },
 )(injectIntl(InvoiceListPage));

@@ -18,6 +18,7 @@ import {
   LOG_INVOICE_BLANKED,
   LOG_INVOICE_FETCHED,
   LOG_SET_INVOICE_MODEL,
+  LOG_INVOICES_FETCHED_BY_STATUS,
 } from './logisticsActionTypes';
 import { doPut, doGet, doPost } from '../../../utils/apiActions';
 import { ACTION_UPDATE, getUriByDoctype } from '../../logUtil';
@@ -186,6 +187,26 @@ export function fetchInvoices(params = {}) {
   };
 }
 
+export function fetchInvoicesByStatus(status, params = {}) {
+  params['statusId'] = status;
+  return function(dispatch) {
+    dispatch(setMatnrListLoading(true));
+    doGet('logistics/invoices', params)
+      .then(({ data }) => {
+        dispatch(setMatnrListLoading(false));
+        dispatch({
+          type: LOG_INVOICES_FETCHED_BY_STATUS,
+          status: status,
+          data: data,
+        });
+      })
+      .catch(error => {
+        dispatch(setMatnrListLoading(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
 export function blankInvoice(doctype) {
   return function(dispatch) {
     doGet('logistics/invoices/blank', { doctype: doctype })
@@ -220,6 +241,13 @@ export function setInvoiceModel(model) {
   return {
     type: LOG_SET_INVOICE_MODEL,
     payload: model,
+  };
+}
+
+export function setInvoicePage(data) {
+  return {
+    type: LOG_INVOICES_FETCHED,
+    payload: data,
   };
 }
 

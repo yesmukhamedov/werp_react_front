@@ -966,6 +966,8 @@ const getComponent = {
   Dmsclist: AsyncDmscList,
   DmscLstExcel: AsyncDmscListExcel,
   CrmSoldDemos: AsyncDemoSoldDemosPage,
+  LogInvoiceForm: AsyncLogInvoicesForm,
+  LogInvoiceList: AsyncLogInvoicesList,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1067,12 +1069,6 @@ const generateRoutes = transactionRoutes => {
       />
 
       <Route
-        path="/logistics/invoices/:doctype(postings-trade-in|postings)"
-        exact={true}
-        component={AsyncLogInvoicesList}
-      />
-
-      <Route
         path="/logistics/invoices/:doctype(postings-trade-in|postings)/:action(create|update|view)/:id?"
         exact={true}
         component={AsyncLogInvoicesForm}
@@ -1082,6 +1078,7 @@ const generateRoutes = transactionRoutes => {
       {transactionRoutes.map(route => {
         return (
           <Route
+            exact={true}
             path={`${route.url}`}
             component={persistPath(getComponent[route.component])}
             key={route.transactionCode}

@@ -3,8 +3,8 @@ import {
   GET_MATNRS,
   NEW_LPLST,
   UPD_LPLST,
-  GET_CONT_DMSC_LST,
-  GET_CONT_DMSC_DEF,
+  GET_CONT_DMSCLST,
+  GET_CONT_DMSCLST_DEF,
   FETCH_DYNOBJ_MARKETING,
   CHANGE_DYNOBJ_MARKETING,
   CLEAR_DYNOBJ_MARKETING,
@@ -66,8 +66,8 @@ export default function(state = INITIAL_STATE, action) {
       };
 
     /************************************************     CONTRACT LIST        */
-    case GET_CONT_DMSC_DEF:
-    case GET_CONT_DMSC_LST:
+    case GET_CONT_DMSCLST_DEF:
+    case GET_CONT_DMSCLST:
       return {
         ...state,
         dynObjDmsc: { ...state.dynObjDmsc, ...action.payload },
