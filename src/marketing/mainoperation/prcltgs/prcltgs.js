@@ -11,12 +11,12 @@ import {
   Grid,
   Label,
   Input,
+  Sticky,
 } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
 import axios from 'axios';
 import { ROOT_URL } from '../../../utils/constants';
 import { notify } from '../../../general/notification/notification_action';
-import { fetchBukrsOptions } from '../../../reference/f4/bukrs/BukrsOptions';
 import {
   getTradeIn,
   tradeInOptions,
@@ -53,6 +53,8 @@ const monthNumOptions = [
   { key: 16, text: '16', value: 16 },
   { key: 17, text: '17', value: 17 },
   { key: 18, text: '18', value: 18 },
+  { key: 19, text: '19', value: 19 },
+  { key: 20, text: '20', value: 20 },
 ];
 
 // const arrayList= ;
@@ -88,6 +90,8 @@ class Prcltgs extends Component {
       loading: false,
     };
   }
+
+  // contextRef = createRef();
 
   clearSelected() {
     this.setState({
@@ -706,14 +710,16 @@ class Prcltgs extends Component {
           </Grid.Row>
           <Grid.Row columns={3}>
             <Grid.Column mobile={16} tablet={16} computer={3}>
-              <Table compact striped selectable celled id="branchList">
-                <Table.Header>
-                  <Table.Row>
-                    <Table.HeaderCell>Филиал</Table.HeaderCell>
-                  </Table.Row>
-                </Table.Header>
-                <Table.Body>{this.renderTableBranchList()}</Table.Body>
-              </Table>
+              <Sticky>
+                <Table compact striped selectable celled id="branchList">
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Филиал</Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>{this.renderTableBranchList()}</Table.Body>
+                </Table>
+              </Sticky>
             </Grid.Column>
             <Grid.Column mobile={16} tablet={16} computer={10}>
               <Table compact striped celled selectable id="priceListHeaders">
@@ -757,34 +763,54 @@ class Prcltgs extends Component {
               </Table>
             </Grid.Column>
             <Grid.Column mobile={16} tablet={16} computer={3}>
-              <Table compact striped celled id="priceListRows">
-                <Table.Header>
-                  <Table.Row>
-                    <Table.HeaderCell>Кол. мес</Table.HeaderCell>
-                    <Table.HeaderCell>Сумма</Table.HeaderCell>
-                    <Table.HeaderCell />
-                  </Table.Row>
-                </Table.Header>
-                <Table.Body>{this.renderTablePriceListRows()}</Table.Body>
-                <Table.Footer>
-                  <Table.Row>
-                    <Table.HeaderCell />
-                    <Table.HeaderCell />
-                    <Table.HeaderCell>
-                      <Icon
-                        name="add"
-                        size="large"
-                        className="clickableIcon"
-                        color="green"
-                        onClick={event => this.addNewPayTemp()}
-                      />
-                    </Table.HeaderCell>
-                  </Table.Row>
-                </Table.Footer>
-              </Table>
+              <Sticky offset={100} bottomOffset={50}>
+                <Table compact striped celled id="priceListRows">
+                  <Table.Header>
+                    <Table.Row>
+                      <Table.HeaderCell>Кол. мес</Table.HeaderCell>
+                      <Table.HeaderCell>Сумма</Table.HeaderCell>
+                      <Table.HeaderCell />
+                    </Table.Row>
+                  </Table.Header>
+                  <Table.Body>{this.renderTablePriceListRows()}</Table.Body>
+                  <Table.Footer>
+                    <Table.Row>
+                      <Table.HeaderCell />
+                      <Table.HeaderCell />
+                      <Table.HeaderCell>
+                        <Icon
+                          name="add"
+                          size="large"
+                          className="clickableIcon"
+                          color="green"
+                          onClick={event => this.addNewPayTemp()}
+                        />
+                      </Table.HeaderCell>
+                    </Table.Row>
+                  </Table.Footer>
+                </Table>
+              </Sticky>
             </Grid.Column>
           </Grid.Row>
         </Grid>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
       </Container>
     );
   }
