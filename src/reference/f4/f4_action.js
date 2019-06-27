@@ -345,7 +345,7 @@ export function f4ClearWerksBranchList() {
 
 export function f4FetchBonusTypeList(trans) {
   return function(dispatch) {
-    doGet('/reference/bonusTypeList')
+    doGet('reference/bonusTypeList', { trans })
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_BONUSTYPE_LIST,
