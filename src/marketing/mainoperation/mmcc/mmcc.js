@@ -284,6 +284,11 @@ const Mmcc = props => {
           priceListId: '',
           tovarSerial: '',
           matnrListId: '',
+          refContractId: value.contractId,
+          refContractNumber: value.contractNumber,
+          refCustomerId: value.customerId,
+          refCustomerName: value.customerName,
+          paymentSchedule: '',
         };
       });
 
@@ -339,13 +344,15 @@ const Mmcc = props => {
       setAddrService({});
     } else if (fieldName === 'refContractId') {
       setContract(prev => {
-        return {
-          ...prev,
-          refContractId: value.contractId,
-          refContractNumber: value.contractNumber,
-          refCustomerId: value.customerId,
-          refCustomerName: value.customerName,
-        };
+        if (prev.tradeIn === 1) return { ...prev };
+        else
+          return {
+            ...prev,
+            refContractId: value.contractId,
+            refContractNumber: value.contractNumber,
+            refCustomerId: value.customerId,
+            refCustomerName: value.customerName,
+          };
       });
     } else if (fieldName === 'refContractIdRemove') {
       setContract(prev => {
