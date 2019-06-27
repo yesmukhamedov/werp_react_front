@@ -171,17 +171,17 @@ export function doAction(model) {
 
 export function fetchInvoices(params = {}) {
   return function(dispatch) {
-    dispatch(setMatnrListLoading(true));
+    dispatch(modifyLoader(true));
     doGet('logistics/invoices', params)
       .then(({ data }) => {
-        dispatch(setMatnrListLoading(false));
+        dispatch(modifyLoader(false));
         dispatch({
           type: LOG_INVOICES_FETCHED,
           payload: data,
         });
       })
       .catch(error => {
-        dispatch(setMatnrListLoading(false));
+        dispatch(modifyLoader(false));
         handleError(error, dispatch);
       });
   };
@@ -190,10 +190,10 @@ export function fetchInvoices(params = {}) {
 export function fetchInvoicesByStatus(status, params = {}) {
   params['statusId'] = status;
   return function(dispatch) {
-    dispatch(setMatnrListLoading(true));
+    dispatch(modifyLoader(true));
     doGet('logistics/invoices', params)
       .then(({ data }) => {
-        dispatch(setMatnrListLoading(false));
+        dispatch(modifyLoader(false));
         dispatch({
           type: LOG_INVOICES_FETCHED_BY_STATUS,
           status: status,
@@ -201,7 +201,7 @@ export function fetchInvoicesByStatus(status, params = {}) {
         });
       })
       .catch(error => {
-        dispatch(setMatnrListLoading(false));
+        dispatch(modifyLoader(false));
         handleError(error, dispatch);
       });
   };
