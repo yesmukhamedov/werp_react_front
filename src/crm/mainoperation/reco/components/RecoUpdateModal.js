@@ -6,7 +6,11 @@ import {
   updateReco,
 } from '../actions/recoAction';
 import { fetchGroupDealers } from '../../demo/actions/demoAction';
-import { RECO_CATEGORIES } from '../../../crmUtil';
+import {
+  RECO_CATEGORIES,
+  getRecoCategoriesOptionsByLanguage,
+  getCallerOptionsByLanguage,
+} from '../../../crmUtil';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
@@ -51,7 +55,7 @@ class RecoUpdateModal extends Component {
     console.log(p1, p2, p3);
   }
 
-  renderUpdateForm(messages) {
+  renderUpdateForm(messages, locale) {
     return (
       <Form>
         <Form.Group widths="equal">
@@ -93,7 +97,7 @@ class RecoUpdateModal extends Component {
             fluid
             selection
             label={messages['Form.Category']}
-            options={RECO_CATEGORIES}
+            options={getRecoCategoriesOptionsByLanguage(locale)}
             onChange={(e, v) => this.handleChange('categoryId', v)}
           />
           <Form.Select
@@ -103,7 +107,7 @@ class RecoUpdateModal extends Component {
             fluid
             selection
             label={messages['Form.Reco.CallerIs']}
-            options={callerIsDealer}
+            options={getCallerOptionsByLanguage(locale)}
             onChange={(e, v) => this.handleChange('callerIsDealer', v)}
           />
         </Form.Group>
@@ -209,11 +213,11 @@ class RecoUpdateModal extends Component {
   }
 
   render() {
-    const { messages } = this.props.intl;
+    const { messages, locale } = this.props.intl;
     return (
       <Modal size="small" open={this.props.updateModalOpened}>
         <Modal.Header>{messages['Crm.EditReco']}</Modal.Header>
-        <Modal.Content>{this.renderUpdateForm(messages)}</Modal.Content>
+        <Modal.Content>{this.renderUpdateForm(messages, locale)}</Modal.Content>
         <Modal.Actions>
           <Button
             negative
