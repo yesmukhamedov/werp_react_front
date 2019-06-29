@@ -5,8 +5,7 @@ import 'react-table/react-table.css';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { formatDMYMS } from '../../../../../../utils/helpers';
-import { LEGACY_URL } from '../../../../../../utils/constants';
-import { Button } from 'semantic-ui-react';
+import { LinkToMmcvNewTab } from '../../../../../../utils/outlink';
 
 class TaskListTableComponent extends Component {
   constructor(props) {
@@ -39,14 +38,7 @@ class TaskListTableComponent extends Component {
         maxWidth: 100,
         Cell: props => {
           const { contractNumber } = props.original;
-          return (
-            <a
-              target="_blank"
-              href={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=${contractNumber}`}
-            >
-              <Button size="mini">{contractNumber}</Button>
-            </a>
-          );
+          return <LinkToMmcvNewTab contractNumber={contractNumber} />;
         },
       },
       {
