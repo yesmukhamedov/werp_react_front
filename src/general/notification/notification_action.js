@@ -26,7 +26,7 @@ export function handleError(error, dispatch) {
       dispatch(
         notify(
           'error',
-          errorTable[`153${language}`],
+          error.response.data.message,
           errorTable[`132${language}`],
         ),
       );
