@@ -8,7 +8,6 @@ import { LinkToMmceg } from '../../../utils/outlink';
 const MmcvLogistics = props => {
   const {
     contract = {},
-    tradeIn = 0,
     contractPromoList = [],
     intl: { messages },
   } = props;
@@ -33,16 +32,18 @@ const MmcvLogistics = props => {
               <Input value={contract.tovarSerial} />
             </Table.Cell>
           </Table.Row>
-          {tradeIn !== undefined && tradeIn !== null && tradeIn > 0 && (
-            <Table.Row>
-              <Table.Cell>
-                Trade-in {messages['productSerialNumber']}
-              </Table.Cell>
-              <Table.Cell>
-                <Input value={contract.tradeInTovarSerial} maxLength="18" />
-              </Table.Cell>
-            </Table.Row>
-          )}
+          {contract.tradeIn !== undefined &&
+            contract.tradeIn !== null &&
+            contract.tradeIn > 0 && (
+              <Table.Row>
+                <Table.Cell>
+                  Trade-in {messages['productSerialNumber']}
+                </Table.Cell>
+                <Table.Cell>
+                  <Input value={contract.tradeInTovarSerial} maxLength="18" />
+                </Table.Cell>
+              </Table.Row>
+            )}
         </Table.Body>
       </Table>
 
