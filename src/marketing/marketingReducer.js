@@ -5,10 +5,12 @@ import {
   UPD_LPLST,
   GET_CONT_DMSCLST,
   GET_CONT_DMSCLST_DEF,
+  GET_DMSCLST_CUSTOMERS,
   FETCH_DYNOBJ_MARKETING,
   CHANGE_DYNOBJ_MARKETING,
   CLEAR_DYNOBJ_MARKETING,
-  ALL_DMSP_LST,
+  ALL_DMSPLST,
+  GET_DMSPLST_MATNRS,
 } from './marketingAction';
 
 const INITIAL_STATE = {
@@ -68,6 +70,7 @@ export default function(state = INITIAL_STATE, action) {
     /************************************************     CONTRACT LIST        */
     case GET_CONT_DMSCLST_DEF:
     case GET_CONT_DMSCLST:
+    case GET_DMSCLST_CUSTOMERS:
       return {
         ...state,
         dynObjDmsc: { ...state.dynObjDmsc, ...action.payload },
@@ -75,11 +78,19 @@ export default function(state = INITIAL_STATE, action) {
 
     /************************************************  END CONTRACT LIST        */
 
-    /********************************************************   DMSP_LST        */
-    case ALL_DMSP_LST:
-      return { ...state, dynDmsplst: [...state.dynDmsplst, ...action.payload] };
+    /********************************************************   DMSPLST        */
+    case ALL_DMSPLST:
+      return {
+        ...state,
+        dynDmsplst: { ...state.dynDmsplst, ...action.payload },
+      };
+    case GET_DMSPLST_MATNRS:
+      return {
+        ...state,
+        dynDmsplst: { ...state.dynDmsplst, ...action.payload },
+      };
 
-    /********************************************************  END DMSP_LST    */
+    /********************************************************  END DMSPLST    */
     case FETCH_DYNOBJ_MARKETING:
       return {
         ...state,

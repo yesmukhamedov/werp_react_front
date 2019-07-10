@@ -1,18 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import matchSorter from 'match-sorter';
-import {
-  Header,
-  Icon,
-  Segment,
-  Button,
-  Container,
-  RightAlign,
-} from 'semantic-ui-react';
 
 export default function List(props) {
-  console.log('props ', props);
   const { dynDmsplst, messages } = props;
   const columns = [
     {
@@ -22,9 +13,9 @@ export default function List(props) {
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['id'] }),
       filterAll: true,
-      width: 90,
+      width: 50,
       minWidth: 90,
-      maxWidth: 100,
+      maxWidth: 90,
     },
     {
       Header: messages['code'],
@@ -64,12 +55,16 @@ export default function List(props) {
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['countryName'] }),
       filterAll: true,
-      width: 250,
-      minWidth: 200,
-      maxWidth: 250,
     },
     {
-      Header: messages['branch'],
+      Header: messages['region'],
+      accessor: 'regionName',
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, { keys: ['regionName'] }),
+      filterAll: true,
+    },
+    {
+      Header: messages['brnch'],
       accessor: 'branchName',
       width: 100,
       minWidth: 100,
@@ -106,8 +101,6 @@ export default function List(props) {
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['pmType'] }),
       filterAll: true,
-      minWidth: 100,
-      maxWidth: 250,
     },
     {
       Header: messages['kind'],
@@ -115,8 +108,6 @@ export default function List(props) {
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['mName'] }),
       filterAll: true,
-      minWidth: 90,
-      maxWidth: 170,
     },
     {
       Header: messages['discount'],
@@ -158,13 +149,13 @@ export default function List(props) {
   ];
   return (
     <div>
-      {dynDmsplst === undefined || dynDmsplst.length == 0 ? (
+      {dynDmsplst.promolst === undefined || dynDmsplst.promolst.length == 0 ? (
         ''
       ) : (
         <ReactTable
           filterable
           columns={columns}
-          data={dynDmsplst}
+          data={dynDmsplst.promolst}
           resolveData={data => data.map(row => row)}
           rowsText={messages['rowsText']}
           pageText={messages['pageText']}

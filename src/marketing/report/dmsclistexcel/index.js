@@ -4,93 +4,75 @@ import {
   f4FetchCountryList,
   f4FetchWerksBranchList,
 } from '../../../reference/f4/f4_action';
-import { getByDefSearchOpts, getContByOpts } from '../../marketingAction';
-import { Container, Segment, Tab, Button, Menu } from 'semantic-ui-react';
+import { getDefSearchOpts, getContByOpts } from '../../marketingAction';
+import {
+  Container,
+  Segment,
+  Tab,
+  Header,
+  Menu,
+  Table,
+} from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
-import DefSearch from './../dmsclist/defSearch';
+
 import List from './../dmsclist/list';
 import SearchByContDet from './../dmsclist/searchByContDet';
 import SearchOpt from './../dmsclist/searchOpt';
 import SearchByNum from './../dmsclist/searchByNum';
 import { excelDownload } from '../../../utils/helpers';
+import { moneyFormat } from '../../../utils/helpers';
 
 class DmscListExcel extends Component {
   constructor() {
     super();
     this.state = {
-      searchPms: {
-        bukrs: '',
-      },
-      row: '',
-      activeIndex: 1,
+      searchPms: { page: 0 },
+      pageCount: 0,
     };
-    this.selectCustRow = this.selectCustRow.bind(this);
-    this.exportExcel = this.exportExcel.bind(this);
   }
 
   componentWillMount() {
     this.props.f4FetchCountryList();
+    this.props.getDefSearchOpts();
   }
 
-  selectCustRow = row => {
-    const searchPms = Object.assign({}, this.state.searchPms);
-    searchPms['customer_id'] = row.id;
-    this.setState({ ...this.state, searchPms });
-  };
+  //Customer options
+  searchCustomer(cust) {
+    this.props.getDmscLstCustrs(cust);
+  }
 
-  inputChange(fieldName, o) {
-    const searchPms = Object.assign({}, this.state.searchPms);
-    switch (fieldName) {
-      case 'bukrs':
-        searchPms.bukrs = o.value;
-        break;
-      case 'branchId':
-        searchPms['branchId'] = o.value;
-        this.props.getByDefSearchOpts(o.value);
-        break;
-      case 'dealerId':
-        searchPms['dealerId'] = o.value;
-        break;
-      case 'demoSecId':
-        searchPms['demoSecId'] = o.value;
-        break;
-      case 'collId':
-        searchPms['collId'] = o.value;
-        break;
-      case 'dateFrom':
-        searchPms['dateFrom'] = o.format('YYYY-MM-DD');
-        break;
-      case 'dateTo':
-        searchPms['dateTo'] = o.format('YYYY-MM-DD');
-        break;
-      case 'contract_number':
-        searchPms.contract_number = o.value;
-      case 'old_sn':
-        searchPms['old_sn'] = o.value;
-        break;
-      case 'phone':
-        searchPms['phone'] = o.value;
-        break;
-      case 'address':
-        searchPms['address'] = o.value;
-        break;
-      case 'contract_status_id':
-        searchPms['contract_status_id'] = o.value;
-        break;
-      case 'paySchedule':
-        searchPms['paySchedule'] = o.value;
-        break;
-      case 'customer_id':
-        searchPms['customer_id'] = o.value;
-        break;
-      default:
-        searchPms[fieldName] = o.value;
+  searchContract(searPms) {
+    const params = {};
+    for (const k in searPms) {
+      if (k === 'brIds') {
+        if (typeof searPms[k] !== 'undefined' && searPms[k].length > 0) {
+          params[k] = searPms[k].join();
+        }
+      } else {
+        params[k] = searPms[k];
+      }
     }
-    this.setState({ ...this.state, searchPms });
+    this.props.getContByOpts(params);
   }
 
-  searchContract() {
-    this.props.getContByOpts(this.state.searchPms);
+  searContrSecOpts(SearchOptions) {
+    this.props.searContrSecOpts(SearchOptions);
+  }
+
+  fetchPage(p) {
+    let searchPms = Object.assign({}, this.state.searchPms);
+    this.setState(state => {
+      return { pageCount: p };
+    });
+
+    let len = 20;
+    let length = this.props.dynObjDmsc.dmsclists.length;
+    let pageSize = (p + 1) * len;
+    if (pageSize > length) {
+      searchPms['page'] = this.state.searchPms.page + 1;
+      this.setState({ ...this.state, searchPms, pageCount: 0 });
+      this.props.getContByOpts(searchPms);
+    }
   }
 
   exportExcel(messages) {
@@ -109,7 +91,6 @@ class DmscListExcel extends Component {
     excelHeaders.push(messages['paid']);
     excelHeaders.push(messages['remainder']);
     excelHeaders.push(messages['extraInfo']);
-
     excelDownload(
       '/api/marketing/report/dmsclistexcel',
       'mcontrrep.xls',
@@ -121,60 +102,79 @@ class DmscListExcel extends Component {
 
   render() {
     const { messages } = this.props.intl;
-    const { activeIndex } = this.state;
-    const isEnabled =
-      this.state.searchPms.branchId === undefined ||
-      this.state.searchPms.branchId === null;
+    const { dynObjDmsc } = this.props;
     return (
-      <div>
-        <Container
-          fluid
-          style={{
-            marginTop: '2em',
-            marginBottom: '2em',
-            paddingLeft: '2em',
-            paddingRight: '2em',
-          }}
-        >
-          <DefSearch
-            searchPms={this.state.searchPms}
-            inputChange={this.inputChange.bind(this)}
-            messages={messages}
-            companyOptions={this.props.companyOptions}
-            branchOptions={this.props.branchOptions}
-          />
-          <Segment clearing>
-            <Tab
-              menu={{ attached: false, pointing: true }}
-              panes={this.panes(messages)}
-            />
-            <br />
-            <Button
-              color="teal"
-              floated="right"
-              disabled={isEnabled}
-              onClick={() => this.searchContract()}
-            >
-              {messages['search']}
-            </Button>
-          </Segment>
-          <Segment className={activeIndex === 1 ? 'show' : 'hide'}>
-            <Menu stackable size="small">
-              <Menu.Item>
-                <img
-                  className="clickableItem"
-                  src="/assets/img/xlsx_export_icon.png"
-                  onClick={() => this.exportExcel(messages)}
-                />
-              </Menu.Item>
-            </Menu>
-          </Segment>
-          <List
-            messages={messages}
-            dmsclists={this.props.dynObjDmsc.dmsclists}
-          />
-        </Container>
-      </div>
+      <Container
+        fluid
+        style={{
+          marginTop: '2em',
+          marginBottom: '2em',
+          paddingLeft: '2em',
+          paddingRight: '2em',
+        }}
+      >
+        <Segment clearing>
+          <Header as="h1">{messages['contract_lst']}</Header>
+        </Segment>
+        <Tab
+          menu={{ attached: false, pointing: true }}
+          panes={this.panes(messages)}
+        />
+        <Menu>
+          <Menu.Menu position="right">
+            <Menu.Item>
+              <img
+                className="clickableItem"
+                src="/assets/img/xlsx_export_icon.png"
+                onClick={() => this.exportExcel(messages)}
+              />
+            </Menu.Item>
+          </Menu.Menu>
+        </Menu>
+
+        <List
+          messages={messages}
+          fetchPage={this.fetchPage.bind(this)}
+          dmsclists={dynObjDmsc.dmsclists}
+          {...this.state}
+        />
+        <br />
+        <Table celled>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>{messages['overallSum']}</Table.HeaderCell>
+              <Table.HeaderCell>{messages['price']}</Table.HeaderCell>
+              <Table.HeaderCell>{messages['TBL_H__PAID']}</Table.HeaderCell>
+              <Table.HeaderCell>{messages['remainder']}</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell>
+                {dynObjDmsc.totalRows === undefined || dynObjDmsc.totalRows == 0
+                  ? ''
+                  : moneyFormat(dynObjDmsc.totalRows[0])}
+              </Table.Cell>
+              <Table.Cell>
+                {dynObjDmsc.totalRows === undefined || dynObjDmsc.totalRows == 0
+                  ? ''
+                  : moneyFormat(dynObjDmsc.totalRows[1])}
+              </Table.Cell>
+              <Table.Cell>
+                {dynObjDmsc.totalRows === undefined || dynObjDmsc.totalRows == 0
+                  ? ''
+                  : moneyFormat(dynObjDmsc.totalRows[2])}
+              </Table.Cell>
+              <Table.Cell>
+                {dynObjDmsc.totalRows === undefined || dynObjDmsc.totalRows == 0
+                  ? ''
+                  : moneyFormat(dynObjDmsc.totalRows[3])}
+              </Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      </Container>
     );
   }
 
@@ -187,10 +187,9 @@ class DmscListExcel extends Component {
           <Tab.Pane attached={false}>
             <SearchOpt
               messages={messages}
-              inputChange={this.inputChange.bind(this)}
-              searchPms={this.state.searchPms}
+              searchCustomer={this.searchCustomer.bind(this)}
+              searchContract={this.searchContract.bind(this)}
               {...this.props}
-              selectCustRow={this.selectCustRow}
             />
           </Tab.Pane>
         ),
@@ -201,9 +200,7 @@ class DmscListExcel extends Component {
           <Tab.Pane attached={false}>
             <SearchByNum
               messages={messages}
-              {...props}
-              inputChange={this.inputChange.bind(this)}
-              searchPms={this.state.searchPms}
+              searContrSecOpts={this.searContrSecOpts.bind(this)}
             />
           </Tab.Pane>
         ),
@@ -214,8 +211,7 @@ class DmscListExcel extends Component {
           <Tab.Pane attached={false}>
             <SearchByContDet
               messages={messages}
-              {...props}
-              inputChange={this.inputChange.bind(this)}
+              searContrSecOpts={this.searContrSecOpts.bind(this)}
             />
           </Tab.Pane>
         ),
@@ -239,6 +235,6 @@ export default connect(
     f4FetchCountryList,
     f4FetchWerksBranchList,
     getContByOpts,
-    getByDefSearchOpts,
+    getDefSearchOpts,
   },
 )(injectIntl(DmscListExcel));

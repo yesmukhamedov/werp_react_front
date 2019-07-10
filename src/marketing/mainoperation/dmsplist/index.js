@@ -10,35 +10,120 @@ import {
 } from 'semantic-ui-react';
 import List from './list';
 //
+import { fetchDmsplist, getDmspLstMatrns } from '../../marketingAction';
 import {
-  fetchDmsplist,
-  f4FetchBranches,
-  f4ClearAnyObject,
-} from '../../marketingAction';
-
+  f4FetchCountryList,
+  f4FetchWerksBranchList,
+} from '../../../reference/f4/f4_action';
 import { injectIntl } from 'react-intl';
+import NewDMSPLST from './newDmspLst';
 
 function Dmsplist(props) {
+  const emptyDmsp = {
+    showStaff: false,
+    pmscope: '',
+    countryId: '',
+    regionId: '',
+    bukrs: '',
+    branchId: '',
+    matnr: '',
+    matnr2: '',
+    discount: '',
+    pmType: '',
+    bonus: '',
+    fromDealer: '',
+    waers: '',
+    pmName: '',
+    dateFrom: '',
+    dateTo: '',
+    pmInfo: '',
+  };
+
   //componentDidMount
   useEffect(() => {
     props.fetchDmsplist();
+    props.f4FetchCountryList();
     //unmount
     return () => {};
   }, []);
 
-  const [state, setState] = useState({
-    showStaff: false,
-  });
+  const [dmsp, setDmsp] = useState({ ...emptyDmsp });
 
   const handleOpen = () => {
-    setState({ showStaff: true });
+    setDmsp({ showStaff: true });
+    props.getDmspLstMatrns();
   };
 
   const handleClose = () => {
-    setState({ showStaff: true });
+    setDmsp({ showStaff: false });
   };
 
+  const saveForm = () => {
+    console.log('in save ', dmsp);
+  };
+
+  const { companyOptions, branchOptions, countryList } = props;
   const { messages } = props.intl;
+
+  const onDmspChange = (o, fieldName) => {
+    setDmsp(prev => {
+      const varDmsp = { ...prev };
+      switch (fieldName) {
+        case 'pmscope':
+          varDmsp.pmscope = o.value;
+          break;
+        case 'countryId':
+          varDmsp.countryId = o.value;
+          break;
+        case 'regionId':
+          varDmsp.regionId = o.value;
+          break;
+        case 'pmType':
+          varDmsp.pmType = o.value;
+          break;
+        case 'bukrs':
+          varDmsp.bukrs = o.value;
+          break;
+        case 'branchId':
+          varDmsp.branchId = o.value;
+          break;
+        case 'matnr':
+          varDmsp.matnr = o.value;
+          break;
+        case 'matnr2':
+          varDmsp.matnr2 = o.value;
+          break;
+        case 'discount':
+          varDmsp.discount = o.value;
+          break;
+        case 'bonus':
+          varDmsp.bonus = o.value;
+          break;
+        case 'fromDealer':
+          varDmsp.fromDealer = o.value;
+          break;
+        case 'waers':
+          varDmsp.waers = o.value;
+          break;
+        case 'pmName':
+          varDmsp.pmName = o.value;
+          break;
+        case 'dateFrom':
+          varDmsp.dateFrom = o;
+          break;
+        case 'dateTo':
+          varDmsp.dateTo = o;
+          break;
+        case 'pmInfo':
+          varDmsp.pmInfo = o;
+          break;
+        default:
+          varDmsp[fieldName] = o.value;
+      }
+      return varDmsp;
+    });
+  };
+
   return (
     <div>
       <Container
@@ -52,24 +137,36 @@ function Dmsplist(props) {
       >
         <Segment clearing>
           <Header as="h2" floated="left">
-            {messages['sys_users']}
+            {' '}
+            {messages['promotion']}{' '}
           </Header>
           <Modal
+            size={'large'}
             trigger={
               <Button
                 floated="right"
                 onClick={handleOpen.bind(this)}
                 color="teal"
               >
-                <Icon name="plus" />
-                {messages['BTN__ADD']}
+                <Icon name="plus" /> {messages['BTN__ADD']}
               </Button>
             }
-            open={state.showStaff}
-            onClose={handleClose.bind(this)}
+            open={dmsp.showStaff}
           >
-            <Modal.Header>{messages['addNewTr']}</Modal.Header>
-            <Modal.Content>{'Добавить'}</Modal.Content>
+            <Modal.Header>{"messages['newPromotion']"}</Modal.Header>
+            <Modal.Content>
+              <NewDMSPLST
+                messages={messages}
+                companyOptions={companyOptions}
+                branchOptions={branchOptions}
+                countryList={countryList}
+                dmsp={dmsp}
+                onInputChange={onDmspChange}
+                dynDmsplst={props.dynDmsplst}
+                handleClose={handleClose.bind(this)}
+                saveForm={saveForm.bind(this)}
+              />
+            </Modal.Content>
           </Modal>
         </Segment>
 
@@ -81,11 +178,19 @@ function Dmsplist(props) {
 
 function mapStateToProps(state) {
   return {
+    countryList: state.f4.countryList,
+    companyOptions: state.userInfo.companyOptions,
+    branchOptions: state.userInfo.branchOptionsAll,
     dynDmsplst: state.marketing.dynDmsplst,
   };
 }
 
 export default connect(
   mapStateToProps,
-  { fetchDmsplist },
+  {
+    f4FetchCountryList,
+    f4FetchWerksBranchList,
+    fetchDmsplist,
+    getDmspLstMatrns,
+  },
 )(injectIntl(Dmsplist));

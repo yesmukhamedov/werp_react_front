@@ -4,98 +4,76 @@ import {
   f4FetchCountryList,
   f4FetchWerksBranchList,
 } from '../../../reference/f4/f4_action';
-import { getContByOpts, getByDefSearchOpts } from '../../marketingAction';
-import { Container, Segment, Tab, Button, Menu } from 'semantic-ui-react';
+import {
+  getContByOpts,
+  searContrSecOpts,
+  getDefSearchOpts,
+  getDmscLstCustrs,
+} from '../../marketingAction';
+import { Container, Segment, Tab, Table, Header } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
-import DefSearch from './defSearch';
 import List from './list';
 import SearchByContDet from './searchByContDet';
 import SearchOpt from './searchOpt';
 import SearchByNum from './searchByNum';
+import { moneyFormat } from '../../../utils/helpers';
 
-class ListContracts extends Component {
+class Dmsclists extends Component {
   constructor() {
     super();
     this.state = {
-      searchPms: {
-        bukrs: '',
-      },
-      row: '',
-      activeIndex: 1,
+      searchPms: { page: 0 },
+      pageCount: 0,
     };
-    this.selectCustRow = this.selectCustRow.bind(this);
   }
 
   componentWillMount() {
     this.props.f4FetchCountryList();
+    this.props.getDefSearchOpts();
   }
 
-  selectCustRow = row => {
-    const searchPms = Object.assign({}, this.state.searchPms);
-    searchPms['customer_id'] = row.id;
-    this.setState({ ...this.state, searchPms });
-  };
+  //Customer options
+  searchCustomer(cust) {
+    this.props.getDmscLstCustrs(cust);
+  }
 
-  inputChange(fieldName, o) {
-    const searchPms = Object.assign({}, this.state.searchPms);
-    switch (fieldName) {
-      case 'bukrs':
-        searchPms.bukrs = o.value;
-        break;
-      case 'branchId':
-        searchPms['branchId'] = o.value;
-        this.props.getByDefSearchOpts(o.value);
-        break;
-      case 'dealerId':
-        searchPms['dealerId'] = o.value;
-        break;
-      case 'demoSecId':
-        searchPms['demoSecId'] = o.value;
-        break;
-      case 'collId':
-        searchPms['collId'] = o.value;
-        break;
-      case 'dateFrom':
-        searchPms['dateFrom'] = o.format('YYYY-MM-DD');
-        break;
-      case 'dateTo':
-        searchPms['dateTo'] = o.format('YYYY-MM-DD');
-        break;
-      case 'contract_number':
-        searchPms.contract_number = o.value;
-      case 'old_sn':
-        searchPms['old_sn'] = o.value;
-        break;
-      case 'phone':
-        searchPms['phone'] = o.value;
-        break;
-      case 'address':
-        searchPms['address'] = o.value;
-        break;
-      case 'contract_status_id':
-        searchPms['contract_status_id'] = o.value;
-        break;
-      case 'paySchedule':
-        searchPms['paySchedule'] = o.value;
-        break;
-      case 'customer_id':
-        searchPms['customer_id'] = o.value;
-        break;
-      default:
-        searchPms[fieldName] = o.value;
+  searchContract(searPms) {
+    const params = {};
+    for (const k in searPms) {
+      if (k === 'brIds') {
+        if (typeof searPms[k] !== 'undefined' && searPms[k].length > 0) {
+          params[k] = searPms[k].join();
+        }
+      } else {
+        params[k] = searPms[k];
+      }
     }
-    this.setState({ ...this.state, searchPms });
+    this.props.getContByOpts(params);
   }
 
-  searchContract() {
-    this.props.getContByOpts(this.state.searchPms);
+  searContrSecOpts(SearchOptions) {
+    this.props.searContrSecOpts(SearchOptions);
+  }
+
+  fetchPage(p) {
+    let searchPms = Object.assign({}, this.state.searchPms);
+    this.setState(state => {
+      return { pageCount: p };
+    });
+
+    let len = 20;
+    let length = this.props.dynObjDmsc.dmsclists.length;
+    let pageSize = (p + 1) * len;
+    if (pageSize > length) {
+      searchPms['page'] = this.state.searchPms.page + 1;
+      this.setState({ ...this.state, searchPms, pageCount: 0 });
+      this.props.getContByOpts(searchPms);
+    }
   }
 
   render() {
     const { messages } = this.props.intl;
-    const isEnabled =
-      this.state.searchPms.branchId === undefined ||
-      this.state.searchPms.branchId === null;
+    const { dynObjDmsc } = this.props;
     return (
       <div>
         <Container
@@ -107,32 +85,59 @@ class ListContracts extends Component {
             paddingRight: '2em',
           }}
         >
-          <DefSearch
-            searchPms={this.state.searchPms}
-            inputChange={this.inputChange.bind(this)}
-            messages={messages}
-            companyOptions={this.props.companyOptions}
-            branchOptions={this.props.branchOptions}
-          />
           <Segment clearing>
-            <Tab
-              menu={{ attached: false, pointing: true }}
-              panes={this.panes(messages)}
-            />
-            <br />
-            <Button
-              color="teal"
-              floated="right"
-              disabled={isEnabled}
-              onClick={() => this.searchContract()}
-            >
-              {messages['search']}
-            </Button>
+            <Header as="h1">{messages['contract_lst']}</Header>
           </Segment>
+          <Tab
+            menu={{ attached: false, pointing: true }}
+            panes={this.panes(messages)}
+          />
           <List
             messages={messages}
-            dmsclists={this.props.dynObjDmsc.dmsclists}
+            fetchPage={this.fetchPage.bind(this)}
+            dmsclists={dynObjDmsc.dmsclists}
+            {...this.state}
           />
+          <br />
+          <Table celled>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>{messages['overallSum']}</Table.HeaderCell>
+                <Table.HeaderCell>{messages['price']}</Table.HeaderCell>
+                <Table.HeaderCell>{messages['TBL_H__PAID']}</Table.HeaderCell>
+                <Table.HeaderCell>{messages['remainder']}</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+
+            <Table.Body>
+              <Table.Row>
+                <Table.Cell>
+                  {dynObjDmsc.totalRows === undefined ||
+                  dynObjDmsc.totalRows == 0
+                    ? ''
+                    : moneyFormat(dynObjDmsc.totalRows[0])}
+                </Table.Cell>
+                <Table.Cell>
+                  {dynObjDmsc.totalRows === undefined ||
+                  dynObjDmsc.totalRows == 0
+                    ? ''
+                    : moneyFormat(dynObjDmsc.totalRows[1])}
+                </Table.Cell>
+                <Table.Cell>
+                  {dynObjDmsc.totalRows === undefined ||
+                  dynObjDmsc.totalRows == 0
+                    ? ''
+                    : moneyFormat(dynObjDmsc.totalRows[2])}
+                </Table.Cell>
+                <Table.Cell>
+                  {dynObjDmsc.totalRows === undefined ||
+                  dynObjDmsc.totalRows == 0
+                    ? ''
+                    : moneyFormat(dynObjDmsc.totalRows[3])}
+                </Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          </Table>
         </Container>
       </div>
     );
@@ -147,10 +152,9 @@ class ListContracts extends Component {
           <Tab.Pane attached={false}>
             <SearchOpt
               messages={messages}
-              inputChange={this.inputChange.bind(this)}
-              searchPms={this.state.searchPms}
+              searchCustomer={this.searchCustomer.bind(this)}
+              searchContract={this.searchContract.bind(this)}
               {...this.props}
-              selectCustRow={this.selectCustRow}
             />
           </Tab.Pane>
         ),
@@ -161,9 +165,7 @@ class ListContracts extends Component {
           <Tab.Pane attached={false}>
             <SearchByNum
               messages={messages}
-              {...props}
-              inputChange={this.inputChange.bind(this)}
-              searchPms={this.state.searchPms}
+              searContrSecOpts={this.searContrSecOpts.bind(this)}
             />
           </Tab.Pane>
         ),
@@ -174,8 +176,7 @@ class ListContracts extends Component {
           <Tab.Pane attached={false}>
             <SearchByContDet
               messages={messages}
-              {...props}
-              inputChange={this.inputChange.bind(this)}
+              searContrSecOpts={this.searContrSecOpts.bind(this)}
             />
           </Tab.Pane>
         ),
@@ -203,6 +204,8 @@ export default connect(
     f4FetchCountryList,
     f4FetchWerksBranchList,
     getContByOpts,
-    getByDefSearchOpts,
+    searContrSecOpts,
+    getDefSearchOpts,
+    getDmscLstCustrs,
   },
-)(injectIntl(ListContracts));
+)(injectIntl(Dmsclists));

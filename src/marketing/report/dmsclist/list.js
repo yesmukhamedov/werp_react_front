@@ -1,11 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import matchSorter from 'match-sorter';
 import { LinkToMmcvNewTab, LinkToCustomerHrc03 } from '../../../utils/outlink';
+import { moneyFormat } from '../../../utils/helpers';
 
 export default function List(props) {
-  const { dmsclists, messages } = props;
+  const { dmsclists, messages, pageCount, searchPms } = props;
   const columns = [
     {
       Header: messages['L__BRANCH'],
@@ -111,6 +112,7 @@ export default function List(props) {
     {
       Header: messages['price'],
       accessor: 'price',
+      Cell: ({ value }) => moneyFormat(String(value)),
       width: 70,
       minWidth: 70,
       maxWidth: 90,
@@ -118,6 +120,7 @@ export default function List(props) {
     {
       Header: messages['TBL_H__PAID'],
       accessor: 'paid',
+      Cell: ({ value }) => moneyFormat(String(value)),
       width: 50,
       minWidth: 50,
       maxWidth: 70,
@@ -125,16 +128,26 @@ export default function List(props) {
     {
       Header: messages['L__REMAINING_AMOUNT'],
       accessor: 'rest',
+      Cell: ({ value }) => moneyFormat(String(value)),
       width: 70,
       minWidth: 70,
       maxWidth: 90,
     },
     {
+      Header: 'In Trade',
+      accessor: 'tradeIn',
+      Cell: ({ value }) =>
+        String(value) === '0'
+          ? 'Без'
+          : String(value) === '1'
+          ? 'Внутренний'
+          : 'Внешний',
+      filterable: false,
+    },
+    {
       Header: messages['extraInfo'],
       accessor: 'info',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['info'] }),
-      filterAll: true,
+      filterable: false,
       minWidth: 90,
       maxWidth: 150,
     },
@@ -145,6 +158,7 @@ export default function List(props) {
         ''
       ) : (
         <ReactTable
+          page={pageCount}
           filterable
           columns={columns}
           data={dmsclists}
@@ -155,6 +169,14 @@ export default function List(props) {
           previousText={messages['previousText']}
           nextText={messages['nextText']}
           noDataText={messages['loadingText']}
+          pageSizeOptions={[20]}
+          defaultPageSize={20}
+          //   onFetchData={(objpage) => {
+          //     props.fetchPage(objpage);
+          //    }}
+          onPageChange={(pageSize, dmsclists) => {
+            props.fetchPage(pageSize, dmsclists);
+          }}
         />
       )}
     </div>
