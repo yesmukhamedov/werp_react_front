@@ -16,99 +16,16 @@ import CustomerSearch from './customerSearch';
 import OutputErrors from '../../../general/error/outputErrors';
 
 export default function SearchOpt(props) {
-  const defSearch = {
-    brIds: [],
-    srchModal: false,
-    customer_id: '',
-    fullFIO: '',
-  };
-  const [searchPms, setSearchPms] = useState({ ...defSearch });
   const [errors, setErrors] = useState([]);
 
-  /**************   CUSTOMER SEARCH FUNCT */
-  const callModalOpen = () => {
-    setSearchPms(prev => {
-      return {
-        ...prev,
-        srchModal: true,
-      };
-    });
-  };
-  const cancelForm = () => {
-    setSearchPms(prev => {
-      return {
-        ...prev,
-        srchModal: false,
-      };
-    });
-  };
   const searchCustomer = custmr => {
     props.searchCustomer(custmr);
   };
 
   const selectedCustomer = customer => {
-    setSearchPms(prev => {
-      let c = { ...defSearch };
-      c.customer_id = customer.id;
-      c.fullFIO = customer.fullFIO;
-      return c;
-    });
+    props.selectedCustomer(customer);
   };
 
-  /************** END CUSTOMER SEARCH FUNC */
-
-  const inputChange = (fieldName, o) => {
-    switch (fieldName) {
-      case 'bukrs':
-        searchPms['bukrs'] = o.value;
-        break;
-      case 'branchIds':
-        searchPms.brIds = o.value;
-        break;
-      case 'dealerId':
-        searchPms['dealerId'] = o.value;
-        break;
-      case 'demoSecId':
-        searchPms['demoSecId'] = o.value;
-        break;
-      case 'collId':
-        searchPms['collId'] = o.value;
-        break;
-      case 'dateFrom':
-        searchPms['dateFrom'] = o.format('YYYY-MM-DD');
-        break;
-      case 'dateTo':
-        searchPms['dateTo'] = o.format('YYYY-MM-DD');
-        break;
-      case 'contract_status_id':
-        searchPms['contract_status_id'] = o.value;
-        break;
-      case 'paySchedule':
-        searchPms['paySchedule'] = o.value;
-        break;
-      case 'customer_id':
-        searchPms['customer_id'] = o.value;
-        break;
-      default:
-        searchPms[fieldName] = o.value;
-    }
-    setSearchPms({ ...searchPms });
-  };
-
-  const searchContract = () => {
-    let errors = [];
-    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-    const language = localStorage.getItem('language');
-    const { bukrs, brIds } = searchPms;
-
-    if (bukrs === null || bukrs === undefined || !bukrs) {
-      errors.push(errorTable['5' + language]);
-    }
-    if (errors === null || errors === undefined || errors.length === 0) {
-      props.searchContract(searchPms);
-    }
-    setErrors(errors);
-  };
   const {
     dealers,
     demosec,
@@ -117,7 +34,33 @@ export default function SearchOpt(props) {
     contlaststate,
     dmsclstCusts,
   } = props.dynObjDmsc;
-  const { messages, companyOptions, branchOptions, countryList } = props;
+  const {
+    messages,
+    companyOptions,
+    branchOptions,
+    countryList,
+    callModalOpen,
+    cancelForm,
+    searchPms,
+    srchModal,
+    inputChange,
+  } = props;
+
+  const searchContract = () => {
+    let errors = [];
+    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+    const language = localStorage.getItem('language');
+    const { bukrs } = searchPms;
+
+    if (bukrs === null || bukrs === undefined || !bukrs) {
+      errors.push(errorTable['5' + language]);
+    }
+    if (errors === null || errors === undefined || errors.length === 0) {
+      props.searchContract();
+    }
+    setErrors(errors);
+  };
+
   return (
     <div>
       <Segment clearing>
@@ -233,11 +176,7 @@ export default function SearchOpt(props) {
                     defaultValue={searchPms.fullFIO}
                     readOnly
                   />
-                  <Button
-                    style={{ width: '10%' }}
-                    onClick={callModalOpen.bind(this)}
-                    icon
-                  >
+                  <Button style={{ width: '10%' }} onClick={callModalOpen} icon>
                     <Icon name="search" />
                   </Button>
                 </Form.Field>
@@ -305,14 +244,14 @@ export default function SearchOpt(props) {
         </Form>
         <OutputErrors errors={errors} />
       </Segment>
-      <Modal open={searchPms.srchModal} size={'large'}>
+      <Modal open={srchModal} size={'large'}>
         <Modal.Header>Delete Your Account</Modal.Header>
         <Modal.Content>
           <CustomerSearch
             messages={messages}
-            searchCustomer={searchCustomer.bind(this)}
-            cancelForm={cancelForm.bind(this)}
-            selectedCustomer={selectedCustomer.bind(this)}
+            searchCustomer={searchCustomer}
+            cancelForm={cancelForm}
+            selectedCustomer={selectedCustomer}
             countryList={countryList}
             dmsclstCusts={dmsclstCusts}
           />
@@ -332,6 +271,7 @@ export default function SearchOpt(props) {
     </div>
   );
 }
+
 /*************************************************** FIRST ROW */
 const getCompanyOptions = compOptions => {
   const companyOptions = compOptions;
