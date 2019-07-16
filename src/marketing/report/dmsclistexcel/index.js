@@ -26,7 +26,11 @@ class DmscListExcel extends Component {
   constructor() {
     super();
     this.state = {
-      searchPms: { page: 0 },
+      searchPms: {
+        brIds: [],
+        page: 0,
+      },
+      srchModal: false,
       pageCount: 0,
     };
   }
@@ -41,15 +45,85 @@ class DmscListExcel extends Component {
     this.props.getDmscLstCustrs(cust);
   }
 
-  searchContract(searPms) {
+  selectedCustomer(customer) {
+    let searchPms = Object.assign({}, this.state.searchPms);
+    searchPms['customer_id'] = customer.id;
+    searchPms['fullFIO'] = customer.fullFIO;
+    this.setState({ ...this.state, searchPms, srchModal: false });
+  }
+
+  /**************   CUSTOMER SEARCH FUNCT */
+  callModalOpen = () => {
+    console.log('call');
+    this.setState(prev => {
+      console.log('prev', prev);
+      return {
+        ...prev,
+        srchModal: true,
+      };
+    });
+  };
+  cancelForm = () => {
+    this.setState(prev => {
+      return {
+        ...prev,
+        srchModal: false,
+      };
+    });
+  };
+
+  //searchOpts
+  inputChange = (fieldName, o) => {
+    let searchPms = Object.assign({}, this.state.searchPms);
+
+    switch (fieldName) {
+      case 'bukrs':
+        searchPms['bukrs'] = o.value;
+        break;
+      case 'branchIds':
+        searchPms.brIds = o.value;
+        break;
+      case 'dealerId':
+        searchPms['dealerId'] = o.value;
+        break;
+      case 'demoSecId':
+        searchPms['demoSecId'] = o.value;
+        break;
+      case 'collId':
+        searchPms['collId'] = o.value;
+        break;
+      case 'dateFrom':
+        searchPms['dateFrom'] = o.format('YYYY-MM-DD');
+        break;
+      case 'dateTo':
+        searchPms['dateTo'] = o.format('YYYY-MM-DD');
+        break;
+      case 'contract_status_id':
+        searchPms['contract_status_id'] = o.value;
+        break;
+      case 'paySchedule':
+        searchPms['paySchedule'] = o.value;
+        break;
+      case 'customer_id':
+        searchPms['customer_id'] = o.value;
+        break;
+      default:
+        searchPms[fieldName] = o.value;
+    }
+    this.setState({ ...this.state, searchPms });
+  };
+
+  searchContract() {
+    let searchPms = Object.assign({}, this.state.searchPms);
+    searchPms['page'] = 0;
     const params = {};
-    for (const k in searPms) {
+    for (const k in searchPms) {
       if (k === 'brIds') {
-        if (typeof searPms[k] !== 'undefined' && searPms[k].length > 0) {
-          params[k] = searPms[k].join();
+        if (typeof searchPms[k] !== 'undefined' && searchPms[k].length > 0) {
+          params[k] = searchPms[k].join();
         }
       } else {
-        params[k] = searPms[k];
+        params[k] = searchPms[k];
       }
     }
     this.props.getContByOpts(params);
@@ -71,7 +145,17 @@ class DmscListExcel extends Component {
     if (pageSize > length) {
       searchPms['page'] = this.state.searchPms.page + 1;
       this.setState({ ...this.state, searchPms, pageCount: 0 });
-      this.props.getContByOpts(searchPms);
+      const params = {};
+      for (const k in searchPms) {
+        if (k === 'brIds') {
+          if (typeof searchPms[k] !== 'undefined' && searchPms[k].length > 0) {
+            params[k] = searchPms[k].join();
+          }
+        } else {
+          params[k] = searchPms[k];
+        }
+      }
+      this.props.getContByOpts(params);
     }
   }
 
@@ -188,8 +272,13 @@ class DmscListExcel extends Component {
             <SearchOpt
               messages={messages}
               searchCustomer={this.searchCustomer.bind(this)}
+              selectedCustomer={this.selectedCustomer.bind(this)}
+              inputChange={this.inputChange.bind(this)}
+              callModalOpen={this.callModalOpen.bind(this)}
+              cancelForm={this.cancelForm.bind(this)}
               searchContract={this.searchContract.bind(this)}
               {...this.props}
+              {...this.state}
             />
           </Tab.Pane>
         ),
