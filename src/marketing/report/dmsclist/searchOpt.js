@@ -9,11 +9,13 @@ import {
   Segment,
   Modal,
 } from 'semantic-ui-react';
+import CustomerSearch from './customerSearch';
+import OutputErrors from '../../../general/error/outputErrors';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-import CustomerSearch from './customerSearch';
-import OutputErrors from '../../../general/error/outputErrors';
+require('moment/locale/ru');
+require('moment/locale/tr');
 
 export default function SearchOpt(props) {
   const [errors, setErrors] = useState([]);
@@ -60,7 +62,7 @@ export default function SearchOpt(props) {
     }
     setErrors(errors);
   };
-
+  const language = localStorage.getItem('language');
   return (
     <div>
       <Segment clearing>
@@ -141,6 +143,7 @@ export default function SearchOpt(props) {
                     showMonthDropdown
                     showYearDropdown
                     dropdownMode="select" //timezone="UTC"
+                    locale={language}
                     selected={
                       searchPms.dateFrom ? moment(searchPms.dateFrom) : null
                     }
@@ -228,6 +231,7 @@ export default function SearchOpt(props) {
                     showMonthDropdown
                     showYearDropdown
                     dropdownMode="select" //timezone="UTC"
+                    locale={language}
                     selected={
                       searchPms.dateTo ? moment(searchPms.dateTo) : null
                     }
