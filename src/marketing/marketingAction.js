@@ -27,7 +27,7 @@ export const GET_DMSPLST_MATNRS = 'GET_DMSPLST_MATNRS';
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 
-export function getDefSearchOpts() {
+export function getDmsclstDef() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`marketing/report/dmsclstdef`)
@@ -45,7 +45,7 @@ export function getDefSearchOpts() {
   };
 }
 
-export function getContByOpts(searchPms) {
+export function getDmsclst(searchPms) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`marketing/report/dmsclstbyprms`, searchPms)
@@ -63,7 +63,7 @@ export function getContByOpts(searchPms) {
   };
 }
 
-export function searContrSecOpts(searchPms) {
+export function searDmsclstSecOpts(searchPms) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`marketing/report/dmsclstSecOpts`, searchPms)

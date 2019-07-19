@@ -5,9 +5,9 @@ import {
   f4FetchWerksBranchList,
 } from '../../../reference/f4/f4_action';
 import {
-  getContByOpts,
-  searContrSecOpts,
-  getDefSearchOpts,
+  getDmsclst,
+  searDmsclstSecOpts,
+  getDmsclstDef,
   getDmscLstCustrs,
 } from '../../marketingAction';
 import { Container, Segment, Tab, Table, Header } from 'semantic-ui-react';
@@ -33,7 +33,7 @@ class Dmsclists extends Component {
 
   componentWillMount() {
     this.props.f4FetchCountryList();
-    this.props.getDefSearchOpts();
+    this.props.getDmsclstDef();
   }
 
   //Customer options
@@ -149,11 +149,11 @@ class Dmsclists extends Component {
         params[k] = searchPms[k];
       }
     }
-    this.props.getContByOpts(params);
+    this.props.getDmsclst(params);
   }
 
   searContrSecOpts(SearchOptions) {
-    this.props.searContrSecOpts(SearchOptions);
+    this.props.searDmsclstSecOpts(SearchOptions);
   }
 
   fetchPage(p) {
@@ -178,7 +178,7 @@ class Dmsclists extends Component {
           params[k] = searchPms[k];
         }
       }
-      this.props.getContByOpts(params);
+      this.props.getDmsclst(params);
     }
   }
 
@@ -320,9 +320,9 @@ export default connect(
   {
     f4FetchCountryList,
     f4FetchWerksBranchList,
-    getContByOpts,
-    searContrSecOpts,
-    getDefSearchOpts,
+    getDmsclst,
+    searDmsclstSecOpts,
+    getDmsclstDef,
     getDmscLstCustrs,
   },
 )(injectIntl(Dmsclists));

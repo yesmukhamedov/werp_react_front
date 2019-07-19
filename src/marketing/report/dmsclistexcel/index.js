@@ -4,7 +4,7 @@ import {
   f4FetchCountryList,
   f4FetchWerksBranchList,
 } from '../../../reference/f4/f4_action';
-import { getDefSearchOpts, getContByOpts } from '../../marketingAction';
+import { getDmsclstDef, getDmsclst } from '../../marketingAction';
 import {
   Container,
   Segment,
@@ -37,7 +37,7 @@ class DmscListExcel extends Component {
 
   componentWillMount() {
     this.props.f4FetchCountryList();
-    this.props.getDefSearchOpts();
+    this.props.getDmsclstDef();
   }
 
   //Customer options
@@ -124,7 +124,7 @@ class DmscListExcel extends Component {
         params[k] = searchPms[k];
       }
     }
-    this.props.getContByOpts(params);
+    this.props.getDmsclst(params);
   }
 
   searContrSecOpts(SearchOptions) {
@@ -153,7 +153,7 @@ class DmscListExcel extends Component {
           params[k] = searchPms[k];
         }
       }
-      this.props.getContByOpts(params);
+      this.props.getDmsclst(params);
     }
   }
 
@@ -321,7 +321,7 @@ export default connect(
   {
     f4FetchCountryList,
     f4FetchWerksBranchList,
-    getContByOpts,
-    getDefSearchOpts,
+    getDmsclst,
+    getDmsclstDef,
   },
 )(injectIntl(DmscListExcel));
