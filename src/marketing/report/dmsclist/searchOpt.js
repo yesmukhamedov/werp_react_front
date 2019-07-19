@@ -7,22 +7,17 @@ import {
   Input,
   Form,
   Segment,
-  Modal,
 } from 'semantic-ui-react';
-import CustomerSearch from './customerSearch';
 import OutputErrors from '../../../general/error/outputErrors';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import CustomerF4Modal from '../../../reference/f4/Customer/customerF4';
 import moment from 'moment';
 require('moment/locale/ru');
 require('moment/locale/tr');
 
 export default function SearchOpt(props) {
   const [errors, setErrors] = useState([]);
-
-  const searchCustomer = custmr => {
-    props.searchCustomer(custmr);
-  };
 
   const selectedCustomer = customer => {
     props.selectedCustomer(customer);
@@ -34,13 +29,11 @@ export default function SearchOpt(props) {
     collectors,
     contstatus,
     contlaststate,
-    dmsclstCusts,
   } = props.dynObjDmsc;
   const {
     messages,
     companyOptions,
     branchOptions,
-    countryList,
     callModalOpen,
     cancelForm,
     searchPms,
@@ -248,19 +241,11 @@ export default function SearchOpt(props) {
         </Form>
         <OutputErrors errors={errors} />
       </Segment>
-      <Modal open={srchModal} size={'large'}>
-        <Modal.Header>Delete Your Account</Modal.Header>
-        <Modal.Content>
-          <CustomerSearch
-            messages={messages}
-            searchCustomer={searchCustomer}
-            cancelForm={cancelForm}
-            selectedCustomer={selectedCustomer}
-            countryList={countryList}
-            dmsclstCusts={dmsclstCusts}
-          />
-        </Modal.Content>
-      </Modal>
+      <CustomerF4Modal
+        open={srchModal}
+        onCloseCustomerF4={cancelForm}
+        onCustomerSelect={selectedCustomer}
+      />
       <Button
         color="teal"
         floated="right"

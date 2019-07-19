@@ -54,9 +54,7 @@ class DmscListExcel extends Component {
 
   /**************   CUSTOMER SEARCH FUNCT */
   callModalOpen = () => {
-    console.log('call');
     this.setState(prev => {
-      console.log('prev', prev);
       return {
         ...prev,
         srchModal: true,
@@ -142,7 +140,7 @@ class DmscListExcel extends Component {
     let len = 20;
     let length = this.props.dynObjDmsc.dmsclists.length;
     let pageSize = (p + 1) * len;
-    if (pageSize > length) {
+    if (pageSize > length && p > 99) {
       searchPms['page'] = this.state.searchPms.page + 1;
       this.setState({ ...this.state, searchPms, pageCount: 0 });
       const params = {};
