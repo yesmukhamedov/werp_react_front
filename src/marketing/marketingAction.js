@@ -46,7 +46,6 @@ export function getDefSearchOpts() {
 }
 
 export function getContByOpts(searchPms) {
-  console.log('in action ', searchPms);
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`marketing/report/dmsclstbyprms`, searchPms)

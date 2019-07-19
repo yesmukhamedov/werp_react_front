@@ -67,7 +67,6 @@ export default function SearchOpt(props) {
     setErrors(errors);
   };
   const language = localStorage.getItem('language');
-  console.log('searchPms ', searchPms);
   return (
     <div>
       <Segment clearing>

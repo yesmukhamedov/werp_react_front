@@ -111,7 +111,6 @@ class Dmsclists extends Component {
 
   handleClear = fieldName => {
     let searchPms = Object.assign({}, this.state.searchPms);
-    console.log('fieldName ', fieldName);
     switch (fieldName) {
       case 'demoSecId':
         searchPms['demoSecId'] = '';
