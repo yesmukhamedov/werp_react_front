@@ -16,6 +16,16 @@ import moment from 'moment';
 require('moment/locale/ru');
 require('moment/locale/tr');
 
+const iconStyle = {
+  position: 'absolute',
+  top: '1.5em',
+  bottom: 0,
+  margin: 'auto',
+  right: '2.5em',
+  lineHeight: 1,
+  zIndex: 1,
+};
+
 export default function SearchOpt(props) {
   const [errors, setErrors] = useState([]);
 
@@ -39,6 +49,7 @@ export default function SearchOpt(props) {
     searchPms,
     srchModal,
     inputChange,
+    handleClear,
   } = props;
 
   const searchContract = () => {
@@ -56,6 +67,7 @@ export default function SearchOpt(props) {
     setErrors(errors);
   };
   const language = localStorage.getItem('language');
+  console.log('searchPms ', searchPms);
   return (
     <div>
       <Segment clearing>
@@ -94,12 +106,19 @@ export default function SearchOpt(props) {
               <Grid.Column width={3}>
                 <Form.Field>
                   <label>{messages['Crm.DemoSecretary']}</label>
+                  <Icon
+                    link
+                    name="close"
+                    style={iconStyle}
+                    onClick={() => handleClear('demoSecId')}
+                  />
                   <Dropdown
                     fluid
                     search
                     selection
                     options={getDsecrets(demosec)}
                     onChange={(e, o) => inputChange('demoSecId', o)}
+                    value={searchPms.demoSecId}
                   />
                 </Form.Field>
               </Grid.Column>
@@ -118,12 +137,19 @@ export default function SearchOpt(props) {
               <Grid.Column width={2}>
                 <Form.Field>
                   <label>{'Trade IN'}</label>
+                  <Icon
+                    link
+                    name="close"
+                    style={iconStyle}
+                    onClick={() => handleClear('tradeIn')}
+                  />
                   <Dropdown
                     fluid
                     search
                     selection
                     options={getTradeIn(messages)}
                     onChange={(e, o) => inputChange('tradeIn', o)}
+                    value={searchPms.tradeIn}
                   />
                 </Form.Field>
               </Grid.Column>
@@ -155,12 +181,19 @@ export default function SearchOpt(props) {
               <Grid.Column width={3}>
                 <Form.Field>
                   <label>{messages['L__DEALER']}</label>
+                  <Icon
+                    link
+                    name="close"
+                    style={iconStyle}
+                    onClick={() => handleClear('dealerId')}
+                  />
                   <Dropdown
                     fluid
                     selection
                     search
                     options={getDealerOptions(dealers)}
                     onChange={(e, o) => inputChange('dealerId', o)}
+                    value={searchPms.dealerId}
                   />
                 </Form.Field>
               </Grid.Column>
@@ -180,38 +213,57 @@ export default function SearchOpt(props) {
               <Grid.Column width={3}>
                 <Form.Field>
                   <label>{messages['fin_status']}</label>
+                  <Icon
+                    link
+                    name="close"
+                    style={iconStyle}
+                    onClick={() => handleClear('contract_status_id')}
+                  />
                   <Dropdown
                     fluid
                     selection
                     search
                     options={getContractStatus(contstatus)}
                     onChange={(e, o) => inputChange('contract_status_id', o)}
+                    value={searchPms.contract_status_id}
                   />
                 </Form.Field>
               </Grid.Column>
               <Grid.Column width={2}>
                 <Form.Field>
                   <label>{messages['phys_status']}</label>
+                  <Icon
+                    link
+                    name="close"
+                    style={iconStyle}
+                    onClick={() => handleClear('physCond')}
+                  />
                   <Dropdown
                     fluid
                     search
                     selection
                     options={getContractLastState(contlaststate)}
-                    onChange={(e, o) => inputChange('contract_status_id', o)}
+                    onChange={(e, o) => inputChange('physCond', o)}
+                    value={searchPms.physCond}
                   />
                 </Form.Field>
               </Grid.Column>
               <Grid.Column width={2}>
                 <Form.Field>
-                  <label>
-                    {messages['phys_status']} {'Оплаты'}
-                  </label>
+                  <label>{messages['paid']}</label>
+                  <Icon
+                    link
+                    name="close"
+                    style={iconStyle}
+                    onClick={() => handleClear('paySchedule')}
+                  />
                   <Dropdown
                     fluid
                     search
                     selection
                     options={getPaymentShedule()}
                     onChange={(e, o) => inputChange('paySchedule', o)}
+                    value={searchPms.paySchedule}
                   />
                 </Form.Field>
               </Grid.Column>

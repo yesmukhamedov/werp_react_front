@@ -69,7 +69,6 @@ class Dmsclists extends Component {
   //searchOpts
   inputChange = (fieldName, o) => {
     let searchPms = Object.assign({}, this.state.searchPms);
-
     switch (fieldName) {
       case 'bukrs':
         searchPms['bukrs'] = o.value;
@@ -95,6 +94,9 @@ class Dmsclists extends Component {
       case 'contract_status_id':
         searchPms['contract_status_id'] = o.value;
         break;
+      case 'physCond':
+        searchPms['physCond'] = o.value;
+        break;
       case 'paySchedule':
         searchPms['paySchedule'] = o.value;
         break;
@@ -103,6 +105,34 @@ class Dmsclists extends Component {
         break;
       default:
         searchPms[fieldName] = o.value;
+    }
+    this.setState({ ...this.state, searchPms });
+  };
+
+  handleClear = fieldName => {
+    let searchPms = Object.assign({}, this.state.searchPms);
+    console.log('fieldName ', fieldName);
+    switch (fieldName) {
+      case 'demoSecId':
+        searchPms['demoSecId'] = '';
+        break;
+      case 'dealerId':
+        searchPms['dealerId'] = '';
+        break;
+      case 'contract_status_id':
+        searchPms['contract_status_id'] = '';
+        break;
+      case 'physCond':
+        searchPms['physCond'] = '';
+        break;
+      case 'paySchedule':
+        searchPms['paySchedule'] = '';
+        break;
+      case 'customer_id':
+        searchPms['customer_id'] = '';
+        break;
+      default:
+        searchPms[fieldName] = '';
     }
     this.setState({ ...this.state, searchPms });
   };
@@ -237,6 +267,7 @@ class Dmsclists extends Component {
               searchCustomer={this.searchCustomer.bind(this)}
               selectedCustomer={this.selectedCustomer.bind(this)}
               inputChange={this.inputChange.bind(this)}
+              handleClear={this.handleClear.bind(this)}
               callModalOpen={this.callModalOpen.bind(this)}
               cancelForm={this.cancelForm.bind(this)}
               searchContract={this.searchContract.bind(this)}
