@@ -209,19 +209,14 @@ export default function SearchOpt(props) {
               <Grid.Column width={3}>
                 <Form.Field>
                   <label>{messages['fin_status']}</label>
-                  <Icon
-                    link
-                    name="close"
-                    style={iconStyle}
-                    onClick={() => handleClear('contract_status_id')}
-                  />
                   <Dropdown
                     fluid
                     selection
                     search
+                    multiple
                     options={getContractStatus(contstatus)}
                     onChange={(e, o) => inputChange('contract_status_id', o)}
-                    value={searchPms.contract_status_id}
+                    value={searchPms.cont_st_ids}
                   />
                 </Form.Field>
               </Grid.Column>

@@ -26,6 +26,7 @@ class Dmsclists extends Component {
     this.state = {
       searchPms: {
         brIds: [],
+        cont_st_ids: [],
         dateFrom: moment(firstDay),
         dateTo: moment(lastDay),
       },
@@ -90,7 +91,7 @@ class Dmsclists extends Component {
         searchPms.dateTo = o;
         break;
       case 'contract_status_id':
-        searchPms['contract_status_id'] = o.value;
+        searchPms.cont_st_ids = o.value;
         break;
       case 'physCond':
         searchPms['physCond'] = o.value;
@@ -116,9 +117,6 @@ class Dmsclists extends Component {
       case 'dealerId':
         searchPms['dealerId'] = '';
         break;
-      case 'contract_status_id':
-        searchPms['contract_status_id'] = '';
-        break;
       case 'physCond':
         searchPms['physCond'] = '';
         break;
@@ -141,6 +139,10 @@ class Dmsclists extends Component {
     const params = {};
     for (const k in searchPms) {
       if (k === 'brIds') {
+        if (typeof searchPms[k] !== 'undefined' && searchPms[k].length > 0) {
+          params[k] = searchPms[k].join();
+        }
+      } else if (k === 'cont_st_ids') {
         if (typeof searchPms[k] !== 'undefined' && searchPms[k].length > 0) {
           params[k] = searchPms[k].join();
         }
