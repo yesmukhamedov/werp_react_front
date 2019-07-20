@@ -2,11 +2,11 @@ import React from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import matchSorter from 'match-sorter';
-import { LinkToMmcvNewTab, LinkToCustomerHrc03 } from '../../../utils/outlink';
+import { LinkToMmcvNewTab } from '../../../utils/outlink';
 import { moneyFormat } from '../../../utils/helpers';
 
 export default function List(props) {
-  const { dmsclists, messages, pageCount, searchPms } = props;
+  const { dmsclists, messages } = props;
   const columns = [
     {
       Header: messages['L__BRANCH'],
@@ -42,16 +42,6 @@ export default function List(props) {
     {
       Header: messages['L__CLIENT_FULLNAME'],
       accessor: 'custFio',
-      Cell: obj => (
-        <span>
-          {obj.original.customerId && (
-            <LinkToCustomerHrc03
-              customerId={obj.original.customerId}
-              customerName={obj.original.custFio}
-            />
-          )}
-        </span>
-      ),
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['custFio'] }),
       filterAll: true,
@@ -158,7 +148,6 @@ export default function List(props) {
         ''
       ) : (
         <ReactTable
-          page={pageCount}
           filterable
           columns={columns}
           data={dmsclists}
@@ -169,14 +158,7 @@ export default function List(props) {
           previousText={messages['previousText']}
           nextText={messages['nextText']}
           noDataText={messages['loadingText']}
-          pageSizeOptions={[20]}
           defaultPageSize={20}
-          //   onFetchData={(objpage) => {
-          //     props.fetchPage(objpage);
-          //    }}
-          onPageChange={(pageSize, dmsclists) => {
-            props.fetchPage(pageSize, dmsclists);
-          }}
         />
       )}
     </div>

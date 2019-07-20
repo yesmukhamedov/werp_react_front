@@ -11,10 +11,10 @@ import {
 } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
 import {
-  getLazyPrList,
-  getAllMatnr,
-  updPrListRow,
-  savePrice,
+  getLplst,
+  getLplstMatnr,
+  updLplst,
+  newLplst,
 } from './../../marketingAction';
 import {
   f4FetchCountryList,
@@ -52,7 +52,7 @@ class PriceList extends Component {
     let temp = [];
     temp.push('bukrs=' + bukrs);
     let q = temp.join('&');
-    this.props.getLazyPrList(q);
+    this.props.getLplst(q);
   }
 
   submitButton() {
@@ -63,12 +63,12 @@ class PriceList extends Component {
 
   //*********************************** NEW PRICE  */
   addNPrice(price) {
-    this.props.savePrice(price);
+    this.props.newLplst(price);
     this.setState({ showAddModal: false });
   }
   //*********************************** END NEW PRICE  */
   updateRow(updRow) {
-    this.props.updPrListRow(updRow);
+    this.props.updLplst(updRow);
   }
 
   showAddModal = () => {
@@ -79,7 +79,7 @@ class PriceList extends Component {
   close = () => this.setState({ showAddModal: false });
 
   getAllMatnr() {
-    this.props.getAllMatnr();
+    this.props.getLplstMatnr();
   }
 
   render() {
@@ -210,10 +210,10 @@ export default connect(
   mapStateToProps,
   {
     f4FetchCountryList,
-    getLazyPrList,
-    getAllMatnr,
-    updPrListRow,
+    getLplst,
+    getLplstMatnr,
+    updLplst,
     f4FetchWerksBranchList,
-    savePrice,
+    newLplst,
   },
 )(injectIntl(PriceList));

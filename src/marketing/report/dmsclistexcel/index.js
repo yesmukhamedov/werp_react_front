@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  f4FetchCountryList,
-  f4FetchWerksBranchList,
-} from '../../../reference/f4/f4_action';
-import { getDmsclstDef, getDmsclst } from '../../marketingAction';
+  fetchDmsclstDefOpts,
+  getDmsclst,
+  getDmsclstSecOpts,
+} from '../../marketingAction';
 import {
   Container,
   Segment,
@@ -21,30 +21,31 @@ import SearchOpt from './../dmsclist/searchOpt';
 import SearchByNum from './../dmsclist/searchByNum';
 import { excelDownload } from '../../../utils/helpers';
 import { moneyFormat } from '../../../utils/helpers';
+import moment from 'moment';
 
 class DmscListExcel extends Component {
   constructor() {
+    const date = new Date();
+    const y = date.getFullYear();
+    const m = date.getMonth();
+    const firstDay = new Date(y, m, 1);
+    const lastDay = new Date(y, m + 1, 0);
     super();
     this.state = {
       searchPms: {
         brIds: [],
-        page: 0,
+        dateFrom: moment(firstDay),
+        dateTo: moment(lastDay),
       },
       srchModal: false,
-      pageCount: 0,
     };
   }
 
   componentWillMount() {
-    this.props.f4FetchCountryList();
-    this.props.getDmsclstDef();
+    this.props.fetchDmsclstDefOpts();
   }
 
   //Customer options
-  searchCustomer(cust) {
-    this.props.getDmscLstCustrs(cust);
-  }
-
   selectedCustomer(customer) {
     let searchPms = Object.assign({}, this.state.searchPms);
     searchPms['customer_id'] = customer.id;
@@ -91,10 +92,10 @@ class DmscListExcel extends Component {
         searchPms['collId'] = o.value;
         break;
       case 'dateFrom':
-        searchPms['dateFrom'] = o.format('YYYY-MM-DD');
+        searchPms['dateFrom'] = o;
         break;
       case 'dateTo':
-        searchPms['dateTo'] = o.format('YYYY-MM-DD');
+        searchPms['dateTo'] = o;
         break;
       case 'contract_status_id':
         searchPms['contract_status_id'] = o.value;
@@ -113,7 +114,8 @@ class DmscListExcel extends Component {
 
   searchContract() {
     let searchPms = Object.assign({}, this.state.searchPms);
-    searchPms['page'] = 0;
+    searchPms.dateFrom = searchPms.dateFrom.format('YYYY-MM-DD');
+    searchPms.dateTo = searchPms.dateTo.format('YYYY-MM-DD');
     const params = {};
     for (const k in searchPms) {
       if (k === 'brIds') {
@@ -128,33 +130,7 @@ class DmscListExcel extends Component {
   }
 
   searContrSecOpts(SearchOptions) {
-    this.props.searContrSecOpts(SearchOptions);
-  }
-
-  fetchPage(p) {
-    let searchPms = Object.assign({}, this.state.searchPms);
-    this.setState(state => {
-      return { pageCount: p };
-    });
-
-    let len = 20;
-    let length = this.props.dynObjDmsc.dmsclists.length;
-    let pageSize = (p + 1) * len;
-    if (pageSize > length && p > 99) {
-      searchPms['page'] = this.state.searchPms.page + 1;
-      this.setState({ ...this.state, searchPms, pageCount: 0 });
-      const params = {};
-      for (const k in searchPms) {
-        if (k === 'brIds') {
-          if (typeof searchPms[k] !== 'undefined' && searchPms[k].length > 0) {
-            params[k] = searchPms[k].join();
-          }
-        } else {
-          params[k] = searchPms[k];
-        }
-      }
-      this.props.getDmsclst(params);
-    }
+    this.props.getDmsclstSecOpts(SearchOptions);
   }
 
   exportExcel(messages) {
@@ -216,7 +192,6 @@ class DmscListExcel extends Component {
 
         <List
           messages={messages}
-          fetchPage={this.fetchPage.bind(this)}
           dmsclists={dynObjDmsc.dmsclists}
           {...this.state}
         />
@@ -269,7 +244,6 @@ class DmscListExcel extends Component {
           <Tab.Pane attached={false}>
             <SearchOpt
               messages={messages}
-              searchCustomer={this.searchCustomer.bind(this)}
               selectedCustomer={this.selectedCustomer.bind(this)}
               inputChange={this.inputChange.bind(this)}
               callModalOpen={this.callModalOpen.bind(this)}
@@ -309,7 +283,6 @@ class DmscListExcel extends Component {
 
 function mapStateToProps(state) {
   return {
-    countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,
     dynObjDmsc: state.marketing.dynObjDmsc,
@@ -319,9 +292,8 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   {
-    f4FetchCountryList,
-    f4FetchWerksBranchList,
+    fetchDmsclstDefOpts,
     getDmsclst,
-    getDmsclstDef,
+    getDmsclstSecOpts,
   },
 )(injectIntl(DmscListExcel));

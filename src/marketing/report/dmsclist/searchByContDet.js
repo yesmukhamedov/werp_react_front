@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid, Segment, Button, Header, Input, Form } from 'semantic-ui-react';
+import { Grid, Segment, Button, Input, Form } from 'semantic-ui-react';
 
 export default function SearchByContDet(props) {
   const [searchPms, setSearchPms] = useState([]);

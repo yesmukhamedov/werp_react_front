@@ -8,7 +8,7 @@ import { doGet, doPost, doPut } from '../utils/apiActions';
 
 /******************************************************************** LPLIST */
 export const GET_LPLST = 'GET_LPLST';
-export const GET_MATNRS = 'GET_MATNRS';
+export const GET_LPLST_MATNRS = 'GET_LPLST_MATNRS';
 export const NEW_LPLST = 'NEW_LPLST';
 export const UPD_LPLST = 'UPD_LPLST';
 
@@ -17,9 +17,8 @@ export const CHANGE_DYNOBJ_MARKETING = 'CHANGE_DYNOBJ_MARKETING';
 export const CLEAR_DYNOBJ_MARKETING = 'CLEAR_DYNOBJ_MARKETING';
 
 /******************************************************************** DMSCLIST */
-export const GET_CONT_DMSCLST_DEF = 'GET_CONT_DMSCLST_DEF';
-export const GET_CONT_DMSCLST = 'GET_CONT_DMSCLST';
-export const GET_DMSCLST_CUSTOMERS = 'GET_DMSCLST_CUSTOMERS';
+export const DMSCLST_DEF_OPTS = 'DMSCLST_DEF_OPTS';
+export const GET_DMSCLST = 'GET_DMSCLST';
 /******************************************************************** DMSPLST */
 export const ALL_DMSPLST = 'ALL_DMSPLST';
 export const GET_DMSPLST_MATNRS = 'GET_DMSPLST_MATNRS';
@@ -27,14 +26,14 @@ export const GET_DMSPLST_MATNRS = 'GET_DMSPLST_MATNRS';
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 
-export function getDmsclstDef() {
+export function fetchDmsclstDefOpts() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`marketing/report/dmsclstdef`)
+    doGet(`marketing/report/dmsclst/defopts`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: GET_CONT_DMSCLST_DEF,
+          type: DMSCLST_DEF_OPTS,
           payload: data,
         });
       })
@@ -48,11 +47,11 @@ export function getDmsclstDef() {
 export function getDmsclst(searchPms) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`marketing/report/dmsclstbyprms`, searchPms)
+    doGet(`marketing/report/dmsclst/byOpts`, searchPms)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: GET_CONT_DMSCLST,
+          type: GET_DMSCLST,
           payload: data,
         });
       })
@@ -63,32 +62,14 @@ export function getDmsclst(searchPms) {
   };
 }
 
-export function searDmsclstSecOpts(searchPms) {
+export function getDmsclstSecOpts(searchPms) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`marketing/report/dmsclstSecOpts`, searchPms)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: GET_CONT_DMSCLST,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
-}
-
-export function getDmscLstCustrs(searchPms) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`marketing/report/dmsclist/getcustomers`, searchPms)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: GET_DMSCLST_CUSTOMERS,
+          type: GET_DMSCLST,
           payload: data,
         });
       })
@@ -101,10 +82,10 @@ export function getDmscLstCustrs(searchPms) {
 
 /****************************************************** LPLIST */
 
-export function getLazyPrList(bukrs) {
+export function getLplst(bukrs) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`lplist/matnrlpricelazy?${bukrs}`)
+    doGet(`lplist/bybukrs?${bukrs}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -119,14 +100,14 @@ export function getLazyPrList(bukrs) {
   };
 }
 
-export function getAllMatnr() {
+export function getLplstMatnr() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`lplist/lpmatnrs`)
+    doGet(`lplist/matnrs`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: GET_MATNRS,
+          type: GET_LPLST_MATNRS,
           payload: data,
         });
       })
@@ -137,10 +118,10 @@ export function getAllMatnr() {
   };
 }
 
-export function savePrice(price) {
+export function newLplst(price) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`lplist/lpnew`, price)
+    doPost(`lplist/new`, price)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
@@ -160,10 +141,10 @@ export function savePrice(price) {
   };
 }
 
-export function updPrListRow(row) {
+export function updLplst(row) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPut('lplist/lpupdate', row)
+    doPut('lplist/update', row)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {

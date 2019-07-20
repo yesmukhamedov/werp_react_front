@@ -1,11 +1,10 @@
 import {
   GET_LPLST,
-  GET_MATNRS,
+  GET_LPLST_MATNRS,
   NEW_LPLST,
   UPD_LPLST,
-  GET_CONT_DMSCLST,
-  GET_CONT_DMSCLST_DEF,
-  GET_DMSCLST_CUSTOMERS,
+  GET_DMSCLST,
+  DMSCLST_DEF_OPTS,
   FETCH_DYNOBJ_MARKETING,
   CHANGE_DYNOBJ_MARKETING,
   CLEAR_DYNOBJ_MARKETING,
@@ -28,7 +27,7 @@ export default function(state = INITIAL_STATE, action) {
         ...state,
         dynObjLpList: { ...state.dynObjLpList, ...action.payload },
       };
-    case GET_MATNRS:
+    case GET_LPLST_MATNRS:
       return {
         ...state,
         dynObjLpList: { ...state.dynObjLpList, ...action.payload },
@@ -68,9 +67,8 @@ export default function(state = INITIAL_STATE, action) {
       };
 
     /************************************************     CONTRACT LIST        */
-    case GET_CONT_DMSCLST_DEF:
-    case GET_CONT_DMSCLST:
-    case GET_DMSCLST_CUSTOMERS:
+    case DMSCLST_DEF_OPTS:
+    case GET_DMSCLST:
       return {
         ...state,
         dynObjDmsc: { ...state.dynObjDmsc, ...action.payload },
