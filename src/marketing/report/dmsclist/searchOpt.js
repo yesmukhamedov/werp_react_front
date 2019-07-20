@@ -19,7 +19,7 @@ const iconStyle = {
   position: 'absolute',
   top: '1.5em',
   bottom: 0,
-  margin: 'auto',
+  margin: '1em',
   right: '2.5em',
   lineHeight: 1,
   zIndex: 1,
