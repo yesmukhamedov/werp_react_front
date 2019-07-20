@@ -634,6 +634,10 @@
   "oldValue": "Старое значение",
   "toWriteOff": "Списать",
   "toEdit": "Редактировать",
+  "currentStatus": "Текущий статус",
+  "newStatus": "Новый статус",
+  "oldStatus": "Старый статус",
+  "operationDate": "Дата операции",
 
   "transNameFmcp": "FMCP: Взнос по договору",
   "transNameFcis": "FCIS: Взнос в счет сотрудника",
@@ -666,6 +670,7 @@
   "transNameMmcecd": "MMCECD: Договор - редактирование контактных данных",
   "transNameMmcef": "MMCEF: Договор - редактирование для Финансового менеджера",
   "transNameMmceg": "MMCEG: Договор - редактирование товаров",
+  "transNameMrcsch": "MRCSCH: Архив операций по изменению фин.статусов",
 
   "asset_mant": "Управление основными средствами",
   "add_assets": "Добавление основных средств",

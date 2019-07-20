@@ -599,6 +599,14 @@ const AsyncMmceg = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncMrcsch = Loadable({
+  loader: () =>
+    import(
+      '../marketing/report/mrcsch/mrcsch' /* webpackChunkName: "mrcsch" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncRfadd01 = Loadable({
   loader: () =>
     import('../reference/f4/address/rfadd01' /* webpackChunkName: "rfadd01" */),
@@ -902,6 +910,7 @@ const getComponent = {
   Mmcecd: AsyncMmcecd,
   Mmcei: AsyncMmcei,
   Mmceg: AsyncMmceg,
+  Mrcsch: AsyncMrcsch,
 
   SpNew: AsyncSpNewPage,
   SpView: AsyncSpViewPage,

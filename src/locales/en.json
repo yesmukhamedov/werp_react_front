@@ -656,6 +656,10 @@
   "oldValue": "Old value",
   "toWriteOff": "Write off",
   "toEdit": "Edit",
+  "currentStatus": "Current status",
+  "newStatus": "New status",
+  "oldStatus": "Old Status",
+  "operationDate": "Operation date",
 
   "transNameFmcp": "FMCP: Receipt from Sales Contract",
   "transNameFcis": "FCIS: Employee acc.cash inquiry",
@@ -688,6 +692,7 @@
   "transNameMmcecd": "MMCECD: Contract - edit contact details",
   "transNameMmcef": "MMCEF: Contract - edit for Finance manager",
   "transNameMmceg": "MMCEG: Contract - edit goods",
+  "transNameMrcsch": "MRCSCH: Operation history of contracts fin.status",
 
   "asset_mant": "Asset management",
   "add_assets": "Adding fixed assets",

@@ -10,12 +10,9 @@ import {
   List,
   Icon,
   Button,
-  Input,
   Tab,
-  Label,
 } from 'semantic-ui-react';
 import { modifyLoader } from '../../../general/loader/loader_action';
-import OutputErrors from '../../../general/error/outputErrors';
 import MmccFin from './mmccFin';
 import MmccLogistics from './mmccLogistics';
 import MmccContactDetails from './mmccContactDetails';
@@ -35,18 +32,11 @@ import {
   f4ClearAnyObject,
 } from '../../../reference/f4/f4_action';
 
-import {
-  handleFocus,
-  moneyFormat,
-  moneyInputHanler,
-  stringYYYYMMDDToMoment,
-  momentYYYYMMDDToString,
-} from '../../../utils/helpers';
+import { moneyInputHanler } from '../../../utils/helpers';
 
 import {
   serviceBA,
   marketingBA,
-  tradeInOptions,
 } from '../contractAdditionaComponents/marketingConstants';
 
 import moment from 'moment';
