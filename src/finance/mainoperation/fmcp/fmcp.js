@@ -225,7 +225,7 @@ class Fmcp extends Component {
               <List.Content>
                 <Input
                   value={this.state.searchTerm.zregOrConNum}
-                  maxLength="12"
+                  maxLength="13"
                   placeholder={formatMessage(messages.regNumOrConNum)}
                   onFocus={handleFocus}
                   onChange={(e, { value }) =>

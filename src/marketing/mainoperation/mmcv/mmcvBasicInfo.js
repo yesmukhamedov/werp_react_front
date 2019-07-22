@@ -68,7 +68,7 @@ const MmcvBasicInfo = props => {
             <Table.Cell>
               <Input
                 value={contractNumberSearch}
-                maxLength="12"
+                maxLength="13"
                 placeholder={messages['snNum']}
                 onFocus={handleFocus}
                 onChange={(e, { value }) => setContractNumberSearch(value)}

@@ -12,6 +12,7 @@ import {
   Label,
 } from 'semantic-ui-react';
 import { moneyFormat } from '../../../utils/helpers';
+import { LinkToMmcvNewTab } from '../../../utils/outlink';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import { Link } from 'react-router-dom';
@@ -285,12 +286,7 @@ class Fa03Header extends PureComponent {
                   <Table.Row>
                     <Table.Cell>{formatMessage(messages.snNum)}</Table.Cell>
                     <Table.Cell>
-                      <Input
-                        value={
-                          !bkpf.contract_number ? '' : bkpf.contract_number
-                        }
-                        readOnly
-                      />
+                      <LinkToMmcvNewTab contractNumber={bkpf.contract_number} />
                     </Table.Cell>
                   </Table.Row>
 

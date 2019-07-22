@@ -24,7 +24,7 @@ import { injectIntl } from 'react-intl';
 import matchSorter, { rankings } from 'match-sorter';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import { LinkToDmsc03 } from '../../../utils/outlink';
+import { LinkToMmcvNewTab } from '../../../utils/outlink';
 import {
   fetchDynObjMarketing,
   clearDynObjMarketing,
@@ -203,7 +203,7 @@ const Mrcsch = props => {
                   <Table.Cell>
                     <span>
                       <Icon name="calendar" />
-                      {messages['bldat']}
+                      {messages['operationDate']}
                     </span>
                   </Table.Cell>
                   <Table.Cell>
@@ -291,7 +291,7 @@ const Mrcsch = props => {
       Cell: obj => (
         <span>
           {obj.original.contractNumber && (
-            <LinkToDmsc03 snNum={obj.original.contractNumber} />
+            <LinkToMmcvNewTab contractNumber={obj.original.contractNumber} />
           )}
         </span>
       ),
