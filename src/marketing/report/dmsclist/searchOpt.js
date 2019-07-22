@@ -152,7 +152,7 @@ export default function SearchOpt(props) {
                 </Form.Field>
               </Grid.Column>
               <Grid.Column width={2}>
-                <Form.Field required>
+                <Form.Field>
                   <label>{messages['Form.DateFrom']}</label>
                   <DatePicker
                     className="date-100-width"
@@ -259,7 +259,7 @@ export default function SearchOpt(props) {
                 </Form.Field>
               </Grid.Column>
               <Grid.Column width={2}>
-                <Form.Field required>
+                <Form.Field>
                   <label>{messages['Form.DateTo']}</label>
                   <DatePicker
                     className="date-100-width"

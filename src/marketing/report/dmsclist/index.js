@@ -12,23 +12,14 @@ import SearchByContDet from './searchByContDet';
 import SearchOpt from './searchOpt';
 import SearchByNum from './searchByNum';
 import { moneyFormat } from '../../../utils/helpers';
-import moment from 'moment';
 
 class Dmsclists extends Component {
   constructor() {
-    const date = new Date();
-    const y = date.getFullYear();
-    const m = date.getMonth();
-    const firstDay = new Date(y, m, 1);
-    const lastDay = new Date(y, m + 1, 0);
-
     super();
     this.state = {
       searchPms: {
         brIds: [],
         cont_st_ids: [],
-        dateFrom: moment(firstDay),
-        dateTo: moment(lastDay),
       },
       srchModal: false,
     };
@@ -85,10 +76,10 @@ class Dmsclists extends Component {
         searchPms['collId'] = o.value;
         break;
       case 'dateFrom':
-        searchPms.dateFrom = o;
+        searchPms['dateFrom'] = o;
         break;
       case 'dateTo':
-        searchPms.dateTo = o;
+        searchPms['dateTo'] = o;
         break;
       case 'contract_status_id':
         searchPms.cont_st_ids = o.value;
