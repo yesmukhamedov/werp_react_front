@@ -34,6 +34,7 @@ class DmscListExcel extends Component {
     this.state = {
       searchPms: {
         brIds: [],
+        cont_st_ids: [],
         dateFrom: moment(firstDay),
         dateTo: moment(lastDay),
       },
@@ -98,7 +99,7 @@ class DmscListExcel extends Component {
         searchPms['dateTo'] = o;
         break;
       case 'contract_status_id':
-        searchPms['contract_status_id'] = o.value;
+        searchPms.cont_st_ids = o.value;
         break;
       case 'paySchedule':
         searchPms['paySchedule'] = o.value;
@@ -150,8 +151,8 @@ class DmscListExcel extends Component {
     excelHeaders.push(messages['remainder']);
     excelHeaders.push(messages['extraInfo']);
     excelDownload(
-      '/api/marketing/report/dmsclistexcel',
-      'mcontrrep.xls',
+      '/api/marketing/report/dmsclist/excel',
+      'dmsclist.xls',
       'outputTable',
       this.props.dynObjDmsc.dmsclists,
       excelHeaders,

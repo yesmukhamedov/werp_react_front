@@ -124,7 +124,7 @@ export default function List(props) {
       maxWidth: 90,
     },
     {
-      Header: 'In Trade',
+      Header: 'Trade In',
       accessor: 'tradeIn',
       Cell: ({ value }) =>
         String(value) === '0'

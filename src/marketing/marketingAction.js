@@ -65,7 +65,7 @@ export function getDmsclst(searchPms) {
 export function getDmsclstSecOpts(searchPms) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`marketing/report/dmsclstSecOpts`, searchPms)
+    doGet(`marketing/report/dmsclst/SecOpts`, searchPms)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
