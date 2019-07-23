@@ -85,10 +85,10 @@ class DmscListExcel extends Component {
         searchPms['collId'] = o.value;
         break;
       case 'dateFrom':
-        searchPms['dateFrom'] = o;
+        searchPms[fieldName] = o.format('YYYY-MM-DD');
         break;
       case 'dateTo':
-        searchPms['dateTo'] = o;
+        searchPms[fieldName] = o.format('YYYY-MM-DD');
         break;
       case 'contract_status_id':
         searchPms.cont_st_ids = o.value;
@@ -107,8 +107,6 @@ class DmscListExcel extends Component {
 
   searchContract() {
     let searchPms = Object.assign({}, this.state.searchPms);
-    searchPms.dateFrom = searchPms.dateFrom.format('YYYY-MM-DD');
-    searchPms.dateTo = searchPms.dateTo.format('YYYY-MM-DD');
     const params = {};
     for (const k in searchPms) {
       if (k === 'brIds') {

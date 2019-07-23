@@ -58,7 +58,8 @@ class Dmsclists extends Component {
   //searchOpts
   inputChange = (fieldName, o) => {
     let searchPms = Object.assign({}, this.state.searchPms);
-
+    console.log('o ', o);
+    console.log('fieldName ', fieldName);
     switch (fieldName) {
       case 'bukrs':
         searchPms['bukrs'] = o.value;
@@ -76,10 +77,10 @@ class Dmsclists extends Component {
         searchPms['collId'] = o.value;
         break;
       case 'dateFrom':
-        searchPms['dateFrom'] = o;
+        searchPms[fieldName] = o.format('YYYY-MM-DD');
         break;
       case 'dateTo':
-        searchPms['dateTo'] = o;
+        searchPms[fieldName] = o.format('YYYY-MM-DD');
         break;
       case 'contract_status_id':
         searchPms.cont_st_ids = o.value;
@@ -125,8 +126,7 @@ class Dmsclists extends Component {
 
   searchContract() {
     let searchPms = Object.assign({}, this.state.searchPms);
-    searchPms.dateFrom = searchPms.dateFrom.format('YYYY-MM-DD');
-    searchPms.dateTo = searchPms.dateTo.format('YYYY-MM-DD');
+
     const params = {};
     for (const k in searchPms) {
       if (k === 'brIds') {
