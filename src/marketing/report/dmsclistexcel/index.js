@@ -21,22 +21,14 @@ import SearchOpt from './../dmsclist/searchOpt';
 import SearchByNum from './../dmsclist/searchByNum';
 import { excelDownload } from '../../../utils/helpers';
 import { moneyFormat } from '../../../utils/helpers';
-import moment from 'moment';
 
 class DmscListExcel extends Component {
   constructor() {
-    const date = new Date();
-    const y = date.getFullYear();
-    const m = date.getMonth();
-    const firstDay = new Date(y, m, 1);
-    const lastDay = new Date(y, m + 1, 0);
     super();
     this.state = {
       searchPms: {
         brIds: [],
         cont_st_ids: [],
-        dateFrom: moment(firstDay),
-        dateTo: moment(lastDay),
       },
       srchModal: false,
     };
