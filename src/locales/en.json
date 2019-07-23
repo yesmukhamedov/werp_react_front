@@ -643,7 +643,7 @@
   "empty": "Empty",
   "sourceDoucments": "Source documents",
   "sourceDoucments-Mid": "Sour. docs",
-  "actionHistry": "Action history",
+  "actionHistory": "Action history",
   "toAdd": "Add",
   "toChange": "Change",
   "toIssue": "Issue",
@@ -660,6 +660,7 @@
   "newStatus": "New status",
   "oldStatus": "Old Status",
   "operationDate": "Operation date",
+  "serviceHistory": "Service History",
 
   "transNameFmcp": "FMCP: Receipt from Sales Contract",
   "transNameFcis": "FCIS: Employee acc.cash inquiry",

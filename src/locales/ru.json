@@ -621,7 +621,7 @@
   "empty": "Пусто",
   "sourceDoucments": "Первичные документы",
   "sourceDoucments-Mid": "Перв. док-ы",
-  "actionHistry": "История действий",
+  "actionHistory": "История действий",
   "toAdd": "Добавить",
   "toChange": "Изменить",
   "toIssue": "Выдать",
@@ -638,6 +638,7 @@
   "newStatus": "Новый статус",
   "oldStatus": "Старый статус",
   "operationDate": "Дата операции",
+  "serviceHistory": "История сервисов",
 
   "transNameFmcp": "FMCP: Взнос по договору",
   "transNameFcis": "FCIS: Взнос в счет сотрудника",
