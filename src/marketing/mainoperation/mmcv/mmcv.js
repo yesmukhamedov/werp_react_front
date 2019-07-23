@@ -9,6 +9,7 @@ import MmcvContactDetails from './mmcvContactDetails';
 import MmcvBasicInfo from './mmcvBasicInfo';
 import MmcvExtraInfo from './mmcvExtraInfo';
 import MmcvContractHistory from './mmcvContractHistory';
+import MmcvContractCRMHistory from './mmcvContractCRMHistory';
 import MmcvSourceDocs from './mmcvSourceDocs';
 import queryString from 'query-string';
 
@@ -92,6 +93,7 @@ const Mmcv = props => {
   const [totalSourceDoscPayment, setTotalSourceDoscPayment] = useState(0);
   const [sourceDocs, setSourceDocs] = useState([]);
   const [contractHistory, setContractHistory] = useState([]);
+  const [contractCRMHistory, setContractCRMHistory] = useState([]);
   const [urlContractNumber, setUrlContractNumber] = useState('');
 
   const {
@@ -122,6 +124,9 @@ const Mmcv = props => {
     if (mmcv && mmcv.addrWork) setAddrWork({ ...mmcv.addrWork });
     if (mmcv && mmcv.contractHistory)
       setContractHistory([...mmcv.contractHistory]);
+    if (mmcv && mmcv.contractCRMHistory)
+      setContractCRMHistory([...mmcv.contractCRMHistory]);
+
     if (mmcv && mmcv.sourceDocs) {
       setSourceDocs([...mmcv.sourceDocs]);
       setTotalSourceDoscPayment(mmcv.totalSourceDoscPayment);
@@ -191,13 +196,28 @@ const Mmcv = props => {
       menuItem: {
         key: 'MmcvContractHistory',
         icon: 'history',
-        content: messages['actionHistry'],
+        content: messages['actionHistory'],
       },
       pane: (
         <Tab.Pane key={5}>
           <MmcvContractHistory
             tcode={'MMCV'}
             contractHistory={contractHistory}
+          />
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: {
+        key: 'MmcvContractCRMHistory',
+        icon: 'history',
+        content: messages['serviceHistory'],
+      },
+      pane: (
+        <Tab.Pane key={6}>
+          <MmcvContractCRMHistory
+            tcode={'MMCV'}
+            contractCRMHistory={contractCRMHistory}
           />
         </Tab.Pane>
       ),
