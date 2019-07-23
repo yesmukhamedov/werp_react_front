@@ -139,6 +139,7 @@ class DmscListExcel extends Component {
     excelHeaders.push(messages['price']);
     excelHeaders.push(messages['paid']);
     excelHeaders.push(messages['remainder']);
+    excelHeaders.push('Trade In');
     excelHeaders.push(messages['extraInfo']);
     excelDownload(
       '/api/marketing/report/dmsclist/excel',
