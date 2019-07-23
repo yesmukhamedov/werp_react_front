@@ -94,6 +94,9 @@ class Dmsclists extends Component {
       case 'customer_id':
         searchPms['customer_id'] = o.value;
         break;
+      case 'tradeIn':
+        searchPms['tradeIn'] = o.value;
+        break;
       default:
         searchPms[fieldName] = o.value;
     }
@@ -117,6 +120,9 @@ class Dmsclists extends Component {
         break;
       case 'customer_id':
         searchPms['customer_id'] = '';
+        break;
+      case 'tradeIn':
+        searchPms['tradeIn'] = '';
         break;
       default:
         searchPms[fieldName] = '';

@@ -99,8 +99,38 @@ class DmscListExcel extends Component {
       case 'customer_id':
         searchPms['customer_id'] = o.value;
         break;
+      case 'tradeIn':
+        searchPms['tradeIn'] = o.value;
+        break;
       default:
         searchPms[fieldName] = o.value;
+    }
+    this.setState({ ...this.state, searchPms });
+  };
+
+  handleClear = fieldName => {
+    let searchPms = Object.assign({}, this.state.searchPms);
+    switch (fieldName) {
+      case 'demoSecId':
+        searchPms['demoSecId'] = '';
+        break;
+      case 'dealerId':
+        searchPms['dealerId'] = '';
+        break;
+      case 'physCond':
+        searchPms['physCond'] = '';
+        break;
+      case 'paySchedule':
+        searchPms['paySchedule'] = '';
+        break;
+      case 'customer_id':
+        searchPms['customer_id'] = '';
+        break;
+      case 'tradeIn':
+        searchPms['tradeIn'] = '';
+        break;
+      default:
+        searchPms[fieldName] = '';
     }
     this.setState({ ...this.state, searchPms });
   };
@@ -237,6 +267,7 @@ class DmscListExcel extends Component {
             <SearchOpt
               messages={messages}
               selectedCustomer={this.selectedCustomer.bind(this)}
+              handleClear={this.handleClear.bind(this)}
               inputChange={this.inputChange.bind(this)}
               callModalOpen={this.callModalOpen.bind(this)}
               cancelForm={this.cancelForm.bind(this)}
