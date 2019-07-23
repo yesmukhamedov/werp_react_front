@@ -12,6 +12,7 @@ import OutputErrors from '../../../general/error/outputErrors';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import CustomerF4Modal from '../../../reference/f4/Customer/customerF4';
+import moment from 'moment';
 require('moment/locale/ru');
 require('moment/locale/tr');
 
@@ -152,7 +153,7 @@ export default function SearchOpt(props) {
                 </Form.Field>
               </Grid.Column>
               <Grid.Column width={2}>
-                <Form.Field required>
+                <Form.Field>
                   <label>{messages['Form.DateFrom']}</label>
                   <DatePicker
                     className="date-100-width"
@@ -161,10 +162,13 @@ export default function SearchOpt(props) {
                     showYearDropdown
                     dropdownMode="select" //timezone="UTC"
                     locale={language}
-                    selected={searchPms.dateFrom ? searchPms.dateFrom : null}
+                    selected={
+                      searchPms.dateFrom ? moment(searchPms.dateFrom) : null
+                    }
                     locale="ru"
-                    // onChange={(e, o) => { inputChange('dateFrom',e); }}
-                    onChange={v => inputChange('dateFrom', v)}
+                    onChange={(e, o) => {
+                      inputChange('dateFrom', e);
+                    }}
                     dateFormat="DD.MM.YYYY"
                   />
                 </Form.Field>
@@ -259,7 +263,7 @@ export default function SearchOpt(props) {
                 </Form.Field>
               </Grid.Column>
               <Grid.Column width={2}>
-                <Form.Field required>
+                <Form.Field>
                   <label>{messages['Form.DateTo']}</label>
                   <DatePicker
                     className="date-100-width"
@@ -268,7 +272,9 @@ export default function SearchOpt(props) {
                     showYearDropdown
                     dropdownMode="select" //timezone="UTC"
                     locale={language}
-                    selected={searchPms.dateTo ? searchPms.dateTo : null}
+                    selected={
+                      searchPms.dateTo ? moment(searchPms.dateTo) : null
+                    }
                     locale="ru"
                     onChange={v => inputChange('dateTo', v)}
                     dateFormat="DD.MM.YYYY"

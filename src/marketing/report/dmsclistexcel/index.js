@@ -21,22 +21,14 @@ import SearchOpt from './../dmsclist/searchOpt';
 import SearchByNum from './../dmsclist/searchByNum';
 import { excelDownload } from '../../../utils/helpers';
 import { moneyFormat } from '../../../utils/helpers';
-import moment from 'moment';
 
 class DmscListExcel extends Component {
   constructor() {
-    const date = new Date();
-    const y = date.getFullYear();
-    const m = date.getMonth();
-    const firstDay = new Date(y, m, 1);
-    const lastDay = new Date(y, m + 1, 0);
     super();
     this.state = {
       searchPms: {
         brIds: [],
         cont_st_ids: [],
-        dateFrom: moment(firstDay),
-        dateTo: moment(lastDay),
       },
       srchModal: false,
     };
@@ -93,10 +85,10 @@ class DmscListExcel extends Component {
         searchPms['collId'] = o.value;
         break;
       case 'dateFrom':
-        searchPms['dateFrom'] = o;
+        searchPms[fieldName] = o.format('YYYY-MM-DD');
         break;
       case 'dateTo':
-        searchPms['dateTo'] = o;
+        searchPms[fieldName] = o.format('YYYY-MM-DD');
         break;
       case 'contract_status_id':
         searchPms.cont_st_ids = o.value;
@@ -115,8 +107,6 @@ class DmscListExcel extends Component {
 
   searchContract() {
     let searchPms = Object.assign({}, this.state.searchPms);
-    searchPms.dateFrom = searchPms.dateFrom.format('YYYY-MM-DD');
-    searchPms.dateTo = searchPms.dateTo.format('YYYY-MM-DD');
     const params = {};
     for (const k in searchPms) {
       if (k === 'brIds') {
@@ -149,6 +139,7 @@ class DmscListExcel extends Component {
     excelHeaders.push(messages['price']);
     excelHeaders.push(messages['paid']);
     excelHeaders.push(messages['remainder']);
+    excelHeaders.push('Trade In');
     excelHeaders.push(messages['extraInfo']);
     excelDownload(
       '/api/marketing/report/dmsclist/excel',

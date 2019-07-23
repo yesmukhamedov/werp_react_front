@@ -126,13 +126,9 @@ export default function List(props) {
     {
       Header: 'Trade In',
       accessor: 'tradeIn',
-      Cell: ({ value }) =>
-        String(value) === '0'
-          ? 'Без'
-          : String(value) === '1'
-          ? 'Внутренний'
-          : 'Внешний',
-      filterable: false,
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, { keys: ['tradeIn'] }),
+      filterAll: true,
     },
     {
       Header: messages['extraInfo'],
