@@ -743,5 +743,6 @@
   "name_of_goods": "Наименование товара",
   "new_items": "Новые",
   "closed_items": "Закрытые",
-  "deleted_items": "Удаленные"
+  "deleted_items": "Удаленные",
+  "dir_inter_phones": "Справочник телефонных номеров"
 }

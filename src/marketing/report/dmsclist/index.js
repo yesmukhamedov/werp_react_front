@@ -158,70 +158,28 @@ class Dmsclists extends Component {
     const { messages } = this.props.intl;
     const { dynObjDmsc } = this.props;
     return (
-      <div>
-        <Container
-          fluid
-          style={{
-            marginTop: '2em',
-            marginBottom: '2em',
-            paddingLeft: '2em',
-            paddingRight: '2em',
-          }}
-        >
-          <Segment clearing>
-            <Header as="h1">{messages['contract_lst']}</Header>
-          </Segment>
-          <Tab
-            menu={{ attached: false, pointing: true }}
-            panes={this.panes(messages)}
-          />
-          <List
-            messages={messages}
-            dmsclists={dynObjDmsc.dmsclists}
-            {...this.state}
-          />
-          <br />
-          <Table celled>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>{messages['overallSum']}</Table.HeaderCell>
-                <Table.HeaderCell>{messages['price']}</Table.HeaderCell>
-                <Table.HeaderCell>{messages['TBL_H__PAID']}</Table.HeaderCell>
-                <Table.HeaderCell>{messages['remainder']}</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell>
-                  {dynObjDmsc.totalRows === undefined ||
-                  dynObjDmsc.totalRows == 0
-                    ? ''
-                    : moneyFormat(dynObjDmsc.totalRows[0])}
-                </Table.Cell>
-                <Table.Cell>
-                  {dynObjDmsc.totalRows === undefined ||
-                  dynObjDmsc.totalRows == 0
-                    ? ''
-                    : moneyFormat(dynObjDmsc.totalRows[1])}
-                </Table.Cell>
-                <Table.Cell>
-                  {dynObjDmsc.totalRows === undefined ||
-                  dynObjDmsc.totalRows == 0
-                    ? ''
-                    : moneyFormat(dynObjDmsc.totalRows[2])}
-                </Table.Cell>
-                <Table.Cell>
-                  {dynObjDmsc.totalRows === undefined ||
-                  dynObjDmsc.totalRows == 0
-                    ? ''
-                    : moneyFormat(dynObjDmsc.totalRows[3])}
-                </Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          </Table>
-        </Container>
-      </div>
+      <Container
+        fluid
+        style={{
+          marginTop: '2em',
+          marginBottom: '2em',
+          paddingLeft: '2em',
+          paddingRight: '2em',
+        }}
+      >
+        <Segment clearing>
+          <Header as="h1">{messages['contract_lst']}</Header>
+        </Segment>
+        <Tab
+          menu={{ attached: false, pointing: true }}
+          panes={this.panes(messages)}
+        />
+        <List
+          messages={messages}
+          dmsclists={dynObjDmsc.dmsclists}
+          {...this.state}
+        />
+      </Container>
     );
   }
 

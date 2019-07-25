@@ -456,6 +456,26 @@ export function updDtr(row) {
   };
 }
 
+/*******************************************************************        DPHBOOK ACTIONCALLS    */
+export function getPhoneBook(book) {
+  console.log('book ', book);
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('dit/phonebook', book)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: UPD_DTR,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        dispatch(notify('error', error.response.data.message, 'Ошибка'));
+      });
+  };
+}
+
 export function successed() {
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');

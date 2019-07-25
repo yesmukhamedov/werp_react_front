@@ -875,6 +875,11 @@ const AsyncDmspList = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncInterPhones = Loadable({
+  loader: () => import('../dit/phoneBook' /* webpackChunkName: "phoneBook" */),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
@@ -987,6 +992,8 @@ const generateRoutes = transactionRoutes => {
         path="/marketing/mainoperation/dmsplist"
         component={AsyncDmspList}
       />
+      <Route path="/dit/phonebook" component={AsyncInterPhones} />
+
       <Route exact path="/" component={MainPanel} />
       <Route path="/settings" component={AsyncSettings} />
       <Route path="/signin" component={Signin} />
