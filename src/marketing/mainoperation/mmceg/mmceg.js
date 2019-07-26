@@ -44,6 +44,7 @@ const Mmceg = props => {
     tovarSerial: '',
     matnrListId: 0,
     matnrReleaseDate: '',
+    dealer: '',
   };
 
   const tcode = 'MMCEG';
@@ -92,7 +93,7 @@ const Mmceg = props => {
       setNewContractPromoList([...mmceg.contractPromoList]);
       // console.log(mmceg.contract, 'mmceg.contract');
 
-      const { bukrs, branchId, contractTypeId } = mmceg.contract;
+      const { bukrs, branchId, contractTypeId, dealer } = mmceg.contract;
       //get Price List
       if (branchId && branchId > 0) {
         props.fetchDynObjMarketing(
@@ -103,10 +104,17 @@ const Mmceg = props => {
       }
 
       //get Price List
-      if (branchId && branchId > 0 && contractTypeId && contractTypeId > 0) {
+      if (
+        branchId &&
+        branchId > 0 &&
+        contractTypeId &&
+        contractTypeId > 0 &&
+        dealer &&
+        dealer > 0
+      ) {
         props.fetchDynObjMarketing(
           'marketing/contract/matnrF4/fetch_matnr_list',
-          { bukrs, tcode, branchId, contractTypeId },
+          { bukrs, tcode, branchId, contractTypeId, dealer },
           bool => setIsLoadingMatnrList(bool),
         );
       }

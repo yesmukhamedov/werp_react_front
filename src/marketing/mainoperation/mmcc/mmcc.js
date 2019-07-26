@@ -306,7 +306,14 @@ const Mmcc = props => {
       });
     } else if (fieldName === 'dealerRemove') {
       setContract(prev => {
-        return { ...prev, dealer: '', dealerName: '' };
+        props.changeDynObjMarketing({ matnrList: [] });
+        return {
+          ...prev,
+          dealer: '',
+          dealerName: '',
+          tovarSerial: '',
+          matnrListId: '',
+        };
       });
     } else if (fieldName === 'collectorRemove') {
       setContract(prev => {

@@ -28,6 +28,7 @@ const MmccLogistics = props => {
       contractTypeId = '',
       tovarSerial = '',
       tradeInTovarSerial = '',
+      dealer = '',
     } = {},
     tcode = '',
     contractPromoList = [],
@@ -53,10 +54,17 @@ const MmccLogistics = props => {
   //componentWillRecieveProps
   useEffect(() => {
     //get Price List
-    if (branchId && branchId > 0 && contractTypeId && contractTypeId > 0) {
+    if (
+      branchId &&
+      branchId > 0 &&
+      contractTypeId &&
+      contractTypeId > 0 &&
+      dealer &&
+      dealer > 0
+    ) {
       props.fetchDynObjMarketing(
         'marketing/contract/matnrF4/fetch_matnr_list',
-        { bukrs, tcode, branchId, contractTypeId },
+        { bukrs, tcode, branchId, contractTypeId, dealer },
         bool => setIsLoadingMatnrList(bool),
       );
       props.fetchDynObjMarketing(
@@ -65,7 +73,7 @@ const MmccLogistics = props => {
         bool => setIsLoadingTradeInMatnrList(bool),
       );
     }
-  }, [branchId, contractTypeId]);
+  }, [branchId, contractTypeId, dealer]);
 
   //componentWillRecieveProps
   useEffect(() => {

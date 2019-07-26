@@ -4,6 +4,7 @@ import { Grid, Label, List, Loader, Segment, Button } from 'semantic-ui-react';
 import PortalComponentDisplay from '../../../../../../general/portal/PortalComponent';
 import { LEGACY_URL } from '../../../../../../utils/constants';
 import { constructFullName } from '../../../../../../utils/helpers';
+import { LinkToMmcvNewTab } from '../../../../../../utils/outlink';
 import { PaymentBreakdownTableDisplay } from '../PaymentBreakdownTable';
 
 const FinancialInfoPanelDisplay = props => {
@@ -108,16 +109,12 @@ const FinancialInfoPanelDisplay = props => {
                     {messages.L__RECOMMENDER}:
                   </List.Header>
                   {(recommender && (
-                    <a
-                      target="_blank"
-                      href={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=${
-                        recommender.contractNumber
-                      }`}
-                    >
-                      <Button>
-                        {constructFullName(recommender.recommenderName)}
-                      </Button>
-                    </a>
+                    <LinkToMmcvNewTab
+                      contractNumber={recommender.contractNumber}
+                      customerFio={constructFullName(
+                        recommender.recommenderName,
+                      )}
+                    />
                   )) || <span>&mdash;</span>}
                 </List.Item>
                 <List.Item>
