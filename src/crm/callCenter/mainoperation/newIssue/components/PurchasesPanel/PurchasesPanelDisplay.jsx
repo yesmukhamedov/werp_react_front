@@ -11,6 +11,8 @@ import {
 } from 'semantic-ui-react';
 import { LEGACY_URL } from '../../../../../../utils/constants';
 
+import { LinkToMmcvNewTab } from '../../../../../../utils/outlink';
+
 const PurchasesPanelDisplay = props => {
   const { otherPurchases, cancelledAt, messages } = props;
   return (
@@ -36,14 +38,17 @@ const PurchasesPanelDisplay = props => {
                   otherPurchases.map((item, idx) => (
                     <Table.Row key={idx}>
                       <Table.Cell>
-                        <a
+                        <LinkToMmcvNewTab
+                          contractNumber={item.contractNumber}
+                        />
+                        {/* <a
                           target="_blank"
                           href={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=${
                             item.contractNumber
                           }`}
                         >
                           <Button>{item.contractNumber}</Button>
-                        </a>
+                        </a> */}
                       </Table.Cell>
                       <Table.Cell>{item.productName}</Table.Cell>
                     </Table.Row>

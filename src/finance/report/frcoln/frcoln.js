@@ -29,6 +29,7 @@ import {
   frcolnSaveData,
 } from './frcoln_action';
 import { LEGACY_URL } from '../../../utils/constants';
+import { LinkToMmcvNewTab } from '../../../utils/outlink';
 import { injectIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { messages } from '../../../locales/defineMessages';
@@ -944,14 +945,15 @@ class Frcoln extends Component {
       Cell: obj => (
         <span>
           {obj.original.contract_number && (
-            <a
-              target="_blank"
-              href={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=${
-                obj.original.contract_number
-              }`}
-            >
-              <Button>{obj.original.contract_number}</Button>
-            </a>
+            <LinkToMmcvNewTab contractNumber={obj.original.contract_number} />
+            // <a
+            //   target="_blank"
+            //   href={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=${
+            //     obj.original.contract_number
+            //   }`}
+            // >
+            //   <Button>{obj.original.contract_number}</Button>
+            // </a>
           )}
           {obj.original.belnr && (
             <span>

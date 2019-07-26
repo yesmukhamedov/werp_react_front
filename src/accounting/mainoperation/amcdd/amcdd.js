@@ -27,6 +27,7 @@ import {
   moneyFormat,
   moneyInputHanler,
 } from '../../../utils/helpers';
+import { LinkToMmcvNewTab } from '../../../utils/outlink';
 import { Link } from 'react-router-dom';
 
 import PaymentSchedule from '../../../finance/mainoperation/fa03/paymentSchedule';
@@ -221,14 +222,15 @@ class Fmcp extends Component {
               <Table.Cell>Номер договора или рег. номер</Table.Cell>
               <Table.Cell>
                 {contract.iscontractnumber && (
-                  <a
-                    target="_blank"
-                    href={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=${
-                      contract.zregOrConNum
-                    }`}
-                  >
-                    <Button>{contract.zregOrConNum}</Button>
-                  </a>
+                  <LinkToMmcvNewTab contractNumber={contract.zregOrConNum} />
+                  // <a
+                  //   target="_blank"
+                  //   href={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=${
+                  //     contract.zregOrConNum
+                  //   }`}
+                  // >
+                  //   <Button>{contract.zregOrConNum}</Button>
+                  // </a>
                 )}
                 {contract.belnr && (
                   <Link

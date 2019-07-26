@@ -27,6 +27,7 @@ import {
   moneyFormat,
   moneyInputHanler,
 } from '../../../utils/helpers';
+import { LinkToMmcvNewTab } from '../../../utils/outlink';
 import { LEGACY_URL } from '../../../utils/constants';
 import { BigNumber } from 'bignumber.js';
 import { injectIntl } from 'react-intl';
@@ -294,14 +295,15 @@ class Fmcp extends Component {
               <Table.Cell>{formatMessage(messages.regNumOrConNum)}</Table.Cell>
               <Table.Cell>
                 {contract.iscontractnumber && (
-                  <a
-                    target="_blank"
-                    href={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=${
-                      contract.zregOrConNum
-                    }`}
-                  >
-                    <Button>{contract.zregOrConNum}</Button>
-                  </a>
+                  <LinkToMmcvNewTab contractNumber={contract.zregOrConNum} />
+                  // <a
+                  //   target="_blank"
+                  //   href={`${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_number=${
+                  //     contract.zregOrConNum
+                  //   }`}
+                  // >
+                  //   <Button>{contract.zregOrConNum}</Button>
+                  // </a>
                 )}
                 {contract.belnr && (
                   <Link

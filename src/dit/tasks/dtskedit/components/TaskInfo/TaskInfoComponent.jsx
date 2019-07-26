@@ -20,6 +20,7 @@ import {
   formatDMY,
   constructFullName,
 } from '../../../../../utils/helpers';
+import { LinkToMmcvNewTab } from '../../../../../utils/outlink';
 import { AttachmentPanelDisplay } from '../../../../../dit/tasks/dtskc/pages';
 import { TaskAttachmentModalContainer } from '../TaskAttachmentModal';
 
@@ -180,7 +181,8 @@ class TaskInfoComponent extends Component {
                       </List.Item>
                       <List.Item>
                         <List.Content>
-                          <Button
+                          <LinkToMmcvNewTab contractNumber={contractNumber} />
+                          {/* <Button
                             onClick={() =>
                               window.open(
                                 `${LEGACY_URL}/dms/contract/dmsc03.xhtml?contract_id=${contractNumber}`,
@@ -189,7 +191,7 @@ class TaskInfoComponent extends Component {
                             }
                           >
                             {contractNumber}
-                          </Button>
+                          </Button> */}
                         </List.Content>
                       </List.Item>
                     </List>
