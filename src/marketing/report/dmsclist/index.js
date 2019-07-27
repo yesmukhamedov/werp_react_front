@@ -11,7 +11,6 @@ import List from './list';
 import SearchByContDet from './searchByContDet';
 import SearchOpt from './searchOpt';
 import SearchByNum from './searchByNum';
-import { moneyFormat } from '../../../utils/helpers';
 
 class Dmsclists extends Component {
   constructor() {

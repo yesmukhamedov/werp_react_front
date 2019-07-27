@@ -982,6 +982,7 @@ const getComponent = {
   CrmSoldDemos: AsyncDemoSoldDemosPage,
   LogInvoiceForm: AsyncLogInvoicesForm,
   LogInvoiceList: AsyncLogInvoicesList,
+  Dphbk: AsyncInterPhones,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -992,7 +993,6 @@ const generateRoutes = transactionRoutes => {
         path="/marketing/mainoperation/dmsplist"
         component={AsyncDmspList}
       />
-      <Route path="/dit/phonebook" component={AsyncInterPhones} />
 
       <Route exact path="/" component={MainPanel} />
       <Route path="/settings" component={AsyncSettings} />

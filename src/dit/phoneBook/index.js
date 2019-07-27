@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import {
-  f4FetchDepartmentList,
-  f4ClearAnyObject,
-} from '../../reference/f4/f4_action';
-import { getPhoneBook } from '../ditAction';
+import { f4FetchDepartmentList } from '../../reference/f4/f4_action';
+import { getPhoneBook, clearDynObj } from '../ditAction';
+import OutputErrors from '../../general/error/outputErrors';
 import {
   Header,
   Grid,
@@ -20,7 +18,7 @@ import ListStaff from './listStaff';
 function PhoneBook(props) {
   const {
     departmentOptions,
-    staffList,
+    dynObjTrLst,
     intl: { messages },
   } = props;
 
@@ -30,7 +28,7 @@ function PhoneBook(props) {
       props.f4FetchDepartmentList();
     //unmount
     return () => {
-      props.f4ClearAnyObject('F4_CLEAR_STAFF_LIST');
+      props.clearDynObj();
     };
   }, []);
 
@@ -42,6 +40,7 @@ function PhoneBook(props) {
   };
 
   const [staff, setStaff] = useState({ ...emptyStaff });
+  const [errors, setErrors] = useState([]);
 
   const getCompanyOptions = () => {
     const { companyOptions } = props;
@@ -75,7 +74,18 @@ function PhoneBook(props) {
 
   const handleSubmit = e => {
     e.preventDefault();
-    props.getPhoneBook(staff);
+    let errors = [];
+    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+    const language = localStorage.getItem('language');
+    const { bukrs } = staff;
+
+    if (bukrs === null || bukrs === undefined || !bukrs) {
+      errors.push(errorTable['5' + language]);
+    }
+    if (errors === null || errors === undefined || errors.length === 0) {
+      props.getPhoneBook(staff);
+    }
+    setErrors(errors);
   };
 
   const onChange = (o, fieldName) => {
@@ -106,7 +116,6 @@ function PhoneBook(props) {
       return varStaff;
     });
   };
-
   return (
     <div>
       <Container
@@ -179,10 +188,11 @@ function PhoneBook(props) {
                 <br />
               </Form>
               <br />
+              <OutputErrors errors={errors} />
             </Segment>
           </Grid.Column>
           <Grid.Column floated="right" width={13}>
-            <ListStaff messages={messages} staffList={staffList} />
+            <ListStaff messages={messages} dynObjTrLst={dynObjTrLst} />
           </Grid.Column>
         </Grid>
       </Container>
@@ -195,10 +205,11 @@ function mapStateToProps(state) {
     companyOptions: state.userInfo.companyOptions,
     departmentOptions: state.f4.departmentOptions,
     staffList: state.f4.staffList,
+    dynObjTrLst: state.ditReducer.dynObjTrLst,
   };
 }
 
 export default connect(
   mapStateToProps,
-  { f4FetchDepartmentList, f4ClearAnyObject, getPhoneBook },
+  { f4FetchDepartmentList, clearDynObj, getPhoneBook },
 )(injectIntl(PhoneBook));

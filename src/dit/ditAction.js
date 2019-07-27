@@ -5,6 +5,7 @@ import {
 } from '../general/notification/notification_action';
 import { doGet, doPut, doPost } from '../utils/apiActions';
 
+export const DIT_CLEAR_DYN_OBJ = 'DIT_CLEAR_DYN_OBJ';
 /*******************************************************************    DIT_ELLST              */
 export const ALL_DITELLST = 'ALL_DITELLST';
 
@@ -37,7 +38,11 @@ export const ALL_CURR_DTR = 'ALL_CURR_DTR';
 export const UPD_DTR = 'UPD_DTR';
 export const NEW_DTR = 'NEW_DTR';
 
+/*******************************************************************    DPHBOOK ACTIONCALLS               */
+export const GET_PHONEBOOK = 'GET_PHONEBOOK';
+
 /*******************************************************************    DITELLST                 */
+
 export function fetchAllEllist(page) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
@@ -458,14 +463,14 @@ export function updDtr(row) {
 
 /*******************************************************************        DPHBOOK ACTIONCALLS    */
 export function getPhoneBook(book) {
-  console.log('book ', book);
   return function(dispatch) {
+    dispatch(clearDynObj());
     dispatch(modifyLoader(true));
     doGet('dit/phonebook', book)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: UPD_DTR,
+          type: GET_PHONEBOOK,
           payload: data,
         });
       })
@@ -474,6 +479,13 @@ export function getPhoneBook(book) {
         dispatch(notify('error', error.response.data.message, 'Ошибка'));
       });
   };
+}
+
+export function clearDynObj() {
+  const obj = {
+    type: DIT_CLEAR_DYN_OBJ,
+  };
+  return obj;
 }
 
 export function successed() {

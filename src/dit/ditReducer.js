@@ -1,4 +1,5 @@
 import {
+  DIT_CLEAR_DYN_OBJ,
   /***************************  DITELLST  */
   ALL_DITELLST,
 
@@ -30,6 +31,9 @@ import {
   ALL_CURR_DTR,
   NEW_DTR,
   UPD_DTR,
+
+  /***************************  DRLST  */
+  GET_PHONEBOOK,
 } from './ditAction';
 
 import {
@@ -57,6 +61,8 @@ const INITIAL_STATE = {
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
+    case DIT_CLEAR_DYN_OBJ:
+      return { ...state, dynObjTrLst: [] };
     /******************************************************************        DIT_ELLST        */
     case ALL_DITELLST:
       return { ...state, events: action.events, evRowPr: action.evRowPr };
@@ -214,6 +220,13 @@ export default function(state = INITIAL_STATE, action) {
           updDtr,
           ...state.dynObjTrLst.slice(idx + 1),
         ],
+      };
+
+    /***************************************************************  DPHBOOK ACTIONCALLS        */
+    case GET_PHONEBOOK:
+      return {
+        ...state,
+        dynObjTrLst: [...state.dynObjTrLst, ...action.payload],
       };
     default:
       return state;
