@@ -7,47 +7,71 @@ import {
   Button,
   Container,
   Modal,
+  Checkbox,
+  Grid,
 } from 'semantic-ui-react';
-import List from './list';
-//
-import { fetchDmsplist, getDmspLstMatrns } from '../../marketingAction';
+import {
+  fetchDmsplist,
+  getDmspLstMatrns,
+  updDmsplist,
+  saveDmsplst,
+  clearDynObjMarketing,
+} from '../../marketingAction';
 import {
   f4FetchCountryList,
   f4FetchWerksBranchList,
 } from '../../../reference/f4/f4_action';
 import { injectIntl } from 'react-intl';
+import List from './list';
 import NewDMSPLST from './newDmspLst';
 
 function Dmsplist(props) {
   const emptyDmsp = {
     showStaff: false,
-    pmscope: '',
+    pmScope: '',
     countryId: '',
-    regionId: '',
+    region: '',
     bukrs: '',
     branchId: '',
     matnr: '',
     matnr2: '',
+    mName: '',
     discount: '',
     pmType: '',
     bonus: '',
     fromDealer: '',
-    waers: '',
-    pmName: '',
-    dateFrom: '',
-    dateTo: '',
+    fdCurrency: '',
+    name: '',
+    dateStart: '',
+    dateEnd: '',
     pmInfo: '',
   };
 
+  const emptyFilter = {
+    filter: false,
+    countryfilter: false,
+    regionfilter: false,
+    brnchfilter: false,
+    kindfilter: false,
+    bonusfilter: false,
+    extraInfofilter: false,
+  };
+
+  const { companyOptions, branchOptions, countryList, dynDmsplst } = props;
   //componentDidMount
   useEffect(() => {
-    props.fetchDmsplist();
-    props.f4FetchCountryList();
+    if (!countryList || countryList.length === 0) props.f4FetchCountryList();
+    if (!dynDmsplst || dynDmsplst.length === 0) props.fetchDmsplist();
+
     //unmount
-    return () => {};
+    return () => {
+      props.clearDynObjMarketing();
+    };
   }, []);
 
   const [dmsp, setDmsp] = useState({ ...emptyDmsp });
+  const [fOpen, setFOpen] = useState({ ...emptyFilter });
+  const [errors, setErrors] = useState([]);
 
   const handleOpen = () => {
     setDmsp({ showStaff: true });
@@ -58,25 +82,95 @@ function Dmsplist(props) {
     setDmsp({ showStaff: false });
   };
 
-  const saveForm = () => {
-    console.log('in save ', dmsp);
+  const filterCheck = fieldName => {
+    setFOpen(prev => {
+      const varDmsp = { ...prev };
+      switch (fieldName) {
+        case 'filter':
+          varDmsp.filter = !varDmsp.filter;
+          break;
+        case 'country':
+          varDmsp.countryfilter = !varDmsp.countryfilter;
+          break;
+        case 'region':
+          varDmsp.regionfilter = !varDmsp.regionfilter;
+          break;
+        case 'brnch':
+          varDmsp.brnchfilter = !varDmsp.brnchfilter;
+          break;
+        case 'kind':
+          varDmsp.kindfilter = !varDmsp.kindfilter;
+          break;
+        case 'bonus':
+          varDmsp.bonusfilter = !varDmsp.bonusfilter;
+          break;
+        case 'extraInfo':
+          varDmsp.extraInfofilter = !varDmsp.extraInfofilter;
+          break;
+        default:
+          varDmsp[fieldName] = !varDmsp.fieldName;
+      }
+      return varDmsp;
+    });
   };
 
-  const { companyOptions, branchOptions, countryList } = props;
+  const selRow = r => {
+    props.getDmspLstMatrns();
+    setDmsp(prevState => {
+      // Object.assign would also work
+      return { ...prevState, ...r };
+    });
+  };
+
+  const saveForm = () => {
+    let errors = [];
+    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+    const language = localStorage.getItem('language');
+    const { pmScope, matnr2, fromDealer, fdCurrency, name } = dmsp;
+
+    if (
+      pmScope === null ||
+      pmScope === undefined ||
+      !pmScope ||
+      matnr2 === null ||
+      matnr2 === undefined ||
+      !matnr2
+    ) {
+      errors.push(errorTable['138' + language]);
+    }
+    if (fromDealer === null || fromDealer === undefined || !fromDealer) {
+      errors.push(errorTable['61' + language]);
+    }
+    if (fdCurrency === null || fdCurrency === undefined || !fdCurrency) {
+      errors.push(errorTable['1' + language]);
+    }
+    if (name === null || name === undefined || !name) {
+      errors.push(errorTable['151' + language]);
+    }
+    if (errors === null || errors === undefined || errors.length === 0) {
+      props.saveDmsplst(dmsp);
+    }
+    setErrors(errors);
+  };
+
+  const updateDmsplst = () => {
+    props.updDmsplist(dmsp);
+  };
+
   const { messages } = props.intl;
 
   const onDmspChange = (o, fieldName) => {
     setDmsp(prev => {
       const varDmsp = { ...prev };
       switch (fieldName) {
-        case 'pmscope':
-          varDmsp.pmscope = o.value;
+        case 'pmScope':
+          varDmsp.pmScope = o.value;
           break;
         case 'countryId':
           varDmsp.countryId = o.value;
           break;
         case 'regionId':
-          varDmsp.regionId = o.value;
+          varDmsp.region = o.value;
           break;
         case 'pmType':
           varDmsp.pmType = o.value;
@@ -102,20 +196,20 @@ function Dmsplist(props) {
         case 'fromDealer':
           varDmsp.fromDealer = o.value;
           break;
-        case 'waers':
-          varDmsp.waers = o.value;
+        case 'fdCurrency':
+          varDmsp.fdCurrency = o.value;
           break;
-        case 'pmName':
-          varDmsp.pmName = o.value;
+        case 'name':
+          varDmsp.name = o.value;
           break;
-        case 'dateFrom':
-          varDmsp.dateFrom = o;
+        case 'dateStart':
+          varDmsp.dateStart = o.format('DD.MM.YYYY');
           break;
-        case 'dateTo':
-          varDmsp.dateTo = o;
+        case 'dateEnd':
+          varDmsp.dateEnd = o.format('DD.MM.YYYY');
           break;
         case 'pmInfo':
-          varDmsp.pmInfo = o;
+          varDmsp.pmInfo = o.value;
           break;
         default:
           varDmsp[fieldName] = o.value;
@@ -123,7 +217,6 @@ function Dmsplist(props) {
       return varDmsp;
     });
   };
-
   return (
     <div>
       <Container
@@ -137,23 +230,21 @@ function Dmsplist(props) {
       >
         <Segment clearing>
           <Header as="h2" floated="left">
-            {' '}
-            {messages['promotion']}{' '}
+            {messages['promotion']}
           </Header>
-          <Modal
-            size={'large'}
-            trigger={
-              <Button
-                floated="right"
-                onClick={handleOpen.bind(this)}
-                color="teal"
-              >
-                <Icon name="plus" /> {messages['BTN__ADD']}
-              </Button>
-            }
-            open={dmsp.showStaff}
-          >
-            <Modal.Header>{"messages['newPromotion']"}</Modal.Header>
+          <Button
+            floated="right"
+            icon="filter"
+            color="blue"
+            content="Filter"
+            onClick={() => filterCheck('filter')}
+          />
+          <Button floated="right" color="teal" onClick={handleOpen.bind(this)}>
+            <Icon name="plus" /> {messages['BTN__ADD']}
+          </Button>
+
+          <Modal size={'large'} open={dmsp.showStaff}>
+            <Modal.Header>{messages['newPromotion']}</Modal.Header>
             <Modal.Content>
               <NewDMSPLST
                 messages={messages}
@@ -165,12 +256,76 @@ function Dmsplist(props) {
                 dynDmsplst={props.dynDmsplst}
                 handleClose={handleClose.bind(this)}
                 saveForm={saveForm.bind(this)}
+                errors={errors}
               />
             </Modal.Content>
           </Modal>
         </Segment>
+        {fOpen.filter ? (
+          <Segment clearing>
+            <Grid>
+              <Grid.Row columns={6}>
+                <Grid.Column>
+                  <Checkbox
+                    label={messages['country']}
+                    onChange={(e, o) => filterCheck('country')}
+                    checked={fOpen.countryfilter}
+                  />
+                </Grid.Column>
+                <Grid.Column>
+                  <Checkbox
+                    label={messages['region']}
+                    onChange={(e, o) => filterCheck('region')}
+                    checked={fOpen.regionfilter}
+                  />
+                </Grid.Column>
+                <Grid.Column>
+                  <Checkbox
+                    label={messages['brnch']}
+                    onChange={(e, o) => filterCheck('brnch')}
+                    checked={fOpen.brnchfilter}
+                  />
+                </Grid.Column>
+                <Grid.Column>
+                  <Checkbox
+                    label={messages['kind']}
+                    onChange={(e, o) => filterCheck('kind')}
+                    checked={fOpen.kindfilter}
+                  />
+                </Grid.Column>
+                <Grid.Column>
+                  <Checkbox
+                    label={messages['bonus']}
+                    onChange={(e, o) => filterCheck('bonus')}
+                    checked={fOpen.bonusfilter}
+                  />
+                </Grid.Column>
+                <Grid.Column>
+                  <Checkbox
+                    label={messages['extraInfo']}
+                    onChange={(e, o) => filterCheck('extraInfo')}
+                    checked={fOpen.extraInfofilter}
+                  />
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          </Segment>
+        ) : (
+          ''
+        )}
 
-        <List messages={messages} dynDmsplst={props.dynDmsplst} />
+        <List
+          messages={messages}
+          companyOptions={companyOptions}
+          branchOptions={branchOptions}
+          onInputChange={onDmspChange}
+          dmsp={dmsp}
+          fOpen={fOpen}
+          dynDmsplst={props.dynDmsplst}
+          selRow={selRow.bind(this)}
+          countryList={countryList}
+          updateDmsplst={updateDmsplst.bind(this)}
+        />
       </Container>
     </div>
   );
@@ -192,5 +347,8 @@ export default connect(
     f4FetchWerksBranchList,
     fetchDmsplist,
     getDmspLstMatrns,
+    updDmsplist,
+    saveDmsplst,
+    clearDynObjMarketing,
   },
 )(injectIntl(Dmsplist));

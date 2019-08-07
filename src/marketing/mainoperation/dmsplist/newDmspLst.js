@@ -3,16 +3,8 @@ import 'react-table/react-table.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-import {
-  Header,
-  Form,
-  Segment,
-  Dropdown,
-  Input,
-  Label,
-  Button,
-  Icon,
-} from 'semantic-ui-react';
+import { Form, Dropdown, Input, Button, Icon } from 'semantic-ui-react';
+import OutputErrors from '../../../general/error/outputErrors';
 
 export default function List(props) {
   const onInputChange = (value, fieldName) => {
@@ -26,31 +18,39 @@ export default function List(props) {
     dmsp,
     dynDmsplst,
     countryList,
+    errors,
   } = props;
+  if (dmsp.dateStart === undefined || null) {
+    let date = new Date(),
+      y = date.getFullYear(),
+      m = date.getMonth();
+    let firstDay = new Date(y, m, 1);
+    let lastDay = new Date(y, m + 1, 0);
+    dmsp['dateStart'] = moment(firstDay).format('DD.MM.YYYY');
+    dmsp['dateEnd'] = moment(lastDay).format('DD.MM.YYYY');
+  }
   const pmType = [
     { key: 1, text: messages['gift'], value: 1 },
     { key: 2, text: messages['discount'], value: 2 },
     { key: 3, text: messages['bonus'], value: 3 },
   ];
+
   const pmScope = [
-    { key: 'gen', text: 'Внутри страны', value: 'gen' },
-    { key: 'com', text: 'Внутри компании', value: 'com' },
-    { key: 'reg', text: 'Внутри региона', value: 'reg' },
-    { key: 'int', text: 'Внутри филиала', value: 'int' },
+    { key: 'GEN', text: 'Внутри страны', value: 'GEN' },
+    { key: 'COM', text: 'Внутри компании', value: 'COM' },
+    { key: 'REG', text: 'Внутри региона', value: 'REG' },
+    { key: 'INT', text: 'Внутри филиала', value: 'INT' },
   ];
-  console.log('dmsp ', dmsp);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    props.saveForm();
+  };
   return (
-    <div>
-      <Segment padded size="small">
-        <Label color="teal" ribbon>
-          <Header as="h5" inverted color="black">
-            {' '}
-            {messages['sel_options']}
-          </Header>
-        </Label>
-        <br />
-        <br />
-        <Form>
+    <Form onSubmit={handleSubmit}>
+      <div className="ui segments">
+        <div className="ui segment"></div>
+        <div className="ui secondary segment">
           <Form.Group widths="equal">
             <Form.Field required>
               <label>{'Cфера действия'} </label>
@@ -59,8 +59,8 @@ export default function List(props) {
                 search
                 selection
                 options={pmScope}
-                value={dmsp.pmscope}
-                onChange={(e, o) => onInputChange(o, 'pmscope')}
+                value={dmsp.pmScope}
+                onChange={(e, o) => onInputChange(o, 'pmScope')}
               />
             </Form.Field>
             <Form.Field>
@@ -72,7 +72,7 @@ export default function List(props) {
                 options={getCountryOptions(countryList)}
                 value={dmsp.countryId}
                 onChange={(e, o) => onInputChange(o, 'countryId')}
-                disabled={dmsp.pmscope === 'gen' ? false : true}
+                disabled={dmsp.pmScope === 'GEN' ? false : true}
               />
             </Form.Field>
             <Form.Field>
@@ -84,13 +84,13 @@ export default function List(props) {
                 options={getRegions(dynDmsplst.regions)}
                 value={dmsp.regionId}
                 onChange={(e, o) => onInputChange(o, 'regionId')}
-                disabled={dmsp.pmscope === 'reg' ? false : true}
+                disabled={dmsp.pmScope === 'REG' ? false : true}
               />
             </Form.Field>
           </Form.Group>
 
           <Form.Group widths="equal">
-            <Form.Field required>
+            <Form.Field>
               <label>{messages['kind']}</label>
               <Dropdown
                 fluid
@@ -110,7 +110,7 @@ export default function List(props) {
                 options={getCompanyOptions(companyOptions)}
                 value={dmsp.bukrs}
                 onChange={(e, o) => onInputChange(o, 'bukrs')}
-                disabled={dmsp.pmscope === 'com' ? false : true}
+                disabled={dmsp.pmScope === 'COM' ? false : true}
               />
             </Form.Field>
             <Form.Field>
@@ -128,7 +128,7 @@ export default function List(props) {
           </Form.Group>
 
           <Form.Group widths="equal">
-            <Form.Field required>
+            <Form.Field>
               <label>
                 {messages['matnr']} ({messages['Product']})
               </label>
@@ -155,7 +155,6 @@ export default function List(props) {
               />
             </Form.Field>
             <Form.Field
-              required
               control={Input}
               label={messages['discount']}
               onChange={(e, o) => onInputChange(o, 'discount')}
@@ -164,7 +163,6 @@ export default function List(props) {
 
           <Form.Group widths="equal">
             <Form.Field
-              required
               control={Input}
               label={messages['bonus'] + ' %'}
               onChange={(e, o) => onInputChange(o, 'bonus')}
@@ -182,36 +180,38 @@ export default function List(props) {
                 search
                 selection
                 options={getWaers(countryList)}
-                value={dmsp.waers}
-                onChange={(e, o) => onInputChange(o, 'waers')}
+                value={dmsp.fdCurrency}
+                onChange={(e, o) => onInputChange(o, 'fdCurrency')}
               />
             </Form.Field>
           </Form.Group>
 
           <Form.Group>
             <Form.Field
-              width={10}
               required
+              width={10}
               control={Input}
               label={'Название промо акции'}
-              onChange={(e, o) => onInputChange(o, 'pmName')}
+              onChange={(e, o) => onInputChange(o, 'name')}
             />
-            <Form.Field>
+            <Form.Field required>
               <label>{messages['Form.DateFrom']}</label>
               <DatePicker
                 autoComplete="off"
                 showMonthDropdown
                 showYearDropdown
                 dropdownMode="select" //timezone="UTC"
-                selected={dmsp.dateFrom ? moment(dmsp.dateFrom) : null}
+                selected={
+                  dmsp.dateStart ? moment(dmsp.dateStart, 'DD-MM-YYYY') : null
+                }
                 locale="ru"
                 onChange={(e, o) => {
-                  onInputChange(e, 'dateFrom');
+                  onInputChange(e, 'dateStart');
                 }}
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
-            <Form.Field>
+            <Form.Field required>
               <label>{messages['Form.DateTo']}</label>
               <DatePicker
                 className="date-100-width"
@@ -219,10 +219,12 @@ export default function List(props) {
                 showMonthDropdown
                 showYearDropdown
                 dropdownMode="select" //timezone="UTC"
-                selected={dmsp.dateTo ? moment(dmsp.dateTo) : null}
+                selected={
+                  dmsp.dateEnd ? moment(dmsp.dateEnd, 'DD-MM-YYYY') : null
+                }
                 locale="ru"
                 onChange={(e, o) => {
-                  onInputChange(e, 'dateTo');
+                  onInputChange(e, 'dateEnd');
                 }}
                 dateFormat="DD.MM.YYYY"
               />
@@ -236,15 +238,10 @@ export default function List(props) {
               onChange={(e, o) => onInputChange(o, 'pmInfo')}
             />
           </Form.Group>
-        </Form>
-      </Segment>
-      <Button
-        color="teal"
-        floated="right"
-        onClick={() => {
-          props.saveForm();
-        }}
-      >
+        </div>
+      </div>
+      <OutputErrors errors={errors} />
+      <Button color="teal" floated="right">
         <Icon name="checkmark" />
         {messages['Form.Save']}
       </Button>
@@ -260,7 +257,7 @@ export default function List(props) {
       </Button>
       <br />
       <br />
-    </div>
+    </Form>
   );
 }
 

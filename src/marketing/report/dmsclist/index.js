@@ -57,8 +57,6 @@ class Dmsclists extends Component {
   //searchOpts
   inputChange = (fieldName, o) => {
     let searchPms = Object.assign({}, this.state.searchPms);
-    console.log('o ', o);
-    console.log('fieldName ', fieldName);
     switch (fieldName) {
       case 'bukrs':
         searchPms['bukrs'] = o.value;

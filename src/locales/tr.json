@@ -765,5 +765,7 @@
   "new_items": "New",
   "closed_items": "Closed",
   "deleted_items": "Deleted",
-  "dir_inter_phones": "directory of phone numbers"
+  "dir_inter_phones": "directory of phone numbers",
+  "newPromotion": "Yeni promosyon",
+  "promotion_name": "Title of a promo-campaign"
 }

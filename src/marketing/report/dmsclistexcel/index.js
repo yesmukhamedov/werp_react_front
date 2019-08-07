@@ -143,6 +143,10 @@ class DmscListExcel extends Component {
         if (typeof searchPms[k] !== 'undefined' && searchPms[k].length > 0) {
           params[k] = searchPms[k].join();
         }
+      } else if (k === 'cont_st_ids') {
+        if (typeof searchPms[k] !== 'undefined' && searchPms[k].length > 0) {
+          params[k] = searchPms[k].join();
+        }
       } else {
         params[k] = searchPms[k];
       }

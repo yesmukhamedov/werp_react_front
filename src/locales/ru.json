@@ -744,5 +744,7 @@
   "new_items": "Новые",
   "closed_items": "Закрытые",
   "deleted_items": "Удаленные",
-  "dir_inter_phones": "Справочник телефонных номеров"
+  "dir_inter_phones": "Справочник телефонных номеров",
+  "newPromotion": "Новая промо акция",
+  "promotion_name": "Название промо-акции"
 }

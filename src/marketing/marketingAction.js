@@ -22,6 +22,8 @@ export const GET_DMSCLST = 'GET_DMSCLST';
 /******************************************************************** DMSPLST */
 export const ALL_DMSPLST = 'ALL_DMSPLST';
 export const GET_DMSPLST_MATNRS = 'GET_DMSPLST_MATNRS';
+export const UPD_DMSPLST = 'UPD_DMSPLST';
+export const SAVE_DMSPLST = 'SAVE_DMSPLST';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
@@ -164,13 +166,14 @@ export function updLplst(row) {
   };
 }
 
-/****************************************************** END LPLIST */
+/****************************************************** DMSPLST */
 
 export function fetchDmsplist() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`marketing/mainoperaton/dmsplst`)
       .then(({ data }) => {
+        console.log('data in act ', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: ALL_DMSPLST,
@@ -194,6 +197,52 @@ export function getDmspLstMatrns() {
           type: GET_DMSPLST_MATNRS,
           payload: data,
         });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function updDmsplist(row) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPut('marketing/mainoperaton/dmsplst/update', row)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        if (data) {
+          dispatch(successed());
+          dispatch({
+            type: UPD_DMSPLST,
+            payload: row,
+          });
+        } else {
+          dispatch(notSuccessed());
+        }
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function saveDmsplst(newDmsplst) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost(`marketing/mainoperaton/dmsplst/save`, newDmsplst)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        if (data) {
+          dispatch(successed());
+          dispatch({
+            type: SAVE_DMSPLST,
+            payload: newDmsplst,
+          });
+        } else {
+          dispatch(notSuccessed());
+        }
       })
       .catch(error => {
         dispatch(modifyLoader(false));

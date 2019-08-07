@@ -10,6 +10,8 @@ import {
   CLEAR_DYNOBJ_MARKETING,
   ALL_DMSPLST,
   GET_DMSPLST_MATNRS,
+  UPD_DMSPLST,
+  SAVE_DMSPLST,
 } from './marketingAction';
 
 const INITIAL_STATE = {
@@ -86,6 +88,30 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         dynDmsplst: { ...state.dynDmsplst, ...action.payload },
+      };
+    case UPD_DMSPLST:
+      const updRow = { ...action.payload };
+      const id = [...state.dynDmsplst.promolst].findIndex(
+        el => el.id === updRow.id,
+      );
+      return {
+        ...state,
+        dynDmsplst: {
+          ...state.dynDmsplst,
+          promolst: [
+            ...state.dynDmsplst.promolst.slice(0, id),
+            updRow,
+            ...state.dynDmsplst.promolst.slice(id + 1),
+          ],
+        },
+      };
+    case SAVE_DMSPLST:
+      return {
+        ...state,
+        dynDmsplst: {
+          ...state.dynDmsplst,
+          promolst: [...state.dynDmsplst.promolst, action.payload],
+        },
       };
 
     /********************************************************  END DMSPLST    */
