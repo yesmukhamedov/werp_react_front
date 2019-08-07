@@ -983,17 +983,12 @@ const getComponent = {
   LogInvoiceForm: AsyncLogInvoicesForm,
   LogInvoiceList: AsyncLogInvoicesList,
   Dphbk: AsyncInterPhones,
+  Dmsplist: AsyncDmspList,
 };
 
 const generateRoutes = transactionRoutes => {
   return (
     <div>
-      <Route
-        exact
-        path="/marketing/mainoperation/dmsplist"
-        component={AsyncDmspList}
-      />
-
       <Route exact path="/" component={MainPanel} />
       <Route path="/settings" component={AsyncSettings} />
       <Route path="/signin" component={Signin} />

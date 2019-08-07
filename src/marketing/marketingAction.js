@@ -173,7 +173,6 @@ export function fetchDmsplist() {
     dispatch(modifyLoader(true));
     doGet(`marketing/mainoperaton/dmsplst`)
       .then(({ data }) => {
-        console.log('data in act ', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: ALL_DMSPLST,

@@ -100,11 +100,7 @@ class ListTable extends Component {
               noDataText={messages['loadingText']}
             />
             {
-              <Modal
-                size="large"
-                open={this.state.modalOpen}
-                onClose={this.handleClose}
-              >
+              <Modal size="large" open={this.state.modalOpen}>
                 <Modal.Content>
                   <UpdateTransaction
                     transaction={this.state.transaction}
