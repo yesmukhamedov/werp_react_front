@@ -82,38 +82,38 @@ export default function(state = INITIAL_STATE, action) {
     case ALL_DMSPLST:
       return {
         ...state,
-        dynDmsplst: { ...state.dynDmsplst, ...action.payload },
+        dynamicObject: { ...state.dynamicObject, ...action.payload },
       };
     case GET_DMSPLST_MATNRS:
       return {
         ...state,
-        dynDmsplst: { ...state.dynDmsplst, ...action.payload },
+        dynamicObject: { ...state.dynamicObject, ...action.payload },
       };
     case UPD_DMSPLST:
       const updRow = { ...action.payload };
-      const id = [...state.dynDmsplst.promolst].findIndex(
+      const id = [...state.dynamicObject.promolst].findIndex(
         el => el.id === updRow.id,
       );
       return {
         ...state,
-        dynDmsplst: {
-          ...state.dynDmsplst,
+        dynamicObject: {
+          ...state.dynamicObject,
           promolst: [
-            ...state.dynDmsplst.promolst.slice(0, id),
+            ...state.dynamicObject.promolst.slice(0, id),
             updRow,
-            ...state.dynDmsplst.promolst.slice(id + 1),
+            ...state.dynamicObject.promolst.slice(id + 1),
           ],
         },
       };
+
     case SAVE_DMSPLST:
       return {
         ...state,
-        dynDmsplst: {
-          ...state.dynDmsplst,
-          promolst: [...state.dynDmsplst.promolst, action.payload],
+        dynamicObject: {
+          ...state.dynamicObject,
+          promolst: [...state.dynamicObject.promolst, action.payload],
         },
       };
-
     /********************************************************  END DMSPLST    */
     case FETCH_DYNOBJ_MARKETING:
       return {

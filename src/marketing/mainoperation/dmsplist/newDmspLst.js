@@ -16,7 +16,7 @@ export default function List(props) {
     companyOptions,
     branchOptions,
     dmsp,
-    dynDmsplst,
+    dynamicObject,
     countryList,
     errors,
   } = props;
@@ -45,6 +45,7 @@ export default function List(props) {
   const handleSubmit = e => {
     e.preventDefault();
     props.saveForm();
+    props.handleClose();
   };
   return (
     <Form onSubmit={handleSubmit}>
@@ -81,7 +82,7 @@ export default function List(props) {
                 fluid
                 search
                 selection
-                options={getRegions(dynDmsplst.regions)}
+                options={getRegions(dynamicObject.regions)}
                 value={dmsp.regionId}
                 onChange={(e, o) => onInputChange(o, 'regionId')}
                 disabled={dmsp.pmScope === 'REG' ? false : true}
@@ -136,7 +137,7 @@ export default function List(props) {
                 fluid
                 search
                 selection
-                options={getMatnrs(dynDmsplst.matnrs)}
+                options={getMatnrs(dynamicObject.matnrs)}
                 value={dmsp.matnr}
                 onChange={(e, o) => onInputChange(o, 'matnr')}
               />
@@ -149,7 +150,7 @@ export default function List(props) {
                 fluid
                 search
                 selection
-                options={getMatnrs2(dynDmsplst.matnrs2)}
+                options={getMatnrs2(dynamicObject.matnrs2)}
                 value={dmsp.matnr2}
                 onChange={(e, o) => onInputChange(o, 'matnr2')}
               />

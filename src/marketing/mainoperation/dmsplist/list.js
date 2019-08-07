@@ -13,7 +13,7 @@ export default function List(props) {
   const [uptModal, setUptModal] = useState(false);
 
   const {
-    dynDmsplst,
+    dynamicObject,
     messages,
     fOpen,
     companyOptions,
@@ -213,13 +213,14 @@ export default function List(props) {
   ];
   return (
     <div>
-      {dynDmsplst.promolst === undefined || dynDmsplst.promolst.length == 0 ? (
+      {dynamicObject.promolst === undefined ||
+      dynamicObject.promolst.length == 0 ? (
         ''
       ) : (
         <ReactTable
           filterable
           columns={columns}
-          data={dynDmsplst.promolst}
+          data={dynamicObject.promolst}
           resolveData={data => data.map(row => row)}
           rowsText={messages['rowsText']}
           pageText={messages['pageText']}
@@ -292,7 +293,7 @@ export default function List(props) {
                       fluid
                       search
                       selection
-                      options={getRegions(dynDmsplst.regions)}
+                      options={getRegions(dynamicObject.regions)}
                       value={dmsp.region}
                       onChange={(e, o) => onInputChange(o, 'regionId')}
                       disabled={dmsp.pmScope === 'REG' ? false : true}
@@ -346,7 +347,7 @@ export default function List(props) {
                       fluid
                       search
                       selection
-                      options={getMatnrs(dynDmsplst.matnrs)}
+                      options={getMatnrs(dynamicObject.matnrs)}
                       value={dmsp.matnr}
                       onChange={(e, o) => onInputChange(o, 'matnr')}
                     />
@@ -359,7 +360,7 @@ export default function List(props) {
                       fluid
                       search
                       selection
-                      options={getMatnrs2(dynDmsplst.matnrs2)}
+                      options={getMatnrs2(dynamicObject.matnrs2)}
                       value={dmsp.matnr}
                       onChange={(e, o) => onInputChange(o, 'matnr')}
                     />

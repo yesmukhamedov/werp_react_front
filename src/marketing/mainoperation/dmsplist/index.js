@@ -32,6 +32,7 @@ function Dmsplist(props) {
     countryId: '',
     region: '',
     bukrs: '',
+    bukrsName: '',
     branchId: '',
     matnr: '',
     matnr2: '',
@@ -57,11 +58,18 @@ function Dmsplist(props) {
     extraInfofilter: false,
   };
 
-  const { companyOptions, branchOptions, countryList, dynDmsplst } = props;
+  const {
+    companyOptions,
+    branchOptions,
+    countryList,
+    dynamicObject,
+    dynDmsplst,
+  } = props;
+
   //componentDidMount
   useEffect(() => {
     if (!countryList || countryList.length === 0) props.f4FetchCountryList();
-    if (!dynDmsplst || dynDmsplst.length === 0) props.fetchDmsplist();
+    if (Object.keys(dynamicObject).length === 0) props.fetchDmsplist();
 
     //unmount
     return () => {
@@ -177,6 +185,14 @@ function Dmsplist(props) {
           break;
         case 'bukrs':
           varDmsp.bukrs = o.value;
+          o.options.some(c => {
+            if (Number(c.key) === o.value) {
+              varDmsp.bukrsName = c.text;
+              return true;
+            } else {
+              return false;
+            }
+          });
           break;
         case 'branchId':
           varDmsp.branchId = o.value;
@@ -253,7 +269,7 @@ function Dmsplist(props) {
                 countryList={countryList}
                 dmsp={dmsp}
                 onInputChange={onDmspChange}
-                dynDmsplst={props.dynDmsplst}
+                dynamicObject={dynamicObject}
                 handleClose={handleClose.bind(this)}
                 saveForm={saveForm.bind(this)}
                 errors={errors}
@@ -321,7 +337,7 @@ function Dmsplist(props) {
           onInputChange={onDmspChange}
           dmsp={dmsp}
           fOpen={fOpen}
-          dynDmsplst={props.dynDmsplst}
+          dynamicObject={props.dynamicObject}
           selRow={selRow.bind(this)}
           countryList={countryList}
           updateDmsplst={updateDmsplst.bind(this)}
@@ -336,7 +352,7 @@ function mapStateToProps(state) {
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,
-    dynDmsplst: state.marketing.dynDmsplst,
+    dynamicObject: state.marketing.dynamicObject,
   };
 }
 
