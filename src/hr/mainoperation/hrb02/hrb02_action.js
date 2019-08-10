@@ -35,6 +35,29 @@ export function updateF4All() {
       });
   };
 }
+
+export function updateKPI() {
+  return function(dispatch) {
+    axios
+      .post(
+        `${ROOT_URL}/api/hr/hrb02/updateKPI`,
+        {},
+        {
+          headers: {
+            // 'Content-Type': 'application/json;charset=UTF-8',
+            authorization: localStorage.getItem('token'),
+          },
+        },
+      )
+      .then(({ data }) => {
+        dispatch(notify('success', 'Сохранен.', 'Успешно'));
+      })
+      .catch(error => {
+        console.log(error);
+        handleError(error, dispatch);
+      });
+  };
+}
 export function fetchBonusData(a_bukrs, a_branchId, a_date) {
   const year = a_date.format('YYYY');
   const month = a_date.format('MM');

@@ -228,8 +228,11 @@ const Mmcc = props => {
         let waConOptions = contractTypeList
           .filter(
             item =>
-              item.bukrs == wa.bukrs &&
-              item.business_area_id == waSelectedBranch.business_area_id,
+              (item.bukrs == wa.bukrs &&
+                item.business_area_id == waSelectedBranch.business_area_id) ||
+              (item.bukrs == wa.bukrs &&
+                item.business_area_id == 4 &&
+                waSelectedBranch.branch_id == 210),
           )
           .map(item => {
             return {
