@@ -131,6 +131,7 @@ class Frep5 extends Component {
         ' ' +
         formatMessage(messages.inDocumentCurrency),
     );
+    console.log('this.props.outputTable ', this.props.outputTable);
     excelDownload(
       '/api/finance/reports/frep5/downloadExcel',
       'frep5Total.xls',
@@ -622,7 +623,7 @@ class Frep5 extends Component {
     const { formatMessage } = this.props.intl;
     const { activeIndex } = this.state;
     const { outputTable } = this.props;
-
+    console.log('outputTable ', outputTable);
     return (
       <Container
         fluid
@@ -668,7 +669,7 @@ class Frep5 extends Component {
           <OutputErrors errors={this.state.errors} />
           {this.renderSearchTab()}
         </Segment>
-        <Segment className={activeIndex === 1 ? 'show' : 'hide'}>
+        <Segment className={activeIndex === 1 ? 'show' : 'show'}>
           {outputTable && outputTable.length > 0 && (
             <Menu stackable size="small">
               <Menu.Item>

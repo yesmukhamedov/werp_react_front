@@ -446,6 +446,7 @@ export function deleteFile(staffId, fileId) {
 }
 
 export function addUploadedFile(file) {
+  console.log('file ', file);
   return {
     type: HR_STAFF_FILE_UPLOADED,
     payload: file,

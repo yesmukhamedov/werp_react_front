@@ -159,6 +159,10 @@ class DmscListExcel extends Component {
   }
 
   exportExcel(messages) {
+    console.log(
+      'this.props.dynObjDmsc.dmsclists ',
+      this.props.dynObjDmsc.dmsclists,
+    );
     let excelHeaders = [];
     excelHeaders.push(messages['L__BRANCH']);
     excelHeaders.push(messages['L__CONTRACT_NUMBER']);
