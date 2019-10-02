@@ -880,6 +880,11 @@ const AsyncInterPhones = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncZreport = Loadable({
+  loader: () => import('../dit/zreport' /* webpackChunkName: "phoneBook" */),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
@@ -984,6 +989,7 @@ const getComponent = {
   LogInvoiceList: AsyncLogInvoicesList,
   Dphbk: AsyncInterPhones,
   Dmsplist: AsyncDmspList,
+  Zreport: AsyncZreport,
 };
 
 const generateRoutes = transactionRoutes => {

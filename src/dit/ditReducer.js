@@ -34,6 +34,13 @@ import {
 
   /***************************  DRLST  */
   GET_PHONEBOOK,
+
+  /*************************** ZREPORT */
+  ALL_ZREPORT,
+  NEW_ZREPORT,
+  GET_ZREPORT,
+  DELETE_ZREPORT,
+  UPDATE_ZREPORT,
 } from './ditAction';
 
 import {
@@ -222,11 +229,43 @@ export default function(state = INITIAL_STATE, action) {
         ],
       };
 
-    /***************************************************************  DPHBOOK ACTIONCALLS        */
+    /***************************************************************             DPHBOOK       */
     case GET_PHONEBOOK:
       return {
         ...state,
         dynObjTrLst: [...state.dynObjTrLst, ...action.payload],
+      };
+
+    /***************************************************************          ZREPORT        */
+    case ALL_ZREPORT:
+      return {
+        ...state,
+        dynObjTrLst: [...state.dynObjTrLst, ...action.payload],
+      };
+    case NEW_ZREPORT:
+      console.log('action ', action.payload);
+      return {
+        ...state,
+        dynObjTrLst: [...state.dynObjTrLst, action.payload],
+      };
+    case GET_ZREPORT:
+      return {
+        ...state,
+        dynObjTrLst: [...state.dynObjTrLst, ...action.payload],
+      };
+    case DELETE_ZREPORT:
+      return {
+        ...state,
+        dynObjTrLst: state.dynObjTrLst.filter(
+          dynOb => dynOb.id !== action.payload,
+        ),
+      };
+    case UPDATE_ZREPORT:
+      return {
+        ...state,
+        dynObjTrLst: state.dynObjTrLst.map(dynOb =>
+          dynOb.id === action.payload.id ? action.payload : dynOb,
+        ),
       };
     default:
       return state;

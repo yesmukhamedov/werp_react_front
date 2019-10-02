@@ -3,7 +3,7 @@ import {
   handleError,
   notify,
 } from '../general/notification/notification_action';
-import { doGet, doPut, doPost } from '../utils/apiActions';
+import { doGet, doPut, doPost, doDelete } from '../utils/apiActions';
 
 export const DIT_CLEAR_DYN_OBJ = 'DIT_CLEAR_DYN_OBJ';
 /*******************************************************************    DIT_ELLST              */
@@ -38,8 +38,15 @@ export const ALL_CURR_DTR = 'ALL_CURR_DTR';
 export const UPD_DTR = 'UPD_DTR';
 export const NEW_DTR = 'NEW_DTR';
 
-/*******************************************************************    DPHBOOK ACTIONCALLS               */
+/*******************************************************************    DPHBOOK ACTIONCALLS       */
 export const GET_PHONEBOOK = 'GET_PHONEBOOK';
+
+/*******************************************************************    ZREPORT ACTIONCALLS      */
+export const ALL_ZREPORT = 'ALL_ZREPORT';
+export const NEW_ZREPORT = 'NEW_ZREPORT';
+export const GET_ZREPORT = 'GET_ZREPORT';
+export const DELETE_ZREPORT = 'DELETE_ZREPORT';
+export const UPDATE_ZREPORT = 'UPDATE_ZREPORT';
 
 /*******************************************************************    DITELLST                 */
 
@@ -477,6 +484,94 @@ export function getPhoneBook(book) {
       .catch(error => {
         dispatch(modifyLoader(false));
         dispatch(notify('error', error.response.data.message, 'Ошибка'));
+      });
+  };
+}
+
+/*******************************************************************        ZREPORT ACTIONCALLS    */
+
+export function fetchZreports() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('dit/zreport/all')
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: ALL_ZREPORT,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function updateZreport(id, file, name) {
+  return function(dispatch) {
+    doPut(`dit/zreport/update/${id}`, file)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        if (data) {
+          dispatch(successed());
+          dispatch({
+            type: UPDATE_ZREPORT,
+            payload: { id, name },
+          });
+        } else {
+          dispatch(notSuccessed());
+        }
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function uploadZReport(newReport, fileData) {
+  return function(dispatch) {
+    dispatch(modifyLoader(false));
+    doPost(`dit/zreport/upload`, newReport)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        if (data) {
+          dispatch(successed());
+          dispatch({
+            type: NEW_ZREPORT,
+            payload: fileData,
+          });
+        } else {
+          dispatch(notSuccessed());
+        }
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function deleteFile(id) {
+  return function(dispatch) {
+    dispatch(modifyLoader(false));
+    doDelete(`dit/zreport/delete/${id}`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        if (data) {
+          dispatch(successed());
+          dispatch({
+            type: DELETE_ZREPORT,
+            payload: id,
+          });
+        } else {
+          dispatch(notSuccessed());
+        }
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
       });
   };
 }
