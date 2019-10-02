@@ -14,7 +14,6 @@ export default function StaffFilesTable(props) {
       Authorization: localStorage.getItem('token'),
     },
     onSuccess(file) {
-      console.log('succ ', file);
       onUploadSuccess(file);
     },
     onError(err) {

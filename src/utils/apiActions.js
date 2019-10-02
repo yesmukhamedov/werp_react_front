@@ -18,9 +18,3 @@ export const doPut = (uri, putData, params = {}) => {
     params,
   });
 };
-
-export const doDelete = (uri, delData, params = {}) => {
-  return axiosInstance.delete(`${ROOT_URL}` + '/api/' + uri, delData, {
-    params,
-  });
-};
