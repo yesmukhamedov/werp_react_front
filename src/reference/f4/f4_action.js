@@ -552,11 +552,10 @@ export function f4ClearStaffList() {
   };
   return obj;
 }
-
 ///////////////////////////////////////////////////////////////////////
 export function f4FetchCashBankBalanceList(a_bukrs, a_branch, a_callBackFun) {
   return function(dispatch) {
-    doGet('reference/cashBankBalance', {
+    doGet('finance/mainoperation/cashBankBalance', {
       bukrs: a_bukrs,
       branch: a_branch,
     }).then(({ data }) => {
