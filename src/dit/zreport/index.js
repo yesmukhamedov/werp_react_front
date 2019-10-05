@@ -73,7 +73,6 @@ function Zreport(props) {
   const delFile = id => {
     props.deleteFile(id);
   };
-  console.log('object');
   return (
     <Container
       fluid
