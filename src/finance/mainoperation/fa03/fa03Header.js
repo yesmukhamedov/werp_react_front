@@ -300,7 +300,13 @@ class Fa03Header extends PureComponent {
                   <Table.Row>
                     <Table.Cell>{formatMessage(messages.official)}</Table.Cell>
                     <Table.Cell>
-                      <Checkbox checked={bkpf.official === 1} readOnly />
+                      <Checkbox
+                        checked={bkpf.official === 1}
+                        readOnly={readOnlyValue}
+                        onChange={(e, { value }) =>
+                          this.props.onInputChangeData(value, 'official', '')
+                        }
+                      />
                     </Table.Cell>
                   </Table.Row>
 
