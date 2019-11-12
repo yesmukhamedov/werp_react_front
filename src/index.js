@@ -88,13 +88,23 @@ store.subscribe(
 
 const token = localStorage.getItem('token');
 const jwtlang = Cookies.get('JWT-LANG');
+const jwtToken = Cookies.get('JWT-TOKEN');
+const jwtUsername = Cookies.get('JWT-USERNAME');
 const language =
   jwtlang || localStorage.getItem('language') || DEFAULT_LANGUAGE;
 // const lastUrl = localStorage.getItem('currentPathName');
 
 store.dispatch(changeLanguage(language));
 // If we have a token, consider the user to be signed in
-if (token) {
+if (jwtToken) {
+  localStorage.setItem('token', jwtToken);
+  localStorage.setItem('username', jwtUsername);
+  localStorage.setItem('language', jwtlang);
+  store.dispatch({
+    type: AUTH_USER,
+    payload: { username: localStorage.getItem(jwtUsername) },
+  });
+} else if (token) {
   // we need to update application state
   // setAuthorizationHeader(token);
   // setContentLanguageHeader(persistedLang.lang);
