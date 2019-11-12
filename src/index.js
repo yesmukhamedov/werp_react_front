@@ -1,4 +1,5 @@
 import React from 'react';
+// eslint-disable-next-line no-unused-vars
 import { Router, Route } from 'react-router-dom';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
@@ -16,10 +17,11 @@ import 'semantic-ui-css/semantic.min.css';
 import generateRoutes from './routes/routes';
 import reducers from './reducers';
 import browserHistory from './utils/history';
-import { AUTH_USER } from './actions/types';
+import { AUTH_ERROR, AUTH_USER, UNAUTH_USER } from './actions/types';
 import ConnectedIntlProvider from './ConnectedIntlProvider';
 import JwtRefresher from './middlewares/JwtRefresher';
 import AppWrapper from './AppWrapper';
+import Cookies from 'js-cookie';
 
 import './index.css';
 
@@ -33,6 +35,35 @@ import { DEFAULT_LANGUAGE } from './utils/constants';
 import changeLanguage from './actions/language';
 
 const promise = axios.get(`${ROOT_URL}/routes`);
+
+axios.interceptors.request.use(
+  function(config) {
+    config.withCredentials = true;
+    let token = Cookies.get('JWT-TOKEN');
+    if (token) {
+      config.headers['authorization'] = token;
+    } else {
+      config.headers['authorization'] = '';
+    }
+    // Do something before request is sent
+    return config;
+  },
+  function(error) {
+    return Promise.reject(error);
+  },
+);
+
+axios.interceptors.response.use(
+  response => {
+    // Edit response config
+    return response;
+  },
+  error => {
+    if (error.response.status === 401) {
+      store.dispatch(UNAUTH_USER);
+    } else return Promise.reject(error);
+  },
+);
 
 addLocaleData([...en, ...ru, ...tr]);
 const persistedLang = loadLang();
@@ -56,7 +87,9 @@ store.subscribe(
 );
 
 const token = localStorage.getItem('token');
-const language = localStorage.getItem('language') || DEFAULT_LANGUAGE;
+const jwtlang = Cookies.get('JWT-LANG');
+const language =
+  jwtlang || localStorage.getItem('language') || DEFAULT_LANGUAGE;
 // const lastUrl = localStorage.getItem('currentPathName');
 
 store.dispatch(changeLanguage(language));

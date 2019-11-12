@@ -14,10 +14,11 @@ const signoutUser = (dispatch, errorMsg) => {
   browserHistory.push('/');
 };
 
-const requestToken = (token, language) => {
+const requestToken = (dispatch, token, language) => {
   axios
     .get(`${ROOT_URL}/tokenRefresh`, {
       headers: { authorization: token },
+      withCredentials: true,
       params: {
         language,
       },
@@ -29,11 +30,7 @@ const requestToken = (token, language) => {
       // setAuthorizationHeader(data.token);
     })
     .catch(error => {
-      // If request is bad...
-      // - Show an error to the user
-      throw new Error(
-        `Can't refresh token. Please sign in again ${JSON.stringify(error)}`,
-      );
+      signoutUser(dispatch, '');
     });
 };
 
@@ -46,7 +43,7 @@ const tokenRefresherMiddleware = ({ dispatch }) => next => action => {
   if (action.type === CHANGE_LANGUAGE) {
     try {
       jwt.decode(token, 'secret');
-      token && requestToken(token, action.payload);
+      token && requestToken(dispatch, token, action.payload);
       return next(action);
     } catch (error) {
       return next(action);
@@ -68,7 +65,7 @@ const tokenRefresherMiddleware = ({ dispatch }) => next => action => {
 
       if (remainedUntilRefresh < TOKEN_REFRESH_LIMIT) {
         isRenewingToken = true;
-        requestToken(token, tokenPayload.language);
+        requestToken(dispatch, token, tokenPayload.language);
         isRenewingToken = false;
       }
     } catch (error) {

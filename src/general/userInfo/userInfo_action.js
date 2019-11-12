@@ -9,7 +9,7 @@ const userInfoUrl = `${ROOT_URL}/api/reference/userInfo`;
 
 export function fetchUserInfo() {
   const request = GET(userInfoUrl);
-  return (dispatch) => {
+  return dispatch => {
     request
       .then(({ data }) => {
         const newCompanyOptions = data.bukrs.map(item => ({
@@ -26,7 +26,7 @@ export function fetchUserInfo() {
           service: data.service,
         });
       })
-      .catch((error) => {
+      .catch(error => {
         // console.log(error);
         if (error.response) {
           if (error.response.status && error.response.status === 403) {
@@ -36,7 +36,8 @@ export function fetchUserInfo() {
           } else if (error.response.status && error.response.status === 500) {
             // blog post has been created, navigate the user to the index
             // We navigate by calling this.context.router.push with the new path to navigate to
-            this.context.router.push('/');
+            if (this && this.context && this.context.router)
+              this.context.router.push('/');
           }
           dispatch(notify('error', error.response.data.message, 'Ошибка'));
         }
@@ -47,4 +48,3 @@ export function fetchUserInfo() {
       });
   };
 }
-

@@ -90,14 +90,22 @@ export function signinUser({ username, password }, language) {
 
 export function signoutUser() {
   // setAuthorizationHeader();
-  resetLocalStorage();
-  localStorage.removeItem('currentPathName');
-  localStorage.removeItem('breadcrumb');
-  browserHistory.push('/');
   return dispatch => {
-    dispatch({
-      type: UNAUTH_USER,
-    });
+    axios
+      .post(`${ROOT_URL}/signout`)
+      .then(response => {
+        resetLocalStorage();
+        localStorage.removeItem('currentPathName');
+        localStorage.removeItem('breadcrumb');
+        browserHistory.push('/');
+
+        dispatch({
+          type: UNAUTH_USER,
+        });
+      })
+      .catch(error => {
+        console.log(error.response);
+      });
   };
 }
 
