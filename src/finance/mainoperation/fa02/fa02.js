@@ -89,6 +89,11 @@ class Fa02 extends PureComponent {
       faDynamicObject = { ...this.props.faDynamicObject };
       faDynamicObject.bseg[index][stateFieldName] = value;
       this.props.changeDynObj(faDynamicObject);
+    } else if (stateFieldName === 'official') {
+      faDynamicObject = { ...this.props.faDynamicObject };
+      faDynamicObject.bkpf[stateFieldName] =
+        this.props.faDynamicObject.bkpf.official === 1 ? 0 : 1;
+      this.props.changeDynObj(faDynamicObject);
     }
     // let searchParameters = {...this.state.searchParameters,[stateFieldName]:value};
     // this.setState({searchParameters});
@@ -123,6 +128,7 @@ class Fa02 extends PureComponent {
                 this.props.faDynamicObject.bkpf.belnr,
                 this.props.faDynamicObject.bkpf.gjahr,
                 this.props.faDynamicObject.bkpf.bktxt,
+                this.props.faDynamicObject.bkpf.official,
                 this.props.faDynamicObject.bseg,
               );
             }}
@@ -165,7 +171,11 @@ class Fa02 extends PureComponent {
                   <Dropdown
                     placeholder={formatMessage(messages.bukrs)}
                     selection
-                    options={this.props.companyOptions}
+                    options={
+                      !this.props.companyOptions
+                        ? []
+                        : this.props.companyOptions
+                    }
                     value={bukrs}
                     onChange={(e, { value }) =>
                       this.onInputChange(value, 'bukrs')

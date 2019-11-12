@@ -293,7 +293,14 @@ export function saveFcis(a_bkpf, a_bseg) {
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // FA03-FA02////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-export function saveFA02(a_bukrs, a_belnr, a_gjahr, a_bktxt, al_bseg) {
+export function saveFA02(
+  a_bukrs,
+  a_belnr,
+  a_gjahr,
+  a_bktxt,
+  a_official,
+  al_bseg,
+) {
   return function(dispatch) {
     axios
       .post(
@@ -303,6 +310,7 @@ export function saveFA02(a_bukrs, a_belnr, a_gjahr, a_bktxt, al_bseg) {
           belnr: a_belnr,
           gjahr: a_gjahr,
           bktxt: a_bktxt,
+          official: a_official,
           bseg: al_bseg,
         },
         {
