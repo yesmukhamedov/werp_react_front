@@ -32,7 +32,7 @@ export default class TreeViewMenu extends Component {
     node.collapse = !node.collapse;
     this.setState({ ...this.state, selectedNode: node });
 
-    if (node.leaf) {
+    if (node.leaf && !node.link.endsWith('.xhtml')) {
       // Bottom-Up approach to gather the breadcrumb
       const breadcrumb = calcBreadcrumb(node);
       this.props.breadcrumbChanged(breadcrumb);
@@ -56,7 +56,7 @@ export default class TreeViewMenu extends Component {
         >
           <i className="file text outline icon" />
           {node.link.endsWith('.xhtml') ? (
-            <a target="_blank" href={`${LEGACY_URL}/${node.link}`}>
+            <a target="_blank" href={`${LEGACY_URL}${node.link}`}>
               {nodeName}
             </a>
           ) : (
