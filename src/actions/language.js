@@ -4,7 +4,10 @@ import { setContentLanguageHeader } from '../utils/setHeaders';
 
 export default function changeLanguage(lang) {
   return dispatch => {
-    Cookies.set('JWT-LANG', lang);
+    Cookies.set(
+      process.env.REACT_APP_LEGACY_COOKIE_PARAMS_LANG_TOKEN_NAME,
+      lang,
+    );
     dispatch({
       type: CHANGE_LANGUAGE,
       payload: lang,

@@ -22,6 +22,7 @@ import ConnectedIntlProvider from './ConnectedIntlProvider';
 import JwtRefresher from './middlewares/JwtRefresher';
 import AppWrapper from './AppWrapper';
 import Cookies from 'js-cookie';
+import { resetLocalStorage } from './utils/helpers';
 
 import './index.css';
 
@@ -39,7 +40,9 @@ const promise = axios.get(`${ROOT_URL}/routes`);
 axios.interceptors.request.use(
   function(config) {
     config.withCredentials = true;
-    let token = Cookies.get('JWT-TOKEN');
+    let token = Cookies.get(
+      process.env.REACT_APP_LEGACY_COOKIE_PARAMS_JWT_TOKEN_NAME,
+    );
     if (token) {
       config.headers['authorization'] = token;
     } else {
@@ -60,6 +63,10 @@ axios.interceptors.response.use(
   },
   error => {
     if (error.response.status === 401) {
+      resetLocalStorage();
+      localStorage.removeItem('currentPathName');
+      localStorage.removeItem('breadcrumb');
+      browserHistory.push('/');
       store.dispatch(UNAUTH_USER);
     } else return Promise.reject(error);
   },
@@ -87,9 +94,15 @@ store.subscribe(
 );
 
 const token = localStorage.getItem('token');
-const jwtlang = Cookies.get('JWT-LANG');
-const jwtToken = Cookies.get('JWT-TOKEN');
-const jwtUsername = Cookies.get('JWT-USERNAME');
+const jwtlang = Cookies.get(
+  process.env.REACT_APP_LEGACY_COOKIE_PARAMS_LANG_TOKEN_NAME,
+);
+const jwtToken = Cookies.get(
+  process.env.REACT_APP_LEGACY_COOKIE_PARAMS_JWT_TOKEN_NAME,
+);
+const jwtUsername = Cookies.get(
+  process.env.REACT_APP_LEGACY_COOKIE_PARAMS_USERNAME_TOKEN_NAME,
+);
 const language =
   jwtlang || localStorage.getItem('language') || DEFAULT_LANGUAGE;
 // const lastUrl = localStorage.getItem('currentPathName');
