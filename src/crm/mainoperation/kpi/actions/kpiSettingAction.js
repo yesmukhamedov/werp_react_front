@@ -1,7 +1,6 @@
-import axios from 'axios';
-import { ROOT_URL } from '../../../../utils/constants';
 import { modifyLoader } from '../../../../general/loader/loader_action';
 import { handleError } from '../../../../general/notification/notification_action';
+import { doGet, doPut, doDelete, doPost } from '../../../../utils/apiActions';
 
 export const CRM_KPI_FETCH_ITEMS = 'CRM_KPI_FETCH_ITEMS';
 export const CRM_KPI_FETCH_INDICATORS = 'CRM_KPI_FETCH_INDICATORS';
@@ -18,13 +17,9 @@ export const CRM_KPI_CLEAR_STATE = 'CRM_KPI_CLEAR_STATE';
 export function fetchItems(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/crm/kpi/setting`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params,
-      })
+    doGet(`crm/kpi/setting`, {
+      params,
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -42,12 +37,7 @@ export function fetchItems(params) {
 
 export function fetchIndicators() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/crm/kpi/setting/indicators`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/kpi/setting/indicators`)
       .then(({ data }) => {
         dispatch({
           type: CRM_KPI_FETCH_INDICATORS,
@@ -62,12 +52,7 @@ export function fetchIndicators() {
 
 export function blankItem() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/crm/kpi/setting/blank`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/kpi/setting/blank`)
       .then(({ data }) => {
         dispatch({
           type: CRM_KPI_BLANK_ITEM,
@@ -82,16 +67,7 @@ export function blankItem() {
 
 export function createItem(item) {
   return function(dispatch) {
-    axios
-      .post(
-        `${ROOT_URL}/api/crm/kpi/setting`,
-        { ...item },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPost(`crm/kpi/setting`, { ...item })
       .then(({ data }) => {
         dispatch({
           type: CRM_KPI_ITEM_CREATED,
@@ -106,12 +82,7 @@ export function createItem(item) {
 
 export function deleteItem(id) {
   return function(dispatch) {
-    axios
-      .delete(`${ROOT_URL}/api/crm/kpi/setting/${id}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doDelete(`crm/kpi/setting/${id}`)
       .then(({ data }) => {
         dispatch({
           type: CRM_KPI_ITEM_DELETED,
@@ -126,16 +97,7 @@ export function deleteItem(id) {
 
 export function updateItem(item) {
   return function(dispatch) {
-    axios
-      .put(
-        `${ROOT_URL}/api/crm/kpi/setting`,
-        { ...item },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPut(`crm/kpi/setting`, { ...item })
       .then(({ data }) => {
         dispatch({
           type: CRM_KPI_ITEM_UPDATED,

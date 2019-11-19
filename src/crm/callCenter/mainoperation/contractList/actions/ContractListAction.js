@@ -2,6 +2,7 @@
 import axios from 'axios';
 import { ROOT_URL } from '../../../../../utils/constants';
 import { notify } from '../../../../../general/notification/notification_action';
+import { doGet, doPut, doPost } from '../../../../../utils/apiActions';
 
 export const CONTRACT_LIST_DIRECTORIES = 'contract_list_directories';
 export const CLEAR_CONSTRACT_LIST_STORE = 'clear_contract_list_store';
@@ -9,15 +10,11 @@ export const FOUND_CONTRACTS = 'found_contracts';
 export const EDIT_CONTRACT_OPERATOR = 'edit_contract_operator';
 
 function getOperators() {
-  return axios.get(`${ROOT_URL}/api/reference/staff/operators`, {
-    headers: { authorization: localStorage.getItem('token') },
-  });
+  return doGet(`reference/staff/operators`);
 }
 
 function getStates() {
-  return axios.get(`${ROOT_URL}/api/call-center/out-calls/status`, {
-    headers: { authorization: localStorage.getItem('token') },
-  });
+  return doGet(`call-center/out-calls/status`);
 }
 
 export function getDirectories(lang) {
@@ -67,10 +64,7 @@ export function clearContractListStore() {
 
 export function searchContracts(params, resolve) {
   return dispatch => {
-    axios
-      .get(`${ROOT_URL}/api/call-center/out-calls?${params}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`call-center/out-calls?${params}`)
       .then(({ data }) => {
         dispatch({
           type: FOUND_CONTRACTS,
@@ -96,12 +90,7 @@ export function editOperator(contractNumber, operatorId) {
     id: operatorId,
   };
   return dispatch => {
-    axios
-      .put(
-        `${ROOT_URL}/api/call-center/out-calls/operator/${contractNumber}`,
-        { operator: o },
-        { headers: { authorization: localStorage.getItem('token') } },
-      )
+    doPut(`call-center/out-calls/operator/${contractNumber}`, { operator: o })
       .then(({ data }) => {
         dispatch({
           type: EDIT_CONTRACT_OPERATOR,

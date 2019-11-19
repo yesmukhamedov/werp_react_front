@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { doGet } from '../../../../utils/apiActions';
 import {
   Container,
   Divider,
@@ -44,16 +44,12 @@ class DemoListPage extends Component {
   }
 
   getLoadedManagers(branchId) {
-    axios
-      .get(`${ROOT_URL}/api/hr/pyramid/managers/by-branch/${branchId}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          year: this.state.queryParams.year,
-          month: this.state.queryParams.month,
-        },
-      })
+    doGet(`hr/pyramid/managers/by-branch/${branchId}`, {
+      params: {
+        year: this.state.queryParams.year,
+        month: this.state.queryParams.month,
+      },
+    })
       .then(response => {
         const result = Object.keys(response.data).map(key => ({
           key,
@@ -135,13 +131,9 @@ class DemoListPage extends Component {
       }
     });
 
-    axios
-      .get(`${ROOT_URL}/api/crm/demo`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: sendingParams,
-      })
+    doGet(`crm/demo`, {
+      params: sendingParams,
+    })
       .then(response => {
         this.setState({
           ...this.state,
@@ -159,12 +151,7 @@ class DemoListPage extends Component {
   }
 
   componentWillMount() {
-    axios
-      .get(`${ROOT_URL}/api/crm/demo/results`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/demo/results`)
       .then(response => {
         const loaded = Object.keys(response.data).map(key => ({
           key,

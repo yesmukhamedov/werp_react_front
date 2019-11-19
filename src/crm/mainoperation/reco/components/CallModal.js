@@ -17,6 +17,7 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import axios from 'axios';
 import { ROOT_URL, MONTH_OPTIONS } from '../../../../utils/constants';
+import { doGet, doPut, doDelete, doPost } from '../../../../utils/apiActions';
 
 const locationOptions = [
   {
@@ -93,10 +94,7 @@ class CallModal extends Component {
   }
 
   handlePhoneClick() {
-    axios
-      .get(`${ROOT_URL}/api/crm/call/number-history/${this.props.id}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`crm/call/number-history/${this.props.id}`)
       .then(res => {
         this.setState({
           ...this.state,
@@ -331,16 +329,7 @@ class CallModal extends Component {
     if (!isValid) {
       return;
     }
-    axios
-      .post(
-        `${ROOT_URL}/api/crm/call/${this.props.phoneId}`,
-        { ...this.state.call },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPost(`crm/call/${this.props.phoneId}`, { ...this.state.call })
       .then(response => {
         this.close();
       })

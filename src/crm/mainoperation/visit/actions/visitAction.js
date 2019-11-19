@@ -3,6 +3,7 @@ import { ROOT_URL } from '../../../../utils/constants';
 import { handleError } from '../../../../general/notification/notification_action';
 import { modifyLoader } from '../../../../general/loader/loader_action';
 import browserHistory from '../../../../utils/history';
+import { doGet, doPut, doDelete, doPost } from '../../../../utils/apiActions';
 
 /**
  *
@@ -23,10 +24,7 @@ export const CRM_VISIT_FETCH_CHILD_RECOS = 'CRM_VISIT_FETCH_CHILD_RECOS';
 export function fetchArchive() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/crm/visit/archive`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`crm/visit/archive`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -44,10 +42,7 @@ export function fetchArchive() {
 export function fetchSingleVisit(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/crm/visit/${id}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`crm/visit/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -65,10 +60,7 @@ export function fetchSingleVisit(id) {
 export function deleteVisit(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .delete(`${ROOT_URL}/api/crm/visit/${id}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doDelete(`crm/visit/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         browserHistory.push('/crm/visit/archive');
@@ -84,12 +76,7 @@ export function createVisit(o) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
 
-    axios
-      .post(`${ROOT_URL}/api/crm/visit/`, o, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doPost(`crm/visit/`, o)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -120,12 +107,7 @@ export function updateVisit(o, fromComponent) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
 
-    axios
-      .put(`${ROOT_URL}/api/crm/visit/`, o, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doPut(`crm/visit/`, o)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (fromComponent === 'archive') {
@@ -159,12 +141,7 @@ export function blankForCreate(recoId, staffId) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
 
-    axios
-      .get(`${ROOT_URL}/api/crm/visit/blank/${recoId}/${staffId}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/visit/blank/${recoId}/${staffId}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -182,10 +159,7 @@ export function blankForCreate(recoId, staffId) {
 export function fetchVisitChildRecos(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/crm/visit/${id}/child-recos`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`crm/visit/${id}/child-recos`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

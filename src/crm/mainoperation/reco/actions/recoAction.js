@@ -6,6 +6,7 @@ import {
 } from '../../../../general/notification/notification_action';
 import { modifyLoader } from '../../../../general/loader/loader_action';
 import browserHistory from '../../../../utils/history';
+import { doGet, doPut, doDelete, doPost } from '../../../../utils/apiActions';
 
 /**
  * Страница Текущие рекомендации
@@ -46,12 +47,7 @@ export const CRM_FETCH_PHONE_META = 'CRM_FETCH_PHONE_META';
 
 export function fetchPhoneNumberHistory(phoneId) {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/crm/call/number-history/${phoneId}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/call/number-history/${phoneId}`)
       .then(({ data }) => {
         dispatch({
           type: CRM_FETCH_PHONE_NUMBER_HISTORY,
@@ -66,16 +62,7 @@ export function fetchPhoneNumberHistory(phoneId) {
 
 export function updateReco(reco) {
   return function(dispatch) {
-    axios
-      .put(
-        `${ROOT_URL}/api/crm/reco/${reco.id}`,
-        { ...reco },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPut(`crm/reco/${reco.id}`, { ...reco })
       .then(({ data }) => {
         dispatch({
           type: CRM_RECO_UPDATE,
@@ -91,12 +78,7 @@ export function updateReco(reco) {
 export function fetchSingleReco(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/crm/reco/${id}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/reco/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -113,12 +95,7 @@ export function fetchSingleReco(id) {
 export function fetchRecoCurrentData(type) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/crm/reco/current/${type}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/reco/current/${type}`)
       .then(({ data }) => {
         let actionType;
         switch (type) {
@@ -152,12 +129,7 @@ export function fetchRecoCurrentData(type) {
 
 export function fetchCallResults() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/crm/call/results`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/call/results`)
       .then(({ data }) => {
         const loaded = Object.keys(data).map(k => ({
           key: k,
@@ -179,13 +151,9 @@ export function fetchCallResults() {
 export function fetchRecoArchive(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/crm/reco/archive`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params,
-      })
+    doGet(`crm/reco/archive`, {
+      params,
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -206,12 +174,7 @@ export function checkPhoneNumber(staffId, phoneNumber) {
       type: CRM_RECO_CHECKING_PHONE_NUMBER,
       payload: phoneNumber,
     });
-    axios
-      .get(`${ROOT_URL}/api/crm/phone/check/${staffId}/${phoneNumber}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/phone/check/${staffId}/${phoneNumber}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -227,12 +190,7 @@ export function checkPhoneNumber(staffId, phoneNumber) {
 
 export function fetchRecoStatuses() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/crm/reco/statuses`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/reco/statuses`)
       .then(res => {
         const loaded = Object.keys(res.data).map(k => ({
           key: k,
@@ -252,12 +210,7 @@ export function fetchRecoStatuses() {
 
 export function fetchReasons(typeId) {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/reasons/${typeId}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`reference/reasons/${typeId}`)
       .then(({ data }) => {
         const loaded = data.map(item => ({
           key: item.id,
@@ -285,12 +238,7 @@ export function toggleRecoUpdateModal(flag) {
 
 export function deleteReco(recoId) {
   return function(dispatch) {
-    axios
-      .delete(`${ROOT_URL}/api/crm/reco/${recoId}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doDelete(`crm/reco/${recoId}`)
       .then(response => {
         browserHistory.push('/crm/reco/current');
       })
@@ -301,35 +249,18 @@ export function deleteReco(recoId) {
 }
 
 export function createRecoListNew(o) {
-  return dispatch =>
-    axios.post(`${ROOT_URL}/api/crm/reco/create`, o, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doPost(`crm/reco/create`, o);
 }
 
 export function blankReco(context, contextId) {
   return dispatch =>
-    axios.get(
-      `${ROOT_URL}/api/crm/reco/create?context=${context}&contextId=${contextId}`,
-      {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      },
-    );
+    doGet(`crm/reco/create?context=${context}&contextId=${contextId}`);
 }
 
 export function createRecoList(o, callBackOnError) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .post(`${ROOT_URL}/api/crm/reco/create`, o, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doPost(`crm/reco/create`, o)
       .then(() => {
         browserHistory.push('/crm/reco/current');
       })
@@ -370,12 +301,7 @@ export function createRecoList(o, callBackOnError) {
 export function blankRecoItem() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/crm/reco/blank-reco-item`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/reco/blank-reco-item`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -392,12 +318,7 @@ export function blankRecoItem() {
 
 export function fetchPhoneMeta() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/crm/phone/meta`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/phone/meta`)
       .then(({ data }) => {
         dispatch({
           type: CRM_FETCH_PHONE_META,

@@ -3,7 +3,7 @@ import { ROOT_URL } from '../../../../utils/constants';
 import { modifyLoader } from '../../../../general/loader/loader_action';
 import { handleError } from '../../../../general/notification/notification_action';
 import browserHistory from '../../../../utils/history';
-import { doGet } from '../../../../utils/apiActions';
+import { doGet, doPut, doDelete } from '../../../../utils/apiActions';
 
 export const CRM_DEMO_FETCH_CURRENT = 'CRM_DEMO_FETCH_CURRENT';
 export const CRM_DEMO_FETCH_ARCHIVE = 'CRM_DEMO_FETCH_ARCHIVE';
@@ -27,16 +27,7 @@ export const CRM_DEMO_CREATE_MODAL_TOGGLE = 'CRM_DEMO_CREATE_MODAL_TOGGLE';
 
 export function updateDemo(demo) {
   return function(dispatch) {
-    axios
-      .put(
-        `${ROOT_URL}/api/crm/demo/${demo.id}`,
-        { ...demo },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPut(`crm/demo/${demo.id}`, { ...demo })
       .then(({}) => {
         dispatch({
           type: CRM_DEMO_UPDATE,
@@ -52,10 +43,7 @@ export function updateDemo(demo) {
 export function fetchDemo(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/crm/demo/${id}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`/crm/demo/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -73,10 +61,7 @@ export function fetchDemo(id) {
 export function fetchDemoChildRecos(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/crm/demo/${id}/child-recos`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`crm/demo/${id}/child-recos`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -94,10 +79,7 @@ export function fetchDemoChildRecos(id) {
 export function fetchDemoCurrentData() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/crm/demo/current`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`crm/demo/current`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -114,12 +96,7 @@ export function fetchDemoCurrentData() {
 export function fetchDemoArchive(q) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/crm/demo/archive?${q}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/demo/archive?${q}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -154,12 +131,7 @@ export function fetchSoldDemos(params) {
 
 export function fetchDemoResults() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/crm/demo/results`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/demo/results`)
       .then(({ data }) => {
         dispatch({
           type: CRM_DEMO_FETCH_RESULTS,
@@ -175,12 +147,7 @@ export function fetchDemoResults() {
 export function fetchGroupDealers() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/hr/pyramid/crm/group-dealers`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`hr/pyramid/crm/group-dealers`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         const loaded = data.map(item => ({
@@ -206,12 +173,7 @@ export function fetchGroupDealers() {
 
 export function fetchReasons() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/reasons/0`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`reference/reasons/0`)
       .then(({ data }) => {
         dispatch({
           type: CRM_DEMO_FETCH_REASONS,
@@ -226,10 +188,7 @@ export function fetchReasons() {
 
 export function deleteDemo(demoId) {
   return function(dispatch) {
-    axios
-      .delete(`${ROOT_URL}/api/crm/demo/${demoId}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doDelete(`crm/demo/${demoId}`)
       .then(response => {
         browserHistory.push('/crm/demo/current');
       })

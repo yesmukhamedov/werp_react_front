@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
 import { Form } from 'semantic-ui-react';
 import { ROOT_URL } from '../../../utils/constants';
+import { doGet } from '../../../../utils/apiActions';
 
 const bukrsBranches = {};
 class GroupDealers extends Component {
@@ -23,12 +23,7 @@ class GroupDealers extends Component {
       console.log('ERR');
       return;
     }
-    axios
-      .get(`${ROOT_URL}/api/reference/branches/${bukrs}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`treference/branches/${bukrs}`)
       .then(res => {
         const loaded = res.data.map(b => ({
           key: b.branch_id,

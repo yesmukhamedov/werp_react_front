@@ -44,6 +44,7 @@ import {
   CALL_STATUS_FINISHED,
   CALL_STATUS_NOTHING,
 } from '../../call/callConstant';
+import { doGet, doPut, doDelete, doPost } from '../../../../utils/apiActions';
 
 require('moment/locale/ru');
 
@@ -105,10 +106,7 @@ class Phone extends Component {
 
     this.props.fetchPhoneNumberHistory(this.props.phoneId);
 
-    axios
-      .get(`${ROOT_URL}/api/crm/call/create/${this.props.phoneId}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`crm/call/create/${this.props.phoneId}`)
       .then(res => {
         res.data.call.callDate = moment();
         this.setState({
@@ -800,17 +798,14 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchPhoneNumberHistory,
-    fetchCallResults,
-    fetchSingleReco,
-    createCall,
-    setCallingFlag,
-    registerCall,
-    saveCall,
-    callInfo,
-    setCallStatus,
-  },
-)(injectIntl(Phone));
+export default connect(mapStateToProps, {
+  fetchPhoneNumberHistory,
+  fetchCallResults,
+  fetchSingleReco,
+  createCall,
+  setCallingFlag,
+  registerCall,
+  saveCall,
+  callInfo,
+  setCallStatus,
+})(injectIntl(Phone));

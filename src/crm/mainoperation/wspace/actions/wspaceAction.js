@@ -9,6 +9,7 @@ import {
   MENU_CURRENT_DEMO,
   MENU_CURRENT_VISIT,
 } from '../wspaceUtil';
+import { doGet, doPut, doDelete, doPost } from '../../../../utils/apiActions';
 
 export const WSP_RECO_LIST_MODAL_OPENED = 'WSP_RECO_LIST_MODAL_OPENED';
 export const WSP_SET_CURRENT_RECOMMENDER = 'WSP_SET_CURRENT_RECOMMENDER';
@@ -48,12 +49,7 @@ export function setCurrentRecommender(recommender) {
 export function fetchRecosByReco(staffId) {
   return function(dispatch) {
     dispatch(modifyLoader(MENU_BY_RECO, true));
-    axios
-      .get(`${ROOT_URL}/api/crm/wspace/by-reco/${staffId}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/wspace/by-reco/${staffId}`)
       .then(({ data }) => {
         dispatch(modifyLoader(MENU_BY_RECO, false));
         dispatch({
@@ -72,12 +68,7 @@ export function fetchRecosByReco(staffId) {
 export function fetchRecosByDate(staffId) {
   return function(dispatch) {
     dispatch(modifyLoader(MENU_BY_DATE, true));
-    axios
-      .get(`${ROOT_URL}/api/crm/wspace/by-date/${staffId}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/wspace/by-date/${staffId}`)
       .then(({ data }) => {
         dispatch(modifyLoader(MENU_BY_DATE, false));
         dispatch({
@@ -96,12 +87,7 @@ export function fetchRecosByDate(staffId) {
 export function fetchMovedRecos(staffId) {
   return function(dispatch) {
     dispatch(modifyLoader(MENU_MOVED, true));
-    axios
-      .get(`${ROOT_URL}/api/crm/wspace/moved/${staffId}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/wspace/moved/${staffId}`)
       .then(({ data }) => {
         dispatch(modifyLoader(MENU_MOVED, false));
         dispatch({
@@ -120,12 +106,7 @@ export function fetchMovedRecos(staffId) {
 export function fetchDemoRecos(demoId) {
   return function(dispatch) {
     dispatch(modifyLoader(RECO_MODAL_ITEMS, true));
-    axios
-      .get(`${ROOT_URL}/api/crm/wspace/demo-recommends/${demoId}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/wspace/demo-recommends/${demoId}`)
       .then(({ data }) => {
         dispatch(modifyLoader(RECO_MODAL_ITEMS, false));
         dispatch({
@@ -143,12 +124,7 @@ export function fetchDemoRecos(demoId) {
 export function fetchVisitRecos(visitId) {
   return function(dispatch) {
     dispatch(modifyLoader(RECO_MODAL_ITEMS, true));
-    axios
-      .get(`${ROOT_URL}/api/crm/wspace/visit-recommends/${visitId}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/wspace/visit-recommends/${visitId}`)
       .then(({ data }) => {
         dispatch(modifyLoader(RECO_MODAL_ITEMS, false));
         dispatch({
@@ -166,12 +142,7 @@ export function fetchVisitRecos(visitId) {
 export function fetchTodayCalls() {
   return function(dispatch) {
     dispatch(modifyLoader(WSP_FETCH_TODAY_CALLS, true));
-    axios
-      .get(`${ROOT_URL}/api/crm/wspace/today-calls`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/wspace/today-calls`)
       .then(({ data }) => {
         dispatch(modifyLoader(WSP_FETCH_TODAY_CALLS, false));
         dispatch({
@@ -189,12 +160,7 @@ export function fetchTodayCalls() {
 export function fetchTodayDemos() {
   return function(dispatch) {
     dispatch(modifyLoader(WSP_FETCH_TODAY_DEMOS, true));
-    axios
-      .get(`${ROOT_URL}/api/crm/wspace/today-demos`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/wspace/today-demos`)
       .then(({ data }) => {
         dispatch(modifyLoader(WSP_FETCH_TODAY_DEMOS, false));
         dispatch({
@@ -212,13 +178,9 @@ export function fetchTodayDemos() {
 export function fetchKpi(year, month) {
   return function(dispatch) {
     dispatch(modifyLoader(WSP_FETCH_KPI, true));
-    axios
-      .get(`${ROOT_URL}/api/crm/wspace/kpi`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: { year, month },
-      })
+    doGet(`crm/wspace/kpi`, {
+      params: { year, month },
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(WSP_FETCH_KPI, false));
         dispatch({
@@ -236,16 +198,7 @@ export function fetchKpi(year, month) {
 export function archiveReco(recoId) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .put(
-        `${ROOT_URL}/api/crm/wspace/archive/reco/${recoId}`,
-        {},
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPut(`crm/wspace/archive/reco/${recoId}`, {})
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -263,10 +216,7 @@ export function archiveReco(recoId) {
 export function fetchPhoneNumberHistory(phoneId) {
   return function(dispatch) {
     dispatch(modifyLoader(`PHONE_${phoneId}`, true));
-    axios
-      .get(`${ROOT_URL}/api/crm/wspace/phone-info/${phoneId}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`crm/wspace/phone-info/${phoneId}`)
       .then(({ data }) => {
         dispatch(modifyLoader(`PHONE_${phoneId}`, false));
         dispatch({
@@ -284,10 +234,7 @@ export function fetchPhoneNumberHistory(phoneId) {
 export function fetchCurrentDemos(staffId) {
   return function(dispatch) {
     dispatch(modifyLoader(MENU_CURRENT_DEMO, true));
-    axios
-      .get(`${ROOT_URL}/api/crm/wspace/current-demos/${staffId}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`crm/wspace/current-demos/${staffId}`)
       .then(({ data }) => {
         dispatch(modifyLoader(MENU_CURRENT_DEMO, false));
         dispatch({
@@ -306,10 +253,7 @@ export function fetchCurrentDemos(staffId) {
 export function fetchCurrentVisits(staffId) {
   return function(dispatch) {
     dispatch(modifyLoader(MENU_CURRENT_VISIT, true));
-    axios
-      .get(`${ROOT_URL}/api/crm/wspace/current-visits/${staffId}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`crm/wspace/current-visits/${staffId}`)
       .then(({ data }) => {
         dispatch(modifyLoader(MENU_CURRENT_VISIT, false));
         dispatch({
@@ -328,16 +272,7 @@ export function fetchCurrentVisits(staffId) {
 export function saveCall(callForm) {
   return function(dispatch) {
     dispatch(modifyLoader(WSP_SAVED_CALL, true));
-    axios
-      .post(
-        `${ROOT_URL}/api/crm/wspace/save-call`,
-        { ...callForm },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPost(`crm/wspace/save-call`, { ...callForm })
       .then(({ data }) => {
         dispatch(modifyLoader(WSP_SAVED_CALL, false));
         dispatch({

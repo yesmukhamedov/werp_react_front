@@ -8,18 +8,11 @@ import {
 } from './actionTypes';
 import { ROOT_URL } from '../../../../../utils/constants';
 import { notify } from '../../../../../general/notification/notification_action';
-
+import { doGet, doPut, doPost } from '../../../../../utils/apiActions';
 
 export function fetchContractById(contractNumber) {
-  const req = axios.get(
-    `${ROOT_URL}/api/call-center/out-calls/${contractNumber}`,
-    {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    },
-  );
-  return (dispatch) => {
+  const req = doGet(`call-center/out-calls/${contractNumber}`);
+  return dispatch => {
     req
       .then(({ data }) => {
         dispatch({
@@ -30,24 +23,29 @@ export function fetchContractById(contractNumber) {
       .catch(({ response = {} }) => {
         const { status } = response;
         if (status === 403) {
-          dispatch(notify('error', `Не удалось получить детали контракта! Нет доступа. ${response}`, 'Ошибка'));
+          dispatch(
+            notify(
+              'error',
+              `Не удалось получить детали контракта! Нет доступа. ${response}`,
+              'Ошибка',
+            ),
+          );
         } else {
-          dispatch(notify('error', `Не удалось получить детали контракта! ${response}`, 'Ошибка'));
+          dispatch(
+            notify(
+              'error',
+              `Не удалось получить детали контракта! ${response}`,
+              'Ошибка',
+            ),
+          );
         }
       });
   };
 }
 
 export function createOutCallFromContract({ contractNumber }) {
-  const req = axios.post(
-    `${ROOT_URL}/api/call-center/out-calls/${contractNumber}`, {},
-    {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    },
-  );
-  return (dispatch) => {
+  const req = doPost(`call-center/out-calls/${contractNumber}`, {});
+  return dispatch => {
     req
       .then(({ data }) => {
         dispatch({
@@ -59,45 +57,49 @@ export function createOutCallFromContract({ contractNumber }) {
       .catch(({ response = {} }) => {
         const { status } = response;
         if (status === 403) {
-          dispatch(notify('error', `Не удалось привязать заявку! Нет доступа. ${response}`, 'Ошибка'));
+          dispatch(
+            notify(
+              'error',
+              `Не удалось привязать заявку! Нет доступа. ${response}`,
+              'Ошибка',
+            ),
+          );
         } else {
-          dispatch(notify('error', `Не удалось привязать заявку! ${response}`, 'Ошибка'));
+          dispatch(
+            notify(
+              'error',
+              `Не удалось привязать заявку! ${response}`,
+              'Ошибка',
+            ),
+          );
         }
       });
   };
 }
 
 export function createNewTask(contractNumber, params) {
-  const req = axios.post(
-    `${ROOT_URL}/api/call-center/out-calls/${contractNumber}/tasks`,
-    {
-      title: params.title,
-      description: params.description,
-      status: {
-        id: params.status,
+  const req = doPost(`call-center/out-calls/${contractNumber}/tasks`, {
+    title: params.title,
+    description: params.description,
+    status: {
+      id: params.status,
+    },
+    priority: {
+      id: params.priority,
+    },
+    recipient: {
+      branch: {
+        id: params.branch,
       },
-      priority: {
-        id: params.priority,
+      department: {
+        id: params.department,
       },
-      recipient: {
-        branch: {
-          id: params.branch,
-        },
-        department: {
-          id: params.department,
-        },
-        position: {
-          id: params.position,
-        },
+      position: {
+        id: params.position,
       },
     },
-    {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    },
-  );
-  return (dispatch) => {
+  });
+  return dispatch => {
     req
       .then(({ data }) => {
         dispatch({
@@ -109,9 +111,17 @@ export function createNewTask(contractNumber, params) {
       .catch(({ response = {} }) => {
         const { status } = response;
         if (status === 403) {
-          dispatch(notify('error', `Не удалось создать задачу! Нет доступа. ${response}`, 'Ошибка'));
+          dispatch(
+            notify(
+              'error',
+              `Не удалось создать задачу! Нет доступа. ${response}`,
+              'Ошибка',
+            ),
+          );
         } else {
-          dispatch(notify('error', `Не удалось создать задачу! ${response}`, 'Ошибка'));
+          dispatch(
+            notify('error', `Не удалось создать задачу! ${response}`, 'Ошибка'),
+          );
         }
       });
   };
@@ -126,7 +136,7 @@ export function fetchTasks(contractNumber) {
       },
     },
   );
-  return (dispatch) => {
+  return dispatch => {
     req
       .then(({ data }) => {
         dispatch({
@@ -137,9 +147,21 @@ export function fetchTasks(contractNumber) {
       .catch(({ response = {} }) => {
         const { status } = response;
         if (status === 403) {
-          dispatch(notify('error', `Не удалось получть список задач! Нет доступа. ${response}`, 'Ошибка'));
+          dispatch(
+            notify(
+              'error',
+              `Не удалось получть список задач! Нет доступа. ${response}`,
+              'Ошибка',
+            ),
+          );
         } else {
-          dispatch(notify('error', `Не удалось получть список задач! ${response}`, 'Ошибка'));
+          dispatch(
+            notify(
+              'error',
+              `Не удалось получть список задач! ${response}`,
+              'Ошибка',
+            ),
+          );
         }
       });
   };
@@ -161,7 +183,7 @@ export function updateOutCall(newOutCallParams) {
       },
     },
   );
-  return (dispatch) => {
+  return dispatch => {
     req
       .then(({ data }) => {
         dispatch({
@@ -173,9 +195,21 @@ export function updateOutCall(newOutCallParams) {
       .catch(({ response = {} }) => {
         const { status } = response;
         if (status === 403) {
-          dispatch(notify('error', `Не удалось обновить заявку! Нет доступа. ${response}`, 'Ошибка'));
+          dispatch(
+            notify(
+              'error',
+              `Не удалось обновить заявку! Нет доступа. ${response}`,
+              'Ошибка',
+            ),
+          );
         } else {
-          dispatch(notify('error', `Не удалось обновить заявку! ${response}`, 'Ошибка'));
+          dispatch(
+            notify(
+              'error',
+              `Не удалось обновить заявку! ${response}`,
+              'Ошибка',
+            ),
+          );
         }
       });
   };

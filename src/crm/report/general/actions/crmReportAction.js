@@ -2,6 +2,7 @@ import axios from 'axios';
 import { ROOT_URL } from '../../../../utils/constants';
 import { handleError } from '../../../../general/notification/notification_action';
 import { modifyLoader } from '../../../../general/loader/loader_action';
+import { doGet, doPut, doDelete, doPost } from '../../../../utils/apiActions';
 
 export const CRM_REP_FETCH_ITEMS = 'CRM_REP_FETCH_ITEMS';
 export const CRM_REP_FETCH_META = 'CRM_REP_FETCH_META';
@@ -13,13 +14,9 @@ export const CRM_REP_CLEAR_STATE = 'CRM_REP_CLEAR_STATE';
 export function fetchItems(id, params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/crm/report/${id}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params,
-      })
+    doGet(`/crm/report/${id}`, {
+      params,
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -36,10 +33,7 @@ export function fetchItems(id, params) {
 
 export function fetchChildItems(id, params) {
   return dispatch =>
-    axios.get(`${ROOT_URL}/api/crm/report/` + id, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
+    doGet(`crm/report/` + id, {
       params: params,
     });
 }
@@ -47,12 +41,7 @@ export function fetchChildItems(id, params) {
 export function fetchMeta(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/crm/report/meta/${id}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`crm/report/meta/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -70,16 +59,7 @@ export function fetchMeta(id) {
 export function updateDirectorNote(demoId, note) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .put(
-        `${ROOT_URL}/api/crm/report/note/${demoId}`,
-        { note },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPut(`crm/report/note/${demoId}`, { note })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch(toggleRepModal(false));
@@ -111,10 +91,7 @@ export function clearState() {
 
 export function fetchDemoRecommender(demoId) {
   return dispatch =>
-    axios.get(`${ROOT_URL}/api/crm/report/find-recommender`, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
+    doGet(`crm/report/find-recommender`, {
       params: { demoId: demoId },
     });
 }

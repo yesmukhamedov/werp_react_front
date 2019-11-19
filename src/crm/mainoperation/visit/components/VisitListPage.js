@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { doGet, doPut, doDelete, doPost } from '../../../../utils/apiActions';
 import {
   Container,
   Divider,
@@ -46,16 +47,12 @@ class VisitListPage extends Component {
   }
 
   getLoadedManagers(branchId) {
-    axios
-      .get(`${ROOT_URL}/api/hr/pyramid/managers/by-branch/${branchId}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          year: this.state.queryParams.year,
-          month: this.state.queryParams.month,
-        },
-      })
+    doGet(`hr/pyramid/managers/by-branch/${branchId}`, {
+      params: {
+        year: this.state.queryParams.year,
+        month: this.state.queryParams.month,
+      },
+    })
       .then(response => {
         const result = Object.keys(response.data).map(key => ({
           key,
@@ -137,13 +134,9 @@ class VisitListPage extends Component {
       }
     });
 
-    axios
-      .get(`${ROOT_URL}/api/crm/demo`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: sendingParams,
-      })
+    doGet(`crm/demo`, {
+      params: sendingParams,
+    })
       .then(response => {
         this.setState({
           ...this.state,
@@ -161,12 +154,7 @@ class VisitListPage extends Component {
   }
 
   componentWillMount() {
-    axios
-      .get(`${ROOT_URL}/api/hr/pyramid/crm/group-dealers`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`hr/pyramid/crm/group-dealers`)
       .then(response => {
         const loaded = response.data.map(item => ({
           key: item.staffId,

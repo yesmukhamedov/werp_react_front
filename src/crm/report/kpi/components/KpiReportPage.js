@@ -20,6 +20,7 @@ import { ROOT_URL } from '../../../../utils/constants';
 import CustomizedAxisTick from './CustomizedAxisTick';
 import MonthF4 from '../../../../reference/f4/date/MonthF4';
 import YearF4 from '../../../../reference/f4/date/YearF4';
+import { doGet, doPut, doDelete, doPost } from '../../../../utils/apiActions';
 
 const bukrsMap = {};
 const branchesMap = {};
@@ -58,12 +59,7 @@ class KpiReportPage extends Component {
     if (branchesMap[bukrs]) {
       return;
     }
-    axios
-      .get(`${ROOT_URL}/api/reference/branches/${bukrs}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`reference/branches/${bukrs}`)
       .then(res => {
         branchesMap[bukrs] = {};
         for (let i = 0; i < res.data.length; i++) {
@@ -80,12 +76,7 @@ class KpiReportPage extends Component {
   }
 
   componentWillMount() {
-    axios
-      .get(`${ROOT_URL}/api/reference/companies`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`reference/companies`)
       .then(res => {
         for (let i = 0; i < res.data.length; i++) {
           bukrsMap[res.data[i].id] = res.data[i].name;
@@ -107,20 +98,16 @@ class KpiReportPage extends Component {
       ...this.state,
       loading: true,
     });
-    axios
-      .get(`${ROOT_URL}/api/crm/report/kpi-current`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          context,
-          contextId,
-          year: this.state.year,
-          month: this.state.month,
-          bukrs: bukrs || null,
-          branchId: branchId || null,
-        },
-      })
+    doGet(`crm/report/kpi-current`, {
+      params: {
+        context,
+        contextId,
+        year: this.state.year,
+        month: this.state.month,
+        bukrs: bukrs || null,
+        branchId: branchId || null,
+      },
+    })
       .then(res => {
         if (context === 'branch') {
           this.loadBranches(contextId);

@@ -16,6 +16,7 @@ import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4';
 import BranchF4 from '../../../../reference/f4/branch/BranchF4';
 import YearF4 from '../../../../reference/f4/date/YearF4';
 import MonthF4 from '../../../../reference/f4/date/MonthF4';
+import { doGet, doPut, doDelete, doPost } from '../../../../utils/apiActions';
 
 const currentDate = new Date();
 
@@ -59,19 +60,15 @@ class KpiRatingReportPage extends Component {
       loading: true,
     });
     const { bukrs, branches, positionId, year, month, items } = this.state;
-    axios
-      .get(`${ROOT_URL}/api/crm/report/kpi-rating`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          bukrs,
-          branchIds: branches.join(','),
-          year,
-          month,
-          positionId,
-        },
-      })
+    doGet(`crm/report/kpi-rating`, {
+      params: {
+        bukrs,
+        branchIds: branches.join(','),
+        year,
+        month,
+        positionId,
+      },
+    })
       .then(res => {
         items[positionId] = res.data;
         this.setState({
