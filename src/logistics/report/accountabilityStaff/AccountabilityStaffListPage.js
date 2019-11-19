@@ -12,6 +12,7 @@ import {
   Button,
 } from 'semantic-ui-react';
 import { ROOT_URL } from '../../../utils/constants';
+import { doPut, doGet, doPost } from '../../../utils/apiActions';
 
 class AccountabilityStaffListPage extends Component {
   constructor(props) {
@@ -34,12 +35,7 @@ class AccountabilityStaffListPage extends Component {
   }
 
   componentWillMount() {
-    axios
-      .get(`${ROOT_URL}/api/reference/companies`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`reference/companies`)
       .then(response => {
         const loadedCompanies = response.data.map(item => ({
           key: item.id,
@@ -57,12 +53,7 @@ class AccountabilityStaffListPage extends Component {
   }
 
   loadBranches(bukrs) {
-    axios
-      .get(`${ROOT_URL}/api/reference/branches/${bukrs}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`reference/branches/${bukrs}`)
       .then(response => {
         const loadedBranches = response.data.map(item => ({
           key: item.branch_id,
@@ -124,17 +115,13 @@ class AccountabilityStaffListPage extends Component {
       ...this.state,
       loading: true,
     });
-    axios
-      .get(`${ROOT_URL}/api/logistics/report/accountability-staff`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          bukrs: this.state.selectedBukrs,
-          branchIds: this.state.selectedBranches.join(),
-          limit: this.state.limitChecked ? 1 : 0,
-        },
-      })
+    doGet(`logistics/report/accountability-staff`, {
+      params: {
+        bukrs: this.state.selectedBukrs,
+        branchIds: this.state.selectedBranches.join(),
+        limit: this.state.limitChecked ? 1 : 0,
+      },
+    })
       .then(response => {
         this.setState({
           ...this.state,

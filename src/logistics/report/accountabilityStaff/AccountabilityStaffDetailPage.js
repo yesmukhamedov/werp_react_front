@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { Container, Grid, Table, Header } from 'semantic-ui-react';
 import { ROOT_URL } from '../../../utils/constants';
+import { doPut, doGet, doPost } from '../../../utils/apiActions';
 
 class AccountabilityStaffDetailPage extends Component {
   constructor(props) {
@@ -19,12 +19,7 @@ class AccountabilityStaffDetailPage extends Component {
   }
 
   componentWillMount() {
-    axios
-      .get(`${ROOT_URL}//api/hr/staff/${+this.props.params.id}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`hr/staff/${+this.props.params.id}`)
       .then(response => {
         this.setState({
           ...this.state,
@@ -35,15 +30,7 @@ class AccountabilityStaffDetailPage extends Component {
         console.log(err);
       });
 
-    axios
-      .get(
-        `${ROOT_URL}//api/hr/staff/${+this.props.params.id}/salaries/current`,
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doGet(`hr/staff/${+this.props.params.id}/salaries/current`)
       .then(response => {
         this.setState({
           ...this.state,
@@ -54,17 +41,7 @@ class AccountabilityStaffDetailPage extends Component {
         console.log(err);
       });
 
-    axios
-      .get(
-        `${ROOT_URL}/api/logistics/report/accountability-staff/${
-          this.props.params.id
-        }`,
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doGet(`logistics/report/accountability-staff/${this.props.params.id}`)
       .then(response => {
         this.setState({
           ...this.state,

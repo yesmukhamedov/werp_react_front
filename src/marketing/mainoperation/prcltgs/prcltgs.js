@@ -14,7 +14,6 @@ import {
   Sticky,
 } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
-import axios from 'axios';
 import { ROOT_URL } from '../../../utils/constants';
 import { notify } from '../../../general/notification/notification_action';
 import {
@@ -22,6 +21,7 @@ import {
   tradeInOptions,
 } from '../contractAdditionaComponents/marketingConstants';
 import './prcltgs.css';
+import { doPut, doGet, doPost } from '../../../utils/apiActions';
 
 require('moment/locale/ru');
 
@@ -110,12 +110,7 @@ class Prcltgs extends Component {
   componentDidMount() {}
   fetchUserBranches(bukrs) {
     this.setState({ loading: true });
-    axios
-      .get(`${ROOT_URL}/api/reference/branches/${bukrs}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`reference/branches/${bukrs}`)
       .then(({ data }) => {
         const newBranchOptions = data
           .filter(item => item.tovarCategory === 1 || item.tovarCategory === 2)
@@ -240,16 +235,12 @@ class Prcltgs extends Component {
 
   onSearchPriceList(branchId) {
     this.setState({ loading: true });
-    axios
-      .get(`${ROOT_URL}/api/marketing/prcltgs/search`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          bukrs: this.state.searchTerm.bukrs,
-          branchId,
-        },
-      })
+    doGet(`marketing/prcltgs/search`, {
+      params: {
+        bukrs: this.state.searchTerm.bukrs,
+        branchId,
+      },
+    })
       .then(response => {
         this.setState({
           ...this.state,
@@ -272,19 +263,10 @@ class Prcltgs extends Component {
   }
 
   onSaveClick() {
-    axios
-      .post(
-        `${ROOT_URL}/api/marketing/prcltgs/save`,
-        {
-          priceList: this.state.priceList,
-          countryId: this.state.countryId,
-        },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPost(`marketing/prcltgs/save`, {
+      priceList: this.state.priceList,
+      countryId: this.state.countryId,
+    })
       .then(response => {
         this.props.notify('success', 'Сохранен.', 'Успешно');
         const branchId = this.state.selectedBranchKey;
@@ -822,7 +804,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { notify },
-)(Prcltgs);
+export default connect(mapStateToProps, { notify })(Prcltgs);

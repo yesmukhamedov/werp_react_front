@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { ROOT_URL } from '../../../utils/constants';
 import { modifyLoader } from '../../../general/loader/loader_action';
 import {
@@ -25,13 +24,9 @@ import { ACTION_UPDATE, getUriByDoctype } from '../../logUtil';
 
 export function fetchWerksRequestsIn(params) {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/logistics/werks-request/in`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: params,
-      })
+    doGet(`logistics/werks-request/in`, {
+      params: params,
+    })
       .then(({ data }) => {
         dispatch({
           type: LOG_WERKS_REQUEST_LIST_FETCHED,
@@ -46,12 +41,7 @@ export function fetchWerksRequestsIn(params) {
 
 export function blankWerksRequest() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/logistics/werks-request/blank`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`logistics/werks-request/blank`)
       .then(({ data }) => {
         dispatch({
           type: LOG_WERKS_REQUEST_BLANKED,
@@ -66,12 +56,7 @@ export function blankWerksRequest() {
 
 export function fetchWerksRequest(id) {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/logistics/werks-request/` + id, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`logistics/werks-request/` + id)
       .then(({ data }) => {
         dispatch({
           type: LOG_WERKS_REQUEST_FETCHED,
@@ -86,37 +71,22 @@ export function fetchWerksRequest(id) {
 
 export function blankWerksRequestItem(matnrId) {
   return dispatch => {
-    return axios.get(
-      `${ROOT_URL}/api/logistics/werks-request/blank-item/` + matnrId,
-      {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      },
-    );
+    return doGet(`logistics/werks-request/blank-item/` + matnrId);
   };
 }
 
 export function createWerksRequest(o) {
   return dispatch => {
-    return axios.post(`${ROOT_URL}/api/logistics/werks-request`, o, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+    return doPost(`logistics/werks-request`, o);
   };
 }
 
 export function fetchMatnrs(params) {
   return function(dispatch) {
     dispatch(setMatnrListLoading(true));
-    axios
-      .get(`${ROOT_URL}/api/reference/matnrs`, {
-        params: params,
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`reference/matnrs`, {
+      params: params,
+    })
       .then(({ data }) => {
         dispatch(setMatnrListLoading(false));
         dispatch({

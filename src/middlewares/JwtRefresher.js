@@ -1,4 +1,3 @@
-import axios from 'axios';
 import jwt from 'jwt-simple';
 import moment from 'moment';
 import browserHistory from '../utils/history';
@@ -6,6 +5,7 @@ import { ROOT_URL, TOKEN_REFRESH_LIMIT } from '../utils/constants';
 import { resetLocalStorage } from '../utils/helpers';
 import { setAuthorizationHeader } from '../utils/setHeaders';
 import { UNAUTH_USER, AUTH_ERROR, CHANGE_LANGUAGE } from '../actions/types';
+import { doPut, doGet, doPost } from '../utils/apiActions';
 
 const signoutUser = (dispatch, errorMsg) => {
   resetLocalStorage();
@@ -15,14 +15,13 @@ const signoutUser = (dispatch, errorMsg) => {
 };
 
 const requestToken = (dispatch, token, language) => {
-  axios
-    .get(`${ROOT_URL}/tokenRefresh`, {
-      headers: { authorization: token },
-      withCredentials: true,
-      params: {
-        language,
-      },
-    })
+  doGet(`tokenRefresh`, {
+    headers: { authorization: token },
+    withCredentials: true,
+    params: {
+      language,
+    },
+  })
     .then(({ data }) => {
       // If request is good...
       // - save the refreshed JWT token
