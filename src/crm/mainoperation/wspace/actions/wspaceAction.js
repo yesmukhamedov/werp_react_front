@@ -1,5 +1,3 @@
-import axios from 'axios';
-import { ROOT_URL } from '../../../../utils/constants';
 import { handleError } from '../../../../general/notification/notification_action';
 import {
   MENU_BY_RECO,

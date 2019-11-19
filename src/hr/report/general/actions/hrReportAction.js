@@ -1,8 +1,6 @@
-import axios from 'axios';
-import { ROOT_URL } from '../../../../utils/constants';
 import { handleError } from '../../../../general/notification/notification_action';
 import { modifyLoader } from '../../../../general/loader/loader_action';
-import { doGet, doPut, doPost, doDelete } from '../../../../utils/apiActions';
+import { doGet, doPut } from '../../../../utils/apiActions';
 
 export const HR_REP_FETCH_ITEMS = 'HR_REP_FETCH_ITEMS';
 export const HR_REP_FETCH_META = 'HR_REP_FETCH_META';

@@ -1,11 +1,9 @@
-import axios from 'axios';
-import { ROOT_URL } from '../../../utils/constants';
 import {
   handleError,
   notify,
 } from '../../../general/notification/notification_action';
 import { modifyLoader } from '../../../general/loader/loader_action';
-import { doGet, doPut, doPost, doDelete } from '../../../utils/apiActions';
+import { doGet, doPost } from '../../../utils/apiActions';
 
 export const FETCH_BONUS_DATA = 'FETCH_BONUS_DATA';
 export const CLEAR_STATE = 'CLEAR_STATE';

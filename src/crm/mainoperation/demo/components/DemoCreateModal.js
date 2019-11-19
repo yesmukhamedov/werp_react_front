@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Modal, Form, Input, TextArea, Button } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
-import axios from 'axios';
-import { ROOT_URL } from '../../../../utils/constants';
+import { doPost } from '../../../../utils/apiActions';
 import { toggleDemoCreateModal } from '../actions/demoAction';
 import { connect } from 'react-redux';
 import {
@@ -275,16 +274,7 @@ class DemoCreateModal extends Component {
     if (!isValid) {
       return;
     }
-    axios
-      .post(
-        `${ROOT_URL}/api/crm/demo`,
-        { ...this.state.demo },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPost(`crm/demo`, { ...this.state.demo })
       .then(response => {
         this.close();
       })
@@ -344,7 +334,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { toggleDemoCreateModal },
-)(injectIntl(DemoCreateModal));
+export default connect(mapStateToProps, { toggleDemoCreateModal })(
+  injectIntl(DemoCreateModal),
+);

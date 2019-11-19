@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import {
   Container,
   Grid,
@@ -11,8 +10,7 @@ import {
   Header,
   Button,
 } from 'semantic-ui-react';
-import { ROOT_URL } from '../../../utils/constants';
-import { doPut, doGet, doPost } from '../../../utils/apiActions';
+import { doGet } from '../../../utils/apiActions';
 
 class AccountabilityStaffListPage extends Component {
   constructor(props) {

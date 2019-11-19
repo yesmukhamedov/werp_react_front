@@ -1,5 +1,3 @@
-import axios from 'axios';
-import { ROOT_URL } from '../../../../utils/constants';
 import { handleError } from '../../../../general/notification/notification_action';
 import browserHistory from '../../../../utils/history';
 import {
@@ -178,21 +176,6 @@ export function handleAction(document, actionType, additionalData) {
   }
 
   return { type: null, payload: null };
-
-  // return function (dispatch) {
-  //     dispatch(setLoading(true))
-  //     axios.put(`${ROOT_URL}/api/hr/document/handle-action/` + actionType,{...document}, {
-  //         headers: {
-  //             authorization: localStorage.getItem('token')
-  //         }
-  //     }).then(({data}) => {
-  //         dispatch(setLoading(false))
-  //         window.document.location.reload(true);
-  //     }).catch((e) => {
-  //         dispatch(setLoading(false))
-  //         handleError(e,dispatch)
-  //     })
-  // }
 }
 
 /** **DOCUMENT ACTIONS ** */

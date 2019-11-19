@@ -1,8 +1,6 @@
 /* jshint esversion: 6 */
-import axios from 'axios';
-import { ROOT_URL } from '../../../../../utils/constants';
 import { notify } from '../../../../../general/notification/notification_action';
-import { doGet, doPut, doPost } from '../../../../../utils/apiActions';
+import { doGet, doPut } from '../../../../../utils/apiActions';
 
 export const CONTRACT_LIST_DIRECTORIES = 'contract_list_directories';
 export const CLEAR_CONSTRACT_LIST_STORE = 'clear_contract_list_store';

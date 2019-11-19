@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import {
   Container,
   Divider,
@@ -15,12 +14,11 @@ import {
   Input,
   List,
 } from 'semantic-ui-react';
-import { ROOT_URL } from '../../../../utils/constants';
 import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4';
 import BranchF4 from '../../../../reference/f4/branch/BranchF4';
 import PositionF4 from '../../../../reference/f4/position/PositionF4';
 import LazyPagination from '../../../../general/pagination/LazyPagination';
-import { doGet, doPut, doPost, doDelete } from '../../../../utils/apiActions';
+import { doGet } from '../../../../utils/apiActions';
 
 const PAGINATION_TOTAL_COUNT_KEY = 'X-Pagination-Total-Count';
 const PAGINATION_CURRENT_PAGE_KEY = 'X-Pagination-Current-Page';

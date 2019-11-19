@@ -1,5 +1,3 @@
-import axios from 'axios';
-import { ROOT_URL } from '../../../../utils/constants';
 import { modifyLoader } from '../../../../general/loader/loader_action';
 import {
   handleError,
@@ -174,27 +172,6 @@ export function saveExitInterview(model) {
       });
   };
 }
-
-// export function updateExpence(exp){
-//     return function (dispatch){
-//         dispatch(modifyLoader(true))
-//         axios.put(`${ROOT_URL}/api/hr/expence`, exp,{
-//             headers: {
-//                 authorization: localStorage.getItem('token')
-//             }
-//         })
-//             .then(({data}) => {
-//                 dispatch(modifyLoader(false))
-//                 dispatch({
-//                     type:HR_EXPENCE_UPDATED,
-//                     payload:data
-//                 })
-//             }).catch((error) => {
-//             dispatch(modifyLoader(false))
-//             handleError(error,dispatch)
-//         })
-//     }
-// }
 
 export function fetchSingleStaff(staffId) {
   return function(dispatch) {

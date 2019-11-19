@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { doGet, doPut, doDelete, doPost } from '../../../../utils/apiActions';
+import { doGet } from '../../../../utils/apiActions';
 import {
   Container,
   Divider,
@@ -17,7 +16,6 @@ import {
 } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import ReactTable from 'react-table';
-import { ROOT_URL } from '../../../../utils/constants';
 
 const currentDate = new Date();
 class VisitListPage extends Component {

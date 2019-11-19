@@ -1,4 +1,3 @@
-import axios from 'axios';
 import {
   FETCH_CONTRACT_DETAILS,
   CREATE_NEW_TASK,
@@ -6,7 +5,6 @@ import {
   OUTCALL_STATUS_COMMENT_UPDATED,
   CREATE_OUTCALL,
 } from './actionTypes';
-import { ROOT_URL } from '../../../../../utils/constants';
 import { notify } from '../../../../../general/notification/notification_action';
 import { doGet, doPut, doPost } from '../../../../../utils/apiActions';
 
@@ -128,14 +126,7 @@ export function createNewTask(contractNumber, params) {
 }
 
 export function fetchTasks(contractNumber) {
-  const req = axios.get(
-    `${ROOT_URL}/api/call-center/out-calls/${contractNumber}/tasks`,
-    {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    },
-  );
+  const req = doGet(`call-center/out-calls/${contractNumber}/tasks`);
   return dispatch => {
     req
       .then(({ data }) => {
@@ -168,21 +159,13 @@ export function fetchTasks(contractNumber) {
 }
 
 export function updateOutCall(newOutCallParams) {
-  const req = axios.put(
-    `${ROOT_URL}/api/call-center/out-calls/${newOutCallParams.id}`,
-    {
-      id: newOutCallParams.id,
-      status: {
-        id: newOutCallParams.status,
-      },
-      newComment: newOutCallParams.text,
+  const req = doPut(`call-center/out-calls/${newOutCallParams.id}`, {
+    id: newOutCallParams.id,
+    status: {
+      id: newOutCallParams.status,
     },
-    {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    },
-  );
+    newComment: newOutCallParams.text,
+  });
   return dispatch => {
     req
       .then(({ data }) => {

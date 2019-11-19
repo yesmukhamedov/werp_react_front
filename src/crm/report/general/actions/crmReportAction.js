@@ -1,8 +1,6 @@
-import axios from 'axios';
-import { ROOT_URL } from '../../../../utils/constants';
 import { handleError } from '../../../../general/notification/notification_action';
 import { modifyLoader } from '../../../../general/loader/loader_action';
-import { doGet, doPut, doDelete, doPost } from '../../../../utils/apiActions';
+import { doGet, doPut } from '../../../../utils/apiActions';
 
 export const CRM_REP_FETCH_ITEMS = 'CRM_REP_FETCH_ITEMS';
 export const CRM_REP_FETCH_META = 'CRM_REP_FETCH_META';

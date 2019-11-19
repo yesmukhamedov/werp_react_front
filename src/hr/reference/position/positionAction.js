@@ -1,5 +1,3 @@
-import axios from 'axios';
-import { ROOT_URL } from '../../../utils/constants';
 import { modifyLoader } from '../../../general/loader/loader_action';
 import {
   handleError,

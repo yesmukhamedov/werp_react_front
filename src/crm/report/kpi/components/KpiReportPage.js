@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { BarChart, XAxis, YAxis, Tooltip, Bar, CartesianGrid } from 'recharts';
 import {
   Container,
@@ -16,11 +15,10 @@ import {
   Label,
 } from 'semantic-ui-react';
 import KpiCard from './KpiCard';
-import { ROOT_URL } from '../../../../utils/constants';
 import CustomizedAxisTick from './CustomizedAxisTick';
 import MonthF4 from '../../../../reference/f4/date/MonthF4';
 import YearF4 from '../../../../reference/f4/date/YearF4';
-import { doGet, doPut, doDelete, doPost } from '../../../../utils/apiActions';
+import { doGet } from '../../../../utils/apiActions';
 
 const bukrsMap = {};
 const branchesMap = {};

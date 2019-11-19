@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { Form, Button } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
-import { ROOT_URL } from '../../../../utils/constants';
-import { doGet, doPut, doPost, doDelete } from '../../../../utils/apiActions';
+import { doGet, doPost } from '../../../../utils/apiActions';
 
 const genderOptions = [
   { key: 'm', text: 'Мужской', value: 'male' },

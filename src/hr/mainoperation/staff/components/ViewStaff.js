@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import moment from 'moment';
 import {
   Container,
@@ -9,7 +8,6 @@ import {
   Grid,
   Header,
 } from 'semantic-ui-react';
-import { ROOT_URL } from '../../../../utils/constants';
 
 class ViewStaff extends Component {
   constructor(props) {

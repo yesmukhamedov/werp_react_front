@@ -14,8 +14,6 @@ import {
   Divider,
   List,
 } from 'semantic-ui-react';
-import axios from 'axios';
-import { ROOT_URL } from '../../../../utils/constants';
 import { notify } from '../../../../general/notification/notification_action';
 import RecoCard from './RecoCard';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -410,14 +408,11 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    notify,
-    fetchGroupDealers,
-    checkPhoneNumber,
-    createRecoListNew,
-    blankRecoItem,
-    blankReco,
-  },
-)(injectIntl(RecoCreatePage));
+export default connect(mapStateToProps, {
+  notify,
+  fetchGroupDealers,
+  checkPhoneNumber,
+  createRecoListNew,
+  blankRecoItem,
+  blankReco,
+})(injectIntl(RecoCreatePage));

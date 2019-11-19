@@ -15,9 +15,8 @@ import {
 } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
-import axios from 'axios';
-import { ROOT_URL, MONTH_OPTIONS } from '../../../../utils/constants';
-import { doGet, doPut, doDelete, doPost } from '../../../../utils/apiActions';
+import { MONTH_OPTIONS } from '../../../../utils/constants';
+import { doGet, doPost } from '../../../../utils/apiActions';
 
 const locationOptions = [
   {

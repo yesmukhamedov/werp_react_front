@@ -12,7 +12,6 @@ import {
   Divider,
   Header,
 } from 'semantic-ui-react';
-import axios from 'axios';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { ROOT_URL } from '../../../../utils/constants';
@@ -578,26 +577,6 @@ class Phone extends Component {
       .catch(e => {
         alert('Error');
       });
-    // return;
-    // axios
-    //   .post(
-    //     `${ROOT_URL}/api/crm/call/${this.props.phoneId}`,
-    //     { ...this.state.call },
-    //     {
-    //       headers: {
-    //         authorization: localStorage.getItem('token'),
-    //       },
-    //     },
-    //   )
-    //   .then(response => {
-    //     if (this.props.recoId) {
-    //       this.props.fetchSingleReco(this.props.recoId);
-    //     }
-    //     this.closeModal();
-    //   })
-    //   .catch(error => {
-    //     console.log(error);
-    //   });
   }
 
   closeModal() {

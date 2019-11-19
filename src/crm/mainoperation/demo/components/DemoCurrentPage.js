@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { Header, Container, Segment } from 'semantic-ui-react';
-import axios from 'axios';
-import { ROOT_URL } from '../../../../utils/constants';
 import moment from 'moment';
 import { fetchDemoCurrentData } from '../actions/demoAction';
 import { connect } from 'react-redux';
@@ -115,7 +113,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { fetchDemoCurrentData },
-)(DemoCurrentPage);
+export default connect(mapStateToProps, { fetchDemoCurrentData })(
+  DemoCurrentPage,
+);

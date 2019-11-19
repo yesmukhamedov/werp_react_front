@@ -1,9 +1,7 @@
 /* jshint esversion: 6 */
-import axios from 'axios';
 import _ from 'lodash';
-import { ROOT_URL } from '../../../../../utils/constants';
 import { notify } from '../../../../../general/notification/notification_action';
-import { doGet, doPut, doPost } from '../../../../../utils/apiActions';
+import { doGet } from '../../../../../utils/apiActions';
 
 export const TASK_LIST_DIRECTORIES = 'TASK_LIST_DIRECTORIES';
 export const CLEAR_TASK_LIST_STORE = 'clear_task_list_store';

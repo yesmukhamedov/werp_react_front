@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import axios from 'axios';
 import {
   Container,
   Header,
@@ -11,12 +10,11 @@ import {
   Tab,
   Loader,
 } from 'semantic-ui-react';
-import { ROOT_URL } from '../../../../utils/constants';
 import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4';
 import BranchF4 from '../../../../reference/f4/branch/BranchF4';
 import YearF4 from '../../../../reference/f4/date/YearF4';
 import MonthF4 from '../../../../reference/f4/date/MonthF4';
-import { doGet, doPut, doDelete, doPost } from '../../../../utils/apiActions';
+import { doGet } from '../../../../utils/apiActions';
 
 const currentDate = new Date();
 
