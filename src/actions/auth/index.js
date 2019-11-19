@@ -1,6 +1,5 @@
-import axios from 'axios';
+import { doGet, doPost } from '../../utils/apiActions';
 import browserHistory from '../../utils/history';
-import { ROOT_URL } from '../../utils/constants';
 import { resetLocalStorage } from '../../utils/helpers';
 import {
   AUTH_USER,
@@ -9,10 +8,6 @@ import {
   USERS_ERROR,
   UNAUTH_USER,
 } from '../types';
-import {
-  setAuthorizationHeader,
-  setContentLanguageHeader,
-} from '../../utils/setHeaders';
 
 export function usersError(error) {
   return {
@@ -40,8 +35,13 @@ export function authError(error) {
 export function signinUser({ username, password }, language) {
   return dispatch => {
     // Submit username/password to the server
-    axios
-      .post(`${ROOT_URL}/signin`, { username, password, language })
+    // .post(`${ROOT_URL}/signin`, { username, password, language })
+
+    doPost(`signin`, {
+      username,
+      password,
+      language,
+    })
       .then(response => {
         // If request is good...
         // - save the JWT token
@@ -91,8 +91,8 @@ export function signinUser({ username, password }, language) {
 export function signoutUser() {
   // setAuthorizationHeader();
   return dispatch => {
-    axios
-      .post(`${ROOT_URL}/signout`)
+    // .post(`${ROOT_URL}/signout`)
+    doPost(`signout`)
       .then(response => {
         resetLocalStorage();
         localStorage.removeItem('currentPathName');
@@ -111,8 +111,9 @@ export function signoutUser() {
 
 export function fetchUsers() {
   return dispatch => {
-    axios
-      .get(`${ROOT_URL}/users`)
+    // .get(`${ROOT_URL}/users`)
+
+    doGet('users')
       .then(response => {
         dispatch({
           type: FETCH_USERS,

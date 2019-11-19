@@ -9,9 +9,8 @@ import {
   Segment,
   Container,
 } from 'semantic-ui-react';
-import axios from 'axios';
+import { doGet } from '../../../../utils/apiActions';
 import moment from 'moment';
-import { ROOT_URL } from '../../../../utils/constants';
 
 export default class extends Component {
   constructor(props) {
@@ -23,12 +22,7 @@ export default class extends Component {
 
   componentWillMount() {
     const id = parseInt(this.props.match.params.id, 10);
-    axios
-      .get(`${ROOT_URL}/api/service/packets/${id}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`service/packets/${id}`)
       .then(
         ({ data }) => {
           this.setState({ servicePacketData: data });

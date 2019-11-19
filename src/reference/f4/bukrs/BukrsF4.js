@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { doGet } from '../../../utils/apiActions';
 import { Form } from 'semantic-ui-react';
-import { ROOT_URL } from '../../../utils/constants';
 
 const MODE_DROPDOWN = 0;
 const MODE_LABEL = 1;
@@ -20,12 +19,7 @@ class BukrsF4 extends Component {
   }
 
   componentWillMount() {
-    axios
-      .get(`${ROOT_URL}/api/reference/companies`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`reference/companies`)
       .then(res => {
         const loaded = res.data.map(b => ({
           key: b.id,

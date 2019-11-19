@@ -1,10 +1,8 @@
-import axios from 'axios';
-import { ROOT_URL } from '../../utils/constants';
+import { doGet, doPost } from '../../utils/apiActions';
 import {
   handleError,
   notify,
 } from '../../general/notification/notification_action';
-import { doGet, doPost } from '../../utils/apiActions';
 import { modifyLoader } from '../../general/loader/loader_action';
 
 export const F4_FETCH_MATNR_LIST = 'F4_FETCH_MATNR_LIST';
@@ -138,12 +136,7 @@ export function f4FetchBranchOptions(params = {}) {
 
 export function f4FetchBranchesByBukrs(bukrs) {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/reference/branches/` + bukrs, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`reference/branches/` + bukrs)
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_BUKRS_BRANCHES,

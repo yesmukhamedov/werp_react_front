@@ -1,22 +1,14 @@
 import React, { PureComponent } from 'react';
-import axios from 'axios';
+import { doGetCancelToken } from '../../../../../utils/apiActions';
 import _ from 'lodash';
-import {
-  Modal,
-  Button,
-  Form,
-  Divider,
-  Search
-} from 'semantic-ui-react';
+import { Modal, Button, Form, Divider, Search } from 'semantic-ui-react';
 import { Field, reduxForm } from 'redux-form';
 import {
   DropdownFormField,
   // SearchableSingleDropdownFormField
 } from '../../../../../utils/formFields';
-import { ROOT_URL } from '../../../../../utils/constants';
 
-
-const validate = (values) => {
+const validate = values => {
   const errors = {};
   if (!values.user) {
     errors.user = 'Объязательное поле для заполнения';
@@ -27,17 +19,17 @@ const validate = (values) => {
   return errors;
 };
 
-const clearForm = (props) => {};
+const clearForm = props => {};
 
-const userSearchUrl = `${ROOT_URL}/api/mgru/users`;
+const userSearchUrl = `mgru/users`;
 class AddTaskAdminModalComponent extends PureComponent {
   constructor(props) {
     super(props);
 
     this.state = {
       isLoading: false,
-      results: [], 
-      value: '' ,
+      results: [],
+      value: '',
       userId: '',
     };
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -46,8 +38,8 @@ class AddTaskAdminModalComponent extends PureComponent {
 
   handleFormSubmit(formValues) {
     const { createTaskAdmin, fetchTaskAdmins } = this.props;
-    const { userId } = this.state
-    createTaskAdmin(formValues, userId,  () => fetchTaskAdmins());
+    const { userId } = this.state;
+    createTaskAdmin(formValues, userId, () => fetchTaskAdmins());
     this.handleFormClose();
   }
 
@@ -57,35 +49,35 @@ class AddTaskAdminModalComponent extends PureComponent {
     this.resetComponent();
   }
 
-  resetComponent = () => this.setState({ isLoading: false, results: [], value: '', userId: '' })
+  resetComponent = () =>
+    this.setState({ isLoading: false, results: [], value: '', userId: '' });
 
-  handleResultSelect = (e, { result }) => this.setState({ value: result.title, userId: result.key })
+  handleResultSelect = (e, { result }) =>
+    this.setState({ value: result.title, userId: result.key });
 
   handleSearchChange = (e, { value }) => {
     const paramsDict = {
-        username: value
-      };
-      const params = _.map(
-        paramsDict,
-        (val, key) =>
-          (val ? `${key}=${val}` : val === false ? `${key}=${val}` : ''),
-      )
-        .filter(param => param)
-        .join('&');
-    this.setState({ isLoading: true, value, userId: ''})
+      username: value,
+    };
+    const params = _.map(paramsDict, (val, key) =>
+      val ? `${key}=${val}` : val === false ? `${key}=${val}` : '',
+    )
+      .filter(param => param)
+      .join('&');
+    this.setState({ isLoading: true, value, userId: '' });
 
     // cancel the previous request
     if (typeof this._source != typeof undefined) {
-      this._source.cancel('Operation canceled due to new request.')
+      this._source.cancel('Operation canceled due to new request.');
     }
 
     // save the new request for cancellation
     this._source = axios.CancelToken.source();
 
-    const req = axios.get(`${userSearchUrl}?${params}`, {
-      headers: { authorization: localStorage.getItem('token') },
-      cancelToken: this._source.token,
-    })
+    const req = doGetCancelToken(
+      `${userSearchUrl}?${params}`,
+      this._source.token,
+    );
 
     req
       .then(({ data }) => {
@@ -99,15 +91,15 @@ class AddTaskAdminModalComponent extends PureComponent {
           results: users,
         });
       })
-      .catch(error => {        
-        this.resetComponent()
-        if (axios.isCancel(error)) {            
+      .catch(error => {
+        this.resetComponent();
+        if (axios.isCancel(error)) {
           console.log('Request canceled', error);
         } else {
           console.log(error);
         }
-      })
-  }
+      });
+  };
 
   render() {
     const {
@@ -118,7 +110,7 @@ class AddTaskAdminModalComponent extends PureComponent {
       lang,
     } = this.props;
     const { messages } = this.props.intl;
-    const { isLoading, value, results } = this.state
+    const { isLoading, value, results } = this.state;
     return (
       <Modal open={isOpen} onClose={this.handleFormClose}>
         <Modal.Header>{messages.H__ADD_TASK_ADMIN}</Modal.Header>
@@ -132,14 +124,16 @@ class AddTaskAdminModalComponent extends PureComponent {
                 opts={userOptions}
               /> */}
               <Form.Field>
-                  <label>{messages.L__USER}</label>
-                  <Search
-                      loading={isLoading}
-                      onResultSelect={this.handleResultSelect}
-                      onSearchChange={_.debounce(this.handleSearchChange, 800, { leading: true })}
-                      results={results}
-                      // value={value}
-                  />
+                <label>{messages.L__USER}</label>
+                <Search
+                  loading={isLoading}
+                  onResultSelect={this.handleResultSelect}
+                  onSearchChange={_.debounce(this.handleSearchChange, 800, {
+                    leading: true,
+                  })}
+                  results={results}
+                  // value={value}
+                />
               </Form.Field>
               <Field
                 name="department"
@@ -147,7 +141,7 @@ class AddTaskAdminModalComponent extends PureComponent {
                 label={messages.L__DEPARTMENT}
                 opts={deptOptions}
               />
-              
+
               <Divider />
 
               <Button

@@ -14,8 +14,7 @@ import {
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-import axios from 'axios';
-import { ROOT_URL } from '../../../utils/constants';
+import { doGet } from '../../../utils/apiActions';
 import { notify } from '../../../general/notification/notification_action';
 import '../serrep1/serrep1.css';
 import SemanticPagination from '../../../general/pagination/semanticTableFooter/semanticPagination';
@@ -158,19 +157,13 @@ class Serrep4 extends Component {
     strVal = this.state.searchTerm.dateTo.format('YYYY-MM-DD');
     const searchDateTo = moment.utc(strVal).format();
 
-    axios
-      .get(`${ROOT_URL}/api/service/reports/serrep4/search`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          bukrs: this.state.searchTerm.bukrs,
-          branchIds: this.state.searchTerm.branchList.join(),
-          dateFrom: searchDateFrom,
-          dateTo: searchDateTo,
-          warranty: this.state.searchTerm.warranty,
-        },
-      })
+    doGet(`${ROOT_URL}/api/service/reports/serrep4/search`, {
+      bukrs: this.state.searchTerm.bukrs,
+      branchIds: this.state.searchTerm.branchList.join(),
+      dateFrom: searchDateFrom,
+      dateTo: searchDateTo,
+      warranty: this.state.searchTerm.warranty,
+    })
       .then(response => {
         this.setState({
           ...this.state,
@@ -519,7 +512,4 @@ function mapStateToProps(state) {
   return {};
 }
 
-export default connect(
-  mapStateToProps,
-  { notify },
-)(Serrep4);
+export default connect(mapStateToProps, { notify })(Serrep4);

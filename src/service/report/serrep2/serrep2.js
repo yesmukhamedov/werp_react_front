@@ -14,8 +14,7 @@ import {
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-import axios from 'axios';
-import { ROOT_URL } from '../../../utils/constants';
+import { doGet, doPost } from '../../../utils/apiActions';
 import { notify } from '../../../general/notification/notification_action';
 import { fetchBukrsOptions } from '../../../reference/f4/bukrs/BukrsOptions';
 import { fetchBranchOptions } from '../../../reference/f4/branch/BranchOptions';
@@ -125,18 +124,12 @@ class Serrep2 extends Component {
       searchDate = moment.utc(strVal).format();
     }
 
-    axios
-      .get(`${ROOT_URL}/api/service/reports/serrep2/search`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          bukrs: this.state.searchTerm.bukrs,
-          branchIds: this.state.searchTerm.branchList.join(),
-          date: searchDate,
-          archive: this.state.searchTerm.archive,
-        },
-      })
+    doGet(`service/reports/serrep2/search`, {
+      bukrs: this.state.searchTerm.bukrs,
+      branchIds: this.state.searchTerm.branchList.join(),
+      date: searchDate,
+      archive: this.state.searchTerm.archive,
+    })
       .then(response => {
         this.setState({
           ...this.state,
@@ -171,21 +164,11 @@ class Serrep2 extends Component {
   }
 
   onSaveClick() {
-    axios
-      .post(
-        `${ROOT_URL}/api/service/reports/serrep2/save`,
-        {
-          a_all: this.state.all,
-          a_tek: this.state.tek,
-          a_pros: this.state.pros,
-        },
-
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPost(`service/reports/serrep2/save`, {
+      a_all: this.state.all,
+      a_tek: this.state.tek,
+      a_pros: this.state.pros,
+    })
       .then(response => {
         this.props.notify('success', 'Сохранен.', 'Успешно');
       })
@@ -468,7 +451,4 @@ function mapStateToProps(state) {
   return {};
 }
 
-export default connect(
-  mapStateToProps,
-  { notify },
-)(Serrep2);
+export default connect(mapStateToProps, { notify })(Serrep2);

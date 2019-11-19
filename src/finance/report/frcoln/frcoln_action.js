@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { ROOT_URL } from '../../../utils/constants';
+import { doGet, doPost } from '../../../utils/apiActions';
 import {
   notify,
   handleError,
@@ -26,20 +25,14 @@ export function frcolnSearchData(
   return function(dispatch) {
     dispatch(modifyLoader(true));
 
-    axios
-      .get(`${ROOT_URL}/api/finance/reports/frcoln/searchByBranches`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          bukrs: a_bukrs,
-          branchIds: a_branchList.join(),
-          year,
-          month,
-          status: a_status,
-          period: a_period,
-        },
-      })
+    doGet(`finance/reports/frcoln/searchByBranches`, {
+      bukrs: a_bukrs,
+      branchIds: a_branchList.join(),
+      year,
+      month,
+      status: a_status,
+      period: a_period,
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -67,21 +60,15 @@ export function frcolnFetchBranchData(
   // console.log(222);
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/finance/reports/frcoln/searchByBranch`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          bukrs: a_bukrs,
-          branchId: a_branchId,
-          waers: a_waers,
-          year,
-          month,
-          status: a_status,
-          period: a_period,
-        },
-      })
+    doGet(`finance/reports/frcoln/searchByBranch`, {
+      bukrs: a_bukrs,
+      branchId: a_branchId,
+      waers: a_waers,
+      year,
+      month,
+      status: a_status,
+      period: a_period,
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -112,23 +99,17 @@ export function frcolnFetchCollectorData(
 
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/finance/reports/frcoln/searchByCollector`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          bukrs: a_bukrs,
-          branchId: a_branchId,
-          waers: a_waers,
-          year,
-          month,
-          ps: a_ps,
-          staff_id: a_staff_id,
-          status: a_status,
-          period: a_period,
-        },
-      })
+    doGet(`finance/reports/frcoln/searchByCollector`, {
+      bukrs: a_bukrs,
+      branchId: a_branchId,
+      waers: a_waers,
+      year,
+      month,
+      ps: a_ps,
+      staff_id: a_staff_id,
+      status: a_status,
+      period: a_period,
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -149,23 +130,16 @@ export function frcolnSaveData(a_bukrs, a_date, a_period) {
 
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .post(
-        `${ROOT_URL}/api/finance/reports/frcoln/saveFrcolStatistics`,
-        {},
-        {
-          params: {
-            bukrs: a_bukrs,
-            year,
-            month,
-            period: a_period,
-          },
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
-
+    doPost(
+      `finance/reports/frcoln/saveFrcolStatistics`,
+      {},
+      {
+        bukrs: a_bukrs,
+        year,
+        month,
+        period: a_period,
+      },
+    )
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {

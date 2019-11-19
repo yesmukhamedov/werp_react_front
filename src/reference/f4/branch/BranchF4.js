@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { doGet } from '../../../utils/apiActions';
 import { Form } from 'semantic-ui-react';
-import { ROOT_URL } from '../../../utils/constants';
 
 const bukrsBranches = {};
 class BranchF4 extends Component {
@@ -22,12 +21,7 @@ class BranchF4 extends Component {
       console.log('ERR');
       return;
     }
-    axios
-      .get(`${ROOT_URL}/api/reference/branches/${bukrs}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`reference/branches/${bukrs}`)
       .then(res => {
         const loaded = res.data.map(b => ({
           key: b.branch_id,

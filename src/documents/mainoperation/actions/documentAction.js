@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { ROOT_URL } from '../../../utils/constants';
+import { doGet } from '../../../utils/apiActions';
 import { handleError } from '../../../general/notification/notification_action';
 // import browserHistory from '../../../../utils/history';
 
@@ -9,10 +8,7 @@ export const DOC_MYDOCS_PAGE_LOADING = 'DOC_MYDOCS_PAGE_LOADING';
 export function fetchMydocs(statusId) {
   return function(dispatch) {
     dispatch(setLoading(true));
-    axios
-      .get(`${ROOT_URL}/api/documents/my-docs/${statusId}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`documents/my-docs/${statusId}`)
       .then(({ data }) => {
         dispatch(setLoading(false));
         dispatch({

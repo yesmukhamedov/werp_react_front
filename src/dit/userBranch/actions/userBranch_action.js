@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { ROOT_URL } from '../../../utils/constants';
+import { doGet, doPost } from '../../../utils/apiActions';
 import { notify } from '../../../general/notification/notification_action';
 
 export const FETCH_USERS = 'FETCH_USERS';
@@ -17,8 +16,7 @@ export const CHANGE_ACCESS_UBC = 'CHANGE_ACCESS_UBC';
 
 export function fetchUsers() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/dit/userBranch/FETCH_USERS`)
+    doGet(`dit/userBranch/FETCH_USERS`)
       .then(response => {
         dispatch({
           type: FETCH_USERS,
@@ -39,11 +37,10 @@ export function fetchUsers() {
 
 export function findUsers(userList, userSearchTerm) {
   return function(dispatch) {
-    axios
-      .post(`${ROOT_URL}/dit/userBranch/FIND_USERS`, {
-        userList,
-        userSearchTerm,
-      })
+    doPost(`dit/userBranch/FIND_USERS`, {
+      userList,
+      userSearchTerm,
+    })
       .then(response => {
         dispatch({
           type: FIND_USERS,
@@ -64,11 +61,10 @@ export function findUsers(userList, userSearchTerm) {
 
 export function editUserBranches(selectedUserId, userBranchList) {
   return function(dispatch) {
-    axios
-      .post(`${ROOT_URL}/dit/userBranch/EDIT_USER_BRANCHES`, {
-        selectedUserId,
-        userBranchList,
-      })
+    doPost(`dit/userBranch/EDIT_USER_BRANCHES`, {
+      selectedUserId,
+      userBranchList,
+    })
       .then(response => {
         dispatch({
           type: EDIT_USER_BRANCHES,
@@ -90,10 +86,9 @@ export function editUserBranches(selectedUserId, userBranchList) {
 
 export function fethcUserBranches(selectedUserId) {
   return function(dispatch) {
-    axios
-      .post(`${ROOT_URL}/dit/userBranch/FETCH_USER_BRANCHES`, {
-        selectedUserId,
-      })
+    doPost(`dit/userBranch/FETCH_USER_BRANCHES`, {
+      selectedUserId,
+    })
       .then(response => {
         dispatch({
           type: FETCH_USER_BRANCHES,
@@ -114,10 +109,9 @@ export function fethcUserBranches(selectedUserId) {
 
 export function fethcUserBranchCustomers(selectedUserBranchId) {
   return function(dispatch) {
-    axios
-      .post(`${ROOT_URL}/dit/userBranch/FETCH_USER_BRANCH_CUSTOMERS`, {
-        selectedUserBranchId,
-      })
+    doPost(`dit/userBranch/FETCH_USER_BRANCH_CUSTOMERS`, {
+      selectedUserBranchId,
+    })
       .then(response => {
         dispatch({
           type: FETCH_USER_BRANCH_CUSTOMERS,
@@ -137,10 +131,9 @@ export function fethcUserBranchCustomers(selectedUserBranchId) {
 }
 export function saveUserBranchCustomers(ubcList) {
   return function(dispatch) {
-    axios
-      .post(`${ROOT_URL}/dit/userBranch/SAVE_USER_BRANCH_CUSTOMERS`, {
-        ubcList,
-      })
+    doPost(`dit/userBranch/SAVE_USER_BRANCH_CUSTOMERS`, {
+      ubcList,
+    })
       .then(response => {
         dispatch({
           type: SAVE_USER_BRANCH_CUSTOMERS,
@@ -163,12 +156,7 @@ export function saveUserBranchCustomers(ubcList) {
 
 export function sendTestSms() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/dit/userBranch/testSms`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`dit/userBranch/testSms`)
       .then(response => {
         dispatch(notify('success', 'Сохранен.', 'Успешно'));
       })

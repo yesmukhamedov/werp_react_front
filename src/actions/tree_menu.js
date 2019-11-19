@@ -1,13 +1,14 @@
-import axios from 'axios';
+import { doGet } from '../utils/apiActions';
 import { BREADCRUMB, TREE_MENU, ROUTES } from './types';
-import { ROOT_URL } from '../utils/constants';
 
 export function fetchTreeMenu(userId) {
   return dispatch => {
     // const url = `https://private-876aa-auraerpapi.apiary-mock.com/api/v1/menu-tree`;
-    const url = `${ROOT_URL}/users/${userId}/menu-tree`;
-    axios
-      .get(url)
+    const url = `users/${userId}/menu-tree`;
+
+    // .get(url)
+
+    doGet(url)
       .then(response => {
         // If request is good...
 
@@ -22,12 +23,13 @@ export function fetchTreeMenu(userId) {
 
 export function fetchAvailableRoutes() {
   return dispatch => {
-    axios
-      .get(`${ROOT_URL}/api/routes`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    // .get(`${ROOT_URL}/api/routes`, {
+    //   headers: {
+    //     authorization: localStorage.getItem('token'),
+    //   },
+    // })
+
+    doGet(`routes`)
       .then(response => {
         // If request is good...
         dispatch({

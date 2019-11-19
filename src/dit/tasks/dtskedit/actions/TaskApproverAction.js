@@ -1,12 +1,11 @@
 /* jshint esversion: 6 */
-import axios from 'axios';
+import { doGet, doPost } from '../../../../utils/apiActions';
 import _ from 'lodash';
-import { ROOT_URL } from '../../../../utils/constants';
 import { notify } from '../../../../general/notification/notification_action';
 
 export const FETCH_TASK_DOC_STATUS = 'fetch_task_doc_status';
 
-const taskApproveUrl = `${ROOT_URL}/api/tasks`;
+const taskApproveUrl = `tasks`;
 
 export function fetchTaskDocStatus(taskId, authorsManager, recipient) {
   const paramsDict = {
@@ -22,10 +21,7 @@ export function fetchTaskDocStatus(taskId, authorsManager, recipient) {
     .join('&');
 
   return dispatch => {
-    axios
-      .get(`${taskApproveUrl}/status/${taskId}?${params}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`${taskApproveUrl}/status/${taskId}?${params}`)
       .then(({ data }) => {
         dispatch({
           type: FETCH_TASK_DOC_STATUS,
@@ -47,10 +43,7 @@ export function fetchTaskDocStatus(taskId, authorsManager, recipient) {
 
 export function approve(task, successCallback) {
   return dispatch => {
-    axios
-      .post(`${taskApproveUrl}/approve`, task, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doPost(`${taskApproveUrl}/approve`, task)
       .then(() => {
         dispatch(notify('success', 'Задача успешно одобрена', 'Успешно'));
         if (successCallback) {
@@ -72,10 +65,7 @@ export function approve(task, successCallback) {
 
 export function reject(task, successCallback) {
   return dispatch => {
-    axios
-      .post(`${taskApproveUrl}/reject`, task, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doPost(`${taskApproveUrl}/reject`, task)
       .then(({ data }) => {
         dispatch(notify('success', 'Задача отклонена', 'Успешно'));
         if (successCallback) {

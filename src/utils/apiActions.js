@@ -24,3 +24,17 @@ export const doDelete = (uri, delData, params = {}) => {
     params,
   });
 };
+
+export const doGetCancelToken = (uri, token, params = {}) => {
+  return axiosInstance.get(`${ROOT_URL}` + '/api/' + uri, {
+    params,
+    cancelToken: token,
+  });
+};
+
+export const doPostExcel = (uri, postData, params = {}) => {
+  return axiosInstance.post(`${ROOT_URL}` + '/api/' + uri, postData, {
+    params,
+    responseType: 'blob',
+  });
+};

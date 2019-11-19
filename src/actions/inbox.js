@@ -1,12 +1,13 @@
 import { INBOX_UNREAD } from './types';
-import axios from 'axios';
-import { ROOT_URL } from '../utils/constants';
+import { doGet } from '../utils/apiActions';
 
 export function fetchUnreadMessages({ userId }) {
   return dispatch => {
-    const url = `${ROOT_URL}/inbox/${userId}`;
-    axios
-      .get(url)
+    const url = `inbox/${userId}`;
+
+    // .get(url)
+
+    doGet(url)
       .then(response => {
         // console.log(`fetchUnreadMessages(${userId}): ${JSON.stringify(response)}`);
         // If request is good...

@@ -1,6 +1,5 @@
-import axios from 'axios';
+import { doGet } from '../../../../utils/apiActions';
 import _ from 'lodash';
-import { ROOT_URL } from '../../../../utils/constants';
 import { notify } from '../../../../general/notification/notification_action';
 
 export const MONITOR_TASK_LIST_DIRECTORIES = 'monitor_task_list_directories';
@@ -9,10 +8,7 @@ export const FOUND_MONITOR_TASKS = 'found_monitor_tasks';
 
 export function searchTasks(params, resolve) {
   return dispatch => {
-    axios
-      .get(`${ROOT_URL}/api/dtskl/monitor?${params}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`dtskl/monitor?${params}`)
       .then(({ data }) => {
         // console.log(data);
         dispatch({
@@ -64,15 +60,11 @@ export function getTaskMonitorDirectoriesOld(lang) {
 }
 
 function getTaskDirectory(name) {
-  return axios.get(`${ROOT_URL}/api/tasks/${name}`, {
-    headers: { authorization: localStorage.getItem('token') },
-  });
+  return doGet(`tasks/${name}`);
 }
 
 function getRefDirectory(name) {
-  return axios.get(`${ROOT_URL}/api/reference/${name}`, {
-    headers: { authorization: localStorage.getItem('token') },
-  });
+  return doGet(`reference/${name}`);
 }
 
 export function getTaskMonitorDirectories(lang) {

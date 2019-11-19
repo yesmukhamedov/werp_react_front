@@ -1,17 +1,9 @@
-import axios from 'axios';
-import { ROOT_URL } from '../../../../utils/constants';
+import { doPost } from '../../../../../utils/apiActions';
 
-const createTaskUrl = `${ROOT_URL}/api/tasks`;
+const createTaskUrl = `tasks`;
 
 export default {
   task: {
-    create: task =>
-      axios
-        .post(createTaskUrl, task, {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        })
-        .then(res => res.data),
+    create: task => doPost(createTaskUrl, task).then(res => res.data),
   },
 };

@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { ROOT_URL } from '../utils/constants';
+import { doGet, doPost } from '../utils/apiActions';
 import {
   handleError,
   notify,
@@ -21,23 +20,28 @@ export function amsgSave(a_bkpf, a_rows, a_rowsPs, a_lifnr) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
 
-    axios
-      .post(
-        `${ROOT_URL}/api/accounting/mainoperation/amsg/save`,
-        {
-          bkpf: a_bkpf,
-          l_bseg: a_rows,
-          l_payment_schedule: a_rowsPs,
-          lifnr: a_lifnr,
-        },
-        {
-          headers: {
-            // 'Content-Type': 'application/json;charset=UTF-8',
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    // .post(
+    //   `${ROOT_URL}/api/accounting/mainoperation/amsg/save`,
+    //   {
+    //     bkpf: a_bkpf,
+    //     l_bseg: a_rows,
+    //     l_payment_schedule: a_rowsPs,
+    //     lifnr: a_lifnr,
+    //   },
+    //   {
+    //     headers: {
+    //       // 'Content-Type': 'application/json;charset=UTF-8',
+    //       authorization: localStorage.getItem('token'),
+    //     },
+    //   },
+    // )
 
+    doPost(`accounting/mainoperation/amsg/save`, {
+      bkpf: a_bkpf,
+      l_bseg: a_rows,
+      l_payment_schedule: a_rowsPs,
+      lifnr: a_lifnr,
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
@@ -72,20 +76,21 @@ export function amcddSave(a_contract) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
 
-    axios
-      .post(
-        `${ROOT_URL}/api/accounting/mainoperation/amcdd/save`,
-        {
-          ...a_contract,
-        },
-        {
-          headers: {
-            // 'Content-Type': 'application/json;charset=UTF-8',
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
-
+    // .post(
+    //   `${ROOT_URL}/api/accounting/mainoperation/amcdd/save`,
+    //   {
+    //     ...a_contract,
+    //   },
+    //   {
+    //     headers: {
+    //       // 'Content-Type': 'application/json;charset=UTF-8',
+    //       authorization: localStorage.getItem('token'),
+    //     },
+    //   },
+    // )
+    doPost(`accounting/mainoperation/amcdd/save`, {
+      ...a_contract,
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
@@ -117,15 +122,17 @@ export function amcddSave(a_contract) {
 export function amcddFetch(a_zregOrConNum) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/accounting/mainoperation/amcdd/fetch`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          zregOrConNum: a_zregOrConNum,
-        },
-      })
+    // .get(`${ROOT_URL}/api/accounting/mainoperation/amcdd/fetch`, {
+    //   headers: {
+    //     authorization: localStorage.getItem('token'),
+    //   },
+    //   params: {
+    //     zregOrConNum: a_zregOrConNum,
+    //   },
+    // })
+    doGet('accounting/mainoperation/amcdd/fetch', {
+      zregOrConNum: a_zregOrConNum,
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -178,18 +185,24 @@ export function fetchARLI(
 ) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/accounting/reports/arli/fetch`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          bukrs: a_bukrs,
-          branchList: a_branchList.join(),
-          dateFrom: a_dateFrom,
-          dateTo: a_dateTo,
-        },
-      })
+
+    // .get(`${ROOT_URL}/api/accounting/reports/arli/fetch`, {
+    //   headers: {
+    //     authorization: localStorage.getItem('token'),
+    //   },
+    //   params: {
+    //     bukrs: a_bukrs,
+    //     branchList: a_branchList.join(),
+    //     dateFrom: a_dateFrom,
+    //     dateTo: a_dateTo,
+    //   },
+    // })
+    doGet('accounting/reports/arli/fetch', {
+      bukrs: a_bukrs,
+      branchList: a_branchList.join(),
+      dateFrom: a_dateFrom,
+      dateTo: a_dateTo,
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -207,27 +220,26 @@ export function fetchARLI(
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 export function saveAccSrcDocs(args, tcode, initFun) {
   let url = '';
-  if (tcode === 'AMPI')
-    url = `${ROOT_URL}/api/accounting/mainoperation/ampi/save`;
-  else if (tcode === 'AMRI')
-    url = `${ROOT_URL}/api/accounting/mainoperation/amri/save`;
+  if (tcode === 'AMPI') url = `accounting/mainoperation/ampi/save`;
+  else if (tcode === 'AMRI') url = `accounting/mainoperation/amri/save`;
 
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
   return function(dispatch) {
-    axios
-      .post(
-        url,
-        {
-          ...args,
-        },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
-
+    // .post(
+    //   url,
+    //   {
+    //     ...args,
+    //   },
+    //   {
+    //     headers: {
+    //       authorization: localStorage.getItem('token'),
+    //     },
+    //   },
+    // )
+    doPost(url, {
+      ...args,
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
@@ -273,27 +285,43 @@ export function fetchArep1Total(
 ) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/accounting/reports/arep1/getTotal`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          bukrs,
-          branchList: branchList.join(),
-          budatFrom,
-          budatTo,
-          bldatFrom,
-          bldatTo,
-          hkontRadio,
-          hkontList: hkontList.join(),
-          hkontFrom,
-          hkontTo,
-          enableBldat,
-          enableBudat,
-          disableStorno,
-        },
-      })
+
+    // .get(`${ROOT_URL}/api/accounting/reports/arep1/getTotal`, {
+    //   headers: {
+    //     authorization: localStorage.getItem('token'),
+    //   },
+    //   params: {
+    //     bukrs,
+    //     branchList: branchList.join(),
+    //     budatFrom,
+    //     budatTo,
+    //     bldatFrom,
+    //     bldatTo,
+    //     hkontRadio,
+    //     hkontList: hkontList.join(),
+    //     hkontFrom,
+    //     hkontTo,
+    //     enableBldat,
+    //     enableBudat,
+    //     disableStorno,
+    //   },
+    // })
+
+    doGet('accounting/reports/arep1/getTotal', {
+      bukrs,
+      branchList: branchList.join(),
+      budatFrom,
+      budatTo,
+      bldatFrom,
+      bldatTo,
+      hkontRadio,
+      hkontList: hkontList.join(),
+      hkontFrom,
+      hkontTo,
+      enableBldat,
+      enableBudat,
+      disableStorno,
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -322,25 +350,37 @@ export function fetchArep1Detail(
 ) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/accounting/reports/arep1/getDetail`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          bukrs,
-          branchId,
-          hkont,
-          bldatFrom,
-          bldatTo,
-          enableBldat,
-          enableBudat,
-          budatFrom,
-          budatTo,
-          disableStorno,
-          waers,
-        },
-      })
+    // .get(`${ROOT_URL}/api/accounting/reports/arep1/getDetail`, {
+    //   headers: {
+    //     authorization: localStorage.getItem('token'),
+    //   },
+    //   params: {
+    //     bukrs,
+    //     branchId,
+    //     hkont,
+    //     bldatFrom,
+    //     bldatTo,
+    //     enableBldat,
+    //     enableBudat,
+    //     budatFrom,
+    //     budatTo,
+    //     disableStorno,
+    //     waers,
+    //   },
+    // })
+    doGet('accounting/reports/arep1/getDetail', {
+      bukrs,
+      branchId,
+      hkont,
+      bldatFrom,
+      bldatTo,
+      enableBldat,
+      enableBudat,
+      budatFrom,
+      budatTo,
+      disableStorno,
+      waers,
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

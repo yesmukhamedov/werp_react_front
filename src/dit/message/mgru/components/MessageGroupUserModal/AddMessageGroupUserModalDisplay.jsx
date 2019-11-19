@@ -1,19 +1,12 @@
 import React, { PureComponent } from 'react';
-import axios from 'axios';
+import { doGetCancelToken } from '../../../../../utils/apiActions';
 import _ from 'lodash';
-import {
-  Modal,
-  Button,
-  Form,
-  Divider,
-  Search,
-} from 'semantic-ui-react';
+import { Modal, Button, Form, Divider, Search } from 'semantic-ui-react';
 import { Field, reduxForm, change, untouch } from 'redux-form';
 import { DropdownFormField } from '../../../../../utils/formFields';
-import { ROOT_URL } from '../../../../../utils/constants';
 
-// const userSearchUrl = `${ROOT_URL}/api/mgru/users`;
-const userSearchUrl = `${ROOT_URL}/api/tasks/assignee`;
+// const userSearchUrl = `mgru/users`;
+const userSearchUrl = `tasks/assignee`;
 
 class AddMessageGroupUserModalDisplay extends PureComponent {
   constructor(props) {
@@ -22,12 +15,12 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
     this.state = {
       isLoading: false,
       results: [],
-      value: '' ,
+      value: '',
       userId: '',
       branchOptions: [],
       departmentOptions: [],
       selectedCompany: '',
-      selectedDepartment: ''
+      selectedDepartment: '',
     };
 
     this.handleFormSubmit = this.handleFormSubmit.bind(this);
@@ -36,35 +29,56 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.branchOptions !== this.state.branchOptions) {
-      if(nextProps.selectedCompany !== this.state.selectedCompany) {
-        this.props.reset()
-        this.props.dispatch(change('mgruAddMessageGroupUserForm', 'company', nextProps.selectedCompany));
+      if (nextProps.selectedCompany !== this.state.selectedCompany) {
+        this.props.reset();
+        this.props.dispatch(
+          change(
+            'mgruAddMessageGroupUserForm',
+            'company',
+            nextProps.selectedCompany,
+          ),
+        );
         this.setState({
           branchOptions: nextProps.branchOptions,
           selectedCompany: nextProps.selectedCompany,
-          isLoading: false, results: [], value: '', userId: '',
-         });
+          isLoading: false,
+          results: [],
+          value: '',
+          userId: '',
+        });
         if (nextProps.reference) {
           this.setState({
-            departmentOptions: nextProps.reference.deptOptions
-          })
+            departmentOptions: nextProps.reference.deptOptions,
+          });
         }
       }
     }
     if (nextProps.selectedDepartment !== this.state.selectedDepartment) {
-      this.setState({selectedDepartment: nextProps.selectedDepartment})
-      this.props.dispatch(change('mgruAddMessageGroupUserForm', 'supervisor',null))
-      this.props.dispatch(untouch('mgruAddMessageGroupUserForm', 'supervisor'))
+      this.setState({ selectedDepartment: nextProps.selectedDepartment });
+      this.props.dispatch(
+        change('mgruAddMessageGroupUserForm', 'supervisor', null),
+      );
+      this.props.dispatch(untouch('mgruAddMessageGroupUserForm', 'supervisor'));
     }
   }
 
   handleFormSubmit(formValues) {
-    const { createMessageGroupUser, updateMessageGroupUser, fetchMessageGroupUsers, modalType, modalData } = this.props;
-    const { userId } = this.state
+    const {
+      createMessageGroupUser,
+      updateMessageGroupUser,
+      fetchMessageGroupUsers,
+      modalType,
+      modalData,
+    } = this.props;
+    const { userId } = this.state;
     if (modalType === 'add') {
-      createMessageGroupUser(formValues, userId,  () => fetchMessageGroupUsers());
+      createMessageGroupUser(formValues, userId, () =>
+        fetchMessageGroupUsers(),
+      );
     } else if (modalType === 'edit') {
-      updateMessageGroupUser(modalData.mguId, formValues, () => fetchMessageGroupUsers());
+      updateMessageGroupUser(modalData.mguId, formValues, () =>
+        fetchMessageGroupUsers(),
+      );
     }
     this.handleFormClose();
   }
@@ -78,25 +92,31 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
   resetComponent() {
     const { reference, branchOptions } = this.props;
     this.setState({
-      isLoading: false, results: [], value: '', userId: '',
-      branchOptions, departmentOptions: reference.deptOptions,
-    })
+      isLoading: false,
+      results: [],
+      value: '',
+      userId: '',
+      branchOptions,
+      departmentOptions: reference.deptOptions,
+    });
   }
 
   resetFields() {
-    const fields = ['branch','department','supervisor',]
+    const fields = ['branch', 'department', 'supervisor'];
     for (var i = 0; i < fields.length; i++) {
-        this.props.dispatch(change('mgruAddMessageGroupUserForm',fields[i],null))
-        this.props.dispatch(untouch('mgruAddMessageGroupUserForm',fields[i]))
+      this.props.dispatch(
+        change('mgruAddMessageGroupUserForm', fields[i], null),
+      );
+      this.props.dispatch(untouch('mgruAddMessageGroupUserForm', fields[i]));
     }
   }
 
   handleResultSelect = (e, { result }) => {
-    this.setState({ value: result.title, userId: result.userid })
+    this.setState({ value: result.title, userId: result.userid });
 
-    const req = axios.get(`${userSearchUrl}/${result.userid}?bukrs=${this.state.selectedCompany}`, {
-      headers: { authorization: localStorage.getItem('token') }
-    })
+    const req = deGet(
+      `${userSearchUrl}/${result.userid}?bukrs=${this.state.selectedCompany}`,
+    );
 
     req
       .then(({ data }) => {
@@ -105,56 +125,54 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
         const { reference, branchOptions } = this.props;
         let branchMap = {};
         Object.keys(branchOptions).forEach(id => {
-            const valueMap = branchOptions[id];
-            branchMap[valueMap.key] = valueMap;
+          const valueMap = branchOptions[id];
+          branchMap[valueMap.key] = valueMap;
         });
 
         let filteredBranchOpts = {};
         let filteredDepOpts = {};
 
-        branchId.forEach(
-          el => (filteredBranchOpts[el] = branchMap[el]),
-        );
+        branchId.forEach(el => (filteredBranchOpts[el] = branchMap[el]));
         departmentId.forEach(
           el => (filteredDepOpts[el] = reference.deptOptions[el]),
         );
-
 
         this.setState({
           branchOptions: _.values(filteredBranchOpts),
           departmentOptions: _.values(filteredDepOpts),
         });
-        this.resetFields()
+        this.resetFields();
       })
       .catch(error => {
-          console.log(error);
-      })
-  }
+        console.log(error);
+      });
+  };
 
   handleSearchChange = (e, { value }) => {
     const { selectedCompany } = this.props;
     const paramsDict = {
       keyword: value,
-      bukrs: selectedCompany };
-    const params = _.map(
-      paramsDict,
-      (val, key) =>
-        (val ? `${key}=${val}` : val === false ? `${key}=${val}` : ''),
-    ).filter(param => param).join('&');
-    this.setState({ isLoading: true, value, userId: ''})
+      bukrs: selectedCompany,
+    };
+    const params = _.map(paramsDict, (val, key) =>
+      val ? `${key}=${val}` : val === false ? `${key}=${val}` : '',
+    )
+      .filter(param => param)
+      .join('&');
+    this.setState({ isLoading: true, value, userId: '' });
 
     // cancel the previous request
     if (typeof this._source != typeof undefined) {
-      this._source.cancel('Operation canceled due to new request.')
+      this._source.cancel('Operation canceled due to new request.');
     }
 
     // save the new request for cancellation
     this._source = axios.CancelToken.source();
 
-    const req = axios.get(`${userSearchUrl}?${params}`, {
-      headers: { authorization: localStorage.getItem('token') },
-      cancelToken: this._source.token,
-    })
+    const req = doGetCancelToken(
+      `${userSearchUrl}?${params}`,
+      this._source.token,
+    );
 
     req
       .then(({ data }) => {
@@ -172,15 +190,15 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
         });
       })
       .catch(error => {
-        this.resetComponent()
-        this.resetFields()
+        this.resetComponent();
+        this.resetFields();
         if (axios.isCancel(error)) {
           console.log('Request canceled', error);
         } else {
           console.log(error);
         }
-      })
-  }
+      });
+  };
 
   render() {
     const {
@@ -194,13 +212,15 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
       reference,
       pristine,
       submitting,
-      messages
+      messages,
     } = this.props;
-    const { isLoading, value, results } = this.state
+    const { isLoading, value, results } = this.state;
     const { formatMessage } = this.props.intl;
     return (
       <Modal size="tiny" open={isOpen} onClose={this.handleFormClose}>
-        <Modal.Header>{modalType === 'add' ? messages.BTN__ADD : messages.BTN__EDIT}</Modal.Header>
+        <Modal.Header>
+          {modalType === 'add' ? messages.BTN__ADD : messages.BTN__EDIT}
+        </Modal.Header>
         <Modal.Content>
           <Modal.Description>
             <Form onSubmit={handleSubmit(this.handleFormSubmit)}>
@@ -222,12 +242,14 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
               <Form.Field disabled={!selectedCompany}>
                 <label>{messages.L__USER}</label>
                 <Search
-                    loading={isLoading}
-                    onResultSelect={this.handleResultSelect}
-                    onSearchChange={_.debounce(this.handleSearchChange, 800, { leading: true })}
-                    results={results}
-                    value={value}
-                    fluid
+                  loading={isLoading}
+                  onResultSelect={this.handleResultSelect}
+                  onSearchChange={_.debounce(this.handleSearchChange, 800, {
+                    leading: true,
+                  })}
+                  results={results}
+                  value={value}
+                  fluid
                 />
               </Form.Field>
               <Field
@@ -252,10 +274,12 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
                 component={DropdownFormField}
                 label={messages.TBL_H__MANAGER}
                 disabled={!selectedDepartment}
-                opts={reference &&
+                opts={
+                  reference &&
                   Object.values(reference.taskAdminOptions).filter(
-                    el => el.departmentId === selectedDepartment)
-                  }
+                    el => el.departmentId === selectedDepartment,
+                  )
+                }
               />
               <Divider />
               <Button
@@ -282,17 +306,23 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
 }
 
 const validate = props => {
-  const errors = {}
-  const fields = ['messageGroup', 'company', 'branch', 'department', 'supervisor'];
+  const errors = {};
+  const fields = [
+    'messageGroup',
+    'company',
+    'branch',
+    'department',
+    'supervisor',
+  ];
 
-  fields.forEach((f) => {
-    if(!(f in props)) {
+  fields.forEach(f => {
+    if (!(f in props)) {
       errors[f] = `${f} is required`;
     }
   });
 
-  return errors
-}
+  return errors;
+};
 
 export default reduxForm({
   form: 'mgruAddMessageGroupUserForm',

@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import { Form, Search, Segment, Button } from 'semantic-ui-react';
 import hash from 'object-hash';
-import axios from 'axios';
+import { doGetCancelToken } from '../../../../../utils/apiActions';
 import _ from 'lodash';
 import WarnMessage from './WarnMessage';
-import { ROOT_URL } from '../../../../../utils/constants';
-import { GET, constructFullName } from '../../../../../utils/helpers';
+import { constructFullName } from '../../../../../utils/helpers';
 import { defineMessages } from 'react-intl';
 
-const assigneeSearchUrl = `${ROOT_URL}/api/tasks/assignee?keyword=`;
-const assigneeDetailsUrl = `${ROOT_URL}/api/tasks/assignee`;
+const assigneeSearchUrl = `tasks/assignee?keyword=`;
+const assigneeDetailsUrl = `tasks/assignee`;
 
 const initialState = {
   data: {
@@ -90,12 +89,9 @@ class AssigneeSearchPaneComponent extends Component {
       // save the new request for cancellation
       this._source = axios.CancelToken.source();
 
-      const req = axios.get(
+      const req = doGetCancelToken(
         `${assigneeSearchUrl}${value}&bukrs=${selectedCompany}`,
-        {
-          headers: { authorization: localStorage.getItem('token') },
-          cancelToken: this._source.token,
-        },
+        this._source.token,
       );
 
       req
@@ -143,12 +139,8 @@ class AssigneeSearchPaneComponent extends Component {
         let filteredBranchOpts = {};
         let filteredDepOpts = {};
 
-        branchId.forEach(
-          el => (filteredBranchOpts[el] = branchOpts[el][0]),
-        );
-        departmentId.forEach(
-          el => (filteredDepOpts[el] = deptOpts[el]),
-        );
+        branchId.forEach(el => (filteredBranchOpts[el] = branchOpts[el][0]));
+        departmentId.forEach(el => (filteredDepOpts[el] = deptOpts[el]));
         this.setState({
           ...this.state,
           branchOptions: _.values(_.sortBy(filteredBranchOpts, ['text'])),

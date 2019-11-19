@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { Container } from 'semantic-ui-react';
-import axios from 'axios';
+import { doGet, doPut } from '../../../../utils/apiActions';
 import moment from 'moment';
 import _ from 'lodash';
 import SearchPanel from './SearchPanel';
 import SpListTable from './spListTable';
-import { ROOT_URL } from '../../../../utils/constants';
 
 export default class SpList extends Component {
   constructor(props) {
@@ -41,15 +40,9 @@ export default class SpList extends Component {
   componentWillMount() {
     axios
       .all([
-        axios.get(`${ROOT_URL}/api/reference/countries`, {
-          headers: { authorization: localStorage.getItem('token') },
-        }),
-        axios.get(`${ROOT_URL}/api/reference/companies`, {
-          headers: { authorization: localStorage.getItem('token') },
-        }),
-        axios.get(`${ROOT_URL}/api/reference/product-categories`, {
-          headers: { authorization: localStorage.getItem('token') },
-        }),
+        doGet(`reference/countries`),
+        doGet(`reference/companies`),
+        doGet(`reference/product-categories`),
       ])
       .then(
         axios.spread(
@@ -110,15 +103,7 @@ export default class SpList extends Component {
   }
 
   fetchCategories(companyId, categoryId) {
-    axios
-      .get(
-        `${ROOT_URL}/api/reference/products?categoryId=${categoryId}&companyId=${companyId}`,
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doGet(`reference/products?categoryId=${categoryId}&companyId=${companyId}`)
       .then(({ data }) => {
         const newProductOptions = data.map(item => ({
           key: item.id,
@@ -215,27 +200,13 @@ export default class SpList extends Component {
       .join('&');
 
     console.log('PARAMS', params);
-    axios
-      .get(`${ROOT_URL}/api/service/packets?${params}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`service/packets?${params}`)
       .then(({ data }) => this.setState({ ...this.state, result: data }))
       .catch(err => console.log('ERROR in SPLIST PAGE', err));
   }
 
   handleActivateServicePacket(id, activationState) {
-    axios
-      .put(
-        `${ROOT_URL}/api/service/packets/${id}`,
-        { active: !activationState },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPut(`service/packets/${id}`, { active: !activationState })
       .then(() => {
         const newResult = this.state.result.map(item => {
           if (item.id === id) {

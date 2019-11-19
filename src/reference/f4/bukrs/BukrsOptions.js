@@ -1,11 +1,7 @@
-import axios from 'axios';
-import { ROOT_URL } from '../../../utils/constants';
+import { doGet } from '../../../utils/apiActions';
 
 export function fetchBukrsOptions() {
-  return axios
-    .get(`${ROOT_URL}/api/reference/companies`, {
-      headers: { authorization: localStorage.getItem('token') },
-    })
+  return doGet(`reference/companies`)
     .then(({ data }) => {
       const newCompanyOptions = data.map(item => ({
         key: item.id,

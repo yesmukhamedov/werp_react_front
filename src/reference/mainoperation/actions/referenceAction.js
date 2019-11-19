@@ -1,193 +1,84 @@
-import axios from 'axios';
-import { ROOT_URL } from '../../../utils/constants';
+import { doGet, doPost, doPut } from '../../../utils/apiActions';
 
 export const blankSubCompany = () => {
-  return dispatch =>
-    axios.get(`${ROOT_URL}/api/reference/blank-sub-company`, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doGet(`reference/blank-sub-company`);
 };
 
 export const fetchSubCompany = id => {
-  return dispatch =>
-    axios.get(`${ROOT_URL}/api/reference/sub-company/` + id, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doGet(`reference/sub-company/` + id);
 };
 
 export const createSubCompany = o => {
-  return dispatch =>
-    axios.post(`${ROOT_URL}/api/reference/sub-company`, o, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doPost(`reference/sub-company`, o);
 };
 
 export const updateSubCompany = o => {
-  return dispatch =>
-    axios.put(`${ROOT_URL}/api/reference/sub-company`, o, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doPut(`reference/sub-company`, o);
 };
 
 export const saveNationality = o => {
   if (o.new) {
-    return dispatch =>
-      axios.post(`${ROOT_URL}/api/reference/nationalities`, o, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      });
+    return dispatch => doPost(`reference/nationalities`, o);
   }
-  return dispatch =>
-    axios.put(`${ROOT_URL}/api/reference/nationalities`, o, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doPut(`reference/nationalities`, o);
 };
 
 export const blankLeaveReason = () => {
-  return dispatch =>
-    axios.get(`${ROOT_URL}/api/reference/leave-reasons/blank`, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doGet(`reference/leave-reasons/blank`);
 };
 
 export const fetchLeaveReasons = params => {
-  return dispatch =>
-    axios.get(`${ROOT_URL}/api/reference/leave-reasons`, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-      params: params,
-    });
+  return dispatch => doGet(`reference/leave-reasons`, params);
 };
 
 export const blankDemoPrice = () => {
-  return dispatch =>
-    axios.get(`${ROOT_URL}/api/reference/demo-prices/blank`, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doGet(`reference/demo-prices/blank`);
 };
 
 export const fetchDemoPrices = params => {
-  return dispatch =>
-    axios.get(`${ROOT_URL}/api/reference/demo-prices`, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-      params: params,
-    });
+  return dispatch => doGet(`reference/demo-prices`, params);
 };
 
 export const fetchLeaveReason = id => {
-  return dispatch =>
-    axios.get(`${ROOT_URL}/api/reference/leave-reasons/` + id, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doGet(`reference/leave-reasons/` + id);
 };
 
 export const createLeaveReason = o => {
-  return dispatch =>
-    axios.post(`${ROOT_URL}/api/reference/leave-reasons`, o, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doPost(`reference/leave-reasons`, o);
 };
 
 export const updateLeaveReason = o => {
-  return dispatch =>
-    axios.put(`${ROOT_URL}/api/reference/leave-reasons`, o, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doPut(`reference/leave-reasons`, o);
 };
 
 export const fetchDemoPrice = id => {
-  return dispatch =>
-    axios.get(`${ROOT_URL}/api/reference/demo-prices/` + id, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doGet(`reference/demo-prices/` + id);
 };
 
 export const createDemoPrice = o => {
-  return dispatch =>
-    axios.post(`${ROOT_URL}/api/reference/demo-prices`, o, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doPost(`reference/demo-prices`, o);
 };
 
 export const updateDemoPrice = o => {
-  return dispatch =>
-    axios.put(`${ROOT_URL}/api/reference/demo-prices`, o, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doPut(`reference/demo-prices`, o);
 };
 
 export const blankStaffProblem = () => {
-  return dispatch =>
-    axios.get(`${ROOT_URL}/api/reference/staff-problems/blank`, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doGet(`reference/staff-problems/blank`);
 };
 
 export const fetchStaffProblems = params => {
-  return dispatch =>
-    axios.get(`${ROOT_URL}/api/reference/staff-problems`, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-      params: params,
-    });
+  return dispatch => doGet(`reference/staff-problems`, params);
 };
 
 export const fetchStaffProblem = id => {
-  return dispatch =>
-    axios.get(`${ROOT_URL}/api/reference/staff-problems/` + id, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doGet(`reference/staff-problems/` + id);
 };
 
 export const createStaffProblem = o => {
-  return dispatch =>
-    axios.post(`${ROOT_URL}/api/reference/staff-problems`, o, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doPost(`reference/staff-problems`, o);
 };
 
 export const updateStaffProblem = o => {
-  return dispatch =>
-    axios.put(`${ROOT_URL}/api/reference/staff-problems`, o, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doPut(`reference/staff-problems`, o);
 };

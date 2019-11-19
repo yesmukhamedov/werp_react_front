@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { ROOT_URL } from '../utils/constants';
+import { doPostExcel } from '../utils/apiActions';
 import _ from 'lodash';
 import moment from 'moment';
 
@@ -207,28 +206,6 @@ export function checkNestedObject(obj, key) {
     .reduce((o, x) => (typeof o === 'undefined' || o === null ? o : o[x]), obj);
 }
 
-export function GET(url) {
-  const { locales } = JSON.parse(localStorage.getItem('lang'));
-  return axios.get(url, {
-    headers: {
-      authorization: localStorage.getItem('token'),
-      'Content-Language': locales.lang,
-    },
-  });
-}
-
-export function DELETE(url) {
-  return axios.delete(url, {
-    headers: { authorization: localStorage.getItem('token') },
-  });
-}
-
-export function PUT(url, data) {
-  return axios.put(url, data, {
-    headers: { authorization: localStorage.getItem('token') },
-  });
-}
-
 export function monthsArrayToOptions(months) {
   const out = [];
   for (const k in months) {
@@ -256,29 +233,30 @@ export function excelDownload(
   outputTable,
   excelHeaders,
 ) {
-  let url = '';
-  url = `${ROOT_URL}${a_url}`;
   // console.log(a_url, filename, outputTable, excelHeaders);
-  return axios
-    .post(
-      url,
-      {
-        [outputTableName]: outputTable,
-        excelHeaders,
-      },
-      {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        responseType: 'blob',
-      },
-    )
-    .then(response => {
-      const url = window.URL.createObjectURL(new Blob([response.data]));
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', filename);
-      document.body.appendChild(link);
-      link.click();
-    });
+  return doPostExcel(a_url, {
+    [outputTableName]: outputTable,
+    excelHeaders,
+  }).then(response => {
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+  });
+
+  // .post(
+  //   url,
+  //   {
+  //     [outputTableName]: outputTable,
+  //     excelHeaders,
+  //   },
+  //   {
+  //     headers: {
+  //       authorization: localStorage.getItem('token'),
+  //     },
+  //     responseType: 'blob',
+  //   },
+  // )
 }

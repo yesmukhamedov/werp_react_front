@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { doGet } from '../../../utils/apiActions';
 import { Form } from 'semantic-ui-react';
-import { ROOT_URL } from '../../../utils/constants';
 
 class PositionF4 extends Component {
   constructor(props) {
@@ -13,12 +12,7 @@ class PositionF4 extends Component {
   }
 
   componentWillMount() {
-    axios
-      .get(`${ROOT_URL}/api/reference/positions`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`reference/positions`)
       .then(res => {
         const loaded = res.data.map(p => ({
           key: p.position_id,

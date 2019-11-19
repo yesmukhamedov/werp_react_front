@@ -1,8 +1,7 @@
-import axios from 'axios';
+import { doGet } from '../../../../utils/apiActions';
 import _ from 'lodash';
 import moment from 'moment';
-import { ROOT_URL } from '../../../../utils/constants';
-import { constructFullName, GET } from '../../../../utils/helpers';
+import { constructFullName } from '../../../../utils/helpers';
 import { notify } from '../../../../general/notification/notification_action';
 import {
   DTSKC_FETCH_REFERENCES,
@@ -16,20 +15,17 @@ import {
 } from './actionTypes';
 import api from './api';
 
-const statusUrl = `${ROOT_URL}/api/tasks/status`;
-const departmentsUrl = `${ROOT_URL}/api/reference/departments`;
-const assigneesUrl = `${ROOT_URL}/api/users?active=true`;
-const taskTypesUrl = `${ROOT_URL}/api/tasks/types`;
-const managersUrl = `${ROOT_URL}/api/task-admins/all?ref=ext`;
-const groupsUrl = `${ROOT_URL}/api/messgr?ref=ext`;
+const statusUrl = `tasks/status`;
+const departmentsUrl = `reference/departments`;
+const assigneesUrl = `users?active=true`;
+const taskTypesUrl = `tasks/types`;
+const managersUrl = `task-admins/all?ref=ext`;
+const groupsUrl = `messgr?ref=ext`;
 
 export function fetchUsers(args) {
   const { branchId, bukrs } = args;
   return dispatch => {
-    axios
-      .get(`${assigneesUrl}&branchId=${branchId}&bukrs=${bukrs}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`${assigneesUrl}&branchId=${branchId}&bukrs=${bukrs}`)
       .then(({ data }) => {
         const assigneesOpts = data.users.map(item => ({
           key: item.id,
@@ -54,11 +50,11 @@ export function fetchReferences(lang) {
   return dispatch => {
     axios
       .all([
-        GET(departmentsUrl),
-        GET(statusUrl),
-        GET(taskTypesUrl),
-        GET(managersUrl),
-        GET(groupsUrl),
+        doGet(departmentsUrl),
+        doGet(statusUrl),
+        doGet(taskTypesUrl),
+        doGet(managersUrl),
+        doGet(groupsUrl),
       ])
       .then(
         axios.spread(

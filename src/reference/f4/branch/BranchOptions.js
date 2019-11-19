@@ -1,20 +1,14 @@
-import axios from 'axios';
-import { ROOT_URL } from '../../../utils/constants';
+import { doGet } from '../../../utils/apiActions';
 
 export function fetchBranchOptions(bukrs, businessArea) {
-  let url = `${ROOT_URL}/api/reference/branches/`;
+  let url = `reference/branches/`;
   if (businessArea === 'marketing') {
     url = `${url}marketing/`;
   } else if (businessArea === 'service') {
     url = `${url}service/`;
   }
 
-  return axios
-    .get(url + bukrs, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    })
+  return doGet(url + bukrs)
     .then(({ data }) => {
       const newBranchOptions = data.map(item => ({
         key: item.branch_id,

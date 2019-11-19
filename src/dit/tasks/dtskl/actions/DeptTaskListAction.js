@@ -1,8 +1,6 @@
-import axios from 'axios';
+import { doGet, doPut } from '../../../../utils/apiActions';
 import moment from 'moment';
 import _ from 'lodash';
-import { ROOT_URL } from '../../../../utils/constants';
-import apiClient from '../../../../utils/apiClient';
 import { notify } from '../../../../general/notification/notification_action';
 
 export const DEPT_TASK_LIST_DIRECTORIES = 'dept_task_list_directories';
@@ -14,8 +12,7 @@ export const FETCH_ASSIGNEE_DETAILS = 'fetch_assignee_details';
 
 export function searchTasks(params, resolve) {
   return dispatch => {
-    apiClient
-      .get(`${ROOT_URL}/api/dtskl/tasks?${params}`)
+    doGet(`dtskl/tasks?${params}`)
       .then(({ data }) => {
         // console.log(data);
         dispatch({
@@ -40,8 +37,7 @@ export function searchTasks(params, resolve) {
 
 export function fetchPrivateTasks() {
   return dispatch => {
-    apiClient
-      .get(`${ROOT_URL}/api/dtskl/privateTasks`)
+    doGet(`dtskl/privateTasks`)
       .then(({ data }) => {
         // console.log(data);
         dispatch({
@@ -92,11 +88,11 @@ export function getDeptTaskListDirectoriesOld(lang) {
 }
 
 function getTaskDirectory(name) {
-  return apiClient.get(`${ROOT_URL}/api/tasks/${name}`);
+  return doGet(`tasks/${name}`);
 }
 
 function getRefDirectory(name) {
-  return apiClient.get(`${ROOT_URL}/api/reference/${name}`);
+  return doGet(`reference/${name}`);
 }
 
 export function getDeptTaskListDirectories(lang) {
@@ -166,8 +162,7 @@ export function editRecipient(taskId, fields, resolve) {
     dirtyFields.estimatedAt = endDateFromUtc;
   }
   return dispatch => {
-    apiClient
-      .put(`${ROOT_URL}/api/dtskl/tasks/${taskId}`, dirtyFields)
+    doPut(`dtskl/tasks/${taskId}`, dirtyFields)
       .then(({ data }) => {
         const editDetails = {
           expectedEndDate: data.estimatedAt,
@@ -199,7 +194,7 @@ export function editRecipient(taskId, fields, resolve) {
   };
 }
 
-const assigneesUrl = `${ROOT_URL}/api/users/assignee`;
+const assigneesUrl = `users/assignee`;
 
 export function fetchTaskById(taskId) {
   return async dispatch => {
@@ -209,8 +204,7 @@ export function fetchTaskById(taskId) {
     }
     function onSuccess(success) {
       const { estimatedAt, bukrs, recipient } = success.data;
-      apiClient
-        .get(`${assigneesUrl}?branchId=${recipient.branch.id}&bukrs=${bukrs}`)
+      doGet(`${assigneesUrl}?branchId=${recipient.branch.id}&bukrs=${bukrs}`)
         .then(({ data }) => {
           const assigneesOpts = data.map(item => ({
             key: item.userId,
@@ -232,7 +226,7 @@ export function fetchTaskById(taskId) {
         .catch(error => onError(error));
     }
     try {
-      const success = await apiClient.get(`${ROOT_URL}/api/tasks/${taskId}`);
+      const success = await doGet(`tasks/${taskId}`);
       return onSuccess(success);
     } catch (error) {
       return onError(error);

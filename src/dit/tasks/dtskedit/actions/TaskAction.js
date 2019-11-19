@@ -1,10 +1,7 @@
 /* jshint esversion: 6 */
-import axios from 'axios';
+import { doGet, doPut } from '../../../../utils/apiActions';
 import moment from 'moment';
-import { ROOT_URL } from '../../../../utils/constants';
-import { PUT } from '../../../../utils/helpers';
 import { notify } from '../../../../general/notification/notification_action';
-
 
 export const CLEAR_TASK_STORE = 'clear_task_store';
 export const FETCH_TASK_DETAILS = 'fetch_task_details';
@@ -13,7 +10,7 @@ export const TOGGLE_MODAL = 'TOGGLE_MODAL';
 export const ADD_UPLOADED = 'ADD_UPLOADED';
 export const DELETE_UPLOADED = 'DELETE_UPLOADED';
 
-const uploadUpdateUrl = `${ROOT_URL}/api/tasks/attachments`;
+const uploadUpdateUrl = `tasks/attachments`;
 
 export function addUpload(upload) {
   return {
@@ -30,21 +27,20 @@ export function deleteUpload(upload) {
 }
 
 export function synchronizeAttachments({ attachmentJson: json, id, taskId }) {
-  const req = PUT(`${uploadUpdateUrl}/${taskId}`, {
+  const req = doPut(`${uploadUpdateUrl}/${taskId}`, {
     id,
     taskId,
     attachmentJson: JSON.stringify(json),
   });
-  return (dispatch) => {
+  return dispatch => {
     req
       .then(({ data }) => console.log(data))
       .catch(error => console.log(error));
   };
 }
 
-
 export function clearTaskStore() {
-  return (dispatch) => {
+  return dispatch => {
     dispatch({ type: CLEAR_TASK_STORE });
   };
 }
@@ -66,17 +62,18 @@ function extractAttachments(attachment) {
         attachmentJson: list,
       };
     } catch (error) {
-      console.error('Could not parse attachment in extractAttachments()', error);
+      console.error(
+        'Could not parse attachment in extractAttachments()',
+        error,
+      );
     }
   }
   return {};
 }
 
 export function fetchTaskById(taskId) {
-  return (dispatch) => {
-    axios.get(`${ROOT_URL}/api/tasks/${taskId}`, {
-      headers: { authorization: localStorage.getItem('token') },
-    })
+  return dispatch => {
+    doGet(`tasks/${taskId}`)
       .then(({ data }) => {
         const { attachment, ...rest } = data;
         const parsedAttachment = extractAttachments(attachment);
@@ -86,12 +83,14 @@ export function fetchTaskById(taskId) {
           payload: { ...rest, attachment: parsedAttachment },
         });
       })
-      .catch((error) => {
+      .catch(error => {
         console.log('ERROR in task search by id', error);
         if (error.response) {
           dispatch(notify('error', error.response.data.message, 'Ошибка'));
         } else {
-          Promise.resolve({ error }).then(response => dispatch(notify('error', response.data.message, 'Ошибка')));
+          Promise.resolve({ error }).then(response =>
+            dispatch(notify('error', response.data.message, 'Ошибка')),
+          );
         }
       });
   };
@@ -106,7 +105,9 @@ export function editTask(taskId, fields) {
     dirtyFields.description = fields.description;
   }
   if (fields.estimatedAt) {
-    dirtyFields.estimatedAt = moment.utc(fields.estimatedAt, 'DD.MM.YYYY').format();
+    dirtyFields.estimatedAt = moment
+      .utc(fields.estimatedAt, 'DD.MM.YYYY')
+      .format();
   }
   if (fields.status) {
     const status = { id: fields.status };
@@ -134,28 +135,27 @@ export function editTask(taskId, fields) {
   if (fields.comment) {
     dirtyFields.newComment = fields.comment;
   }
-  return (dispatch) => {
-    axios.put(
-      `${ROOT_URL}/api/tasks/${taskId}`,
-      dirtyFields,
-      { headers: { authorization: localStorage.getItem('token') } },
-    ).then(({ data }) => {
-      // console.log('data: ', data);
+  return dispatch => {
+    doPut(`tasks/${taskId}`, dirtyFields)
+      .then(({ data }) => {
+        // console.log('data: ', data);
 
-      const { attachment, ...rest } = data;
-      const parsedAttachment = extractAttachments(attachment);
+        const { attachment, ...rest } = data;
+        const parsedAttachment = extractAttachments(attachment);
 
-      dispatch({
-        type: EDIT_TASK,
-        payload: { ...rest, attachment: parsedAttachment },
-      });
-    })
-      .catch((error) => {
+        dispatch({
+          type: EDIT_TASK,
+          payload: { ...rest, attachment: parsedAttachment },
+        });
+      })
+      .catch(error => {
         console.log('ERROR in task edit', error);
         if (error.response) {
           dispatch(notify('error', error.response.data.message, 'Ошибка'));
         } else {
-          Promise.resolve({ error }).then(response => dispatch(notify('error', response.data.message, 'Ошибка')));
+          Promise.resolve({ error }).then(response =>
+            dispatch(notify('error', response.data.message, 'Ошибка')),
+          );
         }
       });
   };

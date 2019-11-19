@@ -1,5 +1,4 @@
-import axios from 'axios';
-import { ROOT_URL } from '../../../utils/constants';
+import { doGet } from '../../../utils/apiActions';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
@@ -119,22 +118,25 @@ class Arep1 extends Component {
   }
 
   fetchHkontOptions(bukrs, branchList) {
-    return axios
-      .get(`${ROOT_URL}/api/accounting/reports/arep1/hkonts`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          bukrs,
-          branchList: branchList.join(),
-        },
-      })
-      .then(({ data }) => {
-        let searchTerm = { ...this.state.searchTerm };
-        searchTerm.hkontOptions = data.hkontOptions;
-        searchTerm.hkontLoading = false;
-        this.setState({ searchTerm });
-      });
+    return doGet('accounting/reports/arep1/hkonts', {
+      bukrs,
+      branchList: branchList.join(),
+    }).then(({ data }) => {
+      let searchTerm = { ...this.state.searchTerm };
+      searchTerm.hkontOptions = data.hkontOptions;
+      searchTerm.hkontLoading = false;
+      this.setState({ searchTerm });
+    });
+
+    // .get(`${ROOT_URL}/api/accounting/reports/arep1/hkonts`, {
+    //   headers: {
+    //     authorization: localStorage.getItem('token'),
+    //   },
+    //   params: {
+    //     bukrs,
+    //     branchList: branchList.join(),
+    //   },
+    // })
   }
 
   exportExcel(a_type) {
@@ -971,7 +973,8 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { fetchArep1Total, fetchArep1Detail, clearDynObjAcc },
-)(injectIntl(Arep1));
+export default connect(mapStateToProps, {
+  fetchArep1Total,
+  fetchArep1Detail,
+  clearDynObjAcc,
+})(injectIntl(Arep1));

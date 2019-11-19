@@ -1,15 +1,14 @@
-import axios from 'axios';
+import { doGet, doPost, doDelete } from '../../../../utils/apiActions';
 import _ from 'lodash';
-import { ROOT_URL } from '../../../../utils/constants';
-import { GET, DELETE, constructFullName } from '../../../../utils/helpers';
+import { constructFullName } from '../../../../utils/helpers';
 import { notify } from '../../../../general/notification/notification_action';
 
 /* action URLs */
-const messageGroupUserUrl = `${ROOT_URL}/api/mgru`;
-const departmentsUrl = `${ROOT_URL}/api/reference/departments`;
-const taskAdminUrl = `${ROOT_URL}/api/task-admins/all`;
-// const usersUrl = `${ROOT_URL}/api/users?active=true`;
-const messageGroupUrl = `${ROOT_URL}/api/messgr`;
+const messageGroupUserUrl = `mgru`;
+const departmentsUrl = `reference/departments`;
+const taskAdminUrl = `task-admins/all`;
+// const usersUrl = `users?active=true`;
+const messageGroupUrl = `messgr`;
 
 /* action types */
 export const MGRU_FETCH_MESSAGE_GROUP_USERS = 'mgru_fetch_message_group_users';
@@ -17,8 +16,8 @@ export const MGRU_FETCH_REFERENCES = 'MGRU_FETCH_REFERENCES';
 
 export function fetchMessageGroupUsers(params, resolve) {
   const req = params
-    ? GET(`${messageGroupUserUrl}?${params}`)
-    : GET(messageGroupUserUrl);
+    ? doGet(`${messageGroupUserUrl}?${params}`)
+    : doGet(messageGroupUserUrl);
   return dispatch => {
     req
       .then(({ data }) => {
@@ -43,7 +42,7 @@ export function fetchMessageGroupUsers(params, resolve) {
 }
 
 export function removeMessageGroupUser(id, successCallback) {
-  const req = DELETE(`${messageGroupUserUrl}/${id}`);
+  const req = doDelete(`${messageGroupUserUrl}/${id}`);
   return dispatch => {
     req
       .then(() => {
@@ -84,11 +83,7 @@ export function createMessageGroupUser(formValues, userId, successCallback) {
       id: userId,
     },
   };
-  const req = axios.post(messageGroupUserUrl, newMessageGroupUser, {
-    headers: {
-      authorization: localStorage.getItem('token'),
-    },
-  });
+  const req = doPost(messageGroupUserUrl, newMessageGroupUser);
   return dispatch => {
     req
       .then(() => {
@@ -129,15 +124,7 @@ export function updateMessageGroupUser(id, formValues, successCallback) {
       id: formValues.user,
     },
   };
-  const req = axios.put(
-    `${messageGroupUserUrl}/${id}`,
-    updatedMessageGroupUser,
-    {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    },
-  );
+  const req = doPut(`${messageGroupUserUrl}/${id}`, updatedMessageGroupUser);
   return dispatch => {
     req
       .then(() => {
@@ -163,7 +150,7 @@ export function updateMessageGroupUser(id, formValues, successCallback) {
 export function fetchReferences(lang) {
   return dispatch => {
     axios
-      .all([GET(departmentsUrl), GET(messageGroupUrl), GET(taskAdminUrl)])
+      .all([doGet(departmentsUrl), doGet(messageGroupUrl), doGet(taskAdminUrl)])
       // GET(usersUrl),
       .then(
         axios.spread(

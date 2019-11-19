@@ -1,7 +1,6 @@
-import axios from 'axios';
+import { doGet, doPost, doDelete } from '../../../../utils/apiActions';
 import _ from 'lodash';
-import { ROOT_URL } from '../../../../utils/constants';
-import { constructFullName, GET } from '../../../../utils/helpers';
+import { constructFullName } from '../../../../utils/helpers';
 import { notify } from '../../../../general/notification/notification_action';
 
 /* action types */
@@ -10,30 +9,22 @@ export const DTSKDEP_REMOVE_TASK_ADMIN = 'DTSKDEP_REMOVE_TASK_ADMIN';
 export const DTSKDEP_FETCH_REFERENCES = 'DTSKDEP_FETCH_REFERENCES';
 export const DTSKDEP_FETCH_TASKADMINS = 'DTSKDEP_FETCH_TASKADMINS';
 
-const departmentsUrl = `${ROOT_URL}/api/reference/departments`;
-const taskAdminUrl = `${ROOT_URL}/api/task-admins/all`;
-const usersUrl = `${ROOT_URL}/api/users?active=true`;
+const departmentsUrl = `reference/departments`;
+const taskAdminUrl = `task-admins/all`;
+const usersUrl = `users?active=true`;
 
-const createTaskAdminUrl = `${ROOT_URL}/api/task-admins`;
-const removeTaskAdminUrl = `${ROOT_URL}/api/task-admins`;
+const createTaskAdminUrl = `task-admins`;
+const removeTaskAdminUrl = `task-admins`;
 
 export function createTaskAdmin(params, userId, successCallback) {
-  const req = axios.post(
-    createTaskAdminUrl,
-    {
-      department: {
-        id: params.department,
-      },
-      user: {
-        id: userId,
-      },
+  const req = doPost(createTaskAdminUrl, {
+    department: {
+      id: params.department,
     },
-    {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
+    user: {
+      id: userId,
     },
-  );
+  });
   return dispatch => {
     req
       .then(() => {
@@ -51,11 +42,7 @@ export function createTaskAdmin(params, userId, successCallback) {
 }
 
 export function removeTaskAdmin(taskAdminId, successCallback) {
-  const req = axios.delete(`${removeTaskAdminUrl}/${taskAdminId}`, {
-    headers: {
-      authorization: localStorage.getItem('token'),
-    },
-  });
+  const req = doDelete(`${removeTaskAdminUrl}/${taskAdminId}`);
   return dispatch => {
     req
       .then(() => {
@@ -73,7 +60,7 @@ export function removeTaskAdmin(taskAdminId, successCallback) {
 }
 
 export function fetchTaskAdmins(lang) {
-  const req = GET(taskAdminUrl);
+  const req = doGet(taskAdminUrl);
   return dispatch => {
     req
       .then(({ data: taskAdminList }) => {
@@ -107,7 +94,7 @@ export function fetchReferences(lang) {
   return dispatch => {
     axios
       .all([
-        GET(departmentsUrl),
+        doGet(departmentsUrl),
         // GET(usersUrl)
       ])
       .then(

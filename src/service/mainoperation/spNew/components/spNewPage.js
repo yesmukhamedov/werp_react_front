@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
+import { doGet, doPost } from '../../../../utils/apiActions';
 import moment from 'moment';
 import _ from 'lodash';
 import { Container } from 'semantic-ui-react';
@@ -9,7 +9,6 @@ import Header from './Header2';
 import SparePartList from './SparePartList';
 import WarrantyList from './WarrantyList';
 import BonusPanel from './BonusPanel';
-import { ROOT_URL } from '../../../../utils/constants';
 
 class SpNewPage extends Component {
   constructor(props) {
@@ -44,15 +43,9 @@ class SpNewPage extends Component {
   componentWillMount() {
     axios
       .all([
-        axios.get(`${ROOT_URL}/api/reference/countries`, {
-          headers: { authorization: localStorage.getItem('token') },
-        }),
-        axios.get(`${ROOT_URL}/api/reference/companies`, {
-          headers: { authorization: localStorage.getItem('token') },
-        }),
-        axios.get(`${ROOT_URL}/api/reference/product-categories`, {
-          headers: { authorization: localStorage.getItem('token') },
-        }),
+        doGet(`reference/countries`),
+        doGet(`reference/companies`),
+        doGet(`reference/product-categories`),
       ])
       .then(
         axios.spread(
@@ -158,16 +151,7 @@ class SpNewPage extends Component {
       transactionId: null,
     };
 
-    axios
-      .post(
-        `${ROOT_URL}/api/service/packets`,
-        { ...newServicePacket },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPost(`service/packets`, { ...newServicePacket })
       .then(response => {
         this.props.notify('success', 'Сервис пакет сохранен.', 'Успешно');
       })
@@ -234,15 +218,7 @@ class SpNewPage extends Component {
   }
 
   fetchCategories(companyId, categoryId) {
-    axios
-      .get(
-        `${ROOT_URL}/api/reference/products?categoryId=${categoryId}&companyId=${companyId}`,
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doGet(`reference/products?categoryId=${categoryId}&companyId=${companyId}`)
       .then(({ data }) => {
         const newProductOptions = data.map(item => ({
           key: item.id,
@@ -267,17 +243,9 @@ class SpNewPage extends Component {
   fetchReferenceList(companyId, countryId, productId) {
     axios
       .all([
-        axios.get(
-          `${ROOT_URL}/api/reference/spare-part-warranties?productId=${productId}`,
-          {
-            headers: { authorization: localStorage.getItem('token') },
-          },
-        ),
-        axios.get(
-          `${ROOT_URL}/api/reference/spare-part-prices?companyId=${companyId}&countryId=${countryId}&productId=${productId}`,
-          {
-            headers: { authorization: localStorage.getItem('token') },
-          },
+        doGet(`reference/spare-part-warranties?productId=${productId}`),
+        doGet(
+          `reference/spare-part-prices?companyId=${companyId}&countryId=${countryId}&productId=${productId}`,
         ),
       ])
       .then(
@@ -366,7 +334,4 @@ class SpNewPage extends Component {
   }
 }
 
-export default connect(
-  null,
-  { notify },
-)(SpNewPage);
+export default connect(null, { notify })(SpNewPage);

@@ -12,8 +12,7 @@ import {
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-import axios from 'axios';
-import { ROOT_URL } from '../../../utils/constants';
+import { doGet } from '../../../utils/apiActions';
 import { notify } from '../../../general/notification/notification_action';
 import '../serrep1/serrep1.css';
 
@@ -108,17 +107,11 @@ class Serrep3 extends Component {
     const strVal = this.state.searchTerm.date.format('YYYY-MM-DD');
     const searchDate = moment.utc(strVal).format();
 
-    axios
-      .get(`${ROOT_URL}/api/service/reports/serrep3/search`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          bukrs: this.state.searchTerm.bukrs,
-          branchIds: this.state.searchTerm.branchList.join(),
-          date: searchDate,
-        },
-      })
+    doGet(`service/reports/serrep3/search`, {
+      bukrs: this.state.searchTerm.bukrs,
+      branchIds: this.state.searchTerm.branchList.join(),
+      date: searchDate,
+    })
       .then(response => {
         this.setState({
           ...this.state,
@@ -390,7 +383,4 @@ function mapStateToProps(state) {
   return {};
 }
 
-export default connect(
-  mapStateToProps,
-  { notify },
-)(Serrep3);
+export default connect(mapStateToProps, { notify })(Serrep3);
