@@ -5,6 +5,7 @@ import {
   handleError,
   notify,
 } from '../../../general/notification/notification_action';
+import { doGet, doPut, doPost, doDelete } from '../../../utils/apiActions';
 
 export const CURRENT_POSITIONS = 'CURRENT_POSITIONS';
 export const POSITION_UPDATE = 'POSITION_UPDATE';
@@ -13,12 +14,7 @@ export const NEW_POSITION = 'NEW_POSITION';
 export function fetchCurrentPositions() {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    axios
-      .get(`${ROOT_URL}/api/hr/positions/list`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`hr/positions/list`)
       .then(({ data }) => {
         modifyLoader(false);
         dispatch({
@@ -36,12 +32,7 @@ export function newPosition(newPos) {
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
   return function(dispatch) {
-    axios
-      .post(`${ROOT_URL}/api/hr/position/save`, newPos, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doPost(`hr/position/save`, newPos)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {
@@ -77,16 +68,7 @@ export function updatePosition(update) {
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
   return function(dispatch) {
-    axios
-      .put(
-        `${ROOT_URL}/api/hr/position/update/${update.position_id}`,
-        { ...update },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPut(`hr/position/update/${update.position_id}`, { ...update })
       .then(response => {
         if (response) {
           dispatch(

@@ -14,6 +14,7 @@ import {
   DOC_ACTION_COMPLETE_DOC,
   DOC_ACTION_DISMISS_EMPLOYEE,
 } from '../../../hrUtil';
+import { doGet, doPut, doPost, doDelete } from '../../../../utils/apiActions';
 
 export const HR_DOC_ITEMS_LOADED = 'HR_DOC_ITEMS_LOADED';
 export const HR_DOC_SINGLE_ITEM_LOADED = 'HR_DOC_SINGLE_ITEM_LOADED';
@@ -29,10 +30,7 @@ export const HR_DOC_SAVE_DOC_ITEMS = 'HR_DOC_SAVE_DOC_ITEMS';
 export function fetchRecruitmentItems(statusId) {
   return function(dispatch) {
     dispatch(setLoading(true));
-    axios
-      .get(`${ROOT_URL}/api/hr/document/recruitment/mydocs/${statusId}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`hr/document/recruitment/mydocs/${statusId}`)
       .then(({ data }) => {
         dispatch(setLoading(false));
         dispatch({
@@ -50,11 +48,9 @@ export function fetchRecruitmentItems(statusId) {
 export function fetchAllHrDocs(params) {
   return function(dispatch) {
     dispatch(setLoading(true));
-    axios
-      .get(`${ROOT_URL}/api/hr/document/all`, {
-        headers: { authorization: localStorage.getItem('token') },
-        params: params,
-      })
+    doGet(`hr/document/all`, {
+      params: params,
+    })
       .then(({ data }) => {
         dispatch(setLoading(false));
         dispatch({
@@ -72,10 +68,7 @@ export function fetchAllHrDocs(params) {
 export function fetchDocument(id) {
   return function(dispatch) {
     dispatch(setLoading(true));
-    axios
-      .get(`${ROOT_URL}/api/hr/document/${id}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`hr/document/${id}`)
       .then(({ data }) => {
         dispatch(setLoading(false));
         dispatch({
@@ -93,10 +86,7 @@ export function fetchDocument(id) {
 export function blankDocument(type) {
   return function(dispatch) {
     dispatch(setLoading(true));
-    axios
-      .get(`${ROOT_URL}/api/hr/document/blank/${type}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`hr/document/blank/${type}`)
       .then(({ data }) => {
         dispatch(setLoading(false));
         dispatch({
@@ -113,10 +103,7 @@ export function blankDocument(type) {
 
 export function getBlankDocument(type, params) {
   return dispatch => {
-    return axios.get(`${ROOT_URL}/api/hr/document/blank/` + type, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
+    return doGet(`hr/document/blank/` + type, {
       params: params,
     });
   };
@@ -125,16 +112,7 @@ export function getBlankDocument(type, params) {
 export function createDocument(document) {
   return function(dispatch) {
     dispatch(setLoading(true));
-    axios
-      .post(
-        `${ROOT_URL}/api/hr/document`,
-        { ...document },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPost(`hr/document`, { ...document })
       .then(({ data }) => {
         dispatch(setLoading(false));
         if (data['typeId'] === 8) {
@@ -222,16 +200,7 @@ export function handleAction(document, actionType, additionalData) {
 const updateDocument = document =>
   function(dispatch) {
     dispatch(setLoading(true));
-    axios
-      .put(
-        `${ROOT_URL}/api/hr/document`,
-        { ...document },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPut(`hr/document`, { ...document })
       .then(({ data }) => {
         dispatch(setLoading(false));
         browserHistory.push(`/hr/doc/view/${data.id}`);
@@ -249,16 +218,7 @@ const updateDocument = document =>
 const sendDocument = document =>
   function(dispatch) {
     dispatch(setLoading(true));
-    axios
-      .put(
-        `${ROOT_URL}/api/hr/document/action-send/${document.id}`,
-        {},
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPut(`hr/document/action-send/${document.id}`, {})
       .then(({ data }) => {
         dispatch(setLoading(false));
         window.document.location.reload(true);
@@ -273,16 +233,7 @@ const sendDocument = document =>
 const approveDocument = document =>
   function(dispatch) {
     dispatch(setLoading(true));
-    axios
-      .put(
-        `${ROOT_URL}/api/hr/document/action-approve/${document.id}`,
-        {},
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPut(`hr/document/action-approve/${document.id}`, {})
       .then(({ data }) => {
         dispatch(setLoading(false));
         window.document.location.reload(true);
@@ -297,16 +248,7 @@ const approveDocument = document =>
 const cancelDocument = document =>
   function(dispatch) {
     dispatch(setLoading(true));
-    axios
-      .put(
-        `${ROOT_URL}/api/hr/document/action-cancel/${document.id}`,
-        {},
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPut(`hr/document/action-cancel/${document.id}`, {})
       .then(({ data }) => {
         dispatch(setLoading(false));
         window.document.location.reload(true);
@@ -321,16 +263,7 @@ const cancelDocument = document =>
 const completeDocument = (document, note) =>
   function(dispatch) {
     dispatch(setLoading(true));
-    axios
-      .put(
-        `${ROOT_URL}/api/hr/document/action-complete-doc/${document.id}`,
-        {},
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPut(`hr/document/action-complete-doc/${document.id}`, {})
       .then(({ data }) => {
         dispatch(setLoading(false));
         window.document.location.reload(true);
@@ -345,16 +278,7 @@ const completeDocument = (document, note) =>
 const rejectDocument = (document, note) =>
   function(dispatch) {
     dispatch(setLoading(true));
-    axios
-      .put(
-        `${ROOT_URL}/api/hr/document/action-reject/${document.id}`,
-        { ...{ note } },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPut(`hr/document/action-reject/${document.id}`, { ...{ note } })
       .then(({ data }) => {
         dispatch(setLoading(false));
         window.document.location.reload(true);
@@ -369,16 +293,7 @@ const rejectDocument = (document, note) =>
 const addSalary = (document, additionalData) =>
   function(dispatch) {
     dispatch(setLoading(true));
-    axios
-      .put(
-        `${ROOT_URL}/api/hr/document/action-add-salary/${document.id}`,
-        additionalData,
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPut(`hr/document/action-add-salary/${document.id}`, additionalData)
       .then(({ data }) => {
         dispatch(setLoading(false));
         browserHistory.push(`/hr/doc/view/${document.id}`);
@@ -394,16 +309,9 @@ const addSalary = (document, additionalData) =>
 const addApprover = (document, staff) =>
   function(dispatch) {
     dispatch(setLoading(true));
-    axios
-      .put(
-        `${ROOT_URL}/api/hr/document/action-add-approver/${document.id}`,
-        { salaryId: staff.salaryId },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPut(`hr/document/action-add-approver/${document.id}`, {
+      salaryId: staff.salaryId,
+    })
       .then(({ data }) => {
         dispatch(setLoading(false));
         window.document.location.reload(true);
@@ -416,27 +324,14 @@ const addApprover = (document, staff) =>
 
 export function removeApprove(id) {
   return dispatch => {
-    return axios.delete(`${ROOT_URL}/api/hr/document/approver/` + id, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+    return doDelete(`hr/document/approver/` + id);
   };
 }
 
 export function addAmount(document, items) {
   return function(dispatch) {
     dispatch(setLoading(true));
-    axios
-      .put(
-        `${ROOT_URL}/api/hr/document/action-add-amount/${document.id}`,
-        items,
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPut(`hr/document/action-add-amount/${document.id}`, items)
       .then(({ data }) => {
         dispatch(setLoading(false));
         window.document.location.reload(true);

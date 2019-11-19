@@ -11,7 +11,7 @@ import {
   getStaffDataFetchUri,
   getStaffDataBlankUri,
 } from '../../../hrUtil';
-import { doGet, doPost, doPut } from '../../../../utils/apiActions';
+import { doGet, doPost, doPut, doDelete } from '../../../../utils/apiActions';
 
 export const HR_STAFF_CURRENT_STAFFS = 'HR_STAFF_CURRENT_STAFFS';
 export const HR_STAFF_SINGLE_STAFF = 'HR_STAFF_SINGLE_STAFF';
@@ -61,13 +61,9 @@ export const HR_EXIT_INTERVIEWS = 'HR_EXIT_INTERVIEWS';
 export function fetchCurrentStaffs(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/hr/staff`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params,
-      })
+    doGet(`hr/staff`, {
+      params,
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -102,24 +98,15 @@ export function fetchExitInterviews(params) {
 }
 
 export function blankExitInterview(staffId) {
-  return dispatch =>
-    axios.get(`${ROOT_URL}/api/hr/exit-interviews/blank/` + staffId, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doGet(`hr/exit-interviews/blank/` + staffId);
 }
 
 export function fetchAllCurrentStaffs(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/hr/staff/current-all`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params,
-      })
+    doGet(`hr/staff/current-all`, {
+      params,
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -138,12 +125,7 @@ export function fetchAllCurrentStaffs(params) {
 export function fetchAllStaffs() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/hr/staff/all`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`hr/staff/all`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -235,10 +217,7 @@ export function fetchSingleStaff(staffId) {
 export function fetchBlankStaff() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/hr/staff/blank`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`hr/staff/blank`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -255,10 +234,7 @@ export function fetchBlankStaff() {
 
 export function fetchBranchPyramids(branchId) {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}/api/hr/pyramid/tree/by-branch/${branchId}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`hr/pyramid/tree/by-branch/${branchId}`)
       .then(({ data }) => {
         dispatch({
           type: HR_PYRAMID_FETCH_BRANCH_PYRAMIDS,
@@ -293,13 +269,10 @@ export function toggleStaffDataFormModal(flag) {
 }
 
 export function blankStaffData(staffId, activeData) {
-  const uri = `${ROOT_URL}${getStaffDataBlankUri(activeData)}${staffId}`;
+  const uri = `${getStaffDataBlankUri(activeData)}${staffId}`;
 
   return function(dispatch) {
-    axios
-      .get(uri, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(uri)
       .then(({ data }) => {
         dispatch({
           type: HR_STAFF_DATA_BLANKED,
@@ -314,15 +287,10 @@ export function blankStaffData(staffId, activeData) {
 }
 
 export function createStaffData(postData, activeData) {
-  const uri = `${ROOT_URL}${getStaffDataPostUri(activeData)}`;
+  const uri = `${getStaffDataPostUri(activeData)}`;
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .post(uri, postData, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doPost(uri, postData)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -339,15 +307,10 @@ export function createStaffData(postData, activeData) {
 }
 
 export function updateStaffData(postData, activeData) {
-  const uri = `${ROOT_URL}${getStaffDataPostUri(activeData)}/${postData.id}`;
+  const uri = `${getStaffDataPostUri(activeData)}/${postData.id}`;
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .put(uri, postData, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doPut(uri, postData)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -364,15 +327,10 @@ export function updateStaffData(postData, activeData) {
 }
 
 export function deleteStaffData(id, activeData) {
-  const uri = `${ROOT_URL}${getStaffDataPostUri(activeData)}/${id}`;
+  const uri = `${getStaffDataPostUri(activeData)}/${id}`;
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .delete(uri, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doDelete(uri)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -389,12 +347,9 @@ export function deleteStaffData(id, activeData) {
 }
 
 export function fetchStaffData(staffId, activeData) {
-  const uri = `${ROOT_URL}${getStaffDataFetchUri(activeData, staffId)}`;
+  const uri = `${getStaffDataFetchUri(activeData, staffId)}`;
   return function(dispatch) {
-    axios
-      .get(uri, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(uri)
       .then(({ data }) => {
         dispatch({
           type: HR_STAFF_DATA_FETCHED_LIST,
@@ -410,14 +365,7 @@ export function fetchStaffData(staffId, activeData) {
 
 export function downloadFile(fileId) {
   return function(dispatch) {
-    axios
-      .post(
-        `${`${ROOT_URL}` + '/api/hr/file/download/'}${fileId}`,
-        {},
-        {
-          headers: { authorization: localStorage.getItem('token') },
-        },
-      )
+    doPost(`hr/file/download/'}${fileId}`, {})
       .then(({ data }) => {
         console.log(data);
       })
@@ -429,10 +377,7 @@ export function downloadFile(fileId) {
 
 export function deleteFile(staffId, fileId) {
   return function(dispatch) {
-    axios
-      .delete(`${`${ROOT_URL}` + '/api/hr/file/'}${staffId}/${fileId}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doDelete(`hr/file/'}${staffId}/${fileId}`)
       .then(({ data }) => {
         dispatch({
           type: HR_STAFF_FILE_DELETED,
@@ -454,10 +399,7 @@ export function addUploadedFile(file) {
 
 export function fetchAllManagers() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}` + '/api/hr/salary/managers', {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`hr/salary/managers`)
       .then(({ data }) => {
         dispatch({
           type: HR_STAFF_FETCH_MANAGERS,
@@ -472,10 +414,7 @@ export function fetchAllManagers() {
 
 export function fetchAllDirectors() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}` + '/api/hr/salary/directors', {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`hr/salary/directors`)
       .then(({ data }) => {
         dispatch({
           type: HR_STAFF_FETCH_DIRECTORS,
@@ -496,20 +435,12 @@ export function setStaffDataForUpdate(data) {
 }
 
 export function blankStaffExperience() {
-  return dispatch =>
-    axios.get(`${ROOT_URL}/api/hr/staff/blank-experience`, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doGet(`hr/staff/blank-experience`);
 }
 
 export function fetchMaritalStatuses() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}` + '/api/hr/staff/marital-statuses', {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`hr/staff/marital-statuses`)
       .then(({ data }) => {
         dispatch({
           type: HR_STAFF_MARITAL_STATUSES,
@@ -524,10 +455,7 @@ export function fetchMaritalStatuses() {
 
 export function fetchMaritalStatusOptions() {
   return function(dispatch) {
-    axios
-      .get(`${ROOT_URL}` + '/api/hr/staff/marital-statuses?dto-type=options', {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`hr/staff/marital-statuses?dto-type=options`)
       .then(({ data }) => {
         dispatch({
           type: HR_STAFF_MARITAL_STATUS_OPTIONS,

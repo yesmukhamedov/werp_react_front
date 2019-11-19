@@ -36,10 +36,7 @@ class ViewStaff extends Component {
 
   componentWillMount() {
     const _this = this;
-    axios
-      .get(`${ROOT_URL}/api/hr/staff/${this.props.params.id}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`hr/staff/${this.props.params.id}`)
       .then(response => {
         this.setState({
           ...this.state,
@@ -78,13 +75,7 @@ class ViewStaff extends Component {
           salaries: [],
         });
       } else {
-        axios
-          .get(
-            `${ROOT_URL}/api/hr/staff/${this.state.staff.staff_id}/salaries`,
-            {
-              headers: { authorization: localStorage.getItem('token') },
-            },
-          )
+        doGet(`hr/staff/${this.state.staff.staff_id}/salaries`)
           .then(response => {
             this.setState({
               ...this.state,
@@ -101,10 +92,7 @@ class ViewStaff extends Component {
         return;
       }
 
-      axios
-        .get(`${ROOT_URL}/api/hr/staff/${this.state.staff.staff_id}/expenses`, {
-          headers: { authorization: localStorage.getItem('token') },
-        })
+      doGet(`hr/staff/${this.state.staff.staff_id}/expenses`)
         .then(response => {
           this.setState({
             ...this.state,
@@ -120,13 +108,7 @@ class ViewStaff extends Component {
         return;
       }
 
-      axios
-        .get(
-          `${ROOT_URL}/api/hr/staff/${this.state.staff.staff_id}/official-data`,
-          {
-            headers: { authorization: localStorage.getItem('token') },
-          },
-        )
+      doGet(`hr/staff/${this.state.staff.staff_id}/official-data`)
         .then(response => {
           this.setState({
             ...this.state,

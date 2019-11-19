@@ -20,6 +20,7 @@ import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4';
 import BranchF4 from '../../../../reference/f4/branch/BranchF4';
 import PositionF4 from '../../../../reference/f4/position/PositionF4';
 import LazyPagination from '../../../../general/pagination/LazyPagination';
+import { doGet, doPut, doPost, doDelete } from '../../../../utils/apiActions';
 
 const PAGINATION_TOTAL_COUNT_KEY = 'X-Pagination-Total-Count';
 const PAGINATION_CURRENT_PAGE_KEY = 'X-Pagination-Current-Page';
@@ -80,13 +81,9 @@ class StaffList extends Component {
 
     params.page = page;
 
-    axios
-      .get(`${ROOT_URL}/api/hr/staff`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params,
-      })
+    doGet(`hr/staff`, {
+      params,
+    })
       .then(response => {
         this.setState({
           ...this.state,

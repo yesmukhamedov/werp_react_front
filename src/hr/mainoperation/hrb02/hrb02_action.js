@@ -5,6 +5,7 @@ import {
   notify,
 } from '../../../general/notification/notification_action';
 import { modifyLoader } from '../../../general/loader/loader_action';
+import { doGet, doPut, doPost, doDelete } from '../../../utils/apiActions';
 
 export const FETCH_BONUS_DATA = 'FETCH_BONUS_DATA';
 export const CLEAR_STATE = 'CLEAR_STATE';
@@ -15,17 +16,7 @@ export const SAVE_BONUS_DATA = 'SAVE_BONUS_DATA';
 
 export function updateF4All() {
   return function(dispatch) {
-    axios
-      .post(
-        `${ROOT_URL}/api/reference/updateF4All`,
-        {},
-        {
-          headers: {
-            // 'Content-Type': 'application/json;charset=UTF-8',
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPost(`reference/updateF4All`, {})
       .then(({ data }) => {
         dispatch(notify('success', 'Сохранен.', 'Успешно'));
       })
@@ -38,17 +29,7 @@ export function updateF4All() {
 
 export function updateKPI() {
   return function(dispatch) {
-    axios
-      .post(
-        `${ROOT_URL}/api/hr/hrb02/updateKPI`,
-        {},
-        {
-          headers: {
-            // 'Content-Type': 'application/json;charset=UTF-8',
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPost(`hr/hrb02/updateKPI`, {})
       .then(({ data }) => {
         dispatch(notify('success', 'Сохранен.', 'Успешно'));
       })
@@ -67,18 +48,14 @@ export function fetchBonusData(a_bukrs, a_branchId, a_date) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
 
-    axios
-      .get(`${ROOT_URL}/api/hr/hrb02/fetchBonusData`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: {
-          bukrs: a_bukrs,
-          branchId: a_branchId,
-          year,
-          month,
-        },
-      })
+    doGet(`hr/hrb02/fetchBonusData`, {
+      params: {
+        bukrs: a_bukrs,
+        branchId: a_branchId,
+        year,
+        month,
+      },
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -105,24 +82,14 @@ export function saveBonusData(a_bukrs, a_branchId, a_date, a_table) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
 
-    axios
-      .post(
-        `${ROOT_URL}/api/hr/hrb02/save`,
-        {
-          bukrs: a_bukrs,
-          branchId: a_branchId,
-          year,
-          month,
-          // ,
-          table: a_table,
-        },
-        {
-          headers: {
-            // 'Content-Type': 'application/json;charset=UTF-8',
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPost(`hr/hrb02/save`, {
+      bukrs: a_bukrs,
+      branchId: a_branchId,
+      year,
+      month,
+      // ,
+      table: a_table,
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data.saved) {

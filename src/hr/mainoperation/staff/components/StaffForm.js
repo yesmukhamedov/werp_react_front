@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Form, Button } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import { ROOT_URL } from '../../../../utils/constants';
+import { doGet, doPut, doPost, doDelete } from '../../../../utils/apiActions';
 
 const genderOptions = [
   { key: 'm', text: 'Мужской', value: 'male' },
@@ -30,10 +31,7 @@ class StaffForm extends Component {
   }
 
   loadRegions(cityId) {
-    axios
-      .get(`${ROOT_URL}/api/reference/regions/${cityId}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`reference/regions/${cityId}`)
       .then(response => {
         const loadedRegions = response.data.map(item => ({
           key: item.idcityreg,
@@ -51,10 +49,7 @@ class StaffForm extends Component {
   }
 
   loadCities(stateId) {
-    axios
-      .get(`${ROOT_URL}/api/reference/cities/${stateId}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`reference/cities/${stateId}`)
       .then(response => {
         const loadedCities = response.data.map(item => ({
           key: item.idcity,
@@ -73,10 +68,7 @@ class StaffForm extends Component {
   }
 
   loadStates(countryId) {
-    axios
-      .get(`${ROOT_URL}/api/reference/states/${countryId}`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`reference/states/${countryId}`)
       .then(response => {
         const loadedStates = response.data.map(item => ({
           key: item.idstate,
@@ -96,10 +88,7 @@ class StaffForm extends Component {
   }
 
   componentWillMount() {
-    axios
-      .get(`${ROOT_URL}/api/reference/countries`, {
-        headers: { authorization: localStorage.getItem('token') },
-      })
+    doGet(`reference/countries`)
       .then(response => {
         const loadedCountries = response.data.map(item => ({
           key: item.countryId,
@@ -124,8 +113,7 @@ class StaffForm extends Component {
       sendingData: true,
     });
 
-    axios
-      .post(`${ROOT_URL}/api/hr/staff`, this.state.staff)
+    doPost(`hr/staff`, this.state.staff)
       .then(response => {
         console.log(response);
       })

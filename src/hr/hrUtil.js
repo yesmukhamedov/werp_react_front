@@ -271,16 +271,16 @@ export const expenceTypeOptions = expenceTypes => {
 export const getStaffDataBlankUri = activeData => {
   switch (activeData) {
     case OFF_DATA:
-      return '/api/hr/off-data/blank/';
+      return 'hr/off-data/blank/';
 
     case EXPENCE_DATA:
-      return '/api/hr/expence/blank/';
+      return 'hr/expence/blank/';
 
     case EDU_DATA:
-      return '/api/hr/education/blank/';
+      return 'hr/education/blank/';
 
     case SALARY_DATA:
-      return '/api/hr/salary/blank/';
+      return 'hr/salary/blank/';
 
     default:
       return '';
@@ -290,16 +290,16 @@ export const getStaffDataBlankUri = activeData => {
 export const getStaffDataPostUri = staffData => {
   switch (staffData) {
     case OFF_DATA:
-      return '/api/hr/off-data';
+      return 'hr/off-data';
 
     case EXPENCE_DATA:
-      return '/api/hr/expence';
+      return 'hr/expence';
 
     case EDU_DATA:
-      return '/api/hr/education';
+      return 'hr/education';
 
     case SALARY_DATA:
-      return '/api/hr/salary';
+      return 'hr/salary';
 
     default:
       return '';
@@ -309,25 +309,25 @@ export const getStaffDataPostUri = staffData => {
 export const getStaffDataFetchUri = (staffData, staffId) => {
   switch (staffData) {
     case OFF_DATA:
-      return `/api/hr/off-data/by-staff/${staffId}`;
+      return `hr/off-data/by-staff/${staffId}`;
 
     case EXPENCE_DATA:
-      return `/api/hr/expence/by-staff/${staffId}`;
+      return `hr/expence/by-staff/${staffId}`;
 
     case EDU_DATA:
-      return `/api/hr/education/by-staff/${staffId}`;
+      return `hr/education/by-staff/${staffId}`;
 
     case SALARY_DATA:
-      return `/api/hr/salary/by-staff/${staffId}`;
+      return `hr/salary/by-staff/${staffId}`;
 
     case MATNR_DATA:
-      return `/api/hr/staff/${staffId}/matnrs`;
+      return `hr/staff/${staffId}/matnrs`;
 
     case CONTACT_DATA:
-      return `/api/hr/address/by-staff/${staffId}`;
+      return `hr/address/by-staff/${staffId}`;
 
     case FILE_DATA:
-      return `/api/hr/file/by-staff/${staffId}`;
+      return `hr/file/by-staff/${staffId}`;
 
     default:
       return '';

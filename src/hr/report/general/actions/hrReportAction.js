@@ -2,6 +2,7 @@ import axios from 'axios';
 import { ROOT_URL } from '../../../../utils/constants';
 import { handleError } from '../../../../general/notification/notification_action';
 import { modifyLoader } from '../../../../general/loader/loader_action';
+import { doGet, doPut, doPost, doDelete } from '../../../../utils/apiActions';
 
 export const HR_REP_FETCH_ITEMS = 'HR_REP_FETCH_ITEMS';
 export const HR_REP_FETCH_META = 'HR_REP_FETCH_META';
@@ -13,13 +14,9 @@ export const HR_REP_CLEAR_STATE = 'HR_REP_CLEAR_STATE';
 export function fetchItems(id, params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/hr/report/${id}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params,
-      })
+    doGet(`hr/report/${id}`, {
+      params,
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -37,12 +34,7 @@ export function fetchItems(id, params) {
 export function fetchMeta(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/hr/report/meta/${id}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`hr/report/meta/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -60,16 +52,7 @@ export function fetchMeta(id) {
 export function updateDirectorNote(demoId, note) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .put(
-        `${ROOT_URL}/api/hr/report/note/${demoId}`,
-        { note },
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPut(`hr/report/note/${demoId}`, { note })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch(toggleRepModal(false));

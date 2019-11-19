@@ -6,6 +6,7 @@ import {
   notify,
   NOTIFY,
 } from '../../../../general/notification/notification_action';
+import { doGet, doPut, doPost, doDelete } from '../../../../utils/apiActions';
 
 export const HR_TIMESHEET_FETCH_ITEMS = 'HR_TIMESHEET_FETCH_ITEMS';
 export const HR_TIMESHEET_FETCH_STATUSES = 'HR_TIMESHEET_FETCH_STATUSES';
@@ -13,13 +14,9 @@ export const HR_TIMESHEET_FETCH_STATUSES = 'HR_TIMESHEET_FETCH_STATUSES';
 export function fetchItems(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/hr/staff/timesheet`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params,
-      })
+    doGet(`hr/staff/timesheet`, {
+      params,
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -37,12 +34,7 @@ export function fetchItems(params) {
 export function fetchStatuses() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/hr/staff/timesheet-statuses`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`hr/staff/timesheet-statuses`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -60,12 +52,7 @@ export function fetchStatuses() {
 export function saveData(data) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .put(`${ROOT_URL}/api/hr/staff/timesheet`, data, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doPut(`hr/staff/timesheet`, data)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch(notify(NOTIFY, 'Сохранено успешно'));

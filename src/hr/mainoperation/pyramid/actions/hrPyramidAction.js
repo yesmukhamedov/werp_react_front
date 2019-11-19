@@ -3,6 +3,7 @@ import { ROOT_URL } from '../../../../utils/constants';
 import { modifyLoader } from '../../../../general/loader/loader_action';
 import { handleError } from '../../../../general/notification/notification_action';
 import browserHistory from '../../../../utils/history';
+import { doGet, doPut, doPost, doDelete } from '../../../../utils/apiActions';
 
 export const HR_PYRAMID_FETCH_BUKRS_TREE = 'HR_PYRAMID_FETCH_BUKRS_TREE';
 export const HR_PYRAMID_TREE_CHANGED = 'HR_PYRAMID_TREE_CHANGED';
@@ -15,13 +16,9 @@ export const HR_PYRAMID_ITEM_UPDATED = 'HR_PYRAMID_ITEM_UPDATED';
 export function fetchBukrsPyramidsTree(bukrs) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/hr/pyramid/tree`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-        params: { bukrs },
-      })
+    doGet(`hr/pyramid/tree`, {
+      params: { bukrs },
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -45,12 +42,7 @@ export function pyramidTreeChanged(treeData) {
 export function deletePyramid(id, callback) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .delete(`${ROOT_URL}/api/hr/pyramid/${id}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doDelete(`hr/pyramid/${id}`)
       .then(() => {
         dispatch(modifyLoader(false));
         if (callback) {
@@ -67,16 +59,7 @@ export function deletePyramid(id, callback) {
 export function removeStaffFromEmployee(id, callback) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .put(
-        `${ROOT_URL}/api/hr/pyramid/remove-staff/${id}`,
-        {},
-        {
-          headers: {
-            authorization: localStorage.getItem('token'),
-          },
-        },
-      )
+    doPut(`hr/pyramid/remove-staff/${id}`, {})
       .then(() => {
         dispatch(modifyLoader(false));
         if (callback) {
@@ -93,12 +76,7 @@ export function removeStaffFromEmployee(id, callback) {
 export function blankItem(parentId) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/hr/pyramid/blank/${parentId}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`hr/pyramid/blank/${parentId}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         // console.log(data)
@@ -117,12 +95,7 @@ export function blankItem(parentId) {
 export function fetchItem(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    axios
-      .get(`${ROOT_URL}/api/hr/pyramid/view/${id}`, {
-        headers: {
-          authorization: localStorage.getItem('token'),
-        },
-      })
+    doGet(`hr/pyramid/view/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -138,21 +111,11 @@ export function fetchItem(id) {
 }
 
 export function updatePyramid(p) {
-  return dispatch =>
-    axios.put(`${ROOT_URL}/api/hr/pyramid/${p.id}`, p, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doPut(`hr/pyramid/${p.id}`, p);
 }
 
 export function createPyramid(p) {
-  return dispatch =>
-    axios.post(`${ROOT_URL}/api/hr/pyramid`, p, {
-      headers: {
-        authorization: localStorage.getItem('token'),
-      },
-    });
+  return dispatch => doPost(`hr/pyramid`, p);
 }
 
 export function toggleFormModal(flag) {
