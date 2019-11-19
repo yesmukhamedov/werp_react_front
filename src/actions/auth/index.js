@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { ROOT_URL } from '../../utils/constants';
 import { doGet, doPost } from '../../utils/apiActions';
 import browserHistory from '../../utils/history';
 import { resetLocalStorage } from '../../utils/helpers';
@@ -35,13 +37,14 @@ export function authError(error) {
 export function signinUser({ username, password }, language) {
   return dispatch => {
     // Submit username/password to the server
-    // .post(`${ROOT_URL}/signin`, { username, password, language })
+    axios
+      .post(`${ROOT_URL}/signin`, { username, password, language })
 
-    doPost(`signin`, {
-      username,
-      password,
-      language,
-    })
+      // doPost(`signin`, {
+      //   username,
+      //   password,
+      //   language,
+      // })
       .then(response => {
         // If request is good...
         // - save the JWT token
