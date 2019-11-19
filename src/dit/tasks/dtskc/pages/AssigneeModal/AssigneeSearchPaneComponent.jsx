@@ -1,7 +1,8 @@
+import axios from 'axios';
 import React, { Component } from 'react';
 import { Form, Search, Segment, Button } from 'semantic-ui-react';
 import hash from 'object-hash';
-import { doGetCancelToken } from '../../../../../utils/apiActions';
+import { doGet, doGetCancelToken } from '../../../../../utils/apiActions';
 import _ from 'lodash';
 import WarnMessage from './WarnMessage';
 import { constructFullName } from '../../../../../utils/helpers';
@@ -132,7 +133,9 @@ class AssigneeSearchPaneComponent extends Component {
       selectedCompany,
     } = this.props;
 
-    const req = GET(`${assigneeDetailsUrl}/${userId}?bukrs=${selectedCompany}`);
+    const req = doGet(
+      `${assigneeDetailsUrl}/${userId}?bukrs=${selectedCompany}`,
+    );
     req
       .then(({ data }) => {
         const { branchId, departmentId } = data;

@@ -1,4 +1,4 @@
-import { doPost } from '../../../../../utils/apiActions';
+import { doPost } from '../../../../utils/apiActions';
 
 const createTaskUrl = `tasks`;
 

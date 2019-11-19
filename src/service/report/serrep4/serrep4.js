@@ -157,7 +157,7 @@ class Serrep4 extends Component {
     strVal = this.state.searchTerm.dateTo.format('YYYY-MM-DD');
     const searchDateTo = moment.utc(strVal).format();
 
-    doGet(`${ROOT_URL}/api/service/reports/serrep4/search`, {
+    doGet(`service/reports/serrep4/search`, {
       bukrs: this.state.searchTerm.bukrs,
       branchIds: this.state.searchTerm.branchList.join(),
       dateFrom: searchDateFrom,

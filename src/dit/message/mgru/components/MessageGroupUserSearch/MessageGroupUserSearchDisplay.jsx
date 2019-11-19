@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { doGetCancelToken } from '../../../../../utils/apiActions';
 import _ from 'lodash';
 import React, { Component } from 'react';
@@ -14,7 +15,7 @@ import {
 } from 'semantic-ui-react';
 import { DropdownFormField } from '../../../../../utils/formFields';
 
-const userSearchUrl = `${ROOT_URL}/api/mgru/users`;
+const userSearchUrl = `mgru/users`;
 
 class MessageGroupUserSearchDisplay extends Component {
   constructor(props) {

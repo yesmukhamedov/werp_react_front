@@ -16,7 +16,7 @@ import {
   DatePickerFormField,
 } from '../../../../utils/formFields';
 import browserHistory from '../../../../utils/history';
-import { DELETE } from '../../../../utils/helpers';
+import { doDelete } from '../../../../utils/apiActions';
 import './style.css';
 
 class DtskcComponent extends Component {
@@ -45,7 +45,7 @@ class DtskcComponent extends Component {
   }
 
   handleUploadDelete(url) {
-    const req = DELETE(url);
+    const req = doDelete(url);
     req
       .then(() => {
         const newUploadList = this.state.uploadList.filter(

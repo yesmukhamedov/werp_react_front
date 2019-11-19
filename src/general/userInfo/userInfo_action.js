@@ -1,14 +1,13 @@
 import { notify } from '../../general/notification/notification_action';
-import { ROOT_URL } from '../../utils/constants';
-import { GET } from '../../utils/helpers';
+import { doGet } from '../../utils/apiActions';
 
 /* action types */
 export const FETCH_USER_INFO = 'FETCH_USER_INFO';
 
-const userInfoUrl = `${ROOT_URL}/api/reference/userInfo`;
+const userInfoUrl = `reference/userInfo`;
 
 export function fetchUserInfo() {
-  const request = GET(userInfoUrl);
+  const request = doGet(userInfoUrl);
   return dispatch => {
     request
       .then(({ data }) => {

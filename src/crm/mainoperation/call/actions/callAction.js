@@ -4,6 +4,7 @@ import {
 } from '../../../../general/notification/notification_action';
 import { modifyLoader } from '../../../../general/loader/loader_action';
 import browserHistory from '../../../../utils/history';
+import axios from 'axios';
 import { doPost, doPut } from '../../../../utils/apiActions';
 
 const CONNECTOR_URL = 'http://192.168.0.26:3454';

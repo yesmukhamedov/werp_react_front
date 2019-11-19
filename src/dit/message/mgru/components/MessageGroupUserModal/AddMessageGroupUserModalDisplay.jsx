@@ -1,5 +1,6 @@
+import axios from 'axios';
 import React, { PureComponent } from 'react';
-import { doGetCancelToken } from '../../../../../utils/apiActions';
+import { doGet, doGetCancelToken } from '../../../../../utils/apiActions';
 import _ from 'lodash';
 import { Modal, Button, Form, Divider, Search } from 'semantic-ui-react';
 import { Field, reduxForm, change, untouch } from 'redux-form';
@@ -114,7 +115,7 @@ class AddMessageGroupUserModalDisplay extends PureComponent {
   handleResultSelect = (e, { result }) => {
     this.setState({ value: result.title, userId: result.userid });
 
-    const req = deGet(
+    const req = doGet(
       `${userSearchUrl}/${result.userid}?bukrs=${this.state.selectedCompany}`,
     );
 

@@ -3,8 +3,8 @@ import { Form, Button, Segment, Label, List } from 'semantic-ui-react';
 import hash from 'object-hash';
 import _ from 'lodash';
 import WarnMessage from './WarnMessage';
-import { GET, constructFullName } from '../../../../../utils/helpers';
-import { ROOT_URL } from '../../../../../utils/constants';
+import { constructFullName } from '../../../../../utils/helpers';
+import { doGet } from '../../../../../utils/apiActions';
 
 class AssigneeGroupPaneComponent extends Component {
   state = {
@@ -19,8 +19,8 @@ class AssigneeGroupPaneComponent extends Component {
 
   fetchGroupsMembers = groupId => {
     const { groupOpts, lang, selectedCompany } = this.props;
-    const groupMembersUrl = `${ROOT_URL}/api/mgru/filter?groupId=${groupId}&bukrsId=${selectedCompany}`;
-    const req = GET(groupMembersUrl);
+    const groupMembersUrl = `mgru/filter?groupId=${groupId}&bukrsId=${selectedCompany}`;
+    const req = doGet(groupMembersUrl);
     req
       .then(({ data }) => {
         const filteredData = _.filter(
@@ -60,7 +60,7 @@ class AssigneeGroupPaneComponent extends Component {
             groupDetail: groupOpts[this.state.data.selectedGroup],
           },
           isLoading: false,
-          isSubmittable: (recipientList.length > 0),
+          isSubmittable: recipientList.length > 0,
         });
       })
       .catch(err => console.log(err));
@@ -122,10 +122,7 @@ class AssigneeGroupPaneComponent extends Component {
           required
         />
         {this.renderGroupMembers()}
-        <Button
-          onClick={this.handleSubmit}
-          disabled={!isSubmittable}
-        >
+        <Button onClick={this.handleSubmit} disabled={!isSubmittable}>
           {messages.BTN__ADD}
         </Button>
       </Form>

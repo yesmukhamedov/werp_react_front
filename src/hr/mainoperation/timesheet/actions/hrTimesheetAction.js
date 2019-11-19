@@ -4,7 +4,7 @@ import {
   notify,
   NOTIFY,
 } from '../../../../general/notification/notification_action';
-import { doGet, doPut, doPost, doDelete } from '../../../../utils/apiActions';
+import { doGet, doPut } from '../../../../utils/apiActions';
 
 export const HR_TIMESHEET_FETCH_ITEMS = 'HR_TIMESHEET_FETCH_ITEMS';
 export const HR_TIMESHEET_FETCH_STATUSES = 'HR_TIMESHEET_FETCH_STATUSES';
