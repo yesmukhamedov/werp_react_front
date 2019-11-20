@@ -145,7 +145,7 @@ const Mrcsch = props => {
     excelHeaders.push(messages['waers']);
 
     excelDownload(
-      '/api/marketing/report/mrcsch/downloadExcel',
+      'marketing/report/mrcsch/downloadExcel',
       'Mrcsch.xls',
       'outputTable',
       outputTable,
@@ -472,10 +472,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchDynObjMarketing,
-    clearDynObjMarketing,
-  },
-)(injectIntl(Mrcsch));
+export default connect(mapStateToProps, {
+  fetchDynObjMarketing,
+  clearDynObjMarketing,
+})(injectIntl(Mrcsch));

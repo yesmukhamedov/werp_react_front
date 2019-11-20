@@ -71,7 +71,7 @@ class Fahrb extends Component {
         branchId: params.branchId,
         staffId: params.staffId,
       };
-      this.props.fetchDynamicFAGM('/api/finance/mainoperation/fahrb/fetch', {
+      this.props.fetchDynamicFAGM('finance/mainoperation/fahrb/fetch', {
         ...searchParameters,
       });
       //   this.setState(searchParameters)
@@ -436,14 +436,11 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    modifyLoader,
-    //cleared by dynamic clear function
-    clearDynObj,
-    fetchDynamicFAGM,
-    saveFahrb,
-    changeDynObj,
-  },
-)(injectIntl(Fahrb));
+export default connect(mapStateToProps, {
+  modifyLoader,
+  //cleared by dynamic clear function
+  clearDynObj,
+  fetchDynamicFAGM,
+  saveFahrb,
+  changeDynObj,
+})(injectIntl(Fahrb));

@@ -83,7 +83,7 @@ class Frep6 extends Component {
     excelHeaders.push('MYR');
     excelHeaders.push(formatMessage(messages.overallSum) + ' USD');
     excelDownload(
-      '/api/finance/reports/frep6/downloadExcel',
+      'finance/reports/frep6/downloadExcel',
       'frep6.xls',
       'outputTable',
       this.props.outputTable,
@@ -191,7 +191,7 @@ class Frep6 extends Component {
     let errors = [];
     errors = this.validate();
     if (errors === null || errors === undefined || errors.length === 0) {
-      this.props.fetchDynamicFAGM('/api/finance/reports/frep6/search', {
+      this.props.fetchDynamicFAGM('finance/reports/frep6/search', {
         ...this.state.searchTerm,
         branchList: this.state.searchTerm.branchList.join(),
       });
@@ -344,13 +344,10 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    modifyLoader,
+export default connect(mapStateToProps, {
+  modifyLoader,
 
-    //cleared by dynamic clear function
-    clearDynObj,
-    fetchDynamicFAGM,
-  },
-)(injectIntl(Frep6));
+  //cleared by dynamic clear function
+  clearDynObj,
+  fetchDynamicFAGM,
+})(injectIntl(Frep6));

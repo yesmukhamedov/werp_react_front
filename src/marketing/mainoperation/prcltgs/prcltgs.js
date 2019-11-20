@@ -236,10 +236,8 @@ class Prcltgs extends Component {
   onSearchPriceList(branchId) {
     this.setState({ loading: true });
     doGet(`marketing/prcltgs/search`, {
-      params: {
-        bukrs: this.state.searchTerm.bukrs,
-        branchId,
-      },
+      bukrs: this.state.searchTerm.bukrs,
+      branchId,
     })
       .then(response => {
         this.setState({

@@ -79,9 +79,7 @@ class StaffList extends Component {
 
     params.page = page;
 
-    doGet(`hr/staff`, {
-      params,
-    })
+    doGet(`hr/staff`, params)
       .then(response => {
         this.setState({
           ...this.state,

@@ -107,7 +107,7 @@ class Frep1 extends Component {
     excelHeaders.push(formatMessage(messages.waers));
     excelHeaders.push(formatMessage(messages.bktxt));
     excelDownload(
-      '/api/finance/reports/frep1/downloadExcel',
+      'finance/reports/frep1/downloadExcel',
       'frep1.xls',
       'outputTable',
       this.props.outputTable,
@@ -282,7 +282,7 @@ class Frep1 extends Component {
     let errors = [];
     errors = this.validate();
     if (errors === null || errors === undefined || errors.length === 0) {
-      this.props.fetchDynamicFAGM('/api/finance/reports/frep1/search', {
+      this.props.fetchDynamicFAGM('finance/reports/frep1/search', {
         ...this.state.searchTerm,
         branchList: this.state.searchTerm.branchList.join(),
         bldatFrom: this.state.searchTerm.bldatFrom.format('YYYY-MM-DD'),
@@ -559,14 +559,11 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    f4FetchHkontList,
-    f4FetchCurrencyList,
-    fetchDynamicFAGM,
-    clearDynObj,
-    f4ClearAnyObject,
-    modifyLoader,
-  },
-)(injectIntl(Frep1));
+export default connect(mapStateToProps, {
+  f4FetchHkontList,
+  f4FetchCurrencyList,
+  fetchDynamicFAGM,
+  clearDynObj,
+  f4ClearAnyObject,
+  modifyLoader,
+})(injectIntl(Frep1));

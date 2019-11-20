@@ -12,9 +12,7 @@ export const HR_REP_CLEAR_STATE = 'HR_REP_CLEAR_STATE';
 export function fetchItems(id, params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`hr/report/${id}`, {
-      params,
-    })
+    doGet(`hr/report/${id}`, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

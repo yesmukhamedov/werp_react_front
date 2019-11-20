@@ -176,7 +176,7 @@ class DmscListExcel extends Component {
     excelHeaders.push('Trade In');
     excelHeaders.push(messages['extraInfo']);
     excelDownload(
-      '/api/marketing/report/dmsclist/excel',
+      'marketing/report/dmsclist/excel',
       'dmsclist.xls',
       'outputTable',
       this.props.dynObjDmsc.dmsclists,
@@ -316,11 +316,8 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchDmsclstDefOpts,
-    getDmsclst,
-    getDmsclstSecOpts,
-  },
-)(injectIntl(DmscListExcel));
+export default connect(mapStateToProps, {
+  fetchDmsclstDefOpts,
+  getDmsclst,
+  getDmsclstSecOpts,
+})(injectIntl(DmscListExcel));

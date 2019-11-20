@@ -46,9 +46,7 @@ export function fetchRecruitmentItems(statusId) {
 export function fetchAllHrDocs(params) {
   return function(dispatch) {
     dispatch(setLoading(true));
-    doGet(`hr/document/all`, {
-      params,
-    })
+    doGet(`hr/document/all`, params)
       .then(({ data }) => {
         dispatch(setLoading(false));
         dispatch({

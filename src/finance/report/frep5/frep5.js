@@ -132,7 +132,7 @@ class Frep5 extends Component {
         formatMessage(messages.inDocumentCurrency),
     );
     excelDownload(
-      '/api/finance/reports/frep5/downloadExcel',
+      'finance/reports/frep5/downloadExcel',
       'frep5Total.xls',
       'outputTable',
       this.props.outputTable,
@@ -313,7 +313,7 @@ class Frep5 extends Component {
     let errors = [];
     errors = this.validate();
     if (errors === null || errors === undefined || errors.length === 0) {
-      this.props.fetchDynamicFAGM('/api/finance/reports/frep5/search', {
+      this.props.fetchDynamicFAGM('finance/reports/frep5/search', {
         ...this.state.searchTerm,
         branchList: this.state.searchTerm.branchList.join(),
         ctTypeList: this.state.searchTerm.ctTypeList.join(),
@@ -431,7 +431,7 @@ class Frep5 extends Component {
   }
   getDetail(branchId, waers, ps) {
     this.props.modifyLoader(true);
-    this.props.fetchDynamicFAGM('/api/finance/reports/frep5/searchDetail', {
+    this.props.fetchDynamicFAGM('finance/reports/frep5/searchDetail', {
       bukrs: this.state.searchTerm.bukrs,
       brnch: branchId,
       waers: waers,
@@ -700,13 +700,10 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    modifyLoader,
+export default connect(mapStateToProps, {
+  modifyLoader,
 
-    //cleared by dynamic clear function
-    clearDynObj,
-    fetchDynamicFAGM,
-  },
-)(injectIntl(Frep5));
+  //cleared by dynamic clear function
+  clearDynObj,
+  fetchDynamicFAGM,
+})(injectIntl(Frep5));

@@ -50,10 +50,7 @@ class Frep7 extends Component {
 
   componentDidMount() {
     this.props.clearDynObj();
-    this.props.fetchDynamicFAGM(
-      '/api/finance/reports/frep7/canReadDismissed',
-      {},
-    );
+    this.props.fetchDynamicFAGM('finance/reports/frep7/canReadDismissed', {});
   }
   componentWillReceiveProps(nextProps) {}
   componentWillUnmount() {
@@ -132,7 +129,7 @@ class Frep7 extends Component {
       );
 
       excelDownload(
-        '/api/finance/reports/frep7/downloadExcel',
+        'finance/reports/frep7/downloadExcel',
         'Frep7Total.xls',
         'outputTable',
         this.props.outputTable,
@@ -159,7 +156,7 @@ class Frep7 extends Component {
       );
 
       excelDownload(
-        '/api/finance/reports/frep7/downloadExcelDetail',
+        'finance/reports/frep7/downloadExcelDetail',
         'Frep7Detail.xls',
         'outputTableDetail',
         this.props.outputTableDetail,
@@ -287,7 +284,7 @@ class Frep7 extends Component {
     let errors = [];
     errors = this.validate();
     if (errors === null || errors === undefined || errors.length === 0) {
-      this.props.fetchDynamicFAGM('/api/finance/reports/frep7/search', {
+      this.props.fetchDynamicFAGM('finance/reports/frep7/search', {
         bukrs: this.state.searchTerm.bukrs,
         branchList: this.state.searchTerm.branchList.join(),
         dismissed: this.state.searchTerm.dismissed ? 1 : 0,
@@ -409,7 +406,7 @@ class Frep7 extends Component {
   }
   getDetail(bukrs, branchId, waers, branchName) {
     this.props.modifyLoader(true);
-    this.props.fetchDynamicFAGM('/api/finance/reports/frep7/searchDetail', {
+    this.props.fetchDynamicFAGM('finance/reports/frep7/searchDetail', {
       bukrs: bukrs,
       branchId: branchId,
       waers: waers,
@@ -784,14 +781,11 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    modifyLoader,
+export default connect(mapStateToProps, {
+  modifyLoader,
 
-    //cleared by dynamic clear function
-    clearDynObj,
-    fetchDynamicFAGM,
-    changeDynObj,
-  },
-)(injectIntl(Frep7));
+  //cleared by dynamic clear function
+  clearDynObj,
+  fetchDynamicFAGM,
+  changeDynObj,
+})(injectIntl(Frep7));

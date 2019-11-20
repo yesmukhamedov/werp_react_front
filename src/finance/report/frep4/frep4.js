@@ -277,7 +277,7 @@ class Frep4 extends Component {
     let errors = [];
     errors = this.validate();
     if (errors === null || errors === undefined || errors.length === 0) {
-      this.props.fetchDynamicFAGM('/api/finance/reports/frep4/search', {
+      this.props.fetchDynamicFAGM('finance/reports/frep4/search', {
         ...this.state.searchTerm,
         branchList: this.state.searchTerm.branchList.join(),
         bldatFrom: this.state.searchTerm.bldatFrom.format('YYYY-MM-DD'),
@@ -349,7 +349,7 @@ class Frep4 extends Component {
   }
   getDetail(branchId, hkont, waers) {
     this.props.modifyLoader(true);
-    this.props.fetchDynamicFAGM('/api/finance/reports/frep4/searchDetail', {
+    this.props.fetchDynamicFAGM('finance/reports/frep4/searchDetail', {
       bukrs: this.state.searchTerm.bukrs,
       brnch: branchId,
       waers: waers,
@@ -629,13 +629,10 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    modifyLoader,
+export default connect(mapStateToProps, {
+  modifyLoader,
 
-    //cleared by dynamic clear function
-    clearDynObj,
-    fetchDynamicFAGM,
-  },
-)(injectIntl(Frep4));
+  //cleared by dynamic clear function
+  clearDynObj,
+  fetchDynamicFAGM,
+})(injectIntl(Frep4));

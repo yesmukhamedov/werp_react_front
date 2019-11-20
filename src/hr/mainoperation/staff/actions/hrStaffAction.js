@@ -59,9 +59,7 @@ export const HR_EXIT_INTERVIEWS = 'HR_EXIT_INTERVIEWS';
 export function fetchCurrentStaffs(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`hr/staff`, {
-      params,
-    })
+    doGet(`hr/staff`, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -102,9 +100,7 @@ export function blankExitInterview(staffId) {
 export function fetchAllCurrentStaffs(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`hr/staff/current-all`, {
-      params,
-    })
+    doGet(`hr/staff/current-all`, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

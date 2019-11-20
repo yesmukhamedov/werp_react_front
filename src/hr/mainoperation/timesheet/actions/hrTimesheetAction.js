@@ -12,9 +12,7 @@ export const HR_TIMESHEET_FETCH_STATUSES = 'HR_TIMESHEET_FETCH_STATUSES';
 export function fetchItems(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`hr/staff/timesheet`, {
-      params,
-    })
+    doGet(`hr/staff/timesheet`, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

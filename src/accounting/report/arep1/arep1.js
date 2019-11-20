@@ -154,7 +154,7 @@ class Arep1 extends Component {
       excelHeaders.push(formatMessage(messages.amount) + ' USD');
 
       excelDownload(
-        '/api/accounting/reports/arep1/downloadTotal',
+        'accounting/reports/arep1/downloadTotal',
         'Arep1Total.xls',
         'outputTable',
         this.props.outputTable,
@@ -177,7 +177,7 @@ class Arep1 extends Component {
       excelHeaders.push(formatMessage(messages.bktxt));
 
       excelDownload(
-        '/api/accounting/reports/arep1/downloadDetail',
+        'accounting/reports/arep1/downloadDetail',
         'Arep1Detail.xls',
         'outputTableDetail',
         this.props.outputTableDetail,

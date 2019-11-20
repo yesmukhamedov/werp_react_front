@@ -17,9 +17,7 @@ export const CRM_KPI_CLEAR_STATE = 'CRM_KPI_CLEAR_STATE';
 export function fetchItems(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`crm/kpi/setting`, {
-      params,
-    })
+    doGet(`crm/kpi/setting`, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

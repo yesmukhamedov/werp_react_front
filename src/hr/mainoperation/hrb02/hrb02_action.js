@@ -47,12 +47,10 @@ export function fetchBonusData(a_bukrs, a_branchId, a_date) {
     dispatch(modifyLoader(true));
 
     doGet(`hr/hrb02/fetchBonusData`, {
-      params: {
-        bukrs: a_bukrs,
-        branchId: a_branchId,
-        year,
-        month,
-      },
+      bukrs: a_bukrs,
+      branchId: a_branchId,
+      year,
+      month,
     })
       .then(({ data }) => {
         dispatch(modifyLoader(false));

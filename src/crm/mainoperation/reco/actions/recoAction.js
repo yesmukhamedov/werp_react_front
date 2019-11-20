@@ -149,9 +149,7 @@ export function fetchCallResults() {
 export function fetchRecoArchive(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`crm/reco/archive`, {
-      params,
-    })
+    doGet(`crm/reco/archive`, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

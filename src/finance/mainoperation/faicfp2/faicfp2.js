@@ -86,7 +86,7 @@ class Faicfp2 extends Component {
     this.initializeBkpfBseg();
     let params = {};
     this.props.fetchDynamicFAGM(
-      '/api/finance/mainoperation/fetchCitiesWithMainOffices',
+      'finance/mainoperation/fetchCitiesWithMainOffices',
       params,
     );
     this.props.f4FetchCurrencyList('faicfp2');
@@ -148,7 +148,7 @@ class Faicfp2 extends Component {
         let brnch = value;
         let params = { bukrs: bukrs, branchId: brnch };
         this.props.fetchDynamicFAGM(
-          '/api/finance/mainoperation/fetchCityBranchCashBanks',
+          'finance/mainoperation/fetchCityBranchCashBanks',
           params,
         );
         this.initializeBseg();
@@ -642,17 +642,14 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    f4FetchCurrencyList,
-    f4ClearAnyObject,
-    f4FetchExchangeRateNational,
+export default connect(mapStateToProps, {
+  f4FetchCurrencyList,
+  f4ClearAnyObject,
+  f4FetchExchangeRateNational,
 
-    modifyLoader,
-    fetchDynamicFAGM,
-    changeDynObj,
-    clearDynObj,
-    saveFiSrcDocs,
-  },
-)(injectIntl(Faicfp2));
+  modifyLoader,
+  fetchDynamicFAGM,
+  changeDynObj,
+  clearDynObj,
+  saveFiSrcDocs,
+})(injectIntl(Faicfp2));

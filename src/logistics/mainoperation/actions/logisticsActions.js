@@ -24,9 +24,7 @@ import { ACTION_UPDATE, getUriByDoctype } from '../../logUtil';
 
 export function fetchWerksRequestsIn(params) {
   return function(dispatch) {
-    doGet(`logistics/werks-request/in`, {
-      params: params,
-    })
+    doGet(`logistics/werks-request/in`, params)
       .then(({ data }) => {
         dispatch({
           type: LOG_WERKS_REQUEST_LIST_FETCHED,
@@ -84,9 +82,7 @@ export function createWerksRequest(o) {
 export function fetchMatnrs(params) {
   return function(dispatch) {
     dispatch(setMatnrListLoading(true));
-    doGet(`reference/matnrs`, {
-      params: params,
-    })
+    doGet(`reference/matnrs`, params)
       .then(({ data }) => {
         dispatch(setMatnrListLoading(false));
         dispatch({

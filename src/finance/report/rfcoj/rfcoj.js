@@ -329,7 +329,7 @@ class Rfcoj extends Component {
     let errors = [];
     errors = this.validate();
     if (errors === null || errors === undefined || errors.length === 0) {
-      this.props.fetchDynamicFAGM('/api/finance/reports/rfcoj/search', {
+      this.props.fetchDynamicFAGM('finance/reports/rfcoj/search', {
         ...this.state.searchTerm,
         bldatFrom: this.state.searchTerm.bldatFrom.format('YYYY-MM-DD'),
         bldatTo: this.state.searchTerm.bldatTo.format('YYYY-MM-DD'),
@@ -416,7 +416,7 @@ class Rfcoj extends Component {
     excelHeaders.push(messages['usnam']);
 
     excelDownload(
-      '/api/finance/reports/rfcoj/downloadExcel',
+      'finance/reports/rfcoj/downloadExcel',
       'Rfcoj.xls',
       'outputTable',
       outputTableState,
@@ -715,17 +715,14 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    modifyLoader,
+export default connect(mapStateToProps, {
+  modifyLoader,
 
-    //cleared by dynamic clear function
-    clearDynObj,
-    fetchDynamicFAGM,
+  //cleared by dynamic clear function
+  clearDynObj,
+  fetchDynamicFAGM,
 
-    //cleared by clear any object function
-    clearAnyObject,
-    fetchCashBankHkontsByBranch,
-  },
-)(injectIntl(Rfcoj));
+  //cleared by clear any object function
+  clearAnyObject,
+  fetchCashBankHkontsByBranch,
+})(injectIntl(Rfcoj));

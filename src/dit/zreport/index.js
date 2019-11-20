@@ -56,7 +56,7 @@ function Zreport(props) {
 
   const download = fileId => {
     excelDownload(
-      `/api/dit/zreport/download/${fileId.id}`,
+      `dit/zreport/download/${fileId.id}`,
       fileId.name,
       'outputTable',
       [],
@@ -119,7 +119,10 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { fetchZreports, uploadZReport, deleteFile, updateZreport, clearDynObj },
-)(injectIntl(Zreport));
+export default connect(mapStateToProps, {
+  fetchZreports,
+  uploadZReport,
+  deleteFile,
+  updateZreport,
+  clearDynObj,
+})(injectIntl(Zreport));

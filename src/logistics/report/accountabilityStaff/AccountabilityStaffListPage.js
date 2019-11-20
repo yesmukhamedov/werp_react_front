@@ -114,11 +114,9 @@ class AccountabilityStaffListPage extends Component {
       loading: true,
     });
     doGet(`logistics/report/accountability-staff`, {
-      params: {
-        bukrs: this.state.selectedBukrs,
-        branchIds: this.state.selectedBranches.join(),
-        limit: this.state.limitChecked ? 1 : 0,
-      },
+      bukrs: this.state.selectedBukrs,
+      branchIds: this.state.selectedBranches.join(),
+      limit: this.state.limitChecked ? 1 : 0,
     })
       .then(response => {
         this.setState({

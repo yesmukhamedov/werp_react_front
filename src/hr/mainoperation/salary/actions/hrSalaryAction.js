@@ -13,9 +13,7 @@ export const HR_SALARY_LIST_MODAL_LOADING = 'HR_SALARY_LIST_MODAL_LOADING';
 export function fetchCurrentSalaries(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`hr/salary`, {
-      params,
-    })
+    doGet(`hr/salary`, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

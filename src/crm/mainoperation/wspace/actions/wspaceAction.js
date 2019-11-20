@@ -177,7 +177,8 @@ export function fetchKpi(year, month) {
   return function(dispatch) {
     dispatch(modifyLoader(WSP_FETCH_KPI, true));
     doGet(`crm/wspace/kpi`, {
-      params: { year, month },
+      year,
+      month,
     })
       .then(({ data }) => {
         dispatch(modifyLoader(WSP_FETCH_KPI, false));
