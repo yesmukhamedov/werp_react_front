@@ -59,13 +59,11 @@ class KpiRatingReportPage extends Component {
     });
     const { bukrs, branches, positionId, year, month, items } = this.state;
     doGet(`crm/report/kpi-rating`, {
-      params: {
-        bukrs,
-        branchIds: branches.join(','),
-        year,
-        month,
-        positionId,
-      },
+      bukrs,
+      branchIds: branches.join(','),
+      year,
+      month,
+      positionId,
     })
       .then(res => {
         items[positionId] = res.data;

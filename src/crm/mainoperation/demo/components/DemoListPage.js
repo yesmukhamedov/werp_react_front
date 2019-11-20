@@ -131,9 +131,7 @@ class DemoListPage extends Component {
       }
     });
 
-    doGet(`crm/demo`, {
-      params: sendingParams,
-    })
+    doGet(`crm/demo`, { sendingParams })
       .then(response => {
         this.setState({
           ...this.state,

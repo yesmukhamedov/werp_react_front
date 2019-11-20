@@ -32,7 +32,7 @@ export function fetchItems(id, params) {
 export function fetchChildItems(id, params) {
   return dispatch =>
     doGet(`crm/report/` + id, {
-      params: params,
+      params,
     });
 }
 
@@ -90,6 +90,6 @@ export function clearState() {
 export function fetchDemoRecommender(demoId) {
   return dispatch =>
     doGet(`crm/report/find-recommender`, {
-      params: { demoId: demoId },
+      demoId: demoId,
     });
 }

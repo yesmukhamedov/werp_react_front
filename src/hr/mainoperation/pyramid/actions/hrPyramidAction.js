@@ -15,7 +15,7 @@ export function fetchBukrsPyramidsTree(bukrs) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`hr/pyramid/tree`, {
-      params: { bukrs },
+      bukrs,
     })
       .then(({ data }) => {
         dispatch(modifyLoader(false));

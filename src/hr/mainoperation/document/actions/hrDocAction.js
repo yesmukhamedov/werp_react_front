@@ -47,7 +47,7 @@ export function fetchAllHrDocs(params) {
   return function(dispatch) {
     dispatch(setLoading(true));
     doGet(`hr/document/all`, {
-      params: params,
+      params,
     })
       .then(({ data }) => {
         dispatch(setLoading(false));
@@ -102,7 +102,7 @@ export function blankDocument(type) {
 export function getBlankDocument(type, params) {
   return dispatch => {
     return doGet(`hr/document/blank/` + type, {
-      params: params,
+      params,
     });
   };
 }

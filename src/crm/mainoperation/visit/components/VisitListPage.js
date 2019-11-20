@@ -46,10 +46,8 @@ class VisitListPage extends Component {
 
   getLoadedManagers(branchId) {
     doGet(`hr/pyramid/managers/by-branch/${branchId}`, {
-      params: {
-        year: this.state.queryParams.year,
-        month: this.state.queryParams.month,
-      },
+      year: this.state.queryParams.year,
+      month: this.state.queryParams.month,
     })
       .then(response => {
         const result = Object.keys(response.data).map(key => ({

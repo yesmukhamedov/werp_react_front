@@ -97,14 +97,12 @@ class KpiReportPage extends Component {
       loading: true,
     });
     doGet(`crm/report/kpi-current`, {
-      params: {
-        context,
-        contextId,
-        year: this.state.year,
-        month: this.state.month,
-        bukrs: bukrs || null,
-        branchId: branchId || null,
-      },
+      context,
+      contextId,
+      year: this.state.year,
+      month: this.state.month,
+      bukrs: bukrs || null,
+      branchId: branchId || null,
     })
       .then(res => {
         if (context === 'branch') {
