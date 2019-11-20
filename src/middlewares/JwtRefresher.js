@@ -16,11 +16,7 @@ const signoutUser = (dispatch, errorMsg) => {
 
 const requestToken = (dispatch, token, language) => {
   doGet(`tokenRefresh`, {
-    headers: { authorization: token },
-    withCredentials: true,
-    params: {
-      language,
-    },
+    language,
   })
     .then(({ data }) => {
       // If request is good...
