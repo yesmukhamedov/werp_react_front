@@ -747,5 +747,18 @@
   "dir_inter_phones": "Справочник телефонных номеров",
   "newPromotion": "Новая промо акция",
   "promotion_name": "Название промо-акции",
-  "report_uploads": "Загрузка отчетов"
+  "report_uploads": "Загрузка отчетов",
+  "ts_report_monthly": "Ежемесячный отчет по TS",
+  "ts_report_monthly_all": "Общий ежемесячный отчет по TS",
+  "ts_report_diller_alltime": "ПО дилеру за все время общий ",
+  "ts_report_count_dissmissed_remaining": "Количество уволенных и оставшихся на работе",
+  "recommenderPositionName": "Должность рекомендателя",
+  "applicantName": "ФИО сотрудника TS",
+  "applicantPositionName": "Должность сотрудника по TS",
+  "applicantBeginDate": "Дата приема на работу",
+  "saleCount": "Количество продаж сотрудников по TS",
+  "recomenderBonus": "Бонус от продаж новичка Рекомендателю",
+  "countEmpAplTs": "Количество привлеченных сотрдуников по TS",
+  "count_laidoff_employees": "Количество уволенных сотрудников",
+  "count_remaining_employees": "Количество оставшихся сотрдуников"
 }

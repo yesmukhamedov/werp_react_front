@@ -42,6 +42,7 @@ axios.interceptors.request.use(
     config.withCredentials = true;
     let token = Cookies.get(
       process.env.REACT_APP_LEGACY_COOKIE_PARAMS_JWT_TOKEN_NAME,
+      [{ domain: '192.168.0.23' }],
     );
     if (token) {
       config.headers['authorization'] = token;
@@ -96,12 +97,15 @@ store.subscribe(
 const token = localStorage.getItem('token');
 const jwtlang = Cookies.get(
   process.env.REACT_APP_LEGACY_COOKIE_PARAMS_LANG_TOKEN_NAME,
+  [{ domain: '192.168.0.23' }],
 );
 const jwtToken = Cookies.get(
   process.env.REACT_APP_LEGACY_COOKIE_PARAMS_JWT_TOKEN_NAME,
+  [{ domain: '192.168.0.23' }],
 );
 const jwtUsername = Cookies.get(
   process.env.REACT_APP_LEGACY_COOKIE_PARAMS_USERNAME_TOKEN_NAME,
+  [{ domain: '192.168.0.23' }],
 );
 const language =
   jwtlang || localStorage.getItem('language') || DEFAULT_LANGUAGE;
