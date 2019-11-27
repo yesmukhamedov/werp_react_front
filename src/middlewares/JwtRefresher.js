@@ -50,23 +50,24 @@ const tokenRefresherMiddleware = ({ dispatch }) => next => action => {
   }
 
   if (!isRenewingToken) {
-    try {
-      const tokenPayload = jwt.decode(token, 'secret');
-
-      const exp = moment.utc(tokenPayload.exp * 1000);
-      const now = moment.utc();
-
-      const remainedUntilRefresh = exp.diff(now, 's');
-
-      if (remainedUntilRefresh < TOKEN_REFRESH_LIMIT) {
-        isRenewingToken = true;
-        requestToken(dispatch, token, tokenPayload.language);
-        isRenewingToken = false;
-      }
-    } catch (error) {
-      isRenewingToken = false;
-      signoutUser(dispatch, error.message);
-    }
+    //***************************** */
+    //25.11.19 by azamat
+    //reomving request token from every query cause token time limit changed to 12 hours
+    //***************************** */
+    // try {
+    //   const tokenPayload = jwt.decode(token, 'secret');
+    //   const exp = moment.utc(tokenPayload.exp * 1000);
+    //   const now = moment.utc();
+    //   const remainedUntilRefresh = exp.diff(now, 's');
+    //   if (remainedUntilRefresh < TOKEN_REFRESH_LIMIT) {
+    //     isRenewingToken = true;
+    //     requestToken(dispatch, token, tokenPayload.language);
+    //     isRenewingToken = false;
+    //   }
+    // } catch (error) {
+    //   isRenewingToken = false;
+    //   signoutUser(dispatch, error.message);
+    // }
   }
 
   next(action);
