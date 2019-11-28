@@ -79,7 +79,7 @@ export default function List(props) {
       minWidth: 100,
     },
     {
-      Header: messages['count_laidoff_employees'],
+      Header: messages['remApplicant'],
       accessor: 'remApplicant',
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['remApplicant'] }),
@@ -89,7 +89,7 @@ export default function List(props) {
       minWidth: 100,
     },
     {
-      Header: messages['count_remaining_employees'],
+      Header: messages['firedApplicant'],
       accessor: 'firedApplicant',
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['firedApplicant'] }),
