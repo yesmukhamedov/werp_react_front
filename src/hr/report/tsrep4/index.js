@@ -94,13 +94,11 @@ function TSRep4(props) {
     excelHeaders.push(messages['brnch']);
     excelHeaders.push(messages['recommender']);
     excelHeaders.push(messages['recommenderPositionName']);
-    excelHeaders.push(messages['applicantName']);
-    excelHeaders.push(messages['applicantPositionName']);
-    excelHeaders.push(messages['applicantBeginDate']);
-    excelHeaders.push(messages['saleCount']);
-    excelHeaders.push(messages['recomenderBonus']);
+    excelHeaders.push(messages['countEmpAplTs']);
+    excelHeaders.push(messages['count_laidoff_employees']);
+    excelHeaders.push(messages['count_remaining_employees']);
     excelDownload(
-      '/api/hr/tsrep/monthly/excel',
+      'hr/tsrep/firremained/excel',
       'tsrep.xls',
       'outputTable',
       props.dynamicObject,
