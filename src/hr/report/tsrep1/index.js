@@ -55,8 +55,13 @@ function TSRep1(props) {
 
   const handleSubmit = e => {
     e.preventDefault();
-    const contractMonth = `${startDate.getMonth() +
-      1}.${startDate.getFullYear()}`;
+    let mon =
+      startDate.getMonth() + 1 < 10
+        ? '0' + (startDate.getMonth() + 1)
+        : startDate.getMonth() + 1;
+    const contractMonth = `${mon}.${startDate.getFullYear()}`;
+    console.log('Month', mon);
+    console.log('contractMonth', contractMonth);
     props.getTSRep1({ ...ts, contractMonth });
   };
 
