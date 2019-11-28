@@ -94,7 +94,7 @@ function TSRep1(props) {
     excelHeaders.push(messages['saleCount']);
     excelHeaders.push(messages['recomenderBonus']);
     excelDownload(
-      '/api/hr/tsrep/monthly/excel',
+      'hr/tsrep/monthly/excel',
       'tsrep.xls',
       'outputTable',
       props.dynamicObject,

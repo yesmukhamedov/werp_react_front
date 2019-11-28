@@ -93,13 +93,11 @@ function TSRep3(props) {
     excelHeaders.push(messages['brnch']);
     excelHeaders.push(messages['recommender']);
     excelHeaders.push(messages['recommenderPositionName']);
-    excelHeaders.push(messages['applicantName']);
-    excelHeaders.push(messages['applicantPositionName']);
-    excelHeaders.push(messages['applicantBeginDate']);
+    excelHeaders.push(messages['countEmpAplTs']);
     excelHeaders.push(messages['saleCount']);
     excelHeaders.push(messages['recomenderBonus']);
     excelDownload(
-      '/api/hr/tsrep/monthly/excel',
+      'hr/tsrep/dillers/alltime/excel',
       'tsrep.xls',
       'outputTable',
       props.dynamicObject,
