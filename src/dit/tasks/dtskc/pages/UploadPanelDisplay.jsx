@@ -3,12 +3,13 @@ import { Button } from 'semantic-ui-react';
 import { ROOT_URL } from '../../../../utils/constants';
 import Upload from 'rc-upload';
 
-const UploadPanelDisplay = (props) => {
+const UploadPanelDisplay = props => {
   const { onUploadSuccess, messages } = props;
   const uploaderProps = {
     action: `${ROOT_URL}/api/attachment/upload-file`,
     accept: '.pdf',
     multiple: true,
+    withCredentials: true,
     headers: {
       Authorization: localStorage.getItem('token'),
     },

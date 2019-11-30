@@ -30,6 +30,8 @@ export function handleError(error, dispatch) {
           errorTable[`132${language}`],
         ),
       );
+    } else if (error.response.status && error.response.status === 401) {
+      browserHistory.push('/signin');
     } else
       dispatch(
         notify(

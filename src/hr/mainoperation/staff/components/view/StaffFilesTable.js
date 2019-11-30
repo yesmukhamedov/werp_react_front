@@ -10,6 +10,7 @@ export default function StaffFilesTable(props) {
     action: `${ROOT_URL}/api/hr/file/upload/${staffId}`,
     accept: '.*',
     multiple: true,
+    withCredentials: true,
     headers: {
       Authorization: localStorage.getItem('token'),
     },
