@@ -99,9 +99,7 @@ export function blankDocument(type) {
 
 export function getBlankDocument(type, params) {
   return dispatch => {
-    return doGet(`hr/document/blank/` + type, {
-      params,
-    });
+    return doGet(`hr/document/blank/` + type, params);
   };
 }
 
