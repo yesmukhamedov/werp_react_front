@@ -380,7 +380,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {},
-)(injectIntl(MmccBasicInfo));
+export default connect(mapStateToProps, {})(injectIntl(MmccBasicInfo));

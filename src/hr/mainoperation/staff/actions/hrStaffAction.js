@@ -338,7 +338,7 @@ export function fetchStaffData(staffId, activeData) {
 
 export function downloadFile(fileId) {
   return function(dispatch) {
-    doPost(`hr/file/download/'}${fileId}`, {})
+    doPost(`hr/file/download/${fileId}`, {})
       .then(({ data }) => {
         console.log(data);
       })
@@ -350,7 +350,7 @@ export function downloadFile(fileId) {
 
 export function deleteFile(staffId, fileId) {
   return function(dispatch) {
-    doDelete(`hr/file/'}${staffId}/${fileId}`)
+    doDelete(`hr/file/${staffId}/${fileId}`)
       .then(({ data }) => {
         dispatch({
           type: HR_STAFF_FILE_DELETED,

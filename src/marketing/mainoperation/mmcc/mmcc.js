@@ -708,15 +708,12 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    modifyLoader,
-    onSaveContractMmcc,
-    changeDynObjMarketing,
-    //reference
-    f4FetchConTypeList,
-    f4FetchBranches,
-    f4ClearAnyObject,
-  },
-)(injectIntl(Mmcc));
+export default connect(mapStateToProps, {
+  modifyLoader,
+  onSaveContractMmcc,
+  changeDynObjMarketing,
+  //reference
+  f4FetchConTypeList,
+  f4FetchBranches,
+  f4ClearAnyObject,
+})(injectIntl(Mmcc));
