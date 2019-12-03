@@ -1,6 +1,4 @@
 import React from 'react';
-// eslint-disable-next-line no-unused-vars
-import { Router, Route } from 'react-router-dom';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
@@ -16,62 +14,21 @@ import 'semantic-ui-css/semantic.min.css';
 
 import generateRoutes from './routes/routes';
 import reducers from './reducers';
-import browserHistory from './utils/history';
-import { AUTH_ERROR, AUTH_USER, UNAUTH_USER } from './actions/types';
+import { AUTH_USER, UNAUTH_USER } from './actions/types';
 import ConnectedIntlProvider from './ConnectedIntlProvider';
 import JwtRefresher from './middlewares/JwtRefresher';
-import AppWrapper from './AppWrapper';
-import Cookies from 'js-cookie';
+import jwt from 'jwt-simple';
 import { resetLocalStorage } from './utils/helpers';
+import { loadLang, saveLang } from './utils/localStorage';
+import { DEFAULT_LANGUAGE, TOKEN_PASSWORD } from './utils/constants';
+import AppWrapper from './AppWrapper';
 
 import './index.css';
 
 import { ROOT_URL } from './utils/constants';
-import { loadLang, saveLang } from './utils/localStorage';
-import {
-  setAuthorizationHeader,
-  setContentLanguageHeader,
-} from './utils/setHeaders';
-import { DEFAULT_LANGUAGE } from './utils/constants';
 import changeLanguage from './actions/language';
 
 const promise = axios.get(`${ROOT_URL}/routes`);
-
-axios.interceptors.request.use(
-  function(config) {
-    config.withCredentials = true;
-    let token = Cookies.get(
-      process.env.REACT_APP_LEGACY_COOKIE_PARAMS_JWT_TOKEN_NAME,
-      [{ domain: '192.168.0.23' }],
-    );
-    if (token) {
-      config.headers['authorization'] = token;
-    } else {
-      config.headers['authorization'] = '';
-    }
-    // Do something before request is sent
-    return config;
-  },
-  function(error) {
-    return Promise.reject(error);
-  },
-);
-
-axios.interceptors.response.use(
-  response => {
-    // Edit response config
-    return response;
-  },
-  error => {
-    if (error.response.status === 401) {
-      resetLocalStorage();
-      localStorage.removeItem('currentPathName');
-      localStorage.removeItem('breadcrumb');
-      browserHistory.push('/');
-      store.dispatch(UNAUTH_USER);
-    } else return Promise.reject(error);
-  },
-);
 
 addLocaleData([...en, ...ru, ...tr]);
 const persistedLang = loadLang();
@@ -95,40 +52,24 @@ store.subscribe(
 );
 
 const token = localStorage.getItem('token');
-const jwtlang = Cookies.get(
-  process.env.REACT_APP_LEGACY_COOKIE_PARAMS_LANG_TOKEN_NAME,
-  [{ domain: '192.168.0.23' }],
-);
-const jwtToken = Cookies.get(
-  process.env.REACT_APP_LEGACY_COOKIE_PARAMS_JWT_TOKEN_NAME,
-  [{ domain: '192.168.0.23' }],
-);
-const jwtUsername = Cookies.get(
-  process.env.REACT_APP_LEGACY_COOKIE_PARAMS_USERNAME_TOKEN_NAME,
-  [{ domain: '192.168.0.23' }],
-);
-const language =
-  jwtlang || localStorage.getItem('language') || DEFAULT_LANGUAGE;
+const language = localStorage.getItem('language') || DEFAULT_LANGUAGE;
 // const lastUrl = localStorage.getItem('currentPathName');
 
 store.dispatch(changeLanguage(language));
 // If we have a token, consider the user to be signed in
-if (jwtToken) {
-  localStorage.setItem('token', jwtToken);
-  localStorage.setItem('username', jwtUsername);
-  localStorage.setItem('language', jwtlang);
-  store.dispatch({
-    type: AUTH_USER,
-    payload: { username: localStorage.getItem(jwtUsername) },
-  });
-} else if (token) {
+if (token) {
   // we need to update application state
   // setAuthorizationHeader(token);
   // setContentLanguageHeader(persistedLang.lang);
-  store.dispatch({
-    type: AUTH_USER,
-    payload: { username: localStorage.getItem('username') },
-  });
+  try {
+    jwt.decode(token, TOKEN_PASSWORD);
+    store.dispatch({
+      type: AUTH_USER,
+      payload: { username: localStorage.getItem('username') },
+    });
+  } catch (e) {
+    resetLocalStorage();
+  }
 }
 
 promise.then(({ data: transactionRoutes }) => {

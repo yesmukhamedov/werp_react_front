@@ -25,7 +25,7 @@ export const LEGACY_URL = isLocalIpAddress()
  * Token refresh limit equals to 10 minutes
  * @type {number} in seconds
  */
-export const TOKEN_REFRESH_LIMIT = 10 * 60;
+export const TOKEN_REFRESH_LIMIT = 30 * 60;
 export const TOKEN_PASSWORD = 'secret'; // so genious :)
 
 export const YEAR_OPTIONS = [

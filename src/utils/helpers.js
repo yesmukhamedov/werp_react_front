@@ -3,6 +3,8 @@ import _ from 'lodash';
 import moment from 'moment';
 
 export function resetLocalStorage() {
+  localStorage.removeItem('currentPathName');
+  localStorage.removeItem('breadcrumb');
   localStorage.removeItem('token');
   localStorage.removeItem('username');
 }

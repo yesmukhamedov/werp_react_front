@@ -1,7 +1,7 @@
 import jwt from 'jwt-simple';
 import moment from 'moment';
 import browserHistory from '../utils/history';
-import { ROOT_URL, TOKEN_REFRESH_LIMIT } from '../utils/constants';
+import { TOKEN_REFRESH_LIMIT, TOKEN_PASSWORD } from '../utils/constants';
 import { resetLocalStorage } from '../utils/helpers';
 import { setAuthorizationHeader } from '../utils/setHeaders';
 import { UNAUTH_USER, AUTH_ERROR, CHANGE_LANGUAGE } from '../actions/types';
@@ -37,7 +37,7 @@ const tokenRefresherMiddleware = ({ dispatch }) => next => action => {
 
   if (action.type === CHANGE_LANGUAGE) {
     try {
-      jwt.decode(token, 'secret');
+      jwt.decode(token, TOKEN_PASSWORD);
       token && requestToken(dispatch, token, action.payload);
       return next(action);
     } catch (error) {
@@ -50,24 +50,20 @@ const tokenRefresherMiddleware = ({ dispatch }) => next => action => {
   }
 
   if (!isRenewingToken) {
-    //***************************** */
-    //25.11.19 by azamat
-    //reomving request token from every query cause token time limit changed to 12 hours
-    //***************************** */
-    // try {
-    //   const tokenPayload = jwt.decode(token, 'secret');
-    //   const exp = moment.utc(tokenPayload.exp * 1000);
-    //   const now = moment.utc();
-    //   const remainedUntilRefresh = exp.diff(now, 's');
-    //   if (remainedUntilRefresh < TOKEN_REFRESH_LIMIT) {
-    //     isRenewingToken = true;
-    //     requestToken(dispatch, token, tokenPayload.language);
-    //     isRenewingToken = false;
-    //   }
-    // } catch (error) {
-    //   isRenewingToken = false;
-    //   signoutUser(dispatch, error.message);
-    // }
+    try {
+      const tokenPayload = jwt.decode(token, TOKEN_PASSWORD);
+      const exp = moment.utc(tokenPayload.exp * 1000);
+      const now = moment.utc();
+      const remainedUntilRefresh = exp.diff(now, 's');
+      if (remainedUntilRefresh < TOKEN_REFRESH_LIMIT) {
+        isRenewingToken = true;
+        requestToken(dispatch, token, tokenPayload.language);
+        isRenewingToken = false;
+      }
+    } catch (error) {
+      isRenewingToken = false;
+      signoutUser(dispatch, error.message);
+    }
   }
 
   next(action);
