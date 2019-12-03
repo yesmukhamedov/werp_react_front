@@ -891,25 +891,25 @@ const AsyncZreport = Loadable({
   loading: () => <LoadingPage />,
 });
 
-// const AsyncTSRep1 = Loadable({
-//   loader: () => import('../hr/report/tsrep1'),
-//   loading: () => <LoadingPage />,
-// });
+const AsyncTSRep1 = Loadable({
+  loader: () => import('../hr/report/tsrep1'),
+  loading: () => <LoadingPage />,
+});
 
-// const AsyncTSRep2 = Loadable({
-//   loader: () => import('../hr/report/tsrep2'),
-//   loading: () => <LoadingPage />,
-// });
+const AsyncTSRep2 = Loadable({
+  loader: () => import('../hr/report/tsrep2'),
+  loading: () => <LoadingPage />,
+});
 
-// const AsyncTSRep3 = Loadable({
-//   loader: () => import('../hr/report/tsrep3'),
-//   loading: () => <LoadingPage />,
-// });
+const AsyncTSRep3 = Loadable({
+  loader: () => import('../hr/report/tsrep3'),
+  loading: () => <LoadingPage />,
+});
 
-// const AsyncTSRep4 = Loadable({
-//   loader: () => import('../hr/report/tsrep4'),
-//   loading: () => <LoadingPage />,
-// });
+const AsyncTSRep4 = Loadable({
+  loader: () => import('../hr/report/tsrep4'),
+  loading: () => <LoadingPage />,
+});
 
 const getComponent = {
   Dtrlist: AsyncTransaction,
@@ -1017,10 +1017,10 @@ const getComponent = {
   Dphbk: AsyncInterPhones,
   Dmsplist: AsyncDmspList,
   Zreport: AsyncZreport,
-  // TSRep1: AsyncTSRep1,
-  // TSRep2: AsyncTSRep2,
-  // TSRep3: AsyncTSRep3,
-  // TSRep4: AsyncTSRep4,
+  Tsrep1: AsyncTSRep1,
+  Tsrep2: AsyncTSRep2,
+  Tsrep3: AsyncTSRep3,
+  Tsrep4: AsyncTSRep4,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1044,10 +1044,6 @@ const generateRoutes = transactionRoutes => {
       <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
       <Route path="/hr/report/hrrsb" component={AsyncHrrsb} />
-      {/* <Route path="/hr/report/tsrep1" component={AsyncTSRep1} />
-      <Route path="/hr/report/tsrep2" component={AsyncTSRep2} />
-      <Route path="/hr/report/tsrep3" component={AsyncTSRep3} />
-      <Route path="/hr/report/tsrep4" component={AsyncTSRep4} /> */}
 
       {/* <Route path="/hr/mainoperation/customer/hrc01" component={AsyncHrc01} />
       <Route path="/hr/mainoperation/customer/hrc02" component={AsyncHrc02} />
