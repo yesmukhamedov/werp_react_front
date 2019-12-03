@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Menu, Breadcrumb, Dropdown, Label, Icon } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
 import jwt from 'jwt-simple';
 import { defineMessages, intlShape, injectIntl } from 'react-intl';
 import LanguageSwitcher from './LanguageSwitcher';
@@ -11,18 +10,22 @@ import { breadcrumbChanged } from '../../actions/tree_menu';
 import { calcBreadcrumb } from '../../utils/helpers';
 import { fetchTreeMenu } from '../../actions/tree_menu';
 import { fetchUserInfo } from '../../general/userInfo/userInfo_action';
-import { signoutUser } from '../../actions/auth';
+import { signoutUser, clearUserAuth } from '../../actions/auth';
 
 class Header extends Component {
   componentWillMount() {
     if (this.props.authenticated) {
       const token = localStorage.getItem('token');
       if (token) {
-        const payload = jwt.decode(token, 'secret');
-        const { userId } = payload;
-        this.props.fetchUnreadMessages({ userId });
-        this.props.fetchTreeMenu(userId);
-        this.props.fetchUserInfo();
+        try {
+          const payload = jwt.decode(token, 'secret');
+          const { userId } = payload;
+          this.props.fetchUnreadMessages({ userId });
+          this.props.fetchTreeMenu(userId);
+          this.props.fetchUserInfo();
+        } catch (e) {
+          this.props.clearUserAuth();
+        }
       }
     }
   }
@@ -76,6 +79,11 @@ class Header extends Component {
 
   render() {
     const { formatMessage } = this.props.intl;
+
+    if (!this.props.authenticated) {
+      return '';
+    }
+
     return (
       <header className="nav-bar">
         <Menu secondary attached="top" stackable>
@@ -155,13 +163,11 @@ Header.propTypes = {
   intl: intlShape.isRequired,
 };
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchUnreadMessages,
-    breadcrumbChanged,
-    fetchTreeMenu,
-    fetchUserInfo,
-    signOut: signoutUser,
-  },
-)(injectIntl(Header));
+export default connect(mapStateToProps, {
+  fetchUnreadMessages,
+  breadcrumbChanged,
+  fetchTreeMenu,
+  fetchUserInfo,
+  signOut: signoutUser,
+  clearUserAuth,
+})(injectIntl(Header));

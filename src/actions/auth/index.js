@@ -100,15 +100,28 @@ export function signoutUser() {
         resetLocalStorage();
         localStorage.removeItem('currentPathName');
         localStorage.removeItem('breadcrumb');
-        browserHistory.push('/');
-
         dispatch({
           type: UNAUTH_USER,
         });
+        browserHistory.push('/');
       })
       .catch(error => {
         console.log(error.response);
       });
+  };
+}
+
+export function clearUserAuth() {
+  // setAuthorizationHeader();
+  return dispatch => {
+    // .post(`${ROOT_URL}/signout`)
+    resetLocalStorage();
+    localStorage.removeItem('currentPathName');
+    localStorage.removeItem('breadcrumb');
+    dispatch({
+      type: UNAUTH_USER,
+    });
+    browserHistory.push('/');
   };
 }
 

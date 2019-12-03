@@ -1,4 +1,5 @@
 import browserHistory from '../../utils/history';
+import { clearUserAuth } from '../../actions/auth';
 
 export const NOTIFY = 'NOTIFY';
 
@@ -31,7 +32,7 @@ export function handleError(error, dispatch) {
         ),
       );
     } else if (error.response.status && error.response.status === 401) {
-      browserHistory.push('/signin');
+      dispatch(clearUserAuth());
     } else
       dispatch(
         notify(

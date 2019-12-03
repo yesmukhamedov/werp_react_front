@@ -23,6 +23,7 @@ import JwtRefresher from './middlewares/JwtRefresher';
 import AppWrapper from './AppWrapper';
 import Cookies from 'js-cookie';
 import { resetLocalStorage } from './utils/helpers';
+import jwt from 'jwt-simple';
 
 import './index.css';
 
@@ -99,6 +100,21 @@ const jwtlang = Cookies.get(
   process.env.REACT_APP_LEGACY_COOKIE_PARAMS_LANG_TOKEN_NAME,
   [{ domain: '192.168.0.23' }],
 );
+
+// console.log(process.env.REACT_APP_LEGACY_URL_LOCAL);
+// console.log(process.env.REACT_APP_LEGACY_URL_REMOTE);
+// console.log(process.env.REACT_APP_LEGACY_COOKIE_PARAMS_DOMAIN);
+// console.log(process.env.REACT_APP_LEGACY_COOKIE_PARAMS_JWT_TOKEN_NAME);
+// console.log(process.env.REACT_APP_LEGACY_COOKIE_PARAMS_USERNAME_TOKEN_NAME);
+// console.log(process.env.REACT_APP_LEGACY_COOKIE_PARAMS_LANG_TOKEN_NAME);
+// console.log(process.env.REACT_APP_LEGACY_COOKIE_PARAMS_LAST_QUERY_TIME);
+// console.log(process.env.REACT_APP_ROOT_URL_LOCAL);
+// console.log(process.env.REACT_APP_ROOT_URL_REMOTE);
+// console.log(
+//   process.env.REACT_APP_LEGACY_COOKIE_PARAMS_LANG_TOKEN_NAME,
+//   'process.env.REACT_APP_LEGACY_COOKIE_PARAMS_LANG_TOKEN_NAME',
+// );
+
 const jwtToken = Cookies.get(
   process.env.REACT_APP_LEGACY_COOKIE_PARAMS_JWT_TOKEN_NAME,
   [{ domain: '192.168.0.23' }],
@@ -114,21 +130,28 @@ const language =
 store.dispatch(changeLanguage(language));
 // If we have a token, consider the user to be signed in
 if (jwtToken) {
-  localStorage.setItem('token', jwtToken);
-  localStorage.setItem('username', jwtUsername);
-  localStorage.setItem('language', jwtlang);
-  store.dispatch({
-    type: AUTH_USER,
-    payload: { username: localStorage.getItem(jwtUsername) },
-  });
+  try {
+    const payload = jwt.decode(jwtToken, 'secret');
+    localStorage.setItem('token', jwtToken);
+    localStorage.setItem('username', jwtUsername);
+    localStorage.setItem('language', jwtlang);
+    store.dispatch({
+      type: AUTH_USER,
+      payload: { username: localStorage.getItem(jwtUsername) },
+    });
+  } catch (e) {}
 } else if (token) {
   // we need to update application state
   // setAuthorizationHeader(token);
   // setContentLanguageHeader(persistedLang.lang);
-  store.dispatch({
-    type: AUTH_USER,
-    payload: { username: localStorage.getItem('username') },
-  });
+
+  try {
+    const payload = jwt.decode(token, 'secret');
+    store.dispatch({
+      type: AUTH_USER,
+      payload: { username: localStorage.getItem('username') },
+    });
+  } catch (e) {}
 }
 
 promise.then(({ data: transactionRoutes }) => {
