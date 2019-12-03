@@ -6,10 +6,6 @@ import {
   f4FetchWerksBranchList,
 } from '../../../reference/f4/f4_action';
 import { excelDownload } from '../../../utils/helpers';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { registerLocale } from 'react-datepicker';
-import ru from 'date-fns/locale/ru';
 import { injectIntl } from 'react-intl';
 import {
   Button,
@@ -26,11 +22,16 @@ import {
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import List from './list';
-registerLocale('ru', ru);
 
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
+require('moment/locale/ru');
+require('moment/locale/tr');
 function TSRep1(props) {
   const {
     intl: { messages },
+    language,
   } = props;
 
   const emptyTs = {
@@ -40,7 +41,7 @@ function TSRep1(props) {
   };
 
   const [ts, setTs] = useState({ ...emptyTs });
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(moment(new Date()));
 
   //componentDidMount
   useEffect(() => {
@@ -56,15 +57,13 @@ function TSRep1(props) {
   const handleSubmit = e => {
     e.preventDefault();
     let mon =
-      startDate.getMonth() + 1 < 10
-        ? '0' + (startDate.getMonth() + 1)
-        : startDate.getMonth() + 1;
-    const contractMonth = `${mon}.${startDate.getFullYear()}`;
-    console.log('Month', mon);
-    console.log('contractMonth', contractMonth);
+      moment(startDate).month() + 1 < 10
+        ? '0' + (moment(startDate).month() + 1)
+        : moment(startDate).month() + 1;
+    const contractMonth = `${mon}.${moment(startDate).year()}`;
     props.getTSRep1({ ...ts, contractMonth });
   };
-
+  moment().year();
   const onInputChange = (o, fieldName) => {
     setTs(prev => {
       const varTs = { ...prev };
@@ -106,7 +105,6 @@ function TSRep1(props) {
       excelHeaders,
     );
   };
-  console.log('tsrep1');
   return (
     <Container
       fluid
@@ -163,11 +161,32 @@ function TSRep1(props) {
             <Grid columns={2}>
               <Grid.Column>
                 <label>{messages['Form.Month']}</label>
-                <DatePicker
+                {/* <DatePicker
                   locale="ru"
                   selected={startDate}
                   onChange={date => setStartDate(date)}
                   dateFormat="MM/yyyy"
+                  showMonthYearPicker
+                /> */}
+
+                {/* <DatePicker
+                  className="date-auto-width"
+                  autoComplete="off"
+                  dropdownMode="select" // timezone="UTC"
+                  selected={startDate}
+                  locale={language}
+                  onChange={date => setStartDate(date)}
+                  showMonthYearPicker
+                  dateFormat="MM/yyyy"
+                /> */}
+                <DatePicker
+                  autoComplete="off"
+                  selected={startDate}
+                  dropdownMode="select" //timezone="UTC"
+                  showMonthYearPicker
+                  locale={language}
+                  dateFormat="MM/YYYY"
+                  onChange={date => setStartDate(date)}
                   showMonthYearPicker
                 />
               </Grid.Column>
@@ -239,6 +258,7 @@ const getCompanyOptions = compOptions => {
 
 function mapStateToProps(state) {
   return {
+    language: state.locales.lang,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,

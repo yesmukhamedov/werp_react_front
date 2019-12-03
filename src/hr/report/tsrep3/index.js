@@ -5,10 +5,8 @@ import {
   f4FetchCountryList,
   f4FetchWerksBranchList,
 } from '../../../reference/f4/f4_action';
-import DatePicker from 'react-datepicker';
 import { excelDownload } from '../../../utils/helpers';
-import 'react-datepicker/dist/react-datepicker.css';
-import { registerLocale } from 'react-datepicker';
+
 import { injectIntl } from 'react-intl';
 import {
   Button,
@@ -23,12 +21,16 @@ import {
   Image,
 } from 'semantic-ui-react';
 import List from './list';
-import ru from 'date-fns/locale/ru';
-registerLocale('ru', ru);
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
+require('moment/locale/ru');
+require('moment/locale/tr');
 
 function TSRep3(props) {
   const {
     intl: { messages },
+    language,
   } = props;
 
   const emptyTs = {
@@ -41,8 +43,8 @@ function TSRep3(props) {
   const y = date.getFullYear();
   const m = date.getMonth();
   const [ts, setTs] = useState({ ...emptyTs });
-  const [startDates, setStartDates] = useState(new Date(y - 1, m, 1));
-  const [endDates, setEndDates] = useState(new Date());
+  const [startDates, setStartDates] = useState(moment(new Date(y - 1, m, 1)));
+  const [endDates, setEndDates] = useState(moment(new Date()));
 
   //componentDidMount
   useEffect(() => {
@@ -57,12 +59,15 @@ function TSRep3(props) {
 
   const handleSubmit = e => {
     e.preventDefault();
-    const startDate = `${startDates.getDate()}.${startDates.getMonth() +
-      1}.${startDates.getFullYear()}`;
 
-    const endDate = `${endDates.getDate()}.${endDates.getMonth() +
-      1}.${endDates.getFullYear()}`;
+    const startDate = `${moment(startDates).date()}.${moment(
+      startDates,
+    ).month() + 1}.${moment(startDates).year()}`;
+
+    const endDate = `${moment(endDates).date()}.${moment(endDates).month() +
+      1}.${moment(endDates).year()}`;
     props.getTSRep3({ ...ts, startDate, endDate });
+    console.log('startDate = ', startDate, 'endDate = ', endDate);
   };
 
   const onInputChange = (o, fieldName) => {
@@ -164,10 +169,12 @@ function TSRep3(props) {
             <Grid.Column>
               <label>{messages['Form.DateFrom']}</label>
               <DatePicker
-                locale="ru"
+                autoComplete="off"
+                locale={language}
+                dropdownMode="select" //timezone="UTC"
                 selected={startDates}
                 onChange={date => setStartDates(date)}
-                dateFormat="dd.MM.yyyy"
+                dateFormat="DD/MM/YYYY"
                 maxDate={new Date()}
               />
             </Grid.Column>
@@ -175,10 +182,12 @@ function TSRep3(props) {
             <Grid.Column>
               <label>{messages['Form.DateTo']}</label>
               <DatePicker
-                locale="ru"
+                autoComplete="off"
+                locale={language}
+                dropdownMode="select" //timezone="UTC"
                 selected={endDates}
                 onChange={date => setEndDates(date)}
-                dateFormat="dd.MM.yyyy"
+                dateFormat="DD/MM/YYYY"
                 maxDate={new Date()}
               />
             </Grid.Column>
@@ -246,6 +255,7 @@ const getCompanyOptions = compOptions => {
 
 function mapStateToProps(state) {
   return {
+    language: state.locales.lang,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,
