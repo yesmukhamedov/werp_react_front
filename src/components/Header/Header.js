@@ -11,6 +11,7 @@ import { calcBreadcrumb } from '../../utils/helpers';
 import { fetchTreeMenu } from '../../actions/tree_menu';
 import { fetchUserInfo } from '../../general/userInfo/userInfo_action';
 import { signoutUser, clearUserAuth } from '../../actions/auth';
+import { TOKEN_PASSWORD } from '../../utils/constants';
 
 class Header extends Component {
   componentWillMount() {
@@ -18,7 +19,7 @@ class Header extends Component {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const payload = jwt.decode(token, 'secret');
+          const payload = jwt.decode(token, TOKEN_PASSWORD);
           const { userId } = payload;
           this.props.fetchUnreadMessages({ userId });
           this.props.fetchTreeMenu(userId);
