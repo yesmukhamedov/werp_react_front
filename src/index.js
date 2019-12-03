@@ -1,5 +1,4 @@
 import React from 'react';
-import { Router, Route } from 'react-router-dom';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
@@ -15,19 +14,18 @@ import 'semantic-ui-css/semantic.min.css';
 
 import generateRoutes from './routes/routes';
 import reducers from './reducers';
-import { AUTH_USER } from './actions/types';
+import { AUTH_USER, UNAUTH_USER } from './actions/types';
 import ConnectedIntlProvider from './ConnectedIntlProvider';
 import JwtRefresher from './middlewares/JwtRefresher';
 import jwt from 'jwt-simple';
+import { resetLocalStorage } from './utils/helpers';
+import { loadLang, saveLang } from './utils/localStorage';
+import { DEFAULT_LANGUAGE, TOKEN_PASSWORD } from './utils/constants';
 import AppWrapper from './AppWrapper';
 
 import './index.css';
 
 import { ROOT_URL } from './utils/constants';
-import { loadLang, saveLang } from './utils/localStorage';
-
-import { clearUserAuth } from './actions/auth';
-import { DEFAULT_LANGUAGE } from './utils/constants';
 import changeLanguage from './actions/language';
 
 const promise = axios.get(`${ROOT_URL}/routes`);
@@ -63,15 +61,14 @@ if (token) {
   // we need to update application state
   // setAuthorizationHeader(token);
   // setContentLanguageHeader(persistedLang.lang);
-
   try {
-    // jwt.decode(token, 'secret');
+    jwt.decode(token, TOKEN_PASSWORD);
     store.dispatch({
       type: AUTH_USER,
       payload: { username: localStorage.getItem('username') },
     });
   } catch (e) {
-    clearUserAuth();
+    resetLocalStorage();
   }
 }
 

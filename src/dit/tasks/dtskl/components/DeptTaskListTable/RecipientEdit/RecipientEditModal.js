@@ -6,6 +6,7 @@ import jwt from 'jwt-simple';
 import { FormattedMessage } from 'react-intl';
 import { Button, Header, Icon, Modal, Form } from 'semantic-ui-react';
 import { editRecipient } from '../../../actions/DeptTaskListAction';
+import { TOKEN_PASSWORD } from '../../../../../../utils/constants';
 import './settings.css';
 
 class RecipientEditModal extends Component {
@@ -19,7 +20,7 @@ class RecipientEditModal extends Component {
   handleFormSubmit() {
     const token = localStorage.getItem('token');
     if (token) {
-      const payload = jwt.decode(token, 'secret');
+      const payload = jwt.decode(token, TOKEN_PASSWORD);
       const field = { recipient: payload.userId };
       this.props.editRecipient(this.props.taskId, field);
       this.props.handleClose();
@@ -92,7 +93,4 @@ RecipientEditModal = reduxForm({
   form: 'editRecipient',
 })(RecipientEditModal);
 
-export default connect(
-  null,
-  { editRecipient },
-)(RecipientEditModal);
+export default connect(null, { editRecipient })(RecipientEditModal);

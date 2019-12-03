@@ -98,8 +98,6 @@ export function signoutUser() {
     doPost(`signout`)
       .then(response => {
         resetLocalStorage();
-        localStorage.removeItem('currentPathName');
-        localStorage.removeItem('breadcrumb');
         dispatch({
           type: UNAUTH_USER,
         });
@@ -116,8 +114,6 @@ export function clearUserAuth() {
   return dispatch => {
     // .post(`${ROOT_URL}/signout`)
     resetLocalStorage();
-    localStorage.removeItem('currentPathName');
-    localStorage.removeItem('breadcrumb');
     dispatch({
       type: UNAUTH_USER,
     });
