@@ -910,6 +910,42 @@ const AsyncTSRep4 = Loadable({
   loader: () => import('../hr/report/tsrep4'),
   loading: () => <LoadingPage />,
 });
+const AsyncSmsetpp = Loadable({
+  loader: () => import('../service/mainoperation/smsetpp'),
+  loading: () => <LoadingPage />,
+});
+const AsyncSmsetct = Loadable({
+  loader: () => import('../service/mainoperation/smsetct'),
+  loading: () => <LoadingPage />,
+});
+const AsyncSmplb = Loadable({
+  loader: () => import('../service/mainoperation/smplb'),
+  loading: () => <LoadingPage />,
+});
+const AsyncSmcs = Loadable({
+  loader: () => import('../service/mainoperation/smcs'),
+  loading: () => <LoadingPage />,
+});
+const AsyncSmcc = Loadable({
+  loader: () => import('../service/mainoperation/smcc'),
+  loading: () => <LoadingPage />,
+});
+const AsyncSmvs = Loadable({
+  loader: () => import('../service/mainoperation/smvs'),
+  loading: () => <LoadingPage />,
+});
+const AsyncSmes = Loadable({
+  loader: () => import('../service/mainoperation/smes'),
+  loading: () => <LoadingPage />,
+});
+const AsyncSrlsm = Loadable({
+  loader: () => import('../service/report/srlsm'),
+  loading: () => <LoadingPage />,
+});
+const AsyncSrls = Loadable({
+  loader: () => import('../service/report/srls'),
+  loading: () => <LoadingPage />,
+});
 
 const getComponent = {
   Dtrlist: AsyncTransaction,
@@ -1021,6 +1057,15 @@ const getComponent = {
   Tsrep2: AsyncTSRep2,
   Tsrep3: AsyncTSRep3,
   Tsrep4: AsyncTSRep4,
+  Smsetpp: AsyncSmsetpp,
+  Smsetct: AsyncSmsetct,
+  Smplb: AsyncSmplb,
+  Smcs: AsyncSmcs,
+  Smcc: AsyncSmcc,
+  Smvs: AsyncSmvs,
+  Smes: AsyncSmes,
+  Srlsm: AsyncSrlsm,
+  Srls: AsyncSrls,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1031,7 +1076,6 @@ const generateRoutes = transactionRoutes => {
       <Route path="/signin" component={Signin} />
       <Route path="/signout" component={Signout} />
       <Route path="forbidden" component={ForbiddenPage} />
-
       <Route path="/hr/staff/list" component={AsyncStaffListPage} />
       <Route path="/newIssue/:id" component={AsyncNewIssuePageContainer} />
       <Route path="/hr/staff/update/:id?" component={AsyncStaffUpdatePage} />
@@ -1044,7 +1088,6 @@ const generateRoutes = transactionRoutes => {
       <Route path="/hr/report/view/:id" component={AsyncHrReportPage} />
       <Route path="/hr/doc/recruitment" component={AsyncHrRecruitmentPage} />
       <Route path="/hr/report/hrrsb" component={AsyncHrrsb} />
-
       {/* <Route path="/hr/mainoperation/customer/hrc01" component={AsyncHrc01} />
       <Route path="/hr/mainoperation/customer/hrc02" component={AsyncHrc02} />
       <Route path="/hr/mainoperation/customer/hrc03" component={AsyncHrc03} />
@@ -1055,28 +1098,23 @@ const generateRoutes = transactionRoutes => {
       <Route path="/marketing/mainoperation/mmcecd" component={AsyncMmcecd} />
       <Route path="/marketing/mainoperation/mmcei" component={AsyncMmcei} />
       <Route path="/marketing/mainoperation/mmceg" component={AsyncMmceg} /> */}
-
       <Route path="/marketing/mainoperation/mmcef" component={AsyncMmcef} />
       <Route path="/marketing/mainoperation/mmcefa" component={AsyncMmcefa} />
       <Route path="/finance/report/frep8" component={AsyncFrep8} />
-
       <Route
         path="/hr/exitinterviews"
         exact={true}
         component={AsyncExitInterviewListPage}
       />
-
       <Route
         path="/hr/exitinterviews/create"
         exact={true}
         component={AsyncExitInterviewCreatePage}
       />
-
       <Route
         path="/reference/nationalities"
         component={AsyncRefNationalityListPage}
       />
-
       <Route
         path="/hr/doc/:action(create)/:type"
         exact={true}
@@ -1094,7 +1132,6 @@ const generateRoutes = transactionRoutes => {
         component={AsyncHrDocSalaryCreatePage}
       />
       <Route path="/general/summary" component={AsyncDtskcSummary} />
-
       <Route
         path="/logistics/werks/requests/:type(in|out|all)"
         exact={true}
@@ -1110,19 +1147,54 @@ const generateRoutes = transactionRoutes => {
         exact={true}
         component={AsyncLogWerksRequestForm}
       />
-
       <Route
         path="/logistics/werks/requests/view/:id"
         exact={true}
         component={AsyncLogWerksRequestView}
       />
-
       <Route
         path="/logistics/invoices/:doctype(postings-trade-in|postings)/:action(create|update|view)/:id?"
         exact={true}
         component={AsyncLogInvoicesForm}
       />
 
+      <Route
+        path="/service/mainoperation/smsetpp"
+        exact={true}
+        component={AsyncSmsetpp}
+      />
+      <Route
+        path="/service/mainoperation/smsetct"
+        exact={true}
+        component={AsyncSmsetct}
+      />
+      <Route
+        path="/service/mainoperation/smplb"
+        exact={true}
+        component={AsyncSmplb}
+      />
+      <Route
+        path="/service/mainoperation/smcs"
+        exact={true}
+        component={AsyncSmcs}
+      />
+      <Route
+        path="/service/mainoperation/smcc"
+        exact={true}
+        component={AsyncSmcc}
+      />
+      <Route
+        path="/service/mainoperation/smvs"
+        exact={true}
+        component={AsyncSmvs}
+      />
+      <Route
+        path="/service/mainoperation/smes"
+        exact={true}
+        component={AsyncSmes}
+      />
+      <Route path="/service/report/srlsm" exact={true} component={AsyncSrlsm} />
+      <Route path="/service/report/srls" exact={true} component={AsyncSrls} />
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
         return (
