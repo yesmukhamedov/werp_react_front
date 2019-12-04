@@ -41,16 +41,6 @@ class AssetApr extends Component {
     this.props.findObject('aes/find/type1/', os_id);
   }
 
-  findType2(type1_id) {
-    this.props.findObject('aes/find/type2/', type1_id);
-  }
-  findType3(type2_id) {
-    this.props.findObject('aes/find/type3/', type2_id);
-  }
-  findDetail(type3_id) {
-    this.props.findObject('aes/find/det/', type3_id);
-  }
-
   handleInputChange(value, dataType) {
     let { queryParams } = this.state;
     switch (dataType) {
@@ -132,9 +122,6 @@ class AssetApr extends Component {
           messages={messages}
           //find sub items
           findType1={this.findType1.bind(this)}
-          findType2={this.findType2.bind(this)}
-          findType3={this.findType3.bind(this)}
-          findDetail={this.findDetail.bind(this)}
         />
         <br />
         <SubSection
@@ -363,16 +350,13 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    f4FetchCountryList,
-    f4FetchDepartmentList,
-    fetchCCBranch,
-    fetchAll,
-    fetchAes,
-    saveApprRej,
-    findObject,
-    unmountAll,
-  },
-)(injectIntl(AssetApr));
+export default connect(mapStateToProps, {
+  f4FetchCountryList,
+  f4FetchDepartmentList,
+  fetchCCBranch,
+  fetchAll,
+  fetchAes,
+  saveApprRej,
+  findObject,
+  unmountAll,
+})(injectIntl(AssetApr));
