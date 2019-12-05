@@ -191,8 +191,6 @@ export function unmountAll() {
 export function findObject(url, params) {
   let fullUrl = url + `/${params}`;
   return function(dispatch) {
-    if (url === 'aes/find/type1/') dispatch(clearAll([]));
-    if (url === 'aes/find/type2/') dispatch(clearT3Osdet([]));
     doGet(fullUrl)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
