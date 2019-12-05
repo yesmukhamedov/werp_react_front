@@ -1,33 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  Header,
-  Container,
-  Icon,
-  Segment,
-  Divider,
-  Tab,
-  Loader,
-  Menu,
-  Dropdown,
-  Button,
-  Form,
-  Grid,
-  Table,
-} from 'semantic-ui-react';
-import ReactTable from 'react-table';
-import {
-  f4FetchCountryList,
-  f4FetchDepartmentList,
-  f4FetchBranchesByBukrs,
-} from '../../../reference/f4/f4_action';
-import 'react-table/react-table.css';
+import { Grid, Table } from 'semantic-ui-react';
 import { fetchWerksRequest } from '../actions/logisticsActions';
-import EnumFormField from './fields/EnumFormField';
-import MatnrsModalField from './fields/MatnrsModalField';
-import MatnrsGridModal from './MatnrsGridModal';
 import { injectIntl } from 'react-intl';
-import { messages } from '../../../locales/defineMessages';
 import _ from 'lodash';
 
 class WerksRequestViewPage extends Component {
@@ -156,9 +131,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchWerksRequest,
-  },
-)(injectIntl(WerksRequestViewPage));
+export default connect(mapStateToProps, {
+  fetchWerksRequest,
+})(injectIntl(WerksRequestViewPage));

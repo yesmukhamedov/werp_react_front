@@ -1,16 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  Modal,
-  List,
-  Button,
-  Table,
-  Icon,
-  Header,
-  Segment,
-  Form,
-  Input,
-} from 'semantic-ui-react';
+import { Modal, Button, Segment, Form } from 'semantic-ui-react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import {
@@ -208,13 +198,10 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchCurrentSalaries,
-    toggleSalaryListModal,
-    toggleSalaryListModalLoading,
-    f4FetchBranchOptions,
-    f4ClearBranchOptions,
-  },
-)(SalaryListModal);
+export default connect(mapStateToProps, {
+  fetchCurrentSalaries,
+  toggleSalaryListModal,
+  toggleSalaryListModalLoading,
+  f4FetchBranchOptions,
+  f4ClearBranchOptions,
+})(SalaryListModal);

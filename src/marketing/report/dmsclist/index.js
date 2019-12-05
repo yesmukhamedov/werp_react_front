@@ -6,7 +6,7 @@ import {
   getDmsclstSecOpts,
   clearDynObjMarketing,
 } from '../../marketingAction';
-import { Container, Segment, Tab, Table, Header } from 'semantic-ui-react';
+import { Container, Segment, Tab, Header } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
 import List from './list';
 import SearchByContDet from './searchByContDet';

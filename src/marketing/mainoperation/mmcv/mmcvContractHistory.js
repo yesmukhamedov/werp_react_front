@@ -6,7 +6,6 @@ import { Table } from 'semantic-ui-react';
 const MmcvContractHistory = props => {
   const {
     contractHistory = [],
-    language,
     intl: { messages },
   } = props;
 
@@ -69,7 +68,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {},
-)(injectIntl(MmcvContractHistory));
+export default connect(mapStateToProps, {})(injectIntl(MmcvContractHistory));

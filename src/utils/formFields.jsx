@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Form,
-  Search,
   TextArea,
   Dropdown,
   Input,
@@ -12,7 +11,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 
-export const DropdownFormField = (props) => {
+export const DropdownFormField = props => {
   const {
     label,
     input,
@@ -46,17 +45,16 @@ export const DropdownFormField = (props) => {
         placeholder={label}
         multiple={multiple}
       />
-      {touched &&
-        error && (
-          <Label basic color="red" pointing>
-            {error}
-          </Label>
-        )}
+      {touched && error && (
+        <Label basic color="red" pointing>
+          {error}
+        </Label>
+      )}
     </Form.Field>
   );
 };
 
-export const SearchableSingleDropdownFormField = (props) => {
+export const SearchableSingleDropdownFormField = props => {
   const {
     label,
     input,
@@ -80,17 +78,16 @@ export const SearchableSingleDropdownFormField = (props) => {
         search
       />
 
-      {touched &&
-        (error && (
-          <Label basic color="red" pointing>
-            {error}
-          </Label>
-        ))}
+      {touched && error && (
+        <Label basic color="red" pointing>
+          {error}
+        </Label>
+      )}
     </Form.Field>
   );
 };
 
-export const TextAreaFormField = (props) => {
+export const TextAreaFormField = props => {
   const {
     label,
     input,
@@ -109,17 +106,16 @@ export const TextAreaFormField = (props) => {
         placeholder={label}
         rows={rows}
       />
-      {touched &&
-        error && (
-          <Label basic color="red" pointing>
-            {error}
-          </Label>
-        )}
+      {touched && error && (
+        <Label basic color="red" pointing>
+          {error}
+        </Label>
+      )}
     </Form.Field>
   );
 };
 
-export const TextInputFormField = (props) => {
+export const TextInputFormField = props => {
   const {
     label,
     input,
@@ -142,17 +138,16 @@ export const TextInputFormField = (props) => {
         onChange={(e, data) => input.onChange(data.value)}
         placeholder={label}
       />
-      {touched &&
-        (error && (
-          <Label basic color="red" pointing>
-            {error}
-          </Label>
-        ))}
+      {touched && error && (
+        <Label basic color="red" pointing>
+          {error}
+        </Label>
+      )}
     </Form.Field>
   );
 };
 
-export const DatePickerFormField = (props) => {
+export const DatePickerFormField = props => {
   const {
     label,
     input,
@@ -175,17 +170,16 @@ export const DatePickerFormField = (props) => {
         disabled={disabled}
         readOnly={readOnly}
       />
-      {touched &&
-        (error && (
-          <Label basic color="red" pointing>
-            {error}
-          </Label>
-        ))}
+      {touched && error && (
+        <Label basic color="red" pointing>
+          {error}
+        </Label>
+      )}
     </Form.Field>
   );
 };
 
-export const CheckBoxFormField = (props) => {
+export const CheckBoxFormField = props => {
   const {
     label,
     input,
@@ -201,17 +195,16 @@ export const CheckBoxFormField = (props) => {
         value={input.value}
         onChange={(e, data) => input.onChange(data.value)}
       />
-      {touched &&
-        (error && (
-          <Label basic color="red" pointing>
-            {error}
-          </Label>
-        ))}
+      {touched && error && (
+        <Label basic color="red" pointing>
+          {error}
+        </Label>
+      )}
     </Form.Field>
   );
 };
 
-export const DatePickerFormField2 = (props) => {
+export const DatePickerFormField2 = props => {
   const {
     label,
     input,
@@ -245,12 +238,11 @@ export const DatePickerFormField2 = (props) => {
         autoComplete={autoComplete}
         readOnly={readOnly}
       />
-      {touched &&
-        (error && (
-          <Label basic color="red" pointing>
-            {error}
-          </Label>
-        ))}
+      {touched && error && (
+        <Label basic color="red" pointing>
+          {error}
+        </Label>
+      )}
     </Form.Field>
   );
 };

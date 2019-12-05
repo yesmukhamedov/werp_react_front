@@ -3,9 +3,8 @@ import moment from 'moment';
 import browserHistory from '../utils/history';
 import { TOKEN_REFRESH_LIMIT, TOKEN_PASSWORD } from '../utils/constants';
 import { resetLocalStorage } from '../utils/helpers';
-import { setAuthorizationHeader } from '../utils/setHeaders';
 import { UNAUTH_USER, AUTH_ERROR, CHANGE_LANGUAGE } from '../actions/types';
-import { doPut, doGet, doPost } from '../utils/apiActions';
+import { doGet } from '../utils/apiActions';
 
 const signoutUser = (dispatch, errorMsg) => {
   resetLocalStorage();

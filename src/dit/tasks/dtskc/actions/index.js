@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { doGet } from '../../../../utils/apiActions';
 import _ from 'lodash';
-import moment from 'moment';
 import { constructFullName } from '../../../../utils/helpers';
 import { notify } from '../../../../general/notification/notification_action';
 import {
