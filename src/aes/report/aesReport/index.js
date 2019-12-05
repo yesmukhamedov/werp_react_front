@@ -22,6 +22,7 @@ import {
   Icon,
   Segment,
   Table,
+  Menu,
 } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -31,6 +32,7 @@ import AddOwner from './addOwner';
 import AddExaminer1 from './addExaminer1';
 import SubSection from './subSection';
 import { injectIntl } from 'react-intl';
+import { excelDownload } from '../../../utils/helpers';
 
 class AesReport extends Component {
   constructor(props) {
@@ -54,16 +56,6 @@ class AesReport extends Component {
 
   findType1(os_id) {
     this.props.findObject('aes/find/type1/', os_id);
-  }
-
-  findType2(type1_id) {
-    this.props.findObject('aes/find/type2/', type1_id);
-  }
-  findType3(type2_id) {
-    this.props.findObject('aes/find/type3/', type2_id);
-  }
-  findDetail(type3_id) {
-    this.props.findObject('aes/find/det/', type3_id);
   }
 
   defaultSearch() {
@@ -166,6 +158,39 @@ class AesReport extends Component {
     this.setState({ open: false });
   };
 
+  exportExcel(messages) {
+    let excelHeaders = [];
+    excelHeaders.push(messages['bukrs']);
+    excelHeaders.push(messages['country']);
+    excelHeaders.push(messages['brnch']);
+    excelHeaders.push(messages['dep']);
+    excelHeaders.push(messages['os_name']);
+    excelHeaders.push(messages['type1']);
+    excelHeaders.push(messages['type2']);
+    excelHeaders.push(messages['type3']);
+    excelHeaders.push(messages['os_det']);
+    excelHeaders.push(messages['rnum']);
+    excelHeaders.push(messages['TBL_H__STATUS']);
+    excelHeaders.push(messages['amount']);
+    excelHeaders.push(messages['waers']);
+    excelHeaders.push(messages['owner']);
+    excelHeaders.push(messages['examiner']);
+    excelHeaders.push(messages['examiner2']);
+    excelHeaders.push(messages['examiner3']);
+    excelHeaders.push(messages['buying_date']);
+    excelHeaders.push(messages['L__CREATE_DATE']);
+    excelHeaders.push(messages['L__MODIFIED_DATE']);
+    excelHeaders.push(messages['count']);
+
+    excelDownload(
+      'aes/report/excel',
+      'ahs.xls',
+      'outputTable',
+      this.props.listAes,
+      excelHeaders,
+    );
+  }
+
   render() {
     const {
       btTo,
@@ -209,9 +234,6 @@ class AesReport extends Component {
           messages={messages}
           //find sub items
           findType1={this.findType1.bind(this)}
-          findType2={this.findType2.bind(this)}
-          findType3={this.findType3.bind(this)}
-          findDetail={this.findDetail.bind(this)}
         />
 
         <Segment padded size="small">
@@ -376,6 +398,19 @@ class AesReport extends Component {
             </Modal.Actions>
           </Modal>
         </Segment>
+
+        <Menu>
+          <Menu.Menu position="right">
+            <Menu.Item>
+              <img
+                className="clickableItem"
+                src="/assets/img/xlsx_export_icon.png"
+                onClick={() => this.exportExcel(messages)}
+              />
+            </Menu.Item>
+          </Menu.Menu>
+        </Menu>
+
         <SubSection
           messages={messages}
           listAes={this.props.listAes}
@@ -440,9 +475,7 @@ class AesReport extends Component {
     for (let item in branchOptions) {
       map.push({
         key: branchOptions[item]['id'],
-        text: `${branchOptions[item]['branch_name']} ${
-          branchOptions[item]['id']
-        }`,
+        text: `${branchOptions[item]['branch_name']} ${branchOptions[item]['id']}`,
         value: branchOptions[item]['id'],
       });
     }
@@ -607,18 +640,15 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    f4FetchCountryList,
-    f4FetchDepartmentList,
-    fetchCCBranch,
-    findCompBrCode,
-    fetchAll,
-    f4FetchStaffList,
-    newAes,
-    fetchReport,
-    findObject,
-    unmountAll,
-  },
-)(injectIntl(AesReport));
+export default connect(mapStateToProps, {
+  f4FetchCountryList,
+  f4FetchDepartmentList,
+  fetchCCBranch,
+  findCompBrCode,
+  fetchAll,
+  f4FetchStaffList,
+  newAes,
+  fetchReport,
+  findObject,
+  unmountAll,
+})(injectIntl(AesReport));

@@ -97,9 +97,6 @@ class IndexForm extends Component {
       queryParams,
       inputChange,
       findType1,
-      findType2,
-      findType3,
-      findDetail,
     } = this.props;
     const isEnabledSe2 = queryParams.se1_name !== null;
     const isEnabledSe3 = queryParams.se1_name && queryParams.se2_name != null;
@@ -241,7 +238,6 @@ class IndexForm extends Component {
                       options={listType1}
                       onChange={(e, { value }) => {
                         inputChange(value, 'type1_id');
-                        findType2(value);
                       }}
                     />
                   </Form.Field>
@@ -257,7 +253,6 @@ class IndexForm extends Component {
                       options={listType2}
                       onChange={(e, { value }) => {
                         inputChange(value, 'type2_id');
-                        findType3(value);
                       }}
                     />
                   </Form.Field>
@@ -273,7 +268,6 @@ class IndexForm extends Component {
                       options={listType3}
                       onChange={(e, { value }) => {
                         inputChange(value, 'type3_id');
-                        findDetail(value);
                       }}
                     />
                   </Form.Field>

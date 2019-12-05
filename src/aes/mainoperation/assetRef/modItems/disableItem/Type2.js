@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Icon, Button } from 'semantic-ui-react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import matchSorter from 'match-sorter';
 
-export default function Type1(props) {
+export default function Type2(props) {
   const selType2 = item => {
     props.selType2(item);
     props.handleClose();
@@ -12,15 +12,11 @@ export default function Type1(props) {
   const { messages } = props;
   const columns = [
     {
-      Header: messages['nomination'],
+      Header: messages['nomination'] + ' & ' + messages['code'],
       accessor: 'text',
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['text'] }),
       filterAll: true,
-    },
-    {
-      Header: 'код',
-      accessor: 'value',
     },
     {
       Cell: props => {
