@@ -4,6 +4,7 @@ import {
   fetchDmsclstDefOpts,
   getDmsclst,
   getDmsclstSecOpts,
+  clearDynObjMarketing,
 } from '../../marketingAction';
 import { Container, Segment, Tab, Table, Header } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
@@ -26,6 +27,10 @@ class Dmsclists extends Component {
 
   componentWillMount() {
     this.props.fetchDmsclstDefOpts();
+  }
+
+  componentWillUnmount() {
+    this.props.clearDynObjMarketing();
   }
 
   //Customer options
@@ -153,7 +158,7 @@ class Dmsclists extends Component {
 
   render() {
     const { messages } = this.props.intl;
-    const { dynObjDmsc } = this.props;
+    const { dynamicObject } = this.props;
     return (
       <Container
         fluid
@@ -173,7 +178,7 @@ class Dmsclists extends Component {
         />
         <List
           messages={messages}
-          dmsclists={dynObjDmsc.dmsclists}
+          dmsclists={dynamicObject.dmsclists}
           {...this.state}
         />
       </Container>
@@ -235,15 +240,13 @@ function mapStateToProps(state) {
     lazymeta: state.marketing.lazymeta,
     contstatus: state.marketing.contstatus,
     contlaststate: state.marketing.contlaststate,
-    dynObjDmsc: state.marketing.dynObjDmsc,
+    dynamicObject: state.marketing.dynamicObject,
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchDmsclstDefOpts,
-    getDmsclst,
-    getDmsclstSecOpts,
-  },
-)(injectIntl(Dmsclists));
+export default connect(mapStateToProps, {
+  fetchDmsclstDefOpts,
+  getDmsclst,
+  getDmsclstSecOpts,
+  clearDynObjMarketing,
+})(injectIntl(Dmsclists));

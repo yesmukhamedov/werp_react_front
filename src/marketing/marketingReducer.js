@@ -16,7 +16,6 @@ import {
 
 const INITIAL_STATE = {
   dynObjLpList: [],
-  dynObjDmsc: [],
   dynamicObject: {},
   dynDmsplst: [],
 };
@@ -73,7 +72,7 @@ export default function(state = INITIAL_STATE, action) {
     case GET_DMSCLST:
       return {
         ...state,
-        dynObjDmsc: { ...state.dynObjDmsc, ...action.payload },
+        dynamicObject: { ...state.dynamicObject, ...action.payload },
       };
 
     /************************************************  END CONTRACT LIST        */
