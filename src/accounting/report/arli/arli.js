@@ -284,9 +284,7 @@ class Arli extends Component {
           <Link
             target="_blank"
             className="ui icon button primary"
-            to={`/finance/mainoperation/fa03?belnr=${
-              obj.original.belnr
-            }&bukrs=${obj.original.bukrs}&gjahr=${obj.original.gjahr}`}
+            to={`/finance/mainoperation/fa03?belnr=${obj.original.belnr}&bukrs=${obj.original.bukrs}&gjahr=${obj.original.gjahr}`}
           >
             {obj.original.belnr}
           </Link>
@@ -450,7 +448,7 @@ class Arli extends Component {
               filterable
               data={this.props.table ? this.props.table : []}
               columns={t1columns}
-              pageSize={20}
+              defaultPageSize={20}
               showPagination
               loadingText="Loading..."
               noDataText="Нет записей"
@@ -477,7 +475,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { fetchARLI, clearDynObjAcc },
-)(Arli);
+export default connect(mapStateToProps, { fetchARLI, clearDynObjAcc })(Arli);

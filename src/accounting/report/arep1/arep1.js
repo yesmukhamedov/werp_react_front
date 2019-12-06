@@ -947,7 +947,7 @@ class Arep1 extends Component {
               this.props.outputTableDetail ? this.props.outputTableDetail : []
             }
             columns={t1columns}
-            pageSize={20}
+            defaultPageSize={20}
             showPagination={true}
             className="-striped -highlight"
             loadingText={formatMessage(messages.loadingText)}

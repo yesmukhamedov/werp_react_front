@@ -501,7 +501,7 @@ const AsyncFrep7 = Loadable({
 
 const AsyncFrep8 = Loadable({
   loader: () =>
-    import('../finance/report/frep8/frep8' /* webpackChunkName: "frep8" */),
+    import('../finance/report/frep8' /* webpackChunkName: "frep8" */),
   loading: () => <LoadingPage />,
 });
 

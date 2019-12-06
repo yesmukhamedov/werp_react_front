@@ -521,7 +521,7 @@ class Frep4 extends Component {
         ref={r => (this.reactTable = r)}
         data={outputTableDetail ? outputTableDetail : []}
         columns={t1columns}
-        pageSize={20}
+        defaultPageSize={20}
         showPagination={true}
         className="-striped -highlight"
         loadingText={formatMessage(messages.loadingText)}
