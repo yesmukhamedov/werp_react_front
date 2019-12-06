@@ -1,8 +1,9 @@
 import React from 'react';
 import { Segment } from 'semantic-ui-react';
 import 'react-table/react-table.css';
+import { func } from 'prop-types';
 
-const Smsetct = () = {
+function Smsetct() {
   return (
     <Segment>
       <h1>Welcome Smsetct</h1>
