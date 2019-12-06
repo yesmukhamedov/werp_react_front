@@ -4,7 +4,7 @@ import 'react-table/react-table.css';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
-const ReactTableWrapper = props => {
+const BranchF4Advanced = props => {
   const {
     intl: { messages },
   } = props;
@@ -56,4 +56,4 @@ const mapStateToProps = state => {
   return {};
 };
 
-export default connect(mapStateToProps, {})(injectIntl(ReactTableWrapper));
+export default connect(mapStateToProps, {})(injectIntl(BranchF4Advanced));
