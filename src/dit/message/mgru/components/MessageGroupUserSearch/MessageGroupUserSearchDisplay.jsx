@@ -4,15 +4,7 @@ import _ from 'lodash';
 import React, { Component } from 'react';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Field, reduxForm } from 'redux-form';
-import {
-  Dimmer,
-  Form,
-  Grid,
-  Label,
-  Loader,
-  Search,
-  Segment,
-} from 'semantic-ui-react';
+import { Dimmer, Form, Label, Loader, Search } from 'semantic-ui-react';
 import { DropdownFormField } from '../../../../../utils/formFields';
 
 const userSearchUrl = `mgru/users`;

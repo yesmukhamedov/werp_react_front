@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { Container, Table } from 'semantic-ui-react';
 import { constructFullName } from '../../../../utils/helpers';
 

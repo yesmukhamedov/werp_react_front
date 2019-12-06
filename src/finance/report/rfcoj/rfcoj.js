@@ -16,9 +16,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { modifyLoader } from '../../../general/loader/loader_action';
 import OutputErrors from '../../../general/error/outputErrors';
 import moment from 'moment';
-import ReactTable from 'react-table';
+import { ReactTableWrapper } from '../../../utils/ReactTableWrapper';
 import { Link } from 'react-router-dom';
-import 'react-table/react-table.css';
 
 import {} from '../../../reference/f4/f4_action';
 import {
@@ -340,7 +339,7 @@ class Rfcoj extends Component {
 
     this.setState({ errors });
   }
-  onFilterChangeReactTable() {
+  onFilterChangeReactTable(filtered) {
     if (
       this.reactTable &&
       this.reactTable.getResolvedState() &&
@@ -674,12 +673,12 @@ class Rfcoj extends Component {
           </Menu>
         )}
 
-        <ReactTable
+        <ReactTableWrapper
           filterable
-          ref={r => (this.reactTable = r)}
-          data={outputTableState ? outputTableState : []}
+          refToChild={r => (this.reactTable = r)}
+          data={outputTableState}
           columns={t1columns}
-          pageSize={20}
+          defaultPageSize={20}
           showPagination={true}
           className="-striped -highlight"
           loadingText={messages['loadingText']}
@@ -689,8 +688,9 @@ class Rfcoj extends Component {
           rowsText={messages['rowsText']}
           pageText={messages['pageText']}
           ofText={messages['ofText']}
-          // filtered={this.state.filtered}
-          onFilteredChange={filtered => this.onFilterChangeReactTable()}
+          onFilterChangeReactTable={filtered =>
+            this.onFilterChangeReactTable(filtered)
+          }
         />
       </Container>
     );

@@ -3,7 +3,7 @@ import {
   handleError,
   notify,
 } from '../../../general/notification/notification_action';
-import { doGet, doPut, doPost, doDelete } from '../../../utils/apiActions';
+import { doGet, doPut, doPost } from '../../../utils/apiActions';
 
 export const CURRENT_POSITIONS = 'CURRENT_POSITIONS';
 export const POSITION_UPDATE = 'POSITION_UPDATE';

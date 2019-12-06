@@ -39,7 +39,7 @@ export default function SearchOpt(props) {
     collectors,
     contstatus,
     contlaststate,
-  } = props.dynObjDmsc;
+  } = props.dynamicObject;
   const {
     messages,
     companyOptions,

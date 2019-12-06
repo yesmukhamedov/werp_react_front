@@ -46,6 +46,7 @@
     "velocity-react": "^1.4.1"
   },
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
     "build:dev": "cross-env REACT_APP_LEGACY_URL_LOCAL=http://192.168.0.15:23029/test REACT_APP_LEGACY_URL_REMOTE=http://werp.kz:23029/test REACT_APP_ROOT_URL_LOCAL=http://localhost:23051 REACT_APP_ROOT_URL_REMOTE=http://werp.kz:23051 react-scripts build",
     "build:stage": "cross-env REACT_APP_LEGACY_URL_LOCAL=http://192.168.0.15:23029/test REACT_APP_LEGACY_URL_REMOTE=http://werp.kz:23029/test REACT_APP_ROOT_URL_LOCAL=http://192.168.0.15:23051 REACT_APP_ROOT_URL_REMOTE=http://werp.kz:23051 react-scripts build",

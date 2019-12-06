@@ -4,6 +4,7 @@ import {
   fetchDmsclstDefOpts,
   getDmsclst,
   getDmsclstSecOpts,
+  clearDynObjMarketing,
 } from '../../marketingAction';
 import {
   Container,
@@ -36,6 +37,10 @@ class DmscListExcel extends Component {
 
   componentWillMount() {
     this.props.fetchDmsclstDefOpts();
+  }
+
+  componentWillUnmount() {
+    this.props.clearDynObjMarketing();
   }
 
   //Customer options
@@ -179,14 +184,14 @@ class DmscListExcel extends Component {
       'marketing/report/dmsclist/excel',
       'dmsclist.xls',
       'outputTable',
-      this.props.dynObjDmsc.dmsclists,
+      this.props.dynamicObject.dmsclists,
       excelHeaders,
     );
   }
 
   render() {
     const { messages } = this.props.intl;
-    const { dynObjDmsc } = this.props;
+    const { dynamicObject } = this.props;
     return (
       <Container
         fluid
@@ -218,7 +223,7 @@ class DmscListExcel extends Component {
 
         <List
           messages={messages}
-          dmsclists={dynObjDmsc.dmsclists}
+          dmsclists={dynamicObject.dmsclists}
           {...this.state}
         />
         <br />
@@ -235,24 +240,28 @@ class DmscListExcel extends Component {
           <Table.Body>
             <Table.Row>
               <Table.Cell>
-                {dynObjDmsc.totalRows === undefined || dynObjDmsc.totalRows == 0
+                {dynamicObject.totalRows === undefined ||
+                dynamicObject.totalRows == 0
                   ? ''
-                  : moneyFormat(dynObjDmsc.totalRows[0])}
+                  : moneyFormat(dynamicObject.totalRows[0])}
               </Table.Cell>
               <Table.Cell>
-                {dynObjDmsc.totalRows === undefined || dynObjDmsc.totalRows == 0
+                {dynamicObject.totalRows === undefined ||
+                dynamicObject.totalRows == 0
                   ? ''
-                  : moneyFormat(dynObjDmsc.totalRows[1])}
+                  : moneyFormat(dynamicObject.totalRows[1])}
               </Table.Cell>
               <Table.Cell>
-                {dynObjDmsc.totalRows === undefined || dynObjDmsc.totalRows == 0
+                {dynamicObject.totalRows === undefined ||
+                dynamicObject.totalRows == 0
                   ? ''
-                  : moneyFormat(dynObjDmsc.totalRows[2])}
+                  : moneyFormat(dynamicObject.totalRows[2])}
               </Table.Cell>
               <Table.Cell>
-                {dynObjDmsc.totalRows === undefined || dynObjDmsc.totalRows == 0
+                {dynamicObject.totalRows === undefined ||
+                dynamicObject.totalRows == 0
                   ? ''
-                  : moneyFormat(dynObjDmsc.totalRows[3])}
+                  : moneyFormat(dynamicObject.totalRows[3])}
               </Table.Cell>
             </Table.Row>
           </Table.Body>
@@ -312,7 +321,7 @@ function mapStateToProps(state) {
   return {
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,
-    dynObjDmsc: state.marketing.dynObjDmsc,
+    dynamicObject: state.marketing.dynamicObject,
   };
 }
 
@@ -320,4 +329,5 @@ export default connect(mapStateToProps, {
   fetchDmsclstDefOpts,
   getDmsclst,
   getDmsclstSecOpts,
+  clearDynObjMarketing,
 })(injectIntl(DmscListExcel));

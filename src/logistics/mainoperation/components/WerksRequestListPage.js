@@ -5,13 +5,10 @@ import {
   Container,
   Segment,
   Divider,
-  Tab,
   Loader,
   Icon,
   Form,
-  Input,
   Button,
-  Label,
 } from 'semantic-ui-react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
@@ -281,9 +278,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchWerksRequestsIn,
-  },
-)(WerksRequestListPage);
+export default connect(mapStateToProps, {
+  fetchWerksRequestsIn,
+})(WerksRequestListPage);

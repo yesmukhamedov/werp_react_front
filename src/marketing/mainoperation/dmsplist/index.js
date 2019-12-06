@@ -58,13 +58,7 @@ function Dmsplist(props) {
     extraInfofilter: false,
   };
 
-  const {
-    companyOptions,
-    branchOptions,
-    countryList,
-    dynamicObject,
-    dynDmsplst,
-  } = props;
+  const { companyOptions, branchOptions, countryList, dynamicObject } = props;
 
   //componentDidMount
   useEffect(() => {
@@ -356,15 +350,12 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    f4FetchCountryList,
-    f4FetchWerksBranchList,
-    fetchDmsplist,
-    getDmspLstMatrns,
-    updDmsplist,
-    saveDmsplst,
-    clearDynObjMarketing,
-  },
-)(injectIntl(Dmsplist));
+export default connect(mapStateToProps, {
+  f4FetchCountryList,
+  f4FetchWerksBranchList,
+  fetchDmsplist,
+  getDmspLstMatrns,
+  updDmsplist,
+  saveDmsplst,
+  clearDynObjMarketing,
+})(injectIntl(Dmsplist));

@@ -1,21 +1,12 @@
 import React, { PureComponent } from 'react';
-import {
-  Modal,
-  Button,
-  Form,
-  Dropdown,
-  TextArea,
-  Input,
-  Label,
-} from 'semantic-ui-react';
+import { Modal, Button, Form } from 'semantic-ui-react';
 import { Field, reduxForm } from 'redux-form';
 import {
   DropdownFormField,
   TextAreaFormField,
 } from '../../../../../../utils/formFields';
 
-
-const validate = (values) => {
+const validate = values => {
   const errors = {};
   if (!values.status) {
     errors.status = 'Объязательное поле для заполнения';
@@ -25,8 +16,6 @@ const validate = (values) => {
   }
   return errors;
 };
-
-const clearForm = (props) => {};
 
 class OutCallPanelModalComponent extends PureComponent {
   constructor(props) {

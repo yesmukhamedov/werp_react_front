@@ -528,7 +528,7 @@ class Frep1 extends Component {
             filterable
             data={outputTable ? outputTable : []}
             columns={t1columns}
-            pageSize={20}
+            defaultPageSize={20}
             showPagination={true}
             className="-striped -highlight"
             loadingText={formatMessage(messages.loadingText)}
