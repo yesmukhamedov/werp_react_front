@@ -14,14 +14,13 @@ import {
   Sticky,
 } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
-import { ROOT_URL } from '../../../utils/constants';
 import { notify } from '../../../general/notification/notification_action';
 import {
   getTradeIn,
   tradeInOptions,
 } from '../contractAdditionaComponents/marketingConstants';
 import './prcltgs.css';
-import { doPut, doGet, doPost } from '../../../utils/apiActions';
+import { doGet, doPost } from '../../../utils/apiActions';
 
 require('moment/locale/ru');
 

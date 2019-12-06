@@ -3,12 +3,9 @@ import { connect } from 'react-redux';
 import {
   Header,
   Icon,
-  Form,
   Segment,
   Button,
-  Input,
   Container,
-  Grid,
   Modal,
 } from 'semantic-ui-react';
 import ListTable from './listTable';
@@ -118,7 +115,8 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { fetchCurrentPositions, newPosition, updatePosition },
-)(injectIntl(List));
+export default connect(mapStateToProps, {
+  fetchCurrentPositions,
+  newPosition,
+  updatePosition,
+})(injectIntl(List));

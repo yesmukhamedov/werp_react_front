@@ -20,15 +20,7 @@ export default function MainSubField(props) {
   const { messages } = props;
   const isEnabledType1 =
     props.queryParams.os_id === undefined || props.queryParams.os_id === null;
-  const isEnabledType2 =
-    props.queryParams.type1_id === undefined ||
-    props.queryParams.type1_id === null;
-  const isEnabledType3 =
-    props.queryParams.type2_id === undefined ||
-    props.queryParams.type2_id === null;
-  const isEnabledDet =
-    props.queryParams.type3_id === undefined ||
-    props.queryParams.type3_id === null;
+
   return (
     <div>
       <br />
@@ -60,29 +52,17 @@ export default function MainSubField(props) {
               </Button>
             </Grid.Column>
             <Grid.Column>
-              <Button
-                color="teal"
-                disabled={isEnabledType2}
-                onClick={props.show('type2')}
-              >
+              <Button color="teal" onClick={props.show('type2')}>
                 {messages['add_type2']}
               </Button>
             </Grid.Column>
             <Grid.Column>
-              <Button
-                color="teal"
-                disabled={isEnabledType3}
-                onClick={props.show('type3')}
-              >
+              <Button color="teal" onClick={props.show('type3')}>
                 {messages['add_type3']}
               </Button>
             </Grid.Column>
             <Grid.Column>
-              <Button
-                color="teal"
-                disabled={isEnabledDet}
-                onClick={props.show('os_detail')}
-              >
+              <Button color="teal" onClick={props.show('os_detail')}>
                 {messages['add_det']}
               </Button>
             </Grid.Column>
@@ -126,7 +106,6 @@ export default function MainSubField(props) {
                 <span>
                   <Button
                     icon="external"
-                    disabled={isEnabledType2}
                     onClick={props.show('disableType2')}
                   />
                 </span>
@@ -135,7 +114,6 @@ export default function MainSubField(props) {
                 <span>
                   <Button
                     icon="external"
-                    disabled={isEnabledType3}
                     onClick={props.show('disableType3')}
                   />
                 </span>
@@ -144,7 +122,6 @@ export default function MainSubField(props) {
                 <span>
                   <Button
                     icon="external"
-                    disabled={isEnabledDet}
                     onClick={props.show('disableDetail')}
                   />
                 </span>
@@ -163,7 +140,8 @@ export default function MainSubField(props) {
             (props.comp == 'room_num' && messages['add_room']) ||
             (props.comp == 'status' && messages['add_cond']) ||
             (props.comp == 'comp_br' && messages['add_compbr_code']) ||
-            (props.comp == 'disableOs' && 'udalit os') ||
+            (props.comp == 'disableOs' &&
+              messages['Crm.ToDelete'] + ' ' + 'OS') ||
             (props.comp == 'disableType1' && 'udalit Type1') ||
             (props.comp == 'disableType2' && 'udalit Type2') ||
             (props.comp == 'disableType3' && 'udalit Type3') ||

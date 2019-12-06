@@ -3,16 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import {
-  Container,
-  Header,
-  Table,
-  Button,
-  Icon,
-  Input,
-} from 'semantic-ui-react';
+import { Container, Header } from 'semantic-ui-react';
 import queryString from 'query-string';
-import { handleFocus } from '../../../utils/helpers';
 import { fetchDynObjMarketing } from '../../marketingAction';
 
 const Mmcefa = props => {
@@ -30,7 +22,6 @@ const Mmcefa = props => {
   const {
     mmcefa,
     intl: { messages },
-    language,
   } = props;
 
   //componentDidMount
@@ -84,9 +75,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchDynObjMarketing,
-  },
-)(injectIntl(Mmcefa));
+export default connect(mapStateToProps, {
+  fetchDynObjMarketing,
+})(injectIntl(Mmcefa));

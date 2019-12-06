@@ -8,7 +8,6 @@ import { LinkToMmcei } from '../../../utils/outlink';
 const MmcvExtraInfo = props => {
   const {
     contract = {},
-    language,
     intl: { messages },
   } = props;
 
@@ -53,7 +52,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {},
-)(injectIntl(MmcvExtraInfo));
+export default connect(mapStateToProps, {})(injectIntl(MmcvExtraInfo));

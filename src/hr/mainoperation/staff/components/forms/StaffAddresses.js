@@ -1,18 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  Form,
-  Input,
-  TextArea,
-  Segment,
-  Button,
-  Grid,
-  Header,
-} from 'semantic-ui-react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-
-import moment from 'moment';
+import { Segment, Button, Header } from 'semantic-ui-react';
 import StaffAddressForm from './StaffAddressForm';
 import {
   f4FetchCountryList,
@@ -201,12 +189,9 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    f4FetchCountryList,
-    f4FetchStateList,
-    f4FetchCityList,
-    f4FetchCityregList,
-  },
-)(StaffAddresses);
+export default connect(mapStateToProps, {
+  f4FetchCountryList,
+  f4FetchStateList,
+  f4FetchCityList,
+  f4FetchCityregList,
+})(StaffAddresses);

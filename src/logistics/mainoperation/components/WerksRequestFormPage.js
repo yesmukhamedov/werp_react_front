@@ -1,21 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import {
-  Header,
-  Container,
-  Icon,
-  Segment,
-  Divider,
-  Tab,
-  Loader,
-  Menu,
-  Dropdown,
-  Button,
-  Form,
-  Grid,
-  Table,
-} from 'semantic-ui-react';
-import ReactTable from 'react-table';
+import { Icon, Button, Form, Grid, Table } from 'semantic-ui-react';
 import {
   f4FetchCountryList,
   f4FetchDepartmentList,
@@ -367,16 +352,13 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    blankWerksRequest,
-    f4FetchCountryList,
-    f4FetchDepartmentList,
-    f4FetchBranchesByBukrs,
-    f4ClearBranchesByBukrs,
-    fetchMatnrs,
-    blankWerksRequestItem,
-    createWerksRequest,
-  },
-)(injectIntl(WerksRequestFormPage));
+export default connect(mapStateToProps, {
+  blankWerksRequest,
+  f4FetchCountryList,
+  f4FetchDepartmentList,
+  f4FetchBranchesByBukrs,
+  f4ClearBranchesByBukrs,
+  fetchMatnrs,
+  blankWerksRequestItem,
+  createWerksRequest,
+})(injectIntl(WerksRequestFormPage));

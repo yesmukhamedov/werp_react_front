@@ -67,7 +67,7 @@ class LeaveReasonListPage extends Component {
   }
 
   renderTable(items) {
-    const { messages, locale } = this.props.intl;
+    const { messages } = this.props.intl;
 
     return (
       <div>
@@ -205,13 +205,10 @@ function mapStateToProps(state) {
   return {};
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    blankLeaveReason,
-    createLeaveReason,
-    updateLeaveReason,
-    fetchLeaveReason,
-    fetchLeaveReasons,
-  },
-)(injectIntl(LeaveReasonListPage));
+export default connect(mapStateToProps, {
+  blankLeaveReason,
+  createLeaveReason,
+  updateLeaveReason,
+  fetchLeaveReason,
+  fetchLeaveReasons,
+})(injectIntl(LeaveReasonListPage));

@@ -64,16 +64,6 @@ class AssetRef extends Component {
     this.props.findObject('aes/find/type1/', os_id);
   }
 
-  findType2(type1_id) {
-    this.props.findObject('aes/find/type2/', type1_id);
-  }
-  findType3(type2_id) {
-    this.props.findObject('aes/find/type3/', type2_id);
-  }
-  findDetail(type3_id) {
-    this.props.findObject('aes/find/det/', type3_id);
-  }
-
   /******************************************************************* CALL DISABLE FUNCTION */
   disableOs(os) {
     this.props.disableObject('aes/os/disable', os, 'DIS_OS');
@@ -153,9 +143,6 @@ class AssetRef extends Component {
           loadCompBr={this.loadCompBr}
           //find sub items
           findType1={this.findType1.bind(this)}
-          findType2={this.findType2.bind(this)}
-          findType3={this.findType3.bind(this)}
-          findDetail={this.findDetail.bind(this)}
           messages={messages}
           {...this.state}
         />
@@ -400,17 +387,14 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchAll,
-    f4FetchDepartmentList,
-    f4FetchCountryList,
-    fetchCCBranch,
-    findCompBrCode,
-    findObject,
-    newObject,
-    disableObject,
-    unmountAll,
-  },
-)(injectIntl(AssetRef));
+export default connect(mapStateToProps, {
+  fetchAll,
+  f4FetchDepartmentList,
+  f4FetchCountryList,
+  fetchCCBranch,
+  findCompBrCode,
+  findObject,
+  newObject,
+  disableObject,
+  unmountAll,
+})(injectIntl(AssetRef));

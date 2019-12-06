@@ -184,7 +184,6 @@ export default function IndexForm(props) {
                   })}
                   onChange={(e, { value }) => {
                     props.inputChange(value, 'type1_id');
-                    props.findType2(value);
                   }}
                 />
               </Form.Field>
@@ -202,7 +201,6 @@ export default function IndexForm(props) {
                   })}
                   onChange={(e, { value }) => {
                     props.inputChange(value, 'type2_id');
-                    props.findType3(value);
                   }}
                 />
               </Form.Field>
@@ -220,7 +218,6 @@ export default function IndexForm(props) {
                   })}
                   onChange={(e, { value }) => {
                     props.inputChange(value, 'type3_id');
-                    props.findDetail(value);
                   }}
                 />
               </Form.Field>

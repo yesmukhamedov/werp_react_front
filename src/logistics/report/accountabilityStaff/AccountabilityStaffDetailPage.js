@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Grid, Table, Header } from 'semantic-ui-react';
-import { ROOT_URL } from '../../../utils/constants';
-import { doPut, doGet, doPost } from '../../../utils/apiActions';
+import { doGet } from '../../../utils/apiActions';
 
 class AccountabilityStaffDetailPage extends Component {
   constructor(props) {

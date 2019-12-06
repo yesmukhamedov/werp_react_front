@@ -75,7 +75,7 @@ class SubCompanyListPage extends Component {
   }
 
   renderTable(items) {
-    const { messages, locale } = this.props.intl;
+    const { messages } = this.props.intl;
 
     return (
       <div>
@@ -389,15 +389,12 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    f4FetchSubCompanies,
-    blankSubCompany,
-    f4FetchSubCompanyTypes,
-    createSubCompany,
-    updateSubCompany,
-    fetchSubCompany,
-    fetchAllCurrentStaffs,
-  },
-)(injectIntl(SubCompanyListPage));
+export default connect(mapStateToProps, {
+  f4FetchSubCompanies,
+  blankSubCompany,
+  f4FetchSubCompanyTypes,
+  createSubCompany,
+  updateSubCompany,
+  fetchSubCompany,
+  fetchAllCurrentStaffs,
+})(injectIntl(SubCompanyListPage));

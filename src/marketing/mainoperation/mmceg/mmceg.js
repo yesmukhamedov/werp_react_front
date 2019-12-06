@@ -68,7 +68,6 @@ const Mmceg = props => {
     matnrList = [],
     promoList = [],
     intl: { messages },
-    language,
   } = props;
 
   //componentDidMount
@@ -429,10 +428,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchDynObjMarketing,
-    onSaveMmcTrans,
-  },
-)(injectIntl(Mmceg));
+export default connect(mapStateToProps, {
+  fetchDynObjMarketing,
+  onSaveMmcTrans,
+})(injectIntl(Mmceg));

@@ -14,7 +14,6 @@ import {
   Icon,
 } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
-import { LEGACY_URL } from '../../../../../utils/constants';
 import {
   formatDMYMS,
   formatDMY,

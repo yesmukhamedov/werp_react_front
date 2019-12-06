@@ -226,8 +226,8 @@ class AssetMod extends Component {
         } else if (dataType === 'room_id') {
           this.props.listAll.listRoom.some(c => {
             if (c.id === value) {
-              queryParams.room_name = c.room_name;
-              queryParams.room_code = c.room_code;
+              queryParams.room_name = c.rname;
+              queryParams.room_code = c.rnum;
               return true;
             } else {
               return false;
@@ -255,16 +255,6 @@ class AssetMod extends Component {
 
   findType1(os_id) {
     this.props.findObject('aes/find/type1/', os_id);
-  }
-
-  findType2(type1_id) {
-    this.props.findObject('aes/find/type2/', type1_id);
-  }
-  findType3(type2_id) {
-    this.props.findObject('aes/find/type3/', type2_id);
-  }
-  findDetail(type3_id) {
-    this.props.findObject('aes/find/det/', type3_id);
   }
 
   render() {
@@ -296,9 +286,6 @@ class AssetMod extends Component {
           errors={this.state.errors}
           //find sub items
           findType1={this.findType1.bind(this)}
-          findType2={this.findType2.bind(this)}
-          findType3={this.findType3.bind(this)}
-          findDetail={this.findDetail.bind(this)}
         />
       </div>
     );
@@ -540,18 +527,15 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    f4FetchCountryList,
-    f4FetchDepartmentList,
-    fetchAll,
-    fetchBlank,
-    f4FetchStaffList,
-    fetchCCBranch,
-    findCompBrCode,
-    newAes,
-    findObject,
-    unmountAll,
-  },
-)(injectIntl(AssetMod));
+export default connect(mapStateToProps, {
+  f4FetchCountryList,
+  f4FetchDepartmentList,
+  fetchAll,
+  fetchBlank,
+  f4FetchStaffList,
+  fetchCCBranch,
+  findCompBrCode,
+  newAes,
+  findObject,
+  unmountAll,
+})(injectIntl(AssetMod));

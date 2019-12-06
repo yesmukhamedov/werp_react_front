@@ -31,7 +31,7 @@
     "react-router-dom": "^4.2.2",
     "react-scripts": "^2.1.8",
     "react-sortable-tree": "^2.7.1",
-    "react-table": "^6.10.3",
+    "react-table": "6.10.3",
     "react-text-mask": "^5.0.2",
     "react-treebeard": "^2.1.0",
     "react-treeview": "^0.4.7",
@@ -46,6 +46,7 @@
     "velocity-react": "^1.4.1"
   },
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
     "build:dev": "cross-env REACT_APP_LEGACY_URL_LOCAL=http://192.168.0.15:23029/test REACT_APP_LEGACY_URL_REMOTE=http://werp.kz:23029/test REACT_APP_ROOT_URL_LOCAL=http://localhost:23051 REACT_APP_ROOT_URL_REMOTE=http://werp.kz:23051 react-scripts build",
     "build:stage": "cross-env REACT_APP_LEGACY_URL_LOCAL=http://192.168.0.15:23029/test REACT_APP_LEGACY_URL_REMOTE=http://werp.kz:23029/test REACT_APP_ROOT_URL_LOCAL=http://192.168.0.15:23051 REACT_APP_ROOT_URL_REMOTE=http://werp.kz:23051 react-scripts build",

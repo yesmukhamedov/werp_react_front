@@ -2,7 +2,6 @@ import React from 'react';
 import { Table, Button } from 'semantic-ui-react';
 import Upload from 'rc-upload';
 import { ROOT_URL } from '../../../../../utils/constants';
-import { Link } from 'react-router-dom';
 
 export default function StaffFilesTable(props) {
   const { files, onUploadSuccess, staffId } = props;

@@ -60,7 +60,7 @@ class NationalityListPage extends Component {
   }
 
   renderTable(items) {
-    const { messages, locale } = this.props.intl;
+    const { messages } = this.props.intl;
 
     return (
       <div>
@@ -263,10 +263,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    f4FetchNationalities,
-    saveNationality,
-  },
-)(injectIntl(NationalityListPage));
+export default connect(mapStateToProps, {
+  f4FetchNationalities,
+  saveNationality,
+})(injectIntl(NationalityListPage));
