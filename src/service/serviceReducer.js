@@ -4,7 +4,7 @@ import {
   CLEAR_DYNOBJ_SERVICE,
 } from './serviceAction';
 
-const INITIAL_STATE = { dynamicObject: {} };
+const INITIAL_STATE = { dynamicObject: {}, data: [] };
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -24,6 +24,13 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         dynamicObject: {},
+      };
+
+    case 'TESTDATA':
+      console.log(action.payload);
+      return {
+        ...state,
+        data: [...state.data, action.payload],
       };
 
     default:

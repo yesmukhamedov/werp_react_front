@@ -10,7 +10,7 @@ import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 const Page = props => {
   const { countryList = [], companyOptions = [], f4FetchCountryList } = props;
   const [countries, setCountries] = useState([]);
-
+  const [test, setTest] = useState([{ name: 'adw', username: 'drteg' }]);
   useEffect(() => {
     f4FetchCountryList();
   }, []);
@@ -56,8 +56,12 @@ const Page = props => {
         <br></br>
         <br></br>
         <ReactTable
-          //data={f}
+          data={test}
           columns={[
+            {
+              Header: 'компания',
+              accessor: 'name',
+            },
             {
               Header: 'дата начало',
               accessor: 'name',
@@ -120,7 +124,6 @@ const Page = props => {
 };
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,

@@ -44,3 +44,10 @@ export function fetchDynObjService(url, params) {
       });
   };
 }
+
+export const data = dataList => {
+  return {
+    type: 'TESTDATA',
+    payload: dataList,
+  };
+};
