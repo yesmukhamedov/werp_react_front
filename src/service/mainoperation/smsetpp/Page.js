@@ -1,14 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Segment, Dropdown } from 'semantic-ui-react';
-import {
-  Header,
-  Container,
-  Icon,
-  Button,
-  Modal,
-  Form,
-  Input,
-} from 'semantic-ui-react';
+import { Icon, Button } from 'semantic-ui-react';
 import './index.css';
 import ModalPrice from './modal';
 import axios from 'axios';
@@ -16,6 +8,7 @@ import { connect } from 'react-redux';
 import * as actions from './smsetppAction';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+import { fetchDynObjHr } from './smsetppAction';
 
 const Page = ({ state, infos }) => {
   const [names, setNames] = useState([]);
@@ -26,11 +19,11 @@ const Page = ({ state, infos }) => {
   const { persons } = state;
 
   useEffect(() => {
+    infos();
     axios.get('https://jsonplaceholder.typicode.com/users').then(res => {
       const data = res.data;
-      infos(data);
 
-      let arr = data.map((item, id) => {
+      let arr = persons.map((item, id) => {
         return { key: id, value: item.name, text: item.name };
       });
       setNames(arr);

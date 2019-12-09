@@ -1,3 +1,5 @@
+import { FETCH_DYNOBJ_HR } from './smsetppAction';
+
 const INITIAL_STATE = {
   persons: [],
   info: [],
@@ -10,16 +12,13 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         persons: [...state.persons, action.payload.info],
       };
-    case 'ADDPERSON':
+    case 'PERSONS':
+      console.log(action.payload);
       return {
         ...state,
-        persons: action.payload.person,
+        persons: [action.payload, ...state.persons],
       };
-    case 'LENGTH':
-      return {
-        ...state,
-        length: state.length + 1,
-      };
+
     default:
       return state;
   }
