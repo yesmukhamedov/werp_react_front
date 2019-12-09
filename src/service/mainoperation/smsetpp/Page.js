@@ -2,100 +2,50 @@ import React, { useState, useEffect } from 'react';
 import { Segment, Dropdown } from 'semantic-ui-react';
 import { Icon, Button } from 'semantic-ui-react';
 import './index.css';
-import ModalPrice from './modal';
-import axios from 'axios';
 import { connect } from 'react-redux';
-import * as actions from './smsetppAction';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import { fetchDynObjHr } from './smsetppAction';
-
-const Page = ({ state, infos }) => {
-  const [names, setNames] = useState([]);
-  const [userNames, setUserNames] = useState([]);
-  const [search, setSearch] = useState('');
-  const [search2, setSearch2] = useState('');
-  const [searchCopy, setSearchCopy] = useState('');
-  const { persons } = state;
-
+import { f4FetchCountryList } from '../../../reference/f4/f4_action';
+const Page = ({ countryList, companyOptions }) => {
+  console.log(countryList, companyOptions);
   useEffect(() => {
-    infos();
-    axios.get('https://jsonplaceholder.typicode.com/users').then(res => {
-      const data = res.data;
+    props.f4FetchCountryList();
+  }, []);
 
-      let arr = persons.map((item, id) => {
-        return { key: id, value: item.name, text: item.name };
-      });
-      setNames(arr);
-    });
-
-    let f2 = persons.filter(persons => {
-      return (
-        persons.name
-          .toLowerCase()
-          .toUpperCase()
-          .indexOf(search2.toLowerCase().toUpperCase()) !== -1
-      );
-    });
-
-    let arr2 = f2.map((item, id) => {
-      return { key: id, value: item.username, text: item.username };
-    });
-    setUserNames(arr2);
-  }, [search2]);
-
-  const onChange = (e, { value }) => {
-    setSearch2(value);
-  };
-
-  const handleClick = (e, { value }) => {
-    setSearchCopy(value);
-  };
-
-  let f = persons.filter(persons => {
-    return (
-      persons.username
-        .toLowerCase()
-        .toUpperCase()
-        .indexOf(search.toLowerCase().toUpperCase()) !== -1
-    );
-  });
   return (
     <Segment>
       <div className="setting">
         <div className="flex-container">
           <h1>Настройка цен и премии сервис услуг</h1>
-
-          <ModalPrice />
         </div>
         <Dropdown
           clearable="true"
           search
           selection
-          options={names}
+          //options={names}
           placeholder="Компания"
-          onChange={onChange}
+          //onChange={onChange}
         />
         <Dropdown
           clearable="true"
           search
           selection
-          options={userNames}
+          //options={userNames}
           placeholder="Страна"
           id="secondDropdown"
-          onChange={handleClick}
+          // onChange={handleClick}
         />
         <button
           className="ui blue tiny button"
           id="addPrice2"
-          onClick={() => setSearch(searchCopy)}
+          // onClick={() => setSearch(searchCopy)}
         >
           Поиск
         </button>
         <br></br>
         <br></br>
         <ReactTable
-          data={f}
+          //data={f}
           columns={[
             {
               Header: 'дата начало',
@@ -159,9 +109,13 @@ const Page = ({ state, infos }) => {
 };
 
 const mapStateToProps = state => {
+  console.log(state, 'state');
   return {
-    state,
+    countryList: state.f4.countryList,
+    companyOptions: state.userInfo.companyOptions,
   };
 };
 
-export default connect(mapStateToProps, actions)(Page);
+export default connect(mapStateToProps, {
+  f4FetchCountryList,
+})(Page);

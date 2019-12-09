@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Header, Icon, Modal } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import * as actions from './smsetppAction';
 import axios from 'axios';
 import './index.css';
-const ModalPrice = ({ state, person, lg }) => {
+const ModalPrice = ({ state, person, infos }) => {
   const [informations, setInformations] = useState({
     name: '',
     username: '',
@@ -24,6 +24,7 @@ const ModalPrice = ({ state, person, lg }) => {
     axios
       .post('https://jsonplaceholder.typicode.com/users', informations)
       .then(res => {
+        console.log(res.data, 'res');
         person(res.data);
       });
 
