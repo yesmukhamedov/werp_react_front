@@ -26,6 +26,7 @@ const ReactTableWrapper = props => {
     pageText = messages['pageText'],
     ofText = messages['ofText'],
     onFilterChangeReactTable = null,
+    onRowClick = null,
   } = props;
 
   return (
@@ -47,6 +48,15 @@ const ReactTableWrapper = props => {
         pageText={pageText}
         ofText={ofText}
         onFilteredChange={onFilterChangeReactTable}
+        getTrProps={(state, rowInfo, column) => {
+          return {
+            onClick: (e, handleOriginal) => {
+              if (onRowClick) {
+                onRowClick(rowInfo.original, rowInfo.index);
+              }
+            },
+          };
+        }}
       />
     </div>
   );
