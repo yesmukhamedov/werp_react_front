@@ -70,7 +70,8 @@ export default function(state = INITIAL_STATE, action) {
     case APPR_REJ:
       return { ...state, listAes: action.payload };
     case UNMOUNT_ALL:
-      return { ...state, listAll: {} };
+      console.log('reducer ');
+      return { ...state, listAll: {}, listAes: [] };
 
     /************************************************************************** SAVING ITEMS */
     case NEW_OS:

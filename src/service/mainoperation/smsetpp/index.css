@@ -1,0 +1,26 @@
+.setting {
+  margin-top: 20px;
+}
+.flex-container {
+  display: flex;
+}
+#addPrice {
+  margin-left: 50px;
+  border-radius: 30px;
+  height: 40px;
+}
+#addPrice2 {
+  margin-left: 50px;
+  border-radius: 30px;
+  width: 70px;
+}
+#secondDropdown {
+  margin-left: 20px;
+}
+#edit {
+  margin-left: 30px;
+  color: rgb(0, 78, 151);
+}
+.inputs {
+  display: flex;
+}

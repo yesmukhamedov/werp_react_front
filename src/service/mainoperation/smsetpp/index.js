@@ -1,11 +1,16 @@
 import React from 'react';
-import { Segment } from 'semantic-ui-react';
+import { Provider } from 'react-redux';
+import reducer from './smsetppReducer';
+import { createStore } from 'redux';
+import Page from './Page';
+const store = createStore(reducer);
 
-function Smsetpp() {
+const Smsetpp = () => {
   return (
-    <Segment>
-      <h1>Welcome Smsetpp</h1>
-    </Segment>
+    <Provider store={store}>
+      <Page />
+    </Provider>
   );
-}
+};
+
 export default Smsetpp;
