@@ -1,11 +1,9 @@
 .setting {
   margin-top: 20px;
 }
-.flex-container {
-  display: flex;
-}
+
 #addPrice {
-  margin-left: 50px;
+  float: right;
   border-radius: 30px;
   height: 40px;
 }

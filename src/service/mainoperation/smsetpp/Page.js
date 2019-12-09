@@ -5,24 +5,34 @@ import './index.css';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
+import MoDal from './modal';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
-const Page = ({ countryList, companyOptions }) => {
-  console.log(countryList, companyOptions);
+const Page = props => {
+  const { countryList = [], companyOptions = [], f4FetchCountryList } = props;
+  const [countries, setCountries] = useState([]);
+
   useEffect(() => {
-    props.f4FetchCountryList();
+    f4FetchCountryList();
   }, []);
 
+  useEffect(() => {
+    let country = countryList.map(item => {
+      return { key: item.countryId, text: item.country, value: item.country };
+    });
+    setCountries(country);
+  }, [countryList]);
   return (
     <Segment>
       <div className="setting">
         <div className="flex-container">
           <h1>Настройка цен и премии сервис услуг</h1>
+          <MoDal />
         </div>
         <Dropdown
           clearable="true"
           search
           selection
-          //options={names}
+          options={companyOptions}
           placeholder="Компания"
           //onChange={onChange}
         />
@@ -30,7 +40,7 @@ const Page = ({ countryList, companyOptions }) => {
           clearable="true"
           search
           selection
-          //options={userNames}
+          options={countries}
           placeholder="Страна"
           id="secondDropdown"
           // onChange={handleClick}
@@ -42,6 +52,7 @@ const Page = ({ countryList, companyOptions }) => {
         >
           Поиск
         </button>
+        <br></br>
         <br></br>
         <br></br>
         <ReactTable
@@ -109,7 +120,7 @@ const Page = ({ countryList, companyOptions }) => {
 };
 
 const mapStateToProps = state => {
-  console.log(state, 'state');
+  console.log(state);
   return {
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
