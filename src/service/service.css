@@ -20,3 +20,25 @@
 .ui.celled.grid > .row {
   box-shadow: none;
 }
+
+.smcsColumn {
+  background-color: #2185d0;
+  min-height: 40rem;
+}
+
+.smcsButton {
+  border-radius: 30px !important;
+  margin: 0 5px 0 5px !important;
+}
+
+.ui.grid > .row {
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
+}
+.br30 {
+  border-radius: 30px !important;
+}
+
+.m_1rem {
+  margin: 0.5rem !important;
+}
