@@ -5,19 +5,21 @@ import DatePicker from 'react-datepicker';
 import './index.css';
 import { Dropdown } from 'semantic-ui-react';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
-import { data } from '../../serviceAction';
+import { docs } from '../../serviceAction';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
+require('moment/locale/ru');
 
-const ModalPrice = (props, { data }) => {
+const ModalPrice = (props, { docs }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const { countryList = [], companyOptions = [], f4FetchCountryList } = props;
   const [countries, setCountries] = useState([]);
-  var date = new Date(),
+  const [startDate, setStartDate] = useState(moment(firstDay));
+  const date = new Date(),
     y = date.getFullYear(),
     m = date.getMonth();
-  var firstDay = new Date(y, m, 1);
-  const [startDate, setStartDate] = useState(moment(firstDay));
+  const firstDay = new Date(y, m, 1);
+
   const [companies, setCompanies] = useState([]);
   const [informations, setInformations] = useState({
     company: '',
@@ -32,6 +34,7 @@ const ModalPrice = (props, { data }) => {
     Country: '',
     Currency: '',
   });
+
   useEffect(() => {
     f4FetchCountryList();
   }, []);
@@ -56,13 +59,17 @@ const ModalPrice = (props, { data }) => {
     }
   };
 
-  const onChangeDate = date => {
-    setStartDate(date);
-    setInformations({ ...informations, startDate: date });
+  const onChangeDate = d => {
+    setStartDate(d);
+    setInformations({
+      ...informations,
+      startDate: `${d.date()}.${d.month() + 1}.${d.year()}`,
+    });
   };
 
   const onhandleAdd = () => {
-    console.log(informations);
+    docs(informations);
+    console.log(docs);
   };
 
   return (
@@ -232,6 +239,6 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps, { f4FetchCountryList, data })(
+export default connect(mapStateToProps, { docs, f4FetchCountryList })(
   ModalPrice,
 );

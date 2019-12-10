@@ -10,7 +10,15 @@ import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 const Page = props => {
   const { countryList = [], companyOptions = [], f4FetchCountryList } = props;
   const [countries, setCountries] = useState([]);
-  const [test, setTest] = useState([{ name: 'adw', username: 'drteg' }]);
+  const [companies, setCompanies] = useState([]);
+  const [test, setTest] = useState([
+    { name: 'kazakhstan', username: 'Aura' },
+    { name: 'turkey', username: 'aura' },
+  ]);
+  const [searchCompany, setSearchCompany] = useState('');
+  const [searchCountry, setSearchCountry] = useState('');
+  const [searchCopyCompany, setSearchCopyCompany] = useState('');
+  const [searchCopyCountry, setSearchCopyCountry] = useState('');
   useEffect(() => {
     f4FetchCountryList();
   }, []);
@@ -20,7 +28,36 @@ const Page = props => {
       return { key: item.countryId, text: item.country, value: item.country };
     });
     setCountries(country);
+    let company = companyOptions.map(item => {
+      return { key: item.key, text: item.text, value: item.text };
+    });
+    setCompanies(company);
   }, [countryList]);
+
+  const onChange = (text, value) => {
+    if (text === 'companies') {
+      setSearchCopyCompany(value);
+      console.log(value, 'v');
+    }
+    if (text === 'countries') {
+      setSearchCopyCountry(value);
+    }
+  };
+
+  const onClickButton = () => {
+    setSearchCompany(searchCopyCompany);
+    setSearchCountry(searchCopyCountry);
+    console.log(searchCompany, 'b');
+  };
+
+  let f = test.filter(test => {
+    return (
+      test.username
+        .toLowerCase()
+        .toUpperCase()
+        .indexOf(searchCompany.toLowerCase().toUpperCase()) !== -1
+    );
+  });
   return (
     <Segment>
       <div className="setting">
@@ -32,9 +69,9 @@ const Page = props => {
           clearable="true"
           search
           selection
-          options={companyOptions}
+          options={companies}
           placeholder="Компания"
-          //onChange={onChange}
+          onChange={(e, { value }) => onChange('companies', value)}
         />
         <Dropdown
           clearable="true"
@@ -43,12 +80,12 @@ const Page = props => {
           options={countries}
           placeholder="Страна"
           id="secondDropdown"
-          // onChange={handleClick}
+          onChange={(e, { value }) => onChange('countries', value)}
         />
         <button
           className="ui blue tiny button"
           id="addPrice2"
-          // onClick={() => setSearch(searchCopy)}
+          onClick={onClickButton}
         >
           Поиск
         </button>
@@ -56,7 +93,14 @@ const Page = props => {
         <br></br>
         <br></br>
         <ReactTable
-          data={test}
+          data={f.filter(test => {
+            return (
+              test.name
+                .toLowerCase()
+                .toUpperCase()
+                .indexOf(searchCountry.toLowerCase().toUpperCase()) !== -1
+            );
+          })}
           columns={[
             {
               Header: 'компания',
