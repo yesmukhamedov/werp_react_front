@@ -56,8 +56,13 @@ const ModalPrice = (props, { data }) => {
     }
   };
 
+  const onChangeDate = date => {
+    setStartDate(date);
+    setInformations({ ...informations, startDate: date });
+  };
+
   const onhandleAdd = () => {
-    data(informations);
+    console.log(informations);
   };
 
   return (
@@ -102,7 +107,7 @@ const ModalPrice = (props, { data }) => {
               showYearDropdown
               dropdownMode="select" //timezone="UTC"
               selected={startDate}
-              onChange={e => console.log(e)}
+              onChange={date => onChangeDate(date)}
               dateFormat="DD.MM.YYYY"
             />
           </div>
