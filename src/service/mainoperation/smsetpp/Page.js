@@ -7,13 +7,20 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import MoDal from './modal';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
+
 const Page = props => {
-  const { countryList = [], companyOptions = [], f4FetchCountryList } = props;
+  const {
+    countryList = [],
+    companyOptions = [],
+    f4FetchCountryList,
+    informations,
+  } = props;
   const [countries, setCountries] = useState([]);
   const [companies, setCompanies] = useState([]);
   const [test, setTest] = useState([
-    { name: 'kazakhstan', username: 'Aura' },
+    { name: 'kazakhstan', username: 'Aura SE ' },
     { name: 'turkey', username: 'aura' },
+    { name: 'china', username: 'greenlight' },
   ]);
   const [searchCompany, setSearchCompany] = useState('');
   const [searchCountry, setSearchCountry] = useState('');
@@ -37,7 +44,6 @@ const Page = props => {
   const onChange = (text, value) => {
     if (text === 'companies') {
       setSearchCopyCompany(value);
-      console.log(value, 'v');
     }
     if (text === 'countries') {
       setSearchCopyCountry(value);
@@ -47,7 +53,6 @@ const Page = props => {
   const onClickButton = () => {
     setSearchCompany(searchCopyCompany);
     setSearchCountry(searchCopyCountry);
-    console.log(searchCompany, 'b');
   };
 
   let f = test.filter(test => {
@@ -58,6 +63,7 @@ const Page = props => {
         .indexOf(searchCompany.toLowerCase().toUpperCase()) !== -1
     );
   });
+  console.log('informations ', informations);
   return (
     <Segment>
       <div className="setting">
@@ -168,9 +174,11 @@ const Page = props => {
 };
 
 const mapStateToProps = state => {
+  console.log('stateRed ', state.serviceReducer);
   return {
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
+    informations: state.serviceReducer.data,
   };
 };
 

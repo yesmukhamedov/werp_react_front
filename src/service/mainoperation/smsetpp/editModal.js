@@ -1,76 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Button, Header, Icon, Modal } from 'semantic-ui-react';
-import { connect } from 'react-redux';
-import DatePicker from 'react-datepicker';
-import './index.css';
-import { Dropdown } from 'semantic-ui-react';
+import React, { useState } from 'react';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
-import { docs } from '../../serviceAction';
-import moment from 'moment';
-import 'react-datepicker/dist/react-datepicker.css';
-require('moment/locale/ru');
-
-const ModalPrice = props => {
-  const [modalOpen, setModalOpen] = useState(false);
-  const { countryList = [], companyOptions = [] } = props;
-  const [countries, setCountries] = useState([]);
-  const [startDate, setStartDate] = useState(moment(firstDay));
-  const date = new Date(),
-    y = date.getFullYear(),
-    m = date.getMonth();
-  const firstDay = new Date(y, m, 1);
-
-  const [companies, setCompanies] = useState([]);
-  const [informations, setInformations] = useState({
-    company: '',
-    startDate: '',
-    FC: null,
-    MC: null,
-    Office: null,
-    Master: null,
-    Operator: null,
-    Sale: null,
-    TotalNum: null,
-    Country: '',
-    Currency: '',
-  });
-
-  useEffect(() => {
-    f4FetchCountryList();
-  }, []);
-
-  useEffect(() => {
-    let country = countryList.map(item => {
-      return { key: item.countryId, text: item.country, value: item.country };
-    });
-    setCountries(country);
-    let company = companyOptions.map(item => {
-      return { key: item.key, text: item.text, value: item.text };
-    });
-    setCompanies(company);
-  }, [countryList]);
-
-  const handleChange = (text, value) => {
-    if (text === 'companies') {
-      setInformations({ ...informations, company: value });
-    }
-    if (text === 'countries') {
-      setInformations({ ...informations, country: value });
-    }
-  };
-
-  const onChangeDate = d => {
-    setStartDate(d);
-    setInformations({
-      ...informations,
-      startDate: `${d.date()}.${d.month() + 1}.${d.year()}`,
-    });
-  };
-
-  const onhandleAdd = () => {
-    docs(informations);
-  };
-
+import { connect } from 'http2';
+const editModal = () => {
   return (
     <Modal
       trigger={
@@ -223,9 +154,7 @@ const ModalPrice = props => {
         </div>
       </Modal.Content>
       <Modal.Actions>
-        <Button color="red" onClick={onhandleAdd}>
-          Добавить
-        </Button>
+        <Button color="red">Добавить</Button>
       </Modal.Actions>
     </Modal>
   );
@@ -238,21 +167,4 @@ const mapStateToProps = state => {
   };
 };
 
-// const mapDispatchToProps = () => {
-//   return {
-//     props: docs
-//   }
-// }
-
-const mapDispatchToProps = dispatch => {
-  return {
-    props: () => {
-      dispatch(docs);
-    },
-  };
-};
-
-export default connect(mapStateToProps, {
-  mapDispatchToProps,
-  f4FetchCountryList,
-})(ModalPrice);
+export default connect(mapStateToProps)(editModal);
