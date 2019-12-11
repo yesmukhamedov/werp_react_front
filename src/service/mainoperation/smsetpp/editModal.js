@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import { connect } from 'http2';
 const editModal = () => {
+  const [modalOpen, setModalOpen] = useState(false);
   return (
     <Modal
       trigger={

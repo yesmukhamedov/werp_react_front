@@ -19,18 +19,18 @@ const ModalPrice = props => {
     y = date.getFullYear(),
     m = date.getMonth();
   const firstDay = new Date(y, m, 1);
-
   const [companies, setCompanies] = useState([]);
   const [informations, setInformations] = useState({
     company: '',
-    startDate: '',
-    FC: null,
-    MC: null,
-    Office: null,
-    Master: null,
-    Operator: null,
-    Sale: null,
-    TotalNum: null,
+    startDate: `${startDate.date()}.${startDate.month() +
+      1}.${startDate.year()}`,
+    FC: 0,
+    MC: 0,
+    Office: 0,
+    Master: 0,
+    Operator: 0,
+    Sale: 0,
+    TotalNum: 0,
     Country: '',
     Currency: '',
   });
@@ -71,11 +71,28 @@ const ModalPrice = props => {
     docs(informations);
   };
 
+  const onhandleCancel = () => {
+    setModalOpen(false);
+    setInformations({
+      company: '',
+      startDate: '',
+      FC: 0,
+      MC: 0,
+      Office: 0,
+      Master: 0,
+      Operator: 0,
+      Sale: 0,
+      TotalNum: 0,
+      Country: '',
+      Currency: '',
+    });
+  };
+
   return (
     <Modal
       trigger={
         <button
-          className="ui blue button"
+          className="ui blue inverted button"
           id="addPrice"
           onClick={() => setModalOpen(true)}
         >
@@ -91,10 +108,11 @@ const ModalPrice = props => {
       <Modal.Content>
         <div>
           <div className="inputs">
-            <h3>Компания</h3>
-            <div className="ui input">
+            Компания
+            <div id="smsetppInput">
               <Dropdown
                 clearable="true"
+                fluid
                 search
                 selection
                 options={companies}
@@ -103,128 +121,194 @@ const ModalPrice = props => {
               />
             </div>
           </div>
-          <br></br>
-          <div className="inputs">
-            <h3>Дата начало</h3>
-            <DatePicker
-              className="date-100-width"
-              autoComplete="off"
-              showMonthDropdown
-              showYearDropdown
-              dropdownMode="select" //timezone="UTC"
-              selected={startDate}
-              onChange={date => onChangeDate(date)}
-              dateFormat="DD.MM.YYYY"
-            />
-          </div>
-          <br></br>
-          <div className="inputs">
-            <h3>FC(кол-во)</h3>
-            <div className="ui input">
-              <input
-                type="text"
-                placeholder="Search..."
-                onChange={e =>
-                  setInformations({ ...informations, FC: e.target.value })
-                }
-              />
-            </div>
-          </div>
-          <br></br>
-          <div className="inputs">
-            <h3>MC(кол-во)</h3>
-            <div className="ui input">
-              <input
-                type="text"
-                placeholder="Search..."
-                onChange={e =>
-                  setInformations({ ...informations, MC: e.target.value })
-                }
-              />
-            </div>
-          </div>
-          <br></br>
-          <div className="inputs">
-            <h3>Офис (в сумме)</h3>
-            <div className="ui input">
-              <input
-                type="text"
-                placeholder="Search..."
-                onChange={e =>
-                  setInformations({ ...informations, Office: e.target.value })
-                }
-              />
-            </div>
-          </div>
-          <br></br>
-          <div className="inputs">
-            <h3>Мастер (в сумме)</h3>
-            <div className="ui input">
-              <input
-                type="text"
-                placeholder="Search..."
-                onChange={e =>
-                  setInformations({ ...informations, Master: e.target.value })
-                }
-              />
-            </div>
-          </div>
-          <div className="inputs">
-            <h3>Оператор (в сумме)</h3>
-            <div className="ui input">
-              <input
-                type="text"
-                placeholder="Search..."
-                onChange={e =>
-                  setInformations({ ...informations, Operator: e.target.value })
-                }
-              />
-            </div>
-          </div>
-          <div className="inputs">
-            <h3>Скидка (в сумме)</h3>
-            <div className="ui input">
-              <input
-                type="text"
-                placeholder="Search..."
-                onChange={e =>
-                  setInformations({ ...informations, Sale: e.target.value })
-                }
-              />
-            </div>
-          </div>
-          <div className="inputs">
-            <h3>Общая сумма</h3>
-            <div className="ui input">
-              <input
-                type="text"
-                placeholder="Search..."
-                onChange={e =>
-                  setInformations({ ...informations, TotalNum: e.target.value })
-                }
-              />
-            </div>
-          </div>
-          <div className="inputs">
-            <h3>Страна</h3>
 
-            <Dropdown
-              clearable="true"
-              search
-              selection
-              options={countries}
-              onChange={(e, { value }) => handleChange('countries', value)}
-              placeholder="Компания"
-            />
+          <div className="inputs">
+            <form>
+              <label>
+                Дата начало
+                <div id="smsetppInput">
+                  <DatePicker
+                    className="date-auto-width"
+                    autoComplete="off"
+                    showMonthDropdown
+                    showYearDropdown
+                    dropdownMode="select" //timezone="UTC"
+                    selected={startDate}
+                    fluid
+                    onChange={date => onChangeDate(date)}
+                    dateFormat="DD.MM.YYYY"
+                  />
+                </div>
+              </label>
+            </form>
+          </div>
+
+          <div className="inputs">
+            <form>
+              <label>
+                FC(кол-во)
+                <div className="ui fluid input">
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    id="smsetppInput"
+                    onChange={e =>
+                      setInformations({ ...informations, FC: e.target.value })
+                    }
+                  />
+                </div>
+              </label>
+            </form>
+          </div>
+
+          <div className="inputs">
+            <form>
+              <label>
+                MC(кол-во)
+                <div className="ui fluid input">
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    id="smsetppInput"
+                    onChange={e =>
+                      setInformations({ ...informations, MC: e.target.value })
+                    }
+                  />
+                </div>
+              </label>
+            </form>
+          </div>
+
+          <div className="inputs">
+            <form>
+              <label>
+                Офис (в сумме)
+                <div className="ui fluid input">
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    id="smsetppInput"
+                    onChange={e =>
+                      setInformations({
+                        ...informations,
+                        Office: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              </label>
+            </form>
+          </div>
+
+          <div className="inputs">
+            <form>
+              <label>
+                Мастер (в сумме)
+                <div className="ui fluid input">
+                  <input
+                    type="text"
+                    id="smsetppInput"
+                    placeholder="Search..."
+                    onChange={e =>
+                      setInformations({
+                        ...informations,
+                        Master: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              </label>
+            </form>
+          </div>
+
+          <div className="inputs">
+            <form>
+              <label>
+                Оператор (в сумме)
+                <div className="ui fluid input">
+                  <input
+                    type="text"
+                    id="smsetppInput"
+                    placeholder="Search..."
+                    onChange={e =>
+                      setInformations({
+                        ...informations,
+                        Operator: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              </label>
+            </form>
+          </div>
+
+          <div className="inputs">
+            <form>
+              <label>
+                Скидка (в сумме)
+                <div className="ui fluid input">
+                  <input
+                    type="text"
+                    id="smsetppInput"
+                    placeholder="Search..."
+                    onChange={e =>
+                      setInformations({ ...informations, Sale: e.target.value })
+                    }
+                  />
+                </div>
+              </label>
+            </form>
+          </div>
+
+          <div className="inputs">
+            <form>
+              <label>
+                Общая сумма
+                <div className="ui fluid input">
+                  <input
+                    type="text"
+                    name="smsetppInput"
+                    id="smsetppInput"
+                    placeholder="Search..."
+                    onChange={e =>
+                      setInformations({
+                        ...informations,
+                        TotalNum: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+              </label>
+            </form>
+          </div>
+
+          <div className="inputs">
+            Страна
+            <div id="smsetppInput">
+              <Dropdown
+                clearable="true"
+                fluid
+                search
+                selection
+                options={countries}
+                onChange={(e, { value }) => handleChange('countries', value)}
+                placeholder="Страна"
+              />
+            </div>
           </div>
           <div className="inputs">
-            <h3>Валюта</h3>
+            <form>
+              <label>Валюта</label>
+            </form>
           </div>
         </div>
       </Modal.Content>
       <Modal.Actions>
-        <Button color="red" onClick={onhandleAdd}>
-          Добавить
+        <Button inverted color="red" onClick={onhandleCancel}>
+          <Icon name="remove" /> Отмена
+        </Button>
+        <Button inverted color="blue" onClick={onhandleAdd}>
+          <Icon name="checkmark" /> Добавить
         </Button>
       </Modal.Actions>
     </Modal>

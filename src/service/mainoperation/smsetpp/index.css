@@ -8,9 +8,7 @@
   height: 40px;
 }
 #addPrice2 {
-  margin-left: 50px;
   border-radius: 30px;
-  width: 70px;
 }
 #secondDropdown {
   margin-left: 20px;
@@ -20,5 +18,5 @@
   color: rgb(0, 78, 151);
 }
 .inputs {
-  display: flex;
+  margin-bottom: 10px;
 }

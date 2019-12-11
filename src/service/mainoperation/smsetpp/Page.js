@@ -15,12 +15,15 @@ const Page = props => {
     f4FetchCountryList,
     informations,
   } = props;
+  const [activeDropdown, setActiveDropdown] = useState(false);
+  const [secondActive, setSecondActive] = useState(false);
+  const [allDropdownActive, setAllDropdownActive] = useState(false);
   const [countries, setCountries] = useState([]);
   const [companies, setCompanies] = useState([]);
   const [test, setTest] = useState([
-    { name: 'kazakhstan', username: 'Aura SE ' },
-    { name: 'turkey', username: 'aura' },
-    { name: 'china', username: 'greenlight' },
+    { company: 'Aura', country: 'Kazakhstan' },
+    { company: 'Greenlight', country: 'China' },
+    { company: 'construction', country: 'Turkey' },
   ]);
   const [searchCompany, setSearchCompany] = useState('');
   const [searchCountry, setSearchCountry] = useState('');
@@ -50,6 +53,11 @@ const Page = props => {
     }
   };
 
+  const dropdownCountry = () => {
+    setAllDropdownActive(true);
+    setSecondActive(true);
+  };
+
   const onClickButton = () => {
     setSearchCompany(searchCopyCompany);
     setSearchCountry(searchCopyCountry);
@@ -57,7 +65,7 @@ const Page = props => {
 
   let f = test.filter(test => {
     return (
-      test.username
+      test.company
         .toLowerCase()
         .toUpperCase()
         .indexOf(searchCompany.toLowerCase().toUpperCase()) !== -1
@@ -73,27 +81,28 @@ const Page = props => {
         </div>
         <Dropdown
           clearable="true"
-          search
           selection
           options={companies}
           placeholder="Компания"
+          onClick={() => (setActiveDropdown(true), setAllDropdownActive(true))}
           onChange={(e, { value }) => onChange('companies', value)}
         />
         <Dropdown
           clearable="true"
-          search
           selection
-          options={countries}
+          options={activeDropdown ? countries : []}
           placeholder="Страна"
           id="secondDropdown"
+          onClick={dropdownCountry}
           onChange={(e, { value }) => onChange('countries', value)}
         />
         <button
-          className="ui blue tiny button"
           id="addPrice2"
-          onClick={onClickButton}
+          className="ui blue inverted button"
+          onClick={allDropdownActive && secondActive ? onClickButton : null}
+          style={{ marginLeft: 30 }}
         >
-          Поиск
+          <i aria-hidden="true" className="search icon"></i> Поиск
         </button>
         <br></br>
         <br></br>
@@ -101,7 +110,7 @@ const Page = props => {
         <ReactTable
           data={f.filter(test => {
             return (
-              test.name
+              test.country
                 .toLowerCase()
                 .toUpperCase()
                 .indexOf(searchCountry.toLowerCase().toUpperCase()) !== -1
@@ -109,51 +118,57 @@ const Page = props => {
           })}
           columns={[
             {
-              Header: 'компания',
-              accessor: 'name',
+              Header: () => <div style={{ textAlign: 'center' }}>Kомпания</div>,
+              accessor: 'company',
             },
             {
-              Header: 'дата начало',
-              accessor: 'name',
+              Header: () => (
+                <div style={{ textAlign: 'center' }}>Дата начало</div>
+              ),
+              accessor: 'startDate',
             },
             {
-              Header: 'FC',
-              accessor: 'username',
+              Header: () => <div style={{ textAlign: 'center' }}>FC</div>,
+              accessor: 'FC',
             },
             {
-              Header: 'MC',
-              accessor: 'website',
+              Header: () => <div style={{ textAlign: 'center' }}>MC</div>,
+              accessor: 'MC',
             },
             {
-              Header: 'Офис',
-              accessor: 'phone',
+              Header: () => <div style={{ textAlign: 'center' }}>Офис</div>,
+              accessor: 'Office',
             },
             {
-              Header: 'Мастер',
-              accessor: 'address.city',
+              Header: () => <div style={{ textAlign: 'center' }}>Мастер</div>,
+              accessor: 'Master',
             },
             {
-              Header: 'Оператор',
-              accessor: 'company.name',
+              Header: () => <div style={{ textAlign: 'center' }}>Оператор</div>,
+              accessor: 'Operator',
             },
             {
-              Header: 'Скидка',
-              accessor: 'age',
+              Header: () => <div style={{ textAlign: 'center' }}>Скидка</div>,
+              accessor: 'Sale',
             },
             {
-              Header: 'Общая сумма',
-              accessor: 'age',
+              Header: () => (
+                <div style={{ textAlign: 'center' }}>Общая сумма</div>
+              ),
+              accessor: 'TotalNum',
             },
             {
-              Header: 'Страна',
-              accessor: 'age',
+              Header: () => <div style={{ textAlign: 'center' }}>Страна</div>,
+              accessor: 'country',
             },
             {
-              Header: 'Валюта',
-              accessor: 'age',
+              Header: () => <div style={{ textAlign: 'center' }}>Валуюта</div>,
+              accessor: 'Currency',
             },
             {
-              Header: 'Редактирование',
+              Header: () => (
+                <div style={{ textAlign: 'center' }}>Редактирование</div>
+              ),
               accessor: 'age',
               filterable: false,
               Cell: () => (
@@ -165,7 +180,10 @@ const Page = props => {
           ]}
           defaultPageSize={15}
           pages={2}
+          previousText={'Предыдущий'}
+          nextText={'Следующий'}
           showPagination={true}
+          className="-striped -highlight"
           pageSizeOptions={[20, 30, 40]}
         />
       </div>
