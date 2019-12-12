@@ -48,11 +48,12 @@ const ReactTableWrapper = props => {
         pageText={pageText}
         ofText={ofText}
         onFilteredChange={onFilterChangeReactTable}
-        getTrProps={(state, rowInfo, column) => {
+        getTdProps={(state, rowInfo, column, instance) => {
           return {
             onClick: (e, handleOriginal) => {
-              if (onRowClick) {
-                onRowClick(rowInfo.original, rowInfo.index);
+              // console.log(column.id, 'column clicked');
+              if (onRowClick && rowInfo) {
+                onRowClick(rowInfo.original, rowInfo.index, column.id);
               }
             },
           };

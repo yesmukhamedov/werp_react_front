@@ -10,7 +10,7 @@ import { f4ClearAnyObject, f4FetchAddresses } from '../f4_action';
 const AddressSearchPage = props => {
   const [isLoadingAddresses, setIsLoadingAddresses] = useState(false);
   const {
-    addressTypes,
+    // addressTypes,
     customerId = 0,
     intl: { messages },
     addresses = [],
@@ -137,7 +137,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { f4ClearAnyObject, f4FetchAddresses },
-)(injectIntl(AddressSearchPage));
+export default connect(mapStateToProps, { f4ClearAnyObject, f4FetchAddresses })(
+  injectIntl(AddressSearchPage),
+);

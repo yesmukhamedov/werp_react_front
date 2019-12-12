@@ -94,7 +94,7 @@ const ListReports = props => {
 
   return (
     <Segment>
-      {dynObjTrLst === undefined || dynObjTrLst.length == 0 ? (
+      {dynObjTrLst === undefined || dynObjTrLst.length === 0 ? (
         'undergfined'
       ) : (
         <ReactTable

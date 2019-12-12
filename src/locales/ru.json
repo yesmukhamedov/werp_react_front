@@ -639,6 +639,11 @@
   "oldStatus": "Старый статус",
   "operationDate": "Дата операции",
   "serviceHistory": "История сервисов",
+  "selectedBranches": "Выбранные филиалы",
+  "vacuumCleaningSystem": "Уборочная система",
+  "waterPurifierSystem": "Система очистки воды",
+  "productCategory": "Товар категория",
+  "category": "Категория",
 
   "transNameFmcp": "FMCP: Взнос по договору",
   "transNameFcis": "FCIS: Взнос в счет сотрудника",
