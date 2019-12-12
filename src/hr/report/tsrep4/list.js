@@ -79,20 +79,20 @@ export default function List(props) {
       minWidth: 100,
     },
     {
-      Header: messages['firedApplicant'],
-      accessor: 'firedApplicant',
+      Header: messages['remApplicant'],
+      accessor: 'remApplicant',
       filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['firedApplicant'] }),
+        matchSorter(rows, filter.value, { keys: ['remApplicant'] }),
       filterAll: true,
       width: 250,
       maxWidth: 200,
       minWidth: 100,
     },
     {
-      Header: messages['remApplicant'],
-      accessor: 'remApplicant',
+      Header: messages['firedApplicant'],
+      accessor: 'firedApplicant',
       filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['remApplicant'] }),
+        matchSorter(rows, filter.value, { keys: ['firedApplicant'] }),
       filterAll: true,
       width: 250,
       maxWidth: 200,
