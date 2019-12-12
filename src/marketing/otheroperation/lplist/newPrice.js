@@ -90,7 +90,7 @@ class NewPrice extends Component {
   }
 
   handleChange(fieldName, o) {
-    let bukrs = this.state.bukrs;
+    // let bukrs = this.state.bukrs;
     const modalForm = Object.assign({}, this.state.modalForm);
     switch (fieldName) {
       case 'bukrs':
@@ -244,7 +244,7 @@ class NewPrice extends Component {
             </Button>
             <Input
               style={{ width: '75%' }}
-              value={row == '' ? row : row.text45}
+              value={row === '' ? row : row.text45}
               onChange={(e, o) => this.inputChange('password', o)}
             />
             <Button onClick={this.getAllMatnr.bind(this)}>

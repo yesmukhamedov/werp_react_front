@@ -253,9 +253,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchDynObjMarketing,
-  },
-)(injectIntl(MmccLogistics));
+export default connect(mapStateToProps, {
+  fetchDynObjMarketing,
+})(injectIntl(MmccLogistics));

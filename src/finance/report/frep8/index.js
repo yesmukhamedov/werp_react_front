@@ -15,6 +15,7 @@ import {
   Menu,
   Checkbox,
   List,
+  Label,
 } from 'semantic-ui-react';
 import { modifyLoader } from '../../../general/loader/loader_action';
 import OutputErrors from '../../../general/error/outputErrors';
@@ -33,6 +34,7 @@ const Frep8 = props => {
   const [budatTo, setBudatTo] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
   const [f4BranchIsOpen, setF4BranchIsOpen] = useState(false);
+  const [selectedBranches, setSelectedBranches] = useState([]);
 
   return (
     <Container
@@ -95,7 +97,10 @@ const Frep8 = props => {
                         selection
                         options={companyOptions || []}
                         value={bukrs}
-                        onChange={(e, { value }) => setBukrs(value)}
+                        onChange={(e, { value }) => {
+                          setBukrs(value);
+                          setSelectedBranches([]);
+                        }}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -105,6 +110,11 @@ const Frep8 = props => {
                       {messages['brnch']}
                     </Table.Cell>
                     <Table.Cell colSpan="2">
+                      <Label>
+                        <Icon name="file" />
+                        {messages['selectedBranches']} #
+                        {selectedBranches.length}
+                      </Label>
                       <Icon
                         link
                         name="clone"
@@ -133,7 +143,10 @@ const Frep8 = props => {
               <BranchF4Advanced
                 branches={bukrs ? branchOptions[bukrs] : []}
                 isOpen={f4BranchIsOpen}
-                onClose={() => setF4BranchIsOpen(false)}
+                onClose={selectedBranches => {
+                  setF4BranchIsOpen(false);
+                  setSelectedBranches(selectedBranches);
+                }}
                 selection={'multiple'}
               />
             </Grid.Column>
@@ -160,7 +173,7 @@ const Frep8 = props => {
 };
 
 function mapStateToProps(state) {
-  console.log(state, 'state.userInfo.branchOptionsMarketing');
+  // console.log(state, 'state.userInfo.branchOptionsMarketing');
 
   return {
     language: state.locales.lang,
