@@ -20,7 +20,7 @@ yarn-error.log*
 .idea/
 *.iml
 
-.env.development.local
+.env.development
 .jshintrc
 .vscode
 package-lock.json

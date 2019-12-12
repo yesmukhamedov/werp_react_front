@@ -1,0 +1,22 @@
+.setting {
+  margin-top: 20px;
+}
+
+#addPrice {
+  float: right;
+  border-radius: 30px;
+  height: 40px;
+}
+#addPrice2 {
+  border-radius: 30px;
+}
+#secondDropdown {
+  margin-left: 20px;
+}
+#edit {
+  margin-left: 30px;
+  color: rgb(0, 78, 151);
+}
+.inputs {
+  margin-bottom: 10px;
+}

@@ -661,6 +661,11 @@
   "oldStatus": "Old Status",
   "operationDate": "Operation date",
   "serviceHistory": "Service History",
+  "selectedBranches": "Selected Branches",
+  "vacuumCleaningSystem": "Vacuum Cleaning System",
+  "waterPurifierSystem": "Water Purifier System",
+  "productCategory": "Product Category",
+  "category": "Category",
 
   "transNameFmcp": "FMCP: Receipt from Sales Contract",
   "transNameFcis": "FCIS: Employee acc.cash inquiry",

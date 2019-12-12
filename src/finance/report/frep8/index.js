@@ -15,9 +15,11 @@ import {
   Menu,
   Checkbox,
   List,
+  Label,
 } from 'semantic-ui-react';
 import { modifyLoader } from '../../../general/loader/loader_action';
 import OutputErrors from '../../../general/error/outputErrors';
+import BranchF4Advanced from '../../../reference/f4/branch/BranchF4Advanced';
 
 const Frep8 = props => {
   const {
@@ -31,6 +33,8 @@ const Frep8 = props => {
   const [budatFrom, setBudatFrom] = useState('');
   const [budatTo, setBudatTo] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
+  const [f4BranchIsOpen, setF4BranchIsOpen] = useState(false);
+  const [selectedBranches, setSelectedBranches] = useState([]);
 
   return (
     <Container
@@ -93,7 +97,10 @@ const Frep8 = props => {
                         selection
                         options={companyOptions || []}
                         value={bukrs}
-                        onChange={(e, { value }) => setBukrs(value)}
+                        onChange={(e, { value }) => {
+                          setBukrs(value);
+                          setSelectedBranches([]);
+                        }}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -103,16 +110,15 @@ const Frep8 = props => {
                       {messages['brnch']}
                     </Table.Cell>
                     <Table.Cell colSpan="2">
-                      <Dropdown
-                        placeholder={messages['all']}
-                        fluid
-                        multiple
-                        search
-                        selection
-                        options={bukrs ? branchOptions[bukrs] : []}
-                        value={branchList}
-                        onChange={(e, { value }) => setBranchList(value)}
-                        noResultsMessage={null}
+                      <Label>
+                        <Icon name="file" />
+                        {messages['selectedBranches']} #
+                        {selectedBranches.length}
+                      </Label>
+                      <Icon
+                        link
+                        name="clone"
+                        onClick={() => setF4BranchIsOpen(true)}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -134,6 +140,15 @@ const Frep8 = props => {
                   </Table.Row>
                 </Table.Body>
               </Table>
+              <BranchF4Advanced
+                branches={bukrs ? branchOptions[bukrs] : []}
+                isOpen={f4BranchIsOpen}
+                onClose={selectedBranches => {
+                  setF4BranchIsOpen(false);
+                  setSelectedBranches(selectedBranches);
+                }}
+                selection={'multiple'}
+              />
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -158,7 +173,7 @@ const Frep8 = props => {
 };
 
 function mapStateToProps(state) {
-  // console.log(state, 'state');
+  // console.log(state, 'state.userInfo.branchOptionsMarketing');
 
   return {
     language: state.locales.lang,

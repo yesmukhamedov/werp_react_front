@@ -104,7 +104,7 @@ export function f4ClearAnyObject(a_const) {
 
 export function f4FetchCompanyOptions() {
   return function(dispatch) {
-    doGet('/reference/companies/all?dto-type=options')
+    doGet('reference/companies/all?dto-type=options')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_COMPANY_OPTIONS,
@@ -120,7 +120,7 @@ export function f4FetchCompanyOptions() {
 
 export function f4FetchBranchOptions(params = {}) {
   return function(dispatch) {
-    doGet('/reference/branches/all?dto-type=options')
+    doGet('reference/branches/all?dto-type=options')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_BRANCH_OPTIONS,
@@ -159,7 +159,7 @@ export function f4ClearBranchesByBukrs() {
 
 export function f4FetchDepartmentList() {
   return function(dispatch) {
-    doGet('/reference/departments')
+    doGet('reference/departments')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_DEPARTMENT_LIST,
@@ -175,7 +175,7 @@ export function f4FetchDepartmentList() {
 
 export function f4FetchCountryList() {
   return function(dispatch) {
-    doGet('/reference/countries')
+    doGet('reference/countries')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_COUNTRY_LIST,
@@ -190,7 +190,7 @@ export function f4FetchCountryList() {
 
 export function f4FetchStateList() {
   return function(dispatch) {
-    doGet('/reference/states')
+    doGet('reference/states')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_STATE_LIST,
@@ -205,7 +205,7 @@ export function f4FetchStateList() {
 
 export function f4FetchCityList() {
   return function(dispatch) {
-    doGet('/reference/cities')
+    doGet('reference/cities')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_CITY_LIST,
@@ -220,7 +220,7 @@ export function f4FetchCityList() {
 
 export function f4FetchCityregList() {
   return function(dispatch) {
-    doGet('/reference/regions')
+    doGet('reference/regions')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_CITYREG_LIST,
@@ -235,7 +235,7 @@ export function f4FetchCityregList() {
 
 export function f4FetchMatnrList(trans) {
   return function(dispatch) {
-    doGet('/reference/matnrList', { trans })
+    doGet('reference/matnrList', { trans })
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_MATNR_LIST,
@@ -257,7 +257,7 @@ export function f4ClearMatnrList() {
 
 export function f4FetchPriceList(trans, bukrs, waers) {
   return function(dispatch) {
-    doGet('/reference/priceList', { trans, bukrs, waers })
+    doGet('reference/priceList', { trans, bukrs, waers })
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_MATNR_LIST,
@@ -272,7 +272,7 @@ export function f4FetchPriceList(trans, bukrs, waers) {
 
 export function f4FetchPositionList(trans) {
   return function(dispatch) {
-    doGet('/reference/positionList', { trans })
+    doGet('reference/positionList', { trans })
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_POSITION_LIST,
@@ -294,7 +294,7 @@ export function f4ClearPositionList() {
 
 export function f4FetchCurrencyList(trans) {
   return function(dispatch) {
-    doGet('/reference/currencyList', { trans })
+    doGet('reference/currencyList', { trans })
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_CURRENCY_LIST,
@@ -316,7 +316,7 @@ export function f4ClearCurrencyList() {
 
 export function f4FetchWerksBranchList() {
   return function(dispatch) {
-    doGet('/reference/werksBranchList')
+    doGet('reference/werksBranchList')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_WERKSBRANCH_LIST,
@@ -360,7 +360,7 @@ export function f4ClearBonusTypeList() {
 
 export function f4FetchBusinessAreaList() {
   return function(dispatch) {
-    doGet('/reference/business-areas')
+    doGet('reference/business-areas')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_BUSINESS_AREA_LIST,
@@ -375,7 +375,7 @@ export function f4FetchBusinessAreaList() {
 
 export function f4FetchBusinessAreaList2() {
   return function(dispatch) {
-    doGet('/reference/businessAreas')
+    doGet('reference/businessAreas')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_BUSINESS_AREA_LIST,
@@ -389,7 +389,7 @@ export function f4FetchBusinessAreaList2() {
 }
 export function f4FetchExchangeRateNational() {
   return function(dispatch) {
-    doGet('/reference/exchangeRateNational')
+    doGet('reference/exchangeRateNational')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_EXCHANGERATE_NATIONAL,
@@ -403,7 +403,7 @@ export function f4FetchExchangeRateNational() {
 }
 export function f4FetchExpenceTypes() {
   return function(dispatch) {
-    doGet('/reference/expence-types')
+    doGet('reference/expence-types')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_EXPENSE_TYPES,
@@ -433,7 +433,7 @@ export function f4FetchSubCompanies() {
 
 export function f4FetchNationalities() {
   return function(dispatch) {
-    doGet('/reference/nationalities')
+    doGet('reference/nationalities')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_NATIONALITIES,
@@ -448,7 +448,7 @@ export function f4FetchNationalities() {
 
 export function f4FetchNationalityOptions() {
   return function(dispatch) {
-    doGet('/reference/nationalities?dto-type=options')
+    doGet('reference/nationalities?dto-type=options')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_NATIONALITY_OPTIONS,
