@@ -1,0 +1,11 @@
+.headlines {
+  border-bottom: 1px solid #797979;
+  padding-bottom: 20px;
+}
+.input__set {
+  margin-right: 36px;
+  width: 44px;
+}
+.input__set:last-child {
+  margin-right: 0;
+}
