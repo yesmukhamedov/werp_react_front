@@ -7,7 +7,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import MoDal from './modal';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
-
+import EditModal from './editModal';
 const Page = props => {
   const {
     countryList = [],
@@ -50,12 +50,12 @@ const Page = props => {
     }
     if (text === 'countries') {
       setSearchCopyCountry(value);
+      setSecondActive(true);
     }
   };
 
   const dropdownCountry = () => {
     setAllDropdownActive(true);
-    setSecondActive(true);
   };
 
   const onClickButton = () => {
@@ -71,7 +71,6 @@ const Page = props => {
         .indexOf(searchCompany.toLowerCase().toUpperCase()) !== -1
     );
   });
-  console.log('informations ', informations);
   return (
     <Segment>
       <div className="setting">
@@ -162,8 +161,20 @@ const Page = props => {
               accessor: 'country',
             },
             {
-              Header: () => <div style={{ textAlign: 'center' }}>Валуюта</div>,
+              Header: () => <div style={{ textAlign: 'center' }}>Валюта</div>,
               accessor: 'Currency',
+            },
+            {
+              Header: () => (
+                <div style={{ textAlign: 'center' }}>Вид сервиса</div>
+              ),
+              accessor: 'typeOfService',
+            },
+            {
+              Header: () => (
+                <div style={{ textAlign: 'center' }}>Вид суммы</div>
+              ),
+              accessor: 'typeOfSum',
             },
             {
               Header: () => (
@@ -171,11 +182,7 @@ const Page = props => {
               ),
               accessor: 'age',
               filterable: false,
-              Cell: () => (
-                <Button icon>
-                  <Icon name={'pencil'} />
-                </Button>
-              ),
+              Cell: () => <EditModal />,
             },
           ]}
           defaultPageSize={15}
@@ -192,7 +199,6 @@ const Page = props => {
 };
 
 const mapStateToProps = state => {
-  console.log('stateRed ', state.serviceReducer);
   return {
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,

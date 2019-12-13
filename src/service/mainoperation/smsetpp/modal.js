@@ -8,6 +8,7 @@ import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import { docs } from '../../serviceAction';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
+import { Grid } from 'semantic-ui-react';
 require('moment/locale/ru');
 
 const ModalPrice = props => {
@@ -100,155 +101,192 @@ const ModalPrice = props => {
           цену
         </button>
       }
+      size="small"
       open={modalOpen}
       onClose={() => setModalOpen(false)}
     >
       <Header content="Добавить новую цену" id="modalHeader" />
       <Modal.Content>
-        <div className="modalPage">
-          <div className="inputs">
-            <h3>Компания</h3>
-            <div id="smsetppInput">
+        <Grid columns={2}>
+          <Grid.Row>
+            <Grid.Column>
+              <h3>Компания</h3>
+            </Grid.Column>
+            <Grid.Column floated="right" width={5}>
               <Dropdown
                 clearable="true"
                 search
                 selection
-                id="smsetppInput"
                 options={companies}
                 onChange={(e, { value }) => handleChange('companies', value)}
                 placeholder="Компания"
               />
-            </div>
-          </div>
+            </Grid.Column>
+          </Grid.Row>
+
           <br></br>
-          <div className="inputs">
-            <h3>Дата начало</h3>
-            <div id="smsetppInput" id="inputDate">
-              <DatePicker
-                className="date-auto-width"
-                autoComplete="off"
-                showMonthDropdown
-                showYearDropdown
-                dropdownMode="select" //timezone="UTC"
-                selected={startDate}
-                id="smsetppInput"
-                onChange={date => onChangeDate(date)}
-                dateFormat="DD.MM.YYYY"
-              />{' '}
-              <i
-                aria-hidden="true"
-                class="calendar alternate outline big icon"
-                id="calendarIcon"
-              ></i>
-            </div>
-          </div>
+          <Grid.Row>
+            <Grid.Column>
+              <h3>Дата начало</h3>
+            </Grid.Column>
+            <Grid.Column floated="right" width={5} id="inputDate">
+              <div className="ui input">
+                <DatePicker
+                  className="date-auto-width"
+                  autoComplete="off"
+                  showMonthDropdown
+                  showYearDropdown
+                  dropdownMode="select" //timezone="UTC"
+                  selected={startDate}
+                  onChange={date => onChangeDate(date)}
+                  dateFormat="DD.MM.YYYY"
+                />
+                <i
+                  aria-hidden="true"
+                  className="calendar alternate outline big icon"
+                  id="calendarIcon"
+                ></i>
+              </div>
+            </Grid.Column>
+          </Grid.Row>
           <br></br>
-          <div className="inputs">
-            <h3 id="fcCount">FC(кол-во)</h3>
-            <div className="ui input" id="smsetppInput">
-              <input
-                type="text"
-                placeholder="Search..."
-                onChange={e =>
-                  setInformations({ ...informations, FC: e.target.value })
-                }
-              />
-            </div>
-          </div>
+          <Grid.Row>
+            <Grid.Column>
+              <h3 id="fcCount">FC(кол-во)</h3>
+            </Grid.Column>
+            <Grid.Column floated="right" width={5}>
+              <div className="ui input">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  onChange={e =>
+                    setInformations({ ...informations, FC: e.target.value })
+                  }
+                />
+              </div>
+            </Grid.Column>
+          </Grid.Row>
           <br></br>
-          <div className="inputs">
-            <h3>MC(кол-во)</h3>
-            <div className="ui input" id="smsetppInput">
-              <input
-                type="text"
-                placeholder="Search..."
-                onChange={e =>
-                  setInformations({ ...informations, MC: e.target.value })
-                }
-              />
-            </div>
-          </div>
+          <Grid.Row>
+            <Grid.Column>
+              <h3>MC(кол-во)</h3>
+            </Grid.Column>
+            <Grid.Column floated="right" width={5}>
+              <div className="ui input">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  onChange={e =>
+                    setInformations({ ...informations, MC: e.target.value })
+                  }
+                />
+              </div>
+            </Grid.Column>
+          </Grid.Row>
           <br></br>
-          <div className="inputs">
-            <h3>Офис (в сумме)</h3>
-            <div className="ui input" id="smsetppInput">
-              <input
-                type="text"
-                placeholder="Search..."
-                onChange={e =>
-                  setInformations({
-                    ...informations,
-                    Office: e.target.value,
-                  })
-                }
-              />
-            </div>
-          </div>
+          <Grid.Row>
+            <Grid.Column>
+              <h3>Офис (в сумме)</h3>
+            </Grid.Column>
+            <Grid.Column floated="right" width={5}>
+              <div className="ui input">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  onChange={e =>
+                    setInformations({
+                      ...informations,
+                      Office: e.target.value,
+                    })
+                  }
+                />
+              </div>
+            </Grid.Column>
+          </Grid.Row>
           <br></br>
-          <div className="inputs">
-            <h3>Мастер (в сумме)</h3>
-            <div className="ui input" id="smsetppInput">
-              <input
-                type="text"
-                placeholder="Search..."
-                onChange={e =>
-                  setInformations({
-                    ...informations,
-                    Master: e.target.value,
-                  })
-                }
-              />
-            </div>
-          </div>
+          <Grid.Row>
+            <Grid.Column>
+              <h3>Мастер (в сумме)</h3>
+            </Grid.Column>
+            <Grid.Column floated="right" width={5}>
+              <div className="ui input">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  onChange={e =>
+                    setInformations({
+                      ...informations,
+                      Master: e.target.value,
+                    })
+                  }
+                />
+              </div>
+            </Grid.Column>
+          </Grid.Row>
           <br></br>
-          <div className="inputs">
-            <h3>Оператор (в сумме)</h3>
-            <div className="ui input" id="smsetppInput">
-              <input
-                type="text"
-                placeholder="Search..."
-                onChange={e =>
-                  setInformations({
-                    ...informations,
-                    Operator: e.target.value,
-                  })
-                }
-              />
-            </div>
-          </div>
+          <Grid.Row>
+            <Grid.Column>
+              <h3>Оператор (в сумме)</h3>
+            </Grid.Column>
+            <Grid.Column floated="right" width={5}>
+              <div className="ui input">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  onChange={e =>
+                    setInformations({
+                      ...informations,
+                      Operator: e.target.value,
+                    })
+                  }
+                />
+              </div>
+            </Grid.Column>
+          </Grid.Row>
           <br></br>
-          <div className="inputs">
-            <h3>Скидка (в сумме)</h3>
-            <div className="ui input" id="smsetppInput">
-              <input
-                type="text"
-                placeholder="Search..."
-                onChange={e =>
-                  setInformations({ ...informations, Sale: e.target.value })
-                }
-              />
-            </div>
-          </div>
+          <Grid.Row>
+            <Grid.Column>
+              <h3>Скидка (в сумме)</h3>
+            </Grid.Column>
+            <Grid.Column floated="right" width={5}>
+              <div className="ui input">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  onChange={e =>
+                    setInformations({ ...informations, Sale: e.target.value })
+                  }
+                />
+              </div>
+            </Grid.Column>
+          </Grid.Row>
           <br></br>
-          <div className="inputs">
-            <h3>Общая сумма</h3>
-            <div className="ui input" id="smsetppInput">
-              <input
-                type="text"
-                placeholder="Search..."
-                onChange={e =>
-                  setInformations({
-                    ...informations,
-                    TotalNum: e.target.value,
-                  })
-                }
-              />
-            </div>
-          </div>
+          <Grid.Row>
+            <Grid.Column>
+              <h3>Общая сумма</h3>
+            </Grid.Column>
+            <Grid.Column floated="right" width={5}>
+              <div className="ui input">
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  onChange={e =>
+                    setInformations({
+                      ...informations,
+                      TotalNum: e.target.value,
+                    })
+                  }
+                />
+              </div>
+            </Grid.Column>
+          </Grid.Row>
           <br></br>
-          <div className="inputs">
-            <h3>Страна</h3>
-            <div id="smsetppInput" id="smsetppInput">
+          <Grid.Row>
+            <Grid.Column>
+              <h3>Страна</h3>
+            </Grid.Column>
+
+            <Grid.Column floated="right" width={5}>
               <Dropdown
                 clearable="true"
                 search
@@ -257,13 +295,43 @@ const ModalPrice = props => {
                 onChange={(e, { value }) => handleChange('countries', value)}
                 placeholder="Страна"
               />
-            </div>
-          </div>
+            </Grid.Column>
+          </Grid.Row>
           <br></br>
-          <div className="inputs">
-            <h3>Валюта</h3>
-          </div>
-        </div>
+          <Grid.Row>
+            <Grid.Column>
+              <h3>Валюта</h3>
+            </Grid.Column>
+            <Grid.Column floated="right" width={5}>
+              <Dropdown placeholder="State" search />
+            </Grid.Column>
+          </Grid.Row>
+
+          <Grid.Row>
+            <Grid.Column>
+              <h3>Вид сервиса</h3>
+            </Grid.Column>
+            <Grid.Column floated="right" width={5}>
+              <Dropdown placeholder="State" search />
+            </Grid.Column>
+          </Grid.Row>
+          <Grid.Row>
+            <Grid.Column>
+              <h3>Вид суммы</h3>
+            </Grid.Column>
+            <Grid.Column floated="right" width={5}>
+              <Dropdown
+                placeholder="State"
+                search
+                selection
+                options={[
+                  { key: 1, text: '%', value: '%' },
+                  { key: 2, text: 'n', value: 'n' },
+                ]}
+              />
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
       </Modal.Content>
       <Modal.Actions>
         <Button inverted color="red" onClick={onhandleCancel}>
