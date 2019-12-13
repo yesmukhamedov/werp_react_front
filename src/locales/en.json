@@ -666,6 +666,7 @@
   "waterPurifierSystem": "Water Purifier System",
   "productCategory": "Product Category",
   "category": "Category",
+  "oldSn": "Old SN",
 
   "transNameFmcp": "FMCP: Receipt from Sales Contract",
   "transNameFcis": "FCIS: Employee acc.cash inquiry",
@@ -689,6 +690,7 @@
   "transNameFrep4": "FREP4: Receipt Cash/Bank",
   "transNameFrep5": "FREP5: Sales report",
   "transNameFrep7": "FREP7: Balance Employee",
+  "transNameFrep8": "FREP8: Official payments",
   "transNameFahrb": "FAHRB: Employee debt transfer",
   "transNameRfadd01": "RFADD01: Create Address",
   "transNameRfadd02": "RFADD02: Edit Address",

@@ -1,6 +1,6 @@
 //Finance report 8
 //frep8
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import {
@@ -13,8 +13,6 @@ import {
   Grid,
   Segment,
   Menu,
-  Checkbox,
-  List,
   Label,
 } from 'semantic-ui-react';
 import { modifyLoader } from '../../../general/loader/loader_action';
@@ -23,9 +21,9 @@ import { fetchDynamicFAGM, clearDynObj } from '../../fa_action';
 import BranchF4Advanced from '../../../reference/f4/branch/BranchF4Advanced';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import { Link } from 'react-router-dom';
-import matchSorter, { rankings } from 'match-sorter';
 import { LinkToDmsc03 } from '../../../utils/outlink';
 import { moneyFormat } from '../../../utils/helpers';
+import { excelDownload } from '../../../utils/helpers';
 
 import {
   stringYYYYMMDDToMoment,
@@ -108,6 +106,27 @@ const Frep8 = props => {
     setErrors(errors);
   };
 
+  const exportExcel = () => {
+    let excelHeaders = [];
+    excelHeaders.push(messages['brnch']);
+    excelHeaders.push(messages['snNum']);
+    excelHeaders.push(messages['oldSn']);
+    excelHeaders.push(messages['customer']);
+    excelHeaders.push(messages['budat']);
+    excelHeaders.push(messages['waers']);
+    excelHeaders.push(messages['amount']);
+    excelHeaders.push(messages['remainder']);
+    excelHeaders.push(messages['registeredTo']);
+
+    excelDownload(
+      'finance/reports/frep8/downloadExcel',
+      'frep8Result.xls',
+      'outputTable',
+      outputTable,
+      excelHeaders,
+    );
+  };
+
   let t1columns = [];
   let t1r1c1 = {
     Header: ({ value }) => <b>{messages['brnch']}</b>,
@@ -124,7 +143,7 @@ const Frep8 = props => {
     width: 90,
   };
   let t1r1c3 = {
-    Header: ({ value }) => <b>{messages['OldSnNum']}</b>,
+    Header: ({ value }) => <b>{messages['oldSn']}</b>,
     accessor: 'oldSn',
     Cell: obj => (
       <span>
@@ -205,6 +224,12 @@ const Frep8 = props => {
     width: 150,
   };
 
+  let t1r1c10 = {
+    Header: ({ value }) => <b>{messages['registeredTo']}</b>,
+    accessor: 'legalEntityName',
+    width: 160,
+  };
+
   t1columns.push(t1r1c1);
   t1columns.push(t1r1c2);
   t1columns.push(t1r1c3);
@@ -214,6 +239,7 @@ const Frep8 = props => {
   t1columns.push(t1r1c7);
   t1columns.push(t1r1c8);
   t1columns.push(t1r1c9);
+  t1columns.push(t1r1c10);
 
   return (
     <Container
@@ -226,7 +252,7 @@ const Frep8 = props => {
       }}
     >
       <Header as="h2" block>
-        {messages['transNameFrep7']}
+        {messages['transNameFrep8']}
       </Header>
 
       <Menu pointing stackable>
@@ -367,7 +393,7 @@ const Frep8 = props => {
               <img
                 className="clickableItem"
                 src="/assets/img/xlsx_export_icon.png"
-                onClick={() => this.exportExcel('total')}
+                onClick={exportExcel}
               />
             </Menu.Item>
           </Menu>
