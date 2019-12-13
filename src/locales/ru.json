@@ -500,7 +500,7 @@
   "toCreatInvoice": "Создать счет-фактуру",
   "include": "Включительно",
   "between": "Между",
-  "from": " C ",
+  "from": " с ",
   "to": " по ",
   "withoutStorno": " Без сторно ",
   "result": "Результат",

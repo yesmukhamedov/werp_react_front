@@ -19,22 +19,201 @@ import {
 } from 'semantic-ui-react';
 import { modifyLoader } from '../../../general/loader/loader_action';
 import OutputErrors from '../../../general/error/outputErrors';
+import { fetchDynamicFAGM, clearDynObj } from '../../fa_action';
 import BranchF4Advanced from '../../../reference/f4/branch/BranchF4Advanced';
+import ReactTableWrapper from '../../../utils/ReactTableWrapper';
+import { Link } from 'react-router-dom';
+import matchSorter, { rankings } from 'match-sorter';
+import { LinkToDmsc03 } from '../../../utils/outlink';
+import { moneyFormat } from '../../../utils/helpers';
+
+import {
+  stringYYYYMMDDToMoment,
+  momentToStringYYYYMMDD,
+} from '../../../utils/helpers';
+
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
+require('moment/locale/ru');
+require('moment/locale/tr');
 
 const Frep8 = props => {
+  var date = new Date(),
+    y = date.getFullYear(),
+    m = date.getMonth();
+  var firstDay = new Date(y, m, 1);
+  var lastDay = new Date(y, m + 1, 0);
+
   const {
     companyOptions = [],
     branchOptions = [],
     intl: { messages },
     language,
+    outputTable = [],
+    totalSumma = 0,
+    totalRemain = 0,
   } = props;
   const [bukrs, setBukrs] = useState('');
-  const [branchList, setBranchList] = useState([]);
-  const [budatFrom, setBudatFrom] = useState('');
-  const [budatTo, setBudatTo] = useState('');
+  const [budatFrom, setBudatFrom] = useState(
+    moment(firstDay).format('YYYY-MM-DD'),
+  );
+  const [budatTo, setBudatTo] = useState(moment(lastDay).format('YYYY-MM-DD'));
   const [activeIndex, setActiveIndex] = useState(0);
   const [f4BranchIsOpen, setF4BranchIsOpen] = useState(false);
   const [selectedBranches, setSelectedBranches] = useState([]);
+  const [errors, setErrors] = useState([]);
+
+  const validate = () => {
+    // getter
+    // console.log(localStorage.getItem('language'),'error');
+
+    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+    const errors = [];
+    if (bukrs === null || bukrs === undefined || !bukrs) {
+      errors.push(errorTable[`5${language}`]);
+    }
+    if (budatFrom === null || budatFrom === undefined || !budatFrom) {
+      errors.push(errorTable[`13${language}`]);
+    }
+    if (budatTo === null || budatTo === undefined || !budatTo) {
+      errors.push(errorTable[`14${language}`]);
+    }
+
+    return errors;
+  };
+
+  const searchFrep8 = () => {
+    props.modifyLoader(true);
+    let errors = [];
+    errors = validate();
+    if (errors === null || errors === undefined || errors.length === 0) {
+      let branchList = [];
+      for (let wa of selectedBranches) {
+        branchList.push(wa.value);
+      }
+
+      props.fetchDynamicFAGM('finance/reports/frep8/search', {
+        bukrs,
+        branchList: branchList.join(),
+        budatFrom,
+        budatTo,
+      });
+
+      setActiveIndex(1);
+    } else {
+      props.modifyLoader(false);
+    }
+
+    setErrors(errors);
+  };
+
+  let t1columns = [];
+  let t1r1c1 = {
+    Header: ({ value }) => <b>{messages['brnch']}</b>,
+    accessor: 'branchName',
+    width: 170,
+  };
+
+  let t1r1c2 = {
+    Header: ({ value }) => <b>{messages['snNum']}</b>,
+    accessor: 'sn',
+    Cell: obj => (
+      <span>{obj.original.sn && <LinkToDmsc03 snNum={obj.original.sn} />}</span>
+    ),
+    width: 90,
+  };
+  let t1r1c3 = {
+    Header: ({ value }) => <b>{messages['OldSnNum']}</b>,
+    accessor: 'oldSn',
+    Cell: obj => (
+      <span>
+        {obj.original.oldSn && <LinkToDmsc03 snNum={obj.original.oldSn} />}
+      </span>
+    ),
+    width: 90,
+  };
+
+  let t1r1c4 = {
+    Header: ({ value }) => <b>{messages['customer']}</b>,
+    accessor: 'fio',
+    width: 270,
+  };
+
+  let t1r1c5 = {
+    Header: ({ value }) => <b>{messages['budat']}</b>,
+    accessor: 'budat',
+    width: 130,
+  };
+
+  let t1r1c6 = {
+    Header: ({ value }) => <b>{messages['waers']}</b>,
+    accessor: 'waers',
+    width: 70,
+  };
+
+  let t1r1c7 = {
+    Header: ({ value }) => <b>{messages['amount']} </b>,
+    accessor: 'summa',
+    Cell: obj => <span>{moneyFormat(obj.original.summa)}</span>,
+    width: 140,
+  };
+
+  t1r1c7.Footer = (
+    <span>
+      <strong>
+        <font>{totalSumma ? moneyFormat(totalSumma) : ''}</font>
+      </strong>
+    </span>
+  );
+
+  let t1r1c8 = {
+    Header: ({ value }) => <b>{messages['remainder']}</b>,
+    accessor: 'remain',
+    Cell: obj => <span>{moneyFormat(obj.original.remain)}</span>,
+    width: 140,
+  };
+
+  t1r1c8.Footer = (
+    <span>
+      <strong>
+        <font>{totalRemain ? moneyFormat(totalRemain) : ''}</font>
+      </strong>
+    </span>
+  );
+
+  let t1r1c9 = {
+    Header: ({ value }) => <b>{messages['belnr']}</b>,
+    accessor: 'belnr',
+    Cell: obj => (
+      <span>
+        <Link
+          target="_blank"
+          to={
+            `/finance/mainoperation/fa03?belnr=` +
+            obj.original.belnr +
+            `&bukrs=` +
+            obj.original.bukrs +
+            `&gjahr=` +
+            obj.original.gjahr
+          }
+        >
+          {obj.original.belnr}
+        </Link>
+      </span>
+    ),
+    width: 150,
+  };
+
+  t1columns.push(t1r1c1);
+  t1columns.push(t1r1c2);
+  t1columns.push(t1r1c3);
+  t1columns.push(t1r1c4);
+  t1columns.push(t1r1c5);
+  t1columns.push(t1r1c6);
+  t1columns.push(t1r1c7);
+  t1columns.push(t1r1c8);
+  t1columns.push(t1r1c9);
 
   return (
     <Container
@@ -67,18 +246,10 @@ const Frep8 = props => {
           }}
           icon="bar chart"
         />
-        <Menu.Item
-          name={messages['details']}
-          active={activeIndex === 2}
-          onClick={() => {
-            setActiveIndex(2);
-          }}
-          icon="list layout"
-        />
       </Menu>
 
       <Segment className={activeIndex === 0 ? 'show' : 'hide'}>
-        {/* <OutputErrors errors={this.state.errors} /> */}
+        <OutputErrors errors={errors} />
         {/* {this.renderSearchTab()} */}
         <Grid>
           <Grid.Row>
@@ -124,6 +295,42 @@ const Frep8 = props => {
                   </Table.Row>
 
                   <Table.Row>
+                    <Table.Cell>{messages['budat']}</Table.Cell>
+                    <Table.Cell>
+                      {messages['from']}
+                      <DatePicker
+                        className="date-auto-width"
+                        autoComplete="off"
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select" // timezone="UTC"
+                        selected={stringYYYYMMDDToMoment(budatFrom)}
+                        locale={language}
+                        onChange={event =>
+                          setBudatFrom(momentToStringYYYYMMDD(event))
+                        }
+                        dateFormat="DD.MM.YYYY"
+                      />
+                    </Table.Cell>
+                    <Table.Cell>
+                      {messages['to']}
+                      <DatePicker
+                        className="date-auto-width"
+                        autoComplete="off"
+                        showMonthDropdown
+                        showYearDropdown
+                        dropdownMode="select" // timezone="UTC"
+                        selected={stringYYYYMMDDToMoment(budatTo)}
+                        locale={language}
+                        onChange={event =>
+                          setBudatTo(momentToStringYYYYMMDD(event))
+                        }
+                        dateFormat="DD.MM.YYYY"
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+
+                  <Table.Row>
                     <Table.Cell />
                     <Table.Cell colSpan="2">
                       <Button
@@ -131,7 +338,7 @@ const Frep8 = props => {
                         labelPosition="left"
                         primary
                         size="small"
-                        onClick={() => this.searchFrep7()}
+                        onClick={searchFrep8}
                       >
                         <Icon name="search" size="large" />
                         {messages['search']}
@@ -154,20 +361,23 @@ const Frep8 = props => {
         </Grid>
       </Segment>
       <Segment className={activeIndex === 1 ? 'show' : 'hide'}>
-        {/* {outputTable && outputTable.length > 0 && (
-      <Menu stackable size="small">
-        <Menu.Item>
-          <img
-            className="clickableItem"
-            src="/assets/img/xlsx_export_icon.png"
-            onClick={() => this.exportExcel('total')}
-          />
-        </Menu.Item>
-      </Menu>
-    )}
-    {this.renderTotal()} */}
+        {outputTable && outputTable.length > 0 && (
+          <Menu stackable size="small">
+            <Menu.Item>
+              <img
+                className="clickableItem"
+                src="/assets/img/xlsx_export_icon.png"
+                onClick={() => this.exportExcel('total')}
+              />
+            </Menu.Item>
+          </Menu>
+        )}
+        <ReactTableWrapper
+          data={outputTable}
+          columns={t1columns}
+          pageSize={outputTable.length > 0 ? outputTable.length : 5}
+        />
       </Segment>
-      <Segment className={activeIndex === 2 ? 'show' : 'hide'}></Segment>
     </Container>
   );
 };
@@ -179,7 +389,15 @@ function mapStateToProps(state) {
     language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsMarketing,
+    outputTable: state.fa.dynamicObject.outputTable,
+    totalSumma: state.fa.dynamicObject.totalSumma,
+    totalRemain: state.fa.dynamicObject.totalRemain,
   };
 }
 
-export default connect(mapStateToProps, {})(injectIntl(Frep8));
+export default connect(mapStateToProps, {
+  modifyLoader,
+  //cleared by dynamic clear function
+  clearDynObj,
+  fetchDynamicFAGM,
+})(injectIntl(Frep8));
