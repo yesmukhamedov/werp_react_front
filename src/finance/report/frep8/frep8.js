@@ -391,6 +391,7 @@ const Frep8 = props => {
           <Menu stackable size="small">
             <Menu.Item>
               <img
+                alt=""
                 className="clickableItem"
                 src="/assets/img/xlsx_export_icon.png"
                 onClick={exportExcel}
