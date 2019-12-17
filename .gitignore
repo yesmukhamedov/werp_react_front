@@ -23,4 +23,5 @@ yarn-error.log*
 .env.development
 .jshintrc
 .vscode
+package.json
 package-lock.json
