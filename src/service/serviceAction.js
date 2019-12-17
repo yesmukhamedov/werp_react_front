@@ -4,13 +4,13 @@ import {
   notify,
 } from '../general/notification/notification_action';
 import { modifyLoader } from '../general/loader/loader_action';
+export const SERVICE_ADD = 'SERVICE_ADD';
 export const FETCH_DYNOBJ_SERVICE = 'FETCH_DYNOBJ_SERVICE';
 export const CHANGE_DYNOBJ_SERVICE = 'CHANGE_DYNOBJ_SERVICE';
 export const CLEAR_DYNOBJ_SERVICE = 'CLEAR_DYNOBJ_SERVICE';
 export const ADD_SMSETCT = 'ADD_SMSETCT';
 export const SEARCH_SMSETCT = 'SEARCH_SMSETCT';
 export const EDIT_SMSETCT = 'EDIT_SMSETCT';
-export const TEST_DATA = 'TEST_DATA';
 export const FETCH_SMSETPP = 'FETCH_SMSETPP';
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
@@ -41,13 +41,21 @@ export function fetchSmsetpp() {
   };
 }
 
-export function docs(dataList) {
-  console.log(dataList);
+export function serviceAdd() {
   return function(dispatch) {
-    dispatch({
-      type: 'TEST_DATA',
-      payload: dataList,
-    });
+    dispatch(modifyLoader(true));
+    doPost(`werp/mservice/smsetpp`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: SERVICE_ADD,
+          payload: data.data.data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
   };
 }
 

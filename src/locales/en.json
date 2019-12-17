@@ -779,5 +779,13 @@
   "Configuration": "Configuration",
   "type_of_transaction": "Type of transaction",
   "current": "Current",
-  "edit_history": "edit_history"
+  "edit_history": "edit_history",
+
+  "setting_prices_and_premium_services": "Setting prices and premium services",
+  "office": "Office",
+  "master": "Master",
+  "totalAmount": "Total amount",
+  "typeOfService": "Type of service",
+  "typeOfAmount": "Type of amount",
+  "inTotal": "in total"
 }

@@ -67,9 +67,7 @@ const EditModal = props => {
     });
   };
 
-  const onhandleAdd = () => {
-    docs(informations);
-  };
+  const onhandleAdd = () => {};
 
   const onhandleCancel = () => {
     setModalOpen(false);
@@ -346,15 +344,6 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    props: () => {
-      dispatch(docs);
-    },
-  };
-};
-
 export default connect(mapStateToProps, {
-  mapDispatchToProps,
   f4FetchCountryList,
 })(EditModal);
