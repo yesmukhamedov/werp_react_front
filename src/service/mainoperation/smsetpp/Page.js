@@ -5,13 +5,19 @@ import { connect } from 'react-redux';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import MoDal from './modal';
+import { injectIntl } from 'react-intl';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import EditModal from './editModal';
+import { fetchSmsetpp, clearDynObjService } from './../../serviceAction';
+
 const Page = props => {
   const {
+    data,
+    intl: { messages },
     countryList = [],
     companyOptions = [],
     f4FetchCountryList,
+    fetchSmsetpp,
     informations,
   } = props;
   const [activeDropdown, setActiveDropdown] = useState(false);
@@ -19,18 +25,19 @@ const Page = props => {
   const [allDropdownActive, setAllDropdownActive] = useState(false);
   const [countries, setCountries] = useState([]);
   const [companies, setCompanies] = useState([]);
-  const [test, setTest] = useState([
-    { company: 'Aura', country: 'Kazakhstan' },
-    { company: 'Greenlight', country: 'China' },
-    { company: 'construction', country: 'Turkey' },
-  ]);
+  const [test, setTest] = useState([]);
   const [searchCompany, setSearchCompany] = useState('');
   const [searchCountry, setSearchCountry] = useState('');
   const [searchCopyCompany, setSearchCopyCompany] = useState('');
   const [searchCopyCountry, setSearchCopyCountry] = useState('');
   useEffect(() => {
+    fetchSmsetpp();
     f4FetchCountryList();
   }, []);
+
+  useEffect(() => {
+    setTest(data);
+  }, [data]);
 
   useEffect(() => {
     let country = countryList.map(item => {
@@ -41,7 +48,7 @@ const Page = props => {
       return { key: item.key, text: item.text, value: item.text };
     });
     setCompanies(company);
-  }, [countryList]);
+  }, [countryList, data]);
 
   const onChange = (text, value) => {
     if (text === 'companies') {
@@ -65,7 +72,7 @@ const Page = props => {
 
   let f = test.filter(test => {
     return (
-      test.company
+      test.bukrs
         .toLowerCase()
         .toUpperCase()
         .indexOf(searchCompany.toLowerCase().toUpperCase()) !== -1
@@ -82,7 +89,7 @@ const Page = props => {
           clearable="true"
           selection
           options={companies}
-          placeholder="Компания"
+          placeholder={messages['bukrs']}
           onClick={() => setAllDropdownActive(true)}
           onChange={(e, { value }) => onChange('companies', value)}
         />
@@ -90,7 +97,7 @@ const Page = props => {
           clearable="true"
           selection
           options={activeDropdown ? countries : []}
-          placeholder="Страна"
+          placeholder={messages['country']}
           id="secondDropdown"
           onClick={dropdownCountry}
           onChange={(e, { value }) => onChange('countries', value)}
@@ -107,69 +114,74 @@ const Page = props => {
         <br></br>
         <br></br>
         <ReactTable
-          data={f.filter(test => {
-            return (
-              test.country
-                .toLowerCase()
-                .toUpperCase()
-                .indexOf(searchCountry.toLowerCase().toUpperCase()) !== -1
-            );
-          })}
+          data={f}
           columns={[
             {
-              Header: () => <div style={{ textAlign: 'center' }}>Kомпания</div>,
-              accessor: 'company',
+              Header: () => (
+                <div style={{ textAlign: 'center' }}>{messages['bukrs']}</div>
+              ),
+              accessor: 'bukrs',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
             },
             {
               Header: () => (
-                <div style={{ textAlign: 'center' }}>Дата начало</div>
+                <div style={{ textAlign: 'center' }}>
+                  {messages['Task.StartDate']}
+                </div>
               ),
-              accessor: 'startDate',
+              accessor: 'dateStart',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
             },
             {
               Header: () => <div style={{ textAlign: 'center' }}>FC</div>,
-              accessor: 'FC',
+              accessor: 'fc',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
             },
             {
               Header: () => <div style={{ textAlign: 'center' }}>MC</div>,
-              accessor: 'MC',
+              accessor: 'mc',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
             },
             {
               Header: () => <div style={{ textAlign: 'center' }}>Офис</div>,
-              accessor: 'Office',
+              accessor: 'office',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
             },
             {
               Header: () => <div style={{ textAlign: 'center' }}>Мастер</div>,
-              accessor: 'Master',
+              accessor: 'master',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
             },
             {
-              Header: () => <div style={{ textAlign: 'center' }}>Оператор</div>,
-              accessor: 'Operator',
+              Header: () => (
+                <div style={{ textAlign: 'center' }}>
+                  {messages['Operator']}
+                </div>
+              ),
+              accessor: 'operator',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
             },
             {
-              Header: () => <div style={{ textAlign: 'center' }}>Скидка</div>,
-              accessor: 'Sale',
+              Header: () => (
+                <div style={{ textAlign: 'center' }}>
+                  {messages['discount']}
+                </div>
+              ),
+              accessor: 'discount',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
@@ -178,21 +190,25 @@ const Page = props => {
               Header: () => (
                 <div style={{ textAlign: 'center' }}>Общая сумма</div>
               ),
-              accessor: 'TotalNum',
+              accessor: 'total',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
             },
             {
-              Header: () => <div style={{ textAlign: 'center' }}>Страна</div>,
+              Header: () => (
+                <div style={{ textAlign: 'center' }}>{messages['country']}</div>
+              ),
               accessor: 'country',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
             },
             {
-              Header: () => <div style={{ textAlign: 'center' }}>Валюта</div>,
-              accessor: 'Currency',
+              Header: () => (
+                <div style={{ textAlign: 'center' }}>{messages['waers']}</div>
+              ),
+              accessor: 'waers',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
@@ -217,7 +233,7 @@ const Page = props => {
             },
             {
               Header: () => (
-                <div style={{ textAlign: 'center' }}>Редактирование</div>
+                <div style={{ textAlign: 'center' }}>{messages['toEdit']}</div>
               ),
               accessor: 'age',
               filterable: false,
@@ -248,6 +264,7 @@ const Page = props => {
 
 const mapStateToProps = state => {
   return {
+    data: state.serviceReducer.data,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
     informations: state.serviceReducer.data,
@@ -256,4 +273,5 @@ const mapStateToProps = state => {
 
 export default connect(mapStateToProps, {
   f4FetchCountryList,
-})(Page);
+  fetchSmsetpp,
+})(injectIntl(Page));

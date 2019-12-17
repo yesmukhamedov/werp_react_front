@@ -6,6 +6,7 @@ import {
   SEARCH_SMSETCT,
   EDIT_SMSETCT,
   TEST_DATA,
+  FETCH_SMSETPP,
 } from './serviceAction';
 
 const INITIAL_STATE = { dynamicObject: {}, data: [] };
@@ -48,15 +49,12 @@ export default function(state = INITIAL_STATE, action) {
         dynamicObject: { ...state.dynamicObject, ...action.payload },
       };
 
-    case 'TESTDATA':
-      console.log(action.payload);
-
-    case TEST_DATA:
-      console.log('reducer ', action.data);
+    case FETCH_SMSETPP:
       return {
         ...state,
-        data: [...state.data, ...action.data],
+        data: [...action.payload],
       };
+
     default:
       return state;
   }

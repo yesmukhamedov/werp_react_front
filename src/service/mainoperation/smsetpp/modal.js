@@ -9,17 +9,20 @@ import { docs } from '../../serviceAction';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Grid } from 'semantic-ui-react';
+import { injectIntl } from 'react-intl';
 require('moment/locale/ru');
 
 const ModalPrice = props => {
   const [modalOpen, setModalOpen] = useState(false);
-  const { countryList = [], companyOptions = [] } = props;
+  const {
+    countryList = [],
+    companyOptions = [],
+    intl: { messages },
+  } = props;
   const [countries, setCountries] = useState([]);
   const [startDate, setStartDate] = useState(moment());
   const [companies, setCompanies] = useState([]);
   const [test, setTest] = useState(false);
-  const [test2, setTest2] = useState(false);
-  const [test3, setTest3] = useState(false);
   const [informations, setInformations] = useState({
     company: '',
     startDate: startDate,
@@ -143,7 +146,7 @@ const ModalPrice = props => {
         <Grid columns={2}>
           <Grid.Row>
             <Grid.Column>
-              <h3>Компания</h3>
+              <h3>{messages['bukrs']}</h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
               <Dropdown
@@ -392,27 +395,20 @@ const ModalPrice = props => {
 };
 
 const mapStateToProps = state => {
+  //console.log(state)
   return {
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
   };
 };
 
-// const mapDispatchToProps = () => {
-//   return {
-//     props: docs
-//   }
-// }
-
 const mapDispatchToProps = dispatch => {
   return {
-    props: () => {
-      dispatch(docs);
-    },
+    props: dispatch(docs),
   };
 };
 
 export default connect(mapStateToProps, {
   mapDispatchToProps,
   f4FetchCountryList,
-})(ModalPrice);
+})(injectIntl(ModalPrice));
