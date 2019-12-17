@@ -116,7 +116,6 @@
   "TX__REQUIRED_FIELD": "Объязательное поле для заполнения",
   "L__TASK_ADMINS": "Администраторы задач",
   "L__TASK_ADMINS_MANAGE": "Управление распределением задач",
-
   "Task.Branch": "Филиал",
   "Task.Department": "Отдел",
   "Task.Type": "Тип",
@@ -246,10 +245,8 @@
   "Table.RingUp": "Обзвонить",
   "Table.Add": "Добавить",
   "Table.PhoneNumber": "Тел. номер",
-
   "Hr.Timetable.Header": "Табель учета рабочего времени сотрудников",
   "Hr.Timetable.SignsAndCodes": "Signs and Codes",
-
   "Crm.Calls": "Звонки",
   "Crm.Demonstrations": "Демонстрации",
   "Crm.Visits": "Визиты",
@@ -258,7 +255,6 @@
   "Crm.Reco.DeleteWarningTxt1": "Удалятся все демонстрации, рекомендации и звонки связанные с данной рекомендацией",
   "Crm.Reco.DeleteWarningTxt2": "Удалятся: Демо, Звонки, Тел. номера связанные с данной рекомендацией",
   "Crm.AdditionDemoFromDemo": "Добавление демо от демо",
-
   "Crm.Wspace.Menu.ByRecommender": "По рекомендателям",
   "Crm.Wspace.Menu.ByDate": "По дате",
   "Crm.Wspace.Menu.Moved": "Перенесенные",
@@ -277,7 +273,6 @@
   "Crm.VisitArchiveTitle": "Архив визитов группы",
   "Crm.DemoSoldTitle": "Список проданных демо",
   "Crm.DemoSoldRegister": "Зарегистрировать",
-
   "Form.CreatingReco": "Добавление рекомендации",
   "Form.CreatingRecoFromArchive": "Добавление рекомендации из архива",
   "Form.Dealer": "Дилер",
@@ -292,7 +287,6 @@
   "Form.SaleDateFrom": "Дата продажи с",
   "Form.SaleDateTo": "Дата продажи по",
   "Form.Address": "Адрес",
-
   "Form.Reco.RecoName": "ФИО клиента",
   "Form.Reco.Category": "Категория",
   "Form.Reco.District": "Район",
@@ -304,12 +298,10 @@
   "Form.Visit.Creating": "Добавление визита",
   "Form.Visit.Editing": "Редактирование визита",
   "Form.PhoneNumber": "Тел. номер",
-
   "Table.ResponsibleStaff": "Отв. сотрудник",
   "Table.AppointerStaff": "Назначел(а)",
   "Table.ClientFullName": "ФИО клиента",
   "Table.Date": "Дата",
-
   "Hr.Timesheet.StatusDescriptionTitle": "Обозначения и коды",
   "Crm.Recommendation": "Рекомендация",
   "Crm.ToCurrentList": "В список текущих",
@@ -360,7 +352,6 @@
   "Crm.New": "Новые",
   "Crm.DemoDone": "Пройденные (для перезвона)",
   "Crm.Moved": "Перенесенные",
-
   "awkey": "Ссылка на документ",
   "awtyp": "Тип операции(Клиент, Поставщик)",
   "belnr": "Номер документа",
@@ -385,7 +376,6 @@
   "official": "Oфициально",
   "dep": "Отдел",
   "zreg": "Рег. номер",
-
   "dealer": "Дилер",
   "finAgent": "Фин. агент",
   "fioClient": "ФИО клиента",
@@ -404,18 +394,15 @@
   "searchParameters": "Параметры поиска",
   "mainInfos": "Основные инфо",
   "finDoc": "Фин. док",
-
   "regNumOrConNum": "Номер договора или рег. номер",
   "header": "Заголовок",
   "position": "Позиция",
   "operation": "Операция",
   "employee": "Сотрудник",
-
   "staff": "Сотрудники",
   "iinBin": "ИИН/БИН",
   "dismissed": "Уволенный",
   "fio": "ФИО",
-
   "loadingText": "Загрузка...",
   "noDataText": "Нет записей",
   "previousText": "Пред.",
@@ -423,7 +410,6 @@
   "rowsText": "строк",
   "pageText": "Страница",
   "ofText": "из",
-
   "all": "Все",
   "date": "Дата",
   "state1": "Статус",
@@ -453,7 +439,6 @@
   "toEmployeeAccount": "Деньги на хранение",
   "cancel": "Отмена",
   "toClose": "Закрыть",
-
   "toStorn": "Сторнировать",
   "inLocalCurrency": "во вн. Валюте",
   "inDocumentCurrency": "в Валюте",
@@ -480,7 +465,6 @@
   "buzeiFullText": "Позиция",
   "documents": "Документы",
   "canceled": "Отменен",
-
   "name": "Название",
   "firstname": "Имя",
   "lastname": "Фамилия",
@@ -496,7 +480,6 @@
   "issuedBy": "Выдан",
   "dateOfIssue": "Дата выдачи",
   "create": "Добавить",
-
   "toCreatInvoice": "Создать счет-фактуру",
   "include": "Включительно",
   "between": "Между",
@@ -504,12 +487,10 @@
   "to": " по ",
   "withoutStorno": " Без сторно ",
   "result": "Результат",
-
   "receipt": "Получение",
   "issue": "Выдача",
   "balance": "Баланс",
   "employeesOnAccount": "Подотчетники",
-
   "incoming": "Входящий",
   "outgoing": "Исходящий",
   "cashAccount": "Касса",
@@ -524,7 +505,6 @@
   "frep5CtBu": "Б/У",
   "frep5CtPresent": "Подарок",
   "frep5CtService": "Сервис",
-
   "balanceAccount": "Баланс",
   "depositAccount": "Депозит",
   "blockedAccount": "Заблокировано",
@@ -539,21 +519,17 @@
   "doubtfulDebtAccountMin": "Неопр. долг",
   "noResultsMessage": "Данных нет",
   "branchesOff": "Без филиалов",
-
   "fahrb_op_pay_loan": "Оплатить долг",
   "fahrb_op_from_loan_to_balance": "Перевод с долг. счета на баланс",
   "fahrb_op_from_balance_to_loan": "Перевод с баланс. счета на долг",
   "fahrb_op_from_loan_to_doubtful": "Перевод с долг. счета на неопределенный счет",
   "fahrb_op_from_doubtful_to_loan": "Перевод с неопредел. счета на долг. счет",
-
   "type": "Тип",
-
   "expenseDate": "Дата начисления",
   "givenDate": "Дата выдачи",
   "bonusType": "Тип бонуса",
   "operationType": "Тип операции",
   "employeePosition": "Должность",
-
   "addrType": "Вид адреса",
   "state": "Область",
   "region": "Район",
@@ -572,10 +548,8 @@
   "addressHome": "Адрес домашний",
   "addressWork": "Адрес рабочий",
   "addressService": "Адрес для сервиса",
-
   "fieldsReqToFill": "Поля помеченные * объязательны к заполнению.",
   "fieldsReqToFillAtLeastOne": "Поля помеченные синей * достаточно заполнить только одну.",
-
   "priceList": "Прайс лист",
   "termInMonth": "Срок (месяц)",
   "premTermInMonth": "Премия",
@@ -644,7 +618,6 @@
   "waterPurifierSystem": "Система очистки воды",
   "productCategory": "Товар категория",
   "category": "Категория",
-
   "transNameFmcp": "FMCP: Взнос по договору",
   "transNameFcis": "FCIS: Взнос в счет сотрудника",
   "transNameFrcoln": "FRCOLN: Статистика взносщиков",
@@ -677,7 +650,6 @@
   "transNameMmcef": "MMCEF: Договор - редактирование для Финансового менеджера",
   "transNameMmceg": "MMCEG: Договор - редактирование товаров",
   "transNameMrcsch": "MRCSCH: Архив операций по изменению фин.статусов",
-
   "asset_mant": "Управление основными средствами",
   "add_assets": "Добавление основных средств",
   "midify_assets": "Изменения основных средств",
@@ -715,7 +687,6 @@
   "preview": "Предпросмотр",
   "send_for_appr": "Отправить на одобрение",
   "report": "Отчет",
-
   "posList": "Список позиций",
   "add_Position": "Добавление нового позиции",
   "change": "Изменить",
@@ -765,5 +736,11 @@
   "recomenderBonus": "Бонус от продаж новичка Рекомендателю",
   "countEmpAplTs": "Количество привлеченных сотрдуников по TS",
   "firedApplicant": "Количество уволенных сотрудников",
-  "remApplicant": "Количество оставшихся сотрдуников"
+  "remApplicant": "Количество оставшихся сотрдуников",
+  "cartrige_replace_period": "Настройка срок замены картриджа",
+  "configuration": "Конфигурация",
+  "type_of_transaction": "Тип операции",
+  "current": "Текущий",
+  "changed_by_employee": "Изменен сотрудником",
+  "edit_history": "История редактирований"
 }

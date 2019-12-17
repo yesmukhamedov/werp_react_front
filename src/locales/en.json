@@ -774,5 +774,10 @@
   "newPromotion": "New promotion",
   "promotion_name": "Title of a promo-campaign",
   "report_uploads": "Upload reports",
-  "report_ts_monthly": "Monthly report"
+  "report_ts_monthly": "Monthly report",
+  "cartrige_replace_period": "Setting the cartridge replacement period",
+  "Configuration": "Configuration",
+  "type_of_transaction": "Type of transaction",
+  "current": "Current",
+  "edit_history": "edit_history"
 }
