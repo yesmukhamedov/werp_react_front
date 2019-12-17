@@ -47,6 +47,7 @@ const Page = props => {
   const onChange = (text, value) => {
     if (text === 'companies') {
       setSearchCopyCompany(value);
+      setActiveDropdown(true);
     }
     if (text === 'countries') {
       setSearchCopyCountry(value);
@@ -83,7 +84,7 @@ const Page = props => {
           selection
           options={companies}
           placeholder="Компания"
-          onClick={() => (setActiveDropdown(true), setAllDropdownActive(true))}
+          onClick={() => setAllDropdownActive(true)}
           onChange={(e, { value }) => onChange('companies', value)}
         />
         <Dropdown
@@ -187,11 +188,16 @@ const Page = props => {
           ]}
           defaultPageSize={15}
           pages={2}
-          previousText={'Предыдущий'}
-          nextText={'Следующий'}
+          previousText="Предыдущий"
+          nextText="Следующий"
           showPagination={true}
           className="-striped -highlight"
           pageSizeOptions={[20, 30, 40]}
+          loadingText="Loading..."
+          noDataText="Нет записей"
+          rowsText="строк"
+          pageText="Страница"
+          ofText="из"
         />
       </div>
     </Segment>

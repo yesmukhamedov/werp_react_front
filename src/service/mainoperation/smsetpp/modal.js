@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Header, Icon, Modal } from 'semantic-ui-react';
+import { Button, Header, Icon, Modal, Input, Divider } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import DatePicker from 'react-datepicker';
 import './index.css';
@@ -15,16 +15,14 @@ const ModalPrice = props => {
   const [modalOpen, setModalOpen] = useState(false);
   const { countryList = [], companyOptions = [] } = props;
   const [countries, setCountries] = useState([]);
-  const [startDate, setStartDate] = useState(moment(firstDay));
-  const date = new Date(),
-    y = date.getFullYear(),
-    m = date.getMonth();
-  const firstDay = new Date(y, m, 1);
+  const [startDate, setStartDate] = useState(moment());
   const [companies, setCompanies] = useState([]);
+  const [test, setTest] = useState(false);
+  const [test2, setTest2] = useState(false);
+  const [test3, setTest3] = useState(false);
   const [informations, setInformations] = useState({
     company: '',
-    startDate: `${startDate.date()}.${startDate.month() +
-      1}.${startDate.year()}`,
+    startDate: startDate,
     FC: 0,
     MC: 0,
     Office: 0,
@@ -32,8 +30,10 @@ const ModalPrice = props => {
     Operator: 0,
     Sale: 0,
     TotalNum: 0,
-    Country: '',
+    country: '',
     Currency: '',
+    typeOfService: '',
+    typeOfSum: '',
   });
 
   useEffect(() => {
@@ -58,25 +58,56 @@ const ModalPrice = props => {
     if (text === 'countries') {
       setInformations({ ...informations, country: value });
     }
+    if (text === 'typeOfSum') {
+      setInformations({ ...informations, typeOfSum: value });
+    }
   };
 
   const onChangeDate = d => {
     setStartDate(d);
     setInformations({
       ...informations,
-      startDate: `${d.date()}.${d.month() + 1}.${d.year()}`,
+      startDate: d,
     });
   };
 
   const onhandleAdd = () => {
-    docs(informations);
+    setTest(true);
+    const {
+      company,
+      FC,
+      MC,
+      Office,
+      Master,
+      Operator,
+      Sale,
+      TotalNum,
+      country,
+      typeOfSum,
+    } = informations;
+
+    if (
+      company !== '' &&
+      FC !== 0 &&
+      MC !== 0 &&
+      Office !== 0 &&
+      Master !== 0 &&
+      Operator !== 0 &&
+      Sale !== 0 &&
+      TotalNum !== 0 &&
+      country !== '' &&
+      typeOfSum !== ''
+    ) {
+      docs(informations);
+    }
   };
 
   const onhandleCancel = () => {
     setModalOpen(false);
+    setTest(false);
     setInformations({
       company: '',
-      startDate: '',
+      startDate: startDate,
       FC: 0,
       MC: 0,
       Office: 0,
@@ -84,8 +115,10 @@ const ModalPrice = props => {
       Operator: 0,
       Sale: 0,
       TotalNum: 0,
-      Country: '',
+      country: '',
       Currency: '',
+      typeOfService: '',
+      typeOfSum: '',
     });
   };
 
@@ -114,6 +147,9 @@ const ModalPrice = props => {
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
               <Dropdown
+                error={
+                  test === true && informations.company === '' ? true : false
+                }
                 clearable="true"
                 search
                 selection
@@ -124,7 +160,7 @@ const ModalPrice = props => {
             </Grid.Column>
           </Grid.Row>
 
-          <br></br>
+          <Divider />
           <Grid.Row>
             <Grid.Column>
               <h3>Дата начало</h3>
@@ -149,138 +185,140 @@ const ModalPrice = props => {
               </div>
             </Grid.Column>
           </Grid.Row>
-          <br></br>
+          <Divider />
           <Grid.Row>
             <Grid.Column>
               <h3 id="fcCount">FC(кол-во)</h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
-              <div className="ui input">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  onChange={e =>
-                    setInformations({ ...informations, FC: e.target.value })
-                  }
-                />
-              </div>
+              <Input
+                error={test === true && informations.FC === 0 ? true : false}
+                placeholder="Search..."
+                type="number"
+                placeholder="Search..."
+                onChange={e =>
+                  setInformations({ ...informations, FC: e.target.value })
+                }
+              />
             </Grid.Column>
           </Grid.Row>
-          <br></br>
+          <Divider />
           <Grid.Row>
             <Grid.Column>
               <h3>MC(кол-во)</h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
-              <div className="ui input">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  onChange={e =>
-                    setInformations({ ...informations, MC: e.target.value })
-                  }
-                />
-              </div>
+              <Input
+                error={test === true && informations.MC === 0 ? true : false}
+                type="number"
+                placeholder="Search..."
+                onChange={e =>
+                  setInformations({ ...informations, MC: e.target.value })
+                }
+              />
             </Grid.Column>
           </Grid.Row>
-          <br></br>
+          <Divider />
           <Grid.Row>
             <Grid.Column>
               <h3>Офис (в сумме)</h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
-              <div className="ui input">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  onChange={e =>
-                    setInformations({
-                      ...informations,
-                      Office: e.target.value,
-                    })
-                  }
-                />
-              </div>
+              <Input
+                error={
+                  test === true && informations.Office === 0 ? true : false
+                }
+                type="number"
+                placeholder="Search..."
+                onChange={e =>
+                  setInformations({
+                    ...informations,
+                    Office: e.target.value,
+                  })
+                }
+              />
             </Grid.Column>
           </Grid.Row>
-          <br></br>
+          <Divider />
           <Grid.Row>
             <Grid.Column>
               <h3>Мастер (в сумме)</h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
-              <div className="ui input">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  onChange={e =>
-                    setInformations({
-                      ...informations,
-                      Master: e.target.value,
-                    })
-                  }
-                />
-              </div>
+              <Input
+                error={
+                  test === true && informations.Master === 0 ? true : false
+                }
+                type="number"
+                placeholder="Search..."
+                onChange={e =>
+                  setInformations({
+                    ...informations,
+                    Master: e.target.value,
+                  })
+                }
+              />
             </Grid.Column>
           </Grid.Row>
-          <br></br>
+          <Divider />
           <Grid.Row>
             <Grid.Column>
               <h3>Оператор (в сумме)</h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
-              <div className="ui input">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  onChange={e =>
-                    setInformations({
-                      ...informations,
-                      Operator: e.target.value,
-                    })
-                  }
-                />
-              </div>
+              <Input
+                error={
+                  test === true && informations.Operator === 0 ? true : false
+                }
+                type="number"
+                placeholder="Search..."
+                onChange={e =>
+                  setInformations({
+                    ...informations,
+                    Operator: e.target.value,
+                  })
+                }
+              />
             </Grid.Column>
           </Grid.Row>
-          <br></br>
+          <Divider />
           <Grid.Row>
             <Grid.Column>
               <h3>Скидка (в сумме)</h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
-              <div className="ui input">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  onChange={e =>
-                    setInformations({ ...informations, Sale: e.target.value })
-                  }
-                />
-              </div>
+              <Input
+                error={test === true && informations.Sale === 0 ? true : false}
+                type="number"
+                placeholder="Search..."
+                onChange={e =>
+                  setInformations({ ...informations, Sale: e.target.value })
+                }
+              />
             </Grid.Column>
           </Grid.Row>
-          <br></br>
+          <Divider />
           <Grid.Row>
             <Grid.Column>
               <h3>Общая сумма</h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
-              <div className="ui input">
-                <input
-                  type="text"
-                  placeholder="Search..."
-                  onChange={e =>
-                    setInformations({
-                      ...informations,
-                      TotalNum: e.target.value,
-                    })
-                  }
-                />
-              </div>
+              <Input
+                error={
+                  test === true && informations.TotalNum === 0 ? true : false
+                }
+                type="number"
+                placeholder="Search..."
+                onChange={e =>
+                  setInformations({
+                    ...informations,
+                    TotalNum: e.target.value,
+                  })
+                }
+              />
             </Grid.Column>
           </Grid.Row>
-          <br></br>
+          <Divider />
           <Grid.Row>
             <Grid.Column>
               <h3>Страна</h3>
@@ -288,6 +326,9 @@ const ModalPrice = props => {
 
             <Grid.Column floated="right" width={5}>
               <Dropdown
+                error={
+                  test === true && informations.country === '' ? true : false
+                }
                 clearable="true"
                 search
                 selection
@@ -297,7 +338,7 @@ const ModalPrice = props => {
               />
             </Grid.Column>
           </Grid.Row>
-          <br></br>
+          <Divider />
           <Grid.Row>
             <Grid.Column>
               <h3>Валюта</h3>
@@ -306,7 +347,7 @@ const ModalPrice = props => {
               <Dropdown placeholder="State" search />
             </Grid.Column>
           </Grid.Row>
-
+          <Divider />
           <Grid.Row>
             <Grid.Column>
               <h3>Вид сервиса</h3>
@@ -315,15 +356,20 @@ const ModalPrice = props => {
               <Dropdown placeholder="State" search />
             </Grid.Column>
           </Grid.Row>
+          <Divider />
           <Grid.Row>
             <Grid.Column>
               <h3>Вид суммы</h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
               <Dropdown
+                error={
+                  test === true && informations.typeOfSum === '' ? true : false
+                }
                 placeholder="State"
                 search
                 selection
+                onChange={(e, { value }) => handleChange('typeOfSum', value)}
                 options={[
                   { key: 1, text: '%', value: '%' },
                   { key: 2, text: 'n', value: 'n' },
