@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Segment, Dropdown } from 'semantic-ui-react';
-import { Icon, Button } from 'semantic-ui-react';
+import React, { useState, useEffect, Fragment } from 'react';
+import { Segment, Dropdown, Icon, Button } from 'semantic-ui-react';
 import './index.css';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
@@ -120,62 +119,101 @@ const Page = props => {
             {
               Header: () => <div style={{ textAlign: 'center' }}>Kомпания</div>,
               accessor: 'company',
+              Cell: row => (
+                <div style={{ textAlign: 'center' }}>{row.value}</div>
+              ),
             },
             {
               Header: () => (
                 <div style={{ textAlign: 'center' }}>Дата начало</div>
               ),
               accessor: 'startDate',
+              Cell: row => (
+                <div style={{ textAlign: 'center' }}>{row.value}</div>
+              ),
             },
             {
               Header: () => <div style={{ textAlign: 'center' }}>FC</div>,
               accessor: 'FC',
+              Cell: row => (
+                <div style={{ textAlign: 'center' }}>{row.value}</div>
+              ),
             },
             {
               Header: () => <div style={{ textAlign: 'center' }}>MC</div>,
               accessor: 'MC',
+              Cell: row => (
+                <div style={{ textAlign: 'center' }}>{row.value}</div>
+              ),
             },
             {
               Header: () => <div style={{ textAlign: 'center' }}>Офис</div>,
               accessor: 'Office',
+              Cell: row => (
+                <div style={{ textAlign: 'center' }}>{row.value}</div>
+              ),
             },
             {
               Header: () => <div style={{ textAlign: 'center' }}>Мастер</div>,
               accessor: 'Master',
+              Cell: row => (
+                <div style={{ textAlign: 'center' }}>{row.value}</div>
+              ),
             },
             {
               Header: () => <div style={{ textAlign: 'center' }}>Оператор</div>,
               accessor: 'Operator',
+              Cell: row => (
+                <div style={{ textAlign: 'center' }}>{row.value}</div>
+              ),
             },
             {
               Header: () => <div style={{ textAlign: 'center' }}>Скидка</div>,
               accessor: 'Sale',
+              Cell: row => (
+                <div style={{ textAlign: 'center' }}>{row.value}</div>
+              ),
             },
             {
               Header: () => (
                 <div style={{ textAlign: 'center' }}>Общая сумма</div>
               ),
               accessor: 'TotalNum',
+              Cell: row => (
+                <div style={{ textAlign: 'center' }}>{row.value}</div>
+              ),
             },
             {
               Header: () => <div style={{ textAlign: 'center' }}>Страна</div>,
               accessor: 'country',
+              Cell: row => (
+                <div style={{ textAlign: 'center' }}>{row.value}</div>
+              ),
             },
             {
               Header: () => <div style={{ textAlign: 'center' }}>Валюта</div>,
               accessor: 'Currency',
+              Cell: row => (
+                <div style={{ textAlign: 'center' }}>{row.value}</div>
+              ),
             },
             {
               Header: () => (
                 <div style={{ textAlign: 'center' }}>Вид сервиса</div>
               ),
               accessor: 'typeOfService',
+              Cell: row => (
+                <div style={{ textAlign: 'center' }}>{row.value}</div>
+              ),
             },
             {
               Header: () => (
                 <div style={{ textAlign: 'center' }}>Вид суммы</div>
               ),
               accessor: 'typeOfSum',
+              Cell: row => (
+                <div style={{ textAlign: 'center' }}>{row.value}</div>
+              ),
             },
             {
               Header: () => (
@@ -183,7 +221,11 @@ const Page = props => {
               ),
               accessor: 'age',
               filterable: false,
-              Cell: () => <EditModal />,
+              Cell: () => (
+                <div style={{ textAlign: 'center' }}>
+                  <EditModal />
+                </div>
+              ),
             },
           ]}
           defaultPageSize={15}
