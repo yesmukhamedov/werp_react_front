@@ -5,7 +5,6 @@ import DatePicker from 'react-datepicker';
 import './index.css';
 import { Dropdown } from 'semantic-ui-react';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
-import { docs } from '../../serviceAction';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 require('moment/locale/ru');
@@ -67,9 +66,7 @@ const EditModal = props => {
     });
   };
 
-  const onhandleAdd = () => {
-    docs(informations);
-  };
+  const onhandleAdd = () => {};
 
   const onhandleCancel = () => {
     setModalOpen(false);
@@ -346,15 +343,6 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    props: () => {
-      dispatch(docs);
-    },
-  };
-};
-
 export default connect(mapStateToProps, {
-  mapDispatchToProps,
   f4FetchCountryList,
 })(EditModal);

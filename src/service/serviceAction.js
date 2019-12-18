@@ -6,11 +6,12 @@ import {
 import { modifyLoader } from '../general/loader/loader_action';
 export const FETCH_DYNOBJ_SERVICE = 'FETCH_DYNOBJ_SERVICE';
 export const CHANGE_DYNOBJ_SERVICE = 'CHANGE_DYNOBJ_SERVICE';
+export const FETCH_SMSETPP_TYPE = 'FETCH_SMSETPP_TYPE';
+export const FETCH_SMSETPP_POST = 'FETCH_SMSETPP_POST';
 export const CLEAR_DYNOBJ_SERVICE = 'CLEAR_DYNOBJ_SERVICE';
 export const ADD_SMSETCT = 'ADD_SMSETCT';
 export const SEARCH_SMSETCT = 'SEARCH_SMSETCT';
 export const EDIT_SMSETCT = 'EDIT_SMSETCT';
-export const TEST_DATA = 'TEST_DATA';
 export const FETCH_SMSETPP = 'FETCH_SMSETPP';
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
@@ -31,7 +32,7 @@ export function fetchSmsetpp() {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SMSETPP,
-          payload: data.data.data,
+          payload: data,
         });
       })
       .catch(error => {
@@ -41,13 +42,38 @@ export function fetchSmsetpp() {
   };
 }
 
-export function docs(dataList) {
-  console.log(dataList);
+export function fetchSmsetppType() {
   return function(dispatch) {
-    dispatch({
-      type: 'TEST_DATA',
-      payload: dataList,
-    });
+    doGet(`werp/mservice/smsetpp/type`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMSETPP_TYPE,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchSmsetppPost(informations) {
+  console.log(informations, 'inf');
+  return function(dispatch) {
+    doPost(`werp/mservice/smsetpp/create`, informations)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMSETPP_POST,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
   };
 }
 
