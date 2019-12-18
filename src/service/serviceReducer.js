@@ -5,12 +5,18 @@ import {
   ADD_SMSETCT,
   SEARCH_SMSETCT,
   EDIT_SMSETCT,
-  TEST_DATA,
   FETCH_SMSETPP,
-  SERVICE_ADD,
+  FETCH_SMSETPP_TYPE,
+  FETCH_SMSETPP_POST,
 } from './serviceAction';
 
-const INITIAL_STATE = { dynamicObject: {}, data: [] };
+const INITIAL_STATE = {
+  dynamicObject: {},
+  data: {
+    service: [],
+    type: [],
+  },
+};
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -53,14 +59,27 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_SMSETPP:
       return {
         ...state,
-        data: [...action.payload],
+        data: {
+          ...state.data,
+          service: [...action.payload.data.data],
+        },
       };
-
-    case SERVICE_ADD:
-      console.log('object');
+    case FETCH_SMSETPP_TYPE:
       return {
         ...state,
-        data: [...state.data, action.payload],
+        data: {
+          ...state.data,
+          type: [...action.payload.data],
+        },
+      };
+    case FETCH_SMSETPP_POST:
+      console.log('object', action.payload);
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          service: [...action.payload.data],
+        },
       };
 
     default:

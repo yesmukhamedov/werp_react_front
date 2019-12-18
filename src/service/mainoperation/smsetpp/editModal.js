@@ -5,7 +5,6 @@ import DatePicker from 'react-datepicker';
 import './index.css';
 import { Dropdown } from 'semantic-ui-react';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
-import { docs } from '../../serviceAction';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 require('moment/locale/ru');

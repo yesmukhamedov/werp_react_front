@@ -16,6 +16,7 @@ import { injectIntl } from 'react-intl';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import EditModal from './editModal';
 import { fetchSmsetpp, clearDynObjService } from './../../serviceAction';
+import OutputErrors from '../../../general/error/outputErrors';
 
 const Page = props => {
   const {
@@ -26,9 +27,10 @@ const Page = props => {
     f4FetchCountryList,
     fetchSmsetpp,
   } = props;
+
+  const [error, setError] = useState([]);
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
-  console.log(errorTable, 'er');
   const [activeDropdown, setActiveDropdown] = useState(false);
   const [secondActive, setSecondActive] = useState(false);
   const [allDropdownActive, setAllDropdownActive] = useState(false);
@@ -43,14 +45,14 @@ const Page = props => {
     fetchSmsetpp();
     f4FetchCountryList();
   }, []);
-
+  console.log(data);
   useEffect(() => {
-    setTest(data);
+    setTest(data.service);
   }, [data]);
 
   useEffect(() => {
     let country = countryList.map(item => {
-      return { key: item.countryId, text: item.country, value: item.country };
+      return { key: item.countryId, text: item.country, value: item.countryId };
     });
     setCountries(country);
     let company = companyOptions.map(item => {
@@ -75,8 +77,32 @@ const Page = props => {
   };
 
   const onClickButton = () => {
-    setSearchCompany(searchCopyCompany);
-    setSearchCountry(searchCopyCountry);
+    if (allDropdownActive && secondActive) {
+      setSearchCompany(searchCopyCompany);
+      setSearchCountry(searchCopyCountry);
+    } else {
+      save();
+    }
+  };
+
+  const validate = () => {
+    const errors = [];
+    if (!activeDropdown) {
+      errors.push(errorTable[`5${language}`]);
+    }
+    if (!secondActive) {
+      errors.push(errorTable[`147${language}`]);
+    }
+    console.log(errors);
+    return errors;
+  };
+
+  const save = () => {
+    let errors = [];
+    errors = validate();
+    if (errors === null || errors === undefined || errors.length === 0) {
+    }
+    setError(() => errors);
   };
 
   let f = test.filter(test => {
@@ -116,13 +142,13 @@ const Page = props => {
         />
         <button
           className="ui blue inverted button"
-          onClick={allDropdownActive && secondActive ? onClickButton : null}
+          onClick={onClickButton}
           style={{ marginLeft: 30 }}
         >
           <i aria-hidden="true" className="search icon"></i>{' '}
           {messages['search']}
         </button>
-        <br></br>
+        <OutputErrors errors={error} />
         <br></br>
         <br></br>
         <ReactTableWrapper

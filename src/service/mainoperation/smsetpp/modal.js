@@ -9,26 +9,30 @@ import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Grid } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
-import { serviceAdd } from './../../serviceAction';
+import { fetchSmsetppType, fetchSmsetppPost } from './../../serviceAction';
 require('moment/locale/ru');
 require('moment/locale/tr');
 
 const ModalPrice = props => {
   const [modalOpen, setModalOpen] = useState(false);
   const {
+    data,
+    fetchSmsetppType,
+    fetchSmsetppPost,
     countryList = [],
     companyOptions = [],
     intl: { messages },
     serviceAdd,
     language,
   } = props;
+  const [typeOfService, setTypeOfService] = useState([]);
   const [countries, setCountries] = useState([]);
   const [startDate, setStartDate] = useState(moment());
   const [companies, setCompanies] = useState([]);
   const [test, setTest] = useState(false);
   const [informations, setInformations] = useState({
     bukrs: '',
-    dateStart: startDate,
+    dateStart: `${startDate}`,
     fc: 0,
     mc: 0,
     office: 0,
@@ -36,20 +40,29 @@ const ModalPrice = props => {
     operator: 0,
     discount: 0,
     total: 0,
-    country: '',
-    waers: '',
-    typeOfService: '',
+    countryId: 0,
+    waers: 'string',
+    serviceTypeId: 0,
     typeOfSum: '',
   });
 
   useEffect(() => {
+    fetchSmsetppType();
     f4FetchCountryList();
   }, []);
 
   useEffect(() => {
-    let country = countryList.map(item => {
-      return { key: item.countryId, text: item.country, value: item.country };
+    let service = data.type.map(item => {
+      return { key: item.id, text: item.nameEn, value: item.id };
     });
+    setTypeOfService(service);
+  }, [data.type]);
+
+  useEffect(() => {
+    let country = countryList.map(item => {
+      return { key: item.countryId, text: item.country, value: item.countryId };
+    });
+
     setCountries(country);
     let company = companyOptions.map(item => {
       return { key: item.key, text: item.text, value: item.text };
@@ -62,10 +75,13 @@ const ModalPrice = props => {
       setInformations({ ...informations, bukrs: value });
     }
     if (text === 'countries') {
-      setInformations({ ...informations, country: value });
+      setInformations({ ...informations, countryId: value });
     }
     if (text === 'typeOfSum') {
       setInformations({ ...informations, typeOfSum: value });
+    }
+    if (text === 'typeOfService') {
+      setInformations({ ...informations, serviceTypeId: value });
     }
   };
 
@@ -88,12 +104,13 @@ const ModalPrice = props => {
       operator,
       discount,
       total,
-      country,
-      waers,
+      countryId,
+      serviceTypeId,
       typeOfSum,
     } = informations;
 
-    if (
+    fetchSmsetppPost(informations);
+    /*if (
       bukrs !== '' &&
       fc !== 0 &&
       mc !== 0 &&
@@ -102,12 +119,13 @@ const ModalPrice = props => {
       operator !== 0 &&
       discount !== 0 &&
       total !== 0 &&
-      country !== '' &&
-      waers !== '' &&
+      countryId !== '' &&
+      serviceTypeId !== ''&&
       typeOfSum !== ''
     ) {
-      serviceAdd(informations);
-    }
+      //fetchSmsetppPost(informations)
+      console.log(informations,'informations')
+    }*/
   };
 
   const onhandleCancel = () => {
@@ -123,8 +141,8 @@ const ModalPrice = props => {
       operator: 0,
       discount: 0,
       total: 0,
-      country: '',
-      discount: '',
+      countryId: '',
+      waers: '',
       typeOfService: '',
       typeOfSum: '',
     });
@@ -202,9 +220,8 @@ const ModalPrice = props => {
             <Grid.Column floated="right" width={5}>
               <Input
                 error={test === true && informations.fc === 0 ? true : false}
-                placeholder="Number..."
+                placeholder="Search..."
                 type="number"
-                placeholder="Number..."
                 onChange={e =>
                   setInformations({ ...informations, fc: e.target.value })
                 }
@@ -344,7 +361,7 @@ const ModalPrice = props => {
             <Grid.Column floated="right" width={5}>
               <Dropdown
                 error={
-                  test === true && informations.country === '' ? true : false
+                  test === true && informations.countryId === '' ? true : false
                 }
                 clearable="true"
                 search
@@ -370,7 +387,17 @@ const ModalPrice = props => {
               <h3>{messages['typeOfService']}</h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
-              <Dropdown placeholder={messages['typeOfService']} search />
+              <Dropdown
+                placeholder="State"
+                clearable="true"
+                selection
+                options={typeOfService}
+                onChange={(e, { value }) =>
+                  handleChange('typeOfService', value)
+                }
+                placeholder="Страна"
+                search
+              />
             </Grid.Column>
           </Grid.Row>
           <Divider />
@@ -409,15 +436,15 @@ const ModalPrice = props => {
 };
 
 const mapStateToProps = state => {
-  //console.log(state)
   return {
-    language: state.locales.lang,
+    data: state.serviceReducer.data,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
   };
 };
 
 export default connect(mapStateToProps, {
-  serviceAdd,
+  fetchSmsetppType,
+  fetchSmsetppPost,
   f4FetchCountryList,
 })(injectIntl(ModalPrice));
