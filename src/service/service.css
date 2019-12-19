@@ -42,3 +42,24 @@
 .m_1rem {
   margin: 0.5rem !important;
 }
+
+.flexRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 1rem;
+  border: 0 0 1px 0 solid #333;
+}
+
+.formRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.tableRow {
+  display: flex;
+  flex-direction: row;
+}
