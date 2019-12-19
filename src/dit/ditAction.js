@@ -412,7 +412,7 @@ export function newDrole(role) {
 export function fetchCurrDtrLst() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`/dit/dtrlist/trall`)
+    doGet(`dit/dtrlist/trall`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -430,7 +430,7 @@ export function fetchCurrDtrLst() {
 export function newDtr(newTr) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
-    doPost(`/dit/dtrlist/newtr`, newTr)
+    doPost(`dit/dtrlist/newtr`, newTr)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data) {

@@ -41,7 +41,7 @@ export function updateDemo(demo) {
 export function fetchDemo(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`/crm/demo/${id}`)
+    doGet(`crm/demo/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
