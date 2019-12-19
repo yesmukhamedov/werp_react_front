@@ -13,10 +13,6 @@ import {
 
 const INITIAL_STATE = {
   dynamicObject: {},
-  data: {
-    service: [],
-    type: [],
-  },
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -57,14 +53,14 @@ export default function(state = INITIAL_STATE, action) {
         dynamicObject: { ...state.dynamicObject, ...action.payload },
       };
 
-    case FETCH_SMSETPP:
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          service: [...action.payload.data.data],
-        },
-      };
+    // case FETCH_SMSETPP:
+    //   return {
+    //     ...state,
+    //     data: {
+    //       ...state.data,
+    //       service: [...action.payload.data.data],
+    //     },
+    //   };
     case FETCH_SMSETPP_TYPE:
       return {
         ...state,

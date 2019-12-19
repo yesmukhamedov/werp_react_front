@@ -64,7 +64,8 @@ const Srls = props => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    console.log('HandleSubmit', srls, startDate._i, endDate);
+    console.log('DYNAMIC', dynamicObject);
+    // console.log('HandleSubmit', srls, startDate._i, endDate);
     props.fetchSrls({ ...srls, startDate, endDate });
   };
 
@@ -221,7 +222,7 @@ function mapStateToProps(state) {
     language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,
-    dynamicObject: state.hr.dynamicObject,
+    dynamicObject: state.serviceReducer.dynamicObject,
   };
 }
 
