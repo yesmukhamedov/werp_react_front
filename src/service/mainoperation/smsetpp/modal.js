@@ -5,48 +5,64 @@ import DatePicker from 'react-datepicker';
 import './index.css';
 import { Dropdown } from 'semantic-ui-react';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
-import { docs } from '../../serviceAction';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Grid } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
+import { fetchSmsetppType, fetchSmsetppPost } from './../../serviceAction';
 require('moment/locale/ru');
+require('moment/locale/tr');
 
 const ModalPrice = props => {
   const [modalOpen, setModalOpen] = useState(false);
   const {
+    data,
+    fetchSmsetppType,
+    fetchSmsetppPost,
     countryList = [],
     companyOptions = [],
     intl: { messages },
+    serviceAdd,
+    language,
   } = props;
+  const [typeOfService, setTypeOfService] = useState([]);
   const [countries, setCountries] = useState([]);
   const [startDate, setStartDate] = useState(moment());
   const [companies, setCompanies] = useState([]);
   const [test, setTest] = useState(false);
   const [informations, setInformations] = useState({
-    company: '',
-    startDate: startDate,
-    FC: 0,
-    MC: 0,
-    Office: 0,
-    Master: 0,
-    Operator: 0,
-    Sale: 0,
-    TotalNum: 0,
-    country: '',
-    Currency: '',
-    typeOfService: '',
+    bukrs: '',
+    dateStart: `${startDate}`,
+    fc: 0,
+    mc: 0,
+    office: 0,
+    master: 0,
+    operator: 0,
+    discount: 0,
+    total: 0,
+    countryId: 0,
+    waers: 'string',
+    serviceTypeId: 0,
     typeOfSum: '',
   });
 
   useEffect(() => {
+    fetchSmsetppType();
     f4FetchCountryList();
   }, []);
 
   useEffect(() => {
-    let country = countryList.map(item => {
-      return { key: item.countryId, text: item.country, value: item.country };
+    let service = data.type.map(item => {
+      return { key: item.id, text: item.nameEn, value: item.id };
     });
+    setTypeOfService(service);
+  }, [data.type]);
+
+  useEffect(() => {
+    let country = countryList.map(item => {
+      return { key: item.countryId, text: item.country, value: item.countryId };
+    });
+
     setCountries(country);
     let company = companyOptions.map(item => {
       return { key: item.key, text: item.text, value: item.text };
@@ -56,13 +72,16 @@ const ModalPrice = props => {
 
   const handleChange = (text, value) => {
     if (text === 'companies') {
-      setInformations({ ...informations, company: value });
+      setInformations({ ...informations, bukrs: value });
     }
     if (text === 'countries') {
-      setInformations({ ...informations, country: value });
+      setInformations({ ...informations, countryId: value });
     }
     if (text === 'typeOfSum') {
       setInformations({ ...informations, typeOfSum: value });
+    }
+    if (text === 'typeOfService') {
+      setInformations({ ...informations, serviceTypeId: value });
     }
   };
 
@@ -70,56 +89,60 @@ const ModalPrice = props => {
     setStartDate(d);
     setInformations({
       ...informations,
-      startDate: d,
+      dateStart: d,
     });
   };
 
   const onhandleAdd = () => {
     setTest(true);
     const {
-      company,
-      FC,
-      MC,
-      Office,
-      Master,
-      Operator,
-      Sale,
-      TotalNum,
-      country,
+      bukrs,
+      fc,
+      mc,
+      office,
+      master,
+      operator,
+      discount,
+      total,
+      countryId,
+      serviceTypeId,
       typeOfSum,
     } = informations;
 
-    if (
-      company !== '' &&
-      FC !== 0 &&
-      MC !== 0 &&
-      Office !== 0 &&
-      Master !== 0 &&
-      Operator !== 0 &&
-      Sale !== 0 &&
-      TotalNum !== 0 &&
-      country !== '' &&
+    fetchSmsetppPost(informations);
+    /*if (
+      bukrs !== '' &&
+      fc !== 0 &&
+      mc !== 0 &&
+      office !== 0 &&
+      master !== 0 &&
+      operator !== 0 &&
+      discount !== 0 &&
+      total !== 0 &&
+      countryId !== '' &&
+      serviceTypeId !== ''&&
       typeOfSum !== ''
     ) {
-      docs(informations);
-    }
+      //fetchSmsetppPost(informations)
+      console.log(informations,'informations')
+    }*/
   };
 
   const onhandleCancel = () => {
     setModalOpen(false);
     setTest(false);
     setInformations({
-      company: '',
-      startDate: startDate,
-      FC: 0,
-      MC: 0,
-      Office: 0,
-      Master: 0,
-      Operator: 0,
-      Sale: 0,
-      TotalNum: 0,
-      country: '',
-      Currency: '',
+      bukrs: '',
+      dateStart: startDate,
+      fc: 0,
+      mc: 0,
+      office: 0,
+      master: 0,
+      operator: 0,
+      discount: 0,
+      total: 0,
+      countryId: '',
+      waers: '',
       typeOfService: '',
       typeOfSum: '',
     });
@@ -133,15 +156,15 @@ const ModalPrice = props => {
           id="addPrice"
           onClick={() => setModalOpen(true)}
         >
-          <i aria-hidden="true" className="add square icon"></i>Добавить новую
-          цену
+          <i aria-hidden="true" className="add square icon"></i>{' '}
+          {messages['toAdd']}
         </button>
       }
       size="small"
       open={modalOpen}
       onClose={() => setModalOpen(false)}
     >
-      <Header content="Добавить новую цену" id="modalHeader" />
+      <Header content={messages['toAdd']} id="modalHeader" />
       <Modal.Content>
         <Grid columns={2}>
           <Grid.Row>
@@ -151,14 +174,14 @@ const ModalPrice = props => {
             <Grid.Column floated="right" width={5}>
               <Dropdown
                 error={
-                  test === true && informations.company === '' ? true : false
+                  test === true && informations.bukrs === '' ? true : false
                 }
                 clearable="true"
                 search
                 selection
                 options={companies}
                 onChange={(e, { value }) => handleChange('companies', value)}
-                placeholder="Компания"
+                placeholder={messages['bukrs']}
               />
             </Grid.Column>
           </Grid.Row>
@@ -166,7 +189,7 @@ const ModalPrice = props => {
           <Divider />
           <Grid.Row>
             <Grid.Column>
-              <h3>Дата начало</h3>
+              <h3>{messages['Task.StartDate']}</h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5} id="inputDate">
               <div className="ui input">
@@ -179,6 +202,7 @@ const ModalPrice = props => {
                   selected={startDate}
                   onChange={date => onChangeDate(date)}
                   dateFormat="DD.MM.YYYY"
+                  locale={language}
                 />
                 <i
                   aria-hidden="true"
@@ -191,16 +215,15 @@ const ModalPrice = props => {
           <Divider />
           <Grid.Row>
             <Grid.Column>
-              <h3 id="fcCount">FC(кол-во)</h3>
+              <h3 id="fcCount">FC({messages['Table.Amount']})</h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
               <Input
-                error={test === true && informations.FC === 0 ? true : false}
+                error={test === true && informations.fc === 0 ? true : false}
                 placeholder="Search..."
                 type="number"
-                placeholder="Search..."
                 onChange={e =>
-                  setInformations({ ...informations, FC: e.target.value })
+                  setInformations({ ...informations, fc: e.target.value })
                 }
               />
             </Grid.Column>
@@ -208,15 +231,15 @@ const ModalPrice = props => {
           <Divider />
           <Grid.Row>
             <Grid.Column>
-              <h3>MC(кол-во)</h3>
+              <h3>MC({messages['Table.Amount']})</h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
               <Input
-                error={test === true && informations.MC === 0 ? true : false}
+                error={test === true && informations.mc === 0 ? true : false}
                 type="number"
-                placeholder="Search..."
+                placeholder="Number..."
                 onChange={e =>
-                  setInformations({ ...informations, MC: e.target.value })
+                  setInformations({ ...informations, mc: e.target.value })
                 }
               />
             </Grid.Column>
@@ -224,19 +247,21 @@ const ModalPrice = props => {
           <Divider />
           <Grid.Row>
             <Grid.Column>
-              <h3>Офис (в сумме)</h3>
+              <h3>
+                {messages['office']} ({messages['inTotal']})
+              </h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
               <Input
                 error={
-                  test === true && informations.Office === 0 ? true : false
+                  test === true && informations.office === 0 ? true : false
                 }
                 type="number"
-                placeholder="Search..."
+                placeholder="Number..."
                 onChange={e =>
                   setInformations({
                     ...informations,
-                    Office: e.target.value,
+                    office: e.target.value,
                   })
                 }
               />
@@ -245,19 +270,21 @@ const ModalPrice = props => {
           <Divider />
           <Grid.Row>
             <Grid.Column>
-              <h3>Мастер (в сумме)</h3>
+              <h3>
+                {messages['master']} ({messages['inTotal']})
+              </h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
               <Input
                 error={
-                  test === true && informations.Master === 0 ? true : false
+                  test === true && informations.master === 0 ? true : false
                 }
                 type="number"
-                placeholder="Search..."
+                placeholder="Number..."
                 onChange={e =>
                   setInformations({
                     ...informations,
-                    Master: e.target.value,
+                    master: e.target.value,
                   })
                 }
               />
@@ -266,19 +293,21 @@ const ModalPrice = props => {
           <Divider />
           <Grid.Row>
             <Grid.Column>
-              <h3>Оператор (в сумме)</h3>
+              <h3>
+                {messages['Operator']} ({messages['inTotal']})
+              </h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
               <Input
                 error={
-                  test === true && informations.Operator === 0 ? true : false
+                  test === true && informations.operator === 0 ? true : false
                 }
                 type="number"
-                placeholder="Search..."
+                placeholder="Number..."
                 onChange={e =>
                   setInformations({
                     ...informations,
-                    Operator: e.target.value,
+                    operator: e.target.value,
                   })
                 }
               />
@@ -287,15 +316,19 @@ const ModalPrice = props => {
           <Divider />
           <Grid.Row>
             <Grid.Column>
-              <h3>Скидка (в сумме)</h3>
+              <h3>
+                {messages['discount']} ({messages['inTotal']})
+              </h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
               <Input
-                error={test === true && informations.Sale === 0 ? true : false}
+                error={
+                  test === true && informations.discount === 0 ? true : false
+                }
                 type="number"
-                placeholder="Search..."
+                placeholder="Number..."
                 onChange={e =>
-                  setInformations({ ...informations, Sale: e.target.value })
+                  setInformations({ ...informations, discount: e.target.value })
                 }
               />
             </Grid.Column>
@@ -303,19 +336,17 @@ const ModalPrice = props => {
           <Divider />
           <Grid.Row>
             <Grid.Column>
-              <h3>Общая сумма</h3>
+              <h3>{messages['totalAmount']}</h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
               <Input
-                error={
-                  test === true && informations.TotalNum === 0 ? true : false
-                }
+                error={test === true && informations.total === 0 ? true : false}
                 type="number"
-                placeholder="Search..."
+                placeholder="Number..."
                 onChange={e =>
                   setInformations({
                     ...informations,
-                    TotalNum: e.target.value,
+                    total: e.target.value,
                   })
                 }
               />
@@ -324,52 +355,62 @@ const ModalPrice = props => {
           <Divider />
           <Grid.Row>
             <Grid.Column>
-              <h3>Страна</h3>
+              <h3>{messages['country']}</h3>
             </Grid.Column>
 
             <Grid.Column floated="right" width={5}>
               <Dropdown
                 error={
-                  test === true && informations.country === '' ? true : false
+                  test === true && informations.countryId === '' ? true : false
                 }
                 clearable="true"
                 search
                 selection
                 options={countries}
                 onChange={(e, { value }) => handleChange('countries', value)}
-                placeholder="Страна"
+                placeholder={messages['country']}
               />
             </Grid.Column>
           </Grid.Row>
           <Divider />
           <Grid.Row>
             <Grid.Column>
-              <h3>Валюта</h3>
+              <h3>{messages['waers']}</h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
-              <Dropdown placeholder="State" search />
+              <Dropdown placeholder={messages['waers']} search />
             </Grid.Column>
           </Grid.Row>
           <Divider />
           <Grid.Row>
             <Grid.Column>
-              <h3>Вид сервиса</h3>
+              <h3>{messages['typeOfService']}</h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
-              <Dropdown placeholder="State" search />
+              <Dropdown
+                placeholder="State"
+                clearable="true"
+                selection
+                options={typeOfService}
+                onChange={(e, { value }) =>
+                  handleChange('typeOfService', value)
+                }
+                placeholder="Страна"
+                search
+              />
             </Grid.Column>
           </Grid.Row>
           <Divider />
           <Grid.Row>
             <Grid.Column>
-              <h3>Вид суммы</h3>
+              <h3>{messages['typeOfAmount']}</h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
               <Dropdown
                 error={
                   test === true && informations.typeOfSum === '' ? true : false
                 }
-                placeholder="State"
+                placeholder={messages['typeOfAmount']}
                 search
                 selection
                 onChange={(e, { value }) => handleChange('typeOfSum', value)}
@@ -384,10 +425,10 @@ const ModalPrice = props => {
       </Modal.Content>
       <Modal.Actions>
         <Button inverted color="red" onClick={onhandleCancel}>
-          <Icon name="remove" /> Отмена
+          <Icon name="remove" /> {messages['Button.No']}
         </Button>
         <Button inverted color="blue" onClick={onhandleAdd}>
-          <Icon name="checkmark" /> Добавить
+          <Icon name="checkmark" /> {messages['BTN__ADD']}
         </Button>
       </Modal.Actions>
     </Modal>
@@ -395,20 +436,15 @@ const ModalPrice = props => {
 };
 
 const mapStateToProps = state => {
-  //console.log(state)
   return {
+    data: state.serviceReducer.data,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    props: dispatch(docs),
-  };
-};
-
 export default connect(mapStateToProps, {
-  mapDispatchToProps,
+  fetchSmsetppType,
+  fetchSmsetppPost,
   f4FetchCountryList,
 })(injectIntl(ModalPrice));

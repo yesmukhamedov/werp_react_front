@@ -1,14 +1,22 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { Segment, Dropdown, Icon, Button } from 'semantic-ui-react';
+import {
+  Segment,
+  Dropdown,
+  Icon,
+  Button,
+  Label,
+  Message,
+} from 'semantic-ui-react';
+import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import './index.css';
 import { connect } from 'react-redux';
-import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import MoDal from './modal';
 import { injectIntl } from 'react-intl';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import EditModal from './editModal';
 import { fetchSmsetpp, clearDynObjService } from './../../serviceAction';
+import OutputErrors from '../../../general/error/outputErrors';
 
 const Page = props => {
   const {
@@ -18,8 +26,11 @@ const Page = props => {
     companyOptions = [],
     f4FetchCountryList,
     fetchSmsetpp,
-    informations,
   } = props;
+
+  const [error, setError] = useState([]);
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
   const [activeDropdown, setActiveDropdown] = useState(false);
   const [secondActive, setSecondActive] = useState(false);
   const [allDropdownActive, setAllDropdownActive] = useState(false);
@@ -34,14 +45,14 @@ const Page = props => {
     fetchSmsetpp();
     f4FetchCountryList();
   }, []);
-
+  console.log(data);
   useEffect(() => {
-    setTest(data);
+    setTest(data.service);
   }, [data]);
 
   useEffect(() => {
     let country = countryList.map(item => {
-      return { key: item.countryId, text: item.country, value: item.country };
+      return { key: item.countryId, text: item.country, value: item.countryId };
     });
     setCountries(country);
     let company = companyOptions.map(item => {
@@ -66,8 +77,32 @@ const Page = props => {
   };
 
   const onClickButton = () => {
-    setSearchCompany(searchCopyCompany);
-    setSearchCountry(searchCopyCountry);
+    if (allDropdownActive && secondActive) {
+      setSearchCompany(searchCopyCompany);
+      setSearchCountry(searchCopyCountry);
+    } else {
+      save();
+    }
+  };
+
+  const validate = () => {
+    const errors = [];
+    if (!activeDropdown) {
+      errors.push(errorTable[`5${language}`]);
+    }
+    if (!secondActive) {
+      errors.push(errorTable[`147${language}`]);
+    }
+    console.log(errors);
+    return errors;
+  };
+
+  const save = () => {
+    let errors = [];
+    errors = validate();
+    if (errors === null || errors === undefined || errors.length === 0) {
+    }
+    setError(() => errors);
   };
 
   let f = test.filter(test => {
@@ -78,13 +113,15 @@ const Page = props => {
         .indexOf(searchCompany.toLowerCase().toUpperCase()) !== -1
     );
   });
+
   return (
     <Segment>
       <div className="setting">
         <div className="flex-container">
-          <h1>Настройка цен и премии сервис услуг</h1>
+          <h1>{messages['setting_prices_and_premium_services']}</h1>
           <MoDal />
         </div>
+
         <Dropdown
           clearable="true"
           selection
@@ -93,6 +130,7 @@ const Page = props => {
           onClick={() => setAllDropdownActive(true)}
           onChange={(e, { value }) => onChange('companies', value)}
         />
+
         <Dropdown
           clearable="true"
           selection
@@ -103,17 +141,17 @@ const Page = props => {
           onChange={(e, { value }) => onChange('countries', value)}
         />
         <button
-          id="addPrice2"
           className="ui blue inverted button"
-          onClick={allDropdownActive && secondActive ? onClickButton : null}
+          onClick={onClickButton}
           style={{ marginLeft: 30 }}
         >
-          <i aria-hidden="true" className="search icon"></i> Поиск
+          <i aria-hidden="true" className="search icon"></i>{' '}
+          {messages['search']}
         </button>
+        <OutputErrors errors={error} />
         <br></br>
         <br></br>
-        <br></br>
-        <ReactTable
+        <ReactTableWrapper
           data={f}
           columns={[
             {
@@ -151,14 +189,18 @@ const Page = props => {
               ),
             },
             {
-              Header: () => <div style={{ textAlign: 'center' }}>Офис</div>,
+              Header: () => (
+                <div style={{ textAlign: 'center' }}>{messages['office']}</div>
+              ),
               accessor: 'office',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
             },
             {
-              Header: () => <div style={{ textAlign: 'center' }}>Мастер</div>,
+              Header: () => (
+                <div style={{ textAlign: 'center' }}>{messages['master']}</div>
+              ),
               accessor: 'master',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
@@ -188,7 +230,9 @@ const Page = props => {
             },
             {
               Header: () => (
-                <div style={{ textAlign: 'center' }}>Общая сумма</div>
+                <div style={{ textAlign: 'center' }}>
+                  {messages['totalAmount']}
+                </div>
               ),
               accessor: 'total',
               Cell: row => (
@@ -215,7 +259,9 @@ const Page = props => {
             },
             {
               Header: () => (
-                <div style={{ textAlign: 'center' }}>Вид сервиса</div>
+                <div style={{ textAlign: 'center' }}>
+                  {messages['typeOfService']}
+                </div>
               ),
               accessor: 'typeOfService',
               Cell: row => (
@@ -224,7 +270,9 @@ const Page = props => {
             },
             {
               Header: () => (
-                <div style={{ textAlign: 'center' }}>Вид суммы</div>
+                <div style={{ textAlign: 'center' }}>
+                  {messages['typeOfAmount']}
+                </div>
               ),
               accessor: 'typeOfSum',
               Cell: row => (
@@ -246,16 +294,16 @@ const Page = props => {
           ]}
           defaultPageSize={15}
           pages={2}
-          previousText="Предыдущий"
-          nextText="Следующий"
+          previousText={messages['Table.Previous']}
+          nextText={messages['Table.Next']}
           showPagination={true}
           className="-striped -highlight"
           pageSizeOptions={[20, 30, 40]}
-          loadingText="Loading..."
-          noDataText="Нет записей"
-          rowsText="строк"
-          pageText="Страница"
-          ofText="из"
+          loadingText={messages['Table.Next']}
+          noDataText={messages['Table.NoData']}
+          rowsText={messages['Table.Rows']}
+          pageText={messages['Table.Page']}
+          ofText={messages['Table.Of']}
         />
       </div>
     </Segment>

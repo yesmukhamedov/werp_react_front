@@ -743,5 +743,13 @@
   "Configuration": "Yapılandırma",
   "type_of_transaction": "Operasyon türü",
   "current": "şimdiki",
-  "edit_history": "geçmişi düzenle"
+  "edit_history": "geçmişi düzenle",
+
+  "setting_prices_and_premium_services": "Setting prices and premium services",
+  "office": "Office",
+  "master": "Master",
+  "totalAmount": "Total amount",
+  "typeOfService": "Type of service",
+  "typeOfAmount": "Type of amount",
+  "inTotal": "in total"
 }

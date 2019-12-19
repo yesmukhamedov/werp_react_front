@@ -742,5 +742,13 @@
   "type_of_transaction": "Тип операции",
   "current": "Текущий",
   "changed_by_employee": "Изменен сотрудником",
-  "edit_history": "История редактирований"
+  "edit_history": "История редактирований",
+
+  "setting_prices_and_premium_services": "Настройка цен и премии сервис услуг",
+  "office": "Офис",
+  "master": "Мастер",
+  "totalAmount": "Общая сумма",
+  "typeOfService": "Вид сервиса",
+  "typeOfAmount": "Вид суммы",
+  "inTotal": "в сумме"
 }
