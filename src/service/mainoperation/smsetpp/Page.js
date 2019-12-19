@@ -27,7 +27,6 @@ const Page = props => {
     f4FetchCountryList,
     fetchSmsetpp,
   } = props;
-
   const [error, setError] = useState([]);
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
@@ -41,18 +40,36 @@ const Page = props => {
   const [searchCountry, setSearchCountry] = useState('');
   const [searchCopyCompany, setSearchCopyCompany] = useState('');
   const [searchCopyCountry, setSearchCopyCountry] = useState('');
+
   useEffect(() => {
     fetchSmsetpp();
     f4FetchCountryList();
   }, []);
-  console.log(data);
+
   useEffect(() => {
-    setTest(data.service);
+    let service = data.service.map(item => {
+      return {
+        bukrs: item.bukrs,
+        country: countryList[item.countryId].country,
+        dateStart: item.dateStart,
+        discount: item.discount,
+        fc: item.fc,
+        id: item.id,
+        master: item.master,
+        mc: item.mc,
+        office: item.office,
+        operator: item.operator,
+        serviceTypeId: item.serviceTypeId,
+        total: item.total,
+        waers: item.waers,
+      };
+    });
+    setTest(service);
   }, [data]);
 
   useEffect(() => {
     let country = countryList.map(item => {
-      return { key: item.countryId, text: item.country, value: item.countryId };
+      return { key: item.countryId, text: item.country, value: item.country };
     });
     setCountries(country);
     let company = companyOptions.map(item => {
@@ -84,7 +101,7 @@ const Page = props => {
       save();
     }
   };
-
+  console.log(countryList, 'couyntry');
   const validate = () => {
     const errors = [];
     if (!activeDropdown) {
@@ -93,7 +110,7 @@ const Page = props => {
     if (!secondActive) {
       errors.push(errorTable[`147${language}`]);
     }
-    console.log(errors);
+
     return errors;
   };
 
@@ -105,12 +122,21 @@ const Page = props => {
     setError(() => errors);
   };
 
-  let f = test.filter(test => {
+  let filter1 = test.filter(test => {
     return (
       test.bukrs
         .toLowerCase()
         .toUpperCase()
         .indexOf(searchCompany.toLowerCase().toUpperCase()) !== -1
+    );
+  });
+
+  let filter2 = filter1.filter(test => {
+    return (
+      test.country
+        .toLowerCase()
+        .toUpperCase()
+        .indexOf(searchCountry.toLowerCase().toUpperCase()) !== -1
     );
   });
 
@@ -152,7 +178,7 @@ const Page = props => {
         <br></br>
         <br></br>
         <ReactTableWrapper
-          data={f}
+          data={filter2}
           columns={[
             {
               Header: () => (
