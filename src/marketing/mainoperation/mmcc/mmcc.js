@@ -115,6 +115,7 @@ const Mmcc = props => {
     branches,
     intl: { messages },
   } = props;
+
   const [serBranches, setSerBranches] = useState({});
   const [finBranches, setFinBranches] = useState({});
   const [contractTypeOpts, setContractTypeOpts] = useState([]);

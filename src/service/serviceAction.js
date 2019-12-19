@@ -12,6 +12,8 @@ export const SEARCH_SMSETCT = 'SEARCH_SMSETCT';
 export const EDIT_SMSETCT = 'EDIT_SMSETCT';
 export const TEST_DATA = 'TEST_DATA';
 export const FETCH_SMSETPP = 'FETCH_SMSETPP';
+export const FETCH_PHONE = 'FETCH_PHONE';
+export const FETCH_PHONE_TYPE = 'FETCH_PHONE_TYPE';
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 
@@ -149,5 +151,41 @@ export function editSmsetct(update) {
         handleError(e, dispatch);
       });
     console.log('put');
+  };
+}
+
+export function fetchPhone() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`werp/dictionary/phone/`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_PHONE,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchPhoneType() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('werp/dictionary/phone/type')
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_PHONE_TYPE,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
   };
 }

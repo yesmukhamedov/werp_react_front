@@ -9,7 +9,6 @@ import {
   Icon,
   Input,
   Button,
-  Checkbox,
   TextArea,
 } from 'semantic-ui-react';
 import {
@@ -18,6 +17,9 @@ import {
   f4ClearAnyObject,
   f4FetchBranches,
 } from '../../../reference/f4/f4_action';
+
+import { fetchPhone } from '../../serviceAction';
+
 import DatePicker from 'react-datepicker';
 import { injectIntl } from 'react-intl';
 import moment from 'moment';
@@ -25,6 +27,7 @@ import CustomerF4Modal from '../../../reference/f4/Customer/customerF4WithCreati
 import StaffF4Modal from '../../../reference/f4/staff/staffF4Modal';
 import AddressF4Modal from '../../../reference/f4/address/addressF4WithCreationPage';
 import MatnrListF4Modal from '../../../marketing/mainoperation/contractAdditionaComponents/matnrListF4';
+import PhoneF4Modal from '../../../reference/f4/phone/phoneF4Modal';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-table/react-table.css';
@@ -47,20 +50,33 @@ function Smcc(props) {
     tovarSerial: '',
     matnrListId: '',
     addrServiceId: '',
+    addrService: '',
   };
 
   const [ts, setTs] = useState({ ...emptyTs });
   const [startDate, setStartDate] = useState(moment(new Date()));
   const [customerF4ModalOpen, setCustomerF4ModalOpen] = useState(false);
   const [staffF4ModalOpen, setStaffF4ModalOpen] = useState(false);
-  const [staffF4ModalPosition, setStaffF4ModalPosition] = useState('');
   const [addressF4ModalOpen, setAddressF4ModalOpen] = useState(false);
-  const [addressF4ModalType, setAddressF4ModalType] = useState('');
   const [contractTypeOpts, setContractTypeOpts] = useState([]);
   const [matnrListF4ModalOpen, setMatnrListF4ModalOpen] = useState(false);
+  const [phoneF4ModalOpen, setPhoneF4ModalOpen] = useState(false);
   const [isLoadingMatnrList, setIsLoadingMatnrList] = useState(false);
 
+  const {
+    companyOptions = [],
+    branchOptions = [],
+    phoneList = [],
+    phoneListType = [],
+    branchService,
+    contractTypeList,
+    language,
+    intl: { messages },
+    contract: { contractTypeId } = {},
+  } = props;
+
   useEffect(() => {
+    props.fetchPhone();
     props.f4FetchConTypeList();
     props.f4FetchBranches();
     return () => {
@@ -69,32 +85,7 @@ function Smcc(props) {
     };
   }, []);
 
-  const {
-    companyOptions = [],
-    branchOptions,
-    branchService,
-    contractTypeList,
-    branches,
-    language,
-    intl: { messages },
-    matnrList = [],
-    contract: {
-      contractTypeId,
-      branchId,
-      bukrs,
-      customerId,
-      customerName,
-    } = {},
-  } = props;
-
   const onInputChange = (o, fieldName) => {
-    let waSelectedBranch = {};
-    branches
-      .filter(item => item.branch_id === o.value)
-      .forEach(item => {
-        waSelectedBranch = item;
-      });
-
     setTs(prev => {
       const varTs = { ...prev };
       switch (fieldName) {
@@ -102,6 +93,13 @@ function Smcc(props) {
           varTs.bukrs = o.value;
           break;
         case 'branchId':
+          let waSelectedBranch = {};
+          branchOptions[ts.bukrs]
+            .filter(item => item.key === o.value)
+            .forEach(item => {
+              waSelectedBranch = item;
+            });
+
           varTs.branchId = o.value;
           let wa = { ...emptyTs };
           wa.bukrs = prev.bukrs;
@@ -111,9 +109,9 @@ function Smcc(props) {
             .filter(
               item =>
                 (item.bukrs == wa.bukrs &&
-                  item.business_area_id == waSelectedBranch.business_area_id) ||
+                  item.business_area_id == waSelectedBranch.businessareaid) ||
                 (item.bukrs == wa.bukrs &&
-                  item.business_area_id == 4 &&
+                  item.businessareaid == 4 &&
                   waSelectedBranch.branchId == 210),
             )
             .map(item => {
@@ -150,9 +148,11 @@ function Smcc(props) {
           break;
         case 'addrServiceId':
           varTs.addrServiceId = o.addr_id;
+          varTs.addrService = o.address;
           break;
         case 'addrServiceIdRemove':
           varTs.addrServiceId = '';
+          varTs.addrService = '';
           break;
         case 'tovarSerial':
           varTs.tovarSerial = o.tovarSerial;
@@ -196,18 +196,25 @@ function Smcc(props) {
 
       <AddressF4Modal
         open={addressF4ModalOpen}
-        customerId={customerId}
-        customerName={customerName}
+        customerId={ts.customerId}
+        customerName={ts.customerName}
         onCloseAddressF4={bool => setAddressF4ModalOpen(bool)}
         onAddressSelect={item => onInputChange(item, 'addrServiceId')}
       />
 
       <MatnrListF4Modal
         open={matnrListF4ModalOpen}
-        matnrList={matnrList}
+        matnrList={ts.matnrList}
         onCloseMatnrF4={bool => setMatnrListF4ModalOpen(bool)}
         onMatnrSelect={item => onInputChange(item, 'tovarSerial')}
         isLoadingMatnrList={isLoadingMatnrList}
+      />
+
+      <PhoneF4Modal
+        open={phoneF4ModalOpen}
+        phoneList={phoneList}
+        cutomerId={ts.customerId}
+        onClosePhoneF4={bool => setPhoneF4ModalOpen(bool)}
       />
       <Segment>
         <Form onSubmit={handleSubmit}>
@@ -269,7 +276,7 @@ function Smcc(props) {
                       </Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                      <Table.Cell>
+                      <Table.Cell collapsing>
                         <Icon name="clipboard" />
                         {messages['contractType']}
                       </Table.Cell>
@@ -386,7 +393,7 @@ function Smcc(props) {
                       </Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                      <Table.Cell collapsing>
+                      <Table.Cell>
                         <Icon name="factory" />
                         {messages['productSerialNumber']}
                       </Table.Cell>
@@ -394,12 +401,32 @@ function Smcc(props) {
                         <Input
                           placeholder={messages['productSerialNumber']}
                           fluid
-                          onClick={() => setMatnrListF4ModalOpen(true)}
+                          value={ts.tovarSerial}
                         />
+                      </Table.Cell>
+                      <Table.Cell collapsing>
+                        <Button
+                          basic
+                          color="blue"
+                          icon
+                          onClick={() => setMatnrListF4ModalOpen(true)}
+                        >
+                          <Icon name="clone" />
+                        </Button>
+                        <Button
+                          basic
+                          color="red"
+                          icon
+                          onClick={event =>
+                            onInputChange('', 'removeTovarSerial')
+                          }
+                        >
+                          <Icon name="delete" />
+                        </Button>
                       </Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                      <Table.Cell collapsing>
+                      <Table.Cell>
                         <Icon name="bookmark" />
                         {messages['lastStateInstalled']}
                       </Table.Cell>
@@ -429,7 +456,11 @@ function Smcc(props) {
                         {messages['addressService']}
                       </Table.Cell>
                       <Table.Cell>
-                        <Input placeholder={messages['addressService']} fluid />
+                        <Input
+                          placeholder={messages['addressService']}
+                          fluid
+                          value={ts.addrService}
+                        />
                       </Table.Cell>
                       <Table.Cell collapsing>
                         <Button
@@ -463,7 +494,14 @@ function Smcc(props) {
                         <Input placeholder={messages['telMob1']} fluid />
                       </Table.Cell>
                       <Table.Cell>
-                        <Button basic color="blue" icon>
+                        <Button
+                          basic
+                          color="blue"
+                          icon
+                          onClick={() => {
+                            setPhoneF4ModalOpen(true);
+                          }}
+                        >
                           <Icon name="clone" />
                         </Button>
                         <Button
@@ -543,7 +581,7 @@ function mapStateToProps(state) {
     branchOptions: state.userInfo.branchOptionsMarketing,
     branchService: state.userInfo.branchOptionsService,
     contractTypeList: state.f4.contractTypeList,
-    branches: state.f4.branches,
+    phoneList: state.serviceReducer.dynamicObject.data,
   };
 }
 
@@ -552,4 +590,5 @@ export default connect(mapStateToProps, {
   f4FetchConTypeList,
   f4ClearAnyObject,
   f4FetchBranches,
+  fetchPhone,
 })(injectIntl(Smcc));
