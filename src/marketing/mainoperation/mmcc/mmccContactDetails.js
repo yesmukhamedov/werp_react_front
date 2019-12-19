@@ -17,6 +17,7 @@ const MmccContactDetails = props => {
     contract: { customerId, customerName } = {},
     intl: { messages },
   } = props;
+
   return (
     // <Segment padded size="small">
     //       <Label color="orange" ribbon>
@@ -169,7 +170,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {},
-)(injectIntl(MmccContactDetails));
+export default connect(mapStateToProps, {})(injectIntl(MmccContactDetails));
