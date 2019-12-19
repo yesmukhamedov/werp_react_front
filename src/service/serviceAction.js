@@ -78,6 +78,25 @@ export function fetchSmsetppPost(informations) {
   };
 }
 
+export function fetchSrls() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`werp/mservice/report/srls`)
+      .then(({ data }) => {
+        console.log('SRLS ACTION', data.data.data);
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SRLS,
+          payload: data.data.data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
 export function clearDynObjService() {
   const obj = {
     type: CLEAR_DYNOBJ_SERVICE,

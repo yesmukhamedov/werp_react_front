@@ -8,6 +8,7 @@ import {
   FETCH_SMSETPP,
   FETCH_SMSETPP_TYPE,
   FETCH_SMSETPP_POST,
+  FETCH_SRLS,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -80,6 +81,12 @@ export default function(state = INITIAL_STATE, action) {
           ...state.data,
           service: [...action.payload.data],
         },
+      };
+    case FETCH_SRLS:
+      console.log('SRLS REDUCER', action.payload);
+      return {
+        ...state,
+        dynamicObject: { ...state.dynamicObject, ...action.payload },
       };
 
     default:
