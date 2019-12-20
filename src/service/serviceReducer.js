@@ -15,14 +15,11 @@ import {
 
 const INITIAL_STATE = {
   dynamicObject: {},
-<<<<<<< HEAD
   dynObjectPhoneType: {},
-=======
   data: {
     service: [],
     type: [],
   },
->>>>>>> bb7f053b093b5332492910e4a6d4f84c3d0a746c
 };
 
 export default function(state = INITIAL_STATE, action) {
