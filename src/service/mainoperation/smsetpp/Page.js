@@ -33,13 +33,12 @@ const Page = props => {
   const [activeDropdown, setActiveDropdown] = useState(false);
   const [secondActive, setSecondActive] = useState(false);
   const [allDropdownActive, setAllDropdownActive] = useState(false);
-  const [countries, setCountries] = useState([]);
-  const [companies, setCompanies] = useState([]);
-  const [test, setTest] = useState([]);
-  const [searchCompany, setSearchCompany] = useState('');
-  const [searchCountry, setSearchCountry] = useState('');
-  const [searchCopyCompany, setSearchCopyCompany] = useState('');
-  const [searchCopyCountry, setSearchCopyCountry] = useState('');
+  const [countryOptions, setCountryOptions] = useState([]);
+  const [serviceOptionPriceList, setServiceOptionPriceList] = useState([]);
+  const [search, setSearch] = useState({
+    company: '',
+    country: '',
+  });
 
   useEffect(() => {
     fetchSmsetpp();
@@ -47,44 +46,23 @@ const Page = props => {
   }, []);
 
   useEffect(() => {
-    let service = data.service.map(item => {
-      return {
-        bukrs: item.bukrs,
-        country: countryList[item.countryId].country,
-        dateStart: item.dateStart,
-        discount: item.discount,
-        fc: item.fc,
-        id: item.id,
-        master: item.master,
-        mc: item.mc,
-        office: item.office,
-        operator: item.operator,
-        serviceTypeId: item.serviceTypeId,
-        total: item.total,
-        waers: item.waers,
-      };
-    });
-    setTest(service);
+    setServiceOptionPriceList(data.service);
   }, [data]);
 
   useEffect(() => {
     let country = countryList.map(item => {
       return { key: item.countryId, text: item.country, value: item.country };
     });
-    setCountries(country);
-    let company = companyOptions.map(item => {
-      return { key: item.key, text: item.text, value: item.text };
-    });
-    setCompanies(company);
-  }, [countryList, data]);
+    setCountryOptions(country);
+  }, [countryList]);
 
   const onChange = (text, value) => {
-    if (text === 'companies') {
-      setSearchCopyCompany(value);
+    if (text === 'companyOptions') {
+      setSearch({ ...search, company: value });
       setActiveDropdown(true);
     }
     if (text === 'countries') {
-      setSearchCopyCountry(value);
+      setSearch({ ...search, country: value });
       setSecondActive(true);
     }
   };
@@ -95,13 +73,11 @@ const Page = props => {
 
   const onClickButton = () => {
     if (allDropdownActive && secondActive) {
-      setSearchCompany(searchCopyCompany);
-      setSearchCountry(searchCopyCountry);
     } else {
       save();
     }
   };
-  console.log(countryList, 'couyntry');
+
   const validate = () => {
     const errors = [];
     if (!activeDropdown) {
@@ -110,7 +86,6 @@ const Page = props => {
     if (!secondActive) {
       errors.push(errorTable[`147${language}`]);
     }
-
     return errors;
   };
 
@@ -121,24 +96,6 @@ const Page = props => {
     }
     setError(() => errors);
   };
-
-  let filter1 = test.filter(test => {
-    return (
-      test.bukrs
-        .toLowerCase()
-        .toUpperCase()
-        .indexOf(searchCompany.toLowerCase().toUpperCase()) !== -1
-    );
-  });
-
-  let filter2 = filter1.filter(test => {
-    return (
-      test.country
-        .toLowerCase()
-        .toUpperCase()
-        .indexOf(searchCountry.toLowerCase().toUpperCase()) !== -1
-    );
-  });
 
   return (
     <Segment>
@@ -151,16 +108,16 @@ const Page = props => {
         <Dropdown
           clearable="true"
           selection
-          options={companies}
+          options={companyOptions}
           placeholder={messages['bukrs']}
           onClick={() => setAllDropdownActive(true)}
-          onChange={(e, { value }) => onChange('companies', value)}
+          onChange={(e, { value }) => onChange('companyOptions', value)}
         />
 
         <Dropdown
           clearable="true"
           selection
-          options={activeDropdown ? countries : []}
+          options={activeDropdown ? countryOptions : []}
           placeholder={messages['country']}
           id="secondDropdown"
           onClick={dropdownCountry}
@@ -178,7 +135,7 @@ const Page = props => {
         <br></br>
         <br></br>
         <ReactTableWrapper
-          data={filter2}
+          data={serviceOptionPriceList}
           columns={[
             {
               Header: () => (

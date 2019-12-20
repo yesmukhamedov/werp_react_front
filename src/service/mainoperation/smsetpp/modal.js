@@ -26,14 +26,11 @@ const ModalPrice = props => {
   const language = localStorage.getItem('language');
   const [typeOfService, setTypeOfService] = useState([]);
   const [countries, setCountries] = useState([]);
-  const [startDate, setStartDate] = useState(moment());
-  const [companies, setCompanies] = useState([]);
   const [test, setTest] = useState(false);
   const [lang, setLang] = useState();
   const [informations, setInformations] = useState({
     bukrs: '',
-    dateStart:
-      '2019-12-17T09:35:58.469+0000' /*`${startDate.date()}.${startDate.month()}.${startDate.year()}`*/,
+    dateStart: moment() /*`${startDate.date()}.${startDate.month()}.${startDate.year()}`*/,
     fc: 0,
     mc: 0,
     office: 0,
@@ -65,10 +62,6 @@ const ModalPrice = props => {
     });
 
     setCountries(country);
-    let company = companyOptions.map(item => {
-      return { key: item.key, text: item.text, value: item.text };
-    });
-    setCompanies(company);
   }, [countryList]);
 
   const handleChange = (text, value) => {
@@ -87,10 +80,9 @@ const ModalPrice = props => {
   };
 
   const onChangeDate = d => {
-    setStartDate(d);
     setInformations({
       ...informations,
-      dateStart: `${d.date()}.${d.month()}.${d.year()}`,
+      dateStart: d,
     });
   };
 
@@ -133,7 +125,7 @@ const ModalPrice = props => {
     setTest(false);
     setInformations({
       bukrs: '',
-      dateStart: startDate,
+      dateStart: moment(),
       fc: 0,
       mc: 0,
       office: 0,
@@ -188,10 +180,9 @@ const ModalPrice = props => {
         break;
       default:
         return informations;
-        break;
     }
   };
-  console.log(typeOfService, 'type');
+
   return (
     <Modal
       trigger={
@@ -223,7 +214,7 @@ const ModalPrice = props => {
                 clearable="true"
                 search
                 selection
-                options={companies}
+                options={companyOptions}
                 onChange={(e, { value }) => handleChange('companies', value)}
                 placeholder={messages['bukrs']}
               />
@@ -243,9 +234,9 @@ const ModalPrice = props => {
                   showMonthDropdown
                   showYearDropdown
                   dropdownMode="select" //timezone="UTC"
-                  selected={startDate}
+                  selected={informations.dateStart}
                   onChange={date => onChangeDate(date)}
-                  dateFormat="YYYY.MM.DD"
+                  dateFormat="DD.MM.YYYY"
                   locale={language}
                 />
                 <i

@@ -78,7 +78,6 @@ export default function(state = INITIAL_STATE, action) {
       };
 
     case FETCH_SMSETPP_POST:
-      console.log('object', action.payload);
       return {
         ...state,
         data: {
