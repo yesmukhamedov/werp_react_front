@@ -15,7 +15,14 @@ import {
 
 const INITIAL_STATE = {
   dynamicObject: {},
+<<<<<<< HEAD
   dynObjectPhoneType: {},
+=======
+  data: {
+    service: [],
+    type: [],
+  },
+>>>>>>> bb7f053b093b5332492910e4a6d4f84c3d0a746c
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -56,14 +63,14 @@ export default function(state = INITIAL_STATE, action) {
         dynamicObject: { ...state.dynamicObject, ...action.payload },
       };
 
-    // case FETCH_SMSETPP:
-    //   return {
-    //     ...state,
-    //     data: {
-    //       ...state.data,
-    //       service: [...action.payload.data.data],
-    //     },
-    //   };
+    case FETCH_SMSETPP:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          service: [...action.payload.data.data],
+        },
+      };
     case FETCH_SMSETPP_TYPE:
       return {
         ...state,
@@ -72,15 +79,17 @@ export default function(state = INITIAL_STATE, action) {
           type: [...action.payload.data],
         },
       };
+
     case FETCH_SMSETPP_POST:
       console.log('object', action.payload);
       return {
         ...state,
         data: {
           ...state.data,
-          service: [...action.payload.data],
+          service: [...state.data.service, action.payload.data],
         },
       };
+
     case FETCH_SRLS:
       console.log('SRLS REDUCER', action.payload);
       return {

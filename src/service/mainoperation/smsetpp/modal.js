@@ -22,17 +22,18 @@ const ModalPrice = props => {
     countryList = [],
     companyOptions = [],
     intl: { messages },
-    serviceAdd,
-    language,
   } = props;
+  const language = localStorage.getItem('language');
   const [typeOfService, setTypeOfService] = useState([]);
   const [countries, setCountries] = useState([]);
   const [startDate, setStartDate] = useState(moment());
   const [companies, setCompanies] = useState([]);
   const [test, setTest] = useState(false);
+  const [lang, setLang] = useState();
   const [informations, setInformations] = useState({
     bukrs: '',
-    dateStart: `${startDate}`,
+    dateStart:
+      '2019-12-17T09:35:58.469+0000' /*`${startDate.date()}.${startDate.month()}.${startDate.year()}`*/,
     fc: 0,
     mc: 0,
     office: 0,
@@ -45,7 +46,7 @@ const ModalPrice = props => {
     serviceTypeId: 0,
     typeOfSum: '',
   });
-
+  console.log(language, 'la');
   useEffect(() => {
     fetchSmsetppType();
     f4FetchCountryList();
@@ -89,7 +90,7 @@ const ModalPrice = props => {
     setStartDate(d);
     setInformations({
       ...informations,
-      dateStart: d,
+      dateStart: `${d.date()}.${d.month()}.${d.year()}`,
     });
   };
 
@@ -109,8 +110,7 @@ const ModalPrice = props => {
       typeOfSum,
     } = informations;
 
-    fetchSmsetppPost(informations);
-    /*if (
+    if (
       bukrs !== '' &&
       fc !== 0 &&
       mc !== 0 &&
@@ -120,12 +120,12 @@ const ModalPrice = props => {
       discount !== 0 &&
       total !== 0 &&
       countryId !== '' &&
-      serviceTypeId !== ''&&
+      serviceTypeId !== '' &&
       typeOfSum !== ''
     ) {
-      //fetchSmsetppPost(informations)
-      console.log(informations,'informations')
-    }*/
+      setModalOpen(false);
+      fetchSmsetppPost(informations);
+    }
   };
 
   const onhandleCancel = () => {
@@ -141,13 +141,57 @@ const ModalPrice = props => {
       operator: 0,
       discount: 0,
       total: 0,
-      countryId: '',
+      countryId: 0,
       waers: '',
       typeOfService: '',
       typeOfSum: '',
     });
   };
 
+  const onInputChange = (text, event) => {
+    switch (text) {
+      case 'fc':
+        setInformations({ ...informations, fc: parseInt(event.target.value) });
+        break;
+      case 'mc':
+        setInformations({ ...informations, mc: parseInt(event.target.value) });
+        break;
+      case 'office':
+        setInformations({
+          ...informations,
+          office: parseInt(event.target.value),
+        });
+        break;
+      case 'master':
+        setInformations({
+          ...informations,
+          master: parseInt(event.target.value),
+        });
+        break;
+      case 'operator':
+        setInformations({
+          ...informations,
+          operator: parseInt(event.target.value),
+        });
+        break;
+      case 'discount':
+        setInformations({
+          ...informations,
+          discount: parseInt(event.target.value),
+        });
+        break;
+      case 'total':
+        setInformations({
+          ...informations,
+          total: parseInt(event.target.value),
+        });
+        break;
+      default:
+        return informations;
+        break;
+    }
+  };
+  console.log(typeOfService, 'type');
   return (
     <Modal
       trigger={
@@ -201,7 +245,7 @@ const ModalPrice = props => {
                   dropdownMode="select" //timezone="UTC"
                   selected={startDate}
                   onChange={date => onChangeDate(date)}
-                  dateFormat="DD.MM.YYYY"
+                  dateFormat="YYYY.MM.DD"
                   locale={language}
                 />
                 <i
@@ -222,9 +266,7 @@ const ModalPrice = props => {
                 error={test === true && informations.fc === 0 ? true : false}
                 placeholder="Search..."
                 type="number"
-                onChange={e =>
-                  setInformations({ ...informations, fc: e.target.value })
-                }
+                onChange={e => onInputChange('fc', e)}
               />
             </Grid.Column>
           </Grid.Row>
@@ -238,9 +280,7 @@ const ModalPrice = props => {
                 error={test === true && informations.mc === 0 ? true : false}
                 type="number"
                 placeholder="Number..."
-                onChange={e =>
-                  setInformations({ ...informations, mc: e.target.value })
-                }
+                onChange={e => onInputChange('mc', e)}
               />
             </Grid.Column>
           </Grid.Row>
@@ -258,12 +298,7 @@ const ModalPrice = props => {
                 }
                 type="number"
                 placeholder="Number..."
-                onChange={e =>
-                  setInformations({
-                    ...informations,
-                    office: e.target.value,
-                  })
-                }
+                onChange={e => onInputChange('office', e)}
               />
             </Grid.Column>
           </Grid.Row>
@@ -281,12 +316,7 @@ const ModalPrice = props => {
                 }
                 type="number"
                 placeholder="Number..."
-                onChange={e =>
-                  setInformations({
-                    ...informations,
-                    master: e.target.value,
-                  })
-                }
+                onChange={e => onInputChange('master', e)}
               />
             </Grid.Column>
           </Grid.Row>
@@ -304,12 +334,7 @@ const ModalPrice = props => {
                 }
                 type="number"
                 placeholder="Number..."
-                onChange={e =>
-                  setInformations({
-                    ...informations,
-                    operator: e.target.value,
-                  })
-                }
+                onChange={e => onInputChange('operator', e)}
               />
             </Grid.Column>
           </Grid.Row>
@@ -327,9 +352,7 @@ const ModalPrice = props => {
                 }
                 type="number"
                 placeholder="Number..."
-                onChange={e =>
-                  setInformations({ ...informations, discount: e.target.value })
-                }
+                onChange={e => onInputChange('discount', e)}
               />
             </Grid.Column>
           </Grid.Row>
@@ -343,12 +366,7 @@ const ModalPrice = props => {
                 error={test === true && informations.total === 0 ? true : false}
                 type="number"
                 placeholder="Number..."
-                onChange={e =>
-                  setInformations({
-                    ...informations,
-                    total: e.target.value,
-                  })
-                }
+                onChange={e => onInputChange('total', e)}
               />
             </Grid.Column>
           </Grid.Row>
@@ -395,7 +413,7 @@ const ModalPrice = props => {
                 onChange={(e, { value }) =>
                   handleChange('typeOfService', value)
                 }
-                placeholder="Страна"
+                placeholder={messages['typeOfService']}
                 search
               />
             </Grid.Column>
@@ -436,6 +454,7 @@ const ModalPrice = props => {
 };
 
 const mapStateToProps = state => {
+  console.log(state, 'state');
   return {
     data: state.serviceReducer.data,
     countryList: state.f4.countryList,
