@@ -9,10 +9,13 @@ import {
   FETCH_SMSETPP_TYPE,
   FETCH_SMSETPP_POST,
   FETCH_SRLS,
+  FETCH_PHONE,
+  FETCH_PHONE_TYPE,
 } from './serviceAction';
 
 const INITIAL_STATE = {
   dynamicObject: {},
+  dynObjectPhoneType: {},
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -83,6 +86,17 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         dynamicObject: { ...state.dynamicObject, ...action.payload },
+      };
+    case FETCH_PHONE:
+      return {
+        ...state,
+        dynamicObject: { ...state.dynamicObject, ...action.payload },
+      };
+
+    case FETCH_PHONE_TYPE:
+      return {
+        ...state,
+        dynObjectPhoneType: { ...state.dynamicObject, ...action.payload },
       };
 
     default:
