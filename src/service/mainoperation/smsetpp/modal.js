@@ -27,7 +27,6 @@ const ModalPrice = props => {
   const [typeOfService, setTypeOfService] = useState([]);
   const [countries, setCountries] = useState([]);
   const [test, setTest] = useState(false);
-  const [lang, setLang] = useState();
   const [informations, setInformations] = useState({
     bukrs: '',
     dateStart: moment() /*`${startDate.date()}.${startDate.month()}.${startDate.year()}`*/,
@@ -43,7 +42,7 @@ const ModalPrice = props => {
     serviceTypeId: 0,
     typeOfSum: '',
   });
-  console.log(language, 'la');
+
   useEffect(() => {
     fetchSmsetppType();
     f4FetchCountryList();
@@ -125,7 +124,7 @@ const ModalPrice = props => {
     setTest(false);
     setInformations({
       bukrs: '',
-      dateStart: moment(),
+      dateStart: moment() /*`${startDate.date()}.${startDate.month()}.${startDate.year()}`*/,
       fc: 0,
       mc: 0,
       office: 0,
@@ -134,8 +133,8 @@ const ModalPrice = props => {
       discount: 0,
       total: 0,
       countryId: 0,
-      waers: '',
-      typeOfService: '',
+      waers: 'string',
+      serviceTypeId: 0,
       typeOfSum: '',
     });
   };

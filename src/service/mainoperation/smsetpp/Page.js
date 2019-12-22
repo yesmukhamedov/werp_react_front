@@ -33,11 +33,11 @@ const Page = props => {
   const [activeDropdown, setActiveDropdown] = useState(false);
   const [secondActive, setSecondActive] = useState(false);
   const [allDropdownActive, setAllDropdownActive] = useState(false);
-  const [countryOptions, setCountryOptions] = useState([]);
   const [serviceOptionPriceList, setServiceOptionPriceList] = useState([]);
+  const [countryOptions, setCountryOptions] = useState([]);
   const [search, setSearch] = useState({
-    company: '',
-    country: '',
+    companyId: '',
+    countryId: '',
   });
 
   useEffect(() => {
@@ -46,33 +46,30 @@ const Page = props => {
   }, []);
 
   useEffect(() => {
-    setServiceOptionPriceList(data.service);
-  }, [data]);
-
-  useEffect(() => {
     let country = countryList.map(item => {
-      return { key: item.countryId, text: item.country, value: item.country };
+      return { key: item.countryId, text: item.country, value: item.countryId };
     });
     setCountryOptions(country);
   }, [countryList]);
 
+  useEffect(() => {
+    setServiceOptionPriceList(data.service);
+  }, [data]);
+
   const onChange = (text, value) => {
     if (text === 'companyOptions') {
-      setSearch({ ...search, company: value });
+      setSearch({ ...search, companyId: value });
       setActiveDropdown(true);
     }
     if (text === 'countries') {
-      setSearch({ ...search, country: value });
+      setSearch({ ...search, countryId: value });
       setSecondActive(true);
     }
   };
 
-  const dropdownCountry = () => {
-    setAllDropdownActive(true);
-  };
-
   const onClickButton = () => {
     if (allDropdownActive && secondActive) {
+      setError([]);
     } else {
       save();
     }
@@ -120,7 +117,7 @@ const Page = props => {
           options={activeDropdown ? countryOptions : []}
           placeholder={messages['country']}
           id="secondDropdown"
-          onClick={dropdownCountry}
+          onClick={() => setAllDropdownActive(true)}
           onChange={(e, { value }) => onChange('countries', value)}
         />
         <button
