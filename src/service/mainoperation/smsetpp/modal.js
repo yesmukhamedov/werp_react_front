@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 import DatePicker from 'react-datepicker';
 import './index.css';
 import { Dropdown } from 'semantic-ui-react';
-import { f4FetchCountryList } from '../../../reference/f4/f4_action';
+import {
+  f4FetchCountryList,
+  f4FetchCurrencyList,
+} from '../../../reference/f4/f4_action';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Grid } from 'semantic-ui-react';
@@ -19,13 +22,15 @@ const ModalPrice = props => {
     data,
     fetchSmsetppType,
     fetchSmsetppPost,
+    currencyOptions = [],
     countryList = [],
     companyOptions = [],
     intl: { messages },
+    f4FetchCurrencyList,
   } = props;
   const language = localStorage.getItem('language');
   const [typeOfService, setTypeOfService] = useState([]);
-  const [countries, setCountries] = useState([]);
+  const [countryOptions, setCountryOptions] = useState([]);
   const [test, setTest] = useState(false);
   const [informations, setInformations] = useState({
     bukrs: '',
@@ -45,7 +50,7 @@ const ModalPrice = props => {
 
   useEffect(() => {
     fetchSmsetppType();
-    f4FetchCountryList();
+    f4FetchCurrencyList('');
   }, []);
 
   useEffect(() => {
@@ -60,7 +65,7 @@ const ModalPrice = props => {
       return { key: item.countryId, text: item.country, value: item.countryId };
     });
 
-    setCountries(country);
+    setCountryOptions(country);
   }, [countryList]);
 
   const handleChange = (text, value) => {
@@ -186,7 +191,7 @@ const ModalPrice = props => {
     <Modal
       trigger={
         <button
-          className="ui blue inverted button"
+          className="ui green button"
           id="addPrice"
           onClick={() => setModalOpen(true)}
         >
@@ -374,7 +379,7 @@ const ModalPrice = props => {
                 clearable="true"
                 search
                 selection
-                options={countries}
+                options={countryOptions}
                 onChange={(e, { value }) => handleChange('countries', value)}
                 placeholder={messages['country']}
               />
@@ -386,7 +391,13 @@ const ModalPrice = props => {
               <h3>{messages['waers']}</h3>
             </Grid.Column>
             <Grid.Column floated="right" width={5}>
-              <Dropdown placeholder={messages['waers']} search />
+              <Dropdown
+                placeholder={messages['waers']}
+                search
+                clearable="true"
+                selection
+                options={currencyOptions}
+              />
             </Grid.Column>
           </Grid.Row>
           <Divider />
@@ -447,6 +458,7 @@ const mapStateToProps = state => {
   console.log(state, 'state');
   return {
     data: state.serviceReducer.data,
+    currencyOptions: state.f4.currencyOptions,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
   };
@@ -455,5 +467,6 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   fetchSmsetppType,
   fetchSmsetppPost,
+  f4FetchCurrencyList,
   f4FetchCountryList,
 })(injectIntl(ModalPrice));
