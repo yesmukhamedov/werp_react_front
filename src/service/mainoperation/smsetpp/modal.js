@@ -4,10 +4,7 @@ import { connect } from 'react-redux';
 import DatePicker from 'react-datepicker';
 import './index.css';
 import { Dropdown } from 'semantic-ui-react';
-import {
-  f4FetchCountryList,
-  f4FetchCurrencyList,
-} from '../../../reference/f4/f4_action';
+import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Grid } from 'semantic-ui-react';
@@ -22,7 +19,6 @@ const ModalPrice = props => {
     data,
     fetchSmsetppType,
     fetchSmsetppPost,
-    currencyOptions = [],
     countryList = [],
     companyOptions = [],
     intl: { messages },
@@ -32,9 +28,10 @@ const ModalPrice = props => {
   const [typeOfService, setTypeOfService] = useState([]);
   const [countryOptions, setCountryOptions] = useState([]);
   const [test, setTest] = useState(false);
+  const [dateStart, setDateStart] = useState(moment());
   const [informations, setInformations] = useState({
     bukrs: '',
-    dateStart: moment() /*`${startDate.date()}.${startDate.month()}.${startDate.year()}`*/,
+    dateStart: `${dateStart.year()}-${dateStart.month()}-${dateStart.date()}`,
     fc: 0,
     mc: 0,
     office: 0,
@@ -43,14 +40,13 @@ const ModalPrice = props => {
     discount: 0,
     total: 0,
     countryId: 0,
-    waers: 'string',
+    waers: '',
     serviceTypeId: 0,
     typeOfSum: '',
   });
 
   useEffect(() => {
     fetchSmsetppType();
-    f4FetchCurrencyList('');
   }, []);
 
   useEffect(() => {
@@ -62,7 +58,12 @@ const ModalPrice = props => {
 
   useEffect(() => {
     let country = countryList.map(item => {
-      return { key: item.countryId, text: item.country, value: item.countryId };
+      return {
+        key: item.countryId,
+        text: item.country,
+        value: item.countryId,
+        currency: item.currency,
+      };
     });
 
     setCountryOptions(country);
@@ -84,9 +85,10 @@ const ModalPrice = props => {
   };
 
   const onChangeDate = d => {
+    setDateStart(d);
     setInformations({
       ...informations,
-      dateStart: d,
+      dateStart: `${d.year()}-${d.month()}-${d.date()}`,
     });
   };
 
@@ -120,7 +122,8 @@ const ModalPrice = props => {
       typeOfSum !== ''
     ) {
       setModalOpen(false);
-      fetchSmsetppPost(informations);
+      console.log(informations, 'infos');
+      //fetchSmsetppPost(informations);
     }
   };
 
@@ -138,7 +141,7 @@ const ModalPrice = props => {
       discount: 0,
       total: 0,
       countryId: 0,
-      waers: 'string',
+      waers: '',
       serviceTypeId: 0,
       typeOfSum: '',
     });
@@ -187,6 +190,12 @@ const ModalPrice = props => {
     }
   };
 
+  const onChangeCountryOptions = v => {
+    handleChange('countries', v);
+    const f = countryOptions.find(({ value }) => value === v);
+    setInformations({ ...informations, waers: f.currency });
+  };
+
   return (
     <Modal
       trigger={
@@ -199,18 +208,18 @@ const ModalPrice = props => {
           {messages['toAdd']}
         </button>
       }
-      size="small"
       open={modalOpen}
       onClose={() => setModalOpen(false)}
     >
       <Header content={messages['toAdd']} id="modalHeader" />
+
       <Modal.Content>
-        <Grid columns={2}>
-          <Grid.Row>
+        <Grid>
+          <Grid.Row columns={4}>
             <Grid.Column>
               <h3>{messages['bukrs']}</h3>
             </Grid.Column>
-            <Grid.Column floated="right" width={5}>
+            <Grid.Column>
               <Dropdown
                 error={
                   test === true && informations.bukrs === '' ? true : false
@@ -223,14 +232,10 @@ const ModalPrice = props => {
                 placeholder={messages['bukrs']}
               />
             </Grid.Column>
-          </Grid.Row>
-
-          <Divider />
-          <Grid.Row>
             <Grid.Column>
               <h3>{messages['Task.StartDate']}</h3>
             </Grid.Column>
-            <Grid.Column floated="right" width={5} id="inputDate">
+            <Grid.Column id="inputDate">
               <div className="ui input">
                 <DatePicker
                   className="date-auto-width"
@@ -238,7 +243,7 @@ const ModalPrice = props => {
                   showMonthDropdown
                   showYearDropdown
                   dropdownMode="select" //timezone="UTC"
-                  selected={informations.dateStart}
+                  selected={dateStart}
                   onChange={date => onChangeDate(date)}
                   dateFormat="DD.MM.YYYY"
                   locale={language}
@@ -251,12 +256,11 @@ const ModalPrice = props => {
               </div>
             </Grid.Column>
           </Grid.Row>
-          <Divider />
-          <Grid.Row>
+          <Grid.Row columns={4}>
             <Grid.Column>
               <h3 id="fcCount">FC({messages['Table.Amount']})</h3>
             </Grid.Column>
-            <Grid.Column floated="right" width={5}>
+            <Grid.Column>
               <Input
                 error={test === true && informations.fc === 0 ? true : false}
                 placeholder="Search..."
@@ -264,13 +268,10 @@ const ModalPrice = props => {
                 onChange={e => onInputChange('fc', e)}
               />
             </Grid.Column>
-          </Grid.Row>
-          <Divider />
-          <Grid.Row>
             <Grid.Column>
               <h3>MC({messages['Table.Amount']})</h3>
             </Grid.Column>
-            <Grid.Column floated="right" width={5}>
+            <Grid.Column>
               <Input
                 error={test === true && informations.mc === 0 ? true : false}
                 type="number"
@@ -279,14 +280,14 @@ const ModalPrice = props => {
               />
             </Grid.Column>
           </Grid.Row>
-          <Divider />
-          <Grid.Row>
+
+          <Grid.Row columns={4}>
             <Grid.Column>
               <h3>
                 {messages['office']} ({messages['inTotal']})
               </h3>
             </Grid.Column>
-            <Grid.Column floated="right" width={5}>
+            <Grid.Column>
               <Input
                 error={
                   test === true && informations.office === 0 ? true : false
@@ -296,15 +297,13 @@ const ModalPrice = props => {
                 onChange={e => onInputChange('office', e)}
               />
             </Grid.Column>
-          </Grid.Row>
-          <Divider />
-          <Grid.Row>
+
             <Grid.Column>
               <h3>
                 {messages['master']} ({messages['inTotal']})
               </h3>
             </Grid.Column>
-            <Grid.Column floated="right" width={5}>
+            <Grid.Column>
               <Input
                 error={
                   test === true && informations.master === 0 ? true : false
@@ -315,14 +314,14 @@ const ModalPrice = props => {
               />
             </Grid.Column>
           </Grid.Row>
-          <Divider />
-          <Grid.Row>
+
+          <Grid.Row columns={4}>
             <Grid.Column>
               <h3>
                 {messages['Operator']} ({messages['inTotal']})
               </h3>
             </Grid.Column>
-            <Grid.Column floated="right" width={5}>
+            <Grid.Column>
               <Input
                 error={
                   test === true && informations.operator === 0 ? true : false
@@ -332,15 +331,12 @@ const ModalPrice = props => {
                 onChange={e => onInputChange('operator', e)}
               />
             </Grid.Column>
-          </Grid.Row>
-          <Divider />
-          <Grid.Row>
             <Grid.Column>
               <h3>
                 {messages['discount']} ({messages['inTotal']})
               </h3>
             </Grid.Column>
-            <Grid.Column floated="right" width={5}>
+            <Grid.Column>
               <Input
                 error={
                   test === true && informations.discount === 0 ? true : false
@@ -351,12 +347,12 @@ const ModalPrice = props => {
               />
             </Grid.Column>
           </Grid.Row>
-          <Divider />
-          <Grid.Row>
+
+          <Grid.Row columns={4}>
             <Grid.Column>
               <h3>{messages['totalAmount']}</h3>
             </Grid.Column>
-            <Grid.Column floated="right" width={5}>
+            <Grid.Column>
               <Input
                 error={test === true && informations.total === 0 ? true : false}
                 type="number"
@@ -364,14 +360,11 @@ const ModalPrice = props => {
                 onChange={e => onInputChange('total', e)}
               />
             </Grid.Column>
-          </Grid.Row>
-          <Divider />
-          <Grid.Row>
             <Grid.Column>
               <h3>{messages['country']}</h3>
             </Grid.Column>
 
-            <Grid.Column floated="right" width={5}>
+            <Grid.Column>
               <Dropdown
                 error={
                   test === true && informations.countryId === '' ? true : false
@@ -380,32 +373,23 @@ const ModalPrice = props => {
                 search
                 selection
                 options={countryOptions}
-                onChange={(e, { value }) => handleChange('countries', value)}
+                onChange={(e, { value }) => onChangeCountryOptions(value)}
                 placeholder={messages['country']}
               />
             </Grid.Column>
           </Grid.Row>
-          <Divider />
-          <Grid.Row>
+
+          <Grid.Row columns={4}>
             <Grid.Column>
               <h3>{messages['waers']}</h3>
             </Grid.Column>
-            <Grid.Column floated="right" width={5}>
-              <Dropdown
-                placeholder={messages['waers']}
-                search
-                clearable="true"
-                selection
-                options={currencyOptions}
-              />
+            <Grid.Column>
+              <Header as="h4">{informations.waers}</Header>
             </Grid.Column>
-          </Grid.Row>
-          <Divider />
-          <Grid.Row>
             <Grid.Column>
               <h3>{messages['typeOfService']}</h3>
             </Grid.Column>
-            <Grid.Column floated="right" width={5}>
+            <Grid.Column>
               <Dropdown
                 placeholder="State"
                 clearable="true"
@@ -419,12 +403,12 @@ const ModalPrice = props => {
               />
             </Grid.Column>
           </Grid.Row>
-          <Divider />
-          <Grid.Row>
+
+          <Grid.Row columns={4}>
             <Grid.Column>
               <h3>{messages['typeOfAmount']}</h3>
             </Grid.Column>
-            <Grid.Column floated="right" width={5}>
+            <Grid.Column>
               <Dropdown
                 error={
                   test === true && informations.typeOfSum === '' ? true : false
@@ -458,7 +442,6 @@ const mapStateToProps = state => {
   console.log(state, 'state');
   return {
     data: state.serviceReducer.data,
-    currencyOptions: state.f4.currencyOptions,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
   };
@@ -467,6 +450,5 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   fetchSmsetppType,
   fetchSmsetppPost,
-  f4FetchCurrencyList,
   f4FetchCountryList,
 })(injectIntl(ModalPrice));

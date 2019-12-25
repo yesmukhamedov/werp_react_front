@@ -68,11 +68,7 @@ const Page = props => {
   };
 
   const onClickButton = () => {
-    if (allDropdownActive && secondActive) {
-      setError([]);
-    } else {
-      save();
-    }
+    save();
   };
 
   const validate = () => {
@@ -89,8 +85,6 @@ const Page = props => {
   const save = () => {
     let errors = [];
     errors = validate();
-    if (errors === null || errors === undefined || errors.length === 0) {
-    }
     setError(() => errors);
   };
 
