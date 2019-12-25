@@ -14,12 +14,8 @@ export const ADD_SMSETCT = 'ADD_SMSETCT';
 export const SEARCH_SMSETCT = 'SEARCH_SMSETCT';
 export const EDIT_SMSETCT = 'EDIT_SMSETCT';
 export const FETCH_SMSETPP = 'FETCH_SMSETPP';
-<<<<<<< Updated upstream
 export const FETCH_SRLS = 'FETCH_SMSETPP';
 export const DELETE_SMCETST = 'DELETE_SMCETST';
-=======
-
->>>>>>> Stashed changes
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
@@ -204,7 +200,3 @@ export function editSmsetct(sm_set_ct_Edit) {
     console.log('put');
   };
 }
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
