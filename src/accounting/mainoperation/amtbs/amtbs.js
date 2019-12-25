@@ -7,124 +7,90 @@ import {
   List,
   Button,
   Icon,
+  Table,
+  Dropdown,
+  Input,
+  Label,
 } from 'semantic-ui-react';
-import moment from 'moment';
-import FaHeader from '../../faHeader';
-import FcisPosition from './fcisPosition';
+import FaHeader from '../../../finance/faHeader';
 import {
   f4FetchDepartmentList,
   f4FetchCurrencyList,
-  f4FetchBusinessAreaList2,
   f4FetchExchangeRateNational,
-  f4ClearAnyObject,
 } from '../../../reference/f4/f4_action';
 import {
   clearfaBkpf,
   changefaBkpf,
-  fetchCashBankHkontsByBranch,
-  changeDynObj,
-  clearDynObj,
-  saveFcis,
-} from '../../fa_action';
+  fetchExpenseHkontsByBukrs,
+} from '../../../finance/fa_action';
+import { saveAccSrcDocs } from '../../accounting_action';
 import { moneyInputHanler } from '../../../utils/helpers';
+import { handleFocus, moneyFormat } from '../../../utils/helpers';
 import OutputErrors from '../../../general/error/outputErrors';
 import { modifyLoader } from '../../../general/loader/loader_action';
 import { injectIntl } from 'react-intl';
+import CustomerF4Modal from '../../../reference/f4/Customer/customerF4';
 import { messages } from '../../../locales/defineMessages';
 
-require('moment/locale/ru');
-require('moment/locale/tr');
+import moment from 'moment';
 
-class Fcis extends Component {
+class Amtbs extends Component {
   constructor(props) {
     super(props);
     this.initializeBkpfBseg = this.initializeBkpfBseg.bind(this);
     this.initialBseg = this.initialBseg.bind(this);
+    this.customerF4ModalOpenHanlder = this.customerF4ModalOpenHanlder.bind(
+      this,
+    );
     this.state = {
+      customerF4ModalOpen: false,
       errors: [],
+      lifnr: null,
+      lifnrName: '',
+      amount: '0',
+      hkont_s: '',
     };
   }
-  componentDidMount() {
+
+  componentWillMount() {
     this.initializeBkpfBseg();
 
-    this.props.f4FetchCurrencyList('fcis');
+    this.props.f4FetchCurrencyList('ampi');
     this.props.f4FetchDepartmentList();
-    this.props.f4FetchBusinessAreaList2();
     this.props.f4FetchExchangeRateNational();
   }
 
   componentWillUnmount() {
     this.props.clearfaBkpf();
-    this.props.clearDynObj();
-    this.props.f4ClearAnyObject('F4_CLEAR_CURRENCY_LIST');
-    this.props.f4ClearAnyObject('F4_CLEAR_EXCHANGERATE_NATIONAL');
+    // this.props.clearDynObj();
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.bkpf.brnch !== this.props.bkpf.brnch) {
-      this.props.fetchCashBankHkontsByBranch(
-        nextProps.bkpf.bukrs,
-        nextProps.bkpf.brnch,
-      );
-      this.props.changeDynObj({
-        ...this.props.bseg,
-        hkont_s: '',
-      });
-      // nextProps.myProp has a different value than our current prop
-      // so we can perform some calculations based on the new value
-    }
-    if (nextProps.bkpf.waers !== this.props.bkpf.waers) {
-      this.props.fetchCashBankHkontsByBranch(
-        nextProps.bkpf.bukrs,
-        nextProps.bkpf.brnch,
-      );
-      this.props.changeDynObj({
-        ...this.props.bseg,
-        hkont_s: '',
-      });
-      // nextProps.myProp has a different value than our current prop
-      // so we can perform some calculations based on the new value
-    }
-
-    if (
-      nextProps.reset !== null &&
-      nextProps.reset !== undefined &&
-      nextProps.reset === true
-    ) {
-      // console.log(nextProps,'nextProps')
-      this.props.changeDynObj({ reset: false });
-      this.initializeBkpfBseg();
+    if (nextProps.bkpf.bukrs !== this.props.bkpf.bukrs) {
+      this.props.fetchExpenseHkontsByBukrs(nextProps.bkpf.bukrs);
     }
   }
 
+  customerF4ModalOpenHanlder(bool) {
+    this.setState({ customerF4ModalOpen: bool });
+  }
   onInputChange(value, stateFieldName) {
-    const bseg = { ...this.props.bseg };
-    if (stateFieldName === 'summa') {
+    // let bseg = {...this.props.bseg};
+    if (stateFieldName === 'amount') {
       const newVal = moneyInputHanler(value, 2);
       if (newVal !== undefined) {
-        this.props.changeDynObj({
-          ...bseg,
-          [stateFieldName]: newVal,
-        });
+        this.setState({ [stateFieldName]: newVal });
       }
     } else if (stateFieldName === 'lifnr') {
-      this.props.changeDynObj({
-        ...bseg,
-        lifnr: value.customerId,
-        staffFio: value.fio,
-        staffId: value.staffId,
-      });
+      this.setState({ lifnr: value.id, lifnrName: value.fio });
     } else {
-      this.props.changeDynObj({
-        ...bseg,
-        [stateFieldName]: value,
-      });
+      this.setState({ [stateFieldName]: value });
     }
   }
 
   initializeBkpfBseg() {
     const bkpf = Object.assign({}, this.props.initialBkpf);
-    bkpf.blart = 'S2';
+    bkpf.blart = 'AE';
     bkpf.budat = moment().format('YYYY-MM-DD');
     bkpf.bldat = moment().format('YYYY-MM-DD');
 
@@ -132,13 +98,13 @@ class Fcis extends Component {
     this.initialBseg();
   }
   initialBseg() {
-    this.props.changeDynObj({
-      lifnr: '',
-      staffId: '',
-      staffFio: '',
+    this.setState({
+      customerF4ModalOpen: false,
+      errors: [],
+      lifnr: null,
+      lifnrName: '',
+      amount: '0',
       hkont_s: '',
-      hkont_h: '',
-      summa: 0,
     });
   }
   save() {
@@ -146,9 +112,14 @@ class Fcis extends Component {
     let errors = [];
     errors = this.validate();
     if (errors === null || errors === undefined || errors.length === 0) {
-      const bkpf = JSON.parse(JSON.stringify(this.props.bkpf));
-      const bseg = JSON.parse(JSON.stringify(this.props.bseg));
-      this.props.saveFcis(bkpf, bseg);
+      const bkpf = { ...this.props.bkpf };
+      const args = {
+        bkpf,
+        amount: this.state.amount,
+        lifnr: this.state.lifnr,
+        hkont_s: this.state.hkont_s,
+      };
+      this.props.saveAccSrcDocs(args, 'AMPI', () => this.initializeBkpfBseg());
     } else {
       this.props.modifyLoader(false);
     }
@@ -179,25 +150,21 @@ class Fcis extends Component {
       errors.push(errorTable[`15${language}`]);
     }
 
-    const { lifnr, hkont_s, hkont_h, summa } = this.props.bseg;
-    if (hkont_h === null || hkont_h === undefined || !hkont_h) {
-      errors.push(errorTable[`16${language}`]);
+    const { lifnr, hkont_s, amount } = this.state;
+    if (lifnr === null || lifnr === undefined || !lifnr) {
+      errors.push(errorTable[`9${language}`]);
     }
     if (hkont_s === null || hkont_s === undefined || !hkont_s) {
-      errors.push(errorTable[`3${language}`]);
-    }
-    if (lifnr === null || lifnr === undefined || !lifnr) {
-      errors.push(errorTable[`63${language}`]);
+      errors.push(errorTable[`12${language}`]);
     }
     if (
-      summa === null ||
-      summa === undefined ||
-      !summa ||
-      parseFloat(summa) <= 0
+      amount === null ||
+      amount === undefined ||
+      !amount ||
+      parseFloat(amount) <= 0
     ) {
       errors.push(errorTable[`61${language}`]);
     }
-
     return errors;
   }
 
@@ -213,28 +180,16 @@ class Fcis extends Component {
       waersInfo: { readOnly: false, disabled: false },
       kursfInfo: { readOnly: true, disabled: false },
       bktxtInfo: { readOnly: false, disabled: false },
-      officialInfo: { readOnly: true, disabled: true },
+      officialInfo: { readOnly: false, disabled: false },
       zregInfo: { readOnly: true, disabled: true },
     };
 
-    const { waers, bukrs, brnch } = this.props.bkpf;
-
-    const hkontOptions = this.props.hkontOptions
-      .filter(wa => wa.dynvalue === waers)
-      .map((wa, idx) => ({ key: idx, value: wa.value, text: wa.text }));
-
-    const { lifnr, staffFio, hkont_s, hkont_h, summa } = this.props.bseg;
-
+    const { waers } = this.props.bkpf;
+    const customerF4ModalOpen = this.state.customerF4ModalOpen;
+    const amount = this.state.amount;
+    const lifnrName = this.state.lifnrName;
+    const hkont_s = this.state.hkont_s;
     const { formatMessage } = this.props.intl;
-
-    const hkontOptions_h = [
-      { key: 1, text: formatMessage(messages.payDebt), value: '33500002' },
-      {
-        key: 2,
-        text: formatMessage(messages.toEmployeeAccount),
-        value: '33500001',
-      },
-    ];
 
     return (
       <Container
@@ -247,7 +202,7 @@ class Fcis extends Component {
         }}
       >
         <Header as="h2" block>
-          {formatMessage(messages.transNameFcis)}
+          {formatMessage(messages.transNameAmpi)}
         </Header>
         <Segment padded size="small">
           <List horizontal>
@@ -272,23 +227,77 @@ class Fcis extends Component {
         <OutputErrors errors={this.state.errors} />
 
         <FaHeader {...this.props} bkpfInfo={bkpfInfo} />
-        <FcisPosition
-          hkontOptions_s={hkontOptions}
-          hkontOptions_h={hkontOptions_h}
-          waers={waers}
-          lifnr={lifnr}
-          staffFio={staffFio}
-          hkont_s={hkont_s}
-          hkont_h={hkont_h}
-          summa={summa}
-          brnch={brnch}
-          branchOptions={this.props.branchOptions}
-          bukrs={bukrs}
-          companyOptions={this.props.companyOptions}
-          onInputChange={(value, stateFieldName) => {
-            this.onInputChange(value, stateFieldName);
-          }}
+        <CustomerF4Modal
+          open={customerF4ModalOpen}
+          onCloseCustomerF4={bool => this.customerF4ModalOpenHanlder(bool)}
+          onCustomerSelect={item => this.onInputChange(item, 'lifnr')}
         />
+
+        <Segment padded size="small">
+          <Label color="red" ribbon>
+            {formatMessage(messages.position)}
+          </Label>
+
+          <Table>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>
+                  {formatMessage(messages.customer)}
+                </Table.HeaderCell>
+                <Table.HeaderCell>
+                  {formatMessage(messages.hkont)}
+                </Table.HeaderCell>
+                <Table.HeaderCell>
+                  {formatMessage(messages.amount)}
+                </Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
+            <Table.Body>
+              <Table.Row>
+                <Table.Cell>
+                  <span>
+                    {' '}
+                    {lifnrName}{' '}
+                    <Button
+                      icon="external"
+                      onClick={() => {
+                        this.customerF4ModalOpenHanlder(true);
+                      }}
+                    />
+                  </span>
+                </Table.Cell>
+                <Table.Cell>
+                  <Dropdown
+                    fluid
+                    search
+                    selection
+                    options={
+                      this.props.hkontOptions ? this.props.hkontOptions : []
+                    }
+                    value={hkont_s}
+                    onChange={(e, { value }) =>
+                      this.onInputChange(value, 'hkont_s')
+                    }
+                  />
+                </Table.Cell>
+                <Table.Cell>
+                  <Input
+                    label={waers}
+                    labelPosition="left"
+                    color="teal"
+                    value={moneyFormat(amount)}
+                    onFocus={handleFocus}
+                    maxLength="18"
+                    onChange={(e, { value }) =>
+                      this.onInputChange(value, 'amount')
+                    }
+                  />
+                </Table.Cell>
+              </Table.Row>
+            </Table.Body>
+          </Table>
+        </Segment>
+
         <br />
         <br />
         <br />
@@ -311,7 +320,6 @@ class Fcis extends Component {
 function mapStateToProps(state) {
   // console.log(state,'state');
   return {
-    language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,
     currencyOptions: state.f4.currencyOptions,
@@ -320,23 +328,18 @@ function mapStateToProps(state) {
     exRateNational: state.f4.exRateNational,
     bkpf: state.fa.faForm.bkpf,
     initialBkpf: state.fa.faForm.initialBkpf,
-    hkontOptions: state.fa.faForm.hkontOptions,
+    hkontOptions: state.fa.faForm.hkontOptions2,
     bseg: state.fa.dynamicObject,
-    reset: state.fa.dynamicObject.reset,
   };
 }
 
 export default connect(mapStateToProps, {
   f4FetchDepartmentList,
   f4FetchCurrencyList,
-  f4ClearAnyObject,
   modifyLoader,
-  saveFcis,
-  f4FetchBusinessAreaList2,
   f4FetchExchangeRateNational,
   changefaBkpf,
   clearfaBkpf,
-  fetchCashBankHkontsByBranch,
-  changeDynObj,
-  clearDynObj,
-})(injectIntl(Fcis));
+  fetchExpenseHkontsByBukrs,
+  saveAccSrcDocs,
+})(injectIntl(Amtbs));

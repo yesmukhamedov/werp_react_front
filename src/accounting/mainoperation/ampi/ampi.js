@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   Container,
@@ -12,7 +12,6 @@ import {
   Input,
   Label,
 } from 'semantic-ui-react';
-import moment from 'moment';
 import FaHeader from '../../../finance/faHeader';
 import {
   f4FetchDepartmentList,
@@ -31,110 +30,102 @@ import OutputErrors from '../../../general/error/outputErrors';
 import { modifyLoader } from '../../../general/loader/loader_action';
 import { injectIntl } from 'react-intl';
 import CustomerF4Modal from '../../../reference/f4/Customer/customerF4';
-import { messages } from '../../../locales/defineMessages';
 
-require('moment/locale/ru');
+import moment from 'moment';
 
-class Ampi extends Component {
-  constructor(props) {
-    super(props);
-    this.initializeBkpfBseg = this.initializeBkpfBseg.bind(this);
-    this.initialBseg = this.initialBseg.bind(this);
-    this.customerF4ModalOpenHanlder = this.customerF4ModalOpenHanlder.bind(
-      this,
-    );
-    this.state = {
-      customerF4ModalOpen: false,
-      errors: [],
-      lifnr: null,
-      lifnrName: '',
-      amount: '0',
-      hkont_s: '',
+const Ampi = props => {
+  const {
+    hkontOptions = [],
+    bkpf = {},
+    initialBkpf = {},
+    activeLoader,
+    intl: { messages },
+    language,
+  } = props;
+
+  const [customerF4ModalOpen, setCustomerF4ModalOpen] = useState(false);
+  const [errors, setErrors] = useState([]);
+  const [lifnr, setLifnr] = useState(null);
+  const [lifnrName, setLifnrName] = useState('');
+  const [amount, setAmount] = useState('0');
+  const [hkont_s, setHkont_s] = useState('');
+
+  //componentDidMount
+  useEffect(() => {
+    initializeBkpfBseg();
+    props.f4FetchCurrencyList('ampi');
+    props.f4FetchDepartmentList();
+    props.f4FetchExchangeRateNational();
+
+    //unmount
+    return () => {
+      props.clearfaBkpf();
     };
-  }
+  }, []);
 
-  componentWillMount() {
-    this.initializeBkpfBseg();
+  //componentWillReceiveProps
+  useEffect(() => {
+    props.fetchExpenseHkontsByBukrs(bkpf.bukrs);
+  }, [bkpf.bukrs]);
 
-    this.props.f4FetchCurrencyList('ampi');
-    this.props.f4FetchDepartmentList();
-    this.props.f4FetchExchangeRateNational();
-  }
-
-  componentWillUnmount() {
-    this.props.clearfaBkpf();
-    // this.props.clearDynObj();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.bkpf.bukrs !== this.props.bkpf.bukrs) {
-      this.props.fetchExpenseHkontsByBukrs(nextProps.bkpf.bukrs);
-    }
-  }
-
-  customerF4ModalOpenHanlder(bool) {
-    this.setState({ customerF4ModalOpen: bool });
-  }
-  onInputChange(value, stateFieldName) {
-    // let bseg = {...this.props.bseg};
+  const onInputChange = (value, stateFieldName) => {
+    // let bseg = {...props.bseg};
     if (stateFieldName === 'amount') {
       const newVal = moneyInputHanler(value, 2);
       if (newVal !== undefined) {
-        this.setState({ [stateFieldName]: newVal });
+        setAmount(newVal);
       }
     } else if (stateFieldName === 'lifnr') {
-      this.setState({ lifnr: value.id, lifnrName: value.fio });
-    } else {
-      this.setState({ [stateFieldName]: value });
+      setLifnr(value.id);
+      setLifnrName(value.fio);
+    } else if (stateFieldName === 'hkont_s') {
+      setHkont_s(value);
     }
-  }
+  };
 
-  initializeBkpfBseg() {
-    const bkpf = Object.assign({}, this.props.initialBkpf);
+  const initializeBkpfBseg = () => {
+    const bkpf = Object.assign({}, initialBkpf);
     bkpf.blart = 'AE';
-    bkpf.budat = moment().format('DD.MM.YYYY');
-    bkpf.bldat = moment().format('DD.MM.YYYY');
+    bkpf.budat = moment().format('YYYY-MM-DD');
+    bkpf.bldat = moment().format('YYYY-MM-DD');
 
-    this.props.changefaBkpf(bkpf);
-    this.initialBseg();
-  }
-  initialBseg() {
-    this.setState({
-      customerF4ModalOpen: false,
-      errors: [],
-      lifnr: null,
-      lifnrName: '',
-      amount: '0',
-      hkont_s: '',
-    });
-  }
-  save() {
-    this.props.modifyLoader(true);
+    props.changefaBkpf(bkpf);
+    initialBseg();
+  };
+  const initialBseg = () => {
+    setCustomerF4ModalOpen(false);
+    setErrors([]);
+    setLifnr(null);
+    setLifnrName('');
+    setAmount('0');
+    setHkont_s('');
+  };
+  const save = () => {
+    props.modifyLoader(true);
     let errors = [];
-    errors = this.validate();
+    errors = validate();
     if (errors === null || errors === undefined || errors.length === 0) {
-      const bkpf = { ...this.props.bkpf };
+      const bkpf = { ...bkpf };
       const args = {
         bkpf,
-        amount: this.state.amount,
-        lifnr: this.state.lifnr,
-        hkont_s: this.state.hkont_s,
+        amount,
+        lifnr,
+        hkont_s,
       };
-      this.props.saveAccSrcDocs(args, 'AMPI', () => this.initializeBkpfBseg());
+      props.saveAccSrcDocs(args, 'AMTBS', () => initializeBkpfBseg());
     } else {
-      this.props.modifyLoader(false);
+      props.modifyLoader(false);
     }
 
-    this.setState({ errors });
-  }
-  validate() {
+    setErrors(errors);
+  };
+  const validate = () => {
     // getter
     // console.log(localStorage.getItem('language'),'error');
 
     const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-    const language = localStorage.getItem('language');
     const errors = [];
-    const { bukrs, brnch, dep, waers, bldat } = this.props.bkpf;
+    const { bukrs, brnch, dep, waers, bldat } = bkpf;
     if (bukrs === null || bukrs === undefined || !bukrs) {
       errors.push(errorTable[`5${language}`]);
     }
@@ -151,7 +142,6 @@ class Ampi extends Component {
       errors.push(errorTable[`15${language}`]);
     }
 
-    const { lifnr, hkont_s, amount } = this.state;
     if (lifnr === null || lifnr === undefined || !lifnr) {
       errors.push(errorTable[`9${language}`]);
     }
@@ -167,160 +157,139 @@ class Ampi extends Component {
       errors.push(errorTable[`61${language}`]);
     }
     return errors;
-  }
+  };
 
-  render() {
-    const bkpfInfo = {
-      bukrsInfo: { readOnly: false, disabled: false },
-      brnchInfo: { readOnly: false, disabled: false },
-      business_area_idInfo: { readOnly: true, disabled: true },
-      depInfo: { readOnly: false, disabled: false },
-      budatInfo: { readOnly: false, disabled: true },
-      bldatInfo: { readOnly: false, disabled: false },
-      blartInfo: { readOnly: true, disabled: false },
-      waersInfo: { readOnly: false, disabled: false },
-      kursfInfo: { readOnly: true, disabled: false },
-      bktxtInfo: { readOnly: false, disabled: false },
-      officialInfo: { readOnly: false, disabled: false },
-      zregInfo: { readOnly: true, disabled: true },
-    };
+  const bkpfInfo = {
+    bukrsInfo: { readOnly: false, disabled: false },
+    brnchInfo: { readOnly: false, disabled: false },
+    business_area_idInfo: { readOnly: true, disabled: true },
+    depInfo: { readOnly: false, disabled: false },
+    budatInfo: { readOnly: false, disabled: true },
+    bldatInfo: { readOnly: false, disabled: false },
+    blartInfo: { readOnly: true, disabled: false },
+    waersInfo: { readOnly: false, disabled: false },
+    kursfInfo: { readOnly: true, disabled: false },
+    bktxtInfo: { readOnly: false, disabled: false },
+    officialInfo: { readOnly: false, disabled: false },
+    zregInfo: { readOnly: true, disabled: true },
+  };
 
-    const { waers } = this.props.bkpf;
-    const customerF4ModalOpen = this.state.customerF4ModalOpen;
-    const amount = this.state.amount;
-    const lifnrName = this.state.lifnrName;
-    const hkont_s = this.state.hkont_s;
-    const { formatMessage } = this.props.intl;
+  return (
+    <Container
+      fluid
+      style={{
+        marginTop: '2em',
+        marginBottom: '2em',
+        paddingLeft: '2em',
+        paddingRight: '2em',
+      }}
+    >
+      <Header as="h2" block>
+        {messages['transNameAmpi']}
+      </Header>
+      <Segment padded size="small">
+        <List horizontal>
+          <List.Item>
+            <List.Content>
+              <Button
+                icon
+                labelPosition="left"
+                primary
+                size="small"
+                onClick={() => save()}
+                disabled={activeLoader}
+              >
+                <Icon name="save" size="large" /> {messages['save']}
+              </Button>
+            </List.Content>
+          </List.Item>
+        </List>
+      </Segment>
 
-    return (
-      <Container
-        fluid
-        style={{
-          marginTop: '2em',
-          marginBottom: '2em',
-          paddingLeft: '2em',
-          paddingRight: '2em',
-        }}
-      >
-        <Header as="h2" block>
-          {formatMessage(messages.transNameAmpi)}
-        </Header>
-        <Segment padded size="small">
-          <List horizontal>
-            <List.Item>
-              <List.Content>
-                <Button
-                  icon
+      <OutputErrors errors={errors} />
+
+      <FaHeader {...props} bkpfInfo={bkpfInfo} />
+      <CustomerF4Modal
+        open={customerF4ModalOpen}
+        onCloseCustomerF4={bool => setCustomerF4ModalOpen(bool)}
+        onCustomerSelect={item => onInputChange(item, 'lifnr')}
+      />
+
+      <Segment padded size="small">
+        <Label color="red" ribbon>
+          {messages['position']}
+        </Label>
+
+        <Table>
+          <Table.Header>
+            <Table.Row>
+              <Table.HeaderCell>{messages['customer']}</Table.HeaderCell>
+              <Table.HeaderCell>{messages['hkont']}</Table.HeaderCell>
+              <Table.HeaderCell>{messages['amount']}</Table.HeaderCell>
+            </Table.Row>
+          </Table.Header>
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell>
+                <span>
+                  {' '}
+                  {lifnrName}{' '}
+                  <Button
+                    icon="external"
+                    onClick={() => {
+                      setCustomerF4ModalOpen(true);
+                    }}
+                  />
+                </span>
+              </Table.Cell>
+              <Table.Cell>
+                <Dropdown
+                  fluid
+                  search
+                  selection
+                  options={hkontOptions}
+                  value={hkont_s}
+                  onChange={(e, { value }) => onInputChange(value, 'hkont_s')}
+                />
+              </Table.Cell>
+              <Table.Cell>
+                <Input
+                  label={bkpf.waers}
                   labelPosition="left"
-                  primary
-                  size="small"
-                  onClick={() => this.save()}
-                  disabled={this.props.activeLoader}
-                >
-                  <Icon name="save" size="large" />{' '}
-                  {formatMessage(messages.save)}
-                </Button>
-              </List.Content>
-            </List.Item>
-          </List>
-        </Segment>
+                  color="teal"
+                  value={moneyFormat(amount)}
+                  onFocus={handleFocus}
+                  maxLength="18"
+                  onChange={(e, { value }) => onInputChange(value, 'amount')}
+                />
+              </Table.Cell>
+            </Table.Row>
+          </Table.Body>
+        </Table>
+      </Segment>
 
-        <OutputErrors errors={this.state.errors} />
-
-        <FaHeader {...this.props} bkpfInfo={bkpfInfo} />
-        <CustomerF4Modal
-          open={customerF4ModalOpen}
-          onCloseCustomerF4={bool => this.customerF4ModalOpenHanlder(bool)}
-          onCustomerSelect={item => this.onInputChange(item, 'lifnr')}
-        />
-
-        <Segment padded size="small">
-          <Label color="red" ribbon>
-            {formatMessage(messages.position)}
-          </Label>
-
-          <Table>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>
-                  {formatMessage(messages.customer)}
-                </Table.HeaderCell>
-                <Table.HeaderCell>
-                  {formatMessage(messages.hkont)}
-                </Table.HeaderCell>
-                <Table.HeaderCell>
-                  {formatMessage(messages.amount)}
-                </Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell>
-                  <span>
-                    {' '}
-                    {lifnrName}{' '}
-                    <Button
-                      icon="external"
-                      onClick={() => {
-                        this.customerF4ModalOpenHanlder(true);
-                      }}
-                    />
-                  </span>
-                </Table.Cell>
-                <Table.Cell>
-                  <Dropdown
-                    fluid
-                    search
-                    selection
-                    options={
-                      this.props.hkontOptions ? this.props.hkontOptions : []
-                    }
-                    value={hkont_s}
-                    onChange={(e, { value }) =>
-                      this.onInputChange(value, 'hkont_s')
-                    }
-                  />
-                </Table.Cell>
-                <Table.Cell>
-                  <Input
-                    label={waers}
-                    labelPosition="left"
-                    color="teal"
-                    value={moneyFormat(amount)}
-                    onFocus={handleFocus}
-                    maxLength="18"
-                    onChange={(e, { value }) =>
-                      this.onInputChange(value, 'amount')
-                    }
-                  />
-                </Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          </Table>
-        </Segment>
-
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-      </Container>
-    );
-  }
-}
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+    </Container>
+  );
+};
 
 function mapStateToProps(state) {
   // console.log(state,'state');
   return {
+    language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,
     currencyOptions: state.f4.currencyOptions,
@@ -334,16 +303,13 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    f4FetchDepartmentList,
-    f4FetchCurrencyList,
-    modifyLoader,
-    f4FetchExchangeRateNational,
-    changefaBkpf,
-    clearfaBkpf,
-    fetchExpenseHkontsByBukrs,
-    saveAccSrcDocs,
-  },
-)(injectIntl(Ampi));
+export default connect(mapStateToProps, {
+  f4FetchDepartmentList,
+  f4FetchCurrencyList,
+  modifyLoader,
+  f4FetchExchangeRateNational,
+  changefaBkpf,
+  clearfaBkpf,
+  fetchExpenseHkontsByBukrs,
+  saveAccSrcDocs,
+})(injectIntl(Ampi));

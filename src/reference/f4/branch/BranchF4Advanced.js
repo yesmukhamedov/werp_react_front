@@ -80,7 +80,7 @@ const BranchF4Advanced = props => {
         let temp = { ...mitem };
         if (
           (categoryS === 0 || temp.tovarcategory === categoryS) &&
-          (countryIdS === 0 || temp.countryId === countryIdS)
+          (countryIdS === 0 || temp.countryid === countryIdS)
         ) {
           temp.isSelected = isSelected;
         }
@@ -110,7 +110,7 @@ const BranchF4Advanced = props => {
 
     filteredArr = branches
       .filter(fitem => waCategoryS === 0 || fitem.tovarcategory === waCategoryS)
-      .filter(fitem => waCountryIdS === 0 || fitem.countryId === waCountryIdS);
+      .filter(fitem => waCountryIdS === 0 || fitem.countryid === waCountryIdS);
 
     if (filteredArr.length > 0) {
       notSelectedArr = filteredArr.filter(fitem => fitem.isSelected === false);
@@ -142,7 +142,7 @@ const BranchF4Advanced = props => {
 
         filteredArr = arr
           .filter(fitem => categoryS === 0 || fitem.tovarcategory === categoryS)
-          .filter(fitem => countryIdS === 0 || fitem.countryId === countryIdS);
+          .filter(fitem => countryIdS === 0 || fitem.countryid === countryIdS);
 
         if (filteredArr.length > 0) {
           notSelectedArr = filteredArr.filter(
@@ -174,7 +174,7 @@ const BranchF4Advanced = props => {
 
         filteredArr = arr
           .filter(fitem => categoryS === 0 || fitem.tovarcategory === categoryS)
-          .filter(fitem => countryIdS === 0 || fitem.countryId === countryIdS);
+          .filter(fitem => countryIdS === 0 || fitem.countryid === countryIdS);
 
         if (filteredArr.length > 0) {
           notSelectedArr = filteredArr.filter(
@@ -257,7 +257,7 @@ const BranchF4Advanced = props => {
 
   let filBranches = branches
     .filter(fitem => categoryS === 0 || fitem.tovarcategory === categoryS)
-    .filter(fitem => countryIdS === 0 || fitem.countryId === countryIdS)
+    .filter(fitem => countryIdS === 0 || fitem.countryid === countryIdS)
     .map(mitem => {
       return { ...mitem };
     });

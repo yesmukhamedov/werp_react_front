@@ -222,7 +222,7 @@ export function monthsArrayToOptions(months) {
 }
 
 export function stringYYYYMMDDToMoment(stringVal) {
-  return stringVal ? moment(stringVal, 'YYYY-MM-DD') : '';
+  return stringVal ? moment(stringVal, 'YYYY-MM-DD') : moment();
 }
 export function momentToStringYYYYMMDD(momentVal) {
   return momentVal ? momentVal.format('YYYY-MM-DD') : '';

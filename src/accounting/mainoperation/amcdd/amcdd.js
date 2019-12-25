@@ -48,7 +48,7 @@ class Fmcp extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.amcddChange({
       zregOrConNum: '',
       lifnr: null,
@@ -236,9 +236,7 @@ class Fmcp extends Component {
                   <Link
                     target="_blank"
                     className="ui icon button primary"
-                    to={`/finance/mainoperation/fa03?belnr=${
-                      contract.belnr
-                    }&bukrs=${contract.bukrs}&gjahr=${contract.gjahr}`}
+                    to={`/finance/mainoperation/fa03?belnr=${contract.belnr}&bukrs=${contract.bukrs}&gjahr=${contract.gjahr}`}
                   >
                     Фин. док
                   </Link>
@@ -353,12 +351,9 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    amcddSave,
-    amcddFetch,
-    amcddChange,
-    amcddClear,
-  },
-)(Fmcp);
+export default connect(mapStateToProps, {
+  amcddSave,
+  amcddFetch,
+  amcddChange,
+  amcddClear,
+})(Fmcp);
