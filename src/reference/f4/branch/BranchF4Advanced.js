@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import {
-  Modal,
-  Icon,
-  Checkbox,
-  Table,
-  Dropdown,
-  Grid,
-  List,
-  Divider,
-  Segment,
-} from 'semantic-ui-react';
+import { Modal, Icon, Checkbox, Dropdown, Grid, List } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import {
   f4FetchCountryList,
