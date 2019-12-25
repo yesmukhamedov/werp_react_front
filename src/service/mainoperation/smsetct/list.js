@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import matchSorter from 'match-sorter';
 import {
@@ -14,6 +13,7 @@ import {
   Input,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
+import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 
 export default function List(props) {
   const {
@@ -21,38 +21,41 @@ export default function List(props) {
     companyOptions,
     branchOptions,
     countryList,
+    dynamicObject,
+    // historyDynamicObject,
     products,
     getCountryOptions,
     getCompanyOptions,
     getProductOptions,
     editSmsetct,
-  } = props; //+ dynamicObject
+  } = props;
 
+  const historyDynamicObject = {};
   const emptysm_set_ct_Edit = {
-    country: '',
-    bukrs: '',
     branchId: '',
-    products: '',
-    configuration_F1: '',
-    configuration_F2: '',
-    configuration_F3: '',
-    configuration_F4: '',
-    configuration_F5: '',
-    configuration_F6: '',
-    configuration_F7: '',
-    note: '',
+    bukrs: '',
+    countryId: '',
+    f1: '',
+    f2: '',
+    f3: '',
+    f4: '',
+    f5: '',
+    f6: '',
+    f7: '',
+    id: '',
+    matnr: '',
   };
   const [sm_set_ct_Edit, set_sm_set_ct_Edit] = useState({
     ...emptysm_set_ct_Edit,
   });
   const [open, setOpen] = useState(false);
 
-  const onEditTable = (o, fieldName) => {
+  const handleEdit = (o, fieldName) => {
     set_sm_set_ct_Edit(prev => {
       let varSm_Set_Ct = { ...prev };
       switch (fieldName) {
         case 'countryId':
-          varSm_Set_Ct.country = o.value;
+          varSm_Set_Ct.countryId = o.value;
           break;
 
         case 'bukrs':
@@ -68,35 +71,35 @@ export default function List(props) {
           break;
 
         case 'F1':
-          varSm_Set_Ct.configureF1 = o.value;
+          varSm_Set_Ct.f1 = o.value;
           break;
 
         case 'F2':
-          varSm_Set_Ct.configureF2 = o.value;
+          varSm_Set_Ct.f2 = o.value;
           break;
 
         case 'F3':
-          varSm_Set_Ct.configureF3 = o.value;
+          varSm_Set_Ct.f3 = o.value;
           break;
 
         case 'F4':
-          varSm_Set_Ct.configureF4 = o.value;
+          varSm_Set_Ct.f4 = o.value;
           break;
 
         case 'F5':
-          varSm_Set_Ct.configureF5 = o.value;
+          varSm_Set_Ct.f5 = o.value;
           break;
 
         case 'F6':
-          varSm_Set_Ct.configureF6 = o.value;
+          varSm_Set_Ct.f6 = o.value;
           break;
 
         case 'F7':
-          varSm_Set_Ct.configureF7 = o.value;
+          varSm_Set_Ct.f7 = o.value;
           break;
 
         case 'note':
-          varSm_Set_Ct.note = o.value;
+          varSm_Set_Ct.matnr = o.value;
           break;
 
         default:
@@ -106,143 +109,38 @@ export default function List(props) {
     });
   };
 
-  const onOpenEdit = row_data => {
+  const openEdit = row_data => {
     set_sm_set_ct_Edit(prop => {
       const sm_set_ct_Row = { ...prop };
       {
-        sm_set_ct_Row.configuration_F1 = row_data.configuration_F1;
-        sm_set_ct_Row.configuration_F2 = row_data.configuration_F2;
-        sm_set_ct_Row.configuration_F3 = row_data.configuration_F3;
-        sm_set_ct_Row.configuration_F4 = row_data.configuration_F4;
-        sm_set_ct_Row.configuration_F5 = row_data.configuration_F5;
-        sm_set_ct_Row.configuration_F6 = row_data.configuration_F6;
-        sm_set_ct_Row.configuration_F7 = row_data.configuration_F7;
-        sm_set_ct_Row.note = row_data.note;
+        sm_set_ct_Row.countryId = row_data.countryId;
+        sm_set_ct_Row.bukrs = row_data.bukrs;
+        sm_set_ct_Row.branchId = row_data.branchId;
+        sm_set_ct_Row.f1 = row_data.f1;
+        sm_set_ct_Row.f2 = row_data.f2;
+        sm_set_ct_Row.f3 = row_data.f3;
+        sm_set_ct_Row.f4 = row_data.f4;
+        sm_set_ct_Row.f5 = row_data.f5;
+        sm_set_ct_Row.f6 = row_data.f6;
+        sm_set_ct_Row.f7 = row_data.f7;
+        sm_set_ct_Row.matnr = row_data.f3;
+        // sm_set_ct_Row.note = row_data.note;
+        sm_set_ct_Row.id = row_data.id;
       }
+      console.log(sm_set_ct_Row);
       return sm_set_ct_Row;
     });
     setOpen(true);
   };
 
-  const onCloseEdit = () => {
+  const closeEdit = () => {
     setOpen(false);
   };
 
-  let dynamicObject = [
-    {
-      id: '1',
-      configuration_F1: 'F1',
-      configuration_F7: 'F1',
-      configuration_F6: 'F6',
-      configuration_F5: 'F1',
-      configuration_F2: 'F1',
-      configuration_F3: 'F1',
-      configuration_F4: 'F1',
-    },
-
-    {
-      id: '2',
-      configuration_F1: 'F1',
-      configuration_F7: 'F7',
-      configuration_F6: 'F1',
-      configuration_F5: 'F1',
-      configuration_F2: 'F1',
-      configuration_F3: 'F1',
-      configuration_F4: 'F1',
-    },
-
-    {
-      id: '3',
-      configuration_F1: 'F1',
-      configuration_F7: 'F1',
-      configuration_F6: 'F6',
-      configuration_F5: 'F5',
-      configuration_F2: 'F1',
-      configuration_F3: 'F1',
-      configuration_F4: 'F1',
-    },
-    {
-      id: '4',
-      configuration_F1: 'F1',
-      configuration_F7: 'F1',
-      configuration_F6: 'F1',
-      configuration_F5: 'F1',
-      configuration_F2: 'F1',
-      configuration_F3: 'F1',
-      configuration_F4: 'F4',
-    },
-
-    {
-      id: '1',
-      configuration_F1: 'F1',
-      configuration_F7: 'F1',
-      configuration_F6: 'F1',
-      configuration_F5: 'F1',
-      configuration_F2: 'F2',
-      configuration_F3: 'F1',
-      configuration_F4: 'F1',
-    },
-
-    {
-      id: '1',
-      configuration_F1: 'F1',
-      configuration_F7: 'F1',
-      configuration_F6: 'F1',
-      configuration_F5: 'F1',
-      configuration_F2: 'F1',
-      configuration_F3: 'F3',
-      configuration_F4: 'F1',
-    },
-
-    {
-      id: '1',
-      configuration_F1: 'F1',
-      configuration_F7: 'F11',
-      configuration_F6: 'F1',
-      configuration_F5: 'F1',
-      configuration_F2: 'F1',
-      configuration_F3: 'F1',
-      configuration_F4: 'F1',
-    },
-  ];
-
-  let historyDynamicObject = [
-    {
-      id: '1',
-      date: '11.11.2011',
-      operationType: 'Добавление',
-      brnch: 'Алматы',
-      previous: '11',
-      current: 'F1',
-      configuration: 'F1',
-      note: 'F1',
-      changed_by_employee: 'Имя Фомилия',
-    },
-
-    {
-      id: '2',
-      date: '11.11.2011',
-      operationType: 'Добавление',
-      brnch: 'Алматы',
-      previous: '11',
-      current: 'F1',
-      configuration: 'F1',
-      note: 'F1',
-      changed_by_employee: 'Имя Фомилия',
-    },
-
-    {
-      id: '3',
-      date: '11.11.2011',
-      operationType: 'Добавление',
-      brnch: 'Алматы',
-      previous: '11',
-      current: 'F1',
-      configuration: 'F1',
-      note: 'F1',
-      changed_by_employee: 'Имя Фомилия',
-    },
-  ];
+  const onClickSave = () => {
+    console.log('sm_set_ct_Edit', sm_set_ct_Edit);
+    editSmsetct({ ...sm_set_ct_Edit });
+  };
 
   let columns = [
     {
@@ -259,9 +157,9 @@ export default function List(props) {
     },
     {
       Header: messages['country'],
-      accessor: 'country',
+      accessor: 'countryId', //Name
       filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['country'] }),
+        matchSorter(rows, filter.value, { keys: ['countryId'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -271,7 +169,7 @@ export default function List(props) {
     },
     {
       Header: messages['bukrs'],
-      accessor: 'bukrs',
+      accessor: 'bukrs', //Name
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['bukrs'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
@@ -283,9 +181,9 @@ export default function List(props) {
     },
     {
       Header: messages['brnch'],
-      accessor: 'brnch',
+      accessor: 'brnchId', //Name
       filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['brnch'] }),
+        matchSorter(rows, filter.value, { keys: ['brnchId'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -295,9 +193,9 @@ export default function List(props) {
     },
     {
       Header: messages['TBL_H__PRODUCT'],
-      accessor: 'product',
+      accessor: 'matnr', //Name
       filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['product'] }),
+        matchSorter(rows, filter.value, { keys: ['matnr'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -307,9 +205,9 @@ export default function List(props) {
     },
     {
       Header: messages['configuration'] + 'F-1',
-      accessor: 'configuration_F1',
+      accessor: 'f1',
       filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['configuration_F1'] }),
+        matchSorter(rows, filter.value, { keys: ['f1'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -319,9 +217,9 @@ export default function List(props) {
     },
     {
       Header: messages['configuration'] + 'F-2',
-      accessor: 'configuration_F2',
+      accessor: 'f2',
       filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['configuration_F2'] }),
+        matchSorter(rows, filter.value, { keys: ['f2'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -331,9 +229,9 @@ export default function List(props) {
     },
     {
       Header: messages['configuration'] + 'F-3',
-      accessor: 'configuration_F3',
+      accessor: 'f3',
       filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['configuration_F3'] }),
+        matchSorter(rows, filter.value, { keys: ['f3'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -343,9 +241,9 @@ export default function List(props) {
     },
     {
       Header: messages['configuration'] + 'F-4',
-      accessor: 'configuration_F4',
+      accessor: 'f4',
       filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['configuration_F4'] }),
+        matchSorter(rows, filter.value, { keys: ['f4'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -356,9 +254,9 @@ export default function List(props) {
 
     {
       Header: messages['configuration'] + 'F-5',
-      accessor: 'configuration_F5',
+      accessor: 'f5',
       filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['configuration_F5'] }),
+        matchSorter(rows, filter.value, { keys: ['f5'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -369,9 +267,9 @@ export default function List(props) {
 
     {
       Header: messages['configuration'] + 'F- 6',
-      accessor: 'configuration_F6',
+      accessor: 'f6',
       filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['configuration_F6'] }),
+        matchSorter(rows, filter.value, { keys: ['f6'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -382,9 +280,9 @@ export default function List(props) {
 
     {
       Header: messages['configuration'] + 'F-7',
-      accessor: 'configuration_F7',
+      accessor: 'f7',
       filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['configuration_F7'] }),
+        matchSorter(rows, filter.value, { keys: ['f7'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -400,7 +298,7 @@ export default function List(props) {
           <Button
             icon
             onClick={() => {
-              onOpenEdit(row.original);
+              openEdit(row.original);
             }}
           >
             <Icon name="edit" size="large" color="teal" />
@@ -529,192 +427,162 @@ export default function List(props) {
         {Object.keys(dynamicObject).length === 0 ? (
           <Segment textAlign="center">Нет данных</Segment>
         ) : (
-          <ReactTable
+          <ReactTableWrapper
             filterable
-            columns={columns}
             data={dynamicObject}
-            resolveData={data => data.map(row => row)}
-            rowsText={messages['rowsText']}
-            pageText={messages['pageText']}
-            ofText={messages['ofText']}
-            previousText={messages['previousText']}
-            nextText={messages['nextText']}
-            noDataText={messages['loadingText']}
+            columns={columns}
+            defaultPageSize={20}
+            showPagination={true}
             className="-striped -highlight"
           />
         )}
 
+        <Modal open={open}>
+          <Modal.Header>
+            {' '}
+            <h3> Редактировать картридж</h3>{' '}
+          </Modal.Header>
+          <Modal.Content>
+            <Form>
+              <Form.Group widths="equal">
+                <Form.Field>
+                  <label>{messages['country']}</label>
+                  <Dropdown
+                    search
+                    selection
+                    options={getCountryOptions(countryList)}
+                    defaultValue={sm_set_ct_Edit.countryId}
+                    onChange={(e, o) => handleEdit(o, 'countryId')}
+                  />
+                  <label>{messages['bukrs']} </label>
+                  <Dropdown
+                    search
+                    selection
+                    options={getCompanyOptions(companyOptions)}
+                    defaultValue={sm_set_ct_Edit.bukrs}
+                    onChange={(e, o) => handleEdit(o, 'bukrs')}
+                  />
+
+                  <label>{messages['brnch']}</label>
+                  <Dropdown
+                    search
+                    selection
+                    options={
+                      sm_set_ct_Edit.bukrs
+                        ? branchOptions[sm_set_ct_Edit.bukrs]
+                        : []
+                    }
+                    defaultValue={sm_set_ct_Edit.branchId}
+                    onChange={(e, o) => handleEdit(o, 'brnch')}
+                  />
+
+                  <label>{messages['TBL_H__PRODUCT']}</label>
+                  <Dropdown
+                    search
+                    selection
+                    options={
+                      sm_set_ct_Edit.bukrs
+                        ? branchOptions[sm_set_ct_Edit.bukrs]
+                        : []
+                    }
+                    defaultValue={sm_set_ct_Edit.products}
+                    onChange={(e, o) => handleEdit(o, 'products')}
+                  />
+                  <Form.Field
+                    required
+                    control={Input}
+                    label={messages['Table.Note']}
+                    defaultValue={sm_set_ct_Edit.note}
+                    onChange={(e, o) => handleEdit(o, 'note')}
+                  />
+                </Form.Field>
+
+                <Form.Field>
+                  <Form.Field
+                    required
+                    control={Input}
+                    label={messages['configuration'] + ' F-1'}
+                    defaultValue={sm_set_ct_Edit.f1}
+                    onChange={(e, o) => handleEdit(o, e, 'F1')}
+                  />
+                  <Form.Field
+                    required
+                    control={Input}
+                    label={messages['configuration'] + ' F-2'}
+                    defaultValue={sm_set_ct_Edit.f2}
+                    onChange={(e, o) => handleEdit(o, 'F2')}
+                  />
+                  <Form.Field
+                    required
+                    control={Input}
+                    label={messages['configuration'] + ' F-3'}
+                    defaultValue={sm_set_ct_Edit.f3}
+                    onChange={(e, o) => handleEdit(o, 'F3')}
+                  />
+                  <Form.Field
+                    required
+                    control={Input}
+                    label={messages['configuration'] + ' F-4'}
+                    defaultValue={sm_set_ct_Edit.f4}
+                    onChange={(e, o) => handleEdit(o, 'F4')}
+                  />
+                  <Form.Field
+                    required
+                    control={Input}
+                    label={messages['configuration'] + ' F-5'}
+                    defaultValue={sm_set_ct_Edit.f5}
+                    onChange={(e, o) => handleEdit(o, 'F5')}
+                  />
+                  <Form.Field
+                    required
+                    control={Input}
+                    label={messages['configuration'] + ' F-6'}
+                    defaultValue={sm_set_ct_Edit.f6}
+                    onChange={(e, o) => handleEdit(o, 'F6')}
+                  />
+                  <Form.Field
+                    required
+                    control={Input}
+                    label={messages['configuration'] + ' F-7'}
+                    defaultValue={sm_set_ct_Edit.f7}
+                    onChange={(e, o) => handleEdit(o, 'F7')}
+                  />
+                </Form.Field>
+              </Form.Group>
+            </Form>
+          </Modal.Content>
+          <Modal.Actions>
+            <Button color="teal" floated="right" onClick={onClickSave}>
+              <Icon name="checkmark" />
+              {messages['Form.Save']}
+            </Button>
+
+            <Button negative floated="right" onClick={closeEdit}>
+              <Icon name="remove" />
+              {messages['BTN__CANCEL']}
+            </Button>
+          </Modal.Actions>
+          <br />
+          <br />
+          <br />
+        </Modal>
+
         <Segment clearing>
           <Header as="h2" floated="left">
-            {' '}
-            {messages['edit_history']}{' '}
+            {messages['edit_history']}
           </Header>
         </Segment>
-        <ReactTable
-          filterable
-          columns={historyColumns}
-          data={historyDynamicObject}
-          resolveData={data => data.map(row => row)}
-          rowsText={messages['rowsText']}
-          pageText={messages['pageText']}
-          ofText={messages['ofText']}
-          previousText={messages['previousText']}
-          nextText={messages['nextText']}
-          noDataText={messages['loadingText']}
-          className="-striped -highlight"
-        />
-
-        <Segment clearing>
-          <Modal open={open}>
-            <Modal.Header>
-              <Segment size="huge" inverted color="teal" textAlign="center">
-                {' '}
-                Редактировать картридж{' '}
-              </Segment>
-            </Modal.Header>
-            <Modal.Content>
-              <Segment>
-                <Form>
-                  <Form.Group widths="equal">
-                    <Form.Field>
-                      <label>{messages['country']}</label>
-                      <Dropdown
-                        fluid
-                        search
-                        selection
-                        options={getCountryOptions(countryList)}
-                        defaultValue={sm_set_ct_Edit.country}
-                        onChange={(e, o) => onEditTable(o, 'countryId')}
-                      />
-                    </Form.Field>
-
-                    <Form.Field>
-                      <label>{messages['bukrs']} </label>
-                      <Dropdown
-                        fluid
-                        search
-                        selection
-                        options={getCompanyOptions(companyOptions)}
-                        defaultValue={sm_set_ct_Edit.bukrs}
-                        onChange={(e, o) => onEditTable(o, 'bukrs')}
-                      />
-                    </Form.Field>
-                  </Form.Group>
-
-                  <Form.Group widths="equal">
-                    <Form.Field>
-                      <label>{messages['brnch']}</label>
-                      <Dropdown
-                        fluid
-                        search
-                        selection
-                        options={
-                          sm_set_ct_Edit.bukrs
-                            ? branchOptions[sm_set_ct_Edit.bukrs]
-                            : []
-                        }
-                        defaultValue={sm_set_ct_Edit.branchId}
-                        onChange={(e, o) => onEditTable(o, 'brnch')}
-                      />
-                    </Form.Field>
-                    <Form.Field>
-                      <label>{messages['TBL_H__PRODUCT']}</label>
-                      <Dropdown
-                        fluid
-                        search
-                        selection
-                        options={
-                          sm_set_ct_Edit.bukrs
-                            ? branchOptions[sm_set_ct_Edit.bukrs]
-                            : []
-                        }
-                        defaultValue={sm_set_ct_Edit.products}
-                        onChange={(e, o) => onEditTable(o, 'products')}
-                      />
-                    </Form.Field>
-                  </Form.Group>
-
-                  <Form.Group widths="equal">
-                    <Form.Field
-                      control={Input}
-                      label={messages['configuration'] + ' F-1'}
-                      defaultValue={sm_set_ct_Edit.configuration_F1}
-                      onChange={(e, o) => onEditTable(o, 'F1')}
-                    />
-                    <Form.Field
-                      control={Input}
-                      label={messages['configuration'] + ' F-2'}
-                      defaultValue={sm_set_ct_Edit.configuration_F2}
-                      onChange={(e, o) => onEditTable(o, 'F2')}
-                    />
-                    <Form.Field
-                      control={Input}
-                      label={messages['configuration'] + ' F-3'}
-                      defaultValue={sm_set_ct_Edit.configuration_F3}
-                      onChange={(e, o) => onEditTable(o, 'F3')}
-                    />
-                    <Form.Field
-                      control={Input}
-                      label={messages['configuration'] + ' F-4'}
-                      defaultValue={sm_set_ct_Edit.configuration_F4}
-                      onChange={(e, o) => onEditTable(o, 'F4')}
-                    />
-                  </Form.Group>
-
-                  <Form.Group widths="equal">
-                    <Form.Field
-                      control={Input}
-                      label={messages['configuration'] + ' F-5'}
-                      defaultValue={sm_set_ct_Edit.configuration_F5}
-                      onChange={(e, o) => onEditTable(o, 'F5')}
-                    />
-                    <Form.Field
-                      control={Input}
-                      label={messages['configuration'] + ' F-6'}
-                      defaultValue={sm_set_ct_Edit.configuration_F6}
-                      onChange={(e, o) => onEditTable(o, 'F6')}
-                    />
-                    <Form.Field
-                      control={Input}
-                      label={messages['configuration'] + ' F-7'}
-                      defaultValue={sm_set_ct_Edit.configuration_F7}
-                      onChange={(e, o) => onEditTable(o, 'F7')}
-                    />
-                  </Form.Group>
-
-                  <Form.Group widths="equal">
-                    <Form.Field
-                      control={Input}
-                      label={messages['Table.Note']}
-                      defaultValue={sm_set_ct_Edit.note}
-                      onChange={(e, o) => onEditTable(o, 'note')}
-                    />
-                  </Form.Group>
-                </Form>
-              </Segment>
-            </Modal.Content>
-            <Modal.Actions>
-              <Button
-                color="teal"
-                floated="right"
-                onClick={() => {
-                  editSmsetct();
-                }}
-              >
-                <Icon name="checkmark" />
-                {messages['Form.Save']}
-              </Button>
-
-              <Button negative floated="right" onClick={onCloseEdit}>
-                <Icon name="remove" />
-                {messages['BTN__CANCEL']}
-              </Button>
-            </Modal.Actions>
-            <br />
-            <br />
-            <br />
-          </Modal>
-        </Segment>
+        {Object.keys({}).length === 0 ? (
+          <Segment textAlign="center">Нет данных</Segment>
+        ) : (
+          <ReactTableWrapper
+            filterable
+            data={historyDynamicObject}
+            columns={historyColumns}
+            defaultPageSize={20}
+            showPagination={true}
+          />
+        )}
       </Container>
     </div>
   );

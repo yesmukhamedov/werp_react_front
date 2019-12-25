@@ -9,13 +9,11 @@ import {
   FETCH_SMSETPP_TYPE,
   FETCH_SMSETPP_POST,
   FETCH_SRLS,
-  FETCH_PHONE,
-  FETCH_PHONE_TYPE,
+  //DELETE_SMCETST
 } from './serviceAction';
 
 const INITIAL_STATE = {
   dynamicObject: {},
-  dynObjectPhoneType: {},
   data: {
     service: [],
     type: [],
@@ -31,6 +29,7 @@ export default function(state = INITIAL_STATE, action) {
       };
 
     case CHANGE_DYNOBJ_SERVICE:
+      console.log('in reducer ', action.payload);
       return {
         ...state,
         dynamicObject: { ...state.dynamicObject, ...action.data },
@@ -42,22 +41,29 @@ export default function(state = INITIAL_STATE, action) {
         dynamicObject: {},
       };
     case ADD_SMSETCT:
-      console.log('in reducer ', action.payload);
-      return {
-        ...state,
-        dynamicObject: { ...state.dynamicObject, ...action.payload },
-      };
+      if (
+        Object.keys(state.dynamicObject).length === 0 ||
+        state.dynamicObject === undefined
+      ) {
+        return { ...state, dynamicObject: [action.payload] };
+      } else {
+        return {
+          ...state,
+          dynamicObject: [...state.dynamicObject, action.payload],
+        };
+      }
+
     case SEARCH_SMSETCT:
       console.log('in reducer ', action.payload);
       return {
         ...state,
-        dynamicObject: { ...state.dynamicObject, ...action.payload },
+        dynamicObject: [...action.payload],
       };
     case EDIT_SMSETCT:
       console.log('in reducer ', action.payload);
       return {
         ...state,
-        dynamicObject: { ...state.dynamicObject, ...action.payload },
+        dynamicObject: [...state.dynamicObject, action.payload],
       };
 
     case FETCH_SMSETPP:
@@ -76,32 +82,20 @@ export default function(state = INITIAL_STATE, action) {
           type: [...action.payload.data],
         },
       };
-
     case FETCH_SMSETPP_POST:
+      console.log('object', action.payload);
       return {
         ...state,
         data: {
           ...state.data,
-          service: [...state.data.service, action.payload.data],
+          service: [...action.payload.data],
         },
       };
-
     case FETCH_SRLS:
       console.log('SRLS REDUCER', action.payload);
       return {
         ...state,
         dynamicObject: { ...state.dynamicObject, ...action.payload },
-      };
-    case FETCH_PHONE:
-      return {
-        ...state,
-        dynamicObject: { ...state.dynamicObject, ...action.payload },
-      };
-
-    case FETCH_PHONE_TYPE:
-      return {
-        ...state,
-        dynObjectPhoneType: { ...state.dynamicObject, ...action.payload },
       };
 
     default:
