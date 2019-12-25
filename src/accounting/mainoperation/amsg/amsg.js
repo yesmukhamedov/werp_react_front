@@ -67,7 +67,7 @@ class Amsg extends Component {
   componentWillMount() {
     // console.log(this.props)
     // this.props.f4FetchBonusTypeList('hrb02');
-    this.props.f4FetchCurrencyList('amsg');
+    this.props.f4FetchCurrencyList('');
     this.props.f4FetchDepartmentList();
     this.props.f4FetchBusinessAreaList2();
     this.props.f4FetchExchangeRateNational();
@@ -378,17 +378,14 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    changefaBkpf,
-    clearfaBkpf,
-    amsgSave,
-    modifyLoader,
-    f4FetchWerksBranchList,
-    f4FetchDepartmentList,
-    f4FetchCurrencyList,
-    f4FetchBusinessAreaList2,
-    f4FetchExchangeRateNational,
-  },
-)(injectIntl(Amsg));
+export default connect(mapStateToProps, {
+  changefaBkpf,
+  clearfaBkpf,
+  amsgSave,
+  modifyLoader,
+  f4FetchWerksBranchList,
+  f4FetchDepartmentList,
+  f4FetchCurrencyList,
+  f4FetchBusinessAreaList2,
+  f4FetchExchangeRateNational,
+})(injectIntl(Amsg));

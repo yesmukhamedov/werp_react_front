@@ -403,6 +403,7 @@ class AesReport extends Component {
           <Menu.Menu position="right">
             <Menu.Item>
               <img
+                alt=""
                 className="clickableItem"
                 src="/assets/img/xlsx_export_icon.png"
                 onClick={() => this.exportExcel(messages)}

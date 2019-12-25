@@ -7,6 +7,8 @@ import {
 } from '../../../reference/f4/f4_action';
 import { addSmsetct, searchSmsetct, editSmsetct } from '../../serviceAction';
 import { connect } from 'react-redux';
+import OutputErrors from '../../../general/error/outputErrors';
+import { modifyLoader } from '../../../general/loader/loader_action';
 import List from './list';
 import {
   Header,
@@ -20,134 +22,141 @@ import {
   Dropdown,
   Input,
 } from 'semantic-ui-react';
-import moment from 'moment';
 require('moment/locale/ru');
 require('moment/locale/tr');
 
 const Smsetct = props => {
-  const {
-    intl: { messages },
-  } = props;
-
-  const emptySmst = {
-    country: '',
-    bukrs: '',
+  const emptySearch = {
     branchId: '',
+    bukrs: '',
+    countryId: '',
   };
-  const emptySmstAdd = {
-    country: '',
-    bukrs: '',
+  const emptyAdd = {
     branchId: '',
+    bukrs: '',
+    countryId: '',
+    f1: '',
+    f2: '',
+    f3: '',
+    f4: '',
+    f5: '',
+    f6: '',
+    f7: '',
+    id: '',
+    // "matnr": '',
     products: '',
-    configureF1: '',
-    configureF2: '',
-    configureF3: '',
-    configureF4: '',
-    configureF5: '',
-    configureF6: '',
-    configureF7: '',
     note: '',
   };
 
-  const [smstSmstAdd, setSmstAdd] = useState({ ...emptySmstAdd });
-  const [smst, setSmst] = useState({ ...emptySmst });
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
+
+  const [smSetCtAdd, setsmSetCtAdd] = useState({ ...emptyAdd });
+  const [smCetStSearch, setsmCetStSearch] = useState({ ...emptySearch });
   const [show, setShow] = useState(false);
+  const [errors, setErrors] = useState([]);
+  const {
+    intl: { messages },
+    companyOptions,
+    branchOptions,
+    searchSmsetct,
+    countryList,
+    dynamicObject,
+    products,
+    addSmsetct,
+    editSmsetct,
+  } = props;
 
   //componentDidMount
   useEffect(() => {
     if (!countryList || countryList.length === 0) props.f4FetchCountryList();
   }, []);
 
-  const {
-    companyOptions,
-    branchOptions,
-    countryList,
-    dynamicObject,
-    products,
-  } = props;
-
-  const onChangeAdd = (o, fieldName) => {
-    setSmstAdd(prev => {
-      const varTs = { ...prev };
+  const handleInputAdd = (o, fieldName) => {
+    setsmSetCtAdd(prev => {
+      const varSmCetCt = { ...prev };
       switch (fieldName) {
         case 'countryId':
-          varTs.country = o.value;
+          varSmCetCt.countryId = o.value;
           break;
 
         case 'bukrs':
-          varTs.bukrs = o.value;
+          varSmCetCt.bukrs = o.value;
           break;
 
         case 'branchId':
-          varTs.branchId = o.value;
+          varSmCetCt.branchId = o.value;
           break;
 
         case 'products':
-          varTs.products = o.value;
+          varSmCetCt.products = o.value;
           break;
 
-        case messages['configuration'] + ' F-1':
-          varTs.configureF1 = o.value;
+        case 'F1':
+          varSmCetCt.f1 = o.value;
           break;
 
-        case messages['configuration'] + ' F-2':
-          varTs.configureF2 = o.value;
+        case 'F2':
+          varSmCetCt.f2 = o.value;
           break;
 
-        case messages['configuration'] + ' F-3':
-          varTs.configureF3 = o.value;
+        case 'F3':
+          varSmCetCt.f3 = o.value;
           break;
 
-        case messages['configuration'] + ' F-4':
-          varTs.configureF4 = o.value;
+        case 'F4':
+          varSmCetCt.f4 = o.value;
           break;
 
-        case messages['configuration'] + ' F-5':
-          varTs.configureF5 = o.value;
+        case 'F5':
+          varSmCetCt.f5 = o.value;
           break;
 
-        case messages['configuration'] + ' F-6':
-          varTs.configureF6 = o.value;
+        case 'F6':
+          varSmCetCt.f6 = o.value;
           break;
 
-        case messages['configuration'] + ' F-7':
-          varTs.configureF7 = o.value;
+        case 'F7':
+          varSmCetCt.f7 = o.value;
           break;
-
-        case messages['Table.Note']:
-          varTs.note = o.value;
+        case 'note':
+          varSmCetCt.note = o.value;
           break;
 
         default:
-          varTs[fieldName] = o.value;
+          varSmCetCt[fieldName] = o.value;
       }
-      return varTs;
+      return varSmCetCt;
     });
   };
 
-  const onInputChange = (o, fieldName) => {
-    setSmst(prev => {
-      const varTs = { ...prev };
+  const handleInputSearch = (o, fieldName) => {
+    setsmCetStSearch(prev => {
+      const varSmCetCt = { ...prev };
       switch (fieldName) {
         case 'countryId':
-          varTs.country = o.value;
+          varSmCetCt.countryId = o.value;
           break;
         case 'bukrs':
-          varTs.bukrs = o.value;
+          varSmCetCt.bukrs = o.value;
           break;
         case 'branchId':
-          varTs.branchId = o.value;
+          varSmCetCt.branchId = o.value;
           break;
         default:
-          varTs[fieldName] = o.value;
+          varSmCetCt[fieldName] = o.value;
       }
-      return varTs;
+      return varSmCetCt;
     });
   };
 
-  const handleAdd = e => {
-    e.preventDefault();
-    props.addSmsetct(smstSmstAdd);
+  const handleAdd = () => {
+    let errs = [];
+    errs = validateAdd();
+    if (errs === null || errs === undefined || errs.length === 0) {
+      addSmsetct({ ...smSetCtAdd });
+    }
+    setErrors(() => errs);
   };
 
   const handleOpen = () => {
@@ -156,8 +165,68 @@ const Smsetct = props => {
 
   const handleClose = () => {
     setShow(false);
+    setErrors(() => []);
   };
 
+  const clickSearch = () => {
+    searchSmsetct({ ...smCetStSearch });
+  };
+
+  const validateAdd = () => {
+    const {
+      f1,
+      f2,
+      f3,
+      f4,
+      f5,
+      f6,
+      f7,
+      countryId,
+      bukrs,
+      branchId,
+      products,
+      matnr,
+      note,
+    } = smSetCtAdd;
+    const errors = [];
+    if (countryId === null || countryId === undefined || !countryId) {
+      errors.push(errorTable[`147${language}`]);
+    }
+    if (bukrs === null || bukrs === undefined || !bukrs) {
+      errors.push(errorTable[`5${language}`]);
+    }
+    if (branchId === null || branchId === undefined || !branchId) {
+      errors.push(errorTable[`7${language}`]);
+    }
+    /* if ( products === null ||  products === undefined || !products) {
+      errors.push(errorTable[`132${language}`]);
+    }*/
+    if (f1 === null || f1 === undefined || !f1) {
+      errors.push(errorTable[`132${language}`]);
+    }
+    if (f2 === null || f2 === undefined || !f2) {
+      errors.push(errorTable[`132${language}`]);
+    }
+    if (f3 === null || f3 === undefined || !f3) {
+      errors.push(errorTable[`132${language}`]);
+    }
+    if (f4 === null || f4 === undefined || !f4) {
+      errors.push(errorTable[`132${language}`]);
+    }
+    if (f5 === null || f5 === undefined || !f5) {
+      errors.push(errorTable[`132${language}`]);
+    }
+    if (f6 === null || f6 === undefined || !f6) {
+      errors.push(errorTable[`132${language}`]);
+    }
+    if (f7 === null || f7 === undefined || !f7) {
+      errors.push(errorTable[`132${language}`]);
+    }
+    if (note === null || note === undefined || !note) {
+      errors.push(errorTable[`132${language}`]);
+    }
+    return errors;
+  };
   return (
     <div>
       <Container
@@ -174,7 +243,6 @@ const Smsetct = props => {
             {messages['cartrige_replace_period']}
           </Header>
           <Button color="teal" onClick={handleOpen} floated="right">
-            {' '}
             <Icon name="add circle" />
             {messages['BTN__ADD']}
           </Button>
@@ -186,122 +254,92 @@ const Smsetct = props => {
               <Segment>
                 <Form>
                   <Form.Group widths="equal">
-                    <Form.Field>
+                    <OutputErrors errors={errors} />
+                    <Form.Field required>
                       <label>{messages['country']}</label>
                       <Dropdown
                         fluid
                         search
                         selection
                         options={getCountryOptions(countryList)}
-                        onChange={(e, o) => onChangeAdd(o, 'countryId')}
+                        onChange={(e, o) => handleInputAdd(o, 'countryId')}
                       />
-                    </Form.Field>
-
-                    <Form.Field>
                       <label>{messages['bukrs']} </label>
                       <Dropdown
                         fluid
                         search
                         selection
                         options={getCompanyOptions(companyOptions)}
-                        value={smstSmstAdd.bukrs}
-                        onChange={(e, o) => onChangeAdd(o, 'bukrs')}
+                        value={smSetCtAdd.bukrs}
+                        onChange={(e, o) => handleInputAdd(o, 'bukrs')}
                       />
-                    </Form.Field>
-                  </Form.Group>
 
-                  <Form.Group widths="equal">
-                    <Form.Field>
                       <label>{messages['brnch']}</label>
                       <Dropdown
                         fluid
                         search
                         selection
                         options={
-                          smstSmstAdd.bukrs
-                            ? branchOptions[smstSmstAdd.bukrs]
+                          smSetCtAdd.bukrs
+                            ? branchOptions[smSetCtAdd.bukrs]
                             : []
                         }
-                        value={smstSmstAdd.branchId}
-                        onChange={(e, o) => onChangeAdd(o, 'branchId')}
+                        value={smSetCtAdd.branchId}
+                        onChange={(e, o) => handleInputAdd(o, 'branchId')}
                       />
-                    </Form.Field>
-                    <Form.Field>
                       <label>{messages['TBL_H__PRODUCT']}</label>
                       <Dropdown
                         fluid
                         search
                         selection
                         options={getProductOptions(companyOptions)}
-                        value={smstSmstAdd.products}
-                        onChange={(e, o) => onChangeAdd(o, 'products')}
+                        value={smSetCtAdd.products}
+                        onChange={(e, o) => handleInputAdd(o, 'products')}
+                      />
+                      <Form.Field
+                        onChange={(e, o) => handleInputAdd(o, 'note')}
+                        control={Input}
+                        label={messages['Table.Note']}
                       />
                     </Form.Field>
-                  </Form.Group>
 
-                  <Form.Group widths="equal">
-                    <Form.Field
-                      onChange={(e, o) =>
-                        onChangeAdd(o, messages['configuration'] + ' F-1')
-                      }
-                      control={Input}
-                      label={messages['configuration'] + ' F-1'}
-                    />
-                    <Form.Field
-                      onChange={(e, o) =>
-                        onChangeAdd(o, messages['configuration'] + ' F-2')
-                      }
-                      control={Input}
-                      label={messages['configuration'] + ' F-2'}
-                    />
-                    <Form.Field
-                      onChange={(e, o) =>
-                        onChangeAdd(o, messages['configuration'] + ' F-3')
-                      }
-                      control={Input}
-                      label={messages['configuration'] + ' F-3'}
-                    />
-                    <Form.Field
-                      onChange={(e, o) =>
-                        onChangeAdd(o, messages['configuration'] + ' F-4')
-                      }
-                      control={Input}
-                      label={messages['configuration'] + ' F-4'}
-                    />
-                  </Form.Group>
-
-                  <Form.Group widths="equal">
-                    <Form.Field
-                      onChange={(e, o) =>
-                        onChangeAdd(o, messages['configuration'] + ' F-5')
-                      }
-                      control={Input}
-                      label={messages['configuration'] + ' F-5'}
-                    />
-                    <Form.Field
-                      onChange={(e, o) =>
-                        onChangeAdd(o, messages['configuration'] + ' F-6')
-                      }
-                      control={Input}
-                      label={messages['configuration'] + ' F-6'}
-                    />
-                    <Form.Field
-                      onChange={(e, o) =>
-                        onChangeAdd(o, messages['configuration'] + ' F-7')
-                      }
-                      control={Input}
-                      label={messages['configuration'] + ' F-7'}
-                    />
-                  </Form.Group>
-
-                  <Form.Group widths="equal">
-                    <Form.Field
-                      onChange={(e, o) =>
-                        onChangeAdd(o, messages['Table.Note'])
-                      }
-                      control={Input}
-                      label={messages['Table.Note']}
-                    />
+                    <Form.Field>
+                      <Form.Field
+                        onChange={(e, o) => handleInputAdd(o, 'F1')}
+                        control={Input}
+                        label={messages['configuration'] + ' F-1'}
+                      />
+                      <Form.Field
+                        onChange={(e, o) => handleInputAdd(o, 'F2')}
+                        control={Input}
+                        label={messages['configuration'] + ' F-2'}
+                      />
+                      <Form.Field
+                        onChange={(e, o) => handleInputAdd(o, 'F3')}
+                        control={Input}
+                        label={messages['configuration'] + ' F-3'}
+                      />
+                      <Form.Field
+                        onChange={(e, o) => handleInputAdd(o, 'F4')}
+                        control={Input}
+                        label={messages['configuration'] + ' F-4'}
+                      />
+                      <Form.Field
+                        onChange={(e, o) => handleInputAdd(o, 'F5')}
+                        control={Input}
+                        label={messages['configuration'] + ' F-5'}
+                      />
+                      <Form.Field
+                        onChange={(e, o) => handleInputAdd(o, 'F6')}
+                        control={Input}
+                        label={messages['configuration'] + ' F-6'}
+                      />
+                      <Form.Field
+                        onChange={(e, o) => handleInputAdd(o, 'F7')}
+                        control={Input}
+                        label={messages['configuration'] + ' F-7'}
+                      />
+                    </Form.Field>
                   </Form.Group>
                 </Form>
               </Segment>
@@ -316,6 +354,7 @@ const Smsetct = props => {
                 negative
                 floated="right"
                 onClick={() => {
+                  setsmSetCtAdd(() => []);
                   handleClose();
                 }}
               >
@@ -338,8 +377,8 @@ const Smsetct = props => {
                 search
                 selection
                 options={getCountryOptions(countryList)}
-                value={smst.country}
-                onChange={(e, o) => onInputChange(o, 'countryId')}
+                value={smCetStSearch.countryId}
+                onChange={(e, o) => handleInputSearch(o, 'countryId')}
                 placeholder={messages['all']}
               />
             </Grid.Column>
@@ -351,8 +390,8 @@ const Smsetct = props => {
                 search
                 selection
                 options={getCompanyOptions(companyOptions)}
-                value={smst.bukrs}
-                onChange={(e, o) => onInputChange(o, 'bukrs')}
+                value={smCetStSearch.bukrs}
+                onChange={(e, o) => handleInputSearch(o, 'bukrs')}
                 placeholder={messages['all']}
               />
             </Grid.Column>
@@ -363,16 +402,18 @@ const Smsetct = props => {
                 fluid
                 search
                 selection
-                options={smst.bukrs ? branchOptions[smst.bukrs] : []}
-                value={smst.branchId}
-                onChange={(e, o) => onInputChange(o, 'branchId')}
+                options={
+                  smCetStSearch.bukrs ? branchOptions[smCetStSearch.bukrs] : []
+                }
+                value={smCetStSearch.branchId}
+                onChange={(e, o) => handleInputSearch(o, 'branchId')}
                 placeholder={messages['all']}
               />
             </Grid.Column>
 
-            <Grid.Column verticalAlign="bottom">
-              <Button color="teal" onClick={props.searchSmsetct}>
-                {' '}
+            <Grid.Column>
+              <br />
+              <Button color="teal" onClick={clickSearch}>
                 <Icon name="search" />
                 {messages['search']}
               </Button>
@@ -389,7 +430,9 @@ const Smsetct = props => {
           getCountryOptions={getCountryOptions}
           getCompanyOptions={getCompanyOptions}
           getProductOptions={getProductOptions}
-          editSmsetct={props.editSmsetct}
+          editSmsetct={editSmsetct}
+          errorTable={errorTable}
+          language={language}
         />
       </Container>
     </div>
@@ -403,9 +446,9 @@ const getCountryOptions = countryList => {
   }
   let out = countryLst.map(c => {
     return {
-      key: parseInt(c.countryId, 10),
-      text: `${c.country}`,
-      value: parseInt(c.countryId, 10),
+      key: c.countryId,
+      text: c.country,
+      value: c.countryId,
     };
   });
   return out;
@@ -426,12 +469,12 @@ const getProductOptions = productList => {
   return out;
 };
 
-const getCompanyOptions = compOptions => {
-  const companyOptions = compOptions;
-  if (!companyOptions) {
+const getCompanyOptions = compList => {
+  const compLst = compList;
+  if (!compLst) {
     return [];
   }
-  let out = companyOptions.map(c => {
+  let out = compLst.map(c => {
     return {
       key: parseInt(c.key, 10),
       text: `${c.text}`,
@@ -446,8 +489,8 @@ function mapStateToProps(state) {
     language: state.locales.lang,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
-    branchOptions: state.userInfo.branchOptionsAll,
-    dynamicObject: state.hr.dynamicObject,
+    branchOptions: state.userInfo.branchOptionsService,
+    dynamicObject: state.serviceReducer.dynamicObject,
   };
 }
 export default connect(mapStateToProps, {
@@ -456,4 +499,5 @@ export default connect(mapStateToProps, {
   addSmsetct,
   searchSmsetct,
   editSmsetct,
+  modifyLoader,
 })(injectIntl(Smsetct));

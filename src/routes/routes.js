@@ -501,7 +501,7 @@ const AsyncFrep7 = Loadable({
 
 const AsyncFrep8 = Loadable({
   loader: () =>
-    import('../finance/report/frep8' /* webpackChunkName: "frep8" */),
+    import('../finance/report/frep8/frep8' /* webpackChunkName: "frep8" */),
   loading: () => <LoadingPage />,
 });
 
@@ -1008,7 +1008,7 @@ const getComponent = {
   Frep5: AsyncFrep5,
   Frep6: AsyncFrep6,
   Frep7: AsyncFrep7,
-  // Frep8: AsyncFrep8,
+  Frep8: AsyncFrep8,
   Rfcoj: AsyncRfcoj,
   Hrrsb: AsyncHrrsb,
   Mmcc: AsyncMmcc,
@@ -1141,7 +1141,6 @@ const generateRoutes = transactionRoutes => {
       <Route path="/marketing/mainoperation/mmceg" component={AsyncMmceg} /> */}
       <Route path="/marketing/mainoperation/mmcef" component={AsyncMmcef} />
       <Route path="/marketing/mainoperation/mmcefa" component={AsyncMmcefa} />
-      <Route path="/finance/report/frep8" component={AsyncFrep8} />
       <Route
         path="/hr/exitinterviews"
         exact={true}
