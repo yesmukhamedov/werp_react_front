@@ -12,7 +12,6 @@ import {
   Input,
   Label,
 } from 'semantic-ui-react';
-import moment from 'moment';
 import FaHeader from '../../../finance/faHeader';
 import {
   f4FetchDepartmentList,
@@ -33,7 +32,7 @@ import { injectIntl } from 'react-intl';
 import CustomerF4Modal from '../../../reference/f4/Customer/customerF4';
 import { messages } from '../../../locales/defineMessages';
 
-require('moment/locale/ru');
+import moment from 'moment';
 
 class Amri extends Component {
   constructor(props) {
@@ -53,7 +52,7 @@ class Amri extends Component {
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.initializeBkpfBseg();
 
     this.props.f4FetchCurrencyList('amri');
@@ -92,8 +91,8 @@ class Amri extends Component {
   initializeBkpfBseg() {
     const bkpf = Object.assign({}, this.props.initialBkpf);
     bkpf.blart = 'OR';
-    bkpf.budat = moment().format('DD.MM.YYYY');
-    bkpf.bldat = moment().format('DD.MM.YYYY');
+    bkpf.budat = moment().format('YYYY-MM-DD');
+    bkpf.bldat = moment().format('YYYY-MM-DD');
 
     this.props.changefaBkpf(bkpf);
     this.initialBseg();
@@ -321,6 +320,7 @@ class Amri extends Component {
 function mapStateToProps(state) {
   // console.log(state,'state');
   return {
+    language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,
     currencyOptions: state.f4.currencyOptions,
@@ -334,16 +334,13 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    f4FetchDepartmentList,
-    f4FetchCurrencyList,
-    modifyLoader,
-    f4FetchExchangeRateNational,
-    changefaBkpf,
-    clearfaBkpf,
-    fetchIncomeHkontsByBukrs,
-    saveAccSrcDocs,
-  },
-)(injectIntl(Amri));
+export default connect(mapStateToProps, {
+  f4FetchDepartmentList,
+  f4FetchCurrencyList,
+  modifyLoader,
+  f4FetchExchangeRateNational,
+  changefaBkpf,
+  clearfaBkpf,
+  fetchIncomeHkontsByBukrs,
+  saveAccSrcDocs,
+})(injectIntl(Amri));

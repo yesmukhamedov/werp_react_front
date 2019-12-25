@@ -1,4 +1,6 @@
 import React, { PureComponent } from 'react';
+import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
 import { Table, Icon, Segment, Label, Input } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -11,6 +13,7 @@ import {
 import _ from 'lodash';
 
 require('moment/locale/ru');
+require('moment/locale/tr');
 
 class AmsgPaySchedule extends PureComponent {
   constructor(props) {
@@ -29,14 +32,14 @@ class AmsgPaySchedule extends PureComponent {
     const psRows = JSON.parse(JSON.stringify(this.props.psRows));
 
     if (stateFieldName === 'payment_date') {
-      psRows[idx].payment_date = value.format('DD.MM.YYYY');
+      psRows[idx].payment_date = value.format('YYYY-MM-DD');
       for (let i = idx + 1; i < psRows.length; i++) {
         psRows[i].payment_date = moment(
           psRows[i - 1].payment_date,
-          'DD.MM.YYYY',
+          'YYYY-MM-DD',
         )
           .add(1, 'M')
-          .format('DD.MM.YYYY');
+          .format('YYYY-MM-DD');
       }
       this.props.changePaymentSchedule('psRows', psRows);
     } else if (stateFieldName === 'sum2') {
@@ -100,9 +103,9 @@ class AmsgPaySchedule extends PureComponent {
   addOneMonthToLastRowAndReturnDateString(a_rows) {
     let date = '';
     if (a_rows !== null && a_rows.length > 0) {
-      date = moment(a_rows[a_rows.length - 1].payment_date, 'DD.MM.YYYY')
+      date = moment(a_rows[a_rows.length - 1].payment_date, 'YYYY-MM-DD')
         .add(1, 'M')
-        .format('DD.MM.YYYY');
+        .format('YYYY-MM-DD');
     }
     return date;
   }
@@ -126,12 +129,12 @@ class AmsgPaySchedule extends PureComponent {
               showYearDropdown
               dropdownMode="select" // timezone="UTC"
               selected={
-                item.payment_date ? moment(item.payment_date, 'DD.MM.YYYY') : ''
+                item.payment_date ? moment(item.payment_date, 'YYYY-MM-DD') : ''
               }
               onChange={(e, { value }) =>
                 this.onInputChangePsRows(e, 'payment_date', idx)
               }
-              locale="ru"
+              locale={this.props.language}
               disabled={idx !== 1}
               dateFormat="DD.MM.YYYY"
             />
@@ -215,4 +218,11 @@ class AmsgPaySchedule extends PureComponent {
   }
 }
 
-export default AmsgPaySchedule;
+function mapStateToProps(state) {
+  // console.log(state,'state');
+  return {
+    language: state.locales.lang,
+  };
+}
+
+export default connect(mapStateToProps, {})(injectIntl(AmsgPaySchedule));

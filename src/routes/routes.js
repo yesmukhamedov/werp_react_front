@@ -407,6 +407,14 @@ const AsyncAmri = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncAmtbs = Loadable({
+  loader: () =>
+    import(
+      '../accounting/mainoperation/amtbs/amtbs' /* webpackChunkName: "amtbs" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncArli = Loadable({
   loader: () =>
     import('../accounting/report/arli/arli' /* webpackChunkName: "arli" */),
@@ -989,6 +997,8 @@ const getComponent = {
   Amcdd: AsyncAmcdd,
   Ampi: AsyncAmpi,
   Amri: AsyncAmri,
+  Amtbs: AsyncAmtbs,
+
   Arli: AsyncArli,
   Arep1: AsyncArep1,
 
@@ -1141,6 +1151,8 @@ const generateRoutes = transactionRoutes => {
       <Route path="/marketing/mainoperation/mmceg" component={AsyncMmceg} /> */}
       <Route path="/marketing/mainoperation/mmcef" component={AsyncMmcef} />
       <Route path="/marketing/mainoperation/mmcefa" component={AsyncMmcefa} />
+      <Route path="/accounting/mainoperation/amtbs" component={AsyncAmtbs} />
+
       <Route
         path="/hr/exitinterviews"
         exact={true}
