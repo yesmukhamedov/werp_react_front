@@ -3,20 +3,26 @@ import { Modal, Icon, Table, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
-import { fetchPhoneType } from '../../../service/serviceAction';
+import { fetchPhoneType } from '../f4_action';
 
 import PhoneF4HistoryModal from './phoneF4HistoryModal';
 import PhoneF4CreateModal from './phoneF4CreateModal';
+import PhoneF4UpdateModal from './phoneF4UpdateModal';
 
 function PhoneF4Modal(props) {
+  const emptyList = {
+    selectedPhone: {},
+  };
+  const [list, setList] = useState({ ...emptyList });
   const [activeIndex, setActiveIndex] = useState(0);
   const [phoneF4HistoryModalOpen, setPhoneF4HistoryModalOpen] = useState(false);
   const [phoneF4CreateModalOpen, setPhoneF4CreateModalOpen] = useState(false);
+  const [phoneF4UpdateModalOpen, setPhoneF4UpdateModalOpen] = useState(false);
 
   const {
     intl: { messages },
     phoneList = [],
-    phoneListType = [],
+    phoneListType,
     customerId,
   } = props;
 
@@ -24,26 +30,41 @@ function PhoneF4Modal(props) {
     props.fetchPhoneType();
   }, []);
 
-  const phone = phoneList.map((phone, key) => {
-    if (!phoneList) {
-      return [];
-    }
-    const pl = phoneListType.map(type => {
-      if (phone.type === type.id && phone.status === 'CREATED') {
-        return (
-          <Table.Row key={key}>
-            <Table.Cell>
-              <label>{type.nameRu}</label>
-            </Table.Cell>
-            <Table.Cell>
-              <label>{phone.phone}</label>
-            </Table.Cell>
-          </Table.Row>
-        );
-      }
-    });
+  const onPhoneSelect = value => {
+    setList({ ...list, selectedPhone: value });
+  };
 
-    return pl;
+  const phone = phoneList.map((phone, key) => {
+    if (phone.customerId === customerId) {
+      const pl = phoneListType.map(type => {
+        if (phone.type === type.id && phone.status === 'CREATED') {
+          return (
+            <Table.Row key={key}>
+              <Table.Cell>
+                <label>{type.nameRu}</label>
+              </Table.Cell>
+              <Table.Cell>
+                <label>{phone.phone}</label>
+              </Table.Cell>
+              <Table.Cell collapsing>
+                <Button
+                  basic
+                  color="blue"
+                  icon
+                  onClick={() => {
+                    onPhoneSelect(phone);
+                    setPhoneF4UpdateModalOpen(true);
+                  }}
+                >
+                  <Icon name="pencil" />
+                </Button>
+              </Table.Cell>
+            </Table.Row>
+          );
+        }
+      });
+      return pl;
+    }
   });
 
   const label = (
@@ -64,14 +85,25 @@ function PhoneF4Modal(props) {
       <PhoneF4HistoryModal
         open={phoneF4HistoryModalOpen}
         phoneList={phoneList}
+        customerId={customerId}
         phoneListType={phoneListType}
         onCloseHistoryPhoneF4={bool => setPhoneF4HistoryModalOpen(bool)}
       />
       <PhoneF4CreateModal
         open={phoneF4CreateModalOpen}
+        customerId={customerId}
         phoneList={phoneList}
         phoneListType={phoneListType}
         onCloseCreatePhoneF4={bool => setPhoneF4CreateModalOpen(bool)}
+      />
+      <PhoneF4UpdateModal
+        open={phoneF4UpdateModalOpen}
+        customerId={customerId}
+        phoneList={phoneList}
+        phoneListType={phoneListType}
+        selectedPhone={list.selectedPhone}
+        //onPhoneSelect={(item, phone) => onPhoneSelect(item, phone)}
+        onCloseUpdatePhoneF4={bool => setPhoneF4UpdateModalOpen(bool)}
       />
       <Modal
         open={props.open}
@@ -84,7 +116,7 @@ function PhoneF4Modal(props) {
           Контакты
         </Modal.Header>
         <Modal.Content>
-          <Table component striped selectable>
+          <Table striped selectable>
             <Table.Body>{phone ? phone : label}</Table.Body>
           </Table>
         </Modal.Content>
@@ -118,9 +150,24 @@ function PhoneF4Modal(props) {
   );
 }
 
+const getPhoneList = ph => {
+  const phoneList = ph;
+  if (!phoneList) {
+    return [];
+  }
+  let out = ph.map(phone => {
+    return {
+      key: phone.id,
+      text: phone.phone,
+      customerId: phone.customerId,
+    };
+  });
+  return out;
+};
+
 function mapStateToProps(state) {
   return {
-    phoneListType: state.serviceReducer.dynObjectPhoneType.data,
+    phoneListType: state.f4.phoneType.data,
   };
 }
 

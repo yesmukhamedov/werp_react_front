@@ -4,7 +4,7 @@ import { injectIntl } from 'react-intl';
 import { Modal, Icon, Table, Button } from 'semantic-ui-react';
 
 function PhoneF4HistoryModal(props) {
-  const { phoneList = [], phoneListType = [] } = props;
+  const { phoneList = [], phoneListType = [], customerId } = props;
 
   const phone = phoneList.map((phone, key) => {
     if (!phoneList) {
@@ -13,6 +13,7 @@ function PhoneF4HistoryModal(props) {
     const pl = phoneListType.map(type => {
       if (
         phone.type === type.id &&
+        phone.customerId === customerId &&
         (phone.status === 'UPDATED' || phone.status === 'DELETED')
       ) {
         return (
@@ -51,7 +52,7 @@ function PhoneF4HistoryModal(props) {
         История
       </Modal.Header>
       <Modal.Content>
-        <Table component striped selectable>
+        <Table striped selectable>
           <Table.Body>{phone ? phone : label}</Table.Body>
         </Table>
       </Modal.Content>

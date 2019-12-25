@@ -18,8 +18,9 @@ import {
   f4FetchBranches,
 } from '../../../reference/f4/f4_action';
 
-import { fetchPhone } from '../../serviceAction';
+import { fetchPhone } from '../../../reference/f4/f4_action';
 
+import OutputErrors from '../../../general/error/outputErrors';
 import DatePicker from 'react-datepicker';
 import { injectIntl } from 'react-intl';
 import moment from 'moment';
@@ -51,6 +52,7 @@ function Smcc(props) {
     matnrListId: '',
     addrServiceId: '',
     addrService: '',
+    phone: '',
   };
 
   const [ts, setTs] = useState({ ...emptyTs });
@@ -62,6 +64,8 @@ function Smcc(props) {
   const [matnrListF4ModalOpen, setMatnrListF4ModalOpen] = useState(false);
   const [phoneF4ModalOpen, setPhoneF4ModalOpen] = useState(false);
   const [isLoadingMatnrList, setIsLoadingMatnrList] = useState(false);
+  const [error, setError] = useState([]);
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 
   const {
     companyOptions = [],
@@ -82,6 +86,7 @@ function Smcc(props) {
     return () => {
       props.f4ClearAnyObject('F4_CLEAR_CONTYPE_LIST');
       props.f4ClearAnyObject('F4_CLEAR_BRANCHES');
+      props.f4ClearAnyObject('F4_CLEAR_PHONE');
     };
   }, []);
 
@@ -162,6 +167,8 @@ function Smcc(props) {
           varTs.tovarSerial = '';
           varTs.matnrListId = '';
           break;
+        case 'choosePhone':
+          varTs.phone = o.phone;
         default:
           varTs[fieldName] = o.value;
       }
@@ -169,8 +176,40 @@ function Smcc(props) {
     });
   };
 
-  const handleSubmit = () => {
-    console.log('HandleSubmit');
+  const handleClick = () => {
+    validate();
+  };
+
+  const validate = () => {
+    const errors = [];
+    if (ts.bukrs === '') {
+      errors.push(errorTable[`5${language}`]);
+    }
+    if (ts.branchId === '') {
+      errors.push(errorTable[`7${language}`]);
+    }
+    if (ts.branchServ === '') {
+      errors.push(errorTable[`7${language}`]);
+    }
+    if (ts.contractType === '') {
+      errors.push(errorTable[`17${language}`]);
+    }
+    if (ts.dealer === '') {
+      errors.push(errorTable[`115${language}`]);
+    }
+    if (ts.customerId === '') {
+      errors.push(errorTable[`9${language}`]);
+    }
+    if (ts.tovarSerial === '') {
+      errors.push(errorTable[`9${language}`]);
+    }
+    if (ts.addrService === '') {
+      errors.push(errorTable[`118${language}`]);
+    }
+    if (ts.phone === '') {
+      errors.push(errorTable[`126${language}`]);
+    }
+    setError(() => errors);
   };
 
   return (
@@ -213,11 +252,12 @@ function Smcc(props) {
       <PhoneF4Modal
         open={phoneF4ModalOpen}
         phoneList={phoneList}
-        cutomerId={ts.customerId}
+        customerId={ts.customerId}
         onClosePhoneF4={bool => setPhoneF4ModalOpen(bool)}
+        onPhoneSelect={item => onInputChange(item, 'choosePhone')}
       />
       <Segment>
-        <Form onSubmit={handleSubmit}>
+        <Form>
           <Grid>
             <Grid.Row>
               <Grid.Column mobile={16} table={16} computer={8}>
@@ -491,7 +531,11 @@ function Smcc(props) {
                         {messages['telMob1']}
                       </Table.Cell>
                       <Table.Cell>
-                        <Input placeholder={messages['telMob1']} fluid />
+                        <Input
+                          placeholder={messages['telMob1']}
+                          fluid
+                          value={ts.phone}
+                        />
                       </Table.Cell>
                       <Table.Cell>
                         <Button
@@ -543,11 +587,12 @@ function Smcc(props) {
                     </Table.Row>
                   </Table.Body>
                 </Table>
+                <OutputErrors errors={error} />
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
               <Grid.Column mobile={16} table={16} computer={8}>
-                <Button floated="right" color="teal">
+                <Button floated="right" color="teal" onClick={handleClick}>
                   {messages['save']}
                 </Button>
               </Grid.Column>
@@ -581,7 +626,7 @@ function mapStateToProps(state) {
     branchOptions: state.userInfo.branchOptionsMarketing,
     branchService: state.userInfo.branchOptionsService,
     contractTypeList: state.f4.contractTypeList,
-    phoneList: state.serviceReducer.dynamicObject.data,
+    phoneList: state.f4.phoneList.data,
   };
 }
 

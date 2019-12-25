@@ -1,4 +1,4 @@
-import { doGet, doPost } from '../../utils/apiActions';
+import { doGet, doPost, doPut } from '../../utils/apiActions';
 import {
   handleError,
   notify,
@@ -91,6 +91,18 @@ export const F4_CLEAR_NATIONALITIES = 'F4_CLEAR_NATIONALITIES';
 export const F4_FETCH_NATIONALITY_OPTIONS = 'F4_FETCH_NATIONALITY_OPTIONS';
 
 export const F4_FETCH_ADDR_TYPE_OPTIONS = 'F4_FETCH_ADDR_TYPE_OPTIONS';
+
+export const F4_FETCH_PHONE = 'F4_FETCH_PHONE';
+export const F4_CLEAR_PHONE = 'F4_CLEAR_PHONE';
+
+export const F4_FETCH_PHONE_TYPE = 'F4_FETCH_PHONE_TYPE';
+export const F4_CLEAR_PHONE_TYPE = 'F4_CLEAR_PHONE_TYPE';
+
+export const F4_POST_PHONE = 'F4_POST_PHONE';
+export const F4_CLEAR_POST_PHONE = 'F4_CLEAR_POST_PHONE';
+
+export const F4_UPDATE_PHONE = 'F4_UPDATE_PHONE';
+export const F4_CLEAR_UPDATE_PHONE = 'F4_CLEAR_UPDATE_PHONE';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
@@ -715,6 +727,86 @@ export function saveRfadd02(url, body, params, setIsLoading) {
         handleError(error, dispatch);
         dispatch(modifyLoader(false));
         setIsLoading(false);
+      });
+  };
+}
+
+export function fetchPhone() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`werp/dictionary/phone/`)
+      .then(({ data }) => {
+        console.log('data', data);
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_PHONE,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchPhoneType() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('werp/dictionary/phone/type')
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_PHONE_TYPE,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function postPhone(getData) {
+  console.log('data', getData);
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost('werp/dictionary/phone/create', getData)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_POST_PHONE,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4UpdatePhone(data) {
+  console.log(data);
+  return function(dispatch) {
+    doPut('werp/dictionary/phone/update', data)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_UPDATE_PHONE,
+          payload: data,
+        });
+        dispatch(
+          notify(
+            'info',
+            errorTable[`133${language}`],
+            errorTable[`132${language}`],
+          ),
+        );
+      })
+      .catch(e => {
+        handleError(e, dispatch);
       });
   };
 }

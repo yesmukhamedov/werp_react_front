@@ -52,6 +52,14 @@ import {
   F4_CLEAR_ADDRESSES,
   F4_FETCH_CONSTATUS_LIST,
   F4_CLEAR_CONSTATUS_LIST,
+  F4_FETCH_PHONE,
+  F4_CLEAR_PHONE,
+  F4_FETCH_PHONE_TYPE,
+  F4_CLEAR_PHONE_TYPE,
+  F4_POST_PHONE,
+  F4_CLEAR_POST_PHONE,
+  F4_UPDATE_PHONE,
+  F4_CLEAR_UPDATE_PHONE,
 } from './f4_action';
 
 const INITIAL_STATE = {
@@ -84,6 +92,9 @@ const INITIAL_STATE = {
   branches: [],
   addresses: [],
   contractStatusList: [],
+  phoneList: [],
+  phoneType: [],
+  phonePost: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -244,6 +255,30 @@ export default function(state = INITIAL_STATE, action) {
 
     case F4_CLEAR_CONSTATUS_LIST:
       return { ...state, contractStatusList: [] };
+
+    case F4_FETCH_PHONE:
+      return { ...state, phoneList: action.payload };
+
+    case F4_CLEAR_PHONE:
+      return { ...state, phoneList: [] };
+
+    case F4_FETCH_PHONE_TYPE:
+      return { ...state, phoneType: action.payload };
+
+    case F4_CLEAR_PHONE_TYPE:
+      return { ...state, phoneType: [] };
+
+    case F4_POST_PHONE:
+      return { ...state, phonePost: action.payload };
+
+    case F4_CLEAR_POST_PHONE:
+      return { ...state, phonePost: [] };
+
+    case F4_UPDATE_PHONE:
+      return { ...state, phoneUpdate: action.payload };
+
+    case F4_CLEAR_UPDATE_PHONE:
+      return { ...state, phoneUpdate: [] };
 
     default:
       return state;

@@ -1,0 +1,8 @@
+.education {
+  background-image: url('./assets/muhaba.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 95vh;
+  cursor: pointer;
+}

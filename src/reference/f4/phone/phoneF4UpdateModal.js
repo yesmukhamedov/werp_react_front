@@ -1,10 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Icon, Button, Dropdown, Input, Table } from 'semantic-ui-react';
+import React, { useState } from 'react';
+import {
+  Modal,
+  Icon,
+  Button,
+  Dropdown,
+  Input,
+  Table,
+  TextArea,
+  Form,
+} from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { postPhone } from '../f4_action';
+import { postPhone, f4UpdatePhone } from '../f4_action';
+import OutputErrors from '../../../general/error/outputErrors';
 
-function PhoneF4CreateModal(props) {
+function PhoneF4UpdateModal(props) {
   const emptyList = {
     type: 0,
     phone: '',
@@ -12,7 +22,12 @@ function PhoneF4CreateModal(props) {
     description: '',
   };
   const [list, setList] = useState({ ...emptyList });
-  const { phoneListType = [], customerId } = props;
+  const [errors, setErrors] = useState([]);
+
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
+
+  const { phoneListType = [], customerId, selectedPhone } = props;
 
   const onInputChange = (o, fieldName) => {
     setList(prev => {
@@ -24,6 +39,9 @@ function PhoneF4CreateModal(props) {
         case 'phoneNumber':
           varList.phone = o.value;
           break;
+        case 'description':
+          varList.description = o.value;
+          break;
         default:
           varList[fieldName] = o.value;
       }
@@ -32,21 +50,48 @@ function PhoneF4CreateModal(props) {
   };
 
   const handleSubmit = () => {
+    let errors = [];
+    errors = validate();
     const { type, phone, status, description } = list;
-    if (type !== 0 && phone !== '' && customerId !== '') {
-      props.postPhone({
+    if (errors === null || errors === undefined || errors.length === 0) {
+      props.f4UpdatePhone({
         type,
         phone,
         status,
         description,
         customerId,
       });
+      // setList({
+      //     status: 'CREATED',
+      // })
+      // props.postPhone({
+      //     type,
+      //     phone,
+      //     status,
+      //     description,
+      //     customerId
+      // })
+      setErrors(errors);
+      props.onCloseUpdatePhoneF4(false);
     }
-    props.onCloseCreatePhoneF4(false);
+  };
+
+  const validate = () => {
+    const errors = [];
+    const { type, phone } = list;
+    if (type === 0 || type === undefined || type === null) {
+      errors.push(errorTable[`20${language}`]);
+      return errors;
+    }
+    if (phone === '' || phone === undefined || phone === null) {
+      errors.push(errorTable[`20${language}`]);
+      return errors;
+    }
+    return errors;
   };
 
   const close = () => {
-    props.onCloseCreatePhoneF4(false);
+    props.onCloseUpdatePhoneF4(false);
     setList({
       type: '',
       phone: '',
@@ -59,7 +104,7 @@ function PhoneF4CreateModal(props) {
     <Modal open={props.open} closeOnEscape={false} onClose={close}>
       <Modal.Header>
         <Icon name="pencil" size="big" />
-        Добавить номер
+        Update number
       </Modal.Header>
       <Modal.Content>
         <Table>
@@ -71,19 +116,31 @@ function PhoneF4CreateModal(props) {
                   selection
                   search
                   options={getTypeList(phoneListType)}
-                  value={list.type}
+                  defaultValue={selectedPhone.type}
                   onChange={(e, o) => onInputChange(o, 'typeList')}
                 />
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Enter the number</Table.Cell>
+              <Table.Cell>Change the number</Table.Cell>
               <Table.Cell>
                 <Input
                   placeholder="Введите номер"
                   type="number"
+                  defaultValue={selectedPhone.phone}
                   onChange={(e, o) => onInputChange(o, 'phoneNumber')}
                 />
+              </Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>Why you want to change number?</Table.Cell>
+              <Table.Cell>
+                <Form>
+                  <TextArea
+                    placeholder="Input description"
+                    onChange={(e, o) => onInputChange(o, 'description')}
+                  />
+                </Form>
               </Table.Cell>
             </Table.Row>
           </Table.Body>
@@ -134,4 +191,5 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   postPhone,
-})(injectIntl(PhoneF4CreateModal));
+  f4UpdatePhone,
+})(injectIntl(PhoneF4UpdateModal));
