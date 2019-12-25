@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import {
-  Modal,
-  Icon,
-  Checkbox,
-  Table,
-  Dropdown,
-  Grid,
-  List,
-  Divider,
-  Segment,
-} from 'semantic-ui-react';
+import { Modal, Icon, Checkbox, Dropdown, Grid, List } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import {
   f4FetchCountryList,
@@ -280,82 +270,75 @@ const BranchF4Advanced = props => {
 
   return (
     <div>
-      <Modal open={isOpen} onClose={onClose} closeIcon>
+      <Modal open={isOpen} onClose={onClose} closeIcon size={'tiny'}>
         <Modal.Header>
           <Icon name="filter" size="big" />
           {messages['brnch']}
         </Modal.Header>
         <Modal.Content>
-          <Table collapsing className="borderLess">
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell>
-                  <List>
-                    <List.Item>{messages['category']}</List.Item>
-                    <List.Item>
-                      <Dropdown
-                        selection
-                        options={categoryOptions}
-                        value={categoryS}
-                        onChange={(e, { value }) =>
-                          onInputChange(value, 'categoryS')
-                        }
-                      />
-                    </List.Item>
-                  </List>
-                </Table.Cell>
-                <Table.Cell>
-                  <List>
-                    <List.Item>{messages['country']}</List.Item>
-                    <List.Item>
-                      <Dropdown
-                        selection
-                        options={countryOptions}
-                        value={countryIdS}
-                        onChange={(e, { value }) =>
-                          onInputChange(value, 'countryIdS')
-                        }
-                      />
-                    </List.Item>
-                  </List>
-                </Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          </Table>
-
-          <Segment>
-            <Grid columns={2} stackable verticalAlign="middle">
-              <Grid.Row>
-                <Divider vertical>
-                  <Icon name="exchange" size="huge" />
-                </Divider>
-                <Grid.Column>
-                  <div style={{ height: '300px', overflow: 'auto' }}>
-                    <ReactTableWrapper
-                      filterable
-                      data={filBranches}
-                      columns={t1columns}
-                      pageSize={filBranches.length > 0 ? filBranches.length : 5}
-                      onRowClick={onRowClick}
+          <Grid columns="equal" stackable>
+            <Grid.Row>
+              <Grid.Column width={8}>
+                <List>
+                  <List.Item>{messages['category']}</List.Item>
+                  <List.Item>
+                    <Dropdown
+                      selection
+                      options={categoryOptions}
+                      value={categoryS}
+                      onChange={(e, { value }) =>
+                        onInputChange(value, 'categoryS')
+                      }
                     />
-                  </div>
-                  <b>#{filBranches.length}</b>
-                </Grid.Column>
+                  </List.Item>
+                </List>
+              </Grid.Column>
 
-                <Grid.Column>
-                  <div style={{ height: '300px', overflow: 'auto' }}>
-                    <ReactTableWrapper
-                      data={selBranches}
-                      columns={t2columns}
-                      pageSize={selBranches.length > 0 ? selBranches.length : 5}
-                      onRowClick={onRowClick}
+              <Grid.Column width={8}>
+                <List>
+                  <List.Item>{messages['country']}</List.Item>
+                  <List.Item>
+                    <Dropdown
+                      selection
+                      options={countryOptions}
+                      value={countryIdS}
+                      onChange={(e, { value }) =>
+                        onInputChange(value, 'countryIdS')
+                      }
                     />
-                  </div>
-                  <b>#{selBranches.length}</b>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </Segment>
+                  </List.Item>
+                </List>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column width={8}>
+                <div style={{ height: '200px', overflow: 'auto' }}>
+                  <ReactTableWrapper
+                    filterable
+                    data={filBranches}
+                    columns={t1columns}
+                    pageSize={filBranches.length > 0 ? filBranches.length : 5}
+                    onRowClick={onRowClick}
+                  />
+                </div>
+                <br />
+                <b>#{filBranches.length}</b>
+              </Grid.Column>
+
+              <Grid.Column width={8}>
+                <div style={{ height: '200px', overflow: 'auto' }}>
+                  <ReactTableWrapper
+                    data={selBranches}
+                    columns={t2columns}
+                    pageSize={selBranches.length > 0 ? selBranches.length : 5}
+                    onRowClick={onRowClick}
+                  />
+                </div>
+                <br />
+                <b>#{selBranches.length}</b>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
         </Modal.Content>
       </Modal>
     </div>

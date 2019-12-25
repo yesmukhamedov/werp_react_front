@@ -112,7 +112,6 @@ export function getTSRep1(ts) {
     dispatch(modifyLoader(true));
     doGet(`hr/tsrep/monthly`, ts)
       .then(({ data }) => {
-        //console.log('data ', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: TS_REP_1,
@@ -127,7 +126,6 @@ export function getTSRep1(ts) {
 }
 
 export function getTSRep2(ts) {
-  // console.log('ts ', ts);
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`hr/tsrep/monthly/general`, ts)

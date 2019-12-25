@@ -79,6 +79,16 @@ export default function List(props) {
       minWidth: 100,
     },
     {
+      Header: messages['brnch'],
+      accessor: 'applicantBranchName',
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, { keys: ['applicantBranchName'] }),
+      filterAll: true,
+      width: 300,
+      maxWidth: 300,
+      minWidth: 100,
+    },
+    {
       Header: messages['applicantPositionName'],
       accessor: 'applicantPositionName',
       filterMethod: (filter, rows) =>

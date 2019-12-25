@@ -12,7 +12,7 @@ export const CRM_REP_CLEAR_STATE = 'CRM_REP_CLEAR_STATE';
 export function fetchItems(id, params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`/crm/report/${id}`, params)
+    doGet(`crm/report/${id}`, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
