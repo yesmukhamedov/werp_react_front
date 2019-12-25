@@ -947,6 +947,39 @@ const AsyncSrls = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncEdu = Loadable({
+  loader: () => import('../education'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCont = Loadable({
+  loader: () => import('../education/components/content/content'),
+  loading: () => <LoadingPage />,
+});
+const AsyncHire = Loadable({
+  loader: () => import('../education/components/firstpart/hiring'),
+  loading: () => <LoadingPage />,
+});
+const AsyncAcComp = Loadable({
+  loader: () => import('../education/components/firstpart/acquaintancecompany'),
+  loading: () => <LoadingPage />,
+});
+const AsyncAcWork = Loadable({
+  loader: () => import('../education/components/firstpart/acquaintancework'),
+  loading: () => <LoadingPage />,
+});
+const AsyncWhyAura = Loadable({
+  loader: () => import('../education/components/firstpart/whyaura'),
+  loading: () => <LoadingPage />,
+});
+const AsyncProfit = Loadable({
+  loader: () => import('../education/components/firstpart/profitways'),
+  loading: () => <LoadingPage />,
+});
+const AsyncBusiness = Loadable({
+  loader: () => import('../education/components/firstpart/businesstypes'),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
@@ -1066,6 +1099,14 @@ const getComponent = {
   Smes: AsyncSmes,
   Srlsm: AsyncSrlsm,
   Srls: AsyncSrls,
+  Edu: AsyncEdu,
+  Cont: AsyncCont,
+  Hire: AsyncHire,
+  AcComp: AsyncAcComp,
+  AcWork: AsyncAcWork,
+  WhyAura: AsyncWhyAura,
+  Business: AsyncBusiness,
+  Profit: AsyncProfit,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1195,6 +1236,43 @@ const generateRoutes = transactionRoutes => {
       />
       <Route path="/service/report/srlsm" exact={true} component={AsyncSrlsm} />
       <Route path="/service/report/srls" exact={true} component={AsyncSrls} />
+
+      <Route path="/edu" exact={true} component={AsyncEdu} />
+      <Route
+        path="/edu/components/content"
+        exact={true}
+        component={AsyncCont}
+      />
+      <Route
+        path="/edu/components/firstpart/hiring"
+        exact={true}
+        component={AsyncHire}
+      />
+      <Route
+        path="/edu/components/firstpart/acquaintancecompany"
+        exact={true}
+        component={AsyncHire}
+      />
+      <Route
+        path="/edu/components/firstpart/acquaintancework"
+        exact={true}
+        component={AsyncHire}
+      />
+      <Route
+        path="/edu/components/firstpart/whyaura"
+        exact={true}
+        component={AsyncHire}
+      />
+      <Route
+        path="/edu/components/firstpart/profitways"
+        exact={true}
+        component={AsyncHire}
+      />
+      <Route
+        path="/edu/components/firstpart/businesstypes"
+        exact={true}
+        component={AsyncHire}
+      />
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
         return (
