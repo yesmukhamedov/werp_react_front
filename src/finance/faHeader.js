@@ -117,6 +117,7 @@ const FaHeader = props => {
                   </Table.Cell>
                   <Table.Cell>
                     <Dropdown
+                      noResultsMessage={messages['noResultsMessage']}
                       placeholder={messages['bukrs']}
                       selection
                       options={companyOptions}
@@ -147,6 +148,7 @@ const FaHeader = props => {
                   </Table.Cell>
                   <Table.Cell>
                     <Dropdown
+                      noResultsMessage={messages['noResultsMessage']}
                       placeholder={messages['brnch']}
                       search
                       selection
@@ -177,6 +179,7 @@ const FaHeader = props => {
                   </Table.Cell>
                   <Table.Cell>
                     <Dropdown
+                      noResultsMessage={messages['noResultsMessage']}
                       placeholder={messages['business_area']}
                       search
                       selection
@@ -241,6 +244,7 @@ const FaHeader = props => {
                   </Table.Cell>
                   <Table.Cell>
                     <Dropdown
+                      noResultsMessage={messages['noResultsMessage']}
                       placeholder={messages['dep']}
                       search
                       selection
@@ -265,6 +269,7 @@ const FaHeader = props => {
                   </Table.Cell>
                   <Table.Cell>
                     <Dropdown
+                      noResultsMessage={messages['noResultsMessage']}
                       placeholder={messages['waers']}
                       search
                       selection

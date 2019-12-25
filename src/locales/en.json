@@ -667,6 +667,9 @@
   "productCategory": "Product Category",
   "category": "Category",
   "oldSn": "Old SN",
+  "yes": "Yes",
+  "no": "No",
+  "questionAreYouSure": "Are you sure?",
 
   "transNameFmcp": "FMCP: Receipt from Sales Contract",
   "transNameFcis": "FCIS: Employee acc.cash inquiry",
@@ -678,6 +681,7 @@
   "transNameHrc03": "HRC03: View Customer",
   "transNameAmpi": "AMPI: Payment Invoice",
   "transNameAmri": "AMRI: Receipt Invoice",
+  "transNameAmtbs": "AMTBS: Transfer Between Suppliers",
   "transNameFaci01": "FACI01: Cash Receipts From Contragents",
   "transNameFaco01": "FACO01Payments to Contragents",
   "transNameArep1": "AREP1: General Ledger",

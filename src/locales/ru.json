@@ -645,6 +645,9 @@
   "productCategory": "Товар категория",
   "category": "Категория",
   "oldSn": "Старый SN",
+  "yes": "Да",
+  "no": "Нет",
+  "questionAreYouSure": "Вы уверены?",
 
   "transNameFmcp": "FMCP: Взнос по договору",
   "transNameFcis": "FCIS: Взнос в счет сотрудника",
@@ -656,6 +659,7 @@
   "transNameHrc03": "HRC03: Просмотр клиента",
   "transNameAmpi": "AMPI: Счет-фактура от постащика",
   "transNameAmri": "AMRI: Прочие доходы (СФ)",
+  "transNameAmtbs": "AMTBS: Перевод между поставщиками",
   "transNameFaci01": "FACI01: Платеж от контрагента",
   "transNameFaco01": "FACO01: Оплата контрагенту",
   "transNameArep1": "AREP1: Счет Гл. Книги",

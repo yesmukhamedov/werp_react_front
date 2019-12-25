@@ -112,7 +112,7 @@ const Ampi = props => {
         lifnr,
         hkont_s,
       };
-      props.saveAccSrcDocs(args, 'AMTBS', () => initializeBkpfBseg());
+      props.saveAccSrcDocs(args, 'AMPI', () => initializeBkpfBseg());
     } else {
       props.modifyLoader(false);
     }
