@@ -22,7 +22,6 @@ const ModalPrice = props => {
     countryList = [],
     companyOptions = [],
     intl: { messages },
-    f4FetchCurrencyList,
   } = props;
   const language = localStorage.getItem('language');
   const [typeOfService, setTypeOfService] = useState([]);
@@ -70,18 +69,7 @@ const ModalPrice = props => {
   }, [countryList]);
 
   const handleChange = (text, value) => {
-    if (text === 'companies') {
-      setInformations({ ...informations, bukrs: value });
-    }
-    if (text === 'countries') {
-      setInformations({ ...informations, countryId: value });
-    }
-    if (text === 'typeOfSum') {
-      setInformations({ ...informations, typeOfSum: value });
-    }
-    if (text === 'typeOfService') {
-      setInformations({ ...informations, serviceTypeId: value });
-    }
+    setInformations({ ...informations, [text]: value });
   };
 
   const onChangeDate = d => {
@@ -132,7 +120,7 @@ const ModalPrice = props => {
     setTest(false);
     setInformations({
       bukrs: '',
-      dateStart: moment() /*`${startDate.date()}.${startDate.month()}.${startDate.year()}`*/,
+      dateStart: `${dateStart.year()}-${dateStart.month()}-${dateStart.date()}`,
       fc: 0,
       mc: 0,
       office: 0,
@@ -148,50 +136,14 @@ const ModalPrice = props => {
   };
 
   const onInputChange = (text, event) => {
-    switch (text) {
-      case 'fc':
-        setInformations({ ...informations, fc: parseInt(event.target.value) });
-        break;
-      case 'mc':
-        setInformations({ ...informations, mc: parseInt(event.target.value) });
-        break;
-      case 'office':
-        setInformations({
-          ...informations,
-          office: parseInt(event.target.value),
-        });
-        break;
-      case 'master':
-        setInformations({
-          ...informations,
-          master: parseInt(event.target.value),
-        });
-        break;
-      case 'operator':
-        setInformations({
-          ...informations,
-          operator: parseInt(event.target.value),
-        });
-        break;
-      case 'discount':
-        setInformations({
-          ...informations,
-          discount: parseInt(event.target.value),
-        });
-        break;
-      case 'total':
-        setInformations({
-          ...informations,
-          total: parseInt(event.target.value),
-        });
-        break;
-      default:
-        return informations;
-    }
+    setInformations({
+      ...informations,
+      [text]: parseFloat(event.target.value),
+    });
   };
 
   const onChangeCountryOptions = v => {
-    handleChange('countries', v);
+    handleChange('countryId', v);
     const f = countryOptions.find(({ value }) => value === v);
     setInformations({ ...informations, waers: f.currency });
   };
@@ -228,7 +180,7 @@ const ModalPrice = props => {
                 search
                 selection
                 options={companyOptions}
-                onChange={(e, { value }) => handleChange('companies', value)}
+                onChange={(e, { value }) => handleChange('bukrs', value)}
                 placeholder={messages['bukrs']}
               />
             </Grid.Column>
@@ -395,9 +347,7 @@ const ModalPrice = props => {
                 clearable="true"
                 selection
                 options={typeOfService}
-                onChange={(e, { value }) =>
-                  handleChange('typeOfService', value)
-                }
+                onChange={(e, { value }) => handleChange('serviceType', value)}
                 placeholder={messages['typeOfService']}
                 search
               />
