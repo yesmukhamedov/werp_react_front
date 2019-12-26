@@ -105,9 +105,8 @@ const Ampi = props => {
     let errors = [];
     errors = validate();
     if (errors === null || errors === undefined || errors.length === 0) {
-      const bkpf = { ...bkpf };
       const args = {
-        bkpf,
+        bkpf: { ...bkpf },
         amount,
         lifnr,
         hkont_s,

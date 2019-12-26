@@ -6,9 +6,12 @@ import 'react-table/react-table.css';
 import { injectIntl } from 'react-intl';
 import { messages } from '../../../locales/defineMessages';
 
-const PopupHkontInfo = (hkont, hkontName) => (
+const PopupHkontInfo = (hkont, hkontName, hkontWaers) => (
   <Popup trigger={<span>{hkont}</span>} flowing hoverable>
-    <Segment inverted> {hkontName}</Segment>
+    <Segment inverted>
+      {' '}
+      {hkontName} {hkontWaers}
+    </Segment>
   </Popup>
 );
 
@@ -46,7 +49,11 @@ class Fa03Position extends PureComponent {
       accessor: 'hkontName',
       Cell: obj => (
         <span>
-          {PopupHkontInfo(obj.original.hkont, obj.original.hkontName)}
+          {PopupHkontInfo(
+            obj.original.hkont,
+            obj.original.hkontName,
+            obj.original.hkontWaers,
+          )}
         </span>
       ),
       width: 100,
@@ -161,8 +168,8 @@ class Fa03Position extends PureComponent {
           defaultPageSize={
             this.props.bseg.length < 11 ? this.props.bseg.length : 10
           }
-          loadingText= {formatMessage(messages.loadingText)}
-          noDataText= {formatMessage(messages.noDataText)}
+          loadingText={formatMessage(messages.loadingText)}
+          noDataText={formatMessage(messages.noDataText)}
           previousText={formatMessage(messages.previousText)}
           nextText={formatMessage(messages.nextText)}
           rowsText={formatMessage(messages.rowsText)}

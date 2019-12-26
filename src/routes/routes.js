@@ -1068,7 +1068,6 @@ const generateRoutes = transactionRoutes => {
 
       <Route path="/marketing/mainoperation/mmcef" component={AsyncMmcef} />
       <Route path="/marketing/mainoperation/mmcefa" component={AsyncMmcefa} />
-      <Route path="/accounting/mainoperation/amtbs" component={AsyncAmtbs} />
 
       <Route
         path="/hr/exitinterviews"

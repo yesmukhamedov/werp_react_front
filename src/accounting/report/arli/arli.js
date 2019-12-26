@@ -88,6 +88,7 @@ const PopupInfo = (
             <p>
               <a
                 target="_blank"
+                rel="noopener noreferrer"
                 href={`${LEGACY_URL}/accounting/other/fcus01.xhtml?customerId=${lifnr}`}
               >
                 <Button>{lifnr}</Button>

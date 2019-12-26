@@ -56,7 +56,11 @@ export default class TreeViewMenu extends Component {
         >
           <i className="file text outline icon" />
           {node.link.endsWith('.xhtml') ? (
-            <a target="_blank" href={`${LEGACY_URL}${node.link}`}>
+            <a
+              target="_blank"
+              href={`${LEGACY_URL}${node.link}`}
+              rel="noopener noreferrer"
+            >
               {nodeName}
             </a>
           ) : (

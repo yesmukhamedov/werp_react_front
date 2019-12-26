@@ -35,7 +35,6 @@ import moment from 'moment';
 
 const Amtbs = props => {
   const {
-    hkontOptions = [],
     bkpf = {},
     initialBkpf = {},
     activeLoader,
@@ -58,7 +57,7 @@ const Amtbs = props => {
   //componentDidMount
   useEffect(() => {
     initializeBkpfBseg();
-    props.f4FetchCurrencyList('ampi');
+    props.f4FetchCurrencyList('amtbs');
     props.f4FetchDepartmentList();
     props.f4FetchExchangeRateNational();
 
@@ -93,7 +92,7 @@ const Amtbs = props => {
 
   const initializeBkpfBseg = () => {
     const bkpf = Object.assign({}, initialBkpf);
-    bkpf.blart = 'AE';
+    bkpf.blart = 'VN';
     bkpf.budat = moment().format('YYYY-MM-DD');
     bkpf.bldat = moment().format('YYYY-MM-DD');
 
@@ -114,14 +113,18 @@ const Amtbs = props => {
     let errors = [];
     errors = validate();
     if (errors === null || errors === undefined || errors.length === 0) {
-      // const bkpf = { ...bkpf };
-      // const args = {
-      //   bkpf,
-      //   amount,
-      //   lifnr,
-      //   hkont_s,
-      // };
-      // props.saveAccSrcDocs(args, 'AMTBS', () => initializeBkpfBseg());
+      const wa_bseg_debit = { lifnr: lifnrDebit, shkzg: 'S' };
+      const wa_bseg_credit = { lifnr: lifnrCredit, shkzg: 'H' };
+      const bseg = [];
+      bseg.push(wa_bseg_debit);
+      bseg.push(wa_bseg_credit);
+
+      const args = {
+        bkpf: { ...bkpf },
+        amount,
+        l_bseg: bseg,
+      };
+      props.saveAccSrcDocs(args, 'AMTBS', () => initializeBkpfBseg());
     } else {
       props.modifyLoader(false);
     }
@@ -167,10 +170,6 @@ const Amtbs = props => {
     }
     return errors;
   };
-  const shkzgOptions = [
-    { key: 1, text: messages['incoming'], value: 'S' },
-    { key: 2, text: messages['outgoing'], value: 'H' },
-  ];
 
   const bkpfInfo = {
     bukrsInfo: { readOnly: false, disabled: false },
@@ -337,7 +336,7 @@ const Amtbs = props => {
 };
 
 function mapStateToProps(state) {
-  // console.log(state,'state');
+  // console.log(state.fa.faForm.bkpf, 'state');
   return {
     language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
