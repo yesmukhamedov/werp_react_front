@@ -36,14 +36,14 @@ function Content(props) {
         </p>
         <p
           onClick={() => {
-            props.history.push('/edu/components/firstpart/aquaintancecompany');
+            props.history.push('/edu/components/firstpart/acquaintancecompany');
           }}
         >
           2. Компаниямен таныстыру.
         </p>
         <p
           onClick={() => {
-            props.history.push('/edu/components/firstpart/aquaintancework');
+            props.history.push('/edu/components/firstpart/acquaintancework');
           }}
         >
           3. Жұмыс барысымен таныстыру
@@ -74,11 +74,41 @@ function Content(props) {
       <p className="part__name">Екінші бөлім</p>
       <br />
       <div className="content__links">
-        <p>1. Roboclean демо обучениясы. </p>
-        <p>2. Экзаменге дайындау.</p>
-        <p>3. Экзамен қабылдау. </p>
-        <p>4. Рекомендация алу.</p>
-        <p>5. Құжаттармен танысу және толтыру. </p>
+        <p
+          onClick={() => {
+            props.history.push('/edu/components/secondpart/robocleandemo');
+          }}
+        >
+          1. Roboclean демо обучениясы.{' '}
+        </p>
+        <p
+          onClick={() => {
+            props.history.push('/edu/components/secondpart/');
+          }}
+        >
+          2. Экзаменге дайындау.
+        </p>
+        <p
+          onClick={() => {
+            props.history.push('/edu/components/secondpart/');
+          }}
+        >
+          3. Экзамен қабылдау.{' '}
+        </p>
+        <p
+          onClick={() => {
+            props.history.push('/edu/components/secondpart/');
+          }}
+        >
+          4. Рекомендация алу.
+        </p>
+        <p
+          onClick={() => {
+            props.history.push('/edu/components/secondpart/');
+          }}
+        >
+          5. Құжаттармен танысу және толтыру.{' '}
+        </p>
       </div>
       <br />
       <p className="part__name">Үшінші бөлім</p>

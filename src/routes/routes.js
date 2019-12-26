@@ -987,6 +987,66 @@ const AsyncBusiness = Loadable({
   loader: () => import('../education/components/firstpart/businesstypes'),
   loading: () => <LoadingPage />,
 });
+const AsyncRobo = Loadable({
+  loader: () => import('../education/components/secondpart/robocleandemo'),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncRIntro = Loadable({
+  loader: () =>
+    import('../education/components/secondpart/robocleandemo/intro'),
+  loading: () => <LoadingPage />,
+});
+const AsyncRLamp = Loadable({
+  loader: () =>
+    import('../education/components/secondpart/robocleandemo/lampshow'),
+  loading: () => <LoadingPage />,
+});
+const AsyncRAir = Loadable({
+  loader: () =>
+    import('../education/components/secondpart/robocleandemo/airwash'),
+  loading: () => <LoadingPage />,
+});
+const AsyncRVac = Loadable({
+  loader: () =>
+    import('../education/components/secondpart/robocleandemo/vackill'),
+  loading: () => <LoadingPage />,
+});
+const AsyncRMini = Loadable({
+  loader: () =>
+    import('../education/components/secondpart/robocleandemo/minivac'),
+  loading: () => <LoadingPage />,
+});
+const AsyncRVisual = Loadable({
+  loader: () =>
+    import('../education/components/secondpart/robocleandemo/visualizer'),
+  loading: () => <LoadingPage />,
+});
+const AsyncRVacuum = Loadable({
+  loader: () =>
+    import('../education/components/secondpart/robocleandemo/vacuum'),
+  loading: () => <LoadingPage />,
+});
+const AsyncRCarp = Loadable({
+  loader: () =>
+    import('../education/components/secondpart/robocleandemo/carpetshow'),
+  loading: () => <LoadingPage />,
+});
+const AsyncRMat = Loadable({
+  loader: () =>
+    import('../education/components/secondpart/robocleandemo/mattress'),
+  loading: () => <LoadingPage />,
+});
+const AsyncRWash = Loadable({
+  loader: () =>
+    import('../education/components/secondpart/robocleandemo/washfunc'),
+  loading: () => <LoadingPage />,
+});
+const AsyncRNozz = Loadable({
+  loader: () =>
+    import('../education/components/secondpart/robocleandemo/nozzle'),
+  loading: () => <LoadingPage />,
+});
 
 const getComponent = {
   Dtrlist: AsyncTransaction,
@@ -1117,6 +1177,18 @@ const getComponent = {
   WhyAura: AsyncWhyAura,
   Business: AsyncBusiness,
   Profit: AsyncProfit,
+  Robo: AsyncRobo,
+  RIntro: AsyncRIntro,
+  RLamp: AsyncRLamp,
+  RAir: AsyncRAir,
+  RVac: AsyncRVac,
+  RMini: AsyncRMini,
+  RVisual: AsyncRVisual,
+  RVacuum: AsyncRVacuum,
+  RCarp: AsyncRCarp,
+  RMat: AsyncRMat,
+  RWash: AsyncRWash,
+  RNozz: AsyncRNozz,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1262,27 +1334,88 @@ const generateRoutes = transactionRoutes => {
       <Route
         path="/edu/components/firstpart/acquaintancecompany"
         exact={true}
-        component={AsyncHire}
+        component={AsyncAcComp}
       />
       <Route
         path="/edu/components/firstpart/acquaintancework"
         exact={true}
-        component={AsyncHire}
+        component={AsyncAcWork}
       />
       <Route
         path="/edu/components/firstpart/whyaura"
         exact={true}
-        component={AsyncHire}
+        component={AsyncWhyAura}
       />
       <Route
         path="/edu/components/firstpart/profitways"
         exact={true}
-        component={AsyncHire}
+        component={AsyncProfit}
       />
       <Route
         path="/edu/components/firstpart/businesstypes"
         exact={true}
-        component={AsyncHire}
+        component={AsyncBusiness}
+      />
+
+      <Route
+        path="/edu/components/secondpart/robocleandemo"
+        exact={true}
+        component={AsyncRobo}
+      />
+      <Route
+        path="/edu/components/secondpart/robocleandemo/intro"
+        exact={true}
+        component={AsyncRIntro}
+      />
+      <Route
+        path="/edu/components/secondpart/robocleandemo/lampshow"
+        exact={true}
+        component={AsyncRLamp}
+      />
+      <Route
+        path="/edu/components/secondpart/robocleandemo/airwash"
+        exact={true}
+        component={AsyncRAir}
+      />
+      <Route
+        path="/edu/components/secondpart/robocleandemo/vackill"
+        exact={true}
+        component={AsyncRVac}
+      />
+      <Route
+        path="/edu/components/secondpart/robocleandemo/minivac"
+        exact={true}
+        component={AsyncRMini}
+      />
+      <Route
+        path="/edu/components/secondpart/robocleandemo/visualizer"
+        exact={true}
+        component={AsyncRVisual}
+      />
+      <Route
+        path="/edu/components/secondpart/robocleandemo/vacuum"
+        exact={true}
+        component={AsyncRVacuum}
+      />
+      <Route
+        path="/edu/components/secondpart/robocleandemo/carpetshow"
+        exact={true}
+        component={AsyncRCarp}
+      />
+      <Route
+        path="/edu/components/secondpart/robocleandemo/mattress"
+        exact={true}
+        component={AsyncRMat}
+      />
+      <Route
+        path="/edu/components/secondpart/robocleandemo/washfunc"
+        exact={true}
+        component={AsyncRWash}
+      />
+      <Route
+        path="/edu/components/secondpart/robocleandemo/nozzle"
+        exact={true}
+        component={AsyncRNozz}
       />
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
