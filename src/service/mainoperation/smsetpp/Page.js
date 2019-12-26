@@ -55,7 +55,7 @@ const Page = props => {
   useEffect(() => {
     setServiceOptionPriceList(data.service);
   }, [data]);
-
+  console.log(serviceOptionPriceList);
   const onChange = (text, value) => {
     if (text === 'companyOptions') {
       setSearch({ ...search, companyId: value });
@@ -248,9 +248,11 @@ const Page = props => {
                   {messages['typeOfAmount']}
                 </div>
               ),
-              accessor: 'typeOfSum',
+              accessor: 'premiumPriceTypeId',
               Cell: row => (
-                <div style={{ textAlign: 'center' }}>{row.value}</div>
+                <div style={{ textAlign: 'center' }}>
+                  {row.value === 0 ? 'Number' : '%'}
+                </div>
               ),
             },
             {

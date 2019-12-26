@@ -39,6 +39,7 @@ const ModalPrice = props => {
     discount: 0,
     total: 0,
     countryId: 0,
+    country: '',
     waers: '',
     serviceTypeId: 0,
     typeOfSum: '',
@@ -82,33 +83,9 @@ const ModalPrice = props => {
 
   const onhandleAdd = () => {
     setTest(true);
-    const {
-      bukrs,
-      fc,
-      mc,
-      office,
-      master,
-      operator,
-      discount,
-      total,
-      countryId,
-      serviceTypeId,
-      typeOfSum,
-    } = informations;
+    const { bukrs, total, country } = informations;
 
-    if (
-      bukrs !== '' &&
-      fc !== 0 &&
-      mc !== 0 &&
-      office !== 0 &&
-      master !== 0 &&
-      operator !== 0 &&
-      discount !== 0 &&
-      total !== 0 &&
-      countryId !== '' &&
-      serviceTypeId !== '' &&
-      typeOfSum !== ''
-    ) {
+    if (bukrs !== '' && total !== 0 && country !== '') {
       setModalOpen(false);
       console.log(informations, 'infos');
       //fetchSmsetppPost(informations);
@@ -143,8 +120,11 @@ const ModalPrice = props => {
   };
 
   const onChangeCountryOptions = v => {
-    handleChange('countryId', v);
+    const findCountry = countryOptions.find(({ value }) => value === v);
     const f = countryOptions.find(({ value }) => value === v);
+    handleChange('countryId', v);
+    console.log(findCountry.text, 'find');
+    handleChange('country', findCountry.text);
     setInformations({ ...informations, waers: f.currency });
   };
 
@@ -214,7 +194,6 @@ const ModalPrice = props => {
             </Grid.Column>
             <Grid.Column>
               <Input
-                error={test === true && informations.fc === 0 ? true : false}
                 placeholder="Search..."
                 type="number"
                 onChange={e => onInputChange('fc', e)}
@@ -225,7 +204,6 @@ const ModalPrice = props => {
             </Grid.Column>
             <Grid.Column>
               <Input
-                error={test === true && informations.mc === 0 ? true : false}
                 type="number"
                 placeholder="Number..."
                 onChange={e => onInputChange('mc', e)}
@@ -241,9 +219,6 @@ const ModalPrice = props => {
             </Grid.Column>
             <Grid.Column>
               <Input
-                error={
-                  test === true && informations.office === 0 ? true : false
-                }
                 type="number"
                 placeholder="Number..."
                 onChange={e => onInputChange('office', e)}
@@ -257,9 +232,6 @@ const ModalPrice = props => {
             </Grid.Column>
             <Grid.Column>
               <Input
-                error={
-                  test === true && informations.master === 0 ? true : false
-                }
                 type="number"
                 placeholder="Number..."
                 onChange={e => onInputChange('master', e)}
@@ -275,9 +247,6 @@ const ModalPrice = props => {
             </Grid.Column>
             <Grid.Column>
               <Input
-                error={
-                  test === true && informations.operator === 0 ? true : false
-                }
                 type="number"
                 placeholder="Number..."
                 onChange={e => onInputChange('operator', e)}
@@ -290,9 +259,6 @@ const ModalPrice = props => {
             </Grid.Column>
             <Grid.Column>
               <Input
-                error={
-                  test === true && informations.discount === 0 ? true : false
-                }
                 type="number"
                 placeholder="Number..."
                 onChange={e => onInputChange('discount', e)}
@@ -319,7 +285,7 @@ const ModalPrice = props => {
             <Grid.Column>
               <Dropdown
                 error={
-                  test === true && informations.countryId === '' ? true : false
+                  test === true && informations.country === '' ? true : false
                 }
                 clearable="true"
                 search
@@ -360,9 +326,6 @@ const ModalPrice = props => {
             </Grid.Column>
             <Grid.Column>
               <Dropdown
-                error={
-                  test === true && informations.typeOfSum === '' ? true : false
-                }
                 placeholder={messages['typeOfAmount']}
                 search
                 selection
