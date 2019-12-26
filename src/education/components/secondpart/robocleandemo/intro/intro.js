@@ -3,16 +3,16 @@ import { Container, Accordion, Image, Grid } from 'semantic-ui-react';
 
 import './intro.css';
 
-import intro1 from '../../../../assets/1.1.png';
-import intro2 from '../../../../assets/1.2.png';
-import intro3 from '../../../../assets/1.3.png';
-import intro4 from '../../../../assets/1.4.png';
-import intro5 from '../../../../assets/1.5.png';
-import intro6 from '../../../../assets/1.6.png';
-import intro7 from '../../../../assets/1.7.png';
-import intro8 from '../../../../assets/1.8.png';
-import intro9 from '../../../../assets/1.9.png';
-import intro10 from '../../../../assets/1.10.png';
+import intro1 from '../../../../assets/1.1.jpg';
+import intro2 from '../../../../assets/1.2.jpg';
+import intro3 from '../../../../assets/1.3.jpg';
+import intro4 from '../../../../assets/1.4.jpg';
+import intro5 from '../../../../assets/1.5.jpg';
+import intro6 from '../../../../assets/1.6.jpg';
+import intro7 from '../../../../assets/1.7.jpg';
+import intro8 from '../../../../assets/1.8.jpg';
+import intro9 from '../../../../assets/1.9.jpg';
+import intro10 from '../../../../assets/1.10.jpg';
 
 export default function Intro() {
   return (
@@ -20,7 +20,6 @@ export default function Intro() {
       <Container textAlign="justified">
         <h1 className="intro__name">1 Introduction.</h1>
         <p className="intro__content">
-          {' '}
           &nbsp; &nbsp;Бұл бөлімнің мақсаты клиентпен танысып, онымен
           қарым-қатынастағы ара-қашықтықты жақындату, клиентті тану және
           клиентті тани отырып мағлұмат алу (шешім қабылдайтын кім, хоббиі,
@@ -35,7 +34,6 @@ export default function Intro() {
             <Grid>
               <Grid.Column width="8" verticalAlign="middle">
                 <p>
-                  {' '}
                   &nbsp; Дилер классикалық стильде киінуі керек. Киіміміз
                   әрдайым таза, үтіктелген, галстук тағылған болып, аяқ киіміміз
                   шаңнан тазаланған, шаш таралған әдемі көріністе болуымыз
@@ -52,11 +50,10 @@ export default function Intro() {
             <Grid>
               <Grid.Column width="8" verticalAlign="middle">
                 <p>
-                  {' '}
                   &nbsp; Күлімдеу жетістікке жетудің кілті. Клиентке жақсы әсер
                   қалдыруда алғашқы 17 секунд өте маңызды. Есікті ашқанда адам
                   бірінші біздің күлімдеген жүзімізді көруі керек. Күлімдеу
-                  клиентпен қарым-қатынас орнатуда маңызды рөл атқарады.{' '}
+                  клиентпен қарым-қатынас орнатуда маңызды рөл атқарады.
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
@@ -69,11 +66,10 @@ export default function Intro() {
             <Grid>
               <Grid.Column width="8" verticalAlign="middle">
                 <p>
-                  {' '}
                   &nbsp; Клиентпен дұрыс сәлемдесе білуіміз керек. Клиентпен
                   амандасқанда көтеріңкі көңілмен, күлімдеген жүзбен, жоғарғы
                   тонмен, ер кісімен қолын созып амандасу керек. Дилердің дұрыс
-                  амандасуы өзіне деген сенімділігін көрсетеді.{' '}
+                  амандасуы өзіне деген сенімділігін көрсетеді.
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
@@ -86,7 +82,6 @@ export default function Intro() {
             <Grid>
               <Grid.Column width="8" verticalAlign="middle">
                 <p>
-                  {' '}
                   &nbsp; Әйелі мен күйеуін бір-бірінің жанына отырғызып, өзіміз
                   мүмкіндігінше одан биігірек, 1.5 – 2 м қашықтықта,
                   қарама-қарсы отыруымыз керек. Телевизор қосылған болса
@@ -103,12 +98,11 @@ export default function Intro() {
             <Grid>
               <Grid.Column width="8" verticalAlign="middle">
                 <p>
-                  {' '}
                   &nbsp; Клиентке алдымен өзімізді толық таныстыруымыз шарт. Тек
                   содан кейін ғана, әңгімелесу барысында олар туралы жақынырақ
                   біле аламыз. Егер бастапқыдан клиентке сұрақтарды жаудыра
                   бастасаңыз, ыңғайсыз жағдай туындауы мүмкін. Әр дилер осыны
-                  ескергені жөн.{' '}
+                  ескергені жөн.
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
@@ -121,14 +115,12 @@ export default function Intro() {
             <Grid>
               <Grid.Column width="8" verticalAlign="middle">
                 <p>
-                  {' '}
                   &nbsp; Компаниямыздың өнімі, қысқаша тарихы, әлемдегі деңгейі,
                   жеткен жетістіктері, филиалдары мен офистың орналасқан жері
-                  туралы айтылады. (Демобукты ашып){' '}
+                  туралы айтылады. (Демобукты ашып)
                 </p>
                 <p>
                   <i>
-                    {' '}
                     &nbsp;«Aura» неміс маркасы, әлемде қырық бестен астам
                     елдерде дистрибьюторлары бар. Европа, Америка, Азияның
                     көптеген елдерінде өз қызметін атқарып келеді. Соның бірі
@@ -138,12 +130,11 @@ export default function Intro() {
                     Қарағанды, Өскемен, Тараз, Шымкент, Қызылорда, Ақтау,
                     Атырау, Орал, Ақтобе, Талдықорған) барлық ірі қалаларында
                     филиалдары бар. Орталығы да Алматы қаласында мамыр 4 ықшам
-                    ауданында орналасқан.{' '}
+                    ауданында орналасқан.
                   </i>
                 </p>
                 <p>
                   <i>
-                    {' '}
                     &nbsp; Негізінде Aura компаниясы адам денсаулығы үшін аса
                     маңызды су тазалау жүйесі Cebilon мен көп функционалды
                     тазалық жүйесі Roboclean аппараттарын сату және сервистік
@@ -172,13 +163,11 @@ export default function Intro() {
             <Grid>
               <Grid.Column width="8" verticalAlign="middle">
                 <p>
-                  {' '}
                   &nbsp; Кім арқылы келгендігіміз, не үшін келгендігіміз
                   айтылады.
                 </p>
                 <p>
                   <i>
-                    {' '}
                     &nbsp;Жақында Қанат пен Қарлығаштың үйінде қонақта болғанбыз
                     ол кісілер сіздерге айтқан болар?
                     <br /> &nbsp; Қанат пен Қарлығаш Roboclean аппаратымен
@@ -203,9 +192,8 @@ export default function Intro() {
             <Grid>
               <Grid.Column width="8" verticalAlign="middle">
                 <p>
-                  {' '}
                   &nbsp; Жаңалық, спорт, мамандығы т.б. жайлы әңгімелесуге
-                  тырысуымыз керек.{' '}
+                  тырысуымыз керек.
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
@@ -220,9 +208,8 @@ export default function Intro() {
             <Grid>
               <Grid.Column width="8" verticalAlign="middle">
                 <p>
-                  {' '}
                   &nbsp; Кішкентай баланың атын, жасын сұрап, мақтап қоюымыз
-                  керек.{' '}
+                  керек.
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
@@ -235,7 +222,6 @@ export default function Intro() {
             <Grid>
               <Grid.Column width="8" verticalAlign="middle">
                 <p>
-                  {' '}
                   &nbsp; Жылы сөз бен күлімдеген жүз барлық адамға жақсы әсер
                   береді. Әр бір нәрседен жақсы жағын көріп, қарсымыздағы кісіге
                   шынайы комплимент айтуды үйренуіміз керек. Адамның атымен атау

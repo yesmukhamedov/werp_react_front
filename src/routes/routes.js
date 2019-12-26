@@ -1193,7 +1193,7 @@ const getComponent = {
 
 const generateRoutes = transactionRoutes => {
   return (
-    <div>
+    <div style={{ height: '100%' }}>
       <Route exact path="/" component={MainPanel} />
       <Route path="/settings" component={AsyncSettings} />
       <Route path="/signin" component={Signin} />

@@ -2,10 +2,10 @@ import React from 'react';
 import { Container, Accordion, Image, Grid } from 'semantic-ui-react';
 
 import './lampShow.css';
-import lamp1 from '../../../../assets/2.1.png';
-import lamp2 from '../../../../assets/2.2.png';
-import lamp3 from '../../../../assets/2.3.png';
-import lamp4 from '../../../../assets/2.4.png';
+import lamp1 from '../../../../assets/2.1.jpg';
+import lamp2 from '../../../../assets/2.2.jpg';
+import lamp3 from '../../../../assets/2.3.jpg';
+import lamp4 from '../../../../assets/2.4.jpg';
 
 export default function LampShow() {
   return (
