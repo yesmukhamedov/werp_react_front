@@ -1,0 +1,16 @@
+.nozzle {
+  background: url('../../../../assets/back.png');
+  width: 100%;
+  height: 120%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  padding: 90px 0 50px 0;
+}
+.nozzle__name {
+  padding-bottom: 50px;
+  text-align: center;
+}
+.nozzle__content {
+  font-size: 20px;
+}
