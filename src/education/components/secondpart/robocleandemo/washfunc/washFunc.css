@@ -12,5 +12,8 @@
   text-align: center;
 }
 .washfunc__content {
-  font-size: 17px;
+  font-size: 20px;
+}
+.washfunc__content__acc {
+  font-size: 18px;
 }

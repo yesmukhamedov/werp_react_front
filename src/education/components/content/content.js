@@ -14,14 +14,11 @@ function Content(props) {
         </Accordion.Title>
         <Accordion.Content>
           <p className="intro__content">
-            <i>
-              Бұл «Тренинг Roboclean» кітабы Roboclean-нің демо обучениясын
-              үйренуге арналған. Бұл кітап бизнес саласын кеңінен түсініп, жан
-              жақты ой-өрісін кеңейтуге мүмкіндік береді. Өз бойындағы
-              сенімділік пен қабілеттілікті арттырады. Roboclean демосын
-              жақсылап үйреніп еліне пайдалы, табысты бизнесмен болуыңызға
-              тілектеспіз.{' '}
-            </i>
+            Бұл «Тренинг Roboclean» кітабы Roboclean-нің демо обучениясын
+            үйренуге арналған. Бұл кітап бизнес саласын кеңінен түсініп, жан
+            жақты ой-өрісін кеңейтуге мүмкіндік береді. Өз бойындағы сенімділік
+            пен қабілеттілікті арттырады. Roboclean демосын жақсылап үйреніп
+            еліне пайдалы, табысты бизнесмен болуыңызға тілектеспіз.
           </p>
         </Accordion.Content>
       </Accordion>
@@ -32,42 +29,42 @@ function Content(props) {
             props.history.push('/edu/components/firstpart/hiring');
           }}
         >
-          1. Жұмыс іздеушіні жұмысқа қабылдау.
+          1) Жұмыс іздеушіні жұмысқа қабылдау.
         </p>
         <p
           onClick={() => {
             props.history.push('/edu/components/firstpart/acquaintancecompany');
           }}
         >
-          2. Компаниямен таныстыру.
+          2) Компаниямен таныстыру.
         </p>
         <p
           onClick={() => {
             props.history.push('/edu/components/firstpart/acquaintancework');
           }}
         >
-          3. Жұмыс барысымен таныстыру
+          3) Жұмыс барысымен таныстыру
         </p>
         <p
           onClick={() => {
             props.history.push('/edu/components/firstpart/whyaura');
           }}
         >
-          4. Мен неліктен Aura компаниясын таңдаймын?
+          4) Мен неліктен Aura компаниясын таңдаймын?
         </p>
         <p
           onClick={() => {
             props.history.push('/edu/components/firstpart/profitways');
           }}
         >
-          5. Табыс табудың жолдары .
+          5) Табыс табудың жолдары .
         </p>
         <p
           onClick={() => {
             props.history.push('/edu/components/firstpart/businesstypes');
           }}
         >
-          6. Бизнес және оның түрлері.{' '}
+          6) Бизнес және оның түрлері.
         </p>
       </div>
       <br />
@@ -79,47 +76,47 @@ function Content(props) {
             props.history.push('/edu/components/secondpart/robocleandemo');
           }}
         >
-          1. Roboclean демо обучениясы.{' '}
+          1) Roboclean демо обучениясы.
         </p>
         <p
           onClick={() => {
-            props.history.push('/edu/components/secondpart/');
+            props.history.push('/edu/components/secondpart/prepexam');
           }}
         >
-          2. Экзаменге дайындау.
+          2) Экзаменге дайындау.
         </p>
         <p
           onClick={() => {
-            props.history.push('/edu/components/secondpart/');
+            props.history.push('/edu/components/secondpart/takeexam');
           }}
         >
-          3. Экзамен қабылдау.{' '}
+          3) Экзамен қабылдау.
         </p>
         <p
           onClick={() => {
-            props.history.push('/edu/components/secondpart/');
+            props.history.push('/edu/components/secondpart/recommendations');
           }}
         >
-          4. Рекомендация алу.
+          4) Рекомендация алу.
         </p>
         <p
           onClick={() => {
-            props.history.push('/edu/components/secondpart/');
+            props.history.push('/edu/components/secondpart/document');
           }}
         >
-          5. Құжаттармен танысу және толтыру.{' '}
+          5) Құжаттармен танысу және толтыру.
         </p>
       </div>
       <br />
       <p className="part__name">Үшінші бөлім</p>
       <br />
       <div className="content__links">
-        <p>1. Эмоцияға әсер.</p>
-        <p>2. Sell closing.</p>
-        <p>3. Сенімге кіру.</p>
-        <p>4. Демода контакт.</p>
-        <p>5. Клиентпен жұмыс және рекомендация алу. </p>
-        <p>6. Жетістікке жетудің жолдары. </p>
+        <p>1) Эмоцияға әсер.</p>
+        <p>2) Sell closing.</p>
+        <p>3) Сенімге кіру.</p>
+        <p>4) Демода контакт.</p>
+        <p>5) Клиентпен жұмыс және рекомендация алу. </p>
+        <p>6) Жетістікке жетудің жолдары. </p>
       </div>
     </div>
   );

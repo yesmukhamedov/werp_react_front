@@ -18,7 +18,7 @@ export default function Vacuum() {
           оларды тазалау қиындығын түсіндіру және Робоклиннің көмегімен
           көрпе-жастығымызды клещтерден оңай әрі тиімді тазалау жолын көрсету.
         </p>
-        <Accordion fluid styled>
+        <Accordion fluid styled className="vacuum__content__acc">
           <Accordion.Title>7.1 Кіріспе.</Accordion.Title>
           <Accordion.Content>
             <Grid>

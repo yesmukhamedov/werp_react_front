@@ -1,19 +1,17 @@
-.vackill {
-  background: url('../../../../assets/back.png');
+.prepexam {
+  background: url('../../../assets/back.png');
   width: 100%;
-  height: 130%;
+  height: 100%;
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
   padding: 90px 0 50px 0;
 }
-.vackill__name {
+.prepexam__name {
   padding-bottom: 50px;
   text-align: center;
 }
-.vackill__content {
+.prepexam__content {
   font-size: 20px;
-}
-.vackill__content__acc {
-  font-size: 18px;
+  text-align: justify;
 }

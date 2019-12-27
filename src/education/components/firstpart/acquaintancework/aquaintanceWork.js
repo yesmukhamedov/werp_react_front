@@ -8,7 +8,7 @@ export default function AquaintanceWork() {
   return (
     <div className="acquaintance">
       <Container>
-        <h1 className="acquaintance__name">3. Жұмыс барысымен танысу.</h1>
+        <h1 className="acquaintance__name">3) Жұмыс барысымен танысу.</h1>
         <Grid columns={2} textAlign="justified" verticalAlign="middle">
           <Grid.Column className="acquaintance__content">
             <p>

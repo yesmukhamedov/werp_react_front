@@ -18,7 +18,7 @@ export default function Mattress() {
           қалдықтарын тазалау қиындығын түсіндіру және Робоклиннің көмегімен
           олардан оңай әрі тиімді құтылу жолын көрсету.
         </p>
-        <Accordion fluid styled>
+        <Accordion fluid styled className="mattress__content__acc">
           <Accordion.Title>9.1 Кіріспе.</Accordion.Title>
           <Accordion.Content>
             <Grid>
@@ -83,6 +83,13 @@ export default function Mattress() {
                     қосылады. Roboclean өшіріліп су көрсетіледі, 3 секунд үнсіз
                     қалу керек.)
                   </p>
+                </Grid.Column>
+                <Grid.Column width="8">
+                  <Image src={mattress3} alt="mattress3" size="big" />
+                </Grid.Column>
+              </Grid.Row>
+              <Grid.Row>
+                <Grid.Column>
                   <p>
                     <i>
                       &nbsp; Бетінде қалқып жүрген сап-сары клещтерге қараңыз.
@@ -99,13 +106,6 @@ export default function Mattress() {
                       жатырмыз деп айт аламыз ба?
                     </i>
                   </p>
-                </Grid.Column>
-                <Grid.Column width="8">
-                  <Image src={mattress3} alt="mattress3" size="big" />
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row>
-                <Grid.Column>
                   <p>
                     <i>
                       &nbsp; Матрас клещтердің ең көп шоғырланған жері. Оның

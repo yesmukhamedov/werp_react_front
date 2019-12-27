@@ -18,7 +18,7 @@ export default function WashFunc() {
           кресло, орындықтарды тазалау қиындығын түсіндіру және Робоклин арқылы
           олардан оңай әрі тиімді құтылу жолын көрсету.
         </p>
-        <Accordion fluid styled>
+        <Accordion fluid styled className="washfunc__content__acc">
           <Accordion.Title>10.1 Кіріспе. </Accordion.Title>
           <Accordion.Content>
             <Grid>

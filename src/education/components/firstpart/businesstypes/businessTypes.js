@@ -7,7 +7,7 @@ export default function BusinessTypes() {
   return (
     <div className="business">
       <Container>
-        <h1 className="business__name">6. Бизнес және оның түрлері.</h1>
+        <h1 className="business__name">6) Бизнес және оның түрлері.</h1>
         <Grid columns={2} textAlign="justified" verticalAlign="middle">
           <Grid.Column className="business__content">
             <p>

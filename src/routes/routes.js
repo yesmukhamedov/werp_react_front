@@ -1048,6 +1048,24 @@ const AsyncRNozz = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncPrepExam = Loadable({
+  loader: () => import('../education/components/secondpart/prepexam'),
+  loading: () => <LoadingPage />,
+});
+const AsyncTakeExam = Loadable({
+  loader: () => import('../education/components/secondpart/takeexam'),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncRecom = Loadable({
+  loader: () => import('../education/components/secondpart/recommendations'),
+  loading: () => <LoadingPage />,
+});
+const AsyncDoc = Loadable({
+  loader: () => import('../education/components/secondpart/document'),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
@@ -1189,6 +1207,10 @@ const getComponent = {
   RMat: AsyncRMat,
   RWash: AsyncRWash,
   RNozz: AsyncRNozz,
+  PrepExam: AsyncPrepExam,
+  TakeExam: AsyncTakeExam,
+  Recom: AsyncRecom,
+  Doc: AsyncDoc,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1416,6 +1438,26 @@ const generateRoutes = transactionRoutes => {
         path="/edu/components/secondpart/robocleandemo/nozzle"
         exact={true}
         component={AsyncRNozz}
+      />
+      <Route
+        path="/edu/components/secondpart/prepexam"
+        exact={true}
+        component={AsyncPrepExam}
+      />
+      <Route
+        path="/edu/components/secondpart/takeexam"
+        exact={true}
+        component={AsyncTakeExam}
+      />
+      <Route
+        path="/edu/components/secondpart/recommendations"
+        exact={true}
+        component={AsyncRecom}
+      />
+      <Route
+        path="/edu/components/secondpart/document"
+        exact={true}
+        component={AsyncDoc}
       />
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {

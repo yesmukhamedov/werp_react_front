@@ -26,7 +26,7 @@ export default function VacKill() {
           зиянды. Сол себепті, бұл системаның мүлдем дұрыс еместігін түсіндіріп,
           пылесосты лақтырту қажет.
         </p>
-        <Accordion fluid styled>
+        <Accordion fluid styled className="vackill__content__acc">
           <Accordion.Title>4.1 Кіріспе.</Accordion.Title>
           <Accordion.Content>
             <Grid>

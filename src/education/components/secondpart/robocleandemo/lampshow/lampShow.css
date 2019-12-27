@@ -1,7 +1,7 @@
 .lampshow {
   background: url('../../../../assets/back.png');
   width: 100%;
-  height: 100%;
+  height: 138%;
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
@@ -12,5 +12,8 @@
   text-align: center;
 }
 .lampshow__content {
-  font-size: 17px;
+  font-size: 20px;
+}
+.lampshow__content__acc {
+  font-size: 18px;
 }

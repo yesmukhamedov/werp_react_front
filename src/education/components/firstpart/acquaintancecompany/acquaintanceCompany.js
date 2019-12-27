@@ -8,12 +8,11 @@ export default function AcquaintanceCompany() {
   return (
     <div className="acquaintance">
       <Container>
-        <h1 className="acquaintance__name">2. Компаниямен таныстыру.</h1>
+        <h1 className="acquaintance__name">2) Компаниямен таныстыру.</h1>
         <Grid columns={2} textAlign="justified" verticalAlign="middle">
           <Grid.Column className="acquaintance__content">
             <h2>Aura компаниясы</h2>
             <p>
-              {' '}
               &nbsp;«Aura» неміс маркасы, әлемде қырық бестен астам елдерде
               дистрибьюторлары бар. Европа, Америка, Азияның көптеген елдерінде
               өз қызметін атқарып келеді. Соның бірі «Аура Қазақстан» орталық

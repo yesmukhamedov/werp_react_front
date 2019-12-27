@@ -8,11 +8,10 @@ export default function Hiring() {
   return (
     <div className="hiring">
       <Container>
-        <h1 className="hiring__name">1. Жұмыс іздеушіні жұмысқа қабылдау.</h1>
+        <h1 className="hiring__name">1) Жұмыс іздеушіні жұмысқа қабылдау.</h1>
         <Grid columns={2} textAlign="justified" verticalAlign="middle">
           <Grid.Column>
             <p className="hiring__content">
-              {' '}
               &nbsp;Жаңа келген баланың резюмесі көріледі. Қосымша сұрақтар қою
               арқылы жұмысқа қабылданушымен жақын танысып, ортақ тақырыпта
               әңгіме қозғалады (туып өскен жері, отбасы, оқыған жері, бұрынғы

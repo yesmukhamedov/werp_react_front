@@ -7,7 +7,7 @@ export default function ProfitWays() {
   return (
     <div className="profit">
       <Container>
-        <h1 className="profit__name">5. Табыс табудың жолдары .</h1>
+        <h1 className="profit__name">5) Табыс табудың жолдары .</h1>
         <Grid textAlign="justified" verticalAlign="middle">
           <Grid.Row>
             <Grid.Column width="8" className="profit__content">

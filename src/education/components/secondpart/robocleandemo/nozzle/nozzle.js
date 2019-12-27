@@ -12,10 +12,8 @@ export default function Nozzle() {
         <h1 className="nozzle__name">11. Насадкаларды таныстыру</h1>
         <Grid>
           <Grid.Column width="8">
-            <p>
-              {' '}
-              &nbsp; Қалған насадкалардың әр қайсысын қалай қолданатындығы
-              үйретіледі.
+            <p className="nozzle__content">
+              Қалған насадкалардың әр қайсысын қалай қолданатындығы үйретіледі.
             </p>
           </Grid.Column>
           <Grid.Column width="8">

@@ -8,7 +8,7 @@ export default function RobocleanDemo(props) {
   return (
     <div className="roboclean">
       <Container>
-        <h1 className="roboclean__name">1. Roboclean демо обучениясы.</h1>
+        <h1 className="roboclean__name">1) Roboclean демо обучениясы.</h1>
         <Grid columns={2} textAlign="justified" verticalAlign="middle">
           <Grid.Column className="roboclean__content">
             <p

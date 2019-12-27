@@ -10,19 +10,21 @@
 }
 
 .intro__content {
-  padding: 0 85px;
+  padding: 10px 85px;
+  font-size: 22px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
 }
 .part__name {
-  font-size: 20px;
-  padding-top: 30px;
+  font-size: 23px;
+  padding-top: 70px;
   font-weight: 600;
   text-decoration: underline;
 }
 .content__links p {
   cursor: pointer;
   font-weight: 600;
-  font-size: 15px;
-  opacity: 0.8;
+  font-size: 22px;
+  opacity: 0.85;
 }
 .content__links p:hover {
   opacity: 1;
