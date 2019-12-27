@@ -15,7 +15,6 @@ import { Dropdown } from 'semantic-ui-react';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
-import { Grid } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
 import { fetchSmsetppType, fetchSmsetppPost } from '../../serviceAction';
 require('moment/locale/ru');
@@ -323,7 +322,7 @@ const AddPrice = props => {
               />
             </Form.Field>
 
-            <Form.Field>
+            <Form.Field required>
               <label>{messages['totalAmount']}</label>
               <Input
                 error={
