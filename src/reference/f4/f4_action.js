@@ -799,7 +799,7 @@ export function f4UpdatePhone(data) {
         });
         dispatch(
           notify(
-            'info',
+            'error',
             errorTable[`133${language}`],
             errorTable[`132${language}`],
           ),

@@ -1,4 +1,4 @@
-.content {
+.content__edu {
   background-image: url('../../assets/back.png');
   width: 100%;
   background-repeat: no-repeat;
@@ -9,7 +9,7 @@
   padding-bottom: 100px;
 }
 
-.intro__content {
+.intro__content__edu {
   padding: 10px 85px;
   font-size: 22px;
   border: 1px solid rgba(0, 0, 0, 0.3);

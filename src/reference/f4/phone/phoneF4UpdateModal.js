@@ -16,6 +16,7 @@ import OutputErrors from '../../../general/error/outputErrors';
 
 function PhoneF4UpdateModal(props) {
   const emptyList = {
+    id: 0,
     type: 0,
     phone: '',
     status: 'CREATED',
@@ -28,10 +29,12 @@ function PhoneF4UpdateModal(props) {
   const language = localStorage.getItem('language');
 
   const { phoneListType = [], customerId, selectedPhone } = props;
+  console.log(customerId);
 
   const onInputChange = (o, fieldName) => {
     setList(prev => {
       const varList = { ...prev };
+      varList.id = selectedPhone.id;
       switch (fieldName) {
         case 'typeList':
           varList.type = o.value;
@@ -52,9 +55,10 @@ function PhoneF4UpdateModal(props) {
   const handleSubmit = () => {
     let errors = [];
     errors = validate();
-    const { type, phone, status, description } = list;
+    const { id, type, phone, status, description } = list;
     if (errors === null || errors === undefined || errors.length === 0) {
       props.f4UpdatePhone({
+        id,
         type,
         phone,
         status,

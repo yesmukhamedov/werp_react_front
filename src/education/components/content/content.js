@@ -5,7 +5,7 @@ import './content.css';
 
 function Content(props) {
   return (
-    <div className="content">
+    <div className="content__edu">
       <h1>Мазмұны</h1>
       <p className="part__name">Бірінші бөлім</p>
       <Accordion>
@@ -13,7 +13,7 @@ function Content(props) {
           <h1>Кіріспе</h1>
         </Accordion.Title>
         <Accordion.Content>
-          <p className="intro__content">
+          <p className="intro__content__edu">
             Бұл «Тренинг Roboclean» кітабы Roboclean-нің демо обучениясын
             үйренуге арналған. Бұл кітап бизнес саласын кеңінен түсініп, жан
             жақты ой-өрісін кеңейтуге мүмкіндік береді. Өз бойындағы сенімділік
