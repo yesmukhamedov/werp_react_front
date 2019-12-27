@@ -11,7 +11,7 @@ import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import './index.css';
 import { connect } from 'react-redux';
 import 'react-table/react-table.css';
-import MoDal from './modal';
+import AddPrice from './AddPrice';
 import { injectIntl } from 'react-intl';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import EditModal from './editModal';
@@ -55,7 +55,7 @@ const Page = props => {
   useEffect(() => {
     setServiceOptionPriceList(data.service);
   }, [data]);
-  console.log(serviceOptionPriceList);
+
   const onChange = (text, value) => {
     if (text === 'companyOptions') {
       setSearch({ ...search, companyId: value });
@@ -93,7 +93,7 @@ const Page = props => {
       <div className="setting">
         <div className="flex-container">
           <h1>{messages['setting_prices_and_premium_services']}</h1>
-          <MoDal />
+          <AddPrice />
         </div>
 
         <Dropdown
