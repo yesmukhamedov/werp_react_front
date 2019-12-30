@@ -3,10 +3,11 @@ import { Container, Grid, Image } from 'semantic-ui-react';
 
 // import u33 from '../../../assets/u33.jpg';
 import './whyAura.css';
+import '../../back.css';
 
 export default function WhyAura() {
   return (
-    <div className="whyaura">
+    <div className="whyaura back">
       <Container>
         <h1 className="whyaura__name">
           4) Мен неліктен Аура компаниясын таңдаймын?

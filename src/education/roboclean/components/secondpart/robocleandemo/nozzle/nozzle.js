@@ -2,12 +2,12 @@ import React from 'react';
 import { Container, Grid, Image } from 'semantic-ui-react';
 
 import './nozzle.css';
-
+import '../../../back.css';
 // import nozzle1 from '../../../../assets/11.png';
 
 export default function Nozzle() {
   return (
-    <div className="nozzle">
+    <div className="nozzle back">
       <Container>
         <h1 className="nozzle__name">11. Насадкаларды таныстыру</h1>
         <Grid>

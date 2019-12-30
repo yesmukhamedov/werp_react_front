@@ -1,16 +1,14 @@
 import React from 'react';
 import { Container, Grid, Accordion, Image } from 'semantic-ui-react';
 
-import './napkin.css';
+import './napkinShow.css';
+import '../../../back.css';
 
-// import napkin1 from '../../../../assets/7.1.jpg';
-// import napkin2 from '../../../../assets/7.2.jpg';
-// import napkin3 from '../../../../assets/7.3.jpg';
-// import napkin4 from '../../../../assets/7.4.jpg';
+import { EDU_CEB_ASSETS_URL } from '../../../../../../utils/constants';
 
-export default function Napkin() {
+export default function NapkinShow() {
   return (
-    <div className="napkin">
+    <div className="napkin back">
       <Container textAlign="justified">
         <h1 className="napkin__name">12. Салфетка шоу</h1>
         <p className="napkin__content">
@@ -42,7 +40,11 @@ export default function Napkin() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={napkin1} alt="napkin1" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}12.1.jpg`}
+                  alt="napkin1"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -72,7 +74,11 @@ export default function Napkin() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={napkin2} alt="napkin2" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}12.2.jpg`}
+                  alt="napkin2"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -93,25 +99,11 @@ export default function Napkin() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={napkin3} alt="napkin3" size="big" /> */}
-              </Grid.Column>
-            </Grid>
-          </Accordion.Content>
-          <Accordion.Title>7.4. Қорытынды. </Accordion.Title>
-          <Accordion.Content>
-            <Grid>
-              <Grid.Column width="8" verticalAlign="middle">
-                <p>
-                  <i>
-                    &nbsp; Егерде қолда бар байлықты бағаламайтын болсақ, оны
-                    жоғалтқаннан кейін қанша өкінсекте пайдасы жоқ. Ал енді ішіп
-                    отырған суымыздың сапасын біле тұра бүгіннен бастап қай суды
-                    қолданасыздар?
-                  </i>
-                </p>
-              </Grid.Column>
-              <Grid.Column width="8">
-                {/* <Image src={napkin4} alt="napkin4" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}12.3.jpg`}
+                  alt="napkin3"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>

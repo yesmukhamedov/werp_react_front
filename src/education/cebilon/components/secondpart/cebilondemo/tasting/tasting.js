@@ -2,15 +2,13 @@ import React from 'react';
 import { Container, Grid, Accordion, Image } from 'semantic-ui-react';
 
 import './tasting.css';
+import '../../../back.css';
 
-// import tasting1 from '../../../../assets/6.1.jpg';
-// import tasting2 from '../../../../assets/6.2.jpg';
-// import tasting3 from '../../../../assets/6.3.jpg';
-// import tasting4 from '../../../../assets/6.4.jpg';
+import { EDU_CEB_ASSETS_URL } from '../../../../../../utils/constants';
 
 export default function Tasting() {
   return (
-    <div className="tasting">
+    <div className="tasting back">
       <Container textAlign="justified">
         <h1 className="tasting__name">6. Дегустация</h1>
         <p className="tasting__content">
@@ -38,7 +36,11 @@ export default function Tasting() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={tasting1} alt="tasting1" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}6.1.jpg`}
+                  alt="tasting1"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -65,7 +67,11 @@ export default function Tasting() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={tasting2} alt="tasting2" size="big" /> */}
+                  <Image
+                    src={`${EDU_CEB_ASSETS_URL}6.2.jpg`}
+                    alt="tasting2"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -119,7 +125,11 @@ export default function Tasting() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={tasting3} alt="tasting3" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}6.3.jpg`}
+                  alt="tasting3"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -137,7 +147,11 @@ export default function Tasting() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={tasting4} alt="tasting4" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}6.4.jpg`}
+                  alt="tasting4"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>

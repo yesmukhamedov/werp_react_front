@@ -1,10 +1,5 @@
 .vackill {
-  /* background: url('../../../../assets/back.png'); */
-  width: 100%;
   height: 150%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
   padding: 90px 0 50px 0;
 }
 .vackill__name {

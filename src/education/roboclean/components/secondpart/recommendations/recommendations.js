@@ -2,10 +2,11 @@ import React from 'react';
 import { Container, Accordion } from 'semantic-ui-react';
 
 import './recommendations.css';
+import '../../back.css';
 
 export default function Recommendations() {
   return (
-    <div className="recommendations">
+    <div className="recommendations back">
       <Container>
         <h1 className="recommendations__name">2) Экзаменге дайындалу</h1>
 

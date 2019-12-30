@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Image, Grid, Accordion } from 'semantic-ui-react';
 
 import './miniVac.css';
+import '../../../back.css';
 
 // import minivac1 from '../../../../assets/5.1.jpg';
 // import minivac2 from '../../../../assets/5.2.jpg';
@@ -11,7 +12,7 @@ import './miniVac.css';
 
 export default function MiniVac() {
   return (
-    <div className="minivac">
+    <div className="minivac back">
       <Container textAlign="justified">
         <h1 className="minivac__name">5 Mini vac.</h1>
         <p className="minivac__content">

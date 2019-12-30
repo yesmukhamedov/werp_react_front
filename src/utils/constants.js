@@ -118,3 +118,6 @@ export const outCallStatusColorMap = {
 };
 
 export const DEFAULT_LANGUAGE = 'ru';
+
+export const EDU_CEB_ASSETS_URL =
+  'http://192.168.0.15/assets/images/prod/education/assetsCebilon/';

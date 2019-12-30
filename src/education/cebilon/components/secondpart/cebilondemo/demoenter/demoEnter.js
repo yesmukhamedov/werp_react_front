@@ -2,11 +2,11 @@ import React from 'react';
 import { Container, Accordion, Image, Grid } from 'semantic-ui-react';
 
 import './demoEnter.css';
-// import image from '../../../../assets/2.1.jpg';
-
+import '../../../back.css';
+import { EDU_CEB_ASSETS_URL } from '../../../../../../utils/constants';
 export default function DemoEnter() {
   return (
-    <div className="demoenter">
+    <div className="demoenter back">
       <Container>
         <h1 className="demoenter__name">
           1) Жұмыс іздеушіні жұмысқа қабылдау.
@@ -29,7 +29,12 @@ export default function DemoEnter() {
             </p>
           </Grid.Column>
           <Grid.Column className="demoenter__image">
-            {/* <Image src={image} alt="image" size="large" centered /> */}
+            <Image
+              src={`${EDU_CEB_ASSETS_URL}2.1.jpg`}
+              alt="image"
+              size="large"
+              centered
+            />
           </Grid.Column>
         </Grid>
       </Container>

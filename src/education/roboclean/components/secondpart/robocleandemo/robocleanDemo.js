@@ -3,10 +3,11 @@ import { Container, Grid, Image } from 'semantic-ui-react';
 
 // import r1 from '../../../assets/r1.png';
 import './robocleanDemo.css';
+import '../../back.css';
 
 export default function RobocleanDemo(props) {
   return (
-    <div className="roboclean">
+    <div className="roboclean back">
       <Container>
         <h1 className="roboclean__name">1) Roboclean демо обучениясы.</h1>
         <Grid columns={2} textAlign="justified" verticalAlign="middle">

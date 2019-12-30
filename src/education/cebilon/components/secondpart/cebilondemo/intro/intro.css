@@ -1,10 +1,6 @@
 .intro {
-  /* background: url('../../../../assets/back.jpg'); */
-  width: 100%;
   height: 160%;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-attachment: fixed;
+
   padding: 90px 0 50px 0;
 }
 .intro__name {

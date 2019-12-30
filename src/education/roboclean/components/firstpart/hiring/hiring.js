@@ -2,11 +2,12 @@ import React from 'react';
 import { Container, Grid, Image } from 'semantic-ui-react';
 
 import './hiring.css';
+import '../../back.css';
 // import image from '../../../assets/u30.jpg';
 
 export default function Hiring() {
   return (
-    <div className="hiring">
+    <div className="hiring back">
       <Container>
         <h1 className="hiring__name">1) Жұмыс іздеушіні жұмысқа қабылдау.</h1>
         <Grid columns={2} textAlign="justified" verticalAlign="middle">

@@ -2,16 +2,12 @@ import React from 'react';
 import { Container, Grid, Accordion, Image } from 'semantic-ui-react';
 
 import './chlorine.css';
-
-// import chlorine1 from '../../../../assets/10.1.jpg';
-// import chlorine2 from '../../../../assets/10.2.jpg';
-// import chlorine3 from '../../../../assets/10.3.jpg';
-// import chlorine4 from '../../../../assets/10.4.jpg';
-// import chlorine5 from '../../../../assets/10.5.jpg';
+import '../../../back.css';
+import { EDU_CEB_ASSETS_URL } from '../../../../../../utils/constants';
 
 export default function Chlorine() {
   return (
-    <div className="chlorine">
+    <div className="chlorine back">
       <Container textAlign="justified">
         <h1 className="chlorine__name">10. Хлор көрсеткіші.</h1>
         <p className="chlorine__content">
@@ -41,7 +37,11 @@ export default function Chlorine() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={chlorine1} alt="chlorine1" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}10.1.jpg`}
+                  alt="chlorine1"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -58,7 +58,11 @@ export default function Chlorine() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={chlorine2} alt="chlorine2" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}10.2.jpg`}
+                  alt="chlorine2"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -85,7 +89,11 @@ export default function Chlorine() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={chlorine3} alt="chlorine3" size="big" /> */}
+                  <Image
+                    src={`${EDU_CEB_ASSETS_URL}10.3.jpg`}
+                    alt="chlorine3"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -140,7 +148,11 @@ export default function Chlorine() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={chlorine4} alt="chlorine4" size="big" /> */}
+                  <Image
+                    src={`${EDU_CEB_ASSETS_URL}10.4.jpg`}
+                    alt="chlorine4"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -226,7 +238,11 @@ export default function Chlorine() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={chlorine5} alt="chlorine5" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}10.5.jpg`}
+                  alt="chlorine5"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>

@@ -1,12 +1,13 @@
 import React from 'react';
 import { Container, Grid, Image } from 'semantic-ui-react';
+import { EDU_CEB_ASSETS_URL } from '../../../../../utils/constants';
 
-// import u31 from '../../../assets/u31.jpg';
 import './acquaintance.css';
+import '../../back.css';
 
 export default function AcquaintanceCompany() {
   return (
-    <div className="acquaintance">
+    <div className="acquaintance back">
       <Container>
         <h1 className="acquaintance__name">2) Компаниямен таныстыру.</h1>
         <Grid columns={2} textAlign="justified" verticalAlign="middle">
@@ -37,7 +38,7 @@ export default function AcquaintanceCompany() {
             </p>
           </Grid.Column>
           <Grid.Column className="acquaintance__image">
-            {/* <Image src={u31} alt="u31" size="large" centered /> */}
+            <Image src={`${EDU_CEB_ASSETS_URL}u31.jpg`} size="large" centered />
           </Grid.Column>
         </Grid>
       </Container>

@@ -3,10 +3,11 @@ import { Container, Grid, Image } from 'semantic-ui-react';
 
 // import u32 from '../../../assets/u32.jpg';
 import './acquaintance.css';
+import '../../back.css';
 
 export default function AquaintanceWork() {
   return (
-    <div className="acquaintance">
+    <div className="acquaintance back">
       <Container>
         <h1 className="acquaintance__name">3) Жұмыс барысымен танысу.</h1>
         <Grid columns={2} textAlign="justified" verticalAlign="middle">

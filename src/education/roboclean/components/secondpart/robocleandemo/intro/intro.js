@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Accordion, Image, Grid } from 'semantic-ui-react';
 
 import './intro.css';
+import '../../../back.css';
 
 // import intro1 from '../../../../assets/1.1.jpg';
 // import intro2 from '../../../../assets/1.2.jpg';
@@ -16,7 +17,7 @@ import './intro.css';
 
 export default function Intro() {
   return (
-    <div className="intro">
+    <div className="intro back">
       <Container textAlign="justified">
         <h1 className="intro__name">1 Introduction.</h1>
         <p className="intro__content">

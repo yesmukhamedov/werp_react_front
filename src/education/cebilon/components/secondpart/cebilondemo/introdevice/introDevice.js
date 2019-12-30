@@ -2,18 +2,13 @@ import React from 'react';
 import { Container, Image, Grid, Accordion } from 'semantic-ui-react';
 
 import './introDevice.css';
+import '../../../back.css';
 
-// import introdevice1 from '../../../../assets/5.1.jpg';
-// import introdevice2 from '../../../../assets/5.2.jpg';
-// import introdevice3 from '../../../../assets/5.3.jpg';
-// import introdevice4 from '../../../../assets/5.4.jpg';
-// import introdevice5 from '../../../../assets/5.5.jpg';
-// import introdevice6 from '../../../../assets/5.6.jpg';
-// import introdevice7 from '../../../../assets/5.7.jpg';
+import { EDU_CEB_ASSETS_URL } from '../../../../../../utils/constants';
 
 export default function IntroDevice() {
   return (
-    <div className="introdevice">
+    <div className="introdevice back">
       <Container textAlign="justified">
         <h1 className="introdevice__name">5. Аппаратты таныстыру</h1>
         <p className="introdevice__content">
@@ -51,7 +46,11 @@ export default function IntroDevice() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={introdevice1} alt="introdevice1" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}5.1.jpg`}
+                  alt="introdevice1"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -76,7 +75,11 @@ export default function IntroDevice() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={introdevice2} alt="introdevice2" size="big" /> */}
+                  <Image
+                    src={`${EDU_CEB_ASSETS_URL}5.2.jpg`}
+                    alt="introdevice2"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -132,7 +135,11 @@ export default function IntroDevice() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={introdevice3} alt="introdevice3" size="big" /> */}
+                  <Image
+                    src={`${EDU_CEB_ASSETS_URL}5.3.jpg`}
+                    alt="introdevice3"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -199,7 +206,11 @@ export default function IntroDevice() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={introdevice4} alt="introdevice4" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}5.4.jpg`}
+                  alt="introdevice4"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -224,7 +235,11 @@ export default function IntroDevice() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={introdevice5} alt="introdevice5" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}5.5.jpg`}
+                  alt="introdevice5"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -251,7 +266,11 @@ export default function IntroDevice() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={introdevice6} alt="introdevice6" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}5.6.jpg`}
+                  alt="introdevice6"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -279,7 +298,11 @@ export default function IntroDevice() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={introdevice7} alt="introdevice7" size="big" /> */}
+                  <Image
+                    src={`${EDU_CEB_ASSETS_URL}5.7.jpg`}
+                    alt="introdevice7"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>

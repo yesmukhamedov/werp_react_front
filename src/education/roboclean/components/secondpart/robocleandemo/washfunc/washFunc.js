@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Grid, Accordion, Image } from 'semantic-ui-react';
 
 import './washFunc.css';
+import '../../../back.css';
 
 // import washfunc1 from '../../../../assets/10.1.jpg';
 // import washfunc2 from '../../../../assets/10.2.jpg';
@@ -10,7 +11,7 @@ import './washFunc.css';
 
 export default function WashFunc() {
   return (
-    <div className="washfunc">
+    <div className="washfunc back">
       <Container textAlign="justified">
         <h1 className="washfunc__name">10 Жуу функциясы.</h1>
         <p className="washfunc__content">

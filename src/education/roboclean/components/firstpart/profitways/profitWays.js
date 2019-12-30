@@ -2,10 +2,11 @@ import React from 'react';
 import { Container, Grid, Image } from 'semantic-ui-react';
 // import u34 from '../../../assets/u34.jpg';
 import './profit.css';
+import '../../back.css';
 
 export default function ProfitWays() {
   return (
-    <div className="profit">
+    <div className="profit back">
       <Container>
         <h1 className="profit__name">5) Табыс табудың жолдары .</h1>
         <Grid textAlign="justified" verticalAlign="middle">

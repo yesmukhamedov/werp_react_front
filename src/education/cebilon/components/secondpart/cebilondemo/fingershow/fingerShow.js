@@ -2,13 +2,12 @@ import React from 'react';
 import { Container, Grid, Accordion, Image } from 'semantic-ui-react';
 
 import './fingerShow.css';
+import '../../../back.css';
 
-// import fingershow1 from '../../../../assets/8.1.jpg';
-// import fingershow2 from '../../../../assets/8.2.jpg';
-
+import { EDU_CEB_ASSETS_URL } from '../../../../../../utils/constants';
 export default function FingerShow() {
   return (
-    <div className="fingershow">
+    <div className="fingershow back">
       <Container textAlign="justified">
         <h1 className="fingershow__name">8. Саусақ шоу</h1>
         <p className="fingershow__content">
@@ -38,7 +37,11 @@ export default function FingerShow() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={fingershow1} alt="fingershow1" size="big" /> */}
+                  <Image
+                    src={`${EDU_CEB_ASSETS_URL}8.1.jpg`}
+                    alt="fingershow1"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -92,7 +95,11 @@ export default function FingerShow() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={fingershow2} alt="fingershow2" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}8.2.jpg`}
+                  alt="fingershow2"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Accordion, Image, Grid } from 'semantic-ui-react';
 
 import './lampShow.css';
+import '../../../back.css';
 // import lamp1 from '../../../../assets/2.1.jpg';
 // import lamp2 from '../../../../assets/2.2.jpg';
 // import lamp3 from '../../../../assets/2.3.jpg';
@@ -9,7 +10,7 @@ import './lampShow.css';
 
 export default function LampShow() {
   return (
-    <div className="lampshow">
+    <div className="lampshow back">
       <Container textAlign="justified">
         <h1 className="lampshow__name">2 Lamp show.</h1>
         <p className="lampshow__content">

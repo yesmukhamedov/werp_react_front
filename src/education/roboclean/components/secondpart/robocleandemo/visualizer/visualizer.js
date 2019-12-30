@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Grid, Accordion, Image } from 'semantic-ui-react';
 
 import './visualizer.css';
-
+import '../../../back.css';
 // import visualizer1 from '../../../../assets/6.1.jpg';
 // import visualizer2 from '../../../../assets/6.2.jpg';
 // import visualizer3 from '../../../../assets/6.3.jpg';
@@ -10,7 +10,7 @@ import './visualizer.css';
 
 export default function Visualizer() {
   return (
-    <div className="visualizer">
+    <div className="visualizer back">
       <Container textAlign="justified">
         <h1 className="visualizer__name">6 Visualizer.</h1>
         <p className="visualizer__content">

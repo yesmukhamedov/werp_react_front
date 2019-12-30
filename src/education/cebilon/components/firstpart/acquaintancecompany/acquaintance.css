@@ -1,11 +1,5 @@
 .acquaintance {
-  /* background: url('../../../assets/back.jpg'); */
-  width: 100%;
-  height: 130%;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  text-align: center;
-  background-attachment: fixed;
+  height: 100%;
   padding: 90px 0 50px 0;
 }
 .acquaintance__name {

@@ -2,11 +2,13 @@ import React from 'react';
 import { Container, Grid, Image } from 'semantic-ui-react';
 
 import './hiring.css';
-// import image from '../../../assets/u52.jpg';
+import '../../back.css';
+
+import { EDU_CEB_ASSETS_URL } from '../../../../../utils/constants';
 
 export default function Hiring() {
   return (
-    <div className="hiring">
+    <div className="hiring back">
       <Container>
         <h1 className="hiring__name">1) Жұмыс іздеушіні жұмысқа қабылдау.</h1>
         <Grid columns={2} textAlign="justified" verticalAlign="middle">
@@ -23,7 +25,12 @@ export default function Hiring() {
             </p>
           </Grid.Column>
           <Grid.Column className="hiring__image">
-            {/* <Image src={image} alt="image" size="large" centered /> */}
+            <Image
+              src={`${EDU_CEB_ASSETS_URL}u52.jpg`}
+              alt="image"
+              size="large"
+              centered
+            />
           </Grid.Column>
         </Grid>
       </Container>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Grid, Accordion, Image } from 'semantic-ui-react';
 
 import './carpetShow.css';
+import '../../../back.css';
 
 // import carpet1 from '../../../../assets/8.1.jpg';
 // import carpet2 from '../../../../assets/8.2.jpg';
@@ -10,7 +11,7 @@ import './carpetShow.css';
 
 export default function CarpetShow() {
   return (
-    <div className="carpet">
+    <div className="carpet back">
       <Container textAlign="justified">
         <h1 className="carpet__name">8 Carpet show.</h1>
         <p className="carpet__content">

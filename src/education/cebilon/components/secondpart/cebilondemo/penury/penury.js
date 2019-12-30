@@ -2,13 +2,12 @@ import React from 'react';
 import { Container, Grid, Image, Accordion } from 'semantic-ui-react';
 
 import './penury.css';
-
-// import pen1 from '../../../../assets/3.1.jpg';
-// import pen2 from '../../../../assets/3.2.jpg';
+import '../../../back.css';
+import { EDU_CEB_ASSETS_URL } from '../../../../../../utils/constants';
 
 export default function Penury() {
   return (
-    <div className="penury">
+    <div className="penury back">
       <Container textAlign="justified">
         <h1 className="penury__name">3. Қажеттілік туғызу</h1>
         <p className="penury__content">
@@ -40,7 +39,11 @@ export default function Penury() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={pen1} alt="pen1" size="big" /> */}
+                  <Image
+                    src={`${EDU_CEB_ASSETS_URL}3.1.jpg`}
+                    alt="pen1"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -93,7 +96,11 @@ export default function Penury() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={pen2} alt="pen2" size="big" /> */}
+                  <Image
+                    src={`${EDU_CEB_ASSETS_URL}3.2.jpg`}
+                    alt="pen2"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>

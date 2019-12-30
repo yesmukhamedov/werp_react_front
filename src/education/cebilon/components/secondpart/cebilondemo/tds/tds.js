@@ -2,15 +2,13 @@ import React from 'react';
 import { Container, Grid, Accordion, Image } from 'semantic-ui-react';
 
 import './tds.css';
+import '../../../back.css';
 
-// import tds1 from '../../../../assets/7.1.jpg';
-// import tds2 from '../../../../assets/7.2.jpg';
-// import tds3 from '../../../../assets/7.3.jpg';
-// import tds4 from '../../../../assets/7.4.jpg';
+import { EDU_CEB_ASSETS_URL } from '../../../../../../utils/constants';
 
 export default function Tds() {
   return (
-    <div className="tds">
+    <div className="tds back">
       <Container textAlign="justified">
         <h1 className="tds__name">7. ТДС метр.</h1>
         <p className="tds__content">
@@ -41,7 +39,11 @@ export default function Tds() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={tds1} alt="tds1" size="big" /> */}
+                  <Image
+                    src={`${EDU_CEB_ASSETS_URL}7.1.jpg`}
+                    alt="tds1"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -90,7 +92,11 @@ export default function Tds() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={tds2} alt="tds2" size="big" /> */}
+                  <Image
+                    src={`${EDU_CEB_ASSETS_URL}7.2.jpg`}
+                    alt="tds2"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -178,7 +184,11 @@ export default function Tds() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={tds3} alt="tds3" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}7.3.jpg`}
+                  alt="tds3"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -196,7 +206,11 @@ export default function Tds() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={tds4} alt="tds4" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}7.4.jpg`}
+                  alt="tds4"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>

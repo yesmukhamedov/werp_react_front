@@ -2,15 +2,12 @@ import React from 'react';
 import { Container, Grid, Image, Accordion } from 'semantic-ui-react';
 
 import './harm.css';
+import '../../../back.css';
 
-// import harm1 from '../../../../assets/11.1.jpg';
-// import harm2 from '../../../../assets/11.2.jpg';
-// import harm3 from '../../../../assets/11.3.jpg';
-// import harm4 from '../../../../assets/11.4.jpg';
-
+import { EDU_CEB_ASSETS_URL } from '../../../../../../utils/constants';
 export default function Harm() {
   return (
-    <div className="harm">
+    <div className="harm back">
       <Container textAlign="justified">
         <h1 className="harm__name">B) Пластик бөтелкенің зияны</h1>
         <p className="harm__content">
@@ -44,7 +41,11 @@ export default function Harm() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={harm1} alt="harm1" size="big" /> */}
+                  <Image
+                    src={`${EDU_CEB_ASSETS_URL}11.1.jpg`}
+                    alt="harm1"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -113,7 +114,11 @@ export default function Harm() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={harm2} alt="harm2" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}11.2.jpg`}
+                  alt="harm2"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -141,7 +146,11 @@ export default function Harm() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={harm3} alt="harm3" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}11.3.jpg`}
+                  alt="harm3"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -179,7 +188,11 @@ export default function Harm() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={harm4} alt="harm4" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}11.4.jpg`}
+                  alt="harm4"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>

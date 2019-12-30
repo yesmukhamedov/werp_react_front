@@ -2,10 +2,11 @@ import React from 'react';
 import { Container } from 'semantic-ui-react';
 
 import './takeExam.css';
+import '../../back.css';
 
 export default function TakeExam() {
   return (
-    <div className="takeexam">
+    <div className="takeexam back">
       <Container>
         <h1 className="takeexam__name">3) Экзамен қабылдау</h1>
         <p className="takeexam__content">

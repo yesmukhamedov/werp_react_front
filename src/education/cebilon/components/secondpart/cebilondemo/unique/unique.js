@@ -2,12 +2,12 @@ import React from 'react';
 import { Container, Accordion, Image, Grid } from 'semantic-ui-react';
 
 import './unique.css';
-// import u1 from '../../../../assets/u1.jpg';
-// import u2 from '../../../../assets/u2.jpg';
+import '../../../back.css';
+import { EDU_CEB_ASSETS_URL } from '../../../../../../utils/constants';
 
 export default function Unique() {
   return (
-    <div className="unique">
+    <div className="unique back">
       <Container>
         <h1 className="unique__name">
           А) «Cebilon Unique» аппаратының ерекшеліктері мен сертификаттары.
@@ -55,8 +55,18 @@ export default function Unique() {
               </p>
             </Grid.Column>
             <Grid.Column className="unique__image">
-              {/* <Image src={u1} alt="u1" size="large" centered />
-                    <Image src={u2} alt="u2" size="large" centered /> */}
+              <Image
+                src={`${EDU_CEB_ASSETS_URL}u1.jpg`}
+                alt="u1"
+                size="large"
+                centered
+              />
+              <Image
+                src={`${EDU_CEB_ASSETS_URL}u2.jpg`}
+                alt="u2"
+                size="large"
+                centered
+              />
             </Grid.Column>
           </Grid.Row>
         </Grid>

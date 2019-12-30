@@ -1,11 +1,13 @@
 import React from 'react';
 import { Container, Grid, Image } from 'semantic-ui-react';
-// import u35 from '../../../assets/u35.jpg';
+import { EDU_CEB_ASSETS_URL } from '../../../../../utils/constants';
+
 import './business.css';
+import '../../back.css';
 
 export default function BusinessTypes() {
   return (
-    <div className="business">
+    <div className="business back">
       <Container>
         <h1 className="business__name">6) Бизнес және оның түрлері.</h1>
         <Grid columns={2} textAlign="justified" verticalAlign="middle">
@@ -34,7 +36,12 @@ export default function BusinessTypes() {
             </p>
           </Grid.Column>
           <Grid.Column className="business__image">
-            {/* <Image src={u35} alt="u35" size="large" centered /> */}
+            <Image
+              src={`${EDU_CEB_ASSETS_URL}u35.jpg`}
+              alt="u35"
+              size="large"
+              centered
+            />
           </Grid.Column>
         </Grid>
       </Container>

@@ -2,10 +2,11 @@ import React from 'react';
 import { Accordion } from 'semantic-ui-react';
 
 import './content.css';
+import '../back.css';
 
 function Content(props) {
   return (
-    <div className="content__edu">
+    <div className="content__edu back">
       <h1>Мазмұны</h1>
       <p className="part__name">Бірінші бөлім</p>
       <Accordion>

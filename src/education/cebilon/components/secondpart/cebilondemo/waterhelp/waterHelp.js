@@ -2,16 +2,13 @@ import React from 'react';
 import { Container, Grid, Accordion, Image } from 'semantic-ui-react';
 
 import './waterHelp.css';
+import '../../../back.css';
 
-// import waterhelp1 from '../../../../assets/9.1.jpg';
-// import waterhelp2 from '../../../../assets/9.2.jpg';
-// import waterhelp3 from '../../../../assets/9.3.jpg';
-// import waterhelp4 from '../../../../assets/9.4.jpg';
-// import waterhelp5 from '../../../../assets/9.5.jpg';
+import { EDU_CEB_ASSETS_URL } from '../../../../../../utils/constants';
 
 export default function WaterHelp() {
   return (
-    <div className="waterhelp">
+    <div className="waterhelp back">
       <Container textAlign="justified">
         <h1 className="waterhelp__name">9. Судың кермектігі</h1>
         <p className="waterhelp__content">
@@ -43,7 +40,11 @@ export default function WaterHelp() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={waterhelp1} alt="waterhelp1" size="big" /> */}
+                  <Image
+                    src={`${EDU_CEB_ASSETS_URL}9.1.jpg`}
+                    alt="waterhelp1"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -86,7 +87,11 @@ export default function WaterHelp() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={waterhelp2} alt="waterhelp2" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}9.2.jpg`}
+                  alt="waterhelp2"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -113,7 +118,11 @@ export default function WaterHelp() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={waterhelp3} alt="waterhelp3" size="big" /> */}
+                  <Image
+                    src={`${EDU_CEB_ASSETS_URL}9.3.jpg`}
+                    alt="waterhelp3"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -161,7 +170,11 @@ export default function WaterHelp() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={waterhelp4} alt="waterhelp4" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}9.4.jpg`}
+                  alt="waterhelp4"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -185,7 +198,11 @@ export default function WaterHelp() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={waterhelp5} alt="waterhelp5" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}9.5.jpg`}
+                  alt="waterhelp5"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>

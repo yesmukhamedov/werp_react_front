@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Grid, Accordion, Image } from 'semantic-ui-react';
 
 import './vacuum.css';
+import '../../../back.css';
 
 // import vacuum1 from '../../../../assets/7.1.jpg';
 // import vacuum2 from '../../../../assets/7.2.jpg';
@@ -10,7 +11,7 @@ import './vacuum.css';
 
 export default function Vacuum() {
   return (
-    <div className="vacuum">
+    <div className="vacuum back">
       <Container textAlign="justified">
         <h1 className="vacuum__name">7 Vacuum.</h1>
         <p className="vacuum__content">

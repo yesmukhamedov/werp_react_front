@@ -2,14 +2,13 @@ import React from 'react';
 import { Container, Grid, Image, Accordion } from 'semantic-ui-react';
 
 import './waterProblem.css';
+import '../../../back.css';
 
-// import wp1 from '../../../../assets/4.1.jpg';
-// import wp2 from '../../../../assets/4.2.jpg';
-// import wp3 from '../../../../assets/4.3.jpg';
+import { EDU_CEB_ASSETS_URL } from '../../../../../../utils/constants';
 
 export default function WaterProblem() {
   return (
-    <div className="waterproblem">
+    <div className="waterproblem back">
       <Container textAlign="justified">
         <h1 className="waterproblem__name">4. Ауыз су проблемасы</h1>
         <p className="waterproblem__content">
@@ -36,7 +35,11 @@ export default function WaterProblem() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={wp1} alt="wp1" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}4.1.jpg`}
+                  alt="wp1"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -69,7 +72,11 @@ export default function WaterProblem() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={wp2} alt="wp2" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}4.2.jpg`}
+                  alt="wp2"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -94,7 +101,11 @@ export default function WaterProblem() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={wp3} alt="wp3" size="big" /> */}
+                  <Image
+                    src={`${EDU_CEB_ASSETS_URL}4.3.jpg`}
+                    alt="wp3"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>

@@ -1653,6 +1653,11 @@ const generateRoutes = transactionRoutes => {
         component={AsyncCebElectro}
       />
       <Route
+        path="/edu/cebilon/cebilondemo/napkinshow"
+        exact={true}
+        component={AsyncCebNapkin}
+      />
+      <Route
         path="/edu/cebilon/cebilondemo/cebilonunique"
         exact={true}
         component={AsyncCebUnique}

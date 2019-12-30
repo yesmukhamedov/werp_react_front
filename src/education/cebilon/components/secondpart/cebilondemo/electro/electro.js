@@ -2,15 +2,13 @@ import React from 'react';
 import { Container, Grid, Image, Accordion } from 'semantic-ui-react';
 
 import './electro.css';
+import '../../../back.css';
 
-// import electro1 from '../../../../assets/11.1.jpg';
-// import electro2 from '../../../../assets/11.2.jpg';
-// import electro3 from '../../../../assets/11.3.jpg';
-// import electro4 from '../../../../assets/11.4.jpg';
+import { EDU_CEB_ASSETS_URL } from '../../../../../../utils/constants';
 
 export default function Electro() {
   return (
-    <div className="electro">
+    <div className="electro back">
       <Container textAlign="justified">
         <h1 className="electro__name">11. Электролиз</h1>
         <p className="electro__content">
@@ -43,7 +41,11 @@ export default function Electro() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={electro1} alt="electro1" size="big" /> */}
+                  <Image
+                    src={`${EDU_CEB_ASSETS_URL}11.1.jpg`}
+                    alt="electro1"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -86,7 +88,11 @@ export default function Electro() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={electro2} alt="electro2" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}11.2.jpg`}
+                  alt="electro2"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -113,7 +119,11 @@ export default function Electro() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={electro3} alt="electro3" size="big" /> */}
+                  <Image
+                    src={`${EDU_CEB_ASSETS_URL}11.3.jpg`}
+                    alt="electro3"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -157,7 +167,11 @@ export default function Electro() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={electro4} alt="electro4" size="big" /> */}
+                <Image
+                  src={`${EDU_CEB_ASSETS_URL}11.4.jpg`}
+                  alt="electro4"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>

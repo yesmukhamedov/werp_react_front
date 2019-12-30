@@ -1,11 +1,12 @@
 import React from 'react';
 import { Container, Grid, Image } from 'semantic-ui-react';
-// import u34 from '../../../assets/u34.jpg';
+import { EDU_CEB_ASSETS_URL } from '../../../../../utils/constants';
 import './profit.css';
+import '../../back.css';
 
 export default function ProfitWays() {
   return (
-    <div className="profit">
+    <div className="profit back">
       <Container>
         <h1 className="profit__name">5) Табыс табудың жолдары .</h1>
         <Grid textAlign="justified" verticalAlign="middle">
@@ -32,7 +33,12 @@ export default function ProfitWays() {
               </p>
             </Grid.Column>
             <Grid.Column width="8" className="profit__image">
-              {/* <Image src={u34} alt="u34" size="large" centered /> */}
+              <Image
+                src={`${EDU_CEB_ASSETS_URL}u34.jpg`}
+                alt="u34"
+                size="large"
+                centered
+              />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>

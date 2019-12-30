@@ -2,10 +2,11 @@ import React from 'react';
 import { Container } from 'semantic-ui-react';
 
 import './document.css';
+import '../../back.css';
 
 export default function Document() {
   return (
-    <div className="document">
+    <div className="document back">
       <Container>
         <h1 className="document__name">5) Құжаттармен танысу және толтыру.</h1>
         <p className="document__content">

@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Grid, Image, Accordion } from 'semantic-ui-react';
 
 import './vacKill.css';
+import '../../../back.css';
 
 // import vac1 from '../../../../assets/4.1.jpg';
 // import vac2 from '../../../../assets/4.2.jpg';
@@ -16,7 +17,7 @@ import './vacKill.css';
 
 export default function VacKill() {
   return (
-    <div className="vackill">
+    <div className="vackill back">
       <Container textAlign="justified">
         <h1 className="vackill__name">4 Vac kill.</h1>
         <p className="vackill__content">

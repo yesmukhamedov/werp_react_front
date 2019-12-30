@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Grid, Image, Accordion } from 'semantic-ui-react';
 
 import './airWash.css';
+import '../../../back.css';
 
 // import air1 from '../../../../assets/3.1.jpg';
 // import air2 from '../../../../assets/3.2.jpg';
@@ -15,7 +16,7 @@ import './airWash.css';
 
 export default function AirWash() {
   return (
-    <div className="airwash">
+    <div className="airwash back">
       <Container textAlign="justified">
         <h1 className="airwash__name">3 Air wash.</h1>
         <p className="airwash__content">

@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Grid, Accordion, Image } from 'semantic-ui-react';
 
 import './mattress.css';
+import '../../../back.css';
 
 // import mattress1 from '../../../../assets/9.1.jpg';
 // import mattress2 from '../../../../assets/9.2.jpg';
@@ -10,7 +11,7 @@ import './mattress.css';
 
 export default function Mattress() {
   return (
-    <div className="mattress">
+    <div className="mattress back">
       <Container textAlign="justified">
         <h1 className="mattress__name">9 Матрас show.</h1>
         <p className="mattress__content">

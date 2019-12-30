@@ -1,12 +1,13 @@
 import React from 'react';
 import { Container, Grid, Image } from 'semantic-ui-react';
 
-// import с1 from '../../../assets/с1.png';
+import { EDU_CEB_ASSETS_URL } from '../../../../../utils/constants';
 import './cebilonDemo.css';
+import '../../back.css';
 
 export default function CebilonDemo(props) {
   return (
-    <div className="cebilon">
+    <div className="cebilon back">
       <Container>
         <h1 className="cebilon__name">1) Cebilon демо обучениясы.</h1>
         <Grid columns={2} textAlign="justified" verticalAlign="middle">
@@ -111,7 +112,12 @@ export default function CebilonDemo(props) {
             </p>
           </Grid.Column>
           <Grid.Column className="cebilon__image">
-            {/* <Image src={с1} alt="с1" size="large" centered /> */}
+            <Image
+              src={`${EDU_CEB_ASSETS_URL}c1.png`}
+              alt="с1"
+              size="large"
+              centered
+            />
           </Grid.Column>
         </Grid>
       </Container>

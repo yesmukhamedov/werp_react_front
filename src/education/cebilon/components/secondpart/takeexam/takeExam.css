@@ -1,10 +1,5 @@
 .takeexam {
-  /* background: url('../../../assets/back.jpg'); */
-  width: 100%;
   height: 100%;
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-attachment: fixed;
   padding: 90px 0 50px 0;
 }
 .takeexam__name {

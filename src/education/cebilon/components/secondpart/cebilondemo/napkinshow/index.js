@@ -1,2 +1,2 @@
-import Napkin from './napkin';
-export default Napkin;
+import NapkinShow from './napkinShow';
+export default NapkinShow;
