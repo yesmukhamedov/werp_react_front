@@ -1,0 +1,19 @@
+.waterproblem {
+  /* background: url('../../../../assets/back.jpg'); */
+  width: 100%;
+  height: 140%;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-attachment: fixed;
+  padding: 90px 0 50px 0;
+}
+.waterproblem__name {
+  padding-bottom: 50px;
+  text-align: center;
+}
+.waterproblem__content {
+  font-size: 20px;
+}
+.waterproblem__content__acc {
+  font-size: 18px;
+}

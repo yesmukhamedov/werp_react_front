@@ -1,0 +1,17 @@
+.education {
+  /* background-image: url('./assets/002.jpg'); */
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+.logo {
+  padding: 100px 0 0 50px;
+}
+.education__container {
+  height: 100%;
+}
+.certificate {
+  padding-top: 300px;
+}

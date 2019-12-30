@@ -1,0 +1,19 @@
+.napkin {
+  /* background: url('../../../../assets/back.jpg'); */
+  width: 100%;
+  height: 140%;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-attachment: fixed;
+  padding: 90px 0 50px 0;
+}
+.napkin__name {
+  padding-bottom: 50px;
+  text-align: center;
+}
+.napkin__content {
+  font-size: 20px;
+}
+.napkin__content__acc {
+  font-size: 18px;
+}

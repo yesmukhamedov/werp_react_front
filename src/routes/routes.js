@@ -920,113 +920,273 @@ const AsyncTSRep4 = Loadable({
 });
 
 const AsyncEdu = Loadable({
-  loader: () => import('../education'),
+  loader: () => import('../education/roboclean'),
   loading: () => <LoadingPage />,
 });
 const AsyncCont = Loadable({
-  loader: () => import('../education/components/content/content'),
+  loader: () => import('../education/roboclean/components/content'),
   loading: () => <LoadingPage />,
 });
 const AsyncHire = Loadable({
-  loader: () => import('../education/components/firstpart/hiring'),
+  loader: () => import('../education/roboclean/components/firstpart/hiring'),
   loading: () => <LoadingPage />,
 });
 const AsyncAcComp = Loadable({
-  loader: () => import('../education/components/firstpart/acquaintancecompany'),
+  loader: () =>
+    import('../education/roboclean/components/firstpart/acquaintancecompany'),
   loading: () => <LoadingPage />,
 });
 const AsyncAcWork = Loadable({
-  loader: () => import('../education/components/firstpart/acquaintancework'),
+  loader: () =>
+    import('../education/roboclean/components/firstpart/acquaintancework'),
   loading: () => <LoadingPage />,
 });
 const AsyncWhyAura = Loadable({
-  loader: () => import('../education/components/firstpart/whyaura'),
+  loader: () => import('../education/roboclean/components/firstpart/whyaura'),
   loading: () => <LoadingPage />,
 });
 const AsyncProfit = Loadable({
-  loader: () => import('../education/components/firstpart/profitways'),
+  loader: () =>
+    import('../education/roboclean/components/firstpart/profitways'),
   loading: () => <LoadingPage />,
 });
 const AsyncBusiness = Loadable({
-  loader: () => import('../education/components/firstpart/businesstypes'),
+  loader: () =>
+    import('../education/roboclean/components/firstpart/businesstypes'),
   loading: () => <LoadingPage />,
 });
 const AsyncRobo = Loadable({
-  loader: () => import('../education/components/secondpart/robocleandemo'),
+  loader: () =>
+    import('../education/roboclean/components/secondpart/robocleandemo'),
   loading: () => <LoadingPage />,
 });
 
 const AsyncRIntro = Loadable({
   loader: () =>
-    import('../education/components/secondpart/robocleandemo/intro'),
+    import('../education/roboclean/components/secondpart/robocleandemo/intro'),
   loading: () => <LoadingPage />,
 });
 const AsyncRLamp = Loadable({
   loader: () =>
-    import('../education/components/secondpart/robocleandemo/lampshow'),
+    import(
+      '../education/roboclean/components/secondpart/robocleandemo/lampshow'
+    ),
   loading: () => <LoadingPage />,
 });
 const AsyncRAir = Loadable({
   loader: () =>
-    import('../education/components/secondpart/robocleandemo/airwash'),
+    import(
+      '../education/roboclean/components/secondpart/robocleandemo/airwash'
+    ),
   loading: () => <LoadingPage />,
 });
 const AsyncRVac = Loadable({
   loader: () =>
-    import('../education/components/secondpart/robocleandemo/vackill'),
+    import(
+      '../education/roboclean/components/secondpart/robocleandemo/vackill'
+    ),
   loading: () => <LoadingPage />,
 });
 const AsyncRMini = Loadable({
   loader: () =>
-    import('../education/components/secondpart/robocleandemo/minivac'),
+    import(
+      '../education/roboclean/components/secondpart/robocleandemo/minivac'
+    ),
   loading: () => <LoadingPage />,
 });
 const AsyncRVisual = Loadable({
   loader: () =>
-    import('../education/components/secondpart/robocleandemo/visualizer'),
+    import(
+      '../education/roboclean/components/secondpart/robocleandemo/visualizer'
+    ),
   loading: () => <LoadingPage />,
 });
 const AsyncRVacuum = Loadable({
   loader: () =>
-    import('../education/components/secondpart/robocleandemo/vacuum'),
+    import('../education/roboclean/components/secondpart/robocleandemo/vacuum'),
   loading: () => <LoadingPage />,
 });
 const AsyncRCarp = Loadable({
   loader: () =>
-    import('../education/components/secondpart/robocleandemo/carpetshow'),
+    import(
+      '../education/roboclean/components/secondpart/robocleandemo/carpetshow'
+    ),
   loading: () => <LoadingPage />,
 });
 const AsyncRMat = Loadable({
   loader: () =>
-    import('../education/components/secondpart/robocleandemo/mattress'),
+    import(
+      '../education/roboclean/components/secondpart/robocleandemo/mattress'
+    ),
   loading: () => <LoadingPage />,
 });
 const AsyncRWash = Loadable({
   loader: () =>
-    import('../education/components/secondpart/robocleandemo/washfunc'),
+    import(
+      '../education/roboclean/components/secondpart/robocleandemo/washfunc'
+    ),
   loading: () => <LoadingPage />,
 });
 const AsyncRNozz = Loadable({
   loader: () =>
-    import('../education/components/secondpart/robocleandemo/nozzle'),
+    import('../education/roboclean/components/secondpart/robocleandemo/nozzle'),
   loading: () => <LoadingPage />,
 });
 
 const AsyncPrepExam = Loadable({
-  loader: () => import('../education/components/secondpart/prepexam'),
+  loader: () => import('../education/roboclean/components/secondpart/prepexam'),
   loading: () => <LoadingPage />,
 });
 const AsyncTakeExam = Loadable({
-  loader: () => import('../education/components/secondpart/takeexam'),
+  loader: () => import('../education/roboclean/components/secondpart/takeexam'),
   loading: () => <LoadingPage />,
 });
 
 const AsyncRecom = Loadable({
-  loader: () => import('../education/components/secondpart/recommendations'),
+  loader: () =>
+    import('../education/roboclean/components/secondpart/recommendations'),
   loading: () => <LoadingPage />,
 });
 const AsyncDoc = Loadable({
-  loader: () => import('../education/components/secondpart/document'),
+  loader: () => import('../education/roboclean/components/secondpart/document'),
+  loading: () => <LoadingPage />,
+});
+
+//cebilon education
+const AsyncCeb = Loadable({
+  loader: () => import('../education/cebilon'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCCon = Loadable({
+  loader: () => import('../education/cebilon/components/content'),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncCHire = Loadable({
+  loader: () => import('../education/cebilon/components/firstpart/hiring'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCAcComp = Loadable({
+  loader: () =>
+    import('../education/cebilon/components/firstpart/acquaintancecompany'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCAcWork = Loadable({
+  loader: () =>
+    import('../education/cebilon/components/firstpart/acquaintancework'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCWhyAura = Loadable({
+  loader: () => import('../education/cebilon/components/firstpart/whyaura'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCProfit = Loadable({
+  loader: () => import('../education/cebilon/components/firstpart/profitways'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCBusiness = Loadable({
+  loader: () =>
+    import('../education/cebilon/components/firstpart/businesstypes'),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncCebilon = Loadable({
+  loader: () =>
+    import('../education/cebilon/components/secondpart/cebilondemo'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCebIntro = Loadable({
+  loader: () =>
+    import('../education/cebilon/components/secondpart/cebilondemo/intro'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCebDemoEnter = Loadable({
+  loader: () =>
+    import('../education/cebilon/components/secondpart/cebilondemo/demoenter'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCebPenury = Loadable({
+  loader: () =>
+    import('../education/cebilon/components/secondpart/cebilondemo/penury'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCebWaterProblem = Loadable({
+  loader: () =>
+    import(
+      '../education/cebilon/components/secondpart/cebilondemo/waterproblem'
+    ),
+  loading: () => <LoadingPage />,
+});
+const AsyncCebIntroDevice = Loadable({
+  loader: () =>
+    import(
+      '../education/cebilon/components/secondpart/cebilondemo/introdevice'
+    ),
+  loading: () => <LoadingPage />,
+});
+const AsyncCebTasting = Loadable({
+  loader: () =>
+    import('../education/cebilon/components/secondpart/cebilondemo/tasting'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCebTDS = Loadable({
+  loader: () =>
+    import('../education/cebilon/components/secondpart/cebilondemo/tds'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCebFinger = Loadable({
+  loader: () =>
+    import('../education/cebilon/components/secondpart/cebilondemo/fingershow'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCebWatHelp = Loadable({
+  loader: () =>
+    import('../education/cebilon/components/secondpart/cebilondemo/waterhelp'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCebChlorine = Loadable({
+  loader: () =>
+    import('../education/cebilon/components/secondpart/cebilondemo/chlorine'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCebElectro = Loadable({
+  loader: () =>
+    import('../education/cebilon/components/secondpart/cebilondemo/electro'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCebNapkin = Loadable({
+  loader: () =>
+    import('../education/cebilon/components/secondpart/cebilondemo/napkinshow'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCebUnique = Loadable({
+  loader: () =>
+    import(
+      '../education/cebilon/components/secondpart/cebilondemo/cebilonunique'
+    ),
+  loading: () => <LoadingPage />,
+});
+const AsyncCebHarm = Loadable({
+  loader: () =>
+    import('../education/cebilon/components/secondpart/cebilondemo/harm'),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncCebPrep = Loadable({
+  loader: () => import('../education/cebilon/components/secondpart/prepexam'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCebTake = Loadable({
+  loader: () => import('../education/cebilon/components/secondpart/takeexam'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCebRec = Loadable({
+  loader: () =>
+    import('../education/cebilon/components/secondpart/recommendations'),
+  loading: () => <LoadingPage />,
+});
+const AsyncCebDoc = Loadable({
+  loader: () => import('../education/cebilon/components/secondpart/document'),
   loading: () => <LoadingPage />,
 });
 
@@ -1167,6 +1327,35 @@ const getComponent = {
   TakeExam: AsyncTakeExam,
   Recom: AsyncRecom,
   Doc: AsyncDoc,
+
+  Ceb: AsyncCeb,
+  CCon: AsyncCCon,
+  CHire: AsyncCHire,
+  CAcComp: AsyncCAcComp,
+  CAcWork: AsyncCAcWork,
+  CWhyAura: AsyncCWhyAura,
+  CBusiness: AsyncCBusiness,
+  CProfit: AsyncCProfit,
+
+  CebIntro: AsyncCebIntro,
+  CebDemoEnter: AsyncCebDemoEnter,
+  CebPenury: AsyncCebPenury,
+  CebWaterProblem: AsyncCebWaterProblem,
+  CebIntroDevice: AsyncCebIntroDevice,
+  CebTasting: AsyncCebTasting,
+  CebTDS: AsyncCebTDS,
+  CebFinger: AsyncCebFinger,
+  CebWatHelp: AsyncCebWatHelp,
+  CebChlorine: AsyncCebChlorine,
+  CebElectro: AsyncCebElectro,
+  CebNapkin: AsyncCebNapkin,
+  CebUnique: AsyncCebUnique,
+  CebHarm: AsyncCebHarm,
+
+  CebPrep: AsyncCebPrep,
+  CebTake: AsyncCebTake,
+  CebRec: AsyncCebRec,
+  CebDoc: AsyncCebDoc,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1268,122 +1457,231 @@ const generateRoutes = transactionRoutes => {
         component={AsyncLogInvoicesForm}
       />
 
-      <Route path="/edu" exact={true} component={AsyncEdu} />
+      <Route path="/edu/roboclean" exact={true} component={AsyncEdu} />
+      <Route path="/edu/roboclean/content" exact={true} component={AsyncCont} />
+      <Route path="/edu/roboclean/hiring" exact={true} component={AsyncHire} />
       <Route
-        path="/edu/components/content"
-        exact={true}
-        component={AsyncCont}
-      />
-      <Route
-        path="/edu/components/firstpart/hiring"
-        exact={true}
-        component={AsyncHire}
-      />
-      <Route
-        path="/edu/components/firstpart/acquaintancecompany"
+        path="/edu/roboclean/acquaintancecompany"
         exact={true}
         component={AsyncAcComp}
       />
       <Route
-        path="/edu/components/firstpart/acquaintancework"
+        path="/edu/roboclean/acquaintancework"
         exact={true}
         component={AsyncAcWork}
       />
       <Route
-        path="/edu/components/firstpart/whyaura"
+        path="/edu/roboclean/whyaura"
         exact={true}
         component={AsyncWhyAura}
       />
       <Route
-        path="/edu/components/firstpart/profitways"
+        path="/edu/roboclean/profitways"
         exact={true}
         component={AsyncProfit}
       />
       <Route
-        path="/edu/components/firstpart/businesstypes"
+        path="/edu/roboclean/businesstypes"
         exact={true}
         component={AsyncBusiness}
       />
 
       <Route
-        path="/edu/components/secondpart/robocleandemo"
+        path="/edu/roboclean/robocleandemo"
         exact={true}
         component={AsyncRobo}
       />
       <Route
-        path="/edu/components/secondpart/robocleandemo/intro"
+        path="/edu/roboclean/robocleandemo/intro"
         exact={true}
         component={AsyncRIntro}
       />
       <Route
-        path="/edu/components/secondpart/robocleandemo/lampshow"
+        path="/edu/roboclean/robocleandemo/lampshow"
         exact={true}
         component={AsyncRLamp}
       />
       <Route
-        path="/edu/components/secondpart/robocleandemo/airwash"
+        path="/edu/roboclean/robocleandemo/airwash"
         exact={true}
         component={AsyncRAir}
       />
       <Route
-        path="/edu/components/secondpart/robocleandemo/vackill"
+        path="/edu/roboclean/robocleandemo/vackill"
         exact={true}
         component={AsyncRVac}
       />
       <Route
-        path="/edu/components/secondpart/robocleandemo/minivac"
+        path="/edu/roboclean/robocleandemo/minivac"
         exact={true}
         component={AsyncRMini}
       />
       <Route
-        path="/edu/components/secondpart/robocleandemo/visualizer"
+        path="/edu/roboclean/robocleandemo/visualizer"
         exact={true}
         component={AsyncRVisual}
       />
       <Route
-        path="/edu/components/secondpart/robocleandemo/vacuum"
+        path="/edu/roboclean/robocleandemo/vacuum"
         exact={true}
         component={AsyncRVacuum}
       />
       <Route
-        path="/edu/components/secondpart/robocleandemo/carpetshow"
+        path="/edu/roboclean/robocleandemo/carpetshow"
         exact={true}
         component={AsyncRCarp}
       />
       <Route
-        path="/edu/components/secondpart/robocleandemo/mattress"
+        path="/edu/roboclean/robocleandemo/mattress"
         exact={true}
         component={AsyncRMat}
       />
       <Route
-        path="/edu/components/secondpart/robocleandemo/washfunc"
+        path="/edu/roboclean/robocleandemo/washfunc"
         exact={true}
         component={AsyncRWash}
       />
       <Route
-        path="/edu/components/secondpart/robocleandemo/nozzle"
+        path="/edu/roboclean/robocleandemo/nozzle"
         exact={true}
         component={AsyncRNozz}
       />
       <Route
-        path="/edu/components/secondpart/prepexam"
+        path="/edu/roboclean/prepexam"
         exact={true}
         component={AsyncPrepExam}
       />
       <Route
-        path="/edu/components/secondpart/takeexam"
+        path="/edu/roboclean/takeexam"
         exact={true}
         component={AsyncTakeExam}
       />
       <Route
-        path="/edu/components/secondpart/recommendations"
+        path="/edu/roboclean/recommendations"
         exact={true}
         component={AsyncRecom}
       />
+      <Route path="/edu/roboclean/document" exact={true} component={AsyncDoc} />
+
+      <Route path="/edu/cebilon" exact={true} component={AsyncCeb} />
+      <Route path="/edu/cebilon/content" exact={true} component={AsyncCCon} />
+      <Route path="/edu/cebilon/hiring" exact={true} component={AsyncCHire} />
       <Route
-        path="/edu/components/secondpart/document"
+        path="/edu/cebilon/acquaintancecompany"
         exact={true}
-        component={AsyncDoc}
+        component={AsyncCAcComp}
+      />
+      <Route
+        path="/edu/cebilon/acquaintancework"
+        exact={true}
+        component={AsyncCAcWork}
+      />
+      <Route
+        path="/edu/cebilon/whyaura"
+        exact={true}
+        component={AsyncCWhyAura}
+      />
+      <Route
+        path="/edu/cebilon/profitways"
+        exact={true}
+        component={AsyncCProfit}
+      />
+      <Route
+        path="/edu/cebilon/businesstypes"
+        exact={true}
+        component={AsyncCBusiness}
+      />
+
+      <Route
+        path="/edu/cebilon/cebilondemo"
+        exact={true}
+        component={AsyncCebilon}
+      />
+      <Route
+        path="/edu/cebilon/cebilondemo/intro"
+        exact={true}
+        component={AsyncCebIntro}
+      />
+      <Route
+        path="/edu/cebilon/cebilondemo/demoenter"
+        exact={true}
+        component={AsyncCebDemoEnter}
+      />
+      <Route
+        path="/edu/cebilon/cebilondemo/penury"
+        exact={true}
+        component={AsyncCebPenury}
+      />
+      <Route
+        path="/edu/cebilon/cebilondemo/waterproblem"
+        exact={true}
+        component={AsyncCebWaterProblem}
+      />
+      <Route
+        path="/edu/cebilon/cebilondemo/introdevice"
+        exact={true}
+        component={AsyncCebIntroDevice}
+      />
+      <Route
+        path="/edu/cebilon/cebilondemo/tasting"
+        exact={true}
+        component={AsyncCebTasting}
+      />
+      <Route
+        path="/edu/cebilon/cebilondemo/tds"
+        exact={true}
+        component={AsyncCebTDS}
+      />
+      <Route
+        path="/edu/cebilon/cebilondemo/fingershow"
+        exact={true}
+        component={AsyncCebFinger}
+      />
+      <Route
+        path="/edu/cebilon/cebilondemo/waterscale"
+        exact={true}
+        component={AsyncCebWatHelp}
+      />
+      <Route
+        path="/edu/cebilon/cebilondemo/chlorine"
+        exact={true}
+        component={AsyncCebChlorine}
+      />
+      <Route
+        path="/edu/cebilon/cebilondemo/electro"
+        exact={true}
+        component={AsyncCebElectro}
+      />
+      <Route
+        path="/edu/cebilon/cebilondemo/cebilonunique"
+        exact={true}
+        component={AsyncCebUnique}
+      />
+      <Route
+        path="/edu/cebilon/cebilondemo/harm"
+        exact={true}
+        component={AsyncCebHarm}
+      />
+
+      <Route
+        path="/edu/cebilon/prepexam"
+        exact={true}
+        component={AsyncCebPrep}
+      />
+      <Route
+        path="/edu/cebilon/takeexam"
+        exact={true}
+        component={AsyncCebTake}
+      />
+      <Route
+        path="/edu/cebilon/recommendations"
+        exact={true}
+        component={AsyncCebRec}
+      />
+      <Route
+        path="/edu/cebilon/document"
+        exact={true}
+        component={AsyncCebDoc}
       />
 
       {/* dynamically generated URLs  */}

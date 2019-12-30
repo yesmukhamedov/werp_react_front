@@ -1,0 +1,16 @@
+.hiring {
+  /* background: url('../../../assets/back.jpg'); */
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  text-align: center;
+  background-attachment: fixed;
+  padding: 90px 0 50px 0;
+}
+.hiring__name {
+  padding-bottom: 50px;
+}
+.hiring__content {
+  font-size: 20px;
+}

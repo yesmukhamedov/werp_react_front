@@ -1,0 +1,19 @@
+.demoenter {
+  /* background: url('../../../../assets/back.jpg'); */
+  width: 100%;
+  height: 140%;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-attachment: fixed;
+  padding: 130px 0 270px 0;
+}
+.demoenter__name {
+  padding-bottom: 50px;
+  text-align: center;
+}
+.demoenter__content {
+  font-size: 20px;
+}
+.demoenter__content__acc {
+  font-size: 18px;
+}
