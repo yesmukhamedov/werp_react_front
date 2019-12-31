@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Grid, Image } from 'semantic-ui-react';
 
-// import r1 from '../../../assets/r1.png';
+import { EDU_ROBO_ASSETS_URL } from '../../../../../utils/constants';
 import './robocleanDemo.css';
 import '../../back.css';
 
@@ -91,7 +91,12 @@ export default function RobocleanDemo(props) {
             </p>
           </Grid.Column>
           <Grid.Column className="roboclean__image">
-            {/* <Image src={r1} alt="r1" size="large" centered /> */}
+            <Image
+              src={`${EDU_ROBO_ASSETS_URL}r1.png`}
+              alt="r1"
+              size="large"
+              centered
+            />
           </Grid.Column>
         </Grid>
       </Container>

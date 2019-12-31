@@ -4,11 +4,7 @@ import { Container, Image, Grid, Accordion } from 'semantic-ui-react';
 import './miniVac.css';
 import '../../../back.css';
 
-// import minivac1 from '../../../../assets/5.1.jpg';
-// import minivac2 from '../../../../assets/5.2.jpg';
-// import minivac3 from '../../../../assets/5.3.jpg';
-// import minivac4 from '../../../../assets/5.4.jpg';
-// import minivac5 from '../../../../assets/5.5.jpg';
+import { EDU_ROBO_ASSETS_URL } from '../../../../../../utils/constants';
 
 export default function MiniVac() {
   return (
@@ -40,7 +36,11 @@ export default function MiniVac() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={minivac1} alt="minivac1" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}5.1.jpg`}
+                  alt="minivac1"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -60,7 +60,11 @@ export default function MiniVac() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={minivac2} alt="minivac2" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}5.2.jpg`}
+                  alt="minivac2"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -96,7 +100,11 @@ export default function MiniVac() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={minivac3} alt="minivac3" size="big" /> */}
+                  <Image
+                    src={`${EDU_ROBO_ASSETS_URL}5.3.jpg`}
+                    alt="minivac3"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -173,7 +181,11 @@ export default function MiniVac() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={minivac4} alt="minivac4" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}5.4.jpg`}
+                  alt="minivac4"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -190,7 +202,11 @@ export default function MiniVac() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={minivac5} alt="minivac5" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}5.5.jpg`}
+                  alt="minivac5"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>

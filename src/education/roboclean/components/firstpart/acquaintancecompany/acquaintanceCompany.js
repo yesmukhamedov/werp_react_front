@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container, Grid, Image } from 'semantic-ui-react';
-import { EDU_CEB_ASSETS_URL } from '../../../../../utils/constants';
+import { EDU_ROBO_ASSETS_URL } from '../../../../../utils/constants';
 
 import './acquaintance.css';
 import '../../back.css';
@@ -39,7 +39,7 @@ export default function AcquaintanceCompany() {
           </Grid.Column>
           <Grid.Column className="acquaintance__image">
             <Image
-              src={`${EDU_CEB_ASSETS_URL}u31.jpg`}
+              src={`${EDU_ROBO_ASSETS_URL}u31.jpg`}
               alt="u31"
               size="large"
               centered

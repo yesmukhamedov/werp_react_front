@@ -4,10 +4,7 @@ import { Container, Grid, Accordion, Image } from 'semantic-ui-react';
 import './washFunc.css';
 import '../../../back.css';
 
-// import washfunc1 from '../../../../assets/10.1.jpg';
-// import washfunc2 from '../../../../assets/10.2.jpg';
-// import washfunc3 from '../../../../assets/10.3.jpg';
-// import washfunc4 from '../../../../assets/10.4.jpg';
+import { EDU_ROBO_ASSETS_URL } from '../../../../../../utils/constants';
 
 export default function WashFunc() {
   return (
@@ -41,7 +38,11 @@ export default function WashFunc() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={washfunc1} alt="washfunc1" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}10.1.jpg`}
+                  alt="washfunc1"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -57,7 +58,11 @@ export default function WashFunc() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={washfunc2} alt="washfunc2" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}10.2.jpg`}
+                  alt="washfunc2"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -85,7 +90,11 @@ export default function WashFunc() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={washfunc3} alt="washfunc3" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}10.3.jpg`}
+                  alt="washfunc3"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -104,7 +113,11 @@ export default function WashFunc() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={washfunc4} alt="washfunc4" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}10.4.jpg`}
+                  alt="washfunc4"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>

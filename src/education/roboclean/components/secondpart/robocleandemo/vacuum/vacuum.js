@@ -4,10 +4,7 @@ import { Container, Grid, Accordion, Image } from 'semantic-ui-react';
 import './vacuum.css';
 import '../../../back.css';
 
-// import vacuum1 from '../../../../assets/7.1.jpg';
-// import vacuum2 from '../../../../assets/7.2.jpg';
-// import vacuum3 from '../../../../assets/7.3.jpg';
-// import vacuum4 from '../../../../assets/7.4.jpg';
+import { EDU_ROBO_ASSETS_URL } from '../../../../../../utils/constants';
 
 export default function Vacuum() {
   return (
@@ -40,7 +37,11 @@ export default function Vacuum() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={vacuum1} alt="vacuum1" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}7.1.jpg`}
+                  alt="vacuum1"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -69,7 +70,11 @@ export default function Vacuum() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={vacuum2} alt="vacuum2" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}7.2.jpg`}
+                  alt="vacuum2"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -96,7 +101,11 @@ export default function Vacuum() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={vacuum3} alt="vacuum3" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}7.3.jpg`}
+                  alt="vacuum3"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -113,7 +122,11 @@ export default function Vacuum() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={vacuum4} alt="vacuum4" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}7.4.jpg`}
+                  alt="vacuum4"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>

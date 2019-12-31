@@ -4,16 +4,7 @@ import { Container, Accordion, Image, Grid } from 'semantic-ui-react';
 import './intro.css';
 import '../../../back.css';
 
-// import intro1 from '../../../../assets/1.1.jpg';
-// import intro2 from '../../../../assets/1.2.jpg';
-// import intro3 from '../../../../assets/1.3.jpg';
-// import intro4 from '../../../../assets/1.4.jpg';
-// import intro5 from '../../../../assets/1.5.jpg';
-// import intro6 from '../../../../assets/1.6.jpg';
-// import intro7 from '../../../../assets/1.7.jpg';
-// import intro8 from '../../../../assets/1.8.jpg';
-// import intro9 from '../../../../assets/1.9.jpg';
-// import intro10 from '../../../../assets/1.10.jpg';
+import { EDU_ROBO_ASSETS_URL } from '../../../../../../utils/constants';
 
 export default function Intro() {
   return (
@@ -42,7 +33,11 @@ export default function Intro() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={intro1} alt="intro1" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}1.1.jpg`}
+                  alt="intro1"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -58,7 +53,11 @@ export default function Intro() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={intro2} alt="intro2" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}1.2.jpg`}
+                  alt="intro2"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -74,7 +73,11 @@ export default function Intro() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={intro3} alt="intro3" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}1.3.jpg`}
+                  alt="intro3"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -90,7 +93,11 @@ export default function Intro() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={intro4} alt="intro4" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}1.4.jpg`}
+                  alt="intro4"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -107,7 +114,11 @@ export default function Intro() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={intro5} alt="intro5" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}1.5.jpg`}
+                  alt="intro5"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -137,7 +148,11 @@ export default function Intro() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8" verticalAlign="middle">
-                  {/* <Image src={intro6} alt="intro6" size="big" /> */}
+                  <Image
+                    src={`${EDU_ROBO_ASSETS_URL}1.6.jpg`}
+                    alt="intro6"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -190,7 +205,11 @@ export default function Intro() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={intro7} alt="intro7" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}1.7.jpg`}
+                  alt="intro7"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -204,7 +223,11 @@ export default function Intro() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={intro8} alt="intro8" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}1.8.jpg`}
+                  alt="intro8"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -220,7 +243,11 @@ export default function Intro() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={intro9} alt="intro9" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}1.9.jpg`}
+                  alt="intro9"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -239,7 +266,11 @@ export default function Intro() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={intro10} alt="intro10" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}1.10.jpg`}
+                  alt="intro10"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>

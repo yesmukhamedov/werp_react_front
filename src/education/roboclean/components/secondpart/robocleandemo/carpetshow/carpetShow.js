@@ -4,10 +4,7 @@ import { Container, Grid, Accordion, Image } from 'semantic-ui-react';
 import './carpetShow.css';
 import '../../../back.css';
 
-// import carpet1 from '../../../../assets/8.1.jpg';
-// import carpet2 from '../../../../assets/8.2.jpg';
-// import carpet3 from '../../../../assets/8.3.jpg';
-// import carpet4 from '../../../../assets/8.4.jpg';
+import { EDU_ROBO_ASSETS_URL } from '../../../../../../utils/constants';
 
 export default function CarpetShow() {
   return (
@@ -46,7 +43,11 @@ export default function CarpetShow() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={carpet1} alt="carpet1" size="big" /> */}
+                  <Image
+                    src={`${EDU_ROBO_ASSETS_URL}8.1.jpg`}
+                    alt="carpet1"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -100,7 +101,11 @@ export default function CarpetShow() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={carpet2} alt="carpet2" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}8.2.jpg`}
+                  alt="carpet2"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -137,7 +142,11 @@ export default function CarpetShow() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={carpet3} alt="carpet3" size="big" /> */}
+                  <Image
+                    src={`${EDU_ROBO_ASSETS_URL}8.3.jpg`}
+                    alt="carpet3"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -174,7 +183,11 @@ export default function CarpetShow() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={carpet4} alt="carpet4" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}8.4.jpg`}
+                  alt="carpet4"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>

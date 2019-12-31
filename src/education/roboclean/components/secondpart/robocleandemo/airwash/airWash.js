@@ -4,15 +4,7 @@ import { Container, Grid, Image, Accordion } from 'semantic-ui-react';
 import './airWash.css';
 import '../../../back.css';
 
-// import air1 from '../../../../assets/3.1.jpg';
-// import air2 from '../../../../assets/3.2.jpg';
-// import air3 from '../../../../assets/3.3.jpg';
-// import air4 from '../../../../assets/3.4.jpg';
-// import air5 from '../../../../assets/3.5.jpg';
-// import air6 from '../../../../assets/3.6.jpg';
-// import air7 from '../../../../assets/3.7.jpg';
-// import air8 from '../../../../assets/3.8.jpg';
-// import air9 from '../../../../assets/3.9.jpg';
+import { EDU_ROBO_ASSETS_URL } from '../../../../../../utils/constants';
 
 export default function AirWash() {
   return (
@@ -50,7 +42,11 @@ export default function AirWash() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={air1} alt="air1" size="big" /> */}
+                  <Image
+                    src={`${EDU_ROBO_ASSETS_URL}3.1.jpg`}
+                    alt="air1"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -96,7 +92,11 @@ export default function AirWash() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={air2} alt="air2" size="big" /> */}
+                  <Image
+                    src={`${EDU_ROBO_ASSETS_URL}3.2.jpg`}
+                    alt="air2"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -137,7 +137,11 @@ export default function AirWash() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={air3} alt="air3" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}3.3.jpg`}
+                  alt="air3"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -174,7 +178,11 @@ export default function AirWash() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={air4} alt="air4" size="big" /> */}
+                  <Image
+                    src={`${EDU_ROBO_ASSETS_URL}3.4.jpg`}
+                    alt="air4"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -231,7 +239,11 @@ export default function AirWash() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={air5} alt="air5" size="big" /> */}
+                  <Image
+                    src={`${EDU_ROBO_ASSETS_URL}3.5.jpg`}
+                    alt="air5"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -289,7 +301,11 @@ export default function AirWash() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8" verticalAlign="middle">
-                {/* <Image src={air6} alt="air6" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}3.6.jpg`}
+                  alt="air6"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -337,7 +353,11 @@ export default function AirWash() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={air7} alt="air7" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}3.7.jpg`}
+                  alt="air7"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -370,7 +390,11 @@ export default function AirWash() {
                 </Grid.Column>
 
                 <Grid.Column width="8">
-                  {/* <Image src={air8} alt="air8" size="big" /> */}
+                  <Image
+                    src={`${EDU_ROBO_ASSETS_URL}3.8.jpg`}
+                    alt="air8"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -443,7 +467,11 @@ export default function AirWash() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={air9} alt="air9" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}3.9.jpg`}
+                  alt="air9"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>

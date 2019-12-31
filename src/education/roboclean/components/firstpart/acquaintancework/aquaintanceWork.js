@@ -1,7 +1,8 @@
 import React from 'react';
 import { Container, Grid, Image } from 'semantic-ui-react';
 
-// import u32 from '../../../assets/u32.jpg';
+import { EDU_ROBO_ASSETS_URL } from '../../../../../utils/constants';
+
 import './acquaintance.css';
 import '../../back.css';
 
@@ -29,7 +30,12 @@ export default function AquaintanceWork() {
             </p>
           </Grid.Column>
           <Grid.Column className="acquaintance__image">
-            {/* <Image src={u32} alt="u32" size="large" centered /> */}
+            <Image
+              src={`${EDU_ROBO_ASSETS_URL}u32.jpg`}
+              alt="u32"
+              size="large"
+              centered
+            />
           </Grid.Column>
         </Grid>
       </Container>

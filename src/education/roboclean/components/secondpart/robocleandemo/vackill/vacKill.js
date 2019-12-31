@@ -4,16 +4,7 @@ import { Container, Grid, Image, Accordion } from 'semantic-ui-react';
 import './vacKill.css';
 import '../../../back.css';
 
-// import vac1 from '../../../../assets/4.1.jpg';
-// import vac2 from '../../../../assets/4.2.jpg';
-// import vac3 from '../../../../assets/4.3.jpg';
-// import vac4 from '../../../../assets/4.4.jpg';
-// import vac5 from '../../../../assets/4.5.jpg';
-// import vac6 from '../../../../assets/4.6.jpg';
-// import vac7 from '../../../../assets/4.7.jpg';
-// import vac8 from '../../../../assets/4.8.jpg';
-// import vac9 from '../../../../assets/4.9.jpg';
-// import vac10 from '../../../../assets/4.10.jpg';
+import { EDU_ROBO_ASSETS_URL } from '../../../../../../utils/constants';
 
 export default function VacKill() {
   return (
@@ -49,7 +40,11 @@ export default function VacKill() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={vac1} alt="vac1" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}4.1.jpg`}
+                  alt="vac1"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -70,7 +65,11 @@ export default function VacKill() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={vac2} alt="vac2" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}4.2.jpg`}
+                  alt="vac2"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -88,7 +87,11 @@ export default function VacKill() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={vac3} alt="vac3" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}4.3.jpg`}
+                  alt="vac3"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -107,7 +110,11 @@ export default function VacKill() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={vac4} alt="vac4" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}4.4.jpg`}
+                  alt="vac4"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -126,7 +133,11 @@ export default function VacKill() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={vac5} alt="vac5" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}4.5.jpg`}
+                  alt="vac5"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -159,7 +170,11 @@ export default function VacKill() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8" verticalAlign="middle">
-                {/* <Image src={vac6} alt="vac6" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}4.6.jpg`}
+                  alt="vac6"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -180,7 +195,11 @@ export default function VacKill() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={vac7} alt="vac7" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}4.7.jpg`}
+                  alt="vac7"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -210,7 +229,11 @@ export default function VacKill() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={vac8} alt="vac8" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}4.8.jpg`}
+                  alt="vac8"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -232,7 +255,11 @@ export default function VacKill() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={vac9} alt="vac9" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}4.9.jpg`}
+                  alt="vac9"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -251,7 +278,11 @@ export default function VacKill() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={vac10} alt="vac10" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}4.10.jpg`}
+                  alt="vac10"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, Grid, Image } from 'semantic-ui-react';
 
-// import u33 from '../../../assets/u33.jpg';
+import { EDU_ROBO_ASSETS_URL } from '../../../../../utils/constants';
 import './whyAura.css';
 import '../../back.css';
 
@@ -38,7 +38,12 @@ export default function WhyAura() {
             </p>
           </Grid.Column>
           <Grid.Column className="whyaura__image">
-            {/* <Image src={u33} alt="u33" size="large" centered /> */}
+            <Image
+              src={`${EDU_ROBO_ASSETS_URL}u33.jpg`}
+              alt="u33"
+              size="large"
+              centered
+            />
           </Grid.Column>
         </Grid>
       </Container>

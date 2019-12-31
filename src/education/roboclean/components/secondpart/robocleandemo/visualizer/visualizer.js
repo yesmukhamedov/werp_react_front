@@ -3,10 +3,7 @@ import { Container, Grid, Accordion, Image } from 'semantic-ui-react';
 
 import './visualizer.css';
 import '../../../back.css';
-// import visualizer1 from '../../../../assets/6.1.jpg';
-// import visualizer2 from '../../../../assets/6.2.jpg';
-// import visualizer3 from '../../../../assets/6.3.jpg';
-// import visualizer4 from '../../../../assets/6.4.jpg';
+import { EDU_ROBO_ASSETS_URL } from '../../../../../../utils/constants';
 
 export default function Visualizer() {
   return (
@@ -34,7 +31,11 @@ export default function Visualizer() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={visualizer1} alt="visualizer1" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}6.1.jpg`}
+                  alt="visualizer1"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -64,7 +65,11 @@ export default function Visualizer() {
                   </p>
                 </Grid.Column>
                 <Grid.Column width="8">
-                  {/* <Image src={visualizer2} alt="visualizer2" size="big" /> */}
+                  <Image
+                    src={`${EDU_ROBO_ASSETS_URL}6.2.jpg`}
+                    alt="visualizer2"
+                    size="big"
+                  />
                 </Grid.Column>
               </Grid.Row>
               <Grid.Row>
@@ -149,7 +154,11 @@ export default function Visualizer() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={visualizer3} alt="visualizer3" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}6.3.jpg`}
+                  alt="visualizer3"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>
@@ -167,7 +176,11 @@ export default function Visualizer() {
                 </p>
               </Grid.Column>
               <Grid.Column width="8">
-                {/* <Image src={visualizer4} alt="visualizer4" size="big" /> */}
+                <Image
+                  src={`${EDU_ROBO_ASSETS_URL}6.4.jpg`}
+                  alt="visualizer4"
+                  size="big"
+                />
               </Grid.Column>
             </Grid>
           </Accordion.Content>

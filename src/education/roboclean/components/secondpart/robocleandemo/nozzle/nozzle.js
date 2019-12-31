@@ -3,7 +3,7 @@ import { Container, Grid, Image } from 'semantic-ui-react';
 
 import './nozzle.css';
 import '../../../back.css';
-// import nozzle1 from '../../../../assets/11.png';
+import { EDU_ROBO_ASSETS_URL } from '../../../../../../utils/constants';
 
 export default function Nozzle() {
   return (
@@ -17,7 +17,11 @@ export default function Nozzle() {
             </p>
           </Grid.Column>
           <Grid.Column width="8">
-            {/* <Image src={nozzle1} alt="nozzle1" size="big" /> */}
+            <Image
+              src={`${EDU_ROBO_ASSETS_URL}11.png`}
+              alt="nozzle1"
+              size="big"
+            />
           </Grid.Column>
         </Grid>
       </Container>

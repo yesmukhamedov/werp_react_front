@@ -3,7 +3,7 @@ import { Container, Grid, Image } from 'semantic-ui-react';
 
 import './hiring.css';
 import '../../back.css';
-// import image from '../../../assets/u30.jpg';
+import { EDU_ROBO_ASSETS_URL } from '../../../../../utils/constants';
 
 export default function Hiring() {
   return (
@@ -24,7 +24,12 @@ export default function Hiring() {
             </p>
           </Grid.Column>
           <Grid.Column className="hiring__image">
-            {/* <Image src={image} alt="image" size="large" centered /> */}
+            <Image
+              src={`${EDU_ROBO_ASSETS_URL}u30.jpg`}
+              alt="image"
+              size="large"
+              centered
+            />
           </Grid.Column>
         </Grid>
       </Container>
