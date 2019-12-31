@@ -19,7 +19,6 @@ export const DELETE_SMCETST = 'DELETE_SMCETST';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
-
 export function changeDynObjService(a_obj) {
   const obj = {
     type: CHANGE_DYNOBJ_SERVICE,
@@ -131,11 +130,16 @@ export const addSmsetct = smSetCtAdd => {
     dispatch(modifyLoader(true));
     doPost(`werp/mservice/smsetct/create`, smSetCtAdd)
       .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: ADD_SMSETCT,
-          payload: data.data,
-        });
+        if (data) {
+          dispatch(notify('success', errorTable[`101${language}`]));
+          dispatch(modifyLoader(false));
+          dispatch({
+            type: ADD_SMSETCT,
+            payload: data.data,
+          });
+        } else {
+          dispatch(notify('info', errorTable[`132${language}`])); //Не добавлен
+        }
       })
       .catch(error => {
         handleError(error, dispatch);
@@ -143,13 +147,13 @@ export const addSmsetct = smSetCtAdd => {
   };
 };
 
-export function searchSmsetct(smCetStSearch) {
-  console.log('smCetStSearch', smCetStSearch);
+export function searchSmsetct(conf) {
+  console.log('smCetStSearch', conf);
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`werp/mservice/smsetct`, smCetStSearch)
+    doGet(`werp/mservice/smsetct`, conf)
       .then(({ data }) => {
-        //
+        console.log('data', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: SEARCH_SMSETCT,
@@ -163,16 +167,12 @@ export function searchSmsetct(smCetStSearch) {
   };
 }
 
-export function editSmsetct(sm_set_ct_Edit) {
-  console.log('update.id', sm_set_ct_Edit.id);
-  console.log('updateInAction', sm_set_ct_Edit);
+export function editSmsetct(sm_set_ct_Edit, smCetStSearch) {
   return function(dispatch) {
     doPut(`werp/mservice/smsetct/update`, sm_set_ct_Edit)
       .then(response => {
-        console.log('INRerquest', sm_set_ct_Edit);
-        console.log('response', response);
         if (response) {
-          console.log('INRerquest', sm_set_ct_Edit);
+          console.log('response', response.data.data);
           dispatch(
             notify(
               'success',
@@ -193,10 +193,19 @@ export function editSmsetct(sm_set_ct_Edit) {
             ),
           );
         }
+        doGet(`werp/mservice/smsetct`, smCetStSearch)
+          .then(({ data }) => {
+            dispatch({
+              type: SEARCH_SMSETCT,
+              payload: data.data.data,
+            });
+          })
+          .catch(error => {
+            handleError(error, dispatch);
+          });
       })
       .catch(e => {
         handleError(e, dispatch);
       });
-    console.log('put');
   };
 }

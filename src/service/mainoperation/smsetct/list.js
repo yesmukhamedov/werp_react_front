@@ -23,11 +23,10 @@ export default function List(props) {
     countryList,
     dynamicObject,
     // historyDynamicObject,
-    products,
     getCountryOptions,
-    getCompanyOptions,
-    getProductOptions,
+    products,
     editSmsetct,
+    smSetCtSearch,
   } = props;
 
   const historyDynamicObject = {};
@@ -139,7 +138,9 @@ export default function List(props) {
 
   const onClickSave = () => {
     console.log('sm_set_ct_Edit', sm_set_ct_Edit);
-    editSmsetct({ ...sm_set_ct_Edit });
+    console.log('smSetCtSearch', smSetCtSearch);
+
+    editSmsetct({ ...sm_set_ct_Edit, ...smSetCtSearch });
   };
 
   let columns = [
@@ -204,7 +205,7 @@ export default function List(props) {
       minWidth: 100,
     },
     {
-      Header: messages['configuration'] + 'F-1',
+      Header: messages['configuration'] + ' F-1',
       accessor: 'f1',
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['f1'] }),
@@ -216,7 +217,7 @@ export default function List(props) {
       minWidth: 100,
     },
     {
-      Header: messages['configuration'] + 'F-2',
+      Header: messages['configuration'] + ' F-2',
       accessor: 'f2',
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['f2'] }),
@@ -240,7 +241,7 @@ export default function List(props) {
       minWidth: 100,
     },
     {
-      Header: messages['configuration'] + 'F-4',
+      Header: messages['configuration'] + ' F-4',
       accessor: 'f4',
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['f4'] }),
@@ -253,7 +254,7 @@ export default function List(props) {
     },
 
     {
-      Header: messages['configuration'] + 'F-5',
+      Header: messages['configuration'] + ' F-5',
       accessor: 'f5',
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['f5'] }),
@@ -266,7 +267,7 @@ export default function List(props) {
     },
 
     {
-      Header: messages['configuration'] + 'F- 6',
+      Header: messages['configuration'] + ' F-6',
       accessor: 'f6',
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['f6'] }),
@@ -279,7 +280,7 @@ export default function List(props) {
     },
 
     {
-      Header: messages['configuration'] + 'F-7',
+      Header: messages['configuration'] + ' F-7',
       accessor: 'f7',
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['f7'] }),
@@ -328,7 +329,7 @@ export default function List(props) {
       Header: messages['Form.Date'],
       accessor: 'date',
       filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['Form.Date'] }),
+        matchSorter(rows, filter.value, { keys: ['date'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
       width: 200,
@@ -425,7 +426,7 @@ export default function List(props) {
     <div>
       <Container fluid style={{ marginTop: '2em' }}>
         {Object.keys(dynamicObject).length === 0 ? (
-          <Segment textAlign="center">Нет данных</Segment>
+          <Segment textAlign="center">{messages['no_data']}</Segment>
         ) : (
           <ReactTableWrapper
             filterable
@@ -439,8 +440,7 @@ export default function List(props) {
 
         <Modal open={open}>
           <Modal.Header>
-            {' '}
-            <h3> Редактировать картридж</h3>{' '}
+            <h3>{messages['edit_cartridge']}</h3>
           </Modal.Header>
           <Modal.Content>
             <Form>
@@ -458,7 +458,7 @@ export default function List(props) {
                   <Dropdown
                     search
                     selection
-                    options={getCompanyOptions(companyOptions)}
+                    options={companyOptions || []}
                     defaultValue={sm_set_ct_Edit.bukrs}
                     onChange={(e, o) => handleEdit(o, 'bukrs')}
                   />
@@ -503,7 +503,7 @@ export default function List(props) {
                     control={Input}
                     label={messages['configuration'] + ' F-1'}
                     defaultValue={sm_set_ct_Edit.f1}
-                    onChange={(e, o) => handleEdit(o, e, 'F1')}
+                    onChange={(e, o) => handleEdit(o, 'F1')}
                   />
                   <Form.Field
                     required
@@ -569,11 +569,11 @@ export default function List(props) {
 
         <Segment clearing>
           <Header as="h2" floated="left">
-            {messages['edit_history']}
+            {messages['editing_history']}
           </Header>
         </Segment>
         {Object.keys({}).length === 0 ? (
-          <Segment textAlign="center">Нет данных</Segment>
+          <Segment textAlign="center">{messages['no_data']}</Segment>
         ) : (
           <ReactTableWrapper
             filterable

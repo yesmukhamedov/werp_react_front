@@ -44,7 +44,7 @@ export default function(state = INITIAL_STATE, action) {
         Object.keys(state.dynamicObject).length === 0 ||
         state.dynamicObject === undefined
       ) {
-        return { ...state, dynamicObject: [action.payload] };
+        return { ...state, dynamicObject: [] };
       } else {
         return {
           ...state,
@@ -59,10 +59,10 @@ export default function(state = INITIAL_STATE, action) {
         dynamicObject: [...action.payload],
       };
     case EDIT_SMSETCT:
-      console.log('in reducer ', action.payload);
+      console.log('in reducer edit', action.payload);
       return {
         ...state,
-        dynamicObject: [...state.dynamicObject, action.payload],
+        dynamicObject: [...state.dynamicObject],
       };
 
     case FETCH_SMSETPP:

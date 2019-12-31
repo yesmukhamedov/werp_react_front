@@ -5,6 +5,8 @@ import {
   f4FetchCountryList,
   f4FetchWerksBranchList,
 } from '../../../reference/f4/f4_action';
+
+import BranchF4Advanced from '../../../reference/f4/branch/BranchF4Advanced';
 import { addSmsetct, searchSmsetct, editSmsetct } from '../../serviceAction';
 import { connect } from 'react-redux';
 import OutputErrors from '../../../general/error/outputErrors';
@@ -21,15 +23,14 @@ import {
   Form,
   Dropdown,
   Input,
+  Label,
 } from 'semantic-ui-react';
 require('moment/locale/ru');
 require('moment/locale/tr');
 
 const Smsetct = props => {
   const emptySearch = {
-    branchId: '',
     bukrs: '',
-    countryId: '',
   };
   const emptyAdd = {
     branchId: '',
@@ -52,15 +53,17 @@ const Smsetct = props => {
   const language = localStorage.getItem('language');
 
   const [smSetCtAdd, setsmSetCtAdd] = useState({ ...emptyAdd });
-  const [smCetStSearch, setsmCetStSearch] = useState({ ...emptySearch });
+  const [smSetCtSearch, setsmSetCtSearch] = useState({ ...emptySearch });
   const [show, setShow] = useState(false);
   const [errors, setErrors] = useState([]);
+  const [selectedBranches, setSelectedBranches] = useState([]);
+  const [f4BranchIsOpen, setF4BranchIsOpen] = useState(false);
   const {
     intl: { messages },
-    companyOptions,
+    companyOptions = [],
     branchOptions,
     searchSmsetct,
-    countryList,
+    countryList = [],
     dynamicObject,
     products,
     addSmsetct,
@@ -69,84 +72,79 @@ const Smsetct = props => {
 
   //componentDidMount
   useEffect(() => {
+    console.log('usEEffect', companyOptions);
     if (!countryList || countryList.length === 0) props.f4FetchCountryList();
   }, []);
 
   const handleInputAdd = (o, fieldName) => {
     setsmSetCtAdd(prev => {
-      const varSmCetCt = { ...prev };
+      const varSmSetCt = { ...prev };
       switch (fieldName) {
         case 'countryId':
-          varSmCetCt.countryId = o.value;
+          varSmSetCt.countryId = o.value;
           break;
 
         case 'bukrs':
-          varSmCetCt.bukrs = o.value;
+          varSmSetCt.bukrs = o.value;
           break;
 
         case 'branchId':
-          varSmCetCt.branchId = o.value;
+          varSmSetCt.branchId = o.value;
           break;
 
         case 'products':
-          varSmCetCt.products = o.value;
+          varSmSetCt.products = o.value;
           break;
 
         case 'F1':
-          varSmCetCt.f1 = o.value;
+          varSmSetCt.f1 = o.value;
           break;
 
         case 'F2':
-          varSmCetCt.f2 = o.value;
+          varSmSetCt.f2 = o.value;
           break;
 
         case 'F3':
-          varSmCetCt.f3 = o.value;
+          varSmSetCt.f3 = o.value;
           break;
 
         case 'F4':
-          varSmCetCt.f4 = o.value;
+          varSmSetCt.f4 = o.value;
           break;
 
         case 'F5':
-          varSmCetCt.f5 = o.value;
+          varSmSetCt.f5 = o.value;
           break;
 
         case 'F6':
-          varSmCetCt.f6 = o.value;
+          varSmSetCt.f6 = o.value;
           break;
 
         case 'F7':
-          varSmCetCt.f7 = o.value;
+          varSmSetCt.f7 = o.value;
           break;
         case 'note':
-          varSmCetCt.note = o.value;
+          varSmSetCt.note = o.value;
           break;
 
         default:
-          varSmCetCt[fieldName] = o.value;
+          varSmSetCt[fieldName] = o.value;
       }
-      return varSmCetCt;
+      return varSmSetCt;
     });
   };
 
   const handleInputSearch = (o, fieldName) => {
-    setsmCetStSearch(prev => {
-      const varSmCetCt = { ...prev };
+    setsmSetCtSearch(prev => {
+      const varSmSetCt = { ...prev };
       switch (fieldName) {
         case 'countryId':
-          varSmCetCt.countryId = o.value;
-          break;
-        case 'bukrs':
-          varSmCetCt.bukrs = o.value;
-          break;
-        case 'branchId':
-          varSmCetCt.branchId = o.value;
+          varSmSetCt.countryId = o.value;
           break;
         default:
-          varSmCetCt[fieldName] = o.value;
+          varSmSetCt[fieldName] = o.value;
       }
-      return varSmCetCt;
+      return varSmSetCt;
     });
   };
 
@@ -154,6 +152,7 @@ const Smsetct = props => {
     let errs = [];
     errs = validateAdd();
     if (errs === null || errs === undefined || errs.length === 0) {
+      console.log('smSetCtAdd', smSetCtAdd);
       addSmsetct({ ...smSetCtAdd });
     }
     setErrors(() => errs);
@@ -169,7 +168,15 @@ const Smsetct = props => {
   };
 
   const clickSearch = () => {
-    searchSmsetct({ ...smCetStSearch });
+    console.log('SmSetCtSearch', smSetCtSearch);
+    let branchId = [];
+    for (let wa of selectedBranches) {
+      branchId.push(wa.value);
+    }
+    searchSmsetct({
+      smSetCtSearch,
+      branchId: branchId.join(),
+    });
   };
 
   const validateAdd = () => {
@@ -242,13 +249,19 @@ const Smsetct = props => {
           <Header as="h2" floated="left">
             {messages['cartrige_replace_period']}
           </Header>
-          <Button color="teal" onClick={handleOpen} floated="right">
+          <Button
+            color="teal"
+            onClick={handleOpen}
+            floated="right"
+            icon
+            labelPosition="left"
+          >
             <Icon name="add circle" />
             {messages['BTN__ADD']}
           </Button>
           <Modal open={show}>
             <Modal.Header>
-              <h3>Добавить картридж</h3>
+              <h3>{messages['add_cartridge']}</h3>
             </Modal.Header>
             <Modal.Content>
               <Segment>
@@ -269,8 +282,7 @@ const Smsetct = props => {
                         fluid
                         search
                         selection
-                        options={getCompanyOptions(companyOptions)}
-                        value={smSetCtAdd.bukrs}
+                        options={companyOptions || []}
                         onChange={(e, o) => handleInputAdd(o, 'bukrs')}
                       />
 
@@ -284,7 +296,6 @@ const Smsetct = props => {
                             ? branchOptions[smSetCtAdd.bukrs]
                             : []
                         }
-                        value={smSetCtAdd.branchId}
                         onChange={(e, o) => handleInputAdd(o, 'branchId')}
                       />
                       <label>{messages['TBL_H__PRODUCT']}</label>
@@ -292,8 +303,7 @@ const Smsetct = props => {
                         fluid
                         search
                         selection
-                        options={getProductOptions(companyOptions)}
-                        value={smSetCtAdd.products}
+                        options={companyOptions || []}
                         onChange={(e, o) => handleInputAdd(o, 'products')}
                       />
                       <Form.Field
@@ -369,54 +379,70 @@ const Smsetct = props => {
         </Segment>
 
         <Form>
-          <Grid columns={5}>
+          <Grid columns={7}>
             <Grid.Column>
-              <label>{messages['country']}</label>
-              <Dropdown
-                fluid
-                search
-                selection
-                options={getCountryOptions(countryList)}
-                value={smCetStSearch.countryId}
-                onChange={(e, o) => handleInputSearch(o, 'countryId')}
-                placeholder={messages['all']}
-              />
+              <Grid.Row>
+                <Label>{messages['bukrs']} </Label>
+              </Grid.Row>
+              <Grid.Row>
+                <Dropdown
+                  fluid
+                  search
+                  selection
+                  options={companyOptions || []}
+                  value={smSetCtSearch.bukrs}
+                  onChange={(e, o) => handleInputSearch(o, 'bukrs')}
+                  placeholder={messages['all']}
+                />
+              </Grid.Row>
             </Grid.Column>
 
             <Grid.Column>
-              <label>{messages['bukrs']} </label>
-              <Dropdown
-                fluid
-                search
-                selection
-                options={getCompanyOptions(companyOptions)}
-                value={smCetStSearch.bukrs}
-                onChange={(e, o) => handleInputSearch(o, 'bukrs')}
-                placeholder={messages['all']}
-              />
-            </Grid.Column>
+              <Grid.Row>
+                <Label>
+                  {messages['selectedBranches']} #{selectedBranches.length}
+                </Label>
+              </Grid.Row>
+              <Grid.Row>
+                <Button
+                  color="teal"
+                  onClick={() => setF4BranchIsOpen(true)}
+                  icon
+                  labelPosition="left"
+                >
+                  <Icon name="checkmark box" />
+                  {messages['Task.BranchError']}
+                </Button>
+              </Grid.Row>
 
-            <Grid.Column>
-              <label>{messages['brnch']}</label>
-              <Dropdown
-                fluid
-                search
-                selection
-                options={
-                  smCetStSearch.bukrs ? branchOptions[smCetStSearch.bukrs] : []
+              <BranchF4Advanced
+                branches={
+                  smSetCtSearch.bukrs ? branchOptions[smSetCtSearch.bukrs] : []
                 }
-                value={smCetStSearch.branchId}
-                onChange={(e, o) => handleInputSearch(o, 'branchId')}
-                placeholder={messages['all']}
+                isOpen={f4BranchIsOpen}
+                onClose={selectedBranches => {
+                  setF4BranchIsOpen(false);
+                  setSelectedBranches(selectedBranches);
+                }}
+                selection={'multiple'}
               />
             </Grid.Column>
 
             <Grid.Column>
-              <br />
-              <Button color="teal" onClick={clickSearch}>
-                <Icon name="search" />
-                {messages['search']}
-              </Button>
+              <Grid.Row>
+                <Label> {messages['search']} </Label>
+              </Grid.Row>
+              <Grid.Row>
+                <Button
+                  color="teal"
+                  onClick={clickSearch}
+                  icon
+                  labelPosition="left"
+                >
+                  <Icon name="search" />
+                  {messages['search']}
+                </Button>
+              </Grid.Row>
             </Grid.Column>
           </Grid>
         </Form>
@@ -428,11 +454,10 @@ const Smsetct = props => {
           countryList={countryList}
           products={products}
           getCountryOptions={getCountryOptions}
-          getCompanyOptions={getCompanyOptions}
-          getProductOptions={getProductOptions}
           editSmsetct={editSmsetct}
           errorTable={errorTable}
           language={language}
+          smSetCtSearch={smSetCtSearch}
         />
       </Container>
     </div>
@@ -454,37 +479,8 @@ const getCountryOptions = countryList => {
   return out;
 };
 
-const getProductOptions = productList => {
-  const productLst = productList;
-  if (!productLst) {
-    return [];
-  }
-  let out = productLst.map(c => {
-    return {
-      key: parseInt(c.key, 10),
-      text: `${c.text}`,
-      value: parseInt(c.value, 10),
-    };
-  });
-  return out;
-};
-
-const getCompanyOptions = compList => {
-  const compLst = compList;
-  if (!compLst) {
-    return [];
-  }
-  let out = compLst.map(c => {
-    return {
-      key: parseInt(c.key, 10),
-      text: `${c.text}`,
-      value: parseInt(c.value, 10),
-    };
-  });
-  return out;
-};
-
 function mapStateToProps(state) {
+  console.log('companyOptions', state.userInfo.companyOptions);
   return {
     language: state.locales.lang,
     countryList: state.f4.countryList,

@@ -33,9 +33,11 @@ const BranchF4Advanced = props => {
 
   //componentWillRecieveProps
   useEffect(() => {
-    let arr = props.branches.map(item => {
-      return { ...item, isSelected: false };
-    });
+    let arr = props.branches
+      ? props.branches.map(item => {
+          return { ...item, isSelected: false };
+        })
+      : [];
 
     setBranches(arr);
     setCategoryS(0);
@@ -300,7 +302,7 @@ const BranchF4Advanced = props => {
                   <List.Item>
                     <Dropdown
                       selection
-                      options={countryOptions}
+                      options={countryOptions || []}
                       value={countryIdS}
                       onChange={(e, { value }) =>
                         onInputChange(value, 'countryIdS')

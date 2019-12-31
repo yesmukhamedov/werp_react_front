@@ -743,16 +743,18 @@
   "promotion_name": "Title of a promo-campaign",
   "report_uploads": "Upload reports",
   "cartrige_replace_period": "Setting the cartridge replacement period",
-  "Configuration": "Yapılandırma",
+  "configuration": "Yapılandırma",
   "type_of_transaction": "Operasyon türü",
   "current": "şimdiki",
-  "edit_history": "geçmişi düzenle",
-
+  "editing_history": "Düzenleme geçmişi",
+  "add_cartridge": "Kartuş ekle",
   "setting_prices_and_premium_services": "Setting prices and premium services",
   "office": "Office",
   "master": "Master",
   "totalAmount": "Total amount",
   "typeOfService": "Type of service",
   "typeOfAmount": "Type of amount",
-  "inTotal": "in total"
+  "inTotal": "in total",
+  "no_data": "Veri yok",
+  "edit_cartridge": "Kartuşu düzenle"
 }
