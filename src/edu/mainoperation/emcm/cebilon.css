@@ -1,0 +1,12 @@
+.ceb {
+  width: 100%;
+  height: 100%;
+}
+.cebilon {
+  background-image: url('http://192.168.0.15/assets/images/prod/education/assetsCebilon/muhaba.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
