@@ -895,37 +895,39 @@ const AsyncInterPhones = Loadable({
 });
 
 const AsyncZreport = Loadable({
-  loader: () => import('../dit/zreport' /* webpackChunkName: "phoneBook" */),
+  loader: () => import('../dit/zreport' /* webpackChunkName: "zreport" */),
   loading: () => <LoadingPage />,
 });
 
 const AsyncTSRep1 = Loadable({
-  loader: () => import('../hr/report/tsrep1'),
+  loader: () => import('../hr/report/tsrep1' /* webpackChunkName: "tsrep1" */),
   loading: () => <LoadingPage />,
 });
 
 const AsyncTSRep2 = Loadable({
-  loader: () => import('../hr/report/tsrep2'),
+  loader: () => import('../hr/report/tsrep2' /* webpackChunkName: "tsrep2" */),
   loading: () => <LoadingPage />,
 });
 
 const AsyncTSRep3 = Loadable({
-  loader: () => import('../hr/report/tsrep3'),
+  loader: () => import('../hr/report/tsrep3' /* webpackChunkName: "tsrep3" */),
   loading: () => <LoadingPage />,
 });
 
 const AsyncTSRep4 = Loadable({
-  loader: () => import('../hr/report/tsrep4'),
+  loader: () => import('../hr/report/tsrep4' /* webpackChunkName: "tsrep4" */),
   loading: () => <LoadingPage />,
 });
 //roboclean education
-const AsyncEdu = Loadable({
-  loader: () => import('../edu/mainoperation/emrm'),
+const AsyncEmrm = Loadable({
+  loader: () =>
+    import('../edu/mainoperation/emrm' /* webpackChunkName: "emrm" */),
   loading: () => <LoadingPage />,
 });
 //cebilon education
-const AsyncCeb = Loadable({
-  loader: () => import('../edu/mainoperation/emcm'),
+const AsyncEmcm = Loadable({
+  loader: () =>
+    import('../edu/mainoperation/emcm' /* webpackChunkName: "emcm" */),
   loading: () => <LoadingPage />,
 });
 
@@ -1042,8 +1044,8 @@ const getComponent = {
   Tsrep3: AsyncTSRep3,
   Tsrep4: AsyncTSRep4,
 
-  Edu: AsyncEdu,
-  Ceb: AsyncCeb,
+  Emrm: AsyncEmrm,
+  Emcm: AsyncEmcm,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1145,8 +1147,6 @@ const generateRoutes = transactionRoutes => {
         component={AsyncLogInvoicesForm}
       />
 
-      <Route path="/edu/mainoperation/emrm" exact={true} component={AsyncEdu} />
-      <Route path="/edu/mainoperation/emcm" exact={true} component={AsyncCeb} />
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
         return (
