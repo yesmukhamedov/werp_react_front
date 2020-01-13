@@ -6,7 +6,9 @@ export function resetLocalStorage() {
   localStorage.removeItem('currentPathName');
   localStorage.removeItem('breadcrumb');
   localStorage.removeItem('token');
+  localStorage.removeItem('refresh_token');
   localStorage.removeItem('username');
+  localStorage.removeItem('userId');
 }
 
 /**

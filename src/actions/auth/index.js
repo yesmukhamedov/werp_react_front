@@ -37,8 +37,20 @@ export function authError(error) {
 export function signinUser({ username, password }, language) {
   return dispatch => {
     // Submit username/password to the server
+    const headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: 'Basic V0VSUDpwYXNzd29yZA==',
+    };
+
+    var bodyFormData = new FormData();
+    bodyFormData.set('grant_type', 'password');
+    bodyFormData.set('username', username);
+    bodyFormData.set('password', password);
+
     axios
-      .post(`${ROOT_URL}/signin`, { username, password, language })
+      .post(`${ROOT_URL}/api/v1/werp/auth-server/oauth/token`, bodyFormData, {
+        headers: headers,
+      })
 
       // doPost(`signin`, {
       //   username,
@@ -48,10 +60,19 @@ export function signinUser({ username, password }, language) {
       .then(response => {
         // If request is good...
         // - save the JWT token
-        const { token, userId } = response.data;
-        localStorage.setItem('token', token);
+
+        const { access_token, refresh_token, userId } = response.data;
+        //let token = access_token;
+        console.log(response.data, 'RESPONSE');
+        // console.log(response.data.access_token);
+
         localStorage.setItem('username', username);
+        localStorage.setItem('userId', userId);
         localStorage.setItem('language', language);
+        localStorage.setItem('token', access_token);
+        localStorage.setItem('refresh_token', refresh_token);
+        localStorage.setItem('token_time', new Date().getTime());
+
         localStorage.setItem(
           'errorTableString',
           JSON.stringify(response.data.errorTable),
@@ -113,7 +134,7 @@ export function clearUserAuth() {
   // setAuthorizationHeader();
   return dispatch => {
     // .post(`${ROOT_URL}/signout`)
-    resetLocalStorage();
+    //resetLocalStorage();
     dispatch({
       type: UNAUTH_USER,
     });

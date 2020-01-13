@@ -48,8 +48,9 @@ class TaskApproverDisplay extends Component {
   getUserId() {
     const token = localStorage.getItem('token');
     if (token) {
-      const payload = jwt.decode(token, TOKEN_PASSWORD);
-      return payload.userId;
+      //const payload = jwt.decode(token, TOKEN_PASSWORD);
+      const userId = localStorage.getItem('userId');
+      return userId;
     }
   }
 
