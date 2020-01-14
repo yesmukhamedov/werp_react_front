@@ -20,6 +20,8 @@ import { fetchSmsetppType, fetchSmsetppPost } from '../../serviceAction';
 
 import {
   stringYYYYMMDDToMoment,
+  handleFocus,
+  moneyFormat,
   momentToStringYYYYMMDD,
 } from '../../../utils/helpers';
 
@@ -125,9 +127,9 @@ const AddPrice = props => {
 
   const onhandleAdd = () => {
     setTest(true);
-    const { bukrs, total, country } = informations;
+    const { bukrs, total, countryId } = informations;
 
-    if (bukrs !== '' && total !== '' && country !== '') {
+    if (bukrs !== '' && total !== '' && countryId !== '') {
       setModalOpen(false);
       console.log(informations, 'infos');
       //fetchSmsetppPost(informations);
@@ -250,6 +252,8 @@ const AddPrice = props => {
             <Form.Field required>
               <label>FC({messages['Table.Amount']})</label>
               <Input
+                value={moneyFormat(informations.fc)}
+                onFocus={handleFocus}
                 placeholder="Search..."
                 type="number"
                 onChange={e => onInputChange('fc', e)}
@@ -330,7 +334,7 @@ const AddPrice = props => {
               <label>{messages['country']}</label>
               <Dropdown
                 error={
-                  test === true && informations.country === '' ? true : false
+                  test === true && informations.countryId === '' ? true : false
                 }
                 clearable="true"
                 search
