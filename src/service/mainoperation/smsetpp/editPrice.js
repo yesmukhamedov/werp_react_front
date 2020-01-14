@@ -187,7 +187,7 @@ const EditModal = props => {
   };
 
   return (
-    <Modal open={active}>
+    <Modal open={modalOpen}>
       <Header content={messages['toEdit']} id="modalHeader" />
 
       <Modal.Content>

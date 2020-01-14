@@ -17,10 +17,10 @@ import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import { injectIntl } from 'react-intl';
 import { fetchSmsetppType, fetchSmsetppPost } from '../../serviceAction';
-
 import {
   stringYYYYMMDDToMoment,
   handleFocus,
+  moneyInputHanler,
   moneyFormat,
   momentToStringYYYYMMDD,
 } from '../../../utils/helpers';
@@ -46,13 +46,13 @@ const AddPrice = props => {
   const [informations, setInformations] = useState({
     bukrs: '',
     dateStart: momentToStringYYYYMMDD(dateStart),
-    fc: '',
-    mc: '',
-    office: '',
-    master: '',
-    operator: '',
-    discount: '',
-    total: '',
+    fc: 0,
+    mc: 0,
+    office: 0,
+    master: 0,
+    operator: 0,
+    discount: 0,
+    total: 0,
     countryId: '',
     waers: '',
     serviceTypeId: '',
@@ -82,6 +82,24 @@ const AddPrice = props => {
 
     setCountryOptions(country);
   }, [countryList]);
+
+  const clearInformation = () => {
+    setInformations({
+      bukrs: '',
+      dateStart: momentToStringYYYYMMDD(dateStart),
+      fc: 0,
+      mc: 0,
+      office: 0,
+      master: 0,
+      operator: 0,
+      discount: 0,
+      total: 0,
+      countryId: '',
+      waers: '',
+      serviceTypeId: '',
+      typeOfSum: '',
+    });
+  };
 
   const handleChange = (text, v) => {
     setInformations(prev => {
@@ -129,11 +147,28 @@ const AddPrice = props => {
     setTest(true);
     const { bukrs, total, countryId } = informations;
 
-    if (bukrs !== '' && total !== '' && countryId !== '') {
+    if (bukrs !== '' && total !== 0 && countryId !== '') {
       setModalOpen(false);
       console.log(informations, 'infos');
-      //fetchSmsetppPost(informations);
+      const y = {
+        bukrs: 'AURA',
+        countryId: 1,
+        dateStart: '2020-01-14',
+        discount: 1,
+        fc: 1,
+        id: 80,
+        master: 1,
+        mc: 1,
+        office: 1,
+        operator: 1,
+        premiumPriceTypeId: 1,
+        serviceTypeId: 1,
+        total: 1,
+        waersId: 1,
+      };
+      fetchSmsetppPost(y);
       setDateStart(moment());
+      clearInformation();
     }
   };
 
@@ -141,27 +176,12 @@ const AddPrice = props => {
     setDateStart(moment());
     setModalOpen(false);
     setTest(false);
-    setInformations({
-      bukrs: '',
-      dateStart: momentToStringYYYYMMDD(dateStart),
-      fc: '',
-      mc: '',
-      office: '',
-      master: '',
-      operator: '',
-      discount: '',
-      total: '',
-      countryId: '',
-      waers: '',
-      serviceTypeId: '',
-      typeOfSum: '',
-      country: '',
-    });
+    clearInformation();
   };
 
   const onInputChange = (text, event) => {
-    console.log(text, event.target.value);
-    const t = parseFloat(event.target.value);
+    const f = moneyInputHanler(event.target.value);
+    const t = parseFloat(f);
     setInformations(prev => {
       const varTs = { ...prev };
       switch (text) {
@@ -255,7 +275,6 @@ const AddPrice = props => {
                 value={moneyFormat(informations.fc)}
                 onFocus={handleFocus}
                 placeholder="Search..."
-                type="number"
                 onChange={e => onInputChange('fc', e)}
               />
             </Form.Field>
@@ -264,7 +283,8 @@ const AddPrice = props => {
             <Form.Field required>
               <label>MC({messages['Table.Amount']})</label>
               <Input
-                type="number"
+                value={moneyFormat(informations.mc)}
+                onFocus={handleFocus}
                 placeholder="Number..."
                 onChange={e => onInputChange('mc', e)}
               />
@@ -275,7 +295,8 @@ const AddPrice = props => {
                 {messages['office']} ({messages['inTotal']})
               </label>
               <Input
-                type="number"
+                value={moneyFormat(informations.office)}
+                onFocus={handleFocus}
                 placeholder="Number..."
                 onChange={e => onInputChange('office', e)}
               />
@@ -287,7 +308,8 @@ const AddPrice = props => {
               </label>
 
               <Input
-                type="number"
+                value={moneyFormat(informations.master)}
+                onFocus={handleFocus}
                 placeholder="Number..."
                 onChange={e => onInputChange('master', e)}
               />
@@ -300,7 +322,8 @@ const AddPrice = props => {
               </label>
 
               <Input
-                type="number"
+                value={moneyFormat(informations.operator)}
+                onFocus={handleFocus}
                 placeholder="Number..."
                 onChange={e => onInputChange('operator', e)}
               />
@@ -311,7 +334,8 @@ const AddPrice = props => {
               </label>
 
               <Input
-                type="number"
+                value={moneyFormat(informations.discount)}
+                onFocus={handleFocus}
                 placeholder="Number..."
                 onChange={e => onInputChange('discount', e)}
               />
@@ -320,10 +344,9 @@ const AddPrice = props => {
             <Form.Field required>
               <label>{messages['totalAmount']}</label>
               <Input
-                error={
-                  test === true && informations.total === '' ? true : false
-                }
-                type="number"
+                error={test === true && informations.total === 0 ? true : false}
+                onFocus={handleFocus}
+                value={moneyFormat(informations.total)}
                 placeholder="Number..."
                 onChange={e => onInputChange('total', e)}
               />

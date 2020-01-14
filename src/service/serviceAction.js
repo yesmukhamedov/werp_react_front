@@ -9,6 +9,8 @@ export const FETCH_DYNOBJ_SERVICE = 'FETCH_DYNOBJ_SERVICE';
 export const CHANGE_DYNOBJ_SERVICE = 'CHANGE_DYNOBJ_SERVICE';
 export const FETCH_SMSETPP_TYPE = 'FETCH_SMSETPP_TYPE';
 export const FETCH_SMSETPP_POST = 'FETCH_SMSETPP_POST';
+export const FETCH_SMSETPP_PUT = 'FETCH_SMSETPP_PUT';
+export const FETCH_SMSETPP_SEARCH = 'FETCH_SMSETPP_SEARCH';
 export const CLEAR_DYNOBJ_SERVICE = 'CLEAR_DYNOBJ_SERVICE';
 export const ADD_SMSETCT = 'ADD_SMSETCT';
 export const SEARCH_SMSETCT = 'SEARCH_SMSETCT';
@@ -66,7 +68,7 @@ export function fetchSmsetppType() {
 export function fetchSmsetppPost(informations) {
   console.log(informations, 'inf');
   return function(dispatch) {
-    doPost(`werp/mservice/smsetpp/create`, informations)
+    doPost(`v1/werp/mservice/smsetpp/create`, informations)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

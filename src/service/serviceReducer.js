@@ -8,6 +8,8 @@ import {
   FETCH_SMSETPP,
   FETCH_SMSETPP_TYPE,
   FETCH_SMSETPP_POST,
+  FETCH_SMSETPP_SEARCH,
+  FETCH_SMSETPP_PUT,
   FETCH_SRLS,
 } from './serviceAction';
 
@@ -16,6 +18,7 @@ const INITIAL_STATE = {
   data: {
     service: [],
     type: [],
+    addedRequest: [],
   },
 };
 
@@ -83,6 +86,22 @@ export default function(state = INITIAL_STATE, action) {
       };
     case FETCH_SMSETPP_POST:
       console.log('object', action.payload);
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          service: [...action.payload.data],
+        },
+      };
+    case FETCH_SMSETPP_SEARCH:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          service: [...action.payload.data],
+        },
+      };
+    case FETCH_SMSETPP_PUT:
       return {
         ...state,
         data: {

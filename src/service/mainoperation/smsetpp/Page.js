@@ -14,7 +14,7 @@ import 'react-table/react-table.css';
 import AddPrice from './AddPrice';
 import { injectIntl } from 'react-intl';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
-import EditModal from './editModal';
+import EditModal from './editPrice';
 import { fetchSmsetpp } from './../../serviceAction';
 import OutputErrors from '../../../general/error/outputErrors';
 
@@ -29,7 +29,6 @@ const Page = props => {
   } = props;
   const [error, setError] = useState([]);
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-  const [modalOpen, setModalOpen] = useState(false);
   const [modalProps, setModalProps] = useState();
   const language = localStorage.getItem('language');
   const [activeDropdown, setActiveDropdown] = useState(false);
@@ -93,11 +92,6 @@ const Page = props => {
 
   return (
     <Segment>
-      <EditModal
-        active={modalOpen}
-        onItemCancel={() => (setModalOpen(false), setModalProps())}
-        documents={modalProps}
-      />
       <div className="setting">
         <div className="flex-container">
           <h1>{messages['setting_prices_and_premium_services']}</h1>
@@ -275,18 +269,7 @@ const Page = props => {
                 <div style={{ textAlign: 'center' }}>{messages['toEdit']}</div>
               ),
               filterable: false,
-              Cell: ({ row }) => (
-                <div style={{ textAlign: 'center' }}>
-                  <Button
-                    inverted
-                    color="blue"
-                    icon
-                    onClick={() => (setModalOpen(true), setModalProps(row))}
-                  >
-                    <Icon name="pencil" />
-                  </Button>
-                </div>
-              ),
+              Cell: ({ row }) => <div style={{ textAlign: 'center' }}></div>,
             },
           ]}
           defaultPageSize={15}
