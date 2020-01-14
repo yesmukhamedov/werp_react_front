@@ -55,6 +55,7 @@ const Page = props => {
   }, [countryList]);
 
   useEffect(() => {
+    console.log(data.service, 'dwa');
     setServiceOptionPriceList(data.service);
   }, [data]);
 
@@ -231,7 +232,7 @@ const Page = props => {
               Header: () => (
                 <div style={{ textAlign: 'center' }}>{messages['country']}</div>
               ),
-              accessor: 'country',
+              accessor: 'countryId',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
@@ -240,7 +241,7 @@ const Page = props => {
               Header: () => (
                 <div style={{ textAlign: 'center' }}>{messages['waers']}</div>
               ),
-              accessor: 'waers',
+              accessor: 'waersId',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
@@ -251,7 +252,7 @@ const Page = props => {
                   {messages['typeOfService']}
                 </div>
               ),
-              accessor: 'typeOfService',
+              accessor: 'serviceTypeId',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
@@ -265,7 +266,7 @@ const Page = props => {
               accessor: 'premiumPriceTypeId',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>
-                  {row.value === 0 ? 'Number' : '%'}
+                  {row.value === 'Percentage' ? '%' : 'Number'}
                 </div>
               ),
             },

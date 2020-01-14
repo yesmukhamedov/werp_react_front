@@ -30,8 +30,9 @@ export function changeDynObjService(a_obj) {
 export function fetchSmsetpp() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`werp/mservice/smsetpp`)
+    doGet(`v1/werp/mservice/smsetpp/view`)
       .then(({ data }) => {
+        console.log(data, 'data');
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SMSETPP,
@@ -47,7 +48,7 @@ export function fetchSmsetpp() {
 
 export function fetchSmsetppType() {
   return function(dispatch) {
-    doGet(`werp/mservice/smsetpp/type`)
+    doGet(`v1/werp/mreference/smsetpp/type`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

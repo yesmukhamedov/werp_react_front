@@ -17,6 +17,12 @@ import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import { injectIntl } from 'react-intl';
 import { fetchSmsetppType, fetchSmsetppPost } from '../../serviceAction';
+
+import {
+  stringYYYYMMDDToMoment,
+  momentToStringYYYYMMDD,
+} from '../../../utils/helpers';
+
 require('moment/locale/ru');
 require('moment/locale/tr');
 
@@ -37,8 +43,7 @@ const AddPrice = props => {
   const [dateStart, setDateStart] = useState(moment());
   const [informations, setInformations] = useState({
     bukrs: '',
-    bukrsId: 0,
-    dateStart: `${dateStart.year()}-${dateStart.month()}-${dateStart.date()}`,
+    dateStart: momentToStringYYYYMMDD(dateStart),
     fc: '',
     mc: '',
     office: '',
@@ -46,11 +51,9 @@ const AddPrice = props => {
     operator: '',
     discount: '',
     total: '',
-    countryId: 0,
-    country: '',
+    countryId: '',
     waers: '',
-    serviceTypeId: 0,
-    serviceType: '',
+    serviceTypeId: '',
     typeOfSum: '',
   });
 
@@ -84,27 +87,39 @@ const AddPrice = props => {
       switch (text) {
         case 'bukrs':
           let g = companyOptions.find(({ value }) => value === v);
-          varTs.bukrsId = v;
           varTs.bukrs = g.text;
           break;
 
         case 'serviceType':
-          varTs.serviceType = v;
+          let g2 = typeOfService.find(({ value }) => value === v);
+          varTs.serviceTypeId = g2.text;
           break;
 
         case 'typeOfSum':
-          varTs.typeOfSum = v;
+          let type;
+          if (v === '%') {
+            type = 'Percentage';
+          } else if (v === 'n') {
+            type = 'Number';
+          }
+          varTs.typeOfSum = type;
           break;
+        case 'country':
+          let g3 = countryOptions.find(({ value }) => value === v);
+          varTs.countryId = g3.text;
+          varTs.waers = g3.currency;
+        default:
+          return varTs;
       }
       return varTs;
     });
   };
 
   const onChangeDate = d => {
-    setDateStart(d);
+    setDateStart(stringYYYYMMDDToMoment(d));
     setInformations({
       ...informations,
-      dateStart: `${d.year()}-${d.month()}-${d.date()}`,
+      dateStart: d,
     });
   };
 
@@ -116,16 +131,17 @@ const AddPrice = props => {
       setModalOpen(false);
       console.log(informations, 'infos');
       //fetchSmsetppPost(informations);
+      setDateStart(moment());
     }
   };
 
   const onhandleCancel = () => {
+    setDateStart(moment());
     setModalOpen(false);
     setTest(false);
     setInformations({
       bukrs: '',
-      bukrsId: '',
-      dateStart: `${dateStart.year()}-${dateStart.month()}-${dateStart.date()}`,
+      dateStart: momentToStringYYYYMMDD(dateStart),
       fc: '',
       mc: '',
       office: '',
@@ -133,69 +149,44 @@ const AddPrice = props => {
       operator: '',
       discount: '',
       total: '',
-      countryId: 0,
+      countryId: '',
       waers: '',
-      serviceTypeId: 0,
-      serviceType: '',
+      serviceTypeId: '',
       typeOfSum: '',
       country: '',
     });
   };
 
   const onInputChange = (text, event) => {
-    switch (text) {
-      case 'fc':
-        setInformations({
-          ...informations,
-          fc: parseFloat(event.target.value),
-        });
-        break;
-      case 'mc':
-        setInformations({
-          ...informations,
-          mc: parseFloat(event.target.value),
-        });
-        break;
-      case 'office':
-        setInformations({
-          ...informations,
-          office: parseFloat(event.target.value),
-        });
-        break;
-      case 'master':
-        setInformations({
-          ...informations,
-          master: parseFloat(event.target.value),
-        });
-        break;
-      case 'operator':
-        setInformations({
-          ...informations,
-          operator: parseFloat(event.target.value),
-        });
-        break;
-      case 'discount':
-        setInformations({
-          ...informations,
-          discount: parseFloat(event.target.value),
-        });
-      case 'total':
-        setInformations({
-          ...informations,
-          total: parseFloat(event.target.value),
-        });
-        break;
-    }
-  };
-
-  const onChangeCountryOptions = v => {
-    const findCountry = countryOptions.find(({ value }) => value === v);
-    const f = countryOptions.find(({ value }) => value === v);
-    setInformations({
-      ...informations,
-      countryId: f.value,
-      country: findCountry.text,
-      waers: f.currency,
+    console.log(text, event.target.value);
+    const t = parseFloat(event.target.value);
+    setInformations(prev => {
+      const varTs = { ...prev };
+      switch (text) {
+        case 'fc':
+          varTs.fc = t;
+          break;
+        case 'mc':
+          varTs.mc = t;
+          break;
+        case 'office':
+          varTs.office = t;
+          break;
+        case 'master':
+          varTs.master = t;
+          break;
+        case 'operator':
+          varTs.operator = t;
+          break;
+        case 'discount':
+          varTs.discount = t;
+          break;
+        case 'total':
+          varTs.total = t;
+        default:
+          return varTs;
+      }
+      return varTs;
     });
   };
 
@@ -242,8 +233,8 @@ const AddPrice = props => {
                   showMonthDropdown
                   showYearDropdown
                   dropdownMode="select" //timezone="UTC"
-                  selected={dateStart}
-                  onChange={date => onChangeDate(date)}
+                  selected={stringYYYYMMDDToMoment(dateStart)}
+                  onChange={date => onChangeDate(momentToStringYYYYMMDD(date))}
                   dateFormat="DD.MM.YYYY"
                   locale={language}
                   id="datePicker"
@@ -345,7 +336,7 @@ const AddPrice = props => {
                 search
                 selection
                 options={countryOptions}
-                onChange={(e, { value }) => onChangeCountryOptions(value)}
+                onChange={(e, { value }) => handleChange('country', value)}
                 placeholder={messages['country']}
               />
             </Form.Field>
