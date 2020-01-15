@@ -4,30 +4,39 @@ import {
   Header,
   Icon,
   Modal,
-  Grid,
   Input,
+  Divider,
   Form,
 } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import DatePicker from 'react-datepicker';
-import { injectIntl } from 'react-intl';
 import './index.css';
 import { Dropdown } from 'semantic-ui-react';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
+import { injectIntl } from 'react-intl';
+import { fetchSmsetppType, fetchSmsetppPost } from '../../serviceAction';
+import {
+  stringYYYYMMDDToMoment,
+  handleFocus,
+  moneyInputHanler,
+  moneyFormat,
+  momentToStringYYYYMMDD,
+} from '../../../utils/helpers';
+
 require('moment/locale/ru');
+require('moment/locale/tr');
 
 const EditModal = props => {
   const language = localStorage.getItem('language');
   const [modalOpen, setModalOpen] = useState(false);
   const {
+    data,
     countryList = [],
     companyOptions = [],
     intl: { messages },
     documents,
-    onItemCancel,
-    active,
   } = props;
   const [countries, setCountries] = useState([]);
   const [countryOptions, setCountryOptions] = useState([]);
@@ -37,33 +46,39 @@ const EditModal = props => {
   const [dateStart, setDateStart] = useState(moment());
   const [informations, setInformations] = useState({
     bukrs: '',
-    bukrsId: 0,
-    dateStart: `${dateStart.year()}-${dateStart.month()}-${dateStart.date()}`,
-    fc: '',
-    mc: '',
-    office: '',
-    master: '',
-    operator: '',
-    discount: '',
-    total: '',
-    countryId: 0,
-    country: '',
+    dateStart: momentToStringYYYYMMDD(dateStart),
+    fc: documents.fc,
+    mc: documents.mc,
+    office: documents.office,
+    master: documents.master,
+    operator: documents.operator,
+    discount: documents.discount,
+    total: documents.total,
+    countryId: '',
     waers: '',
-    serviceTypeId: 0,
-    serviceType: '',
+    serviceTypeId: '',
     typeOfSum: '',
   });
 
   useEffect(() => {
-    f4FetchCountryList();
-  }, []);
-  console.log(props, 'props');
-  useEffect(() => {
     let country = countryList.map(item => {
-      return { key: item.countryId, text: item.country, value: item.country };
+      return {
+        key: item.countryId,
+        text: item.country,
+        value: item.countryId,
+        currency: item.currency,
+      };
     });
-    setCountries(country);
+
+    setCountryOptions(country);
   }, [countryList]);
+
+  useEffect(() => {
+    let service = data.type.map(item => {
+      return { key: item.id, text: item.nameEn, value: item.id };
+    });
+    setTypeOfService(service);
+  }, [data.type]);
 
   const handleChange = (text, v) => {
     setInformations(prev => {
@@ -71,73 +86,72 @@ const EditModal = props => {
       switch (text) {
         case 'bukrs':
           let g = companyOptions.find(({ value }) => value === v);
-          varTs.bukrsId = v;
           varTs.bukrs = g.text;
           break;
 
         case 'serviceType':
-          varTs.serviceType = v;
+          let g2 = typeOfService.find(({ value }) => value === v);
+          varTs.serviceTypeId = g2.text;
           break;
 
         case 'typeOfSum':
-          varTs.typeOfSum = v;
+          let type;
+          if (v === '%') {
+            type = 'Percentage';
+          } else if (v === 'n') {
+            type = 'Number';
+          }
+          varTs.typeOfSum = type;
           break;
+        case 'country':
+          let g3 = countryOptions.find(({ value }) => value === v);
+          varTs.countryId = g3.text;
+          varTs.waers = g3.currency;
+        default:
+          return varTs;
       }
       return varTs;
     });
   };
 
   const onInputChange = (text, event) => {
-    switch (text) {
-      case 'fc':
-        setInformations({
-          ...informations,
-          fc: parseFloat(event.target.value),
-        });
-        break;
-      case 'mc':
-        setInformations({
-          ...informations,
-          mc: parseFloat(event.target.value),
-        });
-        break;
-      case 'office':
-        setInformations({
-          ...informations,
-          office: parseFloat(event.target.value),
-        });
-        break;
-      case 'master':
-        setInformations({
-          ...informations,
-          master: parseFloat(event.target.value),
-        });
-        break;
-      case 'operator':
-        setInformations({
-          ...informations,
-          operator: parseFloat(event.target.value),
-        });
-        break;
-      case 'discount':
-        setInformations({
-          ...informations,
-          discount: parseFloat(event.target.value),
-        });
-      case 'total':
-        setInformations({
-          ...informations,
-          total: parseFloat(event.target.value),
-        });
-        break;
-    }
+    const f = moneyInputHanler(event.target.value);
+    const t = parseFloat(f);
+    setInformations(prev => {
+      const varTs = { ...prev };
+      switch (text) {
+        case 'fc':
+          varTs.fc = t;
+          break;
+        case 'mc':
+          varTs.mc = t;
+          break;
+        case 'office':
+          varTs.office = t;
+          break;
+        case 'master':
+          varTs.master = t;
+          break;
+        case 'operator':
+          varTs.operator = t;
+          break;
+        case 'discount':
+          varTs.discount = t;
+          break;
+        case 'total':
+          varTs.total = t;
+        default:
+          return varTs;
+      }
+      return varTs;
+    });
   };
 
   const onChangeDate = d => {
-    setDateStart(d);
+    setDateStart(stringYYYYMMDDToMoment(d));
     setInformations({
       ...informations,
-      dateStart: `${d.year()}-${d.month()}-${d.date()}`,
+      dateStart: d,
     });
   };
 
@@ -153,41 +167,54 @@ const EditModal = props => {
   };
 
   const onhandleCancel = () => {
-    onItemCancel();
+    setModalOpen(false);
     setTest(false);
     setInformations({
       bukrs: '',
-      bukrsId: '',
-      dateStart: `${dateStart.year()}-${dateStart.month()}-${dateStart.date()}`,
-      fc: '',
-      mc: '',
-      office: '',
-      master: '',
-      operator: '',
-      discount: '',
-      total: '',
-      countryId: 0,
+      dateStart: momentToStringYYYYMMDD(dateStart),
+      fc: 0,
+      mc: 0,
+      office: 0,
+      master: 0,
+      operator: 0,
+      discount: 0,
+      total: 0,
+      countryId: '',
       waers: '',
-      serviceTypeId: 0,
-      serviceType: '',
+      serviceTypeId: '',
       typeOfSum: '',
-      country: '',
     });
   };
 
-  const onChangeCountryOptions = v => {
-    const findCountry = countryOptions.find(({ value }) => value === v);
-    const f = countryOptions.find(({ value }) => value === v);
+  console.log(documents);
+
+  const onModalOpen = () => {
+    const bukr = companyOptions.find(({ text }) => text === documents.bukrs);
+    const countr = countryOptions.find(
+      ({ text }) => text === documents.countryId,
+    );
+    const serviceType = typeOfService.find(
+      ({ text }) => text === documents.serviceTypeId,
+    );
+    console.log(countryOptions);
     setInformations({
       ...informations,
-      countryId: f.value,
-      country: findCountry.text,
-      waers: f.currency,
+      bukrs: bukr.value,
+      countryId: countr.value,
+      serviceTypeId: serviceType.value,
     });
+    setModalOpen(true);
   };
 
   return (
-    <Modal open={modalOpen}>
+    <Modal
+      trigger={
+        <Button icon inverted color="blue" onClick={onModalOpen}>
+          <Icon name="edit"></Icon>
+        </Button>
+      }
+      open={modalOpen}
+    >
       <Header content={messages['toEdit']} id="modalHeader" />
 
       <Modal.Content>
@@ -200,6 +227,7 @@ const EditModal = props => {
                   test === true && informations.bukrs === '' ? true : false
                 }
                 clearable="true"
+                defaultValue={informations.bukrs}
                 search
                 selection
                 options={companyOptions}
@@ -217,8 +245,8 @@ const EditModal = props => {
                   showMonthDropdown
                   showYearDropdown
                   dropdownMode="select" //timezone="UTC"
-                  selected={dateStart}
-                  onChange={date => onChangeDate(date)}
+                  selected={stringYYYYMMDDToMoment(dateStart)}
+                  onChange={date => onChangeDate(momentToStringYYYYMMDD(date))}
                   dateFormat="DD.MM.YYYY"
                   locale={language}
                   id="datePicker"
@@ -234,8 +262,9 @@ const EditModal = props => {
             <Form.Field required>
               <label>FC({messages['Table.Amount']})</label>
               <Input
+                value={moneyFormat(informations.fc)}
+                onFocus={handleFocus}
                 placeholder="Search..."
-                type="number"
                 onChange={e => onInputChange('fc', e)}
               />
             </Form.Field>
@@ -244,7 +273,8 @@ const EditModal = props => {
             <Form.Field required>
               <label>MC({messages['Table.Amount']})</label>
               <Input
-                type="number"
+                value={moneyFormat(informations.mc)}
+                onFocus={handleFocus}
                 placeholder="Number..."
                 onChange={e => onInputChange('mc', e)}
               />
@@ -255,7 +285,8 @@ const EditModal = props => {
                 {messages['office']} ({messages['inTotal']})
               </label>
               <Input
-                type="number"
+                value={moneyFormat(informations.office)}
+                onFocus={handleFocus}
                 placeholder="Number..."
                 onChange={e => onInputChange('office', e)}
               />
@@ -267,7 +298,8 @@ const EditModal = props => {
               </label>
 
               <Input
-                type="number"
+                value={moneyFormat(informations.master)}
+                onFocus={handleFocus}
                 placeholder="Number..."
                 onChange={e => onInputChange('master', e)}
               />
@@ -280,7 +312,8 @@ const EditModal = props => {
               </label>
 
               <Input
-                type="number"
+                value={moneyFormat(informations.operator)}
+                onFocus={handleFocus}
                 placeholder="Number..."
                 onChange={e => onInputChange('operator', e)}
               />
@@ -291,7 +324,8 @@ const EditModal = props => {
               </label>
 
               <Input
-                type="number"
+                value={moneyFormat(informations.discount)}
+                onFocus={handleFocus}
                 placeholder="Number..."
                 onChange={e => onInputChange('discount', e)}
               />
@@ -300,10 +334,9 @@ const EditModal = props => {
             <Form.Field required>
               <label>{messages['totalAmount']}</label>
               <Input
-                error={
-                  test === true && informations.total === '' ? true : false
-                }
-                type="number"
+                error={test === true && informations.total === 0 ? true : false}
+                onFocus={handleFocus}
+                value={moneyFormat(informations.total)}
                 placeholder="Number..."
                 onChange={e => onInputChange('total', e)}
               />
@@ -314,13 +347,14 @@ const EditModal = props => {
               <label>{messages['country']}</label>
               <Dropdown
                 error={
-                  test === true && informations.country === '' ? true : false
+                  test === true && informations.countryId === '' ? true : false
                 }
                 clearable="true"
                 search
+                defaultValue={informations.countryId}
                 selection
                 options={countryOptions}
-                onChange={(e, { value }) => onChangeCountryOptions(value)}
+                onChange={(e, { value }) => handleChange('country', value)}
                 placeholder={messages['country']}
               />
             </Form.Field>
@@ -337,6 +371,7 @@ const EditModal = props => {
               <Dropdown
                 placeholder="State"
                 clearable="true"
+                defaultValue={informations.serviceTypeId}
                 selection
                 options={typeOfService}
                 onChange={(e, { value }) => handleChange('serviceType', value)}
@@ -366,7 +401,7 @@ const EditModal = props => {
           <Icon name="remove" /> {messages['cancel']}
         </Button>
         <Button inverted color="blue" onClick={onhandleAdd}>
-          <Icon name="checkmark" /> {messages['save']}
+          <Icon name="checkmark" /> {messages['BTN__ADD']}
         </Button>
       </Modal.Actions>
     </Modal>
@@ -375,6 +410,7 @@ const EditModal = props => {
 
 const mapStateToProps = state => {
   return {
+    data: state.serviceReducer.data,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
   };

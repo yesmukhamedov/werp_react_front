@@ -148,6 +148,7 @@ const AddPrice = props => {
     const { bukrs, total, countryId } = informations;
 
     if (bukrs !== '' && total !== 0 && countryId !== '') {
+      setTest(false);
       setModalOpen(false);
       console.log(informations, 'infos');
       const y = {

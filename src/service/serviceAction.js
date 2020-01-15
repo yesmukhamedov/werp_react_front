@@ -34,10 +34,29 @@ export function fetchSmsetpp() {
     dispatch(modifyLoader(true));
     doGet(`v1/werp/mservice/smsetpp/view`)
       .then(({ data }) => {
-        console.log(data, 'data');
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SMSETPP,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchSmsetppSearch(params) {
+  console.log(params, 'params');
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`v1/werp/mservice/smsetpp/view`, params)
+      .then(({ data }) => {
+        console.log(data, 'params');
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMSETPP_SEARCH,
           payload: data,
         });
       })

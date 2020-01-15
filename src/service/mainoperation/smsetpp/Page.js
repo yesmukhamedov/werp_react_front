@@ -13,9 +13,10 @@ import { connect } from 'react-redux';
 import 'react-table/react-table.css';
 import AddPrice from './AddPrice';
 import { injectIntl } from 'react-intl';
+import format from 'string-format';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import EditModal from './editPrice';
-import { fetchSmsetpp } from './../../serviceAction';
+import { fetchSmsetpp, fetchSmsetppSearch } from './../../serviceAction';
 import OutputErrors from '../../../general/error/outputErrors';
 
 const Page = props => {
@@ -26,6 +27,7 @@ const Page = props => {
     companyOptions = [],
     f4FetchCountryList,
     fetchSmsetpp,
+    fetchSmsetppSearch,
   } = props;
   const [error, setError] = useState([]);
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
@@ -37,9 +39,14 @@ const Page = props => {
   const [serviceOptionPriceList, setServiceOptionPriceList] = useState([]);
   const [countryOptions, setCountryOptions] = useState([]);
   const [search, setSearch] = useState({
-    companyId: '',
-    countryId: '',
+    bukrs: 0,
+    countryId: 0,
   });
+  let queryString = 'bukrs=={0.bukrs};countryId=={0.countryId}';
+
+  let query = {
+    search: format(queryString, search),
+  };
 
   useEffect(() => {
     fetchSmsetpp();
@@ -54,23 +61,27 @@ const Page = props => {
   }, [countryList]);
 
   useEffect(() => {
-    console.log(data.service, 'dwa');
     setServiceOptionPriceList(data.service);
   }, [data]);
 
   const onChange = (text, value) => {
     if (text === 'companyOptions') {
-      setSearch({ ...search, companyId: value });
+      setSearch({ ...search, bukrs: parseInt(value) });
       setActiveDropdown(true);
     }
     if (text === 'countries') {
-      setSearch({ ...search, countryId: value });
+      setSearch({ ...search, countryId: parseInt(value) });
       setSecondActive(true);
     }
   };
 
   const onClickButton = () => {
     save();
+    if (error.length === 0) {
+      fetchSmsetppSearch(query);
+    } else {
+      setSearch({ bukrs: 0, countryId: 0 });
+    }
   };
 
   const validate = () => {
@@ -268,8 +279,11 @@ const Page = props => {
               Header: () => (
                 <div style={{ textAlign: 'center' }}>{messages['toEdit']}</div>
               ),
-              filterable: false,
-              Cell: ({ row }) => <div style={{ textAlign: 'center' }}></div>,
+              Cell: row => (
+                <div style={{ textAlign: 'center' }}>
+                  <EditModal documents={row.row} />
+                </div>
+              ),
             },
           ]}
           defaultPageSize={15}
@@ -302,4 +316,5 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   f4FetchCountryList,
   fetchSmsetpp,
+  fetchSmsetppSearch,
 })(injectIntl(Page));

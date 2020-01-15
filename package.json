@@ -42,6 +42,7 @@
     "redux-thunk": "^2.2.0",
     "semantic-ui-css": "2.2.14",
     "semantic-ui-react": "^0.72.0",
+    "string-format": "^2.0.0",
     "uuid": "^3.3.3",
     "velocity-react": "^1.4.1"
   },
