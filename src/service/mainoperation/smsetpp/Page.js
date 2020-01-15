@@ -106,7 +106,6 @@ const Page = props => {
       <div className="setting">
         <div className="flex-container">
           <h1>{messages['setting_prices_and_premium_services']}</h1>
-          <AddPrice />
         </div>
 
         <Dropdown
@@ -127,6 +126,7 @@ const Page = props => {
           onClick={() => setAllDropdownActive(true)}
           onChange={(e, { value }) => onChange('countries', value)}
         />
+        <AddPrice />
         <button
           className="ui blue inverted button"
           onClick={onClickButton}
@@ -271,7 +271,11 @@ const Page = props => {
               accessor: 'premiumPriceTypeId',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>
-                  {row.value === 'Percentage' ? '%' : 'Number'}
+                  {row.value === 'Percentage' ||
+                  row.value === 'Процент' ||
+                  row.value === 'Yüzdesi'
+                    ? '%'
+                    : 'Number'}
                 </div>
               ),
             },

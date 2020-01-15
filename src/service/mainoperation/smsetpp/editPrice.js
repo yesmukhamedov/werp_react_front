@@ -55,8 +55,8 @@ const EditModal = props => {
     discount: documents.discount,
     total: documents.total,
     countryId: '',
-    waers: '',
-    serviceTypeId: '',
+    waersId: '',
+    premiumPriceTypeId: '',
     typeOfSum: '',
   });
 
@@ -106,7 +106,7 @@ const EditModal = props => {
         case 'country':
           let g3 = countryOptions.find(({ value }) => value === v);
           varTs.countryId = g3.text;
-          varTs.waers = g3.currency;
+          varTs.waersId = g3.currency;
         default:
           return varTs;
       }
@@ -172,16 +172,16 @@ const EditModal = props => {
     setInformations({
       bukrs: '',
       dateStart: momentToStringYYYYMMDD(dateStart),
-      fc: 0,
-      mc: 0,
-      office: 0,
-      master: 0,
-      operator: 0,
-      discount: 0,
-      total: 0,
+      fc: documents.fc,
+      mc: documents.mc,
+      office: documents.office,
+      master: documents.master,
+      operator: documents.operator,
+      discount: documents.discount,
+      total: documents.total,
       countryId: '',
-      waers: '',
-      serviceTypeId: '',
+      waersId: '',
+      premiumPriceTypeId: '',
       typeOfSum: '',
     });
   };
@@ -189,6 +189,16 @@ const EditModal = props => {
   console.log(documents);
 
   const onModalOpen = () => {
+    if (
+      documents.premiumPriceTypeId === 'Percentage' ||
+      documents.premiumPriceTypeId === 'Процент' ||
+      documents.premiumPriceTypeId === 'Yüzdesi'
+    ) {
+      setInformations({ ...informations, premiumPriceTypeId: 1 });
+    } else {
+      setInformations({ ...informations, premiumPriceTypeId: 2 });
+    }
+
     const bukr = companyOptions.find(({ text }) => text === documents.bukrs);
     const countr = countryOptions.find(
       ({ text }) => text === documents.countryId,
@@ -196,12 +206,12 @@ const EditModal = props => {
     const serviceType = typeOfService.find(
       ({ text }) => text === documents.serviceTypeId,
     );
-    console.log(countryOptions);
     setInformations({
       ...informations,
       bukrs: bukr.value,
       countryId: countr.value,
       serviceTypeId: serviceType.value,
+      waersId: countr.currency,
     });
     setModalOpen(true);
   };
@@ -361,7 +371,7 @@ const EditModal = props => {
 
             <Form.Field required>
               <label>{messages['waers']}</label>
-              <Header as="h4">{informations.waers}</Header>
+              <Header as="h4">{informations.waersId}</Header>
             </Form.Field>
           </Form.Group>
           <Form.Group widths="equal">
@@ -385,6 +395,7 @@ const EditModal = props => {
               <Dropdown
                 placeholder={messages['typeOfAmount']}
                 search
+                defaultValue={informations.premiumPriceTypeId}
                 selection
                 onChange={(e, { value }) => handleChange('typeOfSum', value)}
                 options={[
@@ -401,7 +412,7 @@ const EditModal = props => {
           <Icon name="remove" /> {messages['cancel']}
         </Button>
         <Button inverted color="blue" onClick={onhandleAdd}>
-          <Icon name="checkmark" /> {messages['BTN__ADD']}
+          <Icon name="checkmark" /> {messages['save']}
         </Button>
       </Modal.Actions>
     </Modal>

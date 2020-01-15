@@ -54,7 +54,7 @@ const AddPrice = props => {
     discount: 0,
     total: 0,
     countryId: '',
-    waers: '',
+    waersId: '',
     serviceTypeId: '',
     typeOfSum: '',
   });
@@ -95,7 +95,7 @@ const AddPrice = props => {
       discount: 0,
       total: 0,
       countryId: '',
-      waers: '',
+      waersId: '',
       serviceTypeId: '',
       typeOfSum: '',
     });
@@ -216,14 +216,14 @@ const AddPrice = props => {
   return (
     <Modal
       trigger={
-        <button
-          className="ui green button"
-          id="addPrice"
+        <Button
+          inverted
+          color="blue"
           onClick={() => setModalOpen(true)}
+          floated="right"
         >
-          <i aria-hidden="true" className="add square icon"></i>{' '}
           {messages['toAdd']}
-        </button>
+        </Button>
       }
       open={modalOpen}
     >
@@ -371,7 +371,7 @@ const AddPrice = props => {
 
             <Form.Field required>
               <label>{messages['waers']}</label>
-              <Header as="h4">{informations.waers}</Header>
+              <Header as="h4">{informations.waersId}</Header>
             </Form.Field>
           </Form.Group>
           <Form.Group widths="equal">
