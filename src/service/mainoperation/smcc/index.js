@@ -37,12 +37,14 @@ import {
   LinkToStaffCardView,
   LinkToCustomerHrc03,
 } from '../../../utils/outlink';
+import { isAsyncValidating } from 'redux-form';
 
 function Smcc(props) {
   const emptyTs = {
     bukrs: '',
     branchId: '',
     branchServ: '',
+    selectedBranch: '',
     contractType: '',
     dealer: '',
     dealerName: '',
@@ -105,6 +107,7 @@ function Smcc(props) {
               waSelectedBranch = item;
             });
 
+          varTs.selectedBranch = waSelectedBranch;
           varTs.branchId = o.value;
           let wa = { ...emptyTs };
           wa.bukrs = prev.bukrs;
@@ -211,7 +214,6 @@ function Smcc(props) {
     }
     setError(() => errors);
   };
-
   return (
     <Segment>
       <h1>Сервис договор</h1>
@@ -253,6 +255,7 @@ function Smcc(props) {
         open={phoneF4ModalOpen}
         phoneList={phoneList}
         customerId={ts.customerId}
+        selectedBranch={ts.selectedBranch}
         onClosePhoneF4={bool => setPhoneF4ModalOpen(bool)}
         onPhoneSelect={item => onInputChange(item, 'choosePhone')}
       />

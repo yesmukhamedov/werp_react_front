@@ -2,27 +2,35 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Icon, Button, Dropdown, Input, Table } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
+
+import MaskedInput from 'react-text-mask';
+
+import phoneMask from '../../../utils/phoneMask';
 import { postPhone } from '../f4_action';
 
 function PhoneF4CreateModal(props) {
   const emptyList = {
-    type: 0,
+    typeId: 0,
     phone: '',
-    status: 'CREATED',
     description: '',
   };
   const [list, setList] = useState({ ...emptyList });
-  const { phoneListType = [], customerId } = props;
+  const {
+    intl: { messages },
+    phoneListType = [],
+    customerId,
+    country,
+  } = props;
 
   const onInputChange = (o, fieldName) => {
     setList(prev => {
       const varList = { ...prev };
       switch (fieldName) {
         case 'typeList':
-          varList.type = o.value;
+          varList.typeId = o.value;
           break;
         case 'phoneNumber':
-          varList.phone = o.value;
+          varList.phone = o.replace(/\D+/g, '');
           break;
         default:
           varList[fieldName] = o.value;
@@ -32,14 +40,14 @@ function PhoneF4CreateModal(props) {
   };
 
   const handleSubmit = () => {
-    const { type, phone, status, description } = list;
-    if (type !== 0 && phone !== '' && customerId !== '') {
+    const { typeId, phone, description } = list;
+    console.log(typeId, phone, description, customerId);
+    if (typeId !== 0 && phone !== '' && customerId !== '') {
       props.postPhone({
-        type,
-        phone,
-        status,
-        description,
         customerId,
+        description,
+        phone,
+        typeId,
       });
     }
     props.onCloseCreatePhoneF4(false);
@@ -48,42 +56,44 @@ function PhoneF4CreateModal(props) {
   const close = () => {
     props.onCloseCreatePhoneF4(false);
     setList({
-      type: '',
+      typeId: 0,
       phone: '',
-      status: 'CREATED',
       description: '',
     });
   };
-
   return (
     <Modal open={props.open} closeOnEscape={false} onClose={close}>
       <Modal.Header>
         <Icon name="pencil" size="big" />
-        Добавить номер
+        {messages['add_number']}
       </Modal.Header>
       <Modal.Content>
         <Table>
           <Table.Body>
             <Table.Row>
-              <Table.Cell>Choose type of the number</Table.Cell>
+              <Table.Cell>{messages['number_type']}</Table.Cell>
               <Table.Cell>
                 <Dropdown
                   selection
                   search
                   options={getTypeList(phoneListType)}
-                  value={list.type}
+                  value={list.typeId}
                   onChange={(e, o) => onInputChange(o, 'typeList')}
                 />
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Enter the number</Table.Cell>
+              <Table.Cell>{messages['enter_number']}</Table.Cell>
               <Table.Cell>
-                <Input
-                  placeholder="Введите номер"
-                  type="number"
-                  onChange={(e, o) => onInputChange(o, 'phoneNumber')}
-                />
+                <Input type="number">
+                  <MaskedInput
+                    mask={phoneMask(country.code)}
+                    placeholder={`${country.phoneCode} ${country.telPattern}`}
+                    onChange={event => {
+                      onInputChange(event.target.value, 'phoneNumber');
+                    }}
+                  />
+                </Input>
               </Table.Cell>
             </Table.Row>
           </Table.Body>
@@ -97,7 +107,7 @@ function PhoneF4CreateModal(props) {
           size="small"
           onClick={close}
         >
-          <Icon name="left chevron" /> Back
+          <Icon name="left chevron" /> {messages['back']}
         </Button>
         <Button
           icon
@@ -106,7 +116,7 @@ function PhoneF4CreateModal(props) {
           size="small"
           onClick={handleSubmit}
         >
-          <Icon name="save" /> Save
+          <Icon name="save" /> {messages['save']}
         </Button>
       </Modal.Actions>
     </Modal>

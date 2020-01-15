@@ -734,7 +734,7 @@ export function saveRfadd02(url, body, params, setIsLoading) {
 export function fetchPhone() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`werp/dictionary/phone/`)
+    doGet(`v1/werp/mreference/general/phone`)
       .then(({ data }) => {
         console.log('data', data);
         dispatch(modifyLoader(false));
@@ -753,7 +753,7 @@ export function fetchPhone() {
 export function fetchPhoneType() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet('werp/dictionary/phone/type')
+    doGet('v1/werp/mreference/general/phone_type')
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -772,8 +772,9 @@ export function postPhone(getData) {
   console.log('data', getData);
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost('werp/dictionary/phone/create', getData)
+    doPost('v1/werp/mreference/general/phone/create', getData)
       .then(({ data }) => {
+        console.log('success', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: F4_POST_PHONE,

@@ -28,8 +28,12 @@ function PhoneF4UpdateModal(props) {
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
 
-  const { phoneListType = [], customerId, selectedPhone } = props;
-  console.log(customerId);
+  const {
+    intl: { messages },
+    phoneListType = [],
+    customerId,
+    selectedPhone,
+  } = props;
 
   const onInputChange = (o, fieldName) => {
     setList(prev => {
@@ -108,13 +112,13 @@ function PhoneF4UpdateModal(props) {
     <Modal open={props.open} closeOnEscape={false} onClose={close}>
       <Modal.Header>
         <Icon name="pencil" size="big" />
-        Update number
+        {messages['update_number']}
       </Modal.Header>
       <Modal.Content>
         <Table>
           <Table.Body>
             <Table.Row>
-              <Table.Cell>Choose type of the number</Table.Cell>
+              <Table.Cell>{messages['number_type']}</Table.Cell>
               <Table.Cell>
                 <Dropdown
                   selection
@@ -126,10 +130,10 @@ function PhoneF4UpdateModal(props) {
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Change the number</Table.Cell>
+              <Table.Cell>{messages['update_number']}}</Table.Cell>
               <Table.Cell>
                 <Input
-                  placeholder="Введите номер"
+                  placeholder={messages['enter_number']}
                   type="number"
                   defaultValue={selectedPhone.phone}
                   onChange={(e, o) => onInputChange(o, 'phoneNumber')}
@@ -137,11 +141,11 @@ function PhoneF4UpdateModal(props) {
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>Why you want to change number?</Table.Cell>
+              <Table.Cell>{messages['L__EDIT_DESCRIPTION']}</Table.Cell>
               <Table.Cell>
                 <Form>
                   <TextArea
-                    placeholder="Input description"
+                    placeholder={messages['description']}
                     onChange={(e, o) => onInputChange(o, 'description')}
                   />
                 </Form>
@@ -158,7 +162,7 @@ function PhoneF4UpdateModal(props) {
           size="small"
           onClick={close}
         >
-          <Icon name="left chevron" /> Back
+          <Icon name="left chevron" /> {messages['back']}
         </Button>
         <Button
           icon
@@ -167,7 +171,7 @@ function PhoneF4UpdateModal(props) {
           size="small"
           onClick={handleSubmit}
         >
-          <Icon name="save" /> Save
+          <Icon name="save" /> {messages['save']}
         </Button>
       </Modal.Actions>
     </Modal>
