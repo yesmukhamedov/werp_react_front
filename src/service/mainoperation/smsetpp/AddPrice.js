@@ -43,6 +43,7 @@ const AddPrice = props => {
   const [countryOptions, setCountryOptions] = useState([]);
   const [test, setTest] = useState(false);
   const [dateStart, setDateStart] = useState(moment());
+  const [viewWaer, setViewWaer] = useState('');
   const [informations, setInformations] = useState({
     bukrs: '',
     dateStart: momentToStringYYYYMMDD(dateStart),
@@ -53,10 +54,10 @@ const AddPrice = props => {
     operator: 0,
     discount: 0,
     total: 0,
-    countryId: '',
-    waersId: '',
-    serviceTypeId: '',
-    typeOfSum: '',
+    countryId: 0,
+    waersId: 0,
+    serviceTypeId: 0,
+    typeOfSum: 0,
   });
 
   useEffect(() => {
@@ -94,10 +95,10 @@ const AddPrice = props => {
       operator: 0,
       discount: 0,
       total: 0,
-      countryId: '',
-      waersId: '',
-      serviceTypeId: '',
-      typeOfSum: '',
+      countryId: 0,
+      waersId: 0,
+      serviceTypeId: 0,
+      typeOfSum: 0,
     });
   };
 
@@ -106,33 +107,26 @@ const AddPrice = props => {
       const varTs = { ...prev };
       switch (text) {
         case 'bukrs':
-          let g = companyOptions.find(({ value }) => value === v);
-          varTs.bukrs = g.text;
+          varTs.bukrs = v;
           break;
 
         case 'serviceType':
-          let g2 = typeOfService.find(({ value }) => value === v);
-          varTs.serviceTypeId = g2.text;
+          varTs.serviceTypeId = parseFloat(v);
           break;
 
         case 'typeOfSum':
-          let type;
-          if (v === '%') {
-            type = 'Percentage';
-          } else if (v === 'n') {
-            type = 'Number';
-          }
-          varTs.typeOfSum = type;
-          break;
-        case 'country':
-          let g3 = countryOptions.find(({ value }) => value === v);
-          varTs.countryId = g3.text;
-          varTs.waers = g3.currency;
+          varTs.typeOfSum = parseFloat(v);
         default:
           return varTs;
       }
       return varTs;
     });
+    if (text === 'country') {
+      const waer = countryOptions.find(({ value }) => value === v);
+      setInformations({ ...informations, countryId: parseFloat(v) });
+      setInformations({ ...informations, waersId: parseFloat(v) });
+      setViewWaer(waer.currency);
+    }
   };
 
   const onChangeDate = d => {
@@ -151,7 +145,7 @@ const AddPrice = props => {
       setTest(false);
       setModalOpen(false);
       console.log(informations, 'infos');
-      const y = {
+      /*const y = {
         bukrs: 'AURA',
         countryId: 1,
         dateStart: '2020-01-14',
@@ -167,7 +161,7 @@ const AddPrice = props => {
         total: 1,
         waersId: 1,
       };
-      fetchSmsetppPost(y);
+      fetchSmsetppPost(y);*/
       setDateStart(moment());
       clearInformation();
     }
@@ -371,7 +365,7 @@ const AddPrice = props => {
 
             <Form.Field required>
               <label>{messages['waers']}</label>
-              <Header as="h4">{informations.waersId}</Header>
+              <Header as="h4">{viewWaer}</Header>
             </Form.Field>
           </Form.Group>
           <Form.Group widths="equal">
@@ -397,8 +391,8 @@ const AddPrice = props => {
                 selection
                 onChange={(e, { value }) => handleChange('typeOfSum', value)}
                 options={[
-                  { key: 1, text: '%', value: '%' },
-                  { key: 2, text: 'n', value: 'n' },
+                  { key: 1, text: '%', value: 1 },
+                  { key: 0, text: 'n', value: 0 },
                 ]}
               />
             </Form.Field>

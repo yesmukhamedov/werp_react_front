@@ -47,17 +47,17 @@ const EditModal = props => {
   const [informations, setInformations] = useState({
     bukrs: '',
     dateStart: momentToStringYYYYMMDD(dateStart),
-    fc: documents.fc,
-    mc: documents.mc,
-    office: documents.office,
-    master: documents.master,
-    operator: documents.operator,
-    discount: documents.discount,
-    total: documents.total,
-    countryId: '',
-    waersId: '',
-    premiumPriceTypeId: '',
-    typeOfSum: '',
+    fc: parseFloat(documents.fc),
+    mc: parseFloat(documents.mc),
+    office: parseFloat(documents.office),
+    master: parseFloat(documents.master),
+    operator: parseFloat(documents.operator),
+    discount: parseFloat(documents.discount),
+    total: parseFloat(documents.total),
+    countryId: 0,
+    waersId: 0,
+    premiumPriceTypeId: 0,
+    typeOfSum: 0,
   });
 
   useEffect(() => {
@@ -85,28 +85,17 @@ const EditModal = props => {
       const varTs = { ...prev };
       switch (text) {
         case 'bukrs':
-          let g = companyOptions.find(({ value }) => value === v);
-          varTs.bukrs = g.text;
+          varTs.bukrs = v;
           break;
-
         case 'serviceType':
-          let g2 = typeOfService.find(({ value }) => value === v);
-          varTs.serviceTypeId = g2.text;
+          varTs.serviceTypeId = parseFloat(v);
           break;
-
         case 'typeOfSum':
-          let type;
-          if (v === '%') {
-            type = 'Percentage';
-          } else if (v === 'n') {
-            type = 'Number';
-          }
-          varTs.typeOfSum = type;
+          varTs.typeOfSum = parseFloat(v);
           break;
         case 'country':
-          let g3 = countryOptions.find(({ value }) => value === v);
-          varTs.countryId = g3.text;
-          varTs.waersId = g3.currency;
+          varTs.countryId = parseFloat(v);
+          varTs.waersId = parseFloat(v);
         default:
           return varTs;
       }
@@ -179,10 +168,10 @@ const EditModal = props => {
       operator: documents.operator,
       discount: documents.discount,
       total: documents.total,
-      countryId: '',
-      waersId: '',
-      premiumPriceTypeId: '',
-      typeOfSum: '',
+      countryId: 0,
+      waersId: 0,
+      premiumPriceTypeId: 0,
+      typeOfSum: 0,
     });
   };
 
@@ -196,7 +185,7 @@ const EditModal = props => {
     ) {
       setInformations({ ...informations, premiumPriceTypeId: 1 });
     } else {
-      setInformations({ ...informations, premiumPriceTypeId: 2 });
+      setInformations({ ...informations, premiumPriceTypeId: 0 });
     }
 
     const bukr = companyOptions.find(({ text }) => text === documents.bukrs);
@@ -399,8 +388,8 @@ const EditModal = props => {
                 selection
                 onChange={(e, { value }) => handleChange('typeOfSum', value)}
                 options={[
-                  { key: 1, text: '%', value: '%' },
-                  { key: 2, text: 'n', value: 'n' },
+                  { key: 1, text: '%', value: 1 },
+                  { key: 2, text: 'n', value: 0 },
                 ]}
               />
             </Form.Field>
