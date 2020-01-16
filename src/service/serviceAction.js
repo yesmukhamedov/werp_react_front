@@ -89,6 +89,7 @@ export function fetchSmsetppPost(informations) {
   return function(dispatch) {
     doPost(`v1/werp/mservice/smsetpp/create`, informations)
       .then(({ data }) => {
+        console.log(data, 'data');
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SMSETPP_POST,

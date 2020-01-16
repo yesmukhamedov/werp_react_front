@@ -90,7 +90,7 @@ export default function(state = INITIAL_STATE, action) {
         ...state,
         data: {
           ...state.data,
-          service: [...action.payload.data],
+          service: [...state.data.service, action.payload],
         },
       };
     case FETCH_SMSETPP_SEARCH:
