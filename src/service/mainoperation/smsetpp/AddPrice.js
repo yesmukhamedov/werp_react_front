@@ -17,7 +17,11 @@ import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import { injectIntl } from 'react-intl';
-import { fetchSmsetppType, fetchSmsetppPost } from '../../serviceAction';
+import {
+  fetchSmsetppType,
+  fetchSmsetppPost,
+  fetchSmsetpp,
+} from '../../serviceAction';
 import {
   stringYYYYMMDDToMoment,
   handleFocus,
@@ -48,17 +52,17 @@ const AddPrice = props => {
   const [informations, setInformations] = useState({
     bukrs: '',
     dateStart: momentToStringYYYYMMDD(dateStart),
-    fc: 0,
-    mc: 0,
-    office: 0,
-    master: 0,
-    operator: 0,
-    discount: 0,
-    total: 0,
-    countryId: 0,
-    waersId: 0,
-    serviceTypeId: 0,
-    premiumPriceTypeId: 0,
+    fc: null,
+    mc: null,
+    office: null,
+    master: null,
+    operator: null,
+    discount: null,
+    total: null,
+    countryId: null,
+    waersId: null,
+    serviceTypeId: null,
+    premiumPriceTypeId: null,
   });
 
   useEffect(() => {
@@ -90,17 +94,17 @@ const AddPrice = props => {
     setInformations({
       bukrs: '',
       dateStart: momentToStringYYYYMMDD(dateStart),
-      fc: 0,
-      mc: 0,
-      office: 0,
-      master: 0,
-      operator: 0,
-      discount: 0,
-      total: 0,
-      countryId: 0,
-      waersId: 0,
-      serviceTypeId: 0,
-      premiumPriceTypeId: 0,
+      fc: null,
+      mc: null,
+      office: null,
+      master: null,
+      operator: null,
+      discount: null,
+      total: null,
+      countryId: null,
+      waersId: null,
+      serviceTypeId: null,
+      premiumPriceTypeId: null,
     });
   };
 
@@ -147,23 +151,9 @@ const AddPrice = props => {
       setModalOpen(false);
       console.log(informations, 'infos');
 
-      const y = {
-        bukrs: '6000',
-        dateStart: '2020-01-16',
-        fc: 1,
-        mc: 1,
-        office: 1,
-        master: 1,
-        operator: 1,
-        discount: 1,
-        total: 1,
-        countryId: 1,
-        waersId: 2,
-        serviceTypeId: 2,
-        premiumPriceTypeId: 0,
-      };
-
-      fetchSmsetppPost(y);
+      fetchSmsetppPost(informations, () => {
+        props.fetchSmsetpp();
+      });
       setDateStart(moment());
       clearInformation();
     }
@@ -367,7 +357,6 @@ const AddPrice = props => {
                 options={typeOfService}
                 onChange={(e, { value }) => handleChange('serviceType', value)}
                 placeholder={messages['typeOfService']}
-                search
               />
             </Form.Field>
 
@@ -375,12 +364,11 @@ const AddPrice = props => {
               <label>{messages['typeOfAmount']}</label>
               <Dropdown
                 placeholder={messages['typeOfAmount']}
-                search
                 selection
                 onChange={(e, { value }) => handleChange('typeOfSum', value)}
                 options={[
-                  { key: 1, text: '%', value: 1 },
-                  { key: 0, text: 'n', value: 0 },
+                  { key: 1, text: '%', value: 2 },
+                  { key: 0, text: 'n', value: 1 },
                 ]}
               />
             </Form.Field>
@@ -411,4 +399,5 @@ export default connect(mapStateToProps, {
   fetchSmsetppType,
   fetchSmsetppPost,
   f4FetchCountryList,
+  fetchSmsetpp,
 })(injectIntl(AddPrice));

@@ -369,7 +369,6 @@ const EditModal = props => {
                 options={typeOfService}
                 onChange={(e, { value }) => handleChange('serviceType', value)}
                 placeholder={messages['typeOfService']}
-                search
               />
             </Form.Field>
 
@@ -377,7 +376,6 @@ const EditModal = props => {
               <label>{messages['typeOfAmount']}</label>
               <Dropdown
                 placeholder={messages['typeOfAmount']}
-                search
                 selection
                 defaultValue={informations.premiumPriceTypeId}
                 onChange={(e, { value }) => handleChange('typeOfSum', value)}
