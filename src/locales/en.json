@@ -791,5 +791,13 @@
   "typeOfAmount": "Type of amount",
   "inTotal": "in total",
   "no_data": "No data",
-  "edit_cartridge": "Edit cartridge"
+  "edit_cartridge": "Edit cartridge",
+  "choose_client": "Please choose client",
+  "add_number": "Add number",
+  "enter_number": "Enter the number",
+  "update_number": "Update number",
+  "number_type": "Type of number",
+  "back": "Back",
+  "history": "History",
+  "phone_delete_description": "Why do you want to delete number?"
 }

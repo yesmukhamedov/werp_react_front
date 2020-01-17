@@ -16,6 +16,7 @@ import {
   f4FetchConTypeList,
   f4ClearAnyObject,
   f4FetchBranches,
+  f4fetchMonthTerms,
 } from '../../../reference/f4/f4_action';
 
 import { fetchPhone } from '../../../reference/f4/f4_action';
@@ -37,15 +38,15 @@ import {
   LinkToStaffCardView,
   LinkToCustomerHrc03,
 } from '../../../utils/outlink';
-import { isAsyncValidating } from 'redux-form';
 
 function Smcc(props) {
-  const emptyTs = {
+  const emptyContract = {
     bukrs: '',
     branchId: '',
     branchServ: '',
     selectedBranch: '',
     contractType: '',
+    contractMatnr: '',
     dealer: '',
     dealerName: '',
     customerId: '',
@@ -55,9 +56,16 @@ function Smcc(props) {
     addrServiceId: '',
     addrService: '',
     phone: '',
+    month: {
+      f1: '',
+      f2: '',
+      f3: '',
+      f4: '',
+      f5: '',
+    },
   };
 
-  const [ts, setTs] = useState({ ...emptyTs });
+  const [contract, setContract] = useState({ ...emptyContract });
   const [startDate, setStartDate] = useState(moment(new Date()));
   const [customerF4ModalOpen, setCustomerF4ModalOpen] = useState(false);
   const [staffF4ModalOpen, setStaffF4ModalOpen] = useState(false);
@@ -73,9 +81,9 @@ function Smcc(props) {
     companyOptions = [],
     branchOptions = [],
     phoneList = [],
-    phoneListType = [],
     branchService,
     contractTypeList,
+    monthTerms,
     language,
     intl: { messages },
     contract: { contractTypeId } = {},
@@ -91,25 +99,55 @@ function Smcc(props) {
       props.f4ClearAnyObject('F4_CLEAR_PHONE');
     };
   }, []);
+  useEffect(() => {
+    if (
+      contract.bukrs !== '' &&
+      contract.branchId !== '' &&
+      contract.contractMatnr !== ''
+    ) {
+      fetchMonthTerms(
+        contract.bukrs,
+        contract.branchId,
+        contract.contractMatnr,
+      );
+    }
+  }, [contract.bukrs, contract.branchId, contract.contractMatnr]);
+
+  useEffect(() => {
+    if (monthTerms) {
+      setContract(
+        { ...contract },
+        monthTerms.map(item => {
+          {
+            contract.month.f1 = item.f1;
+            contract.month.f2 = item.f2;
+            contract.month.f3 = item.f3;
+            contract.month.f4 = item.f4;
+            contract.month.f5 = item.f5;
+          }
+        }),
+      );
+    }
+  }, [monthTerms]);
 
   const onInputChange = (o, fieldName) => {
-    setTs(prev => {
-      const varTs = { ...prev };
+    setContract(prev => {
+      const varContract = { ...prev };
       switch (fieldName) {
         case 'bukrs':
-          varTs.bukrs = o.value;
+          varContract.bukrs = o.value;
           break;
         case 'branchId':
           let waSelectedBranch = {};
-          branchOptions[ts.bukrs]
+          branchOptions[contract.bukrs]
             .filter(item => item.key === o.value)
             .forEach(item => {
               waSelectedBranch = item;
             });
 
-          varTs.selectedBranch = waSelectedBranch;
-          varTs.branchId = o.value;
-          let wa = { ...emptyTs };
+          varContract.selectedBranch = waSelectedBranch;
+          varContract.branchId = o.value;
+          let wa = { ...emptyContract };
           wa.bukrs = prev.bukrs;
           wa.branchId = o;
 
@@ -127,56 +165,97 @@ function Smcc(props) {
                 key: item.contract_type_id,
                 value: item.contract_type_id,
                 text: item.name,
+                matnr: item.matnr,
               };
             });
 
           setContractTypeOpts(waConOptions);
           break;
         case 'branchServ':
-          varTs.branchServ = o.value;
+          varContract.branchServ = o.value;
           break;
         case 'contractType':
-          varTs.contractType = o.value;
+          let matnr = 0;
+          for (let i = 0; i < o.options.length; i++) {
+            if (o.value === o.options[i].value) {
+              matnr = o.options[i].matnr;
+            }
+          }
+          varContract.contractType = o.value;
+          varContract.contractMatnr = matnr;
           break;
         case 'dealer':
-          varTs.dealer = o.staffId;
-          varTs.dealerName = o.fio;
+          varContract.dealer = o.staffId;
+          varContract.dealerName = o.fio;
           break;
         case 'dealerRemove':
-          varTs.dealer = '';
-          varTs.dealerName = '';
+          varContract.dealer = '';
+          varContract.dealerName = '';
           break;
         case 'customer':
-          varTs.customerId = o.id;
-          varTs.customerName = o.fullFIO;
+          varContract.customerId = o.id;
+          varContract.customerName = o.fullFIO;
           break;
         case 'customerRemove':
-          varTs.customerId = '';
-          varTs.customerName = '';
+          varContract.customerId = '';
+          varContract.customerName = '';
           break;
         case 'addrServiceId':
-          varTs.addrServiceId = o.addr_id;
-          varTs.addrService = o.address;
+          varContract.addrServiceId = o.addr_id;
+          varContract.addrService = o.address;
           break;
         case 'addrServiceIdRemove':
-          varTs.addrServiceId = '';
-          varTs.addrService = '';
+          varContract.addrServiceId = '';
+          varContract.addrService = '';
           break;
         case 'tovarSerial':
-          varTs.tovarSerial = o.tovarSerial;
-          varTs.matnrListId = o.matnrListId;
+          varContract.tovarSerial = o.tovarSerial;
+          varContract.matnrListId = o.matnrListId;
           break;
         case 'removeTovarSerial':
-          varTs.tovarSerial = '';
-          varTs.matnrListId = '';
+          varContract.tovarSerial = '';
+          varContract.matnrListId = '';
           break;
         case 'choosePhone':
-          varTs.phone = o.phone;
+          varContract.phone = o.phone;
+          break;
+        case 'monthF1':
+          console.log(o);
+          varContract.month.f1 = parseInt(o.value, 10);
+          break;
+        case 'monthF2':
+          varContract.month.f2 = parseInt(o.value, 10);
+          break;
+        case 'monthF3':
+          varContract.month.f3 = parseInt(o.value, 10);
+          break;
+        case 'monthF4':
+          varContract.month.f4 = parseInt(o.value, 10);
+          break;
+        case 'monthF5':
+          varContract.month.f5 = parseInt(o.value, 10);
+          break;
+
         default:
-          varTs[fieldName] = o.value;
+          varContract[fieldName] = o.value;
       }
-      return varTs;
+      return varContract;
     });
+  };
+
+  const fetchMonthTerms = (bukrs, branchId, matnr) => {
+    props.f4fetchMonthTerms({
+      branchId,
+      bukrs,
+      matnr,
+    });
+  };
+
+  const getMonthTerms = () => {
+    if (!monthTerms) {
+      return [];
+    }
+    for (let i = 0; i < monthTerms.length; i++) {}
   };
 
   const handleClick = () => {
@@ -185,31 +264,31 @@ function Smcc(props) {
 
   const validate = () => {
     const errors = [];
-    if (ts.bukrs === '') {
+    if (contract.bukrs === '') {
       errors.push(errorTable[`5${language}`]);
     }
-    if (ts.branchId === '') {
+    if (contract.branchId === '') {
       errors.push(errorTable[`7${language}`]);
     }
-    if (ts.branchServ === '') {
+    if (contract.branchServ === '') {
       errors.push(errorTable[`7${language}`]);
     }
-    if (ts.contractType === '') {
+    if (contract.contractType === '') {
       errors.push(errorTable[`17${language}`]);
     }
-    if (ts.dealer === '') {
+    if (contract.dealer === '') {
       errors.push(errorTable[`115${language}`]);
     }
-    if (ts.customerId === '') {
+    if (contract.customerId === '') {
       errors.push(errorTable[`9${language}`]);
     }
-    if (ts.tovarSerial === '') {
+    if (contract.tovarSerial === '') {
       errors.push(errorTable[`9${language}`]);
     }
-    if (ts.addrService === '') {
+    if (contract.addrService === '') {
       errors.push(errorTable[`118${language}`]);
     }
-    if (ts.phone === '') {
+    if (contract.phone === '') {
       errors.push(errorTable[`126${language}`]);
     }
     setError(() => errors);
@@ -227,9 +306,9 @@ function Smcc(props) {
         closeModal={bool => setStaffF4ModalOpen(bool)}
         onStaffSelect={item => onInputChange(item, 'dealer')}
         trans="mmcc"
-        brnch={ts.branchId}
+        brnch={contract.branchId}
         branchOptions={branchOptions}
-        bukrs={ts.bukrs}
+        bukrs={contract.bukrs}
         companyOptions={getCompanyOptions(companyOptions)}
         bukrsDisabledParent
         unemployedDisabledParent
@@ -237,15 +316,15 @@ function Smcc(props) {
 
       <AddressF4Modal
         open={addressF4ModalOpen}
-        customerId={ts.customerId}
-        customerName={ts.customerName}
+        customerId={contract.customerId}
+        customerName={contract.customerName}
         onCloseAddressF4={bool => setAddressF4ModalOpen(bool)}
         onAddressSelect={item => onInputChange(item, 'addrServiceId')}
       />
 
       <MatnrListF4Modal
         open={matnrListF4ModalOpen}
-        matnrList={ts.matnrList}
+        matnrList={contract.matnrList}
         onCloseMatnrF4={bool => setMatnrListF4ModalOpen(bool)}
         onMatnrSelect={item => onInputChange(item, 'tovarSerial')}
         isLoadingMatnrList={isLoadingMatnrList}
@@ -254,8 +333,8 @@ function Smcc(props) {
       <PhoneF4Modal
         open={phoneF4ModalOpen}
         phoneList={phoneList}
-        customerId={ts.customerId}
-        selectedBranch={ts.selectedBranch}
+        customerId={contract.customerId}
+        selectedBranch={contract.selectedBranch}
         onClosePhoneF4={bool => setPhoneF4ModalOpen(bool)}
         onPhoneSelect={item => onInputChange(item, 'choosePhone')}
       />
@@ -279,7 +358,7 @@ function Smcc(props) {
                           selection
                           search
                           options={getCompanyOptions(companyOptions)}
-                          value={ts.bukrs}
+                          value={contract.bukrs}
                           onChange={(e, o) => onInputChange(o, 'bukrs')}
                         />
                       </Table.Cell>
@@ -295,8 +374,10 @@ function Smcc(props) {
                           fluid
                           selection
                           search
-                          options={ts.bukrs ? branchOptions[ts.bukrs] : []}
-                          value={ts.branchId}
+                          options={
+                            contract.bukrs ? branchOptions[contract.bukrs] : []
+                          }
+                          value={contract.branchId}
                           onChange={(e, o) => onInputChange(o, 'branchId')}
                         />
                       </Table.Cell>
@@ -312,8 +393,12 @@ function Smcc(props) {
                           fluid
                           selection
                           search
-                          options={ts.branchId ? branchService[ts.bukrs] : []}
-                          value={ts.branchServ}
+                          options={
+                            contract.branchId
+                              ? branchService[contract.bukrs]
+                              : []
+                          }
+                          value={contract.branchServ}
                           onChange={(e, o) => onInputChange(o, 'branchServ')}
                         />
                       </Table.Cell>
@@ -360,8 +445,8 @@ function Smcc(props) {
                       </Table.Cell>
                       <Table.Cell>
                         <LinkToCustomerHrc03
-                          customerId={ts.customerId}
-                          customerName={ts.customerName}
+                          customerId={contract.customerId}
+                          customerName={contract.customerName}
                         />
                       </Table.Cell>
                       <Table.Cell collapsing>
@@ -390,8 +475,8 @@ function Smcc(props) {
                       </Table.Cell>
                       <Table.Cell>
                         <LinkToStaffCardView
-                          staffId={ts.dealer}
-                          staffFio={ts.dealerName}
+                          staffId={contract.dealer}
+                          staffFio={contract.dealerName}
                         />
                       </Table.Cell>
                       <Table.Cell>
@@ -444,7 +529,7 @@ function Smcc(props) {
                         <Input
                           placeholder={messages['productSerialNumber']}
                           fluid
-                          value={ts.tovarSerial}
+                          value={contract.tovarSerial}
                         />
                       </Table.Cell>
                       <Table.Cell collapsing>
@@ -478,11 +563,41 @@ function Smcc(props) {
                           display: 'flex',
                         }}
                       >
-                        <Input className="input__set" label="F1" size="mini" />
-                        <Input className="input__set" label="F2" size="mini" />
-                        <Input className="input__set" label="F3" size="mini" />
-                        <Input className="input__set" label="F4" size="mini" />
-                        <Input className="input__set" label="F5" size="mini" />
+                        <Input
+                          className="input__set"
+                          label="F1"
+                          size="mini"
+                          value={contract.month.f1}
+                          onChange={(e, o) => onInputChange(o, 'monthF1')}
+                        />
+                        <Input
+                          className="input__set"
+                          label="F2"
+                          size="mini"
+                          value={contract.month.f2}
+                          onChange={(e, o) => onInputChange(o, 'monthF2')}
+                        />
+                        <Input
+                          className="input__set"
+                          label="F3"
+                          size="mini"
+                          value={contract.month.f3}
+                          onChange={(e, o) => onInputChange(o, 'monthF3')}
+                        />
+                        <Input
+                          className="input__set"
+                          label="F4"
+                          size="mini"
+                          value={contract.month.f4}
+                          onChange={(e, o) => onInputChange(o, 'monthF4')}
+                        />
+                        <Input
+                          className="input__set"
+                          label="F5"
+                          size="mini"
+                          value={contract.month.f5}
+                          onChange={(e, o) => onInputChange(o, 'monthF5')}
+                        />
                       </Table.Cell>
                     </Table.Row>
                   </Table.Body>
@@ -502,7 +617,7 @@ function Smcc(props) {
                         <Input
                           placeholder={messages['addressService']}
                           fluid
-                          value={ts.addrService}
+                          value={contract.addrService}
                         />
                       </Table.Cell>
                       <Table.Cell collapsing>
@@ -534,11 +649,7 @@ function Smcc(props) {
                         {messages['telMob1']}
                       </Table.Cell>
                       <Table.Cell>
-                        <Input
-                          placeholder={messages['telMob1']}
-                          fluid
-                          value={ts.phone}
-                        />
+                        <Segment></Segment>
                       </Table.Cell>
                       <Table.Cell>
                         <Button
@@ -630,6 +741,7 @@ function mapStateToProps(state) {
     branchService: state.userInfo.branchOptionsService,
     contractTypeList: state.f4.contractTypeList,
     phoneList: state.f4.phoneList.data,
+    monthTerms: state.f4.monthTerms.data,
   };
 }
 
@@ -639,4 +751,5 @@ export default connect(mapStateToProps, {
   f4ClearAnyObject,
   f4FetchBranches,
   fetchPhone,
+  f4fetchMonthTerms,
 })(injectIntl(Smcc));

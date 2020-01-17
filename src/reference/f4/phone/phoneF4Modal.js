@@ -8,6 +8,7 @@ import { fetchPhoneType, f4FetchCountryList } from '../f4_action';
 import PhoneF4HistoryModal from './phoneF4HistoryModal';
 import PhoneF4CreateModal from './phoneF4CreateModal';
 import PhoneF4UpdateModal from './phoneF4UpdateModal';
+import PhoneF4DeleteModal from './phoneF4DeleteModal';
 
 function PhoneF4Modal(props) {
   const emptyList = {
@@ -18,6 +19,7 @@ function PhoneF4Modal(props) {
   const [phoneF4HistoryModalOpen, setPhoneF4HistoryModalOpen] = useState(false);
   const [phoneF4CreateModalOpen, setPhoneF4CreateModalOpen] = useState(false);
   const [phoneF4UpdateModalOpen, setPhoneF4UpdateModalOpen] = useState(false);
+  const [phoneF4DeleteModalOpen, setPhoneF4DeleteModalOpen] = useState(false);
 
   const {
     intl: { messages },
@@ -28,6 +30,8 @@ function PhoneF4Modal(props) {
     selectedBranch,
   } = props;
 
+  //console.log(phoneList);
+
   useEffect(() => {
     props.fetchPhoneType();
     props.f4FetchCountryList();
@@ -36,13 +40,16 @@ function PhoneF4Modal(props) {
   const onPhoneSelect = value => {
     setList({ ...list, selectedPhone: value });
   };
-
+  let pl = null;
   const phone = phoneList.map((phone, key) => {
     if (phone.customerId === customerId) {
-      const pl = phoneListType.map(type => {
-        if (phone.type === type.id) {
+      pl = phoneListType.map(type => {
+        if (phone.typeId === type.id) {
           return (
-            <Table.Row key={key}>
+            <Table.Row
+              key={key}
+              //onClick={() => {props.onPhoneSelect(phone)}}
+            >
               <Table.Cell>
                 <label>{type.nameRu}</label>
               </Table.Cell>
@@ -61,6 +68,17 @@ function PhoneF4Modal(props) {
                 >
                   <Icon name="pencil" />
                 </Button>
+                <Button
+                  basic
+                  color="red"
+                  icon
+                  onClick={() => {
+                    onPhoneSelect(phone);
+                    setPhoneF4DeleteModalOpen(true);
+                  }}
+                >
+                  <Icon name="delete" />
+                </Button>
               </Table.Cell>
             </Table.Row>
           );
@@ -69,7 +87,6 @@ function PhoneF4Modal(props) {
       return pl;
     }
   });
-
   const label = (
     <Table.Row>
       <Table.Cell></Table.Cell>
@@ -89,7 +106,6 @@ function PhoneF4Modal(props) {
     <div>
       <PhoneF4HistoryModal
         open={phoneF4HistoryModalOpen}
-        phoneList={phoneList}
         customerId={customerId}
         phoneListType={phoneListType}
         onCloseHistoryPhoneF4={bool => setPhoneF4HistoryModalOpen(bool)}
@@ -106,10 +122,16 @@ function PhoneF4Modal(props) {
         open={phoneF4UpdateModalOpen}
         customerId={customerId}
         phoneList={phoneList}
+        country={getCountry(countryList, selectedBranch)}
         phoneListType={phoneListType}
         selectedPhone={list.selectedPhone}
         //onPhoneSelect={(item, phone) => onPhoneSelect(item, phone)}
         onCloseUpdatePhoneF4={bool => setPhoneF4UpdateModalOpen(bool)}
+      />
+      <PhoneF4DeleteModal
+        open={phoneF4DeleteModalOpen}
+        selectedPhone={list.selectedPhone}
+        onCloseDeletePhoneF4={bool => setPhoneF4DeleteModalOpen(bool)}
       />
       <Modal
         open={props.open}
