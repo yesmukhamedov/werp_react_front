@@ -1,22 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { Modal, Icon, Table, Button } from 'semantic-ui-react';
 
+import { fetchPhoneHistory } from '../f4_action';
+const language = localStorage.getItem('language');
+
 function PhoneF4HistoryModal(props) {
   const {
     intl: { messages },
-    phoneList = [],
     phoneListType = [],
     customerId,
+    phoneHistory = [],
   } = props;
 
-  const phone = phoneList.map((phone, key) => {
-    if (!phoneList) {
+  useEffect(() => {
+    props.fetchPhoneHistory();
+  }, []);
+
+  const phone = phoneHistory.map((phone, key) => {
+    if (!phoneHistory) {
       return [];
     }
+
     const pl = phoneListType.map(type => {
-      if (phone.type === type.id && phone.customerId === customerId) {
+      if (phone.typeId === type.id && phone.customerId === customerId) {
         return (
           <Table.Row key={key}>
             <Table.Cell>
@@ -24,6 +32,9 @@ function PhoneF4HistoryModal(props) {
             </Table.Cell>
             <Table.Cell>
               <label>{phone.phone}</label>
+            </Table.Cell>
+            <Table.Cell>
+              <label>{phone.revsttmp}</label>
             </Table.Cell>
           </Table.Row>
         );
@@ -74,7 +85,11 @@ function PhoneF4HistoryModal(props) {
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    phoneHistory: state.f4.phoneHistory.data,
+  };
 }
 
-export default connect(mapStateToProps, {})(injectIntl(PhoneF4HistoryModal));
+export default connect(mapStateToProps, {
+  fetchPhoneHistory,
+})(injectIntl(PhoneF4HistoryModal));

@@ -1,4 +1,4 @@
-import { doGet, doPost, doPut } from '../../utils/apiActions';
+import { doGet, doPost, doPut, doDelete } from '../../utils/apiActions';
 import {
   handleError,
   notify,
@@ -103,6 +103,14 @@ export const F4_CLEAR_POST_PHONE = 'F4_CLEAR_POST_PHONE';
 
 export const F4_UPDATE_PHONE = 'F4_UPDATE_PHONE';
 export const F4_CLEAR_UPDATE_PHONE = 'F4_CLEAR_UPDATE_PHONE';
+
+export const F4_FETCH_PHONE_HISTORY = 'F4_FETCH_PHONE_HISTORY';
+export const F4_CLEAR_PHONE_HISTORY = 'F4_CLEAR_PHONE_HISTORY';
+
+export const F4_DELETE_PHONE = 'F4_DELETE_PHONE';
+
+export const F4_FETCH_MONTH_TERMS = 'F4_FETCH_MONTH_TERMS';
+export const F4_CLEAR_MONTH_TERMS = 'F4_CLEAR_MONTH_TERMS';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
@@ -734,9 +742,8 @@ export function saveRfadd02(url, body, params, setIsLoading) {
 export function fetchPhone() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`v1/werp/mreference/general/phone`)
+    doGet(`v1/werp/mreference/general/phone?direction=DESC&orderBy=id`)
       .then(({ data }) => {
-        console.log('data', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: F4_FETCH_PHONE,
@@ -768,7 +775,7 @@ export function fetchPhoneType() {
   };
 }
 
-export function postPhone(getData) {
+export function postPhone(getData, fetchPhone) {
   console.log('data', getData);
   return function(dispatch) {
     dispatch(modifyLoader(true));
@@ -780,6 +787,7 @@ export function postPhone(getData) {
           type: F4_POST_PHONE,
           payload: data,
         });
+        fetchPhone();
       })
       .catch(error => {
         dispatch(modifyLoader(false));
@@ -788,10 +796,10 @@ export function postPhone(getData) {
   };
 }
 
-export function f4UpdatePhone(data) {
+export function f4UpdatePhone(data, fetchPhone) {
   console.log(data);
   return function(dispatch) {
-    doPut('werp/dictionary/phone/update', data)
+    doPut('v1/werp/mreference/general/phone/update', data)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -800,14 +808,83 @@ export function f4UpdatePhone(data) {
         });
         dispatch(
           notify(
-            'error',
+            'success',
             errorTable[`133${language}`],
             errorTable[`132${language}`],
           ),
         );
+        fetchPhone();
+        fetchPhoneHistory();
       })
       .catch(e => {
+        dispatch(modifyLoader(false));
         handleError(e, dispatch);
+      });
+  };
+}
+export function f4DeletePhone(data, fetchPhone) {
+  console.log(data);
+  return function(dispatch) {
+    doDelete('v1/werp/mreference/general/phone/delete', { data })
+      .then(data => {
+        console.log(data);
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_DELETE_PHONE,
+        });
+        dispatch(
+          notify(
+            'success',
+            errorTable[`133${language}`],
+            errorTable[`132${language}`],
+          ),
+        );
+        fetchPhone();
+        fetchPhoneHistory();
+      })
+      .catch(e => {
+        dispatch(modifyLoader(false));
+        handleError(e, dispatch);
+      });
+  };
+}
+
+export function fetchPhoneHistory() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('v1/werp/mreference/general/phone/audit?direction=DESC&orderBy=id')
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_PHONE_HISTORY,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4fetchMonthTerms(data) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    console.log('monthter', data);
+
+    doGet('v1/werp/mservice/smcc/branchMonthTerms', data)
+      .then(({ data }) => {
+        console.log('monthterms', data);
+
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_MONTH_TERMS,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
       });
   };
 }

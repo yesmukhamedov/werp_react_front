@@ -2,17 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Icon, Button, Dropdown, Input, Table } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-
 import MaskedInput from 'react-text-mask';
 
 import phoneMask from '../../../utils/phoneMask';
-import { postPhone } from '../f4_action';
+import { postPhone, fetchPhone } from '../f4_action';
 
 function PhoneF4CreateModal(props) {
   const emptyList = {
     typeId: 0,
     phone: '',
-    description: '',
+    description: 'CREATE NUMBER',
   };
   const [list, setList] = useState({ ...emptyList });
   const {
@@ -43,12 +42,15 @@ function PhoneF4CreateModal(props) {
     const { typeId, phone, description } = list;
     console.log(typeId, phone, description, customerId);
     if (typeId !== 0 && phone !== '' && customerId !== '') {
-      props.postPhone({
-        customerId,
-        description,
-        phone,
-        typeId,
-      });
+      props.postPhone(
+        {
+          customerId,
+          description,
+          phone,
+          typeId,
+        },
+        () => props.fetchPhone(),
+      );
     }
     props.onCloseCreatePhoneF4(false);
   };
@@ -58,7 +60,7 @@ function PhoneF4CreateModal(props) {
     setList({
       typeId: 0,
       phone: '',
-      description: '',
+      description: 'CREATE NUMBER',
     });
   };
   return (
@@ -144,4 +146,5 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   postPhone,
+  fetchPhone,
 })(injectIntl(PhoneF4CreateModal));

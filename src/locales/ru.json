@@ -755,5 +755,13 @@
   "typeOfAmount": "Вид суммы",
   "inTotal": "в сумме",
   "no_data": "Нет данных",
-  "edit_cartridge": "Редактировать картридж"
+  "edit_cartridge": "Редактировать картридж",
+  "choose_client": "Выберите клиента",
+  "add_number": "Добавить номер",
+  "enter_number": "Введите номер",
+  "update_number": "Изменить номер",
+  "number_type": "Тип номера",
+  "back": "Назад",
+  "history": "История",
+  "phone_delete_description": "Почему вы хотите удалить номер?"
 }

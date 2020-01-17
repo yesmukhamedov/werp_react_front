@@ -11,17 +11,19 @@ import {
 } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { postPhone, f4UpdatePhone } from '../f4_action';
-import OutputErrors from '../../../general/error/outputErrors';
+import MaskedInput from 'react-text-mask';
+
+import phoneMask from '../../../utils/phoneMask';
+import { f4UpdatePhone, fetchPhone, fetchPhoneHistory } from '../f4_action';
 
 function PhoneF4UpdateModal(props) {
   const emptyList = {
     id: 0,
-    type: 0,
+    typeId: 0,
     phone: '',
-    status: 'CREATED',
     description: '',
   };
+
   const [list, setList] = useState({ ...emptyList });
   const [errors, setErrors] = useState([]);
 
@@ -33,6 +35,7 @@ function PhoneF4UpdateModal(props) {
     phoneListType = [],
     customerId,
     selectedPhone,
+    country,
   } = props;
 
   const onInputChange = (o, fieldName) => {
@@ -41,10 +44,10 @@ function PhoneF4UpdateModal(props) {
       varList.id = selectedPhone.id;
       switch (fieldName) {
         case 'typeList':
-          varList.type = o.value;
+          varList.typeId = o.value;
           break;
         case 'phoneNumber':
-          varList.phone = o.value;
+          varList.phone = o.replace(/\D+/g, '');
           break;
         case 'description':
           varList.description = o.value;
@@ -59,26 +62,21 @@ function PhoneF4UpdateModal(props) {
   const handleSubmit = () => {
     let errors = [];
     errors = validate();
-    const { id, type, phone, status, description } = list;
+    const { id, typeId, phone, description } = list;
     if (errors === null || errors === undefined || errors.length === 0) {
-      props.f4UpdatePhone({
-        id,
-        type,
-        phone,
-        status,
-        description,
-        customerId,
-      });
-      // setList({
-      //     status: 'CREATED',
-      // })
-      // props.postPhone({
-      //     type,
-      //     phone,
-      //     status,
-      //     description,
-      //     customerId
-      // })
+      props.f4UpdatePhone(
+        {
+          id,
+          typeId,
+          phone,
+          description,
+          customerId,
+        },
+        () => {
+          props.fetchPhone();
+          props.fetchPhoneHistory();
+        },
+      );
       setErrors(errors);
       props.onCloseUpdatePhoneF4(false);
     }
@@ -86,8 +84,8 @@ function PhoneF4UpdateModal(props) {
 
   const validate = () => {
     const errors = [];
-    const { type, phone } = list;
-    if (type === 0 || type === undefined || type === null) {
+    const { typeId, phone } = list;
+    if (typeId === 0 || typeId === undefined || typeId === null) {
       errors.push(errorTable[`20${language}`]);
       return errors;
     }
@@ -101,9 +99,9 @@ function PhoneF4UpdateModal(props) {
   const close = () => {
     props.onCloseUpdatePhoneF4(false);
     setList({
-      type: '',
+      id: 0,
+      typeId: '',
       phone: '',
-      status: 'CREATED',
       description: '',
     });
   };
@@ -124,20 +122,24 @@ function PhoneF4UpdateModal(props) {
                   selection
                   search
                   options={getTypeList(phoneListType)}
-                  defaultValue={selectedPhone.type}
+                  defaultValue={selectedPhone.typeId}
                   onChange={(e, o) => onInputChange(o, 'typeList')}
                 />
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>{messages['update_number']}}</Table.Cell>
+              <Table.Cell>{messages['update_number']}</Table.Cell>
               <Table.Cell>
-                <Input
-                  placeholder={messages['enter_number']}
-                  type="number"
-                  defaultValue={selectedPhone.phone}
-                  onChange={(e, o) => onInputChange(o, 'phoneNumber')}
-                />
+                <Input type="number">
+                  <MaskedInput
+                    mask={phoneMask(country.code)}
+                    placeholder={`${country.phoneCode} ${country.telPattern}`}
+                    defaultValue={selectedPhone.phone}
+                    onChange={event => {
+                      onInputChange(event.target.value, 'phoneNumber');
+                    }}
+                  />
+                </Input>
               </Table.Cell>
             </Table.Row>
             <Table.Row>
@@ -192,12 +194,12 @@ const getTypeList = lt => {
   });
   return out;
 };
-
 function mapStateToProps(state) {
   return {};
 }
 
 export default connect(mapStateToProps, {
-  postPhone,
   f4UpdatePhone,
+  fetchPhone,
+  fetchPhoneHistory,
 })(injectIntl(PhoneF4UpdateModal));
