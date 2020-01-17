@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { Modal, Icon, Button, Form, TextArea } from 'semantic-ui-react';
 
-import { f4DeletePhone, fetchPhone, fetchPhoneHistory } from '../f4_action';
+import { f4DeletePhone, f4FetchPhone, fetchPhoneHistory } from '../f4_action';
 
 function PhoneF4DeleteModal(props) {
   const emptyData = {
@@ -41,7 +41,7 @@ function PhoneF4DeleteModal(props) {
           description,
         },
         () => {
-          props.fetchPhone();
+          props.f4FetchPhone();
           props.fetchPhoneHistory();
         },
       );
@@ -111,6 +111,6 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   f4DeletePhone,
-  fetchPhone,
+  f4FetchPhone,
   fetchPhoneHistory,
 })(injectIntl(PhoneF4DeleteModal));

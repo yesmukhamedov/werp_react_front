@@ -739,7 +739,7 @@ export function saveRfadd02(url, body, params, setIsLoading) {
   };
 }
 
-export function fetchPhone() {
+export function f4FetchPhone() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`v1/werp/mreference/general/phone?direction=DESC&orderBy=id`)
@@ -757,7 +757,7 @@ export function fetchPhone() {
   };
 }
 
-export function fetchPhoneType() {
+export function f4fetchPhoneType() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet('v1/werp/mreference/general/phone_type')

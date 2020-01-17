@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Modal,
   Icon,
@@ -14,7 +14,7 @@ import { injectIntl } from 'react-intl';
 import MaskedInput from 'react-text-mask';
 
 import phoneMask from '../../../utils/phoneMask';
-import { f4UpdatePhone, fetchPhone, fetchPhoneHistory } from '../f4_action';
+import { f4UpdatePhone, f4FetchPhone, fetchPhoneHistory } from '../f4_action';
 
 function PhoneF4UpdateModal(props) {
   const emptyList = {
@@ -37,6 +37,12 @@ function PhoneF4UpdateModal(props) {
     selectedPhone,
     country,
   } = props;
+
+  useEffect(() => {
+    if (selectedPhone) {
+      setList({ ...list, typeId: selectedPhone.typeId });
+    }
+  }, [selectedPhone]);
 
   const onInputChange = (o, fieldName) => {
     setList(prev => {
@@ -73,7 +79,7 @@ function PhoneF4UpdateModal(props) {
           customerId,
         },
         () => {
-          props.fetchPhone();
+          props.f4FetchPhone();
           props.fetchPhoneHistory();
         },
       );
@@ -122,7 +128,7 @@ function PhoneF4UpdateModal(props) {
                   selection
                   search
                   options={getTypeList(phoneListType)}
-                  defaultValue={selectedPhone.typeId}
+                  value={list.typeId}
                   onChange={(e, o) => onInputChange(o, 'typeList')}
                 />
               </Table.Cell>
@@ -200,6 +206,6 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   f4UpdatePhone,
-  fetchPhone,
+  f4FetchPhone,
   fetchPhoneHistory,
 })(injectIntl(PhoneF4UpdateModal));

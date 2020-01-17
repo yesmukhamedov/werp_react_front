@@ -10,6 +10,7 @@ import {
   Input,
   Button,
   TextArea,
+  Label,
 } from 'semantic-ui-react';
 import {
   f4FetchBranchesByBukrs,
@@ -17,9 +18,9 @@ import {
   f4ClearAnyObject,
   f4FetchBranches,
   f4fetchMonthTerms,
+  f4FetchPhone,
+  f4fetchPhoneType,
 } from '../../../reference/f4/f4_action';
-
-import { fetchPhone } from '../../../reference/f4/f4_action';
 
 import OutputErrors from '../../../general/error/outputErrors';
 import DatePicker from 'react-datepicker';
@@ -81,6 +82,7 @@ function Smcc(props) {
     companyOptions = [],
     branchOptions = [],
     phoneList = [],
+    phoneListType,
     branchService,
     contractTypeList,
     monthTerms,
@@ -90,7 +92,8 @@ function Smcc(props) {
   } = props;
 
   useEffect(() => {
-    props.fetchPhone();
+    props.f4FetchPhone();
+    props.f4fetchPhoneType();
     props.f4FetchConTypeList();
     props.f4FetchBranches();
     return () => {
@@ -220,7 +223,6 @@ function Smcc(props) {
           varContract.phone = o.phone;
           break;
         case 'monthF1':
-          console.log(o);
           varContract.month.f1 = parseInt(o.value, 10);
           break;
         case 'monthF2':
@@ -249,13 +251,6 @@ function Smcc(props) {
       bukrs,
       matnr,
     });
-  };
-
-  const getMonthTerms = () => {
-    if (!monthTerms) {
-      return [];
-    }
-    for (let i = 0; i < monthTerms.length; i++) {}
   };
 
   const handleClick = () => {
@@ -293,6 +288,9 @@ function Smcc(props) {
     }
     setError(() => errors);
   };
+
+  console.log(phoneList);
+  console.log(phoneListType);
   return (
     <Segment>
       <h1>Сервис договор</h1>
@@ -333,6 +331,7 @@ function Smcc(props) {
       <PhoneF4Modal
         open={phoneF4ModalOpen}
         phoneList={phoneList}
+        phoneListType={phoneListType}
         customerId={contract.customerId}
         selectedBranch={contract.selectedBranch}
         onClosePhoneF4={bool => setPhoneF4ModalOpen(bool)}
@@ -649,7 +648,37 @@ function Smcc(props) {
                         {messages['telMob1']}
                       </Table.Cell>
                       <Table.Cell>
-                        <Segment></Segment>
+                        <Table striped selectable>
+                          <Table.Body>
+                            {contract.customerId ? (
+                              phoneList.map((phone, key) => {
+                                if (phone.customerId === contract.customerId) {
+                                  const pl = phoneListType.map(type => {
+                                    if (phone.typeId === type.id) {
+                                      return (
+                                        <Table.Row key={key}>
+                                          <Table.Cell>
+                                            <label>{type.nameRu}</label>
+                                          </Table.Cell>
+                                          <Table.Cell>
+                                            <label>{phone.phone}</label>
+                                          </Table.Cell>
+                                        </Table.Row>
+                                      );
+                                    }
+                                  });
+                                  return pl;
+                                }
+                              })
+                            ) : (
+                              <Table.Cell textAlign="center">
+                                <Label basic color="red">
+                                  {messages['choose_client']}
+                                </Label>
+                              </Table.Cell>
+                            )}
+                          </Table.Body>
+                        </Table>
                       </Table.Cell>
                       <Table.Cell>
                         <Button
@@ -661,16 +690,6 @@ function Smcc(props) {
                           }}
                         >
                           <Icon name="clone" />
-                        </Button>
-                        <Button
-                          basic
-                          color="red"
-                          icon
-                          onClick={event =>
-                            onInputChange('remove', 'removeTovarSerial')
-                          }
-                        >
-                          <Icon name="delete" />
                         </Button>
                       </Table.Cell>
                     </Table.Row>
@@ -741,6 +760,7 @@ function mapStateToProps(state) {
     branchService: state.userInfo.branchOptionsService,
     contractTypeList: state.f4.contractTypeList,
     phoneList: state.f4.phoneList.data,
+    phoneListType: state.f4.phoneType.data,
     monthTerms: state.f4.monthTerms.data,
   };
 }
@@ -750,6 +770,7 @@ export default connect(mapStateToProps, {
   f4FetchConTypeList,
   f4ClearAnyObject,
   f4FetchBranches,
-  fetchPhone,
+  f4FetchPhone,
+  f4fetchPhoneType,
   f4fetchMonthTerms,
 })(injectIntl(Smcc));
