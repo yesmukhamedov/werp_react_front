@@ -8,7 +8,7 @@ export default function Recommendations() {
   return (
     <div className="recommendations back">
       <Container>
-        <h1 className="recommendations__name">2) Экзаменге дайындалу</h1>
+        <h1 className="recommendations__name">4) Рекомендация алу</h1>
 
         <Accordion fluid styled className="recommendations__content__acc">
           <Accordion.Title>4.1 Рекомендация дегеніміз не ?</Accordion.Title>

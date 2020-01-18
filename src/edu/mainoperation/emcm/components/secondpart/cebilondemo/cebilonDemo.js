@@ -7,11 +7,11 @@ import '../../back.css';
 
 export default function CebilonDemo(props) {
   return (
-    <div className="cebilon back">
+    <div className="cebilonDemo back">
       <Container>
-        <h1 className="cebilon__name">1) Cebilon демо обучениясы.</h1>
+        <h1 className="cebilonDemo__name">1) Cebilon демо обучениясы.</h1>
         <Grid columns={2} textAlign="justified" verticalAlign="middle">
-          <Grid.Column className="cebilon__content">
+          <Grid.Column className="cebilonDemo__content">
             <p
               onClick={() => {
                 props.getLink('intro');
@@ -115,7 +115,7 @@ export default function CebilonDemo(props) {
             <Image
               src={`${EDU_CEB_ASSETS_URL}c1.png`}
               alt="с1"
-              size="large"
+              size="massive"
               centered
             />
           </Grid.Column>

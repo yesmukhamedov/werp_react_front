@@ -94,7 +94,7 @@ export default function RobocleanDemo(props) {
             <Image
               src={`${EDU_ROBO_ASSETS_URL}r1.png`}
               alt="r1"
-              size="large"
+              size="massive"
               centered
             />
           </Grid.Column>
