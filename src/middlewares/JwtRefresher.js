@@ -9,7 +9,7 @@ import axios from 'axios';
 import { ROOT_URL } from '../utils/constants';
 
 const signoutUser = (dispatch, errorMsg) => {
-  //resetLocalStorage();
+  resetLocalStorage();
   dispatch({ type: UNAUTH_USER });
   dispatch({ type: AUTH_ERROR, payload: errorMsg });
   browserHistory.push('/');
