@@ -35,7 +35,6 @@ const Page = props => {
   const [activeDropdown, setActiveDropdown] = useState(false);
   const [typeOfService, setTypeOfService] = useState([]);
   const [secondActive, setSecondActive] = useState(false);
-  const [modalOpen, setModalOpen] = useState(false);
   const [allDropdownActive, setAllDropdownActive] = useState(false);
   const [serviceOptionPriceList, setServiceOptionPriceList] = useState([]);
   const [premiumPriceTypeId, setPremiumPriceTypeId] = useState([]);
