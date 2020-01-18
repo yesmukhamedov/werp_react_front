@@ -1,12 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import {
-  Segment,
-  Dropdown,
-  Icon,
-  Button,
-  Label,
-  Message,
-} from 'semantic-ui-react';
+import { Segment, Dropdown, Button, Icon } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import './index.css';
 import { connect } from 'react-redux';
@@ -16,27 +9,53 @@ import { injectIntl } from 'react-intl';
 import format from 'string-format';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import EditModal from './editPrice';
-import { fetchSmsetpp, fetchSmsetppSearch } from './../../serviceAction';
+import {
+  fetchSmsetpp,
+  fetchSmsetppSearch,
+  fetchSmsetppPremiumPriceType,
+} from './../../serviceAction';
 import OutputErrors from '../../../general/error/outputErrors';
 
 const Page = props => {
   const {
     data,
+    premium,
     intl: { messages },
     countryList = [],
     companyOptions = [],
     f4FetchCountryList,
     fetchSmsetpp,
     fetchSmsetppSearch,
+    fetchSmsetppPremiumPriceType,
   } = props;
   const [error, setError] = useState([]);
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const [modalProps, setModalProps] = useState();
   const language = localStorage.getItem('language');
   const [activeDropdown, setActiveDropdown] = useState(false);
+  const [typeOfService, setTypeOfService] = useState([]);
   const [secondActive, setSecondActive] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const [allDropdownActive, setAllDropdownActive] = useState(false);
   const [serviceOptionPriceList, setServiceOptionPriceList] = useState([]);
+  const [premiumPriceTypeId, setPremiumPriceTypeId] = useState([]);
+  const [editWaers, setEditWaers] = useState('');
+  const [editDocs, setEditDocs] = useState({
+    id: 0,
+    bukrs: '',
+    dateStart: '',
+    fc: 0,
+    mc: 0,
+    office: 0,
+    master: 0,
+    operator: 0,
+    discount: 0,
+    total: 0,
+    countryId: 0,
+    waersId: 0,
+    serviceTypeId: 0,
+    premiumPriceTypeId: 0,
+  });
   const [countryOptions, setCountryOptions] = useState([]);
   const [search, setSearch] = useState({
     bukrs: 0,
@@ -51,11 +70,18 @@ const Page = props => {
   useEffect(() => {
     fetchSmsetpp();
     f4FetchCountryList();
+    fetchSmsetppPremiumPriceType();
   }, []);
 
   useEffect(() => {
     let country = countryList.map(item => {
-      return { key: item.countryId, text: item.country, value: item.countryId };
+      return {
+        key: item.countryId,
+        text: item.country,
+        value: item.countryId,
+        currency: item.currencyId,
+        currencyy: item.currency,
+      };
     });
     setCountryOptions(country);
   }, [countryList]);
@@ -63,6 +89,17 @@ const Page = props => {
   useEffect(() => {
     setServiceOptionPriceList(data.service);
   }, [data]);
+
+  useEffect(() => {
+    setPremiumPriceTypeId(premium);
+  }, [premium]);
+
+  useEffect(() => {
+    let service = data.type.map(item => {
+      return { key: item.id, text: item.name, value: item.id };
+    });
+    setTypeOfService(service);
+  }, [data.type]);
 
   const onChange = (text, value) => {
     if (text === 'companyOptions') {
@@ -101,8 +138,67 @@ const Page = props => {
     setError(() => errors);
   };
 
+  const onModalOpen = documents => {
+    let pr = null;
+    let serviceTypeDoc = null;
+    const bukr = companyOptions.find(({ text }) => text === documents.bukrs);
+    const countr = countryOptions.find(
+      ({ text }) => text === documents.countryId,
+    );
+    const serviceType = typeOfService.find(
+      ({ text }) => text === documents.serviceTypeId,
+    );
+    if (serviceType !== undefined) {
+      serviceTypeDoc = parseFloat(serviceType.value);
+    } else {
+      serviceTypeDoc = null;
+    }
+
+    if (
+      documents.premiumPriceTypeId === 'Percentage' ||
+      documents.premiumPriceTypeId === 'Процент' ||
+      documents.premiumPriceTypeId === 'Yüzdesi'
+    ) {
+      pr = pr + 1;
+    } else if (
+      documents.premiumPriceTypeId === 'Kartuş satışı' ||
+      documents.premiumPriceTypeId === 'Number' ||
+      documents.premiumPriceTypeId === 'Число'
+    ) {
+      pr = pr + 2;
+    } else {
+      pr = null;
+    }
+    setModalOpen(true);
+    return (
+      setEditWaers(countr.currencyy),
+      setEditDocs({
+        id: documents.id,
+        dateStart: documents.dateStart,
+        fc: parseFloat(documents.fc),
+        mc: parseFloat(documents.mc),
+        office: parseFloat(documents.office),
+        master: parseFloat(documents.master),
+        operator: parseFloat(documents.operator),
+        discount: parseFloat(documents.discount),
+        total: parseFloat(documents.total),
+        bukrs: bukr.value,
+        countryId: parseFloat(countr.value),
+        serviceTypeId: serviceTypeDoc,
+        waersId: countr.currency,
+        premiumPriceTypeId: pr,
+      })
+    );
+  };
+
   return (
     <Segment>
+      <EditModal
+        documents={editDocs}
+        open={modalOpen}
+        waers={editWaers}
+        cancel={() => setModalOpen(false)}
+      />
       <div className="setting">
         <div className="flex-container">
           <h1>{messages['setting_prices_and_premium_services']}</h1>
@@ -274,8 +370,13 @@ const Page = props => {
                   {row.value === 'Percentage' ||
                   row.value === 'Процент' ||
                   row.value === 'Yüzdesi'
-                    ? '%'
-                    : 'Number'}
+                    ? premiumPriceTypeId[0].name
+                    : null}
+                  {row.value === 'Kartuş satışı' ||
+                  row.value === 'Number' ||
+                  row.value === 'Число'
+                    ? premiumPriceTypeId[1].name
+                    : null}
                 </div>
               ),
             },
@@ -285,7 +386,14 @@ const Page = props => {
               ),
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>
-                  <EditModal documents={row.row} />
+                  <Button
+                    icon
+                    inverted
+                    color="blue"
+                    onClick={() => onModalOpen(row.row)}
+                  >
+                    <Icon name="edit"></Icon>
+                  </Button>
                 </div>
               ),
             },
@@ -310,6 +418,7 @@ const Page = props => {
 
 const mapStateToProps = state => {
   return {
+    premium: state.serviceReducer.data.premiumPriceTypeId,
     data: state.serviceReducer.data,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
@@ -321,4 +430,5 @@ export default connect(mapStateToProps, {
   f4FetchCountryList,
   fetchSmsetpp,
   fetchSmsetppSearch,
+  fetchSmsetppPremiumPriceType,
 })(injectIntl(Page));

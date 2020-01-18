@@ -10,6 +10,8 @@ export const CHANGE_DYNOBJ_SERVICE = 'CHANGE_DYNOBJ_SERVICE';
 export const FETCH_SMSETPP_TYPE = 'FETCH_SMSETPP_TYPE';
 export const FETCH_SMSETPP_POST = 'FETCH_SMSETPP_POST';
 export const FETCH_SMSETPP_PUT = 'FETCH_SMSETPP_PUT';
+export const FETCH_SMSETPP_PREMIUM_PRICE_TYPE =
+  'FETCH_SMSETPP_PREMIUM_PRICE_TYPE';
 export const FETCH_SMSETPP_SEARCH = 'FETCH_SMSETPP_SEARCH';
 export const CLEAR_DYNOBJ_SERVICE = 'CLEAR_DYNOBJ_SERVICE';
 export const ADD_SMSETCT = 'ADD_SMSETCT';
@@ -32,7 +34,7 @@ export function changeDynObjService(a_obj) {
 export function fetchSmsetpp() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`v1/werp/mservice/smsetpp/view`)
+    doGet(`smsetpp/view`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -47,11 +49,42 @@ export function fetchSmsetpp() {
   };
 }
 
+export function fetchSmsetppPut(params) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPut(`smsetpp/update`, params)
+      .then(({ data }) => {
+        console.log(data);
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMSETPP_PUT,
+          payload: data,
+        });
+        doGet(`smsetpp/view`)
+          .then(({ data }) => {
+            dispatch(modifyLoader(false));
+            dispatch({
+              type: FETCH_SMSETPP,
+              payload: data,
+            });
+          })
+          .catch(error => {
+            dispatch(modifyLoader(false));
+            handleError(error, dispatch);
+          });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
 export function fetchSmsetppSearch(params) {
   console.log(params, 'params');
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`v1/werp/mservice/smsetpp/view`, params)
+    doGet(`smsetpp/view`, params)
       .then(({ data }) => {
         console.log(data, 'params');
         dispatch(modifyLoader(false));
@@ -67,9 +100,28 @@ export function fetchSmsetppSearch(params) {
   };
 }
 
+export function fetchSmsetppPremiumPriceType() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`v1/werp/mreference/smsetpp/premium_price_type/view`)
+      .then(({ data }) => {
+        console.log(data.data);
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMSETPP_PREMIUM_PRICE_TYPE,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
 export function fetchSmsetppType() {
   return function(dispatch) {
-    doGet(`v1/werp/mreference/smsetpp/type`)
+    doGet(`v1/werp/mreference/smsetpp/type/view`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -85,9 +137,9 @@ export function fetchSmsetppType() {
 }
 
 export function fetchSmsetppPost(informations, fetchSmsetpp) {
-  console.log(informations, 'inf');
   return function(dispatch) {
-    doPost(`v1/werp/mservice/smsetpp/create`, informations)
+    dispatch(modifyLoader(true));
+    doPost(`smsetpp/create`, informations)
       .then(({ data }) => {
         console.log(data, 'data');
         dispatch(modifyLoader(false));
