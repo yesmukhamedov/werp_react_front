@@ -32,7 +32,7 @@
     "react-scripts": "^3.3.0",
     "react-sortable-tree": "^2.7.1",
     "react-table": "6.10.3",
-    "react-text-mask": "^5.4.3",
+    "react-text-mask": "^5.0.2",
     "react-treebeard": "^2.1.0",
     "react-treeview": "^0.4.7",
     "react-widgets": "^4.2.0",
@@ -42,7 +42,6 @@
     "redux-thunk": "^2.2.0",
     "semantic-ui-css": "2.2.14",
     "semantic-ui-react": "^0.72.0",
-    "string-format": "^2.0.0",
     "uuid": "^3.3.3",
     "velocity-react": "^1.4.1"
   },

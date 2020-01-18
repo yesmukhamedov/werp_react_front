@@ -18,7 +18,6 @@ const INITIAL_STATE = {
   data: {
     service: [],
     type: [],
-    waers: [],
     premiumPriceTypeId: [],
   },
 };
@@ -74,7 +73,7 @@ export default function(state = INITIAL_STATE, action) {
         ...state,
         data: {
           ...state.data,
-          service: [...action.payload.data],
+          service: [...action.payload.data.data],
         },
       };
 

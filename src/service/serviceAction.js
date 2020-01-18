@@ -141,13 +141,11 @@ export function fetchSmsetppPost(informations, fetchSmsetpp) {
     dispatch(modifyLoader(true));
     doPost(`smsetpp/create`, informations)
       .then(({ data }) => {
-        console.log(data, 'data');
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SMSETPP_POST,
           payload: data,
         });
-        fetchSmsetpp();
       })
       .catch(error => {
         dispatch(modifyLoader(false));

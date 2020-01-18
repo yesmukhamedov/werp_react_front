@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Modal,
   Icon,
@@ -11,38 +11,25 @@ import {
 } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import MaskedInput from 'react-text-mask';
-
-import phoneMask from '../../../utils/phoneMask';
-import { f4UpdatePhone, f4FetchPhone, fetchPhoneHistory } from '../f4_action';
+import { postPhone, f4UpdatePhone } from '../f4_action';
+import OutputErrors from '../../../general/error/outputErrors';
 
 function PhoneF4UpdateModal(props) {
   const emptyList = {
     id: 0,
-    typeId: 0,
+    type: 0,
     phone: '',
+    status: 'CREATED',
     description: '',
   };
-
   const [list, setList] = useState({ ...emptyList });
   const [errors, setErrors] = useState([]);
 
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
 
-  const {
-    intl: { messages },
-    phoneListType = [],
-    customerId,
-    selectedPhone,
-    country,
-  } = props;
-
-  useEffect(() => {
-    if (selectedPhone) {
-      setList({ ...list, typeId: selectedPhone.typeId });
-    }
-  }, [selectedPhone]);
+  const { phoneListType = [], customerId, selectedPhone } = props;
+  console.log(customerId);
 
   const onInputChange = (o, fieldName) => {
     setList(prev => {
@@ -50,10 +37,10 @@ function PhoneF4UpdateModal(props) {
       varList.id = selectedPhone.id;
       switch (fieldName) {
         case 'typeList':
-          varList.typeId = o.value;
+          varList.type = o.value;
           break;
         case 'phoneNumber':
-          varList.phone = o.replace(/\D+/g, '');
+          varList.phone = o.value;
           break;
         case 'description':
           varList.description = o.value;
@@ -68,21 +55,26 @@ function PhoneF4UpdateModal(props) {
   const handleSubmit = () => {
     let errors = [];
     errors = validate();
-    const { id, typeId, phone, description } = list;
+    const { id, type, phone, status, description } = list;
     if (errors === null || errors === undefined || errors.length === 0) {
-      props.f4UpdatePhone(
-        {
-          id,
-          typeId,
-          phone,
-          description,
-          customerId,
-        },
-        () => {
-          props.f4FetchPhone();
-          props.fetchPhoneHistory();
-        },
-      );
+      props.f4UpdatePhone({
+        id,
+        type,
+        phone,
+        status,
+        description,
+        customerId,
+      });
+      // setList({
+      //     status: 'CREATED',
+      // })
+      // props.postPhone({
+      //     type,
+      //     phone,
+      //     status,
+      //     description,
+      //     customerId
+      // })
       setErrors(errors);
       props.onCloseUpdatePhoneF4(false);
     }
@@ -90,8 +82,8 @@ function PhoneF4UpdateModal(props) {
 
   const validate = () => {
     const errors = [];
-    const { typeId, phone } = list;
-    if (typeId === 0 || typeId === undefined || typeId === null) {
+    const { type, phone } = list;
+    if (type === 0 || type === undefined || type === null) {
       errors.push(errorTable[`20${language}`]);
       return errors;
     }
@@ -105,9 +97,9 @@ function PhoneF4UpdateModal(props) {
   const close = () => {
     props.onCloseUpdatePhoneF4(false);
     setList({
-      id: 0,
-      typeId: '',
+      type: '',
       phone: '',
+      status: 'CREATED',
       description: '',
     });
   };
@@ -116,44 +108,40 @@ function PhoneF4UpdateModal(props) {
     <Modal open={props.open} closeOnEscape={false} onClose={close}>
       <Modal.Header>
         <Icon name="pencil" size="big" />
-        {messages['update_number']}
+        Update number
       </Modal.Header>
       <Modal.Content>
         <Table>
           <Table.Body>
             <Table.Row>
-              <Table.Cell>{messages['number_type']}</Table.Cell>
+              <Table.Cell>Choose type of the number</Table.Cell>
               <Table.Cell>
                 <Dropdown
                   selection
                   search
                   options={getTypeList(phoneListType)}
-                  value={list.typeId}
+                  defaultValue={selectedPhone.type}
                   onChange={(e, o) => onInputChange(o, 'typeList')}
                 />
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>{messages['update_number']}</Table.Cell>
+              <Table.Cell>Change the number</Table.Cell>
               <Table.Cell>
-                <Input type="number">
-                  <MaskedInput
-                    mask={phoneMask(country.code)}
-                    placeholder={`${country.phoneCode} ${country.telPattern}`}
-                    defaultValue={selectedPhone.phone}
-                    onChange={event => {
-                      onInputChange(event.target.value, 'phoneNumber');
-                    }}
-                  />
-                </Input>
+                <Input
+                  placeholder="Введите номер"
+                  type="number"
+                  defaultValue={selectedPhone.phone}
+                  onChange={(e, o) => onInputChange(o, 'phoneNumber')}
+                />
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>{messages['L__EDIT_DESCRIPTION']}</Table.Cell>
+              <Table.Cell>Why you want to change number?</Table.Cell>
               <Table.Cell>
                 <Form>
                   <TextArea
-                    placeholder={messages['description']}
+                    placeholder="Input description"
                     onChange={(e, o) => onInputChange(o, 'description')}
                   />
                 </Form>
@@ -170,7 +158,7 @@ function PhoneF4UpdateModal(props) {
           size="small"
           onClick={close}
         >
-          <Icon name="left chevron" /> {messages['back']}
+          <Icon name="left chevron" /> Back
         </Button>
         <Button
           icon
@@ -179,7 +167,7 @@ function PhoneF4UpdateModal(props) {
           size="small"
           onClick={handleSubmit}
         >
-          <Icon name="save" /> {messages['save']}
+          <Icon name="save" /> Save
         </Button>
       </Modal.Actions>
     </Modal>
@@ -200,12 +188,12 @@ const getTypeList = lt => {
   });
   return out;
 };
+
 function mapStateToProps(state) {
   return {};
 }
 
 export default connect(mapStateToProps, {
+  postPhone,
   f4UpdatePhone,
-  f4FetchPhone,
-  fetchPhoneHistory,
 })(injectIntl(PhoneF4UpdateModal));

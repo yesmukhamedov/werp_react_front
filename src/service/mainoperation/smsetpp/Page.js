@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import 'react-table/react-table.css';
 import AddPrice from './AddPrice';
 import { injectIntl } from 'react-intl';
-import format from 'string-format';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import EditModal from './editPrice';
 import {
@@ -30,6 +29,7 @@ const Page = props => {
   } = props;
   const [error, setError] = useState([]);
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const [modalOpen, setModalOpen] = useState(false);
   const [modalProps, setModalProps] = useState();
   const language = localStorage.getItem('language');
   const [activeDropdown, setActiveDropdown] = useState(false);
@@ -58,14 +58,9 @@ const Page = props => {
   });
   const [countryOptions, setCountryOptions] = useState([]);
   const [search, setSearch] = useState({
-    bukrs: 0,
-    countryId: 0,
+    companyId: '',
+    countryId: '',
   });
-  let queryString = 'bukrs=={0.bukrs};countryId=={0.countryId}';
-
-  let query = {
-    search: format(queryString, search),
-  };
 
   useEffect(() => {
     fetchSmsetpp();
@@ -103,22 +98,17 @@ const Page = props => {
 
   const onChange = (text, value) => {
     if (text === 'companyOptions') {
-      setSearch({ ...search, bukrs: parseInt(value) });
+      setSearch({ ...search, companyId: value });
       setActiveDropdown(true);
     }
     if (text === 'countries') {
-      setSearch({ ...search, countryId: parseInt(value) });
+      setSearch({ ...search, countryId: value });
       setSecondActive(true);
     }
   };
 
   const onClickButton = () => {
     save();
-    if (error.length === 0) {
-      fetchSmsetppSearch(query);
-    } else {
-      setSearch({ bukrs: 0, countryId: 0 });
-    }
   };
 
   const validate = () => {
@@ -202,6 +192,7 @@ const Page = props => {
       <div className="setting">
         <div className="flex-container">
           <h1>{messages['setting_prices_and_premium_services']}</h1>
+          <AddPrice />
         </div>
 
         <Dropdown
@@ -222,7 +213,6 @@ const Page = props => {
           onClick={() => setAllDropdownActive(true)}
           onChange={(e, { value }) => onChange('countries', value)}
         />
-        <AddPrice />
         <button
           className="ui blue inverted button"
           onClick={onClickButton}
@@ -333,7 +323,7 @@ const Page = props => {
               Header: () => (
                 <div style={{ textAlign: 'center' }}>{messages['country']}</div>
               ),
-              accessor: 'countryId',
+              accessor: 'country',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
@@ -342,7 +332,7 @@ const Page = props => {
               Header: () => (
                 <div style={{ textAlign: 'center' }}>{messages['waers']}</div>
               ),
-              accessor: 'waersId',
+              accessor: 'waers',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
@@ -353,7 +343,7 @@ const Page = props => {
                   {messages['typeOfService']}
                 </div>
               ),
-              accessor: 'serviceTypeId',
+              accessor: 'typeOfService',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
@@ -384,7 +374,8 @@ const Page = props => {
               Header: () => (
                 <div style={{ textAlign: 'center' }}>{messages['toEdit']}</div>
               ),
-              Cell: row => (
+              filterable: false,
+              Cell: ({ row }) => (
                 <div style={{ textAlign: 'center' }}>
                   <Button
                     icon

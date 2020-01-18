@@ -1,121 +1,71 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Header, Icon, Modal, Input, Form } from 'semantic-ui-react';
+import {
+  Button,
+  Header,
+  Icon,
+  Modal,
+  Grid,
+  Input,
+  Form,
+} from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import DatePicker from 'react-datepicker';
+import { injectIntl } from 'react-intl';
 import './index.css';
 import { Dropdown } from 'semantic-ui-react';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
-import { injectIntl } from 'react-intl';
-import {
-  fetchSmsetppType,
-  fetchSmsetppPost,
-  fetchSmsetpp,
-  fetchSmsetppPremiumPriceType,
-} from '../../serviceAction';
-import {
-  stringYYYYMMDDToMoment,
-  handleFocus,
-  moneyInputHanler,
-  moneyFormat,
-  momentToStringYYYYMMDD,
-} from '../../../utils/helpers';
-
 require('moment/locale/ru');
-require('moment/locale/tr');
 
-const AddPrice = props => {
+const EditModal = props => {
+  const language = localStorage.getItem('language');
   const [modalOpen, setModalOpen] = useState(false);
   const {
-    data,
-    premium,
-    fetchSmsetppType,
-    fetchSmsetppPost,
     countryList = [],
     companyOptions = [],
     intl: { messages },
-    fetchSmsetppPremiumPriceType,
+    documents,
+    onItemCancel,
+    active,
   } = props;
-  const language = localStorage.getItem('language');
-  const [typeOfService, setTypeOfService] = useState([]);
+  const [countries, setCountries] = useState([]);
   const [countryOptions, setCountryOptions] = useState([]);
+  const [typeOfService, setTypeOfService] = useState([]);
   const [test, setTest] = useState(false);
+  const [companies, setCompanies] = useState([]);
   const [dateStart, setDateStart] = useState(moment());
-  const [premiumPriceTypeId, setPremiumPriceTypeId] = useState([]);
-  const [viewWaer, setViewWaer] = useState('');
   const [informations, setInformations] = useState({
     bukrs: '',
-    dateStart: momentToStringYYYYMMDD(dateStart),
-    fc: 0,
-    mc: 0,
-    office: 0,
-    master: 0,
-    operator: 0,
-    discount: 0,
-    total: 0,
-    countryId: null,
-    waersId: null,
-    serviceTypeId: null,
-    premiumPriceTypeId: null,
+    bukrsId: 0,
+    dateStart: `${dateStart.year()}-${dateStart.month()}-${dateStart.date()}`,
+    fc: '',
+    mc: '',
+    office: '',
+    master: '',
+    operator: '',
+    discount: '',
+    total: '',
+    countryId: 0,
+    country: '',
+    waers: '',
+    serviceTypeId: 0,
+    serviceType: '',
+    typeOfSum: '',
   });
 
   useEffect(() => {
-    fetchSmsetppType();
+    f4FetchCountryList();
   }, []);
-
-  useEffect(() => {
-    const premiumPrice = premium.map(item => {
-      return {
-        key: item.id,
-        text: item.name,
-        value: item.id,
-      };
-    });
-    setPremiumPriceTypeId(premiumPrice);
-  }, [premium]);
-
-  useEffect(() => {
-    let service = data.type.map(item => {
-      return { key: item.id, text: item.name, value: item.id };
-    });
-    setTypeOfService(service);
-  }, [data.type]);
-
+  console.log(props, 'props');
   useEffect(() => {
     let country = countryList.map(item => {
-      return {
-        key: item.countryId,
-        text: item.country,
-        value: item.countryId,
-        currency: item.currencyId,
-        currencyy: item.currency,
-      };
+      return { key: item.countryId, text: item.country, value: item.country };
     });
-    setCountryOptions(country);
+    setCountries(country);
   }, [countryList]);
 
-  const clearInformation = () => {
-    setDateStart(moment());
-    setViewWaer('');
-    setInformations({
-      bukrs: '',
-      dateStart: momentToStringYYYYMMDD(dateStart),
-      fc: 0,
-      mc: 0,
-      office: 0,
-      master: 0,
-      operator: 0,
-      discount: 0,
-      total: 0,
-      countryId: null,
-      waersId: null,
-      serviceTypeId: null,
-      premiumPriceTypeId: null,
-    });
-  };
-
-  const handleChange = (text, v, currency) => {
+  const handleChange = (text, v) => {
     setInformations(prev => {
       const varTs = { ...prev };
       switch (text) {
@@ -134,61 +84,6 @@ const AddPrice = props => {
           break;
       }
       return varTs;
-    });
-    if (text === 'country') {
-      const waer = countryOptions.find(({ value }) => value === v);
-      setInformations({
-        ...informations,
-        waersId: waer.currency,
-        countryId: v,
-      });
-      setViewWaer(waer.currencyy);
-    }
-  };
-
-  const onChangeDate = d => {
-    setDateStart(d);
-    setInformations({
-      ...informations,
-      dateStart: `${d.year()}-${d.month()}-${d.date()}`,
-    });
-  };
-
-  const onhandleAdd = () => {
-    setTest(true);
-    const { bukrs, total, country } = informations;
-
-    if (bukrs !== '' && total !== '' && country !== '') {
-      setModalOpen(false);
-      console.log(informations, 'infos');
-
-      fetchSmsetppPost(informations, () => {
-        props.fetchSmsetpp();
-      });
-      clearInformation();
-    }
-  };
-
-  const onhandleCancel = () => {
-    setModalOpen(false);
-    setTest(false);
-    setInformations({
-      bukrs: '',
-      bukrsId: '',
-      dateStart: `${dateStart.year()}-${dateStart.month()}-${dateStart.date()}`,
-      fc: '',
-      mc: '',
-      office: '',
-      master: '',
-      operator: '',
-      discount: '',
-      total: '',
-      countryId: 0,
-      waers: '',
-      serviceTypeId: 0,
-      serviceType: '',
-      typeOfSum: '',
-      country: '',
     });
   };
 
@@ -238,6 +133,48 @@ const AddPrice = props => {
     }
   };
 
+  const onChangeDate = d => {
+    setDateStart(d);
+    setInformations({
+      ...informations,
+      dateStart: `${d.year()}-${d.month()}-${d.date()}`,
+    });
+  };
+
+  const onhandleAdd = () => {
+    setTest(true);
+    const { bukrs, total, country } = informations;
+
+    if (bukrs !== '' && total !== '' && country !== '') {
+      setModalOpen(false);
+      console.log(informations, 'infos');
+      //fetchSmsetppPost(informations);
+    }
+  };
+
+  const onhandleCancel = () => {
+    onItemCancel();
+    setTest(false);
+    setInformations({
+      bukrs: '',
+      bukrsId: '',
+      dateStart: `${dateStart.year()}-${dateStart.month()}-${dateStart.date()}`,
+      fc: '',
+      mc: '',
+      office: '',
+      master: '',
+      operator: '',
+      discount: '',
+      total: '',
+      countryId: 0,
+      waers: '',
+      serviceTypeId: 0,
+      serviceType: '',
+      typeOfSum: '',
+      country: '',
+    });
+  };
+
   const onChangeCountryOptions = v => {
     const findCountry = countryOptions.find(({ value }) => value === v);
     const f = countryOptions.find(({ value }) => value === v);
@@ -250,20 +187,8 @@ const AddPrice = props => {
   };
 
   return (
-    <Modal
-      trigger={
-        <button
-          className="ui green button"
-          id="addPrice"
-          onClick={() => setModalOpen(true)}
-        >
-          <i aria-hidden="true" className="add square icon"></i>{' '}
-          {messages['toAdd']}
-        </button>
-      }
-      open={modalOpen}
-    >
-      <Header content={messages['toAdd']} id="modalHeader" />
+    <Modal open={active}>
+      <Header content={messages['toEdit']} id="modalHeader" />
 
       <Modal.Content>
         <Form>
@@ -427,7 +352,10 @@ const AddPrice = props => {
                 search
                 selection
                 onChange={(e, { value }) => handleChange('typeOfSum', value)}
-                options={premiumPriceTypeId}
+                options={[
+                  { key: 1, text: '%', value: '%' },
+                  { key: 2, text: 'n', value: 'n' },
+                ]}
               />
             </Form.Field>
           </Form.Group>
@@ -438,7 +366,7 @@ const AddPrice = props => {
           <Icon name="remove" /> {messages['cancel']}
         </Button>
         <Button inverted color="blue" onClick={onhandleAdd}>
-          <Icon name="checkmark" /> {messages['BTN__ADD']}
+          <Icon name="checkmark" /> {messages['save']}
         </Button>
       </Modal.Actions>
     </Modal>
@@ -447,17 +375,11 @@ const AddPrice = props => {
 
 const mapStateToProps = state => {
   return {
-    premium: state.serviceReducer.data.premiumPriceTypeId,
-    data: state.serviceReducer.data,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
   };
 };
 
 export default connect(mapStateToProps, {
-  fetchSmsetppType,
-  fetchSmsetppPost,
   f4FetchCountryList,
-  fetchSmsetpp,
-  fetchSmsetppPremiumPriceType,
-})(injectIntl(AddPrice));
+})(injectIntl(EditModal));

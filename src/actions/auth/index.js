@@ -47,6 +47,8 @@ export function signinUser({ username, password }, language) {
     bodyFormData.set('username', username);
     bodyFormData.set('password', password);
 
+    console.log('Authorization', headers.Authorization);
+
     axios
       .post(`${ROOT_URL}/api/v1/werp/auth-server/oauth/token`, bodyFormData, {
         headers: headers,
@@ -62,8 +64,7 @@ export function signinUser({ username, password }, language) {
         // - save the JWT token
 
         const { access_token, refresh_token, userId } = response.data;
-        //let token = access_token;
-        console.log(response.data, 'RESPONSE');
+
         // console.log(response.data.access_token);
 
         localStorage.setItem('username', username);
@@ -73,10 +74,22 @@ export function signinUser({ username, password }, language) {
         localStorage.setItem('refresh_token', refresh_token);
         localStorage.setItem('token_time', new Date().getTime());
 
-        localStorage.setItem(
-          'errorTableString',
-          JSON.stringify(response.data.errorTable),
-        );
+        axios
+          .get(
+            `${ROOT_URL}/api/v1/werp/mreference/general/error_table/list_map`,
+            {
+              headers: {
+                Authorization: access_token,
+              },
+            },
+          )
+
+          .then(res => {
+            let err = res.data.data;
+
+            localStorage.setItem('errorTableString', JSON.stringify(err));
+          });
+
         if (
           response.data.internalNumber &&
           response.data.internalNumber.length > 0
@@ -101,6 +114,7 @@ export function signinUser({ username, password }, language) {
       .catch(error => {
         // If request is bad...
         // - Show an error to the user
+
         if (error.response) {
           dispatch(authError(error.response.data.message));
         } else if (error.stack) {
