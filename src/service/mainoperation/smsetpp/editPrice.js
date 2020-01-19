@@ -46,7 +46,6 @@ const EditModal = props => {
     waers,
     fetchSmsetppPut,
   } = props;
-  console.log(props);
   const [countryOptions, setCountryOptions] = useState([]);
   const [typeOfService, setTypeOfService] = useState([]);
   const [test, setTest] = useState(false);
@@ -77,7 +76,7 @@ const EditModal = props => {
   useEffect(() => {
     if (documents) {
       setDateStart(moment(stringYYYYMMDDToMoment(documents.dateStart)));
-
+      console.log(documents);
       setInformations({
         id: documents.id,
         bukrs: documents.bukrs,
@@ -214,7 +213,6 @@ const EditModal = props => {
     if (bukrs !== '' && total !== 0 && countryId !== 0 && dateStart !== '') {
       setTest(false);
       cancel(false);
-      console.log(informations, 'infos');
       fetchSmsetppPut({ ...informations });
     }
   };
@@ -271,7 +269,7 @@ const EditModal = props => {
                   selected={stringYYYYMMDDToMoment(dateStart)}
                   onChange={date => onChangeDate(momentToStringYYYYMMDD(date))}
                   dateFormat="DD.MM.YYYY"
-                  value={informations.dateStart}
+                  value={dateStart}
                   locale={language}
                   id="datePicker"
                 />
@@ -284,7 +282,6 @@ const EditModal = props => {
             </Form.Field>
 
             <Form.Field
-              required
               control={Input}
               label={`FC(${messages['Table.Amount']})`}
               placeholder="Number..."
@@ -296,7 +293,6 @@ const EditModal = props => {
 
           <Form.Group widths="equal">
             <Form.Field
-              required
               control={Input}
               label={`MC(${messages['Table.Amount']})`}
               placeholder="Number..."
@@ -306,7 +302,6 @@ const EditModal = props => {
             />
 
             <Form.Field
-              required
               control={Input}
               label={`${messages['office']}(${messages['inTotal']})`}
               placeholder="Number..."
@@ -316,7 +311,6 @@ const EditModal = props => {
             />
 
             <Form.Field
-              required
               control={Input}
               label={`${messages['master']} (${messages['inTotal']})`}
               placeholder="Number..."
@@ -328,7 +322,6 @@ const EditModal = props => {
 
           <Form.Group widths="equal">
             <Form.Field
-              required
               control={Input}
               label={`${messages['Operator']} (${messages['inTotal']})`}
               placeholder="Number..."
@@ -338,7 +331,6 @@ const EditModal = props => {
             />
 
             <Form.Field
-              required
               control={Input}
               label={`${messages['discount']} (${messages['inTotal']})`}
               placeholder="Number..."
@@ -348,7 +340,6 @@ const EditModal = props => {
             />
 
             <Form.Field
-              required
               control={Input}
               label={messages['totalAmount']}
               placeholder="Number..."
@@ -379,7 +370,7 @@ const EditModal = props => {
             </Form.Field>
           </Form.Group>
           <Form.Group widths="equal">
-            <Form.Field required>
+            <Form.Field>
               <label>{messages['typeOfService']}</label>
 
               <Dropdown
@@ -393,7 +384,7 @@ const EditModal = props => {
               />
             </Form.Field>
 
-            <Form.Field required>
+            <Form.Field>
               <label>{messages['typeOfAmount']}</label>
               <Dropdown
                 placeholder={messages['typeOfAmount']}

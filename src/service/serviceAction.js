@@ -54,7 +54,6 @@ export function fetchSmsetppPut(params) {
     dispatch(modifyLoader(true));
     doPut(`smsetpp/update`, params)
       .then(({ data }) => {
-        console.log(data);
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SMSETPP_PUT,
@@ -105,7 +104,6 @@ export function fetchSmsetppPremiumPriceType() {
     dispatch(modifyLoader(true));
     doGet(`v1/werp/mreference/smsetpp/premium_price_type/view`)
       .then(({ data }) => {
-        console.log(data.data);
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SMSETPP_PREMIUM_PRICE_TYPE,
@@ -146,6 +144,7 @@ export function fetchSmsetppPost(informations, fetchSmsetpp) {
           type: FETCH_SMSETPP_POST,
           payload: data,
         });
+        fetchSmsetpp();
       })
       .catch(error => {
         dispatch(modifyLoader(false));

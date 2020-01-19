@@ -5,6 +5,7 @@ import './index.css';
 import { connect } from 'react-redux';
 import 'react-table/react-table.css';
 import AddPrice from './AddPrice';
+import format from 'string-format';
 import { injectIntl } from 'react-intl';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import EditModal from './editPrice';
@@ -56,10 +57,20 @@ const Page = props => {
     premiumPriceTypeId: 0,
   });
   const [countryOptions, setCountryOptions] = useState([]);
+  let queryString = 'bukrs=={id=={0.id};0.bukrs};branch=={0.branch}';
+
   const [search, setSearch] = useState({
-    companyId: '',
-    countryId: '',
+    bukrs: 0,
+    countryId: 0,
   });
+
+  let query = {
+    search: format(queryString, { ...search }),
+  };
+
+  const handleClickSearch = () => {
+    props.fetchServiceList(query);
+  };
 
   useEffect(() => {
     fetchSmsetpp();
@@ -118,6 +129,9 @@ const Page = props => {
     if (!secondActive) {
       errors.push(errorTable[`147${language}`]);
     }
+    if (errors.length === 0) {
+      fetchSmsetppSearch(query);
+    }
     return errors;
   };
 
@@ -159,20 +173,21 @@ const Page = props => {
       pr = null;
     }
     setModalOpen(true);
+
     return (
       setEditWaers(countr.currencyy),
       setEditDocs({
         id: documents.id,
         dateStart: documents.dateStart,
-        fc: parseFloat(documents.fc),
-        mc: parseFloat(documents.mc),
-        office: parseFloat(documents.office),
-        master: parseFloat(documents.master),
-        operator: parseFloat(documents.operator),
-        discount: parseFloat(documents.discount),
-        total: parseFloat(documents.total),
+        fc: documents.fc,
+        mc: documents.mc,
+        office: documents.office,
+        master: documents.master,
+        operator: documents.operator,
+        discount: documents.discount,
+        total: documents.total,
         bukrs: bukr.value,
-        countryId: parseFloat(countr.value),
+        countryId: countr.value,
         serviceTypeId: serviceTypeDoc,
         waersId: countr.currency,
         premiumPriceTypeId: pr,
@@ -322,7 +337,7 @@ const Page = props => {
               Header: () => (
                 <div style={{ textAlign: 'center' }}>{messages['country']}</div>
               ),
-              accessor: 'country',
+              accessor: 'countryId',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
@@ -331,7 +346,7 @@ const Page = props => {
               Header: () => (
                 <div style={{ textAlign: 'center' }}>{messages['waers']}</div>
               ),
-              accessor: 'waers',
+              accessor: 'waersId',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
@@ -342,7 +357,7 @@ const Page = props => {
                   {messages['typeOfService']}
                 </div>
               ),
-              accessor: 'typeOfService',
+              accessor: 'serviceTypeId',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
@@ -380,7 +395,7 @@ const Page = props => {
                     icon
                     inverted
                     color="blue"
-                    onClick={() => onModalOpen(row.row)}
+                    onClick={() => onModalOpen(row)}
                   >
                     <Icon name="edit"></Icon>
                   </Button>

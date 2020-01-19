@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Header, Icon, Modal, Input, Form } from 'semantic-ui-react';
+import {
+  Button,
+  Header,
+  Icon,
+  Modal,
+  Input,
+  Form,
+  Select,
+} from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import DatePicker from 'react-datepicker';
 import './index.css';
@@ -115,23 +123,22 @@ const AddPrice = props => {
     });
   };
 
-  const handleChange = (text, v, currency) => {
+  const handleChange = (text, v) => {
     setInformations(prev => {
       const varTs = { ...prev };
       switch (text) {
         case 'bukrs':
-          let g = companyOptions.find(({ value }) => value === v);
-          varTs.bukrsId = v;
-          varTs.bukrs = g.text;
+          varTs.bukrs = v;
           break;
 
         case 'serviceType':
-          varTs.serviceType = v;
+          varTs.serviceTypeId = parseFloat(v);
           break;
 
         case 'typeOfSum':
-          varTs.typeOfSum = v;
-          break;
+          varTs.premiumPriceTypeId = parseFloat(v);
+        default:
+          return varTs;
       }
       return varTs;
     });
@@ -147,18 +154,19 @@ const AddPrice = props => {
   };
 
   const onChangeDate = d => {
-    setDateStart(d);
+    setDateStart(stringYYYYMMDDToMoment(d));
     setInformations({
       ...informations,
-      dateStart: `${d.year()}-${d.month()}-${d.date()}`,
+      dateStart: d,
     });
   };
 
   const onhandleAdd = () => {
     setTest(true);
-    const { bukrs, total, country } = informations;
+    const { bukrs, total, country, dateStart } = informations;
 
-    if (bukrs !== '' && total !== '' && country !== '') {
+    if (bukrs !== '' && total !== '' && country !== '' && dateStart !== '') {
+      setTest(false);
       setModalOpen(false);
       console.log(informations, 'infos');
 
@@ -172,94 +180,53 @@ const AddPrice = props => {
   const onhandleCancel = () => {
     setModalOpen(false);
     setTest(false);
-    setInformations({
-      bukrs: '',
-      bukrsId: '',
-      dateStart: `${dateStart.year()}-${dateStart.month()}-${dateStart.date()}`,
-      fc: '',
-      mc: '',
-      office: '',
-      master: '',
-      operator: '',
-      discount: '',
-      total: '',
-      countryId: 0,
-      waers: '',
-      serviceTypeId: 0,
-      serviceType: '',
-      typeOfSum: '',
-      country: '',
-    });
+    clearInformation();
   };
 
   const onInputChange = (text, event) => {
-    switch (text) {
-      case 'fc':
-        setInformations({
-          ...informations,
-          fc: parseFloat(event.target.value),
-        });
-        break;
-      case 'mc':
-        setInformations({
-          ...informations,
-          mc: parseFloat(event.target.value),
-        });
-        break;
-      case 'office':
-        setInformations({
-          ...informations,
-          office: parseFloat(event.target.value),
-        });
-        break;
-      case 'master':
-        setInformations({
-          ...informations,
-          master: parseFloat(event.target.value),
-        });
-        break;
-      case 'operator':
-        setInformations({
-          ...informations,
-          operator: parseFloat(event.target.value),
-        });
-        break;
-      case 'discount':
-        setInformations({
-          ...informations,
-          discount: parseFloat(event.target.value),
-        });
-      case 'total':
-        setInformations({
-          ...informations,
-          total: parseFloat(event.target.value),
-        });
-        break;
-    }
-  };
-
-  const onChangeCountryOptions = v => {
-    const findCountry = countryOptions.find(({ value }) => value === v);
-    const f = countryOptions.find(({ value }) => value === v);
-    setInformations({
-      ...informations,
-      countryId: f.value,
-      country: findCountry.text,
-      waers: f.currency,
+    const f = moneyInputHanler(event.target.value, 2);
+    const t = parseFloat(f);
+    setInformations(prev => {
+      const varTs = { ...prev };
+      switch (text) {
+        case 'fc':
+          varTs.fc = t;
+          break;
+        case 'mc':
+          varTs.mc = t;
+          break;
+        case 'office':
+          varTs.office = t;
+          break;
+        case 'master':
+          varTs.master = t;
+          break;
+        case 'operator':
+          varTs.operator = t;
+          break;
+        case 'discount':
+          varTs.discount = t;
+          break;
+        case 'total':
+          varTs.total = t;
+        default:
+          return varTs;
+      }
+      return varTs;
     });
   };
 
   return (
     <Modal
       trigger={
-        <button
-          className="ui green button"
-          id="addPrice"
+        <Button
+          inverted
+          color="blue"
+          floated="right"
           onClick={() => setModalOpen(true)}
         >
-          <i aria-hidden="true" className="add square icon"></i>{' '}
           {messages['toAdd']}
-        </button>
+        </Button>
       }
       open={modalOpen}
     >
@@ -268,32 +235,28 @@ const AddPrice = props => {
       <Modal.Content>
         <Form>
           <Form.Group widths="equal">
-            <Form.Field required>
-              <label>{messages['bukrs']}</label>
-              <Dropdown
-                error={
-                  test === true && informations.bukrs === '' ? true : false
-                }
-                clearable="true"
-                search
-                selection
-                options={companyOptions}
-                onChange={(e, { value }) => handleChange('bukrs', value)}
-                placeholder={messages['bukrs']}
-              />
-            </Form.Field>
+            <Form.Field
+              selection
+              label={messages['bukrs']}
+              control={Select}
+              options={companyOptions}
+              onChange={(e, { value }) => handleChange('bukrs', value)}
+              placeholder={messages['bukrs']}
+              error={test === true && informations.bukrs === '' ? true : false}
+              required
+            />
+
             <Form.Field required>
               <label>{messages['Task.StartDate']}</label>
-
-              <div className="ui input">
+              <Input>
                 <DatePicker
                   className="date-auto-width"
                   autoComplete="off"
                   showMonthDropdown
                   showYearDropdown
-                  dropdownMode="select" //timezone="UTC"
-                  selected={dateStart}
-                  onChange={date => onChangeDate(date)}
+                  dropdownMode="select"
+                  selected={stringYYYYMMDDToMoment(dateStart)}
+                  onChange={date => onChangeDate(momentToStringYYYYMMDD(date))}
                   dateFormat="DD.MM.YYYY"
                   locale={language}
                   id="datePicker"
@@ -303,110 +266,98 @@ const AddPrice = props => {
                   className="calendar alternate outline big icon"
                   id="calendarIcon"
                 ></i>
-              </div>
+              </Input>
             </Form.Field>
 
-            <Form.Field required>
-              <label>FC({messages['Table.Amount']})</label>
-              <Input
-                placeholder="Search..."
-                type="number"
-                onChange={e => onInputChange('fc', e)}
-              />
-            </Form.Field>
+            <Form.Field
+              control={Input}
+              label={`FC(${messages['Table.Amount']})`}
+              placeholder="Number..."
+              value={moneyFormat(informations.fc)}
+              onFocus={handleFocus}
+              onChange={e => onInputChange('fc', e)}
+            />
+          </Form.Group>
+
+          <Form.Group widths="equal">
+            <Form.Field
+              control={Input}
+              label={`MC(${messages['Table.Amount']})`}
+              placeholder="Number..."
+              value={moneyFormat(informations.mc)}
+              onFocus={handleFocus}
+              onChange={e => onInputChange('mc', e)}
+            />
+
+            <Form.Field
+              control={Input}
+              label={`${messages['office']}(${messages['inTotal']})`}
+              placeholder="Number..."
+              value={moneyFormat(informations.office)}
+              onFocus={handleFocus}
+              onChange={e => onInputChange('office', e)}
+            />
+
+            <Form.Field
+              control={Input}
+              label={`${messages['master']} (${messages['inTotal']})`}
+              placeholder="Number..."
+              value={moneyFormat(informations.master)}
+              onFocus={handleFocus}
+              onChange={e => onInputChange('master', e)}
+            />
+          </Form.Group>
+
+          <Form.Group widths="equal">
+            <Form.Field
+              control={Input}
+              label={`${messages['Operator']} (${messages['inTotal']})`}
+              placeholder="Number..."
+              value={moneyFormat(informations.operator)}
+              onFocus={handleFocus}
+              onChange={e => onInputChange('operator', e)}
+            />
+
+            <Form.Field
+              control={Input}
+              label={`${messages['discount']} (${messages['inTotal']})`}
+              placeholder="Number..."
+              value={moneyFormat(informations.discount)}
+              onFocus={handleFocus}
+              onChange={e => onInputChange('discount', e)}
+            />
+
+            <Form.Field
+              control={Input}
+              label={messages['totalAmount']}
+              placeholder="Number..."
+              onFocus={handleFocus}
+              value={moneyFormat(informations.total)}
+              onChange={e => onInputChange('total', e)}
+              error={test === true && informations.total === 0 ? true : false}
+            />
           </Form.Group>
           <Form.Group widths="equal">
-            <Form.Field required>
-              <label>MC({messages['Table.Amount']})</label>
-              <Input
-                type="number"
-                placeholder="Number..."
-                onChange={e => onInputChange('mc', e)}
-              />
-            </Form.Field>
-
-            <Form.Field required>
-              <label>
-                {messages['office']} ({messages['inTotal']})
-              </label>
-              <Input
-                type="number"
-                placeholder="Number..."
-                onChange={e => onInputChange('office', e)}
-              />
-            </Form.Field>
-
-            <Form.Field required>
-              <label>
-                {messages['master']} ({messages['inTotal']})
-              </label>
-
-              <Input
-                type="number"
-                placeholder="Number..."
-                onChange={e => onInputChange('master', e)}
-              />
-            </Form.Field>
-          </Form.Group>
-          <Form.Group widths="equal">
-            <Form.Field required>
-              <label>
-                {messages['Operator']} ({messages['inTotal']})
-              </label>
-
-              <Input
-                type="number"
-                placeholder="Number..."
-                onChange={e => onInputChange('operator', e)}
-              />
-            </Form.Field>
-            <Form.Field required>
-              <label>
-                {messages['discount']} ({messages['inTotal']})
-              </label>
-
-              <Input
-                type="number"
-                placeholder="Number..."
-                onChange={e => onInputChange('discount', e)}
-              />
-            </Form.Field>
-
-            <Form.Field required>
-              <label>{messages['totalAmount']}</label>
-              <Input
-                error={
-                  test === true && informations.total === '' ? true : false
-                }
-                type="number"
-                placeholder="Number..."
-                onChange={e => onInputChange('total', e)}
-              />
-            </Form.Field>
-          </Form.Group>
-          <Form.Group widths="equal">
-            <Form.Field required>
-              <label>{messages['country']}</label>
-              <Dropdown
-                error={
-                  test === true && informations.country === '' ? true : false
-                }
-                clearable="true"
-                search
-                selection
-                options={countryOptions}
-                onChange={(e, { value }) => onChangeCountryOptions(value)}
-                placeholder={messages['country']}
-              />
-            </Form.Field>
+            <Form.Field
+              selection
+              control={Select}
+              options={countryOptions}
+              label={messages['country']}
+              placeholder={messages['country']}
+              onChange={(e, { value }) => handleChange('country', value)}
+              error={
+                test === true && informations.countryId === null ? true : false
+              }
+              required
+            />
 
             <Form.Field required>
               <label>{messages['waers']}</label>
-              <Header as="h4">{informations.waers}</Header>
+              <Header as="h4">{viewWaer}</Header>
             </Form.Field>
           </Form.Group>
           <Form.Group widths="equal">
-            <Form.Field required>
+            <Form.Field>
               <label>{messages['typeOfService']}</label>
 
               <Dropdown
@@ -416,15 +367,13 @@ const AddPrice = props => {
                 options={typeOfService}
                 onChange={(e, { value }) => handleChange('serviceType', value)}
                 placeholder={messages['typeOfService']}
-                search
               />
             </Form.Field>
 
-            <Form.Field required>
+            <Form.Field>
               <label>{messages['typeOfAmount']}</label>
               <Dropdown
                 placeholder={messages['typeOfAmount']}
-                search
                 selection
                 onChange={(e, { value }) => handleChange('typeOfSum', value)}
                 options={premiumPriceTypeId}
