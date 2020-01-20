@@ -2,34 +2,27 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Icon, Button, Dropdown, Input, Table } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import MaskedInput from 'react-text-mask';
-
-import phoneMask from '../../../utils/phoneMask';
-import { postPhone, f4FetchPhone } from '../f4_action';
+import { postPhone } from '../f4_action';
 
 function PhoneF4CreateModal(props) {
   const emptyList = {
-    typeId: 0,
+    type: 0,
     phone: '',
-    description: 'CREATE NUMBER',
+    status: 'CREATED',
+    description: '',
   };
   const [list, setList] = useState({ ...emptyList });
-  const {
-    intl: { messages },
-    phoneListType = [],
-    customerId,
-    country,
-  } = props;
+  const { phoneListType = [], customerId } = props;
 
   const onInputChange = (o, fieldName) => {
     setList(prev => {
       const varList = { ...prev };
       switch (fieldName) {
         case 'typeList':
-          varList.typeId = o.value;
+          varList.type = o.value;
           break;
         case 'phoneNumber':
-          varList.phone = o.replace(/\D+/g, '');
+          varList.phone = o.value;
           break;
         default:
           varList[fieldName] = o.value;
@@ -39,18 +32,15 @@ function PhoneF4CreateModal(props) {
   };
 
   const handleSubmit = () => {
-    const { typeId, phone, description } = list;
-    console.log(typeId, phone, description, customerId);
-    if (typeId !== 0 && phone !== '' && customerId !== '') {
-      props.postPhone(
-        {
-          customerId,
-          description,
-          phone,
-          typeId,
-        },
-        () => props.f4FetchPhone(),
-      );
+    const { type, phone, status, description } = list;
+    if (type !== 0 && phone !== '' && customerId !== '') {
+      props.postPhone({
+        type,
+        phone,
+        status,
+        description,
+        customerId,
+      });
     }
     props.onCloseCreatePhoneF4(false);
   };
@@ -58,44 +48,42 @@ function PhoneF4CreateModal(props) {
   const close = () => {
     props.onCloseCreatePhoneF4(false);
     setList({
-      typeId: 0,
+      type: '',
       phone: '',
-      description: 'CREATE NUMBER',
+      status: 'CREATED',
+      description: '',
     });
   };
+
   return (
     <Modal open={props.open} closeOnEscape={false} onClose={close}>
       <Modal.Header>
         <Icon name="pencil" size="big" />
-        {messages['add_number']}
+        Добавить номер
       </Modal.Header>
       <Modal.Content>
         <Table>
           <Table.Body>
             <Table.Row>
-              <Table.Cell>{messages['number_type']}</Table.Cell>
+              <Table.Cell>Choose type of the number</Table.Cell>
               <Table.Cell>
                 <Dropdown
                   selection
                   search
                   options={getTypeList(phoneListType)}
-                  value={list.typeId}
+                  value={list.type}
                   onChange={(e, o) => onInputChange(o, 'typeList')}
                 />
               </Table.Cell>
             </Table.Row>
             <Table.Row>
-              <Table.Cell>{messages['enter_number']}</Table.Cell>
+              <Table.Cell>Enter the number</Table.Cell>
               <Table.Cell>
-                <Input type="number">
-                  <MaskedInput
-                    mask={phoneMask(country.code)}
-                    placeholder={`${country.phoneCode} ${country.telPattern}`}
-                    onChange={event => {
-                      onInputChange(event.target.value, 'phoneNumber');
-                    }}
-                  />
-                </Input>
+                <Input
+                  placeholder="Введите номер"
+                  type="number"
+                  onChange={(e, o) => onInputChange(o, 'phoneNumber')}
+                />
               </Table.Cell>
             </Table.Row>
           </Table.Body>
@@ -109,7 +97,7 @@ function PhoneF4CreateModal(props) {
           size="small"
           onClick={close}
         >
-          <Icon name="left chevron" /> {messages['back']}
+          <Icon name="left chevron" /> Back
         </Button>
         <Button
           icon
@@ -118,7 +106,7 @@ function PhoneF4CreateModal(props) {
           size="small"
           onClick={handleSubmit}
         >
-          <Icon name="save" /> {messages['save']}
+          <Icon name="save" /> Save
         </Button>
       </Modal.Actions>
     </Modal>
@@ -146,5 +134,4 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   postPhone,
-  f4FetchPhone,
 })(injectIntl(PhoneF4CreateModal));

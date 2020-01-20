@@ -756,13 +756,5 @@
   "typeOfAmount": "Type of amount",
   "inTotal": "in total",
   "no_data": "Veri yok",
-  "edit_cartridge": "Kartuşu düzenle",
-  "choose_client": "Please choose client",
-  "add_number": "Add number",
-  "enter_number": "Enter the number",
-  "update_number": "Update number",
-  "number_type": "Type of number",
-  "back": "Back",
-  "history": "History",
-  "phone_delete_description": "Why do you want to delete number?"
+  "edit_cartridge": "Kartuşu düzenle"
 }
