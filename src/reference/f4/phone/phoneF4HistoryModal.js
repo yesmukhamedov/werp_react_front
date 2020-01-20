@@ -1,21 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { Modal, Icon, Table, Button } from 'semantic-ui-react';
 
-function PhoneF4HistoryModal(props) {
-  const { phoneList = [], phoneListType = [], customerId } = props;
+import { fetchPhoneHistory } from '../f4_action';
+const language = localStorage.getItem('language');
 
-  const phone = phoneList.map((phone, key) => {
-    if (!phoneList) {
+function PhoneF4HistoryModal(props) {
+  const {
+    intl: { messages },
+    phoneListType = [],
+    customerId,
+    phoneHistory = [],
+  } = props;
+
+  useEffect(() => {
+    props.fetchPhoneHistory();
+  }, []);
+
+  const phone = phoneHistory.map((phone, key) => {
+    if (!phoneHistory) {
       return [];
     }
+
     const pl = phoneListType.map(type => {
-      if (
-        phone.type === type.id &&
-        phone.customerId === customerId &&
-        (phone.status === 'UPDATED' || phone.status === 'DELETED')
-      ) {
+      if (phone.typeId === type.id && phone.customerId === customerId) {
         return (
           <Table.Row key={key}>
             <Table.Cell>
@@ -23,6 +32,9 @@ function PhoneF4HistoryModal(props) {
             </Table.Cell>
             <Table.Cell>
               <label>{phone.phone}</label>
+            </Table.Cell>
+            <Table.Cell>
+              <label>{phone.revsttmp}</label>
             </Table.Cell>
           </Table.Row>
         );
@@ -49,7 +61,7 @@ function PhoneF4HistoryModal(props) {
     <Modal open={props.open} closeOnEscape={false} onClose={close}>
       <Modal.Header>
         <Icon name="history" size="big" />
-        История
+        {messages['history']}
       </Modal.Header>
       <Modal.Content>
         <Table striped selectable>
@@ -65,7 +77,7 @@ function PhoneF4HistoryModal(props) {
           onClick={close}
         >
           <Icon name="left chevron" />
-          Back
+          {messages['back']}
         </Button>
       </Modal.Actions>
     </Modal>
@@ -73,7 +85,11 @@ function PhoneF4HistoryModal(props) {
 }
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    phoneHistory: state.f4.phoneHistory.data,
+  };
 }
 
-export default connect(mapStateToProps, {})(injectIntl(PhoneF4HistoryModal));
+export default connect(mapStateToProps, {
+  fetchPhoneHistory,
+})(injectIntl(PhoneF4HistoryModal));

@@ -60,6 +60,10 @@ import {
   F4_CLEAR_POST_PHONE,
   F4_UPDATE_PHONE,
   F4_CLEAR_UPDATE_PHONE,
+  F4_FETCH_PHONE_HISTORY,
+  F4_CLEAR_PHONE_HISTORY,
+  F4_FETCH_MONTH_TERMS,
+  F4_CLEAR_MONTH_TERMS,
 } from './f4_action';
 
 const INITIAL_STATE = {
@@ -95,6 +99,8 @@ const INITIAL_STATE = {
   phoneList: [],
   phoneType: [],
   phonePost: [],
+  phoneHistory: [],
+  monthTerms: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -279,6 +285,18 @@ export default function(state = INITIAL_STATE, action) {
 
     case F4_CLEAR_UPDATE_PHONE:
       return { ...state, phoneUpdate: [] };
+
+    case F4_FETCH_PHONE_HISTORY:
+      return { ...state, phoneHistory: action.payload };
+
+    case F4_CLEAR_PHONE_HISTORY:
+      return { ...state, phoneHistory: [] };
+
+    case F4_FETCH_MONTH_TERMS:
+      return { ...state, monthTerms: action.payload };
+
+    case F4_CLEAR_MONTH_TERMS:
+      return { ...state, monthTerms: [] };
 
     default:
       return state;
