@@ -5,7 +5,6 @@ import {
   Icon,
   Modal,
   Input,
-  Divider,
   Form,
   Select,
 } from 'semantic-ui-react';
@@ -21,6 +20,7 @@ import {
   fetchSmsetppType,
   fetchSmsetppPost,
   fetchSmsetpp,
+  fetchSmsetppPremiumPriceType,
 } from '../../serviceAction';
 import {
   stringYYYYMMDDToMoment,
@@ -37,28 +37,31 @@ const AddPrice = props => {
   const [modalOpen, setModalOpen] = useState(false);
   const {
     data,
+    premium,
     fetchSmsetppType,
     fetchSmsetppPost,
     countryList = [],
     companyOptions = [],
     intl: { messages },
+    fetchSmsetppPremiumPriceType,
   } = props;
   const language = localStorage.getItem('language');
   const [typeOfService, setTypeOfService] = useState([]);
   const [countryOptions, setCountryOptions] = useState([]);
   const [test, setTest] = useState(false);
   const [dateStart, setDateStart] = useState(moment());
+  const [premiumPriceTypeId, setPremiumPriceTypeId] = useState([]);
   const [viewWaer, setViewWaer] = useState('');
   const [informations, setInformations] = useState({
     bukrs: '',
     dateStart: momentToStringYYYYMMDD(dateStart),
-    fc: null,
-    mc: null,
-    office: null,
-    master: null,
-    operator: null,
-    discount: null,
-    total: null,
+    fc: 0,
+    mc: 0,
+    office: 0,
+    master: 0,
+    operator: 0,
+    discount: 0,
+    total: 0,
     countryId: null,
     waersId: null,
     serviceTypeId: null,
@@ -70,8 +73,19 @@ const AddPrice = props => {
   }, []);
 
   useEffect(() => {
+    const premiumPrice = premium.map(item => {
+      return {
+        key: item.id,
+        text: item.name,
+        value: item.id,
+      };
+    });
+    setPremiumPriceTypeId(premiumPrice);
+  }, [premium]);
+
+  useEffect(() => {
     let service = data.type.map(item => {
-      return { key: item.id, text: item.nameEn, value: item.id };
+      return { key: item.id, text: item.name, value: item.id };
     });
     setTypeOfService(service);
   }, [data.type]);
@@ -82,25 +96,26 @@ const AddPrice = props => {
         key: item.countryId,
         text: item.country,
         value: item.countryId,
-        currency: item.currency,
+        currency: item.currencyId,
+        currencyy: item.currency,
       };
     });
-
     setCountryOptions(country);
   }, [countryList]);
 
   const clearInformation = () => {
+    setDateStart(moment());
     setViewWaer('');
     setInformations({
       bukrs: '',
       dateStart: momentToStringYYYYMMDD(dateStart),
-      fc: null,
-      mc: null,
-      office: null,
-      master: null,
-      operator: null,
-      discount: null,
-      total: null,
+      fc: 0,
+      mc: 0,
+      office: 0,
+      master: 0,
+      operator: 0,
+      discount: 0,
+      total: 0,
       countryId: null,
       waersId: null,
       serviceTypeId: null,
@@ -129,8 +144,12 @@ const AddPrice = props => {
     });
     if (text === 'country') {
       const waer = countryOptions.find(({ value }) => value === v);
-      setInformations({ ...informations, waersId: v, countryId: v });
-      setViewWaer(waer.currency);
+      setInformations({
+        ...informations,
+        waersId: waer.currency,
+        countryId: v,
+      });
+      setViewWaer(waer.currencyy);
     }
   };
 
@@ -144,9 +163,9 @@ const AddPrice = props => {
 
   const onhandleAdd = () => {
     setTest(true);
-    const { bukrs, total, countryId, dateStart } = informations;
+    const { bukrs, total, country, dateStart } = informations;
 
-    if (bukrs !== '' && total !== 0 && countryId !== 0 && dateStart !== '') {
+    if (bukrs !== '' && total !== '' && country !== '' && dateStart !== '') {
       setTest(false);
       setModalOpen(false);
       console.log(informations, 'infos');
@@ -154,13 +173,11 @@ const AddPrice = props => {
       fetchSmsetppPost(informations, () => {
         props.fetchSmsetpp();
       });
-      setDateStart(moment());
       clearInformation();
     }
   };
 
   const onhandleCancel = () => {
-    setDateStart(moment());
     setModalOpen(false);
     setTest(false);
     clearInformation();
@@ -205,8 +222,8 @@ const AddPrice = props => {
         <Button
           inverted
           color="blue"
-          onClick={() => setModalOpen(true)}
           floated="right"
+          onClick={() => setModalOpen(true)}
         >
           {messages['toAdd']}
         </Button>
@@ -253,7 +270,6 @@ const AddPrice = props => {
             </Form.Field>
 
             <Form.Field
-              required
               control={Input}
               label={`FC(${messages['Table.Amount']})`}
               placeholder="Number..."
@@ -265,7 +281,6 @@ const AddPrice = props => {
 
           <Form.Group widths="equal">
             <Form.Field
-              required
               control={Input}
               label={`MC(${messages['Table.Amount']})`}
               placeholder="Number..."
@@ -275,7 +290,6 @@ const AddPrice = props => {
             />
 
             <Form.Field
-              required
               control={Input}
               label={`${messages['office']}(${messages['inTotal']})`}
               placeholder="Number..."
@@ -285,7 +299,6 @@ const AddPrice = props => {
             />
 
             <Form.Field
-              required
               control={Input}
               label={`${messages['master']} (${messages['inTotal']})`}
               placeholder="Number..."
@@ -297,7 +310,6 @@ const AddPrice = props => {
 
           <Form.Group widths="equal">
             <Form.Field
-              required
               control={Input}
               label={`${messages['Operator']} (${messages['inTotal']})`}
               placeholder="Number..."
@@ -307,7 +319,6 @@ const AddPrice = props => {
             />
 
             <Form.Field
-              required
               control={Input}
               label={`${messages['discount']} (${messages['inTotal']})`}
               placeholder="Number..."
@@ -317,7 +328,6 @@ const AddPrice = props => {
             />
 
             <Form.Field
-              required
               control={Input}
               label={messages['totalAmount']}
               placeholder="Number..."
@@ -336,7 +346,7 @@ const AddPrice = props => {
               placeholder={messages['country']}
               onChange={(e, { value }) => handleChange('country', value)}
               error={
-                test === true && informations.countryId === 0 ? true : false
+                test === true && informations.countryId === null ? true : false
               }
               required
             />
@@ -347,7 +357,7 @@ const AddPrice = props => {
             </Form.Field>
           </Form.Group>
           <Form.Group widths="equal">
-            <Form.Field required>
+            <Form.Field>
               <label>{messages['typeOfService']}</label>
 
               <Dropdown
@@ -360,16 +370,13 @@ const AddPrice = props => {
               />
             </Form.Field>
 
-            <Form.Field required>
+            <Form.Field>
               <label>{messages['typeOfAmount']}</label>
               <Dropdown
                 placeholder={messages['typeOfAmount']}
                 selection
                 onChange={(e, { value }) => handleChange('typeOfSum', value)}
-                options={[
-                  { key: 1, text: '%', value: 2 },
-                  { key: 0, text: 'n', value: 1 },
-                ]}
+                options={premiumPriceTypeId}
               />
             </Form.Field>
           </Form.Group>
@@ -389,6 +396,7 @@ const AddPrice = props => {
 
 const mapStateToProps = state => {
   return {
+    premium: state.serviceReducer.data.premiumPriceTypeId,
     data: state.serviceReducer.data,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
@@ -400,4 +408,5 @@ export default connect(mapStateToProps, {
   fetchSmsetppPost,
   f4FetchCountryList,
   fetchSmsetpp,
+  fetchSmsetppPremiumPriceType,
 })(injectIntl(AddPrice));

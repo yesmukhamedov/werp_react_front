@@ -9,8 +9,8 @@ import {
   FETCH_SMSETPP_TYPE,
   FETCH_SMSETPP_POST,
   FETCH_SMSETPP_SEARCH,
-  FETCH_SMSETPP_PUT,
   FETCH_SRLS,
+  FETCH_SMSETPP_PREMIUM_PRICE_TYPE,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -18,7 +18,7 @@ const INITIAL_STATE = {
   data: {
     service: [],
     type: [],
-    addedRequest: [],
+    premiumPriceTypeId: [],
   },
 };
 
@@ -76,6 +76,15 @@ export default function(state = INITIAL_STATE, action) {
           service: [...action.payload.data],
         },
       };
+
+    case FETCH_SMSETPP_PREMIUM_PRICE_TYPE:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          premiumPriceTypeId: [...action.payload],
+        },
+      };
     case FETCH_SMSETPP_TYPE:
       return {
         ...state,
@@ -84,8 +93,8 @@ export default function(state = INITIAL_STATE, action) {
           type: [...action.payload.data],
         },
       };
+
     case FETCH_SMSETPP_POST:
-      console.log('object', action.payload);
       return {
         ...state,
         data: {
@@ -94,14 +103,6 @@ export default function(state = INITIAL_STATE, action) {
         },
       };
     case FETCH_SMSETPP_SEARCH:
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          service: [...action.payload.data],
-        },
-      };
-    case FETCH_SMSETPP_PUT:
       return {
         ...state,
         data: {
