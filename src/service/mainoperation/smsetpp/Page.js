@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Segment, Dropdown, Button, Icon } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import './index.css';
@@ -13,6 +13,7 @@ import {
   fetchSmsetpp,
   fetchSmsetppSearch,
   fetchSmsetppPremiumPriceType,
+  fetchSmsetppPut,
 } from './../../serviceAction';
 import OutputErrors from '../../../general/error/outputErrors';
 
@@ -57,7 +58,7 @@ const Page = props => {
     premiumPriceTypeId: 0,
   });
   const [countryOptions, setCountryOptions] = useState([]);
-  let queryString = 'bukrs=={id=={0.id};0.bukrs};branch=={0.branch}';
+  let queryString = 'bukrs=={0.bukrs};countryId=={0.countryId}';
 
   const [search, setSearch] = useState({
     bukrs: 0,
@@ -66,10 +67,6 @@ const Page = props => {
 
   let query = {
     search: format(queryString, { ...search }),
-  };
-
-  const handleClickSearch = () => {
-    props.fetchServiceList(query);
   };
 
   useEffect(() => {
@@ -84,8 +81,8 @@ const Page = props => {
         key: item.countryId,
         text: item.country,
         value: item.countryId,
-        currency: item.currencyId,
-        currencyy: item.currency,
+        currencyid: item.currencyId,
+        currency: item.currency,
       };
     });
     setCountryOptions(country);
@@ -108,7 +105,7 @@ const Page = props => {
 
   const onChange = (text, value) => {
     if (text === 'companyOptions') {
-      setSearch({ ...search, companyId: value });
+      setSearch({ ...search, bukrs: value });
       setActiveDropdown(true);
     }
     if (text === 'countries') {
@@ -130,7 +127,9 @@ const Page = props => {
       errors.push(errorTable[`147${language}`]);
     }
     if (errors.length === 0) {
-      fetchSmsetppSearch(query);
+      fetchSmsetppSearch(() => {
+        fetchSmsetpp(query);
+      });
     }
     return errors;
   };
@@ -175,7 +174,7 @@ const Page = props => {
     setModalOpen(true);
 
     return (
-      setEditWaers(countr.currencyy),
+      setEditWaers(countr.currency),
       setEditDocs({
         id: documents.id,
         dateStart: documents.dateStart,
@@ -198,6 +197,7 @@ const Page = props => {
   return (
     <Segment>
       <EditModal
+        param={query}
         documents={editDocs}
         open={modalOpen}
         waers={editWaers}
@@ -206,7 +206,7 @@ const Page = props => {
       <div className="setting">
         <div className="flex-container">
           <h1>{messages['setting_prices_and_premium_services']}</h1>
-          <AddPrice />
+          <AddPrice param={query} />
         </div>
 
         <Dropdown
@@ -376,7 +376,7 @@ const Page = props => {
                   row.value === 'Yüzdesi'
                     ? premiumPriceTypeId[0].name
                     : null}
-                  {row.value === 'Kartuş satışı' ||
+                  {row.value === 'sayı' ||
                   row.value === 'Number' ||
                   row.value === 'Число'
                     ? premiumPriceTypeId[1].name

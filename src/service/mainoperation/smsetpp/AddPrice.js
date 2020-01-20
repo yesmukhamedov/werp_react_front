@@ -44,6 +44,7 @@ const AddPrice = props => {
     companyOptions = [],
     intl: { messages },
     fetchSmsetppPremiumPriceType,
+    param,
   } = props;
   const language = localStorage.getItem('language');
   const [typeOfService, setTypeOfService] = useState([]);
@@ -96,8 +97,8 @@ const AddPrice = props => {
         key: item.countryId,
         text: item.country,
         value: item.countryId,
-        currency: item.currencyId,
-        currencyy: item.currency,
+        currencyid: item.currencyId,
+        currency: item.currency,
       };
     });
     setCountryOptions(country);
@@ -149,7 +150,7 @@ const AddPrice = props => {
         waersId: waer.currency,
         countryId: v,
       });
-      setViewWaer(waer.currencyy);
+      setViewWaer(waer.currency);
     }
   };
 
@@ -168,10 +169,9 @@ const AddPrice = props => {
     if (bukrs !== '' && total !== '' && country !== '' && dateStart !== '') {
       setTest(false);
       setModalOpen(false);
-      console.log(informations, 'infos');
-
+      console.log(informations, param);
       fetchSmsetppPost(informations, () => {
-        props.fetchSmsetpp();
+        props.fetchSmsetpp(param);
       });
       clearInformation();
     }
@@ -335,6 +335,7 @@ const AddPrice = props => {
               value={moneyFormat(informations.total)}
               onChange={e => onInputChange('total', e)}
               error={test === true && informations.total === 0 ? true : false}
+              required
             />
           </Form.Group>
           <Form.Group widths="equal">
