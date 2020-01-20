@@ -18,9 +18,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { injectIntl } from 'react-intl';
 import {
   fetchSmsetppType,
-  fetchSmsetppPost,
-  fetchSmsetpp,
   fetchSmsetppPremiumPriceType,
+  fetchSmsetppPut,
 } from '../../serviceAction';
 import {
   stringYYYYMMDDToMoment,
@@ -33,28 +32,30 @@ import {
 require('moment/locale/ru');
 require('moment/locale/tr');
 
-const AddPrice = props => {
-  const [modalOpen, setModalOpen] = useState(false);
+const EditModal = props => {
+  const language = localStorage.getItem('language');
   const {
     data,
     premium,
-    fetchSmsetppType,
-    fetchSmsetppPost,
     countryList = [],
     companyOptions = [],
     intl: { messages },
-    fetchSmsetppPremiumPriceType,
+    documents,
+    open,
+    cancel,
+    waers,
+    fetchSmsetppPut,
   } = props;
-  const language = localStorage.getItem('language');
-  const [typeOfService, setTypeOfService] = useState([]);
   const [countryOptions, setCountryOptions] = useState([]);
+  const [typeOfService, setTypeOfService] = useState([]);
   const [test, setTest] = useState(false);
-  const [dateStart, setDateStart] = useState(moment());
   const [premiumPriceTypeId, setPremiumPriceTypeId] = useState([]);
   const [viewWaer, setViewWaer] = useState('');
+  const [dateStart, setDateStart] = useState();
   const [informations, setInformations] = useState({
+    id: 0,
     bukrs: '',
-    dateStart: momentToStringYYYYMMDD(dateStart),
+    dateStart: '',
     fc: 0,
     mc: 0,
     office: 0,
@@ -62,22 +63,62 @@ const AddPrice = props => {
     operator: 0,
     discount: 0,
     total: 0,
-    countryId: null,
-    waersId: null,
-    serviceTypeId: null,
-    premiumPriceTypeId: null,
+    countryId: 0,
+    waersId: 0,
+    serviceTypeId: 0,
+    premiumPriceTypeId: 0,
   });
 
   useEffect(() => {
-    fetchSmsetppType();
-  }, []);
+    setViewWaer(waers);
+  }, [waers]);
+
+  useEffect(() => {
+    if (documents) {
+      setDateStart(moment(stringYYYYMMDDToMoment(documents.dateStart)));
+      console.log(documents);
+      setInformations({
+        id: documents.id,
+        bukrs: documents.bukrs,
+        dateStart: documents.dateStart,
+        fc: documents.fc,
+        mc: documents.mc,
+        office: documents.office,
+        master: documents.master,
+        operator: documents.operator,
+        discount: documents.discount,
+        total: documents.total,
+        countryId: documents.countryId,
+        waersId: documents.waersId,
+        serviceTypeId: documents.serviceTypeId,
+        premiumPriceTypeId: documents.premiumPriceTypeId,
+      });
+    }
+  }, [documents]);
+
+  useEffect(() => {
+    let country = countryList.map(
+      item => {
+        return {
+          key: item.countryId,
+          text: item.country,
+          value: item.countryId,
+          currency: item.currency,
+          currencyy: item.currencyId,
+        };
+      },
+      [countryList],
+    );
+
+    setCountryOptions(country);
+  }, [countryList]);
 
   useEffect(() => {
     const premiumPrice = premium.map(item => {
       return {
-        key: item.id,
+        key: parseInt(item.id, 10),
         text: item.name,
-        value: item.id,
+        value: parseInt(item.id, 10),
       };
     });
     setPremiumPriceTypeId(premiumPrice);
@@ -85,43 +126,14 @@ const AddPrice = props => {
 
   useEffect(() => {
     let service = data.type.map(item => {
-      return { key: item.id, text: item.name, value: item.id };
+      return {
+        key: parseInt(item.id, 10),
+        text: item.name,
+        value: parseInt(item.id, 10),
+      };
     });
     setTypeOfService(service);
   }, [data.type]);
-
-  useEffect(() => {
-    let country = countryList.map(item => {
-      return {
-        key: item.countryId,
-        text: item.country,
-        value: item.countryId,
-        currency: item.currencyId,
-        currencyy: item.currency,
-      };
-    });
-    setCountryOptions(country);
-  }, [countryList]);
-
-  const clearInformation = () => {
-    setDateStart(moment());
-    setViewWaer('');
-    setInformations({
-      bukrs: '',
-      dateStart: momentToStringYYYYMMDD(dateStart),
-      fc: 0,
-      mc: 0,
-      office: 0,
-      master: 0,
-      operator: 0,
-      discount: 0,
-      total: 0,
-      countryId: null,
-      waersId: null,
-      serviceTypeId: null,
-      premiumPriceTypeId: null,
-    });
-  };
 
   const handleChange = (text, v) => {
     setInformations(prev => {
@@ -146,41 +158,11 @@ const AddPrice = props => {
       const waer = countryOptions.find(({ value }) => value === v);
       setInformations({
         ...informations,
-        waersId: waer.currency,
+        waersId: waer.currencyy,
         countryId: v,
       });
-      setViewWaer(waer.currencyy);
+      setViewWaer(waer.currency);
     }
-  };
-
-  const onChangeDate = d => {
-    setDateStart(stringYYYYMMDDToMoment(d));
-    setInformations({
-      ...informations,
-      dateStart: d,
-    });
-  };
-
-  const onhandleAdd = () => {
-    setTest(true);
-    const { bukrs, total, country, dateStart } = informations;
-
-    if (bukrs !== '' && total !== '' && country !== '' && dateStart !== '') {
-      setTest(false);
-      setModalOpen(false);
-      console.log(informations, 'infos');
-
-      fetchSmsetppPost(informations, () => {
-        props.fetchSmsetpp();
-      });
-      clearInformation();
-    }
-  };
-
-  const onhandleCancel = () => {
-    setModalOpen(false);
-    setTest(false);
-    clearInformation();
   };
 
   const onInputChange = (text, event) => {
@@ -216,21 +198,49 @@ const AddPrice = props => {
     });
   };
 
+  const onChangeDate = d => {
+    setDateStart(stringYYYYMMDDToMoment(d));
+    setInformations({
+      ...informations,
+      dateStart: d,
+    });
+  };
+
+  const onhandleAdd = () => {
+    setTest(true);
+    const { bukrs, total, countryId, dateStart } = informations;
+
+    if (bukrs !== '' && total !== 0 && countryId !== 0 && dateStart !== '') {
+      setTest(false);
+      cancel(false);
+      fetchSmsetppPut({ ...informations });
+    }
+  };
+
+  const onhandleCancel = () => {
+    cancel(false);
+    setTest(false);
+    setInformations({
+      id: 0,
+      bukrs: '',
+      dateStart: '',
+      fc: 0,
+      mc: 0,
+      office: 0,
+      master: 0,
+      operator: 0,
+      discount: 0,
+      total: 0,
+      countryId: 0,
+      waersId: 0,
+      serviceTypeId: 0,
+      premiumPriceTypeId: 0,
+    });
+  };
+
   return (
-    <Modal
-      trigger={
-        <Button
-          inverted
-          color="blue"
-          floated="right"
-          onClick={() => setModalOpen(true)}
-        >
-          {messages['toAdd']}
-        </Button>
-      }
-      open={modalOpen}
-    >
-      <Header content={messages['toAdd']} id="modalHeader" />
+    <Modal open={open}>
+      <Header content={messages['toEdit']} id="modalHeader" />
 
       <Modal.Content>
         <Form>
@@ -242,6 +252,7 @@ const AddPrice = props => {
               options={companyOptions}
               onChange={(e, { value }) => handleChange('bukrs', value)}
               placeholder={messages['bukrs']}
+              value={informations.bukrs}
               error={test === true && informations.bukrs === '' ? true : false}
               required
             />
@@ -258,6 +269,7 @@ const AddPrice = props => {
                   selected={stringYYYYMMDDToMoment(dateStart)}
                   onChange={date => onChangeDate(momentToStringYYYYMMDD(date))}
                   dateFormat="DD.MM.YYYY"
+                  value={dateStart}
                   locale={language}
                   id="datePicker"
                 />
@@ -342,11 +354,12 @@ const AddPrice = props => {
               selection
               control={Select}
               options={countryOptions}
+              value={informations.countryId}
               label={messages['country']}
               placeholder={messages['country']}
               onChange={(e, { value }) => handleChange('country', value)}
               error={
-                test === true && informations.countryId === null ? true : false
+                test === true && informations.countryId === 0 ? true : false
               }
               required
             />
@@ -364,6 +377,7 @@ const AddPrice = props => {
                 placeholder="State"
                 clearable="true"
                 selection
+                value={informations.serviceTypeId}
                 options={typeOfService}
                 onChange={(e, { value }) => handleChange('serviceType', value)}
                 placeholder={messages['typeOfService']}
@@ -375,6 +389,7 @@ const AddPrice = props => {
               <Dropdown
                 placeholder={messages['typeOfAmount']}
                 selection
+                value={informations.premiumPriceTypeId}
                 onChange={(e, { value }) => handleChange('typeOfSum', value)}
                 options={premiumPriceTypeId}
               />
@@ -387,7 +402,7 @@ const AddPrice = props => {
           <Icon name="remove" /> {messages['cancel']}
         </Button>
         <Button inverted color="blue" onClick={onhandleAdd}>
-          <Icon name="checkmark" /> {messages['BTN__ADD']}
+          <Icon name="checkmark" /> {messages['save']}
         </Button>
       </Modal.Actions>
     </Modal>
@@ -404,9 +419,6 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, {
-  fetchSmsetppType,
-  fetchSmsetppPost,
   f4FetchCountryList,
-  fetchSmsetpp,
-  fetchSmsetppPremiumPriceType,
-})(injectIntl(AddPrice));
+  fetchSmsetppPut,
+})(injectIntl(EditModal));
