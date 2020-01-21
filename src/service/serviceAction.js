@@ -31,10 +31,10 @@ export function changeDynObjService(a_obj) {
   return obj;
 }
 
-export function fetchSmsetpp() {
+export function fetchSmsetpp(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smsetpp/view`)
+    doGet(`smsetpp/view?direction=DESC&orderBy=id`, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -49,7 +49,7 @@ export function fetchSmsetpp() {
   };
 }
 
-export function fetchSmsetppPut(params) {
+export function fetchSmsetppPut(params, fetchSmsetpp) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doPut(`smsetpp/update`, params)
@@ -59,18 +59,7 @@ export function fetchSmsetppPut(params) {
           type: FETCH_SMSETPP_PUT,
           payload: data,
         });
-        doGet(`smsetpp/view`)
-          .then(({ data }) => {
-            dispatch(modifyLoader(false));
-            dispatch({
-              type: FETCH_SMSETPP,
-              payload: data,
-            });
-          })
-          .catch(error => {
-            dispatch(modifyLoader(false));
-            handleError(error, dispatch);
-          });
+        fetchSmsetpp();
       })
       .catch(error => {
         dispatch(modifyLoader(false));
@@ -79,23 +68,10 @@ export function fetchSmsetppPut(params) {
   };
 }
 
-export function fetchSmsetppSearch(params) {
-  console.log(params, 'params');
+export function fetchSmsetppSearch(fetchSmsetpp) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smsetpp/view`, params)
-      .then(({ data }) => {
-        console.log(data, 'params');
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: FETCH_SMSETPP_SEARCH,
-          payload: data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
+    fetchSmsetpp();
   };
 }
 

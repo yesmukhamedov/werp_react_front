@@ -44,6 +44,7 @@ const AddPrice = props => {
     companyOptions = [],
     intl: { messages },
     fetchSmsetppPremiumPriceType,
+    param,
   } = props;
   const language = localStorage.getItem('language');
   const [typeOfService, setTypeOfService] = useState([]);
@@ -96,8 +97,8 @@ const AddPrice = props => {
         key: item.countryId,
         text: item.country,
         value: item.countryId,
-        currency: item.currencyId,
-        currencyy: item.currency,
+        currencyid: item.currencyId,
+        currency: item.currency,
       };
     });
     setCountryOptions(country);
@@ -146,10 +147,10 @@ const AddPrice = props => {
       const waer = countryOptions.find(({ value }) => value === v);
       setInformations({
         ...informations,
-        waersId: waer.currency,
+        waersId: waer.currencyid,
         countryId: v,
       });
-      setViewWaer(waer.currencyy);
+      setViewWaer(waer.currency);
     }
   };
 
@@ -165,13 +166,11 @@ const AddPrice = props => {
     setTest(true);
     const { bukrs, total, country, dateStart } = informations;
 
-    if (bukrs !== '' && total !== '' && country !== '' && dateStart !== '') {
+    if (bukrs !== '' && total !== 0 && country !== '' && dateStart !== '') {
       setTest(false);
       setModalOpen(false);
-      console.log(informations, 'infos');
-
       fetchSmsetppPost(informations, () => {
-        props.fetchSmsetpp();
+        props.fetchSmsetpp(param);
       });
       clearInformation();
     }
@@ -335,6 +334,7 @@ const AddPrice = props => {
               value={moneyFormat(informations.total)}
               onChange={e => onInputChange('total', e)}
               error={test === true && informations.total === 0 ? true : false}
+              required
             />
           </Form.Group>
           <Form.Group widths="equal">
@@ -351,7 +351,7 @@ const AddPrice = props => {
               required
             />
 
-            <Form.Field required>
+            <Form.Field>
               <label>{messages['waers']}</label>
               <Header as="h4">{viewWaer}</Header>
             </Form.Field>

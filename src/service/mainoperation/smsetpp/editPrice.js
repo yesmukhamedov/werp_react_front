@@ -17,9 +17,9 @@ import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import { injectIntl } from 'react-intl';
 import {
-  fetchSmsetppType,
-  fetchSmsetppPremiumPriceType,
+  fetchSmsetpp,
   fetchSmsetppPut,
+  fetchSmsetppPost,
 } from '../../serviceAction';
 import {
   stringYYYYMMDDToMoment,
@@ -45,6 +45,8 @@ const EditModal = props => {
     cancel,
     waers,
     fetchSmsetppPut,
+    fetchSmsetpp,
+    param,
   } = props;
   const [countryOptions, setCountryOptions] = useState([]);
   const [typeOfService, setTypeOfService] = useState([]);
@@ -76,22 +78,21 @@ const EditModal = props => {
   useEffect(() => {
     if (documents) {
       setDateStart(moment(stringYYYYMMDDToMoment(documents.dateStart)));
-      console.log(documents);
       setInformations({
-        id: documents.id,
+        id: parseFloat(documents.id),
         bukrs: documents.bukrs,
         dateStart: documents.dateStart,
-        fc: documents.fc,
-        mc: documents.mc,
-        office: documents.office,
-        master: documents.master,
-        operator: documents.operator,
-        discount: documents.discount,
-        total: documents.total,
-        countryId: documents.countryId,
-        waersId: documents.waersId,
-        serviceTypeId: documents.serviceTypeId,
-        premiumPriceTypeId: documents.premiumPriceTypeId,
+        fc: parseFloat(documents.fc),
+        mc: parseFloat(documents.mc),
+        office: parseFloat(documents.office),
+        master: parseFloat(documents.master),
+        operator: parseFloat(documents.operator),
+        discount: parseFloat(documents.discount),
+        total: parseFloat(documents.total),
+        countryId: parseFloat(documents.countryId),
+        waersId: parseFloat(documents.waersId),
+        serviceTypeId: parseFloat(documents.serviceTypeId),
+        premiumPriceTypeId: parseFloat(documents.premiumPriceTypeId),
       });
     }
   }, [documents]);
@@ -104,7 +105,7 @@ const EditModal = props => {
           text: item.country,
           value: item.countryId,
           currency: item.currency,
-          currencyy: item.currencyId,
+          currencyid: item.currencyId,
         };
       },
       [countryList],
@@ -158,7 +159,7 @@ const EditModal = props => {
       const waer = countryOptions.find(({ value }) => value === v);
       setInformations({
         ...informations,
-        waersId: waer.currencyy,
+        waersId: waer.currencyid,
         countryId: v,
       });
       setViewWaer(waer.currency);
@@ -213,7 +214,9 @@ const EditModal = props => {
     if (bukrs !== '' && total !== 0 && countryId !== 0 && dateStart !== '') {
       setTest(false);
       cancel(false);
-      fetchSmsetppPut({ ...informations });
+      fetchSmsetppPut({ ...informations }, () => {
+        fetchSmsetpp(param);
+      });
     }
   };
 
@@ -347,6 +350,7 @@ const EditModal = props => {
               value={moneyFormat(informations.total)}
               onChange={e => onInputChange('total', e)}
               error={test === true && informations.total === 0 ? true : false}
+              required
             />
           </Form.Group>
           <Form.Group widths="equal">
@@ -364,7 +368,7 @@ const EditModal = props => {
               required
             />
 
-            <Form.Field required>
+            <Form.Field>
               <label>{messages['waers']}</label>
               <Header as="h4">{viewWaer}</Header>
             </Form.Field>
@@ -421,4 +425,5 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   f4FetchCountryList,
   fetchSmsetppPut,
+  fetchSmsetpp,
 })(injectIntl(EditModal));
