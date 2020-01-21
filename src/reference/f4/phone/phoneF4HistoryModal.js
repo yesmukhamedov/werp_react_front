@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { Modal, Icon, Table, Button } from 'semantic-ui-react';
 
-import { fetchPhoneHistory } from '../f4_action';
+import { f4FetchPhoneHistory } from '../f4_action';
 const language = localStorage.getItem('language');
 
 function PhoneF4HistoryModal(props) {
@@ -15,7 +15,7 @@ function PhoneF4HistoryModal(props) {
   } = props;
 
   useEffect(() => {
-    props.fetchPhoneHistory();
+    props.f4FetchPhoneHistory();
   }, []);
 
   const phone = phoneHistory.map((phone, key) => {
@@ -91,5 +91,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  fetchPhoneHistory,
+  f4FetchPhoneHistory,
 })(injectIntl(PhoneF4HistoryModal));

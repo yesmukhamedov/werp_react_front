@@ -112,6 +112,9 @@ export const F4_DELETE_PHONE = 'F4_DELETE_PHONE';
 export const F4_FETCH_MONTH_TERMS = 'F4_FETCH_MONTH_TERMS';
 export const F4_CLEAR_MONTH_TERMS = 'F4_CLEAR_MONTH_TERMS';
 
+export const F4_FETCH_MATNR_LIST_VIEW = 'F4_FETCH_MATNR_LIST_VIEW';
+export const F4_CLEAR_MATNR_LIST_VIEW = 'F4_CLEAR_MATNR_LIST_VIEW';
+
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 
@@ -757,7 +760,7 @@ export function f4FetchPhone() {
   };
 }
 
-export function f4fetchPhoneType() {
+export function f4FetchPhoneType() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet('v1/werp/mreference/general/phone_type')
@@ -775,18 +778,23 @@ export function f4fetchPhoneType() {
   };
 }
 
-export function postPhone(getData, fetchPhone) {
-  console.log('data', getData);
+export function f4PostPhone(getData, fetchPhone) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doPost('v1/werp/mreference/general/phone/create', getData)
       .then(({ data }) => {
-        console.log('success', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: F4_POST_PHONE,
           payload: data,
         });
+        dispatch(
+          notify(
+            'success',
+            errorTable[`101${language}`],
+            errorTable[`104${language}`],
+          ),
+        );
         fetchPhone();
       })
       .catch(error => {
@@ -809,12 +817,12 @@ export function f4UpdatePhone(data, fetchPhone) {
         dispatch(
           notify(
             'success',
-            errorTable[`133${language}`],
-            errorTable[`132${language}`],
+            errorTable[`101${language}`],
+            errorTable[`104${language}`],
           ),
         );
         fetchPhone();
-        fetchPhoneHistory();
+        f4FetchPhoneHistory();
       })
       .catch(e => {
         dispatch(modifyLoader(false));
@@ -840,7 +848,7 @@ export function f4DeletePhone(data, fetchPhone) {
           ),
         );
         fetchPhone();
-        fetchPhoneHistory();
+        f4FetchPhoneHistory();
       })
       .catch(e => {
         dispatch(modifyLoader(false));
@@ -849,7 +857,7 @@ export function f4DeletePhone(data, fetchPhone) {
   };
 }
 
-export function fetchPhoneHistory() {
+export function f4FetchPhoneHistory() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet('v1/werp/mreference/general/phone/audit?direction=DESC&orderBy=id')
@@ -867,18 +875,32 @@ export function fetchPhoneHistory() {
   };
 }
 
-export function f4fetchMonthTerms(data) {
+export function f4FetchMonthTerms(data) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    console.log('monthter', data);
-
-    doGet('v1/werp/mservice/smcc/branchMonthTerms', data)
+    doGet('smcc/branchMonthTerms', data)
       .then(({ data }) => {
-        console.log('monthterms', data);
-
         dispatch(modifyLoader(false));
         dispatch({
           type: F4_FETCH_MONTH_TERMS,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchMatnrListView(data) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('smcc/matnrListView', data)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_MATNR_LIST_VIEW,
           payload: data,
         });
       })

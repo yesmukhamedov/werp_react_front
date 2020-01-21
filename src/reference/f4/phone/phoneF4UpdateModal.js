@@ -1,71 +1,165 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import {
+  Modal,
+  Icon,
+  Button,
+  Dropdown,
+  Input,
+  Table,
+  TextArea,
+  Form,
+} from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Modal, Icon, Table, Button } from 'semantic-ui-react';
+import MaskedInput from 'react-text-mask';
 
-import { fetchPhoneHistory } from '../f4_action';
-const language = localStorage.getItem('language');
+import phoneMask from '../../../utils/phoneMask';
+import { f4UpdatePhone, f4FetchPhone, f4FetchPhoneHistory } from '../f4_action';
 
-function PhoneF4HistoryModal(props) {
+function PhoneF4UpdateModal(props) {
+  const emptyList = {
+    id: 0,
+    typeId: 0,
+    phone: '',
+    description: '',
+  };
+
+  const [list, setList] = useState({ ...emptyList });
+  const [errors, setErrors] = useState([]);
+
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
+
   const {
     intl: { messages },
     phoneListType = [],
     customerId,
-    phoneHistory = [],
+    selectedPhone,
+    country,
   } = props;
 
   useEffect(() => {
-    props.fetchPhoneHistory();
-  }, []);
-
-  const phone = phoneHistory.map((phone, key) => {
-    if (!phoneHistory) {
-      return [];
+    if (selectedPhone) {
+      setList({ ...list, typeId: selectedPhone.typeId });
     }
+  }, [selectedPhone]);
 
-    const pl = phoneListType.map(type => {
-      if (phone.typeId === type.id && phone.customerId === customerId) {
-        return (
-          <Table.Row key={key}>
-            <Table.Cell>
-              <label>{type.nameRu}</label>
-            </Table.Cell>
-            <Table.Cell>
-              <label>{phone.phone}</label>
-            </Table.Cell>
-            <Table.Cell>
-              <label>{phone.revsttmp}</label>
-            </Table.Cell>
-          </Table.Row>
-        );
+  const onInputChange = (o, fieldName) => {
+    setList(prev => {
+      const varList = { ...prev };
+      varList.id = selectedPhone.id;
+      switch (fieldName) {
+        case 'typeList':
+          varList.typeId = o.value;
+          break;
+        case 'phoneNumber':
+          varList.phone = o.replace(/\D+/g, '');
+          break;
+        case 'description':
+          varList.description = o.value;
+          break;
+        default:
+          varList[fieldName] = o.value;
       }
+      return varList;
     });
+  };
 
-    return pl;
-  });
+  const handleSubmit = () => {
+    let errors = [];
+    errors = validate();
+    const { id, typeId, phone, description } = list;
+    if (errors === null || errors === undefined || errors.length === 0) {
+      props.f4UpdatePhone(
+        {
+          id,
+          typeId,
+          phone,
+          description,
+          customerId,
+        },
+        () => {
+          props.f4FetchPhone();
+          props.f4FetchPhoneHistory();
+        },
+      );
+      setErrors(errors);
+      props.onCloseUpdatePhoneF4(false);
+    }
+  };
 
-  const label = (
-    <Table.Row>
-      <Table.Cell></Table.Cell>
-      <Table.Cell textAlign="center">
-        <label>Ничего не добавлено в историю :( </label>
-      </Table.Cell>
-      <Table.Cell></Table.Cell>
-    </Table.Row>
-  );
+  const validate = () => {
+    const errors = [];
+    const { typeId, phone } = list;
+    if (typeId === 0 || typeId === undefined || typeId === null) {
+      errors.push(errorTable[`20${language}`]);
+      return errors;
+    }
+    if (phone === '' || phone === undefined || phone === null) {
+      errors.push(errorTable[`20${language}`]);
+      return errors;
+    }
+    return errors;
+  };
 
   const close = () => {
-    props.onCloseHistoryPhoneF4(false);
+    props.onCloseUpdatePhoneF4(false);
+    setList({
+      id: 0,
+      typeId: '',
+      phone: '',
+      description: '',
+    });
   };
+
   return (
     <Modal open={props.open} closeOnEscape={false} onClose={close}>
       <Modal.Header>
-        <Icon name="history" size="big" />
-        {messages['history']}
+        <Icon name="pencil" size="big" />
+        {messages['update_number']}
       </Modal.Header>
       <Modal.Content>
-        <Table striped selectable>
-          <Table.Body>{phone ? phone : label}</Table.Body>
+        <Table>
+          <Table.Body>
+            <Table.Row>
+              <Table.Cell>{messages['number_type']}</Table.Cell>
+              <Table.Cell>
+                <Dropdown
+                  selection
+                  search
+                  options={getTypeList(phoneListType)}
+                  value={list.typeId}
+                  onChange={(e, o) => onInputChange(o, 'typeList')}
+                />
+              </Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>{messages['update_number']}</Table.Cell>
+              <Table.Cell>
+                <Input type="number">
+                  <MaskedInput
+                    mask={phoneMask(country.code)}
+                    placeholder={`${country.phoneCode} ${country.telPattern}`}
+                    defaultValue={selectedPhone.phone}
+                    onChange={event => {
+                      onInputChange(event.target.value, 'phoneNumber');
+                    }}
+                  />
+                </Input>
+              </Table.Cell>
+            </Table.Row>
+            <Table.Row>
+              <Table.Cell>{messages['L__EDIT_DESCRIPTION']}</Table.Cell>
+              <Table.Cell>
+                <Form>
+                  <TextArea
+                    placeholder={messages['description']}
+                    onChange={(e, o) => onInputChange(o, 'description')}
+                  />
+                </Form>
+              </Table.Cell>
+            </Table.Row>
+          </Table.Body>
         </Table>
       </Modal.Content>
       <Modal.Actions>
@@ -76,20 +170,42 @@ function PhoneF4HistoryModal(props) {
           size="small"
           onClick={close}
         >
-          <Icon name="left chevron" />
-          {messages['back']}
+          <Icon name="left chevron" /> {messages['back']}
+        </Button>
+        <Button
+          icon
+          labelPosition="left"
+          primary
+          size="small"
+          onClick={handleSubmit}
+        >
+          <Icon name="save" /> {messages['save']}
         </Button>
       </Modal.Actions>
     </Modal>
   );
 }
 
+const getTypeList = lt => {
+  const phoneListType = lt;
+  if (!phoneListType) {
+    return [];
+  }
+  let out = lt.map(e => {
+    return {
+      key: e.id,
+      text: e.nameRu,
+      value: e.id,
+    };
+  });
+  return out;
+};
 function mapStateToProps(state) {
-  return {
-    phoneHistory: state.f4.phoneHistory.data,
-  };
+  return {};
 }
 
 export default connect(mapStateToProps, {
-  fetchPhoneHistory,
-})(injectIntl(PhoneF4HistoryModal));
+  f4UpdatePhone,
+  f4FetchPhone,
+  f4FetchPhoneHistory,
+})(injectIntl(PhoneF4UpdateModal));

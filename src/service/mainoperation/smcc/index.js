@@ -17,9 +17,10 @@ import {
   f4FetchConTypeList,
   f4ClearAnyObject,
   f4FetchBranches,
-  f4fetchMonthTerms,
+  f4FetchMonthTerms,
   f4FetchPhone,
-  f4fetchPhoneType,
+  f4FetchPhoneType,
+  f4FetchMatnrListView,
 } from '../../../reference/f4/f4_action';
 
 import OutputErrors from '../../../general/error/outputErrors';
@@ -44,29 +45,50 @@ function Smcc(props) {
   const emptyContract = {
     bukrs: '',
     branchId: '',
-    branchServ: '',
-    selectedBranch: '',
-    contractType: '',
-    contractMatnr: '',
-    dealer: '',
-    dealerName: '',
+    servBranchId: '',
+    contractTypeId: '',
+    contractDate: moment(new Date()).format('YYYY-MM-DD'),
     customerId: '',
-    customerName: '',
+    dealer: '',
     tovarSerial: '',
+    addrServId: '',
+    email: '',
+    info: '',
     matnrListId: '',
-    addrServiceId: '',
+
+    dealerName: '',
+    customerName: '',
     addrService: '',
-    phone: '',
+    selectedBranch: '',
+    matnr: '',
+
     month: {
-      f1: '',
-      f2: '',
-      f3: '',
-      f4: '',
-      f5: '',
+      f1Mt: '',
+      f2Mt: '',
+      f3Mt: '',
+      f4Mt: '',
+      f5Mt: '',
     },
   };
 
+  const emptyServFilter = {
+    bukrs: '',
+    f1Mt: '',
+    f1Date: '',
+    f2Mt: '',
+    f2Date: '',
+    f3Mt: '',
+    f3Date: '',
+    f4Mt: '',
+    f4Date: '',
+    f5Mt: '',
+    f5Date: '',
+    servBranch: '',
+    tovarSn: '',
+  };
+
   const [contract, setContract] = useState({ ...emptyContract });
+  const [servFilter, setServFilter] = useState({ ...emptyServFilter });
   const [startDate, setStartDate] = useState(moment(new Date()));
   const [customerF4ModalOpen, setCustomerF4ModalOpen] = useState(false);
   const [staffF4ModalOpen, setStaffF4ModalOpen] = useState(false);
@@ -87,13 +109,14 @@ function Smcc(props) {
     contractTypeList,
     monthTerms,
     language,
+    matnrListView,
     intl: { messages },
     contract: { contractTypeId } = {},
   } = props;
 
   useEffect(() => {
     props.f4FetchPhone();
-    props.f4fetchPhoneType();
+    props.f4FetchPhoneType();
     props.f4FetchConTypeList();
     props.f4FetchBranches();
     return () => {
@@ -103,18 +126,25 @@ function Smcc(props) {
     };
   }, []);
   useEffect(() => {
-    if (
-      contract.bukrs !== '' &&
-      contract.branchId !== '' &&
-      contract.contractMatnr !== ''
-    ) {
-      fetchMonthTerms(
-        contract.bukrs,
-        contract.branchId,
-        contract.contractMatnr,
-      );
+    const { bukrs, branchId, matnr } = contract;
+    if (bukrs !== '' && branchId !== '' && matnr !== '') {
+      props.f4FetchMonthTerms({
+        branchId,
+        bukrs,
+        matnr,
+      });
     }
-  }, [contract.bukrs, contract.branchId, contract.contractMatnr]);
+  }, [contract.bukrs, contract.branchId, contract.matnr]);
+
+  useEffect(() => {
+    const { bukrs, matnr } = contract;
+    if (bukrs !== '' && matnr !== '') {
+      props.f4FetchMatnrListView({
+        bukrs,
+        matnr,
+      });
+    }
+  }, [contract.bukrs, contract.matnr]);
 
   useEffect(() => {
     if (monthTerms) {
@@ -122,11 +152,11 @@ function Smcc(props) {
         { ...contract },
         monthTerms.map(item => {
           {
-            contract.month.f1 = item.f1;
-            contract.month.f2 = item.f2;
-            contract.month.f3 = item.f3;
-            contract.month.f4 = item.f4;
-            contract.month.f5 = item.f5;
+            contract.month.f1Mt = item.f1;
+            contract.month.f2Mt = item.f2;
+            contract.month.f3Mt = item.f3;
+            contract.month.f4Mt = item.f4;
+            contract.month.f5Mt = item.f5;
           }
         }),
       );
@@ -174,18 +204,21 @@ function Smcc(props) {
 
           setContractTypeOpts(waConOptions);
           break;
-        case 'branchServ':
-          varContract.branchServ = o.value;
+        case 'servBranchId':
+          varContract.servBranchId = o.value;
           break;
-        case 'contractType':
+        case 'contractTypeId':
           let matnr = 0;
           for (let i = 0; i < o.options.length; i++) {
             if (o.value === o.options[i].value) {
               matnr = o.options[i].matnr;
             }
           }
-          varContract.contractType = o.value;
-          varContract.contractMatnr = matnr;
+          varContract.contractTypeId = o.value;
+          varContract.matnr = matnr;
+          break;
+        case 'contractDate':
+          varContract.contractDate = o.format('YYYY-MM-DD');
           break;
         case 'dealer':
           varContract.dealer = o.staffId;
@@ -203,12 +236,12 @@ function Smcc(props) {
           varContract.customerId = '';
           varContract.customerName = '';
           break;
-        case 'addrServiceId':
-          varContract.addrServiceId = o.addr_id;
+        case 'addrServId':
+          varContract.addrServId = o.addr_id;
           varContract.addrService = o.address;
           break;
         case 'addrServiceIdRemove':
-          varContract.addrServiceId = '';
+          varContract.addrServId = '';
           varContract.addrService = '';
           break;
         case 'tovarSerial':
@@ -219,8 +252,11 @@ function Smcc(props) {
           varContract.tovarSerial = '';
           varContract.matnrListId = '';
           break;
-        case 'choosePhone':
-          varContract.phone = o.phone;
+        case 'email':
+          varContract.email = o.value;
+          break;
+        case 'info':
+          varContract.info = o.value;
           break;
         case 'monthF1':
           varContract.month.f1 = parseInt(o.value, 10);
@@ -245,14 +281,6 @@ function Smcc(props) {
     });
   };
 
-  const fetchMonthTerms = (bukrs, branchId, matnr) => {
-    props.f4fetchMonthTerms({
-      branchId,
-      bukrs,
-      matnr,
-    });
-  };
-
   const handleClick = () => {
     validate();
   };
@@ -265,32 +293,24 @@ function Smcc(props) {
     if (contract.branchId === '') {
       errors.push(errorTable[`7${language}`]);
     }
-    if (contract.branchServ === '') {
+    if (contract.servBranchId === '') {
       errors.push(errorTable[`7${language}`]);
     }
-    if (contract.contractType === '') {
+    if (contract.contractTypeId === '') {
       errors.push(errorTable[`17${language}`]);
-    }
-    if (contract.dealer === '') {
-      errors.push(errorTable[`115${language}`]);
     }
     if (contract.customerId === '') {
       errors.push(errorTable[`9${language}`]);
     }
     if (contract.tovarSerial === '') {
-      errors.push(errorTable[`9${language}`]);
+      errors.push(errorTable[`21${language}`]);
     }
-    if (contract.addrService === '') {
+    if (contract.addrServId === '') {
       errors.push(errorTable[`118${language}`]);
-    }
-    if (contract.phone === '') {
-      errors.push(errorTable[`126${language}`]);
     }
     setError(() => errors);
   };
 
-  console.log(phoneList);
-  console.log(phoneListType);
   return (
     <Segment>
       <h1>Сервис договор</h1>
@@ -317,7 +337,7 @@ function Smcc(props) {
         customerId={contract.customerId}
         customerName={contract.customerName}
         onCloseAddressF4={bool => setAddressF4ModalOpen(bool)}
-        onAddressSelect={item => onInputChange(item, 'addrServiceId')}
+        onAddressSelect={item => onInputChange(item, 'addrServId')}
       />
 
       <MatnrListF4Modal
@@ -326,6 +346,7 @@ function Smcc(props) {
         onCloseMatnrF4={bool => setMatnrListF4ModalOpen(bool)}
         onMatnrSelect={item => onInputChange(item, 'tovarSerial')}
         isLoadingMatnrList={isLoadingMatnrList}
+        matnrList={matnrListView}
       />
 
       <PhoneF4Modal
@@ -335,7 +356,6 @@ function Smcc(props) {
         customerId={contract.customerId}
         selectedBranch={contract.selectedBranch}
         onClosePhoneF4={bool => setPhoneF4ModalOpen(bool)}
-        onPhoneSelect={item => onInputChange(item, 'choosePhone')}
       />
       <Segment>
         <Form>
@@ -397,8 +417,8 @@ function Smcc(props) {
                               ? branchService[contract.bukrs]
                               : []
                           }
-                          value={contract.branchServ}
-                          onChange={(e, o) => onInputChange(o, 'branchServ')}
+                          value={contract.servBranchId}
+                          onChange={(e, o) => onInputChange(o, 'servBranchId')}
                         />
                       </Table.Cell>
                     </Table.Row>
@@ -415,7 +435,9 @@ function Smcc(props) {
                           selection
                           options={contractTypeOpts ? contractTypeOpts : []}
                           value={contractTypeId}
-                          onChange={(e, o) => onInputChange(o, 'contractType')}
+                          onChange={(e, o) =>
+                            onInputChange(o, 'contractTypeId')
+                          }
                         />
                       </Table.Cell>
                     </Table.Row>
@@ -431,9 +453,13 @@ function Smcc(props) {
                           selected={startDate}
                           dropdownMode="select"
                           locale={language}
-                          onChange={date => setStartDate(date)}
+                          onChange={date => {
+                            setStartDate(date);
+                            onInputChange(date, 'contractDate');
+                          }}
                           showMonthDropdown
                           showYearDropdown
+                          maxDate={moment(new Date())}
                         />
                       </Table.Cell>
                     </Table.Row>
@@ -503,24 +529,6 @@ function Smcc(props) {
                     </Table.Row>
                     <Table.Row>
                       <Table.Cell>
-                        <Icon name="calendar" />
-                        {messages['dateOfIssue']}
-                      </Table.Cell>
-                      <Table.Cell>
-                        <DatePicker
-                          autoComplete="off"
-                          dateFormat="DD/MM/YYYY"
-                          selected={startDate}
-                          locale={language}
-                          dropdownMode="select"
-                          onChange={date => setStartDate(date)}
-                          showMonthDropdown
-                          showYearDropdown
-                        />
-                      </Table.Cell>
-                    </Table.Row>
-                    <Table.Row>
-                      <Table.Cell>
                         <Icon name="factory" />
                         {messages['productSerialNumber']}
                       </Table.Cell>
@@ -566,35 +574,35 @@ function Smcc(props) {
                           className="input__set"
                           label="F1"
                           size="mini"
-                          value={contract.month.f1}
+                          value={contract.month.f1Mt}
                           onChange={(e, o) => onInputChange(o, 'monthF1')}
                         />
                         <Input
                           className="input__set"
                           label="F2"
                           size="mini"
-                          value={contract.month.f2}
+                          value={contract.month.f2Mt}
                           onChange={(e, o) => onInputChange(o, 'monthF2')}
                         />
                         <Input
                           className="input__set"
                           label="F3"
                           size="mini"
-                          value={contract.month.f3}
+                          value={contract.month.f3Mt}
                           onChange={(e, o) => onInputChange(o, 'monthF3')}
                         />
                         <Input
                           className="input__set"
                           label="F4"
                           size="mini"
-                          value={contract.month.f4}
+                          value={contract.month.f4Mt}
                           onChange={(e, o) => onInputChange(o, 'monthF4')}
                         />
                         <Input
                           className="input__set"
                           label="F5"
                           size="mini"
-                          value={contract.month.f5}
+                          value={contract.month.f5Mt}
                           onChange={(e, o) => onInputChange(o, 'monthF5')}
                         />
                       </Table.Cell>
@@ -671,11 +679,13 @@ function Smcc(props) {
                                 }
                               })
                             ) : (
-                              <Table.Cell textAlign="center">
-                                <Label basic color="red">
-                                  {messages['choose_client']}
-                                </Label>
-                              </Table.Cell>
+                              <Table.Row>
+                                <Table.Cell textAlign="center">
+                                  <Label basic color="red">
+                                    {messages['choose_client']}
+                                  </Label>
+                                </Table.Cell>
+                              </Table.Row>
                             )}
                           </Table.Body>
                         </Table>
@@ -686,7 +696,9 @@ function Smcc(props) {
                           color="blue"
                           icon
                           onClick={() => {
-                            setPhoneF4ModalOpen(true);
+                            if (contract.customerId) {
+                              setPhoneF4ModalOpen(true);
+                            }
                           }}
                         >
                           <Icon name="clone" />
@@ -699,7 +711,11 @@ function Smcc(props) {
                         E-Mail
                       </Table.Cell>
                       <Table.Cell>
-                        <Input placeholder="E-Mail" fluid />
+                        <Input
+                          placeholder="E-Mail"
+                          fluid
+                          onChange={(e, o) => onInputChange(o, 'email')}
+                        />
                       </Table.Cell>
                     </Table.Row>
                     <Table.Row>
@@ -715,7 +731,10 @@ function Smcc(props) {
                         {messages['extraInfo']}
                       </Table.Cell>
                       <Table.Cell>
-                        <TextArea placeholder={messages['extraInfo']} />
+                        <TextArea
+                          placeholder={messages['extraInfo']}
+                          onChange={(e, o) => onInputChange(o, 'info')}
+                        />
                       </Table.Cell>
                     </Table.Row>
                   </Table.Body>
@@ -762,6 +781,7 @@ function mapStateToProps(state) {
     phoneList: state.f4.phoneList.data,
     phoneListType: state.f4.phoneType.data,
     monthTerms: state.f4.monthTerms.data,
+    matnrListView: state.f4.matnrListView.data,
   };
 }
 
@@ -771,6 +791,7 @@ export default connect(mapStateToProps, {
   f4ClearAnyObject,
   f4FetchBranches,
   f4FetchPhone,
-  f4fetchPhoneType,
-  f4fetchMonthTerms,
+  f4FetchPhoneType,
+  f4FetchMonthTerms,
+  f4FetchMatnrListView,
 })(injectIntl(Smcc));

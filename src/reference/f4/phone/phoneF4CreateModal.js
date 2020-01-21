@@ -5,7 +5,7 @@ import { injectIntl } from 'react-intl';
 import MaskedInput from 'react-text-mask';
 
 import phoneMask from '../../../utils/phoneMask';
-import { postPhone, f4FetchPhone } from '../f4_action';
+import { f4PostPhone, f4FetchPhone } from '../f4_action';
 
 function PhoneF4CreateModal(props) {
   const emptyList = {
@@ -42,7 +42,7 @@ function PhoneF4CreateModal(props) {
     const { typeId, phone, description } = list;
     console.log(typeId, phone, description, customerId);
     if (typeId !== 0 && phone !== '' && customerId !== '') {
-      props.postPhone(
+      props.f4PostPhone(
         {
           customerId,
           description,
@@ -145,6 +145,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  postPhone,
+  f4PostPhone,
   f4FetchPhone,
 })(injectIntl(PhoneF4CreateModal));
