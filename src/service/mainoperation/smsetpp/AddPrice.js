@@ -147,7 +147,7 @@ const AddPrice = props => {
       const waer = countryOptions.find(({ value }) => value === v);
       setInformations({
         ...informations,
-        waersId: waer.currency,
+        waersId: waer.currencyid,
         countryId: v,
       });
       setViewWaer(waer.currency);
@@ -166,10 +166,9 @@ const AddPrice = props => {
     setTest(true);
     const { bukrs, total, country, dateStart } = informations;
 
-    if (bukrs !== '' && total !== '' && country !== '' && dateStart !== '') {
+    if (bukrs !== '' && total !== 0 && country !== '' && dateStart !== '') {
       setTest(false);
       setModalOpen(false);
-      console.log(informations, param);
       fetchSmsetppPost(informations, () => {
         props.fetchSmsetpp(param);
       });
@@ -352,7 +351,7 @@ const AddPrice = props => {
               required
             />
 
-            <Form.Field required>
+            <Form.Field>
               <label>{messages['waers']}</label>
               <Header as="h4">{viewWaer}</Header>
             </Form.Field>
