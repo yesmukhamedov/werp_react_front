@@ -11,6 +11,7 @@ import {
   Button,
   TextArea,
   Label,
+  Checkbox,
 } from 'semantic-ui-react';
 import {
   f4FetchBranchesByBukrs,
@@ -21,6 +22,7 @@ import {
   f4FetchPhone,
   f4FetchPhoneType,
   f4FetchMatnrListView,
+  f4CreateServContract,
 } from '../../../reference/f4/f4_action';
 
 import OutputErrors from '../../../general/error/outputErrors';
@@ -51,44 +53,39 @@ function Smcc(props) {
     customerId: '',
     dealer: '',
     tovarSerial: '',
-    addrServId: '',
+    addrServiceId: '',
     email: '',
     info: '',
     matnrListId: '',
+    lastState: 2,
 
     dealerName: '',
     customerName: '',
     addrService: '',
     selectedBranch: '',
     matnr: '',
+    check: false,
+    disabled: true,
+    tovarCategory: '',
 
-    month: {
+    servFilter: {
+      branchMonthTermsId: '',
       f1Mt: '',
+      f1Date: moment(new Date()).format('YYYY-MM-DD'),
       f2Mt: '',
+      f2Date: moment(new Date()).format('YYYY-MM-DD'),
       f3Mt: '',
+      f3Date: moment(new Date()).format('YYYY-MM-DD'),
       f4Mt: '',
+      f4Date: moment(new Date()).format('YYYY-MM-DD'),
       f5Mt: '',
+      f5Date: moment(new Date()).format('YYYY-MM-DD'),
+      servBranch: '',
+      tovarSn: '',
     },
   };
 
-  const emptyServFilter = {
-    bukrs: '',
-    f1Mt: '',
-    f1Date: '',
-    f2Mt: '',
-    f2Date: '',
-    f3Mt: '',
-    f3Date: '',
-    f4Mt: '',
-    f4Date: '',
-    f5Mt: '',
-    f5Date: '',
-    servBranch: '',
-    tovarSn: '',
-  };
-
   const [contract, setContract] = useState({ ...emptyContract });
-  const [servFilter, setServFilter] = useState({ ...emptyServFilter });
   const [startDate, setStartDate] = useState(moment(new Date()));
   const [customerF4ModalOpen, setCustomerF4ModalOpen] = useState(false);
   const [staffF4ModalOpen, setStaffF4ModalOpen] = useState(false);
@@ -114,6 +111,8 @@ function Smcc(props) {
     contract: { contractTypeId } = {},
   } = props;
 
+  const lang = language.charAt(0).toUpperCase() + language.slice(1);
+
   useEffect(() => {
     props.f4FetchPhone();
     props.f4FetchPhoneType();
@@ -125,6 +124,7 @@ function Smcc(props) {
       props.f4ClearAnyObject('F4_CLEAR_PHONE');
     };
   }, []);
+
   useEffect(() => {
     const { bukrs, branchId, matnr } = contract;
     if (bukrs !== '' && branchId !== '' && matnr !== '') {
@@ -152,16 +152,34 @@ function Smcc(props) {
         { ...contract },
         monthTerms.map(item => {
           {
-            contract.month.f1Mt = item.f1;
-            contract.month.f2Mt = item.f2;
-            contract.month.f3Mt = item.f3;
-            contract.month.f4Mt = item.f4;
-            contract.month.f5Mt = item.f5;
+            contract.servFilter.f1Mt = item.f1;
+            contract.servFilter.f2Mt = item.f2;
+            contract.servFilter.f3Mt = item.f3;
+            contract.servFilter.f4Mt = item.f4;
+            contract.servFilter.f5Mt = item.f5;
+            contract.servFilter.branchMonthTermsId = item.id;
           }
         }),
       );
     }
   }, [monthTerms]);
+
+  useEffect(() => {
+    const { tovarCategory } = contract;
+    if (tovarCategory) {
+      setContract(prev => {
+        const varContract = { ...prev };
+        if (tovarCategory === 2) {
+          varContract.disabled = false;
+        } else if (tovarCategory === 1) {
+          varContract.check = false;
+          varContract.disabled = true;
+          varContract.tovarCategory = 1;
+        }
+        return varContract;
+      });
+    }
+  }, [contract.tovarCategory]);
 
   const onInputChange = (o, fieldName) => {
     setContract(prev => {
@@ -179,7 +197,10 @@ function Smcc(props) {
             });
 
           varContract.selectedBranch = waSelectedBranch;
+          varContract.tovarCategory = waSelectedBranch.tovarcategory;
           varContract.branchId = o.value;
+          varContract.tovarSerial = '';
+
           let wa = { ...emptyContract };
           wa.bukrs = prev.bukrs;
           wa.branchId = o;
@@ -201,11 +222,11 @@ function Smcc(props) {
                 matnr: item.matnr,
               };
             });
-
           setContractTypeOpts(waConOptions);
           break;
         case 'servBranchId':
           varContract.servBranchId = o.value;
+          varContract.servFilter.servBranch = o.value;
           break;
         case 'contractTypeId':
           let matnr = 0;
@@ -231,21 +252,31 @@ function Smcc(props) {
         case 'customer':
           varContract.customerId = o.id;
           varContract.customerName = o.fullFIO;
+          if (o.email) {
+            varContract.email = o.email;
+          }
           break;
         case 'customerRemove':
           varContract.customerId = '';
           varContract.customerName = '';
+          varContract.email = '';
           break;
-        case 'addrServId':
-          varContract.addrServId = o.addr_id;
+        case 'addrServiceId':
+          varContract.addrServiceId = o.addr_id;
           varContract.addrService = o.address;
           break;
         case 'addrServiceIdRemove':
-          varContract.addrServId = '';
+          varContract.addrServiceId = '';
           varContract.addrService = '';
           break;
         case 'tovarSerial':
-          varContract.tovarSerial = o.tovarSerial;
+          if (o.tovarSerial === undefined) {
+            varContract.tovarSerial = o.value;
+            varContract.servFilter.tovarSn = o.value;
+          } else {
+            varContract.tovarSerial = o.tovarSerial;
+            varContract.servFilter.tovarSn = o.tovarSerial;
+          }
           varContract.matnrListId = o.matnrListId;
           break;
         case 'removeTovarSerial':
@@ -258,20 +289,28 @@ function Smcc(props) {
         case 'info':
           varContract.info = o.value;
           break;
-        case 'monthF1':
-          varContract.month.f1 = parseInt(o.value, 10);
+        case 'checkbox':
+          varContract.check = o.checked;
+          if (o.checked) {
+            varContract.lastState = 4;
+          } else {
+            varContract.lastState = 2;
+          }
           break;
-        case 'monthF2':
-          varContract.month.f2 = parseInt(o.value, 10);
+        case 'servFilterF1':
+          varContract.servFilter.f1 = parseInt(o.value, 10);
           break;
-        case 'monthF3':
-          varContract.month.f3 = parseInt(o.value, 10);
+        case 'servFilterF2':
+          varContract.servFilter.f2 = parseInt(o.value, 10);
           break;
-        case 'monthF4':
-          varContract.month.f4 = parseInt(o.value, 10);
+        case 'servFilterF3':
+          varContract.servFilter.f3 = parseInt(o.value, 10);
           break;
-        case 'monthF5':
-          varContract.month.f5 = parseInt(o.value, 10);
+        case 'servFilterF4':
+          varContract.servFilter.f4 = parseInt(o.value, 10);
+          break;
+        case 'servFilterF5':
+          varContract.servFilter.f5 = parseInt(o.value, 10);
           break;
 
         default:
@@ -283,6 +322,44 @@ function Smcc(props) {
 
   const handleClick = () => {
     validate();
+    const {
+      bukrs,
+      branchId,
+      servBranchId,
+      contractTypeId,
+      contractDate,
+      customerId,
+      dealer,
+      tovarSerial,
+      addrServiceId,
+      matnrListId,
+      info,
+      lastState,
+      tovarCategory,
+      servFilter,
+    } = contract;
+
+    const { branchMonthTermsId } = contract.servFilter;
+
+    props.f4CreateServContract({
+      branchMonthTermsId,
+      contract: {
+        addrServiceId,
+        branchId,
+        bukrs,
+        contractDate,
+        contractTypeId,
+        customerId,
+        dealer,
+        info,
+        lastState,
+        matnrListId,
+        servBranchId,
+        tovarCategory,
+        tovarSerial,
+      },
+      servFilter,
+    });
   };
 
   const validate = () => {
@@ -305,7 +382,7 @@ function Smcc(props) {
     if (contract.tovarSerial === '') {
       errors.push(errorTable[`21${language}`]);
     }
-    if (contract.addrServId === '') {
+    if (contract.addrServiceId === '') {
       errors.push(errorTable[`118${language}`]);
     }
     setError(() => errors);
@@ -337,7 +414,7 @@ function Smcc(props) {
         customerId={contract.customerId}
         customerName={contract.customerName}
         onCloseAddressF4={bool => setAddressF4ModalOpen(bool)}
-        onAddressSelect={item => onInputChange(item, 'addrServId')}
+        onAddressSelect={item => onInputChange(item, 'addrServiceId')}
       />
 
       <MatnrListF4Modal
@@ -355,6 +432,7 @@ function Smcc(props) {
         phoneListType={phoneListType}
         customerId={contract.customerId}
         selectedBranch={contract.selectedBranch}
+        lang={lang}
         onClosePhoneF4={bool => setPhoneF4ModalOpen(bool)}
       />
       <Segment>
@@ -537,6 +615,7 @@ function Smcc(props) {
                           placeholder={messages['productSerialNumber']}
                           fluid
                           value={contract.tovarSerial}
+                          onChange={(e, o) => onInputChange(o, 'tovarSerial')}
                         />
                       </Table.Cell>
                       <Table.Cell collapsing>
@@ -565,48 +644,72 @@ function Smcc(props) {
                         <Icon name="bookmark" />
                         {messages['lastStateInstalled']}
                       </Table.Cell>
-                      <Table.Cell
-                        style={{
-                          display: 'flex',
-                        }}
-                      >
-                        <Input
-                          className="input__set"
-                          label="F1"
-                          size="mini"
-                          value={contract.month.f1Mt}
-                          onChange={(e, o) => onInputChange(o, 'monthF1')}
-                        />
-                        <Input
-                          className="input__set"
-                          label="F2"
-                          size="mini"
-                          value={contract.month.f2Mt}
-                          onChange={(e, o) => onInputChange(o, 'monthF2')}
-                        />
-                        <Input
-                          className="input__set"
-                          label="F3"
-                          size="mini"
-                          value={contract.month.f3Mt}
-                          onChange={(e, o) => onInputChange(o, 'monthF3')}
-                        />
-                        <Input
-                          className="input__set"
-                          label="F4"
-                          size="mini"
-                          value={contract.month.f4Mt}
-                          onChange={(e, o) => onInputChange(o, 'monthF4')}
-                        />
-                        <Input
-                          className="input__set"
-                          label="F5"
-                          size="mini"
-                          value={contract.month.f5Mt}
-                          onChange={(e, o) => onInputChange(o, 'monthF5')}
+                      <Table.Cell>
+                        <Checkbox
+                          toggle
+                          disabled={contract.disabled}
+                          onChange={(e, o) => onInputChange(o, 'checkbox')}
                         />
                       </Table.Cell>
                     </Table.Row>
+                    {contract.check ? (
+                      <Table.Row>
+                        <Table.Cell></Table.Cell>
+                        <Table.Cell
+                          style={{
+                            display: 'flex',
+                          }}
+                        >
+                          <Input
+                            className="input__set"
+                            label="F1"
+                            size="mini"
+                            value={contract.servFilter.f1Mt}
+                            onChange={(e, o) =>
+                              onInputChange(o, 'servFilterF1')
+                            }
+                          />
+                          <Input
+                            className="input__set"
+                            label="F2"
+                            size="mini"
+                            value={contract.servFilter.f2Mt}
+                            onChange={(e, o) =>
+                              onInputChange(o, 'servFilterF2')
+                            }
+                          />
+                          <Input
+                            className="input__set"
+                            label="F3"
+                            size="mini"
+                            value={contract.servFilter.f3Mt}
+                            onChange={(e, o) =>
+                              onInputChange(o, 'servFilterF3')
+                            }
+                          />
+                          <Input
+                            className="input__set"
+                            label="F4"
+                            size="mini"
+                            value={contract.servFilter.f4Mt}
+                            onChange={(e, o) =>
+                              onInputChange(o, 'servFilterF4')
+                            }
+                          />
+                          <Input
+                            className="input__set"
+                            label="F5"
+                            size="mini"
+                            value={contract.servFilter.f5Mt}
+                            onChange={(e, o) =>
+                              onInputChange(o, 'servFilterF5')
+                            }
+                          />
+                        </Table.Cell>
+                      </Table.Row>
+                    ) : (
+                      <Table.Row></Table.Row>
+                    )}
                   </Table.Body>
                 </Table>
               </Grid.Column>
@@ -666,7 +769,7 @@ function Smcc(props) {
                                       return (
                                         <Table.Row key={key}>
                                           <Table.Cell>
-                                            <label>{type.nameRu}</label>
+                                            <label>{type[`name${lang}`]}</label>
                                           </Table.Cell>
                                           <Table.Cell>
                                             <label>{phone.phone}</label>
@@ -714,7 +817,7 @@ function Smcc(props) {
                         <Input
                           placeholder="E-Mail"
                           fluid
-                          onChange={(e, o) => onInputChange(o, 'email')}
+                          value={contract.email}
                         />
                       </Table.Cell>
                     </Table.Row>
@@ -794,4 +897,5 @@ export default connect(mapStateToProps, {
   f4FetchPhoneType,
   f4FetchMonthTerms,
   f4FetchMatnrListView,
+  f4CreateServContract,
 })(injectIntl(Smcc));

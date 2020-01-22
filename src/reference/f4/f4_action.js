@@ -115,6 +115,9 @@ export const F4_CLEAR_MONTH_TERMS = 'F4_CLEAR_MONTH_TERMS';
 export const F4_FETCH_MATNR_LIST_VIEW = 'F4_FETCH_MATNR_LIST_VIEW';
 export const F4_CLEAR_MATNR_LIST_VIEW = 'F4_CLEAR_MATNR_LIST_VIEW';
 
+export const F4_POST_SERV_CONTRACT = 'F4_POST_SERV_CONTRACT';
+export const F4_CLEAR_SERV_CONTRACT = 'F4_CLEAR_SERV_CONTRACT';
+
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 
@@ -903,6 +906,34 @@ export function f4FetchMatnrListView(data) {
           type: F4_FETCH_MATNR_LIST_VIEW,
           payload: data,
         });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4CreateServContract(contract) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    console.log(contract);
+    doPost('smcc/createServContract', contract)
+      .then(({ data }) => {
+        console.log(data);
+
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_POST_SERV_CONTRACT,
+          payload: data,
+        });
+        dispatch(
+          notify(
+            'success',
+            errorTable[`101${language}`],
+            errorTable[`104${language}`],
+          ),
+        );
       })
       .catch(error => {
         dispatch(modifyLoader(false));

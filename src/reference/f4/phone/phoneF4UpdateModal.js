@@ -36,6 +36,7 @@ function PhoneF4UpdateModal(props) {
     customerId,
     selectedPhone,
     country,
+    lang,
   } = props;
 
   useEffect(() => {
@@ -127,7 +128,7 @@ function PhoneF4UpdateModal(props) {
                 <Dropdown
                   selection
                   search
-                  options={getTypeList(phoneListType)}
+                  options={getTypeList(phoneListType, lang)}
                   value={list.typeId}
                   onChange={(e, o) => onInputChange(o, 'typeList')}
                 />
@@ -186,7 +187,7 @@ function PhoneF4UpdateModal(props) {
   );
 }
 
-const getTypeList = lt => {
+const getTypeList = (lt, lang) => {
   const phoneListType = lt;
   if (!phoneListType) {
     return [];
@@ -194,7 +195,7 @@ const getTypeList = lt => {
   let out = lt.map(e => {
     return {
       key: e.id,
-      text: e.nameRu,
+      text: e[`name${lang}`],
       value: e.id,
     };
   });

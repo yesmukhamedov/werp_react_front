@@ -66,6 +66,8 @@ import {
   F4_CLEAR_MONTH_TERMS,
   F4_FETCH_MATNR_LIST_VIEW,
   F4_CLEAR_MATNR_LIST_VIEW,
+  F4_POST_SERV_CONTRACT,
+  F4_CLEAR_SERV_CONTRACT,
 } from './f4_action';
 
 const INITIAL_STATE = {
@@ -104,6 +106,7 @@ const INITIAL_STATE = {
   phoneHistory: [],
   monthTerms: [],
   matnrListView: [],
+  servContract: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -306,6 +309,12 @@ export default function(state = INITIAL_STATE, action) {
 
     case F4_CLEAR_MATNR_LIST_VIEW:
       return { ...state, matnrListView: [] };
+
+    case F4_POST_SERV_CONTRACT:
+      return { ...state, servContract: action.payload };
+
+    case F4_CLEAR_SERV_CONTRACT:
+      return { ...state, servContract: [] };
 
     default:
       return state;

@@ -19,6 +19,7 @@ function PhoneF4CreateModal(props) {
     phoneListType = [],
     customerId,
     country,
+    lang,
   } = props;
 
   const onInputChange = (o, fieldName) => {
@@ -78,7 +79,7 @@ function PhoneF4CreateModal(props) {
                 <Dropdown
                   selection
                   search
-                  options={getTypeList(phoneListType)}
+                  options={getTypeList(phoneListType, lang)}
                   value={list.typeId}
                   onChange={(e, o) => onInputChange(o, 'typeList')}
                 />
@@ -125,7 +126,7 @@ function PhoneF4CreateModal(props) {
   );
 }
 
-const getTypeList = lt => {
+const getTypeList = (lt, lang) => {
   const phoneListType = lt;
   if (!phoneListType) {
     return [];
@@ -133,7 +134,7 @@ const getTypeList = lt => {
   let out = lt.map(e => {
     return {
       key: e.id,
-      text: e.nameRu,
+      text: e[`name${lang}`],
       value: e.id,
     };
   });

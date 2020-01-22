@@ -28,6 +28,7 @@ function PhoneF4Modal(props) {
     countryList = [],
     customerId,
     selectedBranch,
+    lang,
   } = props;
 
   useEffect(() => {
@@ -43,12 +44,9 @@ function PhoneF4Modal(props) {
       const pl = phoneListType.map(type => {
         if (phone.typeId === type.id) {
           return (
-            <Table.Row
-              key={key}
-              //onClick={() => {props.onPhoneSelect(phone)}}
-            >
+            <Table.Row key={key}>
               <Table.Cell>
-                <label>{type.nameRu}</label>
+                <label>{type[`name${lang}`]}</label>
               </Table.Cell>
               <Table.Cell>
                 <label>{phone.phone}</label>
@@ -106,6 +104,7 @@ function PhoneF4Modal(props) {
         customerId={customerId}
         phoneListType={phoneListType}
         onCloseHistoryPhoneF4={bool => setPhoneF4HistoryModalOpen(bool)}
+        lang={lang}
       />
       <PhoneF4CreateModal
         open={phoneF4CreateModalOpen}
@@ -114,6 +113,7 @@ function PhoneF4Modal(props) {
         country={getCountry(countryList, selectedBranch)}
         phoneListType={phoneListType}
         onCloseCreatePhoneF4={bool => setPhoneF4CreateModalOpen(bool)}
+        lang={lang}
       />
       <PhoneF4UpdateModal
         open={phoneF4UpdateModalOpen}
@@ -124,6 +124,7 @@ function PhoneF4Modal(props) {
         selectedPhone={list.selectedPhone}
         //onPhoneSelect={(item, phone) => onPhoneSelect(item, phone)}
         onCloseUpdatePhoneF4={bool => setPhoneF4UpdateModalOpen(bool)}
+        lang={lang}
       />
       <PhoneF4DeleteModal
         open={phoneF4DeleteModalOpen}
@@ -180,21 +181,6 @@ function PhoneF4Modal(props) {
     </div>
   );
 }
-
-const getPhoneList = ph => {
-  const phoneList = ph;
-  if (!phoneList) {
-    return [];
-  }
-  let out = ph.map(phone => {
-    return {
-      key: phone.id,
-      text: phone.phone,
-      customerId: phone.customerId,
-    };
-  });
-  return out;
-};
 
 const getCountry = (countryList, branch) => {
   let selectedCountry = {};

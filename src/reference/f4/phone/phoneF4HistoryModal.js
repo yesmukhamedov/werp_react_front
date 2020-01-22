@@ -12,6 +12,7 @@ function PhoneF4HistoryModal(props) {
     phoneListType = [],
     customerId,
     phoneHistory = [],
+    lang,
   } = props;
 
   useEffect(() => {
@@ -28,7 +29,7 @@ function PhoneF4HistoryModal(props) {
         return (
           <Table.Row key={key}>
             <Table.Cell>
-              <label>{type.nameRu}</label>
+              <label>{type[`name${lang}`]}</label>
             </Table.Cell>
             <Table.Cell>
               <label>{phone.phone}</label>
@@ -44,16 +45,6 @@ function PhoneF4HistoryModal(props) {
     return pl;
   });
 
-  const label = (
-    <Table.Row>
-      <Table.Cell></Table.Cell>
-      <Table.Cell textAlign="center">
-        <label>Ничего не добавлено в историю :( </label>
-      </Table.Cell>
-      <Table.Cell></Table.Cell>
-    </Table.Row>
-  );
-
   const close = () => {
     props.onCloseHistoryPhoneF4(false);
   };
@@ -65,7 +56,7 @@ function PhoneF4HistoryModal(props) {
       </Modal.Header>
       <Modal.Content>
         <Table striped selectable>
-          <Table.Body>{phone ? phone : label}</Table.Body>
+          <Table.Body>{phone}</Table.Body>
         </Table>
       </Modal.Content>
       <Modal.Actions>
