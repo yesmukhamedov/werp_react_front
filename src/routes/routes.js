@@ -955,6 +955,27 @@ const AsyncSrls = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncSmcuspor = Loadable({
+  loader: () => import('../service/mainoperation/smcuspor'),
+  loading: () => <LoadingPage />,
+});
+const AsyncSmregc = Loadable({
+  loader: () => import('../service/mainoperation/smregc'),
+  loading: () => <LoadingPage />,
+});
+const AsyncSmeci = Loadable({
+  loader: () => import('../service/mainoperation/smeci'),
+  loading: () => <LoadingPage />,
+});
+const AsyncSmcca = Loadable({
+  loader: () => import('../service/mainoperation/smcca'),
+  loading: () => <LoadingPage />,
+});
+const AsyncSmccald = Loadable({
+  loader: () => import('../service/mainoperation/smccald'),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
@@ -1076,6 +1097,11 @@ const getComponent = {
   Smes: AsyncSmes,
   Srlsm: AsyncSrlsm,
   Srls: AsyncSrls,
+  Smcuspor: AsyncSmcuspor,
+  Smregc: AsyncSmregc,
+  Smeci: AsyncSmeci,
+  Smcca: AsyncSmcca,
+  Smccald: AsyncSmccald,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1206,6 +1232,31 @@ const generateRoutes = transactionRoutes => {
       />
       <Route path="/service/report/srlsm" exact={true} component={AsyncSrlsm} />
       <Route path="/service/report/srls" exact={true} component={AsyncSrls} />
+      <Route
+        path="/service/mainoperation/smcuspor"
+        exact={true}
+        component={AsyncSmcuspor}
+      />
+      <Route
+        path="/service/mainoperation/smregc"
+        exact={true}
+        component={AsyncSmregc}
+      />
+      <Route
+        path="/service/mainoperation/smeci"
+        exact={true}
+        component={AsyncSmeci}
+      />
+      <Route
+        path="/service/mainoperation/smcca"
+        exact={true}
+        component={AsyncSmcca}
+      />
+      <Route
+        path="/service/mainoperation/smccald"
+        exact={true}
+        component={AsyncSmccald}
+      />
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {

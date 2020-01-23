@@ -340,26 +340,35 @@ function Smcc(props) {
     } = contract;
 
     const { branchMonthTermsId } = contract.servFilter;
-
-    props.f4CreateServContract({
-      branchMonthTermsId,
-      contract: {
-        addrServiceId,
-        branchId,
-        bukrs,
-        contractDate,
-        contractTypeId,
-        customerId,
-        dealer,
-        info,
-        lastState,
-        matnrListId,
-        servBranchId,
-        tovarCategory,
-        tovarSerial,
-      },
-      servFilter,
-    });
+    if (
+      bukrs !== '' &&
+      branchId !== '' &&
+      servBranchId !== '' &&
+      contractTypeId !== '' &&
+      customerId !== '' &&
+      tovarSerial !== '' &&
+      addrServiceId
+    ) {
+      props.f4CreateServContract({
+        branchMonthTermsId,
+        contract: {
+          addrServiceId,
+          branchId,
+          bukrs,
+          contractDate,
+          contractTypeId,
+          customerId,
+          dealer,
+          info,
+          lastState,
+          matnrListId,
+          servBranchId,
+          tovarCategory,
+          tovarSerial,
+        },
+        servFilter,
+      });
+    }
   };
 
   const validate = () => {
