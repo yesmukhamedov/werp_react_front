@@ -11,6 +11,8 @@ import {
   FETCH_SMSETPP_SEARCH,
   FETCH_SRLS,
   FETCH_SMSETPP_PREMIUM_PRICE_TYPE,
+  FETCH_SMPLB,
+  FETCH_SMPLB_ADD,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -116,7 +118,12 @@ export default function(state = INITIAL_STATE, action) {
         ...state,
         dynamicObject: { ...state.dynamicObject, ...action.payload },
       };
-
+    case FETCH_SMPLB: {
+      return {
+        ...state,
+        dynamicObject: { ...state.dynamicObject, ...action.payload },
+      };
+    }
     default:
       return state;
   }

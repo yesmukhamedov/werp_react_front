@@ -113,7 +113,7 @@ const EditModal = props => {
 
     setCountryOptions(country);
   }, [countryList]);
-
+  console.log(documents);
   useEffect(() => {
     const premiumPrice = premium.map(item => {
       return {

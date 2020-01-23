@@ -188,7 +188,7 @@ const Smsetpp = props => {
         bukrs: bukr.value,
         countryId: countr.value,
         serviceTypeId: serviceTypeDoc,
-        waersId: countr.currency,
+        waersId: countr.currencyid,
         premiumPriceTypeId: pr,
       })
     );

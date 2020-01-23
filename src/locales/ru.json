@@ -763,5 +763,6 @@
   "number_type": "Тип номера",
   "back": "Назад",
   "history": "История",
-  "phone_delete_description": "Почему вы хотите удалить номер?"
+  "phone_delete_description": "Почему вы хотите удалить номер?",
+  "List_of_posts_receiving_bonuses": "Список должностей получающие бонусы"
 }

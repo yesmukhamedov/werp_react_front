@@ -20,6 +20,8 @@ export const EDIT_SMSETCT = 'EDIT_SMSETCT';
 export const FETCH_SMSETPP = 'FETCH_SMSETPP';
 export const FETCH_SRLS = 'FETCH_SMSETPP';
 export const DELETE_SMCETST = 'DELETE_SMCETST';
+export const FETCH_SMPLB = 'FETCH_SMPLB';
+export const FETCH_SMPLB_ADD = 'FETCH_SMPLB_ADD';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
@@ -255,6 +257,24 @@ export function editSmsetct(sm_set_ct_Edit, smCetStSearch) {
       })
       .catch(e => {
         handleError(e, dispatch);
+      });
+  };
+}
+
+export function fetchSmplb(params) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`smsetpp/view?direction=DESC&orderBy=id`, params)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMPLB,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
       });
   };
 }
