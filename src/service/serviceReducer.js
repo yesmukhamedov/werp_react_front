@@ -17,11 +17,6 @@ import {
 
 const INITIAL_STATE = {
   dynamicObject: {},
-  data: {
-    service: [],
-    type: [],
-    premiumPriceTypeId: [],
-  },
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -73,8 +68,8 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_SMSETPP:
       return {
         ...state,
-        data: {
-          ...state.data,
+        dynamicObject: {
+          ...state.dynamicObject,
           service: [...action.payload.data],
         },
       };
@@ -82,33 +77,25 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_SMSETPP_PREMIUM_PRICE_TYPE:
       return {
         ...state,
-        data: {
-          ...state.data,
+        dynamicObject: {
+          ...state.dynamicObject,
           premiumPriceTypeId: [...action.payload],
         },
       };
     case FETCH_SMSETPP_TYPE:
       return {
         ...state,
-        data: {
-          ...state.data,
+        dynamicObject: {
+          ...state.dynamicObject,
           type: [...action.payload.data],
         },
       };
 
-    case FETCH_SMSETPP_POST:
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          service: [...state.data.service, action.payload],
-        },
-      };
     case FETCH_SMSETPP_SEARCH:
       return {
         ...state,
-        data: {
-          ...state.data,
+        dynamicObject: {
+          ...state.dynamicObject,
           service: [...action.payload.data],
         },
       };

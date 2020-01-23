@@ -110,9 +110,9 @@ const EditModal = props => {
       },
       [countryList],
     );
-
     setCountryOptions(country);
   }, [countryList]);
+
   console.log(documents);
   useEffect(() => {
     const premiumPrice = premium.map(item => {
@@ -415,8 +415,8 @@ const EditModal = props => {
 
 const mapStateToProps = state => {
   return {
-    premium: state.serviceReducer.data.premiumPriceTypeId,
-    data: state.serviceReducer.data,
+    premium: state.serviceReducer.dynamicObject.premiumPriceTypeId,
+    data: state.serviceReducer.dynamicObject,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
   };

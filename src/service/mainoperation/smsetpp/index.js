@@ -14,6 +14,7 @@ import {
   fetchSmsetppSearch,
   fetchSmsetppPremiumPriceType,
   fetchSmsetppPut,
+  fetchSmsetppType,
 } from '../../serviceAction';
 import OutputErrors from '../../../general/error/outputErrors';
 
@@ -28,6 +29,7 @@ const Smsetpp = props => {
     fetchSmsetpp,
     fetchSmsetppSearch,
     fetchSmsetppPremiumPriceType,
+    fetchSmsetppType,
   } = props;
   const [error, setError] = useState([]);
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
@@ -73,6 +75,7 @@ const Smsetpp = props => {
     fetchSmsetpp();
     f4FetchCountryList();
     fetchSmsetppPremiumPriceType();
+    fetchSmsetppType();
   }, []);
 
   useEffect(() => {
@@ -95,6 +98,10 @@ const Smsetpp = props => {
   useEffect(() => {
     setPremiumPriceTypeId(premium);
   }, [premium]);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   useEffect(() => {
     let service = data.type.map(item => {
@@ -196,19 +203,19 @@ const Smsetpp = props => {
 
   return (
     <Segment>
-      <EditModal
+      {/* <EditModal
         param={search.bukrs !== 0 && search.countryId !== 0 ? query : null}
         documents={editDocs}
         open={modalOpen}
         waers={editWaers}
         cancel={() => setModalOpen(false)}
-      />
+      /> */}
       <div className="setting">
         <div className="flex-container">
           <h1>{messages['setting_prices_and_premium_services']}</h1>
-          <AddPrice
+          {/* <AddPrice
             param={search.bukrs !== 0 && search.countryId !== 0 ? query : null}
-          />
+          /> */}
         </div>
 
         <Dropdown
@@ -425,8 +432,8 @@ const Smsetpp = props => {
 
 const mapStateToProps = state => {
   return {
-    premium: state.serviceReducer.data.premiumPriceTypeId,
-    data: state.serviceReducer.data,
+    premium: state.serviceReducer.dynamicObject.premiumPriceTypeId,
+    data: state.serviceReducer.dynamicObject,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
     informations: state.serviceReducer.data,
@@ -438,4 +445,5 @@ export default connect(mapStateToProps, {
   fetchSmsetpp,
   fetchSmsetppSearch,
   fetchSmsetppPremiumPriceType,
+  fetchSmsetppType,
 })(injectIntl(Smsetpp));
