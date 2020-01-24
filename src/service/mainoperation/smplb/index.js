@@ -16,10 +16,12 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import OutputErrors from '../../../general/error/outputErrors';
 import 'react-table/react-table.css';
+import { clearDynObjService } from '../../serviceAction';
 
 const Smplb = props => {
   const {
     companyPosition,
+    clearDynObjService,
     intl: { messages },
   } = props;
   const [modalOpen, setModalOpen] = useState(false);
@@ -36,6 +38,10 @@ const Smplb = props => {
   let query = {
     search: format(queryString, { ...search }),
   };
+
+  useEffect(() => {
+    clearDynObjService();
+  }, []);
 
   const onChange = value => {
     setSearch({ bukrs: value });
@@ -186,4 +192,6 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(injectIntl(Smplb));
+export default connect(mapStateToProps, {
+  clearDynObjService,
+})(injectIntl(Smplb));

@@ -90,7 +90,6 @@ export default function(state = INITIAL_STATE, action) {
           type: [...action.payload.data],
         },
       };
-
     case FETCH_SMSETPP_SEARCH:
       return {
         ...state,

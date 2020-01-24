@@ -37,7 +37,7 @@ const AddPrice = props => {
   const [modalOpen, setModalOpen] = useState(false);
   const {
     data,
-    premium,
+    premium = [],
     fetchSmsetppType,
     fetchSmsetppPost,
     countryList = [],
@@ -45,6 +45,7 @@ const AddPrice = props => {
     intl: { messages },
     fetchSmsetppPremiumPriceType,
     param,
+    serviceType = [],
   } = props;
   const language = localStorage.getItem('language');
   const [typeOfService, setTypeOfService] = useState([]);
@@ -70,10 +71,6 @@ const AddPrice = props => {
   });
 
   useEffect(() => {
-    fetchSmsetppType();
-  }, []);
-
-  useEffect(() => {
     const premiumPrice = premium.map(item => {
       return {
         key: item.id,
@@ -85,11 +82,11 @@ const AddPrice = props => {
   }, [premium]);
 
   useEffect(() => {
-    let service = data.type.map(item => {
+    let service = serviceType.map(item => {
       return { key: item.id, text: item.name, value: item.id };
     });
     setTypeOfService(service);
-  }, [data.type]);
+  }, [serviceType]);
 
   useEffect(() => {
     let country = countryList.map(item => {
@@ -400,6 +397,7 @@ const mapStateToProps = state => {
     data: state.serviceReducer.dynamicObject,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
+    serviceType: state.serviceReducer.dynamicObject.type,
   };
 };
 

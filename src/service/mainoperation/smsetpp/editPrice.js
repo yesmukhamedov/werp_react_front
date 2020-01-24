@@ -36,7 +36,7 @@ const EditModal = props => {
   const language = localStorage.getItem('language');
   const {
     data,
-    premium,
+    premium = [],
     countryList = [],
     companyOptions = [],
     intl: { messages },
@@ -47,6 +47,7 @@ const EditModal = props => {
     fetchSmsetppPut,
     fetchSmsetpp,
     param,
+    serviceType = [],
   } = props;
   const [countryOptions, setCountryOptions] = useState([]);
   const [typeOfService, setTypeOfService] = useState([]);
@@ -113,7 +114,6 @@ const EditModal = props => {
     setCountryOptions(country);
   }, [countryList]);
 
-  console.log(documents);
   useEffect(() => {
     const premiumPrice = premium.map(item => {
       return {
@@ -126,7 +126,7 @@ const EditModal = props => {
   }, [premium]);
 
   useEffect(() => {
-    let service = data.type.map(item => {
+    let service = serviceType.map(item => {
       return {
         key: parseInt(item.id, 10),
         text: item.name,
@@ -134,7 +134,7 @@ const EditModal = props => {
       };
     });
     setTypeOfService(service);
-  }, [data.type]);
+  }, [serviceType]);
 
   const handleChange = (text, v) => {
     setInformations(prev => {
@@ -419,6 +419,7 @@ const mapStateToProps = state => {
     data: state.serviceReducer.dynamicObject,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
+    serviceType: state.serviceReducer.dynamicObject.type,
   };
 };
 

@@ -80,7 +80,7 @@ export function fetchSmsetppSearch(fetchSmsetpp) {
 export function fetchSmsetppPremiumPriceType() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`v1/werp/mreference/smsetpp/premium_price_type/view`)
+    doGet(`premium_price_type/view`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -97,7 +97,7 @@ export function fetchSmsetppPremiumPriceType() {
 
 export function fetchSmsetppType() {
   return function(dispatch) {
-    doGet(`v1/werp/mreference/smsetpp/type/view`)
+    doGet(`service_type/view`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

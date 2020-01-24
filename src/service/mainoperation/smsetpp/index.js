@@ -13,15 +13,15 @@ import {
   fetchSmsetpp,
   fetchSmsetppSearch,
   fetchSmsetppPremiumPriceType,
-  fetchSmsetppPut,
   fetchSmsetppType,
+  clearDynObjService,
 } from '../../serviceAction';
 import OutputErrors from '../../../general/error/outputErrors';
 
 const Smsetpp = props => {
   const {
     data,
-    premium,
+    premium = [],
     intl: { messages },
     countryList = [],
     companyOptions = [],
@@ -29,7 +29,9 @@ const Smsetpp = props => {
     fetchSmsetpp,
     fetchSmsetppSearch,
     fetchSmsetppPremiumPriceType,
+    serviceType = [],
     fetchSmsetppType,
+    clearDynObjService,
   } = props;
   const [error, setError] = useState([]);
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
@@ -72,6 +74,7 @@ const Smsetpp = props => {
   };
 
   useEffect(() => {
+    clearDynObjService();
     fetchSmsetpp();
     f4FetchCountryList();
     fetchSmsetppPremiumPriceType();
@@ -100,15 +103,11 @@ const Smsetpp = props => {
   }, [premium]);
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
-
-  useEffect(() => {
-    let service = data.type.map(item => {
+    let service = serviceType.map(item => {
       return { key: item.id, text: item.name, value: item.id };
     });
     setTypeOfService(service);
-  }, [data.type]);
+  }, [serviceType]);
 
   const onChange = (text, value) => {
     if (text === 'companyOptions') {
@@ -203,19 +202,19 @@ const Smsetpp = props => {
 
   return (
     <Segment>
-      {/* <EditModal
+      <EditModal
         param={search.bukrs !== 0 && search.countryId !== 0 ? query : null}
         documents={editDocs}
         open={modalOpen}
         waers={editWaers}
         cancel={() => setModalOpen(false)}
-      /> */}
+      />
       <div className="setting">
         <div className="flex-container">
           <h1>{messages['setting_prices_and_premium_services']}</h1>
-          {/* <AddPrice
+          <AddPrice
             param={search.bukrs !== 0 && search.countryId !== 0 ? query : null}
-          /> */}
+          />
         </div>
 
         <Dropdown
@@ -436,7 +435,7 @@ const mapStateToProps = state => {
     data: state.serviceReducer.dynamicObject,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
-    informations: state.serviceReducer.data,
+    serviceType: state.serviceReducer.dynamicObject.type,
   };
 };
 
@@ -446,4 +445,5 @@ export default connect(mapStateToProps, {
   fetchSmsetppSearch,
   fetchSmsetppPremiumPriceType,
   fetchSmsetppType,
+  clearDynObjService,
 })(injectIntl(Smsetpp));
