@@ -764,5 +764,7 @@
   "back": "Назад",
   "history": "История",
   "phone_delete_description": "Почему вы хотите удалить номер?",
-  "List_of_posts_receiving_bonuses": "Список должностей получающие бонусы"
+  "List_of_posts_receiving_bonuses": "Список должностей получающие бонусы",
+  "percentage": "Процент",
+  "number": "Число"
 }

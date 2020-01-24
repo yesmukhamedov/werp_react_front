@@ -162,17 +162,9 @@ const Smsetpp = props => {
       serviceTypeDoc = null;
     }
 
-    if (
-      documents.premiumPriceTypeId === 'Percentage' ||
-      documents.premiumPriceTypeId === 'Процент' ||
-      documents.premiumPriceTypeId === 'Yüzdesi'
-    ) {
+    if (documents.premiumPriceTypeId === messages['percentage']) {
       pr = pr + 1;
-    } else if (
-      documents.premiumPriceTypeId === 'Kartuş satışı' ||
-      documents.premiumPriceTypeId === 'Number' ||
-      documents.premiumPriceTypeId === 'Число'
-    ) {
+    } else if (documents.premiumPriceTypeId === messages['number']) {
       pr = pr + 2;
     } else {
       pr = null;
@@ -378,18 +370,7 @@ const Smsetpp = props => {
               ),
               accessor: 'premiumPriceTypeId',
               Cell: row => (
-                <div style={{ textAlign: 'center' }}>
-                  {row.value === 'Percentage' ||
-                  row.value === 'Процент' ||
-                  row.value === 'Yüzdesi'
-                    ? premiumPriceTypeId[0].name
-                    : null}
-                  {row.value === 'sayı' ||
-                  row.value === 'Number' ||
-                  row.value === 'Число'
-                    ? premiumPriceTypeId[1].name
-                    : null}
-                </div>
+                <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
             },
             {
