@@ -775,5 +775,7 @@
   "Application_Date": "Дата заявки",
   "Phone": "Телефон",
   "Masters": "Мастера",
-  "Applications": "Заявки"
+  "Applications": "Заявки",
+  "customer_story": "История клиента",
+  "columns": "Столбцы"
 }

@@ -776,5 +776,7 @@
   "Application_Date": "Application Date",
   "Phone": "Phone",
   "Masters": "Masters",
-  "Applications": "Applications"
+  "Applications": "Applications",
+  "customer_story": "Customer story",
+  "columns": "Columns"
 }

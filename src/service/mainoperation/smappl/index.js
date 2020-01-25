@@ -8,6 +8,7 @@ import {
   Icon,
   Grid,
   Input,
+  Form,
 } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import format from 'string-format';
@@ -16,7 +17,13 @@ import { injectIntl } from 'react-intl';
 import OutputErrors from '../../../general/error/outputErrors';
 import 'react-table/react-table.css';
 import { clearDynObjService } from '../../serviceAction';
-import NewService from './NewService';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
+import {
+  stringYYYYMMDDToMoment,
+  momentToStringYYYYMMDD,
+} from '../../../utils/helpers';
 
 const Smappl = props => {
   const {
@@ -25,7 +32,6 @@ const Smappl = props => {
     intl: { messages },
     branchOptions,
   } = props;
-  const [modalOpen, setModalOpen] = useState(false);
   const [dropdownActive, setDropdownActive] = useState(false);
   const [error, setError] = useState([]);
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
@@ -35,6 +41,8 @@ const Smappl = props => {
   const [search, setSearch] = useState({
     bukrs: 0,
     branch: 0,
+    datefrom: momentToStringYYYYMMDD(moment()),
+    dateTo: momentToStringYYYYMMDD(moment()),
   });
 
   let query = {
@@ -45,22 +53,34 @@ const Smappl = props => {
     clearDynObjService();
   }, []);
 
+  console.log(search);
+
   const onChange = (text, value) => {
     setSearch(prev => {
       const varTs = { ...prev };
       switch (text) {
         case 'bukrs':
           varTs.bukrs = value;
+          break;
         case 'branch':
           varTs.branch = value;
+          break;
+        case 'datefrom':
+          varTs.datefrom = value;
+          break;
+        case 'dateTo':
+          varTs.dateTo = value;
+          break;
+        default:
+          return varTs;
       }
       return varTs;
     });
 
     setDropdownActive(true);
   };
-  console.log(search);
-  const onSearchCompany = () => {
+
+  const onSearch = () => {
     save();
   };
 
@@ -81,84 +101,112 @@ const Smappl = props => {
     setError(() => errors);
   };
 
-  const onEditPosition = row => {
-    setModalOpen(true);
-  };
-
-  const onDelete = id => {
-    console.log(id);
-  };
-
   return (
     <Fragment>
       <Segment>
         <Divider hidden></Divider>
         <Header as="h2">
           {messages['service_requests']}
-          <NewService />
+          <Button floated="right" color="teal">
+            {messages['new_service']}
+          </Button>
         </Header>
         <Divider />
-        <Grid columns={8}>
-          <Grid.Column>
-            <Dropdown
+
+        <Form>
+          <Form.Group widths="equal">
+            <Form.Select
+              label={messages['bukrs']}
               clearable="true"
               selection
               options={companyPosition}
               placeholder={messages['bukrs']}
               onChange={(e, { value }) => onChange('bukrs', value)}
             />
-          </Grid.Column>
-          <Grid.Column>
-            <Dropdown
+            <Form.Select
+              label={messages['Task.Branch']}
               clearable="true"
               selection
               options={search.bukrs ? branchOptions[search.bukrs] : []}
               placeholder={messages['Task.Branch']}
               onChange={(e, { value }) => onChange('branch', value)}
             />
-          </Grid.Column>
-          <Grid.Column>
-            <Dropdown
+            <Form.Select
+              label={messages['product_category']}
               clearable="true"
               selection
               options={[]}
               placeholder={messages['product_category']}
               onChange={(e, { value }) => onChange('product', value)}
             />
-          </Grid.Column>
-          <Grid.Column>
-            <Dropdown
+            <Form.Select
+              label={messages['L__ORDER_STATUS']}
               clearable="true"
               selection
               options={[]}
               placeholder={messages['L__ORDER_STATUS']}
               onChange={(e, { value }) => onChange('status', value)}
             />
-          </Grid.Column>
-          <Grid.Column>
-            <Dropdown
+            <Form.Select
+              label={messages['type_of_application']}
               clearable="true"
               selection
               options={[]}
               placeholder={messages['type_of_application']}
               onChange={(e, { value }) => onChange('ApplicationType', value)}
             />
-          </Grid.Column>
-          <Grid.Column>
-            <Input placeholder="wa" />
-          </Grid.Column>
-          <Grid.Column>
-            <Input placeholder="wa" />
-          </Grid.Column>
-          <Grid.Column>
-            <Button color="teal" id="searchButton" onClick={onSearchCompany}>
+          </Form.Group>
+
+          <Form.Group>
+            <Form.Field>
+              <label>{messages['Form.DateFrom']}</label>
+              <DatePicker
+                className="date-auto-width"
+                autoComplete="off"
+                showMonthDropdown
+                showYearDropdown
+                dropdownMode="select" // timezone="UTC"
+                selected={stringYYYYMMDDToMoment(search.datefrom)}
+                locale={language}
+                onChange={event =>
+                  onChange('datefrom', momentToStringYYYYMMDD(event))
+                }
+                dateFormat="DD.MM.YYYY"
+                placeholderText={messages['Form.DateFrom']}
+              />
+            </Form.Field>
+            <Form.Field>
+              <label>{messages['Form.DateTo']}</label>
+              <DatePicker
+                className="date-auto-width"
+                autoComplete="off"
+                showMonthDropdown
+                showYearDropdown
+                dropdownMode="select" // timezone="UTC"
+                selected={stringYYYYMMDDToMoment(search.datefrom)}
+                locale={language}
+                onChange={event =>
+                  onChange('datefrom', momentToStringYYYYMMDD(event))
+                }
+                dateFormat="DD.MM.YYYY"
+                placeholderText={messages['Form.DateTo']}
+              />
+            </Form.Field>
+
+            <Form.Field control={Button} color="teal" style={{ marginTop: 24 }}>
               {messages['apply']}
-            </Button>
-          </Grid.Column>
-        </Grid>
+            </Form.Field>
+          </Form.Group>
+        </Form>
         <OutputErrors errors={error} />
-        <br></br>
-        <br></br>
+        <Divider></Divider>
+        <Dropdown
+          clearable="true"
+          selection
+          options={[]}
+          placeholder={messages['columns']}
+          onChange={(e, { value }) => onChange('columns', value)}
+        />
         <ReactTableWrapper
           columns={[
             {
@@ -283,21 +331,40 @@ const Smappl = props => {
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
             },
-
             {
               Header: () => (
-                <div style={{ textAlign: 'center' }}>{messages['toEdit']}</div>
+                <div style={{ textAlign: 'center' }}>
+                  № {messages['Applications']}
+                </div>
+              ),
+              accessor: 'Position',
+              Cell: row => (
+                <div style={{ textAlign: 'center' }}>{row.value}</div>
+              ),
+            },
+            {
+              Header: () => (
+                <div style={{ textAlign: 'center' }}>
+                  {messages['service']} №
+                </div>
+              ),
+              accessor: 'Position',
+              Cell: row => (
+                <div style={{ textAlign: 'center' }}>{row.value}</div>
+              ),
+            },
+            {
+              Header: () => (
+                <div style={{ textAlign: 'center' }}>
+                  {messages['customer_story']}
+                </div>
               ),
               accessor: 'fc',
               filterable: false,
               Cell: ({ row }) => (
                 <div style={{ textAlign: 'center' }}>
-                  <Button
-                    icon
-                    color="instagram"
-                    onClick={() => onEditPosition(row.row)}
-                  >
-                    <Icon name="edit"></Icon>
+                  <Button icon color="instagram">
+                    <Icon name="id card outline"></Icon>
                   </Button>
                 </div>
               ),
@@ -322,6 +389,7 @@ const Smappl = props => {
 };
 
 const mapStateToProps = state => {
+  console.log(state);
   return {
     companyPosition: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsService,
