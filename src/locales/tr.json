@@ -767,5 +767,14 @@
   "phone_delete_description": "Why do you want to delete number?",
   "List_of_posts_receiving_bonuses": "List of posts receiving bonuses",
   "percentage": "Yüzdesi",
-  "number": "sayı"
+  "number": "sayı",
+  "service_requests": "Service requests",
+  "new_service": "New service",
+  "product_category": "Product category",
+  "type_of_application": "Type of application",
+  "apply": "Apply",
+  "Application_Date": "Application Date",
+  "Phone": "Phone",
+  "Masters": "Masters",
+  "Applications": "Applications"
 }

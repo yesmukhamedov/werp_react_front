@@ -10,13 +10,12 @@ import {
 } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-const EditPosition = props => {
+const NewService = props => {
   const {
     companyPosition,
     intl: { messages },
-    open,
-    cancel,
   } = props;
+  const [modalOpen, setModalOpen] = useState(false);
 
   const [addInfo, setAddInfo] = useState({
     bukrs: '',
@@ -33,16 +32,15 @@ const EditPosition = props => {
     }
   };
 
-  const onCancel = () => {
-    cancel();
-    setAddInfo({
-      bukrs: '',
-      position: '',
-    });
-  };
-
   return (
-    <Modal open={open}>
+    <Modal
+      trigger={
+        <Button color="teal" floated="right" onClick={() => setModalOpen(true)}>
+          {messages['new_service']}
+        </Button>
+      }
+      open={modalOpen}
+    >
       <Header content={messages['toAdd']} textAlign="center" />
       <Modal.Content>
         <Form>
@@ -60,11 +58,11 @@ const EditPosition = props => {
         </Form>
       </Modal.Content>
       <Modal.Actions>
-        <Button color="red" inverted onClick={onCancel}>
-          <Icon name="remove" /> Cancel
+        <Button color="red" inverted onClick={() => setModalOpen(false)}>
+          <Icon name="remove" /> {messages['cancel']}
         </Button>
         <Button color="green" inverted>
-          <Icon name="checkmark" /> Save
+          <Icon name="checkmark" /> {messages['BTN__ADD']}
         </Button>
       </Modal.Actions>
     </Modal>
@@ -77,4 +75,4 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(injectIntl(EditPosition));
+export default connect(mapStateToProps)(injectIntl(NewService));

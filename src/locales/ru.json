@@ -766,5 +766,14 @@
   "phone_delete_description": "Почему вы хотите удалить номер?",
   "List_of_posts_receiving_bonuses": "Список должностей получающие бонусы",
   "percentage": "Процент",
-  "number": "Число"
+  "number": "Число",
+  "service_requests": "Заявки на сервис",
+  "new_service": "Новый сервис",
+  "product_category": "Категория товара",
+  "type_of_application": "Вид заявки",
+  "apply": "Применить",
+  "Application_Date": "Дата заявки",
+  "Phone": "Телефон",
+  "Masters": "Мастера",
+  "Applications": "Заявки"
 }

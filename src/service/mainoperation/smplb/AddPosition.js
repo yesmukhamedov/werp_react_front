@@ -58,10 +58,10 @@ const AddPosition = props => {
         </Form>
       </Modal.Content>
       <Modal.Actions>
-        <Button color="red" onClick={() => setModalOpen(false)}>
+        <Button color="red" inverted onClick={() => setModalOpen(false)}>
           <Icon name="remove" /> {messages['cancel']}
         </Button>
-        <Button color="green">
+        <Button color="green" inverted>
           <Icon name="checkmark" /> {messages['BTN__ADD']}
         </Button>
       </Modal.Actions>

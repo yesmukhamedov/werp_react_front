@@ -58,6 +58,7 @@ const Smplb = props => {
       errors.push(errorTable[`5${language}`]);
     }
     if (errors.length === 0) {
+      console.log(query);
     }
     return errors;
   };
@@ -68,11 +69,13 @@ const Smplb = props => {
     setError(() => errors);
   };
 
-  const onAddPosition = row => {
+  const onEditPosition = row => {
     setModalOpen(true);
   };
 
-  const onDelete = id => {};
+  const onDelete = id => {
+    console.log(id);
+  };
 
   return (
     <Fragment>
@@ -159,8 +162,8 @@ const Smplb = props => {
                 <div style={{ textAlign: 'center' }}>
                   <Button
                     icon
-                    color="teal"
-                    onClick={() => onAddPosition(row.row)}
+                    color="instagram"
+                    onClick={() => onEditPosition(row.row)}
                   >
                     <Icon name="edit"></Icon>
                   </Button>

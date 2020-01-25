@@ -975,6 +975,10 @@ const AsyncSmccald = Loadable({
   loader: () => import('../service/mainoperation/smccald'),
   loading: () => <LoadingPage />,
 });
+const AsyncSmappl = Loadable({
+  loader: () => import('../service/mainoperation/smappl'),
+  loading: () => <LoadingPage />,
+});
 
 const getComponent = {
   Dtrlist: AsyncTransaction,
@@ -1102,6 +1106,7 @@ const getComponent = {
   Smeci: AsyncSmeci,
   Smcca: AsyncSmcca,
   Smccald: AsyncSmccald,
+  Smappl: AsyncSmappl,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1256,6 +1261,11 @@ const generateRoutes = transactionRoutes => {
         path="/service/mainoperation/smccald"
         exact={true}
         component={AsyncSmccald}
+      />
+      <Route
+        path="/service/mainoperation/smappl"
+        exact={true}
+        component={AsyncSmappl}
       />
 
       {/* dynamically generated URLs  */}
