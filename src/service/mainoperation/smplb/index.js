@@ -16,27 +16,30 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import OutputErrors from '../../../general/error/outputErrors';
 import 'react-table/react-table.css';
-import { clearDynObjService } from '../../serviceAction';
+import { clearDynObjService, fetchSmplb } from '../../serviceAction';
 
 const Smplb = props => {
   const {
+    positionList,
     companyPosition,
     clearDynObjService,
     intl: { messages },
+    fetchSmplb,
   } = props;
   const [modalOpen, setModalOpen] = useState(false);
   const [dropdownActive, setDropdownActive] = useState(false);
   const [error, setError] = useState([]);
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
-  let queryString = 'bukrs=={0.bukrs};';
+  let queryString = 'bukrs={0.bukrs};';
+  const [positions, setPositions] = useState([]);
 
   const [search, setSearch] = useState({
-    bukrs: 0,
+    bukrs: '',
   });
 
   let query = {
-    search: format(queryString, { ...search }),
+    search: format(queryString, search),
   };
 
   useEffect(() => {
@@ -58,7 +61,9 @@ const Smplb = props => {
       errors.push(errorTable[`5${language}`]);
     }
     if (errors.length === 0) {
-      console.log(query);
+      fetchSmplb('bukrs=1000');
+      //setPositions(positionList)
+      console.log(positionList);
     }
     return errors;
   };
@@ -96,16 +101,14 @@ const Smplb = props => {
           onChange={(e, { value }) => onChange(value)}
         />
         <Button color="teal" id="searchButton" onClick={onSearchCompany}>
-          <Icon name="search"></Icon>Search
+          <Icon name="search"></Icon>
+          {messages['search']}
         </Button>
         <OutputErrors errors={error} />
         <br></br>
         <br></br>
         <ReactTableWrapper
-          data={[
-            { id: 1, bukrs: 'Aura', Position: 'fergre' },
-            { id: 2, bukrs: 'CONSTRUCTION', Position: 'fergre' },
-          ]}
+          data={positions}
           columns={[
             {
               Header: () => <div style={{ textAlign: 'center' }}>id</div>,
@@ -192,9 +195,11 @@ const Smplb = props => {
 const mapStateToProps = state => {
   return {
     companyPosition: state.userInfo.companyOptions,
+    positionList: state.serviceReducer.dynamicObject,
   };
 };
 
 export default connect(mapStateToProps, {
   clearDynObjService,
+  fetchSmplb,
 })(injectIntl(Smplb));

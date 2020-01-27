@@ -262,11 +262,13 @@ export function editSmsetct(sm_set_ct_Edit, smCetStSearch) {
 }
 
 export function fetchSmplb(params) {
+  console.log(params);
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smsetpp/view?direction=DESC&orderBy=id`, params)
+    doGet(`smplb/list`, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
+        console.log(data, 'data');
         dispatch({
           type: FETCH_SMPLB,
           payload: data,

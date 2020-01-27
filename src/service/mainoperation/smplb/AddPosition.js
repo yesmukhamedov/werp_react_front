@@ -10,17 +10,31 @@ import {
 } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
+import { doGet } from '../../../utils/apiActions';
+
 const AddPosition = props => {
   const {
     companyPosition,
     intl: { messages },
   } = props;
   const [modalOpen, setModalOpen] = useState(false);
+  const [position, setPosition] = useState([]);
 
   const [addInfo, setAddInfo] = useState({
     bukrs: '',
     position: '',
   });
+
+  useEffect(() => {
+    doGet(`reference/positions`).then(res => {
+      const loaded = res.data.map(p => ({
+        key: p.position_id,
+        text: p.text,
+        value: p.position_id,
+      }));
+      setPosition(loaded);
+    });
+  }, []);
 
   const onChange = (text, value) => {
     if (text === 'bukrs') {
@@ -44,17 +58,24 @@ const AddPosition = props => {
       <Header content={messages['toAdd']} textAlign="center" />
       <Modal.Content>
         <Form>
-          <Form.Group widths="equal">
-            <Form.Field
-              selection
-              label={messages['bukrs']}
-              control={Select}
-              options={companyPosition}
-              onChange={(e, { value }) => onChange('bukrs', value)}
-              placeholder={messages['bukrs']}
-              required
-            />
-          </Form.Group>
+          <Form.Field
+            selection
+            label={messages['bukrs']}
+            control={Select}
+            options={companyPosition}
+            onChange={(e, { value }) => onChange('bukrs', value)}
+            placeholder={messages['bukrs']}
+            required
+          />
+          <Form.Field
+            selection
+            label={messages['Table.Position']}
+            control={Select}
+            options={position}
+            onChange={(e, { value }) => onChange('position', value)}
+            placeholder={messages['Table.Position']}
+            required
+          />
         </Form>
       </Modal.Content>
       <Modal.Actions>
