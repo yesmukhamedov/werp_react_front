@@ -11,18 +11,25 @@ import {
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { doGet } from '../../../utils/apiActions';
+import { fetchSmplbPost, fetchSmplb } from '../../serviceAction';
 
 const AddPosition = props => {
   const {
     companyPosition,
     intl: { messages },
+    params,
+    fetchSmplbPost,
+    fetchSmplb,
   } = props;
   const [modalOpen, setModalOpen] = useState(false);
   const [position, setPosition] = useState([]);
+  const [firstDropdownError, setFirstDropdownError] = useState(false);
+  const [secondDropdownError, setSecondDropdownError] = useState(false);
+  const [addPositionError, setAddPositionError] = useState(false);
 
   const [addInfo, setAddInfo] = useState({
     bukrs: '',
-    position: '',
+    positionId: '',
   });
 
   useEffect(() => {
@@ -39,13 +46,28 @@ const AddPosition = props => {
   const onChange = (text, value) => {
     if (text === 'bukrs') {
       setAddInfo({ ...addInfo, bukrs: value });
+      setFirstDropdownError(true);
     }
 
     if (text === 'position') {
-      setAddInfo({ ...addInfo, position: value });
+      setAddInfo({ ...addInfo, positionId: parseInt(value) });
+      setSecondDropdownError(true);
     }
   };
 
+  const onAddPosition = () => {
+    setAddPositionError(true);
+    if (firstDropdownError && secondDropdownError) {
+      fetchSmplbPost(addInfo, () => {
+        fetchSmplb(params);
+        setModalOpen(false);
+      });
+    } else {
+      setModalOpen(true);
+    }
+  };
+
+  console.log(addPositionError, secondDropdownError);
   return (
     <Modal
       trigger={
@@ -66,6 +88,7 @@ const AddPosition = props => {
             onChange={(e, { value }) => onChange('bukrs', value)}
             placeholder={messages['bukrs']}
             required
+            error={addPositionError && !firstDropdownError ? true : false}
           />
           <Form.Field
             selection
@@ -75,6 +98,7 @@ const AddPosition = props => {
             onChange={(e, { value }) => onChange('position', value)}
             placeholder={messages['Table.Position']}
             required
+            error={addPositionError && !secondDropdownError ? true : false}
           />
         </Form>
       </Modal.Content>
@@ -82,7 +106,7 @@ const AddPosition = props => {
         <Button color="red" inverted onClick={() => setModalOpen(false)}>
           <Icon name="remove" /> {messages['cancel']}
         </Button>
-        <Button color="green" inverted>
+        <Button color="green" inverted onClick={onAddPosition}>
           <Icon name="checkmark" /> {messages['BTN__ADD']}
         </Button>
       </Modal.Actions>
@@ -96,4 +120,7 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(injectIntl(AddPosition));
+export default connect(mapStateToProps, {
+  fetchSmplbPost,
+  fetchSmplb,
+})(injectIntl(AddPosition));

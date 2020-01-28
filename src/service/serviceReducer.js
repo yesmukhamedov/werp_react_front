@@ -105,9 +105,10 @@ export default function(state = INITIAL_STATE, action) {
         dynamicObject: { ...state.dynamicObject, ...action.payload },
       };
     case FETCH_SMPLB: {
+      console.log('in reducer');
       return {
         ...state,
-        dynamicObject: { ...state.dynamicObject, ...action.payload },
+        dynamicObject: { ...state.dynamicObject, data: [...action.payload] },
       };
     }
     default:
