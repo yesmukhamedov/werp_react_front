@@ -2,21 +2,27 @@ import {
   FETCH_DYNOBJ_SERVICE,
   CHANGE_DYNOBJ_SERVICE,
   CLEAR_DYNOBJ_SERVICE,
-  ADD_SMSETCT,
-  SEARCH_SMSETCT,
+  POST_SMSETCT,
+  FETCH_SMSETCT,
   EDIT_SMSETCT,
   FETCH_SMSETPP,
   FETCH_SMSETPP_TYPE,
-  FETCH_SMSETPP_POST,
   FETCH_SMSETPP_SEARCH,
   FETCH_SRLS,
   FETCH_SMSETPP_PREMIUM_PRICE_TYPE,
   FETCH_SMPLB,
   FETCH_SMPLB_ADD,
+  FETCH_SMSETPP_POST,
+  HISTORY_EDITING_SMSETCT,
 } from './serviceAction';
 
 const INITIAL_STATE = {
   dynamicObject: {},
+  historyDynamicObject: {},
+  data: {
+    service: [],
+    type: [],
+  },
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -38,8 +44,10 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         dynamicObject: {},
+        historyDynamicObject: {},
       };
-    case ADD_SMSETCT:
+    case POST_SMSETCT:
+      console.log('post IN reducer', action.payload);
       if (
         Object.keys(state.dynamicObject).length === 0 ||
         state.dynamicObject === undefined
@@ -52,7 +60,7 @@ export default function(state = INITIAL_STATE, action) {
         };
       }
 
-    case SEARCH_SMSETCT:
+    case FETCH_SMSETCT:
       console.log('in reducer ', action.payload);
       return {
         ...state,
@@ -62,7 +70,13 @@ export default function(state = INITIAL_STATE, action) {
       console.log('in reducer edit', action.payload);
       return {
         ...state,
-        dynamicObject: [...state.dynamicObject],
+        dynamicObject: [...state.dynamicObject, action.payload],
+      };
+    case HISTORY_EDITING_SMSETCT:
+      console.log('in reducer editingHistory', action.payload);
+      return {
+        ...state,
+        historyDynamicObject: [...action.payload],
       };
 
     case FETCH_SMSETPP:
@@ -105,10 +119,9 @@ export default function(state = INITIAL_STATE, action) {
         dynamicObject: { ...state.dynamicObject, ...action.payload },
       };
     case FETCH_SMPLB: {
-      console.log('in reducer');
       return {
         ...state,
-        dynamicObject: { ...state.dynamicObject, data: [...action.payload] },
+        dynamicObject: { ...state.dynamicObject, ...action.payload },
       };
     }
     default:

@@ -634,7 +634,6 @@
   "productCategory": "Product Category",
   "category": "Category",
   "oldSn": "Old SN",
-
   "transNameFmcp": "FMCP: Receipt from Sales Contract",
   "transNameFcis": "FCIS: Employee acc.cash inquiry",
   "transNameFrcoln": "FRCOLN: Collectors Statistics",
@@ -778,5 +777,12 @@
   "Masters": "Masters",
   "Applications": "Applications",
   "customer_story": "Customer story",
-  "columns": "Columns"
+  "columns": "Columns",
+  "changed_by_employee": "Çalışan tarafından değiştirildi",
+  "customer_search": "Müşteri arama",
+  "financial_status": "Finansal durum",
+  "factory_number": "Fabrika numarası",
+  "full_name_of_client": "Müşteri adı",
+  "customer_key": "Customer key",
+  "telephone": "Telefon numarası"
 }

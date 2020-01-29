@@ -954,7 +954,6 @@ const AsyncSrls = Loadable({
   loader: () => import('../service/report/srls'),
   loading: () => <LoadingPage />,
 });
-
 const AsyncSmcuspor = Loadable({
   loader: () => import('../service/mainoperation/smcuspor'),
   loading: () => <LoadingPage />,
@@ -979,7 +978,10 @@ const AsyncSmappl = Loadable({
   loader: () => import('../service/mainoperation/smappl'),
   loading: () => <LoadingPage />,
 });
-
+const AsyncSmsrcus = Loadable({
+  loader: () => import('../service/mainoperation/smsrcus'),
+  loading: () => <LoadingPage />,
+});
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
@@ -1107,6 +1109,7 @@ const getComponent = {
   Smcca: AsyncSmcca,
   Smccald: AsyncSmccald,
   Smappl: AsyncSmappl,
+  Smsrcus: AsyncSmsrcus,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1266,6 +1269,11 @@ const generateRoutes = transactionRoutes => {
         path="/service/mainoperation/smappl"
         exact={true}
         component={AsyncSmappl}
+      />
+      <Route
+        path="/service/mainoperation/smsrcus"
+        exact={true}
+        component={AsyncSmsrcus}
       />
 
       {/* dynamically generated URLs  */}
