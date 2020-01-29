@@ -67,6 +67,7 @@ const AddPosition = props => {
     }
   };
 
+  console.log(addPositionError, secondDropdownError);
   return (
     <Modal
       trigger={
