@@ -14,8 +14,8 @@ export const FETCH_SMSETPP_PREMIUM_PRICE_TYPE =
   'FETCH_SMSETPP_PREMIUM_PRICE_TYPE';
 export const FETCH_SMSETPP_SEARCH = 'FETCH_SMSETPP_SEARCH';
 export const CLEAR_DYNOBJ_SERVICE = 'CLEAR_DYNOBJ_SERVICE';
-export const ADD_SMSETCT = 'ADD_SMSETCT';
-export const SEARCH_SMSETCT = 'SEARCH_SMSETCT';
+export const POST_SMSETCT = 'POST_SMSETCT';
+export const FETCH_SMSETCT = 'FETCH_SMSETCT';
 export const EDIT_SMSETCT = 'EDIT_SMSETCT';
 export const FETCH_SMSETPP = 'FETCH_SMSETPP';
 export const FETCH_SRLS = 'FETCH_SMSETPP';
@@ -24,6 +24,7 @@ export const FETCH_SMPLB = 'FETCH_SMPLB';
 export const FETCH_SMPLB_POST = 'FETCH_SMPLB_POST';
 export const FETCH_SMPLB_PUT = 'FETCH_SMPLB_PUT';
 export const FETCH_SMPLB_DELETE = 'FETCH_SMPLB_DELETE';
+export const HISTORY_EDITING_SMSETCT = 'HISTORY_EDITING_SMSETCT';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
@@ -176,22 +177,50 @@ export function fetchDynObjService(url, params) {
       });
   };
 }
-
-export const addSmsetct = smSetCtAdd => {
-  return function(dispatch) {
-    console.log('smSetCtAdd', smSetCtAdd);
+export function fetchSmsetct(searchParams) {
+  console.log('orderBy');
+  console.log('smCetStSearch', searchParams);
+  return dispatch => {
     dispatch(modifyLoader(true));
-    doPost(`werp/mservice/smsetct/create`, smSetCtAdd)
+    doGet(`smsetct/view?direction=DESC&orderBy=id`, searchParams)
       .then(({ data }) => {
-        if (data) {
-          dispatch(notify('success', errorTable[`101${language}`]));
-          dispatch(modifyLoader(false));
-          dispatch({
-            type: ADD_SMSETCT,
-            payload: data.data,
+        console.log('dataAction', data);
+        dispatch({
+          type: FETCH_SMSETCT,
+          payload: data.data,
+        });
+        doGet(`smsetct/audit?direction=DESC&orderBy=rev`, searchParams)
+          .then(({ data }) => {
+            console.log('dataHistory', data.data);
+            dispatch(modifyLoader(false));
+            dispatch({
+              type: HISTORY_EDITING_SMSETCT,
+              payload: data.data,
+            });
+          })
+          .catch(error => {
+            handleError(error, dispatch);
           });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+export const postSmsetct = (postParams, fetchSmsetct, searchParams) => {
+  return function(dispatch) {
+    console.log('postParams', postParams);
+
+    doPost(`smsetct/create`, postParams)
+      .then(({ data }) => {
+        console.log('dataAdd', data);
+        if (data & (data.status === 'success')) {
+          dispatch(notify('success', errorTable[`101${language}`]));
         } else {
           dispatch(notify('info', errorTable[`132${language}`])); //Не добавлен
+        }
+        if (searchParams.length !== 0) {
+          fetchSmsetct(searchParams);
         }
       })
       .catch(error => {
@@ -200,32 +229,13 @@ export const addSmsetct = smSetCtAdd => {
   };
 };
 
-export function searchSmsetct(conf) {
-  console.log('smCetStSearch', conf);
+export function editSmsetct(editParams, searchParams, fetchSmsetct) {
+  console.log('EdirParams', editParams);
   return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`werp/mservice/smsetct`, conf)
-      .then(({ data }) => {
-        console.log('data', data);
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: SEARCH_SMSETCT,
-          payload: data.data.data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
-}
-
-export function editSmsetct(sm_set_ct_Edit, smCetStSearch) {
-  return function(dispatch) {
-    doPut(`werp/mservice/smsetct/update`, sm_set_ct_Edit)
-      .then(response => {
-        if (response) {
-          console.log('response', response.data.data);
+    doPut(`smsetct/update`, editParams)
+      .then(data => {
+        if (data & (data.status === 'success')) {
+          console.log('responseEdit', data);
           dispatch(
             notify(
               'success',
@@ -233,10 +243,6 @@ export function editSmsetct(sm_set_ct_Edit, smCetStSearch) {
               errorTable[`101${language}`],
             ),
           );
-          dispatch({
-            type: EDIT_SMSETCT,
-            payload: sm_set_ct_Edit,
-          });
         } else {
           dispatch(
             notify(
@@ -246,16 +252,8 @@ export function editSmsetct(sm_set_ct_Edit, smCetStSearch) {
             ),
           );
         }
-        doGet(`werp/mservice/smsetct`, smCetStSearch)
-          .then(({ data }) => {
-            dispatch({
-              type: SEARCH_SMSETCT,
-              payload: data.data.data,
-            });
-          })
-          .catch(error => {
-            handleError(error, dispatch);
-          });
+        console.log('SEARCH', searchParams);
+        fetchSmsetct(searchParams);
       })
       .catch(e => {
         handleError(e, dispatch);

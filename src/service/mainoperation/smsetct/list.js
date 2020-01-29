@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import 'react-table/react-table.css';
-import matchSorter from 'match-sorter';
 import {
   Header,
   Icon,
@@ -12,9 +11,7 @@ import {
   Dropdown,
   Input,
 } from 'semantic-ui-react';
-import 'react-table/react-table.css';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
-
 export default function List(props) {
   const {
     messages,
@@ -22,15 +19,15 @@ export default function List(props) {
     branchOptions,
     countryList,
     dynamicObject,
-    // historyDynamicObject,
+    historyDynamicObject,
     getCountryOptions,
-    products,
+    getProductOptions,
+    productList,
+    fetchSmsetct,
     editSmsetct,
-    smSetCtSearch,
+    searchParams,
   } = props;
-
-  const historyDynamicObject = {};
-  const emptysm_set_ct_Edit = {
+  const emptySmSetCtEdit = {
     branchId: '',
     bukrs: '',
     countryId: '',
@@ -43,12 +40,13 @@ export default function List(props) {
     f7: '',
     id: '',
     matnr: '',
+    description: '',
   };
+
   const [sm_set_ct_Edit, set_sm_set_ct_Edit] = useState({
-    ...emptysm_set_ct_Edit,
+    ...emptySmSetCtEdit,
   });
   const [open, setOpen] = useState(false);
-
   const handleEdit = (o, fieldName) => {
     set_sm_set_ct_Edit(prev => {
       let varSm_Set_Ct = { ...prev };
@@ -65,8 +63,8 @@ export default function List(props) {
           varSm_Set_Ct.branchId = o.value;
           break;
 
-        case 'products':
-          varSm_Set_Ct.products = o.value;
+        case 'matnr':
+          varSm_Set_Ct.matnr = o.value;
           break;
 
         case 'F1':
@@ -97,8 +95,8 @@ export default function List(props) {
           varSm_Set_Ct.f7 = o.value;
           break;
 
-        case 'note':
-          varSm_Set_Ct.matnr = o.value;
+        case 'description':
+          varSm_Set_Ct.description = o.value;
           break;
 
         default:
@@ -110,24 +108,30 @@ export default function List(props) {
 
   const openEdit = row_data => {
     set_sm_set_ct_Edit(prop => {
-      const sm_set_ct_Row = { ...prop };
+      const sm_set_ct_EditRow = { ...prop };
       {
-        sm_set_ct_Row.countryId = row_data.countryId;
-        sm_set_ct_Row.bukrs = row_data.bukrs;
-        sm_set_ct_Row.branchId = row_data.branchId;
-        sm_set_ct_Row.f1 = row_data.f1;
-        sm_set_ct_Row.f2 = row_data.f2;
-        sm_set_ct_Row.f3 = row_data.f3;
-        sm_set_ct_Row.f4 = row_data.f4;
-        sm_set_ct_Row.f5 = row_data.f5;
-        sm_set_ct_Row.f6 = row_data.f6;
-        sm_set_ct_Row.f7 = row_data.f7;
-        sm_set_ct_Row.matnr = row_data.f3;
-        // sm_set_ct_Row.note = row_data.note;
-        sm_set_ct_Row.id = row_data.id;
+        sm_set_ct_EditRow.countryId = getCountryId(
+          countryList,
+          row_data.countryId,
+        );
+        sm_set_ct_EditRow.bukrs = getBukrsId(companyOptions, row_data.bukrs);
+        sm_set_ct_EditRow.branchId = getBranchId(
+          branchOptions,
+          row_data.branchId,
+          searchParams.bukrs,
+        );
+        sm_set_ct_EditRow.f1 = row_data.f1;
+        sm_set_ct_EditRow.f2 = row_data.f2;
+        sm_set_ct_EditRow.f3 = row_data.f3;
+        sm_set_ct_EditRow.f4 = row_data.f4;
+        sm_set_ct_EditRow.f5 = row_data.f5;
+        sm_set_ct_EditRow.f6 = row_data.f6;
+        sm_set_ct_EditRow.f7 = row_data.f7;
+        sm_set_ct_EditRow.matnr = getProductId(productList, row_data.matnr);
+        sm_set_ct_EditRow.description = row_data.description;
+        sm_set_ct_EditRow.id = row_data.id;
       }
-      console.log(sm_set_ct_Row);
-      return sm_set_ct_Row;
+      return sm_set_ct_EditRow;
     });
     setOpen(true);
   };
@@ -137,30 +141,56 @@ export default function List(props) {
   };
 
   const onClickSave = () => {
-    console.log('sm_set_ct_Edit', sm_set_ct_Edit);
-    console.log('smSetCtSearch', smSetCtSearch);
-
-    editSmsetct({ ...sm_set_ct_Edit, ...smSetCtSearch });
+    editSmsetct(
+      { ...sm_set_ct_Edit },
+      { ...searchParams.searchText },
+      fetchSmsetct,
+    );
+  };
+  //Получить ID Стран через text
+  const getCountryId = (countries, countryName) => {
+    countries.map(e => {
+      if (countryName === e.country) countryName = e.countryId;
+    });
+    return countryName;
+  };
+  // Получить ID Компанию через text
+  const getBukrsId = (bukrs, companyName) => {
+    bukrs.map(e => {
+      if (companyName === e.text) companyName = e.key;
+    });
+    return companyName;
+  };
+  // Получить ID Филиала через text
+  const getBranchId = (branches, branchName, bukrs) => {
+    branches[bukrs].map(e => {
+      if (branchName === e.text) {
+        branchName = e.key;
+      }
+    });
+    return branchName;
+  };
+  // Получить ID Продукта через text
+  const getProductId = (products, productName) => {
+    let a = 'ROBOCLEAN - 114 F';
+    let v = 'ROBOCLEAN - 114 F';
+    if (productName !== null) {
+      products.map(e => {
+        console.log('productName', productName);
+        console.log('e.name', e.name);
+        if (productName === e.name.toUpperCase()) {
+          console.log('Success');
+          productName = e.contract_type_id;
+        }
+      });
+    }
+    return productName;
   };
 
-  let columns = [
+  let searchColumns = [
     {
       Header: 'ID',
       accessor: 'id',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['id'] }),
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
-      filterAll: true,
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
-    },
-    {
-      Header: messages['country'],
-      accessor: 'countryId', //Name
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['countryId'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -170,9 +200,7 @@ export default function List(props) {
     },
     {
       Header: messages['bukrs'],
-      accessor: 'bukrs', //Name
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['bukrs'] }),
+      accessor: 'bukrs', //Name Ф
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -181,10 +209,18 @@ export default function List(props) {
       minWidth: 100,
     },
     {
+      Header: messages['country'],
+      accessor: 'countryId', //Name
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      width: 150,
+      filterAll: true,
+      width: 100,
+      maxWidth: 200,
+      minWidth: 100,
+    },
+    {
       Header: messages['brnch'],
-      accessor: 'brnchId', //Name
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['brnchId'] }),
+      accessor: 'branchId', //Name
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -194,9 +230,7 @@ export default function List(props) {
     },
     {
       Header: messages['TBL_H__PRODUCT'],
-      accessor: 'matnr', //Name
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['matnr'] }),
+      accessor: 'matnr',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -207,8 +241,6 @@ export default function List(props) {
     {
       Header: messages['configuration'] + ' F-1',
       accessor: 'f1',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['f1'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -219,8 +251,6 @@ export default function List(props) {
     {
       Header: messages['configuration'] + ' F-2',
       accessor: 'f2',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['f2'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -231,8 +261,6 @@ export default function List(props) {
     {
       Header: messages['configuration'] + 'F-3',
       accessor: 'f3',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['f3'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -243,8 +271,6 @@ export default function List(props) {
     {
       Header: messages['configuration'] + ' F-4',
       accessor: 'f4',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['f4'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -256,8 +282,6 @@ export default function List(props) {
     {
       Header: messages['configuration'] + ' F-5',
       accessor: 'f5',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['f5'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -269,8 +293,6 @@ export default function List(props) {
     {
       Header: messages['configuration'] + ' F-6',
       accessor: 'f6',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['f6'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -282,8 +304,6 @@ export default function List(props) {
     {
       Header: messages['configuration'] + ' F-7',
       accessor: 'f7',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['f7'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -314,46 +334,44 @@ export default function List(props) {
 
   let historyColumns = [
     {
+      Header: '№',
+      accessor: 'rev',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+      width: 100,
+      maxWidth: 150,
+      minWidth: 100,
+    },
+    {
       Header: 'ID',
       accessor: 'id',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['recommenderId'] }),
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
       width: 200,
       maxWidth: 250,
       minWidth: 100,
     },
-
     {
-      Header: messages['Form.Date'],
-      accessor: 'date',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['date'] }),
+      Header: messages['Task.Company'],
+      accessor: 'bukrs',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
       width: 200,
       maxWidth: 250,
       minWidth: 100,
     },
-
     {
-      Header: messages['operationType'],
-      accessor: 'operationType',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['operationType'] }),
+      Header: messages['country'],
+      accessor: 'countryId',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
       width: 200,
       maxWidth: 250,
       minWidth: 100,
     },
-
     {
       Header: messages['brnch'],
-      accessor: 'brnch',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['bukrs'] }),
+      accessor: 'branchId',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
@@ -361,59 +379,46 @@ export default function List(props) {
       maxWidth: 250,
       minWidth: 100,
     },
-
     {
-      Header: messages['Table.Previous'],
-      accessor: 'previous',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['previous'] }),
+      Header: messages['TBL_H__PRODUCT'],
+      accessor: 'matnr', //Name
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      width: 150,
       filterAll: true,
-      width: 200,
-      maxWidth: 250,
+      width: 150,
+      maxWidth: 150,
       minWidth: 100,
     },
-
-    {
-      Header: messages['current'],
-      accessor: 'current',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['current'] }),
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      filterAll: true,
-      width: 200,
-      maxWidth: 250,
-      minWidth: 100,
-    },
-    {
-      Header: messages['configuration'],
-      accessor: 'configuration',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['configuration'] }),
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      filterAll: true,
-      width: 200,
-      maxWidth: 250,
-      minWidth: 100,
-    },
-
     {
       Header: messages['Table.Note'],
-      accessor: 'note',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['note'] }),
+      accessor: 'description',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
       width: 200,
       maxWidth: 250,
       minWidth: 100,
     },
-
+    {
+      Header: messages['Form.Date'],
+      accessor: 'revsttmp',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+      width: 200,
+      maxWidth: 250,
+      minWidth: 100,
+    },
     {
       Header: messages['changed_by_employee'],
-      accessor: 'changed_by_employee',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['bukrs'] }),
+      accessor: 'fullname',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+      width: 200,
+      maxWidth: 250,
+      minWidth: 100,
+    },
+    {
+      Header: messages['operationType'],
+      accessor: 'revType',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
       width: 200,
@@ -429,9 +434,8 @@ export default function List(props) {
           <Segment textAlign="center">{messages['no_data']}</Segment>
         ) : (
           <ReactTableWrapper
-            filterable
             data={dynamicObject}
-            columns={columns}
+            columns={searchColumns}
             defaultPageSize={20}
             showPagination={true}
             className="-striped -highlight"
@@ -445,7 +449,7 @@ export default function List(props) {
           <Modal.Content>
             <Form>
               <Form.Group widths="equal">
-                <Form.Field>
+                <Form.Field required>
                   <label>{messages['country']}</label>
                   <Dropdown
                     search
@@ -480,20 +484,16 @@ export default function List(props) {
                   <Dropdown
                     search
                     selection
-                    options={
-                      sm_set_ct_Edit.bukrs
-                        ? branchOptions[sm_set_ct_Edit.bukrs]
-                        : []
-                    }
-                    defaultValue={sm_set_ct_Edit.products}
-                    onChange={(e, o) => handleEdit(o, 'products')}
+                    options={getProductOptions(productList)}
+                    defaultValue={sm_set_ct_Edit.matnr}
+                    onChange={(e, o) => handleEdit(o, 'matnr')}
                   />
                   <Form.Field
                     required
                     control={Input}
                     label={messages['Table.Note']}
-                    defaultValue={sm_set_ct_Edit.note}
-                    onChange={(e, o) => handleEdit(o, 'note')}
+                    defaultValue={sm_set_ct_Edit.description}
+                    onChange={(e, o) => handleEdit(o, 'description')}
                   />
                 </Form.Field>
 
@@ -572,11 +572,10 @@ export default function List(props) {
             {messages['editing_history']}
           </Header>
         </Segment>
-        {Object.keys({}).length === 0 ? (
+        {Object.keys(historyDynamicObject).length === 0 ? (
           <Segment textAlign="center">{messages['no_data']}</Segment>
         ) : (
           <ReactTableWrapper
-            filterable
             data={historyDynamicObject}
             columns={historyColumns}
             defaultPageSize={20}

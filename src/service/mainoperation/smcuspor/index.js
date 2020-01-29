@@ -23,11 +23,24 @@ function Smcuspor(props) {
   const emptyHistory = {
     activeButton: true,
     reactColumns: 'all',
+    radioChange: '',
   };
   const [history, setHistory] = useState({ ...emptyHistory });
   const {
     intl: { messages },
   } = props;
+
+  const onInputChange = (event, fieldname) => {
+    setHistory(prev => {
+      const varHistory = { ...prev };
+      switch (fieldname) {
+        case 'radioChange':
+          varHistory.radioChange = event.value;
+          break;
+      }
+      return varHistory;
+    });
+  };
 
   const handleClick = (data, fieldname) => {
     setHistory(prev => {
@@ -64,12 +77,22 @@ function Smcuspor(props) {
                   <h1>История клиента</h1>
                 </Table.Cell>
                 <Table.Cell width="3">
-                  <Button floated="right" fluid color="blue">
+                  <Button
+                    floated="right"
+                    fluid
+                    color="blue"
+                    onClick={() => props.history.push('smregc')}
+                  >
                     Зарегистрировать звонок
                   </Button>
                 </Table.Cell>
                 <Table.Cell width="3">
-                  <Button floated="right" fluid color="blue">
+                  <Button
+                    floated="right"
+                    fluid
+                    color="blue"
+                    onClick={() => props.history.push('smcca')}
+                  >
                     Создать заявку
                   </Button>
                 </Table.Cell>
@@ -270,6 +293,11 @@ function Smcuspor(props) {
                                 radio
                                 label="Автоматом"
                                 name="changeTerm"
+                                value="auto"
+                                checked={history.radioChange === 'auto'}
+                                onChange={(e, o) =>
+                                  onInputChange(o, 'radioChange')
+                                }
                               />
                             </Table.Cell>
                             <Table.Cell>
@@ -277,6 +305,11 @@ function Smcuspor(props) {
                                 radio
                                 label="В ручную"
                                 name="changeTerm"
+                                value="manual"
+                                checked={history.radioChange === 'manual'}
+                                onChange={(e, o) =>
+                                  onInputChange(o, 'radioChange')
+                                }
                               />
                             </Table.Cell>
                           </Table.Row>
@@ -294,7 +327,11 @@ function Smcuspor(props) {
                 <Input size="mini" label="F4" className="input__filter_terms" />
                 <Input size="mini" label="F5" className="input__filter_terms" />
               </Segment>
-              <Button color="blue" fluid>
+              <Button
+                color="blue"
+                fluid
+                onClick={() => props.history.push('smeci')}
+              >
                 Редактировать
               </Button>
             </Grid.Column>

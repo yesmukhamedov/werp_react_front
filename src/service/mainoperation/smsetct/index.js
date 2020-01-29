@@ -4,13 +4,18 @@ import { injectIntl } from 'react-intl';
 import {
   f4FetchCountryList,
   f4FetchWerksBranchList,
+  f4FetchConTypeList,
 } from '../../../reference/f4/f4_action';
 
 import BranchF4Advanced from '../../../reference/f4/branch/BranchF4Advanced';
-import { addSmsetct, searchSmsetct, editSmsetct } from '../../serviceAction';
+import {
+  postSmsetct,
+  fetchSmsetct,
+  editSmsetct,
+  clearDynObjService,
+} from '../../serviceAction';
 import { connect } from 'react-redux';
 import OutputErrors from '../../../general/error/outputErrors';
-import { modifyLoader } from '../../../general/loader/loader_action';
 import List from './list';
 import {
   Header,
@@ -25,12 +30,11 @@ import {
   Input,
   Label,
 } from 'semantic-ui-react';
-require('moment/locale/ru');
-require('moment/locale/tr');
-
+import format from 'string-format';
 const Smsetct = props => {
   const emptySearch = {
     bukrs: '',
+    searchText: '',
   };
   const emptyAdd = {
     branchId: '',
@@ -43,17 +47,15 @@ const Smsetct = props => {
     f5: '',
     f6: '',
     f7: '',
-    id: '',
-    // "matnr": '',
-    products: '',
-    note: '',
+    matnr: '',
+    description: '',
   };
 
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
 
-  const [smSetCtAdd, setsmSetCtAdd] = useState({ ...emptyAdd });
-  const [smSetCtSearch, setsmSetCtSearch] = useState({ ...emptySearch });
+  const [postParams, setPostParams] = useState({ ...emptyAdd });
+  const [searchParams, setSearchParams] = useState({ ...emptySearch });
   const [show, setShow] = useState(false);
   const [errors, setErrors] = useState([]);
   const [selectedBranches, setSelectedBranches] = useState([]);
@@ -61,23 +63,76 @@ const Smsetct = props => {
   const {
     intl: { messages },
     companyOptions = [],
+    productList = [],
     branchOptions,
-    searchSmsetct,
+    fetchSmsetct,
     countryList = [],
     dynamicObject,
+    historyDynamicObject,
     products,
-    addSmsetct,
+    postSmsetct,
     editSmsetct,
+    clearDynObjService,
   } = props;
 
+  let searchPars;
   //componentDidMount
   useEffect(() => {
-    console.log('usEEffect', companyOptions);
+    clearDynObjService();
+    if (!productList || productList.length === 0) props.f4FetchConTypeList();
     if (!countryList || countryList.length === 0) props.f4FetchCountryList();
   }, []);
 
+  const handleInputSearch = (o, fieldName) => {
+    setSearchParams(prev => {
+      const varSmSetCt = { ...prev };
+      switch (fieldName) {
+        case 'bukrs':
+          varSmSetCt.bukrs = o.value;
+          break;
+        default:
+          varSmSetCt[fieldName] = o.value;
+      }
+      return varSmSetCt;
+    });
+  };
+  const clickSearch = () => {
+    let branchId = [];
+    let errs = [];
+    errs = validateSearch();
+    console.log('errorsValidate', errs);
+    console.log('Search', searchParams.bukrs.length);
+    for (let wa of selectedBranches) {
+      branchId.push(wa.value);
+    }
+    let branchRequestSum = selectedBranches.length;
+    let queryString = 'bukrs=={0.bukrs}';
+    let query = { search: format(queryString, { ...searchParams }) };
+    let branch = { branchId: 0 };
+
+    if (selectedBranches.length > 0) {
+      queryString = ';branchId=={0.branchId}';
+      while (branchRequestSum > 0) {
+        branch.branchId = branchId[branchRequestSum - 1];
+        query.search = query.search + format(queryString, { ...branch });
+        --branchRequestSum;
+      }
+    }
+    setSearchParams(prev => {
+      const varSmSetCt = { ...prev };
+      varSmSetCt.searchText = query;
+      return varSmSetCt;
+    });
+    searchPars = searchParams.bukrs;
+
+    if (errs === null || errs === undefined || errs.length === 0) {
+      fetchSmsetct({ ...query });
+    }
+    setErrors(() => errs);
+  };
+
   const handleInputAdd = (o, fieldName) => {
-    setsmSetCtAdd(prev => {
+    setPostParams(prev => {
       const varSmSetCt = { ...prev };
       switch (fieldName) {
         case 'countryId':
@@ -92,8 +147,8 @@ const Smsetct = props => {
           varSmSetCt.branchId = o.value;
           break;
 
-        case 'products':
-          varSmSetCt.products = o.value;
+        case 'matnr':
+          varSmSetCt.matnr = o.value;
           break;
 
         case 'F1':
@@ -123,8 +178,8 @@ const Smsetct = props => {
         case 'F7':
           varSmSetCt.f7 = o.value;
           break;
-        case 'note':
-          varSmSetCt.note = o.value;
+        case 'description':
+          varSmSetCt.description = o.value;
           break;
 
         default:
@@ -134,49 +189,26 @@ const Smsetct = props => {
     });
   };
 
-  const handleInputSearch = (o, fieldName) => {
-    setsmSetCtSearch(prev => {
-      const varSmSetCt = { ...prev };
-      switch (fieldName) {
-        case 'countryId':
-          varSmSetCt.countryId = o.value;
-          break;
-        default:
-          varSmSetCt[fieldName] = o.value;
-      }
-      return varSmSetCt;
-    });
-  };
-
-  const handleAdd = () => {
+  const handlePost = () => {
     let errs = [];
     errs = validateAdd();
     if (errs === null || errs === undefined || errs.length === 0) {
-      console.log('smSetCtAdd', smSetCtAdd);
-      addSmsetct({ ...smSetCtAdd });
+      console.log('smeStCtAdd', postParams);
+      postSmsetct({ ...postParams }, fetchSmsetct, {
+        ...searchParams.searchText,
+      });
     }
     setErrors(() => errs);
   };
 
   const handleOpen = () => {
+    setErrors(() => []);
     setShow(true);
   };
 
   const handleClose = () => {
     setShow(false);
     setErrors(() => []);
-  };
-
-  const clickSearch = () => {
-    console.log('SmSetCtSearch', smSetCtSearch);
-    let branchId = [];
-    for (let wa of selectedBranches) {
-      branchId.push(wa.value);
-    }
-    searchSmsetct({
-      smSetCtSearch,
-      branchId: branchId.join(),
-    });
   };
 
   const validateAdd = () => {
@@ -191,10 +223,9 @@ const Smsetct = props => {
       countryId,
       bukrs,
       branchId,
-      products,
       matnr,
-      note,
-    } = smSetCtAdd;
+      description,
+    } = postParams;
     const errors = [];
     if (countryId === null || countryId === undefined || !countryId) {
       errors.push(errorTable[`147${language}`]);
@@ -205,9 +236,9 @@ const Smsetct = props => {
     if (branchId === null || branchId === undefined || !branchId) {
       errors.push(errorTable[`7${language}`]);
     }
-    /* if ( products === null ||  products === undefined || !products) {
+    if (matnr === null || matnr === undefined || !matnr) {
       errors.push(errorTable[`132${language}`]);
-    }*/
+    }
     if (f1 === null || f1 === undefined || !f1) {
       errors.push(errorTable[`132${language}`]);
     }
@@ -229,9 +260,20 @@ const Smsetct = props => {
     if (f7 === null || f7 === undefined || !f7) {
       errors.push(errorTable[`132${language}`]);
     }
-    if (note === null || note === undefined || !note) {
+    if (description === null || description === undefined || !description) {
       errors.push(errorTable[`132${language}`]);
     }
+    return errors;
+  };
+  const validateSearch = () => {
+    const errors = [];
+    if (
+      searchParams.bukrs === null ||
+      searchParams.bukrs === undefined ||
+      !searchParams.bukrs
+    )
+      errors.push(errorTable[`5${language}`]);
+
     return errors;
   };
   return (
@@ -271,7 +313,6 @@ const Smsetct = props => {
                     <Form.Field required>
                       <label>{messages['country']}</label>
                       <Dropdown
-                        fluid
                         search
                         selection
                         options={getCountryOptions(countryList)}
@@ -279,7 +320,6 @@ const Smsetct = props => {
                       />
                       <label>{messages['bukrs']} </label>
                       <Dropdown
-                        fluid
                         search
                         selection
                         options={companyOptions || []}
@@ -288,26 +328,25 @@ const Smsetct = props => {
 
                       <label>{messages['brnch']}</label>
                       <Dropdown
-                        fluid
                         search
                         selection
                         options={
-                          smSetCtAdd.bukrs
-                            ? branchOptions[smSetCtAdd.bukrs]
+                          postParams.bukrs
+                            ? branchOptions[postParams.bukrs]
                             : []
                         }
                         onChange={(e, o) => handleInputAdd(o, 'branchId')}
                       />
                       <label>{messages['TBL_H__PRODUCT']}</label>
                       <Dropdown
-                        fluid
                         search
                         selection
-                        options={companyOptions || []}
-                        onChange={(e, o) => handleInputAdd(o, 'products')}
+                        options={getProductOptions(productList) || []}
+                        onChange={(e, o) => handleInputAdd(o, 'matnr')}
                       />
                       <Form.Field
-                        onChange={(e, o) => handleInputAdd(o, 'note')}
+                        required
+                        onChange={(e, o) => handleInputAdd(o, 'description')}
                         control={Input}
                         label={messages['Table.Note']}
                       />
@@ -315,36 +354,43 @@ const Smsetct = props => {
 
                     <Form.Field>
                       <Form.Field
+                        required
                         onChange={(e, o) => handleInputAdd(o, 'F1')}
                         control={Input}
                         label={messages['configuration'] + ' F-1'}
                       />
                       <Form.Field
+                        required
                         onChange={(e, o) => handleInputAdd(o, 'F2')}
                         control={Input}
                         label={messages['configuration'] + ' F-2'}
                       />
                       <Form.Field
+                        required
                         onChange={(e, o) => handleInputAdd(o, 'F3')}
                         control={Input}
                         label={messages['configuration'] + ' F-3'}
                       />
                       <Form.Field
+                        required
                         onChange={(e, o) => handleInputAdd(o, 'F4')}
                         control={Input}
                         label={messages['configuration'] + ' F-4'}
                       />
                       <Form.Field
+                        required
                         onChange={(e, o) => handleInputAdd(o, 'F5')}
                         control={Input}
                         label={messages['configuration'] + ' F-5'}
                       />
                       <Form.Field
+                        required
                         onChange={(e, o) => handleInputAdd(o, 'F6')}
                         control={Input}
                         label={messages['configuration'] + ' F-6'}
                       />
                       <Form.Field
+                        required
                         onChange={(e, o) => handleInputAdd(o, 'F7')}
                         control={Input}
                         label={messages['configuration'] + ' F-7'}
@@ -355,7 +401,7 @@ const Smsetct = props => {
               </Segment>
             </Modal.Content>
             <Modal.Actions>
-              <Button color="teal" floated="right" onClick={handleAdd}>
+              <Button color="teal" floated="right" onClick={handlePost}>
                 <Icon name="checkmark" />
                 {messages['Table.Add']}
               </Button>
@@ -364,7 +410,7 @@ const Smsetct = props => {
                 negative
                 floated="right"
                 onClick={() => {
-                  setsmSetCtAdd(() => []);
+                  setPostParams(() => []);
                   handleClose();
                 }}
               >
@@ -379,87 +425,81 @@ const Smsetct = props => {
         </Segment>
 
         <Form>
-          <Grid columns={7}>
-            <Grid.Column>
-              <Grid.Row>
-                <Label>{messages['bukrs']} </Label>
-              </Grid.Row>
-              <Grid.Row>
-                <Dropdown
-                  fluid
-                  search
-                  selection
-                  options={companyOptions || []}
-                  value={smSetCtSearch.bukrs}
-                  onChange={(e, o) => handleInputSearch(o, 'bukrs')}
-                  placeholder={messages['all']}
-                />
-              </Grid.Row>
-            </Grid.Column>
-
-            <Grid.Column>
-              <Grid.Row>
-                <Label>
-                  {messages['selectedBranches']} #{selectedBranches.length}
-                </Label>
-              </Grid.Row>
-              <Grid.Row>
-                <Button
-                  color="teal"
-                  onClick={() => setF4BranchIsOpen(true)}
-                  icon
-                  labelPosition="left"
-                >
-                  <Icon name="checkmark box" />
-                  {messages['Task.BranchError']}
-                </Button>
-              </Grid.Row>
-
-              <BranchF4Advanced
-                branches={
-                  smSetCtSearch.bukrs ? branchOptions[smSetCtSearch.bukrs] : []
-                }
-                isOpen={f4BranchIsOpen}
-                onClose={selectedBranches => {
-                  setF4BranchIsOpen(false);
-                  setSelectedBranches(selectedBranches);
-                }}
-                selection={'multiple'}
+          <Form.Group widths={7}>
+            <Form.Field required>
+              <label>{messages['bukrs']}</label>
+              <Dropdown
+                fluid
+                search
+                selection
+                options={companyOptions || []}
+                value={searchParams.bukrs}
+                onChange={(e, o) => handleInputSearch(o, 'bukrs')}
+                placeholder={messages['bukrs']}
               />
-            </Grid.Column>
+            </Form.Field>
 
-            <Grid.Column>
-              <Grid.Row>
-                <Label> {messages['search']} </Label>
-              </Grid.Row>
-              <Grid.Row>
-                <Button
-                  color="teal"
-                  onClick={clickSearch}
-                  icon
-                  labelPosition="left"
-                >
-                  <Icon name="search" />
-                  {messages['search']}
-                </Button>
-              </Grid.Row>
-            </Grid.Column>
-          </Grid>
+            <Form.Field>
+              <label>
+                {messages['brnch']} #{selectedBranches.length}
+              </label>
+
+              <Button
+                color="teal"
+                onClick={() => setF4BranchIsOpen(true)}
+                icon
+                labelPosition="left"
+              >
+                <Icon name="checkmark box" />
+                {messages['Task.BranchError']}
+              </Button>
+            </Form.Field>
+
+            <Form.Field>
+              <label> {messages['search']} </label>
+              <Button
+                color="teal"
+                onClick={clickSearch}
+                icon
+                labelPosition="left"
+              >
+                <Icon name="search" />
+                {messages['search']}
+              </Button>
+            </Form.Field>
+
+            <OutputErrors errors={errors} />
+          </Form.Group>
         </Form>
         <List
           dynamicObject={dynamicObject}
+          historyDynamicObject={historyDynamicObject}
           messages={messages}
           companyOptions={companyOptions}
           branchOptions={branchOptions}
           countryList={countryList}
           products={products}
           getCountryOptions={getCountryOptions}
+          getProductOptions={getProductOptions}
+          productList={productList}
           editSmsetct={editSmsetct}
           errorTable={errorTable}
           language={language}
-          smSetCtSearch={smSetCtSearch}
+          searchParams={searchParams}
+          fetchSmsetct={fetchSmsetct}
+          searchpars={searchPars}
         />
       </Container>
+
+      <BranchF4Advanced
+        branches={searchParams.bukrs ? branchOptions[searchParams.bukrs] : []}
+        isOpen={f4BranchIsOpen}
+        onClose={selectedBranches => {
+          setF4BranchIsOpen(false);
+          setSelectedBranches(selectedBranches);
+        }}
+        selection={'multiple'}
+      />
     </div>
   );
 };
@@ -479,21 +519,39 @@ const getCountryOptions = countryList => {
   return out;
 };
 
+const getProductOptions = productList => {
+  const productLst = productList;
+  if (!productLst) {
+    return [];
+  }
+  let out = productLst.map(c => {
+    return {
+      key: c.contract_type_id,
+      text: c.name,
+      value: c.contract_type_id,
+    };
+  });
+  return out;
+};
 function mapStateToProps(state) {
-  console.log('companyOptions', state.userInfo.companyOptions);
+  console.log('state', state.f4.contractTypeList);
+  console.log('counrty', state.f4.countryList);
   return {
     language: state.locales.lang,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
+    productList: state.f4.contractTypeList,
     branchOptions: state.userInfo.branchOptionsService,
     dynamicObject: state.serviceReducer.dynamicObject,
+    historyDynamicObject: state.serviceReducer.historyDynamicObject,
   };
 }
 export default connect(mapStateToProps, {
   f4FetchCountryList,
   f4FetchWerksBranchList,
-  addSmsetct,
-  searchSmsetct,
+  f4FetchConTypeList,
+  postSmsetct,
+  fetchSmsetct,
   editSmsetct,
-  modifyLoader,
+  clearDynObjService,
 })(injectIntl(Smsetct));

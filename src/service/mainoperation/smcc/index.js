@@ -368,7 +368,52 @@ function Smcc(props) {
         },
         servFilter,
       });
+      clearContract();
     }
+  };
+
+  const clearContract = () => {
+    setContract({
+      bukrs: '',
+      branchId: '',
+      servBranchId: '',
+      contractTypeId: '',
+      contractDate: moment(new Date()).format('YYYY-MM-DD'),
+      customerId: '',
+      dealer: '',
+      tovarSerial: '',
+      addrServiceId: '',
+      email: '',
+      info: '',
+      matnrListId: '',
+      lastState: 2,
+
+      dealerName: '',
+      customerName: '',
+      addrService: '',
+      selectedBranch: '',
+      matnr: '',
+      check: false,
+      disabled: true,
+      tovarCategory: '',
+
+      servFilter: {
+        branchMonthTermsId: '',
+        f1Mt: '',
+        f1Date: moment(new Date()).format('YYYY-MM-DD'),
+        f2Mt: '',
+        f2Date: moment(new Date()).format('YYYY-MM-DD'),
+        f3Mt: '',
+        f3Date: moment(new Date()).format('YYYY-MM-DD'),
+        f4Mt: '',
+        f4Date: moment(new Date()).format('YYYY-MM-DD'),
+        f5Mt: '',
+        f5Date: moment(new Date()).format('YYYY-MM-DD'),
+        servBranch: '',
+        tovarSn: '',
+      },
+    });
+    setContractTypeOpts([]);
   };
 
   const validate = () => {

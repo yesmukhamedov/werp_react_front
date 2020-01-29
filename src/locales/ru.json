@@ -777,5 +777,11 @@
   "Masters": "Мастера",
   "Applications": "Заявки",
   "customer_story": "История клиента",
-  "columns": "Столбцы"
+  "columns": "Столбцы",
+  "customer_search": "Поиск клиентов",
+  "financial_status": "Финансовый статус",
+  "factory_number": "Заводской номер",
+  "full_name_of_client": "ФИО клиента",
+  "customer_key": "ИИН клиента",
+  "telephone": "Телефон"
 }
