@@ -21,9 +21,10 @@ export const FETCH_SMSETPP = 'FETCH_SMSETPP';
 export const FETCH_SRLS = 'FETCH_SMSETPP';
 export const DELETE_SMCETST = 'DELETE_SMCETST';
 export const FETCH_SMPLB = 'FETCH_SMPLB';
-export const FETCH_SMPLB_ADD = 'FETCH_SMPLB_ADD';
-//export const DELETE_SMCETST = 'DELETE_SMCETST';
-export const HISTORY_EDITING_SMSETCT = 'HISTORY_EDITING_SMSETCTS';
+export const FETCH_SMPLB_POST = 'FETCH_SMPLB_POST';
+export const FETCH_SMPLB_PUT = 'FETCH_SMPLB_PUT';
+export const FETCH_SMPLB_DELETE = 'FETCH_SMPLB_DELETE';
+export const HISTORY_EDITING_SMSETCT = 'HISTORY_EDITING_SMSETCT';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
@@ -263,13 +264,70 @@ export function editSmsetct(editParams, searchParams, fetchSmsetct) {
 export function fetchSmplb(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smsetpp/view?direction=DESC&orderBy=id`, params)
+    doGet(`smplb/list`, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SMPLB,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchSmplbPost(docs, fetchSmplb) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost(`smplb/create`, docs)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMPLB_POST,
           payload: data,
         });
+        fetchSmplb();
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchSmplbPut(params, fetchSmplb) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPut(`smplb/update`, params)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMPLB_PUT,
+          payload: data,
+        });
+        fetchSmplb();
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchSmplbDelete(id, fetchSmplb) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doDelete(`smplb/delete/${id}`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMPLB_DELETE,
+          payload: data,
+        });
+        fetchSmplb();
       })
       .catch(error => {
         dispatch(modifyLoader(false));

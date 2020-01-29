@@ -7,22 +7,18 @@ import {
   EDIT_SMSETCT,
   FETCH_SMSETPP,
   FETCH_SMSETPP_TYPE,
+  FETCH_SMSETPP_POST,
   FETCH_SMSETPP_SEARCH,
   FETCH_SRLS,
   FETCH_SMSETPP_PREMIUM_PRICE_TYPE,
   FETCH_SMPLB,
   FETCH_SMPLB_ADD,
-  FETCH_SMSETPP_POST,
   HISTORY_EDITING_SMSETCT,
 } from './serviceAction';
 
 const INITIAL_STATE = {
   dynamicObject: {},
   historyDynamicObject: {},
-  data: {
-    service: [],
-    type: [],
-  },
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -119,9 +115,10 @@ export default function(state = INITIAL_STATE, action) {
         dynamicObject: { ...state.dynamicObject, ...action.payload },
       };
     case FETCH_SMPLB: {
+      console.log('in reducer');
       return {
         ...state,
-        dynamicObject: { ...state.dynamicObject, ...action.payload },
+        dynamicObject: { ...state.dynamicObject, data: [...action.payload] },
       };
     }
     default:
