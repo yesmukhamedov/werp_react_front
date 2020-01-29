@@ -317,12 +317,11 @@ export function fetchSmplbPut(params, fetchSmplb) {
   };
 }
 
-export function fetchSmplbDelete(params, fetchSmplb) {
+export function fetchSmplbDelete(id, fetchSmplb) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doDelete(`smplb/delete`, params)
+    doDelete(`smplb/delete/${id}`)
       .then(({ data }) => {
-        console.log(data);
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SMPLB_DELETE,

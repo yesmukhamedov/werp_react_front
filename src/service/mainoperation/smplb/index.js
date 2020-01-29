@@ -87,10 +87,7 @@ const Smplb = props => {
   };
 
   const onDelete = id => {
-    const param = {
-      id: parseInt(id),
-    };
-    fetchSmplbDelete(param, () => {
+    fetchSmplbDelete(id, () => {
       fetchSmplb(search);
     });
   };
@@ -112,7 +109,6 @@ const Smplb = props => {
 
         <Divider />
         <Dropdown
-          clearable="true"
           selection
           options={companyPosition}
           placeholder={messages['bukrs']}
