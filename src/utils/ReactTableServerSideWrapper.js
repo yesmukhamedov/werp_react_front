@@ -15,7 +15,7 @@ const ReactTableServerSideWrapper = props => {
     columns = [],
     data = [],
     filterable = false,
-    searchText = '',
+    searchParam = '',
     loadingText = messages['loadingText'],
     noDataText = messages['noDataText'],
     previousText = messages['previousText'],
@@ -34,7 +34,7 @@ const ReactTableServerSideWrapper = props => {
     // console.log(sorted, 'sorted');
     let orderBy = '';
     let direction = '';
-    let filter = '';
+    // let filter = '';
 
     for (let i = 0; i < sorted.length; i++) {
       let item = sorted[i];
@@ -43,20 +43,23 @@ const ReactTableServerSideWrapper = props => {
       direction = item.desc ? 'DESC' : 'ASC';
     }
 
+    let param = { ...searchParam, orderBy, direction, page, size: pageSize };
+
     for (let i = 0; i < filtered.length; i++) {
       let item = filtered[i];
 
-      if (filter !== null && filter.length > 0) {
-        filter = filter + ';';
-      }
-      filter = filter + item.id + '==*' + item.value + '*';
+      param = { ...param, [item.id]: item.value };
+      // if (filter !== null && filter.length > 0) {
+      //   filter = filter + ';';
+      // }
+      // filter = filter + item.id + '==*' + item.value + '*';
     }
 
-    if (filter !== null && filter.length > 0) {
-      if (searchText !== null && searchText.length > 0) {
-        filter = searchText + ';(' + filter + ')';
-      }
-    }
+    // if (filter !== null && filter.length > 0) {
+    //   if (searchText !== null && searchText.length > 0) {
+    //     filter = searchText + ';(' + filter + ')';
+    //   }
+    // }
 
     // Whenever the table model changes, or the user sorts or changes pages, this method gets called and passed the current table model.
     // You can set the `loading` prop of the table to true to use the built-in one or show you're own loading bar if you want.
@@ -64,7 +67,7 @@ const ReactTableServerSideWrapper = props => {
     // Request the data however you want.  Here, we'll use our mocked service we created earlier
 
     if (turnOnReactFetch) {
-      requestData(filter, orderBy, direction, page, pageSize);
+      requestData(param);
     }
   };
   return (
