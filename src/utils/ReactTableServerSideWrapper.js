@@ -15,7 +15,7 @@ const ReactTableServerSideWrapper = props => {
     columns = [],
     data = [],
     filterable = false,
-    searchParam = '',
+    searchParam = {},
     loadingText = messages['loadingText'],
     noDataText = messages['noDataText'],
     previousText = messages['previousText'],
