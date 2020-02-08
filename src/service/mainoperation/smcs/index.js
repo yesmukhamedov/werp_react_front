@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import TabSmcsWithoutContract from './TabSmcsWithoutContract';
-import TabSmcsWithRequest from './TabSmcsWithRequest';
-import TabSmcsWithoutRequest from './TabSmcsWithoutRequest';
+import TabSmcsWithoutContract from './components/tabs/TabSmcsWithoutContract';
+import TabSmcsWithRequest from './components/tabs/TabSmcsWithRequest';
+import TabSmcsWithoutRequest from './components/tabs/TabSmcsWithoutRequest';
 import { Container, Grid, Tab, Segment } from 'semantic-ui-react';
 
-const Smcs = () => {
+import '../../service.css';
+
+const Smcs = props => {
+  //Вкладки
   const panes = [
     {
       menuItem: {

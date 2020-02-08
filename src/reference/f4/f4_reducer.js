@@ -68,6 +68,8 @@ import {
   F4_CLEAR_MATNR_LIST_VIEW,
   F4_POST_SERV_CONTRACT,
   F4_CLEAR_SERV_CONTRACT,
+  F4_FETCH_CATEGORY,
+  F4_FETCH_CUSTOMERS_BY_ID,
 } from './f4_action';
 
 const INITIAL_STATE = {
@@ -107,6 +109,8 @@ const INITIAL_STATE = {
   monthTerms: [],
   matnrListView: [],
   servContract: [],
+  category: [],
+  customersById: {},
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -315,6 +319,11 @@ export default function(state = INITIAL_STATE, action) {
 
     case F4_CLEAR_SERV_CONTRACT:
       return { ...state, servContract: [] };
+    case F4_FETCH_CATEGORY:
+      return { ...state, category: action.payload.data };
+
+    case F4_FETCH_CUSTOMERS_BY_ID:
+      return { ...state, customersById: action.data.data };
 
     default:
       return state;

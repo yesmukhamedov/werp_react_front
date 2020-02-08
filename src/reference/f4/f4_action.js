@@ -118,6 +118,11 @@ export const F4_CLEAR_MATNR_LIST_VIEW = 'F4_CLEAR_MATNR_LIST_VIEW';
 export const F4_POST_SERV_CONTRACT = 'F4_POST_SERV_CONTRACT';
 export const F4_CLEAR_SERV_CONTRACT = 'F4_CLEAR_SERV_CONTRACT';
 
+export const F4_FETCH_CATEGORY = 'F4_FETCH_CATEGORY';
+export const F4_CLEAR_FETCH_CATEGORY = 'F4_CLEAR_FETCH_CATEGORY';
+
+export const F4_FETCH_CUSTOMERS_BY_ID = 'F4_FETCH_CUSTOMERS_BY_ID';
+
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 
@@ -672,6 +677,23 @@ export function f4FetchCustomers(params = {}, setIsLoading) {
   };
 }
 
+export function f4FetchCustomersById(params = {}) {
+  return function(dispatch) {
+    doGet('smcs/customer', params)
+      .then(({ data }) => {
+        // setIsLoading(false);
+        dispatch({
+          type: F4_FETCH_CUSTOMERS_BY_ID,
+          data,
+        });
+      })
+      .catch(error => {
+        // setIsLoading(false);
+        handleError(error, dispatch);
+      });
+  };
+}
+
 export function f4FetchAddresses(params = {}, setIsLoading) {
   setIsLoading(true);
   return function(dispatch) {
@@ -934,6 +956,26 @@ export function f4CreateServContract(contract) {
             errorTable[`104${language}`],
           ),
         );
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+//Категория
+export function f4fetchCategory(data) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+
+    doGet('service_category/view', data)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_CATEGORY,
+          payload: data,
+        });
       })
       .catch(error => {
         dispatch(modifyLoader(false));

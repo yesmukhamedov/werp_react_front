@@ -9,6 +9,7 @@ import {
   FETCH_SMSETPP_TYPE,
   FETCH_SMSETPP_POST,
   FETCH_SMSETPP_SEARCH,
+  FETCH_SMSETPP_PUT,
   FETCH_SRLS,
   FETCH_SMSETPP_PREMIUM_PRICE_TYPE,
   FETCH_SMPLB,
@@ -19,6 +20,11 @@ import {
 const INITIAL_STATE = {
   dynamicObject: {},
   historyDynamicObject: {},
+  data: {
+    service: [],
+    type: [],
+    addedRequest: [],
+  },
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -100,6 +106,16 @@ export default function(state = INITIAL_STATE, action) {
           type: [...action.payload.data],
         },
       };
+
+    case FETCH_SMSETPP_POST:
+      console.log('object', action.payload);
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          service: [...state.data.service, action.payload],
+        },
+      };
     case FETCH_SMSETPP_SEARCH:
       return {
         ...state,
@@ -108,6 +124,25 @@ export default function(state = INITIAL_STATE, action) {
           service: [...action.payload.data],
         },
       };
+    case FETCH_SMSETPP_PUT:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          service: [...action.payload.data],
+        },
+      };
+
+    // case FETCH_SMSETPP_POST:
+    //   console.log('object', action.payload);
+    //   return {
+    //     ...state,
+    //     data: {
+    //       ...state.data,
+    //       service: [...state.data.service, action.payload.data],
+    //     },
+    //   };
+
     case FETCH_SRLS:
       console.log('SRLS REDUCER', action.payload);
       return {

@@ -63,7 +63,6 @@ if (token) {
   // setAuthorizationHeader(token);
   // setContentLanguageHeader(persistedLang.lang);
   try {
-    //jwt.decode(token, TOKEN_PASSWORD);
     store.dispatch({
       type: AUTH_USER,
       payload: { username: localStorage.getItem('username') },

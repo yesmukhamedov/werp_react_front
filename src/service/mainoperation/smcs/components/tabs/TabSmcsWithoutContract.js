@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Segment,
   Grid,
@@ -12,65 +12,13 @@ import {
   Select,
   Menu,
   Dropdown,
-  Modal,
-  Header,
-  Checkbox,
 } from 'semantic-ui-react';
 
-import './../../service.css';
-import moment from 'moment';
-
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import { stringYYYYMMDDToMoment } from '../../../utils/helpers';
-
-const TabSmcsWithoutRequest = props => {
+const TabSmcsWithoutContract = props => {
   const options = [
-    { key: '1', text: 'Устранил' },
-    { key: '2', text: 'Снятие' },
-    { key: '3', text: 'Установка' },
+    { key: 'angular', text: 'Angular', value: 'angular' },
+    { key: 'css', text: 'CSS', value: 'css' },
   ];
-
-  const [serviceSelected, setServiceSelected] = useState('');
-  const [addSparePartModalOpened, setAddSparePartModalOpened] = useState(false);
-  const initialService = {
-    number: 1,
-    serviceName: 'Снятие',
-    summ: 5000,
-  };
-
-  const [service, setService] = useState({ ...initialService });
-  const [sparePart, setSparePart] = useState([]);
-  const [cartridge, setCartridge] = useState([]);
-  const [servicePackage, setServicePackage] = useState([]);
-
-  //Дoбавить сервис
-  const handleAddService = () => {};
-
-  //Дoбавить запчасти
-  const handleAddSparePart = () => {
-    console.log('AddSparepart');
-    setAddSparePartModalOpened(true);
-  };
-
-  // Добавить картриджи
-  const handleAddCartridge = () => {
-    console.log('handleAddCartridge');
-  };
-
-  //Добавить сервис пакет
-  const handleAddServicePackage = () => {
-    console.log('handleAddServicePackage');
-  };
-
-  const closeModal = () => {
-    setAddSparePartModalOpened(false);
-  };
-
-  const handleSubmit = () => {
-    setAddSparePartModalOpened(false);
-  };
-
   return (
     <Form>
       <Grid>
@@ -88,13 +36,13 @@ const TabSmcsWithoutRequest = props => {
                 <Table.Row>
                   <Table.Cell>Компания</Table.Cell>
                   <Table.Cell>
-                    <Input fluid disabled />
+                    <Dropdown fluid placeholder="Компания" />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>Филиал</Table.Cell>
                   <Table.Cell>
-                    <Input fluid disabled />
+                    <Dropdown fluid placeholder="Филиал" />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
@@ -106,23 +54,19 @@ const TabSmcsWithoutRequest = props => {
                 <Table.Row>
                   <Table.Cell width={4}>Заводской номер</Table.Cell>
                   <Table.Cell width={12}>
-                    <Input
-                      fluid
-                      type="number"
-                      action={<Button icon="search" content="Поиск" primary />}
-                    />
+                    <Input fluid disabled />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>Категория</Table.Cell>
                   <Table.Cell>
-                    <Input fluid disabled />
+                    <Dropdown fluid options={options} />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>Продукт</Table.Cell>
                   <Table.Cell>
-                    <Input fluid disabled />
+                    <Dropdown fluid options={options} />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
@@ -147,14 +91,14 @@ const TabSmcsWithoutRequest = props => {
                 <Table.Row>
                   <Table.Cell>Мастер</Table.Cell>
                   <Table.Cell>
-                    <Dropdown fluid />
+                    <Dropdown fluid options={options} />
                   </Table.Cell>
                 </Table.Row>
 
                 <Table.Row>
                   <Table.Cell>Оператор</Table.Cell>
                   <Table.Cell>
-                    <Dropdown fluid />
+                    <Dropdown fluid options={options} />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
@@ -165,29 +109,21 @@ const TabSmcsWithoutRequest = props => {
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>Срок гарантии</Table.Cell>
-                  <Table.Cell className="tableRow">
-                    <DatePicker />
-                    <Input />
+                  <Table.Cell>
+                    <Input disabled />
+                    <Input disabled />
                   </Table.Cell>
                 </Table.Row>
               </Table.Body>
             </Table>
           </Grid.Column>
-
           {/*RIGHT*/}
           <Grid.Column width={11}>
             <Segment>
               <Segment>
                 <h3>Услуга</h3>
                 <Divider />
-
-                <Button
-                  icon
-                  labelPosition="left"
-                  color="green"
-                  size="small"
-                  onClick={handleAddService}
-                >
+                <Button icon labelPosition="left" color="green" size="small">
                   <Icon name="plus" size="small" /> Добавить услугу
                 </Button>
               </Segment>
@@ -195,41 +131,15 @@ const TabSmcsWithoutRequest = props => {
               <Segment>
                 <h3>Продажа запчастей</h3>
                 <Divider />
-                <Button
-                  icon
-                  labelPosition="left"
-                  color="green"
-                  size="small"
-                  onClick={handleAddSparePart}
-                >
+                <Button icon labelPosition="left" color="green" size="small">
                   <Icon name="plus" size="small" /> Добавить запчасти
                 </Button>
               </Segment>
-              {/* <AddSparePartModal
-                opened={addSparePartModalOpened}
-                closed={closeModal}
-              /> */}
-
-              <Modal open={addSparePartModalOpened}>
-                <Header content="Добавить услуги" />
-                <Modal.Content></Modal.Content>
-                <Modal.Actions>
-                  <Button color="green" onClick={handleSubmit}>
-                    Применить
-                  </Button>
-                </Modal.Actions>
-              </Modal>
 
               <Segment>
                 <h3>Продажа картриджи</h3>
                 <Divider />
-                <Button
-                  icon
-                  labelPosition="left"
-                  color="green"
-                  size="small"
-                  onClick={handleAddCartridge}
-                >
+                <Button icon labelPosition="left" color="green" size="small">
                   <Icon name="plus" size="small" /> Добавить картриджи
                 </Button>
               </Segment>
@@ -237,14 +147,16 @@ const TabSmcsWithoutRequest = props => {
               <Segment>
                 <h3>Сервис пакет</h3>
                 <Divider />
-                <Button
-                  icon
-                  labelPosition="left"
-                  color="green"
-                  size="small"
-                  onClick={handleAddServicePackage}
-                >
-                  <Icon name="plus" size="small" /> Добавить сервис пакет
+                <Button icon labelPosition="left" color="green" size="small">
+                  <Icon name="plus" size="small" /> Добавить сервис
+                </Button>
+              </Segment>
+
+              <Segment>
+                <h3>Услуга</h3>
+                <Divider />
+                <Button icon labelPosition="left" color="green" size="small">
+                  <Icon name="plus" size="small" /> Добавить услугу
                 </Button>
               </Segment>
 
@@ -276,7 +188,6 @@ const TabSmcsWithoutRequest = props => {
                   </Table.Row>
                 </Table.Body>
               </Table>
-
               <Button type="submit" primary>
                 <Icon name="save" size="large" />
                 Сохранить
@@ -289,4 +200,4 @@ const TabSmcsWithoutRequest = props => {
   );
 };
 
-export default TabSmcsWithoutRequest;
+export default TabSmcsWithoutContract;

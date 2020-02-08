@@ -46,6 +46,8 @@ import marketingReducer from '../marketing/marketingReducer';
 import hrReducer from '../hr/hr_reducer';
 import callReducer from '../crm/mainoperation/call/reducers/callReducer';
 import serviceReducer from '../service/serviceReducer';
+import smcsReducer from '../service/mainoperation/smcs/smcsReducer';
+import srlsReducer from '../service/report/srls/srlsReducer';
 
 const appReducer = combineReducers({
   form,
@@ -94,6 +96,8 @@ const appReducer = combineReducers({
   hr: hrReducer,
   callReducer: callReducer,
   serviceReducer: serviceReducer,
+  smcsReducer: smcsReducer,
+  srlsReducer: srlsReducer,
 });
 
 const rootReducer = (state, action) => {
