@@ -25,6 +25,11 @@ export const FETCH_SMPLB_POST = 'FETCH_SMPLB_POST';
 export const FETCH_SMPLB_PUT = 'FETCH_SMPLB_PUT';
 export const FETCH_SMPLB_DELETE = 'FETCH_SMPLB_DELETE';
 export const HISTORY_EDITING_SMSETCT = 'HISTORY_EDITING_SMSETCT';
+export const FETCH_SMCUSPOR = 'FETCH_SMCUSPOR';
+export const FETCH_SMCUSPOR_HISTORY_ALL = 'FETCH_SMCUSPOR_HISTORY_ALL';
+export const FETCH_SMCUSPOR_HISTORY_APP = 'FETCH_SMCUSPOR_HISTORY_APP';
+export const FETCH_SMCUSPOR_HISTORY_CALL = 'FETCH_SMCUSPOR_HISTORY_CALL';
+export const FETCH_SMCUSPOR_HISTORY_SERVICE = 'FETCH_SMCUSPOR_HISTORY_SERVICE';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
@@ -333,5 +338,87 @@ export function fetchSmplbDelete(id, fetchSmplb) {
         dispatch(modifyLoader(false));
         handleError(error, dispatch);
       });
+  };
+}
+
+export function fetchSmcusporClientHistory(contractNumber) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`smcuspor/contractInfo`, contractNumber)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMCUSPOR,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchServCrmHistoryAll(date, type) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    switch (type) {
+      case 'all':
+        doGet(`smcuspor/servCrmHistoryAll`, date)
+          .then(({ data }) => {
+            dispatch(modifyLoader(false));
+            dispatch({
+              type: FETCH_SMCUSPOR_HISTORY_ALL,
+              payload: data,
+            });
+          })
+          .catch(error => {
+            dispatch(modifyLoader(false));
+            handleError(error, dispatch);
+          });
+        break;
+      case 'services':
+        doGet(`smcuspor/servCrmHistoryService`, date)
+          .then(({ data }) => {
+            dispatch(modifyLoader(false));
+            dispatch({
+              type: FETCH_SMCUSPOR_HISTORY_APP,
+              payload: data,
+            });
+          })
+          .catch(error => {
+            dispatch(modifyLoader(false));
+            handleError(error, dispatch);
+          });
+        break;
+      case 'calls':
+        doGet(`smcuspor/servCrmHistoryCall`, date)
+          .then(({ data }) => {
+            dispatch(modifyLoader(false));
+            dispatch({
+              type: FETCH_SMCUSPOR_HISTORY_CALL,
+              payload: data,
+            });
+          })
+          .catch(error => {
+            dispatch(modifyLoader(false));
+            handleError(error, dispatch);
+          });
+        break;
+      case 'requests':
+        doGet(`smcuspor/servCrmHistoryApp`, date)
+          .then(({ data }) => {
+            dispatch(modifyLoader(false));
+            dispatch({
+              type: FETCH_SMCUSPOR_HISTORY_SERVICE,
+              payload: data,
+            });
+          })
+          .catch(error => {
+            dispatch(modifyLoader(false));
+            handleError(error, dispatch);
+          });
+        break;
+    }
   };
 }

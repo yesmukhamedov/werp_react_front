@@ -15,6 +15,11 @@ import {
   FETCH_SMPLB,
   FETCH_SMPLB_ADD,
   HISTORY_EDITING_SMSETCT,
+  FETCH_SMCUSPOR,
+  FETCH_SMCUSPOR_HISTORY_ALL,
+  FETCH_SMCUSPOR_HISTORY_APP,
+  FETCH_SMCUSPOR_HISTORY_CALL,
+  FETCH_SMCUSPOR_HISTORY_SERVICE,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -25,6 +30,8 @@ const INITIAL_STATE = {
     type: [],
     addedRequest: [],
   },
+  clientHistory: [],
+  crmHistoryAll: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -156,6 +163,38 @@ export default function(state = INITIAL_STATE, action) {
         dynamicObject: { ...state.dynamicObject, data: [...action.payload] },
       };
     }
+    case FETCH_SMPLB: {
+      console.log('in reducer');
+      return {
+        ...state,
+        dynamicObject: { ...state.dynamicObject, data: [...action.payload] },
+      };
+    }
+
+    case FETCH_SMCUSPOR: {
+      return { ...state, clientHistory: action.payload };
+    }
+
+    case FETCH_SMCUSPOR_HISTORY_ALL: {
+      console.log(action.payload);
+      return { ...state, crmHistoryAll: action.payload };
+    }
+
+    case FETCH_SMCUSPOR_HISTORY_APP: {
+      console.log(action.payload);
+      return { ...state, crmHistoryAll: action.payload };
+    }
+
+    case FETCH_SMCUSPOR_HISTORY_CALL: {
+      console.log(action.payload);
+      return { ...state, crmHistoryAll: action.payload };
+    }
+
+    case FETCH_SMCUSPOR_HISTORY_SERVICE: {
+      console.log(action.payload);
+      return { ...state, crmHistoryAll: action.payload };
+    }
+
     default:
       return state;
   }

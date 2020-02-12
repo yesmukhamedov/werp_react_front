@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   Segment,
@@ -10,6 +10,10 @@ import {
   Checkbox,
   Button,
 } from 'semantic-ui-react';
+import {
+  fetchSmcusporClientHistory,
+  fetchServCrmHistoryAll,
+} from '../../serviceAction';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import { injectIntl } from 'react-intl';
@@ -20,26 +24,71 @@ import './smcuspor.css';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 
 function Smcuspor(props) {
+  const url = window.location.search;
+  const contractNumber = url.slice(url.indexOf('=') + 1);
+
   const emptyHistory = {
     activeButton: true,
     reactColumns: 'all',
-    radioChange: '',
+    startDate,
   };
+
   const [history, setHistory] = useState({ ...emptyHistory });
+  const [startDate, setStartDate] = useState(moment(new Date()));
+  const [endDate, setEndDate] = useState(moment(new Date()));
+
   const {
     intl: { messages },
+    clientHistory = {
+      contractInfo: {},
+    },
+    crmHistoryAll,
   } = props;
 
-  const onInputChange = (event, fieldname) => {
-    setHistory(prev => {
-      const varHistory = { ...prev };
-      switch (fieldname) {
-        case 'radioChange':
-          varHistory.radioChange = event.value;
-          break;
-      }
-      return varHistory;
-    });
+  const {
+    countryName,
+    bukrsName,
+    branchName,
+    servBranchName,
+    tovarSerial,
+    customerName,
+    contactPersonName,
+    addrServ,
+    fullPhone,
+    servCrmCategory,
+    contractDate,
+    installmentDate,
+    dealerName,
+    fitterName,
+    warrantyEndDate,
+    warranty,
+    warrantyEndedMonths,
+    manual,
+    f1Mt,
+    f2Mt,
+    f3Mt,
+    f4Mt,
+    f5Mt,
+  } = clientHistory.contractInfo;
+
+  useEffect(() => {
+    if (contractNumber) {
+      props.fetchSmcusporClientHistory({ contractNumber });
+    }
+  }, [contractNumber]);
+
+  const crmHistoryDateFrom = startDate.format('YYYY-MM-DD');
+  const crmHistoryDateTo = endDate.format('YYYY-MM-DD');
+
+  const dateRange = () => {
+    props.fetchServCrmHistoryAll(
+      {
+        contractNumber,
+        crmHistoryDateFrom,
+        crmHistoryDateTo,
+      },
+      history.reactColumns,
+    );
   };
 
   const handleClick = (data, fieldname) => {
@@ -64,6 +113,18 @@ function Smcuspor(props) {
       }
       return varHistory;
     });
+  };
+
+  const labelColor = () => {
+    if (servCrmCategory === 'ЗЕЛЕНЫЙ') {
+      return 'green';
+    } else if (servCrmCategory === 'ЖЕЛТЫЙ') {
+      return 'yellow';
+    } else if (servCrmCategory === 'КРАСНЫЙ') {
+      return 'red';
+    } else if (servCrmCategory === 'ЧЕРНЫЙ') {
+      return 'black';
+    }
   };
 
   return (
@@ -114,7 +175,11 @@ function Smcuspor(props) {
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
-                      <Input size="small" fluid />
+                      <Input
+                        size="small"
+                        fluid
+                        value={countryName ? countryName : ''}
+                      />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
@@ -124,7 +189,11 @@ function Smcuspor(props) {
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
-                      <Input size="small" fluid />
+                      <Input
+                        size="small"
+                        fluid
+                        value={bukrsName ? bukrsName : ''}
+                      />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
@@ -134,7 +203,11 @@ function Smcuspor(props) {
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
-                      <Input size="small" fluid />
+                      <Input
+                        size="small"
+                        fluid
+                        value={branchName ? branchName : ''}
+                      />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
@@ -144,7 +217,11 @@ function Smcuspor(props) {
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
-                      <Input size="small" fluid />
+                      <Input
+                        size="small"
+                        fluid
+                        value={servBranchName ? servBranchName : ''}
+                      />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
@@ -154,7 +231,11 @@ function Smcuspor(props) {
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
-                      <Input size="small" fluid />
+                      <Input
+                        size="small"
+                        fluid
+                        value={contractNumber ? contractNumber : ''}
+                      />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
@@ -164,7 +245,11 @@ function Smcuspor(props) {
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
-                      <Input size="small" fluid />
+                      <Input
+                        size="small"
+                        fluid
+                        value={tovarSerial ? tovarSerial : ''}
+                      />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
@@ -174,7 +259,11 @@ function Smcuspor(props) {
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
-                      <Input size="small" fluid />
+                      <Input
+                        size="small"
+                        fluid
+                        value={customerName ? customerName : ''}
+                      />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
@@ -184,7 +273,11 @@ function Smcuspor(props) {
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
-                      <Input size="small" fluid />
+                      <Input
+                        size="small"
+                        fluid
+                        value={contactPersonName ? contactPersonName : ''}
+                      />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
@@ -194,7 +287,11 @@ function Smcuspor(props) {
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
-                      <Input size="small" fluid />
+                      <Input
+                        size="small"
+                        fluid
+                        value={addrServ ? addrServ : ''}
+                      />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
@@ -204,17 +301,25 @@ function Smcuspor(props) {
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
-                      <Input size="small" fluid />
+                      <Input
+                        size="small"
+                        fluid
+                        value={fullPhone ? fullPhone : ''}
+                      />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label size="large" basic>
+                      <Label size="large" color={labelColor()}>
                         Категория
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
-                      <Input size="small" fluid />
+                      <Input
+                        size="small"
+                        fluid
+                        value={servCrmCategory ? servCrmCategory : ''}
+                      />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
@@ -224,7 +329,11 @@ function Smcuspor(props) {
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
-                      <Input size="small" fluid />
+                      <Input
+                        size="small"
+                        fluid
+                        value={contractDate ? contractDate : ''}
+                      />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
@@ -234,7 +343,11 @@ function Smcuspor(props) {
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
-                      <Input size="small" fluid />
+                      <Input
+                        size="small"
+                        fluid
+                        value={installmentDate ? installmentDate : ''}
+                      />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
@@ -244,7 +357,11 @@ function Smcuspor(props) {
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
-                      <Input size="small" fluid />
+                      <Input
+                        size="small"
+                        fluid
+                        value={dealerName ? dealerName : ''}
+                      />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
@@ -254,7 +371,11 @@ function Smcuspor(props) {
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
-                      <Input size="small" fluid />
+                      <Input
+                        size="small"
+                        fluid
+                        value={fitterName ? fitterName : ''}
+                      />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
@@ -268,10 +389,20 @@ function Smcuspor(props) {
                         <Table.Body>
                           <Table.Row>
                             <Table.Cell>
-                              <Input size="small" fluid />
+                              <Input
+                                size="small"
+                                fluid
+                                value={warrantyEndDate ? warrantyEndDate : ''}
+                              />
                             </Table.Cell>
                             <Table.Cell>
-                              <Input size="small" fluid />
+                              <Input
+                                size="small"
+                                fluid
+                                value={`${warranty ? warranty : ''} / ${
+                                  warrantyEndedMonths ? warrantyEndedMonths : ''
+                                }`}
+                              />
                             </Table.Cell>
                           </Table.Row>
                         </Table.Body>
@@ -294,10 +425,7 @@ function Smcuspor(props) {
                                 label="Автоматом"
                                 name="changeTerm"
                                 value="auto"
-                                checked={history.radioChange === 'auto'}
-                                onChange={(e, o) =>
-                                  onInputChange(o, 'radioChange')
-                                }
+                                checked={manual === 0}
                               />
                             </Table.Cell>
                             <Table.Cell>
@@ -306,10 +434,7 @@ function Smcuspor(props) {
                                 label="В ручную"
                                 name="changeTerm"
                                 value="manual"
-                                checked={history.radioChange === 'manual'}
-                                onChange={(e, o) =>
-                                  onInputChange(o, 'radioChange')
-                                }
+                                checked={manual === 1}
                               />
                             </Table.Cell>
                           </Table.Row>
@@ -321,11 +446,36 @@ function Smcuspor(props) {
               </Table>
               <Segment>
                 <h3>Срок замены фильтров</h3>
-                <Input size="mini" label="F1" className="input__filter_terms" />
-                <Input size="mini" label="F2" className="input__filter_terms" />
-                <Input size="mini" label="F3" className="input__filter_terms" />
-                <Input size="mini" label="F4" className="input__filter_terms" />
-                <Input size="mini" label="F5" className="input__filter_terms" />
+                <Input
+                  size="mini"
+                  label="F1"
+                  className="input__filter_terms"
+                  value={f1Mt ? f1Mt : '0'}
+                />
+                <Input
+                  size="mini"
+                  label="F2"
+                  className="input__filter_terms"
+                  value={f2Mt ? f2Mt : '0'}
+                />
+                <Input
+                  size="mini"
+                  label="F3"
+                  className="input__filter_terms"
+                  value={f3Mt ? f3Mt : '0'}
+                />
+                <Input
+                  size="mini"
+                  label="F4"
+                  className="input__filter_terms"
+                  value={f4Mt ? f4Mt : '0'}
+                />
+                <Input
+                  size="mini"
+                  label="F5"
+                  className="input__filter_terms"
+                  value={f5Mt ? f5Mt : '0'}
+                />
               </Segment>
               <Button
                 color="blue"
@@ -391,10 +541,12 @@ function Smcuspor(props) {
                       <DatePicker
                         autoComplete="off"
                         deteFormat="DD/MM/YYYY"
-                        selected={moment(new Date())}
+                        selected={startDate}
                         dropdownMode="select"
                         showMonthDropDown
                         showYearDropDown
+                        maxDate={moment(new Date())}
+                        onChange={date => setStartDate(date)}
                       />
                     </Table.Cell>
                     <Table.Cell width="2" verticalAlign="bottom">
@@ -402,14 +554,16 @@ function Smcuspor(props) {
                       <DatePicker
                         autoComplete="off"
                         deteFormat="DD/MM/YYYY"
-                        selected={moment(new Date())}
+                        selected={endDate}
                         dropdownMode="select"
                         showMonthDropDown
                         showYearDropDown
+                        maxDate={moment(new Date())}
+                        onChange={date => setEndDate(date)}
                       />
                     </Table.Cell>
                     <Table.Cell width="2" verticalAlign="bottom">
-                      <Button fluid color="teal">
+                      <Button fluid color="teal" onClick={dateRange}>
                         Применить
                       </Button>
                     </Table.Cell>
@@ -417,7 +571,11 @@ function Smcuspor(props) {
                   </Table.Row>
                 </Table.Body>
               </Table>
-              <HistoryReactTable columns={history.reactColumns} />
+              <HistoryReactTable
+                columns={history.reactColumns}
+                data={crmHistoryAll}
+                initValue={clientHistory.servCrmHistoryAll}
+              />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
@@ -425,12 +583,13 @@ function Smcuspor(props) {
               <Segment>
                 <h2>История редактирований договора</h2>
                 <ReactTableWrapper
+                  data={clientHistory.contractHistory}
                   columns={[
                     {
                       Header: () => (
                         <div style={{ textAlign: 'center' }}>Дата</div>
                       ),
-                      accessor: 'date',
+                      accessor: 'recDate',
                       Cell: row => (
                         <div style={{ textAlign: 'center' }}>{row.value}</div>
                       ),
@@ -439,7 +598,7 @@ function Smcuspor(props) {
                       Header: () => (
                         <div style={{ textAlign: 'center' }}>Изменения</div>
                       ),
-                      accessor: 'date',
+                      accessor: 'operOnName',
                       Cell: row => (
                         <div style={{ textAlign: 'center' }}>{row.value}</div>
                       ),
@@ -448,7 +607,7 @@ function Smcuspor(props) {
                       Header: () => (
                         <div style={{ textAlign: 'center' }}>Операция</div>
                       ),
-                      accessor: 'date',
+                      accessor: 'operTypeName',
                       Cell: row => (
                         <div style={{ textAlign: 'center' }}>{row.value}</div>
                       ),
@@ -457,7 +616,7 @@ function Smcuspor(props) {
                       Header: () => (
                         <div style={{ textAlign: 'center' }}>Старый</div>
                       ),
-                      accessor: 'date',
+                      accessor: 'oldText',
                       Cell: row => (
                         <div style={{ textAlign: 'center' }}>{row.value}</div>
                       ),
@@ -466,7 +625,7 @@ function Smcuspor(props) {
                       Header: () => (
                         <div style={{ textAlign: 'center' }}>Новый</div>
                       ),
-                      accessor: 'date',
+                      accessor: 'newText',
                       Cell: row => (
                         <div style={{ textAlign: 'center' }}>{row.value}</div>
                       ),
@@ -475,7 +634,7 @@ function Smcuspor(props) {
                       Header: () => (
                         <div style={{ textAlign: 'center' }}>Примечание</div>
                       ),
-                      accessor: 'date',
+                      accessor: 'info',
                       Cell: row => (
                         <div style={{ textAlign: 'center' }}>{row.value}</div>
                       ),
@@ -486,7 +645,7 @@ function Smcuspor(props) {
                           Изменен сотрудником
                         </div>
                       ),
-                      accessor: 'date',
+                      accessor: 'userName',
                       Cell: row => (
                         <div style={{ textAlign: 'center' }}>{row.value}</div>
                       ),
@@ -496,7 +655,6 @@ function Smcuspor(props) {
                   pages={2}
                   previousText={messages['Table.Previous']}
                   nextText={messages['Table.Next']}
-                  showPagination={true}
                   className="-striped -highlight"
                   pageSizeOptions={[20, 30, 40]}
                   loadingText={messages['Table.Next']}
@@ -514,7 +672,13 @@ function Smcuspor(props) {
   );
 }
 function mapStateToProps(state) {
-  return {};
+  return {
+    clientHistory: state.serviceReducer.clientHistory.data,
+    crmHistoryAll: state.serviceReducer.crmHistoryAll.data,
+  };
 }
 
-export default connect(mapStateToProps, {})(injectIntl(Smcuspor));
+export default connect(mapStateToProps, {
+  fetchSmcusporClientHistory,
+  fetchServCrmHistoryAll,
+})(injectIntl(Smcuspor));
