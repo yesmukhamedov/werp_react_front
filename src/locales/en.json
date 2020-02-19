@@ -784,5 +784,6 @@
   "factory_number": "Factory number",
   "full_name_of_client": "Name of client",
   "customer_key": "Customer key",
-  "telephone": "Telephone"
+  "telephone": "Telephone",
+  "choose_columns": "Choose columns"
 }

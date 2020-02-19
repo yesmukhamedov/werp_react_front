@@ -1,171 +1,206 @@
-import React from 'react';
-import ReactTableWrapper from '../../../utils/ReactTableWrapper';
+//Excuse me for hard code   :-)  !
+//Excuse me for hard code   :-O  !
+//Excuse me for hard code   :-D  !
+
+import React, { useState, useEffect } from 'react';
 import 'react-table/react-table.css';
-import { Container, Segment, Icon, Button } from 'semantic-ui-react';
+import DataTable from './table';
+import { Checkbox, Icon, Button, Table, Modal } from 'semantic-ui-react';
 const List = props => {
-  const { messages } = props;
-  let dynamicObject = [
+  //When first login and just login and when refresh page( onClick F5 )
+  useEffect(() => {
+    const tableColumns = localStorage.getItem(localStorage.username) || columns;
+    tableColumns.length === columns.length
+      ? setColumnsName(tableColumns)
+      : setColumnsName(JSON.parse(tableColumns));
+  }, []);
+  const {
+    messages,
+    dynamicObject,
+    fetchSmsrcus,
+    turnOnReactFetch,
+    searchParams,
+  } = props;
+
+  //When first login
+  let allColumns = [
+    {
+      id: 0,
+      accessor: 'branchName',
+      show: true,
+    },
     {
       id: 1,
-      bukrs: 'AURA',
-      branch: 'ALM-CEB',
-      CN: 1,
-      factoryNumber: 159,
-      date: '11.11.11',
-      telephone: '87075790515',
-      address: 'mkd.Mamyr - 4 №71',
-      INN: '000604501282',
-      name: 'Aura@Aura',
-      finNumber: '007-001',
+      accessor: 'contractNumber',
+      show: true,
+    },
+    { id: 2, accessor: 'tovarSerial', show: true },
+    {
+      id: 3,
+      accessor: 'contractDate',
+      show: true,
+    },
+    {
+      id: 4,
+      accessor: 'contractStatusName',
+      show: true,
+    },
+    {
+      id: 5,
+      accessor: 'customerName',
+      show: true,
+    },
+    {
+      id: 6,
+      accessor: 'iinBin',
+      show: true,
+    },
+    {
+      id: 7,
+      accessor: 'fullAddress',
+      show: true,
+    },
+    {
+      id: 8,
+      accessor: 'fullPhone',
+      show: true,
+    },
+    {
+      id: 9,
+      accessor: 'customerStory',
+      show: true,
     },
   ];
-  let columns = [
+
+  let headersName = [
     {
-      Header: 'ID',
-      accessor: 'id',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
-      filterAll: true,
-      width: 200,
-      maxWidth: 150,
-      minWidth: 100,
-    },
-    {
-      Header: messages['bukrs'],
-      accessor: 'bukrs', //Name Ф
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
-      filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
-    },
-    {
+      id: 0,
       Header: messages['brnch'],
-      accessor: 'branch', //Name
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
-      filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
     {
+      id: 1,
       Header: 'CN',
-      accessor: 'CN', //Name
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
-      filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
     {
+      id: 2,
       Header: messages['factory_number'],
-      accessor: 'factoryNumber',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
-      filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
     {
+      id: 3,
       Header: messages['Table.Date'],
-      accessor: 'date',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
-      filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
     {
+      id: 4,
       Header: messages['financial_status'],
-      accessor: 'finNumber',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
-      filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
     {
+      id: 5,
       Header: messages['full_name_of_client'],
-      accessor: 'name',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
-      filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
     {
+      id: 6,
       Header: messages['customer_key'],
-      accessor: 'INN',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
-      filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
     {
+      id: 7,
       Header: messages['address'],
-      accessor: 'address',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
-      filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
     {
+      id: 8,
       Header: messages['telephone'],
-      accessor: 'telephone',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
-      filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
     {
+      id: 9,
       Header: messages['customer_story'],
-      Cell: () => (
-        <div style={{ textAlign: 'center' }}>
-          <Button size="mini" icon>
-            {' '}
-            <Icon
-              name="address card"
-              size="large"
-              color="black"
-              onClick={() => {
-                console.log('Next Page');
-              }}
-            />
-          </Button>
-        </div>
-      ),
-      width: 150,
-      filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
   ];
+
+  const columns =
+    JSON.parse(localStorage.getItem(localStorage.username)) || allColumns;
+
+  const [open, setOpen] = useState(false);
+
+  const [columnsName, setColumnsName] = useState(columns);
+
+  const handleOpen = () => {
+    setOpen(!open);
+  };
+  const handleSave = () => {
+    handleOpen();
+    localStorage.setItem(localStorage.username, JSON.stringify(columnsName));
+  };
+
+  const handleClose = () => {
+    handleOpen();
+    setColumnsName(columns);
+  };
+  const tableRows = () => {
+    let rows = columnsName.map(e => {
+      return (
+        <Table.Row key={e.id}>
+          <Table.Cell>{headersName[e.id].Header}</Table.Cell>
+          <Table.Cell>
+            <Checkbox
+              checked={e.show}
+              onChange={() => {
+                checkColumns(e);
+              }}
+            />{' '}
+          </Table.Cell>
+        </Table.Row>
+      );
+    });
+    return rows;
+  };
+
+  const checkColumns = e => {
+    setColumnsName(prev => {
+      let columns = [...prev];
+      columns.map(el => {
+        if (el.accessor === e.accessor) {
+          el.show = !el.show;
+        }
+      });
+      return columns;
+    });
+  };
   return (
     <div>
-      <Container fluid style={{ marginTop: '2em' }}>
-        <ReactTableWrapper
-          filterable
-          data={dynamicObject}
-          columns={columns}
-          defaultPageSize={20}
-          showPagination={true}
-          className="-striped -highlight"
-        />
-      </Container>
+      <b>{messages['columns']}</b> <br />
+      <Button color="blue" onClick={handleOpen} icon labelPosition="left">
+        <Icon name="checkmark box" />
+        {messages['choose_columns']}
+      </Button>
+      <Modal size="mini" open={open}>
+        <Modal.Header align="center">
+          {' '}
+          {messages['choose_columns']}{' '}
+        </Modal.Header>
+        <Modal.Content>
+          <Table singleLine>
+            <Table.Body>{tableRows()}</Table.Body>
+          </Table>
+        </Modal.Content>
+        <Modal.Actions>
+          <p align="center">
+            <Button
+              negative
+              onClick={handleClose}
+              content={messages['BTN__CANCEL']}
+            />
+            <Button positive content="OK" onClick={handleSave} />
+          </p>
+        </Modal.Actions>
+      </Modal>
+      <DataTable
+        columnsName={columnsName}
+        messages={messages}
+        dynamicObject={dynamicObject}
+        fetchSmsrcus={fetchSmsrcus}
+        turnOnReactFetch={turnOnReactFetch}
+        searchParams={searchParams}
+        headersName={headersName}
+      />
     </div>
   );
 };

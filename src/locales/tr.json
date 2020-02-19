@@ -784,5 +784,6 @@
   "factory_number": "Fabrika numarası",
   "full_name_of_client": "Müşteri adı",
   "customer_key": "Customer key",
-  "telephone": "Telefon numarası"
+  "telephone": "Telefon numarası",
+  "choose_columns": "Choose columns"
 }

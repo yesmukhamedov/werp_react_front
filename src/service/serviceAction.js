@@ -31,6 +31,10 @@ export const FETCH_SMCUSPOR_HISTORY_APP = 'FETCH_SMCUSPOR_HISTORY_APP';
 export const FETCH_SMCUSPOR_HISTORY_CALL = 'FETCH_SMCUSPOR_HISTORY_CALL';
 export const FETCH_SMCUSPOR_HISTORY_SERVICE = 'FETCH_SMCUSPOR_HISTORY_SERVICE';
 
+export const FETCH_SMSRCUS = 'FETCH_SMSRCUS';
+export const FETCH_TOVAR_CATEGORYS = 'FETCH_TOVAR_CATEGORYS';
+export const FETCH_CONTRACT_STATUS = 'FETCH_CONTRACT_STATUS';
+
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 export function changeDynObjService(a_obj) {
@@ -183,20 +187,16 @@ export function fetchDynObjService(url, params) {
   };
 }
 export function fetchSmsetct(searchParams) {
-  console.log('orderBy');
-  console.log('smCetStSearch', searchParams);
   return dispatch => {
     dispatch(modifyLoader(true));
     doGet(`smsetct/view?direction=DESC&orderBy=id`, searchParams)
       .then(({ data }) => {
-        console.log('dataAction', data);
         dispatch({
           type: FETCH_SMSETCT,
           payload: data.data,
         });
         doGet(`smsetct/audit?direction=DESC&orderBy=rev`, searchParams)
           .then(({ data }) => {
-            console.log('dataHistory', data.data);
             dispatch(modifyLoader(false));
             dispatch({
               type: HISTORY_EDITING_SMSETCT,
@@ -212,13 +212,10 @@ export function fetchSmsetct(searchParams) {
       });
   };
 }
-export const postSmsetct = (postParams, fetchSmsetct, searchParams) => {
+export function postSmsetct(postParams, fetchSmsetct, searchParams) {
   return function(dispatch) {
-    console.log('postParams', postParams);
-
     doPost(`smsetct/create`, postParams)
       .then(({ data }) => {
-        console.log('dataAdd', data);
         if (data & (data.status === 'success')) {
           dispatch(notify('success', errorTable[`101${language}`]));
         } else {
@@ -232,15 +229,13 @@ export const postSmsetct = (postParams, fetchSmsetct, searchParams) => {
         handleError(error, dispatch);
       });
   };
-};
+}
 
 export function editSmsetct(editParams, searchParams, fetchSmsetct) {
-  console.log('EdirParams', editParams);
   return function(dispatch) {
     doPut(`smsetct/update`, editParams)
       .then(data => {
         if (data & (data.status === 'success')) {
-          console.log('responseEdit', data);
           dispatch(
             notify(
               'success',
@@ -257,7 +252,6 @@ export function editSmsetct(editParams, searchParams, fetchSmsetct) {
             ),
           );
         }
-        console.log('SEARCH', searchParams);
         fetchSmsetct(searchParams);
       })
       .catch(e => {
@@ -420,5 +414,59 @@ export function fetchServCrmHistoryAll(date, type) {
           });
         break;
     }
+  };
+}
+export function fetchSmsrcus(searchParams) {
+  console.log('searchParams', searchParams);
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('smsrcus/list', searchParams)
+      .then(({ data }) => {
+        console.log('DATA IN ACTION', data);
+        dispatch(modifyLoader(false));
+        if (data.status === 200) {
+          dispatch({
+            type: FETCH_SMSRCUS,
+            payload: data.data,
+          });
+        }
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchTovarCategorys() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('smcs/categoryId')
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_TOVAR_CATEGORYS,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchContractStatus() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('ContractStatus/view')
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_CONTRACT_STATUS,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
   };
 }

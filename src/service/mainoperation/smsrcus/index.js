@@ -5,20 +5,21 @@ import BranchF4Advanced from '../../../reference/f4/branch/BranchF4Advanced';
 import List from './list';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import OutputErrors from '../../../general/error/outputErrors';
 import {
-  f4FetchCountryList,
-  f4FetchWerksBranchList,
-} from '../../../reference/f4/f4_action';
+  fetchSmsrcus,
+  fetchTovarCategorys,
+  clearDynObjService,
+  fetchContractStatus,
+} from '../../serviceAction';
+import { f4FetchWerksBranchList } from '../../../reference/f4/f4_action';
 import {
   Segment,
   Container,
   Header,
   Button,
-  Grid,
   Dropdown,
   Form,
-  Label,
-  Input,
   Icon,
   Divider,
 } from 'semantic-ui-react';
@@ -32,45 +33,59 @@ const Smsrcus = props => {
     companyList = [],
     language,
     branchList,
+    fetchSmsrcus,
+    dynamicObject,
+    fetchTovarCategorys,
+    tovarCategorys,
+    clearDynObjService,
+    fetchContractStatus,
+    contractStatus,
   } = props;
-  const emptySearch = {
-    bukrs: '',
-    productCategory: '',
-    finStatus: '',
-  };
+
+  useEffect(() => {
+    fetchTovarCategorys();
+    fetchContractStatus();
+    clearDynObjService();
+  }, []);
+
   const [f4BranchIsOpen, setF4BranchIsOpen] = useState(false);
-  const [selectedBranches, setSelectedBranches] = useState([]);
   const date = new Date();
   const y = date.getFullYear();
   const m = date.getMonth();
   const [dateStart, setStartDates] = useState(moment(new Date(y - 1, m, 1)));
   const [endDates, setEndDates] = useState(moment(new Date()));
   const [searchParams, setSearchParams] = useState({ ...emptySearch });
-
+  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
+  const [errors, setErrors] = useState([]);
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  let emptySearch = {
+    branchId: '',
+    bukrs: '',
+  };
   const handleInputSearch = (o, fieldName) => {
     setSearchParams(prev => {
       let searchArr = { ...prev };
-
-      console.log('object', o.value);
-      console.log('Name', fieldName);
       switch (fieldName) {
         case 'company':
           {
             searchArr.bukrs = o.value;
           }
           break;
-        case 'productCategory':
+        case 'tovarCategorys':
           {
-            searchArr.productCategory = o.value;
+            console.log('o.value', o.value);
+            searchArr.tovarCategorys = o.value;
           }
           break;
         case 'finStatus':
           {
-            searchArr.finStatus = o.value;
+            console.log('o.value', o.value);
+            searchArr.contractStatusIds = o.value.join();
           }
+
           break;
         default: {
-          searchArr[fieldName] = o.value;
+          searchArr[fieldName] = o.value.value.join();
         }
       }
       return searchArr;
@@ -78,19 +93,38 @@ const Smsrcus = props => {
   };
 
   const clickedSearch = () => {
-    const startDate = `${moment(dateStart).date()}.${moment(dateStart).month() +
-      1}.${moment(dateStart).year()}`;
+    let errs = validateSearch();
+    setTurnOnReactFetch(true);
+    const contractDateFrom = `${moment(dateStart).year()}-${moment(
+      dateStart,
+    ).month() + 1}-${moment(dateStart).date()}`;
 
-    const endDate = `${moment(endDates).date()}.${moment(endDates).month() +
-      1}.${moment(endDates).year()}`;
-    let branchId = [];
-
-    for (let wa of selectedBranches) {
-      branchId.push(wa.value);
+    const contractDateTo = `${moment(endDates).year()}-${moment(
+      endDates,
+    ).month() + 1}-${moment(endDates).date()}`;
+    if (errs === null || errs === undefined || errs.length === 0) {
+      fetchSmsrcus({ ...searchParams, contractDateFrom, contractDateTo });
     }
-    console.log('searchParams', searchParams);
-    console.log('s', branchId);
-    console.log('startDate = ', startDate, 'endDate = ', endDate);
+    setErrors(() => errs);
+  };
+
+  const validateSearch = () => {
+    let errors = [];
+    if (
+      searchParams.bukrs === null ||
+      searchParams.bukrs === undefined ||
+      !searchParams.bukrs
+    )
+      errors.push(errorTable[`5${language}`]);
+
+    if (
+      searchParams.branchId === null ||
+      searchParams.branchId === undefined ||
+      !searchParams.branchId
+    )
+      errors.push(errorTable[`5${language}`]);
+
+    return errors;
   };
 
   return (
@@ -105,11 +139,9 @@ const Smsrcus = props => {
         }}
       >
         <Segment clearing tertiary>
-          {' '}
           <Header as="h2" floated="left">
-            {' '}
-            {messages['customer_search']}{' '}
-          </Header>{' '}
+            {messages['customer_search']}
+          </Header>
         </Segment>
         <Divider />
         <Form>
@@ -129,19 +161,17 @@ const Smsrcus = props => {
               />
             </Form.Field>
 
-            <Form.Field>
-              <label>
-                {messages['selectedBranches']} #{selectedBranches.length}
-              </label>
-
+            <Form.Field required>
+              <label>{messages['brnch']}</label>
               <Button
                 color="blue"
+                fluid
                 onClick={() => setF4BranchIsOpen(true)}
                 icon
                 labelPosition="left"
               >
                 <Icon name="checkmark box" />
-                {messages['Task.BranchError']}
+                {messages['select']}
               </Button>
             </Form.Field>
 
@@ -152,31 +182,39 @@ const Smsrcus = props => {
               isOpen={f4BranchIsOpen}
               onClose={selectedBranches => {
                 setF4BranchIsOpen(false);
-                setSelectedBranches(selectedBranches);
+                if (selectedBranches.length !== 0) {
+                  setSearchParams(prev => {
+                    const srchParams = { ...prev };
+                    srchParams.branchId = selectedBranches[0].value;
+                    return srchParams;
+                  });
+                }
               }}
-              selection={'multiple'}
+              selection="single"
             />
             <Form.Field>
               <label> {messages['product_category']} </label>
-
               <Dropdown
+                onChange={(e, o) => {
+                  handleInputSearch(o, 'tovarCategorys');
+                }}
                 placeholder={messages['product_category']}
                 fluid
                 search
                 selection
-                onChange={o => {
-                  handleInputSearch(o, 'productCategory');
-                }}
+                multiple
+                options={getTovarCategotys(tovarCategorys)}
               />
             </Form.Field>
             <Form.Field>
               <label> {messages['financial_status']} </label>
-
               <Dropdown
                 placeholder={messages['financial_status']}
                 fluid
                 search
                 selection
+                multiple
+                options={getContractStatus(contractStatus)}
                 onChange={(e, o) => {
                   handleInputSearch(o, 'finStatus');
                 }}
@@ -184,9 +222,8 @@ const Smsrcus = props => {
             </Form.Field>
             <Form.Field>
               <label>
-                {' '}
-                {messages['Form.DateFrom']}{' '}
-                <Icon name="calendar alternate outline" />{' '}
+                {messages['Form.DateFrom']}
+                <Icon name="calendar alternate" />
               </label>
               <DatePicker
                 autoComplete="off"
@@ -196,46 +233,44 @@ const Smsrcus = props => {
                 showYearDropdown
                 selected={dateStart}
                 onChange={date => setStartDates(date)}
-                dateFormat="DD.MM.YYYY"
+                dateFormat="YYYY.MM.DD"
               />
             </Form.Field>
             <Form.Field>
               <label>
-                {' '}
-                {messages['Form.DateTo']}{' '}
-                <Icon name="calendar alternate outline" />{' '}
+                {messages['Form.DateTo']}
+                <Icon name="calendar alternate" />
               </label>
               <DatePicker
                 autoComplete="off"
                 locale={language}
+                dropdownMode="select" //timezone="UTC"
                 showMonthDropdown
                 showYearDropdown
-                dropdownMode="select" //timezone="UTC"
                 selected={endDates}
                 onChange={date => setEndDates(date)}
-                dateFormat="DD.MM.YYYY"
+                dateFormat="YYYY.MM.DD"
               />
             </Form.Field>
             <Form.Field>
               <label>
-                {' '}
                 <br />
               </label>
-              <Button
-                color="blue"
-                onClick={clickedSearch}
-                icon
-                labelPosition="left"
-              >
+              <Button color="blue" onClick={clickedSearch} icon>
                 <Icon name="search" />
-                {messages['search']}
               </Button>
             </Form.Field>
           </Form.Group>
         </Form>
-
+        <OutputErrors errors={errors} />
         <Divider />
-        <List messages={messages} />
+        <List
+          messages={messages}
+          dynamicObject={dynamicObject}
+          fetchSmsrcus={fetchSmsrcus}
+          turnOnReactFetch={turnOnReactFetch}
+          searchParams={searchParams}
+        />
       </Container>
     </div>
   );
@@ -254,13 +289,62 @@ const getCompanyOptions = companyList => {
   });
   return out;
 };
+
+const getTovarCategotys = tovarCategorysList => {
+  if (!tovarCategorysList) {
+    return [];
+  }
+  let out = tovarCategorysList.map(c => {
+    let text;
+    switch (localStorage.language) {
+      case 'ru':
+        text = c.nameRu;
+        break;
+
+      case 'en':
+        text = c.nameEn;
+        break;
+
+      case 'tr':
+        text = c.nameTr;
+        break;
+    }
+    return {
+      key: c.id,
+      text: text,
+      value: c.id,
+    };
+  });
+  return out;
+};
+
+const getContractStatus = contractStatusList => {
+  if (!contractStatusList) {
+    return [];
+  }
+  let out = contractStatusList.map(c => {
+    return {
+      key: c.id,
+      text: c.name,
+      value: c.id,
+    };
+  });
+  return out;
+};
 function mapStateToProps(state) {
   return {
     language: state.locales.lang,
-    branchList: state.userInfo.branchOptionsService,
+    branchList: state.userInfo.branchOptionsAll,
     companyList: state.userInfo.companyOptions,
+    dynamicObject: state.serviceReducer.dynamicObject,
+    tovarCategorys: state.serviceReducer.tovarCategorys,
+    contractStatus: state.serviceReducer.contractStatus,
   };
 }
 export default connect(mapStateToProps, {
   f4FetchWerksBranchList,
+  fetchSmsrcus,
+  fetchTovarCategorys,
+  clearDynObjService,
+  fetchContractStatus,
 })(injectIntl(Smsrcus));

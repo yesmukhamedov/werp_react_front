@@ -75,14 +75,11 @@ export function signinUser({ username, password }, language) {
         localStorage.setItem('token_time', new Date().getTime());
 
         axios
-          .get(
-            `${ROOT_URL}/api/v1/werp/mreference/general/error_table/list_map`,
-            {
-              headers: {
-                Authorization: access_token,
-              },
+          .get(`${ROOT_URL}/api/error_table`, {
+            headers: {
+              Authorization: access_token,
             },
-          )
+          })
 
           .then(res => {
             let err = res.data.data;

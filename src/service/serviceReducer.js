@@ -19,12 +19,16 @@ import {
   FETCH_SMCUSPOR_HISTORY_ALL,
   FETCH_SMCUSPOR_HISTORY_APP,
   FETCH_SMCUSPOR_HISTORY_CALL,
-  FETCH_SMCUSPOR_HISTORY_SERVICE,
+  FETCH_SMSRCUS,
+  FETCH_TOVAR_CATEGORYS,
+  FETCH_CONTRACT_STATUS,
 } from './serviceAction';
 
 const INITIAL_STATE = {
   dynamicObject: {},
   historyDynamicObject: {},
+  tovarCategorys: [],
+  contractStatus: [],
   data: {
     service: [],
     type: [],
@@ -163,6 +167,7 @@ export default function(state = INITIAL_STATE, action) {
         dynamicObject: { ...state.dynamicObject, data: [...action.payload] },
       };
     }
+
     case FETCH_SMPLB: {
       console.log('in reducer');
       return {
@@ -195,6 +200,26 @@ export default function(state = INITIAL_STATE, action) {
       return { ...state, crmHistoryAll: action.payload };
     }
 
+    case FETCH_SMSRCUS: {
+      return {
+        ...state,
+        dynamicObject: action.payload,
+      };
+    }
+
+    case FETCH_TOVAR_CATEGORYS: {
+      return {
+        ...state,
+        tovarCategorys: [...action.payload],
+      };
+    }
+
+    case FETCH_CONTRACT_STATUS: {
+      return {
+        ...state,
+        contractStatus: [...action.payload],
+      };
+    }
     default:
       return state;
   }

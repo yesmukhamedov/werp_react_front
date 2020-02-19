@@ -172,14 +172,9 @@ export default function List(props) {
   };
   // Получить ID Продукта через text
   const getProductId = (products, productName) => {
-    let a = 'ROBOCLEAN - 114 F';
-    let v = 'ROBOCLEAN - 114 F';
     if (productName !== null) {
       products.map(e => {
-        console.log('productName', productName);
-        console.log('e.name', e.name);
         if (productName === e.name.toUpperCase()) {
-          console.log('Success');
           productName = e.contract_type_id;
         }
       });
@@ -192,124 +187,76 @@ export default function List(props) {
       Header: 'ID',
       accessor: 'id',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
       filterAll: true,
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
     },
     {
       Header: messages['bukrs'],
       accessor: 'bukrs', //Name Ф
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
       filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
     {
       Header: messages['country'],
       accessor: 'countryId', //Name
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
       filterAll: true,
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
     },
     {
       Header: messages['brnch'],
       accessor: 'branchId', //Name
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
       filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
     {
       Header: messages['TBL_H__PRODUCT'],
       accessor: 'matnr',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
       filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
     {
       Header: messages['configuration'] + ' F-1',
       accessor: 'f1',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
       filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
     {
       Header: messages['configuration'] + ' F-2',
       accessor: 'f2',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
       filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
     {
       Header: messages['configuration'] + 'F-3',
       accessor: 'f3',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
       filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
     {
       Header: messages['configuration'] + ' F-4',
       accessor: 'f4',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
       filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
 
     {
       Header: messages['configuration'] + ' F-5',
       accessor: 'f5',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
       filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
 
     {
       Header: messages['configuration'] + ' F-6',
       accessor: 'f6',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
       filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
 
     {
       Header: messages['configuration'] + ' F-7',
       accessor: 'f7',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
       filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
 
     {
@@ -326,9 +273,6 @@ export default function List(props) {
           </Button>
         </div>
       ),
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
   ];
 
@@ -338,36 +282,24 @@ export default function List(props) {
       accessor: 'rev',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
-      width: 100,
-      maxWidth: 150,
-      minWidth: 100,
     },
     {
       Header: 'ID',
       accessor: 'id',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
-      width: 200,
-      maxWidth: 250,
-      minWidth: 100,
     },
     {
       Header: messages['Task.Company'],
       accessor: 'bukrs',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
-      width: 200,
-      maxWidth: 250,
-      minWidth: 100,
     },
     {
       Header: messages['country'],
       accessor: 'countryId',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
-      width: 200,
-      maxWidth: 250,
-      minWidth: 100,
     },
     {
       Header: messages['brnch'],
@@ -375,9 +307,6 @@ export default function List(props) {
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
-      width: 200,
-      maxWidth: 250,
-      minWidth: 100,
     },
     {
       Header: messages['TBL_H__PRODUCT'],
@@ -385,45 +314,30 @@ export default function List(props) {
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 150,
       filterAll: true,
-      width: 150,
-      maxWidth: 150,
-      minWidth: 100,
     },
     {
       Header: messages['Table.Note'],
       accessor: 'description',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
-      width: 200,
-      maxWidth: 250,
-      minWidth: 100,
     },
     {
       Header: messages['Form.Date'],
       accessor: 'revsttmp',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
-      width: 200,
-      maxWidth: 250,
-      minWidth: 100,
     },
     {
       Header: messages['changed_by_employee'],
       accessor: 'fullname',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
-      width: 200,
-      maxWidth: 250,
-      minWidth: 100,
     },
     {
       Header: messages['operationType'],
       accessor: 'revType',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
-      width: 200,
-      maxWidth: 250,
-      minWidth: 100,
     },
   ];
 

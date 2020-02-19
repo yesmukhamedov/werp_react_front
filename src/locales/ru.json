@@ -783,5 +783,6 @@
   "factory_number": "Заводской номер",
   "full_name_of_client": "ФИО клиента",
   "customer_key": "ИИН клиента",
-  "telephone": "Телефон"
+  "telephone": "Телефон",
+  "choose_columns": "Выбрать столбцов"
 }

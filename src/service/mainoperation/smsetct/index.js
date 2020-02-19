@@ -6,7 +6,6 @@ import {
   f4FetchWerksBranchList,
   f4FetchConTypeList,
 } from '../../../reference/f4/f4_action';
-
 import BranchF4Advanced from '../../../reference/f4/branch/BranchF4Advanced';
 import {
   postSmsetct,
@@ -24,11 +23,9 @@ import {
   Button,
   Container,
   Modal,
-  Grid,
   Form,
   Dropdown,
   Input,
-  Label,
 } from 'semantic-ui-react';
 import format from 'string-format';
 const Smsetct = props => {
@@ -69,13 +66,11 @@ const Smsetct = props => {
     countryList = [],
     dynamicObject,
     historyDynamicObject,
-    products,
     postSmsetct,
     editSmsetct,
     clearDynObjService,
   } = props;
 
-  let searchPars;
   //componentDidMount
   useEffect(() => {
     clearDynObjService();
@@ -100,8 +95,6 @@ const Smsetct = props => {
     let branchId = [];
     let errs = [];
     errs = validateSearch();
-    console.log('errorsValidate', errs);
-    console.log('Search', searchParams.bukrs.length);
     for (let wa of selectedBranches) {
       branchId.push(wa.value);
     }
@@ -123,12 +116,11 @@ const Smsetct = props => {
       varSmSetCt.searchText = query;
       return varSmSetCt;
     });
-    searchPars = searchParams.bukrs;
 
     if (errs === null || errs === undefined || errs.length === 0) {
       fetchSmsetct({ ...query });
     }
-    setErrors(() => errs);
+    setErrors(errs);
   };
 
   const handleInputAdd = (o, fieldName) => {
@@ -193,22 +185,21 @@ const Smsetct = props => {
     let errs = [];
     errs = validateAdd();
     if (errs === null || errs === undefined || errs.length === 0) {
-      console.log('smeStCtAdd', postParams);
       postSmsetct({ ...postParams }, fetchSmsetct, {
         ...searchParams.searchText,
       });
     }
-    setErrors(() => errs);
+    setErrors(errs);
   };
 
   const handleOpen = () => {
-    setErrors(() => []);
+    setErrors([]);
     setShow(true);
   };
 
   const handleClose = () => {
     setShow(false);
-    setErrors(() => []);
+    setErrors([]);
   };
 
   const validateAdd = () => {
@@ -218,8 +209,6 @@ const Smsetct = props => {
       f3,
       f4,
       f5,
-      f6,
-      f7,
       countryId,
       bukrs,
       branchId,
@@ -252,12 +241,6 @@ const Smsetct = props => {
       errors.push(errorTable[`132${language}`]);
     }
     if (f5 === null || f5 === undefined || !f5) {
-      errors.push(errorTable[`132${language}`]);
-    }
-    if (f6 === null || f6 === undefined || !f6) {
-      errors.push(errorTable[`132${language}`]);
-    }
-    if (f7 === null || f7 === undefined || !f7) {
       errors.push(errorTable[`132${language}`]);
     }
     if (description === null || description === undefined || !description) {
@@ -341,7 +324,9 @@ const Smsetct = props => {
                       <Dropdown
                         search
                         selection
-                        options={getProductOptions(productList) || []}
+                        options={
+                          getProductOptions(productList, postParams.bukrs) || []
+                        }
                         onChange={(e, o) => handleInputAdd(o, 'matnr')}
                       />
                       <Form.Field
@@ -384,13 +369,11 @@ const Smsetct = props => {
                         label={messages['configuration'] + ' F-5'}
                       />
                       <Form.Field
-                        required
                         onChange={(e, o) => handleInputAdd(o, 'F6')}
                         control={Input}
                         label={messages['configuration'] + ' F-6'}
                       />
                       <Form.Field
-                        required
                         onChange={(e, o) => handleInputAdd(o, 'F7')}
                         control={Input}
                         label={messages['configuration'] + ' F-7'}
@@ -425,7 +408,7 @@ const Smsetct = props => {
         </Segment>
 
         <Form>
-          <Form.Group widths={7}>
+          <Form.Group widths={8}>
             <Form.Field required>
               <label>{messages['bukrs']}</label>
               <Dropdown
@@ -443,9 +426,9 @@ const Smsetct = props => {
               <label>
                 {messages['brnch']} #{selectedBranches.length}
               </label>
-
               <Button
                 color="teal"
+                fluid
                 onClick={() => setF4BranchIsOpen(true)}
                 icon
                 labelPosition="left"
@@ -456,15 +439,11 @@ const Smsetct = props => {
             </Form.Field>
 
             <Form.Field>
-              <label> {messages['search']} </label>
-              <Button
-                color="teal"
-                onClick={clickSearch}
-                icon
-                labelPosition="left"
-              >
+              <label>
+                <br />
+              </label>
+              <Button color="teal" onClick={clickSearch} icon>
                 <Icon name="search" />
-                {messages['search']}
               </Button>
             </Form.Field>
 
@@ -478,16 +457,12 @@ const Smsetct = props => {
           companyOptions={companyOptions}
           branchOptions={branchOptions}
           countryList={countryList}
-          products={products}
           getCountryOptions={getCountryOptions}
           getProductOptions={getProductOptions}
           productList={productList}
           editSmsetct={editSmsetct}
-          errorTable={errorTable}
-          language={language}
           searchParams={searchParams}
           fetchSmsetct={fetchSmsetct}
-          searchpars={searchPars}
         />
       </Container>
 
@@ -519,23 +494,31 @@ const getCountryOptions = countryList => {
   return out;
 };
 
-const getProductOptions = productList => {
+const getProductOptions = (productList, bukrs) => {
   const productLst = productList;
-  if (!productLst) {
+  if (!productLst || bukrs === '') {
     return [];
   }
   let out = productLst.map(c => {
-    return {
-      key: c.contract_type_id,
-      text: c.name,
-      value: c.contract_type_id,
-    };
+    if (bukrs === c.bukrs) {
+      return {
+        key: c.contract_type_id,
+        text: c.name,
+        value: c.contract_type_id,
+      };
+    }
+    return {};
   });
   return out;
 };
 function mapStateToProps(state) {
-  console.log('state', state.f4.contractTypeList);
-  console.log('counrty', state.f4.countryList);
+  console.log('state.f4.countryList', state.f4.countryList);
+  console.log(
+    'state.userInfo.branchOptionsService',
+    state.userInfo.branchOptionsService,
+  );
+  console.log('companyOption', state.userInfo.companyOptions);
+  console.log('state.f4.contractTypeList', state.f4.contractTypeList);
   return {
     language: state.locales.lang,
     countryList: state.f4.countryList,
