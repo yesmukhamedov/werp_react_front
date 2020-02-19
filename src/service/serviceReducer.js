@@ -144,16 +144,6 @@ export default function(state = INITIAL_STATE, action) {
         },
       };
 
-    // case FETCH_SMSETPP_POST:
-    //   console.log('object', action.payload);
-    //   return {
-    //     ...state,
-    //     data: {
-    //       ...state.data,
-    //       service: [...state.data.service, action.payload.data],
-    //     },
-    //   };
-
     case FETCH_SRLS:
       console.log('SRLS REDUCER', action.payload);
       return {
@@ -195,10 +185,10 @@ export default function(state = INITIAL_STATE, action) {
       return { ...state, crmHistoryAll: action.payload };
     }
 
-    case FETCH_SMCUSPOR_HISTORY_SERVICE: {
+    /*case FETCH_SMCUSPOR_HISTORY_SERVICE: {
       console.log(action.payload);
       return { ...state, crmHistoryAll: action.payload };
-    }
+    }*/
 
     case FETCH_SMSRCUS: {
       return {
