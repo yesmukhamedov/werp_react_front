@@ -10,12 +10,10 @@ import {
   Input,
   Form,
 } from 'semantic-ui-react';
-import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import format from 'string-format';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import OutputErrors from '../../../general/error/outputErrors';
-import 'react-table/react-table.css';
 import { clearDynObjService } from '../../serviceAction';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -24,6 +22,8 @@ import {
   stringYYYYMMDDToMoment,
   momentToStringYYYYMMDD,
 } from '../../../utils/helpers';
+import Columns from './columns';
+import ServiceRequestTable from './table';
 
 const Smappl = props => {
   const {
@@ -200,189 +200,9 @@ const Smappl = props => {
         </Form>
         <OutputErrors errors={error} />
         <Divider></Divider>
-        <Dropdown
-          clearable="true"
-          selection
-          options={[]}
-          placeholder={messages['columns']}
-          onChange={(e, { value }) => onChange('columns', value)}
-        />
-        <ReactTableWrapper
-          columns={[
-            {
-              Header: () => <div style={{ textAlign: 'center' }}>id</div>,
-              accessor: 'id',
-              Cell: row => (
-                <div style={{ textAlign: 'center' }}>{row.value}</div>
-              ),
-            },
-            {
-              Header: () => (
-                <div style={{ textAlign: 'center' }}>
-                  {messages['Task.Branch']} CN
-                </div>
-              ),
-              accessor: 'bukrs',
-              Cell: row => (
-                <div style={{ textAlign: 'center' }}>{row.value}</div>
-              ),
-            },
-            {
-              Header: () => (
-                <div style={{ textAlign: 'center' }}>
-                  {messages['productSerialNumber']}
-                </div>
-              ),
-              accessor: 'Position',
-              Cell: row => (
-                <div style={{ textAlign: 'center' }}>{row.value}</div>
-              ),
-            },
-            {
-              Header: () => (
-                <div style={{ textAlign: 'center' }}>
-                  {messages['TBL_H__PRODUCT']}
-                </div>
-              ),
-              accessor: 'fc',
-              Cell: row => <div style={{ textAlign: 'center' }}></div>,
-            },
-            {
-              Header: () => (
-                <div style={{ textAlign: 'center' }}>
-                  {messages['Application_Date']}
-                </div>
-              ),
-              accessor: 'Position',
-              Cell: row => (
-                <div style={{ textAlign: 'center' }}>{row.value}</div>
-              ),
-            },
-            {
-              Header: () => (
-                <div style={{ textAlign: 'center' }}>
-                  {messages['Form.Reco.RecoName']}
-                </div>
-              ),
-              accessor: 'Position',
-              Cell: row => (
-                <div style={{ textAlign: 'center' }}>{row.value}</div>
-              ),
-            },
-            {
-              Header: () => (
-                <div style={{ textAlign: 'center' }}>
-                  {messages['Table.Address']}
-                </div>
-              ),
-              accessor: 'Position',
-              Cell: row => (
-                <div style={{ textAlign: 'center' }}>{row.value}</div>
-              ),
-            },
-            {
-              Header: () => (
-                <div style={{ textAlign: 'center' }}>{messages['Phone']}</div>
-              ),
-              accessor: 'Position',
-              Cell: row => (
-                <div style={{ textAlign: 'center' }}>{row.value}</div>
-              ),
-            },
-            {
-              Header: () => (
-                <div style={{ textAlign: 'center' }}>{messages['Masters']}</div>
-              ),
-              accessor: 'Position',
-              Cell: row => (
-                <div style={{ textAlign: 'center' }}>{row.value}</div>
-              ),
-            },
-            {
-              Header: () => (
-                <div style={{ textAlign: 'center' }}>
-                  {messages['L__ORDER_STATUS']}
-                </div>
-              ),
-              accessor: 'Position',
-              Cell: row => (
-                <div style={{ textAlign: 'center' }}>{row.value}</div>
-              ),
-            },
-            {
-              Header: () => (
-                <div style={{ textAlign: 'center' }}>
-                  {messages['Operator']}
-                </div>
-              ),
-              accessor: 'Position',
-              Cell: row => (
-                <div style={{ textAlign: 'center' }}>{row.value}</div>
-              ),
-            },
-            {
-              Header: () => (
-                <div style={{ textAlign: 'center' }}>
-                  {messages['type_of_application']}
-                </div>
-              ),
-              accessor: 'Position',
-              Cell: row => (
-                <div style={{ textAlign: 'center' }}>{row.value}</div>
-              ),
-            },
-            {
-              Header: () => (
-                <div style={{ textAlign: 'center' }}>
-                  № {messages['Applications']}
-                </div>
-              ),
-              accessor: 'Position',
-              Cell: row => (
-                <div style={{ textAlign: 'center' }}>{row.value}</div>
-              ),
-            },
-            {
-              Header: () => (
-                <div style={{ textAlign: 'center' }}>
-                  {messages['service']} №
-                </div>
-              ),
-              accessor: 'Position',
-              Cell: row => (
-                <div style={{ textAlign: 'center' }}>{row.value}</div>
-              ),
-            },
-            {
-              Header: () => (
-                <div style={{ textAlign: 'center' }}>
-                  {messages['customer_story']}
-                </div>
-              ),
-              accessor: 'fc',
-              filterable: false,
-              Cell: ({ row }) => (
-                <div style={{ textAlign: 'center' }}>
-                  <Button icon color="instagram">
-                    <Icon name="id card outline"></Icon>
-                  </Button>
-                </div>
-              ),
-            },
-          ]}
-          defaultPageSize={15}
-          pages={2}
-          previousText={messages['Table.Previous']}
-          nextText={messages['Table.Next']}
-          showPagination={true}
-          className="-striped -highlight"
-          pageSizeOptions={[20, 30, 40]}
-          loadingText={messages['Table.Next']}
-          noDataText={messages['Table.NoData']}
-          rowsText={messages['Table.Rows']}
-          pageText={messages['Table.Page']}
-          ofText={messages['Table.Of']}
-        />
+        <Segment basic textAlign="right">
+          <Columns />
+        </Segment>
       </Segment>
     </Fragment>
   );
