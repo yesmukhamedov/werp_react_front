@@ -216,10 +216,10 @@ export function postSmsetct(postParams, fetchSmsetct, searchParams) {
   return function(dispatch) {
     doPost(`smsetct/create`, postParams)
       .then(({ data }) => {
-        if (data & (data.status === 'success')) {
+        if (data.status === 200) {
           dispatch(notify('success', errorTable[`101${language}`]));
         } else {
-          dispatch(notify('info', errorTable[`132${language}`])); //Не добавлен
+          dispatch(notify('error', errorTable[`132${language}`])); //Не добавлен
         }
         if (searchParams.length !== 0) {
           fetchSmsetct(searchParams);
@@ -235,7 +235,7 @@ export function editSmsetct(editParams, searchParams, fetchSmsetct) {
   return function(dispatch) {
     doPut(`smsetct/update`, editParams)
       .then(data => {
-        if (data & (data.status === 'success')) {
+        if (data.status === 200) {
           dispatch(
             notify(
               'success',
@@ -244,9 +244,10 @@ export function editSmsetct(editParams, searchParams, fetchSmsetct) {
             ),
           );
         } else {
+          console.log('succes3');
           dispatch(
             notify(
-              'info',
+              'error',
               errorTable[`133${language}`],
               errorTable[`132${language}`],
             ),

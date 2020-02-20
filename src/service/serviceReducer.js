@@ -19,6 +19,7 @@ import {
   FETCH_SMCUSPOR_HISTORY_ALL,
   FETCH_SMCUSPOR_HISTORY_APP,
   FETCH_SMCUSPOR_HISTORY_CALL,
+  FETCH_SMCUSPOR_HISTORY_SERVICE,
   FETCH_SMSRCUS,
   FETCH_TOVAR_CATEGORYS,
   FETCH_CONTRACT_STATUS,
@@ -60,7 +61,6 @@ export default function(state = INITIAL_STATE, action) {
         historyDynamicObject: {},
       };
     case POST_SMSETCT:
-      console.log('post IN reducer', action.payload);
       if (
         Object.keys(state.dynamicObject).length === 0 ||
         state.dynamicObject === undefined
@@ -74,19 +74,16 @@ export default function(state = INITIAL_STATE, action) {
       }
 
     case FETCH_SMSETCT:
-      console.log('in reducer ', action.payload);
       return {
         ...state,
         dynamicObject: [...action.payload],
       };
     case EDIT_SMSETCT:
-      console.log('in reducer edit', action.payload);
       return {
         ...state,
         dynamicObject: [...state.dynamicObject, action.payload],
       };
     case HISTORY_EDITING_SMSETCT:
-      console.log('in reducer editingHistory', action.payload);
       return {
         ...state,
         historyDynamicObject: [...action.payload],
@@ -199,7 +196,6 @@ export default function(state = INITIAL_STATE, action) {
       console.log(action.payload);
       return { ...state, crmHistoryAll: action.payload };
     }
-
     case FETCH_SMSRCUS: {
       return {
         ...state,
