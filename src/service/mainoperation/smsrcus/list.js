@@ -145,7 +145,7 @@ const List = props => {
               onChange={() => {
                 checkColumns(e);
               }}
-            />{' '}
+            />
           </Table.Cell>
         </Table.Row>
       );
@@ -166,16 +166,20 @@ const List = props => {
   };
   return (
     <div>
-      <b>{messages['columns']}</b> <br />
-      <Button color="blue" onClick={handleOpen} icon labelPosition="left">
+      <Button
+        color="blue"
+        onClick={handleOpen}
+        icon
+        labelPosition="left"
+        floated="right"
+      >
         <Icon name="checkmark box" />
         {messages['choose_columns']}
       </Button>
-      <Modal size="mini" open={open}>
-        <Modal.Header align="center">
-          {' '}
-          {messages['choose_columns']}{' '}
-        </Modal.Header>
+      <br />
+      <br />
+      <Modal size="mini" open={open} closeIcon>
+        <Modal.Header align="center">{messages['choose_columns']}</Modal.Header>
         <Modal.Content>
           <Table singleLine>
             <Table.Body>{tableRows()}</Table.Body>

@@ -418,12 +418,10 @@ export function fetchServCrmHistoryAll(date, type) {
   };
 }
 export function fetchSmsrcus(searchParams) {
-  console.log('searchParams', searchParams);
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet('smsrcus/list', searchParams)
       .then(({ data }) => {
-        console.log('DATA IN ACTION', data);
         dispatch(modifyLoader(false));
         if (data.status === 200) {
           dispatch({
