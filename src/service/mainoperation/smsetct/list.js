@@ -163,6 +163,8 @@ export default function List(props) {
   };
   // Получить ID Филиала через text
   const getBranchId = (branches, branchName, bukrs) => {
+    console.log('branches', branches);
+    console.log('branches', bukrs);
     branches[bukrs].map(e => {
       if (branchName === e.text) {
         branchName = e.key;
@@ -448,14 +450,12 @@ export default function List(props) {
                     onChange={(e, o) => handleEdit(o, 'F5')}
                   />
                   <Form.Field
-                    required
                     control={Input}
                     label={messages['configuration'] + ' F-6'}
                     defaultValue={sm_set_ct_Edit.f6}
                     onChange={(e, o) => handleEdit(o, 'F6')}
                   />
                   <Form.Field
-                    required
                     control={Input}
                     label={messages['configuration'] + ' F-7'}
                     defaultValue={sm_set_ct_Edit.f7}

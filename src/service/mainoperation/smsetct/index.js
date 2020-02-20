@@ -305,7 +305,7 @@ const Smsetct = props => {
                       <Dropdown
                         search
                         selection
-                        options={companyOptions || []}
+                        options={getCompanyOptions(companyOptions)}
                         onChange={(e, o) => handleInputAdd(o, 'bukrs')}
                       />
 
@@ -324,9 +324,7 @@ const Smsetct = props => {
                       <Dropdown
                         search
                         selection
-                        options={
-                          getProductOptions(productList, postParams.bukrs) || []
-                        }
+                        options={getProductOptions(productList)}
                         onChange={(e, o) => handleInputAdd(o, 'matnr')}
                       />
                       <Form.Field
@@ -494,31 +492,36 @@ const getCountryOptions = countryList => {
   return out;
 };
 
-const getProductOptions = (productList, bukrs) => {
+const getCompanyOptions = companyOptions => {
+  const companyList = companyOptions;
+  if (!companyList) {
+    return [];
+  }
+  let out = companyList.map(c => {
+    return {
+      key: c.key,
+      text: c.text,
+      value: c.value,
+    };
+  });
+  return out;
+};
+
+const getProductOptions = productList => {
   const productLst = productList;
-  if (!productLst || bukrs === '') {
+  if (!productLst) {
     return [];
   }
   let out = productLst.map(c => {
-    if (bukrs === c.bukrs) {
-      return {
-        key: c.contract_type_id,
-        text: c.name,
-        value: c.contract_type_id,
-      };
-    }
-    return {};
+    return {
+      key: c.contract_type_id,
+      text: c.name,
+      value: c.contract_type_id,
+    };
   });
   return out;
 };
 function mapStateToProps(state) {
-  console.log('state.f4.countryList', state.f4.countryList);
-  console.log(
-    'state.userInfo.branchOptionsService',
-    state.userInfo.branchOptionsService,
-  );
-  console.log('companyOption', state.userInfo.companyOptions);
-  console.log('state.f4.contractTypeList', state.f4.contractTypeList);
   return {
     language: state.locales.lang,
     countryList: state.f4.countryList,
