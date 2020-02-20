@@ -73,19 +73,19 @@ const Smsrcus = props => {
           break;
         case 'tovarCategorys':
           {
-            console.log('o.value', o.value);
-            searchArr.tovarCategorys = o.value;
+            searchArr.tovarCategorys =
+              o.value.length > 0 ? o.value.join() : null;
           }
           break;
         case 'finStatus':
           {
-            console.log('o.value', o.value);
-            searchArr.contractStatusIds = o.value.join();
+            searchArr.contractStatusIds =
+              o.value.length > 0 ? o.value.join() : null;
           }
 
           break;
         default: {
-          searchArr[fieldName] = o.value.value.join();
+          searchArr[fieldName] = o.value;
         }
       }
       return searchArr;
@@ -156,7 +156,7 @@ const Smsrcus = props => {
                 fluid
                 search
                 selection
-                options={getCompanyOptions(companyList)}
+                options={companyList || []}
                 placeholder={messages['bukrs']}
               />
             </Form.Field>
@@ -223,7 +223,7 @@ const Smsrcus = props => {
             <Form.Field>
               <label>
                 {messages['Form.DateFrom']}
-                <Icon name="calendar alternate" />
+                <Icon name="calendar" />
               </label>
               <DatePicker
                 autoComplete="off"
@@ -239,7 +239,7 @@ const Smsrcus = props => {
             <Form.Field>
               <label>
                 {messages['Form.DateTo']}
-                <Icon name="calendar alternate" />
+                <Icon name="calendar" />
               </label>
               <DatePicker
                 autoComplete="off"
@@ -274,20 +274,6 @@ const Smsrcus = props => {
       </Container>
     </div>
   );
-};
-
-const getCompanyOptions = companyList => {
-  if (!companyList) {
-    return [];
-  }
-  let out = companyList.map(c => {
-    return {
-      key: c.key,
-      text: c.text,
-      value: c.value,
-    };
-  });
-  return out;
 };
 
 const getTovarCategotys = tovarCategorysList => {
