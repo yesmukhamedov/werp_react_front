@@ -7,140 +7,44 @@ import { Button, Icon } from 'semantic-ui-react';
 const Table = props => {
   const {
     intl: { messages },
-    columnsName,
+    columnsName = [],
   } = props;
 
-  console.log(columnsName);
-  const serviceColumns = [
-    {
-      Header: 'id',
-      accessor: 'id',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-    },
-    {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>{messages['Task.Branch']} CN</div>
-      ),
-      accessor: 'bukrs',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-    },
-    {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>
-          {messages['productSerialNumber']}
-        </div>
-      ),
-      accessor: 'Position',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-    },
-    {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>{messages['TBL_H__PRODUCT']}</div>
-      ),
-      accessor: 'fc',
-      Cell: row => <div style={{ textAlign: 'center' }}></div>,
-    },
-    {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>
-          {messages['Application_Date']}
-        </div>
-      ),
-      accessor: 'Position',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-    },
-    {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>
-          {messages['Form.Reco.RecoName']}
-        </div>
-      ),
-      accessor: 'Position',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-    },
-    {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>{messages['Table.Address']}</div>
-      ),
-      accessor: 'Position',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-    },
-    {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>{messages['Phone']}</div>
-      ),
-      accessor: 'Position',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-    },
-    {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>{messages['Masters']}</div>
-      ),
-      accessor: 'Position',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-    },
-    {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>{messages['L__ORDER_STATUS']}</div>
-      ),
-      accessor: 'Position',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-    },
-    {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>{messages['Operator']}</div>
-      ),
-      accessor: 'Position',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-    },
-    {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>
-          {messages['type_of_application']}
-        </div>
-      ),
-      accessor: 'Position',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-    },
-    {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>№ {messages['Applications']}</div>
-      ),
-      accessor: 'Position',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-    },
-    {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>{messages['service']} №</div>
-      ),
-      accessor: 'Position',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-    },
-    {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>{messages['customer_story']}</div>
-      ),
-      accessor: 'fc',
-      filterable: false,
-      Cell: ({ row }) => (
-        <div style={{ textAlign: 'center' }}>
-          <Button icon color="instagram">
-            <Icon name="id card outline"></Icon>
-          </Button>
-        </div>
-      ),
-    },
-  ];
   const [tableColumns, setTableColumns] = useState([]);
 
   useEffect(() => {
-    const username = localStorage.getItem('username');
-    if (localStorage.getItem(username)) {
-      setTableColumns([]);
-    } else {
-      setTableColumns(serviceColumns);
+    let p = [];
+    let g = 0;
+    for (var t = 0; t < columnsName.length; t++) {
+      if (columnsName[t].show) {
+        if (columnsName[t].Header === messages['customer_story']) {
+          p[g] = {
+            ...columnsName[t],
+            filterable: false,
+            Cell: ({ row }) => (
+              <div style={{ textAlign: 'center' }}>
+                <Button icon color="instagram">
+                  <Icon name="id card outline"></Icon>
+                </Button>
+              </div>
+            ),
+          };
+        } else {
+          p[g] = columnsName[t];
+        }
+        g++;
+      }
     }
-  }, []);
+
+    setTableColumns([
+      {
+        Header: 'id',
+        accessor: 'id',
+        Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      },
+      ...p,
+    ]);
+  }, [columnsName]);
 
   return (
     <ReactTableServerSideWrapper
