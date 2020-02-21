@@ -3,7 +3,11 @@ import { Modal, Icon, Table, Button, Label } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
-import { f4FetchCountryList } from '../f4_action';
+import {
+  f4FetchCountryList,
+  f4FetchPhone,
+  f4FetchPhoneType,
+} from '../f4_action';
 
 import PhoneF4HistoryModal from './phoneF4HistoryModal';
 import PhoneF4CreateModal from './phoneF4CreateModal';
@@ -28,11 +32,15 @@ function PhoneF4Modal(props) {
     countryList = [],
     customerId,
     selectedBranch,
-    lang,
+    language,
   } = props;
+
+  const lang = language.charAt(0).toUpperCase() + language.slice(1);
 
   useEffect(() => {
     props.f4FetchCountryList();
+    props.f4FetchPhone();
+    props.f4FetchPhoneType();
   }, []);
 
   const onPhoneSelect = value => {
@@ -194,10 +202,15 @@ const getCountry = (countryList, branch) => {
 
 function mapStateToProps(state) {
   return {
+    language: state.locales.lang,
     countryList: state.f4.countryList,
+    phoneList: state.f4.phoneList.data,
+    phoneListType: state.f4.phoneType.data,
   };
 }
 
 export default connect(mapStateToProps, {
   f4FetchCountryList,
+  f4FetchPhone,
+  f4FetchPhoneType,
 })(injectIntl(PhoneF4Modal));

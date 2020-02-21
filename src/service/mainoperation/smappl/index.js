@@ -23,7 +23,6 @@ import {
   momentToStringYYYYMMDD,
 } from '../../../utils/helpers';
 import Columns from './columns';
-import ServiceRequestTable from './table';
 
 const Smappl = props => {
   const {
@@ -52,8 +51,6 @@ const Smappl = props => {
   useEffect(() => {
     clearDynObjService();
   }, []);
-
-  console.log(search);
 
   const onChange = (text, value) => {
     setSearch(prev => {
@@ -107,7 +104,7 @@ const Smappl = props => {
         <Divider hidden></Divider>
         <Header as="h2">
           {messages['service_requests']}
-          <Button floated="right" color="teal">
+          <Button floated="right" color="blue">
             {messages['new_service']}
           </Button>
         </Header>
@@ -183,17 +180,17 @@ const Smappl = props => {
                 showMonthDropdown
                 showYearDropdown
                 dropdownMode="select" // timezone="UTC"
-                selected={stringYYYYMMDDToMoment(search.datefrom)}
+                selected={stringYYYYMMDDToMoment(search.dateTo)}
                 locale={language}
                 onChange={event =>
-                  onChange('datefrom', momentToStringYYYYMMDD(event))
+                  onChange('dateTo', momentToStringYYYYMMDD(event))
                 }
                 dateFormat="DD.MM.YYYY"
                 placeholderText={messages['Form.DateTo']}
               />
             </Form.Field>
 
-            <Form.Field control={Button} color="teal" style={{ marginTop: 24 }}>
+            <Form.Field control={Button} color="blue" style={{ marginTop: 24 }}>
               {messages['apply']}
             </Form.Field>
           </Form.Group>
@@ -209,7 +206,6 @@ const Smappl = props => {
 };
 
 const mapStateToProps = state => {
-  console.log(state);
   return {
     companyPosition: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsService,

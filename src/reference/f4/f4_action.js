@@ -770,7 +770,7 @@ export function saveRfadd02(url, body, params, setIsLoading) {
 export function f4FetchPhone() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`v1/werp/mreference/general/phone?direction=DESC&orderBy=id`)
+    doGet(`phone?direction=DESC&orderBy=id`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -788,7 +788,7 @@ export function f4FetchPhone() {
 export function f4FetchPhoneType() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet('v1/werp/mreference/general/phone_type')
+    doGet('phone_type')
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -806,7 +806,7 @@ export function f4FetchPhoneType() {
 export function f4PostPhone(getData, fetchPhone) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost('v1/werp/mreference/general/phone/create', getData)
+    doPost('phone/create', getData)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -830,9 +830,8 @@ export function f4PostPhone(getData, fetchPhone) {
 }
 
 export function f4UpdatePhone(data, fetchPhone) {
-  console.log(data);
   return function(dispatch) {
-    doPut('v1/werp/mreference/general/phone/update', data)
+    doPut('phone/update', data)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -858,7 +857,7 @@ export function f4UpdatePhone(data, fetchPhone) {
 export function f4DeletePhone(data, fetchPhone) {
   console.log(data);
   return function(dispatch) {
-    doDelete('v1/werp/mreference/general/phone/delete', { data })
+    doDelete('phone/delete', { data })
       .then(data => {
         console.log(data);
         dispatch(modifyLoader(false));
@@ -885,7 +884,7 @@ export function f4DeletePhone(data, fetchPhone) {
 export function f4FetchPhoneHistory() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet('v1/werp/mreference/general/phone/audit?direction=DESC&orderBy=id')
+    doGet('phone/audit?direction=DESC&orderBy=id')
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

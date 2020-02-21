@@ -48,6 +48,7 @@ import callReducer from '../crm/mainoperation/call/reducers/callReducer';
 import serviceReducer from '../service/serviceReducer';
 import smcsReducer from '../service/mainoperation/smcs/smcsReducer';
 import srlsReducer from '../service/report/srls/srlsReducer';
+import srefReducer from '../service/reference/srefReducer';
 
 const appReducer = combineReducers({
   form,
@@ -98,6 +99,7 @@ const appReducer = combineReducers({
   serviceReducer: serviceReducer,
   smcsReducer: smcsReducer,
   srlsReducer: srlsReducer,
+  srefReducer: srefReducer,
 });
 
 const rootReducer = (state, action) => {

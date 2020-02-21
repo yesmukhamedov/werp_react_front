@@ -30,6 +30,12 @@ export const FETCH_SMCUSPOR_HISTORY_ALL = 'FETCH_SMCUSPOR_HISTORY_ALL';
 export const FETCH_SMCUSPOR_HISTORY_APP = 'FETCH_SMCUSPOR_HISTORY_APP';
 export const FETCH_SMCUSPOR_HISTORY_CALL = 'FETCH_SMCUSPOR_HISTORY_CALL';
 export const FETCH_SMCUSPOR_HISTORY_SERVICE = 'FETCH_SMCUSPOR_HISTORY_SERVICE';
+export const FETCH_SMECI = 'FETCH_SMECI';
+export const POST_SMECI = 'POST_SMECI';
+export const FETCH_SERV_CRM_CALL_STATUS = 'FETCH_SERV_CRM_CALL_STATUS';
+export const POST_SMREGC_CREATE_CALL = 'POST_SMREGC_CREATE_CALL';
+export const POST_SMCCA_CREATE_APP = 'POST_SMCCA_CREATE_APP';
+export const POST_SMCCALD_CREATE_APP = 'POST_SMCCALD_CREATE_APP';
 
 export const FETCH_SMSRCUS = 'FETCH_SMSRCUS';
 export const FETCH_TOVAR_CATEGORYS = 'FETCH_TOVAR_CATEGORYS';
@@ -417,6 +423,100 @@ export function fetchServCrmHistoryAll(date, type) {
     }
   };
 }
+
+export function fetchSmeciContractInfo(contractNumber) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`smeci/contractInfo`, contractNumber)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMECI,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function postSmeciContractInfo(contract, fetchSmcuspor) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost(`smeci/edit`, contract)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: POST_SMECI,
+          payload: data,
+        });
+        fetchSmcuspor();
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchServCrmCallStatus() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`serv_crm_call_status`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SERV_CRM_CALL_STATUS,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function postSmregcCreateCall(call, back) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost(`smregc/create`, call)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: POST_SMREGC_CREATE_CALL,
+          payload: data,
+        });
+        back();
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function postSmccaCreateApp(application, back) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost(`smcca/create`, application)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: POST_SMCCA_CREATE_APP,
+          payload: data,
+        });
+        back();
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
 export function fetchSmsrcus(searchParams) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
@@ -465,6 +565,24 @@ export function fetchContractStatus() {
         });
       })
       .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function postSmccaldCreateApp(application) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost(`smccald/create`, application)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: POST_SMCCALD_CREATE_APP,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
         handleError(error, dispatch);
       });
   };

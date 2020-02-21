@@ -17,7 +17,7 @@ const Columns = props => {
     intl: { messages },
   } = props;
   const [modalOpen, setModalOpen] = useState(false);
-  const serviceColumns = [
+  const allColumns = [
     {
       Header: `${messages['Task.Branch']} CN`,
       accessor: 'bukrs',
@@ -89,55 +89,79 @@ const Columns = props => {
       show: true,
     },
   ];
+  const [columns, setColumns] = useState(allColumns);
 
-  const [columns, setColumns] = useState(serviceColumns);
+  useEffect(() => {
+    const username = localStorage.getItem('username');
+    if (localStorage.getItem(username)) {
+      setColumns(JSON.parse(localStorage.getItem(localStorage.username)));
+    } else {
+      setColumns(allColumns);
+    }
+  }, []);
 
   const checkColumns = e => {
     setColumns(prev => {
       let columns = [...prev];
       columns.map(el => {
-        if (el.accessor === e.accessor) {
+        if (el.Header === e.Header) {
           el.show = !el.show;
         }
       });
       return columns;
     });
-    console.log('cols', columns);
+  };
+
+  const onSave = () => {
+    setModalOpen(false);
+    localStorage.setItem(localStorage.username, JSON.stringify(columns));
+  };
+
+  const onCancel = () => {
+    setModalOpen(false);
+    const localColumns =
+      JSON.parse(localStorage.getItem(localStorage.username)) || allColumns;
+    setColumns(localColumns);
   };
 
   return (
     <Fragment>
       <Modal
         trigger={
-          <Button color="teal" onClick={() => setModalOpen(true)}>
+          <Button color="blue" onClick={() => setModalOpen(true)}>
             {messages['columns']}
           </Button>
         }
         open={modalOpen}
+        size="small"
       >
         <Header content={messages['columns']} />
         <Modal.Content>
-          <Segment>
-            {serviceColumns.map(item => (
-              <Table.Row>
-                <Table.Cell>{item.Header}</Table.Cell>
-                <Table.Cell>
-                  <Checkbox
-                    onChange={() => {
-                      checkColumns(item);
-                    }}
-                  />
-                </Table.Cell>
-              </Table.Row>
-            ))}
-          </Segment>
+          <Table singleLine>
+            <Table.Body>
+              {columns.map((item, id) => (
+                <Table.Row key={id}>
+                  <Table.Cell>{item.Header}</Table.Cell>
+                  <Table.Cell>
+                    <Checkbox
+                      onChange={() => {
+                        checkColumns(item);
+                      }}
+                      checked={item.show}
+                      style={{ float: 'right' }}
+                    />
+                  </Table.Cell>
+                </Table.Row>
+              ))}
+            </Table.Body>
+          </Table>
         </Modal.Content>
         <Modal.Actions>
-          <Button color="red" onClick={() => setModalOpen(false)}>
-            <Icon name="remove" /> No
+          <Button color="red" onClick={onCancel}>
+            <Icon name="remove" /> {messages['cancel']}
           </Button>
-          <Button color="green">
-            <Icon name="checkmark" /> Yes
+          <Button color="green" onClick={onSave}>
+            <Icon name="checkmark" /> {messages['save']}
           </Button>
         </Modal.Actions>
       </Modal>

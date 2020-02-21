@@ -110,7 +110,7 @@ function Smcc(props) {
     intl: { messages },
     contract: { contractTypeId } = {},
   } = props;
-
+  console.log(contract.customerId);
   const lang = language.charAt(0).toUpperCase() + language.slice(1);
 
   useEffect(() => {
@@ -482,11 +482,8 @@ function Smcc(props) {
 
       <PhoneF4Modal
         open={phoneF4ModalOpen}
-        phoneList={phoneList}
-        phoneListType={phoneListType}
         customerId={contract.customerId}
         selectedBranch={contract.selectedBranch}
-        lang={lang}
         onClosePhoneF4={bool => setPhoneF4ModalOpen(bool)}
       />
       <Segment>

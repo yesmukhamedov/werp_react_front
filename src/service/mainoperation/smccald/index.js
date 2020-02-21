@@ -7,12 +7,16 @@ import {
   Table,
   Input,
   Button,
-  Message,
+  Form,
+  TextArea,
 } from 'semantic-ui-react';
+import { fetchServAppType } from '../../reference/srefAction';
+import { postSmccaldCreateApp } from '../../serviceAction';
 import {
   f4ClearAnyObject,
   f4FetchConTypeList,
 } from '../../../reference/f4/f4_action';
+import OutputErrors from '../../../general/error/outputErrors';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import { injectIntl } from 'react-intl';
@@ -25,19 +29,29 @@ function Smccald(props) {
     bukrs: '',
     branchId: '',
     requestTypeId: '',
+    appType: '',
+    info: '',
+    matnr: '',
   };
   const [request, setRequest] = useState({ ...emptyRequest });
   const [requestTypeOpts, setRequestTypeOpts] = useState([]);
+  const [error, setError] = useState([]);
+
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const lang = localStorage.getItem('language');
+  const userName = localStorage.getItem('username');
 
   const {
     companyOptions = [],
     branchOptions = [],
     contractTypeList,
+    servAppType,
     intl: { messages },
   } = props;
 
   useEffect(() => {
     props.f4FetchConTypeList();
+    props.fetchServAppType();
     return () => {
       props.f4ClearAnyObject('F4_CLEAR_CONTYPE_LIST');
     };
@@ -78,15 +92,21 @@ function Smccald(props) {
                 key: item.contract_type_id,
                 value: item.contract_type_id,
                 text: item.name,
+                matnr: item.matnr,
               };
             });
           setRequestTypeOpts(waConOptions);
           break;
         case 'requestTypeId':
+          const matnr = o.options.filter(item => item.value === o.value);
+          varRequest.matnr = matnr[0].matnr;
           varRequest.requestTypeId = o.value;
           break;
-        case 'requestDate':
-          varRequest.requestDate = o.format('YYYY-MM-DD');
+        case 'appType':
+          varRequest.appType = o.value;
+          break;
+        case 'info':
+          varRequest.info = o.value;
           break;
 
         default:
@@ -95,6 +115,36 @@ function Smccald(props) {
       return varRequest;
     });
   };
+
+  const handleSubmit = () => {
+    validate();
+    const { appType, branchId, bukrs, requestTypeId, info, matnr } = request;
+    if (appType !== '' && branchId !== '' && bukrs !== '') {
+      props.postSmccaldCreateApp({
+        appType,
+        branchId,
+        bukrs,
+        tovarCategory: requestTypeId,
+        matnr,
+        info,
+      });
+    }
+  };
+
+  const validate = () => {
+    const errors = [];
+    if (request.appType === '') {
+      errors.push(errorTable['hi there']);
+    }
+    if (request.branchId === '') {
+      errors.push(errorTable['hi there']);
+    }
+    if (request.bukrs === '') {
+      errors.push(errorTable['hi there']);
+    }
+    setError(() => errors);
+  };
+
   return (
     <Grid centered>
       <Grid.Row>
@@ -150,13 +200,24 @@ function Smccald(props) {
                 <Table.Row>
                   <Table.Cell>Вид заявки</Table.Cell>
                   <Table.Cell>
-                    <Dropdown placeholder="Вид заявки" fluid selection search />
+                    <Dropdown
+                      placeholder="Вид заявки"
+                      fluid
+                      selection
+                      search
+                      options={servAppOpts(servAppType, lang)}
+                      onChange={(e, o) => onInputChange(o, 'appType')}
+                    />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell verticalAlign="top">Оператор</Table.Cell>
                   <Table.Cell>
-                    <Input size="small" fluid />
+                    <Input
+                      size="small"
+                      fluid
+                      value={userName ? userName : ''}
+                    />
                     <Table>
                       <Table.Body>
                         <Table.Row>
@@ -165,26 +226,31 @@ function Smccald(props) {
                               size="mini"
                               label="F1"
                               className="input__filter_terms"
+                              disabled
                             />
                             <Input
                               size="mini"
                               label="F2"
                               className="input__filter_terms"
+                              disabled
                             />
                             <Input
                               size="mini"
                               label="F3"
                               className="input__filter_terms"
+                              disabled
                             />
                             <Input
                               size="mini"
                               label="F4"
                               className="input__filter_terms"
+                              disabled
                             />
                             <Input
                               size="mini"
                               label="F5"
                               className="input__filter_terms"
+                              disabled
                             />
                           </Table.Cell>
                         </Table.Row>
@@ -195,31 +261,31 @@ function Smccald(props) {
                 <Table.Row>
                   <Table.Cell>ФИО клиента</Table.Cell>
                   <Table.Cell>
-                    <Input size="small" fluid />
+                    <Input size="small" fluid disabled />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>Адрес</Table.Cell>
                   <Table.Cell>
-                    <Input size="small" fluid />
+                    <Input size="small" fluid disabled />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>Kонтакты</Table.Cell>
                   <Table.Cell>
-                    <Input size="small" fluid />
+                    <Input size="small" fluid disabled />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>Заводской номер</Table.Cell>
                   <Table.Cell>
-                    <Input size="small" fluid />
+                    <Input size="small" fluid disabled />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>Дата установки</Table.Cell>
                   <Table.Cell>
-                    <Input>
+                    <Input disabled>
                       <DatePicker
                         autoComplete="off"
                         deteFormat="DD/MM/YYYY"
@@ -234,52 +300,27 @@ function Smccald(props) {
                 <Table.Row>
                   <Table.Cell>Установщик</Table.Cell>
                   <Table.Cell>
-                    <Input size="small" fluid />
+                    <Input size="small" fluid disabled />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>Примечание</Table.Cell>
                   <Table.Cell>
-                    <Message content="Звонок создается автоматом, и примечание заявки копируется в примечание звонка" />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>Дата приема в сервисе</Table.Cell>
-                  <Table.Cell>
-                    <Table>
-                      <Table.Body>
-                        <Table.Row>
-                          <Table.Cell collapsing>
-                            <Input>
-                              <DatePicker
-                                autoComplete="off"
-                                deteFormat="DD/MM/YYYY"
-                                selected={moment(new Date())}
-                                dropdownMode="select"
-                                showMonthDropDown
-                                showYearDropDown
-                              />
-                            </Input>
-                          </Table.Cell>
-                          <Table.Cell collapsing>Время сервиса</Table.Cell>
-                          <Table.Cell>
-                            <Input size="small" fluid />
-                          </Table.Cell>
-                        </Table.Row>
-                      </Table.Body>
-                    </Table>
+                    <Form>
+                      <TextArea
+                        placeholder="Примечание"
+                        onChange={(e, o) => onInputChange(o, 'info')}
+                      />
+                    </Form>
                   </Table.Cell>
                 </Table.Row>
               </Table.Body>
             </Table>
-            <Button
-              color="blue"
-              fluid
-              // onClick={() => props.history.push('smcuspor')}
-            >
+            <Button color="blue" fluid onClick={() => handleSubmit()}>
               Сохранить
             </Button>
           </Segment>
+          <OutputErrors errors={error} />
         </Grid.Column>
       </Grid.Row>
     </Grid>
@@ -301,15 +342,32 @@ const getCompanyOptions = compOptions => {
   return out;
 };
 
+const servAppOpts = (servAppType, lang) => {
+  if (!servAppType) {
+    return [];
+  }
+  let out = servAppType.map(item => {
+    return {
+      key: item.id,
+      value: item.id,
+      text: item[lang],
+    };
+  });
+  return out;
+};
+
 function mapStateToProps(state) {
   return {
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsMarketing,
     contractTypeList: state.f4.contractTypeList,
+    servAppType: state.srefReducer.servAppType,
   };
 }
 
 export default connect(mapStateToProps, {
   f4ClearAnyObject,
   f4FetchConTypeList,
+  fetchServAppType,
+  postSmccaldCreateApp,
 })(injectIntl(Smccald));

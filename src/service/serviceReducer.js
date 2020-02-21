@@ -23,6 +23,9 @@ import {
   FETCH_SMSRCUS,
   FETCH_TOVAR_CATEGORYS,
   FETCH_CONTRACT_STATUS,
+  FETCH_SMECI,
+  FETCH_SERV_CRM_CALL_STATUS,
+  POST_SMREGC_CREATE_CALL,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -37,6 +40,9 @@ const INITIAL_STATE = {
   },
   clientHistory: [],
   crmHistoryAll: [],
+  smeciContractInfo: [],
+  servCrmCallStatus: [],
+  smregcCreateCall: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -178,22 +184,18 @@ export default function(state = INITIAL_STATE, action) {
     }
 
     case FETCH_SMCUSPOR_HISTORY_ALL: {
-      console.log(action.payload);
       return { ...state, crmHistoryAll: action.payload };
     }
 
     case FETCH_SMCUSPOR_HISTORY_APP: {
-      console.log(action.payload);
       return { ...state, crmHistoryAll: action.payload };
     }
 
     case FETCH_SMCUSPOR_HISTORY_CALL: {
-      console.log(action.payload);
       return { ...state, crmHistoryAll: action.payload };
     }
 
     case FETCH_SMCUSPOR_HISTORY_SERVICE: {
-      console.log(action.payload);
       return { ...state, crmHistoryAll: action.payload };
     }
     case FETCH_SMSRCUS: {
@@ -216,6 +218,19 @@ export default function(state = INITIAL_STATE, action) {
         contractStatus: [...action.payload],
       };
     }
+
+    case FETCH_SMECI: {
+      return { ...state, smeciContractInfo: action.payload.data.contractInfo };
+    }
+
+    case FETCH_SERV_CRM_CALL_STATUS: {
+      return { ...state, servCrmCallStatus: action.payload.data };
+    }
+
+    case POST_SMREGC_CREATE_CALL: {
+      return { ...state, smregcCreateCall: action.payload };
+    }
+
     default:
       return state;
   }

@@ -26,6 +26,8 @@ function PhoneF4UpdateModal(props) {
 
   const [list, setList] = useState({ ...emptyList });
   const [errors, setErrors] = useState([]);
+  const [errTextarea, setErrTextarea] = useState(false);
+  const [errInput, setErrInput] = useState(false);
 
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
@@ -85,32 +87,52 @@ function PhoneF4UpdateModal(props) {
         },
       );
       setErrors(errors);
+      clearList();
+
       props.onCloseUpdatePhoneF4(false);
     }
   };
 
   const validate = () => {
     const errors = [];
-    const { typeId, phone } = list;
+    const { typeId, phone, description } = list;
     if (typeId === 0 || typeId === undefined || typeId === null) {
       errors.push(errorTable[`20${language}`]);
       return errors;
     }
     if (phone === '' || phone === undefined || phone === null) {
       errors.push(errorTable[`20${language}`]);
+      setErrInput(true);
       return errors;
+    } else {
+      setErrInput(false);
+    }
+    if (
+      description === '' ||
+      description === undefined ||
+      description === null
+    ) {
+      errors.push(errorTable[`20${language}`]);
+      setErrTextarea(true);
+      return errors;
+    } else {
+      setErrTextarea(false);
     }
     return errors;
   };
 
-  const close = () => {
-    props.onCloseUpdatePhoneF4(false);
+  const clearList = () => {
     setList({
       id: 0,
       typeId: '',
       phone: '',
       description: '',
     });
+  };
+
+  const close = () => {
+    props.onCloseUpdatePhoneF4(false);
+    clearList();
   };
 
   return (
@@ -137,25 +159,28 @@ function PhoneF4UpdateModal(props) {
             <Table.Row>
               <Table.Cell>{messages['update_number']}</Table.Cell>
               <Table.Cell>
-                <Input type="number">
-                  <MaskedInput
-                    mask={phoneMask(country.code)}
-                    placeholder={`${country.phoneCode} ${country.telPattern}`}
-                    defaultValue={selectedPhone.phone}
-                    onChange={event => {
-                      onInputChange(event.target.value, 'phoneNumber');
-                    }}
-                  />
-                </Input>
+                <Form>
+                  <Form.Input type="number" error={errInput}>
+                    <MaskedInput
+                      mask={phoneMask(country.code)}
+                      placeholder={`${country.phoneCode} ${country.telPattern}`}
+                      defaultValue={selectedPhone.phone}
+                      onChange={event => {
+                        onInputChange(event.target.value, 'phoneNumber');
+                      }}
+                    />
+                  </Form.Input>
+                </Form>
               </Table.Cell>
             </Table.Row>
             <Table.Row>
               <Table.Cell>{messages['L__EDIT_DESCRIPTION']}</Table.Cell>
               <Table.Cell>
                 <Form>
-                  <TextArea
+                  <Form.TextArea
                     placeholder={messages['description']}
                     onChange={(e, o) => onInputChange(o, 'description')}
+                    error={errTextarea}
                   />
                 </Form>
               </Table.Cell>
