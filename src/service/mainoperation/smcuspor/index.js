@@ -48,15 +48,19 @@ function Smcuspor(props) {
   const {
     countryName,
     bukrsName,
+    bukrs,
     branchName,
+    branchId,
     servBranchName,
     tovarSerial,
     customerName,
+    customerId,
     contactPersonName,
     addrServ,
     fullPhone,
     servCrmCategory,
     contractDate,
+    matnrName,
     installmentDate,
     dealerName,
     fitterName,
@@ -64,11 +68,11 @@ function Smcuspor(props) {
     warranty,
     warrantyEndedMonths,
     manual,
-    f1Mt,
-    f2Mt,
-    f3Mt,
-    f4Mt,
-    f5Mt,
+    f1MtLeft,
+    f2MtLeft,
+    f3MtLeft,
+    f4MtLeft,
+    f5MtLeft,
   } = clientHistory.contractInfo;
 
   useEffect(() => {
@@ -116,13 +120,13 @@ function Smcuspor(props) {
   };
 
   const labelColor = () => {
-    if (servCrmCategory === 'ЗЕЛЕНЫЙ') {
+    if (servCrmCategory === 'ЗЕЛЕНЫЙ' || servCrmCategory === 'GREEN') {
       return 'green';
-    } else if (servCrmCategory === 'ЖЕЛТЫЙ') {
+    } else if (servCrmCategory === 'ЖЕЛТЫЙ' || servCrmCategory === 'YELLOW') {
       return 'yellow';
-    } else if (servCrmCategory === 'КРАСНЫЙ') {
+    } else if (servCrmCategory === 'КРАСНЫЙ' || servCrmCategory === 'RED') {
       return 'red';
-    } else if (servCrmCategory === 'ЧЕРНЫЙ') {
+    } else if (servCrmCategory === 'ЧЕРНЫЙ' || servCrmCategory === 'BLACK') {
       return 'black';
     }
   };
@@ -142,7 +146,16 @@ function Smcuspor(props) {
                     floated="right"
                     fluid
                     color="blue"
-                    onClick={() => props.history.push('smregc')}
+                    onClick={() =>
+                      props.history.push(
+                        `smregc?contractNumber=${contractNumber}`,
+                        {
+                          tovarSn: tovarSerial,
+                          branchId: branchId,
+                          bukrs: bukrs,
+                        },
+                      )
+                    }
                   >
                     Зарегистрировать звонок
                   </Button>
@@ -152,7 +165,30 @@ function Smcuspor(props) {
                     floated="right"
                     fluid
                     color="blue"
-                    onClick={() => props.history.push('smcca')}
+                    onClick={() =>
+                      props.history.push(
+                        `smcca?contractNumber=${contractNumber}`,
+                        {
+                          bukrs: bukrs,
+                          bukrsName: bukrsName,
+                          branchId: branchId,
+                          servBranchName: servBranchName,
+                          customerId: customerId,
+                          customerName: customerName,
+                          addrServ: addrServ,
+                          fullPhone: fullPhone,
+                          tovarSn: tovarSerial,
+                          matnrName: matnrName,
+                          installmentDate: installmentDate,
+                          fitterName: fitterName,
+                          f1MtLeft: f1MtLeft,
+                          f2MtLeft: f2MtLeft,
+                          f3MtLeft: f3MtLeft,
+                          f4MtLeft: f4MtLeft,
+                          f5MtLeft: f5MtLeft,
+                        },
+                      )
+                    }
                   >
                     Создать заявку
                   </Button>
@@ -310,7 +346,7 @@ function Smcuspor(props) {
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label size="large" color={labelColor()}>
+                      <Label ribbon color={labelColor()}>
                         Категория
                       </Label>
                     </Table.Cell>
@@ -450,37 +486,39 @@ function Smcuspor(props) {
                   size="mini"
                   label="F1"
                   className="input__filter_terms"
-                  value={f1Mt ? f1Mt : '0'}
+                  value={f1MtLeft ? f1MtLeft : '0'}
                 />
                 <Input
                   size="mini"
                   label="F2"
                   className="input__filter_terms"
-                  value={f2Mt ? f2Mt : '0'}
+                  value={f2MtLeft ? f2MtLeft : '0'}
                 />
                 <Input
                   size="mini"
                   label="F3"
                   className="input__filter_terms"
-                  value={f3Mt ? f3Mt : '0'}
+                  value={f3MtLeft ? f3MtLeft : '0'}
                 />
                 <Input
                   size="mini"
                   label="F4"
                   className="input__filter_terms"
-                  value={f4Mt ? f4Mt : '0'}
+                  value={f4MtLeft ? f4MtLeft : '0'}
                 />
                 <Input
                   size="mini"
                   label="F5"
                   className="input__filter_terms"
-                  value={f5Mt ? f5Mt : '0'}
+                  value={f5MtLeft ? f5MtLeft : '0'}
                 />
               </Segment>
               <Button
                 color="blue"
                 fluid
-                onClick={() => props.history.push('smeci')}
+                onClick={() =>
+                  props.history.push(`smeci?contractNumber=${contractNumber}`)
+                }
               >
                 Редактировать
               </Button>
