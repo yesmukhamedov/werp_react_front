@@ -26,6 +26,8 @@ import {
   FETCH_SMECI,
   FETCH_SERV_CRM_CALL_STATUS,
   POST_SMREGC_CREATE_CALL,
+  FETCH_APP_STATUS,
+  FETCH_APP_TYPE,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -43,6 +45,8 @@ const INITIAL_STATE = {
   smeciContractInfo: [],
   servCrmCallStatus: [],
   smregcCreateCall: [],
+  appStatus: [],
+  appType: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -146,17 +150,6 @@ export default function(state = INITIAL_STATE, action) {
           service: [...action.payload.data],
         },
       };
-
-    // case FETCH_SMSETPP_POST:
-    //   console.log('object', action.payload);
-    //   return {
-    //     ...state,
-    //     data: {
-    //       ...state.data,
-    //       service: [...state.data.service, action.payload.data],
-    //     },
-    //   };
-
     case FETCH_SRLS:
       console.log('SRLS REDUCER', action.payload);
       return {
@@ -229,6 +222,20 @@ export default function(state = INITIAL_STATE, action) {
 
     case POST_SMREGC_CREATE_CALL: {
       return { ...state, smregcCreateCall: action.payload };
+    }
+
+    case FETCH_APP_STATUS: {
+      return {
+        ...state,
+        appStatus: [...action.payload],
+      };
+    }
+
+    case FETCH_APP_TYPE: {
+      return {
+        ...state,
+        appType: [...action.payload],
+      };
     }
 
     default:

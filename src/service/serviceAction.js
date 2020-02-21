@@ -37,6 +37,9 @@ export const POST_SMREGC_CREATE_CALL = 'POST_SMREGC_CREATE_CALL';
 export const POST_SMCCA_CREATE_APP = 'POST_SMCCA_CREATE_APP';
 export const POST_SMCCALD_CREATE_APP = 'POST_SMCCALD_CREATE_APP';
 
+export const FETCH_APP_STATUS = 'FETCH_APP_STATUS';
+export const FETCH_APP_TYPE = 'FETCH_APP_TYPE';
+
 export const FETCH_SMSRCUS = 'FETCH_SMSRCUS';
 export const FETCH_TOVAR_CATEGORYS = 'FETCH_TOVAR_CATEGORYS';
 export const FETCH_CONTRACT_STATUS = 'FETCH_CONTRACT_STATUS';
@@ -583,6 +586,40 @@ export function postSmccaldCreateApp(application) {
       })
       .catch(error => {
         dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchAppStatus() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('service/reference/serv_app_status')
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_APP_STATUS,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchAppType() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('service/reference/serv_app_type')
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_APP_TYPE,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
         handleError(error, dispatch);
       });
   };

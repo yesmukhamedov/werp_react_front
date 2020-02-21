@@ -10,11 +10,15 @@ import {
   Input,
   Form,
 } from 'semantic-ui-react';
-import format from 'string-format';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import OutputErrors from '../../../general/error/outputErrors';
-import { clearDynObjService, fetchTovarCategorys } from '../../serviceAction';
+import {
+  clearDynObjService,
+  fetchTovarCategorys,
+  fetchAppStatus,
+  fetchAppType,
+} from '../../serviceAction';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
@@ -32,14 +36,18 @@ const Smappl = props => {
     branchOptions,
     fetchTovarCategorys,
     tovarCategorys,
+    fetchAppStatus,
+    appStatus,
+    fetchAppType,
+    appType,
   } = props;
   const [dropdownActive, setDropdownActive] = useState(false);
   const [error, setError] = useState([]);
   const [tovarCategory, setTovarCategory] = useState([]);
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
-  let queryString = 'bukrs=={0.bukrs};';
-
+  const [applicationStatus, setApplicationStatus] = useState([]);
+  const [applicationType, setApplicationType] = useState([]);
   const [search, setSearch] = useState({
     bukrs: 0,
     branch: 0,
@@ -47,14 +55,34 @@ const Smappl = props => {
     dateTo: momentToStringYYYYMMDD(moment()),
   });
 
-  let query = {
-    search: format(queryString, { ...search }),
-  };
-
   useEffect(() => {
     clearDynObjService();
     fetchTovarCategorys();
+    fetchAppStatus();
+    fetchAppType();
   }, []);
+
+  useEffect(() => {
+    const app = appStatus.map(item => {
+      return {
+        key: item.id,
+        text: item.name,
+        value: item.id,
+      };
+    });
+    setApplicationStatus(app);
+  }, [appStatus]);
+
+  useEffect(() => {
+    const app = appType.map(item => {
+      return {
+        key: item.id,
+        text: item.name,
+        value: item.id,
+      };
+    });
+    setApplicationType(app);
+  }, [appType]);
 
   useEffect(() => {
     const t = tovarCategorys.map(item => {
@@ -114,7 +142,7 @@ const Smappl = props => {
       errors.push(errorTable[`5${language}`]);
     }
     if (errors.length === 0) {
-      console.log(query);
+      console.log(search);
     }
     return errors;
   };
@@ -167,7 +195,7 @@ const Smappl = props => {
               label={messages['L__ORDER_STATUS']}
               clearable="true"
               selection
-              options={[]}
+              options={applicationStatus}
               placeholder={messages['L__ORDER_STATUS']}
               onChange={(e, { value }) => onChange('status', value)}
             />
@@ -175,7 +203,7 @@ const Smappl = props => {
               label={messages['type_of_application']}
               clearable="true"
               selection
-              options={[]}
+              options={applicationType}
               placeholder={messages['type_of_application']}
               onChange={(e, { value }) => onChange('ApplicationType', value)}
             />
@@ -237,10 +265,14 @@ const mapStateToProps = state => {
     companyPosition: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsService,
     tovarCategorys: state.serviceReducer.tovarCategorys,
+    appStatus: state.serviceReducer.appStatus,
+    appType: state.serviceReducer.appType,
   };
 };
 
 export default connect(mapStateToProps, {
   clearDynObjService,
   fetchTovarCategorys,
+  fetchAppStatus,
+  fetchAppType,
 })(injectIntl(Smappl));
