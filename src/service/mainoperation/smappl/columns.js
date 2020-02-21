@@ -19,7 +19,7 @@ const Columns = props => {
   const [modalOpen, setModalOpen] = useState(false);
   const allColumns = [
     {
-      Header: `${messages['Task.Branch']} CN`,
+      Header: `CN`,
       accessor: 'bukrs',
       show: true,
     },

@@ -14,7 +14,7 @@ import format from 'string-format';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import OutputErrors from '../../../general/error/outputErrors';
-import { clearDynObjService } from '../../serviceAction';
+import { clearDynObjService, fetchTovarCategorys } from '../../serviceAction';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
@@ -30,9 +30,12 @@ const Smappl = props => {
     clearDynObjService,
     intl: { messages },
     branchOptions,
+    fetchTovarCategorys,
+    tovarCategorys,
   } = props;
   const [dropdownActive, setDropdownActive] = useState(false);
   const [error, setError] = useState([]);
+  const [tovarCategory, setTovarCategory] = useState([]);
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
   let queryString = 'bukrs=={0.bukrs};';
@@ -50,7 +53,31 @@ const Smappl = props => {
 
   useEffect(() => {
     clearDynObjService();
+    fetchTovarCategorys();
   }, []);
+
+  useEffect(() => {
+    const t = tovarCategorys.map(item => {
+      let text;
+      switch (localStorage.language) {
+        case 'ru':
+          text = item.nameRu;
+          break;
+        case 'en':
+          text = item.nameEn;
+          break;
+        case 'tr':
+          text = item.nameTr;
+          break;
+      }
+      return {
+        key: item.id,
+        text: text,
+        value: item.id,
+      };
+    });
+    setTovarCategory(t);
+  }, [tovarCategorys]);
 
   const onChange = (text, value) => {
     setSearch(prev => {
@@ -132,7 +159,7 @@ const Smappl = props => {
               label={messages['product_category']}
               clearable="true"
               selection
-              options={[]}
+              options={tovarCategory}
               placeholder={messages['product_category']}
               onChange={(e, { value }) => onChange('product', value)}
             />
@@ -209,9 +236,11 @@ const mapStateToProps = state => {
   return {
     companyPosition: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsService,
+    tovarCategorys: state.serviceReducer.tovarCategorys,
   };
 };
 
 export default connect(mapStateToProps, {
   clearDynObjService,
+  fetchTovarCategorys,
 })(injectIntl(Smappl));
