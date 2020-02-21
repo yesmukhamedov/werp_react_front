@@ -511,7 +511,6 @@ const getBranchOptions = (BranchList, countryId) => {
       out[j] = BranchList[i];
       j++;
     }
-    console.log('cou', out);
   }
   return out;
 };
@@ -537,7 +536,6 @@ const getProductOptions = (productList, bukrs) => {
   return out;
 };
 function mapStateToProps(state) {
-  console.log('kk', state.userInfo.branchOptionsService);
   return {
     language: state.locales.lang,
     countryList: state.f4.countryList,
