@@ -26,6 +26,7 @@ export default function List(props) {
     fetchSmsetct,
     editSmsetct,
     searchParams,
+    getBranchOptions,
   } = props;
   const emptySmSetCtEdit = {
     branchId: '',
@@ -163,8 +164,6 @@ export default function List(props) {
   };
   // Получить ID Филиала через text
   const getBranchId = (branches, branchName, bukrs) => {
-    console.log('branches', branches);
-    console.log('branches', bukrs);
     branches[bukrs].map(e => {
       if (branchName === e.text) {
         branchName = e.key;
@@ -366,14 +365,6 @@ export default function List(props) {
             <Form>
               <Form.Group widths="equal">
                 <Form.Field required>
-                  <label>{messages['country']}</label>
-                  <Dropdown
-                    search
-                    selection
-                    options={getCountryOptions(countryList)}
-                    defaultValue={sm_set_ct_Edit.countryId}
-                    onChange={(e, o) => handleEdit(o, 'countryId')}
-                  />
                   <label>{messages['bukrs']} </label>
                   <Dropdown
                     search
@@ -383,13 +374,25 @@ export default function List(props) {
                     onChange={(e, o) => handleEdit(o, 'bukrs')}
                   />
 
+                  <label>{messages['country']}</label>
+                  <Dropdown
+                    search
+                    selection
+                    options={getCountryOptions(countryList)}
+                    defaultValue={sm_set_ct_Edit.countryId}
+                    onChange={(e, o) => handleEdit(o, 'countryId')}
+                  />
+
                   <label>{messages['brnch']}</label>
                   <Dropdown
                     search
                     selection
                     options={
                       sm_set_ct_Edit.bukrs
-                        ? branchOptions[sm_set_ct_Edit.bukrs]
+                        ? getBranchOptions(
+                            branchOptions[sm_set_ct_Edit.bukrs],
+                            sm_set_ct_Edit.countryId,
+                          )
                         : []
                     }
                     defaultValue={sm_set_ct_Edit.branchId}
@@ -400,7 +403,10 @@ export default function List(props) {
                   <Dropdown
                     search
                     selection
-                    options={getProductOptions(productList)}
+                    options={getProductOptions(
+                      productList,
+                      sm_set_ct_Edit.bukrs,
+                    )}
                     defaultValue={sm_set_ct_Edit.matnr}
                     onChange={(e, o) => handleEdit(o, 'matnr')}
                   />

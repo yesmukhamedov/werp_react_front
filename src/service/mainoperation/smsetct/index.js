@@ -294,19 +294,19 @@ const Smsetct = props => {
                   <Form.Group widths="equal">
                     <OutputErrors errors={errors} />
                     <Form.Field required>
+                      <label>{messages['bukrs']} </label>
+                      <Dropdown
+                        search
+                        selection
+                        options={companyOptions || []}
+                        onChange={(e, o) => handleInputAdd(o, 'bukrs')}
+                      />
                       <label>{messages['country']}</label>
                       <Dropdown
                         search
                         selection
                         options={getCountryOptions(countryList)}
                         onChange={(e, o) => handleInputAdd(o, 'countryId')}
-                      />
-                      <label>{messages['bukrs']} </label>
-                      <Dropdown
-                        search
-                        selection
-                        options={getCompanyOptions(companyOptions)}
-                        onChange={(e, o) => handleInputAdd(o, 'bukrs')}
                       />
 
                       <label>{messages['brnch']}</label>
@@ -315,16 +315,22 @@ const Smsetct = props => {
                         selection
                         options={
                           postParams.bukrs
-                            ? branchOptions[postParams.bukrs]
+                            ? getBranchOptions(
+                                branchOptions[postParams.bukrs],
+                                postParams.countryId,
+                              )
                             : []
                         }
-                        onChange={(e, o) => handleInputAdd(o, 'branchId')}
+                        onChange={(e, o) => handleInputAdd(o, '`branchId`')}
                       />
                       <label>{messages['TBL_H__PRODUCT']}</label>
                       <Dropdown
                         search
                         selection
-                        options={getProductOptions(productList)}
+                        options={getProductOptions(
+                          productList,
+                          postParams.bukrs,
+                        )}
                         onChange={(e, o) => handleInputAdd(o, 'matnr')}
                       />
                       <Form.Field
@@ -461,6 +467,7 @@ const Smsetct = props => {
           editSmsetct={editSmsetct}
           searchParams={searchParams}
           fetchSmsetct={fetchSmsetct}
+          getBranchOptions={getBranchOptions}
         />
       </Container>
 
@@ -492,27 +499,35 @@ const getCountryOptions = countryList => {
   return out;
 };
 
-const getCompanyOptions = companyOptions => {
-  const companyList = companyOptions;
-  if (!companyList) {
+const getBranchOptions = (BranchList, countryId) => {
+  if (!BranchList || !countryId) {
     return [];
   }
-  let out = companyList.map(c => {
-    return {
-      key: c.key,
-      text: c.text,
-      value: c.value,
-    };
-  });
+
+  let out = [],
+    j = 0;
+  for (let i = 0; i < BranchList.length; i++) {
+    if (BranchList[i].countryid === countryId) {
+      out[j] = BranchList[i];
+      j++;
+    }
+    console.log('cou', out);
+  }
   return out;
 };
-
-const getProductOptions = productList => {
-  const productLst = productList;
-  if (!productLst) {
+const getProductOptions = (productList, bukrs) => {
+  if (!productList || !bukrs) {
     return [];
   }
-  let out = productLst.map(c => {
+  let productArray = [],
+    j = 0;
+  for (let i = 0; i < productList.length; i++) {
+    if (productList[i].bukrs === bukrs) {
+      productArray[j] = productList[i];
+      j++;
+    }
+  }
+  let out = productArray.map(c => {
     return {
       key: c.contract_type_id,
       text: c.name,
@@ -522,6 +537,7 @@ const getProductOptions = productList => {
   return out;
 };
 function mapStateToProps(state) {
+  console.log('kk', state.userInfo.branchOptionsService);
   return {
     language: state.locales.lang,
     countryList: state.f4.countryList,
