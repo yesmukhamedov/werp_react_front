@@ -124,29 +124,11 @@ export default function(state = INITIAL_STATE, action) {
           type: [...action.payload.data],
         },
       };
-
-    case FETCH_SMSETPP_POST:
-      console.log('object', action.payload);
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          service: [...state.data.service, action.payload],
-        },
-      };
     case FETCH_SMSETPP_SEARCH:
       return {
         ...state,
         dynamicObject: {
           ...state.dynamicObject,
-          service: [...action.payload.data],
-        },
-      };
-    case FETCH_SMSETPP_PUT:
-      return {
-        ...state,
-        data: {
-          ...state.data,
           service: [...action.payload.data],
         },
       };
@@ -165,7 +147,6 @@ export default function(state = INITIAL_STATE, action) {
     }
 
     case FETCH_SMPLB: {
-      console.log('in reducer');
       return {
         ...state,
         dynamicObject: { ...state.dynamicObject, data: [...action.payload] },

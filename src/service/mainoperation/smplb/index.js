@@ -25,7 +25,7 @@ import {
 const Smplb = props => {
   const {
     positionList,
-    companyPosition,
+    companyPosition = [],
     clearDynObjService,
     intl: { messages },
     fetchSmplb,
@@ -109,8 +109,8 @@ const Smplb = props => {
 
         <Divider />
         <Dropdown
-          selection
           options={companyPosition}
+          selection
           placeholder={messages['bukrs']}
           onChange={(e, { value }) => onChange(value)}
         />

@@ -5,10 +5,8 @@ import {
   Divider,
   Dropdown,
   Button,
-  Icon,
-  Grid,
-  Input,
   Form,
+  Icon,
 } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
@@ -30,7 +28,7 @@ import Columns from './columns';
 
 const Smappl = props => {
   const {
-    companyPosition,
+    companyPosition = [],
     clearDynObjService,
     intl: { messages },
     branchOptions,
@@ -50,9 +48,12 @@ const Smappl = props => {
   const [applicationType, setApplicationType] = useState([]);
   const [search, setSearch] = useState({
     bukrs: 0,
-    branch: 0,
-    datefrom: momentToStringYYYYMMDD(moment()),
-    dateTo: momentToStringYYYYMMDD(moment()),
+    branchId: 0,
+    aDateFrom: momentToStringYYYYMMDD(moment()),
+    aDateTo: momentToStringYYYYMMDD(moment()),
+    tovarCategorys: '',
+    appStatusIds: '',
+    appTypeIds: '',
   });
 
   useEffect(() => {
@@ -115,13 +116,22 @@ const Smappl = props => {
           varTs.bukrs = value;
           break;
         case 'branch':
-          varTs.branch = value;
+          varTs.branchId = value;
           break;
         case 'datefrom':
-          varTs.datefrom = value;
+          varTs.aDateFrom = value;
           break;
         case 'dateTo':
-          varTs.dateTo = value;
+          varTs.aDateTo = value;
+          break;
+        case 'product':
+          varTs.tovarCategorys = value.length > 0 ? value.join() : null;
+          break;
+        case 'status':
+          varTs.appStatusIds = value.length > 0 ? value.join() : null;
+          break;
+        case 'ApplicationType':
+          varTs.appTypeIds = value.length > 0 ? value.join() : null;
           break;
         default:
           return varTs;
@@ -159,9 +169,11 @@ const Smappl = props => {
         <Divider hidden></Divider>
         <Header as="h2">
           {messages['service_requests']}
-          <Button floated="right" color="blue">
-            {messages['new_service']}
-          </Button>
+          <a href="/service/mainoperation/smcs" target="_blank">
+            <Button floated="right" color="blue">
+              {messages['new_service']}
+            </Button>
+          </a>
         </Header>
         <Divider />
 
@@ -186,6 +198,7 @@ const Smappl = props => {
             <Form.Select
               label={messages['product_category']}
               clearable="true"
+              multiple
               selection
               options={tovarCategory}
               placeholder={messages['product_category']}
@@ -195,6 +208,7 @@ const Smappl = props => {
               label={messages['L__ORDER_STATUS']}
               clearable="true"
               selection
+              multiple
               options={applicationStatus}
               placeholder={messages['L__ORDER_STATUS']}
               onChange={(e, { value }) => onChange('status', value)}
@@ -203,6 +217,7 @@ const Smappl = props => {
               label={messages['type_of_application']}
               clearable="true"
               selection
+              multiple
               options={applicationType}
               placeholder={messages['type_of_application']}
               onChange={(e, { value }) => onChange('ApplicationType', value)}
@@ -246,7 +261,8 @@ const Smappl = props => {
             </Form.Field>
 
             <Form.Field control={Button} color="blue" style={{ marginTop: 24 }}>
-              {messages['apply']}
+              <Icon name="search" />
+              {messages['search']}
             </Form.Field>
           </Form.Group>
         </Form>

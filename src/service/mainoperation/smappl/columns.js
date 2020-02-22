@@ -19,76 +19,135 @@ const Columns = props => {
   const [modalOpen, setModalOpen] = useState(false);
   const allColumns = [
     {
-      Header: `CN`,
-      accessor: 'bukrs',
+      id: 0,
+      accessor: 'branchName',
       show: true,
     },
     {
-      Header: `${messages['productSerialNumber']}`,
-      accessor: 'Position',
+      id: 1,
+      accessor: 'tovarSn',
       show: true,
     },
     {
-      Header: `${messages['TBL_H__PRODUCT']}`,
-      accessor: 'fc',
+      id: 2,
+      accessor: 'matnr',
       show: true,
     },
     {
-      Header: `${messages['Application_Date']}`,
-      accessor: 'bukrs',
+      id: 3,
+      accessor: 'aDate',
       show: true,
     },
     {
-      Header: `${messages['Form.Reco.RecoName']}`,
-      accessor: 'bukrs',
+      id: 4,
+      accessor: 'customerName',
       show: true,
     },
     {
-      Header: `${messages['Table.Address']}`,
-      accessor: 'bukrs',
+      id: 5,
+      accessor: 'address',
       show: true,
     },
     {
-      Header: `${messages['Phone']}`,
-      accessor: 'bukrs',
+      id: 6,
+      accessor: 'inPhoneNum',
       show: true,
     },
     {
-      Header: `${messages['Masters']}`,
-      accessor: 'bukrs',
+      id: 7,
+      accessor: 'masterName',
       show: true,
     },
     {
-      Header: `${messages['L__ORDER_STATUS']}`,
-      accessor: 'bukrs',
+      id: 8,
+      accessor: 'appStatusIds',
       show: true,
     },
     {
-      Header: `${messages['Operator']}`,
-      accessor: 'bukrs',
+      id: 9,
+      accessor: 'operatorName',
       show: true,
     },
     {
-      Header: `${messages['type_of_application']}`,
-      accessor: 'bukrs',
+      id: 10,
+      accessor: 'appTypeIds',
       show: true,
     },
     {
-      Header: `№ ${messages['Applications']}`,
-      accessor: 'bukrs',
+      id: 11,
+      accessor: 'id',
       show: true,
     },
     {
-      Header: `${messages['service']} №`,
-      accessor: 'bukrs',
+      id: 12,
+      accessor: 'serviceId',
       show: true,
     },
     {
-      Header: `${messages['customer_story']}`,
-      accessor: 'bukrs',
+      id: 13,
+      accessor: 'awdaw',
       show: true,
     },
   ];
+  let headers = [
+    {
+      id: 0,
+      Header: `CN`,
+    },
+    {
+      id: 1,
+      Header: messages['productSerialNumber'],
+    },
+    {
+      id: 2,
+      Header: messages['TBL_H__PRODUCT'],
+    },
+    {
+      id: 3,
+      Header: messages['Application_Date'],
+    },
+    {
+      id: 4,
+      Header: messages['Form.Reco.RecoName'],
+    },
+    {
+      id: 5,
+      Header: messages['Table.Address'],
+    },
+    {
+      id: 6,
+      Header: messages['Phone'],
+    },
+    {
+      id: 7,
+      Header: messages['Masters'],
+    },
+    {
+      id: 8,
+      Header: messages['L__ORDER_STATUS'],
+    },
+    {
+      id: 9,
+      Header: messages['Operator'],
+    },
+    {
+      id: 10,
+      Header: messages['type_of_application'],
+    },
+    {
+      id: 11,
+      Header: `№ ${messages['Applications']}`,
+    },
+    {
+      id: 12,
+      Header: `${messages['service']} №`,
+    },
+    {
+      id: 13,
+      Header: messages['customer_story'],
+    },
+  ];
+
   const [columns, setColumns] = useState(allColumns);
 
   useEffect(() => {
@@ -104,7 +163,7 @@ const Columns = props => {
     setColumns(prev => {
       let columns = [...prev];
       columns.map(el => {
-        if (el.Header === e.Header) {
+        if (el.accessor === e.accessor) {
           el.show = !el.show;
         }
       });
@@ -141,7 +200,7 @@ const Columns = props => {
             <Table.Body>
               {columns.map((item, id) => (
                 <Table.Row key={id}>
-                  <Table.Cell>{item.Header}</Table.Cell>
+                  <Table.Cell>{headers[id].Header}</Table.Cell>
                   <Table.Cell>
                     <Checkbox
                       onChange={() => {
@@ -165,7 +224,7 @@ const Columns = props => {
           </Button>
         </Modal.Actions>
       </Modal>
-      <ServiceRequestTable columnsName={columns} />
+      <ServiceRequestTable columnsName={columns} headers={headers} />
     </Fragment>
   );
 };
