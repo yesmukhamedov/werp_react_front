@@ -39,6 +39,8 @@ export const POST_SMCCALD_CREATE_APP = 'POST_SMCCALD_CREATE_APP';
 
 export const FETCH_APP_STATUS = 'FETCH_APP_STATUS';
 export const FETCH_APP_TYPE = 'FETCH_APP_TYPE';
+export const FETCH_APP_LIST = 'FETCH_APP_LIST';
+export const FETCH_APP_MASTER_LIST = 'FETCH_APP_MASTER_LIST';
 
 export const FETCH_SMSRCUS = 'FETCH_SMSRCUS';
 export const FETCH_TOVAR_CATEGORYS = 'FETCH_TOVAR_CATEGORYS';
@@ -616,6 +618,40 @@ export function fetchAppType() {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_APP_TYPE,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchAppList(params) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('smappl/appList?direction=ASC&orderBy=id', params)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_APP_LIST,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchAppMasterList(params) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('smappl/masterList', params)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_APP_MASTER_LIST,
           payload: data.data,
         });
       })

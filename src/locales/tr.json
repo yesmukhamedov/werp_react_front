@@ -785,5 +785,6 @@
   "full_name_of_client": "Müşteri adı",
   "customer_key": "Customer key",
   "telephone": "Telefon numarası",
-  "choose_columns": "Choose columns"
+  "choose_columns": "Choose columns",
+  "change_master": "Change master"
 }

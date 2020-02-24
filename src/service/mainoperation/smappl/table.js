@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
 import 'react-table/react-table.css';
 import { injectIntl } from 'react-intl';
 import { Button, Icon, Dropdown, Select } from 'semantic-ui-react';
+import { connect } from 'react-redux';
+import Masters from './Masters';
 
 import '../../service.css';
 
@@ -11,48 +13,13 @@ const Table = props => {
     intl: { messages },
     columnsName = [],
     headers,
+    appList,
+    appMasterList,
   } = props;
 
   const [tableColumns, setTableColumns] = useState([]);
-  const [serviceRequests, setServiceRequests] = useState([
-    {
-      id: 1,
-      contractNumber: 'wadwadwa',
-      appStatusIds: 'awdawd',
-      appTypeIds: 'dwadawd',
-      customerName: 'awdawd',
-      branchName: 'dawdaw',
-      address: 'wadaw',
-      operatorName: 'wawdaw',
-      aDate: 'awdawd',
-      tovarSn: 'awdaw',
-      inPhoneNum: 'dawdawd',
-      masterName: 'wadawdaw',
-      matnr: 'Roboclean',
-      serviceId: 25,
-    },
-    {
-      id: 2,
-      contractNumber: 'wadwadwa',
-      appStatusIds: 'awdawd',
-      appTypeIds: 'dwadawd',
-      customerName: 'awdawd',
-      branchName: 'dawdaw',
-      address: 'wadaw',
-      operatorName: 'wawdaw',
-      aDate: 'awdawd',
-      tovarSn: 'awdaw',
-      inPhoneNum: 'dawdawd',
-      masterName: 'wadawdaw',
-      matnr: 'Roboclean',
-      serviceId: 25,
-    },
-  ]);
-  const [masterList, setMasterList] = useState([
-    { key: 2, text: 'Ахметов М.', value: 2 },
-    { key: 1, text: 'Токсанбаев Д.', value: 1 },
-    { key: 3, text: 'Сериков Б.', value: 3 },
-  ]);
+  const [serviceRequests, setServiceRequests] = useState([]);
+  const [masterList, setMasterList] = useState([]);
 
   useEffect(() => {
     let p = [];
@@ -78,10 +45,11 @@ const Table = props => {
             ...columnsName[t],
             Cell: ({ row }) => (
               <div style={{ textAlign: 'center' }}>
-                <Dropdown
-                  className="dropDownZindex"
-                  options={masterList}
-                  placeholder="I open on focus"
+                {row._original.masterName}
+                <Masters
+                  master={row._original.masterName}
+                  masterList={masterList}
+                  id={row._original.masterId}
                 />
               </div>
             ),
@@ -97,26 +65,57 @@ const Table = props => {
       }
     }
     setTableColumns([...p]);
-  }, [columnsName]);
+  }, [columnsName, masterList]);
+
+  useEffect(() => {
+    if (appList !== undefined) {
+      setServiceRequests(appList.data);
+      console.log(appList);
+    }
+  }, [appList]);
+
+  useEffect(() => {
+    if (appMasterList !== undefined) {
+      let masters = appMasterList.map(item => {
+        return {
+          key: item.staffId,
+          text: item.fullFIO,
+          value: item.staffId,
+        };
+      });
+      setMasterList(masters);
+    }
+  }, [appMasterList]);
 
   return (
-    <ReactTableServerSideWrapper
-      data={serviceRequests}
-      columns={tableColumns}
-      defaultPageSize={15}
-      pages={2}
-      previousText={messages['Table.Previous']}
-      nextText={messages['Table.Next']}
-      showPagination={true}
-      className="-striped -highlight"
-      pageSizeOptions={[20, 30, 40]}
-      loadingText={messages['Table.Next']}
-      noDataText={messages['Table.NoData']}
-      rowsText={messages['Table.Rows']}
-      pageText={messages['Table.Page']}
-      ofText={messages['Table.Of']}
-    />
+    <Fragment>
+      {serviceRequests.length !== 0 ? (
+        <ReactTableServerSideWrapper
+          data={serviceRequests}
+          columns={tableColumns}
+          defaultPageSize={15}
+          pages={appList.totalPages}
+          previousText={messages['Table.Previous']}
+          nextText={messages['Table.Next']}
+          showPagination={true}
+          className="-striped -highlight"
+          pageSizeOptions={[20, 30, 40]}
+          loadingText={messages['Table.Next']}
+          noDataText={messages['Table.NoData']}
+          rowsText={messages['Table.Rows']}
+          pageText={messages['Table.Page']}
+          ofText={messages['Table.Of']}
+        />
+      ) : null}
+    </Fragment>
   );
 };
 
-export default injectIntl(Table);
+const mapStateToProps = state => {
+  return {
+    appList: state.serviceReducer.dynamicObject.appList,
+    appMasterList: state.serviceReducer.dynamicObject.appMasterList,
+  };
+};
+
+export default connect(mapStateToProps)(injectIntl(Table));

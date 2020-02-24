@@ -785,5 +785,6 @@
   "full_name_of_client": "Name of client",
   "customer_key": "Customer key",
   "telephone": "Telephone",
-  "choose_columns": "Choose columns"
+  "choose_columns": "Choose columns",
+  "change_master": "Change master"
 }

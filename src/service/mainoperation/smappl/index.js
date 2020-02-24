@@ -16,14 +16,13 @@ import {
   fetchTovarCategorys,
   fetchAppStatus,
   fetchAppType,
+  fetchAppList,
+  fetchAppMasterList,
 } from '../../serviceAction';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-import {
-  stringYYYYMMDDToMoment,
-  momentToStringYYYYMMDD,
-} from '../../../utils/helpers';
+import { formatDMY } from '../../../utils/helpers';
 import Columns from './columns';
 
 const Smappl = props => {
@@ -38,6 +37,8 @@ const Smappl = props => {
     appStatus,
     fetchAppType,
     appType,
+    fetchAppList,
+    fetchAppMasterList,
   } = props;
   const [dropdownActive, setDropdownActive] = useState(false);
   const [error, setError] = useState([]);
@@ -46,14 +47,16 @@ const Smappl = props => {
   const language = localStorage.getItem('language');
   const [applicationStatus, setApplicationStatus] = useState([]);
   const [applicationType, setApplicationType] = useState([]);
+  const [aDateFrom, setDateFrom] = useState();
+  const [aDateTo, setDateTo] = useState();
   const [search, setSearch] = useState({
     bukrs: 0,
     branchId: 0,
-    aDateFrom: momentToStringYYYYMMDD(moment()),
-    aDateTo: momentToStringYYYYMMDD(moment()),
-    tovarCategorys: '',
-    appStatusIds: '',
-    appTypeIds: '',
+    aDateFrom: null,
+    aDateTo: null,
+    tovarCategorys: null,
+    appStatusIds: null,
+    appTypeIds: null,
   });
 
   useEffect(() => {
@@ -119,10 +122,12 @@ const Smappl = props => {
           varTs.branchId = value;
           break;
         case 'datefrom':
-          varTs.aDateFrom = value;
+          setDateFrom(value);
+          varTs.aDateFrom = formatDMY(value);
           break;
         case 'dateTo':
-          varTs.aDateTo = value;
+          setDateTo(value);
+          varTs.aDateTo = formatDMY(value);
           break;
         case 'product':
           varTs.tovarCategorys = value.length > 0 ? value.join() : null;
@@ -153,6 +158,8 @@ const Smappl = props => {
     }
     if (errors.length === 0) {
       console.log(search);
+      fetchAppList(search);
+      fetchAppMasterList(search);
     }
     return errors;
   };
@@ -176,7 +183,6 @@ const Smappl = props => {
           </a>
         </Header>
         <Divider />
-
         <Form>
           <Form.Group widths="equal">
             <Form.Select
@@ -232,12 +238,10 @@ const Smappl = props => {
                 autoComplete="off"
                 showMonthDropdown
                 showYearDropdown
-                dropdownMode="select" // timezone="UTC"
-                selected={stringYYYYMMDDToMoment(search.datefrom)}
+                dropdownMode="select"
                 locale={language}
-                onChange={event =>
-                  onChange('datefrom', momentToStringYYYYMMDD(event))
-                }
+                selected={aDateFrom}
+                onChange={event => onChange('datefrom', event)}
                 dateFormat="DD.MM.YYYY"
                 placeholderText={messages['Form.DateFrom']}
               />
@@ -249,18 +253,21 @@ const Smappl = props => {
                 autoComplete="off"
                 showMonthDropdown
                 showYearDropdown
-                dropdownMode="select" // timezone="UTC"
-                selected={stringYYYYMMDDToMoment(search.dateTo)}
+                dropdownMode="select"
+                selected={aDateTo}
                 locale={language}
-                onChange={event =>
-                  onChange('dateTo', momentToStringYYYYMMDD(event))
-                }
+                onChange={event => onChange('dateTo', event)}
                 dateFormat="DD.MM.YYYY"
                 placeholderText={messages['Form.DateTo']}
               />
             </Form.Field>
 
-            <Form.Field control={Button} color="blue" style={{ marginTop: 24 }}>
+            <Form.Field
+              control={Button}
+              color="blue"
+              style={{ marginTop: 24 }}
+              onClick={onSearch}
+            >
               <Icon name="search" />
               {messages['search']}
             </Form.Field>
@@ -291,4 +298,6 @@ export default connect(mapStateToProps, {
   fetchTovarCategorys,
   fetchAppStatus,
   fetchAppType,
+  fetchAppList,
+  fetchAppMasterList,
 })(injectIntl(Smappl));

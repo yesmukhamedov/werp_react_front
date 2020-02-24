@@ -28,6 +28,8 @@ import {
   POST_SMREGC_CREATE_CALL,
   FETCH_APP_STATUS,
   FETCH_APP_TYPE,
+  FETCH_APP_LIST,
+  FETCH_APP_MASTER_LIST,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -139,7 +141,6 @@ export default function(state = INITIAL_STATE, action) {
         dynamicObject: { ...state.dynamicObject, ...action.payload },
       };
     case FETCH_SMPLB: {
-      console.log('in reducer');
       return {
         ...state,
         dynamicObject: { ...state.dynamicObject, data: [...action.payload] },
@@ -219,6 +220,22 @@ export default function(state = INITIAL_STATE, action) {
       };
     }
 
+    case FETCH_APP_LIST:
+      return {
+        ...state,
+        dynamicObject: {
+          ...state.dynamicObject,
+          appList: action.payload,
+        },
+      };
+    case FETCH_APP_MASTER_LIST:
+      return {
+        ...state,
+        dynamicObject: {
+          ...state.dynamicObject,
+          appMasterList: [...action.payload],
+        },
+      };
     default:
       return state;
   }

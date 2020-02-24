@@ -35,12 +35,12 @@ const Columns = props => {
     },
     {
       id: 3,
-      accessor: 'aDate',
+      accessor: 'adate',
       show: true,
     },
     {
       id: 4,
-      accessor: 'customerName',
+      accessor: 'applicantName',
       show: true,
     },
     {
@@ -60,7 +60,7 @@ const Columns = props => {
     },
     {
       id: 8,
-      accessor: 'appStatusIds',
+      accessor: 'appStatusName',
       show: true,
     },
     {
@@ -70,7 +70,7 @@ const Columns = props => {
     },
     {
       id: 10,
-      accessor: 'appTypeIds',
+      accessor: 'appTypeName',
       show: true,
     },
     {
