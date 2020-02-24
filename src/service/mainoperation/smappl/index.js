@@ -157,7 +157,6 @@ const Smappl = props => {
       errors.push(errorTable[`5${language}`]);
     }
     if (errors.length === 0) {
-      console.log(search);
       fetchAppList(search);
       fetchAppMasterList(search);
     }

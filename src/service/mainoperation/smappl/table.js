@@ -91,20 +91,12 @@ const Table = props => {
     <Fragment>
       {serviceRequests.length !== 0 ? (
         <ReactTableServerSideWrapper
-          data={serviceRequests}
+          data={serviceRequests.length === 0 ? [] : serviceRequests}
           columns={tableColumns}
           defaultPageSize={15}
           pages={appList.totalPages}
-          previousText={messages['Table.Previous']}
-          nextText={messages['Table.Next']}
           showPagination={true}
           className="-striped -highlight"
-          pageSizeOptions={[20, 30, 40]}
-          loadingText={messages['Table.Next']}
-          noDataText={messages['Table.NoData']}
-          rowsText={messages['Table.Rows']}
-          pageText={messages['Table.Page']}
-          ofText={messages['Table.Of']}
         />
       ) : null}
     </Fragment>
