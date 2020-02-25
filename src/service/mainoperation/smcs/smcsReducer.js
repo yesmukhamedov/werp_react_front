@@ -46,15 +46,12 @@ export default function(state = INITIAL_STATE, action) {
       return { ...state, smcsMatnrPriceList: [...action.data.data] };
 
     case FETCH_SMCS_SERVICE_PACKET:
-      console.log('SERVICE PACKET REDUCER');
       return { ...state, smcsServicePacket: [...action.data.data] };
 
     case FETCH_POSITION_SUMM:
-      console.log('FETCH POSITION SUMM REDUCER');
       return { ...state, smcsFetchPositionSumm: { ...action.data.data } };
 
     case CHECK_SMCS_WITHOUT_REQUEST:
-      console.log('CHECK_SMCS_WITHOUT_REQUEST REDUCER');
       return { ...state, checkSmcs: { ...action.data.data } };
     default:
       return state;

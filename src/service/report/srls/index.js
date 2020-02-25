@@ -4,8 +4,10 @@ import {
   f4FetchCountryList,
   f4FetchWerksBranchList,
 } from '../../../reference/f4/f4_action';
-import { fetchSrls, clearDynObjService } from './../../serviceAction';
+import { fetchServiceList } from '../serviceReportAction';
 import { injectIntl } from 'react-intl';
+import matchSorter from 'match-sorter';
+import format from 'string-format';
 import {
   Button,
   Dropdown,
@@ -21,12 +23,10 @@ import {
 } from 'semantic-ui-react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import matchSorter from 'match-sorter';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-import { stringYYYYMMDDToMoment } from '../../../utils/helpers';
-import ReactTableWrapper from './../../../utils/ReactTableWrapper';
+import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 require('moment/locale/ru');
 require('moment/locale/tr');
 
@@ -37,57 +37,49 @@ const Srls = props => {
     companyOptions = [],
     branchOptions = [],
     dynamicObject,
-    fetchSrls,
-    clearDynObjService,
+    fetchServiceList,
+    search,
   } = props;
 
+  let queryString = 'bukrs=={0.bukrs};id=={0.id};branch=={0.branch}';
+
   const emptySrls = {
-    bukrs: '',
-    branchId: '',
-    productCategory: '',
-    typeOfService: '',
-    statusService: '',
+    id: 1,
+    bukrs: 1000,
+    branch: 'servisebranch',
   };
+
   const date = moment().format(`YYYY-MM-DDThh:mm:ss.SSSZZ`);
   const [srls, setSrls] = useState({ ...emptySrls });
   const [startDate, setStartDate] = useState(moment(date));
   const [endDate, setEndDate] = useState(moment(date));
 
   useEffect(() => {
-    fetchSrls();
-
+    fetchServiceList();
     //unmount
-    return () => {
-      props.clearDynObjService();
-    };
   }, []);
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    console.log('DYNAMIC', dynamicObject);
-    // console.log('HandleSubmit', srls, startDate._i, endDate);
-    props.fetchSrls({ ...srls, startDate, endDate });
-  };
-
+  //Категория продукта
   const productCategoryOptions = [
     { key: '1', text: 'Aura', value: '1' },
     { key: '2', text: 'Greenlight', value: '2' },
     { key: '3', text: 'S', value: '3' },
   ];
 
+  //Вид сервиса
   const typeOfServiceOptions = [
     { key: '1', text: 'Сервис карта заполнена', value: '1' },
     { key: '2', text: 'Новый', value: '2' },
     { key: '3', text: 'S', value: '3' },
   ];
 
+  //Статус сервиса
   const serviceStatusOptions = [
     { key: '1', text: 'Выполнено', value: '1' },
     { key: '2', text: 'Отмена', value: '2' },
   ];
 
   const onInputChange = (o, fieldName) => {
-    console.log('e', o);
     setSrls(prev => {
       const varSrls = { ...prev };
       switch (fieldName) {
@@ -113,13 +105,139 @@ const Srls = props => {
     });
   };
 
+  //Колоны ReactTable
+  const columns = [
+    {
+      Header: 'Филиал',
+      accessor: 'branchId',
+      filterAll: true,
+      width: 180,
+      maxWidth: 200,
+      minWidth: 100,
+    },
+    {
+      Header: 'Дата',
+      accessor: 'dateOpen',
+      filterAll: true,
+      width: 300,
+      maxWidth: 300,
+      minWidth: 100,
+    },
+    {
+      Header: 'CN',
+      accessor: 'contractId',
+      filterAll: true,
+      width: 100,
+      maxWidth: 200,
+      minWidth: 100,
+    },
+    {
+      Header: 'Заводской номер',
+      accessor: 'tovarSn',
+      filterAll: true,
+      width: 150,
+      maxWidth: 200,
+      minWidth: 100,
+    },
+    {
+      Header: 'ФИО клиента',
+      accessor: '',
+      filterAll: true,
+      width: 300,
+      maxWidth: 300,
+      minWidth: 100,
+    },
+
+    {
+      Header: 'Статус сервиса',
+      accessor: 'servStatus',
+      filterAll: true,
+      width: 150,
+      maxWidth: 200,
+      minWidth: 100,
+    },
+    {
+      Header: 'Мастер',
+      accessor: 'masterId',
+      filterAll: true,
+      width: 150,
+      maxWidth: 200,
+      minWidth: 100,
+    },
+    {
+      Header: 'Оператор',
+      accessor: 'operId',
+      filterAll: true,
+      width: 150,
+      maxWidth: 200,
+      minWidth: 100,
+    },
+    {
+      Header: 'Вид сервиса',
+      accessor: '',
+      filterAll: true,
+      width: 150,
+      maxWidth: 200,
+      minWidth: 100,
+    },
+    {
+      Header: 'Сумма',
+      accessor: 'summTotal',
+      filterAll: true,
+      width: 150,
+      maxWidth: 200,
+      minWidth: 100,
+    },
+    {
+      Header: 'Оплачено',
+      accessor: 'paid',
+      filterAll: true,
+      width: 150,
+      maxWidth: 200,
+      minWidth: 100,
+    },
+    {
+      Header: 'Остаток',
+      accessor: '',
+      filterAll: true,
+      width: 150,
+      maxWidth: 200,
+      minWidth: 100,
+    },
+    {
+      Header: 'Сервис №',
+      accessor: '',
+      filterAll: true,
+      width: 150,
+      maxWidth: 200,
+      minWidth: 100,
+    },
+    {
+      Header: 'История клиента',
+      accessor: '',
+      filterAll: true,
+      width: 150,
+      maxWidth: 200,
+      minWidth: 100,
+    },
+  ];
+
+  let query = {
+    search: format(queryString, srls),
+  };
+
+  const handleClickSearch = () => {
+    console.log('HANDLE CLICK SEARCH');
+    props.fetchServiceList(query);
+  };
+
   return (
     <Container fluid>
       <Segment>
         <h3>Список сервисов</h3>
       </Segment>
       <Segment>
-        <Form onSubmit={handleSubmit}>
+        <Form>
           <Grid columns={8}>
             <Grid.Column>
               <label>{messages['bukrs']} </label>
@@ -127,9 +245,8 @@ const Srls = props => {
                 fluid
                 search
                 selection
-                options={companyOptions}
+                options={companyOptions ? companyOptions : []}
                 value={srls.bukrs}
-                onChange={(e, o) => onInputChange(o, 'bukrs')}
               />
             </Grid.Column>
 
@@ -139,7 +256,6 @@ const Srls = props => {
                 fluid
                 search
                 selection
-                options={srls.bukrs ? branchOptions[srls.bukrs] : []}
                 value={srls.branchId}
                 onChange={(e, o) => onInputChange(o, 'branchId')}
               />
@@ -153,7 +269,7 @@ const Srls = props => {
                 selection
                 options={productCategoryOptions}
                 value={srls.productCategory}
-                onChange={(e, o) => onInputChange(o, 'productCategory')}
+                //  onChange={(e, o) => onInputChange(o, 'productCategory')}
               />
             </Grid.Column>
 
@@ -165,7 +281,7 @@ const Srls = props => {
                 selection
                 value={srls.typeOfService}
                 options={typeOfServiceOptions}
-                onChange={(e, o) => onInputChange(o, 'typeOfService')}
+                // onChange={(e, o) => onInputChange(o, 'typeOfService')}
               />
             </Grid.Column>
 
@@ -177,7 +293,7 @@ const Srls = props => {
                 selection
                 options={serviceStatusOptions}
                 value={srls.statusService}
-                onChange={(e, o) => onInputChange(o, 'statusService')}
+                // onChange={(e, o) => onInputChange(o, 'statusService')}
               />
             </Grid.Column>
 
@@ -206,13 +322,23 @@ const Srls = props => {
             </Grid.Column>
 
             <Grid.Column verticalAlign="bottom">
-              <Button color="teal" onSubmit={handleSubmit}>
+              <Button onClick={handleClickSearch} color="teal">
                 Применить
               </Button>
             </Grid.Column>
           </Grid>
         </Form>
       </Segment>
+      <ReactTableWrapper
+        filterable
+        columns={columns}
+        rowsText={messages['rowsText']}
+        pageText={messages['pageText']}
+        ofText={messages['ofText']}
+        previousText={messages['previousText']}
+        nextText={messages['nextText']}
+        noDataText={messages['loadingText']}
+      />
     </Container>
   );
 };
@@ -222,12 +348,10 @@ function mapStateToProps(state) {
     language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,
-    dynamicObject: state.serviceReducer.dynamicObject,
   };
 }
 
 export default connect(mapStateToProps, {
   f4FetchWerksBranchList,
-  fetchSrls,
-  clearDynObjService,
+  fetchServiceList,
 })(injectIntl(Srls));

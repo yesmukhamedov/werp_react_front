@@ -878,7 +878,6 @@ const TabSmcsWithoutRequest = props => {
     console.log('SAVE');
   };
 
-  console.log('CHECK', checkSmcs);
   return (
     <Form>
       <StaffF4Modal

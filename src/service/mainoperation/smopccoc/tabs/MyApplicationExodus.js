@@ -9,46 +9,40 @@ import {
   Button,
   Table,
   Input,
+  Select,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
-import '../../service.css';
-import {
-  f4fetchCategory,
-  f4FetchStaffList,
-  f4FetchServiceStatusList,
-} from '../../../reference/f4/f4_action';
-
-import { fetchServiceTypeId } from '../../mainoperation/smcs/smcsAction';
-import { fetchServiceListManager } from '../serviceReportAction';
-import ReactTableWrapper from '../../../utils/ReactTableWrapper';
-import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
+import '../../../service.css';
+import { fetchServiceTypeId } from '../../../mainoperation/smcs/smcsAction';
+import { fetchServiceListManager } from '../../../report/serviceReportAction';
+import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-import { momentToStringYYYYMMDD } from '../../../utils/helpers';
+import { momentToStringYYYYMMDD } from '../../../../utils/helpers';
 require('moment/locale/ru');
 require('moment/locale/tr');
 
-const Srlsm = props => {
+const MyApplicationExodus = props => {
   const {
     intl: { messages },
     language,
-    companyOptions = [],
-    branchOptions,
-    srlsmList = [],
-    fetchServiceListManager,
-    category,
-    f4fetchCategory,
-    f4FetchStaffList,
-    serviceTypeId = [],
     fetchServiceTypeId,
-    f4FetchServiceStatusList,
-    serviceStatusList = [],
   } = props;
 
-  console.log('srlsmList', srlsmList);
+  const {
+    serviceTypeId = [],
+    srlsmList,
+    companyOptions,
+    countryOptions,
+    category,
+    serviceStatusList = [],
+    contractStatusList,
+    branches,
+  } = props;
 
-  const emptySrlsmParam = {
+  const emptyParam = {
+    country: '',
     bukrs: '',
     branchId: '',
     categoryId: '',
@@ -60,7 +54,7 @@ const Srlsm = props => {
   const date = new Date();
   const y = date.getFullYear();
   const m = date.getMonth();
-  const [srlsmParam, setSrlsmParam] = useState({ ...emptySrlsmParam });
+  const [param, setParam] = useState({ ...emptyParam });
   const [startDates, setStartDates] = useState(moment(new Date(y - 1, m, 1)));
   const [endDates, setEndDates] = useState(moment(new Date()));
   const columnsSrlsm = [
@@ -153,21 +147,43 @@ const Srlsm = props => {
   ];
   const [columns, setColumns] = useState([...columnsSrlsm]);
 
+  const [serBranchOptions, setSerBranchOptions] = useState([]);
+
   useEffect(() => {
-    setSrlsmParam({
-      ...srlsmParam,
+    fetchServiceTypeId();
+  }, []);
+
+  useEffect(() => {
+    setParam({
+      ...param,
       dateStart: momentToStringYYYYMMDD(startDates),
       dateEnd: momentToStringYYYYMMDD(endDates),
     });
   }, [startDates, endDates]);
 
-  console.log('srlsmParam', srlsmParam);
-
   useEffect(() => {
-    f4fetchCategory();
-    fetchServiceTypeId();
-    f4FetchServiceStatusList();
-  }, []);
+    const getBranchByBukrs = (branches, bukrs) => {
+      let br = branches.filter(item => item.bukrs == bukrs);
+
+      let brSer = br.filter(
+        item =>
+          item.business_area_id == 5 ||
+          item.business_area_id == 6 ||
+          item.business_area_id == 9,
+      );
+
+      let serBranchOpt = brSer.map(item => {
+        return {
+          key: item.branch_id,
+          text: item.text45,
+          value: item.branch_id,
+        };
+      });
+      return serBranchOpt;
+    };
+
+    setSerBranchOptions(getBranchByBukrs(branches, param.bukrs));
+  }, [param.bukrs]);
 
   const categoryOptions = category.map(item => {
     return {
@@ -194,65 +210,59 @@ const Srlsm = props => {
   });
 
   const handleClickApply = () => {
-    props.fetchServiceListManager(srlsmParam);
+    props.fetchServiceListManager({ ...param });
   };
 
   const onInputChange = (o, fieldName) => {
-    setSrlsmParam(prev => {
-      const varSrlsm = { ...prev };
+    setParam(prev => {
+      const prevParam = { ...prev };
       switch (fieldName) {
+        case 'country':
+          prevParam.country = o.value;
+          break;
         case 'bukrs':
-          varSrlsm.bukrs = o.value;
+          prevParam.bukrs = o.value;
           break;
         case 'branchId':
-          varSrlsm.branchId = o.value;
+          prevParam.branchId = o.value;
           break;
 
         case 'categoryId':
-          varSrlsm.categoryId = o.value;
+          prevParam.categoryId = o.value;
           break;
         case 'serviceTypeId':
-          varSrlsm.serviceTypeId = o.value;
+          prevParam.serviceTypeId = o.value;
           break;
 
         case 'serviceStatusId':
-          varSrlsm.serviceStatusId = o.value;
+          prevParam.serviceStatusId = o.value;
           break;
         case 'dateStart':
-          varSrlsm.dateStart = o.value;
+          prevParam.dateStart = o.value;
           break;
 
         default:
-          varSrlsm[fieldName] = o.value;
+          prevParam[fieldName] = o.value;
       }
-      return varSrlsm;
+      return prevParam;
     });
-  };
-
-  const getBranchOptions = (brOptions, bukrs) => {
-    const brachOptions = brOptions;
-    if (!bukrs) {
-      return [];
-    }
-    let out = brachOptions[bukrs].map(c => {
-      return {
-        key: parseInt(c.key, 10),
-        text: `${c.text}`,
-        value: parseInt(c.value, 10),
-      };
-    });
-
-    return out;
   };
 
   return (
     <Container fluid className="containerMargin">
       <Segment>
-        <h3>Менеджер: Список сервисов</h3>
-      </Segment>
-      <Segment>
         <Grid>
           <Grid.Row columns={9}>
+            <Grid.Column>
+              <label>Страна</label>
+              <Dropdown
+                options={countryOptions}
+                fluid
+                selection
+                placeholder="Страна"
+                onChange={(e, o) => onInputChange(o, 'country')}
+              />
+            </Grid.Column>
             <Grid.Column>
               <label>Компания</label>
               <Dropdown
@@ -270,7 +280,7 @@ const Srlsm = props => {
                 selection
                 placeholder="Филиал"
                 onChange={(e, o) => onInputChange(o, 'branchId')}
-                options={getBranchOptions(branchOptions, srlsmParam.bukrs)}
+                options={serBranchOptions}
               />
             </Grid.Column>
             <Grid.Column>
@@ -285,7 +295,7 @@ const Srlsm = props => {
             </Grid.Column>
             <Grid.Column>
               <label>Вид сервиса</label>
-              <Dropdown
+              <Select
                 options={serviceTypeOptions}
                 onChange={(e, o) => onInputChange(o, 'serviceTypeId')}
                 fluid
@@ -295,7 +305,7 @@ const Srlsm = props => {
             </Grid.Column>
             <Grid.Column>
               <label>Статус сервиса</label>
-              <Dropdown
+              <Select
                 options={serviceStatusOptions}
                 onChange={(e, o) => onInputChange(o, 'serviceStatusId')}
                 fluid
@@ -306,6 +316,7 @@ const Srlsm = props => {
             <Grid.Column>
               <label>{messages['Form.DateFrom']}</label>
               <DatePicker
+                className="datePicker"
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
@@ -318,6 +329,7 @@ const Srlsm = props => {
             <Grid.Column>
               <label>{messages['Form.DateTo']}</label>
               <DatePicker
+                className="datePicker"
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
@@ -338,37 +350,6 @@ const Srlsm = props => {
           </Grid.Row>
         </Grid>
       </Segment>
-      <Table>
-        <Table.Body>
-          <Table.Row>
-            <Table.Cell>Общая сумма</Table.Cell>
-            <Table.Cell>
-              <Input readOnly type="text" value="654654" />
-            </Table.Cell>
-            <Table.Cell>Оплачено</Table.Cell>
-            <Table.Cell>
-              <Input readOnly type="text" value="654654" />
-            </Table.Cell>
-            <Table.Cell>Остаток</Table.Cell>
-            <Table.Cell>
-              <Input readOnly type="text" value="654654" />
-            </Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Премия мастера</Table.Cell>
-            <Table.Cell>
-              <Input readOnly type="text" value="654654" />
-            </Table.Cell>
-            <Table.Cell>Премия оператора</Table.Cell>
-            <Table.Cell>
-              <Input readOnly type="text" value="654654" />
-            </Table.Cell>
-            <Table.Cell></Table.Cell>
-            <Table.Cell></Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table>
-
       <ReactTableServerSideWrapper data={srlsmList} columns={columns} />
     </Container>
   );
@@ -377,18 +358,11 @@ const Srlsm = props => {
 function mapStateToProps(state) {
   return {
     language: state.locales.lang,
-    companyOptions: state.userInfo.companyOptions,
-    branchOptions: state.userInfo.branchOptionsAll,
-    srlsmList: state.serviceReportReducer.srlsmList,
-    category: state.f4.category,
     serviceTypeId: state.smcsReducer.serviceTypeId,
-    serviceStatusList: state.f4.serviceStatusList,
   };
 }
 
 export default connect(mapStateToProps, {
   fetchServiceListManager,
-  f4fetchCategory,
   fetchServiceTypeId,
-  f4FetchServiceStatusList,
-})(injectIntl(Srlsm));
+})(injectIntl(MyApplicationExodus));

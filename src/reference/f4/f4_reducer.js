@@ -70,6 +70,7 @@ import {
   F4_CLEAR_SERV_CONTRACT,
   F4_FETCH_CATEGORY,
   F4_FETCH_CUSTOMERS_BY_ID,
+  F4_FETCH_SERVICE_STATUS_LIST,
 } from './f4_action';
 
 const INITIAL_STATE = {
@@ -325,6 +326,8 @@ export default function(state = INITIAL_STATE, action) {
     case F4_FETCH_CUSTOMERS_BY_ID:
       return { ...state, customersById: action.data.data };
 
+    case F4_FETCH_SERVICE_STATUS_LIST:
+      return { ...state, serviceStatusList: action.data.data };
     default:
       return state;
   }

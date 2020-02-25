@@ -982,6 +982,32 @@ const AsyncSmsrcus = Loadable({
   loader: () => import('../service/mainoperation/smsrcus'),
   loading: () => <LoadingPage />,
 });
+
+const AsyncSmopccoc = Loadable({
+  loader: () => import('../service/mainoperation/smopccoc'),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncSmopccic = Loadable({
+  loader: () => import('../service/mainoperation/smopccic'),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncSmopsp = Loadable({
+  loader: () => import('../service/mainoperation/smopsp'),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncSrkpiso = Loadable({
+  loader: () => import('../service/report/srkpiso'),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncSmcrld = Loadable({
+  loader: () => import('../service/mainoperation/smcrld'),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
@@ -1110,6 +1136,11 @@ const getComponent = {
   Smccald: AsyncSmccald,
   Smappl: AsyncSmappl,
   Smsrcus: AsyncSmsrcus,
+  Smopccoc: AsyncSmopccoc,
+  Smopccic: AsyncSmopccic,
+  Smopsp: AsyncSmopsp,
+  Srkpiso: AsyncSrkpiso,
+  Smcrld: AsyncSmcrld,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1202,7 +1233,34 @@ const generateRoutes = transactionRoutes => {
         exact={true}
         component={AsyncLogInvoicesForm}
       />
+      <Route
+        path="/service/mainoperation/smopccoc"
+        exact={true}
+        component={AsyncSmopccoc}
+      />
+      <Route
+        path="/service/mainoperation/smopccic"
+        exact={true}
+        component={AsyncSmopccic}
+      />
 
+      <Route
+        path="/service/mainoperation/smopsp"
+        exact={true}
+        component={AsyncSmopsp}
+      />
+
+      <Route
+        path="/service/report/srkpiso"
+        exact={true}
+        component={AsyncSrkpiso}
+      />
+
+      <Route
+        path="/service/mainoperation/smcrld"
+        exact={true}
+        component={AsyncSmcrld}
+      />
       {/* <Route
         path="/service/mainoperation/smsetpp"
         exact={true}

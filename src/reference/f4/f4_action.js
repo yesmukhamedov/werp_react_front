@@ -123,6 +123,8 @@ export const F4_CLEAR_FETCH_CATEGORY = 'F4_CLEAR_FETCH_CATEGORY';
 
 export const F4_FETCH_CUSTOMERS_BY_ID = 'F4_FETCH_CUSTOMERS_BY_ID';
 
+export const F4_FETCH_SERVICE_STATUS_LIST = 'F4_FETCH_SERVICE_STATUS_LIST';
+
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 
@@ -978,6 +980,21 @@ export function f4fetchCategory(data) {
       })
       .catch(error => {
         dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchServiceStatusList() {
+  return function(dispatch) {
+    doGet('service_status')
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_SERVICE_STATUS_LIST,
+          data,
+        });
+      })
+      .catch(error => {
         handleError(error, dispatch);
       });
   };

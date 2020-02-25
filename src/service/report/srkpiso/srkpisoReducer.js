@@ -1,4 +1,4 @@
-import FETCH_SERVICE_LIST from './srlsAction';
+import { FETCH_SRKPISO } from './srkpisoAction';
 
 const INITIAL_STATE = {
   dynamicObject: {},
@@ -6,11 +6,10 @@ const INITIAL_STATE = {
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case FETCH_SERVICE_LIST:
-      console.log('REDUCER', action.data);
+    case FETCH_SRKPISO:
       return {
         ...state,
-        dynamicObject: { ...state.dynamicObject, ...action.data },
+        dynamicObject: { ...action.data },
       };
 
     default:

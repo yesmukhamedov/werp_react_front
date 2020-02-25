@@ -1,0 +1,42 @@
+import {
+  FETCH_SERVICE_FILTER_PLAN,
+  FETCH_SERVICE_TRANSFER_APPLICATION_EXODUS,
+  FETCH_SERVICE_ASSIGNED_CALLS,
+  FETCH_SERVICE_MY_APPLICATION_EXODUS,
+} from './smopccocAction';
+
+const INITIAL_STATE = {
+  dynamicObject: [],
+  transfer: [],
+  assignedCalls: [],
+};
+
+export default function(state = INITIAL_STATE, action) {
+  switch (action.type) {
+    case FETCH_SERVICE_FILTER_PLAN:
+      return {
+        ...state,
+        dynamicObject: [...action.data.data.data],
+      };
+
+    case FETCH_SERVICE_TRANSFER_APPLICATION_EXODUS:
+      return {
+        ...state,
+        transfer: [...action.data.data],
+      };
+    case FETCH_SERVICE_ASSIGNED_CALLS:
+      return {
+        ...state,
+        assignedCalls: [...action.data.data],
+      };
+
+    case FETCH_SERVICE_MY_APPLICATION_EXODUS:
+      return {
+        ...state,
+        dynamicObject: [...action.data],
+      };
+
+    default:
+      return state;
+  }
+}

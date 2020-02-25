@@ -75,7 +75,6 @@ export function signinUser({ username, password }, language) {
         localStorage.setItem('token_time', new Date().getTime());
 
         axios
-
           .get(`${ROOT_URL}/api/error_table`, {
             headers: {
               Authorization: access_token,
