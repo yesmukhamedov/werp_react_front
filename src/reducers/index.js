@@ -47,15 +47,11 @@ import hrReducer from '../hr/hr_reducer';
 import callReducer from '../crm/mainoperation/call/reducers/callReducer';
 import serviceReducer from '../service/serviceReducer';
 import smcsReducer from '../service/mainoperation/smcs/smcsReducer';
-<<<<<<< Updated upstream
-import srlsReducer from '../service/report/srls/srlsReducer';
 import srefReducer from '../service/reference/srefReducer';
-=======
 import serviceReportReducer from '../service/report/serviceReportReducer';
 import smopccocReducer from '../service/mainoperation/smopccoc/smopccocReducer';
 import smopccicReducer from '../service/mainoperation/smopccic/smopccicReducer';
 import smopspReducer from '../service/mainoperation/smopsp/smopspReducer';
->>>>>>> Stashed changes
 
 const appReducer = combineReducers({
   form,
@@ -105,7 +101,6 @@ const appReducer = combineReducers({
   callReducer: callReducer,
   serviceReducer: serviceReducer,
   smcsReducer: smcsReducer,
-  srlsReducer: srlsReducer,
   srefReducer: srefReducer,
   serviceReportReducer: serviceReportReducer,
   smopccocReducer: smopccocReducer,
