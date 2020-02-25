@@ -41,6 +41,7 @@ export const FETCH_APP_STATUS = 'FETCH_APP_STATUS';
 export const FETCH_APP_TYPE = 'FETCH_APP_TYPE';
 export const FETCH_APP_LIST = 'FETCH_APP_LIST';
 export const FETCH_APP_MASTER_LIST = 'FETCH_APP_MASTER_LIST';
+export const FETCH_EDIT_APP = 'FETCH_EDIT_APP';
 
 export const FETCH_SMSRCUS = 'FETCH_SMSRCUS';
 export const FETCH_TOVAR_CATEGORYS = 'FETCH_TOVAR_CATEGORYS';
@@ -655,6 +656,20 @@ export function fetchAppMasterList(params) {
           type: FETCH_APP_MASTER_LIST,
           payload: data.data,
         });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchEditApp(params, fetchSmappl) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost('smappl/editApp', params)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        fetchSmappl();
       })
       .catch(error => {
         handleError(error, dispatch);

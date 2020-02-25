@@ -5,6 +5,7 @@ import { injectIntl } from 'react-intl';
 import { Button, Icon, Dropdown, Select } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import Masters from './Masters';
+import { fetchAppList } from '../../serviceAction';
 
 import '../../service.css';
 
@@ -15,6 +16,9 @@ const Table = props => {
     headers,
     appList,
     appMasterList,
+    searchParams,
+    fetchAppList,
+    turnOnReactFetch,
   } = props;
 
   const [tableColumns, setTableColumns] = useState([]);
@@ -50,6 +54,8 @@ const Table = props => {
                   master={row._original.masterName}
                   masterList={masterList}
                   id={row._original.masterId}
+                  request={row._original}
+                  searchParams={searchParams}
                 />
               </div>
             ),
@@ -89,16 +95,23 @@ const Table = props => {
 
   return (
     <Fragment>
-      {serviceRequests.length !== 0 ? (
-        <ReactTableServerSideWrapper
-          data={serviceRequests.length === 0 ? [] : serviceRequests}
-          columns={tableColumns}
-          defaultPageSize={15}
-          pages={appList.totalPages}
-          showPagination={true}
-          className="-striped -highlight"
-        />
-      ) : null}
+      <ReactTableServerSideWrapper
+        data={serviceRequests.length === 0 ? [] : serviceRequests}
+        columns={tableColumns}
+        defaultPageSize={15}
+        pages={5}
+        filterable={true}
+        searchParam={searchParams}
+        turnOnReactFetch={turnOnReactFetch}
+        showPagination={false}
+        requestData={param => {
+          console.log('param', param);
+          if (turnOnReactFetch) {
+            fetchAppList(param);
+          }
+        }}
+        className="-striped -highlight"
+      />
     </Fragment>
   );
 };
@@ -110,4 +123,6 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(injectIntl(Table));
+export default connect(mapStateToProps, {
+  fetchAppList,
+})(injectIntl(Table));

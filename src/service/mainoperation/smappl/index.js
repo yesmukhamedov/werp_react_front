@@ -49,6 +49,7 @@ const Smappl = props => {
   const [applicationType, setApplicationType] = useState([]);
   const [aDateFrom, setDateFrom] = useState();
   const [aDateTo, setDateTo] = useState();
+  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const [search, setSearch] = useState({
     bukrs: 0,
     branchId: 0,
@@ -159,6 +160,7 @@ const Smappl = props => {
     if (errors.length === 0) {
       fetchAppList(search);
       fetchAppMasterList(search);
+      setTurnOnReactFetch(true);
     }
     return errors;
   };
@@ -275,7 +277,7 @@ const Smappl = props => {
         <OutputErrors errors={error} />
         <Divider></Divider>
         <Segment basic textAlign="right">
-          <Columns />
+          <Columns searchParams={search} turnOnReactFetch={turnOnReactFetch} />
         </Segment>
       </Segment>
     </Fragment>

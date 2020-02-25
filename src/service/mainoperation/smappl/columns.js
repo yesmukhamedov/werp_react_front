@@ -15,12 +15,14 @@ import ServiceRequestTable from './table';
 const Columns = props => {
   const {
     intl: { messages },
+    searchParams,
+    turnOnReactFetch,
   } = props;
   const [modalOpen, setModalOpen] = useState(false);
   const allColumns = [
     {
       id: 0,
-      accessor: 'branchName',
+      accessor: 'contractNumber',
       show: true,
     },
     {
@@ -32,6 +34,7 @@ const Columns = props => {
       id: 2,
       accessor: 'matnr',
       show: true,
+      filterable: false,
     },
     {
       id: 3,
@@ -85,14 +88,14 @@ const Columns = props => {
     },
     {
       id: 13,
-      accessor: 'awdaw',
+      accessor: 'clientStory',
       show: true,
     },
   ];
   let headers = [
     {
       id: 0,
-      Header: `CN`,
+      Header: `CN `,
     },
     {
       id: 1,
@@ -187,9 +190,11 @@ const Columns = props => {
     <Fragment>
       <Modal
         trigger={
-          <Button color="blue" onClick={() => setModalOpen(true)}>
-            {messages['columns']}
-          </Button>
+          turnOnReactFetch ? (
+            <Button color="blue" onClick={() => setModalOpen(true)}>
+              {messages['columns']}
+            </Button>
+          ) : null
         }
         open={modalOpen}
         size="small"
@@ -224,7 +229,12 @@ const Columns = props => {
           </Button>
         </Modal.Actions>
       </Modal>
-      <ServiceRequestTable columnsName={columns} headers={headers} />
+      <ServiceRequestTable
+        turnOnReactFetch={turnOnReactFetch}
+        columnsName={columns}
+        headers={headers}
+        searchParams={searchParams}
+      />
     </Fragment>
   );
 };

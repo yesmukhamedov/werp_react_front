@@ -214,7 +214,6 @@ const EditModal = props => {
     if (bukrs !== '' && total !== 0 && countryId !== 0 && dateStart !== '') {
       setTest(false);
       cancel(false);
-      console.log(informations);
       fetchSmsetppPut({ ...informations }, () => {
         fetchSmsetpp(param);
       });
