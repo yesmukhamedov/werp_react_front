@@ -1003,11 +1003,6 @@ const AsyncSrkpiso = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncSmcrld = Loadable({
-  loader: () => import('../service/mainoperation/smcrld'),
-  loading: () => <LoadingPage />,
-});
-
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
@@ -1140,7 +1135,6 @@ const getComponent = {
   Smopccic: AsyncSmopccic,
   Smopsp: AsyncSmopsp,
   Srkpiso: AsyncSrkpiso,
-  Smcrld: AsyncSmcrld,
 };
 
 const generateRoutes = transactionRoutes => {
