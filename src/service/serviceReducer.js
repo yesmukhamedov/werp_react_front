@@ -30,6 +30,7 @@ import {
   FETCH_APP_TYPE,
   FETCH_APP_LIST,
   FETCH_APP_MASTER_LIST,
+  FETCH_CLEAR_APP_LIST,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -37,6 +38,8 @@ const INITIAL_STATE = {
   historyDynamicObject: {},
   tovarCategorys: [],
   contractStatus: [],
+  appList: [],
+  appMasterList: [],
   data: {
     service: [],
     type: [],
@@ -140,12 +143,6 @@ export default function(state = INITIAL_STATE, action) {
         ...state,
         dynamicObject: { ...state.dynamicObject, ...action.payload },
       };
-    case FETCH_SMPLB: {
-      return {
-        ...state,
-        dynamicObject: { ...state.dynamicObject, data: [...action.payload] },
-      };
-    }
 
     case FETCH_SMPLB: {
       return {
@@ -212,29 +209,27 @@ export default function(state = INITIAL_STATE, action) {
         appStatus: [...action.payload],
       };
     }
-
     case FETCH_APP_TYPE: {
       return {
         ...state,
         appType: [...action.payload],
       };
     }
-
     case FETCH_APP_LIST:
       return {
         ...state,
-        dynamicObject: {
-          ...state.dynamicObject,
-          appList: action.payload,
-        },
+        appList: action.payload,
       };
     case FETCH_APP_MASTER_LIST:
       return {
         ...state,
-        dynamicObject: {
-          ...state.dynamicObject,
-          appMasterList: [...action.payload],
-        },
+        appMasterList: [...action.payload],
+      };
+    case FETCH_CLEAR_APP_LIST:
+      return {
+        ...state,
+        appList: [],
+        appMasterList: [],
       };
     default:
       return state;

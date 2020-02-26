@@ -55,16 +55,19 @@ const Columns = props => {
       id: 6,
       accessor: 'inPhoneNum',
       show: true,
+      filterable: false,
     },
     {
       id: 7,
       accessor: 'masterName',
       show: true,
+      filterable: false,
     },
     {
       id: 8,
       accessor: 'appStatusName',
       show: true,
+      filterable: false,
     },
     {
       id: 9,
@@ -75,21 +78,25 @@ const Columns = props => {
       id: 10,
       accessor: 'appTypeName',
       show: true,
+      filterable: false,
     },
     {
       id: 11,
       accessor: 'id',
       show: true,
+      filterable: false,
     },
     {
       id: 12,
       accessor: 'serviceId',
       show: true,
+      filterable: false,
     },
     {
       id: 13,
       accessor: 'clientStory',
       show: true,
+      filterable: false,
     },
   ];
   let headers = [

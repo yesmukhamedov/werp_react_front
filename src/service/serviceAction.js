@@ -42,6 +42,7 @@ export const FETCH_APP_TYPE = 'FETCH_APP_TYPE';
 export const FETCH_APP_LIST = 'FETCH_APP_LIST';
 export const FETCH_APP_MASTER_LIST = 'FETCH_APP_MASTER_LIST';
 export const FETCH_EDIT_APP = 'FETCH_EDIT_APP';
+export const FETCH_CLEAR_APP_LIST = 'FETCH_CLEAR_APP_LIST';
 
 export const FETCH_SMSRCUS = 'FETCH_SMSRCUS';
 export const FETCH_TOVAR_CATEGORYS = 'FETCH_TOVAR_CATEGORYS';
@@ -633,7 +634,6 @@ export function fetchAppList(params) {
     dispatch(modifyLoader(true));
     doGet('smappl/appList?direction=ASC&orderBy=id', params)
       .then(({ data }) => {
-        console.log(data, params);
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_APP_LIST,
@@ -665,14 +665,21 @@ export function fetchAppMasterList(params) {
 
 export function fetchEditApp(params, fetchSmappl) {
   return function(dispatch) {
-    dispatch(modifyLoader(true));
     doPost('smappl/editApp', params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        fetchSmappl();
+        fetchSmappl(params);
       })
       .catch(error => {
         handleError(error, dispatch);
       });
+  };
+}
+
+export function fetchClearAppList() {
+  return function(dispatch) {
+    dispatch({
+      type: FETCH_CLEAR_APP_LIST,
+    });
   };
 }

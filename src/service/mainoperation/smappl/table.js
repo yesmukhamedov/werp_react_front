@@ -2,7 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
 import 'react-table/react-table.css';
 import { injectIntl } from 'react-intl';
-import { Button, Icon, Dropdown, Select } from 'semantic-ui-react';
+import { Button, Icon, Dropdown, Select, Loader } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import Masters from './Masters';
 import { fetchAppList } from '../../serviceAction';
@@ -76,7 +76,6 @@ const Table = props => {
   useEffect(() => {
     if (appList !== undefined) {
       setServiceRequests(appList.data);
-      console.log(appList);
     }
   }, [appList]);
 
@@ -96,7 +95,7 @@ const Table = props => {
   return (
     <Fragment>
       <ReactTableServerSideWrapper
-        data={serviceRequests.length === 0 ? [] : serviceRequests}
+        data={serviceRequests}
         columns={tableColumns}
         defaultPageSize={15}
         pages={5}
@@ -118,8 +117,8 @@ const Table = props => {
 
 const mapStateToProps = state => {
   return {
-    appList: state.serviceReducer.dynamicObject.appList,
-    appMasterList: state.serviceReducer.dynamicObject.appMasterList,
+    appList: state.serviceReducer.appList,
+    appMasterList: state.serviceReducer.appMasterList,
   };
 };
 

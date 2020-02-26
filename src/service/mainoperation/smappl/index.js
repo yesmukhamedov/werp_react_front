@@ -18,6 +18,7 @@ import {
   fetchAppType,
   fetchAppList,
   fetchAppMasterList,
+  fetchClearAppList,
 } from '../../serviceAction';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -39,6 +40,7 @@ const Smappl = props => {
     appType,
     fetchAppList,
     fetchAppMasterList,
+    fetchClearAppList,
   } = props;
   const [dropdownActive, setDropdownActive] = useState(false);
   const [error, setError] = useState([]);
@@ -51,7 +53,7 @@ const Smappl = props => {
   const [aDateTo, setDateTo] = useState();
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const [search, setSearch] = useState({
-    bukrs: 0,
+    bukrs: '',
     branchId: 0,
     aDateFrom: null,
     aDateTo: null,
@@ -61,7 +63,7 @@ const Smappl = props => {
   });
 
   useEffect(() => {
-    clearDynObjService();
+    fetchClearAppList();
     fetchTovarCategorys();
     fetchAppStatus();
     fetchAppType();
@@ -144,8 +146,6 @@ const Smappl = props => {
       }
       return varTs;
     });
-
-    setDropdownActive(true);
   };
 
   const onSearch = () => {
@@ -154,8 +154,11 @@ const Smappl = props => {
 
   const validate = () => {
     const errors = [];
-    if (!dropdownActive) {
+    if (search.bukrs === '') {
       errors.push(errorTable[`5${language}`]);
+    }
+    if (search.branchId === 0) {
+      errors.push(errorTable[`7${language}`]);
     }
     if (errors.length === 0) {
       fetchAppList(search);
@@ -286,6 +289,7 @@ const Smappl = props => {
 
 const mapStateToProps = state => {
   return {
+    state,
     companyPosition: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsService,
     tovarCategorys: state.serviceReducer.tovarCategorys,
@@ -301,4 +305,5 @@ export default connect(mapStateToProps, {
   fetchAppType,
   fetchAppList,
   fetchAppMasterList,
+  fetchClearAppList,
 })(injectIntl(Smappl));

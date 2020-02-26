@@ -51,9 +51,13 @@ const Masters = props => {
     <Fragment>
       <Modal
         trigger={
-          <Header as="h4" onClick={onClickMaster}>
-            {master !== null ? messages['change_master'] : messages['Masters']}
-          </Header>
+          <a>
+            <p onClick={onClickMaster}>
+              {master !== null
+                ? messages['change_master']
+                : messages['Masters']}
+            </p>
+          </a>
         }
         open={onModalOpen}
       >
