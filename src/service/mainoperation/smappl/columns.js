@@ -197,11 +197,9 @@ const Columns = props => {
     <Fragment>
       <Modal
         trigger={
-          turnOnReactFetch ? (
-            <Button color="blue" onClick={() => setModalOpen(true)}>
-              {messages['columns']}
-            </Button>
-          ) : null
+          <Button color="pink" onClick={() => setModalOpen(true)}>
+            {messages['columns']}
+          </Button>
         }
         open={modalOpen}
         size="small"

@@ -74,9 +74,8 @@ const Table = props => {
   }, [columnsName, masterList]);
 
   useEffect(() => {
-    if (appList !== undefined) {
-      setServiceRequests(appList.data);
-    }
+    console.log(appList);
+    setServiceRequests(appList.data);
   }, [appList]);
 
   useEffect(() => {

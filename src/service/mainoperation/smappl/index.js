@@ -25,6 +25,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import { formatDMY } from '../../../utils/helpers';
 import Columns from './columns';
+import './index.css';
 
 const Smappl = props => {
   const {
@@ -42,7 +43,6 @@ const Smappl = props => {
     fetchAppMasterList,
     fetchClearAppList,
   } = props;
-  const [dropdownActive, setDropdownActive] = useState(false);
   const [error, setError] = useState([]);
   const [tovarCategory, setTovarCategory] = useState([]);
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
@@ -126,11 +126,11 @@ const Smappl = props => {
           break;
         case 'datefrom':
           setDateFrom(value);
-          varTs.aDateFrom = formatDMY(value);
+          varTs.aDateFrom = formatDMY(value) || null;
           break;
         case 'dateTo':
           setDateTo(value);
-          varTs.aDateTo = formatDMY(value);
+          varTs.aDateTo = formatDMY(value) || null;
           break;
         case 'product':
           varTs.tovarCategorys = value.length > 0 ? value.join() : null;
@@ -161,6 +161,7 @@ const Smappl = props => {
       errors.push(errorTable[`7${language}`]);
     }
     if (errors.length === 0) {
+      console.log(search);
       fetchAppList(search);
       fetchAppMasterList(search);
       setTurnOnReactFetch(true);
@@ -181,7 +182,7 @@ const Smappl = props => {
         <Header as="h2">
           {messages['service_requests']}
           <a href="/service/mainoperation/smcs" target="_blank">
-            <Button floated="right" color="blue">
+            <Button floated="right" color="pink">
               {messages['new_service']}
             </Button>
           </a>
@@ -268,7 +269,7 @@ const Smappl = props => {
 
             <Form.Field
               control={Button}
-              color="blue"
+              color="pink"
               style={{ marginTop: 24 }}
               onClick={onSearch}
             >
