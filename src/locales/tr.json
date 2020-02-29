@@ -786,5 +786,6 @@
   "customer_key": "Customer key",
   "telephone": "Telefon numarası",
   "choose_columns": "Choose columns",
-  "change_master": "Change master"
+  "change_master": "Change master",
+  "List_of_employees": "List of employees and their plans"
 }

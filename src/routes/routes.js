@@ -978,6 +978,10 @@ const AsyncSmappl = Loadable({
   loader: () => import('../service/mainoperation/smappl'),
   loading: () => <LoadingPage />,
 });
+const AsyncSmslsp = Loadable({
+  loader: () => import('../service/mainoperation/smslsp'),
+  loading: () => <LoadingPage />,
+});
 const AsyncSmsrcus = Loadable({
   loader: () => import('../service/mainoperation/smsrcus'),
   loading: () => <LoadingPage />,
@@ -1135,6 +1139,7 @@ const getComponent = {
   Smopccic: AsyncSmopccic,
   Smopsp: AsyncSmopsp,
   Srkpiso: AsyncSrkpiso,
+  Smslsp: AsyncSmslsp,
 };
 
 const generateRoutes = transactionRoutes => {

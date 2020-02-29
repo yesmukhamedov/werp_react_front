@@ -785,5 +785,6 @@
   "customer_key": "ИИН клиента",
   "telephone": "Телефон",
   "choose_columns": "Выбрать столбцов",
-  "change_master": "Поменять мастера"
+  "change_master": "Поменять мастера",
+  "List_of_employees": "Список сотрудников и их планы"
 }

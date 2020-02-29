@@ -161,9 +161,9 @@ const Columns = props => {
   const [columns, setColumns] = useState(allColumns);
 
   useEffect(() => {
-    const username = localStorage.getItem('username');
-    if (localStorage.getItem(username)) {
-      setColumns(JSON.parse(localStorage.getItem(localStorage.username)));
+    const transactionCode = localStorage.getItem('smappl');
+    if (transactionCode) {
+      setColumns(JSON.parse(localStorage.getItem('smappl')));
     } else {
       setColumns(allColumns);
     }
@@ -183,13 +183,13 @@ const Columns = props => {
 
   const onSave = () => {
     setModalOpen(false);
-    localStorage.setItem(localStorage.username, JSON.stringify(columns));
+    localStorage.setItem('smappl', JSON.stringify(columns));
   };
 
   const onCancel = () => {
     setModalOpen(false);
     const localColumns =
-      JSON.parse(localStorage.getItem(localStorage.username)) || allColumns;
+      JSON.parse(localStorage.getItem('smappl')) || allColumns;
     setColumns(localColumns);
   };
 
