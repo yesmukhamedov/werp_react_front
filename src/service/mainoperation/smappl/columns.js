@@ -170,6 +170,7 @@ const Columns = props => {
   }, []);
 
   const checkColumns = e => {
+    console.log(e);
     setColumns(prev => {
       let columns = [...prev];
       columns.map(el => {

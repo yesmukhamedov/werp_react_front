@@ -70,6 +70,7 @@ const Table = props => {
         g++;
       }
     }
+    console.log(p);
     setTableColumns([...p]);
   }, [columnsName, masterList]);
 

@@ -176,7 +176,7 @@ const Smappl = props => {
   };
 
   return (
-    <Fragment>
+    <>
       <Segment>
         <Divider hidden></Divider>
         <Header as="h2">
@@ -284,7 +284,7 @@ const Smappl = props => {
           <Columns searchParams={search} turnOnReactFetch={turnOnReactFetch} />
         </Segment>
       </Segment>
-    </Fragment>
+    </>
   );
 };
 

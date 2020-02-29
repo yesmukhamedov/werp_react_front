@@ -1232,6 +1232,11 @@ const generateRoutes = transactionRoutes => {
         exact={true}
         component={AsyncLogInvoicesForm}
       />
+      <Route
+        path="/service/mainoperation/smslsp"
+        exact={true}
+        component={AsyncSmslsp}
+      />
 
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
