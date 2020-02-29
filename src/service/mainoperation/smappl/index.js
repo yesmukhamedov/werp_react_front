@@ -24,8 +24,9 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import { formatDMY } from '../../../utils/helpers';
-import Columns from './columns';
+import ColumnsModal from './ColumnsModal';
 import './index.css';
+import ServiceRequestTable from './table';
 
 const Smappl = props => {
   const {
@@ -61,6 +62,8 @@ const Smappl = props => {
     appStatusIds: null,
     appTypeIds: null,
   });
+  const [columnsForTable, setColumnsForTable] = useState([]);
+  const [headersForTable, setHeadersForTable] = useState([]);
 
   useEffect(() => {
     fetchClearAppList();
@@ -161,7 +164,6 @@ const Smappl = props => {
       errors.push(errorTable[`7${language}`]);
     }
     if (errors.length === 0) {
-      console.log(search);
       fetchAppList(search);
       fetchAppMasterList(search);
       setTurnOnReactFetch(true);
@@ -176,115 +178,129 @@ const Smappl = props => {
   };
 
   return (
-    <>
-      <Segment>
-        <Divider hidden></Divider>
-        <Header as="h2">
-          {messages['service_requests']}
-          <a href="/service/mainoperation/smcs" target="_blank">
-            <Button floated="right" color="pink">
-              {messages['new_service']}
-            </Button>
-          </a>
-        </Header>
-        <Divider />
-        <Form>
-          <Form.Group widths="equal">
-            <Form.Select
-              label={messages['bukrs']}
-              clearable="true"
-              selection
-              options={companyPosition}
-              placeholder={messages['bukrs']}
-              onChange={(e, { value }) => onChange('bukrs', value)}
-            />
-            <Form.Select
-              label={messages['Task.Branch']}
-              clearable="true"
-              selection
-              options={search.bukrs ? branchOptions[search.bukrs] : []}
-              placeholder={messages['Task.Branch']}
-              onChange={(e, { value }) => onChange('branch', value)}
-            />
-            <Form.Select
-              label={messages['product_category']}
-              clearable="true"
-              multiple
-              selection
-              options={tovarCategory}
-              placeholder={messages['product_category']}
-              onChange={(e, { value }) => onChange('product', value)}
-            />
-            <Form.Select
-              label={messages['L__ORDER_STATUS']}
-              clearable="true"
-              selection
-              multiple
-              options={applicationStatus}
-              placeholder={messages['L__ORDER_STATUS']}
-              onChange={(e, { value }) => onChange('status', value)}
-            />
-            <Form.Select
-              label={messages['type_of_application']}
-              clearable="true"
-              selection
-              multiple
-              options={applicationType}
-              placeholder={messages['type_of_application']}
-              onChange={(e, { value }) => onChange('ApplicationType', value)}
-            />
-          </Form.Group>
+    <Segment>
+      <Divider hidden></Divider>
+      <Header as="h2">
+        {messages['service_requests']}
+        <a href="/service/mainoperation/smcs" target="_blank">
+          <Button floated="right" color="pink">
+            {messages['new_service']}
+          </Button>
+        </a>
+      </Header>
 
-          <Form.Group>
-            <Form.Field>
-              <label>{messages['Form.DateFrom']}</label>
-              <DatePicker
-                className="date-auto-width"
-                autoComplete="off"
-                showMonthDropdown
-                showYearDropdown
-                dropdownMode="select"
-                locale={language}
-                selected={aDateFrom}
-                onChange={event => onChange('datefrom', event)}
-                dateFormat="DD.MM.YYYY"
-                placeholderText={messages['Form.DateFrom']}
-              />
-            </Form.Field>
-            <Form.Field>
-              <label>{messages['Form.DateTo']}</label>
-              <DatePicker
-                className="date-auto-width"
-                autoComplete="off"
-                showMonthDropdown
-                showYearDropdown
-                dropdownMode="select"
-                selected={aDateTo}
-                locale={language}
-                onChange={event => onChange('dateTo', event)}
-                dateFormat="DD.MM.YYYY"
-                placeholderText={messages['Form.DateTo']}
-              />
-            </Form.Field>
+      <Divider />
 
-            <Form.Field
-              control={Button}
-              color="pink"
-              style={{ marginTop: 24 }}
-              onClick={onSearch}
-            >
-              <Icon name="search" />
-              {messages['search']}
-            </Form.Field>
-          </Form.Group>
-        </Form>
-        <OutputErrors errors={error} />
-        <Divider></Divider>
-        <Segment basic textAlign="right">
-          <Columns searchParams={search} turnOnReactFetch={turnOnReactFetch} />
-        </Segment>
+      <Form>
+        <Form.Group widths="equal">
+          <Form.Select
+            label={messages['bukrs']}
+            clearable="true"
+            selection
+            options={companyPosition}
+            placeholder={messages['bukrs']}
+            onChange={(e, { value }) => onChange('bukrs', value)}
+          />
+          <Form.Select
+            label={messages['Task.Branch']}
+            clearable="true"
+            selection
+            options={search.bukrs ? branchOptions[search.bukrs] : []}
+            placeholder={messages['Task.Branch']}
+            onChange={(e, { value }) => onChange('branch', value)}
+          />
+          <Form.Select
+            label={messages['product_category']}
+            clearable="true"
+            multiple
+            selection
+            options={tovarCategory}
+            placeholder={messages['product_category']}
+            onChange={(e, { value }) => onChange('product', value)}
+          />
+          <Form.Select
+            label={messages['L__ORDER_STATUS']}
+            clearable="true"
+            selection
+            multiple
+            options={applicationStatus}
+            placeholder={messages['L__ORDER_STATUS']}
+            onChange={(e, { value }) => onChange('status', value)}
+          />
+          <Form.Select
+            label={messages['type_of_application']}
+            clearable="true"
+            selection
+            multiple
+            options={applicationType}
+            placeholder={messages['type_of_application']}
+            onChange={(e, { value }) => onChange('ApplicationType', value)}
+          />
+        </Form.Group>
+
+        <Form.Group>
+          <Form.Field>
+            <label>{messages['Form.DateFrom']}</label>
+            <DatePicker
+              className="date-auto-width"
+              autoComplete="off"
+              showMonthDropdown
+              showYearDropdown
+              dropdownMode="select"
+              locale={language}
+              selected={aDateFrom}
+              onChange={event => onChange('datefrom', event)}
+              dateFormat="DD.MM.YYYY"
+              placeholderText={messages['Form.DateFrom']}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>{messages['Form.DateTo']}</label>
+            <DatePicker
+              className="date-auto-width"
+              autoComplete="off"
+              showMonthDropdown
+              showYearDropdown
+              dropdownMode="select"
+              selected={aDateTo}
+              locale={language}
+              onChange={event => onChange('dateTo', event)}
+              dateFormat="DD.MM.YYYY"
+              placeholderText={messages['Form.DateTo']}
+            />
+          </Form.Field>
+
+          <Form.Field
+            control={Button}
+            color="pink"
+            style={{ marginTop: 24 }}
+            onClick={onSearch}
+          >
+            <Icon name="search" />
+            {messages['search']}
+          </Form.Field>
+        </Form.Group>
+      </Form>
+
+      <OutputErrors errors={error} />
+
+      <Divider></Divider>
+
+      <Segment basic textAlign="right">
+        <ColumnsModal
+          headersForTable={headers => setHeadersForTable(headers)}
+          columnsForTable={cols => setColumnsForTable(cols)}
+          turnOnReactFetch={turnOnReactFetch}
+        />
       </Segment>
-    </>
+
+      <ServiceRequestTable
+        turnOnReactFetch={turnOnReactFetch}
+        columnsName={columnsForTable}
+        headers={headersForTable}
+        searchParams={search}
+      />
+    </Segment>
   );
 };
 

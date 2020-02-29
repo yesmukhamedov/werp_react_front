@@ -10,13 +10,13 @@ import {
   Table,
 } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
-import ServiceRequestTable from './table';
 
-const Columns = props => {
+const ColumnsModal = props => {
   const {
     intl: { messages },
-    searchParams,
     turnOnReactFetch,
+    columnsForTable,
+    headersForTable,
   } = props;
   const [modalOpen, setModalOpen] = useState(false);
   const allColumns = [
@@ -163,14 +163,17 @@ const Columns = props => {
   useEffect(() => {
     const transactionCode = localStorage.getItem('smappl');
     if (transactionCode) {
+      columnsForTable(JSON.parse(localStorage.getItem('smappl')));
+      headersForTable(headers);
       setColumns(JSON.parse(localStorage.getItem('smappl')));
     } else {
       setColumns(allColumns);
+      columnsForTable(allColumns);
+      headersForTable(headers);
     }
   }, []);
 
   const checkColumns = e => {
-    console.log(e);
     setColumns(prev => {
       let columns = [...prev];
       columns.map(el => {
@@ -183,6 +186,8 @@ const Columns = props => {
   };
 
   const onSave = () => {
+    columnsForTable(columns);
+    headersForTable(headers);
     setModalOpen(false);
     localStorage.setItem('smappl', JSON.stringify(columns));
   };
@@ -235,14 +240,8 @@ const Columns = props => {
           </Button>
         </Modal.Actions>
       </Modal>
-      <ServiceRequestTable
-        turnOnReactFetch={turnOnReactFetch}
-        columnsName={columns}
-        headers={headers}
-        searchParams={searchParams}
-      />
     </Fragment>
   );
 };
 
-export default injectIntl(Columns);
+export default injectIntl(ColumnsModal);

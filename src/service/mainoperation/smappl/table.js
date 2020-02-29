@@ -70,12 +70,10 @@ const Table = props => {
         g++;
       }
     }
-    console.log(p);
     setTableColumns([...p]);
   }, [columnsName, masterList]);
 
   useEffect(() => {
-    console.log(appList);
     setServiceRequests(appList.data);
   }, [appList]);
 
@@ -91,7 +89,7 @@ const Table = props => {
       setMasterList(masters);
     }
   }, [appMasterList]);
-
+  console.log(turnOnReactFetch);
   return (
     <Fragment>
       <ReactTableServerSideWrapper
