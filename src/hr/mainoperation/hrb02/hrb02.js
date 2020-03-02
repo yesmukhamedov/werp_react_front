@@ -21,7 +21,7 @@ import {
 import './hrb02.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { saveBonusData, updateF4All, updateKPI } from './hrb02_action';
+import { saveBonusData, updateF4All } from './hrb02_action';
 
 import Hrb02EditBonus from './hrb02EditBonus';
 
@@ -182,16 +182,6 @@ class Hrb02 extends Component {
                   <Icon name="check" size="large" />
                   Обновит F4
                 </Button>
-                <Button
-                  icon
-                  labelPosition="left"
-                  primary
-                  size="small"
-                  onClick={() => this.props.updateKPI()}
-                >
-                  <Icon name="check" size="large" />
-                  Обновит KPI
-                </Button>
               </Grid.Column>
             )}
           </Grid.Row>
@@ -322,17 +312,13 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchBonusData,
-    f4FetchBonusTypeList,
-    f4FetchCurrencyList,
-    saveBonusData,
-    clearRedStateHrb02,
-    f4ClearBonusTypeList,
-    f4ClearCurrencyList,
-    updateF4All,
-    updateKPI,
-  },
-)(Hrb02);
+export default connect(mapStateToProps, {
+  fetchBonusData,
+  f4FetchBonusTypeList,
+  f4FetchCurrencyList,
+  saveBonusData,
+  clearRedStateHrb02,
+  f4ClearBonusTypeList,
+  f4ClearCurrencyList,
+  updateF4All,
+})(Hrb02);
