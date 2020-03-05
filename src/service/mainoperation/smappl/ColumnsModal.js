@@ -4,8 +4,6 @@ import {
   Header,
   Icon,
   Modal,
-  Segment,
-  Grid,
   Checkbox,
   Table,
 } from 'semantic-ui-react';

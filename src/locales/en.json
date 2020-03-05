@@ -787,5 +787,7 @@
   "telephone": "Telephone",
   "choose_columns": "Choose columns",
   "change_master": "Change master",
-  "List_of_employees": "List of employees and their plans"
+  "List_of_employees": "List of employees and their plans",
+  "Table.NameOfEmployee": "Full name of employee",
+  "Table.Plan": "Plan"
 }

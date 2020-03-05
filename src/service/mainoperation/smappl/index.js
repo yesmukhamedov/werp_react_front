@@ -3,7 +3,6 @@ import {
   Segment,
   Header,
   Divider,
-  Dropdown,
   Button,
   Form,
   Icon,

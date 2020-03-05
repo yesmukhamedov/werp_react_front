@@ -786,5 +786,7 @@
   "telephone": "Телефон",
   "choose_columns": "Выбрать столбцов",
   "change_master": "Поменять мастера",
-  "List_of_employees": "Список сотрудников и их планы"
+  "List_of_employees": "Список сотрудников и их планы",
+  "Table.NameOfEmployee": "ФИО сотрудника",
+  "Table.Plan": "План"
 }

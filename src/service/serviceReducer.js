@@ -31,6 +31,7 @@ import {
   FETCH_APP_LIST,
   FETCH_APP_MASTER_LIST,
   FETCH_CLEAR_APP_LIST,
+  FETCH_SMSLSP,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -52,6 +53,7 @@ const INITIAL_STATE = {
   smregcCreateCall: [],
   appStatus: [],
   appType: [],
+  listOfEmployees: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -230,6 +232,11 @@ export default function(state = INITIAL_STATE, action) {
         ...state,
         appList: [],
         appMasterList: [],
+      };
+    case FETCH_SMSLSP:
+      return {
+        ...state,
+        listOfEmployees: { ...action.payload },
       };
     default:
       return state;
