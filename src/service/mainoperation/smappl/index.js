@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Segment,
   Header,
@@ -21,7 +21,6 @@ import {
 } from '../../serviceAction';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment';
 import { formatDMY } from '../../../utils/helpers';
 import ColumnsModal from './ColumnsModal';
 import './index.css';
@@ -30,7 +29,6 @@ import ServiceRequestTable from './table';
 const Smappl = props => {
   const {
     companyPosition = [],
-    clearDynObjService,
     intl: { messages },
     branchOptions,
     fetchTovarCategorys,

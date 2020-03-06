@@ -19,79 +19,65 @@ const ColumnsModal = props => {
   const [modalOpen, setModalOpen] = useState(false);
   const allColumns = [
     {
-      id: 0,
       accessor: 'contractNumber',
       show: true,
     },
     {
-      id: 1,
       accessor: 'tovarSn',
       show: true,
     },
     {
-      id: 2,
       accessor: 'matnr',
       show: true,
       filterable: false,
     },
     {
-      id: 3,
       accessor: 'adate',
       show: true,
     },
     {
-      id: 4,
       accessor: 'applicantName',
       show: true,
     },
     {
-      id: 5,
       accessor: 'address',
       show: true,
     },
     {
-      id: 6,
       accessor: 'inPhoneNum',
       show: true,
       filterable: false,
     },
     {
-      id: 7,
       accessor: 'masterName',
       show: true,
       filterable: false,
     },
     {
-      id: 8,
       accessor: 'appStatusName',
       show: true,
       filterable: false,
     },
     {
-      id: 9,
       accessor: 'operatorName',
       show: true,
     },
     {
-      id: 10,
       accessor: 'appTypeName',
       show: true,
       filterable: false,
     },
     {
-      id: 11,
       accessor: 'id',
       show: true,
       filterable: false,
     },
     {
-      id: 12,
       accessor: 'serviceId',
       show: true,
       filterable: false,
     },
     {
-      id: 13,
       accessor: 'clientStory',
       show: true,
       filterable: false,
@@ -99,59 +85,45 @@ const ColumnsModal = props => {
   ];
   let headers = [
     {
-      id: 0,
       Header: `CN `,
     },
     {
-      id: 1,
       Header: messages['productSerialNumber'],
     },
     {
-      id: 2,
       Header: messages['TBL_H__PRODUCT'],
     },
     {
-      id: 3,
       Header: messages['Application_Date'],
     },
     {
-      id: 4,
       Header: messages['Form.Reco.RecoName'],
     },
     {
-      id: 5,
       Header: messages['Table.Address'],
     },
     {
-      id: 6,
       Header: messages['Phone'],
     },
     {
-      id: 7,
       Header: messages['Masters'],
     },
     {
-      id: 8,
       Header: messages['L__ORDER_STATUS'],
     },
     {
-      id: 9,
       Header: messages['Operator'],
     },
     {
-      id: 10,
       Header: messages['type_of_application'],
     },
     {
-      id: 11,
       Header: `№ ${messages['Applications']}`,
     },
     {
-      id: 12,
       Header: `${messages['service']} №`,
     },
     {
-      id: 13,
       Header: messages['customer_story'],
     },
   ];

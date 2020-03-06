@@ -17,7 +17,6 @@ const Table = props => {
     appList,
     appMasterList,
     searchParams,
-    fetchAppList,
     turnOnReactFetch,
   } = props;
 
@@ -74,7 +73,6 @@ const Table = props => {
   }, [columnsName, masterList]);
 
   useEffect(() => {
-    console.log(appList);
     setServiceRequests(appList.data);
   }, [appList]);
 
@@ -90,9 +88,7 @@ const Table = props => {
       setMasterList(masters);
     }
   }, [appMasterList]);
-  console.log(turnOnReactFetch);
 
-  console.log(searchParams);
   return (
     <Fragment>
       <ReactTableServerSideWrapper
@@ -105,7 +101,6 @@ const Table = props => {
         turnOnReactFetch={turnOnReactFetch}
         showPagination={false}
         requestData={param => {
-          console.log('paramsss', param);
           fetchAppList({ ...param });
         }}
         className="-striped -highlight"
