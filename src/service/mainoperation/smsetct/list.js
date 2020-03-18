@@ -10,6 +10,7 @@ import {
   Form,
   Dropdown,
   Input,
+  Label,
 } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 export default function List(props) {
@@ -27,155 +28,203 @@ export default function List(props) {
     editSmsetct,
     searchParams,
     getBranchOptions,
+    validateEdit,
   } = props;
-  const emptySmSetCtEdit = {
-    branchId: '',
-    bukrs: '',
-    countryId: '',
-    f1: '',
-    f2: '',
-    f3: '',
-    f4: '',
-    f5: '',
-    f6: '',
-    f7: '',
-    id: '',
-    matnr: '',
-    description: '',
-  };
 
-  const [sm_set_ct_Edit, set_sm_set_ct_Edit] = useState({
-    ...emptySmSetCtEdit,
-  });
+  const [errorsEdit, setErrorsEdit] = useState({});
+  const [smsetctEdit, setSmsetctEdit] = useState({});
+  const [oldSmsetctEdit, setOldSmsetctEdit] = useState({});
   const [open, setOpen] = useState(false);
-  const handleEdit = (o, fieldName) => {
-    set_sm_set_ct_Edit(prev => {
-      let varSm_Set_Ct = { ...prev };
-      switch (fieldName) {
-        case 'countryId':
-          varSm_Set_Ct.countryId = o.value;
-          break;
-
-        case 'bukrs':
-          varSm_Set_Ct.bukrs = o.value;
-          break;
-
-        case 'brnch':
-          varSm_Set_Ct.branchId = o.value;
-          break;
-
-        case 'matnr':
-          varSm_Set_Ct.matnr = o.value;
-          break;
-
-        case 'F1':
-          varSm_Set_Ct.f1 = o.value;
-          break;
-
-        case 'F2':
-          varSm_Set_Ct.f2 = o.value;
-          break;
-
-        case 'F3':
-          varSm_Set_Ct.f3 = o.value;
-          break;
-
-        case 'F4':
-          varSm_Set_Ct.f4 = o.value;
-          break;
-
-        case 'F5':
-          varSm_Set_Ct.f5 = o.value;
-          break;
-
-        case 'F6':
-          varSm_Set_Ct.f6 = o.value;
-          break;
-
-        case 'F7':
-          varSm_Set_Ct.f7 = o.value;
-          break;
-
-        case 'description':
-          varSm_Set_Ct.description = o.value;
-          break;
-
-        default:
-          varSm_Set_Ct[fieldName] = o.value;
-      }
-      return varSm_Set_Ct;
-    });
-  };
+  const [messg, setMessg] = useState({ messgBrnch: false, messgMatnr: false });
 
   const openEdit = row_data => {
-    set_sm_set_ct_Edit(prop => {
-      const sm_set_ct_EditRow = { ...prop };
+    setSmsetctEdit(prop => {
+      let editRow = { ...prop };
       {
-        sm_set_ct_EditRow.countryId = getCountryId(
-          countryList,
-          row_data.countryId,
-        );
-        sm_set_ct_EditRow.bukrs = getBukrsId(companyOptions, row_data.bukrs);
-        sm_set_ct_EditRow.branchId = getBranchId(
+        editRow.countryId = getCountryId(countryList, row_data.countryId);
+        editRow.bukrs = getBukrsId(companyOptions, row_data.bukrs);
+        editRow.branchId = getBranchId(
           branchOptions,
           row_data.branchId,
           searchParams.bukrs,
         );
-        sm_set_ct_EditRow.f1 = row_data.f1;
-        sm_set_ct_EditRow.f2 = row_data.f2;
-        sm_set_ct_EditRow.f3 = row_data.f3;
-        sm_set_ct_EditRow.f4 = row_data.f4;
-        sm_set_ct_EditRow.f5 = row_data.f5;
-        sm_set_ct_EditRow.f6 = row_data.f6;
-        sm_set_ct_EditRow.f7 = row_data.f7;
-        sm_set_ct_EditRow.matnr = getProductId(productList, row_data.matnr);
-        sm_set_ct_EditRow.description = row_data.description;
-        sm_set_ct_EditRow.id = row_data.id;
+        editRow.f1 = row_data.f1;
+        editRow.f2 = row_data.f2;
+        editRow.f3 = row_data.f3;
+        editRow.f4 = row_data.f4;
+        editRow.f5 = row_data.f5;
+        editRow.f6 = row_data.f6;
+        editRow.f7 = row_data.f7;
+        editRow.matnr = getProductId(productList, row_data.matnr);
+        editRow.description = row_data.description;
+        editRow.id = row_data.id;
       }
-      return sm_set_ct_EditRow;
+      setOldSmsetctEdit({ ...editRow });
+      return editRow;
     });
     setOpen(true);
+    setErrorsEdit({});
+    setMessg({});
+  };
+
+  const handleEdit = (o, fieldName) => {
+    setSmsetctEdit(() => {
+      let vars = { ...smsetctEdit };
+      let errors = { ...errorsEdit };
+      let messages = {};
+      switch (fieldName) {
+        case 'bukrs':
+          if (vars.bukrs !== o.value && vars.bukrs && vars.branchId) {
+            vars.branchId = '';
+            vars.matnr = '';
+            errors.matnr = true;
+            errors.branchId = true;
+            messages.messgBrnch = messages.messgMatnr = true;
+            setMessg({ ...messages });
+          }
+          vars.bukrs = o.value;
+          errors.bukrs = o.value ? false : true;
+          break;
+        case 'countryId':
+          if (vars.bukrs !== o.countryId && vars.countryId && vars.branchId) {
+            vars.branchId = '';
+            vars.matnr = '';
+            errors.matnr = true;
+            errors.branchId = true;
+            messages.messgBrnch = messages.messgMatnr = true;
+            setMessg({ ...messages });
+          }
+          vars.countryId = o.value;
+          errors.countryId = o.value ? false : true;
+          break;
+
+        case 'brnch':
+          vars.branchId = o.value;
+          errors.branchId = o.value ? false : true;
+          messages.messgBrnch = false;
+          messages.messgMatnr = messg.messgMatnr;
+          setMessg({ ...messages });
+          break;
+
+        case 'matnr':
+          vars.matnr = o.value;
+          errors.matnr = o.value ? false : true;
+          messages.messgBrnch = messg.messgBrnch;
+          messages.messgMatnr = false;
+          setMessg({ ...messages });
+          break;
+
+        case 'F1':
+          vars.f1 = o.value;
+          errors.f1 = o.value ? false : true;
+          break;
+
+        case 'F2':
+          vars.f2 = o.value;
+          errors.f2 = o.value ? false : true;
+          break;
+
+        case 'F3':
+          vars.f3 = o.value;
+          errors.f3 = o.value ? false : true;
+          break;
+
+        case 'F4':
+          vars.f4 = o.value;
+          errors.f4 = o.value ? false : true;
+          break;
+
+        case 'F5':
+          vars.f5 = o.value;
+          errors.f5 = o.value ? false : true;
+          break;
+
+        case 'F6':
+          vars.f6 = o.value;
+          break;
+
+        case 'F7':
+          vars.f7 = o.value;
+          break;
+
+        case 'description':
+          vars.description = o.value;
+          break;
+
+        default:
+          vars[fieldName] = o.value;
+      }
+      setErrorsEdit({ ...errors });
+      return vars;
+    });
   };
 
   const closeEdit = () => {
     setOpen(false);
+    setMessg({});
+    setErrorsEdit({});
   };
 
   const onClickSave = () => {
-    editSmsetct(
-      { ...sm_set_ct_Edit },
-      { ...searchParams.searchText },
-      fetchSmsetct,
-    );
+    let errs = validateEdit(smsetctEdit);
+
+    if (
+      errs === null ||
+      errs === undefined ||
+      (Object.keys(errs).length === 0 &&
+        JSON.stringify(oldSmsetctEdit) !== JSON.stringify(smsetctEdit))
+    ) {
+      editSmsetct(
+        { ...smsetctEdit },
+        { ...searchParams.searchText },
+        fetchSmsetct,
+      );
+    }
+    setErrorsEdit({ ...errs });
   };
+
   //Получить ID Стран через text
   const getCountryId = (countries, countryName) => {
-    countries.map(e => {
-      if (countryName === e.country) countryName = e.countryId;
-    });
+    if (countries) {
+      countries.map(e => {
+        if (countryName === e.country) countryName = e.countryId;
+      });
+    }
     return countryName;
   };
+
   // Получить ID Компанию через text
   const getBukrsId = (bukrs, companyName) => {
-    bukrs.map(e => {
-      if (companyName === e.text) companyName = e.key;
-    });
+    if (bukrs.length > 0) {
+      bukrs.map(e => {
+        if (companyName === e.text) companyName = e.key;
+      });
+    }
     return companyName;
   };
+
   // Получить ID Филиала через text
   const getBranchId = (branches, branchName, bukrs) => {
-    branches[bukrs].map(e => {
-      if (branchName === e.text) {
-        branchName = e.key;
-      }
-    });
+    if (branches[bukrs]) {
+      branches[bukrs].map(e => {
+        if (branchName === e.text) {
+          branchName = e.key;
+        }
+      });
+    }
     return branchName;
   };
   // Получить ID Продукта через text
+
   const getProductId = (products, productName) => {
-    if (productName !== null) {
+    if (productName !== null && products) {
       products.map(e => {
-        if (productName === e.name.toUpperCase()) {
+        //ROBOCLEAN-114F это исключения в списке ROBOCLEAN 114F  а на базе ROBOCLEAN-114F
+        if (
+          productName === e.name.toUpperCase() ||
+          productName === 'ROBOCLEAN-114F'
+        ) {
+          // ROBOCLEAN-114F не равен на ROBOCLEAN 114F
           productName = e.contract_type_id;
         }
       });
@@ -279,46 +328,8 @@ export default function List(props) {
 
   let historyColumns = [
     {
-      Header: '№',
-      accessor: 'rev',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      filterAll: true,
-    },
-    {
       Header: 'ID',
       accessor: 'id',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      filterAll: true,
-    },
-    {
-      Header: messages['Task.Company'],
-      accessor: 'bukrs',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      filterAll: true,
-    },
-    {
-      Header: messages['country'],
-      accessor: 'countryId',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      filterAll: true,
-    },
-    {
-      Header: messages['brnch'],
-      accessor: 'branchId',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
-      filterAll: true,
-    },
-    {
-      Header: messages['TBL_H__PRODUCT'],
-      accessor: 'matnr', //Name
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 150,
-      filterAll: true,
-    },
-    {
-      Header: messages['Table.Note'],
-      accessor: 'description',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
     },
@@ -329,14 +340,27 @@ export default function List(props) {
       filterAll: true,
     },
     {
-      Header: messages['changed_by_employee'],
-      accessor: 'fullname',
+      Header: messages['operationType'],
+      accessor: 'revType',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
     },
     {
-      Header: messages['operationType'],
-      accessor: 'revType',
+      Header: messages['brnch'],
+      accessor: 'branchId',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+    },
+    {
+      Header: messages['Table.Note'],
+      accessor: 'description',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+    },
+
+    {
+      Header: messages['changed_by_employee'],
+      accessor: 'fullname',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
     },
@@ -368,53 +392,71 @@ export default function List(props) {
                   <label>{messages['bukrs']} </label>
                   <Dropdown
                     search
+                    error={errorsEdit.bukrs ? true : false}
                     selection
                     options={companyOptions || []}
-                    defaultValue={sm_set_ct_Edit.bukrs}
+                    defaultValue={smsetctEdit.bukrs}
                     onChange={(e, o) => handleEdit(o, 'bukrs')}
                   />
 
                   <label>{messages['country']}</label>
                   <Dropdown
                     search
+                    error={errorsEdit.countryId ? true : false}
                     selection
                     options={getCountryOptions(countryList)}
-                    defaultValue={sm_set_ct_Edit.countryId}
+                    defaultValue={smsetctEdit.countryId}
                     onChange={(e, o) => handleEdit(o, 'countryId')}
                   />
 
                   <label>{messages['brnch']}</label>
                   <Dropdown
                     search
+                    error={errorsEdit.branchId ? true : false}
                     selection
                     options={
-                      sm_set_ct_Edit.bukrs
+                      smsetctEdit.bukrs
                         ? getBranchOptions(
-                            branchOptions[sm_set_ct_Edit.bukrs],
-                            sm_set_ct_Edit.countryId,
+                            branchOptions[smsetctEdit.bukrs],
+                            smsetctEdit.countryId,
                           )
                         : []
                     }
-                    defaultValue={sm_set_ct_Edit.branchId}
+                    defaultValue={smsetctEdit.branchId}
                     onChange={(e, o) => handleEdit(o, 'brnch')}
                   />
-
+                  {messg.messgBrnch ? (
+                    <Label basic color="red" pointing>
+                      {messages['enter_again']}
+                    </Label>
+                  ) : (
+                    ''
+                  )}
                   <label>{messages['TBL_H__PRODUCT']}</label>
                   <Dropdown
                     search
+                    error={errorsEdit.matnr ? true : false}
                     selection
                     options={getProductOptions(
                       productList,
-                      sm_set_ct_Edit.bukrs,
+                      smsetctEdit.bukrs,
+                      smsetctEdit.countryId,
+                      smsetctEdit.branchId,
                     )}
-                    defaultValue={sm_set_ct_Edit.matnr}
+                    defaultValue={smsetctEdit.matnr}
                     onChange={(e, o) => handleEdit(o, 'matnr')}
                   />
+                  {messg.messgMatnr ? (
+                    <Label basic color="red" pointing>
+                      {messages['enter_again']}
+                    </Label>
+                  ) : (
+                    ''
+                  )}
                   <Form.Field
-                    required
                     control={Input}
                     label={messages['Table.Note']}
-                    defaultValue={sm_set_ct_Edit.description}
+                    defaultValue={smsetctEdit.description}
                     onChange={(e, o) => handleEdit(o, 'description')}
                   />
                 </Form.Field>
@@ -422,49 +464,54 @@ export default function List(props) {
                 <Form.Field>
                   <Form.Field
                     required
+                    error={errorsEdit.f1 ? true : false}
                     control={Input}
                     label={messages['configuration'] + ' F-1'}
-                    defaultValue={sm_set_ct_Edit.f1}
+                    defaultValue={smsetctEdit.f1}
                     onChange={(e, o) => handleEdit(o, 'F1')}
                   />
                   <Form.Field
                     required
+                    error={errorsEdit.f2 ? true : false}
                     control={Input}
                     label={messages['configuration'] + ' F-2'}
-                    defaultValue={sm_set_ct_Edit.f2}
+                    defaultValue={smsetctEdit.f2}
                     onChange={(e, o) => handleEdit(o, 'F2')}
                   />
                   <Form.Field
                     required
+                    error={errorsEdit.f3 ? true : false}
                     control={Input}
                     label={messages['configuration'] + ' F-3'}
-                    defaultValue={sm_set_ct_Edit.f3}
+                    defaultValue={smsetctEdit.f3}
                     onChange={(e, o) => handleEdit(o, 'F3')}
                   />
                   <Form.Field
                     required
+                    error={errorsEdit.f4 ? true : false}
                     control={Input}
                     label={messages['configuration'] + ' F-4'}
-                    defaultValue={sm_set_ct_Edit.f4}
+                    defaultValue={smsetctEdit.f4}
                     onChange={(e, o) => handleEdit(o, 'F4')}
                   />
                   <Form.Field
                     required
+                    error={errorsEdit.f5 ? true : false}
                     control={Input}
                     label={messages['configuration'] + ' F-5'}
-                    defaultValue={sm_set_ct_Edit.f5}
+                    defaultValue={smsetctEdit.f5}
                     onChange={(e, o) => handleEdit(o, 'F5')}
                   />
                   <Form.Field
                     control={Input}
                     label={messages['configuration'] + ' F-6'}
-                    defaultValue={sm_set_ct_Edit.f6}
+                    defaultValue={smsetctEdit.f6}
                     onChange={(e, o) => handleEdit(o, 'F6')}
                   />
                   <Form.Field
                     control={Input}
                     label={messages['configuration'] + ' F-7'}
-                    defaultValue={sm_set_ct_Edit.f7}
+                    defaultValue={smsetctEdit.f7}
                     onChange={(e, o) => handleEdit(o, 'F7')}
                   />
                 </Form.Field>

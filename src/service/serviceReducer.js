@@ -32,6 +32,12 @@ import {
   FETCH_APP_MASTER_LIST,
   FETCH_CLEAR_APP_LIST,
   FETCH_SMSLSP,
+  FETCH_SMECAM,
+  FETCH_SERV_APP_STATUS,
+  FETCH_SMVCA,
+  FETCH_SMECA,
+  FETCH_SMSETPLP,
+  POST_SMSETPLP,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -51,11 +57,7 @@ const INITIAL_STATE = {
   smeciContractInfo: [],
   servCrmCallStatus: [],
   smregcCreateCall: [],
-  appStatus: [],
-  appType: [],
-  listOfEmployees: [],
 };
-
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     case FETCH_DYNOBJ_SERVICE:
@@ -204,6 +206,13 @@ export default function(state = INITIAL_STATE, action) {
     case POST_SMREGC_CREATE_CALL: {
       return { ...state, smregcCreateCall: action.payload };
     }
+    case FETCH_SMECAM: {
+      return {
+        ...state,
+        dynamicObject: action.payload.servApp,
+        historyDynamicObject: [...action.payload.servAppHistory],
+      };
+    }
 
     case FETCH_APP_STATUS: {
       return {
@@ -238,6 +247,42 @@ export default function(state = INITIAL_STATE, action) {
         ...state,
         listOfEmployees: { ...action.payload },
       };
+
+    case FETCH_SERV_APP_STATUS: {
+      return {
+        ...state,
+        servAppStatus: [...action.payload],
+      };
+    }
+
+    case FETCH_SMVCA: {
+      return {
+        ...state,
+        dynamicObject: action.payload.servApp,
+        historyDynamicObject: [...action.payload.servAppHistory],
+      };
+    }
+
+    case FETCH_SMECA: {
+      return {
+        ...state,
+        dynamicObject: action.payload.servApp,
+        historyDynamicObject: [...action.payload.servAppHistory],
+      };
+    }
+    case FETCH_SMSETPLP: {
+      return {
+        ...state,
+        dynamicObject: action.payload,
+      };
+    }
+
+    case POST_SMSETPLP: {
+      return {
+        ...state,
+        dynamicObject: [action.payload],
+      };
+    }
     default:
       return state;
   }

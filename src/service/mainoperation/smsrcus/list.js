@@ -14,6 +14,7 @@ const List = props => {
       ? setColumnsName(tableColumns)
       : setColumnsName(JSON.parse(tableColumns));
   }, []);
+
   const {
     messages,
     dynamicObject,
@@ -178,7 +179,7 @@ const List = props => {
       </Button>
       <br />
       <br />
-      <Modal size="mini" open={open} closeIcon>
+      <Modal size="mini" open={open}>
         <Modal.Header align="center">{messages['choose_columns']}</Modal.Header>
         <Modal.Content>
           <Table singleLine>

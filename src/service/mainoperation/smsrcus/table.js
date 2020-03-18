@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
 import { Icon, Button } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 const DataTable = props => {
   const {
@@ -35,13 +36,12 @@ const DataTable = props => {
           Header: Header,
           Cell: () => (
             <div style={{ textAlign: 'center' }}>
-              <Button
-                size="mini"
-                icon
-                onClick={() => props.history.push('smcuspor')}
-              >
-                <Icon name="address card" size="large" color="black" />
-              </Button>
+              <Link to={`/service/mainoperation/smcuspor`}>
+                <Button size="mini" icon>
+                  {' '}
+                  <Icon name="address card" size="large" color="black" />{' '}
+                </Button>{' '}
+              </Link>
             </div>
           ),
           filterable: false,

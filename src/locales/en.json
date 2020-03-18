@@ -786,8 +786,32 @@
   "customer_key": "Customer key",
   "telephone": "Telephone",
   "choose_columns": "Choose columns",
+
   "change_master": "Change master",
   "List_of_employees": "List of employees and their plans",
   "Table.NameOfEmployee": "Full name of employee",
-  "Table.Plan": "Plan"
+  "Table.Plan": "Plan",
+  "request_number": "Request number",
+  "contacts": "Contacts",
+  "installation_date": "Installation date",
+  "date_of_admission_to_the_service": "Date of admission to the service",
+  "service_time": "Service time",
+  "transfer_date": "Transfer Date",
+  "create_service_card": "Create service card",
+  "customer_request": "Customer request",
+  "contract_editing_history": "Contract Editing History",
+  "old": "Old",
+  "new": "New",
+  "view_customer_request": "View customer request",
+  "application_editing_history": "Application Editing History",
+  "editing_a_customer_request": "Editing a customer request",
+  "settings_of_plan_and_percent": "settings_of_plan_and_percent",
+  "type_of_operation": "Type of operation",
+  "current_base_plan": "Current base plan",
+  "current_plan": "Current plan",
+  "overdue_base_plan": "Overdue Base Plan",
+  "overdue_plan": "Overdue plan",
+  "total_plan_amount": "Total plan amount",
+
+  "enter_again": "Please choose a value again"
 }

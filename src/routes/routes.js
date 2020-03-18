@@ -926,6 +926,18 @@ const AsyncSmsetct = Loadable({
   loader: () => import('../service/mainoperation/smsetct'),
   loading: () => <LoadingPage />,
 });
+const AsyncSmeca = Loadable({
+  loader: () => import('../service/mainoperation/smeca'),
+  loading: () => <LoadingPage />,
+});
+const AsyncSmvca = Loadable({
+  loader: () => import('../service/mainoperation/smvca'),
+  loading: () => <LoadingPage />,
+});
+const AsyncSmecam = Loadable({
+  loader: () => import('../service/mainoperation/smecam'),
+  loading: () => <LoadingPage />,
+});
 const AsyncSmplb = Loadable({
   loader: () => import('../service/mainoperation/smplb'),
   loading: () => <LoadingPage />,
@@ -982,6 +994,7 @@ const AsyncSmslsp = Loadable({
   loader: () => import('../service/mainoperation/smslsp'),
   loading: () => <LoadingPage />,
 });
+
 const AsyncSmsrcus = Loadable({
   loader: () => import('../service/mainoperation/smsrcus'),
   loading: () => <LoadingPage />,
@@ -1004,6 +1017,11 @@ const AsyncSmopsp = Loadable({
 
 const AsyncSrkpiso = Loadable({
   loader: () => import('../service/report/srkpiso'),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncSmsetplp = Loadable({
+  loader: () => import('../service/mainoperation/smsetplp'),
   loading: () => <LoadingPage />,
 });
 
@@ -1126,6 +1144,9 @@ const getComponent = {
   Tsrep4: AsyncTSRep4,
   Smsetpp: AsyncSmsetpp,
   Smsetct: AsyncSmsetct,
+  Smecam: AsyncSmecam,
+  Smeca: AsyncSmeca,
+  Smvca: AsyncSmvca,
   Smplb: AsyncSmplb,
   Smcs: AsyncSmcs,
   Smcc: AsyncSmcc,
@@ -1145,7 +1166,7 @@ const getComponent = {
   Smopsp: AsyncSmopsp,
   Srkpiso: AsyncSrkpiso,
   Smslsp: AsyncSmslsp,
-  Smdis: AsyncSmdis,
+  Smsetplp: AsyncSmsetplp,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1239,6 +1260,53 @@ const generateRoutes = transactionRoutes => {
         component={AsyncLogInvoicesForm}
       />
       <Route
+        path="/service/mainoperation/smsetpp"
+        exact={true}
+        component={AsyncSmsetpp}
+      />
+      <Route
+        path="/service/mainoperation/smsetct"
+        exact={true}
+        component={AsyncSmsetct}
+      />
+      <Route
+        path="/service/mainoperation/smecam"
+        exact={true}
+        component={AsyncSmecam}
+      />
+
+      <Route
+        path="/service/mainoperation/smeca"
+        exact={true}
+        component={AsyncSmeca}
+      />
+      <Route
+        path="/service/mainoperation/smvca"
+        exact={true}
+        component={AsyncSmvca}
+      />
+      <Route
+        path="/service/mainoperation/smsrcus"
+        exact={true}
+        component={AsyncSmsrcus}
+      />
+      <Route
+        path="/service/mainoperation/smsetplp"
+        exact={true}
+        component={AsyncSmsetplp}
+      />
+      {/* 
+      <Route
+        path="/service/mainoperation/smplb"
+        exact={true}
+        component={AsyncSmplb}
+      />
+      <Route
+        path="/service/mainoperation/smcs"
+        exact={true}
+        component={AsyncSmcs}
+      /> 
+      <Route
         path="/service/mainoperation/smslsp"
         exact={true}
         component={AsyncSmslsp}
@@ -1249,7 +1317,49 @@ const generateRoutes = transactionRoutes => {
         exact={true}
         component={AsyncSmdis}
       />
-
+ 
+      <Route
+        path="/service/mainoperation/smvs"
+        exact={true}
+        component={AsyncSmvs}
+      />
+      <Route
+        path="/service/mainoperation/smes"
+        exact={true}
+        component={AsyncSmes}
+      />
+      <Route path="/service/report/srlsm" exact={true} component={AsyncSrlsm} />
+      <Route path="/service/report/srls" exact={true} component={AsyncSrls} />
+      <Route
+        path="/service/mainoperation/smcuspor"
+        exact={true}
+        component={AsyncSmcuspor}
+      />
+      <Route
+        path="/service/mainoperation/smregc"
+        exact={true}
+        component={AsyncSmregc}
+      />
+      <Route
+        path="/service/mainoperation/smeci"
+        exact={true}
+        component={AsyncSmeci}
+      />
+      <Route
+        path="/service/mainoperation/smcca"
+        exact={true}
+        component={AsyncSmcca}
+      />
+      <Route
+        path="/service/mainoperation/smccald"
+        exact={true}
+        component={AsyncSmccald}
+      />
+      <Route
+        path="/service/mainoperation/smappl"
+        exact={true}
+        component={AsyncSmappl} 
+      />   
       {/* dynamically generated URLs  */}
       {transactionRoutes.map(route => {
         return (

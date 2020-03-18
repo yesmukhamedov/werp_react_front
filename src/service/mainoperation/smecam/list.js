@@ -3,43 +3,34 @@ import { Container, Segment, Header } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import 'react-table/react-table.css';
 
-const ListHistory = () => {
-  let historyDynamicObject = [];
+const ListHistory = props => {
+  const { historyDynamicObject, messages } = props;
+
   let columns = [
     {
-      Header: 'Дата',
-      accessor: 'date',
-      Cell: row => <div style={{ textAlign: 'сenter' }}> {row.value} </div>,
-      filterAll: true,
-      width: 350,
+      Header: messages['Form.Date'],
+      accessor: 'revsttmp',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
-      Header: 'Старый',
+      Header: messages['old'],
       accessor: 'date',
-      Cell: row => <div style={{ textAlign: 'сenter' }}> {row.value} </div>,
-      filterAll: true,
-      width: 350,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
-      Header: 'Новый',
+      Header: messages['new'],
       accessor: 'date',
-      Cell: row => <div style={{ textAlign: 'сenter' }}> {row.value} </div>,
-      filterAll: true,
-      width: 350,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
-      Header: 'Описание',
-      accessor: 'date',
-      Cell: row => <div style={{ textAlign: 'сenter' }}> {row.value} </div>,
-      filterAll: true,
-      width: 350,
+      Header: messages['L__DESCRIPTION'],
+      accessor: 'revType',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
-      Header: 'Изменен сотрудником',
-      accessor: 'date',
-      Cell: row => <div style={{ textAlign: 'сenter' }}> {row.value} </div>,
-      filterAll: true,
-      width: 350,
+      Header: messages['changed_by_employee'],
+      accessor: 'username',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
   ];
 
@@ -54,14 +45,18 @@ const ListHistory = () => {
       }}
     >
       <Segment tertiary>
-        {' '}
-        <Header as="h2"> История редактирований договора </Header>{' '}
+        <Header as="h2"> {messages['contract_editing_history']}</Header>
       </Segment>
       <ReactTableWrapper
-        data={historyDynamicObject}
+        data={
+          Object.keys(historyDynamicObject).length === 0
+            ? []
+            : historyDynamicObject
+        }
         columns={columns}
         defaultPageSize={20}
         showPagination={true}
+        className="-striped -highlight"
       />
     </Container>
   );

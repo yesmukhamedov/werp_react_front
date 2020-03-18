@@ -36,7 +36,6 @@ export const FETCH_SERV_CRM_CALL_STATUS = 'FETCH_SERV_CRM_CALL_STATUS';
 export const POST_SMREGC_CREATE_CALL = 'POST_SMREGC_CREATE_CALL';
 export const POST_SMCCA_CREATE_APP = 'POST_SMCCA_CREATE_APP';
 export const POST_SMCCALD_CREATE_APP = 'POST_SMCCALD_CREATE_APP';
-
 export const FETCH_APP_STATUS = 'FETCH_APP_STATUS';
 export const FETCH_APP_TYPE = 'FETCH_APP_TYPE';
 export const FETCH_APP_LIST = 'FETCH_APP_LIST';
@@ -45,11 +44,16 @@ export const FETCH_EDIT_APP = 'FETCH_EDIT_APP';
 export const FETCH_CLEAR_APP_LIST = 'FETCH_CLEAR_APP_LIST';
 
 export const FETCH_SMSLSP = 'FETCH_SMSLSP';
-
 export const FETCH_SMSRCUS = 'FETCH_SMSRCUS';
 export const FETCH_TOVAR_CATEGORYS = 'FETCH_TOVAR_CATEGORYS';
 export const FETCH_CONTRACT_STATUS = 'FETCH_CONTRACT_STATUS';
-
+export const FETCH_SMECAM = 'FETCH_SMECAM';
+export const FETCH_SERV_APP_STATUS = 'FETCH_SERV_APP_STATUS';
+export const EDIT_SMECAM = 'EDIT_SMECAM';
+export const FETCH_SMVCA = 'FETCH_SMVCA';
+export const FETCH_SMECA = 'FETCH_SMECA';
+export const FETCH_SMSETPLP = 'FETCH_SMSETPLP';
+export const POST_SMSETPLP = 'FETCH_SMSETPLP';
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 export function changeDynObjService(a_obj) {
@@ -259,7 +263,6 @@ export function editSmsetct(editParams, searchParams, fetchSmsetct) {
             ),
           );
         } else {
-          console.log('succes3');
           dispatch(
             notify(
               'error',
@@ -614,6 +617,41 @@ export function fetchAppStatus() {
   };
 }
 
+export function fetchSmecam(id) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`smecam/${id}`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMECAM,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchServAppStatus() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('service/reference/serv_app_status')
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SERV_APP_STATUS,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
 export function fetchAppType() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
@@ -686,6 +724,103 @@ export function fetchClearAppList() {
   };
 }
 
+export function fetchSmsetplp(params) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`smsetplp`, { ...params })
+      .then(data => {
+        dispatch(modifyLoader(false));
+        if ((data.status === 200) & (data.data.data.length > 0)) {
+          dispatch({
+            type: FETCH_SMSETPLP,
+            payload: data.data,
+          });
+        }
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function postSmsetplp(params) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost(`smsetplp/create`, params)
+      .then(data => {
+        dispatch(modifyLoader(false));
+        if ((data.status === 200) & (data.data.data.length > 0)) {
+          dispatch({
+            type: POST_SMSETPLP,
+            payload: data.data.data,
+          });
+        }
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function editSmecam(editParams) {
+  return function(dispatch) {
+    console.log('editParamsSmecamInAction', editParams);
+    doPut('smecam/edit', editParams)
+      .then(data => {
+        if (data.status === 200) {
+          dispatch(
+            notify(
+              'success',
+              errorTable[`104${language}`],
+              errorTable[`101${language}`],
+            ),
+          );
+        } else {
+          dispatch(
+            notify(
+              'error',
+              errorTable[`133${language}`],
+              errorTable[`132${language}`],
+            ),
+          );
+        }
+      })
+      .catch(e => {
+        handleError(e, dispatch);
+      });
+  };
+}
+export function editSmeca(editParams) {
+  return function(dispatch) {
+    console.log('editEdit', editParams);
+    doPut('smeca/edit', editParams)
+      .then(data => {
+        if (data.status === 200) {
+          dispatch(
+            notify(
+              'success',
+              errorTable[`104${language}`],
+              errorTable[`101${language}`],
+            ),
+          );
+        } else {
+          dispatch(
+            notify(
+              'error',
+              errorTable[`133${language}`],
+              errorTable[`132${language}`],
+            ),
+          );
+        }
+      })
+      .catch(e => {
+        handleError(e, dispatch);
+      });
+  };
+}
+
 export function fetchSmslsp(params) {
   return function(dispatch) {
     doGet('smslspl/view?direction=ASC&orderBy=id', params)
@@ -697,6 +832,76 @@ export function fetchSmslsp(params) {
         });
       })
       .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchSmeca(id) {
+  console.log('id', id);
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`smeca/${id}`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMECA,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchSmvca(id) {
+  console.log('id', id);
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`smvca/${id}`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        console.log('dataSmecam', data);
+        dispatch({
+          type: FETCH_SMVCA,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function editSmsetplp(params) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPut(`smsetplp/update`, params)
+      .then(data => {
+        dispatch(modifyLoader(false));
+        if (data.status === 200) {
+          dispatch(
+            notify(
+              'success',
+              errorTable[`104${language}`],
+              errorTable[`101${language}`],
+            ),
+          );
+        } else {
+          dispatch(
+            notify(
+              'error',
+              errorTable[`133${language}`],
+              errorTable[`132${language}`],
+            ),
+          );
+        }
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
         handleError(error, dispatch);
       });
   };
