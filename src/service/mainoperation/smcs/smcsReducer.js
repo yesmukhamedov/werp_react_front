@@ -8,6 +8,7 @@ import {
   FETCH_SMCS_SERVICE_PACKET,
   FETCH_POSITION_SUMM,
   CHECK_SMCS_WITHOUT_REQUEST,
+  SAVE_SMCS_WITHOUT_REQUEST,
 } from './smcsAction';
 
 const INITIAL_STATE = {
@@ -53,6 +54,10 @@ export default function(state = INITIAL_STATE, action) {
 
     case CHECK_SMCS_WITHOUT_REQUEST:
       return { ...state, checkSmcs: { ...action.data.data } };
+
+    case SAVE_SMCS_WITHOUT_REQUEST:
+      return { ...state, saveSmcs: { ...action.data.data } };
+
     default:
       return state;
   }

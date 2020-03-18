@@ -1,8 +1,5 @@
-import { doGet, doPost, doPut, doDelete } from '../../../utils/apiActions';
-import {
-  handleError,
-  notify,
-} from '../../../general/notification/notification_action';
+import { doGet, doPost } from '../../../utils/apiActions';
+import { handleError } from '../../../general/notification/notification_action';
 import { modifyLoader } from '../../../general/loader/loader_action';
 
 //SMCS - создание сервиса
@@ -23,9 +20,11 @@ export const FETCH_SMCS_SERVICE_PACKET = 'FETCH_SMCS_SERVICE_PACKET';
 export const FETCH_POSITION_SUMM = 'FETCH_POSITION_SUMM';
 
 export const CHECK_SMCS_WITHOUT_REQUEST = 'CHECK_SMCS_WITHOUT_REQUEST';
+
+export const SAVE_SMCS_WITHOUT_REQUEST = 'SAVE_SMCS_WITHOUT_REQUEST';
 //--END
-const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-const language = localStorage.getItem('language');
+// const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+// const language = localStorage.getItem('language');
 
 //SMCS ACTIONS
 //---Получить договор
@@ -147,7 +146,6 @@ export const fetchPositionSumm = body => {
     doPost(`smcs/position_sum`, body)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        console.log(data);
         dispatch({
           type: FETCH_POSITION_SUMM,
           data: data,
@@ -159,7 +157,7 @@ export const fetchPositionSumm = body => {
       });
   };
 };
-
+//Проверка сервиса и получение суммы
 export const checkSmcsWithoutReques = body => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
@@ -168,6 +166,24 @@ export const checkSmcsWithoutReques = body => {
         dispatch(modifyLoader(false));
         dispatch({
           type: CHECK_SMCS_WITHOUT_REQUEST,
+          data: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+//Создать сервис
+export const saveSmcsWithoutReques = body => {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost(`smcs/create`, body)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: SAVE_SMCS_WITHOUT_REQUEST,
           data: data,
         });
       })

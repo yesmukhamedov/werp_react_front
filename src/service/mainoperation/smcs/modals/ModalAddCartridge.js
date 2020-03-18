@@ -1,27 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-import {
-  Segment,
-  Grid,
-  Form,
-  Button,
-  Table,
-  Input,
-  Icon,
-  Divider,
-  Dropdown,
-  Modal,
-  Header,
-  Checkbox,
-} from 'semantic-ui-react';
-import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
+import { Button, Icon, Modal, Header, Checkbox } from 'semantic-ui-react';
+import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
 
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
 import checkedSparePart from '../tabs/TabSmcsWithoutRequest';
 
-const ModalAddServicePacket = props => {
+const ModalAddCartridge = props => {
   const {
     intl: { messages },
   } = props;
@@ -29,29 +16,35 @@ const ModalAddServicePacket = props => {
   const {
     data = [],
     modalOpen = false,
-    modalClose = false,
-    handleApplyServicePacket,
-    onRowClick = null,
-    checked = [],
-    checkedServicePacket,
+    handleApplyCartridge,
+    checkedCartridge,
   } = props;
 
-  const columnsServicePacket = [
+  const columnsSparePart = [
     {
       Header: '',
       Cell: ({ original }) => (
         <Checkbox
           checked={original.checked}
-          onClick={() => checkedServicePacket(original)}
+          onClick={() => checkedCartridge(original)}
         />
       ),
+      filterAll: true,
       width: 30,
       maxWidth: 50,
       minWidth: 20,
     },
     {
+      Header: 'Код',
+      accessor: 'matnrCode',
+      filterAll: true,
+      width: 100,
+      maxWidth: 200,
+      minWidth: 100,
+    },
+    {
       Header: 'Название',
-      accessor: 'name',
+      accessor: 'matnrName',
       filterAll: true,
       width: 500,
       maxWidth: 500,
@@ -59,7 +52,7 @@ const ModalAddServicePacket = props => {
     },
     {
       Header: 'Цена',
-      accessor: 'price',
+      accessor: 'matnrPrice',
       filterAll: true,
       width: 100,
       maxWidth: 150,
@@ -73,14 +66,23 @@ const ModalAddServicePacket = props => {
       maxWidth: 100,
       minWidth: 50,
     },
+    {
+      Header: 'В подочете',
+      accessor: 'menge',
+      filterAll: true,
+      width: 100,
+      maxWidth: 150,
+      minWidth: 100,
+    },
   ];
+
   return (
     <Modal open={modalOpen} closeOnDimmerClick dimmer={'blurring'}>
-      <Header content="Добавить сервис пакет" />
+      <Header content="Добавление запчастей" />
       <Modal.Content>
         <ReactTableWrapper
           data={data}
-          columns={columnsServicePacket}
+          columns={columnsSparePart}
           previousText={messages['Table.Previous']}
           nextText={messages['Table.Next']}
           showPagination={true}
@@ -95,7 +97,7 @@ const ModalAddServicePacket = props => {
         />
       </Modal.Content>
       <Modal.Actions>
-        <Button color="green" onClick={handleApplyServicePacket}>
+        <Button color="green" onClick={handleApplyCartridge}>
           <Icon name="checkmark" /> Применить
         </Button>
       </Modal.Actions>
@@ -108,5 +110,5 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, { checkedSparePart })(
-  injectIntl(ModalAddServicePacket),
+  injectIntl(ModalAddCartridge),
 );

@@ -8,9 +8,6 @@ import {
   Input,
   Icon,
   Divider,
-  Label,
-  Select,
-  Menu,
   Dropdown,
 } from 'semantic-ui-react';
 

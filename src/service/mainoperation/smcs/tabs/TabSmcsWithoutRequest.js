@@ -14,6 +14,7 @@ import {
   Modal,
   Header,
   Checkbox,
+  Label,
 } from 'semantic-ui-react';
 
 import {
@@ -24,7 +25,8 @@ import {
   fetchSmcsServicePacket,
   fetchPositionSumm,
   checkSmcsWithoutReques,
-} from '../../smcsAction';
+  saveSmcsWithoutReques,
+} from '../smcsAction';
 
 import {
   f4FetchConTypeList,
@@ -33,12 +35,9 @@ import {
   f4FetchCompanyOptions,
   f4fetchCategory,
   f4FetchCustomersById,
-} from '../../../../../reference/f4/f4_action';
+} from '../../../../reference/f4/f4_action';
 
-import MatnrF4Modal from '../../../../../reference/f4/matnr/matnrF4Modal';
-import CustomerF4Modal from '../../../../../reference/f4/Customer/customerF4';
-
-import StaffF4Modal from '../../../../../reference/f4/staff/staffF4Modal';
+import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal';
 
 import ModalAddServicePacket from '../modals/ModalAddServicePacket';
 import ModalAddSparePart from '../modals/ModalAddSparePart';
@@ -67,6 +66,7 @@ const TabSmcsWithoutRequest = props => {
     servicePacketProps = [],
     positionSumm,
     checkSmcs,
+    saveSmcs,
   } = props;
 
   const emptyService = {
@@ -98,9 +98,8 @@ const TabSmcsWithoutRequest = props => {
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
-  useEffect(() => {
-    console.log('SERVICE', service);
-  }, [service]);
+
+  console.log('SERVICE', service);
 
   //Услуги
   const [serviceInstallation, setServiceInstallation] = useState([]);
@@ -134,7 +133,6 @@ const TabSmcsWithoutRequest = props => {
   const [modalOpen, setModalOpen] = useState({
     matnrF4ModalOpen: false,
     staffF4ModalOpen: false,
-    staffF4ModalOpenOperator: false,
   });
   //
   const [staffF4ModalPosition, setStaffF4ModalPosition] = useState('');
@@ -380,9 +378,8 @@ const TabSmcsWithoutRequest = props => {
     let servFilter = serviceInstallation.filter(item => item.id !== value.id);
     setServiceInstallation([...servFilter]);
   };
-  //------------------------END УСЛУГИ-------------------------------
 
-  //-----------------------------------ЗАПЧАСТИ-----------------------------------------------
+  //ЗАПЧАСТИ
 
   //Список запчастей
   const [sparePartList, setSparePartList] = useState([]);
@@ -483,7 +480,7 @@ const TabSmcsWithoutRequest = props => {
       setSparePartList(
         sparePartList.map(item =>
           item.matnr === value.matnr
-            ? { ...item, warranty: true, sum: null }
+            ? { ...item, warranty: true, sum: 0 }
             : item,
         ),
       );
@@ -873,9 +870,10 @@ const TabSmcsWithoutRequest = props => {
       });
     }
   }, [checkSmcs]);
-
-  const handleSaveSmcs = () => {
+  //Сохранить сервис
+  const saveService = () => {
     console.log('SAVE');
+    props.saveSmcsWithoutReques({ ...checkSmcs });
   };
 
   return (
@@ -885,20 +883,6 @@ const TabSmcsWithoutRequest = props => {
         closeModal={bool => setModalOpen({ staffF4ModalOpen: bool })}
         onStaffSelect={item =>
           onBasicInfoInputChange(item, staffF4ModalPosition)
-        }
-        trans="mmcc"
-        brnch={service.branchId}
-        branchOptions={serBranches}
-        bukrs={service.bukrs}
-        companyOptions={companyOptions}
-        bukrsDisabledParent
-      />
-
-      <StaffF4Modal
-        open={modalOpen.staffF4ModalOpenOperator}
-        closeModal={bool => setModalOpen({ staffF4ModalOpenOperator: bool })}
-        onStaffSelect={item =>
-          onBasicInfoInputChangeOperator(item, staffF4ModalPosition)
         }
         trans="mmcc"
         brnch={service.branchId}
@@ -1061,36 +1045,29 @@ const TabSmcsWithoutRequest = props => {
             <Segment>
               {/*Услуга */}
               <Segment>
-                <h3>Услуга</h3>
+                <h5>Услуга</h5>
                 <Divider />
 
-                <Table>
-                  <Table.Body>
-                    {serviceInstallation.map((item, index) => (
+                {serviceInstallation.map((item, index) => (
+                  <Table celled>
+                    <Table.Body>
                       <Table.Row key={index}>
-                        <Table.Cell width={1}>
-                          <Input readOnly value={index + 1} />
-                        </Table.Cell>
-
-                        <Table.Cell width={7}>
+                        <Table.Cell width={1}>{index + 1}</Table.Cell>
+                        <Table.Cell
+                          width={7}
+                          style={{ margin: '0', padding: '0' }}
+                        >
                           <Dropdown
+                            placeholder="Dropdown..."
                             fluid
                             selection
                             options={serviceOptions}
                             onChange={() => selectServiceOption(item)}
                           />
                         </Table.Cell>
-                        <Table.Cell width={3}>
-                          <Input
-                            readOnly
-                            value={item.sum}
-                            placeholder="Сумма"
-                          />
-                        </Table.Cell>
-                        <Table.Cell width={2}>
-                          <Input readOnly placeholder="Сумма" value="KZT" />
-                        </Table.Cell>
-                        <Table.Cell width={3}>
+                        <Table.Cell width={2}>{item.sum}</Table.Cell>
+                        <Table.Cell width={2}>KZT</Table.Cell>
+                        <Table.Cell style={{ margin: '0', padding: '0' }}>
                           <Button
                             color="red"
                             onClick={() => handleRemoveService(item)}
@@ -1099,9 +1076,10 @@ const TabSmcsWithoutRequest = props => {
                           </Button>
                         </Table.Cell>
                       </Table.Row>
-                    ))}
-                  </Table.Body>
-                </Table>
+                    </Table.Body>
+                  </Table>
+                ))}
+
                 {serviceInstallation.length < 1 ? (
                   <Button
                     onClick={handleAddService}
@@ -1120,9 +1098,9 @@ const TabSmcsWithoutRequest = props => {
 
               {/*Продажа запчастей */}
               <Segment>
-                <h3>Продажа запчастей</h3>
+                <h5>Продажа запчастей</h5>
                 <Divider />
-                <Table>
+                <Table celled>
                   <Table.Header>
                     <Table.Row>
                       <Table.HeaderCell>№</Table.HeaderCell>
@@ -1134,17 +1112,14 @@ const TabSmcsWithoutRequest = props => {
                       <Table.HeaderCell></Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
-                  <Table.Body>
-                    {sparePart.map((item, index) => (
+                  {sparePart.map((item, index) => (
+                    <Table.Body>
                       <Table.Row key={index}>
-                        <Table.Cell width={1}>
-                          <Input value={index + 1} readOnly />
-                        </Table.Cell>
-                        <Table.Cell width={5}>
-                          <Input readOnly fluid value={item.matnrName} />
-                        </Table.Cell>
+                        <Table.Cell width={1}>{index + 1}</Table.Cell>
+                        <Table.Cell width={5}>{item.matnrName}</Table.Cell>
                         <Table.Cell width={2}>
                           <Input
+                            style={{ padding: '0' }}
                             value={item.quantity}
                             type="number"
                             label={{ content: 'шт' }}
@@ -1153,20 +1128,8 @@ const TabSmcsWithoutRequest = props => {
                             onChange={e => changeSparePartCount(e, item)}
                           />
                         </Table.Cell>
-                        <Table.Cell width={2}>
-                          <Input
-                            value={item.sum}
-                            readOnly
-                            placeholder="Сумма"
-                          />
-                        </Table.Cell>
-                        <Table.Cell width={2}>
-                          <Input
-                            value={item.currencyName}
-                            readOnly
-                            placeholder="Валюта"
-                          />
-                        </Table.Cell>
+                        <Table.Cell width={2}>{item.sum}</Table.Cell>
+                        <Table.Cell width={2}>{item.currencyName}</Table.Cell>
                         <Table.Cell width={2}>
                           <Checkbox
                             checked={item.warranty}
@@ -1183,8 +1146,8 @@ const TabSmcsWithoutRequest = props => {
                           </Button>
                         </Table.Cell>
                       </Table.Row>
-                    ))}
-                  </Table.Body>
+                    </Table.Body>
+                  ))}
                 </Table>
 
                 <ModalAddSparePart
@@ -1421,7 +1384,7 @@ const TabSmcsWithoutRequest = props => {
                 type="submit"
                 primary
                 disabled={status.saveButton}
-                onClick={handleSaveSmcs}
+                onClick={saveService}
               >
                 <Icon name="save" size="large" />
                 Сохранить
@@ -1451,6 +1414,7 @@ function mapStateToProps(state) {
     servicePacketProps: state.smcsReducer.smcsServicePacket,
     positionSumm: state.smcsReducer.smcsFetchPositionSumm,
     checkSmcs: state.smcsReducer.checkSmcs,
+    saveSmcs: state.smcsReducer.saveSmcs,
   };
 }
 
@@ -1468,4 +1432,5 @@ export default connect(mapStateToProps, {
   fetchSmcsServicePacket,
   fetchPositionSumm,
   checkSmcsWithoutReques,
+  saveSmcsWithoutReques,
 })(injectIntl(TabSmcsWithoutRequest));

@@ -1,27 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-import {
-  Segment,
-  Grid,
-  Form,
-  Button,
-  Table,
-  Input,
-  Icon,
-  Divider,
-  Dropdown,
-  Modal,
-  Header,
-  Checkbox,
-} from 'semantic-ui-react';
-import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
+import { Button, Icon, Modal, Header, Checkbox } from 'semantic-ui-react';
+import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
 
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
 import checkedSparePart from '../tabs/TabSmcsWithoutRequest';
 
-const ModalAddCartridge = props => {
+const ModalAddServicePacket = props => {
   const {
     intl: { messages },
   } = props;
@@ -29,38 +16,26 @@ const ModalAddCartridge = props => {
   const {
     data = [],
     modalOpen = false,
-    modalClose = false,
-    handleApplyCartridge,
-    onRowClick = null,
-    checked = [],
-    checkedCartridge,
+    handleApplyServicePacket,
+    checkedServicePacket,
   } = props;
 
-  const columnsSparePart = [
+  const columnsServicePacket = [
     {
       Header: '',
       Cell: ({ original }) => (
         <Checkbox
           checked={original.checked}
-          onClick={() => checkedCartridge(original)}
+          onClick={() => checkedServicePacket(original)}
         />
       ),
-      filterAll: true,
       width: 30,
       maxWidth: 50,
       minWidth: 20,
     },
     {
-      Header: 'Код',
-      accessor: 'matnrCode',
-      filterAll: true,
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
-    },
-    {
       Header: 'Название',
-      accessor: 'matnrName',
+      accessor: 'name',
       filterAll: true,
       width: 500,
       maxWidth: 500,
@@ -68,7 +43,7 @@ const ModalAddCartridge = props => {
     },
     {
       Header: 'Цена',
-      accessor: 'matnrPrice',
+      accessor: 'price',
       filterAll: true,
       width: 100,
       maxWidth: 150,
@@ -82,25 +57,14 @@ const ModalAddCartridge = props => {
       maxWidth: 100,
       minWidth: 50,
     },
-    {
-      Header: 'В подочете',
-      accessor: 'menge',
-      filterAll: true,
-      width: 100,
-      maxWidth: 150,
-      minWidth: 100,
-    },
   ];
-  const closeModal = () => {
-    modalOpen = false;
-  };
   return (
     <Modal open={modalOpen} closeOnDimmerClick dimmer={'blurring'}>
-      <Header content="Добавление запчастей" />
+      <Header content="Добавить сервис пакет" />
       <Modal.Content>
         <ReactTableWrapper
           data={data}
-          columns={columnsSparePart}
+          columns={columnsServicePacket}
           previousText={messages['Table.Previous']}
           nextText={messages['Table.Next']}
           showPagination={true}
@@ -115,7 +79,7 @@ const ModalAddCartridge = props => {
         />
       </Modal.Content>
       <Modal.Actions>
-        <Button color="green" onClick={handleApplyCartridge}>
+        <Button color="green" onClick={handleApplyServicePacket}>
           <Icon name="checkmark" /> Применить
         </Button>
       </Modal.Actions>
@@ -128,5 +92,5 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, { checkedSparePart })(
-  injectIntl(ModalAddCartridge),
+  injectIntl(ModalAddServicePacket),
 );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import {
@@ -10,11 +10,6 @@ import {
   Input,
   Icon,
   Divider,
-  Dropdown,
-  Modal,
-  Header,
-  Checkbox,
-  Container,
 } from 'semantic-ui-react';
 
 import './../../service.css';
@@ -23,41 +18,11 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const Smes = props => {
-  const optionsService = [
-    { key: '1', text: 'Устранил', value: 1 },
-    { key: '2', text: 'Снятие', value: 2 },
-    { key: '3', text: 'Установка', value: 3 },
-    { key: '4', text: 'Выбрать услуги', value: 4 },
-  ];
-
-  const sparePartList = [
-    { id: '1', name: 'Устранил', count: 1, summ: 2000, warranty: false },
-  ];
-
-  const initialService = {};
-
   const [service, setService] = useState([]);
-  const [sparePart, setSparePart] = useState([]);
-  const [cartridge, setCartridge] = useState([]);
-  const [servicePackage, setServicePackage] = useState([]);
-  const [addSparePartModalOpened, setAddSparePartModalOpened] = useState(false);
 
   const emptyTovar = {
     param: 555,
     name: 'Jaks',
-  };
-
-  //Параметры поиска по заводскому номеру
-  const [tovarSerial, setTovarSerial] = useState({ ...emptyTovar });
-
-  //Дoбавить сервис
-  const handleAddService = e => {
-    e.preventDefault();
-    let serviceLength = service.length;
-    setService(prevService => [
-      ...prevService,
-      { id: serviceLength + 1, serviceName: 4, summ: 0 },
-    ]);
   };
 
   //Поиск по номеру сервиса

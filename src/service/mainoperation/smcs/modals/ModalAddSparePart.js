@@ -1,20 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
-import {
-  Segment,
-  Grid,
-  Form,
-  Button,
-  Table,
-  Input,
-  Icon,
-  Divider,
-  Dropdown,
-  Modal,
-  Header,
-  Checkbox,
-} from 'semantic-ui-react';
-import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
+import { Button, Icon, Modal, Header, Checkbox } from 'semantic-ui-react';
+import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
 
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
@@ -29,10 +16,7 @@ const ModalAddSparePart = props => {
   const {
     data = [],
     modalOpen = false,
-    modalClose = false,
     handleApplySparePart,
-    onRowClick = null,
-    checked = [],
     checkedSparePart,
   } = props;
 
@@ -91,9 +75,6 @@ const ModalAddSparePart = props => {
       minWidth: 100,
     },
   ];
-  const closeModal = () => {
-    modalOpen = false;
-  };
   return (
     <Modal open={modalOpen} closeOnDimmerClick dimmer={'blurring'}>
       <Header content="Добавление запчастей" />

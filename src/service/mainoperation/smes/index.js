@@ -14,7 +14,6 @@ import {
   Modal,
   Header,
   Checkbox,
-  Container,
 } from 'semantic-ui-react';
 
 import './../../service.css';
@@ -30,66 +29,12 @@ const Smes = props => {
     { key: '4', text: 'Выбрать услуги', value: 4 },
   ];
 
-  const sparePartList = [
-    { id: '1', name: 'Устранил', count: 1, summ: 2000, warranty: false },
-  ];
-
-  const initialService = {};
-
-  const [contract, setContract] = useState({ ...emptyContract });
   const [service, setService] = useState([]);
-
-  const [sparePart, setSparePart] = useState([]);
-  const [cartridge, setCartridge] = useState([]);
-  const [servicePackage, setServicePackage] = useState([]);
-  const [addSparePartModalOpened, setAddSparePartModalOpened] = useState(false);
-  const emptyContract = {
-    addr: '',
-    awkey: 0,
-    branchId: 0,
-    bukrs: '',
-    category: 0,
-    contractId: 0,
-    contractInfo: '',
-    createdBy: 0,
-    createdDate: '',
-    currency: '',
-    customerFirstname: '',
-    customerId: 0,
-    customerLastname: '',
-    customerMidname: '',
-    dateClose: '',
-    dateOpen: '',
-    discount: 0,
-    id: 0,
-    info: '',
-    masterCurrency: '',
-    masterId: 0,
-    masterPremi: 0,
-    operCurrency: '',
-    operId: 0,
-    operPremi: 0,
-    paid: 0,
-    paymentDue: 0,
-    servAppNum: 0,
-    servNum: 0,
-    servPacketId: 0,
-    servStatus: 0,
-    servType: 0,
-    summTotal: 0,
-    tel: '',
-    tovarId: 0,
-    tovarSn: '',
-    updatedDate: '',
-  };
 
   const emptyTovar = {
     param: 555,
     name: 'Jaks',
   };
-
-  //Параметры поиска по заводскому номеру
-  const [tovarSerial, setTovarSerial] = useState({ ...emptyTovar });
 
   //Дoбавить сервис
   const handleAddService = e => {
@@ -104,11 +49,6 @@ const Smes = props => {
   //Удалить сервис
   const handleRemoveService = id => {
     setService(service.filter(item => item.id !== id));
-  };
-
-  //Изменить сервис
-  const serviceSelectChange = (id, data) => {
-    setService(change => []);
   };
 
   //Поиск по номеру сервиса
@@ -417,9 +357,9 @@ const Smes = props => {
             <Segment>
               <h3>Услуга</h3>
               <Divider />
-              {service.length == 0 ||
-              service.length == null ||
-              service.length == undefined ? (
+              {service.length === 0 ||
+              service.length === null ||
+              service.length === undefined ? (
                 ''
               ) : (
                 <Table>

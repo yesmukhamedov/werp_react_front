@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import TabSmcsWithoutContract from './components/tabs/TabSmcsWithoutContract';
-import TabSmcsWithRequest from './components/tabs/TabSmcsWithRequest';
-import TabSmcsWithoutRequest from './components/tabs/TabSmcsWithoutRequest';
-import { Container, Grid, Tab, Segment } from 'semantic-ui-react';
-
-import '../../service.css';
+import React from 'react';
+import TabSmcsWithoutContract from './tabs/TabSmcsWithoutContract';
+import TabSmcsWithRequest from './tabs/TabSmcsWithRequest';
+import TabSmcsWithoutRequest from './tabs/TabSmcsWithoutRequest';
+import { Container, Tab, Segment, Label } from 'semantic-ui-react';
+import './style.css';
 
 const Smcs = props => {
   //Вкладки
@@ -24,6 +23,8 @@ const Smcs = props => {
       menuItem: {
         key: 'TabSmcsWithoutContract',
         content: 'Без договора',
+        icon: 'ban',
+        color: 'red',
       },
       pane: (
         <Tab.Pane key={2}>
@@ -35,6 +36,8 @@ const Smcs = props => {
       menuItem: {
         key: 'TabSmcsWithRequest',
         content: 'С  заявкой',
+        icon: 'ban',
+        color: 'red',
       },
       pane: (
         <Tab.Pane key={3}>

@@ -71,6 +71,7 @@ import {
   F4_FETCH_CATEGORY,
   F4_FETCH_CUSTOMERS_BY_ID,
   F4_FETCH_SERVICE_STATUS_LIST,
+  F4_FETCH_OPERATORS_BY_BRANCH_ID,
 } from './f4_action';
 
 const INITIAL_STATE = {
@@ -328,6 +329,9 @@ export default function(state = INITIAL_STATE, action) {
 
     case F4_FETCH_SERVICE_STATUS_LIST:
       return { ...state, serviceStatusList: action.data.data };
+
+    case F4_FETCH_OPERATORS_BY_BRANCH_ID:
+      return { operatorsByBranchId: action.data.data };
     default:
       return state;
   }

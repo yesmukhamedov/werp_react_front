@@ -1,14 +1,8 @@
-import { doGet, doPost, doPut, doDelete } from '../../../utils/apiActions';
-import {
-  handleError,
-  notify,
-} from '../../../general/notification/notification_action';
+import { doGet } from '../../../utils/apiActions';
+import { handleError } from '../../../general/notification/notification_action';
 import { modifyLoader } from '../../../general/loader/loader_action';
 
 export const FETCH_SRKPISO = 'FETCH_SRKPISO';
-
-const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-const language = localStorage.getItem('language');
 
 //SRKPISO  KPI Сервис операторов
 export const fetchSrkpiso = param => {

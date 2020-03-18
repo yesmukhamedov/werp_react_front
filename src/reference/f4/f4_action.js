@@ -125,6 +125,9 @@ export const F4_FETCH_CUSTOMERS_BY_ID = 'F4_FETCH_CUSTOMERS_BY_ID';
 
 export const F4_FETCH_SERVICE_STATUS_LIST = 'F4_FETCH_SERVICE_STATUS_LIST';
 
+export const F4_FETCH_OPERATORS_BY_BRANCH_ID =
+  'F4_FETCH_OPERATORS_BY_BRANCH_ID';
+
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 
@@ -991,6 +994,20 @@ export function f4FetchServiceStatusList() {
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_SERVICE_STATUS_LIST,
+          data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+export function f4FetchOperatorsByBranchId(param) {
+  return function(dispatch) {
+    doGet('smrd/operatorsByBranchId', param)
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_OPERATORS_BY_BRANCH_ID,
           data,
         });
       })

@@ -1007,6 +1007,11 @@ const AsyncSrkpiso = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncSmdis = Loadable({
+  loader: () => import('../service/mainoperation/smdis'),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
@@ -1140,6 +1145,7 @@ const getComponent = {
   Smopsp: AsyncSmopsp,
   Srkpiso: AsyncSrkpiso,
   Smslsp: AsyncSmslsp,
+  Smdis: AsyncSmdis,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1236,6 +1242,12 @@ const generateRoutes = transactionRoutes => {
         path="/service/mainoperation/smslsp"
         exact={true}
         component={AsyncSmslsp}
+      />
+
+      <Route
+        path="/service/mainoperation/smdis"
+        exact={true}
+        component={AsyncSmdis}
       />
 
       {/* dynamically generated URLs  */}
