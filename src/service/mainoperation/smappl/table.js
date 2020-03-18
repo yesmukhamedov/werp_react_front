@@ -2,7 +2,7 @@ import React, { useState, useEffect, Fragment } from 'react';
 import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
 import 'react-table/react-table.css';
 import { injectIntl } from 'react-intl';
-import { Button, Icon, Dropdown, Select, Loader } from 'semantic-ui-react';
+import { Button, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import Masters from './Masters';
 import { fetchAppList } from '../../serviceAction';

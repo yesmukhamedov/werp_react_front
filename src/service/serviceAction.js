@@ -632,12 +632,10 @@ export function fetchAppType() {
 }
 
 export function fetchAppList(params) {
-  console.log('paramsInAction', params);
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet('smappl/appList?direction=ASC&orderBy=id', params)
       .then(({ data }) => {
-        console.log('data', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_APP_LIST,

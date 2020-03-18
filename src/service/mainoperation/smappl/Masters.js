@@ -51,13 +51,13 @@ const Masters = props => {
     <Fragment>
       <Modal
         trigger={
-          <Header as="h5" color="brown">
+          <h5 style={{ color: 'brown' }}>
             <span className="pseudolink" onClick={onClickMaster}>
               {master !== null
                 ? messages['change_master']
                 : messages['Masters']}
             </span>
-          </Header>
+          </h5>
         }
         open={onModalOpen}
       >

@@ -16,11 +16,7 @@ import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import { injectIntl } from 'react-intl';
-import {
-  fetchSmsetpp,
-  fetchSmsetppPut,
-  fetchSmsetppPost,
-} from '../../serviceAction';
+import { fetchSmsetpp, fetchSmsetppPut } from '../../serviceAction';
 import {
   stringYYYYMMDDToMoment,
   handleFocus,

@@ -1,13 +1,5 @@
-import React, { Fragment, useState, useEffect } from 'react';
-import {
-  Segment,
-  Header,
-  Button,
-  Icon,
-  Modal,
-  Form,
-  Select,
-} from 'semantic-ui-react';
+import React, { useState, useEffect } from 'react';
+import { Header, Button, Icon, Modal, Form, Select } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { doGet } from '../../../utils/apiActions';

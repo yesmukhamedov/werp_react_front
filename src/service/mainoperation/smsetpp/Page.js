@@ -1,12 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import {
-  Segment,
-  Dropdown,
-  Icon,
-  Button,
-  Label,
-  Message,
-} from 'semantic-ui-react';
+import { Segment, Dropdown } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import './index.css';
 import { connect } from 'react-redux';

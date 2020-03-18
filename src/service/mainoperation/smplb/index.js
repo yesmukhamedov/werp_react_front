@@ -11,7 +11,6 @@ import AddPosition from './AddPosition';
 import EditPosition from './EditPosition';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import './index.css';
-import format from 'string-format';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import OutputErrors from '../../../general/error/outputErrors';

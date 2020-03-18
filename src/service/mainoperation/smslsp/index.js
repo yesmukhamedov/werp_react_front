@@ -21,7 +21,7 @@ import './smslsp.css';
 const Smslsp = props => {
   const {
     intl: { messages },
-    companyOptions,
+    companyOptions = [],
     listOfEmployees,
     fetchSmslsp,
   } = props;

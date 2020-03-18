@@ -12,7 +12,6 @@ import { injectIntl } from 'react-intl';
 const ColumnsModal = props => {
   const {
     intl: { messages },
-    turnOnReactFetch,
     columnsForTable,
     headersForTable,
   } = props;
