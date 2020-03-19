@@ -120,6 +120,7 @@ const Smappl = props => {
       switch (text) {
         case 'bukrs':
           varTs.bukrs = value;
+          varTs.branchId = 0;
           break;
         case 'branch':
           varTs.branchId = value;
@@ -152,13 +153,28 @@ const Smappl = props => {
     save();
   };
 
+  const errorTableText = id => {
+    const findError = errorTable.find(({ errorId }) => errorId === id);
+    let errorText = '';
+    if (language === 'ru') {
+      errorText = findError.textRu;
+    }
+    if (language === 'en') {
+      errorText = findError.textEn;
+    }
+    if (language === 'tr') {
+      errorText = findError.textTr;
+    }
+    return errorText;
+  };
+
   const validate = () => {
     const errors = [];
     if (search.bukrs === '') {
-      errors.push(errorTable[`5${language}`]);
+      errors.push(errorTableText(5));
     }
     if (search.branchId === 0) {
-      errors.push(errorTable[`7${language}`]);
+      errors.push(errorTableText(7));
     }
     if (errors.length === 0) {
       fetchAppList(search);

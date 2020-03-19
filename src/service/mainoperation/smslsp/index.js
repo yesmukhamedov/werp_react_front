@@ -127,13 +127,12 @@ const Smslsp = props => {
               ),
             },
           ]}
-          defaultPageSize={15}
-          pages={2}
+          defaultPageSize={10}
           previousText={messages['Table.Previous']}
           nextText={messages['Table.Next']}
           showPagination={true}
           className="-striped -highlight"
-          pageSizeOptions={[20, 30, 40]}
+          pageSizeOptions={[10, 20, 30, 40]}
           loadingText={messages['Table.Next']}
           noDataText={messages['Table.NoData']}
           rowsText={messages['Table.Rows']}

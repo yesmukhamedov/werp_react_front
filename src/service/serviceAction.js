@@ -600,23 +600,6 @@ export function postSmccaldCreateApp(application) {
   };
 }
 
-export function fetchAppStatus() {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet('service/reference/serv_app_status')
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: FETCH_APP_STATUS,
-          payload: data.data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
-}
-
 export function fetchSmecam(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
@@ -649,78 +632,6 @@ export function fetchServAppStatus() {
       .catch(error => {
         handleError(error, dispatch);
       });
-  };
-}
-
-export function fetchAppType() {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet('service/reference/serv_app_type')
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: FETCH_APP_TYPE,
-          payload: data.data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
-}
-
-export function fetchAppList(params) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet('smappl/appList?direction=ASC&orderBy=id', params)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: FETCH_APP_LIST,
-          payload: data.data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
-}
-
-export function fetchAppMasterList(params) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet('smappl/masterList', params)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: FETCH_APP_MASTER_LIST,
-          payload: data.data,
-        });
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
-}
-
-export function fetchEditApp(params, fetchSmappl) {
-  return function(dispatch) {
-    doPost('smappl/editApp', params)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        fetchSmappl(params);
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
-}
-
-export function fetchClearAppList() {
-  return function(dispatch) {
-    dispatch({
-      type: FETCH_CLEAR_APP_LIST,
-    });
   };
 }
 
@@ -818,6 +729,95 @@ export function editSmeca(editParams) {
       .catch(e => {
         handleError(e, dispatch);
       });
+  };
+}
+
+export function fetchAppStatus() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('service/reference/serv_app_status')
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_APP_STATUS,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchAppType() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('service/reference/serv_app_type')
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_APP_TYPE,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchAppList(params) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('smappl/appList?direction=ASC&orderBy=id', params)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_APP_LIST,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchAppMasterList(params) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('smappl/masterList', params)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_APP_MASTER_LIST,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchEditApp(params, fetchSmappl) {
+  return function(dispatch) {
+    doPost('smappl/editApp', params)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        fetchSmappl(params);
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchClearAppList() {
+  return function(dispatch) {
+    dispatch({
+      type: FETCH_CLEAR_APP_LIST,
+    });
   };
 }
 

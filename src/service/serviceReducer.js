@@ -57,6 +57,9 @@ const INITIAL_STATE = {
   smeciContractInfo: [],
   servCrmCallStatus: [],
   smregcCreateCall: [],
+  appStatus: [],
+  appType: [],
+  listOfEmployees: [],
 };
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {

@@ -165,6 +165,7 @@ const ColumnsModal = props => {
     setModalOpen(false);
     const localColumns =
       JSON.parse(localStorage.getItem('smappl')) || allColumns;
+    columnsForTable(localColumns);
     setColumns(localColumns);
   };
 

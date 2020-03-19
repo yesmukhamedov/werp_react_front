@@ -21,7 +21,6 @@ import OutputErrors from '../../../general/error/outputErrors';
 const Smsetpp = props => {
   const {
     data,
-    premium = [],
     intl: { messages },
     countryList = [],
     companyOptions = [],
@@ -36,14 +35,11 @@ const Smsetpp = props => {
   const [error, setError] = useState([]);
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalProps, setModalProps] = useState();
   const language = localStorage.getItem('language');
   const [activeDropdown, setActiveDropdown] = useState(false);
   const [typeOfService, setTypeOfService] = useState([]);
   const [secondActive, setSecondActive] = useState(false);
-  const [allDropdownActive, setAllDropdownActive] = useState(false);
   const [serviceOptionPriceList, setServiceOptionPriceList] = useState([]);
-  const [premiumPriceTypeId, setPremiumPriceTypeId] = useState([]);
   const [editWaers, setEditWaers] = useState('');
   const [editDocs, setEditDocs] = useState({
     id: 0,
@@ -98,10 +94,7 @@ const Smsetpp = props => {
     setServiceOptionPriceList(data.service);
   }, [data]);
 
-  useEffect(() => {
-    setPremiumPriceTypeId(premium);
-  }, [premium]);
-
+  console.log('ServiceOptionPriceList', serviceOptionPriceList);
   useEffect(() => {
     let service = serviceType.map(item => {
       return { key: item.id, text: item.name, value: item.id };
@@ -214,7 +207,6 @@ const Smsetpp = props => {
           selection
           options={companyOptions}
           placeholder={messages['bukrs']}
-          onClick={() => setAllDropdownActive(true)}
           onChange={(e, { value }) => onChange('companyOptions', value)}
         />
 
@@ -224,7 +216,6 @@ const Smsetpp = props => {
           options={activeDropdown ? countryOptions : []}
           placeholder={messages['country']}
           id="secondDropdown"
-          onClick={() => setAllDropdownActive(true)}
           onChange={(e, { value }) => onChange('countries', value)}
         />
         <button
@@ -392,18 +383,9 @@ const Smsetpp = props => {
               ),
             },
           ]}
-          defaultPageSize={15}
-          pages={2}
-          previousText={messages['Table.Previous']}
-          nextText={messages['Table.Next']}
+          defaultPageSize={10}
           showPagination={true}
-          className="-striped -highlight"
-          pageSizeOptions={[20, 30, 40]}
-          loadingText={messages['Table.Next']}
-          noDataText={messages['Table.NoData']}
-          rowsText={messages['Table.Rows']}
-          pageText={messages['Table.Page']}
-          ofText={messages['Table.Of']}
+          pageSizeOptions={[10, 20, 30, 40]}
         />
       </div>
     </Segment>

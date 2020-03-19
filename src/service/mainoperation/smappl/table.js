@@ -94,8 +94,12 @@ const Table = props => {
       <ReactTableServerSideWrapper
         data={serviceRequests}
         columns={tableColumns}
-        defaultPageSize={15}
-        pages={5}
+        defaultPageSize={20}
+        pages={
+          appList.totalPages !== undefined || appList.totalPages !== null
+            ? appList.totalPages
+            : 5
+        }
         filterable={true}
         searchParam={searchParams}
         turnOnReactFetch={turnOnReactFetch}
