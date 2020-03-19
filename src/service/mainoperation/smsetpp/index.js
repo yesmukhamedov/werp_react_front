@@ -17,6 +17,7 @@ import {
   clearDynObjService,
 } from '../../serviceAction';
 import OutputErrors from '../../../general/error/outputErrors';
+import { errorTableText } from '../../../utils/helpers';
 
 const Smsetpp = props => {
   const {
@@ -33,9 +34,7 @@ const Smsetpp = props => {
     clearDynObjService,
   } = props;
   const [error, setError] = useState([]);
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const [modalOpen, setModalOpen] = useState(false);
-  const language = localStorage.getItem('language');
   const [activeDropdown, setActiveDropdown] = useState(false);
   const [typeOfService, setTypeOfService] = useState([]);
   const [secondActive, setSecondActive] = useState(false);
@@ -94,7 +93,6 @@ const Smsetpp = props => {
     setServiceOptionPriceList(data.service);
   }, [data]);
 
-  console.log('ServiceOptionPriceList', serviceOptionPriceList);
   useEffect(() => {
     let service = serviceType.map(item => {
       return { key: item.id, text: item.name, value: item.id };
@@ -120,10 +118,10 @@ const Smsetpp = props => {
   const validate = () => {
     const errors = [];
     if (!activeDropdown) {
-      errors.push(errorTable[`5${language}`]);
+      errors.push(errorTableText(5));
     }
     if (!secondActive) {
-      errors.push(errorTable[`147${language}`]);
+      errors.push(errorTableText(147));
     }
     if (errors.length === 0) {
       fetchSmsetppSearch(() => {

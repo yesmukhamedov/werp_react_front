@@ -20,6 +20,7 @@ import {
   fetchSmplb,
   fetchSmplbDelete,
 } from '../../serviceAction';
+import { errorTableText } from '../../../utils/helpers';
 
 const Smplb = props => {
   const {
@@ -33,8 +34,6 @@ const Smplb = props => {
   const [modalOpen, setModalOpen] = useState(false);
   const [dropdownActive, setDropdownActive] = useState(false);
   const [error, setError] = useState([]);
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-  const language = localStorage.getItem('language');
   const [searchActive, setSearchActive] = useState(false);
   const [editId, setEditId] = useState(null);
   const [positions, setPositions] = useState([]);
@@ -65,7 +64,7 @@ const Smplb = props => {
   const validate = () => {
     const errors = [];
     if (!dropdownActive) {
-      errors.push(errorTable[`5${language}`]);
+      errors.push(errorTableText(5));
     }
     if (errors.length === 0) {
       fetchSmplb(search);

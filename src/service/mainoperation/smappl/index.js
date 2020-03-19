@@ -21,7 +21,7 @@ import {
 } from '../../serviceAction';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { formatDMY } from '../../../utils/helpers';
+import { formatDMY, errorTableText } from '../../../utils/helpers';
 import ColumnsModal from './ColumnsModal';
 import './index.css';
 import ServiceRequestTable from './table';
@@ -43,7 +43,6 @@ const Smappl = props => {
   } = props;
   const [error, setError] = useState([]);
   const [tovarCategory, setTovarCategory] = useState([]);
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
   const [applicationStatus, setApplicationStatus] = useState([]);
   const [applicationType, setApplicationType] = useState([]);
@@ -151,21 +150,6 @@ const Smappl = props => {
 
   const onSearch = () => {
     save();
-  };
-
-  const errorTableText = id => {
-    const findError = errorTable.find(({ errorId }) => errorId === id);
-    let errorText = '';
-    if (language === 'ru') {
-      errorText = findError.textRu;
-    }
-    if (language === 'en') {
-      errorText = findError.textEn;
-    }
-    if (language === 'tr') {
-      errorText = findError.textTr;
-    }
-    return errorText;
   };
 
   const validate = () => {

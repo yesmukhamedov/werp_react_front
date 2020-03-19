@@ -7,9 +7,8 @@ import {
   Button,
   Icon,
 } from 'semantic-ui-react';
-
 import { connect } from 'react-redux';
-
+import { errorTableText } from '../../../utils/helpers';
 import { fetchSmslsp } from '../../serviceAction';
 import { injectIntl } from 'react-intl';
 import OutputErrors from '../../../general/error/outputErrors';
@@ -25,8 +24,6 @@ const Smslsp = props => {
     listOfEmployees,
     fetchSmslsp,
   } = props;
-  const language = localStorage.getItem('language');
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const [error, setError] = useState([]);
   const [search, setSearch] = useState({
     bukrs: '',
@@ -35,7 +32,7 @@ const Smslsp = props => {
   const validate = () => {
     const errors = [];
     if (search.bukrs === '') {
-      errors.push(errorTable[`5${language}`]);
+      errors.push(errorTableText(5));
     }
     if (errors.length === 0) {
       fetchSmslsp(search);

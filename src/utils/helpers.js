@@ -264,3 +264,26 @@ export function excelDownload(
   //   },
   // )
 }
+
+export function errorTableText(id) {
+  // get errors in localStorage
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  // get language in localStorage
+  const language = localStorage.getItem('language');
+  // find error in errorTable by id
+  const findError = errorTable.find(({ errorId }) => errorId === id);
+  // text which save error text
+  let errorText = '';
+  // put the errors to errorText by language
+  if (language === 'ru') {
+    errorText = findError.textRu;
+  }
+  if (language === 'en') {
+    errorText = findError.textEn;
+  }
+  if (language === 'tr') {
+    errorText = findError.textTr;
+  }
+
+  return errorText;
+}
