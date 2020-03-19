@@ -63,7 +63,7 @@ const AddPrice = props => {
     master: 0,
     operator: 0,
     discount: 0,
-    total: 0,
+    total: '0',
     countryId: null,
     waersId: null,
     serviceTypeId: null,
@@ -193,15 +193,27 @@ const AddPrice = props => {
           break;
         case 'office':
           varTs.office = t;
+          varTs.total = parseFloat(
+            varTs.office + varTs.master + varTs.operator + varTs.discount,
+          );
           break;
         case 'master':
           varTs.master = t;
+          varTs.total = parseFloat(
+            varTs.office + varTs.master + varTs.operator + varTs.discount,
+          );
           break;
         case 'operator':
           varTs.operator = t;
+          varTs.total = parseFloat(
+            varTs.office + varTs.master + varTs.operator + varTs.discount,
+          );
           break;
         case 'discount':
           varTs.discount = t;
+          varTs.total = parseFloat(
+            varTs.office + varTs.master + varTs.operator + varTs.discount,
+          );
           break;
         case 'total':
           varTs.total = t;
@@ -323,13 +335,12 @@ const AddPrice = props => {
               onChange={e => onInputChange('discount', e)}
             />
 
-            <Form.Field
-              control={Input}
+            <Form.Input
               label={messages['totalAmount']}
               placeholder="Number..."
               onFocus={handleFocus}
+              readOnly
               value={moneyFormat(informations.total)}
-              onChange={e => onInputChange('total', e)}
               error={test === true && informations.total === 0 ? true : false}
               required
             />

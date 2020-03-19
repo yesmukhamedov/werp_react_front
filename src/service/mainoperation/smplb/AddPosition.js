@@ -26,12 +26,15 @@ const AddPosition = props => {
 
   useEffect(() => {
     doGet(`reference/positions`).then(res => {
-      const loaded = res.data.map(p => ({
+      const positions = res.data.map(p => ({
         key: p.position_id,
         text: p.text,
         value: p.position_id,
       }));
-      setPosition(loaded);
+      const sortPositions = positions.sort((a, b) =>
+        a.text.localeCompare(b.text),
+      );
+      setPosition(sortPositions);
     });
   }, []);
 

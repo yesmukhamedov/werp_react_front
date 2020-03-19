@@ -61,7 +61,7 @@ const EditModal = props => {
     master: 0,
     operator: 0,
     discount: 0,
-    total: 0,
+    total: '0',
     countryId: 0,
     waersId: 0,
     serviceTypeId: 0,
@@ -85,7 +85,7 @@ const EditModal = props => {
         master: parseFloat(documents.master),
         operator: parseFloat(documents.operator),
         discount: parseFloat(documents.discount),
-        total: parseFloat(documents.total),
+        total: documents.total,
         countryId: parseFloat(documents.countryId),
         waersId: parseFloat(documents.waersId),
         serviceTypeId: documents.serviceTypeId,
@@ -176,15 +176,27 @@ const EditModal = props => {
           break;
         case 'office':
           varTs.office = t;
+          varTs.total = parseFloat(
+            varTs.office + varTs.master + varTs.operator + varTs.discount,
+          );
           break;
         case 'master':
           varTs.master = t;
+          varTs.total = parseFloat(
+            varTs.office + varTs.master + varTs.operator + varTs.discount,
+          );
           break;
         case 'operator':
           varTs.operator = t;
+          varTs.total = parseFloat(
+            varTs.office + varTs.master + varTs.operator + varTs.discount,
+          );
           break;
         case 'discount':
           varTs.discount = t;
+          varTs.total = parseFloat(
+            varTs.office + varTs.master + varTs.operator + varTs.discount,
+          );
           break;
         case 'total':
           varTs.total = t;
@@ -338,10 +350,10 @@ const EditModal = props => {
               onChange={e => onInputChange('discount', e)}
             />
 
-            <Form.Field
-              control={Input}
+            <Form.Input
               label={messages['totalAmount']}
               placeholder="Number..."
+              readOnly
               onFocus={handleFocus}
               value={moneyFormat(informations.total)}
               onChange={e => onInputChange('total', e)}
