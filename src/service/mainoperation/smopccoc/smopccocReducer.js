@@ -22,7 +22,7 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_SERVICE_TRANSFER_APPLICATION_EXODUS:
       return {
         ...state,
-        transfer: [...action.data.data],
+        transfer: [...action.data.data.content],
       };
     case FETCH_SERVICE_ASSIGNED_CALLS:
       return {
@@ -33,7 +33,7 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_SERVICE_MY_APPLICATION_EXODUS:
       return {
         ...state,
-        dynamicObject: [...action.data],
+        myApplication: [...action.data],
       };
 
     default:

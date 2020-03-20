@@ -758,7 +758,6 @@ const TabSmcsWithoutRequest = props => {
   //-----------------------------------END СЕРВИС ПАКЕТ--------------------------------------
 
   const handleCheck = () => {
-    alert('HANDLE CHECK');
     props.checkSmcsWithoutReques(service);
   };
 
@@ -1058,7 +1057,7 @@ const TabSmcsWithoutRequest = props => {
                           style={{ margin: '0', padding: '0' }}
                         >
                           <Dropdown
-                            placeholder="Dropdown..."
+                            placeholder="Выбрать"
                             fluid
                             selection
                             options={serviceOptions}
@@ -1368,10 +1367,6 @@ const TabSmcsWithoutRequest = props => {
                 </Table.Body>
               </Table>
 
-              <Button color="green" disabled={status.editButton}>
-                <Icon name="edit" size="large" />
-                Редактировать
-              </Button>
               <Button
                 color="green"
                 disabled={status.checkButton}

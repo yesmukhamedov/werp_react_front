@@ -7,8 +7,7 @@ import {
   Dropdown,
   Grid,
   Button,
-  Table,
-  Input,
+  Popup,
   Select,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
@@ -44,6 +43,8 @@ const TransferApplicationExodus = props => {
     finStatusOption,
     transfer,
   } = props;
+
+  console.log('transfer', transfer);
 
   const emptyParam = {
     country: '',
@@ -140,10 +141,19 @@ const TransferApplicationExodus = props => {
     {
       Header: 'Заявка',
       accessor: '898',
+      Cell: ({ original }) => <h1>{original.contractNumber}</h1>,
     },
     {
       Header: 'Просмотр',
       accessor: '16',
+      Cell: (
+        <div style={{ textAlign: 'center' }}>
+          <Popup
+            content="Просмотр сервис карту"
+            trigger={<Button icon="address card" />}
+          />
+        </div>
+      ),
     },
   ];
   const [columns, setColumns] = useState([...columnsSrlsm]);

@@ -25,6 +25,7 @@ const language = localStorage.getItem('language');
 //План по замене картриджей
 export const fetchServiceFilterPlan = param => {
   return function(dispatch) {
+    dispatch(modifyLoader(true));
     doGet(`smopccoc/ServiceFilterPlan`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
@@ -43,6 +44,7 @@ export const fetchServiceFilterPlan = param => {
 //Перенесенные заявки исход
 export const fetchTransferApplicationExodus = param => {
   return function(dispatch) {
+    dispatch(modifyLoader(true));
     doGet(`smopccoc/transferApplicationExodus`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));

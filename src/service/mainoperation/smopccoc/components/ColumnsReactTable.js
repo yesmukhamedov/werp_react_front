@@ -5,7 +5,6 @@ const ColumnsReactTable = props => {
   const { transactionName = 'Smopccoc', columns = [] } = props;
 
   const [col, setCol] = useState([...columns]);
-  console.log('col', col);
 
   useEffect(() => {
     let colJson = JSON.stringify(col);

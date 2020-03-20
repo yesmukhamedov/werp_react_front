@@ -7,8 +7,7 @@ import {
   Dropdown,
   Grid,
   Button,
-  Table,
-  Input,
+  Popup,
   Select,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
@@ -74,11 +73,6 @@ const ServiceFilterPlan = props => {
   //END Date option
   const [param, setParam] = useState({ ...emptyParam });
 
-  const columnsTable = localStorage.getItem(`columnsSmopccoc`)
-    ? localStorage.getItem(`columnsSmopccoc`)
-    : columnsSrlsm;
-
-  console.log('columnsTable', columnsTable);
   const columnsSrlsm = [
     {
       Header: 'Id',
@@ -143,6 +137,14 @@ const ServiceFilterPlan = props => {
     {
       Header: 'Просмотр',
       accessor: '16',
+      Cell: (
+        <div style={{ textAlign: 'center' }}>
+          <Popup
+            content="Просмотр сервис карту"
+            trigger={<Button icon="address card" />}
+          />
+        </div>
+      ),
     },
   ];
   const [columns, setColumns] = useState([...columnsSrlsm]);
@@ -332,9 +334,9 @@ const ServiceFilterPlan = props => {
                 Применить
               </Button>
             </Grid.Column>
-            <Grid.Column>
+            {/* <Grid.Column>
               <ColumnsReactTable columns={columnsSrlsm} />
-            </Grid.Column>
+            </Grid.Column> */}
           </Grid.Row>
         </Grid>
       </Segment>

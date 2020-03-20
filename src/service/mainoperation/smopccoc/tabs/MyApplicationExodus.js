@@ -9,6 +9,7 @@ import {
   Button,
   Table,
   Input,
+  Popup,
   Select,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
@@ -16,6 +17,7 @@ import '../../../service.css';
 import { fetchServiceTypeId } from '../../../mainoperation/smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
+import { fetchMyApplicationExodus } from '../smopccocAction';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
@@ -39,7 +41,10 @@ const MyApplicationExodus = props => {
     serviceStatusList = [],
     contractStatusList,
     branches,
+    myApplication,
   } = props;
+
+  console.log('myApplication', myApplication);
 
   const emptyParam = {
     country: '',
@@ -140,6 +145,14 @@ const MyApplicationExodus = props => {
     },
     {
       Header: 'История клиента',
+      Cell: (
+        <div style={{ textAlign: 'center' }}>
+          <Popup
+            content="Просмотр истории"
+            trigger={<Button icon="address card" />}
+          />
+        </div>
+      ),
       width: 100,
       maxWidth: 200,
       minWidth: 100,
@@ -210,7 +223,7 @@ const MyApplicationExodus = props => {
   });
 
   const handleClickApply = () => {
-    props.fetchServiceListManager({ ...param });
+    props.fetchMyApplicationExodus({ ...param });
   };
 
   const onInputChange = (o, fieldName) => {
@@ -359,10 +372,12 @@ function mapStateToProps(state) {
   return {
     language: state.locales.lang,
     serviceTypeId: state.smcsReducer.serviceTypeId,
+    myApplication: state.smopccocReducer.myApplication,
   };
 }
 
 export default connect(mapStateToProps, {
   fetchServiceListManager,
   fetchServiceTypeId,
+  fetchMyApplicationExodus,
 })(injectIntl(MyApplicationExodus));
