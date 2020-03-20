@@ -28,7 +28,7 @@ function PhoneF4Modal(props) {
   const {
     intl: { messages },
     phoneList = [],
-    phoneListType,
+    phoneListType = [],
     countryList = [],
     customerId,
     selectedBranch,

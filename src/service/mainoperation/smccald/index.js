@@ -19,6 +19,8 @@ import {
 import OutputErrors from '../../../general/error/outputErrors';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import 'moment/locale/ru';
+import 'moment/locale/tr';
 import { injectIntl } from 'react-intl';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -149,7 +151,7 @@ function Smccald(props) {
     <Grid centered>
       <Grid.Row>
         <Grid.Column mobile={16} tablet={16} computer={7}>
-          <h1>Создать заявку без данных</h1>
+          <h1>{messages['create_request_without_data']}</h1>
           <Segment>
             <Table compact striped>
               <Table.Body>
@@ -198,10 +200,10 @@ function Smccald(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Вид заявки</Table.Cell>
+                  <Table.Cell>{messages['type_of_application']}</Table.Cell>
                   <Table.Cell>
                     <Dropdown
-                      placeholder="Вид заявки"
+                      placeholder={messages['type_of_application']}
                       fluid
                       selection
                       search
@@ -211,7 +213,9 @@ function Smccald(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell verticalAlign="top">Оператор</Table.Cell>
+                  <Table.Cell verticalAlign="top">
+                    {messages['Operator']}
+                  </Table.Cell>
                   <Table.Cell>
                     <Input
                       size="small"
@@ -259,31 +263,31 @@ function Smccald(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>ФИО клиента</Table.Cell>
+                  <Table.Cell>{messages['full_name_of_client']}</Table.Cell>
                   <Table.Cell>
                     <Input size="small" fluid disabled />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Адрес</Table.Cell>
+                  <Table.Cell>{messages['address']}</Table.Cell>
                   <Table.Cell>
                     <Input size="small" fluid disabled />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Kонтакты</Table.Cell>
+                  <Table.Cell>{messages['contacts']}</Table.Cell>
                   <Table.Cell>
                     <Input size="small" fluid disabled />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Заводской номер</Table.Cell>
+                  <Table.Cell>{messages['productSerialNumber']}</Table.Cell>
                   <Table.Cell>
                     <Input size="small" fluid disabled />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Дата установки</Table.Cell>
+                  <Table.Cell>{messages['installation_date']}</Table.Cell>
                   <Table.Cell>
                     <Input disabled>
                       <DatePicker
@@ -298,17 +302,17 @@ function Smccald(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Установщик</Table.Cell>
+                  <Table.Cell>{messages['goodsInstaller']}</Table.Cell>
                   <Table.Cell>
                     <Input size="small" fluid disabled />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Примечание</Table.Cell>
+                  <Table.Cell>{messages['bktxt']}</Table.Cell>
                   <Table.Cell>
                     <Form>
                       <TextArea
-                        placeholder="Примечание"
+                        placeholder={messages['bktxt']}
                         onChange={(e, o) => onInputChange(o, 'info')}
                       />
                     </Form>
@@ -317,7 +321,7 @@ function Smccald(props) {
               </Table.Body>
             </Table>
             <Button color="blue" fluid onClick={() => handleSubmit()}>
-              Сохранить
+              {messages['save']}
             </Button>
           </Segment>
           <OutputErrors errors={error} />

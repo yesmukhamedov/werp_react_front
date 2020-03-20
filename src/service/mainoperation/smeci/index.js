@@ -46,7 +46,11 @@ function Smeci(props) {
   const [addressF4ModalOpen, setAddressF4ModalOpen] = useState(false);
   const [phoneF4ModalOpen, setPhoneF4ModalOpen] = useState(false);
 
-  const { contractInfo = [], branchOptions = [] } = props;
+  const {
+    contractInfo = [],
+    branchOptions = [],
+    intl: { messages },
+  } = props;
 
   const {
     countryName,
@@ -126,16 +130,16 @@ function Smeci(props) {
           newContract.f1Mt = e.value;
           break;
         case 'f2Mt':
-          newContract.f1Mt = e.value;
+          newContract.f2Mt = e.value;
           break;
         case 'f3Mt':
-          newContract.f1Mt = e.value;
+          newContract.f3Mt = e.value;
           break;
         case 'f4Mt':
-          newContract.f1Mt = e.value;
+          newContract.f4Mt = e.value;
           break;
         case 'f5Mt':
-          newContract.f1Mt = e.value;
+          newContract.f5Mt = e.value;
           break;
         case 'addrServiceId':
           newContract.addrServiceId = e.addr_id;
@@ -280,13 +284,13 @@ function Smeci(props) {
       <Grid centered>
         <Grid.Row>
           <Grid.Column mobile={16} tablet={16} computer={7}>
-            <h1>Редактирование</h1>
+            <h1>{messages['editing']}</h1>
             <Segment>
-              <h3>Данные клиента</h3>
+              <h3>{messages['L__CLIENT_INFO']} </h3>
               <Table compact striped>
                 <Table.Body>
                   <Table.Row>
-                    <Table.Cell width="4">Страна</Table.Cell>
+                    <Table.Cell width="4">{messages['country']}</Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
@@ -297,7 +301,7 @@ function Smeci(props) {
                     <Table.Cell></Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>Компания</Table.Cell>
+                    <Table.Cell>{messages['bukrs']}</Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
@@ -308,7 +312,7 @@ function Smeci(props) {
                     <Table.Cell></Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>Филиал</Table.Cell>
+                    <Table.Cell>{messages['brnch']}</Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
@@ -319,7 +323,7 @@ function Smeci(props) {
                     <Table.Cell></Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>Сервис Филиал</Table.Cell>
+                    <Table.Cell>{messages['service_branch']}</Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
@@ -330,7 +334,7 @@ function Smeci(props) {
                     <Table.Cell></Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>CN</Table.Cell>
+                    <Table.Cell>{messages['contract_number']}</Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
@@ -341,7 +345,7 @@ function Smeci(props) {
                     <Table.Cell></Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>Заводской №</Table.Cell>
+                    <Table.Cell>{messages['factory_number']}</Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
@@ -352,7 +356,7 @@ function Smeci(props) {
                     <Table.Cell></Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>ФИО клиента</Table.Cell>
+                    <Table.Cell>{messages['fio']}</Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
@@ -363,7 +367,7 @@ function Smeci(props) {
                     <Table.Cell></Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>Контактное лицо</Table.Cell>
+                    <Table.Cell>{messages['contactDetails']}</Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
@@ -381,7 +385,7 @@ function Smeci(props) {
                     <Table.Cell></Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>Адрес для сервиса</Table.Cell>
+                    <Table.Cell>{messages['addressService']}</Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
@@ -401,7 +405,7 @@ function Smeci(props) {
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>Kонтакты</Table.Cell>
+                    <Table.Cell>{messages['contacts']}</Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
@@ -423,7 +427,7 @@ function Smeci(props) {
                   <Table.Row>
                     <Table.Cell>
                       <Label ribbon color={labelColor()}>
-                        Категория
+                        {messages['category']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
@@ -436,7 +440,7 @@ function Smeci(props) {
                     <Table.Cell></Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>Дата покупки</Table.Cell>
+                    <Table.Cell>{messages['buying_date']}</Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
@@ -447,7 +451,7 @@ function Smeci(props) {
                     <Table.Cell></Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>Дата установки</Table.Cell>
+                    <Table.Cell>{messages['installation_date']}</Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
@@ -458,7 +462,7 @@ function Smeci(props) {
                     <Table.Cell></Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>Диллер</Table.Cell>
+                    <Table.Cell>{messages['dealer']}</Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
@@ -469,7 +473,7 @@ function Smeci(props) {
                     <Table.Cell></Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>Установщик</Table.Cell>
+                    <Table.Cell>{messages['goodsInstaller']}</Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
@@ -480,7 +484,7 @@ function Smeci(props) {
                     <Table.Cell></Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>Срок гарантии</Table.Cell>
+                    <Table.Cell>{messages['guarantee_period']}</Table.Cell>
                     <Table.Cell>
                       <Table>
                         <Table.Body>
@@ -508,7 +512,7 @@ function Smeci(props) {
                     <Table.Cell></Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>Срок замены </Table.Cell>
+                    <Table.Cell>{messages['replacement_period']} </Table.Cell>
                     <Table.Cell>
                       <Table>
                         <Table.Body>
@@ -516,7 +520,7 @@ function Smeci(props) {
                             <Table.Cell>
                               <Checkbox
                                 radio
-                                label="Автоматом"
+                                label={messages['automate']}
                                 name="changeTerm"
                                 value="0"
                                 checked={contract.manual === 0}
@@ -526,7 +530,7 @@ function Smeci(props) {
                             <Table.Cell>
                               <Checkbox
                                 radio
-                                label="В ручную"
+                                label={messages['manual']}
                                 name="changeTerm"
                                 value="1"
                                 checked={contract.manual === 1}
@@ -541,7 +545,7 @@ function Smeci(props) {
                   </Table.Row>
                   {contract.manual === 1 ? (
                     <Table.Row>
-                      <Table.Cell>Срок фильтров</Table.Cell>
+                      <Table.Cell>{messages['filter_term']}</Table.Cell>
                       <Table.Cell>
                         <Input
                           size="mini"
@@ -576,7 +580,7 @@ function Smeci(props) {
                           label="F5"
                           className="input__filter_terms"
                           value={contract.f5Mt}
-                          onChange={(e, o) => onInputChange(o, 'f1Mt')}
+                          onChange={(e, o) => onInputChange(o, 'f5Mt')}
                         />
                       </Table.Cell>
                       <Table.Cell></Table.Cell>
@@ -585,11 +589,11 @@ function Smeci(props) {
                     <Table.Row></Table.Row>
                   )}
                   <Table.Row>
-                    <Table.Cell>Описание</Table.Cell>
+                    <Table.Cell>{messages['description']}</Table.Cell>
                     <Table.Cell>
                       <Form>
                         <TextArea
-                          placeholder={'Info'}
+                          placeholder={messages['description']}
                           onChange={(e, o) => onInputChange(o, 'info')}
                           value={contract.info}
                         />
@@ -598,11 +602,11 @@ function Smeci(props) {
                     <Table.Cell></Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>Описание 1</Table.Cell>
+                    <Table.Cell>{messages['description']} 1</Table.Cell>
                     <Table.Cell>
                       <Form>
                         <TextArea
-                          placeholder={'info2'}
+                          placeholder={messages['description']}
                           onChange={(e, o) => onInputChange(o, 'info2')}
                         />
                       </Form>
@@ -615,7 +619,7 @@ function Smeci(props) {
                 <Table.Body>
                   <Table.Row>
                     <Table.Cell width={4}>
-                      <h3>Срок замены фильтров</h3>
+                      <h3>{messages['filter_replacement_period']}</h3>
                     </Table.Cell>
                     <Table.Cell>
                       <Input
@@ -653,7 +657,7 @@ function Smeci(props) {
                 </Table.Body>
               </Table>
               <Button color="blue" fluid onClick={() => handleSubmit()}>
-                Сохранить
+                {messages['save']}
               </Button>
             </Segment>
           </Grid.Column>

@@ -78,6 +78,8 @@ function Smcuspor(props) {
     f5MtLeft,
   } = clientHistory.contractInfo;
 
+  // console.log(startDate.format('YYYY-MM-DD, HH:MM'));
+  console.log(clientHistory.contractInfo);
   useEffect(() => {
     if (contractNumber) {
       props.fetchSmcusporClientHistory({ contractNumber });
@@ -142,7 +144,7 @@ function Smcuspor(props) {
             <Table.Body>
               <Table.Row>
                 <Table.Cell>
-                  <h1>История клиента</h1>
+                  <h1>{messages['client_history']}</h1>
                 </Table.Cell>
                 <Table.Cell width="3">
                   <Button
@@ -160,7 +162,7 @@ function Smcuspor(props) {
                       )
                     }
                   >
-                    Зарегистрировать звонок
+                    {messages['call_register']}
                   </Button>
                 </Table.Cell>
                 <Table.Cell width="3">
@@ -193,7 +195,7 @@ function Smcuspor(props) {
                       )
                     }
                   >
-                    Создать заявку
+                    {messages['create_request']}
                   </Button>
                 </Table.Cell>
               </Table.Row>
@@ -203,14 +205,14 @@ function Smcuspor(props) {
           <Grid.Row>
             <Grid.Column mobile={16} table={16} computer={6}>
               <Segment>
-                <h3>Данные клиента</h3>
+                <h3>{messages['L__CLIENT_INFO']}</h3>
               </Segment>
               <Table compact striped>
                 <Table.Body>
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>
-                        Страна
+                        {messages['country']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
@@ -224,7 +226,7 @@ function Smcuspor(props) {
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>
-                        Компания
+                        {messages['bukrs']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
@@ -238,7 +240,7 @@ function Smcuspor(props) {
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>
-                        Филиал
+                        {messages['Task.Branch']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
@@ -252,7 +254,7 @@ function Smcuspor(props) {
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>
-                        Сервис Филиал
+                        {messages['service_branch']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
@@ -266,7 +268,7 @@ function Smcuspor(props) {
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>
-                        CN
+                        {messages['Contract.Number']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
@@ -280,7 +282,7 @@ function Smcuspor(props) {
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>
-                        Заводской №
+                        {messages['productSerialNumber']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
@@ -294,7 +296,7 @@ function Smcuspor(props) {
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>
-                        ФИО клиента
+                        {messages['fioClient']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
@@ -308,7 +310,7 @@ function Smcuspor(props) {
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>
-                        Контактное лицо
+                        {messages['contactDetails']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
@@ -322,7 +324,7 @@ function Smcuspor(props) {
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>
-                        Адрес для сервиса
+                        {messages['addressService']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
@@ -336,7 +338,7 @@ function Smcuspor(props) {
                   <Table.Row>
                     <Table.Cell collapsing>
                       <Label size="large" basic>
-                        Основные контакты
+                        {messages['contacts']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
@@ -350,7 +352,7 @@ function Smcuspor(props) {
                   <Table.Row>
                     <Table.Cell>
                       <Label ribbon color={labelColor()}>
-                        Категория
+                        {messages['category']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
@@ -364,7 +366,7 @@ function Smcuspor(props) {
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>
-                        Дата покупки
+                        {messages['buying_date']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
@@ -378,7 +380,7 @@ function Smcuspor(props) {
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>
-                        Дата установки
+                        {messages['installation_date']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
@@ -392,7 +394,7 @@ function Smcuspor(props) {
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>
-                        Диллер
+                        {messages['dealer']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
@@ -406,7 +408,7 @@ function Smcuspor(props) {
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>
-                        Установщик
+                        {messages['goodsInstaller']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
@@ -420,7 +422,7 @@ function Smcuspor(props) {
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>
-                        Срок гарантии
+                        {messages['guarantee_period']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
@@ -451,7 +453,7 @@ function Smcuspor(props) {
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>
-                        Срок замены{' '}
+                        {messages['replacement_period']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
@@ -461,7 +463,7 @@ function Smcuspor(props) {
                             <Table.Cell>
                               <Checkbox
                                 radio
-                                label="Автоматом"
+                                label={messages['automate']}
                                 name="changeTerm"
                                 value="auto"
                                 checked={manual === 0}
@@ -470,7 +472,7 @@ function Smcuspor(props) {
                             <Table.Cell>
                               <Checkbox
                                 radio
-                                label="В ручную"
+                                label={messages['manual']}
                                 name="changeTerm"
                                 value="manual"
                                 checked={manual === 1}
@@ -484,7 +486,7 @@ function Smcuspor(props) {
                 </Table.Body>
               </Table>
               <Segment>
-                <h3>Срок замены фильтров</h3>
+                <h3>{messages['filter_replacement_period']}</h3>
                 <Input
                   size="mini"
                   label="F1"
@@ -523,7 +525,7 @@ function Smcuspor(props) {
                   props.history.push(`smeci?contractNumber=${contractNumber}`)
                 }
               >
-                Редактировать
+                {messages['Button.Edit']}
               </Button>
             </Grid.Column>
             <Grid.Column mobile={16} table={16} computer={10}>
@@ -538,7 +540,7 @@ function Smcuspor(props) {
                         active={history.activeButton}
                         onClick={(e, o) => handleClick(o, 'all')}
                       >
-                        Все
+                        {messages['all']}
                       </Button>
                     </Table.Cell>
                     <Table.Cell width="3">
@@ -548,7 +550,7 @@ function Smcuspor(props) {
                         size="tiny"
                         onClick={(e, o) => handleClick(o, 'services')}
                       >
-                        Сервисы
+                        {messages['services']}
                       </Button>
                     </Table.Cell>
                     <Table.Cell width="3">
@@ -558,7 +560,7 @@ function Smcuspor(props) {
                         size="tiny"
                         onClick={(e, o) => handleClick(o, 'calls')}
                       >
-                        Звонки
+                        {messages['Crm.Calls']}
                       </Button>
                     </Table.Cell>
                     <Table.Cell width="3">
@@ -568,7 +570,7 @@ function Smcuspor(props) {
                         size="tiny"
                         onClick={(e, o) => handleClick(o, 'requests')}
                       >
-                        Заявки
+                        {messages['Applications']}
                       </Button>
                     </Table.Cell>
                   </Table.Row>
@@ -578,7 +580,7 @@ function Smcuspor(props) {
                 <Table.Body>
                   <Table.Row>
                     <Table.Cell width="3" verticalAlign="bottom">
-                      Дата заявки с
+                      {messages['application_date_from']}
                       <DatePicker
                         autoComplete="off"
                         dateFormat="DD/MM/YYYY"
@@ -592,7 +594,7 @@ function Smcuspor(props) {
                       />
                     </Table.Cell>
                     <Table.Cell width="3" verticalAlign="bottom">
-                      Дата заявки по
+                      {messages['application_date_to']}
                       <DatePicker
                         autoComplete="off"
                         dateFormat="DD/MM/YYYY"
@@ -607,7 +609,7 @@ function Smcuspor(props) {
                     </Table.Cell>
                     <Table.Cell width="2" verticalAlign="bottom">
                       <Button fluid color="teal" onClick={dateRange}>
-                        Применить
+                        {messages['apply']}
                       </Button>
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -624,13 +626,15 @@ function Smcuspor(props) {
           <Grid.Row>
             <Grid.Column>
               <Segment>
-                <h2>История редактирований договора</h2>
+                <h2>{messages['contract_editing_history']}</h2>
                 <ReactTableWrapper
                   data={clientHistory.contractHistory}
                   columns={[
                     {
                       Header: () => (
-                        <div style={{ textAlign: 'center' }}>Дата</div>
+                        <div style={{ textAlign: 'center' }}>
+                          {messages['date']}
+                        </div>
                       ),
                       accessor: 'recDate',
                       Cell: row => (
@@ -639,7 +643,9 @@ function Smcuspor(props) {
                     },
                     {
                       Header: () => (
-                        <div style={{ textAlign: 'center' }}>Изменения</div>
+                        <div style={{ textAlign: 'center' }}>
+                          {messages['changes']}
+                        </div>
                       ),
                       accessor: 'operOnName',
                       Cell: row => (
@@ -648,7 +654,9 @@ function Smcuspor(props) {
                     },
                     {
                       Header: () => (
-                        <div style={{ textAlign: 'center' }}>Операция</div>
+                        <div style={{ textAlign: 'center' }}>
+                          {messages['operation']}
+                        </div>
                       ),
                       accessor: 'operTypeName',
                       Cell: row => (
@@ -657,7 +665,9 @@ function Smcuspor(props) {
                     },
                     {
                       Header: () => (
-                        <div style={{ textAlign: 'center' }}>Старый</div>
+                        <div style={{ textAlign: 'center' }}>
+                          {messages['old']}
+                        </div>
                       ),
                       accessor: 'oldText',
                       Cell: row => (
@@ -666,7 +676,9 @@ function Smcuspor(props) {
                     },
                     {
                       Header: () => (
-                        <div style={{ textAlign: 'center' }}>Новый</div>
+                        <div style={{ textAlign: 'center' }}>
+                          {messages['new']}
+                        </div>
                       ),
                       accessor: 'newText',
                       Cell: row => (
@@ -675,7 +687,9 @@ function Smcuspor(props) {
                     },
                     {
                       Header: () => (
-                        <div style={{ textAlign: 'center' }}>Примечание</div>
+                        <div style={{ textAlign: 'center' }}>
+                          {messages['bktxt']}
+                        </div>
                       ),
                       accessor: 'info',
                       Cell: row => (
@@ -685,7 +699,7 @@ function Smcuspor(props) {
                     {
                       Header: () => (
                         <div style={{ textAlign: 'center' }}>
-                          Изменен сотрудником
+                          {messages['changed_by_employee']}
                         </div>
                       ),
                       accessor: 'userName',

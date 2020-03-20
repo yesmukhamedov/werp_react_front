@@ -43,46 +43,62 @@ function HistoryReactTable(props) {
         data={data.servCrmHistoryAll ? data.servCrmHistoryAll : initValue}
         columns={[
           {
-            Header: () => <div style={{ textAlign: 'center' }}>Дата</div>,
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>{messages['date']}</div>
+            ),
             accessor: 'crmHistoryDate',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
             Header: () => (
-              <div style={{ textAlign: 'center' }}>Вид сервиса</div>
+              <div style={{ textAlign: 'center' }}>
+                {messages['typeOfService']}
+              </div>
             ),
             accessor: 'servTypeName',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
-            Header: () => <div style={{ textAlign: 'center' }}>Вид звонка</div>,
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>{messages['call_type']}</div>
+            ),
             accessor: 'callDirectionName',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
             Header: () => (
-              <div style={{ textAlign: 'center' }}>Описание звонка</div>
+              <div style={{ textAlign: 'center' }}>
+                {messages['call_description']}
+              </div>
             ),
             accessor: 'info',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
-            Header: () => <div style={{ textAlign: 'center' }}>Сумма</div>,
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>{messages['amount']}</div>
+            ),
             accessor: 'price',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
-            Header: () => <div style={{ textAlign: 'center' }}>Мастер</div>,
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>{messages['master']}</div>
+            ),
             accessor: 'masterName',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
-            Header: () => <div style={{ textAlign: 'center' }}>Оператор</div>,
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>{messages['Operator']}</div>
+            ),
             accessor: 'staffName',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
-            Header: () => <div style={{ textAlign: 'center' }}>Сервис №</div>,
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>{messages['service']}</div>
+            ),
             accessor: 'serviceId',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
@@ -111,29 +127,39 @@ function HistoryReactTable(props) {
         }
         columns={[
           {
-            Header: () => <div style={{ textAlign: 'center' }}>Дата</div>,
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>{messages['date']}</div>
+            ),
             accessor: 'crmHistoryDate',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
             Header: () => (
-              <div style={{ textAlign: 'center' }}>Вид сервиса</div>
+              <div style={{ textAlign: 'center' }}>
+                {messages['typeOfService']}
+              </div>
             ),
             accessor: 'servTypeName',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
-            Header: () => <div style={{ textAlign: 'center' }}>Сумма</div>,
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>{messages['amount']}</div>
+            ),
             accessor: 'price',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
-            Header: () => <div style={{ textAlign: 'center' }}>Мастер</div>,
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>{messages['master']}</div>
+            ),
             accessor: 'masterName',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
-            Header: () => <div style={{ textAlign: 'center' }}>Сервис №</div>,
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>{messages['service']}</div>
+            ),
             accessor: 'serviceId',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
@@ -160,24 +186,32 @@ function HistoryReactTable(props) {
         }
         columns={[
           {
-            Header: () => <div style={{ textAlign: 'center' }}>Дата</div>,
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>{messages['date']}</div>
+            ),
             accessor: 'crmHistoryDate',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
-            Header: () => <div style={{ textAlign: 'center' }}>Вид звонка</div>,
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>{messages['call_type']}</div>
+            ),
             accessor: 'callDirectionName',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
             Header: () => (
-              <div style={{ textAlign: 'center' }}>Описание звонка</div>
+              <div style={{ textAlign: 'center' }}>
+                {messages['call_description']}
+              </div>
             ),
             accessor: 'info',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
-            Header: () => <div style={{ textAlign: 'center' }}>Оператор</div>,
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>{messages['Operator']}</div>
+            ),
             accessor: 'staffName',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
@@ -204,29 +238,43 @@ function HistoryReactTable(props) {
         }
         columns={[
           {
-            Header: () => <div style={{ textAlign: 'center' }}>Дата</div>,
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>{messages['date']}</div>
+            ),
             accessor: 'crmHistoryDate',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
             Header: () => (
-              <div style={{ textAlign: 'center' }}>Статус заявки</div>
+              <div style={{ textAlign: 'center' }}>
+                {messages['application_status']}
+              </div>
             ),
             accessor: 'appStatusName',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
-            Header: () => <div style={{ textAlign: 'center' }}>Вид заявки</div>,
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>
+                {messages['type_of_application']}
+              </div>
+            ),
             accessor: 'appTypeName',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
-            Header: () => <div style={{ textAlign: 'center' }}>Оператор</div>,
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>{messages['Operator']}</div>
+            ),
             accessor: 'staffName',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
-            Header: () => <div style={{ textAlign: 'center' }}>№ заявки</div>,
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>
+                {messages['request_number']}
+              </div>
+            ),
             accessor: 'serviceAppId',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },

@@ -21,6 +21,8 @@ import {
 import OutputErrors from '../../../general/error/outputErrors';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import 'moment/locale/ru';
+import 'moment/locale/tr';
 import { injectIntl } from 'react-intl';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -182,9 +184,9 @@ function Smcca(props) {
     <Grid centered>
       <Grid.Row>
         <Grid.Column mobile={16} tablet={16} computer={7}>
-          <h1>Создание заявки</h1>
+          <h1>{messages['create_request']}</h1>
           <Segment>
-            <h3>Данные клиента</h3>
+            <h3>{messages['L__CLIENT_INFO']}</h3>
             <Table compact striped>
               <Table.Body>
                 <Table.Row>
@@ -208,7 +210,7 @@ function Smcca(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Товар</Table.Cell>
+                  <Table.Cell>{messages['Product']}</Table.Cell>
                   <Table.Cell>
                     <Input
                       size="small"
@@ -218,10 +220,10 @@ function Smcca(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Вид заявки</Table.Cell>
+                  <Table.Cell>{messages['type_of_application']} </Table.Cell>
                   <Table.Cell>
                     <Dropdown
-                      placeholder="Вид заявки"
+                      placeholder={messages['type_of_application']}
                       fluid
                       selection
                       search
@@ -231,7 +233,9 @@ function Smcca(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell verticalAlign="top">Оператор</Table.Cell>
+                  <Table.Cell verticalAlign="top">
+                    {messages['Operator']}
+                  </Table.Cell>
                   <Table.Cell>
                     <Input
                       size="small"
@@ -279,7 +283,7 @@ function Smcca(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>ФИО клиента</Table.Cell>
+                  <Table.Cell>{messages['full_name_of_client']}</Table.Cell>
                   <Table.Cell>
                     <Input
                       size="small"
@@ -289,7 +293,7 @@ function Smcca(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Адрес</Table.Cell>
+                  <Table.Cell>{messages['address']}</Table.Cell>
                   <Table.Cell>
                     <Input
                       size="small"
@@ -299,7 +303,7 @@ function Smcca(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Kонтакты</Table.Cell>
+                  <Table.Cell>{messages['contacts']}</Table.Cell>
                   <Table.Cell>
                     <Input
                       size="small"
@@ -309,13 +313,13 @@ function Smcca(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Заводской номер</Table.Cell>
+                  <Table.Cell>{messages['productSerialNumber']}</Table.Cell>
                   <Table.Cell>
                     <Input size="small" fluid value={tovarSn ? tovarSn : ''} />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Дата установки</Table.Cell>
+                  <Table.Cell>{messages['installation_date']}</Table.Cell>
                   <Table.Cell>
                     <Input
                       size="small"
@@ -325,7 +329,7 @@ function Smcca(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Установщик</Table.Cell>
+                  <Table.Cell>{messages['goodsInstaller']}</Table.Cell>
                   <Table.Cell>
                     <Input
                       size="small"
@@ -335,11 +339,11 @@ function Smcca(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Примечание</Table.Cell>
+                  <Table.Cell>{messages['bktxt']}</Table.Cell>
                   <Table.Cell>
                     <Form>
                       <TextArea
-                        placeholder="Примечание"
+                        placeholder={messages['bktxt']}
                         onChange={(e, o) => onInputChange(o, 'description')}
                       />
                     </Form>
@@ -358,7 +362,7 @@ function Smcca(props) {
             <Table compact striped>
               <Table.Body>
                 <Table.Row>
-                  <Table.Cell>Дата</Table.Cell>
+                  <Table.Cell>{messages['date']}</Table.Cell>
                   <Table.Cell>
                     <Input>
                       <DatePicker
@@ -366,6 +370,7 @@ function Smcca(props) {
                         deteFormat="DD/MM/YYYY"
                         selected={callDate}
                         dropdownMode="select"
+                        locale={lang}
                         showMonthDropDown
                         showYearDropDown
                         maxDate={moment(new Date())}
@@ -376,10 +381,10 @@ function Smcca(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Статус звонка</Table.Cell>
+                  <Table.Cell>{messages['call_status']}</Table.Cell>
                   <Table.Cell>
                     <Dropdown
-                      placeholder="Статус звонка"
+                      placeholder={messages['call_status']}
                       fluid
                       selection
                       search
@@ -390,7 +395,7 @@ function Smcca(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Звонок</Table.Cell>
+                  <Table.Cell>{messages['call']}</Table.Cell>
                   <Table.Cell>
                     <Table>
                       <Table.Body>
@@ -398,7 +403,7 @@ function Smcca(props) {
                           <Table.Cell>
                             <Checkbox
                               radio
-                              label="Входящий"
+                              label={messages['incoming']}
                               name="changeTerm"
                               value="1"
                               checked={Number.parseInt(callD, 10) === 1}
@@ -411,7 +416,7 @@ function Smcca(props) {
                           <Table.Cell>
                             <Checkbox
                               radio
-                              label="Исходящий"
+                              label={messages['outgoing']}
                               name="changeTerm"
                               value="2"
                               checked={Number.parseInt(callD, 10) === 2}
@@ -427,11 +432,11 @@ function Smcca(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Примечание</Table.Cell>
+                  <Table.Cell>{messages['bktxt']}</Table.Cell>
                   <Table.Cell>
                     <Form>
                       <TextArea
-                        placeholder="Примечание"
+                        placeholder={messages['bktxt']}
                         onChange={(e, o) => onInputChange(o, 'description2')}
                         disabled={!scheduleCall}
                       />
@@ -441,7 +446,7 @@ function Smcca(props) {
               </Table.Body>
             </Table>
             <Button color="blue" fluid onClick={() => handleSubmit()}>
-              Сохранить
+              {messages['save']}
             </Button>
           </Segment>
           <OutputErrors errors={error} />

@@ -6,7 +6,6 @@ import {
   Form,
   Dropdown,
   Table,
-  Icon,
   Input,
   Button,
   TextArea,
@@ -14,6 +13,8 @@ import {
 } from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import 'moment/locale/ru';
+import 'moment/locale/tr';
 import { injectIntl } from 'react-intl';
 
 import {
@@ -43,7 +44,6 @@ function Smregc(props) {
   const url = window.location.search;
   const contractNumber = url.slice(url.indexOf('=') + 1);
   const userName = localStorage.getItem('username');
-  const lang = localStorage.getItem('language');
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const callD = localStorage.getItem('callDirection');
 
@@ -51,7 +51,11 @@ function Smregc(props) {
     setCall({ ...call, callDirection: Number.parseInt(callD, 10) });
   }, []);
 
-  const { servCrmCallStatus } = props;
+  const {
+    servCrmCallStatus,
+    language,
+    intl: { messages },
+  } = props;
 
   useEffect(() => {
     props.fetchServCrmCallStatus();
@@ -86,12 +90,7 @@ function Smregc(props) {
 
     const { tovarSn, branchId, bukrs } = props.location.state;
     const { callDirection, callStatusId, description, description2 } = call;
-    if (
-      callDirection !== '' &&
-      callStatusId !== '' &&
-      description !== '' &&
-      description2 !== ''
-    ) {
+    if (callDirection !== '' && callStatusId !== '' && description !== '') {
       props.postSmregcCreateCall(
         {
           scheduleCall,
@@ -130,7 +129,7 @@ function Smregc(props) {
     if (call.description === '') {
       errors.push(errorTable['hi there']);
     }
-    if (call.description2 === '') {
+    if (scheduleCall && call.description2 === '') {
       errors.push(errorTable['hi there']);
     }
     setError(() => errors);
@@ -140,7 +139,7 @@ function Smregc(props) {
     return {
       key: item.id,
       value: item.id,
-      text: item[lang],
+      text: item[language],
     };
   });
 
@@ -149,24 +148,25 @@ function Smregc(props) {
       <Grid.Row>
         <Grid.Column width={7}>
           <Segment>
-            <h1>Зарегистрировать входящий звонок</h1>
+            <h1>{messages['call_register']}</h1>
             <Table striped>
               <Table.Body>
                 <Table.Row>
-                  <Table.Cell width={5}>Оператор</Table.Cell>
+                  <Table.Cell width={5}>{messages['Operator']}</Table.Cell>
                   <Table.Cell>
                     <Input size="small" fluid value={userName} />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Дата</Table.Cell>
+                  <Table.Cell>{messages['Form.Date']}</Table.Cell>
                   <Table.Cell>
                     <Input>
                       <DatePicker
                         autoComplete="off"
-                        deteFormat="DD/MM/YYYY"
+                        dateFormat="DD/MM/YYYY"
                         selected={callDate}
                         dropdownMode="select"
+                        locale={language}
                         showMonthDropDown
                         showYearDropDown
                         maxDate={moment(new Date())}
@@ -176,10 +176,10 @@ function Smregc(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Статус звонка</Table.Cell>
+                  <Table.Cell>{messages['call_status']}</Table.Cell>
                   <Table.Cell>
                     <Dropdown
-                      placeholder="Статус звонка"
+                      placeholder={messages['call_status']}
                       fluid
                       selection
                       search
@@ -189,7 +189,7 @@ function Smregc(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Звонок</Table.Cell>
+                  <Table.Cell>{messages['call']}</Table.Cell>
                   <Table.Cell>
                     <Table>
                       <Table.Body>
@@ -197,7 +197,7 @@ function Smregc(props) {
                           <Table.Cell>
                             <Checkbox
                               radio
-                              label="Входящий"
+                              label={messages['incoming']}
                               name="changeTerm"
                               value="1"
                               checked={Number.parseInt(callD, 10) === 1}
@@ -209,7 +209,7 @@ function Smregc(props) {
                           <Table.Cell>
                             <Checkbox
                               radio
-                              label="Исходящий"
+                              label={messages['outgoing']}
                               name="changeTerm"
                               value="2"
                               checked={Number.parseInt(callD, 10) === 2}
@@ -224,11 +224,11 @@ function Smregc(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Примечание</Table.Cell>
+                  <Table.Cell>{messages['Table.Note']}</Table.Cell>
                   <Table.Cell>
                     <Form>
                       <TextArea
-                        placeholder="Примечание"
+                        placeholder={messages['Table.Note']}
                         onChange={(e, o) => onInputChange(o, 'description')}
                       />
                     </Form>
@@ -239,7 +239,7 @@ function Smregc(props) {
             <Table striped>
               <Table.Body>
                 <Table.Row>
-                  <Table.Cell width={5}>Назначить звонок</Table.Cell>
+                  <Table.Cell width={5}>{messages['schedule_call']}</Table.Cell>
                   <Table.Cell>
                     <Table>
                       <Table.Body>
@@ -253,9 +253,10 @@ function Smregc(props) {
                             <Input>
                               <DatePicker
                                 autoComplete="off"
-                                deteFormat="DD/MM/YYYY"
+                                dateFormat="DD/MM/YYYY"
                                 selected={appointDate}
                                 dropdownMode="select"
+                                locale={language}
                                 showMonthDropDown
                                 showYearDropDown
                                 onChange={date => setAppointDate(date)}
@@ -269,11 +270,11 @@ function Smregc(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Примечание</Table.Cell>
+                  <Table.Cell>{messages['Table.Note']}</Table.Cell>
                   <Table.Cell>
                     <Form>
                       <TextArea
-                        placeholder="Примечание"
+                        placeholder={messages['Table.Note']}
                         onChange={(e, o) => onInputChange(o, 'description2')}
                         disabled={!scheduleCall}
                       />
@@ -288,7 +289,7 @@ function Smregc(props) {
               size="small"
               onClick={() => handleSubmit()}
             >
-              Сохранить
+              {messages['save']}
             </Button>
           </Segment>
           <OutputErrors errors={error} />
@@ -300,6 +301,7 @@ function Smregc(props) {
 
 function mapStateToProps(state) {
   return {
+    language: state.locales.lang,
     servCrmCallStatus: state.serviceReducer.servCrmCallStatus,
   };
 }
