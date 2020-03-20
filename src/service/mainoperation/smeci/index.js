@@ -214,6 +214,24 @@ function Smeci(props) {
         props.history.push(`smcuspor?contractNumber=${contractNumber}`);
       },
     );
+    clearContract();
+  };
+
+  const clearContract = () => {
+    setContract({
+      manual: 0,
+      f1Mt: '',
+      f2Mt: '',
+      f3Mt: '',
+      f4Mt: '',
+      f5Mt: '',
+      addrServiceId: '',
+      addrServ: '',
+      contactPersonName: '',
+      selectedBranch: {},
+      info: '',
+      info2: '',
+    });
   };
 
   const labelColor = () => {

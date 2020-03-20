@@ -43,6 +43,7 @@ function Smcuspor(props) {
       contractInfo: {},
     },
     crmHistoryAll,
+    language,
   } = props;
 
   const {
@@ -574,30 +575,32 @@ function Smcuspor(props) {
               <Table>
                 <Table.Body>
                   <Table.Row>
-                    <Table.Cell width="2" verticalAlign="bottom">
+                    <Table.Cell width="3" verticalAlign="bottom">
                       Дата заявки с
                       <DatePicker
                         autoComplete="off"
-                        deteFormat="DD/MM/YYYY"
+                        dateFormat="DD/MM/YYYY"
                         selected={startDate}
                         dropdownMode="select"
+                        locale={language}
+                        onChange={date => setStartDate(date)}
                         showMonthDropDown
                         showYearDropDown
                         maxDate={moment(new Date())}
-                        onChange={date => setStartDate(date)}
                       />
                     </Table.Cell>
-                    <Table.Cell width="2" verticalAlign="bottom">
+                    <Table.Cell width="3" verticalAlign="bottom">
                       Дата заявки по
                       <DatePicker
                         autoComplete="off"
-                        deteFormat="DD/MM/YYYY"
+                        dateFormat="DD/MM/YYYY"
                         selected={endDate}
                         dropdownMode="select"
+                        locale={language}
+                        onChange={date => setEndDate(date)}
                         showMonthDropDown
                         showYearDropDown
                         maxDate={moment(new Date())}
-                        onChange={date => setEndDate(date)}
                       />
                     </Table.Cell>
                     <Table.Cell width="2" verticalAlign="bottom">
@@ -711,6 +714,7 @@ function Smcuspor(props) {
 }
 function mapStateToProps(state) {
   return {
+    language: state.locales.lang,
     clientHistory: state.serviceReducer.clientHistory.data,
     crmHistoryAll: state.serviceReducer.crmHistoryAll.data,
   };

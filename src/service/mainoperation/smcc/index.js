@@ -110,7 +110,7 @@ function Smcc(props) {
     intl: { messages },
     contract: { contractTypeId } = {},
   } = props;
-  console.log(contract.customerId);
+
   const lang = language.charAt(0).toUpperCase() + language.slice(1);
 
   useEffect(() => {
