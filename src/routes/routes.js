@@ -1263,12 +1263,11 @@ const generateRoutes = transactionRoutes => {
         path="/service/mainoperation/smsetpp"
         exact={true}
         component={AsyncSmsetpp}
-      /> */}
-      {/* <Route
+      />  <Route
         path="/service/mainoperation/smsetct"
         exact={true}
         component={AsyncSmsetct}
-      /> */}
+      />
       <Route
         path="/service/mainoperation/smecam"
         exact={true}
