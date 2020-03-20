@@ -16,6 +16,8 @@ import {
 } from '../../serviceAction';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import 'moment/locale/ru';
+import 'moment/locale/tr';
 import { injectIntl } from 'react-intl';
 import HistoryReactTable from './historyReactTable';
 
