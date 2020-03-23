@@ -5,7 +5,7 @@ import AssignedCalls from './tabs/AssignedCalls';
 import MyApplication from './tabs/MyApplication';
 import ServiceFilterVC from './tabs/ServiceFilterVC';
 import TransferApplication from './tabs/TransferApplication';
-import { Container, Grid, Tab, Segment, Menu, Label } from 'semantic-ui-react';
+import { Container, Tab, Segment, Menu, Label } from 'semantic-ui-react';
 import {
   f4fetchCategory,
   f4FetchStaffList,
@@ -20,13 +20,12 @@ import '../../service.css';
 
 const Smopccoc = props => {
   const {
-    intl: { messages },
-    language,
+    // intl: { messages },
+    // language,
   } = props;
 
   const {
     f4fetchCategory,
-    f4FetchStaffList,
     f4FetchServiceStatusList,
     f4FetchCountryList,
     f4FetchConStatusList,
@@ -34,12 +33,13 @@ const Smopccoc = props => {
   } = props;
 
   const {
-    serviceTypeId,
-    srlsmList,
+    // serviceTypeId,
+    // srlsmList,
+    // serviceStatusList,
     companyOptions,
     countryList,
     category,
-    serviceStatusList,
+
     contractStatusList,
     branches,
   } = props;

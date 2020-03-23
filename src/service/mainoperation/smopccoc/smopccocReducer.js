@@ -16,7 +16,7 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_SERVICE_FILTER_PLAN:
       return {
         ...state,
-        dynamicObject: [...action.data.data.data],
+        serviceFilterPlan: [...action.data.data.data],
       };
 
     case FETCH_SERVICE_TRANSFER_APPLICATION_EXODUS:

@@ -3,6 +3,8 @@ import {
   POST_SMCRLD_FORMPLAN,
   FETCH_SMCRLD,
   FETCH_SMVOD_LIST,
+  FETCH_SMRD_OPERATOR,
+  POST_SMRD_OPERATORS_BY_BRANCH,
 } from './smdisAction';
 
 const INITIAL_STATE = {
@@ -37,6 +39,18 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         smvod: { ...action.data.data },
+      };
+
+    case FETCH_SMRD_OPERATOR:
+      return {
+        ...state,
+        smrdOperator: [...action.data.data.fromOperator],
+      };
+
+    case POST_SMRD_OPERATORS_BY_BRANCH:
+      return {
+        ...state,
+        operatorsByBranch: [...action.data.data],
       };
 
     default:

@@ -176,13 +176,13 @@ const MyApplicationExodus = props => {
 
   useEffect(() => {
     const getBranchByBukrs = (branches, bukrs) => {
-      let br = branches.filter(item => item.bukrs == bukrs);
+      let br = branches.filter(item => item.bukrs === bukrs);
 
       let brSer = br.filter(
         item =>
-          item.business_area_id == 5 ||
-          item.business_area_id == 6 ||
-          item.business_area_id == 9,
+          item.business_area_id === 5 ||
+          item.business_area_id === 6 ||
+          item.business_area_id === 9,
       );
 
       let serBranchOpt = brSer.map(item => {

@@ -3,175 +3,168 @@ import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
 import { Dropdown } from 'semantic-ui-react';
 
 const TableReDistribution1 = props => {
-  const { options = [] } = props;
+  const { data } = props;
 
-  const columns = useMemo(
-    () => [
-      {
-        columns: [
-          {
-            Header: 'Id',
-            accessor: '1',
-          },
-          {
-            Header: 'Страна',
-            accessor: '2',
-          },
-          {
-            Header: 'Компания',
-            accessor: '3',
-          },
-          {
-            Header: 'Филиал',
-            accessor: '4',
-          },
-          {
-            Header: 'Оператор',
-            accessor: '5',
-            Cell: ({ original }) => <Dropdown selection options={options} />,
-          },
-        ],
-      },
-
-      {
-        // Текущий group
-        Header: 'Текущий',
-        headerStyle: { background: 'teal', color: '#fff' },
-        // Текущий columns
-        columns: [
-          {
-            Header: 'F1',
-            accessor: '6',
-            width: 70,
-          },
-          {
-            Header: 'F1+M1',
-            accessor: '7',
-            width: 70,
-          },
-          {
-            Header: 'F2',
-            accessor: '8',
-            width: 70,
-          },
-          {
-            Header: 'F2+M1',
-            accessor: '9',
-            width: 70,
-          },
-          {
-            Header: 'F3',
-            accessor: '10',
-            width: 70,
-          },
-          {
-            Header: 'F3+M1',
-            accessor: '11',
-            width: 70,
-          },
-          {
-            Header: 'F4',
-            accessor: '12',
-            width: 70,
-          },
-          {
-            Header: 'F4+M1',
-            accessor: '13',
-            width: 70,
-          },
-          {
-            Header: 'M1',
-            accessor: '14',
-            width: 70,
-          },
-          {
-            Header: 'Итог',
-            accessor: '15',
-          },
-        ],
-      },
-      {
-        // Просроченный group
-        Header: 'Просроченный',
-        headerStyle: {
-          background: 'red',
-          color: '#fff',
-          height: '2rem',
+  const columns = [
+    {
+      columns: [
+        {
+          Header: 'Id',
+          accessor: 'operatorId',
         },
-        // Просроченный columns
-        columns: [
-          {
-            Header: 'F1',
-            accessor: '16',
-            width: 70,
-          },
-          {
-            Header: 'F1+M1',
-            accessor: '17',
-            width: 70,
-          },
-          {
-            Header: 'F2',
-            accessor: '18',
-            width: 70,
-          },
-          {
-            Header: 'F2+M1',
-            accessor: '19',
-            width: 70,
-          },
-          {
-            Header: 'F3',
-            accessor: '20',
-            width: 70,
-          },
-          {
-            Header: 'F3+M1',
-            accessor: '21',
-            width: 70,
-          },
-          {
-            Header: 'F4',
-            accessor: '22',
-            width: 70,
-          },
-          {
-            Header: 'F4+M1',
-            accessor: '23',
-            width: 70,
-          },
-          {
-            Header: 'M1',
-            accessor: '24',
-            width: 70,
-          },
-          {
-            Header: 'Итог',
-            accessor: '25',
-            width: 70,
-          },
-        ],
+        {
+          Header: 'Страна',
+          accessor: 'countryName',
+        },
+        {
+          Header: 'Компания',
+          accessor: 'bukrsName',
+        },
+        {
+          Header: 'Филиал',
+          accessor: 'branchName',
+        },
+        {
+          Header: 'Оператор',
+          accessor: 'operatorName',
+          width: 250,
+        },
+      ],
+    },
+    {
+      // Текущий group
+      Header: 'Текущий',
+      headerStyle: { background: 'teal', color: '#fff' },
+      // Текущий columns
+      columns: [
+        {
+          Header: 'F1',
+          accessor: 'currentF1',
+          width: 70,
+        },
+        {
+          Header: 'F1+M1',
+          accessor: 'currentF1M1',
+          width: 70,
+        },
+        {
+          Header: 'F2',
+          accessor: 'currentF2',
+          width: 70,
+        },
+        {
+          Header: 'F2+M1',
+          accessor: 'currentF2M1',
+          width: 70,
+        },
+        {
+          Header: 'F3',
+          accessor: 'currentF3',
+          width: 70,
+        },
+        {
+          Header: 'F3+M1',
+          accessor: 'currentF3M1',
+          width: 70,
+        },
+        {
+          Header: 'F4',
+          accessor: 'currentF4',
+          width: 70,
+        },
+        {
+          Header: 'F4+M1',
+          accessor: 'currentF4M1',
+          width: 70,
+        },
+        {
+          Header: 'M1',
+          accessor: 'currentM1',
+          width: 70,
+        },
+        {
+          Header: 'Итог',
+          accessor: 'currentSum',
+        },
+      ],
+    },
+    {
+      // Просроченный group
+      Header: 'Просроченный',
+      headerStyle: {
+        background: 'red',
+        color: '#fff',
+        height: '2rem',
       },
-      {
-        // Общий
-        Header: 'Общий',
-        // Second group columns
-        columns: [
-          {
-            Header: 'Итог',
-          },
-        ],
-      },
-    ],
-    [],
-  );
+      // Просроченный columns
+      columns: [
+        {
+          Header: 'F1',
+          accessor: 'overDueF1',
+          width: 70,
+        },
+        {
+          Header: 'F1+M1',
+          accessor: 'overDueF1M1',
+          width: 70,
+        },
+        {
+          Header: 'F2',
+          accessor: 'overDueF2',
+          width: 70,
+        },
+        {
+          Header: 'F2+M1',
+          accessor: 'overDueF2M1',
+          width: 70,
+        },
+        {
+          Header: 'F3',
+          accessor: 'overDueF3',
+          width: 70,
+        },
+        {
+          Header: 'F3+M1',
+          accessor: 'overDueF3M1',
+          width: 70,
+        },
+        {
+          Header: 'F4',
+          accessor: 'overDueF4',
+          width: 70,
+        },
+        {
+          Header: 'F4+M1',
+          accessor: 'overDueF4M1',
+          width: 70,
+        },
+        {
+          Header: 'M1',
+          accessor: 'overDueM1',
+          width: 70,
+        },
+        {
+          Header: 'Итог',
+          accessor: 'overDueSum',
+          width: 70,
+        },
+      ],
+    },
+    {
+      // Общий
+      Header: 'Общий',
+      // Second group columns
+      columns: [
+        {
+          Header: 'Итог',
+          accessor: 'totalSum',
+        },
+      ],
+    },
+  ];
+
   return (
-    <ReactTableWrapper
-      columns={columns}
-      defaultPageSize={10}
-      showPagination
-      previousText
-    />
+    <ReactTableWrapper data={data} columns={columns} defaultPageSize={2} />
   );
 };
 export default TableReDistribution1;

@@ -21,6 +21,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import { momentToStringYYYYMMDD } from '../../../../utils/helpers';
+import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import ColumnsReactTable from '../components/ColumnsReactTable';
 require('moment/locale/ru');
 require('moment/locale/tr');
@@ -42,7 +43,7 @@ const ServiceFilterPlan = props => {
     serviceDateTypeOptions,
     branches,
     finStatusOption,
-    dynamicObject,
+    serviceFilterPlan,
   } = props;
 
   const emptyParam = {
@@ -77,6 +78,7 @@ const ServiceFilterPlan = props => {
     {
       Header: 'Id',
       accessor: 'id',
+      Cell: <div style={{ height: '100px' }}></div>,
     },
     {
       Header: 'CN',
@@ -141,7 +143,7 @@ const ServiceFilterPlan = props => {
         <div style={{ textAlign: 'center' }}>
           <Popup
             content="Просмотр сервис карту"
-            trigger={<Button icon="address card" />}
+            trigger={<Button color="green" icon="address card" />}
           />
         </div>
       ),
@@ -154,6 +156,11 @@ const ServiceFilterPlan = props => {
   useEffect(() => {
     fetchServiceTypeId();
   }, []);
+
+  const optionsSelect = [
+    { label: 'Thing 1', value: 1 },
+    { label: 'Thing 2', value: 2 },
+  ];
 
   //Get service branches
   useEffect(() => {
@@ -185,6 +192,11 @@ const ServiceFilterPlan = props => {
     { key: 2, text: 'Желтый', value: 'Желтый' },
     { key: 3, text: 'Красный', value: 'Красный' },
     { key: 4, text: 'Черный', value: 'Черный' },
+  ];
+
+  const options8 = [
+    { label: 'Thing 1', value: 1 },
+    { label: 'Thing 2', value: 2 },
   ];
 
   const serviceTypeOptions = serviceTypeId.map(item => {
@@ -219,7 +231,7 @@ const ServiceFilterPlan = props => {
       const prevParam = { ...prev };
       switch (fieldName) {
         case 'country':
-          prevParam.country = o.value;
+          prevParam.country = [o.value];
           break;
         case 'bukrs':
           prevParam.bukrs = o.value;
@@ -258,6 +270,8 @@ const ServiceFilterPlan = props => {
             <Grid.Column>
               <label>Страна</label>
               <Dropdown
+                multiple
+                search
                 options={countryOptions}
                 fluid
                 selection
@@ -328,6 +342,10 @@ const ServiceFilterPlan = props => {
                 placeholder="Конфигурация"
               />
             </Grid.Column>
+            <Grid.Column>
+              <label>Мультиселект</label>
+              <ReactMultiSelectCheckboxes options={options8} />
+            </Grid.Column>
 
             <Grid.Column verticalAlign="bottom">
               <Button onClick={handleClickApply} color="blue">
@@ -340,7 +358,7 @@ const ServiceFilterPlan = props => {
           </Grid.Row>
         </Grid>
       </Segment>
-      <ReactTableServerSideWrapper data={dynamicObject} columns={columns} />
+      <ReactTableServerSideWrapper data={serviceFilterPlan} columns={columns} />
     </Container>
   );
 };
@@ -349,7 +367,7 @@ function mapStateToProps(state) {
   return {
     language: state.locales.lang,
     serviceTypeId: state.smcsReducer.serviceTypeId,
-    dynamicObject: state.smopccocReducer.dynamicObject,
+    serviceFilterPlan: state.smopccocReducer.serviceFilterPlan,
   };
 }
 

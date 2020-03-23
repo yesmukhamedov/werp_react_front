@@ -1167,6 +1167,7 @@ const getComponent = {
   Srkpiso: AsyncSrkpiso,
   Smslsp: AsyncSmslsp,
   Smsetplp: AsyncSmsetplp,
+  Smdis: AsyncSmdis,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1309,13 +1310,7 @@ const generateRoutes = transactionRoutes => {
         path="/service/mainoperation/smslsp"
         exact={true}
         component={AsyncSmslsp}
-      />
-
-      <Route
-        path="/service/mainoperation/smdis"
-        exact={true}
-        component={AsyncSmdis}
-      />
+      />     
  
       <Route
         path="/service/mainoperation/smvs"
@@ -1360,6 +1355,7 @@ const generateRoutes = transactionRoutes => {
         component={AsyncSmappl} 
       />   
       {/* dynamically generated URLs  */}
+
       {transactionRoutes.map(route => {
         return (
           <Route

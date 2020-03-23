@@ -5,23 +5,15 @@ import { Container, Segment } from 'semantic-ui-react';
 import TableSmvod from './tables/TableSmvod';
 import { fetchSmvodList } from '../smdisAction';
 const Smvod = props => {
-  const { smvod = {}, fetchSmvodList } = props;
-  console.log('smvod', smvod);
-  const emptyParam = {
-    branchId: 61,
-    categoryId: 2,
-    dateAt: '2020-03-01',
-  };
-
-  const [param, setParam] = useState({ ...emptyParam });
-
-  useEffect(() => {
-    fetchSmvodList({ ...param });
-  }, []);
+  const { smvod = {}, clickSmvodRow } = props;
 
   return (
     <Container fluid>
-      <TableSmvod data={smvod.listData} footerData={smvod.listSum} />
+      <TableSmvod
+        data={smvod.listData}
+        footerData={smvod.listSum}
+        clickSmvodRow={clickSmvodRow}
+      />
     </Container>
   );
 };

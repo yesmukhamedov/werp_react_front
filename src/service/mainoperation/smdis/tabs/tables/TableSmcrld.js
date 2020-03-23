@@ -5,14 +5,7 @@ import Footer from '../../../../../general/menu/components/footer';
 import { LinkToSmdisTabSmvod } from '../../../../../utils/outlink';
 
 const TableSmcrld = props => {
-  const {
-    options = [],
-    data,
-    dataTotal,
-    footerData = {},
-    operatorList = [],
-    clickViewService,
-  } = props;
+  const { data, dataTotal, footerData = {}, clickViewService } = props;
 
   const columns = [
     {
@@ -186,9 +179,14 @@ const TableSmcrld = props => {
     },
     {
       Header: 'Просмотр',
-      Cell: row => (
+      Cell: original => (
         <div style={{ textAlign: 'center' }}>
-          <LinkToSmdisTabSmvod clickViewService={clickViewService} />
+          <Icon
+            color="teal"
+            link
+            name="search"
+            onClick={() => clickViewService(original.row._original)}
+          />
         </div>
       ),
     },

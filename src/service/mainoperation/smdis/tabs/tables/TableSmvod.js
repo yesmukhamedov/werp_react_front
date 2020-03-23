@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react';
 import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
-import { Dropdown } from 'semantic-ui-react';
+import { Icon } from 'semantic-ui-react';
 
 const TableSmvod = props => {
-  const { options = [], data, footerData = {} } = props;
+  const { options = [], data, footerData = {}, clickSmvodRow } = props;
 
   const columns = [
     {
@@ -20,6 +20,11 @@ const TableSmvod = props => {
           Header: 'Филиал',
           accessor: 'branchName',
           Footer: 'Итого:',
+        },
+        {
+          Header: 'Оператор',
+          accessor: 'operatorName',
+          width: 250,
         },
       ],
     },
@@ -175,6 +180,19 @@ const TableSmvod = props => {
         },
       ],
     },
+    {
+      Header: 'Просмотр',
+      Cell: original => (
+        <div style={{ textAlign: 'center' }}>
+          <Icon
+            color="teal"
+            link
+            name="search"
+            onClick={() => clickSmvodRow(original.row._original)}
+          />
+        </div>
+      ),
+    },
   ];
   return (
     <ReactTableWrapper
@@ -182,7 +200,6 @@ const TableSmvod = props => {
       columns={columns}
       defaultPageSize={10}
       showPagination
-      previousText
     />
   );
 };

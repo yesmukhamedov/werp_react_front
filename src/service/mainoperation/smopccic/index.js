@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import SearchCustomer from './tabs/SearchCustomer';
 import MyApplication from './tabs/MyApplication';
 import TransferApplicationEntry from './tabs/TransferApplicationEntry';
-import { Container, Grid, Tab, Segment, Menu, Label } from 'semantic-ui-react';
+import { Container, Tab, Segment, Menu, Label } from 'semantic-ui-react';
 import {
   f4fetchCategory,
   f4FetchStaffList,
@@ -22,13 +22,12 @@ import '../../service.css';
 
 const Smopccic = props => {
   const {
-    intl: { messages },
-    language,
+    // intl: { messages },
+    // language,
   } = props;
 
   const {
     f4fetchCategory,
-    f4FetchStaffList,
     f4FetchServiceStatusList,
     f4FetchCountryList,
     f4FetchConStatusList,

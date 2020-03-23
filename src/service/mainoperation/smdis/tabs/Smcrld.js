@@ -35,36 +35,17 @@ const Smcrld = props => {
     language,
     category,
     companyOptions = [],
-    fetchSmcrldList,
     listData = {},
-    postSmcrldFormplan,
-    formPlanList,
     clickViewService,
-    propsParam = param,
+    param,
   } = props;
 
-  const emptyParam = {
-    bukrs: '1000',
-    categoryId: 2,
-    dateAt: '',
-  };
-
   const [paramSmvod, setParamSmvod] = useState({});
-
-  //main State Parametrs
-  const [param, setParam] = useState({ ...emptyParam });
 
   const [paramFormPlan, setParamFormPLan] = useState({
     categoryId: 0,
     dateAt: '',
   });
-
-  useEffect(() => {
-    setParamFormPLan({
-      categoryId: param.categoryId,
-      dateAt: param.dateAt,
-    });
-  }, [param]);
 
   //Get category options
   const categoryOptions = category.map(item => {
@@ -80,25 +61,9 @@ const Smcrld = props => {
     props.f4fetchCategory();
   }, []);
 
-  const onInputChange = (o, fieldName) => {
-    setParam(prev => {
-      const prevParam = { ...prev };
-      switch (fieldName) {
-        case 'bukrs':
-          prevParam.bukrs = o.value;
-          break;
-        case 'categoryId':
-          prevParam.categoryId = o.value;
-          break;
-        default:
-          prevParam[fieldName] = o.value;
-      }
-      return prevParam;
-    });
-  };
   //Применить
   const handleClickApply = () => {
-    props.fetchSmcrldList({ ...param });
+    props.fetchSmcrldList({ ...props.param });
   };
 
   const formPlanClick = () => {
@@ -118,7 +83,7 @@ const Smcrld = props => {
                 selection
                 value={param.bukrs}
                 placeholder="Компания"
-                onChange={(e, o) => onInputChange(o, 'bukrs')}
+                onChange={(e, o) => props.onInputChange(o, 'bukrs')}
               />
             </Grid.Column>
             <Grid.Column>
@@ -129,7 +94,7 @@ const Smcrld = props => {
                 value={param.categoryId}
                 placeholder="Категория товара"
                 options={categoryOptions}
-                onChange={(e, o) => onInputChange(o, 'categoryId')}
+                onChange={(e, o) => props.onInputChange(o, 'categoryId')}
               />
             </Grid.Column>
             <Grid.Column>
@@ -140,12 +105,7 @@ const Smcrld = props => {
                 autoComplete="off"
                 dropdownMode="select" //timezone="UTC"
                 selected={stringYYYYMMDDToMoment(param.dateAt)}
-                onChange={date =>
-                  setParam({
-                    ...param,
-                    dateAt: momentToStringYYYYMMDD(date),
-                  })
-                }
+                onChange={date => props.onInputChange(date, 'date')}
                 dateFormat="DD/MM/YYYY"
                 maxDate={new Date()}
               />
