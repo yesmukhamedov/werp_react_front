@@ -36,7 +36,13 @@ const Table = props => {
             filterable: false,
             Cell: ({ row }) => (
               <div style={{ textAlign: 'center' }}>
-                <Button icon color="instagram">
+                <Button
+                  as="a"
+                  to="/service/mainoperation/smcuspor?contractNumber="
+                  icon
+                  color="instagram"
+                  onClick={() => console.log(row)}
+                >
                   <Icon name="id card outline"></Icon>
                 </Button>
               </div>
