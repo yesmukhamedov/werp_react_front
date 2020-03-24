@@ -8,7 +8,7 @@ import {
   Grid,
   Button,
   Popup,
-  Select,
+  Form,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
@@ -262,83 +262,89 @@ const TransferApplicationExodus = props => {
 
   return (
     <Container fluid className="containerMargin">
+      <Form>
+        <Form.Group widths="equal">
+          <Form.Select
+            fluid
+            label="Страна"
+            options={countryOptions}
+            onChange={(e, o) => onInputChange(o, 'country')}
+            className="alignBottom"
+          />
+
+          <Form.Select
+            fluid
+            label="Компания"
+            options={companyOptions}
+            onChange={(e, o) => onInputChange(o, 'bukrs')}
+            className="alignBottom"
+          />
+
+          <Form.Select
+            fluid
+            label="Филиал"
+            options={serBranchOptions}
+            onChange={(e, o) => onInputChange(o, 'branchId')}
+            className="alignBottom"
+          />
+
+          <Form.Select
+            fluid
+            label="Фин. Статус"
+            options={finStatusOption}
+            onChange={(e, o) => onInputChange(o, 'finStatus')}
+            className="alignBottom"
+          />
+
+          <Form.Select
+            fluid
+            label="Статус сервиса"
+            options={serviceDateTypeOptions}
+            onChange={(e, o) => onInputChange(o, 'serviceDateType')}
+            className="alignBottom"
+          />
+
+          <Form.Select
+            label="Категория товара"
+            options={categoryOptions}
+            onChange={(e, o) => onInputChange(o, 'categoryId')}
+            className="alignBottom"
+          />
+
+          <Form.Select
+            label="Конфигурация"
+            options={configurationOptions}
+            onChange={(e, o) => onInputChange(o, 'configuration')}
+            className="alignBottom"
+          />
+
+          <div className="flexColumn alignBottom">
+            <label>Дата</label>
+            <DatePicker
+              className="datePicker"
+              autoComplete="off"
+              locale={language}
+              dropdownMode="select" //timezone="UTC"
+              selected={date}
+              onChange={date => setDate(date)}
+              dateFormat="DD/MM/YYYY"
+              maxDate={new Date()}
+            />
+          </div>
+
+          <Form.Button
+            onClick={handleClickApply}
+            color="blue"
+            className="alignBottom"
+          >
+            Применить
+          </Form.Button>
+        </Form.Group>
+      </Form>
       <Segment>
         <Grid>
           <Grid.Row columns={9}>
-            <Grid.Column>
-              <label>Страна</label>
-              <Dropdown
-                options={countryOptions}
-                fluid
-                selection
-                placeholder="Страна"
-                onChange={(e, o) => onInputChange(o, 'country')}
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Компания</label>
-              <Dropdown
-                options={companyOptions}
-                fluid
-                selection
-                placeholder="Компания"
-                onChange={(e, o) => onInputChange(o, 'bukrs')}
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Филиал</label>
-              <Dropdown
-                fluid
-                selection
-                placeholder="Филиал"
-                onChange={(e, o) => onInputChange(o, 'branchId')}
-                options={serBranchOptions}
-              />
-            </Grid.Column>
-
-            <Grid.Column>
-              <label>Фин. Статус</label>
-              <Select
-                options={finStatusOption}
-                onChange={(e, o) => onInputChange(o, 'finStatus')}
-                fluid
-                selection
-                placeholder="Фин. Статус"
-              />
-            </Grid.Column>
-
-            <Grid.Column>
-              <label>Срок сервиса</label>
-              <Select
-                options={serviceDateTypeOptions}
-                onChange={(e, o) => onInputChange(o, 'serviceDateType')}
-                fluid
-                selection
-                placeholder="Статус сервиса"
-              />
-            </Grid.Column>
-
-            <Grid.Column>
-              <label>Категория</label>
-              <Dropdown
-                options={categoryOptions}
-                onChange={(e, o) => onInputChange(o, 'categoryId')}
-                fluid
-                selection
-                placeholder="Категория товара"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Конфигурация</label>
-              <Select
-                options={configurationOptions}
-                onChange={(e, o) => onInputChange(o, 'configuration')}
-                fluid
-                selection
-                placeholder="Конфигурация"
-              />
-            </Grid.Column>
-            <Grid.Column>
+            {/* <Grid.Column>
               <label>{messages['Form.DateFrom']}</label>
               <DatePicker
                 className="datePicker"
@@ -350,13 +356,8 @@ const TransferApplicationExodus = props => {
                 dateFormat="DD/MM/YYYY"
                 maxDate={new Date()}
               />
-            </Grid.Column>
+            </Grid.Column> */}
 
-            <Grid.Column verticalAlign="bottom">
-              <Button onClick={handleClickApply} color="blue">
-                Применить
-              </Button>
-            </Grid.Column>
             <Grid.Column>
               <ModalColumns columns={columns} />
             </Grid.Column>

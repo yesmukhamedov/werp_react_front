@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import {
-  Segment,
-  Container,
-  Dropdown,
-  Grid,
-  Button,
-  Popup,
-  Select,
-} from 'semantic-ui-react';
+import { Segment, Container, Icon, Form } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
 
@@ -35,7 +27,7 @@ const ServiceFilterPlan = props => {
     fetchServiceTypeId,
     fetchServiceFilterPlan,
   } = props;
-
+  const transaction = 'smopccocServiceFilterPlan';
   const {
     serviceTypeId = [],
     companyOptions = [],
@@ -75,68 +67,82 @@ const ServiceFilterPlan = props => {
 
   //END Date option
   const [param, setParam] = useState({ ...emptyParam });
-
   const columnsSrlsm = [
     {
       Header: 'Id',
       accessor: 'id',
+      checked: true,
       Cell: <div style={{ height: '100px' }}></div>,
     },
     {
       Header: 'CN',
       accessor: 'contractNumber',
+      checked: true,
     },
     {
       Header: 'Заводской номер',
       accessor: 'tovarSn',
+      checked: true,
     },
     {
       Header: 'Дата продажи',
       accessor: 'contractDate',
+      checked: true,
     },
     {
       Header: 'ФИО клиента',
       accessor: 'customerFIO',
+      checked: true,
     },
     {
       Header: 'ИИН клиента',
       accessor: 'customerIinBin',
+      checked: true,
     },
     {
       Header: 'Адрес',
       accessor: 'address',
+      checked: true,
     },
     {
       Header: 'ФИО дилера',
       accessor: 'dealerFIO',
+      checked: true,
     },
     {
       Header: 'F1',
       accessor: 'f1',
+      checked: true,
     },
     {
       Header: 'F2',
       accessor: 'f2',
+      checked: true,
     },
     {
       Header: 'F3',
       accessor: 'f3',
+      checked: true,
     },
     {
       Header: 'F4',
       accessor: 'f4',
+      checked: true,
     },
     {
       Header: 'F5',
       accessor: 'f5',
+      checked: true,
     },
     {
       Header: 'Категория',
       accessor: 'crmCategory',
+      checked: true,
     },
     {
       Header: 'Фин. статус',
       accessor: '15',
+      checked: true,
     },
     {
       Header: 'Просмотр',
@@ -149,10 +155,14 @@ const ServiceFilterPlan = props => {
           />
         </div>
       ),
+      checked: true,
     },
   ];
-  const [columns, setColumns] = useState([...columnsSrlsm]);
 
+  const [columns, setColumns] = useState([]);
+  const columnsChecked = columns.filter(item => item.checked == true);
+
+  console.log('columnsChecked', columnsChecked);
   const [serBranchOptions, setSerBranchOptions] = useState([]);
 
   useEffect(() => {
@@ -266,100 +276,88 @@ const ServiceFilterPlan = props => {
 
   return (
     <Container fluid className="containerMargin">
-      <Segment>
-        <Grid>
-          <Grid.Row columns={9}>
-            <Grid.Column>
-              <label>Страна</label>
-              <Dropdown
-                multiple
-                search
-                options={countryOptions}
-                fluid
-                selection
-                placeholder="Страна"
-                onChange={(e, o) => onInputChange(o, 'country')}
-                wrapSelection="false"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Компания</label>
-              <Dropdown
-                options={companyOptions}
-                fluid
-                selection
-                placeholder="Компания"
-                onChange={(e, o) => onInputChange(o, 'bukrs')}
-                wrapSelection="false"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Филиал</label>
-              <Dropdown
-                fluid
-                selection
-                placeholder="Филиал"
-                onChange={(e, o) => onInputChange(o, 'branchId')}
-                options={serBranchOptions}
-                wrapSelection="false"
-              />
-            </Grid.Column>
+      <Form>
+        <Form.Group widths="equal">
+          <Form.Select
+            fluid
+            label="Страна"
+            options={countryOptions}
+            placeholder="Страна"
+            onChange={(e, o) => onInputChange(o, 'country')}
+            className="alignBottom"
+          />
 
-            <Grid.Column>
-              <label>Фин. Статус</label>
-              <Select
-                options={finStatusOption}
-                onChange={(e, o) => onInputChange(o, 'finStatus')}
-                fluid
-                selection
-                placeholder="Фин. Статус"
-              />
-            </Grid.Column>
+          <Form.Select
+            fluid
+            label="Компания"
+            options={companyOptions}
+            placeholder="Компания"
+            onChange={(e, o) => onInputChange(o, 'bukrs')}
+            className="alignBottom"
+          />
 
-            <Grid.Column>
-              <label>Срок сервиса</label>
-              <Select
-                options={serviceDateTypeOptions}
-                onChange={(e, o) => onInputChange(o, 'serviceDateType')}
-                fluid
-                selection
-                placeholder="Статус сервиса"
-              />
-            </Grid.Column>
+          <Form.Select
+            fluid
+            label="Филиал"
+            options={serBranchOptions}
+            placeholder="Филиал"
+            onChange={(e, o) => onInputChange(o, 'branchId')}
+            className="alignBottom"
+            wrapSelection
+          />
+          <Form.Select
+            fluid
+            label="Фин. Статус"
+            options={finStatusOption}
+            placeholder="Фин. Статус"
+            onChange={(e, o) => onInputChange(o, 'finStatus')}
+            className="alignBottom"
+          />
 
-            <Grid.Column>
-              <label>Категория</label>
-              <Dropdown
-                options={categoryOptions}
-                onChange={(e, o) => onInputChange(o, 'categoryId')}
-                fluid
-                selection
-                placeholder="Категория товара"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Конфигурация</label>
-              <Select
-                options={configurationOptions}
-                onChange={(e, o) => onInputChange(o, 'configuration')}
-                fluid
-                selection
-                placeholder="Конфигурация"
-              />
-            </Grid.Column>
+          <Form.Select
+            fluid
+            label="Срок сервиса"
+            options={serviceDateTypeOptions}
+            placeholder="Фин. Статус"
+            onChange={(e, o) => onInputChange(o, 'serviceDateType')}
+            className="alignBottom"
+          />
 
-            <Grid.Column verticalAlign="bottom">
-              <Button onClick={handleClickApply} color="blue">
-                Применить
-              </Button>
-            </Grid.Column>
-            <Grid.Column>
-              <ModalColumns columns={columns} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Segment>
-      <ReactTableServerSideWrapper data={serviceFilterPlan} columns={columns} />
+          <Form.Select
+            fluid
+            label="Категория"
+            options={categoryOptions}
+            placeholder="Категория"
+            onChange={(e, o) => onInputChange(o, 'categoryId')}
+            className="alignBottom"
+          />
+
+          <Form.Select
+            fluid
+            label="Конфигурация"
+            options={configurationOptions}
+            placeholder="Конфигурация"
+            onChange={(e, o) => onInputChange(o, 'configuration')}
+            className="alignBottom"
+          />
+          <Form.Button
+            fluid
+            options={configurationOptions}
+            onClick={handleClickApply}
+            color="blue"
+            className="alignBottom"
+          >
+            Применить
+          </Form.Button>
+          <Form.Button fluid color="teal" className="alignBottom">
+            Столбцы
+          </Form.Button>
+        </Form.Group>
+      </Form>
+      <ReactTableServerSideWrapper
+        data={serviceFilterPlan}
+        columns={columnsChecked}
+      />
     </Container>
   );
 };

@@ -112,7 +112,7 @@ input::-webkit-inner-spin-button {
   outline: 0;
   -webkit-transform: rotateZ(0);
   transform: rotateZ(0);
-  width: 12em;
+  width: 9em !important;
   min-height: 2.71428571em;
   background: #fff;
   display: inline-block;
@@ -124,4 +124,13 @@ input::-webkit-inner-spin-button {
   -webkit-transition: width 0.1s ease, -webkit-box-shadow 0.1s ease;
   -webkit-transition: box-shadow 0.1s ease, width 0.1s ease;
   transition: box-shadow 0.1s ease, width 0.1s ease;
+}
+
+.alignBottom {
+  align-self: flex-end !important;
+}
+
+.flexColumn {
+  display: flex;
+  flex-direction: column;
 }
