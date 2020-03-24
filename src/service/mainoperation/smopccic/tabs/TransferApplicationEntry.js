@@ -17,7 +17,7 @@ import { fetchTransferApplication } from '../smopccicAction';
 import { fetchServiceTypeId } from '../../smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
-
+import ModalColumns from '../../../../utils/ModalColumns';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
@@ -336,6 +336,9 @@ const TransferApplicationEntry = props => {
               <Button onClick={handleClickApply} color="blue">
                 Применить
               </Button>
+            </Grid.Column>
+            <Grid.Column>
+              <ModalColumns columns={columns} />
             </Grid.Column>
           </Grid.Row>
         </Grid>

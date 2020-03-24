@@ -16,6 +16,8 @@ import { fetchAssignedCalls } from '../smopccocAction';
 import { fetchServiceTypeId } from '../../../mainoperation/smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
+
+import ModalColumns from '../../../../utils/ModalColumns';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
@@ -307,6 +309,9 @@ const AssignedCalls = props => {
               <Button onClick={handleClickApply1} color="blue">
                 Применить
               </Button>
+            </Grid.Column>
+            <Grid.Column>
+              <ModalColumns columns={columns} />
             </Grid.Column>
           </Grid.Row>
         </Grid>

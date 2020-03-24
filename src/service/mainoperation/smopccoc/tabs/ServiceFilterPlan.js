@@ -20,6 +20,7 @@ import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideW
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
+import ModalColumns from '../../../../utils/ModalColumns';
 import { momentToStringYYYYMMDD } from '../../../../utils/helpers';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import ColumnsReactTable from '../components/ColumnsReactTable';
@@ -342,19 +343,15 @@ const ServiceFilterPlan = props => {
                 placeholder="Конфигурация"
               />
             </Grid.Column>
-            <Grid.Column>
-              <label>Мультиселект</label>
-              <ReactMultiSelectCheckboxes options={options8} />
-            </Grid.Column>
 
             <Grid.Column verticalAlign="bottom">
               <Button onClick={handleClickApply} color="blue">
                 Применить
               </Button>
             </Grid.Column>
-            {/* <Grid.Column>
-              <ColumnsReactTable columns={columnsSrlsm} />
-            </Grid.Column> */}
+            <Grid.Column>
+              <ModalColumns columns={columns} />
+            </Grid.Column>
           </Grid.Row>
         </Grid>
       </Segment>
