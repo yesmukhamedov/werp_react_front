@@ -25,10 +25,7 @@ import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-import {
-  stringYYYYMMDDToMoment,
-  momentToStringYYYYMMDD,
-} from '../../../utils/helpers';
+
 const Smecam = props => {
   const {
     historyDynamicObject,
@@ -38,10 +35,10 @@ const Smecam = props => {
     fetchServAppStatus,
     clearDynObjService,
     servAppStatusList,
-    id = 1900,
     editSmecam,
   } = props;
-
+  const url = window.location.search;
+  const id = url.slice(url.indexOf('=') + 1);
   let emptyEditList = {
     id: dynamicObject.id,
     bukrs: dynamicObject.bukrs,

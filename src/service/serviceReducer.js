@@ -38,6 +38,7 @@ import {
   FETCH_SMECA,
   FETCH_SMSETPLP,
   POST_SMSETPLP,
+  FETCH_ERROR_TABLE,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -60,6 +61,7 @@ const INITIAL_STATE = {
   appStatus: [],
   appType: [],
   listOfEmployees: [],
+  errorTable: [],
 };
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -284,6 +286,13 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         dynamicObject: [action.payload],
+      };
+    }
+    case FETCH_ERROR_TABLE: {
+      console.log('Table', action.payload);
+      return {
+        ...state,
+        errorTable: [...action.payload],
       };
     }
     default:

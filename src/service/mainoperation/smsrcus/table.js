@@ -34,13 +34,15 @@ const DataTable = props => {
       if (e.accessor === 'customerStory') {
         return {
           Header: Header,
-          Cell: () => (
+          Cell: row => (
             <div style={{ textAlign: 'center' }}>
-              <Link to={`/service/mainoperation/smcuspor`}>
+              <Link
+                to={`/service/mainoperation/smcuspor?contractNumber=${row.original.contractNumber}`}
+                target="_blank"
+              >
                 <Button size="mini" icon>
-                  {' '}
                   <Icon name="address card" size="large" color="black" />{' '}
-                </Button>{' '}
+                </Button>
               </Link>
             </div>
           ),

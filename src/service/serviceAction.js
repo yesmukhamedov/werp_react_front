@@ -42,7 +42,7 @@ export const FETCH_APP_LIST = 'FETCH_APP_LIST';
 export const FETCH_APP_MASTER_LIST = 'FETCH_APP_MASTER_LIST';
 export const FETCH_EDIT_APP = 'FETCH_EDIT_APP';
 export const FETCH_CLEAR_APP_LIST = 'FETCH_CLEAR_APP_LIST';
-
+export const FETCH_ERROR_TABLE = 'FETCH_ERROR_TABLE';
 export const FETCH_SMSLSP = 'FETCH_SMSLSP';
 export const FETCH_SMSRCUS = 'FETCH_SMSRCUS';
 export const FETCH_TOVAR_CATEGORYS = 'FETCH_TOVAR_CATEGORYS';
@@ -50,10 +50,11 @@ export const FETCH_CONTRACT_STATUS = 'FETCH_CONTRACT_STATUS';
 export const FETCH_SMECAM = 'FETCH_SMECAM';
 export const FETCH_SERV_APP_STATUS = 'FETCH_SERV_APP_STATUS';
 export const EDIT_SMECAM = 'EDIT_SMECAM';
+export const EDIT_SMECA = 'EDIT_SMECA';
 export const FETCH_SMVCA = 'FETCH_SMVCA';
 export const FETCH_SMECA = 'FETCH_SMECA';
 export const FETCH_SMSETPLP = 'FETCH_SMSETPLP';
-export const POST_SMSETPLP = 'FETCH_SMSETPLP';
+export const POST_SMSETPLP = 'POST_SMSETPLP';
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 export function changeDynObjService(a_obj) {
@@ -234,12 +235,7 @@ export function fetchSmsetct(searchParams) {
 export function postSmsetct(postParams, fetchSmsetct, searchParams) {
   return function(dispatch) {
     doPost(`smsetct/create`, postParams)
-      .then(({ data }) => {
-        if (data.status === 200) {
-          dispatch(notify('success', errorTable[`101${language}`]));
-        } else {
-          dispatch(notify('error', errorTable[`132${language}`])); //Не добавлен
-        }
+      .then(() => {
         if (searchParams.length !== 0) {
           fetchSmsetct(searchParams);
         }
@@ -253,24 +249,7 @@ export function postSmsetct(postParams, fetchSmsetct, searchParams) {
 export function editSmsetct(editParams, searchParams, fetchSmsetct) {
   return function(dispatch) {
     doPut(`smsetct/update`, editParams)
-      .then(data => {
-        if (data.status === 200) {
-          dispatch(
-            notify(
-              'success',
-              errorTable[`104${language}`],
-              errorTable[`101${language}`],
-            ),
-          );
-        } else {
-          dispatch(
-            notify(
-              'error',
-              errorTable[`133${language}`],
-              errorTable[`132${language}`],
-            ),
-          );
-        }
+      .then(() => {
         fetchSmsetct(searchParams);
       })
       .catch(e => {
@@ -677,25 +656,13 @@ export function postSmsetplp(params) {
 
 export function editSmecam(editParams) {
   return function(dispatch) {
-    console.log('editParamsSmecamInAction', editParams);
     doPut('smecam/edit', editParams)
       .then(data => {
         if (data.status === 200) {
-          dispatch(
-            notify(
-              'success',
-              errorTable[`104${language}`],
-              errorTable[`101${language}`],
-            ),
-          );
-        } else {
-          dispatch(
-            notify(
-              'error',
-              errorTable[`133${language}`],
-              errorTable[`132${language}`],
-            ),
-          );
+          dispatch({
+            type: EDIT_SMECAM,
+            payloda: data,
+          });
         }
       })
       .catch(e => {
@@ -703,27 +670,17 @@ export function editSmecam(editParams) {
       });
   };
 }
+
 export function editSmeca(editParams) {
   return function(dispatch) {
     console.log('editEdit', editParams);
     doPut('smeca/edit', editParams)
       .then(data => {
         if (data.status === 200) {
-          dispatch(
-            notify(
-              'success',
-              errorTable[`104${language}`],
-              errorTable[`101${language}`],
-            ),
-          );
-        } else {
-          dispatch(
-            notify(
-              'error',
-              errorTable[`133${language}`],
-              errorTable[`132${language}`],
-            ),
-          );
+          dispatch({
+            type: EDIT_SMECA,
+            payloda: data,
+          });
         }
       })
       .catch(e => {
@@ -863,7 +820,6 @@ export function fetchSmvca(id) {
     doGet(`smvca/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        console.log('dataSmecam', data);
         dispatch({
           type: FETCH_SMVCA,
           payload: data.data,
@@ -883,25 +839,29 @@ export function editSmsetplp(params) {
       .then(data => {
         dispatch(modifyLoader(false));
         if (data.status === 200) {
-          dispatch(
-            notify(
-              'success',
-              errorTable[`104${language}`],
-              errorTable[`101${language}`],
-            ),
-          );
+          dispatch(notify('success', errorTable[`104`], errorTable[`101`]));
         } else {
-          dispatch(
-            notify(
-              'error',
-              errorTable[`133${language}`],
-              errorTable[`132${language}`],
-            ),
-          );
+          dispatch(notify('error', errorTable[`133`], errorTable[`132`]));
         }
       })
       .catch(error => {
         dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchErrorTable() {
+  return function(dispatch) {
+    doGet(`error_table`)
+      .then(data => {
+        console.log('error', data.data.data);
+        dispatch({
+          type: FETCH_ERROR_TABLE,
+          payload: data.data.data,
+        });
+      })
+      .catch(error => {
         handleError(error, dispatch);
       });
   };

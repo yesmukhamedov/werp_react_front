@@ -26,8 +26,10 @@ const Smvca = props => {
     intl: { messages },
     fetchServAppStatus,
     clearDynObjService,
-    id = 1900,
   } = props;
+
+  const url = window.location.search;
+  const id = url.slice(url.indexOf('=') + 1);
 
   useEffect(() => {
     clearDynObjService();

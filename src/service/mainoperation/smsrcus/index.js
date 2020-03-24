@@ -8,7 +8,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import OutputErrors from '../../../general/error/outputErrors';
 import {
   fetchSmsrcus,
-  fetchTovarCategorys,
   clearDynObjService,
   fetchContractStatus,
 } from '../../serviceAction';
