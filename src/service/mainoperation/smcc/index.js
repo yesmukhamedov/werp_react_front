@@ -26,6 +26,7 @@ import {
 } from '../../../reference/f4/f4_action';
 
 import OutputErrors from '../../../general/error/outputErrors';
+import { errorTableText } from '../../../utils/helpers';
 import DatePicker from 'react-datepicker';
 import { injectIntl } from 'react-intl';
 import moment from 'moment';
@@ -95,7 +96,6 @@ function Smcc(props) {
   const [phoneF4ModalOpen, setPhoneF4ModalOpen] = useState(false);
   const [isLoadingMatnrList, setIsLoadingMatnrList] = useState(false);
   const [error, setError] = useState([]);
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 
   const {
     companyOptions = [],
@@ -209,10 +209,10 @@ function Smcc(props) {
             .filter(
               item =>
                 (item.bukrs == wa.bukrs &&
-                  item.business_area_id == waSelectedBranch.businessareaid) ||
-                (item.bukrs == wa.bukrs &&
-                  item.businessareaid == 4 &&
-                  waSelectedBranch.branchId == 210),
+                  item.business_area_id === waSelectedBranch.businessareaid) ||
+                (item.bukrs === wa.bukrs &&
+                  item.businessareaid === 4 &&
+                  waSelectedBranch.branchId === 210),
             )
             .map(item => {
               return {
@@ -419,25 +419,25 @@ function Smcc(props) {
   const validate = () => {
     const errors = [];
     if (contract.bukrs === '') {
-      errors.push(errorTable[`5${language}`]);
+      errors.push(errorTableText(5));
     }
     if (contract.branchId === '') {
-      errors.push(errorTable[`7${language}`]);
+      errors.push(errorTableText(7));
     }
     if (contract.servBranchId === '') {
-      errors.push(errorTable[`7${language}`]);
+      errors.push(errorTableText(168));
     }
     if (contract.contractTypeId === '') {
-      errors.push(errorTable[`17${language}`]);
+      errors.push(errorTableText(17));
     }
     if (contract.customerId === '') {
-      errors.push(errorTable[`9${language}`]);
+      errors.push(errorTableText(9));
     }
     if (contract.tovarSerial === '') {
-      errors.push(errorTable[`21${language}`]);
+      errors.push(errorTableText(21));
     }
     if (contract.addrServiceId === '') {
-      errors.push(errorTable[`118${language}`]);
+      errors.push(errorTableText(118));
     }
     setError(() => errors);
   };

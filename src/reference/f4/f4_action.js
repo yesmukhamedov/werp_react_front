@@ -4,6 +4,7 @@ import {
   notify,
 } from '../../general/notification/notification_action';
 import { modifyLoader } from '../../general/loader/loader_action';
+import { errorTableText } from '../../utils/helpers';
 
 export const F4_FETCH_MATNR_LIST = 'F4_FETCH_MATNR_LIST';
 export const F4_CLEAR_MATNR_LIST = 'F4_CLEAR_MATNR_LIST';
@@ -818,13 +819,7 @@ export function f4PostPhone(getData, fetchPhone) {
           type: F4_POST_PHONE,
           payload: data,
         });
-        dispatch(
-          notify(
-            'success',
-            errorTable[`101${language}`],
-            errorTable[`104${language}`],
-          ),
-        );
+        dispatch(notify('success', errorTableText(101), errorTableText(104)));
         fetchPhone();
       })
       .catch(error => {
@@ -843,13 +838,7 @@ export function f4UpdatePhone(data, fetchPhone) {
           type: F4_UPDATE_PHONE,
           payload: data,
         });
-        dispatch(
-          notify(
-            'success',
-            errorTable[`101${language}`],
-            errorTable[`104${language}`],
-          ),
-        );
+        dispatch(notify('success', errorTableText(101), errorTableText(104)));
         fetchPhone();
         f4FetchPhoneHistory();
       })
@@ -860,7 +849,6 @@ export function f4UpdatePhone(data, fetchPhone) {
   };
 }
 export function f4DeletePhone(data, fetchPhone) {
-  console.log(data);
   return function(dispatch) {
     doDelete('phone/delete', { data })
       .then(data => {
@@ -869,13 +857,7 @@ export function f4DeletePhone(data, fetchPhone) {
         dispatch({
           type: F4_DELETE_PHONE,
         });
-        dispatch(
-          notify(
-            'success',
-            errorTable[`133${language}`],
-            errorTable[`132${language}`],
-          ),
-        );
+        dispatch(notify('success', errorTableText(101), errorTableText(104)));
         fetchPhone();
         f4FetchPhoneHistory();
       })

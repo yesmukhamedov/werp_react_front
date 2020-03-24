@@ -23,6 +23,7 @@ import {
 } from '../../serviceAction';
 
 import OutputErrors from '../../../general/error/outputErrors';
+import { errorTableText } from '../../../utils/helpers';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import './smregc.css';
@@ -44,7 +45,6 @@ function Smregc(props) {
   const url = window.location.search;
   const contractNumber = url.slice(url.indexOf('=') + 1);
   const userName = localStorage.getItem('username');
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const callD = localStorage.getItem('callDirection');
 
   useEffect(() => {
@@ -120,17 +120,17 @@ function Smregc(props) {
 
   const validate = () => {
     const errors = [];
-    if (call.callDireaction === '') {
-      errors.push(errorTable['hi there']);
+    if (call.callDirection === '') {
+      errors.push(errorTableText(171));
     }
     if (call.callStatusId === '') {
-      errors.push(errorTable['hi there']);
+      errors.push(errorTableText(170));
     }
     if (call.description === '') {
-      errors.push(errorTable['hi there']);
+      errors.push(errorTableText(169));
     }
     if (scheduleCall && call.description2 === '') {
-      errors.push(errorTable['hi there']);
+      errors.push(errorTableText(169));
     }
     setError(() => errors);
   };

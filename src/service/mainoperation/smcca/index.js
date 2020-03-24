@@ -19,6 +19,7 @@ import {
   postSmccaCreateApp,
 } from '../../serviceAction';
 import OutputErrors from '../../../general/error/outputErrors';
+import { errorTableText } from '../../../utils/helpers';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'moment/locale/ru';
@@ -41,7 +42,6 @@ function Smcca(props) {
   const [callDate, setCallDate] = useState(moment(new Date()));
   const [error, setError] = useState([]);
 
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const url = window.location.search;
   const contractNumber = url.slice(url.indexOf('=') + 1);
   const userName = localStorage.getItem('username');
@@ -163,19 +163,10 @@ function Smcca(props) {
   const validate = () => {
     const errors = [];
     if (request.servAppType === '') {
-      errors.push(errorTable['hi there']);
-    }
-    if (branchId === '') {
-      errors.push(errorTable['hi there']);
-    }
-    if (bukrs === '') {
-      errors.push(errorTable['hi there']);
-    }
-    if (customerId === '') {
-      errors.push(errorTable['hi there']);
+      errors.push(errorTableText(166));
     }
     if (request.description === '') {
-      errors.push(errorTable['hi there']);
+      errors.push(errorTableText(169));
     }
     setError(() => errors);
   };

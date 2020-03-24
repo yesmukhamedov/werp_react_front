@@ -78,8 +78,6 @@ function Smcuspor(props) {
     f5MtLeft,
   } = clientHistory.contractInfo;
 
-  // console.log(startDate.format('YYYY-MM-DD, HH:MM'));
-  console.log(clientHistory.contractInfo);
   useEffect(() => {
     if (contractNumber) {
       props.fetchSmcusporClientHistory({ contractNumber });
