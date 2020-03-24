@@ -17,6 +17,7 @@ import { fetchServicePacketPlan } from '../smopspAction';
 import { fetchServiceTypeId } from '../../smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
+import ModalColumns from './../../../../utils/ModalColumns';
 
 const ServiceFilterVC = props => {
   const {
@@ -299,6 +300,10 @@ const ServiceFilterVC = props => {
               <Button onClick={handleClickApply} color="blue">
                 Применить
               </Button>
+            </Grid.Column>
+
+            <Grid.Column>
+              <ModalColumns columns={columns} />
             </Grid.Column>
           </Grid.Row>
         </Grid>

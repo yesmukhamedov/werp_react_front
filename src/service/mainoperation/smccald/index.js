@@ -17,6 +17,7 @@ import {
   f4FetchConTypeList,
 } from '../../../reference/f4/f4_action';
 import OutputErrors from '../../../general/error/outputErrors';
+import { errorTableText } from '../../../utils/helpers';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'moment/locale/ru';
@@ -136,13 +137,16 @@ function Smccald(props) {
   const validate = () => {
     const errors = [];
     if (request.appType === '') {
-      errors.push(errorTable['hi there']);
+      errors.push(errorTableText(166));
     }
     if (request.branchId === '') {
-      errors.push(errorTable['hi there']);
+      errors.push(errorTableText(7));
     }
     if (request.bukrs === '') {
-      errors.push(errorTable['hi there']);
+      errors.push(errorTableText(5));
+    }
+    if (request.requestTypeId === '') {
+      errors.push(errorTableText(17));
     }
     setError(() => errors);
   };
