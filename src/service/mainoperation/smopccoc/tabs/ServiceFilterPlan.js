@@ -24,6 +24,7 @@ import ModalColumns from '../../../../utils/ModalColumns';
 import { momentToStringYYYYMMDD } from '../../../../utils/helpers';
 import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
 import ColumnsReactTable from '../components/ColumnsReactTable';
+import { LinkToSmcuspor } from '../../../../utils/outlink';
 require('moment/locale/ru');
 require('moment/locale/tr');
 
@@ -140,11 +141,11 @@ const ServiceFilterPlan = props => {
     {
       Header: 'Просмотр',
       accessor: '16',
-      Cell: (
+      Cell: original => (
         <div style={{ textAlign: 'center' }}>
-          <Popup
-            content="Просмотр сервис карту"
-            trigger={<Button color="green" icon="address card" />}
+          <LinkToSmcuspor
+            contractNumber={original.row.contractNumber}
+            text="Просмотр"
           />
         </div>
       ),
@@ -278,6 +279,7 @@ const ServiceFilterPlan = props => {
                 selection
                 placeholder="Страна"
                 onChange={(e, o) => onInputChange(o, 'country')}
+                wrapSelection="false"
               />
             </Grid.Column>
             <Grid.Column>
@@ -288,6 +290,7 @@ const ServiceFilterPlan = props => {
                 selection
                 placeholder="Компания"
                 onChange={(e, o) => onInputChange(o, 'bukrs')}
+                wrapSelection="false"
               />
             </Grid.Column>
             <Grid.Column>
@@ -298,6 +301,7 @@ const ServiceFilterPlan = props => {
                 placeholder="Филиал"
                 onChange={(e, o) => onInputChange(o, 'branchId')}
                 options={serBranchOptions}
+                wrapSelection="false"
               />
             </Grid.Column>
 

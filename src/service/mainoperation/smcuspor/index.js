@@ -32,7 +32,7 @@ function Smcuspor(props) {
   const emptyHistory = {
     activeButton: true,
     reactColumns: 'all',
-    startDate,
+    startDate: '',
   };
 
   const [history, setHistory] = useState({ ...emptyHistory });

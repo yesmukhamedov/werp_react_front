@@ -23,6 +23,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
 import { momentToStringYYYYMMDD } from '../../../../utils/helpers';
+import { LinkToSmcuspor } from '../../../../utils/outlink';
 require('moment/locale/ru');
 require('moment/locale/tr');
 
@@ -146,11 +147,11 @@ const MyApplicationExodus = props => {
     },
     {
       Header: 'История клиента',
-      Cell: (
+      Cell: original => (
         <div style={{ textAlign: 'center' }}>
-          <Popup
-            content="Просмотр истории"
-            trigger={<Button icon="address card" />}
+          <LinkToSmcuspor
+            contractNumber={original.row.contractNumber}
+            text="Просмотр"
           />
         </div>
       ),
