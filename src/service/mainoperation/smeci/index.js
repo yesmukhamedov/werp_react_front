@@ -93,6 +93,11 @@ function Smeci(props) {
       props.fetchSmeciContractInfo({ contractNumber });
     }
   }, [contractNumber]);
+  useEffect(() => {
+    if (!phoneF4ModalOpen) {
+      props.fetchSmeciContractInfo({ contractNumber });
+    }
+  }, [!phoneF4ModalOpen]);
 
   useEffect(() => {
     if (Object.entries(branchOptions).length !== 0 && bukrs) {
