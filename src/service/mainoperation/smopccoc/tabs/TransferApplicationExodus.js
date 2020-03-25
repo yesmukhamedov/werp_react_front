@@ -20,10 +20,10 @@ import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideW
 import ModalColumns from '../../../../utils/ModalColumns';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment';
-import { momentToStringYYYYMMDD } from '../../../../utils/helpers';
-require('moment/locale/ru');
-require('moment/locale/tr');
+import {
+  momentToStringYYYYMMDD,
+  stringYYYYMMDDToMoment,
+} from '../../../../utils/helpers';
 
 const TransferApplicationExodus = props => {
   const {
@@ -45,8 +45,6 @@ const TransferApplicationExodus = props => {
     transfer,
   } = props;
 
-  console.log('transfer', transfer);
-
   const emptyParam = {
     country: '',
     bukrs: '',
@@ -58,95 +56,104 @@ const TransferApplicationExodus = props => {
     date: '',
   };
 
-  //Date option
-  const [date, setDate] = useState(moment(new Date()));
-  useEffect(() => {
-    setParam({
-      ...param,
-      date: momentToStringYYYYMMDD(date),
-    });
-  }, [date]);
-
-  //END Date option
   const [param, setParam] = useState({ ...emptyParam });
 
-  const columnsSrlsm = [
+  const initialColumns = [
     {
       Header: 'Id',
       accessor: 'id',
+      checked: true,
     },
     {
       Header: 'CN',
       accessor: 'contractNumber',
+      checked: true,
     },
     {
       Header: 'Заводской номер',
       accessor: 'tovarSn',
+      checked: true,
     },
     {
       Header: 'Дата продажи',
       accessor: 'contractDate',
+      checked: true,
     },
     {
       Header: 'Дата переноса',
       accessor: '888',
+      checked: true,
     },
     {
       Header: 'Дата заявки',
       accessor: '999',
+      checked: true,
     },
     {
       Header: 'ФИО клиента',
       accessor: 'customerFIO',
+      checked: true,
     },
     {
       Header: 'Адрес',
       accessor: 'address',
+      checked: true,
     },
     {
       Header: 'Телефон',
       accessor: 'address',
+      checked: true,
     },
     {
       Header: 'ФИО мастер',
       accessor: 'dealerFIO',
+      checked: true,
     },
     {
       Header: 'F1',
       accessor: 'f1',
+      checked: true,
     },
     {
       Header: 'F2',
       accessor: 'f2',
+      checked: true,
     },
     {
       Header: 'F3',
       accessor: 'f3',
+      checked: true,
     },
     {
       Header: 'F4',
       accessor: 'f4',
+      checked: true,
     },
     {
       Header: 'F5',
       accessor: 'f5',
+      checked: true,
     },
     {
       Header: 'Категория',
       accessor: 'crmCategory',
+      checked: true,
     },
     {
       Header: 'Статус заявки',
       accessor: '15',
+      checked: true,
     },
     {
       Header: 'Заявка',
       accessor: '898',
+      checked: true,
       Cell: ({ original }) => <h1>{original.contractNumber}</h1>,
     },
     {
       Header: 'Просмотр',
       accessor: '16',
+      checked: true,
       Cell: (
         <div style={{ textAlign: 'center' }}>
           <Popup
@@ -157,7 +164,12 @@ const TransferApplicationExodus = props => {
       ),
     },
   ];
-  const [columns, setColumns] = useState([...columnsSrlsm]);
+
+  const [columns, setColumns] = useState([...initialColumns]);
+
+  const finishColumns = data => {
+    setColumns([...data]);
+  };
 
   const [serBranchOptions, setSerBranchOptions] = useState([]);
 
@@ -267,6 +279,7 @@ const TransferApplicationExodus = props => {
           <Form.Select
             fluid
             label="Страна"
+            placeholder="Страна"
             options={countryOptions}
             onChange={(e, o) => onInputChange(o, 'country')}
             className="alignBottom"
@@ -275,6 +288,7 @@ const TransferApplicationExodus = props => {
           <Form.Select
             fluid
             label="Компания"
+            placeholder="Компания"
             options={companyOptions}
             onChange={(e, o) => onInputChange(o, 'bukrs')}
             className="alignBottom"
@@ -283,6 +297,7 @@ const TransferApplicationExodus = props => {
           <Form.Select
             fluid
             label="Филиал"
+            placeholder="Филиал"
             options={serBranchOptions}
             onChange={(e, o) => onInputChange(o, 'branchId')}
             className="alignBottom"
@@ -291,6 +306,7 @@ const TransferApplicationExodus = props => {
           <Form.Select
             fluid
             label="Фин. Статус"
+            placeholder="Фин. Статус"
             options={finStatusOption}
             onChange={(e, o) => onInputChange(o, 'finStatus')}
             className="alignBottom"
@@ -299,6 +315,7 @@ const TransferApplicationExodus = props => {
           <Form.Select
             fluid
             label="Статус сервиса"
+            placeholder="Статус сервиса"
             options={serviceDateTypeOptions}
             onChange={(e, o) => onInputChange(o, 'serviceDateType')}
             className="alignBottom"
@@ -306,6 +323,7 @@ const TransferApplicationExodus = props => {
 
           <Form.Select
             label="Категория товара"
+            placeholder="Категория товара"
             options={categoryOptions}
             onChange={(e, o) => onInputChange(o, 'categoryId')}
             className="alignBottom"
@@ -313,6 +331,7 @@ const TransferApplicationExodus = props => {
 
           <Form.Select
             label="Конфигурация"
+            placeholder="Конфигурация"
             options={configurationOptions}
             onChange={(e, o) => onInputChange(o, 'configuration')}
             className="alignBottom"
@@ -325,9 +344,10 @@ const TransferApplicationExodus = props => {
               autoComplete="off"
               locale={language}
               dropdownMode="select" //timezone="UTC"
-              selected={date}
-              onChange={date => setDate(date)}
-              dateFormat="DD/MM/YYYY"
+              selected={stringYYYYMMDDToMoment(param.date)}
+              onChange={date =>
+                setParam({ ...param, date: momentToStringYYYYMMDD(date) })
+              }
               maxDate={new Date()}
             />
           </div>
@@ -339,31 +359,15 @@ const TransferApplicationExodus = props => {
           >
             Применить
           </Form.Button>
+
+          <Form.Field className="alignBottom">
+            <ModalColumns
+              columns={initialColumns}
+              finishColumns={finishColumns}
+            />
+          </Form.Field>
         </Form.Group>
       </Form>
-      <Segment>
-        <Grid>
-          <Grid.Row columns={9}>
-            {/* <Grid.Column>
-              <label>{messages['Form.DateFrom']}</label>
-              <DatePicker
-                className="datePicker"
-                autoComplete="off"
-                locale={language}
-                dropdownMode="select" //timezone="UTC"
-                selected={date}
-                onChange={date => setDate(date)}
-                dateFormat="DD/MM/YYYY"
-                maxDate={new Date()}
-              />
-            </Grid.Column> */}
-
-            <Grid.Column>
-              <ModalColumns columns={columns} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Segment>
       <ReactTableServerSideWrapper data={transfer} columns={columns} />
     </Container>
   );

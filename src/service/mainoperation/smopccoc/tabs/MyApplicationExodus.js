@@ -1,17 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import {
-  Segment,
-  Container,
-  Dropdown,
-  Grid,
-  Button,
-  Table,
-  Input,
-  Popup,
-  Select,
-} from 'semantic-ui-react';
+import { Form, Container } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
 import { fetchServiceTypeId } from '../../../mainoperation/smcs/smcsAction';
@@ -21,11 +11,11 @@ import { fetchMyApplicationExodus } from '../smopccocAction';
 import ModalColumns from '../../../../utils/ModalColumns';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment';
-import { momentToStringYYYYMMDD } from '../../../../utils/helpers';
+import {
+  momentToStringYYYYMMDD,
+  stringYYYYMMDDToMoment,
+} from '../../../../utils/helpers';
 import { LinkToSmcuspor } from '../../../../utils/outlink';
-require('moment/locale/ru');
-require('moment/locale/tr');
 
 const MyApplicationExodus = props => {
   const {
@@ -37,7 +27,7 @@ const MyApplicationExodus = props => {
   const {
     serviceTypeId = [],
     srlsmList,
-    companyOptions,
+    companyOptions = [],
     countryOptions,
     category,
     serviceStatusList = [],
@@ -45,8 +35,6 @@ const MyApplicationExodus = props => {
     branches,
     myApplication,
   } = props;
-
-  console.log('myApplication', myApplication);
 
   const emptyParam = {
     country: '',
@@ -58,95 +46,107 @@ const MyApplicationExodus = props => {
     dateStart: '',
     dateEnd: '',
   };
-  const date = new Date();
-  const y = date.getFullYear();
-  const m = date.getMonth();
+
   const [param, setParam] = useState({ ...emptyParam });
-  const [startDates, setStartDates] = useState(moment(new Date(y - 1, m, 1)));
-  const [endDates, setEndDates] = useState(moment(new Date()));
-  const columnsSrlsm = [
+
+  console.log('PARAM MY', param);
+  const categoryOptions = [
+    { key: 1, text: 'Зеленый', value: 'Зеленый' },
+    { key: 2, text: 'Желтый', value: 'Желтый' },
+    { key: 3, text: 'Красный', value: 'Красный' },
+    { key: 4, text: 'Черный', value: 'Черный' },
+  ];
+
+  const initialColumns = [
+    {
+      Header: 'ID',
+      accessor: 'id',
+      checked: true,
+    },
     {
       Header: 'Филиал',
       accessor: 'recommenderId',
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
-    },
-    {
-      Header: 'Дата',
-      accessor: 'recommender',
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
-    },
-    {
-      Header: 'CN',
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
+      checked: true,
     },
     {
       Header: 'Заводской номер',
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
+      accessor: '45',
+      checked: true,
+    },
+    {
+      Header: 'Дата продажи',
+      accessor: '45',
+      checked: true,
+    },
+    {
+      Header: 'Дата заявки',
+      accessor: '477',
+      checked: true,
     },
     {
       Header: 'ФИО клиента',
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
+      accessor: '46',
+      checked: true,
     },
     {
-      Header: 'Статус сервиса',
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
+      Header: 'Адрес',
+      accessor: '47',
+      checked: true,
     },
     {
-      Header: 'Мастер',
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
+      Header: 'Телефон',
+      accessor: '48',
+      checked: true,
     },
     {
-      Header: 'Оператор',
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
+      Header: 'ФИО мастера',
+      accessor: '49',
+      checked: true,
     },
     {
-      Header: 'Вид сервиса',
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
+      Header: 'F1',
+      accessor: '50',
+      checked: true,
     },
     {
-      Header: 'Сумма',
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
+      Header: 'F2',
+      accessor: '50',
+      checked: true,
     },
     {
-      Header: 'Оплачено',
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
+      Header: 'F3',
+      accessor: '50',
+      checked: true,
     },
     {
-      Header: 'Остаток',
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
+      Header: 'F4',
+      accessor: '50',
+      checked: true,
     },
     {
-      Header: 'Сервис №',
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
+      Header: 'F5',
+      accessor: '50',
+      checked: true,
+    },
+    {
+      Header: 'Категория',
+      accessor: '505',
+      checked: true,
+    },
+    {
+      Header: 'Статус заявки',
+      accessor: '5088',
+      checked: true,
+    },
+    {
+      Header: '№ заявки',
+      accessor: '5850',
+      checked: true,
     },
     {
       Header: 'История клиента',
+      accessor: '5885',
+      checked: true,
       Cell: original => (
         <div style={{ textAlign: 'center' }}>
           <LinkToSmcuspor
@@ -160,21 +160,12 @@ const MyApplicationExodus = props => {
       minWidth: 100,
     },
   ];
-  const [columns, setColumns] = useState([...columnsSrlsm]);
 
   const [serBranchOptions, setSerBranchOptions] = useState([]);
 
   useEffect(() => {
     fetchServiceTypeId();
   }, []);
-
-  useEffect(() => {
-    setParam({
-      ...param,
-      dateStart: momentToStringYYYYMMDD(startDates),
-      dateEnd: momentToStringYYYYMMDD(endDates),
-    });
-  }, [startDates, endDates]);
 
   useEffect(() => {
     const getBranchByBukrs = (branches, bukrs) => {
@@ -199,14 +190,6 @@ const MyApplicationExodus = props => {
 
     setSerBranchOptions(getBranchByBukrs(branches, param.bukrs));
   }, [param.bukrs]);
-
-  const categoryOptions = category.map(item => {
-    return {
-      key: item.id,
-      text: item.name,
-      value: item.id,
-    };
-  });
 
   const serviceTypeOptions = serviceTypeId.map(item => {
     return {
@@ -263,108 +246,106 @@ const MyApplicationExodus = props => {
     });
   };
 
+  const [columns, setColumns] = useState([...initialColumns]);
+
+  const finishColumns = data => {
+    setColumns([...data]);
+  };
+
   return (
     <Container fluid className="containerMargin">
-      <Segment>
-        <Grid>
-          <Grid.Row columns={9}>
-            <Grid.Column>
-              <label>Страна</label>
-              <Dropdown
-                options={countryOptions}
-                fluid
-                selection
-                placeholder="Страна"
-                onChange={(e, o) => onInputChange(o, 'country')}
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Компания</label>
-              <Dropdown
-                options={companyOptions}
-                fluid
-                selection
-                placeholder="Компания"
-                onChange={(e, o) => onInputChange(o, 'bukrs')}
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Филиал</label>
-              <Dropdown
-                fluid
-                selection
-                placeholder="Филиал"
-                onChange={(e, o) => onInputChange(o, 'branchId')}
-                options={serBranchOptions}
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Категория товара</label>
-              <Dropdown
-                options={categoryOptions}
-                onChange={(e, o) => onInputChange(o, 'categoryId')}
-                fluid
-                selection
-                placeholder="Категория товара"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Вид сервиса</label>
-              <Select
-                options={serviceTypeOptions}
-                onChange={(e, o) => onInputChange(o, 'serviceTypeId')}
-                fluid
-                selection
-                placeholder="Вид сервиса"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Статус сервиса</label>
-              <Select
-                options={serviceStatusOptions}
-                onChange={(e, o) => onInputChange(o, 'serviceStatusId')}
-                fluid
-                selection
-                placeholder="Статус сервиса"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>{messages['Form.DateFrom']}</label>
-              <DatePicker
-                className="datePicker"
-                autoComplete="off"
-                locale={language}
-                dropdownMode="select" //timezone="UTC"
-                selected={startDates}
-                onChange={date => setStartDates(date)}
-                dateFormat="DD/MM/YYYY"
-                maxDate={new Date()}
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>{messages['Form.DateTo']}</label>
-              <DatePicker
-                className="datePicker"
-                autoComplete="off"
-                locale={language}
-                dropdownMode="select" //timezone="UTC"
-                selected={endDates}
-                onChange={date => setEndDates(date)}
-                dateFormat="DD/MM/YYYY"
-                maxDate={new Date()}
-              />
-            </Grid.Column>
-            <Grid.Column verticalAlign="bottom">
-              <Button onClick={handleClickApply} color="blue">
-                Применить
-              </Button>
-            </Grid.Column>
-            <Grid.Column>
-              <ModalColumns columns={columns} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Segment>
+      <Form>
+        <Form.Group widths="equal">
+          <Form.Select
+            fluid
+            label="Страна"
+            placeholder="Страна"
+            options={countryOptions}
+            onChange={(e, o) => onInputChange(o, 'country')}
+            className="alignBottom"
+          />
+
+          <Form.Select
+            fluid
+            label="Компания"
+            placeholder="Компания"
+            options={companyOptions}
+            onChange={(e, o) => onInputChange(o, 'bukrs')}
+            className="alignBottom"
+          />
+
+          <Form.Select
+            fluid
+            label="Филиал"
+            placeholder="Филиал"
+            options={serBranchOptions}
+            onChange={(e, o) => onInputChange(o, 'branchId')}
+            className="alignBottom"
+          />
+
+          <Form.Select
+            fluid
+            label="Категория"
+            placeholder="Фин. Статус"
+            options={categoryOptions}
+            onChange={(e, o) => onInputChange(o, 'categoryId')}
+            className="alignBottom"
+          />
+
+          <Form.Select
+            fluid
+            label="Статус заявки"
+            placeholder="Статус заявки"
+            options={serviceStatusOptions}
+            onChange={(e, o) => onInputChange(o, 'serviceDateType')}
+            className="alignBottom"
+          />
+
+          <div className="flexColumn alignBottom">
+            <label>Дата с</label>
+            <DatePicker
+              className="datePicker"
+              autoComplete="off"
+              locale={language}
+              dropdownMode="select" //timezone="UTC"
+              selected={stringYYYYMMDDToMoment(param.dateStart)}
+              onChange={date =>
+                setParam({ ...param, dateStart: momentToStringYYYYMMDD(date) })
+              }
+              maxDate={new Date()}
+            />
+          </div>
+          <div className="flexColumn alignBottom">
+            <label>Дата по</label>
+            <DatePicker
+              className="datePicker"
+              autoComplete="off"
+              locale={language}
+              dropdownMode="select" //timezone="UTC"
+              selected={stringYYYYMMDDToMoment(param.dateEnd)}
+              onChange={date =>
+                setParam({ ...param, dateEnd: momentToStringYYYYMMDD(date) })
+              }
+              maxDate={new Date()}
+            />
+          </div>
+
+          <Form.Button
+            onClick={handleClickApply}
+            color="blue"
+            className="alignBottom"
+          >
+            Применить
+          </Form.Button>
+
+          <Form.Field className="alignBottom">
+            <ModalColumns
+              columns={initialColumns}
+              finishColumns={finishColumns}
+            />
+          </Form.Field>
+        </Form.Group>
+      </Form>
       <ReactTableServerSideWrapper data={srlsmList} columns={columns} />
     </Container>
   );

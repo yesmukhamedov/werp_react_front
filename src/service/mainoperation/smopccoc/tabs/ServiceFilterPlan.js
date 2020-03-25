@@ -67,7 +67,7 @@ const ServiceFilterPlan = props => {
 
   //END Date option
   const [param, setParam] = useState({ ...emptyParam });
-  const columnsSrlsm = [
+  const initialColumns = [
     {
       Header: 'Id',
       accessor: 'id',
@@ -159,10 +159,6 @@ const ServiceFilterPlan = props => {
     },
   ];
 
-  const [columns, setColumns] = useState([]);
-  const columnsChecked = columns.filter(item => item.checked == true);
-
-  console.log('columnsChecked', columnsChecked);
   const [serBranchOptions, setSerBranchOptions] = useState([]);
 
   useEffect(() => {
@@ -273,6 +269,11 @@ const ServiceFilterPlan = props => {
       return prevParam;
     });
   };
+  const [columns, setColumns] = useState([...initialColumns]);
+
+  const finishColumns = data => {
+    setColumns([...data]);
+  };
 
   return (
     <Container fluid className="containerMargin">
@@ -303,7 +304,6 @@ const ServiceFilterPlan = props => {
             placeholder="Филиал"
             onChange={(e, o) => onInputChange(o, 'branchId')}
             className="alignBottom"
-            wrapSelection
           />
           <Form.Select
             fluid
@@ -349,15 +349,15 @@ const ServiceFilterPlan = props => {
           >
             Применить
           </Form.Button>
-          <Form.Button fluid color="teal" className="alignBottom">
-            Столбцы
-          </Form.Button>
+          <Form.Field className="alignBottom">
+            <ModalColumns
+              columns={initialColumns}
+              finishColumns={finishColumns}
+            />
+          </Form.Field>
         </Form.Group>
       </Form>
-      <ReactTableServerSideWrapper
-        data={serviceFilterPlan}
-        columns={columnsChecked}
-      />
+      <ReactTableServerSideWrapper data={serviceFilterPlan} columns={columns} />
     </Container>
   );
 };
