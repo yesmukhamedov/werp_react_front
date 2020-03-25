@@ -190,3 +190,13 @@ export const LinkToSmcuspor = props => {
     </a>
   );
 };
+
+export const LinkToSmecam = props => {
+  const { id } = props;
+  const url = `smecam?id=${id}`;
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      {id}
+    </a>
+  );
+};

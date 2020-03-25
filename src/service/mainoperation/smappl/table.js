@@ -2,11 +2,11 @@ import React, { useState, useEffect, Fragment } from 'react';
 import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
 import 'react-table/react-table.css';
 import { injectIntl } from 'react-intl';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button, Icon, Header } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import Masters from './Masters';
 import { fetchAppList } from '../../serviceAction';
-import { LinkToSmcuspor } from '../../../utils/outlink';
+import { LinkToSmcuspor, LinkToSmecam } from '../../../utils/outlink';
 import '../../service.css';
 
 const Table = props => {
@@ -36,15 +36,7 @@ const Table = props => {
             filterable: false,
             Cell: ({ row }) => (
               <div style={{ textAlign: 'center' }}>
-                <LinkToSmcuspor /* props={{ contractNumber: }} */>
-                  <Button
-                    icon
-                    color="instagram"
-                    onClick={() => console.log(row)}
-                  >
-                    <Icon name="id card outline"></Icon>
-                  </Button>
-                </LinkToSmcuspor>
+                <LinkToSmcuspor contractNumber={row._original.contractNumber} />
               </div>
             ),
           };
@@ -62,6 +54,17 @@ const Table = props => {
                   request={row._original}
                   searchParams={searchParams}
                 />
+              </div>
+            ),
+          };
+        } else if (headers[t].Header === `№ ${messages['Applications']}`) {
+          p[g] = {
+            Header: headers[t].Header,
+            ...columnsName[t],
+            filterable: false,
+            Cell: ({ row }) => (
+              <div style={{ textAlign: 'center' }}>
+                <LinkToSmecam id={row._original.id} />
               </div>
             ),
           };
