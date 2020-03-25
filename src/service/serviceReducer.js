@@ -24,6 +24,7 @@ import {
   FETCH_TOVAR_CATEGORYS,
   FETCH_CONTRACT_STATUS,
   FETCH_SMECI,
+  POST_SMECI,
   FETCH_SERV_CRM_CALL_STATUS,
   POST_SMREGC_CREATE_CALL,
   FETCH_APP_STATUS,
@@ -200,6 +201,9 @@ export default function(state = INITIAL_STATE, action) {
 
     case FETCH_SMECI: {
       return { ...state, smeciContractInfo: action.payload.data.contractInfo };
+    }
+    case POST_SMECI: {
+      return { ...state, smeciContractInfo: {} };
     }
 
     case FETCH_SERV_CRM_CALL_STATUS: {

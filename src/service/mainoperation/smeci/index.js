@@ -67,6 +67,7 @@ function Smeci(props) {
     fullPhone,
     servCrmCategory,
     contractDate,
+    manual,
     installmentDate,
     dealerName,
     fitterName,
@@ -110,6 +111,7 @@ function Smeci(props) {
 
       setContract({
         ...contract,
+        manual: manual,
         f1Mt: f1Mt,
         f2Mt: f2Mt,
         f3Mt: f3Mt,
@@ -505,9 +507,9 @@ function Smeci(props) {
                               <Input
                                 size="small"
                                 fluid
-                                value={`${warranty ? warranty : ''} / ${
+                                value={`${
                                   warrantyEndedMonths ? warrantyEndedMonths : ''
-                                }`}
+                                } / ${warranty ? warranty : ''}`}
                               />
                             </Table.Cell>
                           </Table.Row>
