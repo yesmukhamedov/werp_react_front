@@ -32,7 +32,7 @@ function Smcuspor(props) {
   const emptyHistory = {
     activeButton: true,
     reactColumns: 'all',
-    startDate,
+    startDate: '',
   };
 
   const [history, setHistory] = useState({ ...emptyHistory });
@@ -712,6 +712,7 @@ function Smcuspor(props) {
                   nextText={messages['Table.Next']}
                   className="-striped -highlight"
                   pageSizeOptions={[20, 30, 40]}
+                  showPagination={true}
                   loadingText={messages['Table.Next']}
                   noDataText={messages['Table.NoData']}
                   rowsText={messages['Table.Rows']}

@@ -6,7 +6,7 @@ import { Button, Icon } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import Masters from './Masters';
 import { fetchAppList } from '../../serviceAction';
-
+import { LinkToSmcuspor } from '../../../utils/outlink';
 import '../../service.css';
 
 const Table = props => {
@@ -36,15 +36,15 @@ const Table = props => {
             filterable: false,
             Cell: ({ row }) => (
               <div style={{ textAlign: 'center' }}>
-                <Button
-                  as="a"
-                  to="/service/mainoperation/smcuspor?contractNumber="
-                  icon
-                  color="instagram"
-                  onClick={() => console.log(row)}
-                >
-                  <Icon name="id card outline"></Icon>
-                </Button>
+                <LinkToSmcuspor /* props={{ contractNumber: }} */>
+                  <Button
+                    icon
+                    color="instagram"
+                    onClick={() => console.log(row)}
+                  >
+                    <Icon name="id card outline"></Icon>
+                  </Button>
+                </LinkToSmcuspor>
               </div>
             ),
           };

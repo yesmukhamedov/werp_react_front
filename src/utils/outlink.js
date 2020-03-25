@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { LEGACY_URL } from '../utils/constants';
-import { Icon } from 'semantic-ui-react';
+import { Icon, Popup } from 'semantic-ui-react';
 
 export const LinkToDmsc03 = props => {
   const { snNum } = props;
@@ -178,5 +178,15 @@ export const LinkToSmdisTabSmvod = props => {
     <div style={{ textAlign: 'center' }}>
       <Icon color="teal" link name="search" onClick={clickViewService} />
     </div>
+  );
+};
+
+export const LinkToSmcuspor = props => {
+  const { contractNumber = '', text } = props;
+  const url = `smcuspor?contractNumber=${contractNumber}`;
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      <Icon color="teal" name="history" />
+    </a>
   );
 };

@@ -36,6 +36,7 @@ const ServiceFilterVC = props => {
     fetchServicePacketPlan,
     dynamicObject = [],
     srlsmList = [],
+    columns = [],
   } = props;
   const emptyParam = {
     country: '',
@@ -74,7 +75,7 @@ const ServiceFilterVC = props => {
     setSerBranchOptions(getBranchByBukrs(branches, param.bukrs));
   }, [param.bukrs]);
 
-  const [columns, setColumns] = useState([
+  const initialColumns = [
     {
       Header: '№',
       accessor: '1',
@@ -161,7 +162,7 @@ const ServiceFilterVC = props => {
       status: true,
       id: 14,
     },
-  ]);
+  ];
 
   const filterColumns = columns.filter(item => item.status === true);
   const columnsOption = columns.map(item => {
@@ -303,12 +304,12 @@ const ServiceFilterVC = props => {
             </Grid.Column>
 
             <Grid.Column>
-              <ModalColumns columns={columns} />
+              <ModalColumns columns={initialColumns} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
       </Segment>
-      <ReactTableServerSideWrapper data={srlsmList} columns={filterColumns} />
+      <ReactTableServerSideWrapper data={srlsmList} columns={columns} />
     </Container>
   );
 };

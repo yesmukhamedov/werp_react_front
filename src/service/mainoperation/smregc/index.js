@@ -85,8 +85,8 @@ function Smregc(props) {
 
   const handleSubmit = () => {
     validate();
-    const crmHistoryDate = callDate.format('DD.MM.YYYY hh:mm:ss');
-    const crmScheduleDate = appointDate.format('DD.MM.YYYY hh:mm:ss');
+    const crmHistoryDate = callDate.format('DD.MM.YYYY HH:mm:ss');
+    const crmScheduleDate = appointDate.format('DD.MM.YYYY HH:mm:ss');
 
     const { tovarSn, branchId, bukrs } = props.location.state;
     const { callDirection, callStatusId, description, description2 } = call;
