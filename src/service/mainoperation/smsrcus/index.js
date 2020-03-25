@@ -52,6 +52,8 @@ const Smsrcus = props => {
   const date = new Date();
   const y = date.getFullYear();
   const m = date.getMonth();
+
+  let page = dynamicObject.totalPages ? dynamicObject.totalPages : 1;
   const [startDate, setStartDate] = useState(
     momentToStringYYYYMMDD(moment(new Date(y - 1, m, 1))),
   );
@@ -95,8 +97,7 @@ const Smsrcus = props => {
     if (errs === null || errs === undefined || errs.length === 0) {
       let contractDateFrom = startDate,
         contractDateTo = endDate;
-
-      fetchSmsrcus({ ...searchParams, contractDateFrom, contractDateTo });
+      fetchSmsrcus({ ...searchParams, contractDateFrom, contractDateTo, page });
     }
     setErrors(() => errs);
   };

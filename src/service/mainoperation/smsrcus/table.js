@@ -13,10 +13,13 @@ const DataTable = props => {
     messages,
     headersName,
   } = props;
+  let page,
+    oldPage = dynamicObject.totalPages ? dynamicObject.totalPages : 1;
   const getColumnsForTable = columnsName => {
     //select columns which show === true
     let columnsForShow = [];
     let Header;
+
     // i - index for columnsName j- index for
     for (let i = 0, j = 0; i < columnsName.length; i++) {
       if (columnsName[i].show) {
@@ -75,7 +78,8 @@ const DataTable = props => {
         searchParam={searchParams}
         showPagination={true}
         requestData={param => {
-          fetchSmsrcus({ ...param });
+          page = dynamicObject.totalPages;
+          fetchSmsrcus({ ...param, page });
         }}
         turnOnReactFetch={turnOnReactFetch}
         className="-striped -highlight"

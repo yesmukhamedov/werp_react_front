@@ -56,7 +56,6 @@ const Smsetplp = props => {
     fetchOperationTypeList();
   }, []);
 
-  console.log('operationTypeList', operationTypeList);
   const [bukrs, setBukrs] = useState({});
   const [dateAt, setDateAt] = useState(momentToStringYYYYMMDD(moment()));
   const [selectedBranches, setSelectedBranches] = useState([]);
@@ -483,6 +482,8 @@ const Smsetplp = props => {
         getCountryOptions={getCountryOptions}
         getBranchOptions={getBranchOptions}
         editSmsetplp={editSmsetplp}
+        getOperationList={getOperationList}
+        operationTypeList={operationTypeList}
       />
 
       <BranchF4Advanced

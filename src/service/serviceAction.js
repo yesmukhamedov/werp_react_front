@@ -522,6 +522,7 @@ export function postSmccaCreateApp(application, back) {
 
 export function fetchSmsrcus(searchParams) {
   return function(dispatch) {
+    console.log('object', searchParams);
     dispatch(modifyLoader(true));
     doGet('smsrcus/list', searchParams)
       .then(({ data }) => {

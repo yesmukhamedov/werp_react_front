@@ -13,6 +13,7 @@ import {
   Input,
   Dropdown,
 } from 'semantic-ui-react';
+import 'react-table/react-table.css';
 
 const List = props => {
   const {
@@ -24,6 +25,8 @@ const List = props => {
     getCountryOptions,
     getBranchOptions,
     editSmsetplp,
+    getOperationList,
+    operationTypeList,
   } = props;
 
   const [editOpen, setEditOpen] = useState(false);
@@ -194,6 +197,7 @@ const List = props => {
         columns={columns}
         defaultPageSize={20}
         showPagination={true}
+        className="-striped -highlight"
       />
 
       <Modal open={editOpen} size="tiny">
@@ -310,7 +314,7 @@ const List = props => {
                           fluid
                           selection
                           search
-                          options={companyOptions || []}
+                          options={getOperationList(operationTypeList) || []}
                           onChange={(e, o) => {
                             handleChange('operationId', o);
                           }}
