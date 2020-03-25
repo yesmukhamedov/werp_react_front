@@ -22,6 +22,7 @@ import {
   Divider,
 } from 'semantic-ui-react';
 import moment from 'moment';
+import { errorTableText } from '../../../utils/helpers';
 import {
   stringYYYYMMDDToMoment,
   momentToStringYYYYMMDD,
@@ -60,7 +61,6 @@ const Smsrcus = props => {
   const [searchParams, setSearchParams] = useState({ ...emptySearch });
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const [errors, setErrors] = useState([]);
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   let emptySearch = {
     branchId: '',
     bukrs: '',
@@ -108,14 +108,14 @@ const Smsrcus = props => {
       searchParams.bukrs === undefined ||
       !searchParams.bukrs
     )
-      errors.push(errorTable[`5${language}`]);
+      errors.push(errorTableText(5));
 
     if (
       searchParams.branchId === null ||
       searchParams.branchId === undefined ||
       !searchParams.branchId
     )
-      errors.push(errorTable[`5${language}`]);
+      errors.push(errorTableText(7));
 
     return errors;
   };

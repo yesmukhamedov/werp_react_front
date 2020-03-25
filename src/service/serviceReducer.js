@@ -38,7 +38,7 @@ import {
   FETCH_SMECA,
   FETCH_SMSETPLP,
   POST_SMSETPLP,
-  FETCH_ERROR_TABLE,
+  FETCH_OPERTAION_TYPE_LIST,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -46,6 +46,7 @@ const INITIAL_STATE = {
   historyDynamicObject: {},
   tovarCategorys: [],
   contractStatus: [],
+  operationTypeList: [],
   appList: [],
   appMasterList: [],
   data: {
@@ -276,6 +277,7 @@ export default function(state = INITIAL_STATE, action) {
       };
     }
     case FETCH_SMSETPLP: {
+      console.log('DataReducerpLP', action.payload);
       return {
         ...state,
         dynamicObject: action.payload,
@@ -288,11 +290,10 @@ export default function(state = INITIAL_STATE, action) {
         dynamicObject: [action.payload],
       };
     }
-    case FETCH_ERROR_TABLE: {
-      console.log('Table', action.payload);
+    case FETCH_OPERTAION_TYPE_LIST: {
       return {
         ...state,
-        errorTable: [...action.payload],
+        operationTypeList: [...action.payload.data],
       };
     }
     default:

@@ -12,7 +12,6 @@ import {
   fetchSmsetct,
   editSmsetct,
   clearDynObjService,
-  fetchErrorTable,
 } from '../../serviceAction';
 import { connect } from 'react-redux';
 import List from './list';
@@ -56,8 +55,6 @@ const Smsetct = props => {
     postSmsetct,
     editSmsetct,
     clearDynObjService,
-    fetchErrorTable,
-    errorTable,
   } = props;
 
   //componentDidMount
@@ -65,10 +62,9 @@ const Smsetct = props => {
     clearDynObjService();
     if (!productList || productList.length === 0) props.f4FetchConTypeList();
     if (!countryList || countryList.length === 0) props.f4FetchCountryList();
-    fetchErrorTable();
   }, []);
 
-  console.log('ErrorTable', errorTable);
+  //console.log('ErrorTable', errorTable);
   //onClickSearch
   const handleInputSearch = o => {
     setSearchParams({ bukrs: o.value });
@@ -602,5 +598,4 @@ export default connect(mapStateToProps, {
   fetchSmsetct,
   editSmsetct,
   clearDynObjService,
-  fetchErrorTable,
 })(injectIntl(Smsetct));
