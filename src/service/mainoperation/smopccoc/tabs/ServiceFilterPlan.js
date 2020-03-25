@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Segment, Container, Icon, Form } from 'semantic-ui-react';
+import { Container, Form } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
 
@@ -9,16 +9,10 @@ import { fetchServiceFilterPlan } from '../smopccocAction';
 import { fetchServiceTypeId } from '../../../mainoperation/smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment';
 import ModalColumns from '../../../../utils/ModalColumns';
 import { momentToStringYYYYMMDD } from '../../../../utils/helpers';
-import ReactMultiSelectCheckboxes from 'react-multiselect-checkboxes';
-import ColumnsReactTable from '../components/ColumnsReactTable';
 import { LinkToSmcuspor } from '../../../../utils/outlink';
-require('moment/locale/ru');
-require('moment/locale/tr');
+import matchSorter from 'match-sorter';
 
 const ServiceFilterPlan = props => {
   const {
@@ -51,20 +45,6 @@ const ServiceFilterPlan = props => {
     configuration: '',
   };
 
-  //Date option
-  const date = new Date();
-  const y = date.getFullYear();
-  const m = date.getMonth();
-  const [startDates, setStartDates] = useState(moment(new Date(y - 1, m, 1)));
-  const [endDates, setEndDates] = useState(moment(new Date()));
-  useEffect(() => {
-    setParam({
-      ...param,
-      dateStart: momentToStringYYYYMMDD(startDates),
-      dateEnd: momentToStringYYYYMMDD(endDates),
-    });
-  }, [startDates, endDates]);
-
   //END Date option
   const [param, setParam] = useState({ ...emptyParam });
   const initialColumns = [
@@ -78,11 +58,17 @@ const ServiceFilterPlan = props => {
       Header: 'CN',
       accessor: 'contractNumber',
       checked: true,
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, { keys: ['contractNumber'] }),
+      filterAll: true,
     },
     {
       Header: 'Заводской номер',
       accessor: 'tovarSn',
       checked: true,
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, { keys: ['tovarSn'] }),
+      filterAll: true,
     },
     {
       Header: 'Дата продажи',
@@ -93,21 +79,33 @@ const ServiceFilterPlan = props => {
       Header: 'ФИО клиента',
       accessor: 'customerFIO',
       checked: true,
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, { keys: ['customerFIO'] }),
+      filterAll: true,
     },
     {
       Header: 'ИИН клиента',
       accessor: 'customerIinBin',
       checked: true,
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, { keys: ['customerIinBin'] }),
+      filterAll: true,
     },
     {
       Header: 'Адрес',
       accessor: 'address',
       checked: true,
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, { keys: ['address'] }),
+      filterAll: true,
     },
     {
       Header: 'ФИО дилера',
       accessor: 'dealerFIO',
       checked: true,
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, { keys: ['dealerFIO'] }),
+      filterAll: true,
     },
     {
       Header: 'F1',
@@ -357,7 +355,12 @@ const ServiceFilterPlan = props => {
           </Form.Field>
         </Form.Group>
       </Form>
-      <ReactTableServerSideWrapper data={serviceFilterPlan} columns={columns} />
+      <ReactTableServerSideWrapper
+        data={serviceFilterPlan}
+        columns={columns}
+        filterable
+        resolveData={data => data.map(row => row)}
+      />
     </Container>
   );
 };
