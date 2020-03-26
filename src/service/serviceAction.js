@@ -58,6 +58,7 @@ export const FETCH_OPERTAION_TYPE_LIST = 'FETCH_OPERTAION_TYPE_LIST';
 export const FETCH_SMECA = 'FETCH_SMECA';
 export const FETCH_SMSETPLP = 'FETCH_SMSETPLP';
 export const POST_SMSETPLP = 'POST_SMSETPLP';
+
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 
 const language = localStorage.getItem('language');
@@ -586,6 +587,7 @@ export function postSmccaldCreateApp(application) {
           type: POST_SMCCALD_CREATE_APP,
           payload: data,
         });
+        dispatch(notify('success', errorTableText(101), errorTableText(104)));
       })
       .catch(error => {
         dispatch(modifyLoader(false));

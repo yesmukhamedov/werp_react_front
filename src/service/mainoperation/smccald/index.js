@@ -40,7 +40,6 @@ function Smccald(props) {
   const [requestTypeOpts, setRequestTypeOpts] = useState([]);
   const [error, setError] = useState([]);
 
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const lang = localStorage.getItem('language');
   const userName = localStorage.getItem('username');
 
@@ -68,36 +67,16 @@ function Smccald(props) {
           varRequest.bukrs = o.value;
           break;
         case 'branchId':
-          let waSelectedBranch = {};
-          branchOptions[request.bukrs]
-            .filter(item => item.key === o.value)
-            .forEach(item => {
-              waSelectedBranch = item;
-            });
-
           varRequest.branchId = o.value;
 
-          let wa = { ...emptyRequest };
-          wa.bukrs = prev.bukrs;
-          wa.branchId = o;
-
-          let waConOptions = contractTypeList
-            .filter(
-              item =>
-                (item.bukrs == wa.bukrs &&
-                  item.business_area_id == waSelectedBranch.businessareaid) ||
-                (item.bukrs == wa.bukrs &&
-                  item.businessareaid == 4 &&
-                  waSelectedBranch.branchId == 210),
-            )
-            .map(item => {
-              return {
-                key: item.contract_type_id,
-                value: item.contract_type_id,
-                text: item.name,
-                matnr: item.matnr,
-              };
-            });
+          let waConOptions = contractTypeList.map(item => {
+            return {
+              key: item.contract_type_id,
+              value: item.contract_type_id,
+              text: item.name,
+              matnr: item.matnr,
+            };
+          });
           setRequestTypeOpts(waConOptions);
           break;
         case 'requestTypeId':
@@ -131,7 +110,19 @@ function Smccald(props) {
         matnr,
         info,
       });
+      clearState();
     }
+  };
+
+  const clearState = () => {
+    setRequest({
+      bukrs: '',
+      branchId: '',
+      requestTypeId: '',
+      appType: '',
+      info: '',
+      matnr: '',
+    });
   };
 
   const validate = () => {
@@ -190,7 +181,7 @@ function Smccald(props) {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Товар</Table.Cell>
+                  <Table.Cell>{messages['Product']}</Table.Cell>
                   <Table.Cell>
                     <Dropdown
                       placeholder={messages['service']}
@@ -212,6 +203,7 @@ function Smccald(props) {
                       selection
                       search
                       options={servAppOpts(servAppType, lang)}
+                      value={request.appType}
                       onChange={(e, o) => onInputChange(o, 'appType')}
                     />
                   </Table.Cell>
@@ -317,6 +309,7 @@ function Smccald(props) {
                     <Form>
                       <TextArea
                         placeholder={messages['bktxt']}
+                        value={request.info}
                         onChange={(e, o) => onInputChange(o, 'info')}
                       />
                     </Form>
@@ -367,7 +360,7 @@ const servAppOpts = (servAppType, lang) => {
 function mapStateToProps(state) {
   return {
     companyOptions: state.userInfo.companyOptions,
-    branchOptions: state.userInfo.branchOptionsMarketing,
+    branchOptions: state.userInfo.branchOptionsService,
     contractTypeList: state.f4.contractTypeList,
     servAppType: state.srefReducer.servAppType,
   };
