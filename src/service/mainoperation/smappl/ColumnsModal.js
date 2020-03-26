@@ -8,210 +8,69 @@ import {
   Table,
 } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
+import { connect } from 'react-redux';
 
 const ColumnsModal = props => {
   const {
     intl: { messages },
-    columnsForTable,
-    headersForTable,
+    tableHeaderCols = [],
+    tableThings,
   } = props;
-  const [modalOpen, setModalOpen] = useState(false);
-  const allColumns = [
-    {
-      accessor: 'contractNumber',
-      show: true,
-    },
-    {
-      accessor: 'tovarSn',
-      show: true,
-    },
-    {
-      accessor: 'matnr',
-      show: true,
-      filterable: false,
-    },
-    {
-      accessor: 'adate',
-      show: true,
-    },
-    {
-      accessor: 'applicantName',
-      show: true,
-    },
-    {
-      accessor: 'address',
-      show: true,
-    },
-    {
-      accessor: 'inPhoneNum',
-      show: true,
-      filterable: false,
-    },
-    {
-      accessor: 'masterName',
-      show: true,
-      filterable: false,
-    },
-    {
-      accessor: 'appStatusName',
-      show: true,
-      filterable: false,
-    },
-    {
-      accessor: 'operatorName',
-      show: true,
-    },
-    {
-      accessor: 'appTypeName',
-      show: true,
-      filterable: false,
-    },
-    {
-      accessor: 'id',
-      show: true,
-      filterable: false,
-    },
-    {
-      accessor: 'serviceId',
-      show: true,
-      filterable: false,
-    },
-    {
-      accessor: 'clientStory',
-      show: true,
-      filterable: false,
-    },
-  ];
-  let headers = [
-    {
-      Header: `CN `,
-    },
-    {
-      Header: messages['productSerialNumber'],
-    },
-    {
-      Header: messages['TBL_H__PRODUCT'],
-    },
-    {
-      Header: messages['Application_Date'],
-    },
-    {
-      Header: messages['Form.Reco.RecoName'],
-    },
-    {
-      Header: messages['Table.Address'],
-    },
-    {
-      Header: messages['Phone'],
-    },
-    {
-      Header: messages['Masters'],
-    },
-    {
-      Header: messages['L__ORDER_STATUS'],
-    },
-    {
-      Header: messages['Operator'],
-    },
-    {
-      Header: messages['type_of_application'],
-    },
-    {
-      Header: `№ ${messages['Applications']}`,
-    },
-    {
-      Header: `${messages['service']} №`,
-    },
-    {
-      Header: messages['customer_story'],
-    },
-  ];
-
-  const [columns, setColumns] = useState(allColumns);
+  const [columns, setColumns] = useState([]);
 
   useEffect(() => {
-    const transactionCode = localStorage.getItem('smappl');
-    if (transactionCode) {
-      columnsForTable(JSON.parse(localStorage.getItem('smappl')));
-      headersForTable(headers);
-      setColumns(JSON.parse(localStorage.getItem('smappl')));
-    } else {
-      setColumns(allColumns);
-      columnsForTable(allColumns);
-      headersForTable(headers);
-    }
-  }, []);
+    setColumns(tableHeaderCols);
+  }, [tableHeaderCols]);
 
   const checkColumns = e => {
-    setColumns(prev => {
-      let columns = [...prev];
-      columns.map(el => {
-        if (el.accessor === e.accessor) {
-          el.show = !el.show;
-        }
-      });
-      return columns;
+    let cls = [...columns];
+    cls.map(el => {
+      if (el.accessor === e.accessor) {
+        el.show = !el.show;
+      }
     });
-  };
 
-  const onSave = () => {
-    columnsForTable(columns);
-    headersForTable(headers);
-    setModalOpen(false);
-    localStorage.setItem('smappl', JSON.stringify(columns));
-  };
-
-  const onCancel = () => {
-    setModalOpen(false);
-    const localColumns =
-      JSON.parse(localStorage.getItem('smappl')) || allColumns;
-    columnsForTable(localColumns);
-    setColumns(localColumns);
+    return tableThings(cls);
   };
 
   return (
     <Fragment>
       <Modal
-        trigger={
-          <Button color="pink" onClick={() => setModalOpen(true)}>
-            {messages['columns']}
-          </Button>
-        }
-        open={modalOpen}
+        trigger={<Button color="pink">{messages['columns']}</Button>}
         size="small"
       >
         <Header content={messages['columns']} />
         <Modal.Content>
           <Table singleLine>
             <Table.Body>
-              {columns.map((item, id) => (
-                <Table.Row key={id}>
-                  <Table.Cell>{headers[id].Header}</Table.Cell>
-                  <Table.Cell>
-                    <Checkbox
-                      onChange={() => {
-                        checkColumns(item);
-                      }}
-                      checked={item.show}
-                      style={{ float: 'right' }}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-              ))}
+              {columns.length === 0
+                ? null
+                : columns.map((item, id) => (
+                    <Table.Row key={id}>
+                      <Table.Cell>{item.Header}</Table.Cell>
+                      <Table.Cell>
+                        <Checkbox
+                          onChange={() => {
+                            checkColumns(item);
+                          }}
+                          checked={item.show}
+                          style={{ float: 'right' }}
+                        />
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
             </Table.Body>
           </Table>
         </Modal.Content>
-        <Modal.Actions>
-          <Button color="red" onClick={onCancel}>
-            <Icon name="remove" /> {messages['cancel']}
-          </Button>
-          <Button color="green" onClick={onSave}>
-            <Icon name="checkmark" /> {messages['save']}
-          </Button>
-        </Modal.Actions>
       </Modal>
     </Fragment>
   );
 };
 
-export default injectIntl(ColumnsModal);
+const mapStateToProps = state => {
+  return {
+    appMasterList: state.serviceReducer.appMasterList,
+  };
+};
+
+export default connect(mapStateToProps, {})(injectIntl(ColumnsModal));

@@ -25,9 +25,12 @@ import { formatDMY, errorTableText } from '../../../utils/helpers';
 import ColumnsModal from './ColumnsModal';
 import './index.css';
 import ServiceRequestTable from './table';
+import { LinkToSmcuspor, LinkToSmecam } from '../../../utils/outlink';
+import Masters from './Masters';
 
 const Smappl = props => {
   const {
+    appList,
     companyPosition = [],
     intl: { messages },
     branchOptions,
@@ -40,6 +43,7 @@ const Smappl = props => {
     fetchAppList,
     fetchAppMasterList,
     fetchClearAppList,
+    appMasterList,
   } = props;
   const [error, setError] = useState([]);
   const [tovarCategory, setTovarCategory] = useState([]);
@@ -57,9 +61,114 @@ const Smappl = props => {
     tovarCategorys: null,
     appStatusIds: null,
     appTypeIds: null,
+    page: 0,
   });
+
+  // modal useStates
+  const [masterList, setMasterList] = useState([]);
+  const allColumns = [
+    {
+      Header: `CN `,
+      accessor: 'contractNumber',
+      show: true,
+    },
+    {
+      Header: messages['productSerialNumber'],
+      accessor: 'tovarSn',
+      show: true,
+    },
+    {
+      Header: messages['TBL_H__PRODUCT'],
+      accessor: 'matnr',
+      show: true,
+      filterable: false,
+    },
+    {
+      Header: messages['Application_Date'],
+      accessor: 'adate',
+      show: true,
+    },
+    {
+      Header: messages['Form.Reco.RecoName'],
+      accessor: 'applicantName',
+      show: true,
+    },
+    {
+      Header: messages['Table.Address'],
+      accessor: 'address',
+      show: true,
+    },
+    {
+      Header: messages['Phone'],
+      accessor: 'inPhoneNum',
+      show: true,
+      filterable: false,
+    },
+    {
+      Header: messages['Masters'],
+      accessor: 'masterName',
+      show: true,
+      filterable: false,
+      Cell: ({ row }) => (
+        <div style={{ textAlign: 'center' }}>
+          {row._original.masterName}
+          <Masters
+            master={row._original.masterName}
+            masterList={masterList}
+            id={row._original.masterId}
+            request={row._original}
+            searchParams={search}
+          />
+        </div>
+      ),
+    },
+    {
+      Header: messages['L__ORDER_STATUS'],
+      accessor: 'appStatusName',
+      show: true,
+      filterable: false,
+    },
+    {
+      Header: messages['Operator'],
+      accessor: 'operatorName',
+      show: true,
+    },
+    {
+      Header: messages['type_of_application'],
+      accessor: 'appTypeName',
+      show: true,
+      filterable: false,
+    },
+    {
+      Header: `№ ${messages['Applications']}`,
+      accessor: 'id',
+      show: true,
+      filterable: false,
+      Cell: ({ row }) => (
+        <div style={{ textAlign: 'center' }}>
+          <LinkToSmecam id={row._original.id} />
+        </div>
+      ),
+    },
+    {
+      Header: `${messages['service']} №`,
+      accessor: 'serviceId',
+      show: true,
+      filterable: false,
+    },
+    {
+      Header: messages['customer_story'],
+      accessor: 'clientStory',
+      show: true,
+      filterable: false,
+      Cell: ({ row }) => (
+        <div style={{ textAlign: 'center' }}>
+          <LinkToSmcuspor contractNumber={row._original.contractNumber} />
+        </div>
+      ),
+    },
+  ];
   const [columnsForTable, setColumnsForTable] = useState([]);
-  const [headersForTable, setHeadersForTable] = useState([]);
 
   useEffect(() => {
     fetchClearAppList();
@@ -67,6 +176,34 @@ const Smappl = props => {
     fetchAppStatus();
     fetchAppType();
   }, []);
+
+  useEffect(() => {
+    const transactionCodeText = localStorage.getItem('smappl');
+    if (transactionCodeText) {
+      let transactionCodeObject = JSON.parse(transactionCodeText);
+
+      let temp = allColumns.map(item => {
+        return { ...item, show: transactionCodeObject[item.accessor] };
+      });
+
+      setColumnsForTable(temp);
+    } else {
+      setColumnsForTable(allColumns);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (appMasterList !== undefined) {
+      let masters = appMasterList.map(item => {
+        return {
+          key: item.staffId,
+          text: item.fullFIO,
+          value: item.staffId,
+        };
+      });
+      setMasterList(masters);
+    }
+  }, [appMasterList]);
 
   useEffect(() => {
     const app = appStatus.map(item => {
@@ -285,17 +422,23 @@ const Smappl = props => {
 
       <Segment basic textAlign="right">
         <ColumnsModal
-          headersForTable={headers => setHeadersForTable(headers)}
-          columnsForTable={cols => setColumnsForTable(cols)}
-          turnOnReactFetch={turnOnReactFetch}
+          tableHeaderCols={columnsForTable}
+          tableThings={things => {
+            setColumnsForTable(things);
+            //store in localstorage
+            let temp = {};
+            things.map(el => {
+              temp = { ...temp, [el.accessor]: el.show };
+            });
+            localStorage.setItem('smappl', JSON.stringify(temp));
+          }}
         />
       </Segment>
 
       <ServiceRequestTable
         turnOnReactFetch={turnOnReactFetch}
-        columnsName={columnsForTable}
-        headers={headersForTable}
         searchParams={search}
+        tableCols={columnsForTable}
       />
     </Segment>
   );
@@ -304,11 +447,13 @@ const Smappl = props => {
 const mapStateToProps = state => {
   return {
     state,
+    appList: state.serviceReducer.appList,
     companyPosition: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsService,
     tovarCategorys: state.serviceReducer.tovarCategorys,
     appStatus: state.serviceReducer.appStatus,
     appType: state.serviceReducer.appType,
+    appMasterList: state.serviceReducer.appMasterList,
   };
 };
 

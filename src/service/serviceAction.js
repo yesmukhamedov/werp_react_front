@@ -753,6 +753,7 @@ export function fetchAppType() {
 }
 
 export function fetchAppList(params) {
+  console.log(params);
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet('smappl/appList?direction=ASC&orderBy=id', params)
