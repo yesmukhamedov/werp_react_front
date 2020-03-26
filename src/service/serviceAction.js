@@ -261,11 +261,13 @@ export function editSmsetct(editParams, searchParams, fetchSmsetct) {
           dispatch(notify('success', errorTableText(104), errorTableText(101)));
           fetchSmsetct(searchParams);
         } else {
+          console.log('object');
           dispatch(notify('error', errorTableText(133), errorTableText(132)));
         }
       })
-      .catch(e => {
-        handleError(e, dispatch);
+      .catch(error => {
+        console.log('error', error.Error);
+        handleError(error, dispatch);
       });
   };
 }
@@ -655,7 +657,7 @@ export function postSmsetplp(params) {
       .then(data => {
         console.log(data);
         dispatch(modifyLoader(false));
-        if (data.status === 200) {
+        if (data.data.status === 200) {
           // & (data.data.data.length > 0)
           dispatch({
             type: POST_SMSETPLP,
@@ -663,7 +665,7 @@ export function postSmsetplp(params) {
           });
           dispatch(notify('success', errorTableText(101)));
         } else {
-          dispatch(notify('error', errorTableText(133), errorTableText(132)));
+          dispatch(notify('error', errorTableText(132)));
         }
       })
       .catch(error => {
@@ -863,7 +865,7 @@ export function editSmsetplp(params) {
     doPut(`smsetplp/update`, params)
       .then(data => {
         dispatch(modifyLoader(false));
-        if (data.status === 200) {
+        if (data.data.status === 200) {
           dispatch(notify('success', errorTableText(104), errorTableText(101)));
         } else {
           dispatch(notify('error', errorTableText(133), errorTableText(132)));

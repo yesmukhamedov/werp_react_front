@@ -198,6 +198,9 @@ const Smsetct = props => {
   };
 
   const handlePost = () => {
+    setShow(false);
+    setMessg({});
+    setPostErrors({});
     let errors = validateAdd(postParams);
     if (
       errors === null ||
@@ -300,6 +303,8 @@ const Smsetct = props => {
             closeIcon
             onClose={() => {
               setShow(false);
+              setMessg({});
+              setPostErrors({});
             }}
           >
             <Modal.Header>

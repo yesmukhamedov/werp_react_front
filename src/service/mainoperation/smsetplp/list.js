@@ -107,6 +107,7 @@ const List = props => {
 
   const handleSave = () => {
     editSmsetplp({ ...editParams });
+    setEditOpen(false);
   };
 
   let dj = [{ bukrs: '1000' }, { bukrs: '1000' }];
