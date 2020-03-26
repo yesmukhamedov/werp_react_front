@@ -154,3 +154,13 @@ input::-webkit-inner-spin-button {
 .marginRight {
   margin-right: 15px !important;
 }
+
+.alignItemsCenter {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.marginBottom-0 {
+  margin-bottom: 0px !important;
+}

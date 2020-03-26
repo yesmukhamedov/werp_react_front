@@ -4,7 +4,14 @@ import { injectIntl } from 'react-intl';
 import SearchCustomer from './tabs/SearchCustomer';
 import MyApplication from './tabs/MyApplication';
 import TransferApplicationEntry from './tabs/TransferApplicationEntry';
-import { Container, Tab, Segment, Menu, Label } from 'semantic-ui-react';
+import {
+  Container,
+  Tab,
+  Segment,
+  Menu,
+  Label,
+  Button,
+} from 'semantic-ui-react';
 import {
   f4fetchCategory,
   f4FetchStaffList,
@@ -17,13 +24,12 @@ import {
 import { fetchServiceTypeId } from '../../mainoperation/smcs/smcsAction';
 import { fetchServiceListManager } from '../../report/serviceReportAction';
 import '../../service.css';
-
-import '../../service.css';
+import { classNames } from 'classnames';
 
 const Smopccic = props => {
   const {
-    // intl: { messages },
-    // language,
+    intl: { messages },
+    language,
   } = props;
 
   const {
@@ -139,7 +145,14 @@ const Smopccic = props => {
         paddingRight: '2em',
       }}
     >
-      <Segment as="h2">Оператор call center по входящим звонкам</Segment>
+      <Segment className="spaceBetween alignItemsCenter">
+        <h3 className="alignItemsCenter marginBottom-0">
+          Оператор call center по входящим звонкам
+        </h3>
+        <a href="/service/mainoperation/smccald" target="_blank">
+          <Button color="teal">Создать заявку без данных</Button>
+        </a>
+      </Segment>
 
       <Tab
         menu={{ attached: true, tabular: false, pointing: true }}

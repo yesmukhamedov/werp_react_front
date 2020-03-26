@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Form, Container, Divider } from 'semantic-ui-react';
+import { Form, Container, Divider, Icon } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
 import { fetchServiceTypeId } from '../../../mainoperation/smcs/smcsAction';
@@ -293,7 +293,7 @@ const MyApplicationExodus = props => {
           <Form.Select
             fluid
             label="Категория"
-            placeholder="Фин. Статус"
+            placeholder="Категория"
             options={categoryOptions}
             onChange={(e, o) => onInputChange(o, 'categoryId')}
             className="alignBottom"
@@ -349,7 +349,9 @@ const MyApplicationExodus = props => {
               onClick={handleClickApply}
               color="blue"
               className="alignBottom"
+              iconPosition="left"
             >
+              <Icon name="search" />
               Применить
             </Form.Button>
           </div>

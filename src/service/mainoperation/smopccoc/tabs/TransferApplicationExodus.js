@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Container, Button, Popup, Form, Divider } from 'semantic-ui-react';
+import {
+  Container,
+  Button,
+  Popup,
+  Form,
+  Divider,
+  Icon,
+} from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
 
@@ -363,7 +370,9 @@ const TransferApplicationExodus = props => {
               onClick={handleClickApply}
               color="blue"
               className="alignBottom"
+              iconPosition="left"
             >
+              <Icon name="search" />
               Применить
             </Form.Button>
           </div>

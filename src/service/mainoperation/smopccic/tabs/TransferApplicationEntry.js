@@ -2,44 +2,43 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import {
-  Segment,
   Container,
-  Dropdown,
-  Grid,
+  Form,
+  Icon,
   Button,
-  Table,
-  Input,
-  Select,
+  Popup,
+  Divider,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
-import '../../../service.css';
-import { fetchTransferApplication } from '../smopccicAction';
+import { fetchMyApplicationExodus } from '../smopccicAction';
 import { fetchServiceTypeId } from '../../smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from '../../../../utils/ModalColumns';
+
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment';
-import { momentToStringYYYYMMDD } from '../../../../utils/helpers';
-require('moment/locale/ru');
-require('moment/locale/tr');
+import {
+  momentToStringYYYYMMDD,
+  stringYYYYMMDDToMoment,
+} from '../../../../utils/helpers';
+import { LinkToSmcuspor } from '../../../../utils/outlink';
 
 const TransferApplicationEntry = props => {
   const {
     countryOptions,
     companyOptions = [],
     branches,
-    finStatusOption = [],
-    serviceDateTypeOptions = [],
-    categoryOptions = [],
-    warrantyOptions = [],
+    finStatusOption,
+    serviceDateTypeOptions,
+    categoryOptions,
+    warrantyOptions,
   } = props;
 
   const {
     intl: { messages },
     language,
-    fetchTransferApplication,
+    fetchMyApplicationExodus,
     dynamicObject = [],
     srlsmList = [],
   } = props;
@@ -48,302 +47,153 @@ const TransferApplicationEntry = props => {
     country: '',
     bukrs: '',
     branchId: '',
-    finStatus: '',
     categoryId: '',
-    serviceDateType: '',
-    warranty: '',
-    date: '',
+    serviceStatusId: '',
+    dateStart: '',
+    dateEnd: '',
   };
 
-  const [param, setParam] = useState({ ...emptyParam });
-
-  const [serBranchOptions, setSerBranchOptions] = useState([]);
-
-  const date = new Date();
-  const y = date.getFullYear();
-  const m = date.getMonth();
-  const [dateState, setDateState] = useState(moment(new Date()));
-
-  useEffect(() => {
-    setParam({
-      ...param,
-      date: momentToStringYYYYMMDD(dateState),
-    });
-  }, [dateState]);
-
-  useEffect(() => {
-    const getBranchByBukrs = (branches, bukrs) => {
-      let br = branches.filter(item => item.bukrs == bukrs);
-
-      let brSer = br.filter(
-        item =>
-          item.business_area_id == 5 ||
-          item.business_area_id == 6 ||
-          item.business_area_id == 9,
-      );
-
-      let serBranchOpt = brSer.map(item => {
-        return {
-          key: item.branch_id,
-          text: item.text45,
-          value: item.branch_id,
-        };
-      });
-      return serBranchOpt;
-    };
-
-    setSerBranchOptions(getBranchByBukrs(branches, param.bukrs));
-  }, [param.bukrs]);
-
-  const [columns, setColumns] = useState([
+  const initialColumns = [
     {
-      Header: '№',
-      accessor: '1',
-      status: false,
-      id: 1,
+      Header: 'Id',
+      accessor: 'id',
+      checked: true,
+      filterable: false,
     },
     {
       Header: 'CN',
-      accessor: '2',
-      status: true,
-      id: 2,
-    },
-    {
-      Header: 'Филиал',
-      accessor: '3',
-      status: true,
-      id: 3,
+      accessor: 'contractNumber',
+      checked: true,
     },
     {
       Header: 'Заводской номер',
-      accessor: '4',
-      status: true,
-      id: 4,
+      accessor: 'tovarSn',
+      checked: true,
     },
     {
       Header: 'Дата продажи',
-      accessor: '5',
-      status: true,
-      id: 5,
+      accessor: 'contractDate',
+      checked: true,
+      filterable: false,
+    },
+    {
+      Header: 'Дата переноса',
+      accessor: '999',
+      checked: true,
+      filterable: false,
+    },
+
+    {
+      Header: 'Дата заявки',
+      accessor: '99985',
+      checked: true,
+      filterable: false,
     },
     {
       Header: 'ФИО клиента',
-      accessor: '6',
-      status: true,
-      id: 6,
-    },
-    {
-      Header: 'ИИН клиента',
-      accessor: '7',
-      status: true,
-      id: 7,
+      accessor: 'customerFIO',
+      checked: true,
     },
     {
       Header: 'Адрес',
-      accessor: '8',
-      status: true,
-      id: 8,
+      accessor: 'address',
+      checked: true,
     },
     {
-      Header: 'ФИО дилера',
-      accessor: '9',
-      status: true,
-      id: 9,
+      Header: 'Телефон',
+      accessor: 'address',
+      checked: true,
+    },
+    {
+      Header: 'ФИО мастер',
+      accessor: 'dealerFIO',
+      checked: true,
     },
     {
       Header: 'F1',
-      accessor: '10',
-      status: true,
-      id: 10,
+      accessor: 'f1',
+      checked: true,
+      filterable: false,
     },
     {
-      Header: 'Гарантия',
-      accessor: '11',
-      status: true,
-      id: 11,
+      Header: 'F2',
+      accessor: 'f2',
+      checked: true,
+      filterable: false,
     },
-
+    {
+      Header: 'F3',
+      accessor: 'f3',
+      checked: true,
+      filterable: false,
+    },
+    {
+      Header: 'F4',
+      accessor: 'f4',
+      checked: true,
+      filterable: false,
+    },
+    {
+      Header: 'F5',
+      accessor: 'f5',
+      checked: true,
+      filterable: false,
+    },
     {
       Header: 'Категория',
-      accessor: '12',
-      status: true,
-      id: 12,
+      accessor: 'crmCategory',
+      checked: true,
+      filterable: false,
     },
-
     {
-      Header: 'Фин статус',
-      accessor: '13',
-      status: true,
-      id: 13,
+      Header: 'Статус заявки',
+      accessor: '15',
+      checked: true,
+      filterable: false,
+    },
+    {
+      Header: '№ заявка',
+      accessor: '898',
+      checked: true,
+      filterable: false,
+      Cell: ({ original }) => <h1>{original.contractNumber}</h1>,
     },
     {
       Header: 'Просмотр',
-      accessor: '14',
-      status: true,
-      id: 14,
+      accessor: '16',
+      filterable: false,
+      Cell: original => (
+        <div style={{ textAlign: 'center' }}>
+          <LinkToSmcuspor
+            contractNumber={original.row.contractNumber}
+            text="Просмотр"
+          />
+        </div>
+      ),
+      checked: true,
     },
-  ]);
+  ];
 
-  const filterColumns = columns.filter(item => item.status === true);
-  const columnsOption = columns.map(item => {
-    return {
-      key: item.id,
-      text: item.Header,
-      value: item.id,
-    };
-  });
-
-  const handleClickApply = () => {
-    fetchTransferApplication({ ...param });
-  };
-
-  const onInputChange = (o, fieldName) => {
-    setParam(prev => {
-      const prevParam = { ...prev };
-      switch (fieldName) {
-        case 'country':
-          prevParam.country = o.value;
-          break;
-        case 'bukrs':
-          prevParam.bukrs = o.value;
-          break;
-        case 'branchId':
-          prevParam.branchId = o.value;
-          break;
-
-        case 'categoryId':
-          prevParam.categoryId = o.value;
-          break;
-        case 'serviceTypeId':
-          prevParam.serviceTypeId = o.value;
-          break;
-
-        case 'serviceStatusId':
-          prevParam.serviceStatusId = o.value;
-          break;
-
-        case 'finStatus':
-          prevParam.finStatus = o.value;
-
-        case 'serviceDateType':
-          prevParam.serviceDateType = o.value;
-
-        case 'warranty':
-          prevParam.warranty = o.value;
-
-        case 'date':
-          prevParam.date = o.value;
-          break;
-        default:
-          prevParam[fieldName] = o.value;
-      }
-      return prevParam;
-    });
+  const [columns, setColumns] = useState([...initialColumns]);
+  const finishColumns = data => {
+    setColumns([...data]);
   };
 
   return (
     <Container fluid className="containerMargin">
-      <Segment>
-        <Grid>
-          <Grid.Row columns={9}>
-            <Grid.Column>
-              <label>Страна</label>
-              <Dropdown
-                options={countryOptions}
-                fluid
-                selection
-                placeholder="Страна"
-                onChange={(e, o) => onInputChange(o, 'country')}
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Компания</label>
-              <Dropdown
-                options={companyOptions}
-                fluid
-                selection
-                placeholder="Компания"
-                onChange={(e, o) => onInputChange(o, 'bukrs')}
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Филиал</label>
-              <Dropdown
-                fluid
-                selection
-                placeholder="Филиал"
-                onChange={(e, o) => onInputChange(o, 'branchId')}
-                options={serBranchOptions}
-              />
-            </Grid.Column>
+      <Form>
+        <Form.Group className="spaceBetween">
+          <div className="flexDirectionRow"></div>
 
-            <Grid.Column>
-              <label>Фин. Статус</label>
-              <Dropdown
-                fluid
-                selection
-                placeholder="Фин. Статус"
-                onChange={(e, o) => onInputChange(o, 'finStatus')}
-                options={finStatusOption}
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Срок сервиса</label>
-              <Select
-                options={serviceDateTypeOptions}
-                onChange={(e, o) => onInputChange(o, 'serviceDateType')}
-                fluid
-                selection
-                placeholder="Статус сервиса"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Категория товара</label>
-              <Dropdown
-                options={categoryOptions}
-                onChange={(e, o) => onInputChange(o, 'categoryId')}
-                fluid
-                selection
-                placeholder="Категория товара"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Гарантия</label>
-              <Select
-                options={warrantyOptions}
-                onChange={(e, o) => onInputChange(o, 'warranty')}
-                fluid
-                selection
-                placeholder="Вид сервиса"
-              />
-            </Grid.Column>
-
-            <Grid.Column>
-              <label>{messages['Form.Date']}</label>
-              <DatePicker
-                className="datePicker"
-                autoComplete="off"
-                locale={language}
-                dropdownMode="select" //timezone="UTC"
-                selected={dateState}
-                onChange={date => setDateState(date)}
-                dateFormat="DD/MM/YYYY"
-                maxDate={new Date()}
-              />
-            </Grid.Column>
-
-            <Grid.Column verticalAlign="bottom">
-              <Button onClick={handleClickApply} color="blue">
-                Применить
-              </Button>
-            </Grid.Column>
-            <Grid.Column>
-              <ModalColumns columns={columns} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Segment>
-      <ReactTableServerSideWrapper data={srlsmList} columns={filterColumns} />
+          <Form.Field className="alignBottom">
+            <ModalColumns
+              columns={initialColumns}
+              finishColumns={finishColumns}
+            />
+          </Form.Field>
+        </Form.Group>
+      </Form>
+      <ReactTableServerSideWrapper filterable={true} columns={columns} />
     </Container>
   );
 };
@@ -359,5 +209,5 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
   fetchServiceListManager,
   fetchServiceTypeId,
-  fetchTransferApplication,
+  fetchMyApplicationExodus,
 })(injectIntl(TransferApplicationEntry));

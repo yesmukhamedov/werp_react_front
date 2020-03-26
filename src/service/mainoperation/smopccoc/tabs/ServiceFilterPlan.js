@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Container, Form, Divider } from 'semantic-ui-react';
+import { Container, Form, Divider, Icon } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
 
@@ -10,7 +10,6 @@ import { fetchServiceTypeId } from '../../../mainoperation/smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from '../../../../utils/ModalColumns';
-import { momentToStringYYYYMMDD } from '../../../../utils/helpers';
 import { LinkToSmcuspor } from '../../../../utils/outlink';
 import matchSorter from 'match-sorter';
 
@@ -324,7 +323,7 @@ const ServiceFilterPlan = props => {
             fluid
             label="Срок сервиса"
             options={serviceDateTypeOptions}
-            placeholder="Фин. Статус"
+            placeholder="Срок сервиса"
             onChange={(e, o) => onInputChange(o, 'serviceDateType')}
             className="alignBottom"
           />
@@ -352,7 +351,9 @@ const ServiceFilterPlan = props => {
             onClick={handleClickApply}
             color="blue"
             className="alignBottom"
+            iconPosition="left"
           >
+            <Icon name="search" />
             Применить
           </Form.Button>
 
