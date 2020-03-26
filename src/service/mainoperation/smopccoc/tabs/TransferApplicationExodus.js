@@ -165,12 +165,6 @@ const TransferApplicationExodus = props => {
     },
   ];
 
-  const [columns, setColumns] = useState([...initialColumns]);
-
-  const finishColumns = data => {
-    setColumns([...data]);
-  };
-
   const [serBranchOptions, setSerBranchOptions] = useState([]);
 
   useEffect(() => {
@@ -270,6 +264,11 @@ const TransferApplicationExodus = props => {
       }
       return prevParam;
     });
+  };
+
+  const [columns, setColumns] = useState([...initialColumns]);
+  const finishColumns = data => {
+    setColumns([...data]);
   };
 
   return (
