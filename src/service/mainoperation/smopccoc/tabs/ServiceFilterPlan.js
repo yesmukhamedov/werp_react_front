@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Container, Form } from 'semantic-ui-react';
+import { Container, Form, Divider } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
 
@@ -53,6 +53,7 @@ const ServiceFilterPlan = props => {
       accessor: 'id',
       checked: true,
       Cell: <div style={{ height: '100px' }}></div>,
+      filterable: false,
     },
     {
       Header: 'CN',
@@ -60,7 +61,6 @@ const ServiceFilterPlan = props => {
       checked: true,
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['contractNumber'] }),
-      filterAll: true,
     },
     {
       Header: 'Заводской номер',
@@ -68,12 +68,12 @@ const ServiceFilterPlan = props => {
       checked: true,
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['tovarSn'] }),
-      filterAll: true,
     },
     {
       Header: 'Дата продажи',
       accessor: 'contractDate',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'ФИО клиента',
@@ -111,40 +111,48 @@ const ServiceFilterPlan = props => {
       Header: 'F1',
       accessor: 'f1',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'F2',
       accessor: 'f2',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'F3',
       accessor: 'f3',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'F4',
       accessor: 'f4',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'F5',
       accessor: 'f5',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'Категория',
       accessor: 'crmCategory',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'Фин. статус',
       accessor: '15',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'Просмотр',
       accessor: '16',
+      filterable: false,
       Cell: original => (
         <div style={{ textAlign: 'center' }}>
           <LinkToSmcuspor
@@ -338,15 +346,16 @@ const ServiceFilterPlan = props => {
             onChange={(e, o) => onInputChange(o, 'configuration')}
             className="alignBottom"
           />
+        </Form.Group>
+        <Form.Group className="spaceBetween">
           <Form.Button
-            fluid
-            options={configurationOptions}
             onClick={handleClickApply}
             color="blue"
             className="alignBottom"
           >
             Применить
           </Form.Button>
+
           <Form.Field className="alignBottom">
             <ModalColumns
               columns={initialColumns}
@@ -355,10 +364,11 @@ const ServiceFilterPlan = props => {
           </Form.Field>
         </Form.Group>
       </Form>
+      <Divider />
       <ReactTableServerSideWrapper
         data={serviceFilterPlan}
         columns={columns}
-        filterable
+        filterable={true}
         resolveData={data => data.map(row => row)}
       />
     </Container>

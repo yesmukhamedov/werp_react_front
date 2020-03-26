@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { Container, Form, Divider } from 'semantic-ui-react';
 import 'react-table/react-table.css';
-import '../../../service.css';
 import { fetchTransferApplication } from '../smopspAction';
 import { fetchServiceTypeId } from '../../smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
@@ -331,7 +330,7 @@ const TransferApplication = props => {
             <Form.Field className="marginRight">
               <label>Дата</label>
               <DatePicker
-                className="datePicker"
+                className="date-auto-width"
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"

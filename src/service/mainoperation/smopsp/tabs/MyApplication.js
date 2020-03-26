@@ -287,7 +287,7 @@ const MyApplication = props => {
             <Form.Field className="marginRight">
               <label>Дата</label>
               <DatePicker
-                className="datePicker"
+                className="date-auto-width"
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"

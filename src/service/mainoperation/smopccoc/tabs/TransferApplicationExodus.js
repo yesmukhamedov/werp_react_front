@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import {
-  Segment,
-  Container,
-  Dropdown,
-  Grid,
-  Button,
-  Popup,
-  Form,
-} from 'semantic-ui-react';
+import { Container, Button, Popup, Form, Divider } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
 
@@ -63,6 +55,7 @@ const TransferApplicationExodus = props => {
       Header: 'Id',
       accessor: 'id',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'CN',
@@ -78,16 +71,19 @@ const TransferApplicationExodus = props => {
       Header: 'Дата продажи',
       accessor: 'contractDate',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'Дата переноса',
       accessor: '888',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'Дата заявки',
       accessor: '999',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'ФИО клиента',
@@ -113,47 +109,56 @@ const TransferApplicationExodus = props => {
       Header: 'F1',
       accessor: 'f1',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'F2',
       accessor: 'f2',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'F3',
       accessor: 'f3',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'F4',
       accessor: 'f4',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'F5',
       accessor: 'f5',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'Категория',
       accessor: 'crmCategory',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'Статус заявки',
       accessor: '15',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'Заявка',
       accessor: '898',
       checked: true,
+      filterable: false,
       Cell: ({ original }) => <h1>{original.contractNumber}</h1>,
     },
     {
       Header: 'Просмотр',
       accessor: '16',
       checked: true,
+      filterable: false,
       Cell: (
         <div style={{ textAlign: 'center' }}>
           <Popup
@@ -313,51 +318,55 @@ const TransferApplicationExodus = props => {
 
           <Form.Select
             fluid
-            label="Статус сервиса"
-            placeholder="Статус сервиса"
+            label="Срок сервиса"
+            placeholder="Срок сервиса"
             options={serviceDateTypeOptions}
             onChange={(e, o) => onInputChange(o, 'serviceDateType')}
             className="alignBottom"
           />
 
           <Form.Select
-            label="Категория товара"
-            placeholder="Категория товара"
+            label="Категория"
+            placeholder="Категория"
             options={categoryOptions}
             onChange={(e, o) => onInputChange(o, 'categoryId')}
             className="alignBottom"
           />
 
           <Form.Select
-            label="Конфигурация"
-            placeholder="Конфигурация"
+            label="Статус заявки"
+            placeholder="Статус заявки"
             options={configurationOptions}
             onChange={(e, o) => onInputChange(o, 'configuration')}
             className="alignBottom"
           />
+        </Form.Group>
 
-          <div className="flexColumn alignBottom">
-            <label>Дата</label>
-            <DatePicker
-              className="datePicker"
-              autoComplete="off"
-              locale={language}
-              dropdownMode="select" //timezone="UTC"
-              selected={stringYYYYMMDDToMoment(param.date)}
-              onChange={date =>
-                setParam({ ...param, date: momentToStringYYYYMMDD(date) })
-              }
-              maxDate={new Date()}
-            />
+        <Form.Group className="spaceBetween">
+          <div className="flexDirectionRow">
+            <Form.Field className="marginRight">
+              <label>Дата</label>
+              <DatePicker
+                className="date-auto-width"
+                autoComplete="off"
+                locale={language}
+                dropdownMode="select" //timezone="UTC"
+                selected={stringYYYYMMDDToMoment(param.date)}
+                onChange={date =>
+                  setParam({ ...param, date: momentToStringYYYYMMDD(date) })
+                }
+                maxDate={new Date()}
+                dateFormat="DD.MM.YYYY"
+              />
+            </Form.Field>
+            <Form.Button
+              onClick={handleClickApply}
+              color="blue"
+              className="alignBottom"
+            >
+              Применить
+            </Form.Button>
           </div>
-
-          <Form.Button
-            onClick={handleClickApply}
-            color="blue"
-            className="alignBottom"
-          >
-            Применить
-          </Form.Button>
 
           <Form.Field className="alignBottom">
             <ModalColumns
@@ -367,7 +376,12 @@ const TransferApplicationExodus = props => {
           </Form.Field>
         </Form.Group>
       </Form>
-      <ReactTableServerSideWrapper data={transfer} columns={columns} />
+      <Divider />
+      <ReactTableServerSideWrapper
+        filterable={true}
+        data={transfer}
+        columns={columns}
+      />
     </Container>
   );
 };

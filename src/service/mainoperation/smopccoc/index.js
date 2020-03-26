@@ -20,8 +20,6 @@ import { fetchServiceListManager } from '../../report/serviceReportAction';
 
 import '../../service.css';
 
-import '../../service.css';
-
 const Smopccoc = props => {
   const {
     // intl: { messages },

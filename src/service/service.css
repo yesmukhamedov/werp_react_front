@@ -134,3 +134,23 @@ input::-webkit-inner-spin-button {
   display: flex;
   flex-direction: column;
 }
+
+.ui.dimmer {
+  position: fixed !important;
+}
+
+.spaceBetween {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-left: 7px;
+}
+
+.flexDirectionRow {
+  display: flex;
+  flex-direction: row;
+}
+
+.marginRight {
+  margin-right: 15px !important;
+}

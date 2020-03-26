@@ -1,25 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Container, Form } from 'semantic-ui-react';
+import { Container, Form, Divider } from 'semantic-ui-react';
 import 'react-table/react-table.css';
-import '../../../service.css';
-
 import { fetchAssignedCalls } from '../smopccocAction';
 import { fetchServiceTypeId } from '../../../mainoperation/smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
-
 import ModalColumns from '../../../../utils/ModalColumns';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment';
 import {
   momentToStringYYYYMMDD,
   stringYYYYMMDDToMoment,
 } from '../../../../utils/helpers';
-require('moment/locale/ru');
-require('moment/locale/tr');
+import { LinkToSmcuspor } from '../../../../utils/outlink';
 
 const AssignedCalls = props => {
   const {
@@ -54,6 +49,7 @@ const AssignedCalls = props => {
       Header: 'Id',
       accessor: 'id',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'CN',
@@ -69,11 +65,13 @@ const AssignedCalls = props => {
       Header: 'Дата продажи',
       accessor: 'contractDate',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'Дата назначения',
       accessor: '888',
       checked: true,
+      filterable: false,
     },
 
     {
@@ -101,40 +99,56 @@ const AssignedCalls = props => {
       Header: 'F1',
       accessor: 'f1',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'F2',
       accessor: 'f2',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'F3',
       accessor: 'f3',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'F4',
       accessor: 'f4',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'F5',
       accessor: 'f5',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'Категория',
       accessor: 'crmCategory',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'Фин. статус',
       accessor: '15',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'Просмотр',
       accessor: '16',
+      filterable: false,
+      Cell: original => (
+        <div style={{ textAlign: 'center' }}>
+          <LinkToSmcuspor
+            contractNumber={original.row.contractNumber}
+            text="Просмотр"
+          />
+        </div>
+      ),
       checked: true,
     },
   ];
@@ -265,7 +279,7 @@ const AssignedCalls = props => {
 
           <Form.Select
             fluid
-            label="Статус сервиса"
+            label="Срок сервиса"
             placeholder="Статус сервиса"
             options={serviceDateTypeOptions}
             onChange={(e, o) => onInputChange(o, 'serviceDateType')}
@@ -279,29 +293,33 @@ const AssignedCalls = props => {
             onChange={(e, o) => onInputChange(o, 'categoryId')}
             className="alignBottom"
           />
+        </Form.Group>
 
-          <div className="flexColumn alignBottom">
-            <label>Дата</label>
-            <DatePicker
-              className="datePicker"
-              autoComplete="off"
-              locale={language}
-              dropdownMode="select" //timezone="UTC"
-              selected={stringYYYYMMDDToMoment(param.date)}
-              onChange={date =>
-                setParam({ ...param, date: momentToStringYYYYMMDD(date) })
-              }
-              maxDate={new Date()}
-            />
+        <Form.Group className="spaceBetween">
+          <div className="flexDirectionRow">
+            <Form.Field className="marginRight">
+              <label>Дата</label>
+              <DatePicker
+                className="date-auto-width"
+                autoComplete="off"
+                locale={language}
+                dropdownMode="select" //timezone="UTC"
+                selected={stringYYYYMMDDToMoment(param.date)}
+                onChange={date =>
+                  setParam({ ...param, date: momentToStringYYYYMMDD(date) })
+                }
+                maxDate={new Date()}
+                dateFormat="DD.MM.YYYY"
+              />
+            </Form.Field>
+            <Form.Button
+              onClick={handleClickApply}
+              color="blue"
+              className="alignBottom"
+            >
+              Применить
+            </Form.Button>
           </div>
-
-          <Form.Button
-            onClick={handleClickApply}
-            color="blue"
-            className="alignBottom"
-          >
-            Применить
-          </Form.Button>
 
           <Form.Field className="alignBottom">
             <ModalColumns
@@ -311,7 +329,12 @@ const AssignedCalls = props => {
           </Form.Field>
         </Form.Group>
       </Form>
-      <ReactTableServerSideWrapper data={assignedCalls} columns={columns} />
+      <Divider />
+      <ReactTableServerSideWrapper
+        filterable={true}
+        data={assignedCalls}
+        columns={columns}
+      />
     </Container>
   );
 };

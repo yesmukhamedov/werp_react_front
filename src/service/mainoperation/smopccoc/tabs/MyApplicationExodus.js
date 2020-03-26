@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Form, Container } from 'semantic-ui-react';
+import { Form, Container, Divider } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
 import { fetchServiceTypeId } from '../../../mainoperation/smcs/smcsAction';
@@ -60,6 +60,7 @@ const MyApplicationExodus = props => {
       Header: 'ID',
       accessor: 'id',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'Филиал',
@@ -75,11 +76,13 @@ const MyApplicationExodus = props => {
       Header: 'Дата продажи',
       accessor: '45',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'Дата заявки',
       accessor: '477',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'ФИО клиента',
@@ -105,46 +108,55 @@ const MyApplicationExodus = props => {
       Header: 'F1',
       accessor: '50',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'F2',
       accessor: '50',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'F3',
       accessor: '50',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'F4',
       accessor: '50',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'F5',
       accessor: '50',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'Категория',
       accessor: '505',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'Статус заявки',
       accessor: '5088',
       checked: true,
+      filterable: false,
     },
     {
       Header: '№ заявки',
       accessor: '5850',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'История клиента',
       accessor: '5885',
       checked: true,
+      filterable: false,
       Cell: original => (
         <div style={{ textAlign: 'center' }}>
           <LinkToSmcuspor
@@ -153,9 +165,6 @@ const MyApplicationExodus = props => {
           />
         </div>
       ),
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
     },
   ];
 
@@ -298,43 +307,52 @@ const MyApplicationExodus = props => {
             onChange={(e, o) => onInputChange(o, 'serviceDateType')}
             className="alignBottom"
           />
+        </Form.Group>
 
-          <div className="flexColumn alignBottom">
-            <label>Дата с</label>
-            <DatePicker
-              className="datePicker"
-              autoComplete="off"
-              locale={language}
-              dropdownMode="select" //timezone="UTC"
-              selected={stringYYYYMMDDToMoment(param.dateStart)}
-              onChange={date =>
-                setParam({ ...param, dateStart: momentToStringYYYYMMDD(date) })
-              }
-              maxDate={new Date()}
-            />
-          </div>
-          <div className="flexColumn alignBottom">
-            <label>Дата по</label>
-            <DatePicker
-              className="datePicker"
-              autoComplete="off"
-              locale={language}
-              dropdownMode="select" //timezone="UTC"
-              selected={stringYYYYMMDDToMoment(param.dateEnd)}
-              onChange={date =>
-                setParam({ ...param, dateEnd: momentToStringYYYYMMDD(date) })
-              }
-              maxDate={new Date()}
-            />
-          </div>
+        <Form.Group className="spaceBetween">
+          <div className="flexDirectionRow">
+            <Form.Field className="marginRight">
+              <label>Дата заявки с</label>
+              <DatePicker
+                className="date-auto-width"
+                autoComplete="off"
+                locale={language}
+                dropdownMode="select" //timezone="UTC"
+                selected={stringYYYYMMDDToMoment(param.dateStart)}
+                onChange={date =>
+                  setParam({
+                    ...param,
+                    dateStart: momentToStringYYYYMMDD(date),
+                  })
+                }
+                maxDate={new Date()}
+                dateFormat="DD.MM.YYYY"
+              />
+            </Form.Field>
 
-          <Form.Button
-            onClick={handleClickApply}
-            color="blue"
-            className="alignBottom"
-          >
-            Применить
-          </Form.Button>
+            <Form.Field className="marginRight">
+              <label>Дата заявки по</label>
+              <DatePicker
+                className="date-auto-width"
+                autoComplete="off"
+                locale={language}
+                dropdownMode="select" //timezone="UTC"
+                selected={stringYYYYMMDDToMoment(param.dateEnd)}
+                onChange={date =>
+                  setParam({ ...param, dateEnd: momentToStringYYYYMMDD(date) })
+                }
+                maxDate={new Date()}
+                dateFormat="DD.MM.YYYY"
+              />
+            </Form.Field>
+            <Form.Button
+              onClick={handleClickApply}
+              color="blue"
+              className="alignBottom"
+            >
+              Применить
+            </Form.Button>
+          </div>
 
           <Form.Field className="alignBottom">
             <ModalColumns
@@ -344,7 +362,12 @@ const MyApplicationExodus = props => {
           </Form.Field>
         </Form.Group>
       </Form>
-      <ReactTableServerSideWrapper data={srlsmList} columns={columns} />
+      <Divider />
+      <ReactTableServerSideWrapper
+        filterable={true}
+        data={srlsmList}
+        columns={columns}
+      />
     </Container>
   );
 };
