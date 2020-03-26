@@ -1,0 +1,15 @@
+.spaceBetween {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-left: 7px;
+}
+
+.flexDirectionRow {
+  display: flex;
+  flex-direction: row;
+}
+
+.marginRight {
+  margin-right: 15px !important;
+}

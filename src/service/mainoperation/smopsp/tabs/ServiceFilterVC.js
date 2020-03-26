@@ -1,16 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import {
-  Segment,
-  Container,
-  Dropdown,
-  Grid,
-  Button,
-  Table,
-  Input,
-  Select,
-} from 'semantic-ui-react';
+import { Container, Form, Divider } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
 import { fetchServicePacketPlan } from '../smopspAction';
@@ -18,6 +9,7 @@ import { fetchServiceTypeId } from '../../smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from './../../../../utils/ModalColumns';
+import { LinkToSmcuspor } from '../../../../utils/outlink';
 
 const ServiceFilterVC = props => {
   const {
@@ -36,7 +28,6 @@ const ServiceFilterVC = props => {
     fetchServicePacketPlan,
     dynamicObject = [],
     srlsmList = [],
-    columns = [],
   } = props;
   const emptyParam = {
     country: '',
@@ -79,99 +70,86 @@ const ServiceFilterVC = props => {
     {
       Header: '№',
       accessor: '1',
-      status: false,
-      id: 1,
+      checked: true,
+      filterable: false,
     },
     {
       Header: 'CN',
       accessor: '2',
-      status: true,
-      id: 2,
-    },
-    {
-      Header: 'Филиал',
-      accessor: '3',
-      status: true,
-      id: 3,
+      checked: true,
     },
     {
       Header: 'Заводской номер',
       accessor: '4',
-      status: true,
-      id: 4,
+      checked: true,
     },
     {
       Header: 'Дата продажи',
       accessor: '5',
-      status: true,
-      id: 5,
+      checked: true,
     },
     {
       Header: 'ФИО клиента',
       accessor: '6',
-      status: true,
-      id: 6,
+      checked: true,
+      with: 200,
     },
     {
       Header: 'ИИН клиента',
       accessor: '7',
-      status: true,
-      id: 7,
+      checked: true,
+      with: 150,
     },
     {
       Header: 'Адрес',
       accessor: '8',
-      status: true,
-      id: 8,
+      checked: true,
     },
     {
       Header: 'ФИО дилера',
       accessor: '9',
-      status: true,
-      id: 9,
+      checked: true,
+      filterable: false,
     },
     {
       Header: 'F1',
       accessor: '10',
-      status: true,
-      id: 10,
+      checked: true,
+      filterable: false,
     },
     {
       Header: 'Гарантия',
-      accessor: '11',
-      status: true,
-      id: 11,
+      accessor: '13cat5',
+      checked: true,
+      filterable: false,
     },
-
     {
       Header: 'Категория',
-      accessor: '12',
-      status: true,
-      id: 12,
+      accessor: '13cat',
+      checked: true,
+      filterable: false,
     },
-
     {
-      Header: 'Фин статус',
-      accessor: '13',
-      status: true,
-      id: 13,
+      Header: 'Фин. статус',
+      accessor: '13cfin',
+      checked: true,
+      filterable: false,
     },
     {
       Header: 'Просмотр',
-      accessor: '14',
-      status: true,
-      id: 14,
+      accessor: '16',
+      filterable: false,
+      Cell: original => (
+        <div style={{ textAlign: 'center' }}>
+          <LinkToSmcuspor
+            contractNumber={original.row.contractNumber}
+            text="Просмотр"
+          />
+        </div>
+      ),
+      checked: true,
     },
   ];
-
-  const filterColumns = columns.filter(item => item.status === true);
-  const columnsOption = columns.map(item => {
-    return {
-      key: item.id,
-      text: item.Header,
-      value: item.id,
-    };
-  });
 
   const handleClickApply = () => {
     fetchServicePacketPlan({ ...param });
@@ -190,7 +168,6 @@ const ServiceFilterVC = props => {
         case 'branchId':
           prevParam.branchId = o.value;
           break;
-
         case 'categoryId':
           prevParam.categoryId = o.value;
           break;
@@ -220,96 +197,103 @@ const ServiceFilterVC = props => {
     });
   };
 
+  const [columns, setColumns] = useState([...initialColumns]);
+
+  const finishColumns = data => {
+    setColumns([...data]);
+  };
+
   return (
     <Container fluid className="containerMargin">
-      <Segment>
-        <Grid>
-          <Grid.Row columns={9}>
-            <Grid.Column>
-              <label>Страна</label>
-              <Dropdown
-                options={countryOptions}
-                fluid
-                selection
-                placeholder="Страна"
-                onChange={(e, o) => onInputChange(o, 'country')}
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Компания</label>
-              <Dropdown
-                options={companyOptions}
-                fluid
-                selection
-                placeholder="Компания"
-                onChange={(e, o) => onInputChange(o, 'bukrs')}
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Филиал</label>
-              <Dropdown
-                options={serBranchOptions}
-                fluid
-                selection
-                placeholder="Филиал"
-                onChange={(e, o) => onInputChange(o, 'branchId')}
-              />
-            </Grid.Column>
+      <Form>
+        <Form.Group widths="equal">
+          <Form.Select
+            fluid
+            label="Страна"
+            options={countryOptions}
+            placeholder="Страна"
+            onChange={(e, o) => onInputChange(o, 'country')}
+            className="alignBottom"
+          />
 
-            <Grid.Column>
-              <label>Фин. Статус</label>
-              <Dropdown
-                fluid
-                selection
-                placeholder="Фин. Статус"
-                onChange={(e, o) => onInputChange(o, 'finStatus')}
-                options={finStatusOption}
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Срок сервиса</label>
-              <Select
-                options={serviceDateTypeOptions}
-                onChange={(e, o) => onInputChange(o, 'serviceDateType')}
-                fluid
-                selection
-                placeholder="Статус сервиса"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Категория товара</label>
-              <Dropdown
-                options={categoryOptions}
-                onChange={(e, o) => onInputChange(o, 'categoryId')}
-                fluid
-                selection
-                placeholder="Категория товара"
-              />
-            </Grid.Column>
-            <Grid.Column>
-              <label>Гарантия</label>
-              <Select
-                options={warrantyOptions}
-                onChange={(e, o) => onInputChange(o, 'warranty')}
-                fluid
-                selection
-                placeholder="Вид сервиса"
-              />
-            </Grid.Column>
+          <Form.Select
+            fluid
+            label="Компания"
+            options={companyOptions}
+            placeholder="Компания"
+            onChange={(e, o) => onInputChange(o, 'bukrs')}
+            className="alignBottom"
+          />
 
-            <Grid.Column verticalAlign="bottom">
-              <Button onClick={handleClickApply} color="blue">
-                Применить
-              </Button>
-            </Grid.Column>
+          <Form.Select
+            fluid
+            label="Филиал"
+            options={serBranchOptions}
+            placeholder="Филиал"
+            onChange={(e, o) => onInputChange(o, 'branchId')}
+            className="alignBottom"
+          />
+          <Form.Select
+            fluid
+            label="Фин. Статус"
+            options={finStatusOption}
+            placeholder="Фин. Статус"
+            onChange={(e, o) => onInputChange(o, 'finStatus')}
+            className="alignBottom"
+          />
 
-            <Grid.Column>
-              <ModalColumns columns={initialColumns} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Segment>
-      <ReactTableServerSideWrapper data={srlsmList} columns={columns} />
+          <Form.Select
+            fluid
+            label="Срок сервиса"
+            options={serviceDateTypeOptions}
+            placeholder="Фин. Статус"
+            onChange={(e, o) => onInputChange(o, 'serviceDateType')}
+            className="alignBottom"
+          />
+
+          <Form.Select
+            fluid
+            label="Категория"
+            options={categoryOptions}
+            placeholder="Категория"
+            onChange={(e, o) => onInputChange(o, 'categoryId')}
+            className="alignBottom"
+          />
+
+          <Form.Select
+            fluid
+            label="Гарантия"
+            options={warrantyOptions}
+            placeholder="Гарантия"
+            onChange={(e, o) => onInputChange(o, 'warranty')}
+            className="alignBottom"
+          />
+        </Form.Group>
+
+        <Form.Group className="spaceBetween">
+          <Form.Button
+            onClick={handleClickApply}
+            color="blue"
+            className="alignBottom"
+          >
+            Применить
+          </Form.Button>
+
+          <Form.Field className="alignBottom">
+            <ModalColumns
+              columns={initialColumns}
+              finishColumns={finishColumns}
+            />
+          </Form.Field>
+        </Form.Group>
+      </Form>
+      <Divider />
+
+      <ReactTableServerSideWrapper
+        filterable={true}
+        data={srlsmList}
+        columns={columns}
+      />
     </Container>
   );
 };

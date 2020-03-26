@@ -17,6 +17,7 @@ import {
 import { fetchServiceTypeId } from '../../mainoperation/smcs/smcsAction';
 import { fetchServiceListManager } from '../../report/serviceReportAction';
 import '../../service.css';
+import './style.css';
 
 const Smopccoc = props => {
   const {

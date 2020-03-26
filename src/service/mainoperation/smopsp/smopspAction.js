@@ -23,6 +23,7 @@ const language = localStorage.getItem('language');
 //План по сервис пакетам
 export const fetchServicePacketPlan = param => {
   return function(dispatch) {
+    dispatch(modifyLoader(true));
     doGet(`smopsp/ServiceFilterVC`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
@@ -41,6 +42,7 @@ export const fetchServicePacketPlan = param => {
 //Перенесенные заявки
 export const fetchTransferApplication = param => {
   return function(dispatch) {
+    dispatch(modifyLoader(true));
     doGet(`smopsp/transferApplication`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
@@ -59,6 +61,7 @@ export const fetchTransferApplication = param => {
 //Назначенные звонки
 export const fetchAssignedCalls = param => {
   return function(dispatch) {
+    dispatch(modifyLoader(true));
     doGet(`smopsp/assignedCalls`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
@@ -77,6 +80,7 @@ export const fetchAssignedCalls = param => {
 //Мои заявки
 export const fetchMyApplication = param => {
   return function(dispatch) {
+    dispatch(modifyLoader(true));
     doGet(`smopsp/myApplication`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
