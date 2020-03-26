@@ -53,7 +53,7 @@ function Smcuspor(props) {
     bukrsName,
     bukrs,
     branchName,
-    branchId,
+    servBranchId,
     servBranchName,
     tovarSerial,
     customerName,
@@ -154,7 +154,7 @@ function Smcuspor(props) {
                         `smregc?contractNumber=${contractNumber}`,
                         {
                           tovarSn: tovarSerial,
-                          branchId: branchId,
+                          branchId: servBranchId,
                           bukrs: bukrs,
                         },
                       )
@@ -174,7 +174,7 @@ function Smcuspor(props) {
                         {
                           bukrs: bukrs,
                           bukrsName: bukrsName,
-                          branchId: branchId,
+                          branchId: servBranchId,
                           servBranchName: servBranchName,
                           customerId: customerId,
                           customerName: customerName,
@@ -438,9 +438,9 @@ function Smcuspor(props) {
                               <Input
                                 size="small"
                                 fluid
-                                value={`${warranty ? warranty : ''} / ${
+                                value={`${
                                   warrantyEndedMonths ? warrantyEndedMonths : ''
-                                }`}
+                                } / ${warranty ? warranty : ''}`}
                               />
                             </Table.Cell>
                           </Table.Row>
@@ -602,7 +602,6 @@ function Smcuspor(props) {
                         onChange={date => setEndDate(date)}
                         showMonthDropDown
                         showYearDropDown
-                        maxDate={moment(new Date())}
                       />
                     </Table.Cell>
                     <Table.Cell width="2" verticalAlign="bottom">
@@ -712,6 +711,7 @@ function Smcuspor(props) {
                   nextText={messages['Table.Next']}
                   className="-striped -highlight"
                   pageSizeOptions={[20, 30, 40]}
+                  showPagination={true}
                   loadingText={messages['Table.Next']}
                   noDataText={messages['Table.NoData']}
                   rowsText={messages['Table.Rows']}

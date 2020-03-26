@@ -24,6 +24,7 @@ import {
   FETCH_TOVAR_CATEGORYS,
   FETCH_CONTRACT_STATUS,
   FETCH_SMECI,
+  POST_SMECI,
   FETCH_SERV_CRM_CALL_STATUS,
   POST_SMREGC_CREATE_CALL,
   FETCH_APP_STATUS,
@@ -38,6 +39,7 @@ import {
   FETCH_SMECA,
   FETCH_SMSETPLP,
   POST_SMSETPLP,
+  FETCH_OPERTAION_TYPE_LIST,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -45,6 +47,7 @@ const INITIAL_STATE = {
   historyDynamicObject: {},
   tovarCategorys: [],
   contractStatus: [],
+  operationTypeList: [],
   appList: [],
   appMasterList: [],
   data: {
@@ -60,6 +63,7 @@ const INITIAL_STATE = {
   appStatus: [],
   appType: [],
   listOfEmployees: [],
+  errorTable: [],
 };
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -201,6 +205,9 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_SMECI: {
       return { ...state, smeciContractInfo: action.payload.data.contractInfo };
     }
+    case POST_SMECI: {
+      return { ...state, smeciContractInfo: {} };
+    }
 
     case FETCH_SERV_CRM_CALL_STATUS: {
       return { ...state, servCrmCallStatus: action.payload.data };
@@ -274,6 +281,7 @@ export default function(state = INITIAL_STATE, action) {
       };
     }
     case FETCH_SMSETPLP: {
+      console.log('DataReducerpLP', action.payload);
       return {
         ...state,
         dynamicObject: action.payload,
@@ -284,6 +292,12 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         dynamicObject: [action.payload],
+      };
+    }
+    case FETCH_OPERTAION_TYPE_LIST: {
+      return {
+        ...state,
+        operationTypeList: [...action.payload.data],
       };
     }
     default:

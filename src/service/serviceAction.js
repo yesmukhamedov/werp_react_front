@@ -3,7 +3,9 @@ import {
   handleError,
   notify,
 } from '../general/notification/notification_action';
+import { errorTableText } from '../utils/helpers';
 import { modifyLoader } from '../general/loader/loader_action';
+import { date } from 'yup';
 export const SERVICE_ADD = 'SERVICE_ADD';
 export const FETCH_DYNOBJ_SERVICE = 'FETCH_DYNOBJ_SERVICE';
 export const CHANGE_DYNOBJ_SERVICE = 'CHANGE_DYNOBJ_SERVICE';
@@ -42,7 +44,7 @@ export const FETCH_APP_LIST = 'FETCH_APP_LIST';
 export const FETCH_APP_MASTER_LIST = 'FETCH_APP_MASTER_LIST';
 export const FETCH_EDIT_APP = 'FETCH_EDIT_APP';
 export const FETCH_CLEAR_APP_LIST = 'FETCH_CLEAR_APP_LIST';
-
+export const FETCH_ERROR_TABLE = 'FETCH_ERROR_TABLE';
 export const FETCH_SMSLSP = 'FETCH_SMSLSP';
 export const FETCH_SMSRCUS = 'FETCH_SMSRCUS';
 export const FETCH_TOVAR_CATEGORYS = 'FETCH_TOVAR_CATEGORYS';
@@ -50,11 +52,14 @@ export const FETCH_CONTRACT_STATUS = 'FETCH_CONTRACT_STATUS';
 export const FETCH_SMECAM = 'FETCH_SMECAM';
 export const FETCH_SERV_APP_STATUS = 'FETCH_SERV_APP_STATUS';
 export const EDIT_SMECAM = 'EDIT_SMECAM';
+export const EDIT_SMECA = 'EDIT_SMECA';
 export const FETCH_SMVCA = 'FETCH_SMVCA';
+export const FETCH_OPERTAION_TYPE_LIST = 'FETCH_OPERTAION_TYPE_LIST';
 export const FETCH_SMECA = 'FETCH_SMECA';
 export const FETCH_SMSETPLP = 'FETCH_SMSETPLP';
-export const POST_SMSETPLP = 'FETCH_SMSETPLP';
+export const POST_SMSETPLP = 'POST_SMSETPLP';
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+
 const language = localStorage.getItem('language');
 export function changeDynObjService(a_obj) {
   const obj = {
@@ -234,14 +239,12 @@ export function fetchSmsetct(searchParams) {
 export function postSmsetct(postParams, fetchSmsetct, searchParams) {
   return function(dispatch) {
     doPost(`smsetct/create`, postParams)
-      .then(({ data }) => {
+      .then(data => {
         if (data.status === 200) {
-          dispatch(notify('success', errorTable[`101${language}`]));
-        } else {
-          dispatch(notify('error', errorTable[`132${language}`])); //Не добавлен
-        }
-        if (searchParams.length !== 0) {
+          dispatch(notify('success', errorTableText(101)));
           fetchSmsetct(searchParams);
+        } else {
+          dispatch(notify('error', errorTableText(133), errorTableText(132)));
         }
       })
       .catch(error => {
@@ -255,23 +258,11 @@ export function editSmsetct(editParams, searchParams, fetchSmsetct) {
     doPut(`smsetct/update`, editParams)
       .then(data => {
         if (data.status === 200) {
-          dispatch(
-            notify(
-              'success',
-              errorTable[`104${language}`],
-              errorTable[`101${language}`],
-            ),
-          );
+          dispatch(notify('success', errorTableText(104), errorTableText(101)));
+          fetchSmsetct(searchParams);
         } else {
-          dispatch(
-            notify(
-              'error',
-              errorTable[`133${language}`],
-              errorTable[`132${language}`],
-            ),
-          );
+          dispatch(notify('error', errorTableText(133), errorTableText(132)));
         }
-        fetchSmsetct(searchParams);
       })
       .catch(e => {
         handleError(e, dispatch);
@@ -531,6 +522,7 @@ export function postSmccaCreateApp(application, back) {
 
 export function fetchSmsrcus(searchParams) {
   return function(dispatch) {
+    console.log('object', searchParams);
     dispatch(modifyLoader(true));
     doGet('smsrcus/list', searchParams)
       .then(({ data }) => {
@@ -638,13 +630,14 @@ export function fetchServAppStatus() {
 export function fetchSmsetplp(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smsetplp`, { ...params })
+    doGet(`smsetplp/view`, { ...params })
       .then(data => {
+        console.log('Data', data.data.data);
         dispatch(modifyLoader(false));
-        if ((data.status === 200) & (data.data.data.length > 0)) {
+        if (data.status === 200) {
           dispatch({
             type: FETCH_SMSETPLP,
-            payload: data.data,
+            payload: data.data.data,
           });
         }
       })
@@ -660,12 +653,17 @@ export function postSmsetplp(params) {
     dispatch(modifyLoader(true));
     doPost(`smsetplp/create`, params)
       .then(data => {
+        console.log(data);
         dispatch(modifyLoader(false));
-        if ((data.status === 200) & (data.data.data.length > 0)) {
+        if (data.status === 200) {
+          // & (data.data.data.length > 0)
           dispatch({
             type: POST_SMSETPLP,
             payload: data.data.data,
           });
+          dispatch(notify('success', errorTableText(101)));
+        } else {
+          dispatch(notify('error', errorTableText(133), errorTableText(132)));
         }
       })
       .catch(error => {
@@ -677,25 +675,16 @@ export function postSmsetplp(params) {
 
 export function editSmecam(editParams) {
   return function(dispatch) {
-    console.log('editParamsSmecamInAction', editParams);
     doPut('smecam/edit', editParams)
       .then(data => {
         if (data.status === 200) {
-          dispatch(
-            notify(
-              'success',
-              errorTable[`104${language}`],
-              errorTable[`101${language}`],
-            ),
-          );
+          dispatch({
+            type: EDIT_SMECAM,
+            payloda: data,
+          });
+          dispatch(notify('success', errorTableText(104), errorTableText(101)));
         } else {
-          dispatch(
-            notify(
-              'error',
-              errorTable[`133${language}`],
-              errorTable[`132${language}`],
-            ),
-          );
+          dispatch(notify('error', errorTableText(133), errorTableText(132)));
         }
       })
       .catch(e => {
@@ -703,27 +692,20 @@ export function editSmecam(editParams) {
       });
   };
 }
+
 export function editSmeca(editParams) {
   return function(dispatch) {
     console.log('editEdit', editParams);
     doPut('smeca/edit', editParams)
       .then(data => {
         if (data.status === 200) {
-          dispatch(
-            notify(
-              'success',
-              errorTable[`104${language}`],
-              errorTable[`101${language}`],
-            ),
-          );
+          dispatch({
+            type: EDIT_SMECA,
+            payloda: data,
+          });
+          dispatch(notify('success', errorTableText(104), errorTableText(101)));
         } else {
-          dispatch(
-            notify(
-              'error',
-              errorTable[`133${language}`],
-              errorTable[`132${language}`],
-            ),
-          );
+          dispatch(notify('error', errorTableText(133), errorTableText(132)));
         }
       })
       .catch(e => {
@@ -863,7 +845,6 @@ export function fetchSmvca(id) {
     doGet(`smvca/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        console.log('dataSmecam', data);
         dispatch({
           type: FETCH_SMVCA,
           payload: data.data,
@@ -883,22 +864,28 @@ export function editSmsetplp(params) {
       .then(data => {
         dispatch(modifyLoader(false));
         if (data.status === 200) {
-          dispatch(
-            notify(
-              'success',
-              errorTable[`104${language}`],
-              errorTable[`101${language}`],
-            ),
-          );
+          dispatch(notify('success', errorTableText(104), errorTableText(101)));
         } else {
-          dispatch(
-            notify(
-              'error',
-              errorTable[`133${language}`],
-              errorTable[`132${language}`],
-            ),
-          );
+          dispatch(notify('error', errorTableText(133), errorTableText(132)));
         }
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchOperationTypeList() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('service_operation_type/view')
+      .then(data => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_OPERTAION_TYPE_LIST,
+          payload: data.data,
+        });
       })
       .catch(error => {
         dispatch(modifyLoader(false));

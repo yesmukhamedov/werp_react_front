@@ -13,6 +13,7 @@ import {
   Input,
   Dropdown,
 } from 'semantic-ui-react';
+import 'react-table/react-table.css';
 
 const List = props => {
   const {
@@ -24,6 +25,8 @@ const List = props => {
     getCountryOptions,
     getBranchOptions,
     editSmsetplp,
+    getOperationList,
+    operationTypeList,
   } = props;
 
   const [editOpen, setEditOpen] = useState(false);
@@ -133,39 +136,40 @@ const List = props => {
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
     },
+
     {
       Header: messages['type_of_operation'],
-      accessor: 'branchId', //Name
+      accessor: 'operationTypeId', //Name
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
     },
     {
       Header: messages['current_base_plan'],
-      accessor: 'branchId', //Name
+      accessor: 'currentBasePlan',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
     },
     {
       Header: messages['current_plan'],
-      accessor: 'branchId', //Name
+      accessor: 'currentPlan', //Name', //Name
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
     },
     {
       Header: messages['overdue_base_plan'],
-      accessor: 'branchId', //Name
+      accessor: 'overDueBasePlan', //Name
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
     },
     {
       Header: messages['overdue_plan'],
-      accessor: 'branchId', //Name
+      accessor: 'overDuePlan', //Name
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
     },
     {
       Header: messages['total_plan_amount'],
-      accessor: 'branchId', //Name
+      accessor: 'totalSumPlan', //Name
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
     },
@@ -189,10 +193,11 @@ const List = props => {
   return (
     <div>
       <ReactTableWrapper
-        data={dynamicObject.data ? dynamicObject.data : dj}
+        data={dynamicObject ? dynamicObject.data : []}
         columns={columns}
         defaultPageSize={20}
         showPagination={true}
+        className="-striped -highlight"
       />
 
       <Modal open={editOpen} size="tiny">
@@ -309,7 +314,7 @@ const List = props => {
                           fluid
                           selection
                           search
-                          options={companyOptions || []}
+                          options={getOperationList(operationTypeList) || []}
                           onChange={(e, o) => {
                             handleChange('operationId', o);
                           }}

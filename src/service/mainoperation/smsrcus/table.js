@@ -13,10 +13,13 @@ const DataTable = props => {
     messages,
     headersName,
   } = props;
+  let page,
+    oldPage = dynamicObject.totalPages ? dynamicObject.totalPages : 1;
   const getColumnsForTable = columnsName => {
     //select columns which show === true
     let columnsForShow = [];
     let Header;
+
     // i - index for columnsName j- index for
     for (let i = 0, j = 0; i < columnsName.length; i++) {
       if (columnsName[i].show) {
@@ -34,13 +37,15 @@ const DataTable = props => {
       if (e.accessor === 'customerStory') {
         return {
           Header: Header,
-          Cell: () => (
+          Cell: row => (
             <div style={{ textAlign: 'center' }}>
-              <Link to={`/service/mainoperation/smcuspor`}>
+              <Link
+                to={`/service/mainoperation/smcuspor?contractNumber=${row.original.contractNumber}`}
+                target="_blank"
+              >
                 <Button size="mini" icon>
-                  {' '}
                   <Icon name="address card" size="large" color="black" />{' '}
-                </Button>{' '}
+                </Button>
               </Link>
             </div>
           ),
@@ -73,7 +78,8 @@ const DataTable = props => {
         searchParam={searchParams}
         showPagination={true}
         requestData={param => {
-          fetchSmsrcus({ ...param });
+          page = dynamicObject.totalPages;
+          fetchSmsrcus({ ...param, page });
         }}
         turnOnReactFetch={turnOnReactFetch}
         className="-striped -highlight"

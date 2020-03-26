@@ -8,7 +8,6 @@ import 'react-datepicker/dist/react-datepicker.css';
 import OutputErrors from '../../../general/error/outputErrors';
 import {
   fetchSmsrcus,
-  fetchTovarCategorys,
   clearDynObjService,
   fetchContractStatus,
 } from '../../serviceAction';
@@ -23,6 +22,7 @@ import {
   Divider,
 } from 'semantic-ui-react';
 import moment from 'moment';
+import { errorTableText } from '../../../utils/helpers';
 import {
   stringYYYYMMDDToMoment,
   momentToStringYYYYMMDD,
@@ -52,6 +52,8 @@ const Smsrcus = props => {
   const date = new Date();
   const y = date.getFullYear();
   const m = date.getMonth();
+
+  let page = dynamicObject.totalPages ? dynamicObject.totalPages : 1;
   const [startDate, setStartDate] = useState(
     momentToStringYYYYMMDD(moment(new Date(y - 1, m, 1))),
   );
@@ -61,7 +63,6 @@ const Smsrcus = props => {
   const [searchParams, setSearchParams] = useState({ ...emptySearch });
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const [errors, setErrors] = useState([]);
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   let emptySearch = {
     branchId: '',
     bukrs: '',
@@ -96,8 +97,7 @@ const Smsrcus = props => {
     if (errs === null || errs === undefined || errs.length === 0) {
       let contractDateFrom = startDate,
         contractDateTo = endDate;
-
-      fetchSmsrcus({ ...searchParams, contractDateFrom, contractDateTo });
+      fetchSmsrcus({ ...searchParams, contractDateFrom, contractDateTo, page });
     }
     setErrors(() => errs);
   };
@@ -109,14 +109,14 @@ const Smsrcus = props => {
       searchParams.bukrs === undefined ||
       !searchParams.bukrs
     )
-      errors.push(errorTable[`5${language}`]);
+      errors.push(errorTableText(5));
 
     if (
       searchParams.branchId === null ||
       searchParams.branchId === undefined ||
       !searchParams.branchId
     )
-      errors.push(errorTable[`5${language}`]);
+      errors.push(errorTableText(7));
 
     return errors;
   };

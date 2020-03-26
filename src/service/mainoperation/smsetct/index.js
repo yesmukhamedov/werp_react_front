@@ -14,8 +14,8 @@ import {
   clearDynObjService,
 } from '../../serviceAction';
 import { connect } from 'react-redux';
-import OutputErrors from '../../../general/error/outputErrors';
 import List from './list';
+import { errorTableText } from '../../../utils/helpers';
 import {
   Header,
   Icon,
@@ -64,11 +64,13 @@ const Smsetct = props => {
     if (!countryList || countryList.length === 0) props.f4FetchCountryList();
   }, []);
 
+  //console.log('ErrorTable', errorTable);
   //onClickSearch
   const handleInputSearch = o => {
     setSearchParams({ bukrs: o.value });
     if (o.value.length > 0) setSearchError(false);
   };
+
   const clickSearch = () => {
     let branchesId = [];
     let srchErr = validateSearch();
@@ -293,7 +295,13 @@ const Smsetct = props => {
             <Icon name="add circle" />
             {messages['BTN__ADD']}
           </Button>
-          <Modal open={show}>
+          <Modal
+            open={show}
+            closeIcon
+            onClose={() => {
+              setShow(false);
+            }}
+          >
             <Modal.Header>
               <h3>{messages['add_cartridge']}</h3>
             </Modal.Header>
@@ -470,7 +478,6 @@ const Smsetct = props => {
 
             <Form.Field>
               <label>
-                {' '}
                 <br />
               </label>
               <Button color="teal" onClick={clickSearch} icon>
@@ -580,6 +587,7 @@ function mapStateToProps(state) {
     branchOptions: state.userInfo.branchOptionsService,
     dynamicObject: state.serviceReducer.dynamicObject,
     historyDynamicObject: state.serviceReducer.historyDynamicObject,
+    errorTable: state.serviceReducer.errorTable,
   };
 }
 export default connect(mapStateToProps, {

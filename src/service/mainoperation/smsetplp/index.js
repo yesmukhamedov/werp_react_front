@@ -13,7 +13,12 @@ import {
   Input,
   Dropdown,
 } from 'semantic-ui-react';
-import { fetchSmsetplp, postSmsetplp, editSmsetplp } from '../../serviceAction';
+import {
+  fetchSmsetplp,
+  postSmsetplp,
+  editSmsetplp,
+  fetchOperationTypeList,
+} from '../../serviceAction';
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import DatePicker from 'react-datepicker';
@@ -42,10 +47,13 @@ const Smsetplp = props => {
     dynamicObject,
     postSmsetplp,
     editSmsetplp,
+    fetchOperationTypeList,
+    operationTypeList,
   } = props;
 
   useEffect(() => {
     if (!countryList || countryList.length === 0) props.f4FetchCountryList();
+    fetchOperationTypeList();
   }, []);
 
   const [bukrs, setBukrs] = useState({});
@@ -65,7 +73,7 @@ const Smsetplp = props => {
     if (selectedBranches.length > 0) {
       searchParams.branchId = selectedBranches;
     }
-    fetchSmsetplp({ searchParams, dateAt });
+    fetchSmsetplp({ ...searchParams, dateAt });
   };
 
   const handleChange = (label, o) => {
@@ -288,7 +296,6 @@ const Smsetplp = props => {
                     <Table.Row>
                       <Table.Cell>
                         <Label size="large" basic>
-                          {' '}
                           {messages['country']}{' '}
                         </Label>
                       </Table.Cell>
@@ -354,7 +361,7 @@ const Smsetplp = props => {
                           fluid
                           selection
                           search
-                          options={companyOptions || []}
+                          options={getOperationList(operationTypeList) || []}
                           onChange={(e, o) => {
                             handleChange('operationId', o);
                           }}
@@ -475,6 +482,8 @@ const Smsetplp = props => {
         getCountryOptions={getCountryOptions}
         getBranchOptions={getBranchOptions}
         editSmsetplp={editSmsetplp}
+        getOperationList={getOperationList}
+        operationTypeList={operationTypeList}
       />
 
       <BranchF4Advanced
@@ -489,6 +498,20 @@ const Smsetplp = props => {
       />
     </Container>
   );
+};
+
+const getOperationList = operationTypeList => {
+  if (!operationTypeList) {
+    return [];
+  }
+  let out = (operationTypeList = operationTypeList.map(el => {
+    return {
+      key: el.id,
+      text: el.name,
+      value: el.id,
+    };
+  }));
+  return out;
 };
 
 const getCountryOptions = countryList => {
@@ -526,6 +549,7 @@ const mapStateToProps = state => {
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,
     dynamicObject: state.serviceReducer.dynamicObject,
+    operationTypeList: state.serviceReducer.operationTypeList,
   };
 };
 
@@ -535,4 +559,5 @@ export default connect(mapStateToProps, {
   fetchSmsetplp,
   postSmsetplp,
   editSmsetplp,
+  fetchOperationTypeList,
 })(injectIntl(Smsetplp));

@@ -34,9 +34,9 @@ const Smeca = props => {
     clearDynObjService,
     servAppStatusList,
     editSmeca,
-    id = 1900,
   } = props;
-
+  const url = window.location.search;
+  const id = url.slice(url.indexOf('=') + 1);
   let emptyEditList = {
     id: dynamicObject.id,
     bukrs: dynamicObject.bukrs,
@@ -377,7 +377,6 @@ const Smeca = props => {
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>
-                        {' '}
                         {messages['date_of_admission_to_the_service']}{' '}
                       </Label>
                     </Table.Cell>

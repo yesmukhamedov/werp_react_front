@@ -352,6 +352,51 @@ export default function List(props) {
       filterAll: true,
     },
     {
+      Header: messages['configuration'] + ' F-1',
+      accessor: 'f1',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+    },
+    {
+      Header: messages['configuration'] + ' F-2',
+      accessor: 'f2',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+    },
+    {
+      Header: messages['configuration'] + 'F-3',
+      accessor: 'f3',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+    },
+    {
+      Header: messages['configuration'] + ' F-4',
+      accessor: 'f4',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+    },
+
+    {
+      Header: messages['configuration'] + ' F-5',
+      accessor: 'f5',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+    },
+
+    {
+      Header: messages['configuration'] + ' F-6',
+      accessor: 'f6',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+    },
+
+    {
+      Header: messages['configuration'] + ' F-7',
+      accessor: 'f7',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+    },
+    {
       Header: messages['Table.Note'],
       accessor: 'description',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
@@ -381,7 +426,13 @@ export default function List(props) {
           />
         )}
 
-        <Modal open={open}>
+        <Modal
+          open={open}
+          closeIcon
+          onClose={() => {
+            setOpen(false);
+          }}
+        >
           <Modal.Header>
             <h3>{messages['edit_cartridge']}</h3>
           </Modal.Header>
