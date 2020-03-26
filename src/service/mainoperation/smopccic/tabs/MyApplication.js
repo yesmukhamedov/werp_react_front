@@ -242,6 +242,8 @@ const MyApplication = props => {
     });
   };
 
+  console.log('PARAM TRANSFER', param);
+
   return (
     <Container fluid className="containerMargin">
       <Segment>

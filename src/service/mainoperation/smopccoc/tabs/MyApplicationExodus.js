@@ -48,6 +48,8 @@ const MyApplicationExodus = props => {
   };
 
   const [param, setParam] = useState({ ...emptyParam });
+
+  console.log('PARAM MY', param);
   const categoryOptions = [
     { key: 1, text: 'Зеленый', value: 'Зеленый' },
     { key: 2, text: 'Желтый', value: 'Желтый' },
