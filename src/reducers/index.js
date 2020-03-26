@@ -53,6 +53,8 @@ import smopccocReducer from '../service/mainoperation/smopccoc/smopccocReducer';
 import smopccicReducer from '../service/mainoperation/smopccic/smopccicReducer';
 import smopspReducer from '../service/mainoperation/smopsp/smopspReducer';
 import smdisReducer from '../service/mainoperation/smdis/smdisReducer';
+import srkpisoReducer from '../service/report/srkpiso/srkpisoReducer';
+import srkpisodReducer from '../service/report/srkpisod/srkpisodReducer';
 
 const appReducer = combineReducers({
   form,
@@ -108,6 +110,8 @@ const appReducer = combineReducers({
   smopccicReducer: smopccicReducer,
   smopspReducer: smopspReducer,
   smdisReducer: smdisReducer,
+  srkpisoReducer: srkpisoReducer,
+  srkpisodReducer: srkpisodReducer,
 });
 
 const rootReducer = (state, action) => {

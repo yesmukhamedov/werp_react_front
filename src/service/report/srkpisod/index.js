@@ -6,7 +6,7 @@ import {
   f4FetchCountryList,
   f4FetchBranches,
 } from '../../../reference/f4/f4_action';
-import { fetchSrkpiso } from './srkpisoAction';
+import { fetchSrkpisod } from './srkpisodAction';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
@@ -14,15 +14,14 @@ import {
   stringYYYYMMDDToMoment,
   momentToStringYYYYMMDD,
 } from '../../../utils/helpers';
-import matchSorter from 'match-sorter';
 import ModalColumns from './../../../utils/ModalColumns';
 import '../../service.css';
+import { LinkToSmcuspor } from '../../../utils/outlink';
 
 const Srkpiso = props => {
   const {
     intl: { messages },
     language,
-    fetchSrkpiso,
     f4FetchCountryList,
     f4FetchBranches,
     branches,
@@ -35,84 +34,104 @@ const Srkpiso = props => {
     bukrs: '',
     branchId: '',
     product: '',
-    date: '',
+    dateStart: '',
+    dateEnd: '',
   };
   const [param, setParam] = useState({ ...emptyParam });
 
   const initialColumns = [
     {
       Header: 'ID',
+      accessor: 'id',
+      checked: true,
+    },
+    {
+      Header: 'CN',
+      accessor: 'cn',
+      checked: true,
+    },
+    {
+      Header: 'Филиал',
       accessor: 'recommenderId',
-      filterable: false,
       checked: true,
     },
     {
-      Header: messages['brnch'],
-      accessor: 'recommenderBranchName',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['recommenderBranchName'] }),
+      Header: 'Заводской номер',
+      accessor: '4455',
       checked: true,
     },
     {
-      Header: 'Оператор',
-      accessor: 'recommenderName',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['recommenderName'] }),
+      Header: 'Дата',
+      accessor: '45',
       checked: true,
     },
     {
-      Header: 'Текущий план',
-      accessor: 'recommenderPositionName',
-      filterable: false,
+      Header: 'ФИО клиента',
+      accessor: '46',
       checked: true,
     },
     {
-      Header: 'Текущий перенос',
-      accessor: 'applicantQuantity',
-      filterable: false,
+      Header: 'Адрес',
+      accessor: '47',
       checked: true,
     },
     {
-      Header: 'Текущий отмена',
-      accessor: 'saleCount',
-      filterable: false,
+      Header: 'Телефон',
+      accessor: '48',
       checked: true,
     },
     {
-      Header: 'Текущий выполнен',
-      accessor: 'recomenderBonus',
-      filterable: false,
+      Header: 'ФИО мастера',
+      accessor: '49',
       checked: true,
     },
     {
-      Header: 'Просроченный план',
-      accessor: '88',
-      filterable: false,
+      Header: 'F1',
+      accessor: '5045',
       checked: true,
     },
     {
-      Header: 'Просроченный перенос',
-      accessor: '78754',
-      filterable: false,
+      Header: 'F2',
+      accessor: '5078',
       checked: true,
     },
     {
-      Header: 'Просроченный отмена',
-      accessor: '656',
-      filterable: false,
+      Header: 'F3',
+      accessor: '5120',
       checked: true,
     },
     {
-      Header: 'Просроченный выполнен',
-      accessor: '858',
-      filterable: false,
+      Header: 'F4',
+      accessor: '5690',
       checked: true,
     },
     {
-      Header: 'KPI по %',
-      accessor: '858',
-      filterable: false,
+      Header: 'F5',
+      accessor: '57840',
       checked: true,
+    },
+    {
+      Header: 'Категория',
+      accessor: '505',
+      checked: true,
+    },
+    {
+      Header: 'Заявка',
+      accessor: '5088',
+      checked: true,
+    },
+    {
+      Header: 'Просмотр',
+      accessor: '5885',
+      checked: true,
+      Cell: original => (
+        <div style={{ textAlign: 'center' }}>
+          <LinkToSmcuspor
+            contractNumber={original.row.contractNumber}
+            text="Просмотр"
+          />
+        </div>
+      ),
     },
   ];
 
@@ -174,7 +193,10 @@ const Srkpiso = props => {
       }}
     >
       <Segment>
-        <h3>KPI Сервис операторов</h3>
+        <h3>
+          KPI Сервис операторов - Детализация(Текущий план/Текущий
+          перенос/Текущий отмена/Текущий выполненный)
+        </h3>
       </Segment>
       <Form>
         <Form.Group widths="equal">
@@ -216,17 +238,35 @@ const Srkpiso = props => {
         <Form.Group className="spaceBetween">
           <div className="flexDirectionRow">
             <Form.Field className="marginRight">
-              <label>Дата</label>
+              <label>Дата с</label>
               <DatePicker
                 className="date-auto-width"
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.date)}
+                selected={stringYYYYMMDDToMoment(param.dateStart)}
                 onChange={date =>
                   setParam({
                     ...param,
-                    date: momentToStringYYYYMMDD(date),
+                    dateStart: momentToStringYYYYMMDD(date),
+                  })
+                }
+                maxDate={new Date()}
+                dateFormat="DD.MM.YYYY"
+              />
+            </Form.Field>
+            <Form.Field className="marginRight">
+              <label>Дата по</label>
+              <DatePicker
+                className="date-auto-width"
+                autoComplete="off"
+                locale={language}
+                dropdownMode="select" //timezone="UTC"
+                selected={stringYYYYMMDDToMoment(param.dateEnd)}
+                onChange={date =>
+                  setParam({
+                    ...param,
+                    dateEnd: momentToStringYYYYMMDD(date),
                   })
                 }
                 maxDate={new Date()}
@@ -238,7 +278,6 @@ const Srkpiso = props => {
               onClick={handleClickApply}
               color="blue"
               className="alignBottom"
-              iconPosition="left"
             >
               <Icon name="search" />
               Применить
@@ -254,7 +293,7 @@ const Srkpiso = props => {
         </Form.Group>
       </Form>
       <Divider />
-      <ReactTableServerSideWrapper columns={columns} filterable={true} />
+      <ReactTableServerSideWrapper columns={columns} />
     </Container>
   );
 };
@@ -265,12 +304,12 @@ function mapStateToProps(state) {
     countryList: state.f4.countryList,
     branches: state.f4.branches,
     companyOptions: state.userInfo.companyOptions,
-    srkpisoData: state.srkpisoReducer.srkpisoData,
+    srkpisodData: state.srkpisodReduce.srkpisodData,
   };
 }
 
 export default connect(mapStateToProps, {
   f4FetchCountryList,
   f4FetchBranches,
-  fetchSrkpiso,
+  fetchSrkpisod,
 })(injectIntl(Srkpiso));

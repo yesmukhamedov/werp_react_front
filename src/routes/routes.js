@@ -1019,6 +1019,10 @@ const AsyncSrkpiso = Loadable({
   loader: () => import('../service/report/srkpiso'),
   loading: () => <LoadingPage />,
 });
+const AsyncSrkpisod = Loadable({
+  loader: () => import('../service/report/srkpisod'),
+  loading: () => <LoadingPage />,
+});
 
 const AsyncSmsetplp = Loadable({
   loader: () => import('../service/mainoperation/smsetplp'),
@@ -1165,6 +1169,7 @@ const getComponent = {
   Smopccic: AsyncSmopccic,
   Smopsp: AsyncSmopsp,
   Srkpiso: AsyncSrkpiso,
+  Srkpisod: AsyncSrkpisod,
   Smslsp: AsyncSmslsp,
   Smsetplp: AsyncSmsetplp,
   Smdis: AsyncSmdis,
@@ -1264,6 +1269,11 @@ const generateRoutes = transactionRoutes => {
         path="/service/mainoperation/smecam"
         exact={true}
         component={AsyncSmecam}
+      />
+      <Route
+        path="/service/report/srkpisod"
+        exact={true}
+        component={AsyncSrkpisod}
       />
       {/* <Route
         path="/service/mainoperation/smsetpp"

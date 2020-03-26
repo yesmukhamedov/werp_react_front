@@ -1,4 +1,4 @@
-import { FETCH_SRKPISO } from './srkpisoAction';
+import { FETCH_SRKPISOD } from './srkpisodAction';
 
 const INITIAL_STATE = {
   dynamicObject: {},
@@ -6,10 +6,10 @@ const INITIAL_STATE = {
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case FETCH_SRKPISO:
+    case FETCH_SRKPISOD:
       return {
         ...state,
-        srkpisoData: { ...action.data },
+        srkpisodData: { ...action.data },
       };
 
     default:
