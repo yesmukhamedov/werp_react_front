@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { Button, Header, Icon, Modal, Dropdown } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
 import { fetchEditApp, fetchAppList } from '../../serviceAction';
@@ -7,18 +7,34 @@ import { connect } from 'react-redux';
 const Masters = props => {
   const {
     intl: { messages },
-    masterList,
     master,
     id,
     request,
     fetchEditApp,
     fetchAppList,
     searchParams,
+    appMasterList,
   } = props;
 
   const [onModalOpen, setOnModalOpen] = useState(false);
   const [editMaster, setEditMaster] = useState();
   const [error, setError] = useState(false);
+
+  const [masterList, setMasterList] = useState([]);
+
+  console.log(searchParams);
+  useEffect(() => {
+    if (appMasterList !== undefined) {
+      let masters = appMasterList.map(item => {
+        return {
+          key: item.staffId,
+          text: item.fullFIO,
+          value: item.staffId,
+        };
+      });
+      setMasterList(masters);
+    }
+  }, [appMasterList]);
 
   const onChangeMaster = (e, { value }) => {
     setEditMaster({ ...editMaster, masterId: value });
@@ -53,7 +69,7 @@ const Masters = props => {
         trigger={
           <h5 style={{ color: 'brown' }}>
             <span className="pseudolink" onClick={onClickMaster}>
-              <Icon size="large" name="edit outline" />
+              <Icon size="large" name="edit" />
             </span>
           </h5>
         }
@@ -88,7 +104,9 @@ const Masters = props => {
 };
 
 const mapStateToProps = state => {
-  return {};
+  return {
+    appMasterList: state.serviceReducer.appMasterList,
+  };
 };
 
 export default connect(mapStateToProps, {

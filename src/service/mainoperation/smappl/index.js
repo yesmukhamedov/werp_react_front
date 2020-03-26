@@ -25,6 +25,8 @@ import { formatDMY, errorTableText } from '../../../utils/helpers';
 import ColumnsModal from './ColumnsModal';
 import './index.css';
 import ServiceRequestTable from './table';
+import { LinkToSmcuspor, LinkToSmecam } from '../../../utils/outlink';
+import Masters from './Masters';
 
 const Smappl = props => {
   const {
@@ -57,15 +59,144 @@ const Smappl = props => {
     tovarCategorys: null,
     appStatusIds: null,
     appTypeIds: null,
+    page: 0,
   });
+
+  // modal useStates
+  const allColumns = [
+    {
+      Header: `CN `,
+      accessor: 'contractNumber',
+      show: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: messages['productSerialNumber'],
+      accessor: 'tovarSn',
+      show: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: messages['TBL_H__PRODUCT'],
+      accessor: 'matnr',
+      show: true,
+      filterable: false,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: messages['Application_Date'],
+      accessor: 'adate',
+      show: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: messages['Form.Reco.RecoName'],
+      accessor: 'applicantName',
+      show: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: messages['Table.Address'],
+      accessor: 'address',
+      show: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: messages['Phone'],
+      accessor: 'inPhoneNum',
+      show: true,
+      filterable: false,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: messages['Masters'],
+      accessor: 'masterName',
+      show: true,
+      filterable: false,
+      Cell: ({ row }) => (
+        <div style={{ textAlign: 'center' }}>
+          {row._original.masterName}
+          <Masters
+            master={row._original.masterName}
+            id={row._original.masterId}
+            request={row._original}
+            searchParams={search}
+          />
+        </div>
+      ),
+    },
+    {
+      Header: messages['L__ORDER_STATUS'],
+      accessor: 'appStatusName',
+      show: true,
+      filterable: false,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: messages['Operator'],
+      accessor: 'operatorName',
+      show: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: messages['type_of_application'],
+      accessor: 'appTypeName',
+      show: true,
+      filterable: false,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: `№ ${messages['Applications']}`,
+      accessor: 'id',
+      show: true,
+      filterable: false,
+      Cell: ({ row }) => (
+        <div style={{ textAlign: 'center' }}>
+          <LinkToSmecam id={row._original.id} />
+        </div>
+      ),
+    },
+    {
+      Header: `${messages['service']} №`,
+      accessor: 'serviceId',
+      show: true,
+      filterable: false,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: messages['customer_story'],
+      accessor: 'clientStory',
+      show: true,
+      filterable: false,
+      Cell: ({ row }) => (
+        <div style={{ textAlign: 'center' }}>
+          <LinkToSmcuspor contractNumber={row._original.contractNumber} />
+        </div>
+      ),
+    },
+  ];
   const [columnsForTable, setColumnsForTable] = useState([]);
-  const [headersForTable, setHeadersForTable] = useState([]);
 
   useEffect(() => {
     fetchClearAppList();
     fetchTovarCategorys();
     fetchAppStatus();
     fetchAppType();
+  }, []);
+
+  useEffect(() => {
+    const transactionCodeText = localStorage.getItem('smappl');
+    if (transactionCodeText) {
+      let transactionCodeObject = JSON.parse(transactionCodeText);
+
+      let temp = allColumns.map(item => {
+        return { ...item, show: transactionCodeObject[item.accessor] };
+      });
+
+      setColumnsForTable(temp);
+    } else {
+      setColumnsForTable(allColumns);
+    }
   }, []);
 
   useEffect(() => {
@@ -285,17 +416,23 @@ const Smappl = props => {
 
       <Segment basic textAlign="right">
         <ColumnsModal
-          headersForTable={headers => setHeadersForTable(headers)}
-          columnsForTable={cols => setColumnsForTable(cols)}
-          turnOnReactFetch={turnOnReactFetch}
+          tableHeaderCols={columnsForTable}
+          tableThings={things => {
+            setColumnsForTable(things);
+            //store in localstorage
+            let temp = {};
+            things.map(el => {
+              temp = { ...temp, [el.accessor]: el.show };
+            });
+            localStorage.setItem('smappl', JSON.stringify(temp));
+          }}
         />
       </Segment>
 
       <ServiceRequestTable
         turnOnReactFetch={turnOnReactFetch}
-        columnsName={columnsForTable}
-        headers={headersForTable}
         searchParams={search}
+        tableCols={columnsForTable}
       />
     </Segment>
   );
@@ -304,11 +441,13 @@ const Smappl = props => {
 const mapStateToProps = state => {
   return {
     state,
+    appList: state.serviceReducer.appList,
     companyPosition: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsService,
     tovarCategorys: state.serviceReducer.tovarCategorys,
     appStatus: state.serviceReducer.appStatus,
     appType: state.serviceReducer.appType,
+    appMasterList: state.serviceReducer.appMasterList,
   };
 };
 
