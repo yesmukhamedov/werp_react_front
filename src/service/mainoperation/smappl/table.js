@@ -1,23 +1,12 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
 import 'react-table/react-table.css';
-import { Button, Icon, Header } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import Masters from './Masters';
 import { fetchAppList } from '../../serviceAction';
-import { LinkToSmcuspor, LinkToSmecam } from '../../../utils/outlink';
 import '../../service.css';
 
 const Table = props => {
-  const {
-    columnsName = [],
-    headers,
-    appList,
-    appMasterList,
-    searchParams,
-    turnOnReactFetch,
-    tableCols,
-  } = props;
+  const { appList, searchParams, turnOnReactFetch, tableCols } = props;
 
   const [tableColumns, setTableColumns] = useState([]);
   const [serviceRequests, setServiceRequests] = useState([]);
@@ -27,7 +16,8 @@ const Table = props => {
   }, [appList]);
 
   useEffect(() => {
-    setTableColumns(tableCols);
+    let columnsFilter = tableCols.filter(item => item.show === true);
+    setTableColumns(columnsFilter);
   }, [tableCols]);
 
   return (
@@ -36,12 +26,6 @@ const Table = props => {
         data={serviceRequests}
         columns={tableColumns}
         defaultPageSize={20}
-        pages={
-          appList.totalPages !== undefined || appList.totalPages !== null
-            ? appList.totalPages
-            : 15
-        }
-        pages={5}
         filterable={true}
         searchParam={searchParams}
         turnOnReactFetch={turnOnReactFetch}

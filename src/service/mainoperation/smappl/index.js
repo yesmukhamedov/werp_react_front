@@ -30,7 +30,6 @@ import Masters from './Masters';
 
 const Smappl = props => {
   const {
-    appList,
     companyPosition = [],
     intl: { messages },
     branchOptions,
@@ -43,7 +42,6 @@ const Smappl = props => {
     fetchAppList,
     fetchAppMasterList,
     fetchClearAppList,
-    appMasterList,
   } = props;
   const [error, setError] = useState([]);
   const [tovarCategory, setTovarCategory] = useState([]);
@@ -65,44 +63,50 @@ const Smappl = props => {
   });
 
   // modal useStates
-  const [masterList, setMasterList] = useState([]);
   const allColumns = [
     {
       Header: `CN `,
       accessor: 'contractNumber',
       show: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
       Header: messages['productSerialNumber'],
       accessor: 'tovarSn',
       show: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
       Header: messages['TBL_H__PRODUCT'],
       accessor: 'matnr',
       show: true,
       filterable: false,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
       Header: messages['Application_Date'],
       accessor: 'adate',
       show: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
       Header: messages['Form.Reco.RecoName'],
       accessor: 'applicantName',
       show: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
       Header: messages['Table.Address'],
       accessor: 'address',
       show: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
       Header: messages['Phone'],
       accessor: 'inPhoneNum',
       show: true,
       filterable: false,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
       Header: messages['Masters'],
@@ -114,7 +118,6 @@ const Smappl = props => {
           {row._original.masterName}
           <Masters
             master={row._original.masterName}
-            masterList={masterList}
             id={row._original.masterId}
             request={row._original}
             searchParams={search}
@@ -127,17 +130,20 @@ const Smappl = props => {
       accessor: 'appStatusName',
       show: true,
       filterable: false,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
       Header: messages['Operator'],
       accessor: 'operatorName',
       show: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
       Header: messages['type_of_application'],
       accessor: 'appTypeName',
       show: true,
       filterable: false,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
       Header: `№ ${messages['Applications']}`,
@@ -155,6 +161,7 @@ const Smappl = props => {
       accessor: 'serviceId',
       show: true,
       filterable: false,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
       Header: messages['customer_story'],
@@ -191,19 +198,6 @@ const Smappl = props => {
       setColumnsForTable(allColumns);
     }
   }, []);
-
-  useEffect(() => {
-    if (appMasterList !== undefined) {
-      let masters = appMasterList.map(item => {
-        return {
-          key: item.staffId,
-          text: item.fullFIO,
-          value: item.staffId,
-        };
-      });
-      setMasterList(masters);
-    }
-  }, [appMasterList]);
 
   useEffect(() => {
     const app = appStatus.map(item => {

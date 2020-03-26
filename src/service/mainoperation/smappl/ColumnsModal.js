@@ -1,14 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import {
-  Button,
-  Header,
-  Icon,
-  Modal,
-  Checkbox,
-  Table,
-} from 'semantic-ui-react';
+import { Button, Header, Modal, Checkbox, Table } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
-import { connect } from 'react-redux';
 
 const ColumnsModal = props => {
   const {
@@ -67,10 +59,4 @@ const ColumnsModal = props => {
   );
 };
 
-const mapStateToProps = state => {
-  return {
-    appMasterList: state.serviceReducer.appMasterList,
-  };
-};
-
-export default connect(mapStateToProps, {})(injectIntl(ColumnsModal));
+export default injectIntl(ColumnsModal);
