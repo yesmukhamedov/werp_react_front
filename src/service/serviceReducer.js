@@ -281,7 +281,6 @@ export default function(state = INITIAL_STATE, action) {
       };
     }
     case FETCH_SMSETPLP: {
-      console.log('DataReducerpLP', action.payload);
       return {
         ...state,
         dynamicObject: action.payload,

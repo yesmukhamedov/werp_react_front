@@ -53,9 +53,7 @@ const Masters = props => {
         trigger={
           <h5 style={{ color: 'brown' }}>
             <span className="pseudolink" onClick={onClickMaster}>
-              {master !== null
-                ? messages['change_master']
-                : messages['Masters']}
+              <Icon size="large" name="edit outline" />
             </span>
           </h5>
         }

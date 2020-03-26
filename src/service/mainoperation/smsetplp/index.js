@@ -138,6 +138,7 @@ const Smsetplp = props => {
   };
 
   const handlePost = () => {
+    setPostOpen(false);
     postSmsetplp({ ...postParams });
   };
 

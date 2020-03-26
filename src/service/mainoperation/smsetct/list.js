@@ -166,6 +166,9 @@ export default function List(props) {
   };
 
   const onClickSave = () => {
+    setOpen(false);
+    setMessg({});
+    setErrorsEdit({});
     let errs = validateEdit(smsetctEdit);
 
     if (
@@ -431,6 +434,8 @@ export default function List(props) {
           closeIcon
           onClose={() => {
             setOpen(false);
+            setMessg({});
+            setErrorsEdit({});
           }}
         >
           <Modal.Header>
