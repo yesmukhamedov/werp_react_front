@@ -753,7 +753,6 @@ export function fetchAppType() {
 }
 
 export function fetchAppList(params) {
-  console.log(params);
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet('smappl/appList?direction=ASC&orderBy=id', params)
@@ -810,7 +809,7 @@ export function fetchClearAppList() {
 
 export function fetchSmslsp(params) {
   return function(dispatch) {
-    doGet('smslspl/view?direction=ASC&orderBy=id', params)
+    doGet('smslspl?direction=ASC', params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

@@ -31,7 +31,6 @@ require('moment/locale/tr');
 const EditModal = props => {
   const language = localStorage.getItem('language');
   const {
-    data,
     premium = [],
     countryList = [],
     companyOptions = [],
@@ -357,7 +356,7 @@ const EditModal = props => {
               onFocus={handleFocus}
               value={moneyFormat(informations.total)}
               onChange={e => onInputChange('total', e)}
-              error={test === true && informations.total === 0 ? true : false}
+              error={test === true && informations.total === '0' ? true : false}
               required
             />
           </Form.Group>

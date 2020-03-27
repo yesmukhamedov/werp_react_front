@@ -6,7 +6,7 @@ import { fetchAppList } from '../../serviceAction';
 import '../../service.css';
 
 const Table = props => {
-  const { appList, searchParams, turnOnReactFetch, tableCols } = props;
+  const { appList, searchParams, turnOnReactFetch, tableCols = [] } = props;
 
   const [tableColumns, setTableColumns] = useState([]);
   const [serviceRequests, setServiceRequests] = useState([]);
@@ -16,8 +16,7 @@ const Table = props => {
   }, [appList]);
 
   useEffect(() => {
-    let columnsFilter = tableCols.filter(item => item.show === true);
-    setTableColumns(columnsFilter);
+    setTableColumns(tableCols);
   }, [tableCols]);
 
   return (
