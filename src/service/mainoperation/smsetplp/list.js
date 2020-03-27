@@ -33,18 +33,33 @@ const List = props => {
   const [editParams, setEditParams] = useState({});
   const [brnchErr, setBrnchErr] = useState(false);
 
-  const handleOpenEdit = rowDates => {
+  const handleOpenEdit = rowData => {
     setEditOpen(!editOpen);
+    let bukr = companyOptions.find(({ text }) => rowData.bukrs === text).value;
     let editObj = {
-      bukrs: rowDates.bukrs,
-      countryId: rowDates.countryId,
-      branchId: rowDates.branchId,
+      bukrs: bukr,
+      countryId: countryList.find(
+        ({ country }) => rowData.countryId === country,
+      ).countryId,
+      branchId: branchOptions[bukr].find(
+        ({ text }) => rowData.branchId === text,
+      ).value,
+      operationTypeId: operationTypeList.find(
+        ({ name }) => rowData.operationTypeId === name,
+      ).id,
+      currentBasePlan: rowData.currentBasePlan,
+      currentPlan: rowData.currentPlan,
+      overDueBasePlan: rowData.overDueBasePlan,
+      overDuePlan: rowData.overDuePlan,
+      totalSumPlan: rowData.totalSumPlan,
+      id: rowData.id,
     };
     setEditParams({ ...editObj });
   };
 
   const handleChange = (label, o) => {
     let temporaryObj = { ...editParams };
+
     switch (label) {
       case 'bukrs': {
         if (
@@ -77,30 +92,29 @@ const List = props => {
       }
 
       case 'currentBasePlan': {
-        temporaryObj.currentBasePlan = o.value;
+        temporaryObj.currentBasePlan = Number(o.value);
         break;
       }
       case 'currentPlan': {
-        temporaryObj.currentPlan = o.value;
+        temporaryObj.currentPlan = Number(o.value);
         break;
       }
-      case 'operationId': {
-        temporaryObj.operationId = o.value;
+      case 'operationTypeId': {
+        temporaryObj.operationTypeId = Number(o.value);
         break;
       }
       case 'overDueBasePlan': {
-        temporaryObj.overDueBasePlan = o.value;
+        temporaryObj.overDueBasePlan = Number(o.value);
         break;
       }
       case 'overDuePlan': {
-        temporaryObj.overDuePlan = o.value;
-        break;
-      }
-      case 'totalSumPlan': {
-        temporaryObj.totalSumPlan = o.value;
+        temporaryObj.overDuePlan = Number(o.value);
         break;
       }
     }
+
+    temporaryObj.totalSumPlan =
+      (temporaryObj.currentPlan || 0) + (temporaryObj.overDuePlan || 0);
 
     setEditParams({ ...temporaryObj });
   };
@@ -234,7 +248,7 @@ const List = props => {
                           fluid
                           selection
                           search
-                          defaultValue={editParams.bukrs}
+                          value={editParams.bukrs}
                           onChange={(e, o) => {
                             handleChange('bukrs', o);
                           }}
@@ -256,7 +270,7 @@ const List = props => {
                           fluid
                           selection
                           search
-                          defaultValue={editParams.countryId}
+                          value={editParams.countryId}
                           onChange={(e, o) => {
                             handleChange('countryId', o);
                           }}
@@ -278,7 +292,7 @@ const List = props => {
                           fluid
                           selection
                           search
-                          defaultValue={editParams.branchId}
+                          value={editParams.branchId}
                           error={brnchErr ? true : false}
                           onChange={(e, o) => {
                             handleChange('branchId', o);
@@ -305,7 +319,6 @@ const List = props => {
                     <Table.Row>
                       <Table.Cell>
                         <Label size="large" basic>
-                          {' '}
                           {messages['type_of_operation']}{' '}
                         </Label>
                       </Table.Cell>
@@ -315,9 +328,10 @@ const List = props => {
                           fluid
                           selection
                           search
+                          value={editParams.operationTypeId}
                           options={getOperationList(operationTypeList) || []}
                           onChange={(e, o) => {
-                            handleChange('operationId', o);
+                            handleChange('operationTypeId', o);
                           }}
                         />
                       </Table.Cell>
@@ -325,13 +339,14 @@ const List = props => {
                     <Table.Row>
                       <Table.Cell>
                         <Label size="large" basic>
-                          {messages['current_base_plan']}{' '}
+                          {messages['current_base_plan']}
                         </Label>
                       </Table.Cell>
 
                       <Table.Cell>
                         <Input
                           fluid
+                          value={editParams.currentBasePlan}
                           onChange={(e, o) => {
                             handleChange('currentBasePlan', o);
                           }}
@@ -350,6 +365,7 @@ const List = props => {
                       <Table.Cell>
                         <Input
                           fluid
+                          value={editParams.currentPlan}
                           onChange={(e, o) => {
                             handleChange('currentPlan', o);
                           }}
@@ -367,6 +383,7 @@ const List = props => {
                       <Table.Cell>
                         <Input
                           fluid
+                          value={editParams.overDueBasePlan}
                           onChange={(e, o) => {
                             handleChange('overDueBasePlan', o);
                           }}
@@ -384,6 +401,7 @@ const List = props => {
                       <Table.Cell>
                         <Input
                           fluid
+                          value={editParams.overDuePlan}
                           onChange={(e, o) => {
                             handleChange('overDuePlan', o);
                           }}
@@ -399,12 +417,7 @@ const List = props => {
                         </Label>
                       </Table.Cell>
                       <Table.Cell>
-                        <Input
-                          fluid
-                          onChange={(e, o) => {
-                            handleChange('totalSumPlan', o);
-                          }}
-                        />
+                        <Input fluid value={editParams.totalSumPlan} readOnly />
                       </Table.Cell>
                     </Table.Row>
                   </Table.Body>

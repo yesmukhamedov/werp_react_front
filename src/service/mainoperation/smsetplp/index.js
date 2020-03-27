@@ -110,36 +110,35 @@ const Smsetplp = props => {
         break;
       }
       case 'currentBasePlan': {
-        temporaryObj.currentBasePlan = o.value;
+        temporaryObj.currentBasePlan = Number(o.value);
         break;
       }
       case 'currentPlan': {
-        temporaryObj.currentPlan = o.value;
+        temporaryObj.currentPlan = Number(o.value);
         break;
       }
       case 'operationId': {
-        temporaryObj.operationId = o.value;
+        temporaryObj.operationTypeId = Number(o.value);
         break;
       }
       case 'overDueBasePlan': {
-        temporaryObj.overDueBasePlan = o.value;
+        temporaryObj.overDueBasePlan = Number(o.value);
         break;
       }
       case 'overDuePlan': {
-        temporaryObj.overDuePlan = o.value;
-        break;
-      }
-      case 'totalSumPlan': {
-        temporaryObj.totalSumPlan = o.value;
+        temporaryObj.overDuePlan = Number(o.value);
         break;
       }
     }
+    temporaryObj.totalSumPlan =
+      (temporaryObj.currentPlan || 0) + (temporaryObj.overDuePlan || 0);
     setPostParams({ ...temporaryObj });
   };
 
   const handlePost = () => {
-    setPostOpen(false);
     postSmsetplp({ ...postParams });
+    setPostOpen(false);
+    setPostParams({});
   };
 
   return (
@@ -260,7 +259,10 @@ const Smsetplp = props => {
             color="red"
             icon
             floated="right"
-            onClick={() => setPostOpen(false)}
+            onClick={() => {
+              setPostOpen(false);
+              setPostParams({});
+            }}
           >
             <Icon name="close" />{' '}
           </Button>
@@ -352,8 +354,7 @@ const Smsetplp = props => {
                     <Table.Row>
                       <Table.Cell>
                         <Label size="large" basic>
-                          {' '}
-                          {messages['type_of_operation']}{' '}
+                          {messages['type_of_operation']}
                         </Label>
                       </Table.Cell>
 
@@ -448,9 +449,11 @@ const Smsetplp = props => {
                       <Table.Cell>
                         <Input
                           fluid
-                          onChange={(e, o) => {
-                            handleChange('totalSumPlan', o);
-                          }}
+                          readOnly
+                          value={
+                            (postParams.currentPlan || 0) +
+                            (postParams.overDuePlan || 0)
+                          }
                         />
                       </Table.Cell>
                     </Table.Row>
