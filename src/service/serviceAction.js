@@ -241,7 +241,7 @@ export function postSmsetct(postParams, fetchSmsetct, searchParams) {
   return function(dispatch) {
     doPost(`smsetct/create`, postParams)
       .then(data => {
-        if (data.status === 200) {
+        if (data.data.status === 200) {
           dispatch(notify('success', errorTableText(101)));
           fetchSmsetct(searchParams);
         } else {
@@ -258,16 +258,14 @@ export function editSmsetct(editParams, searchParams, fetchSmsetct) {
   return function(dispatch) {
     doPut(`smsetct/update`, editParams)
       .then(data => {
-        if (data.status === 200) {
+        if (data.data.status === 200) {
           dispatch(notify('success', errorTableText(104), errorTableText(101)));
           fetchSmsetct(searchParams);
         } else {
-          console.log('object');
           dispatch(notify('error', errorTableText(133), errorTableText(132)));
         }
       })
       .catch(error => {
-        console.log('error', error.Error);
         handleError(error, dispatch);
       });
   };
@@ -525,7 +523,6 @@ export function postSmccaCreateApp(application, back) {
 
 export function fetchSmsrcus(searchParams) {
   return function(dispatch) {
-    console.log('object', searchParams);
     dispatch(modifyLoader(true));
     doGet('smsrcus/list', searchParams)
       .then(({ data }) => {
@@ -636,9 +633,8 @@ export function fetchSmsetplp(params) {
     dispatch(modifyLoader(true));
     doGet(`smsetplp/view`, { ...params })
       .then(data => {
-        console.log('Data', data.data.data);
         dispatch(modifyLoader(false));
-        if (data.status === 200) {
+        if (data.data.status === 200) {
           dispatch({
             type: FETCH_SMSETPLP,
             payload: data.data.data,
@@ -657,10 +653,8 @@ export function postSmsetplp(params) {
     dispatch(modifyLoader(true));
     doPost(`smsetplp/create`, params)
       .then(data => {
-        console.log(data);
         dispatch(modifyLoader(false));
         if (data.data.status === 200) {
-          // & (data.data.data.length > 0)
           dispatch({
             type: POST_SMSETPLP,
             payload: data.data.data,
@@ -699,7 +693,6 @@ export function editSmecam(editParams) {
 
 export function editSmeca(editParams) {
   return function(dispatch) {
-    console.log('editEdit', editParams);
     doPut('smeca/edit', editParams)
       .then(data => {
         if (data.status === 200) {
@@ -824,7 +817,6 @@ export function fetchSmslsp(params) {
 }
 
 export function fetchSmeca(id) {
-  console.log('id', id);
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`smeca/${id}`)
@@ -843,7 +835,6 @@ export function fetchSmeca(id) {
 }
 
 export function fetchSmvca(id) {
-  console.log('id', id);
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`smvca/${id}`)
