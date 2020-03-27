@@ -78,7 +78,7 @@ const Smappl = props => {
     },
     {
       Header: messages['TBL_H__PRODUCT'],
-      accessor: 'matnr',
+      accessor: 'matnrName',
       show: true,
       filterable: false,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
@@ -192,7 +192,6 @@ const Smappl = props => {
       let temp = allColumns.map(item => {
         return { ...item, show: transactionCodeObject[item.accessor] };
       });
-
       setColumnsForTable(temp);
     } else {
       setColumnsForTable(allColumns);

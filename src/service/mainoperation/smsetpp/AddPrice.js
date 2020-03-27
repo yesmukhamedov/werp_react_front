@@ -36,9 +36,7 @@ require('moment/locale/tr');
 const AddPrice = props => {
   const [modalOpen, setModalOpen] = useState(false);
   const {
-    data,
     premium = [],
-    fetchSmsetppType,
     fetchSmsetppPost,
     countryList = [],
     companyOptions = [],
@@ -340,7 +338,7 @@ const AddPrice = props => {
               onFocus={handleFocus}
               readOnly
               value={moneyFormat(informations.total)}
-              error={test === true && informations.total === 0 ? true : false}
+              error={test === true && informations.total === '0' ? true : false}
               required
             />
           </Form.Group>
