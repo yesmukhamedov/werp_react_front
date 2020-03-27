@@ -29,7 +29,6 @@ const TransferApplicationExodus = props => {
     intl: { messages },
     language,
     fetchServiceTypeId,
-    fetchTransferApplicationExodus,
   } = props;
 
   const {
@@ -43,6 +42,8 @@ const TransferApplicationExodus = props => {
     finStatusOption,
     transfer,
   } = props;
+
+  console.log('TRANSFER', transfer);
 
   const emptyParam = {
     country: '',
@@ -66,7 +67,7 @@ const TransferApplicationExodus = props => {
     },
     {
       Header: 'CN',
-      accessor: 'contractNumber',
+      accessor: 'contract_number',
       checked: true,
     },
     {
@@ -238,7 +239,7 @@ const TransferApplicationExodus = props => {
     { key: 4, text: 'F-1+2+3+4+5', value: 4 },
   ];
 
-  const handleClickApply = () => {
+  const handleClickApplyTransfer = () => {
     props.fetchTransferApplicationExodus({ ...param });
   };
 
@@ -367,10 +368,9 @@ const TransferApplicationExodus = props => {
               />
             </Form.Field>
             <Form.Button
-              onClick={handleClickApply}
+              onClick={handleClickApplyTransfer}
               color="blue"
               className="alignBottom"
-              iconPosition="left"
             >
               <Icon name="search" />
               Применить

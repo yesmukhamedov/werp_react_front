@@ -33,7 +33,7 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_SERVICE_MY_APPLICATION_EXODUS:
       return {
         ...state,
-        myApplication: [...action.data],
+        myApplication: [...action.data.data],
       };
 
     default:

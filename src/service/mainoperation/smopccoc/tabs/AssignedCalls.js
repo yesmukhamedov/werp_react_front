@@ -32,6 +32,8 @@ const AssignedCalls = props => {
     assignedCalls,
   } = props;
 
+  console.log('ASSIGNED CALLS', assignedCalls);
+
   const emptyParam = {
     country: '',
     bukrs: '',
@@ -69,7 +71,7 @@ const AssignedCalls = props => {
     },
     {
       Header: 'Дата назначения',
-      accessor: '888',
+      accessor: 'appointmentDate',
       checked: true,
       filterable: false,
     },
@@ -191,7 +193,7 @@ const AssignedCalls = props => {
     { key: 4, text: 'Черный', value: 'Черный' },
   ];
 
-  const handleClickApply = () => {
+  const handleClickApplyAssigned = () => {
     props.fetchAssignedCalls({ ...param });
   };
 
@@ -313,10 +315,9 @@ const AssignedCalls = props => {
               />
             </Form.Field>
             <Form.Button
-              onClick={handleClickApply}
+              onClick={handleClickApplyAssigned}
               color="blue"
               className="alignBottom"
-              iconPosition="left"
             >
               <Icon name="search" />
               Применить

@@ -18,7 +18,6 @@ const ServiceFilterPlan = props => {
     intl: { messages },
     language,
     fetchServiceTypeId,
-    fetchServiceFilterPlan,
   } = props;
   const transaction = 'smopccocServiceFilterPlan';
   const {
@@ -32,6 +31,8 @@ const ServiceFilterPlan = props => {
     finStatusOption,
     serviceFilterPlan,
   } = props;
+
+  console.log('SERVICE FILTER PLAN', serviceFilterPlan);
 
   const emptyParam = {
     country: '',
@@ -351,7 +352,6 @@ const ServiceFilterPlan = props => {
             onClick={handleClickApply}
             color="blue"
             className="alignBottom"
-            iconPosition="left"
           >
             <Icon name="search" />
             Применить

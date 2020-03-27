@@ -36,6 +36,8 @@ const MyApplicationExodus = props => {
     myApplication,
   } = props;
 
+  console.log('MY APPLICATION', myApplication);
+
   const emptyParam = {
     country: '',
     bukrs: '',
@@ -64,85 +66,85 @@ const MyApplicationExodus = props => {
     },
     {
       Header: 'Филиал',
-      accessor: 'recommenderId',
+      accessor: 'branch',
       checked: true,
     },
     {
       Header: 'Заводской номер',
-      accessor: '45',
+      accessor: 'tovarSn',
       checked: true,
     },
     {
       Header: 'Дата продажи',
-      accessor: '45',
+      accessor: 'contractDate',
       checked: true,
       filterable: false,
     },
     {
       Header: 'Дата заявки',
-      accessor: '477',
+      accessor: '4applicationDate',
       checked: true,
       filterable: false,
     },
     {
       Header: 'ФИО клиента',
-      accessor: '46',
+      accessor: 'customerFIO',
       checked: true,
     },
     {
       Header: 'Адрес',
-      accessor: '47',
+      accessor: 'address',
       checked: true,
     },
     {
       Header: 'Телефон',
-      accessor: '48',
+      accessor: 'phone',
       checked: true,
     },
     {
       Header: 'ФИО мастера',
-      accessor: '49',
+      accessor: 'masterFIO',
       checked: true,
     },
     {
       Header: 'F1',
-      accessor: '50',
+      accessor: 'f1',
       checked: true,
       filterable: false,
     },
     {
       Header: 'F2',
-      accessor: '50',
+      accessor: 'f2',
       checked: true,
       filterable: false,
     },
     {
       Header: 'F3',
-      accessor: '50',
+      accessor: 'f3',
       checked: true,
       filterable: false,
     },
     {
       Header: 'F4',
-      accessor: '50',
+      accessor: 'f4',
       checked: true,
       filterable: false,
     },
     {
       Header: 'F5',
-      accessor: '50',
+      accessor: 'f5',
       checked: true,
       filterable: false,
     },
     {
       Header: 'Категория',
-      accessor: '505',
+      accessor: '5crmCategory',
       checked: true,
       filterable: false,
     },
     {
       Header: 'Статус заявки',
-      accessor: '5088',
+      accessor: 'applicationStatus',
       checked: true,
       filterable: false,
     },
@@ -214,7 +216,7 @@ const MyApplicationExodus = props => {
     };
   });
 
-  const handleClickApply = () => {
+  const handleClickApplyMyApp = () => {
     props.fetchMyApplicationExodus({ ...param });
   };
 
@@ -346,10 +348,9 @@ const MyApplicationExodus = props => {
               />
             </Form.Field>
             <Form.Button
-              onClick={handleClickApply}
+              onClick={handleClickApplyMyApp}
               color="blue"
               className="alignBottom"
-              iconPosition="left"
             >
               <Icon name="search" />
               Применить
@@ -367,7 +368,7 @@ const MyApplicationExodus = props => {
       <Divider />
       <ReactTableServerSideWrapper
         filterable={true}
-        data={srlsmList}
+        data={myApplication}
         columns={columns}
       />
     </Container>

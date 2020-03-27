@@ -63,6 +63,7 @@ export const fetchTransferApplicationExodus = param => {
 //Назначенные звонки
 export const fetchAssignedCalls = param => {
   return function(dispatch) {
+    dispatch(modifyLoader(true));
     doGet(`smopccoc/assignedCalls`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
@@ -81,6 +82,7 @@ export const fetchAssignedCalls = param => {
 //Мои заявки
 export const fetchMyApplicationExodus = param => {
   return function(dispatch) {
+    dispatch(modifyLoader(true));
     doGet(`smopccoc/MyApplicationExodus`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));

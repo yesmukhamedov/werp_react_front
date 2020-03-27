@@ -238,7 +238,6 @@ const Srkpiso = props => {
               onClick={handleClickApply}
               color="blue"
               className="alignBottom"
-              iconPosition="left"
             >
               <Icon name="search" />
               Применить

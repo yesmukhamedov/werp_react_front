@@ -4,74 +4,40 @@ import {
   f4FetchCountryList,
   f4FetchWerksBranchList,
 } from '../../../reference/f4/f4_action';
-import { fetchServiceList } from '../serviceReportAction';
+import { fetchSrls } from './srlsAction';
 import { injectIntl } from 'react-intl';
-import matchSorter from 'match-sorter';
-import format from 'string-format';
-import {
-  Button,
-  Dropdown,
-  Icon,
-  Container,
-  Header,
-  Segment,
-  Form,
-  Grid,
-  Divider,
-  Image,
-  Table,
-} from 'semantic-ui-react';
-import ReactTable from 'react-table';
+import { Icon, Container, Segment, Form, Divider } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
-require('moment/locale/ru');
-require('moment/locale/tr');
+import ModalColumns from './../../../utils/ModalColumns';
+import {
+  stringYYYYMMDDToMoment,
+  momentToStringYYYYMMDD,
+} from '../../../utils/helpers';
+import '../../service.css';
+import { LinkToSmcuspor } from '../../../utils/outlink';
 
 const Srls = props => {
   const {
     intl: { messages },
     language,
     companyOptions = [],
-    branchOptions = [],
-    dynamicObject,
-    fetchServiceList,
-    search,
+    srlsList = [],
   } = props;
 
-  let queryString = 'bukrs=={0.bukrs};id=={0.id};branch=={0.branch}';
-
-  const emptySrls = {
-    id: 1,
-    bukrs: 1000,
-    branch: 'servisebranch',
+  const emptyParam = {
+    country: '',
+    bukrs: '',
+    branchId: '',
+    categoryId: '',
+    serviceTypeId: '',
+    dateStart: '',
+    dateEnd: '',
   };
 
-  const date = moment().format(`YYYY-MM-DDThh:mm:ss.SSSZZ`);
-  const [srls, setSrls] = useState({ ...emptySrls });
-  const [startDate, setStartDate] = useState(moment(date));
-  const [endDate, setEndDate] = useState(moment(date));
-
-  useEffect(() => {
-    fetchServiceList();
-    //unmount
-  }, []);
-
-  //Категория продукта
-  const productCategoryOptions = [
-    { key: '1', text: 'Aura', value: '1' },
-    { key: '2', text: 'Greenlight', value: '2' },
-    { key: '3', text: 'S', value: '3' },
-  ];
-
-  //Вид сервиса
-  const typeOfServiceOptions = [
-    { key: '1', text: 'Сервис карта заполнена', value: '1' },
-    { key: '2', text: 'Новый', value: '2' },
-    { key: '3', text: 'S', value: '3' },
-  ];
+  const [param, setParam] = useState({ ...emptyParam });
 
   //Статус сервиса
   const serviceStatusOptions = [
@@ -80,7 +46,7 @@ const Srls = props => {
   ];
 
   const onInputChange = (o, fieldName) => {
-    setSrls(prev => {
+    setParam(prev => {
       const varSrls = { ...prev };
       switch (fieldName) {
         case 'bukrs':
@@ -106,239 +72,223 @@ const Srls = props => {
   };
 
   //Колоны ReactTable
-  const columns = [
+  const initialColumns = [
     {
       Header: 'Филиал',
       accessor: 'branchId',
-      filterAll: true,
-      width: 180,
-      maxWidth: 200,
-      minWidth: 100,
+      checked: true,
+      filterable: false,
     },
     {
       Header: 'Дата',
       accessor: 'dateOpen',
-      filterAll: true,
-      width: 300,
-      maxWidth: 300,
-      minWidth: 100,
+      checked: true,
+      filterable: false,
     },
     {
       Header: 'CN',
       accessor: 'contractId',
-      filterAll: true,
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
+      checked: true,
     },
     {
       Header: 'Заводской номер',
       accessor: 'tovarSn',
-      filterAll: true,
-      width: 150,
-      maxWidth: 200,
-      minWidth: 100,
+      checked: true,
     },
     {
       Header: 'ФИО клиента',
       accessor: '',
-      filterAll: true,
-      width: 300,
-      maxWidth: 300,
-      minWidth: 100,
+      checked: true,
     },
 
     {
       Header: 'Статус сервиса',
       accessor: 'servStatus',
-      filterAll: true,
-      width: 150,
-      maxWidth: 200,
-      minWidth: 100,
+      checked: true,
+      filterable: false,
     },
     {
       Header: 'Мастер',
       accessor: 'masterId',
-      filterAll: true,
-      width: 150,
-      maxWidth: 200,
-      minWidth: 100,
+      checked: true,
     },
     {
       Header: 'Оператор',
       accessor: 'operId',
-      filterAll: true,
-      width: 150,
-      maxWidth: 200,
-      minWidth: 100,
+      checked: true,
     },
     {
       Header: 'Вид сервиса',
       accessor: '',
-      filterAll: true,
-      width: 150,
-      maxWidth: 200,
-      minWidth: 100,
+      checked: true,
+      filterable: false,
     },
     {
       Header: 'Сумма',
       accessor: 'summTotal',
-      filterAll: true,
-      width: 150,
-      maxWidth: 200,
-      minWidth: 100,
+      checked: true,
+      filterable: false,
     },
     {
       Header: 'Оплачено',
       accessor: 'paid',
-      filterAll: true,
-      width: 150,
-      maxWidth: 200,
-      minWidth: 100,
+      checked: true,
+      filterable: false,
     },
     {
       Header: 'Остаток',
       accessor: '',
-      filterAll: true,
-      width: 150,
-      maxWidth: 200,
-      minWidth: 100,
+      checked: true,
+      filterable: false,
     },
     {
       Header: 'Сервис №',
       accessor: '',
-      filterAll: true,
-      width: 150,
-      maxWidth: 200,
-      minWidth: 100,
+      checked: true,
+      filterable: false,
     },
     {
       Header: 'История клиента',
-      accessor: '',
-      filterAll: true,
-      width: 150,
-      maxWidth: 200,
-      minWidth: 100,
+      accessor: '16',
+      filterable: false,
+      Cell: original => (
+        <div style={{ textAlign: 'center' }}>
+          <LinkToSmcuspor
+            contractNumber={original.row.contractNumber}
+            text="Просмотр"
+          />
+        </div>
+      ),
+      checked: true,
     },
   ];
 
-  let query = {
-    search: format(queryString, srls),
+  const handleClickApply = () => {
+    props.fetchSrls({ ...param });
   };
 
-  const handleClickSearch = () => {
-    console.log('HANDLE CLICK SEARCH');
-    props.fetchServiceList(query);
+  const [columns, setColumns] = useState([...initialColumns]);
+
+  const finishColumns = data => {
+    setColumns([...data]);
   };
 
   return (
-    <Container fluid>
+    <Container
+      fluid
+      style={{
+        marginTop: '2em',
+        marginBottom: '2em',
+        paddingLeft: '2em',
+        paddingRight: '2em',
+      }}
+    >
       <Segment>
         <h3>Список сервисов</h3>
       </Segment>
-      <Segment>
-        <Form>
-          <Grid columns={8}>
-            <Grid.Column>
-              <label>{messages['bukrs']} </label>
-              <Dropdown
-                fluid
-                search
-                selection
-                options={companyOptions ? companyOptions : []}
-                value={srls.bukrs}
-              />
-            </Grid.Column>
+      <Form>
+        <Form.Group widths="equal">
+          <Form.Select
+            fluid
+            label="Страна"
+            placeholder="Страна"
+            onChange={(e, o) => onInputChange(o, 'country')}
+            className="alignBottom"
+          />
 
-            <Grid.Column>
-              <label>{messages['brnch']}</label>
-              <Dropdown
-                fluid
-                search
-                selection
-                value={srls.branchId}
-                onChange={(e, o) => onInputChange(o, 'branchId')}
-              />
-            </Grid.Column>
+          <Form.Select
+            fluid
+            label="Компания"
+            placeholder="Компания"
+            options={companyOptions}
+            onChange={(e, o) => onInputChange(o, 'bukrs')}
+            className="alignBottom"
+          />
 
-            <Grid.Column>
-              <label>Категория товара</label>
-              <Dropdown
-                fluid
-                search
-                selection
-                options={productCategoryOptions}
-                value={srls.productCategory}
-                //  onChange={(e, o) => onInputChange(o, 'productCategory')}
-              />
-            </Grid.Column>
+          <Form.Select
+            fluid
+            label="Филиал"
+            placeholder="Филиал"
+            onChange={(e, o) => onInputChange(o, 'branchId')}
+            className="alignBottom"
+          />
 
-            <Grid.Column>
-              <label>Вид сервиса</label>
-              <Dropdown
-                fluid
-                search
-                selection
-                value={srls.typeOfService}
-                options={typeOfServiceOptions}
-                // onChange={(e, o) => onInputChange(o, 'typeOfService')}
-              />
-            </Grid.Column>
+          <Form.Select
+            fluid
+            label="Категория"
+            placeholder="Категория"
+            onChange={(e, o) => onInputChange(o, 'categoryId')}
+            className="alignBottom"
+          />
 
-            <Grid.Column>
-              <label>Статус сервиса</label>
-              <Dropdown
-                fluid
-                search
-                selection
-                options={serviceStatusOptions}
-                value={srls.statusService}
-                // onChange={(e, o) => onInputChange(o, 'statusService')}
-              />
-            </Grid.Column>
+          <Form.Select
+            fluid
+            label="Статус заявки"
+            placeholder="Статус заявки"
+            onChange={(e, o) => onInputChange(o, 'serviceDateType')}
+            className="alignBottom"
+          />
+        </Form.Group>
 
-            <Grid.Column>
-              <label>{messages['Form.DateFrom']}</label>
+        <Form.Group className="spaceBetween">
+          <div className="flexDirectionRow">
+            <Form.Field className="marginRight">
+              <label>Дата заявки с</label>
               <DatePicker
+                className="date-auto-width"
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={startDate}
-                onChange={date => setStartDate(date)}
+                selected={stringYYYYMMDDToMoment(param.dateStart)}
+                onChange={date =>
+                  setParam({
+                    ...param,
+                    dateStart: momentToStringYYYYMMDD(date),
+                  })
+                }
                 maxDate={new Date()}
+                dateFormat="DD.MM.YYYY"
               />
-            </Grid.Column>
+            </Form.Field>
 
-            <Grid.Column>
-              <label>{messages['Form.DateTo']}</label>
+            <Form.Field className="marginRight">
+              <label>Дата заявки по</label>
               <DatePicker
+                className="date-auto-width"
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={endDate}
-                onChange={date => setEndDate(date)}
+                selected={stringYYYYMMDDToMoment(param.dateEnd)}
+                onChange={date =>
+                  setParam({
+                    ...param,
+                    dateEnd: momentToStringYYYYMMDD(date),
+                  })
+                }
                 maxDate={new Date()}
+                dateFormat="DD.MM.YYYY"
               />
-            </Grid.Column>
+            </Form.Field>
+            <Form.Button
+              onClick={handleClickApply}
+              color="blue"
+              className="alignBottom"
+            >
+              <Icon name="search" />
+              Применить
+            </Form.Button>
+          </div>
 
-            <Grid.Column verticalAlign="bottom">
-              <Button onClick={handleClickSearch} color="teal">
-                Применить
-              </Button>
-            </Grid.Column>
-          </Grid>
-        </Form>
-      </Segment>
-      <ReactTableWrapper
-        filterable
-        columns={columns}
-        rowsText={messages['rowsText']}
-        pageText={messages['pageText']}
-        ofText={messages['ofText']}
-        previousText={messages['previousText']}
-        nextText={messages['nextText']}
-        noDataText={messages['loadingText']}
-      />
+          <Form.Field className="alignBottom">
+            <ModalColumns
+              columns={initialColumns}
+              finishColumns={finishColumns}
+            />
+          </Form.Field>
+        </Form.Group>
+      </Form>
+      <Divider />
+      <ReactTableWrapper filterable={true} columns={columns} />
     </Container>
   );
 };
@@ -348,10 +298,11 @@ function mapStateToProps(state) {
     language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,
+    srlsList: state.srlsReducer.srlsList,
   };
 }
 
 export default connect(mapStateToProps, {
   f4FetchWerksBranchList,
-  fetchServiceList,
+  fetchSrls,
 })(injectIntl(Srls));
