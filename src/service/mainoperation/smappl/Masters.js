@@ -11,9 +11,9 @@ const Masters = props => {
     id,
     request,
     fetchEditApp,
-    fetchAppList,
-    searchParams,
     appMasterList,
+    searchParams,
+    fetchAppList,
   } = props;
 
   const [onModalOpen, setOnModalOpen] = useState(false);
@@ -22,7 +22,6 @@ const Masters = props => {
 
   const [masterList, setMasterList] = useState([]);
 
-  console.log(searchParams);
   useEffect(() => {
     if (appMasterList !== undefined) {
       let masters = appMasterList.map(item => {

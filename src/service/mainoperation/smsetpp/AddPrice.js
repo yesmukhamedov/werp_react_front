@@ -43,7 +43,6 @@ const AddPrice = props => {
     countryList = [],
     companyOptions = [],
     intl: { messages },
-    fetchSmsetppPremiumPriceType,
     param,
     serviceType = [],
   } = props;

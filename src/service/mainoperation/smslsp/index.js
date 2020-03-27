@@ -59,7 +59,7 @@ const Smslsp = props => {
         selection
         options={companyOptions}
         placeholder={messages['bukrs']}
-        onChange={(e, { value }) => setSearch(value)}
+        onChange={(e, { value }) => setSearch({ bukrs: value })}
       />
 
       <Button color="brown" onClick={onSearch} id="smslspSearchButton">
@@ -75,17 +75,10 @@ const Smslsp = props => {
           data={listOfEmployees.data}
           columns={[
             {
-              Header: () => <div style={{ textAlign: 'center' }}>id</div>,
-              accessor: 'id',
-              Cell: row => (
-                <div style={{ textAlign: 'center' }}>{row.value}</div>
-              ),
-            },
-            {
               Header: () => (
                 <div style={{ textAlign: 'center' }}>{messages['bukrs']}</div>
               ),
-              accessor: 'bukrs',
+              accessor: 'bukrsName',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
@@ -96,7 +89,7 @@ const Smslsp = props => {
                   {messages['Table.Position']}
                 </div>
               ),
-              accessor: 'positionId',
+              accessor: 'positionName',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
@@ -107,7 +100,7 @@ const Smslsp = props => {
                   {messages['Table.NameOfEmployee']}
                 </div>
               ),
-              accessor: 'staffId',
+              accessor: 'staffName',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
@@ -118,7 +111,7 @@ const Smslsp = props => {
                   {messages['Table.Plan']}
                 </div>
               ),
-              accessor: 'plan',
+              accessor: 'planCount',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),

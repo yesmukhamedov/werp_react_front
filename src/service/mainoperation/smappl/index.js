@@ -120,7 +120,7 @@ const Smappl = props => {
             master={row._original.masterName}
             id={row._original.masterId}
             request={row._original}
-            searchParams={search}
+            searchParams={search.bukrs !== '' ? search : null}
           />
         </div>
       ),
@@ -295,6 +295,7 @@ const Smappl = props => {
       fetchAppList(search);
       fetchAppMasterList(search);
       setTurnOnReactFetch(true);
+      setColumnsForTable(allColumns);
     }
     return errors;
   };
