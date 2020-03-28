@@ -29,7 +29,7 @@ const ColumnsModal = props => {
     <Fragment>
       <Modal
         trigger={<Button color="pink">{messages['columns']}</Button>}
-        size="small"
+        size="mini"
       >
         <Header content={messages['columns']} />
         <Modal.Content>
