@@ -14,6 +14,7 @@ import { injectIntl } from 'react-intl';
 import OutputErrors from '../../../general/error/outputErrors';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import 'react-table/react-table.css';
+import EmployeeModal from './EmployeeModal';
 
 import './smslsp.css';
 

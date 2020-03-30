@@ -6,7 +6,13 @@ import { fetchAppList } from '../../serviceAction';
 import '../../service.css';
 
 const Table = props => {
-  const { appList, searchParams, turnOnReactFetch, tableCols = [] } = props;
+  const {
+    appList,
+    searchParams,
+    turnOnReactFetch,
+    tableCols = [],
+    fetchAppList,
+  } = props;
 
   const [tableColumns, setTableColumns] = useState([]);
   const [serviceRequests, setServiceRequests] = useState([]);
@@ -29,7 +35,7 @@ const Table = props => {
         turnOnReactFetch={turnOnReactFetch}
         showPagination={false}
         requestData={param => {
-          console.log(param);
+          fetchAppList({ ...param });
         }}
         className="-striped -highlight"
       />
