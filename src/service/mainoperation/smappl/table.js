@@ -24,13 +24,12 @@ const Table = props => {
       <ReactTableServerSideWrapper
         data={serviceRequests}
         columns={tableColumns}
-        defaultPageSize={20}
         filterable={true}
         searchParam={searchParams}
         turnOnReactFetch={turnOnReactFetch}
         showPagination={false}
         requestData={param => {
-          fetchAppList({ ...param });
+          console.log(param);
         }}
         className="-striped -highlight"
       />

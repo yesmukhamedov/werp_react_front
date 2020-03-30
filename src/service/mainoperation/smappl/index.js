@@ -60,6 +60,7 @@ const Smappl = props => {
     appStatusIds: null,
     appTypeIds: null,
     page: 0,
+    direction: 'DESC',
   });
 
   // modal useStates
