@@ -22,7 +22,7 @@ import {
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { formatDMY, errorTableText } from '../../../utils/helpers';
-import ColumnsModal from './ColumnsModal';
+import ColumnsModal from '../../../utils/ColumnsModal';
 import './index.css';
 import ServiceRequestTable from './table';
 import { LinkToSmcuspor, LinkToSmecam } from '../../../utils/outlink';
