@@ -105,6 +105,7 @@ const Masters = props => {
 const mapStateToProps = state => {
   return {
     appMasterList: state.serviceReducer.appMasterList,
+    searchParams: state.serviceReducer.dynamicObject.appListSearchParams,
   };
 };
 

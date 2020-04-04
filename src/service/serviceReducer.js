@@ -40,6 +40,7 @@ import {
   FETCH_SMSETPLP,
   POST_SMSETPLP,
   FETCH_OPERTAION_TYPE_LIST,
+  FETCH_APP_LIST_SEARCH_PARAMS,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -299,6 +300,13 @@ export default function(state = INITIAL_STATE, action) {
         operationTypeList: [...action.payload.data],
       };
     }
+    case FETCH_APP_LIST_SEARCH_PARAMS:
+      return {
+        ...state,
+        dynamicObject: {
+          appListSearchParams: action.payload,
+        },
+      };
     default:
       return state;
   }

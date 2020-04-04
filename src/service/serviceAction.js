@@ -58,6 +58,7 @@ export const FETCH_OPERTAION_TYPE_LIST = 'FETCH_OPERTAION_TYPE_LIST';
 export const FETCH_SMECA = 'FETCH_SMECA';
 export const FETCH_SMSETPLP = 'FETCH_SMSETPLP';
 export const POST_SMSETPLP = 'POST_SMSETPLP';
+export const FETCH_APP_LIST_SEARCH_PARAMS = 'FETCH_APP_LIST_SEARCH_PARAMS';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 
@@ -746,12 +747,10 @@ export function fetchAppType() {
 }
 
 export function fetchAppList(params) {
-  console.log(params);
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet('smappl/appList?direction=ASC&orderBy=id', params)
       .then(({ data }) => {
-        console.log(data);
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_APP_LIST,
@@ -782,12 +781,12 @@ export function fetchAppMasterList(params) {
   };
 }
 
-export function fetchEditApp(params, fetchSmappl) {
+export function fetchEditApp(params, fetchAppList) {
   return function(dispatch) {
     doPost('smappl/editApp', params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        fetchSmappl(params);
+        fetchAppList();
       })
       .catch(error => {
         handleError(error, dispatch);
@@ -889,5 +888,14 @@ export function fetchOperationTypeList() {
         dispatch(modifyLoader(false));
         handleError(error, dispatch);
       });
+  };
+}
+
+export function fetchAppListSearchParam(data) {
+  return function(dispatch) {
+    dispatch({
+      type: FETCH_APP_LIST_SEARCH_PARAMS,
+      payload: data,
+    });
   };
 }

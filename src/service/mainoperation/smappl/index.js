@@ -18,6 +18,7 @@ import {
   fetchAppList,
   fetchAppMasterList,
   fetchClearAppList,
+  fetchAppListSearchParam,
 } from '../../serviceAction';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -42,6 +43,7 @@ const Smappl = props => {
     fetchAppList,
     fetchAppMasterList,
     fetchClearAppList,
+    fetchAppListSearchParam,
   } = props;
   const [error, setError] = useState([]);
   const [tovarCategory, setTovarCategory] = useState([]);
@@ -120,7 +122,6 @@ const Smappl = props => {
             master={row._original.masterName}
             id={row._original.masterId}
             request={row._original}
-            searchParams={search.bukrs !== '' ? search : null}
           />
         </div>
       ),
@@ -279,10 +280,6 @@ const Smappl = props => {
   };
 
   const onSearch = () => {
-    save();
-  };
-
-  const validate = () => {
     const errors = [];
     if (search.bukrs === '') {
       errors.push(errorTableText(5));
@@ -294,14 +291,8 @@ const Smappl = props => {
       fetchAppList(search);
       fetchAppMasterList(search);
       setTurnOnReactFetch(true);
-      setColumnsForTable(allColumns);
+      fetchAppListSearchParam(search);
     }
-    return errors;
-  };
-
-  const save = () => {
-    let errors = [];
-    errors = validate();
     setError(() => errors);
   };
 
@@ -459,4 +450,5 @@ export default connect(mapStateToProps, {
   fetchAppList,
   fetchAppMasterList,
   fetchClearAppList,
+  fetchAppListSearchParam,
 })(injectIntl(Smappl));
