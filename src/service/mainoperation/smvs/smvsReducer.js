@@ -1,15 +1,15 @@
-import { FETCH_SERVICE_LIST } from './srlsAction';
+import { FETCH_SMVS_LIST } from './smvsAction';
 
 const INITIAL_STATE = {
-  srlsList: [],
+  smvsList: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case FETCH_SERVICE_LIST:
+    case FETCH_SMVS_LIST:
       return {
         ...state,
-        srlsData: [...action.data.data.data],
+        smvsList: { ...action.data.data },
       };
 
     default:

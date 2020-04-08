@@ -20,7 +20,8 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_SMCRLD_LIST:
       return {
         ...state,
-        smcrldObject: { ...action.data.data },
+        smcrldListData: [...action.data.data.listData],
+        smcrldListSum: { ...action.data.data.listSum },
       };
 
     case POST_SMCRLD_FORMPLAN:

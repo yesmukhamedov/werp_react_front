@@ -1275,6 +1275,11 @@ const generateRoutes = transactionRoutes => {
         exact={true}
         component={AsyncSrkpisod}
       />
+      <Route
+        path="/service/mainoperation/smvs/serviceNumber=:id"
+        exact={true}
+        component={AsyncSmvs}
+      />
       {/* <Route
         path="/service/mainoperation/smsetpp"
         exact={true}

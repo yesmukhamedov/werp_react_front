@@ -1,12 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
-  f4FetchCountryList,
-  f4FetchWerksBranchList,
+  f4fetchCategory,
+  f4FetchBranches,
+  f4FetchServiceAppStatus,
+  f4FetchServicType,
 } from '../../../reference/f4/f4_action';
 import { fetchSrls } from './srlsAction';
 import { injectIntl } from 'react-intl';
-import { Icon, Container, Segment, Form, Divider } from 'semantic-ui-react';
+import {
+  Icon,
+  Container,
+  Segment,
+  Form,
+  Divider,
+  Button,
+} from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -17,33 +26,91 @@ import {
   momentToStringYYYYMMDD,
 } from '../../../utils/helpers';
 import '../../service.css';
-import { LinkToSmcuspor } from '../../../utils/outlink';
+import { LinkToSmcuspor, LinkToSmvs } from '../../../utils/outlink';
 
 const Srls = props => {
   const {
     intl: { messages },
     language,
+    category = [],
     companyOptions = [],
-    srlsList = [],
+    branches = [],
+    serviceAppStatus = [],
+    serviceType = [],
+    srlsData,
   } = props;
 
+  console.log('PROPS SRLS', props);
+
   const emptyParam = {
-    country: '',
     bukrs: '',
     branchId: '',
     categoryId: '',
     serviceTypeId: '',
-    dateStart: '',
-    dateEnd: '',
+    serviceStatusId: '',
+    dateOpenAt: '',
+    dateOpenTo: '',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
 
-  //Статус сервиса
-  const serviceStatusOptions = [
-    { key: '1', text: 'Выполнено', value: '1' },
-    { key: '2', text: 'Отмена', value: '2' },
-  ];
+  useEffect(() => {
+    props.f4FetchServiceAppStatus();
+    props.f4fetchCategory();
+    props.f4FetchBranches();
+    props.f4FetchServiceAppStatus();
+    props.f4FetchServicType();
+  }, []);
+
+  const tovarCategoryOptions = category.map(item => {
+    return {
+      key: item.id,
+      text: item.name,
+      value: item.id,
+    };
+  });
+
+  const serviceAppStatusOptions = serviceAppStatus.map(item => {
+    return {
+      key: item.id,
+      text: item.name,
+      value: item.id,
+    };
+  });
+
+  const serviceTypeOptions = serviceType.map(item => {
+    return {
+      key: item.id,
+      text: item.nameRu,
+      value: item.id,
+    };
+  });
+
+  const [serBranchOptions, setSerBranchOptions] = useState([]);
+
+  useEffect(() => {
+    const getBranchByBukrs = (branches, bukrs) => {
+      let br = branches.filter(item => item.bukrs == bukrs);
+
+      let brSer = br.filter(
+        item =>
+          item.business_area_id == 5 ||
+          item.business_area_id == 6 ||
+          item.business_area_id == 9,
+      );
+
+      let serBranchOpt = brSer.map(item => {
+        return {
+          key: item.branch_id,
+          text: item.text45,
+          value: item.branch_id,
+        };
+      });
+      return serBranchOpt;
+    };
+
+    setSerBranchOptions(getBranchByBukrs(branches, param.bukrs));
+  }, [param.bukrs]);
 
   const onInputChange = (o, fieldName) => {
     setParam(prev => {
@@ -55,14 +122,14 @@ const Srls = props => {
         case 'branchId':
           varSrls.branchId = o.value;
           break;
-        case 'productCategory':
-          varSrls.productCategory = o.value;
+        case 'categoryId':
+          varSrls.categoryId = o.value;
           break;
-        case 'typeOfService':
-          varSrls.typeOfService = o.value;
+        case 'serviceTypeId':
+          varSrls.serviceTypeId = o.value;
           break;
-        case 'statusService':
-          varSrls.statusService = o.value;
+        case 'serviceStatusId':
+          varSrls.serviceStatusId = o.value;
           break;
         default:
           varSrls[fieldName] = o.value;
@@ -97,13 +164,13 @@ const Srls = props => {
     },
     {
       Header: 'ФИО клиента',
-      accessor: '',
+      accessor: 'customerId',
       checked: true,
     },
 
     {
       Header: 'Статус сервиса',
-      accessor: 'servStatus',
+      accessor: 'serviceStatusId',
       checked: true,
       filterable: false,
     },
@@ -114,18 +181,18 @@ const Srls = props => {
     },
     {
       Header: 'Оператор',
-      accessor: 'operId',
+      accessor: 'operatorId',
       checked: true,
     },
     {
       Header: 'Вид сервиса',
-      accessor: '',
+      accessor: 'serviceTypeId',
       checked: true,
       filterable: false,
     },
     {
       Header: 'Сумма',
-      accessor: 'summTotal',
+      accessor: 'sumTotal',
       checked: true,
       filterable: false,
     },
@@ -137,19 +204,24 @@ const Srls = props => {
     },
     {
       Header: 'Остаток',
-      accessor: '',
+      accessor: 'residue',
       checked: true,
       filterable: false,
     },
     {
       Header: 'Сервис №',
-      accessor: '',
+      accessor: 'id',
       checked: true,
       filterable: false,
+      Cell: original => (
+        <div style={{ textAlign: 'center' }}>
+          <LinkToSmvs serviceNumber={original.row.id} text={original.row.id} />
+        </div>
+      ),
     },
     {
       Header: 'История клиента',
-      accessor: '16',
+      accessor: 'contractNumber',
       filterable: false,
       Cell: original => (
         <div style={{ textAlign: 'center' }}>
@@ -190,14 +262,6 @@ const Srls = props => {
         <Form.Group widths="equal">
           <Form.Select
             fluid
-            label="Страна"
-            placeholder="Страна"
-            onChange={(e, o) => onInputChange(o, 'country')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            fluid
             label="Компания"
             placeholder="Компания"
             options={companyOptions}
@@ -209,23 +273,35 @@ const Srls = props => {
             fluid
             label="Филиал"
             placeholder="Филиал"
+            options={serBranchOptions}
             onChange={(e, o) => onInputChange(o, 'branchId')}
             className="alignBottom"
           />
 
           <Form.Select
             fluid
-            label="Категория"
-            placeholder="Категория"
+            label="Категория товара"
+            placeholder="Категория товара"
+            options={tovarCategoryOptions}
             onChange={(e, o) => onInputChange(o, 'categoryId')}
             className="alignBottom"
           />
 
           <Form.Select
             fluid
-            label="Статус заявки"
-            placeholder="Статус заявки"
-            onChange={(e, o) => onInputChange(o, 'serviceDateType')}
+            label="Вид сервиса"
+            placeholder="Вид сервиса"
+            options={serviceTypeOptions}
+            onChange={(e, o) => onInputChange(o, 'serviceTypeId')}
+            className="alignBottom"
+          />
+
+          <Form.Select
+            fluid
+            label="Статус сервиса"
+            placeholder="Статус сервиса"
+            options={serviceAppStatusOptions}
+            onChange={(e, o) => onInputChange(o, 'serviceStatusId')}
             className="alignBottom"
           />
         </Form.Group>
@@ -239,11 +315,11 @@ const Srls = props => {
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.dateStart)}
+                selected={stringYYYYMMDDToMoment(param.dateOpenAt)}
                 onChange={date =>
                   setParam({
                     ...param,
-                    dateStart: momentToStringYYYYMMDD(date),
+                    dateOpenAt: momentToStringYYYYMMDD(date),
                   })
                 }
                 maxDate={new Date()}
@@ -258,11 +334,11 @@ const Srls = props => {
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.dateEnd)}
+                selected={stringYYYYMMDDToMoment(param.dateOpenTo)}
                 onChange={date =>
                   setParam({
                     ...param,
-                    dateEnd: momentToStringYYYYMMDD(date),
+                    dateOpenTo: momentToStringYYYYMMDD(date),
                   })
                 }
                 maxDate={new Date()}
@@ -288,7 +364,7 @@ const Srls = props => {
         </Form.Group>
       </Form>
       <Divider />
-      <ReactTableWrapper filterable={true} columns={columns} />
+      <ReactTableWrapper data={srlsData} filterable={true} columns={columns} />
     </Container>
   );
 };
@@ -297,12 +373,19 @@ function mapStateToProps(state) {
   return {
     language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
-    branchOptions: state.userInfo.branchOptionsAll,
-    srlsList: state.srlsReducer.srlsList,
+    category: state.f4.category,
+    branches: state.f4.branches,
+    serviceAppStatus: state.f4.serviceAppStatus,
+    contractStatusList: state.f4.contractStatusList,
+    serviceType: state.f4.serviceType,
+    srlsData: state.srlsReducer.srlsData,
   };
 }
 
 export default connect(mapStateToProps, {
-  f4FetchWerksBranchList,
   fetchSrls,
+  f4fetchCategory,
+  f4FetchBranches,
+  f4FetchServiceAppStatus,
+  f4FetchServicType,
 })(injectIntl(Srls));

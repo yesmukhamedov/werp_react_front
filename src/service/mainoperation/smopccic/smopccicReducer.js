@@ -13,7 +13,7 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_SEARCH_CUSTOMER:
       return {
         ...state,
-        dynamicObject: { ...action.data },
+        searchCustomerData: [...action.data],
       };
 
     case FETCH_TRANSFER_APPLICATION:

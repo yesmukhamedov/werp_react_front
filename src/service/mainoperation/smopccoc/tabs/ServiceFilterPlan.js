@@ -12,6 +12,7 @@ import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideW
 import ModalColumns from '../../../../utils/ModalColumns';
 import { LinkToSmcuspor } from '../../../../utils/outlink';
 import matchSorter from 'match-sorter';
+import { f4FetchBranchesByBukrs } from './../../../../reference/f4/f4_action';
 
 const ServiceFilterPlan = props => {
   const {
@@ -30,9 +31,8 @@ const ServiceFilterPlan = props => {
     branches,
     finStatusOption,
     serviceFilterPlan,
+    branchService,
   } = props;
-
-  console.log('SERVICE FILTER PLAN', serviceFilterPlan);
 
   const emptyParam = {
     country: '',
@@ -165,23 +165,19 @@ const ServiceFilterPlan = props => {
     },
   ];
 
-  const [serBranchOptions, setSerBranchOptions] = useState([]);
+  const [branchFilter, setBranchFilter] = useState([]);
+  console.log('branchFilter', branchFilter);
+
+  const [serBranchOptions, setSerBranchOptions] = useState([...branchFilter]);
 
   useEffect(() => {
     fetchServiceTypeId();
   }, []);
 
-  const optionsSelect = [
-    { label: 'Thing 1', value: 1 },
-    { label: 'Thing 2', value: 2 },
-  ];
-
   //Get service branches
   useEffect(() => {
-    const getBranchByBukrs = (branches, bukrs) => {
-      let br = branches.filter(item => item.bukrs == bukrs);
-
-      let brSer = br.filter(
+    const getBranchByBukrs = branches => {
+      let brSer = branches.filter(
         item =>
           item.business_area_id == 5 ||
           item.business_area_id == 6 ||
@@ -193,13 +189,22 @@ const ServiceFilterPlan = props => {
           key: item.branch_id,
           text: item.text45,
           value: item.branch_id,
+          country_id: item.country_id,
+          bukrs: item.bukrs,
         };
       });
       return serBranchOpt;
     };
 
-    setSerBranchOptions(getBranchByBukrs(branches, param.bukrs));
-  }, [param.bukrs]);
+    setBranchFilter(getBranchByBukrs(branches));
+  }, [branches]);
+
+  // useEffect(() => {
+  //   let filterBranch = branchFilter.filter(
+  //     item => item.country_id === param.country && item.bukrs === param.bukrs,
+  //   );
+  //   setSerBranchOptions(filterBranch);
+  // }, [param.country, param.bukrs]);
 
   const categoryOptions = [
     { key: 1, text: 'Зеленый', value: 'Зеленый' },
@@ -245,7 +250,7 @@ const ServiceFilterPlan = props => {
       const prevParam = { ...prev };
       switch (fieldName) {
         case 'country':
-          prevParam.country = [o.value];
+          prevParam.country = o.value;
           break;
         case 'bukrs':
           prevParam.bukrs = o.value;
@@ -306,7 +311,7 @@ const ServiceFilterPlan = props => {
           <Form.Select
             fluid
             label="Филиал"
-            options={serBranchOptions}
+            options={branchFilter}
             placeholder="Филиал"
             onChange={(e, o) => onInputChange(o, 'branchId')}
             className="alignBottom"
@@ -381,10 +386,12 @@ function mapStateToProps(state) {
     language: state.locales.lang,
     serviceTypeId: state.smcsReducer.serviceTypeId,
     serviceFilterPlan: state.smopccocReducer.serviceFilterPlan,
+    branchService: state.userInfo.branchOptionsService,
   };
 }
 
 export default connect(mapStateToProps, {
+  f4FetchBranchesByBukrs,
   fetchServiceListManager,
   fetchServiceTypeId,
   fetchServiceFilterPlan,

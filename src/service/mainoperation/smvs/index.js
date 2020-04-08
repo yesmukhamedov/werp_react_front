@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { Segment, Grid, Form, Button, Icon } from 'semantic-ui-react';
@@ -6,17 +6,34 @@ import { Segment, Grid, Form, Button, Icon } from 'semantic-ui-react';
 import BasicInfo from './components/BasicInfo';
 import SettingService from './components/SettingService';
 import ReportService from './components/ReportService';
+import { fetchSmvsList } from './smvsAction';
 import './../../service.css';
+import { LinkToSmes } from '../../../utils/outlink';
+import { ROOT_URL } from './../../../utils/constants';
 
 const Smes = props => {
-  const emptyTovar = {
-    param: 555,
-    name: 'Jaks',
-  };
+  const { smvsList } = props;
+  const url = window.location.search;
+  const numberService = url.slice(url.indexOf('=') + 1);
 
+  console.log('smvsList', smvsList);
+
+  const [serviceNumber, setServiceNumber] = useState('');
+
+  useEffect(() => {
+    setServiceNumber(numberService);
+    if (numberService) {
+      props.fetchSmvsList(numberService);
+    }
+  }, [numberService]);
+
+  const onChangeServiceNumber = value => {
+    setServiceNumber(value);
+  };
   //Поиск по номеру сервиса
-  const handleSearchNumberService = () => {
-    console.log('handleSearchNumberService');
+  const searchByServiceNumber = () => {
+    console.log('Service Number', serviceNumber);
+    props.fetchSmvsList(serviceNumber);
   };
 
   return (
@@ -31,16 +48,17 @@ const Smes = props => {
         }}
       >
         <h3>Просмотр сервис карты</h3>
-        <Button color="green">
-          <Icon name="pencil" />
-          Редактировать
-        </Button>
+        <LinkToSmes serviceNumber={serviceNumber} />
       </Segment>
       <Grid>
         <Grid.Row>
           {/*BASIC INFO*/}
           <Grid.Column width={5}>
-            <BasicInfo />
+            <BasicInfo
+              serviceNumber={serviceNumber}
+              searchByServiceNumber={searchByServiceNumber}
+              onChangeServiceNumber={onChangeServiceNumber}
+            />
           </Grid.Column>
 
           {/*SETTING*/}
@@ -59,7 +77,8 @@ function mapStateToProps(state) {
     language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,
+    smvsList: state.smvsReducer.smvsList,
   };
 }
 
-export default connect(mapStateToProps, {})(injectIntl(Smes));
+export default connect(mapStateToProps, { fetchSmvsList })(injectIntl(Smes));

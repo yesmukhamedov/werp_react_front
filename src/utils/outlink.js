@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { LEGACY_URL } from '../utils/constants';
-import { Icon, Popup } from 'semantic-ui-react';
+import { Icon, Popup, Button } from 'semantic-ui-react';
 
 export const LinkToDmsc03 = props => {
   const { snNum } = props;
@@ -183,11 +183,37 @@ export const LinkToSmdisTabSmvod = props => {
 
 export const LinkToSmcuspor = props => {
   const { contractNumber = '', text } = props;
-  const url = `smcuspor?contractNumber=${contractNumber}`;
+  const url = `../mainoperation/smcuspor?contractNumber=${contractNumber}`;
   return (
     <a target="_blank" href={url} rel="noopener noreferrer">
       <Icon color="teal" name="history" />
     </a>
+  );
+};
+
+export const LinkToSmvs = props => {
+  const { serviceNumber, text } = props;
+  const url = `../mainoperation/smvs?serviceNumber=${serviceNumber}`;
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      {serviceNumber}
+    </a>
+  );
+};
+export const LinkToSmes = props => {
+  const { serviceNumber, text } = props;
+  const url = `../mainoperation/smes?serviceNumber=${serviceNumber}`;
+  return (
+    <Button color="green">
+      <a
+        style={{ color: 'white' }}
+        target="_blank"
+        href={url}
+        rel="noopener noreferrer"
+      >
+        Редактировать
+      </a>
+    </Button>
   );
 };
 

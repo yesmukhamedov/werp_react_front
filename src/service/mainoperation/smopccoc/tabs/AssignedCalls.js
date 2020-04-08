@@ -32,8 +32,6 @@ const AssignedCalls = props => {
     assignedCalls,
   } = props;
 
-  console.log('ASSIGNED CALLS', assignedCalls);
-
   const emptyParam = {
     country: '',
     bukrs: '',

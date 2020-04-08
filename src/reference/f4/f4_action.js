@@ -128,6 +128,12 @@ export const F4_FETCH_SERVICE_STATUS_LIST = 'F4_FETCH_SERVICE_STATUS_LIST';
 
 export const F4_FETCH_OPERATORS_BY_BRANCH_ID =
   'F4_FETCH_OPERATORS_BY_BRANCH_ID';
+export const F4_FETCH_SERVICE_APP_STATUS = 'F4_FETCH_SERVICE_APP_STATUS';
+export const F4_FETCH_SERVICE_APP_TYPE = 'F4_FETCH_SERVICE_APP_TYPE';
+export const F4_FETCH_TOVAR_CATEGORYS = 'F4_FETCH_TOVAR_CATEGORYS';
+export const F4_FETCH_MATNR_PRICELIST = 'F4_FETCH_MATNR_PRICELIST';
+
+export const F4_FETCH_SERVICE_TYPE = 'F4_FETCH_SERVICE_TYPE';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
@@ -137,6 +143,23 @@ export function f4ClearAnyObject(a_const) {
     type: a_const,
   };
   return obj;
+}
+
+export function f4FetchTovarCategorys() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('smcs/categoryId')
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_TOVAR_CATEGORYS,
+          data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
 }
 
 export function f4FetchCompanyOptions() {
@@ -998,3 +1021,71 @@ export function f4FetchOperatorsByBranchId(param) {
       });
   };
 }
+
+//Статус заявки
+export function f4FetchServiceAppStatus() {
+  return function(dispatch) {
+    doGet('service/reference/serv_app_status')
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_SERVICE_APP_STATUS,
+          data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchServiceAppType() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('service/reference/serv_app_type')
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_SERVICE_APP_TYPE,
+          data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchServicType() {
+  return function(dispatch) {
+    doGet('smcs/serviceTypeId')
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_SERVICE_TYPE,
+          data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export const f4FetchMatnrPriceList = param => {
+  return function(dispatch) {
+    doGet(`smcs/matnr_pricelist`, param)
+      .then(({ data }) => {
+        //console.log(data, 'ACTION');
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_MATNR_PRICELIST,
+          data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};

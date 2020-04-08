@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { Container, Segment, Form, Icon, Divider } from 'semantic-ui-react';
 import {
-  f4FetchCountryList,
   f4FetchBranches,
+  f4FetchCountryList,
+  f4FetchMatnrPriceList,
 } from '../../../reference/f4/f4_action';
 import { fetchSrkpiso } from './srkpisoAction';
 import DatePicker from 'react-datepicker';
@@ -22,20 +23,20 @@ const Srkpiso = props => {
   const {
     intl: { messages },
     language,
-    fetchSrkpiso,
-    f4FetchCountryList,
-    f4FetchBranches,
-    branches,
-    countryList,
-    companyOptions,
+    companyOptions = [],
+    countryList = [],
+    branches = [],
+    matnrPriceList = [],
   } = props;
 
+  console.log('matnrPriceList', matnrPriceList);
+
   const emptyParam = {
-    countryId: '',
+    country: '',
     bukrs: '',
     branchId: '',
     product: '',
-    date: '',
+    dateOpenAt: '',
   };
   const [param, setParam] = useState({ ...emptyParam });
 
@@ -104,7 +105,7 @@ const Srkpiso = props => {
     },
     {
       Header: 'Просроченный выполнен',
-      accessor: '858',
+      accessor: '57878',
       filterable: false,
       checked: true,
     },
@@ -117,17 +118,51 @@ const Srkpiso = props => {
   ];
 
   useEffect(() => {
-    f4FetchCountryList();
-    f4FetchBranches();
+    props.f4FetchCountryList();
+    props.f4FetchBranches();
+
+    let matnrParam = {
+      countryId: param.country,
+      bukrs: param.bukrs,
+      branchId: param.branchId,
+    };
+
+    props.f4FetchMatnrPriceList(matnrParam);
   }, []);
 
   const countryOptions = countryList.map(item => {
     return {
-      key: parseInt(item.countryId, 10),
-      text: `${item.country}`,
-      value: parseInt(item.countryId, 10),
+      key: item.countryId,
+      text: item.country,
+      value: item.countryId,
     };
   });
+
+  const [serBranchOptions, setSerBranchOptions] = useState([]);
+
+  useEffect(() => {
+    const getBranchByBukrs = (branches, bukrs) => {
+      let br = branches.filter(item => item.bukrs == bukrs);
+
+      let brSer = br.filter(
+        item =>
+          item.business_area_id == 5 ||
+          item.business_area_id == 6 ||
+          item.business_area_id == 9,
+      );
+
+      let serBranchOpt = brSer.map(item => {
+        return {
+          key: item.branch_id,
+          text: item.text45,
+          value: item.branch_id,
+        };
+      });
+      return serBranchOpt;
+    };
+
+    setSerBranchOptions(getBranchByBukrs(branches, param.bukrs));
+  }, [param.bukrs]);
 
   const onInputChange = (o, fieldName) => {
     setParam(prev => {
@@ -140,11 +175,10 @@ const Srkpiso = props => {
           prevParam.bukrs = o.value;
           break;
         case 'branchId':
-          prevParam.branchId = o.value;
+          prevParam.branchId = o.length > 0 ? o.join() : null;
           break;
-
-        case 'date':
-          prevParam.date = o.value;
+        case 'product':
+          prevParam.product = o.length > 0 ? o.join() : null;
           break;
         default:
           prevParam[fieldName] = o.value;
@@ -192,7 +226,7 @@ const Srkpiso = props => {
             label="Компания"
             placeholder="Компания"
             options={companyOptions}
-            onChange={(e, o) => onInputChange(o, 'bukrs')}
+            onChange={(e, value) => onInputChange(value, 'bukrs')}
             className="alignBottom"
           />
 
@@ -200,7 +234,10 @@ const Srkpiso = props => {
             fluid
             label="Филиал"
             placeholder="Филиал"
-            onChange={(e, o) => onInputChange(o, 'branchId')}
+            clearable="true"
+            multiple
+            options={serBranchOptions}
+            onChange={(e, { value }) => onInputChange(value, 'branchId')}
             className="alignBottom"
           />
 
@@ -208,7 +245,9 @@ const Srkpiso = props => {
             fluid
             label="Продукт"
             placeholder="Продукт"
-            onChange={(e, o) => onInputChange(o, 'categoryId')}
+            clearable="true"
+            multiple
+            onChange={(e, { value }) => onInputChange(value, 'product')}
             className="alignBottom"
           />
         </Form.Group>
@@ -216,17 +255,16 @@ const Srkpiso = props => {
         <Form.Group className="spaceBetween">
           <div className="flexDirectionRow">
             <Form.Field className="marginRight">
-              <label>Дата</label>
+              <label>Дата заявки с</label>
               <DatePicker
                 className="date-auto-width"
                 autoComplete="off"
-                locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.date)}
+                selected={stringYYYYMMDDToMoment(param.dateOpenAt)}
                 onChange={date =>
                   setParam({
                     ...param,
-                    date: momentToStringYYYYMMDD(date),
+                    dateOpenAt: momentToStringYYYYMMDD(date),
                   })
                 }
                 maxDate={new Date()}
@@ -261,15 +299,17 @@ const Srkpiso = props => {
 function mapStateToProps(state) {
   return {
     language: state.locales.lang,
+    companyOptions: state.userInfo.companyOptions,
     countryList: state.f4.countryList,
     branches: state.f4.branches,
-    companyOptions: state.userInfo.companyOptions,
+    matnrPriceList: state.f4.matnrPriceList,
     srkpisoData: state.srkpisoReducer.srkpisoData,
   };
 }
 
 export default connect(mapStateToProps, {
-  f4FetchCountryList,
   f4FetchBranches,
+  f4FetchCountryList,
+  f4FetchMatnrPriceList,
   fetchSrkpiso,
 })(injectIntl(Srkpiso));

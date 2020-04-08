@@ -4,6 +4,12 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const BasicInfo = props => {
+  const {
+    data,
+    searchByServiceNumber,
+    onChangeServiceNumber,
+    serviceNumber,
+  } = props;
   return (
     <Segment>
       <Table collapsing className="borderLess">
@@ -14,7 +20,16 @@ const BasicInfo = props => {
               <Input
                 fluid
                 type="number"
-                action={<Button icon="search" content="Поиск" primary />}
+                value={serviceNumber}
+                onChange={e => onChangeServiceNumber(e.target.value)}
+                action={
+                  <Button
+                    onClick={searchByServiceNumber}
+                    icon="search"
+                    content="Поиск"
+                    primary
+                  />
+                }
               />
             </Table.Cell>
           </Table.Row>

@@ -17,7 +17,7 @@ const language = localStorage.getItem('language');
 //Поиск клиентов
 export const fetchSearchCustomer = param => {
   return function(dispatch) {
-    doGet(`smopccoc/ServiceFilterPlan`, param)
+    doGet(`smopccic/search_customer`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

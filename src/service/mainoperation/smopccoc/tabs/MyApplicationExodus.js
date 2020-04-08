@@ -36,8 +36,6 @@ const MyApplicationExodus = props => {
     myApplication,
   } = props;
 
-  console.log('MY APPLICATION', myApplication);
-
   const emptyParam = {
     country: '',
     bukrs: '',

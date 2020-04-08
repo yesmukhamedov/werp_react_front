@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import SearchCustomer from './tabs/SearchCustomer';
@@ -14,57 +14,65 @@ import {
 } from 'semantic-ui-react';
 import {
   f4fetchCategory,
-  f4FetchStaffList,
-  f4FetchServiceStatusList,
   f4FetchCountryList,
   f4FetchConStatusList,
   f4FetchBranches,
+  f4FetchServiceAppStatus,
 } from '../../../reference/f4/f4_action';
-
-import { fetchServiceTypeId } from '../../mainoperation/smcs/smcsAction';
-import { fetchServiceListManager } from '../../report/serviceReportAction';
+import { fetchBukrsOptions } from '../../../reference/f4/bukrs/BukrsOptions';
 import '../../service.css';
-import { classNames } from 'classnames';
 
 const Smopccic = props => {
   const {
     intl: { messages },
     language,
+    contractStatusList = [],
+    category = [],
+    companyOptions = [],
+    countryList = [],
+    branches = [],
+    serviceAppStatus = [],
   } = props;
 
-  const {
-    f4fetchCategory,
-    f4FetchServiceStatusList,
-    f4FetchCountryList,
-    f4FetchConStatusList,
-    f4FetchBranches,
-  } = props;
-
-  const {
-    serviceTypeId,
-    srlsmList,
-    companyOptions,
-    countryList,
-    category,
-    serviceStatusList,
-    contractStatusList,
-    branches,
-  } = props;
+  console.log('PROPS SMOPCCIC', props);
 
   useEffect(() => {
-    f4fetchCategory();
-    fetchServiceTypeId();
-    f4FetchServiceStatusList();
-    f4FetchCountryList();
-    f4FetchConStatusList();
-    f4FetchBranches();
+    props.f4FetchCountryList();
+    props.f4FetchBranches();
+    props.f4fetchCategory();
+    props.f4FetchConStatusList();
+    props.f4FetchServiceAppStatus();
   }, []);
+
+  const tovarCategoryOptions = category.map(item => {
+    return {
+      key: item.id,
+      text: item.name,
+      value: item.id,
+    };
+  });
 
   const countryOptions = countryList.map(item => {
     return {
-      key: parseInt(item.countryId, 10),
-      text: `${item.country}`,
-      value: parseInt(item.countryId, 10),
+      key: item.countryId,
+      text: item.country,
+      value: item.countryId,
+    };
+  });
+
+  const finStatusOptions = contractStatusList.map(item => {
+    return {
+      key: item.contract_status_id,
+      text: item.name,
+      value: item.contract_status_id,
+    };
+  });
+
+  const serviceAppStatusOptions = serviceAppStatus.map(item => {
+    return {
+      key: item.id,
+      text: item.name,
+      value: item.id,
     };
   });
 
@@ -79,14 +87,11 @@ const Smopccic = props => {
       pane: (
         <Tab.Pane key={1}>
           <SearchCustomer
-            serviceTypeId={serviceTypeId}
-            srlsmList={srlsmList}
             companyOptions={companyOptions}
             countryOptions={countryOptions}
-            category={category}
-            serviceStatusList={serviceStatusList}
-            contractStatusList={contractStatusList}
+            tovarCategoryOptions={tovarCategoryOptions}
             branches={branches}
+            finStatusOptions={finStatusOptions}
           />
         </Tab.Pane>
       ),
@@ -99,16 +104,7 @@ const Smopccic = props => {
       ),
       pane: (
         <Tab.Pane key={2}>
-          <TransferApplicationEntry
-            serviceTypeId={serviceTypeId}
-            srlsmList={srlsmList}
-            companyOptions={companyOptions}
-            countryOptions={countryOptions}
-            category={category}
-            serviceStatusList={serviceStatusList}
-            contractStatusList={contractStatusList}
-            branches={branches}
-          />
+          <TransferApplicationEntry />
         </Tab.Pane>
       ),
     },
@@ -121,14 +117,11 @@ const Smopccic = props => {
       pane: (
         <Tab.Pane key={3}>
           <MyApplication
-            serviceTypeId={serviceTypeId}
-            srlsmList={srlsmList}
             companyOptions={companyOptions}
             countryOptions={countryOptions}
-            category={category}
-            serviceStatusList={serviceStatusList}
-            contractStatusList={contractStatusList}
             branches={branches}
+            tovarCategoryOptions={tovarCategoryOptions}
+            serviceAppStatusOptions={serviceAppStatusOptions}
           />
         </Tab.Pane>
       ),
@@ -166,24 +159,19 @@ const Smopccic = props => {
 function mapStateToProps(state) {
   return {
     language: state.locales.lang,
-    serviceTypeId: state.smcsReducer.serviceTypeId,
-    srlsmList: state.serviceReportReducer.srlsmList,
     companyOptions: state.userInfo.companyOptions,
     countryList: state.f4.countryList,
     category: state.f4.category,
-    serviceStatusList: state.f4.serviceStatusList,
-    contractStatusList: state.f4.contractStatusList,
     branches: state.f4.branches,
+    serviceAppStatus: state.f4.serviceAppStatus,
+    contractStatusList: state.f4.contractStatusList,
   };
 }
 
 export default connect(mapStateToProps, {
-  fetchServiceListManager,
   f4fetchCategory,
-  f4FetchStaffList,
-  f4FetchServiceStatusList,
   f4FetchCountryList,
   f4FetchConStatusList,
   f4FetchBranches,
-  fetchServiceTypeId,
+  f4FetchServiceAppStatus,
 })(injectIntl(Smopccic));

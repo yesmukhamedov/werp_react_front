@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { connect } from 'react-redux';
-import { injectIntl } from 'react-intl';
 import {
   Container,
   Form,
@@ -10,9 +8,7 @@ import {
   Divider,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
-import { fetchMyApplicationExodus } from '../smopccicAction';
-import { fetchServiceTypeId } from '../../smcs/smcsAction';
-import { fetchServiceListManager } from '../../../report/serviceReportAction';
+import { fetchSearchCustomer } from '../smopccicAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from '../../../../utils/ModalColumns';
 
@@ -25,34 +21,28 @@ import {
 
 const SearchCustomer = props => {
   const {
-    countryOptions,
+    countryOptions = [],
     companyOptions = [],
-    branches,
-    finStatusOption,
-    serviceDateTypeOptions,
-    categoryOptions,
-    warrantyOptions,
+    branches = [],
+    finStatusOptions = [],
+    tovarCategoryOptions = [],
+    searchCustomerData = [],
   } = props;
 
-  const {
-    intl: { messages },
-    language,
-    fetchMyApplicationExodus,
-    dynamicObject = [],
-    srlsmList = [],
-  } = props;
+  const {} = props;
 
   const emptyParam = {
     country: '',
     bukrs: '',
     branchId: '',
-    categoryId: '',
-    serviceStatusId: '',
-    dateStart: '',
-    dateEnd: '',
+    tovarCategorys: '',
+    contractStatusIds: '',
+    contractDateFrom: '',
+    contractDateTo: '',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
+
   const initialColumns = [
     {
       Header: 'Id',
@@ -152,10 +142,6 @@ const SearchCustomer = props => {
     setSerBranchOptions(getBranchByBukrs(branches, param.bukrs));
   }, [param.bukrs]);
 
-  const handleClickApply = () => {
-    fetchMyApplicationExodus({ ...param });
-  };
-
   const onInputChange = (o, fieldName) => {
     setParam(prev => {
       const prevParam = { ...prev };
@@ -169,17 +155,21 @@ const SearchCustomer = props => {
         case 'branchId':
           prevParam.branchId = o.value;
           break;
-        case 'categoryId':
-          prevParam.categoryId = o.value;
+        case 'tovarCategorys':
+          prevParam.tovarCategorys = o.value;
           break;
-        case 'serviceStatusId':
-          prevParam.serviceStatusId = o.value;
+        case 'contractStatusIds':
+          prevParam.contractStatusIds = o.value;
           break;
+
         default:
           prevParam[fieldName] = o.value;
       }
       return prevParam;
     });
+  };
+  const handleClickApply = () => {
+    props.fetchSearchCustomer({ ...param });
   };
 
   const [columns, setColumns] = useState([...initialColumns]);
@@ -221,14 +211,15 @@ const SearchCustomer = props => {
           <Form.Select
             label="Категория товара"
             placeholder="Категория товара"
-            options={categoryOptions}
-            onChange={(e, o) => onInputChange(o, 'categoryId')}
+            options={tovarCategoryOptions}
+            onChange={(e, o) => onInputChange(o, 'tovarCategorys')}
             className="alignBottom"
           />
 
           <Form.Select
             label="Фин. статус"
             placeholder="Фин. статус"
+            options={finStatusOptions}
             onChange={(e, o) => onInputChange(o, 'configuration')}
             className="alignBottom"
           />
@@ -240,13 +231,12 @@ const SearchCustomer = props => {
               <DatePicker
                 className="date-auto-width"
                 autoComplete="off"
-                locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.dateStart)}
+                selected={stringYYYYMMDDToMoment(param.contractDateFrom)}
                 onChange={date =>
                   setParam({
                     ...param,
-                    dateStart: momentToStringYYYYMMDD(date),
+                    contractDateFrom: momentToStringYYYYMMDD(date),
                   })
                 }
                 maxDate={new Date()}
@@ -259,11 +249,13 @@ const SearchCustomer = props => {
               <DatePicker
                 className="date-auto-width"
                 autoComplete="off"
-                locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.dateEnd)}
+                selected={stringYYYYMMDDToMoment(param.contractDateTo)}
                 onChange={date =>
-                  setParam({ ...param, dateEnd: momentToStringYYYYMMDD(date) })
+                  setParam({
+                    ...param,
+                    contractDateTo: momentToStringYYYYMMDD(date),
+                  })
                 }
                 maxDate={new Date()}
                 dateFormat="DD.MM.YYYY"
@@ -293,16 +285,4 @@ const SearchCustomer = props => {
   );
 };
 
-function mapStateToProps(state) {
-  return {
-    language: state.locales.lang,
-    serviceTypeId: state.smcsReducer.serviceTypeId,
-    dynamicObject: state.smopspReducer.dynamicObject,
-  };
-}
-
-export default connect(mapStateToProps, {
-  fetchServiceListManager,
-  fetchServiceTypeId,
-  fetchMyApplicationExodus,
-})(injectIntl(SearchCustomer));
+export default SearchCustomer;

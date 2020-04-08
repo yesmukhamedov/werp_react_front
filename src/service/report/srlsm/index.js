@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
-  f4FetchCountryList,
-  f4FetchWerksBranchList,
+  f4fetchCategory,
+  f4FetchBranches,
+  f4FetchServiceAppStatus,
+  f4FetchServicType,
 } from '../../../reference/f4/f4_action';
 import { fetchSrlsm } from './srlsmAction';
 import { injectIntl } from 'react-intl';
@@ -18,7 +20,6 @@ import {
 import 'react-table/react-table.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import ModalColumns from './../../../utils/ModalColumns';
 import {
   stringYYYYMMDDToMoment,
@@ -32,15 +33,19 @@ const Srlsm = props => {
   const {
     intl: { messages },
     language,
+    category = [],
     companyOptions = [],
+    branches = [],
+    serviceAppStatus = [],
+    serviceType = [],
     srlsmList = [],
   } = props;
 
   console.log('SRLSM', srlsmList, 'LANGUAGE', language);
 
   const emptyParam = {
-    branchId: '',
     bukrs: '',
+    branchId: '',
     categoryId: '',
     serviceTypeId: '',
     serviceStatusId: '',
@@ -50,12 +55,61 @@ const Srlsm = props => {
 
   const [param, setParam] = useState({ ...emptyParam });
 
-  //Статус сервиса
-  const serviceStatusOptions = [
-    { key: '1', text: 'Выполнено', value: '1' },
-    { key: '2', text: 'Отмена', value: '2' },
-  ];
+  useEffect(() => {
+    props.f4FetchServiceAppStatus();
+    props.f4fetchCategory();
+    props.f4FetchBranches();
+    props.f4FetchServiceAppStatus();
+    props.f4FetchServicType();
+  }, []);
 
+  const tovarCategoryOptions = category.map(item => {
+    return {
+      key: item.id,
+      text: item.name,
+      value: item.id,
+    };
+  });
+
+  const serviceAppStatusOptions = serviceAppStatus.map(item => {
+    return {
+      key: item.id,
+      text: item.name,
+      value: item.id,
+    };
+  });
+
+  const serviceTypeOptions = serviceType.map(item => {
+    return {
+      key: item.id,
+      text: item.nameRu,
+      value: item.id,
+    };
+  });
+  const [serBranchOptions, setSerBranchOptions] = useState([]);
+  useEffect(() => {
+    const getBranchByBukrs = (branches, bukrs) => {
+      let br = branches.filter(item => item.bukrs == bukrs);
+
+      let brSer = br.filter(
+        item =>
+          item.business_area_id == 5 ||
+          item.business_area_id == 6 ||
+          item.business_area_id == 9,
+      );
+
+      let serBranchOpt = brSer.map(item => {
+        return {
+          key: item.branch_id,
+          text: item.text45,
+          value: item.branch_id,
+        };
+      });
+      return serBranchOpt;
+    };
+
+    setSerBranchOptions(getBranchByBukrs(branches, param.bukrs));
+  }, [param.bukrs]);
   const onInputChange = (o, fieldName) => {
     setParam(prev => {
       const varSrls = { ...prev };
@@ -212,21 +266,25 @@ const Srlsm = props => {
             fluid
             label="Филиал"
             placeholder="Филиал"
+            options={serBranchOptions}
             onChange={(e, o) => onInputChange(o, 'branchId')}
             className="alignBottom"
           />
 
           <Form.Select
             fluid
-            label="Категория"
-            placeholder="Категория"
+            label="Категория товара"
+            placeholder="Категория товара"
+            options={tovarCategoryOptions}
             onChange={(e, o) => onInputChange(o, 'categoryId')}
             className="alignBottom"
           />
+
           <Form.Select
             fluid
             label="Вид сервиса"
             placeholder="Вид сервиса"
+            options={serviceTypeOptions}
             onChange={(e, o) => onInputChange(o, 'serviceTypeId')}
             className="alignBottom"
           />
@@ -235,6 +293,7 @@ const Srlsm = props => {
             fluid
             label="Статус сервиса"
             placeholder="Статус сервиса"
+            options={serviceAppStatusOptions}
             onChange={(e, o) => onInputChange(o, 'serviceStatusId')}
             className="alignBottom"
           />
@@ -297,6 +356,7 @@ const Srlsm = props => {
           </Form.Field>
         </Form.Group>
       </Form>
+
       <Divider />
       <Table>
         <Table.Body>
@@ -338,12 +398,19 @@ function mapStateToProps(state) {
   return {
     language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
-    branchOptions: state.userInfo.branchOptionsAll,
+    category: state.f4.category,
+    branches: state.f4.branches,
+    serviceAppStatus: state.f4.serviceAppStatus,
+    contractStatusList: state.f4.contractStatusList,
+    serviceType: state.f4.serviceType,
     srlsmList: state.srlsmReducer.srlsmList,
   };
 }
 
 export default connect(mapStateToProps, {
-  f4FetchWerksBranchList,
+  f4fetchCategory,
+  f4FetchBranches,
+  f4FetchServiceAppStatus,
+  f4FetchServicType,
   fetchSrlsm,
 })(injectIntl(Srlsm));

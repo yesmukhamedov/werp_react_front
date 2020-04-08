@@ -72,6 +72,11 @@ import {
   F4_FETCH_CUSTOMERS_BY_ID,
   F4_FETCH_SERVICE_STATUS_LIST,
   F4_FETCH_OPERATORS_BY_BRANCH_ID,
+  F4_FETCH_SERVICE_APP_STATUS,
+  F4_FETCH_SERVICE_APP_TYPE,
+  F4_FETCH_TOVAR_CATEGORYS,
+  F4_FETCH_SERVICE_TYPE,
+  F4_FETCH_MATNR_PRICELIST,
 } from './f4_action';
 
 const INITIAL_STATE = {
@@ -332,6 +337,22 @@ export default function(state = INITIAL_STATE, action) {
 
     case F4_FETCH_OPERATORS_BY_BRANCH_ID:
       return { operatorsByBranchId: action.data.data };
+
+    case F4_FETCH_SERVICE_APP_STATUS:
+      return { ...state, serviceAppStatus: [...action.data.data] };
+
+    case F4_FETCH_SERVICE_APP_TYPE:
+      return { serviceAppType: action.data.data };
+
+    case F4_FETCH_TOVAR_CATEGORYS:
+      return { ...state, tovarCategory: [...action.data.data] };
+
+    case F4_FETCH_SERVICE_TYPE:
+      return { ...state, serviceType: [...action.data.data] };
+
+    case F4_FETCH_MATNR_PRICELIST:
+      return { ...state, matnrPriceList: [...action.data.data] };
+
     default:
       return state;
   }

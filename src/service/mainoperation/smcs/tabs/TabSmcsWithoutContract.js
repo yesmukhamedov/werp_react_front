@@ -99,7 +99,7 @@ const TabSmcsWithoutContract = props => {
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
-                  <Table.Cell>Дата покупки</Table.Cell>
+                  <Table.Cell>Дата сервиса</Table.Cell>
                   <Table.Cell>
                     <Input fluid disabled />
                   </Table.Cell>

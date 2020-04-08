@@ -11,8 +11,6 @@ import {
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import { fetchMyApplicationExodus } from '../smopccicAction';
-import { fetchServiceTypeId } from '../../smcs/smcsAction';
-import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from '../../../../utils/ModalColumns';
 
@@ -28,10 +26,8 @@ const MyApplication = props => {
     countryOptions,
     companyOptions = [],
     branches,
-    finStatusOption,
-    serviceDateTypeOptions,
-    categoryOptions,
-    warrantyOptions,
+    serviceAppStatusOptions,
+    tovarCategoryOptions,
   } = props;
 
   const {
@@ -262,7 +258,7 @@ const MyApplication = props => {
           <Form.Select
             label="Категория товара"
             placeholder="Категория товара"
-            options={categoryOptions}
+            options={tovarCategoryOptions}
             onChange={(e, o) => onInputChange(o, 'categoryId')}
             className="alignBottom"
           />
@@ -270,6 +266,7 @@ const MyApplication = props => {
           <Form.Select
             label="Статус заявки"
             placeholder="Статус заявки"
+            options={serviceAppStatusOptions}
             onChange={(e, o) => onInputChange(o, 'configuration')}
             className="alignBottom"
           />
@@ -337,13 +334,10 @@ const MyApplication = props => {
 function mapStateToProps(state) {
   return {
     language: state.locales.lang,
-    serviceTypeId: state.smcsReducer.serviceTypeId,
     dynamicObject: state.smopspReducer.dynamicObject,
   };
 }
 
 export default connect(mapStateToProps, {
-  fetchServiceListManager,
-  fetchServiceTypeId,
   fetchMyApplicationExodus,
 })(injectIntl(MyApplication));

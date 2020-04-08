@@ -43,8 +43,6 @@ const TransferApplicationExodus = props => {
     transfer,
   } = props;
 
-  console.log('TRANSFER', transfer);
-
   const emptyParam = {
     country: '',
     bukrs: '',
