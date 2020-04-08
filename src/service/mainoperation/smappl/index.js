@@ -26,7 +26,11 @@ import { formatDMY, errorTableText } from '../../../utils/helpers';
 import ColumnsModal from '../../../utils/ColumnsModal';
 import './index.css';
 import ServiceRequestTable from './table';
-import { LinkToSmcuspor, LinkToSmecam } from '../../../utils/outlink';
+import {
+  LinkToSmcuspor,
+  LinkToSmecam,
+  LinkToSmvs,
+} from '../../../utils/outlink';
 import Masters from './Masters';
 
 const Smappl = props => {
@@ -105,7 +109,7 @@ const Smappl = props => {
     },
     {
       Header: messages['Phone'],
-      accessor: 'inPhoneNum',
+      accessor: 'fullPhone',
       show: true,
       filterable: false,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
@@ -162,7 +166,11 @@ const Smappl = props => {
       accessor: 'serviceId',
       show: true,
       filterable: false,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div style={{ textAlign: 'center' }}>
+          <LinkToSmvs serviceNumber={row.value} />
+        </div>
+      ),
     },
     {
       Header: messages['customer_story'],
@@ -223,21 +231,9 @@ const Smappl = props => {
 
   useEffect(() => {
     const t = tovarCategorys.map(item => {
-      let text;
-      switch (localStorage.language) {
-        case 'ru':
-          text = item.nameRu;
-          break;
-        case 'en':
-          text = item.nameEn;
-          break;
-        case 'tr':
-          text = item.nameTr;
-          break;
-      }
       return {
         key: item.id,
-        text: text,
+        text: item.name,
         value: item.id,
       };
     });
