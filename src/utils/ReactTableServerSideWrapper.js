@@ -32,8 +32,8 @@ const ReactTableServerSideWrapper = props => {
   const fetchData = (params, instance) => {
     const { pageSize, page, sorted = [], filtered = [] } = params;
     // console.log(sorted, 'sorted');
-    let orderBy = '';
-    let direction = '';
+    let orderBy = null;
+    let direction = null;
     // let filter = '';
 
     for (let i = 0; i < sorted.length; i++) {
