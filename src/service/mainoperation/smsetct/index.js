@@ -578,7 +578,7 @@ const getProductOptions = (productList, bukrs, countryId, branchId) => {
     return {
       key: c.contract_type_id,
       text: c.name,
-      value: c.contract_type_id,
+      value: c.matnr,
     };
   });
   return out;

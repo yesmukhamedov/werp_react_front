@@ -40,14 +40,16 @@ export default function List(props) {
   const openEdit = row_data => {
     setSmsetctEdit(prop => {
       let editRow = { ...prop };
+      let bukr = companyOptions.find(({ text }) => row_data.bukrs === text)
+        .value;
       {
-        editRow.countryId = getCountryId(countryList, row_data.countryId);
-        editRow.bukrs = getBukrsId(companyOptions, row_data.bukrs);
-        editRow.branchId = getBranchId(
-          branchOptions,
-          row_data.branchId,
-          searchParams.bukrs,
-        );
+        editRow.countryId = countryList.find(
+          ({ country }) => row_data.countryId === country,
+        ).countryId;
+        editRow.bukrs = bukr;
+        editRow.branchId = branchOptions[bukr].find(
+          ({ text }) => row_data.branchId === text,
+        ).value;
         editRow.f1 = row_data.f1;
         editRow.f2 = row_data.f2;
         editRow.f3 = row_data.f3;
@@ -55,7 +57,7 @@ export default function List(props) {
         editRow.f5 = row_data.f5;
         editRow.f6 = row_data.f6;
         editRow.f7 = row_data.f7;
-        editRow.matnr = getProductId(productList, row_data.matnr);
+        editRow.matnr = getProductId(productList, row_data.matnr); // productList.find(({ name }) => row_data.matnr === name).contract_type_id;
         editRow.description = row_data.description;
         editRow.id = row_data.id;
       }
@@ -223,12 +225,9 @@ export default function List(props) {
     if (productName !== null && products) {
       products.map(e => {
         //ROBOCLEAN-114F это исключения в списке ROBOCLEAN 114F  а на базе ROBOCLEAN-114F
-        if (
-          productName === e.name.toUpperCase() ||
-          productName === 'ROBOCLEAN-114F'
-        ) {
+        if (productName === e.name) {
           // ROBOCLEAN-114F не равен на ROBOCLEAN 114F
-          productName = e.contract_type_id;
+          productName = e.matnr;
         }
       });
     }
