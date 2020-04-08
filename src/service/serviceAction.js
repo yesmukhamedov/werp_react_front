@@ -751,7 +751,6 @@ export function fetchAppList(params) {
     dispatch(modifyLoader(true));
     doGet('smappl/appList', params)
       .then(({ data }) => {
-        console.log(data);
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_APP_LIST,
