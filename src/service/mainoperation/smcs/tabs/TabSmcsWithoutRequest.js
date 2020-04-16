@@ -11,10 +11,7 @@ import {
   Icon,
   Divider,
   Dropdown,
-  Modal,
-  Header,
   Checkbox,
-  Label,
 } from 'semantic-ui-react';
 
 import {
@@ -42,11 +39,7 @@ import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal';
 import ModalAddServicePacket from '../modals/ModalAddServicePacket';
 import ModalAddSparePart from '../modals/ModalAddSparePart';
 import ModalAddCartridge from '../modals/ModalAddCartridge';
-
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-
-import format from 'string-format';
 
 //Создание сервиса без заявки
 const TabSmcsWithoutRequest = props => {
@@ -69,37 +62,8 @@ const TabSmcsWithoutRequest = props => {
     saveSmcs,
   } = props;
 
-  const emptyService = {
-    bukrs: '',
-    branchId: 0,
-    customerId: 0,
-    customerName: '',
-    tovarSn: '',
-    categoryId: 0,
-    tovarId: 0,
-    contractNumber: 0,
-    address: '',
-    contractDate: '',
-    masterId: 0,
-    operatorId: 0,
-    dateOpen: '',
-    warrantyPeriodInMonth: 0,
-    warrantyPeriodInDate: '',
-    currency: '',
-    countryId: 0,
-    servicePositions: [],
-    sumForPay: 0,
-    sumTotal: 0,
-    discount: 0,
-    paid: 0,
-    operatorPremium: 0,
-    masterPremium: 0,
-  };
-
   //Основной объект сервиса
-  const [service, setService] = useState({ ...emptyService });
-
-  console.log('SERVICE', service);
+  const [service, setService] = useState({});
 
   //Услуги
   const [serviceInstallation, setServiceInstallation] = useState([]);
@@ -174,41 +138,7 @@ const TabSmcsWithoutRequest = props => {
   const serviceBA = [5, 6, 9];
 
   useEffect(() => {
-    if (Object.keys(contract).length !== 0) {
-      setService({
-        bukrs: contract.bukrs,
-        branchId: contract.branchId,
-        customerId: contract.customerId,
-        tovarSn: contract.tovarSn,
-        categoryId: contract.categoryId,
-        tovarId: contract.tovarId,
-        contractNumber: contract.contractNumber,
-        address: contract.address,
-        contractDate: contract.contractDate,
-        masterId: contract.masterId,
-        operatorId: contract.operatorId,
-        dateOpen: contract.dateOpen,
-        warrantyPeriodInMonth: contract.warrantyPeriodInMonth,
-        warrantyPeriodInDate: contract.warrantyPeriodDate,
-        currency: contract.currencyId,
-        countryId: contract.countryId,
-        servicePositions: [],
-      });
-      let tovarId = contract.tovarId;
-      let customerId = contract.customerId;
-
-      props.fetchTovarId({ tovarId });
-
-      props.f4FetchCustomersById({ customerId });
-
-      let servicePacketParam = {
-        branchId: contract.branchId,
-        bukrs: contract.bukrs,
-        tovarSn: contract.tovarSn,
-      };
-
-      props.fetchSmcsServicePacket(servicePacketParam);
-    }
+    setService({ ...contract });
   }, [contract]);
 
   useEffect(() => {
@@ -896,6 +826,17 @@ const TabSmcsWithoutRequest = props => {
           <Grid.Column width={5}>
             <Table collapsing className="borderLess">
               <Table.Body>
+                <Table.Row>
+                  <Table.Cell>Номер заявки</Table.Cell>
+                  <Table.Cell>
+                    <Input
+                      type="text"
+                      fluid
+                      readOnly
+                      value={getCompanyName(companyOptions, service)}
+                    />
+                  </Table.Cell>
+                </Table.Row>
                 <Table.Row>
                   <Table.Cell>Компания</Table.Cell>
                   <Table.Cell>

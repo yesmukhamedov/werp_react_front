@@ -51,13 +51,13 @@ const SearchCustomer = props => {
       filterable: false,
     },
     {
-      Header: 'CN',
-      accessor: 'contractNumber',
+      Header: 'Филиал',
+      accessor: 'branch',
       checked: true,
     },
     {
-      Header: 'Филиал',
-      accessor: '858',
+      Header: 'CN',
+      accessor: 'contractNumber',
       checked: true,
     },
     {
@@ -86,7 +86,7 @@ const SearchCustomer = props => {
 
     {
       Header: 'ИИН клиента',
-      accessor: 'customerFIO',
+      accessor: 'customerIIN',
       checked: true,
     },
     {
@@ -96,7 +96,7 @@ const SearchCustomer = props => {
     },
     {
       Header: 'Телефон',
-      accessor: 'address',
+      accessor: 'phone',
       checked: true,
     },
 
@@ -116,31 +116,45 @@ const SearchCustomer = props => {
     },
   ];
 
-  const [serBranchOptions, setSerBranchOptions] = useState([]);
+  const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
 
   useEffect(() => {
-    const getBranchByBukrs = (branches, bukrs) => {
-      let br = branches.filter(item => item.bukrs == bukrs);
-
-      let brSer = br.filter(
+    let servBrOptions = branches
+      .filter(
         item =>
           item.business_area_id == 5 ||
           item.business_area_id == 6 ||
           item.business_area_id == 9,
-      );
-
-      let serBranchOpt = brSer.map(item => {
+      )
+      .map(item => {
         return {
           key: item.branch_id,
           text: item.text45,
           value: item.branch_id,
+          country_id: item.country_id,
+          bukrs: item.bukrs,
         };
       });
-      return serBranchOpt;
-    };
+    if (param.country !== '' && param.bukrs !== '') {
+      let servBranchOptions = servBrOptions
+        .filter(item => item.country_id === param.country)
+        .filter(item => item.bukrs === param.bukrs);
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.country !== '' && param.bukrs === '') {
+      let servBranchOptions = servBrOptions.filter(
+        item => item.country_id === param.country,
+      );
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.country === '' && param.bukrs !== '') {
+      let servBranchOptions = servBrOptions.filter(
+        item => item.bukrs === param.bukrs,
+      );
 
-    setSerBranchOptions(getBranchByBukrs(branches, param.bukrs));
-  }, [param.bukrs]);
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.country === '' && param.bukrs === '') {
+      setServiceBranchOptions([...servBrOptions]);
+    }
+  }, [branches, param.country, param.bukrs]);
 
   const onInputChange = (o, fieldName) => {
     setParam(prev => {
@@ -203,7 +217,7 @@ const SearchCustomer = props => {
             fluid
             label="Филиал"
             placeholder="Филиал"
-            options={serBranchOptions}
+            options={serviceBranchOptions}
             onChange={(e, o) => onInputChange(o, 'branchId')}
             className="alignBottom"
           />

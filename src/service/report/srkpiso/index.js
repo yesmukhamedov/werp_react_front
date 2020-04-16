@@ -5,7 +5,7 @@ import { Container, Segment, Form, Icon, Divider } from 'semantic-ui-react';
 import {
   f4FetchBranches,
   f4FetchCountryList,
-  f4FetchMatnrPriceList,
+  f4FetchConTypeList,
 } from '../../../reference/f4/f4_action';
 import { fetchSrkpiso } from './srkpisoAction';
 import DatePicker from 'react-datepicker';
@@ -26,10 +26,10 @@ const Srkpiso = props => {
     companyOptions = [],
     countryList = [],
     branches = [],
-    matnrPriceList = [],
+    productList = [],
   } = props;
 
-  console.log('matnrPriceList', matnrPriceList);
+  console.log('productList', productList);
 
   const emptyParam = {
     country: '',
@@ -120,14 +120,7 @@ const Srkpiso = props => {
   useEffect(() => {
     props.f4FetchCountryList();
     props.f4FetchBranches();
-
-    let matnrParam = {
-      countryId: param.country,
-      bukrs: param.bukrs,
-      branchId: param.branchId,
-    };
-
-    props.f4FetchMatnrPriceList(matnrParam);
+    props.f4FetchConTypeList();
   }, []);
 
   const countryOptions = countryList.map(item => {
@@ -138,31 +131,66 @@ const Srkpiso = props => {
     };
   });
 
-  const [serBranchOptions, setSerBranchOptions] = useState([]);
+  const productListOptions =
+    param.bukrs === ''
+      ? productList.map(item => {
+          return {
+            key: item.contract_type_id,
+            text: item.name,
+            value: item.contract_type_id,
+          };
+        })
+      : productList
+          .filter(item => item.bukrs === param.bukrs)
+          .map(item => {
+            return {
+              key: item.contract_type_id,
+              text: item.name,
+              value: item.contract_type_id,
+            };
+          });
+
+  console.log('productListOptions', productListOptions);
+
+  const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
 
   useEffect(() => {
-    const getBranchByBukrs = (branches, bukrs) => {
-      let br = branches.filter(item => item.bukrs == bukrs);
-
-      let brSer = br.filter(
+    let servBrOptions = branches
+      .filter(
         item =>
           item.business_area_id == 5 ||
           item.business_area_id == 6 ||
           item.business_area_id == 9,
-      );
-
-      let serBranchOpt = brSer.map(item => {
+      )
+      .map(item => {
         return {
           key: item.branch_id,
           text: item.text45,
           value: item.branch_id,
+          country_id: item.country_id,
+          bukrs: item.bukrs,
         };
       });
-      return serBranchOpt;
-    };
+    if (param.country !== '' && param.bukrs !== '') {
+      let servBranchOptions = servBrOptions
+        .filter(item => item.country_id === param.country)
+        .filter(item => item.bukrs === param.bukrs);
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.country !== '' && param.bukrs === '') {
+      let servBranchOptions = servBrOptions.filter(
+        item => item.country_id === param.country,
+      );
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.country === '' && param.bukrs !== '') {
+      let servBranchOptions = servBrOptions.filter(
+        item => item.bukrs === param.bukrs,
+      );
 
-    setSerBranchOptions(getBranchByBukrs(branches, param.bukrs));
-  }, [param.bukrs]);
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.country === '' && param.bukrs === '') {
+      setServiceBranchOptions([...servBrOptions]);
+    }
+  }, [branches, param.country, param.bukrs]);
 
   const onInputChange = (o, fieldName) => {
     setParam(prev => {
@@ -236,7 +264,7 @@ const Srkpiso = props => {
             placeholder="Филиал"
             clearable="true"
             multiple
-            options={serBranchOptions}
+            options={serviceBranchOptions}
             onChange={(e, { value }) => onInputChange(value, 'branchId')}
             className="alignBottom"
           />
@@ -247,6 +275,7 @@ const Srkpiso = props => {
             placeholder="Продукт"
             clearable="true"
             multiple
+            options={productListOptions}
             onChange={(e, { value }) => onInputChange(value, 'product')}
             className="alignBottom"
           />
@@ -302,7 +331,7 @@ function mapStateToProps(state) {
     companyOptions: state.userInfo.companyOptions,
     countryList: state.f4.countryList,
     branches: state.f4.branches,
-    matnrPriceList: state.f4.matnrPriceList,
+    productList: state.f4.contractTypeList,
     srkpisoData: state.srkpisoReducer.srkpisoData,
   };
 }
@@ -310,6 +339,6 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
   f4FetchBranches,
   f4FetchCountryList,
-  f4FetchMatnrPriceList,
+  f4FetchConTypeList,
   fetchSrkpiso,
 })(injectIntl(Srkpiso));

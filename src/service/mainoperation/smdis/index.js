@@ -31,7 +31,7 @@ const Smdis = props => {
   const emptyParam = {
     bukrs: '1000',
     categoryId: 2,
-    dateAt: '',
+    dateAt: null,
   };
 
   const [param, setParam] = useState({ ...emptyParam });

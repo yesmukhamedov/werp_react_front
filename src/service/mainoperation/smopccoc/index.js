@@ -39,8 +39,7 @@ const Smopccoc = props => {
     srlsmList,
     companyOptions,
     countryList,
-    category,
-    serviceStatusList,
+    serviceStatusList = [],
     contractStatusList,
     branches,
   } = props;
@@ -62,6 +61,14 @@ const Smopccoc = props => {
     };
   });
 
+  const serviceStatusOptions = serviceStatusList.map(item => {
+    return {
+      key: item.id,
+      text: item.nameRu,
+      value: item.id,
+    };
+  });
+
   const serviceDateTypeOptions = [
     {
       key: 1,
@@ -78,6 +85,13 @@ const Smopccoc = props => {
       text: 'Тек. Просроченный',
       value: 3,
     },
+  ];
+
+  const crmCategoryOptions = [
+    { key: 1, text: 'Зеленый', value: 'Зеленый' },
+    { key: 2, text: 'Желтый', value: 'Желтый' },
+    { key: 3, text: 'Красный', value: 'Красный' },
+    { key: 4, text: 'Черный', value: 'Черный' },
   ];
 
   const finStatusOption = contractStatusList.map(item => {
@@ -103,7 +117,7 @@ const Smopccoc = props => {
             companyOptions={companyOptions}
             countryOptions={countryOptions}
             finStatusOption={finStatusOption}
-            category={category}
+            crmCategoryOptions={crmCategoryOptions}
             serviceDateTypeOptions={serviceDateTypeOptions}
             serviceStatusList={serviceStatusList}
             contractStatusList={contractStatusList}
@@ -127,8 +141,8 @@ const Smopccoc = props => {
             countryOptions={countryOptions}
             finStatusOption={finStatusOption}
             serviceDateTypeOptions={serviceDateTypeOptions}
-            category={category}
-            serviceStatusList={serviceStatusList}
+            crmCategoryOptions={crmCategoryOptions}
+            serviceStatusOptions={serviceStatusOptions}
             contractStatusList={contractStatusList}
             branches={branches}
           />
@@ -150,7 +164,7 @@ const Smopccoc = props => {
             countryOptions={countryOptions}
             finStatusOption={finStatusOption}
             serviceDateTypeOptions={serviceDateTypeOptions}
-            category={category}
+            crmCategoryOptions={crmCategoryOptions}
             serviceStatusList={serviceStatusList}
             contractStatusList={contractStatusList}
             branches={branches}
@@ -171,8 +185,8 @@ const Smopccoc = props => {
             srlsmList={srlsmList}
             companyOptions={companyOptions}
             countryOptions={countryOptions}
-            category={category}
-            serviceStatusList={serviceStatusList}
+            crmCategoryOptions={crmCategoryOptions}
+            serviceStatusOptions={serviceStatusOptions}
             contractStatusList={contractStatusList}
             branches={branches}
           />

@@ -31,7 +31,7 @@ export const SAVE_SMCS_WITHOUT_REQUEST = 'SAVE_SMCS_WITHOUT_REQUEST';
 export const fetchServiceSmcs = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcs/tovarSn`, param)
+    doGet(`smcs/getContractByTovarSn`, param)
       .then(({ data }) => {
         //console.log(data, 'ACTION');
         dispatch(modifyLoader(false));
@@ -50,7 +50,7 @@ export const fetchServiceSmcs = param => {
 export const fetchServiceMatnrList = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcs/matnr_pricelist`, param)
+    doGet(`smcs/getMatnrPriceList`, param)
       .then(({ data }) => {
         //console.log(data, 'ACTION');
         dispatch(modifyLoader(false));
@@ -69,7 +69,7 @@ export const fetchServiceMatnrList = param => {
 export const fetchTovarId = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcs/tovarId`, param)
+    doGet(`smcs/getTovarList`, param)
       .then(({ data }) => {
         //console.log(data, 'ACTION');
         dispatch(modifyLoader(false));
@@ -88,7 +88,7 @@ export const fetchTovarId = param => {
 export const fetchServiceTypeId = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcs/serviceTypeId`, param)
+    doGet(`smcs/getServiceTypeList`, param)
       .then(({ data }) => {
         //console.log(data, 'ACTION');
         dispatch(modifyLoader(false));
@@ -107,7 +107,7 @@ export const fetchServiceTypeId = param => {
 export const fetchSmcsMatnrPriceList = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcs/matnr_pricelist`, param)
+    doGet(`smcs/getMatnrPriceList`, param)
       .then(({ data }) => {
         //console.log(data, 'ACTION');
         dispatch(modifyLoader(false));
@@ -126,7 +126,7 @@ export const fetchSmcsMatnrPriceList = param => {
 export const fetchSmcsServicePacket = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcs/servicePackageId`, param)
+    doGet(`smcs/getServicePackageList`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

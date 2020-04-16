@@ -4,9 +4,7 @@ import { injectIntl } from 'react-intl';
 import { Container, Form, Divider, Icon } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
-
 import { fetchServiceFilterPlan } from '../smopccocAction';
-import { fetchServiceTypeId } from '../../../mainoperation/smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from '../../../../utils/ModalColumns';
@@ -18,35 +16,30 @@ const ServiceFilterPlan = props => {
   const {
     intl: { messages },
     language,
-    fetchServiceTypeId,
   } = props;
-  const transaction = 'smopccocServiceFilterPlan';
+  //const transaction = 'smopccocServiceFilterPlan';
   const {
-    serviceTypeId = [],
     companyOptions = [],
     countryOptions,
-    serviceStatusList = [],
-    contractStatusList,
     serviceDateTypeOptions,
     branches,
     finStatusOption,
     serviceFilterPlan,
-    branchService,
   } = props;
 
   const emptyParam = {
     country: '',
     bukrs: '',
     branchId: '',
-    categoryId: '',
-    serviceTypeId: '',
-    finStatus: '',
-    serviceStatusId: '',
+    contractStatusId: '',
+    serviceDateType: '',
+    crmCategory: '',
     configuration: '',
   };
 
   //END Date option
   const [param, setParam] = useState({ ...emptyParam });
+
   const initialColumns = [
     {
       Header: 'Id',
@@ -54,6 +47,12 @@ const ServiceFilterPlan = props => {
       checked: true,
       Cell: <div style={{ height: '100px' }}></div>,
       filterable: false,
+    },
+    {
+      Header: 'Филиал',
+      accessor: 'branch',
+      checked: true,
+      Cell: <div style={{ height: '100px' }}></div>,
     },
     {
       Header: 'CN',
@@ -145,7 +144,7 @@ const ServiceFilterPlan = props => {
     },
     {
       Header: 'Фин. статус',
-      accessor: '15',
+      accessor: 'contractStatus',
       checked: true,
       filterable: false,
     },
@@ -165,26 +164,17 @@ const ServiceFilterPlan = props => {
     },
   ];
 
-  const [branchFilter, setBranchFilter] = useState([]);
-  console.log('branchFilter', branchFilter);
-
-  const [serBranchOptions, setSerBranchOptions] = useState([...branchFilter]);
+  const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
 
   useEffect(() => {
-    fetchServiceTypeId();
-  }, []);
-
-  //Get service branches
-  useEffect(() => {
-    const getBranchByBukrs = branches => {
-      let brSer = branches.filter(
+    let servBrOptions = branches
+      .filter(
         item =>
           item.business_area_id == 5 ||
           item.business_area_id == 6 ||
           item.business_area_id == 9,
-      );
-
-      let serBranchOpt = brSer.map(item => {
+      )
+      .map(item => {
         return {
           key: item.branch_id,
           text: item.text45,
@@ -193,18 +183,26 @@ const ServiceFilterPlan = props => {
           bukrs: item.bukrs,
         };
       });
-      return serBranchOpt;
-    };
+    if (param.country !== '' && param.bukrs !== '') {
+      let servBranchOptions = servBrOptions
+        .filter(item => item.country_id === param.country)
+        .filter(item => item.bukrs === param.bukrs);
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.country !== '' && param.bukrs === '') {
+      let servBranchOptions = servBrOptions.filter(
+        item => item.country_id === param.country,
+      );
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.country === '' && param.bukrs !== '') {
+      let servBranchOptions = servBrOptions.filter(
+        item => item.bukrs === param.bukrs,
+      );
 
-    setBranchFilter(getBranchByBukrs(branches));
-  }, [branches]);
-
-  // useEffect(() => {
-  //   let filterBranch = branchFilter.filter(
-  //     item => item.country_id === param.country && item.bukrs === param.bukrs,
-  //   );
-  //   setSerBranchOptions(filterBranch);
-  // }, [param.country, param.bukrs]);
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.country === '' && param.bukrs === '') {
+      setServiceBranchOptions([...servBrOptions]);
+    }
+  }, [branches, param.country, param.bukrs]);
 
   const categoryOptions = [
     { key: 1, text: 'Зеленый', value: 'Зеленый' },
@@ -212,27 +210,6 @@ const ServiceFilterPlan = props => {
     { key: 3, text: 'Красный', value: 'Красный' },
     { key: 4, text: 'Черный', value: 'Черный' },
   ];
-
-  const options8 = [
-    { label: 'Thing 1', value: 1 },
-    { label: 'Thing 2', value: 2 },
-  ];
-
-  const serviceTypeOptions = serviceTypeId.map(item => {
-    return {
-      key: item.id,
-      text: item.nameRu,
-      value: item.id,
-    };
-  });
-
-  const serviceStatusOptions = serviceStatusList.map(item => {
-    return {
-      key: item.id,
-      text: item.nameRu,
-      value: item.id,
-    };
-  });
 
   const configurationOptions = [
     { key: 1, text: 'F-1', value: 1 },
@@ -258,20 +235,17 @@ const ServiceFilterPlan = props => {
         case 'branchId':
           prevParam.branchId = o.value;
           break;
-
-        case 'categoryId':
-          prevParam.categoryId = o.value;
+        case 'finStatus':
+          prevParam.contractStatusId = o.value;
           break;
-        case 'serviceTypeId':
-          prevParam.serviceTypeId = o.value;
+        case 'serviceDateType':
+          prevParam.serviceDateType = o.value;
           break;
-
+        case 'crmCategory':
+          prevParam.crmCategory = o.value;
+          break;
         case 'configuration':
           prevParam.configuration = o.value;
-          break;
-
-        case 'finStatus':
-          prevParam.finStatus = o.value;
           break;
 
         default:
@@ -311,7 +285,7 @@ const ServiceFilterPlan = props => {
           <Form.Select
             fluid
             label="Филиал"
-            options={branchFilter}
+            options={serviceBranchOptions}
             placeholder="Филиал"
             onChange={(e, o) => onInputChange(o, 'branchId')}
             className="alignBottom"
@@ -339,7 +313,7 @@ const ServiceFilterPlan = props => {
             label="Категория"
             options={categoryOptions}
             placeholder="Категория"
-            onChange={(e, o) => onInputChange(o, 'categoryId')}
+            onChange={(e, o) => onInputChange(o, 'crmCategory')}
             className="alignBottom"
           />
 
@@ -393,6 +367,5 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
   f4FetchBranchesByBukrs,
   fetchServiceListManager,
-  fetchServiceTypeId,
   fetchServiceFilterPlan,
 })(injectIntl(ServiceFilterPlan));

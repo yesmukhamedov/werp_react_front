@@ -33,9 +33,7 @@ const MyApplication = props => {
   const {
     intl: { messages },
     language,
-    fetchMyApplicationExodus,
-    dynamicObject = [],
-    srlsmList = [],
+    myApplicationData = [],
   } = props;
 
   const emptyParam = {
@@ -55,6 +53,11 @@ const MyApplication = props => {
       accessor: 'id',
       checked: true,
       filterable: false,
+    },
+    {
+      Header: 'Филиал',
+      accessor: 'branch',
+      checked: true,
     },
     {
       Header: 'CN',
@@ -90,7 +93,7 @@ const MyApplication = props => {
     },
     {
       Header: 'Телефон',
-      accessor: 'address',
+      accessor: 'phone',
       checked: true,
     },
     {
@@ -163,31 +166,45 @@ const MyApplication = props => {
     },
   ];
 
-  const [serBranchOptions, setSerBranchOptions] = useState([]);
+  const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
 
   useEffect(() => {
-    const getBranchByBukrs = (branches, bukrs) => {
-      let br = branches.filter(item => item.bukrs == bukrs);
-
-      let brSer = br.filter(
+    let servBrOptions = branches
+      .filter(
         item =>
           item.business_area_id == 5 ||
           item.business_area_id == 6 ||
           item.business_area_id == 9,
-      );
-
-      let serBranchOpt = brSer.map(item => {
+      )
+      .map(item => {
         return {
           key: item.branch_id,
           text: item.text45,
           value: item.branch_id,
+          country_id: item.country_id,
+          bukrs: item.bukrs,
         };
       });
-      return serBranchOpt;
-    };
+    if (param.country !== '' && param.bukrs !== '') {
+      let servBranchOptions = servBrOptions
+        .filter(item => item.country_id === param.country)
+        .filter(item => item.bukrs === param.bukrs);
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.country !== '' && param.bukrs === '') {
+      let servBranchOptions = servBrOptions.filter(
+        item => item.country_id === param.country,
+      );
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.country === '' && param.bukrs !== '') {
+      let servBranchOptions = servBrOptions.filter(
+        item => item.bukrs === param.bukrs,
+      );
 
-    setSerBranchOptions(getBranchByBukrs(branches, param.bukrs));
-  }, [param.bukrs]);
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.country === '' && param.bukrs === '') {
+      setServiceBranchOptions([...servBrOptions]);
+    }
+  }, [branches, param.country, param.bukrs]);
 
   const handleClickApply = () => {
     fetchMyApplicationExodus({ ...param });
@@ -250,7 +267,7 @@ const MyApplication = props => {
             fluid
             label="Филиал"
             placeholder="Филиал"
-            options={serBranchOptions}
+            options={serviceBranchOptions}
             onChange={(e, o) => onInputChange(o, 'branchId')}
             className="alignBottom"
           />
@@ -334,7 +351,7 @@ const MyApplication = props => {
 function mapStateToProps(state) {
   return {
     language: state.locales.lang,
-    dynamicObject: state.smopspReducer.dynamicObject,
+    myApplicationData: state.smopspReducer.myApplicationData,
   };
 }
 

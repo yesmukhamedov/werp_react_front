@@ -708,7 +708,7 @@ export function f4FetchCustomers(params = {}, setIsLoading) {
 
 export function f4FetchCustomersById(params = {}) {
   return function(dispatch) {
-    doGet('smcs/customer', params)
+    doGet('smcs/getCustomer', params)
       .then(({ data }) => {
         // setIsLoading(false);
         dispatch({

@@ -4,7 +4,6 @@ import { injectIntl } from 'react-intl';
 import { Form, Container, Divider, Icon } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
-import { fetchServiceTypeId } from '../../../mainoperation/smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import { fetchMyApplicationExodus } from '../smopccocAction';
@@ -21,19 +20,15 @@ const MyApplicationExodus = props => {
   const {
     intl: { messages },
     language,
-    fetchServiceTypeId,
   } = props;
 
   const {
-    serviceTypeId = [],
-    srlsmList,
     companyOptions = [],
     countryOptions,
-    category,
-    serviceStatusList = [],
-    contractStatusList,
+    serviceStatusOptions = [],
     branches,
     myApplication,
+    crmCategoryOptions = [],
   } = props;
 
   const emptyParam = {
@@ -41,23 +36,16 @@ const MyApplicationExodus = props => {
     bukrs: '',
     branchId: '',
     categoryId: '',
-    serviceTypeId: '',
     serviceStatusId: '',
     dateStart: '',
     dateEnd: '',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
-  const categoryOptions = [
-    { key: 1, text: 'Зеленый', value: 'Зеленый' },
-    { key: 2, text: 'Желтый', value: 'Желтый' },
-    { key: 3, text: 'Красный', value: 'Красный' },
-    { key: 4, text: 'Черный', value: 'Черный' },
-  ];
 
   const initialColumns = [
     {
-      Header: 'ID',
+      Header: 'Id',
       accessor: 'id',
       checked: true,
       filterable: false,
@@ -168,51 +156,45 @@ const MyApplicationExodus = props => {
     },
   ];
 
-  const [serBranchOptions, setSerBranchOptions] = useState([]);
+  const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
 
   useEffect(() => {
-    fetchServiceTypeId();
-  }, []);
-
-  useEffect(() => {
-    const getBranchByBukrs = (branches, bukrs) => {
-      let br = branches.filter(item => item.bukrs === bukrs);
-
-      let brSer = br.filter(
+    let servBrOptions = branches
+      .filter(
         item =>
-          item.business_area_id === 5 ||
-          item.business_area_id === 6 ||
-          item.business_area_id === 9,
-      );
-
-      let serBranchOpt = brSer.map(item => {
+          item.business_area_id == 5 ||
+          item.business_area_id == 6 ||
+          item.business_area_id == 9,
+      )
+      .map(item => {
         return {
           key: item.branch_id,
           text: item.text45,
           value: item.branch_id,
+          country_id: item.country_id,
+          bukrs: item.bukrs,
         };
       });
-      return serBranchOpt;
-    };
+    if (param.country !== '' && param.bukrs !== '') {
+      let servBranchOptions = servBrOptions
+        .filter(item => item.country_id === param.country)
+        .filter(item => item.bukrs === param.bukrs);
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.country !== '' && param.bukrs === '') {
+      let servBranchOptions = servBrOptions.filter(
+        item => item.country_id === param.country,
+      );
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.country === '' && param.bukrs !== '') {
+      let servBranchOptions = servBrOptions.filter(
+        item => item.bukrs === param.bukrs,
+      );
 
-    setSerBranchOptions(getBranchByBukrs(branches, param.bukrs));
-  }, [param.bukrs]);
-
-  const serviceTypeOptions = serviceTypeId.map(item => {
-    return {
-      key: item.id,
-      text: item.nameRu,
-      value: item.id,
-    };
-  });
-
-  const serviceStatusOptions = serviceStatusList.map(item => {
-    return {
-      key: item.id,
-      text: item.nameRu,
-      value: item.id,
-    };
-  });
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.country === '' && param.bukrs === '') {
+      setServiceBranchOptions([...servBrOptions]);
+    }
+  }, [branches, param.country, param.bukrs]);
 
   const handleClickApplyMyApp = () => {
     props.fetchMyApplicationExodus({ ...param });
@@ -234,9 +216,6 @@ const MyApplicationExodus = props => {
 
         case 'categoryId':
           prevParam.categoryId = o.value;
-          break;
-        case 'serviceTypeId':
-          prevParam.serviceTypeId = o.value;
           break;
 
         case 'serviceStatusId':
@@ -285,7 +264,7 @@ const MyApplicationExodus = props => {
             fluid
             label="Филиал"
             placeholder="Филиал"
-            options={serBranchOptions}
+            options={serviceBranchOptions}
             onChange={(e, o) => onInputChange(o, 'branchId')}
             className="alignBottom"
           />
@@ -294,7 +273,7 @@ const MyApplicationExodus = props => {
             fluid
             label="Категория"
             placeholder="Категория"
-            options={categoryOptions}
+            options={crmCategoryOptions}
             onChange={(e, o) => onInputChange(o, 'categoryId')}
             className="alignBottom"
           />
@@ -376,13 +355,11 @@ const MyApplicationExodus = props => {
 function mapStateToProps(state) {
   return {
     language: state.locales.lang,
-    serviceTypeId: state.smcsReducer.serviceTypeId,
     myApplication: state.smopccocReducer.myApplication,
   };
 }
 
 export default connect(mapStateToProps, {
   fetchServiceListManager,
-  fetchServiceTypeId,
   fetchMyApplicationExodus,
 })(injectIntl(MyApplicationExodus));

@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
 import {
   Segment,
   Grid,
@@ -10,12 +12,137 @@ import {
   Divider,
   Dropdown,
 } from 'semantic-ui-react';
+import {
+  f4fetchCategory,
+  f4FetchConTypeList,
+} from '../../../../reference/f4/f4_action';
 
 const TabSmcsWithoutContract = props => {
-  const options = [
-    { key: 'angular', text: 'Angular', value: 'angular' },
-    { key: 'css', text: 'CSS', value: 'css' },
-  ];
+  const { companyOptions, branches, category = [], productList = [] } = props;
+
+  // bukrs: '',
+  // branchId: '',
+  // categoryId: '',
+  // matnr: '',
+
+  const emptyState = {
+    address: '',
+    applicationNumber: '',
+    awkey: '',
+    branchId: '',
+    branchName: '',
+    bukrs: '',
+    bukrsName: '',
+    categoryId: '',
+    categoryName: '',
+    contractDate: '',
+    contractId: '',
+    contractNumber: '',
+    countryId: '',
+    countryName: '',
+    currencyId: '',
+    currencyName: '',
+    customerFullName: '',
+    customerId: '',
+    discount: '',
+    id: '',
+    masterFullName: '',
+    masterId: '',
+    masterPremium: '',
+    operatorFullName: '',
+    operatorId: '',
+    operatorPremium: '',
+    paid: '',
+    positions: [],
+    serviceDate: '',
+    serviceStatusId: '',
+    serviceStatusName: '',
+    sumForPay: '',
+    sumTotal: '',
+    tovarId: '',
+    tovarName: '',
+    tovarSn: '',
+    warrantyPeriodDate: '',
+    warrantyPeriodInMonth: '',
+  };
+
+  const [state, setState] = useState({ ...emptyState });
+
+  console.log('STATE', state, 'category', category, 'productList', productList);
+
+  const tovarCategoryOptions = category.map(item => {
+    return {
+      key: item.id,
+      text: item.name,
+      value: item.id,
+    };
+  });
+
+  const productOptions = productList.map(item => {
+    return {
+      key: item.contract_type_id,
+      text: item.name,
+      value: item.matnr,
+    };
+  });
+
+  console.log('productOptions', productOptions);
+
+  const servBranch = branches.filter(
+    item =>
+      item.business_area_id == 5 ||
+      item.business_area_id == 6 ||
+      item.business_area_id == 9,
+  );
+
+  const servBranchOptions =
+    state.bukrs === ''
+      ? servBranch.map(item => {
+          return {
+            key: item.branch_id,
+            text: item.text45,
+            value: item.branch_id,
+          };
+        })
+      : servBranch
+          .filter(item => item.bukrs === state.bukrs)
+          .map(item => {
+            return {
+              key: item.branch_id,
+              text: item.text45,
+              value: item.branch_id,
+            };
+          });
+
+  useEffect(() => {
+    props.f4fetchCategory();
+    props.f4FetchConTypeList();
+  }, []);
+
+  const onInputChange = (o, fieldName) => {
+    setState(prev => {
+      const prevState = { ...prev };
+      switch (fieldName) {
+        case 'bukrs':
+          prevState.bukrs = o.value;
+          break;
+        case 'branchId':
+          prevState.branchId = o.value;
+          break;
+
+        case 'categoryId':
+          prevState.categoryId = o.value;
+          break;
+        case 'matnr':
+          prevState.matnr = o.value;
+          break;
+
+        default:
+          prevState[fieldName] = o.value;
+      }
+      return prevState;
+    });
+  };
   return (
     <Form>
       <Grid>
@@ -33,13 +160,25 @@ const TabSmcsWithoutContract = props => {
                 <Table.Row>
                   <Table.Cell>Компания</Table.Cell>
                   <Table.Cell>
-                    <Dropdown fluid placeholder="Компания" />
+                    <Dropdown
+                      fluid
+                      selection
+                      placeholder="Компания"
+                      options={companyOptions}
+                      onChange={(e, o) => onInputChange(o, 'bukrs')}
+                    />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>Филиал</Table.Cell>
                   <Table.Cell>
-                    <Dropdown fluid placeholder="Филиал" />
+                    <Dropdown
+                      fluid
+                      selection
+                      placeholder="Филиал"
+                      options={servBranchOptions}
+                      onChange={(e, o) => onInputChange(o, 'branchId')}
+                    />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
@@ -57,13 +196,25 @@ const TabSmcsWithoutContract = props => {
                 <Table.Row>
                   <Table.Cell>Категория</Table.Cell>
                   <Table.Cell>
-                    <Dropdown fluid options={options} />
+                    <Dropdown
+                      fluid
+                      selection
+                      placeholder="Категория товара"
+                      options={tovarCategoryOptions}
+                      onChange={(e, o) => onInputChange(o, 'categoryId')}
+                    />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>Продукт</Table.Cell>
                   <Table.Cell>
-                    <Dropdown fluid options={options} />
+                    <Dropdown
+                      fluid
+                      selection
+                      placeholder="Продукт"
+                      options={productOptions}
+                      onChange={(e, o) => onInputChange(o, 'matnr')}
+                    />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
@@ -88,14 +239,14 @@ const TabSmcsWithoutContract = props => {
                 <Table.Row>
                   <Table.Cell>Мастер</Table.Cell>
                   <Table.Cell>
-                    <Dropdown fluid options={options} />
+                    <Dropdown fluid />
                   </Table.Cell>
                 </Table.Row>
 
                 <Table.Row>
                   <Table.Cell>Оператор</Table.Cell>
                   <Table.Cell>
-                    <Dropdown fluid options={options} />
+                    <Dropdown fluid />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
@@ -197,4 +348,17 @@ const TabSmcsWithoutContract = props => {
   );
 };
 
-export default TabSmcsWithoutContract;
+function mapStateToProps(state) {
+  return {
+    language: state.locales.lang,
+    branches: state.f4.branches,
+    companyOptions: state.userInfo.companyOptions,
+    category: state.f4.category,
+    productList: state.f4.contractTypeList,
+  };
+}
+
+export default connect(mapStateToProps, {
+  f4fetchCategory,
+  f4FetchConTypeList,
+})(injectIntl(TabSmcsWithoutContract));

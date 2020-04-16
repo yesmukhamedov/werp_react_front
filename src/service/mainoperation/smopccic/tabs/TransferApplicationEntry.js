@@ -1,57 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import {
-  Container,
-  Form,
-  Icon,
-  Button,
-  Popup,
-  Divider,
-} from 'semantic-ui-react';
+import { Container, Form } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import { fetchMyApplicationExodus } from '../smopccicAction';
-import { fetchServiceTypeId } from '../../smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from '../../../../utils/ModalColumns';
-
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import {
-  momentToStringYYYYMMDD,
-  stringYYYYMMDDToMoment,
-} from '../../../../utils/helpers';
 import { LinkToSmcuspor } from '../../../../utils/outlink';
 
 const TransferApplicationEntry = props => {
   const {
-    countryOptions,
-    companyOptions = [],
-    branches,
-    finStatusOption,
-    serviceDateTypeOptions,
-    categoryOptions,
-    warrantyOptions,
-  } = props;
-
-  const {
     intl: { messages },
     language,
-    fetchMyApplicationExodus,
-    dynamicObject = [],
-    srlsmList = [],
+    transferApplicationData,
   } = props;
-
-  const emptyParam = {
-    country: '',
-    bukrs: '',
-    branchId: '',
-    categoryId: '',
-    serviceStatusId: '',
-    dateStart: '',
-    dateEnd: '',
-  };
 
   const initialColumns = [
     {
@@ -59,6 +22,11 @@ const TransferApplicationEntry = props => {
       accessor: 'id',
       checked: true,
       filterable: false,
+    },
+    {
+      Header: 'Филиал',
+      accessor: 'branch',
+      checked: true,
     },
     {
       Header: 'CN',
@@ -101,7 +69,7 @@ const TransferApplicationEntry = props => {
     },
     {
       Header: 'Телефон',
-      accessor: 'address',
+      accessor: 'phone',
       checked: true,
     },
     {
@@ -201,13 +169,11 @@ const TransferApplicationEntry = props => {
 function mapStateToProps(state) {
   return {
     language: state.locales.lang,
-    serviceTypeId: state.smcsReducer.serviceTypeId,
-    dynamicObject: state.smopspReducer.dynamicObject,
+    transferApplicationData: state.smopspReducer.transferApplicationData,
   };
 }
 
 export default connect(mapStateToProps, {
   fetchServiceListManager,
-  fetchServiceTypeId,
   fetchMyApplicationExodus,
 })(injectIntl(TransferApplicationEntry));

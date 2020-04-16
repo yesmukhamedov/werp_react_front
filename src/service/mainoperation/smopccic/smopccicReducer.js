@@ -19,13 +19,13 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_TRANSFER_APPLICATION:
       return {
         ...state,
-        dynamicObject: { ...action.data },
+        transferApplicationData: { ...action.data },
       };
 
     case FETCH_MY_APPLICATION:
       return {
         ...state,
-        dynamicObject: { ...action.data },
+        myApplicationData: { ...action.data },
       };
 
     default:

@@ -305,6 +305,7 @@ const Smcrld = props => {
                 onChange={date => props.onInputChange(date, 'date')}
                 maxDate={new Date()}
                 dateFormat="DD.MM.YYYY"
+                showMonthYearPicker
               />
             </Form.Field>
             <Form.Button
@@ -326,11 +327,7 @@ const Smcrld = props => {
         </Form.Group>
       </Form>
       <Divider />
-      <ReactTableServerSideWrapper
-        filterable={true}
-        data={smcrldListData}
-        columns={columns}
-      />
+      <ReactTableServerSideWrapper data={smcrldListData} columns={columns} />
       <Segment textAlign="right">
         <Popup
           size="mini"

@@ -14,6 +14,7 @@ import {
   Segment,
   Form,
   Divider,
+  Dropdown,
   Button,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
@@ -81,7 +82,7 @@ const Srls = props => {
   const serviceTypeOptions = serviceType.map(item => {
     return {
       key: item.id,
-      text: item.nameRu,
+      text: item.name,
       value: item.id,
     };
   });
@@ -141,6 +142,12 @@ const Srls = props => {
   //Колоны ReactTable
   const initialColumns = [
     {
+      Header: 'Id',
+      accessor: 'id',
+      checked: true,
+      filterable: false,
+    },
+    {
       Header: 'Филиал',
       accessor: 'branchId',
       checked: true,
@@ -178,6 +185,18 @@ const Srls = props => {
       Header: 'Мастер',
       accessor: 'masterId',
       checked: true,
+      Filter: (filter, onChange) => (
+        // <Dropdown selection fluid options={tovarCategoryOptions} />
+        <select
+          onChange={event => onChange(event.target.value)}
+          style={{ width: '100%' }}
+          value={filter ? filter.value : 'all'}
+        >
+          <option value="all">Show All</option>
+          <option value="true">Can Drink</option>
+          <option value="false">Can't Drink</option>
+        </select>
+      ),
     },
     {
       Header: 'Оператор',

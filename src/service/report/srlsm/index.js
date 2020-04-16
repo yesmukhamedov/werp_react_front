@@ -27,7 +27,7 @@ import {
 } from '../../../utils/helpers';
 import '../../service.css';
 import { LinkToSmcuspor } from '../../../utils/outlink';
-import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
+import ReactTableWrapper from './../../../utils/ReactTableWrapper';
 
 const Srlsm = props => {
   const {
@@ -82,7 +82,7 @@ const Srlsm = props => {
   const serviceTypeOptions = serviceType.map(item => {
     return {
       key: item.id,
-      text: item.nameRu,
+      text: item.name,
       value: item.id,
     };
   });
@@ -110,6 +110,7 @@ const Srlsm = props => {
 
     setSerBranchOptions(getBranchByBukrs(branches, param.bukrs));
   }, [param.bukrs]);
+
   const onInputChange = (o, fieldName) => {
     setParam(prev => {
       const varSrls = { ...prev };
@@ -138,6 +139,12 @@ const Srlsm = props => {
 
   //Колоны ReactTable
   const initialColumns = [
+    {
+      Header: 'Id',
+      accessor: 'id',
+      checked: true,
+      filterable: false,
+    },
     {
       Header: 'Филиал',
       accessor: 'branchId',
@@ -233,6 +240,8 @@ const Srlsm = props => {
   };
 
   const [columns, setColumns] = useState([...initialColumns]);
+
+  console.log('columns', columns);
 
   const finishColumns = data => {
     setColumns([...data]);
@@ -389,7 +398,7 @@ const Srlsm = props => {
         </Table.Body>
       </Table>
       <Divider />
-      <ReactTableServerSideWrapper filterable={true} columns={columns} />
+      <ReactTableWrapper filterable={true} columns={columns} />
     </Container>
   );
 };

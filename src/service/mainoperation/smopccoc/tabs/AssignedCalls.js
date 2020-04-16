@@ -4,7 +4,6 @@ import { injectIntl } from 'react-intl';
 import { Container, Form, Divider, Icon } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import { fetchAssignedCalls } from '../smopccocAction';
-import { fetchServiceTypeId } from '../../../mainoperation/smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from '../../../../utils/ModalColumns';
@@ -20,7 +19,6 @@ const AssignedCalls = props => {
   const {
     intl: { messages },
     language,
-    fetchServiceTypeId,
   } = props;
 
   const {
@@ -28,6 +26,7 @@ const AssignedCalls = props => {
     countryOptions,
     serviceDateTypeOptions,
     branches,
+    crmCategoryOptions = [],
     finStatusOption,
     assignedCalls,
   } = props;
@@ -50,6 +49,11 @@ const AssignedCalls = props => {
       accessor: 'id',
       checked: true,
       filterable: false,
+    },
+    {
+      Header: 'Филиал',
+      accessor: 'branch',
+      checked: true,
     },
     {
       Header: 'CN',
@@ -133,7 +137,7 @@ const AssignedCalls = props => {
     },
     {
       Header: 'Фин. статус',
-      accessor: '15',
+      accessor: 'contractStatus',
       checked: true,
       filterable: false,
     },
@@ -153,43 +157,45 @@ const AssignedCalls = props => {
     },
   ];
 
-  const [serBranchOptions, setSerBranchOptions] = useState([]);
+  const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
 
   useEffect(() => {
-    fetchServiceTypeId();
-  }, []);
-
-  //Get service branches
-  useEffect(() => {
-    const getBranchByBukrs = (branches, bukrs) => {
-      let br = branches.filter(item => item.bukrs === bukrs);
-
-      let brSer = br.filter(
+    let servBrOptions = branches
+      .filter(
         item =>
-          item.business_area_id === 5 ||
-          item.business_area_id === 6 ||
-          item.business_area_id === 9,
-      );
-
-      let serBranchOpt = brSer.map(item => {
+          item.business_area_id == 5 ||
+          item.business_area_id == 6 ||
+          item.business_area_id == 9,
+      )
+      .map(item => {
         return {
           key: item.branch_id,
           text: item.text45,
           value: item.branch_id,
+          country_id: item.country_id,
+          bukrs: item.bukrs,
         };
       });
-      return serBranchOpt;
-    };
+    if (param.country !== '' && param.bukrs !== '') {
+      let servBranchOptions = servBrOptions
+        .filter(item => item.country_id === param.country)
+        .filter(item => item.bukrs === param.bukrs);
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.country !== '' && param.bukrs === '') {
+      let servBranchOptions = servBrOptions.filter(
+        item => item.country_id === param.country,
+      );
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.country === '' && param.bukrs !== '') {
+      let servBranchOptions = servBrOptions.filter(
+        item => item.bukrs === param.bukrs,
+      );
 
-    setSerBranchOptions(getBranchByBukrs(branches, param.bukrs));
-  }, [param.bukrs]);
-
-  const categoryOptions = [
-    { key: 1, text: 'Зеленый', value: 'Зеленый' },
-    { key: 2, text: 'Желтый', value: 'Желтый' },
-    { key: 3, text: 'Красный', value: 'Красный' },
-    { key: 4, text: 'Черный', value: 'Черный' },
-  ];
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.country === '' && param.bukrs === '') {
+      setServiceBranchOptions([...servBrOptions]);
+    }
+  }, [branches, param.country, param.bukrs]);
 
   const handleClickApplyAssigned = () => {
     props.fetchAssignedCalls({ ...param });
@@ -263,7 +269,7 @@ const AssignedCalls = props => {
             fluid
             label="Филиал"
             placeholder="Филиал"
-            options={serBranchOptions}
+            options={serviceBranchOptions}
             onChange={(e, o) => onInputChange(o, 'branchId')}
             className="alignBottom"
           />
@@ -289,7 +295,7 @@ const AssignedCalls = props => {
           <Form.Select
             label="Категория"
             placeholder="Категория"
-            options={categoryOptions}
+            options={crmCategoryOptions}
             onChange={(e, o) => onInputChange(o, 'categoryId')}
             className="alignBottom"
           />
@@ -350,6 +356,5 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   fetchServiceListManager,
-  fetchServiceTypeId,
   fetchAssignedCalls,
 })(injectIntl(AssignedCalls));
