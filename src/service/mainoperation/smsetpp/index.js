@@ -46,6 +46,7 @@ const Smsetpp = props => {
   useEffect(() => {
     clearDynObjService();
     f4FetchCountryList();
+    fetchSmsetpp();
     fetchSmsetppPremiumPriceType();
     fetchSmsetppType();
   }, []);

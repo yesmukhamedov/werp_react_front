@@ -138,25 +138,25 @@ const EditModal = props => {
         case 'office':
           varTs.office = t;
           varTs.total = parseFloat(
-            varTs.office + varTs.master + varTs.operator - varTs.discount,
+            varTs.office + varTs.master + varTs.operator + varTs.discount,
           );
           break;
         case 'master':
           varTs.master = t;
           varTs.total = parseFloat(
-            varTs.office + varTs.master + varTs.operator - varTs.discount,
+            varTs.office + varTs.master + varTs.operator + varTs.discount,
           );
           break;
         case 'operator':
           varTs.operator = t;
           varTs.total = parseFloat(
-            varTs.office + varTs.master + varTs.operator - varTs.discount,
+            varTs.office + varTs.master + varTs.operator + varTs.discount,
           );
           break;
         case 'discount':
           varTs.discount = t;
           varTs.total = parseFloat(
-            varTs.office + varTs.master + varTs.operator - varTs.discount,
+            varTs.office + varTs.master + varTs.operator + varTs.discount,
           );
           break;
         case 'total':
