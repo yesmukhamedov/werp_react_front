@@ -11,7 +11,6 @@ import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import EditModal from './editPrice';
 import {
   fetchSmsetpp,
-  fetchSmsetppSearch,
   fetchSmsetppPremiumPriceType,
   fetchSmsetppType,
   clearDynObjService,
@@ -27,50 +26,25 @@ const Smsetpp = props => {
     companyOptions = [],
     f4FetchCountryList,
     fetchSmsetpp,
-    fetchSmsetppSearch,
     fetchSmsetppPremiumPriceType,
     serviceType = [],
     fetchSmsetppType,
     clearDynObjService,
   } = props;
   const [error, setError] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState(false);
   const [typeOfService, setTypeOfService] = useState([]);
   const [secondActive, setSecondActive] = useState(false);
   const [serviceOptionPriceList, setServiceOptionPriceList] = useState([]);
-  const [editWaers, setEditWaers] = useState('');
-  const [editDocs, setEditDocs] = useState({
-    id: 0,
-    bukrs: '',
-    dateStart: '',
-    fc: 0,
-    mc: 0,
-    office: 0,
-    master: 0,
-    operator: 0,
-    discount: 0,
-    total: 0,
-    countryId: 0,
-    waersId: 0,
-    serviceTypeId: 0,
-    premiumPriceTypeId: 0,
-  });
   const [countryOptions, setCountryOptions] = useState([]);
-  let queryString = 'bukrs=={0.bukrs};countryId=={0.countryId}';
 
   const [search, setSearch] = useState({
     bukrs: 0,
     countryId: 0,
   });
 
-  let query = {
-    search: format(queryString, { ...search }),
-  };
-
   useEffect(() => {
     clearDynObjService();
-    fetchSmsetpp();
     f4FetchCountryList();
     fetchSmsetppPremiumPriceType();
     fetchSmsetppType();
@@ -90,7 +64,9 @@ const Smsetpp = props => {
   }, [countryList]);
 
   useEffect(() => {
-    setServiceOptionPriceList(data.service);
+    if (data.service !== undefined) {
+      setServiceOptionPriceList(data.service);
+    }
   }, [data]);
 
   useEffect(() => {
@@ -112,10 +88,6 @@ const Smsetpp = props => {
   };
 
   const onClickButton = () => {
-    save();
-  };
-
-  const validate = () => {
     const errors = [];
     if (!activeDropdown) {
       errors.push(errorTableText(5));
@@ -124,80 +96,17 @@ const Smsetpp = props => {
       errors.push(errorTableText(147));
     }
     if (errors.length === 0) {
-      fetchSmsetppSearch(() => {
-        fetchSmsetpp(query);
-      });
+      fetchSmsetpp(search);
     }
-    return errors;
-  };
-
-  const save = () => {
-    let errors = [];
-    errors = validate();
-    setError(() => errors);
-  };
-
-  const onModalOpen = documents => {
-    let pr = null;
-    let serviceTypeDoc = null;
-    const bukr = companyOptions.find(({ text }) => text === documents.bukrs);
-    const countr = countryOptions.find(
-      ({ text }) => text === documents.countryId,
-    );
-    const serviceType = typeOfService.find(
-      ({ text }) => text === documents.serviceTypeId,
-    );
-    if (serviceType !== undefined) {
-      serviceTypeDoc = parseFloat(serviceType.value);
-    } else {
-      serviceTypeDoc = null;
-    }
-
-    if (documents.premiumPriceTypeId === messages['percentage']) {
-      pr = pr + 1;
-    } else if (documents.premiumPriceTypeId === messages['number']) {
-      pr = pr + 2;
-    } else {
-      pr = null;
-    }
-    setModalOpen(true);
-
-    return (
-      setEditWaers(countr.currency),
-      setEditDocs({
-        id: documents.id,
-        dateStart: documents.dateStart,
-        fc: documents.fc,
-        mc: documents.mc,
-        office: documents.office,
-        master: documents.master,
-        operator: documents.operator,
-        discount: documents.discount,
-        total: documents.total,
-        bukrs: bukr.value,
-        countryId: countr.value,
-        serviceTypeId: serviceTypeDoc,
-        waersId: countr.currencyid,
-        premiumPriceTypeId: pr,
-      })
-    );
+    setError(errors);
   };
 
   return (
     <Segment>
-      <EditModal
-        param={search.bukrs !== 0 && search.countryId !== 0 ? query : null}
-        documents={editDocs}
-        open={modalOpen}
-        waers={editWaers}
-        cancel={() => setModalOpen(false)}
-      />
       <div className="setting">
         <div className="flex-container">
           <h1>{messages['setting_prices_and_premium_services']}</h1>
-          <AddPrice
-            param={search.bukrs !== 0 && search.countryId !== 0 ? query : null}
-          />
+          <AddPrice param={search.bukrs !== 0 && search.countryId !== 0} />
         </div>
 
         <Dropdown
@@ -227,6 +136,7 @@ const Smsetpp = props => {
         <OutputErrors errors={error} />
         <br></br>
         <br></br>
+
         <ReactTableWrapper
           data={serviceOptionPriceList}
           columns={[
@@ -335,7 +245,7 @@ const Smsetpp = props => {
               Header: () => (
                 <div style={{ textAlign: 'center' }}>{messages['waers']}</div>
               ),
-              accessor: 'waersId',
+              accessor: 'waers',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
@@ -369,14 +279,10 @@ const Smsetpp = props => {
               filterable: false,
               Cell: ({ row }) => (
                 <div style={{ textAlign: 'center' }}>
-                  <Button
-                    icon
-                    inverted
-                    color="blue"
-                    onClick={() => onModalOpen(row)}
-                  >
-                    <Icon name="edit"></Icon>
-                  </Button>
+                  <EditModal
+                    param={search.bukrs !== 0 && search.countryId !== 0}
+                    row={row}
+                  />
                 </div>
               ),
             },
@@ -403,7 +309,6 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
   f4FetchCountryList,
   fetchSmsetpp,
-  fetchSmsetppSearch,
   fetchSmsetppPremiumPriceType,
   fetchSmsetppType,
   clearDynObjService,

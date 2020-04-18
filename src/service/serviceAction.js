@@ -108,13 +108,6 @@ export function fetchSmsetppPut(params, fetchSmsetpp) {
   };
 }
 
-export function fetchSmsetppSearch(fetchSmsetpp) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    fetchSmsetpp();
-  };
-}
-
 export function fetchSmsetppPremiumPriceType() {
   return function(dispatch) {
     dispatch(modifyLoader(true));

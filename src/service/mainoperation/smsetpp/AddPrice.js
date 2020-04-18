@@ -60,9 +60,9 @@ const AddPrice = props => {
     master: 0,
     operator: 0,
     discount: 0,
-    total: '0',
+    total: 0,
     countryId: null,
-    waersId: null,
+    waers: null,
     serviceTypeId: null,
     premiumPriceTypeId: null,
   });
@@ -112,7 +112,7 @@ const AddPrice = props => {
       discount: 0,
       total: 0,
       countryId: null,
-      waersId: null,
+      waers: null,
       serviceTypeId: null,
       premiumPriceTypeId: null,
     });
@@ -141,7 +141,7 @@ const AddPrice = props => {
       const waer = countryOptions.find(({ value }) => value === v);
       setInformations({
         ...informations,
-        waersId: waer.currencyid,
+        waers: waer.currency,
         countryId: v,
       });
       setViewWaer(waer.currency);
@@ -338,7 +338,7 @@ const AddPrice = props => {
               onFocus={handleFocus}
               readOnly
               value={moneyFormat(informations.total)}
-              error={test === true && informations.total === '0' ? true : false}
+              error={test === true && informations.total === 0 ? true : false}
               required
             />
           </Form.Group>
