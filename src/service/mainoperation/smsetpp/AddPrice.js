@@ -64,7 +64,7 @@ const AddPrice = props => {
     countryId: null,
     waers: null,
     serviceTypeId: null,
-    premiumPriceTypeId: null,
+    premiumPriceTypeId: 2,
   });
 
   useEffect(() => {
@@ -79,7 +79,10 @@ const AddPrice = props => {
   }, [premium]);
 
   useEffect(() => {
-    let service = serviceType.map(item => {
+    let filter = serviceType.filter(
+      ({ name }) => name === 'Продажа картриджей' || name === 'Установка',
+    );
+    let service = filter.map(item => {
       return { key: item.id, text: item.name, value: item.id };
     });
     setTypeOfService(service);
@@ -114,7 +117,7 @@ const AddPrice = props => {
       countryId: null,
       waers: null,
       serviceTypeId: null,
-      premiumPriceTypeId: null,
+      premiumPriceTypeId: 2,
     });
   };
 
@@ -158,9 +161,16 @@ const AddPrice = props => {
 
   const onhandleAdd = () => {
     setTest(true);
-    const { bukrs, total, country, dateStart } = informations;
+    const { bukrs, total, country, dateStart, serviceTypeId } = informations;
 
-    if (bukrs !== '' && total !== 0 && country !== '' && dateStart !== '') {
+    if (
+      bukrs !== '' &&
+      total !== 0 &&
+      country !== '' &&
+      dateStart !== '' &&
+      serviceTypeId !== null
+    ) {
+      console.log(param);
       setTest(false);
       setModalOpen(false);
       fetchSmsetppPost(informations, () => {
@@ -362,7 +372,7 @@ const AddPrice = props => {
             </Form.Field>
           </Form.Group>
           <Form.Group widths="equal">
-            <Form.Field>
+            <Form.Field required>
               <label>{messages['typeOfService']}</label>
 
               <Dropdown
@@ -372,6 +382,11 @@ const AddPrice = props => {
                 options={typeOfService}
                 onChange={(e, { value }) => handleChange('serviceType', value)}
                 placeholder={messages['typeOfService']}
+                error={
+                  test === true && informations.serviceTypeId === null
+                    ? true
+                    : false
+                }
               />
             </Form.Field>
 
@@ -380,6 +395,7 @@ const AddPrice = props => {
               <Dropdown
                 placeholder={messages['typeOfAmount']}
                 selection
+                value={`${informations.premiumPriceTypeId}`}
                 onChange={(e, { value }) => handleChange('typeOfSum', value)}
                 options={premiumPriceTypeId}
               />

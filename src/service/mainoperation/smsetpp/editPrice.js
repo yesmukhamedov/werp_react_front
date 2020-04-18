@@ -84,11 +84,14 @@ const EditModal = props => {
   }, [premium]);
 
   useEffect(() => {
-    let service = serviceType.map(item => {
+    let filter = serviceType.filter(
+      ({ name }) => name === 'Продажа картриджей' || name === 'Установка',
+    );
+    let service = filter.map(item => {
       return {
-        key: parseInt(item.id, 10),
+        key: parseInt(item.id),
         text: item.name,
-        value: parseInt(item.id, 10),
+        value: parseInt(item.id),
       };
     });
     setTypeOfService(service);

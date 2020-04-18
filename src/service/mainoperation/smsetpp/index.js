@@ -107,7 +107,9 @@ const Smsetpp = props => {
       <div className="setting">
         <div className="flex-container">
           <h1>{messages['setting_prices_and_premium_services']}</h1>
-          <AddPrice param={search.bukrs !== 0 && search.countryId !== 0} />
+          <AddPrice
+            param={search.bukrs !== 0 && search.countryId !== 0 ? search : null}
+          />
         </div>
 
         <Dropdown
@@ -281,7 +283,11 @@ const Smsetpp = props => {
               Cell: ({ row }) => (
                 <div style={{ textAlign: 'center' }}>
                   <EditModal
-                    param={search.bukrs !== 0 && search.countryId !== 0}
+                    param={
+                      search.bukrs !== 0 && search.countryId !== 0
+                        ? search
+                        : null
+                    }
                     row={row}
                   />
                 </div>
