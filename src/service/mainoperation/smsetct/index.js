@@ -32,7 +32,6 @@ import format from 'string-format';
 const Smsetct = props => {
   const emptySearch = {
     bukrs: '',
-    searchText: '',
   };
 
   const [searchError, setSearchError] = useState('');
@@ -64,46 +63,34 @@ const Smsetct = props => {
     if (!countryList || countryList.length === 0) props.f4FetchCountryList();
   }, []);
 
-  //console.log('ErrorTable', errorTable);
-  //onClickSearch
-  const handleInputSearch = o => {
+  const searchInput = o => {
     setSearchParams({ bukrs: o.value });
     if (o.value.length > 0) setSearchError(false);
   };
 
+  //onClickSearch
   const clickSearch = () => {
-    let branchesId = [];
-    let srchErr = validateSearch();
-
-    for (let el of selectedBranches) {
-      branchesId.push(el.value);
-    }
-    let queryString = 'bukrs=={0.bukrs}';
-    let query = { search: format(queryString, { ...searchParams }) };
-    let branch = { branchId: 0 };
-    if (selectedBranches.length > 0) {
-      for (let i = 0; i < branchesId.length; i++) {
-        queryString =
-          i > 0 ? ',branchId=={0.branchId}' : ';branchId=={0.branchId}';
-        //Если запрос на таком форме  bukrs=={0.bukrs};branchId=={0.branchId};branchId=={0.branchId};... это эквивалентен на  bukrs==1000 & branchId==61 & branchId==63 ...
-        //Если запрос на таком форме  bukrs=={0.bukrs};branchId=={0.branchId},branchId=={0.branchId},... это эквивалентен на  bukrs==1000 | branchId==61 | branchId==63 ...
-        //разница в том что < ; > эквивалентен на < & >  a < , > эквивалентен на < | >
-        branch.branchId = branchesId[i];
-        query.search = query.search + format(queryString, { ...branch });
-      }
-    }
-    setSearchParams(prev => {
-      const vars = { ...prev };
-      vars.searchText = query;
-      return vars;
-    });
-
-    if (!srchErr & (srchErr !== '')) {
-      fetchSmsetct({ ...query });
+    let srchErrs = validateSearch();
+    if (!srchErrs & (srchErrs !== '')) {
+      fetchSmsetct({ ...searchParams });
     }
   };
 
-  const handleInputAdd = (o, fieldName) => {
+  // func validateSearch
+  const validateSearch = () => {
+    let srchErrs = '';
+    if (
+      searchParams.bukrs === null ||
+      searchParams.bukrs === undefined ||
+      !searchParams.bukrs
+    )
+      srchErrs = true;
+    else srchErrs = false;
+    setSearchError(srchErrs);
+    return srchErrs;
+  };
+
+  const changePostInput = (o, fieldName) => {
     let errors = { ...postErrors };
     let messages = {};
 
@@ -198,17 +185,17 @@ const Smsetct = props => {
   };
 
   const handlePost = () => {
-    setShow(false);
-    setMessg({});
-    setPostErrors({});
     let errors = validateAdd(postParams);
     if (
       errors === null ||
       errors === undefined ||
       Object.keys(errors).length === 0
     ) {
-      postSmsetct({ ...postParams }, fetchSmsetct, {
-        ...searchParams.searchText,
+      postSmsetct({ ...postParams }, () => {
+        setShow(false);
+        setMessg({});
+        setPostErrors({});
+        fetchSmsetct(postParams.bukrs, postParams.branchId);
       });
     }
     setPostErrors({ ...errors });
@@ -261,18 +248,7 @@ const Smsetct = props => {
     }
     return errors;
   };
-  const validateSearch = () => {
-    let srchErr = '';
-    if (
-      searchParams.bukrs === null ||
-      searchParams.bukrs === undefined ||
-      !searchParams.bukrs
-    )
-      srchErr = true;
-    else srchErr = false;
-    setSearchError(srchErr);
-    return srchErr;
-  };
+
   return (
     <div>
       <Container
@@ -321,7 +297,7 @@ const Smsetct = props => {
                         selection
                         error={postErrors.bukrs ? true : false}
                         options={companyOptions || []}
-                        onChange={(e, o) => handleInputAdd(o, 'bukrs')}
+                        onChange={(e, o) => changePostInput(o, 'bukrs')}
                       />
                       <label>{messages['country']}</label>
                       <Dropdown
@@ -329,7 +305,7 @@ const Smsetct = props => {
                         selection
                         error={postErrors.countryId ? true : false}
                         options={getCountryOptions(countryList)}
-                        onChange={(e, o) => handleInputAdd(o, 'countryId')}
+                        onChange={(e, o) => changePostInput(o, 'countryId')}
                       />
 
                       <label>{messages['brnch']}</label>
@@ -345,7 +321,7 @@ const Smsetct = props => {
                               )
                             : []
                         }
-                        onChange={(e, o) => handleInputAdd(o, 'branchId')}
+                        onChange={(e, o) => changePostInput(o, 'branchId')}
                       />
                       {messg.messgBrnch ? (
                         <Label basic color="red" pointing>
@@ -365,7 +341,7 @@ const Smsetct = props => {
                           postParams.countryId,
                           postParams.branchId,
                         )}
-                        onChange={(e, o) => handleInputAdd(o, 'matnr')}
+                        onChange={(e, o) => changePostInput(o, 'matnr')}
                       />
                       {messg.messgMatnr ? (
                         <Label basic color="red" pointing>
@@ -375,7 +351,7 @@ const Smsetct = props => {
                         ''
                       )}
                       <Form.Field
-                        onChange={(e, o) => handleInputAdd(o, 'description')}
+                        onChange={(e, o) => changePostInput(o, 'description')}
                         control={Input}
                         label={messages['Table.Note']}
                       />
@@ -385,45 +361,45 @@ const Smsetct = props => {
                       <Form.Field
                         required
                         error={postErrors.f1 ? true : false}
-                        onChange={(e, o) => handleInputAdd(o, 'F1')}
+                        onChange={(e, o) => changePostInput(o, 'F1')}
                         control={Input}
                         label={messages['configuration'] + ' F-1'}
                       />
                       <Form.Field
                         required
                         error={postErrors.f2 ? true : false}
-                        onChange={(e, o) => handleInputAdd(o, 'F2')}
+                        onChange={(e, o) => changePostInput(o, 'F2')}
                         control={Input}
                         label={messages['configuration'] + ' F-2'}
                       />
                       <Form.Field
                         required
                         error={postErrors.f3 ? true : false}
-                        onChange={(e, o) => handleInputAdd(o, 'F3')}
+                        onChange={(e, o) => changePostInput(o, 'F3')}
                         control={Input}
                         label={messages['configuration'] + ' F-3'}
                       />
                       <Form.Field
                         required
                         error={postErrors.f4 ? true : false}
-                        onChange={(e, o) => handleInputAdd(o, 'F4')}
+                        onChange={(e, o) => changePostInput(o, 'F4')}
                         control={Input}
                         label={messages['configuration'] + ' F-4'}
                       />
                       <Form.Field
                         required
                         error={postErrors.f5 ? true : false}
-                        onChange={(e, o) => handleInputAdd(o, 'F5')}
+                        onChange={(e, o) => changePostInput(o, 'F5')}
                         control={Input}
                         label={messages['configuration'] + ' F-5'}
                       />
                       <Form.Field
-                        onChange={(e, o) => handleInputAdd(o, 'F6')}
+                        onChange={(e, o) => changePostInput(o, 'F6')}
                         control={Input}
                         label={messages['configuration'] + ' F-6'}
                       />
                       <Form.Field
-                        onChange={(e, o) => handleInputAdd(o, 'F7')}
+                        onChange={(e, o) => changePostInput(o, 'F7')}
                         control={Input}
                         label={messages['configuration'] + ' F-7'}
                       />
@@ -466,7 +442,7 @@ const Smsetct = props => {
               selection
               options={companyOptions || []}
               value={searchParams.bukrs}
-              onChange={(e, o) => handleInputSearch(o)}
+              onChange={(e, o) => searchInput(o)}
               placeholder={messages['bukrs']}
             />
 
@@ -515,8 +491,14 @@ const Smsetct = props => {
         onClose={selectedBranches => {
           setBranchF4IsOpen(false);
           setSelectedBranches(selectedBranches);
+          selectedBranches.length !== 0
+            ? setSearchParams({
+                ...searchParams,
+                branchId: selectedBranches[0].value,
+              })
+            : setSearchParams({ bukrs: searchParams.bukrs });
         }}
-        selection={'multiple'}
+        selection={'single'}
       />
     </div>
   );
@@ -551,6 +533,7 @@ const getBranchOptions = (BranchList, countryId) => {
   }
   return out;
 };
+
 const getProductOptions = (productList, bukrs, countryId, branchId) => {
   if (!productList || !bukrs || !countryId || !branchId) {
     return [];
@@ -558,6 +541,7 @@ const getProductOptions = (productList, bukrs, countryId, branchId) => {
   let productArray = [],
     j = 0,
     i = 0;
+
   if (countryId !== 9) {
     for (i = 0; i < productList.length; i++) {
       if (productList[i].bukrs === bukrs && productList[i].countryId !== 9) {

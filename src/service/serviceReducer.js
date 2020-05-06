@@ -41,6 +41,7 @@ import {
   POST_SMSETPLP,
   FETCH_OPERTAION_TYPE_LIST,
   FETCH_APP_LIST_SEARCH_PARAMS,
+  FETCH_SMSETPLP_ID,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -65,6 +66,7 @@ const INITIAL_STATE = {
   appType: [],
   listOfEmployees: [],
   errorTable: [],
+  dataID: [],
 };
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -298,6 +300,20 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         operationTypeList: [...action.payload.data],
+      };
+    }
+
+    case FETCH_OPERTAION_TYPE_LIST: {
+      return {
+        ...state,
+        operationTypeList: [...action.payload.data],
+      };
+    }
+    case FETCH_SMSETPLP_ID: {
+      console.log('ac', action.payload);
+      return {
+        ...state,
+        dataID: { ...action.payload.data },
       };
     }
     case FETCH_APP_LIST_SEARCH_PARAMS:

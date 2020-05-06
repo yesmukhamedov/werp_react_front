@@ -1280,15 +1280,6 @@ const generateRoutes = transactionRoutes => {
         exact={true}
         component={AsyncSmvs}
       />
-      {/* <Route
-        path="/service/mainoperation/smsetpp"
-        exact={true}
-        component={AsyncSmsetpp}
-      />  <Route
-        path="/service/mainoperation/smsetct"
-        exact={true}
-        component={AsyncSmsetct}
-      />
       <Route
         path="/service/mainoperation/smeca"
         exact={true}
@@ -1299,6 +1290,17 @@ const generateRoutes = transactionRoutes => {
         exact={true}
         component={AsyncSmvca}
       />
+      {/* <Route
+        path="/service/mainoperation/smsetpp"
+        exact={true}
+        component={AsyncSmsetpp}
+      />  <Route
+        path="/service/mainoperation/smsetct"
+        exact={true}
+        component={AsyncSmsetct}
+      />
+      
+    
       <Route
         path="/service/mainoperation/smsrcus"
         exact={true}

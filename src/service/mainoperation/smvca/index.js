@@ -70,22 +70,6 @@ const Smvca = props => {
                       />
                     </Table.Cell>
                   </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      <Label size="large" basic>
-                        {' '}
-                        {messages['Form.ClientFullName']}{' '}
-                      </Label>
-                    </Table.Cell>
-
-                    <Table.Cell>
-                      <Input
-                        fluid
-                        readOnly
-                        value={dynamicObject.applicantName || ''}
-                      />
-                    </Table.Cell>
-                  </Table.Row>
 
                   <Table.Row>
                     <Table.Cell>
@@ -100,23 +84,6 @@ const Smvca = props => {
                         fluid
                         readOnly
                         value={dynamicObject.bukrsName || ''}
-                      />
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      {' '}
-                      <Label size="large" basic>
-                        {' '}
-                        {messages['Table.Address']}{' '}
-                      </Label>
-                    </Table.Cell>
-
-                    <Table.Cell>
-                      <Input
-                        fluid
-                        readOnly
-                        value={dynamicObject.address || ''}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -157,6 +124,99 @@ const Smvca = props => {
                     <Table.Cell>
                       <Label size="large" basic>
                         {' '}
+                        {messages['type_of_application']}{' '}
+                      </Label>
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      <Input
+                        fluid
+                        readOnly
+                        value={dynamicObject.appTypeName || ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+
+                  <Table.Row>
+                    <Table.Cell>
+                      <Label size="large" basic>
+                        {' '}
+                        {messages['Operator']}{' '}
+                      </Label>
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      <Input
+                        fluid
+                        readOnly
+                        value={dynamicObject.operatorName || ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+
+                  <Table.Row>
+                    <Table.Cell></Table.Cell>
+                    <Table.Cell>
+                      <Label color="green" size="large">
+                        F1 |
+                        <Label.Detail>{dynamicObject.f1MtLeft}</Label.Detail>
+                      </Label>
+                      <Label color="blue" size="large">
+                        F2 |
+                        <Label.Detail>{dynamicObject.f2MtLeft}</Label.Detail>
+                      </Label>
+                      <Label color="red" size="large">
+                        F3 |
+                        <Label.Detail>{dynamicObject.f3MtLeft}</Label.Detail>
+                      </Label>
+                      <Label color="orange" size="large">
+                        F4 |
+                        <Label.Detail>{dynamicObject.f4MtLeft}</Label.Detail>
+                      </Label>
+                      <Label color="pink" size="large">
+                        F5 |
+                        <Label.Detail>{dynamicObject.f5MtLeft}</Label.Detail>
+                      </Label>
+                    </Table.Cell>
+                  </Table.Row>
+
+                  <Table.Row>
+                    <Table.Cell>
+                      <Label size="large" basic>
+                        {' '}
+                        {messages['Form.ClientFullName']}{' '}
+                      </Label>
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      <Input
+                        fluid
+                        readOnly
+                        value={dynamicObject.applicantName || ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      {' '}
+                      <Label size="large" basic>
+                        {' '}
+                        {messages['Table.Address']}{' '}
+                      </Label>
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      <Input
+                        fluid
+                        readOnly
+                        value={dynamicObject.address || ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Label size="large" basic>
+                        {' '}
                         {messages['Product']}{' '}
                       </Label>
                     </Table.Cell>
@@ -181,24 +241,7 @@ const Smvca = props => {
                       <Input
                         fluid
                         readOnly
-                        value={dynamicObject.contractNumber || ''}
-                      />
-                    </Table.Cell>
-                  </Table.Row>
-
-                  <Table.Row>
-                    <Table.Cell>
-                      <Label size="large" basic>
-                        {' '}
-                        {messages['type_of_application']}{' '}
-                      </Label>
-                    </Table.Cell>
-
-                    <Table.Cell>
-                      <Input
-                        fluid
-                        readOnly
-                        value={dynamicObject.appTypeName || ''}
+                        value={dynamicObject.tovarSn || ''}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -211,23 +254,10 @@ const Smvca = props => {
                     </Table.Cell>
 
                     <Table.Cell>
-                      <Input fluid readOnly value={dynamicObject.adate || ''} />
-                    </Table.Cell>
-                  </Table.Row>
-
-                  <Table.Row>
-                    <Table.Cell>
-                      <Label size="large" basic>
-                        {' '}
-                        {messages['Operator']}{' '}
-                      </Label>
-                    </Table.Cell>
-
-                    <Table.Cell>
                       <Input
                         fluid
                         readOnly
-                        value={dynamicObject.operatorName || ''}
+                        value={dynamicObject.installmentDate || ''}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -244,31 +274,6 @@ const Smvca = props => {
                         readOnly
                         value={dynamicObject.contractNumber || ''}
                       />
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell></Table.Cell>
-                    <Table.Cell>
-                      <Label color="green" size="large">
-                        F1 |
-                        <Label.Detail>{dynamicObject.f1MtLeft}</Label.Detail>
-                      </Label>
-                      <Label color="blue" size="large">
-                        F2 |
-                        <Label.Detail>{dynamicObject.f2MtLeft}</Label.Detail>
-                      </Label>
-                      <Label color="red" size="large">
-                        F3 |
-                        <Label.Detail>{dynamicObject.f3MtLeft}</Label.Detail>
-                      </Label>
-                      <Label color="orange" size="large">
-                        F4 |
-                        <Label.Detail>{dynamicObject.f4MtLeft}</Label.Detail>
-                      </Label>
-                      <Label color="pink" size="large">
-                        F5 |
-                        <Label.Detail>{dynamicObject.f5MtLeft}</Label.Detail>
-                      </Label>
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>

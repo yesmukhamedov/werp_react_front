@@ -85,7 +85,9 @@ const Smeca = props => {
   const handleSave = () => {
     let errs = validate();
     if (Object.keys(errs).length === 0) {
-      editSmeca(state);
+      editSmeca(state, () => {
+        fetchSmeca(id);
+      });
     }
     setErrors({ ...errs });
   };
@@ -155,26 +157,10 @@ const Smeca = props => {
                       />
                     </Table.Cell>
                   </Table.Row>
+
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>
-                        {' '}
-                        {messages['Form.ClientFullName']}{' '}
-                      </Label>
-                    </Table.Cell>
-
-                    <Table.Cell>
-                      <Input
-                        fluid
-                        readOnly
-                        value={dynamicObject.applicantName || ''}
-                      />
-                    </Table.Cell>
-                  </Table.Row>
-
-                  <Table.Row>
-                    <Table.Cell>
-                      <Label size="large" required basic>
                         {' '}
                         {messages['bukrs']}{' '}
                       </Label>
@@ -186,23 +172,6 @@ const Smeca = props => {
                         readOnly
                         error={errors.bukrs ? true : false}
                         value={dynamicObject.bukrsName || ''}
-                      />
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      {' '}
-                      <Label size="large" basic>
-                        {' '}
-                        {messages['Table.Address']}{' '}
-                      </Label>
-                    </Table.Cell>
-
-                    <Table.Cell>
-                      <Input
-                        fluid
-                        readOnly
-                        value={dynamicObject.address || ''}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -224,21 +193,6 @@ const Smeca = props => {
                       />
                     </Table.Cell>
                   </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      <Label size="large" basic>
-                        {messages['contacts']}{' '}
-                      </Label>
-                    </Table.Cell>
-
-                    <Table.Cell>
-                      <Input
-                        fluid
-                        readOnly
-                        value={dynamicObject.inPhoneNum || ''}
-                      />
-                    </Table.Cell>
-                  </Table.Row>
 
                   <Table.Row>
                     <Table.Cell>
@@ -253,22 +207,6 @@ const Smeca = props => {
                         fluid
                         readOnly
                         value={dynamicObject.matnrName || ''}
-                      />
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      <Label size="large" basic>
-                        {' '}
-                        {messages['productSerialNumber']}{' '}
-                      </Label>
-                    </Table.Cell>
-
-                    <Table.Cell>
-                      <Input
-                        fluid
-                        readOnly
-                        value={dynamicObject.contractNumber || ''}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -293,19 +231,6 @@ const Smeca = props => {
                     <Table.Cell>
                       <Label size="large" basic>
                         {' '}
-                        {messages['installation_date']}{' '}
-                      </Label>
-                    </Table.Cell>
-
-                    <Table.Cell>
-                      <Input fluid readOnly value={dynamicObject.adate || ''} />
-                    </Table.Cell>
-                  </Table.Row>
-
-                  <Table.Row>
-                    <Table.Cell>
-                      <Label size="large" basic>
-                        {' '}
                         {messages['Operator']}{' '}
                       </Label>
                     </Table.Cell>
@@ -315,21 +240,6 @@ const Smeca = props => {
                         fluid
                         readOnly
                         value={dynamicObject.operatorName || ''}
-                      />
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      <Label size="large" basic>
-                        CN{' '}
-                      </Label>
-                    </Table.Cell>
-
-                    <Table.Cell>
-                      <Input
-                        fluid
-                        readOnly
-                        value={dynamicObject.contractNumber || ''}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -358,6 +268,104 @@ const Smeca = props => {
                       </Label>
                     </Table.Cell>
                   </Table.Row>
+
+                  <Table.Row>
+                    <Table.Cell>
+                      <Label size="large" basic>
+                        {' '}
+                        {messages['Form.ClientFullName']}{' '}
+                      </Label>
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      <Input
+                        fluid
+                        readOnly
+                        value={dynamicObject.applicantName || ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      {' '}
+                      <Label size="large" basic>
+                        {' '}
+                        {messages['Table.Address']}{' '}
+                      </Label>
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      <Input
+                        fluid
+                        readOnly
+                        value={dynamicObject.address || ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+
+                  <Table.Row>
+                    <Table.Cell>
+                      <Label size="large" basic>
+                        {messages['contacts']}{' '}
+                      </Label>
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      <Input
+                        fluid
+                        readOnly
+                        value={dynamicObject.inPhoneNum || ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Label size="large" basic>
+                        {' '}
+                        {messages['productSerialNumber']}{' '}
+                      </Label>
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      <Input
+                        fluid
+                        readOnly
+                        value={dynamicObject.tovarSn || ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Label size="large" basic>
+                        {' '}
+                        {messages['installation_date']}{' '}
+                      </Label>
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      <Input
+                        fluid
+                        readOnly
+                        value={dynamicObject.installmentDate || ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Label size="large" basic>
+                        CN
+                      </Label>
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      <Input
+                        fluid
+                        readOnly
+                        value={dynamicObject.contractNumber || ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>

@@ -22,6 +22,7 @@ import {
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import DatePicker from 'react-datepicker';
+import Edit from './edit';
 import BranchF4Advanced from '../../../reference/f4/branch/BranchF4Advanced';
 import {
   f4FetchWerksBranchList,
@@ -33,6 +34,7 @@ import {
   stringYYYYMMDDToMoment,
   momentToStringYYYYMMDD,
 } from '../../../utils/helpers';
+import ColumnsModal from '../../../utils/ColumnsModal';
 import List from './list';
 require('moment/locale/ru');
 require('moment/locale/tr');
@@ -46,7 +48,6 @@ const Smsetplp = props => {
     fetchSmsetplp,
     dynamicObject,
     postSmsetplp,
-    editSmsetplp,
     fetchOperationTypeList,
     operationTypeList,
   } = props;
@@ -55,7 +56,6 @@ const Smsetplp = props => {
     if (!countryList || countryList.length === 0) props.f4FetchCountryList();
     fetchOperationTypeList();
   }, []);
-
   const [bukrs, setBukrs] = useState({});
   const [dateAt, setDateAt] = useState(momentToStringYYYYMMDD(moment()));
   const [selectedBranches, setSelectedBranches] = useState([]);
@@ -64,16 +64,125 @@ const Smsetplp = props => {
   const [brnchErr, setBrnchErr] = useState(false);
   const [postOpen, setPostOpen] = useState(false);
   const language = localStorage.getItem('language');
+  const [iss, setIss] = useState();
+
+  let allColumns = [
+    {
+      Header: 'ID',
+      accessor: 'id',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+      show: true,
+    },
+    {
+      Header: messages['bukrs'],
+      accessor: 'bukrs', //Name Ф
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+      show: true,
+    },
+    {
+      Header: messages['country'],
+      accessor: 'countryId', //Name
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+      show: true,
+    },
+    {
+      Header: messages['brnch'],
+      accessor: 'branchId', //Name
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+      show: true,
+    },
+
+    {
+      Header: messages['type_of_operation'],
+      accessor: 'operationTypeId', //Name
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+      show: true,
+    },
+    {
+      Header: messages['current_base_plan'],
+      accessor: 'currentBasePlan',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+      show: true,
+    },
+    {
+      Header: messages['current_plan'],
+      accessor: 'currentPlan', //Name', //Name
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+      show: true,
+    },
+    {
+      Header: messages['overdue_base_plan'],
+      accessor: 'overDueBasePlan', //Name
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+      show: true,
+    },
+    {
+      Header: messages['overdue_plan'],
+      accessor: 'overDuePlan', //Name
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+      show: true,
+    },
+    {
+      Header: messages['total_plan_amount'],
+      accessor: 'totalSumPlan', //Name
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+      show: true,
+    },
+    {
+      Header: messages['BTN__EDIT'],
+      Cell: row => (
+        <div style={{ textAlign: 'center' }}>
+          <Edit
+            getCountryOptions={getCountryOptions}
+            getBranchOptions={getBranchOptions}
+            getOperationList={getOperationList}
+            row={row.original}
+          />
+        </div>
+      ),
+      show: true,
+    },
+  ];
+
+  const [columnsForTable, setColumnsForTable] = useState([]);
+
+  useEffect(() => {
+    const transactionCodeText = localStorage.getItem('smsetplp');
+    if (transactionCodeText) {
+      let transactionCodeObject = JSON.parse(transactionCodeText);
+
+      let temp = allColumns.map(item => {
+        return { ...item, show: transactionCodeObject[item.accessor] };
+      });
+      setColumnsForTable(temp);
+    } else {
+      setColumnsForTable(allColumns);
+    }
+  }, []);
 
   const handleSearch = () => {
     let searchParams = {};
     if (Object.keys(bukrs).length > 0) {
       searchParams.bukrs = bukrs;
     }
-    if (selectedBranches.length > 0) {
+    if (selectedBranches) {
       searchParams.branchId = selectedBranches;
     }
-    fetchSmsetplp({ ...searchParams, dateAt });
+
+    if (dateAt) {
+      searchParams.dateAt = dateAt;
+    }
+    fetchSmsetplp({ ...searchParams });
   };
 
   const handleChange = (label, o) => {
@@ -136,9 +245,16 @@ const Smsetplp = props => {
   };
 
   const handlePost = () => {
-    postSmsetplp({ ...postParams });
-    setPostOpen(false);
-    setPostParams({});
+    let searchParams = {
+      burs: postParams.bukrs,
+      branchId: postParams.branchId,
+    };
+    postSmsetplp({ ...postParams }, () => {
+      setPostOpen(false);
+      setPostParams({});
+      console.log('postParams.bukrs', postParams.bukrs);
+      fetchSmsetplp(searchParams);
+    });
   };
 
   return (
@@ -156,7 +272,7 @@ const Smsetplp = props => {
           {messages['settings_of_plan_and_percent']}{' '}
         </Header>
         <Button
-          primary
+          color="pink"
           onClick={() => {
             setPostOpen(true);
           }}
@@ -186,7 +302,7 @@ const Smsetplp = props => {
                 />
                 <Form.Button
                   label={messages['brnch']}
-                  color="blue"
+                  color="pink"
                   onClick={() => setBranchF4IsOpen(true)}
                   icon
                   labelPosition="right"
@@ -218,11 +334,10 @@ const Smsetplp = props => {
 
                 <Form.Field>
                   <label>
-                    {' '}
-                    <br />{' '}
+                    <br />
                   </label>
                   <Button
-                    primary
+                    color="pink"
                     onClick={() => {
                       handleSearch();
                     }}
@@ -239,13 +354,23 @@ const Smsetplp = props => {
             <Form>
               <Form.Field>
                 <label>
-                  {' '}
-                  <br />{' '}
+                  <br />
                 </label>
-                <Button floated="right" primary>
+                <p align="right">
                   {' '}
-                  {messages['save']}{' '}
-                </Button>
+                  <ColumnsModal
+                    tableHeaderCols={columnsForTable}
+                    tableThings={things => {
+                      setColumnsForTable(things);
+                      //store in localstorage
+                      let temp = {};
+                      things.map(el => {
+                        temp = { ...temp, [el.accessor]: el.show };
+                      });
+                      localStorage.setItem('smsetplp', JSON.stringify(temp));
+                    }}
+                  />
+                </p>
               </Form.Field>
             </Form>
           </Grid.Column>
@@ -253,22 +378,25 @@ const Smsetplp = props => {
       </Grid>
 
       <Modal open={postOpen} size="tiny">
-        <Segment clearing inverted color="blue">
+        <Segment style={{ padding: 0 }} clearing inverted color="blue">
           <Button
             size="mini"
             color="red"
-            icon
             floated="right"
+            icon
             onClick={() => {
               setPostOpen(false);
               setPostParams({});
             }}
           >
             <Icon name="close" />{' '}
-          </Button>
-          <Header className="addHeader" textAlign="center" as="h2">
+          </Button>{' '}
+          <br />
+          <br />
+          <Header style={{ margin: 0 }} textAlign="center" as="h2">
             {messages['BTN__ADD']}{' '}
-          </Header>
+          </Header>{' '}
+          <br />
         </Segment>
         <Modal.Content>
           <Grid centered>
@@ -462,7 +590,7 @@ const Smsetplp = props => {
                 <div align="center">
                   {' '}
                   <Button
-                    primary
+                    color="pink"
                     onClick={() => {
                       handlePost();
                     }}
@@ -477,18 +605,7 @@ const Smsetplp = props => {
         </Modal.Content>
       </Modal>
 
-      <List
-        messages={messages}
-        dynamicObject={dynamicObject}
-        countryList={countryList}
-        companyOptions={companyOptions}
-        branchOptions={branchOptions}
-        getCountryOptions={getCountryOptions}
-        getBranchOptions={getBranchOptions}
-        editSmsetplp={editSmsetplp}
-        getOperationList={getOperationList}
-        operationTypeList={operationTypeList}
-      />
+      <List dynamicObject={dynamicObject} tableCols={columnsForTable} />
 
       <BranchF4Advanced
         branches={bukrs || bukrs !== undefined ? branchOptions[bukrs] : []}
@@ -496,7 +613,9 @@ const Smsetplp = props => {
         countries={countryList}
         onClose={selectedBranches => {
           setBranchF4IsOpen(false);
-          setSelectedBranches(selectedBranches);
+          setSelectedBranches(
+            selectedBranches.length !== 0 ? selectedBranches[0].value : '',
+          );
         }}
         selection={'single'}
       />

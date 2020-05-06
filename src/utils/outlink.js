@@ -226,3 +226,32 @@ export const LinkToSmecam = props => {
     </a>
   );
 };
+
+export const LinkToSmcs = props => {
+  const { serviceNumber, message } = props;
+  const url = `smcs?serviceNumber=${serviceNumber}`;
+  return (
+    <Button primary>
+      <a
+        style={{ color: 'white' }}
+        target="_blank"
+        href={url}
+        rel="noopener noreferrer"
+      >
+        {message}
+      </a>
+    </Button>
+  );
+};
+
+export const LinkToSmcusporFromSmsrcus = props => {
+  const { contractNum } = props;
+  const url = `../mainoperation/smcuspor?contractNumber=${contractNum}`;
+  return (
+    <Button size="mini" icon>
+      <a target="_blank" href={url} rel="noopener noreferrer">
+        <Icon name="address card" size="large" color="black" />
+      </a>
+    </Button>
+  );
+};

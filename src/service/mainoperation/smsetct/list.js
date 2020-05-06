@@ -32,13 +32,13 @@ export default function List(props) {
   } = props;
 
   const [errorsEdit, setErrorsEdit] = useState({});
-  const [smsetctEdit, setSmsetctEdit] = useState({});
+  const [editParams, setEditParams] = useState({});
   const [oldSmsetctEdit, setOldSmsetctEdit] = useState({});
   const [open, setOpen] = useState(false);
   const [messg, setMessg] = useState({ messgBrnch: false, messgMatnr: false });
 
   const openEdit = row_data => {
-    setSmsetctEdit(prop => {
+    setEditParams(prop => {
       let editRow = { ...prop };
       let bukr = companyOptions.find(({ text }) => row_data.bukrs === text)
         .value;
@@ -70,8 +70,8 @@ export default function List(props) {
   };
 
   const handleEdit = (o, fieldName) => {
-    setSmsetctEdit(() => {
-      let vars = { ...smsetctEdit };
+    setEditParams(() => {
+      let vars = { ...editParams };
       let errors = { ...errorsEdit };
       let messages = {};
       switch (fieldName) {
@@ -168,69 +168,40 @@ export default function List(props) {
   };
 
   const onClickSave = () => {
-    setOpen(false);
-    setMessg({});
-    setErrorsEdit({});
-    let errs = validateEdit(smsetctEdit);
+    let errs = validateEdit(editParams);
 
     if (
       errs === null ||
       errs === undefined ||
       (Object.keys(errs).length === 0 &&
-        JSON.stringify(oldSmsetctEdit) !== JSON.stringify(smsetctEdit))
+        JSON.stringify(oldSmsetctEdit) !== JSON.stringify(editParams))
     ) {
-      editSmsetct(
-        { ...smsetctEdit },
-        { ...searchParams.searchText },
-        fetchSmsetct,
-      );
+      editSmsetct({ ...editParams }, () => {
+        setOpen(false);
+        setMessg({});
+        setErrorsEdit({});
+        fetchSmsetct(searchParams.searchText);
+      });
     }
     setErrorsEdit({ ...errs });
   };
 
-  //Получить ID Стран через text
-  const getCountryId = (countries, countryName) => {
-    if (countries) {
-      countries.map(e => {
-        if (countryName === e.country) countryName = e.countryId;
-      });
-    }
-    return countryName;
-  };
-
-  // Получить ID Компанию через text
-  const getBukrsId = (bukrs, companyName) => {
-    if (bukrs.length > 0) {
-      bukrs.map(e => {
-        if (companyName === e.text) companyName = e.key;
-      });
-    }
-    return companyName;
-  };
-
-  // Получить ID Филиала через text
-  const getBranchId = (branches, branchName, bukrs) => {
-    if (branches[bukrs]) {
-      branches[bukrs].map(e => {
-        if (branchName === e.text) {
-          branchName = e.key;
-        }
-      });
-    }
-    return branchName;
-  };
   // Получить ID Продукта через text
 
   const getProductId = (products, productName) => {
     if (productName !== null && products) {
-      products.map(e => {
-        //ROBOCLEAN-114F это исключения в списке ROBOCLEAN 114F  а на базе ROBOCLEAN-114F
-        if (productName === e.name) {
-          // ROBOCLEAN-114F не равен на ROBOCLEAN 114F
-          productName = e.matnr;
-        }
-      });
+      //ROBOCLEAN-114K SPlus это исключения в списке Roboclean 114K SPLUS  а в базе ROBOCLEAN-114K SPlus "-" тире
+      // ROBOCLEAN-114F не равен на ROBOCLEAN 114F  отличается. "-" тире после ROBOCLEAN
+      if (productName === 'ROBOCLEAN-114K SPlus') productName = 817; // 817 код продукта Roboclean 114K SPLUS
+      if (productName === 'ROBOCLEAN-114F') productName = 1;
+      else {
+        var matnrID = productList.find(
+          ({ name }) => productName.toUpperCase() === name.toUpperCase(),
+        );
+      }
+      productName = matnrID ? matnrID.matnr : productName;
     }
+
     return productName;
   };
 
@@ -450,7 +421,7 @@ export default function List(props) {
                     error={errorsEdit.bukrs ? true : false}
                     selection
                     options={companyOptions || []}
-                    defaultValue={smsetctEdit.bukrs}
+                    defaultValue={editParams.bukrs}
                     onChange={(e, o) => handleEdit(o, 'bukrs')}
                   />
 
@@ -460,7 +431,7 @@ export default function List(props) {
                     error={errorsEdit.countryId ? true : false}
                     selection
                     options={getCountryOptions(countryList)}
-                    defaultValue={smsetctEdit.countryId}
+                    defaultValue={editParams.countryId}
                     onChange={(e, o) => handleEdit(o, 'countryId')}
                   />
 
@@ -470,14 +441,14 @@ export default function List(props) {
                     error={errorsEdit.branchId ? true : false}
                     selection
                     options={
-                      smsetctEdit.bukrs
+                      editParams.bukrs
                         ? getBranchOptions(
-                            branchOptions[smsetctEdit.bukrs],
-                            smsetctEdit.countryId,
+                            branchOptions[editParams.bukrs],
+                            editParams.countryId,
                           )
                         : []
                     }
-                    defaultValue={smsetctEdit.branchId}
+                    defaultValue={editParams.branchId}
                     onChange={(e, o) => handleEdit(o, 'brnch')}
                   />
                   {messg.messgBrnch ? (
@@ -494,11 +465,11 @@ export default function List(props) {
                     selection
                     options={getProductOptions(
                       productList,
-                      smsetctEdit.bukrs,
-                      smsetctEdit.countryId,
-                      smsetctEdit.branchId,
+                      editParams.bukrs,
+                      editParams.countryId,
+                      editParams.branchId,
                     )}
-                    defaultValue={smsetctEdit.matnr}
+                    defaultValue={editParams.matnr}
                     onChange={(e, o) => handleEdit(o, 'matnr')}
                   />
                   {messg.messgMatnr ? (
@@ -511,7 +482,7 @@ export default function List(props) {
                   <Form.Field
                     control={Input}
                     label={messages['Table.Note']}
-                    defaultValue={smsetctEdit.description}
+                    defaultValue={editParams.description}
                     onChange={(e, o) => handleEdit(o, 'description')}
                   />
                 </Form.Field>
@@ -522,7 +493,7 @@ export default function List(props) {
                     error={errorsEdit.f1 ? true : false}
                     control={Input}
                     label={messages['configuration'] + ' F-1'}
-                    defaultValue={smsetctEdit.f1}
+                    defaultValue={editParams.f1}
                     onChange={(e, o) => handleEdit(o, 'F1')}
                   />
                   <Form.Field
@@ -530,7 +501,7 @@ export default function List(props) {
                     error={errorsEdit.f2 ? true : false}
                     control={Input}
                     label={messages['configuration'] + ' F-2'}
-                    defaultValue={smsetctEdit.f2}
+                    defaultValue={editParams.f2}
                     onChange={(e, o) => handleEdit(o, 'F2')}
                   />
                   <Form.Field
@@ -538,7 +509,7 @@ export default function List(props) {
                     error={errorsEdit.f3 ? true : false}
                     control={Input}
                     label={messages['configuration'] + ' F-3'}
-                    defaultValue={smsetctEdit.f3}
+                    defaultValue={editParams.f3}
                     onChange={(e, o) => handleEdit(o, 'F3')}
                   />
                   <Form.Field
@@ -546,7 +517,7 @@ export default function List(props) {
                     error={errorsEdit.f4 ? true : false}
                     control={Input}
                     label={messages['configuration'] + ' F-4'}
-                    defaultValue={smsetctEdit.f4}
+                    defaultValue={editParams.f4}
                     onChange={(e, o) => handleEdit(o, 'F4')}
                   />
                   <Form.Field
@@ -554,19 +525,19 @@ export default function List(props) {
                     error={errorsEdit.f5 ? true : false}
                     control={Input}
                     label={messages['configuration'] + ' F-5'}
-                    defaultValue={smsetctEdit.f5}
+                    defaultValue={editParams.f5}
                     onChange={(e, o) => handleEdit(o, 'F5')}
                   />
                   <Form.Field
                     control={Input}
                     label={messages['configuration'] + ' F-6'}
-                    defaultValue={smsetctEdit.f6}
+                    defaultValue={editParams.f6}
                     onChange={(e, o) => handleEdit(o, 'F6')}
                   />
                   <Form.Field
                     control={Input}
                     label={messages['configuration'] + ' F-7'}
-                    defaultValue={smsetctEdit.f7}
+                    defaultValue={editParams.f7}
                     onChange={(e, o) => handleEdit(o, 'F7')}
                   />
                 </Form.Field>

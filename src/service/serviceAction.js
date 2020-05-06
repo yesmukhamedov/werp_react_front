@@ -59,6 +59,7 @@ export const FETCH_SMECA = 'FETCH_SMECA';
 export const FETCH_SMSETPLP = 'FETCH_SMSETPLP';
 export const POST_SMSETPLP = 'POST_SMSETPLP';
 export const FETCH_APP_LIST_SEARCH_PARAMS = 'FETCH_APP_LIST_SEARCH_PARAMS';
+export const FETCH_SMSETPLP_ID = 'FETCH_SMSETPLP_ID';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 
@@ -214,12 +215,17 @@ export function fetchSmsetct(searchParams) {
           type: FETCH_SMSETCT,
           payload: data.data,
         });
-        doGet(`smsetct/audit?direction=DESC&orderBy=rev`, searchParams)
+
+        doGet(
+          `smsetct/audit?direction=DESC&orderBy=rev&page=3&size=20`,
+          searchParams,
+        )
           .then(({ data }) => {
+            console.log('data', data.data.data);
             dispatch(modifyLoader(false));
             dispatch({
               type: HISTORY_EDITING_SMSETCT,
-              payload: data.data,
+              payload: data.data.data,
             });
           })
           .catch(error => {
@@ -231,35 +237,38 @@ export function fetchSmsetct(searchParams) {
       });
   };
 }
-export function postSmsetct(postParams, fetchSmsetct, searchParams) {
+export function postSmsetct(postParams, fetchSmsetct) {
   return function(dispatch) {
     doPost(`smsetct/create`, postParams)
       .then(data => {
-        if (data.data.status === 200) {
+        if (data.data.status === 200 || data.data.status === 'OK') {
           dispatch(notify('success', errorTableText(101)));
-          fetchSmsetct(searchParams);
+          fetchSmsetct();
         } else {
           dispatch(notify('error', errorTableText(133), errorTableText(132)));
         }
       })
       .catch(error => {
+        console.log('mm', error);
         handleError(error, dispatch);
       });
   };
 }
 
-export function editSmsetct(editParams, searchParams, fetchSmsetct) {
+export function editSmsetct(editParams, fetchSmsetct) {
   return function(dispatch) {
     doPut(`smsetct/update`, editParams)
       .then(data => {
-        if (data.data.status === 200) {
+        console.log('Data');
+        if (data.data.status === 200 || data.data.status === 'OK') {
           dispatch(notify('success', errorTableText(104), errorTableText(101)));
-          fetchSmsetct(searchParams);
+          fetchSmsetct();
         } else {
           dispatch(notify('error', errorTableText(133), errorTableText(132)));
         }
       })
       .catch(error => {
+        console.log(error);
         handleError(error, dispatch);
       });
   };
@@ -514,14 +523,13 @@ export function postSmccaCreateApp(application, back) {
       });
   };
 }
-
 export function fetchSmsrcus(searchParams) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet('smsrcus/list', searchParams)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        if (data.status === 200) {
+        if (data.status === 200 || data.status === 'OK') {
           dispatch({
             type: FETCH_SMSRCUS,
             payload: data.data,
@@ -529,6 +537,7 @@ export function fetchSmsrcus(searchParams) {
         }
       })
       .catch(error => {
+        dispatch(modifyLoader(false));
         handleError(error, dispatch);
       });
   };
@@ -625,13 +634,14 @@ export function fetchServAppStatus() {
 export function fetchSmsetplp(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smsetplp/view`, { ...params })
+    doGet(`smsetplp/view?direction=DESC&orderBy=id`, params)
       .then(data => {
+        console.log('data', data);
         dispatch(modifyLoader(false));
-        if (data.data.status === 200) {
+        if (data.data.status === 200 || data.data.status === 'OK') {
           dispatch({
             type: FETCH_SMSETPLP,
-            payload: data.data.data,
+            payload: data.data,
           });
         }
       })
@@ -642,18 +652,39 @@ export function fetchSmsetplp(params) {
   };
 }
 
-export function postSmsetplp(params) {
+export function fetchSmsetplpId(id) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`smsetplp/${id}`)
+      .then(data => {
+        if (data.data.status === 200 || data.data.status === 'OK') {
+          dispatch({
+            type: FETCH_SMSETPLP_ID,
+            payload: data.data,
+          });
+          dispatch(modifyLoader(false));
+        }
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function postSmsetplp(params, fetchSmsetplp) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doPost(`smsetplp/create`, params)
       .then(data => {
         dispatch(modifyLoader(false));
-        if (data.data.status === 200) {
+        if (data.data.status === 200 || data.data.status === 'OK') {
           dispatch({
             type: POST_SMSETPLP,
             payload: data.data.data,
           });
           dispatch(notify('success', errorTableText(101)));
+          fetchSmsetplp();
         } else {
           dispatch(notify('error', errorTableText(132)));
         }
@@ -665,15 +696,19 @@ export function postSmsetplp(params) {
   };
 }
 
-export function editSmecam(editParams) {
+export function editSmecam(editParams, fetchSmecam) {
   return function(dispatch) {
+    console.log('data', editParams);
     doPut('smecam/edit', editParams)
       .then(data => {
-        if (data.status === 200) {
+        console.log('data', editParams);
+        console.log('data', data);
+        if (data.status === 200 || data.status === 'OK') {
           dispatch({
             type: EDIT_SMECAM,
             payloda: data,
           });
+          fetchSmecam();
           dispatch(notify('success', errorTableText(104), errorTableText(101)));
         } else {
           dispatch(notify('error', errorTableText(133), errorTableText(132)));
@@ -685,15 +720,16 @@ export function editSmecam(editParams) {
   };
 }
 
-export function editSmeca(editParams) {
+export function editSmeca(editParams, fetchSmeca) {
   return function(dispatch) {
     doPut('smeca/edit', editParams)
       .then(data => {
-        if (data.status === 200) {
+        if (data.status === 200 || data.status === 'OK') {
           dispatch({
             type: EDIT_SMECA,
             payloda: data,
           });
+          fetchSmeca();
           dispatch(notify('success', errorTableText(104), errorTableText(101)));
         } else {
           dispatch(notify('error', errorTableText(133), errorTableText(132)));
@@ -847,14 +883,15 @@ export function fetchSmvca(id) {
   };
 }
 
-export function editSmsetplp(params) {
+export function editSmsetplp(params, fetchSmsetplp) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doPut(`smsetplp/update`, params)
       .then(data => {
         dispatch(modifyLoader(false));
-        if (data.data.status === 200) {
+        if (data.data.status === 200 || data.data.status === 'OK') {
           dispatch(notify('success', errorTableText(104), errorTableText(101)));
+          fetchSmsetplp();
         } else {
           dispatch(notify('error', errorTableText(133), errorTableText(132)));
         }

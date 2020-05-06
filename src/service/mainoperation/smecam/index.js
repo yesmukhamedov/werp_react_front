@@ -18,6 +18,7 @@ import {
   clearDynObjService,
   editSmecam,
 } from '../../serviceAction';
+import { LinkToSmcs } from '../../../utils/outlink';
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import ListHistory from './list';
@@ -91,7 +92,9 @@ const Smecam = props => {
   const handleSave = () => {
     let errs = validate();
     if (Object.keys(errs).length === 0) {
-      editSmecam({ ...state });
+      editSmecam(state, () => {
+        fetchSmecam(id);
+      });
     }
     setErrors({ ...errs });
   };
@@ -156,27 +159,7 @@ const Smecam = props => {
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
-                      <Input
-                        readOnly
-                        fluid
-                        value={dynamicObject.customerId || ''}
-                      />
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      <Label size="large" basic>
-                        {' '}
-                        {messages['Form.ClientFullName']}{' '}
-                      </Label>
-                    </Table.Cell>
-
-                    <Table.Cell>
-                      <Input
-                        fluid
-                        readOnly
-                        value={dynamicObject.applicantName || ''}
-                      />
+                      <Input readOnly fluid value={dynamicObject.id || ''} />
                     </Table.Cell>
                   </Table.Row>
 
@@ -194,23 +177,6 @@ const Smecam = props => {
                         readOnly
                         error={errors.bukrs ? true : false}
                         value={dynamicObject.bukrsName || ''}
-                      />
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      {' '}
-                      <Label size="large" basic>
-                        {' '}
-                        {messages['Table.Address']}{' '}
-                      </Label>
-                    </Table.Cell>
-
-                    <Table.Cell>
-                      <Input
-                        fluid
-                        readOnly
-                        value={dynamicObject.address || ''}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -232,21 +198,6 @@ const Smecam = props => {
                       />
                     </Table.Cell>
                   </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      <Label size="large" basic>
-                        {messages['contacts']}{' '}
-                      </Label>
-                    </Table.Cell>
-
-                    <Table.Cell>
-                      <Input
-                        fluid
-                        readOnly
-                        value={dynamicObject.inPhoneNum || ''}
-                      />
-                    </Table.Cell>
-                  </Table.Row>
 
                   <Table.Row>
                     <Table.Cell>
@@ -261,22 +212,6 @@ const Smecam = props => {
                         fluid
                         readOnly
                         value={dynamicObject.matnrName || ''}
-                      />
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      <Label size="large" basic>
-                        {' '}
-                        {messages['productSerialNumber']}{' '}
-                      </Label>
-                    </Table.Cell>
-
-                    <Table.Cell>
-                      <Input
-                        fluid
-                        readOnly
-                        value={dynamicObject.contractNumber || ''}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -301,19 +236,6 @@ const Smecam = props => {
                     <Table.Cell>
                       <Label size="large" basic>
                         {' '}
-                        {messages['installation_date']}{' '}
-                      </Label>
-                    </Table.Cell>
-
-                    <Table.Cell>
-                      <Input fluid readOnly value={dynamicObject.adate || ''} />
-                    </Table.Cell>
-                  </Table.Row>
-
-                  <Table.Row>
-                    <Table.Cell>
-                      <Label size="large" basic>
-                        {' '}
                         {messages['Operator']}{' '}
                       </Label>
                     </Table.Cell>
@@ -323,21 +245,6 @@ const Smecam = props => {
                         fluid
                         readOnly
                         value={dynamicObject.operatorName || ''}
-                      />
-                    </Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>
-                      <Label size="large" basic>
-                        CN{' '}
-                      </Label>
-                    </Table.Cell>
-
-                    <Table.Cell>
-                      <Input
-                        fluid
-                        readOnly
-                        value={dynamicObject.contractNumber || ''}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -364,6 +271,103 @@ const Smecam = props => {
                         F5 |
                         <Label.Detail>{dynamicObject.f5MtLeft}</Label.Detail>
                       </Label>
+                    </Table.Cell>
+                  </Table.Row>
+
+                  <Table.Row>
+                    <Table.Cell>
+                      <Label size="large" basic>
+                        {' '}
+                        {messages['Form.ClientFullName']}{' '}
+                      </Label>
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      <Input
+                        fluid
+                        readOnly
+                        value={dynamicObject.applicantName || ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      {' '}
+                      <Label size="large" basic>
+                        {' '}
+                        {messages['Table.Address']}{' '}
+                      </Label>
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      <Input
+                        fluid
+                        readOnly
+                        value={dynamicObject.address || ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+
+                  <Table.Row>
+                    <Table.Cell>
+                      <Label size="large" basic>
+                        {messages['contacts']}{' '}
+                      </Label>
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      <Input
+                        fluid
+                        readOnly
+                        value={dynamicObject.inPhoneNum || ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Label size="large" basic>
+                        {' '}
+                        {messages['productSerialNumber']}{' '}
+                      </Label>
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      <Input
+                        fluid
+                        readOnly
+                        value={dynamicObject.tovarSn || ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Label size="large" basic>
+                        {' '}
+                        {messages['installation_date']}{' '}
+                      </Label>
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      <Input
+                        fluid
+                        readOnly
+                        value={dynamicObject.installmentDate || ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Label size="large" basic>
+                        CN
+                      </Label>
+                    </Table.Cell>
+
+                    <Table.Cell>
+                      <Input
+                        fluid
+                        readOnly
+                        value={dynamicObject.contractNumber || ''}
+                      />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
@@ -400,8 +404,7 @@ const Smecam = props => {
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>
-                        {' '}
-                        {messages['service_time']}{' '}
+                        {messages['service_time']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
@@ -490,14 +493,12 @@ const Smecam = props => {
                         handleSave();
                       }}
                     >
-                      {' '}
                       {messages['Form.Save']}
                     </Button>
-                    <Link to={`/service/mainoperation/smcs`}>
-                      <Button primary>
-                        {messages['create_service_card']}{' '}
-                      </Button>
-                    </Link>
+                    <LinkToSmcs
+                      serviceNumber={id}
+                      message={messages['create_service_card']}
+                    />
                   </div>
                 </Form.Field>
               </Form>

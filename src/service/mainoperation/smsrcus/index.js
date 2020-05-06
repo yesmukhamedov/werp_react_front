@@ -6,12 +6,12 @@ import List from './list';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import OutputErrors from '../../../general/error/outputErrors';
-import {
-  fetchSmsrcus,
-  clearDynObjService,
-  fetchContractStatus,
-} from '../../serviceAction';
 import { f4FetchWerksBranchList } from '../../../reference/f4/f4_action';
+import ColumnsModal from '../../../utils/ColumnsModal';
+import moment from 'moment';
+import { errorTableText } from '../../../utils/helpers';
+import { LinkToSmcusporFromSmsrcus } from '../../../utils/outlink';
+
 import {
   Segment,
   Container,
@@ -21,14 +21,15 @@ import {
   Icon,
   Divider,
 } from 'semantic-ui-react';
-import moment from 'moment';
-import { errorTableText } from '../../../utils/helpers';
+import {
+  fetchSmsrcus,
+  clearDynObjService,
+  fetchContractStatus,
+} from '../../serviceAction';
 import {
   stringYYYYMMDDToMoment,
   momentToStringYYYYMMDD,
 } from '../../../utils/helpers';
-require('moment/locale/ru');
-require('moment/locale/tr');
 
 const Smsrcus = props => {
   const {
@@ -43,30 +44,118 @@ const Smsrcus = props => {
     contractStatus,
   } = props;
 
-  useEffect(() => {
-    fetchContractStatus();
-    clearDynObjService();
-  }, []);
-
   const [f4BranchIsOpen, setF4BranchIsOpen] = useState(false);
-  const date = new Date();
-  const y = date.getFullYear();
-  const m = date.getMonth();
-
   let page = dynamicObject.totalPages ? dynamicObject.totalPages : 1;
-  const [startDate, setStartDate] = useState(
-    momentToStringYYYYMMDD(moment(new Date(y - 1, m, 1))),
-  );
-  const [endDate, setEndDate] = useState(
-    momentToStringYYYYMMDD(moment(new Date())),
-  );
-  const [searchParams, setSearchParams] = useState({ ...emptySearch });
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const [errors, setErrors] = useState([]);
   let emptySearch = {
     branchId: '',
     bukrs: '',
   };
+  const [searchParams, setSearchParams] = useState({ ...emptySearch });
+  const date = new Date();
+  const y = date.getFullYear();
+  const m = date.getMonth();
+  const [startDate, setStartDate] = useState(
+    momentToStringYYYYMMDD(moment(new Date(y - 1, m, 1))),
+  );
+  const [endDate, setEndDate] = useState(
+    momentToStringYYYYMMDD(moment(new Date())),
+  );
+
+  let allColumns = [
+    {
+      Header: messages['brnch'],
+      accessor: 'branchName',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      show: true,
+      filterable: false,
+    },
+    {
+      Header: 'CN',
+      accessor: 'contractNumber',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      show: true,
+    },
+    {
+      Header: messages['factory_number'],
+      accessor: 'tovarSerial',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      show: true,
+    },
+    {
+      Header: messages['Table.Date'],
+      accessor: 'contractDate',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      show: true,
+      filterable: false,
+    },
+    {
+      Header: messages['financial_status'],
+      accessor: 'contractStatusName',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      show: true,
+      filterable: false,
+    },
+    {
+      Header: messages['full_name_of_client'],
+      accessor: 'customerName',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      show: true,
+    },
+    {
+      Header: messages['customer_key'],
+      accessor: 'iinBin',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      show: true,
+    },
+    {
+      Header: messages['address'],
+      accessor: 'fullAddress',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      show: true,
+    },
+    {
+      Header: messages['telephone'],
+      accessor: 'fullPhone',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      show: true,
+    },
+    {
+      Header: messages['customer_story'],
+      show: true,
+      Cell: row => (
+        <div style={{ textAlign: 'center' }}>
+          <LinkToSmcusporFromSmsrcus
+            contractNumber={row.original.contractNumber}
+          />
+        </div>
+      ),
+      filterable: false,
+    },
+  ];
+
+  const [columnsForTable, setColumnsForTable] = useState([]);
+
+  useEffect(() => {
+    fetchContractStatus();
+    clearDynObjService();
+  }, []);
+
+  useEffect(() => {
+    const transactionCodeText = localStorage.getItem('smsrcus');
+    if (transactionCodeText) {
+      let transactionCodeObject = JSON.parse(transactionCodeText);
+
+      let temp = allColumns.map(item => {
+        return { ...item, show: transactionCodeObject[item.accessor] };
+      });
+      setColumnsForTable(temp);
+    } else {
+      setColumnsForTable(allColumns);
+    }
+  }, []);
+
   const handleInputSearch = (o, fieldName) => {
     setSearchParams(prev => {
       let searchArr = { ...prev };
@@ -91,7 +180,7 @@ const Smsrcus = props => {
     });
   };
 
-  const clickedSearch = () => {
+  const onSearch = () => {
     let errs = validateSearch();
     setTurnOnReactFetch(true);
     if (errs === null || errs === undefined || errs.length === 0) {
@@ -154,7 +243,7 @@ const Smsrcus = props => {
             <Form.Button
               required
               label={messages['brnch']}
-              color="blue"
+              color="pink"
               onClick={() => setF4BranchIsOpen(true)}
               icon
               labelPosition="right"
@@ -176,7 +265,6 @@ const Smsrcus = props => {
             <Form.Input
               label={
                 <label>
-                  {' '}
                   {messages['Form.DateFrom']} <Icon name="calendar" />{' '}
                 </label>
               }
@@ -216,7 +304,7 @@ const Smsrcus = props => {
               <label>
                 <br />
               </label>
-              <Button color="blue" onClick={clickedSearch} icon>
+              <Button color="pink" onClick={onSearch} icon>
                 <Icon name="search" />
               </Button>
             </Form.Field>
@@ -224,12 +312,28 @@ const Smsrcus = props => {
         </Form>
         <OutputErrors errors={errors} />
         <Divider />
+
+        <Segment basic textAlign="right">
+          <ColumnsModal
+            tableHeaderCols={columnsForTable}
+            tableThings={things => {
+              setColumnsForTable(things);
+              //store in localstorage
+              let temp = {};
+              things.map(el => {
+                temp = { ...temp, [el.accessor]: el.show };
+              });
+              localStorage.setItem('smsrcus', JSON.stringify(temp));
+            }}
+          />
+        </Segment>
         <List
           messages={messages}
           dynamicObject={dynamicObject}
           fetchSmsrcus={fetchSmsrcus}
           turnOnReactFetch={turnOnReactFetch}
           searchParams={searchParams}
+          columnsForTable={columnsForTable}
         />
         <BranchF4Advanced
           branches={searchParams.bukrs ? branchList[searchParams.bukrs] : []}
