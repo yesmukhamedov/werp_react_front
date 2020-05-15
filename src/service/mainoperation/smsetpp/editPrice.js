@@ -56,21 +56,21 @@ const EditModal = props => {
     setModalOpen(true);
   };
 
-  useEffect(() => {
-    let country = countryList.map(
-      item => {
-        return {
-          key: item.countryId,
-          text: item.country,
-          value: item.countryId,
-          currency: item.currency,
-          currencyid: item.currencyId,
-        };
-      },
-      [countryList],
-    );
-    setCountryOptions(country);
-  }, [countryList]);
+  // useEffect(() => {
+  //   let country = countryList.map(
+  //     item => {
+  //       return {
+  //         key: item.countryId,
+  //         text: item.country,
+  //         value: item.countryId,
+  //         currency: item.currency,
+  //         currencyid: item.currencyId,
+  //       };
+  //     },
+  //     [countryList],
+  //   );
+  //   setCountryOptions(country);
+  // }, [countryList]);
 
   useEffect(() => {
     const premiumPrice = premium.map(item => {
@@ -82,6 +82,8 @@ const EditModal = props => {
     });
     setPremiumPriceTypeId(premiumPrice);
   }, [premium]);
+
+  console.log('EDIT PRICE');
 
   useEffect(() => {
     let filter = serviceType.filter(
@@ -138,31 +140,31 @@ const EditModal = props => {
         case 'mc':
           varTs.mc = t;
           break;
-        case 'office':
-          varTs.office = t;
-          varTs.total = parseFloat(
-            varTs.office + varTs.master + varTs.operator + varTs.discount,
+        case 'total':
+          varTs.total = t;
+          varTs.office = parseFloat(
+            varTs.total - (varTs.master + varTs.operator + varTs.discount),
           );
           break;
         case 'master':
           varTs.master = t;
-          varTs.total = parseFloat(
-            varTs.office + varTs.master + varTs.operator + varTs.discount,
+          varTs.office = parseFloat(
+            varTs.total - (varTs.master + varTs.operator + varTs.discount),
           );
           break;
         case 'operator':
           varTs.operator = t;
-          varTs.total = parseFloat(
-            varTs.office + varTs.master + varTs.operator + varTs.discount,
+          varTs.office = parseFloat(
+            varTs.total - (varTs.master + varTs.operator + varTs.discount),
           );
           break;
         case 'discount':
           varTs.discount = t;
-          varTs.total = parseFloat(
-            varTs.office + varTs.master + varTs.operator + varTs.discount,
+          varTs.office = parseFloat(
+            varTs.total - (varTs.master + varTs.operator + varTs.discount),
           );
           break;
-        case 'total':
+        case 'office':
           varTs.total = t;
         default:
           return varTs;
@@ -170,7 +172,6 @@ const EditModal = props => {
       return varTs;
     });
   };
-
   const onChangeDate = d => {
     setInformations({
       ...informations,
@@ -273,6 +274,8 @@ const EditModal = props => {
                 control={Input}
                 label={`${messages['office']}(${messages['inTotal']})`}
                 placeholder="Number..."
+                readonly
+                disabled
                 value={moneyFormat(informations.office)}
                 onFocus={handleFocus}
                 onChange={e => onInputChange('office', e)}
@@ -310,7 +313,7 @@ const EditModal = props => {
               <Form.Input
                 label={messages['totalAmount']}
                 placeholder="Number..."
-                readOnly
+                //readOnly
                 onFocus={handleFocus}
                 value={moneyFormat(informations.total)}
                 onChange={e => onInputChange('total', e)}

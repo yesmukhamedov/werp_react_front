@@ -44,7 +44,7 @@ const Smsetpp = props => {
   });
 
   useEffect(() => {
-    clearDynObjService();
+    // clearDynObjService();
     f4FetchCountryList();
     fetchSmsetpp();
     fetchSmsetppPremiumPriceType();
@@ -69,6 +69,8 @@ const Smsetpp = props => {
       setServiceOptionPriceList(data.service);
     }
   }, [data]);
+
+  console.log('INDEX');
 
   useEffect(() => {
     let service = serviceType.map(item => {

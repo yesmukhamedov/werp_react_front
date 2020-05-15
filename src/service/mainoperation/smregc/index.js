@@ -88,6 +88,8 @@ function Smregc(props) {
     const crmHistoryDate = callDate.format('DD.MM.YYYY HH:mm:ss');
     const crmScheduleDate = appointDate.format('DD.MM.YYYY HH:mm:ss');
 
+    console.log('PROPS', props);
+
     const { tovarSn, branchId, bukrs } = props.location.state;
     const { callDirection, callStatusId, description, description2 } = call;
     if (callDirection !== '' && callStatusId !== '' && description !== '') {

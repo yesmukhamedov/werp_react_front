@@ -186,6 +186,10 @@ const AddPrice = props => {
     clearInformation();
   };
 
+  useEffect(() => {
+    console.log('FFFFFFFFFFF1');
+  }, []);
+
   const onInputChange = (text, event) => {
     const f = moneyInputHanler(event.target.value, 2);
     const t = parseFloat(f);
@@ -198,32 +202,32 @@ const AddPrice = props => {
         case 'mc':
           varTs.mc = t;
           break;
-        case 'office':
-          varTs.office = t;
-          varTs.total = parseFloat(
-            varTs.office + varTs.master + varTs.operator + varTs.discount,
+        case 'total':
+          varTs.total = t;
+          varTs.office = parseFloat(
+            varTs.total - (varTs.master + varTs.operator + varTs.discount),
           );
           break;
         case 'master':
           varTs.master = t;
-          varTs.total = parseFloat(
-            varTs.office + varTs.master + varTs.operator + varTs.discount,
+          varTs.office = parseFloat(
+            varTs.total - (varTs.master + varTs.operator + varTs.discount),
           );
           break;
         case 'operator':
           varTs.operator = t;
-          varTs.total = parseFloat(
-            varTs.office + varTs.master + varTs.operator + varTs.discount,
+          varTs.office = parseFloat(
+            varTs.total - (varTs.master + varTs.operator + varTs.discount),
           );
           break;
         case 'discount':
           varTs.discount = t;
-          varTs.total = parseFloat(
-            varTs.office + varTs.master + varTs.operator + varTs.discount,
+          varTs.office = parseFloat(
+            varTs.total - (varTs.master + varTs.operator + varTs.discount),
           );
           break;
-        case 'total':
-          varTs.total = t;
+        case 'office':
+          varTs.office = t;
         default:
           return varTs;
       }
@@ -305,10 +309,13 @@ const AddPrice = props => {
             />
 
             <Form.Field
+              readOnly
               control={Input}
+              disabled
               label={`${messages['office']}(${messages['inTotal']})`}
               placeholder="Number..."
-              value={moneyFormat(informations.office)}
+              //value={moneyFormat(informations.office)}
+              value={informations.office}
               onFocus={handleFocus}
               onChange={e => onInputChange('office', e)}
             />
@@ -346,8 +353,11 @@ const AddPrice = props => {
               label={messages['totalAmount']}
               placeholder="Number..."
               onFocus={handleFocus}
-              readOnly
-              value={moneyFormat(informations.total)}
+              //readOnly
+              value={informations.total}
+              //onChange={(e)=>setInformations({...informations, total:e.target.value })}
+              onChange={e => onInputChange('total', e)}
+              //value={moneyFormat(informations.total)}
               error={test === true && informations.total === 0 ? true : false}
               required
             />
