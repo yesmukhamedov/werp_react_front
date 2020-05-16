@@ -12,10 +12,10 @@ import {
   fetchSmsetct,
   editSmsetct,
   clearDynObjService,
+  applySmsetct,
 } from '../../serviceAction';
 import { connect } from 'react-redux';
 import List from './list';
-import { errorTableText } from '../../../utils/helpers';
 import {
   Header,
   Icon,
@@ -28,7 +28,6 @@ import {
   Input,
   Label,
 } from 'semantic-ui-react';
-import format from 'string-format';
 const Smsetct = props => {
   const emptySearch = {
     bukrs: '',
@@ -54,6 +53,7 @@ const Smsetct = props => {
     postSmsetct,
     editSmsetct,
     clearDynObjService,
+    applySmsetct,
   } = props;
 
   //componentDidMount
@@ -264,6 +264,16 @@ const Smsetct = props => {
           <Header as="h2" floated="left">
             {messages['cartrige_replace_period']}
           </Header>
+          <Button
+            color="teal"
+            onClick={() => applySmsetct()}
+            floated="right"
+            icon
+            labelPosition="left"
+          >
+            <Icon name="check" />
+            Применить
+          </Button>
           <Button
             color="teal"
             onClick={handleOpen}
@@ -587,4 +597,5 @@ export default connect(mapStateToProps, {
   fetchSmsetct,
   editSmsetct,
   clearDynObjService,
+  applySmsetct,
 })(injectIntl(Smsetct));

@@ -274,6 +274,24 @@ export function editSmsetct(editParams, fetchSmsetct) {
   };
 }
 
+export function applySmsetct() {
+  return dispatch => {
+    doGet(`smsetct/apply`)
+      .then(({ data }) => {
+        if (data.status === 200 || data.status === 'OK') {
+          dispatch(notify('success', errorTableText(101)));
+          fetchSmsetct();
+        } else {
+          dispatch(notify('error', errorTableText(133), errorTableText(132)));
+        }
+        console.log(data);
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
 export function fetchSmplb(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
