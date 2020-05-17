@@ -26,7 +26,7 @@ const language = localStorage.getItem('language');
 export const fetchServiceFilterPlan = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccoc/ServiceFilterPlan`, param)
+    doGet(`smopccoc/serviceFilterPlan`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

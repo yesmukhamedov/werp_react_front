@@ -68,8 +68,6 @@ const TabSmcsWithoutContract = props => {
 
   const [state, setState] = useState({ ...emptyState });
 
-  console.log('STATE', state, 'category', category, 'productList', productList);
-
   const tovarCategoryOptions = category.map(item => {
     return {
       key: item.id,
@@ -85,8 +83,6 @@ const TabSmcsWithoutContract = props => {
       value: item.matnr,
     };
   });
-
-  console.log('productOptions', productOptions);
 
   const servBranch = branches.filter(
     item =>
@@ -164,7 +160,7 @@ const TabSmcsWithoutContract = props => {
                       fluid
                       selection
                       placeholder="Компания"
-                      options={companyOptions}
+                      options={companyOptions ? companyOptions : []}
                       onChange={(e, o) => onInputChange(o, 'bukrs')}
                     />
                   </Table.Cell>

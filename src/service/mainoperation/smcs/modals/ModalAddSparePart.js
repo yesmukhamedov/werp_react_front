@@ -52,7 +52,7 @@ const ModalAddSparePart = props => {
     },
     {
       Header: 'Цена',
-      accessor: 'matnrPrice',
+      accessor: 'price',
       filterAll: true,
       width: 100,
       maxWidth: 150,

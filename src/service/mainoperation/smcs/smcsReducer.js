@@ -4,8 +4,10 @@ import {
   CLEAR_DYNOBJ_MARKETING,
   FETCH_TOVAR_ID,
   FETCH_SERVICE_TYPE_ID,
-  FETCH_SMCS_MATNR_PRICELIST,
+  FETCH_MATNR_PRICE_SPARE_PART,
+  FETCH_MATNR_PRICE_CARTRIDGE,
   FETCH_SMCS_SERVICE_PACKET,
+  FETCH_OPERATOR_LIST,
   FETCH_POSITION_SUMM,
   CHECK_SMCS_WITHOUT_REQUEST,
   SAVE_SMCS_WITHOUT_REQUEST,
@@ -43,8 +45,11 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_SERVICE_TYPE_ID:
       return { ...state, serviceTypeId: [...action.data.data] };
 
-    case FETCH_SMCS_MATNR_PRICELIST:
-      return { ...state, smcsMatnrPriceList: [...action.data.data] };
+    case FETCH_MATNR_PRICE_SPARE_PART:
+      return { ...state, matnrPriceSparePart: [...action.data.data] };
+
+    case FETCH_MATNR_PRICE_CARTRIDGE:
+      return { ...state, matnrPriceCartridge: [...action.data.data] };
 
     case FETCH_SMCS_SERVICE_PACKET:
       return { ...state, smcsServicePacket: [...action.data.data] };
@@ -57,6 +62,9 @@ export default function(state = INITIAL_STATE, action) {
 
     case SAVE_SMCS_WITHOUT_REQUEST:
       return { ...state, saveSmcs: { ...action.data.data } };
+
+    case FETCH_OPERATOR_LIST:
+      return { ...state, operatorList: [...action.data.data] };
 
     default:
       return state;

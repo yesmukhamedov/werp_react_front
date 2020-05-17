@@ -18,11 +18,13 @@ import {
   fetchServiceSmcs,
   fetchTovarId,
   fetchServiceTypeId,
-  fetchSmcsMatnrPriceList,
+  fetchMatnrPriceSparePart,
+  fetchMatnrPriceCartridge,
   fetchSmcsServicePacket,
   fetchPositionSumm,
   checkSmcsWithoutReques,
   saveSmcsWithoutReques,
+  fetchOperatorList,
 } from '../smcsAction';
 
 import {
@@ -40,13 +42,13 @@ import ModalAddServicePacket from '../modals/ModalAddServicePacket';
 import ModalAddSparePart from '../modals/ModalAddSparePart';
 import ModalAddCartridge from '../modals/ModalAddCartridge';
 import 'react-datepicker/dist/react-datepicker.css';
+import Services from './components/Services';
+import SaleOfSparePart from './components/SaleOfSparePart';
 
 //Создание сервиса без заявки
 const TabSmcsWithoutRequest = props => {
   const {
     contract,
-    language,
-    countryList = [],
     companyOptions = [],
     branchOptions = [],
     contractTypeList = [],
@@ -55,99 +57,72 @@ const TabSmcsWithoutRequest = props => {
     customersById,
     tovar,
     serviceTypeId = [],
-    matnrList,
+    matnrPriceSparePart,
+    matnrPriceCartridge,
     servicePacketProps = [],
     positionSumm,
     checkSmcs,
     saveSmcs,
+    operatorList = [],
   } = props;
 
+  const emptyService = {
+    address: '',
+    applicationNumber: '',
+    awkey: null,
+    branchId: 0,
+    branchName: '',
+    bukrs: '',
+    bukrsName: '',
+    categoryId: 2,
+    categoryName: '',
+    contractDate: '',
+    contractId: 0,
+    contractNumber: '',
+    countryId: 0,
+    countryName: '',
+    currencyId: 0,
+    currencyName: '',
+    customerFullName: '',
+    customerId: 0,
+    discount: 0,
+    id: null,
+    masterFullName: '',
+    masterId: null,
+    masterPremium: 0,
+    operatorFullName: null,
+    operatorId: null,
+    operatorPremium: 0,
+    paid: 0,
+    positions: [],
+    serviceDate: '',
+    serviceStatusId: null,
+    serviceStatusName: null,
+    sumForPay: 0,
+    sumTotal: 0,
+    tovarId: 0,
+    tovarName: '',
+    tovarSn: '4134-031589',
+    warrantyPeriodDate: '',
+    warrantyPeriodInMonth: 0,
+    status: '',
+  };
+
   //Основной объект сервиса
-  const [service, setService] = useState({});
+  const [service, setService] = useState({ ...emptyService });
 
-  //Услуги
-  const [serviceInstallation, setServiceInstallation] = useState([]);
-  const filterServiceInstallation = service.servicePositions.filter(
-    item => item.serviceTypeId === 2,
-  );
-  //Запчасти
-  const [sparePart, setSparePart] = useState([]);
+  const [editStatus, SetEditStatus] = useState(true);
 
-  const filterSparePart = service.servicePositions.filter(
-    item => item.serviceTypeId === 3,
-  );
-
-  //Картриджи
-  const [cartridge, setCartridge] = useState([]);
-  const filterCartridge = service.servicePositions.filter(
-    item => item.serviceTypeId === 1,
-  );
-
-  //Сервис пакет
-  const [servicePacket, setServicePacket] = useState([]);
-  const filterServicePacket = service.servicePositions.filter(
-    item => item.serviceTypeId === 4,
-  );
-
-  //Номер товара
-  const [tovarSn, setTovarSn] = useState('4134-031589');
-  //
-  const [customeData, setCustomerData] = useState('');
-  //
   const [modalOpen, setModalOpen] = useState({
     matnrF4ModalOpen: false,
     staffF4ModalOpen: false,
   });
-  //
+
   const [staffF4ModalPosition, setStaffF4ModalPosition] = useState('');
-  //
   const [serBranches, setSerBranches] = useState({});
-  //
-  const [editStatus, SetEditStatus] = useState(true);
-  //
-  const [tovarData, setTovarData] = useState({
-    matnr: 0,
-    text45: '',
-  });
-  //
-  const [master, setMaster] = useState({
-    masterId: 0,
-    masterFio: '',
-  });
-
-  const [operator, setOperator] = useState({
-    operatorId: 0,
-    operatorFio: '',
-  });
 
   useEffect(() => {
-    props.f4FetchConTypeList();
-    props.f4FetchBranches();
-    props.f4FetchCountryList();
-    props.f4FetchCompanyOptions();
-    props.f4fetchCategory();
-    props.fetchServiceTypeId();
-  }, []);
-
-  useEffect(() => {
-    if (Object.keys(customersById).length !== 0) {
-      setCustomerData(customersById.fullName);
-    }
-  }, [customersById]);
-
-  const serviceBA = [5, 6, 9];
-
-  useEffect(() => {
-    setService({ ...contract });
-  }, [contract]);
-
-  useEffect(() => {
-    if (tovar) {
-      setTovarData({ matnr: tovar.matnr, text45: tovar.text45 });
-    }
-  }, [tovar]);
-
-  useEffect(() => {
+    let serviceBA = [5, 6, 9];
     let waSerBranches = {};
     //getting all branches and making fin branch options and service branch options
     function optFunction(item) {
@@ -169,128 +144,73 @@ const TabSmcsWithoutRequest = props => {
   }, [branches]);
 
   //Поиск по заводскому номеру
-  const handleSearchTovarSerial = e => {
-    e.preventDefault();
+  const handleSearchTovarSerial = () => {
+    let tovarSn = service.tovarSn;
     props.fetchServiceSmcs({ tovarSn });
+    props.fetchServiceTypeId();
   };
-
-  //Получить Филиал через ID
-  const getCompanyName = (companyOptions, service) => {
-    let companyName = '';
-    for (let i = 0; i < companyOptions.length; i++) {
-      if (companyOptions[i].key === service.bukrs) {
-        companyName = companyOptions[i].text;
-      }
-    }
-    return companyName;
-  };
-
-  //Получить Филиал через ID
-  const getBranchName = (branches, service) => {
-    let branchName = '';
-    for (let i = 0; i < branches.length; i++) {
-      if (branches[i].branch_id === service.branchId) {
-        branchName = branches[i].text45;
-      }
-    }
-    return branchName;
-  };
-
-  //Получить Категорию
-  const getCategoryName = (category, service) => {
-    let categoryName = '';
-    for (let i = 0; i < category.length; i++) {
-      if (category[i].id === service.categoryId) {
-        categoryName = category[i].name;
-      }
-    }
-    return categoryName;
-  };
-
-  //get service branch from the same city
-  let serBranchInSameCity = {};
-
-  const branchesForEach = branches.forEach(item => {
-    serBranchInSameCity = item;
-  });
-
-  const branchesFilter = branches.filter(item =>
-    serviceBA.includes(item.business_area_id),
-  );
 
   const onBasicInfoInputChange = value => {
-    setMaster(prev => {
-      return { masterId: value.staffId, masterFio: value.fio };
+    setService({
+      ...service,
+      masterId: value.staffId,
+      masterFullName: value.fio,
     });
-
-    setService(prev => {
-      return { ...prev, masterId: value.staffId };
-    });
-    SetEditStatus(false);
-  };
-
-  const onBasicInfoInputChangeOperator = value => {
-    setOperator(prev => {
-      return { operatorId: value.staffId, operatorFio: value.fio };
-    });
-
-    setService(prev => {
-      return { ...prev, operatorId: value.staffId };
-    });
-    SetEditStatus(false);
   };
 
   useEffect(() => {
-    let matnrParam = {
-      branchId: service.branchId,
-      bukrs: service.bukrs,
-      countryId: service.countryId,
-      dateOpen: service.dateOpen,
-      masterId: service.masterId,
-      tovarId: service.tovarId,
-    };
-
-    if (matnrParam.masterId != 0) {
-      props.fetchSmcsMatnrPriceList(matnrParam);
+    if (Object.keys(contract).length > 0) {
+      setService({ ...contract, positions: [] });
+      let operParam = {
+        branchId: contract.branchId,
+        bukrs: contract.bukrs,
+        categoryId: contract.categoryId,
+      };
+      props.fetchOperatorList({ ...operParam });
     }
-  }, [master]);
+  }, [contract]);
 
-  const removeMasterData = () => {
-    setMaster({ masterId: 0, masterFio: '' });
-    setService(prev => {
-      return { ...prev, masterId: 0 };
-    });
-  };
-
-  const [modalOpenSparePart, setModalOpenSparePart] = useState();
-  const [modalOpenCartridge, setModalOpenCartridge] = useState();
-  const [modalOpenServicePacket, setModalOpenServicePacket] = useState();
-
-  const serviceOptions = serviceTypeId.map(item => {
+  const operatorOptions = operatorList.map(item => {
     return {
-      key: item.id,
-      text: item.nameRu,
-      value: item.id,
+      key: item.staffId,
+      text: item.fullName,
+      value: item.staffId,
     };
   });
 
-  const selectServiceOption = value => {
-    setParamServiceInstallation(value.serviceTypeId);
-    let paramPostSumm = { serviceTypeId: value.serviceTypeId };
-    props.fetchPositionSumm(paramPostSumm);
+  const changeOperator = (e, value) => {
+    setService({ ...service, operatorId: value.value });
   };
 
-  const [paramServiceInstallation, setParamServiceInstallation] = useState();
+  useEffect(() => {
+    props.f4FetchBranches();
+  }, []);
+
+  //УСЛУГИ========================================================================================
+  //==============================================================================================
+
+  const [services, setServices] = useState([]);
+
+  const serviceOptions = serviceTypeId
+    .filter(item => item.id === '2')
+    .map(item => {
+      return {
+        key: item.id,
+        text: item.name,
+        value: item.id,
+      };
+    });
 
   // Добавить услуги
-  const handleAddService = e => {
-    let lengtn = serviceInstallation.length;
-    setServiceInstallation(prev => [
-      ...prev,
+  const addServices = e => {
+    let length = service.positions.length;
+
+    setServices([
+      ...services,
       {
         currencyId: null,
         fno: null,
-        id: lengtn + 1,
+        id: '2' + length,
         matnr: null,
         matnrPrice: null,
         operationId: null,
@@ -303,22 +223,65 @@ const TabSmcsWithoutRequest = props => {
       },
     ]);
   };
-  //Удалить услуг
-  const handleRemoveService = value => {
-    let servFilter = serviceInstallation.filter(item => item.id !== value.id);
-    setServiceInstallation([...servFilter]);
+
+  //Select services
+  const selectServices = (id, value) => {
+    setServices(
+      services.map(item =>
+        item.id === id ? { ...item, serviceTypeId: value.value } : item,
+      ),
+    );
+
+    props.fetchPositionSumm(service.branchId, service.bukrs, ...services);
   };
 
-  //ЗАПЧАСТИ
-
-  //Список запчастей
-  const [sparePartList, setSparePartList] = useState([]);
-
-  //Формировать список запчастей
   useEffect(() => {
-    if (matnrList) {
-      matnrList.map(item => {
-        setSparePartList(prev => [
+    setServices(
+      services.map(item =>
+        item.serviceTypeId === '2' ? { ...item, sum: positionSumm.sum } : item,
+      ),
+    );
+  }, [positionSumm]);
+
+  //Удалить услуг
+  const handleRemoveService = value => {
+    let servFilter = service.positions.filter(item => item.id !== value.id);
+    setServices([...servFilter]);
+  };
+
+  //ПРОДАЖА ЗАПЧАСТЕЙ========================================================================================
+  //=========================================================================================================
+
+  const [saleOfSparePart, setSaleOfSparePart] = useState([]);
+  const [modalSparePart, setModalSparePart] = useState(false);
+
+  const sparePartList = service.positions
+    .filter(item => item.serviceTypeId === 3)
+    .filter(item => item.checked === true);
+
+  const addSparePartBtn = () => {
+    setModalSparePart(true);
+  };
+
+  useEffect(() => {
+    const paramMatnrSparePart = {
+      branchId: service.branchId,
+      bukrs: service.bukrs,
+      masterId: service.masterId,
+      serviceTypeId: 3,
+      tovarId: service.tovarId,
+    };
+
+    if (service.masterId !== null || service.masterId !== undefined) {
+      console.log('MASTER', service.masterId);
+      // props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart });
+    }
+  }, [service.masterId]);
+
+  useEffect(() => {
+    if (matnrPriceSparePart) {
+      matnrPriceSparePart.map(item => {
+        setSaleOfSparePart(prev => [
           ...prev,
           {
             index: null,
@@ -329,7 +292,7 @@ const TabSmcsWithoutRequest = props => {
             matnr: item.matnr,
             matnrName: item.matnrName,
             matnrCode: item.matnrCode,
-            matnrPrice: item.price,
+            price: item.price,
             menge: item.menge,
             qinit: item.qinit,
             qminus: item.qminus,
@@ -343,42 +306,16 @@ const TabSmcsWithoutRequest = props => {
             checked: false,
           },
         ]);
-
-        setCartridgeList(prev => [
-          ...prev,
-          {
-            index: null,
-            currencyId: item.currencyId,
-            currencyName: item.currencyName,
-            fno: null,
-            id: null,
-            matnr: item.matnr,
-            matnrName: item.matnrName,
-            matnrCode: item.matnrCode,
-            matnrPrice: item.price,
-            menge: item.menge,
-            qinit: item.qinit,
-            qminus: item.qminus,
-            operationId: null,
-            quantity: null,
-            serviceId: null,
-            servicePackageId: null,
-            serviceTypeId: null,
-            sum: null,
-            warranty: false,
-            checked: false,
-          },
-        ]);
       });
     }
-  }, [matnrList]);
+  }, [matnrPriceSparePart]);
 
   //Выбрать запчасть
   const checkedSparePart = value => {
     if (value.checked == true) {
-      setSparePartList(
-        sparePartList.map(item =>
-          item.matnr === value.matnr
+      setSaleOfSparePart(
+        saleOfSparePart.map(item =>
+          item.matnrCode === value.matnrCode
             ? {
                 ...item,
                 checked: false,
@@ -389,9 +326,9 @@ const TabSmcsWithoutRequest = props => {
         ),
       );
     } else {
-      setSparePartList(
-        sparePartList.map(item =>
-          item.matnr === value.matnr
+      setSaleOfSparePart(
+        saleOfSparePart.map(item =>
+          item.matnrCode === value.matnrCode
             ? {
                 ...item,
                 checked: true,
@@ -404,406 +341,26 @@ const TabSmcsWithoutRequest = props => {
     }
   };
 
-  //Гарантия запчастей
-  const changeWarrantySparePart = value => {
-    if (value.warranty == false) {
-      setSparePartList(
-        sparePartList.map(item =>
-          item.matnr === value.matnr
-            ? { ...item, warranty: true, sum: 0 }
-            : item,
-        ),
-      );
-    } else {
-      setSparePartList(
-        sparePartList.map(item =>
-          item.matnr === value.matnr
-            ? { ...item, warranty: false, sum: item.quantity * item.matnrPrice }
-            : item,
-        ),
-      );
-    }
-  };
-
-  //Удалить запчасть
-  const removeSparePartItem = value => {
-    let spareFilter = sparePart.filter(item => item.matnr !== value.matnr);
-    setSparePart([...spareFilter]);
-
-    setSparePartList(
-      sparePartList.map(item =>
-        item.matnr === value.matnr ? { ...item, checked: false } : item,
-      ),
-    );
-  };
-
-  useEffect(() => {
-    const filterSparePart = sparePartList.filter(item => item.checked === true);
-    setSparePart([...filterSparePart]);
-  }, [sparePartList]);
-
-  //Количество запчастей
-  const changeSparePartCount = (e, value) => {
-    if (e.target.value <= value.menge) {
-      if (value.warranty === true) {
-        setSparePartList(
-          sparePartList.map(item =>
-            item.matnr == value.matnr
-              ? {
-                  ...item,
-                  sum: null,
-                  quantity: e.target.value,
-                }
-              : item,
-          ),
-        );
-      } else {
-        setSparePartList(
-          sparePartList.map(item =>
-            item.matnr == value.matnr
-              ? {
-                  ...item,
-                  sum: e.target.value * item.matnrPrice,
-                  quantity: e.target.value,
-                }
-              : item,
-          ),
-        );
-      }
-    } else {
-      alert(`У Вас в подотчете ${value.menge}`);
-    }
-  };
-
-  //Закрыть модальное окно
   const handleApplySparePart = () => {
-    setModalOpenSparePart(false);
+    setService({ ...service, positions: [...services, ...sparePartList] });
+    setModalSparePart(false);
   };
 
-  //--------------------END ЗАПЧАСТИ---------------------------------------------
+  //ПРОДАЖА КАРТРИДЖЕЙ========================================================================================
+  //=========================================================================================================
 
-  //-----------------------------------КАРТРИДЖ----------------------------------
-  //Список картриджей
-  const [cartridgeList, setCartridgeList] = useState([]);
+  const cartridgeList = service.positions.filter(
+    item => item.serviceTypeId === 1,
+  );
 
-  //Выбрать картридж
-  const checkedCartridge = value => {
-    if (value.checked == true) {
-      setCartridgeList(
-        cartridgeList.map(item =>
-          item.matnr === value.matnr
-            ? {
-                ...item,
-                checked: false,
-                quantity: item.quantity,
-                sum: item.sum,
-              }
-            : item,
-        ),
-      );
-    } else {
-      setCartridgeList(
-        cartridgeList.map(item =>
-          item.matnr === value.matnr
-            ? {
-                ...item,
-                checked: true,
-                quantity: 1,
-                sum: item.matnrPrice,
-              }
-            : item,
-        ),
-      );
-    }
-  };
+  //СЕРВИС ПАКЕТ========================================================================================
+  const servicePackageList = service.positions.filter(
+    item => item.serviceTypeId === 4,
+  );
 
   useEffect(() => {
-    const filterCartridge = cartridgeList.filter(item => item.checked === true);
-    setCartridge([...filterCartridge]);
-  }, [cartridgeList]);
-
-  //Закрыть модальное окно
-  const handleApplyCartridge = () => {
-    setModalOpenCartridge(false);
-  };
-
-  //Гарантия картриджей
-  const changeWarrantyCartridge = value => {
-    if (value.warranty == false) {
-      setCartridgeList(
-        cartridgeList.map(item =>
-          item.matnr === value.matnr
-            ? { ...item, warranty: true, sum: 0 }
-            : item,
-        ),
-      );
-    } else {
-      setCartridgeList(
-        cartridgeList.map(item =>
-          item.matnr === value.matnr
-            ? { ...item, warranty: false, sum: item.quantity * item.matnrPrice }
-            : item,
-        ),
-      );
-    }
-  };
-
-  //Количество картриджей
-  const changeCartridgeCount = (e, value) => {
-    if (e.target.value <= value.menge) {
-      if (value.warranty === true) {
-        setCartridgeList(
-          cartridgeList.map(item =>
-            item.matnr == value.matnr
-              ? {
-                  ...item,
-                  sum: 0,
-                  quantity: e.target.value,
-                }
-              : item,
-          ),
-        );
-      } else {
-        setCartridgeList(
-          cartridgeList.map(item =>
-            item.matnr == value.matnr
-              ? {
-                  ...item,
-                  sum: e.target.value * item.matnrPrice,
-                  quantity: e.target.value,
-                }
-              : item,
-          ),
-        );
-      }
-    } else {
-      alert(`У Вас в подотчете ${value.menge}`);
-    }
-  };
-
-  //Удалить картридж
-  const removeCartridgeItem = value => {
-    let cartridgeFilter = cartridge.filter(item => item.matnr !== value.matnr);
-    setCartridge([...cartridgeFilter]);
-
-    setCartridgeList(
-      cartridgeList.map(item =>
-        item.matnr === value.matnr ? { ...item, checked: false } : item,
-      ),
-    );
-  };
-
-  //-----------------------------------END КАРТРИДЖ----------------------------------
-
-  //-----------------------------------СЕРВИС ПАКЕТ--------------------------------------
-
-  const [servicePacketList, setServicePacketList] = useState([]);
-  useEffect(() => {
-    servicePacketProps.map(item =>
-      setServicePacketList(prev => [
-        ...prev,
-        {
-          index: null,
-          currencyId: item.currencyId,
-          currencyName: item.waers,
-          fno: 0,
-          id: 0,
-          matnr: 0,
-          matnrPrice: 0,
-          menge: item.menge,
-          qinit: item.qinit,
-          qminus: item.qminus,
-          operationId: 0,
-          quantity: 0,
-          serviceId: 0,
-          servicePackageId: item.id,
-          serviceTypeId: 4,
-          sum: item.summ,
-          name: item.name,
-          price: item.price,
-          checked: false,
-        },
-      ]),
-    );
-  }, [servicePacketProps]);
-
-  useEffect(() => {
-    let filterServicePacket = servicePacketList.filter(
-      item => item.checked === true,
-    );
-    setServicePacket([...filterServicePacket]);
-  }, [servicePacketList]);
-
-  //Закрыть модальное окно
-  const handleApplyServicePacket = () => {
-    setModalOpenServicePacket(false);
-  };
-  //Выбрать сервис пакет
-  const checkedServicePacket = value => {
-    if (value.checked == true) {
-      setServicePacketList(
-        servicePacketList.map(item =>
-          item.servicePackageId === value.servicePackageId
-            ? {
-                ...item,
-                checked: false,
-                // quantity: item.quantity,
-                // sum: item.sum,
-              }
-            : item,
-        ),
-      );
-    } else {
-      setServicePacketList(
-        servicePacketList.map(item =>
-          item.servicePackageId === value.servicePackageId
-            ? {
-                ...item,
-                checked: true,
-                // quantity: 1,
-                // sum: item.matnrPrice,
-              }
-            : item,
-        ),
-      );
-    }
-  };
-
-  //Удалить сервис пакет
-  const removeServicePacket = value => {
-    let servicePacketFilter = servicePacket.filter(
-      item => item.servicePackageId !== value.servicePackageId,
-    );
-    setServicePacket([...servicePacketFilter]);
-
-    setServicePacketList(
-      servicePacketList.map(item =>
-        item.servicePackageId === value.servicePackageId
-          ? { ...item, checked: false }
-          : item,
-      ),
-    );
-  };
-
-  //-----------------------------------END СЕРВИС ПАКЕТ--------------------------------------
-
-  const handleCheck = () => {
-    props.checkSmcsWithoutReques(service);
-  };
-
-  useEffect(() => {
-    const serviceInstallationMap = serviceInstallation.map(item => ({
-      currencyId: item.currencyId,
-      fno: item.fno,
-      id: item.id,
-      matnr: item.matnr,
-      matnrPrice: item.matnrPrice,
-      operationId: item.operationId,
-      quantity: item.quantity,
-      serviceId: item.serviceId,
-      servicePackageId: item.servicePackageId,
-      serviceTypeId: item.serviceTypeId,
-      sum: item.sum,
-      warranty: item.warranty,
-    }));
-
-    const sparePartMap = sparePart.map(item => ({
-      currencyId: item.currencyId,
-      fno: item.fno,
-      id: item.id,
-      matnr: item.matnr,
-      matnrPrice: item.matnrPrice,
-      operationId: item.operationId,
-      quantity: item.quantity,
-      serviceId: item.serviceId,
-      servicePackageId: item.servicePackageId,
-      serviceTypeId: item.serviceTypeId,
-      sum: item.sum,
-      warranty: item.warranty,
-    }));
-
-    const cartridgeMap = cartridge.map(item => ({
-      currencyId: item.currencyId,
-      fno: item.fno,
-      id: item.id,
-      matnr: item.matnr,
-      matnrPrice: item.matnrPrice,
-      operationId: item.operationId,
-      quantity: item.quantity,
-      serviceId: item.serviceId,
-      servicePackageId: item.servicePackageId,
-      serviceTypeId: item.serviceTypeId,
-      sum: item.sum,
-      warranty: item.warranty,
-    }));
-
-    const servicePacketMap = servicePacket.map(item => ({
-      currencyId: item.currencyId,
-      fno: null,
-      id: null,
-      matnr: null,
-      matnrPrice: null,
-      operationId: null,
-      quantity: null,
-      serviceId: null,
-      servicePackageId: item.servicePackageId,
-      serviceTypeId: item.serviceTypeId,
-      sum: item.sum,
-      warranty: item.warranty,
-    }));
-    setService({
-      ...service,
-      servicePositions: [
-        ...sparePartMap,
-        ...serviceInstallationMap,
-        ...cartridgeMap,
-        ...servicePacketMap,
-      ],
-    });
-  }, [sparePart, servicePacket, cartridge, serviceInstallation]);
-
-  useEffect(() => {
-    if (positionSumm) {
-      setServiceInstallation(
-        serviceInstallation.map(item =>
-          item.serviceTypeId === positionSumm.serviceTypeId
-            ? { ...item, sum: positionSumm.sum }
-            : item,
-        ),
-      );
-    }
-  }, [positionSumm]);
-
-  const [status, setStatus] = useState({
-    checkButton: false,
-    editButton: true,
-    saveButton: true,
-  });
-
-  useEffect(() => {
-    if (checkSmcs) {
-      setService({
-        ...service,
-        sumForPay: checkSmcs.sumForPay,
-        sumTotal: checkSmcs.sumTotal,
-        discount: checkSmcs.discount,
-        paid: checkSmcs.paid,
-        operatorPremium: checkSmcs.operatorPremium,
-        masterPremium: checkSmcs.masterPremium,
-      });
-
-      setStatus({
-        editButton: false,
-        checkButton: true,
-        saveButton: false,
-      });
-    }
-  }, [checkSmcs]);
-  //Сохранить сервис
-  const saveService = () => {
-    console.log('SAVE');
-    props.saveSmcsWithoutReques({ ...checkSmcs });
-  };
+    setService({ ...service, positions: [...services, ...saleOfSparePart] });
+  }, [services, saleOfSparePart]);
 
   return (
     <Form>
@@ -820,6 +377,7 @@ const TabSmcsWithoutRequest = props => {
         companyOptions={companyOptions}
         bukrsDisabledParent
       />
+
       <Grid>
         <Grid.Row>
           {/*BASIC INFO*/}
@@ -833,7 +391,11 @@ const TabSmcsWithoutRequest = props => {
                       type="text"
                       fluid
                       readOnly
-                      value={getCompanyName(companyOptions, service)}
+                      value={
+                        service.applicationNumber === null
+                          ? ''
+                          : service.applicationNumber
+                      }
                     />
                   </Table.Cell>
                 </Table.Row>
@@ -844,24 +406,20 @@ const TabSmcsWithoutRequest = props => {
                       type="text"
                       fluid
                       readOnly
-                      value={getCompanyName(companyOptions, service)}
+                      value={service.bukrsName}
                     />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>Филиал</Table.Cell>
                   <Table.Cell>
-                    <Input
-                      fluid
-                      readOnly
-                      value={getBranchName(branches, service)}
-                    />
+                    <Input fluid readOnly value={service.branchName} />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>Клиент</Table.Cell>
                   <Table.Cell>
-                    <Input fluid readOnly value={customeData} />
+                    <Input fluid readOnly value={service.customerFullName} />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
@@ -870,9 +428,11 @@ const TabSmcsWithoutRequest = props => {
                     <Input
                       fluid
                       type="text"
-                      value={tovarSn}
+                      value={service.tovarSn}
                       placeholder="Введите заводской номер"
-                      onChange={e => setTovarSn(e.target.value)}
+                      onChange={e =>
+                        setService({ ...service, tovarSn: e.target.value })
+                      }
                       action={
                         <Button
                           icon="search"
@@ -887,17 +447,13 @@ const TabSmcsWithoutRequest = props => {
                 <Table.Row>
                   <Table.Cell>Категория</Table.Cell>
                   <Table.Cell>
-                    <Input
-                      fluid
-                      readOnly
-                      value={getCategoryName(category, service)}
-                    />
+                    <Input fluid readOnly value={service.categoryName} />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>Продукт</Table.Cell>
                   <Table.Cell>
-                    <Input fluid readOnly value={tovarData.text45} />
+                    <Input fluid readOnly value={service.tovarName} />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
@@ -922,7 +478,14 @@ const TabSmcsWithoutRequest = props => {
                 <Table.Row>
                   <Table.Cell>Мастер</Table.Cell>
                   <Table.Cell>
-                    <Input readOnly value={master.masterFio} />
+                    <Input
+                      readOnly
+                      value={
+                        service.masterFullName === null
+                          ? ''
+                          : service.masterFullName
+                      }
+                    />
                     <Icon
                       name="clone"
                       size="large"
@@ -937,7 +500,13 @@ const TabSmcsWithoutRequest = props => {
                       size="large"
                       className="clickableIcon"
                       color="red"
-                      onClick={removeMasterData}
+                      onClick={() =>
+                        setService({
+                          ...service,
+                          masterFullName: '',
+                          masterId: 0,
+                        })
+                      }
                     />
                   </Table.Cell>
                 </Table.Row>
@@ -945,35 +514,32 @@ const TabSmcsWithoutRequest = props => {
                 <Table.Row>
                   <Table.Cell>Оператор</Table.Cell>
                   <Table.Cell>
-                    <Input readOnly value={operator.operatorFio} />
-                    <Icon
-                      name="clone"
-                      size="large"
-                      className="clickableIcon"
-                      onClick={() => {
-                        setModalOpen({ staffF4ModalOpenOperator: true });
-                        setStaffF4ModalPosition('operator');
-                      }}
-                    />
-                    <Icon
-                      name="remove"
-                      size="large"
-                      className="clickableIcon"
-                      color="red"
+                    <Dropdown
+                      selection
+                      options={operatorOptions}
+                      value={service.operatorId}
+                      onChange={(e, value) => changeOperator(e, value)}
                     />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>Дата сервиса</Table.Cell>
                   <Table.Cell>
-                    <Input fluid readOnly value={service.dateOpen} />
+                    <Input fluid readOnly value={service.serviceDate} />
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
                   <Table.Cell>Срок гарантии</Table.Cell>
                   <Table.Cell className="tableRow">
-                    <Input readOnly value={service.warrantyPeriodInDate} />
-                    <Input readOnly value={service.warrantyPeriodInMonth} />
+                    <Input readOnly value={service.warrantyPeriodDate} />
+                    <Input
+                      readOnly
+                      value={
+                        service.warrantyPeriodInMonth === 0
+                          ? ''
+                          : service.warrantyPeriodInMonth
+                      }
+                    />
                   </Table.Cell>
                 </Table.Row>
               </Table.Body>
@@ -982,350 +548,29 @@ const TabSmcsWithoutRequest = props => {
 
           {/*RIGHT*/}
           <Grid.Column readOnly width={11}>
-            <Segment>
-              {/*Услуга */}
-              <Segment>
-                <h5>Услуга</h5>
-                <Divider />
+            {/*Услуга */}
 
-                {serviceInstallation.map((item, index) => (
-                  <Table celled>
-                    <Table.Body>
-                      <Table.Row key={index}>
-                        <Table.Cell width={1}>{index + 1}</Table.Cell>
-                        <Table.Cell
-                          width={7}
-                          style={{ margin: '0', padding: '0' }}
-                        >
-                          <Dropdown
-                            placeholder="Выбрать"
-                            fluid
-                            selection
-                            options={serviceOptions}
-                            onChange={() => selectServiceOption(item)}
-                          />
-                        </Table.Cell>
-                        <Table.Cell width={2}>{item.sum}</Table.Cell>
-                        <Table.Cell width={2}>KZT</Table.Cell>
-                        <Table.Cell style={{ margin: '0', padding: '0' }}>
-                          <Button
-                            color="red"
-                            onClick={() => handleRemoveService(item)}
-                          >
-                            Удалить
-                          </Button>
-                        </Table.Cell>
-                      </Table.Row>
-                    </Table.Body>
-                  </Table>
-                ))}
+            <h5>Услуга</h5>
+            <Divider />
+            <Services
+              data={services}
+              addServices={addServices}
+              servicesOptions={serviceOptions}
+              handleRemoveService={handleRemoveService}
+              selectServices={selectServices}
+              waers={service.currencyName}
+            />
 
-                {serviceInstallation.length < 1 ? (
-                  <Button
-                    onClick={handleAddService}
-                    icon
-                    labelPosition="left"
-                    color="green"
-                    size="small"
-                    disabled={editStatus}
-                  >
-                    <Icon name="plus" size="small" /> Добавить услугу
-                  </Button>
-                ) : (
-                  ''
-                )}
-              </Segment>
-
-              {/*Продажа запчастей */}
-              <Segment>
-                <h5>Продажа запчастей</h5>
-                <Divider />
-                <Table celled>
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.HeaderCell>№</Table.HeaderCell>
-                      <Table.HeaderCell>Наименование</Table.HeaderCell>
-                      <Table.HeaderCell>Количество</Table.HeaderCell>
-                      <Table.HeaderCell>Сумма</Table.HeaderCell>
-                      <Table.HeaderCell>Валюта</Table.HeaderCell>
-                      <Table.HeaderCell>Гарантия</Table.HeaderCell>
-                      <Table.HeaderCell></Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-                  {sparePart.map((item, index) => (
-                    <Table.Body>
-                      <Table.Row key={index}>
-                        <Table.Cell width={1}>{index + 1}</Table.Cell>
-                        <Table.Cell width={5}>{item.matnrName}</Table.Cell>
-                        <Table.Cell width={2}>
-                          <Input
-                            style={{ padding: '0' }}
-                            value={item.quantity}
-                            type="number"
-                            label={{ content: 'шт' }}
-                            labelPosition="right"
-                            fluid
-                            onChange={e => changeSparePartCount(e, item)}
-                          />
-                        </Table.Cell>
-                        <Table.Cell width={2}>{item.sum}</Table.Cell>
-                        <Table.Cell width={2}>{item.currencyName}</Table.Cell>
-                        <Table.Cell width={2}>
-                          <Checkbox
-                            checked={item.warranty}
-                            label="Гарантия"
-                            onChange={() => changeWarrantySparePart(item)}
-                          />
-                        </Table.Cell>
-                        <Table.Cell width={3}>
-                          <Button
-                            color="red"
-                            onClick={() => removeSparePartItem(item)}
-                          >
-                            Удалить
-                          </Button>
-                        </Table.Cell>
-                      </Table.Row>
-                    </Table.Body>
-                  ))}
-                </Table>
-
-                <ModalAddSparePart
-                  data={sparePartList}
-                  modalOpen={modalOpenSparePart}
-                  handleApplySparePart={handleApplySparePart}
-                  checkedSparePart={checkedSparePart}
-                />
-
-                <Button
-                  disabled={editStatus}
-                  icon
-                  labelPosition="left"
-                  color="green"
-                  size="small"
-                  onClick={() => setModalOpenSparePart(true)}
-                >
-                  <Icon name="plus" size="small" />
-                  Добавить запчасти
-                </Button>
-              </Segment>
-
-              {/*Продажа картриджи  */}
-              <Segment>
-                <h3>Продажа картриджи</h3>
-                <Divider />
-                <Table>
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.HeaderCell>№</Table.HeaderCell>
-                      <Table.HeaderCell>Наименование</Table.HeaderCell>
-                      <Table.HeaderCell>F№</Table.HeaderCell>
-                      <Table.HeaderCell>Количество</Table.HeaderCell>
-                      <Table.HeaderCell>Сумма</Table.HeaderCell>
-                      <Table.HeaderCell>Валюта</Table.HeaderCell>
-                      <Table.HeaderCell>Гарантия</Table.HeaderCell>
-                      <Table.HeaderCell></Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-                  <Table.Body>
-                    {cartridge.map((item, index) => (
-                      <Table.Row key={index}>
-                        <Table.Cell width={1}>
-                          <Input value={index + 1} readOnly />
-                        </Table.Cell>
-                        <Table.Cell width={5}>
-                          <Input readOnly fluid value={item.matnrName} />
-                        </Table.Cell>
-
-                        <Table.Cell width={1}>
-                          <Input
-                            readOnly
-                            fluid
-                            label={{ content: 'F№' }}
-                            labelPosition="left"
-                          />
-                        </Table.Cell>
-                        <Table.Cell width={2}>
-                          <Input
-                            value={item.quantity}
-                            type="number"
-                            label={{ content: 'шт' }}
-                            labelPosition="right"
-                            fluid
-                            onChange={e => changeCartridgeCount(e, item)}
-                          />
-                        </Table.Cell>
-                        <Table.Cell width={2}>
-                          <Input
-                            value={item.sum}
-                            readOnly
-                            placeholder="Сумма"
-                          />
-                        </Table.Cell>
-                        <Table.Cell width={2}>
-                          <Input
-                            value={item.currencyName}
-                            readOnly
-                            placeholder="Валюта"
-                          />
-                        </Table.Cell>
-                        <Table.Cell width={2}>
-                          <Checkbox
-                            checked={item.warranty}
-                            label="Гарантия"
-                            onChange={() => changeWarrantyCartridge(item)}
-                          />
-                        </Table.Cell>
-                        <Table.Cell width={3}>
-                          <Button
-                            color="red"
-                            onClick={() => removeCartridgeItem(item)}
-                          >
-                            Удалить
-                          </Button>
-                        </Table.Cell>
-                      </Table.Row>
-                    ))}
-                  </Table.Body>
-                </Table>
-
-                <ModalAddCartridge
-                  data={cartridgeList}
-                  modalOpen={modalOpenCartridge}
-                  handleApplyCartridge={handleApplyCartridge}
-                  checkedCartridge={checkedCartridge}
-                />
-                <Button
-                  disabled={editStatus}
-                  icon
-                  labelPosition="left"
-                  color="green"
-                  size="small"
-                  onClick={() => setModalOpenCartridge(true)}
-                >
-                  <Icon name="plus" size="small" />
-                  Добавить картриджи
-                </Button>
-              </Segment>
-
-              {/*Сервис пакет  */}
-              <Segment>
-                <h3>Сервис пакет</h3>
-                <Divider />
-                <Table>
-                  <Table.Header>
-                    <Table.Row>
-                      <Table.HeaderCell>№</Table.HeaderCell>
-                      <Table.HeaderCell>Наименование</Table.HeaderCell>
-                      <Table.HeaderCell>Сумма</Table.HeaderCell>
-                      <Table.HeaderCell>Валюта</Table.HeaderCell>
-                      <Table.HeaderCell></Table.HeaderCell>
-                    </Table.Row>
-                  </Table.Header>
-                  <Table.Body>
-                    {servicePacket.map((item, index) => (
-                      <Table.Row key={index}>
-                        <Table.Cell width={1}>
-                          <Input value={index + 1} readOnly />
-                        </Table.Cell>
-                        <Table.Cell width={5}>
-                          <Input value={item.name} readOnly fluid />
-                        </Table.Cell>
-                        <Table.Cell width={3}>
-                          <Input
-                            value={item.price}
-                            readOnly
-                            placeholder="Сумма"
-                          />
-                        </Table.Cell>
-                        <Table.Cell width={3}>
-                          <Input
-                            value={item.currencyName}
-                            readOnly
-                            placeholder="Валюта"
-                          />
-                        </Table.Cell>
-                        <Table.Cell width={3}>
-                          <Button
-                            onClick={() => removeServicePacket(item)}
-                            color="red"
-                          >
-                            Удалить
-                          </Button>
-                        </Table.Cell>
-                      </Table.Row>
-                    ))}
-                  </Table.Body>
-                </Table>
-                <ModalAddServicePacket
-                  data={servicePacketList}
-                  modalOpen={modalOpenServicePacket}
-                  handleApplyServicePacket={handleApplyServicePacket}
-                  checkedServicePacket={checkedServicePacket}
-                />
-                <Button
-                  disabled={editStatus}
-                  icon
-                  labelPosition="left"
-                  color="green"
-                  size="small"
-                  onClick={() => setModalOpenServicePacket(true)}
-                >
-                  <Icon name="plus" size="small" />
-                  Добавить сервис пакет
-                </Button>
-              </Segment>
-
-              {/*Отчеты  */}
-              <Table celled>
-                <Table.Body>
-                  <Table.Row>
-                    <Table.Cell>Общая Сумма</Table.Cell>
-                    <Table.Cell>{service.sumTotal}</Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>Скидка</Table.Cell>
-                    <Table.Cell>{service.discount}</Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>Сумма к оплате</Table.Cell>
-                    <Table.Cell>{service.sumForPay}</Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>Оплачено</Table.Cell>
-                    <Table.Cell>{service.paid}</Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell>Премия мастера</Table.Cell>
-                    <Table.Cell>{service.masterPremium}</Table.Cell>
-                  </Table.Row>
-                  <Table.Row>
-                    <Table.Cell width={6}>Премия оператора</Table.Cell>
-                    <Table.Cell width={10}>
-                      {service.operatorPremium}
-                    </Table.Cell>
-                  </Table.Row>
-                </Table.Body>
-              </Table>
-
-              <Button
-                color="green"
-                disabled={status.checkButton}
-                onClick={handleCheck}
-              >
-                <Icon name="check" size="large" />
-                Проверить
-              </Button>
-              <Button
-                type="submit"
-                primary
-                disabled={status.saveButton}
-                onClick={saveService}
-              >
-                <Icon name="save" size="large" />
-                Сохранить
-              </Button>
-            </Segment>
+            <SaleOfSparePart
+              data={sparePartList}
+              addSparePartBtn={addSparePartBtn}
+            />
+            <ModalAddSparePart
+              data={saleOfSparePart}
+              modalOpen={modalSparePart}
+              checkedSparePart={checkedSparePart}
+              handleApplySparePart={handleApplySparePart}
+            />
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -1346,11 +591,13 @@ function mapStateToProps(state) {
     customersById: state.f4.customersById,
     tovar: state.smcsReducer.tovar,
     serviceTypeId: state.smcsReducer.serviceTypeId,
-    matnrList: state.smcsReducer.smcsMatnrPriceList,
+    matnrPriceSparePart: state.smcsReducer.matnrPriceSparePart,
+    matnrPriceCartridge: state.smcsReducer.matnrPriceCartridge,
     servicePacketProps: state.smcsReducer.smcsServicePacket,
     positionSumm: state.smcsReducer.smcsFetchPositionSumm,
     checkSmcs: state.smcsReducer.checkSmcs,
     saveSmcs: state.smcsReducer.saveSmcs,
+    operatorList: state.smcsReducer.operatorList,
   };
 }
 
@@ -1364,9 +611,11 @@ export default connect(mapStateToProps, {
   f4FetchCustomersById,
   fetchTovarId,
   fetchServiceTypeId,
-  fetchSmcsMatnrPriceList,
+  fetchMatnrPriceSparePart,
+  fetchMatnrPriceCartridge,
   fetchSmcsServicePacket,
   fetchPositionSumm,
   checkSmcsWithoutReques,
   saveSmcsWithoutReques,
+  fetchOperatorList,
 })(injectIntl(TabSmcsWithoutRequest));

@@ -3,25 +3,18 @@ import { handleError } from '../../../general/notification/notification_action';
 import { modifyLoader } from '../../../general/loader/loader_action';
 
 //SMCS - создание сервиса
-export const FETCH_SERVICE_SMCS = 'FETCH_SERVICE_SMCS'; //Договор
-
+export const FETCH_SERVICE_SMCS = 'FETCH_SERVICE_SMCS';
 export const FETCH_SERVICE_MATNR_LIST = 'FETCH_SERVICE_MATNR_LIST';
-
 export const CLEAR_DYNOBJ_MARKETING = 'CLEAR_DYNOBJ_MARKETING';
-
 export const FETCH_TOVAR_ID = 'FETCH_TOVAR_ID';
-
 export const FETCH_SERVICE_TYPE_ID = 'FETCH_SERVICE_TYPE_ID';
-
-export const FETCH_SMCS_MATNR_PRICELIST = 'FETCH_SMCS_MATNR_PRICELIST';
-
+export const FETCH_MATNR_PRICE_SPARE_PART = 'FETCH_MATNR_PRICE_SPARE_PART';
+export const FETCH_MATNR_PRICE_CARTRIDGE = 'FETCH_MATNR_PRICE_CARTRIDGE';
 export const FETCH_SMCS_SERVICE_PACKET = 'FETCH_SMCS_SERVICE_PACKET';
-
 export const FETCH_POSITION_SUMM = 'FETCH_POSITION_SUMM';
-
 export const CHECK_SMCS_WITHOUT_REQUEST = 'CHECK_SMCS_WITHOUT_REQUEST';
-
 export const SAVE_SMCS_WITHOUT_REQUEST = 'SAVE_SMCS_WITHOUT_REQUEST';
+export const FETCH_OPERATOR_LIST = 'FETCH_OPERATOR_LIST';
 //--END
 // const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 // const language = localStorage.getItem('language');
@@ -33,7 +26,6 @@ export const fetchServiceSmcs = param => {
     dispatch(modifyLoader(true));
     doGet(`smcs/getContractByTovarSn`, param)
       .then(({ data }) => {
-        //console.log(data, 'ACTION');
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SERVICE_SMCS,
@@ -47,24 +39,24 @@ export const fetchServiceSmcs = param => {
   };
 };
 
-export const fetchServiceMatnrList = param => {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doGet(`smcs/getMatnrPriceList`, param)
-      .then(({ data }) => {
-        //console.log(data, 'ACTION');
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: FETCH_SERVICE_MATNR_LIST,
-          data: data.data,
-        });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
-};
+// export const fetchServiceMatnrList = param => {
+//   return function(dispatch) {
+//     dispatch(modifyLoader(true));
+//     doGet(`smcs/getMatnrPriceList`, param)
+//       .then(({ data }) => {
+//         //console.log(data, 'ACTION');
+//         dispatch(modifyLoader(false));
+//         dispatch({
+//           type: FETCH_SERVICE_MATNR_LIST,
+//           data: data.data,
+//         });
+//       })
+//       .catch(error => {
+//         dispatch(modifyLoader(false));
+//         handleError(error, dispatch);
+//       });
+//   };
+// };
 
 export const fetchTovarId = param => {
   return function(dispatch) {
@@ -104,21 +96,38 @@ export const fetchServiceTypeId = param => {
   };
 };
 
-export const fetchSmcsMatnrPriceList = param => {
+export const fetchMatnrPriceSparePart = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`smcs/getMatnrPriceList`, param)
       .then(({ data }) => {
-        //console.log(data, 'ACTION');
         dispatch(modifyLoader(false));
         dispatch({
-          type: FETCH_SMCS_MATNR_PRICELIST,
+          type: FETCH_MATNR_PRICE_SPARE_PART,
           data: data,
         });
       })
       .catch(error => {
-        // dispatch(modifyLoader(false));
-        // handleError(error, dispatch);
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+
+export const fetchMatnrPriceCartridge = param => {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`smcs/getMatnrPriceList`, param)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_MATNR_PRICE_CARTRIDGE,
+          data: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
       });
   };
 };
@@ -141,9 +150,27 @@ export const fetchSmcsServicePacket = param => {
   };
 };
 
-export const fetchPositionSumm = body => {
+export const fetchOperatorList = param => {
   return function(dispatch) {
-    doPost(`smcs/position_sum`, body)
+    dispatch(modifyLoader(true));
+    doGet(`smcs/getOperatorList`, param)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_OPERATOR_LIST,
+          data: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+
+export const fetchPositionSumm = (branchId, bukrs, position) => {
+  return function(dispatch) {
+    doPost(`smcs/getPositionSum?branchId=${branchId}&bukrs=${bukrs}`, position)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
