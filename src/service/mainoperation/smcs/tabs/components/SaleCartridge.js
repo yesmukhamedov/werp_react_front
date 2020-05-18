@@ -9,7 +9,7 @@ import {
 } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
 
-const SaleOfSparePart = props => {
+const SaleCartridge = props => {
   const {
     data = [],
     addSparePartBtn,
@@ -17,19 +17,16 @@ const SaleOfSparePart = props => {
     quantitySparePart,
   } = props;
 
-  console.log('DATA', data);
+  console.log('DATA', data.length);
 
   const columns = [
     {
       Header: '№',
       accessor: 'matnrCode',
-      width: 50,
-      // Cell: index => <p>{index + 1}</p>,
     },
     {
       Header: 'Наименование',
       accessor: 'matnrName',
-      width: 500,
     },
     {
       Header: 'Количество',
@@ -83,13 +80,13 @@ const SaleOfSparePart = props => {
 
   return (
     <Segment>
-      <h5>Продажа запчастей</h5>
+      <h5>Продажа картриджей</h5>
       <Divider />
       <ReactTableWrapper
         data={data}
         columns={columns}
-        className="-striped -highlight"
-        defaultPageSize={data.length <= 5 ? 5 : 10}
+        // className="-striped -highlight"
+        defaultPageSize={5}
       />
       <Divider />
 
@@ -102,10 +99,10 @@ const SaleOfSparePart = props => {
         onClick={addSparePartBtn}
       >
         <Icon name="plus" size="small" />
-        Добавить запчасти
+        Добавить картриджей
       </Button>
     </Segment>
   );
 };
 
-export default SaleOfSparePart;
+export default SaleCartridge;

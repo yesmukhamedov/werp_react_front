@@ -44,6 +44,7 @@ import ModalAddCartridge from '../modals/ModalAddCartridge';
 import 'react-datepicker/dist/react-datepicker.css';
 import Services from './components/Services';
 import SaleOfSparePart from './components/SaleOfSparePart';
+import SaleCartridge from './components/SaleCartridge';
 
 //Создание сервиса без заявки
 const TabSmcsWithoutRequest = props => {
@@ -57,7 +58,7 @@ const TabSmcsWithoutRequest = props => {
     customersById,
     tovar,
     serviceTypeId = [],
-    matnrPriceSparePart,
+    matnrPriceSparePart = [],
     matnrPriceCartridge,
     servicePacketProps = [],
     positionSumm,
@@ -186,6 +187,30 @@ const TabSmcsWithoutRequest = props => {
     props.f4FetchBranches();
   }, []);
 
+  useEffect(() => {
+    let paramMatnrSparePart = {
+      branchId: service.branchId,
+      bukrs: service.bukrs,
+      masterId: service.masterId,
+      serviceTypeId: 3,
+      tovarId: service.tovarId,
+    };
+
+    let paramMatnrCartridge = {
+      branchId: service.branchId,
+      bukrs: service.bukrs,
+      masterId: service.masterId,
+      serviceTypeId: 1,
+      tovarId: service.tovarId,
+    };
+
+    if (service.masterId != null || service.masterId != undefined) {
+      console.log('MASTER', service.masterId);
+      props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart });
+      props.fetchMatnrPriceSparePart({ ...paramMatnrCartridge });
+    }
+  }, [service.masterId]);
+
   //УСЛУГИ========================================================================================
   //==============================================================================================
 
@@ -219,7 +244,7 @@ const TabSmcsWithoutRequest = props => {
         servicePackageId: null,
         serviceTypeId: 2,
         sum: 0,
-        warranty: false,
+        warranty: null,
       },
     ]);
   };
@@ -245,77 +270,57 @@ const TabSmcsWithoutRequest = props => {
 
   //Удалить услуг
   const handleRemoveService = value => {
-    let servFilter = service.positions.filter(item => item.id !== value.id);
-    setServices([...servFilter]);
+    let servicesFilter = services.filter(item => item.id !== value.id);
+    setServices([...servicesFilter]);
   };
 
   //ПРОДАЖА ЗАПЧАСТЕЙ========================================================================================
   //=========================================================================================================
-
+  const [sparePartInitial, setSparePartInitial] = useState([]);
   const [saleOfSparePart, setSaleOfSparePart] = useState([]);
   const [modalSparePart, setModalSparePart] = useState(false);
-
-  const sparePartList = service.positions
-    .filter(item => item.serviceTypeId === 3)
-    .filter(item => item.checked === true);
+  console.log('saleOfSparePart', saleOfSparePart);
 
   const addSparePartBtn = () => {
     setModalSparePart(true);
   };
 
   useEffect(() => {
-    const paramMatnrSparePart = {
-      branchId: service.branchId,
-      bukrs: service.bukrs,
-      masterId: service.masterId,
-      serviceTypeId: 3,
-      tovarId: service.tovarId,
-    };
-
-    if (service.masterId !== null || service.masterId !== undefined) {
-      console.log('MASTER', service.masterId);
-      // props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart });
-    }
-  }, [service.masterId]);
-
-  useEffect(() => {
-    if (matnrPriceSparePart) {
-      matnrPriceSparePart.map(item => {
-        setSaleOfSparePart(prev => [
-          ...prev,
-          {
-            index: null,
-            currencyId: item.currencyId,
-            currencyName: item.currencyName,
-            fno: null,
-            id: null,
-            matnr: item.matnr,
-            matnrName: item.matnrName,
-            matnrCode: item.matnrCode,
-            price: item.price,
-            menge: item.menge,
-            qinit: item.qinit,
-            qminus: item.qminus,
-            operationId: null,
-            quantity: null,
-            serviceId: null,
-            servicePackageId: null,
-            serviceTypeId: 3,
-            sum: null,
-            warranty: false,
-            checked: false,
-          },
-        ]);
-      });
-    }
+    matnrPriceSparePart.map((item, index) => {
+      setSparePartInitial(prev => [
+        ...prev,
+        {
+          index: null,
+          currencyId: item.currencyId,
+          currencyName: item.currencyName,
+          fno: null,
+          id: item.matnrId + index,
+          matnr: item.matnr,
+          matnrName: item.matnrName,
+          matnrCode: item.matnrCode,
+          matnrPrice: item.price,
+          menge: item.menge,
+          qinit: item.qinit,
+          qminus: item.qminus,
+          operationId: null,
+          quantity: 1,
+          serviceId: null,
+          servicePackageId: null,
+          serviceTypeId: 3,
+          sum: null,
+          warranty: false,
+          checked: false,
+        },
+      ]);
+    });
   }, [matnrPriceSparePart]);
 
   //Выбрать запчасть
   const checkedSparePart = value => {
-    if (value.checked == true) {
-      setSaleOfSparePart(
-        saleOfSparePart.map(item =>
-          item.matnrCode === value.matnrCode
+    if (value.checked === true) {
+      setSparePartInitial(
+        sparePartInitial.map(item =>
+          item.id === value.id
             ? {
                 ...item,
                 checked: false,
@@ -326,14 +331,14 @@ const TabSmcsWithoutRequest = props => {
         ),
       );
     } else {
-      setSaleOfSparePart(
-        saleOfSparePart.map(item =>
-          item.matnrCode === value.matnrCode
+      setSparePartInitial(
+        sparePartInitial.map(item =>
+          item.id === value.id
             ? {
                 ...item,
                 checked: true,
-                quantity: 1,
-                sum: item.matnrPrice,
+                quantity: item.quantity,
+                sum: item.matnrPrice * item.quantity,
               }
             : item,
         ),
@@ -341,9 +346,59 @@ const TabSmcsWithoutRequest = props => {
     }
   };
 
+  // Применить выбранные запчасти
   const handleApplySparePart = () => {
-    setService({ ...service, positions: [...services, ...sparePartList] });
+    const sparePartFilter = sparePartInitial.filter(
+      item => item.checked === true,
+    );
+    setSaleOfSparePart([...sparePartFilter]);
     setModalSparePart(false);
+  };
+
+  //Удалить запчасть
+  const deleteSparePart = value => {
+    let deleteFilter = sparePartInitial.filter(item => item.id !== value.id);
+    setSparePartInitial([...deleteFilter]);
+  };
+
+  //Количество запчастей
+  const quantitySparePart = (e, value) => {
+    console.log('target value', e.target.value);
+    if (e.target.value <= value.menge) {
+      if (value.warranty === true) {
+        setSparePartInitial(
+          sparePartInitial.map(
+            item => (
+              console.log('item ID', item.id, 'value.id', value.id),
+              item.id === value.id
+                ? {
+                    ...item,
+                    sum: 0,
+                    quantity: e.target.value,
+                  }
+                : item
+            ),
+          ),
+        );
+      } else {
+        setSparePartInitial(
+          sparePartInitial.map(
+            item => (
+              console.log('item ID', item.id, 'value.id', value.id),
+              item.id === value.id
+                ? {
+                    ...item,
+                    quantity: e.target.value,
+                    sum: e.target.value * item.matnrPrice,
+                  }
+                : item
+            ),
+          ),
+        );
+      }
+    } else {
+      alert(`У Вас в подотчете ${value.menge}`);
+    }
   };
 
   //ПРОДАЖА КАРТРИДЖЕЙ========================================================================================
@@ -562,15 +617,18 @@ const TabSmcsWithoutRequest = props => {
             />
 
             <SaleOfSparePart
-              data={sparePartList}
+              data={saleOfSparePart}
               addSparePartBtn={addSparePartBtn}
+              deleteSparePart={deleteSparePart}
+              quantitySparePart={quantitySparePart}
             />
             <ModalAddSparePart
-              data={saleOfSparePart}
+              data={sparePartInitial}
               modalOpen={modalSparePart}
               checkedSparePart={checkedSparePart}
               handleApplySparePart={handleApplySparePart}
             />
+            <SaleCartridge />
           </Grid.Column>
         </Grid.Row>
       </Grid>
