@@ -25,21 +25,22 @@ const ServiceFilterVC = props => {
     intl: { messages },
     language,
     fetchServicePacketPlan,
-    dynamicObject = [],
-    srlsmList = [],
+    servicePacket = [],
   } = props;
+
   const emptyParam = {
-    country: '',
+    countryId: '',
     bukrs: '',
     branchId: '',
-    finStatus: '',
-    categoryId: '',
+    contractStatusId: '',
+    crmCategory: '',
     serviceDateType: '',
     warranty: '',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
+  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
 
   useEffect(() => {
     let servBrOptions = branches
@@ -58,93 +59,93 @@ const ServiceFilterVC = props => {
           bukrs: item.bukrs,
         };
       });
-    if (param.country !== '' && param.bukrs !== '') {
+    if (param.countryId !== '' && param.bukrs !== '') {
       let servBranchOptions = servBrOptions
-        .filter(item => item.country_id === param.country)
+        .filter(item => item.country_id === param.countryId)
         .filter(item => item.bukrs === param.bukrs);
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country !== '' && param.bukrs === '') {
+    } else if (param.countryId !== '' && param.bukrs === '') {
       let servBranchOptions = servBrOptions.filter(
-        item => item.country_id === param.country,
+        item => item.country_id === param.countryId,
       );
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country === '' && param.bukrs !== '') {
+    } else if (param.countryId === '' && param.bukrs !== '') {
       let servBranchOptions = servBrOptions.filter(
         item => item.bukrs === param.bukrs,
       );
 
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country === '' && param.bukrs === '') {
+    } else if (param.countryId === '' && param.bukrs === '') {
       setServiceBranchOptions([...servBrOptions]);
     }
-  }, [branches, param.country, param.bukrs]);
+  }, [branches, param.countryId, param.bukrs]);
 
   const initialColumns = [
     {
-      Header: '№',
-      accessor: '1',
+      Header: 'ID',
+      accessor: 'id',
       checked: true,
       filterable: false,
     },
     {
       Header: 'CN',
-      accessor: '2',
+      accessor: 'contractNumber',
       checked: true,
     },
     {
       Header: 'Заводской номер',
-      accessor: '4',
+      accessor: 'tovarSn',
       checked: true,
     },
     {
       Header: 'Дата продажи',
-      accessor: '5',
+      accessor: 'contractDate',
       checked: true,
     },
     {
       Header: 'ФИО клиента',
-      accessor: '6',
+      accessor: 'customerFIO',
       checked: true,
       with: 200,
     },
     {
       Header: 'ИИН клиента',
-      accessor: '7',
+      accessor: 'customerIinBin',
       checked: true,
       with: 150,
     },
     {
       Header: 'Адрес',
-      accessor: '8',
+      accessor: 'address',
       checked: true,
     },
     {
       Header: 'ФИО дилера',
-      accessor: '9',
+      accessor: 'dealerFIO',
       checked: true,
       filterable: false,
     },
     {
       Header: 'F1',
-      accessor: '10',
+      accessor: 'f1',
       checked: true,
       filterable: false,
     },
     {
       Header: 'Гарантия',
-      accessor: '13cat5',
+      accessor: 'warrantyName',
       checked: true,
       filterable: false,
     },
     {
       Header: 'Категория',
-      accessor: '13cat',
+      accessor: 'crmCategoryName',
       checked: true,
       filterable: false,
     },
     {
       Header: 'Фин. статус',
-      accessor: '13cfin',
+      accessor: 'contractStatusName',
       checked: true,
       filterable: false,
     },
@@ -165,15 +166,18 @@ const ServiceFilterVC = props => {
   ];
 
   const handleClickApply = () => {
-    fetchServicePacketPlan({ ...param });
+    const page = 0;
+    const size = 20;
+    fetchServicePacketPlan({ ...param, page, size });
+    setTurnOnReactFetch(true);
   };
 
   const onInputChange = (o, fieldName) => {
     setParam(prev => {
       const prevParam = { ...prev };
       switch (fieldName) {
-        case 'country':
-          prevParam.country = o.value;
+        case 'countryId':
+          prevParam.countryId = o.value;
           break;
         case 'bukrs':
           prevParam.bukrs = o.value;
@@ -181,8 +185,8 @@ const ServiceFilterVC = props => {
         case 'branchId':
           prevParam.branchId = o.value;
           break;
-        case 'categoryId':
-          prevParam.categoryId = o.value;
+        case 'crmCategory':
+          prevParam.crmCategory = o.value;
           break;
         case 'serviceTypeId':
           prevParam.serviceTypeId = o.value;
@@ -195,8 +199,8 @@ const ServiceFilterVC = props => {
           prevParam.dateStart = o.value;
           break;
 
-        case 'finStatus':
-          prevParam.finStatus = o.value;
+        case 'contractStatusId':
+          prevParam.contractStatusId = o.value;
 
         case 'serviceDateType':
           prevParam.serviceDateType = o.value;
@@ -225,7 +229,7 @@ const ServiceFilterVC = props => {
             label="Страна"
             options={countryOptions}
             placeholder="Страна"
-            onChange={(e, o) => onInputChange(o, 'country')}
+            onChange={(e, o) => onInputChange(o, 'countryId')}
             className="alignBottom"
           />
 
@@ -251,7 +255,7 @@ const ServiceFilterVC = props => {
             label="Фин. Статус"
             options={finStatusOption}
             placeholder="Фин. Статус"
-            onChange={(e, o) => onInputChange(o, 'finStatus')}
+            onChange={(e, o) => onInputChange(o, 'contractStatusId')}
             className="alignBottom"
           />
 
@@ -269,7 +273,7 @@ const ServiceFilterVC = props => {
             label="Категория"
             options={categoryOptions}
             placeholder="Категория"
-            onChange={(e, o) => onInputChange(o, 'categoryId')}
+            onChange={(e, o) => onInputChange(o, 'crmCategory')}
             className="alignBottom"
           />
 
@@ -303,9 +307,16 @@ const ServiceFilterVC = props => {
       <Divider />
 
       <ReactTableServerSideWrapper
-        filterable={true}
-        data={srlsmList}
+        data={servicePacket ? servicePacket.data : []}
         columns={columns}
+        filterable={true}
+        defaultPageSize={20}
+        showPagination={true}
+        requestData={param => {
+          props.fetchServicePacketPlan({ ...param });
+        }}
+        pages={servicePacket ? servicePacket.totalPages : ''}
+        turnOnReactFetch={turnOnReactFetch}
       />
     </Container>
   );
@@ -315,7 +326,7 @@ function mapStateToProps(state) {
   return {
     language: state.locales.lang,
     serviceTypeId: state.smcsReducer.serviceTypeId,
-    dynamicObject: state.smopspReducer.dynamicObject,
+    servicePacket: state.smopspReducer.servicePacket,
   };
 }
 

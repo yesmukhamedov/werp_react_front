@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { Container, Form, Divider, Icon } from 'semantic-ui-react';
+import moment from 'moment';
 import 'react-table/react-table.css';
-import { fetchAssignedCalls } from '../smopccocAction';
+import { fetchCRMSchedule } from '../smopccocAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from '../../../../utils/ModalColumns';
@@ -38,10 +39,11 @@ const AssignedCalls = props => {
     categoryId: '',
     serviceDateType: '',
     finStatus: '',
-    date: '',
+    dateOpenAt: '',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
+  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
 
   const initialColumns = [
     {
@@ -158,7 +160,7 @@ const AssignedCalls = props => {
   ];
 
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
-
+  console.log(assignedCalls);
   useEffect(() => {
     let servBrOptions = branches
       .filter(
@@ -198,7 +200,10 @@ const AssignedCalls = props => {
   }, [branches, param.country, param.bukrs]);
 
   const handleClickApplyAssigned = () => {
-    props.fetchAssignedCalls({ ...param });
+    const page = 0;
+    const size = 20;
+    props.fetchCRMSchedule({ ...param, page, size });
+    setTurnOnReactFetch(true);
   };
 
   const onInputChange = (o, fieldName) => {
@@ -249,8 +254,8 @@ const AssignedCalls = props => {
         <Form.Group widths="equal">
           <Form.Select
             fluid
-            label="Страна"
-            placeholder="Страна"
+            label={messages['country']}
+            placeholder={messages['country']}
             options={countryOptions}
             onChange={(e, o) => onInputChange(o, 'country')}
             className="alignBottom"
@@ -258,8 +263,8 @@ const AssignedCalls = props => {
 
           <Form.Select
             fluid
-            label="Компания"
-            placeholder="Компания"
+            label={messages['bukrs']}
+            placeholder={messages['bukrs']}
             options={companyOptions}
             onChange={(e, o) => onInputChange(o, 'bukrs')}
             className="alignBottom"
@@ -267,8 +272,8 @@ const AssignedCalls = props => {
 
           <Form.Select
             fluid
-            label="Филиал"
-            placeholder="Филиал"
+            label={messages['brnch']}
+            placeholder={messages['brnch']}
             options={serviceBranchOptions}
             onChange={(e, o) => onInputChange(o, 'branchId')}
             className="alignBottom"
@@ -276,8 +281,8 @@ const AssignedCalls = props => {
 
           <Form.Select
             fluid
-            label="Фин. Статус"
-            placeholder="Фин. Статус"
+            label={messages['fin_status']}
+            placeholder={messages['fin_status']}
             options={finStatusOption}
             onChange={(e, o) => onInputChange(o, 'finStatus')}
             className="alignBottom"
@@ -285,16 +290,16 @@ const AssignedCalls = props => {
 
           <Form.Select
             fluid
-            label="Срок сервиса"
-            placeholder="Срок сервиса"
+            label={messages['service_period']}
+            placeholder={messages['service_period']}
             options={serviceDateTypeOptions}
             onChange={(e, o) => onInputChange(o, 'serviceDateType')}
             className="alignBottom"
           />
 
           <Form.Select
-            label="Категория"
-            placeholder="Категория"
+            label={messages['category']}
+            placeholder={messages['category']}
             options={crmCategoryOptions}
             onChange={(e, o) => onInputChange(o, 'categoryId')}
             className="alignBottom"
@@ -304,17 +309,25 @@ const AssignedCalls = props => {
         <Form.Group className="spaceBetween">
           <div className="flexDirectionRow">
             <Form.Field className="marginRight">
-              <label>Дата</label>
+              <label>{messages['date']}</label>
               <DatePicker
                 className="date-auto-width"
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.date)}
-                onChange={date =>
-                  setParam({ ...param, date: momentToStringYYYYMMDD(date) })
+                placeholderText={messages['date']}
+                selected={
+                  param.dateOpenAt === ''
+                    ? ''
+                    : stringYYYYMMDDToMoment(param.dateOpenAt)
                 }
-                maxDate={new Date()}
+                onChange={date =>
+                  setParam({
+                    ...param,
+                    dateOpenAt: momentToStringYYYYMMDD(date),
+                  })
+                }
+                // maxDate={moment(new Date())}
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
@@ -324,7 +337,7 @@ const AssignedCalls = props => {
               className="alignBottom"
             >
               <Icon name="search" />
-              Применить
+              {messages['apply']}
             </Form.Button>
           </div>
 
@@ -338,9 +351,16 @@ const AssignedCalls = props => {
       </Form>
       <Divider />
       <ReactTableServerSideWrapper
-        filterable={true}
-        data={assignedCalls}
+        data={assignedCalls ? assignedCalls.data : []}
         columns={columns}
+        filterable={true}
+        defaultPageSize={20}
+        showPagination={true}
+        requestData={param => {
+          props.fetchCRMSchedule({ ...param });
+        }}
+        pages={assignedCalls ? assignedCalls.totalPages : ''}
+        turnOnReactFetch={turnOnReactFetch}
       />
     </Container>
   );
@@ -350,11 +370,11 @@ function mapStateToProps(state) {
   return {
     language: state.locales.lang,
     serviceTypeId: state.smcsReducer.serviceTypeId,
-    assignedCalls: state.smopccocReducer.assignedCalls,
+    assignedCalls: state.smopccocReducer.CRMSchedule,
   };
 }
 
 export default connect(mapStateToProps, {
   fetchServiceListManager,
-  fetchAssignedCalls,
+  fetchCRMSchedule,
 })(injectIntl(AssignedCalls));

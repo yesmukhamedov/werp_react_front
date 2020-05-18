@@ -13,7 +13,7 @@ export const FETCH_SERVICE_TRANSFER_APPLICATION_EXODUS =
   'FETCH_SERVICE_TRANSFER_APPLICATION_EXODUS';
 
 //Назначенные звонки
-export const FETCH_SERVICE_ASSIGNED_CALLS = 'FETCH_SERVICE_ASSIGNED_CALLS';
+export const FETCH_SERVICE_CRMSchedule = 'FETCH_SERVICE_CRMSchedule';
 
 //Мои заявки
 export const FETCH_SERVICE_MY_APPLICATION_EXODUS =
@@ -31,7 +31,7 @@ export const fetchServiceFilterPlan = param => {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SERVICE_FILTER_PLAN,
-          data,
+          payload: data,
         });
       })
       .catch(error => {
@@ -45,12 +45,12 @@ export const fetchServiceFilterPlan = param => {
 export const fetchTransferApplicationExodus = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccoc/transferApplicationExodus`, param)
+    doGet(`smopccoc/rescheduledApplication`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SERVICE_TRANSFER_APPLICATION_EXODUS,
-          data,
+          payload: data,
         });
       })
       .catch(error => {
@@ -61,15 +61,15 @@ export const fetchTransferApplicationExodus = param => {
 };
 
 //Назначенные звонки
-export const fetchAssignedCalls = param => {
+export const fetchCRMSchedule = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccoc/assignedCalls`, param)
+    doGet(`smopccoc/CRMSchedule`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: FETCH_SERVICE_ASSIGNED_CALLS,
-          data,
+          type: FETCH_SERVICE_CRMSchedule,
+          payload: data,
         });
       })
       .catch(error => {
@@ -83,12 +83,12 @@ export const fetchAssignedCalls = param => {
 export const fetchMyApplicationExodus = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccoc/MyApplicationExodus`, param)
+    doGet(`smopccoc/myApplication`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SERVICE_MY_APPLICATION_EXODUS,
-          data,
+          payload: data,
         });
       })
       .catch(error => {

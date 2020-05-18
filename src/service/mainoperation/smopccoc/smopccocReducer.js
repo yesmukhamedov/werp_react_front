@@ -1,14 +1,14 @@
 import {
   FETCH_SERVICE_FILTER_PLAN,
   FETCH_SERVICE_TRANSFER_APPLICATION_EXODUS,
-  FETCH_SERVICE_ASSIGNED_CALLS,
+  FETCH_SERVICE_CRMSchedule,
   FETCH_SERVICE_MY_APPLICATION_EXODUS,
 } from './smopccocAction';
 
 const INITIAL_STATE = {
   dynamicObject: [],
   transfer: [],
-  assignedCalls: [],
+  CRMSchedule: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -16,24 +16,24 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_SERVICE_FILTER_PLAN:
       return {
         ...state,
-        serviceFilterPlan: [...action.data.data.data],
+        serviceFilterPlan: { ...action.payload.data },
       };
 
     case FETCH_SERVICE_TRANSFER_APPLICATION_EXODUS:
       return {
         ...state,
-        transfer: [...action.data.data.content],
+        transfer: { ...action.payload.data },
       };
-    case FETCH_SERVICE_ASSIGNED_CALLS:
+    case FETCH_SERVICE_CRMSchedule:
       return {
         ...state,
-        assignedCalls: [...action.data.data],
+        CRMSchedule: { ...action.payload.data },
       };
 
     case FETCH_SERVICE_MY_APPLICATION_EXODUS:
       return {
         ...state,
-        myApplication: [...action.data.data],
+        myApplication: { ...action.payload.data },
       };
 
     default:

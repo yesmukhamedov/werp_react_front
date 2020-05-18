@@ -8,6 +8,7 @@ import { fetchServiceTypeId } from '../../smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import DatePicker from 'react-datepicker';
+import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import ModalColumns from './../../../../utils/ModalColumns';
 import {
@@ -30,24 +31,24 @@ const MyApplication = props => {
   const {
     intl: { messages },
     language,
-    fetchMyApplication,
     dynamicObject = [],
-    srlsmList = [],
+    myApplication = [],
   } = props;
 
   const emptyParam = {
-    country: '',
+    countryId: '',
     bukrs: '',
     branchId: '',
-    finStatus: '',
-    categoryId: '',
+    contractStatusId: '',
+    crmCategory: '',
     serviceDateType: '',
     warranty: '',
-    date: '',
+    dateOpenAt: '',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
+  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
 
   useEffect(() => {
     let servBrOptions = branches
@@ -66,105 +67,105 @@ const MyApplication = props => {
           bukrs: item.bukrs,
         };
       });
-    if (param.country !== '' && param.bukrs !== '') {
+    if (param.countryId !== '' && param.bukrs !== '') {
       let servBranchOptions = servBrOptions
-        .filter(item => item.country_id === param.country)
+        .filter(item => item.country_id === param.countryId)
         .filter(item => item.bukrs === param.bukrs);
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country !== '' && param.bukrs === '') {
+    } else if (param.countryId !== '' && param.bukrs === '') {
       let servBranchOptions = servBrOptions.filter(
-        item => item.country_id === param.country,
+        item => item.country_id === param.countryId,
       );
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country === '' && param.bukrs !== '') {
+    } else if (param.countryId === '' && param.bukrs !== '') {
       let servBranchOptions = servBrOptions.filter(
         item => item.bukrs === param.bukrs,
       );
 
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country === '' && param.bukrs === '') {
+    } else if (param.countryId === '' && param.bukrs === '') {
       setServiceBranchOptions([...servBrOptions]);
     }
-  }, [branches, param.country, param.bukrs]);
+  }, [branches, param.countryId, param.bukrs]);
 
   const initialColumns = [
     {
-      Header: '№',
-      accessor: '1',
+      Header: 'ID',
+      accessor: 'id',
       checked: true,
       filterable: false,
     },
     {
       Header: 'CN',
-      accessor: '2',
+      accessor: 'contractNumber',
       checked: true,
     },
     {
       Header: 'Филиал',
-      accessor: '3',
+      accessor: 'branchId',
       checked: true,
     },
     {
       Header: 'Заводской номер',
-      accessor: '4',
+      accessor: 'tovarSn',
       checked: true,
     },
     {
       Header: 'Дата Заявки',
-      accessor: '5',
+      accessor: 'applicationDate',
       checked: true,
     },
 
     {
       Header: 'ФИО клиента',
-      accessor: '6sdsd',
+      accessor: 'customerFIO',
       checked: true,
     },
     {
       Header: 'ИИН клиента',
-      accessor: '6',
+      accessor: 'customerIinBin',
       checked: true,
     },
     {
       Header: 'Адрес',
-      accessor: '8',
+      accessor: 'address',
       checked: true,
     },
     {
       Header: 'ФИО дилера',
-      accessor: '9',
+      accessor: 'dealerFIO',
       checked: true,
       filterable: false,
     },
     {
       Header: 'F1',
-      accessor: '10',
+      accessor: 'f1',
       checked: true,
       filterable: false,
     },
     {
       Header: 'Гарантия',
-      accessor: '11',
+      accessor: 'warrantyId',
       checked: true,
       filterable: false,
     },
 
     {
       Header: 'Категория',
-      accessor: '12',
+      accessor: 'crmCategoryId',
       checked: true,
       filterable: false,
     },
 
     {
       Header: 'Фин статус',
-      accessor: '13',
+      accessor: 'contractStatusId',
       checked: true,
       filterable: false,
     },
     {
       Header: '№ заявки',
-      accessor: '136',
+      accessor: 'applicationNumber',
       checked: true,
       filterable: false,
     },
@@ -185,15 +186,18 @@ const MyApplication = props => {
   ];
 
   const handleClickApply = () => {
-    fetchMyApplication({ ...param });
+    const page = 0;
+    const size = 20;
+    props.fetchMyApplication({ ...param, page, size });
+    setTurnOnReactFetch(true);
   };
 
   const onInputChange = (o, fieldName) => {
     setParam(prev => {
       const prevParam = { ...prev };
       switch (fieldName) {
-        case 'country':
-          prevParam.country = o.value;
+        case 'countryId':
+          prevParam.countryId = o.value;
           break;
         case 'bukrs':
           prevParam.bukrs = o.value;
@@ -202,8 +206,8 @@ const MyApplication = props => {
           prevParam.branchId = o.value;
           break;
 
-        case 'categoryId':
-          prevParam.categoryId = o.value;
+        case 'crmCategory':
+          prevParam.crmCategory = o.value;
           break;
         case 'serviceTypeId':
           prevParam.serviceTypeId = o.value;
@@ -213,8 +217,8 @@ const MyApplication = props => {
           prevParam.serviceStatusId = o.value;
           break;
 
-        case 'finStatus':
-          prevParam.finStatus = o.value;
+        case 'contractStatusId':
+          prevParam.contractStatusId = o.value;
 
         case 'serviceDateType':
           prevParam.serviceDateType = o.value;
@@ -242,7 +246,7 @@ const MyApplication = props => {
             label="Страна"
             placeholder="Страна"
             options={countryOptions}
-            onChange={(e, o) => onInputChange(o, 'country')}
+            onChange={(e, o) => onInputChange(o, 'countryId')}
             className="alignBottom"
           />
 
@@ -267,7 +271,7 @@ const MyApplication = props => {
             label="Фин. Статус"
             placeholder="Фин. Статус"
             options={finStatusOption}
-            onChange={(e, o) => onInputChange(o, 'finStatus')}
+            onChange={(e, o) => onInputChange(o, 'contractStatusId')}
             className="alignBottom"
           />
           <Form.Select
@@ -283,7 +287,7 @@ const MyApplication = props => {
             label="Категория"
             placeholder="Категория"
             options={categoryOptions}
-            onChange={(e, o) => onInputChange(o, 'categoryId')}
+            onChange={(e, o) => onInputChange(o, 'crmCategory')}
             className="alignBottom"
           />
           <Form.Select
@@ -291,7 +295,7 @@ const MyApplication = props => {
             label="Гарантия"
             placeholder="Гарантия"
             options={warrantyOptions}
-            onChange={(e, o) => onInputChange(o, 'categoryId')}
+            onChange={(e, o) => onInputChange(o, 'warranty')}
             className="alignBottom"
           />
         </Form.Group>
@@ -305,11 +309,19 @@ const MyApplication = props => {
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.date)}
-                onChange={date =>
-                  setParam({ ...param, date: momentToStringYYYYMMDD(date) })
+                placeholderText="Дата"
+                selected={
+                  param.dateOpenAt === ''
+                    ? ''
+                    : stringYYYYMMDDToMoment(param.dateOpenAt)
                 }
-                maxDate={new Date()}
+                onChange={date =>
+                  setParam({
+                    ...param,
+                    dateOpenAt: momentToStringYYYYMMDD(date),
+                  })
+                }
+                maxDate={moment(new Date())}
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
@@ -333,9 +345,16 @@ const MyApplication = props => {
       <Divider />
 
       <ReactTableServerSideWrapper
-        filterable={true}
-        data={srlsmList}
+        data={myApplication ? myApplication.data : []}
         columns={columns}
+        filterable={true}
+        defaultPageSize={20}
+        showPagination={true}
+        requestData={param => {
+          props.fetchMyApplication({ ...param });
+        }}
+        pages={myApplication ? myApplication.totalPages : ''}
+        turnOnReactFetch={turnOnReactFetch}
       />
     </Container>
   );
@@ -345,7 +364,7 @@ function mapStateToProps(state) {
   return {
     language: state.locales.lang,
     serviceTypeId: state.smcsReducer.serviceTypeId,
-    dynamicObject: state.smopspReducer.dynamicObject,
+    myApplication: state.smopspReducer.myApplication,
   };
 }
 

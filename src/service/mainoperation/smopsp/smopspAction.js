@@ -9,7 +9,7 @@ import { modifyLoader } from '../../../general/loader/loader_action';
 export const FETCH_SERVICE_PACKET_PLAN = 'FETCH_SERVICE_PACKET_PLAN';
 
 //Перенесенные заявки
-export const FETCH_TRANSFER_APPLICATION = 'FETCH_TRANSFER_APPLICATION';
+export const FETCH_RESCHEDULED_APPLICATION = 'FETCH_RESCHEDULED_APPLICATION';
 
 //Назначенные звонки
 export const FETCH_ASSIGNED_CALLS = 'FETCH_ASSIGNED_CALLS';
@@ -24,12 +24,12 @@ const language = localStorage.getItem('language');
 export const fetchServicePacketPlan = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopsp/ServiceFilterVC`, param)
+    doGet(`smopsp/serviceFilterVCPlan`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SERVICE_PACKET_PLAN,
-          data,
+          payload: data,
         });
       })
       .catch(error => {
@@ -40,15 +40,16 @@ export const fetchServicePacketPlan = param => {
 };
 
 //Перенесенные заявки
-export const fetchTransferApplication = param => {
+export const fetchRescheduledApplication = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopsp/transferApplication`, param)
+    console.log(param);
+    doGet(`smopsp/rescheduledApplication`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: FETCH_TRANSFER_APPLICATION,
-          data,
+          type: FETCH_RESCHEDULED_APPLICATION,
+          payload: data,
         });
       })
       .catch(error => {
@@ -62,12 +63,12 @@ export const fetchTransferApplication = param => {
 export const fetchAssignedCalls = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopsp/assignedCalls`, param)
+    doGet(`smopsp/CRMSchedule`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_ASSIGNED_CALLS,
-          data,
+          payload: data,
         });
       })
       .catch(error => {
@@ -86,7 +87,7 @@ export const fetchMyApplication = param => {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_MY_APPLICATION,
-          data,
+          payload: data,
         });
       })
       .catch(error => {

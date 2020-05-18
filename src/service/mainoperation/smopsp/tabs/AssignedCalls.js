@@ -8,6 +8,7 @@ import { fetchServiceTypeId } from '../../smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import DatePicker from 'react-datepicker';
+import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
   momentToStringYYYYMMDD,
@@ -30,24 +31,23 @@ const AssignedCalls = props => {
   const {
     intl: { messages },
     language,
-    fetchAssignedCalls,
-    dynamicObject = [],
-    srlsmList = [],
+    assignedCalls = [],
   } = props;
 
   const emptyParam = {
-    country: '',
+    countryId: '',
     bukrs: '',
     branchId: '',
-    finStatus: '',
+    contractStatusId: '',
     serviceDateType: '',
-    categoryId: '',
+    crmCategory: '',
     warranty: '',
-    date: '',
+    dateOpenAt: '',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
+  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
 
   useEffect(() => {
     let servBrOptions = branches
@@ -66,99 +66,99 @@ const AssignedCalls = props => {
           bukrs: item.bukrs,
         };
       });
-    if (param.country !== '' && param.bukrs !== '') {
+    if (param.countryId !== '' && param.bukrs !== '') {
       let servBranchOptions = servBrOptions
-        .filter(item => item.country_id === param.country)
+        .filter(item => item.country_id === param.countryId)
         .filter(item => item.bukrs === param.bukrs);
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country !== '' && param.bukrs === '') {
+    } else if (param.countryId !== '' && param.bukrs === '') {
       let servBranchOptions = servBrOptions.filter(
-        item => item.country_id === param.country,
+        item => item.country_id === param.countryId,
       );
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country === '' && param.bukrs !== '') {
+    } else if (param.countryId === '' && param.bukrs !== '') {
       let servBranchOptions = servBrOptions.filter(
         item => item.bukrs === param.bukrs,
       );
 
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country === '' && param.bukrs === '') {
+    } else if (param.countryId === '' && param.bukrs === '') {
       setServiceBranchOptions([...servBrOptions]);
     }
-  }, [branches, param.country, param.bukrs]);
+  }, [branches, param.countryId, param.bukrs]);
 
   const initialColumns = [
     {
-      Header: '№',
-      accessor: '1',
+      Header: 'ID',
+      accessor: 'id',
       checked: true,
       filterable: false,
     },
     {
       Header: 'CN',
-      accessor: '2',
+      accessor: 'contractNumber',
       checked: true,
     },
     {
       Header: 'Филиал',
-      accessor: '3',
+      accessor: 'branchId',
       checked: true,
     },
     {
       Header: 'Заводской номер',
-      accessor: '4',
+      accessor: 'tovarSn',
       checked: true,
     },
     {
       Header: 'Дата продажи',
-      accessor: '5sds',
+      accessor: 'contractDate',
       checked: true,
       filterable: false,
     },
     {
       Header: 'Дата Назначения',
-      accessor: '5',
+      accessor: 'crmScheduleDate',
       checked: true,
       filterable: false,
     },
     {
       Header: 'ФИО клиента',
-      accessor: '6',
+      accessor: 'customerFIO',
       checked: true,
     },
     {
       Header: 'Адрес',
-      accessor: '8',
+      accessor: 'address',
       checked: true,
     },
     {
       Header: 'ФИО дилера',
-      accessor: '9',
+      accessor: 'dealerFIO',
       checked: true,
     },
     {
       Header: 'F1',
-      accessor: '10',
+      accessor: 'f1',
       checked: true,
       filterable: false,
     },
     {
       Header: 'Гарантия',
-      accessor: '11',
+      accessor: 'warrantyId',
       checked: true,
       filterable: false,
     },
 
     {
       Header: 'Категория',
-      accessor: '12',
+      accessor: 'crmCategoryId',
       checked: true,
       filterable: false,
     },
 
     {
       Header: 'Фин статус',
-      accessor: '13',
+      accessor: 'contractStatusId',
       checked: true,
       filterable: false,
     },
@@ -179,15 +179,18 @@ const AssignedCalls = props => {
   ];
 
   const handleClickApply = () => {
-    fetchAssignedCalls({ ...param });
+    const page = 0;
+    const size = 20;
+    props.fetchAssignedCalls({ ...param, page, size });
+    setTurnOnReactFetch(true);
   };
 
   const onInputChange = (o, fieldName) => {
     setParam(prev => {
       const prevParam = { ...prev };
       switch (fieldName) {
-        case 'country':
-          prevParam.country = o.value;
+        case 'countryId':
+          prevParam.countryId = o.value;
           break;
         case 'bukrs':
           prevParam.bukrs = o.value;
@@ -196,8 +199,8 @@ const AssignedCalls = props => {
           prevParam.branchId = o.value;
           break;
 
-        case 'categoryId':
-          prevParam.categoryId = o.value;
+        case 'crmCategory':
+          prevParam.crmCategory = o.value;
           break;
         case 'serviceTypeId':
           prevParam.serviceTypeId = o.value;
@@ -207,8 +210,8 @@ const AssignedCalls = props => {
           prevParam.serviceStatusId = o.value;
           break;
 
-        case 'finStatus':
-          prevParam.finStatus = o.value;
+        case 'contractStatusId':
+          prevParam.contractStatusId = o.value;
 
         case 'serviceDateType':
           prevParam.serviceDateType = o.value;
@@ -236,7 +239,7 @@ const AssignedCalls = props => {
             label="Страна"
             placeholder="Страна"
             options={countryOptions}
-            onChange={(e, o) => onInputChange(o, 'country')}
+            onChange={(e, o) => onInputChange(o, 'countryId')}
             className="alignBottom"
           />
 
@@ -261,7 +264,7 @@ const AssignedCalls = props => {
             label="Фин. Статус"
             placeholder="Фин. Статус"
             options={finStatusOption}
-            onChange={(e, o) => onInputChange(o, 'finStatus')}
+            onChange={(e, o) => onInputChange(o, 'contractStatusId')}
             className="alignBottom"
           />
           <Form.Select
@@ -277,7 +280,7 @@ const AssignedCalls = props => {
             label="Категория"
             placeholder="Категория"
             options={categoryOptions}
-            onChange={(e, o) => onInputChange(o, 'categoryId')}
+            onChange={(e, o) => onInputChange(o, 'crmCategory')}
             className="alignBottom"
           />
           <Form.Select
@@ -285,7 +288,7 @@ const AssignedCalls = props => {
             label="Гарантия"
             placeholder="Гарантия"
             options={warrantyOptions}
-            onChange={(e, o) => onInputChange(o, 'categoryId')}
+            onChange={(e, o) => onInputChange(o, 'warranty')}
             className="alignBottom"
           />
         </Form.Group>
@@ -299,11 +302,19 @@ const AssignedCalls = props => {
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.date)}
-                onChange={date =>
-                  setParam({ ...param, date: momentToStringYYYYMMDD(date) })
+                placeholderText="Дата"
+                selected={
+                  param.dateOpenAt === ''
+                    ? ''
+                    : stringYYYYMMDDToMoment(param.dateOpenAt)
                 }
-                maxDate={new Date()}
+                onChange={date =>
+                  setParam({
+                    ...param,
+                    dateOpenAt: momentToStringYYYYMMDD(date),
+                  })
+                }
+                maxDate={moment(new Date())}
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
@@ -327,9 +338,16 @@ const AssignedCalls = props => {
       <Divider />
 
       <ReactTableServerSideWrapper
+        data={assignedCalls ? assignedCalls.data : []}
         filterable={true}
-        data={srlsmList}
         columns={columns}
+        defaultPageSize={20}
+        showPagination={true}
+        requestData={param => {
+          props.fetchAssignedCalls({ ...param });
+        }}
+        pages={assignedCalls ? assignedCalls.totalPages : ''}
+        turnOnReactFetch={turnOnReactFetch}
       />
     </Container>
   );
@@ -339,7 +357,7 @@ function mapStateToProps(state) {
   return {
     language: state.locales.lang,
     serviceTypeId: state.smcsReducer.serviceTypeId,
-    dynamicObject: state.smopspReducer.dynamicObject,
+    assignedCalls: state.smopspReducer.assignedCalls,
   };
 }
 

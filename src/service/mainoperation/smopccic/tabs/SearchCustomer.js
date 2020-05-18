@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
 import {
   Container,
   Form,
@@ -196,6 +198,7 @@ const SearchCustomer = props => {
       <Form>
         <Form.Group widths="equal">
           <Form.Select
+            clearable
             fluid
             label="Страна"
             placeholder="Страна"
@@ -205,6 +208,8 @@ const SearchCustomer = props => {
           />
 
           <Form.Select
+            clearable
+            required
             fluid
             label="Компания"
             placeholder="Компания"
@@ -214,6 +219,8 @@ const SearchCustomer = props => {
           />
 
           <Form.Select
+            clearable
+            required
             fluid
             label="Филиал"
             placeholder="Филиал"
@@ -223,6 +230,7 @@ const SearchCustomer = props => {
           />
 
           <Form.Select
+            clearable
             label="Категория товара"
             placeholder="Категория товара"
             options={tovarCategoryOptions}
@@ -231,6 +239,7 @@ const SearchCustomer = props => {
           />
 
           <Form.Select
+            clearable
             label="Фин. статус"
             placeholder="Фин. статус"
             options={finStatusOptions}
@@ -299,4 +308,10 @@ const SearchCustomer = props => {
   );
 };
 
-export default SearchCustomer;
+function mapStateToProps(state) {
+  return {};
+}
+
+export default connect(mapStateToProps, {
+  fetchSearchCustomer,
+})(injectIntl(SearchCustomer));

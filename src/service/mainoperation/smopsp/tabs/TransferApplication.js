@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { Container, Form, Divider } from 'semantic-ui-react';
 import 'react-table/react-table.css';
-import { fetchTransferApplication } from '../smopspAction';
+import { fetchRescheduledApplication } from '../smopspAction';
 import { fetchServiceTypeId } from '../../smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
-
+import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
@@ -31,24 +31,24 @@ const TransferApplication = props => {
   const {
     intl: { messages },
     language,
-    fetchTransferApplication,
-    dynamicObject = [],
-    srlsmList = [],
+    fetchRescheduledApplication,
+    rescheduledApp = [],
   } = props;
 
   const emptyParam = {
-    country: '',
+    countryId: '',
     bukrs: '',
     branchId: '',
-    finStatus: '',
-    categoryId: '',
+    contractStatusId: '',
+    crmCategory: '',
     serviceDateType: '',
     warranty: '',
-    date: '',
-    statusApplication: '',
+    dateOpenAt: '',
+    applicationStatusId: '',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
+  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
 
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
 
@@ -69,127 +69,127 @@ const TransferApplication = props => {
           bukrs: item.bukrs,
         };
       });
-    if (param.country !== '' && param.bukrs !== '') {
+    if (param.countryId !== '' && param.bukrs !== '') {
       let servBranchOptions = servBrOptions
-        .filter(item => item.country_id === param.country)
+        .filter(item => item.country_id === param.countryId)
         .filter(item => item.bukrs === param.bukrs);
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country !== '' && param.bukrs === '') {
+    } else if (param.countryId !== '' && param.bukrs === '') {
       let servBranchOptions = servBrOptions.filter(
-        item => item.country_id === param.country,
+        item => item.country_id === param.countryId,
       );
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country === '' && param.bukrs !== '') {
+    } else if (param.countryId === '' && param.bukrs !== '') {
       let servBranchOptions = servBrOptions.filter(
         item => item.bukrs === param.bukrs,
       );
 
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country === '' && param.bukrs === '') {
+    } else if (param.countryId === '' && param.bukrs === '') {
       setServiceBranchOptions([...servBrOptions]);
     }
-  }, [branches, param.country, param.bukrs]);
+  }, [branches, param.countryId, param.bukrs]);
 
   const initialColumns = [
     {
-      Header: '№',
-      accessor: '1',
+      Header: 'ID',
+      accessor: 'id',
       checked: true,
       filterable: false,
     },
     {
       Header: 'CN',
-      accessor: '2',
+      accessor: 'contractNumber',
       checked: true,
     },
     {
       Header: 'Филиал',
-      accessor: '3',
+      accessor: 'branchId',
       checked: true,
     },
     {
       Header: 'Заводской номер',
-      accessor: '4',
+      accessor: 'tovarSn',
       checked: true,
     },
     {
       Header: 'Дата продажи',
-      accessor: '5',
+      accessor: 'contractDate',
       checked: true,
       filterable: false,
     },
 
     {
       Header: 'Дата переноса',
-      accessor: '578',
+      accessor: 'rescheduledDate',
       checked: true,
       filterable: false,
     },
     {
       Header: 'Дата заявки',
-      accessor: '598',
+      accessor: 'applicationDate',
       checked: true,
       filterable: false,
     },
     {
       Header: 'ФИО клиента',
-      accessor: '6',
+      accessor: 'customerFIO',
       checked: true,
       with: 200,
     },
     {
       Header: 'ИИН клиента',
-      accessor: '7',
+      accessor: 'customerIinBin',
       checked: true,
       with: 150,
     },
     {
       Header: 'Адрес',
-      accessor: '8',
+      accessor: 'address',
       checked: true,
     },
     {
       Header: 'ФИО дилера',
-      accessor: '9',
+      accessor: 'dealerFIO',
       checked: true,
       with: 200,
       filterable: false,
     },
     {
       Header: 'F1',
-      accessor: '10',
+      accessor: 'f1',
       checked: true,
       filterable: false,
     },
     {
       Header: 'Гарантия',
-      accessor: '13cats',
+      accessor: 'warrantyId',
       checked: true,
       filterable: false,
     },
 
     {
       Header: 'Категория',
-      accessor: 'crmCategory',
+      accessor: 'crmCategoryId',
       checked: true,
       filterable: false,
     },
 
     {
       Header: 'Статус заявки',
-      accessor: '13cat88',
+      accessor: 'applicationStatusId',
       checked: true,
       filterable: false,
     },
     {
       Header: 'Фин. статус',
-      accessor: '13lklk',
+      accessor: 'contractStatusId',
       checked: true,
       filterable: false,
     },
     {
       Header: 'Заявка',
-      accessor: '13cfin',
+      accessor: 'applicationNumber',
       checked: true,
       filterable: false,
     },
@@ -215,7 +215,10 @@ const TransferApplication = props => {
   ];
 
   const handleClickApply = () => {
-    fetchTransferApplication({ ...param });
+    const page = 0;
+    const size = 20;
+    fetchRescheduledApplication({ ...param, page, size });
+    setTurnOnReactFetch(true);
   };
 
   const [columns, setColumns] = useState([...initialColumns]);
@@ -227,8 +230,8 @@ const TransferApplication = props => {
     setParam(prev => {
       const prevParam = { ...prev };
       switch (fieldName) {
-        case 'country':
-          prevParam.country = o.value;
+        case 'countryId':
+          prevParam.countryId = o.value;
           break;
         case 'bukrs':
           prevParam.bukrs = o.value;
@@ -237,8 +240,8 @@ const TransferApplication = props => {
           prevParam.branchId = o.value;
           break;
 
-        case 'categoryId':
-          prevParam.categoryId = o.value;
+        case 'crmCategory':
+          prevParam.crmCategory = o.value;
           break;
         case 'serviceTypeId':
           prevParam.serviceTypeId = o.value;
@@ -248,8 +251,8 @@ const TransferApplication = props => {
           prevParam.serviceStatusId = o.value;
           break;
 
-        case 'finStatus':
-          prevParam.finStatus = o.value;
+        case 'contractStatusId':
+          prevParam.contractStatusId = o.value;
 
         case 'serviceDateType':
           prevParam.serviceDateType = o.value;
@@ -257,12 +260,12 @@ const TransferApplication = props => {
         case 'warranty':
           prevParam.warranty = o.value;
 
-        case 'date':
-          prevParam.date = o.value;
+        case 'dateOpenAt':
+          prevParam.dateOpenAt = o.value;
           break;
 
-        case 'statusApplication':
-          prevParam.statusApplication = o.value;
+        case 'applicationStatusId':
+          prevParam.applicationStatusId = o.value;
         default:
           prevParam[fieldName] = o.value;
       }
@@ -279,7 +282,7 @@ const TransferApplication = props => {
             label="Страна"
             placeholder="Страна"
             options={countryOptions}
-            onChange={(e, o) => onInputChange(o, 'country')}
+            onChange={(e, o) => onInputChange(o, 'countryId')}
             className="alignBottom"
           />
 
@@ -306,7 +309,7 @@ const TransferApplication = props => {
             label="Фин. Статус"
             placeholder="Фин. Статус"
             options={finStatusOption}
-            onChange={(e, o) => onInputChange(o, 'finStatus')}
+            onChange={(e, o) => onInputChange(o, 'contractStatusId')}
             className="alignBottom"
           />
 
@@ -324,7 +327,7 @@ const TransferApplication = props => {
             label="Категория"
             placeholder="Категория"
             options={categoryOptions}
-            onChange={(e, o) => onInputChange(o, 'categoryId')}
+            onChange={(e, o) => onInputChange(o, 'crmCategory')}
             className="alignBottom"
           />
 
@@ -333,7 +336,7 @@ const TransferApplication = props => {
             label="Гарантия"
             placeholder="Гарантия"
             options={warrantyOptions}
-            onChange={(e, o) => onInputChange(o, 'categoryId')}
+            onChange={(e, o) => onInputChange(o, 'warranty')}
             className="alignBottom"
           />
           <Form.Select
@@ -341,7 +344,7 @@ const TransferApplication = props => {
             label="Статус заявки"
             placeholder="Статус заявки"
             options={serviceDateTypeOptions}
-            onChange={(e, o) => onInputChange(o, 'serviceDateType')}
+            onChange={(e, o) => onInputChange(o, 'applicationStatusId')}
             className="alignBottom"
           />
         </Form.Group>
@@ -355,11 +358,19 @@ const TransferApplication = props => {
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.date)}
-                onChange={date =>
-                  setParam({ ...param, date: momentToStringYYYYMMDD(date) })
+                placeholderText="Дата"
+                selected={
+                  param.dateOpenAt === ''
+                    ? ''
+                    : stringYYYYMMDDToMoment(param.dateOpenAt)
                 }
-                maxDate={new Date()}
+                onChange={date =>
+                  setParam({
+                    ...param,
+                    dateOpenAt: momentToStringYYYYMMDD(date),
+                  })
+                }
+                maxDate={moment(new Date())}
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
@@ -382,9 +393,16 @@ const TransferApplication = props => {
       </Form>
       <Divider />
       <ReactTableServerSideWrapper
-        filterable={true}
-        data={srlsmList}
+        data={rescheduledApp ? rescheduledApp.data : []}
         columns={columns}
+        filterable={true}
+        defaultPageSize={20}
+        showPagination={true}
+        requestData={param => {
+          props.fetchRescheduledApplication({ ...param });
+        }}
+        pages={rescheduledApp ? rescheduledApp.totalPages : ''}
+        turnOnReactFetch={turnOnReactFetch}
       />
     </Container>
   );
@@ -394,12 +412,12 @@ function mapStateToProps(state) {
   return {
     language: state.locales.lang,
     serviceTypeId: state.smcsReducer.serviceTypeId,
-    dynamicObject: state.smopspReducer.dynamicObject,
+    rescheduledApp: state.smopspReducer.rescheduledApp,
   };
 }
 
 export default connect(mapStateToProps, {
   fetchServiceListManager,
   fetchServiceTypeId,
-  fetchTransferApplication,
+  fetchRescheduledApplication,
 })(injectIntl(TransferApplication));

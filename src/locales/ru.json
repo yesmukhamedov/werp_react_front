@@ -709,7 +709,7 @@
   "event_log": "Журнал событии",
   "contract_lst": "Список договоров",
   "collector": "Взносщик",
-  "fin_status": "Фин. статус",
+  "fin_status": "Фин.статус",
   "phys_status": "Физ.статус",
   "LGI_POSTING_TRADE_IN": "Оприходования материалов по Trade In",
   "sender_whouse": "Склад отправитель",
@@ -833,5 +833,11 @@
   "application_date_from": "Дата заявки с",
   "application_date_to": "Дата заявки по",
   "application_status": "Статус заявки",
-  "changes": "Изменения"
+  "changes": "Изменения",
+  "outgoing_call_operator": "Оператор call center по исходящим звонкам",
+  "cartrige_change_plan": "План по замене картриджей",
+  "rescheduled_applications": "Перенесенные заявки",
+  "assigned_calls": "Назначенные звонки",
+  "my_outgoing_app": "Мои заявки исход",
+  "service_period": "Срок сервиса"
 }

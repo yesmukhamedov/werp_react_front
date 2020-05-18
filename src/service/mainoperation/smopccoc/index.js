@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { injectIntl } from 'react-intl';
+import { injectIntl, defineMessages } from 'react-intl';
 import AssignedCalls from './tabs/AssignedCalls';
 import MyApplicationExodus from './tabs/MyApplicationExodus';
 import ServiceFilterPlan from './tabs/ServiceFilterPlan';
@@ -22,7 +22,7 @@ import '../../service.css';
 
 const Smopccoc = props => {
   const {
-    // intl: { messages },
+    intl: { messages },
     // language,
   } = props;
 
@@ -88,10 +88,10 @@ const Smopccoc = props => {
   ];
 
   const crmCategoryOptions = [
-    { key: 1, text: 'Зеленый', value: 'Зеленый' },
-    { key: 2, text: 'Желтый', value: 'Желтый' },
-    { key: 3, text: 'Красный', value: 'Красный' },
-    { key: 4, text: 'Черный', value: 'Черный' },
+    { key: 1, text: 'Зеленый', value: 1 },
+    { key: 2, text: 'Желтый', value: 2 },
+    { key: 3, text: 'Красный', value: 3 },
+    { key: 4, text: 'Черный', value: 4 },
   ];
 
   const finStatusOption = contractStatusList.map(item => {
@@ -105,9 +105,7 @@ const Smopccoc = props => {
   const panes = [
     {
       menuItem: (
-        <Menu.Item key={1}>
-          План по замене картриджей<Label color="teal">15</Label>
-        </Menu.Item>
+        <Menu.Item key={1}>{messages['cartrige_change_plan']}</Menu.Item>
       ),
       pane: (
         <Tab.Pane key={1}>
@@ -128,9 +126,7 @@ const Smopccoc = props => {
     },
     {
       menuItem: (
-        <Menu.Item key={2}>
-          Перенесенные заявки<Label color="teal">15</Label>
-        </Menu.Item>
+        <Menu.Item key={2}>{messages['rescheduled_applications']}</Menu.Item>
       ),
       pane: (
         <Tab.Pane key={2}>
@@ -150,11 +146,7 @@ const Smopccoc = props => {
       ),
     },
     {
-      menuItem: (
-        <Menu.Item key={3}>
-          Назначенные звонки<Label color="teal">15</Label>
-        </Menu.Item>
-      ),
+      menuItem: <Menu.Item key={3}>{messages['assigned_calls']}</Menu.Item>,
       pane: (
         <Tab.Pane key={3}>
           <AssignedCalls
@@ -173,11 +165,7 @@ const Smopccoc = props => {
       ),
     },
     {
-      menuItem: (
-        <Menu.Item key={4}>
-          Мои заявки исход<Label color="teal">15</Label>
-        </Menu.Item>
-      ),
+      menuItem: <Menu.Item key={4}>{messages['my_outgoing_app']}</Menu.Item>,
       pane: (
         <Tab.Pane key={4}>
           <MyApplicationExodus
@@ -205,7 +193,7 @@ const Smopccoc = props => {
         paddingRight: '2em',
       }}
     >
-      <Segment as="h2">Оператор call center по исходящим звонкам</Segment>
+      <Segment as="h2">{messages['outgoing_call_operator']}</Segment>
 
       <Tab
         menu={{ attached: true, tabular: false, pointing: true }}

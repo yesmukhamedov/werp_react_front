@@ -3,6 +3,7 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
+import debounce from 'lodash/debounce';
 
 const ReactTableServerSideWrapper = props => {
   const {
@@ -77,7 +78,7 @@ const ReactTableServerSideWrapper = props => {
         data={data}
         pages={pages} // Display the total number of pages
         loading={loading} // Display the loading overlay when we need it
-        onFetchData={fetchData} // Request new data when things change
+        onFetchData={debounce(fetchData, 1000)} // Request new data when things change
         columns={columns}
         defaultPageSize={defaultPageSize}
         className={className}

@@ -834,5 +834,11 @@
   "application_date_from": "Application date from",
   "application_date_to": "Application date to",
   "application_status": "Application status",
-  "changes": "Changes"
+  "changes": "Changes",
+  "outgoing_call_operator": "Call center operator for outgoing calls",
+  "cartrige_change_plan": "Cartrige change plan",
+  "rescheduled_applications": "Rescheduled applications",
+  "assigned_calls": "Assigned calls",
+  "my_outgoing_app": "My outgoig applications",
+  "service_period": "Service period"
 }

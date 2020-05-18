@@ -1,13 +1,15 @@
 import {
   FETCH_SERVICE_PACKET_PLAN,
-  FETCH_TRANSFER_APPLICATION,
+  FETCH_RESCHEDULED_APPLICATION,
   FETCH_ASSIGNED_CALLS,
   FETCH_MY_APPLICATION,
 } from './smopspAction';
 
 const INITIAL_STATE = {
-  dynamicObject: {},
-  srlsmList: [],
+  servicePacket: {},
+  rescheduledApp: {},
+  assignedCalls: {},
+  myApplication: {},
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -15,24 +17,24 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_SERVICE_PACKET_PLAN:
       return {
         ...state,
-        dynamicObject: { ...action.data },
+        servicePacket: { ...action.payload.data },
       };
 
-    case FETCH_TRANSFER_APPLICATION:
+    case FETCH_RESCHEDULED_APPLICATION:
       return {
         ...state,
-        dynamicObject: { ...action.data },
+        rescheduledApp: { ...action.payload.data },
       };
     case FETCH_ASSIGNED_CALLS:
       return {
         ...state,
-        dynamicObject: { ...action.data },
+        assignedCalls: { ...action.payload.data },
       };
 
     case FETCH_MY_APPLICATION:
       return {
         ...state,
-        dynamicObject: { ...action.data },
+        myApplication: { ...action.payload.data },
       };
 
     default:

@@ -4,6 +4,8 @@ import { injectIntl } from 'react-intl';
 import { Form, Container, Divider, Icon } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
+import moment from 'moment';
+
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import { fetchMyApplicationExodus } from '../smopccocAction';
@@ -32,16 +34,17 @@ const MyApplicationExodus = props => {
   } = props;
 
   const emptyParam = {
-    country: '',
+    countryId: '',
     bukrs: '',
     branchId: '',
     categoryId: '',
-    serviceStatusId: '',
-    dateStart: '',
-    dateEnd: '',
+    applicationStatus: '',
+    dateOpenAt: '',
+    dateOpenTo: '',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
+  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
 
   const initialColumns = [
     {
@@ -175,37 +178,40 @@ const MyApplicationExodus = props => {
           bukrs: item.bukrs,
         };
       });
-    if (param.country !== '' && param.bukrs !== '') {
+    if (param.countryId !== '' && param.bukrs !== '') {
       let servBranchOptions = servBrOptions
-        .filter(item => item.country_id === param.country)
+        .filter(item => item.country_id === param.countryId)
         .filter(item => item.bukrs === param.bukrs);
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country !== '' && param.bukrs === '') {
+    } else if (param.countryId !== '' && param.bukrs === '') {
       let servBranchOptions = servBrOptions.filter(
-        item => item.country_id === param.country,
+        item => item.country_id === param.countryId,
       );
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country === '' && param.bukrs !== '') {
+    } else if (param.countryId === '' && param.bukrs !== '') {
       let servBranchOptions = servBrOptions.filter(
         item => item.bukrs === param.bukrs,
       );
 
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country === '' && param.bukrs === '') {
+    } else if (param.countryId === '' && param.bukrs === '') {
       setServiceBranchOptions([...servBrOptions]);
     }
-  }, [branches, param.country, param.bukrs]);
+  }, [branches, param.countryId, param.bukrs]);
 
   const handleClickApplyMyApp = () => {
-    props.fetchMyApplicationExodus({ ...param });
+    const page = 0;
+    const size = 20;
+    props.fetchMyApplicationExodus({ ...param, page, size });
+    setTurnOnReactFetch(true);
   };
 
   const onInputChange = (o, fieldName) => {
     setParam(prev => {
       const prevParam = { ...prev };
       switch (fieldName) {
-        case 'country':
-          prevParam.country = o.value;
+        case 'countryId':
+          prevParam.countryId = o.value;
           break;
         case 'bukrs':
           prevParam.bukrs = o.value;
@@ -218,11 +224,11 @@ const MyApplicationExodus = props => {
           prevParam.categoryId = o.value;
           break;
 
-        case 'serviceStatusId':
-          prevParam.serviceStatusId = o.value;
+        case 'applicationStatus':
+          prevParam.applicationStatus = o.value;
           break;
-        case 'dateStart':
-          prevParam.dateStart = o.value;
+        case 'dateOpenAt':
+          prevParam.dateOpenAt = o.value;
           break;
 
         default:
@@ -244,17 +250,17 @@ const MyApplicationExodus = props => {
         <Form.Group widths="equal">
           <Form.Select
             fluid
-            label="Страна"
-            placeholder="Страна"
+            label={messages['country']}
+            placeholder={messages['country']}
             options={countryOptions}
-            onChange={(e, o) => onInputChange(o, 'country')}
+            onChange={(e, o) => onInputChange(o, 'countryId')}
             className="alignBottom"
           />
 
           <Form.Select
             fluid
-            label="Компания"
-            placeholder="Компания"
+            label={messages['bukrs']}
+            placeholder={messages['bukrs']}
             options={companyOptions}
             onChange={(e, o) => onInputChange(o, 'bukrs')}
             className="alignBottom"
@@ -262,8 +268,8 @@ const MyApplicationExodus = props => {
 
           <Form.Select
             fluid
-            label="Филиал"
-            placeholder="Филиал"
+            label={messages['brnch']}
+            placeholder={messages['brnch']}
             options={serviceBranchOptions}
             onChange={(e, o) => onInputChange(o, 'branchId')}
             className="alignBottom"
@@ -271,8 +277,8 @@ const MyApplicationExodus = props => {
 
           <Form.Select
             fluid
-            label="Категория"
-            placeholder="Категория"
+            label={messages['category']}
+            placeholder={messages['category']}
             options={crmCategoryOptions}
             onChange={(e, o) => onInputChange(o, 'categoryId')}
             className="alignBottom"
@@ -280,10 +286,10 @@ const MyApplicationExodus = props => {
 
           <Form.Select
             fluid
-            label="Статус заявки"
-            placeholder="Статус заявки"
+            label={messages['application_status']}
+            placeholder={messages['application_status']}
             options={serviceStatusOptions}
-            onChange={(e, o) => onInputChange(o, 'serviceDateType')}
+            onChange={(e, o) => onInputChange(o, 'applicationStatus')}
             className="alignBottom"
           />
         </Form.Group>
@@ -291,36 +297,49 @@ const MyApplicationExodus = props => {
         <Form.Group className="spaceBetween">
           <div className="flexDirectionRow">
             <Form.Field className="marginRight">
-              <label>Дата заявки с</label>
+              <label>{messages['Form.DateFrom']}</label>
               <DatePicker
                 className="date-auto-width"
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.dateStart)}
+                placeholderText={messages['Form.DateFrom']}
+                selected={
+                  param.dateOpenAt === ''
+                    ? ''
+                    : stringYYYYMMDDToMoment(param.dateOpenAt)
+                }
                 onChange={date =>
                   setParam({
                     ...param,
-                    dateStart: momentToStringYYYYMMDD(date),
+                    dateOpenAt: momentToStringYYYYMMDD(date),
                   })
                 }
-                maxDate={new Date()}
+                maxDate={moment(new Date())}
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
 
             <Form.Field className="marginRight">
-              <label>Дата заявки по</label>
+              <label>{messages['Form.DateTo']}</label>
               <DatePicker
                 className="date-auto-width"
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.dateEnd)}
-                onChange={date =>
-                  setParam({ ...param, dateEnd: momentToStringYYYYMMDD(date) })
+                placeholderText={messages['Form.DateTo']}
+                selected={
+                  param.dateOpenTo === ''
+                    ? ''
+                    : stringYYYYMMDDToMoment(param.dateOpenTo)
                 }
-                maxDate={new Date()}
+                onChange={date =>
+                  setParam({
+                    ...param,
+                    dateOpenTo: momentToStringYYYYMMDD(date),
+                  })
+                }
+                maxDate={moment(new Date())}
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
@@ -330,7 +349,7 @@ const MyApplicationExodus = props => {
               className="alignBottom"
             >
               <Icon name="search" />
-              Применить
+              {messages['apply']}
             </Form.Button>
           </div>
 
@@ -344,9 +363,16 @@ const MyApplicationExodus = props => {
       </Form>
       <Divider />
       <ReactTableServerSideWrapper
-        filterable={true}
-        data={myApplication}
+        data={myApplication ? myApplication.data : []}
         columns={columns}
+        filterable={true}
+        defaultPageSize={20}
+        showPagination={true}
+        requestData={param => {
+          props.fetchMyApplicationExodus({ ...param });
+        }}
+        pages={myApplication ? myApplication.totalPages : ''}
+        turnOnReactFetch={turnOnReactFetch}
       />
     </Container>
   );

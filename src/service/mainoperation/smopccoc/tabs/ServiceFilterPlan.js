@@ -28,7 +28,7 @@ const ServiceFilterPlan = props => {
   } = props;
 
   const emptyParam = {
-    country: '',
+    countryId: '',
     bukrs: '',
     branchId: '',
     contractStatusId: '',
@@ -39,6 +39,7 @@ const ServiceFilterPlan = props => {
 
   //END Date option
   const [param, setParam] = useState({ ...emptyParam });
+  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
 
   const initialColumns = [
     {
@@ -183,32 +184,32 @@ const ServiceFilterPlan = props => {
           bukrs: item.bukrs,
         };
       });
-    if (param.country !== '' && param.bukrs !== '') {
+    if (param.countryId !== '' && param.bukrs !== '') {
       let servBranchOptions = servBrOptions
-        .filter(item => item.country_id === param.country)
+        .filter(item => item.country_id === param.countryId)
         .filter(item => item.bukrs === param.bukrs);
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country !== '' && param.bukrs === '') {
+    } else if (param.countryId !== '' && param.bukrs === '') {
       let servBranchOptions = servBrOptions.filter(
-        item => item.country_id === param.country,
+        item => item.country_id === param.countryId,
       );
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country === '' && param.bukrs !== '') {
+    } else if (param.countryId === '' && param.bukrs !== '') {
       let servBranchOptions = servBrOptions.filter(
         item => item.bukrs === param.bukrs,
       );
 
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country === '' && param.bukrs === '') {
+    } else if (param.countryId === '' && param.bukrs === '') {
       setServiceBranchOptions([...servBrOptions]);
     }
-  }, [branches, param.country, param.bukrs]);
+  }, [branches, param.countryId, param.bukrs]);
 
   const categoryOptions = [
-    { key: 1, text: 'Зеленый', value: 'Зеленый' },
-    { key: 2, text: 'Желтый', value: 'Желтый' },
-    { key: 3, text: 'Красный', value: 'Красный' },
-    { key: 4, text: 'Черный', value: 'Черный' },
+    { key: 1, text: 'Зеленый', value: 1 },
+    { key: 2, text: 'Желтый', value: 2 },
+    { key: 3, text: 'Красный', value: 3 },
+    { key: 4, text: 'Черный', value: 4 },
   ];
 
   const configurationOptions = [
@@ -219,15 +220,18 @@ const ServiceFilterPlan = props => {
   ];
 
   const handleClickApply = () => {
-    props.fetchServiceFilterPlan({ ...param });
+    const page = 0;
+    const size = 20;
+    props.fetchServiceFilterPlan({ ...param, page, size });
+    setTurnOnReactFetch(true);
   };
 
   const onInputChange = (o, fieldName) => {
     setParam(prev => {
       const prevParam = { ...prev };
       switch (fieldName) {
-        case 'country':
-          prevParam.country = o.value;
+        case 'countryId':
+          prevParam.countryId = o.value;
           break;
         case 'bukrs':
           prevParam.bukrs = o.value;
@@ -266,62 +270,62 @@ const ServiceFilterPlan = props => {
         <Form.Group widths="equal">
           <Form.Select
             fluid
-            label="Страна"
+            label={messages['country']}
             options={countryOptions}
-            placeholder="Страна"
-            onChange={(e, o) => onInputChange(o, 'country')}
+            placeholder={messages['country']}
+            onChange={(e, o) => onInputChange(o, 'countryId')}
             className="alignBottom"
           />
 
           <Form.Select
             fluid
-            label="Компания"
+            label={messages['bukrs']}
             options={companyOptions}
-            placeholder="Компания"
+            placeholder={messages['bukrs']}
             onChange={(e, o) => onInputChange(o, 'bukrs')}
             className="alignBottom"
           />
 
           <Form.Select
             fluid
-            label="Филиал"
+            label={messages['brnch']}
             options={serviceBranchOptions}
-            placeholder="Филиал"
+            placeholder={messages['brnch']}
             onChange={(e, o) => onInputChange(o, 'branchId')}
             className="alignBottom"
           />
           <Form.Select
             fluid
-            label="Фин. Статус"
+            label={messages['fin_status']}
             options={finStatusOption}
-            placeholder="Фин. Статус"
+            placeholder={messages['fin_status']}
             onChange={(e, o) => onInputChange(o, 'finStatus')}
             className="alignBottom"
           />
 
           <Form.Select
             fluid
-            label="Срок сервиса"
+            label={messages['service_period']}
             options={serviceDateTypeOptions}
-            placeholder="Срок сервиса"
+            placeholder={messages['service_period']}
             onChange={(e, o) => onInputChange(o, 'serviceDateType')}
             className="alignBottom"
           />
 
           <Form.Select
             fluid
-            label="Категория"
+            label={messages['category']}
             options={categoryOptions}
-            placeholder="Категория"
+            placeholder={messages['category']}
             onChange={(e, o) => onInputChange(o, 'crmCategory')}
             className="alignBottom"
           />
 
           <Form.Select
             fluid
-            label="Конфигурация"
+            label={messages['configuration']}
             options={configurationOptions}
-            placeholder="Конфигурация"
+            placeholder={messages['configuration']}
             onChange={(e, o) => onInputChange(o, 'configuration')}
             className="alignBottom"
           />
@@ -333,7 +337,7 @@ const ServiceFilterPlan = props => {
             className="alignBottom"
           >
             <Icon name="search" />
-            Применить
+            {messages['apply']}
           </Form.Button>
 
           <Form.Field className="alignBottom">
@@ -346,10 +350,17 @@ const ServiceFilterPlan = props => {
       </Form>
       <Divider />
       <ReactTableServerSideWrapper
-        data={serviceFilterPlan}
+        data={serviceFilterPlan ? serviceFilterPlan.data : []}
         columns={columns}
-        filterable={true}
         resolveData={data => data.map(row => row)}
+        filterable={true}
+        defaultPageSize={20}
+        showPagination={true}
+        requestData={param => {
+          props.fetchServiceFilterPlan({ ...param });
+        }}
+        pages={serviceFilterPlan ? serviceFilterPlan.totalPages : ''}
+        turnOnReactFetch={turnOnReactFetch}
       />
     </Container>
   );
