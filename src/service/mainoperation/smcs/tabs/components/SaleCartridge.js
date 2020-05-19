@@ -12,12 +12,13 @@ import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
 const SaleCartridge = props => {
   const {
     data = [],
-    addSparePartBtn,
+    addCartridgeBtn,
     deleteSparePart,
     quantitySparePart,
+    onChangeCartridge,
   } = props;
 
-  console.log('DATA', data.length);
+  console.log('DATA CARTRIDGE', data);
 
   const columns = [
     {
@@ -27,6 +28,20 @@ const SaleCartridge = props => {
     {
       Header: 'Наименование',
       accessor: 'matnrName',
+    },
+    {
+      Header: 'F№',
+      accessor: 'fno',
+      Cell: ({ original }) => (
+        <Input
+          size="mini"
+          style={{ padding: '0' }}
+          value={original.fno === null ? '' : original.fno}
+          type="number"
+          fluid
+          onChange={(e, value) => onChangeCartridge(value, 'fnoEdit', original)}
+        />
+      ),
     },
     {
       Header: 'Количество',
@@ -86,7 +101,7 @@ const SaleCartridge = props => {
         data={data}
         columns={columns}
         // className="-striped -highlight"
-        defaultPageSize={5}
+        pageSize={data.length > 10 ? 10 : data.length}
       />
       <Divider />
 
@@ -96,7 +111,7 @@ const SaleCartridge = props => {
         labelPosition="left"
         color="green"
         size="small"
-        onClick={addSparePartBtn}
+        onClick={item => onChangeCartridge(item, 'addCartridgeBtn')}
       >
         <Icon name="plus" size="small" />
         Добавить картриджей
