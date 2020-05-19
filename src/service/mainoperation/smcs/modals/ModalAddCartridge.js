@@ -18,6 +18,8 @@ const ModalAddCartridge = props => {
     modalOpen = false,
     handleApplyCartridge,
     checkedCartridge,
+
+    onChangeCartridge,
   } = props;
 
   const columnsSparePart = [
@@ -26,7 +28,7 @@ const ModalAddCartridge = props => {
       Cell: ({ original }) => (
         <Checkbox
           checked={original.checked}
-          onClick={() => checkedCartridge(original)}
+          onClick={() => onChangeCartridge(original, 'checkedCartridge')}
         />
       ),
       filterAll: true,
@@ -97,7 +99,10 @@ const ModalAddCartridge = props => {
         />
       </Modal.Content>
       <Modal.Actions>
-        <Button color="green" onClick={handleApplyCartridge}>
+        <Button
+          color="green"
+          onClick={item => onChangeCartridge(item, 'closeModalCartridge')}
+        >
           <Icon name="checkmark" /> Применить
         </Button>
       </Modal.Actions>

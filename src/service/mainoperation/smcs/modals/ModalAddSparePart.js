@@ -37,7 +37,6 @@ const ModalAddSparePart = props => {
     {
       Header: 'Код',
       accessor: 'matnrCode',
-      filterAll: true,
       width: 100,
       maxWidth: 200,
       minWidth: 100,
@@ -45,15 +44,13 @@ const ModalAddSparePart = props => {
     {
       Header: 'Название',
       accessor: 'matnrName',
-      filterAll: true,
       width: 500,
       maxWidth: 500,
       minWidth: 300,
     },
     {
       Header: 'Цена',
-      accessor: 'price',
-      filterAll: true,
+      accessor: 'matnrPrice',
       width: 100,
       maxWidth: 150,
       minWidth: 50,
@@ -69,7 +66,6 @@ const ModalAddSparePart = props => {
     {
       Header: 'В подочете',
       accessor: 'menge',
-      filterAll: true,
       width: 100,
       maxWidth: 150,
       minWidth: 100,
