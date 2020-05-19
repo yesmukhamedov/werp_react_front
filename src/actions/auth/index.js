@@ -63,12 +63,12 @@ export function signinUser({ username, password }, language) {
         // If request is good...
         // - save the JWT token
 
-        const { access_token, refresh_token, userId } = response.data;
+        const { access_token, refresh_token, user_id } = response.data;
 
         // console.log(response.data.access_token);
 
         localStorage.setItem('username', username);
-        localStorage.setItem('userId', userId);
+        localStorage.setItem('userId', user_id);
         localStorage.setItem('language', language);
         localStorage.setItem('token', access_token);
         localStorage.setItem('refresh_token', refresh_token);
@@ -99,7 +99,7 @@ export function signinUser({ username, password }, language) {
         // setAuthorizationHeader(token);
         // setContentLanguageHeader(language);
         // - update state to indicate user is authenticated
-        dispatch(authUser({ username, userId }));
+        dispatch(authUser({ username, user_id }));
         // - redirect to the route '/'
         const path = localStorage.getItem('currentPathName');
         if (path) {
