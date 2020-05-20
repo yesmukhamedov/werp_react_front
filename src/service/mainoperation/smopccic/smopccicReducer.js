@@ -6,6 +6,9 @@ import {
 
 const INITIAL_STATE = {
   dynamicObject: [],
+  searchCustomerData: {},
+  transferApplicationData: {},
+  myApplicationData: {},
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -13,7 +16,7 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_SEARCH_CUSTOMER:
       return {
         ...state,
-        searchCustomerData: [...action.data],
+        searchCustomerData: { ...action.data },
       };
 
     case FETCH_TRANSFER_APPLICATION:

@@ -33,13 +33,9 @@ const Smopccoc = props => {
   } = props;
 
   const {
-    // serviceTypeId,
-    // srlsmList,
-    // serviceStatusList,
     companyOptions,
     countryList,
     category,
-
     contractStatusList,
     branches,
   } = props;
@@ -116,11 +112,7 @@ const Smopccoc = props => {
   //Вкладки
   const panes = [
     {
-      menuItem: (
-        <Menu.Item key={1}>
-          План по сервис пакетам<Label color="teal">15</Label>
-        </Menu.Item>
-      ),
+      menuItem: <Menu.Item key={1}>План по сервис пакетам</Menu.Item>,
       pane: (
         <Tab.Pane key={1}>
           <ServiceFilterVC
@@ -136,11 +128,7 @@ const Smopccoc = props => {
       ),
     },
     {
-      menuItem: (
-        <Menu.Item key={2}>
-          Перенесенные заявки<Label color="teal">15</Label>
-        </Menu.Item>
-      ),
+      menuItem: <Menu.Item key={2}>Перенесенные заявки</Menu.Item>,
       pane: (
         <Tab.Pane key={2}>
           <TransferApplication
@@ -156,11 +144,7 @@ const Smopccoc = props => {
       ),
     },
     {
-      menuItem: (
-        <Menu.Item key={3}>
-          Назначенные звонки<Label color="teal">15</Label>
-        </Menu.Item>
-      ),
+      menuItem: <Menu.Item key={3}>Назначенные звонки</Menu.Item>,
       pane: (
         <Tab.Pane key={3}>
           <AssignedCalls
@@ -176,11 +160,7 @@ const Smopccoc = props => {
       ),
     },
     {
-      menuItem: (
-        <Menu.Item key={4}>
-          Мои заявки<Label color="teal">15</Label>
-        </Menu.Item>
-      ),
+      menuItem: <Menu.Item key={4}>Мои заявки</Menu.Item>,
       pane: (
         <Tab.Pane key={4}>
           <MyApplication

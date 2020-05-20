@@ -839,5 +839,6 @@
   "rescheduled_applications": "Перенесенные заявки",
   "assigned_calls": "Назначенные звонки",
   "my_outgoing_app": "Мои заявки исход",
-  "service_period": "Срок сервиса"
+  "service_period": "Срок сервиса",
+  "appointment_date": "Дата назначения"
 }

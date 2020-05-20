@@ -12,7 +12,8 @@ import {
 import 'react-table/react-table.css';
 import '../../../service.css';
 import moment from 'moment';
-
+import OutputErrors from '../../../../general/error/outputErrors';
+import { errorTableText } from '../../../../utils/helpers';
 import { fetchTransferApplicationExodus } from '../smopccocAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
@@ -54,6 +55,7 @@ const TransferApplicationExodus = props => {
 
   const [param, setParam] = useState({ ...emptyParam });
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
+  const [error, setError] = useState([]);
 
   const initialColumns = [
     {
@@ -63,7 +65,7 @@ const TransferApplicationExodus = props => {
       filterable: false,
     },
     {
-      Header: 'Филиал',
+      Header: messages['brnch'],
       accessor: 'branch',
       checked: true,
     },
@@ -73,45 +75,45 @@ const TransferApplicationExodus = props => {
       checked: true,
     },
     {
-      Header: 'Заводской номер',
+      Header: messages['factory_number'],
       accessor: 'tovarSn',
       checked: true,
     },
     {
-      Header: 'Дата продажи',
+      Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'Дата переноса',
+      Header: messages['transfer_date'],
       accessor: '888',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'Дата заявки',
+      Header: messages['Application_Date'],
       accessor: '999',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'ФИО клиента',
+      Header: messages['fio'],
       accessor: 'customerFIO',
       checked: true,
     },
     {
-      Header: 'Адрес',
+      Header: messages['address'],
       accessor: 'address',
       checked: true,
     },
     {
-      Header: 'Телефон',
+      Header: messages['Phone'],
       accessor: 'phone',
       checked: true,
     },
     {
-      Header: 'ФИО мастер',
+      Header: messages['master'],
       accessor: 'dealerFIO',
       checked: true,
     },
@@ -146,13 +148,13 @@ const TransferApplicationExodus = props => {
       filterable: false,
     },
     {
-      Header: 'Категория',
+      Header: messages['category'],
       accessor: 'crmCategory',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'Статус заявки',
+      Header: messages['application_status'],
       accessor: '15',
       checked: true,
       filterable: false,
@@ -165,7 +167,7 @@ const TransferApplicationExodus = props => {
       Cell: ({ original }) => <h1>{original.contractNumber}</h1>,
     },
     {
-      Header: 'Просмотр',
+      Header: messages['Table.View'],
       accessor: '16',
       checked: true,
       filterable: false,
@@ -221,10 +223,21 @@ const TransferApplicationExodus = props => {
   }, [branches, param.countryId, param.bukrs]);
 
   const handleClickApplyTransfer = () => {
-    const page = 0;
-    const size = 20;
-    props.fetchTransferApplicationExodus({ ...param, page, size });
-    setTurnOnReactFetch(true);
+    validate();
+    if (param.bukrs !== '') {
+      const page = 0;
+      const size = 20;
+      props.fetchTransferApplicationExodus({ ...param, page, size });
+      setTurnOnReactFetch(true);
+    }
+  };
+
+  const validate = () => {
+    const errors = [];
+    if (param.bukrs === '') {
+      errors.push(errorTableText(5));
+    }
+    setError(() => errors);
   };
 
   const onInputChange = (o, fieldName) => {
@@ -283,6 +296,7 @@ const TransferApplicationExodus = props => {
           />
 
           <Form.Select
+            required
             fluid
             label={messages['bukrs']}
             placeholder={messages['bukrs']}
@@ -377,6 +391,7 @@ const TransferApplicationExodus = props => {
             />
           </Form.Field>
         </Form.Group>
+        <OutputErrors errors={error} />
       </Form>
       <Divider />
       <ReactTableServerSideWrapper

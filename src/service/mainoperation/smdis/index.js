@@ -26,11 +26,9 @@ const Smdis = props => {
     operatorsByBranch = [],
   } = props;
 
-  console.log('operatorsByBranch', operatorsByBranch);
-
   const emptyParam = {
-    bukrs: '1000',
-    categoryId: 2,
+    bukrs: '',
+    categoryId: '',
     dateAt: null,
   };
 

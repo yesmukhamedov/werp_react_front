@@ -8,6 +8,8 @@ import { fetchCRMSchedule } from '../smopccocAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from '../../../../utils/ModalColumns';
+import OutputErrors from '../../../../general/error/outputErrors';
+import { errorTableText } from '../../../../utils/helpers';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
@@ -44,6 +46,7 @@ const AssignedCalls = props => {
 
   const [param, setParam] = useState({ ...emptyParam });
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
+  const [error, setError] = useState([]);
 
   const initialColumns = [
     {
@@ -53,8 +56,8 @@ const AssignedCalls = props => {
       filterable: false,
     },
     {
-      Header: 'Филиал',
-      accessor: 'branch',
+      Header: messages['brnch'],
+      accessor: 'branchId',
       checked: true,
     },
     {
@@ -63,41 +66,41 @@ const AssignedCalls = props => {
       checked: true,
     },
     {
-      Header: 'Заводской номер',
+      Header: messages['factory_number'],
       accessor: 'tovarSn',
       checked: true,
     },
     {
-      Header: 'Дата продажи',
+      Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'Дата назначения',
-      accessor: 'appointmentDate',
+      Header: messages['appointment_date'],
+      accessor: 'crmScheduleDate',
       checked: true,
       filterable: false,
     },
 
     {
-      Header: 'ФИО клиента',
+      Header: messages['fio'],
       accessor: 'customerFIO',
       checked: true,
     },
 
     {
-      Header: 'Телефон',
-      accessor: 'phone',
+      Header: messages['Phone'],
+      accessor: 'phoneNumber',
       checked: true,
     },
     {
-      Header: 'Адрес',
+      Header: messages['address'],
       accessor: 'address',
       checked: true,
     },
     {
-      Header: 'ФИО дилера',
+      Header: messages['Dealer.Fullname'],
       accessor: 'dealerFIO',
       checked: true,
     },
@@ -132,26 +135,26 @@ const AssignedCalls = props => {
       filterable: false,
     },
     {
-      Header: 'Категория',
-      accessor: 'crmCategory',
+      Header: messages['category'],
+      accessor: 'crmCategoryId',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'Фин. статус',
-      accessor: 'contractStatus',
+      Header: messages['fin_status'],
+      accessor: 'contractStatusId',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'Просмотр',
+      Header: messages['Table.View'],
       accessor: '16',
       filterable: false,
       Cell: original => (
         <div style={{ textAlign: 'center' }}>
           <LinkToSmcuspor
             contractNumber={original.row.contractNumber}
-            text="Просмотр"
+            text={messages['Table.View']}
           />
         </div>
       ),
@@ -160,7 +163,7 @@ const AssignedCalls = props => {
   ];
 
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
-  console.log(assignedCalls);
+
   useEffect(() => {
     let servBrOptions = branches
       .filter(
@@ -200,10 +203,21 @@ const AssignedCalls = props => {
   }, [branches, param.country, param.bukrs]);
 
   const handleClickApplyAssigned = () => {
-    const page = 0;
-    const size = 20;
-    props.fetchCRMSchedule({ ...param, page, size });
-    setTurnOnReactFetch(true);
+    validate();
+    if (param.bukrs !== '') {
+      const page = 0;
+      const size = 20;
+      props.fetchCRMSchedule({ ...param, page, size });
+      setTurnOnReactFetch(true);
+    }
+  };
+
+  const validate = () => {
+    const errors = [];
+    if (param.bukrs === '') {
+      errors.push(errorTableText(5));
+    }
+    setError(() => errors);
   };
 
   const onInputChange = (o, fieldName) => {
@@ -262,6 +276,7 @@ const AssignedCalls = props => {
           />
 
           <Form.Select
+            required
             fluid
             label={messages['bukrs']}
             placeholder={messages['bukrs']}
@@ -327,7 +342,7 @@ const AssignedCalls = props => {
                     dateOpenAt: momentToStringYYYYMMDD(date),
                   })
                 }
-                // maxDate={moment(new Date())}
+                maxDate={moment(new Date())}
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
@@ -348,6 +363,7 @@ const AssignedCalls = props => {
             />
           </Form.Field>
         </Form.Group>
+        <OutputErrors errors={error} />
       </Form>
       <Divider />
       <ReactTableServerSideWrapper

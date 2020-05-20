@@ -198,7 +198,6 @@ const SearchCustomer = props => {
       <Form>
         <Form.Group widths="equal">
           <Form.Select
-            clearable
             fluid
             label="Страна"
             placeholder="Страна"
@@ -208,7 +207,6 @@ const SearchCustomer = props => {
           />
 
           <Form.Select
-            clearable
             required
             fluid
             label="Компания"
@@ -219,7 +217,6 @@ const SearchCustomer = props => {
           />
 
           <Form.Select
-            clearable
             required
             fluid
             label="Филиал"
@@ -230,7 +227,6 @@ const SearchCustomer = props => {
           />
 
           <Form.Select
-            clearable
             label="Категория товара"
             placeholder="Категория товара"
             options={tovarCategoryOptions}
@@ -239,7 +235,6 @@ const SearchCustomer = props => {
           />
 
           <Form.Select
-            clearable
             label="Фин. статус"
             placeholder="Фин. статус"
             options={finStatusOptions}

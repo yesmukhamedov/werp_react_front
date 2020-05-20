@@ -251,6 +251,7 @@ const MyApplication = props => {
           />
 
           <Form.Select
+            required
             fluid
             label="Компания"
             placeholder="Компания"

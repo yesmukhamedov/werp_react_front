@@ -18,7 +18,7 @@ export const fetchSmcrldList = param => {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SMCRLD_LIST,
-          data,
+          payload: data,
         });
       })
       .catch(error => {

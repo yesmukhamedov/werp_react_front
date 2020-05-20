@@ -34,8 +34,6 @@ const Smopccic = props => {
     serviceAppStatus = [],
   } = props;
 
-  console.log('PROPS SMOPCCIC', props);
-
   useEffect(() => {
     props.f4FetchCountryList();
     props.f4FetchBranches();
@@ -79,11 +77,7 @@ const Smopccic = props => {
   //Вкладки
   const panes = [
     {
-      menuItem: (
-        <Menu.Item key={1}>
-          Поиск клиентов<Label color="teal">15</Label>
-        </Menu.Item>
-      ),
+      menuItem: <Menu.Item key={1}>Поиск клиентов</Menu.Item>,
       pane: (
         <Tab.Pane key={1}>
           <SearchCustomer
@@ -97,11 +91,7 @@ const Smopccic = props => {
       ),
     },
     {
-      menuItem: (
-        <Menu.Item key={2}>
-          Перенос<Label color="teal">15</Label>
-        </Menu.Item>
-      ),
+      menuItem: <Menu.Item key={2}>Перенос</Menu.Item>,
       pane: (
         <Tab.Pane key={2}>
           <TransferApplicationEntry />
@@ -109,11 +99,7 @@ const Smopccic = props => {
       ),
     },
     {
-      menuItem: (
-        <Menu.Item key={3}>
-          Мои заявки<Label color="teal">15</Label>
-        </Menu.Item>
-      ),
+      menuItem: <Menu.Item key={3}>Мои заявки</Menu.Item>,
       pane: (
         <Tab.Pane key={3}>
           <MyApplication

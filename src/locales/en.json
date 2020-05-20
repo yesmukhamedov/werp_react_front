@@ -841,5 +841,6 @@
   "rescheduled_applications": "Rescheduled applications",
   "assigned_calls": "Assigned calls",
   "my_outgoing_app": "My outgoig applications",
-  "service_period": "Service period"
+  "service_period": "Service period",
+  "appointment_date": "Appointment date"
 }

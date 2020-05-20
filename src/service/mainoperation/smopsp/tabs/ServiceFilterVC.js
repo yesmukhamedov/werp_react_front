@@ -234,6 +234,7 @@ const ServiceFilterVC = props => {
           />
 
           <Form.Select
+            required
             fluid
             label="Компания"
             options={companyOptions}
