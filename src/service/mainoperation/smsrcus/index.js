@@ -191,7 +191,7 @@ const Smsrcus = props => {
       if (startDate) Obj = { ...Obj, contractDateFrom };
       if (endDate) Obj = { ...Obj, contractDateTo };
 
-      fetchSmsrcus({ ...searchParams, page });
+      fetchSmsrcus({ ...Obj, page });
     }
     setErrors(() => errs);
   };
@@ -284,7 +284,6 @@ const Smsrcus = props => {
                 colo="pink"
                 selected={startDate ? stringYYYYMMDDToMoment(startDate) : null}
                 onChange={event => {
-                  console.log(event, 'event');
                   event
                     ? setStartDate(momentToStringYYYYMMDD(event))
                     : setStartDate(event);
@@ -356,16 +355,19 @@ const Smsrcus = props => {
         />
         <BranchF4Advanced
           branches={searchParams.bukrs ? branchList[searchParams.bukrs] : []}
+          branches={searchParams.bukrs ? branchList[searchParams.bukrs] : []}
           isOpen={f4BranchIsOpen}
           onClose={selectedBranches => {
+            let obj = { ...searchParams };
             setF4BranchIsOpen(false);
+
             if (selectedBranches.length !== 0) {
-              setSearchParams(prev => {
-                const srchParams = { ...prev };
-                srchParams.branchId = selectedBranches[0].value;
-                return srchParams;
-              });
+              obj.branchId = selectedBranches[0].value;
+            } else {
+              delete obj['branchId'];
             }
+
+            setSearchParams(obj);
           }}
           selection="single"
         />
