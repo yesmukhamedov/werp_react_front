@@ -12,9 +12,10 @@ import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
 const SaleOfSparePart = props => {
   const {
     data = [],
-    addSparePartBtn,
     deleteSparePart,
     quantitySparePart,
+    onChangeSparePart,
+    editStatus,
   } = props;
 
   const columns = [
@@ -44,7 +45,9 @@ const SaleOfSparePart = props => {
           label={{ content: 'шт' }}
           labelPosition="right"
           fluid
-          onChange={e => quantitySparePart(e, original)}
+          onChange={item =>
+            onChangeSparePart(item, 'quantitySparePart', original)
+          }
         />
       ),
     },
@@ -74,7 +77,7 @@ const SaleOfSparePart = props => {
         <Button
           size="mini"
           color="red"
-          onClick={() => deleteSparePart(original)}
+          onClick={() => onChangeSparePart(original, 'deleteSparePart')}
         >
           Удалить
         </Button>
@@ -100,7 +103,8 @@ const SaleOfSparePart = props => {
         labelPosition="left"
         color="green"
         size="small"
-        onClick={addSparePartBtn}
+        onClick={item => onChangeSparePart(item, 'addSparePartBtn')}
+        disabled={editStatus}
       >
         <Icon name="plus" size="small" />
         Добавить запчасти

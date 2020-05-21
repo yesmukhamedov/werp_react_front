@@ -9,6 +9,7 @@ const Services = props => {
     handleRemoveService,
     servicesOptions,
     selectServices,
+    editStatus,
   } = props;
 
   const columns = [
@@ -78,6 +79,7 @@ const Services = props => {
           labelPosition="left"
           color="green"
           size="small"
+          disabled={editStatus}
         >
           <Icon name="plus" size="small" /> Добавить услугу
         </Button>

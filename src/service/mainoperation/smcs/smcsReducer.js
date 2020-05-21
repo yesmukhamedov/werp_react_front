@@ -11,6 +11,8 @@ import {
   FETCH_POSITION_SUMM,
   CHECK_SMCS_WITHOUT_REQUEST,
   SAVE_SMCS_WITHOUT_REQUEST,
+  FETCH_MATNR_PRICE_SERVICE_PACKAGE,
+  FETCH_SERVICE_PACKAGE_DETAILS,
 } from './smcsAction';
 
 const INITIAL_STATE = {
@@ -51,8 +53,11 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_MATNR_PRICE_CARTRIDGE:
       return { ...state, matnrPriceCartridge: [...action.data.data] };
 
-    case FETCH_SMCS_SERVICE_PACKET:
-      return { ...state, smcsServicePacket: [...action.data.data] };
+    case FETCH_MATNR_PRICE_SERVICE_PACKAGE:
+      return { ...state, matnrServicePackage: [...action.data.data] };
+
+    case FETCH_SERVICE_PACKAGE_DETAILS:
+      return { ...state, servicePacketDetails: [...action.data.data] };
 
     case FETCH_POSITION_SUMM:
       return { ...state, smcsFetchPositionSumm: { ...action.data.data } };

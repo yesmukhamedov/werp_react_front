@@ -20,6 +20,8 @@ import {
   fetchServiceTypeId,
   fetchMatnrPriceSparePart,
   fetchMatnrPriceCartridge,
+  fetchMatnrPriceServicePackage,
+  fetchServicePackageDetails,
   fetchSmcsServicePacket,
   fetchPositionSumm,
   checkSmcsWithoutReques,
@@ -58,6 +60,8 @@ const TabSmcsWithoutRequest = props => {
     serviceTypeId = [],
     matnrPriceSparePart = [],
     matnrPriceCartridge = [],
+    matnrServicePackage = [],
+    servicePacketDetails = [],
     servicePacketProps = [],
     positionSumm,
     checkSmcs,
@@ -109,7 +113,8 @@ const TabSmcsWithoutRequest = props => {
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
-  console.log('SERVICE', service);
+
+  const [editStatus, setEditStatus] = useState(true);
 
   //BasicInfo
   const onBasicInfoInputChange = (value, fieldName) => {
@@ -148,8 +153,8 @@ const TabSmcsWithoutRequest = props => {
   };
 
   useEffect(() => {
-    let tovarSn = service.tovarSn;
-    props.fetchServiceSmcs({ tovarSn });
+    //let tovarSn = service.tovarSn;
+    // props.fetchServiceSmcs({ tovarSn });
     props.fetchServiceTypeId();
   }, []);
 
@@ -202,6 +207,8 @@ const TabSmcsWithoutRequest = props => {
         categoryId: contract.categoryId,
       };
       props.fetchOperatorList({ ...operParam });
+      let contractId = contract.contractId;
+      props.fetchMatnrPriceServicePackage({ contractId });
     }
   }, [contract]);
 
@@ -234,9 +241,15 @@ const TabSmcsWithoutRequest = props => {
       tovarId: service.tovarId,
     };
 
-    if (service.masterId != null || service.masterId != undefined) {
+    let master = service.masterId;
+
+    if (master === null || master === undefined || master === '') {
+      setService({ ...service, positions: [] });
+      setEditStatus(true);
+    } else {
       props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart });
       props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge });
+      setEditStatus(false);
     }
   }, [service.masterId]);
 
@@ -303,22 +316,66 @@ const TabSmcsWithoutRequest = props => {
   };
 
   //ПРОДАЖА ЗАПЧАСТЕЙ========================================================================================
-  //=========================================================================================================
   const [sparePartInitial, setSparePartInitial] = useState([]);
-  const filterSparePart = sparePartInitial.filter(
-    item => item.checked === true,
-  );
-  const [modalSparePart, setModalSparePart] = useState(false);
-  const [modalCartridge, setModalCartridge] = useState(false);
 
-  //Кнопка добавить запчасти
-  const addSparePartBtn = () => {
-    setModalSparePart(true);
+  const [sparePartList, setSparePartList] = useState([]);
+
+  const [modalSparePart, setModalSparePart] = useState(false);
+
+  const onChangeSparePart = (value, fildName, original) => {
+    switch (fildName) {
+      //Кнопка добавить запчасти
+      case 'addSparePartBtn':
+        setModalSparePart(true);
+        break;
+
+      //Удалить запчасть
+      case 'deleteSparePart':
+        let deleteFilter = sparePartInitial.filter(
+          item => item.id !== value.id,
+        );
+        setSparePartInitial([...deleteFilter]);
+
+        setSparePartList(
+          sparePartList.map(item =>
+            item.id === value.id
+              ? {
+                  ...item,
+                  checked: false,
+                }
+              : item,
+          ),
+        );
+        break;
+
+      //Количество запчастей
+      case 'quantitySparePart':
+        let val = value.target.value;
+        if (val <= original.menge) {
+          setSparePartInitial(
+            sparePartInitial.map(item =>
+              item.id === original.id
+                ? {
+                    ...item,
+                    quantity: val,
+                    sum: val * item.matnrPrice,
+                  }
+                : item,
+            ),
+          );
+        } else {
+          alert(`У Вас в подотчете ${original.menge}`);
+        }
+        break;
+
+      default:
+        break;
+    }
   };
 
   useEffect(() => {
     matnrPriceSparePart.map((item, index) => {
-      setSparePartInitial(prev => [
+      setSparePartList(prev => [
         ...prev,
         {
           index: null,
@@ -349,8 +406,8 @@ const TabSmcsWithoutRequest = props => {
   //Выбрать запчасть
   const checkedSparePart = value => {
     if (value.checked === true) {
-      setSparePartInitial(
-        sparePartInitial.map(item =>
+      setSparePartList(
+        sparePartList.map(item =>
           item.id === value.id
             ? {
                 ...item,
@@ -362,8 +419,8 @@ const TabSmcsWithoutRequest = props => {
         ),
       );
     } else {
-      setSparePartInitial(
-        sparePartInitial.map(item =>
+      setSparePartList(
+        sparePartList.map(item =>
           item.id === value.id
             ? {
                 ...item,
@@ -382,49 +439,26 @@ const TabSmcsWithoutRequest = props => {
     setModalSparePart(false);
   };
 
-  //Удалить запчасть
-  const deleteSparePart = value => {
-    let deleteFilter = sparePartInitial.filter(item => item.id !== value.id);
-    setSparePartInitial([...deleteFilter]);
-  };
-
-  //Количество запчастей
-  const quantitySparePart = (e, value) => {
-    if (e.target.value <= value.menge) {
-      setSparePartInitial(
-        sparePartInitial.map(item =>
-          item.id === value.id
-            ? {
-                ...item,
-                quantity: e.target.value,
-                sum: e.target.value * item.matnrPrice,
-              }
-            : item,
-        ),
-      );
-    } else {
-      alert(`У Вас в подотчете ${value.menge}`);
-    }
-  };
+  useEffect(() => {
+    let filterSparePart = sparePartList.filter(item => item.checked === true);
+    setSparePartInitial([...filterSparePart]);
+  }, [sparePartList]);
 
   //ПРОДАЖА КАРТРИДЖЕЙ==================================================================================
-  //====================================================================================================
   const [cartridge, setCartridge] = useState([]); //Для сортировки своиств
+  //=======
   const [cartridgeInitial, setCartridgeInitial] = useState([]);
-
-  const filterCartridge = cartridgeInitial.filter(
-    item => item.checked === true,
-  );
-
-  console.log('cartridgeInitial', cartridgeInitial);
+  //=======
+  const [cartridgeList, setCartridgeList] = useState([]);
+  const [modalCartridge, setModalCartridge] = useState(false);
 
   const onChangeCartridge = (value, fieldName, original) => {
     switch (fieldName) {
+      //Добавить картридж в список
       case 'checkedCartridge':
-        console.log('CARTRIDGE CHECKED');
         if (value.checked === true) {
-          setCartridgeInitial(
-            cartridgeInitial.map(item =>
+          setCartridgeList(
+            cartridgeList.map(item =>
               item.id === value.id
                 ? {
                     ...item,
@@ -436,8 +470,8 @@ const TabSmcsWithoutRequest = props => {
             ),
           );
         } else {
-          setCartridgeInitial(
-            cartridgeInitial.map(item =>
+          setCartridgeList(
+            cartridgeList.map(item =>
               item.id === value.id
                 ? {
                     ...item,
@@ -450,18 +484,16 @@ const TabSmcsWithoutRequest = props => {
           );
         }
         break;
-
+      // Закрыть модальное окно
       case 'closeModalCartridge':
         setModalCartridge(false);
         break;
-
+      //Кнопка добавить картридж
       case 'addCartridgeBtn':
         setModalCartridge(true);
         break;
-
+      //F№ изменение
       case 'fnoEdit':
-        console.log('VALUE FNO', value);
-        console.log('original FNO', original);
         setCartridgeInitial(
           cartridgeInitial.map(item =>
             item.id === original.id
@@ -473,6 +505,44 @@ const TabSmcsWithoutRequest = props => {
           ),
         );
         break;
+      //Удалить картридж
+      case 'deleteCartridge':
+        let deleteFilter = cartridgeInitial.filter(
+          item => item.id !== value.id,
+        );
+        setCartridgeInitial([...deleteFilter]);
+
+        setCartridgeList(
+          cartridgeList.map(item =>
+            item.id === value.id
+              ? {
+                  ...item,
+                  checked: false,
+                }
+              : item,
+          ),
+        );
+        break;
+
+      //Количество картриджей
+      case 'quantityCartridge':
+        let val = value.target.value;
+        if (val <= original.menge) {
+          setCartridgeInitial(
+            cartridgeInitial.map(item =>
+              item.id === original.id
+                ? {
+                    ...item,
+                    quantity: val,
+                    sum: val * item.matnrPrice,
+                  }
+                : item,
+            ),
+          );
+        } else {
+          alert(`У Вас в подотчете ${original.menge}`);
+        }
+        break;
 
       default:
         alert('Нет таких значений');
@@ -481,7 +551,7 @@ const TabSmcsWithoutRequest = props => {
 
   useEffect(() => {
     matnrPriceCartridge.map((item, index) => {
-      setCartridgeInitial(prev => [
+      setCartridgeList(prev => [
         ...prev,
         {
           index: null,
@@ -509,17 +579,123 @@ const TabSmcsWithoutRequest = props => {
     });
   }, [matnrPriceCartridge]);
 
-  console.log('matnrPriceCartridge', matnrPriceCartridge);
-
-  const cartridgeList = service.positions.filter(
-    item => item.serviceTypeId === 1,
-  );
+  useEffect(() => {
+    let filterCartridge = cartridgeList.filter(item => item.checked === true);
+    setCartridgeInitial([...filterCartridge]);
+  }, [cartridgeList]);
 
   //СЕРВИС ПАКЕТ========================================================================================
-  //====================================================================================================
-  const servicePackageList = service.positions.filter(
-    item => item.serviceTypeId === 4,
+  const [servicePackageList, setServicePackageList] = useState([]);
+  const servicePackageListFilter = servicePackageList.filter(
+    item => item.checked === true,
   );
+  const [modalServicePackage, setModalServicePackage] = useState(false);
+  console.log('servicePackageList', servicePackageList);
+
+  const onChangeServicePackage = (value, fieldName, original) => {
+    switch (fieldName) {
+      case 'checkedServicePackage':
+        console.log('CHECKED', value.checked);
+        if (value.checked === true) {
+          setServicePackageList(
+            servicePackageList.map(item =>
+              item.id === value.id
+                ? {
+                    ...item,
+                    checked: false,
+                  }
+                : item,
+            ),
+          );
+        } else {
+          setServicePackageList(
+            servicePackageList.map(item =>
+              item.id === value.id
+                ? {
+                    ...item,
+                    checked: true,
+                  }
+                : item,
+            ),
+          );
+          let paramServicePackageDetails = {
+            branchId: service.branchId,
+            bukrs: service.bukrs,
+            servicePackageId: value.id,
+          };
+
+          props.fetchServicePackageDetails({ ...paramServicePackageDetails });
+        }
+        break;
+      case 'modalOpenServicePackage':
+        setModalServicePackage(true);
+        break;
+      case 'closeOpenServicePackage':
+        setModalServicePackage(false);
+        break;
+
+      case 'deleteServicePackage':
+        let deleteFilterSP = servicePackageList.filter(
+          item => item.id !== value.id,
+        );
+        setServicePackageList([...deleteFilterSP]);
+        break;
+
+      case 'dimmerClose':
+        console.log('DIMMER');
+        break;
+      default:
+        console.log('нет таких!');
+        break;
+    }
+  };
+
+  useEffect(() => {
+    matnrServicePackage.map((item, index) => {
+      setServicePackageList(prev => [
+        ...prev,
+        {
+          index: null,
+          currencyId: item.currencyId,
+          currencyName: item.waers,
+          fno: null,
+          id: item.id,
+          matnr: item.matnr,
+          matnrName: item.name,
+          matnrCode: null,
+          matnrPrice: null,
+          menge: null,
+          qinit: null,
+          qminus: null,
+          operationId: null,
+          quantity: 1,
+          serviceId: null,
+          servicePackageId: item.id,
+          serviceTypeId: 4,
+          sum: item.summ,
+          warranty: null,
+          checked: false,
+          details: [],
+        },
+      ]);
+    });
+  }, [matnrServicePackage]);
+
+  useEffect(() => {
+    if (servicePacketDetails.length > 0) {
+      let detailsId = servicePacketDetails[0].servicePackageId;
+      setServicePackageList(
+        servicePackageList.map(item =>
+          item.id === detailsId
+            ? {
+                ...item,
+                details: [...servicePacketDetails],
+              }
+            : item,
+        ),
+      );
+    }
+  }, [servicePacketDetails]);
 
   useEffect(() => {
     let filterSparePartInitial = sparePartInitial.filter(
@@ -565,18 +741,18 @@ const TabSmcsWithoutRequest = props => {
               handleRemoveService={handleRemoveService}
               selectServices={selectServices}
               waers={service.currencyName}
+              editStatus={editStatus}
             />
 
             {/*Продажа запчастей */}
             <SaleOfSparePart
-              data={filterSparePart}
-              addSparePartBtn={addSparePartBtn}
-              deleteSparePart={deleteSparePart}
-              quantitySparePart={quantitySparePart}
+              data={sparePartInitial}
+              onChangeSparePart={onChangeSparePart}
+              editStatus={editStatus}
             />
 
             <ModalAddSparePart
-              data={sparePartInitial}
+              data={sparePartList}
               modalOpen={modalSparePart}
               checkedSparePart={checkedSparePart}
               handleApplySparePart={handleApplySparePart}
@@ -584,18 +760,28 @@ const TabSmcsWithoutRequest = props => {
 
             {/*Продажа картриджей */}
             <SaleCartridge
-              data={filterCartridge}
+              data={cartridgeInitial}
               onChangeCartridge={onChangeCartridge}
+              editStatus={editStatus}
             />
 
             <ModalAddCartridge
-              data={cartridgeInitial}
+              data={cartridgeList}
               modalOpen={modalCartridge}
               onChangeCartridge={onChangeCartridge}
             />
 
             {/*Сервис пакет*/}
-            <ServicePackage />
+            <ServicePackage
+              data={servicePackageListFilter}
+              onChangeServicePackage={onChangeServicePackage}
+              editStatus={editStatus}
+            />
+            <ModalAddServicePacket
+              data={servicePackageList}
+              modalStatus={modalServicePackage}
+              onChangeServicePackage={onChangeServicePackage}
+            />
 
             {/*Таблица*/}
             <TableReportWithoutRequest />
@@ -621,6 +807,8 @@ function mapStateToProps(state) {
     serviceTypeId: state.smcsReducer.serviceTypeId,
     matnrPriceSparePart: state.smcsReducer.matnrPriceSparePart,
     matnrPriceCartridge: state.smcsReducer.matnrPriceCartridge,
+    matnrServicePackage: state.smcsReducer.matnrServicePackage,
+    servicePacketDetails: state.smcsReducer.servicePacketDetails,
     servicePacketProps: state.smcsReducer.smcsServicePacket,
     positionSumm: state.smcsReducer.smcsFetchPositionSumm,
     checkSmcs: state.smcsReducer.checkSmcs,
@@ -641,6 +829,8 @@ export default connect(mapStateToProps, {
   fetchServiceTypeId,
   fetchMatnrPriceSparePart,
   fetchMatnrPriceCartridge,
+  fetchMatnrPriceServicePackage,
+  fetchServicePackageDetails,
   fetchSmcsServicePacket,
   fetchPositionSumm,
   checkSmcsWithoutReques,

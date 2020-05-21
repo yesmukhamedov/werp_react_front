@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Button, Icon, Modal, Header, Checkbox } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
@@ -13,12 +13,7 @@ const ModalAddServicePacket = props => {
     intl: { messages },
   } = props;
 
-  const {
-    data = [],
-    modalOpen = false,
-    handleApplyServicePacket,
-    checkedServicePacket,
-  } = props;
+  const { data = [], onChangeServicePackage, modalStatus } = props;
 
   const columnsServicePacket = [
     {
@@ -26,7 +21,9 @@ const ModalAddServicePacket = props => {
       Cell: ({ original }) => (
         <Checkbox
           checked={original.checked}
-          onClick={() => checkedServicePacket(original)}
+          onClick={() =>
+            onChangeServicePackage(original, 'checkedServicePackage')
+          }
         />
       ),
       width: 30,
@@ -35,7 +32,7 @@ const ModalAddServicePacket = props => {
     },
     {
       Header: 'Название',
-      accessor: 'name',
+      accessor: 'matnrName',
       filterAll: true,
       width: 500,
       maxWidth: 500,
@@ -43,7 +40,7 @@ const ModalAddServicePacket = props => {
     },
     {
       Header: 'Цена',
-      accessor: 'price',
+      accessor: 'sum',
       filterAll: true,
       width: 100,
       maxWidth: 150,
@@ -58,8 +55,10 @@ const ModalAddServicePacket = props => {
       minWidth: 50,
     },
   ];
+
+  const [close, setClose] = useState(true);
   return (
-    <Modal open={modalOpen} closeOnDimmerClick dimmer={'blurring'}>
+    <Modal open={modalStatus} closeOnDimmerClick={false} dimmer={'blurring'}>
       <Header content="Добавить сервис пакет" />
       <Modal.Content>
         <ReactTableWrapper
@@ -79,7 +78,12 @@ const ModalAddServicePacket = props => {
         />
       </Modal.Content>
       <Modal.Actions>
-        <Button color="green" onClick={handleApplyServicePacket}>
+        <Button
+          color="green"
+          onClick={item =>
+            onChangeServicePackage(item, 'closeOpenServicePackage')
+          }
+        >
           <Icon name="checkmark" /> Применить
         </Button>
       </Modal.Actions>
