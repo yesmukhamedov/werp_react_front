@@ -195,7 +195,10 @@ const Smsetct = props => {
         setShow(false);
         setMessg({});
         setPostErrors({});
-        fetchSmsetct(postParams.bukrs, postParams.branchId);
+        fetchSmsetct({
+          bukrs: postParams.bukrs,
+          branchId: postParams.branchId,
+        });
       });
     }
     setPostErrors({ ...errors });

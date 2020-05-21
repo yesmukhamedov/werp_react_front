@@ -138,7 +138,7 @@ const Edit = props => {
   const handleSave = () => {
     setOpenModal(false);
     editSmsetplp({ ...editParams }, () => {
-      fetchSmsetplp(editParams.bukrs, editParams.branchId);
+      fetchSmsetplp({ bukrs: editParams.bukrs, branchId: editParams.branchId });
       setOpenModal(false);
     });
   };

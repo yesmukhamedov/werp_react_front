@@ -168,7 +168,12 @@ export default function List(props) {
   };
 
   const onClickSave = () => {
-    let errs = validateEdit(editParams);
+    let errs = validateEdit(editParams),
+      searchParams = {
+        countryId: editParams.countryId,
+        bukrs: editParams.bukrs,
+        branchId: editParams.branchId,
+      };
 
     if (
       errs === null ||
@@ -180,7 +185,7 @@ export default function List(props) {
         setOpen(false);
         setMessg({});
         setErrorsEdit({});
-        fetchSmsetct(searchParams.searchText);
+        fetchSmsetct(searchParams);
       });
     }
     setErrorsEdit({ ...errs });

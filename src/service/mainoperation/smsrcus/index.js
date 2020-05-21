@@ -186,7 +186,12 @@ const Smsrcus = props => {
     if (errs === null || errs === undefined || errs.length === 0) {
       let contractDateFrom = startDate,
         contractDateTo = endDate;
-      fetchSmsrcus({ ...searchParams, contractDateFrom, contractDateTo, page });
+      let Obj = { ...searchParams };
+
+      if (startDate) Obj = { ...Obj, contractDateFrom };
+      if (endDate) Obj = { ...Obj, contractDateTo };
+
+      fetchSmsrcus({ ...searchParams, page });
     }
     setErrors(() => errs);
   };
@@ -273,11 +278,19 @@ const Smsrcus = props => {
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
+                isClearable={startDate ? true : false}
                 showMonthDropdown
                 showYearDropdown
-                selected={stringYYYYMMDDToMoment(startDate)}
-                onChange={event => setStartDate(momentToStringYYYYMMDD(event))}
+                colo="pink"
+                selected={startDate ? stringYYYYMMDDToMoment(startDate) : null}
+                onChange={event => {
+                  console.log(event, 'event');
+                  event
+                    ? setStartDate(momentToStringYYYYMMDD(event))
+                    : setStartDate(event);
+                }}
                 dateFormat="YYYY.MM.DD"
+                placeholderText={messages['Form.DateFrom']}
               />
             </Form.Input>
 
@@ -293,11 +306,17 @@ const Smsrcus = props => {
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
+                isClearable={endDate ? true : false}
                 showMonthDropdown
                 showYearDropdown
-                selected={stringYYYYMMDDToMoment(endDate)}
-                onChange={event => setEndDate(momentToStringYYYYMMDD(event))}
+                selected={endDate ? stringYYYYMMDDToMoment(endDate) : null}
+                onChange={date => {
+                  date
+                    ? setEndDate(momentToStringYYYYMMDD(date))
+                    : setEndDate(date);
+                }}
                 dateFormat="YYYY.MM.DD"
+                placeholderText={messages['Form.DateTo']}
               />
             </Form.Input>
             <Form.Field>
