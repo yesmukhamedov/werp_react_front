@@ -57,7 +57,7 @@ const MyApplicationExodus = props => {
     },
     {
       Header: messages['brnch'],
-      accessor: 'branch',
+      accessor: 'branchId',
       checked: true,
     },
     {
@@ -89,7 +89,7 @@ const MyApplicationExodus = props => {
     },
     {
       Header: messages['Phone'],
-      accessor: 'phone',
+      accessor: 'phoneNumber',
       checked: true,
     },
     {
@@ -129,19 +129,19 @@ const MyApplicationExodus = props => {
     },
     {
       Header: messages['category'],
-      accessor: '5crmCategory',
+      accessor: 'crmCategoryId',
       checked: true,
       filterable: false,
     },
     {
       Header: messages['application_status'],
-      accessor: 'applicationStatus',
+      accessor: 'applicationStatusId',
       checked: true,
       filterable: false,
     },
     {
       Header: messages['request_number'],
-      accessor: '5850',
+      accessor: 'applicationNumber',
       checked: true,
       filterable: false,
     },
@@ -383,8 +383,8 @@ const MyApplicationExodus = props => {
         filterable={true}
         defaultPageSize={20}
         showPagination={true}
-        requestData={param => {
-          props.fetchMyApplicationExodus({ ...param });
+        requestData={params => {
+          props.fetchMyApplicationExodus({ ...params, ...param });
         }}
         pages={myApplication ? myApplication.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}

@@ -372,8 +372,9 @@ const ServiceFilterPlan = props => {
         filterable={true}
         defaultPageSize={20}
         showPagination={true}
-        requestData={param => {
-          props.fetchServiceFilterPlan({ ...param });
+        requestData={params => {
+          props.fetchServiceFilterPlan({ ...params, ...param });
+          console.log(param);
         }}
         pages={serviceFilterPlan ? serviceFilterPlan.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}

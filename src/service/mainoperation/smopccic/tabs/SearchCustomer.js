@@ -10,10 +10,12 @@ import {
   Divider,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
+import OutputErrors from '../../../../general/error/outputErrors';
+import { errorTableText } from '../../../../utils/helpers';
 import { fetchSearchCustomer } from '../smopccicAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from '../../../../utils/ModalColumns';
-
+import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
@@ -28,11 +30,12 @@ const SearchCustomer = props => {
     branches = [],
     finStatusOptions = [],
     tovarCategoryOptions = [],
-    searchCustomerData = [],
   } = props;
 
-  const {} = props;
-
+  const {
+    intl: { messages },
+    searchCustomer,
+  } = props;
   const emptyParam = {
     country: '',
     bukrs: '',
@@ -44,18 +47,21 @@ const SearchCustomer = props => {
   };
 
   const [param, setParam] = useState({ ...emptyParam });
+  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
+  const [error, setError] = useState([]);
 
   const initialColumns = [
     {
       Header: 'Id',
-      accessor: 'id',
+      accessor: 'customerId',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'Филиал',
-      accessor: 'branch',
+      Header: messages['brnch'],
+      accessor: 'branchName',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'CN',
@@ -63,47 +69,47 @@ const SearchCustomer = props => {
       checked: true,
     },
     {
-      Header: 'Заводской номер',
+      Header: messages['factory_number'],
       accessor: 'tovarSn',
       checked: true,
     },
     {
-      Header: 'Дата продажи',
+      Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'Фин. статус',
-      accessor: '999',
+      Header: messages['fin_status'],
+      accessor: 'contractStatusName',
       checked: true,
       filterable: false,
     },
 
     {
-      Header: 'ФИО клиента',
+      Header: messages['fio'],
       accessor: 'customerFIO',
       checked: true,
     },
 
     {
-      Header: 'ИИН клиента',
-      accessor: 'customerIIN',
+      Header: messages['customer_key'],
+      accessor: 'customerIinBin',
       checked: true,
     },
     {
-      Header: 'Адрес',
+      Header: messages['address'],
       accessor: 'address',
       checked: true,
     },
     {
-      Header: 'Телефон',
-      accessor: 'phone',
+      Header: messages['Phone'],
+      accessor: 'phoneNumber',
       checked: true,
     },
 
     {
-      Header: 'История клиента',
+      Header: messages['customer_story'],
       accessor: '16',
       checked: true,
       filterable: false,
@@ -185,7 +191,21 @@ const SearchCustomer = props => {
     });
   };
   const handleClickApply = () => {
-    props.fetchSearchCustomer({ ...param });
+    validate();
+    if (param.bukrs !== '') {
+      const page = 0;
+      const size = 20;
+      props.fetchSearchCustomer({ ...param, page, size });
+      setTurnOnReactFetch(true);
+    }
+  };
+
+  const validate = () => {
+    const errors = [];
+    if (param.bukrs === '') {
+      errors.push(errorTableText(5));
+    }
+    setError(() => errors);
   };
 
   const [columns, setColumns] = useState([...initialColumns]);
@@ -199,8 +219,8 @@ const SearchCustomer = props => {
         <Form.Group widths="equal">
           <Form.Select
             fluid
-            label="Страна"
-            placeholder="Страна"
+            label={messages['country']}
+            placeholder={messages['country']}
             options={countryOptions}
             onChange={(e, o) => onInputChange(o, 'country')}
             className="alignBottom"
@@ -209,34 +229,33 @@ const SearchCustomer = props => {
           <Form.Select
             required
             fluid
-            label="Компания"
-            placeholder="Компания"
+            label={messages['bukrs']}
+            placeholder={messages['bukrs']}
             options={companyOptions}
             onChange={(e, o) => onInputChange(o, 'bukrs')}
             className="alignBottom"
           />
 
           <Form.Select
-            required
             fluid
-            label="Филиал"
-            placeholder="Филиал"
+            label={messages['brnch']}
+            placeholder={messages['brnch']}
             options={serviceBranchOptions}
             onChange={(e, o) => onInputChange(o, 'branchId')}
             className="alignBottom"
           />
 
           <Form.Select
-            label="Категория товара"
-            placeholder="Категория товара"
+            label={messages['category']}
+            placeholder={messages['category']}
             options={tovarCategoryOptions}
             onChange={(e, o) => onInputChange(o, 'tovarCategorys')}
             className="alignBottom"
           />
 
           <Form.Select
-            label="Фин. статус"
-            placeholder="Фин. статус"
+            label={messages['fin_status']}
+            placeholder={messages['fin_status']}
             options={finStatusOptions}
             onChange={(e, o) => onInputChange(o, 'configuration')}
             className="alignBottom"
@@ -245,37 +264,47 @@ const SearchCustomer = props => {
         <Form.Group className="spaceBetween">
           <div className="flexDirectionRow">
             <Form.Field className="marginRight">
-              <label>Дата заявки с</label>
+              <label>{messages['Form.DateFrom']}</label>
               <DatePicker
                 className="date-auto-width"
                 autoComplete="off"
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.contractDateFrom)}
+                placeholderText={messages['Form.DateFrom']}
+                selected={
+                  param.contractDateFrom === ''
+                    ? ''
+                    : stringYYYYMMDDToMoment(param.contractDateFrom)
+                }
                 onChange={date =>
                   setParam({
                     ...param,
                     contractDateFrom: momentToStringYYYYMMDD(date),
                   })
                 }
-                maxDate={new Date()}
+                maxDate={moment(new Date())}
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
 
             <Form.Field className="marginRight">
-              <label>Дата заявки по</label>
+              <label>{messages['Form.DateTo']}</label>
               <DatePicker
                 className="date-auto-width"
                 autoComplete="off"
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.contractDateTo)}
+                placeholderText={messages['Form.DateTo']}
+                selected={
+                  param.contractDateTo === ''
+                    ? ''
+                    : stringYYYYMMDDToMoment(param.contractDateFrom)
+                }
                 onChange={date =>
                   setParam({
                     ...param,
                     contractDateTo: momentToStringYYYYMMDD(date),
                   })
                 }
-                maxDate={new Date()}
+                maxDate={moment(new Date())}
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
@@ -285,7 +314,7 @@ const SearchCustomer = props => {
               className="alignBottom"
             >
               <Icon name="search" />
-              Применить
+              {messages['apply']}
             </Form.Button>
           </div>
 
@@ -296,15 +325,29 @@ const SearchCustomer = props => {
             />
           </Form.Field>
         </Form.Group>
+        <OutputErrors errors={error} />
       </Form>
       <Divider />
-      <ReactTableServerSideWrapper filterable={true} columns={columns} />
+      <ReactTableServerSideWrapper
+        data={searchCustomer ? searchCustomer.data : []}
+        filterable={true}
+        columns={columns}
+        defaultPageSize={20}
+        showPagination={true}
+        requestData={params => {
+          props.fetchSearchCustomer({ ...params, ...param });
+        }}
+        pages={searchCustomer ? searchCustomer.totalPages : ''}
+        turnOnReactFetch={turnOnReactFetch}
+      />
     </Container>
   );
 };
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    searchCustomer: state.smopccicReducer.searchCustomerData,
+  };
 }
 
 export default connect(mapStateToProps, {

@@ -38,9 +38,9 @@ const AssignedCalls = props => {
     country: '',
     bukrs: '',
     branchId: '',
-    categoryId: '',
+    crmCategoryId: '',
     serviceDateType: '',
-    finStatus: '',
+    contractStatusId: '',
     dateOpenAt: '',
   };
 
@@ -234,8 +234,8 @@ const AssignedCalls = props => {
           prevParam.branchId = o.value;
           break;
 
-        case 'categoryId':
-          prevParam.categoryId = o.value;
+        case 'crmCategoryId':
+          prevParam.crmCategoryId = o.value;
           break;
         case 'serviceDateType':
           prevParam.serviceDateType = o.value;
@@ -245,8 +245,8 @@ const AssignedCalls = props => {
           prevParam.configuration = o.value;
           break;
 
-        case 'finStatus':
-          prevParam.finStatus = o.value;
+        case 'contractStatusId':
+          prevParam.contractStatusId = o.value;
           break;
 
         default:
@@ -299,7 +299,7 @@ const AssignedCalls = props => {
             label={messages['fin_status']}
             placeholder={messages['fin_status']}
             options={finStatusOption}
-            onChange={(e, o) => onInputChange(o, 'finStatus')}
+            onChange={(e, o) => onInputChange(o, 'contractStatusId')}
             className="alignBottom"
           />
 
@@ -316,7 +316,7 @@ const AssignedCalls = props => {
             label={messages['category']}
             placeholder={messages['category']}
             options={crmCategoryOptions}
-            onChange={(e, o) => onInputChange(o, 'categoryId')}
+            onChange={(e, o) => onInputChange(o, 'crmCategoryId')}
             className="alignBottom"
           />
         </Form.Group>
@@ -372,8 +372,8 @@ const AssignedCalls = props => {
         filterable={true}
         defaultPageSize={20}
         showPagination={true}
-        requestData={param => {
-          props.fetchCRMSchedule({ ...param });
+        requestData={params => {
+          props.fetchCRMSchedule({ ...params, ...param });
         }}
         pages={assignedCalls ? assignedCalls.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}

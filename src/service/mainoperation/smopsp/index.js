@@ -20,8 +20,7 @@ import '../../service.css';
 
 const Smopccoc = props => {
   const {
-    // intl: { messages },
-    // language,
+    intl: { messages },
   } = props;
 
   const {
@@ -112,7 +111,9 @@ const Smopccoc = props => {
   //Вкладки
   const panes = [
     {
-      menuItem: <Menu.Item key={1}>План по сервис пакетам</Menu.Item>,
+      menuItem: (
+        <Menu.Item key={1}>{messages['service_packet_plan']}</Menu.Item>
+      ),
       pane: (
         <Tab.Pane key={1}>
           <ServiceFilterVC
@@ -128,7 +129,9 @@ const Smopccoc = props => {
       ),
     },
     {
-      menuItem: <Menu.Item key={2}>Перенесенные заявки</Menu.Item>,
+      menuItem: (
+        <Menu.Item key={2}>{messages['rescheduled_applications']}</Menu.Item>
+      ),
       pane: (
         <Tab.Pane key={2}>
           <TransferApplication
@@ -144,7 +147,7 @@ const Smopccoc = props => {
       ),
     },
     {
-      menuItem: <Menu.Item key={3}>Назначенные звонки</Menu.Item>,
+      menuItem: <Menu.Item key={3}>{messages['assigned_calls']}</Menu.Item>,
       pane: (
         <Tab.Pane key={3}>
           <AssignedCalls
@@ -160,7 +163,7 @@ const Smopccoc = props => {
       ),
     },
     {
-      menuItem: <Menu.Item key={4}>Мои заявки</Menu.Item>,
+      menuItem: <Menu.Item key={4}>{messages['my_applications']}</Menu.Item>,
       pane: (
         <Tab.Pane key={4}>
           <MyApplication
@@ -187,7 +190,7 @@ const Smopccoc = props => {
         paddingRight: '2em',
       }}
     >
-      <Segment as="h2">План по профилактики</Segment>
+      <Segment as="h2">{messages['prevention_plan']}</Segment>
 
       <Tab
         menu={{ attached: true, tabular: false, pointing: true }}

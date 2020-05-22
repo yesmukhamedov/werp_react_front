@@ -19,7 +19,6 @@ import {
   f4FetchBranches,
   f4FetchServiceAppStatus,
 } from '../../../reference/f4/f4_action';
-import { fetchBukrsOptions } from '../../../reference/f4/bukrs/BukrsOptions';
 import '../../service.css';
 
 const Smopccic = props => {
@@ -77,7 +76,7 @@ const Smopccic = props => {
   //Вкладки
   const panes = [
     {
-      menuItem: <Menu.Item key={1}>Поиск клиентов</Menu.Item>,
+      menuItem: <Menu.Item key={1}>{messages['customer_search']}</Menu.Item>,
       pane: (
         <Tab.Pane key={1}>
           <SearchCustomer
@@ -91,7 +90,7 @@ const Smopccic = props => {
       ),
     },
     {
-      menuItem: <Menu.Item key={2}>Перенос</Menu.Item>,
+      menuItem: <Menu.Item key={2}>{messages['transfer']}</Menu.Item>,
       pane: (
         <Tab.Pane key={2}>
           <TransferApplicationEntry />
@@ -99,7 +98,7 @@ const Smopccic = props => {
       ),
     },
     {
-      menuItem: <Menu.Item key={3}>Мои заявки</Menu.Item>,
+      menuItem: <Menu.Item key={3}>{messages['my_applications']}</Menu.Item>,
       pane: (
         <Tab.Pane key={3}>
           <MyApplication
@@ -126,10 +125,12 @@ const Smopccic = props => {
     >
       <Segment className="spaceBetween alignItemsCenter">
         <h3 className="alignItemsCenter marginBottom-0">
-          Оператор call center по входящим звонкам
+          {messages['incoming_call_operator']}
         </h3>
         <a href="/service/mainoperation/smccald" target="_blank">
-          <Button color="teal">Создать заявку без данных</Button>
+          <Button color="teal">
+            {messages['create_request_without_data']}
+          </Button>
         </a>
       </Segment>
 

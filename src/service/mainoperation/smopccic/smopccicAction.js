@@ -22,7 +22,7 @@ export const fetchSearchCustomer = param => {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SEARCH_CUSTOMER,
-          data,
+          payload: data,
         });
       })
       .catch(error => {
@@ -33,14 +33,14 @@ export const fetchSearchCustomer = param => {
 };
 
 //Перенесенные заявки
-export const fetchTransferApplication = param => {
+export const fetchTransferApplication = () => {
   return function(dispatch) {
-    doGet(`smopccic/transferApplicationEntry`, param)
+    doGet(`smopccic/rescheduledApplication`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_TRANSFER_APPLICATION,
-          data,
+          payload: data,
         });
       })
       .catch(error => {
@@ -58,7 +58,7 @@ export const fetchMyApplicationExodus = param => {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_MY_APPLICATION,
-          data,
+          payload: data,
         });
       })
       .catch(error => {
