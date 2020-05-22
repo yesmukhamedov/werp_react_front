@@ -16,7 +16,7 @@ import {
   f4FetchCompanyOptions,
   f4fetchCategory,
 } from '../../../../reference/f4/f4_action';
-
+import OutputErrors from '../../../../general/error/outputErrors';
 import { fetchSmcrldList, postSmcrldFormplan } from '../smdisAction';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -40,9 +40,8 @@ const Smcrld = props => {
     footerData,
   } = props;
 
-  console.log(smcrldListSum);
-
   const [sum, setSum] = useState({});
+
   useEffect(() => {
     setSum({ ...smcrldListSum });
   }, [smcrldListSum]);
@@ -345,13 +344,16 @@ const Smcrld = props => {
 
   //Применить
   const handleClickApply = () => {
-    props.fetchSmcrldList({ ...param });
+    props.validate();
+    const { bukrs, categoryId, dateAt } = param;
+    if (bukrs !== '' && categoryId !== '' && dateAt !== null) {
+      props.fetchSmcrldList({ ...param });
+    }
   };
 
   const formPlanClick = () => {
     props.postSmcrldFormplan({ ...param });
   };
-
   const [columns, setColumns] = useState([...initialColumns]);
 
   const finishColumns = data => {
@@ -420,6 +422,7 @@ const Smcrld = props => {
             />
           </Form.Field>
         </Form.Group>
+        <OutputErrors errors={props.error} />
       </Form>
       <Divider />
       <ReactTableWrapper

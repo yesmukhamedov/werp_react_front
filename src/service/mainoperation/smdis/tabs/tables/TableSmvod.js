@@ -10,7 +10,7 @@ const TableSmvod = props => {
       columns: [
         {
           Header: 'Id',
-          accessor: 'id',
+          accessor: 'operatorId',
         },
         {
           Header: 'Страна',

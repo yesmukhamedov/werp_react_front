@@ -10,7 +10,7 @@ import {
   fetchSmrdOperator,
   postSmrdOperatorsByBranch,
 } from './smdisAction';
-
+import { errorTableText } from '../../../utils/helpers';
 import { Container, Tab, Menu, Label } from 'semantic-ui-react';
 
 import '../../service.css';
@@ -27,13 +27,17 @@ const Smdis = props => {
   } = props;
 
   const emptyParam = {
+    branchId: '',
     bukrs: '',
+    countryId: '',
     categoryId: '',
     dateAt: null,
+    operatorId: '',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
   const [branch, setBranch] = useState('');
+  const [error, setError] = useState([]);
 
   const [defaultPane, setDefaultPane] = useState(0);
 
@@ -53,6 +57,8 @@ const Smdis = props => {
 
     let paramSmvod = {
       branchId: data.branchId,
+      bukrsId: data.bukrs,
+      countryId: data.countryId,
       categoryId: param.categoryId,
       dateAt: param.dateAt,
     };
@@ -67,6 +73,8 @@ const Smdis = props => {
 
     let smrdOperatorParam = {
       branchId: data.branchId,
+      bukrsId: data.bukrs,
+      countryId: data.countryId,
       categoryId: param.categoryId,
       dateAt: param.dateAt,
       operatorId: data.operatorId,
@@ -80,7 +88,9 @@ const Smdis = props => {
   //Получить список операторов
   const clickAddOperator = () => {
     let paramOp = {
-      branchId: branch,
+      branchId: param.branchId,
+      bukrsId: param.bukrs,
+      countryId: param.countryId,
       categoryId: param.categoryId,
       dateAt: param.dateAt,
     };
@@ -110,6 +120,20 @@ const Smdis = props => {
     });
   };
 
+  const validate = () => {
+    const errors = [];
+    if (param.bukrs === '') {
+      errors.push(errorTableText(5));
+    }
+    if (param.categoryId === '') {
+      errors.push(errorTableText(109));
+    }
+    if (param.dateAt === null) {
+      errors.push(errorTableText(22));
+    }
+    setError(() => errors);
+  };
+
   //Вкладки
   const panes = [
     {
@@ -124,6 +148,8 @@ const Smdis = props => {
             clickViewService={clickViewService}
             onInputChange={onInputChange}
             param={param}
+            validate={validate}
+            error={error}
           />
         </Tab.Pane>
       ),
