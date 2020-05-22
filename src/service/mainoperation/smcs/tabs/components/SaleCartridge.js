@@ -16,11 +16,15 @@ const SaleCartridge = props => {
     {
       Header: '№',
       accessor: 'matnrCode',
+      Cell: row => {
+        return <div>{row.index + 1}</div>;
+      },
+      width: 50,
     },
     {
       Header: 'Наименование',
       accessor: 'matnrName',
-      width: 400,
+      width: 500,
     },
     {
       Header: 'F№',
@@ -29,7 +33,9 @@ const SaleCartridge = props => {
         <Input
           size="mini"
           style={{ padding: '0' }}
-          value={original.fno === null ? '' : original.fno}
+          value={
+            original.fno === null || original.fno === '' ? 0 : original.fno
+          }
           type="number"
           fluid
           onChange={(e, value) => onChangeCartridge(value, 'fnoEdit', original)}
@@ -41,6 +47,7 @@ const SaleCartridge = props => {
       accessor: 'quantity',
       Cell: ({ original }) => (
         <Input
+          readOnly
           size="mini"
           style={{ padding: '0' }}
           value={original.quantity}

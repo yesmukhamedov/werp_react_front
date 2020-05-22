@@ -17,12 +17,12 @@ const ServicePackage = props => {
       Header: '№',
       accessor: 'matnrCode',
       Cell: ({ original, index }) => <div>{index + 1}</div>,
-
       width: 50,
     },
     {
       Header: 'Наименование',
       accessor: 'matnrName',
+      width: 500,
     },
 
     {

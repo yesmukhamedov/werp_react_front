@@ -13,6 +13,7 @@ import {
   SAVE_SMCS_WITHOUT_REQUEST,
   FETCH_MATNR_PRICE_SERVICE_PACKAGE,
   FETCH_SERVICE_PACKAGE_DETAILS,
+  FETCH_SMCS_BY_APP_NUMBER,
 } from './smcsAction';
 
 const INITIAL_STATE = {
@@ -71,6 +72,8 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_OPERATOR_LIST:
       return { ...state, operatorList: [...action.data.data] };
 
+    case FETCH_SMCS_BY_APP_NUMBER:
+      return { ...state, smcsAppNumberData: { ...action.data.data } };
     default:
       return state;
   }

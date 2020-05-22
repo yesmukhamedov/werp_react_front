@@ -26,33 +26,23 @@ const ModalAddServicePacket = props => {
           }
         />
       ),
-      width: 30,
-      maxWidth: 50,
-      minWidth: 20,
+      width: 50,
     },
     {
       Header: 'Название',
       accessor: 'matnrName',
       filterAll: true,
       width: 500,
-      maxWidth: 500,
-      minWidth: 300,
     },
     {
       Header: 'Цена',
       accessor: 'sum',
       filterAll: true,
-      width: 100,
-      maxWidth: 150,
-      minWidth: 50,
     },
     {
       Header: 'Валюта',
       accessor: 'currencyName',
       filterAll: true,
-      width: 70,
-      maxWidth: 100,
-      minWidth: 50,
     },
   ];
 

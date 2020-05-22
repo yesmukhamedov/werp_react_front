@@ -32,17 +32,7 @@ const ModalAddCartridge = props => {
         />
       ),
       filterAll: true,
-      width: 30,
-      maxWidth: 50,
-      minWidth: 20,
-    },
-    {
-      Header: 'Код',
-      accessor: 'matnrCode',
-      filterAll: true,
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
+      width: 50,
     },
     {
       Header: 'Название',
@@ -56,25 +46,16 @@ const ModalAddCartridge = props => {
       Header: 'Цена',
       accessor: 'matnrPrice',
       filterAll: true,
-      width: 100,
-      maxWidth: 150,
-      minWidth: 50,
     },
     {
       Header: 'Валюта',
       accessor: 'currencyName',
       filterAll: true,
-      width: 70,
-      maxWidth: 100,
-      minWidth: 50,
     },
     {
       Header: 'В подочете',
       accessor: 'menge',
       filterAll: true,
-      width: 100,
-      maxWidth: 150,
-      minWidth: 100,
     },
   ];
 

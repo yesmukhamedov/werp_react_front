@@ -30,45 +30,25 @@ const ModalAddSparePart = props => {
         />
       ),
       filterAll: true,
-      width: 30,
-      maxWidth: 50,
-      minWidth: 20,
-    },
-    {
-      Header: 'Код',
-      accessor: 'matnrCode',
-      width: 100,
-      maxWidth: 200,
-      minWidth: 100,
+      width: 50,
     },
     {
       Header: 'Название',
       accessor: 'matnrName',
       width: 500,
-      maxWidth: 500,
-      minWidth: 300,
     },
     {
       Header: 'Цена',
       accessor: 'matnrPrice',
-      width: 100,
-      maxWidth: 150,
-      minWidth: 50,
     },
     {
       Header: 'Валюта',
       accessor: 'currencyName',
       filterAll: true,
-      width: 70,
-      maxWidth: 100,
-      minWidth: 50,
     },
     {
       Header: 'В подочете',
       accessor: 'menge',
-      width: 100,
-      maxWidth: 150,
-      minWidth: 100,
     },
   ];
   return (

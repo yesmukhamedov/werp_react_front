@@ -25,7 +25,7 @@ const Services = props => {
     {
       Header: 'Наименование услуг',
       accessor: 'matnrName',
-      width: 400,
+      width: 500,
       Cell: ({ original }) => (
         <Dropdown
           placeholder="Выбрать"
@@ -43,7 +43,7 @@ const Services = props => {
     },
     {
       Header: 'Валюта',
-      accessor: 'waers',
+      accessor: 'currencyName',
     },
     {
       Header: '',

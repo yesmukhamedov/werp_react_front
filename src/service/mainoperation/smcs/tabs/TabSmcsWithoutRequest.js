@@ -1,18 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import {
-  Segment,
-  Grid,
-  Form,
-  Button,
-  Table,
-  Input,
-  Icon,
-  Divider,
-  Dropdown,
-  Checkbox,
-} from 'semantic-ui-react';
+import { Grid, Form, Button, Icon } from 'semantic-ui-react';
 
 import {
   fetchServiceSmcs,
@@ -62,9 +51,8 @@ const TabSmcsWithoutRequest = props => {
     matnrPriceCartridge = [],
     matnrServicePackage = [],
     servicePacketDetails = [],
-    servicePacketProps = [],
     positionSumm,
-    checkSmcs,
+    checkSmcs = {},
     saveSmcs,
     operatorList = [],
   } = props;
@@ -169,7 +157,6 @@ const TabSmcsWithoutRequest = props => {
   useEffect(() => {
     let serviceBA = [5, 6, 9];
     let waSerBranches = {};
-    //getting all branches and making fin branch options and service branch options
     function optFunction(item) {
       let option = {
         key: item.branch_id,
@@ -243,10 +230,59 @@ const TabSmcsWithoutRequest = props => {
 
     let master = service.masterId;
 
-    if (master === null || master === undefined || master === '') {
-      setService({ ...service, positions: [] });
+    if (
+      master === null ||
+      master === undefined ||
+      master === '' ||
+      master === 0
+    ) {
+      setServices([]);
+
+      setSparePartList(
+        sparePartList.map(item =>
+          item.checked === true
+            ? {
+                ...item,
+                checked: false,
+              }
+            : item,
+        ),
+      );
+      setCartridgeList(
+        cartridgeList.map(item =>
+          item.checked === true
+            ? {
+                ...item,
+                checked: false,
+              }
+            : item,
+        ),
+      );
+      setServicePackageList(
+        servicePackageList.map(item =>
+          item.checked === true
+            ? {
+                ...item,
+                checked: false,
+              }
+            : item,
+        ),
+      );
       setEditStatus(true);
     } else {
+      setServices([]);
+      setSparePartList(
+        sparePartList.map(item =>
+          item.checked === true
+            ? {
+                ...item,
+                checked: false,
+              }
+            : item,
+        ),
+      );
+      setCartridgeInitial([]);
+      setServicePackageInitial([]);
       props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart });
       props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge });
       setEditStatus(false);
@@ -275,16 +311,21 @@ const TabSmcsWithoutRequest = props => {
       ...services,
       {
         currencyId: null,
+        currencyName: null,
         fno: null,
-        id: '2' + length,
-        matnr: null,
+        id: 2222 + length,
+        matnrId: null,
+        matnrName: null,
         matnrPrice: null,
         operationId: null,
+        operationName: null,
         quantity: null,
         serviceId: null,
         servicePackageId: null,
+        servicePackageName: null,
         serviceTypeId: 2,
-        sum: 0,
+        serviceTypeName: null,
+        sum: null,
         warranty: null,
       },
     ]);
@@ -304,7 +345,14 @@ const TabSmcsWithoutRequest = props => {
   useEffect(() => {
     setServices(
       services.map(item =>
-        item.serviceTypeId === '2' ? { ...item, sum: positionSumm.sum } : item,
+        item.serviceTypeId === '2'
+          ? {
+              ...item,
+              currencyId: positionSumm.currencyId,
+              currencyName: positionSumm.currencyName,
+              sum: positionSumm.sum,
+            }
+          : item,
       ),
     );
   }, [positionSumm]);
@@ -378,25 +426,45 @@ const TabSmcsWithoutRequest = props => {
       setSparePartList(prev => [
         ...prev,
         {
-          index: null,
+          // index: null,
+          // currencyId: item.currencyId,
+          // currencyName: item.currencyName,
+          // fno: null,
+          // id: item.matnrId + index,
+          // matnr: item.matnr,
+          // matnrName: item.matnrName,
+          // matnrCode: item.matnrCode,
+          // matnrPrice: item.price,
+          // menge: item.menge,
+          // qinit: item.qinit,
+          // qminus: item.qminus,
+          // operationId: null,
+          // quantity: 1,
+          // serviceId: null,
+          // servicePackageId: null,
+          // serviceTypeId: 3,
+          // sum: null,
+          // warranty: false,
+          // checked: false,
+
           currencyId: item.currencyId,
           currencyName: item.currencyName,
           fno: null,
           id: item.matnrId + index,
-          matnr: item.matnr,
+          matnrId: item.matnrId,
           matnrName: item.matnrName,
-          matnrCode: item.matnrCode,
           matnrPrice: item.price,
-          menge: item.menge,
-          qinit: item.qinit,
-          qminus: item.qminus,
           operationId: null,
+          operationName: null,
+          menge: item.menge,
           quantity: 1,
           serviceId: null,
           servicePackageId: null,
+          servicePackageName: null,
           serviceTypeId: 3,
+          serviceTypeName: null,
           sum: null,
-          warranty: false,
+          warranty: null,
           checked: false,
         },
       ]);
@@ -445,10 +513,7 @@ const TabSmcsWithoutRequest = props => {
   }, [sparePartList]);
 
   //ПРОДАЖА КАРТРИДЖЕЙ==================================================================================
-  const [cartridge, setCartridge] = useState([]); //Для сортировки своиств
-  //=======
   const [cartridgeInitial, setCartridgeInitial] = useState([]);
-  //=======
   const [cartridgeList, setCartridgeList] = useState([]);
   const [modalCartridge, setModalCartridge] = useState(false);
 
@@ -494,12 +559,14 @@ const TabSmcsWithoutRequest = props => {
         break;
       //F№ изменение
       case 'fnoEdit':
-        setCartridgeInitial(
-          cartridgeInitial.map(item =>
+        console.log('VALUE FNO', value);
+        console.log('ORIGINAL FNO', original);
+        setCartridgeList(
+          cartridgeList.map(item =>
             item.id === original.id
               ? {
                   ...item,
-                  fno: value.value,
+                  fno: parseInt(value.value, 10),
                 }
               : item,
           ),
@@ -510,7 +577,7 @@ const TabSmcsWithoutRequest = props => {
         let deleteFilter = cartridgeInitial.filter(
           item => item.id !== value.id,
         );
-        setCartridgeInitial([...deleteFilter]);
+        setCartridgeList([...deleteFilter]);
 
         setCartridgeList(
           cartridgeList.map(item =>
@@ -528,8 +595,8 @@ const TabSmcsWithoutRequest = props => {
       case 'quantityCartridge':
         let val = value.target.value;
         if (val <= original.menge) {
-          setCartridgeInitial(
-            cartridgeInitial.map(item =>
+          setCartridgeList(
+            cartridgeList.map(item =>
               item.id === original.id
                 ? {
                     ...item,
@@ -554,25 +621,47 @@ const TabSmcsWithoutRequest = props => {
       setCartridgeList(prev => [
         ...prev,
         {
-          index: null,
+          // index: null,
+          // currencyId: item.currencyId,
+
+          // currencyName: item.currencyName,
+          // fno: null,
+          // id: item.matnrId + index,
+          // matnr: item.matnr,
+
+          // matnrName: item.matnrName,
+          // matnrCode: item.matnrCode,
+          // matnrPrice: item.price,
+          // menge: item.menge,
+          // qinit: item.qinit,
+          // qminus: item.qminus,
+          // operationId: null,
+          // quantity: 1,
+          // serviceId: null,
+          // servicePackageId: null,
+          // serviceTypeId: 3,
+          // sum: null,
+          // warranty: false,
+          // checked: false,
+
           currencyId: item.currencyId,
           currencyName: item.currencyName,
           fno: null,
           id: item.matnrId + index,
-          matnr: item.matnr,
+          matnrId: item.matnrId,
           matnrName: item.matnrName,
-          matnrCode: item.matnrCode,
           matnrPrice: item.price,
-          menge: item.menge,
-          qinit: item.qinit,
-          qminus: item.qminus,
           operationId: null,
+          operationName: null,
+          menge: item.menge,
           quantity: 1,
           serviceId: null,
           servicePackageId: null,
-          serviceTypeId: 3,
+          servicePackageName: null,
+          serviceTypeId: 1,
+          serviceTypeName: null,
           sum: null,
-          warranty: false,
+          warranty: null,
           checked: false,
         },
       ]);
@@ -585,17 +674,14 @@ const TabSmcsWithoutRequest = props => {
   }, [cartridgeList]);
 
   //СЕРВИС ПАКЕТ========================================================================================
+
+  const [servicePackageInitial, setServicePackageInitial] = useState([]);
   const [servicePackageList, setServicePackageList] = useState([]);
-  const servicePackageListFilter = servicePackageList.filter(
-    item => item.checked === true,
-  );
   const [modalServicePackage, setModalServicePackage] = useState(false);
-  console.log('servicePackageList', servicePackageList);
 
   const onChangeServicePackage = (value, fieldName, original) => {
     switch (fieldName) {
       case 'checkedServicePackage':
-        console.log('CHECKED', value.checked);
         if (value.checked === true) {
           setServicePackageList(
             servicePackageList.map(item =>
@@ -635,10 +721,20 @@ const TabSmcsWithoutRequest = props => {
         break;
 
       case 'deleteServicePackage':
-        let deleteFilterSP = servicePackageList.filter(
+        let deleteFilterSP = servicePackageInitial.filter(
           item => item.id !== value.id,
         );
-        setServicePackageList([...deleteFilterSP]);
+        setServicePackageInitial([...deleteFilterSP]);
+        setServicePackageList(
+          servicePackageList.map(item =>
+            item.id === value.id
+              ? {
+                  ...item,
+                  checked: false,
+                }
+              : item,
+          ),
+        );
         break;
 
       case 'dimmerClose':
@@ -660,7 +756,7 @@ const TabSmcsWithoutRequest = props => {
           currencyName: item.waers,
           fno: null,
           id: item.id,
-          matnr: item.matnr,
+          matnrId: item.matnrId,
           matnrName: item.name,
           matnrCode: null,
           matnrPrice: null,
@@ -698,14 +794,147 @@ const TabSmcsWithoutRequest = props => {
   }, [servicePacketDetails]);
 
   useEffect(() => {
-    let filterSparePartInitial = sparePartInitial.filter(
+    let filterServicePackage = servicePackageList.filter(
       item => item.checked === true,
     );
+    setServicePackageInitial([...filterServicePackage]);
+  }, [servicePackageList]);
+
+  useEffect(() => {
+    let servicesF = services.map(item => {
+      return {
+        currencyId: item.currencyId,
+        currencyName: item.currencyName,
+        fno: item.fno,
+        id: null,
+        matnrId: item.matnrId,
+        matnrName: item.matnrName,
+        matnrPrice: item.matnrPrice,
+        operationId: item.operationId,
+        operationName: item.operationName,
+        quantity: item.quantity,
+        serviceId: item.serviceId,
+        servicePackageId: item.servicePackageId,
+        servicePackageName: item.servicePackageName,
+        serviceTypeId: item.serviceTypeId,
+        serviceTypeName: item.serviceTypeName,
+        sum: item.sum,
+        warranty: item.warranty,
+      };
+    });
+
+    let sparePart = sparePartInitial
+      .filter(item => item.checked === true)
+      .map(item => {
+        return {
+          currencyId: item.currencyId,
+          currencyName: item.currencyName,
+          fno: item.fno,
+          id: null,
+          matnrId: item.matnrId,
+          matnrName: item.matnrName,
+          matnrPrice: item.matnrPrice,
+          operationId: item.operationId,
+          operationName: item.operationName,
+          quantity: item.quantity,
+          serviceId: item.serviceId,
+          servicePackageId: item.servicePackageId,
+          servicePackageName: item.servicePackageName,
+          serviceTypeId: item.serviceTypeId,
+          serviceTypeName: item.serviceTypeName,
+          sum: item.sum,
+          warranty: item.warranty,
+        };
+      });
+
+    let cartridge = cartridgeInitial
+      .filter(item => item.checked === true)
+      .map(item => {
+        return {
+          currencyId: item.currencyId,
+          currencyName: item.currencyName,
+          fno: item.fno,
+          id: null,
+          matnrId: item.matnrId,
+          matnrName: item.matnrName,
+          matnrPrice: item.matnrPrice,
+          operationId: item.operationId,
+          operationName: item.operationName,
+          quantity: item.quantity,
+          serviceId: item.serviceId,
+          servicePackageId: item.servicePackageId,
+          servicePackageName: item.servicePackageName,
+          serviceTypeId: item.serviceTypeId,
+          serviceTypeName: item.serviceTypeName,
+          sum: item.sum,
+          warranty: item.warranty,
+        };
+      });
+
+    let servicePackage = [];
+
+    servicePackageInitial
+      .filter(item => item.checked === true)
+      .map(elem =>
+        elem.details.map(item => {
+          return servicePackage.push({
+            currencyId: item.currencyId,
+            currencyName: item.currencyName,
+            fno: item.fno,
+            id: null,
+            matnrId: item.matnrId,
+            matnrName: item.matnrName,
+            matnrPrice: item.matnrPrice,
+            operationId: item.operationId,
+            operationName: item.operationName,
+            quantity: item.quantity,
+            serviceId: item.serviceId,
+            servicePackageId: item.servicePackageId,
+            servicePackageName: item.servicePackageName,
+            serviceTypeId: item.serviceTypeId,
+            serviceTypeName: item.serviceTypeName,
+            sum: item.sum,
+            warranty: item.warranty,
+          });
+        }),
+      );
+
     setService({
       ...service,
-      positions: [...services, ...filterSparePartInitial],
+      positions: [...servicesF, ...sparePart, ...cartridge, ...servicePackage],
     });
-  }, [services, sparePartInitial]);
+  }, [, services, sparePartInitial, cartridgeInitial, servicePackageInitial]);
+
+  const handleCheck = () => {
+    if (
+      service.operatorId === null ||
+      service.operatorId === 0 ||
+      service.operatorId === ''
+    ) {
+      alert('Выберите оператора');
+    } else {
+      alert('CHECK');
+      props.checkSmcsWithoutReques(service);
+    }
+  };
+
+  const handleSave = () => {
+    props.saveSmcsWithoutReques(service);
+  };
+
+  useEffect(() => {
+    if (checkSmcs.contractId === service.contractId) {
+      setService({
+        ...service,
+        sumTotal: checkSmcs.sumTotal,
+        discount: checkSmcs.discount,
+        sumForPay: checkSmcs.sumForPay,
+        paid: checkSmcs.paid,
+        masterPremium: checkSmcs.masterPremium,
+        operatorPremium: checkSmcs.operatorPremium,
+      });
+    }
+  }, [checkSmcs]);
 
   return (
     <Form>
@@ -773,7 +1002,7 @@ const TabSmcsWithoutRequest = props => {
 
             {/*Сервис пакет*/}
             <ServicePackage
-              data={servicePackageListFilter}
+              data={servicePackageInitial}
               onChangeServicePackage={onChangeServicePackage}
               editStatus={editStatus}
             />
@@ -784,7 +1013,19 @@ const TabSmcsWithoutRequest = props => {
             />
 
             {/*Таблица*/}
-            <TableReportWithoutRequest />
+            <TableReportWithoutRequest data={service} />
+
+            {/*Проверить*/}
+            <Button color="green" onClick={handleCheck}>
+              <Icon name="check" size="large" />
+              Проверить
+            </Button>
+
+            {/*Сохранить*/}
+            <Button type="submit" primary onClick={handleSave}>
+              <Icon name="save" size="large" />
+              Сохранить
+            </Button>
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -809,7 +1050,6 @@ function mapStateToProps(state) {
     matnrPriceCartridge: state.smcsReducer.matnrPriceCartridge,
     matnrServicePackage: state.smcsReducer.matnrServicePackage,
     servicePacketDetails: state.smcsReducer.servicePacketDetails,
-    servicePacketProps: state.smcsReducer.smcsServicePacket,
     positionSumm: state.smcsReducer.smcsFetchPositionSumm,
     checkSmcs: state.smcsReducer.checkSmcs,
     saveSmcs: state.smcsReducer.saveSmcs,
