@@ -905,9 +905,6 @@ const TabSmcsWithoutContract = props => {
       });
     }
   }, [checkSmcs]);
-
-  const applicationNumber = 2078;
-
   return (
     <Form>
       <StaffF4Modal
@@ -935,7 +932,6 @@ const TabSmcsWithoutContract = props => {
           </Grid.Column>
 
           <Grid.Column readOnly width={11}>
-            <LinkToSmcsWithRequest applicationNumber={applicationNumber} />
             {/*Услуги */}
             <Services
               data={services}
