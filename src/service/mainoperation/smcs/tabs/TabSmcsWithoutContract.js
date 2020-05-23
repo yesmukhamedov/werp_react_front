@@ -39,6 +39,7 @@ import BasicInfoWithoutRequest from './components/BasicInfoWithoutRequest';
 import ServicePackage from './components/ServicePackage';
 import TableReportWithoutRequest from './components/TableReportWithoutRequest';
 import BasicInfoWithoutContract from './components/BasicInfoWithoutContract';
+import { LinkToSmcsWithRequest } from '../../../../utils/outlink';
 
 //Создание сервиса без заявки
 const TabSmcsWithoutContract = props => {
@@ -143,21 +144,25 @@ const TabSmcsWithoutContract = props => {
   const [staffF4ModalPosition, setStaffF4ModalPosition] = useState('');
   const [serBranches, setSerBranches] = useState({});
 
+  console.log('serBranches', serBranches);
+
   useEffect(() => {
     let serviceBA = [5, 6, 9];
     let bukrs = service.bukrs;
+    let arr = [];
 
     let serviceBranchesByBukrs = branches
-      // .filter(item => item.business_area_id === serviceBA)
-      // .filter(el => el.bukrs === bukrs)
-      .filter(item => {
-        if (serviceBA.includes(item.business_area_id)) {
-          return {
+      .filter(item => item.bukrs === bukrs)
+      .map(item => {
+        let ba = item.business_area_id;
+        if (ba === 5 || ba === 6 || ba === 9) {
+          arr.push({
             key: item.branch_id,
             value: item.branch_id,
             text: item.text45,
             ba: item.business_area_id,
-          };
+          });
+          return;
         }
       });
 
@@ -180,7 +185,7 @@ const TabSmcsWithoutContract = props => {
 
     // branches.forEach(optFunction);
 
-    setSerBranches(serviceBranchesByBukrs);
+    setSerBranches(arr);
   }, [branches]);
 
   const inputChange = value => {
@@ -901,6 +906,8 @@ const TabSmcsWithoutContract = props => {
     }
   }, [checkSmcs]);
 
+  const applicationNumber = 2078;
+
   return (
     <Form>
       <StaffF4Modal
@@ -928,6 +935,7 @@ const TabSmcsWithoutContract = props => {
           </Grid.Column>
 
           <Grid.Column readOnly width={11}>
+            <LinkToSmcsWithRequest applicationNumber={applicationNumber} />
             {/*Услуги */}
             <Services
               data={services}

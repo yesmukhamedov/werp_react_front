@@ -261,16 +261,11 @@ export const LinkToSmcs = props => {
 
 export const LinkToSmcsWithRequest = props => {
   const { applicationNumber } = props;
-  const url = `smcs?applicationNumber=${applicationNumber}`;
+  let url = `smcs?applicationNumber=${applicationNumber}`;
 
   return (
-    <a
-      style={{ color: 'white' }}
-      target="_blank"
-      href={url}
-      rel="noopener noreferrer"
-    >
-      <Button primary>{applicationNumber}</Button>
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      Создать сервис
     </a>
   );
 };
