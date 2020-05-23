@@ -20,6 +20,7 @@ import './../../service.css';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { LinkToSmcsWithRequest } from '../../../utils/outlink';
 
 const Smes = props => {
   const optionsService = [
@@ -229,6 +230,7 @@ const Smes = props => {
       <Segment style={{ marginRight: '1rem', marginLeft: '1rem' }}>
         <h3>Редактирование карты</h3>
       </Segment>
+      <LinkToSmcsWithRequest />
       <Grid>
         <Grid.Row>
           {/*BASIC INFO*/}

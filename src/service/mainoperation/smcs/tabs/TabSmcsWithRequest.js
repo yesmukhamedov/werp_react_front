@@ -4,7 +4,6 @@ import { injectIntl } from 'react-intl';
 import { Grid, Form, Button, Icon, Table, Dropdown } from 'semantic-ui-react';
 
 import {
-  fetchServiceSmcs,
   fetchTovarId,
   fetchServiceTypeId,
   fetchMatnrPriceSparePart,
@@ -44,7 +43,6 @@ import TableReportWithoutRequest from './components/TableReportWithoutRequest';
 //Создание сервиса без заявки
 const TabSmcsWithRequest = props => {
   const {
-    contract,
     companyOptions = [],
     branches,
     serviceTypeId = [],
@@ -57,6 +55,7 @@ const TabSmcsWithRequest = props => {
     saveSmcs,
     operatorList = [],
     smcsAppNumberData = {},
+    applicationNumber,
   } = props;
 
   const emptyService = {
@@ -402,8 +401,6 @@ const TabSmcsWithRequest = props => {
         break;
       //F№ изменение
       case 'fnoEdit':
-        console.log('VALUE FNO', value);
-        console.log('ORIGINAL FNO', original);
         setCartridgeList(
           cartridgeList.map(item =>
             item.id === original.id
@@ -788,7 +785,6 @@ const TabSmcsWithRequest = props => {
       masterId === '' ||
       masterId === 0
     ) {
-      console.log('MASTER NOT', masterId);
     } else {
       props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart });
       props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge });
@@ -801,17 +797,21 @@ const TabSmcsWithRequest = props => {
       contractId === '' ||
       contractId === 0
     ) {
-      console.log('CONTRACT NOT', contractId);
     } else {
-      console.log('CONTRACT ID WITH', contractId);
       props.fetchMatnrPriceServicePackage({ contractId });
     }
   }, [service.masterId, service.contractId]);
 
-  const searchAppNumber = () => {
-    let applicationNumber = '2073';
-    props.fetchSmcsByAppNumber({ applicationNumber });
-  };
+  useEffect(() => {
+    if (
+      applicationNumber === null ||
+      applicationNumber === undefined ||
+      applicationNumber === 0
+    ) {
+    } else {
+      props.fetchSmcsByAppNumber({ applicationNumber });
+    }
+  }, [applicationNumber]);
 
   return (
     <Form>
@@ -835,10 +835,6 @@ const TabSmcsWithRequest = props => {
           </Grid.Column>
 
           <Grid.Column readOnly width={11}>
-            <Button color="green" onClick={searchAppNumber}>
-              <Icon name="check" size="large" />
-              Поиск(applicationNumber=2073)
-            </Button>
             {/*Услуги */}
             <Services
               data={services}
@@ -916,7 +912,6 @@ function mapStateToProps(state) {
     countryList: state.f4.countryList,
     contractTypeList: state.f4.contractTypeList,
     branches: state.f4.branches,
-    contract: state.smcsReducer.contract,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsMarketing,
     category: state.f4.category,
@@ -936,7 +931,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  fetchServiceSmcs,
   f4FetchConTypeList,
   f4FetchBranches,
   f4FetchCountryList,

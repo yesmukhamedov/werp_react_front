@@ -4,7 +4,6 @@ import { injectIntl } from 'react-intl';
 import { Grid, Form, Button, Icon, Table, Dropdown } from 'semantic-ui-react';
 
 import {
-  fetchServiceSmcs,
   fetchTovarId,
   fetchServiceTypeId,
   fetchMatnrPriceSparePart,
@@ -44,7 +43,6 @@ import BasicInfoWithoutContract from './components/BasicInfoWithoutContract';
 //Создание сервиса без заявки
 const TabSmcsWithoutContract = props => {
   const {
-    contract,
     companyOptions = [],
     branches,
     serviceTypeId = [],
@@ -108,16 +106,8 @@ const TabSmcsWithoutContract = props => {
   //BasicInfo
   const onBasicInfoInputChange = (value, fieldName) => {
     switch (fieldName) {
-      //Поиск по серииному номеру товара(tovarSn)
-      case 'searchTovarSN':
-        let tovarSn = service.tovarSn;
-        props.fetchServiceSmcs({ tovarSn });
-        props.fetchServiceTypeId();
-        break;
-
-      //Изменить серииный номер товара
-      case 'inputChangeTovarSN':
-        setService({ ...service, tovarSn: value.target.value });
+      case 'selectCompany':
+        setService({ ...service, bukrs: value.value });
         break;
 
       case 'clearMaster':
@@ -142,8 +132,6 @@ const TabSmcsWithoutContract = props => {
   };
 
   useEffect(() => {
-    //let tovarSn = service.tovarSn;
-    // props.fetchServiceSmcs({ tovarSn });
     props.fetchServiceTypeId();
   }, []);
 
@@ -157,26 +145,43 @@ const TabSmcsWithoutContract = props => {
 
   useEffect(() => {
     let serviceBA = [5, 6, 9];
-    let waSerBranches = {};
-    function optFunction(item) {
-      let option = {
-        key: item.branch_id,
-        value: item.branch_id,
-        text: item.text45,
-      };
-      if (serviceBA.includes(item.business_area_id)) {
-        if (!waSerBranches[item.bukrs]) {
-          waSerBranches[item.bukrs] = [];
+    let bukrs = service.bukrs;
+
+    let serviceBranchesByBukrs = branches
+      // .filter(item => item.business_area_id === serviceBA)
+      // .filter(el => el.bukrs === bukrs)
+      .filter(item => {
+        if (serviceBA.includes(item.business_area_id)) {
+          return {
+            key: item.branch_id,
+            value: item.branch_id,
+            text: item.text45,
+            ba: item.business_area_id,
+          };
         }
-        waSerBranches[item.bukrs].push(option);
-      }
-    }
+      });
 
-    branches.forEach(optFunction);
-    setSerBranches(waSerBranches);
+    // let waSerBranches = {};
+
+    // function optFunction(item) {
+    //   let option = {
+    //     key: item.branch_id,
+    //     value: item.branch_id,
+    //     text: item.text45,
+    //   };
+
+    //   if (serviceBA.includes(item.business_area_id)) {
+    //     if (!waSerBranches[item.bukrs]) {
+    //       waSerBranches[item.bukrs] = [];
+    //     }
+    //     waSerBranches[item.bukrs].push(option);
+    //   }
+    // }
+
+    // branches.forEach(optFunction);
+
+    setSerBranches(serviceBranchesByBukrs);
   }, [branches]);
-
-  //Поиск по заводскому номеру
 
   const inputChange = value => {
     setService({
@@ -185,20 +190,6 @@ const TabSmcsWithoutContract = props => {
       masterFullName: value.fio,
     });
   };
-
-  useEffect(() => {
-    if (Object.keys(contract).length > 0) {
-      setService({ ...contract, positions: [] });
-      let operParam = {
-        branchId: contract.branchId,
-        bukrs: contract.bukrs,
-        categoryId: contract.categoryId,
-      };
-      props.fetchOperatorList({ ...operParam });
-      let contractId = contract.contractId;
-      props.fetchMatnrPriceServicePackage({ contractId });
-    }
-  }, [contract]);
 
   const operatorOptions = operatorList.map(item => {
     return {
@@ -932,6 +923,7 @@ const TabSmcsWithoutContract = props => {
               data={service}
               operatorOptions={operatorOptions}
               onBasicInfoInputChange={onBasicInfoInputChange}
+              companyOptions={companyOptions}
             />
           </Grid.Column>
 
@@ -1013,7 +1005,6 @@ function mapStateToProps(state) {
     countryList: state.f4.countryList,
     contractTypeList: state.f4.contractTypeList,
     branches: state.f4.branches,
-    contract: state.smcsReducer.contract,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsMarketing,
     category: state.f4.category,
@@ -1032,7 +1023,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  fetchServiceSmcs,
   f4FetchConTypeList,
   f4FetchBranches,
   f4FetchCountryList,

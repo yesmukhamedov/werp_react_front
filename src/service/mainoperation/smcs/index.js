@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
 import TabSmcsWithoutContract from './tabs/TabSmcsWithoutContract';
 import TabSmcsWithRequest from './tabs/TabSmcsWithRequest';
 import TabSmcsWithoutRequest from './tabs/TabSmcsWithoutRequest';
@@ -6,7 +8,25 @@ import { Container, Tab, Segment, Label } from 'semantic-ui-react';
 import './style.css';
 
 const Smcs = props => {
+  const { location } = props;
+  const [applicationNumber, setApplicationNumber] = useState();
   const [activeTab, setActiveTab] = useState(1);
+  useEffect(() => {
+    if (
+      location.search === '' ||
+      location.search === null ||
+      location.search === undefined
+    ) {
+      console.log('location.search', location.search);
+    } else {
+      setActiveTab(2);
+      let searchString = '?applicationNumber=';
+      let appNumberStr = location.search.replace(searchString, '');
+      let appNumber = parseInt(appNumberStr);
+      setApplicationNumber(appNumber);
+    }
+  }, [location]);
+
   //Вкладки
   const panes = [
     {
@@ -38,7 +58,7 @@ const Smcs = props => {
       },
       pane: (
         <Tab.Pane key={3}>
-          <TabSmcsWithRequest />
+          <TabSmcsWithRequest applicationNumber={applicationNumber} />
         </Tab.Pane>
       ),
     },
@@ -71,4 +91,8 @@ const Smcs = props => {
   );
 };
 
-export default Smcs;
+const mapStateToProps = state => {
+  return {};
+};
+
+export default connect(mapStateToProps, {})(injectIntl(Smcs));
