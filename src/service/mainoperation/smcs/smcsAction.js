@@ -10,11 +10,16 @@ export const FETCH_TOVAR_ID = 'FETCH_TOVAR_ID';
 export const FETCH_SERVICE_TYPE_ID = 'FETCH_SERVICE_TYPE_ID';
 export const FETCH_MATNR_PRICE_SPARE_PART = 'FETCH_MATNR_PRICE_SPARE_PART';
 export const FETCH_MATNR_PRICE_CARTRIDGE = 'FETCH_MATNR_PRICE_CARTRIDGE';
+//Сервис пакет
+export const FETCH_MATNR_PRICE_SERVICE_PACKAGE =
+  'FETCH_MATNR_PRICE_SERVICE_PACKAGE';
+export const FETCH_SERVICE_PACKAGE_DETAILS = 'FETCH_SERVICE_PACKAGE_DETAILS';
 export const FETCH_SMCS_SERVICE_PACKET = 'FETCH_SMCS_SERVICE_PACKET';
 export const FETCH_POSITION_SUMM = 'FETCH_POSITION_SUMM';
 export const CHECK_SMCS_WITHOUT_REQUEST = 'CHECK_SMCS_WITHOUT_REQUEST';
 export const SAVE_SMCS_WITHOUT_REQUEST = 'SAVE_SMCS_WITHOUT_REQUEST';
 export const FETCH_OPERATOR_LIST = 'FETCH_OPERATOR_LIST';
+export const FETCH_SMCS_BY_APP_NUMBER = 'FETCH_SMCS_BY_APP_NUMBER';
 //--END
 // const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 // const language = localStorage.getItem('language');
@@ -38,25 +43,6 @@ export const fetchServiceSmcs = param => {
       });
   };
 };
-
-// export const fetchServiceMatnrList = param => {
-//   return function(dispatch) {
-//     dispatch(modifyLoader(true));
-//     doGet(`smcs/getMatnrPriceList`, param)
-//       .then(({ data }) => {
-//         //console.log(data, 'ACTION');
-//         dispatch(modifyLoader(false));
-//         dispatch({
-//           type: FETCH_SERVICE_MATNR_LIST,
-//           data: data.data,
-//         });
-//       })
-//       .catch(error => {
-//         dispatch(modifyLoader(false));
-//         handleError(error, dispatch);
-//       });
-//   };
-// };
 
 export const fetchTovarId = param => {
   return function(dispatch) {
@@ -122,6 +108,42 @@ export const fetchMatnrPriceCartridge = param => {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_MATNR_PRICE_CARTRIDGE,
+          data: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+
+export const fetchMatnrPriceServicePackage = param => {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`smcs/getServicePackageList`, param)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_MATNR_PRICE_SERVICE_PACKAGE,
+          data: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+
+export const fetchServicePackageDetails = param => {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`smcs/getServicePackageDetails`, param)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SERVICE_PACKAGE_DETAILS,
           data: data,
         });
       })
@@ -211,6 +233,25 @@ export const saveSmcsWithoutReques = body => {
         dispatch(modifyLoader(false));
         dispatch({
           type: SAVE_SMCS_WITHOUT_REQUEST,
+          data: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+
+//Поиск по application Number
+export const fetchSmcsByAppNumber = param => {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`smcs/getServiceApplication`, param)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMCS_BY_APP_NUMBER,
           data: data,
         });
       })

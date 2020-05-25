@@ -148,7 +148,7 @@ export function f4ClearAnyObject(a_const) {
 export function f4FetchTovarCategorys() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet('smcs/categoryId')
+    doGet('smcs/getCategoryList')
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

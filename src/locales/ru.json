@@ -835,9 +835,16 @@
   "application_status": "Статус заявки",
   "changes": "Изменения",
   "outgoing_call_operator": "Оператор call center по исходящим звонкам",
+  "incoming_call_operator": "Оператор call center по входящим звонкам",
   "cartrige_change_plan": "План по замене картриджей",
   "rescheduled_applications": "Перенесенные заявки",
   "assigned_calls": "Назначенные звонки",
   "my_outgoing_app": "Мои заявки исход",
-  "service_period": "Срок сервиса"
+  "service_period": "Срок сервиса",
+  "appointment_date": "Дата назначения",
+  "service_packet_plan": "План по сервис пакетам",
+  "my_applications": "Мои заявки",
+  "prevention_plan": "План по профилактике",
+  "guarantee": "Гарантия",
+  "transfer": "Перенос"
 }

@@ -10,10 +10,12 @@ import {
   Divider,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
+import OutputErrors from '../../../../general/error/outputErrors';
+import { errorTableText } from '../../../../utils/helpers';
 import { fetchMyApplicationExodus } from '../smopccicAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from '../../../../utils/ModalColumns';
-
+import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
@@ -33,7 +35,7 @@ const MyApplication = props => {
   const {
     intl: { messages },
     language,
-    myApplicationData = [],
+    myApplicationData,
   } = props;
 
   const emptyParam = {
@@ -42,11 +44,14 @@ const MyApplication = props => {
     branchId: '',
     categoryId: '',
     serviceStatusId: '',
-    dateStart: '',
-    dateEnd: '',
+    dateOpenAt: '',
+    dateOpenTo: '',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
+  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
+  const [error, setError] = useState([]);
+
   const initialColumns = [
     {
       Header: 'Id',
@@ -55,8 +60,8 @@ const MyApplication = props => {
       filterable: false,
     },
     {
-      Header: 'Филиал',
-      accessor: 'branch',
+      Header: messages['brnch'],
+      accessor: 'branchId',
       checked: true,
     },
     {
@@ -65,40 +70,40 @@ const MyApplication = props => {
       checked: true,
     },
     {
-      Header: 'Заводской номер',
+      Header: messages['factory_number'],
       accessor: 'tovarSn',
       checked: true,
     },
     {
-      Header: 'Дата продажи',
+      Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'Дата заявки',
-      accessor: '999',
+      Header: messages['Application_Date'],
+      accessor: 'applicationDate',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'ФИО клиента',
+      Header: messages['fio'],
       accessor: 'customerFIO',
       checked: true,
     },
     {
-      Header: 'Адрес',
+      Header: messages['address'],
       accessor: 'address',
       checked: true,
     },
     {
-      Header: 'Телефон',
-      accessor: 'phone',
+      Header: messages['Phone'],
+      accessor: 'phoneNumber',
       checked: true,
     },
     {
-      Header: 'ФИО мастер',
-      accessor: 'dealerFIO',
+      Header: messages['master'],
+      accessor: 'masterFIO',
       checked: true,
     },
     {
@@ -132,26 +137,26 @@ const MyApplication = props => {
       filterable: false,
     },
     {
-      Header: 'Категория',
-      accessor: 'crmCategory',
+      Header: messages['category'],
+      accessor: 'crmCategoryId',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'Статус заявки',
-      accessor: '15',
+      Header: messages['application_status'],
+      accessor: 'contractStatusId',
       checked: true,
       filterable: false,
     },
     {
-      Header: '№ заявка',
-      accessor: '898',
+      Header: messages['request_number'],
+      accessor: 'applicationNumber',
       checked: true,
       filterable: false,
-      Cell: ({ original }) => <h1>{original.contractNumber}</h1>,
+      Cell: ({ original }) => <span>{original.contractNumber}</span>,
     },
     {
-      Header: 'Просмотр',
+      Header: messages['Table.View'],
       accessor: '16',
       checked: true,
       filterable: false,
@@ -207,7 +212,21 @@ const MyApplication = props => {
   }, [branches, param.country, param.bukrs]);
 
   const handleClickApply = () => {
-    fetchMyApplicationExodus({ ...param });
+    validate();
+    if (param.bukrs !== '') {
+      const page = 0;
+      const size = 20;
+      props.fetchMyApplicationExodus({ ...param, page, size });
+      setTurnOnReactFetch(true);
+    }
+  };
+
+  const validate = () => {
+    const errors = [];
+    if (param.bukrs === '') {
+      errors.push(errorTableText(5));
+    }
+    setError(() => errors);
   };
 
   const onInputChange = (o, fieldName) => {
@@ -240,6 +259,7 @@ const MyApplication = props => {
   const finishColumns = data => {
     setColumns([...data]);
   };
+  console.log(myApplicationData);
 
   return (
     <Container fluid className="containerMargin">
@@ -247,17 +267,18 @@ const MyApplication = props => {
         <Form.Group widths="equal">
           <Form.Select
             fluid
-            label="Страна"
-            placeholder="Страна"
+            label={messages['country']}
+            placeholder={messages['country']}
             options={countryOptions}
             onChange={(e, o) => onInputChange(o, 'country')}
             className="alignBottom"
           />
 
           <Form.Select
+            required
             fluid
-            label="Компания"
-            placeholder="Компания"
+            label={messages['bukrs']}
+            placeholder={messages['bukrs']}
             options={companyOptions}
             onChange={(e, o) => onInputChange(o, 'bukrs')}
             className="alignBottom"
@@ -265,24 +286,24 @@ const MyApplication = props => {
 
           <Form.Select
             fluid
-            label="Филиал"
-            placeholder="Филиал"
+            label={messages['brnch']}
+            placeholder={messages['brnch']}
             options={serviceBranchOptions}
             onChange={(e, o) => onInputChange(o, 'branchId')}
             className="alignBottom"
           />
 
           <Form.Select
-            label="Категория товара"
-            placeholder="Категория товара"
+            label={messages['category']}
+            placeholder={messages['category']}
             options={tovarCategoryOptions}
             onChange={(e, o) => onInputChange(o, 'categoryId')}
             className="alignBottom"
           />
 
           <Form.Select
-            label="Статус заявки"
-            placeholder="Статус заявки"
+            label={messages['fin_status']}
+            placeholder={messages['fin_status']}
             options={serviceAppStatusOptions}
             onChange={(e, o) => onInputChange(o, 'configuration')}
             className="alignBottom"
@@ -291,36 +312,50 @@ const MyApplication = props => {
         <Form.Group className="spaceBetween">
           <div className="flexDirectionRow">
             <Form.Field className="marginRight">
-              <label>Дата заявки с</label>
+              <label>{messages['Form.DateFrom']}</label>
               <DatePicker
                 className="date-auto-width"
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.dateStart)}
+                placeholderText={messages['Form.DateFrom']}
+                selected={
+                  param.dateOpenAt === ''
+                    ? ''
+                    : stringYYYYMMDDToMoment(param.dateOpenAt)
+                }
                 onChange={date =>
                   setParam({
                     ...param,
-                    dateStart: momentToStringYYYYMMDD(date),
+                    dateOpenAt: momentToStringYYYYMMDD(date),
                   })
                 }
-                maxDate={new Date()}
+                maxDate={moment(new Date())}
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
 
             <Form.Field className="marginRight">
-              <label>Дата заявки по</label>
+              <label>{messages['Form.DateTo']}</label>
               <DatePicker
                 className="date-auto-width"
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.dateEnd)}
-                onChange={date =>
-                  setParam({ ...param, dateEnd: momentToStringYYYYMMDD(date) })
+                placeholderText={messages['Form.DateTo']}
+                selected={stringYYYYMMDDToMoment(param.dateOpenTo)}
+                selected={
+                  param.dateOpenTo === ''
+                    ? ''
+                    : stringYYYYMMDDToMoment(param.dateOpenTo)
                 }
-                maxDate={new Date()}
+                onChange={date =>
+                  setParam({
+                    ...param,
+                    dateOpenTo: momentToStringYYYYMMDD(date),
+                  })
+                }
+                maxDate={moment(new Date())}
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
@@ -330,7 +365,7 @@ const MyApplication = props => {
               className="alignBottom"
             >
               <Icon name="search" />
-              Применить
+              {messages['apply']}
             </Form.Button>
           </div>
 
@@ -341,9 +376,21 @@ const MyApplication = props => {
             />
           </Form.Field>
         </Form.Group>
+        <OutputErrors errors={error} />
       </Form>
       <Divider />
-      <ReactTableServerSideWrapper filterable={true} columns={columns} />
+      <ReactTableServerSideWrapper
+        data={myApplicationData ? myApplicationData.data : []}
+        filterable={true}
+        columns={columns}
+        defaultPageSize={20}
+        showPagination={true}
+        requestData={params => {
+          props.fetchMyApplicationExodus({ ...params, ...param });
+        }}
+        pages={myApplicationData ? myApplicationData.totalPages : ''}
+        turnOnReactFetch={turnOnReactFetch}
+      />
     </Container>
   );
 };
@@ -351,7 +398,7 @@ const MyApplication = props => {
 function mapStateToProps(state) {
   return {
     language: state.locales.lang,
-    myApplicationData: state.smopspReducer.myApplicationData,
+    myApplicationData: state.smopccicReducer.myApplicationData,
   };
 }
 

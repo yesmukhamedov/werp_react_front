@@ -36,9 +36,9 @@ const requestToken = (dispatch, token, language) => {
     .then(({ data }) => {
       // If request is good...
       // - save the refreshed JWT token
-      const { access_token, refresh_token, userId } = data;
+      const { access_token, refresh_token, user_id } = data;
 
-      localStorage.setItem('userId', userId);
+      localStorage.setItem('userId', user_id);
       localStorage.setItem('token', access_token);
       localStorage.setItem('refresh_token', refresh_token);
       localStorage.setItem('token_time', new Date().getTime());

@@ -4,6 +4,8 @@ import { injectIntl } from 'react-intl';
 import { Container, Form, Divider, Icon } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
+import OutputErrors from '../../../../general/error/outputErrors';
+import { errorTableText } from '../../../../utils/helpers';
 import { fetchServiceFilterPlan } from '../smopccocAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
@@ -40,6 +42,7 @@ const ServiceFilterPlan = props => {
   //END Date option
   const [param, setParam] = useState({ ...emptyParam });
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
+  const [error, setError] = useState([]);
 
   const initialColumns = [
     {
@@ -50,8 +53,8 @@ const ServiceFilterPlan = props => {
       filterable: false,
     },
     {
-      Header: 'Филиал',
-      accessor: 'branch',
+      Header: messages['brnch'],
+      accessor: 'branchName',
       checked: true,
       Cell: <div style={{ height: '100px' }}></div>,
     },
@@ -63,20 +66,20 @@ const ServiceFilterPlan = props => {
         matchSorter(rows, filter.value, { keys: ['contractNumber'] }),
     },
     {
-      Header: 'Заводской номер',
+      Header: messages['factory_number'],
       accessor: 'tovarSn',
       checked: true,
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['tovarSn'] }),
     },
     {
-      Header: 'Дата продажи',
+      Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'ФИО клиента',
+      Header: messages['fio'],
       accessor: 'customerFIO',
       checked: true,
       filterMethod: (filter, rows) =>
@@ -84,7 +87,7 @@ const ServiceFilterPlan = props => {
       filterAll: true,
     },
     {
-      Header: 'ИИН клиента',
+      Header: messages['customer_key'],
       accessor: 'customerIinBin',
       checked: true,
       filterMethod: (filter, rows) =>
@@ -92,7 +95,7 @@ const ServiceFilterPlan = props => {
       filterAll: true,
     },
     {
-      Header: 'Адрес',
+      Header: messages['address'],
       accessor: 'address',
       checked: true,
       filterMethod: (filter, rows) =>
@@ -100,7 +103,7 @@ const ServiceFilterPlan = props => {
       filterAll: true,
     },
     {
-      Header: 'ФИО дилера',
+      Header: messages['Dealer.Fullname'],
       accessor: 'dealerFIO',
       checked: true,
       filterMethod: (filter, rows) =>
@@ -138,26 +141,26 @@ const ServiceFilterPlan = props => {
       filterable: false,
     },
     {
-      Header: 'Категория',
-      accessor: 'crmCategory',
+      Header: messages['category'],
+      accessor: 'crmCategoryName',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'Фин. статус',
-      accessor: 'contractStatus',
+      Header: messages['fin_status'],
+      accessor: 'contractStatusName',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'Просмотр',
+      Header: messages['Table.View'],
       accessor: '16',
       filterable: false,
       Cell: original => (
         <div style={{ textAlign: 'center' }}>
           <LinkToSmcuspor
             contractNumber={original.row.contractNumber}
-            text="Просмотр"
+            text={messages['Table.View']}
           />
         </div>
       ),
@@ -220,10 +223,21 @@ const ServiceFilterPlan = props => {
   ];
 
   const handleClickApply = () => {
-    const page = 0;
-    const size = 20;
-    props.fetchServiceFilterPlan({ ...param, page, size });
-    setTurnOnReactFetch(true);
+    validate();
+    if (param.bukrs !== '') {
+      const page = 0;
+      const size = 20;
+      props.fetchServiceFilterPlan({ ...param, page, size });
+      setTurnOnReactFetch(true);
+    }
+  };
+
+  const validate = () => {
+    const errors = [];
+    if (param.bukrs === '') {
+      errors.push(errorTableText(5));
+    }
+    setError(() => errors);
   };
 
   const onInputChange = (o, fieldName) => {
@@ -278,6 +292,7 @@ const ServiceFilterPlan = props => {
           />
 
           <Form.Select
+            required
             fluid
             label={messages['bukrs']}
             options={companyOptions}
@@ -347,6 +362,7 @@ const ServiceFilterPlan = props => {
             />
           </Form.Field>
         </Form.Group>
+        <OutputErrors errors={error} />
       </Form>
       <Divider />
       <ReactTableServerSideWrapper
@@ -356,8 +372,9 @@ const ServiceFilterPlan = props => {
         filterable={true}
         defaultPageSize={20}
         showPagination={true}
-        requestData={param => {
-          props.fetchServiceFilterPlan({ ...param });
+        requestData={params => {
+          props.fetchServiceFilterPlan({ ...params, ...param });
+          console.log(param);
         }}
         pages={serviceFilterPlan ? serviceFilterPlan.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}

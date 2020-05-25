@@ -229,10 +229,12 @@ export function fetchSmsetct(searchParams) {
             });
           })
           .catch(error => {
+            dispatch(modifyLoader(false));
             handleError(error, dispatch);
           });
       })
       .catch(error => {
+        dispatch(modifyLoader(false));
         handleError(error, dispatch);
       });
   };
@@ -249,7 +251,6 @@ export function postSmsetct(postParams, fetchSmsetct) {
         }
       })
       .catch(error => {
-        console.log('mm', error);
         handleError(error, dispatch);
       });
   };
@@ -259,7 +260,6 @@ export function editSmsetct(editParams, fetchSmsetct) {
   return function(dispatch) {
     doPut(`smsetct/update`, editParams)
       .then(data => {
-        console.log('Data');
         if (data.data.status === 200 || data.data.status === 'OK') {
           dispatch(notify('success', errorTableText(104), errorTableText(101)));
           fetchSmsetct();
@@ -268,7 +268,6 @@ export function editSmsetct(editParams, fetchSmsetct) {
         }
       })
       .catch(error => {
-        console.log(error);
         handleError(error, dispatch);
       });
   };
@@ -276,6 +275,7 @@ export function editSmsetct(editParams, fetchSmsetct) {
 
 export function applySmsetct() {
   return dispatch => {
+    dispatch(modifyLoader(true));
     doGet(`smsetct/apply`)
       .then(({ data }) => {
         if (data.status === 200 || data.status === 'OK') {
@@ -284,9 +284,10 @@ export function applySmsetct() {
         } else {
           dispatch(notify('error', errorTableText(133), errorTableText(132)));
         }
-        console.log(data);
+        dispatch(modifyLoader(false));
       })
       .catch(error => {
+        dispatch(modifyLoader(false));
         handleError(error, dispatch);
       });
   };

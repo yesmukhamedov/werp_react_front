@@ -246,13 +246,12 @@ const Smsetplp = props => {
 
   const handlePost = () => {
     let searchParams = {
-      burs: postParams.bukrs,
+      bukrs: postParams.bukrs,
       branchId: postParams.branchId,
     };
     postSmsetplp({ ...postParams }, () => {
       setPostOpen(false);
       setPostParams({});
-      console.log('postParams.bukrs', postParams.bukrs);
       fetchSmsetplp(searchParams);
     });
   };

@@ -10,17 +10,18 @@ import {
   Form,
   Divider,
 } from 'semantic-ui-react';
+import moment from 'moment';
 
 import {
   f4FetchCompanyOptions,
   f4fetchCategory,
 } from '../../../../reference/f4/f4_action';
-
+import OutputErrors from '../../../../general/error/outputErrors';
 import { fetchSmcrldList, postSmcrldFormplan } from '../smdisAction';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ModalColumns from './../../../../utils/ModalColumns';
-import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
+import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
 import {
   momentToStringYYYYMMDD,
   stringYYYYMMDDToMoment,
@@ -34,12 +35,16 @@ const Smcrld = props => {
     companyOptions = [],
     clickViewService,
     param,
-    smcrldListData,
+    smcrldListData = [],
     smcrldListSum,
     footerData,
   } = props;
 
-  console.log('smcrldListData', smcrldListData, 'smcrldListSum', smcrldListSum);
+  const [sum, setSum] = useState({});
+
+  useEffect(() => {
+    setSum({ ...smcrldListSum });
+  }, [smcrldListSum]);
 
   //Get category options
   const categoryOptions = category.map(item => {
@@ -68,7 +73,7 @@ const Smcrld = props => {
         {
           Header: 'Филиал',
           accessor: 'branchName',
-          Footer: 'Итого:',
+          Footer: <strong>{'Итого:'}</strong>,
         },
       ],
       checked: true,
@@ -82,61 +87,101 @@ const Smcrld = props => {
       columns: [
         {
           Header: 'F1',
-          // Footer: <span>{footerData.currentF1}</span>,
           accessor: 'currentF1',
-          width: 70,
+          // width: 70,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.currentF1}</strong>
+            </span>
+          ),
         },
         {
           Header: 'F1+M1',
-          // Footer: <span>{footerData.currentF1M1}</span>,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.currentF1M1}</strong>
+            </span>
+          ),
           accessor: 'currentF1M1',
           width: 70,
         },
         {
           Header: 'F2',
-          // Footer: <span>{footerData.currentF2}</span>,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.currentF2}</strong>
+            </span>
+          ),
           accessor: 'currentF2',
           width: 70,
         },
         {
           Header: 'F2+M1',
-          // Footer: <span>{footerData.currentF2M1}</span>,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.currentF2M1}</strong>
+            </span>
+          ),
           accessor: 'currentF2M1',
           width: 70,
         },
         {
           Header: 'F3',
-          // Footer: <span>{footerData.currentF3}</span>,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.currentF3}</strong>
+            </span>
+          ),
           accessor: 'currentF3',
           width: 70,
         },
         {
           Header: 'F3+M1',
-          // Footer: <span>{footerData.currentF3M1}</span>,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.currentF3M1}</strong>
+            </span>
+          ),
           accessor: 'currentF3M1',
           width: 70,
         },
         {
           Header: 'F4',
-          // Footer: <span>{footerData.currentF4}</span>,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.currentF4}</strong>
+            </span>
+          ),
           accessor: 'currentF4',
           width: 70,
         },
         {
           Header: 'F4+M1',
-          // Footer: <span>{footerData.currentF4M1}</span>,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.currentF4M1}</strong>
+            </span>
+          ),
           accessor: 'currentF4M1',
           width: 70,
         },
         {
           Header: 'M1',
-          //Footer: <span>{footerData.currentM1}</span>,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.currentM1}</strong>
+            </span>
+          ),
           accessor: 'currentM1',
           width: 70,
         },
         {
           Header: 'Итог',
-          //Footer: <span>{footerData.currentSum}</span>,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.currentSum}</strong>
+            </span>
+          ),
           accessor: 'currentSum',
         },
       ],
@@ -155,61 +200,101 @@ const Smcrld = props => {
       columns: [
         {
           Header: 'F1',
-          //Footer: <span>{footerData.overDueF1}</span>,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.overDueF1}</strong>
+            </span>
+          ),
           accessor: 'overDueF1',
           width: 70,
         },
         {
           Header: 'F1+M1',
-          //Footer: <span>{footerData.overDueF1M1}</span>,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.overDueF1M1}</strong>
+            </span>
+          ),
           accessor: 'overDueF1M1',
           width: 70,
         },
         {
           Header: 'F2',
-          // Footer: <span>{footerData.overDueF2}</span>,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.overDueF2}</strong>
+            </span>
+          ),
           accessor: 'overDueF2',
           width: 70,
         },
         {
           Header: 'F2+M1',
-          //Footer: <span>{footerData.overDueF2M1}</span>,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.overDueF2M1}</strong>
+            </span>
+          ),
           accessor: 'overDueF2M1',
           width: 70,
         },
         {
           Header: 'F3',
-          //Footer: <span>{footerData.overDueF3}</span>,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.overDueF3}</strong>
+            </span>
+          ),
           accessor: 'overDueF3',
           width: 70,
         },
         {
           Header: 'F3+M1',
-          // Footer: <span>{footerData.overDueF3M1}</span>,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.overDueF3M1}</strong>
+            </span>
+          ),
           accessor: 'overDueF3M1',
           width: 70,
         },
         {
           Header: 'F4',
-          //Footer: <span>{footerData.overDueF4}</span>,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.overDueF4}</strong>
+            </span>
+          ),
           accessor: 'overDueF4',
           width: 70,
         },
         {
           Header: 'F4+M1',
-          // Footer: <span>{footerData.overDueF4M1}</span>,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.overDueF4M1}</strong>
+            </span>
+          ),
           accessor: 'overDueF4M1',
           width: 70,
         },
         {
           Header: 'M1',
-          // Footer: <span>{footerData.overDueM1}</span>,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.overDueM1}</strong>
+            </span>
+          ),
           accessor: 'overDueM1',
           width: 70,
         },
         {
           Header: 'Итог',
-          // Footer: <span>{footerData.overDueSum}</span>,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.overDueSum}</strong>
+            </span>
+          ),
           accessor: 'overDueSum',
           width: 70,
         },
@@ -226,7 +311,11 @@ const Smcrld = props => {
       columns: [
         {
           Header: 'Итог',
-          //Footer: <span>{footerData.totalSum}</span>,
+          Footer: (
+            <span>
+              <strong>{smcrldListSum.totalSum}</strong>
+            </span>
+          ),
           accessor: 'totalSum',
         },
       ],
@@ -255,13 +344,16 @@ const Smcrld = props => {
 
   //Применить
   const handleClickApply = () => {
-    props.fetchSmcrldList({ ...param });
+    props.validate();
+    const { bukrs, categoryId, dateAt } = param;
+    if (bukrs !== '' && categoryId !== '' && dateAt !== null) {
+      props.fetchSmcrldList({ ...param });
+    }
   };
 
   const formPlanClick = () => {
     props.postSmcrldFormplan({ ...param });
   };
-
   const [columns, setColumns] = useState([...initialColumns]);
 
   const finishColumns = data => {
@@ -295,15 +387,20 @@ const Smcrld = props => {
         <Form.Group className="spaceBetween">
           <div className="flexDirectionRow">
             <Form.Field className="marginRight">
-              <label>Дата</label>
+              <label>{messages['date']}</label>
               <DatePicker
                 className="date-auto-width"
                 autoComplete="off"
                 locale={language}
+                placeholderText={messages['date']}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.dateAt)}
+                selected={
+                  param.dateAt === null
+                    ? ''
+                    : stringYYYYMMDDToMoment(param.dateAt)
+                }
                 onChange={date => props.onInputChange(date, 'date')}
-                maxDate={new Date()}
+                maxDate={moment(new Date())}
                 dateFormat="DD.MM.YYYY"
                 showMonthYearPicker
               />
@@ -325,9 +422,14 @@ const Smcrld = props => {
             />
           </Form.Field>
         </Form.Group>
+        <OutputErrors errors={props.error} />
       </Form>
       <Divider />
-      <ReactTableServerSideWrapper data={smcrldListData} columns={columns} />
+      <ReactTableWrapper
+        data={smcrldListData}
+        columns={initialColumns}
+        pageSize={smcrldListData.length ? smcrldListData.length : 20}
+      />
       <Segment textAlign="right">
         <Popup
           size="mini"

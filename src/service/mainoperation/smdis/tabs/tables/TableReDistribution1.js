@@ -164,7 +164,7 @@ const TableReDistribution1 = props => {
   ];
 
   return (
-    <ReactTableWrapper data={data} columns={columns} defaultPageSize={2} />
+    <ReactTableWrapper data={data} columns={columns} defaultPageSize={10} />
   );
 };
 export default TableReDistribution1;

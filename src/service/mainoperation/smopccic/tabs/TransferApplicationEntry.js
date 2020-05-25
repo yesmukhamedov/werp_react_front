@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { Container, Form } from 'semantic-ui-react';
 import 'react-table/react-table.css';
-import { fetchMyApplicationExodus } from '../smopccicAction';
+import { fetchTransferApplication } from '../smopccicAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
-import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
+import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
 import ModalColumns from '../../../../utils/ModalColumns';
 import { LinkToSmcuspor } from '../../../../utils/outlink';
 
@@ -24,8 +24,8 @@ const TransferApplicationEntry = props => {
       filterable: false,
     },
     {
-      Header: 'Филиал',
-      accessor: 'branch',
+      Header: messages['brnch'],
+      accessor: 'branchId',
       checked: true,
     },
     {
@@ -34,47 +34,47 @@ const TransferApplicationEntry = props => {
       checked: true,
     },
     {
-      Header: 'Заводской номер',
+      Header: messages['factory_number'],
       accessor: 'tovarSn',
       checked: true,
     },
     {
-      Header: 'Дата продажи',
+      Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'Дата переноса',
-      accessor: '999',
+      Header: messages['transfer_date'],
+      accessor: 'rescheduledDate',
       checked: true,
       filterable: false,
     },
 
     {
-      Header: 'Дата заявки',
-      accessor: '99985',
+      Header: messages['Application_Date'],
+      accessor: 'applicationDate',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'ФИО клиента',
+      Header: messages['fio'],
       accessor: 'customerFIO',
       checked: true,
     },
     {
-      Header: 'Адрес',
+      Header: messages['address'],
       accessor: 'address',
       checked: true,
     },
     {
-      Header: 'Телефон',
-      accessor: 'phone',
+      Header: messages['Phone'],
+      accessor: 'phoneNumber',
       checked: true,
     },
     {
-      Header: 'ФИО мастер',
-      accessor: 'dealerFIO',
+      Header: messages['master'],
+      accessor: 'masterFIO',
       checked: true,
     },
     {
@@ -108,51 +108,52 @@ const TransferApplicationEntry = props => {
       filterable: false,
     },
     {
-      Header: 'Категория',
-      accessor: 'crmCategory',
+      Header: messages['category'],
+      accessor: 'crmCategoryId',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'Статус заявки',
-      accessor: '15',
+      Header: messages['application_status'],
+      accessor: 'applicationStatusId',
       checked: true,
       filterable: false,
     },
     {
-      Header: '№ заявка',
-      accessor: '898',
+      Header: messages['request_number'],
+      accessor: 'applicationNumber',
       checked: true,
       filterable: false,
-      Cell: ({ original }) => <h1>{original.contractNumber}</h1>,
+      Cell: ({ original }) => <span>{original.contractNumber}</span>,
     },
     {
-      Header: 'Просмотр',
+      Header: messages['Table.View'],
       accessor: '16',
       filterable: false,
       Cell: original => (
         <div style={{ textAlign: 'center' }}>
           <LinkToSmcuspor
             contractNumber={original.row.contractNumber}
-            text="Просмотр"
+            text={messages['Table.View']}
           />
         </div>
       ),
       checked: true,
     },
   ];
+  useEffect(() => {
+    props.fetchTransferApplication();
+  }, []);
 
   const [columns, setColumns] = useState([...initialColumns]);
   const finishColumns = data => {
     setColumns([...data]);
   };
-
   return (
     <Container fluid className="containerMargin">
       <Form>
         <Form.Group className="spaceBetween">
           <div className="flexDirectionRow"></div>
-
           <Form.Field className="alignBottom">
             <ModalColumns
               columns={initialColumns}
@@ -161,7 +162,11 @@ const TransferApplicationEntry = props => {
           </Form.Field>
         </Form.Group>
       </Form>
-      <ReactTableServerSideWrapper filterable={true} columns={columns} />
+      <ReactTableWrapper
+        filterable={true}
+        columns={columns}
+        data={transferApplicationData ? transferApplicationData.data : []}
+      />
     </Container>
   );
 };
@@ -169,11 +174,11 @@ const TransferApplicationEntry = props => {
 function mapStateToProps(state) {
   return {
     language: state.locales.lang,
-    transferApplicationData: state.smopspReducer.transferApplicationData,
+    transferApplicationData: state.smopccicReducer.transferApplicationData,
   };
 }
 
 export default connect(mapStateToProps, {
   fetchServiceListManager,
-  fetchMyApplicationExodus,
+  fetchTransferApplication,
 })(injectIntl(TransferApplicationEntry));

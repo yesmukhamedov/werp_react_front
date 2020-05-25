@@ -227,6 +227,21 @@ export const LinkToSmecam = props => {
   );
 };
 
+export const LinkToSmcsEmpty = props => {
+  const url = `/service/mainoperation/smcs`;
+  // const url = `/marketing/mainoperation/mmceg?contractNumber=${contractNumber}`;
+  return (
+    <a
+      style={{ color: 'white' }}
+      target="_blank"
+      href={url}
+      rel="noopener noreferrer"
+    >
+      <Button primary>Новый сервис</Button>
+    </a>
+  );
+};
+
 export const LinkToSmcs = props => {
   const { serviceNumber, message } = props;
   const url = `smcs?serviceNumber=${serviceNumber}`;
@@ -241,6 +256,17 @@ export const LinkToSmcs = props => {
         {message}
       </a>
     </Button>
+  );
+};
+
+export const LinkToSmcsWithRequest = props => {
+  const { applicationNumber } = props;
+  let url = `smcs?applicationNumber=${applicationNumber}`;
+
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      Создать сервис
+    </a>
   );
 };
 

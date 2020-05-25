@@ -9,6 +9,7 @@ const Services = props => {
     handleRemoveService,
     servicesOptions,
     selectServices,
+    editStatus,
   } = props;
 
   const columns = [
@@ -24,7 +25,7 @@ const Services = props => {
     {
       Header: 'Наименование услуг',
       accessor: 'matnrName',
-      width: 400,
+      width: 500,
       Cell: ({ original }) => (
         <Dropdown
           placeholder="Выбрать"
@@ -42,7 +43,7 @@ const Services = props => {
     },
     {
       Header: 'Валюта',
-      accessor: 'waers',
+      accessor: 'currencyName',
     },
     {
       Header: '',
@@ -78,6 +79,7 @@ const Services = props => {
           labelPosition="left"
           color="green"
           size="small"
+          disabled={editStatus}
         >
           <Icon name="plus" size="small" /> Добавить услугу
         </Button>

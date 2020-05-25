@@ -12,12 +12,14 @@ import {
 import 'react-table/react-table.css';
 import '../../../service.css';
 import moment from 'moment';
-
+import OutputErrors from '../../../../general/error/outputErrors';
+import { errorTableText } from '../../../../utils/helpers';
 import { fetchTransferApplicationExodus } from '../smopccocAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from '../../../../utils/ModalColumns';
 import DatePicker from 'react-datepicker';
+import { LinkToSmcuspor } from '../../../../utils/outlink';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
   momentToStringYYYYMMDD,
@@ -54,6 +56,7 @@ const TransferApplicationExodus = props => {
 
   const [param, setParam] = useState({ ...emptyParam });
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
+  const [error, setError] = useState([]);
 
   const initialColumns = [
     {
@@ -63,56 +66,56 @@ const TransferApplicationExodus = props => {
       filterable: false,
     },
     {
-      Header: 'Филиал',
-      accessor: 'branch',
+      Header: messages['brnch'],
+      accessor: 'branchId',
       checked: true,
     },
     {
       Header: 'CN',
-      accessor: 'contract_number',
+      accessor: 'contractNumber',
       checked: true,
     },
     {
-      Header: 'Заводской номер',
+      Header: messages['factory_number'],
       accessor: 'tovarSn',
       checked: true,
     },
     {
-      Header: 'Дата продажи',
+      Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'Дата переноса',
-      accessor: '888',
+      Header: messages['transfer_date'],
+      accessor: 'rescheduledDate',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'Дата заявки',
-      accessor: '999',
+      Header: messages['Application_Date'],
+      accessor: 'applicationDate',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'ФИО клиента',
+      Header: messages['fio'],
       accessor: 'customerFIO',
       checked: true,
     },
     {
-      Header: 'Адрес',
+      Header: messages['address'],
       accessor: 'address',
       checked: true,
     },
     {
-      Header: 'Телефон',
-      accessor: 'phone',
+      Header: messages['Phone'],
+      accessor: 'phoneNumber',
       checked: true,
     },
     {
-      Header: 'ФИО мастер',
-      accessor: 'dealerFIO',
+      Header: messages['master'],
+      accessor: 'masterFIO',
       checked: true,
     },
     {
@@ -146,34 +149,33 @@ const TransferApplicationExodus = props => {
       filterable: false,
     },
     {
-      Header: 'Категория',
-      accessor: 'crmCategory',
+      Header: messages['category'],
+      accessor: 'crmCategoryId',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'Статус заявки',
-      accessor: '15',
+      Header: messages['application_status'],
+      accessor: 'applicationStatusId',
       checked: true,
       filterable: false,
     },
     {
       Header: 'Заявка',
-      accessor: '898',
+      accessor: 'applicationNumber',
       checked: true,
       filterable: false,
-      Cell: ({ original }) => <h1>{original.contractNumber}</h1>,
     },
     {
-      Header: 'Просмотр',
+      Header: messages['Table.View'],
       accessor: '16',
       checked: true,
       filterable: false,
-      Cell: (
+      Cell: original => (
         <div style={{ textAlign: 'center' }}>
-          <Popup
-            content="Просмотр сервис карту"
-            trigger={<Button icon="address card" />}
+          <LinkToSmcuspor
+            contractNumber={original.row.contractNumber}
+            text={messages['Table.View']}
           />
         </div>
       ),
@@ -221,10 +223,21 @@ const TransferApplicationExodus = props => {
   }, [branches, param.countryId, param.bukrs]);
 
   const handleClickApplyTransfer = () => {
-    const page = 0;
-    const size = 20;
-    props.fetchTransferApplicationExodus({ ...param, page, size });
-    setTurnOnReactFetch(true);
+    validate();
+    if (param.bukrs !== '') {
+      const page = 0;
+      const size = 20;
+      props.fetchTransferApplicationExodus({ ...param, page, size });
+      setTurnOnReactFetch(true);
+    }
+  };
+
+  const validate = () => {
+    const errors = [];
+    if (param.bukrs === '') {
+      errors.push(errorTableText(5));
+    }
+    setError(() => errors);
   };
 
   const onInputChange = (o, fieldName) => {
@@ -283,6 +296,7 @@ const TransferApplicationExodus = props => {
           />
 
           <Form.Select
+            required
             fluid
             label={messages['bukrs']}
             placeholder={messages['bukrs']}
@@ -377,6 +391,7 @@ const TransferApplicationExodus = props => {
             />
           </Form.Field>
         </Form.Group>
+        <OutputErrors errors={error} />
       </Form>
       <Divider />
       <ReactTableServerSideWrapper
@@ -385,8 +400,8 @@ const TransferApplicationExodus = props => {
         filterable={true}
         defaultPageSize={20}
         showPagination={true}
-        requestData={param => {
-          props.fetchServiceFilterPlan({ ...param });
+        requestData={params => {
+          props.fetchServiceFilterPlan({ ...params, ...param });
         }}
         pages={transfer ? transfer.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}

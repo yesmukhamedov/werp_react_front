@@ -837,9 +837,16 @@
   "application_status": "Application status",
   "changes": "Changes",
   "outgoing_call_operator": "Call center operator for outgoing calls",
+  "incoming_call_operator": "Call center operator for incoming calls",
   "cartrige_change_plan": "Cartrige change plan",
   "rescheduled_applications": "Rescheduled applications",
   "assigned_calls": "Assigned calls",
   "my_outgoing_app": "My outgoig applications",
-  "service_period": "Service period"
+  "service_period": "Service period",
+  "appointment_date": "Appointment date",
+  "service_packet_plan": "Service packet plan",
+  "my_applications": "My applications",
+  "prevention_plan": "Prevention plan",
+  "guarantee": "Guarantee",
+  "transfer": "Перенос"
 }

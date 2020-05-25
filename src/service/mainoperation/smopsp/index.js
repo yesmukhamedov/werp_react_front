@@ -20,8 +20,7 @@ import '../../service.css';
 
 const Smopccoc = props => {
   const {
-    // intl: { messages },
-    // language,
+    intl: { messages },
   } = props;
 
   const {
@@ -33,13 +32,9 @@ const Smopccoc = props => {
   } = props;
 
   const {
-    // serviceTypeId,
-    // srlsmList,
-    // serviceStatusList,
     companyOptions,
     countryList,
     category,
-
     contractStatusList,
     branches,
   } = props;
@@ -117,9 +112,7 @@ const Smopccoc = props => {
   const panes = [
     {
       menuItem: (
-        <Menu.Item key={1}>
-          План по сервис пакетам<Label color="teal">15</Label>
-        </Menu.Item>
+        <Menu.Item key={1}>{messages['service_packet_plan']}</Menu.Item>
       ),
       pane: (
         <Tab.Pane key={1}>
@@ -137,9 +130,7 @@ const Smopccoc = props => {
     },
     {
       menuItem: (
-        <Menu.Item key={2}>
-          Перенесенные заявки<Label color="teal">15</Label>
-        </Menu.Item>
+        <Menu.Item key={2}>{messages['rescheduled_applications']}</Menu.Item>
       ),
       pane: (
         <Tab.Pane key={2}>
@@ -156,11 +147,7 @@ const Smopccoc = props => {
       ),
     },
     {
-      menuItem: (
-        <Menu.Item key={3}>
-          Назначенные звонки<Label color="teal">15</Label>
-        </Menu.Item>
-      ),
+      menuItem: <Menu.Item key={3}>{messages['assigned_calls']}</Menu.Item>,
       pane: (
         <Tab.Pane key={3}>
           <AssignedCalls
@@ -176,11 +163,7 @@ const Smopccoc = props => {
       ),
     },
     {
-      menuItem: (
-        <Menu.Item key={4}>
-          Мои заявки<Label color="teal">15</Label>
-        </Menu.Item>
-      ),
+      menuItem: <Menu.Item key={4}>{messages['my_applications']}</Menu.Item>,
       pane: (
         <Tab.Pane key={4}>
           <MyApplication
@@ -207,7 +190,7 @@ const Smopccoc = props => {
         paddingRight: '2em',
       }}
     >
-      <Segment as="h2">План по профилактики</Segment>
+      <Segment as="h2">{messages['prevention_plan']}</Segment>
 
       <Tab
         menu={{ attached: true, tabular: false, pointing: true }}

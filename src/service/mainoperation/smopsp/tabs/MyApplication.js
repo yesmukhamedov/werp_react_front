@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { Container, Form, Divider } from 'semantic-ui-react';
 import 'react-table/react-table.css';
+import OutputErrors from '../../../../general/error/outputErrors';
+import { errorTableText } from '../../../../utils/helpers';
 import { fetchMyApplication } from '../smopspAction';
 import { fetchServiceTypeId } from '../../smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
@@ -49,6 +51,7 @@ const MyApplication = props => {
   const [param, setParam] = useState({ ...emptyParam });
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
+  const [error, setError] = useState([]);
 
   useEffect(() => {
     let servBrOptions = branches
@@ -101,38 +104,38 @@ const MyApplication = props => {
       checked: true,
     },
     {
-      Header: 'Филиал',
+      Header: messages['brnch'],
       accessor: 'branchId',
       checked: true,
     },
     {
-      Header: 'Заводской номер',
+      Header: messages['factory_number'],
       accessor: 'tovarSn',
       checked: true,
     },
     {
-      Header: 'Дата Заявки',
+      Header: messages['Application_Date'],
       accessor: 'applicationDate',
       checked: true,
     },
 
     {
-      Header: 'ФИО клиента',
+      Header: messages['fio'],
       accessor: 'customerFIO',
       checked: true,
     },
     {
-      Header: 'ИИН клиента',
+      Header: messages['customer_key'],
       accessor: 'customerIinBin',
       checked: true,
     },
     {
-      Header: 'Адрес',
+      Header: messages['address'],
       accessor: 'address',
       checked: true,
     },
     {
-      Header: 'ФИО дилера',
+      Header: messages['Dealer.Fullname'],
       accessor: 'dealerFIO',
       checked: true,
       filterable: false,
@@ -144,40 +147,40 @@ const MyApplication = props => {
       filterable: false,
     },
     {
-      Header: 'Гарантия',
+      Header: messages['guarantee'],
       accessor: 'warrantyId',
       checked: true,
       filterable: false,
     },
 
     {
-      Header: 'Категория',
+      Header: messages['category'],
       accessor: 'crmCategoryId',
       checked: true,
       filterable: false,
     },
 
     {
-      Header: 'Фин статус',
+      Header: messages['fin_status'],
       accessor: 'contractStatusId',
       checked: true,
       filterable: false,
     },
     {
-      Header: '№ заявки',
+      Header: messages['request_number'],
       accessor: 'applicationNumber',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'Просмотр',
+      Header: messages['Table.View'],
       filterable: false,
       accessor: '16',
       Cell: original => (
         <div style={{ textAlign: 'center' }}>
           <LinkToSmcuspor
             contractNumber={original.row.contractNumber}
-            text="Просмотр"
+            text={messages['Table.View']}
           />
         </div>
       ),
@@ -186,10 +189,21 @@ const MyApplication = props => {
   ];
 
   const handleClickApply = () => {
-    const page = 0;
-    const size = 20;
-    props.fetchMyApplication({ ...param, page, size });
-    setTurnOnReactFetch(true);
+    validate();
+    if (param.bukrs !== '') {
+      const page = 0;
+      const size = 20;
+      props.fetchMyApplication({ ...param, page, size });
+      setTurnOnReactFetch(true);
+    }
+  };
+
+  const validate = () => {
+    const errors = [];
+    if (param.bukrs === '') {
+      errors.push(errorTableText(5));
+    }
+    setError(() => errors);
   };
 
   const onInputChange = (o, fieldName) => {
@@ -243,57 +257,58 @@ const MyApplication = props => {
         <Form.Group widths="equal">
           <Form.Select
             fluid
-            label="Страна"
-            placeholder="Страна"
+            label={messages['country']}
+            placeholder={messages['country']}
             options={countryOptions}
             onChange={(e, o) => onInputChange(o, 'countryId')}
             className="alignBottom"
           />
 
           <Form.Select
+            required
             fluid
-            label="Компания"
-            placeholder="Компания"
+            label={messages['bukrs']}
+            placeholder={messages['bukrs']}
             options={companyOptions}
             onChange={(e, o) => onInputChange(o, 'bukrs')}
             className="alignBottom"
           />
           <Form.Select
             fluid
-            label="Филиал"
-            placeholder="Филиал"
+            label={messages['brnch']}
+            placeholder={messages['brnch']}
             options={serviceBranchOptions}
             onChange={(e, o) => onInputChange(o, 'branchId')}
             className="alignBottom"
           />
           <Form.Select
             fluid
-            label="Фин. Статус"
-            placeholder="Фин. Статус"
+            label={messages['fin_status']}
+            placeholder={messages['fin_status']}
             options={finStatusOption}
             onChange={(e, o) => onInputChange(o, 'contractStatusId')}
             className="alignBottom"
           />
           <Form.Select
             fluid
-            label="Срок сервиса"
-            placeholder="Срок сервиса"
+            label={messages['service_period']}
+            placeholder={messages['service_period']}
             options={serviceDateTypeOptions}
             onChange={(e, o) => onInputChange(o, 'serviceDateType')}
             className="alignBottom"
           />
           <Form.Select
             fluid
-            label="Категория"
-            placeholder="Категория"
+            label={messages['category']}
+            placeholder={messages['category']}
             options={categoryOptions}
             onChange={(e, o) => onInputChange(o, 'crmCategory')}
             className="alignBottom"
           />
           <Form.Select
             fluid
-            label="Гарантия"
-            placeholder="Гарантия"
+            label={messages['guarantee']}
+            placeholder={messages['guarantee']}
             options={warrantyOptions}
             onChange={(e, o) => onInputChange(o, 'warranty')}
             className="alignBottom"
@@ -303,13 +318,13 @@ const MyApplication = props => {
         <Form.Group className="spaceBetween">
           <div className="flexDirectionRow">
             <Form.Field className="marginRight">
-              <label>Дата</label>
+              <label>{messages['date']}</label>
               <DatePicker
                 className="date-auto-width"
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                placeholderText="Дата"
+                placeholderText={messages['date']}
                 selected={
                   param.dateOpenAt === ''
                     ? ''
@@ -330,7 +345,7 @@ const MyApplication = props => {
               color="blue"
               className="alignBottom"
             >
-              Применить
+              {messages['apply']}
             </Form.Button>
           </div>
 
@@ -341,6 +356,7 @@ const MyApplication = props => {
             />
           </Form.Field>
         </Form.Group>
+        <OutputErrors errors={error} />
       </Form>
       <Divider />
 
@@ -350,8 +366,8 @@ const MyApplication = props => {
         filterable={true}
         defaultPageSize={20}
         showPagination={true}
-        requestData={param => {
-          props.fetchMyApplication({ ...param });
+        requestData={params => {
+          props.fetchMyApplication({ ...params, ...param });
         }}
         pages={myApplication ? myApplication.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}

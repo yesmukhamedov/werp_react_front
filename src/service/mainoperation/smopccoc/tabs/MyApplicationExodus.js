@@ -5,7 +5,8 @@ import { Form, Container, Divider, Icon } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
 import moment from 'moment';
-
+import OutputErrors from '../../../../general/error/outputErrors';
+import { errorTableText } from '../../../../utils/helpers';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import { fetchMyApplicationExodus } from '../smopccocAction';
@@ -45,6 +46,7 @@ const MyApplicationExodus = props => {
 
   const [param, setParam] = useState({ ...emptyParam });
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
+  const [error, setError] = useState([]);
 
   const initialColumns = [
     {
@@ -54,44 +56,44 @@ const MyApplicationExodus = props => {
       filterable: false,
     },
     {
-      Header: 'Филиал',
-      accessor: 'branch',
+      Header: messages['brnch'],
+      accessor: 'branchId',
       checked: true,
     },
     {
-      Header: 'Заводской номер',
+      Header: messages['factory_number'],
       accessor: 'tovarSn',
       checked: true,
     },
     {
-      Header: 'Дата продажи',
+      Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'Дата заявки',
-      accessor: '4applicationDate',
+      Header: messages['Application_Date'],
+      accessor: 'applicationDate',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'ФИО клиента',
+      Header: messages['fio'],
       accessor: 'customerFIO',
       checked: true,
     },
     {
-      Header: 'Адрес',
+      Header: messages['address'],
       accessor: 'address',
       checked: true,
     },
     {
-      Header: 'Телефон',
-      accessor: 'phone',
+      Header: messages['Phone'],
+      accessor: 'phoneNumber',
       checked: true,
     },
     {
-      Header: 'ФИО мастера',
+      Header: messages['master'],
       accessor: 'masterFIO',
       checked: true,
     },
@@ -126,25 +128,25 @@ const MyApplicationExodus = props => {
       filterable: false,
     },
     {
-      Header: 'Категория',
-      accessor: '5crmCategory',
+      Header: messages['category'],
+      accessor: 'crmCategoryId',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'Статус заявки',
-      accessor: 'applicationStatus',
+      Header: messages['application_status'],
+      accessor: 'applicationStatusId',
       checked: true,
       filterable: false,
     },
     {
-      Header: '№ заявки',
-      accessor: '5850',
+      Header: messages['request_number'],
+      accessor: 'applicationNumber',
       checked: true,
       filterable: false,
     },
     {
-      Header: 'История клиента',
+      Header: messages['customer_story'],
       accessor: '5885',
       checked: true,
       filterable: false,
@@ -152,7 +154,7 @@ const MyApplicationExodus = props => {
         <div style={{ textAlign: 'center' }}>
           <LinkToSmcuspor
             contractNumber={original.row.contractNumber}
-            text="Просмотр"
+            text={messages['Table.View']}
           />
         </div>
       ),
@@ -200,10 +202,21 @@ const MyApplicationExodus = props => {
   }, [branches, param.countryId, param.bukrs]);
 
   const handleClickApplyMyApp = () => {
-    const page = 0;
-    const size = 20;
-    props.fetchMyApplicationExodus({ ...param, page, size });
-    setTurnOnReactFetch(true);
+    validate();
+    if (param.bukrs !== '') {
+      const page = 0;
+      const size = 20;
+      props.fetchMyApplicationExodus({ ...param, page, size });
+      setTurnOnReactFetch(true);
+    }
+  };
+
+  const validate = () => {
+    const errors = [];
+    if (param.bukrs === '') {
+      errors.push(errorTableText(5));
+    }
+    setError(() => errors);
   };
 
   const onInputChange = (o, fieldName) => {
@@ -258,6 +271,7 @@ const MyApplicationExodus = props => {
           />
 
           <Form.Select
+            required
             fluid
             label={messages['bukrs']}
             placeholder={messages['bukrs']}
@@ -360,6 +374,7 @@ const MyApplicationExodus = props => {
             />
           </Form.Field>
         </Form.Group>
+        <OutputErrors errors={error} />
       </Form>
       <Divider />
       <ReactTableServerSideWrapper
@@ -368,8 +383,8 @@ const MyApplicationExodus = props => {
         filterable={true}
         defaultPageSize={20}
         showPagination={true}
-        requestData={param => {
-          props.fetchMyApplicationExodus({ ...param });
+        requestData={params => {
+          props.fetchMyApplicationExodus({ ...params, ...param });
         }}
         pages={myApplication ? myApplication.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}

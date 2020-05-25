@@ -10,24 +10,21 @@ import {
 import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
 
 const SaleCartridge = props => {
-  const {
-    data = [],
-    addCartridgeBtn,
-    deleteSparePart,
-    quantitySparePart,
-    onChangeCartridge,
-  } = props;
-
-  console.log('DATA CARTRIDGE', data);
+  const { data = [], onChangeCartridge, editStatus } = props;
 
   const columns = [
     {
       Header: '№',
       accessor: 'matnrCode',
+      Cell: row => {
+        return <div>{row.index + 1}</div>;
+      },
+      width: 50,
     },
     {
       Header: 'Наименование',
       accessor: 'matnrName',
+      width: 500,
     },
     {
       Header: 'F№',
@@ -36,7 +33,9 @@ const SaleCartridge = props => {
         <Input
           size="mini"
           style={{ padding: '0' }}
-          value={original.fno === null ? '' : original.fno}
+          value={
+            original.fno === null || original.fno === '' ? 0 : original.fno
+          }
           type="number"
           fluid
           onChange={(e, value) => onChangeCartridge(value, 'fnoEdit', original)}
@@ -48,6 +47,7 @@ const SaleCartridge = props => {
       accessor: 'quantity',
       Cell: ({ original }) => (
         <Input
+          readOnly
           size="mini"
           style={{ padding: '0' }}
           value={original.quantity}
@@ -55,7 +55,9 @@ const SaleCartridge = props => {
           label={{ content: 'шт' }}
           labelPosition="right"
           fluid
-          onChange={e => quantitySparePart(e, original)}
+          onChange={item =>
+            onChangeCartridge(item, 'quantityCartridge', original)
+          }
         />
       ),
     },
@@ -85,7 +87,7 @@ const SaleCartridge = props => {
         <Button
           size="mini"
           color="red"
-          onClick={() => deleteSparePart(original)}
+          onClick={() => onChangeCartridge(original, 'deleteCartridge')}
         >
           Удалить
         </Button>
@@ -112,6 +114,7 @@ const SaleCartridge = props => {
         color="green"
         size="small"
         onClick={item => onChangeCartridge(item, 'addCartridgeBtn')}
+        disabled={editStatus}
       >
         <Icon name="plus" size="small" />
         Добавить картриджей

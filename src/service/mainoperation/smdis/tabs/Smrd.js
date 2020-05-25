@@ -15,7 +15,6 @@ const Smrd = props => {
     clickAddOperator = [],
     operatorOptions,
   } = props;
-  console.log('SMRD PROPS', props);
 
   return (
     <Container fluid>

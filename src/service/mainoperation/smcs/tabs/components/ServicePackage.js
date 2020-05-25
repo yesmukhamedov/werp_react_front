@@ -10,84 +10,71 @@ import {
 import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
 
 const ServicePackage = props => {
-  const {
-    data = [],
-    addSparePartBtn,
-    deleteSparePart,
-    quantitySparePart,
-  } = props;
+  const { data = [], onChangeServicePackage, editStatus } = props;
 
-  console.log('DATA', data.length);
-
-  const columns = [
+  const columnsDetails = [
     {
       Header: '№',
       accessor: 'matnrCode',
+      Cell: ({ original, index }) => <div>{index + 1}</div>,
+      width: 50,
     },
     {
       Header: 'Наименование',
       accessor: 'matnrName',
+      width: 500,
     },
+
     {
-      Header: 'Количество',
-      accessor: 'quantity',
-      Cell: ({ original }) => (
-        <Input
-          size="mini"
-          style={{ padding: '0' }}
-          value={original.quantity}
-          type="number"
-          label={{ content: 'шт' }}
-          labelPosition="right"
-          fluid
-          onChange={e => quantitySparePart(e, original)}
-        />
-      ),
-    },
-    {
-      Header: 'Сумма',
-      accessor: 'sum',
+      Header: 'Цена',
+      accessor: 'matnrPrice',
     },
     {
       Header: 'Валюта',
       accessor: 'currencyName',
     },
     {
-      Header: 'Гарантия',
-      accessor: 'warranty',
-      Cell: ({ original }) => (
-        <Checkbox
-          // checked={original.warranty}
-          label="Гарантия"
-          //   onChange={() => warrantySparePart(item)}
-        />
-      ),
-    },
-    {
-      Header: '',
-      accessor: 'delete',
-      Cell: ({ original }) => (
-        <Button
-          size="mini"
-          color="red"
-          onClick={() => deleteSparePart(original)}
-        >
-          Удалить
-        </Button>
-      ),
+      Header: 'Количество',
+      accessor: 'quantity',
     },
   ];
 
   return (
     <Segment>
-      <h5>Продажа картриджей</h5>
+      <h5>Сервис пакет</h5>
       <Divider />
-      <ReactTableWrapper
-        data={data}
-        columns={columns}
-        // className="-striped -highlight"
-        pageSize={data.length > 10 ? 10 : data.length}
-      />
+      {data.map(item => (
+        <Segment color="orange" key={item.servicePackageId}>
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <p>{item.matnrName}</p>
+            <Button
+              size="mini"
+              color="red"
+              onClick={() =>
+                onChangeServicePackage(item, 'deleteServicePackage')
+              }
+            >
+              Удалить
+            </Button>
+          </div>
+
+          <Divider />
+          <ReactTableWrapper
+            data={item.details}
+            columns={columnsDetails}
+            className="-striped -highlight"
+            pageSize={item.details.length > 10 ? 10 : item.details.length}
+          />
+        </Segment>
+      ))}
+
       <Divider />
 
       <Button
@@ -96,7 +83,10 @@ const ServicePackage = props => {
         labelPosition="left"
         color="green"
         size="small"
-        onClick={addSparePartBtn}
+        onClick={item =>
+          onChangeServicePackage(item, 'modalOpenServicePackage')
+        }
+        disabled={editStatus}
       >
         <Icon name="plus" size="small" />
         Добавить сервис пакет

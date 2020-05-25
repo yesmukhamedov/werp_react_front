@@ -30,6 +30,8 @@ import {
   LinkToSmcuspor,
   LinkToSmecam,
   LinkToSmvs,
+  LinkToSmcsEmpty,
+  LinkToSmcsWithRequest,
 } from '../../../utils/outlink';
 import Masters from './Masters';
 
@@ -297,11 +299,13 @@ const Smappl = props => {
       <Divider hidden></Divider>
       <Header as="h2">
         {messages['service_requests']}
-        <a href="/service/mainoperation/smcs" target="_blank">
+        {/* <a href="/service/mainoperation/smcs" target="_blank">
           <Button floated="right" color="pink">
             {messages['new_service']}
           </Button>
-        </a>
+        </a> */}
+
+        <LinkToSmcsWithRequest />
       </Header>
 
       <Divider />

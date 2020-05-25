@@ -18,10 +18,11 @@ const INITIAL_STATE = {
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     case FETCH_SMCRLD_LIST:
+      console.log('fetch', action.payload);
       return {
         ...state,
-        smcrldListData: [...action.data.data.listData],
-        smcrldListSum: { ...action.data.data.listSum },
+        smcrldListData: [...action.payload.data.listData],
+        smcrldListSum: { ...action.payload.data.listSum },
       };
 
     case POST_SMCRLD_FORMPLAN:
