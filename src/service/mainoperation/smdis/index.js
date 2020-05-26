@@ -39,16 +39,9 @@ const Smdis = props => {
   const [branch, setBranch] = useState('');
   const [error, setError] = useState([]);
 
-  const [defaultPane, setDefaultPane] = useState(0);
+  const [defaultPane, setDefaultPane] = useState(2);
 
   //Operator options
-  const operatorOptions = operatorsByBranch.map(item => {
-    return {
-      key: item.staffId,
-      text: `${item.lastname} ${item.firstname} ${item.middlename}`,
-      value: item.staffId,
-    };
-  });
 
   //Распределение списка замена картриджа
   const clickViewService = data => {
@@ -70,6 +63,12 @@ const Smdis = props => {
   const clickSmvodRow = data => {
     setDefaultPane(2);
     console.log('DATA CLICK SMVOD', data);
+
+    setParam({
+      ...param,
+      branchId: data.branchId,
+      countryId: data.countryId,
+    });
 
     let smrdOperatorParam = {
       branchId: data.branchId,
@@ -178,7 +177,7 @@ const Smdis = props => {
             intl={props.intl}
             data={smrdOperator}
             clickAddOperator={clickAddOperator}
-            operatorOptions={operatorOptions}
+            operatorsByBranch={operatorsByBranch}
           />
         </Tab.Pane>
       ),
