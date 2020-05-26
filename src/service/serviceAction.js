@@ -565,7 +565,7 @@ export function fetchSmsrcus(searchParams) {
 export function fetchTovarCategorys() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet('smcs/categoryId')
+    doGet('smcs/getCategoryList')
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
