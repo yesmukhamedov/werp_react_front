@@ -56,21 +56,20 @@ const EditModal = props => {
     setModalOpen(true);
   };
 
-  // useEffect(() => {
-  //   let country = countryList.map(
-  //     item => {
-  //       return {
-  //         key: item.countryId,
-  //         text: item.country,
-  //         value: item.countryId,
-  //         currency: item.currency,
-  //         currencyid: item.currencyId,
-  //       };
-  //     },
-  //     [countryList],
-  //   );
-  //   setCountryOptions(country);
-  // }, [countryList]);
+  console.log('countryList', countryList);
+
+  useEffect(() => {
+    let country = countryList.map(item => {
+      return {
+        key: item.countryId,
+        text: item.country,
+        value: item.countryId,
+        currency: item.currency,
+        currencyid: item.currencyId,
+      };
+    });
+    setCountryOptions(country);
+  }, [countryList]);
 
   useEffect(() => {
     const premiumPrice = premium.map(item => {
@@ -272,7 +271,7 @@ const EditModal = props => {
                 control={Input}
                 label={`${messages['office']}(${messages['inTotal']})`}
                 placeholder="Number..."
-                readonly
+                readOnly
                 disabled
                 value={moneyFormat(informations.office)}
                 onFocus={handleFocus}
