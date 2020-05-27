@@ -123,6 +123,7 @@ const AddPrice = props => {
       discount: 0,
       total: 0,
       countryId: null,
+      productId: null,
       waers: null,
       serviceTypeId: null,
       premiumPriceTypeId: 2,
@@ -132,16 +133,45 @@ const AddPrice = props => {
   const [productOptions, setProductOptions] = useState([]);
   console.log('informations ', informations);
   useEffect(() => {
-    let productOptions = productList
-      .filter(item => item.bukrs === informations.bukrs)
-      .map(item => {
-        return {
-          key: item.matnr,
-          text: item.name,
-          value: item.matnr,
-        };
-      });
-    setProductOptions([...productOptions]);
+    if (informations.bukrs === '' && informations.countryId === null) {
+      setProductOptions([]);
+    } else if (informations.bukrs !== '' && informations.countryId === null) {
+      let productOptions = productList
+        .filter(item => item.bukrs === informations.bukrs)
+        .map(item => {
+          return {
+            key: item.matnr,
+            text: item.name,
+            value: item.matnr,
+          };
+        });
+      setProductOptions([...productOptions]);
+    } else if (informations.bukrs !== '' && informations.countryId !== 9) {
+      let productOptions = productList
+        .filter(item => item.bukrs === informations.bukrs)
+        .filter(item => item.countryId === null)
+        .map(item => {
+          return {
+            key: item.matnr,
+            text: item.name,
+            value: item.matnr,
+          };
+        });
+      setProductOptions([...productOptions]);
+    } else if (informations.bukrs !== '' && informations.countryId === 9) {
+      let productOptions = productList
+        .filter(item => item.bukrs === informations.bukrs)
+        .filter(item => item.countryId === 9)
+        .map(item => {
+          return {
+            key: item.matnr,
+            text: item.name,
+            value: item.matnr,
+          };
+        });
+
+      setProductOptions([...productOptions]);
+    }
   }, [informations.bukrs, informations.countryId]);
 
   console.log('productOptions ADD', productOptions);
