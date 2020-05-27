@@ -6,6 +6,8 @@ import 'react-table/react-table.css';
 const ListHistory = props => {
   const { historyDynamicObject, messages } = props;
 
+  console.log('His', historyDynamicObject);
+
   let columns = [
     {
       Header: messages['Form.Date'],

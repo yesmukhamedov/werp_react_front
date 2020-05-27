@@ -407,6 +407,7 @@ export default function List(props) {
         <Modal
           open={open}
           closeIcon
+          size={'small'}
           onClose={() => {
             setOpen(false);
             setMessg({});

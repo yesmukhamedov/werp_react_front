@@ -237,25 +237,8 @@ export const LinkToSmcsEmpty = props => {
       href={url}
       rel="noopener noreferrer"
     >
-      <Button primary>Новый сервис</Button>
+      Новый сервис
     </a>
-  );
-};
-
-export const LinkToSmcs = props => {
-  const { serviceNumber, message } = props;
-  const url = `smcs?serviceNumber=${serviceNumber}`;
-  return (
-    <Button primary>
-      <a
-        style={{ color: 'white' }}
-        target="_blank"
-        href={url}
-        rel="noopener noreferrer"
-      >
-        {message}
-      </a>
-    </Button>
   );
 };
 
@@ -264,9 +247,11 @@ export const LinkToSmcsWithRequest = props => {
   let url = `smcs?applicationNumber=${applicationNumber}`;
 
   return (
-    <a target="_blank" href={url} rel="noopener noreferrer">
-      Создать сервис
-    </a>
+    <Button primary>
+      <a target="_blank" href={url} rel="noopener noreferrer">
+        Создать сервис
+      </a>
+    </Button>
   );
 };
 

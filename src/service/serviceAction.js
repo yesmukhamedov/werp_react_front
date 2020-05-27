@@ -717,11 +717,8 @@ export function postSmsetplp(params, fetchSmsetplp) {
 
 export function editSmecam(editParams, fetchSmecam) {
   return function(dispatch) {
-    console.log('data', editParams);
     doPut('smecam/edit', editParams)
       .then(data => {
-        console.log('data', editParams);
-        console.log('data', data);
         if (data.status === 200 || data.status === 'OK') {
           dispatch({
             type: EDIT_SMECAM,

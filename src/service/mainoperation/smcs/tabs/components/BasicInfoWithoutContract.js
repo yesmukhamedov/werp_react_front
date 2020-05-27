@@ -7,6 +7,8 @@ const BasicInfoWithoutContract = props => {
     operatorOptions,
     onBasicInfoInputChange,
     companyOptions,
+    branchOptions,
+    categoryOptions,
   } = props;
 
   const optionsExample = [
@@ -46,7 +48,7 @@ const BasicInfoWithoutContract = props => {
         <Table.Row>
           <Table.Cell>Филиал</Table.Cell>
           <Table.Cell>
-            <Dropdown fluid selection options={optionsExample} />
+            <Dropdown fluid selection options={branchOptions} />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -64,7 +66,7 @@ const BasicInfoWithoutContract = props => {
         <Table.Row>
           <Table.Cell>Категория</Table.Cell>
           <Table.Cell>
-            <Dropdown fluid selection options={optionsExample} />
+            <Dropdown fluid selection options={categoryOptions} />
           </Table.Cell>
         </Table.Row>
         <Table.Row>

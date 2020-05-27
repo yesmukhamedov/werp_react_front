@@ -27,7 +27,7 @@ const TableReDistribution1 = props => {
         {
           Header: 'Оператор',
           accessor: 'operatorName',
-          width: 250,
+          width: 220,
         },
       ],
     },

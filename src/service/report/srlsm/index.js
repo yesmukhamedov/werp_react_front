@@ -4,9 +4,8 @@ import {
   f4fetchCategory,
   f4FetchBranches,
   f4FetchServiceAppStatus,
-  f4FetchServicType,
 } from '../../../reference/f4/f4_action';
-import { fetchSrlsm } from './srlsmAction';
+import { fetchSrlsm, fetchServiceTypeList } from './srlsmAction';
 import { injectIntl } from 'react-intl';
 import {
   Icon,
@@ -28,6 +27,7 @@ import {
 import '../../service.css';
 import { LinkToSmcuspor } from '../../../utils/outlink';
 import ReactTableWrapper from './../../../utils/ReactTableWrapper';
+import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
 
 const Srlsm = props => {
   const {
@@ -38,10 +38,15 @@ const Srlsm = props => {
     branches = [],
     serviceAppStatus = [],
     serviceType = [],
-    srlsmList = [],
+    srlsmListData = [],
+    srlsmListSum = {},
+    serviceTypeList = [],
+    srlsmTotalPages,
   } = props;
 
-  console.log('SRLSM', srlsmList, 'LANGUAGE', language);
+  console.log('srlsmListData', srlsmListData);
+  console.log('srlsmListSum', srlsmListSum);
+  console.log('srlsmTotalPages', srlsmTotalPages);
 
   const emptyParam = {
     bukrs: '',
@@ -60,7 +65,7 @@ const Srlsm = props => {
     props.f4fetchCategory();
     props.f4FetchBranches();
     props.f4FetchServiceAppStatus();
-    props.f4FetchServicType();
+    props.fetchServiceTypeList();
   }, []);
 
   const tovarCategoryOptions = category.map(item => {
@@ -79,7 +84,7 @@ const Srlsm = props => {
     };
   });
 
-  const serviceTypeOptions = serviceType.map(item => {
+  const serviceTypeOptions = serviceTypeList.map(item => {
     return {
       key: item.id,
       text: item.name,
@@ -87,6 +92,7 @@ const Srlsm = props => {
     };
   });
   const [serBranchOptions, setSerBranchOptions] = useState([]);
+
   useEffect(() => {
     const getBranchByBukrs = (branches, bukrs) => {
       let br = branches.filter(item => item.bukrs == bukrs);
@@ -169,7 +175,7 @@ const Srlsm = props => {
     },
     {
       Header: 'ФИО клиента',
-      accessor: 'customerId',
+      accessor: 'customerFIO',
       checked: true,
     },
 
@@ -181,12 +187,12 @@ const Srlsm = props => {
     },
     {
       Header: 'Мастер',
-      accessor: 'masterId',
+      accessor: 'masterFIO',
       checked: true,
     },
     {
       Header: 'Оператор',
-      accessor: 'operatorId',
+      accessor: 'operatorFIO',
       checked: true,
     },
     {
@@ -215,7 +221,7 @@ const Srlsm = props => {
     },
     {
       Header: 'Сервис №',
-      accessor: '',
+      accessor: 'id',
       checked: true,
       filterable: false,
     },
@@ -234,14 +240,18 @@ const Srlsm = props => {
       checked: true,
     },
   ];
-
+  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const handleClickApply = () => {
-    props.fetchSrlsm({ ...param });
+    //validate();
+    if (param.bukrs !== '') {
+      const page = 0;
+      const size = 20;
+      props.fetchSrlsm({ ...param, page, size });
+    }
+    setTurnOnReactFetch(true);
   };
 
   const [columns, setColumns] = useState([...initialColumns]);
-
-  console.log('columns', columns);
 
   const finishColumns = data => {
     setColumns([...data]);
@@ -372,25 +382,25 @@ const Srlsm = props => {
           <Table.Row>
             <Table.Cell>Общая сумма</Table.Cell>
             <Table.Cell>
-              <Input readOnly value="0" />
+              <Input readOnly value={srlsmListSum.sumTotal} />
             </Table.Cell>
             <Table.Cell>Оплачено</Table.Cell>
             <Table.Cell>
-              <Input readOnly value="0" />
+              <Input readOnly value={srlsmListSum.paid} />
             </Table.Cell>
             <Table.Cell>Остаток</Table.Cell>
             <Table.Cell>
-              <Input readOnly value="0" />
+              <Input readOnly value={srlsmListSum.paymentDue} />
             </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>Премия мастера</Table.Cell>
             <Table.Cell>
-              <Input readOnly value="0" />
+              <Input readOnly value={srlsmListSum.masterPremium} />
             </Table.Cell>
             <Table.Cell>Премия оператора</Table.Cell>
             <Table.Cell>
-              <Input readOnly value="0" />
+              <Input readOnly value={srlsmListSum.operatorPremium} />
             </Table.Cell>
             <Table.Cell></Table.Cell>
             <Table.Cell></Table.Cell>
@@ -398,7 +408,19 @@ const Srlsm = props => {
         </Table.Body>
       </Table>
       <Divider />
-      <ReactTableWrapper filterable={true} columns={columns} />
+
+      <ReactTableServerSideWrapper
+        data={srlsmListData}
+        columns={columns}
+        filterable={true}
+        defaultPageSize={10}
+        showPagination={true}
+        requestData={params => {
+          props.fetchSrlsm({ ...params, ...param });
+        }}
+        pages={srlsmTotalPages ? srlsmTotalPages : ''}
+        turnOnReactFetch={turnOnReactFetch}
+      />
     </Container>
   );
 };
@@ -411,8 +433,10 @@ function mapStateToProps(state) {
     branches: state.f4.branches,
     serviceAppStatus: state.f4.serviceAppStatus,
     contractStatusList: state.f4.contractStatusList,
-    serviceType: state.f4.serviceType,
-    srlsmList: state.srlsmReducer.srlsmList,
+    serviceTypeList: state.srlsmReducer.serviceTypeList,
+    srlsmListData: state.srlsmReducer.srlsmListData,
+    srlsmListSum: state.srlsmReducer.srlsmListSum,
+    srlsmTotalPages: state.srlsmReducer.srlsmTotalPages,
   };
 }
 
@@ -420,6 +444,6 @@ export default connect(mapStateToProps, {
   f4fetchCategory,
   f4FetchBranches,
   f4FetchServiceAppStatus,
-  f4FetchServicType,
   fetchSrlsm,
+  fetchServiceTypeList,
 })(injectIntl(Srlsm));
