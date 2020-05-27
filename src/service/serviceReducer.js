@@ -7,6 +7,7 @@ import {
   EDIT_SMSETCT,
   FETCH_SMSETPP,
   FETCH_SMSETPP_HISTORY,
+  FETCH_SMSETPP_SERVICE_TYPE_ID,
   FETCH_SMSETPP_TYPE,
   FETCH_SMSETPP_POST,
   FETCH_SMSETPP_SEARCH,
@@ -133,6 +134,14 @@ export default function(state = INITIAL_STATE, action) {
         dynamicObject: {
           ...state.dynamicObject,
           smsetppHistory: [...action.payload.data],
+        },
+      };
+    case FETCH_SMSETPP_SERVICE_TYPE_ID:
+      return {
+        ...state,
+        dynamicObject: {
+          ...state.dynamicObject,
+          smsetppServiceType: [...action.payload.data],
         },
       };
 

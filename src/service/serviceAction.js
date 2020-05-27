@@ -61,6 +61,7 @@ export const POST_SMSETPLP = 'POST_SMSETPLP';
 export const FETCH_APP_LIST_SEARCH_PARAMS = 'FETCH_APP_LIST_SEARCH_PARAMS';
 export const FETCH_SMSETPLP_ID = 'FETCH_SMSETPLP_ID';
 export const FETCH_SMSETPP_HISTORY = 'FETCH_SMSETPP_HISTORY';
+export const FETCH_SMSETPP_SERVICE_TYPE_ID = 'FETCH_SMSETPP_SERVICE_TYPE_ID';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 
@@ -153,6 +154,23 @@ export function fetchSmsetppType() {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SMSETPP_TYPE,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchSmsetppServiceTypeId() {
+  return function(dispatch) {
+    doGet(`smcs/getServiceTypeList`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMSETPP_SERVICE_TYPE_ID,
           payload: data,
         });
       })

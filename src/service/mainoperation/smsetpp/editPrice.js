@@ -41,6 +41,7 @@ const EditModal = props => {
     fetchSmsetpp,
     param,
     serviceType = [],
+    serviceTypeOptions,
   } = props;
   const [countryOptions, setCountryOptions] = useState([]);
   const [typeOfService, setTypeOfService] = useState([]);
@@ -347,7 +348,7 @@ const EditModal = props => {
                   clearable="true"
                   selection
                   value={informations.serviceTypeId}
-                  options={typeOfService}
+                  options={serviceTypeOptions}
                   onChange={(e, { value }) =>
                     handleChange('serviceType', value)
                   }

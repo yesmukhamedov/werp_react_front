@@ -43,6 +43,7 @@ const AddPrice = props => {
     intl: { messages },
     param,
     serviceType = [],
+    serviceTypeOptions,
   } = props;
   const language = localStorage.getItem('language');
   const [typeOfService, setTypeOfService] = useState([]);
@@ -389,7 +390,7 @@ const AddPrice = props => {
                 placeholder="State"
                 clearable="true"
                 selection
-                options={typeOfService}
+                options={serviceTypeOptions}
                 onChange={(e, { value }) => handleChange('serviceType', value)}
                 placeholder={messages['typeOfService']}
                 error={

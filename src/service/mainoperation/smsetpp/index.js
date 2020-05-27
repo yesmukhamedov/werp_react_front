@@ -15,6 +15,7 @@ import {
   fetchSmsetppType,
   clearDynObjService,
   fetchSmsetppHistory,
+  fetchSmsetppServiceTypeId,
 } from '../../serviceAction';
 import OutputErrors from '../../../general/error/outputErrors';
 import { errorTableText } from '../../../utils/helpers';
@@ -33,10 +34,10 @@ const Smsetpp = props => {
     fetchSmsetppType,
     clearDynObjService,
     smsetppHistory = [],
+    smsetppServiceType = [],
     premium,
   } = props;
 
-  console.log('PROPS', props);
   const [error, setError] = useState([]);
   const [activeDropdown, setActiveDropdown] = useState(false);
   const [typeOfService, setTypeOfService] = useState([]);
@@ -47,14 +48,37 @@ const Smsetpp = props => {
   const [search, setSearch] = useState({
     bukrs: 0,
     countryId: 0,
+    serviceTypeId: null,
+    fc: null,
+    mc: null,
   });
+
+  console.log('SEARCH', search);
+
+  const serviceTypeOptions = smsetppServiceType
+    .filter(
+      el =>
+        el.id === '1' ||
+        el.id === '2' ||
+        el.id === '5' ||
+        el.id === '6' ||
+        el.id === '7',
+    )
+    .map(item => {
+      return {
+        key: parseInt(item.id),
+        text: item.name,
+        value: parseInt(item.id),
+      };
+    });
 
   useEffect(() => {
     // clearDynObjService();
     f4FetchCountryList();
-    fetchSmsetpp();
+    //fetchSmsetpp();
     fetchSmsetppPremiumPriceType();
     fetchSmsetppType();
+    props.fetchSmsetppServiceTypeId();
   }, []);
 
   useEffect(() => {
@@ -69,6 +93,17 @@ const Smsetpp = props => {
     });
     setCountryOptions(country);
   }, [countryList]);
+
+  const fcOptions = [
+    { key: 1, text: '1', value: 1 },
+    { key: 2, text: '2', value: 2 },
+    { key: 3, text: '3', value: 3 },
+    { key: 4, text: '4', value: 4 },
+  ];
+  const mcOptions = [
+    { key: 0, text: '0', value: 0 },
+    { key: 1, text: '1', value: 1 },
+  ];
 
   useEffect(() => {
     if (data.service !== undefined) {
@@ -90,6 +125,18 @@ const Smsetpp = props => {
     }
     if (text === 'countries') {
       setSearch({ ...search, countryId: value });
+      setSecondActive(true);
+    }
+    if (text === 'serviceType') {
+      setSearch({ ...search, serviceTypeId: value });
+      setSecondActive(true);
+    }
+    if (text === 'fc') {
+      setSearch({ ...search, fc: value });
+      setSecondActive(true);
+    }
+    if (text === 'mc') {
+      setSearch({ ...search, mc: value });
       setSecondActive(true);
     }
   };
@@ -221,6 +268,7 @@ const Smsetpp = props => {
           <h1>{messages['setting_prices_and_premium_services']}</h1>
           <AddPrice
             param={search.bukrs !== 0 && search.countryId !== 0 ? search : null}
+            serviceTypeOptions={serviceTypeOptions}
           />
         </div>
 
@@ -239,6 +287,32 @@ const Smsetpp = props => {
           placeholder={messages['country']}
           id="secondDropdown"
           onChange={(e, { value }) => onChange('countries', value)}
+        />
+
+        <Dropdown
+          clearable="true"
+          selection
+          options={serviceTypeOptions}
+          placeholder="Вид сервиса"
+          id="secondDropdown"
+          onChange={(e, { value }) => onChange('serviceType', value)}
+        />
+
+        <Dropdown
+          clearable="true"
+          selection
+          options={fcOptions}
+          placeholder="FC"
+          id="secondDropdown"
+          onChange={(e, { value }) => onChange('fc', value)}
+        />
+        <Dropdown
+          clearable="true"
+          selection
+          options={mcOptions}
+          placeholder="MC"
+          id="secondDropdown"
+          onChange={(e, { value }) => onChange('mc', value)}
         />
         <button
           className="ui blue inverted button"
@@ -401,6 +475,7 @@ const Smsetpp = props => {
                         : null
                     }
                     row={row}
+                    serviceTypeOptions={serviceTypeOptions}
                   />
                 </div>
               ),
@@ -434,6 +509,7 @@ const mapStateToProps = state => {
     companyOptions: state.userInfo.companyOptions,
     serviceType: state.serviceReducer.dynamicObject.type,
     smsetppHistory: state.serviceReducer.dynamicObject.smsetppHistory,
+    smsetppServiceType: state.serviceReducer.dynamicObject.smsetppServiceType,
   };
 };
 
@@ -444,4 +520,5 @@ export default connect(mapStateToProps, {
   fetchSmsetppType,
   clearDynObjService,
   fetchSmsetppHistory,
+  fetchSmsetppServiceTypeId,
 })(injectIntl(Smsetpp));
