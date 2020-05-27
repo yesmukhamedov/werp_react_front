@@ -15,6 +15,7 @@ import {
   checkSmcsWithoutReques,
   saveSmcsWithoutReques,
   fetchOperatorList,
+  fetchMasterList,
 } from '../smcsAction';
 
 import {
@@ -56,8 +57,11 @@ const TabSmcsWithoutContract = props => {
     saveSmcs,
     operatorList = [],
     category,
+    tovar = [],
+    masterList = [],
   } = props;
-  console.log('category', category);
+
+  console.log('masterList', masterList);
 
   const emptyService = {
     address: '',
@@ -103,6 +107,9 @@ const TabSmcsWithoutContract = props => {
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
+  const [tovarOptions, setTovarOptions] = useState([]);
+
+  console.log('SERVICE', service);
 
   const [editStatus, setEditStatus] = useState(true);
 
@@ -113,6 +120,22 @@ const TabSmcsWithoutContract = props => {
     switch (fieldName) {
       case 'selectCompany':
         setService({ ...service, bukrs: value.value });
+        break;
+
+      case 'selectBranch':
+        setService({ ...service, branchId: value.value });
+        break;
+      case 'selectCategory':
+        setService({ ...service, categoryId: value.value });
+        break;
+      case 'selectTovar':
+        setService({ ...service, tovarId: value.value });
+        break;
+      case 'selectMaster':
+        setService({ ...service, masterId: value.value });
+        break;
+      case 'selectOperator':
+        setService({ ...service, operatorId: value.value });
         break;
 
       case 'clearMaster':
@@ -137,9 +160,32 @@ const TabSmcsWithoutContract = props => {
   };
 
   useEffect(() => {
+    let tovarOpt = tovar.map(item => {
+      return {
+        key: item.matnr,
+        text: item.text45,
+        value: item.matnr,
+      };
+    });
+
+    setTovarOptions([...tovarOpt]);
+  }, [tovar]);
+
+  useEffect(() => {
     props.fetchServiceTypeId();
     props.f4fetchCategory();
   }, []);
+
+  useEffect(() => {
+    let tovarParam = {
+      bukrs: service.bukrs,
+      categoryId: service.categoryId,
+    };
+
+    if (service.bukrs !== '' || service.categoryId !== '') {
+      props.fetchTovarId({ ...tovarParam });
+    }
+  }, [service.bukrs, service.categoryId]);
 
   useEffect(() => {
     let categoryOp = category.map(item => {
@@ -206,9 +252,28 @@ const TabSmcsWithoutContract = props => {
     };
   });
 
+  const masterOptions = masterList.map(item => {
+    return {
+      key: item.staffId,
+      text: item.fullName,
+      value: item.staffId,
+    };
+  });
+
   useEffect(() => {
     props.f4FetchBranches();
   }, []);
+
+  useEffect(() => {
+    if (service.bukrs !== '' && service.branchId !== 0) {
+      let param = {
+        bukrs: service.bukrs,
+        branchId: service.branchId,
+      };
+      props.fetchMasterList({ ...param });
+      props.fetchOperatorList({ ...param });
+    }
+  }, [service.bukrs, service.branchId]);
 
   useEffect(() => {
     let paramMatnrSparePart = {
@@ -286,7 +351,7 @@ const TabSmcsWithoutContract = props => {
       props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge });
       setEditStatus(false);
     }
-  }, [service.masterId]);
+  }, [service.masterId, service.branchId, service.bukrs, service.tovarId]);
 
   //УСЛУГИ========================================================================================
 
@@ -932,6 +997,8 @@ const TabSmcsWithoutContract = props => {
               companyOptions={companyOptions}
               branchOptions={serBranches}
               categoryOptions={categoryOptions}
+              tovarOptions={tovarOptions}
+              masterOptions={masterOptions}
             />
           </Grid.Column>
 
@@ -1027,6 +1094,7 @@ function mapStateToProps(state) {
     checkSmcs: state.smcsReducer.checkSmcs,
     saveSmcs: state.smcsReducer.saveSmcs,
     operatorList: state.smcsReducer.operatorList,
+    masterList: state.smcsReducer.masterList,
   };
 }
 
@@ -1048,4 +1116,5 @@ export default connect(mapStateToProps, {
   checkSmcsWithoutReques,
   saveSmcsWithoutReques,
   fetchOperatorList,
+  fetchMasterList,
 })(injectIntl(TabSmcsWithoutContract));

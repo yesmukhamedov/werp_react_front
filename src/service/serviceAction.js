@@ -60,6 +60,7 @@ export const FETCH_SMSETPLP = 'FETCH_SMSETPLP';
 export const POST_SMSETPLP = 'POST_SMSETPLP';
 export const FETCH_APP_LIST_SEARCH_PARAMS = 'FETCH_APP_LIST_SEARCH_PARAMS';
 export const FETCH_SMSETPLP_ID = 'FETCH_SMSETPLP_ID';
+export const FETCH_SMSETPP_HISTORY = 'FETCH_SMSETPP_HISTORY';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 
@@ -80,6 +81,24 @@ export function fetchSmsetpp(params) {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SMSETPP,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchSmsetppHistory(params) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`smsetpp/audit`, params)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMSETPP_HISTORY,
           payload: data,
         });
       })
@@ -216,10 +235,7 @@ export function fetchSmsetct(searchParams) {
           payload: data.data,
         });
 
-        doGet(
-          `smsetct/audit?direction=DESC&orderBy=rev&page=3&size=20`,
-          searchParams,
-        )
+        doGet(`smsetct/audit`, searchParams)
           .then(({ data }) => {
             console.log('data', data.data.data);
             dispatch(modifyLoader(false));

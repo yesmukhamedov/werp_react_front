@@ -20,6 +20,7 @@ export const CHECK_SMCS_WITHOUT_REQUEST = 'CHECK_SMCS_WITHOUT_REQUEST';
 export const SAVE_SMCS_WITHOUT_REQUEST = 'SAVE_SMCS_WITHOUT_REQUEST';
 export const FETCH_OPERATOR_LIST = 'FETCH_OPERATOR_LIST';
 export const FETCH_SMCS_BY_APP_NUMBER = 'FETCH_SMCS_BY_APP_NUMBER';
+export const FETCH_MASTER_LIST = 'FETCH_MASTER_LIST';
 //--END
 // const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 // const language = localStorage.getItem('language');
@@ -53,6 +54,25 @@ export const fetchTovarId = param => {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_TOVAR_ID,
+          data: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+
+export const fetchMasterList = param => {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`smcs/getMasterList`, param)
+      .then(({ data }) => {
+        //console.log(data, 'ACTION');
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_MASTER_LIST,
           data: data,
         });
       })

@@ -83,8 +83,6 @@ const EditModal = props => {
     setPremiumPriceTypeId(premiumPrice);
   }, [premium]);
 
-  console.log('EDIT PRICE');
-
   useEffect(() => {
     let filter = serviceType.filter(
       ({ name }) => name === 'Продажа картриджей' || name === 'Установка',

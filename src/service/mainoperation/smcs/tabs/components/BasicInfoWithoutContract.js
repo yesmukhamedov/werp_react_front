@@ -9,6 +9,8 @@ const BasicInfoWithoutContract = props => {
     companyOptions,
     branchOptions,
     categoryOptions,
+    tovarOptions,
+    masterOptions,
   } = props;
 
   const optionsExample = [
@@ -48,7 +50,15 @@ const BasicInfoWithoutContract = props => {
         <Table.Row>
           <Table.Cell>Филиал</Table.Cell>
           <Table.Cell>
-            <Dropdown fluid selection options={branchOptions} />
+            <Dropdown
+              fluid
+              selection
+              options={branchOptions}
+              value={data.branchId}
+              onChange={(e, value) =>
+                onBasicInfoInputChange(value, 'selectBranch')
+              }
+            />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -66,13 +76,29 @@ const BasicInfoWithoutContract = props => {
         <Table.Row>
           <Table.Cell>Категория</Table.Cell>
           <Table.Cell>
-            <Dropdown fluid selection options={categoryOptions} />
+            <Dropdown
+              fluid
+              selection
+              options={categoryOptions}
+              value={data.categoryId}
+              onChange={(e, value) =>
+                onBasicInfoInputChange(value, 'selectCategory')
+              }
+            />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>Продукт</Table.Cell>
           <Table.Cell>
-            <Dropdown fluid selection options={optionsExample} />
+            <Dropdown
+              fluid
+              selection
+              options={tovarOptions}
+              value={data.tovarId}
+              onChange={(e, value) =>
+                onBasicInfoInputChange(value, 'selectTovar')
+              }
+            />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -97,14 +123,30 @@ const BasicInfoWithoutContract = props => {
         <Table.Row>
           <Table.Cell>Мастер</Table.Cell>
           <Table.Cell>
-            <Dropdown fluid selection options={optionsExample} />
+            <Dropdown
+              fluid
+              selection
+              value={data.masterId}
+              options={masterOptions}
+              onChange={(e, value) =>
+                onBasicInfoInputChange(value, 'selectMaster')
+              }
+            />
           </Table.Cell>
         </Table.Row>
 
         <Table.Row>
           <Table.Cell>Оператор</Table.Cell>
           <Table.Cell>
-            <Dropdown fluid selection options={optionsExample} />
+            <Dropdown
+              fluid
+              selection
+              options={operatorOptions}
+              value={data.operatorId}
+              onChange={(e, value) =>
+                onBasicInfoInputChange(value, 'selectOperator')
+              }
+            />
           </Table.Cell>
         </Table.Row>
         <Table.Row>

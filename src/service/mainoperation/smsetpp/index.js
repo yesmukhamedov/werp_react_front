@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Segment, Dropdown, Button, Icon } from 'semantic-ui-react';
+import { Segment, Dropdown, Button, Icon, Divider } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import './index.css';
 import { connect } from 'react-redux';
@@ -14,6 +14,7 @@ import {
   fetchSmsetppPremiumPriceType,
   fetchSmsetppType,
   clearDynObjService,
+  fetchSmsetppHistory,
 } from '../../serviceAction';
 import OutputErrors from '../../../general/error/outputErrors';
 import { errorTableText } from '../../../utils/helpers';
@@ -26,11 +27,16 @@ const Smsetpp = props => {
     companyOptions = [],
     f4FetchCountryList,
     fetchSmsetpp,
+    fetchSmsetppHistory,
     fetchSmsetppPremiumPriceType,
     serviceType = [],
     fetchSmsetppType,
     clearDynObjService,
+    smsetppHistory = [],
+    premium,
   } = props;
+
+  console.log('PROPS', props);
   const [error, setError] = useState([]);
   const [activeDropdown, setActiveDropdown] = useState(false);
   const [typeOfService, setTypeOfService] = useState([]);
@@ -70,8 +76,6 @@ const Smsetpp = props => {
     }
   }, [data]);
 
-  console.log('INDEX');
-
   useEffect(() => {
     let service = serviceType.map(item => {
       return { key: item.id, text: item.name, value: item.id };
@@ -100,9 +104,115 @@ const Smsetpp = props => {
     }
     if (errors.length === 0) {
       fetchSmsetpp(search);
+      fetchSmsetppHistory(search);
     }
     setError(errors);
   };
+
+  let historyColumns = [
+    {
+      Header: () => <div style={{ textAlign: 'center' }}>id</div>,
+      accessor: 'id',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['bukrs']}</div>
+      ),
+      accessor: 'bukrs',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['Task.StartDate']}</div>
+      ),
+      accessor: 'dateStart',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => <div style={{ textAlign: 'center' }}>FC</div>,
+      accessor: 'fc',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => <div style={{ textAlign: 'center' }}>MC</div>,
+      accessor: 'mc',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['office']}</div>
+      ),
+      accessor: 'office',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['master']}</div>
+      ),
+      accessor: 'master',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['Operator']}</div>
+      ),
+      accessor: 'operator',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['discount']}</div>
+      ),
+      accessor: 'discount',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['totalAmount']}</div>
+      ),
+      accessor: 'total',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['country']}</div>
+      ),
+      accessor: 'countryId',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['waers']}</div>
+      ),
+      accessor: 'waersId',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['typeOfService']}</div>
+      ),
+      accessor: 'serviceTypeId',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['typeOfAmount']}</div>
+      ),
+      accessor: 'premiumPriceTypeId',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => <div style={{ textAlign: 'center' }}>Тип операции</div>,
+      accessor: 'revType',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => <div style={{ textAlign: 'center' }}>Автор</div>,
+      accessor: 'fullname',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+  ];
 
   return (
     <Segment>
@@ -300,6 +410,17 @@ const Smsetpp = props => {
           showPagination={true}
           pageSizeOptions={[10, 20, 30, 40]}
         />
+        <Divider />
+        <Segment>
+          <h1>История редактирования</h1>
+        </Segment>
+        <ReactTableWrapper
+          data={smsetppHistory}
+          columns={historyColumns}
+          pageSize={smsetppHistory.length < 10 ? smsetppHistory.length : 10}
+          showPagination={true}
+          pageSizeOptions={[10, 20, 30, 40]}
+        />
       </div>
     </Segment>
   );
@@ -312,6 +433,7 @@ const mapStateToProps = state => {
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
     serviceType: state.serviceReducer.dynamicObject.type,
+    smsetppHistory: state.serviceReducer.dynamicObject.smsetppHistory,
   };
 };
 
@@ -321,4 +443,5 @@ export default connect(mapStateToProps, {
   fetchSmsetppPremiumPriceType,
   fetchSmsetppType,
   clearDynObjService,
+  fetchSmsetppHistory,
 })(injectIntl(Smsetpp));

@@ -6,6 +6,7 @@ import {
   FETCH_SMSETCT,
   EDIT_SMSETCT,
   FETCH_SMSETPP,
+  FETCH_SMSETPP_HISTORY,
   FETCH_SMSETPP_TYPE,
   FETCH_SMSETPP_POST,
   FETCH_SMSETPP_SEARCH,
@@ -126,6 +127,14 @@ export default function(state = INITIAL_STATE, action) {
           service: [...action.payload.data],
         },
       };
+    case FETCH_SMSETPP_HISTORY:
+      return {
+        ...state,
+        dynamicObject: {
+          ...state.dynamicObject,
+          smsetppHistory: [...action.payload.data],
+        },
+      };
 
     case FETCH_SMSETPP_PREMIUM_PRICE_TYPE:
       return {
@@ -135,6 +144,7 @@ export default function(state = INITIAL_STATE, action) {
           premiumPriceTypeId: [...action.payload],
         },
       };
+
     case FETCH_SMSETPP_TYPE:
       return {
         ...state,
