@@ -290,6 +290,7 @@ const Smsetct = props => {
           <Modal
             open={show}
             closeIcon
+            size={'small'}
             onClose={() => {
               setShow(false);
               setMessg({});
@@ -297,7 +298,7 @@ const Smsetct = props => {
             }}
           >
             <Modal.Header>
-              <h3>{messages['add_cartridge']}</h3>
+              <h2 align="center">{messages['add_cartridge']}</h2>
             </Modal.Header>
             <Modal.Content>
               <Segment>
@@ -422,26 +423,24 @@ const Smsetct = props => {
               </Segment>
             </Modal.Content>
             <Modal.Actions>
-              <Button color="teal" floated="right" onClick={handlePost}>
-                <Icon name="checkmark" />
-                {messages['Table.Add']}
-              </Button>
+              <div align="center">
+                <Button color="teal" onClick={handlePost}>
+                  <Icon name="checkmark" />
+                  {messages['Table.Add']}
+                </Button>
 
-              <Button
-                negative
-                floated="right"
-                onClick={() => {
-                  setPostParams(() => []);
-                  handleClose();
-                }}
-              >
-                <Icon name="remove" />
-                {messages['BTN__CANCEL']}
-              </Button>
+                <Button
+                  negative
+                  onClick={() => {
+                    setPostParams(() => []);
+                    handleClose();
+                  }}
+                >
+                  <Icon name="remove" />
+                  {messages['BTN__CANCEL']}
+                </Button>
+              </div>
             </Modal.Actions>
-            <br />
-            <br />
-            <br />
           </Modal>
         </Segment>
 

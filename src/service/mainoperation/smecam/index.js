@@ -18,11 +18,10 @@ import {
   clearDynObjService,
   editSmecam,
 } from '../../serviceAction';
-import { LinkToSmcs } from '../../../utils/outlink';
+import { LinkToSmcsWithRequest } from '../../../utils/outlink';
 import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import ListHistory from './list';
-import { Link } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
@@ -40,7 +39,7 @@ const Smecam = props => {
   } = props;
   const url = window.location.search;
   const id = url.slice(url.indexOf('=') + 1);
-  let emptyEditList = {
+  let editList = {
     id: dynamicObject.id,
     bukrs: dynamicObject.bukrs,
     branchId: dynamicObject.branchId,
@@ -54,7 +53,7 @@ const Smecam = props => {
   const language = localStorage.getItem('language');
 
   useEffect(() => {
-    setState({ ...emptyEditList });
+    setState({ ...editList });
   }, [dynamicObject]);
 
   useEffect(() => {
@@ -62,8 +61,6 @@ const Smecam = props => {
     if (id) fetchSmecam(id);
     fetchServAppStatus();
   }, []);
-
-  //const [editList, setEditList] = useState({ ...emptyEditList });
 
   const handleChange = (o, label) => {
     setState(prev => {
@@ -90,6 +87,8 @@ const Smecam = props => {
   };
 
   const handleSave = () => {
+    console.log('Date', dynamicObject);
+    /*if (JSON.stringify(state)!==JSON.stringify(editList)){ 
     let errs = validate();
     if (Object.keys(errs).length === 0) {
       editSmecam(state, () => {
@@ -97,6 +96,7 @@ const Smecam = props => {
       });
     }
     setErrors({ ...errs });
+  }*/
   };
 
   const validate = () => {
@@ -453,7 +453,6 @@ const Smecam = props => {
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>
-                        {' '}
                         {messages['L__ORDER_STATUS']}
                       </Label>
                     </Table.Cell>
@@ -473,7 +472,6 @@ const Smecam = props => {
               <Form>
                 <Form.Field>
                   <Label size="large" basic>
-                    {' '}
                     {messages['Table.Note']}
                   </Label>
                   <TextArea
@@ -495,10 +493,7 @@ const Smecam = props => {
                     >
                       {messages['Form.Save']}
                     </Button>
-                    <LinkToSmcs
-                      serviceNumber={id}
-                      message={messages['create_service_card']}
-                    />
+                    <LinkToSmcsWithRequest applicationNumber={id} />
                   </div>
                 </Form.Field>
               </Form>

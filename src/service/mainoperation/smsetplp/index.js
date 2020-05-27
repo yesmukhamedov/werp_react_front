@@ -178,11 +178,10 @@ const Smsetplp = props => {
     if (selectedBranches) {
       searchParams.branchId = selectedBranches;
     }
-
     if (dateAt) {
       searchParams.dateAt = dateAt;
     }
-    fetchSmsetplp({ ...searchParams });
+    if (searchParams.bukrs) fetchSmsetplp({ ...searchParams });
   };
 
   const handleChange = (label, o) => {
@@ -589,7 +588,7 @@ const Smsetplp = props => {
                 <div align="center">
                   {' '}
                   <Button
-                    color="pink"
+                    color="blue"
                     onClick={() => {
                       handlePost();
                     }}
