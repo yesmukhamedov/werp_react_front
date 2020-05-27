@@ -274,7 +274,7 @@ const EditModal = props => {
                 control={Input}
                 label={`${messages['office']}(${messages['inTotal']})`}
                 placeholder="Number..."
-                readonly
+                readOnly
                 disabled
                 value={moneyFormat(informations.office)}
                 onFocus={handleFocus}
