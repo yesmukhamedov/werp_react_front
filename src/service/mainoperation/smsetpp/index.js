@@ -7,7 +7,10 @@ import 'react-table/react-table.css';
 import AddPrice from './AddPrice';
 import format from 'string-format';
 import { injectIntl } from 'react-intl';
-import { f4FetchCountryList } from '../../../reference/f4/f4_action';
+import {
+  f4FetchCountryList,
+  f4FetchConTypeList,
+} from '../../../reference/f4/f4_action';
 import EditModal from './editPrice';
 import {
   fetchSmsetpp,
@@ -35,6 +38,7 @@ const Smsetpp = props => {
     clearDynObjService,
     smsetppHistory = [],
     smsetppServiceType = [],
+    productList = [],
     premium,
   } = props;
 
@@ -52,9 +56,6 @@ const Smsetpp = props => {
     fc: null,
     mc: null,
   });
-
-  console.log('SEARCH', search);
-
   const serviceTypeOptions = smsetppServiceType
     .filter(
       el =>
@@ -79,6 +80,7 @@ const Smsetpp = props => {
     fetchSmsetppPremiumPriceType();
     fetchSmsetppType();
     props.fetchSmsetppServiceTypeId();
+    props.f4FetchConTypeList();
   }, []);
 
   useEffect(() => {
@@ -168,6 +170,11 @@ const Smsetpp = props => {
         <div style={{ textAlign: 'center' }}>{messages['bukrs']}</div>
       ),
       accessor: 'bukrs',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => <div style={{ textAlign: 'center' }}>Продукт</div>,
+      accessor: 'productId',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
@@ -270,6 +277,8 @@ const Smsetpp = props => {
           <AddPrice
             param={search.bukrs !== 0 && search.countryId !== 0 ? search : null}
             serviceTypeOptions={serviceTypeOptions}
+            search={search}
+            productList={productList}
           />
         </div>
 
@@ -342,6 +351,13 @@ const Smsetpp = props => {
                 <div style={{ textAlign: 'center' }}>{messages['bukrs']}</div>
               ),
               accessor: 'bukrs',
+              Cell: row => (
+                <div style={{ textAlign: 'center' }}>{row.value}</div>
+              ),
+            },
+            {
+              Header: () => <div style={{ textAlign: 'center' }}>Продукт</div>,
+              accessor: 'productId',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
@@ -511,6 +527,7 @@ const mapStateToProps = state => {
     serviceType: state.serviceReducer.dynamicObject.type,
     smsetppHistory: state.serviceReducer.dynamicObject.smsetppHistory,
     smsetppServiceType: state.serviceReducer.dynamicObject.smsetppServiceType,
+    productList: state.f4.contractTypeList,
   };
 };
 
@@ -522,4 +539,5 @@ export default connect(mapStateToProps, {
   clearDynObjService,
   fetchSmsetppHistory,
   fetchSmsetppServiceTypeId,
+  f4FetchConTypeList,
 })(injectIntl(Smsetpp));
