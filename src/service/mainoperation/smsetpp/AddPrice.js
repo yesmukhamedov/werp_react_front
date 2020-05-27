@@ -21,6 +21,7 @@ import {
   fetchSmsetppPost,
   fetchSmsetpp,
   fetchSmsetppPremiumPriceType,
+  fetchSmsetppHistory,
 } from '../../serviceAction';
 import {
   stringYYYYMMDDToMoment,
@@ -176,6 +177,7 @@ const AddPrice = props => {
       setModalOpen(false);
       fetchSmsetppPost(informations, () => {
         props.fetchSmsetpp(param);
+        props.fetchSmsetppHistory(param);
       });
       clearInformation();
     }
@@ -441,5 +443,6 @@ export default connect(mapStateToProps, {
   fetchSmsetppPost,
   f4FetchCountryList,
   fetchSmsetpp,
+  fetchSmsetppHistory,
   fetchSmsetppPremiumPriceType,
 })(injectIntl(AddPrice));

@@ -16,7 +16,11 @@ import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import { injectIntl } from 'react-intl';
-import { fetchSmsetpp, fetchSmsetppPut } from '../../serviceAction';
+import {
+  fetchSmsetpp,
+  fetchSmsetppPut,
+  fetchSmsetppHistory,
+} from '../../serviceAction';
 import {
   stringYYYYMMDDToMoment,
   handleFocus,
@@ -186,6 +190,7 @@ const EditModal = props => {
       setModalOpen(false);
       fetchSmsetppPut({ ...informations }, () => {
         fetchSmsetpp(param);
+        props.fetchSmsetppHistory(param);
       });
     }
   };
@@ -396,4 +401,5 @@ export default connect(mapStateToProps, {
   f4FetchCountryList,
   fetchSmsetppPut,
   fetchSmsetpp,
+  fetchSmsetppHistory,
 })(injectIntl(EditModal));
