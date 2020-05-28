@@ -221,6 +221,7 @@ const Smsetct = props => {
           branchId: postParams.branchId,
         });
       });
+      clearState();
     }
     setPostErrors({ ...errors });
   };
@@ -235,6 +236,23 @@ const Smsetct = props => {
     setShow(false);
     setMessg({});
     setPostErrors({});
+  };
+
+  const clearState = () => {
+    setPostParams({
+      branchId: '',
+      bukrs: '',
+      countryId: '',
+      description: '',
+      f2: '',
+      f1: '',
+      f3: '',
+      f4: '',
+      f5: '',
+      f6: '',
+      f7: '',
+      matnr: 0,
+    });
   };
 
   const validateAdd = obj => {
@@ -361,17 +379,19 @@ const Smsetct = props => {
                       ) : (
                         ''
                       )}
-                      <Label>{messages['TBL_H__PRODUCT']}</Label>
-                      <Dropdown
-                        search
-                        selection
-                        options={
-                          getProductOptions(productList)
-                            ? getProductOptions(productList)
-                            : []
-                        }
-                        onChange={(e, o) => changePostInput(o, 'matnr')}
-                      />
+                      <Form.Field>
+                        <label>{messages['TBL_H__PRODUCT']}</label>
+                        <Dropdown
+                          search
+                          selection
+                          options={
+                            getProductOptions(productList)
+                              ? getProductOptions(productList)
+                              : []
+                          }
+                          onChange={(e, o) => changePostInput(o, 'matnr')}
+                        />
+                      </Form.Field>
                       <Form.Field
                         onChange={(e, o) => changePostInput(o, 'description')}
                         control={Input}
