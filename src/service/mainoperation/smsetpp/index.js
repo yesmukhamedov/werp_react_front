@@ -109,6 +109,16 @@ const Smsetpp = props => {
     { key: 1, text: '1', value: 1 },
   ];
 
+  const [statusServiceType, setStatusServiceType] = useState(true);
+
+  useEffect(() => {
+    if (search.serviceTypeId === 1) {
+      setStatusServiceType(false);
+    } else {
+      setStatusServiceType(true);
+    }
+  }, [search]);
+
   useEffect(() => {
     if (data.service !== undefined) {
       setServiceOptionPriceList(data.service);
@@ -350,6 +360,7 @@ const Smsetpp = props => {
         />
 
         <Dropdown
+          disabled={statusServiceType}
           clearable="true"
           selection
           options={fcOptions}
@@ -357,7 +368,9 @@ const Smsetpp = props => {
           id="secondDropdown"
           onChange={(e, { value }) => onChange('fc', value)}
         />
+
         <Dropdown
+          disabled={statusServiceType}
           clearable="true"
           selection
           options={mcOptions}
