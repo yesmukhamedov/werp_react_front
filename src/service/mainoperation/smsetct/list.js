@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'react-table/react-table.css';
 import {
   Header,
@@ -29,6 +29,8 @@ export default function List(props) {
     searchParams,
     getBranchOptions,
     validateEdit,
+    setPostParams,
+    postParams,
   } = props;
 
   const [errorsEdit, setErrorsEdit] = useState({});
@@ -36,6 +38,12 @@ export default function List(props) {
   const [oldSmsetctEdit, setOldSmsetctEdit] = useState({});
   const [open, setOpen] = useState(false);
   const [messg, setMessg] = useState({ messgBrnch: false, messgMatnr: false });
+
+  useEffect(() => {
+    if (editParams.bukrs) {
+      setPostParams({ ...postParams, bukrs: editParams.bukrs });
+    }
+  }, [editParams.bukrs]);
 
   const openEdit = row_data => {
     setEditParams(prop => {
@@ -464,27 +472,22 @@ export default function List(props) {
                   ) : (
                     ''
                   )}
-                  <label>{messages['TBL_H__PRODUCT']}</label>
-                  <Dropdown
-                    search
-                    error={errorsEdit.matnr ? true : false}
-                    selection
-                    options={getProductOptions(
-                      productList,
-                      editParams.bukrs,
-                      editParams.countryId,
-                      editParams.branchId,
-                    )}
-                    defaultValue={editParams.matnr}
-                    onChange={(e, o) => handleEdit(o, 'matnr')}
-                  />
-                  {messg.messgMatnr ? (
-                    <Label basic color="red" pointing>
-                      {messages['enter_again']}
-                    </Label>
-                  ) : (
-                    ''
-                  )}
+                  <Form.Field>
+                    <label>{messages['TBL_H__PRODUCT']}</label>
+                    <Dropdown
+                      search
+                      error={errorsEdit.matnr ? true : false}
+                      selection
+                      options={
+                        getProductOptions(productList)
+                          ? getProductOptions(productList)
+                          : []
+                      }
+                      defaultValue={editParams.matnr}
+                      onChange={(e, o) => handleEdit(o, 'matnr')}
+                    />
+                  </Form.Field>
+
                   <Form.Field
                     control={Input}
                     label={messages['Table.Note']}
@@ -495,7 +498,6 @@ export default function List(props) {
 
                 <Form.Field>
                   <Form.Field
-                    required
                     error={errorsEdit.f1 ? true : false}
                     control={Input}
                     label={messages['configuration'] + ' F-1'}
@@ -503,7 +505,6 @@ export default function List(props) {
                     onChange={(e, o) => handleEdit(o, 'F1')}
                   />
                   <Form.Field
-                    required
                     error={errorsEdit.f2 ? true : false}
                     control={Input}
                     label={messages['configuration'] + ' F-2'}
@@ -511,7 +512,6 @@ export default function List(props) {
                     onChange={(e, o) => handleEdit(o, 'F2')}
                   />
                   <Form.Field
-                    required
                     error={errorsEdit.f3 ? true : false}
                     control={Input}
                     label={messages['configuration'] + ' F-3'}
@@ -519,7 +519,6 @@ export default function List(props) {
                     onChange={(e, o) => handleEdit(o, 'F3')}
                   />
                   <Form.Field
-                    required
                     error={errorsEdit.f4 ? true : false}
                     control={Input}
                     label={messages['configuration'] + ' F-4'}
@@ -527,7 +526,6 @@ export default function List(props) {
                     onChange={(e, o) => handleEdit(o, 'F4')}
                   />
                   <Form.Field
-                    required
                     error={errorsEdit.f5 ? true : false}
                     control={Input}
                     label={messages['configuration'] + ' F-5'}

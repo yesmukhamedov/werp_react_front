@@ -261,19 +261,24 @@ export function fetchDynObjService(url, params) {
       });
   };
 }
-export function fetchSmsetct(searchParams) {
+export function fetchSmsetct(searchParams, searchArray) {
+  let queryString = Object.keys(searchArray)
+    .map(key => 'branchId=' + searchArray[key].branchId)
+    .join('&');
   return dispatch => {
     dispatch(modifyLoader(true));
-    doGet(`smsetct/view?direction=DESC&orderBy=id`, searchParams)
+    doGet(`smsetct/view?direction=DESC&orderBy=id&${queryString}`, searchParams)
       .then(({ data }) => {
         dispatch({
           type: FETCH_SMSETCT,
           payload: data.data,
         });
 
-        doGet(`smsetct/audit`, searchParams)
+        doGet(
+          `smsetct/audit?direction=DESC&orderBy=id&${queryString}`,
+          searchParams,
+        )
           .then(({ data }) => {
-            console.log('data', data.data.data);
             dispatch(modifyLoader(false));
             dispatch({
               type: HISTORY_EDITING_SMSETCT,

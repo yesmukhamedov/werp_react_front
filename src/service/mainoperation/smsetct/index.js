@@ -51,6 +51,7 @@ const Smsetct = props => {
   const [searchError, setSearchError] = useState('');
   const [postParams, setPostParams] = useState({ ...emptyParams });
   const [searchParams, setSearchParams] = useState({ ...emptySearch });
+  const [searchArray, setSearchArray] = useState([]);
   const [show, setShow] = useState(false);
   const [postErrors, setPostErrors] = useState({});
   const [selectedBranches, setSelectedBranches] = useState([]);
@@ -90,7 +91,7 @@ const Smsetct = props => {
   const clickSearch = () => {
     let srchErrs = validateSearch();
     if (!srchErrs & (srchErrs !== '')) {
-      fetchSmsetct({ ...searchParams });
+      fetchSmsetct({ ...searchParams }, searchArray);
     }
   };
 
@@ -403,43 +404,57 @@ const Smsetct = props => {
                       <Form.Field
                         onChange={(e, o) => changePostInput(o, 'F1')}
                         control={Input}
-                        label={messages['configuration'] + ' F-1'}
+                        label={
+                          messages['configuration'] + ' F-1' + messages['monat']
+                        }
                         placeholder="0"
                       />
                       <Form.Field
                         onChange={(e, o) => changePostInput(o, 'F2')}
                         control={Input}
-                        label={messages['configuration'] + ' F-2'}
+                        label={
+                          messages['configuration'] + ' F-2' + messages['monat']
+                        }
                         placeholder="0"
                       />
                       <Form.Field
                         onChange={(e, o) => changePostInput(o, 'F3')}
                         control={Input}
-                        label={messages['configuration'] + ' F-3'}
+                        label={
+                          messages['configuration'] + ' F-3' + messages['monat']
+                        }
                         placeholder="0"
                       />
                       <Form.Field
                         onChange={(e, o) => changePostInput(o, 'F4')}
                         control={Input}
-                        label={messages['configuration'] + ' F-4'}
+                        label={
+                          messages['configuration'] + ' F-4' + messages['monat']
+                        }
                         placeholder="0"
                       />
                       <Form.Field
                         onChange={(e, o) => changePostInput(o, 'F5')}
                         control={Input}
-                        label={messages['configuration'] + ' F-5'}
+                        label={
+                          messages['configuration'] + ' F-5' + messages['monat']
+                        }
                         placeholder="0"
                       />
                       <Form.Field
                         onChange={(e, o) => changePostInput(o, 'F6')}
                         control={Input}
-                        label={messages['configuration'] + ' F-6'}
+                        label={
+                          messages['configuration'] + ' F-6' + messages['monat']
+                        }
                         placeholder="0"
                       />
                       <Form.Field
                         onChange={(e, o) => changePostInput(o, 'F7')}
                         control={Input}
-                        label={messages['configuration'] + ' F-7'}
+                        label={
+                          messages['configuration'] + ' F-7' + messages['monat']
+                        }
                         placeholder="0"
                       />
                     </Form.Field>
@@ -519,6 +534,8 @@ const Smsetct = props => {
           fetchSmsetct={fetchSmsetct}
           getBranchOptions={getBranchOptions}
           validateEdit={validateAdd}
+          setPostParams={setPostParams}
+          postParams={postParams}
         />
       </Container>
 
@@ -528,12 +545,18 @@ const Smsetct = props => {
         onClose={selectedBranches => {
           setBranchF4IsOpen(false);
           setSelectedBranches(selectedBranches);
-          selectedBranches.length !== 0
-            ? setSearchParams({
-                ...searchParams,
-                branchId: selectedBranches[0].value,
-              })
-            : setSearchParams({ bukrs: searchParams.bukrs });
+          if (selectedBranches.length !== 0) {
+            setSearchArray(
+              selectedBranches.map(item => {
+                return {
+                  ...searchArray,
+                  branchId: item.value,
+                };
+              }),
+            );
+          } else {
+            setSearchParams({ bukrs: searchParams.bukrs });
+          }
         }}
         selection={'multiple'}
         disabled={'true'}
