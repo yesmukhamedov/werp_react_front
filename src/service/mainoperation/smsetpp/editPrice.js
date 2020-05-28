@@ -206,8 +206,18 @@ const EditModal = props => {
   const onhandleCancel = () => {
     setModalOpen(false);
     setTest(false);
-    setInformations(null);
+    setInformations({});
   };
+
+  const [statusServiceType, setStatusServiceType] = useState(true);
+
+  useEffect(() => {
+    if (informations.serviceTypeId === 1) {
+      setStatusServiceType(false);
+    } else {
+      setStatusServiceType(true);
+    }
+  }, [informations]);
 
   const productOptions = productList.map(item => {
     return {
@@ -354,6 +364,7 @@ const EditModal = props => {
                 <Table.Row>
                   <Table.Cell>
                     <Form.Field
+                      disabled={statusServiceType}
                       control={Input}
                       label={`FC(${messages['Table.Amount']})`}
                       placeholder="Number..."
@@ -378,6 +389,7 @@ const EditModal = props => {
                 <Table.Row>
                   <Table.Cell>
                     <Form.Field
+                      disabled={statusServiceType}
                       control={Input}
                       label={`MC(${messages['Table.Amount']})`}
                       placeholder="Number..."

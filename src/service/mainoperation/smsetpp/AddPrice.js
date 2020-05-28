@@ -214,6 +214,16 @@ const AddPrice = props => {
     clearInformation();
   };
 
+  const [statusServiceType, setStatusServiceType] = useState(true);
+
+  useEffect(() => {
+    if (informations.serviceTypeId === 1) {
+      setStatusServiceType(false);
+    } else {
+      setStatusServiceType(true);
+    }
+  }, [informations]);
+
   const onInputChange = (text, event) => {
     const f = moneyInputHanler(event.target.value, 2);
     const t = parseFloat(f);
@@ -407,6 +417,7 @@ const AddPrice = props => {
               <Table.Row>
                 <Table.Cell>
                   <Form.Field
+                    disabled={statusServiceType}
                     control={Input}
                     label={`FC(${messages['Table.Amount']})`}
                     placeholder="Number..."
@@ -432,6 +443,7 @@ const AddPrice = props => {
               <Table.Row>
                 <Table.Cell>
                   <Form.Field
+                    disabled={statusServiceType}
                     control={Input}
                     label={`MC(${messages['Table.Amount']})`}
                     placeholder="Number..."
