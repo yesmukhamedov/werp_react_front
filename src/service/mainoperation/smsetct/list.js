@@ -31,6 +31,7 @@ export default function List(props) {
     validateEdit,
     setPostParams,
     postParams,
+    searchArray = [],
   } = props;
 
   const [errorsEdit, setErrorsEdit] = useState({});
@@ -118,6 +119,9 @@ export default function List(props) {
 
         case 'matnr':
           vars.matnr = o.value;
+          if (o.value === 'all') {
+            vars.matnr = null;
+          }
           errors.matnr = o.value ? false : true;
           messages.messgBrnch = messg.messgBrnch;
           messages.messgMatnr = false;
@@ -193,7 +197,7 @@ export default function List(props) {
         setOpen(false);
         setMessg({});
         setErrorsEdit({});
-        fetchSmsetct(searchParams);
+        fetchSmsetct(searchParams, searchArray);
       });
     }
     setErrorsEdit({ ...errs });
@@ -208,8 +212,9 @@ export default function List(props) {
       if (productName === 'ROBOCLEAN-114K SPlus') productName = 817; // 817 код продукта Roboclean 114K SPLUS
       if (productName === 'ROBOCLEAN-114F') productName = 1;
       else {
+        console.log(productName, productList);
         var matnrID = productList.find(
-          ({ name }) => productName.toUpperCase() === name.toUpperCase(),
+          ({ text45 }) => productName.toUpperCase() === text45.toUpperCase(),
         );
       }
       productName = matnrID ? matnrID.matnr : productName;
@@ -472,22 +477,26 @@ export default function List(props) {
                   ) : (
                     ''
                   )}
-                  <Form.Field>
-                    <label>{messages['TBL_H__PRODUCT']}</label>
-                    <Dropdown
-                      search
-                      error={errorsEdit.matnr ? true : false}
-                      selection
-                      options={
-                        getProductOptions(productList)
-                          ? getProductOptions(productList)
-                          : []
-                      }
-                      defaultValue={editParams.matnr}
-                      onChange={(e, o) => handleEdit(o, 'matnr')}
-                    />
-                  </Form.Field>
-
+                  <label>{messages['TBL_H__PRODUCT']}</label>
+                  <Dropdown
+                    search
+                    error={errorsEdit.matnr ? true : false}
+                    selection
+                    options={
+                      getProductOptions(productList)
+                        ? getProductOptions(productList)
+                        : []
+                    }
+                    defaultValue={editParams.matnr}
+                    onChange={(e, o) => handleEdit(o, 'matnr')}
+                  />
+                  {messg.messgBrnch ? (
+                    <Label basic color="red" pointing>
+                      {messages['enter_again']}
+                    </Label>
+                  ) : (
+                    ''
+                  )}
                   <Form.Field
                     control={Input}
                     label={messages['Table.Note']}

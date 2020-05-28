@@ -262,6 +262,7 @@ export function fetchDynObjService(url, params) {
   };
 }
 export function fetchSmsetct(searchParams, searchArray) {
+  console.log(searchArray);
   let queryString = Object.keys(searchArray)
     .map(key => 'branchId=' + searchArray[key].branchId)
     .join('&');

@@ -271,6 +271,9 @@ const Smsetct = props => {
     if (obj.branchId === null || obj.branchId === undefined || !obj.branchId) {
       errors.branchId = true;
     }
+    if (obj.matnr === null || obj.matnr === undefined || !obj.matnr) {
+      errors.matnr = true;
+    }
     if (obj.f1 === null || obj.f1 === undefined || !obj.f1) {
       errors.f1 = true;
     }
@@ -536,6 +539,7 @@ const Smsetct = props => {
           validateEdit={validateAdd}
           setPostParams={setPostParams}
           postParams={postParams}
+          searchArray={searchArray}
         />
       </Container>
 
