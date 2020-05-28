@@ -11,7 +11,20 @@ const TableRedistribution2 = props => {
     removeOperator,
     onOperatorSelect = [],
   } = props;
-  console.log('opttttt', operatorOptions);
+
+  const renderEditable = row => {
+    return (
+      <Input
+        type="number"
+        placeholder="Percent"
+        fluid
+        value={row.amountPercent}
+        onChange={e => {
+          changePercent(e, row);
+        }}
+      />
+    );
+  };
 
   const columns = [
     {
@@ -30,10 +43,8 @@ const TableRedistribution2 = props => {
               search
               options={operatorOptions}
               className="tableDropDown"
-              value={data.operatorId}
-              onChange={(e, o) => {
-                onOperatorSelect(o, row);
-              }}
+              value={row.toOperatorId}
+              onChange={(e, o) => onOperatorSelect(o.value, row.id)}
             />
           ),
           width: 300,
@@ -41,17 +52,7 @@ const TableRedistribution2 = props => {
         {
           Header: '%',
           accessor: 'amountPercent',
-          Cell: ({ row }) => (
-            <Input
-              type="number"
-              placeholder="%"
-              fluid
-              value={row.percent}
-              onChange={(e, value) => {
-                changePercent(e, row);
-              }}
-            />
-          ),
+          Cell: ({ row }) => renderEditable(row),
         },
       ],
     },

@@ -330,7 +330,9 @@ const Smcrld = props => {
             color="teal"
             link
             name="search"
-            onClick={() => clickViewService(original.row._original)}
+            onClick={() => {
+              clickViewService(original.row._original);
+            }}
           />
         </div>
       ),
@@ -345,8 +347,8 @@ const Smcrld = props => {
   //Применить
   const handleClickApply = () => {
     props.validate();
-    const { bukrs, categoryId, dateAt } = param;
-    if (bukrs !== '' && categoryId !== '' && dateAt !== null) {
+    const { bukrsId, categoryId, dateAt } = param;
+    if (bukrsId !== '' && categoryId !== '' && dateAt !== null) {
       props.fetchSmcrldList({ ...param });
     }
   };
@@ -367,10 +369,10 @@ const Smcrld = props => {
           <Form.Select
             fluid
             label="Компания"
-            value={param.bukrs}
+            value={param.bukrsId}
             placeholder="Компания"
             options={companyOptions}
-            onChange={(e, o) => props.onInputChange(o, 'bukrs')}
+            onChange={(e, o) => props.onInputChange(o, 'bukrsId')}
             className="alignBottom"
           />
 
