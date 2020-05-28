@@ -13,6 +13,7 @@ import {
   editSmsetct,
   clearDynObjService,
   applySmsetct,
+  fetchProductListSmsetct,
 } from '../../serviceAction';
 import { connect } from 'react-redux';
 import List from './list';
@@ -32,9 +33,23 @@ const Smsetct = props => {
   const emptySearch = {
     bukrs: '',
   };
+  const emptyParams = {
+    branchId: '',
+    bukrs: '',
+    countryId: '',
+    description: '',
+    f2: '',
+    f1: '',
+    f3: '',
+    f4: '',
+    f5: '',
+    f6: '',
+    f7: '',
+    matnr: 0,
+  };
 
   const [searchError, setSearchError] = useState('');
-  const [postParams, setPostParams] = useState({});
+  const [postParams, setPostParams] = useState({ ...emptyParams });
   const [searchParams, setSearchParams] = useState({ ...emptySearch });
   const [show, setShow] = useState(false);
   const [postErrors, setPostErrors] = useState({});
@@ -59,9 +74,12 @@ const Smsetct = props => {
   //componentDidMount
   useEffect(() => {
     clearDynObjService();
-    if (!productList || productList.length === 0) props.f4FetchConTypeList();
     if (!countryList || countryList.length === 0) props.f4FetchCountryList();
   }, []);
+  useEffect(() => {
+    if (postParams.bukrs)
+      props.fetchProductListSmsetct({ bukrs: postParams.bukrs });
+  }, [postParams.bukrs]);
 
   const searchInput = o => {
     setSearchParams({ bukrs: o.value });
@@ -134,6 +152,9 @@ const Smsetct = props => {
 
         case 'matnr':
           vars.matnr = o.value;
+          if (o.value === 'all') {
+            vars.matnr = null;
+          }
           errors.matnr = o.value ? false : true;
           messages.messgBrnch = messg.messgBrnch;
           messages.messgMatnr = false;
@@ -231,9 +252,6 @@ const Smsetct = props => {
     if (obj.branchId === null || obj.branchId === undefined || !obj.branchId) {
       errors.branchId = true;
     }
-    if (obj.matnr === null || obj.matnr === undefined || !obj.matnr) {
-      errors.matnr = true;
-    }
     if (obj.f1 === null || obj.f1 === undefined || !obj.f1) {
       errors.f1 = true;
     }
@@ -251,7 +269,6 @@ const Smsetct = props => {
     }
     return errors;
   };
-
   return (
     <div>
       <Container
@@ -344,26 +361,17 @@ const Smsetct = props => {
                       ) : (
                         ''
                       )}
-                      <label>{messages['TBL_H__PRODUCT']}</label>
+                      <Label>{messages['TBL_H__PRODUCT']}</Label>
                       <Dropdown
                         search
                         selection
-                        error={postErrors.matnr ? true : false}
-                        options={getProductOptions(
-                          productList,
-                          postParams.bukrs,
-                          postParams.countryId,
-                          postParams.branchId,
-                        )}
+                        options={
+                          getProductOptions(productList)
+                            ? getProductOptions(productList)
+                            : []
+                        }
                         onChange={(e, o) => changePostInput(o, 'matnr')}
                       />
-                      {messg.messgMatnr ? (
-                        <Label basic color="red" pointing>
-                          {messages['enter_again']}
-                        </Label>
-                      ) : (
-                        ''
-                      )}
                       <Form.Field
                         onChange={(e, o) => changePostInput(o, 'description')}
                         control={Input}
@@ -373,49 +381,46 @@ const Smsetct = props => {
 
                     <Form.Field>
                       <Form.Field
-                        required
-                        error={postErrors.f1 ? true : false}
                         onChange={(e, o) => changePostInput(o, 'F1')}
                         control={Input}
                         label={messages['configuration'] + ' F-1'}
+                        placeholder="0"
                       />
                       <Form.Field
-                        required
-                        error={postErrors.f2 ? true : false}
                         onChange={(e, o) => changePostInput(o, 'F2')}
                         control={Input}
                         label={messages['configuration'] + ' F-2'}
+                        placeholder="0"
                       />
                       <Form.Field
-                        required
-                        error={postErrors.f3 ? true : false}
                         onChange={(e, o) => changePostInput(o, 'F3')}
                         control={Input}
                         label={messages['configuration'] + ' F-3'}
+                        placeholder="0"
                       />
                       <Form.Field
-                        required
-                        error={postErrors.f4 ? true : false}
                         onChange={(e, o) => changePostInput(o, 'F4')}
                         control={Input}
                         label={messages['configuration'] + ' F-4'}
+                        placeholder="0"
                       />
                       <Form.Field
-                        required
-                        error={postErrors.f5 ? true : false}
                         onChange={(e, o) => changePostInput(o, 'F5')}
                         control={Input}
                         label={messages['configuration'] + ' F-5'}
+                        placeholder="0"
                       />
                       <Form.Field
                         onChange={(e, o) => changePostInput(o, 'F6')}
                         control={Input}
                         label={messages['configuration'] + ' F-6'}
+                        placeholder="0"
                       />
                       <Form.Field
                         onChange={(e, o) => changePostInput(o, 'F7')}
                         control={Input}
                         label={messages['configuration'] + ' F-7'}
+                        placeholder="0"
                       />
                     </Form.Field>
                   </Form.Group>
@@ -510,7 +515,8 @@ const Smsetct = props => {
               })
             : setSearchParams({ bukrs: searchParams.bukrs });
         }}
-        selection={'single'}
+        selection={'multiple'}
+        disabled={'true'}
       />
     </div>
   );
@@ -546,37 +552,25 @@ const getBranchOptions = (BranchList, countryId) => {
   return out;
 };
 
-const getProductOptions = (productList, bukrs, countryId, branchId) => {
-  if (!productList || !bukrs || !countryId || !branchId) {
+const getProductOptions = productList => {
+  const productListOptions = productList;
+  if (!productListOptions) {
     return [];
   }
-  let productArray = [],
-    j = 0,
-    i = 0;
-
-  if (countryId !== 9) {
-    for (i = 0; i < productList.length; i++) {
-      if (productList[i].bukrs === bukrs && productList[i].countryId !== 9) {
-        productArray[j] = productList[i];
-        j++;
-      }
-    }
-  } else {
-    for (i = 0; i < productList.length; i++) {
-      if (productList[i].bukrs === bukrs) {
-        productArray[j] = productList[i];
-        j++;
-      }
-    }
-  }
-
-  let out = productArray.map(c => {
+  let out = productList.map(c => {
     return {
-      key: c.contract_type_id,
-      text: c.name,
-      value: c.matnr,
+      key: parseInt(c.matnr, 10),
+      text: `${c.text45}`,
+      value: parseInt(c.matnr, 10),
     };
   });
+  if (productListOptions) {
+    out.unshift({
+      key: 'all',
+      text: 'Все',
+      value: 'all',
+    });
+  }
   return out;
 };
 function mapStateToProps(state) {
@@ -584,7 +578,7 @@ function mapStateToProps(state) {
     language: state.locales.lang,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
-    productList: state.f4.contractTypeList,
+    productList: state.serviceReducer.productList,
     branchOptions: state.userInfo.branchOptionsService,
     dynamicObject: state.serviceReducer.dynamicObject,
     historyDynamicObject: state.serviceReducer.historyDynamicObject,
@@ -600,4 +594,5 @@ export default connect(mapStateToProps, {
   editSmsetct,
   clearDynObjService,
   applySmsetct,
+  fetchProductListSmsetct,
 })(injectIntl(Smsetct));

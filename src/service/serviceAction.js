@@ -63,6 +63,7 @@ export const FETCH_SMSETPLP_ID = 'FETCH_SMSETPLP_ID';
 export const FETCH_SMSETPP_HISTORY = 'FETCH_SMSETPP_HISTORY';
 export const FETCH_SMSETPP_SERVICE_TYPE_ID = 'FETCH_SMSETPP_SERVICE_TYPE_ID';
 export const FETCH_SMSETPP_GET_PRODUCT_LIST = 'FETCH_SMSETPP_GET_PRODUCT_LIST';
+export const FETCH_PRODUCT_LIST_SMSETCT = 'FETCH_PRODUCT_LIST_SMSETCT';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 
@@ -276,13 +277,29 @@ export function fetchSmsetct(searchParams) {
             dispatch(modifyLoader(false));
             dispatch({
               type: HISTORY_EDITING_SMSETCT,
-              payload: data.data.data,
+              payload: data.data,
             });
           })
           .catch(error => {
             dispatch(modifyLoader(false));
             handleError(error, dispatch);
           });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+export function fetchProductListSmsetct(param) {
+  return dispatch => {
+    dispatch(modifyLoader(true));
+    doGet(`smsetct/getProductList`, param)
+      .then(({ data }) => {
+        dispatch({
+          type: FETCH_PRODUCT_LIST_SMSETCT,
+          payload: data.data,
+        });
       })
       .catch(error => {
         dispatch(modifyLoader(false));

@@ -45,6 +45,7 @@ import {
   FETCH_APP_LIST_SEARCH_PARAMS,
   FETCH_SMSETPLP_ID,
   FETCH_SMSETPP_GET_PRODUCT_LIST,
+  FETCH_PRODUCT_LIST_SMSETCT,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -70,6 +71,7 @@ const INITIAL_STATE = {
   listOfEmployees: [],
   errorTable: [],
   dataID: [],
+  productList: [],
 };
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -119,6 +121,11 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         historyDynamicObject: [...action.payload],
+      };
+    case FETCH_PRODUCT_LIST_SMSETCT:
+      return {
+        ...state,
+        productList: [...action.payload],
       };
 
     case FETCH_SMSETPP:

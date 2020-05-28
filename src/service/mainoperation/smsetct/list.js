@@ -239,7 +239,7 @@ export default function List(props) {
       Header: messages['TBL_H__PRODUCT'],
       accessor: 'matnr',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      filterAll: true,
+      filterable: true,
     },
     {
       Header: messages['configuration'] + ' F-1',
