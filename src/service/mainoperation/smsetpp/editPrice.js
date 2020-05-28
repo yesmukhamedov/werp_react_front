@@ -7,6 +7,7 @@ import {
   Input,
   Form,
   Select,
+  Table,
 } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import DatePicker from 'react-datepicker';
@@ -20,6 +21,7 @@ import {
   fetchSmsetpp,
   fetchSmsetppPut,
   fetchSmsetppHistory,
+  fetchSmsetppGetProductList,
 } from '../../serviceAction';
 import {
   stringYYYYMMDDToMoment,
@@ -46,22 +48,24 @@ const EditModal = props => {
     param,
     serviceType = [],
     serviceTypeOptions,
+    productList = [],
+    getProduct,
+    smsetppProductList = [],
   } = props;
+
   const [countryOptions, setCountryOptions] = useState([]);
   const [typeOfService, setTypeOfService] = useState([]);
   const [test, setTest] = useState(false);
   const [premiumPriceTypeId, setPremiumPriceTypeId] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [informations, setInformations] = useState(null);
+  const [informations, setInformations] = useState({});
 
   const onClickEdit = () => {
+    setModalOpen(true);
     doGet(`smsetpp/${row.id}`).then(({ data }) => {
       setInformations(data.data);
     });
-    setModalOpen(true);
   };
-
-  console.log('countryList', countryList);
 
   useEffect(() => {
     let country = countryList.map(item => {
@@ -107,10 +111,14 @@ const EditModal = props => {
       switch (text) {
         case 'bukrs':
           varTs.bukrs = v;
+          props.fetchSmsetppGetProductList(v);
           break;
 
         case 'serviceType':
           varTs.serviceTypeId = parseFloat(v);
+          break;
+        case 'productId':
+          varTs.productId = v;
           break;
 
         case 'typeOfSum':
@@ -201,6 +209,14 @@ const EditModal = props => {
     setInformations(null);
   };
 
+  const productOptions = productList.map(item => {
+    return {
+      key: item.matnr,
+      text: item.name,
+      value: item.matnr,
+    };
+  });
+
   return (
     <Modal
       open={modalOpen}
@@ -212,166 +228,214 @@ const EditModal = props => {
       <Modal.Content>
         {informations === null ? null : (
           <Form>
-            <Form.Group widths="equal">
-              <Form.Field
-                selection
-                label={messages['bukrs']}
-                control={Select}
-                options={companyOptions}
-                onChange={(e, { value }) => handleChange('bukrs', value)}
-                placeholder={messages['bukrs']}
-                value={informations.bukrs}
-                error={
-                  test === true && informations.bukrs === '' ? true : false
-                }
-                required
-              />
+            <Table celled>
+              <Table.Body>
+                <Table.Row>
+                  <Table.Cell>
+                    <Form.Field
+                      selection
+                      label={messages['bukrs']}
+                      control={Select}
+                      options={companyOptions}
+                      onChange={(e, { value }) => handleChange('bukrs', value)}
+                      placeholder={messages['bukrs']}
+                      value={informations.bukrs}
+                      error={
+                        test === true && informations.bukrs === ''
+                          ? true
+                          : false
+                      }
+                      required
+                    />
+                  </Table.Cell>
 
-              <Form.Field required>
-                <label>{messages['Task.StartDate']}</label>
-                <Input>
-                  <DatePicker
-                    className="date-auto-width"
-                    autoComplete="off"
-                    showMonthDropdown
-                    showYearDropdown
-                    dropdownMode="select"
-                    selected={stringYYYYMMDDToMoment(informations.dateStart)}
-                    onChange={date =>
-                      onChangeDate(momentToStringYYYYMMDD(date))
-                    }
-                    dateFormat="DD.MM.YYYY"
-                    value={informations.dateStart}
-                    locale={language}
-                    id="datePicker"
-                  />
-                  <i
-                    aria-hidden="true"
-                    className="calendar alternate outline big icon"
-                    id="calendarIcon"
-                  ></i>
-                </Input>
-              </Form.Field>
+                  <Table.Cell>
+                    <Form.Input
+                      label={messages['totalAmount']}
+                      placeholder="Number..."
+                      //readOnly
+                      onFocus={handleFocus}
+                      value={moneyFormat(informations.total)}
+                      onChange={e => onInputChange('total', e)}
+                      error={
+                        test === true && informations.total === 0 ? true : false
+                      }
+                      required
+                    />
+                  </Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    <Form.Field
+                      selection
+                      control={Select}
+                      options={countryOptions}
+                      value={informations.countryId}
+                      label={messages['country']}
+                      placeholder={messages['country']}
+                      onChange={(e, { value }) =>
+                        handleChange('country', value)
+                      }
+                      error={
+                        test === true && informations.countryId === 0
+                          ? true
+                          : false
+                      }
+                      required
+                    />
+                  </Table.Cell>
 
-              <Form.Field
-                control={Input}
-                label={`FC(${messages['Table.Amount']})`}
-                placeholder="Number..."
-                value={moneyFormat(informations.fc)}
-                onFocus={handleFocus}
-                onChange={e => onInputChange('fc', e)}
-              />
-            </Form.Group>
+                  <Table.Cell>
+                    <Form.Field
+                      control={Input}
+                      label={`${messages['master']} (${messages['inTotal']})`}
+                      placeholder="Number..."
+                      value={moneyFormat(informations.master)}
+                      onFocus={handleFocus}
+                      onChange={e => onInputChange('master', e)}
+                    />
+                  </Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    <label>{messages['TBL_H__PRODUCT']}</label>
+                    <Dropdown
+                      fluid
+                      selection
+                      value={informations.productId}
+                      options={productOptions}
+                      onChange={(e, value) =>
+                        handleChange('productId', value.value)
+                      }
+                    />
+                  </Table.Cell>
 
-            <Form.Group widths="equal">
-              <Form.Field
-                control={Input}
-                label={`MC(${messages['Table.Amount']})`}
-                placeholder="Number..."
-                value={moneyFormat(informations.mc)}
-                onFocus={handleFocus}
-                onChange={e => onInputChange('mc', e)}
-              />
+                  <Table.Cell>
+                    <Form.Field
+                      control={Input}
+                      label={`${messages['Operator']} (${messages['inTotal']})`}
+                      placeholder="Number..."
+                      value={moneyFormat(informations.operator)}
+                      onFocus={handleFocus}
+                      onChange={e => onInputChange('operator', e)}
+                    />
+                  </Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    <Form.Field>
+                      <label>{messages['typeOfService']}</label>
 
-              <Form.Field
-                control={Input}
-                label={`${messages['office']}(${messages['inTotal']})`}
-                placeholder="Number..."
-                readOnly
-                disabled
-                value={moneyFormat(informations.office)}
-                onFocus={handleFocus}
-                onChange={e => onInputChange('office', e)}
-              />
+                      <Dropdown
+                        placeholder="State"
+                        clearable="true"
+                        selection
+                        value={informations.serviceTypeId}
+                        options={serviceTypeOptions}
+                        onChange={(e, { value }) =>
+                          handleChange('serviceType', value)
+                        }
+                        placeholder={messages['typeOfService']}
+                      />
+                    </Form.Field>
+                  </Table.Cell>
 
-              <Form.Field
-                control={Input}
-                label={`${messages['master']} (${messages['inTotal']})`}
-                placeholder="Number..."
-                value={moneyFormat(informations.master)}
-                onFocus={handleFocus}
-                onChange={e => onInputChange('master', e)}
-              />
-            </Form.Group>
+                  <Table.Cell>
+                    <Form.Field
+                      control={Input}
+                      label={`${messages['discount']} (${messages['inTotal']})`}
+                      placeholder="Number..."
+                      value={moneyFormat(informations.discount)}
+                      onFocus={handleFocus}
+                      onChange={e => onInputChange('discount', e)}
+                    />
+                  </Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    <Form.Field
+                      control={Input}
+                      label={`FC(${messages['Table.Amount']})`}
+                      placeholder="Number..."
+                      value={moneyFormat(informations.fc)}
+                      onFocus={handleFocus}
+                      onChange={e => onInputChange('fc', e)}
+                    />
+                  </Table.Cell>
 
-            <Form.Group widths="equal">
-              <Form.Field
-                control={Input}
-                label={`${messages['Operator']} (${messages['inTotal']})`}
-                placeholder="Number..."
-                value={moneyFormat(informations.operator)}
-                onFocus={handleFocus}
-                onChange={e => onInputChange('operator', e)}
-              />
+                  <Table.Cell>
+                    <Form.Field
+                      control={Input}
+                      label={`${messages['office']}(${messages['inTotal']})`}
+                      placeholder="Number..."
+                      readOnly
+                      value={moneyFormat(informations.office)}
+                      onFocus={handleFocus}
+                      onChange={e => onInputChange('office', e)}
+                    />
+                  </Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    <Form.Field
+                      control={Input}
+                      label={`MC(${messages['Table.Amount']})`}
+                      placeholder="Number..."
+                      value={moneyFormat(informations.mc)}
+                      onFocus={handleFocus}
+                      onChange={e => onInputChange('mc', e)}
+                    />
+                  </Table.Cell>
 
-              <Form.Field
-                control={Input}
-                label={`${messages['discount']} (${messages['inTotal']})`}
-                placeholder="Number..."
-                value={moneyFormat(informations.discount)}
-                onFocus={handleFocus}
-                onChange={e => onInputChange('discount', e)}
-              />
-
-              <Form.Input
-                label={messages['totalAmount']}
-                placeholder="Number..."
-                //readOnly
-                onFocus={handleFocus}
-                value={moneyFormat(informations.total)}
-                onChange={e => onInputChange('total', e)}
-                error={test === true && informations.total === 0 ? true : false}
-                required
-              />
-            </Form.Group>
-            <Form.Group widths="equal">
-              <Form.Field
-                selection
-                control={Select}
-                options={countryOptions}
-                value={informations.countryId}
-                label={messages['country']}
-                placeholder={messages['country']}
-                onChange={(e, { value }) => handleChange('country', value)}
-                error={
-                  test === true && informations.countryId === 0 ? true : false
-                }
-                required
-              />
-
-              <Form.Field>
-                <label>{messages['waers']}</label>
-                <Header as="h4">{informations.waers}</Header>
-              </Form.Field>
-            </Form.Group>
-            <Form.Group widths="equal">
-              <Form.Field>
-                <label>{messages['typeOfService']}</label>
-
-                <Dropdown
-                  placeholder="State"
-                  clearable="true"
-                  selection
-                  value={informations.serviceTypeId}
-                  options={serviceTypeOptions}
-                  onChange={(e, { value }) =>
-                    handleChange('serviceType', value)
-                  }
-                  placeholder={messages['typeOfService']}
-                />
-              </Form.Field>
-
-              <Form.Field>
-                <label>{messages['typeOfAmount']}</label>
-                <Dropdown
-                  placeholder={messages['typeOfAmount']}
-                  selection
-                  value={informations.premiumPriceTypeId}
-                  onChange={(e, { value }) => handleChange('typeOfSum', value)}
-                  options={premiumPriceTypeId}
-                />
-              </Form.Field>
-            </Form.Group>
+                  <Table.Cell>
+                    <Form.Field required>
+                      <label>{messages['Task.StartDate']}</label>
+                      <Input>
+                        <DatePicker
+                          className="date-auto-width"
+                          autoComplete="off"
+                          showMonthDropdown
+                          showYearDropdown
+                          dropdownMode="select"
+                          selected={stringYYYYMMDDToMoment(
+                            informations.dateStart,
+                          )}
+                          onChange={date =>
+                            onChangeDate(momentToStringYYYYMMDD(date))
+                          }
+                          dateFormat="DD.MM.YYYY"
+                          value={informations.dateStart}
+                          locale={language}
+                          id="datePicker"
+                        />
+                        <i
+                          aria-hidden="true"
+                          className="calendar alternate outline big icon"
+                          id="calendarIcon"
+                        ></i>
+                      </Input>
+                    </Form.Field>{' '}
+                  </Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    <Form.Field>
+                      <label>{messages['typeOfAmount']}</label>
+                      <Dropdown
+                        placeholder={messages['typeOfAmount']}
+                        selection
+                        value={informations.premiumPriceTypeId}
+                        onChange={(e, { value }) =>
+                          handleChange('typeOfSum', value)
+                        }
+                        options={premiumPriceTypeId}
+                      />
+                    </Form.Field>
+                  </Table.Cell>
+                  <Table.Cell></Table.Cell>
+                </Table.Row>
+              </Table.Body>
+            </Table>
           </Form>
         )}
       </Modal.Content>
@@ -394,6 +458,7 @@ const mapStateToProps = state => {
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
     serviceType: state.serviceReducer.dynamicObject.type,
+    smsetppProductList: state.serviceReducer.dynamicObject.smsetppProductList,
   };
 };
 
@@ -402,4 +467,5 @@ export default connect(mapStateToProps, {
   fetchSmsetppPut,
   fetchSmsetpp,
   fetchSmsetppHistory,
+  fetchSmsetppGetProductList,
 })(injectIntl(EditModal));

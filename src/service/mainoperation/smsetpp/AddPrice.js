@@ -25,6 +25,7 @@ import {
   fetchSmsetpp,
   fetchSmsetppPremiumPriceType,
   fetchSmsetppHistory,
+  fetchSmsetppGetProductList,
 } from '../../serviceAction';
 import {
   stringYYYYMMDDToMoment,
@@ -50,7 +51,10 @@ const AddPrice = props => {
     serviceTypeOptions,
     productList = [],
     search = {},
+    smsetppProductListAdd = [],
   } = props;
+  console.log('smsetppProductListAdd', smsetppProductListAdd);
+
   const language = localStorage.getItem('language');
   const [typeOfService, setTypeOfService] = useState([]);
   const [countryOptions, setCountryOptions] = useState([]);
@@ -74,6 +78,8 @@ const AddPrice = props => {
     premiumPriceTypeId: 2,
     productId: 0,
   });
+
+  console.log('INFORMATIONS', informations);
 
   useEffect(() => {
     const premiumPrice = premium.map(item => {
@@ -130,58 +136,13 @@ const AddPrice = props => {
     });
   };
 
-  const [productOptions, setProductOptions] = useState([]);
-  console.log('informations ', informations);
-  useEffect(() => {
-    if (informations.bukrs === '' && informations.countryId === null) {
-      setProductOptions([]);
-    } else if (informations.bukrs !== '' && informations.countryId === null) {
-      let productOptions = productList
-        .filter(item => item.bukrs === informations.bukrs)
-        .map(item => {
-          return {
-            key: item.matnr,
-            text: item.name,
-            value: item.matnr,
-          };
-        });
-      setProductOptions([...productOptions]);
-    } else if (informations.bukrs !== '' && informations.countryId !== 9) {
-      let productOptions = productList
-        .filter(item => item.bukrs === informations.bukrs)
-        .filter(item => item.countryId === null)
-        .map(item => {
-          return {
-            key: item.matnr,
-            text: item.name,
-            value: item.matnr,
-          };
-        });
-      setProductOptions([...productOptions]);
-    } else if (informations.bukrs !== '' && informations.countryId === 9) {
-      let productOptions = productList
-        .filter(item => item.bukrs === informations.bukrs)
-        .filter(item => item.countryId === 9)
-        .map(item => {
-          return {
-            key: item.matnr,
-            text: item.name,
-            value: item.matnr,
-          };
-        });
-
-      setProductOptions([...productOptions]);
-    }
-  }, [informations.bukrs, informations.countryId]);
-
-  console.log('productOptions ADD', productOptions);
-
   const handleChange = (text, v) => {
     setInformations(prev => {
       const varTs = { ...prev };
       switch (text) {
         case 'bukrs':
           varTs.bukrs = v;
+          props.fetchSmsetppGetProductList({ bukrs: v });
           break;
 
         case 'serviceType':
@@ -208,6 +169,14 @@ const AddPrice = props => {
       setViewWaer(waer.currency);
     }
   };
+
+  const productOptions = smsetppProductListAdd.map(item => {
+    return {
+      key: item.matnr,
+      text: item.text45,
+      value: item.matnr,
+    };
+  });
 
   const onChangeDate = d => {
     setDateStart(stringYYYYMMDDToMoment(d));
@@ -244,10 +213,6 @@ const AddPrice = props => {
     setTest(false);
     clearInformation();
   };
-
-  useEffect(() => {
-    console.log('FFFFFFFFFFF1');
-  }, []);
 
   const onInputChange = (text, event) => {
     const f = moneyInputHanler(event.target.value, 2);
@@ -386,14 +351,6 @@ const AddPrice = props => {
                   <Dropdown
                     fluid
                     selection
-                    // error={postErrors.matnr ? true : false}
-                    // options={getProductOptions(
-                    //   productList,
-                    //   postParams.bukrs,
-                    //   postParams.countryId,
-                    //   postParams.branchId,
-                    // )}
-                    // onChange={(e, o) => changePostInput(o, 'matnr')}
                     value={informations.productId}
                     options={productOptions}
                     onChange={(e, value) =>
@@ -410,54 +367,6 @@ const AddPrice = props => {
                     value={moneyFormat(informations.operator)}
                     onFocus={handleFocus}
                     onChange={e => onInputChange('operator', e)}
-                  />
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>
-                  <Form.Field
-                    control={Input}
-                    label={`FC(${messages['Table.Amount']})`}
-                    placeholder="Number..."
-                    value={moneyFormat(informations.fc)}
-                    onFocus={handleFocus}
-                    onChange={e => onInputChange('fc', e)}
-                  />
-                </Table.Cell>
-
-                <Table.Cell>
-                  <Form.Field
-                    control={Input}
-                    label={`${messages['discount']} (${messages['inTotal']})`}
-                    placeholder="Number..."
-                    value={moneyFormat(informations.discount)}
-                    onFocus={handleFocus}
-                    onChange={e => onInputChange('discount', e)}
-                  />
-                </Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>
-                  <Form.Field
-                    control={Input}
-                    label={`MC(${messages['Table.Amount']})`}
-                    placeholder="Number..."
-                    value={moneyFormat(informations.mc)}
-                    onFocus={handleFocus}
-                    onChange={e => onInputChange('mc', e)}
-                  />
-                </Table.Cell>
-
-                <Table.Cell>
-                  <Form.Field
-                    readOnly
-                    control={Input}
-                    label={`${messages['office']}(${messages['inTotal']})`}
-                    placeholder="Number..."
-                    //value={moneyFormat(informations.office)}
-                    value={informations.office}
-                    onFocus={handleFocus}
-                    onChange={e => onInputChange('office', e)}
                   />
                 </Table.Cell>
               </Table.Row>
@@ -482,6 +391,54 @@ const AddPrice = props => {
                       }
                     />
                   </Form.Field>
+                </Table.Cell>
+
+                <Table.Cell>
+                  <Form.Field
+                    control={Input}
+                    label={`${messages['discount']} (${messages['inTotal']})`}
+                    placeholder="Number..."
+                    value={moneyFormat(informations.discount)}
+                    onFocus={handleFocus}
+                    onChange={e => onInputChange('discount', e)}
+                  />
+                </Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.Cell>
+                  <Form.Field
+                    control={Input}
+                    label={`FC(${messages['Table.Amount']})`}
+                    placeholder="Number..."
+                    value={moneyFormat(informations.fc)}
+                    onFocus={handleFocus}
+                    onChange={e => onInputChange('fc', e)}
+                  />
+                </Table.Cell>
+
+                <Table.Cell>
+                  <Form.Field
+                    readOnly
+                    control={Input}
+                    label={`${messages['office']}(${messages['inTotal']})`}
+                    placeholder="Number..."
+                    //value={moneyFormat(informations.office)}
+                    value={informations.office}
+                    onFocus={handleFocus}
+                    onChange={e => onInputChange('office', e)}
+                  />
+                </Table.Cell>
+              </Table.Row>
+              <Table.Row>
+                <Table.Cell>
+                  <Form.Field
+                    control={Input}
+                    label={`MC(${messages['Table.Amount']})`}
+                    placeholder="Number..."
+                    value={moneyFormat(informations.mc)}
+                    onFocus={handleFocus}
+                    onChange={e => onInputChange('mc', e)}
+                  />
                 </Table.Cell>
 
                 <Table.Cell>
@@ -551,6 +508,8 @@ const mapStateToProps = state => {
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
     serviceType: state.serviceReducer.dynamicObject.type,
+    smsetppProductListAdd:
+      state.serviceReducer.dynamicObject.smsetppProductList,
   };
 };
 
@@ -561,4 +520,5 @@ export default connect(mapStateToProps, {
   fetchSmsetpp,
   fetchSmsetppHistory,
   fetchSmsetppPremiumPriceType,
+  fetchSmsetppGetProductList,
 })(injectIntl(AddPrice));

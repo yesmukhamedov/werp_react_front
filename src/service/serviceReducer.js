@@ -44,6 +44,7 @@ import {
   FETCH_OPERTAION_TYPE_LIST,
   FETCH_APP_LIST_SEARCH_PARAMS,
   FETCH_SMSETPLP_ID,
+  FETCH_SMSETPP_GET_PRODUCT_LIST,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -142,6 +143,14 @@ export default function(state = INITIAL_STATE, action) {
         dynamicObject: {
           ...state.dynamicObject,
           smsetppServiceType: [...action.payload.data],
+        },
+      };
+    case FETCH_SMSETPP_GET_PRODUCT_LIST:
+      return {
+        ...state,
+        dynamicObject: {
+          ...state.dynamicObject,
+          smsetppProductList: [...action.payload.data],
         },
       };
 

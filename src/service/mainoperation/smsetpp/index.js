@@ -19,6 +19,7 @@ import {
   clearDynObjService,
   fetchSmsetppHistory,
   fetchSmsetppServiceTypeId,
+  fetchSmsetppGetProductList,
 } from '../../serviceAction';
 import OutputErrors from '../../../general/error/outputErrors';
 import { errorTableText } from '../../../utils/helpers';
@@ -56,6 +57,7 @@ const Smsetpp = props => {
     fc: null,
     mc: null,
   });
+
   const serviceTypeOptions = smsetppServiceType
     .filter(
       el =>
@@ -157,6 +159,45 @@ const Smsetpp = props => {
       fetchSmsetppHistory(search);
     }
     setError(errors);
+  };
+
+  const getProduct = param => {
+    let bukrs = param;
+    props.fetchSmsetppGetProductList(bukrs);
+  };
+
+  const getProductOptions = (productList, bukrs, countryId) => {
+    if (!productList || !bukrs || !countryId) {
+      return [];
+    }
+    let productArray = [],
+      j = 0,
+      i = 0;
+
+    if (countryId !== 9) {
+      for (i = 0; i < productList.length; i++) {
+        if (productList[i].bukrs === bukrs && productList[i].countryId !== 9) {
+          productArray[j] = productList[i];
+          j++;
+        }
+      }
+    } else {
+      for (i = 0; i < productList.length; i++) {
+        if (productList[i].bukrs === bukrs) {
+          productArray[j] = productList[i];
+          j++;
+        }
+      }
+    }
+
+    let out = productArray.map(c => {
+      return {
+        key: c.contract_type_id,
+        text: c.name,
+        value: c.matnr,
+      };
+    });
+    return out;
   };
 
   let historyColumns = [
@@ -279,6 +320,7 @@ const Smsetpp = props => {
             serviceTypeOptions={serviceTypeOptions}
             search={search}
             productList={productList}
+            getProductOptions={getProductOptions}
           />
         </div>
 
@@ -493,6 +535,9 @@ const Smsetpp = props => {
                     }
                     row={row}
                     serviceTypeOptions={serviceTypeOptions}
+                    productList={productList}
+                    getProductOptions={getProductOptions}
+                    getProduct
                   />
                 </div>
               ),
@@ -540,4 +585,5 @@ export default connect(mapStateToProps, {
   fetchSmsetppHistory,
   fetchSmsetppServiceTypeId,
   f4FetchConTypeList,
+  fetchSmsetppGetProductList,
 })(injectIntl(Smsetpp));
