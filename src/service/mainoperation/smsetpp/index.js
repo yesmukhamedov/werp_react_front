@@ -5,7 +5,6 @@ import './index.css';
 import { connect } from 'react-redux';
 import 'react-table/react-table.css';
 import AddPrice from './AddPrice';
-import format from 'string-format';
 import { injectIntl } from 'react-intl';
 import {
   f4FetchCountryList,

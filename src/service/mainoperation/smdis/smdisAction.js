@@ -8,6 +8,7 @@ export const FETCH_SMCRLD = 'FETCH_SMCRLD';
 export const FETCH_SMVOD_LIST = 'FETCH_SMVOD_LIST';
 export const FETCH_SMRD_OPERATOR = 'FETCH_SMRD_OPERATOR';
 export const POST_SMRD_OPERATORS_BY_BRANCH = 'POST_SMRD_OPERATORS_BY_BRANCH';
+export const POST_REDIST_SMRD_OPERATOR = 'POST_REDIST_SMRD_OPERATOR';
 
 //SMCRLD Получить список распределении
 export const fetchSmcrldList = param => {
@@ -120,6 +121,29 @@ export const postSmrdOperatorsByBranch = param => {
           type: POST_SMRD_OPERATORS_BY_BRANCH,
           data,
         });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+
+//SMRD Перераспределение
+export const postRedistSmrdOperator = (param, toOperators, fetchOperator) => {
+  let queryString = Object.keys(param)
+    .map(key => key + '=' + param[key])
+    .join('&');
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost(`smrd/reDistributionOperator?${queryString}`, toOperators)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: POST_REDIST_SMRD_OPERATOR,
+          data,
+        });
+        fetchOperator();
       })
       .catch(error => {
         dispatch(modifyLoader(false));

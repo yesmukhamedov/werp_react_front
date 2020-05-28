@@ -28,29 +28,28 @@ const Smdis = props => {
 
   const emptyParam = {
     branchId: '',
-    bukrs: '',
+    bukrsId: '',
     countryId: '',
     categoryId: '',
     dateAt: null,
-    operatorId: '',
+    fromOperatorId: '',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
   const [branch, setBranch] = useState('');
   const [error, setError] = useState([]);
 
-  const [defaultPane, setDefaultPane] = useState(2);
+  const [defaultPane, setDefaultPane] = useState(0);
 
   //Operator options
 
   //Распределение списка замена картриджа
   const clickViewService = data => {
-    console.log('DATA', data);
     setDefaultPane(1);
 
     let paramSmvod = {
       branchId: data.branchId,
-      bukrsId: data.bukrs,
+      bukrsId: data.bukrsId,
       countryId: data.countryId,
       categoryId: param.categoryId,
       dateAt: param.dateAt,
@@ -62,17 +61,17 @@ const Smdis = props => {
   //Просмотр распределения по операторам
   const clickSmvodRow = data => {
     setDefaultPane(2);
-    console.log('DATA CLICK SMVOD', data);
 
     setParam({
       ...param,
       branchId: data.branchId,
       countryId: data.countryId,
+      fromOperatorId: data.operatorId,
     });
 
     let smrdOperatorParam = {
       branchId: data.branchId,
-      bukrsId: data.bukrs,
+      bukrsId: data.bukrsId,
       countryId: data.countryId,
       categoryId: param.categoryId,
       dateAt: param.dateAt,
@@ -88,12 +87,11 @@ const Smdis = props => {
   const clickAddOperator = () => {
     let paramOp = {
       branchId: param.branchId,
-      bukrsId: param.bukrs,
+      bukrsId: param.bukrsId,
       countryId: param.countryId,
       categoryId: param.categoryId,
       dateAt: param.dateAt,
     };
-    console.log('clickAddOperator param', paramOp);
     props.postSmrdOperatorsByBranch({ ...paramOp });
   };
 
@@ -101,8 +99,8 @@ const Smdis = props => {
     setParam(prev => {
       const prevParam = { ...prev };
       switch (fieldName) {
-        case 'bukrs':
-          prevParam.bukrs = o.value;
+        case 'bukrsId':
+          prevParam.bukrsId = o.value;
           break;
 
         case 'categoryId':
@@ -121,7 +119,7 @@ const Smdis = props => {
 
   const validate = () => {
     const errors = [];
-    if (param.bukrs === '') {
+    if (param.bukrsId === '') {
       errors.push(errorTableText(5));
     }
     if (param.categoryId === '') {
@@ -178,6 +176,7 @@ const Smdis = props => {
             data={smrdOperator}
             clickAddOperator={clickAddOperator}
             operatorsByBranch={operatorsByBranch}
+            params={param}
           />
         </Tab.Pane>
       ),
