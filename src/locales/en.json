@@ -670,6 +670,7 @@
   "yes": "Yes",
   "no": "No",
   "questionAreYouSure": "Are you sure?",
+  "bank": "Bank",
 
   "transNameFmcp": "FMCP: Receipt from Sales Contract",
   "transNameFcis": "FCIS: Employee acc.cash inquiry",

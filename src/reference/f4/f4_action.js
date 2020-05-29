@@ -92,6 +92,8 @@ export const F4_FETCH_NATIONALITY_OPTIONS = 'F4_FETCH_NATIONALITY_OPTIONS';
 
 export const F4_FETCH_ADDR_TYPE_OPTIONS = 'F4_FETCH_ADDR_TYPE_OPTIONS';
 
+export const F4_FETCH_BANK_PARTNER_OPTIONS = 'F4_FETCH_BANK_PARTNER_OPTIONS';
+
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 
@@ -468,6 +470,22 @@ export function f4FetchAddrTypeOptions() {
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_ADDR_TYPE_OPTIONS,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+//Address Types
+export function f4FetchBankPartnerOptions() {
+  return function(dispatch) {
+    doGet('reference/bankPartnerOptions')
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_BANK_PARTNER_OPTIONS,
           payload: data,
         });
       })

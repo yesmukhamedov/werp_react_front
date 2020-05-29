@@ -180,6 +180,7 @@ const MmccFin = props => {
         onClosePriceListF4={bool => setPriceListF4ModalOpen(bool)}
         onPriceSelect={item => props.onFinInputChange(item, 'price', '')}
         isLoadingPriceList={isLoadingPriceList}
+        tradeIn={tradeIn}
       />
 
       {/* <Segment padded size="small">
@@ -284,10 +285,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    f4FetchSubCompanies,
-    fetchDynObjMarketing,
-  },
-)(injectIntl(MmccFin));
+export default connect(mapStateToProps, {
+  f4FetchSubCompanies,
+  fetchDynObjMarketing,
+})(injectIntl(MmccFin));

@@ -42,6 +42,7 @@ import {
   F4_FETCH_NATIONALITIES,
   F4_FETCH_NATIONALITY_OPTIONS,
   F4_FETCH_ADDR_TYPE_OPTIONS,
+  F4_FETCH_BANK_PARTNER_OPTIONS,
   F4_FETCH_CONTYPE_LIST,
   F4_CLEAR_CONTYPE_LIST,
   F4_FETCH_BRANCHES,
@@ -80,6 +81,7 @@ const INITIAL_STATE = {
   companyOptions: [],
   branchOptions: [],
   addressTypeOptions: [],
+  bankPartnerOptions: [],
   contractTypeList: [],
   branches: [],
   addresses: [],
@@ -214,6 +216,9 @@ export default function(state = INITIAL_STATE, action) {
 
     case F4_FETCH_ADDR_TYPE_OPTIONS:
       return { ...state, addressTypeOptions: action.payload };
+
+    case F4_FETCH_BANK_PARTNER_OPTIONS:
+      return { ...state, bankPartnerOptions: action.payload };
 
     case F4_FETCH_CONTYPE_LIST:
       return { ...state, contractTypeList: action.data };

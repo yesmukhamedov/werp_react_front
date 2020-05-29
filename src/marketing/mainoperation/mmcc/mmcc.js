@@ -455,6 +455,7 @@ const Mmcc = props => {
           waers: value.waers,
           priceListId: value.priceListId,
           paymentSchedule: month,
+          bankPartnerId: value.bankPartnerId,
         };
       });
     } else if (fieldName === 'dealerSubtract') {

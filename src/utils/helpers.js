@@ -228,6 +228,13 @@ export function momentToStringYYYYMMDD(momentVal) {
   return momentVal ? momentVal.format('YYYY-MM-DD') : '';
 }
 
+export function stringToMoment(stringVal, format) {
+  return stringVal ? moment(stringVal, format) : '';
+}
+export function momentToString(momentVal, format) {
+  return momentVal ? momentVal.format(format) : '';
+}
+
 export function excelDownload(
   a_url,
   filename,

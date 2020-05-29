@@ -22,7 +22,14 @@ import {
 import './prcltgs.css';
 import { doGet, doPost } from '../../../utils/apiActions';
 
+import { f4FetchBankPartnerOptions } from '../../../reference/f4/f4_action';
+import { stringToMoment, momentToString } from '../../../utils/helpers';
+
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
 require('moment/locale/ru');
+require('moment/locale/tr');
 
 const categoryOptions = [
   { key: 1, text: 'Уборочная система', value: 1 },
@@ -122,7 +129,9 @@ class Prcltgs extends Component {
     });
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.props.f4FetchBankPartnerOptions();
+  }
   fetchUserBranches(bukrs) {
     this.setState({ loading: true });
     doGet(`reference/branches/${bukrs}`)
@@ -192,6 +201,10 @@ class Prcltgs extends Component {
       obj.premDiv = value;
     } else if (fieldName === 'tradeIn') {
       obj.tradeIn = value;
+    } else if (fieldName === 'bankPartnerId') {
+      obj.bankPartnerId = value;
+    } else if (fieldName === 'toDate') {
+      obj.toDate = value;
     } else if (fieldName === 'matnr') {
       obj.matnr = value;
       this.state.matnrOptions
@@ -541,6 +554,53 @@ class Prcltgs extends Component {
             />
           )}
         </Table.Cell>
+        <Table.Cell className="clickable">
+          {idx !== this.state.editPriceListIndex && wa.bankPartnerId > 0 && (
+            <div>
+              {
+                this.props.bankPartnerOptions[
+                  this.props.bankPartnerOptions.findIndex(
+                    element => element.value === wa.bankPartnerId,
+                  )
+                ].text
+              }
+            </div>
+          )}
+          {idx === this.state.editPriceListIndex && (
+            <Dropdown
+              compact
+              selection
+              options={this.props.bankPartnerOptions}
+              value={wa.bankPartnerId}
+              onChange={(e, { value }) =>
+                this.onInputChangePrice(value, 'bankPartnerId', idx, wa)
+              }
+            />
+          )}
+        </Table.Cell>
+        <Table.Cell className="clickable">
+          {idx !== this.state.editPriceListIndex && wa.toDate}
+          {idx === this.state.editPriceListIndex && (
+            <DatePicker
+              className="date-100-width"
+              autoComplete="off"
+              showMonthDropdown
+              showYearDropdown
+              dropdownMode="select" // timezone="UTC"
+              selected={stringToMoment(wa.toDate, 'DD.MM.YYYY')}
+              locale={this.props.language}
+              onChange={event =>
+                this.onInputChangePrice(
+                  momentToString(event, 'DD.MM.YYYY'),
+                  'toDate',
+                  idx,
+                  wa,
+                )
+              }
+              dateFormat="DD.MM.YYYY"
+            />
+          )}
+        </Table.Cell>
         <Table.Cell className="clickable">{wa.userName}</Table.Cell>
         <Table.Cell>
           {' '}
@@ -674,7 +734,7 @@ class Prcltgs extends Component {
 
         <Grid textAlign="justified">
           <Grid.Row columns={3}>
-            <Grid.Column mobile={16} tablet={16} computer={3}>
+            <Grid.Column mobile={16} tablet={16} computer={2}>
               <Dropdown
                 placeholder="Компания"
                 fluid
@@ -704,7 +764,7 @@ class Prcltgs extends Component {
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={3}>
-            <Grid.Column mobile={16} tablet={16} computer={3}>
+            <Grid.Column mobile={16} tablet={16} computer={2}>
               <Sticky>
                 <Table compact striped selectable celled id="branchList">
                   <Table.Header>
@@ -716,7 +776,7 @@ class Prcltgs extends Component {
                 </Table>
               </Sticky>
             </Grid.Column>
-            <Grid.Column mobile={16} tablet={16} computer={10}>
+            <Grid.Column mobile={16} tablet={16} computer={11}>
               <Table compact striped celled selectable id="priceListHeaders">
                 <Table.Header>
                   <Table.Row>
@@ -728,6 +788,8 @@ class Prcltgs extends Component {
                     <Table.HeaderCell>Срок (месяц)</Table.HeaderCell>
                     <Table.HeaderCell>Премия</Table.HeaderCell>
                     <Table.HeaderCell>Trade-In</Table.HeaderCell>
+                    <Table.HeaderCell>Банк партнер</Table.HeaderCell>
+                    <Table.HeaderCell>До</Table.HeaderCell>
                     <Table.HeaderCell>Создал</Table.HeaderCell>
                     <Table.HeaderCell />
                   </Table.Row>
@@ -735,6 +797,8 @@ class Prcltgs extends Component {
                 <Table.Body>{this.renderTablePriceListHeaders()}</Table.Body>
                 <Table.Footer>
                   <Table.Row>
+                    <Table.HeaderCell />
+                    <Table.HeaderCell />
                     <Table.HeaderCell />
                     <Table.HeaderCell />
                     <Table.HeaderCell />
@@ -812,9 +876,14 @@ class Prcltgs extends Component {
 }
 
 function mapStateToProps(state) {
+  // console.log(state.f4.bankPartnerOptions, 'state.f4.bankPartnerOptions');
   return {
+    language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
+    bankPartnerOptions: state.f4.bankPartnerOptions,
   };
 }
 
-export default connect(mapStateToProps, { notify })(Prcltgs);
+export default connect(mapStateToProps, { notify, f4FetchBankPartnerOptions })(
+  Prcltgs,
+);
