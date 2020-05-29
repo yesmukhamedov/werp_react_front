@@ -38,6 +38,8 @@ const Smdis = props => {
   const [param, setParam] = useState({ ...emptyParam });
   const [branch, setBranch] = useState('');
   const [error, setError] = useState([]);
+  const [state, setState] = useState([]);
+  const [showTable, setshowTable] = useState(false);
 
   const [defaultPane, setDefaultPane] = useState(0);
 
@@ -79,7 +81,8 @@ const Smdis = props => {
     };
 
     setBranch(data.branchId);
-
+    setState([]);
+    setshowTable(false);
     props.fetchSmrdOperator({ ...smrdOperatorParam });
   };
 
@@ -177,6 +180,10 @@ const Smdis = props => {
             clickAddOperator={clickAddOperator}
             operatorsByBranch={operatorsByBranch}
             params={param}
+            state={state}
+            setState={setState}
+            showTable={showTable}
+            setshowTable={setshowTable}
           />
         </Tab.Pane>
       ),
