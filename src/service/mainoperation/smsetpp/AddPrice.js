@@ -53,7 +53,6 @@ const AddPrice = props => {
     search = {},
     smsetppProductListAdd = [],
   } = props;
-  console.log('smsetppProductListAdd', smsetppProductListAdd);
 
   const language = localStorage.getItem('language');
   const [typeOfService, setTypeOfService] = useState([]);
@@ -78,8 +77,6 @@ const AddPrice = props => {
     premiumPriceTypeId: 2,
     productId: 0,
   });
-
-  console.log('INFORMATIONS', informations);
 
   useEffect(() => {
     const premiumPrice = premium.map(item => {
@@ -197,7 +194,7 @@ const AddPrice = props => {
       dateStart !== '' &&
       serviceTypeId !== null
     ) {
-      console.log(param);
+      //console.log(param);
       setTest(false);
       setModalOpen(false);
       fetchSmsetppPost(informations, () => {
@@ -221,8 +218,13 @@ const AddPrice = props => {
       setStatusServiceType(false);
     } else {
       setStatusServiceType(true);
+      setInformations({
+        ...informations,
+        fc: 0,
+        mc: 0,
+      });
     }
-  }, [informations]);
+  }, [informations.serviceTypeId]);
 
   const onInputChange = (text, event) => {
     const f = moneyInputHanler(event.target.value, 2);

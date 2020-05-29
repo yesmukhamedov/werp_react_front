@@ -21,7 +21,8 @@ import {
   fetchSmsetppGetProductList,
 } from '../../serviceAction';
 import OutputErrors from '../../../general/error/outputErrors';
-import { errorTableText } from '../../../utils/helpers';
+import { errorTableText, moneyInputHanler } from '../../../utils/helpers';
+import { doGet } from '../../../utils/apiActions';
 
 const Smsetpp = props => {
   const {
@@ -48,6 +49,17 @@ const Smsetpp = props => {
   const [secondActive, setSecondActive] = useState(false);
   const [serviceOptionPriceList, setServiceOptionPriceList] = useState([]);
   const [countryOptions, setCountryOptions] = useState([]);
+  const [modalOpenEdit, setModalOpenEdit] = useState(false);
+
+  const [informations, setInformations] = useState({});
+
+  const [dataEdit, setDataEdit] = useState({});
+
+  useEffect(() => {
+    if (Object.keys(dataEdit).length > 0) {
+      setInformations({ ...dataEdit });
+    }
+  }, [dataEdit]);
 
   const [search, setSearch] = useState({
     bukrs: 0,
@@ -214,6 +226,22 @@ const Smsetpp = props => {
       Header: () => <div style={{ textAlign: 'center' }}>id</div>,
       accessor: 'id',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      width: 70,
+    },
+    {
+      Header: () => <div style={{ textAlign: 'center' }}>Автор</div>,
+      accessor: 'fullname',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => <div style={{ textAlign: 'center' }}>Тип операции</div>,
+      accessor: 'revType',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => <div style={{ textAlign: 'center' }}>Дата операции</div>,
+      accessor: 'revsttmp',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
       Header: () => (
@@ -238,11 +266,13 @@ const Smsetpp = props => {
       Header: () => <div style={{ textAlign: 'center' }}>FC</div>,
       accessor: 'fc',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      width: 50,
     },
     {
       Header: () => <div style={{ textAlign: 'center' }}>MC</div>,
       accessor: 'mc',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      width: 50,
     },
     {
       Header: () => (
@@ -292,6 +322,7 @@ const Smsetpp = props => {
       ),
       accessor: 'waersId',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      width: 70,
     },
     {
       Header: () => (
@@ -307,17 +338,180 @@ const Smsetpp = props => {
       accessor: 'premiumPriceTypeId',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
-    {
-      Header: () => <div style={{ textAlign: 'center' }}>Тип операции</div>,
-      accessor: 'revType',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-    },
-    {
-      Header: () => <div style={{ textAlign: 'center' }}>Автор</div>,
-      accessor: 'fullname',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-    },
   ];
+
+  const onClickEdit = value => {
+    setModalOpenEdit(true);
+    doGet(`smsetpp/${value}`).then(({ data }) => {
+      setDataEdit(data.data);
+    });
+  };
+
+  const onChangeEditModal = (value, fieldName) => {
+    let money = moneyInputHanler(value, 2);
+    let setValue = parseFloat(money);
+    switch (fieldName) {
+      //Компания
+      case 'bukrs':
+        setInformations({ ...informations, bukrs: value });
+        break;
+
+      //Страна
+      case 'countryId':
+        console.log('countryId', value);
+        setInformations({ ...informations, countryId: value });
+        break;
+
+      //Продукт
+      case 'productId':
+        console.log('productId', value);
+        setInformations({ ...informations, productId: value });
+        break;
+
+      //Вид сервиса
+      case 'serviceType':
+        console.log('serviceType', value);
+        setInformations({ ...informations, serviceTypeId: value });
+        break;
+
+      //Вид суммы
+      case 'typeOfSum':
+        console.log('typeOfSum', value);
+        setInformations({ ...informations, typeOfSum: value });
+        break;
+
+      //Дата начало
+      case 'dateStart':
+        console.log('date', value);
+        setInformations({ ...informations, dateStart: value });
+        break;
+
+      //FC
+      case 'fc':
+        console.log('fc', value);
+        setInformations({ ...informations, fc: parseInt(value) });
+        break;
+
+      //MC
+      case 'mc':
+        console.log('mc', value);
+        setInformations({ ...informations, mc: parseInt(value) });
+        break;
+
+      //Общая сумма
+      case 'total':
+        console.log('setValue total', setValue);
+        setInformations({
+          ...informations,
+          total: setValue,
+          office: parseFloat(
+            setValue -
+              (informations.master +
+                informations.operator +
+                informations.discount),
+          ),
+        });
+
+        break;
+
+      //Мастер сумма
+      case 'master':
+        setInformations({
+          ...informations,
+          master: setValue,
+          // office:
+          //   informations.total -
+          //   (parseInt(newVal) + informations.operator + informations.discount),
+
+          office: parseFloat(
+            informations.total -
+              (setValue + informations.operator + informations.discount),
+          ),
+        });
+
+        break;
+
+      //Оператор сумма
+      case 'operator':
+        setInformations({
+          ...informations,
+          operator: setValue,
+          office: parseFloat(
+            informations.total -
+              (setValue + informations.master + informations.discount),
+          ),
+        });
+
+        break;
+
+      //Скидка сумма
+      case 'discount':
+        setInformations({
+          ...informations,
+          discount: setValue,
+          // office:
+          //   informations.total -
+          //   (informations.master + informations.operator + parseInt(newVal)),
+          office: parseFloat(
+            informations.total -
+              (setValue + informations.master + informations.operator),
+          ),
+        });
+
+        break;
+
+      case 'saveEdit':
+        setModalOpenEdit(false);
+
+      // case 'total':
+      //   varTs.total = t;
+      //   varTs.office = parseFloat(
+      //     varTs.total - (varTs.master + varTs.operator + varTs.discount),
+      //   );
+      //   break;
+      // case 'master':
+      //   varTs.master = t;
+      //   varTs.office = parseFloat(
+      //     varTs.total - (varTs.master + varTs.operator + varTs.discount),
+      //   );
+      //   break;
+      // case 'operator':
+      //   varTs.operator = t;
+      //   varTs.office = parseFloat(
+      //     varTs.total - (varTs.master + varTs.operator + varTs.discount),
+      //   );
+      //   break;
+      // case 'discount':
+      //   varTs.discount = t;
+      //   varTs.office = parseFloat(
+      //     varTs.total - (varTs.master + varTs.operator + varTs.discount),
+      //   );
+      //   break;
+      // case 'office':
+      //   varTs.total = t;
+      // default:
+      //   return varTs;
+    }
+  };
+
+  const onhandleCancel = () => {
+    setModalOpenEdit(false);
+    //setTest(false);
+    setInformations({});
+  };
+
+  useEffect(() => {
+    if (informations.serviceTypeId === 1) {
+      setStatusServiceType(false);
+    } else {
+      setStatusServiceType(true);
+      setInformations({
+        ...informations,
+        fc: 0,
+        mc: 0,
+      });
+    }
+  }, [informations.serviceTypeId]);
 
   return (
     <Segment>
@@ -400,6 +594,7 @@ const Smsetpp = props => {
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
             },
+
             {
               Header: () => (
                 <div style={{ textAlign: 'center' }}>{messages['bukrs']}</div>
@@ -539,17 +734,11 @@ const Smsetpp = props => {
               filterable: false,
               Cell: ({ row }) => (
                 <div style={{ textAlign: 'center' }}>
-                  <EditModal
-                    param={
-                      search.bukrs !== 0 && search.countryId !== 0
-                        ? search
-                        : null
-                    }
-                    row={row}
-                    serviceTypeOptions={serviceTypeOptions}
-                    productList={productList}
-                    getProductOptions={getProductOptions}
-                    getProduct
+                  <Button
+                    color="blue"
+                    inverted
+                    icon="edit"
+                    onClick={() => onClickEdit(row.id)}
                   />
                 </div>
               ),
@@ -569,6 +758,17 @@ const Smsetpp = props => {
           pageSize={smsetppHistory.length < 10 ? smsetppHistory.length : 10}
           showPagination={true}
           pageSizeOptions={[10, 20, 30, 40]}
+        />
+        <EditModal
+          param={search.bukrs !== 0 && search.countryId !== 0 ? search : null}
+          informations={informations}
+          serviceTypeOptions={serviceTypeOptions}
+          productList={productList}
+          getProductOptions={getProductOptions}
+          getProduct
+          modalOpenEdit={modalOpenEdit}
+          onChangeEditModal={onChangeEditModal}
+          onhandleCancel={onhandleCancel}
         />
       </div>
     </Segment>
