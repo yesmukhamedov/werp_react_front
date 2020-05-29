@@ -306,6 +306,7 @@ export function fetchProductListSmsetct(param) {
     dispatch(modifyLoader(true));
     doGet(`smsetct/getProductList`, param)
       .then(({ data }) => {
+        dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_PRODUCT_LIST_SMSETCT,
           payload: data.data,

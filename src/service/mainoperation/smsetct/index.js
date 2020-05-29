@@ -77,11 +77,6 @@ const Smsetct = props => {
     clearDynObjService();
     if (!countryList || countryList.length === 0) props.f4FetchCountryList();
   }, []);
-  useEffect(() => {
-    console.log('sdfjkeoijfe');
-    if (postParams.bukrs)
-      props.fetchProductListSmsetct({ bukrs: postParams.bukrs });
-  }, [postParams.bukrs]);
 
   const searchInput = o => {
     setSearchParams({ bukrs: o.value });
@@ -128,6 +123,7 @@ const Smsetct = props => {
             setMessg({ ...messages });
           }
           vars.bukrs = o.value;
+          props.fetchProductListSmsetct({ bukrs: o.value });
           errors.bukrs = o.value ? false : true;
 
           break;
