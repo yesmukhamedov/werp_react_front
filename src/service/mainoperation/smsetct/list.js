@@ -15,22 +15,22 @@ import {
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 export default function List(props) {
   const {
-    messages,
-    companyOptions,
-    branchOptions,
-    countryList,
-    dynamicObject,
-    historyDynamicObject,
-    getCountryOptions,
-    getProductOptions,
-    productList,
-    fetchSmsetct,
-    editSmsetct,
-    searchParams,
-    getBranchOptions,
-    validateEdit,
-    setPostParams,
-    postParams,
+    messages = [],
+    companyOptions = [],
+    branchOptions = [],
+    countryList = [],
+    dynamicObject = [],
+    historyDynamicObject = [],
+    getCountryOptions = [],
+    getProductOptions = [],
+    productList = [],
+    fetchSmsetct = [],
+    editSmsetct = [],
+    searchParams = [],
+    getBranchOptions = [],
+    validateEdit = [],
+    setPostParams = [],
+    postParams = [],
     searchArray = [],
   } = props;
 
@@ -39,12 +39,6 @@ export default function List(props) {
   const [oldSmsetctEdit, setOldSmsetctEdit] = useState({});
   const [open, setOpen] = useState(false);
   const [messg, setMessg] = useState({ messgBrnch: false, messgMatnr: false });
-
-  useEffect(() => {
-    if (editParams.bukrs) {
-      setPostParams({ ...postParams, bukrs: editParams.bukrs });
-    }
-  }, [editParams.bukrs]);
 
   const openEdit = row_data => {
     setEditParams(prop => {
@@ -193,12 +187,21 @@ export default function List(props) {
       (Object.keys(errs).length === 0 &&
         JSON.stringify(oldSmsetctEdit) !== JSON.stringify(editParams))
     ) {
-      editSmsetct({ ...editParams }, () => {
-        setOpen(false);
-        setMessg({});
-        setErrorsEdit({});
-        fetchSmsetct(searchParams, searchArray);
-      });
+      if (editParams.matnr === 'all') {
+        editSmsetct({ ...editParams, matnr: null }, () => {
+          setOpen(false);
+          setMessg({});
+          setErrorsEdit({});
+          fetchSmsetct(searchParams, searchArray);
+        });
+      } else {
+        editSmsetct({ ...editParams }, () => {
+          setOpen(false);
+          setMessg({});
+          setErrorsEdit({});
+          fetchSmsetct(searchParams, searchArray);
+        });
+      }
     }
     setErrorsEdit({ ...errs });
   };
@@ -211,8 +214,8 @@ export default function List(props) {
       // ROBOCLEAN-114F не равен на ROBOCLEAN 114F  отличается. "-" тире после ROBOCLEAN
       if (productName === 'ROBOCLEAN-114K SPlus') productName = 817; // 817 код продукта Roboclean 114K SPLUS
       if (productName === 'ROBOCLEAN-114F') productName = 1;
+      if (productName === 'All') productName = 'all';
       else {
-        console.log(productName, productList);
         var matnrID = productList.find(
           ({ text45 }) => productName.toUpperCase() === text45.toUpperCase(),
         );

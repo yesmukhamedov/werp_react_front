@@ -78,6 +78,7 @@ const Smsetct = props => {
     if (!countryList || countryList.length === 0) props.f4FetchCountryList();
   }, []);
   useEffect(() => {
+    console.log('sdfjkeoijfe');
     if (postParams.bukrs)
       props.fetchProductListSmsetct({ bukrs: postParams.bukrs });
   }, [postParams.bukrs]);
@@ -92,6 +93,7 @@ const Smsetct = props => {
     let srchErrs = validateSearch();
     if (!srchErrs & (srchErrs !== '')) {
       fetchSmsetct({ ...searchParams }, searchArray);
+      props.fetchProductListSmsetct({ bukrs: searchParams.bukrs });
     }
   };
 
@@ -271,9 +273,7 @@ const Smsetct = props => {
     if (obj.branchId === null || obj.branchId === undefined || !obj.branchId) {
       errors.branchId = true;
     }
-    if (obj.matnr === null || obj.matnr === undefined || !obj.matnr) {
-      errors.matnr = true;
-    }
+
     if (obj.f1 === null || obj.f1 === undefined || !obj.f1) {
       errors.f1 = true;
     }

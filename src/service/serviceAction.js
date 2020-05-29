@@ -262,10 +262,14 @@ export function fetchDynObjService(url, params) {
   };
 }
 export function fetchSmsetct(searchParams, searchArray) {
-  console.log(searchArray);
-  let queryString = Object.keys(searchArray)
-    .map(key => 'branchId=' + searchArray[key].branchId)
-    .join('&');
+  console.log('searchParams', searchParams);
+  console.log('searchArray', searchArray);
+  let queryString = '';
+  if (searchArray !== undefined) {
+    queryString = Object.keys(searchArray)
+      .map(key => 'branchId=' + searchArray[key].branchId)
+      .join('&');
+  }
   return dispatch => {
     dispatch(modifyLoader(true));
     doGet(`smsetct/view?direction=DESC&orderBy=id&${queryString}`, searchParams)
