@@ -402,7 +402,6 @@ const Smcrld = props => {
                     : stringYYYYMMDDToMoment(param.dateAt)
                 }
                 onChange={date => props.onInputChange(date, 'date')}
-                maxDate={moment(new Date())}
                 dateFormat="DD.MM.YYYY"
                 showMonthYearPicker
               />
