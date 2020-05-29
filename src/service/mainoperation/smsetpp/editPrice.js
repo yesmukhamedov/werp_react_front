@@ -88,9 +88,9 @@ const EditModal = props => {
 
   const onhandleSave = () => {
     setTest(true);
-    const { bukrs, total, countryId, dateStart } = informations;
+    const { bukrs, countryId, dateStart } = informations;
 
-    if (bukrs !== '' && total !== 0 && countryId !== 0 && dateStart !== '') {
+    if (bukrs !== '' && countryId !== 0 && dateStart !== '') {
       setTest(false);
 
       onChangeEditModal1(false, 'saveEdit');
