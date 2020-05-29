@@ -185,11 +185,10 @@ const AddPrice = props => {
 
   const onhandleAdd = () => {
     setTest(true);
-    const { bukrs, total, country, dateStart, serviceTypeId } = informations;
+    const { bukrs, country, dateStart, serviceTypeId } = informations;
 
     if (
       bukrs !== '' &&
-      total !== 0 &&
       country !== '' &&
       dateStart !== '' &&
       serviceTypeId !== null
@@ -321,9 +320,7 @@ const AddPrice = props => {
                     //onChange={(e)=>setInformations({...informations, total:e.target.value })}
                     onChange={e => onInputChange('total', e)}
                     //value={moneyFormat(informations.total)}
-                    error={
-                      test === true && informations.total === 0 ? true : false
-                    }
+                    error={test === true ? true : false}
                     required
                   />
                 </Table.Cell>

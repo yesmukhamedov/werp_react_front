@@ -346,10 +346,7 @@ const Smsetpp = props => {
       setDataEdit(data.data);
     });
   };
-
-  const onChangeEditModal = (value, fieldName) => {
-    let money = moneyInputHanler(value, 2);
-    let setValue = parseFloat(money);
+  const onChangeEditModal1 = (value, fieldName) => {
     switch (fieldName) {
       //Компания
       case 'bukrs':
@@ -369,8 +366,8 @@ const Smsetpp = props => {
         break;
 
       //Вид сервиса
-      case 'serviceType':
-        console.log('serviceType', value);
+      case 'serviceTypeIdEdit':
+        console.log('serviceTypeIdEdit', value);
         setInformations({ ...informations, serviceTypeId: value });
         break;
 
@@ -398,6 +395,15 @@ const Smsetpp = props => {
         setInformations({ ...informations, mc: parseInt(value) });
         break;
 
+      case 'saveEdit':
+        setModalOpenEdit(false);
+    }
+  };
+
+  const onChangeEditModal = (value, fieldName) => {
+    let money = moneyInputHanler(value, 2);
+    let setValue = parseFloat(money);
+    switch (fieldName) {
       //Общая сумма
       case 'total':
         console.log('setValue total', setValue);
@@ -459,38 +465,6 @@ const Smsetpp = props => {
         });
 
         break;
-
-      case 'saveEdit':
-        setModalOpenEdit(false);
-
-      // case 'total':
-      //   varTs.total = t;
-      //   varTs.office = parseFloat(
-      //     varTs.total - (varTs.master + varTs.operator + varTs.discount),
-      //   );
-      //   break;
-      // case 'master':
-      //   varTs.master = t;
-      //   varTs.office = parseFloat(
-      //     varTs.total - (varTs.master + varTs.operator + varTs.discount),
-      //   );
-      //   break;
-      // case 'operator':
-      //   varTs.operator = t;
-      //   varTs.office = parseFloat(
-      //     varTs.total - (varTs.master + varTs.operator + varTs.discount),
-      //   );
-      //   break;
-      // case 'discount':
-      //   varTs.discount = t;
-      //   varTs.office = parseFloat(
-      //     varTs.total - (varTs.master + varTs.operator + varTs.discount),
-      //   );
-      //   break;
-      // case 'office':
-      //   varTs.total = t;
-      // default:
-      //   return varTs;
     }
   };
 
@@ -769,6 +743,7 @@ const Smsetpp = props => {
           modalOpenEdit={modalOpenEdit}
           onChangeEditModal={onChangeEditModal}
           onhandleCancel={onhandleCancel}
+          onChangeEditModal1={onChangeEditModal1}
         />
       </div>
     </Segment>

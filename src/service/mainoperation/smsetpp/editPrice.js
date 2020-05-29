@@ -55,6 +55,7 @@ const EditModal = props => {
     modalOpenEdit,
     informations = {},
     onhandleCancel,
+    onChangeEditModal1,
   } = props;
 
   useEffect(() => {
@@ -92,7 +93,7 @@ const EditModal = props => {
     if (bukrs !== '' && total !== 0 && countryId !== 0 && dateStart !== '') {
       setTest(false);
 
-      onChangeEditModal(false, 'saveEdit');
+      onChangeEditModal1(false, 'saveEdit');
       //setModalOpen(false);
       fetchSmsetppPut({ ...informations }, () => {
         fetchSmsetpp(param);
@@ -111,6 +112,10 @@ const EditModal = props => {
     };
   });
 
+  const onChangeEditModalRR = (value, fieldName) => {
+    console.log(`${fieldName}`, value);
+  };
+
   return (
     <Modal open={modalOpenEdit}>
       <Header content={messages['toEdit']} id="modalHeader" />
@@ -119,6 +124,7 @@ const EditModal = props => {
           <Table celled>
             <Table.Body>
               <Table.Row>
+                {/*Общая сумма*/}
                 <Table.Cell>
                   <Form.Select
                     required
@@ -128,7 +134,7 @@ const EditModal = props => {
                     options={companyOptions}
                     value={informations.bukrs}
                     onChange={(e, { value }) =>
-                      onChangeEditModal(value, 'bukrs')
+                      onChangeEditModal1(value, 'bukrs')
                     }
                     error={
                       test === true && informations.bukrs === '' ? true : false
@@ -149,6 +155,7 @@ const EditModal = props => {
                   />
                 </Table.Cell>
               </Table.Row>
+
               <Table.Row>
                 <Table.Cell>
                   <Form.Select
@@ -159,7 +166,7 @@ const EditModal = props => {
                     label={messages['country']}
                     placeholder={messages['country']}
                     onChange={(e, { value }) =>
-                      onChangeEditModal(value, 'countryId')
+                      onChangeEditModal1(value, 'countryId')
                     }
                     error={test === true ? true : false}
                     required
@@ -185,8 +192,8 @@ const EditModal = props => {
                     selection
                     value={informations.productId}
                     options={productOptions}
-                    onChange={(e, value) =>
-                      onChangeEditModal(value.value, 'productId')
+                    onChange={(e, { value }) =>
+                      onChangeEditModal1(value, 'productId')
                     }
                   />
                 </Table.Cell>
@@ -208,17 +215,15 @@ const EditModal = props => {
                 <Table.Cell>
                   <Form.Field>
                     <label>{messages['typeOfService']}</label>
-                    <Form.Select
+
+                    <Dropdown
                       fluid
-                      placeholder="State"
-                      clearable="true"
                       selection
-                      value={parseInt(informations.serviceTypeId)}
+                      value={informations.serviceTypeId}
                       options={serviceTypeOptions}
                       onChange={(e, { value }) =>
-                        onChangeEditModal(value, 'serviceType')
+                        onChangeEditModal1(value, 'serviceTypeIdEdit')
                       }
-                      placeholder={messages['typeOfService']}
                     />
                   </Form.Field>
                 </Table.Cell>
@@ -246,7 +251,7 @@ const EditModal = props => {
                     value={moneyFormat(informations.fc)}
                     onFocus={handleFocus}
                     onChange={(e, value) =>
-                      onChangeEditModal(e.target.value, 'fc')
+                      onChangeEditModal1(e.target.value, 'fc')
                     }
                   />
                 </Table.Cell>
@@ -273,7 +278,7 @@ const EditModal = props => {
                     value={moneyFormat(informations.mc)}
                     onFocus={handleFocus}
                     onChange={(e, value) =>
-                      onChangeEditModal(e.target.value, 'mc')
+                      onChangeEditModal1(e.target.value, 'mc')
                     }
                   />
                 </Table.Cell>
@@ -292,7 +297,7 @@ const EditModal = props => {
                           informations.dateStart,
                         )}
                         onChange={date =>
-                          onChangeEditModal(
+                          onChangeEditModal1(
                             momentToStringYYYYMMDD(date),
                             'dateStart',
                           )
@@ -318,9 +323,9 @@ const EditModal = props => {
                     <Form.Select
                       placeholder={messages['typeOfAmount']}
                       selection
-                      value={informations.premiumPriceTypeId}
+                      value={informations.typeOfSum}
                       onChange={(e, { value }) =>
-                        onChangeEditModal(value, 'typeOfSum')
+                        onChangeEditModal1(value, 'typeOfSum')
                       }
                       options={premiumPriceTypeId}
                     />
