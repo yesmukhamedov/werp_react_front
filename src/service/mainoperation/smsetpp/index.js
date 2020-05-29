@@ -473,12 +473,13 @@ const Smsetpp = props => {
     //setTest(false);
     setInformations({});
   };
+  const [statusServiceTypeEdit, setStatusServiceTypeEdit] = useState(false);
 
   useEffect(() => {
     if (informations.serviceTypeId === 1) {
-      setStatusServiceType(false);
+      setStatusServiceTypeEdit(false);
     } else {
-      setStatusServiceType(true);
+      setStatusServiceTypeEdit(true);
       setInformations({
         ...informations,
         fc: 0,
@@ -744,6 +745,7 @@ const Smsetpp = props => {
           onChangeEditModal={onChangeEditModal}
           onhandleCancel={onhandleCancel}
           onChangeEditModal1={onChangeEditModal1}
+          statusServiceTypeEdit={statusServiceTypeEdit}
         />
       </div>
     </Segment>

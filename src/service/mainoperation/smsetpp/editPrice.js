@@ -56,6 +56,7 @@ const EditModal = props => {
     informations = {},
     onhandleCancel,
     onChangeEditModal1,
+    statusServiceTypeEdit,
   } = props;
 
   useEffect(() => {
@@ -101,8 +102,6 @@ const EditModal = props => {
       });
     }
   };
-
-  const [statusServiceType, setStatusServiceType] = useState(false);
 
   const productOptions = smsetppProductList.map(item => {
     return {
@@ -244,7 +243,7 @@ const EditModal = props => {
               <Table.Row>
                 <Table.Cell>
                   <Form.Field
-                    disabled={statusServiceType}
+                    disabled={statusServiceTypeEdit}
                     control={Input}
                     label={`FC(${messages['Table.Amount']})`}
                     placeholder="Number..."
@@ -271,7 +270,7 @@ const EditModal = props => {
               <Table.Row>
                 <Table.Cell>
                   <Form.Field
-                    disabled={statusServiceType}
+                    disabled={statusServiceTypeEdit}
                     control={Input}
                     label={`MC(${messages['Table.Amount']})`}
                     placeholder="Number..."
