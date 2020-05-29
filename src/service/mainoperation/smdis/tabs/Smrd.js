@@ -122,9 +122,9 @@ const Smrd = props => {
     props.postRedistSmrdOperator({ ...params }, toOperators, () =>
       props.fetchSmrdOperator({ ...operatorParam }),
     );
-
     setOperatorData();
   };
+
   const setOperatorData = () => {
     if (data.toOperators.length !== 0) {
       setState(
@@ -164,6 +164,9 @@ const Smrd = props => {
         }),
       );
       setshowTable(true);
+    } else {
+      setshowTable(false);
+      setState([]);
     }
   };
 

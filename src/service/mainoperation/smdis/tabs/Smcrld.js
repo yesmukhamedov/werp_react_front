@@ -358,6 +358,12 @@ const Smcrld = props => {
     setColumns([...data]);
   };
 
+  let ddd = initialColumns.map(item => {
+    return {
+      columns: item.columns,
+    };
+  });
+
   return (
     <Container fluid>
       <Form>
@@ -414,7 +420,9 @@ const Smcrld = props => {
 
           <Form.Field className="alignBottom">
             <ModalColumns
-              columns={initialColumns}
+              columns={initialColumns.map(item => {
+                return { columns: item.columns };
+              })}
               finishColumns={finishColumns}
             />
           </Form.Field>
