@@ -16,6 +16,10 @@ const Smrd = props => {
     clickAddOperator = [],
     operatorsByBranch = [],
     params,
+    setState,
+    state = [],
+    setshowTable,
+    showTable = [],
   } = props;
 
   const operatorOptions = operatorsByBranch.map(item => {
@@ -25,9 +29,6 @@ const Smrd = props => {
       value: item.staffId,
     };
   });
-
-  const [state, setState] = useState([]);
-  const [showTable, setshowTable] = useState(false);
 
   const addOperatorRow = () => {
     if (operatorOptions.length > state.length || operatorOptions.length === 0) {
