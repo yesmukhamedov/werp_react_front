@@ -269,7 +269,6 @@ const Smsetct = props => {
     if (obj.branchId === null || obj.branchId === undefined || !obj.branchId) {
       errors.branchId = true;
     }
-
     if (obj.f1 === null || obj.f1 === undefined || !obj.f1) {
       errors.f1 = true;
     }
@@ -404,7 +403,8 @@ const Smsetct = props => {
                         onChange={(e, o) => changePostInput(o, 'F1')}
                         control={Input}
                         label={
-                          messages['configuration'] + ' F-1' + messages['monat']
+                          messages['configuration'] +
+                          ` F-1 (${messages['monat']})`
                         }
                         placeholder="0"
                       />
@@ -412,7 +412,8 @@ const Smsetct = props => {
                         onChange={(e, o) => changePostInput(o, 'F2')}
                         control={Input}
                         label={
-                          messages['configuration'] + ' F-2' + messages['monat']
+                          messages['configuration'] +
+                          ` F-2 (${messages['monat']})`
                         }
                         placeholder="0"
                       />
@@ -420,7 +421,8 @@ const Smsetct = props => {
                         onChange={(e, o) => changePostInput(o, 'F3')}
                         control={Input}
                         label={
-                          messages['configuration'] + ' F-3' + messages['monat']
+                          messages['configuration'] +
+                          ` F-3 (${messages['monat']})`
                         }
                         placeholder="0"
                       />
@@ -428,7 +430,8 @@ const Smsetct = props => {
                         onChange={(e, o) => changePostInput(o, 'F4')}
                         control={Input}
                         label={
-                          messages['configuration'] + ' F-4' + messages['monat']
+                          messages['configuration'] +
+                          ` F-4 (${messages['monat']})`
                         }
                         placeholder="0"
                       />
@@ -436,23 +439,28 @@ const Smsetct = props => {
                         onChange={(e, o) => changePostInput(o, 'F5')}
                         control={Input}
                         label={
-                          messages['configuration'] + ' F-5' + messages['monat']
+                          messages['configuration'] +
+                          ` F-5 (${messages['monat']})`
                         }
                         placeholder="0"
                       />
                       <Form.Field
+                        disabled
                         onChange={(e, o) => changePostInput(o, 'F6')}
                         control={Input}
                         label={
-                          messages['configuration'] + ' F-6' + messages['monat']
+                          messages['configuration'] +
+                          ` F-6 (${messages['monat']})`
                         }
                         placeholder="0"
                       />
                       <Form.Field
+                        disabled
                         onChange={(e, o) => changePostInput(o, 'F7')}
                         control={Input}
                         label={
-                          messages['configuration'] + ' F-7' + messages['monat']
+                          messages['configuration'] +
+                          ` F-7 (${messages['monat']})`
                         }
                         placeholder="0"
                       />
@@ -532,7 +540,6 @@ const Smsetct = props => {
           searchParams={searchParams}
           fetchSmsetct={fetchSmsetct}
           getBranchOptions={getBranchOptions}
-          validateEdit={validateAdd}
           setPostParams={setPostParams}
           postParams={postParams}
           searchArray={searchArray}

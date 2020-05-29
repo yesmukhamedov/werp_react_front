@@ -28,7 +28,6 @@ export default function List(props) {
     editSmsetct = [],
     searchParams = [],
     getBranchOptions = [],
-    validateEdit = [],
     setPostParams = [],
     postParams = [],
     searchArray = [],
@@ -204,6 +203,50 @@ export default function List(props) {
       }
     }
     setErrorsEdit({ ...errs });
+  };
+
+  const validateEdit = obj => {
+    const errors = {};
+    if (
+      obj.countryId === null ||
+      obj.countryId === undefined ||
+      !obj.countryId
+    ) {
+      errors.countryId = true;
+    }
+    if (obj.bukrs === null || obj.bukrs === undefined || !obj.bukrs) {
+      errors.bukrs = true;
+    }
+    if (obj.branchId === null || obj.branchId === undefined || !obj.branchId) {
+      errors.branchId = true;
+    }
+    if (obj.matnr === null || obj.matnr === undefined || !obj.matnr) {
+      errors.matnr = true;
+    }
+    if (obj.f1 === null || obj.f1 === undefined || !obj.f1) {
+      errors.f1 = true;
+    }
+    if (obj.f2 === null || obj.f2 === undefined || !obj.f2) {
+      errors.f2 = true;
+    }
+    if (obj.f3 === null || obj.f3 === undefined || !obj.f3) {
+      errors.f3 = true;
+    }
+    if (obj.f4 === null || obj.f4 === undefined || !obj.f4) {
+      errors.f4 = true;
+    }
+    if (obj.f5 === null || obj.f5 === undefined || !obj.f5) {
+      errors.f5 = true;
+    }
+    if (
+      obj.description === null ||
+      obj.description === undefined ||
+      !obj.description
+    ) {
+      errors.description = true;
+    }
+
+    return errors;
   };
 
   // Получить ID Продукта через text
@@ -501,7 +544,9 @@ export default function List(props) {
                     ''
                   )}
                   <Form.Field
+                    required
                     control={Input}
+                    error={errorsEdit.description ? true : false}
                     label={messages['Table.Note']}
                     defaultValue={editParams.description}
                     onChange={(e, o) => handleEdit(o, 'description')}
@@ -512,47 +557,63 @@ export default function List(props) {
                   <Form.Field
                     error={errorsEdit.f1 ? true : false}
                     control={Input}
-                    label={messages['configuration'] + ' F-1'}
+                    label={
+                      messages['configuration'] + `F-1 (${messages['monat']})`
+                    }
                     defaultValue={editParams.f1}
                     onChange={(e, o) => handleEdit(o, 'F1')}
                   />
                   <Form.Field
                     error={errorsEdit.f2 ? true : false}
                     control={Input}
-                    label={messages['configuration'] + ' F-2'}
+                    label={
+                      messages['configuration'] + `F-2 (${messages['monat']})`
+                    }
                     defaultValue={editParams.f2}
                     onChange={(e, o) => handleEdit(o, 'F2')}
                   />
                   <Form.Field
                     error={errorsEdit.f3 ? true : false}
                     control={Input}
-                    label={messages['configuration'] + ' F-3'}
+                    label={
+                      messages['configuration'] + `F-3 (${messages['monat']})`
+                    }
                     defaultValue={editParams.f3}
                     onChange={(e, o) => handleEdit(o, 'F3')}
                   />
                   <Form.Field
                     error={errorsEdit.f4 ? true : false}
                     control={Input}
-                    label={messages['configuration'] + ' F-4'}
+                    label={
+                      messages['configuration'] + `F-4 (${messages['monat']})`
+                    }
                     defaultValue={editParams.f4}
                     onChange={(e, o) => handleEdit(o, 'F4')}
                   />
                   <Form.Field
                     error={errorsEdit.f5 ? true : false}
                     control={Input}
-                    label={messages['configuration'] + ' F-5'}
+                    label={
+                      messages['configuration'] + `F-5 (${messages['monat']})`
+                    }
                     defaultValue={editParams.f5}
                     onChange={(e, o) => handleEdit(o, 'F5')}
                   />
                   <Form.Field
+                    disabled
                     control={Input}
-                    label={messages['configuration'] + ' F-6'}
+                    label={
+                      messages['configuration'] + `F-6 (${messages['monat']})`
+                    }
                     defaultValue={editParams.f6}
                     onChange={(e, o) => handleEdit(o, 'F6')}
                   />
                   <Form.Field
+                    disabled
                     control={Input}
-                    label={messages['configuration'] + ' F-7'}
+                    label={
+                      messages['configuration'] + `F-7 (${messages['monat']})`
+                    }
                     defaultValue={editParams.f7}
                     onChange={(e, o) => handleEdit(o, 'F7')}
                   />
