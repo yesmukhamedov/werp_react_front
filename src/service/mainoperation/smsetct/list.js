@@ -369,6 +369,12 @@ export default function List(props) {
       filterAll: true,
     },
     {
+      Header: messages['changed_by_employee'],
+      accessor: 'fullname',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterAll: true,
+    },
+    {
       Header: messages['Form.Date'],
       accessor: 'revsttmp',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
@@ -434,13 +440,6 @@ export default function List(props) {
     {
       Header: messages['Table.Note'],
       accessor: 'description',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      filterAll: true,
-    },
-
-    {
-      Header: messages['changed_by_employee'],
-      accessor: 'fullname',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterAll: true,
     },
