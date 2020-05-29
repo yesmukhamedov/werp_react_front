@@ -45,7 +45,7 @@ const Smsetct = props => {
     f5: '',
     f6: '',
     f7: '',
-    matnr: 0,
+    matnr: null,
   };
 
   const [searchError, setSearchError] = useState('');
@@ -219,8 +219,8 @@ const Smsetct = props => {
           bukrs: postParams.bukrs,
           branchId: postParams.branchId,
         });
+        clearState();
       });
-      clearState();
     }
     setPostErrors({ ...errors });
   };
