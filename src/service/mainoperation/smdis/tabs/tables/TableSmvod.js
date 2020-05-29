@@ -202,7 +202,7 @@ const TableSmvod = props => {
     <ReactTableWrapper
       data={data}
       columns={columns}
-      defaultPageSize={10}
+      defaultPageSize={20}
       showPagination
     />
   );

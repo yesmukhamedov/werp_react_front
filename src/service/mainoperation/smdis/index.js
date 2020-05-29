@@ -11,7 +11,7 @@ import {
   postSmrdOperatorsByBranch,
 } from './smdisAction';
 import { errorTableText } from '../../../utils/helpers';
-import { Container, Tab, Menu, Label } from 'semantic-ui-react';
+import { Container, Tab, Menu, Label, Header } from 'semantic-ui-react';
 
 import '../../service.css';
 import './style.css';
@@ -136,7 +136,7 @@ const Smdis = props => {
     {
       menuItem: (
         <Menu.Item key={0} onClick={() => setDefaultPane(0)}>
-          Распределение списка замена картриджа
+          {messages['cartridge_replacement_distribution']}
         </Menu.Item>
       ),
       pane: (
@@ -193,6 +193,9 @@ const Smdis = props => {
         paddingRight: '2em',
       }}
     >
+      <Header as="h2" floated="left">
+        {messages['cartridge_replacement_distribution']}
+      </Header>
       <Tab
         activeIndex={defaultPane}
         menu={{ attached: true, tabular: false, pointing: true }}

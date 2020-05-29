@@ -59,10 +59,6 @@ const Smcrld = props => {
     {
       columns: [
         {
-          Header: 'Id',
-          accessor: 'id',
-        },
-        {
           Header: 'Страна',
           accessor: 'countryName',
         },

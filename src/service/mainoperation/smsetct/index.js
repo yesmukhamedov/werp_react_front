@@ -269,21 +269,6 @@ const Smsetct = props => {
     if (obj.branchId === null || obj.branchId === undefined || !obj.branchId) {
       errors.branchId = true;
     }
-    if (obj.f1 === null || obj.f1 === undefined || !obj.f1) {
-      errors.f1 = true;
-    }
-    if (obj.f2 === null || obj.f2 === undefined || !obj.f2) {
-      errors.f2 = true;
-    }
-    if (obj.f3 === null || obj.f3 === undefined || !obj.f3) {
-      errors.f3 = true;
-    }
-    if (obj.f4 === null || obj.f4 === undefined || !obj.f4) {
-      errors.f4 = true;
-    }
-    if (obj.f5 === null || obj.f5 === undefined || !obj.f5) {
-      errors.f5 = true;
-    }
     return errors;
   };
   return (

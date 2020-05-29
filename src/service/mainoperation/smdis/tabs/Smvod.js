@@ -11,6 +11,7 @@ const Smvod = props => {
     <Container fluid>
       <TableSmvod
         data={smvod.listData}
+        pageSize={smvod.length ? smvod.length : 20}
         footerData={smvod.listSum}
         clickSmvodRow={clickSmvodRow}
       />

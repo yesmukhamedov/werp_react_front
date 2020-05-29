@@ -253,11 +253,12 @@ export default function List(props) {
 
   const getProductId = (products, productName) => {
     if (productName !== null && products) {
+      console.log(productName);
       //ROBOCLEAN-114K SPlus это исключения в списке Roboclean 114K SPLUS  а в базе ROBOCLEAN-114K SPlus "-" тире
       // ROBOCLEAN-114F не равен на ROBOCLEAN 114F  отличается. "-" тире после ROBOCLEAN
       if (productName === 'ROBOCLEAN-114K SPlus') productName = 817; // 817 код продукта Roboclean 114K SPLUS
       if (productName === 'ROBOCLEAN-114F') productName = 1;
-      if (productName === 'All') productName = 'all';
+      if (productName === 'All' || productName === 'Все') productName = 'all';
       else {
         var matnrID = productList.find(
           ({ text45 }) => productName.toUpperCase() === text45.toUpperCase(),
