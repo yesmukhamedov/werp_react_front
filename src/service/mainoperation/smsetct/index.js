@@ -13,6 +13,7 @@ import {
   editSmsetct,
   clearDynObjService,
   applySmsetct,
+  fetchProductListSmsetct,
 } from '../../serviceAction';
 import { connect } from 'react-redux';
 import List from './list';
@@ -32,10 +33,25 @@ const Smsetct = props => {
   const emptySearch = {
     bukrs: '',
   };
+  const emptyParams = {
+    branchId: '',
+    bukrs: '',
+    countryId: '',
+    description: '',
+    f2: '',
+    f1: '',
+    f3: '',
+    f4: '',
+    f5: '',
+    f6: '',
+    f7: '',
+    matnr: 0,
+  };
 
   const [searchError, setSearchError] = useState('');
-  const [postParams, setPostParams] = useState({});
+  const [postParams, setPostParams] = useState({ ...emptyParams });
   const [searchParams, setSearchParams] = useState({ ...emptySearch });
+  const [searchArray, setSearchArray] = useState([]);
   const [show, setShow] = useState(false);
   const [postErrors, setPostErrors] = useState({});
   const [selectedBranches, setSelectedBranches] = useState([]);
@@ -59,7 +75,6 @@ const Smsetct = props => {
   //componentDidMount
   useEffect(() => {
     clearDynObjService();
-    if (!productList || productList.length === 0) props.f4FetchConTypeList();
     if (!countryList || countryList.length === 0) props.f4FetchCountryList();
   }, []);
 
@@ -72,7 +87,8 @@ const Smsetct = props => {
   const clickSearch = () => {
     let srchErrs = validateSearch();
     if (!srchErrs & (srchErrs !== '')) {
-      fetchSmsetct({ ...searchParams });
+      fetchSmsetct({ ...searchParams }, searchArray);
+      props.fetchProductListSmsetct({ bukrs: searchParams.bukrs });
     }
   };
 
@@ -107,6 +123,7 @@ const Smsetct = props => {
             setMessg({ ...messages });
           }
           vars.bukrs = o.value;
+          props.fetchProductListSmsetct({ bukrs: o.value });
           errors.bukrs = o.value ? false : true;
 
           break;
@@ -134,6 +151,9 @@ const Smsetct = props => {
 
         case 'matnr':
           vars.matnr = o.value;
+          if (o.value === 'all') {
+            vars.matnr = null;
+          }
           errors.matnr = o.value ? false : true;
           messages.messgBrnch = messg.messgBrnch;
           messages.messgMatnr = false;
@@ -200,6 +220,7 @@ const Smsetct = props => {
           branchId: postParams.branchId,
         });
       });
+      clearState();
     }
     setPostErrors({ ...errors });
   };
@@ -214,6 +235,23 @@ const Smsetct = props => {
     setShow(false);
     setMessg({});
     setPostErrors({});
+  };
+
+  const clearState = () => {
+    setPostParams({
+      branchId: '',
+      bukrs: '',
+      countryId: '',
+      description: '',
+      f2: '',
+      f1: '',
+      f3: '',
+      f4: '',
+      f5: '',
+      f6: '',
+      f7: '',
+      matnr: 0,
+    });
   };
 
   const validateAdd = obj => {
@@ -231,9 +269,7 @@ const Smsetct = props => {
     if (obj.branchId === null || obj.branchId === undefined || !obj.branchId) {
       errors.branchId = true;
     }
-    if (obj.matnr === null || obj.matnr === undefined || !obj.matnr) {
-      errors.matnr = true;
-    }
+
     if (obj.f1 === null || obj.f1 === undefined || !obj.f1) {
       errors.f1 = true;
     }
@@ -251,7 +287,6 @@ const Smsetct = props => {
     }
     return errors;
   };
-
   return (
     <div>
       <Container
@@ -290,6 +325,7 @@ const Smsetct = props => {
           <Modal
             open={show}
             closeIcon
+            size={'small'}
             onClose={() => {
               setShow(false);
               setMessg({});
@@ -297,7 +333,7 @@ const Smsetct = props => {
             }}
           >
             <Modal.Header>
-              <h3>{messages['add_cartridge']}</h3>
+              <h2 align="center">{messages['add_cartridge']}</h2>
             </Modal.Header>
             <Modal.Content>
               <Segment>
@@ -343,26 +379,19 @@ const Smsetct = props => {
                       ) : (
                         ''
                       )}
-                      <label>{messages['TBL_H__PRODUCT']}</label>
-                      <Dropdown
-                        search
-                        selection
-                        error={postErrors.matnr ? true : false}
-                        options={getProductOptions(
-                          productList,
-                          postParams.bukrs,
-                          postParams.countryId,
-                          postParams.branchId,
-                        )}
-                        onChange={(e, o) => changePostInput(o, 'matnr')}
-                      />
-                      {messg.messgMatnr ? (
-                        <Label basic color="red" pointing>
-                          {messages['enter_again']}
-                        </Label>
-                      ) : (
-                        ''
-                      )}
+                      <Form.Field>
+                        <label>{messages['TBL_H__PRODUCT']}</label>
+                        <Dropdown
+                          search
+                          selection
+                          options={
+                            getProductOptions(productList)
+                              ? getProductOptions(productList)
+                              : []
+                          }
+                          onChange={(e, o) => changePostInput(o, 'matnr')}
+                        />
+                      </Form.Field>
                       <Form.Field
                         onChange={(e, o) => changePostInput(o, 'description')}
                         control={Input}
@@ -372,49 +401,60 @@ const Smsetct = props => {
 
                     <Form.Field>
                       <Form.Field
-                        required
-                        error={postErrors.f1 ? true : false}
                         onChange={(e, o) => changePostInput(o, 'F1')}
                         control={Input}
-                        label={messages['configuration'] + ' F-1'}
+                        label={
+                          messages['configuration'] + ' F-1' + messages['monat']
+                        }
+                        placeholder="0"
                       />
                       <Form.Field
-                        required
-                        error={postErrors.f2 ? true : false}
                         onChange={(e, o) => changePostInput(o, 'F2')}
                         control={Input}
-                        label={messages['configuration'] + ' F-2'}
+                        label={
+                          messages['configuration'] + ' F-2' + messages['monat']
+                        }
+                        placeholder="0"
                       />
                       <Form.Field
-                        required
-                        error={postErrors.f3 ? true : false}
                         onChange={(e, o) => changePostInput(o, 'F3')}
                         control={Input}
-                        label={messages['configuration'] + ' F-3'}
+                        label={
+                          messages['configuration'] + ' F-3' + messages['monat']
+                        }
+                        placeholder="0"
                       />
                       <Form.Field
-                        required
-                        error={postErrors.f4 ? true : false}
                         onChange={(e, o) => changePostInput(o, 'F4')}
                         control={Input}
-                        label={messages['configuration'] + ' F-4'}
+                        label={
+                          messages['configuration'] + ' F-4' + messages['monat']
+                        }
+                        placeholder="0"
                       />
                       <Form.Field
-                        required
-                        error={postErrors.f5 ? true : false}
                         onChange={(e, o) => changePostInput(o, 'F5')}
                         control={Input}
-                        label={messages['configuration'] + ' F-5'}
+                        label={
+                          messages['configuration'] + ' F-5' + messages['monat']
+                        }
+                        placeholder="0"
                       />
                       <Form.Field
                         onChange={(e, o) => changePostInput(o, 'F6')}
                         control={Input}
-                        label={messages['configuration'] + ' F-6'}
+                        label={
+                          messages['configuration'] + ' F-6' + messages['monat']
+                        }
+                        placeholder="0"
                       />
                       <Form.Field
                         onChange={(e, o) => changePostInput(o, 'F7')}
                         control={Input}
-                        label={messages['configuration'] + ' F-7'}
+                        label={
+                          messages['configuration'] + ' F-7' + messages['monat']
+                        }
+                        placeholder="0"
                       />
                     </Form.Field>
                   </Form.Group>
@@ -422,26 +462,24 @@ const Smsetct = props => {
               </Segment>
             </Modal.Content>
             <Modal.Actions>
-              <Button color="teal" floated="right" onClick={handlePost}>
-                <Icon name="checkmark" />
-                {messages['Table.Add']}
-              </Button>
+              <div align="center">
+                <Button color="teal" onClick={handlePost}>
+                  <Icon name="checkmark" />
+                  {messages['Table.Add']}
+                </Button>
 
-              <Button
-                negative
-                floated="right"
-                onClick={() => {
-                  setPostParams(() => []);
-                  handleClose();
-                }}
-              >
-                <Icon name="remove" />
-                {messages['BTN__CANCEL']}
-              </Button>
+                <Button
+                  negative
+                  onClick={() => {
+                    setPostParams(() => []);
+                    handleClose();
+                  }}
+                >
+                  <Icon name="remove" />
+                  {messages['BTN__CANCEL']}
+                </Button>
+              </div>
             </Modal.Actions>
-            <br />
-            <br />
-            <br />
           </Modal>
         </Segment>
 
@@ -495,6 +533,9 @@ const Smsetct = props => {
           fetchSmsetct={fetchSmsetct}
           getBranchOptions={getBranchOptions}
           validateEdit={validateAdd}
+          setPostParams={setPostParams}
+          postParams={postParams}
+          searchArray={searchArray}
         />
       </Container>
 
@@ -504,14 +545,21 @@ const Smsetct = props => {
         onClose={selectedBranches => {
           setBranchF4IsOpen(false);
           setSelectedBranches(selectedBranches);
-          selectedBranches.length !== 0
-            ? setSearchParams({
-                ...searchParams,
-                branchId: selectedBranches[0].value,
-              })
-            : setSearchParams({ bukrs: searchParams.bukrs });
+          if (selectedBranches.length !== 0) {
+            setSearchArray(
+              selectedBranches.map(item => {
+                return {
+                  ...searchArray,
+                  branchId: item.value,
+                };
+              }),
+            );
+          } else {
+            setSearchParams({ bukrs: searchParams.bukrs });
+          }
         }}
-        selection={'single'}
+        selection={'multiple'}
+        disabled={'true'}
       />
     </div>
   );
@@ -547,37 +595,25 @@ const getBranchOptions = (BranchList, countryId) => {
   return out;
 };
 
-const getProductOptions = (productList, bukrs, countryId, branchId) => {
-  if (!productList || !bukrs || !countryId || !branchId) {
+const getProductOptions = productList => {
+  const productListOptions = productList;
+  if (!productListOptions) {
     return [];
   }
-  let productArray = [],
-    j = 0,
-    i = 0;
-
-  if (countryId !== 9) {
-    for (i = 0; i < productList.length; i++) {
-      if (productList[i].bukrs === bukrs && productList[i].countryId !== 9) {
-        productArray[j] = productList[i];
-        j++;
-      }
-    }
-  } else {
-    for (i = 0; i < productList.length; i++) {
-      if (productList[i].bukrs === bukrs) {
-        productArray[j] = productList[i];
-        j++;
-      }
-    }
-  }
-
-  let out = productArray.map(c => {
+  let out = productList.map(c => {
     return {
-      key: c.contract_type_id,
-      text: c.name,
-      value: c.matnr,
+      key: parseInt(c.matnr, 10),
+      text: `${c.text45}`,
+      value: parseInt(c.matnr, 10),
     };
   });
+  if (productListOptions) {
+    out.unshift({
+      key: 'all',
+      text: 'Все',
+      value: 'all',
+    });
+  }
   return out;
 };
 function mapStateToProps(state) {
@@ -585,7 +621,7 @@ function mapStateToProps(state) {
     language: state.locales.lang,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
-    productList: state.f4.contractTypeList,
+    productList: state.serviceReducer.productList,
     branchOptions: state.userInfo.branchOptionsService,
     dynamicObject: state.serviceReducer.dynamicObject,
     historyDynamicObject: state.serviceReducer.historyDynamicObject,
@@ -601,4 +637,5 @@ export default connect(mapStateToProps, {
   editSmsetct,
   clearDynObjService,
   applySmsetct,
+  fetchProductListSmsetct,
 })(injectIntl(Smsetct));

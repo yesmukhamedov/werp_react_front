@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'react-table/react-table.css';
 import {
   Header,
@@ -15,20 +15,23 @@ import {
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 export default function List(props) {
   const {
-    messages,
-    companyOptions,
-    branchOptions,
-    countryList,
-    dynamicObject,
-    historyDynamicObject,
-    getCountryOptions,
-    getProductOptions,
-    productList,
-    fetchSmsetct,
-    editSmsetct,
-    searchParams,
-    getBranchOptions,
-    validateEdit,
+    messages = [],
+    companyOptions = [],
+    branchOptions = [],
+    countryList = [],
+    dynamicObject = [],
+    historyDynamicObject = [],
+    getCountryOptions = [],
+    getProductOptions = [],
+    productList = [],
+    fetchSmsetct = [],
+    editSmsetct = [],
+    searchParams = [],
+    getBranchOptions = [],
+    validateEdit = [],
+    setPostParams = [],
+    postParams = [],
+    searchArray = [],
   } = props;
 
   const [errorsEdit, setErrorsEdit] = useState({});
@@ -110,6 +113,9 @@ export default function List(props) {
 
         case 'matnr':
           vars.matnr = o.value;
+          if (o.value === 'all') {
+            vars.matnr = null;
+          }
           errors.matnr = o.value ? false : true;
           messages.messgBrnch = messg.messgBrnch;
           messages.messgMatnr = false;
@@ -181,12 +187,21 @@ export default function List(props) {
       (Object.keys(errs).length === 0 &&
         JSON.stringify(oldSmsetctEdit) !== JSON.stringify(editParams))
     ) {
-      editSmsetct({ ...editParams }, () => {
-        setOpen(false);
-        setMessg({});
-        setErrorsEdit({});
-        fetchSmsetct(searchParams);
-      });
+      if (editParams.matnr === 'all') {
+        editSmsetct({ ...editParams, matnr: null }, () => {
+          setOpen(false);
+          setMessg({});
+          setErrorsEdit({});
+          fetchSmsetct(searchParams, searchArray);
+        });
+      } else {
+        editSmsetct({ ...editParams }, () => {
+          setOpen(false);
+          setMessg({});
+          setErrorsEdit({});
+          fetchSmsetct(searchParams, searchArray);
+        });
+      }
     }
     setErrorsEdit({ ...errs });
   };
@@ -199,9 +214,10 @@ export default function List(props) {
       // ROBOCLEAN-114F не равен на ROBOCLEAN 114F  отличается. "-" тире после ROBOCLEAN
       if (productName === 'ROBOCLEAN-114K SPlus') productName = 817; // 817 код продукта Roboclean 114K SPLUS
       if (productName === 'ROBOCLEAN-114F') productName = 1;
+      if (productName === 'All') productName = 'all';
       else {
         var matnrID = productList.find(
-          ({ name }) => productName.toUpperCase() === name.toUpperCase(),
+          ({ text45 }) => productName.toUpperCase() === text45.toUpperCase(),
         );
       }
       productName = matnrID ? matnrID.matnr : productName;
@@ -239,7 +255,7 @@ export default function List(props) {
       Header: messages['TBL_H__PRODUCT'],
       accessor: 'matnr',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      filterAll: true,
+      filterable: true,
     },
     {
       Header: messages['configuration'] + ' F-1',
@@ -407,6 +423,7 @@ export default function List(props) {
         <Modal
           open={open}
           closeIcon
+          size={'small'}
           onClose={() => {
             setOpen(false);
             setMessg({});
@@ -468,16 +485,15 @@ export default function List(props) {
                     search
                     error={errorsEdit.matnr ? true : false}
                     selection
-                    options={getProductOptions(
-                      productList,
-                      editParams.bukrs,
-                      editParams.countryId,
-                      editParams.branchId,
-                    )}
+                    options={
+                      getProductOptions(productList)
+                        ? getProductOptions(productList)
+                        : []
+                    }
                     defaultValue={editParams.matnr}
                     onChange={(e, o) => handleEdit(o, 'matnr')}
                   />
-                  {messg.messgMatnr ? (
+                  {messg.messgBrnch ? (
                     <Label basic color="red" pointing>
                       {messages['enter_again']}
                     </Label>
@@ -494,7 +510,6 @@ export default function List(props) {
 
                 <Form.Field>
                   <Form.Field
-                    required
                     error={errorsEdit.f1 ? true : false}
                     control={Input}
                     label={messages['configuration'] + ' F-1'}
@@ -502,7 +517,6 @@ export default function List(props) {
                     onChange={(e, o) => handleEdit(o, 'F1')}
                   />
                   <Form.Field
-                    required
                     error={errorsEdit.f2 ? true : false}
                     control={Input}
                     label={messages['configuration'] + ' F-2'}
@@ -510,7 +524,6 @@ export default function List(props) {
                     onChange={(e, o) => handleEdit(o, 'F2')}
                   />
                   <Form.Field
-                    required
                     error={errorsEdit.f3 ? true : false}
                     control={Input}
                     label={messages['configuration'] + ' F-3'}
@@ -518,7 +531,6 @@ export default function List(props) {
                     onChange={(e, o) => handleEdit(o, 'F3')}
                   />
                   <Form.Field
-                    required
                     error={errorsEdit.f4 ? true : false}
                     control={Input}
                     label={messages['configuration'] + ' F-4'}
@@ -526,7 +538,6 @@ export default function List(props) {
                     onChange={(e, o) => handleEdit(o, 'F4')}
                   />
                   <Form.Field
-                    required
                     error={errorsEdit.f5 ? true : false}
                     control={Input}
                     label={messages['configuration'] + ' F-5'}

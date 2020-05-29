@@ -14,6 +14,7 @@ import {
   FETCH_MATNR_PRICE_SERVICE_PACKAGE,
   FETCH_SERVICE_PACKAGE_DETAILS,
   FETCH_SMCS_BY_APP_NUMBER,
+  FETCH_MASTER_LIST,
 } from './smcsAction';
 
 const INITIAL_STATE = {
@@ -29,6 +30,11 @@ export default function(state = INITIAL_STATE, action) {
         ...state,
         contract: { ...action.data },
       };
+    case FETCH_MASTER_LIST:
+      return {
+        ...state,
+        masterList: [...action.data.data],
+      };
 
     case FETCH_SERVICE_MATNR_LIST:
       return {
@@ -39,7 +45,7 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_TOVAR_ID:
       return {
         ...state,
-        tovar: { ...action.data.data },
+        tovar: [...action.data.data],
       };
 
     case CLEAR_DYNOBJ_MARKETING:

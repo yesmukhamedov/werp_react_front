@@ -15,6 +15,7 @@ import {
   checkSmcsWithoutReques,
   saveSmcsWithoutReques,
   fetchOperatorList,
+  fetchMasterList,
 } from '../smcsAction';
 
 import {
@@ -55,7 +56,12 @@ const TabSmcsWithoutContract = props => {
     checkSmcs = {},
     saveSmcs,
     operatorList = [],
+    category,
+    tovar = [],
+    masterList = [],
   } = props;
+
+  console.log('masterList', masterList);
 
   const emptyService = {
     address: '',
@@ -65,7 +71,7 @@ const TabSmcsWithoutContract = props => {
     branchName: '',
     bukrs: '',
     bukrsName: '',
-    categoryId: 2,
+    categoryId: 0,
     categoryName: '',
     contractDate: '',
     contractId: 0,
@@ -101,14 +107,35 @@ const TabSmcsWithoutContract = props => {
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
+  const [tovarOptions, setTovarOptions] = useState([]);
+
+  console.log('SERVICE', service);
 
   const [editStatus, setEditStatus] = useState(true);
+
+  const [categoryOptions, setCategoryOptions] = useState([]);
 
   //BasicInfo
   const onBasicInfoInputChange = (value, fieldName) => {
     switch (fieldName) {
       case 'selectCompany':
         setService({ ...service, bukrs: value.value });
+        break;
+
+      case 'selectBranch':
+        setService({ ...service, branchId: value.value });
+        break;
+      case 'selectCategory':
+        setService({ ...service, categoryId: value.value });
+        break;
+      case 'selectTovar':
+        setService({ ...service, tovarId: value.value });
+        break;
+      case 'selectMaster':
+        setService({ ...service, masterId: value.value });
+        break;
+      case 'selectOperator':
+        setService({ ...service, operatorId: value.value });
         break;
 
       case 'clearMaster':
@@ -133,8 +160,43 @@ const TabSmcsWithoutContract = props => {
   };
 
   useEffect(() => {
+    let tovarOpt = tovar.map(item => {
+      return {
+        key: item.matnr,
+        text: item.text45,
+        value: item.matnr,
+      };
+    });
+
+    setTovarOptions([...tovarOpt]);
+  }, [tovar]);
+
+  useEffect(() => {
     props.fetchServiceTypeId();
+    props.f4fetchCategory();
   }, []);
+
+  useEffect(() => {
+    let tovarParam = {
+      bukrs: service.bukrs,
+      categoryId: service.categoryId,
+    };
+
+    if (service.bukrs !== '' || service.categoryId !== '') {
+      props.fetchTovarId({ ...tovarParam });
+    }
+  }, [service.bukrs, service.categoryId]);
+
+  useEffect(() => {
+    let categoryOp = category.map(item => {
+      return {
+        key: item.id,
+        text: item.name,
+        value: item.id,
+      };
+    });
+    setCategoryOptions([...categoryOp]);
+  }, [category]);
 
   const [modalOpen, setModalOpen] = useState({
     matnrF4ModalOpen: false,
@@ -143,50 +205,36 @@ const TabSmcsWithoutContract = props => {
 
   const [staffF4ModalPosition, setStaffF4ModalPosition] = useState('');
   const [serBranches, setSerBranches] = useState({});
-
   console.log('serBranches', serBranches);
 
   useEffect(() => {
-    let serviceBA = [5, 6, 9];
-    let bukrs = service.bukrs;
-    let arr = [];
-
-    let serviceBranchesByBukrs = branches
-      .filter(item => item.bukrs === bukrs)
+    let servBrOptions = branches
+      .filter(
+        item =>
+          item.business_area_id == 5 ||
+          item.business_area_id == 6 ||
+          item.business_area_id == 9,
+      )
       .map(item => {
-        let ba = item.business_area_id;
-        if (ba === 5 || ba === 6 || ba === 9) {
-          arr.push({
-            key: item.branch_id,
-            value: item.branch_id,
-            text: item.text45,
-            ba: item.business_area_id,
-          });
-          return;
-        }
+        return {
+          key: item.branch_id,
+          text: item.text45,
+          value: item.branch_id,
+          bukrs: item.bukrs,
+        };
       });
 
-    // let waSerBranches = {};
-
-    // function optFunction(item) {
-    //   let option = {
-    //     key: item.branch_id,
-    //     value: item.branch_id,
-    //     text: item.text45,
-    //   };
-
-    //   if (serviceBA.includes(item.business_area_id)) {
-    //     if (!waSerBranches[item.bukrs]) {
-    //       waSerBranches[item.bukrs] = [];
-    //     }
-    //     waSerBranches[item.bukrs].push(option);
-    //   }
-    // }
-
-    // branches.forEach(optFunction);
-
-    setSerBranches(arr);
-  }, [branches]);
+    const servBranchOptions = servBrOptions.filter(
+      item => item.bukrs === service.bukrs,
+    );
+    if (service.bukrs !== '') {
+      setSerBranches([...servBranchOptions]);
+    } else if (service.bukrs === '') {
+      setSerBranches([...servBranchOptions]);
+    } else {
+      setSerBranches([...servBrOptions]);
+    }
+  }, [branches, service.bukrs]);
 
   const inputChange = value => {
     setService({
@@ -204,9 +252,28 @@ const TabSmcsWithoutContract = props => {
     };
   });
 
+  const masterOptions = masterList.map(item => {
+    return {
+      key: item.staffId,
+      text: item.fullName,
+      value: item.staffId,
+    };
+  });
+
   useEffect(() => {
     props.f4FetchBranches();
   }, []);
+
+  useEffect(() => {
+    if (service.bukrs !== '' && service.branchId !== 0) {
+      let param = {
+        bukrs: service.bukrs,
+        branchId: service.branchId,
+      };
+      props.fetchMasterList({ ...param });
+      props.fetchOperatorList({ ...param });
+    }
+  }, [service.bukrs, service.branchId]);
 
   useEffect(() => {
     let paramMatnrSparePart = {
@@ -284,7 +351,7 @@ const TabSmcsWithoutContract = props => {
       props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge });
       setEditStatus(false);
     }
-  }, [service.masterId]);
+  }, [service.masterId, service.branchId, service.bukrs, service.tovarId]);
 
   //УСЛУГИ========================================================================================
 
@@ -928,6 +995,10 @@ const TabSmcsWithoutContract = props => {
               operatorOptions={operatorOptions}
               onBasicInfoInputChange={onBasicInfoInputChange}
               companyOptions={companyOptions}
+              branchOptions={serBranches}
+              categoryOptions={categoryOptions}
+              tovarOptions={tovarOptions}
+              masterOptions={masterOptions}
             />
           </Grid.Column>
 
@@ -1023,6 +1094,7 @@ function mapStateToProps(state) {
     checkSmcs: state.smcsReducer.checkSmcs,
     saveSmcs: state.smcsReducer.saveSmcs,
     operatorList: state.smcsReducer.operatorList,
+    masterList: state.smcsReducer.masterList,
   };
 }
 
@@ -1044,4 +1116,5 @@ export default connect(mapStateToProps, {
   checkSmcsWithoutReques,
   saveSmcsWithoutReques,
   fetchOperatorList,
+  fetchMasterList,
 })(injectIntl(TabSmcsWithoutContract));

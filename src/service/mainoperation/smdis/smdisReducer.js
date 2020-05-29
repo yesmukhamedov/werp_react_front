@@ -5,6 +5,7 @@ import {
   FETCH_SMVOD_LIST,
   FETCH_SMRD_OPERATOR,
   POST_SMRD_OPERATORS_BY_BRANCH,
+  POST_REDIST_SMRD_OPERATOR,
 } from './smdisAction';
 
 const INITIAL_STATE = {
@@ -13,12 +14,12 @@ const INITIAL_STATE = {
   matnr: {},
   smcrldListData: [],
   smcrldListSum: {},
+  smrdRedistOperator: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     case FETCH_SMCRLD_LIST:
-      console.log('fetch', action.payload);
       return {
         ...state,
         smcrldListData: [...action.payload.data.listData],
@@ -46,7 +47,7 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_SMRD_OPERATOR:
       return {
         ...state,
-        smrdOperator: [...action.data.data.fromOperator],
+        smrdOperator: { ...action.data.data },
       };
 
     case POST_SMRD_OPERATORS_BY_BRANCH:
@@ -54,6 +55,12 @@ export default function(state = INITIAL_STATE, action) {
         ...state,
         operatorsByBranch: [...action.data.data],
       };
+
+    // case POST_REDIST_SMRD_OPERATOR:
+    //   return {
+    //     ...state,
+    //     smrdRedistOperator: [...action.data.data],
+    //   };
 
     default:
       return state;

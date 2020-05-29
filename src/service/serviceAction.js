@@ -60,6 +60,10 @@ export const FETCH_SMSETPLP = 'FETCH_SMSETPLP';
 export const POST_SMSETPLP = 'POST_SMSETPLP';
 export const FETCH_APP_LIST_SEARCH_PARAMS = 'FETCH_APP_LIST_SEARCH_PARAMS';
 export const FETCH_SMSETPLP_ID = 'FETCH_SMSETPLP_ID';
+export const FETCH_SMSETPP_HISTORY = 'FETCH_SMSETPP_HISTORY';
+export const FETCH_SMSETPP_SERVICE_TYPE_ID = 'FETCH_SMSETPP_SERVICE_TYPE_ID';
+export const FETCH_SMSETPP_GET_PRODUCT_LIST = 'FETCH_SMSETPP_GET_PRODUCT_LIST';
+export const FETCH_PRODUCT_LIST_SMSETCT = 'FETCH_PRODUCT_LIST_SMSETCT';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 
@@ -80,6 +84,24 @@ export function fetchSmsetpp(params) {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SMSETPP,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchSmsetppHistory(params) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`smsetpp/audit`, params)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMSETPP_HISTORY,
           payload: data,
         });
       })
@@ -134,6 +156,39 @@ export function fetchSmsetppType() {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SMSETPP_TYPE,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function fetchSmsetppServiceTypeId() {
+  return function(dispatch) {
+    doGet(`smcs/getServiceTypeList`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMSETPP_SERVICE_TYPE_ID,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+export function fetchSmsetppGetProductList(param) {
+  return function(dispatch) {
+    doGet(`smsetpp/getProductList`, param)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMSETPP_GET_PRODUCT_LIST,
           payload: data,
         });
       })
@@ -206,10 +261,18 @@ export function fetchDynObjService(url, params) {
       });
   };
 }
-export function fetchSmsetct(searchParams) {
+export function fetchSmsetct(searchParams, searchArray) {
+  console.log('searchParams', searchParams);
+  console.log('searchArray', searchArray);
+  let queryString = '';
+  if (searchArray !== undefined) {
+    queryString = Object.keys(searchArray)
+      .map(key => 'branchId=' + searchArray[key].branchId)
+      .join('&');
+  }
   return dispatch => {
     dispatch(modifyLoader(true));
-    doGet(`smsetct/view?direction=DESC&orderBy=id`, searchParams)
+    doGet(`smsetct/view?direction=DESC&orderBy=id&${queryString}`, searchParams)
       .then(({ data }) => {
         dispatch({
           type: FETCH_SMSETCT,
@@ -217,21 +280,37 @@ export function fetchSmsetct(searchParams) {
         });
 
         doGet(
-          `smsetct/audit?direction=DESC&orderBy=rev&page=3&size=20`,
+          `smsetct/audit?direction=DESC&orderBy=id&${queryString}`,
           searchParams,
         )
           .then(({ data }) => {
-            console.log('data', data.data.data);
             dispatch(modifyLoader(false));
             dispatch({
               type: HISTORY_EDITING_SMSETCT,
-              payload: data.data.data,
+              payload: data.data,
             });
           })
           .catch(error => {
             dispatch(modifyLoader(false));
             handleError(error, dispatch);
           });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+export function fetchProductListSmsetct(param) {
+  return dispatch => {
+    dispatch(modifyLoader(true));
+    doGet(`smsetct/getProductList`, param)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_PRODUCT_LIST_SMSETCT,
+          payload: data.data,
+        });
       })
       .catch(error => {
         dispatch(modifyLoader(false));
@@ -565,7 +644,7 @@ export function fetchSmsrcus(searchParams) {
 export function fetchTovarCategorys() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet('smcs/categoryId')
+    doGet('smcs/getCategoryList')
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -717,11 +796,8 @@ export function postSmsetplp(params, fetchSmsetplp) {
 
 export function editSmecam(editParams, fetchSmecam) {
   return function(dispatch) {
-    console.log('data', editParams);
     doPut('smecam/edit', editParams)
       .then(data => {
-        console.log('data', editParams);
-        console.log('data', data);
         if (data.status === 200 || data.status === 'OK') {
           dispatch({
             type: EDIT_SMECAM,

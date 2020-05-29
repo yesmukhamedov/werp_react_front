@@ -16,6 +16,7 @@ const BranchF4Advanced = props => {
     selection = 'single',
     isOpen = false,
     countries = [],
+    disabled = false,
   } = props;
 
   const categoryOptions = [
@@ -288,6 +289,7 @@ const BranchF4Advanced = props => {
                       selection
                       options={categoryOptions}
                       value={categoryS}
+                      disabled={disabled ? true : false}
                       onChange={(e, { value }) =>
                         onInputChange(value, 'categoryS')
                       }

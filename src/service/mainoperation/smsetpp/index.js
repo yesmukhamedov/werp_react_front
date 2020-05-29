@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { Segment, Dropdown, Button, Icon } from 'semantic-ui-react';
+import { Segment, Dropdown, Button, Icon, Divider } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import './index.css';
 import { connect } from 'react-redux';
 import 'react-table/react-table.css';
 import AddPrice from './AddPrice';
-import format from 'string-format';
 import { injectIntl } from 'react-intl';
-import { f4FetchCountryList } from '../../../reference/f4/f4_action';
+import {
+  f4FetchCountryList,
+  f4FetchConTypeList,
+} from '../../../reference/f4/f4_action';
 import EditModal from './editPrice';
 import {
   fetchSmsetpp,
   fetchSmsetppPremiumPriceType,
   fetchSmsetppType,
   clearDynObjService,
+  fetchSmsetppHistory,
+  fetchSmsetppServiceTypeId,
+  fetchSmsetppGetProductList,
 } from '../../serviceAction';
 import OutputErrors from '../../../general/error/outputErrors';
 import { errorTableText } from '../../../utils/helpers';
@@ -26,11 +31,17 @@ const Smsetpp = props => {
     companyOptions = [],
     f4FetchCountryList,
     fetchSmsetpp,
+    fetchSmsetppHistory,
     fetchSmsetppPremiumPriceType,
     serviceType = [],
     fetchSmsetppType,
     clearDynObjService,
+    smsetppHistory = [],
+    smsetppServiceType = [],
+    productList = [],
+    premium,
   } = props;
+
   const [error, setError] = useState([]);
   const [activeDropdown, setActiveDropdown] = useState(false);
   const [typeOfService, setTypeOfService] = useState([]);
@@ -41,14 +52,36 @@ const Smsetpp = props => {
   const [search, setSearch] = useState({
     bukrs: 0,
     countryId: 0,
+    serviceTypeId: null,
+    fc: null,
+    mc: null,
   });
+
+  const serviceTypeOptions = smsetppServiceType
+    .filter(
+      el =>
+        el.id === '1' ||
+        el.id === '2' ||
+        el.id === '5' ||
+        el.id === '6' ||
+        el.id === '7',
+    )
+    .map(item => {
+      return {
+        key: parseInt(item.id),
+        text: item.name,
+        value: parseInt(item.id),
+      };
+    });
 
   useEffect(() => {
     // clearDynObjService();
     f4FetchCountryList();
-    fetchSmsetpp();
+    //fetchSmsetpp();
     fetchSmsetppPremiumPriceType();
     fetchSmsetppType();
+    props.fetchSmsetppServiceTypeId();
+    props.f4FetchConTypeList();
   }, []);
 
   useEffect(() => {
@@ -64,13 +97,33 @@ const Smsetpp = props => {
     setCountryOptions(country);
   }, [countryList]);
 
+  const fcOptions = [
+    { key: 0, text: '0', value: 0 },
+    { key: 1, text: '1', value: 1 },
+    { key: 2, text: '2', value: 2 },
+    { key: 3, text: '3', value: 3 },
+    { key: 4, text: '4', value: 4 },
+  ];
+  const mcOptions = [
+    { key: 0, text: '0', value: 0 },
+    { key: 1, text: '1', value: 1 },
+  ];
+
+  const [statusServiceType, setStatusServiceType] = useState(true);
+
+  useEffect(() => {
+    if (search.serviceTypeId === 1) {
+      setStatusServiceType(false);
+    } else {
+      setStatusServiceType(true);
+    }
+  }, [search]);
+
   useEffect(() => {
     if (data.service !== undefined) {
       setServiceOptionPriceList(data.service);
     }
   }, [data]);
-
-  console.log('INDEX');
 
   useEffect(() => {
     let service = serviceType.map(item => {
@@ -88,6 +141,18 @@ const Smsetpp = props => {
       setSearch({ ...search, countryId: value });
       setSecondActive(true);
     }
+    if (text === 'serviceType') {
+      setSearch({ ...search, serviceTypeId: value });
+      setSecondActive(true);
+    }
+    if (text === 'fc') {
+      setSearch({ ...search, fc: value });
+      setSecondActive(true);
+    }
+    if (text === 'mc') {
+      setSearch({ ...search, mc: value });
+      setSecondActive(true);
+    }
   };
 
   const onClickButton = () => {
@@ -100,9 +165,159 @@ const Smsetpp = props => {
     }
     if (errors.length === 0) {
       fetchSmsetpp(search);
+      fetchSmsetppHistory(search);
     }
     setError(errors);
   };
+
+  const getProduct = param => {
+    let bukrs = param;
+    props.fetchSmsetppGetProductList(bukrs);
+  };
+
+  const getProductOptions = (productList, bukrs, countryId) => {
+    if (!productList || !bukrs || !countryId) {
+      return [];
+    }
+    let productArray = [],
+      j = 0,
+      i = 0;
+
+    if (countryId !== 9) {
+      for (i = 0; i < productList.length; i++) {
+        if (productList[i].bukrs === bukrs && productList[i].countryId !== 9) {
+          productArray[j] = productList[i];
+          j++;
+        }
+      }
+    } else {
+      for (i = 0; i < productList.length; i++) {
+        if (productList[i].bukrs === bukrs) {
+          productArray[j] = productList[i];
+          j++;
+        }
+      }
+    }
+
+    let out = productArray.map(c => {
+      return {
+        key: c.contract_type_id,
+        text: c.name,
+        value: c.matnr,
+      };
+    });
+    return out;
+  };
+
+  let historyColumns = [
+    {
+      Header: () => <div style={{ textAlign: 'center' }}>id</div>,
+      accessor: 'id',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['bukrs']}</div>
+      ),
+      accessor: 'bukrs',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => <div style={{ textAlign: 'center' }}>Продукт</div>,
+      accessor: 'productId',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['Task.StartDate']}</div>
+      ),
+      accessor: 'dateStart',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => <div style={{ textAlign: 'center' }}>FC</div>,
+      accessor: 'fc',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => <div style={{ textAlign: 'center' }}>MC</div>,
+      accessor: 'mc',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['office']}</div>
+      ),
+      accessor: 'office',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['master']}</div>
+      ),
+      accessor: 'master',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['Operator']}</div>
+      ),
+      accessor: 'operator',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['discount']}</div>
+      ),
+      accessor: 'discount',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['totalAmount']}</div>
+      ),
+      accessor: 'total',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['country']}</div>
+      ),
+      accessor: 'countryId',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['waers']}</div>
+      ),
+      accessor: 'waersId',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['typeOfService']}</div>
+      ),
+      accessor: 'serviceTypeId',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => (
+        <div style={{ textAlign: 'center' }}>{messages['typeOfAmount']}</div>
+      ),
+      accessor: 'premiumPriceTypeId',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => <div style={{ textAlign: 'center' }}>Тип операции</div>,
+      accessor: 'revType',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
+      Header: () => <div style={{ textAlign: 'center' }}>Автор</div>,
+      accessor: 'fullname',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+  ];
 
   return (
     <Segment>
@@ -111,6 +326,10 @@ const Smsetpp = props => {
           <h1>{messages['setting_prices_and_premium_services']}</h1>
           <AddPrice
             param={search.bukrs !== 0 && search.countryId !== 0 ? search : null}
+            serviceTypeOptions={serviceTypeOptions}
+            search={search}
+            productList={productList}
+            getProductOptions={getProductOptions}
           />
         </div>
 
@@ -129,6 +348,35 @@ const Smsetpp = props => {
           placeholder={messages['country']}
           id="secondDropdown"
           onChange={(e, { value }) => onChange('countries', value)}
+        />
+
+        <Dropdown
+          clearable="true"
+          selection
+          options={serviceTypeOptions}
+          placeholder="Вид сервиса"
+          id="secondDropdown"
+          onChange={(e, { value }) => onChange('serviceType', value)}
+        />
+
+        <Dropdown
+          disabled={statusServiceType}
+          clearable="true"
+          selection
+          options={fcOptions}
+          placeholder="FC"
+          id="secondDropdown"
+          onChange={(e, { value }) => onChange('fc', value)}
+        />
+
+        <Dropdown
+          disabled={statusServiceType}
+          clearable="true"
+          selection
+          options={mcOptions}
+          placeholder="MC"
+          id="secondDropdown"
+          onChange={(e, { value }) => onChange('mc', value)}
         />
         <button
           className="ui blue inverted button"
@@ -157,6 +405,13 @@ const Smsetpp = props => {
                 <div style={{ textAlign: 'center' }}>{messages['bukrs']}</div>
               ),
               accessor: 'bukrs',
+              Cell: row => (
+                <div style={{ textAlign: 'center' }}>{row.value}</div>
+              ),
+            },
+            {
+              Header: () => <div style={{ textAlign: 'center' }}>Продукт</div>,
+              accessor: 'productId',
               Cell: row => (
                 <div style={{ textAlign: 'center' }}>{row.value}</div>
               ),
@@ -291,12 +546,27 @@ const Smsetpp = props => {
                         : null
                     }
                     row={row}
+                    serviceTypeOptions={serviceTypeOptions}
+                    productList={productList}
+                    getProductOptions={getProductOptions}
+                    getProduct
                   />
                 </div>
               ),
             },
           ]}
           defaultPageSize={10}
+          showPagination={true}
+          pageSizeOptions={[10, 20, 30, 40]}
+        />
+        <Divider />
+        <Segment>
+          <h1>История редактирования</h1>
+        </Segment>
+        <ReactTableWrapper
+          data={smsetppHistory}
+          columns={historyColumns}
+          pageSize={smsetppHistory.length < 10 ? smsetppHistory.length : 10}
           showPagination={true}
           pageSizeOptions={[10, 20, 30, 40]}
         />
@@ -312,6 +582,9 @@ const mapStateToProps = state => {
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
     serviceType: state.serviceReducer.dynamicObject.type,
+    smsetppHistory: state.serviceReducer.dynamicObject.smsetppHistory,
+    smsetppServiceType: state.serviceReducer.dynamicObject.smsetppServiceType,
+    productList: state.f4.contractTypeList,
   };
 };
 
@@ -321,4 +594,8 @@ export default connect(mapStateToProps, {
   fetchSmsetppPremiumPriceType,
   fetchSmsetppType,
   clearDynObjService,
+  fetchSmsetppHistory,
+  fetchSmsetppServiceTypeId,
+  f4FetchConTypeList,
+  fetchSmsetppGetProductList,
 })(injectIntl(Smsetpp));

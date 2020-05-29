@@ -6,6 +6,8 @@ import {
   FETCH_SMSETCT,
   EDIT_SMSETCT,
   FETCH_SMSETPP,
+  FETCH_SMSETPP_HISTORY,
+  FETCH_SMSETPP_SERVICE_TYPE_ID,
   FETCH_SMSETPP_TYPE,
   FETCH_SMSETPP_POST,
   FETCH_SMSETPP_SEARCH,
@@ -42,6 +44,8 @@ import {
   FETCH_OPERTAION_TYPE_LIST,
   FETCH_APP_LIST_SEARCH_PARAMS,
   FETCH_SMSETPLP_ID,
+  FETCH_SMSETPP_GET_PRODUCT_LIST,
+  FETCH_PRODUCT_LIST_SMSETCT,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -67,6 +71,7 @@ const INITIAL_STATE = {
   listOfEmployees: [],
   errorTable: [],
   dataID: [],
+  productList: [],
 };
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -117,6 +122,11 @@ export default function(state = INITIAL_STATE, action) {
         ...state,
         historyDynamicObject: [...action.payload],
       };
+    case FETCH_PRODUCT_LIST_SMSETCT:
+      return {
+        ...state,
+        productList: [...action.payload],
+      };
 
     case FETCH_SMSETPP:
       return {
@@ -124,6 +134,30 @@ export default function(state = INITIAL_STATE, action) {
         dynamicObject: {
           ...state.dynamicObject,
           service: [...action.payload.data],
+        },
+      };
+    case FETCH_SMSETPP_HISTORY:
+      return {
+        ...state,
+        dynamicObject: {
+          ...state.dynamicObject,
+          smsetppHistory: [...action.payload.data],
+        },
+      };
+    case FETCH_SMSETPP_SERVICE_TYPE_ID:
+      return {
+        ...state,
+        dynamicObject: {
+          ...state.dynamicObject,
+          smsetppServiceType: [...action.payload.data],
+        },
+      };
+    case FETCH_SMSETPP_GET_PRODUCT_LIST:
+      return {
+        ...state,
+        dynamicObject: {
+          ...state.dynamicObject,
+          smsetppProductList: [...action.payload.data],
         },
       };
 
@@ -135,6 +169,7 @@ export default function(state = INITIAL_STATE, action) {
           premiumPriceTypeId: [...action.payload],
         },
       };
+
     case FETCH_SMSETPP_TYPE:
       return {
         ...state,

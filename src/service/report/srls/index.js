@@ -4,9 +4,8 @@ import {
   f4fetchCategory,
   f4FetchBranches,
   f4FetchServiceAppStatus,
-  f4FetchServicType,
 } from '../../../reference/f4/f4_action';
-import { fetchSrls } from './srlsAction';
+import { fetchSrls, fetchServiceTypeList } from './srlsAction';
 import { injectIntl } from 'react-intl';
 import {
   Icon,
@@ -14,20 +13,21 @@ import {
   Segment,
   Form,
   Divider,
-  Dropdown,
-  Button,
+  Table,
+  Input,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import ModalColumns from './../../../utils/ModalColumns';
 import {
   stringYYYYMMDDToMoment,
   momentToStringYYYYMMDD,
 } from '../../../utils/helpers';
 import '../../service.css';
-import { LinkToSmcuspor, LinkToSmvs } from '../../../utils/outlink';
+import { LinkToSmcuspor } from '../../../utils/outlink';
+import ReactTableWrapper from './../../../utils/ReactTableWrapper';
+import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
 
 const Srls = props => {
   const {
@@ -38,10 +38,11 @@ const Srls = props => {
     branches = [],
     serviceAppStatus = [],
     serviceType = [],
-    srlsData,
+    serviceTypeList = [],
+    srlsData = [],
+    srlsTotalPages,
   } = props;
-
-  console.log('PROPS SRLS', props);
+  console.log('srlsTotalPages', srlsTotalPages);
 
   const emptyParam = {
     bukrs: '',
@@ -49,18 +50,20 @@ const Srls = props => {
     categoryId: '',
     serviceTypeId: '',
     serviceStatusId: '',
-    dateOpenAt: '',
-    dateOpenTo: '',
+    dateAt: '',
+    dateTo: '',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
+
+  console.log('param', param);
 
   useEffect(() => {
     props.f4FetchServiceAppStatus();
     props.f4fetchCategory();
     props.f4FetchBranches();
     props.f4FetchServiceAppStatus();
-    props.f4FetchServicType();
+    props.fetchServiceTypeList();
   }, []);
 
   const tovarCategoryOptions = category.map(item => {
@@ -79,14 +82,13 @@ const Srls = props => {
     };
   });
 
-  const serviceTypeOptions = serviceType.map(item => {
+  const serviceTypeOptions = serviceTypeList.map(item => {
     return {
       key: item.id,
       text: item.name,
       value: item.id,
     };
   });
-
   const [serBranchOptions, setSerBranchOptions] = useState([]);
 
   useEffect(() => {
@@ -146,6 +148,7 @@ const Srls = props => {
       accessor: 'id',
       checked: true,
       filterable: false,
+      width: 50,
     },
     {
       Header: 'Филиал',
@@ -155,13 +158,13 @@ const Srls = props => {
     },
     {
       Header: 'Дата',
-      accessor: 'dateOpen',
+      accessor: 'contractDate',
       checked: true,
       filterable: false,
     },
     {
       Header: 'CN',
-      accessor: 'contractId',
+      accessor: 'contractNumber',
       checked: true,
     },
     {
@@ -171,7 +174,7 @@ const Srls = props => {
     },
     {
       Header: 'ФИО клиента',
-      accessor: 'customerId',
+      accessor: 'customerFIO',
       checked: true,
     },
 
@@ -183,24 +186,12 @@ const Srls = props => {
     },
     {
       Header: 'Мастер',
-      accessor: 'masterId',
+      accessor: 'masterFIO',
       checked: true,
-      Filter: (filter, onChange) => (
-        // <Dropdown selection fluid options={tovarCategoryOptions} />
-        <select
-          onChange={event => onChange(event.target.value)}
-          style={{ width: '100%' }}
-          value={filter ? filter.value : 'all'}
-        >
-          <option value="all">Show All</option>
-          <option value="true">Can Drink</option>
-          <option value="false">Can't Drink</option>
-        </select>
-      ),
     },
     {
       Header: 'Оператор',
-      accessor: 'operatorId',
+      accessor: 'operatorFIO',
       checked: true,
     },
     {
@@ -215,6 +206,15 @@ const Srls = props => {
       checked: true,
       filterable: false,
     },
+
+    {
+      Header: 'Валюта',
+      accessor: 'currencyId',
+      checked: true,
+      filterable: false,
+      width: 100,
+    },
+
     {
       Header: 'Оплачено',
       accessor: 'paid',
@@ -232,15 +232,10 @@ const Srls = props => {
       accessor: 'id',
       checked: true,
       filterable: false,
-      Cell: original => (
-        <div style={{ textAlign: 'center' }}>
-          <LinkToSmvs serviceNumber={original.row.id} text={original.row.id} />
-        </div>
-      ),
     },
     {
       Header: 'История клиента',
-      accessor: 'contractNumber',
+      accessor: '16',
       filterable: false,
       Cell: original => (
         <div style={{ textAlign: 'center' }}>
@@ -253,9 +248,15 @@ const Srls = props => {
       checked: true,
     },
   ];
-
+  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const handleClickApply = () => {
-    props.fetchSrls({ ...param });
+    //validate();
+    if (param.bukrs !== '') {
+      const page = 0;
+      const size = 20;
+      props.fetchSrls({ ...param, page, size });
+    }
+    setTurnOnReactFetch(true);
   };
 
   const [columns, setColumns] = useState([...initialColumns]);
@@ -275,7 +276,7 @@ const Srls = props => {
       }}
     >
       <Segment>
-        <h3>Список сервисов</h3>
+        <h3>Список сервисов(Общий)</h3>
       </Segment>
       <Form>
         <Form.Group widths="equal">
@@ -301,6 +302,7 @@ const Srls = props => {
             fluid
             label="Категория товара"
             placeholder="Категория товара"
+            value={param.c}
             options={tovarCategoryOptions}
             onChange={(e, o) => onInputChange(o, 'categoryId')}
             className="alignBottom"
@@ -334,11 +336,11 @@ const Srls = props => {
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.dateOpenAt)}
+                selected={stringYYYYMMDDToMoment(param.dateAt)}
                 onChange={date =>
                   setParam({
                     ...param,
-                    dateOpenAt: momentToStringYYYYMMDD(date),
+                    dateAt: momentToStringYYYYMMDD(date),
                   })
                 }
                 maxDate={new Date()}
@@ -353,11 +355,11 @@ const Srls = props => {
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.dateOpenTo)}
+                selected={stringYYYYMMDDToMoment(param.dateTo)}
                 onChange={date =>
                   setParam({
                     ...param,
-                    dateOpenTo: momentToStringYYYYMMDD(date),
+                    dateTo: momentToStringYYYYMMDD(date),
                   })
                 }
                 maxDate={new Date()}
@@ -382,8 +384,21 @@ const Srls = props => {
           </Form.Field>
         </Form.Group>
       </Form>
+
       <Divider />
-      <ReactTableWrapper data={srlsData} filterable={true} columns={columns} />
+
+      <ReactTableServerSideWrapper
+        data={srlsData}
+        columns={columns}
+        filterable={true}
+        pageSize={20}
+        showPagination={true}
+        requestData={params => {
+          props.fetchSrls({ ...params, ...param });
+        }}
+        pages={srlsTotalPages ? srlsTotalPages : ''}
+        turnOnReactFetch={turnOnReactFetch}
+      />
     </Container>
   );
 };
@@ -396,15 +411,16 @@ function mapStateToProps(state) {
     branches: state.f4.branches,
     serviceAppStatus: state.f4.serviceAppStatus,
     contractStatusList: state.f4.contractStatusList,
-    serviceType: state.f4.serviceType,
+    serviceTypeList: state.srlsmReducer.serviceTypeList,
     srlsData: state.srlsReducer.srlsData,
+    srlsTotalPages: state.srlsReducer.srlsTotalPages,
   };
 }
 
 export default connect(mapStateToProps, {
-  fetchSrls,
   f4fetchCategory,
   f4FetchBranches,
   f4FetchServiceAppStatus,
-  f4FetchServicType,
+  fetchSrls,
+  fetchServiceTypeList,
 })(injectIntl(Srls));

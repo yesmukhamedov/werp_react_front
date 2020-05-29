@@ -37,7 +37,7 @@ const Smeca = props => {
   } = props;
   const url = window.location.search;
   const id = url.slice(url.indexOf('=') + 1);
-  let emptyEditList = {
+  let editList = {
     id: dynamicObject.id,
     bukrs: dynamicObject.bukrs,
     branchId: dynamicObject.branchId,
@@ -49,7 +49,7 @@ const Smeca = props => {
   const [errors, setErrors] = useState({});
   const language = localStorage.getItem('language');
   useEffect(() => {
-    setState({ ...emptyEditList });
+    setState({ ...editList });
   }, [dynamicObject]);
 
   useEffect(() => {
@@ -83,13 +83,15 @@ const Smeca = props => {
   };
 
   const handleSave = () => {
-    let errs = validate();
-    if (Object.keys(errs).length === 0) {
-      editSmeca(state, () => {
-        fetchSmeca(id);
-      });
+    if (JSON.stringify(state) !== JSON.stringify(editList)) {
+      let errs = validate();
+      if (Object.keys(errs).length === 0) {
+        editSmeca(state, () => {
+          fetchSmeca(id);
+        });
+      }
+      setErrors({ ...errs });
     }
-    setErrors({ ...errs });
   };
 
   const validate = () => {
