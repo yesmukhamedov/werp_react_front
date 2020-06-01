@@ -103,13 +103,17 @@ const EditModal = props => {
     }
   };
 
-  const productOptions = smsetppProductList.map(item => {
+  const productOpt = smsetppProductList.map(item => {
     return {
       key: item.matnr,
       text: item.text45,
       value: item.matnr,
     };
   });
+
+  const productOptions = [{ key: 66666, text: 'Все', value: 0 }, ...productOpt];
+
+  console.log('productOptions', productOptions);
 
   const onChangeEditModalRR = (value, fieldName) => {
     console.log(`${fieldName}`, value);
@@ -142,7 +146,7 @@ const EditModal = props => {
                 </Table.Cell>
 
                 <Table.Cell>
-                  <Form.Input
+                  {/* <Form.Input
                     label={messages['totalAmount']}
                     placeholder="Number..."
                     //readOnly
@@ -151,7 +155,25 @@ const EditModal = props => {
                     onChange={e => onChangeEditModal(e.target.value, 'total')}
                     error={test === true ? true : false}
                     required
-                  />
+                  /> */}
+
+                  <Form.Field>
+                    <label>{messages['totalAmount']}</label>
+                    <Input
+                      label={{
+                        basic: true,
+                        content:
+                          informations.waers === null ? '' : informations.waers,
+                      }}
+                      labelPosition="right"
+                      placeholder="Number..."
+                      onFocus={handleFocus}
+                      onChange={e => onChangeEditModal(e.target.value, 'total')}
+                      value={moneyFormat(informations.total)}
+                      error={test === true ? true : false}
+                      required
+                    ></Input>
+                  </Form.Field>
                 </Table.Cell>
               </Table.Row>
 
@@ -173,14 +195,32 @@ const EditModal = props => {
                 </Table.Cell>
 
                 <Table.Cell>
-                  <Form.Field
+                  {/* <Form.Field
                     control={Input}
                     label={`${messages['master']} (${messages['inTotal']})`}
                     placeholder="Number..."
                     value={moneyFormat(informations.master)}
                     onFocus={handleFocus}
                     onChange={e => onChangeEditModal(e.target.value, 'master')}
-                  />
+                  /> */}
+
+                  <Form.Field>
+                    <label>{`${messages['master']} (${messages['inTotal']})`}</label>
+                    <Input
+                      label={{
+                        basic: true,
+                        content:
+                          informations.waers === null ? '' : informations.waers,
+                      }}
+                      labelPosition="right"
+                      placeholder="Number..."
+                      value={moneyFormat(informations.master)}
+                      onFocus={handleFocus}
+                      onChange={e =>
+                        onChangeEditModal(e.target.value, 'master')
+                      }
+                    />
+                  </Form.Field>
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
@@ -189,7 +229,11 @@ const EditModal = props => {
                   <Dropdown
                     fluid
                     selection
-                    value={informations.productId}
+                    value={
+                      informations.productId === null
+                        ? 0
+                        : informations.productId
+                    }
                     options={productOptions}
                     onChange={(e, { value }) =>
                       onChangeEditModal1(value, 'productId')
@@ -198,7 +242,7 @@ const EditModal = props => {
                 </Table.Cell>
 
                 <Table.Cell>
-                  <Form.Field
+                  {/* <Form.Field
                     control={Input}
                     label={`${messages['Operator']} (${messages['inTotal']})`}
                     placeholder="Number..."
@@ -207,7 +251,25 @@ const EditModal = props => {
                     onChange={e =>
                       onChangeEditModal(e.target.value, 'operator')
                     }
-                  />
+                  /> */}
+
+                  <Form.Field>
+                    <label>{`${messages['Operator']} (${messages['inTotal']})`}</label>
+                    <Input
+                      label={{
+                        basic: true,
+                        content:
+                          informations.waers === null ? '' : informations.waers,
+                      }}
+                      labelPosition="right"
+                      placeholder="Number..."
+                      value={moneyFormat(informations.operator)}
+                      onFocus={handleFocus}
+                      onChange={e =>
+                        onChangeEditModal(e.target.value, 'operator')
+                      }
+                    />
+                  </Form.Field>
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
@@ -228,7 +290,7 @@ const EditModal = props => {
                 </Table.Cell>
 
                 <Table.Cell>
-                  <Form.Field
+                  {/* <Form.Field
                     control={Input}
                     label={`${messages['discount']} (${messages['inTotal']})`}
                     placeholder="Number..."
@@ -237,7 +299,25 @@ const EditModal = props => {
                     onChange={e =>
                       onChangeEditModal(e.target.value, 'discount')
                     }
-                  />
+                  /> */}
+
+                  <Form.Field>
+                    <label>{`${messages['discount']} (${messages['inTotal']})`}</label>
+                    <Input
+                      label={{
+                        basic: true,
+                        content:
+                          informations.waers === null ? '' : informations.waers,
+                      }}
+                      labelPosition="right"
+                      placeholder="Number..."
+                      value={moneyFormat(informations.discount)}
+                      onFocus={handleFocus}
+                      onChange={e =>
+                        onChangeEditModal(e.target.value, 'discount')
+                      }
+                    />
+                  </Form.Field>
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
@@ -256,7 +336,7 @@ const EditModal = props => {
                 </Table.Cell>
 
                 <Table.Cell>
-                  <Form.Field
+                  {/* <Form.Field
                     control={Input}
                     label={`${messages['office']}(${messages['inTotal']})`}
                     placeholder="Number..."
@@ -264,7 +344,25 @@ const EditModal = props => {
                     value={moneyFormat(informations.office)}
                     onFocus={handleFocus}
                     onChange={e => onChangeEditModal(e.target.value, 'office')}
-                  />
+                  /> */}
+
+                  <Form.Field>
+                    <label>{`${messages['office']}(${messages['inTotal']})`}</label>
+                    <Input
+                      label={{
+                        basic: true,
+                        content:
+                          informations.waers === null ? '' : informations.waers,
+                      }}
+                      labelPosition="right"
+                      placeholder="Number..."
+                      value={informations.office}
+                      onFocus={handleFocus}
+                      onChange={e =>
+                        onChangeEditModal(e.target.value, 'office')
+                      }
+                    />
+                  </Form.Field>
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
