@@ -58,6 +58,7 @@ import srkpisodReducer from '../service/report/srkpisod/srkpisodReducer';
 import srlsReducer from '../service/report/srls/srlsReducer';
 import srlsmReducer from '../service/report/srlsm/srlsmReducer';
 import smvsReducer from '../service/mainoperation/smvs/smvsReducer';
+import smsrcusReducer from '../service/mainoperation/smsrcus/smsrcusReducer';
 
 const appReducer = combineReducers({
   form,
@@ -118,6 +119,7 @@ const appReducer = combineReducers({
   srlsReducer: srlsReducer,
   srlsmReducer: srlsmReducer,
   smvsReducer: smvsReducer,
+  smsrcusReducer: smsrcusReducer,
 });
 
 const rootReducer = (state, action) => {
