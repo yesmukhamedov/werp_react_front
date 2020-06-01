@@ -135,6 +135,9 @@ export const F4_FETCH_MATNR_PRICELIST = 'F4_FETCH_MATNR_PRICELIST';
 
 export const F4_FETCH_SERVICE_TYPE = 'F4_FETCH_SERVICE_TYPE';
 
+export const F4_FETCH_FILTER_PLAN_STATUS = 'F4_FETCH_FILTER_PLAN_STATUS';
+export const F4_CLEAR_FILTER_PLAN_STATUS = 'F4_CLEAR_FILTER_PLAN_STATUS';
+
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 
@@ -1081,6 +1084,23 @@ export const f4FetchMatnrPriceList = param => {
         dispatch({
           type: F4_FETCH_MATNR_PRICELIST,
           data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+export const f4FetchFilterPlanStatus = param => {
+  return function(dispatch) {
+    doGet(`filterPlan_status/view?direction=ASC`, param)
+      .then(({ data }) => {
+        //console.log(data, 'ACTION');
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_FILTER_PLAN_STATUS,
+          payload: data,
         });
       })
       .catch(error => {

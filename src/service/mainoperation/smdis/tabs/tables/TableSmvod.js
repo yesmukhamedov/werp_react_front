@@ -199,12 +199,7 @@ const TableSmvod = props => {
     },
   ];
   return (
-    <ReactTableWrapper
-      data={data}
-      columns={columns}
-      defaultPageSize={20}
-      showPagination
-    />
+    <ReactTableWrapper data={data} columns={columns} defaultPageSize={20} />
   );
 };
 export default TableSmvod;

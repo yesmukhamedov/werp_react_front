@@ -37,10 +37,10 @@ const SearchCustomer = props => {
     searchCustomer,
   } = props;
   const emptyParam = {
-    country: '',
+    countryId: '',
     bukrs: '',
     branchId: '',
-    tovarCategorys: '',
+    tovarCategory: '',
     contractStatusIds: '',
     contractDateFrom: '',
     contractDateTo: '',
@@ -143,33 +143,33 @@ const SearchCustomer = props => {
           bukrs: item.bukrs,
         };
       });
-    if (param.country !== '' && param.bukrs !== '') {
+    if (param.countryId !== '' && param.bukrs !== '') {
       let servBranchOptions = servBrOptions
-        .filter(item => item.country_id === param.country)
+        .filter(item => item.country_id === param.countryId)
         .filter(item => item.bukrs === param.bukrs);
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country !== '' && param.bukrs === '') {
+    } else if (param.countryId !== '' && param.bukrs === '') {
       let servBranchOptions = servBrOptions.filter(
-        item => item.country_id === param.country,
+        item => item.country_id === param.countryId,
       );
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country === '' && param.bukrs !== '') {
+    } else if (param.countryId === '' && param.bukrs !== '') {
       let servBranchOptions = servBrOptions.filter(
         item => item.bukrs === param.bukrs,
       );
 
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country === '' && param.bukrs === '') {
+    } else if (param.countryId === '' && param.bukrs === '') {
       setServiceBranchOptions([...servBrOptions]);
     }
-  }, [branches, param.country, param.bukrs]);
+  }, [branches, param.countryId, param.bukrs]);
 
   const onInputChange = (o, fieldName) => {
     setParam(prev => {
       const prevParam = { ...prev };
       switch (fieldName) {
-        case 'country':
-          prevParam.country = o.value;
+        case 'countryId':
+          prevParam.countryId = o.value;
           break;
         case 'bukrs':
           prevParam.bukrs = o.value;
@@ -177,8 +177,8 @@ const SearchCustomer = props => {
         case 'branchId':
           prevParam.branchId = o.value;
           break;
-        case 'tovarCategorys':
-          prevParam.tovarCategorys = o.value;
+        case 'tovarCategory':
+          prevParam.tovarCategory = o.value;
           break;
         case 'contractStatusIds':
           prevParam.contractStatusIds = o.value;
@@ -222,7 +222,7 @@ const SearchCustomer = props => {
             label={messages['country']}
             placeholder={messages['country']}
             options={countryOptions}
-            onChange={(e, o) => onInputChange(o, 'country')}
+            onChange={(e, o) => onInputChange(o, 'countryId')}
             className="alignBottom"
           />
 
@@ -249,7 +249,7 @@ const SearchCustomer = props => {
             label={messages['category']}
             placeholder={messages['category']}
             options={tovarCategoryOptions}
-            onChange={(e, o) => onInputChange(o, 'tovarCategorys')}
+            onChange={(e, o) => onInputChange(o, 'tovarCategory')}
             className="alignBottom"
           />
 
@@ -257,7 +257,7 @@ const SearchCustomer = props => {
             label={messages['fin_status']}
             placeholder={messages['fin_status']}
             options={finStatusOptions}
-            onChange={(e, o) => onInputChange(o, 'configuration')}
+            onChange={(e, o) => onInputChange(o, 'contractStatusIds')}
             className="alignBottom"
           />
         </Form.Group>

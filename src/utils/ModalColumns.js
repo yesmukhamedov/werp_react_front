@@ -14,6 +14,8 @@ const ModalColumns = props => {
   const [state, setState] = useState([]);
   const [stateColumns, setStateColumns] = useState([...columns]);
 
+  console.log('state columns', stateColumns);
+
   const changeChekcbox = value => {
     if (value.checked === true) {
       setStateColumns(

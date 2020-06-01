@@ -37,7 +37,6 @@ const Smcrld = props => {
     param,
     smcrldListData = [],
     smcrldListSum,
-    footerData,
   } = props;
 
   const [sum, setSum] = useState({});
@@ -61,14 +60,17 @@ const Smcrld = props => {
         {
           Header: 'Страна',
           accessor: 'countryName',
+          checked: true,
         },
         {
           Header: 'Компания',
           accessor: 'bukrsName',
+          checked: true,
         },
         {
           Header: 'Филиал',
           accessor: 'branchName',
+          checked: true,
           Footer: <strong>{'Итого:'}</strong>,
         },
       ],
@@ -85,6 +87,7 @@ const Smcrld = props => {
           Header: 'F1',
           accessor: 'currentF1',
           // width: 70,
+          checked: true,
           Footer: (
             <span>
               <strong>{smcrldListSum.currentF1}</strong>
@@ -93,6 +96,7 @@ const Smcrld = props => {
         },
         {
           Header: 'F1+M1',
+          checked: true,
           Footer: (
             <span>
               <strong>{smcrldListSum.currentF1M1}</strong>
@@ -103,6 +107,7 @@ const Smcrld = props => {
         },
         {
           Header: 'F2',
+          checked: true,
           Footer: (
             <span>
               <strong>{smcrldListSum.currentF2}</strong>
@@ -113,6 +118,7 @@ const Smcrld = props => {
         },
         {
           Header: 'F2+M1',
+          checked: true,
           Footer: (
             <span>
               <strong>{smcrldListSum.currentF2M1}</strong>
@@ -123,6 +129,7 @@ const Smcrld = props => {
         },
         {
           Header: 'F3',
+          checked: true,
           Footer: (
             <span>
               <strong>{smcrldListSum.currentF3}</strong>
@@ -133,6 +140,7 @@ const Smcrld = props => {
         },
         {
           Header: 'F3+M1',
+          checked: true,
           Footer: (
             <span>
               <strong>{smcrldListSum.currentF3M1}</strong>
@@ -143,6 +151,7 @@ const Smcrld = props => {
         },
         {
           Header: 'F4',
+          checked: true,
           Footer: (
             <span>
               <strong>{smcrldListSum.currentF4}</strong>
@@ -153,6 +162,7 @@ const Smcrld = props => {
         },
         {
           Header: 'F4+M1',
+          checked: true,
           Footer: (
             <span>
               <strong>{smcrldListSum.currentF4M1}</strong>
@@ -163,6 +173,7 @@ const Smcrld = props => {
         },
         {
           Header: 'M1',
+          checked: true,
           Footer: (
             <span>
               <strong>{smcrldListSum.currentM1}</strong>
@@ -173,6 +184,7 @@ const Smcrld = props => {
         },
         {
           Header: 'Итог',
+          checked: true,
           Footer: (
             <span>
               <strong>{smcrldListSum.currentSum}</strong>
@@ -196,6 +208,7 @@ const Smcrld = props => {
       columns: [
         {
           Header: 'F1',
+          checked: true,
           Footer: (
             <span>
               <strong>{smcrldListSum.overDueF1}</strong>
@@ -206,12 +219,14 @@ const Smcrld = props => {
         },
         {
           Header: 'F1+M1',
+          checked: true,
           Footer: (
             <span>
               <strong>{smcrldListSum.overDueF1M1}</strong>
             </span>
           ),
           accessor: 'overDueF1M1',
+          checked: true,
           width: 70,
         },
         {
@@ -222,10 +237,12 @@ const Smcrld = props => {
             </span>
           ),
           accessor: 'overDueF2',
+          checked: true,
           width: 70,
         },
         {
           Header: 'F2+M1',
+          checked: true,
           Footer: (
             <span>
               <strong>{smcrldListSum.overDueF2M1}</strong>
@@ -236,6 +253,7 @@ const Smcrld = props => {
         },
         {
           Header: 'F3',
+          checked: true,
           Footer: (
             <span>
               <strong>{smcrldListSum.overDueF3}</strong>
@@ -246,6 +264,7 @@ const Smcrld = props => {
         },
         {
           Header: 'F3+M1',
+          checked: true,
           Footer: (
             <span>
               <strong>{smcrldListSum.overDueF3M1}</strong>
@@ -256,6 +275,7 @@ const Smcrld = props => {
         },
         {
           Header: 'F4',
+          checked: true,
           Footer: (
             <span>
               <strong>{smcrldListSum.overDueF4}</strong>
@@ -266,6 +286,7 @@ const Smcrld = props => {
         },
         {
           Header: 'F4+M1',
+          checked: true,
           Footer: (
             <span>
               <strong>{smcrldListSum.overDueF4M1}</strong>
@@ -276,6 +297,7 @@ const Smcrld = props => {
         },
         {
           Header: 'M1',
+          checked: true,
           Footer: (
             <span>
               <strong>{smcrldListSum.overDueM1}</strong>
@@ -286,6 +308,7 @@ const Smcrld = props => {
         },
         {
           Header: 'Итог',
+          checked: true,
           Footer: (
             <span>
               <strong>{smcrldListSum.overDueSum}</strong>
@@ -307,6 +330,7 @@ const Smcrld = props => {
       columns: [
         {
           Header: 'Итог',
+          checked: true,
           Footer: (
             <span>
               <strong>{smcrldListSum.totalSum}</strong>
@@ -358,10 +382,13 @@ const Smcrld = props => {
     setColumns([...data]);
   };
 
-  let ddd = initialColumns.map(item => {
-    return {
-      columns: item.columns,
-    };
+  let col = [];
+  initialColumns.map(item => {
+    if (item.columns != undefined || item.columns != null) {
+      item.columns.map(item => {
+        col.push(item);
+      });
+    }
   });
 
   return (
@@ -419,12 +446,7 @@ const Smcrld = props => {
           </div>
 
           <Form.Field className="alignBottom">
-            <ModalColumns
-              columns={initialColumns.map(item => {
-                return { columns: item.columns };
-              })}
-              finishColumns={finishColumns}
-            />
+            <ModalColumns columns={col} finishColumns={finishColumns} />
           </Form.Field>
         </Form.Group>
         <OutputErrors errors={props.error} />

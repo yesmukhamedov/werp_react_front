@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { Container, Segment, Button, Popup, Divider } from 'semantic-ui-react';
 import { postRedistSmrdOperator, fetchSmrdOperator } from '../smdisAction';
+import { f4FetchFilterPlanStatus } from '../../../../reference/f4/f4_action';
 import 'react-datepicker/dist/react-datepicker.css';
 import TableReDistribution1 from './tables/TableReDistribution1';
 import TableRedistribution2 from './tables/TableRedistribution2';
@@ -16,11 +17,16 @@ const Smrd = props => {
     clickAddOperator = [],
     operatorsByBranch = [],
     params,
-    setState,
-    state = [],
+    setSmrd,
+    smrd = [],
     setshowTable,
     showTable = [],
+    filterPlanStatus = [],
   } = props;
+
+  useEffect(() => {
+    props.f4FetchFilterPlanStatus();
+  }, []);
 
   const operatorOptions = operatorsByBranch.map(item => {
     return {
@@ -31,10 +37,10 @@ const Smrd = props => {
   });
 
   const addOperatorRow = () => {
-    if (operatorOptions.length > state.length || operatorOptions.length === 0) {
-      let length = state.length;
-      setState([
-        ...state,
+    if (operatorOptions.length > smrd.length || operatorOptions.length === 0) {
+      let length = smrd.length;
+      setSmrd([
+        ...smrd,
         {
           id: 1 + length,
           toOperatorId: null,
@@ -73,8 +79,8 @@ const Smrd = props => {
   }, [data.toOperators]);
 
   const changePercent = (e, row) => {
-    setState(
-      state.map(item =>
+    setSmrd(
+      smrd.map(item =>
         item.id === row.id
           ? {
               ...item,
@@ -86,13 +92,13 @@ const Smrd = props => {
   };
 
   const removeOperator = row => {
-    let filterRemove = state.filter(item => item.id != row.id);
-    setState(filterRemove);
+    let filterRemove = smrd.filter(item => item.id != row.id);
+    setSmrd(filterRemove);
   };
 
   const onOperatorSelect = (o, row) => {
-    setState(
-      state.map(item =>
+    setSmrd(
+      smrd.map(item =>
         item.id === row
           ? {
               ...item,
@@ -103,11 +109,26 @@ const Smrd = props => {
     );
   };
 
+  const onStatusSelect = (o, row) => {
+    console.log(o, row);
+    setSmrd(
+      smrd.map(item =>
+        item.id === row
+          ? {
+              ...item,
+              planStatusId: o,
+            }
+          : item,
+      ),
+    );
+  };
+
   const redistributionData = () => {
-    const toOperators = state.map(item => {
+    const toOperators = smrd.map(item => {
       return {
         toOperatorId: item.toOperatorId,
         amountPercent: parseInt(item.amountPercent, 10),
+        planStatusId: item.planStatusId,
       };
     });
     const operatorParam = {
@@ -127,10 +148,10 @@ const Smrd = props => {
 
   const setOperatorData = () => {
     if (data.toOperators.length !== 0) {
-      setState(
+      setSmrd(
         data.toOperators.map((item, i) => {
-          if (item.toOperatorId === state.toOperatorId) {
-            onOperatorSelect(item.operatorId, state.id);
+          if (item.toOperatorId === smrd.toOperatorId) {
+            onOperatorSelect(item.operatorId, smrd.id);
             clickAddOperator();
             return {
               ...item,
@@ -166,7 +187,7 @@ const Smrd = props => {
       setshowTable(true);
     } else {
       setshowTable(false);
-      setState([]);
+      setSmrd([]);
     }
   };
 
@@ -180,12 +201,14 @@ const Smrd = props => {
       {showTable ? (
         <Segment>
           <TableRedistribution2
-            data={state}
-            pageSize={state.length}
+            data={smrd}
+            pageSize={smrd.length}
             operatorOptions={operatorOptions}
             changePercent={changePercent}
             removeOperator={removeOperator}
             onOperatorSelect={onOperatorSelect}
+            onStatusSelect={onStatusSelect}
+            filterStatus={getFilterStatus(filterPlanStatus)}
           />
         </Segment>
       ) : null}
@@ -221,11 +244,29 @@ const Smrd = props => {
   );
 };
 
+const getFilterStatus = filterStatus => {
+  const filterStatusPlan = filterStatus;
+  if (!filterStatusPlan) {
+    return [];
+  }
+  let out = filterStatus.map(item => {
+    return {
+      key: item.id,
+      text: item.name,
+      value: item.id,
+    };
+  });
+  return out;
+};
+
 function mapStateToProps(state) {
-  return {};
+  return {
+    filterPlanStatus: state.f4.filterPlanStatus,
+  };
 }
 
 export default connect(mapStateToProps, {
   postRedistSmrdOperator,
   fetchSmrdOperator,
+  f4FetchFilterPlanStatus,
 })(injectIntl(Smrd));

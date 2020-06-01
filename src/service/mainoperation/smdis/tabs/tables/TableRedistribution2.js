@@ -10,6 +10,8 @@ const TableRedistribution2 = props => {
     changePercent,
     removeOperator,
     onOperatorSelect = [],
+    filterStatus = [],
+    onStatusSelect = [],
   } = props;
 
   const renderEditable = row => {
@@ -45,6 +47,22 @@ const TableRedistribution2 = props => {
               className="tableDropDown"
               value={row.toOperatorId}
               onChange={(e, o) => onOperatorSelect(o.value, row.id)}
+            />
+          ),
+          width: 300,
+        },
+        {
+          Header: 'Status',
+          accessor: 'planStatusId',
+          Cell: ({ row }) => (
+            <Dropdown
+              // search
+              multiple
+              selection
+              options={filterStatus}
+              className="tableDropDown"
+              value={row.planStatusId}
+              onChange={(e, o) => onStatusSelect(o.value, row.id)}
             />
           ),
           width: 300,

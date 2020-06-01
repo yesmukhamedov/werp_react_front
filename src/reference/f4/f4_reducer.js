@@ -77,6 +77,8 @@ import {
   F4_FETCH_TOVAR_CATEGORYS,
   F4_FETCH_SERVICE_TYPE,
   F4_FETCH_MATNR_PRICELIST,
+  F4_FETCH_FILTER_PLAN_STATUS,
+  F4_CLEAR_FILTER_PLAN_STATUS,
 } from './f4_action';
 
 const INITIAL_STATE = {
@@ -118,6 +120,7 @@ const INITIAL_STATE = {
   servContract: [],
   category: [],
   customersById: {},
+  filterPlanStatus: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -326,6 +329,7 @@ export default function(state = INITIAL_STATE, action) {
 
     case F4_CLEAR_SERV_CONTRACT:
       return { ...state, servContract: [] };
+
     case F4_FETCH_CATEGORY:
       return { ...state, category: action.payload.data };
 
@@ -352,6 +356,12 @@ export default function(state = INITIAL_STATE, action) {
 
     case F4_FETCH_MATNR_PRICELIST:
       return { ...state, matnrPriceList: [...action.data.data] };
+
+    case F4_FETCH_FILTER_PLAN_STATUS:
+      return { ...state, filterPlanStatus: action.payload.data };
+
+    case F4_CLEAR_FILTER_PLAN_STATUS:
+      return { ...state, filterPlanStatus: [] };
 
     default:
       return state;
