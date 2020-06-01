@@ -149,7 +149,11 @@ const AddPrice = props => {
         case 'typeOfSum':
           varTs.premiumPriceTypeId = parseFloat(v);
         case 'productId':
-          varTs.productId = v;
+          if (v === 0) {
+            varTs.productId = null;
+          } else {
+            varTs.productId = v;
+          }
           break;
         default:
           return varTs;
@@ -167,13 +171,17 @@ const AddPrice = props => {
     }
   };
 
-  const productOptions = smsetppProductListAdd.map(item => {
+  const productOpt = smsetppProductListAdd.map(item => {
     return {
       key: item.matnr,
       text: item.text45,
       value: item.matnr,
     };
   });
+
+  const productOptions = [{ key: 66666, text: 'Все', value: 0 }, ...productOpt];
+
+  console.log('productOptions ADD', productOptions);
 
   const onChangeDate = d => {
     setDateStart(stringYYYYMMDDToMoment(d));
@@ -311,18 +319,23 @@ const AddPrice = props => {
                 </Table.Cell>
 
                 <Table.Cell>
-                  <Form.Input
-                    label={messages['totalAmount']}
-                    placeholder="Number..."
-                    onFocus={handleFocus}
-                    //readOnly
-                    value={informations.total}
-                    //onChange={(e)=>setInformations({...informations, total:e.target.value })}
-                    onChange={e => onInputChange('total', e)}
-                    //value={moneyFormat(informations.total)}
-                    error={test === true ? true : false}
-                    required
-                  />
+                  <Form.Field>
+                    <label>{messages['totalAmount']}</label>
+                    <Input
+                      label={{
+                        basic: true,
+                        content:
+                          informations.waers === null ? '' : informations.waers,
+                      }}
+                      labelPosition="right"
+                      placeholder="Number..."
+                      onFocus={handleFocus}
+                      onChange={e => onInputChange('total', e)}
+                      value={moneyFormat(informations.total)}
+                      error={test === true ? true : false}
+                      required
+                    ></Input>
+                  </Form.Field>
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
@@ -344,14 +357,21 @@ const AddPrice = props => {
                 </Table.Cell>
 
                 <Table.Cell>
-                  <Form.Field
-                    control={Input}
-                    label={`${messages['master']} (${messages['inTotal']})`}
-                    placeholder="Number..."
-                    value={moneyFormat(informations.master)}
-                    onFocus={handleFocus}
-                    onChange={e => onInputChange('master', e)}
-                  />
+                  <Form.Field>
+                    <label>{`${messages['master']} (${messages['inTotal']})`}</label>
+                    <Input
+                      label={{
+                        basic: true,
+                        content:
+                          informations.waers === null ? '' : informations.waers,
+                      }}
+                      labelPosition="right"
+                      placeholder="Number..."
+                      value={moneyFormat(informations.master)}
+                      onFocus={handleFocus}
+                      onChange={e => onInputChange('master', e)}
+                    />
+                  </Form.Field>
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
@@ -360,7 +380,11 @@ const AddPrice = props => {
                   <Dropdown
                     fluid
                     selection
-                    value={informations.productId}
+                    value={
+                      informations.productId === null
+                        ? 0
+                        : informations.productId
+                    }
                     options={productOptions}
                     onChange={(e, value) =>
                       handleChange('productId', value.value)
@@ -369,14 +393,21 @@ const AddPrice = props => {
                 </Table.Cell>
 
                 <Table.Cell>
-                  <Form.Field
-                    control={Input}
-                    label={`${messages['Operator']} (${messages['inTotal']})`}
-                    placeholder="Number..."
-                    value={moneyFormat(informations.operator)}
-                    onFocus={handleFocus}
-                    onChange={e => onInputChange('operator', e)}
-                  />
+                  <Form.Field>
+                    <label>{`${messages['Operator']} (${messages['inTotal']})`}</label>
+                    <Input
+                      label={{
+                        basic: true,
+                        content:
+                          informations.waers === null ? '' : informations.waers,
+                      }}
+                      labelPosition="right"
+                      placeholder="Number..."
+                      value={moneyFormat(informations.operator)}
+                      onFocus={handleFocus}
+                      onChange={e => onInputChange('operator', e)}
+                    />
+                  </Form.Field>
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
@@ -403,16 +434,24 @@ const AddPrice = props => {
                 </Table.Cell>
 
                 <Table.Cell>
-                  <Form.Field
-                    control={Input}
-                    label={`${messages['discount']} (${messages['inTotal']})`}
-                    placeholder="Number..."
-                    value={moneyFormat(informations.discount)}
-                    onFocus={handleFocus}
-                    onChange={e => onInputChange('discount', e)}
-                  />
+                  <Form.Field>
+                    <label>{`${messages['discount']} (${messages['inTotal']})`}</label>
+                    <Input
+                      label={{
+                        basic: true,
+                        content:
+                          informations.waers === null ? '' : informations.waers,
+                      }}
+                      labelPosition="right"
+                      placeholder="Number..."
+                      value={moneyFormat(informations.discount)}
+                      onFocus={handleFocus}
+                      onChange={e => onInputChange('discount', e)}
+                    />
+                  </Form.Field>
                 </Table.Cell>
               </Table.Row>
+
               <Table.Row>
                 <Table.Cell>
                   <Form.Field
@@ -427,16 +466,21 @@ const AddPrice = props => {
                 </Table.Cell>
 
                 <Table.Cell>
-                  <Form.Field
-                    readOnly
-                    control={Input}
-                    label={`${messages['office']}(${messages['inTotal']})`}
-                    placeholder="Number..."
-                    //value={moneyFormat(informations.office)}
-                    value={informations.office}
-                    onFocus={handleFocus}
-                    onChange={e => onInputChange('office', e)}
-                  />
+                  <Form.Field>
+                    <label>{`${messages['office']}(${messages['inTotal']})`}</label>
+                    <Input
+                      label={{
+                        basic: true,
+                        content:
+                          informations.waers === null ? '' : informations.waers,
+                      }}
+                      labelPosition="right"
+                      placeholder="Number..."
+                      value={informations.office}
+                      onFocus={handleFocus}
+                      onChange={e => onInputChange('office', e)}
+                    />
+                  </Form.Field>
                 </Table.Cell>
               </Table.Row>
               <Table.Row>

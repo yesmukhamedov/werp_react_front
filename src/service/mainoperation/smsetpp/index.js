@@ -346,6 +346,7 @@ const Smsetpp = props => {
       setDataEdit(data.data);
     });
   };
+
   const onChangeEditModal1 = (value, fieldName) => {
     switch (fieldName) {
       //Компания
@@ -362,7 +363,12 @@ const Smsetpp = props => {
       //Продукт
       case 'productId':
         console.log('productId', value);
-        setInformations({ ...informations, productId: value });
+        if (value === 0) {
+          setInformations({ ...informations, productId: null });
+        } else {
+          setInformations({ ...informations, productId: value });
+        }
+
         break;
 
       //Вид сервиса
