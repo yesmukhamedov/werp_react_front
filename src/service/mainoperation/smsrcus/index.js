@@ -41,6 +41,7 @@ const Smsrcus = props => {
   } = props;
 
   const emptyParam = {
+    countryId: '',
     bukrs: '',
     branchId: '',
     tovarCategoryId: '',
@@ -52,8 +53,41 @@ const Smsrcus = props => {
 
   const [param, setParam] = useState({ ...emptyParam });
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
+  console.log('serviceBranchOptions', serviceBranchOptions);
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const [error, setError] = useState([]);
+
+  // useEffect(() => {
+  //   let servBrOptions = branches
+  //     .filter(
+  //       item =>
+  //         item.business_area_id == 1 ||
+  //         item.business_area_id == 2 ||
+  //         item.business_area_id == 3 ||
+  //         item.business_area_id == 4 ||
+  //         item.business_area_id == 7 ||
+  //         item.business_area_id == 8,
+  //     )
+  //     .map(item => {
+  //       return {
+  //         key: item.branch_id,
+  //         text: item.text45,
+  //         value: item.branch_id,
+  //         country_id: item.country_id,
+  //         bukrs: item.bukrs,
+  //       };
+  //     });
+
+  //   if (param.bukrs !== '') {
+  //     let servBranchOptions = servBrOptions.filter(
+  //       item => item.bukrs === param.bukrs,
+  //     );
+
+  //     console.log('servBranchOptions', servBranchOptions);
+
+  //     setServiceBranchOptions([...servBranchOptions]);
+  //   }
+  // }, [branches, param.bukrs]);
 
   useEffect(() => {
     let servBrOptions = branches
@@ -66,6 +100,7 @@ const Smsrcus = props => {
           item.business_area_id == 7 ||
           item.business_area_id == 8,
       )
+
       .map(item => {
         return {
           key: item.branch_id,
@@ -76,16 +111,26 @@ const Smsrcus = props => {
         };
       });
 
-    if (param.bukrs !== '') {
+    if (param.countryId !== '' && param.bukrs !== '') {
+      let servBranchOptions = servBrOptions
+        .filter(item => item.country_id === param.countryId)
+        .filter(item => item.bukrs === param.bukrs);
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.countryId !== '' && param.bukrs === '') {
+      let servBranchOptions = servBrOptions.filter(
+        item => item.country_id === param.countryId,
+      );
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.countryId === '' && param.bukrs !== '') {
       let servBranchOptions = servBrOptions.filter(
         item => item.bukrs === param.bukrs,
       );
 
-      console.log('servBranchOptions', servBranchOptions);
-
       setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.countryId === '' && param.bukrs === '') {
+      setServiceBranchOptions([...servBrOptions]);
     }
-  }, [branches, param.bukrs]);
+  }, [branches, param.countryId, param.bukrs]);
 
   let initialColumns = [
     {
