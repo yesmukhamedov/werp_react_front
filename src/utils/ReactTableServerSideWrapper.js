@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import ReactTable from 'react-table';
+import withFixedColumns from 'react-table-hoc-fixed-columns';
 import 'react-table/react-table.css';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import debounce from 'lodash/debounce';
+import 'react-table-hoc-fixed-columns/lib/styles.css';
+
+const ReactTableFixedColumns = withFixedColumns(ReactTable);
 
 const ReactTableServerSideWrapper = props => {
   const {
@@ -73,7 +77,7 @@ const ReactTableServerSideWrapper = props => {
   };
   return (
     <div>
-      <ReactTable
+      <ReactTableFixedColumns
         manual // Forces table not to paginate or sort automatically, so we can handle it server-side
         data={data}
         pages={pages} // Display the total number of pages
