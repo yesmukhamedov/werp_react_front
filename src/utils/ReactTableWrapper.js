@@ -3,6 +3,10 @@ import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
+import withFixedColumns from 'react-table-hoc-fixed-columns';
+import 'react-table-hoc-fixed-columns/lib/styles.css';
+
+const ReactTableFixedColumns = withFixedColumns(ReactTable);
 
 const ReactTableWrapper = props => {
   const {
@@ -31,7 +35,7 @@ const ReactTableWrapper = props => {
 
   return (
     <div>
-      <ReactTable
+      <ReactTableFixedColumns
         filterable={filterable}
         ref={refToChild}
         data={data}
