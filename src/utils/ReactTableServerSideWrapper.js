@@ -32,6 +32,7 @@ const ReactTableServerSideWrapper = props => {
     pages = 0,
     loading = false,
     turnOnReactFetch = false,
+    onRowClick = null,
   } = props;
 
   const fetchData = (params, instance) => {
@@ -94,6 +95,16 @@ const ReactTableServerSideWrapper = props => {
         pageText={pageText}
         ofText={ofText}
         filterable={filterable}
+        getTdProps={(state, rowInfo, column, instance) => {
+          return {
+            onClick: (e, handleOriginal) => {
+              //console.log(rowInfo, 'column clicked');
+              if (onRowClick && rowInfo) {
+                onRowClick(rowInfo.original, rowInfo.index, column.id);
+              }
+            },
+          };
+        }}
       />
     </div>
   );

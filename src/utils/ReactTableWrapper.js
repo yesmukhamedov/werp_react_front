@@ -55,7 +55,7 @@ const ReactTableWrapper = props => {
         getTdProps={(state, rowInfo, column, instance) => {
           return {
             onClick: (e, handleOriginal) => {
-              // console.log(column.id, 'column clicked');
+              //console.log(rowInfo, 'column clicked');
               if (onRowClick && rowInfo) {
                 onRowClick(rowInfo.original, rowInfo.index, column.id);
               }

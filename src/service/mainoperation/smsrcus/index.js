@@ -38,12 +38,10 @@ const Smsrcus = props => {
     smsrcusData = {},
   } = props;
 
-  console.log('smsrcusData', smsrcusData);
-
   const emptyParam = {
     bukrs: '',
     branchId: '',
-    categoryId: '',
+    tovarCategoryId: '',
     contractStatusId: '',
     contractDateFrom: '',
     contractDateTo: '',
@@ -89,26 +87,22 @@ const Smsrcus = props => {
   let initialColumns = [
     {
       Header: messages['brnch'],
-      fixed: 'left',
       accessor: 'branchName',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
-      width: 500,
     },
     {
       Header: 'CN',
       accessor: 'contractNumber',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
-      width: 500,
     },
     {
       Header: messages['factory_number'],
       accessor: 'tovarSn',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
-      width: 500,
     },
     {
       Header: messages['Table.Date'],
@@ -116,7 +110,6 @@ const Smsrcus = props => {
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
-      width: 500,
     },
     {
       Header: messages['financial_status'],
@@ -232,13 +225,12 @@ const Smsrcus = props => {
         case 'branchId':
           prevParam.branchId = o.value;
           break;
-        case 'categoryId':
-          prevParam.categoryId = o.value;
+        case 'tovarCategoryId':
+          prevParam.tovarCategoryId = o.value;
           break;
         case 'contractStatusId':
           prevParam.contractStatusId =
             o.value.length > 0 ? o.value.join() : null;
-          //varTs.tovarCategorys = value.length > 0 ? value.join() : null;
           break;
         case 'contractDateFrom':
           prevParam.contractDateFrom = o.value;
@@ -246,10 +238,6 @@ const Smsrcus = props => {
         case 'contractDateTo':
           prevParam.contractDateTo = o.value;
           break;
-
-        // case 'product':
-        //   varTs.tovarCategorys = value.length > 0 ? value.join() : null;
-        //   break;
         default:
           prevParam[fieldName] = o.value;
       }
@@ -301,7 +289,7 @@ const Smsrcus = props => {
               label={messages['category']}
               placeholder={messages['category']}
               options={categoryOptions}
-              onChange={(e, o) => onInputChange(o, 'categoryId')}
+              onChange={(e, o) => onInputChange(o, 'tovarCategoryId')}
               className="alignBottom"
             />
 
@@ -381,6 +369,12 @@ const Smsrcus = props => {
         </Form>
       </Segment>{' '}
       <Divider />
+      <Segment>
+        <h5>
+          {`Общее количество: 
+          ${smsrcusData.totalElements ? smsrcusData.totalElements : 0}`}
+        </h5>
+      </Segment>
       <ReactTableServerSideWrapper
         data={smsrcusData ? smsrcusData.data : []}
         columns={columns}
