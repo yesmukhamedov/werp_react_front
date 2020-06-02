@@ -79,6 +79,7 @@ import {
   F4_FETCH_MATNR_PRICELIST,
   F4_FETCH_FILTER_PLAN_STATUS,
   F4_CLEAR_FILTER_PLAN_STATUS,
+  F4_FETCH_PHYS_STATUS,
 } from './f4_action';
 
 const INITIAL_STATE = {
@@ -362,6 +363,9 @@ export default function(state = INITIAL_STATE, action) {
 
     case F4_CLEAR_FILTER_PLAN_STATUS:
       return { ...state, filterPlanStatus: [] };
+
+    case F4_FETCH_PHYS_STATUS:
+      return { ...state, physStatus: action.payload.contlaststate };
 
     default:
       return state;

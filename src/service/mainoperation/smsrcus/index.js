@@ -22,6 +22,7 @@ import {
   f4FetchCountryList,
   f4FetchConStatusList,
   f4FetchBranches,
+  f4FetchPhysStatus,
 } from '../../../reference/f4/f4_action';
 
 import { fetchSmsrcusList } from './smsrcusAction';
@@ -36,6 +37,7 @@ const Smsrcus = props => {
     branches = [],
     category = [],
     smsrcusData = {},
+    physStatus = [],
   } = props;
 
   const emptyParam = {
@@ -43,6 +45,7 @@ const Smsrcus = props => {
     branchId: '',
     tovarCategoryId: '',
     contractStatusId: '',
+    lastStateId: '',
     contractDateFrom: '',
     contractDateTo: '',
   };
@@ -119,6 +122,13 @@ const Smsrcus = props => {
       filterable: false,
     },
     {
+      Header: 'Физический статус',
+      accessor: 'lastStateId',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      checked: true,
+      filterable: false,
+    },
+    {
       Header: messages['full_name_of_client'],
       accessor: 'customerFIO',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
@@ -187,11 +197,22 @@ const Smsrcus = props => {
     };
   });
 
+  const physStatusOptions = physStatus.map(item => {
+    return {
+      key: item.id,
+      text: item.oper_name_ru,
+      value: item.id,
+    };
+  });
+
+  console.log('physStatusOptions', physStatusOptions);
+
   useEffect(() => {
     props.f4fetchCategory();
     props.f4FetchCountryList();
     props.f4FetchConStatusList();
     props.f4FetchBranches();
+    props.f4FetchPhysStatus();
   }, []);
 
   const handleClickSmsrcus = () => {
@@ -227,6 +248,9 @@ const Smsrcus = props => {
           break;
         case 'tovarCategoryId':
           prevParam.tovarCategoryId = o.value;
+          break;
+        case 'lastStateId':
+          prevParam.lastStateId = o.value.length > 0 ? o.value.join() : null;
           break;
         case 'contractStatusId':
           prevParam.contractStatusId =
@@ -299,6 +323,15 @@ const Smsrcus = props => {
               placeholder="Фин. статус"
               options={finStatusOptions}
               onChange={(e, o) => onInputChange(o, 'contractStatusId')}
+              className="alignBottom"
+              multiple
+            />
+            <Form.Select
+              fluid
+              label="Физ. статус"
+              placeholder="Физ. статус"
+              options={physStatusOptions}
+              onChange={(e, o) => onInputChange(o, 'lastStateId')}
               className="alignBottom"
               multiple
             />
@@ -404,6 +437,7 @@ function mapStateToProps(state) {
     category: state.f4.category,
     contractStatusList: state.f4.contractStatusList,
     branches: state.f4.branches,
+    physStatus: state.f4.physStatus,
   };
 }
 
@@ -413,4 +447,5 @@ export default connect(mapStateToProps, {
   f4FetchCountryList,
   f4FetchConStatusList,
   f4FetchBranches,
+  f4FetchPhysStatus,
 })(injectIntl(Smsrcus));

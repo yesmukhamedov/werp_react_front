@@ -137,6 +137,7 @@ export const F4_FETCH_SERVICE_TYPE = 'F4_FETCH_SERVICE_TYPE';
 
 export const F4_FETCH_FILTER_PLAN_STATUS = 'F4_FETCH_FILTER_PLAN_STATUS';
 export const F4_CLEAR_FILTER_PLAN_STATUS = 'F4_CLEAR_FILTER_PLAN_STATUS';
+export const F4_FETCH_PHYS_STATUS = 'F4_FETCH_PHYS_STATUS';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
@@ -1109,3 +1110,21 @@ export const f4FetchFilterPlanStatus = param => {
       });
   };
 };
+
+export function f4FetchPhysStatus() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`marketing/report/dmsclst/defopts`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_PHYS_STATUS,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
