@@ -13,6 +13,7 @@ import 'react-table/react-table.css';
 import OutputErrors from '../../../../general/error/outputErrors';
 import { errorTableText } from '../../../../utils/helpers';
 import { fetchSearchCustomer } from '../smopccicAction';
+import { f4FetchPhysStatus } from '../../../../reference/f4/f4_action';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from '../../../../utils/ModalColumns';
 import moment from 'moment';
@@ -30,25 +31,32 @@ const SearchCustomer = props => {
     branches = [],
     finStatusOptions = [],
     tovarCategoryOptions = [],
+    physStatusOptions = [],
   } = props;
 
   const {
     intl: { messages },
     searchCustomer,
+    language,
   } = props;
   const emptyParam = {
     countryId: '',
     bukrs: '',
     branchId: '',
-    tovarCategory: '',
-    contractStatusIds: '',
+    tovarCategoryId: '',
+    contractStatusId: [],
     contractDateFrom: '',
     contractDateTo: '',
+    lastStateId: '',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const [error, setError] = useState([]);
+
+  useEffect(() => {
+    props.f4FetchPhysStatus();
+  }, []);
 
   const initialColumns = [
     {
@@ -130,9 +138,12 @@ const SearchCustomer = props => {
     let servBrOptions = branches
       .filter(
         item =>
-          item.business_area_id == 5 ||
-          item.business_area_id == 6 ||
-          item.business_area_id == 9,
+          item.business_area_id == 1 ||
+          item.business_area_id == 2 ||
+          item.business_area_id == 3 ||
+          item.business_area_id == 4 ||
+          item.business_area_id == 7 ||
+          item.business_area_id == 8,
       )
       .map(item => {
         return {
@@ -143,26 +154,15 @@ const SearchCustomer = props => {
           bukrs: item.bukrs,
         };
       });
-    if (param.countryId !== '' && param.bukrs !== '') {
-      let servBranchOptions = servBrOptions
-        .filter(item => item.country_id === param.countryId)
-        .filter(item => item.bukrs === param.bukrs);
-      setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.countryId !== '' && param.bukrs === '') {
-      let servBranchOptions = servBrOptions.filter(
-        item => item.country_id === param.countryId,
-      );
-      setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.countryId === '' && param.bukrs !== '') {
+
+    if (param.bukrs !== '') {
       let servBranchOptions = servBrOptions.filter(
         item => item.bukrs === param.bukrs,
       );
 
       setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.countryId === '' && param.bukrs === '') {
-      setServiceBranchOptions([...servBrOptions]);
     }
-  }, [branches, param.countryId, param.bukrs]);
+  }, [branches, param.bukrs]);
 
   const onInputChange = (o, fieldName) => {
     setParam(prev => {
@@ -177,11 +177,15 @@ const SearchCustomer = props => {
         case 'branchId':
           prevParam.branchId = o.value;
           break;
-        case 'tovarCategory':
-          prevParam.tovarCategory = o.value;
+        case 'tovarCategoryId':
+          prevParam.tovarCategoryId = o.value;
           break;
-        case 'contractStatusIds':
-          prevParam.contractStatusIds = o.value;
+        case 'contractStatusId':
+          prevParam.contractStatusId =
+            o.value.length > 0 ? o.value.join() : null;
+          break;
+        case 'lastStateId':
+          prevParam.lastStateId = o.value.length > 0 ? o.value.join() : null;
           break;
 
         default:
@@ -190,6 +194,7 @@ const SearchCustomer = props => {
       return prevParam;
     });
   };
+
   const handleClickApply = () => {
     validate();
     if (param.bukrs !== '') {
@@ -249,7 +254,7 @@ const SearchCustomer = props => {
             label={messages['category']}
             placeholder={messages['category']}
             options={tovarCategoryOptions}
-            onChange={(e, o) => onInputChange(o, 'tovarCategory')}
+            onChange={(e, o) => onInputChange(o, 'tovarCategoryId')}
             className="alignBottom"
           />
 
@@ -257,8 +262,19 @@ const SearchCustomer = props => {
             label={messages['fin_status']}
             placeholder={messages['fin_status']}
             options={finStatusOptions}
-            onChange={(e, o) => onInputChange(o, 'contractStatusIds')}
+            onChange={(e, o) => onInputChange(o, 'contractStatusId')}
             className="alignBottom"
+            multiple
+          />
+
+          <Form.Select
+            fluid
+            label="Физ. статус"
+            placeholder="Физ. статус"
+            options={getPhysStatus(physStatusOptions, language)}
+            onChange={(e, o) => onInputChange(o, 'lastStateId')}
+            className="alignBottom"
+            multiple
           />
         </Form.Group>
         <Form.Group className="spaceBetween">
@@ -296,7 +312,7 @@ const SearchCustomer = props => {
                 selected={
                   param.contractDateTo === ''
                     ? ''
-                    : stringYYYYMMDDToMoment(param.contractDateFrom)
+                    : stringYYYYMMDDToMoment(param.contractDateTo)
                 }
                 onChange={date =>
                   setParam({
@@ -344,12 +360,30 @@ const SearchCustomer = props => {
   );
 };
 
+const getPhysStatus = (value, lang) => {
+  const physStatus = value;
+  if (!physStatus) {
+    return [];
+  }
+  let out = value.map(c => {
+    return {
+      key: c.id,
+      text: c[`oper_name_${lang}`],
+      value: parseInt(c.id, 10),
+    };
+  });
+  return out;
+};
+
 function mapStateToProps(state) {
   return {
+    language: state.locales.lang,
     searchCustomer: state.smopccicReducer.searchCustomerData,
+    physStatusOptions: state.f4.physStatus,
   };
 }
 
 export default connect(mapStateToProps, {
   fetchSearchCustomer,
+  f4FetchPhysStatus,
 })(injectIntl(SearchCustomer));
