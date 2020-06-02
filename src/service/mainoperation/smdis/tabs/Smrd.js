@@ -124,6 +124,7 @@ const Smrd = props => {
   };
 
   const redistributionData = () => {
+    setSmrd([]);
     const toOperators = smrd.map(item => {
       return {
         toOperatorId: item.toOperatorId,
