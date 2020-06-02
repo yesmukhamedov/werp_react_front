@@ -17,6 +17,7 @@ import { fetchSearchCustomer } from '../smopccicAction';
 import { f4FetchPhysStatus } from '../../../../reference/f4/f4_action';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from '../../../../utils/ModalColumns';
+import { LinkToSmcusporFromSmsrcus } from '../../../../utils/outlink';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -128,20 +129,23 @@ const SearchCustomer = props => {
       accessor: '16',
       checked: true,
       filterable: false,
-      Cell: (
-        <div style={{ textAlign: 'center' }}>
-          <Popup
-            content="Просмотр сервис карту"
-            trigger={<Button icon="address card" />}
-          />
-        </div>
-      ),
+      Cell: original => {
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <div></div>
+            <LinkToSmcusporFromSmsrcus
+              contractNumber={original.row.contractNumber}
+            />
+          </div>
+        );
+      },
     },
   ];
 
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
 
   useEffect(() => {
+    setParam({ ...param, branchId: '' });
     let servBrOptions = branches
       .filter(
         item =>
@@ -152,6 +156,7 @@ const SearchCustomer = props => {
           item.business_area_id == 7 ||
           item.business_area_id == 8,
       )
+
       .map(item => {
         return {
           key: item.branch_id,
@@ -162,14 +167,26 @@ const SearchCustomer = props => {
         };
       });
 
-    if (param.bukrs !== '') {
+    if (param.countryId !== '' && param.bukrs !== '') {
+      let servBranchOptions = servBrOptions
+        .filter(item => item.country_id === param.countryId)
+        .filter(item => item.bukrs === param.bukrs);
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.countryId !== '' && param.bukrs === '') {
+      let servBranchOptions = servBrOptions.filter(
+        item => item.country_id === param.countryId,
+      );
+      setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.countryId === '' && param.bukrs !== '') {
       let servBranchOptions = servBrOptions.filter(
         item => item.bukrs === param.bukrs,
       );
 
       setServiceBranchOptions([...servBranchOptions]);
+    } else if (param.countryId === '' && param.bukrs === '') {
+      setServiceBranchOptions([...servBrOptions]);
     }
-  }, [branches, param.bukrs]);
+  }, [branches, param.countryId, param.bukrs]);
 
   const onInputChange = (o, fieldName) => {
     setParam(prev => {
