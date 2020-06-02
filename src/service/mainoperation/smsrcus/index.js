@@ -57,38 +57,6 @@ const Smsrcus = props => {
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const [error, setError] = useState([]);
 
-  // useEffect(() => {
-  //   let servBrOptions = branches
-  //     .filter(
-  //       item =>
-  //         item.business_area_id == 1 ||
-  //         item.business_area_id == 2 ||
-  //         item.business_area_id == 3 ||
-  //         item.business_area_id == 4 ||
-  //         item.business_area_id == 7 ||
-  //         item.business_area_id == 8,
-  //     )
-  //     .map(item => {
-  //       return {
-  //         key: item.branch_id,
-  //         text: item.text45,
-  //         value: item.branch_id,
-  //         country_id: item.country_id,
-  //         bukrs: item.bukrs,
-  //       };
-  //     });
-
-  //   if (param.bukrs !== '') {
-  //     let servBranchOptions = servBrOptions.filter(
-  //       item => item.bukrs === param.bukrs,
-  //     );
-
-  //     console.log('servBranchOptions', servBranchOptions);
-
-  //     setServiceBranchOptions([...servBranchOptions]);
-  //   }
-  // }, [branches, param.bukrs]);
-
   useEffect(() => {
     let servBrOptions = branches
       .filter(
@@ -322,6 +290,9 @@ const Smsrcus = props => {
 
   return (
     <Container fluid className="containerMargin">
+      <Segment>
+        <h3>Поиск клиентов</h3>
+      </Segment>
       <Segment>
         <Form>
           <Form.Group widths="equal">
