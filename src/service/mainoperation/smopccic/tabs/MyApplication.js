@@ -246,7 +246,8 @@ const MyApplication = props => {
           prevParam.categoryId = o.value;
           break;
         case 'serviceStatusId':
-          prevParam.serviceStatusId = o.value;
+          prevParam.serviceStatusId =
+            o.value.length > 0 ? o.value.join() : null;
           break;
         default:
           prevParam[fieldName] = o.value;
@@ -259,7 +260,6 @@ const MyApplication = props => {
   const finishColumns = data => {
     setColumns([...data]);
   };
-  console.log(myApplicationData);
 
   return (
     <Container fluid className="containerMargin">
@@ -305,8 +305,9 @@ const MyApplication = props => {
             label={messages['fin_status']}
             placeholder={messages['fin_status']}
             options={serviceAppStatusOptions}
-            onChange={(e, o) => onInputChange(o, 'configuration')}
+            onChange={(e, o) => onInputChange(o, 'serviceStatusId')}
             className="alignBottom"
+            multiple
           />
         </Form.Group>
         <Form.Group className="spaceBetween">

@@ -58,6 +58,17 @@ const Smcrld = props => {
     {
       columns: [
         {
+          Header: 'Филиал',
+          accessor: 'branchName',
+          checked: true,
+          Footer: <strong>{'Итого:'}</strong>,
+        },
+      ],
+      fixed: 'left',
+    },
+    {
+      columns: [
+        {
           Header: 'Страна',
           accessor: 'countryName',
           checked: true,
@@ -66,12 +77,6 @@ const Smcrld = props => {
           Header: 'Компания',
           accessor: 'bukrsName',
           checked: true,
-        },
-        {
-          Header: 'Филиал',
-          accessor: 'branchName',
-          checked: true,
-          Footer: <strong>{'Итого:'}</strong>,
         },
       ],
       checked: true,
@@ -344,18 +349,24 @@ const Smcrld = props => {
       Header: 'Просмотр',
       checked: true,
       accessor: '5',
-      Cell: original => (
-        <div style={{ textAlign: 'center' }}>
-          <Icon
-            color="teal"
-            link
-            name="search"
-            onClick={() => {
-              clickViewService(original.row._original);
-            }}
-          />
-        </div>
-      ),
+      columns: [
+        {
+          Cell: original => (
+            <div style={{ textAlign: 'center' }}>
+              <Icon
+                color="teal"
+                link
+                name="search"
+                onClick={() => {
+                  clickViewService(original.row._original);
+                }}
+              />
+            </div>
+          ),
+          width: 50,
+        },
+      ],
+      fixed: 'right',
     },
   ];
 

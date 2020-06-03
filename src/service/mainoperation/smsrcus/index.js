@@ -58,6 +58,7 @@ const Smsrcus = props => {
   const [error, setError] = useState([]);
 
   useEffect(() => {
+    setParam({ ...param, branchId: '' });
     let servBrOptions = branches
       .filter(
         item =>
@@ -437,7 +438,6 @@ const Smsrcus = props => {
         pages={smsrcusData ? smsrcusData.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}
         style={{ height: 500 }}
-        className="-striped"
       />
     </Container>
   );

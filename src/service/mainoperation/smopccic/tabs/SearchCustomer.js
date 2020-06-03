@@ -8,13 +8,16 @@ import {
   Button,
   Popup,
   Divider,
+  Segment,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import OutputErrors from '../../../../general/error/outputErrors';
 import { errorTableText } from '../../../../utils/helpers';
 import { fetchSearchCustomer } from '../smopccicAction';
+import { f4FetchPhysStatus } from '../../../../reference/f4/f4_action';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from '../../../../utils/ModalColumns';
+import { LinkToSmcusporFromSmsrcus } from '../../../../utils/outlink';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -30,25 +33,32 @@ const SearchCustomer = props => {
     branches = [],
     finStatusOptions = [],
     tovarCategoryOptions = [],
+    physStatusOptions = [],
   } = props;
 
   const {
     intl: { messages },
     searchCustomer,
+    language,
   } = props;
   const emptyParam = {
     countryId: '',
     bukrs: '',
     branchId: '',
-    tovarCategory: '',
-    contractStatusIds: '',
+    tovarCategoryId: '',
+    contractStatusId: [],
     contractDateFrom: '',
     contractDateTo: '',
+    lastStateId: '',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const [error, setError] = useState([]);
+
+  useEffect(() => {
+    props.f4FetchPhysStatus();
+  }, []);
 
   const initialColumns = [
     {
@@ -85,6 +95,12 @@ const SearchCustomer = props => {
       checked: true,
       filterable: false,
     },
+    {
+      Header: 'Физ статус',
+      accessor: 'lastStateId',
+      checked: true,
+      filterable: false,
+    },
 
     {
       Header: messages['fio'],
@@ -113,27 +129,34 @@ const SearchCustomer = props => {
       accessor: '16',
       checked: true,
       filterable: false,
-      Cell: (
-        <div style={{ textAlign: 'center' }}>
-          <Popup
-            content="Просмотр сервис карту"
-            trigger={<Button icon="address card" />}
-          />
-        </div>
-      ),
+      Cell: original => {
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <div></div>
+            <LinkToSmcusporFromSmsrcus
+              contractNumber={original.row.contractNumber}
+            />
+          </div>
+        );
+      },
     },
   ];
 
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
 
   useEffect(() => {
+    setParam({ ...param, branchId: '' });
     let servBrOptions = branches
       .filter(
         item =>
-          item.business_area_id == 5 ||
-          item.business_area_id == 6 ||
-          item.business_area_id == 9,
+          item.business_area_id == 1 ||
+          item.business_area_id == 2 ||
+          item.business_area_id == 3 ||
+          item.business_area_id == 4 ||
+          item.business_area_id == 7 ||
+          item.business_area_id == 8,
       )
+
       .map(item => {
         return {
           key: item.branch_id,
@@ -143,6 +166,7 @@ const SearchCustomer = props => {
           bukrs: item.bukrs,
         };
       });
+
     if (param.countryId !== '' && param.bukrs !== '') {
       let servBranchOptions = servBrOptions
         .filter(item => item.country_id === param.countryId)
@@ -177,11 +201,15 @@ const SearchCustomer = props => {
         case 'branchId':
           prevParam.branchId = o.value;
           break;
-        case 'tovarCategory':
-          prevParam.tovarCategory = o.value;
+        case 'tovarCategoryId':
+          prevParam.tovarCategoryId = o.value;
           break;
-        case 'contractStatusIds':
-          prevParam.contractStatusIds = o.value;
+        case 'contractStatusId':
+          prevParam.contractStatusId =
+            o.value.length > 0 ? o.value.join() : null;
+          break;
+        case 'lastStateId':
+          prevParam.lastStateId = o.value.length > 0 ? o.value.join() : null;
           break;
 
         default:
@@ -190,6 +218,7 @@ const SearchCustomer = props => {
       return prevParam;
     });
   };
+
   const handleClickApply = () => {
     validate();
     if (param.bukrs !== '') {
@@ -249,7 +278,7 @@ const SearchCustomer = props => {
             label={messages['category']}
             placeholder={messages['category']}
             options={tovarCategoryOptions}
-            onChange={(e, o) => onInputChange(o, 'tovarCategory')}
+            onChange={(e, o) => onInputChange(o, 'tovarCategoryId')}
             className="alignBottom"
           />
 
@@ -257,8 +286,19 @@ const SearchCustomer = props => {
             label={messages['fin_status']}
             placeholder={messages['fin_status']}
             options={finStatusOptions}
-            onChange={(e, o) => onInputChange(o, 'contractStatusIds')}
+            onChange={(e, o) => onInputChange(o, 'contractStatusId')}
             className="alignBottom"
+            multiple
+          />
+
+          <Form.Select
+            fluid
+            label="Физ. статус"
+            placeholder="Физ. статус"
+            options={getPhysStatus(physStatusOptions, language)}
+            onChange={(e, o) => onInputChange(o, 'lastStateId')}
+            className="alignBottom"
+            multiple
           />
         </Form.Group>
         <Form.Group className="spaceBetween">
@@ -296,7 +336,7 @@ const SearchCustomer = props => {
                 selected={
                   param.contractDateTo === ''
                     ? ''
-                    : stringYYYYMMDDToMoment(param.contractDateFrom)
+                    : stringYYYYMMDDToMoment(param.contractDateTo)
                 }
                 onChange={date =>
                   setParam({
@@ -326,6 +366,18 @@ const SearchCustomer = props => {
           </Form.Field>
         </Form.Group>
         <OutputErrors errors={error} />
+        {searchCustomer.totalElements ? (
+          <Segment>
+            <h5>
+              {`Общее количество: 
+              ${
+                searchCustomer.totalElements
+                  ? searchCustomer.totalElements
+                  : null
+              }`}
+            </h5>
+          </Segment>
+        ) : null}
       </Form>
       <Divider />
       <ReactTableServerSideWrapper
@@ -344,12 +396,30 @@ const SearchCustomer = props => {
   );
 };
 
+const getPhysStatus = (value, lang) => {
+  const physStatus = value;
+  if (!physStatus) {
+    return [];
+  }
+  let out = value.map(c => {
+    return {
+      key: c.id,
+      text: c[`oper_name_${lang}`],
+      value: parseInt(c.id, 10),
+    };
+  });
+  return out;
+};
+
 function mapStateToProps(state) {
   return {
+    language: state.locales.lang,
     searchCustomer: state.smopccicReducer.searchCustomerData,
+    physStatusOptions: state.f4.physStatus,
   };
 }
 
 export default connect(mapStateToProps, {
   fetchSearchCustomer,
+  f4FetchPhysStatus,
 })(injectIntl(SearchCustomer));

@@ -9,6 +9,21 @@ const TableSmvod = props => {
     {
       columns: [
         {
+          Header: 'Филиал',
+          accessor: 'branchName',
+          Footer: 'Итого:',
+        },
+        {
+          Header: 'Оператор',
+          accessor: 'operatorName',
+          width: 250,
+        },
+      ],
+      fixed: 'left',
+    },
+    {
+      columns: [
+        {
           Header: 'Id',
           accessor: 'operatorId',
         },
@@ -19,16 +34,6 @@ const TableSmvod = props => {
         {
           Header: 'Компания',
           accessor: 'bukrsName',
-        },
-        {
-          Header: 'Филиал',
-          accessor: 'branchName',
-          Footer: 'Итого:',
-        },
-        {
-          Header: 'Оператор',
-          accessor: 'operatorName',
-          width: 250,
         },
       ],
     },
@@ -186,16 +191,22 @@ const TableSmvod = props => {
     },
     {
       Header: 'Просмотр',
-      Cell: original => (
-        <div style={{ textAlign: 'center' }}>
-          <Icon
-            color="teal"
-            link
-            name="search"
-            onClick={() => clickSmvodRow(original.row._original)}
-          />
-        </div>
-      ),
+      columns: [
+        {
+          Cell: original => (
+            <div style={{ textAlign: 'center' }}>
+              <Icon
+                color="teal"
+                link
+                name="search"
+                onClick={() => clickSmvodRow(original.row._original)}
+              />
+            </div>
+          ),
+          width: 50,
+        },
+      ],
+      fixed: 'right',
     },
   ];
   return (
