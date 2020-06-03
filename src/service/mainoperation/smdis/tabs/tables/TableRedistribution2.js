@@ -12,6 +12,7 @@ const TableRedistribution2 = props => {
     onOperatorSelect = [],
     filterStatus = [],
     onStatusSelect = [],
+    toOperators = [],
   } = props;
 
   const renderEditable = row => {
@@ -204,22 +205,25 @@ const TableRedistribution2 = props => {
         },
       ],
     },
-    {
-      Header: 'Delete',
-      accessor: '0',
-      Cell: ({ row }) => (
-        <div style={{ textAlign: 'center' }}>
-          <Button
-            icon={'delete'}
-            size="mini"
-            color="red"
-            onClick={() => {
-              removeOperator(row);
-            }}
-          />
-        </div>
-      ),
-    },
+
+    toOperators.length === 0
+      ? {
+          Header: 'Delete',
+          accessor: '0',
+          Cell: ({ row }) => (
+            <div style={{ textAlign: 'center' }}>
+              <Button
+                icon={'delete'}
+                size="mini"
+                color="red"
+                onClick={() => {
+                  removeOperator(row);
+                }}
+              />
+            </div>
+          ),
+        }
+      : {},
   ];
 
   return (

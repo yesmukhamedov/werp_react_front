@@ -18,7 +18,6 @@ import {
 } from '../../serviceAction';
 
 import AddressF4Modal from '../../../reference/f4/address/addressF4WithCreationPage';
-import PhoneF4Modal from '../../../reference/f4/phone/phoneF4Modal';
 
 import { injectIntl } from 'react-intl';
 import './smeci.css';
@@ -280,13 +279,7 @@ function Smeci(props) {
         customerId={customerId}
         onCloseAddressF4={bool => setAddressF4ModalOpen(bool)}
         onAddressSelect={item => onInputChange(item, 'addrServiceId')}
-      />
-
-      <PhoneF4Modal
-        open={phoneF4ModalOpen}
-        customerId={customerId}
         selectedBranch={contract.selectedBranch}
-        onClosePhoneF4={bool => setPhoneF4ModalOpen(bool)}
       />
       <Grid centered>
         <Grid.Row>
@@ -400,7 +393,7 @@ function Smeci(props) {
                         value={contract.addrServ ? contract.addrServ : ''}
                       />
                     </Table.Cell>
-                    <Table.Cell>
+                    <Table.Cell collapsing>
                       <Button
                         icon
                         basic
@@ -420,16 +413,7 @@ function Smeci(props) {
                         value={fullPhone ? fullPhone : ''}
                       />
                     </Table.Cell>
-                    <Table.Cell collapsing>
-                      <Button
-                        icon
-                        basic
-                        color="blue"
-                        onClick={() => setPhoneF4ModalOpen(true)}
-                      >
-                        <Icon name="clone" />
-                      </Button>
-                    </Table.Cell>
+                    <Table.Cell></Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>

@@ -70,15 +70,15 @@ function Smcca(props) {
     bukrs = '',
     bukrsName = '',
     branchId = '',
-    servBranchName = '',
+    serviceBranchName = '',
     customerId = '',
-    customerName,
-    addrServ,
+    customerFIO,
+    serviceAddressName,
     fullPhone,
     tovarSn,
     matnrName,
     installmentDate,
-    fitterName,
+    fitterFIO,
     f1MtLeft,
     f2MtLeft,
     f3MtLeft,
@@ -196,7 +196,7 @@ function Smcca(props) {
                     <Input
                       size="small"
                       fluid
-                      value={servBranchName ? servBranchName : ''}
+                      value={serviceBranchName ? serviceBranchName : ''}
                     />
                   </Table.Cell>
                 </Table.Row>
@@ -279,7 +279,7 @@ function Smcca(props) {
                     <Input
                       size="small"
                       fluid
-                      value={customerName ? customerName : ''}
+                      value={customerFIO ? customerFIO : ''}
                     />
                   </Table.Cell>
                 </Table.Row>
@@ -289,7 +289,7 @@ function Smcca(props) {
                     <Input
                       size="small"
                       fluid
-                      value={addrServ ? addrServ : ''}
+                      value={serviceAddressName ? serviceAddressName : ''}
                     />
                   </Table.Cell>
                 </Table.Row>
@@ -325,7 +325,7 @@ function Smcca(props) {
                     <Input
                       size="small"
                       fluid
-                      value={fitterName ? fitterName : ''}
+                      value={fitterFIO ? fitterFIO : ''}
                     />
                   </Table.Cell>
                 </Table.Row>

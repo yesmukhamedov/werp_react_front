@@ -17,7 +17,7 @@ import {
   FETCH_SMPLB,
   FETCH_SMPLB_ADD,
   HISTORY_EDITING_SMSETCT,
-  FETCH_SMCUSPOR,
+  FETCH_SMCUSPOR_CONTRACT,
   FETCH_SMCUSPOR_HISTORY_ALL,
   FETCH_SMCUSPOR_HISTORY_APP,
   FETCH_SMCUSPOR_HISTORY_CALL,
@@ -200,8 +200,8 @@ export default function(state = INITIAL_STATE, action) {
       };
     }
 
-    case FETCH_SMCUSPOR: {
-      return { ...state, clientHistory: action.payload };
+    case FETCH_SMCUSPOR_CONTRACT: {
+      return { ...state, clientContract: action.payload.data };
     }
 
     case FETCH_SMCUSPOR_HISTORY_ALL: {

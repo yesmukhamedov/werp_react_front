@@ -27,7 +27,7 @@ export const FETCH_SMPLB_POST = 'FETCH_SMPLB_POST';
 export const FETCH_SMPLB_PUT = 'FETCH_SMPLB_PUT';
 export const FETCH_SMPLB_DELETE = 'FETCH_SMPLB_DELETE';
 export const HISTORY_EDITING_SMSETCT = 'HISTORY_EDITING_SMSETCT';
-export const FETCH_SMCUSPOR = 'FETCH_SMCUSPOR';
+export const FETCH_SMCUSPOR_CONTRACT = 'FETCH_SMCUSPOR_CONTRACT';
 export const FETCH_SMCUSPOR_HISTORY_ALL = 'FETCH_SMCUSPOR_HISTORY_ALL';
 export const FETCH_SMCUSPOR_HISTORY_APP = 'FETCH_SMCUSPOR_HISTORY_APP';
 export const FETCH_SMCUSPOR_HISTORY_CALL = 'FETCH_SMCUSPOR_HISTORY_CALL';
@@ -447,14 +447,14 @@ export function fetchSmplbDelete(id, fetchSmplb) {
   };
 }
 
-export function fetchSmcusporClientHistory(contractNumber) {
+export function fetchSmcusporContract(contractNumber) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcuspor/contractInfo`, contractNumber)
+    doGet(`smcuspor/contract`, contractNumber)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: FETCH_SMCUSPOR,
+          type: FETCH_SMCUSPOR_CONTRACT,
           payload: data,
         });
       })

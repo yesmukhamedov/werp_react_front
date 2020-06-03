@@ -210,6 +210,7 @@ const Smrd = props => {
             onOperatorSelect={onOperatorSelect}
             onStatusSelect={onStatusSelect}
             filterStatus={getFilterStatus(filterPlanStatus)}
+            toOperators={data.toOperators}
           />
         </Segment>
       ) : null}

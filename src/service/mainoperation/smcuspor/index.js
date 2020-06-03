@@ -11,7 +11,7 @@ import {
   Button,
 } from 'semantic-ui-react';
 import {
-  fetchSmcusporClientHistory,
+  fetchSmcusporContract,
   fetchServCrmHistoryAll,
 } from '../../serviceAction';
 import DatePicker from 'react-datepicker';
@@ -44,6 +44,7 @@ function Smcuspor(props) {
     clientHistory = {
       contractInfo: {},
     },
+    clientContract = {},
     crmHistoryAll,
     language,
   } = props;
@@ -53,20 +54,20 @@ function Smcuspor(props) {
     bukrsName,
     bukrs,
     branchName,
-    servBranchId,
-    servBranchName,
-    tovarSerial,
-    customerName,
+    serviceBranchId,
+    serviceBranchName,
+    tovarSn,
+    customerFIO,
     customerId,
     contactPersonName,
-    addrServ,
+    serviceAddressName,
     fullPhone,
-    servCrmCategory,
+    serviceCrmCategoryName,
     contractDate,
     matnrName,
     installmentDate,
-    dealerName,
-    fitterName,
+    dealerFIO,
+    fitterFIO,
     warrantyEndDate,
     warranty,
     warrantyEndedMonths,
@@ -76,11 +77,11 @@ function Smcuspor(props) {
     f3MtLeft,
     f4MtLeft,
     f5MtLeft,
-  } = clientHistory.contractInfo;
+  } = clientContract;
 
   useEffect(() => {
     if (contractNumber) {
-      props.fetchSmcusporClientHistory({ contractNumber });
+      props.fetchSmcusporContract({ contractNumber });
     }
   }, [contractNumber]);
 
@@ -123,13 +124,25 @@ function Smcuspor(props) {
   };
 
   const labelColor = () => {
-    if (servCrmCategory === 'ЗЕЛЕНЫЙ' || servCrmCategory === 'GREEN') {
+    if (
+      serviceCrmCategoryName === 'ЗЕЛЕНЫЙ' ||
+      serviceCrmCategoryName === 'GREEN'
+    ) {
       return 'green';
-    } else if (servCrmCategory === 'ЖЕЛТЫЙ' || servCrmCategory === 'YELLOW') {
+    } else if (
+      serviceCrmCategoryName === 'ЖЕЛТЫЙ' ||
+      serviceCrmCategoryName === 'YELLOW'
+    ) {
       return 'yellow';
-    } else if (servCrmCategory === 'КРАСНЫЙ' || servCrmCategory === 'RED') {
+    } else if (
+      serviceCrmCategoryName === 'КРАСНЫЙ' ||
+      serviceCrmCategoryName === 'RED'
+    ) {
       return 'red';
-    } else if (servCrmCategory === 'ЧЕРНЫЙ' || servCrmCategory === 'BLACK') {
+    } else if (
+      serviceCrmCategoryName === 'ЧЕРНЫЙ' ||
+      serviceCrmCategoryName === 'BLACK'
+    ) {
       return 'black';
     }
   };
@@ -153,8 +166,8 @@ function Smcuspor(props) {
                       props.history.push(
                         `smregc?contractNumber=${contractNumber}`,
                         {
-                          tovarSn: tovarSerial,
-                          branchId: servBranchId,
+                          tovarSn: tovarSn,
+                          branchId: serviceBranchId,
                           bukrs: bukrs,
                         },
                       )
@@ -174,16 +187,16 @@ function Smcuspor(props) {
                         {
                           bukrs: bukrs,
                           bukrsName: bukrsName,
-                          branchId: servBranchId,
-                          servBranchName: servBranchName,
+                          branchId: serviceBranchId,
+                          serviceBranchName: serviceBranchName,
                           customerId: customerId,
-                          customerName: customerName,
-                          addrServ: addrServ,
+                          customerFIO: customerFIO,
+                          serviceAddressName: serviceAddressName,
                           fullPhone: fullPhone,
-                          tovarSn: tovarSerial,
+                          tovarSn: tovarSn,
                           matnrName: matnrName,
                           installmentDate: installmentDate,
-                          fitterName: fitterName,
+                          fitterFIO: fitterFIO,
                           f1MtLeft: f1MtLeft,
                           f2MtLeft: f2MtLeft,
                           f3MtLeft: f3MtLeft,
@@ -259,7 +272,7 @@ function Smcuspor(props) {
                       <Input
                         size="small"
                         fluid
-                        value={servBranchName ? servBranchName : ''}
+                        value={serviceBranchName ? serviceBranchName : ''}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -287,7 +300,7 @@ function Smcuspor(props) {
                       <Input
                         size="small"
                         fluid
-                        value={tovarSerial ? tovarSerial : ''}
+                        value={tovarSn ? tovarSn : ''}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -301,7 +314,7 @@ function Smcuspor(props) {
                       <Input
                         size="small"
                         fluid
-                        value={customerName ? customerName : ''}
+                        value={customerFIO ? customerFIO : ''}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -329,7 +342,7 @@ function Smcuspor(props) {
                       <Input
                         size="small"
                         fluid
-                        value={addrServ ? addrServ : ''}
+                        value={serviceAddressName ? serviceAddressName : ''}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -357,7 +370,9 @@ function Smcuspor(props) {
                       <Input
                         size="small"
                         fluid
-                        value={servCrmCategory ? servCrmCategory : ''}
+                        value={
+                          serviceCrmCategoryName ? serviceCrmCategoryName : ''
+                        }
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -399,7 +414,7 @@ function Smcuspor(props) {
                       <Input
                         size="small"
                         fluid
-                        value={dealerName ? dealerName : ''}
+                        value={dealerFIO ? dealerFIO : ''}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -413,7 +428,7 @@ function Smcuspor(props) {
                       <Input
                         size="small"
                         fluid
-                        value={fitterName ? fitterName : ''}
+                        value={fitterFIO ? fitterFIO : ''}
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -729,12 +744,12 @@ function Smcuspor(props) {
 function mapStateToProps(state) {
   return {
     language: state.locales.lang,
-    clientHistory: state.serviceReducer.clientHistory.data,
+    clientContract: state.serviceReducer.clientContract,
     crmHistoryAll: state.serviceReducer.crmHistoryAll.data,
   };
 }
 
 export default connect(mapStateToProps, {
-  fetchSmcusporClientHistory,
+  fetchSmcusporContract,
   fetchServCrmHistoryAll,
 })(injectIntl(Smcuspor));
