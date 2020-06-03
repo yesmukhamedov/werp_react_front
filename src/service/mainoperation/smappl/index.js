@@ -297,16 +297,18 @@ const Smappl = props => {
   return (
     <Segment>
       <Divider hidden></Divider>
-      <Header as="h2">
-        {messages['service_requests']}
-        {/* <a href="/service/mainoperation/smcs" target="_blank">
-          <Button floated="right" color="pink">
-            {messages['new_service']}
-          </Button>
-        </a> */}
-
-        <LinkToSmcsWithRequest />
-      </Header>
+      <Segment>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <h3>{messages['service_requests']}</h3>
+        </div>
+      </Segment>
 
       <Divider />
 
@@ -319,6 +321,7 @@ const Smappl = props => {
             options={companyPosition}
             placeholder={messages['bukrs']}
             onChange={(e, { value }) => onChange('bukrs', value)}
+            required
           />
           <Form.Select
             label={messages['Task.Branch']}
@@ -327,6 +330,7 @@ const Smappl = props => {
             options={search.bukrs ? branchOptions[search.bukrs] : []}
             placeholder={messages['Task.Branch']}
             onChange={(e, { value }) => onChange('branch', value)}
+            required
           />
           <Form.Select
             label={messages['product_category']}
@@ -391,7 +395,7 @@ const Smappl = props => {
 
           <Form.Field
             control={Button}
-            color="pink"
+            color="primary"
             style={{ marginTop: 24 }}
             onClick={onSearch}
           >

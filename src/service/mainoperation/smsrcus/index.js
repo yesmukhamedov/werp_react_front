@@ -297,6 +297,7 @@ const Smsrcus = props => {
         <Form>
           <Form.Group widths="equal">
             <Form.Select
+              clearable
               fluid
               label={messages['country']}
               placeholder={messages['country']}

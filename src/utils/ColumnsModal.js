@@ -28,7 +28,7 @@ const ColumnsModal = props => {
   return (
     <Fragment>
       <Modal
-        trigger={<Button color="pink">{messages['columns']}</Button>}
+        trigger={<Button color="teal">{messages['columns']}</Button>}
         size="mini"
       >
         <Header content={messages['columns']} />
