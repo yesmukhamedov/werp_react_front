@@ -64,6 +64,8 @@ export const FETCH_SMSETPP_HISTORY = 'FETCH_SMSETPP_HISTORY';
 export const FETCH_SMSETPP_SERVICE_TYPE_ID = 'FETCH_SMSETPP_SERVICE_TYPE_ID';
 export const FETCH_SMSETPP_GET_PRODUCT_LIST = 'FETCH_SMSETPP_GET_PRODUCT_LIST';
 export const FETCH_PRODUCT_LIST_SMSETCT = 'FETCH_PRODUCT_LIST_SMSETCT';
+export const FETCH_SMCUSPOR_CONTRACT_HISTORY =
+  'FETCH_SMCUSPOR_CONTRACT_HISTORY';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 
@@ -465,12 +467,30 @@ export function fetchSmcusporContract(contractNumber) {
   };
 }
 
+export function fetchSmcusporContractHistory(contractNumber) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`smcuspor/contractHistory`, contractNumber)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMCUSPOR_CONTRACT_HISTORY,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
 export function fetchServCrmHistoryAll(date, type) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     switch (type) {
       case 'all':
-        doGet(`smcuspor/servCrmHistoryAll`, date)
+        doGet(`smcuspor/serviceCrmHistoryAll`, date)
           .then(({ data }) => {
             dispatch(modifyLoader(false));
             dispatch({

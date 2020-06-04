@@ -40,6 +40,7 @@ function Smcca(props) {
   const [request, setRequest] = useState({ ...emptyRequest });
   const [scheduleCall, setScheduleCall] = useState(false);
   const [callDate, setCallDate] = useState(moment(new Date()));
+  const [callAppData, setCallAppDate] = useState(moment(new Date()));
   const [error, setError] = useState([]);
 
   const url = window.location.search;
@@ -221,6 +222,23 @@ function Smcca(props) {
                       options={servAppOpts(servAppType, lang)}
                       onChange={(e, o) => onInputChange(o, 'servAppType')}
                     />
+                  </Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>{messages['Application_Date']} </Table.Cell>
+                  <Table.Cell>
+                    <Input>
+                      <DatePicker
+                        autoComplete="off"
+                        deteFormat="DD/MM/YYYY"
+                        selected={callDate}
+                        dropdownMode="select"
+                        locale={lang}
+                        showMonthDropDown
+                        showYearDropDown
+                        onChange={date => setCallAppDate(date)}
+                      />
+                    </Input>
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>

@@ -46,6 +46,7 @@ import {
   FETCH_SMSETPLP_ID,
   FETCH_SMSETPP_GET_PRODUCT_LIST,
   FETCH_PRODUCT_LIST_SMSETCT,
+  FETCH_SMCUSPOR_CONTRACT_HISTORY,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -72,6 +73,8 @@ const INITIAL_STATE = {
   errorTable: [],
   dataID: [],
   productList: [],
+  smcusporContractHistory: [],
+  crmHistory: [],
 };
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -202,6 +205,10 @@ export default function(state = INITIAL_STATE, action) {
 
     case FETCH_SMCUSPOR_CONTRACT: {
       return { ...state, clientContract: action.payload.data };
+    }
+
+    case FETCH_SMCUSPOR_CONTRACT_HISTORY: {
+      return { ...state, smcusporContractHistory: action.payload.data };
     }
 
     case FETCH_SMCUSPOR_HISTORY_ALL: {

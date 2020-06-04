@@ -14,6 +14,8 @@ const ReactTableServerSideWrapper = props => {
     intl: { messages },
   } = props;
 
+  const [selectedRow, setSelectedRow] = useState(-1);
+
   const {
     defaultPageSize = 20,
     className = '-striped -highlight',
@@ -96,14 +98,38 @@ const ReactTableServerSideWrapper = props => {
         ofText={ofText}
         filterable={filterable}
         getTdProps={(state, rowInfo, column, instance) => {
-          return {
-            onClick: (e, handleOriginal) => {
-              //console.log(rowInfo, 'column clicked');
-              if (onRowClick && rowInfo) {
-                onRowClick(rowInfo.original, rowInfo.index, column.id);
-              }
-            },
-          };
+          if (typeof rowInfo !== 'undefined') {
+            return {
+              onClick: (e, handleOriginal) => {
+                setSelectedRow({ selected: rowInfo.index });
+                if (handleOriginal) {
+                  handleOriginal();
+                }
+                //console.log(rowInfo, 'column clicked');
+                if (onRowClick && rowInfo) {
+                  onRowClick(rowInfo.original, rowInfo.index, column.id);
+                }
+              },
+              style: {
+                background:
+                  rowInfo.index === selectedRow.selected ? '#7D3C98' : 'white',
+                color:
+                  rowInfo.index === selectedRow.selected ? 'white' : 'black',
+              },
+            };
+          } else {
+            return {
+              onClick: (e, handleOriginal) => {
+                if (handleOriginal) {
+                  handleOriginal();
+                }
+              },
+              style: {
+                background: 'white',
+                color: 'black',
+              },
+            };
+          }
         }}
       />
     </div>

@@ -13,6 +13,7 @@ import {
 import {
   fetchSmcusporContract,
   fetchServCrmHistoryAll,
+  fetchSmcusporContractHistory,
 } from '../../serviceAction';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
@@ -45,7 +46,8 @@ function Smcuspor(props) {
       contractInfo: {},
     },
     clientContract = {},
-    crmHistoryAll,
+    contractHistory = [],
+    crmHistoryAll = [],
     language,
   } = props;
 
@@ -82,8 +84,12 @@ function Smcuspor(props) {
   useEffect(() => {
     if (contractNumber) {
       props.fetchSmcusporContract({ contractNumber });
+      props.fetchSmcusporContractHistory({ contractNumber });
+      props.fetchServCrmHistoryAll({ contractNumber }, history.reactColumns);
     }
   }, [contractNumber]);
+
+  console.log(crmHistoryAll);
 
   const crmHistoryDateFrom = startDate.format('YYYY-MM-DD');
   const crmHistoryDateTo = endDate.format('YYYY-MM-DD');
@@ -126,22 +132,26 @@ function Smcuspor(props) {
   const labelColor = () => {
     if (
       serviceCrmCategoryName === 'ЗЕЛЕНЫЙ' ||
-      serviceCrmCategoryName === 'GREEN'
+      serviceCrmCategoryName === 'GREEN' ||
+      serviceCrmCategoryName === 'YEŞİL'
     ) {
       return 'green';
     } else if (
       serviceCrmCategoryName === 'ЖЕЛТЫЙ' ||
-      serviceCrmCategoryName === 'YELLOW'
+      serviceCrmCategoryName === 'YELLOW' ||
+      serviceCrmCategoryName === 'SARI'
     ) {
       return 'yellow';
     } else if (
       serviceCrmCategoryName === 'КРАСНЫЙ' ||
-      serviceCrmCategoryName === 'RED'
+      serviceCrmCategoryName === 'RED' ||
+      serviceCrmCategoryName === 'KIRMIZI'
     ) {
       return 'red';
     } else if (
       serviceCrmCategoryName === 'ЧЕРНЫЙ' ||
-      serviceCrmCategoryName === 'BLACK'
+      serviceCrmCategoryName === 'BLACK' ||
+      serviceCrmCategoryName === 'SIYAH'
     ) {
       return 'black';
     }
@@ -604,6 +614,7 @@ function Smcuspor(props) {
                         showMonthDropDown
                         showYearDropDown
                         maxDate={moment(new Date())}
+                        popperPlacement="top"
                       />
                     </Table.Cell>
                     <Table.Cell width="3" verticalAlign="bottom">
@@ -617,6 +628,7 @@ function Smcuspor(props) {
                         onChange={date => setEndDate(date)}
                         showMonthDropDown
                         showYearDropDown
+                        popperPlacement="top"
                       />
                     </Table.Cell>
                     <Table.Cell width="2" verticalAlign="bottom">
@@ -631,7 +643,7 @@ function Smcuspor(props) {
               <HistoryReactTable
                 columns={history.reactColumns}
                 data={crmHistoryAll}
-                initValue={clientHistory.servCrmHistoryAll}
+                initValue={crmHistoryAll}
               />
             </Grid.Column>
           </Grid.Row>
@@ -640,7 +652,7 @@ function Smcuspor(props) {
               <Segment>
                 <h2>{messages['contract_editing_history']}</h2>
                 <ReactTableWrapper
-                  data={clientHistory.contractHistory}
+                  data={contractHistory}
                   columns={[
                     {
                       Header: () => (
@@ -746,10 +758,12 @@ function mapStateToProps(state) {
     language: state.locales.lang,
     clientContract: state.serviceReducer.clientContract,
     crmHistoryAll: state.serviceReducer.crmHistoryAll.data,
+    contractHistory: state.serviceReducer.smcusporContractHistory,
   };
 }
 
 export default connect(mapStateToProps, {
   fetchSmcusporContract,
   fetchServCrmHistoryAll,
+  fetchSmcusporContractHistory,
 })(injectIntl(Smcuspor));
