@@ -17,30 +17,29 @@ function HistoryReactTable(props) {
     columns,
     data = {},
     initValue,
+    crmHistoryApp = [],
+    crmHistoryCall = [],
+    crmHistoryServ = [],
   } = props;
 
   useEffect(() => {
     setValue(prev => {
       const varValue = { ...prev };
-      if (data.servCrmHistoryApp) {
-        varValue.historyApp = data.servCrmHistoryApp;
-      } else if (data.servCrmHistoryCall) {
-        varValue.historyCall = data.servCrmHistoryCall;
-      } else if (data.servCrmHistoryService) {
-        varValue.historyService = data.servCrmHistoryService;
+      if (data.crmHistoryApp) {
+        varValue.historyApp = data.crmHistoryApp;
+      } else if (data.crmHistoryCall) {
+        varValue.historyCall = data.crmHistoryCall;
+      } else if (data.crmHistoryServ) {
+        varValue.historyService = data.crmHistoryServ;
       }
       return varValue;
     });
-  }, [
-    data.servCrmHistoryCall,
-    data.servCrmHistoryCall,
-    data.servCrmHistoryService,
-  ]);
+  }, [crmHistoryApp, crmHistoryCall, crmHistoryServ]);
 
   if (columns === 'all') {
     return (
       <ReactTableWrapper
-        data={data.servCrmHistoryAll ? data.servCrmHistoryAll : initValue}
+        data={data ? data : initValue}
         columns={[
           {
             Header: () => (
@@ -55,7 +54,7 @@ function HistoryReactTable(props) {
                 {messages['typeOfService']}
               </div>
             ),
-            accessor: 'servTypeName',
+            accessor: 'serviceTypeName',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
@@ -78,21 +77,21 @@ function HistoryReactTable(props) {
             Header: () => (
               <div style={{ textAlign: 'center' }}>{messages['amount']}</div>
             ),
-            accessor: 'price',
+            accessor: 'servicePrice',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
             Header: () => (
               <div style={{ textAlign: 'center' }}>{messages['master']}</div>
             ),
-            accessor: 'masterName',
+            accessor: 'masterFIO',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
             Header: () => (
               <div style={{ textAlign: 'center' }}>{messages['Operator']}</div>
             ),
-            accessor: 'staffName',
+            accessor: 'operatorFIO',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
@@ -120,11 +119,7 @@ function HistoryReactTable(props) {
   } else if (columns === 'services') {
     return (
       <ReactTableWrapper
-        data={
-          data.servCrmHistoryService
-            ? data.servCrmHistoryService
-            : value.historyService
-        }
+        data={crmHistoryServ ? crmHistoryServ : value.historyService}
         columns={[
           {
             Header: () => (
@@ -139,21 +134,21 @@ function HistoryReactTable(props) {
                 {messages['typeOfService']}
               </div>
             ),
-            accessor: 'servTypeName',
+            accessor: 'serviceTypeName',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
             Header: () => (
               <div style={{ textAlign: 'center' }}>{messages['amount']}</div>
             ),
-            accessor: 'price',
+            accessor: 'servicePrice',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
             Header: () => (
               <div style={{ textAlign: 'center' }}>{messages['master']}</div>
             ),
-            accessor: 'masterName',
+            accessor: 'masterFIO',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
@@ -181,9 +176,7 @@ function HistoryReactTable(props) {
   } else if (columns === 'calls') {
     return (
       <ReactTableWrapper
-        data={
-          data.servCrmHistoryCall ? data.servCrmHistoryCall : value.historyCall
-        }
+        data={crmHistoryCall ? crmHistoryCall : value.historyCall}
         columns={[
           {
             Header: () => (
@@ -212,7 +205,7 @@ function HistoryReactTable(props) {
             Header: () => (
               <div style={{ textAlign: 'center' }}>{messages['Operator']}</div>
             ),
-            accessor: 'staffName',
+            accessor: 'operatorFIO',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
         ]}
@@ -233,9 +226,7 @@ function HistoryReactTable(props) {
   } else if (columns === 'requests') {
     return (
       <ReactTableWrapper
-        data={
-          data.servCrmHistoryApp ? data.servCrmHistoryApp : value.historyApp
-        }
+        data={crmHistoryApp ? crmHistoryApp : value.historyApp}
         columns={[
           {
             Header: () => (
@@ -250,7 +241,7 @@ function HistoryReactTable(props) {
                 {messages['application_status']}
               </div>
             ),
-            accessor: 'appStatusName',
+            accessor: 'applicationStatusName',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
@@ -259,14 +250,14 @@ function HistoryReactTable(props) {
                 {messages['type_of_application']}
               </div>
             ),
-            accessor: 'appTypeName',
+            accessor: 'applicationTypeName',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
             Header: () => (
               <div style={{ textAlign: 'center' }}>{messages['Operator']}</div>
             ),
-            accessor: 'staffName',
+            accessor: 'operatorFIO',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
@@ -275,7 +266,7 @@ function HistoryReactTable(props) {
                 {messages['request_number']}
               </div>
             ),
-            accessor: 'serviceAppId',
+            accessor: 'applicationId',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
         ]}

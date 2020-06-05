@@ -212,19 +212,19 @@ export default function(state = INITIAL_STATE, action) {
     }
 
     case FETCH_SMCUSPOR_HISTORY_ALL: {
-      return { ...state, crmHistoryAll: action.payload };
+      return { ...state, crmHistoryAll: action.payload.data };
     }
 
     case FETCH_SMCUSPOR_HISTORY_APP: {
-      return { ...state, crmHistoryAll: action.payload };
+      return { ...state, crmHistoryApp: action.payload.data };
     }
 
     case FETCH_SMCUSPOR_HISTORY_CALL: {
-      return { ...state, crmHistoryAll: action.payload };
+      return { ...state, crmHistoryCall: action.payload.data };
     }
 
     case FETCH_SMCUSPOR_HISTORY_SERVICE: {
-      return { ...state, crmHistoryAll: action.payload };
+      return { ...state, crmHistoryServ: action.payload.data };
     }
     case FETCH_SMSRCUS: {
       return {

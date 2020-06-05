@@ -48,8 +48,13 @@ function Smcuspor(props) {
     clientContract = {},
     contractHistory = [],
     crmHistoryAll = [],
+    crmHistoryApp = [],
+    crmHistoryCall = [],
+    crmHistoryServ = [],
     language,
   } = props;
+
+  console.log('crmHistoryServ', crmHistoryServ);
 
   const {
     countryName,
@@ -89,17 +94,15 @@ function Smcuspor(props) {
     }
   }, [contractNumber]);
 
-  console.log(crmHistoryAll);
-
-  const crmHistoryDateFrom = startDate.format('YYYY-MM-DD');
-  const crmHistoryDateTo = endDate.format('YYYY-MM-DD');
+  const dateAt = startDate.format('YYYY-MM-DD');
+  const dateTo = endDate.format('YYYY-MM-DD');
 
   const dateRange = () => {
     props.fetchServCrmHistoryAll(
       {
         contractNumber,
-        crmHistoryDateFrom,
-        crmHistoryDateTo,
+        dateAt,
+        dateTo,
       },
       history.reactColumns,
     );
@@ -643,6 +646,9 @@ function Smcuspor(props) {
               <HistoryReactTable
                 columns={history.reactColumns}
                 data={crmHistoryAll}
+                crmHistoryApp={crmHistoryApp}
+                crmHistoryCall={crmHistoryCall}
+                crmHistoryServ={crmHistoryServ}
                 initValue={crmHistoryAll}
               />
             </Grid.Column>
@@ -757,7 +763,10 @@ function mapStateToProps(state) {
   return {
     language: state.locales.lang,
     clientContract: state.serviceReducer.clientContract,
-    crmHistoryAll: state.serviceReducer.crmHistoryAll.data,
+    crmHistoryAll: state.serviceReducer.crmHistoryAll,
+    crmHistoryApp: state.serviceReducer.crmHistoryApp,
+    crmHistoryCall: state.serviceReducer.crmHistoryCall,
+    crmHistoryServ: state.serviceReducer.crmHistoryServ,
     contractHistory: state.serviceReducer.smcusporContractHistory,
   };
 }

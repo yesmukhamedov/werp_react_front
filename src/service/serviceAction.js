@@ -504,11 +504,11 @@ export function fetchServCrmHistoryAll(date, type) {
           });
         break;
       case 'services':
-        doGet(`smcuspor/servCrmHistoryService`, date)
+        doGet(`smcuspor/serviceCrmHistoryService`, date)
           .then(({ data }) => {
             dispatch(modifyLoader(false));
             dispatch({
-              type: FETCH_SMCUSPOR_HISTORY_APP,
+              type: FETCH_SMCUSPOR_HISTORY_SERVICE,
               payload: data,
             });
           })
@@ -518,7 +518,7 @@ export function fetchServCrmHistoryAll(date, type) {
           });
         break;
       case 'calls':
-        doGet(`smcuspor/servCrmHistoryCall`, date)
+        doGet(`smcuspor/serviceCrmHistoryCall`, date)
           .then(({ data }) => {
             dispatch(modifyLoader(false));
             dispatch({
@@ -532,11 +532,11 @@ export function fetchServCrmHistoryAll(date, type) {
           });
         break;
       case 'requests':
-        doGet(`smcuspor/servCrmHistoryApp`, date)
+        doGet(`smcuspor/serviceCrmHistoryApplication`, date)
           .then(({ data }) => {
             dispatch(modifyLoader(false));
             dispatch({
-              type: FETCH_SMCUSPOR_HISTORY_SERVICE,
+              type: FETCH_SMCUSPOR_HISTORY_APP,
               payload: data,
             });
           })
