@@ -30,9 +30,6 @@ const Rfadd01 = props => {
     ap_number: '',
     ap_drob: '',
     flat_number: '',
-    telDom: '',
-    telMob1: '',
-    telMob2: '',
   };
   const [address, setAddress] = useState({ ...emptyAddress });
   const [countryOptions, setCountryOptions] = useState([]);
@@ -154,23 +151,26 @@ const Rfadd01 = props => {
       avenue,
       street,
       ap_number,
-      telMob1,
     } = address;
 
     if (
       customerId === null ||
       customerId === undefined ||
       !customerId ||
-      addrType === null || !['1', '2', '3', '4'].includes(addrType) ||
-      countryId === null || countryId === undefined || !countryId ||
-      stateId === null || stateId === undefined || !stateId ||
-      cityId === null || cityId === undefined || !cityId ||
+      addrType === null ||
+      !['1', '2', '3', '4'].includes(addrType) ||
+      countryId === null ||
+      countryId === undefined ||
+      !countryId ||
+      stateId === null ||
+      stateId === undefined ||
+      !stateId ||
+      cityId === null ||
+      cityId === undefined ||
+      !cityId ||
       ap_number === null ||
-        ap_number === undefined ||
-        ap_number.replace(/\s/g, '').length === 0 ||
-      telMob1 === null ||
-        telMob1 === undefined ||
-        telMob1.replace(/\s/g, '').length === 0
+      ap_number === undefined ||
+      ap_number.replace(/\s/g, '').length === 0
     ) {
       errors.push(errorTable[`20${language}`]);
       return errors;

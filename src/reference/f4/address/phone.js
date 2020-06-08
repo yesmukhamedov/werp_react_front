@@ -59,7 +59,7 @@ function Phone(props) {
               <Table.Cell>
                 <label>{phone.phone}</label>
               </Table.Cell>
-              <Table.Cell collapsing>
+              <Table.Cell collapsing textAlign="center">
                 <Button
                   basic
                   color="blue"
@@ -145,6 +145,13 @@ function Phone(props) {
         {messages['contactDetails']}
       </Header>
       <Table striped selectable>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>{messages['phone_type']}</Table.HeaderCell>
+            <Table.HeaderCell>{messages['Table.PhoneNumber']}</Table.HeaderCell>
+            <Table.HeaderCell>{messages['editing']}</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
         <Table.Body>{customerId ? phone : label}</Table.Body>
       </Table>
       <Segment>

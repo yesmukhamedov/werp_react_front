@@ -849,5 +849,6 @@
   "prevention_plan": "Prevention plan",
   "guarantee": "Guarantee",
   "transfer": "Перенос",
-  "cartridge_replacement_distribution": "Cartridge replacement distribution list"
+  "cartridge_replacement_distribution": "Cartridge replacement distribution list",
+  "phone_type": "Phone type"
 }

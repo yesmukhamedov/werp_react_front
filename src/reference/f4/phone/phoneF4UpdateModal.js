@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import MaskedInput from 'react-text-mask';
 
-import phoneMask from '../../../utils/phoneMask';
+import phoneUpdateMask from '../../../utils/phoneUpdateMask';
 import { f4UpdatePhone, f4FetchPhone, f4FetchPhoneHistory } from '../f4_action';
 
 function PhoneF4UpdateModal(props) {
@@ -162,7 +162,7 @@ function PhoneF4UpdateModal(props) {
                 <Form>
                   <Form.Input type="number" error={errInput}>
                     <MaskedInput
-                      mask={phoneMask(country.code)}
+                      mask={phoneUpdateMask(country.code)}
                       placeholder={`${country.phoneCode} ${country.telPattern}`}
                       defaultValue={selectedPhone.phone}
                       onChange={event => {

@@ -43,12 +43,12 @@ function Smeci(props) {
 
   const [contract, setContract] = useState({ ...emptyContract });
   const [addressF4ModalOpen, setAddressF4ModalOpen] = useState(false);
-  const [phoneF4ModalOpen, setPhoneF4ModalOpen] = useState(false);
 
   const {
     contractInfo = [],
     branchOptions = [],
     intl: { messages },
+    fetchSmeciContractInfo,
   } = props;
 
   const {
@@ -94,10 +94,10 @@ function Smeci(props) {
     }
   }, [contractNumber]);
   useEffect(() => {
-    if (!phoneF4ModalOpen) {
+    if (!addressF4ModalOpen) {
       props.fetchSmeciContractInfo({ contractNumber });
     }
-  }, [!phoneF4ModalOpen]);
+  }, [!addressF4ModalOpen]);
 
   useEffect(() => {
     if (Object.entries(branchOptions).length !== 0 && bukrs) {
@@ -586,7 +586,7 @@ function Smeci(props) {
                         <TextArea
                           placeholder={messages['description']}
                           onChange={(e, o) => onInputChange(o, 'info')}
-                          value={contract.info}
+                          value={contract.info ? contract.info : ''}
                         />
                       </Form>
                     </Table.Cell>

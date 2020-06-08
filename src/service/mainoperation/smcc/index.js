@@ -94,7 +94,7 @@ function Smcc(props) {
   const [contractTypeOpts, setContractTypeOpts] = useState([]);
   const [matnrListF4ModalOpen, setMatnrListF4ModalOpen] = useState(false);
   const [phoneF4ModalOpen, setPhoneF4ModalOpen] = useState(false);
-  const [isLoadingMatnrList, setIsLoadingMatnrList] = useState(false);
+  // const [isLoadingMatnrList, setIsLoadingMatnrList] = useState(false);
   const [error, setError] = useState([]);
 
   const {
@@ -476,7 +476,7 @@ function Smcc(props) {
         matnrList={contract.matnrList}
         onCloseMatnrF4={bool => setMatnrListF4ModalOpen(bool)}
         onMatnrSelect={item => onInputChange(item, 'tovarSerial')}
-        isLoadingMatnrList={isLoadingMatnrList}
+        // isLoadingMatnrList={isLoadingMatnrList}
         matnrList={matnrListView}
       />
 

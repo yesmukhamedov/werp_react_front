@@ -151,6 +151,15 @@ function PhoneF4Modal(props) {
         </Modal.Header>
         <Modal.Content>
           <Table striped selectable>
+            <Table.Header>
+              <Table.Row>
+                <Table.HeaderCell>{messages['phone_type']}</Table.HeaderCell>
+                <Table.HeaderCell>
+                  {messages['Table.PhoneNumber']}
+                </Table.HeaderCell>
+                <Table.HeaderCell>{messages['editing']}</Table.HeaderCell>
+              </Table.Row>
+            </Table.Header>
             <Table.Body>{customerId ? phone : label}</Table.Body>
           </Table>
         </Modal.Content>

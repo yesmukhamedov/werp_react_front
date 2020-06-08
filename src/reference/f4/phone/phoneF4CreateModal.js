@@ -44,6 +44,7 @@ function PhoneF4CreateModal(props) {
           varList.typeId = o.value;
           break;
         case 'phoneNumber':
+          console.log(o);
           varList.phone = o.replace(/\D+/g, '');
           break;
         default:

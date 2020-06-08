@@ -1,10 +1,10 @@
-const phoneMask = code => {
+const phoneUpdateMask = code => {
   let mask = {};
   switch (code) {
     case 'KZ':
       mask = [
         '+',
-        '7',
+        /\d/,
         ' ',
         '(',
         /[1-9]/,
@@ -26,8 +26,8 @@ const phoneMask = code => {
     case 'TR':
       mask = [
         '+',
-        '9',
-        '0',
+        /\d/,
+        /\d/,
         ' ',
         '(',
         /[1-9]/,
@@ -49,7 +49,7 @@ const phoneMask = code => {
     case 'RU':
       mask = [
         '+',
-        '7',
+        /\d/,
         ' ',
         '(',
         /[1-9]/,
@@ -71,7 +71,7 @@ const phoneMask = code => {
     case 'USA':
       mask = [
         '+',
-        '1',
+        /\d/,
         ' ',
         '(',
         /[1-9]/,
@@ -93,9 +93,9 @@ const phoneMask = code => {
     case 'UZ':
       mask = [
         '+',
-        '9',
-        '9',
-        '8',
+        /\d/,
+        /\d/,
+        /\d/,
         ' ',
         '(',
         /[1-9]/,
@@ -116,9 +116,9 @@ const phoneMask = code => {
     case 'KR':
       mask = [
         '+',
-        '9',
-        '9',
-        '6',
+        /\d/,
+        /\d/,
+        /\d/,
         ' ',
         '(',
         /[1-9]/,
@@ -139,9 +139,9 @@ const phoneMask = code => {
     case 'AE':
       mask = [
         '+',
-        '9',
-        '7',
-        '1',
+        /\d/,
+        /\d/,
+        /\d/,
         ' ',
         '(',
         /[1-9]/,
@@ -163,8 +163,8 @@ const phoneMask = code => {
     case 'CN':
       mask = [
         '+',
-        '8',
-        '6',
+        /\d/,
+        /\d/,
         ' ',
         '(',
         /[1-9]/,
@@ -188,9 +188,9 @@ const phoneMask = code => {
     case 'AZ':
       mask = [
         '+',
-        '9',
-        '9',
-        '4',
+        /\d/,
+        /\d/,
+        /\d/,
         ' ',
         '(',
         /[1-9]/,
@@ -211,8 +211,8 @@ const phoneMask = code => {
     case 'MY':
       mask = [
         '+',
-        '6',
-        '0',
+        /\d/,
+        /\d/,
         ' ',
         '(',
         /[1-9]/,
@@ -231,29 +231,6 @@ const phoneMask = code => {
 
       break;
     case 'TJ':
-      mask = [
-        '+',
-        '9',
-        '9',
-        '2',
-        ' ',
-        '(',
-        /[1-9]/,
-        /\d/,
-        ')',
-        ' ',
-        /\d/,
-        /\d/,
-        /\d/,
-        '-',
-        /\d/,
-        /\d/,
-        /\d/,
-        /\d/,
-      ];
-
-      break;
-    case 'ULA':
       mask = [
         '+',
         /\d/,
@@ -282,4 +259,4 @@ const phoneMask = code => {
   return mask;
 };
 
-export default phoneMask;
+export default phoneUpdateMask;

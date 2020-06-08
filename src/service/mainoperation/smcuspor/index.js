@@ -21,6 +21,7 @@ import 'moment/locale/ru';
 import 'moment/locale/tr';
 import { injectIntl } from 'react-intl';
 import HistoryReactTable from './historyReactTable';
+import { stringYYYYMMDDToMoment } from '../../../utils/helpers';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import './smcuspor.css';
@@ -33,12 +34,12 @@ function Smcuspor(props) {
   const emptyHistory = {
     activeButton: true,
     reactColumns: 'all',
-    startDate: '',
+    dateAt: '',
   };
 
   const [history, setHistory] = useState({ ...emptyHistory });
-  const [startDate, setStartDate] = useState(moment(new Date()));
-  const [endDate, setEndDate] = useState(moment(new Date()));
+  const [dateAt, setDateAt] = useState(null);
+  const [dateTo, setDateTo] = useState(null);
 
   const {
     intl: { messages },
@@ -53,8 +54,6 @@ function Smcuspor(props) {
     crmHistoryServ = [],
     language,
   } = props;
-
-  console.log('crmHistoryServ', crmHistoryServ);
 
   const {
     countryName,
@@ -94,15 +93,12 @@ function Smcuspor(props) {
     }
   }, [contractNumber]);
 
-  const dateAt = startDate.format('YYYY-MM-DD');
-  const dateTo = endDate.format('YYYY-MM-DD');
-
   const dateRange = () => {
     props.fetchServCrmHistoryAll(
       {
         contractNumber,
-        dateAt,
-        dateTo,
+        dateAt: dateAt === null ? null : dateAt.format('YYYY-MM-DD'),
+        dateTo: dateTo === null ? null : dateTo.format('YYYY-MM-DD'),
       },
       history.reactColumns,
     );
@@ -610,14 +606,16 @@ function Smcuspor(props) {
                       <DatePicker
                         autoComplete="off"
                         dateFormat="DD/MM/YYYY"
-                        selected={startDate}
+                        placeholderText={messages['application_date_from']}
+                        selected={
+                          dateAt === null ? '' : stringYYYYMMDDToMoment(dateAt)
+                        }
                         dropdownMode="select"
                         locale={language}
-                        onChange={date => setStartDate(date)}
+                        onChange={date => setDateAt(date)}
                         showMonthDropDown
                         showYearDropDown
                         maxDate={moment(new Date())}
-                        popperPlacement="top"
                       />
                     </Table.Cell>
                     <Table.Cell width="3" verticalAlign="bottom">
@@ -625,13 +623,15 @@ function Smcuspor(props) {
                       <DatePicker
                         autoComplete="off"
                         dateFormat="DD/MM/YYYY"
-                        selected={endDate}
+                        placeholderText={messages['application_date_to']}
+                        selected={
+                          dateTo === null ? '' : stringYYYYMMDDToMoment(dateTo)
+                        }
                         dropdownMode="select"
                         locale={language}
-                        onChange={date => setEndDate(date)}
+                        onChange={date => setDateTo(date)}
                         showMonthDropDown
                         showYearDropDown
-                        popperPlacement="top"
                       />
                     </Table.Cell>
                     <Table.Cell width="2" verticalAlign="bottom">

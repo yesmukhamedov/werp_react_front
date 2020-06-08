@@ -847,5 +847,6 @@
   "prevention_plan": "План по профилактике",
   "guarantee": "Гарантия",
   "transfer": "Перенос",
-  "cartridge_replacement_distribution": "Распределение списка замена картриджа"
+  "cartridge_replacement_distribution": "Распределение списка замена картриджа",
+  "phone_type": "Тип телефона"
 }
