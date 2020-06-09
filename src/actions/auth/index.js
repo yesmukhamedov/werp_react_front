@@ -69,6 +69,7 @@ export function signinUser({ username, password }, language) {
 
         localStorage.setItem('username', username);
         localStorage.setItem('userId', user_id);
+        //localStorage.setItem('userId', user_id);
         localStorage.setItem('language', language);
         localStorage.setItem('token', access_token);
         localStorage.setItem('refresh_token', refresh_token);

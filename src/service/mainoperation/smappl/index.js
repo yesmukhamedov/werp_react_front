@@ -32,6 +32,7 @@ import {
   LinkToSmvs,
   LinkToSmcsEmpty,
   LinkToSmcsWithRequest,
+  LinkToSmccald,
 } from '../../../utils/outlink';
 import Masters from './Masters';
 
@@ -276,7 +277,6 @@ const Smappl = props => {
       return varTs;
     });
   };
-
   const onSearch = () => {
     const errors = [];
     if (search.bukrs === '') {
@@ -307,6 +307,7 @@ const Smappl = props => {
           }}
         >
           <h3>{messages['service_requests']}</h3>
+          <LinkToSmccald buttonName="Создать заявку без данных" />
         </div>
       </Segment>
 
@@ -395,7 +396,7 @@ const Smappl = props => {
 
           <Form.Field
             control={Button}
-            color="primary"
+            color="blue"
             style={{ marginTop: 24 }}
             onClick={onSearch}
           >

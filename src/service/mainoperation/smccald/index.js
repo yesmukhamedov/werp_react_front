@@ -12,10 +12,12 @@ import {
 } from 'semantic-ui-react';
 import { fetchServAppType } from '../../reference/srefAction';
 import { postSmccaldCreateApp } from '../../serviceAction';
+import { f4ClearAnyObject } from '../../../reference/f4/f4_action';
+
 import {
-  f4ClearAnyObject,
-  f4FetchConTypeList,
-} from '../../../reference/f4/f4_action';
+  fetchSmccaldGetProductList,
+  fetchCurrentStaff,
+} from './smccaldActions';
 import OutputErrors from '../../../general/error/outputErrors';
 import { errorTableText } from '../../../utils/helpers';
 import DatePicker from 'react-datepicker';
@@ -28,120 +30,212 @@ import 'react-datepicker/dist/react-datepicker.css';
 import './smccald.css';
 
 function Smccald(props) {
-  const emptyRequest = {
-    bukrs: '',
-    branchId: '',
-    requestTypeId: '',
-    appType: '',
-    info: '',
-    matnr: '',
-  };
-  const [request, setRequest] = useState({ ...emptyRequest });
-  const [requestTypeOpts, setRequestTypeOpts] = useState([]);
-  const [error, setError] = useState([]);
-
-  const lang = localStorage.getItem('language');
-  const userName = localStorage.getItem('username');
-
   const {
     companyOptions = [],
     branchOptions = [],
-    contractTypeList,
     servAppType,
+    smccaldProductList = [],
+    currentStaff = {},
     intl: { messages },
   } = props;
 
+  console.log('currentStaff', currentStaff);
+
+  const emptyParam = {
+    addressId: null,
+    addressName: '',
+    applicantName: '',
+    applicationDate: '',
+    applicationNumber: null,
+    applicationStatusId: null,
+    applicationStatusName: '',
+    applicationTypeId: null,
+    applicationTypeName: '',
+    branchId: null,
+    branchName: '',
+    bukrsId: '',
+    bukrsName: '',
+    contractNumber: null,
+    countryId: null,
+    countryName: '',
+    createdBy: null,
+    customerFIO: '',
+    customerId: null,
+    f1MtLeft: null,
+    f2MtLeft: null,
+    f3MtLeft: null,
+    f4MtLeft: null,
+    f5MtLeft: null,
+    fitterFIO: '',
+    fitterId: null,
+    fullPhone: '',
+    id: null,
+    inPhoneNum: '',
+    info: '',
+    installmentDate: '',
+    masterFIO: '',
+    masterId: null,
+    matnrId: '',
+    matnrName: '',
+    operatorFIO: '',
+    operatorId: null,
+    rescheduledDate: '',
+    serviceDate: '',
+    serviceFilterPlanId: null,
+    serviceFilterVCPlanId: null,
+    serviceId: null,
+    tovarCategoryId: null,
+    tovarCategoryName: '',
+    tovarSn: '',
+    updatedBy: null,
+    updatedDate: '',
+  };
+
+  const lang = localStorage.getItem('language');
+
+  const [param, setParam] = useState({ ...emptyParam });
+  const [error, setError] = useState([]);
+  const [requestTypeOpts, setRequestTypeOpts] = useState([]);
+
+  const onInputChange = (o, fieldName) => {
+    switch (fieldName) {
+      case 'bukrsId':
+        setParam({ ...param, bukrsId: o.value });
+
+        break;
+      case 'branchId':
+        setParam({ ...param, branchId: o.value });
+        break;
+
+      case 'applicationTypeId':
+        setParam({ ...param, applicationTypeId: o.value });
+        break;
+      case 'matnrId':
+        setParam({ ...param, matnrId: o.value });
+        break;
+      case 'info':
+        setParam({ ...param, info: o.value });
+        break;
+      default:
+        break;
+    }
+  };
+
   useEffect(() => {
-    props.f4FetchConTypeList();
+    let matnrId = param.matnrId;
+    smccaldProductList.forEach(item => {
+      if (item.matnr == matnrId) {
+        setParam({
+          ...param,
+          tovarCategoryId: item.category,
+        });
+      }
+    });
+  }, [param.matnrId]);
+
+  useEffect(() => {
+    setParam({
+      ...param,
+      operatorId: currentStaff.staffId,
+      operatorFIO: currentStaff.fullName,
+    });
+  }, [currentStaff]);
+
+  useEffect(() => {
+    props.fetchCurrentStaff();
+  }, []);
+
+  useEffect(() => {
+    const userName = localStorage.getItem('username');
+    let userId = localStorage.getItem('userId');
+    setParam({ ...param, operatorFIO: userName, operatorId: parseInt(userId) });
     props.fetchServAppType();
+
     return () => {
       props.f4ClearAnyObject('F4_CLEAR_CONTYPE_LIST');
     };
   }, []);
 
-  const onInputChange = (o, fieldName) => {
-    setRequest(prev => {
-      const varRequest = { ...prev };
-      switch (fieldName) {
-        case 'bukrs':
-          varRequest.bukrs = o.value;
-          break;
-        case 'branchId':
-          varRequest.branchId = o.value;
+  const productOptions = smccaldProductList.map(item => {
+    return {
+      key: item.matnr,
+      text: item.text45,
+      value: item.matnr,
+      category: item.category,
+    };
+  });
 
-          let waConOptions = contractTypeList.map(item => {
-            return {
-              key: item.contract_type_id,
-              value: item.contract_type_id,
-              text: item.name,
-              matnr: item.matnr,
-            };
-          });
-          setRequestTypeOpts(waConOptions);
-          break;
-        case 'requestTypeId':
-          const matnr = o.options.filter(item => item.value === o.value);
-          varRequest.matnr = matnr[0].matnr;
-          varRequest.requestTypeId = o.value;
-          break;
-        case 'appType':
-          varRequest.appType = o.value;
-          break;
-        case 'info':
-          varRequest.info = o.value;
-          break;
-
-        default:
-          varRequest[fieldName] = o.value;
-      }
-      return varRequest;
-    });
-  };
-
-  const handleSubmit = () => {
-    validate();
-    const { appType, branchId, bukrs, requestTypeId, info, matnr } = request;
-    if (appType !== '' && branchId !== '' && bukrs !== '') {
-      props.postSmccaldCreateApp({
-        appType,
-        branchId,
-        bukrs,
-        tovarCategory: requestTypeId,
-        matnr,
-        info,
-      });
-      clearState();
+  useEffect(() => {
+    if (param.bukrsId != '') {
+      props.fetchSmccaldGetProductList({ bukrs: param.bukrsId });
     }
-  };
-
-  const clearState = () => {
-    setRequest({
-      bukrs: '',
-      branchId: '',
-      requestTypeId: '',
-      appType: '',
-      info: '',
-      matnr: '',
-    });
-  };
+  }, [param.bukrsId]);
 
   const validate = () => {
     const errors = [];
-    if (request.appType === '') {
+    if (param.applicationTypeId === '') {
       errors.push(errorTableText(166));
     }
-    if (request.branchId === '') {
+    if (param.branchId === '') {
       errors.push(errorTableText(7));
     }
-    if (request.bukrs === '') {
+    if (param.bukrsId === '') {
       errors.push(errorTableText(5));
     }
-    if (request.requestTypeId === '') {
+    if (param.requestTypeId === '') {
       errors.push(errorTableText(17));
     }
     setError(() => errors);
   };
 
+  const servAppOpts = (servAppType, lang) => {
+    if (!servAppType) {
+      return [];
+    }
+    let out = servAppType.map(item => {
+      return {
+        key: item.id,
+        value: item.id,
+        text: item[lang],
+      };
+    });
+    return out;
+  };
+
+  const clearState = () => {
+    setParam({ ...emptyParam });
+  };
+
+  const handleSubmit = () => {
+    validate();
+
+    if (
+      param.applicationTypeId !== '' &&
+      param.branchId !== '' &&
+      param.bukrsId !== ''
+    ) {
+      props.postSmccaldCreateApp({
+        ...param,
+      });
+    }
+  };
+
+  const getCompanyOptions = compOptions => {
+    const companyOptions = compOptions;
+    if (!companyOptions) {
+      return [];
+    }
+    let out = compOptions.map(c => {
+      return {
+        key: parseInt(c.key, 10),
+        text: `${c.text}`,
+        value: parseInt(c.value, 10),
+      };
+    });
+    return out;
+  };
+
+  console.log('param', param);
   return (
     <Grid centered>
       <Grid.Row>
@@ -159,8 +253,8 @@ function Smccald(props) {
                       selection
                       search
                       options={getCompanyOptions(companyOptions)}
-                      value={request.bukrs}
-                      onChange={(e, o) => onInputChange(o, 'bukrs')}
+                      value={param.bukrsId}
+                      onChange={(e, o) => onInputChange(o, 'bukrsId')}
                     />
                   </Table.Cell>
                 </Table.Row>
@@ -173,9 +267,9 @@ function Smccald(props) {
                       selection
                       search
                       options={
-                        request.bukrs ? branchOptions[request.bukrs] : []
+                        param.bukrsId ? branchOptions[param.bukrsId] : []
                       }
-                      value={request.branchId}
+                      value={param.branchId}
                       onChange={(e, o) => onInputChange(o, 'branchId')}
                     />
                   </Table.Cell>
@@ -188,9 +282,9 @@ function Smccald(props) {
                       fluid
                       selection
                       search
-                      options={requestTypeOpts ? requestTypeOpts : []}
-                      value={request.requestTypeId}
-                      onChange={(e, o) => onInputChange(o, 'requestTypeId')}
+                      options={productOptions}
+                      value={param.matnrId}
+                      onChange={(e, o) => onInputChange(o, 'matnrId')}
                     />
                   </Table.Cell>
                 </Table.Row>
@@ -203,8 +297,8 @@ function Smccald(props) {
                       selection
                       search
                       options={servAppOpts(servAppType, lang)}
-                      value={request.appType}
-                      onChange={(e, o) => onInputChange(o, 'appType')}
+                      value={param.applicationTypeId}
+                      onChange={(e, o) => onInputChange(o, 'applicationTypeId')}
                     />
                   </Table.Cell>
                 </Table.Row>
@@ -213,11 +307,7 @@ function Smccald(props) {
                     {messages['Operator']}
                   </Table.Cell>
                   <Table.Cell>
-                    <Input
-                      size="small"
-                      fluid
-                      value={userName ? userName : ''}
-                    />
+                    <Input size="small" fluid value={param.operatorFIO} />
                     <Table>
                       <Table.Body>
                         <Table.Row>
@@ -309,7 +399,7 @@ function Smccald(props) {
                     <Form>
                       <TextArea
                         placeholder={messages['bktxt']}
-                        value={request.info}
+                        value={param.info}
                         onChange={(e, o) => onInputChange(o, 'info')}
                       />
                     </Form>
@@ -328,47 +418,20 @@ function Smccald(props) {
   );
 }
 
-const getCompanyOptions = compOptions => {
-  const companyOptions = compOptions;
-  if (!companyOptions) {
-    return [];
-  }
-  let out = compOptions.map(c => {
-    return {
-      key: parseInt(c.key, 10),
-      text: `${c.text}`,
-      value: parseInt(c.value, 10),
-    };
-  });
-  return out;
-};
-
-const servAppOpts = (servAppType, lang) => {
-  if (!servAppType) {
-    return [];
-  }
-  let out = servAppType.map(item => {
-    return {
-      key: item.id,
-      value: item.id,
-      text: item[lang],
-    };
-  });
-  return out;
-};
-
 function mapStateToProps(state) {
   return {
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsService,
-    contractTypeList: state.f4.contractTypeList,
     servAppType: state.srefReducer.servAppType,
+    smccaldProductList: state.smccaldReducer.smccaldProductList,
+    currentStaff: state.smccaldReducer.currentStaff,
   };
 }
 
 export default connect(mapStateToProps, {
   f4ClearAnyObject,
-  f4FetchConTypeList,
   fetchServAppType,
   postSmccaldCreateApp,
+  fetchSmccaldGetProductList,
+  fetchCurrentStaff,
 })(injectIntl(Smccald));

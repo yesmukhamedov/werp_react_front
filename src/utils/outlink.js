@@ -264,3 +264,14 @@ export const LinkToSmcusporFromSmsrcus = props => {
     </Button>
   );
 };
+
+export const LinkToSmccald = props => {
+  const url = `../mainoperation/smccald`;
+  const { buttonName } = props;
+
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      <Button color="blue">{buttonName}</Button>
+    </a>
+  );
+};
