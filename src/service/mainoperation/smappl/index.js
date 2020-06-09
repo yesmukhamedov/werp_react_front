@@ -12,7 +12,6 @@ import { injectIntl } from 'react-intl';
 import OutputErrors from '../../../general/error/outputErrors';
 import {
   clearDynObjService,
-  fetchTovarCategorys,
   fetchAppStatus,
   fetchAppType,
   fetchAppList,
@@ -20,6 +19,8 @@ import {
   fetchClearAppList,
   fetchAppListSearchParam,
 } from '../../serviceAction';
+
+import { f4fetchCategory } from '../../../reference/f4/f4_action';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { formatDMY, errorTableText } from '../../../utils/helpers';
@@ -41,8 +42,8 @@ const Smappl = props => {
     companyPosition = [],
     intl: { messages },
     branchOptions,
-    fetchTovarCategorys,
     tovarCategorys,
+
     fetchAppStatus,
     appStatus,
     fetchAppType,
@@ -51,9 +52,11 @@ const Smappl = props => {
     fetchAppMasterList,
     fetchClearAppList,
     fetchAppListSearchParam,
+    category,
   } = props;
+
+  console.log('category', category);
   const [error, setError] = useState([]);
-  const [tovarCategory, setTovarCategory] = useState([]);
   const language = localStorage.getItem('language');
   const [applicationStatus, setApplicationStatus] = useState([]);
   const [applicationType, setApplicationType] = useState([]);
@@ -69,6 +72,14 @@ const Smappl = props => {
     appStatusIds: null,
     appTypeIds: null,
     page: 0,
+  });
+
+  const categoryOptions = category.map(item => {
+    return {
+      key: item.id,
+      text: item.name,
+      value: item.id,
+    };
   });
 
   // modal useStates
@@ -191,9 +202,9 @@ const Smappl = props => {
 
   useEffect(() => {
     fetchClearAppList();
-    fetchTovarCategorys();
     fetchAppStatus();
     fetchAppType();
+    props.f4fetchCategory();
   }, []);
 
   useEffect(() => {
@@ -231,17 +242,6 @@ const Smappl = props => {
     });
     setApplicationType(app);
   }, [appType]);
-
-  useEffect(() => {
-    const t = tovarCategorys.map(item => {
-      return {
-        key: item.id,
-        text: item.name,
-        value: item.id,
-      };
-    });
-    setTovarCategory(t);
-  }, [tovarCategorys]);
 
   const onChange = (text, value) => {
     setSearch(prev => {
@@ -338,7 +338,7 @@ const Smappl = props => {
             clearable="true"
             multiple
             selection
-            options={tovarCategory}
+            options={categoryOptions}
             placeholder={messages['product_category']}
             onChange={(e, { value }) => onChange('product', value)}
           />
@@ -440,20 +440,20 @@ const mapStateToProps = state => {
     appList: state.serviceReducer.appList,
     companyPosition: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsService,
-    tovarCategorys: state.serviceReducer.tovarCategorys,
     appStatus: state.serviceReducer.appStatus,
     appType: state.serviceReducer.appType,
     appMasterList: state.serviceReducer.appMasterList,
+    category: state.f4.category,
   };
 };
 
 export default connect(mapStateToProps, {
   clearDynObjService,
-  fetchTovarCategorys,
   fetchAppStatus,
   fetchAppType,
   fetchAppList,
   fetchAppMasterList,
   fetchClearAppList,
   fetchAppListSearchParam,
+  f4fetchCategory,
 })(injectIntl(Smappl));
