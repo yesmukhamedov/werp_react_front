@@ -13,6 +13,8 @@ import ModalColumns from '../../../../utils/ModalColumns';
 import { LinkToSmcuspor } from '../../../../utils/outlink';
 import matchSorter from 'match-sorter';
 import { f4FetchBranchesByBukrs } from './../../../../reference/f4/f4_action';
+import { smcusporId } from '../../smcuspor/index';
+import { Link } from 'react-router-dom';
 
 const ServiceFilterPlan = props => {
   const {
@@ -156,14 +158,17 @@ const ServiceFilterPlan = props => {
       Header: messages['Table.View'],
       accessor: '16',
       filterable: false,
-      Cell: original => (
-        <div style={{ textAlign: 'center' }}>
-          <LinkToSmcuspor
-            contractNumber={original.row.contractNumber}
-            text={messages['Table.View']}
-          />
-        </div>
-      ),
+
+      Cell: original => {
+        const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}`;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <Link to={url} onClick={() => smcusporId(original.row.id)}>
+              <Icon name="address card" outline color="black" />
+            </Link>
+          </div>
+        );
+      },
       checked: true,
     },
   ];

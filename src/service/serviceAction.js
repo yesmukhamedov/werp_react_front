@@ -36,6 +36,8 @@ export const FETCH_SMECI = 'FETCH_SMECI';
 export const POST_SMECI = 'POST_SMECI';
 export const FETCH_SERV_CRM_CALL_STATUS = 'FETCH_SERV_CRM_CALL_STATUS';
 export const POST_SMREGC_CREATE_CALL = 'POST_SMREGC_CREATE_CALL';
+export const POST_SMREGC_CREATE_CRM_SCHEDULE =
+  'POST_SMREGC_CREATE_CRM_SCHEDULE';
 export const POST_SMCCA_CREATE_APP = 'POST_SMCCA_CREATE_APP';
 export const POST_SMCCALD_CREATE_APP = 'POST_SMCCALD_CREATE_APP';
 export const FETCH_APP_STATUS = 'FETCH_APP_STATUS';
@@ -607,7 +609,7 @@ export function fetchServCrmCallStatus() {
 export function postSmregcCreateCall(call, back) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`smregc/create`, call)
+    doPost(`smregc/createCrmHistory`, call)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -615,6 +617,24 @@ export function postSmregcCreateCall(call, back) {
           payload: data,
         });
         back();
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function postSmregcCreateCrmSchedule(params) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost(`smregc/createCrmSchedule`, params)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: POST_SMREGC_CREATE_CRM_SCHEDULE,
+          payload: data,
+        });
       })
       .catch(error => {
         dispatch(modifyLoader(false));

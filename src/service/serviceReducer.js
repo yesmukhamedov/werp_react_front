@@ -29,6 +29,7 @@ import {
   POST_SMECI,
   FETCH_SERV_CRM_CALL_STATUS,
   POST_SMREGC_CREATE_CALL,
+  POST_SMREGC_CREATE_CRM_SCHEDULE,
   FETCH_APP_STATUS,
   FETCH_APP_TYPE,
   FETCH_APP_LIST,
@@ -67,6 +68,7 @@ const INITIAL_STATE = {
   smeciContractInfo: [],
   servCrmCallStatus: [],
   smregcCreateCall: [],
+  smregcCreateCrmSchedule: [],
   appStatus: [],
   appType: [],
   listOfEmployees: [],
@@ -261,6 +263,11 @@ export default function(state = INITIAL_STATE, action) {
     case POST_SMREGC_CREATE_CALL: {
       return { ...state, smregcCreateCall: action.payload };
     }
+
+    case POST_SMREGC_CREATE_CRM_SCHEDULE: {
+      return { ...state, smregcCreateCrmSchedule: action.payload };
+    }
+
     case FETCH_SMECAM: {
       return {
         ...state,

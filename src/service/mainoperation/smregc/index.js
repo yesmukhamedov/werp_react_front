@@ -20,6 +20,7 @@ import { injectIntl } from 'react-intl';
 import {
   fetchServCrmCallStatus,
   postSmregcCreateCall,
+  postSmregcCreateCrmSchedule,
 } from '../../serviceAction';
 
 import OutputErrors from '../../../general/error/outputErrors';
@@ -31,7 +32,7 @@ import './smregc.css';
 function Smregc(props) {
   const emptyCall = {
     description: '',
-    callDirection: '',
+    callDirectionId: '',
     description2: '',
     callStatusId: '',
   };
@@ -45,10 +46,10 @@ function Smregc(props) {
   const url = window.location.search;
   const contractNumber = url.slice(url.indexOf('=') + 1);
   const userName = localStorage.getItem('username');
-  const callD = localStorage.getItem('callDirection');
+  const callD = localStorage.getItem('callDirectionId');
 
   useEffect(() => {
-    setCall({ ...call, callDirection: Number.parseInt(callD, 10) });
+    setCall({ ...call, callDirectionId: Number.parseInt(callD, 10) });
   }, []);
 
   const {
@@ -68,8 +69,8 @@ function Smregc(props) {
         case 'description':
           newCall.description = e.value;
           break;
-        case 'callDirection':
-          newCall.callDirection = Number.parseInt(e.value, 10);
+        case 'callDirectionId':
+          newCall.callDirectionId = Number.parseInt(e.value, 10);
           localStorage.setItem(fieldname, e.value);
           break;
         case 'description2':
@@ -90,39 +91,38 @@ function Smregc(props) {
 
     console.log('PROPS', props);
 
-    const { tovarSn, branchId, bukrs } = props.location.state;
-    const { callDirection, callStatusId, description, description2 } = call;
-    if (callDirection !== '' && callStatusId !== '' && description !== '') {
+    const { tovarSn, branchId, bukrsId } = props.location.state;
+    const { callDirectionId, callStatusId, description, description2 } = call;
+    if (callDirectionId !== '' && callStatusId !== '' && description !== '') {
       props.postSmregcCreateCall(
         {
-          scheduleCall,
-          servCrmHistoryDto: {
-            callDirection,
-            callStatusId,
-            contractId: Number.parseInt(contractNumber, 10),
-            crmHistoryDate,
-            info: description,
-            tovarSn,
-          },
-          servCrmScheduleDto: {
-            branchId,
-            bukrs,
-            contractId: Number.parseInt(contractNumber, 10),
-            crmScheduleDate,
-            info: description2,
-            tovarSn,
-          },
+          callDirectionId,
+          callStatusId,
+          contractNumber: Number.parseInt(contractNumber, 10),
+          crmHistoryDate,
+          info: description,
+          tovarSn,
         },
         () => {
           props.history.push(`smcuspor?contractNumber=${contractNumber}`);
         },
       );
+      if (scheduleCall) {
+        props.postSmregcCreateCrmSchedule({
+          branchId,
+          bukrsId,
+          contractNumber: Number.parseInt(contractNumber, 10),
+          crmScheduleDate,
+          info: description2,
+          tovarSn,
+        });
+      }
     }
   };
 
   const validate = () => {
     const errors = [];
-    if (call.callDirection === '') {
+    if (call.callDirectionId === '') {
       errors.push(errorTableText(171));
     }
     if (call.callStatusId === '') {
@@ -204,7 +204,7 @@ function Smregc(props) {
                               value="1"
                               checked={Number.parseInt(callD, 10) === 1}
                               onChange={(e, o) =>
-                                onInputChange(o, 'callDirection')
+                                onInputChange(o, 'callDirectionId')
                               }
                             />
                           </Table.Cell>
@@ -216,7 +216,7 @@ function Smregc(props) {
                               value="2"
                               checked={Number.parseInt(callD, 10) === 2}
                               onChange={(e, o) =>
-                                onInputChange(o, 'callDirection')
+                                onInputChange(o, 'callDirectionId')
                               }
                             />
                           </Table.Cell>
@@ -311,4 +311,5 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
   fetchServCrmCallStatus,
   postSmregcCreateCall,
+  postSmregcCreateCrmSchedule,
 })(injectIntl(Smregc));

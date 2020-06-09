@@ -58,7 +58,7 @@ function Smcuspor(props) {
   const {
     countryName,
     bukrsName,
-    bukrs,
+    bukrsId,
     branchName,
     serviceBranchId,
     serviceBranchName,
@@ -84,6 +84,7 @@ function Smcuspor(props) {
     f4MtLeft,
     f5MtLeft,
   } = clientContract;
+  console.log('props SMCUSPOR', props);
 
   useEffect(() => {
     if (contractNumber) {
@@ -177,7 +178,7 @@ function Smcuspor(props) {
                         {
                           tovarSn: tovarSn,
                           branchId: serviceBranchId,
-                          bukrs: bukrs,
+                          bukrsId: bukrsId,
                         },
                       )
                     }
@@ -194,7 +195,7 @@ function Smcuspor(props) {
                       props.history.push(
                         `smcca?contractNumber=${contractNumber}`,
                         {
-                          bukrs: bukrs,
+                          bukrs: bukrsId,
                           bukrsName: bukrsName,
                           branchId: serviceBranchId,
                           serviceBranchName: serviceBranchName,
@@ -759,6 +760,12 @@ function Smcuspor(props) {
     </Segment>
   );
 }
+
+export const smcusporId = id => {
+  console.log(id);
+  return id;
+};
+
 function mapStateToProps(state) {
   return {
     language: state.locales.lang,
