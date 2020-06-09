@@ -33,8 +33,8 @@ function Smeci(props) {
     f3Mt: '',
     f4Mt: '',
     f5Mt: '',
-    addrServiceId: '',
-    addrServ: '',
+    serviceAddressId: '',
+    serviceAddressName: '',
     contactPersonName: '',
     selectedBranch: {},
     info: '',
@@ -54,22 +54,22 @@ function Smeci(props) {
   const {
     countryName,
     bukrsName,
-    bukrs,
+    bukrsId,
     branchName,
     branchId,
-    servBranchName,
-    servBranchId,
-    tovarSerial,
-    customerName,
+    serviceBranchName,
+    serviceBranchId,
+    tovarSn,
+    customerFIO,
     contactPersonName,
-    addrServ,
+    serviceAddressName,
     fullPhone,
-    servCrmCategory,
+    serviceCrmCategoryName,
     contractDate,
     manual,
     installmentDate,
-    dealerName,
-    fitterName,
+    dealerFIO,
+    fitterFIO,
     warrantyEndDate,
     warranty,
     warrantyEndedMonths,
@@ -84,9 +84,11 @@ function Smeci(props) {
     f4MtLeft,
     f5MtLeft,
     customerId,
-    addrServiceId,
+    serviceAddressId,
     info,
   } = contractInfo;
+
+  console.log(contractInfo);
 
   useEffect(() => {
     if (contractNumber) {
@@ -100,9 +102,9 @@ function Smeci(props) {
   }, [!addressF4ModalOpen]);
 
   useEffect(() => {
-    if (Object.entries(branchOptions).length !== 0 && bukrs) {
+    if (Object.entries(branchOptions).length !== 0 && bukrsId) {
       let branch = {};
-      branchOptions[bukrs]
+      branchOptions[bukrsId]
         .filter(item => item.key === branchId)
         .forEach(item => {
           branch = item;
@@ -116,8 +118,8 @@ function Smeci(props) {
         f3Mt: f3Mt,
         f4Mt: f4Mt,
         f5Mt: f5Mt,
-        addrServiceId: addrServiceId,
-        addrServ: addrServ,
+        serviceAddressId: serviceAddressId,
+        serviceAddressName: serviceAddressName,
         contactPersonName: contactPersonName,
         selectedBranch: branch,
         info: info,
@@ -147,9 +149,9 @@ function Smeci(props) {
         case 'f5Mt':
           newContract.f5Mt = e.value;
           break;
-        case 'addrServiceId':
-          newContract.addrServiceId = e.addr_id;
-          newContract.addrServ = e.address;
+        case 'serviceAddressId':
+          newContract.serviceAddressId = e.addr_id;
+          newContract.serviceAddressName = e.address;
           break;
         case 'contactPersonName':
           newContract.contactPersonName = e.value;
@@ -169,8 +171,8 @@ function Smeci(props) {
 
   const handleSubmit = () => {
     const {
-      addrServ,
-      addrServiceId,
+      serviceAddressName,
+      serviceAddressId,
       contactPersonName,
       f1Mt,
       f2Mt,
@@ -183,19 +185,19 @@ function Smeci(props) {
     } = contract;
     props.postSmeciContractInfo(
       {
-        addrServ,
-        addrServiceId,
+        serviceAddressName,
+        serviceAddressId,
         branchId,
         branchName,
-        bukrs,
+        bukrsId,
         bukrsName,
         contactPersonName,
         contractDate,
         contractNumber,
         countryName,
         customerId,
-        customerName,
-        dealerName,
+        customerFIO,
+        dealerFIO,
         f1Mt,
         f2Mt,
         f3Mt,
@@ -206,16 +208,16 @@ function Smeci(props) {
         f3MtLeft,
         f4MtLeft,
         f5MtLeft,
-        fitterName,
+        fitterFIO,
         fullPhone,
         info,
         info2,
         installmentDate,
         manual,
-        servBranchId,
-        servBranchName,
-        servCrmCategory,
-        tovarSerial,
+        serviceBranchId,
+        serviceBranchName,
+        serviceCrmCategoryName,
+        tovarSn,
         warranty,
         warrantyEndDate,
         warrantyEndedMonths,
@@ -235,8 +237,8 @@ function Smeci(props) {
       f3Mt: '',
       f4Mt: '',
       f5Mt: '',
-      addrServiceId: '',
-      addrServ: '',
+      serviceAddressId: '',
+      serviceAddressName: '',
       contactPersonName: '',
       selectedBranch: {},
       info: '',
@@ -246,27 +248,27 @@ function Smeci(props) {
 
   const labelColor = () => {
     if (
-      servCrmCategory === 'ЗЕЛЕНЫЙ' ||
-      servCrmCategory === 'GREEN' ||
-      servCrmCategory === 'YEŞİL'
+      serviceCrmCategoryName === 'ЗЕЛЕНЫЙ' ||
+      serviceCrmCategoryName === 'GREEN' ||
+      serviceCrmCategoryName === 'YEŞİL'
     ) {
       return 'green';
     } else if (
-      servCrmCategory === 'ЖЕЛТЫЙ' ||
-      servCrmCategory === 'YELLOW' ||
-      servCrmCategory === 'SARI'
+      serviceCrmCategoryName === 'ЖЕЛТЫЙ' ||
+      serviceCrmCategoryName === 'YELLOW' ||
+      serviceCrmCategoryName === 'SARI'
     ) {
       return 'yellow';
     } else if (
-      servCrmCategory === 'КРАСНЫЙ' ||
-      servCrmCategory === 'RED' ||
-      servCrmCategory === 'KIRMIZI'
+      serviceCrmCategoryName === 'КРАСНЫЙ' ||
+      serviceCrmCategoryName === 'RED' ||
+      serviceCrmCategoryName === 'KIRMIZI'
     ) {
       return 'red';
     } else if (
-      servCrmCategory === 'ЧЕРНЫЙ' ||
-      servCrmCategory === 'BLACK' ||
-      servCrmCategory === 'SİYAH'
+      serviceCrmCategoryName === 'ЧЕРНЫЙ' ||
+      serviceCrmCategoryName === 'BLACK' ||
+      serviceCrmCategoryName === 'SİYAH'
     ) {
       return 'black';
     }
@@ -278,7 +280,7 @@ function Smeci(props) {
         open={addressF4ModalOpen}
         customerId={customerId}
         onCloseAddressF4={bool => setAddressF4ModalOpen(bool)}
-        onAddressSelect={item => onInputChange(item, 'addrServiceId')}
+        onAddressSelect={item => onInputChange(item, 'serviceAddressId')}
         selectedBranch={contract.selectedBranch}
       />
       <Grid centered>
@@ -287,6 +289,7 @@ function Smeci(props) {
             <h1>{messages['editing']}</h1>
             <Segment>
               <h3>{messages['L__CLIENT_INFO']} </h3>
+              <Button>Admin</Button>
               <Table compact striped>
                 <Table.Body>
                   <Table.Row>
@@ -328,7 +331,7 @@ function Smeci(props) {
                       <Input
                         size="small"
                         fluid
-                        value={servBranchName ? servBranchName : ''}
+                        value={serviceBranchName ? serviceBranchName : ''}
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -350,7 +353,7 @@ function Smeci(props) {
                       <Input
                         size="small"
                         fluid
-                        value={tovarSerial ? tovarSerial : ''}
+                        value={tovarSn ? tovarSn : ''}
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -361,7 +364,7 @@ function Smeci(props) {
                       <Input
                         size="small"
                         fluid
-                        value={customerName ? customerName : ''}
+                        value={customerFIO ? customerFIO : ''}
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -390,7 +393,11 @@ function Smeci(props) {
                       <Input
                         size="small"
                         fluid
-                        value={contract.addrServ ? contract.addrServ : ''}
+                        value={
+                          contract.serviceAddressName
+                            ? contract.serviceAddressName
+                            : ''
+                        }
                       />
                     </Table.Cell>
                     <Table.Cell collapsing>
@@ -425,7 +432,9 @@ function Smeci(props) {
                       <Input
                         size="small"
                         fluid
-                        value={servCrmCategory ? servCrmCategory : ''}
+                        value={
+                          serviceCrmCategoryName ? serviceCrmCategoryName : ''
+                        }
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -458,7 +467,7 @@ function Smeci(props) {
                       <Input
                         size="small"
                         fluid
-                        value={dealerName ? dealerName : ''}
+                        value={dealerFIO ? dealerFIO : ''}
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -469,7 +478,7 @@ function Smeci(props) {
                       <Input
                         size="small"
                         fluid
-                        value={fitterName ? fitterName : ''}
+                        value={fitterFIO ? fitterFIO : ''}
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>

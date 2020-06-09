@@ -164,7 +164,7 @@ const ServiceFilterPlan = props => {
         return (
           <div style={{ textAlign: 'center' }}>
             <Link to={url} onClick={() => smcusporId(original.row.id)}>
-              <Icon name="address card" outline color="black" />
+              <Icon name="address card outline" color="black" />
             </Link>
           </div>
         );

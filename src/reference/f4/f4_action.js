@@ -879,7 +879,6 @@ export function f4DeletePhone(data, fetchPhone) {
   return function(dispatch) {
     doDelete('phone/delete', { data })
       .then(data => {
-        console.log(data);
         dispatch(modifyLoader(false));
         dispatch({
           type: F4_DELETE_PHONE,

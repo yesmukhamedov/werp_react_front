@@ -84,7 +84,6 @@ function Smcuspor(props) {
     f4MtLeft,
     f5MtLeft,
   } = clientContract;
-  console.log('props SMCUSPOR', props);
 
   useEffect(() => {
     if (contractNumber) {
@@ -179,6 +178,7 @@ function Smcuspor(props) {
                           tovarSn: tovarSn,
                           branchId: serviceBranchId,
                           bukrsId: bukrsId,
+                          serviceFilterPlanId: smcusporId(),
                         },
                       )
                     }
@@ -762,7 +762,6 @@ function Smcuspor(props) {
 }
 
 export const smcusporId = id => {
-  console.log(id);
   return id;
 };
 

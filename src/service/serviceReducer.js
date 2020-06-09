@@ -250,7 +250,7 @@ export default function(state = INITIAL_STATE, action) {
     }
 
     case FETCH_SMECI: {
-      return { ...state, smeciContractInfo: action.payload.data.contractInfo };
+      return { ...state, smeciContractInfo: action.payload.data };
     }
     case POST_SMECI: {
       return { ...state, smeciContractInfo: {} };

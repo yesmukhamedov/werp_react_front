@@ -56,6 +56,7 @@ function Smregc(props) {
     servCrmCallStatus,
     language,
     intl: { messages },
+    serviceFilterPlanId,
   } = props;
 
   useEffect(() => {
@@ -78,6 +79,11 @@ function Smregc(props) {
           break;
         case 'callStatusId':
           newCall.callStatusId = e.value;
+          e.options.map(item => {
+            if (item.key === e.value) {
+              newCall.description = item.text;
+            }
+          });
           break;
       }
       return newCall;
@@ -88,9 +94,6 @@ function Smregc(props) {
     validate();
     const crmHistoryDate = callDate.format('DD.MM.YYYY HH:mm:ss');
     const crmScheduleDate = appointDate.format('DD.MM.YYYY HH:mm:ss');
-
-    console.log('PROPS', props);
-
     const { tovarSn, branchId, bukrsId } = props.location.state;
     const { callDirectionId, callStatusId, description, description2 } = call;
     if (callDirectionId !== '' && callStatusId !== '' && description !== '') {
@@ -231,6 +234,7 @@ function Smregc(props) {
                     <Form>
                       <TextArea
                         placeholder={messages['Table.Note']}
+                        value={call.description}
                         onChange={(e, o) => onInputChange(o, 'description')}
                       />
                     </Form>
