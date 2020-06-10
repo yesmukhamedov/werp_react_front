@@ -85,6 +85,12 @@ const Smappl = props => {
   // modal useStates
   const allColumns = [
     {
+      Header: `id`,
+      accessor: 'id',
+      show: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
       Header: `CN `,
       accessor: 'contractNumber',
       show: true,
@@ -132,7 +138,6 @@ const Smappl = props => {
       Header: messages['Masters'],
       accessor: 'masterName',
       show: true,
-      filterable: false,
       Cell: ({ row }) => (
         <div style={{ textAlign: 'center' }}>
           {row._original.masterName}
@@ -177,7 +182,21 @@ const Smappl = props => {
     },
     {
       Header: `${messages['service']} №`,
-      accessor: 'serviceId',
+
+      accessor: 'id',
+      Footer: original => {
+        let total = 0;
+        original.data.map((item, index) => {
+          if (
+            item._original.serviceTotalSum != null ||
+            item._original.serviceTotalSum != undefined
+          ) {
+            total = total + item._original.serviceTotalSum;
+          }
+        });
+        console.log('total', total);
+        return <div style={{ textAlign: 'center' }}>Итого:{total}</div>;
+      },
       show: true,
       filterable: false,
       Cell: row => (
@@ -307,7 +326,8 @@ const Smappl = props => {
           }}
         >
           <h3>{messages['service_requests']}</h3>
-          <LinkToSmccald buttonName="Создать заявку без данных" />
+          {/* <LinkToSmccald buttonName="Создать заявку без данных" /> */}
+          <LinkToSmcsEmpty />
         </div>
       </Segment>
 

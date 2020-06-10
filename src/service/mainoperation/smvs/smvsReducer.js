@@ -10,6 +10,7 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         smvsList: { ...action.data.data },
+        editStat: true,
       };
 
     default:

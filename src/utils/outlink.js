@@ -229,15 +229,9 @@ export const LinkToSmecam = props => {
 
 export const LinkToSmcsEmpty = props => {
   const url = `/service/mainoperation/smcs`;
-  // const url = `/marketing/mainoperation/mmceg?contractNumber=${contractNumber}`;
   return (
-    <a
-      style={{ color: 'white' }}
-      target="_blank"
-      href={url}
-      rel="noopener noreferrer"
-    >
-      Новый сервис
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      <Button primary>Новый сервис</Button>
     </a>
   );
 };
