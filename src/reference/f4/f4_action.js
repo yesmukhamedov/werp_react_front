@@ -139,6 +139,9 @@ export const F4_FETCH_FILTER_PLAN_STATUS = 'F4_FETCH_FILTER_PLAN_STATUS';
 export const F4_CLEAR_FILTER_PLAN_STATUS = 'F4_CLEAR_FILTER_PLAN_STATUS';
 export const F4_FETCH_PHYS_STATUS = 'F4_FETCH_PHYS_STATUS';
 
+export const F4_FETCH_CRM_CATEGORY = 'F4_FETCH_CRM_CATEGORY';
+export const F4_CLEAR_CRM_CATEGORY = 'F4_CLEAR_CRM_CATEGORY';
+
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 
@@ -1118,6 +1121,24 @@ export function f4FetchPhysStatus() {
         dispatch(modifyLoader(false));
         dispatch({
           type: F4_FETCH_PHYS_STATUS,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchCrmCategory() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`crm_category/view`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_CRM_CATEGORY,
           payload: data,
         });
       })

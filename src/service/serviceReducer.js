@@ -27,6 +27,7 @@ import {
   FETCH_CONTRACT_STATUS,
   FETCH_SMECI,
   POST_SMECI,
+  POST_SMECIM,
   FETCH_SERV_CRM_CALL_STATUS,
   POST_SMREGC_CREATE_CALL,
   POST_SMREGC_CREATE_CRM_SCHEDULE,
@@ -48,6 +49,7 @@ import {
   FETCH_SMSETPP_GET_PRODUCT_LIST,
   FETCH_PRODUCT_LIST_SMSETCT,
   FETCH_SMCUSPOR_CONTRACT_HISTORY,
+  FETCH_BRANCH_LIST,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -77,6 +79,7 @@ const INITIAL_STATE = {
   productList: [],
   smcusporContractHistory: [],
   crmHistory: [],
+  branchList: [],
 };
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -256,6 +259,10 @@ export default function(state = INITIAL_STATE, action) {
       return { ...state, smeciContractInfo: {} };
     }
 
+    case POST_SMECIM: {
+      return { ...state, smecimContractInfo: {} };
+    }
+
     case FETCH_SERV_CRM_CALL_STATUS: {
       return { ...state, servCrmCallStatus: action.payload.data };
     }
@@ -371,6 +378,11 @@ export default function(state = INITIAL_STATE, action) {
         dynamicObject: {
           appListSearchParams: action.payload,
         },
+      };
+    case FETCH_BRANCH_LIST:
+      return {
+        ...state,
+        branchList: [...action.payload],
       };
     default:
       return state;

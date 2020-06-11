@@ -19,6 +19,8 @@ export const FETCH_SERVICE_CRMSchedule = 'FETCH_SERVICE_CRMSchedule';
 export const FETCH_SERVICE_MY_APPLICATION_EXODUS =
   'FETCH_SERVICE_MY_APPLICATION_EXODUS';
 
+export const POST_TO_CANCEL_PLAN = 'POST_TO_CANCEL_PLAN';
+
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 
@@ -88,6 +90,28 @@ export const fetchMyApplicationExodus = param => {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SERVICE_MY_APPLICATION_EXODUS,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+
+//Отмена заявки
+export const postToCancelPlan = param => {
+  let queryString = Object.keys(param)
+    .map(key => key + '=' + param[key])
+    .join('&');
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost(`smopccoc/toCancelPlan?${queryString}`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: POST_TO_CANCEL_PLAN,
           payload: data,
         });
       })

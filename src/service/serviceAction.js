@@ -34,6 +34,7 @@ export const FETCH_SMCUSPOR_HISTORY_CALL = 'FETCH_SMCUSPOR_HISTORY_CALL';
 export const FETCH_SMCUSPOR_HISTORY_SERVICE = 'FETCH_SMCUSPOR_HISTORY_SERVICE';
 export const FETCH_SMECI = 'FETCH_SMECI';
 export const POST_SMECI = 'POST_SMECI';
+export const POST_SMECIM = 'POST_SMECIM';
 export const FETCH_SERV_CRM_CALL_STATUS = 'FETCH_SERV_CRM_CALL_STATUS';
 export const POST_SMREGC_CREATE_CALL = 'POST_SMREGC_CREATE_CALL';
 export const POST_SMREGC_CREATE_CRM_SCHEDULE =
@@ -68,6 +69,7 @@ export const FETCH_SMSETPP_GET_PRODUCT_LIST = 'FETCH_SMSETPP_GET_PRODUCT_LIST';
 export const FETCH_PRODUCT_LIST_SMSETCT = 'FETCH_PRODUCT_LIST_SMSETCT';
 export const FETCH_SMCUSPOR_CONTRACT_HISTORY =
   'FETCH_SMCUSPOR_CONTRACT_HISTORY';
+export const FETCH_BRANCH_LIST = 'FETCH_BRANCH_LIST';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 
@@ -569,6 +571,7 @@ export function fetchSmeciContractInfo(contractNumber) {
   };
 }
 
+//Редактирование для операторов
 export function postSmeciContractInfo(contract, fetchSmcuspor) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
@@ -577,6 +580,26 @@ export function postSmeciContractInfo(contract, fetchSmcuspor) {
         dispatch(modifyLoader(false));
         dispatch({
           type: POST_SMECI,
+          payload: data,
+        });
+        fetchSmcuspor();
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+//Редактирование для менеджеров
+export function postSmecimContractInfo(contract, fetchSmcuspor) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost(`smecim/edit`, contract)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: POST_SMECIM,
           payload: data,
         });
         fetchSmcuspor();
@@ -689,6 +712,22 @@ export function fetchTovarCategorys() {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_TOVAR_CATEGORYS,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+export function fetchBranchList(params) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('smcs/getBranchList', params)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_BRANCH_LIST,
           payload: data.data,
         });
       })

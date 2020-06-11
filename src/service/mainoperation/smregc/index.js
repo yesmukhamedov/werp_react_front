@@ -56,7 +56,6 @@ function Smregc(props) {
     servCrmCallStatus,
     language,
     intl: { messages },
-    serviceFilterPlanId,
   } = props;
 
   useEffect(() => {
@@ -94,9 +93,21 @@ function Smregc(props) {
     validate();
     const crmHistoryDate = callDate.format('DD.MM.YYYY HH:mm:ss');
     const crmScheduleDate = appointDate.format('DD.MM.YYYY HH:mm:ss');
-    const { tovarSn, branchId, bukrsId } = props.location.state;
+    const {
+      tovarSn,
+      branchId,
+      bukrsId,
+      serviceFilterPlanId,
+      serviceFilterVCPlanId,
+    } = props.location.state;
     const { callDirectionId, callStatusId, description, description2 } = call;
-    if (callDirectionId !== '' && callStatusId !== '' && description !== '') {
+    if (
+      callDirectionId !== '' &&
+      !Number.isNaN(callDirectionId) &&
+      callStatusId !== '' &&
+      description !== '' &&
+      description2 !== ''
+    ) {
       props.postSmregcCreateCall(
         {
           callDirectionId,
@@ -118,6 +129,8 @@ function Smregc(props) {
           crmScheduleDate,
           info: description2,
           tovarSn,
+          serviceFilterPlanId,
+          serviceFilterVCPlanId,
         });
       }
     }
@@ -125,13 +138,26 @@ function Smregc(props) {
 
   const validate = () => {
     const errors = [];
-    if (call.callDirectionId === '') {
+    if (
+      call.callDirectionId === '' ||
+      call.callDirectionId === null ||
+      call.callDirectionId === undefined ||
+      Number.isNaN(call.callDirectionId)
+    ) {
       errors.push(errorTableText(171));
     }
-    if (call.callStatusId === '') {
+    if (
+      call.callStatusId === '' ||
+      call.callStatusId === null ||
+      call.callStatusId === undefined
+    ) {
       errors.push(errorTableText(170));
     }
-    if (call.description === '') {
+    if (
+      call.description === '' ||
+      call.description === null ||
+      call.description === undefined
+    ) {
       errors.push(errorTableText(169));
     }
     if (scheduleCall && call.description2 === '') {

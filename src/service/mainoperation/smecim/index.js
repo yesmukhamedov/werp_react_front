@@ -11,11 +11,15 @@ import {
   TextArea,
   Label,
   Checkbox,
+  Dropdown,
 } from 'semantic-ui-react';
 import {
   fetchSmeciContractInfo,
-  postSmeciContractInfo,
+  postSmecimContractInfo,
+  fetchBranchList,
 } from '../../serviceAction';
+
+import { f4FetchCrmCategory } from '../../../reference/f4/f4_action';
 
 import AddressF4Modal from '../../../reference/f4/address/addressF4WithCreationPage';
 
@@ -33,43 +37,50 @@ function Smecim(props) {
     f3Mt: '',
     f4Mt: '',
     f5Mt: '',
-    addrServiceId: '',
-    addrServ: '',
+    serviceBranchId: '',
+    serviceAddressId: '',
+    serviceAddressName: '',
     contactPersonName: '',
     selectedBranch: {},
+    servCrmCategory: '',
     info: '',
     info2: '',
   };
 
   const [contract, setContract] = useState({ ...emptyContract });
   const [addressF4ModalOpen, setAddressF4ModalOpen] = useState(false);
-  const [phoneF4ModalOpen, setPhoneF4ModalOpen] = useState(false);
 
   const {
     contractInfo = [],
     branchOptions = [],
     intl: { messages },
+    crmCategory = [],
+    branchList = [],
   } = props;
 
   const {
     countryName,
+    countryId,
     bukrsName,
-    bukrs,
+    bukrsId,
     branchName,
     branchId,
-    servBranchName,
-    servBranchId,
-    tovarSerial,
-    customerName,
+    serviceBranchName,
+    serviceBranchId,
+    tovarSn,
+    customerFIO,
     contactPersonName,
-    addrServ,
+    serviceAddressName,
     fullPhone,
-    servCrmCategory,
+    serviceCrmCategoryName,
+    serviceCrmCategoryId,
     contractDate,
     manual,
     installmentDate,
-    dealerName,
-    fitterName,
+    dealerFIO,
+    dealerId,
+    fitterFIO,
+    fitterId,
     warrantyEndDate,
     warranty,
     warrantyEndedMonths,
@@ -84,25 +95,31 @@ function Smecim(props) {
     f4MtLeft,
     f5MtLeft,
     customerId,
-    addrServiceId,
+    serviceAddressId,
     info,
   } = contractInfo;
 
   useEffect(() => {
     if (contractNumber) {
       props.fetchSmeciContractInfo({ contractNumber });
+      props.f4FetchCrmCategory();
     }
   }, [contractNumber]);
   useEffect(() => {
-    if (!phoneF4ModalOpen) {
+    if (bukrsId) {
+      props.fetchBranchList({ bukrs: bukrsId });
+    }
+  }, [bukrsId]);
+  useEffect(() => {
+    if (!addressF4ModalOpen) {
       props.fetchSmeciContractInfo({ contractNumber });
     }
-  }, [!phoneF4ModalOpen]);
+  }, [!addressF4ModalOpen]);
 
   useEffect(() => {
-    if (Object.entries(branchOptions).length !== 0 && bukrs) {
+    if (Object.entries(branchOptions).length !== 0 && bukrsId) {
       let branch = {};
-      branchOptions[bukrs]
+      branchOptions[bukrsId]
         .filter(item => item.key === branchId)
         .forEach(item => {
           branch = item;
@@ -116,10 +133,12 @@ function Smecim(props) {
         f3Mt: f3Mt,
         f4Mt: f4Mt,
         f5Mt: f5Mt,
-        addrServiceId: addrServiceId,
-        addrServ: addrServ,
+        serviceBranchId: serviceBranchId,
+        serviceAddressId: serviceAddressId,
+        serviceAddressName: serviceAddressName,
         contactPersonName: contactPersonName,
         selectedBranch: branch,
+        servCrmCategory: serviceCrmCategoryId,
         info: info,
       });
     }
@@ -147,12 +166,18 @@ function Smecim(props) {
         case 'f5Mt':
           newContract.f5Mt = e.value;
           break;
-        case 'addrServiceId':
-          newContract.addrServiceId = e.addr_id;
-          newContract.addrServ = e.address;
+        case 'serviceAddressId':
+          newContract.serviceAddressId = e.addr_id;
+          newContract.serviceAddressName = e.address;
+          break;
+        case 'serviceBranchId':
+          newContract.serviceBranchId = e.value;
           break;
         case 'contactPersonName':
           newContract.contactPersonName = e.value;
+          break;
+        case 'servCrmCategory':
+          newContract.servCrmCategory = e.value;
           break;
         case 'info':
           newContract.info = e.value;
@@ -169,9 +194,10 @@ function Smecim(props) {
 
   const handleSubmit = () => {
     const {
-      addrServ,
-      addrServiceId,
+      serviceAddressName,
+      serviceAddressId,
       contactPersonName,
+      serviceBranchId,
       f1Mt,
       f2Mt,
       f3Mt,
@@ -180,42 +206,47 @@ function Smecim(props) {
       info,
       info2,
       manual,
+      servCrmCategory,
     } = contract;
-    props.postSmeciContractInfo(
+    props.postSmecimContractInfo(
       {
-        addrServ,
-        addrServiceId,
+        serviceAddressName,
+        serviceAddressId,
         branchId,
         branchName,
-        bukrs,
+        bukrsId,
         bukrsName,
         contactPersonName,
         contractDate,
         contractNumber,
         countryName,
+        countryId,
         customerId,
-        customerName,
-        dealerName,
-        f1Mt,
-        f2Mt,
-        f3Mt,
-        f4Mt,
-        f5Mt,
+        customerFIO,
+        dealerFIO,
+        dealerId,
+        f1Mt: Number.parseInt(f1Mt, 10),
+        f2Mt: Number.parseInt(f2Mt, 10),
+        f3Mt: Number.parseInt(f3Mt, 10),
+        f4Mt: Number.parseInt(f4Mt, 10),
+        f5Mt: Number.parseInt(f5Mt, 10),
         f1MtLeft,
         f2MtLeft,
         f3MtLeft,
         f4MtLeft,
         f5MtLeft,
-        fitterName,
+        fitterFIO,
+        fitterId,
         fullPhone,
         info,
         info2,
         installmentDate,
         manual,
-        servBranchId,
-        servBranchName,
-        servCrmCategory,
-        tovarSerial,
+        serviceBranchId,
+        serviceBranchName,
+        serviceCrmCategoryId: servCrmCategory,
+        serviceCrmCategoryName,
+        tovarSn,
         warranty,
         warrantyEndDate,
         warrantyEndedMonths,
@@ -235,41 +266,15 @@ function Smecim(props) {
       f3Mt: '',
       f4Mt: '',
       f5Mt: '',
-      addrServiceId: '',
-      addrServ: '',
+      serviceBranchId: '',
+      serviceAddressId: '',
+      serviceAddressName: '',
       contactPersonName: '',
       selectedBranch: {},
+      servCrmCategory: '',
       info: '',
       info2: '',
     });
-  };
-
-  const labelColor = () => {
-    if (
-      servCrmCategory === 'ЗЕЛЕНЫЙ' ||
-      servCrmCategory === 'GREEN' ||
-      servCrmCategory === 'YEŞİL'
-    ) {
-      return 'green';
-    } else if (
-      servCrmCategory === 'ЖЕЛТЫЙ' ||
-      servCrmCategory === 'YELLOW' ||
-      servCrmCategory === 'SARI'
-    ) {
-      return 'yellow';
-    } else if (
-      servCrmCategory === 'КРАСНЫЙ' ||
-      servCrmCategory === 'RED' ||
-      servCrmCategory === 'KIRMIZI'
-    ) {
-      return 'red';
-    } else if (
-      servCrmCategory === 'ЧЕРНЫЙ' ||
-      servCrmCategory === 'BLACK' ||
-      servCrmCategory === 'SİYAH'
-    ) {
-      return 'black';
-    }
   };
 
   return (
@@ -278,7 +283,7 @@ function Smecim(props) {
         open={addressF4ModalOpen}
         customerId={customerId}
         onCloseAddressF4={bool => setAddressF4ModalOpen(bool)}
-        onAddressSelect={item => onInputChange(item, 'addrServiceId')}
+        onAddressSelect={item => onInputChange(item, 'serviceAddressId')}
         selectedBranch={contract.selectedBranch}
       />
       <Grid centered>
@@ -325,10 +330,13 @@ function Smecim(props) {
                   <Table.Row>
                     <Table.Cell>{messages['service_branch']}</Table.Cell>
                     <Table.Cell>
-                      <Input
-                        size="small"
+                      <Dropdown
+                        placeholder={messages['service_branch']}
                         fluid
-                        value={servBranchName ? servBranchName : ''}
+                        selection
+                        options={getBranchList(branchList)}
+                        value={contract.serviceBranchId}
+                        onChange={(e, o) => onInputChange(o, 'serviceBranchId')}
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -350,7 +358,7 @@ function Smecim(props) {
                       <Input
                         size="small"
                         fluid
-                        value={tovarSerial ? tovarSerial : ''}
+                        value={tovarSn ? tovarSn : ''}
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -361,7 +369,7 @@ function Smecim(props) {
                       <Input
                         size="small"
                         fluid
-                        value={customerName ? customerName : ''}
+                        value={customerFIO ? customerFIO : ''}
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -390,7 +398,11 @@ function Smecim(props) {
                       <Input
                         size="small"
                         fluid
-                        value={contract.addrServ ? contract.addrServ : ''}
+                        value={
+                          contract.serviceAddressName
+                            ? contract.serviceAddressName
+                            : ''
+                        }
                       />
                     </Table.Cell>
                     <Table.Cell collapsing>
@@ -417,15 +429,21 @@ function Smecim(props) {
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label ribbon color={labelColor()}>
+                      <Label
+                        ribbon
+                        color={labelColor(contract.servCrmCategory)}
+                      >
                         {messages['category']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
-                      <Input
-                        size="small"
+                      <Dropdown
+                        placeholder={messages['category']}
                         fluid
-                        value={servCrmCategory ? servCrmCategory : ''}
+                        selection
+                        options={getCrmCategory(crmCategory)}
+                        value={contract.servCrmCategory}
+                        onChange={(e, o) => onInputChange(o, 'servCrmCategory')}
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -458,7 +476,7 @@ function Smecim(props) {
                       <Input
                         size="small"
                         fluid
-                        value={dealerName ? dealerName : ''}
+                        value={dealerFIO ? dealerFIO : ''}
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -469,7 +487,7 @@ function Smecim(props) {
                       <Input
                         size="small"
                         fluid
-                        value={fitterName ? fitterName : ''}
+                        value={fitterFIO ? fitterFIO : ''}
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -658,14 +676,60 @@ function Smecim(props) {
   );
 }
 
+const getCrmCategory = crmCategory => {
+  const crmCat = crmCategory;
+  if (!crmCat) {
+    return [];
+  }
+  let out = crmCategory.map(item => {
+    return {
+      key: item.id,
+      text: item.name,
+      value: item.id,
+    };
+  });
+  return out;
+};
+
+const getBranchList = branchList => {
+  const list = branchList;
+  if (!list) {
+    return [];
+  }
+  let out = branchList.map(item => {
+    return {
+      key: item.id,
+      text: item.text45,
+      value: item.id,
+    };
+  });
+  return out;
+};
+
+const labelColor = crmCategoryId => {
+  if (crmCategoryId === 1) {
+    return 'green';
+  } else if (crmCategoryId === 2) {
+    return 'yellow';
+  } else if (crmCategoryId === 3) {
+    return 'red';
+  } else if (crmCategoryId === 4) {
+    return 'black';
+  }
+};
+
 function mapStateToProps(state) {
   return {
     branchOptions: state.userInfo.branchOptionsMarketing,
     contractInfo: state.serviceReducer.smeciContractInfo,
+    crmCategory: state.f4.crmCategory,
+    branchList: state.serviceReducer.branchList,
   };
 }
 
 export default connect(mapStateToProps, {
   fetchSmeciContractInfo,
-  postSmeciContractInfo,
+  postSmecimContractInfo,
+  f4FetchCrmCategory,
+  fetchBranchList,
 })(injectIntl(Smecim));

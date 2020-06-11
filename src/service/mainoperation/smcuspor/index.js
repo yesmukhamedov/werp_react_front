@@ -21,6 +21,7 @@ import 'moment/locale/ru';
 import 'moment/locale/tr';
 import { injectIntl } from 'react-intl';
 import HistoryReactTable from './historyReactTable';
+import ExportExcel from './ExportExcel';
 import { stringYYYYMMDDToMoment } from '../../../utils/helpers';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -28,8 +29,11 @@ import './smcuspor.css';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 
 function Smcuspor(props) {
-  const url = window.location.search;
-  const contractNumber = url.slice(url.indexOf('=') + 1);
+  const urlString = window.location.href;
+  const url = new URL(urlString);
+  const contractNumber = url.searchParams.get('contractNumber');
+  const planId = url.searchParams.get('filterPlanId');
+  const vcId = url.searchParams.get('filterVCId');
 
   const emptyHistory = {
     activeButton: true,
@@ -69,6 +73,7 @@ function Smcuspor(props) {
     serviceAddressName,
     fullPhone,
     serviceCrmCategoryName,
+    serviceCrmCategoryId,
     contractDate,
     matnrName,
     installmentDate,
@@ -128,34 +133,6 @@ function Smcuspor(props) {
     });
   };
 
-  const labelColor = () => {
-    if (
-      serviceCrmCategoryName === 'ЗЕЛЕНЫЙ' ||
-      serviceCrmCategoryName === 'GREEN' ||
-      serviceCrmCategoryName === 'YEŞİL'
-    ) {
-      return 'green';
-    } else if (
-      serviceCrmCategoryName === 'ЖЕЛТЫЙ' ||
-      serviceCrmCategoryName === 'YELLOW' ||
-      serviceCrmCategoryName === 'SARI'
-    ) {
-      return 'yellow';
-    } else if (
-      serviceCrmCategoryName === 'КРАСНЫЙ' ||
-      serviceCrmCategoryName === 'RED' ||
-      serviceCrmCategoryName === 'KIRMIZI'
-    ) {
-      return 'red';
-    } else if (
-      serviceCrmCategoryName === 'ЧЕРНЫЙ' ||
-      serviceCrmCategoryName === 'BLACK' ||
-      serviceCrmCategoryName === 'SIYAH'
-    ) {
-      return 'black';
-    }
-  };
-
   return (
     <Segment>
       <Form>
@@ -178,7 +155,8 @@ function Smcuspor(props) {
                           tovarSn: tovarSn,
                           branchId: serviceBranchId,
                           bukrsId: bukrsId,
-                          serviceFilterPlanId: smcusporId(),
+                          serviceFilterPlanId: planId,
+                          serviceFilterVCPlanId: vcId,
                         },
                       )
                     }
@@ -372,7 +350,7 @@ function Smcuspor(props) {
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label ribbon color={labelColor()}>
+                      <Label ribbon color={labelColor(serviceCrmCategoryId)}>
                         {messages['category']}
                       </Label>
                     </Table.Cell>
@@ -641,6 +619,9 @@ function Smcuspor(props) {
                       </Button>
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
+                    <Table.Cell width="3" verticalAlign="bottom">
+                      <ExportExcel data={crmHistoryAll} />
+                    </Table.Cell>
                   </Table.Row>
                 </Table.Body>
               </Table>
@@ -761,8 +742,16 @@ function Smcuspor(props) {
   );
 }
 
-export const smcusporId = id => {
-  return id;
+const labelColor = crmCategoryId => {
+  if (crmCategoryId === 1) {
+    return 'green';
+  } else if (crmCategoryId === 2) {
+    return 'yellow';
+  } else if (crmCategoryId === 3) {
+    return 'red';
+  } else if (crmCategoryId === 4) {
+    return 'black';
+  }
 };
 
 function mapStateToProps(state) {

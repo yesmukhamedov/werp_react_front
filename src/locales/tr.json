@@ -849,5 +849,7 @@
   "guarantee": "Guarantee",
   "transfer": "Перенос",
   "cartridge_replacement_distribution": "Cartridge replacement distribution list",
-  "phone_type": "Phone type"
+  "phone_type": "Phone type",
+  "admin": "Admin",
+  "export": "Export"
 }

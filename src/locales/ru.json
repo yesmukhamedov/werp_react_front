@@ -848,5 +848,7 @@
   "guarantee": "Гарантия",
   "transfer": "Перенос",
   "cartridge_replacement_distribution": "Распределение списка замена картриджа",
-  "phone_type": "Тип телефона"
+  "phone_type": "Тип телефона",
+  "admin": "Админ",
+  "export": "Экспортировать"
 }

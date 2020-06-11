@@ -80,6 +80,8 @@ import {
   F4_FETCH_FILTER_PLAN_STATUS,
   F4_CLEAR_FILTER_PLAN_STATUS,
   F4_FETCH_PHYS_STATUS,
+  F4_FETCH_CRM_CATEGORY,
+  F4_CLEAR_CRM_CATEGORY,
 } from './f4_action';
 
 const INITIAL_STATE = {
@@ -122,6 +124,7 @@ const INITIAL_STATE = {
   category: [],
   customersById: {},
   filterPlanStatus: [],
+  crmCategory: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -365,8 +368,13 @@ export default function(state = INITIAL_STATE, action) {
       return { ...state, filterPlanStatus: [] };
 
     case F4_FETCH_PHYS_STATUS:
-      return { ...state, physStatus: action.payload.contlaststate };
+      return { ...state, crmCategory: action.payload.data };
 
+    case F4_FETCH_CRM_CATEGORY:
+      return { ...state, crmCategory: action.payload.data };
+
+    case F4_CLEAR_CRM_CATEGORY:
+      return { ...state, filterPlanStatus: [] };
     default:
       return state;
   }

@@ -11,11 +11,14 @@ import {
   TextArea,
   Label,
   Checkbox,
+  Dropdown,
 } from 'semantic-ui-react';
 import {
   fetchSmeciContractInfo,
   postSmeciContractInfo,
+  fetchBranchList,
 } from '../../serviceAction';
+import { f4FetchCrmCategory } from '../../../reference/f4/f4_action';
 
 import AddressF4Modal from '../../../reference/f4/address/addressF4WithCreationPage';
 
@@ -33,10 +36,12 @@ function Smeci(props) {
     f3Mt: '',
     f4Mt: '',
     f5Mt: '',
+    serviceBranchId: '',
     serviceAddressId: '',
     serviceAddressName: '',
     contactPersonName: '',
     selectedBranch: {},
+    servCrmCategory: '',
     info: '',
     info2: '',
   };
@@ -48,11 +53,13 @@ function Smeci(props) {
     contractInfo = [],
     branchOptions = [],
     intl: { messages },
-    fetchSmeciContractInfo,
+    crmCategory = [],
+    branchList = [],
   } = props;
 
   const {
     countryName,
+    countryId,
     bukrsName,
     bukrsId,
     branchName,
@@ -65,11 +72,14 @@ function Smeci(props) {
     serviceAddressName,
     fullPhone,
     serviceCrmCategoryName,
+    serviceCrmCategoryId,
     contractDate,
     manual,
     installmentDate,
     dealerFIO,
+    dealerId,
     fitterFIO,
+    fitterId,
     warrantyEndDate,
     warranty,
     warrantyEndedMonths,
@@ -88,13 +98,17 @@ function Smeci(props) {
     info,
   } = contractInfo;
 
-  console.log(contractInfo);
-
   useEffect(() => {
     if (contractNumber) {
       props.fetchSmeciContractInfo({ contractNumber });
+      props.f4FetchCrmCategory();
     }
   }, [contractNumber]);
+  useEffect(() => {
+    if (bukrsId) {
+      props.fetchBranchList({ bukrs: bukrsId });
+    }
+  }, [bukrsId]);
   useEffect(() => {
     if (!addressF4ModalOpen) {
       props.fetchSmeciContractInfo({ contractNumber });
@@ -112,16 +126,12 @@ function Smeci(props) {
 
       setContract({
         ...contract,
-        manual: manual,
-        f1Mt: f1Mt,
-        f2Mt: f2Mt,
-        f3Mt: f3Mt,
-        f4Mt: f4Mt,
-        f5Mt: f5Mt,
+        serviceBranchId: serviceBranchId,
         serviceAddressId: serviceAddressId,
         serviceAddressName: serviceAddressName,
         contactPersonName: contactPersonName,
         selectedBranch: branch,
+        servCrmCategory: serviceCrmCategoryId,
         info: info,
       });
     }
@@ -153,8 +163,14 @@ function Smeci(props) {
           newContract.serviceAddressId = e.addr_id;
           newContract.serviceAddressName = e.address;
           break;
+        case 'serviceBranchId':
+          newContract.serviceBranchId = e.value;
+          break;
         case 'contactPersonName':
           newContract.contactPersonName = e.value;
+          break;
+        case 'servCrmCategory':
+          newContract.servCrmCategory = e.value;
           break;
         case 'info':
           newContract.info = e.value;
@@ -174,14 +190,10 @@ function Smeci(props) {
       serviceAddressName,
       serviceAddressId,
       contactPersonName,
-      f1Mt,
-      f2Mt,
-      f3Mt,
-      f4Mt,
-      f5Mt,
+      serviceBranchId,
       info,
       info2,
-      manual,
+      servCrmCategory,
     } = contract;
     props.postSmeciContractInfo(
       {
@@ -195,9 +207,11 @@ function Smeci(props) {
         contractDate,
         contractNumber,
         countryName,
+        countryId,
         customerId,
         customerFIO,
         dealerFIO,
+        dealerId,
         f1Mt,
         f2Mt,
         f3Mt,
@@ -209,6 +223,7 @@ function Smeci(props) {
         f4MtLeft,
         f5MtLeft,
         fitterFIO,
+        fitterId,
         fullPhone,
         info,
         info2,
@@ -216,6 +231,7 @@ function Smeci(props) {
         manual,
         serviceBranchId,
         serviceBranchName,
+        serviceCrmCategoryId: servCrmCategory,
         serviceCrmCategoryName,
         tovarSn,
         warranty,
@@ -237,41 +253,15 @@ function Smeci(props) {
       f3Mt: '',
       f4Mt: '',
       f5Mt: '',
+      serviceBranchId: '',
       serviceAddressId: '',
       serviceAddressName: '',
       contactPersonName: '',
       selectedBranch: {},
+      servCrmCategory: '',
       info: '',
       info2: '',
     });
-  };
-
-  const labelColor = () => {
-    if (
-      serviceCrmCategoryName === 'ЗЕЛЕНЫЙ' ||
-      serviceCrmCategoryName === 'GREEN' ||
-      serviceCrmCategoryName === 'YEŞİL'
-    ) {
-      return 'green';
-    } else if (
-      serviceCrmCategoryName === 'ЖЕЛТЫЙ' ||
-      serviceCrmCategoryName === 'YELLOW' ||
-      serviceCrmCategoryName === 'SARI'
-    ) {
-      return 'yellow';
-    } else if (
-      serviceCrmCategoryName === 'КРАСНЫЙ' ||
-      serviceCrmCategoryName === 'RED' ||
-      serviceCrmCategoryName === 'KIRMIZI'
-    ) {
-      return 'red';
-    } else if (
-      serviceCrmCategoryName === 'ЧЕРНЫЙ' ||
-      serviceCrmCategoryName === 'BLACK' ||
-      serviceCrmCategoryName === 'SİYAH'
-    ) {
-      return 'black';
-    }
   };
 
   return (
@@ -288,8 +278,26 @@ function Smeci(props) {
           <Grid.Column mobile={16} tablet={16} computer={7}>
             <h1>{messages['editing']}</h1>
             <Segment>
-              <h3>{messages['L__CLIENT_INFO']} </h3>
-              <Button>Admin</Button>
+              <Grid>
+                <Grid.Row>
+                  <Grid.Column width={10} verticalAlign="middle">
+                    <h3>{messages['L__CLIENT_INFO']}</h3>
+                  </Grid.Column>
+                  <Grid.Column width={6}>
+                    <Button
+                      fluid
+                      color="violet"
+                      onClick={() =>
+                        props.history.push(
+                          `smecim?contractNumber=${contractNumber}`,
+                        )
+                      }
+                    >
+                      {messages['admin']}
+                    </Button>
+                  </Grid.Column>
+                </Grid.Row>
+              </Grid>
               <Table compact striped>
                 <Table.Body>
                   <Table.Row>
@@ -328,10 +336,13 @@ function Smeci(props) {
                   <Table.Row>
                     <Table.Cell>{messages['service_branch']}</Table.Cell>
                     <Table.Cell>
-                      <Input
-                        size="small"
+                      <Dropdown
+                        placeholder={messages['service_branch']}
                         fluid
-                        value={serviceBranchName ? serviceBranchName : ''}
+                        selection
+                        options={getBranchList(branchList)}
+                        value={contract.serviceBranchId}
+                        onChange={(e, o) => onInputChange(o, 'serviceBranchId')}
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -424,17 +435,21 @@ function Smeci(props) {
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label ribbon color={labelColor()}>
+                      <Label
+                        ribbon
+                        color={labelColor(contract.servCrmCategory)}
+                      >
                         {messages['category']}
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
-                      <Input
-                        size="small"
+                      <Dropdown
+                        placeholder={messages['category']}
                         fluid
-                        value={
-                          serviceCrmCategoryName ? serviceCrmCategoryName : ''
-                        }
+                        selection
+                        options={getCrmCategory(crmCategory)}
+                        value={contract.servCrmCategory}
+                        onChange={(e, o) => onInputChange(o, 'servCrmCategory')}
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -551,36 +566,31 @@ function Smeci(props) {
                           size="mini"
                           label="F1"
                           className="input__filter_terms"
-                          value={contract.f1Mt}
-                          onChange={(e, o) => onInputChange(o, 'f1Mt')}
+                          value={f1Mt ? f1Mt : 0}
                         />
                         <Input
                           size="mini"
                           label="F2"
                           className="input__filter_terms"
-                          value={contract.f2Mt}
-                          onChange={(e, o) => onInputChange(o, 'f2Mt')}
+                          value={f2Mt ? f2Mt : 0}
                         />
                         <Input
                           size="mini"
                           label="F3"
                           className="input__filter_terms"
-                          value={contract.f3Mt}
-                          onChange={(e, o) => onInputChange(o, 'f3Mt')}
+                          value={f3Mt ? f3Mt : 0}
                         />
                         <Input
                           size="mini"
                           label="F4"
                           className="input__filter_terms"
-                          value={contract.f4Mt}
-                          onChange={(e, o) => onInputChange(o, 'f4Mt')}
+                          value={f4Mt ? f4Mt : 0}
                         />
                         <Input
                           size="mini"
                           label="F5"
                           className="input__filter_terms"
-                          value={contract.f5Mt}
-                          onChange={(e, o) => onInputChange(o, 'f5Mt')}
+                          value={f5Mt ? f5Mt : 0}
                         />
                       </Table.Cell>
                       <Table.Cell></Table.Cell>
@@ -667,14 +677,60 @@ function Smeci(props) {
   );
 }
 
+const getCrmCategory = crmCategory => {
+  const crmCat = crmCategory;
+  if (!crmCat) {
+    return [];
+  }
+  let out = crmCategory.map(item => {
+    return {
+      key: item.id,
+      text: item.name,
+      value: item.id,
+    };
+  });
+  return out;
+};
+
+const getBranchList = branchList => {
+  const list = branchList;
+  if (!list) {
+    return [];
+  }
+  let out = branchList.map(item => {
+    return {
+      key: item.id,
+      text: item.text45,
+      value: item.id,
+    };
+  });
+  return out;
+};
+
+const labelColor = crmCategoryId => {
+  if (crmCategoryId === 1) {
+    return 'green';
+  } else if (crmCategoryId === 2) {
+    return 'yellow';
+  } else if (crmCategoryId === 3) {
+    return 'red';
+  } else if (crmCategoryId === 4) {
+    return 'black';
+  }
+};
+
 function mapStateToProps(state) {
   return {
     branchOptions: state.userInfo.branchOptionsMarketing,
     contractInfo: state.serviceReducer.smeciContractInfo,
+    crmCategory: state.f4.crmCategory,
+    branchList: state.serviceReducer.branchList,
   };
 }
 
 export default connect(mapStateToProps, {
   fetchSmeciContractInfo,
   postSmeciContractInfo,
+  f4FetchCrmCategory,
+  fetchBranchList,
 })(injectIntl(Smeci));

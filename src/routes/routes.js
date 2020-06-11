@@ -978,6 +978,10 @@ const AsyncSmeci = Loadable({
   loader: () => import('../service/mainoperation/smeci'),
   loading: () => <LoadingPage />,
 });
+const AsyncSmecim = Loadable({
+  loader: () => import('../service/mainoperation/smecim'),
+  loading: () => <LoadingPage />,
+});
 const AsyncSmcca = Loadable({
   loader: () => import('../service/mainoperation/smcca'),
   loading: () => <LoadingPage />,
@@ -1161,6 +1165,7 @@ const getComponent = {
   Smcuspor: AsyncSmcuspor,
   Smregc: AsyncSmregc,
   Smeci: AsyncSmeci,
+  Smecim: AsyncSmecim,
   Smcca: AsyncSmcca,
   Smccald: AsyncSmccald,
   Smappl: AsyncSmappl,
@@ -1356,20 +1361,25 @@ const generateRoutes = transactionRoutes => {
         component={AsyncSmeci}
       />
       <Route
-        path="/service/mainoperation/smcca"
-        exact={true}
-        component={AsyncSmcca}
+      path="/service/mainoperation/smcca"
+      exact={true}
+      component={AsyncSmcca}
       />
       <Route
-        path="/service/mainoperation/smccald"
-        exact={true}
-        component={AsyncSmccald}
+      path="/service/mainoperation/smccald"
+      exact={true}
+      component={AsyncSmccald}
       />
       <Route
-        path="/service/mainoperation/smappl"
-        exact={true}
-        component={AsyncSmappl} 
+      path="/service/mainoperation/smappl"
+      exact={true}
+      component={AsyncSmappl} 
       />   
+      <Route
+        path="/service/mainoperation/smecim"
+        exact={true}
+        component={AsyncSmecim}
+      />
       {/* dynamically generated URLs  */}
 
       {transactionRoutes.map(route => {

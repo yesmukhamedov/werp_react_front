@@ -3,12 +3,14 @@ import {
   FETCH_SERVICE_TRANSFER_APPLICATION_EXODUS,
   FETCH_SERVICE_CRMSchedule,
   FETCH_SERVICE_MY_APPLICATION_EXODUS,
+  POST_TO_CANCEL_PLAN,
 } from './smopccocAction';
 
 const INITIAL_STATE = {
   dynamicObject: [],
   transfer: [],
   CRMSchedule: [],
+  toCancelPlan: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -34,6 +36,12 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         myApplication: { ...action.payload.data },
+      };
+
+    case POST_TO_CANCEL_PLAN:
+      return {
+        ...state,
+        toCancelPlan: { ...action.payload.data },
       };
 
     default:

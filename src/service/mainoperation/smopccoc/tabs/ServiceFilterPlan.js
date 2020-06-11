@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Container, Form, Divider, Icon } from 'semantic-ui-react';
+import { Container, Form, Divider, Icon, Button } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
 import OutputErrors from '../../../../general/error/outputErrors';
@@ -10,10 +10,9 @@ import { fetchServiceFilterPlan } from '../smopccocAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from '../../../../utils/ModalColumns';
-import { LinkToSmcuspor } from '../../../../utils/outlink';
+import CancelPlanModal from '../components/CancelPlanModal';
 import matchSorter from 'match-sorter';
 import { f4FetchBranchesByBukrs } from './../../../../reference/f4/f4_action';
-import { smcusporId } from '../../smcuspor/index';
 import { Link } from 'react-router-dom';
 
 const ServiceFilterPlan = props => {
@@ -21,7 +20,7 @@ const ServiceFilterPlan = props => {
     intl: { messages },
     language,
   } = props;
-  //const transaction = 'smopccocServiceFilterPlan';
+
   const {
     companyOptions = [],
     countryOptions,
@@ -39,12 +38,15 @@ const ServiceFilterPlan = props => {
     serviceDateType: '',
     crmCategory: '',
     configuration: '',
+    planId: '',
   };
 
   //END Date option
   const [param, setParam] = useState({ ...emptyParam });
-  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const [error, setError] = useState([]);
+  const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
+  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
+  const [cancelPlanModal, setCancelPlanModal] = useState(false);
 
   const initialColumns = [
     {
@@ -160,20 +162,40 @@ const ServiceFilterPlan = props => {
       filterable: false,
 
       Cell: original => {
-        const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}`;
+        const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}&filterPlanId=${original.row.id}`;
         return (
           <div style={{ textAlign: 'center' }}>
-            <Link to={url} onClick={() => smcusporId(original.row.id)}>
-              <Icon name="address card outline" color="black" />
+            <Link to={url} target="_blank">
+              <Icon name="address card" color="black" />
             </Link>
           </div>
         );
       },
       checked: true,
     },
-  ];
+    {
+      Header: messages['cancel'],
+      accessor: '17',
+      filterable: false,
 
-  const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
+      Cell: original => {
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <Icon
+              name="cancel"
+              color="red"
+              onClick={() => {
+                setCancelPlanModal(true);
+                setParam({ ...param, planId: original.row.id });
+              }}
+              style={{ cursor: 'pointer' }}
+            />
+          </div>
+        );
+      },
+      checked: true,
+    },
+  ];
 
   useEffect(() => {
     let servBrOptions = branches
@@ -212,20 +234,6 @@ const ServiceFilterPlan = props => {
       setServiceBranchOptions([...servBrOptions]);
     }
   }, [branches, param.countryId, param.bukrs]);
-
-  const categoryOptions = [
-    { key: 1, text: 'Зеленый', value: 1 },
-    { key: 2, text: 'Желтый', value: 2 },
-    { key: 3, text: 'Красный', value: 3 },
-    { key: 4, text: 'Черный', value: 4 },
-  ];
-
-  const configurationOptions = [
-    { key: 1, text: 'F-1', value: 1 },
-    { key: 2, text: 'F-2+3', value: 2 },
-    { key: 3, text: 'F-1+2+3', value: 3 },
-    { key: 4, text: 'F-1+2+3+4+5', value: 4 },
-  ];
 
   const handleClickApply = () => {
     validate();
@@ -285,6 +293,11 @@ const ServiceFilterPlan = props => {
 
   return (
     <Container fluid className="containerMargin">
+      <CancelPlanModal
+        open={cancelPlanModal}
+        planId={param.planId}
+        onClosePlanModal={bool => setCancelPlanModal(bool)}
+      />
       <Form>
         <Form.Group widths="equal">
           <Form.Select
@@ -387,6 +400,20 @@ const ServiceFilterPlan = props => {
     </Container>
   );
 };
+
+const categoryOptions = [
+  { key: 1, text: 'Зеленый', value: 1 },
+  { key: 2, text: 'Желтый', value: 2 },
+  { key: 3, text: 'Красный', value: 3 },
+  { key: 4, text: 'Черный', value: 4 },
+];
+
+const configurationOptions = [
+  { key: 1, text: 'F-1', value: 1 },
+  { key: 2, text: 'F-2+3', value: 2 },
+  { key: 3, text: 'F-1+2+3', value: 3 },
+  { key: 4, text: 'F-1+2+3+4+5', value: 4 },
+];
 
 function mapStateToProps(state) {
   return {
