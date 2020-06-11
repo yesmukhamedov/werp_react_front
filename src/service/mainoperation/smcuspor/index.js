@@ -173,23 +173,7 @@ function Smcuspor(props) {
                       props.history.push(
                         `smcca?contractNumber=${contractNumber}`,
                         {
-                          bukrs: bukrsId,
-                          bukrsName: bukrsName,
-                          branchId: serviceBranchId,
-                          serviceBranchName: serviceBranchName,
-                          customerId: customerId,
-                          customerFIO: customerFIO,
-                          serviceAddressName: serviceAddressName,
-                          fullPhone: fullPhone,
-                          tovarSn: tovarSn,
-                          matnrName: matnrName,
-                          installmentDate: installmentDate,
-                          fitterFIO: fitterFIO,
-                          f1MtLeft: f1MtLeft,
-                          f2MtLeft: f2MtLeft,
-                          f3MtLeft: f3MtLeft,
-                          f4MtLeft: f4MtLeft,
-                          f5MtLeft: f5MtLeft,
+                          clientContract,
                         },
                       )
                     }

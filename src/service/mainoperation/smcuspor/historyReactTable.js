@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
+import { Popup } from 'semantic-ui-react';
 
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 
@@ -71,7 +72,15 @@ function HistoryReactTable(props) {
               </div>
             ),
             accessor: 'info',
-            Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+            Cell: row => (
+              <Popup
+                content={row.value}
+                on="hover"
+                pinned="true"
+                trigger={<div style={{ textAlign: 'center' }}>{row.value}</div>}
+              />
+            ),
+            //<div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
             Header: () => (
