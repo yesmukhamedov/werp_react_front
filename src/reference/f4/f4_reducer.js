@@ -368,7 +368,7 @@ export default function(state = INITIAL_STATE, action) {
       return { ...state, filterPlanStatus: [] };
 
     case F4_FETCH_PHYS_STATUS:
-      return { ...state, crmCategory: action.payload.data };
+      return { ...state, physStatus: action.payload.data };
 
     case F4_FETCH_CRM_CATEGORY:
       return { ...state, crmCategory: action.payload.data };

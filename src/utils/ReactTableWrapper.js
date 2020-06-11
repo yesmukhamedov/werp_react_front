@@ -67,12 +67,12 @@ const ReactTableWrapper = props => {
                   onRowClick(rowInfo.original, rowInfo.index, column.id);
                 }
               },
-              style: {
-                background:
-                  rowInfo.index === selectedRow.selected ? '#7D3C98' : 'white',
-                color:
-                  rowInfo.index === selectedRow.selected ? 'white' : 'black',
-              },
+              // style: {
+              //   background:
+              //     rowInfo.index === selectedRow.selected ? '#7D3C98' : 'white',
+              //   color:
+              //     rowInfo.index === selectedRow.selected ? 'white' : 'black',
+              // },
             };
           } else {
             return {

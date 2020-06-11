@@ -40,6 +40,8 @@ const Smsrcus = props => {
     physStatus = [],
   } = props;
 
+  console.log('physStatus', physStatus);
+
   const emptyParam = {
     countryId: '',
     bukrs: '',
@@ -214,7 +216,7 @@ const Smsrcus = props => {
   const physStatusOptions = physStatus.map(item => {
     return {
       key: item.id,
-      text: item.oper_name_ru,
+      text: item.name,
       value: item.id,
     };
   });
@@ -298,7 +300,6 @@ const Smsrcus = props => {
         <Form>
           <Form.Group widths="equal">
             <Form.Select
-              clearable
               fluid
               label={messages['country']}
               placeholder={messages['country']}

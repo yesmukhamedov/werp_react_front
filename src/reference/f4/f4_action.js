@@ -1116,7 +1116,7 @@ export const f4FetchFilterPlanStatus = param => {
 export function f4FetchPhysStatus() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`marketing/report/dmsclst/defopts`)
+    doGet(`ContractLastState/view`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
