@@ -37,13 +37,13 @@ import {
 } from '../../../utils/outlink';
 import Masters from './Masters';
 
+import TotalCountsTable from '../../../utils/TotalCountsTable';
+
 const Smappl = props => {
   const {
     companyPosition = [],
     intl: { messages },
     branchOptions,
-    tovarCategorys,
-
     fetchAppStatus,
     appStatus,
     fetchAppType,
@@ -53,9 +53,11 @@ const Smappl = props => {
     fetchClearAppList,
     fetchAppListSearchParam,
     category,
+    appList,
   } = props;
 
-  console.log('category', category);
+  console.log('appList', appList);
+
   const [error, setError] = useState([]);
   const language = localStorage.getItem('language');
   const [applicationStatus, setApplicationStatus] = useState([]);
@@ -82,7 +84,6 @@ const Smappl = props => {
     };
   });
 
-  // modal useStates
   const allColumns = [
     {
       Header: `id`,
@@ -194,7 +195,6 @@ const Smappl = props => {
             total = total + item._original.serviceTotalSum;
           }
         });
-        console.log('total', total);
         return <div style={{ textAlign: 'center' }}>Итого:{total}</div>;
       },
       show: true,
@@ -444,7 +444,7 @@ const Smappl = props => {
           }}
         />
       </Segment>
-
+      <TotalCountsTable count={appList.totalElements} />
       <ServiceRequestTable
         turnOnReactFetch={turnOnReactFetch}
         searchParams={search}
