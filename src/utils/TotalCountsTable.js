@@ -1,8 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Segment } from 'semantic-ui-react';
 
 const TotalCountsTable = props => {
-  return <div>skjdh</div>;
+  const { count } = props;
+  return (
+    <Segment>
+      <h5>
+        {`Общее количество: 
+    ${count ? count : 0}`}
+      </h5>
+    </Segment>
+  );
 };
 
 export default TotalCountsTable;

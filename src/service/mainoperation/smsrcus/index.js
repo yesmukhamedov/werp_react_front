@@ -26,6 +26,7 @@ import {
 } from '../../../reference/f4/f4_action';
 
 import { fetchSmsrcusList } from './smsrcusAction';
+import TotalCountsTable from '../../../utils/TotalCountsTable';
 
 const Smsrcus = props => {
   const {
@@ -419,14 +420,10 @@ const Smsrcus = props => {
           </Form.Group>
           <OutputErrors errors={error} />
         </Form>
-      </Segment>{' '}
-      <Divider />
-      <Segment>
-        <h5>
-          {`Общее количество: 
-          ${smsrcusData.totalElements ? smsrcusData.totalElements : 0}`}
-        </h5>
       </Segment>
+      <Divider />
+
+      <TotalCountsTable count={smsrcusData.totalElements} />
       <ReactTableServerSideWrapper
         data={smsrcusData ? smsrcusData.data : []}
         columns={columns}
