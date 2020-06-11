@@ -268,8 +268,6 @@ export function fetchDynObjService(url, params) {
   };
 }
 export function fetchSmsetct(searchParams, searchArray) {
-  console.log('searchParams', searchParams);
-  console.log('searchArray', searchArray);
   let queryString = '';
   if (searchArray !== undefined) {
     queryString = Object.keys(searchArray)

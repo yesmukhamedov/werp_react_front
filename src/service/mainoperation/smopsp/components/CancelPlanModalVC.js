@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Modal, Icon, Button, Form, TextArea, Input } from 'semantic-ui-react';
-import { postToCancelPlan } from '../smopccocAction';
+import { Modal, Icon, Button, Form, TextArea } from 'semantic-ui-react';
+import { postToCancelPlanVC } from '../smopspAction';
 
-function CancelPlanModal(props) {
+function CancelPlanModalVC(props) {
   const emptyData = {
     description: '',
   };
   const [data, setData] = useState({ ...emptyData });
   const [errors, setErrors] = useState({});
 
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-  const language = localStorage.getItem('language');
   const {
     intl: { messages },
     planId,
@@ -23,7 +21,7 @@ function CancelPlanModal(props) {
   const handleSubmit = () => {
     let errs = validate();
     if (Object.keys(errs).length === 0) {
-      props.postToCancelPlan({
+      props.postToCancelPlanVC({
         cancelReasonText: data.description,
         id: planId,
       });
@@ -95,5 +93,5 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
-  postToCancelPlan,
-})(injectIntl(CancelPlanModal));
+  postToCancelPlanVC,
+})(injectIntl(CancelPlanModalVC));

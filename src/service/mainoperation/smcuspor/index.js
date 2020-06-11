@@ -620,7 +620,14 @@ function Smcuspor(props) {
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
                     <Table.Cell width="3" verticalAlign="bottom">
-                      <ExportExcel data={crmHistoryAll} />
+                      <ExportExcel
+                        crmHistoryAll={crmHistoryAll}
+                        crmHistoryApp={crmHistoryApp}
+                        crmHistoryCall={crmHistoryCall}
+                        crmHistoryServ={crmHistoryServ}
+                        tabs={history.reactColumns}
+                        initValue={crmHistoryAll}
+                      />
                     </Table.Cell>
                   </Table.Row>
                 </Table.Body>

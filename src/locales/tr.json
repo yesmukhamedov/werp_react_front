@@ -851,5 +851,7 @@
   "cartridge_replacement_distribution": "Cartridge replacement distribution list",
   "phone_type": "Phone type",
   "admin": "Admin",
-  "export": "Export"
+  "export": "Export",
+  "execute": "Execute",
+  "urgent": "Urgent"
 }

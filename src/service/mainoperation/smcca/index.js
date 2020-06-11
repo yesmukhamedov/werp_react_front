@@ -7,7 +7,6 @@ import {
   Table,
   Input,
   Button,
-  Message,
   Checkbox,
   Form,
   TextArea,
@@ -32,13 +31,14 @@ import './smcca.css';
 function Smcca(props) {
   const emptyRequest = {
     servAppType: '',
-    callDirection: '',
+    callDirectionId: '',
     description: '',
     description2: '',
     callStatusId: '',
   };
   const [request, setRequest] = useState({ ...emptyRequest });
   const [scheduleCall, setScheduleCall] = useState(false);
+  const [urgencyLevel, setUrgencyLevel] = useState(false);
   const [callDate, setCallDate] = useState(moment(new Date()));
   const [callAppData, setCallAppDate] = useState(moment(new Date()));
   const [error, setError] = useState([]);
@@ -47,12 +47,12 @@ function Smcca(props) {
   const contractNumber = url.slice(url.indexOf('=') + 1);
   const userName = localStorage.getItem('username');
   const lang = localStorage.getItem('language');
-  const callD = localStorage.getItem('callDirection');
+  const callD = localStorage.getItem('callDirectionId');
   const scheduleCallToggle = localStorage.getItem('scheduleCall');
   const bool = scheduleCallToggle === 'true';
 
   useEffect(() => {
-    setRequest({ ...request, callDirection: Number.parseInt(callD, 10) });
+    setRequest({ ...request, callDirectionId: Number.parseInt(callD, 10) });
     setScheduleCall(bool);
   }, []);
   useEffect(() => {
@@ -87,6 +87,8 @@ function Smcca(props) {
     f5MtLeft,
   } = state;
 
+  console.log(props.location);
+
   const onInputChange = (o, fieldName) => {
     setRequest(prev => {
       const varRequest = { ...prev };
@@ -94,8 +96,8 @@ function Smcca(props) {
         case 'servAppType':
           varRequest.servAppType = o.value;
           break;
-        case 'callDirection':
-          varRequest.callDirection = Number.parseInt(o.value, 10);
+        case 'callDirectionId':
+          varRequest.callDirectionId = Number.parseInt(o.value, 10);
           localStorage.setItem(fieldName, o.value);
           break;
         case 'description':
@@ -120,7 +122,7 @@ function Smcca(props) {
 
     const {
       servAppType,
-      callDirection,
+      callDirectionId,
       description,
       description2,
       callStatusId,
@@ -136,22 +138,25 @@ function Smcca(props) {
       props.postSmccaCreateApp(
         {
           callRegister: scheduleCall,
-          servCrmHistoryDto: {
-            callDirection,
+          serviceCrmHistoryDto: {
+            callDirectionId,
             info: description2,
             callStatusId,
             crmHistoryDate,
             tovarSn,
             contractId: Number.parseInt(contractNumber, 10),
           },
-          serviceApplicationSingleRowDto: {
-            appType: servAppType,
+          serviceApplicationDto: {
+            applicationTypeId: servAppType,
             branchId,
-            bukrs,
+            bukrsId: bukrs,
             contractNumber: Number.parseInt(contractNumber, 10),
             info: description,
             customerId,
             tovarSn,
+            applicationDate:
+              callAppData === null ? null : callAppData.format('YYYY-MM-DD'),
+            urgencyLevel,
           },
         },
         () => {
@@ -227,18 +232,34 @@ function Smcca(props) {
                 <Table.Row>
                   <Table.Cell>{messages['Application_Date']} </Table.Cell>
                   <Table.Cell>
-                    <Input>
-                      <DatePicker
-                        autoComplete="off"
-                        deteFormat="DD/MM/YYYY"
-                        selected={callDate}
-                        dropdownMode="select"
-                        locale={lang}
-                        showMonthDropDown
-                        showYearDropDown
-                        onChange={date => setCallAppDate(date)}
-                      />
-                    </Input>
+                    <Table>
+                      <Table.Body>
+                        <Table.Row>
+                          <Table.Cell>
+                            <Input>
+                              <DatePicker
+                                autoComplete="off"
+                                deteFormat="DD/MM/YYYY"
+                                selected={callAppData}
+                                dropdownMode="select"
+                                locale={lang}
+                                showMonthDropDown
+                                showYearDropDown
+                                onChange={date => setCallAppDate(date)}
+                              />
+                            </Input>
+                          </Table.Cell>
+                          <Table.Cell>
+                            <Checkbox
+                              label={messages['urgent']}
+                              onChange={(e, o) => {
+                                setUrgencyLevel(o.checked);
+                              }}
+                            />
+                          </Table.Cell>
+                        </Table.Row>
+                      </Table.Body>
+                    </Table>
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
@@ -417,7 +438,7 @@ function Smcca(props) {
                               value="1"
                               checked={Number.parseInt(callD, 10) === 1}
                               onChange={(e, o) =>
-                                onInputChange(o, 'callDirection')
+                                onInputChange(o, 'callDirectionId')
                               }
                               disabled={!scheduleCall}
                             />
@@ -430,7 +451,7 @@ function Smcca(props) {
                               value="2"
                               checked={Number.parseInt(callD, 10) === 2}
                               onChange={(e, o) =>
-                                onInputChange(o, 'callDirection')
+                                onInputChange(o, 'callDirectionId')
                               }
                               disabled={!scheduleCall}
                             />

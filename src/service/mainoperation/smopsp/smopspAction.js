@@ -17,6 +17,8 @@ export const FETCH_ASSIGNED_CALLS = 'FETCH_ASSIGNED_CALLS';
 //Мои заявки
 export const FETCH_MY_APPLICATION = 'FETCH_MY_APPLICATION';
 
+export const POST_TO_CANCEL_PLAN_VC = 'POST_TO_CANCEL_PLAN_VC';
+
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 
@@ -87,6 +89,28 @@ export const fetchMyApplication = param => {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_MY_APPLICATION,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+
+//Отмена заявки
+export const postToCancelPlanVC = param => {
+  let queryString = Object.keys(param)
+    .map(key => key + '=' + param[key])
+    .join('&');
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost(`smopsp/toCancelPlan?${queryString}`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: POST_TO_CANCEL_PLAN_VC,
           payload: data,
         });
       })

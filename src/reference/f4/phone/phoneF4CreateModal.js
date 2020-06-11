@@ -63,9 +63,10 @@ function PhoneF4CreateModal(props) {
         {
           customerId,
           description,
-          phone,
+          phone: `+${phone}`,
           typeId,
         },
+        country.countryId,
         () => props.f4FetchPhone(),
       );
       setErrors(errors);
@@ -92,6 +93,8 @@ function PhoneF4CreateModal(props) {
     }
     return errors;
   };
+
+  console.log(country);
 
   const close = () => {
     props.onCloseCreatePhoneF4(false);

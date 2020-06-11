@@ -850,5 +850,7 @@
   "cartridge_replacement_distribution": "Распределение списка замена картриджа",
   "phone_type": "Тип телефона",
   "admin": "Админ",
-  "export": "Экспортировать"
+  "export": "Экспортировать",
+  "execute": "Выполнить",
+  "urgent": "Срочно"
 }

@@ -839,10 +839,10 @@ export function f4FetchPhoneType() {
   };
 }
 
-export function f4PostPhone(getData, fetchPhone) {
+export function f4PostPhone(getData, countryId, fetchPhone) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost('phone/create', getData)
+    doPost(`phone/create?countryId=${countryId}`, getData)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

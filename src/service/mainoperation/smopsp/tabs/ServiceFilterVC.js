@@ -10,6 +10,7 @@ import { fetchServiceTypeId } from '../../smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from './../../../../utils/ModalColumns';
+import CancelPlanModalVC from '../components/CancelPlanModalVC';
 import { Link } from 'react-router-dom';
 
 const ServiceFilterVC = props => {
@@ -38,12 +39,14 @@ const ServiceFilterVC = props => {
     crmCategory: '',
     serviceDateType: '',
     warranty: '',
+    planId: '',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
-  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const [error, setError] = useState([]);
+  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
+  const [cancelPlanModal, setCancelPlanModal] = useState(false);
 
   useEffect(() => {
     let servBrOptions = branches
@@ -168,6 +171,28 @@ const ServiceFilterVC = props => {
       },
       checked: true,
     },
+    {
+      Header: messages['cancel'],
+      accessor: '17',
+      filterable: false,
+
+      Cell: original => {
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <Icon
+              name="cancel"
+              color="red"
+              onClick={() => {
+                setCancelPlanModal(true);
+                setParam({ ...param, planId: original.row.id });
+              }}
+              style={{ cursor: 'pointer' }}
+            />
+          </div>
+        );
+      },
+      checked: true,
+    },
   ];
 
   const handleClickApply = () => {
@@ -242,6 +267,11 @@ const ServiceFilterVC = props => {
 
   return (
     <Container fluid className="containerMargin">
+      <CancelPlanModalVC
+        open={cancelPlanModal}
+        planId={param.planId}
+        onClosePlanModal={bool => setCancelPlanModal(bool)}
+      />
       <Form>
         <Form.Group widths="equal">
           <Form.Select

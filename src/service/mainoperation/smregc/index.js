@@ -90,7 +90,7 @@ function Smregc(props) {
   };
 
   const handleSubmit = () => {
-    validate();
+    let err = validate();
     const crmHistoryDate = callDate.format('DD.MM.YYYY HH:mm:ss');
     const crmScheduleDate = appointDate.format('DD.MM.YYYY HH:mm:ss');
     const {
@@ -101,13 +101,7 @@ function Smregc(props) {
       serviceFilterVCPlanId,
     } = props.location.state;
     const { callDirectionId, callStatusId, description, description2 } = call;
-    if (
-      callDirectionId !== '' &&
-      !Number.isNaN(callDirectionId) &&
-      callStatusId !== '' &&
-      description !== '' &&
-      description2 !== ''
-    ) {
+    if (err.length === 0) {
       props.postSmregcCreateCall(
         {
           callDirectionId,
@@ -161,9 +155,11 @@ function Smregc(props) {
       errors.push(errorTableText(169));
     }
     if (scheduleCall && call.description2 === '') {
+      console.log('truee');
       errors.push(errorTableText(169));
     }
     setError(() => errors);
+    return errors;
   };
 
   const servCrmCallOpt = servCrmCallStatus.map(item => {

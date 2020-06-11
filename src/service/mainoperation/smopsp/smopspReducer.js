@@ -3,6 +3,7 @@ import {
   FETCH_RESCHEDULED_APPLICATION,
   FETCH_ASSIGNED_CALLS,
   FETCH_MY_APPLICATION,
+  POST_TO_CANCEL_PLAN_VC,
 } from './smopspAction';
 
 const INITIAL_STATE = {
@@ -10,6 +11,7 @@ const INITIAL_STATE = {
   rescheduledApp: {},
   assignedCalls: {},
   myApplication: {},
+  toCancelPlanVc: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -35,6 +37,12 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         myApplication: { ...action.payload.data },
+      };
+
+    case POST_TO_CANCEL_PLAN_VC:
+      return {
+        ...state,
+        toCancelPlanVc: [],
       };
 
     default:
