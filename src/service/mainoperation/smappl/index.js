@@ -56,8 +56,6 @@ const Smappl = props => {
     appList,
   } = props;
 
-  console.log('appList', appList);
-
   const [error, setError] = useState([]);
   const language = localStorage.getItem('language');
   const [applicationStatus, setApplicationStatus] = useState([]);

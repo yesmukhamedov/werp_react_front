@@ -4,6 +4,7 @@ import {
   f4fetchCategory,
   f4FetchBranches,
   f4FetchServiceAppStatus,
+  f4FetchCountryList,
 } from '../../../reference/f4/f4_action';
 import { fetchSrlsm, fetchServiceTypeList } from './srlsmAction';
 import { injectIntl } from 'react-intl';
@@ -42,13 +43,11 @@ const Srlsm = props => {
     srlsmListSum = {},
     serviceTypeList = [],
     srlsmTotalPages,
+    countryList = [],
   } = props;
 
-  console.log('srlsmListData', srlsmListData);
-  console.log('srlsmListSum', srlsmListSum);
-  console.log('srlsmTotalPages', srlsmTotalPages);
-
   const emptyParam = {
+    countryId: '',
     bukrs: '',
     branchId: '',
     categoryId: '',
@@ -66,7 +65,16 @@ const Srlsm = props => {
     props.f4FetchBranches();
     props.f4FetchServiceAppStatus();
     props.fetchServiceTypeList();
+    props.f4FetchCountryList();
   }, []);
+
+  const countryOptions = countryList.map(item => {
+    return {
+      key: item.countryId,
+      text: item.country,
+      value: item.countryId,
+    };
+  });
 
   const tovarCategoryOptions = category.map(item => {
     return {
@@ -94,33 +102,50 @@ const Srlsm = props => {
   const [serBranchOptions, setSerBranchOptions] = useState([]);
 
   useEffect(() => {
-    const getBranchByBukrs = (branches, bukrs) => {
-      let br = branches.filter(item => item.bukrs == bukrs);
-
-      let brSer = br.filter(
+    let servBrOptions = branches
+      .filter(
         item =>
           item.business_area_id == 5 ||
           item.business_area_id == 6 ||
           item.business_area_id == 9,
-      );
-
-      let serBranchOpt = brSer.map(item => {
+      )
+      .map(item => {
         return {
           key: item.branch_id,
           text: item.text45,
           value: item.branch_id,
+          country_id: item.country_id,
+          bukrs: item.bukrs,
         };
       });
-      return serBranchOpt;
-    };
+    if (param.countryId !== '' && param.bukrs !== '') {
+      let servBranchOptions = servBrOptions
+        .filter(item => item.country_id === param.countryId)
+        .filter(item => item.bukrs === param.bukrs);
+      setSerBranchOptions([...servBranchOptions]);
+    } else if (param.countryId !== '' && param.bukrs === '') {
+      let servBranchOptions = servBrOptions.filter(
+        item => item.country_id === param.countryId,
+      );
+      setSerBranchOptions([...servBranchOptions]);
+    } else if (param.countryId === '' && param.bukrs !== '') {
+      let servBranchOptions = servBrOptions.filter(
+        item => item.bukrs === param.bukrs,
+      );
 
-    setSerBranchOptions(getBranchByBukrs(branches, param.bukrs));
-  }, [param.bukrs]);
+      setSerBranchOptions([...servBranchOptions]);
+    } else if (param.countryId === '' && param.bukrs === '') {
+      setSerBranchOptions([...servBrOptions]);
+    }
+  }, [branches, param.countryId, param.bukrs]);
 
   const onInputChange = (o, fieldName) => {
     setParam(prev => {
       const varSrls = { ...prev };
       switch (fieldName) {
+        case 'countryId':
+          varSrls.countryId = o.value;
+          break;
         case 'bukrs':
           varSrls.bukrs = o.value;
           break;
@@ -272,6 +297,14 @@ const Srlsm = props => {
       </Segment>
       <Form>
         <Form.Group widths="equal">
+          <Form.Select
+            fluid
+            label="Страна"
+            placeholder="Страна"
+            options={countryOptions}
+            onChange={(e, o) => onInputChange(o, 'countryId')}
+            className="alignBottom"
+          />
           <Form.Select
             fluid
             label="Компания"
@@ -427,6 +460,7 @@ const Srlsm = props => {
 
 function mapStateToProps(state) {
   return {
+    countryList: state.f4.countryList,
     language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
     category: state.f4.category,
@@ -446,4 +480,5 @@ export default connect(mapStateToProps, {
   f4FetchServiceAppStatus,
   fetchSrlsm,
   fetchServiceTypeList,
+  f4FetchCountryList,
 })(injectIntl(Srlsm));
