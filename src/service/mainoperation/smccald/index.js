@@ -9,17 +9,22 @@ import {
   Button,
   Form,
   TextArea,
+  Checkbox,
 } from 'semantic-ui-react';
 import { fetchServAppType } from '../../reference/srefAction';
-import { postSmccaldCreateApp } from '../../serviceAction';
 import { f4ClearAnyObject } from '../../../reference/f4/f4_action';
 
 import {
   fetchSmccaldGetProductList,
   fetchCurrentStaff,
+  postSmccaldCreateApp,
 } from './smccaldActions';
 import OutputErrors from '../../../general/error/outputErrors';
-import { errorTableText } from '../../../utils/helpers';
+import {
+  errorTableText,
+  stringYYYYMMDDHHMMSSToMoment,
+  momentToStringYYYYMMDDHHMMSS,
+} from '../../../utils/helpers';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'moment/locale/ru';
@@ -37,9 +42,8 @@ function Smccald(props) {
     smccaldProductList = [],
     currentStaff = {},
     intl: { messages },
+    smccaldCreate,
   } = props;
-
-  console.log('currentStaff', currentStaff);
 
   const emptyParam = {
     addressId: null,
@@ -75,7 +79,7 @@ function Smccald(props) {
     installmentDate: '',
     masterFIO: '',
     masterId: null,
-    matnrId: '',
+    matnrId: null,
     matnrName: '',
     operatorFIO: '',
     operatorId: null,
@@ -89,13 +93,14 @@ function Smccald(props) {
     tovarSn: '',
     updatedBy: null,
     updatedDate: '',
+    urgencyLevel: false,
   };
 
   const lang = localStorage.getItem('language');
 
   const [param, setParam] = useState({ ...emptyParam });
+
   const [error, setError] = useState([]);
-  const [requestTypeOpts, setRequestTypeOpts] = useState([]);
 
   const onInputChange = (o, fieldName) => {
     switch (fieldName) {
@@ -139,7 +144,7 @@ function Smccald(props) {
       operatorId: currentStaff.staffId,
       operatorFIO: currentStaff.fullName,
     });
-  }, [currentStaff]);
+  }, []);
 
   useEffect(() => {
     props.fetchCurrentStaff();
@@ -217,6 +222,7 @@ function Smccald(props) {
       props.postSmccaldCreateApp({
         ...param,
       });
+      clearState();
     }
   };
 
@@ -235,7 +241,6 @@ function Smccald(props) {
     return out;
   };
 
-  console.log('param', param);
   return (
     <Grid centered>
       <Grid.Row>
@@ -248,6 +253,7 @@ function Smccald(props) {
                   <Table.Cell>{messages['bukrs']}</Table.Cell>
                   <Table.Cell>
                     <Dropdown
+                      required
                       placeholder={messages['bukrs']}
                       fluid
                       selection
@@ -300,6 +306,54 @@ function Smccald(props) {
                       value={param.applicationTypeId}
                       onChange={(e, o) => onInputChange(o, 'applicationTypeId')}
                     />
+                  </Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>{messages['Application_Date']} </Table.Cell>
+                  <Table.Cell>
+                    <Table>
+                      <Table.Body>
+                        <Table.Row>
+                          <Table.Cell>
+                            <Input>
+                              <DatePicker
+                                placeholder="Дата"
+                                autoComplete="off"
+                                deteFormat="YYYY-MM-DD HH:mm:ss"
+                                selected={
+                                  param.applicationDate === ''
+                                    ? ''
+                                    : stringYYYYMMDDHHMMSSToMoment(
+                                        param.applicationDate,
+                                      )
+                                }
+                                dropdownMode="select"
+                                locale={lang}
+                                showMonthDropDown
+                                showYearDropDown
+                                onChange={date =>
+                                  setParam({
+                                    ...param,
+                                    applicationDate: momentToStringYYYYMMDDHHMMSS(
+                                      date,
+                                    ),
+                                  })
+                                }
+                              />
+                            </Input>
+                          </Table.Cell>
+                          <Table.Cell>
+                            <Checkbox
+                              checked={param.urgencyLevel}
+                              label={messages['urgent']}
+                              onChange={(e, o) => {
+                                setParam({ ...param, urgencyLevel: o.checked });
+                              }}
+                            />
+                          </Table.Cell>
+                        </Table.Row>
+                      </Table.Body>
+                    </Table>
                   </Table.Cell>
                 </Table.Row>
                 <Table.Row>
@@ -425,6 +479,7 @@ function mapStateToProps(state) {
     servAppType: state.srefReducer.servAppType,
     smccaldProductList: state.smccaldReducer.smccaldProductList,
     currentStaff: state.smccaldReducer.currentStaff,
+    smccaldCreate: state.smccaldReducer.smccaldCreate,
   };
 }
 

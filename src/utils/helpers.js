@@ -226,8 +226,16 @@ export function monthsArrayToOptions(months) {
 export function stringYYYYMMDDToMoment(stringVal) {
   return stringVal ? moment(stringVal, 'YYYY-MM-DD') : moment();
 }
+
 export function momentToStringYYYYMMDD(momentVal) {
   return momentVal ? momentVal.format('YYYY-MM-DD') : '';
+}
+export function momentToStringYYYYMMDDHHMMSS(momentVal) {
+  return momentVal ? momentVal.format('YYYY-MM-DD HH:mm:ss') : '';
+}
+
+export function stringYYYYMMDDHHMMSSToMoment(stringVal) {
+  return stringVal ? moment(stringVal, 'YYYY-MM-DD HH:mm:ss') : moment();
 }
 
 export function excelDownload(

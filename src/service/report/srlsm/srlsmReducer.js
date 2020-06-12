@@ -10,7 +10,7 @@ export default function(state = INITIAL_STATE, action) {
       console.log('REDUCE SRLSM', action.data.data);
       return {
         ...state,
-        srlsmListData: [...action.data.data.listData.data],
+        srlsmListData: { ...action.data.data.listData },
         srlsmListSum: { ...action.data.data.listSum },
         srlsmTotalPages: action.data.data.listData.totalPages,
       };

@@ -24,11 +24,13 @@ import ModalColumns from './../../../utils/ModalColumns';
 import {
   stringYYYYMMDDToMoment,
   momentToStringYYYYMMDD,
+  moneyFormat,
 } from '../../../utils/helpers';
 import '../../service.css';
-import { LinkToSmcuspor } from '../../../utils/outlink';
-import ReactTableWrapper from './../../../utils/ReactTableWrapper';
+import { LinkToSmcuspor, LinkToSmvs } from '../../../utils/outlink';
 import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
+import TotalCountsTable from '../../../utils/TotalCountsTable';
+import moment from 'moment';
 
 const Srlsm = props => {
   const {
@@ -39,7 +41,7 @@ const Srlsm = props => {
     branches = [],
     serviceAppStatus = [],
     serviceType = [],
-    srlsmListData = [],
+    srlsmListData = {},
     srlsmListSum = {},
     serviceTypeList = [],
     srlsmTotalPages,
@@ -58,6 +60,7 @@ const Srlsm = props => {
   };
 
   const [param, setParam] = useState({ ...emptyParam });
+  const [currency, setCurrency] = useState('');
 
   useEffect(() => {
     props.f4FetchServiceAppStatus();
@@ -145,6 +148,7 @@ const Srlsm = props => {
       switch (fieldName) {
         case 'countryId':
           varSrls.countryId = o.value;
+
           break;
         case 'bukrs':
           varSrls.bukrs = o.value;
@@ -231,24 +235,59 @@ const Srlsm = props => {
       accessor: 'sumTotal',
       checked: true,
       filterable: false,
+      Cell: original => (
+        <div style={{ textAlign: 'right' }}>
+          {moneyFormat(original.row.sumTotal)}
+        </div>
+      ),
     },
     {
       Header: 'Оплачено',
       accessor: 'paid',
       checked: true,
       filterable: false,
+      Cell: original => (
+        <div style={{ textAlign: 'right' }}>
+          {moneyFormat(original.row.paid)}
+        </div>
+      ),
     },
     {
       Header: 'Остаток',
       accessor: 'residue',
       checked: true,
       filterable: false,
+      Cell: original => (
+        <div style={{ textAlign: 'right' }}>
+          {moneyFormat(original.row.residue)}
+        </div>
+      ),
     },
     {
-      Header: 'Сервис №',
-      accessor: 'id',
+      Header: 'Валюта',
+      accessor: 'currencyId',
       checked: true,
       filterable: false,
+      width: 70,
+    },
+    {
+      Header: 'Принял',
+      accessor: 'prinyal',
+      checked: true,
+      filterable: false,
+    },
+
+    {
+      Header: `${messages['service']} №`,
+
+      accessor: 'id',
+      show: true,
+      filterable: false,
+      Cell: row => (
+        <div style={{ textAlign: 'center' }}>
+          <LinkToSmvs serviceNumber={row.value} />
+        </div>
+      ),
     },
     {
       Header: 'История клиента',
@@ -281,7 +320,6 @@ const Srlsm = props => {
   const finishColumns = data => {
     setColumns([...data]);
   };
-
   return (
     <Container
       fluid
@@ -360,14 +398,17 @@ const Srlsm = props => {
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.dateOpenAt)}
+                selected={
+                  param.dateOpenAt === ''
+                    ? ''
+                    : stringYYYYMMDDToMoment(param.dateOpenAt)
+                }
                 onChange={date =>
                   setParam({
                     ...param,
                     dateOpenAt: momentToStringYYYYMMDD(date),
                   })
                 }
-                maxDate={new Date()}
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
@@ -379,14 +420,17 @@ const Srlsm = props => {
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.dateOpenTo)}
+                selected={
+                  param.dateOpenTo === ''
+                    ? ''
+                    : stringYYYYMMDDToMoment(param.dateOpenTo)
+                }
                 onChange={date =>
                   setParam({
                     ...param,
                     dateOpenTo: momentToStringYYYYMMDD(date),
                   })
                 }
-                maxDate={new Date()}
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
@@ -409,41 +453,78 @@ const Srlsm = props => {
         </Form.Group>
       </Form>
 
-      <Divider />
-      <Table>
+      <Table celled>
         <Table.Body>
           <Table.Row>
             <Table.Cell>Общая сумма</Table.Cell>
             <Table.Cell>
-              <Input readOnly value={srlsmListSum.sumTotal} />
+              <Input
+                readOnly
+                value={moneyFormat(
+                  srlsmListSum.sumTotal === undefined ||
+                    srlsmListSum.sumTotal === null
+                    ? ''
+                    : srlsmListSum.sumTotal,
+                )}
+              />
             </Table.Cell>
             <Table.Cell>Оплачено</Table.Cell>
             <Table.Cell>
-              <Input readOnly value={srlsmListSum.paid} />
+              <Input
+                readOnly
+                value={moneyFormat(
+                  srlsmListSum.paid === undefined || srlsmListSum.paid === null
+                    ? ''
+                    : srlsmListSum.paid,
+                )}
+              />
             </Table.Cell>
             <Table.Cell>Остаток</Table.Cell>
             <Table.Cell>
-              <Input readOnly value={srlsmListSum.paymentDue} />
+              <Input
+                readOnly
+                value={moneyFormat(
+                  srlsmListSum.paymentDue === null ||
+                    srlsmListSum.paymentDue === undefined
+                    ? ''
+                    : srlsmListSum.paymentDue,
+                )}
+              />
             </Table.Cell>
           </Table.Row>
           <Table.Row>
             <Table.Cell>Премия мастера</Table.Cell>
             <Table.Cell>
-              <Input readOnly value={srlsmListSum.masterPremium} />
+              <Input
+                readOnly
+                value={moneyFormat(
+                  srlsmListSum.masterPremium === null ||
+                    srlsmListSum.masterPremium === undefined
+                    ? ''
+                    : srlsmListSum.masterPremium,
+                )}
+              />
             </Table.Cell>
             <Table.Cell>Премия оператора</Table.Cell>
             <Table.Cell>
-              <Input readOnly value={srlsmListSum.operatorPremium} />
+              <Input
+                readOnly
+                value={moneyFormat(
+                  srlsmListSum.operatorPremium === null ||
+                    srlsmListSum.operatorPremium === undefined
+                    ? ''
+                    : srlsmListSum.operatorPremium,
+                )}
+              />
             </Table.Cell>
             <Table.Cell></Table.Cell>
             <Table.Cell></Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table>
-      <Divider />
-
+      <TotalCountsTable count={srlsmListData.totalElements} />
       <ReactTableServerSideWrapper
-        data={srlsmListData}
+        data={srlsmListData.data}
         columns={columns}
         filterable={true}
         defaultPageSize={10}

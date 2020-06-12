@@ -752,25 +752,6 @@ export function fetchContractStatus() {
   };
 }
 
-export function postSmccaldCreateApp(application) {
-  return function(dispatch) {
-    dispatch(modifyLoader(true));
-    doPost(`smccald/create`, application)
-      .then(({ data }) => {
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: POST_SMCCALD_CREATE_APP,
-          payload: data,
-        });
-        dispatch(notify('success', errorTableText(101), errorTableText(104)));
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
-}
-
 export function fetchSmecam(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
