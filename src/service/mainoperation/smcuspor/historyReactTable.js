@@ -40,10 +40,19 @@ function HistoryReactTable(props) {
     });
   }, [crmHistoryApp, crmHistoryCall, crmHistoryServ]);
 
+  const dateFormat = data.map(item => {
+    return {
+      ...item,
+      crmHistoryDateYYYY: moment(item.crmHistoryDate).format(
+        'YYYY-MM-DD HH:mm:ss',
+      ),
+    };
+  });
+
   if (columns === 'all') {
     return (
       <ReactTableWrapper
-        data={data ? data : initValue}
+        data={dateFormat ? dateFormat : initValue}
         columns={[
           {
             Header: () => (
@@ -51,14 +60,9 @@ function HistoryReactTable(props) {
             ),
             accessor: 'crmHistoryDate',
             filterMethod: (filter, rows) =>
-              matchSorter(rows, filter.value, { keys: ['crmHistoryDate'] }),
+              matchSorter(rows, filter.value, { keys: ['crmHistoryDateYYYY'] }),
             filterAll: true,
-            Cell: row => (
-              <div style={{ textAlign: 'center' }}>
-                {formatDMYMS(row.original.crmHistoryDate)}
-              </div>
-            ),
-            // render: row => <span>{moment.utc(row.value).format('YYYY/MM//DD')}</span>,
+            Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
             Header: () => (
