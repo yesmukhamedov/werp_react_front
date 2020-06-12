@@ -182,7 +182,7 @@ const Smappl = props => {
     {
       Header: `${messages['service']} №`,
 
-      accessor: 'id',
+      accessor: 'serviceId',
       Footer: original => {
         let total = 0;
         original.data.map((item, index) => {
