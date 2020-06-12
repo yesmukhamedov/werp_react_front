@@ -859,9 +859,9 @@ export function f4PostPhone(getData, countryId, fetchPhone) {
   };
 }
 
-export function f4UpdatePhone(data, fetchPhone) {
+export function f4UpdatePhone(data, countryId, fetchPhone) {
   return function(dispatch) {
-    doPut('phone/update', data)
+    doPut(`phone/update?countryId=${countryId}`, data)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

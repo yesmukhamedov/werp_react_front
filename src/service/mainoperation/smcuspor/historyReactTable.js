@@ -2,6 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { Popup } from 'semantic-ui-react';
+import moment from 'moment';
+import matchSorter, { rankings } from 'match-sorter';
+import { formatDMYMS } from '../../../utils/helpers';
 
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 
@@ -47,7 +50,15 @@ function HistoryReactTable(props) {
               <div style={{ textAlign: 'center' }}>{messages['date']}</div>
             ),
             accessor: 'crmHistoryDate',
-            Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+            filterMethod: (filter, rows) =>
+              matchSorter(rows, filter.value, { keys: ['crmHistoryDate'] }),
+            filterAll: true,
+            Cell: row => (
+              <div style={{ textAlign: 'center' }}>
+                {formatDMYMS(row.original.crmHistoryDate)}
+              </div>
+            ),
+            // render: row => <span>{moment.utc(row.value).format('YYYY/MM//DD')}</span>,
           },
           {
             Header: () => (

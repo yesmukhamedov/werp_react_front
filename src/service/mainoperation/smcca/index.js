@@ -36,6 +36,85 @@ function Smcca(props) {
     description2: '',
     callStatusId: '',
   };
+
+  const serviceApplicationDto = {
+    addressId: null,
+    addressName: null,
+    applicantName: null,
+    applicationDate: null,
+    applicationNumber: null,
+    applicationStatusId: null,
+    applicationStatusName: null,
+    applicationTypeId: null,
+    applicationTypeName: null,
+    branchId: null,
+    branchName: null,
+    bukrsId: null,
+    bukrsName: null,
+    contractNumber: null,
+    countryId: null,
+    countryName: null,
+    createdBy: null,
+    customerFIO: null,
+    customerId: null,
+    f1MtLeft: null,
+    f2MtLeft: null,
+    f3MtLeft: null,
+    f4MtLeft: null,
+    f5MtLeft: null,
+    fitterFIO: null,
+    fitterId: null,
+    fullPhone: null,
+    id: null,
+    inPhoneNum: null,
+    info: null,
+    installmentDate: null,
+    masterFIO: null,
+    masterId: null,
+    matnrId: null,
+    matnrName: null,
+    operatorFIO: null,
+    operatorId: null,
+    rescheduledDate: null,
+    serviceDate: null,
+    serviceFilterPlanId: null,
+    serviceFilterVCPlanId: null,
+    serviceId: null,
+    tovarCategoryId: null,
+    tovarCategoryName: null,
+    tovarSn: null,
+    updatedBy: null,
+    updatedDate: null,
+  };
+  const serviceCrmHistoryDto = {
+    actionId: null,
+    actionName: null,
+    applicationId: null,
+    applicationStatusId: null,
+    applicationStatusName: null,
+    applicationTypeId: null,
+    applicationTypeName: null,
+    callDirectionId: null,
+    callDirectionName: null,
+    callStatusId: null,
+    callStatusName: null,
+    contractId: null,
+    contractNumber: null,
+    crmHistoryDate: null,
+    id: null,
+    info: null,
+    masterFIO: null,
+    masterId: null,
+    operatorFIO: null,
+    operatorId: null,
+    serviceCurrencyId: null,
+    serviceCurrencyName: null,
+    serviceId: null,
+    servicePrice: null,
+    serviceTypeName: null,
+    serviceWaers: null,
+    tovarSn: null,
+  };
   const [request, setRequest] = useState({ ...emptyRequest });
   const [scheduleCall, setScheduleCall] = useState(false);
   const [urgencyLevel, setUrgencyLevel] = useState(false);
@@ -64,11 +143,13 @@ function Smcca(props) {
     servAppType,
     servCrmCallStatus,
     intl: { messages },
-    location: { state = {} },
+    location: {
+      state: { clientContract = {} },
+    },
   } = props;
 
   const {
-    bukrs = '',
+    bukrsId = '',
     bukrsName = '',
     branchId = '',
     serviceBranchName = '',
@@ -85,9 +166,7 @@ function Smcca(props) {
     f3MtLeft,
     f4MtLeft,
     f5MtLeft,
-  } = state;
-
-  console.log(props.location);
+  } = clientContract;
 
   const onInputChange = (o, fieldName) => {
     setRequest(prev => {
@@ -131,7 +210,7 @@ function Smcca(props) {
     if (
       servAppType !== '' &&
       branchId !== '' &&
-      bukrs !== '' &&
+      bukrsId !== '' &&
       customerId !== '' &&
       description !== ''
     ) {
@@ -139,6 +218,7 @@ function Smcca(props) {
         {
           callRegister: scheduleCall,
           serviceCrmHistoryDto: {
+            ...serviceCrmHistoryDto,
             callDirectionId,
             info: description2,
             callStatusId,
@@ -147,9 +227,10 @@ function Smcca(props) {
             contractId: Number.parseInt(contractNumber, 10),
           },
           serviceApplicationDto: {
+            ...serviceApplicationDto,
             applicationTypeId: servAppType,
             branchId,
-            bukrsId: bukrs,
+            bukrsId,
             contractNumber: Number.parseInt(contractNumber, 10),
             info: description,
             customerId,

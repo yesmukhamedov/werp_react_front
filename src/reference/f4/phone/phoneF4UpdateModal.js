@@ -68,6 +68,8 @@ function PhoneF4UpdateModal(props) {
     });
   };
 
+  console.log(country);
+
   const handleSubmit = () => {
     let errors = [];
     errors = validate();
@@ -77,10 +79,11 @@ function PhoneF4UpdateModal(props) {
         {
           id,
           typeId,
-          phone,
+          phone: `+${phone}`,
           description,
           customerId,
         },
+        country.countryId,
         () => {
           props.f4FetchPhone();
           props.f4FetchPhoneHistory();
