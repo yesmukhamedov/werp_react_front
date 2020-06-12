@@ -253,6 +253,8 @@ const SearchCustomer = props => {
     setColumns([...data]);
   };
 
+  console.log(getPhysStatus(physStatusOptions, language));
+
   return (
     <Container fluid className="containerMargin">
       <Form>

@@ -22,6 +22,7 @@ import {
   momentToStringYYYYMMDD,
   stringYYYYMMDDToMoment,
 } from '../../../../utils/helpers';
+import { Link } from 'react-router-dom';
 
 const MyApplication = props => {
   const {
@@ -42,8 +43,8 @@ const MyApplication = props => {
     country: '',
     bukrs: '',
     branchId: '',
-    categoryId: '',
-    serviceStatusId: '',
+    tovarCategory: '',
+    applicationStatus: '',
     dateOpenAt: '',
     dateOpenTo: '',
   };
@@ -64,11 +65,13 @@ const MyApplication = props => {
         return {
           style: {
             background:
-              rowInfo && rowInfo.original.urgencyLevel === true ? 'red' : null,
+              rowInfo && rowInfo.original.urgencyLevel === true
+                ? '#cc0000'
+                : null,
             color:
               rowInfo && rowInfo.original.urgencyLevel === true
                 ? 'white'
-                : null,
+                : 'black',
           },
         };
       },
@@ -191,14 +194,16 @@ const MyApplication = props => {
       accessor: '16',
       checked: true,
       filterable: false,
-      Cell: (
-        <div style={{ textAlign: 'center' }}>
-          <Popup
-            content="Просмотр сервис карту"
-            trigger={<Button icon="address card" />}
-          />
-        </div>
-      ),
+      Cell: original => {
+        const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}&filterPlanId=${original.row.id}`;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <Link to={url} target="_blank">
+              <Icon name="address card" color="black" />
+            </Link>
+          </div>
+        );
+      },
     },
   ];
 
@@ -275,11 +280,11 @@ const MyApplication = props => {
         case 'branchId':
           prevParam.branchId = o.value;
           break;
-        case 'categoryId':
-          prevParam.categoryId = o.value;
+        case 'tovarCategory':
+          prevParam.tovarCategory = o.value;
           break;
-        case 'serviceStatusId':
-          prevParam.serviceStatusId =
+        case 'applicationStatus':
+          prevParam.applicationStatus =
             o.value.length > 0 ? o.value.join() : null;
           break;
         default:
@@ -330,7 +335,7 @@ const MyApplication = props => {
             label={messages['category']}
             placeholder={messages['category']}
             options={tovarCategoryOptions}
-            onChange={(e, o) => onInputChange(o, 'categoryId')}
+            onChange={(e, o) => onInputChange(o, 'tovarCategory')}
             className="alignBottom"
           />
 
@@ -338,7 +343,7 @@ const MyApplication = props => {
             label={messages['fin_status']}
             placeholder={messages['fin_status']}
             options={serviceAppStatusOptions}
-            onChange={(e, o) => onInputChange(o, 'serviceStatusId')}
+            onChange={(e, o) => onInputChange(o, 'applicationStatus')}
             className="alignBottom"
             multiple
           />
