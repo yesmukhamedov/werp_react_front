@@ -31,10 +31,7 @@ const Smopccic = props => {
     countryList = [],
     branches = [],
     serviceAppStatus = [],
-    branchOptionsService = {},
   } = props;
-
-  console.log('branchOptionsService', branchOptionsService);
 
   useEffect(() => {
     props.f4FetchCountryList();
@@ -86,7 +83,7 @@ const Smopccic = props => {
             companyOptions={companyOptions}
             countryOptions={countryOptions}
             tovarCategoryOptions={tovarCategoryOptions}
-            branchOptionsService={branchOptionsService}
+            branches={branches}
             finStatusOptions={finStatusOptions}
           />
         </Tab.Pane>
@@ -107,7 +104,7 @@ const Smopccic = props => {
           <MyApplication
             companyOptions={companyOptions}
             countryOptions={countryOptions}
-            branchOptionsService={branchOptionsService}
+            branches={branches}
             tovarCategoryOptions={tovarCategoryOptions}
             serviceAppStatusOptions={serviceAppStatusOptions}
           />
@@ -153,8 +150,6 @@ function mapStateToProps(state) {
     countryList: state.f4.countryList,
     category: state.f4.category,
     branches: state.f4.branches,
-    branchOptionsService: state.userInfo.branchOptionsService,
-
     serviceAppStatus: state.f4.serviceAppStatus,
     contractStatusList: state.f4.contractStatusList,
   };
