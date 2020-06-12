@@ -34,7 +34,6 @@ import CustomerF4Modal from '../../../reference/f4/Customer/customerF4WithCreati
 import StaffF4Modal from '../../../reference/f4/staff/staffF4Modal';
 import AddressF4Modal from '../../../reference/f4/address/addressF4WithCreationPage';
 import MatnrListF4Modal from '../../../marketing/mainoperation/contractAdditionaComponents/matnrListF4';
-import PhoneF4Modal from '../../../reference/f4/phone/phoneF4Modal';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import 'react-table/react-table.css';
@@ -93,8 +92,6 @@ function Smcc(props) {
   const [addressF4ModalOpen, setAddressF4ModalOpen] = useState(false);
   const [contractTypeOpts, setContractTypeOpts] = useState([]);
   const [matnrListF4ModalOpen, setMatnrListF4ModalOpen] = useState(false);
-  const [phoneF4ModalOpen, setPhoneF4ModalOpen] = useState(false);
-  // const [isLoadingMatnrList, setIsLoadingMatnrList] = useState(false);
   const [error, setError] = useState([]);
 
   const {
@@ -467,6 +464,7 @@ function Smcc(props) {
         open={addressF4ModalOpen}
         customerId={contract.customerId}
         customerName={contract.customerName}
+        selectedBranch={contract.selectedBranch}
         onCloseAddressF4={bool => setAddressF4ModalOpen(bool)}
         onAddressSelect={item => onInputChange(item, 'addrServiceId')}
       />
@@ -478,13 +476,6 @@ function Smcc(props) {
         onMatnrSelect={item => onInputChange(item, 'tovarSerial')}
         // isLoadingMatnrList={isLoadingMatnrList}
         matnrList={matnrListView}
-      />
-
-      <PhoneF4Modal
-        open={phoneF4ModalOpen}
-        customerId={contract.customerId}
-        selectedBranch={contract.selectedBranch}
-        onClosePhoneF4={bool => setPhoneF4ModalOpen(bool)}
       />
       <Segment>
         <Form>
@@ -843,20 +834,6 @@ function Smcc(props) {
                             )}
                           </Table.Body>
                         </Table>
-                      </Table.Cell>
-                      <Table.Cell>
-                        <Button
-                          basic
-                          color="blue"
-                          icon
-                          onClick={() => {
-                            if (contract.customerId) {
-                              setPhoneF4ModalOpen(true);
-                            }
-                          }}
-                        >
-                          <Icon name="clone" />
-                        </Button>
                       </Table.Cell>
                     </Table.Row>
                     <Table.Row>

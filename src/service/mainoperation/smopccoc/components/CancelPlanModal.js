@@ -11,11 +11,10 @@ function CancelPlanModal(props) {
   const [data, setData] = useState({ ...emptyData });
   const [errors, setErrors] = useState({});
 
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-  const language = localStorage.getItem('language');
   const {
     intl: { messages },
     planId,
+    handleClickApply,
   } = props;
 
   const onInputChange = event => setData({ description: event.target.value });
@@ -27,6 +26,7 @@ function CancelPlanModal(props) {
         cancelReasonText: data.description,
         id: planId,
       });
+      handleClickApply();
       setData({ description: '' });
       close();
     }

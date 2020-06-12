@@ -4,7 +4,6 @@ import { injectIntl } from 'react-intl';
 import { Popup } from 'semantic-ui-react';
 import moment from 'moment';
 import matchSorter, { rankings } from 'match-sorter';
-import { formatDMYMS } from '../../../utils/helpers';
 
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 
@@ -43,8 +42,8 @@ function HistoryReactTable(props) {
   const dateFormat = data.map(item => {
     return {
       ...item,
-      crmHistoryDateYYYY: moment(item.crmHistoryDate).format(
-        'YYYY-MM-DD HH:mm:ss',
+      crmHistoryDateYYYY: moment(item.crmHistoryDate, 'YYYY.MM.DD').format(
+        'YYYY.MM.DD',
       ),
     };
   });
@@ -58,11 +57,15 @@ function HistoryReactTable(props) {
             Header: () => (
               <div style={{ textAlign: 'center' }}>{messages['date']}</div>
             ),
-            accessor: 'crmHistoryDate',
+            accessor: 'crmHistoryDateYYYY',
             filterMethod: (filter, rows) =>
               matchSorter(rows, filter.value, { keys: ['crmHistoryDateYYYY'] }),
-            filterAll: true,
-            Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+            // filterAll: true,
+            Cell: row => (
+              <div style={{ textAlign: 'center' }}>
+                {row.original.crmHistoryDate}
+              </div>
+            ),
           },
           {
             Header: () => (
@@ -223,7 +226,15 @@ function HistoryReactTable(props) {
               </div>
             ),
             accessor: 'info',
-            Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+            Cell: row => (
+              <Popup
+                content={row.value}
+                on="hover"
+                pinned="true"
+                trigger={<div style={{ textAlign: 'center' }}>{row.value}</div>}
+              />
+            ),
+            // <div style={{ textAlign: 'center' }}>{row.value}</div>,
           },
           {
             Header: () => (

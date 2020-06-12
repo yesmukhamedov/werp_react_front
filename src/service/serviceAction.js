@@ -40,6 +40,7 @@ export const POST_SMREGC_CREATE_CALL = 'POST_SMREGC_CREATE_CALL';
 export const POST_SMREGC_CREATE_CRM_SCHEDULE =
   'POST_SMREGC_CREATE_CRM_SCHEDULE';
 export const POST_SMCCA_CREATE_APP = 'POST_SMCCA_CREATE_APP';
+export const POST_SMCCA_CREATE_CRM_HISTORY = 'POST_SMCCA_CREATE_CRM_HISTORY';
 export const POST_SMCCALD_CREATE_APP = 'POST_SMCCALD_CREATE_APP';
 export const FETCH_APP_STATUS = 'FETCH_APP_STATUS';
 export const FETCH_APP_TYPE = 'FETCH_APP_TYPE';
@@ -675,6 +676,24 @@ export function postSmccaCreateApp(application, back) {
           payload: data,
         });
         back();
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function postSmccaCreateCrmHistory(application) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost(`smcca/createCrmHistory`, application)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: POST_SMCCA_CREATE_CRM_HISTORY,
+          payload: data,
+        });
       })
       .catch(error => {
         dispatch(modifyLoader(false));

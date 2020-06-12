@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Container, Form, Divider, Icon } from 'semantic-ui-react';
+import { Container, Form, Divider, Icon, Popup } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import OutputErrors from '../../../../general/error/outputErrors';
 import { errorTableText } from '../../../../utils/helpers';
@@ -177,7 +177,22 @@ const ServiceFilterVC = props => {
       filterable: false,
 
       Cell: original => {
-        return (
+        return original.original.planStatusName === 'Отменен' ||
+          original.original.planStatusName === 'Canceled' ||
+          original.original.planStatusName === 'İptal edildi' ? (
+          <div style={{ textAlign: 'center' }}>
+            <Popup
+              content={original.original.cancelReasonText}
+              on="hover"
+              pinned="true"
+              trigger={
+                <div style={{ textAlign: 'center' }}>
+                  {original.original.cancelReasonText}
+                </div>
+              }
+            />
+          </div>
+        ) : (
           <div style={{ textAlign: 'center' }}>
             <Icon
               name="cancel"

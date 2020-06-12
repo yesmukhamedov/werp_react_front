@@ -47,6 +47,8 @@ function PhoneF4UpdateModal(props) {
     }
   }, [selectedPhone]);
 
+  console.log(selectedPhone);
+
   const onInputChange = (o, fieldName) => {
     setList(prev => {
       const varList = { ...prev };
@@ -67,8 +69,6 @@ function PhoneF4UpdateModal(props) {
       return varList;
     });
   };
-
-  console.log(country);
 
   const handleSubmit = () => {
     let errors = [];

@@ -58,99 +58,130 @@ const MyApplication = props => {
       accessor: 'id',
       checked: true,
       filterable: false,
+      width: 70,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      getProps: (state, rowInfo, column) => {
+        return {
+          style: {
+            background:
+              rowInfo && rowInfo.original.urgencyLevel === true ? 'red' : null,
+            color:
+              rowInfo && rowInfo.original.urgencyLevel === true
+                ? 'white'
+                : null,
+          },
+        };
+      },
     },
     {
       Header: messages['brnch'],
       accessor: 'branchId',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
     },
     {
       Header: 'CN',
       accessor: 'contractNumber',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
     },
     {
       Header: messages['factory_number'],
       accessor: 'tovarSn',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
     },
     {
       Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
     },
     {
       Header: messages['Application_Date'],
       accessor: 'applicationDate',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
     },
     {
       Header: messages['fio'],
       accessor: 'customerFIO',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
     },
     {
       Header: messages['address'],
       accessor: 'address',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
     },
     {
       Header: messages['Phone'],
       accessor: 'phoneNumber',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
     },
     {
       Header: messages['master'],
       accessor: 'masterFIO',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
     },
     {
       Header: 'F1',
       accessor: 'f1',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
     },
     {
       Header: 'F2',
       accessor: 'f2',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
     },
     {
       Header: 'F3',
       accessor: 'f3',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
     },
     {
       Header: 'F4',
       accessor: 'f4',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
     },
     {
       Header: 'F5',
       accessor: 'f5',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
     },
     {
       Header: messages['category'],
       accessor: 'crmCategoryId',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
     },
     {
       Header: messages['application_status'],
       accessor: 'contractStatusId',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
     },
     {
       Header: messages['request_number'],
       accessor: 'applicationNumber',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
       Cell: ({ original }) => <span>{original.contractNumber}</span>,
@@ -220,6 +251,8 @@ const MyApplication = props => {
       setTurnOnReactFetch(true);
     }
   };
+
+  console.log(myApplicationData);
 
   const validate = () => {
     const errors = [];

@@ -50,6 +50,7 @@ import {
   FETCH_PRODUCT_LIST_SMSETCT,
   FETCH_SMCUSPOR_CONTRACT_HISTORY,
   FETCH_BRANCH_LIST,
+  POST_SMCCA_CREATE_CRM_HISTORY,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -80,6 +81,7 @@ const INITIAL_STATE = {
   smcusporContractHistory: [],
   crmHistory: [],
   branchList: [],
+  smccaCrmHistory: [],
 };
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -383,6 +385,11 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         branchList: [...action.payload],
+      };
+    case POST_SMCCA_CREATE_CRM_HISTORY:
+      return {
+        ...state,
+        smccaCrmHistory: [],
       };
     default:
       return state;

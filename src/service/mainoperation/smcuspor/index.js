@@ -565,11 +565,11 @@ function Smcuspor(props) {
                 <Table.Body>
                   <Table.Row>
                     <Table.Cell width="3" verticalAlign="bottom">
-                      {messages['application_date_from']}
+                      {messages['Form.DateFrom']}
                       <DatePicker
                         autoComplete="off"
                         dateFormat="DD/MM/YYYY"
-                        placeholderText={messages['application_date_from']}
+                        placeholderText={messages['Form.DateFrom']}
                         selected={
                           dateAt === null ? '' : stringYYYYMMDDToMoment(dateAt)
                         }
@@ -582,11 +582,11 @@ function Smcuspor(props) {
                       />
                     </Table.Cell>
                     <Table.Cell width="3" verticalAlign="bottom">
-                      {messages['application_date_to']}
+                      {messages['Form.DateTo']}
                       <DatePicker
                         autoComplete="off"
                         dateFormat="DD/MM/YYYY"
-                        placeholderText={messages['application_date_to']}
+                        placeholderText={messages['Form.DateTo']}
                         selected={
                           dateTo === null ? '' : stringYYYYMMDDToMoment(dateTo)
                         }

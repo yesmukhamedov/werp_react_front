@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Container, Form, Divider, Icon, Button } from 'semantic-ui-react';
+import { Container, Form, Divider, Icon, Popup } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
 import OutputErrors from '../../../../general/error/outputErrors';
@@ -179,7 +179,22 @@ const ServiceFilterPlan = props => {
       filterable: false,
 
       Cell: original => {
-        return (
+        return original.original.planStatusName === 'Отменен' ||
+          original.original.planStatusName === 'Canceled' ||
+          original.original.planStatusName === 'İptal edildi' ? (
+          <div style={{ textAlign: 'center' }}>
+            <Popup
+              content={original.original.cancelReasonText}
+              on="hover"
+              pinned="true"
+              trigger={
+                <div style={{ textAlign: 'center' }}>
+                  {original.original.cancelReasonText}
+                </div>
+              }
+            />
+          </div>
+        ) : (
           <div style={{ textAlign: 'center' }}>
             <Icon
               name="cancel"
@@ -237,7 +252,9 @@ const ServiceFilterPlan = props => {
 
   const handleClickApply = () => {
     validate();
+    console.log('OUTSIDE');
     if (param.bukrs !== '') {
+      console.log('inside');
       const page = 0;
       const size = 20;
       props.fetchServiceFilterPlan({ ...param, page, size });
@@ -295,6 +312,7 @@ const ServiceFilterPlan = props => {
     <Container fluid className="containerMargin">
       <CancelPlanModal
         open={cancelPlanModal}
+        handleClickApply={() => handleClickApply()}
         planId={param.planId}
         onClosePlanModal={bool => setCancelPlanModal(bool)}
       />
@@ -392,7 +410,6 @@ const ServiceFilterPlan = props => {
         showPagination={true}
         requestData={params => {
           props.fetchServiceFilterPlan({ ...params, ...param });
-          console.log(param);
         }}
         pages={serviceFilterPlan ? serviceFilterPlan.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}

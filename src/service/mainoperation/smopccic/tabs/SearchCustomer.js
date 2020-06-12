@@ -65,40 +65,47 @@ const SearchCustomer = props => {
       Header: 'Id',
       accessor: 'customerId',
       checked: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,
     },
     {
       Header: messages['brnch'],
       accessor: 'branchName',
       checked: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,
     },
     {
       Header: 'CN',
       accessor: 'contractNumber',
       checked: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
       Header: messages['factory_number'],
       accessor: 'tovarSn',
       checked: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
       Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,
     },
     {
       Header: messages['fin_status'],
       accessor: 'contractStatusName',
       checked: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,
     },
     {
       Header: 'Физ статус',
       accessor: 'lastStateId',
       checked: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,
     },
 
@@ -106,22 +113,26 @@ const SearchCustomer = props => {
       Header: messages['fio'],
       accessor: 'customerFIO',
       checked: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
 
     {
       Header: messages['customer_key'],
       accessor: 'customerIinBin',
       checked: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
       Header: messages['address'],
       accessor: 'address',
       checked: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
       Header: messages['Phone'],
       accessor: 'phoneNumber',
       checked: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
 
     {

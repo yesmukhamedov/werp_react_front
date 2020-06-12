@@ -16,6 +16,7 @@ import { fetchServAppType } from '../../reference/srefAction';
 import {
   fetchServCrmCallStatus,
   postSmccaCreateApp,
+  postSmccaCreateCrmHistory,
 } from '../../serviceAction';
 import OutputErrors from '../../../general/error/outputErrors';
 import { errorTableText } from '../../../utils/helpers';
@@ -85,6 +86,7 @@ function Smcca(props) {
     tovarSn: null,
     updatedBy: null,
     updatedDate: null,
+    urgencyLevel: null,
   };
   const serviceCrmHistoryDto = {
     actionId: null,
@@ -197,7 +199,7 @@ function Smcca(props) {
 
   const handleSubmit = () => {
     validate();
-    const crmHistoryDate = callDate.format('DD.MM.YYYY hh:mm:ss');
+    const crmHistoryDate = callDate.format('DD-MM-YYYY hh:mm:ss');
 
     const {
       servAppType,
@@ -216,34 +218,35 @@ function Smcca(props) {
     ) {
       props.postSmccaCreateApp(
         {
-          callRegister: scheduleCall,
-          serviceCrmHistoryDto: {
-            ...serviceCrmHistoryDto,
-            callDirectionId,
-            info: description2,
-            callStatusId,
-            crmHistoryDate,
-            tovarSn,
-            contractId: Number.parseInt(contractNumber, 10),
-          },
-          serviceApplicationDto: {
-            ...serviceApplicationDto,
-            applicationTypeId: servAppType,
-            branchId,
-            bukrsId,
-            contractNumber: Number.parseInt(contractNumber, 10),
-            info: description,
-            customerId,
-            tovarSn,
-            applicationDate:
-              callAppData === null ? null : callAppData.format('YYYY-MM-DD'),
-            urgencyLevel,
-          },
+          ...serviceApplicationDto,
+          applicationTypeId: servAppType,
+          branchId,
+          bukrsId,
+          contractNumber: Number.parseInt(contractNumber, 10),
+          info: description,
+          customerId,
+          tovarSn,
+          applicationDate:
+            callAppData === null
+              ? null
+              : callAppData.format('DD-MM-YYYY HH:mm:ss'),
+          urgencyLevel,
         },
         () => {
           props.history.push(`smcuspor?contractNumber=${contractNumber}`);
         },
       );
+      if (scheduleCall) {
+        props.postSmccaCreateCrmHistory({
+          ...serviceCrmHistoryDto,
+          callDirectionId,
+          info: description2,
+          callStatusId,
+          contractNumber: Number.parseInt(contractNumber, 10),
+          crmHistoryDate,
+          tovarSn,
+        });
+      }
     }
   };
 
@@ -606,4 +609,5 @@ export default connect(mapStateToProps, {
   fetchServAppType,
   fetchServCrmCallStatus,
   postSmccaCreateApp,
+  postSmccaCreateCrmHistory,
 })(injectIntl(Smcca));
