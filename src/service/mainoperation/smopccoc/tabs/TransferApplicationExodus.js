@@ -179,6 +179,8 @@ const TransferApplicationExodus = props => {
           />
         </div>
       ),
+      width: 60,
+      fixed: 'right',
     },
   ];
 

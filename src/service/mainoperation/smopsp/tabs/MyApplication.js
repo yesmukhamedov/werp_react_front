@@ -219,6 +219,8 @@ const MyApplication = props => {
         </div>
       ),
       checked: true,
+      width: 60,
+      fixed: 'right',
     },
   ];
 

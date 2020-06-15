@@ -36,7 +36,7 @@ const ServiceFilterPlan = props => {
     branchId: '',
     contractStatusId: '',
     serviceDateType: '',
-    crmCategory: '',
+    crmCategoryId: '',
     configuration: '',
     planId: '',
   };
@@ -172,6 +172,8 @@ const ServiceFilterPlan = props => {
         );
       },
       checked: true,
+      width: 60,
+      fixed: 'right',
     },
     {
       Header: messages['cancel'],
@@ -209,6 +211,7 @@ const ServiceFilterPlan = props => {
         );
       },
       checked: true,
+      fixed: 'right',
     },
   ];
 
@@ -289,8 +292,8 @@ const ServiceFilterPlan = props => {
         case 'serviceDateType':
           prevParam.serviceDateType = o.value;
           break;
-        case 'crmCategory':
-          prevParam.crmCategory = o.value;
+        case 'crmCategoryId':
+          prevParam.crmCategoryId = o.value;
           break;
         case 'configuration':
           prevParam.configuration = o.value;
@@ -368,7 +371,7 @@ const ServiceFilterPlan = props => {
             label={messages['category']}
             options={categoryOptions}
             placeholder={messages['category']}
-            onChange={(e, o) => onInputChange(o, 'crmCategory')}
+            onChange={(e, o) => onInputChange(o, 'crmCategoryId')}
             className="alignBottom"
           />
 

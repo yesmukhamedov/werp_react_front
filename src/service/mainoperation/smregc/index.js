@@ -91,8 +91,8 @@ function Smregc(props) {
 
   const handleSubmit = () => {
     let err = validate();
-    const crmHistoryDate = callDate.format('DD-MM-YYYY HH:mm:ss');
-    const crmScheduleDate = appointDate.format('DD-MM-YYYY HH:mm:ss');
+    const crmHistoryDate = callDate.format('YYYY-MM-DD HH:mm:ss');
+    const crmScheduleDate = appointDate.format('YYYY-MM-DD HH:mm:ss');
     const {
       tovarSn,
       branchId,

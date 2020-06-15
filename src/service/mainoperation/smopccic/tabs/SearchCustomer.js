@@ -150,6 +150,7 @@ const SearchCustomer = props => {
           </div>
         );
       },
+      fixed: 'right',
     },
   ];
 

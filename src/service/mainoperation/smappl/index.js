@@ -88,6 +88,21 @@ const Smappl = props => {
       accessor: 'id',
       show: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      getProps: (state, rowInfo, column) => {
+        return {
+          style: {
+            background:
+              rowInfo && rowInfo.original.urgencyLevel === true
+                ? '#cc0000'
+                : null,
+            color:
+              rowInfo && rowInfo.original.urgencyLevel === true
+                ? 'white'
+                : 'black',
+          },
+        };
+      },
+      fixed: 'left',
     },
     {
       Header: `CN `,
@@ -213,6 +228,8 @@ const Smappl = props => {
           <LinkToSmcuspor contractNumber={row._original.contractNumber} />
         </div>
       ),
+      fixed: 'right',
+      width: 60,
     },
   ];
   const [columnsForTable, setColumnsForTable] = useState([]);

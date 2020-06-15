@@ -8,6 +8,8 @@ import {
   Button,
   Popup,
   Divider,
+  Dropdown,
+  Input,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import OutputErrors from '../../../../general/error/outputErrors';
@@ -75,6 +77,7 @@ const MyApplication = props => {
           },
         };
       },
+      fixed: 'left',
     },
     {
       Header: messages['brnch'],
@@ -204,6 +207,8 @@ const MyApplication = props => {
           </div>
         );
       },
+      width: 60,
+      fixed: 'right',
     },
   ];
 
@@ -310,6 +315,7 @@ const MyApplication = props => {
             options={countryOptions}
             onChange={(e, o) => onInputChange(o, 'country')}
             className="alignBottom"
+            clearable
           />
 
           <Form.Select
@@ -320,6 +326,7 @@ const MyApplication = props => {
             options={companyOptions}
             onChange={(e, o) => onInputChange(o, 'bukrs')}
             className="alignBottom"
+            clearable
           />
 
           <Form.Select
@@ -329,6 +336,7 @@ const MyApplication = props => {
             options={serviceBranchOptions}
             onChange={(e, o) => onInputChange(o, 'branchId')}
             className="alignBottom"
+            clearable
           />
 
           <Form.Select
@@ -337,6 +345,7 @@ const MyApplication = props => {
             options={tovarCategoryOptions}
             onChange={(e, o) => onInputChange(o, 'tovarCategory')}
             className="alignBottom"
+            clearable
           />
 
           <Form.Select
@@ -346,6 +355,7 @@ const MyApplication = props => {
             onChange={(e, o) => onInputChange(o, 'applicationStatus')}
             className="alignBottom"
             multiple
+            clearable
           />
         </Form.Group>
         <Form.Group className="spaceBetween">
