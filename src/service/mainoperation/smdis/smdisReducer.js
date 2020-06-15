@@ -56,11 +56,11 @@ export default function(state = INITIAL_STATE, action) {
         operatorsByBranch: [...action.data.data],
       };
 
-    // case POST_REDIST_SMRD_OPERATOR:
-    //   return {
-    //     ...state,
-    //     smrdRedistOperator: [...action.data.data],
-    //   };
+    case POST_REDIST_SMRD_OPERATOR:
+      return {
+        ...state,
+        smrdRedistOperator: [...action.data.data],
+      };
 
     default:
       return state;

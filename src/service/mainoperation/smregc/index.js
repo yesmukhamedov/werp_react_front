@@ -162,8 +162,6 @@ function Smregc(props) {
     return errors;
   };
 
-  console.log(servCrmCallStatus);
-
   const servCrmCallOpt = servCrmCallStatus.map(item => {
     return {
       key: item.id,

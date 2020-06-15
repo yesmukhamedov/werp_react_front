@@ -33,6 +33,7 @@ const Smdis = props => {
     categoryId: '',
     dateAt: null,
     fromOperatorId: '',
+    planStatusId: '',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
@@ -180,6 +181,7 @@ const Smdis = props => {
             clickAddOperator={clickAddOperator}
             operatorsByBranch={operatorsByBranch}
             params={param}
+            setParams={setParam}
             smrd={smrd}
             setSmrd={setSmrd}
             showTable={showTable}
