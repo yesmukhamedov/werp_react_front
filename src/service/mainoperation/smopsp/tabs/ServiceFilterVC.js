@@ -170,6 +170,8 @@ const ServiceFilterVC = props => {
         );
       },
       checked: true,
+      width: 60,
+      fixed: 'right',
     },
     {
       Header: messages['cancel'],
@@ -207,6 +209,7 @@ const ServiceFilterVC = props => {
         );
       },
       checked: true,
+      fixed: 'right',
     },
   ];
 

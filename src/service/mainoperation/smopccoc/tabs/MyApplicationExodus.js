@@ -191,14 +191,18 @@ const MyApplicationExodus = props => {
       accessor: '5885',
       checked: true,
       filterable: false,
-      Cell: original => (
-        <div style={{ textAlign: 'center' }}>
-          <LinkToSmcuspor
-            contractNumber={original.row.contractNumber}
-            text={messages['Table.View']}
-          />
-        </div>
-      ),
+      Cell: original => {
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <LinkToSmcuspor
+              contractNumber={original.row._original.contractNumber}
+              text={messages['Table.View']}
+            />
+          </div>
+        );
+      },
+      width: 60,
+      fixed: 'right',
     },
   ];
 

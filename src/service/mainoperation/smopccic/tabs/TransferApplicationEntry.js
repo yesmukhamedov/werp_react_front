@@ -157,6 +157,7 @@ const TransferApplicationEntry = props => {
         </div>
       ),
       checked: true,
+      fixed: 'right',
     },
   ];
   useEffect(() => {
