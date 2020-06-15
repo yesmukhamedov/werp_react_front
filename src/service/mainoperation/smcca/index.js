@@ -235,7 +235,7 @@ function Smcca(props) {
             applicationDate:
               callAppData === null
                 ? null
-                : callAppData.format('DD-MM-YYYY HH:mm:ss'),
+                : callAppData.format('YYYY-MM-DD HH:mm:ss'),
             urgencyLevel,
           },
           crmHistory: {

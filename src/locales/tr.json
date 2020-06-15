@@ -853,5 +853,7 @@
   "admin": "Admin",
   "export": "Export",
   "execute": "Execute",
-  "urgent": "Urgent"
+  "urgent": "Urgent",
+  "filter_change_operator": "Filter change operator",
+  "cleaning_system_operator": "Cleaning system operator"
 }

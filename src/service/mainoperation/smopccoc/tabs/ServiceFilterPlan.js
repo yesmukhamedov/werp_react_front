@@ -255,9 +255,7 @@ const ServiceFilterPlan = props => {
 
   const handleClickApply = () => {
     validate();
-    console.log('OUTSIDE');
     if (param.bukrs !== '') {
-      console.log('inside');
       const page = 0;
       const size = 20;
       props.fetchServiceFilterPlan({ ...param, page, size });
