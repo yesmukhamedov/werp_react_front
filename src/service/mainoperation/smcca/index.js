@@ -203,7 +203,7 @@ function Smcca(props) {
 
   const handleSubmit = () => {
     validate();
-    const crmHistoryDate = callDate.format('DD-MM-YYYY hh:mm:ss');
+    const crmHistoryDate = callDate.format('YYYY-MM-DD hh:mm:ss');
 
     const {
       servAppType,
