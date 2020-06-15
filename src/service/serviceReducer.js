@@ -30,7 +30,6 @@ import {
   POST_SMECIM,
   FETCH_SERV_CRM_CALL_STATUS,
   POST_SMREGC_CREATE_CALL,
-  POST_SMREGC_CREATE_CRM_SCHEDULE,
   FETCH_APP_STATUS,
   FETCH_APP_TYPE,
   FETCH_APP_LIST,
@@ -50,7 +49,6 @@ import {
   FETCH_PRODUCT_LIST_SMSETCT,
   FETCH_SMCUSPOR_CONTRACT_HISTORY,
   FETCH_BRANCH_LIST,
-  POST_SMCCA_CREATE_CRM_HISTORY,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -273,10 +271,6 @@ export default function(state = INITIAL_STATE, action) {
       return { ...state, smregcCreateCall: action.payload };
     }
 
-    case POST_SMREGC_CREATE_CRM_SCHEDULE: {
-      return { ...state, smregcCreateCrmSchedule: action.payload };
-    }
-
     case FETCH_SMECAM: {
       return {
         ...state,
@@ -385,11 +379,6 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         branchList: [...action.payload],
-      };
-    case POST_SMCCA_CREATE_CRM_HISTORY:
-      return {
-        ...state,
-        smccaCrmHistory: [],
       };
     default:
       return state;

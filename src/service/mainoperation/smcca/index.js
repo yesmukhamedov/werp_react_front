@@ -16,7 +16,6 @@ import { fetchServAppType } from '../../reference/srefAction';
 import {
   fetchServCrmCallStatus,
   postSmccaCreateApp,
-  postSmccaCreateCrmHistory,
 } from '../../serviceAction';
 import OutputErrors from '../../../general/error/outputErrors';
 import { errorTableText } from '../../../utils/helpers';
@@ -189,6 +188,11 @@ function Smcca(props) {
           break;
         case 'callStatusId':
           varRequest.callStatusId = o.value;
+          o.options.map(item => {
+            if (item.key === o.value) {
+              varRequest.description2 = item.text;
+            }
+          });
           break;
         default:
           varRequest[fieldName] = o.value;
@@ -218,35 +222,36 @@ function Smcca(props) {
     ) {
       props.postSmccaCreateApp(
         {
-          ...serviceApplicationDto,
-          applicationTypeId: servAppType,
-          branchId,
-          bukrsId,
-          contractNumber: Number.parseInt(contractNumber, 10),
-          info: description,
-          customerId,
-          tovarSn,
-          applicationDate:
-            callAppData === null
-              ? null
-              : callAppData.format('DD-MM-YYYY HH:mm:ss'),
-          urgencyLevel,
+          callRegister: scheduleCall,
+          application: {
+            ...serviceApplicationDto,
+            applicationTypeId: servAppType,
+            branchId,
+            bukrsId,
+            contractNumber: Number.parseInt(contractNumber, 10),
+            info: description,
+            customerId,
+            tovarSn,
+            applicationDate:
+              callAppData === null
+                ? null
+                : callAppData.format('DD-MM-YYYY HH:mm:ss'),
+            urgencyLevel,
+          },
+          crmHistory: {
+            ...serviceCrmHistoryDto,
+            callDirectionId,
+            info: description2,
+            callStatusId,
+            contractNumber: Number.parseInt(contractNumber, 10),
+            crmHistoryDate,
+            tovarSn,
+          },
         },
         () => {
           props.history.push(`smcuspor?contractNumber=${contractNumber}`);
         },
       );
-      if (scheduleCall) {
-        props.postSmccaCreateCrmHistory({
-          ...serviceCrmHistoryDto,
-          callDirectionId,
-          info: description2,
-          callStatusId,
-          contractNumber: Number.parseInt(contractNumber, 10),
-          crmHistoryDate,
-          tovarSn,
-        });
-      }
     }
   };
 
@@ -553,6 +558,7 @@ function Smcca(props) {
                         placeholder={messages['bktxt']}
                         onChange={(e, o) => onInputChange(o, 'description2')}
                         disabled={!scheduleCall}
+                        value={request.description2}
                       />
                     </Form>
                   </Table.Cell>
@@ -609,5 +615,4 @@ export default connect(mapStateToProps, {
   fetchServAppType,
   fetchServCrmCallStatus,
   postSmccaCreateApp,
-  postSmccaCreateCrmHistory,
 })(injectIntl(Smcca));

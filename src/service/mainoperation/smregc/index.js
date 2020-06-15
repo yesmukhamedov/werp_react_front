@@ -20,7 +20,6 @@ import { injectIntl } from 'react-intl';
 import {
   fetchServCrmCallStatus,
   postSmregcCreateCall,
-  postSmregcCreateCrmSchedule,
 } from '../../serviceAction';
 
 import OutputErrors from '../../../general/error/outputErrors';
@@ -104,29 +103,30 @@ function Smregc(props) {
     if (err.length === 0) {
       props.postSmregcCreateCall(
         {
-          callDirectionId,
-          callStatusId,
-          contractNumber: Number.parseInt(contractNumber, 10),
-          crmHistoryDate,
-          info: description,
-          tovarSn,
+          scheduleCall,
+          crmHistory: {
+            callDirectionId,
+            callStatusId,
+            contractNumber: Number.parseInt(contractNumber, 10),
+            crmHistoryDate,
+            info: description,
+            tovarSn,
+          },
+          crmSchedule: {
+            branchId,
+            bukrsId,
+            contractNumber: Number.parseInt(contractNumber, 10),
+            crmScheduleDate,
+            info: description2,
+            tovarSn,
+            serviceFilterPlanId,
+            serviceFilterVCPlanId,
+          },
         },
         () => {
           props.history.push(`smcuspor?contractNumber=${contractNumber}`);
         },
       );
-      if (scheduleCall) {
-        props.postSmregcCreateCrmSchedule({
-          branchId,
-          bukrsId,
-          contractNumber: Number.parseInt(contractNumber, 10),
-          crmScheduleDate,
-          info: description2,
-          tovarSn,
-          serviceFilterPlanId,
-          serviceFilterVCPlanId,
-        });
-      }
     }
   };
 
@@ -337,5 +337,4 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
   fetchServCrmCallStatus,
   postSmregcCreateCall,
-  postSmregcCreateCrmSchedule,
 })(injectIntl(Smregc));
