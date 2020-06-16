@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Form, Container, Divider, Icon, Segment } from 'semantic-ui-react';
+import {
+  Form,
+  Container,
+  Divider,
+  Icon,
+  Segment,
+  Dropdown,
+} from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../service.css';
 import moment from 'moment';
@@ -28,6 +35,8 @@ import {
 import { fetchSmsrcusList } from './smsrcusAction';
 import TotalCountsTable from '../../../utils/TotalCountsTable';
 
+import DropdownClearable from '../../../utils/DropdownClearable';
+
 const Smsrcus = props => {
   const {
     intl: { messages },
@@ -40,8 +49,6 @@ const Smsrcus = props => {
     smsrcusData = {},
     physStatus = [],
   } = props;
-
-  console.log('physStatus', physStatus);
 
   const emptyParam = {
     countryId: '',
@@ -270,6 +277,7 @@ const Smsrcus = props => {
           prevParam.lastStateId = o.value.length > 0 ? o.value.join() : null;
           break;
         case 'contractStatusId':
+          console.log('o', o);
           prevParam.contractStatusId =
             o.value.length > 0 ? o.value.join() : null;
           break;
@@ -292,6 +300,8 @@ const Smsrcus = props => {
     setColumns([...data]);
   };
 
+  console.log('PARAM', param);
+
   return (
     <Container fluid className="containerMargin">
       <Segment>
@@ -300,61 +310,80 @@ const Smsrcus = props => {
       <Segment>
         <Form>
           <Form.Group widths="equal">
-            <Form.Select
-              fluid
-              label={messages['country']}
-              placeholder={messages['country']}
-              options={countryOptions}
-              onChange={(e, o) => onInputChange(o, 'countryId')}
-              className="alignBottom"
-            />
+            <Form.Field>
+              <label>{messages['country']}</label>
+              <DropdownClearable
+                fluid
+                placeholder={messages['country']}
+                value={param.countryId}
+                options={countryOptions}
+                onChange={(e, o) => onInputChange(o, 'countryId')}
+                className="alignBottom"
+                handleClear={() => setParam({ ...param, countryId: '' })}
+              />
+            </Form.Field>
 
-            <Form.Select
-              required
-              fluid
-              label={messages['bukrs']}
-              placeholder={messages['bukrs']}
-              options={companyOptions}
-              onChange={(e, o) => onInputChange(o, 'bukrs')}
-              className="alignBottom"
-            />
+            <Form.Field required>
+              <label>{messages['bukrs']}</label>
+              <DropdownClearable
+                fluid
+                placeholder={messages['bukrs']}
+                value={param.bukrs}
+                options={companyOptions}
+                onChange={(e, o) => onInputChange(o, 'bukrs')}
+                handleClear={() => setParam({ ...param, bukrs: '' })}
+              />
+            </Form.Field>
 
-            <Form.Select
-              fluid
-              label={messages['brnch']}
-              placeholder={messages['brnch']}
-              options={serviceBranchOptions}
-              onChange={(e, o) => onInputChange(o, 'branchId')}
-              className="alignBottom"
-            />
+            <Form.Field>
+              <label>{messages['brnch']}</label>
+              <DropdownClearable
+                fluid
+                placeholder={messages['brnch']}
+                value={param.branchId}
+                options={serviceBranchOptions}
+                onChange={(e, o) => onInputChange(o, 'branchId')}
+                handleClear={() => setParam({ ...param, branchId: '' })}
+              />
+            </Form.Field>
 
-            <Form.Select
-              fluid
-              label={messages['category']}
-              placeholder={messages['category']}
-              options={categoryOptions}
-              onChange={(e, o) => onInputChange(o, 'tovarCategoryId')}
-              className="alignBottom"
-            />
+            <Form.Field>
+              <label>{messages['category']}</label>
+              <DropdownClearable
+                fluid
+                placeholder={messages['category']}
+                value={param.tovarCategoryId}
+                options={categoryOptions}
+                onChange={(e, o) => onInputChange(o, 'tovarCategoryId')}
+                handleClear={() => setParam({ ...param, tovarCategoryId: '' })}
+              />
+            </Form.Field>
 
-            <Form.Select
-              fluid
-              label="Фин. статус"
-              placeholder="Фин. статус"
-              options={finStatusOptions}
-              onChange={(e, o) => onInputChange(o, 'contractStatusId')}
-              className="alignBottom"
-              multiple
-            />
-            <Form.Select
-              fluid
-              label="Физ. статус"
-              placeholder="Физ. статус"
-              options={physStatusOptions}
-              onChange={(e, o) => onInputChange(o, 'lastStateId')}
-              className="alignBottom"
-              multiple
-            />
+            <Form.Field>
+              <label>Фин. статус</label>
+              <Dropdown
+                selection
+                fluid
+                placeholder="Фин. статус"
+                options={finStatusOptions}
+                onChange={(e, o) => onInputChange(o, 'contractStatusId')}
+                className="alignBottom"
+                multiple
+              />
+            </Form.Field>
+
+            <Form.Field>
+              <label>Физ. статус</label>
+              <Form.Select
+                selection
+                fluid
+                placeholder="Физ. статус"
+                options={physStatusOptions}
+                onChange={(e, o) => onInputChange(o, 'lastStateId')}
+                className="alignBottom"
+                multiple
+              />
+            </Form.Field>
           </Form.Group>
 
           <Form.Group className="spaceBetween">
