@@ -14,7 +14,7 @@ import {
   clearDynObjService,
   applySmsetct,
   fetchProductListSmsetct,
-} from '../../serviceAction';
+} from './smsetctAction';
 import { connect } from 'react-redux';
 import List from './list';
 import {
@@ -29,6 +29,7 @@ import {
   Input,
   Label,
 } from 'semantic-ui-react';
+import DropdownClearable from '../../../utils/DropdownClearable';
 const Smsetct = props => {
   const emptySearch = {
     bukrs: '',
@@ -271,6 +272,28 @@ const Smsetct = props => {
     }
     return errors;
   };
+
+  const handleClear = fieldName => {
+    //let searchPms = Object.assign({}, this.state.searchPms);
+    switch (fieldName) {
+      case 'bukrs':
+        console.log('demoSecId handleClear');
+        setSearchParams({ ...postParams, bukrs: '' });
+        break;
+      default:
+        console.log('Значения не существует');
+    }
+  };
+
+  const iconStyle = {
+    position: 'absolute',
+    top: '1.5em',
+    bottom: 0,
+    margin: '1em',
+    right: '118.5em',
+    lineHeight: 1,
+    zIndex: 1,
+  };
   return (
     <div>
       <Container
@@ -325,6 +348,7 @@ const Smsetct = props => {
                   <Form.Group widths="equal">
                     <Form.Field required>
                       <label>{messages['bukrs']} </label>
+
                       <Dropdown
                         search
                         selection
@@ -478,17 +502,35 @@ const Smsetct = props => {
 
         <Form>
           <Form.Group>
-            <Form.Select
-              required
-              error={searchError ? true : false}
-              label={messages['bukrs']}
-              search
-              selection
-              options={companyOptions || []}
-              value={searchParams.bukrs}
-              onChange={(e, o) => searchInput(o)}
-              placeholder={messages['bukrs']}
-            />
+            <Form.Field>
+              <label>'TTT'</label>
+              <DropdownClearable
+                error={searchError ? true : false}
+                options={companyOptions || []}
+                value={searchParams.bukrs}
+                placeholder={messages['bukrs']}
+                onChange={(e, o) => searchInput(o)}
+                handleClear={() => handleClear('bukrs')}
+                onChange={(e, o) => searchInput(o)}
+              />
+              {/* <Icon
+                link
+                name="close"
+                style={iconStyle}
+                onClick={() => handleClear('demoSecId')}
+              />
+              <Dropdown
+                required
+                error={searchError ? true : false}
+                label={messages['bukrs']}
+                search
+                selection
+                options={companyOptions || []}
+                value={searchParams.bukrs}
+                onChange={(e, o) => searchInput(o)}
+                placeholder={messages['bukrs']}
+              /> */}
+            </Form.Field>
 
             <Form.Button
               label={messages['brnch'] + ' # ' + selectedBranches.length}
@@ -613,11 +655,11 @@ function mapStateToProps(state) {
     language: state.locales.lang,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
-    productList: state.serviceReducer.productList,
+    productList: state.smsetctReducer.productList,
     branchOptions: state.userInfo.branchOptionsService,
-    dynamicObject: state.serviceReducer.dynamicObject,
+    dynamicObject: state.smsetctReducer.dynamicObject,
     historyDynamicObject: state.serviceReducer.historyDynamicObject,
-    errorTable: state.serviceReducer.errorTable,
+    errorTable: state.smsetctReducer.errorTable,
   };
 }
 export default connect(mapStateToProps, {

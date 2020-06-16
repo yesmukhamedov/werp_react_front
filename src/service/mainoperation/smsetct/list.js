@@ -13,6 +13,7 @@ import {
   Label,
 } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
+import TextAlignCenter from '../../../utils/TextAlignCenter';
 export default function List(props) {
   const {
     messages = [],
@@ -371,7 +372,7 @@ export default function List(props) {
     {
       Header: messages['changed_by_employee'],
       accessor: 'fullname',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterAll: true,
     },
     {
