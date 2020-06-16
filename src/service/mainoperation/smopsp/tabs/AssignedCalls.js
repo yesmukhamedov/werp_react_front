@@ -19,12 +19,13 @@ import ModalColumns from './../../../../utils/ModalColumns';
 import { LinkToSmcuspor } from '../../../../utils/outlink';
 
 const AssignedCalls = props => {
-  const { countryOptions, companyOptions = [], branches } = props;
-
   const {
     intl: { messages },
     language,
     assignedCalls = [],
+    branchOptions = [],
+    countryOptions,
+    companyOptions = [],
   } = props;
 
   const emptyParam = {
@@ -40,42 +41,16 @@ const AssignedCalls = props => {
   const [error, setError] = useState([]);
 
   useEffect(() => {
-    let servBrOptions = branches
-      .filter(
-        item =>
-          item.business_area_id == 5 ||
-          item.business_area_id == 6 ||
-          item.business_area_id == 9,
-      )
-      .map(item => {
-        return {
-          key: item.branch_id,
-          text: item.text45,
-          value: item.branch_id,
-          country_id: item.country_id,
-          bukrs: item.bukrs,
-        };
-      });
-    if (param.countryId !== '' && param.bukrs !== '') {
-      let servBranchOptions = servBrOptions
-        .filter(item => item.country_id === param.countryId)
-        .filter(item => item.bukrs === param.bukrs);
-      setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.countryId !== '' && param.bukrs === '') {
-      let servBranchOptions = servBrOptions.filter(
-        item => item.country_id === param.countryId,
-      );
-      setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.countryId === '' && param.bukrs !== '') {
-      let servBranchOptions = servBrOptions.filter(
-        item => item.bukrs === param.bukrs,
-      );
-
-      setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.countryId === '' && param.bukrs === '') {
-      setServiceBranchOptions([...servBrOptions]);
+    if (param.bukrs) {
+      setServiceBranchOptions(branchOptions[param.bukrs]);
     }
-  }, [branches, param.countryId, param.bukrs]);
+    if (param.bukrs !== '' && param.countryId !== '' && branchOptions) {
+      let brnchOpt = branchOptions[param.bukrs].filter(
+        item => item.countryid === param.countryId,
+      );
+      setServiceBranchOptions(brnchOpt);
+    }
+  }, [branchOptions, param.countryId, param.bukrs]);
 
   const initialColumns = [
     {

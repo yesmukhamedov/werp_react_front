@@ -18,16 +18,15 @@ const ServiceFilterVC = props => {
   const {
     countryOptions,
     companyOptions = [],
-    branches,
     finStatusOption,
     serviceDateTypeOptions,
     warrantyOptions,
     crmCategory,
+    branchOptions,
   } = props;
 
   const {
     intl: { messages },
-    language,
     fetchServicePacketPlan,
     servicePacket = [],
   } = props;
@@ -54,42 +53,16 @@ const ServiceFilterVC = props => {
   }, []);
 
   useEffect(() => {
-    let servBrOptions = branches
-      .filter(
-        item =>
-          item.business_area_id == 5 ||
-          item.business_area_id == 6 ||
-          item.business_area_id == 9,
-      )
-      .map(item => {
-        return {
-          key: item.branch_id,
-          text: item.text45,
-          value: item.branch_id,
-          country_id: item.country_id,
-          bukrs: item.bukrs,
-        };
-      });
-    if (param.countryId !== '' && param.bukrs !== '') {
-      let servBranchOptions = servBrOptions
-        .filter(item => item.country_id === param.countryId)
-        .filter(item => item.bukrs === param.bukrs);
-      setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.countryId !== '' && param.bukrs === '') {
-      let servBranchOptions = servBrOptions.filter(
-        item => item.country_id === param.countryId,
-      );
-      setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.countryId === '' && param.bukrs !== '') {
-      let servBranchOptions = servBrOptions.filter(
-        item => item.bukrs === param.bukrs,
-      );
-
-      setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.countryId === '' && param.bukrs === '') {
-      setServiceBranchOptions([...servBrOptions]);
+    if (param.bukrs) {
+      setServiceBranchOptions(branchOptions[param.bukrs]);
     }
-  }, [branches, param.countryId, param.bukrs]);
+    if (param.bukrs !== '' && param.countryId !== '' && branchOptions) {
+      let brnchOpt = branchOptions[param.bukrs].filter(
+        item => item.countryid === param.countryId,
+      );
+      setServiceBranchOptions(brnchOpt);
+    }
+  }, [branchOptions, param.bukrs, param.countryId]);
 
   const initialColumns = [
     {
@@ -218,24 +191,6 @@ const ServiceFilterVC = props => {
     },
   ];
 
-  const handleClickApply = () => {
-    validate();
-    if (param.bukrs !== '') {
-      const page = 0;
-      const size = 20;
-      fetchServicePacketPlan({ ...param, page, size });
-      setTurnOnReactFetch(true);
-    }
-  };
-
-  const validate = () => {
-    const errors = [];
-    if (param.bukrs === '') {
-      errors.push(errorTableText(5));
-    }
-    setError(() => errors);
-  };
-
   const onInputChange = (o, fieldName) => {
     setParam(prev => {
       const prevParam = { ...prev };
@@ -278,14 +233,28 @@ const ServiceFilterVC = props => {
     });
   };
 
+  const handleClickApply = () => {
+    validate();
+    if (param.bukrs !== '') {
+      const page = 0;
+      const size = 20;
+      fetchServicePacketPlan({ ...param, page, size });
+      setTurnOnReactFetch(true);
+    }
+  };
+
+  const validate = () => {
+    const errors = [];
+    if (param.bukrs === '') {
+      errors.push(errorTableText(5));
+    }
+    setError(() => errors);
+  };
+
   const [columns, setColumns] = useState([...initialColumns]);
 
   const finishColumns = data => {
     setColumns([...data]);
-  };
-  const handleClickParam = value => {
-    let prm = { page: value.page, size: value.size };
-    fetchServicePacketPlan({ ...param, ...prm });
   };
 
   return (

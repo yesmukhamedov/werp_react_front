@@ -474,7 +474,6 @@ function Smcc(props) {
         matnrList={contract.matnrList}
         onCloseMatnrF4={bool => setMatnrListF4ModalOpen(bool)}
         onMatnrSelect={item => onInputChange(item, 'tovarSerial')}
-        // isLoadingMatnrList={isLoadingMatnrList}
         matnrList={matnrListView}
       />
       <Segment>

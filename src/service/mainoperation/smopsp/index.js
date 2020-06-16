@@ -37,6 +37,7 @@ const Smopccoc = props => {
     category,
     contractStatusList,
     branches,
+    branchOptions,
   } = props;
 
   useEffect(() => {
@@ -77,18 +78,13 @@ const Smopccoc = props => {
   const warrantyOptions = [
     {
       key: 1,
-      text: 'Отмена',
+      text: 'С гарантией',
       value: 1,
     },
     {
       key: 2,
-      text: 'Перенос',
+      text: 'Без грантии',
       value: 2,
-    },
-    {
-      key: 3,
-      text: 'Выполнен',
-      value: 3,
     },
   ];
 
@@ -118,7 +114,7 @@ const Smopccoc = props => {
         <Tab.Pane key={1}>
           <ServiceFilterVC
             companyOptions={companyOptions}
-            branches={branches}
+            branchOptions={branchOptions}
             countryOptions={countryOptions}
             finStatusOption={finStatusOption}
             serviceDateTypeOptions={serviceDateTypeOptions}
@@ -136,7 +132,7 @@ const Smopccoc = props => {
         <Tab.Pane key={2}>
           <TransferApplication
             companyOptions={companyOptions}
-            branches={branches}
+            branchOptions={branchOptions}
             countryOptions={countryOptions}
             finStatusOption={finStatusOption}
             serviceDateTypeOptions={serviceDateTypeOptions}
@@ -152,7 +148,7 @@ const Smopccoc = props => {
         <Tab.Pane key={3}>
           <AssignedCalls
             companyOptions={companyOptions}
-            branches={branches}
+            branchOptions={branchOptions}
             countryOptions={countryOptions}
             finStatusOption={finStatusOption}
             serviceDateTypeOptions={serviceDateTypeOptions}
@@ -168,7 +164,7 @@ const Smopccoc = props => {
         <Tab.Pane key={4}>
           <MyApplication
             companyOptions={companyOptions}
-            branches={branches}
+            branchOptions={branchOptions}
             countryOptions={countryOptions}
             finStatusOption={finStatusOption}
             serviceDateTypeOptions={serviceDateTypeOptions}
@@ -212,6 +208,7 @@ function mapStateToProps(state) {
     serviceStatusList: state.f4.serviceStatusList,
     contractStatusList: state.f4.contractStatusList,
     branches: state.f4.branches,
+    branchOptions: state.userInfo.branchOptionsService,
   };
 }
 
