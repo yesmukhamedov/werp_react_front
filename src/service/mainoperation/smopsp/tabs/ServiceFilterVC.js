@@ -342,7 +342,7 @@ const ServiceFilterVC = props => {
             <label>{messages['brnch']}</label>
             <DropdownClearable
               options={serviceBranchOptions}
-              value={param.bukrs}
+              value={param.branchId}
               placeholder={messages['brnch']}
               onChange={(e, o) => onInputChange(o, 'branchId')}
               handleClear={() => handleClear('branchId')}

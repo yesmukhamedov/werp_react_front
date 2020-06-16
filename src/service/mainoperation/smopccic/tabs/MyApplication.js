@@ -199,13 +199,13 @@ const MyApplication = props => {
       filterable: false,
       Cell: original => {
         const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}&filterPlanId=${original.row.id}`;
-        return (
+        return original.row.contractNumber ? (
           <div style={{ textAlign: 'center' }}>
             <Link to={url} target="_blank">
               <Icon name="address card" color="black" />
             </Link>
           </div>
-        );
+        ) : null;
       },
       width: 60,
       fixed: 'right',
