@@ -23,6 +23,7 @@ import {
 import OutputErrors from '../../../general/error/outputErrors';
 import { errorTableText, moneyInputHanler } from '../../../utils/helpers';
 import { doGet } from '../../../utils/apiActions';
+import TextAlignCenter from '../../../utils/TextAlignCenter';
 
 const Smsetpp = props => {
   const {
@@ -223,120 +224,98 @@ const Smsetpp = props => {
 
   let historyColumns = [
     {
-      Header: () => <div style={{ textAlign: 'center' }}>id</div>,
+      Header: () => <TextAlignCenter text="id" />,
       accessor: 'id',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
       width: 70,
     },
     {
-      Header: () => <div style={{ textAlign: 'center' }}>Автор</div>,
+      Header: () => <TextAlignCenter text="Автор" />,
       accessor: 'fullname',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
-      Header: () => <div style={{ textAlign: 'center' }}>Тип операции</div>,
+      Header: () => <TextAlignCenter text="Тип операции" />,
       accessor: 'revType',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
-      Header: () => <div style={{ textAlign: 'center' }}>Дата операции</div>,
+      Header: () => <TextAlignCenter text="Дата операции" />,
       accessor: 'revsttmp',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>{messages['bukrs']}</div>
-      ),
+      Header: () => <TextAlignCenter text={messages['bukrs']} />,
       accessor: 'bukrs',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
-      Header: () => <div style={{ textAlign: 'center' }}>Продукт</div>,
+      Header: () => <TextAlignCenter text="Продукт" />,
       accessor: 'productId',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>{messages['Task.StartDate']}</div>
-      ),
+      Header: () => <TextAlignCenter text={messages['Task.StartDate']} />,
       accessor: 'dateStart',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
-      Header: () => <div style={{ textAlign: 'center' }}>FC</div>,
+      Header: () => <TextAlignCenter text="FC" />,
       accessor: 'fc',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
       width: 50,
     },
     {
-      Header: () => <div style={{ textAlign: 'center' }}>MC</div>,
+      Header: () => <TextAlignCenter text="MC" />,
       accessor: 'mc',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
       width: 50,
     },
     {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>{messages['office']}</div>
-      ),
+      Header: () => <TextAlignCenter text={messages['office']} />,
       accessor: 'office',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>{messages['master']}</div>
-      ),
+      Header: () => <TextAlignCenter text={messages['master']} />,
       accessor: 'master',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>{messages['Operator']}</div>
-      ),
+      Header: () => <TextAlignCenter text={messages['Operator']} />,
       accessor: 'operator',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>{messages['discount']}</div>
-      ),
+      Header: () => <TextAlignCenter text={messages['discount']} />,
       accessor: 'discount',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>{messages['totalAmount']}</div>
-      ),
+      Header: () => <TextAlignCenter text={messages['totalAmount']} />,
       accessor: 'total',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>{messages['country']}</div>
-      ),
+      Header: () => <TextAlignCenter text={messages['country']} />,
       accessor: 'countryId',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>{messages['waers']}</div>
-      ),
+      Header: () => <TextAlignCenter text={messages['waers']} />,
       accessor: 'waersId',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
       width: 70,
     },
     {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>{messages['typeOfService']}</div>
-      ),
+      Header: () => <TextAlignCenter text={messages['typeOfService']} />,
       accessor: 'serviceTypeId',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
-      Header: () => (
-        <div style={{ textAlign: 'center' }}>{messages['typeOfAmount']}</div>
-      ),
+      Header: () => <TextAlignCenter text={messages['typeOfAmount']} />,
       accessor: 'premiumPriceTypeId',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
   ];
 
