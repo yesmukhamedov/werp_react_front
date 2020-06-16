@@ -17,6 +17,7 @@ import {
 } from '../../../../utils/helpers';
 import ModalColumns from './../../../../utils/ModalColumns';
 import { LinkToSmcuspor } from '../../../../utils/outlink';
+import DropdownClearable from '../../../../utils/DropdownClearable';
 
 const AssignedCalls = props => {
   const {
@@ -170,15 +171,12 @@ const AssignedCalls = props => {
         case 'countryId':
           prevParam.countryId = o.value;
           break;
-
         case 'bukrs':
           prevParam.bukrs = o.value;
           break;
-
         case 'branchId':
           prevParam.branchId = o.value;
           break;
-
         default:
           prevParam[fieldName] = o.value;
       }
@@ -191,36 +189,60 @@ const AssignedCalls = props => {
     setColumns([...data]);
   };
 
+  const handleClear = fieldName => {
+    setParam(prev => {
+      const prevParam = { ...prev };
+      switch (fieldName) {
+        case 'countryId':
+          prevParam.countryId = '';
+          break;
+        case 'bukrs':
+          prevParam.bukrs = '';
+          break;
+        case 'branchId':
+          prevParam.branchId = '';
+          break;
+        default:
+          prevParam[fieldName] = '';
+      }
+      return prevParam;
+    });
+  };
+
   return (
     <Container fluid className="containerMargin">
       <Form>
         <Form.Group widths="equal">
-          <Form.Select
-            fluid
-            label={messages['country']}
-            placeholder={messages['country']}
-            options={countryOptions}
-            onChange={(e, o) => onInputChange(o, 'countryId')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            required
-            fluid
-            label={messages['bukrs']}
-            placeholder={messages['bukrs']}
-            options={companyOptions}
-            onChange={(e, o) => onInputChange(o, 'bukrs')}
-            className="alignBottom"
-          />
-          <Form.Select
-            fluid
-            label={messages['brnch']}
-            placeholder={messages['brnch']}
-            options={serviceBranchOptions}
-            onChange={(e, o) => onInputChange(o, 'branchId')}
-            className="alignBottom"
-          />
+          <Form.Field>
+            <label>{messages['country']}</label>
+            <DropdownClearable
+              options={countryOptions}
+              value={param.countryId}
+              placeholder={messages['country']}
+              onChange={(e, o) => onInputChange(o, 'countryId')}
+              handleClear={() => handleClear('countryId')}
+            />
+          </Form.Field>
+          <Form.Field required>
+            <label>{messages['bukrs']}</label>
+            <DropdownClearable
+              options={companyOptions}
+              value={param.bukrs}
+              placeholder={messages['bukrs']}
+              onChange={(e, o) => onInputChange(o, 'bukrs')}
+              handleClear={() => handleClear('bukrs')}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>{messages['brnch']}</label>
+            <DropdownClearable
+              options={companyOptions}
+              value={param.branchId}
+              placeholder={messages['brnch']}
+              onChange={(e, o) => onInputChange(o, 'branchId')}
+              handleClear={() => handleClear('branchId')}
+            />
+          </Form.Field>
         </Form.Group>
 
         <Form.Group className="spaceBetween">

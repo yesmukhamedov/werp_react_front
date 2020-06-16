@@ -40,6 +40,7 @@ import {
   FETCH_SMSETPP_GET_PRODUCT_LIST,
   FETCH_SMCUSPOR_CONTRACT_HISTORY,
   FETCH_BRANCH_LIST,
+  FETCH_SMCUSPORLE,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -71,6 +72,7 @@ const INITIAL_STATE = {
   crmHistory: [],
   branchList: [],
   smccaCrmHistory: [],
+  smcusporle: [],
 };
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
@@ -330,6 +332,13 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         branchList: [...action.payload],
+      };
+
+    case FETCH_SMCUSPORLE:
+      console.log(action.payload);
+      return {
+        ...state,
+        smcusporle: { ...action.payload },
       };
     default:
       return state;

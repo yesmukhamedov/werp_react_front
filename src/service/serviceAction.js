@@ -64,6 +64,7 @@ export const FETCH_SMCUSPOR_CONTRACT_HISTORY =
   'FETCH_SMCUSPOR_CONTRACT_HISTORY';
 export const FETCH_BRANCH_LIST = 'FETCH_BRANCH_LIST';
 export const CLEAR_DYNOBJ_SERVICE = 'CLEAR_DYNOBJ_SERVICE';
+export const FETCH_SMCUSPORLE = 'FETCH_SMCUSPORLE';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 
@@ -949,5 +950,23 @@ export function fetchAppListSearchParam(data) {
       type: FETCH_APP_LIST_SEARCH_PARAMS,
       payload: data,
     });
+  };
+}
+
+export function fetchSmcusporle() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('smcusporle')
+      .then(data => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMCUSPORLE,
+          payload: data.data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
   };
 }

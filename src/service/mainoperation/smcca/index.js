@@ -155,6 +155,7 @@ function Smcca(props) {
     branchId = '',
     serviceBranchName = '',
     customerId = '',
+    serviceBranchId,
     customerFIO,
     serviceAddressName,
     fullPhone,
@@ -201,6 +202,8 @@ function Smcca(props) {
     });
   };
 
+  console.log(clientContract);
+
   const handleSubmit = () => {
     validate();
     const crmHistoryDate = callDate.format('YYYY-MM-DD HH:mm:ss');
@@ -226,7 +229,7 @@ function Smcca(props) {
           application: {
             ...serviceApplicationDto,
             applicationTypeId: servAppType,
-            branchId,
+            branchId: serviceBranchId,
             bukrsId,
             contractNumber: Number.parseInt(contractNumber, 10),
             info: description,

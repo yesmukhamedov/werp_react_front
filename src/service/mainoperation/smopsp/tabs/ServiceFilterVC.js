@@ -13,19 +13,13 @@ import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideW
 import ModalColumns from './../../../../utils/ModalColumns';
 import CancelPlanModalVC from '../components/CancelPlanModalVC';
 import { Link } from 'react-router-dom';
+import DropdownClearable from '../../../../utils/DropdownClearable';
 
 const ServiceFilterVC = props => {
   const {
     countryOptions,
     companyOptions = [],
-    finStatusOption,
-    serviceDateTypeOptions,
-    warrantyOptions,
-    crmCategory,
     branchOptions,
-  } = props;
-
-  const {
     intl: { messages },
     fetchServicePacketPlan,
     servicePacket = [],
@@ -210,22 +204,21 @@ const ServiceFilterVC = props => {
         case 'serviceTypeId':
           prevParam.serviceTypeId = o.value;
           break;
-
         case 'serviceStatusId':
           prevParam.serviceStatusId = o.value;
           break;
         case 'dateStart':
           prevParam.dateStart = o.value;
           break;
-
         case 'contractStatusId':
           prevParam.contractStatusId = o.value;
-
+          break;
         case 'serviceDateType':
           prevParam.serviceDateType = o.value;
-
+          break;
         case 'warranty':
           prevParam.warranty = o.value;
+          break;
         default:
           prevParam[fieldName] = o.value;
       }
@@ -257,6 +250,47 @@ const ServiceFilterVC = props => {
     setColumns([...data]);
   };
 
+  const handleClear = fieldName => {
+    setParam(prev => {
+      const prevParam = { ...prev };
+      switch (fieldName) {
+        case 'countryId':
+          prevParam.countryId = '';
+          break;
+        case 'bukrs':
+          prevParam.bukrs = '';
+          break;
+        case 'branchId':
+          prevParam.branchId = '';
+          break;
+        case 'crmCategory':
+          prevParam.crmCategory = '';
+          break;
+        case 'serviceTypeId':
+          prevParam.serviceTypeId = '';
+          break;
+        case 'serviceStatusId':
+          prevParam.serviceStatusId = '';
+          break;
+        case 'dateStart':
+          prevParam.dateStart = '';
+          break;
+        case 'contractStatusId':
+          prevParam.contractStatusId = '';
+          break;
+        case 'serviceDateType':
+          prevParam.serviceDateType = '';
+          break;
+        case 'warranty':
+          prevParam.warranty = '';
+          break;
+        default:
+          prevParam[fieldName] = '';
+      }
+      return prevParam;
+    });
+  };
+
   return (
     <Container fluid className="containerMargin">
       <CancelPlanModalVC
@@ -264,70 +298,81 @@ const ServiceFilterVC = props => {
         planId={param.planId}
         onClosePlanModal={bool => setCancelPlanModal(bool)}
       />
+
       <Form>
         <Form.Group widths="equal">
-          <Form.Select
-            fluid
-            label={messages['country']}
-            options={countryOptions}
-            placeholder={messages['country']}
-            onChange={(e, o) => onInputChange(o, 'countryId')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            required
-            fluid
-            label={messages['bukrs']}
-            options={companyOptions}
-            placeholder={messages['bukrs']}
-            onChange={(e, o) => onInputChange(o, 'bukrs')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            fluid
-            label={messages['brnch']}
-            options={serviceBranchOptions}
-            placeholder={messages['brnch']}
-            onChange={(e, o) => onInputChange(o, 'branchId')}
-            className="alignBottom"
-          />
-          <Form.Select
-            fluid
-            label={messages['fin_status']}
-            options={finStatusOption}
-            placeholder={messages['fin_status']}
-            onChange={(e, o) => onInputChange(o, 'contractStatusId')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            fluid
-            label={messages['service_period']}
-            options={serviceDateTypeOptions}
-            placeholder={messages['service_period']}
-            onChange={(e, o) => onInputChange(o, 'serviceDateType')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            fluid
-            label={messages['category']}
-            options={getCrmCategory(crmCategory)}
-            placeholder={messages['category']}
-            onChange={(e, o) => onInputChange(o, 'crmCategory')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            fluid
-            label={messages['guarantee']}
-            options={warrantyOptions}
-            placeholder={messages['guarantee']}
-            onChange={(e, o) => onInputChange(o, 'warranty')}
-            className="alignBottom"
-          />
+          <Form.Field>
+            <label>{messages['country']}</label>
+            <DropdownClearable
+              options={countryOptions}
+              value={param.countryId}
+              placeholder={messages['country']}
+              onChange={(e, o) => onInputChange(o, 'countryId')}
+              handleClear={() => handleClear('countryId')}
+            />
+          </Form.Field>
+          <Form.Field required>
+            <label>{messages['bukrs']}</label>
+            <DropdownClearable
+              options={companyOptions}
+              value={param.bukrs}
+              placeholder={messages['bukrs']}
+              onChange={(e, o) => onInputChange(o, 'bukrs')}
+              handleClear={() => handleClear('bukrs')}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>{messages['brnch']}</label>
+            <DropdownClearable
+              options={companyOptions}
+              value={param.branchId}
+              placeholder={messages['brnch']}
+              onChange={(e, o) => onInputChange(o, 'branchId')}
+              handleClear={() => handleClear('branchId')}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>{messages['fin_status']}</label>
+            <DropdownClearable
+              options={companyOptions}
+              value={param.contractStatusId}
+              placeholder={messages['fin_status']}
+              onChange={(e, o) => onInputChange(o, 'contractStatusId')}
+              handleClear={() => handleClear('contractStatusId')}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>{messages['service_period']}</label>
+            <DropdownClearable
+              options={companyOptions}
+              value={param.serviceDateType}
+              placeholder={messages['service_period']}
+              onChange={(e, o) => onInputChange(o, 'serviceDateType')}
+              handleClear={() => handleClear('serviceDateType')}
+            />
+          </Form.Field>
+        </Form.Group>
+        <Form.Group widths="5">
+          <Form.Field>
+            <label>{messages['category']}</label>
+            <DropdownClearable
+              options={companyOptions}
+              value={param.crmCategory}
+              placeholder={messages['category']}
+              onChange={(e, o) => onInputChange(o, 'crmCategory')}
+              handleClear={() => handleClear('crmCategory')}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>{messages['guarantee']}</label>
+            <DropdownClearable
+              options={companyOptions}
+              value={param.warranty}
+              placeholder={messages['guarantee']}
+              onChange={(e, o) => onInputChange(o, 'warranty')}
+              handleClear={() => handleClear('warranty')}
+            />
+          </Form.Field>
         </Form.Group>
 
         <Form.Group className="spaceBetween">

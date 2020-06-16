@@ -14,6 +14,7 @@ import {
   fetchSmcusporContract,
   fetchServCrmHistoryAll,
   fetchSmcusporContractHistory,
+  fetchSmcusporle,
 } from '../../serviceAction';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
@@ -57,6 +58,7 @@ function Smcuspor(props) {
     crmHistoryCall = [],
     crmHistoryServ = [],
     language,
+    exportRole,
   } = props;
 
   const {
@@ -90,7 +92,10 @@ function Smcuspor(props) {
     f5MtLeft,
   } = clientContract;
 
+  console.log(exportRole);
+
   useEffect(() => {
+    props.fetchSmcusporle();
     if (contractNumber) {
       props.fetchSmcusporContract({ contractNumber });
       props.fetchSmcusporContractHistory({ contractNumber });
@@ -604,14 +609,16 @@ function Smcuspor(props) {
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
                     <Table.Cell width="3" verticalAlign="bottom">
-                      <ExportExcel
-                        crmHistoryAll={crmHistoryAll}
-                        crmHistoryApp={crmHistoryApp}
-                        crmHistoryCall={crmHistoryCall}
-                        crmHistoryServ={crmHistoryServ}
-                        tabs={history.reactColumns}
-                        initValue={crmHistoryAll}
-                      />
+                      {exportRole.data ? (
+                        <ExportExcel
+                          crmHistoryAll={crmHistoryAll}
+                          crmHistoryApp={crmHistoryApp}
+                          crmHistoryCall={crmHistoryCall}
+                          crmHistoryServ={crmHistoryServ}
+                          tabs={history.reactColumns}
+                          initValue={crmHistoryAll}
+                        />
+                      ) : null}
                     </Table.Cell>
                   </Table.Row>
                 </Table.Body>
@@ -754,6 +761,7 @@ function mapStateToProps(state) {
     crmHistoryCall: state.serviceReducer.crmHistoryCall,
     crmHistoryServ: state.serviceReducer.crmHistoryServ,
     contractHistory: state.serviceReducer.smcusporContractHistory,
+    exportRole: state.serviceReducer.smcusporle,
   };
 }
 
@@ -761,4 +769,5 @@ export default connect(mapStateToProps, {
   fetchSmcusporContract,
   fetchServCrmHistoryAll,
   fetchSmcusporContractHistory,
+  fetchSmcusporle,
 })(injectIntl(Smcuspor));
