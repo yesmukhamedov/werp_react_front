@@ -246,6 +246,7 @@ const Srls = props => {
         </div>
       ),
       checked: true,
+      fixed: 'right',
     },
   ];
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
