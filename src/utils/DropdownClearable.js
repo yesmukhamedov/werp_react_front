@@ -12,15 +12,15 @@ const DropdownClearable = props => {
   } = props;
   const iconStyle = {
     position: 'absolute',
-    top: '1.5em',
-    bottom: 0,
+    bottom: '-1px',
     margin: '1em',
-    right: '118.5em',
+    right: '0.5em',
     lineHeight: 1,
     zIndex: 1,
   };
+
   return (
-    <div>
+    <div style={{ position: 'relative' }}>
       <Icon link name="close" style={iconStyle} onClick={handleClear} />
       <Dropdown
         error={error}
