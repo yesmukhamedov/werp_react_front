@@ -1,22 +1,14 @@
 import {
   FETCH_DYNOBJ_SERVICE,
   CHANGE_DYNOBJ_SERVICE,
-  CLEAR_DYNOBJ_SERVICE,
-  POST_SMSETCT,
-  FETCH_SMSETCT,
-  EDIT_SMSETCT,
   FETCH_SMSETPP,
   FETCH_SMSETPP_HISTORY,
   FETCH_SMSETPP_SERVICE_TYPE_ID,
   FETCH_SMSETPP_TYPE,
-  FETCH_SMSETPP_POST,
   FETCH_SMSETPP_SEARCH,
-  FETCH_SMSETPP_PUT,
   FETCH_SRLS,
   FETCH_SMSETPP_PREMIUM_PRICE_TYPE,
   FETCH_SMPLB,
-  FETCH_SMPLB_ADD,
-  HISTORY_EDITING_SMSETCT,
   FETCH_SMCUSPOR_CONTRACT,
   FETCH_SMCUSPOR_HISTORY_ALL,
   FETCH_SMCUSPOR_HISTORY_APP,
@@ -47,7 +39,6 @@ import {
   FETCH_APP_LIST_SEARCH_PARAMS,
   FETCH_SMSETPLP_ID,
   FETCH_SMSETPP_GET_PRODUCT_LIST,
-  FETCH_PRODUCT_LIST_SMSETCT,
   FETCH_SMCUSPOR_CONTRACT_HISTORY,
   FETCH_BRANCH_LIST,
   POST_SMCCA_CREATE_CRM_HISTORY,
@@ -96,46 +87,6 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         dynamicObject: { ...state.dynamicObject, ...action.data },
-      };
-
-    case CLEAR_DYNOBJ_SERVICE:
-      return {
-        ...state,
-        dynamicObject: {},
-        historyDynamicObject: {},
-      };
-    case POST_SMSETCT:
-      if (
-        Object.keys(state.dynamicObject).length === 0 ||
-        state.dynamicObject === undefined
-      ) {
-        return { ...state, dynamicObject: [] };
-      } else {
-        return {
-          ...state,
-          dynamicObject: [...state.dynamicObject, action.payload],
-        };
-      }
-
-    case FETCH_SMSETCT:
-      return {
-        ...state,
-        dynamicObject: [...action.payload],
-      };
-    case EDIT_SMSETCT:
-      return {
-        ...state,
-        dynamicObject: [...state.dynamicObject, action.payload],
-      };
-    case HISTORY_EDITING_SMSETCT:
-      return {
-        ...state,
-        historyDynamicObject: [...action.payload],
-      };
-    case FETCH_PRODUCT_LIST_SMSETCT:
-      return {
-        ...state,
-        productList: [...action.payload],
       };
 
     case FETCH_SMSETPP:

@@ -15,10 +15,6 @@ export const FETCH_SMSETPP_PUT = 'FETCH_SMSETPP_PUT';
 export const FETCH_SMSETPP_PREMIUM_PRICE_TYPE =
   'FETCH_SMSETPP_PREMIUM_PRICE_TYPE';
 export const FETCH_SMSETPP_SEARCH = 'FETCH_SMSETPP_SEARCH';
-export const CLEAR_DYNOBJ_SERVICE = 'CLEAR_DYNOBJ_SERVICE';
-export const POST_SMSETCT = 'POST_SMSETCT';
-export const FETCH_SMSETCT = 'FETCH_SMSETCT';
-export const EDIT_SMSETCT = 'EDIT_SMSETCT';
 export const FETCH_SMSETPP = 'FETCH_SMSETPP';
 export const FETCH_SRLS = 'FETCH_SMSETPP';
 export const DELETE_SMCETST = 'DELETE_SMCETST';
@@ -26,7 +22,6 @@ export const FETCH_SMPLB = 'FETCH_SMPLB';
 export const FETCH_SMPLB_POST = 'FETCH_SMPLB_POST';
 export const FETCH_SMPLB_PUT = 'FETCH_SMPLB_PUT';
 export const FETCH_SMPLB_DELETE = 'FETCH_SMPLB_DELETE';
-export const HISTORY_EDITING_SMSETCT = 'HISTORY_EDITING_SMSETCT';
 export const FETCH_SMCUSPOR_CONTRACT = 'FETCH_SMCUSPOR_CONTRACT';
 export const FETCH_SMCUSPOR_HISTORY_ALL = 'FETCH_SMCUSPOR_HISTORY_ALL';
 export const FETCH_SMCUSPOR_HISTORY_APP = 'FETCH_SMCUSPOR_HISTORY_APP';
@@ -67,10 +62,10 @@ export const FETCH_SMSETPLP_ID = 'FETCH_SMSETPLP_ID';
 export const FETCH_SMSETPP_HISTORY = 'FETCH_SMSETPP_HISTORY';
 export const FETCH_SMSETPP_SERVICE_TYPE_ID = 'FETCH_SMSETPP_SERVICE_TYPE_ID';
 export const FETCH_SMSETPP_GET_PRODUCT_LIST = 'FETCH_SMSETPP_GET_PRODUCT_LIST';
-export const FETCH_PRODUCT_LIST_SMSETCT = 'FETCH_PRODUCT_LIST_SMSETCT';
 export const FETCH_SMCUSPOR_CONTRACT_HISTORY =
   'FETCH_SMCUSPOR_CONTRACT_HISTORY';
 export const FETCH_BRANCH_LIST = 'FETCH_BRANCH_LIST';
+export const CLEAR_DYNOBJ_SERVICE = 'CLEAR_DYNOBJ_SERVICE';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 
@@ -99,6 +94,13 @@ export function fetchSmsetpp(params) {
         handleError(error, dispatch);
       });
   };
+}
+
+export function clearDynObjService() {
+  const obj = {
+    type: CLEAR_DYNOBJ_SERVICE,
+  };
+  return obj;
 }
 
 export function fetchSmsetppHistory(params) {
@@ -244,13 +246,6 @@ export function fetchSrls() {
   };
 }
 
-export function clearDynObjService() {
-  const obj = {
-    type: CLEAR_DYNOBJ_SERVICE,
-  };
-  return obj;
-}
-
 export function fetchDynObjService(url, params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
@@ -265,114 +260,6 @@ export function fetchDynObjService(url, params) {
       .catch(error => {
         handleError(error, dispatch);
         dispatch(modifyLoader(false));
-      });
-  };
-}
-export function fetchSmsetct(searchParams, searchArray) {
-  let queryString = '';
-  if (searchArray !== undefined) {
-    queryString = Object.keys(searchArray)
-      .map(key => 'branchId=' + searchArray[key].branchId)
-      .join('&');
-  }
-  return dispatch => {
-    dispatch(modifyLoader(true));
-    doGet(`smsetct/view?direction=DESC&orderBy=id&${queryString}`, searchParams)
-      .then(({ data }) => {
-        dispatch({
-          type: FETCH_SMSETCT,
-          payload: data.data,
-        });
-
-        doGet(
-          `smsetct/audit?direction=DESC&orderBy=id&${queryString}`,
-          searchParams,
-        )
-          .then(({ data }) => {
-            dispatch(modifyLoader(false));
-            dispatch({
-              type: HISTORY_EDITING_SMSETCT,
-              payload: data.data,
-            });
-          })
-          .catch(error => {
-            dispatch(modifyLoader(false));
-            handleError(error, dispatch);
-          });
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
-}
-export function fetchProductListSmsetct(param) {
-  return dispatch => {
-    dispatch(modifyLoader(true));
-    doGet(`smsetct/getProductList`, param)
-      .then(({ data }) => {
-        dispatch({
-          type: FETCH_PRODUCT_LIST_SMSETCT,
-          payload: data.data,
-        });
-        dispatch(modifyLoader(false));
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
-      });
-  };
-}
-export function postSmsetct(postParams, fetchSmsetct) {
-  return function(dispatch) {
-    doPost(`smsetct/create`, postParams)
-      .then(data => {
-        if (data.data.status === 200 || data.data.status === 'OK') {
-          dispatch(notify('success', errorTableText(101)));
-          fetchSmsetct();
-        } else {
-          dispatch(notify('error', errorTableText(133), errorTableText(132)));
-        }
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
-}
-
-export function editSmsetct(editParams, fetchSmsetct) {
-  return function(dispatch) {
-    doPut(`smsetct/update`, editParams)
-      .then(data => {
-        if (data.data.status === 200 || data.data.status === 'OK') {
-          dispatch(notify('success', errorTableText(104), errorTableText(101)));
-          fetchSmsetct();
-        } else {
-          dispatch(notify('error', errorTableText(133), errorTableText(132)));
-        }
-      })
-      .catch(error => {
-        handleError(error, dispatch);
-      });
-  };
-}
-
-export function applySmsetct() {
-  return dispatch => {
-    dispatch(modifyLoader(true));
-    doGet(`smsetct/apply`)
-      .then(({ data }) => {
-        if (data.status === 200 || data.status === 'OK') {
-          dispatch(notify('success', errorTableText(101)));
-          fetchSmsetct();
-        } else {
-          dispatch(notify('error', errorTableText(133), errorTableText(132)));
-        }
-        dispatch(modifyLoader(false));
-      })
-      .catch(error => {
-        dispatch(modifyLoader(false));
-        handleError(error, dispatch);
       });
   };
 }
