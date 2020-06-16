@@ -251,11 +251,9 @@ export const LinkToSmcusporFromSmsrcus = props => {
   const { contractNumber } = props;
   const url = `../mainoperation/smcuspor?contractNumber=${contractNumber}`;
   return (
-    <Button size="mini" icon>
-      <a target="_blank" href={url} rel="noopener noreferrer">
-        <Icon name="address card" size="large" color="black" />
-      </a>
-    </Button>
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      <Icon name="address card outline" size="large" color="black" />
+    </a>
   );
 };
 

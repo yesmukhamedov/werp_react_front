@@ -193,7 +193,7 @@ const Smopccoc = props => {
         paddingRight: '2em',
       }}
     >
-      <Segment as="h2">{messages['outgoing_call_operator']}</Segment>
+      <Segment as="h2">{messages['filter_change_operator']}</Segment>
 
       <Tab
         menu={{ attached: true, tabular: false, pointing: true }}

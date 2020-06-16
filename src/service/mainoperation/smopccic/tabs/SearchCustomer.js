@@ -150,6 +150,7 @@ const SearchCustomer = props => {
           </div>
         );
       },
+      fixed: 'right',
     },
   ];
 
@@ -417,7 +418,7 @@ const getPhysStatus = (value, lang) => {
   let out = value.map(c => {
     return {
       key: c.id,
-      text: c[`oper_name_${lang}`],
+      text: c.name,
       value: parseInt(c.id, 10),
     };
   });

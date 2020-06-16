@@ -159,6 +159,7 @@ const AssignedCalls = props => {
         </div>
       ),
       checked: true,
+      fixed: 'right',
     },
   ];
 

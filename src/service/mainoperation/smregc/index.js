@@ -20,7 +20,6 @@ import { injectIntl } from 'react-intl';
 import {
   fetchServCrmCallStatus,
   postSmregcCreateCall,
-  postSmregcCreateCrmSchedule,
 } from '../../serviceAction';
 
 import OutputErrors from '../../../general/error/outputErrors';
@@ -91,8 +90,8 @@ function Smregc(props) {
 
   const handleSubmit = () => {
     let err = validate();
-    const crmHistoryDate = callDate.format('DD-MM-YYYY HH:mm:ss');
-    const crmScheduleDate = appointDate.format('DD-MM-YYYY HH:mm:ss');
+    const crmHistoryDate = callDate.format('YYYY-MM-DD HH:mm:ss');
+    const crmScheduleDate = appointDate.format('YYYY-MM-DD HH:mm:ss');
     const {
       tovarSn,
       branchId,
@@ -104,29 +103,30 @@ function Smregc(props) {
     if (err.length === 0) {
       props.postSmregcCreateCall(
         {
-          callDirectionId,
-          callStatusId,
-          contractNumber: Number.parseInt(contractNumber, 10),
-          crmHistoryDate,
-          info: description,
-          tovarSn,
+          scheduleCall,
+          crmHistory: {
+            callDirectionId,
+            callStatusId,
+            contractNumber: Number.parseInt(contractNumber, 10),
+            crmHistoryDate,
+            info: description,
+            tovarSn,
+          },
+          crmSchedule: {
+            branchId,
+            bukrsId,
+            contractNumber: Number.parseInt(contractNumber, 10),
+            crmScheduleDate,
+            info: description2,
+            tovarSn,
+            serviceFilterPlanId,
+            serviceFilterVCPlanId,
+          },
         },
         () => {
           props.history.push(`smcuspor?contractNumber=${contractNumber}`);
         },
       );
-      if (scheduleCall) {
-        props.postSmregcCreateCrmSchedule({
-          branchId,
-          bukrsId,
-          contractNumber: Number.parseInt(contractNumber, 10),
-          crmScheduleDate,
-          info: description2,
-          tovarSn,
-          serviceFilterPlanId,
-          serviceFilterVCPlanId,
-        });
-      }
     }
   };
 
@@ -161,8 +161,6 @@ function Smregc(props) {
     setError(() => errors);
     return errors;
   };
-
-  console.log(servCrmCallStatus);
 
   const servCrmCallOpt = servCrmCallStatus.map(item => {
     return {
@@ -339,5 +337,4 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
   fetchServCrmCallStatus,
   postSmregcCreateCall,
-  postSmregcCreateCrmSchedule,
 })(injectIntl(Smregc));

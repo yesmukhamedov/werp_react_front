@@ -190,7 +190,7 @@ const Smopccoc = props => {
         paddingRight: '2em',
       }}
     >
-      <Segment as="h2">{messages['prevention_plan']}</Segment>
+      <Segment as="h2">{messages['cleaning_system_operator']}</Segment>
 
       <Tab
         menu={{ attached: true, tabular: false, pointing: true }}

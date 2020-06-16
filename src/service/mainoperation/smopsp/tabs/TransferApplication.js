@@ -6,7 +6,6 @@ import 'react-table/react-table.css';
 import OutputErrors from '../../../../general/error/outputErrors';
 import { errorTableText } from '../../../../utils/helpers';
 import { fetchRescheduledApplication } from '../smopspAction';
-import { fetchServiceTypeId } from '../../smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import moment from 'moment';
@@ -20,15 +19,7 @@ import ModalColumns from '../../../../utils/ModalColumns';
 import { LinkToSmcuspor } from '../../../../utils/outlink';
 
 const TransferApplication = props => {
-  const {
-    countryOptions,
-    companyOptions = [],
-    branches,
-    finStatusOption,
-    serviceDateTypeOptions,
-    categoryOptions,
-    warrantyOptions,
-  } = props;
+  const { countryOptions, companyOptions = [], branches } = props;
 
   const {
     intl: { messages },
@@ -42,11 +33,7 @@ const TransferApplication = props => {
     bukrs: '',
     branchId: '',
     contractStatusId: '',
-    crmCategory: '',
-    serviceDateType: '',
-    warranty: '',
     dateOpenAt: '',
-    applicationStatusId: '',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
@@ -209,6 +196,8 @@ const TransferApplication = props => {
         </div>
       ),
       checked: true,
+      width: 60,
+      fixed: 'right',
     },
   ];
 
@@ -242,39 +231,18 @@ const TransferApplication = props => {
         case 'countryId':
           prevParam.countryId = o.value;
           break;
+
         case 'bukrs':
           prevParam.bukrs = o.value;
           break;
+
         case 'branchId':
           prevParam.branchId = o.value;
           break;
 
-        case 'crmCategory':
-          prevParam.crmCategory = o.value;
-          break;
-        case 'serviceTypeId':
-          prevParam.serviceTypeId = o.value;
-          break;
-
-        case 'serviceStatusId':
-          prevParam.serviceStatusId = o.value;
-          break;
-
-        case 'contractStatusId':
-          prevParam.contractStatusId = o.value;
-
-        case 'serviceDateType':
-          prevParam.serviceDateType = o.value;
-
-        case 'warranty':
-          prevParam.warranty = o.value;
-
         case 'dateOpenAt':
           prevParam.dateOpenAt = o.value;
           break;
-
-        case 'applicationStatusId':
-          prevParam.applicationStatusId = o.value;
         default:
           prevParam[fieldName] = o.value;
       }
@@ -311,50 +279,6 @@ const TransferApplication = props => {
             placeholder={messages['brnch']}
             options={serviceBranchOptions}
             onChange={(e, o) => onInputChange(o, 'branchId')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            fluid
-            label={messages['fin_status']}
-            placeholder={messages['fin_status']}
-            options={finStatusOption}
-            onChange={(e, o) => onInputChange(o, 'contractStatusId')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            fluid
-            label={messages['service_period']}
-            placeholder={messages['service_period']}
-            options={serviceDateTypeOptions}
-            onChange={(e, o) => onInputChange(o, 'serviceDateType')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            fluid
-            label={messages['category']}
-            placeholder={messages['category']}
-            options={categoryOptions}
-            onChange={(e, o) => onInputChange(o, 'crmCategory')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            fluid
-            label={messages['guarantee']}
-            placeholder={messages['guarantee']}
-            options={warrantyOptions}
-            onChange={(e, o) => onInputChange(o, 'warranty')}
-            className="alignBottom"
-          />
-          <Form.Select
-            fluid
-            label={messages['application_status']}
-            placeholder={messages['application_status']}
-            options={serviceDateTypeOptions}
-            onChange={(e, o) => onInputChange(o, 'applicationStatusId')}
             className="alignBottom"
           />
         </Form.Group>
@@ -422,13 +346,11 @@ const TransferApplication = props => {
 function mapStateToProps(state) {
   return {
     language: state.locales.lang,
-    serviceTypeId: state.smcsReducer.serviceTypeId,
     rescheduledApp: state.smopspReducer.rescheduledApp,
   };
 }
 
 export default connect(mapStateToProps, {
   fetchServiceListManager,
-  fetchServiceTypeId,
   fetchRescheduledApplication,
 })(injectIntl(TransferApplication));

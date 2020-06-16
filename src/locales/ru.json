@@ -852,5 +852,7 @@
   "admin": "Админ",
   "export": "Экспортировать",
   "execute": "Выполнить",
-  "urgent": "Срочно"
+  "urgent": "Срочно",
+  "filter_change_operator": "Оператор по замене фильтра",
+  "cleaning_system_operator": "Оператор по уборочной системе"
 }

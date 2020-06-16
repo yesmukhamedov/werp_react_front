@@ -8,6 +8,7 @@ import { errorTableText } from '../../../../utils/helpers';
 import { fetchServicePacketPlan } from '../smopspAction';
 import { fetchServiceTypeId } from '../../smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
+import { f4FetchCrmCategory } from '../../../../reference/f4/f4_action';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from './../../../../utils/ModalColumns';
 import CancelPlanModalVC from '../components/CancelPlanModalVC';
@@ -20,8 +21,8 @@ const ServiceFilterVC = props => {
     branches,
     finStatusOption,
     serviceDateTypeOptions,
-    categoryOptions,
     warrantyOptions,
+    crmCategory,
   } = props;
 
   const {
@@ -47,6 +48,10 @@ const ServiceFilterVC = props => {
   const [error, setError] = useState([]);
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const [cancelPlanModal, setCancelPlanModal] = useState(false);
+
+  useEffect(() => {
+    props.f4FetchCrmCategory();
+  }, []);
 
   useEffect(() => {
     let servBrOptions = branches
@@ -170,6 +175,8 @@ const ServiceFilterVC = props => {
         );
       },
       checked: true,
+      width: 60,
+      fixed: 'right',
     },
     {
       Header: messages['cancel'],
@@ -207,6 +214,7 @@ const ServiceFilterVC = props => {
         );
       },
       checked: true,
+      fixed: 'right',
     },
   ];
 
@@ -337,7 +345,7 @@ const ServiceFilterVC = props => {
           <Form.Select
             fluid
             label={messages['category']}
-            options={categoryOptions}
+            options={getCrmCategory(crmCategory)}
             placeholder={messages['category']}
             onChange={(e, o) => onInputChange(o, 'crmCategory')}
             className="alignBottom"
@@ -387,11 +395,27 @@ const ServiceFilterVC = props => {
   );
 };
 
+const getCrmCategory = crmCategory => {
+  const crmCat = crmCategory;
+  if (!crmCat) {
+    return [];
+  }
+  let out = crmCategory.map(item => {
+    return {
+      key: item.id,
+      text: item.name,
+      value: item.id,
+    };
+  });
+  return out;
+};
+
 function mapStateToProps(state) {
   return {
     language: state.locales.lang,
     serviceTypeId: state.smcsReducer.serviceTypeId,
     servicePacket: state.smopspReducer.servicePacket,
+    crmCategory: state.f4.crmCategory,
   };
 }
 
@@ -399,4 +423,5 @@ export default connect(mapStateToProps, {
   fetchServiceListManager,
   fetchServiceTypeId,
   fetchServicePacketPlan,
+  f4FetchCrmCategory,
 })(injectIntl(ServiceFilterVC));
