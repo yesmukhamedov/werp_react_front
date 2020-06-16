@@ -45,6 +45,8 @@ function Smccald(props) {
     smccaldCreate,
   } = props;
 
+  console.log('currentStaff', currentStaff);
+
   const emptyParam = {
     addressId: null,
     addressName: '',
@@ -100,6 +102,8 @@ function Smccald(props) {
 
   const [param, setParam] = useState({ ...emptyParam });
 
+  console.log('PARAM', param);
+
   const [error, setError] = useState([]);
 
   const onInputChange = (o, fieldName) => {
@@ -144,7 +148,7 @@ function Smccald(props) {
       operatorId: currentStaff.staffId,
       operatorFIO: currentStaff.fullName,
     });
-  }, []);
+  }, [currentStaff]);
 
   useEffect(() => {
     props.fetchCurrentStaff();
@@ -208,7 +212,11 @@ function Smccald(props) {
   };
 
   const clearState = () => {
-    setParam({ ...emptyParam });
+    setParam({
+      ...emptyParam,
+      operatorId: currentStaff.staffId,
+      operatorFIO: currentStaff.fullName,
+    });
   };
 
   const handleSubmit = () => {
