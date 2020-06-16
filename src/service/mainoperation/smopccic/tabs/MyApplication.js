@@ -179,7 +179,7 @@ const MyApplication = props => {
     },
     {
       Header: messages['application_status'],
-      accessor: 'contractStatusId',
+      accessor: 'applicationStatusId',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
@@ -190,7 +190,6 @@ const MyApplication = props => {
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
-      Cell: ({ original }) => <span>{original.contractNumber}</span>,
     },
     {
       Header: messages['Table.View'],
