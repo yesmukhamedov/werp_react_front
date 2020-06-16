@@ -7,6 +7,7 @@ import OutputErrors from '../../../../general/error/outputErrors';
 import { errorTableText } from '../../../../utils/helpers';
 import { fetchMyApplication } from '../smopspAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
+import { f4FetchServiceAppStatus } from '../../../../reference/f4/f4_action';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
@@ -25,6 +26,7 @@ const MyApplication = props => {
     companyOptions = [],
     branchOptions = [],
     serviceDateTypeOptions,
+    serviceAppStatus = [],
   } = props;
 
   const {
@@ -45,6 +47,10 @@ const MyApplication = props => {
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const [error, setError] = useState([]);
+
+  useEffect(() => {
+    props.f4FetchServiceAppStatus();
+  }, []);
 
   useEffect(() => {
     if (param.bukrs) {
@@ -260,6 +266,8 @@ const MyApplication = props => {
     });
   };
 
+  console.log(serviceAppStatus);
+
   return (
     <Container fluid className="containerMargin">
       <Form>
@@ -287,7 +295,7 @@ const MyApplication = props => {
           <Form.Field>
             <label>{messages['brnch']}</label>
             <DropdownClearable
-              options={companyOptions}
+              options={serviceBranchOptions}
               value={param.branchId}
               placeholder={messages['brnch']}
               onChange={(e, o) => onInputChange(o, 'branchId')}
@@ -297,8 +305,8 @@ const MyApplication = props => {
           <Form.Field>
             <label>{messages['application_status']}</label>
             <DropdownClearable
-              options={companyOptions}
-              value={param.branchId}
+              options={getAppStatus(serviceAppStatus, language)}
+              value={param.applicationStatusId}
               placeholder={messages['application_status']}
               onChange={(e, o) => onInputChange(o, 'applicationStatusId')}
               handleClear={() => handleClear('applicationStatusId')}
@@ -367,14 +375,31 @@ const MyApplication = props => {
   );
 };
 
+const getAppStatus = (serviceAppStatus, lang) => {
+  const appStatus = serviceAppStatus;
+  if (!appStatus) {
+    return [];
+  }
+  let out = serviceAppStatus.map(c => {
+    return {
+      key: parseInt(c.id, 10),
+      text: c[lang],
+      value: parseInt(c.id, 10),
+    };
+  });
+  return out;
+};
+
 function mapStateToProps(state) {
   return {
     language: state.locales.lang,
     myApplication: state.smopspReducer.myApplication,
+    serviceAppStatus: state.f4.serviceAppStatus,
   };
 }
 
 export default connect(mapStateToProps, {
   fetchServiceListManager,
   fetchMyApplication,
+  f4FetchServiceAppStatus,
 })(injectIntl(MyApplication));

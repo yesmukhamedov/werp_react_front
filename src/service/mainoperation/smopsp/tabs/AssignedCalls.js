@@ -236,7 +236,7 @@ const AssignedCalls = props => {
           <Form.Field>
             <label>{messages['brnch']}</label>
             <DropdownClearable
-              options={companyOptions}
+              options={serviceBranchOptions}
               value={param.branchId}
               placeholder={messages['brnch']}
               onChange={(e, o) => onInputChange(o, 'branchId')}

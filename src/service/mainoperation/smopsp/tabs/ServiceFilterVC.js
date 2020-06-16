@@ -19,7 +19,14 @@ const ServiceFilterVC = props => {
   const {
     countryOptions,
     companyOptions = [],
+    finStatusOption,
+    serviceDateTypeOptions,
+    warrantyOptions,
+    crmCategory,
     branchOptions,
+  } = props;
+
+  const {
     intl: { messages },
     fetchServicePacketPlan,
     servicePacket = [],
@@ -204,21 +211,26 @@ const ServiceFilterVC = props => {
         case 'serviceTypeId':
           prevParam.serviceTypeId = o.value;
           break;
+
         case 'serviceStatusId':
           prevParam.serviceStatusId = o.value;
           break;
         case 'dateStart':
           prevParam.dateStart = o.value;
           break;
+
         case 'contractStatusId':
           prevParam.contractStatusId = o.value;
           break;
+
         case 'serviceDateType':
           prevParam.serviceDateType = o.value;
           break;
+
         case 'warranty':
           prevParam.warranty = o.value;
           break;
+
         default:
           prevParam[fieldName] = o.value;
       }
@@ -269,21 +281,26 @@ const ServiceFilterVC = props => {
         case 'serviceTypeId':
           prevParam.serviceTypeId = '';
           break;
+
         case 'serviceStatusId':
           prevParam.serviceStatusId = '';
           break;
         case 'dateStart':
           prevParam.dateStart = '';
           break;
+
         case 'contractStatusId':
           prevParam.contractStatusId = '';
           break;
+
         case 'serviceDateType':
           prevParam.serviceDateType = '';
           break;
+
         case 'warranty':
           prevParam.warranty = '';
           break;
+
         default:
           prevParam[fieldName] = '';
       }
@@ -324,8 +341,8 @@ const ServiceFilterVC = props => {
           <Form.Field>
             <label>{messages['brnch']}</label>
             <DropdownClearable
-              options={companyOptions}
-              value={param.branchId}
+              options={serviceBranchOptions}
+              value={param.bukrs}
               placeholder={messages['brnch']}
               onChange={(e, o) => onInputChange(o, 'branchId')}
               handleClear={() => handleClear('branchId')}
@@ -334,7 +351,7 @@ const ServiceFilterVC = props => {
           <Form.Field>
             <label>{messages['fin_status']}</label>
             <DropdownClearable
-              options={companyOptions}
+              options={finStatusOption}
               value={param.contractStatusId}
               placeholder={messages['fin_status']}
               onChange={(e, o) => onInputChange(o, 'contractStatusId')}
@@ -344,7 +361,7 @@ const ServiceFilterVC = props => {
           <Form.Field>
             <label>{messages['service_period']}</label>
             <DropdownClearable
-              options={companyOptions}
+              options={serviceDateTypeOptions}
               value={param.serviceDateType}
               placeholder={messages['service_period']}
               onChange={(e, o) => onInputChange(o, 'serviceDateType')}
@@ -356,7 +373,7 @@ const ServiceFilterVC = props => {
           <Form.Field>
             <label>{messages['category']}</label>
             <DropdownClearable
-              options={companyOptions}
+              options={getCrmCategory(crmCategory)}
               value={param.crmCategory}
               placeholder={messages['category']}
               onChange={(e, o) => onInputChange(o, 'crmCategory')}
@@ -366,7 +383,7 @@ const ServiceFilterVC = props => {
           <Form.Field>
             <label>{messages['guarantee']}</label>
             <DropdownClearable
-              options={companyOptions}
+              options={warrantyOptions}
               value={param.warranty}
               placeholder={messages['guarantee']}
               onChange={(e, o) => onInputChange(o, 'warranty')}
