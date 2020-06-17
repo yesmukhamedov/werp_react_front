@@ -187,8 +187,8 @@ const Srlsm = props => {
       filterable: false,
     },
     {
-      Header: 'Дата',
-      accessor: 'contractDate',
+      Header: 'Дата сервиса',
+      accessor: 'dateOpen',
       checked: true,
       filterable: false,
     },
