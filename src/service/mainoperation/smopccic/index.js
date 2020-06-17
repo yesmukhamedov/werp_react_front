@@ -31,6 +31,7 @@ const Smopccic = props => {
     countryList = [],
     branches = [],
     serviceAppStatus = [],
+    branchOptions = [],
   } = props;
 
   useEffect(() => {
@@ -83,7 +84,7 @@ const Smopccic = props => {
             companyOptions={companyOptions}
             countryOptions={countryOptions}
             tovarCategoryOptions={tovarCategoryOptions}
-            branches={branches}
+            branchOptions={branchOptions}
             finStatusOptions={finStatusOptions}
           />
         </Tab.Pane>
@@ -104,7 +105,7 @@ const Smopccic = props => {
           <MyApplication
             companyOptions={companyOptions}
             countryOptions={countryOptions}
-            branches={branches}
+            branchOptions={branchOptions}
             tovarCategoryOptions={tovarCategoryOptions}
             serviceAppStatusOptions={serviceAppStatusOptions}
           />
@@ -152,6 +153,7 @@ function mapStateToProps(state) {
     branches: state.f4.branches,
     serviceAppStatus: state.f4.serviceAppStatus,
     contractStatusList: state.f4.contractStatusList,
+    branchOptions: state.userInfo.branchOptionsService,
   };
 }
 

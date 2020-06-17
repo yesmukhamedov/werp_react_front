@@ -27,9 +27,7 @@ const AssignedCalls = props => {
   const {
     companyOptions = [],
     countryOptions,
-    serviceDateTypeOptions,
     branches,
-    crmCategoryOptions = [],
     finStatusOption,
     assignedCalls,
   } = props;
@@ -38,9 +36,6 @@ const AssignedCalls = props => {
     country: '',
     bukrs: '',
     branchId: '',
-    crmCategoryId: '',
-    serviceDateType: '',
-    contractStatusId: '',
     dateOpenAt: '',
   };
 
@@ -234,22 +229,9 @@ const AssignedCalls = props => {
         case 'branchId':
           prevParam.branchId = o.value;
           break;
-
-        case 'crmCategoryId':
-          prevParam.crmCategoryId = o.value;
-          break;
-        case 'serviceDateType':
-          prevParam.serviceDateType = o.value;
-          break;
-
         case 'configuration':
           prevParam.configuration = o.value;
           break;
-
-        case 'contractStatusId':
-          prevParam.contractStatusId = o.value;
-          break;
-
         default:
           prevParam[fieldName] = o.value;
       }
@@ -292,32 +274,6 @@ const AssignedCalls = props => {
             placeholder={messages['brnch']}
             options={serviceBranchOptions}
             onChange={(e, o) => onInputChange(o, 'branchId')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            fluid
-            label={messages['fin_status']}
-            placeholder={messages['fin_status']}
-            options={finStatusOption}
-            onChange={(e, o) => onInputChange(o, 'contractStatusId')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            fluid
-            label={messages['service_period']}
-            placeholder={messages['service_period']}
-            options={serviceDateTypeOptions}
-            onChange={(e, o) => onInputChange(o, 'serviceDateType')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            label={messages['category']}
-            placeholder={messages['category']}
-            options={crmCategoryOptions}
-            onChange={(e, o) => onInputChange(o, 'crmCategoryId')}
             className="alignBottom"
           />
         </Form.Group>

@@ -28,7 +28,6 @@ const MyApplicationExodus = props => {
   const {
     companyOptions = [],
     countryOptions,
-    serviceStatusOptions = [],
     branches,
     myApplication,
     crmCategoryOptions = [],
@@ -38,8 +37,6 @@ const MyApplicationExodus = props => {
     countryId: '',
     bukrs: '',
     branchId: '',
-    categoryId: '',
-    applicationStatus: '',
     dateOpenAt: '',
     dateOpenTo: '',
   };
@@ -277,18 +274,8 @@ const MyApplicationExodus = props => {
         case 'branchId':
           prevParam.branchId = o.value;
           break;
-
-        case 'categoryId':
-          prevParam.categoryId = o.value;
-          break;
-
-        case 'applicationStatus':
-          prevParam.applicationStatus = o.value;
-          break;
         case 'dateOpenAt':
           prevParam.dateOpenAt = o.value;
-          break;
-
         default:
           prevParam[fieldName] = o.value;
       }
@@ -331,24 +318,6 @@ const MyApplicationExodus = props => {
             placeholder={messages['brnch']}
             options={serviceBranchOptions}
             onChange={(e, o) => onInputChange(o, 'branchId')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            fluid
-            label={messages['category']}
-            placeholder={messages['category']}
-            options={crmCategoryOptions}
-            onChange={(e, o) => onInputChange(o, 'categoryId')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            fluid
-            label={messages['application_status']}
-            placeholder={messages['application_status']}
-            options={serviceStatusOptions}
-            onChange={(e, o) => onInputChange(o, 'applicationStatus')}
             className="alignBottom"
           />
         </Form.Group>

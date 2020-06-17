@@ -8,6 +8,7 @@ import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
 import ModalColumns from '../../../../utils/ModalColumns';
 import { LinkToSmcuspor } from '../../../../utils/outlink';
+import { Link } from 'react-router-dom';
 
 const TransferApplicationEntry = props => {
   const {
@@ -140,9 +141,21 @@ const TransferApplicationEntry = props => {
     {
       Header: messages['request_number'],
       accessor: 'applicationNumber',
+      Cell: original => {
+        const url = `../mainoperation/smvca?id=${original.value}`;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <Link to={url} target="_blank">
+              {original.value}
+            </Link>
+          </div>
+        );
+      },
+
       checked: true,
       filterable: false,
-      Cell: ({ original }) => <span>{original.contractNumber}</span>,
+      fixed: 'right',
+      width: 60,
     },
     {
       Header: messages['Table.View'],
@@ -157,6 +170,7 @@ const TransferApplicationEntry = props => {
         </div>
       ),
       checked: true,
+      width: 60,
       fixed: 'right',
     },
   ];

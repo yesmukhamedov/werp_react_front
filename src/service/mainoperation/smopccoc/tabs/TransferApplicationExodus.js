@@ -32,25 +32,13 @@ const TransferApplicationExodus = props => {
     language,
   } = props;
 
-  const {
-    companyOptions = [],
-    countryOptions,
-    serviceStatusOptions = [],
-    serviceDateTypeOptions,
-    branches,
-    finStatusOption,
-    crmCategoryOptions = [],
-    transfer,
-  } = props;
+  const { companyOptions = [], countryOptions, branches, transfer } = props;
 
   const emptyParam = {
     countryId: '',
     bukrs: '',
     branchId: '',
     contractStatusId: '',
-    serviceDateType: '',
-    crmCategory: '',
-    applicationStatus: '',
     dateOpenAt: '',
   };
 
@@ -255,23 +243,6 @@ const TransferApplicationExodus = props => {
         case 'branchId':
           prevParam.branchId = o.value;
           break;
-
-        case 'finStatus':
-          prevParam.contractStatusId = o.value;
-          break;
-
-        case 'serviceDateType':
-          prevParam.serviceDateType = o.value;
-          break;
-
-        case 'crmCategory':
-          prevParam.crmCategory = o.value;
-          break;
-
-        case 'applicationStatus':
-          prevParam.applicationStatus = o.value;
-          break;
-
         default:
           prevParam[fieldName] = o.value;
       }
@@ -313,40 +284,6 @@ const TransferApplicationExodus = props => {
             placeholder={messages['brnch']}
             options={serviceBranchOptions}
             onChange={(e, o) => onInputChange(o, 'branchId')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            fluid
-            label={messages['fin_status']}
-            placeholder={messages['fin_status']}
-            options={finStatusOption}
-            onChange={(e, o) => onInputChange(o, 'finStatus')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            fluid
-            label={messages['service_period']}
-            placeholder={messages['service_period']}
-            options={serviceDateTypeOptions}
-            onChange={(e, o) => onInputChange(o, 'serviceDateType')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            label={messages['category']}
-            placeholder={messages['category']}
-            options={crmCategoryOptions}
-            onChange={(e, o) => onInputChange(o, 'crmCategory')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            label={messages['application_status']}
-            placeholder={messages['application_status']}
-            options={serviceStatusOptions}
-            onChange={(e, o) => onInputChange(o, 'applicationStatus')}
             className="alignBottom"
           />
         </Form.Group>

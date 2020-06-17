@@ -1,16 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import {
-  Container,
-  Form,
-  Icon,
-  Button,
-  Popup,
-  Divider,
-  Dropdown,
-  Input,
-} from 'semantic-ui-react';
+import { Container, Form, Icon, Divider } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import OutputErrors from '../../../../general/error/outputErrors';
 import { errorTableText } from '../../../../utils/helpers';
@@ -25,24 +16,22 @@ import {
   stringYYYYMMDDToMoment,
 } from '../../../../utils/helpers';
 import { Link } from 'react-router-dom';
+import DropdownClearable from '../../../../utils/DropdownClearable';
 
 const MyApplication = props => {
-  const {
-    countryOptions,
-    companyOptions = [],
-    branches,
-    serviceAppStatusOptions,
-    tovarCategoryOptions,
-  } = props;
-
   const {
     intl: { messages },
     language,
     myApplicationData,
+    countryOptions,
+    companyOptions = [],
+    serviceAppStatusOptions,
+    tovarCategoryOptions,
+    branchOptions = [],
   } = props;
 
   const emptyParam = {
-    country: '',
+    countryId: '',
     bukrs: '',
     branchId: '',
     tovarCategory: '',
@@ -54,6 +43,20 @@ const MyApplication = props => {
   const [param, setParam] = useState({ ...emptyParam });
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const [error, setError] = useState([]);
+
+  const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
+  useEffect(() => {
+    if (param.bukrs) {
+      setServiceBranchOptions(branchOptions[param.bukrs]);
+      console.log(branchOptions[param.bukrs]);
+    }
+    if (param.bukrs !== '' && param.countryId !== '' && branchOptions) {
+      let brnchOpt = branchOptions[param.bukrs].filter(
+        item => item.countryid === param.countryId,
+      );
+      setServiceBranchOptions(brnchOpt);
+    }
+  }, [branchOptions, param.countryId, param.bukrs]);
 
   const initialColumns = [
     {
@@ -187,9 +190,21 @@ const MyApplication = props => {
     {
       Header: messages['request_number'],
       accessor: 'applicationNumber',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: original => {
+        const url = `../mainoperation/smvca?id=${original.value}`;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <Link to={url} target="_blank">
+              {original.value}
+            </Link>
+          </div>
+        );
+      },
+
       checked: true,
       filterable: false,
+      fixed: 'right',
+      width: 60,
     },
     {
       Header: messages['Table.View'],
@@ -211,46 +226,6 @@ const MyApplication = props => {
     },
   ];
 
-  const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
-
-  useEffect(() => {
-    let servBrOptions = branches
-      .filter(
-        item =>
-          item.business_area_id == 5 ||
-          item.business_area_id == 6 ||
-          item.business_area_id == 9,
-      )
-      .map(item => {
-        return {
-          key: item.branch_id,
-          text: item.text45,
-          value: item.branch_id,
-          country_id: item.country_id,
-          bukrs: item.bukrs,
-        };
-      });
-    if (param.country !== '' && param.bukrs !== '') {
-      let servBranchOptions = servBrOptions
-        .filter(item => item.country_id === param.country)
-        .filter(item => item.bukrs === param.bukrs);
-      setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country !== '' && param.bukrs === '') {
-      let servBranchOptions = servBrOptions.filter(
-        item => item.country_id === param.country,
-      );
-      setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country === '' && param.bukrs !== '') {
-      let servBranchOptions = servBrOptions.filter(
-        item => item.bukrs === param.bukrs,
-      );
-
-      setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country === '' && param.bukrs === '') {
-      setServiceBranchOptions([...servBrOptions]);
-    }
-  }, [branches, param.country, param.bukrs]);
-
   const handleClickApply = () => {
     validate();
     if (param.bukrs !== '') {
@@ -260,8 +235,6 @@ const MyApplication = props => {
       setTurnOnReactFetch(true);
     }
   };
-
-  console.log(myApplicationData);
 
   const validate = () => {
     const errors = [];
@@ -275,8 +248,8 @@ const MyApplication = props => {
     setParam(prev => {
       const prevParam = { ...prev };
       switch (fieldName) {
-        case 'country':
-          prevParam.country = o.value;
+        case 'countryId':
+          prevParam.countryId = o.value;
           break;
         case 'bukrs':
           prevParam.bukrs = o.value;
@@ -303,58 +276,87 @@ const MyApplication = props => {
     setColumns([...data]);
   };
 
+  const handleClear = fieldName => {
+    setParam(prev => {
+      const prevParam = { ...prev };
+      switch (fieldName) {
+        case 'countryId':
+          prevParam.countryId = '';
+          break;
+        case 'bukrs':
+          prevParam.bukrs = '';
+          break;
+        case 'branchId':
+          prevParam.branchId = '';
+          break;
+        case 'tovarCategory':
+          prevParam.tovarCategory = '';
+          break;
+        case 'applicationStatus':
+          prevParam.applicationStatus = '';
+          break;
+        default:
+          prevParam[fieldName] = '';
+      }
+      return prevParam;
+    });
+  };
+
   return (
     <Container fluid className="containerMargin">
       <Form>
         <Form.Group widths="equal">
-          <Form.Select
-            fluid
-            label={messages['country']}
-            placeholder={messages['country']}
-            options={countryOptions}
-            onChange={(e, o) => onInputChange(o, 'country')}
-            className="alignBottom"
-            clearable
-          />
+          <Form.Field>
+            <label>{messages['country']}</label>
+            <DropdownClearable
+              options={countryOptions}
+              value={param.countryId}
+              placeholder={messages['country']}
+              onChange={(e, o) => onInputChange(o, 'countryId')}
+              handleClear={() => handleClear('countryId')}
+            />
+          </Form.Field>
+
+          <Form.Field required>
+            <label>{messages['bukrs']}</label>
+            <DropdownClearable
+              options={companyOptions}
+              value={param.bukrs}
+              placeholder={messages['bukrs']}
+              onChange={(e, o) => onInputChange(o, 'bukrs')}
+              handleClear={() => handleClear('bukrs')}
+            />
+          </Form.Field>
+
+          <Form.Field>
+            <label>{messages['brnch']}</label>
+            <DropdownClearable
+              options={serviceBranchOptions}
+              value={param.branchId}
+              placeholder={messages['brnch']}
+              onChange={(e, o) => onInputChange(o, 'branchId')}
+              handleClear={() => handleClear('branchId')}
+            />
+          </Form.Field>
+
+          <Form.Field>
+            <label>{messages['category']}</label>
+            <DropdownClearable
+              options={tovarCategoryOptions}
+              value={param.tovarCategoryId}
+              placeholder={messages['category']}
+              onChange={(e, o) => onInputChange(o, 'tovarCategoryId')}
+              handleClear={() => handleClear('tovarCategoryId')}
+            />
+          </Form.Field>
 
           <Form.Select
-            required
-            fluid
-            label={messages['bukrs']}
-            placeholder={messages['bukrs']}
-            options={companyOptions}
-            onChange={(e, o) => onInputChange(o, 'bukrs')}
-            className="alignBottom"
-            clearable
-          />
-
-          <Form.Select
-            fluid
-            label={messages['brnch']}
-            placeholder={messages['brnch']}
-            options={serviceBranchOptions}
-            onChange={(e, o) => onInputChange(o, 'branchId')}
-            className="alignBottom"
-            clearable
-          />
-
-          <Form.Select
-            label={messages['category']}
-            placeholder={messages['category']}
-            options={tovarCategoryOptions}
-            onChange={(e, o) => onInputChange(o, 'tovarCategory')}
-            className="alignBottom"
-            clearable
-          />
-
-          <Form.Select
-            label={messages['fin_status']}
-            placeholder={messages['fin_status']}
+            label={messages['application_status']}
+            placeholder={messages['application_status']}
             options={serviceAppStatusOptions}
             onChange={(e, o) => onInputChange(o, 'applicationStatus')}
             className="alignBottom"
             multiple
-            clearable
           />
         </Form.Group>
         <Form.Group className="spaceBetween">
