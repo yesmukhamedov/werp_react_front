@@ -224,13 +224,13 @@ export default function(state = INITIAL_STATE, action) {
       return { ...state, smregcCreateCall: action.payload };
     }
 
-    case FETCH_SMECAM: {
-      return {
-        ...state,
-        dynamicObject: action.payload.servApp,
-        historyDynamicObject: [...action.payload.servAppHistory],
-      };
-    }
+    // case FETCH_SMECAM: {
+    //   return {
+    //     ...state,
+    //     dynamicObject: action.payload.servApp,
+    //     historyDynamicObject: [...action.payload.servAppHistory],
+    //   };
+    // }
 
     case FETCH_APP_STATUS: {
       return {
