@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Container, Form, Divider } from 'semantic-ui-react';
+import { Container, Form, Divider, Segment } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import OutputErrors from '../../../../general/error/outputErrors';
 import { errorTableText } from '../../../../utils/helpers';
@@ -326,6 +326,11 @@ const TransferApplication = props => {
         <OutputErrors errors={error} />
       </Form>
       <Divider />
+      {Object.keys(rescheduledApp).length !== 0 ? (
+        <Segment>
+          <h4>{`Общее количество ${rescheduledApp.totalElements}`}</h4>
+        </Segment>
+      ) : null}
       <ReactTableServerSideWrapper
         data={rescheduledApp ? rescheduledApp.data : []}
         columns={columns}

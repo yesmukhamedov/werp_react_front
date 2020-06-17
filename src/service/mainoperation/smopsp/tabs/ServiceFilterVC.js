@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Container, Form, Divider, Icon, Popup } from 'semantic-ui-react';
+import {
+  Container,
+  Form,
+  Divider,
+  Icon,
+  Popup,
+  Segment,
+} from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import OutputErrors from '../../../../general/error/outputErrors';
 import { errorTableText } from '../../../../utils/helpers';
@@ -411,6 +418,11 @@ const ServiceFilterVC = props => {
         <OutputErrors errors={error} />
       </Form>
       <Divider />
+      {Object.keys(servicePacket).length !== 0 ? (
+        <Segment>
+          <h4>{`Общее количество ${servicePacket.totalElements}`}</h4>
+        </Segment>
+      ) : null}
 
       <ReactTableServerSideWrapper
         data={servicePacket ? servicePacket.data : []}
