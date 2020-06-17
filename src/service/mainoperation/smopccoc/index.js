@@ -5,7 +5,7 @@ import AssignedCalls from './tabs/AssignedCalls';
 import MyApplicationExodus from './tabs/MyApplicationExodus';
 import ServiceFilterPlan from './tabs/ServiceFilterPlan';
 import TransferApplicationExodus from './tabs/TransferApplicationExodus';
-import { Container, Tab, Segment, Menu, Label } from 'semantic-ui-react';
+import { Container, Tab, Segment, Menu, Button } from 'semantic-ui-react';
 import {
   f4fetchCategory,
   f4FetchStaffList,
@@ -193,7 +193,16 @@ const Smopccoc = props => {
         paddingRight: '2em',
       }}
     >
-      <Segment as="h2">{messages['filter_change_operator']}</Segment>
+      <Segment className="spaceBetween alignItemsCenter">
+        <h3 className="alignItemsCenter marginBottom-0">
+          {messages['filter_change_operator']}
+        </h3>
+        <a href="/service/mainoperation/smccald" target="_blank">
+          <Button color="teal">
+            {messages['create_request_without_data']}
+          </Button>
+        </a>
+      </Segment>
 
       <Tab
         menu={{ attached: true, tabular: false, pointing: true }}
