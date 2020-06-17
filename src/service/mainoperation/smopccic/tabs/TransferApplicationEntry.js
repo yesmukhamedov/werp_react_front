@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Container, Form } from 'semantic-ui-react';
+import { Container, Form, Icon } from 'semantic-ui-react';
+import { errorTableText } from '../../../../utils/helpers';
 import 'react-table/react-table.css';
 import { fetchTransferApplication } from '../smopccicAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
@@ -9,13 +10,42 @@ import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
 import ModalColumns from '../../../../utils/ModalColumns';
 import { LinkToSmcuspor } from '../../../../utils/outlink';
 import { Link } from 'react-router-dom';
+import DropdownClearable from '../../../../utils/DropdownClearable';
 
 const TransferApplicationEntry = props => {
   const {
     intl: { messages },
-    language,
     transferApplicationData,
+    companyOptions = [],
+    countryOptions,
+    branchOptions = [],
   } = props;
+
+  const emptyParam = {
+    countryId: '',
+    bukrs: '',
+    branchId: '',
+    contractStatusId: '',
+    dateOpenAt: '',
+  };
+
+  const [param, setParam] = useState({ ...emptyParam });
+  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
+  const [error, setError] = useState([]);
+
+  const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
+
+  useEffect(() => {
+    if (param.bukrs) {
+      setServiceBranchOptions(branchOptions[param.bukrs]);
+    }
+    if (param.bukrs !== '' && param.countryId !== '' && branchOptions) {
+      let brnchOpt = branchOptions[param.bukrs].filter(
+        item => item.countryid === param.countryId,
+      );
+      setServiceBranchOptions(brnchOpt);
+    }
+  }, [branchOptions, param.countryId, param.bukrs]);
 
   const initialColumns = [
     {
@@ -174,19 +204,114 @@ const TransferApplicationEntry = props => {
       fixed: 'right',
     },
   ];
-  useEffect(() => {
-    props.fetchTransferApplication();
-  }, []);
+  const handleClickApplyTransfer = () => {
+    validate();
+    if (param.bukrs !== '') {
+      const page = 0;
+      const size = 20;
+      props.fetchTransferApplication({ ...param, page, size });
+      setTurnOnReactFetch(true);
+    }
+  };
+
+  const validate = () => {
+    const errors = [];
+    if (param.bukrs === '') {
+      errors.push(errorTableText(5));
+    }
+    setError(() => errors);
+  };
+
+  const onInputChange = (o, fieldName) => {
+    setParam(prev => {
+      const prevParam = { ...prev };
+      switch (fieldName) {
+        case 'countryId':
+          prevParam.countryId = o.value;
+          break;
+        case 'bukrs':
+          prevParam.bukrs = o.value;
+          break;
+        case 'branchId':
+          prevParam.branchId = o.value;
+          break;
+        default:
+          prevParam[fieldName] = o.value;
+      }
+      return prevParam;
+    });
+  };
 
   const [columns, setColumns] = useState([...initialColumns]);
   const finishColumns = data => {
     setColumns([...data]);
   };
+
+  const handleClear = fieldName => {
+    setParam(prev => {
+      const prevParam = { ...prev };
+      switch (fieldName) {
+        case 'countryId':
+          prevParam.countryId = '';
+          break;
+        case 'bukrs':
+          prevParam.bukrs = '';
+          break;
+        case 'branchId':
+          prevParam.branchId = '';
+          break;
+        default:
+          prevParam[fieldName] = '';
+      }
+      return prevParam;
+    });
+  };
   return (
     <Container fluid className="containerMargin">
       <Form>
+        <Form.Group widths="equal">
+          <Form.Field>
+            <label>{messages['country']}</label>
+            <DropdownClearable
+              options={countryOptions}
+              value={param.countryId}
+              placeholder={messages['country']}
+              onChange={(e, o) => onInputChange(o, 'countryId')}
+              handleClear={() => handleClear('countryId')}
+            />
+          </Form.Field>
+
+          <Form.Field required>
+            <label>{messages['bukrs']}</label>
+            <DropdownClearable
+              options={companyOptions}
+              value={param.bukrs}
+              placeholder={messages['bukrs']}
+              onChange={(e, o) => onInputChange(o, 'bukrs')}
+              handleClear={() => handleClear('bukrs')}
+            />
+          </Form.Field>
+
+          <Form.Field>
+            <label>{messages['brnch']}</label>
+            <DropdownClearable
+              options={serviceBranchOptions}
+              value={param.branchId}
+              placeholder={messages['brnch']}
+              onChange={(e, o) => onInputChange(o, 'branchId')}
+              handleClear={() => handleClear('branchId')}
+            />
+          </Form.Field>
+        </Form.Group>
         <Form.Group className="spaceBetween">
-          <div className="flexDirectionRow"></div>
+          <Form.Button
+            onClick={handleClickApplyTransfer}
+            color="blue"
+            className="alignBottom"
+          >
+            <Icon name="search" />
+            {messages['apply']}
+          </Form.Button>
           <Form.Field className="alignBottom">
             <ModalColumns
               columns={initialColumns}
@@ -196,9 +321,18 @@ const TransferApplicationEntry = props => {
         </Form.Group>
       </Form>
       <ReactTableWrapper
-        filterable={true}
-        columns={columns}
         data={transferApplicationData ? transferApplicationData.data : []}
+        columns={columns}
+        filterable={true}
+        defaultPageSize={20}
+        showPagination={true}
+        requestData={params => {
+          props.fetchTransferApplication({ ...params, ...param });
+        }}
+        pages={
+          transferApplicationData ? transferApplicationData.totalPages : ''
+        }
+        turnOnReactFetch={turnOnReactFetch}
       />
     </Container>
   );

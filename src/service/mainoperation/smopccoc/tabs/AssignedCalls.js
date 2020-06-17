@@ -27,7 +27,7 @@ const AssignedCalls = props => {
   const {
     companyOptions = [],
     countryOptions,
-    branches,
+    branchOptions = [],
     finStatusOption,
     assignedCalls,
   } = props;
@@ -161,42 +161,16 @@ const AssignedCalls = props => {
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
 
   useEffect(() => {
-    let servBrOptions = branches
-      .filter(
-        item =>
-          item.business_area_id == 5 ||
-          item.business_area_id == 6 ||
-          item.business_area_id == 9,
-      )
-      .map(item => {
-        return {
-          key: item.branch_id,
-          text: item.text45,
-          value: item.branch_id,
-          country_id: item.country_id,
-          bukrs: item.bukrs,
-        };
-      });
-    if (param.country !== '' && param.bukrs !== '') {
-      let servBranchOptions = servBrOptions
-        .filter(item => item.country_id === param.country)
-        .filter(item => item.bukrs === param.bukrs);
-      setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country !== '' && param.bukrs === '') {
-      let servBranchOptions = servBrOptions.filter(
-        item => item.country_id === param.country,
-      );
-      setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country === '' && param.bukrs !== '') {
-      let servBranchOptions = servBrOptions.filter(
-        item => item.bukrs === param.bukrs,
-      );
-
-      setServiceBranchOptions([...servBranchOptions]);
-    } else if (param.country === '' && param.bukrs === '') {
-      setServiceBranchOptions([...servBrOptions]);
+    if (param.bukrs) {
+      setServiceBranchOptions(branchOptions[param.bukrs]);
     }
-  }, [branches, param.country, param.bukrs]);
+    if (param.bukrs !== '' && param.countryId !== '' && branchOptions) {
+      let brnchOpt = branchOptions[param.bukrs].filter(
+        item => item.countryid === param.countryId,
+      );
+      setServiceBranchOptions(brnchOpt);
+    }
+  }, [branchOptions, param.countryId, param.bukrs]);
 
   const handleClickApplyAssigned = () => {
     validate();

@@ -94,7 +94,13 @@ const Smopccic = props => {
       menuItem: <Menu.Item key={2}>{messages['transfer']}</Menu.Item>,
       pane: (
         <Tab.Pane key={2}>
-          <TransferApplicationEntry />
+          <TransferApplicationEntry
+            companyOptions={companyOptions}
+            countryOptions={countryOptions}
+            tovarCategoryOptions={tovarCategoryOptions}
+            branchOptions={branchOptions}
+            finStatusOptions={finStatusOptions}
+          />
         </Tab.Pane>
       ),
     },

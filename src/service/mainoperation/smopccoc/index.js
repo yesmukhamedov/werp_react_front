@@ -41,7 +41,7 @@ const Smopccoc = props => {
     countryList,
     serviceStatusList = [],
     contractStatusList,
-    branches,
+    branchOptions,
   } = props;
 
   useEffect(() => {
@@ -119,7 +119,7 @@ const Smopccoc = props => {
             serviceDateTypeOptions={serviceDateTypeOptions}
             serviceStatusList={serviceStatusList}
             contractStatusList={contractStatusList}
-            branches={branches}
+            branchOptions={branchOptions}
           />
         </Tab.Pane>
       ),
@@ -140,7 +140,7 @@ const Smopccoc = props => {
             crmCategoryOptions={crmCategoryOptions}
             serviceStatusOptions={serviceStatusOptions}
             contractStatusList={contractStatusList}
-            branches={branches}
+            branchOptions={branchOptions}
           />
         </Tab.Pane>
       ),
@@ -159,7 +159,7 @@ const Smopccoc = props => {
             crmCategoryOptions={crmCategoryOptions}
             serviceStatusList={serviceStatusList}
             contractStatusList={contractStatusList}
-            branches={branches}
+            branchOptions={branchOptions}
           />
         </Tab.Pane>
       ),
@@ -176,7 +176,7 @@ const Smopccoc = props => {
             crmCategoryOptions={crmCategoryOptions}
             serviceStatusOptions={serviceStatusOptions}
             contractStatusList={contractStatusList}
-            branches={branches}
+            branchOptions={branchOptions}
           />
         </Tab.Pane>
       ),
@@ -214,7 +214,7 @@ function mapStateToProps(state) {
     category: state.f4.category,
     serviceStatusList: state.f4.serviceStatusList,
     contractStatusList: state.f4.contractStatusList,
-    branches: state.f4.branches,
+    branchOptions: state.userInfo.branchOptionsService,
   };
 }
 

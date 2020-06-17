@@ -21,6 +21,9 @@ import DropdownClearable from '../../../../utils/DropdownClearable';
 
 const SearchCustomer = props => {
   const {
+    intl: { messages },
+    searchCustomer,
+    language,
     countryOptions = [],
     companyOptions = [],
     branchOptions = [],
@@ -29,11 +32,6 @@ const SearchCustomer = props => {
     physStatusOptions = [],
   } = props;
 
-  const {
-    intl: { messages },
-    searchCustomer,
-    language,
-  } = props;
   const emptyParam = {
     countryId: '',
     bukrs: '',
