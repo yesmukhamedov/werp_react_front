@@ -53,7 +53,7 @@ const SearchCustomer = props => {
 
   const initialColumns = [
     {
-      Header: 'Id',
+      Header: '#',
       accessor: 'customerId',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
