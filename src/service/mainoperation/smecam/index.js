@@ -86,7 +86,7 @@ const Smecam = props => {
   const serviceAppStatusOptions = serviceAppStatus.map(item => {
     return {
       key: item.id,
-      text: item.name,
+      text: item.ru,
       value: item.id,
     };
   });
