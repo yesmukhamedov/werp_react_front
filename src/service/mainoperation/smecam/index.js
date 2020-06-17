@@ -33,6 +33,8 @@ const Smecam = props => {
     intl: { messages },
     smecamData = {},
     smecamHistory = [],
+    smecamDataEdit = {},
+    smecamHistoryEdit = [],
     serviceAppStatus = [],
   } = props;
 
@@ -40,7 +42,14 @@ const Smecam = props => {
   const id = url.slice(url.indexOf('=') + 1);
 
   const [smecam, setSmecam] = useState({});
-  console.log('state SMECAM', smecam);
+  const [smecamHis, setSmecamHis] = useState([]);
+  useEffect(() => {
+    if (Object.keys(smecamDataEdit).length > 0) {
+      setSmecam({ ...smecamDataEdit });
+      setSmecamHis([...smecamHistoryEdit]);
+    }
+  }, [smecamDataEdit]);
+
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
@@ -79,7 +88,6 @@ const Smecam = props => {
   };
 
   const handleSave = () => {
-    console.log('SAVE SMECAM');
     props.editSmecam({ ...smecam });
   };
 
@@ -509,6 +517,8 @@ function mapStateToProps(state) {
   return {
     smecamData: state.smecamReducer.smecamData,
     smecamHistory: state.smecamReducer.smecamHistory,
+    smecamDataEdit: state.smecamReducer.smecamDataEdit,
+    smecamHistoryEdit: state.smecamReducer.smecamHistoryEdit,
     serviceAppStatus: state.f4.serviceAppStatus,
   };
 }

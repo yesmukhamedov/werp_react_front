@@ -56,13 +56,14 @@ export const editSmecam = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doPut('smecam/edit', param)
-      .then(({ data }) => {
+      .then(data => {
+        console.log('SUCCESS EDIT');
         dispatch(modifyLoader(false));
         dispatch({
           type: EDIT_SMECAM,
-          payload: data,
+          payload: data.data.data,
         });
-        dispatch(notify('success', errorTableText(104), errorTableText(101)));
+        //dispatch(notify('success', errorTableText(104), errorTableText(101)));
       })
       .catch(error => {
         console.log('ERROR EDIT');

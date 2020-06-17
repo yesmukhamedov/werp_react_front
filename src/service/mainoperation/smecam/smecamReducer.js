@@ -19,10 +19,12 @@ export default function(state = INITIAL_STATE, action) {
       };
     }
     case EDIT_SMECAM: {
+      console.log('EDIT_SMECAM', action.payload);
+
       return {
         ...state,
-        smecamData: { ...action.payload.application },
-        smecamHistory: [...action.payload.applicationAudit],
+        smecamDataEdit: { ...action.payload.application },
+        smecamHistoryEdit: [...action.payload.applicationAudit],
       };
     }
 
