@@ -307,6 +307,7 @@ function Smeci(props) {
                         size="small"
                         fluid
                         value={countryName ? countryName : ''}
+                        disabled
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -318,6 +319,7 @@ function Smeci(props) {
                         size="small"
                         fluid
                         value={bukrsName ? bukrsName : ''}
+                        disabled
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -329,6 +331,7 @@ function Smeci(props) {
                         size="small"
                         fluid
                         value={branchName ? branchName : ''}
+                        disabled
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -354,6 +357,7 @@ function Smeci(props) {
                         size="small"
                         fluid
                         value={contractNumber ? contractNumber : ''}
+                        disabled
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -365,6 +369,7 @@ function Smeci(props) {
                         size="small"
                         fluid
                         value={tovarSn ? tovarSn : ''}
+                        disabled
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -376,6 +381,7 @@ function Smeci(props) {
                         size="small"
                         fluid
                         value={customerFIO ? customerFIO : ''}
+                        disabled
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -409,6 +415,7 @@ function Smeci(props) {
                             ? contract.serviceAddressName
                             : ''
                         }
+                        disabled
                       />
                     </Table.Cell>
                     <Table.Cell collapsing>
@@ -429,6 +436,7 @@ function Smeci(props) {
                         size="small"
                         fluid
                         value={fullPhone ? fullPhone : ''}
+                        disabled
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -461,6 +469,7 @@ function Smeci(props) {
                         size="small"
                         fluid
                         value={contractDate ? contractDate : ''}
+                        disabled
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -472,6 +481,7 @@ function Smeci(props) {
                         size="small"
                         fluid
                         value={installmentDate ? installmentDate : ''}
+                        disabled
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -483,6 +493,7 @@ function Smeci(props) {
                         size="small"
                         fluid
                         value={dealerFIO ? dealerFIO : ''}
+                        disabled
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -494,6 +505,7 @@ function Smeci(props) {
                         size="small"
                         fluid
                         value={fitterFIO ? fitterFIO : ''}
+                        disabled
                       />
                     </Table.Cell>
                     <Table.Cell></Table.Cell>
@@ -509,6 +521,7 @@ function Smeci(props) {
                                 size="small"
                                 fluid
                                 value={warrantyEndDate ? warrantyEndDate : ''}
+                                disabled
                               />
                             </Table.Cell>
                             <Table.Cell>
@@ -518,6 +531,7 @@ function Smeci(props) {
                                 value={`${
                                   warrantyEndedMonths ? warrantyEndedMonths : ''
                                 } / ${warranty ? warranty : ''}`}
+                                disabled
                               />
                             </Table.Cell>
                           </Table.Row>
@@ -567,30 +581,35 @@ function Smeci(props) {
                           label="F1"
                           className="input__filter_terms"
                           value={f1Mt ? f1Mt : 0}
+                          disabled
                         />
                         <Input
                           size="mini"
                           label="F2"
                           className="input__filter_terms"
                           value={f2Mt ? f2Mt : 0}
+                          disabled
                         />
                         <Input
                           size="mini"
                           label="F3"
                           className="input__filter_terms"
                           value={f3Mt ? f3Mt : 0}
+                          disabled
                         />
                         <Input
                           size="mini"
                           label="F4"
                           className="input__filter_terms"
                           value={f4Mt ? f4Mt : 0}
+                          disabled
                         />
                         <Input
                           size="mini"
                           label="F5"
                           className="input__filter_terms"
                           value={f5Mt ? f5Mt : 0}
+                          disabled
                         />
                       </Table.Cell>
                       <Table.Cell></Table.Cell>
@@ -637,30 +656,35 @@ function Smeci(props) {
                         label="F1"
                         className="input__filter_terms"
                         value={f1MtLeft ? f1MtLeft : '0'}
+                        disabled
                       />
                       <Input
                         size="mini"
                         label="F2"
                         className="input__filter_terms"
                         value={f2MtLeft ? f2MtLeft : '0'}
+                        disabled
                       />
                       <Input
                         size="mini"
                         label="F3"
                         className="input__filter_terms"
                         value={f3MtLeft ? f3MtLeft : '0'}
+                        disabled
                       />
                       <Input
                         size="mini"
                         label="F4"
                         className="input__filter_terms"
                         value={f4MtLeft ? f4MtLeft : '0'}
+                        disabled
                       />
                       <Input
                         size="mini"
                         label="F5"
                         className="input__filter_terms"
                         value={f5MtLeft ? f5MtLeft : '0'}
+                        disabled
                       />
                     </Table.Cell>
                   </Table.Row>

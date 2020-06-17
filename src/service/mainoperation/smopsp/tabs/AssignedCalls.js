@@ -61,6 +61,11 @@ const AssignedCalls = props => {
       filterable: false,
     },
     {
+      Header: messages['brnch'],
+      accessor: 'branchName',
+      checked: true,
+    },
+    {
       Header: 'CN',
       accessor: 'contractNumber',
       checked: true,
@@ -208,6 +213,8 @@ const AssignedCalls = props => {
       return prevParam;
     });
   };
+
+  console.log(assignedCalls.data);
 
   return (
     <Container fluid className="containerMargin">

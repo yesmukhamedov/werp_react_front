@@ -87,6 +87,11 @@ const MyApplication = props => {
       },
     },
     {
+      Header: messages['brnch'],
+      accessor: 'branchName',
+      checked: true,
+    },
+    {
       Header: 'CN',
       accessor: 'contractNumber',
       checked: true,

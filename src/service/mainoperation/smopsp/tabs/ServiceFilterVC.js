@@ -80,6 +80,11 @@ const ServiceFilterVC = props => {
       filterable: false,
     },
     {
+      Header: messages['brnch'],
+      accessor: 'branchName',
+      checked: true,
+    },
+    {
       Header: 'CN',
       accessor: 'contractNumber',
       checked: true,

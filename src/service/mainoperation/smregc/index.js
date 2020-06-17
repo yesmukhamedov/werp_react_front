@@ -175,150 +175,170 @@ function Smregc(props) {
       <Grid.Row>
         <Grid.Column width={7}>
           <Segment>
-            <h1>{messages['call_register']}</h1>
-            <Table striped>
-              <Table.Body>
-                <Table.Row>
-                  <Table.Cell width={5}>{messages['Operator']}</Table.Cell>
-                  <Table.Cell>
-                    <Input size="small" fluid value={userName} />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['Form.Date']}</Table.Cell>
-                  <Table.Cell>
-                    <Input>
-                      <DatePicker
-                        autoComplete="off"
-                        dateFormat="DD/MM/YYYY"
-                        selected={callDate}
-                        dropdownMode="select"
-                        locale={language}
-                        showMonthDropDown
-                        showYearDropDown
-                        maxDate={moment(new Date())}
-                        onChange={date => setCallDate(date)}
+            <Form>
+              <h1>{messages['call_register']}</h1>
+              <Table striped>
+                <Table.Body>
+                  <Table.Row>
+                    <Table.Cell width={5}>{messages['Operator']}</Table.Cell>
+                    <Table.Cell>
+                      <Input size="small" fluid value={userName} />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>{messages['Form.Date']}</Table.Cell>
+                    <Table.Cell>
+                      <Input>
+                        <DatePicker
+                          autoComplete="off"
+                          dateFormat="DD/MM/YYYY"
+                          selected={callDate}
+                          dropdownMode="select"
+                          locale={language}
+                          showMonthDropDown
+                          showYearDropDown
+                          maxDate={moment(new Date())}
+                          onChange={date => setCallDate(date)}
+                        />
+                      </Input>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Form.Field required>
+                        <label>{messages['call_status']}</label>
+                      </Form.Field>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Dropdown
+                        placeholder={messages['call_status']}
+                        fluid
+                        selection
+                        search
+                        options={servCrmCallOpt}
+                        onChange={(e, o) => onInputChange(o, 'callStatusId')}
                       />
-                    </Input>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['call_status']}</Table.Cell>
-                  <Table.Cell>
-                    <Dropdown
-                      placeholder={messages['call_status']}
-                      fluid
-                      selection
-                      search
-                      options={servCrmCallOpt}
-                      onChange={(e, o) => onInputChange(o, 'callStatusId')}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['call']}</Table.Cell>
-                  <Table.Cell>
-                    <Table>
-                      <Table.Body>
-                        <Table.Row>
-                          <Table.Cell>
-                            <Checkbox
-                              radio
-                              label={messages['incoming']}
-                              name="changeTerm"
-                              value="1"
-                              checked={Number.parseInt(callD, 10) === 1}
-                              onChange={(e, o) =>
-                                onInputChange(o, 'callDirectionId')
-                              }
-                            />
-                          </Table.Cell>
-                          <Table.Cell>
-                            <Checkbox
-                              radio
-                              label={messages['outgoing']}
-                              name="changeTerm"
-                              value="2"
-                              checked={Number.parseInt(callD, 10) === 2}
-                              onChange={(e, o) =>
-                                onInputChange(o, 'callDirectionId')
-                              }
-                            />
-                          </Table.Cell>
-                        </Table.Row>
-                      </Table.Body>
-                    </Table>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['Table.Note']}</Table.Cell>
-                  <Table.Cell>
-                    <Form>
-                      <TextArea
-                        placeholder={messages['Table.Note']}
-                        value={call.description}
-                        onChange={(e, o) => onInputChange(o, 'description')}
-                      />
-                    </Form>
-                  </Table.Cell>
-                </Table.Row>
-              </Table.Body>
-            </Table>
-            <Table striped>
-              <Table.Body>
-                <Table.Row>
-                  <Table.Cell width={5}>{messages['schedule_call']}</Table.Cell>
-                  <Table.Cell>
-                    <Table>
-                      <Table.Body>
-                        <Table.Row>
-                          <Table.Cell collapsing>
-                            <Checkbox
-                              onChange={(e, o) => setScheduleCall(o.checked)}
-                            />
-                          </Table.Cell>
-                          <Table.Cell>
-                            <Input>
-                              <DatePicker
-                                autoComplete="off"
-                                dateFormat="DD/MM/YYYY"
-                                selected={appointDate}
-                                dropdownMode="select"
-                                locale={language}
-                                showMonthDropDown
-                                showYearDropDown
-                                onChange={date => setAppointDate(date)}
-                                disabled={!scheduleCall}
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Form.Field required>
+                        <label>{messages['call']}</label>
+                      </Form.Field>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Table>
+                        <Table.Body>
+                          <Table.Row>
+                            <Table.Cell>
+                              <Checkbox
+                                radio
+                                label={messages['incoming']}
+                                name="changeTerm"
+                                value="1"
+                                checked={Number.parseInt(callD, 10) === 1}
+                                onChange={(e, o) =>
+                                  onInputChange(o, 'callDirectionId')
+                                }
                               />
-                            </Input>
-                          </Table.Cell>
-                        </Table.Row>
-                      </Table.Body>
-                    </Table>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['Table.Note']}</Table.Cell>
-                  <Table.Cell>
-                    <Form>
-                      <TextArea
-                        placeholder={messages['Table.Note']}
-                        onChange={(e, o) => onInputChange(o, 'description2')}
-                        disabled={!scheduleCall}
-                      />
-                    </Form>
-                  </Table.Cell>
-                </Table.Row>
-              </Table.Body>
-            </Table>
-            <Button
-              fluid
-              color="blue"
-              size="small"
-              onClick={() => handleSubmit()}
-            >
-              {messages['save']}
-            </Button>
+                            </Table.Cell>
+                            <Table.Cell>
+                              <Checkbox
+                                radio
+                                label={messages['outgoing']}
+                                name="changeTerm"
+                                value="2"
+                                checked={Number.parseInt(callD, 10) === 2}
+                                onChange={(e, o) =>
+                                  onInputChange(o, 'callDirectionId')
+                                }
+                              />
+                            </Table.Cell>
+                          </Table.Row>
+                        </Table.Body>
+                      </Table>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Form.Field required>
+                        <label>{messages['Table.Note']}</label>
+                      </Form.Field>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Form>
+                        <TextArea
+                          placeholder={messages['Table.Note']}
+                          value={call.description}
+                          onChange={(e, o) => onInputChange(o, 'description')}
+                        />
+                      </Form>
+                    </Table.Cell>
+                  </Table.Row>
+                </Table.Body>
+              </Table>
+              <Table striped>
+                <Table.Body>
+                  <Table.Row>
+                    <Table.Cell width={5}>
+                      {messages['schedule_call']}
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Table>
+                        <Table.Body>
+                          <Table.Row>
+                            <Table.Cell collapsing>
+                              <Checkbox
+                                onChange={(e, o) => setScheduleCall(o.checked)}
+                              />
+                            </Table.Cell>
+                            <Table.Cell>
+                              <Input>
+                                <DatePicker
+                                  autoComplete="off"
+                                  dateFormat="DD/MM/YYYY"
+                                  selected={appointDate}
+                                  dropdownMode="select"
+                                  locale={language}
+                                  showMonthDropDown
+                                  showYearDropDown
+                                  onChange={date => setAppointDate(date)}
+                                  disabled={!scheduleCall}
+                                />
+                              </Input>
+                            </Table.Cell>
+                          </Table.Row>
+                        </Table.Body>
+                      </Table>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Form.Field required={scheduleCall ? true : false}>
+                        <label>{messages['Table.Note']}</label>
+                      </Form.Field>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Form>
+                        <TextArea
+                          placeholder={messages['Table.Note']}
+                          onChange={(e, o) => onInputChange(o, 'description2')}
+                          disabled={!scheduleCall}
+                        />
+                      </Form>
+                    </Table.Cell>
+                  </Table.Row>
+                </Table.Body>
+              </Table>
+              <Button
+                fluid
+                color="blue"
+                size="small"
+                onClick={() => handleSubmit()}
+              >
+                {messages['save']}
+              </Button>
+            </Form>
           </Segment>
           <OutputErrors errors={error} />
         </Grid.Column>

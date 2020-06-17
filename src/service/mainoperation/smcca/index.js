@@ -10,6 +10,7 @@ import {
   Checkbox,
   Form,
   TextArea,
+  Label,
 } from 'semantic-ui-react';
 
 import { fetchServAppType } from '../../reference/srefAction';
@@ -202,8 +203,6 @@ function Smcca(props) {
     });
   };
 
-  console.log(clientContract);
-
   const handleSubmit = () => {
     validate();
     const crmHistoryDate = callDate.format('YYYY-MM-DD HH:mm:ss');
@@ -275,302 +274,328 @@ function Smcca(props) {
         <Grid.Column mobile={16} tablet={16} computer={7}>
           <h1>{messages['create_request']}</h1>
           <Segment>
-            <h3>{messages['L__CLIENT_INFO']}</h3>
-            <Table compact striped>
-              <Table.Body>
-                <Table.Row>
-                  <Table.Cell>{messages['bukrs']}</Table.Cell>
-                  <Table.Cell>
-                    <Input
-                      size="small"
-                      fluid
-                      value={bukrsName ? bukrsName : ''}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['brnch']}</Table.Cell>
-                  <Table.Cell>
-                    <Input
-                      size="small"
-                      fluid
-                      value={serviceBranchName ? serviceBranchName : ''}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['Product']}</Table.Cell>
-                  <Table.Cell>
-                    <Input
-                      size="small"
-                      fluid
-                      value={matnrName ? matnrName : ''}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['type_of_application']} </Table.Cell>
-                  <Table.Cell>
-                    <Dropdown
-                      placeholder={messages['type_of_application']}
-                      fluid
-                      selection
-                      search
-                      options={servAppOpts(servAppType, lang)}
-                      onChange={(e, o) => onInputChange(o, 'servAppType')}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['Application_Date']} </Table.Cell>
-                  <Table.Cell>
-                    <Table>
-                      <Table.Body>
-                        <Table.Row>
-                          <Table.Cell>
-                            <Input>
-                              <DatePicker
-                                autoComplete="off"
-                                deteFormat="DD/MM/YYYY"
-                                selected={callAppData}
-                                dropdownMode="select"
-                                locale={lang}
-                                showMonthDropDown
-                                showYearDropDown
-                                onChange={date => setCallAppDate(date)}
+            <Form>
+              <h3>{messages['L__CLIENT_INFO']}</h3>
+              <Table compact striped>
+                <Table.Body>
+                  <Table.Row>
+                    <Table.Cell>{messages['bukrs']}</Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        size="small"
+                        fluid
+                        value={bukrsName ? bukrsName : ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>{messages['brnch']}</Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        size="small"
+                        fluid
+                        value={serviceBranchName ? serviceBranchName : ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>{messages['Product']}</Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        size="small"
+                        fluid
+                        value={matnrName ? matnrName : ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Form.Field required>
+                        <label>{messages['type_of_application']}</label>
+                      </Form.Field>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Dropdown
+                        placeholder={messages['type_of_application']}
+                        fluid
+                        selection
+                        search
+                        options={servAppOpts(servAppType, lang)}
+                        onChange={(e, o) => onInputChange(o, 'servAppType')}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>{messages['Application_Date']} </Table.Cell>
+                    <Table.Cell>
+                      <Table>
+                        <Table.Body>
+                          <Table.Row>
+                            <Table.Cell>
+                              <Input>
+                                <DatePicker
+                                  autoComplete="off"
+                                  deteFormat="DD/MM/YYYY"
+                                  selected={callAppData}
+                                  dropdownMode="select"
+                                  locale={lang}
+                                  showMonthDropDown
+                                  showYearDropDown
+                                  onChange={date => setCallAppDate(date)}
+                                />
+                              </Input>
+                            </Table.Cell>
+                            <Table.Cell>
+                              <Checkbox
+                                label={messages['urgent']}
+                                onChange={(e, o) => {
+                                  setUrgencyLevel(o.checked);
+                                }}
                               />
-                            </Input>
-                          </Table.Cell>
-                          <Table.Cell>
-                            <Checkbox
-                              label={messages['urgent']}
-                              onChange={(e, o) => {
-                                setUrgencyLevel(o.checked);
-                              }}
-                            />
-                          </Table.Cell>
-                        </Table.Row>
-                      </Table.Body>
-                    </Table>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell verticalAlign="top">
-                    {messages['Operator']}
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Input
-                      size="small"
-                      fluid
-                      value={userName ? userName : ''}
-                    />
-                    <Table>
-                      <Table.Body>
-                        <Table.Row>
-                          <Table.Cell>
-                            <Input
-                              size="mini"
-                              label="F1"
-                              className="input__filter_terms"
-                              value={f1MtLeft ? f1MtLeft : ''}
-                            />
-                            <Input
-                              size="mini"
-                              label="F2"
-                              className="input__filter_terms"
-                              value={f2MtLeft ? f2MtLeft : ''}
-                            />
-                            <Input
-                              size="mini"
-                              label="F3"
-                              className="input__filter_terms"
-                              value={f3MtLeft ? f3MtLeft : ''}
-                            />
-                            <Input
-                              size="mini"
-                              label="F4"
-                              className="input__filter_terms"
-                              value={f4MtLeft ? f4MtLeft : ''}
-                            />
-                            <Input
-                              size="mini"
-                              label="F5"
-                              className="input__filter_terms"
-                              value={f5MtLeft ? f5MtLeft : ''}
-                            />
-                          </Table.Cell>
-                        </Table.Row>
-                      </Table.Body>
-                    </Table>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['full_name_of_client']}</Table.Cell>
-                  <Table.Cell>
-                    <Input
-                      size="small"
-                      fluid
-                      value={customerFIO ? customerFIO : ''}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['address']}</Table.Cell>
-                  <Table.Cell>
-                    <Input
-                      size="small"
-                      fluid
-                      value={serviceAddressName ? serviceAddressName : ''}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['contacts']}</Table.Cell>
-                  <Table.Cell>
-                    <Input
-                      size="small"
-                      fluid
-                      value={fullPhone ? fullPhone : ''}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['productSerialNumber']}</Table.Cell>
-                  <Table.Cell>
-                    <Input size="small" fluid value={tovarSn ? tovarSn : ''} />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['installation_date']}</Table.Cell>
-                  <Table.Cell>
-                    <Input
-                      size="small"
-                      fluid
-                      value={installmentDate ? installmentDate : ''}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['goodsInstaller']}</Table.Cell>
-                  <Table.Cell>
-                    <Input
-                      size="small"
-                      fluid
-                      value={fitterFIO ? fitterFIO : ''}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['bktxt']}</Table.Cell>
-                  <Table.Cell>
-                    <Form>
-                      <TextArea
-                        placeholder={messages['bktxt']}
-                        onChange={(e, o) => onInputChange(o, 'description')}
+                            </Table.Cell>
+                          </Table.Row>
+                        </Table.Body>
+                      </Table>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell verticalAlign="top">
+                      {messages['Operator']}
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        size="small"
+                        fluid
+                        value={userName ? userName : ''}
                       />
-                    </Form>
-                  </Table.Cell>
-                </Table.Row>
-              </Table.Body>
-            </Table>
-            <Checkbox
-              toggle
-              checked={scheduleCall}
-              onChange={(e, o) => {
-                setScheduleCall(o.checked);
-                localStorage.setItem('scheduleCall', !scheduleCall);
-              }}
-            />
-            <Table compact striped>
-              <Table.Body>
-                <Table.Row>
-                  <Table.Cell>{messages['date']}</Table.Cell>
-                  <Table.Cell>
-                    <Input>
-                      <DatePicker
-                        autoComplete="off"
-                        deteFormat="DD/MM/YYYY"
-                        selected={callDate}
-                        dropdownMode="select"
-                        locale={lang}
-                        showMonthDropDown
-                        showYearDropDown
-                        maxDate={moment(new Date())}
-                        onChange={date => setCallDate(date)}
+                      <Table>
+                        <Table.Body>
+                          <Table.Row>
+                            <Table.Cell>
+                              <Input
+                                size="mini"
+                                label="F1"
+                                className="input__filter_terms"
+                                value={f1MtLeft ? f1MtLeft : ''}
+                              />
+                              <Input
+                                size="mini"
+                                label="F2"
+                                className="input__filter_terms"
+                                value={f2MtLeft ? f2MtLeft : ''}
+                              />
+                              <Input
+                                size="mini"
+                                label="F3"
+                                className="input__filter_terms"
+                                value={f3MtLeft ? f3MtLeft : ''}
+                              />
+                              <Input
+                                size="mini"
+                                label="F4"
+                                className="input__filter_terms"
+                                value={f4MtLeft ? f4MtLeft : ''}
+                              />
+                              <Input
+                                size="mini"
+                                label="F5"
+                                className="input__filter_terms"
+                                value={f5MtLeft ? f5MtLeft : ''}
+                              />
+                            </Table.Cell>
+                          </Table.Row>
+                        </Table.Body>
+                      </Table>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>{messages['full_name_of_client']}</Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        size="small"
+                        fluid
+                        value={customerFIO ? customerFIO : ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>{messages['address']}</Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        size="small"
+                        fluid
+                        value={serviceAddressName ? serviceAddressName : ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>{messages['contacts']}</Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        size="small"
+                        fluid
+                        value={fullPhone ? fullPhone : ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>{messages['productSerialNumber']}</Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        size="small"
+                        fluid
+                        value={tovarSn ? tovarSn : ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>{messages['installation_date']}</Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        size="small"
+                        fluid
+                        value={installmentDate ? installmentDate : ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>{messages['goodsInstaller']}</Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        size="small"
+                        fluid
+                        value={fitterFIO ? fitterFIO : ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Form.Field required>
+                        <label>{messages['bktxt']}</label>
+                      </Form.Field>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Form.Field>
+                        <TextArea
+                          placeholder={messages['bktxt']}
+                          onChange={(e, o) => onInputChange(o, 'description')}
+                        />
+                      </Form.Field>
+                    </Table.Cell>
+                  </Table.Row>
+                </Table.Body>
+              </Table>
+              <Checkbox
+                toggle
+                checked={scheduleCall}
+                onChange={(e, o) => {
+                  setScheduleCall(o.checked);
+                  localStorage.setItem('scheduleCall', !scheduleCall);
+                }}
+              />
+              <Table compact striped>
+                <Table.Body>
+                  <Table.Row>
+                    <Table.Cell>{messages['date']}</Table.Cell>
+                    <Table.Cell>
+                      <Input>
+                        <DatePicker
+                          autoComplete="off"
+                          deteFormat="DD/MM/YYYY"
+                          selected={callDate}
+                          dropdownMode="select"
+                          locale={lang}
+                          showMonthDropDown
+                          showYearDropDown
+                          maxDate={moment(new Date())}
+                          onChange={date => setCallDate(date)}
+                          disabled={!scheduleCall}
+                        />
+                      </Input>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Form.Field required={scheduleCall ? true : false}>
+                        <label>{messages['call_status']}</label>
+                      </Form.Field>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Dropdown
+                        placeholder={messages['call_status']}
+                        fluid
+                        selection
+                        search
+                        options={servCrmCallOpt(servCrmCallStatus, lang)}
+                        onChange={(e, o) => onInputChange(o, 'callStatusId')}
                         disabled={!scheduleCall}
                       />
-                    </Input>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['call_status']}</Table.Cell>
-                  <Table.Cell>
-                    <Dropdown
-                      placeholder={messages['call_status']}
-                      fluid
-                      selection
-                      search
-                      options={servCrmCallOpt(servCrmCallStatus, lang)}
-                      onChange={(e, o) => onInputChange(o, 'callStatusId')}
-                      disabled={!scheduleCall}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['call']}</Table.Cell>
-                  <Table.Cell>
-                    <Table>
-                      <Table.Body>
-                        <Table.Row>
-                          <Table.Cell>
-                            <Checkbox
-                              radio
-                              label={messages['incoming']}
-                              name="changeTerm"
-                              value="1"
-                              checked={Number.parseInt(callD, 10) === 1}
-                              onChange={(e, o) =>
-                                onInputChange(o, 'callDirectionId')
-                              }
-                              disabled={!scheduleCall}
-                            />
-                          </Table.Cell>
-                          <Table.Cell>
-                            <Checkbox
-                              radio
-                              label={messages['outgoing']}
-                              name="changeTerm"
-                              value="2"
-                              checked={Number.parseInt(callD, 10) === 2}
-                              onChange={(e, o) =>
-                                onInputChange(o, 'callDirectionId')
-                              }
-                              disabled={!scheduleCall}
-                            />
-                          </Table.Cell>
-                        </Table.Row>
-                      </Table.Body>
-                    </Table>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['bktxt']}</Table.Cell>
-                  <Table.Cell>
-                    <Form>
-                      <TextArea
-                        placeholder={messages['bktxt']}
-                        onChange={(e, o) => onInputChange(o, 'description2')}
-                        disabled={!scheduleCall}
-                        value={request.description2}
-                      />
-                    </Form>
-                  </Table.Cell>
-                </Table.Row>
-              </Table.Body>
-            </Table>
-            <Button color="blue" fluid onClick={() => handleSubmit()}>
-              {messages['save']}
-            </Button>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Form.Field required={scheduleCall ? true : false}>
+                        <label>{messages['incoming']}</label>
+                      </Form.Field>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Table>
+                        <Table.Body>
+                          <Table.Row>
+                            <Table.Cell>
+                              <Checkbox
+                                radio
+                                label={messages['incoming']}
+                                name="changeTerm"
+                                value="1"
+                                checked={Number.parseInt(callD, 10) === 1}
+                                onChange={(e, o) =>
+                                  onInputChange(o, 'callDirectionId')
+                                }
+                                disabled={!scheduleCall}
+                              />
+                            </Table.Cell>
+                            <Table.Cell>
+                              <Checkbox
+                                radio
+                                label={messages['outgoing']}
+                                name="changeTerm"
+                                value="2"
+                                checked={Number.parseInt(callD, 10) === 2}
+                                onChange={(e, o) =>
+                                  onInputChange(o, 'callDirectionId')
+                                }
+                                disabled={!scheduleCall}
+                              />
+                            </Table.Cell>
+                          </Table.Row>
+                        </Table.Body>
+                      </Table>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Form.Field required={scheduleCall ? true : false}>
+                        <label>{messages['bktxt']}</label>
+                      </Form.Field>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Form.Field>
+                        <TextArea
+                          placeholder={messages['bktxt']}
+                          onChange={(e, o) => onInputChange(o, 'description2')}
+                          disabled={!scheduleCall}
+                          value={request.description2}
+                        />
+                      </Form.Field>
+                    </Table.Cell>
+                  </Table.Row>
+                </Table.Body>
+              </Table>
+              <Button color="blue" fluid onClick={() => handleSubmit()}>
+                {messages['save']}
+              </Button>
+            </Form>
           </Segment>
           <OutputErrors errors={error} />
         </Grid.Column>
