@@ -835,7 +835,7 @@
   "application_status": "Статус заявки",
   "changes": "Изменения",
   "outgoing_call_operator": "Оператор call center по исходящим звонкам",
-  "incoming_call_operator": "Оператор call center по входящим звонкам",
+  "incoming_call_operator": "Оператор по входящим звонкам",
   "cartrige_change_plan": "План по замене картриджей",
   "rescheduled_applications": "Перенесенные заявки",
   "assigned_calls": "Назначенные звонки",

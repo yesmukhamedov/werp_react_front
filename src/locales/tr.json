@@ -836,7 +836,7 @@
   "application_status": "Application status",
   "changes": "Changes",
   "outgoing_call_operator": "Call center operator for outgoing calls",
-  "incoming_call_operator": "Call center operator for incoming calls",
+  "incoming_call_operator": "Operator for incoming calls",
   "cartrige_change_plan": "Cartrige change plan",
   "rescheduled_applications": "Rescheduled applications",
   "assigned_calls": "Assigned calls",
