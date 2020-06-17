@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Segment, Dropdown, Button, Icon, Divider } from 'semantic-ui-react';
+import {
+  Segment,
+  Dropdown,
+  Button,
+  Icon,
+  Divider,
+  Form,
+  Container,
+} from 'semantic-ui-react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import './index.css';
 import { connect } from 'react-redux';
@@ -474,75 +482,96 @@ const Smsetpp = props => {
   }, [informations.serviceTypeId]);
 
   return (
-    <Segment>
-      <div className="setting">
-        <div className="flex-container">
-          <h1>{messages['setting_prices_and_premium_services']}</h1>
-          <AddPrice
-            param={search.bukrs !== 0 && search.countryId !== 0 ? search : null}
-            serviceTypeOptions={serviceTypeOptions}
-            search={search}
-            productList={productList}
-            getProductOptions={getProductOptions}
-          />
+    <Container
+      fluid
+      style={{
+        marginTop: '2em',
+        marginBottom: '2em',
+        paddingLeft: '2em',
+        paddingRight: '2em',
+      }}
+    >
+      <Segment className="flex-container">
+        <h2>{messages['setting_prices_and_premium_services']}</h2>
+      </Segment>
+
+      <Form>
+        <div className="justifySpaceBetween">
+          <Form.Group className="alignBottom">
+            <Form.Field required>
+              <label>{messages['bukrs']}</label>
+              <Dropdown
+                clearable="true"
+                selection
+                options={companyOptions}
+                placeholder={messages['bukrs']}
+                onChange={(e, { value }) => onChange('companyOptions', value)}
+              />
+            </Form.Field>
+
+            <Form.Field required>
+              <label>{messages['country']}</label>
+              <Dropdown
+                clearable="true"
+                selection
+                options={activeDropdown ? countryOptions : []}
+                placeholder={messages['country']}
+                onChange={(e, { value }) => onChange('countries', value)}
+              />
+            </Form.Field>
+
+            <Form.Field>
+              <label>Вид сервиса</label>
+              <Dropdown
+                clearable="true"
+                selection
+                options={serviceTypeOptions}
+                placeholder="Вид сервиса"
+                onChange={(e, { value }) => onChange('serviceType', value)}
+              />
+            </Form.Field>
+
+            <Form.Field>
+              <label>FC</label>
+              <Dropdown
+                disabled={statusServiceType}
+                clearable="true"
+                selection
+                options={fcOptions}
+                placeholder="FC"
+                onChange={(e, { value }) => onChange('fc', value)}
+              />
+            </Form.Field>
+
+            <Form.Field>
+              <label>MC</label>
+              <Dropdown
+                disabled={statusServiceType}
+                clearable="true"
+                selection
+                options={mcOptions}
+                placeholder="MC"
+                onChange={(e, { value }) => onChange('mc', value)}
+              />
+            </Form.Field>
+            <Form.Button onClick={onClickButton} color="blue">
+              <Icon name="search"></Icon>
+              {messages['search']}
+            </Form.Button>
+          </Form.Group>
+          <Form.Group className="alignBottom">
+            <AddPrice
+              param={
+                search.bukrs !== 0 && search.countryId !== 0 ? search : null
+              }
+              serviceTypeOptions={serviceTypeOptions}
+              search={search}
+              productList={productList}
+              getProductOptions={getProductOptions}
+            />
+          </Form.Group>
         </div>
-
-        <Dropdown
-          clearable="true"
-          selection
-          options={companyOptions}
-          placeholder={messages['bukrs']}
-          onChange={(e, { value }) => onChange('companyOptions', value)}
-        />
-
-        <Dropdown
-          clearable="true"
-          selection
-          options={activeDropdown ? countryOptions : []}
-          placeholder={messages['country']}
-          id="secondDropdown"
-          onChange={(e, { value }) => onChange('countries', value)}
-        />
-
-        <Dropdown
-          clearable="true"
-          selection
-          options={serviceTypeOptions}
-          placeholder="Вид сервиса"
-          id="secondDropdown"
-          onChange={(e, { value }) => onChange('serviceType', value)}
-        />
-
-        <Dropdown
-          disabled={statusServiceType}
-          clearable="true"
-          selection
-          options={fcOptions}
-          placeholder="FC"
-          id="secondDropdown"
-          onChange={(e, { value }) => onChange('fc', value)}
-        />
-
-        <Dropdown
-          disabled={statusServiceType}
-          clearable="true"
-          selection
-          options={mcOptions}
-          placeholder="MC"
-          id="secondDropdown"
-          onChange={(e, { value }) => onChange('mc', value)}
-        />
-        <button
-          className="ui blue inverted button"
-          onClick={onClickButton}
-          style={{ marginLeft: 30 }}
-        >
-          <i aria-hidden="true" className="search icon"></i>{' '}
-          {messages['search']}
-        </button>
         <OutputErrors errors={error} />
-        <br></br>
-        <br></br>
 
         <ReactTableWrapper
           data={serviceOptionPriceList}
@@ -692,6 +721,7 @@ const Smsetpp = props => {
                 <div style={{ textAlign: 'center' }}>{messages['toEdit']}</div>
               ),
               filterable: false,
+              fixed: 'right',
               Cell: ({ row }) => (
                 <div style={{ textAlign: 'center' }}>
                   <Button
@@ -732,8 +762,8 @@ const Smsetpp = props => {
           onChangeEditModal1={onChangeEditModal1}
           statusServiceTypeEdit={statusServiceTypeEdit}
         />
-      </div>
-    </Segment>
+      </Form>
+    </Container>
   );
 };
 

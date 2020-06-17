@@ -284,14 +284,14 @@ const AddPrice = props => {
   return (
     <Modal
       trigger={
-        <Button
-          inverted
-          color="blue"
+        <Form.Button
+          color="green"
           floated="right"
           onClick={() => setModalOpen(true)}
         >
+          <Icon name="plus" />
           {messages['toAdd']}
-        </Button>
+        </Form.Button>
       }
       open={modalOpen}
     >

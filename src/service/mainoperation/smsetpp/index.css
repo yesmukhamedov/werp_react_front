@@ -26,3 +26,14 @@
 #calendarIcon {
   margin-top: 5px;
 }
+.alignBottom {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-end !important;
+}
+
+.justifySpaceBetween {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+}
