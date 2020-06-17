@@ -23,7 +23,6 @@ import '../../service.css';
 const Smopccoc = props => {
   const {
     intl: { messages },
-    // language,
   } = props;
 
   const {

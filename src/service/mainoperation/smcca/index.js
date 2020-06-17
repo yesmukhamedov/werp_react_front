@@ -25,6 +25,7 @@ import moment from 'moment';
 import 'moment/locale/ru';
 import 'moment/locale/tr';
 import { injectIntl } from 'react-intl';
+import { stringYYYYMMDDHHMMSSToMoment } from '../../../utils/helpers';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import './smcca.css';
@@ -498,20 +499,23 @@ function Smcca(props) {
                   <Table.Row>
                     <Table.Cell>{messages['date']}</Table.Cell>
                     <Table.Cell>
-                      <Input>
-                        <DatePicker
-                          autoComplete="off"
-                          deteFormat="DD/MM/YYYY"
-                          selected={callDate}
-                          dropdownMode="select"
-                          locale={lang}
-                          showMonthDropDown
-                          showYearDropDown
-                          maxDate={moment(new Date())}
-                          onChange={date => setCallDate(date)}
-                          disabled={!scheduleCall}
-                        />
-                      </Input>
+                      <DatePicker
+                        autoComplete="off"
+                        dateFormat="DD/MM/YYYY HH:mm"
+                        selected={callDate}
+                        dropdownMode="select"
+                        locale={lang}
+                        timeFormat="HH:mm"
+                        showTimeSelect
+                        injectTimes={[
+                          moment()
+                            .hours(23)
+                            .minutes(59),
+                        ]}
+                        maxDate={moment(new Date())}
+                        onChange={date => setCallDate(date)}
+                        disabled={!scheduleCall}
+                      />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>

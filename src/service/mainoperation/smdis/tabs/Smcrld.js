@@ -402,6 +402,9 @@ const Smcrld = props => {
     }
   });
 
+  console.log('col', col);
+  console.log('init', initialColumns);
+
   return (
     <Container fluid>
       <Form>
