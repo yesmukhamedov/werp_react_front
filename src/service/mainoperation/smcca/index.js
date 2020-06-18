@@ -25,7 +25,6 @@ import moment from 'moment';
 import 'moment/locale/ru';
 import 'moment/locale/tr';
 import { injectIntl } from 'react-intl';
-import { stringYYYYMMDDHHMMSSToMoment } from '../../../utils/helpers';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import './smcca.css';
@@ -151,6 +150,8 @@ function Smcca(props) {
         clientContract = {},
         serviceFilterPlanId,
         serviceFilterVCPlanId,
+        operatorId,
+        operatorFIO,
       },
     },
   } = props;
@@ -175,8 +176,6 @@ function Smcca(props) {
     f4MtLeft,
     f5MtLeft,
   } = clientContract;
-
-  console.log(serviceFilterPlanId, serviceFilterVCPlanId);
 
   const onInputChange = (o, fieldName) => {
     setRequest(prev => {
@@ -248,6 +247,8 @@ function Smcca(props) {
             urgencyLevel,
             serviceFilterPlanId,
             serviceFilterVCPlanId,
+            operatorId,
+            operatorFIO,
           },
           crmHistory: {
             ...serviceCrmHistoryDto,
@@ -257,6 +258,8 @@ function Smcca(props) {
             contractNumber: Number.parseInt(contractNumber, 10),
             crmHistoryDate,
             tovarSn,
+            operatorId,
+            operatorFIO,
           },
         },
         () => {

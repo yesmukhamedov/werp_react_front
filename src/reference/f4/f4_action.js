@@ -142,6 +142,9 @@ export const F4_FETCH_PHYS_STATUS = 'F4_FETCH_PHYS_STATUS';
 export const F4_FETCH_CRM_CATEGORY = 'F4_FETCH_CRM_CATEGORY';
 export const F4_CLEAR_CRM_CATEGORY = 'F4_CLEAR_CRM_CATEGORY';
 
+export const F4_FETCH_CURRENT_STAFF = 'F4_FETCH_CURRENT_STAFF';
+export const F4_CLEAR_CURRENT_STAFF = 'F4_CLEAR_CURRENT_STAFF';
+
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 
@@ -1139,6 +1142,24 @@ export function f4FetchCrmCategory() {
         dispatch(modifyLoader(false));
         dispatch({
           type: F4_FETCH_CRM_CATEGORY,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchCurrentStaff() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`reference/currentStaff`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_CURRENT_STAFF,
           payload: data,
         });
       })

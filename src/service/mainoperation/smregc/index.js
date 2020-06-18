@@ -98,6 +98,8 @@ function Smregc(props) {
       bukrsId,
       serviceFilterPlanId,
       serviceFilterVCPlanId,
+      operatorId,
+      operatorFIO,
     } = props.location.state;
     const { callDirectionId, callStatusId, description, description2 } = call;
     if (err.length === 0) {
@@ -111,6 +113,8 @@ function Smregc(props) {
             crmHistoryDate,
             info: description,
             tovarSn,
+            operatorId,
+            operatorFIO,
           },
           crmSchedule: {
             branchId,
@@ -121,6 +125,8 @@ function Smregc(props) {
             tovarSn,
             serviceFilterPlanId,
             serviceFilterVCPlanId,
+            operatorId,
+            operatorFIO,
           },
         },
         () => {
