@@ -35,11 +35,11 @@ const ServiceFilterPlan = props => {
     serviceDateType: '',
     crmCategoryId: '',
     configuration: '',
-    planId: '',
   };
 
   //END Date option
   const [param, setParam] = useState({ ...emptyParam });
+  const [planId, setPlanId] = useState('');
   const [error, setError] = useState([]);
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
@@ -200,7 +200,7 @@ const ServiceFilterPlan = props => {
               color="red"
               onClick={() => {
                 setCancelPlanModal(true);
-                setParam({ ...param, planId: original.row.id });
+                setPlanId(original.row.id);
               }}
               style={{ cursor: 'pointer' }}
             />
@@ -317,7 +317,7 @@ const ServiceFilterPlan = props => {
       <CancelPlanModal
         open={cancelPlanModal}
         handleClickApply={() => handleClickApply()}
-        planId={param.planId}
+        planId={planId}
         onClosePlanModal={bool => setCancelPlanModal(bool)}
       />
       <Form>

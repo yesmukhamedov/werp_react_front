@@ -363,18 +363,21 @@ function Smcca(props) {
                         <Table.Body>
                           <Table.Row>
                             <Table.Cell>
-                              <Input>
-                                <DatePicker
-                                  autoComplete="off"
-                                  deteFormat="DD/MM/YYYY"
-                                  selected={callAppData}
-                                  dropdownMode="select"
-                                  locale={lang}
-                                  showMonthDropDown
-                                  showYearDropDown
-                                  onChange={date => setCallAppDate(date)}
-                                />
-                              </Input>
+                              <DatePicker
+                                autoComplete="off"
+                                dateFormat="DD/MM/YYYY HH:mm"
+                                selected={callAppData}
+                                dropdownMode="select"
+                                locale={lang}
+                                timeFormat="HH:mm"
+                                showTimeSelect
+                                injectTimes={[
+                                  moment()
+                                    .hours(23)
+                                    .minutes(59),
+                                ]}
+                                onChange={date => setCallAppDate(date)}
+                              />
                             </Table.Cell>
                             <Table.Cell collapsing>
                               <Checkbox
@@ -551,14 +554,19 @@ function Smcca(props) {
                   </Table.Row>
                 </Table.Body>
               </Table>
-              <Checkbox
-                toggle
-                checked={scheduleCall}
-                onChange={(e, o) => {
-                  setScheduleCall(o.checked);
-                  localStorage.setItem('scheduleCall', !scheduleCall);
-                }}
-              />
+              <Form.Field>
+                <h4>{messages['call_register']}</h4>
+              </Form.Field>
+              <Form.Field>
+                <Checkbox
+                  toggle
+                  checked={scheduleCall}
+                  onChange={(e, o) => {
+                    setScheduleCall(o.checked);
+                    localStorage.setItem('scheduleCall', !scheduleCall);
+                  }}
+                />
+              </Form.Field>
               <Table compact striped>
                 <Table.Body>
                   <Table.Row>

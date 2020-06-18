@@ -402,14 +402,12 @@ const Smcrld = props => {
     }
   });
 
-  console.log('col', col);
-  console.log('init', initialColumns);
-
   return (
     <Container fluid>
       <Form>
         <Form.Group widths="equal">
           <Form.Select
+            required
             fluid
             label="Компания"
             value={param.bukrsId}
@@ -420,6 +418,7 @@ const Smcrld = props => {
           />
 
           <Form.Select
+            required
             fluid
             label="Категория товара"
             placeholder="Категория товара"
@@ -431,7 +430,7 @@ const Smcrld = props => {
         </Form.Group>
         <Form.Group className="spaceBetween">
           <div className="flexDirectionRow">
-            <Form.Field className="marginRight">
+            <Form.Field className="marginRight" required>
               <label>{messages['date']}</label>
               <DatePicker
                 className="date-auto-width"
