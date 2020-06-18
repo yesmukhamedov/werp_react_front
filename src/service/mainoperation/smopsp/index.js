@@ -83,7 +83,7 @@ const Smopccoc = props => {
     },
     {
       key: 2,
-      text: 'Без грантии',
+      text: 'Без гарантии',
       value: 2,
     },
   ];

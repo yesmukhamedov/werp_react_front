@@ -25,7 +25,6 @@ import moment from 'moment';
 import 'moment/locale/ru';
 import 'moment/locale/tr';
 import { injectIntl } from 'react-intl';
-import { stringYYYYMMDDHHMMSSToMoment } from '../../../utils/helpers';
 
 import 'react-datepicker/dist/react-datepicker.css';
 import './smcca.css';
@@ -147,7 +146,13 @@ function Smcca(props) {
     servCrmCallStatus,
     intl: { messages },
     location: {
-      state: { clientContract = {} },
+      state: {
+        clientContract = {},
+        serviceFilterPlanId,
+        serviceFilterVCPlanId,
+        operatorId,
+        operatorFIO,
+      },
     },
   } = props;
 
@@ -240,6 +245,10 @@ function Smcca(props) {
                 ? null
                 : callAppData.format('YYYY-MM-DD HH:mm:ss'),
             urgencyLevel,
+            serviceFilterPlanId,
+            serviceFilterVCPlanId,
+            operatorId,
+            operatorFIO,
           },
           crmHistory: {
             ...serviceCrmHistoryDto,
@@ -249,6 +258,8 @@ function Smcca(props) {
             contractNumber: Number.parseInt(contractNumber, 10),
             crmHistoryDate,
             tovarSn,
+            operatorId,
+            operatorFIO,
           },
         },
         () => {
@@ -285,6 +296,7 @@ function Smcca(props) {
                       <Input
                         size="small"
                         fluid
+                        disabled
                         value={bukrsName ? bukrsName : ''}
                       />
                     </Table.Cell>
@@ -295,6 +307,7 @@ function Smcca(props) {
                       <Input
                         size="small"
                         fluid
+                        disabled
                         value={serviceBranchName ? serviceBranchName : ''}
                       />
                     </Table.Cell>
@@ -305,6 +318,7 @@ function Smcca(props) {
                       <Input
                         size="small"
                         fluid
+                        disabled
                         value={matnrName ? matnrName : ''}
                       />
                     </Table.Cell>
@@ -327,7 +341,11 @@ function Smcca(props) {
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>{messages['Application_Date']} </Table.Cell>
+                    <Table.Cell>
+                      <Form.Field>
+                        <label>{messages['Application_Date']}</label>
+                      </Form.Field>
+                    </Table.Cell>
                     <Table.Cell>
                       <Table>
                         <Table.Body>
@@ -367,6 +385,7 @@ function Smcca(props) {
                       <Input
                         size="small"
                         fluid
+                        disabled
                         value={userName ? userName : ''}
                       />
                       <Table>
@@ -415,6 +434,7 @@ function Smcca(props) {
                       <Input
                         size="small"
                         fluid
+                        disabled
                         value={customerFIO ? customerFIO : ''}
                       />
                     </Table.Cell>
@@ -425,6 +445,7 @@ function Smcca(props) {
                       <Input
                         size="small"
                         fluid
+                        disabled
                         value={serviceAddressName ? serviceAddressName : ''}
                       />
                     </Table.Cell>
@@ -435,6 +456,7 @@ function Smcca(props) {
                       <Input
                         size="small"
                         fluid
+                        disabled
                         value={fullPhone ? fullPhone : ''}
                       />
                     </Table.Cell>
@@ -445,6 +467,7 @@ function Smcca(props) {
                       <Input
                         size="small"
                         fluid
+                        disabled
                         value={tovarSn ? tovarSn : ''}
                       />
                     </Table.Cell>
@@ -455,6 +478,7 @@ function Smcca(props) {
                       <Input
                         size="small"
                         fluid
+                        disabled
                         value={installmentDate ? installmentDate : ''}
                       />
                     </Table.Cell>
@@ -465,6 +489,7 @@ function Smcca(props) {
                       <Input
                         size="small"
                         fluid
+                        disabled
                         value={fitterFIO ? fitterFIO : ''}
                       />
                     </Table.Cell>
@@ -484,6 +509,23 @@ function Smcca(props) {
                       </Form.Field>
                     </Table.Cell>
                   </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>{messages['plan_number']}</Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        size="small"
+                        fluid
+                        disabled
+                        value={`${
+                          serviceFilterPlanId ? serviceFilterPlanId : ''
+                        }${
+                          serviceFilterPlanId && serviceFilterVCPlanId
+                            ? ','
+                            : ''
+                        }${serviceFilterVCPlanId ? serviceFilterVCPlanId : ''}`}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
                 </Table.Body>
               </Table>
               <Checkbox
@@ -497,7 +539,11 @@ function Smcca(props) {
               <Table compact striped>
                 <Table.Body>
                   <Table.Row>
-                    <Table.Cell>{messages['date']}</Table.Cell>
+                    <Table.Cell>
+                      <Form.Field>
+                        <label>{messages['date']}</label>
+                      </Form.Field>
+                    </Table.Cell>
                     <Table.Cell>
                       <DatePicker
                         autoComplete="off"
@@ -596,9 +642,16 @@ function Smcca(props) {
                   </Table.Row>
                 </Table.Body>
               </Table>
-              <Button color="blue" fluid onClick={() => handleSubmit()}>
-                {messages['save']}
-              </Button>
+              <Form.Field>
+                <Button color="blue" fluid onClick={() => handleSubmit()}>
+                  {messages['save']}
+                </Button>
+              </Form.Field>
+              <Form.Field>
+                <Button color="red" fluid onClick={() => window.history.back()}>
+                  {messages['cancel']}
+                </Button>
+              </Form.Field>
             </Form>
           </Segment>
           <OutputErrors errors={error} />

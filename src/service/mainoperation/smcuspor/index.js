@@ -16,6 +16,7 @@ import {
   fetchSmcusporContractHistory,
   fetchSmcusporle,
 } from '../../serviceAction';
+import { f4FetchCurrentStaff } from '../../../reference/f4/f4_action';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'moment/locale/ru';
@@ -59,7 +60,10 @@ function Smcuspor(props) {
     crmHistoryServ = [],
     language,
     exportRole,
+    staffInfo,
   } = props;
+
+  console.log(staffInfo);
 
   const {
     countryName,
@@ -92,10 +96,9 @@ function Smcuspor(props) {
     f5MtLeft,
   } = clientContract;
 
-  console.log(exportRole);
-
   useEffect(() => {
     props.fetchSmcusporle();
+    props.f4FetchCurrentStaff();
     if (contractNumber) {
       props.fetchSmcusporContract({ contractNumber });
       props.fetchSmcusporContractHistory({ contractNumber });
@@ -162,6 +165,8 @@ function Smcuspor(props) {
                           bukrsId: bukrsId,
                           serviceFilterPlanId: planId,
                           serviceFilterVCPlanId: vcId,
+                          operatorId: staffInfo.staffId,
+                          operatorFIO: staffInfo.fullName,
                         },
                       )
                     }
@@ -179,6 +184,10 @@ function Smcuspor(props) {
                         `smcca?contractNumber=${contractNumber}`,
                         {
                           clientContract,
+                          serviceFilterPlanId: planId,
+                          serviceFilterVCPlanId: vcId,
+                          operatorId: staffInfo.staffId,
+                          operatorFIO: staffInfo.fullName,
                         },
                       )
                     }
@@ -762,6 +771,7 @@ function mapStateToProps(state) {
     crmHistoryServ: state.serviceReducer.crmHistoryServ,
     contractHistory: state.serviceReducer.smcusporContractHistory,
     exportRole: state.serviceReducer.smcusporle,
+    staffInfo: state.f4.staffInfo,
   };
 }
 
@@ -770,4 +780,5 @@ export default connect(mapStateToProps, {
   fetchServCrmHistoryAll,
   fetchSmcusporContractHistory,
   fetchSmcusporle,
+  f4FetchCurrentStaff,
 })(injectIntl(Smcuspor));

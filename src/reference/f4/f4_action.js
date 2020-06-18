@@ -145,6 +145,9 @@ export const F4_CLEAR_CRM_CATEGORY = 'F4_CLEAR_CRM_CATEGORY';
 export const F4_FETCH_AVAILABLED_TRANSACTION_BY_USER =
   'F4_FETCH_AVAILABLED_TRANSACTION_BY_USER';
 
+export const F4_FETCH_CURRENT_STAFF = 'F4_FETCH_CURRENT_STAFF';
+export const F4_CLEAR_CURRENT_STAFF = 'F4_CLEAR_CURRENT_STAFF';
+
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 
@@ -1151,10 +1154,30 @@ export function f4FetchCrmCategory() {
       });
   };
 }
+
+export function f4FetchCurrentStaff() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`reference/currentStaff`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_CURRENT_STAFF,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
 export function f4FetchAvailabledTransactionByUser() {
   return function(dispatch) {
+    dispatch(modifyLoader(true));
     doGet(`reference/transactions`)
       .then(({ data }) => {
+        dispatch(modifyLoader(false));
         dispatch({
           type: F4_FETCH_AVAILABLED_TRANSACTION_BY_USER,
           payload: data,

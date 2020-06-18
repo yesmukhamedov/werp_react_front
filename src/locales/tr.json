@@ -855,5 +855,6 @@
   "execute": "Execute",
   "urgent": "Urgent",
   "filter_change_operator": "Filter change operator",
-  "cleaning_system_operator": "Cleaning system operator"
+  "cleaning_system_operator": "Cleaning system operator",
+  "plan_number": "Plan number"
 }

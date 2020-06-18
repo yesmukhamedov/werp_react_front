@@ -83,6 +83,8 @@ import {
   F4_FETCH_CRM_CATEGORY,
   F4_CLEAR_CRM_CATEGORY,
   F4_FETCH_AVAILABLED_TRANSACTION_BY_USER,
+  F4_FETCH_CURRENT_STAFF,
+  F4_CLEAR_CURRENT_STAFF,
 } from './f4_action';
 
 const INITIAL_STATE = {
@@ -126,6 +128,7 @@ const INITIAL_STATE = {
   customersById: {},
   filterPlanStatus: [],
   crmCategory: [],
+  staffInfo: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -376,8 +379,15 @@ export default function(state = INITIAL_STATE, action) {
 
     case F4_CLEAR_CRM_CATEGORY:
       return { ...state, filterPlanStatus: [] };
+
     case F4_FETCH_AVAILABLED_TRANSACTION_BY_USER:
       return { ...state, availabledTransaction: {} };
+
+    case F4_FETCH_CURRENT_STAFF:
+      return { ...state, staffInfo: action.payload.data };
+
+    case F4_CLEAR_CURRENT_STAFF:
+      return { ...state, staffInfo: [] };
     default:
       return state;
   }
