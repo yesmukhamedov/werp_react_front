@@ -273,13 +273,13 @@ export default function(state = INITIAL_STATE, action) {
       };
     }
 
-    case FETCH_SMVCA: {
-      return {
-        ...state,
-        dynamicObject: action.payload.servApp,
-        historyDynamicObject: [...action.payload.servAppHistory],
-      };
-    }
+    // case FETCH_SMVCA: {
+    //   return {
+    //     ...state,
+    //     dynamicObject: action.payload.servApp,
+    //     historyDynamicObject: [...action.payload.servAppHistory],
+    //   };
+    // }
 
     case FETCH_SMECA: {
       return {

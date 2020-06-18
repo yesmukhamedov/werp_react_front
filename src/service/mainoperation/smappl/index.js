@@ -105,11 +105,18 @@ const Smappl = props => {
       fixed: 'left',
     },
     {
+      Header: `Филиал`,
+      accessor: 'branchName',
+      show: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+    },
+    {
       Header: `CN `,
       accessor: 'contractNumber',
       show: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
+
     {
       Header: messages['productSerialNumber'],
       accessor: 'tovarSn',

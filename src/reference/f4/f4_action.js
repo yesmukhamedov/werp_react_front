@@ -142,6 +142,9 @@ export const F4_FETCH_PHYS_STATUS = 'F4_FETCH_PHYS_STATUS';
 export const F4_FETCH_CRM_CATEGORY = 'F4_FETCH_CRM_CATEGORY';
 export const F4_CLEAR_CRM_CATEGORY = 'F4_CLEAR_CRM_CATEGORY';
 
+export const F4_FETCH_AVAILABLED_TRANSACTION_BY_USER =
+  'F4_FETCH_AVAILABLED_TRANSACTION_BY_USER';
+
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
 
@@ -1144,6 +1147,20 @@ export function f4FetchCrmCategory() {
       })
       .catch(error => {
         dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+export function f4FetchAvailabledTransactionByUser() {
+  return function(dispatch) {
+    doGet(`reference/transactions`)
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_AVAILABLED_TRANSACTION_BY_USER,
+          payload: data,
+        });
+      })
+      .catch(error => {
         handleError(error, dispatch);
       });
   };

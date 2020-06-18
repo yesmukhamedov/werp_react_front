@@ -82,6 +82,7 @@ import {
   F4_FETCH_PHYS_STATUS,
   F4_FETCH_CRM_CATEGORY,
   F4_CLEAR_CRM_CATEGORY,
+  F4_FETCH_AVAILABLED_TRANSACTION_BY_USER,
 } from './f4_action';
 
 const INITIAL_STATE = {
@@ -375,6 +376,8 @@ export default function(state = INITIAL_STATE, action) {
 
     case F4_CLEAR_CRM_CATEGORY:
       return { ...state, filterPlanStatus: [] };
+    case F4_FETCH_AVAILABLED_TRANSACTION_BY_USER:
+      return { ...state, availabledTransaction: {} };
     default:
       return state;
   }

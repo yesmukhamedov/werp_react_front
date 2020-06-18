@@ -62,6 +62,7 @@ import smsrcusReducer from '../service/mainoperation/smsrcus/smsrcusReducer';
 import smccaldReducer from '../service/mainoperation/smccald/smccaldReducer';
 import smsetctReducer from '../service/mainoperation/smsetct/smsetctReducer';
 import smecamReducer from '../service/mainoperation/smecam/smecamReducer';
+import smvcaReducer from '../service/mainoperation/smvca/smvcaReducer';
 
 const appReducer = combineReducers({
   form,
@@ -126,6 +127,7 @@ const appReducer = combineReducers({
   smccaldReducer: smccaldReducer,
   smsetctReducer: smsetctReducer,
   smecamReducer: smecamReducer,
+  smvcaReducer: smvcaReducer,
 });
 
 const rootReducer = (state, action) => {
