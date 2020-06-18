@@ -100,7 +100,7 @@ export const fetchMyApplication = param => {
 };
 
 //Отмена заявки
-export const postToCancelPlanVC = param => {
+export const postToCancelPlanVC = (param, fetchServPacketVC) => {
   let queryString = Object.keys(param)
     .map(key => key + '=' + param[key])
     .join('&');
@@ -113,6 +113,7 @@ export const postToCancelPlanVC = param => {
           type: POST_TO_CANCEL_PLAN_VC,
           payload: data,
         });
+        fetchServPacketVC();
       })
       .catch(error => {
         dispatch(modifyLoader(false));

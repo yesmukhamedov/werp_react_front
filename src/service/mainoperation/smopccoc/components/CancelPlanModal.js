@@ -22,11 +22,14 @@ function CancelPlanModal(props) {
   const handleSubmit = () => {
     let errs = validate();
     if (Object.keys(errs).length === 0) {
-      props.postToCancelPlan({
-        cancelReasonText: data.description,
-        id: planId,
-      });
-      handleClickApply();
+      props.postToCancelPlan(
+        {
+          cancelReasonText: data.description,
+          id: planId,
+        },
+        () => handleClickApply(),
+      );
+
       setData({ description: '' });
       close();
     }

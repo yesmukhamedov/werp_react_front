@@ -101,7 +101,7 @@ export const fetchMyApplicationExodus = param => {
 };
 
 //Отмена заявки
-export const postToCancelPlan = param => {
+export const postToCancelPlan = (param, fetchFilterPlan) => {
   let queryString = Object.keys(param)
     .map(key => key + '=' + param[key])
     .join('&');
@@ -114,6 +114,7 @@ export const postToCancelPlan = param => {
           type: POST_TO_CANCEL_PLAN,
           payload: data,
         });
+        fetchFilterPlan();
       })
       .catch(error => {
         dispatch(modifyLoader(false));

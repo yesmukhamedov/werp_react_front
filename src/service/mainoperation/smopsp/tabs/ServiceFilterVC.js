@@ -47,11 +47,11 @@ const ServiceFilterVC = props => {
     crmCategory: '',
     serviceDateType: '',
     warranty: '',
-    planId: '',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
+  const [planId, setPlanId] = useState('');
   const [error, setError] = useState([]);
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const [cancelPlanModal, setCancelPlanModal] = useState(false);
@@ -192,7 +192,7 @@ const ServiceFilterVC = props => {
               color="red"
               onClick={() => {
                 setCancelPlanModal(true);
-                setParam({ ...param, planId: original.row.id });
+                setPlanId(original.row.id);
               }}
               style={{ cursor: 'pointer' }}
             />
@@ -324,7 +324,8 @@ const ServiceFilterVC = props => {
     <Container fluid className="containerMargin">
       <CancelPlanModalVC
         open={cancelPlanModal}
-        planId={param.planId}
+        handleClickApply={() => handleClickApply()}
+        planId={planId}
         onClosePlanModal={bool => setCancelPlanModal(bool)}
       />
 

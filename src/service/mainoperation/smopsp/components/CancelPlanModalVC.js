@@ -14,6 +14,7 @@ function CancelPlanModalVC(props) {
   const {
     intl: { messages },
     planId,
+    handleClickApply,
   } = props;
 
   const onInputChange = event => setData({ description: event.target.value });
@@ -21,10 +22,13 @@ function CancelPlanModalVC(props) {
   const handleSubmit = () => {
     let errs = validate();
     if (Object.keys(errs).length === 0) {
-      props.postToCancelPlanVC({
-        cancelReasonText: data.description,
-        id: planId,
-      });
+      props.postToCancelPlanVC(
+        {
+          cancelReasonText: data.description,
+          id: planId,
+        },
+        () => handleClickApply(),
+      );
       setData({ description: '' });
       close();
     }
