@@ -66,7 +66,7 @@ const MyApplication = props => {
 
   const initialColumns = [
     {
-      Header: 'ID',
+      Header: '#',
       accessor: 'id',
       checked: true,
       filterable: false,

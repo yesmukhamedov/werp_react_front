@@ -74,7 +74,7 @@ const ServiceFilterVC = props => {
 
   const initialColumns = [
     {
-      Header: 'ID',
+      Header: '#',
       accessor: 'id',
       checked: true,
       filterable: false,
@@ -143,6 +143,12 @@ const ServiceFilterVC = props => {
     {
       Header: messages['fin_status'],
       accessor: 'contractStatusName',
+      checked: true,
+      filterable: false,
+    },
+    {
+      Header: messages['plan_status'],
+      accessor: 'planStatusName',
       checked: true,
       filterable: false,
     },

@@ -12,6 +12,7 @@ import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideW
 import ModalColumns from '../../../../utils/ModalColumns';
 import CancelPlanModal from '../components/CancelPlanModal';
 import matchSorter from 'match-sorter';
+import TextAlignCenter from '../../../../utils/TextAlignCenter';
 import { f4FetchBranchesByBukrs } from './../../../../reference/f4/f4_action';
 import { Link } from 'react-router-dom';
 import DropdownClearable from '../../../../utils/DropdownClearable';
@@ -50,19 +51,20 @@ const ServiceFilterPlan = props => {
       Header: '#',
       accessor: 'id',
       checked: true,
-      Cell: <div style={{ height: '100px' }}></div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
     {
       Header: messages['brnch'],
       accessor: 'branchName',
       checked: true,
-      Cell: <div style={{ height: '100px' }}></div>,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: 'CN',
       accessor: 'contractNumber',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['contractNumber'] }),
     },
@@ -70,6 +72,7 @@ const ServiceFilterPlan = props => {
       Header: messages['factory_number'],
       accessor: 'tovarSn',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['tovarSn'] }),
     },
@@ -77,12 +80,14 @@ const ServiceFilterPlan = props => {
       Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
     {
       Header: messages['fio'],
       accessor: 'customerFIO',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['customerFIO'] }),
       filterAll: true,
@@ -91,6 +96,7 @@ const ServiceFilterPlan = props => {
       Header: messages['customer_key'],
       accessor: 'customerIinBin',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['customerIinBin'] }),
       filterAll: true,
@@ -99,6 +105,7 @@ const ServiceFilterPlan = props => {
       Header: messages['address'],
       accessor: 'address',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['address'] }),
       filterAll: true,
@@ -107,6 +114,7 @@ const ServiceFilterPlan = props => {
       Header: messages['Dealer.Fullname'],
       accessor: 'dealerFIO',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['dealerFIO'] }),
       filterAll: true,
@@ -115,42 +123,56 @@ const ServiceFilterPlan = props => {
       Header: 'F1',
       accessor: 'f1',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
     {
       Header: 'F2',
       accessor: 'f2',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
     {
       Header: 'F3',
       accessor: 'f3',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
     {
       Header: 'F4',
       accessor: 'f4',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
     {
       Header: 'F5',
       accessor: 'f5',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
     {
       Header: messages['category'],
       accessor: 'crmCategoryName',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
     {
       Header: messages['fin_status'],
       accessor: 'contractStatusName',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
+      filterable: false,
+    },
+    {
+      Header: messages['plan_status'],
+      accessor: 'planStatusName',
+      checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
     {

@@ -12,6 +12,7 @@ import OutputErrors from '../../../../general/error/outputErrors';
 import { errorTableText } from '../../../../utils/helpers';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import TextAlignCenter from '../../../../utils/TextAlignCenter';
 import {
   momentToStringYYYYMMDD,
   stringYYYYMMDDToMoment,
@@ -48,33 +49,41 @@ const AssignedCalls = props => {
       Header: '#',
       accessor: 'id',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
     {
       Header: messages['brnch'],
       accessor: 'branchId',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: 'CN',
       accessor: 'contractNumber',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: messages['factory_number'],
       accessor: 'tovarSn',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
+
       filterable: false,
     },
     {
       Header: messages['appointment_date'],
       accessor: 'crmScheduleDate',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
+
       filterable: false,
     },
 
@@ -82,63 +91,81 @@ const AssignedCalls = props => {
       Header: messages['fio'],
       accessor: 'customerFIO',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
 
     {
       Header: messages['Phone'],
       accessor: 'phoneNumber',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: messages['address'],
       accessor: 'address',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: messages['Dealer.Fullname'],
       accessor: 'dealerFIO',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: 'F1',
       accessor: 'f1',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
+
       filterable: false,
     },
     {
       Header: 'F2',
       accessor: 'f2',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
+
       filterable: false,
     },
     {
       Header: 'F3',
       accessor: 'f3',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
+
       filterable: false,
     },
     {
       Header: 'F4',
       accessor: 'f4',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
+
       filterable: false,
     },
     {
       Header: 'F5',
       accessor: 'f5',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
+
       filterable: false,
     },
     {
       Header: messages['category'],
       accessor: 'crmCategoryId',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
+
       filterable: false,
     },
     {
       Header: messages['fin_status'],
       accessor: 'contractStatusId',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
+
       filterable: false,
     },
     {

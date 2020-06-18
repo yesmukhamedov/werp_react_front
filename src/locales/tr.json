@@ -857,5 +857,6 @@
   "filter_change_operator": "Filter change operator",
   "cleaning_system_operator": "Cleaning system operator",
   "plan_number": "Filter replacement plan number",
-  "plan_number_vc": "Cleaning plan number"
+  "plan_number_vc": "Cleaning plan number",
+  "plan_status": "Plan status"
 }
