@@ -47,7 +47,7 @@ const ServiceFilterPlan = props => {
 
   const initialColumns = [
     {
-      Header: 'Id',
+      Header: '#',
       accessor: 'id',
       checked: true,
       Cell: <div style={{ height: '100px' }}></div>,

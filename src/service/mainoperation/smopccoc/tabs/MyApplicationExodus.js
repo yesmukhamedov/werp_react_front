@@ -45,7 +45,7 @@ const MyApplicationExodus = props => {
 
   const initialColumns = [
     {
-      Header: 'Id',
+      Header: '#',
       accessor: 'id',
       checked: true,
       filterable: false,
@@ -177,8 +177,18 @@ const MyApplicationExodus = props => {
       Header: messages['request_number'],
       accessor: 'applicationNumber',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-
+      Cell: original => {
+        const url = `../mainoperation/smvca?id=${original.value}`;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <Link to={url} target="_blank">
+              {original.value}
+            </Link>
+          </div>
+        );
+      },
+      fixed: 'right',
+      width: 60,
       filterable: false,
     },
     {

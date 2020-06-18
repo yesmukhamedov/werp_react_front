@@ -186,7 +186,7 @@ export const LinkToSmcuspor = props => {
   const url = `../mainoperation/smcuspor?contractNumber=${contractNumber}`;
   return (
     <a target="_blank" href={url} rel="noopener noreferrer">
-      <Icon color="teal" name="address card" />
+      <Icon color="black" name="address card" />
     </a>
   );
 };

@@ -45,7 +45,7 @@ const AssignedCalls = props => {
 
   const initialColumns = [
     {
-      Header: 'Id',
+      Header: '#',
       accessor: 'id',
       checked: true,
       filterable: false,
