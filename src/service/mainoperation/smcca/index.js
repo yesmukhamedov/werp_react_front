@@ -571,28 +571,28 @@ function Smcca(props) {
                 <Table.Body>
                   <Table.Row>
                     <Table.Cell>
-                      <Form.Field>
-                        <label>{messages['date']}</label>
-                      </Form.Field>
+                      <label>{messages['date']}</label>
                     </Table.Cell>
                     <Table.Cell>
-                      <DatePicker
-                        autoComplete="off"
-                        dateFormat="DD/MM/YYYY HH:mm"
-                        selected={callDate}
-                        dropdownMode="select"
-                        locale={lang}
-                        timeFormat="HH:mm"
-                        showTimeSelect
-                        injectTimes={[
-                          moment()
-                            .hours(23)
-                            .minutes(59),
-                        ]}
-                        maxDate={moment(new Date())}
-                        onChange={date => setCallDate(date)}
-                        disabled={!scheduleCall}
-                      />
+                      <Input>
+                        <DatePicker
+                          autoComplete="off"
+                          dateFormat="DD/MM/YYYY HH:mm"
+                          selected={callDate}
+                          dropdownMode="select"
+                          locale={lang}
+                          timeFormat="HH:mm"
+                          showTimeSelect
+                          injectTimes={[
+                            moment()
+                              .hours(23)
+                              .minutes(59),
+                          ]}
+                          maxDate={moment(new Date())}
+                          onChange={date => setCallDate(date)}
+                          disabled
+                        />
+                      </Input>
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>

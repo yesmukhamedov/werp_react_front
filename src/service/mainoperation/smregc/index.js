@@ -196,22 +196,25 @@ function Smregc(props) {
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Form.Field>
-                        <label>{messages['Form.Date']}</label>
-                      </Form.Field>
+                      <label>{messages['Form.Date']}</label>
                     </Table.Cell>
                     <Table.Cell>
                       <Input>
                         <DatePicker
                           autoComplete="off"
-                          dateFormat="DD/MM/YYYY"
+                          dateFormat="DD/MM/YYYY HH:mm"
                           selected={callDate}
                           dropdownMode="select"
                           locale={language}
-                          showMonthDropDown
-                          showYearDropDown
-                          maxDate={moment(new Date())}
+                          timeFormat="HH:mm"
+                          showTimeSelect
+                          injectTimes={[
+                            moment()
+                              .hours(23)
+                              .minutes(59),
+                          ]}
                           onChange={date => setCallDate(date)}
+                          disabled
                         />
                       </Input>
                     </Table.Cell>
@@ -290,6 +293,15 @@ function Smregc(props) {
                   </Table.Row>
                 </Table.Body>
               </Table>
+              <Form.Field>
+                <h4>{messages['schedule_call']}</h4>
+              </Form.Field>
+              <Form.Field>
+                <Checkbox
+                  onChange={(e, o) => setScheduleCall(o.checked)}
+                  toggle
+                />
+              </Form.Field>
               <Table striped>
                 <Table.Body>
                   <Table.Row>
@@ -299,32 +311,22 @@ function Smregc(props) {
                       </Form.Field>
                     </Table.Cell>
                     <Table.Cell>
-                      <Table>
-                        <Table.Body>
-                          <Table.Row>
-                            <Table.Cell collapsing>
-                              <Checkbox
-                                onChange={(e, o) => setScheduleCall(o.checked)}
-                              />
-                            </Table.Cell>
-                            <Table.Cell>
-                              <Input>
-                                <DatePicker
-                                  autoComplete="off"
-                                  dateFormat="DD/MM/YYYY"
-                                  selected={appointDate}
-                                  dropdownMode="select"
-                                  locale={language}
-                                  showMonthDropDown
-                                  showYearDropDown
-                                  onChange={date => setAppointDate(date)}
-                                  disabled={!scheduleCall}
-                                />
-                              </Input>
-                            </Table.Cell>
-                          </Table.Row>
-                        </Table.Body>
-                      </Table>
+                      <DatePicker
+                        autoComplete="off"
+                        dateFormat="DD/MM/YYYY HH:mm"
+                        selected={appointDate}
+                        dropdownMode="select"
+                        locale={language}
+                        timeFormat="HH:mm"
+                        showTimeSelect
+                        injectTimes={[
+                          moment()
+                            .hours(23)
+                            .minutes(59),
+                        ]}
+                        onChange={date => setAppointDate(date)}
+                        disabled={!scheduleCall}
+                      />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
