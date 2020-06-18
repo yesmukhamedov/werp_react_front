@@ -392,6 +392,7 @@ function Smeci(props) {
                       <Input
                         size="small"
                         fluid
+                        placeholder={messages['contactDetails']}
                         value={
                           contract.contactPersonName
                             ? contract.contactPersonName

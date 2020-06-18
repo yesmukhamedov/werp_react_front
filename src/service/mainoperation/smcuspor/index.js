@@ -92,8 +92,6 @@ function Smcuspor(props) {
     f5MtLeft,
   } = clientContract;
 
-  console.log(exportRole);
-
   useEffect(() => {
     props.fetchSmcusporle();
     if (contractNumber) {

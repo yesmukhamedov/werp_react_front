@@ -8,13 +8,13 @@ import {
   Popup,
   Divider,
   Dropdown,
+  Form,
 } from 'semantic-ui-react';
 import { postRedistSmrdOperator, fetchSmrdOperator } from '../smdisAction';
 import { f4FetchFilterPlanStatus } from '../../../../reference/f4/f4_action';
 import 'react-datepicker/dist/react-datepicker.css';
 import TableReDistribution1 from './tables/TableReDistribution1';
 import TableRedistribution2 from './tables/TableRedistribution2';
-import { Label } from 'recharts';
 require('moment/locale/ru');
 require('moment/locale/tr');
 
@@ -221,7 +221,11 @@ const Smrd = props => {
       {showTable ? (
         <Segment>
           <Segment>
-            <h5>{messages['Task.StatusError']}</h5>
+            <Form>
+              <Form.Field required>
+                <label>{messages['Task.StatusError']}</label>
+              </Form.Field>
+            </Form>
             <Dropdown
               error={errors.planStatusId ? true : false}
               search
