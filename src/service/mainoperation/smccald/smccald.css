@@ -5,3 +5,7 @@
 .input__filter_termst:last-child {
   margin-right: 0;
 }
+
+.ui.dimmer {
+  position: fixed !important;
+}

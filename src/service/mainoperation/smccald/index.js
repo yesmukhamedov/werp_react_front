@@ -47,8 +47,18 @@ function Smccald(props) {
     currentStaff = {},
     intl: { messages },
     smccaldCreate,
-    smccaldPostStatus = false,
+    smccaldPostStatus = {},
   } = props;
+
+  const [postStatus, setPostStatus] = useState(false);
+
+  useEffect(() => {
+    if (smccaldPostStatus.status == 'OK') {
+      setPostStatus(true);
+    } else {
+      setPostStatus(false);
+    }
+  }, [smccaldPostStatus]);
 
   const emptyParam = {
     addressId: null,
@@ -105,10 +115,6 @@ function Smccald(props) {
   const lang = localStorage.getItem('language');
 
   const [param, setParam] = useState({ ...emptyParam });
-
-  console.log('operatorId', param.operatorId);
-
-  console.log('PARAM', param);
 
   const [error, setError] = useState([]);
 
@@ -228,7 +234,16 @@ function Smccald(props) {
       errors.push(errorTableText(17));
     }
     setError(() => errors);
+    setPostStatus(false);
   }, [param]);
+
+  useEffect(() => {
+    if (postStatus == true) {
+      setParam({
+        ...emptyParam,
+      });
+    }
+  }, [postStatus]);
 
   const servAppOpts = (servAppType, lang) => {
     if (!servAppType) {
@@ -252,11 +267,7 @@ function Smccald(props) {
       props.postSmccaldCreateApp({
         ...param,
       });
-      setParam({
-        ...emptyParam,
-      });
     } else {
-      console.log('YES ERRORS', error);
       setErrorsView([...error]);
     }
   };
