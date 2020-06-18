@@ -44,7 +44,6 @@ function Smregc(props) {
 
   const url = window.location.search;
   const contractNumber = url.slice(url.indexOf('=') + 1);
-  const userName = localStorage.getItem('username');
   const callD = localStorage.getItem('callDirectionId');
 
   useEffect(() => {
@@ -55,6 +54,17 @@ function Smregc(props) {
     servCrmCallStatus,
     language,
     intl: { messages },
+    location: {
+      state: {
+        tovarSn,
+        branchId,
+        bukrsId,
+        serviceFilterPlanId,
+        serviceFilterVCPlanId,
+        operatorId,
+        operatorFIO,
+      },
+    },
   } = props;
 
   useEffect(() => {
@@ -92,15 +102,6 @@ function Smregc(props) {
     let err = validate();
     const crmHistoryDate = callDate.format('YYYY-MM-DD HH:mm:ss');
     const crmScheduleDate = appointDate.format('YYYY-MM-DD HH:mm:ss');
-    const {
-      tovarSn,
-      branchId,
-      bukrsId,
-      serviceFilterPlanId,
-      serviceFilterVCPlanId,
-      operatorId,
-      operatorFIO,
-    } = props.location.state;
     const { callDirectionId, callStatusId, description, description2 } = call;
     if (err.length === 0) {
       props.postSmregcCreateCall(
@@ -114,7 +115,6 @@ function Smregc(props) {
             info: description,
             tovarSn,
             operatorId,
-            operatorFIO,
           },
           crmSchedule: {
             branchId,
@@ -126,7 +126,6 @@ function Smregc(props) {
             serviceFilterPlanId,
             serviceFilterVCPlanId,
             operatorId,
-            operatorFIO,
           },
         },
         () => {
@@ -188,7 +187,11 @@ function Smregc(props) {
                   <Table.Row>
                     <Table.Cell width={5}>{messages['Operator']}</Table.Cell>
                     <Table.Cell>
-                      <Input size="small" fluid value={userName} />
+                      <Input
+                        size="small"
+                        fluid
+                        value={operatorFIO ? operatorFIO : ''}
+                      />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
@@ -336,6 +339,30 @@ function Smregc(props) {
                           placeholder={messages['Table.Note']}
                           onChange={(e, o) => onInputChange(o, 'description2')}
                           disabled={!scheduleCall}
+                        />
+                      </Form.Field>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <label>{messages['plan_number']}</label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Form.Field>
+                        <Input
+                          placeholder={messages['plan_number']}
+                          size="small"
+                          fluid
+                          disabled
+                          value={`${
+                            serviceFilterPlanId ? serviceFilterPlanId : ''
+                          }${
+                            serviceFilterPlanId && serviceFilterVCPlanId
+                              ? ','
+                              : ''
+                          }${
+                            serviceFilterVCPlanId ? serviceFilterVCPlanId : ''
+                          }`}
                         />
                       </Form.Field>
                     </Table.Cell>

@@ -248,7 +248,6 @@ function Smcca(props) {
             serviceFilterPlanId,
             serviceFilterVCPlanId,
             operatorId,
-            operatorFIO,
           },
           crmHistory: {
             ...serviceCrmHistoryDto,
@@ -259,7 +258,6 @@ function Smcca(props) {
             crmHistoryDate,
             tovarSn,
             operatorId,
-            operatorFIO,
           },
         },
         () => {
@@ -364,13 +362,17 @@ function Smcca(props) {
                                 />
                               </Input>
                             </Table.Cell>
-                            <Table.Cell>
+                            <Table.Cell collapsing>
                               <Checkbox
-                                label={messages['urgent']}
                                 onChange={(e, o) => {
                                   setUrgencyLevel(o.checked);
                                 }}
                               />
+                            </Table.Cell>
+                            <Table.Cell>
+                              <Form.Field>
+                                <label>{messages['urgent']}</label>
+                              </Form.Field>
                             </Table.Cell>
                           </Table.Row>
                         </Table.Body>
@@ -386,7 +388,7 @@ function Smcca(props) {
                         size="small"
                         fluid
                         disabled
-                        value={userName ? userName : ''}
+                        value={operatorFIO ? operatorFIO : ''}
                       />
                       <Table>
                         <Table.Body>
@@ -514,6 +516,7 @@ function Smcca(props) {
                     <Table.Cell>
                       <Input
                         size="small"
+                        placeholder={messages['plan_number']}
                         fluid
                         disabled
                         value={`${
