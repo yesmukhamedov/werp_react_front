@@ -350,25 +350,34 @@ function Smregc(props) {
                     <Table.Cell>
                       <Form.Field>
                         <Input
-                          placeholder={messages['plan_number']}
                           size="small"
                           fluid
                           disabled
-                          value={`${
-                            serviceFilterPlanId ? serviceFilterPlanId : ''
-                          }${
-                            serviceFilterPlanId && serviceFilterVCPlanId
-                              ? ','
-                              : ''
-                          }${
+                          value={serviceFilterPlanId ? serviceFilterPlanId : ''}
+                        />
+                      </Form.Field>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <label>{messages['plan_number_vc']}</label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Form.Field>
+                        <Input
+                          size="small"
+                          fluid
+                          disabled
+                          value={
                             serviceFilterVCPlanId ? serviceFilterVCPlanId : ''
-                          }`}
+                          }
                         />
                       </Form.Field>
                     </Table.Cell>
                   </Table.Row>
                 </Table.Body>
               </Table>
+              <OutputErrors errors={error} />
               <Form.Field>
                 <Button
                   fluid
@@ -391,7 +400,6 @@ function Smregc(props) {
               </Form.Field>
             </Form>
           </Segment>
-          <OutputErrors errors={error} />
         </Grid.Column>
       </Grid.Row>
     </Grid>

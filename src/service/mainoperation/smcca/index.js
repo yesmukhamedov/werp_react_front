@@ -124,9 +124,10 @@ function Smcca(props) {
   const [callAppData, setCallAppDate] = useState(moment(new Date()));
   const [error, setError] = useState([]);
 
+  console.log(request);
+
   const url = window.location.search;
   const contractNumber = url.slice(url.indexOf('=') + 1);
-  const userName = localStorage.getItem('username');
   const lang = localStorage.getItem('language');
   const callD = localStorage.getItem('callDirectionId');
   const scheduleCallToggle = localStorage.getItem('scheduleCall');
@@ -267,12 +268,25 @@ function Smcca(props) {
     }
   };
 
+  console.log(request);
   const validate = () => {
     const errors = [];
     if (request.servAppType === '') {
       errors.push(errorTableText(166));
     }
     if (request.description === '') {
+      errors.push(errorTableText(169));
+    }
+    if (scheduleCall && request.callStatusId === '') {
+      errors.push(errorTableText(170));
+    }
+    if (
+      (scheduleCall && request.callDirectionId === '') ||
+      (scheduleCall && Number.isNaN(request.callDirectionId))
+    ) {
+      errors.push(errorTableText(171));
+    }
+    if (scheduleCall && request.description2 === '') {
       errors.push(errorTableText(169));
     }
     setError(() => errors);
@@ -516,16 +530,22 @@ function Smcca(props) {
                     <Table.Cell>
                       <Input
                         size="small"
-                        placeholder={messages['plan_number']}
                         fluid
                         disabled
-                        value={`${
-                          serviceFilterPlanId ? serviceFilterPlanId : ''
-                        }${
-                          serviceFilterPlanId && serviceFilterVCPlanId
-                            ? ','
-                            : ''
-                        }${serviceFilterVCPlanId ? serviceFilterVCPlanId : ''}`}
+                        value={serviceFilterPlanId ? serviceFilterPlanId : ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>{messages['plan_number_vc']}</Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        size="small"
+                        fluid
+                        disabled
+                        value={
+                          serviceFilterVCPlanId ? serviceFilterVCPlanId : ''
+                        }
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -645,6 +665,7 @@ function Smcca(props) {
                   </Table.Row>
                 </Table.Body>
               </Table>
+              <OutputErrors errors={error} />
               <Form.Field>
                 <Button color="blue" fluid onClick={() => handleSubmit()}>
                   {messages['save']}
@@ -657,7 +678,6 @@ function Smcca(props) {
               </Form.Field>
             </Form>
           </Segment>
-          <OutputErrors errors={error} />
         </Grid.Column>
       </Grid.Row>
     </Grid>
