@@ -25,9 +25,11 @@ export default function(state = INITIAL_STATE, action) {
       };
       break;
     case POST_SMCCALD_CREATE_APP:
+      console.log('REDUCER', action);
       return {
         ...state,
         smccaldCreate: { ...action.payload.data },
+        smccaldPostStatus: action.payload.status == 'OK' ? true : false,
       };
       break;
 

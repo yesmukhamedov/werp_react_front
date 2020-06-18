@@ -10,13 +10,16 @@ import {
   Form,
   TextArea,
   Checkbox,
+  Label,
 } from 'semantic-ui-react';
 import { fetchServAppType } from '../../reference/srefAction';
-import { f4ClearAnyObject } from '../../../reference/f4/f4_action';
+import {
+  f4ClearAnyObject,
+  f4FetchCurrentStaff,
+} from '../../../reference/f4/f4_action';
 
 import {
   fetchSmccaldGetProductList,
-  fetchCurrentStaff,
   postSmccaldCreateApp,
 } from './smccaldActions';
 import OutputErrors from '../../../general/error/outputErrors';
@@ -24,6 +27,7 @@ import {
   errorTableText,
   stringYYYYMMDDHHMMSSToMoment,
   momentToStringYYYYMMDDHHMMSS,
+  momentToStringYYYYMMDD,
 } from '../../../utils/helpers';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
@@ -43,9 +47,8 @@ function Smccald(props) {
     currentStaff = {},
     intl: { messages },
     smccaldCreate,
+    smccaldPostStatus = false,
   } = props;
-
-  console.log('currentStaff', currentStaff);
 
   const emptyParam = {
     addressId: null,
@@ -83,8 +86,9 @@ function Smccald(props) {
     masterId: null,
     matnrId: null,
     matnrName: '',
-    operatorFIO: '',
-    operatorId: null,
+    operatorId: currentStaff.staffId == undefined ? '' : currentStaff.staffId,
+    operatorFIO:
+      currentStaff.fullName == undefined ? '' : currentStaff.fullName,
     rescheduledDate: '',
     serviceDate: '',
     serviceFilterPlanId: null,
@@ -101,6 +105,8 @@ function Smccald(props) {
   const lang = localStorage.getItem('language');
 
   const [param, setParam] = useState({ ...emptyParam });
+
+  console.log('operatorId', param.operatorId);
 
   console.log('PARAM', param);
 
@@ -131,9 +137,8 @@ function Smccald(props) {
   };
 
   useEffect(() => {
-    let matnrId = param.matnrId;
     smccaldProductList.forEach(item => {
-      if (item.matnr == matnrId) {
+      if (parseInt(item.matnr) == param.matnrId) {
         setParam({
           ...param,
           tovarCategoryId: item.category,
@@ -143,15 +148,17 @@ function Smccald(props) {
   }, [param.matnrId]);
 
   useEffect(() => {
-    setParam({
-      ...param,
-      operatorId: currentStaff.staffId,
-      operatorFIO: currentStaff.fullName,
-    });
+    if (Object.keys(currentStaff).length > 0) {
+      setParam({
+        ...param,
+        operatorId: currentStaff.staffId,
+        operatorFIO: currentStaff.fullName,
+      });
+    }
   }, [currentStaff]);
 
   useEffect(() => {
-    props.fetchCurrentStaff();
+    props.f4FetchCurrentStaff();
   }, []);
 
   useEffect(() => {
@@ -180,22 +187,48 @@ function Smccald(props) {
     }
   }, [param.bukrsId]);
 
-  const validate = () => {
+  useEffect(() => {
     const errors = [];
-    if (param.applicationTypeId === '') {
-      errors.push(errorTableText(166));
-    }
-    if (param.branchId === '') {
-      errors.push(errorTableText(7));
-    }
-    if (param.bukrsId === '') {
+    if (
+      param.bukrsId === '' ||
+      param.bukrsId === null ||
+      param.bukrsId === undefined
+    ) {
       errors.push(errorTableText(5));
     }
-    if (param.requestTypeId === '') {
+
+    if (
+      param.branchId === '' ||
+      param.branchId === null ||
+      param.branchId === undefined
+    ) {
+      errors.push(errorTableText(7));
+    }
+
+    if (
+      param.matnrId === '' ||
+      param.matnrId === null ||
+      param.matnrId === undefined
+    ) {
+      errors.push(errorTableText(173));
+    }
+
+    if (
+      param.applicationTypeId === '' ||
+      param.applicationTypeId === null ||
+      param.applicationTypeId === undefined
+    ) {
+      errors.push(errorTableText(166));
+    }
+    if (
+      param.operatorId === '' ||
+      param.operatorId === null ||
+      param.operatorId === undefined
+    ) {
       errors.push(errorTableText(17));
     }
     setError(() => errors);
-  };
+  }, [param]);
 
   const servAppOpts = (servAppType, lang) => {
     if (!servAppType) {
@@ -211,26 +244,20 @@ function Smccald(props) {
     return out;
   };
 
-  const clearState = () => {
-    setParam({
-      ...emptyParam,
-      operatorId: currentStaff.staffId,
-      operatorFIO: currentStaff.fullName,
-    });
-  };
+  const [errorsView, setErrorsView] = useState([]);
 
   const handleSubmit = () => {
-    validate();
-
-    if (
-      param.applicationTypeId !== '' &&
-      param.branchId !== '' &&
-      param.bukrsId !== ''
-    ) {
+    if (error == undefined || error == null || error.length == 0) {
+      setErrorsView([]);
       props.postSmccaldCreateApp({
         ...param,
       });
-      clearState();
+      setParam({
+        ...emptyParam,
+      });
+    } else {
+      console.log('YES ERRORS', error);
+      setErrorsView([...error]);
     }
   };
 
@@ -253,227 +280,282 @@ function Smccald(props) {
     <Grid centered>
       <Grid.Row>
         <Grid.Column mobile={16} tablet={16} computer={7}>
-          <h1>{messages['create_request_without_data']}</h1>
+          <h2>Создать заявку без данных</h2>
           <Segment>
-            <Table compact striped>
-              <Table.Body>
-                <Table.Row>
-                  <Table.Cell>{messages['bukrs']}</Table.Cell>
-                  <Table.Cell>
-                    <Dropdown
-                      required
-                      placeholder={messages['bukrs']}
-                      fluid
-                      selection
-                      search
-                      options={getCompanyOptions(companyOptions)}
-                      value={param.bukrsId}
-                      onChange={(e, o) => onInputChange(o, 'bukrsId')}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['brnch']}</Table.Cell>
-                  <Table.Cell>
-                    <Dropdown
-                      placeholder={messages['brnch']}
-                      fluid
-                      selection
-                      search
-                      options={
-                        param.bukrsId ? branchOptions[param.bukrsId] : []
-                      }
-                      value={param.branchId}
-                      onChange={(e, o) => onInputChange(o, 'branchId')}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['Product']}</Table.Cell>
-                  <Table.Cell>
-                    <Dropdown
-                      placeholder={messages['service']}
-                      fluid
-                      selection
-                      search
-                      options={productOptions}
-                      value={param.matnrId}
-                      onChange={(e, o) => onInputChange(o, 'matnrId')}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['type_of_application']}</Table.Cell>
-                  <Table.Cell>
-                    <Dropdown
-                      placeholder={messages['type_of_application']}
-                      fluid
-                      selection
-                      search
-                      options={servAppOpts(servAppType, lang)}
-                      value={param.applicationTypeId}
-                      onChange={(e, o) => onInputChange(o, 'applicationTypeId')}
-                    />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['Application_Date']} </Table.Cell>
-                  <Table.Cell>
-                    <Table>
-                      <Table.Body>
-                        <Table.Row>
-                          <Table.Cell>
-                            <Input>
-                              <DatePicker
-                                placeholder="Дата"
-                                autoComplete="off"
-                                deteFormat="YYYY-MM-DD HH:mm:ss"
-                                selected={
-                                  param.applicationDate === ''
-                                    ? ''
-                                    : stringYYYYMMDDHHMMSSToMoment(
-                                        param.applicationDate,
-                                      )
-                                }
-                                dropdownMode="select"
-                                locale={lang}
-                                showMonthDropDown
-                                showYearDropDown
-                                onChange={date =>
+            <Form>
+              <h3>{messages['L__CLIENT_INFO']}</h3>
+              <Table compact striped>
+                <Table.Body>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Form.Field required>
+                        <label>{messages['bukrs']}</label>
+                      </Form.Field>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Dropdown
+                        required
+                        placeholder={messages['bukrs']}
+                        fluid
+                        selection
+                        search
+                        options={getCompanyOptions(companyOptions)}
+                        value={param.bukrsId}
+                        onChange={(e, o) => onInputChange(o, 'bukrsId')}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Form.Field required>
+                        <label>{messages['brnch']}</label>
+                      </Form.Field>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Dropdown
+                        placeholder={messages['brnch']}
+                        fluid
+                        selection
+                        search
+                        options={
+                          param.bukrsId ? branchOptions[param.bukrsId] : []
+                        }
+                        value={param.branchId}
+                        onChange={(e, o) => onInputChange(o, 'branchId')}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Form.Field required>
+                        <label>{messages['Product']}</label>
+                      </Form.Field>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Dropdown
+                        placeholder={messages['Product']}
+                        fluid
+                        selection
+                        search
+                        options={productOptions}
+                        value={param.matnrId}
+                        onChange={(e, o) => onInputChange(o, 'matnrId')}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Form.Field required>
+                        <label>{messages['type_of_application']}</label>
+                      </Form.Field>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Dropdown
+                        placeholder={messages['type_of_application']}
+                        fluid
+                        selection
+                        search
+                        options={servAppOpts(servAppType, lang)}
+                        value={param.applicationTypeId}
+                        onChange={(e, o) =>
+                          onInputChange(o, 'applicationTypeId')
+                        }
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Form.Field>
+                        <label>{messages['Application_Date']}</label>
+                      </Form.Field>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Table>
+                        <Table.Body>
+                          <Table.Row>
+                            <Table.Cell>
+                              <Input>
+                                <DatePicker
+                                  placeholder="Дата"
+                                  autoComplete="off"
+                                  deteFormat="DD/MM/YYYY"
+                                  selected={
+                                    param.applicationDate === ''
+                                      ? ''
+                                      : stringYYYYMMDDHHMMSSToMoment(
+                                          param.applicationDate,
+                                        )
+                                  }
+                                  dropdownMode="select"
+                                  locale={lang}
+                                  showMonthDropDown
+                                  showYearDropDown
+                                  onChange={date =>
+                                    setParam({
+                                      ...param,
+                                      applicationDate: momentToStringYYYYMMDDHHMMSS(
+                                        date,
+                                      ),
+                                    })
+                                  }
+                                />
+                              </Input>
+                            </Table.Cell>
+
+                            <Table.Cell collapsing>
+                              <Checkbox
+                                checked={param.urgencyLevel}
+                                onChange={(e, o) => {
                                   setParam({
                                     ...param,
-                                    applicationDate: momentToStringYYYYMMDDHHMMSS(
-                                      date,
-                                    ),
-                                  })
-                                }
+                                    urgencyLevel: o.checked,
+                                  });
+                                }}
                               />
-                            </Input>
-                          </Table.Cell>
-                          <Table.Cell>
-                            <Checkbox
-                              checked={param.urgencyLevel}
-                              label={messages['urgent']}
-                              onChange={(e, o) => {
-                                setParam({ ...param, urgencyLevel: o.checked });
-                              }}
-                            />
-                          </Table.Cell>
-                        </Table.Row>
-                      </Table.Body>
-                    </Table>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell verticalAlign="top">
-                    {messages['Operator']}
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Input size="small" fluid value={param.operatorFIO} />
-                    <Table>
-                      <Table.Body>
-                        <Table.Row>
-                          <Table.Cell>
-                            <Input
-                              size="mini"
-                              label="F1"
-                              className="input__filter_terms"
-                              disabled
-                            />
-                            <Input
-                              size="mini"
-                              label="F2"
-                              className="input__filter_terms"
-                              disabled
-                            />
-                            <Input
-                              size="mini"
-                              label="F3"
-                              className="input__filter_terms"
-                              disabled
-                            />
-                            <Input
-                              size="mini"
-                              label="F4"
-                              className="input__filter_terms"
-                              disabled
-                            />
-                            <Input
-                              size="mini"
-                              label="F5"
-                              className="input__filter_terms"
-                              disabled
-                            />
-                          </Table.Cell>
-                        </Table.Row>
-                      </Table.Body>
-                    </Table>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['full_name_of_client']}</Table.Cell>
-                  <Table.Cell>
-                    <Input size="small" fluid disabled />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['address']}</Table.Cell>
-                  <Table.Cell>
-                    <Input size="small" fluid disabled />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['contacts']}</Table.Cell>
-                  <Table.Cell>
-                    <Input size="small" fluid disabled />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['productSerialNumber']}</Table.Cell>
-                  <Table.Cell>
-                    <Input size="small" fluid disabled />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['installation_date']}</Table.Cell>
-                  <Table.Cell>
-                    <Input disabled>
+                            </Table.Cell>
+                            <Table.Cell>
+                              <Form.Field>
+                                <label>{messages['urgent']}</label>
+                              </Form.Field>
+                            </Table.Cell>
+                          </Table.Row>
+                        </Table.Body>
+                      </Table>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell verticalAlign="top">
+                      <Form.Field required>{messages['Operator']}</Form.Field>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        readOnly
+                        size="small"
+                        fluid
+                        value={param.operatorFIO}
+                      />
+                      <Table>
+                        <Table.Body>
+                          <Table.Row>
+                            <Table.Cell>
+                              <Input
+                                size="mini"
+                                label="F1"
+                                className="input__filter_terms"
+                                disabled
+                              />
+                              <Input
+                                size="mini"
+                                label="F2"
+                                className="input__filter_terms"
+                                disabled
+                              />
+                              <Input
+                                size="mini"
+                                label="F3"
+                                className="input__filter_terms"
+                                disabled
+                              />
+                              <Input
+                                size="mini"
+                                label="F4"
+                                className="input__filter_terms"
+                                disabled
+                              />
+                              <Input
+                                size="mini"
+                                label="F5"
+                                className="input__filter_terms"
+                                disabled
+                              />
+                            </Table.Cell>
+                          </Table.Row>
+                        </Table.Body>
+                      </Table>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>{messages['full_name_of_client']}</Table.Cell>
+                    <Table.Cell>
+                      <Input size="small" fluid disabled />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>{messages['address']}</Table.Cell>
+                    <Table.Cell>
+                      <Input size="small" fluid disabled />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>{messages['contacts']}</Table.Cell>
+                    <Table.Cell>
+                      <Input size="small" fluid disabled />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>{messages['productSerialNumber']}</Table.Cell>
+                    <Table.Cell>
+                      <Input size="small" fluid disabled />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>{messages['installation_date']}</Table.Cell>
+                    <Table.Cell>
                       <DatePicker
+                        disabled
                         autoComplete="off"
-                        deteFormat="DD/MM/YYYY"
-                        selected={moment(new Date())}
+                        dateFormat="DD/MM/YYYY HH:mm"
                         dropdownMode="select"
-                        showMonthDropDown
-                        showYearDropDown
+                        locale={lang}
+                        timeFormat="HH:mm"
+                        showTimeSelect
+                        injectTimes={[
+                          moment()
+                            .hours(23)
+                            .minutes(59),
+                        ]}
+                        maxDate={moment(new Date())}
+                        onChange={date =>
+                          setParam({
+                            ...param,
+                            installmentDate: momentToStringYYYYMMDDHHMMSS(date),
+                          })
+                        }
                       />
-                    </Input>
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['goodsInstaller']}</Table.Cell>
-                  <Table.Cell>
-                    <Input size="small" fluid disabled />
-                  </Table.Cell>
-                </Table.Row>
-                <Table.Row>
-                  <Table.Cell>{messages['bktxt']}</Table.Cell>
-                  <Table.Cell>
-                    <Form>
-                      <TextArea
-                        placeholder={messages['bktxt']}
-                        value={param.info}
-                        onChange={(e, o) => onInputChange(o, 'info')}
-                      />
-                    </Form>
-                  </Table.Cell>
-                </Table.Row>
-              </Table.Body>
-            </Table>
-            <Button color="blue" fluid onClick={() => handleSubmit()}>
-              {messages['save']}
-            </Button>
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>{messages['goodsInstaller']}</Table.Cell>
+                    <Table.Cell>
+                      <Input size="small" fluid disabled />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Form.Field>
+                        <label>{messages['bktxt']}</label>
+                      </Form.Field>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Form.Field>
+                        <TextArea
+                          placeholder={messages['bktxt']}
+                          value={param.info}
+                          onChange={(e, o) => onInputChange(o, 'info')}
+                        />
+                      </Form.Field>
+                    </Table.Cell>
+                  </Table.Row>
+                </Table.Body>
+              </Table>
+              <OutputErrors errors={errorsView} />
+              <Form.Field>
+                <Button color="blue" fluid onClick={() => handleSubmit()}>
+                  {messages['save']}
+                </Button>
+              </Form.Field>
+            </Form>
           </Segment>
-          <OutputErrors errors={error} />
         </Grid.Column>
       </Grid.Row>
     </Grid>
@@ -488,6 +570,8 @@ function mapStateToProps(state) {
     smccaldProductList: state.smccaldReducer.smccaldProductList,
     currentStaff: state.smccaldReducer.currentStaff,
     smccaldCreate: state.smccaldReducer.smccaldCreate,
+    smccaldPostStatus: state.smccaldReducer.smccaldPostStatus,
+    currentStaff: state.f4.staffInfo,
   };
 }
 
@@ -496,5 +580,5 @@ export default connect(mapStateToProps, {
   fetchServAppType,
   postSmccaldCreateApp,
   fetchSmccaldGetProductList,
-  fetchCurrentStaff,
+  f4FetchCurrentStaff,
 })(injectIntl(Smccald));
