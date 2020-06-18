@@ -186,7 +186,11 @@ function Smregc(props) {
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
-                    <Table.Cell>{messages['Form.Date']}</Table.Cell>
+                    <Table.Cell>
+                      <Form.Field>
+                        <label>{messages['Form.Date']}</label>
+                      </Form.Field>
+                    </Table.Cell>
                     <Table.Cell>
                       <Input>
                         <DatePicker
@@ -266,13 +270,13 @@ function Smregc(props) {
                       </Form.Field>
                     </Table.Cell>
                     <Table.Cell>
-                      <Form>
+                      <Form.Field>
                         <TextArea
                           placeholder={messages['Table.Note']}
                           value={call.description}
                           onChange={(e, o) => onInputChange(o, 'description')}
                         />
-                      </Form>
+                      </Form.Field>
                     </Table.Cell>
                   </Table.Row>
                 </Table.Body>
@@ -281,7 +285,9 @@ function Smregc(props) {
                 <Table.Body>
                   <Table.Row>
                     <Table.Cell width={5}>
-                      {messages['schedule_call']}
+                      <Form.Field>
+                        <label>{messages['schedule_call']}</label>
+                      </Form.Field>
                     </Table.Cell>
                     <Table.Cell>
                       <Table>
@@ -319,25 +325,37 @@ function Smregc(props) {
                       </Form.Field>
                     </Table.Cell>
                     <Table.Cell>
-                      <Form>
+                      <Form.Field>
                         <TextArea
                           placeholder={messages['Table.Note']}
                           onChange={(e, o) => onInputChange(o, 'description2')}
                           disabled={!scheduleCall}
                         />
-                      </Form>
+                      </Form.Field>
                     </Table.Cell>
                   </Table.Row>
                 </Table.Body>
               </Table>
-              <Button
-                fluid
-                color="blue"
-                size="small"
-                onClick={() => handleSubmit()}
-              >
-                {messages['save']}
-              </Button>
+              <Form.Field>
+                <Button
+                  fluid
+                  color="blue"
+                  size="small"
+                  onClick={() => handleSubmit()}
+                >
+                  {messages['save']}
+                </Button>
+              </Form.Field>
+              <Form.Field>
+                <Button
+                  fluid
+                  color="red"
+                  size="small"
+                  onClick={() => window.history.back()}
+                >
+                  {messages['cancel']}
+                </Button>
+              </Form.Field>
             </Form>
           </Segment>
           <OutputErrors errors={error} />

@@ -854,5 +854,6 @@
   "execute": "Выполнить",
   "urgent": "Срочно",
   "filter_change_operator": "Оператор по замене фильтра",
-  "cleaning_system_operator": "Оператор по уборочной системе"
+  "cleaning_system_operator": "Оператор по уборочной системе",
+  "plan_number": "Номер плана"
 }

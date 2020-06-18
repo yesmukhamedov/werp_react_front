@@ -177,6 +177,8 @@ function Smcuspor(props) {
                         `smcca?contractNumber=${contractNumber}`,
                         {
                           clientContract,
+                          serviceFilterPlanId: planId,
+                          serviceFilterVCPlanId: vcId,
                         },
                       )
                     }
