@@ -143,6 +143,8 @@ function Smcc(props) {
     }
   }, [contract.bukrs, contract.matnr]);
 
+  console.log(monthTerms);
+
   useEffect(() => {
     if (monthTerms) {
       setContract(

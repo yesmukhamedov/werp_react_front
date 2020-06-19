@@ -1156,10 +1156,8 @@ export function f4FetchCrmCategory() {
 
 export function f4FetchCurrentStaff() {
   return function(dispatch) {
-    dispatch(modifyLoader(true));
     doGet(`reference/currentStaff`)
       .then(({ data }) => {
-        dispatch(modifyLoader(false));
         dispatch({
           type: F4_FETCH_CURRENT_STAFF,
           payload: data,

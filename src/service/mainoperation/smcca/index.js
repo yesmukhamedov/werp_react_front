@@ -268,7 +268,6 @@ function Smcca(props) {
     }
   };
 
-  console.log(request);
   const validate = () => {
     const errors = [];
     if (request.servAppType === '') {

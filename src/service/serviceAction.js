@@ -955,10 +955,8 @@ export function fetchAppListSearchParam(data) {
 
 export function fetchSmcusporle() {
   return function(dispatch) {
-    dispatch(modifyLoader(true));
     doGet('smcusporle')
       .then(data => {
-        dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SMCUSPORLE,
           payload: data.data,

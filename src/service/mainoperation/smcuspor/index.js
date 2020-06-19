@@ -63,8 +63,6 @@ function Smcuspor(props) {
     staffInfo,
   } = props;
 
-  console.log(staffInfo);
-
   const {
     countryName,
     bukrsName,

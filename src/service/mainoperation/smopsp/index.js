@@ -5,7 +5,7 @@ import AssignedCalls from './tabs/AssignedCalls';
 import MyApplication from './tabs/MyApplication';
 import ServiceFilterVC from './tabs/ServiceFilterVC';
 import TransferApplication from './tabs/TransferApplication';
-import { Container, Tab, Segment, Menu, Label } from 'semantic-ui-react';
+import { Container, Tab, Segment, Menu, Button } from 'semantic-ui-react';
 import {
   f4fetchCategory,
   f4FetchStaffList,
@@ -186,7 +186,14 @@ const Smopccoc = props => {
         paddingRight: '2em',
       }}
     >
-      <Segment as="h2">{messages['cleaning_system_operator']}</Segment>
+      <Segment className="spaceBetween alignItemsCenter">
+        <h3 className="alignItemsCenter marginBottom-0">
+          {messages['incoming_call_operator']}
+        </h3>
+        <a href="/service/mainoperation/smccald" target="_blank">
+          <Button color="teal">{messages['cleaning_system_operator']}</Button>
+        </a>
+      </Segment>
 
       <Tab
         menu={{ attached: true, tabular: false, pointing: true }}

@@ -648,13 +648,13 @@ function Smeci(props) {
                         </Form.Field>
                       </Table.Cell>
                       <Table.Cell>
-                        <Form>
+                        <Form.Field>
                           <TextArea
                             placeholder={messages['description']}
                             onChange={(e, o) => onInputChange(o, 'info')}
                             value={contract.info ? contract.info : ''}
                           />
-                        </Form>
+                        </Form.Field>
                       </Table.Cell>
                       <Table.Cell></Table.Cell>
                     </Table.Row>
@@ -665,12 +665,12 @@ function Smeci(props) {
                         </Form.Field>
                       </Table.Cell>
                       <Table.Cell>
-                        <Form>
+                        <Form.Field>
                           <TextArea
                             placeholder={messages['description']}
                             onChange={(e, o) => onInputChange(o, 'info2')}
                           />
-                        </Form>
+                        </Form.Field>
                       </Table.Cell>
                       <Table.Cell></Table.Cell>
                     </Table.Row>
