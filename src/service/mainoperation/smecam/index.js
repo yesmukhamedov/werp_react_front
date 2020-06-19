@@ -10,6 +10,7 @@ import {
   Button,
   Dropdown,
 } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 import { fetchSmecam, editSmecam } from './smecamAction';
 import { injectIntl } from 'react-intl';
@@ -421,18 +422,19 @@ const Smecam = props => {
                 </Form.Field>
                 {editStatus == true ? (
                   <Form.Field>
-                    <a
-                      href={`../mainoperation/smcs?applicationNumber=${id}`}
-                      rel="noopener noreferrer"
+                    <Button
+                      color="green"
+                      fluid
+                      // onClick={() => handleSubmit()}
                     >
-                      <Button
-                        color="green"
-                        fluid
-                        // onClick={() => handleSubmit()}
+                      <Link
+                        className="linkColor"
+                        target="_blank"
+                        to={`../mainoperation/smcs?applicationNumber=${id}`}
                       >
                         Создать сервис карточку
-                      </Button>
-                    </a>
+                      </Link>
+                    </Button>
                   </Form.Field>
                 ) : (
                   ''
