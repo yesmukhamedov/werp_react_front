@@ -155,13 +155,13 @@ const TableHistory = props => {
         paddingRight: '2em',
       }}
     >
-      <Segment tertiary>
-        <Header as="h2"> {messages['contract_editing_history']}</Header>
+      <Segment>
+        <h2> {messages['contract_editing_history']}</h2>
       </Segment>
       <ReactTableWrapper
         data={data}
         columns={historyColumns}
-        defaultPageSize={20}
+        pageSize={data.length > 10 ? 10 : data.length}
         showPagination={true}
         className="-striped -highlight"
       />

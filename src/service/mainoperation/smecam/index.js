@@ -21,6 +21,8 @@ import './smecam.css';
 import {
   stringYYYYMMDDHHMMSSToMoment,
   momentToStringYYYYMMDDHHMMSS,
+  momentToStringYYYYMMDD,
+  moneyInputHanler,
 } from '../../../utils/helpers';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -38,7 +40,6 @@ const Smecam = props => {
     serviceAppStatus = [],
     smecamEditStatus,
   } = props;
-  console.log('serviceAppStatus', serviceAppStatus);
 
   const url = window.location.search;
   const id = url.slice(url.indexOf('=') + 1);
@@ -60,8 +61,6 @@ const Smecam = props => {
       value: item.id,
     };
   });
-
-  console.log('smecamEditStatus', smecamEditStatus);
 
   useEffect(() => {
     const equal = JSON.stringify(smecam) === JSON.stringify(smecamData);
@@ -105,7 +104,10 @@ const Smecam = props => {
         setSmecam({ ...smecam, applicationStatusId: value.value });
         break;
       case 'rescheduledDate':
-        setSmecam({ ...smecam, rescheduledDate: value });
+        setSmecam({
+          ...smecam,
+          rescheduledDate: momentToStringYYYYMMDDHHMMSS(value),
+        });
         break;
       default:
     }
@@ -131,7 +133,7 @@ const Smecam = props => {
                 <Table compact striped>
                   <Table.Body>
                     <Table.Row>
-                      <Table.Cell>№ {messages['request_number']}</Table.Cell>
+                      <Table.Cell>{messages['request_number']}</Table.Cell>
                       <Table.Cell>
                         <Input readOnly fluid value={smecam.id || ''} />
                       </Table.Cell>
@@ -347,11 +349,11 @@ const Smecam = props => {
                           locale={lang}
                           timeFormat="HH:mm"
                           showTimeSelect
-                          injectTimes={[
-                            moment()
-                              .hours(23)
-                              .minutes(59),
-                          ]}
+                          // injectTimes={[
+                          //   moment()
+                          //     .hours(23)
+                          //     .minutes(59),
+                          // ]}
                           onChange={date =>
                             handleChange(date, 'rescheduledDate')
                           }
@@ -411,34 +413,24 @@ const Smecam = props => {
                     {messages['save']}
                   </Button>
                 </Form.Field>
+
                 <Form.Field>
                   <Button
-                    color="red"
+                    disabled={!editStatus}
+                    color="green"
                     fluid
-                    onClick={() => window.history.back()}
+                    // onClick={() => handleSubmit()}
                   >
-                    {messages['cancel']}
+                    <Link
+                      disabled={!editStatus}
+                      className="linkColor"
+                      target="_blank"
+                      to={`../mainoperation/smcs?applicationNumber=${id}`}
+                    >
+                      Создать сервис карточку
+                    </Link>
                   </Button>
                 </Form.Field>
-                {editStatus == true ? (
-                  <Form.Field>
-                    <Button
-                      color="green"
-                      fluid
-                      // onClick={() => handleSubmit()}
-                    >
-                      <Link
-                        className="linkColor"
-                        target="_blank"
-                        to={`../mainoperation/smcs?applicationNumber=${id}`}
-                      >
-                        Создать сервис карточку
-                      </Link>
-                    </Button>
-                  </Form.Field>
-                ) : (
-                  ''
-                )}
               </Form>
             </Segment>
           </Grid.Column>
