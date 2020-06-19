@@ -766,10 +766,8 @@ export function editSmeca(editParams, fetchSmeca) {
 
 export function fetchAppStatus() {
   return function(dispatch) {
-    dispatch(modifyLoader(true));
     doGet('service/reference/serv_app_status')
       .then(({ data }) => {
-        dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_APP_STATUS,
           payload: data.data,
@@ -783,10 +781,8 @@ export function fetchAppStatus() {
 
 export function fetchAppType() {
   return function(dispatch) {
-    dispatch(modifyLoader(true));
     doGet('service/reference/serv_app_type')
       .then(({ data }) => {
-        dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_APP_TYPE,
           payload: data.data,
@@ -810,7 +806,7 @@ export function fetchAppList(params) {
         });
       })
       .catch(error => {
-        console.log(error);
+        dispatch(modifyLoader(false));
         handleError(error, dispatch);
       });
   };
@@ -818,10 +814,8 @@ export function fetchAppList(params) {
 
 export function fetchAppMasterList(params) {
   return function(dispatch) {
-    dispatch(modifyLoader(true));
     doGet('smappl/masterList', params)
       .then(({ data }) => {
-        dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_APP_MASTER_LIST,
           payload: data.data,

@@ -988,18 +988,14 @@ export function f4CreateServContract(contract) {
 //Категория
 export function f4fetchCategory(data) {
   return function(dispatch) {
-    dispatch(modifyLoader(true));
-
     doGet('service_category/view', data)
       .then(({ data }) => {
-        dispatch(modifyLoader(false));
         dispatch({
           type: F4_FETCH_CATEGORY,
           payload: data,
         });
       })
       .catch(error => {
-        dispatch(modifyLoader(false));
         handleError(error, dispatch);
       });
   };

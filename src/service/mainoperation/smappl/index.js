@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Segment,
   Header,
@@ -225,18 +226,27 @@ const Smappl = props => {
         </div>
       ),
     },
+
     {
-      Header: messages['customer_story'],
+      Header: messages['Table.View'],
       accessor: 'clientStory',
-      show: true,
+      checked: true,
       filterable: false,
-      Cell: ({ row }) => (
-        <div style={{ textAlign: 'center' }}>
-          <LinkToSmcuspor contractNumber={row._original.contractNumber} />
-        </div>
-      ),
-      fixed: 'right',
+      Cell: original => {
+        const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}`;
+        return original.row.contractNumber == null ||
+          original.row.contractNumber == undefined ? (
+          ''
+        ) : (
+          <div style={{ textAlign: 'center' }}>
+            <Link to={url} target="_blank">
+              <Icon name="address card" color="black" />
+            </Link>
+          </div>
+        );
+      },
       width: 60,
+      fixed: 'right',
     },
   ];
   const [columnsForTable, setColumnsForTable] = useState([]);
