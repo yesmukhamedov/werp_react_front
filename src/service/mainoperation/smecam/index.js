@@ -122,7 +122,7 @@ const Smecam = props => {
         <Grid.Row>
           <Grid.Column mobile={16} tablet={16} computer={7}>
             <div className="spaceBetween">
-              <h2>Редактирование заявки клиента</h2>
+              <h2>Заявка клиента</h2>
             </div>
 
             <Segment>
