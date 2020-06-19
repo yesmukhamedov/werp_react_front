@@ -385,32 +385,34 @@ function Smccald(props) {
                         <Table.Body>
                           <Table.Row>
                             <Table.Cell>
-                              <Input>
-                                <DatePicker
-                                  placeholder="Дата"
-                                  autoComplete="off"
-                                  deteFormat="DD/MM/YYYY"
-                                  selected={
-                                    param.applicationDate === ''
-                                      ? ''
-                                      : stringYYYYMMDDHHMMSSToMoment(
-                                          param.applicationDate,
-                                        )
-                                  }
-                                  dropdownMode="select"
-                                  locale={lang}
-                                  showMonthDropDown
-                                  showYearDropDown
-                                  onChange={date =>
-                                    setParam({
-                                      ...param,
-                                      applicationDate: momentToStringYYYYMMDDHHMMSS(
-                                        date,
-                                      ),
-                                    })
-                                  }
-                                />
-                              </Input>
+                              <DatePicker
+                                autoComplete="off"
+                                dateFormat="DD/MM/YYYY HH:mm"
+                                selected={
+                                  param.applicationDate === ''
+                                    ? ''
+                                    : stringYYYYMMDDHHMMSSToMoment(
+                                        param.applicationDate,
+                                      )
+                                }
+                                dropdownMode="select"
+                                locale={lang}
+                                timeFormat="HH:mm"
+                                showTimeSelect
+                                injectTimes={[
+                                  moment()
+                                    .hours(23)
+                                    .minutes(59),
+                                ]}
+                                onChange={date =>
+                                  setParam({
+                                    ...param,
+                                    applicationDate: momentToStringYYYYMMDDHHMMSS(
+                                      date,
+                                    ),
+                                  })
+                                }
+                              />
                             </Table.Cell>
 
                             <Table.Cell collapsing>
