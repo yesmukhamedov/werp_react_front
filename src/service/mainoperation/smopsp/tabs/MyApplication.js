@@ -13,6 +13,7 @@ import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import ModalColumns from './../../../../utils/ModalColumns';
+import { Link } from 'react-router-dom';
 import {
   momentToStringYYYYMMDD,
   stringYYYYMMDDToMoment,
@@ -179,10 +180,21 @@ const MyApplication = props => {
     {
       Header: messages['request_number'],
       accessor: 'applicationNumber',
-      checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: original => {
+        const url = `../mainoperation/smvca?id=${original.value}`;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <Link to={url} target="_blank">
+              {original.value}
+            </Link>
+          </div>
+        );
+      },
 
+      checked: true,
       filterable: false,
+      fixed: 'right',
+      width: 60,
     },
     {
       Header: messages['Table.View'],

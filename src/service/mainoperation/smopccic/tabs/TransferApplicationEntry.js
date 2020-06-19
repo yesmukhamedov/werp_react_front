@@ -49,7 +49,7 @@ const TransferApplicationEntry = props => {
 
   const initialColumns = [
     {
-      Header: 'Id',
+      Header: '#',
       accessor: 'id',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
