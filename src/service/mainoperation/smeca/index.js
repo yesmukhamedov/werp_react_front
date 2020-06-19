@@ -17,7 +17,7 @@ import TableHistory from './TableHistory';
 import OutputErrors from '../../../general/error/outputErrors';
 import './smeca.css';
 
-const Smecam = props => {
+const Smeca = props => {
   const {
     intl: { messages },
     smecaData = {},
@@ -359,4 +359,4 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
   fetchSmeca,
   editSmeca,
-})(injectIntl(Smecam));
+})(injectIntl(Smeca));

@@ -5,3 +5,10 @@
 .input__filter_termst:last-child {
   margin-right: 0;
 }
+
+.spaceBetween {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-left: 7px;
+}

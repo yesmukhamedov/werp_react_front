@@ -1039,7 +1039,6 @@ export function f4FetchServiceAppStatus() {
   return function(dispatch) {
     doGet('service/reference/serv_app_status')
       .then(({ data }) => {
-        dispatch(modifyLoader(false));
         dispatch({
           type: F4_FETCH_SERVICE_APP_STATUS,
           data,

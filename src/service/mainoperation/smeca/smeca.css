@@ -12,3 +12,7 @@
   justify-content: space-between;
   padding-left: 7px;
 }
+
+.ui.dimmer {
+  position: fixed !important;
+}

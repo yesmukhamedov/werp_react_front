@@ -1,32 +1,28 @@
-import {
-  FETCH_SMECAM,
-  EDIT_SMECAM,
-  CLEAR_DYNOBJ_SERVICE,
-} from './smecamAction';
+import { FETCH_SMECAM, EDIT_SMECAM } from './smecamAction';
 
 const INITIAL_STATE = {
-  smecamData: {},
-  smecamHistory: [],
+  smvcamData: {},
+  smvcamHistory: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     case FETCH_SMECAM: {
+      console.log('REDUCER', action);
       return {
         ...state,
-        smecamData: { ...action.payload.application },
-        smecamHistory: [...action.payload.applicationAudit],
+        smecamData: action.payload.data.application,
+        smecamHistory: action.payload.data.applicationAudit,
       };
     }
-    case EDIT_SMECAM: {
-      console.log('EDIT_SMECAM', action.payload);
 
+    case EDIT_SMECAM:
       return {
         ...state,
-        smecamDataEdit: { ...action.payload.application },
-        smecamHistoryEdit: [...action.payload.applicationAudit],
+        smecamEdit: action.payload.data,
+        smecamEditStatus: action.payload,
       };
-    }
+      break;
 
     default:
       return state;
