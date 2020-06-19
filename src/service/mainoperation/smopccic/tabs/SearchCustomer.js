@@ -141,6 +141,7 @@ const SearchCustomer = props => {
           </div>
         );
       },
+      width: 60,
       fixed: 'right',
     },
   ];

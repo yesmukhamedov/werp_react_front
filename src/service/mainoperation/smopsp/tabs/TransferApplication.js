@@ -10,6 +10,7 @@ import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
+import { Link } from 'react-router-dom';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
   momentToStringYYYYMMDD,
@@ -161,8 +162,21 @@ const TransferApplication = props => {
     {
       Header: messages['request_number'],
       accessor: 'applicationNumber',
+      Cell: original => {
+        const url = `../mainoperation/smvca?id=${original.value}`;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <Link to={url} target="_blank">
+              {original.value}
+            </Link>
+          </div>
+        );
+      },
+
       checked: true,
       filterable: false,
+      fixed: 'right',
+      width: 60,
     },
     {
       Header: messages['Table.View'],
