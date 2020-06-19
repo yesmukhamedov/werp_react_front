@@ -1285,11 +1285,11 @@ const generateRoutes = transactionRoutes => {
         exact={true}
         component={AsyncSmvs}
       />
-      <Route
+      {/* <Route
         path="/service/mainoperation/smeca"
         exact={true}
         component={AsyncSmeca}
-      />
+      /> */}
       {/* <Route
         path="/service/mainoperation/smvca"
         exact={true}

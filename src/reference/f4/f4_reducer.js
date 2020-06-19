@@ -381,7 +381,7 @@ export default function(state = INITIAL_STATE, action) {
       return { ...state, filterPlanStatus: [] };
 
     case F4_FETCH_AVAILABLED_TRANSACTION_BY_USER:
-      return { ...state, availabledTransaction: {} };
+      return { ...state, availabledTransaction: [...action.payload.data] };
 
     case F4_FETCH_CURRENT_STAFF:
       return { ...state, staffInfo: action.payload.data };
