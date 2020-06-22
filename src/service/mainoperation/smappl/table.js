@@ -25,8 +25,6 @@ const Table = props => {
     setTableColumns(tableCols);
   }, [tableCols]);
 
-  console.log(serviceRequests);
-
   return (
     <Fragment>
       <ReactTableServerSideWrapper

@@ -37,6 +37,7 @@ import {
   LinkToSmccald,
 } from '../../../utils/outlink';
 import Masters from './Masters';
+import DropdownClearable from '../../../utils/DropdownClearable';
 
 import TotalCountsTable from '../../../utils/TotalCountsTable';
 
@@ -64,9 +65,10 @@ const Smappl = props => {
   const [aDateFrom, setDateFrom] = useState();
   const [aDateTo, setDateTo] = useState();
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
+
   const [search, setSearch] = useState({
     bukrs: '',
-    branchId: 0,
+    branchId: '',
     aDateFrom: null,
     aDateTo: null,
     tovarCategorys: null,
@@ -74,6 +76,8 @@ const Smappl = props => {
     appTypeIds: null,
     page: 0,
   });
+
+  console.log('search', search);
 
   const categoryOptions = category.map(item => {
     return {
@@ -367,24 +371,29 @@ const Smappl = props => {
 
       <Form>
         <Form.Group widths="equal">
-          <Form.Select
-            label={messages['bukrs']}
-            clearable="true"
-            selection
-            options={companyPosition}
-            placeholder={messages['bukrs']}
-            onChange={(e, { value }) => onChange('bukrs', value)}
-            required
-          />
-          <Form.Select
-            label={messages['Task.Branch']}
-            clearable="true"
-            selection
-            options={search.bukrs ? branchOptions[search.bukrs] : []}
-            placeholder={messages['Task.Branch']}
-            onChange={(e, { value }) => onChange('branch', value)}
-            required
-          />
+          <Form.Field required>
+            <label>{messages['bukrs']}</label>
+            <DropdownClearable
+              selection
+              options={companyPosition}
+              value={search.bukrs}
+              placeholder={messages['bukrs']}
+              onChange={(e, { value }) => onChange('bukrs', value)}
+              handleClear={() => setSearch({ ...search, bukrs: '' })}
+            />
+          </Form.Field>
+
+          <Form.Field required>
+            <label>{messages['Task.Branch']}</label>
+            <DropdownClearable
+              selection
+              options={search.bukrs ? branchOptions[search.bukrs] : []}
+              value={search.branchId}
+              placeholder={messages['Task.Branch']}
+              onChange={(e, { value }) => onChange('branch', value)}
+              handleClear={() => setSearch({ ...search, branchId: '' })}
+            />
+          </Form.Field>
           <Form.Select
             label={messages['product_category']}
             clearable="true"
