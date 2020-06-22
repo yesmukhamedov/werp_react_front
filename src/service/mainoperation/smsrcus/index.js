@@ -8,6 +8,7 @@ import {
   Icon,
   Segment,
   Dropdown,
+  Checkbox,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../service.css';
@@ -30,9 +31,10 @@ import {
   f4FetchConStatusList,
   f4FetchBranches,
   f4FetchPhysStatus,
+  f4FetchCurrentStaff,
 } from '../../../reference/f4/f4_action';
 
-import { fetchSmsrcusList } from './smsrcusAction';
+import { fetchSmsrcusList, clearSmsrcusList } from './smsrcusAction';
 import TotalCountsTable from '../../../utils/TotalCountsTable';
 
 import DropdownClearable from '../../../utils/DropdownClearable';
@@ -48,6 +50,7 @@ const Smsrcus = props => {
     category = [],
     smsrcusData = {},
     physStatus = [],
+    branchOptionsService,
   } = props;
 
   const emptyParam = {
@@ -62,9 +65,9 @@ const Smsrcus = props => {
   };
 
   const [param, setParam] = useState({ ...emptyParam });
+  const [blackListChecked, setBlackListChecked] = useState(false);
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
-  console.log('serviceBranchOptions', serviceBranchOptions);
-  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
+  const [turnOnReactFetch, setTurnOnReactFetch] = useState(true);
   const [error, setError] = useState([]);
 
   useEffect(() => {
@@ -180,7 +183,6 @@ const Smsrcus = props => {
       Header: messages['customer_story'],
       checked: true,
       Cell: original => {
-        console.log('ORIGINAL', original.row.contractNumber);
         return (
           <div style={{ textAlign: 'center' }}>
             <div></div>
@@ -229,14 +231,18 @@ const Smsrcus = props => {
     };
   });
 
-  console.log('physStatusOptions', physStatusOptions);
-
   useEffect(() => {
     props.f4fetchCategory();
     props.f4FetchCountryList();
     props.f4FetchConStatusList();
     props.f4FetchBranches();
     props.f4FetchPhysStatus();
+    props.f4FetchCurrentStaff();
+    // const page = 0;
+    // const size = 20;
+
+    // props.fetchSmsrcusList({ ...param, page, size });
+    // setTurnOnReactFetch(true);
   }, []);
 
   const handleClickSmsrcus = () => {
@@ -300,156 +306,217 @@ const Smsrcus = props => {
     setColumns([...data]);
   };
 
-  console.log('PARAM', param);
+  const serverSideSearch = ssParams => {
+    let params = { ...ssParams };
+
+    if (params.contractNumber != undefined || params.contractNumber != null) {
+      if (params.contractNumber.length > 2) {
+        props.fetchSmsrcusList({ ...params, ...param });
+      } else {
+        props.clearSmsrcusList();
+      }
+    }
+    if (params.tovarSn != undefined || params.tovarSn != null) {
+      if (params.tovarSn.length > 2) {
+        props.fetchSmsrcusList({ ...params, ...param });
+      } else {
+        props.clearSmsrcusList();
+      }
+    }
+    if (params.customerFIO != undefined || params.customerFIO != null) {
+      if (params.customerFIO.length > 2) {
+        props.fetchSmsrcusList({ ...params, ...param });
+      } else {
+        props.clearSmsrcusList();
+      }
+    }
+    if (params.customerIinBin != undefined || params.customerIinBin != null) {
+      if (params.customerIinBin.length > 2) {
+        props.fetchSmsrcusList({ ...params, ...param });
+      } else {
+        props.clearSmsrcusList();
+      }
+    }
+    if (params.address != undefined || params.address != null) {
+      if (params.address.length > 2) {
+        props.fetchSmsrcusList({ ...params, ...param });
+      } else {
+        props.clearSmsrcusList();
+      }
+    }
+    if (params.phoneNumber != undefined || params.phoneNumber != null) {
+      if (params.phoneNumber.length > 2) {
+        props.fetchSmsrcusList({ ...params, ...param });
+      } else {
+        props.clearSmsrcusList();
+      }
+    }
+  };
 
   return (
     <Container fluid className="containerMargin">
       <Segment>
         <h3>Поиск клиентов</h3>
+        {blackListChecked == true ? (
+          <Checkbox
+            checked={blackListChecked}
+            label="Черный список"
+            onChange={() => setBlackListChecked(!blackListChecked)}
+          />
+        ) : (
+          ''
+        )}
       </Segment>
-      <Segment>
-        <Form>
-          <Form.Group widths="equal">
-            <Form.Field>
-              <label>{messages['country']}</label>
-              <DropdownClearable
-                fluid
-                placeholder={messages['country']}
-                value={param.countryId}
-                options={countryOptions}
-                onChange={(e, o) => onInputChange(o, 'countryId')}
-                className="alignBottom"
-                handleClear={() => setParam({ ...param, countryId: '' })}
-              />
-            </Form.Field>
-
-            <Form.Field required>
-              <label>{messages['bukrs']}</label>
-              <DropdownClearable
-                fluid
-                placeholder={messages['bukrs']}
-                value={param.bukrs}
-                options={companyOptions}
-                onChange={(e, o) => onInputChange(o, 'bukrs')}
-                handleClear={() => setParam({ ...param, bukrs: '' })}
-              />
-            </Form.Field>
-
-            <Form.Field>
-              <label>{messages['brnch']}</label>
-              <DropdownClearable
-                fluid
-                placeholder={messages['brnch']}
-                value={param.branchId}
-                options={serviceBranchOptions}
-                onChange={(e, o) => onInputChange(o, 'branchId')}
-                handleClear={() => setParam({ ...param, branchId: '' })}
-              />
-            </Form.Field>
-
-            <Form.Field>
-              <label>{messages['category']}</label>
-              <DropdownClearable
-                fluid
-                placeholder={messages['category']}
-                value={param.tovarCategoryId}
-                options={categoryOptions}
-                onChange={(e, o) => onInputChange(o, 'tovarCategoryId')}
-                handleClear={() => setParam({ ...param, tovarCategoryId: '' })}
-              />
-            </Form.Field>
-
-            <Form.Field>
-              <label>Фин. статус</label>
-              <Dropdown
-                selection
-                fluid
-                placeholder="Фин. статус"
-                options={finStatusOptions}
-                onChange={(e, o) => onInputChange(o, 'contractStatusId')}
-                className="alignBottom"
-                multiple
-              />
-            </Form.Field>
-
-            <Form.Field>
-              <label>Физ. статус</label>
-              <Form.Select
-                selection
-                fluid
-                placeholder="Физ. статус"
-                options={physStatusOptions}
-                onChange={(e, o) => onInputChange(o, 'lastStateId')}
-                className="alignBottom"
-                multiple
-              />
-            </Form.Field>
-          </Form.Group>
-
-          <Form.Group className="spaceBetween">
-            <div className="flexDirectionRow">
-              <Form.Field className="marginRight">
-                <label>{messages['Form.DateFrom']}</label>
-                <DatePicker
-                  className="date-auto-width"
-                  autoComplete="off"
-                  locale={language}
-                  dropdownMode="select" //timezone="UTC"
-                  placeholderText={messages['Form.DateFrom']}
-                  selected={
-                    param.contractDateFrom === ''
-                      ? ''
-                      : stringYYYYMMDDToMoment(param.contractDateFrom)
-                  }
-                  onChange={date =>
-                    setParam({
-                      ...param,
-                      contractDateFrom: momentToStringYYYYMMDD(date),
-                    })
-                  }
-                  dateFormat="DD.MM.YYYY"
+      {blackListChecked == true ? (
+        <Segment>
+          <Form>
+            <Form.Group widths="equal">
+              <Form.Field>
+                <label>{messages['country']}</label>
+                <DropdownClearable
+                  fluid
+                  placeholder={messages['country']}
+                  value={param.countryId}
+                  options={countryOptions}
+                  onChange={(e, o) => onInputChange(o, 'countryId')}
+                  className="alignBottom"
+                  handleClear={() => setParam({ ...param, countryId: '' })}
                 />
               </Form.Field>
 
-              <Form.Field className="marginRight">
-                <label>{messages['Form.DateTo']}</label>
-                <DatePicker
-                  className="date-auto-width"
-                  autoComplete="off"
-                  locale={language}
-                  dropdownMode="select" //timezone="UTC"
-                  placeholderText={messages['Form.DateTo']}
-                  selected={
-                    param.contractDateTo === ''
-                      ? ''
-                      : stringYYYYMMDDToMoment(param.contractDateTo)
-                  }
-                  onChange={date =>
-                    setParam({
-                      ...param,
-                      contractDateTo: momentToStringYYYYMMDD(date),
-                    })
-                  }
-                  dateFormat="DD.MM.YYYY"
+              <Form.Field required>
+                <label>{messages['bukrs']}</label>
+                <DropdownClearable
+                  fluid
+                  placeholder={messages['bukrs']}
+                  value={param.bukrs}
+                  options={companyOptions}
+                  onChange={(e, o) => onInputChange(o, 'bukrs')}
+                  handleClear={() => setParam({ ...param, bukrs: '' })}
                 />
               </Form.Field>
-              <Form.Button
-                onClick={handleClickSmsrcus}
-                color="blue"
-                className="alignBottom"
-              >
-                <Icon name="search" />
-                {messages['apply']}
-              </Form.Button>
-            </div>
 
-            <Form.Field className="alignBottom">
-              <ModalColumns columns={columns} finishColumns={finishColumns} />
-            </Form.Field>
-          </Form.Group>
-          <OutputErrors errors={error} />
-        </Form>
-      </Segment>
+              <Form.Field>
+                <label>{messages['brnch']}</label>
+                <DropdownClearable
+                  fluid
+                  placeholder={messages['brnch']}
+                  value={param.branchId}
+                  options={branchOptionsService[param.bukrs]}
+                  onChange={(e, o) => onInputChange(o, 'branchId')}
+                  handleClear={() => setParam({ ...param, branchId: '' })}
+                />
+              </Form.Field>
+
+              <Form.Field>
+                <label>{messages['category']}</label>
+                <DropdownClearable
+                  fluid
+                  placeholder={messages['category']}
+                  value={param.tovarCategoryId}
+                  options={categoryOptions}
+                  onChange={(e, o) => onInputChange(o, 'tovarCategoryId')}
+                  handleClear={() =>
+                    setParam({ ...param, tovarCategoryId: '' })
+                  }
+                />
+              </Form.Field>
+
+              <Form.Field>
+                <label>Фин. статус</label>
+                <Dropdown
+                  selection
+                  fluid
+                  placeholder="Фин. статус"
+                  options={finStatusOptions}
+                  onChange={(e, o) => onInputChange(o, 'contractStatusId')}
+                  className="alignBottom"
+                  multiple
+                />
+              </Form.Field>
+
+              <Form.Field>
+                <label>Физ. статус</label>
+                <Form.Select
+                  selection
+                  fluid
+                  placeholder="Физ. статус"
+                  options={physStatusOptions}
+                  onChange={(e, o) => onInputChange(o, 'lastStateId')}
+                  className="alignBottom"
+                  multiple
+                />
+              </Form.Field>
+            </Form.Group>
+
+            <Form.Group className="spaceBetween">
+              <div className="flexDirectionRow">
+                <Form.Field className="marginRight">
+                  <label>{messages['Form.DateFrom']}</label>
+                  <DatePicker
+                    className="date-auto-width"
+                    autoComplete="off"
+                    locale={language}
+                    dropdownMode="select" //timezone="UTC"
+                    placeholderText={messages['Form.DateFrom']}
+                    selected={
+                      param.contractDateFrom === ''
+                        ? ''
+                        : stringYYYYMMDDToMoment(param.contractDateFrom)
+                    }
+                    onChange={date =>
+                      setParam({
+                        ...param,
+                        contractDateFrom: momentToStringYYYYMMDD(date),
+                      })
+                    }
+                    dateFormat="DD.MM.YYYY"
+                  />
+                </Form.Field>
+
+                <Form.Field className="marginRight">
+                  <label>{messages['Form.DateTo']}</label>
+                  <DatePicker
+                    className="date-auto-width"
+                    autoComplete="off"
+                    locale={language}
+                    dropdownMode="select" //timezone="UTC"
+                    placeholderText={messages['Form.DateTo']}
+                    selected={
+                      param.contractDateTo === ''
+                        ? ''
+                        : stringYYYYMMDDToMoment(param.contractDateTo)
+                    }
+                    onChange={date =>
+                      setParam({
+                        ...param,
+                        contractDateTo: momentToStringYYYYMMDD(date),
+                      })
+                    }
+                    dateFormat="DD.MM.YYYY"
+                  />
+                </Form.Field>
+                <Form.Button
+                  onClick={handleClickSmsrcus}
+                  color="blue"
+                  className="alignBottom"
+                >
+                  <Icon name="search" />
+                  {messages['apply']}
+                </Form.Button>
+              </div>
+
+              <Form.Field className="alignBottom">
+                <ModalColumns columns={columns} finishColumns={finishColumns} />
+              </Form.Field>
+            </Form.Group>
+            <OutputErrors errors={error} />
+          </Form>
+        </Segment>
+      ) : (
+        ''
+      )}
+
       <Divider />
 
       <TotalCountsTable count={smsrcusData.totalElements} />
@@ -459,9 +526,7 @@ const Smsrcus = props => {
         filterable={true}
         defaultPageSize={20}
         showPagination={true}
-        requestData={params => {
-          props.fetchSmsrcusList({ ...params, ...param });
-        }}
+        requestData={params => serverSideSearch(params)}
         pages={smsrcusData ? smsrcusData.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}
         style={{ height: 500 }}
@@ -475,6 +540,7 @@ function mapStateToProps(state) {
     language: state.locales.lang,
     myApplication: state.smopccocReducer.myApplication,
     smsrcusData: state.smsrcusReducer.smsrcusData,
+    branchOptionsService: state.userInfo.branchOptionsService,
     //
     companyOptions: state.userInfo.companyOptions,
     countryList: state.f4.countryList,
@@ -492,4 +558,6 @@ export default connect(mapStateToProps, {
   f4FetchConStatusList,
   f4FetchBranches,
   f4FetchPhysStatus,
+  f4FetchCurrentStaff,
+  clearSmsrcusList,
 })(injectIntl(Smsrcus));

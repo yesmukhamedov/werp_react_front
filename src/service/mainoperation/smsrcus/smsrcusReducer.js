@@ -1,4 +1,4 @@
-import { FETCH_SMSRCUS_LIST } from './smsrcusAction';
+import { FETCH_SMSRCUS_LIST, CLEAR_SMSRCUS_LIST } from './smsrcusAction';
 
 const INITIAL_STATE = {
   dynamicObject: [],
@@ -12,6 +12,11 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         smsrcusData: { ...action.payload.data },
+      };
+    case CLEAR_SMSRCUS_LIST:
+      return {
+        ...state,
+        smsrcusData: {},
       };
 
     default:
