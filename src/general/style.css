@@ -7,12 +7,12 @@
 }
 .text403 {
   color: #888;
-  font-size: 110pt !important;
+  font-size: 90pt !important;
   margin-bottom: 4rem;
 }
 
 .background {
-  width: 30rem;
+  width: 40rem;
   height: 30rem;
   background-image: url('../assets/images/forbiddenGif.gif');
   background-repeat: no-repeat;
