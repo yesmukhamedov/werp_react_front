@@ -503,7 +503,7 @@ const Smsetct = props => {
         <Form>
           <Form.Group>
             <Form.Field>
-              <label>'TTT'</label>
+              <label>{messages['bukrs']}</label>
               <DropdownClearable
                 error={searchError ? true : false}
                 options={companyOptions || []}
@@ -513,23 +513,6 @@ const Smsetct = props => {
                 handleClear={() => handleClear('bukrs')}
                 onChange={(e, o) => searchInput(o)}
               />
-              {/* <Icon
-                link
-                name="close"
-                style={iconStyle}
-                onClick={() => handleClear('demoSecId')}
-              />
-              <Dropdown
-                required
-                error={searchError ? true : false}
-                label={messages['bukrs']}
-                search
-                selection
-                options={companyOptions || []}
-                value={searchParams.bukrs}
-                onChange={(e, o) => searchInput(o)}
-                placeholder={messages['bukrs']}
-              /> */}
             </Form.Field>
 
             <Form.Button
@@ -549,6 +532,7 @@ const Smsetct = props => {
               </label>
               <Button color="teal" onClick={clickSearch} icon>
                 <Icon name="search" />
+                Поиск
               </Button>
             </Form.Field>
           </Form.Group>
