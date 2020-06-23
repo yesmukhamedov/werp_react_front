@@ -66,13 +66,17 @@ const Smopccic = props => {
     };
   });
 
-  const serviceAppStatusOptions = serviceAppStatus.map(item => {
-    return {
-      key: item.id,
-      text: item.name,
-      value: item.id,
-    };
-  });
+  const serviceAppStatusOptions = serviceAppStatus
+    .filter(el => el.id !== 5)
+    .filter(el => el.id !== 7)
+    .map(item => {
+      return {
+        key: item.id,
+        text: item.name,
+        value: item.id,
+      };
+    });
+  console.log(serviceAppStatus.filter(el => el.id === 5 || el.id === 7));
 
   //Вкладки
   const panes = [

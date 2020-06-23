@@ -961,7 +961,7 @@ export function f4CreateServContract(contract) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     console.log(contract);
-    doPost('smcc/createServContract', contract)
+    doPost('smcc/createContract', contract)
       .then(({ data }) => {
         console.log(data);
 

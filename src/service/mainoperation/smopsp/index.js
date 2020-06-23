@@ -188,10 +188,12 @@ const Smopccoc = props => {
     >
       <Segment className="spaceBetween alignItemsCenter">
         <h3 className="alignItemsCenter marginBottom-0">
-          {messages['incoming_call_operator']}
+          {messages['cleaning_system_operator']}
         </h3>
         <a href="/service/mainoperation/smccald" target="_blank">
-          <Button color="teal">{messages['cleaning_system_operator']}</Button>
+          <Button color="teal">
+            {messages['create_request_without_data']}
+          </Button>
         </a>
       </Segment>
 
