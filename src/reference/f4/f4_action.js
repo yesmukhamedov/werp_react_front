@@ -1065,7 +1065,7 @@ export function f4FetchServiceAppType() {
 
 export function f4FetchServicType() {
   return function(dispatch) {
-    doGet('smcs/getServiceTypeList')
+    doGet('service_type')
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

@@ -30,7 +30,7 @@ export const fetchSrls = param => {
 export const fetchServiceTypeList = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcs/getServiceTypeList`, param)
+    doGet(`service_type`, param)
       .then(({ data }) => {
         //console.log(data, 'ACTION');
         dispatch(modifyLoader(false));
