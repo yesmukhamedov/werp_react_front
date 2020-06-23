@@ -528,7 +528,7 @@ const Srlsm = props => {
         data={srlsmListData.data}
         columns={columns}
         filterable={true}
-        defaultPageSize={10}
+        pageSize={20}
         showPagination={true}
         requestData={params => {
           props.fetchSrlsm({ ...params, ...param });
