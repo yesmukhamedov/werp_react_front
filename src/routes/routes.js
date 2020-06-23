@@ -1187,7 +1187,7 @@ const generateRoutes = transactionRoutes => {
       <Route path="/settings" component={AsyncSettings} />
       <Route path="/signin" component={Signin} />
       <Route path="/signout" component={Signout} />
-      <Route path="forbidden" component={ForbiddenPage} />
+      <Route path="/forbidden" component={ForbiddenPage} />
       <Route path="/hr/staff/list" component={AsyncStaffListPage} />
       <Route path="/newIssue/:id" component={AsyncNewIssuePageContainer} />
       <Route path="/hr/staff/update/:id?" component={AsyncStaffUpdatePage} />

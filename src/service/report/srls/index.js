@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import {
   f4fetchCategory,
-  f4FetchBranches,
   f4FetchServiceAppStatus,
 } from '../../../reference/f4/f4_action';
 import { fetchSrls, fetchServiceTypeList } from './srlsAction';
@@ -28,6 +27,7 @@ import '../../service.css';
 import { LinkToSmcuspor } from '../../../utils/outlink';
 import ReactTableWrapper from './../../../utils/ReactTableWrapper';
 import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
+import moment from 'moment';
 
 const Srls = props => {
   const {
@@ -35,12 +35,12 @@ const Srls = props => {
     language,
     category = [],
     companyOptions = [],
-    branches = [],
     serviceAppStatus = [],
     serviceType = [],
     serviceTypeList = [],
     srlsData = [],
     srlsTotalPages,
+    branchOptionsService,
   } = props;
   console.log('srlsTotalPages', srlsTotalPages);
 
@@ -55,13 +55,32 @@ const Srls = props => {
   };
 
   const [param, setParam] = useState({ ...emptyParam });
-
+  const [maxDateAt, setMaxDateAt] = useState(
+    param.dateTo == ''
+      ? moment(new Date())
+      : stringYYYYMMDDToMoment(param.dateTo),
+  );
   console.log('param', param);
+
+  const [maxDateTo, setMaxDateTo] = useState(
+    param.dateTo == ''
+      ? moment(new Date())
+      : stringYYYYMMDDToMoment(param.dateTo),
+  );
+
+  useEffect(() => {
+    if (stringYYYYMMDDToMoment(param.dateTo) != '') {
+      setMaxDateAt(stringYYYYMMDDToMoment(param.dateTo));
+    }
+  }, [param.dateAt, param.dateTo]);
+
+  console.log('maxDateAt', maxDateAt);
+  console.log('maxDateTo', maxDateTo);
 
   useEffect(() => {
     props.f4FetchServiceAppStatus();
     props.f4fetchCategory();
-    props.f4FetchBranches();
+
     props.f4FetchServiceAppStatus();
     props.fetchServiceTypeList();
   }, []);
@@ -89,31 +108,6 @@ const Srls = props => {
       value: item.id,
     };
   });
-  const [serBranchOptions, setSerBranchOptions] = useState([]);
-
-  useEffect(() => {
-    const getBranchByBukrs = (branches, bukrs) => {
-      let br = branches.filter(item => item.bukrs == bukrs);
-
-      let brSer = br.filter(
-        item =>
-          item.business_area_id == 5 ||
-          item.business_area_id == 6 ||
-          item.business_area_id == 9,
-      );
-
-      let serBranchOpt = brSer.map(item => {
-        return {
-          key: item.branch_id,
-          text: item.text45,
-          value: item.branch_id,
-        };
-      });
-      return serBranchOpt;
-    };
-
-    setSerBranchOptions(getBranchByBukrs(branches, param.bukrs));
-  }, [param.bukrs]);
 
   const onInputChange = (o, fieldName) => {
     setParam(prev => {
@@ -294,7 +288,7 @@ const Srls = props => {
             fluid
             label="Филиал"
             placeholder="Филиал"
-            options={serBranchOptions}
+            options={param.bukrs == '' ? [] : branchOptionsService[param.bukrs]}
             onChange={(e, o) => onInputChange(o, 'branchId')}
             className="alignBottom"
           />
@@ -331,39 +325,43 @@ const Srls = props => {
         <Form.Group className="spaceBetween">
           <div className="flexDirectionRow">
             <Form.Field className="marginRight">
-              <label>Дата заявки с</label>
+              <label>Дата с</label>
               <DatePicker
                 className="date-auto-width"
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.dateAt)}
+                selected={
+                  param.dateAt == '' ? '' : stringYYYYMMDDToMoment(param.dateAt)
+                }
                 onChange={date =>
                   setParam({
                     ...param,
                     dateAt: momentToStringYYYYMMDD(date),
                   })
                 }
-                maxDate={new Date()}
+                maxDate={maxDateAt}
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
 
             <Form.Field className="marginRight">
-              <label>Дата заявки по</label>
+              <label>Дата по</label>
               <DatePicker
                 className="date-auto-width"
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={stringYYYYMMDDToMoment(param.dateTo)}
+                selected={
+                  param.dateTo == '' ? '' : stringYYYYMMDDToMoment(param.dateTo)
+                }
                 onChange={date =>
                   setParam({
                     ...param,
                     dateTo: momentToStringYYYYMMDD(date),
                   })
                 }
-                maxDate={new Date()}
+                maxDate={maxDateTo}
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
@@ -408,8 +406,8 @@ function mapStateToProps(state) {
   return {
     language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
+    branchOptionsService: state.userInfo.branchOptionsService,
     category: state.f4.category,
-    branches: state.f4.branches,
     serviceAppStatus: state.f4.serviceAppStatus,
     contractStatusList: state.f4.contractStatusList,
     serviceTypeList: state.srlsmReducer.serviceTypeList,
@@ -420,7 +418,6 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   f4fetchCategory,
-  f4FetchBranches,
   f4FetchServiceAppStatus,
   fetchSrls,
   fetchServiceTypeList,
