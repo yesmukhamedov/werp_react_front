@@ -17,6 +17,7 @@ import { injectIntl } from 'react-intl';
 import {
   f4FetchCountryList,
   f4FetchConTypeList,
+  f4FetchServicType,
 } from '../../../reference/f4/f4_action';
 import EditModal from './editPrice';
 import {
@@ -25,7 +26,6 @@ import {
   fetchSmsetppType,
   clearDynObjService,
   fetchSmsetppHistory,
-  fetchSmsetppServiceTypeId,
   fetchSmsetppGetProductList,
 } from '../../serviceAction';
 import OutputErrors from '../../../general/error/outputErrors';
@@ -78,22 +78,13 @@ const Smsetpp = props => {
     mc: null,
   });
 
-  const serviceTypeOptions = smsetppServiceType
-    .filter(
-      el =>
-        el.id === '1' ||
-        el.id === '2' ||
-        el.id === '5' ||
-        el.id === '6' ||
-        el.id === '7',
-    )
-    .map(item => {
-      return {
-        key: parseInt(item.id),
-        text: item.name,
-        value: parseInt(item.id),
-      };
-    });
+  const serviceTypeOptions = serviceType.map(item => {
+    return {
+      key: parseInt(item.id),
+      text: item.name,
+      value: parseInt(item.id),
+    };
+  });
 
   useEffect(() => {
     // clearDynObjService();
@@ -101,7 +92,7 @@ const Smsetpp = props => {
     //fetchSmsetpp();
     fetchSmsetppPremiumPriceType();
     fetchSmsetppType();
-    props.fetchSmsetppServiceTypeId();
+    props.f4FetchServicType();
     props.f4FetchConTypeList();
   }, []);
 
@@ -773,7 +764,7 @@ const mapStateToProps = state => {
     data: state.serviceReducer.dynamicObject,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
-    serviceType: state.serviceReducer.dynamicObject.type,
+    serviceType: state.f4.serviceType,
     smsetppHistory: state.serviceReducer.dynamicObject.smsetppHistory,
     smsetppServiceType: state.serviceReducer.dynamicObject.smsetppServiceType,
     productList: state.f4.contractTypeList,
@@ -787,7 +778,7 @@ export default connect(mapStateToProps, {
   fetchSmsetppType,
   clearDynObjService,
   fetchSmsetppHistory,
-  fetchSmsetppServiceTypeId,
   f4FetchConTypeList,
   fetchSmsetppGetProductList,
+  f4FetchServicType,
 })(injectIntl(Smsetpp));
