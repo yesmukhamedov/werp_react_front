@@ -13,9 +13,9 @@ import {
   Container,
   Segment,
   Form,
-  Divider,
   Table,
   Input,
+  Dropdown,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import DatePicker from 'react-datepicker';
@@ -58,14 +58,13 @@ const Srlsm = props => {
     categoryId: null,
     serviceTypeId: null,
     serviceStatusId: null,
-    dateOpenAt: null,
-    dateOpenTo: null,
+    dateAt: null,
+    dateTo: null,
   };
 
   const [param, setParam] = useState({ ...emptyParam });
   const [error, setError] = useState([]);
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
-  console.log('PARAM', param);
   const [currency, setCurrency] = useState('');
 
   useEffect(() => {
@@ -118,6 +117,7 @@ const Srlsm = props => {
           break;
         case 'bukrs':
           varSrls.bukrs = o.value;
+          varSrls.branchId = '';
           break;
         case 'branchId':
           varSrls.branchId = o.value.length > 0 ? o.value.join() : null;
@@ -274,12 +274,12 @@ const Srlsm = props => {
 
   const handleClickApply = () => {
     const errors = [];
-    if (param.bukrs != null) {
+    if (param.bukrs == null || param.bukrs == '') {
+      errors.push(errorTableText(5));
+    } else {
       const page = 0;
       const size = 20;
       props.fetchSrlsm({ ...param, page, size });
-    } else {
-      errors.push(errorTableText(5));
     }
     setTurnOnReactFetch(true);
     setError(errors);
@@ -332,7 +332,8 @@ const Srlsm = props => {
           </Form.Field>
           <Form.Field>
             <label>Филиал</label>
-            <Form.Select
+            <Dropdown
+              selection
               fluid
               placeholder="Филиал"
               options={
@@ -385,21 +386,21 @@ const Srlsm = props => {
         <Form.Group className="spaceBetween">
           <div className="flexDirectionRow">
             <Form.Field className="marginRight">
-              <label>Дата заявки с</label>
+              <label>Дата с</label>
               <DatePicker
                 className="date-auto-width"
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
                 selected={
-                  param.dateOpenAt === null
+                  param.dateAt === null
                     ? ''
-                    : stringYYYYMMDDToMoment(param.dateOpenAt)
+                    : stringYYYYMMDDToMoment(param.dateAt)
                 }
                 onChange={date =>
                   setParam({
                     ...param,
-                    dateOpenAt: momentToStringYYYYMMDD(date),
+                    dateAt: momentToStringYYYYMMDD(date),
                   })
                 }
                 dateFormat="DD.MM.YYYY"
@@ -407,21 +408,21 @@ const Srlsm = props => {
             </Form.Field>
 
             <Form.Field className="marginRight">
-              <label>Дата заявки по</label>
+              <label>Дата по</label>
               <DatePicker
                 className="date-auto-width"
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
                 selected={
-                  param.dateOpenTo === null
+                  param.dateTo === null
                     ? ''
-                    : stringYYYYMMDDToMoment(param.dateOpenTo)
+                    : stringYYYYMMDDToMoment(param.dateTo)
                 }
                 onChange={date =>
                   setParam({
                     ...param,
-                    dateOpenTo: momentToStringYYYYMMDD(date),
+                    dateTo: momentToStringYYYYMMDD(date),
                   })
                 }
                 dateFormat="DD.MM.YYYY"
