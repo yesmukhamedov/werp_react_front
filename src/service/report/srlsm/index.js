@@ -31,6 +31,9 @@ import { LinkToSmcuspor, LinkToSmvs } from '../../../utils/outlink';
 import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
 import TotalCountsTable from '../../../utils/TotalCountsTable';
 import moment from 'moment';
+import DropdownClearable from '../../../utils/DropdownClearable';
+import OutputErrors from '../../../general/error/outputErrors';
+import { formatDMY, errorTableText } from '../../../utils/helpers';
 
 const Srlsm = props => {
   const {
@@ -38,7 +41,7 @@ const Srlsm = props => {
     language,
     category = [],
     companyOptions = [],
-    branches = [],
+    branchOptionsService,
     serviceAppStatus = [],
     serviceType = [],
     srlsmListData = {},
@@ -49,17 +52,20 @@ const Srlsm = props => {
   } = props;
 
   const emptyParam = {
-    countryId: '',
-    bukrs: '',
-    branchId: '',
-    categoryId: '',
-    serviceTypeId: '',
-    serviceStatusId: '',
-    dateOpenAt: '',
-    dateOpenTo: '',
+    countryId: null,
+    bukrs: null,
+    branchId: null,
+    categoryId: null,
+    serviceTypeId: null,
+    serviceStatusId: null,
+    dateOpenAt: null,
+    dateOpenTo: null,
   };
 
   const [param, setParam] = useState({ ...emptyParam });
+  const [error, setError] = useState([]);
+  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
+  console.log('PARAM', param);
   const [currency, setCurrency] = useState('');
 
   useEffect(() => {
@@ -102,45 +108,6 @@ const Srlsm = props => {
       value: item.id,
     };
   });
-  const [serBranchOptions, setSerBranchOptions] = useState([]);
-
-  useEffect(() => {
-    let servBrOptions = branches
-      .filter(
-        item =>
-          item.business_area_id == 5 ||
-          item.business_area_id == 6 ||
-          item.business_area_id == 9,
-      )
-      .map(item => {
-        return {
-          key: item.branch_id,
-          text: item.text45,
-          value: item.branch_id,
-          country_id: item.country_id,
-          bukrs: item.bukrs,
-        };
-      });
-    if (param.countryId !== '' && param.bukrs !== '') {
-      let servBranchOptions = servBrOptions
-        .filter(item => item.country_id === param.countryId)
-        .filter(item => item.bukrs === param.bukrs);
-      setSerBranchOptions([...servBranchOptions]);
-    } else if (param.countryId !== '' && param.bukrs === '') {
-      let servBranchOptions = servBrOptions.filter(
-        item => item.country_id === param.countryId,
-      );
-      setSerBranchOptions([...servBranchOptions]);
-    } else if (param.countryId === '' && param.bukrs !== '') {
-      let servBranchOptions = servBrOptions.filter(
-        item => item.bukrs === param.bukrs,
-      );
-
-      setSerBranchOptions([...servBranchOptions]);
-    } else if (param.countryId === '' && param.bukrs === '') {
-      setSerBranchOptions([...servBrOptions]);
-    }
-  }, [branches, param.countryId, param.bukrs]);
 
   const onInputChange = (o, fieldName) => {
     setParam(prev => {
@@ -148,22 +115,21 @@ const Srlsm = props => {
       switch (fieldName) {
         case 'countryId':
           varSrls.countryId = o.value;
-
           break;
         case 'bukrs':
           varSrls.bukrs = o.value;
           break;
         case 'branchId':
-          varSrls.branchId = o.value;
+          varSrls.branchId = o.value.length > 0 ? o.value.join() : null;
           break;
         case 'categoryId':
-          varSrls.categoryId = o.value;
+          varSrls.categoryId = o.value.length > 0 ? o.value.join() : null;
           break;
         case 'serviceTypeId':
-          varSrls.serviceTypeId = o.value;
+          varSrls.serviceTypeId = o.value.length > 0 ? o.value.join() : null;
           break;
         case 'serviceStatusId':
-          varSrls.serviceStatusId = o.value;
+          varSrls.serviceStatusId = o.value.length > 0 ? o.value.join() : null;
           break;
         default:
           varSrls[fieldName] = o.value;
@@ -305,15 +271,18 @@ const Srlsm = props => {
       fixed: 'right',
     },
   ];
-  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
+
   const handleClickApply = () => {
-    //validate();
-    if (param.bukrs !== '') {
+    const errors = [];
+    if (param.bukrs != null) {
       const page = 0;
       const size = 20;
       props.fetchSrlsm({ ...param, page, size });
+    } else {
+      errors.push(errorTableText(5));
     }
     setTurnOnReactFetch(true);
+    setError(errors);
   };
 
   const [columns, setColumns] = useState([...initialColumns]);
@@ -336,58 +305,81 @@ const Srlsm = props => {
       </Segment>
       <Form>
         <Form.Group widths="equal">
-          <Form.Select
-            fluid
-            label="Страна"
-            placeholder="Страна"
-            options={countryOptions}
-            onChange={(e, o) => onInputChange(o, 'countryId')}
-            className="alignBottom"
-          />
-          <Form.Select
-            fluid
-            label="Компания"
-            placeholder="Компания"
-            options={companyOptions}
-            onChange={(e, o) => onInputChange(o, 'bukrs')}
-            className="alignBottom"
-          />
+          <Form.Field>
+            <label>Страна</label>
+            <DropdownClearable
+              fluid
+              placeholder="Страна"
+              value={param.countryId}
+              options={countryOptions}
+              onChange={(e, o) => onInputChange(o, 'countryId')}
+              className="alignBottom"
+              handleClear={() => setParam({ ...param, countryId: '' })}
+            />
+          </Form.Field>
 
-          <Form.Select
-            fluid
-            label="Филиал"
-            placeholder="Филиал"
-            options={serBranchOptions}
-            onChange={(e, o) => onInputChange(o, 'branchId')}
-            className="alignBottom"
-          />
+          <Form.Field required>
+            <label>Компания</label>
+            <DropdownClearable
+              fluid
+              placeholder="Компания"
+              value={param.bukrs}
+              options={companyOptions}
+              onChange={(e, o) => onInputChange(o, 'bukrs')}
+              className="alignBottom"
+              handleClear={() => setParam({ ...param, bukrs: '' })}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Филиал</label>
+            <Form.Select
+              fluid
+              placeholder="Филиал"
+              options={
+                param.bukrs == '' || param.bukrs == null
+                  ? []
+                  : branchOptionsService[param.bukrs]
+              }
+              onChange={(e, o) => onInputChange(o, 'branchId')}
+              className="alignBottom"
+              multiple
+            />
+          </Form.Field>
 
-          <Form.Select
-            fluid
-            label="Категория товара"
-            placeholder="Категория товара"
-            options={tovarCategoryOptions}
-            onChange={(e, o) => onInputChange(o, 'categoryId')}
-            className="alignBottom"
-          />
+          <Form.Field>
+            <label>Вид сервиса</label>
+            <Form.Select
+              fluid
+              placeholder="Вид сервиса"
+              options={serviceTypeOptions}
+              onChange={(e, o) => onInputChange(o, 'serviceTypeId')}
+              className="alignBottom"
+              multiple
+            />
+          </Form.Field>
 
-          <Form.Select
-            fluid
-            label="Вид сервиса"
-            placeholder="Вид сервиса"
-            options={serviceTypeOptions}
-            onChange={(e, o) => onInputChange(o, 'serviceTypeId')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            fluid
-            label="Статус сервиса"
-            placeholder="Статус сервиса"
-            options={serviceAppStatusOptions}
-            onChange={(e, o) => onInputChange(o, 'serviceStatusId')}
-            className="alignBottom"
-          />
+          <Form.Field>
+            <label>Категория товара</label>
+            <Form.Select
+              fluid
+              placeholder="Категория товара"
+              options={tovarCategoryOptions}
+              onChange={(e, o) => onInputChange(o, 'categoryId')}
+              className="alignBottom"
+              multiple
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Статус сервиса</label>
+            <Form.Select
+              fluid
+              placeholder="Статус сервиса"
+              options={serviceAppStatusOptions}
+              onChange={(e, o) => onInputChange(o, 'serviceStatusId')}
+              className="alignBottom"
+              multiple
+            />
+          </Form.Field>
         </Form.Group>
 
         <Form.Group className="spaceBetween">
@@ -400,7 +392,7 @@ const Srlsm = props => {
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
                 selected={
-                  param.dateOpenAt === ''
+                  param.dateOpenAt === null
                     ? ''
                     : stringYYYYMMDDToMoment(param.dateOpenAt)
                 }
@@ -422,7 +414,7 @@ const Srlsm = props => {
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
                 selected={
-                  param.dateOpenTo === ''
+                  param.dateOpenTo === null
                     ? ''
                     : stringYYYYMMDDToMoment(param.dateOpenTo)
                 }
@@ -453,6 +445,7 @@ const Srlsm = props => {
           </Form.Field>
         </Form.Group>
       </Form>
+      <OutputErrors errors={error} />
 
       <Table celled>
         <Table.Body>
@@ -546,7 +539,7 @@ function mapStateToProps(state) {
     language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
     category: state.f4.category,
-    branches: state.f4.branches,
+    branchOptionsService: state.userInfo.branchOptionsService,
     serviceAppStatus: state.f4.serviceAppStatus,
     contractStatusList: state.f4.contractStatusList,
     serviceTypeList: state.srlsmReducer.serviceTypeList,
