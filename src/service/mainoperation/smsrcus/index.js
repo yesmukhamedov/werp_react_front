@@ -129,6 +129,13 @@ const Smsrcus = props => {
       checked: true,
     },
     {
+      Header: 'Продукт',
+      accessor: 'productName',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      checked: true,
+      filterable: false,
+    },
+    {
       Header: messages['factory_number'],
       accessor: 'tovarSn',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
