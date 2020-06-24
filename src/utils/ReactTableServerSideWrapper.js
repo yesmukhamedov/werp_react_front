@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import debounce from 'lodash/debounce';
 import 'react-table-hoc-fixed-columns/lib/styles.css';
+import './style.css';
 
 const ReactTableFixedColumns = withFixedColumns(ReactTable);
 
