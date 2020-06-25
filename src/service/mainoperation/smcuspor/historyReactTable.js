@@ -5,6 +5,8 @@ import { Popup } from 'semantic-ui-react';
 import moment from 'moment';
 import matchSorter, { rankings } from 'match-sorter';
 
+import { LinkToSmvs, LinkToSmecam } from '../../../utils/outlink';
+
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 
 function HistoryReactTable(props) {
@@ -126,7 +128,11 @@ function HistoryReactTable(props) {
               <div style={{ textAlign: 'center' }}>{messages['service']}</div>
             ),
             accessor: 'serviceId',
-            Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+            Cell: row => (
+              <div style={{ textAlign: 'center' }}>
+                <LinkToSmvs serviceNumber={row.value} />
+              </div>
+            ),
           },
         ]}
         defaultPageSize={15}
@@ -183,7 +189,11 @@ function HistoryReactTable(props) {
               <div style={{ textAlign: 'center' }}>{messages['service']}</div>
             ),
             accessor: 'serviceId',
-            Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+            Cell: row => (
+              <div style={{ textAlign: 'center' }}>
+                <LinkToSmvs serviceNumber={row.value} />
+              </div>
+            ),
           },
         ]}
         defaultPageSize={15}
@@ -302,7 +312,11 @@ function HistoryReactTable(props) {
               </div>
             ),
             accessor: 'applicationId',
-            Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+            Cell: row => (
+              <div style={{ textAlign: 'center' }}>
+                <LinkToSmecam id={row.value} />
+              </div>
+            ),
           },
         ]}
         defaultPageSize={15}

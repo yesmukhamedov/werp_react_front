@@ -648,7 +648,7 @@ function Smecim(props) {
                           <TextArea
                             placeholder={messages['description']}
                             onChange={(e, o) => onInputChange(o, 'info')}
-                            value={contract.info}
+                            value={contract.info ? contract.info : ''}
                           />
                         </Form.Field>
                       </Table.Cell>

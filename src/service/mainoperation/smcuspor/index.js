@@ -263,7 +263,21 @@ function Smcuspor(props) {
                   <Table.Row>
                     <Table.Cell>
                       <Label size="large" basic>
-                        {messages['Contract.Number']}
+                        {messages['Product']}
+                      </Label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        size="small"
+                        fluid
+                        value={matnrName ? matnrName : ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Label size="large" basic>
+                        CN
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
