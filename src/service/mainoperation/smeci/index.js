@@ -358,7 +358,7 @@ function Smeci(props) {
                       <Table.Cell></Table.Cell>
                     </Table.Row>
                     <Table.Row>
-                      <Table.Cell>{messages['Contract.Number']}</Table.Cell>
+                      <Table.Cell>CN</Table.Cell>
                       <Table.Cell>
                         <Input
                           size="small"

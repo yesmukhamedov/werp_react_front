@@ -9,6 +9,7 @@ import {
   Input,
   Checkbox,
   Button,
+  TextArea,
 } from 'semantic-ui-react';
 import {
   fetchSmcusporContract,
@@ -351,7 +352,7 @@ function Smcuspor(props) {
                       </Label>
                     </Table.Cell>
                     <Table.Cell>
-                      <Input
+                      <TextArea
                         size="small"
                         fluid
                         value={fullPhone ? fullPhone : ''}

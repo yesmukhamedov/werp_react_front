@@ -5,7 +5,7 @@ import { Popup } from 'semantic-ui-react';
 import moment from 'moment';
 import matchSorter, { rankings } from 'match-sorter';
 
-import { LinkToSmvs, LinkToSmecam } from '../../../utils/outlink';
+import { LinkToSmvs, LinkToSmvca } from '../../../utils/outlink';
 
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 
@@ -314,7 +314,7 @@ function HistoryReactTable(props) {
             accessor: 'applicationId',
             Cell: row => (
               <div style={{ textAlign: 'center' }}>
-                <LinkToSmecam id={row.value} />
+                <LinkToSmvca id={row.value} />
               </div>
             ),
           },

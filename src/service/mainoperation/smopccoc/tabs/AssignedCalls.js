@@ -117,7 +117,7 @@ const AssignedCalls = props => {
       accessor: 'f1',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
-
+      width: 40,
       filterable: false,
     },
     {
@@ -125,7 +125,7 @@ const AssignedCalls = props => {
       accessor: 'f2',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
-
+      width: 40,
       filterable: false,
     },
     {
@@ -133,7 +133,7 @@ const AssignedCalls = props => {
       accessor: 'f3',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
-
+      width: 40,
       filterable: false,
     },
     {
@@ -141,7 +141,7 @@ const AssignedCalls = props => {
       accessor: 'f4',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
-
+      width: 40,
       filterable: false,
     },
     {
@@ -149,7 +149,7 @@ const AssignedCalls = props => {
       accessor: 'f5',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
-
+      width: 40,
       filterable: false,
     },
     {

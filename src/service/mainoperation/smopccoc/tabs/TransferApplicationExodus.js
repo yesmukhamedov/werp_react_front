@@ -121,6 +121,7 @@ const TransferApplicationExodus = props => {
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 40,
     },
     {
       Header: 'F2',
@@ -128,6 +129,7 @@ const TransferApplicationExodus = props => {
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 40,
     },
     {
       Header: 'F3',
@@ -135,6 +137,7 @@ const TransferApplicationExodus = props => {
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 40,
     },
     {
       Header: 'F4',
@@ -142,6 +145,7 @@ const TransferApplicationExodus = props => {
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 40,
     },
     {
       Header: 'F5',
@@ -149,6 +153,7 @@ const TransferApplicationExodus = props => {
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 40,
     },
     {
       Header: messages['category'],

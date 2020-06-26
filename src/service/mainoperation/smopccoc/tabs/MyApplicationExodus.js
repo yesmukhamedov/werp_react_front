@@ -123,7 +123,7 @@ const MyApplicationExodus = props => {
       accessor: 'f1',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-
+      width: 40,
       filterable: false,
     },
     {
@@ -131,7 +131,7 @@ const MyApplicationExodus = props => {
       accessor: 'f2',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-
+      width: 40,
       filterable: false,
     },
     {
@@ -139,7 +139,7 @@ const MyApplicationExodus = props => {
       accessor: 'f3',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-
+      width: 40,
       filterable: false,
     },
     {
@@ -147,7 +147,7 @@ const MyApplicationExodus = props => {
       accessor: 'f4',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-
+      width: 40,
       filterable: false,
     },
     {
@@ -155,7 +155,7 @@ const MyApplicationExodus = props => {
       accessor: 'f5',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-
+      width: 40,
       filterable: false,
     },
     {

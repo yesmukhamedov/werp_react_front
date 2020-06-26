@@ -200,6 +200,15 @@ export const LinkToSmvs = props => {
     </a>
   );
 };
+export const LinkToSmvca = props => {
+  const { id } = props;
+  const url = `../mainoperation/smvca?id=${id}`;
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      {id}
+    </a>
+  );
+};
 export const LinkToSmes = props => {
   const { serviceNumber, text } = props;
   const url = `../mainoperation/smes?serviceNumber=${serviceNumber}`;
