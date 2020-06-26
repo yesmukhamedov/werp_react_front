@@ -502,7 +502,7 @@ const Smsetct = props => {
 
         <Form>
           <Form.Group>
-            <Form.Field>
+            <Form.Field required>
               <label>{messages['bukrs']}</label>
               <DropdownClearable
                 error={searchError ? true : false}
@@ -516,7 +516,7 @@ const Smsetct = props => {
             </Form.Field>
 
             <Form.Button
-              label={messages['brnch'] + ' # ' + selectedBranches.length}
+              label={messages['brnch']}
               color="teal"
               onClick={() => setBranchF4IsOpen(true)}
               icon
