@@ -23,6 +23,7 @@ const DropdownClearable = props => {
     <div style={{ position: 'relative' }}>
       <Icon link name="close" style={iconStyle} onClick={handleClear} />
       <Dropdown
+        fluid
         error={error}
         search
         selection
