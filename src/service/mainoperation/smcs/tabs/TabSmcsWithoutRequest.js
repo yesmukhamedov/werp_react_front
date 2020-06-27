@@ -16,6 +16,7 @@ import {
   checkSmcsWithoutReques,
   saveSmcsWithoutReques,
   fetchOperatorList,
+  fetchMasterList,
 } from '../smcsAction';
 
 import {
@@ -43,7 +44,7 @@ import TableReportWithoutRequest from './components/TableReportWithoutRequest';
 //Создание сервиса без заявки
 const TabSmcsWithoutRequest = props => {
   const {
-    contract,
+    contract = {},
     companyOptions = [],
     branches,
     serviceTypeId = [],
@@ -51,10 +52,11 @@ const TabSmcsWithoutRequest = props => {
     matnrPriceCartridge = [],
     matnrServicePackage = [],
     servicePacketDetails = [],
-    positionSumm,
+    positionSumm = {},
     checkSmcs = {},
     saveSmcs,
     operatorList = [],
+    masterList = [],
   } = props;
 
   const emptyService = {
@@ -119,20 +121,18 @@ const TabSmcsWithoutRequest = props => {
         setService({ ...service, tovarSn: value.target.value });
         break;
 
-      case 'clearMaster':
-        setService({
-          ...service,
-          masterFullName: '',
-          masterId: 0,
-        });
-        break;
-
-      case 'masterModalOpen':
-        setModalOpen({ staffF4ModalOpen: true });
-        break;
-
       case 'changeOperator':
         setService({ ...service, operatorId: value.value });
+        break;
+      case 'clearOperator':
+        setService({ ...service, operatorId: null });
+        break;
+
+      case 'changeMaster':
+        setService({ ...service, masterId: value.value });
+        break;
+      case 'clearMaster':
+        setService({ ...service, masterId: null });
         break;
 
       default:
@@ -187,19 +187,42 @@ const TabSmcsWithoutRequest = props => {
 
   useEffect(() => {
     if (Object.keys(contract).length > 0) {
-      setService({ ...contract, positions: [] });
-      let operParam = {
+      setService({ ...contract });
+      let param = {
         branchId: contract.branchId,
         bukrs: contract.bukrs,
         categoryId: contract.categoryId,
       };
-      props.fetchOperatorList({ ...operParam });
-      let contractId = contract.contractId;
-      props.fetchMatnrPriceServicePackage({ contractId });
+
+      if (contract.branchId && contract.bukrs) {
+        props.fetchOperatorList({
+          ...param,
+        });
+
+        props.fetchMasterList({
+          ...param,
+        });
+      }
+
+      if (contract.branchId && contract.bukrs && contract.tovarId) {
+        let param = {
+          branchId: contract.branchId,
+          bukrs: contract.bukrs,
+          productId: contract.tovarId,
+        };
+        props.fetchMatnrPriceServicePackage({ ...param });
+      }
     }
   }, [contract]);
 
   const operatorOptions = operatorList.map(item => {
+    return {
+      key: item.staffId,
+      text: item.fullName,
+      value: item.staffId,
+    };
+  });
+  const masterOptions = masterList.map(item => {
     return {
       key: item.staffId,
       text: item.fullName,
@@ -289,17 +312,22 @@ const TabSmcsWithoutRequest = props => {
     }
   }, [service.masterId]);
 
-  //УСЛУГИ========================================================================================
+  //УСЛУГИ============================================================================================================================
+  //==================================================================================================================================
 
   const [services, setServices] = useState([]);
+  console.log('SERVICEEEES', services);
 
   const serviceOptions = serviceTypeId
-    .filter(item => item.id === '2')
+    .filter(
+      item =>
+        item.id == '2' || item.id == '5' || item.id == '6' || item.id == '7',
+    )
     .map(item => {
       return {
-        key: item.id,
+        key: parseInt(item.id),
         text: item.name,
-        value: item.id,
+        value: parseInt(item.id),
       };
     });
 
@@ -313,7 +341,7 @@ const TabSmcsWithoutRequest = props => {
         currencyId: null,
         currencyName: null,
         fno: null,
-        id: 2222 + length,
+        id: parseInt(`222${length}`),
         matnrId: null,
         matnrName: null,
         matnrPrice: null,
@@ -323,38 +351,82 @@ const TabSmcsWithoutRequest = props => {
         serviceId: null,
         servicePackageId: null,
         servicePackageName: null,
-        serviceTypeId: 2,
+        serviceTypeId: null,
         serviceTypeName: null,
         sum: null,
-        warranty: null,
+        warranty: false,
+        ss: 22,
       },
     ]);
   };
 
   //Select services
   const selectServices = (id, value) => {
-    setServices(
-      services.map(item =>
-        item.id === id ? { ...item, serviceTypeId: value.value } : item,
-      ),
+    let servicesData = services.filter(item => item.ss == 22);
+    let servicesFilter = servicesData.filter(
+      item => item.serviceTypeId == value.value,
     );
 
-    props.fetchPositionSumm(service.branchId, service.bukrs, ...services);
+    console.log(servicesFilter);
+    if (servicesFilter.length > 0) {
+      alert(
+        'Вы не можете добавить несколько одноименных услуг в эту сервис карту',
+      );
+    } else {
+      setServices(
+        services.map(item =>
+          item.id == id
+            ? {
+                ...item,
+                serviceTypeId: parseInt(value.value),
+              }
+            : item,
+        ),
+      );
+      let posParam = {
+        currencyId: null,
+        currencyName: '',
+        fno: null,
+        id: null,
+        matnrId: null,
+        matnrName: '',
+        matnrPrice: null,
+        operationId: null,
+        operationName: '',
+        quantity: null,
+        serviceId: null,
+        servicePackageId: null,
+        servicePackageName: '',
+        serviceTypeId: parseInt(value.value),
+        serviceTypeName: '',
+        sum: null,
+        warranty: false,
+      };
+
+      props.fetchPositionSumm(
+        service.branchId,
+        service.bukrs,
+        service.tovarId,
+        posParam,
+      );
+    }
   };
 
   useEffect(() => {
-    setServices(
-      services.map(item =>
-        item.serviceTypeId === '2'
-          ? {
-              ...item,
-              currencyId: positionSumm.currencyId,
-              currencyName: positionSumm.currencyName,
-              sum: positionSumm.sum,
-            }
-          : item,
-      ),
-    );
+    if (Object.keys(positionSumm).length > 0) {
+      setServices(
+        services.map(item =>
+          item.serviceTypeId == positionSumm.serviceTypeId
+            ? {
+                ...item,
+                currencyId: positionSumm.currencyId,
+                currencyName: positionSumm.currencyName,
+                sum: positionSumm.sum,
+              }
+            : item,
+        ),
+      );
+    }
   }, [positionSumm]);
 
   //Удалить услуг
@@ -363,7 +435,8 @@ const TabSmcsWithoutRequest = props => {
     setServices([...servicesFilter]);
   };
 
-  //ПРОДАЖА ЗАПЧАСТЕЙ========================================================================================
+  //ПРОДАЖА ЗАПЧАСТЕЙ=================================================================================================================
+  //==================================================================================================================================
   const [sparePartInitial, setSparePartInitial] = useState([]);
 
   const [sparePartList, setSparePartList] = useState([]);
@@ -426,27 +499,6 @@ const TabSmcsWithoutRequest = props => {
       setSparePartList(prev => [
         ...prev,
         {
-          // index: null,
-          // currencyId: item.currencyId,
-          // currencyName: item.currencyName,
-          // fno: null,
-          // id: item.matnrId + index,
-          // matnr: item.matnr,
-          // matnrName: item.matnrName,
-          // matnrCode: item.matnrCode,
-          // matnrPrice: item.price,
-          // menge: item.menge,
-          // qinit: item.qinit,
-          // qminus: item.qminus,
-          // operationId: null,
-          // quantity: 1,
-          // serviceId: null,
-          // servicePackageId: null,
-          // serviceTypeId: 3,
-          // sum: null,
-          // warranty: false,
-          // checked: false,
-
           currencyId: item.currencyId,
           currencyName: item.currencyName,
           fno: null,
@@ -464,7 +516,7 @@ const TabSmcsWithoutRequest = props => {
           serviceTypeId: 3,
           serviceTypeName: null,
           sum: null,
-          warranty: null,
+          warranty: false,
           checked: false,
         },
       ]);
@@ -512,7 +564,8 @@ const TabSmcsWithoutRequest = props => {
     setSparePartInitial([...filterSparePart]);
   }, [sparePartList]);
 
-  //ПРОДАЖА КАРТРИДЖЕЙ==================================================================================
+  //ПРОДАЖА КАРТРИДЖЕЙ================================================================================================================
+  //==================================================================================================================================
   const [cartridgeInitial, setCartridgeInitial] = useState([]);
   const [cartridgeList, setCartridgeList] = useState([]);
   const [modalCartridge, setModalCartridge] = useState(false);
@@ -559,8 +612,6 @@ const TabSmcsWithoutRequest = props => {
         break;
       //F№ изменение
       case 'fnoEdit':
-        console.log('VALUE FNO', value);
-        console.log('ORIGINAL FNO', original);
         setCartridgeList(
           cartridgeList.map(item =>
             item.id === original.id
@@ -621,29 +672,6 @@ const TabSmcsWithoutRequest = props => {
       setCartridgeList(prev => [
         ...prev,
         {
-          // index: null,
-          // currencyId: item.currencyId,
-
-          // currencyName: item.currencyName,
-          // fno: null,
-          // id: item.matnrId + index,
-          // matnr: item.matnr,
-
-          // matnrName: item.matnrName,
-          // matnrCode: item.matnrCode,
-          // matnrPrice: item.price,
-          // menge: item.menge,
-          // qinit: item.qinit,
-          // qminus: item.qminus,
-          // operationId: null,
-          // quantity: 1,
-          // serviceId: null,
-          // servicePackageId: null,
-          // serviceTypeId: 3,
-          // sum: null,
-          // warranty: false,
-          // checked: false,
-
           currencyId: item.currencyId,
           currencyName: item.currencyName,
           fno: null,
@@ -673,7 +701,8 @@ const TabSmcsWithoutRequest = props => {
     setCartridgeInitial([...filterCartridge]);
   }, [cartridgeList]);
 
-  //СЕРВИС ПАКЕТ========================================================================================
+  //СЕРВИС ПАКЕТ======================================================================================================================
+  //==================================================================================================================================
 
   const [servicePackageInitial, setServicePackageInitial] = useState([]);
   const [servicePackageList, setServicePackageList] = useState([]);
@@ -957,6 +986,7 @@ const TabSmcsWithoutRequest = props => {
             <BasicInfoWithoutRequest
               data={service}
               operatorOptions={operatorOptions}
+              masterOptions={masterOptions}
               onBasicInfoInputChange={onBasicInfoInputChange}
             />
           </Grid.Column>
@@ -1054,6 +1084,7 @@ function mapStateToProps(state) {
     checkSmcs: state.smcsReducer.checkSmcs,
     saveSmcs: state.smcsReducer.saveSmcs,
     operatorList: state.smcsReducer.operatorList,
+    masterList: state.smcsReducer.masterList,
   };
 }
 
@@ -1076,4 +1107,5 @@ export default connect(mapStateToProps, {
   checkSmcsWithoutReques,
   saveSmcsWithoutReques,
   fetchOperatorList,
+  fetchMasterList,
 })(injectIntl(TabSmcsWithoutRequest));

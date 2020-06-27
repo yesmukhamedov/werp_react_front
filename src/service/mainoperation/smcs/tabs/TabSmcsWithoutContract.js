@@ -61,8 +61,6 @@ const TabSmcsWithoutContract = props => {
     masterList = [],
   } = props;
 
-  console.log('masterList', masterList);
-
   const emptyService = {
     address: '',
     applicationNumber: '',
@@ -108,8 +106,6 @@ const TabSmcsWithoutContract = props => {
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
   const [tovarOptions, setTovarOptions] = useState([]);
-
-  console.log('SERVICE', service);
 
   const [editStatus, setEditStatus] = useState(true);
 
@@ -205,7 +201,6 @@ const TabSmcsWithoutContract = props => {
 
   const [staffF4ModalPosition, setStaffF4ModalPosition] = useState('');
   const [serBranches, setSerBranches] = useState({});
-  console.log('serBranches', serBranches);
 
   useEffect(() => {
     let servBrOptions = branches
@@ -353,7 +348,8 @@ const TabSmcsWithoutContract = props => {
     }
   }, [service.masterId, service.branchId, service.bukrs, service.tovarId]);
 
-  //УСЛУГИ========================================================================================
+  //УСЛУГИ============================================================================================================================
+  //==================================================================================================================================
 
   const [services, setServices] = useState([]);
 

@@ -210,9 +210,12 @@ export const fetchOperatorList = param => {
   };
 };
 
-export const fetchPositionSumm = (branchId, bukrs, position) => {
+export const fetchPositionSumm = (branchId, bukrs, productId, position) => {
   return function(dispatch) {
-    doPost(`smcs/getPositionSum?branchId=${branchId}&bukrs=${bukrs}`, position)
+    doPost(
+      `smcs/getPositionSum?branchId=${branchId}&bukrs=${bukrs}&productId=${productId}`,
+      position,
+    )
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

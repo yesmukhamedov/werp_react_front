@@ -6,11 +6,40 @@ import {
   Divider,
   Input,
   Checkbox,
+  Dropdown,
 } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
 
 const SaleCartridge = props => {
   const { data = [], onChangeCartridge, editStatus } = props;
+
+  const fnoOptions = [
+    {
+      key: 1,
+      text: 1,
+      value: 1,
+    },
+    {
+      key: 2,
+      text: 2,
+      value: 2,
+    },
+    {
+      key: 3,
+      text: 3,
+      value: 3,
+    },
+    {
+      key: 4,
+      text: 4,
+      value: 4,
+    },
+    {
+      key: 5,
+      text: 5,
+      value: 5,
+    },
+  ];
 
   const columns = [
     {
@@ -30,15 +59,12 @@ const SaleCartridge = props => {
       Header: 'F№',
       accessor: 'fno',
       Cell: ({ original }) => (
-        <Input
-          size="mini"
-          style={{ padding: '0' }}
-          value={
-            original.fno === null || original.fno === '' ? 0 : original.fno
-          }
-          type="number"
+        <Dropdown
           fluid
+          selection
+          value={original.fno}
           onChange={(e, value) => onChangeCartridge(value, 'fnoEdit', original)}
+          options={fnoOptions}
         />
       ),
     },

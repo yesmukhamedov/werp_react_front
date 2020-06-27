@@ -10,7 +10,7 @@ import './style.css';
 const Smcs = props => {
   const { location } = props;
   const [applicationNumber, setApplicationNumber] = useState();
-  const [activeTab, setActiveTab] = useState(1);
+  const [activeTab, setActiveTab] = useState(0);
   useEffect(() => {
     if (
       location.search === '' ||

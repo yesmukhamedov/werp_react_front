@@ -1,25 +1,37 @@
 import React from 'react';
-import { Button, Table, Icon, Input, Dropdown } from 'semantic-ui-react';
+import {
+  Button,
+  Table,
+  Icon,
+  Input,
+  Dropdown,
+  Segment,
+  Form,
+} from 'semantic-ui-react';
+import DropdownClearable from '../../../../../utils/DropdownClearable';
 
 const BasicInfoWithoutRequest = props => {
-  const { data = {}, operatorOptions, onBasicInfoInputChange } = props;
+  const {
+    data = {},
+    operatorOptions = [],
+    masterOptions = [],
+    onBasicInfoInputChange,
+  } = props;
 
   return (
-    <Table collapsing className="borderLess">
+    <Table>
       <Table.Body>
-        <Table.Row>
-          <Table.Cell>Номер заявки</Table.Cell>
-          <Table.Cell>
-            <Input
-              type="text"
-              fluid
-              readOnly
-              value={
-                data.applicationNumber === null ? '' : data.applicationNumber
-              }
-            />
-          </Table.Cell>
-        </Table.Row>
+        <Table.Cell width={5}>Номер заявки</Table.Cell>
+        <Table.Cell width={11}>
+          <Input
+            type="text"
+            fluid
+            readOnly
+            value={
+              data.applicationNumber === null ? '' : data.applicationNumber
+            }
+          />
+        </Table.Cell>
         <Table.Row>
           <Table.Cell>Компания</Table.Cell>
           <Table.Cell>
@@ -39,8 +51,12 @@ const BasicInfoWithoutRequest = props => {
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell width={4}>Заводской номер</Table.Cell>
-          <Table.Cell width={12}>
+          <Table.Cell>
+            <Form.Field required>
+              <label>Заводской номер</label>
+            </Form.Field>
+          </Table.Cell>
+          <Table.Cell>
             <Input
               fluid
               type="text"
@@ -94,37 +110,42 @@ const BasicInfoWithoutRequest = props => {
         </Table.Row>
 
         <Table.Row>
-          <Table.Cell>Мастер</Table.Cell>
           <Table.Cell>
-            <Input
-              readOnly
-              value={data.masterFullName === null ? '' : data.masterFullName}
-            />
-            <Icon
-              name="clone"
-              size="large"
-              className="clickableIcon"
-              onClick={item => onBasicInfoInputChange(item, 'masterModalOpen')}
-            />
-            <Icon
-              name="remove"
-              size="large"
-              className="clickableIcon"
-              color="red"
-              onClick={item => onBasicInfoInputChange(item, 'clearMaster')}
+            <Form.Field required>
+              <label>Мастер</label>
+            </Form.Field>
+          </Table.Cell>
+          <Table.Cell>
+            <DropdownClearable
+              options={masterOptions}
+              value={data.masterId ? data.masterId : ''}
+              placeholder="Мастер"
+              onChange={(e, item) =>
+                onBasicInfoInputChange(item, 'changeMaster')
+              }
+              handleClear={(e, item) =>
+                onBasicInfoInputChange(item, 'clearMaster')
+              }
             />
           </Table.Cell>
         </Table.Row>
 
         <Table.Row>
-          <Table.Cell>Оператор</Table.Cell>
           <Table.Cell>
-            <Dropdown
-              selection
+            <Form.Field required>
+              <label>Оператор</label>
+            </Form.Field>
+          </Table.Cell>
+          <Table.Cell>
+            <DropdownClearable
               options={operatorOptions}
-              value={data.operatorId}
+              value={data.operatorId ? data.operatorId : ''}
+              placeholder="Оператор"
               onChange={(e, item) =>
                 onBasicInfoInputChange(item, 'changeOperator')
+              }
+              handleClear={(e, item) =>
+                onBasicInfoInputChange(item, 'clearOperator')
               }
             />
           </Table.Cell>
@@ -139,6 +160,11 @@ const BasicInfoWithoutRequest = props => {
           <Table.Cell>Срок гарантии</Table.Cell>
           <Table.Cell className="tableRow">
             <Input readOnly value={data.warrantyPeriodDate} />
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>Срок гарантии в месяц</Table.Cell>
+          <Table.Cell className="tableRow">
             <Input
               readOnly
               value={

@@ -18,6 +18,7 @@ const ModalAddServicePacket = props => {
   const columnsServicePacket = [
     {
       Header: '',
+      accessor: 'id',
       Cell: ({ original }) => (
         <Checkbox
           checked={original.checked}
