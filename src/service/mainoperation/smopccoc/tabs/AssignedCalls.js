@@ -163,14 +163,6 @@ const AssignedCalls = props => {
       filterable: false,
     },
     {
-      Header: messages['fin_status'],
-      accessor: 'contractStatusId',
-      checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
-
-      filterable: false,
-    },
-    {
       Header: messages['Table.View'],
       accessor: '16',
       filterable: false,

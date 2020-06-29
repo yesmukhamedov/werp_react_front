@@ -166,13 +166,6 @@ const TransferApplicationExodus = props => {
       filterable: false,
     },
     {
-      Header: messages['application_status'],
-      accessor: 'applicationStatusId',
-      checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
-      filterable: false,
-    },
-    {
       Header: messages['request_number'],
       accessor: 'applicationNumber',
       checked: true,

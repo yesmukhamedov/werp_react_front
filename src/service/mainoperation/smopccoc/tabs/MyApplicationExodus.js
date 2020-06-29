@@ -80,6 +80,13 @@ const MyApplicationExodus = props => {
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
+      Header: 'CN',
+      accessor: 'contractNumber',
+      checked: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      width: 60,
+    },
+    {
       Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
