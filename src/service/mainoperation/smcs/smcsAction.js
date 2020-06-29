@@ -158,10 +158,8 @@ export const fetchMatnrPriceServicePackage = param => {
 
 export const fetchServicePackageDetails = param => {
   return function(dispatch) {
-    dispatch(modifyLoader(true));
     doGet(`smcs/getServicePackageDetails`, param)
       .then(({ data }) => {
-        dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SERVICE_PACKAGE_DETAILS,
           data: data,
@@ -179,7 +177,6 @@ export const fetchSmcsServicePacket = param => {
     dispatch(modifyLoader(true));
     doGet(`smcs/getServicePackageList`, param)
       .then(({ data }) => {
-        dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SMCS_SERVICE_PACKET,
           data: data,
@@ -212,6 +209,7 @@ export const fetchOperatorList = param => {
 
 export const fetchPositionSumm = (branchId, bukrs, productId, position) => {
   return function(dispatch) {
+    dispatch(modifyLoader(true));
     doPost(
       `smcs/getPositionSum?branchId=${branchId}&bukrs=${bukrs}&productId=${productId}`,
       position,

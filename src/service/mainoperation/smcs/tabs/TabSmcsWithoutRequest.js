@@ -612,9 +612,10 @@ const TabSmcsWithoutRequest = props => {
         break;
       //F№ изменение
       case 'fnoEdit':
+        console.log('FNO CHANGE');
         setCartridgeList(
           cartridgeList.map(item =>
-            item.id === original.id
+            item.id === original
               ? {
                   ...item,
                   fno: parseInt(value.value, 10),
@@ -626,13 +627,13 @@ const TabSmcsWithoutRequest = props => {
       //Удалить картридж
       case 'deleteCartridge':
         let deleteFilter = cartridgeInitial.filter(
-          item => item.id !== value.id,
+          item => item.id !== original,
         );
         setCartridgeList([...deleteFilter]);
 
         setCartridgeList(
           cartridgeList.map(item =>
-            item.id === value.id
+            item.id === original
               ? {
                   ...item,
                   checked: false,
@@ -662,6 +663,21 @@ const TabSmcsWithoutRequest = props => {
         }
         break;
 
+      case 'warrantyCartridge':
+        console.log('[WARRANTY CARTRIDGE', 'value', value, 'id', original);
+        setCartridgeList(
+          cartridgeList.map(item =>
+            item.id === original
+              ? {
+                  ...item,
+                  warranty: value.checked,
+                }
+              : item,
+          ),
+        );
+
+        break;
+
       default:
         alert('Нет таких значений');
     }
@@ -674,7 +690,7 @@ const TabSmcsWithoutRequest = props => {
         {
           currencyId: item.currencyId,
           currencyName: item.currencyName,
-          fno: null,
+          fno: item.fno,
           id: item.matnrId + index,
           matnrId: item.matnrId,
           matnrName: item.matnrName,

@@ -7,11 +7,14 @@ import {
   Input,
   Checkbox,
   Dropdown,
+  Table,
 } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
 
 const SaleCartridge = props => {
   const { data = [], onChangeCartridge, editStatus } = props;
+
+  console.log('CARTRIDGE DATA', data);
 
   const fnoOptions = [
     {
@@ -123,29 +126,145 @@ const SaleCartridge = props => {
 
   return (
     <Segment>
-      <h5>Продажа картриджей</h5>
-      <Divider />
-      <ReactTableWrapper
-        data={data}
-        columns={columns}
-        // className="-striped -highlight"
-        pageSize={data.length > 10 ? 10 : data.length}
-      />
+      <h4>Продажа картриджей</h4>
       <Divider />
 
+      <Table compact>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell width={1} textAlign="center">
+              №
+            </Table.HeaderCell>
+            <Table.HeaderCell width={5} textAlign="center">
+              Наименование
+            </Table.HeaderCell>
+            <Table.HeaderCell width={1} textAlign="center">
+              f№
+            </Table.HeaderCell>
+            <Table.HeaderCell width={2} textAlign="center">
+              Количество
+            </Table.HeaderCell>
+            <Table.HeaderCell width={2} textAlign="center">
+              Сумма
+            </Table.HeaderCell>
+            <Table.HeaderCell width={1} textAlign="center">
+              Валюта
+            </Table.HeaderCell>
+            <Table.HeaderCell width={2} textAlign="center">
+              Гарантия
+            </Table.HeaderCell>
+            <Table.HeaderCell></Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+
+        <Table.Body>
+          {data.map((item, index) => (
+            <Table.Row key={index}>
+              <Table.Cell>
+                <Input readOnly fluid value={index + 1} />
+              </Table.Cell>
+              <Table.Cell>
+                <Input readOnly fluid value={item.matnrName} />
+              </Table.Cell>
+              <Table.Cell>
+                <Dropdown
+                  fluid
+                  selection
+                  value={item.fno}
+                  options={fnoOptions}
+                  onChange={(e, value) =>
+                    onChangeCartridge(value, 'fnoEdit', item.id)
+                  }
+                />
+              </Table.Cell>
+              <Table.Cell>
+                <Input
+                  fluid
+                  style={{ padding: '0' }}
+                  value={item.quantity}
+                  type="number"
+                  label={{ content: 'шт' }}
+                  labelPosition="right"
+                  onChange={(e, value) =>
+                    onChangeCartridge(e, 'quantityCartridge', item)
+                  }
+                />
+              </Table.Cell>
+              <Table.Cell>
+                <Input
+                  readOnly
+                  fluid
+                  value={item.sum != null ? item.sum : ''}
+                />
+              </Table.Cell>
+              <Table.Cell>
+                <Input
+                  readOnly
+                  fluid
+                  value={item.currencyName ? item.currencyName : ''}
+                />
+              </Table.Cell>
+              <Table.Cell>
+                <Checkbox
+                  checked={item.warranty ? item.warranty : false}
+                  label="Гарантия"
+                  onChange={(e, value) =>
+                    onChangeCartridge(value, 'warrantyCartridge', item.id)
+                  }
+                />
+              </Table.Cell>
+              <Table.Cell>
+                <Button
+                  size="mini"
+                  color="red"
+                  onClick={(e, value) =>
+                    onChangeCartridge(value, 'deleteCartridge', item.id)
+                  }
+                >
+                  Удалить
+                </Button>
+              </Table.Cell>
+            </Table.Row>
+          ))}
+        </Table.Body>
+      </Table>
+      <Segment>Сумма: </Segment>
+
       <Button
-        // disabled={editStatus}
+        onClick={item => onChangeCartridge(item, 'addCartridgeBtn')}
         icon
         labelPosition="left"
         color="green"
         size="small"
-        onClick={item => onChangeCartridge(item, 'addCartridgeBtn')}
         disabled={editStatus}
       >
-        <Icon name="plus" size="small" />
-        Добавить картриджей
+        <Icon name="plus" size="small" /> Добавить картриджей
       </Button>
     </Segment>
+    // <Segment>
+
+    //   <Divider />
+    //   <ReactTableWrapper
+    //     data={data}
+    //     columns={columns}
+    //     // className="-striped -highlight"
+    //     pageSize={data.length > 10 ? 10 : data.length}
+    //   />
+    //   <Divider />
+
+    //   <Button
+    //     // disabled={editStatus}
+    //     icon
+    //     labelPosition="left"
+    //     color="green"
+    //     size="small"
+    //     onClick={item => onChangeCartridge(item, 'addCartridgeBtn')}
+    //     disabled={editStatus}
+    //   >
+    //     <Icon name="plus" size="small" />
+    //     Добавить картриджей
+    //   </Button>
+    // </Segment>
   );
 };
 
