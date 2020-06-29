@@ -53,6 +53,7 @@ const ServiceFilterPlan = props => {
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 55,
     },
     {
       Header: messages['brnch'],
@@ -67,6 +68,7 @@ const ServiceFilterPlan = props => {
       Cell: row => <TextAlignCenter text={row.value} />,
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['contractNumber'] }),
+      width: 60,
     },
     {
       Header: messages['factory_number'],
@@ -82,6 +84,7 @@ const ServiceFilterPlan = props => {
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 80,
     },
     {
       Header: messages['fio'],
@@ -196,7 +199,7 @@ const ServiceFilterPlan = props => {
         );
       },
       checked: true,
-      width: 60,
+      width: 50,
       fixed: 'right',
     },
     {
@@ -236,6 +239,7 @@ const ServiceFilterPlan = props => {
       },
       checked: true,
       fixed: 'right',
+      width: 50,
     },
   ];
 

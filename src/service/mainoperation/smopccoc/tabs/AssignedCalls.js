@@ -51,6 +51,7 @@ const AssignedCalls = props => {
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 55,
     },
     {
       Header: messages['brnch'],
@@ -63,6 +64,7 @@ const AssignedCalls = props => {
       accessor: 'contractNumber',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
+      width: 60,
     },
     {
       Header: messages['factory_number'],
@@ -75,7 +77,7 @@ const AssignedCalls = props => {
       accessor: 'contractDate',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
-
+      width: 80,
       filterable: false,
     },
     {
@@ -182,6 +184,7 @@ const AssignedCalls = props => {
       ),
       checked: true,
       fixed: 'right',
+      width: 50,
     },
   ];
 

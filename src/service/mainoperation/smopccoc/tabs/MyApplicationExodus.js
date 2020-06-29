@@ -65,6 +65,7 @@ const MyApplicationExodus = props => {
           },
         };
       },
+      width: 55,
     },
     {
       Header: messages['brnch'],
@@ -83,7 +84,7 @@ const MyApplicationExodus = props => {
       accessor: 'contractDate',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-
+      width: 80,
       filterable: false,
     },
     {
@@ -189,7 +190,7 @@ const MyApplicationExodus = props => {
         );
       },
       fixed: 'right',
-      width: 60,
+      width: 50,
       filterable: false,
     },
     {
@@ -207,7 +208,7 @@ const MyApplicationExodus = props => {
           </div>
         );
       },
-      width: 60,
+      width: 50,
       fixed: 'right',
     },
   ];

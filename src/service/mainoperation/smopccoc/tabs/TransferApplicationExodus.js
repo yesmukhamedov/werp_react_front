@@ -51,6 +51,7 @@ const TransferApplicationExodus = props => {
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 55,
     },
     {
       Header: messages['brnch'],
@@ -63,6 +64,7 @@ const TransferApplicationExodus = props => {
       accessor: 'contractNumber',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
+      width: 60,
     },
     {
       Header: messages['factory_number'],
@@ -76,6 +78,7 @@ const TransferApplicationExodus = props => {
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 80,
     },
     {
       Header: messages['transfer_date'],
@@ -184,7 +187,7 @@ const TransferApplicationExodus = props => {
         );
       },
       fixed: 'right',
-      width: 60,
+      width: 50,
       filterable: false,
     },
     {
@@ -200,7 +203,7 @@ const TransferApplicationExodus = props => {
           />
         </div>
       ),
-      width: 60,
+      width: 50,
       fixed: 'right',
     },
   ];
