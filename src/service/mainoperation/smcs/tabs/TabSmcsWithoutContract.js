@@ -1008,6 +1008,7 @@ const TabSmcsWithoutContract = props => {
               selectServices={selectServices}
               waers={service.currencyName}
               editStatus={editStatus}
+              currency={service.currencyName}
             />
 
             {/*Продажа запчастей */}

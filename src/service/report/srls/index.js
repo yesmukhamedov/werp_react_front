@@ -12,8 +12,7 @@ import {
   Segment,
   Form,
   Divider,
-  Table,
-  Input,
+  Dropdown,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import DatePicker from 'react-datepicker';
@@ -25,24 +24,30 @@ import {
 } from '../../../utils/helpers';
 import '../../service.css';
 import { LinkToSmcuspor } from '../../../utils/outlink';
-import ReactTableWrapper from './../../../utils/ReactTableWrapper';
 import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
+
+import DropdownClearable from '../../../utils/DropdownClearable';
+import OutputErrors from '../../../general/error/outputErrors';
+import { formatDMY, errorTableText } from '../../../utils/helpers';
+import TotalCountsTable from '../../../utils/TotalCountsTable';
 import moment from 'moment';
+require('moment/locale/ru');
 
 const Srls = props => {
   const {
     intl: { messages },
-    language,
+    language = '',
     category = [],
     companyOptions = [],
     serviceAppStatus = [],
-    serviceType = [],
     serviceTypeList = [],
     srlsData = [],
     srlsTotalPages,
+    srlsTotalElements,
     branchOptionsService,
   } = props;
-  console.log('srlsTotalPages', srlsTotalPages);
+
+  console.log(typeof language, language);
 
   const emptyParam = {
     bukrs: '',
@@ -55,6 +60,7 @@ const Srls = props => {
   };
 
   const [param, setParam] = useState({ ...emptyParam });
+  const [error, setError] = useState([]);
   const [maxDateAt, setMaxDateAt] = useState(
     param.dateTo == ''
       ? moment(new Date())
@@ -73,9 +79,6 @@ const Srls = props => {
       setMaxDateAt(stringYYYYMMDDToMoment(param.dateTo));
     }
   }, [param.dateAt, param.dateTo]);
-
-  console.log('maxDateAt', maxDateAt);
-  console.log('maxDateTo', maxDateTo);
 
   useEffect(() => {
     props.f4FetchServiceAppStatus();
@@ -117,16 +120,17 @@ const Srls = props => {
           varSrls.bukrs = o.value;
           break;
         case 'branchId':
-          varSrls.branchId = o.value;
+          //varSrls.branchId = o.value;
+          varSrls.branchId = o.value.length > 0 ? o.value.join() : '';
           break;
         case 'categoryId':
-          varSrls.categoryId = o.value;
+          varSrls.categoryId = o.value.length > 0 ? o.value.join() : '';
           break;
         case 'serviceTypeId':
-          varSrls.serviceTypeId = o.value;
+          varSrls.serviceTypeId = o.value.length > 0 ? o.value.join() : '';
           break;
         case 'serviceStatusId':
-          varSrls.serviceStatusId = o.value;
+          varSrls.serviceStatusId = o.value.length > 0 ? o.value.join() : '';
           break;
         default:
           varSrls[fieldName] = o.value;
@@ -245,13 +249,25 @@ const Srls = props => {
   ];
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const handleClickApply = () => {
-    //validate();
-    if (param.bukrs !== '') {
+    // //validate();
+    // if (param.bukrs !== '') {
+    //   const page = 0;
+    //   const size = 20;
+    //   props.fetchSrls({ ...param, page, size });
+    // }
+    // setTurnOnReactFetch(true);
+    // setError(errors);
+
+    const errors = [];
+    if (param.bukrs == null || param.bukrs == '') {
+      errors.push(errorTableText(5));
+    } else {
       const page = 0;
       const size = 20;
       props.fetchSrls({ ...param, page, size });
     }
     setTurnOnReactFetch(true);
+    setError(errors);
   };
 
   const [columns, setColumns] = useState([...initialColumns]);
@@ -259,6 +275,12 @@ const Srls = props => {
   const finishColumns = data => {
     setColumns([...data]);
   };
+
+  useEffect(() => {
+    if (param.bukrs == '') {
+      setParam({ ...param, branchId: '' });
+    }
+  }, [param.bukrs]);
 
   return (
     <Container
@@ -275,51 +297,60 @@ const Srls = props => {
       </Segment>
       <Form>
         <Form.Group widths="equal">
-          <Form.Select
-            fluid
-            label="Компания"
-            placeholder="Компания"
-            options={companyOptions}
-            onChange={(e, o) => onInputChange(o, 'bukrs')}
-            className="alignBottom"
-          />
+          <Form.Field required>
+            <label>Компания</label>
+            <DropdownClearable
+              placeholder="Компания"
+              options={companyOptions}
+              onChange={(e, o) => onInputChange(o, 'bukrs')}
+              value={param.bukrs}
+              handleClear={() => setParam({ ...param, bukrs: '' })}
+            />
+          </Form.Field>
 
-          <Form.Select
-            fluid
-            label="Филиал"
-            placeholder="Филиал"
-            options={param.bukrs == '' ? [] : branchOptionsService[param.bukrs]}
-            onChange={(e, o) => onInputChange(o, 'branchId')}
-            className="alignBottom"
-          />
+          <Form.Field>
+            <label>Филиал</label>
+            <Dropdown
+              selection
+              multiple
+              placeholder="Филиал"
+              options={param.bukrs ? branchOptionsService[param.bukrs] : []}
+              onChange={(e, o) => onInputChange(o, 'branchId')}
+            />
+          </Form.Field>
 
-          <Form.Select
-            fluid
-            label="Категория товара"
-            placeholder="Категория товара"
-            value={param.c}
-            options={tovarCategoryOptions}
-            onChange={(e, o) => onInputChange(o, 'categoryId')}
-            className="alignBottom"
-          />
+          <Form.Field>
+            <label>Категория товара</label>
+            <Dropdown
+              selection
+              multiple
+              placeholder="Категория товара"
+              options={tovarCategoryOptions ? tovarCategoryOptions : []}
+              onChange={(e, o) => onInputChange(o, 'categoryId')}
+            />
+          </Form.Field>
 
-          <Form.Select
-            fluid
-            label="Вид сервиса"
-            placeholder="Вид сервиса"
-            options={serviceTypeOptions}
-            onChange={(e, o) => onInputChange(o, 'serviceTypeId')}
-            className="alignBottom"
-          />
+          <Form.Field>
+            <label>Вид сервиса</label>
+            <Dropdown
+              selection
+              multiple
+              placeholder="Вид сервиса"
+              options={serviceTypeOptions ? serviceTypeOptions : []}
+              onChange={(e, o) => onInputChange(o, 'serviceTypeId')}
+            />
+          </Form.Field>
 
-          <Form.Select
-            fluid
-            label="Статус сервиса"
-            placeholder="Статус сервиса"
-            options={serviceAppStatusOptions}
-            onChange={(e, o) => onInputChange(o, 'serviceStatusId')}
-            className="alignBottom"
-          />
+          <Form.Field>
+            <label>Статус сервиса</label>
+            <Dropdown
+              selection
+              multiple
+              placeholder="Статус сервиса"
+              options={serviceAppStatusOptions ? serviceAppStatusOptions : []}
+              onChange={(e, o) => onInputChange(o, 'serviceStatusId')}
+            />
+          </Form.Field>
         </Form.Group>
 
         <Form.Group className="spaceBetween">
@@ -327,9 +358,11 @@ const Srls = props => {
             <Form.Field className="marginRight">
               <label>Дата с</label>
               <DatePicker
+                isClearable
+                placeholderText="Дата с"
                 className="date-auto-width"
                 autoComplete="off"
-                locale={language}
+                locale={`${language}`}
                 dropdownMode="select" //timezone="UTC"
                 selected={
                   param.dateAt == '' ? '' : stringYYYYMMDDToMoment(param.dateAt)
@@ -348,6 +381,9 @@ const Srls = props => {
             <Form.Field className="marginRight">
               <label>Дата по</label>
               <DatePicker
+                isClearable
+                locale={language}
+                placeholderText="Дата по"
                 className="date-auto-width"
                 autoComplete="off"
                 locale={language}
@@ -383,8 +419,9 @@ const Srls = props => {
           </Form.Field>
         </Form.Group>
       </Form>
+      <OutputErrors errors={error} />
 
-      <Divider />
+      <TotalCountsTable count={srlsTotalElements ? srlsTotalElements : 0} />
 
       <ReactTableServerSideWrapper
         data={srlsData}
@@ -413,6 +450,7 @@ function mapStateToProps(state) {
     serviceTypeList: state.srlsmReducer.serviceTypeList,
     srlsData: state.srlsReducer.srlsData,
     srlsTotalPages: state.srlsReducer.srlsTotalPages,
+    srlsTotalElements: state.srlsReducer.srlsTotalElements,
   };
 }
 

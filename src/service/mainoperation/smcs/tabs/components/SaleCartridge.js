@@ -10,11 +10,12 @@ import {
   Table,
 } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
+import { moneyFormat } from '../../../../../utils/helpers';
 
 const SaleCartridge = props => {
-  const { data = [], onChangeCartridge, editStatus } = props;
+  const { data = [], onChangeCartridge, editStatus, currency } = props;
 
-  console.log('CARTRIDGE DATA', data);
+  const totalCartridge = data.reduce((total, item) => total + item.sum, 0);
 
   const fnoOptions = [
     {
@@ -194,7 +195,7 @@ const SaleCartridge = props => {
                 <Input
                   readOnly
                   fluid
-                  value={item.sum != null ? item.sum : ''}
+                  value={item.sum != null ? moneyFormat(item.sum) : ''}
                 />
               </Table.Cell>
               <Table.Cell>
@@ -228,7 +229,13 @@ const SaleCartridge = props => {
           ))}
         </Table.Body>
       </Table>
-      <Segment>Сумма: </Segment>
+      {data.length > 0 ? (
+        <Segment>
+          Общая сумма: {totalCartridge} {currency}
+        </Segment>
+      ) : (
+        ''
+      )}
 
       <Button
         onClick={item => onChangeCartridge(item, 'addCartridgeBtn')}

@@ -30,10 +30,12 @@ import '../../service.css';
 import { LinkToSmcuspor, LinkToSmvs } from '../../../utils/outlink';
 import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
 import TotalCountsTable from '../../../utils/TotalCountsTable';
-import moment from 'moment';
+
 import DropdownClearable from '../../../utils/DropdownClearable';
 import OutputErrors from '../../../general/error/outputErrors';
 import { formatDMY, errorTableText } from '../../../utils/helpers';
+import moment from 'moment';
+require('moment/locale/ru');
 
 const Srlsm = props => {
   const {
@@ -388,6 +390,8 @@ const Srlsm = props => {
             <Form.Field className="marginRight">
               <label>Дата с</label>
               <DatePicker
+                placeholderText="Дата с"
+                isClearable
                 className="date-auto-width"
                 autoComplete="off"
                 locale={language}
@@ -410,6 +414,8 @@ const Srlsm = props => {
             <Form.Field className="marginRight">
               <label>Дата по</label>
               <DatePicker
+                placeholderText="Дата по"
+                isClearable
                 className="date-auto-width"
                 autoComplete="off"
                 locale={language}

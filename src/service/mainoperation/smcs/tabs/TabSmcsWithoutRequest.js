@@ -67,7 +67,7 @@ const TabSmcsWithoutRequest = props => {
     branchName: '',
     bukrs: '',
     bukrsName: '',
-    categoryId: 2,
+    categoryId: 0,
     categoryName: '',
     contractDate: '',
     contractId: 0,
@@ -119,6 +119,7 @@ const TabSmcsWithoutRequest = props => {
       //Изменить серииный номер товара
       case 'inputChangeTovarSN':
         setService({ ...service, tovarSn: value.target.value });
+
         break;
 
       case 'changeOperator':
@@ -187,6 +188,13 @@ const TabSmcsWithoutRequest = props => {
 
   useEffect(() => {
     if (Object.keys(contract).length > 0) {
+      setSparePartInitial([]);
+      setSparePartList([]);
+      setCartridgeInitial([]);
+      setCartridgeList([]);
+      setServicePackageInitial([]);
+      setServicePackageList([]);
+      setServices([]);
       setService({ ...contract });
       let param = {
         branchId: contract.branchId,
@@ -316,7 +324,6 @@ const TabSmcsWithoutRequest = props => {
   //==================================================================================================================================
 
   const [services, setServices] = useState([]);
-  console.log('SERVICEEEES', services);
 
   const serviceOptions = serviceTypeId
     .filter(
@@ -1017,6 +1024,7 @@ const TabSmcsWithoutRequest = props => {
               selectServices={selectServices}
               waers={service.currencyName}
               editStatus={editStatus}
+              currency={service.currencyName}
             />
 
             {/*Продажа запчастей */}
@@ -1024,6 +1032,7 @@ const TabSmcsWithoutRequest = props => {
               data={sparePartInitial}
               onChangeSparePart={onChangeSparePart}
               editStatus={editStatus}
+              currency={service.currencyName}
             />
 
             <ModalAddSparePart
@@ -1038,6 +1047,7 @@ const TabSmcsWithoutRequest = props => {
               data={cartridgeInitial}
               onChangeCartridge={onChangeCartridge}
               editStatus={editStatus}
+              currency={service.currencyName}
             />
 
             <ModalAddCartridge
@@ -1051,6 +1061,7 @@ const TabSmcsWithoutRequest = props => {
               data={servicePackageInitial}
               onChangeServicePackage={onChangeServicePackage}
               editStatus={editStatus}
+              currency={service.currencyName}
             />
             <ModalAddServicePacket
               data={servicePackageList}
@@ -1059,7 +1070,10 @@ const TabSmcsWithoutRequest = props => {
             />
 
             {/*Таблица*/}
-            <TableReportWithoutRequest data={service} />
+            <TableReportWithoutRequest
+              data={service}
+              currency={service.currencyName}
+            />
 
             {/*Проверить*/}
             <Button color="green" onClick={handleCheck}>

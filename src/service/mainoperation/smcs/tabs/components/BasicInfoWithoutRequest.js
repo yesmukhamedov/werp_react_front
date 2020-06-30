@@ -21,17 +21,19 @@ const BasicInfoWithoutRequest = props => {
   return (
     <Table>
       <Table.Body>
-        <Table.Cell width={5}>Номер заявки</Table.Cell>
-        <Table.Cell width={11}>
-          <Input
-            type="text"
-            fluid
-            readOnly
-            value={
-              data.applicationNumber === null ? '' : data.applicationNumber
-            }
-          />
-        </Table.Cell>
+        <Table.Row>
+          <Table.Cell width={5}>Номер заявки</Table.Cell>
+          <Table.Cell width={11}>
+            <Input
+              type="text"
+              fluid
+              readOnly
+              value={
+                data.applicationNumber === null ? '' : data.applicationNumber
+              }
+            />
+          </Table.Cell>
+        </Table.Row>
         <Table.Row>
           <Table.Cell>Компания</Table.Cell>
           <Table.Cell>

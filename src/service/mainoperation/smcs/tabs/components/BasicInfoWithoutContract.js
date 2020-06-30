@@ -7,11 +7,13 @@ const BasicInfoWithoutContract = props => {
     operatorOptions,
     onBasicInfoInputChange,
     companyOptions,
-    branchOptions,
+    branchOptions = [],
     categoryOptions,
     tovarOptions,
     masterOptions,
   } = props;
+
+  console.log('BRANCH OPTIONS', branchOptions);
 
   const optionsExample = [
     { key: 1, text: 'name 1', value: 1 },

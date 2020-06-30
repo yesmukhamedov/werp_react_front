@@ -116,6 +116,8 @@ function Smccald(props) {
 
   const [param, setParam] = useState({ ...emptyParam });
 
+  console.log('param', param);
+
   const [error, setError] = useState([]);
 
   const onInputChange = (o, fieldName) => {

@@ -8,9 +8,10 @@ import {
   Checkbox,
 } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
+import { moneyFormat } from '../../../../../utils/helpers';
 
 const ServicePackage = props => {
-  const { data = [], onChangeServicePackage, editStatus } = props;
+  const { data = [], onChangeServicePackage, editStatus, currency } = props;
 
   const columnsDetails = [
     {
@@ -39,6 +40,7 @@ const ServicePackage = props => {
     },
   ];
 
+  const totalServicePackage = data.reduce((total, item) => total + item.sum, 0);
   return (
     <Segment>
       <h5>Сервис пакет</h5>
@@ -74,6 +76,13 @@ const ServicePackage = props => {
           />
         </Segment>
       ))}
+      {data.length > 0 ? (
+        <Segment>
+          Общая сумма: {moneyFormat(totalServicePackage)} {currency}
+        </Segment>
+      ) : (
+        ''
+      )}
 
       <Divider />
 

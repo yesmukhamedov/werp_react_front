@@ -8,6 +8,7 @@ import {
   Table,
   Input,
 } from 'semantic-ui-react';
+import { moneyFormat } from '../../../../../utils/helpers';
 
 const Services = props => {
   const {
@@ -17,25 +18,24 @@ const Services = props => {
     servicesOptions = [],
     selectServices,
     editStatus,
-    total,
+    currency,
   } = props;
 
   const servicesData = data.filter(el => el.ss == 22);
+  const totalServices = data.reduce((total, item) => total + item.sum, 0);
 
   return (
     <Segment>
       <h4>Услуги</h4>
       <Divider />
 
-      <Table compact>
+      <Table>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell textAlign="center">№</Table.HeaderCell>
-            <Table.HeaderCell textAlign="center">
-              Наименование услуг
-            </Table.HeaderCell>
-            <Table.HeaderCell textAlign="center">Сумма</Table.HeaderCell>
-            <Table.HeaderCell textAlign="center">Валюта</Table.HeaderCell>
+            <Table.HeaderCell width={1}>№</Table.HeaderCell>
+            <Table.HeaderCell width={5}>Наименование услуг</Table.HeaderCell>
+            <Table.HeaderCell width={2}>Сумма</Table.HeaderCell>
+            <Table.HeaderCell width={1}>Валюта</Table.HeaderCell>
             <Table.HeaderCell></Table.HeaderCell>
           </Table.Row>
         </Table.Header>
@@ -60,7 +60,7 @@ const Services = props => {
                 <Input
                   readOnly
                   fluid
-                  value={item.sum != null ? item.sum : ''}
+                  value={item.sum != null ? moneyFormat(item.sum) : ''}
                 />
               </Table.Cell>
               <Table.Cell>
@@ -83,20 +83,16 @@ const Services = props => {
           ))}
         </Table.Body>
       </Table>
-      <Segment>Общая сумма: {total}</Segment>
+      {data.length > 0 ? (
+        <Segment>
+          Общая сумма: {moneyFormat(totalServices)} {currency}
+        </Segment>
+      ) : (
+        ''
+      )}
       {data.length >= 4 ? (
         ''
       ) : (
-        // <Button
-        //   onClick={(e, value) => onChangeServices(e, 2, 'addServices')}
-        //   icon
-        //   labelPosition="left"
-        //   color="green"
-        //   size="small"
-        //   disabled={editStatus}
-        // >
-        //   <Icon name="plus" size="small" /> Добавить услугу
-        // </Button>
         <Button
           onClick={addServices}
           icon

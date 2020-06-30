@@ -11,6 +11,7 @@ export default function(state = INITIAL_STATE, action) {
         ...state,
         srlsData: [...action.data.data.data],
         srlsTotalPages: action.data.data.totalPages,
+        srlsTotalElements: action.data.data.totalElements,
       };
 
     case FETCH_SERVICE_TYPE_LIST:
