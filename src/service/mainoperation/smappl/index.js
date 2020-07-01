@@ -50,10 +50,7 @@ const Smappl = props => {
     appStatus,
     fetchAppType,
     appType,
-    fetchAppList,
-    fetchAppMasterList,
     fetchClearAppList,
-    fetchAppListSearchParam,
     category,
     appList,
   } = props;
@@ -256,7 +253,7 @@ const Smappl = props => {
   const [columnsForTable, setColumnsForTable] = useState([]);
 
   useEffect(() => {
-    fetchClearAppList();
+    props.fetchClearAppList();
     fetchAppStatus();
     fetchAppType();
     props.f4fetchCategory();
@@ -337,14 +334,14 @@ const Smappl = props => {
     if (search.bukrs === '') {
       errors.push(errorTableText(5));
     }
-    if (search.branchId === 0) {
+    if (search.branchId === 0 || search.branchId === '') {
       errors.push(errorTableText(7));
     }
     if (errors.length === 0) {
-      fetchAppList(search);
-      fetchAppMasterList(search);
+      props.fetchAppList(search);
+      props.fetchAppMasterList(search);
       setTurnOnReactFetch(true);
-      fetchAppListSearchParam(search);
+      props.fetchAppListSearchParam(search);
     }
     setError(() => errors);
   };

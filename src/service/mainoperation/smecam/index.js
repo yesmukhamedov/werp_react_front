@@ -9,6 +9,7 @@ import {
   TextArea,
   Button,
   Dropdown,
+  Checkbox,
 } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 
@@ -21,8 +22,6 @@ import './smecam.css';
 import {
   stringYYYYMMDDHHMMSSToMoment,
   momentToStringYYYYMMDDHHMMSS,
-  momentToStringYYYYMMDD,
-  moneyInputHanler,
 } from '../../../utils/helpers';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -188,6 +187,42 @@ const Smecam = props => {
                           readOnly
                           value={smecam.applicationTypeName || ''}
                         />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>
+                        <Form.Field>Дата заявки</Form.Field>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Table>
+                          <Table.Body>
+                            <Table.Row>
+                              <Table.Cell>
+                                <Input
+                                  fluid
+                                  readOnly
+                                  value={
+                                    smecam.applicationDate
+                                      ? smecam.applicationDate
+                                      : ''
+                                  }
+                                />
+                              </Table.Cell>
+
+                              <Table.Cell collapsing>
+                                <Checkbox
+                                  readOnly
+                                  checked={smecam.urgencyLevel}
+                                />
+                              </Table.Cell>
+                              <Table.Cell>
+                                <Form.Field>
+                                  <label>{messages['urgent']}</label>
+                                </Form.Field>
+                              </Table.Cell>
+                            </Table.Row>
+                          </Table.Body>
+                        </Table>
                       </Table.Cell>
                     </Table.Row>
 
@@ -415,12 +450,7 @@ const Smecam = props => {
                 </Form.Field>
 
                 <Form.Field>
-                  <Button
-                    disabled={!editStatus}
-                    color="green"
-                    fluid
-                    // onClick={() => handleSubmit()}
-                  >
+                  <Button disabled={!editStatus} color="green" fluid>
                     <Link
                       disabled={!editStatus}
                       className="linkColor"

@@ -13,5 +13,7 @@
   padding-left: 7px;
 }
 .linkColor {
+  width: 100% !important;
+  height: 100% !important;
   color: white !important;
 }

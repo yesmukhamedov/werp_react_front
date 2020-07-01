@@ -9,6 +9,7 @@ import {
   TextArea,
   Button,
   Dropdown,
+  Checkbox,
 } from 'semantic-ui-react';
 
 import { fetchSmeca, editSmeca } from './smecaAction';
@@ -18,10 +19,19 @@ import TableHistory from './TableHistory';
 import OutputErrors from '../../../general/error/outputErrors';
 import { f4FetchServiceAppStatus } from '../../../reference/f4/f4_action';
 import './smeca.css';
-import DropdownClearable from '../../../utils/DropdownClearable';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
+import 'moment/locale/ru';
+import 'moment/locale/tr';
+import {
+  stringYYYYMMDDHHMMSSToMoment,
+  momentToStringYYYYMMDDHHMMSS,
+} from '../../../utils/helpers';
 
 const Smeca = props => {
   const {
+    language,
     intl: { messages },
     smecaData = {},
     smecaHistory = [],
@@ -183,6 +193,42 @@ const Smeca = props => {
                           readOnly
                           value={smeca.applicationTypeName || ''}
                         />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>
+                        <Form.Field>Дата заявки</Form.Field>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Table>
+                          <Table.Body>
+                            <Table.Row>
+                              <Table.Cell>
+                                <Input
+                                  fluid
+                                  readOnly
+                                  value={
+                                    smeca.applicationDate
+                                      ? smeca.applicationDate
+                                      : ''
+                                  }
+                                />
+                              </Table.Cell>
+
+                              <Table.Cell collapsing>
+                                <Checkbox
+                                  readOnly
+                                  checked={smeca.urgencyLevel}
+                                />
+                              </Table.Cell>
+                              <Table.Cell>
+                                <Form.Field>
+                                  <label>{messages['urgent']}</label>
+                                </Form.Field>
+                              </Table.Cell>
+                            </Table.Row>
+                          </Table.Body>
+                        </Table>
                       </Table.Cell>
                     </Table.Row>
 
