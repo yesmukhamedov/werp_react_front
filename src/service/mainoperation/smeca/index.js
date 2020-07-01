@@ -8,6 +8,7 @@ import {
   Table,
   TextArea,
   Button,
+  Dropdown,
 } from 'semantic-ui-react';
 
 import { fetchSmeca, editSmeca } from './smecaAction';
@@ -15,7 +16,9 @@ import { injectIntl } from 'react-intl';
 import { connect } from 'react-redux';
 import TableHistory from './TableHistory';
 import OutputErrors from '../../../general/error/outputErrors';
+import { f4FetchServiceAppStatus } from '../../../reference/f4/f4_action';
 import './smeca.css';
+import DropdownClearable from '../../../utils/DropdownClearable';
 
 const Smeca = props => {
   const {
@@ -23,6 +26,7 @@ const Smeca = props => {
     smecaData = {},
     smecaHistory = [],
     smecaPutStatus = {},
+    serviceAppStatus = [],
   } = props;
 
   const url = window.location.search;
@@ -32,6 +36,23 @@ const Smeca = props => {
   const [smecaHis, setSmecaHis] = useState([]);
   const [postStatus, setPostStatus] = useState(false);
   const [editStatus, setEditStatus] = useState(true);
+
+  console.log('SMECA DATA', smeca);
+
+  const serviceAppStatusOptions = serviceAppStatus
+    .filter(
+      item =>
+        item.id == smecaData.applicationStatusId ||
+        item.id == 1 ||
+        item.id == 6,
+    )
+    .map(item => {
+      return {
+        key: parseInt(item.id),
+        text: item.name,
+        value: parseInt(item.id),
+      };
+    });
 
   const deepEqual = (obj1, obj2) => {
     return JSON.stringify(obj1) === JSON.stringify(obj2);
@@ -50,6 +71,7 @@ const Smeca = props => {
     if (smecaPutStatus.status == 'OK') {
       setPostStatus(true);
       props.fetchSmeca(id);
+      setSmeca({ ...smecaPutStatus.data });
     } else {
       setPostStatus(false);
     }
@@ -68,6 +90,7 @@ const Smeca = props => {
 
   useEffect(() => {
     props.fetchSmeca(id);
+    props.f4FetchServiceAppStatus();
   }, []);
 
   const handleChange = (value, fieldName) => {
@@ -76,6 +99,10 @@ const Smeca = props => {
         console.log('info value', value);
         setSmeca({ ...smeca, info: value });
         break;
+      case 'selectApplicationStatusId':
+        setSmeca({ ...smeca, applicationStatusId: value.value });
+        break;
+
       case '':
         break;
       default:
@@ -83,7 +110,6 @@ const Smeca = props => {
   };
 
   const handleSubmit = () => {
-    console.log('EDIT BUTTON');
     props.editSmeca({ ...smeca });
   };
 
@@ -288,12 +314,20 @@ const Smeca = props => {
                     </Table.Row>
 
                     <Table.Row>
-                      <Table.Cell>{messages['L__ORDER_STATUS']}</Table.Cell>
                       <Table.Cell>
-                        <Input
+                        <Form.Field>
+                          <label>{messages['L__ORDER_STATUS']}</label>
+                        </Form.Field>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Dropdown
                           fluid
-                          readOnly
-                          value={smeca.applicationStatusName || ''}
+                          selection
+                          value={smeca.applicationStatusId}
+                          options={serviceAppStatusOptions}
+                          onChange={(e, value) =>
+                            handleChange(value, 'selectApplicationStatusId')
+                          }
                         />
                       </Table.Cell>
                     </Table.Row>
@@ -310,6 +344,7 @@ const Smeca = props => {
                             rows={1}
                             placeholder={messages['Table.Note']}
                             value={smeca.info || ''}
+                            style={{ minHeight: 100 }}
                             onChange={(e, value) =>
                               handleChange(e.target.value, 'info')
                             }
@@ -353,10 +388,12 @@ function mapStateToProps(state) {
     smecaData: state.smecaReducer.smecaData,
     smecaHistory: state.smecaReducer.smecaHistory,
     smecaPutStatus: state.smecaReducer.smecaEditStatus,
+    serviceAppStatus: state.f4.serviceAppStatus,
   };
 }
 
 export default connect(mapStateToProps, {
   fetchSmeca,
   editSmeca,
+  f4FetchServiceAppStatus,
 })(injectIntl(Smeca));
