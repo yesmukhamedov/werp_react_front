@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Container, Form, Divider, Segment } from 'semantic-ui-react';
+import { Container, Form, Divider, Segment, Icon } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import OutputErrors from '../../../../general/error/outputErrors';
 import { errorTableText } from '../../../../utils/helpers';
@@ -16,7 +16,7 @@ import {
   stringYYYYMMDDToMoment,
 } from '../../../../utils/helpers';
 import ModalColumns from './../../../../utils/ModalColumns';
-import { LinkToSmcuspor } from '../../../../utils/outlink';
+import { Link } from 'react-router-dom';
 import DropdownClearable from '../../../../utils/DropdownClearable';
 
 const AssignedCalls = props => {
@@ -137,14 +137,16 @@ const AssignedCalls = props => {
       Header: messages['Table.View'],
       accessor: '16',
       filterable: false,
-      Cell: original => (
-        <div style={{ textAlign: 'center' }}>
-          <LinkToSmcuspor
-            contractNumber={original.row.contractNumber}
-            text={messages['Table.View']}
-          />
-        </div>
-      ),
+      Cell: original => {
+        const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}&filterVCId=${original.row.id}`;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <Link to={url} target="_blank">
+              <Icon name="address card" color="black" />
+            </Link>
+          </div>
+        );
+      },
       checked: true,
       width: 60,
       fixed: 'right',
@@ -213,8 +215,6 @@ const AssignedCalls = props => {
       return prevParam;
     });
   };
-
-  console.log(assignedCalls.data);
 
   return (
     <Container fluid className="containerMargin">

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Form, Container, Divider, Icon } from 'semantic-ui-react';
+import { Form, Container, Divider, Icon, Segment } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
 import moment from 'moment';
@@ -27,7 +27,7 @@ const MyApplicationExodus = props => {
     language,
     companyOptions = [],
     countryOptions,
-    myApplication,
+    myApplication = [],
     branchOptions = [],
     crmCategoryOptions = [],
   } = props;
@@ -206,12 +206,12 @@ const MyApplicationExodus = props => {
       checked: true,
       filterable: false,
       Cell: original => {
+        const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}&filterPlanId=${original.row.id}`;
         return (
           <div style={{ textAlign: 'center' }}>
-            <LinkToSmcuspor
-              contractNumber={original.row._original.contractNumber}
-              text={messages['Table.View']}
-            />
+            <Link to={url} target="_blank">
+              <Icon name="address card" color="black" />
+            </Link>
           </div>
         );
       },
@@ -402,6 +402,13 @@ const MyApplicationExodus = props => {
         <OutputErrors errors={error} />
       </Form>
       <Divider />
+
+      {Object.keys(myApplication).length !== 0 ? (
+        <Segment>
+          <h4>{`Общее количество: ${myApplication.totalElements}`}</h4>
+        </Segment>
+      ) : null}
+
       <ReactTableServerSideWrapper
         data={myApplication ? myApplication.data : []}
         columns={columns}

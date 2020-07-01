@@ -101,7 +101,10 @@ function Smcuspor(props) {
     if (contractNumber) {
       props.fetchSmcusporContract({ contractNumber });
       props.fetchSmcusporContractHistory({ contractNumber });
-      props.fetchServCrmHistoryAll({ contractNumber }, history.reactColumns);
+      props.fetchServCrmHistoryAll({ contractNumber }, 'all');
+      props.fetchServCrmHistoryAll({ contractNumber }, 'services');
+      props.fetchServCrmHistoryAll({ contractNumber }, 'calls');
+      props.fetchServCrmHistoryAll({ contractNumber }, 'requests');
     }
   }, [contractNumber]);
 
@@ -354,7 +357,6 @@ function Smcuspor(props) {
                     <Table.Cell>
                       <TextArea
                         size="small"
-                        fluid
                         value={fullPhone ? fullPhone : ''}
                       />
                     </Table.Cell>

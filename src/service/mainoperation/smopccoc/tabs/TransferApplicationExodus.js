@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Container, Form, Divider, Icon } from 'semantic-ui-react';
+import { Container, Form, Divider, Icon, Segment } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
 import moment from 'moment';
@@ -29,7 +29,7 @@ const TransferApplicationExodus = props => {
     companyOptions = [],
     countryOptions,
     branchOptions = [],
-    transfer,
+    transfer = [],
   } = props;
 
   const emptyParam = {
@@ -188,14 +188,16 @@ const TransferApplicationExodus = props => {
       accessor: '16',
       checked: true,
       filterable: false,
-      Cell: original => (
-        <div style={{ textAlign: 'center' }}>
-          <LinkToSmcuspor
-            contractNumber={original.row.contractNumber}
-            text={messages['Table.View']}
-          />
-        </div>
-      ),
+      Cell: original => {
+        const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}&filterPlanId=${original.row.id}`;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <Link to={url} target="_blank">
+              <Icon name="address card" color="black" />
+            </Link>
+          </div>
+        );
+      },
       width: 50,
       fixed: 'right',
     },
@@ -359,6 +361,13 @@ const TransferApplicationExodus = props => {
         <OutputErrors errors={error} />
       </Form>
       <Divider />
+
+      {Object.keys(transfer).length !== 0 ? (
+        <Segment>
+          <h4>{`Общее количество: ${transfer.totalElements}`}</h4>
+        </Segment>
+      ) : null}
+
       <ReactTableServerSideWrapper
         data={transfer ? transfer.data : []}
         columns={columns}

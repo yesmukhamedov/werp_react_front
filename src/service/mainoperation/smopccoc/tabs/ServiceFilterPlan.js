@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Container, Form, Divider, Icon, Popup } from 'semantic-ui-react';
+import {
+  Container,
+  Form,
+  Divider,
+  Icon,
+  Popup,
+  Segment,
+} from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
 import OutputErrors from '../../../../general/error/outputErrors';
@@ -25,7 +32,7 @@ const ServiceFilterPlan = props => {
     serviceDateTypeOptions,
     branchOptions,
     finStatusOption,
-    serviceFilterPlan,
+    serviceFilterPlan = [],
   } = props;
 
   const emptyParam = {
@@ -451,6 +458,13 @@ const ServiceFilterPlan = props => {
         <OutputErrors errors={error} />
       </Form>
       <Divider />
+
+      {Object.keys(serviceFilterPlan).length !== 0 ? (
+        <Segment>
+          <h4>{`Общее количество: ${serviceFilterPlan.totalElements}`}</h4>
+        </Segment>
+      ) : null}
+
       <ReactTableServerSideWrapper
         data={serviceFilterPlan ? serviceFilterPlan.data : []}
         columns={columns}

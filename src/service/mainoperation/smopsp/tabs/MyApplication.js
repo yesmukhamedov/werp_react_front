@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Container, Form, Divider, Segment } from 'semantic-ui-react';
+import { Container, Form, Divider, Segment, Icon } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import OutputErrors from '../../../../general/error/outputErrors';
 import { errorTableText } from '../../../../utils/helpers';
@@ -200,14 +200,16 @@ const MyApplication = props => {
       Header: messages['Table.View'],
       filterable: false,
       accessor: '16',
-      Cell: original => (
-        <div style={{ textAlign: 'center' }}>
-          <LinkToSmcuspor
-            contractNumber={original.row.contractNumber}
-            text={messages['Table.View']}
-          />
-        </div>
-      ),
+      Cell: original => {
+        const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}&filterVCId=${original.row.id}`;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <Link to={url} target="_blank">
+              <Icon name="address card" color="black" />
+            </Link>
+          </div>
+        );
+      },
       checked: true,
       width: 60,
       fixed: 'right',

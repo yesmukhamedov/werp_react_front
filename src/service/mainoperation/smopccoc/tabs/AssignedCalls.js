@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Container, Form, Divider, Icon } from 'semantic-ui-react';
-import moment from 'moment';
+import { Container, Form, Divider, Icon, Segment } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import { fetchCRMSchedule } from '../smopccocAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
@@ -17,7 +16,7 @@ import {
   momentToStringYYYYMMDD,
   stringYYYYMMDDToMoment,
 } from '../../../../utils/helpers';
-import { LinkToSmcuspor } from '../../../../utils/outlink';
+import { Link } from 'react-router-dom';
 import DropdownClearable from '../../../../utils/DropdownClearable';
 
 const AssignedCalls = props => {
@@ -30,7 +29,7 @@ const AssignedCalls = props => {
     companyOptions = [],
     countryOptions,
     branchOptions = [],
-    assignedCalls,
+    assignedCalls = [],
   } = props;
 
   const emptyParam = {
@@ -166,14 +165,16 @@ const AssignedCalls = props => {
       Header: messages['Table.View'],
       accessor: '16',
       filterable: false,
-      Cell: original => (
-        <div style={{ textAlign: 'center' }}>
-          <LinkToSmcuspor
-            contractNumber={original.row.contractNumber}
-            text={messages['Table.View']}
-          />
-        </div>
-      ),
+      Cell: original => {
+        const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}&filterPlanId=${original.row.id}`;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <Link to={url} target="_blank">
+              <Icon name="address card" color="black" />
+            </Link>
+          </div>
+        );
+      },
       checked: true,
       fixed: 'right',
       width: 50,
@@ -340,6 +341,13 @@ const AssignedCalls = props => {
         <OutputErrors errors={error} />
       </Form>
       <Divider />
+
+      {Object.keys(assignedCalls).length !== 0 ? (
+        <Segment>
+          <h4>{`Общее количество: ${assignedCalls.totalElements}`}</h4>
+        </Segment>
+      ) : null}
+
       <ReactTableServerSideWrapper
         data={assignedCalls ? assignedCalls.data : []}
         columns={columns}
