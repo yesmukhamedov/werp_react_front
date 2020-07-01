@@ -81,25 +81,12 @@ const SaleCartridge = props => {
       accessor: 'warranty',
       Cell: ({ original }) => (
         <Checkbox
+          readOnly
           disabled={disabledEdit}
           // checked={original.warranty}
           label="Гарантия"
           //   onChange={() => warrantySparePart(item)}
         />
-      ),
-    },
-    {
-      Header: '',
-      accessor: 'delete',
-      Cell: ({ original }) => (
-        <Button
-          disabled={disabledEdit}
-          size="mini"
-          color="red"
-          onClick={() => onChangeCartridge(original, 'deleteCartridge')}
-        >
-          Удалить
-        </Button>
       ),
     },
   ];
@@ -114,19 +101,6 @@ const SaleCartridge = props => {
         // className="-striped -highlight"
         pageSize={data.length > 10 ? 10 : data.length}
       />
-      <Divider />
-
-      <Button
-        disabled={disabledEdit}
-        icon
-        labelPosition="left"
-        color="green"
-        size="small"
-        onClick={item => onChangeCartridge(item, 'addCartridgeBtn')}
-      >
-        <Icon name="plus" size="small" />
-        Добавить картриджей
-      </Button>
     </Segment>
   );
 };

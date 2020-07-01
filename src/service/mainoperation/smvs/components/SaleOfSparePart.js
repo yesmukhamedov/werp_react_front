@@ -12,9 +12,7 @@ import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
 const SaleOfSparePart = props => {
   const {
     data = [],
-    onChangeSettingService,
-    deleteSparePart,
-    quantitySparePart,
+
     onChangeSparePart,
     disabledEdit,
   } = props;
@@ -66,25 +64,12 @@ const SaleOfSparePart = props => {
       accessor: 'warranty',
       Cell: ({ original }) => (
         <Checkbox
+          readOnly
           // checked={original.warranty}
           label="Гарантия"
           //   onChange={() => warrantySparePart(item)}
           disabled={disabledEdit}
         />
-      ),
-    },
-    {
-      Header: '',
-      accessor: 'delete',
-      Cell: ({ original }) => (
-        <Button
-          size="mini"
-          color="red"
-          onClick={() => onChangeSparePart(original, 'deleteSparePart')}
-          disabled={disabledEdit}
-        >
-          Удалить
-        </Button>
       ),
     },
   ];
@@ -99,19 +84,6 @@ const SaleOfSparePart = props => {
         className="-striped -highlight"
         pageSize={data.length > 10 ? 10 : data.length}
       />
-      <Divider />
-
-      <Button
-        icon
-        labelPosition="left"
-        color="green"
-        size="small"
-        onClick={item => onChangeSparePart(item, 'addSparePartBtn')}
-        disabled={disabledEdit}
-      >
-        <Icon name="plus" size="small" />
-        Добавить запчасти
-      </Button>
     </Segment>
   );
 };

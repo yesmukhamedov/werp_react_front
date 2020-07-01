@@ -15,7 +15,7 @@ const BasicInfo = props => {
   const positions = data.positions;
   return (
     <Segment>
-      <Table collapsing className="borderLess">
+      <Table>
         <Table.Body>
           <Table.Row>
             <Table.Cell>№ Сервиса</Table.Cell>

@@ -990,18 +990,6 @@ const TabSmcsWithoutRequest = props => {
 
   return (
     <Form>
-      <StaffF4Modal
-        open={modalOpen.staffF4ModalOpen}
-        closeModal={bool => setModalOpen({ staffF4ModalOpen: bool })}
-        onStaffSelect={item => inputChange(item, staffF4ModalPosition)}
-        trans="mmcc"
-        brnch={service.branchId}
-        branchOptions={serBranches}
-        bukrs={service.bukrs}
-        companyOptions={companyOptions}
-        bukrsDisabledParent
-      />
-
       <Grid>
         <Grid.Row>
           {/*BASIC INFO*/}

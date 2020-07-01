@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Table, Icon, Input, Dropdown } from 'semantic-ui-react';
+import { Button, Table, Icon, Input, Dropdown, Form } from 'semantic-ui-react';
+import DropdownClearable from '../../../../../utils/DropdownClearable';
 
 const BasicInfoWithoutContract = props => {
   const {
@@ -13,15 +14,8 @@ const BasicInfoWithoutContract = props => {
     masterOptions,
   } = props;
 
-  console.log('BRANCH OPTIONS', branchOptions);
-
-  const optionsExample = [
-    { key: 1, text: 'name 1', value: 1 },
-    { key: 2, text: 'name 2', value: 2 },
-  ];
-
   return (
-    <Table collapsing className="borderLess">
+    <Table>
       <Table.Body>
         <Table.Row>
           <Table.Cell>Номер заявки</Table.Cell>
@@ -37,28 +31,39 @@ const BasicInfoWithoutContract = props => {
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>Компания</Table.Cell>
           <Table.Cell>
-            <Dropdown
-              fluid
-              selection
+            <Form.Field required>
+              <label>Компания</label>
+            </Form.Field>
+          </Table.Cell>
+          <Table.Cell>
+            <DropdownClearable
+              value={data.bukrs ? data.bukrs : ''}
               options={companyOptions}
               onChange={(e, value) =>
                 onBasicInfoInputChange(value, 'selectCompany')
+              }
+              handleClear={(e, value) =>
+                onBasicInfoInputChange(value, 'clearBukrs')
               }
             />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>Филиал</Table.Cell>
           <Table.Cell>
-            <Dropdown
-              fluid
-              selection
-              options={branchOptions}
+            <Form.Field required>
+              <label>Филиал</label>
+            </Form.Field>
+          </Table.Cell>
+          <Table.Cell>
+            <DropdownClearable
               value={data.branchId}
+              options={branchOptions}
               onChange={(e, value) =>
                 onBasicInfoInputChange(value, 'selectBranch')
+              }
+              handleClear={(e, value) =>
+                onBasicInfoInputChange(value, 'clearBranch')
               }
             />
           </Table.Cell>
@@ -76,29 +81,39 @@ const BasicInfoWithoutContract = props => {
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>Категория</Table.Cell>
           <Table.Cell>
-            <Dropdown
-              fluid
-              selection
-              options={categoryOptions}
+            <Form.Field required>
+              <label>Категория</label>
+            </Form.Field>
+          </Table.Cell>
+          <Table.Cell>
+            <DropdownClearable
               value={data.categoryId}
+              options={categoryOptions}
               onChange={(e, value) =>
                 onBasicInfoInputChange(value, 'selectCategory')
+              }
+              handleClear={(e, value) =>
+                onBasicInfoInputChange(value, 'clearCategory')
               }
             />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>Продукт</Table.Cell>
           <Table.Cell>
-            <Dropdown
-              fluid
-              selection
-              options={tovarOptions}
+            <Form.Field required>
+              <label>Продукт</label>
+            </Form.Field>
+          </Table.Cell>
+          <Table.Cell>
+            <DropdownClearable
               value={data.tovarId}
+              options={tovarOptions}
               onChange={(e, value) =>
                 onBasicInfoInputChange(value, 'selectTovar')
+              }
+              handleClear={(e, value) =>
+                onBasicInfoInputChange(value, 'clearTovar')
               }
             />
           </Table.Cell>
@@ -123,30 +138,40 @@ const BasicInfoWithoutContract = props => {
         </Table.Row>
 
         <Table.Row>
-          <Table.Cell>Мастер</Table.Cell>
           <Table.Cell>
-            <Dropdown
-              fluid
-              selection
+            <Form.Field required>
+              <label>Мастер</label>
+            </Form.Field>
+          </Table.Cell>
+          <Table.Cell>
+            <DropdownClearable
               value={data.masterId}
               options={masterOptions}
               onChange={(e, value) =>
                 onBasicInfoInputChange(value, 'selectMaster')
+              }
+              handleClear={(e, value) =>
+                onBasicInfoInputChange(value, 'clearMaster')
               }
             />
           </Table.Cell>
         </Table.Row>
 
         <Table.Row>
-          <Table.Cell>Оператор</Table.Cell>
           <Table.Cell>
-            <Dropdown
-              fluid
-              selection
-              options={operatorOptions}
+            <Form.Field required>
+              <label>Оператор</label>
+            </Form.Field>
+          </Table.Cell>
+          <Table.Cell>
+            <DropdownClearable
               value={data.operatorId}
+              options={operatorOptions}
               onChange={(e, value) =>
                 onBasicInfoInputChange(value, 'selectOperator')
+              }
+              handleClear={(e, value) =>
+                onBasicInfoInputChange(value, 'clearOperator')
               }
             />
           </Table.Cell>

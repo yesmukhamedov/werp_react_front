@@ -80,22 +80,6 @@ const ServicePackage = props => {
           />
         </Segment>
       ))}
-
-      <Divider />
-
-      <Button
-        disabled={disabledEdit}
-        icon
-        labelPosition="left"
-        color="green"
-        size="small"
-        onClick={item =>
-          onChangeServicePackage(item, 'modalOpenServicePackage')
-        }
-      >
-        <Icon name="plus" size="small" />
-        Добавить сервис пакет
-      </Button>
     </Segment>
   );
 };

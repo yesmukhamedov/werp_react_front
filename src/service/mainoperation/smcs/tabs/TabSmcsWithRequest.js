@@ -58,6 +58,8 @@ const TabSmcsWithRequest = props => {
     applicationNumber,
   } = props;
 
+  console.log('WITH REQUEST');
+
   const emptyService = {
     address: '',
     applicationNumber: '',

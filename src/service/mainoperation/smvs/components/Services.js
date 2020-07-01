@@ -50,20 +50,6 @@ const Services = props => {
       Header: 'Валюта',
       accessor: 'currencyName',
     },
-    {
-      Header: '',
-      accessor: 'delete',
-      Cell: ({ original }) => (
-        <Button
-          disabled={disabledEdit}
-          size="mini"
-          color="red"
-          onClick={() => handleRemoveService(original)}
-        >
-          Удалить
-        </Button>
-      ),
-    },
   ];
 
   return (
@@ -76,22 +62,6 @@ const Services = props => {
         className="-striped -highlight"
         pageSize={data.length > 10 ? 10 : data.length}
       />
-      <Divider />
-
-      {data.length < 1 ? (
-        <Button
-          disabled={disabledEdit}
-          onClick={addServices}
-          icon
-          labelPosition="left"
-          color="green"
-          size="small"
-        >
-          <Icon name="plus" size="small" /> Добавить услугу
-        </Button>
-      ) : (
-        ''
-      )}
     </Segment>
   );
 };

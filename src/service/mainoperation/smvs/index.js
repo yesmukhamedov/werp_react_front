@@ -3,19 +3,17 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { Segment, Grid, Form, Button, Icon, Divider } from 'semantic-ui-react';
 import BasicInfo from './components/BasicInfo';
-import SettingService from './components/SettingService';
 import ReportService from './components/ReportService';
-import ModalAddSparePart from './modals/ModalAddSparePart';
-import ModalAddCartridge from './modals/ModalAddCartridge';
-import ModalAddServicePacket from './modals/ModalAddServicePacket';
-import { f4FetchServicType } from '../../../reference/f4/f4_action';
+import Services from './components/Services';
+import SaleOfSparePart from './components/SaleOfSparePart';
+import SaleCartridge from './components/SaleCartridge';
+import ServicePackage from './components/ServicePackage';
+
 import { fetchSmvsList } from './smvsAction';
 import './../../service.css';
 
 const Smes = props => {
-  const { smvsList, editStat, serviceType = [] } = props;
-
-  console.log('serviceType', serviceType);
+  const { smvsList = {} } = props;
 
   const emptyDataSmvs = {
     address: null,
@@ -66,10 +64,7 @@ const Smes = props => {
   const urlNumberService = url.slice(url.indexOf('=') + 1);
 
   const [serviceNumber, setServiceNumber] = useState(urlNumberService);
-  const [editStatus, setEditStatus] = useState(
-    editStat === undefined ? false : editStat,
-  );
-  const disabledEdit = !editStatus;
+
   const [checkStatus, setCheckStatus] = useState(false);
 
   useEffect(() => {
@@ -77,87 +72,18 @@ const Smes = props => {
       console.log('serviceNumber', serviceNumber);
       props.fetchSmvsList(serviceNumber);
     }
-
-    props.f4FetchServicType();
   }, []);
-
-  const serviceTypeOptions = serviceType.map(item => {
-    return {
-      key: item.id,
-      text: item.name,
-      value: item.id,
-    };
-  });
 
   useEffect(() => {
     if (Object.keys(smvsList).length > 0) {
       setDataSmvs({
         ...smvsList,
-        positions: [
-          ...smvsList.positions.map((item, index) => {
-            return {
-              ...item,
-              idd: parseInt(item.id + `${index + 1}`),
-            };
-          }),
-        ],
       });
     }
   }, [smvsList]);
 
-  const onChangeBasicInfo = (value, fieldName) => {
-    switch (fieldName) {
-      //Поиск по номеру сервиса
-      case 'searchByServiceNumber':
-        setDataSmvs({ ...emptyDataSmvs });
-        props.fetchSmvsList(serviceNumber);
-        break;
-      case 'changeServiceNumber':
-        console.log('onChangeServiceNumber', value);
-        setServiceNumber(value);
-        break;
-      case '':
-        break;
-      case '':
-        break;
-      case '':
-        break;
-      default:
-        alert('Нет таких значении');
-    }
-  };
-
-  const onChangeSettingService = (value, fieldName) => {
-    switch (fieldName) {
-      //Услуги: Изменить тип сервиса
-      case 'changeServiceType':
-        setDataSmvs({
-          ...dataSmvs,
-          positions: dataSmvs.positions.map(item =>
-            item.id === value.original.id
-              ? {
-                  ...item,
-                  serviceTypeId: parseInt(value.value.value),
-                }
-              : item,
-          ),
-        });
-
-        break;
-      case '':
-        break;
-      case '':
-        break;
-      default:
-        alert('Нет таких значении');
-    }
-  };
-
   return (
     <Form>
-      <ModalAddSparePart />
-      <ModalAddCartridge />
-      <ModalAddServicePacket />
       <Segment
         style={{
           marginRight: '1rem',
@@ -168,20 +94,7 @@ const Smes = props => {
         }}
       >
         <h3>Просмотр сервис карты</h3>
-        <Button
-          icon
-          labelPosition="left"
-          color="green"
-          disabled={editStatus === false ? false : true}
-          onClick={() => {
-            setEditStatus(!editStatus);
-            if (editStatus === true) {
-              setCheckStatus(true);
-            } else {
-              setCheckStatus(false);
-            }
-          }}
-        >
+        <Button icon labelPosition="left" color="green">
           <Icon name="pencil" />
           Редактировать
         </Button>
@@ -193,26 +106,38 @@ const Smes = props => {
             <BasicInfo
               data={dataSmvs}
               serviceNumber={serviceNumber}
-              onChangeBasicInfo={onChangeBasicInfo}
-              editStatus={editStatus}
+              // onChangeBasicInfo={onChangeBasicInfo}
             />
           </Grid.Column>
 
           {/*SETTING*/}
           <Grid.Column width={11}>
-            <SettingService
-              serviceTypeOptions={serviceTypeOptions}
-              onChangeSettingService={onChangeSettingService}
-              positions={dataSmvs.positions}
-              disabledEdit={disabledEdit}
+            <Services
+            // data={servicesPos}
+            // servicesOptions={servicesOptions}
+            />
+
+            {/*Продажа запчастей */}
+            <SaleOfSparePart
+            // data={sparePartPos}
+            // disabledEdit={disabledEdit}
+            />
+
+            {/*Продажа картриджи  */}
+            <SaleCartridge
+            // data={cartridgePos}
+            // disabledEdit={disabledEdit}
+            />
+
+            {/*Сервис пакет  */}
+            <ServicePackage
+            // disabledEdit={disabledEdit}
             />
             <ReportService data={dataSmvs} />
             <Button
               color="green"
-              disabled={editStatus === true ? false : true}
               onClick={() => {
                 setCheckStatus(true);
-                setEditStatus(false);
               }}
             >
               Проверить
@@ -235,11 +160,9 @@ function mapStateToProps(state) {
     branchOptions: state.userInfo.branchOptionsAll,
     smvsList: state.smvsReducer.smvsList,
     editStat: state.smvsReducer.editStat,
-    serviceType: state.f4.serviceType,
   };
 }
 
 export default connect(mapStateToProps, {
   fetchSmvsList,
-  f4FetchServicType,
 })(injectIntl(Smes));

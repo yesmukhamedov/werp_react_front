@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Grid, Form, Button, Icon, Table, Dropdown } from 'semantic-ui-react';
+import { Grid, Form, Button, Icon } from 'semantic-ui-react';
 
 import {
   fetchTovarId,
@@ -20,14 +20,11 @@ import {
 
 import {
   f4FetchConTypeList,
-  f4FetchBranches,
   f4FetchCountryList,
   f4FetchCompanyOptions,
   f4fetchCategory,
   f4FetchCustomersById,
 } from '../../../../reference/f4/f4_action';
-
-import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal';
 
 import ModalAddServicePacket from '../modals/ModalAddServicePacket';
 import ModalAddSparePart from '../modals/ModalAddSparePart';
@@ -36,17 +33,15 @@ import 'react-datepicker/dist/react-datepicker.css';
 import Services from './components/Services';
 import SaleOfSparePart from './components/SaleOfSparePart';
 import SaleCartridge from './components/SaleCartridge';
-import BasicInfoWithoutRequest from './components/BasicInfoWithoutRequest';
 import ServicePackage from './components/ServicePackage';
 import TableReportWithoutRequest from './components/TableReportWithoutRequest';
 import BasicInfoWithoutContract from './components/BasicInfoWithoutContract';
-import { LinkToSmcsWithRequest } from '../../../../utils/outlink';
+import { emptyService } from '../components/directory';
 
 //Создание сервиса без заявки
 const TabSmcsWithoutContract = props => {
   const {
     companyOptions = [],
-    branches,
     serviceTypeId = [],
     matnrPriceSparePart = [],
     matnrPriceCartridge = [],
@@ -59,57 +54,14 @@ const TabSmcsWithoutContract = props => {
     category,
     tovar = [],
     masterList = [],
+    branchOptionsService,
   } = props;
-
-  const emptyService = {
-    address: '',
-    applicationNumber: '',
-    awkey: null,
-    branchId: 0,
-    branchName: '',
-    bukrs: '',
-    bukrsName: '',
-    categoryId: 0,
-    categoryName: '',
-    contractDate: '',
-    contractId: 0,
-    contractNumber: '',
-    countryId: 0,
-    countryName: '',
-    currencyId: 0,
-    currencyName: '',
-    customerFullName: '',
-    customerId: 0,
-    discount: 0,
-    id: null,
-    masterFullName: '',
-    masterId: null,
-    masterPremium: 0,
-    operatorFullName: null,
-    operatorId: null,
-    operatorPremium: 0,
-    paid: 0,
-    positions: [],
-    serviceDate: '',
-    serviceStatusId: null,
-    serviceStatusName: null,
-    sumForPay: 0,
-    sumTotal: 0,
-    tovarId: 0,
-    tovarName: '',
-    tovarSn: '4134-031589',
-    warrantyPeriodDate: '',
-    warrantyPeriodInMonth: 0,
-    status: '',
-  };
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
   const [tovarOptions, setTovarOptions] = useState([]);
 
   const [editStatus, setEditStatus] = useState(true);
-
-  const [categoryOptions, setCategoryOptions] = useState([]);
 
   //BasicInfo
   const onBasicInfoInputChange = (value, fieldName) => {
@@ -118,36 +70,42 @@ const TabSmcsWithoutContract = props => {
         setService({ ...service, bukrs: value.value });
         break;
 
+      case 'clearBukrs':
+        setService({ ...service, bukrs: '', bukrsName: '' });
+        break;
+
       case 'selectBranch':
         setService({ ...service, branchId: value.value });
+        break;
+      case 'clearBranch':
+        setService({ ...service, branchId: '' });
         break;
       case 'selectCategory':
         setService({ ...service, categoryId: value.value });
         break;
+      case 'clearCategory':
+        setService({ ...service, categoryId: '' });
+        break;
       case 'selectTovar':
         setService({ ...service, tovarId: value.value });
+        break;
+      case 'clearTovar':
+        setService({ ...service, tovarId: '' });
         break;
       case 'selectMaster':
         setService({ ...service, masterId: value.value });
         break;
-      case 'selectOperator':
-        setService({ ...service, operatorId: value.value });
-        break;
-
       case 'clearMaster':
         setService({
           ...service,
           masterFullName: '',
           masterId: 0,
         });
-        break;
-
-      case 'masterModalOpen':
-        setModalOpen({ staffF4ModalOpen: true });
-        break;
-
-      case 'changeOperator':
+      case 'selectOperator':
         setService({ ...service, operatorId: value.value });
+        break;
+      case 'clearOperator':
+        setService({ ...service, operatorFullName: null, operatorId: null });
         break;
 
       default:
@@ -172,72 +130,27 @@ const TabSmcsWithoutContract = props => {
     props.f4fetchCategory();
   }, []);
 
-  useEffect(() => {
-    let tovarParam = {
-      bukrs: service.bukrs,
-      categoryId: service.categoryId,
+  // useEffect(() => {
+  //   if (service.bukrs != '' && service.categoryId != '') {
+  //     let tovarParam = {
+  //       bukrs: service.bukrs,
+  //       categoryId: service.categoryId,
+  //     };
+  //     props.fetchTovarId({ ...tovarParam });
+  //   }
+  // }, [service.bukrs, service.categoryId]);
+  const categoryOptions = category.map(item => {
+    return {
+      key: item.id,
+      text: item.name,
+      value: item.id,
     };
-
-    if (service.bukrs !== '' || service.categoryId !== '') {
-      props.fetchTovarId({ ...tovarParam });
-    }
-  }, [service.bukrs, service.categoryId]);
-
-  useEffect(() => {
-    let categoryOp = category.map(item => {
-      return {
-        key: item.id,
-        text: item.name,
-        value: item.id,
-      };
-    });
-    setCategoryOptions([...categoryOp]);
-  }, [category]);
+  });
 
   const [modalOpen, setModalOpen] = useState({
     matnrF4ModalOpen: false,
     staffF4ModalOpen: false,
   });
-
-  const [staffF4ModalPosition, setStaffF4ModalPosition] = useState('');
-  const [serBranches, setSerBranches] = useState({});
-
-  useEffect(() => {
-    let servBrOptions = branches
-      .filter(
-        item =>
-          item.business_area_id == 5 ||
-          item.business_area_id == 6 ||
-          item.business_area_id == 9,
-      )
-      .map(item => {
-        return {
-          key: item.branch_id,
-          text: item.text45,
-          value: item.branch_id,
-          bukrs: item.bukrs,
-        };
-      });
-
-    const servBranchOptions = servBrOptions.filter(
-      item => item.bukrs === service.bukrs,
-    );
-    if (service.bukrs !== '') {
-      setSerBranches([...servBranchOptions]);
-    } else if (service.bukrs === '') {
-      setSerBranches([...servBranchOptions]);
-    } else {
-      setSerBranches([...servBrOptions]);
-    }
-  }, [branches, service.bukrs]);
-
-  const inputChange = value => {
-    setService({
-      ...service,
-      masterId: value.staffId,
-      masterFullName: value.fio,
-    });
-  };
 
   const operatorOptions = operatorList.map(item => {
     return {
@@ -254,10 +167,6 @@ const TabSmcsWithoutContract = props => {
       value: item.staffId,
     };
   });
-
-  useEffect(() => {
-    props.f4FetchBranches();
-  }, []);
 
   useEffect(() => {
     if (service.bukrs !== '' && service.branchId !== 0) {
@@ -970,18 +879,6 @@ const TabSmcsWithoutContract = props => {
   }, [checkSmcs]);
   return (
     <Form>
-      <StaffF4Modal
-        open={modalOpen.staffF4ModalOpen}
-        closeModal={bool => setModalOpen({ staffF4ModalOpen: bool })}
-        onStaffSelect={item => inputChange(item, staffF4ModalPosition)}
-        trans="mmcc"
-        brnch={service.branchId}
-        branchOptions={serBranches}
-        bukrs={service.bukrs}
-        companyOptions={companyOptions}
-        bukrsDisabledParent
-      />
-
       <Grid>
         <Grid.Row>
           {/*BASIC INFO*/}
@@ -991,7 +888,7 @@ const TabSmcsWithoutContract = props => {
               operatorOptions={operatorOptions}
               onBasicInfoInputChange={onBasicInfoInputChange}
               companyOptions={companyOptions}
-              branchOptions={serBranches}
+              branchOptions={branchOptionsService[service.bukrs]}
               categoryOptions={categoryOptions}
               tovarOptions={tovarOptions}
               masterOptions={masterOptions}
@@ -1051,7 +948,10 @@ const TabSmcsWithoutContract = props => {
             />
 
             {/*Таблица*/}
-            <TableReportWithoutRequest data={service} />
+            <TableReportWithoutRequest
+              data={service}
+              currency={service.currencyName}
+            />
 
             {/*Проверить*/}
             <Button color="green" onClick={handleCheck}>
@@ -1076,9 +976,8 @@ function mapStateToProps(state) {
     language: state.locales.lang,
     countryList: state.f4.countryList,
     contractTypeList: state.f4.contractTypeList,
-    branches: state.f4.branches,
     companyOptions: state.userInfo.companyOptions,
-    branchOptions: state.userInfo.branchOptionsMarketing,
+    branchOptionsService: state.userInfo.branchOptionsService,
     category: state.f4.category,
     customersById: state.f4.customersById,
     tovar: state.smcsReducer.tovar,
@@ -1097,7 +996,6 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   f4FetchConTypeList,
-  f4FetchBranches,
   f4FetchCountryList,
   f4FetchCompanyOptions,
   f4fetchCategory,

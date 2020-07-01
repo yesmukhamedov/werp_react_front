@@ -38,6 +38,9 @@ import {
 } from '../../../utils/outlink';
 import Masters from './Masters';
 import DropdownClearable from '../../../utils/DropdownClearable';
+import moment from 'moment';
+import 'moment/locale/ru';
+import 'moment/locale/tr';
 
 import TotalCountsTable from '../../../utils/TotalCountsTable';
 
@@ -434,6 +437,7 @@ const Smappl = props => {
               onChange={event => onChange('datefrom', event)}
               dateFormat="DD.MM.YYYY"
               placeholderText={messages['Form.DateFrom']}
+              isClearable
             />
           </Form.Field>
           <Form.Field>
@@ -449,6 +453,7 @@ const Smappl = props => {
               onChange={event => onChange('dateTo', event)}
               dateFormat="DD.MM.YYYY"
               placeholderText={messages['Form.DateTo']}
+              isClearable
             />
           </Form.Field>
 
