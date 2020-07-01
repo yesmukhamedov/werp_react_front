@@ -86,6 +86,14 @@ const SearchCustomer = props => {
       filterable: false,
     },
     {
+      Header: messages['Product'],
+      accessor: 'productName',
+      checked: true,
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterable: false,
+    },
+
+    {
       Header: messages['fin_status'],
       accessor: 'contractStatusName',
       checked: true,

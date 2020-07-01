@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Container, Form, Divider, Segment, Icon } from 'semantic-ui-react';
+import {
+  Container,
+  Form,
+  Divider,
+  Segment,
+  Icon,
+  Popup,
+} from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import OutputErrors from '../../../../general/error/outputErrors';
 import { errorTableText } from '../../../../utils/helpers';
@@ -62,7 +69,7 @@ const AssignedCalls = props => {
     },
     {
       Header: messages['brnch'],
-      accessor: 'branchName',
+      accessor: 'branchId',
       checked: true,
     },
     {
@@ -134,11 +141,25 @@ const AssignedCalls = props => {
       filterable: false,
     },
     {
+      Header: messages['description'],
+      accessor: 'info',
+      checked: true,
+      filterable: false,
+      Cell: row => (
+        <Popup
+          content={row.value}
+          on="hover"
+          pinned="true"
+          trigger={<div style={{ textAlign: 'center' }}>{row.value}</div>}
+        />
+      ),
+    },
+    {
       Header: messages['Table.View'],
       accessor: '16',
       filterable: false,
       Cell: original => {
-        const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}&filterVCId=${original.row.id}`;
+        const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}&filterVCId=${original.original.serviceFilterVCPlanId}`;
         return (
           <div style={{ textAlign: 'center' }}>
             <Link to={url} target="_blank">

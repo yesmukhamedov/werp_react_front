@@ -182,7 +182,7 @@ const TransferApplication = props => {
       accessor: '16',
       filterable: false,
       Cell: original => {
-        const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}&filterVCId=${original.row.id}`;
+        const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}&filterVCId=${original.original.serviceFilterVCPlanId}`;
         return (
           <div style={{ textAlign: 'center' }}>
             <Link to={url} target="_blank">

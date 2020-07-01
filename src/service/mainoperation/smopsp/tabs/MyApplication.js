@@ -18,7 +18,6 @@ import {
   momentToStringYYYYMMDD,
   stringYYYYMMDDToMoment,
 } from '../../../../utils/helpers';
-import { LinkToSmcuspor } from '../../../../utils/outlink';
 import DropdownClearable from '../../../../utils/DropdownClearable';
 
 const MyApplication = props => {
@@ -89,7 +88,7 @@ const MyApplication = props => {
     },
     {
       Header: messages['brnch'],
-      accessor: 'branchName',
+      accessor: 'branchId',
       checked: true,
     },
     {
@@ -201,7 +200,7 @@ const MyApplication = props => {
       filterable: false,
       accessor: '16',
       Cell: original => {
-        const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}&filterVCId=${original.row.id}`;
+        const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}&filterVCId=${original.original.serviceFilterVCPlanId}`;
         return (
           <div style={{ textAlign: 'center' }}>
             <Link to={url} target="_blank">

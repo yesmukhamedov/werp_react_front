@@ -45,7 +45,6 @@ export const fetchServicePacketPlan = param => {
 export const fetchRescheduledApplication = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    console.log(param);
     doGet(`smopsp/rescheduledApplication`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));

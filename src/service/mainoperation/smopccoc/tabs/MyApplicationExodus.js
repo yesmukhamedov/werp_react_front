@@ -206,7 +206,7 @@ const MyApplicationExodus = props => {
       checked: true,
       filterable: false,
       Cell: original => {
-        const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}&filterPlanId=${original.row.id}`;
+        const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}&filterPlanId=${original.original.serviceFilterPlanId}`;
         return (
           <div style={{ textAlign: 'center' }}>
             <Link to={url} target="_blank">
