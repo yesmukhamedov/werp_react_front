@@ -64,7 +64,6 @@ const MyApplication = props => {
       accessor: 'id',
       checked: true,
       filterable: false,
-      width: 70,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       getProps: (state, rowInfo, column) => {
         return {
@@ -81,6 +80,7 @@ const MyApplication = props => {
         };
       },
       fixed: 'left',
+      width: 55,
     },
     {
       Header: messages['brnch'],
@@ -93,6 +93,7 @@ const MyApplication = props => {
       accessor: 'contractNumber',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
+      width: 60,
     },
     {
       Header: messages['factory_number'],
@@ -106,6 +107,7 @@ const MyApplication = props => {
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
+      width: 80,
     },
     {
       Header: messages['Application_Date'],
@@ -113,6 +115,7 @@ const MyApplication = props => {
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
+      width: 80,
     },
     {
       Header: messages['fio'],
@@ -144,6 +147,7 @@ const MyApplication = props => {
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
+      width: 40,
     },
     {
       Header: 'F2',
@@ -151,6 +155,7 @@ const MyApplication = props => {
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
+      width: 40,
     },
     {
       Header: 'F3',
@@ -158,6 +163,7 @@ const MyApplication = props => {
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
+      width: 40,
     },
     {
       Header: 'F4',
@@ -165,6 +171,7 @@ const MyApplication = props => {
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
+      width: 40,
     },
     {
       Header: 'F5',
@@ -172,6 +179,7 @@ const MyApplication = props => {
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
+      width: 40,
     },
     {
       Header: messages['category'],
@@ -186,6 +194,7 @@ const MyApplication = props => {
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
+      width: 70,
     },
     {
       Header: messages['request_number'],

@@ -35,8 +35,14 @@ function Smcuspor(props) {
   const urlString = window.location.href;
   const url = new URL(urlString);
   const contractNumber = url.searchParams.get('contractNumber');
-  const planId = url.searchParams.get('filterPlanId');
-  const vcId = url.searchParams.get('filterVCId');
+  const planId =
+    url.searchParams.get('filterPlanId') !== 'null'
+      ? url.searchParams.get('filterPlanId')
+      : null;
+  const vcId =
+    url.searchParams.get('filterVCId') !== 'null'
+      ? url.searchParams.get('filterVCId')
+      : null;
 
   const emptyHistory = {
     activeButton: true,

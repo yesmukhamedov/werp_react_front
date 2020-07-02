@@ -18,6 +18,7 @@ import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import { f4FetchCrmCategory } from '../../../../reference/f4/f4_action';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from './../../../../utils/ModalColumns';
+import TextAlignCenter from '../../../../utils/TextAlignCenter';
 import CancelPlanModalVC from '../components/CancelPlanModalVC';
 import { Link } from 'react-router-dom';
 import DropdownClearable from '../../../../utils/DropdownClearable';
@@ -78,78 +79,94 @@ const ServiceFilterVC = props => {
       accessor: 'id',
       checked: true,
       filterable: false,
+      Cell: row => <TextAlignCenter text={row.value} />,
+      width: 55,
     },
     {
       Header: messages['brnch'],
       accessor: 'branchName',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: 'CN',
       accessor: 'contractNumber',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
+      width: 60,
     },
     {
       Header: messages['factory_number'],
       accessor: 'tovarSn',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
+      width: 80,
     },
     {
       Header: messages['fio'],
       accessor: 'customerFIO',
       checked: true,
-      with: 200,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: messages['customer_key'],
       accessor: 'customerIinBin',
       checked: true,
-      with: 150,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: messages['address'],
       accessor: 'address',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: messages['Dealer.Fullname'],
       accessor: 'dealerFIO',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
     {
       Header: 'F1',
       accessor: 'f1',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 40,
     },
     {
       Header: messages['guarantee'],
       accessor: 'warrantyName',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
     {
       Header: messages['category'],
       accessor: 'crmCategoryName',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
     {
       Header: messages['fin_status'],
       accessor: 'contractStatusName',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
     {
       Header: messages['plan_status'],
       accessor: 'planStatusName',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
     {
@@ -167,7 +184,7 @@ const ServiceFilterVC = props => {
         );
       },
       checked: true,
-      width: 60,
+      width: 40,
       fixed: 'right',
     },
     {
@@ -207,6 +224,7 @@ const ServiceFilterVC = props => {
       },
       checked: true,
       fixed: 'right',
+      width: 40,
     },
   ];
 

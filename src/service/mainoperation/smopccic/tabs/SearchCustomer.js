@@ -58,6 +58,7 @@ const SearchCustomer = props => {
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,
+      width: 55,
     },
     {
       Header: messages['brnch'],
@@ -65,18 +66,21 @@ const SearchCustomer = props => {
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,
+      width: 90,
     },
     {
       Header: 'CN',
       accessor: 'contractNumber',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      width: 60,
     },
     {
       Header: messages['factory_number'],
       accessor: 'tovarSn',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      width: 90,
     },
     {
       Header: messages['Crm.DateOfSale'],
@@ -84,9 +88,10 @@ const SearchCustomer = props => {
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,
+      width: 80,
     },
     {
-      Header: messages['Product'],
+      Header: messages['TBL_H__PRODUCT'],
       accessor: 'productName',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
@@ -99,6 +104,7 @@ const SearchCustomer = props => {
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,
+      width: 90,
     },
     {
       Header: 'Физ статус',
@@ -106,6 +112,7 @@ const SearchCustomer = props => {
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,
+      width: 90,
     },
 
     {
@@ -120,6 +127,7 @@ const SearchCustomer = props => {
       accessor: 'customerIinBin',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      width: 100,
     },
     {
       Header: messages['address'],

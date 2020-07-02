@@ -47,7 +47,7 @@ export const fetchServiceFilterPlan = param => {
 export const fetchTransferApplicationExodus = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccoc/rescheduledApplication?direction=ASC`, param)
+    doGet(`smopccoc/rescheduledApplication?direction=DESC&orderBy=id`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -66,7 +66,7 @@ export const fetchTransferApplicationExodus = param => {
 export const fetchCRMSchedule = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccoc/CRMSchedule?direction=ASC`, param)
+    doGet(`smopccoc/CRMSchedule?direction=DESC&orderBy=id`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -85,7 +85,7 @@ export const fetchCRMSchedule = param => {
 export const fetchMyApplicationExodus = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccoc/myApplication?direction=ASC`, param)
+    doGet(`smopccoc/myApplication?direction=DESC&orderBy=id`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

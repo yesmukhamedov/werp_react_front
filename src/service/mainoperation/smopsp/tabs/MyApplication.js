@@ -85,10 +85,11 @@ const MyApplication = props => {
           },
         };
       },
+      width: 55,
     },
     {
       Header: messages['brnch'],
-      accessor: 'branchId',
+      accessor: 'branchName',
       checked: true,
     },
     {
@@ -96,6 +97,7 @@ const MyApplication = props => {
       accessor: 'contractNumber',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      width: 60,
     },
     {
       Header: messages['brnch'],
@@ -114,6 +116,7 @@ const MyApplication = props => {
       accessor: 'applicationDate',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      width: 80,
     },
 
     {
@@ -147,7 +150,7 @@ const MyApplication = props => {
       accessor: 'f1',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-
+      width: 40,
       filterable: false,
     },
     {
@@ -193,7 +196,7 @@ const MyApplication = props => {
       checked: true,
       filterable: false,
       fixed: 'right',
-      width: 60,
+      width: 40,
     },
     {
       Header: messages['Table.View'],
@@ -210,7 +213,7 @@ const MyApplication = props => {
         );
       },
       checked: true,
-      width: 60,
+      width: 40,
       fixed: 'right',
     },
   ];

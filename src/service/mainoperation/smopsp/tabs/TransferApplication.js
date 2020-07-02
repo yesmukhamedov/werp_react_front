@@ -12,6 +12,7 @@ import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import { Link } from 'react-router-dom';
 import 'react-datepicker/dist/react-datepicker.css';
+import TextAlignCenter from '../../../../utils/TextAlignCenter';
 import {
   momentToStringYYYYMMDD,
   stringYYYYMMDDToMoment,
@@ -61,81 +62,98 @@ const TransferApplication = props => {
       Header: '#',
       accessor: 'id',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 55,
     },
     {
       Header: messages['brnch'],
       accessor: 'branchName',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: 'CN',
       accessor: 'contractNumber',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
+      width: 60,
     },
     {
       Header: messages['brnch'],
       accessor: 'branchId',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: messages['factory_number'],
       accessor: 'tovarSn',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 80,
     },
 
     {
       Header: messages['transfer_date'],
       accessor: 'rescheduledDate',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 80,
     },
     {
       Header: messages['Application_Date'],
       accessor: 'applicationDate',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 80,
     },
     {
       Header: messages['fio'],
       accessor: 'customerFIO',
       checked: true,
-      with: 200,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: messages['customer_key'],
       accessor: 'customerIinBin',
       checked: true,
-      with: 150,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: messages['address'],
       accessor: 'address',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: messages['Dealer.Fullname'],
       accessor: 'dealerFIO',
       checked: true,
-      with: 200,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
     {
       Header: 'F1',
       accessor: 'f1',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 40,
     },
     {
       Header: messages['guarantee'],
       accessor: 'warrantyId',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
 
@@ -143,6 +161,7 @@ const TransferApplication = props => {
       Header: messages['category'],
       accessor: 'crmCategoryId',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
 
@@ -150,12 +169,14 @@ const TransferApplication = props => {
       Header: messages['application_status'],
       accessor: 'applicationStatusId',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
     {
       Header: messages['fin_status'],
       accessor: 'contractStatusId',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
     {
@@ -175,7 +196,7 @@ const TransferApplication = props => {
       checked: true,
       filterable: false,
       fixed: 'right',
-      width: 60,
+      width: 40,
     },
     {
       Header: messages['Table.View'],
@@ -192,7 +213,7 @@ const TransferApplication = props => {
         );
       },
       checked: true,
-      width: 60,
+      width: 40,
       fixed: 'right',
     },
   ];

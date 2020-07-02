@@ -16,6 +16,7 @@ import { fetchAssignedCalls } from '../smopspAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import DatePicker from 'react-datepicker';
+import TextAlignCenter from '../../../../utils/TextAlignCenter';
 import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
@@ -65,79 +66,100 @@ const AssignedCalls = props => {
       Header: '#',
       accessor: 'id',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 60,
     },
     {
       Header: messages['brnch'],
-      accessor: 'branchId',
+      accessor: 'branchName',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: 'CN',
       accessor: 'contractNumber',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
+      width: 60,
     },
     {
       Header: messages['brnch'],
       accessor: 'branchId',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: messages['factory_number'],
       accessor: 'tovarSn',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 80,
     },
     {
       Header: messages['appointment_date'],
       accessor: 'crmScheduleDate',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 80,
     },
     {
       Header: messages['fio'],
       accessor: 'customerFIO',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: messages['address'],
       accessor: 'address',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: messages['Dealer.Fullname'],
       accessor: 'dealerFIO',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: 'F1',
       accessor: 'f1',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 40,
     },
     {
       Header: messages['guarantee'],
       accessor: 'warrantyId',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 85,
     },
 
     {
       Header: messages['category'],
       accessor: 'crmCategoryId',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      width: 85,
     },
 
     {
       Header: messages['fin_status'],
       accessor: 'contractStatusId',
       checked: true,
+      Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
     {
@@ -169,7 +191,7 @@ const AssignedCalls = props => {
         );
       },
       checked: true,
-      width: 60,
+      width: 40,
       fixed: 'right',
     },
   ];

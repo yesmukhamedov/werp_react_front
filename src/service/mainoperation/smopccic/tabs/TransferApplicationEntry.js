@@ -54,6 +54,7 @@ const TransferApplicationEntry = props => {
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,
+      width: 55,
     },
     {
       Header: messages['brnch'],
@@ -66,6 +67,7 @@ const TransferApplicationEntry = props => {
       accessor: 'contractNumber',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      width: 60,
     },
     {
       Header: messages['factory_number'],
@@ -79,6 +81,7 @@ const TransferApplicationEntry = props => {
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,
+      width: 80,
     },
     {
       Header: messages['transfer_date'],
@@ -125,6 +128,7 @@ const TransferApplicationEntry = props => {
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,
+      width: 40,
     },
     {
       Header: 'F2',
@@ -132,6 +136,7 @@ const TransferApplicationEntry = props => {
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,
+      width: 40,
     },
     {
       Header: 'F3',
@@ -139,6 +144,7 @@ const TransferApplicationEntry = props => {
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,
+      width: 40,
     },
     {
       Header: 'F4',
@@ -146,6 +152,7 @@ const TransferApplicationEntry = props => {
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,
+      width: 40,
     },
     {
       Header: 'F5',
@@ -153,6 +160,7 @@ const TransferApplicationEntry = props => {
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,
+      width: 40,
     },
     {
       Header: messages['category'],
