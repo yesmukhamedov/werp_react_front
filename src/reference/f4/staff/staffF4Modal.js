@@ -123,6 +123,7 @@ class StaffF4Modal extends PureComponent {
       t1r1c4 = {};
 
     if (
+      trans === 'smcs' ||
       trans === 'fcis' ||
       trans === 'mmcc' ||
       trans === 'mmcef' ||
@@ -171,7 +172,7 @@ class StaffF4Modal extends PureComponent {
       // t1columns.push(t1r1c4);
     }
 
-    if (trans === 'mmcc' || trans === 'mmcef') {
+    if (trans === 'mmcc' || trans === 'mmcef' || trans === 'smcs') {
       t1r1c4 = {
         Header: ({ value }) => <b>{messages['position']}</b>,
         id: 'positionName',
@@ -338,7 +339,6 @@ function mapStateToProps(state) {
   return { table: state.f4.staffList };
 }
 
-export default connect(
-  mapStateToProps,
-  { f4FetchStaffList, f4ClearStaffList },
-)(injectIntl(StaffF4Modal));
+export default connect(mapStateToProps, { f4FetchStaffList, f4ClearStaffList })(
+  injectIntl(StaffF4Modal),
+);

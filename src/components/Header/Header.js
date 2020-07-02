@@ -19,12 +19,14 @@ class Header extends Component {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const payload = jwt.decode(token, TOKEN_PASSWORD);
-          const { userId } = payload;
+          //const payload = jwt.decode(token, TOKEN_PASSWORD);
+          //const { userId } = payload;
+          const userId = localStorage.getItem('userId');
           this.props.fetchUnreadMessages({ userId });
           this.props.fetchTreeMenu(userId);
           this.props.fetchUserInfo();
         } catch (e) {
+          console.log('error15', e);
           this.props.clearUserAuth();
         }
       }

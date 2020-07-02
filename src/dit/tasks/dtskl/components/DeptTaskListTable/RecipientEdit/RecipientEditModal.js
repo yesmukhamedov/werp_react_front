@@ -20,8 +20,9 @@ class RecipientEditModal extends Component {
   handleFormSubmit() {
     const token = localStorage.getItem('token');
     if (token) {
-      const payload = jwt.decode(token, TOKEN_PASSWORD);
-      const field = { recipient: payload.userId };
+      //const payload = jwt.decode(token, TOKEN_PASSWORD);
+      const userId = localStorage.getItem('userId');
+      const field = { recipient: userId };
       this.props.editRecipient(this.props.taskId, field);
       this.props.handleClose();
     }

@@ -1,25 +1,16 @@
-import React, { Component } from 'react';
-import { Container, Header, Image } from 'semantic-ui-react';
+import React from 'react';
+import { Container, Header, Image, Segment, Icon } from 'semantic-ui-react';
+import './style.css';
 
-class ForbiddenPage extends Component {
-  render() {
-    return (
-      <Container style={{ marginTop: '1em' }}>
-        <Header as="h1" icon textAlign="center">
-          <Image src="../assets/images/forbidden.png" size="medium" />У вас нет
-          доступа
-        </Header>
-      </Container>
-    );
-  }
-}
+const ForbiddenPage = props => {
+  console.log('forbidden PAGE');
+  return (
+    <Container fluid className="forbidden">
+      <div className="text403">403</div>
+      <div className="background"></div>
+      <h1>У Вас нет доступа...</h1>
+    </Container>
+  );
+};
 
 export default ForbiddenPage;
-
-// import React from 'react';
-
-// const ForbiddenPage = () =>{
-//     return ("zzzzzzzzzzzzzzzzzzz");
-// };
-
-// export default ForbiddenPage;

@@ -68,7 +68,7 @@ class Amsg extends Component {
   componentDidMount() {
     // console.log(this.props)
     // this.props.f4FetchBonusTypeList('hrb02');
-    this.props.f4FetchCurrencyList('amsg');
+    this.props.f4FetchCurrencyList('');
     this.props.f4FetchDepartmentList();
     this.props.f4FetchBusinessAreaList2();
     this.props.f4FetchExchangeRateNational();

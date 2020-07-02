@@ -1,0 +1,39 @@
+.setting {
+  margin-top: 20px;
+}
+
+#addPrice {
+  float: right;
+}
+#addPrice2 {
+  border-radius: 30px;
+}
+#secondDropdown {
+  margin-left: 20px;
+}
+#edit {
+  margin-left: 30px;
+  color: rgb(0, 78, 151);
+}
+
+#modalHeader {
+  text-align: center;
+}
+
+#inputDate {
+  display: flex;
+}
+#calendarIcon {
+  margin-top: 5px;
+}
+.alignBottom {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: flex-end !important;
+}
+
+.justifySpaceBetween {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+}

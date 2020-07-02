@@ -1,9 +1,10 @@
-import { doGet, doPost } from '../../utils/apiActions';
+import { doGet, doPost, doPut, doDelete } from '../../utils/apiActions';
 import {
   handleError,
   notify,
 } from '../../general/notification/notification_action';
 import { modifyLoader } from '../../general/loader/loader_action';
+import { errorTableText } from '../../utils/helpers';
 
 export const F4_FETCH_MATNR_LIST = 'F4_FETCH_MATNR_LIST';
 export const F4_CLEAR_MATNR_LIST = 'F4_CLEAR_MATNR_LIST';
@@ -93,6 +94,60 @@ export const F4_FETCH_NATIONALITY_OPTIONS = 'F4_FETCH_NATIONALITY_OPTIONS';
 export const F4_FETCH_ADDR_TYPE_OPTIONS = 'F4_FETCH_ADDR_TYPE_OPTIONS';
 
 export const F4_FETCH_BANK_PARTNER_OPTIONS = 'F4_FETCH_BANK_PARTNER_OPTIONS';
+export const F4_FETCH_PHONE = 'F4_FETCH_PHONE';
+export const F4_CLEAR_PHONE = 'F4_CLEAR_PHONE';
+
+export const F4_FETCH_PHONE_TYPE = 'F4_FETCH_PHONE_TYPE';
+export const F4_CLEAR_PHONE_TYPE = 'F4_CLEAR_PHONE_TYPE';
+
+export const F4_POST_PHONE = 'F4_POST_PHONE';
+export const F4_CLEAR_POST_PHONE = 'F4_CLEAR_POST_PHONE';
+
+export const F4_UPDATE_PHONE = 'F4_UPDATE_PHONE';
+export const F4_CLEAR_UPDATE_PHONE = 'F4_CLEAR_UPDATE_PHONE';
+
+export const F4_FETCH_PHONE_HISTORY = 'F4_FETCH_PHONE_HISTORY';
+export const F4_CLEAR_PHONE_HISTORY = 'F4_CLEAR_PHONE_HISTORY';
+
+export const F4_DELETE_PHONE = 'F4_DELETE_PHONE';
+
+export const F4_FETCH_MONTH_TERMS = 'F4_FETCH_MONTH_TERMS';
+export const F4_CLEAR_MONTH_TERMS = 'F4_CLEAR_MONTH_TERMS';
+
+export const F4_FETCH_MATNR_LIST_VIEW = 'F4_FETCH_MATNR_LIST_VIEW';
+export const F4_CLEAR_MATNR_LIST_VIEW = 'F4_CLEAR_MATNR_LIST_VIEW';
+
+export const F4_POST_SERV_CONTRACT = 'F4_POST_SERV_CONTRACT';
+export const F4_CLEAR_SERV_CONTRACT = 'F4_CLEAR_SERV_CONTRACT';
+
+export const F4_FETCH_CATEGORY = 'F4_FETCH_CATEGORY';
+export const F4_CLEAR_FETCH_CATEGORY = 'F4_CLEAR_FETCH_CATEGORY';
+
+export const F4_FETCH_CUSTOMERS_BY_ID = 'F4_FETCH_CUSTOMERS_BY_ID';
+
+export const F4_FETCH_SERVICE_STATUS_LIST = 'F4_FETCH_SERVICE_STATUS_LIST';
+
+export const F4_FETCH_OPERATORS_BY_BRANCH_ID =
+  'F4_FETCH_OPERATORS_BY_BRANCH_ID';
+export const F4_FETCH_SERVICE_APP_STATUS = 'F4_FETCH_SERVICE_APP_STATUS';
+export const F4_FETCH_SERVICE_APP_TYPE = 'F4_FETCH_SERVICE_APP_TYPE';
+export const F4_FETCH_TOVAR_CATEGORYS = 'F4_FETCH_TOVAR_CATEGORYS';
+export const F4_FETCH_MATNR_PRICELIST = 'F4_FETCH_MATNR_PRICELIST';
+
+export const F4_FETCH_SERVICE_TYPE = 'F4_FETCH_SERVICE_TYPE';
+
+export const F4_FETCH_FILTER_PLAN_STATUS = 'F4_FETCH_FILTER_PLAN_STATUS';
+export const F4_CLEAR_FILTER_PLAN_STATUS = 'F4_CLEAR_FILTER_PLAN_STATUS';
+export const F4_FETCH_PHYS_STATUS = 'F4_FETCH_PHYS_STATUS';
+
+export const F4_FETCH_CRM_CATEGORY = 'F4_FETCH_CRM_CATEGORY';
+export const F4_CLEAR_CRM_CATEGORY = 'F4_CLEAR_CRM_CATEGORY';
+
+export const F4_FETCH_AVAILABLED_TRANSACTION_BY_USER =
+  'F4_FETCH_AVAILABLED_TRANSACTION_BY_USER';
+
+export const F4_FETCH_CURRENT_STAFF = 'F4_FETCH_CURRENT_STAFF';
+export const F4_CLEAR_CURRENT_STAFF = 'F4_CLEAR_CURRENT_STAFF';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
@@ -102,6 +157,23 @@ export function f4ClearAnyObject(a_const) {
     type: a_const,
   };
   return obj;
+}
+
+export function f4FetchTovarCategorys() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('smcs/getCategoryList')
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_TOVAR_CATEGORYS,
+          data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
 }
 
 export function f4FetchCompanyOptions() {
@@ -664,6 +736,23 @@ export function f4FetchCustomers(params = {}, setIsLoading) {
   };
 }
 
+export function f4FetchCustomersById(params = {}) {
+  return function(dispatch) {
+    doGet('smcs/getCustomer', params)
+      .then(({ data }) => {
+        // setIsLoading(false);
+        dispatch({
+          type: F4_FETCH_CUSTOMERS_BY_ID,
+          data,
+        });
+      })
+      .catch(error => {
+        // setIsLoading(false);
+        handleError(error, dispatch);
+      });
+  };
+}
+
 export function f4FetchAddresses(params = {}, setIsLoading) {
   setIsLoading(true);
   return function(dispatch) {
@@ -733,6 +822,379 @@ export function saveRfadd02(url, body, params, setIsLoading) {
         handleError(error, dispatch);
         dispatch(modifyLoader(false));
         setIsLoading(false);
+      });
+  };
+}
+
+export function f4FetchPhone() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`phone?direction=DESC&orderBy=id`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_PHONE,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchPhoneType() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('phone_type')
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_PHONE_TYPE,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4PostPhone(getData, countryId, fetchPhone) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost(`phone/create?countryId=${countryId}`, getData)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_POST_PHONE,
+          payload: data,
+        });
+        dispatch(notify('success', errorTableText(101), errorTableText(104)));
+        fetchPhone();
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4UpdatePhone(data, countryId, fetchPhone) {
+  return function(dispatch) {
+    doPut(`phone/update?countryId=${countryId}`, data)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_UPDATE_PHONE,
+          payload: data,
+        });
+        dispatch(notify('success', errorTableText(101), errorTableText(104)));
+        fetchPhone();
+        f4FetchPhoneHistory();
+      })
+      .catch(e => {
+        dispatch(modifyLoader(false));
+        handleError(e, dispatch);
+      });
+  };
+}
+export function f4DeletePhone(data, fetchPhone) {
+  return function(dispatch) {
+    doDelete('phone/delete', { data })
+      .then(data => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_DELETE_PHONE,
+        });
+        dispatch(notify('success', errorTableText(101), errorTableText(104)));
+        fetchPhone();
+        f4FetchPhoneHistory();
+      })
+      .catch(e => {
+        dispatch(modifyLoader(false));
+        handleError(e, dispatch);
+      });
+  };
+}
+
+export function f4FetchPhoneHistory() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('phone/audit?direction=DESC&orderBy=id')
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_PHONE_HISTORY,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchMonthTerms(data) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('smcc/branchMonthTerms', data)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_MONTH_TERMS,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchMatnrListView(data) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('smcc/matnrListView', data)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_MATNR_LIST_VIEW,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4CreateServContract(contract) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    console.log(contract);
+    doPost('smcc/createContract', contract)
+      .then(({ data }) => {
+        console.log(data);
+
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_POST_SERV_CONTRACT,
+          payload: data,
+        });
+        dispatch(
+          notify(
+            'success',
+            errorTable[`101${language}`],
+            errorTable[`104${language}`],
+          ),
+        );
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+//Категория
+export function f4fetchCategory(data) {
+  return function(dispatch) {
+    doGet('service_category/view', data)
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_CATEGORY,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchServiceStatusList() {
+  return function(dispatch) {
+    doGet('service_status')
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_SERVICE_STATUS_LIST,
+          data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+export function f4FetchOperatorsByBranchId(param) {
+  return function(dispatch) {
+    doGet('smrd/operatorsByBranchId', param)
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_OPERATORS_BY_BRANCH_ID,
+          data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+//Статус заявки
+export function f4FetchServiceAppStatus() {
+  return function(dispatch) {
+    doGet('service/reference/serv_app_status')
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_SERVICE_APP_STATUS,
+          data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchServiceAppType() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet('service/reference/serv_app_type')
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_SERVICE_APP_TYPE,
+          data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchServicType() {
+  return function(dispatch) {
+    doGet('service_type')
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_SERVICE_TYPE,
+          data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export const f4FetchMatnrPriceList = param => {
+  return function(dispatch) {
+    doGet(`smcs/matnr_pricelist`, param)
+      .then(({ data }) => {
+        //console.log(data, 'ACTION');
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_MATNR_PRICELIST,
+          data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+export const f4FetchFilterPlanStatus = param => {
+  return function(dispatch) {
+    doGet(`filterPlan_status/view?direction=ASC`, param)
+      .then(({ data }) => {
+        //console.log(data, 'ACTION');
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_FILTER_PLAN_STATUS,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+
+export function f4FetchPhysStatus() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`ContractLastState/view`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_PHYS_STATUS,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchCrmCategory() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`crm_category/view`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_CRM_CATEGORY,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchCurrentStaff() {
+  return function(dispatch) {
+    doGet(`reference/currentStaff`)
+      .then(({ data }) => {
+        dispatch({
+          type: F4_FETCH_CURRENT_STAFF,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4FetchAvailabledTransactionByUser() {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`reference/transactions`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: F4_FETCH_AVAILABLED_TRANSACTION_BY_USER,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
       });
   };
 }

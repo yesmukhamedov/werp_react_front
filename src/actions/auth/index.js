@@ -37,8 +37,22 @@ export function authError(error) {
 export function signinUser({ username, password }, language) {
   return dispatch => {
     // Submit username/password to the server
+    const headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: 'Basic V0VSUDpwYXNzd29yZA==',
+    };
+
+    var bodyFormData = new FormData();
+    bodyFormData.set('grant_type', 'password');
+    bodyFormData.set('username', username);
+    bodyFormData.set('password', password);
+
+    console.log('Authorization', headers.Authorization);
+
     axios
-      .post(`${ROOT_URL}/signin`, { username, password, language })
+      .post(`${ROOT_URL}/api/v1/werp/auth-server/oauth/token`, bodyFormData, {
+        headers: headers,
+      })
 
       // doPost(`signin`, {
       //   username,
@@ -48,14 +62,32 @@ export function signinUser({ username, password }, language) {
       .then(response => {
         // If request is good...
         // - save the JWT token
-        const { token, userId } = response.data;
-        localStorage.setItem('token', token);
+
+        const { access_token, refresh_token, user_id } = response.data;
+
+        // console.log(response.data.access_token);
+
         localStorage.setItem('username', username);
+        localStorage.setItem('userId', user_id);
+        //localStorage.setItem('userId', user_id);
         localStorage.setItem('language', language);
-        localStorage.setItem(
-          'errorTableString',
-          JSON.stringify(response.data.errorTable),
-        );
+        localStorage.setItem('token', access_token);
+        localStorage.setItem('refresh_token', refresh_token);
+        localStorage.setItem('token_time', new Date().getTime());
+
+        axios
+          .get(`${ROOT_URL}/api/error_table`, {
+            headers: {
+              Authorization: access_token,
+            },
+          })
+
+          .then(res => {
+            let err = res.data.data;
+
+            localStorage.setItem('errorTableString', JSON.stringify(err));
+          });
+
         if (
           response.data.internalNumber &&
           response.data.internalNumber.length > 0
@@ -68,7 +100,7 @@ export function signinUser({ username, password }, language) {
         // setAuthorizationHeader(token);
         // setContentLanguageHeader(language);
         // - update state to indicate user is authenticated
-        dispatch(authUser({ username, userId }));
+        dispatch(authUser({ username, user_id }));
         // - redirect to the route '/'
         const path = localStorage.getItem('currentPathName');
         if (path) {
@@ -80,6 +112,7 @@ export function signinUser({ username, password }, language) {
       .catch(error => {
         // If request is bad...
         // - Show an error to the user
+
         if (error.response) {
           dispatch(authError(error.response.data.message));
         } else if (error.stack) {
@@ -113,7 +146,7 @@ export function clearUserAuth() {
   // setAuthorizationHeader();
   return dispatch => {
     // .post(`${ROOT_URL}/signout`)
-    resetLocalStorage();
+    //resetLocalStorage();
     dispatch({
       type: UNAUTH_USER,
     });

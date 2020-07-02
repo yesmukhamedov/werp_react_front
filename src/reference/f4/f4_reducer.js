@@ -53,6 +53,39 @@ import {
   F4_CLEAR_ADDRESSES,
   F4_FETCH_CONSTATUS_LIST,
   F4_CLEAR_CONSTATUS_LIST,
+  F4_FETCH_PHONE,
+  F4_CLEAR_PHONE,
+  F4_FETCH_PHONE_TYPE,
+  F4_CLEAR_PHONE_TYPE,
+  F4_POST_PHONE,
+  F4_CLEAR_POST_PHONE,
+  F4_UPDATE_PHONE,
+  F4_CLEAR_UPDATE_PHONE,
+  F4_FETCH_PHONE_HISTORY,
+  F4_CLEAR_PHONE_HISTORY,
+  F4_FETCH_MONTH_TERMS,
+  F4_CLEAR_MONTH_TERMS,
+  F4_FETCH_MATNR_LIST_VIEW,
+  F4_CLEAR_MATNR_LIST_VIEW,
+  F4_POST_SERV_CONTRACT,
+  F4_CLEAR_SERV_CONTRACT,
+  F4_FETCH_CATEGORY,
+  F4_FETCH_CUSTOMERS_BY_ID,
+  F4_FETCH_SERVICE_STATUS_LIST,
+  F4_FETCH_OPERATORS_BY_BRANCH_ID,
+  F4_FETCH_SERVICE_APP_STATUS,
+  F4_FETCH_SERVICE_APP_TYPE,
+  F4_FETCH_TOVAR_CATEGORYS,
+  F4_FETCH_SERVICE_TYPE,
+  F4_FETCH_MATNR_PRICELIST,
+  F4_FETCH_FILTER_PLAN_STATUS,
+  F4_CLEAR_FILTER_PLAN_STATUS,
+  F4_FETCH_PHYS_STATUS,
+  F4_FETCH_CRM_CATEGORY,
+  F4_CLEAR_CRM_CATEGORY,
+  F4_FETCH_AVAILABLED_TRANSACTION_BY_USER,
+  F4_FETCH_CURRENT_STAFF,
+  F4_CLEAR_CURRENT_STAFF,
 } from './f4_action';
 
 const INITIAL_STATE = {
@@ -86,6 +119,18 @@ const INITIAL_STATE = {
   branches: [],
   addresses: [],
   contractStatusList: [],
+  phoneList: [],
+  phoneType: [],
+  phonePost: [],
+  phoneHistory: [],
+  monthTerms: [],
+  matnrListView: [],
+  servContract: [],
+  category: [],
+  customersById: {},
+  filterPlanStatus: [],
+  crmCategory: [],
+  staffInfo: [],
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -250,6 +295,104 @@ export default function(state = INITIAL_STATE, action) {
     case F4_CLEAR_CONSTATUS_LIST:
       return { ...state, contractStatusList: [] };
 
+    case F4_FETCH_PHONE:
+      return { ...state, phoneList: action.payload };
+
+    case F4_CLEAR_PHONE:
+      return { ...state, phoneList: [] };
+
+    case F4_FETCH_PHONE_TYPE:
+      return { ...state, phoneType: action.payload };
+
+    case F4_CLEAR_PHONE_TYPE:
+      return { ...state, phoneType: [] };
+
+    case F4_POST_PHONE:
+      return { ...state, phonePost: action.payload };
+
+    case F4_CLEAR_POST_PHONE:
+      return { ...state, phonePost: [] };
+
+    case F4_UPDATE_PHONE:
+      return { ...state, phoneUpdate: action.payload };
+
+    case F4_CLEAR_UPDATE_PHONE:
+      return { ...state, phoneUpdate: [] };
+
+    case F4_FETCH_PHONE_HISTORY:
+      return { ...state, phoneHistory: action.payload };
+
+    case F4_CLEAR_PHONE_HISTORY:
+      return { ...state, phoneHistory: [] };
+
+    case F4_FETCH_MONTH_TERMS:
+      return { ...state, monthTerms: action.payload };
+
+    case F4_CLEAR_MONTH_TERMS:
+      return { ...state, monthTerms: [] };
+
+    case F4_FETCH_MATNR_LIST_VIEW:
+      return { ...state, matnrListView: action.payload };
+
+    case F4_CLEAR_MATNR_LIST_VIEW:
+      return { ...state, matnrListView: [] };
+
+    case F4_POST_SERV_CONTRACT:
+      return { ...state, servContract: action.payload };
+
+    case F4_CLEAR_SERV_CONTRACT:
+      return { ...state, servContract: [] };
+
+    case F4_FETCH_CATEGORY:
+      return { ...state, category: action.payload.data };
+
+    case F4_FETCH_CUSTOMERS_BY_ID:
+      return { ...state, customersById: action.data.data };
+
+    case F4_FETCH_SERVICE_STATUS_LIST:
+      return { ...state, serviceStatusList: action.data.data };
+
+    case F4_FETCH_OPERATORS_BY_BRANCH_ID:
+      return { operatorsByBranchId: action.data.data };
+
+    case F4_FETCH_SERVICE_APP_STATUS:
+      return { ...state, serviceAppStatus: [...action.data.data] };
+
+    case F4_FETCH_SERVICE_APP_TYPE:
+      return { serviceAppType: action.data.data };
+
+    case F4_FETCH_TOVAR_CATEGORYS:
+      return { ...state, tovarCategory: [...action.data.data] };
+
+    case F4_FETCH_SERVICE_TYPE:
+      return { ...state, serviceType: [...action.data.data] };
+
+    case F4_FETCH_MATNR_PRICELIST:
+      return { ...state, matnrPriceList: [...action.data.data] };
+
+    case F4_FETCH_FILTER_PLAN_STATUS:
+      return { ...state, filterPlanStatus: action.payload.data };
+
+    case F4_CLEAR_FILTER_PLAN_STATUS:
+      return { ...state, filterPlanStatus: [] };
+
+    case F4_FETCH_PHYS_STATUS:
+      return { ...state, physStatus: action.payload.data };
+
+    case F4_FETCH_CRM_CATEGORY:
+      return { ...state, crmCategory: action.payload.data };
+
+    case F4_CLEAR_CRM_CATEGORY:
+      return { ...state, filterPlanStatus: [] };
+
+    case F4_FETCH_AVAILABLED_TRANSACTION_BY_USER:
+      return { ...state, availabledTransaction: [...action.payload.data] };
+
+    case F4_FETCH_CURRENT_STAFF:
+      return { ...state, staffInfo: action.payload.data };
+
+    case F4_CLEAR_CURRENT_STAFF:
+      return { ...state, staffInfo: [] };
     default:
       return state;
   }

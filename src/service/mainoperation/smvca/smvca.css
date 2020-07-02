@@ -1,0 +1,14 @@
+.input__filter_terms {
+  margin-right: 36px;
+  width: 40px;
+}
+.input__filter_termst:last-child {
+  margin-right: 0;
+}
+
+.spaceBetween {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-left: 7px;
+}

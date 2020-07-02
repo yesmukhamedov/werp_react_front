@@ -16,6 +16,7 @@ const BranchF4Advanced = props => {
     selection = 'single',
     isOpen = false,
     countries = [],
+    disabled = false,
   } = props;
 
   const categoryOptions = [
@@ -33,9 +34,11 @@ const BranchF4Advanced = props => {
 
   //componentWillRecieveProps
   useEffect(() => {
-    let arr = props.branches.map(item => {
-      return { ...item, isSelected: false };
-    });
+    let arr = props.branches
+      ? props.branches.map(item => {
+          return { ...item, isSelected: false };
+        })
+      : [];
 
     setBranches(arr);
     setCategoryS(0);
@@ -286,6 +289,7 @@ const BranchF4Advanced = props => {
                       selection
                       options={categoryOptions}
                       value={categoryS}
+                      disabled={disabled ? true : false}
                       onChange={(e, { value }) =>
                         onInputChange(value, 'categoryS')
                       }
@@ -300,7 +304,7 @@ const BranchF4Advanced = props => {
                   <List.Item>
                     <Dropdown
                       selection
-                      options={countryOptions}
+                      options={countryOptions || []}
                       value={countryIdS}
                       onChange={(e, { value }) =>
                         onInputChange(value, 'countryIdS')

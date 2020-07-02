@@ -45,6 +45,25 @@ import hrPosReducer from '../hr/reference/position/positionReducer';
 import marketingReducer from '../marketing/marketingReducer';
 import hrReducer from '../hr/hr_reducer';
 import callReducer from '../crm/mainoperation/call/reducers/callReducer';
+import serviceReducer from '../service/serviceReducer';
+import smcsReducer from '../service/mainoperation/smcs/smcsReducer';
+import srefReducer from '../service/reference/srefReducer';
+import serviceReportReducer from '../service/report/serviceReportReducer';
+import smopccocReducer from '../service/mainoperation/smopccoc/smopccocReducer';
+import smopccicReducer from '../service/mainoperation/smopccic/smopccicReducer';
+import smopspReducer from '../service/mainoperation/smopsp/smopspReducer';
+import smdisReducer from '../service/mainoperation/smdis/smdisReducer';
+import srkpisoReducer from '../service/report/srkpiso/srkpisoReducer';
+import srkpisodReducer from '../service/report/srkpisod/srkpisodReducer';
+import srlsReducer from '../service/report/srls/srlsReducer';
+import srlsmReducer from '../service/report/srlsm/srlsmReducer';
+import smvsReducer from '../service/mainoperation/smvs/smvsReducer';
+import smsrcusReducer from '../service/mainoperation/smsrcus/smsrcusReducer';
+import smccaldReducer from '../service/mainoperation/smccald/smccaldReducer';
+import smsetctReducer from '../service/mainoperation/smsetct/smsetctReducer';
+import smecamReducer from '../service/mainoperation/smecam/smecamReducer';
+import smvcaReducer from '../service/mainoperation/smvca/smvcaReducer';
+import smecaReducer from '../service/mainoperation/smeca/smecaReducer';
 
 const appReducer = combineReducers({
   form,
@@ -92,6 +111,25 @@ const appReducer = combineReducers({
   marketing: marketingReducer,
   hr: hrReducer,
   callReducer: callReducer,
+  serviceReducer: serviceReducer,
+  smcsReducer: smcsReducer,
+  srefReducer: srefReducer,
+  serviceReportReducer: serviceReportReducer,
+  smopccocReducer: smopccocReducer,
+  smopccicReducer: smopccicReducer,
+  smopspReducer: smopspReducer,
+  smdisReducer: smdisReducer,
+  srkpisoReducer: srkpisoReducer,
+  srkpisodReducer: srkpisodReducer,
+  srlsReducer: srlsReducer,
+  srlsmReducer: srlsmReducer,
+  smvsReducer: smvsReducer,
+  smsrcusReducer: smsrcusReducer,
+  smccaldReducer: smccaldReducer,
+  smsetctReducer: smsetctReducer,
+  smecamReducer: smecamReducer,
+  smvcaReducer: smvcaReducer,
+  smecaReducer: smecaReducer,
 });
 
 const rootReducer = (state, action) => {

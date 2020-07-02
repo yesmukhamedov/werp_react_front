@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
+import withFixedColumns from 'react-table-hoc-fixed-columns';
+import 'react-table-hoc-fixed-columns/lib/styles.css';
+import './style.css';
+
+const ReactTableFixedColumns = withFixedColumns(ReactTable);
 
 const ReactTableWrapper = props => {
   const {
     intl: { messages },
   } = props;
+
+  const [selectedRow, setSelectedRow] = useState(-1);
 
   const {
     showPagination = false,
@@ -31,7 +38,7 @@ const ReactTableWrapper = props => {
 
   return (
     <div>
-      <ReactTable
+      <ReactTableFixedColumns
         filterable={filterable}
         ref={refToChild}
         data={data}
@@ -49,14 +56,38 @@ const ReactTableWrapper = props => {
         ofText={ofText}
         onFilteredChange={onFilterChangeReactTable}
         getTdProps={(state, rowInfo, column, instance) => {
-          return {
-            onClick: (e, handleOriginal) => {
-              // console.log(column.id, 'column clicked');
-              if (onRowClick && rowInfo) {
-                onRowClick(rowInfo.original, rowInfo.index, column.id);
-              }
-            },
-          };
+          if (typeof rowInfo !== 'undefined') {
+            return {
+              onClick: (e, handleOriginal) => {
+                setSelectedRow({ selected: rowInfo.index });
+                if (handleOriginal) {
+                  handleOriginal();
+                }
+                //console.log(rowInfo, 'column clicked');
+                if (onRowClick && rowInfo) {
+                  onRowClick(rowInfo.original, rowInfo.index, column.id);
+                }
+              },
+              // style: {
+              //   background:
+              //     rowInfo.index === selectedRow.selected ? '#7D3C98' : 'white',
+              //   color:
+              //     rowInfo.index === selectedRow.selected ? 'white' : 'black',
+              // },
+            };
+          } else {
+            return {
+              onClick: (e, handleOriginal) => {
+                if (handleOriginal) {
+                  handleOriginal();
+                }
+              },
+              style: {
+                background: 'white',
+                color: 'black',
+              },
+            };
+          }
         }}
       />
     </div>

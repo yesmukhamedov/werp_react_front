@@ -41,6 +41,7 @@ const store = createStore(
   reducers,
   persistedLang,
   composeEnhancers(applyMiddleware(JwtRefresher, reduxThunk)),
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 );
 
 store.subscribe(
@@ -62,7 +63,6 @@ if (token) {
   // setAuthorizationHeader(token);
   // setContentLanguageHeader(persistedLang.lang);
   try {
-    jwt.decode(token, TOKEN_PASSWORD);
     store.dispatch({
       type: AUTH_USER,
       payload: { username: localStorage.getItem('username') },

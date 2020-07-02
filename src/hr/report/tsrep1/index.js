@@ -19,8 +19,6 @@ import {
   Divider,
   Image,
 } from 'semantic-ui-react';
-import ReactTable from 'react-table';
-import 'react-table/react-table.css';
 import List from './list';
 
 import DatePicker from 'react-datepicker';
