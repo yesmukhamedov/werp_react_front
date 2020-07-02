@@ -7,6 +7,7 @@ import {
   Input,
   Table,
   TextArea,
+  Checkbox,
 } from 'semantic-ui-react';
 import { fetchSmvca, clearDynObjService } from './smvcaAction';
 import { injectIntl } from 'react-intl';
@@ -27,17 +28,12 @@ const Smecam = props => {
     staffInfo = {},
   } = props;
 
-  console.log('availabledTransaction', availabledTransaction);
-  console.log('staffInfo', staffInfo);
-
   const url = window.location.search;
   const id = url.slice(url.indexOf('=') + 1);
 
   const [smvca, setSmvca] = useState({});
   const [smvcaHis, setSmvcaHis] = useState([]);
   const [editStatus, setEditStatus] = useState(false);
-  console.log('editStatus', editStatus);
-
   useEffect(() => {
     if (availabledTransaction.length > 0) {
       availabledTransaction.map(item =>
@@ -143,6 +139,43 @@ const Smecam = props => {
                           readOnly
                           value={smvca.applicationTypeName || ''}
                         />
+                      </Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>
+                        <Form.Field>Дата заявки</Form.Field>
+                      </Table.Cell>
+
+                      <Table.Cell>
+                        <Table>
+                          <Table.Body>
+                            <Table.Row>
+                              <Table.Cell>
+                                <Input
+                                  fluid
+                                  readOnly
+                                  value={
+                                    smvca.applicationDate
+                                      ? smvca.applicationDate
+                                      : ''
+                                  }
+                                />
+                              </Table.Cell>
+
+                              <Table.Cell collapsing>
+                                <Checkbox
+                                  readOnly
+                                  checked={smvca.urgencyLevel}
+                                />
+                              </Table.Cell>
+                              <Table.Cell>
+                                <Form.Field>
+                                  <label>{messages['urgent']}</label>
+                                </Form.Field>
+                              </Table.Cell>
+                            </Table.Row>
+                          </Table.Body>
+                        </Table>
                       </Table.Cell>
                     </Table.Row>
 
