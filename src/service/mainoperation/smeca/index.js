@@ -367,7 +367,11 @@ const Smeca = props => {
                     </Table.Row>
 
                     <Table.Row>
-                      <Table.Cell>{messages['transfer_date']}</Table.Cell>
+                      <Table.Cell>
+                        <Form.Field>
+                          <label>{messages['transfer_date']}</label>
+                        </Form.Field>
+                      </Table.Cell>
                       <Table.Cell>
                         <DatePicker
                           autoComplete="off"

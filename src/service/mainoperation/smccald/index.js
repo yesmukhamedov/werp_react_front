@@ -388,6 +388,7 @@ function Smccald(props) {
                           <Table.Row>
                             <Table.Cell>
                               <DatePicker
+                                placeholderText={messages['Application_Date']}
                                 autoComplete="off"
                                 dateFormat="DD/MM/YYYY HH:mm"
                                 selected={

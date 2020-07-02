@@ -72,12 +72,12 @@ const Smappl = props => {
   const [search, setSearch] = useState({
     bukrs: '',
     branchId: '',
-    dateOpenAt: '',
+    dateOpenAt: momentToStringYYYYMMDD(moment(new Date())),
     dateOpenTo: '',
     aDateFrom: null,
     aDateTo: null,
     tovarCategorys: null,
-    appStatusIds: null,
+    appStatusIds: [1, 5, 2, 3, 4],
     appTypeIds: null,
     direction: 'DESC',
     orderBy: 'id',
@@ -319,7 +319,9 @@ const Smappl = props => {
           varTs.tovarCategorys = value.length > 0 ? value.join() : null;
           break;
         case 'status':
-          varTs.appStatusIds = value.length > 0 ? value.join() : null;
+          console.log('value', value);
+          //varTs.appStatusIds = value.length > 0 ? value.join() : null;
+          varTs.appStatusIds = value;
           break;
         case 'ApplicationType':
           varTs.appTypeIds = value.length > 0 ? value.join() : null;
@@ -339,7 +341,10 @@ const Smappl = props => {
       errors.push(errorTableText(7));
     }
     if (errors.length === 0) {
-      props.fetchAppList(search);
+      props.fetchAppList({
+        ...search,
+        appStatusIds: search.appStatusIds.toString(),
+      });
       props.fetchAppMasterList(search);
       setTurnOnReactFetch(true);
       props.fetchAppListSearchParam(search);
@@ -405,7 +410,10 @@ const Smappl = props => {
             label={messages['L__ORDER_STATUS']}
             clearable="true"
             selection
+            fluid
             multiple
+            selection
+            defaultValue={search.appStatusIds}
             options={applicationStatus}
             placeholder={messages['L__ORDER_STATUS']}
             onChange={(e, { value }) => onChange('status', value)}
