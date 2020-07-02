@@ -369,10 +369,30 @@ const Smeca = props => {
                     <Table.Row>
                       <Table.Cell>{messages['transfer_date']}</Table.Cell>
                       <Table.Cell>
-                        <Input
-                          fluid
-                          readOnly
-                          value={smeca.rescheduledDate || ''}
+                        <DatePicker
+                          autoComplete="off"
+                          dateFormat="DD/MM/YYYY HH:mm"
+                          selected={stringYYYYMMDDHHMMSSToMoment(
+                            smeca.rescheduledDate,
+                          )}
+                          dropdownMode="select"
+                          locale={language}
+                          timeFormat="HH:mm"
+                          showTimeSelect
+                          injectTimes={[
+                            moment()
+                              .hours(23)
+                              .minutes(59),
+                          ]}
+                          onChange={event =>
+                            setSmeca({
+                              ...smeca,
+                              rescheduledDate: momentToStringYYYYMMDDHHMMSS(
+                                event,
+                              ),
+                            })
+                          }
+                          placeholderText={messages['transfer_date']}
                         />
                       </Table.Cell>
                     </Table.Row>
