@@ -28,8 +28,6 @@ import {
   f4FetchCustomersById,
 } from '../../../../reference/f4/f4_action';
 
-import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal';
-
 import ModalAddServicePacket from '../modals/ModalAddServicePacket';
 import ModalAddSparePart from '../modals/ModalAddSparePart';
 import ModalAddCartridge from '../modals/ModalAddCartridge';
@@ -95,7 +93,7 @@ const TabSmcsWithoutRequest = props => {
     sumTotal: 0,
     tovarId: 0,
     tovarName: '',
-    tovarSn: '4134-031589',
+    tovarSn: '',
     warrantyPeriodDate: '',
     warrantyPeriodInMonth: 0,
     status: '',
@@ -319,6 +317,8 @@ const TabSmcsWithoutRequest = props => {
       setEditStatus(false);
     }
   }, [service.masterId]);
+
+  useEffect(() => {}, []);
 
   //УСЛУГИ============================================================================================================================
   //==================================================================================================================================
