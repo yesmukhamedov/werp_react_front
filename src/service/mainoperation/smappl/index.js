@@ -24,7 +24,12 @@ import {
 import { f4fetchCategory } from '../../../reference/f4/f4_action';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { formatDMY, errorTableText } from '../../../utils/helpers';
+import {
+  formatDMY,
+  errorTableText,
+  momentToStringYYYYMMDD,
+  stringYYYYMMDDToMoment,
+} from '../../../utils/helpers';
 import ColumnsModal from '../../../utils/ColumnsModal';
 import './index.css';
 import ServiceRequestTable from './table';
@@ -62,19 +67,20 @@ const Smappl = props => {
   const language = localStorage.getItem('language');
   const [applicationStatus, setApplicationStatus] = useState([]);
   const [applicationType, setApplicationType] = useState([]);
-  const [aDateFrom, setDateFrom] = useState();
-  const [aDateTo, setDateTo] = useState();
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
 
   const [search, setSearch] = useState({
     bukrs: '',
     branchId: '',
+    dateOpenAt: '',
+    dateOpenTo: '',
     aDateFrom: null,
     aDateTo: null,
     tovarCategorys: null,
     appStatusIds: null,
     appTypeIds: null,
-    page: 0,
+    direction: 'DESC',
+    orderBy: 'id',
   });
 
   console.log('search', search);
@@ -309,14 +315,6 @@ const Smappl = props => {
         case 'branch':
           varTs.branchId = value;
           break;
-        case 'datefrom':
-          setDateFrom(value);
-          varTs.aDateFrom = formatDMY(value) || null;
-          break;
-        case 'dateTo':
-          setDateTo(value);
-          varTs.aDateTo = formatDMY(value) || null;
-          break;
         case 'product':
           varTs.tovarCategorys = value.length > 0 ? value.join() : null;
           break;
@@ -433,8 +431,13 @@ const Smappl = props => {
               showYearDropdown
               dropdownMode="select"
               locale={language}
-              selected={aDateFrom}
-              onChange={event => onChange('datefrom', event)}
+              selected={stringYYYYMMDDToMoment(search.dateOpenAt)}
+              onChange={event =>
+                setSearch({
+                  ...search,
+                  dateOpenAt: momentToStringYYYYMMDD(event),
+                })
+              }
               dateFormat="DD.MM.YYYY"
               placeholderText={messages['Form.DateFrom']}
               isClearable
@@ -448,9 +451,14 @@ const Smappl = props => {
               showMonthDropdown
               showYearDropdown
               dropdownMode="select"
-              selected={aDateTo}
+              selected={stringYYYYMMDDToMoment(search.dateOpenTo)}
+              onChange={event =>
+                setSearch({
+                  ...search,
+                  dateOpenTo: momentToStringYYYYMMDD(event),
+                })
+              }
               locale={language}
-              onChange={event => onChange('dateTo', event)}
               dateFormat="DD.MM.YYYY"
               placeholderText={messages['Form.DateTo']}
               isClearable

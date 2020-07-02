@@ -31,23 +31,23 @@ import {
 
 const Smeca = props => {
   const {
-    language,
     intl: { messages },
     smecaData = {},
     smecaHistory = [],
     smecaPutStatus = {},
     serviceAppStatus = [],
   } = props;
+  const language = localStorage.getItem('language');
+  console.log('language', language);
 
   const url = window.location.search;
   const id = url.slice(url.indexOf('=') + 1);
 
   const [smeca, setSmeca] = useState({});
+  console.log('smeca', smeca);
   const [smecaHis, setSmecaHis] = useState([]);
   const [postStatus, setPostStatus] = useState(false);
   const [editStatus, setEditStatus] = useState(true);
-
-  console.log('SMECA DATA', smeca);
 
   const serviceAppStatusOptions = serviceAppStatus
     .filter(
@@ -197,21 +197,39 @@ const Smeca = props => {
                     </Table.Row>
                     <Table.Row>
                       <Table.Cell>
-                        <Form.Field>Дата заявки</Form.Field>
+                        <Form.Field required>
+                          <label>Дата заявки</label>
+                        </Form.Field>
                       </Table.Cell>
                       <Table.Cell>
                         <Table>
                           <Table.Body>
                             <Table.Row>
                               <Table.Cell>
-                                <Input
-                                  fluid
-                                  readOnly
-                                  value={
-                                    smeca.applicationDate
-                                      ? smeca.applicationDate
-                                      : ''
+                                <DatePicker
+                                  autoComplete="off"
+                                  dateFormat="DD/MM/YYYY HH:mm"
+                                  selected={stringYYYYMMDDHHMMSSToMoment(
+                                    smeca.applicationDate,
+                                  )}
+                                  dropdownMode="select"
+                                  locale={language}
+                                  timeFormat="HH:mm"
+                                  showTimeSelect
+                                  injectTimes={[
+                                    moment()
+                                      .hours(23)
+                                      .minutes(59),
+                                  ]}
+                                  onChange={event =>
+                                    setSmeca({
+                                      ...smeca,
+                                      applicationDate: momentToStringYYYYMMDDHHMMSS(
+                                        event,
+                                      ),
+                                    })
                                   }
+                                  placeholderText={messages['Form.DateFrom']}
                                 />
                               </Table.Cell>
 
