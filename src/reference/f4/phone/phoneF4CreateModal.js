@@ -94,8 +94,6 @@ function PhoneF4CreateModal(props) {
     return errors;
   };
 
-  console.log(country);
-
   const close = () => {
     props.onCloseCreatePhoneF4(false);
     setList({

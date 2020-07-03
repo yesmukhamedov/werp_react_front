@@ -41,7 +41,7 @@ function Smecim(props) {
     serviceAddressId: '',
     serviceAddressName: '',
     contactPersonName: '',
-    selectedBranch: {},
+    countryId: '',
     servCrmCategory: '',
     info: '',
     info2: '',
@@ -137,7 +137,7 @@ function Smecim(props) {
         serviceAddressId: serviceAddressId,
         serviceAddressName: serviceAddressName,
         contactPersonName: contactPersonName,
-        selectedBranch: branch,
+        countryId: branch.countryid,
         servCrmCategory: serviceCrmCategoryId,
         info: info,
       });
@@ -270,7 +270,7 @@ function Smecim(props) {
       serviceAddressId: '',
       serviceAddressName: '',
       contactPersonName: '',
-      selectedBranch: {},
+      countryId: '',
       servCrmCategory: '',
       info: '',
       info2: '',
@@ -284,7 +284,7 @@ function Smecim(props) {
         customerId={customerId}
         onCloseAddressF4={bool => setAddressF4ModalOpen(bool)}
         onAddressSelect={item => onInputChange(item, 'serviceAddressId')}
-        selectedBranch={contract.selectedBranch}
+        countryId={contract.countryId}
       />
       <Grid centered>
         <Grid.Row>

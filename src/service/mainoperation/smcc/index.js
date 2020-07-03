@@ -52,7 +52,7 @@ function Smcc(props) {
     contactPersonName: null,
     contractDate: moment(new Date()).format('YYYY-MM-DD'),
     contractTypeId: '',
-    countryId: null,
+    // countryId: null,
     countryName: null,
     customerFIO: null,
     customerId: '',
@@ -95,7 +95,7 @@ function Smcc(props) {
     dealerName: '',
     customerName: '',
     addrService: '',
-    selectedBranch: '',
+    countryId: '',
     matnr: '',
     check: false,
     disabled: true,
@@ -255,7 +255,7 @@ function Smcc(props) {
               waSelectedBranch = item;
             });
 
-          varContract.selectedBranch = waSelectedBranch;
+          varContract.countryId = waSelectedBranch.countryid;
           varContract.tovarCategoryId = waSelectedBranch.tovarcategory;
           varContract.branchId = o.value;
           varContract.tovarSn = '';
@@ -454,7 +454,7 @@ function Smcc(props) {
       dealerName: '',
       customerName: '',
       addrService: '',
-      selectedBranch: '',
+      countryId: '',
       matnr: '',
       check: false,
       disabled: true,
@@ -529,7 +529,7 @@ function Smcc(props) {
         open={addressF4ModalOpen}
         customerId={contract.customerId}
         customerName={contract.customerName}
-        selectedBranch={contract.selectedBranch}
+        countryId={contract.countryId}
         onCloseAddressF4={bool => setAddressF4ModalOpen(bool)}
         onAddressSelect={item => onInputChange(item, 'serviceAddressId')}
       />

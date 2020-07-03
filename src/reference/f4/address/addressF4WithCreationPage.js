@@ -11,7 +11,7 @@ const AddressF4WithCreationPage = props => {
   const handleTabChange = (e, { activeIndex }) => setActiveIndex(activeIndex);
   const {
     intl: { messages },
-    selectedBranch = [],
+    countryId,
     phoneOpen,
     onCloseAddressF4,
   } = props;
@@ -48,10 +48,7 @@ const AddressF4WithCreationPage = props => {
       menuItem: { key: 'phone', icon: 'phone', content: messages['Phone'] },
       render: () => (
         <Tab.Pane>
-          <Phone
-            customerId={props.customerId}
-            selectedBranch={selectedBranch}
-          />
+          <Phone customerId={props.customerId} countryId={countryId} />
         </Tab.Pane>
       ),
     },

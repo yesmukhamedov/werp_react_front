@@ -31,7 +31,7 @@ function Phone(props) {
     phoneListType = [],
     countryList = [],
     customerId,
-    selectedBranch,
+    countryId,
     language,
   } = props;
 
@@ -122,7 +122,7 @@ function Phone(props) {
         open={phoneF4CreateModalOpen}
         customerId={customerId}
         phoneList={phoneList}
-        country={getCountry(countryList, selectedBranch)}
+        country={getCountry(countryList, countryId)}
         phoneListType={phoneListType}
         onCloseCreatePhoneF4={bool => setPhoneF4CreateModalOpen(bool)}
         lang={lang}
@@ -131,7 +131,7 @@ function Phone(props) {
         open={phoneF4UpdateModalOpen}
         customerId={customerId}
         phoneList={phoneList}
-        country={getCountry(countryList, selectedBranch)}
+        country={getCountry(countryList, countryId)}
         phoneListType={phoneListType}
         selectedPhone={list.selectedPhone}
         //onPhoneSelect={(item, phone) => onPhoneSelect(item, phone)}
@@ -193,10 +193,10 @@ function Phone(props) {
   );
 }
 
-const getCountry = (countryList, branch) => {
+const getCountry = (countryList, countryId) => {
   let selectedCountry = {};
   for (let i = 0; i < countryList.length; i++) {
-    if (countryList[i].countryId === branch.countryid) {
+    if (countryList[i].countryId === countryId) {
       selectedCountry = countryList[i];
     }
   }
