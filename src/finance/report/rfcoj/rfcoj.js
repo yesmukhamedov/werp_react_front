@@ -371,6 +371,7 @@ class Rfcoj extends Component {
 
     const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
     const language = localStorage.getItem('language');
+
     const errors = [];
     const {
       bukrs,

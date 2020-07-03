@@ -85,6 +85,19 @@ export function signinUser({ username, password }, language) {
           .then(res => {
             let err = res.data.data;
 
+            localStorage.setItem('errorTableString2', JSON.stringify(err));
+          });
+
+        axios
+          .get(`${ROOT_URL}/api/error_table/map`, {
+            headers: {
+              Authorization: access_token,
+            },
+          })
+
+          .then(res => {
+            let err = res.data.data;
+
             localStorage.setItem('errorTableString', JSON.stringify(err));
           });
 

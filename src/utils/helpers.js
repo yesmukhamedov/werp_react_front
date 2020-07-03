@@ -282,7 +282,7 @@ export function excelDownload(
 
 export function errorTableText(id) {
   // get errors in localStorage
-  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString2'));
   // get language in localStorage
   const language = localStorage.getItem('language');
   // find error in errorTable by id
