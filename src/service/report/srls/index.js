@@ -46,9 +46,6 @@ const Srls = props => {
     srlsTotalElements,
     branchOptionsService,
   } = props;
-
-  console.log(typeof language, language);
-
   const emptyParam = {
     bukrs: '',
     branchId: '',
@@ -66,7 +63,6 @@ const Srls = props => {
       ? moment(new Date())
       : stringYYYYMMDDToMoment(param.dateTo),
   );
-  console.log('param', param);
 
   const [maxDateTo, setMaxDateTo] = useState(
     param.dateTo == ''
