@@ -21,7 +21,7 @@ import { fetchSmcrldList, postSmcrldFormplan } from '../smdisAction';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ModalColumns from './../../../../utils/ModalColumns';
-import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
+import ReactTableWrapperFixedColumns from '../../../../utils/ReactTableWrapperFixedColumns';
 import {
   momentToStringYYYYMMDD,
   stringYYYYMMDDToMoment,
@@ -465,7 +465,7 @@ const Smcrld = props => {
         <OutputErrors errors={props.error} />
       </Form>
       <Divider />
-      <ReactTableWrapper
+      <ReactTableWrapperFixedColumns
         data={smcrldListData}
         columns={initialColumns}
         pageSize={smcrldListData.length ? smcrldListData.length : 20}

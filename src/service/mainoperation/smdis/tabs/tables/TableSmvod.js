@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
+import ReactTableWrapperFixedColumns from '../../../../../utils/ReactTableWrapperFixedColumns';
 import { Icon } from 'semantic-ui-react';
 
 const TableSmvod = props => {
@@ -210,7 +210,11 @@ const TableSmvod = props => {
     },
   ];
   return (
-    <ReactTableWrapper data={data} columns={columns} defaultPageSize={20} />
+    <ReactTableWrapperFixedColumns
+      data={data}
+      columns={columns}
+      defaultPageSize={20}
+    />
   );
 };
 export default TableSmvod;

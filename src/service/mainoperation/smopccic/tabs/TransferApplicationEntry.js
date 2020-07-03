@@ -6,7 +6,7 @@ import { errorTableText } from '../../../../utils/helpers';
 import 'react-table/react-table.css';
 import { fetchTransferApplication } from '../smopccicAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
-import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
+import ReactTableWrapperFixedColumns from '../../../../utils/ReactTableWrapperFixedColumns';
 import ModalColumns from '../../../../utils/ModalColumns';
 import { LinkToSmcuspor } from '../../../../utils/outlink';
 import { Link } from 'react-router-dom';
@@ -328,7 +328,7 @@ const TransferApplicationEntry = props => {
           </Form.Field>
         </Form.Group>
       </Form>
-      <ReactTableWrapper
+      <ReactTableWrapperFixedColumns
         data={transferApplicationData ? transferApplicationData.data : []}
         columns={columns}
         filterable={true}

@@ -8,7 +8,7 @@ import {
   Form,
   Container,
 } from 'semantic-ui-react';
-import ReactTableWrapper from '../../../utils/ReactTableWrapper';
+import ReactTableWrapperFixedColumns from '../../../utils/ReactTableWrapperFixedColumns';
 import './index.css';
 import { connect } from 'react-redux';
 import 'react-table/react-table.css';
@@ -564,7 +564,7 @@ const Smsetpp = props => {
         </div>
         <OutputErrors errors={error} />
 
-        <ReactTableWrapper
+        <ReactTableWrapperFixedColumns
           data={serviceOptionPriceList}
           columns={[
             {
@@ -733,7 +733,7 @@ const Smsetpp = props => {
         <Segment>
           <h1>История редактирования</h1>
         </Segment>
-        <ReactTableWrapper
+        <ReactTableWrapperFixedColumns
           data={smsetppHistory}
           columns={historyColumns}
           pageSize={smsetppHistory.length < 10 ? smsetppHistory.length : 10}
