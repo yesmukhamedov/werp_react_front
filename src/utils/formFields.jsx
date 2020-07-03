@@ -10,6 +10,8 @@ import {
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
+require('moment/locale/ru');
+require('moment/locale/tr');
 
 export const DropdownFormField = props => {
   const {
@@ -158,6 +160,8 @@ export const DatePickerFormField = props => {
     dateFormat,
     autoComplete,
   } = props;
+
+  const language = localStorage.getItem('language');
   return (
     <Form.Field required={required}>
       <label>{label}</label>
@@ -169,6 +173,7 @@ export const DatePickerFormField = props => {
         autoComplete={autoComplete}
         disabled={disabled}
         readOnly={readOnly}
+        locale={language}
       />
       {touched && error && (
         <Label basic color="red" pointing>
