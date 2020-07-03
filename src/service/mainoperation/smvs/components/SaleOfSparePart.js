@@ -8,15 +8,11 @@ import {
   Checkbox,
 } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
+import { moneyFormat } from '../../../../utils/helpers';
 
 const SaleOfSparePart = props => {
-  const {
-    data = [],
-
-    onChangeSparePart,
-    disabledEdit,
-  } = props;
-
+  const { data = [], currency, onChangeSparePart, disabledEdit } = props;
+  const totalSparePart = data.reduce((total, item) => total + item.sum, 0);
   const columns = [
     {
       Header: '№',
@@ -37,7 +33,7 @@ const SaleOfSparePart = props => {
       accessor: 'quantity',
       Cell: ({ original }) => (
         <Input
-          disabled={disabledEdit}
+          readOnly
           size="mini"
           style={{ padding: '0' }}
           value={original.quantity}
@@ -45,9 +41,6 @@ const SaleOfSparePart = props => {
           label={{ content: 'шт' }}
           labelPosition="right"
           fluid
-          onChange={item =>
-            onChangeSparePart(item, 'quantitySparePart', original)
-          }
         />
       ),
     },
@@ -63,13 +56,7 @@ const SaleOfSparePart = props => {
       Header: 'Гарантия',
       accessor: 'warranty',
       Cell: ({ original }) => (
-        <Checkbox
-          readOnly
-          // checked={original.warranty}
-          label="Гарантия"
-          //   onChange={() => warrantySparePart(item)}
-          disabled={disabledEdit}
-        />
+        <Checkbox checked={original.warranty} readOnly label="Гарантия" />
       ),
     },
   ];
@@ -84,6 +71,13 @@ const SaleOfSparePart = props => {
         className="-striped -highlight"
         pageSize={data.length > 10 ? 10 : data.length}
       />
+      {data.length > 0 ? (
+        <Segment>
+          Общая сумма: {moneyFormat(totalSparePart)} {currency}
+        </Segment>
+      ) : (
+        ''
+      )}
     </Segment>
   );
 };

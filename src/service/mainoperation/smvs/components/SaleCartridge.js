@@ -8,6 +8,7 @@ import {
   Checkbox,
 } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
+import { moneyFormat } from '../../../../utils/helpers';
 
 const SaleCartridge = props => {
   const {
@@ -15,7 +16,10 @@ const SaleCartridge = props => {
     onChangeCartridge,
     disabledEdit,
     onChangeSettingService,
+    currency,
   } = props;
+
+  const totalCartridge = data.reduce((total, item) => total + item.sum, 0);
 
   const columns = [
     {
@@ -36,7 +40,7 @@ const SaleCartridge = props => {
       accessor: 'fno',
       Cell: ({ original }) => (
         <Input
-          disabled={disabledEdit}
+          readOnly
           size="mini"
           style={{ padding: '0' }}
           value={
@@ -44,7 +48,6 @@ const SaleCartridge = props => {
           }
           type="number"
           fluid
-          onChange={(e, value) => onChangeCartridge(value, 'fnoEdit', original)}
         />
       ),
     },
@@ -53,7 +56,6 @@ const SaleCartridge = props => {
       accessor: 'quantity',
       Cell: ({ original }) => (
         <Input
-          disabled={disabledEdit}
           readOnly
           size="mini"
           style={{ padding: '0' }}
@@ -62,9 +64,6 @@ const SaleCartridge = props => {
           label={{ content: 'шт' }}
           labelPosition="right"
           fluid
-          onChange={item =>
-            onChangeCartridge(item, 'quantityCartridge', original)
-          }
         />
       ),
     },
@@ -101,6 +100,13 @@ const SaleCartridge = props => {
         // className="-striped -highlight"
         pageSize={data.length > 10 ? 10 : data.length}
       />
+      {data.length > 0 ? (
+        <Segment>
+          Общая сумма: {moneyFormat(totalCartridge)} {currency}
+        </Segment>
+      ) : (
+        ''
+      )}
     </Segment>
   );
 };

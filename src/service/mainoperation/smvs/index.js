@@ -61,6 +61,33 @@ const Smes = props => {
   console.log('dataSmvs', dataSmvs);
   const url = window.location.search;
 
+  //СПИСОК УСЛУГ
+  const servicesList = dataSmvs.positions.filter(
+    item =>
+      item.serviceTypeId == 2 ||
+      item.serviceTypeId == 5 ||
+      item.serviceTypeId == 6 ||
+      item.serviceTypeId == 7,
+  );
+
+  //СПИСОК ПРОДАЖА ЗАПЧАСТЕЙ
+  const sparePartList = dataSmvs.positions.filter(
+    item => item.serviceTypeId == 3,
+  );
+  //СПИСОК ПРОДАЖА КАРТРИДЖЕЙ
+  const cartridgeList = dataSmvs.positions.filter(
+    item => item.serviceTypeId == 1,
+  );
+  //СПИСОК СЕРВИС ПАКЕТОВ
+  const servicePackageList = dataSmvs.positions.filter(
+    item => item.serviceTypeId == 4,
+  );
+
+  console.log('servicesList', servicesList);
+  console.log('sparePartList', sparePartList);
+  console.log('cartridgeList', cartridgeList);
+  console.log('servicePackageList', servicePackageList);
+
   const urlNumberService = url.slice(url.indexOf('=') + 1);
 
   const [serviceNumber, setServiceNumber] = useState(urlNumberService);
@@ -81,6 +108,20 @@ const Smes = props => {
       });
     }
   }, [smvsList]);
+
+  const onChangeBasicInfo = (value, fieldName) => {
+    switch (fieldName) {
+      case 'changeServiceNumber':
+        console.log('changeServiceNumber', value);
+        setServiceNumber(value);
+        break;
+      case 'searchByServiceNumber':
+        props.fetchSmvsList(serviceNumber);
+        break;
+      case '':
+        break;
+    }
+  };
 
   return (
     <Form>
@@ -106,46 +147,26 @@ const Smes = props => {
             <BasicInfo
               data={dataSmvs}
               serviceNumber={serviceNumber}
-              // onChangeBasicInfo={onChangeBasicInfo}
+              onChangeBasicInfo={onChangeBasicInfo}
             />
           </Grid.Column>
 
           {/*SETTING*/}
           <Grid.Column width={11}>
-            <Services
-            // data={servicesPos}
-            // servicesOptions={servicesOptions}
-            />
+            <Services data={servicesList} />
 
             {/*Продажа запчастей */}
-            <SaleOfSparePart
-            // data={sparePartPos}
-            // disabledEdit={disabledEdit}
-            />
+            <SaleOfSparePart data={sparePartList} />
 
             {/*Продажа картриджи  */}
-            <SaleCartridge
-            // data={cartridgePos}
-            // disabledEdit={disabledEdit}
-            />
+            <SaleCartridge data={cartridgeList} />
 
             {/*Сервис пакет  */}
             <ServicePackage
+            // data={servicePackageList}
             // disabledEdit={disabledEdit}
             />
             <ReportService data={dataSmvs} />
-            <Button
-              color="green"
-              onClick={() => {
-                setCheckStatus(true);
-              }}
-            >
-              Проверить
-            </Button>
-            <Button color="blue" disabled={checkStatus === true ? false : true}>
-              Сохранить
-            </Button>
-            <Divider />
           </Grid.Column>
         </Grid.Row>
       </Grid>

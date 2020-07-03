@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Segment, Icon, Divider, Dropdown } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
+import { moneyFormat } from '../../../../utils/helpers';
 
 const Services = props => {
   const {
@@ -12,7 +13,10 @@ const Services = props => {
     selectServices,
     disabledEdit,
     serviceTypeOptions = [],
+    currency,
   } = props;
+
+  const totalServices = data.reduce((total, item) => total + item.sum, 0);
 
   const columns = [
     {
@@ -62,6 +66,13 @@ const Services = props => {
         className="-striped -highlight"
         pageSize={data.length > 10 ? 10 : data.length}
       />
+      {data.length > 0 ? (
+        <Segment>
+          Общая сумма: {moneyFormat(totalServices)} {currency}
+        </Segment>
+      ) : (
+        ''
+      )}
     </Segment>
   );
 };

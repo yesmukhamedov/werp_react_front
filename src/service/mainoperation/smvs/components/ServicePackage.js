@@ -8,14 +8,12 @@ import {
   Checkbox,
 } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
+import { moneyFormat } from '../../../../utils/helpers';
 
 const ServicePackage = props => {
-  const {
-    data = [],
-    onChangeServicePackage,
-    disabledEdit,
-    onChangeSettingService,
-  } = props;
+  const { data = [], currency } = props;
+
+  console.log('СЕРВИС ПАКЕТ', data);
 
   const columnsDetails = [
     {
@@ -44,6 +42,8 @@ const ServicePackage = props => {
     },
   ];
 
+  const totalServicePackage = data.reduce((total, item) => total + item.sum, 0);
+
   return (
     <Segment>
       <h5>Сервис пакет</h5>
@@ -59,25 +59,23 @@ const ServicePackage = props => {
             }}
           >
             <p>{item.matnrName}</p>
-            <Button
-              disabled={disabledEdit}
-              size="mini"
-              color="red"
-              onClick={() =>
-                onChangeServicePackage(item, 'deleteServicePackage')
-              }
-            >
-              Удалить
-            </Button>
           </div>
 
           <Divider />
           <ReactTableWrapper
-            data={item.details}
-            columns={columnsDetails}
+            //  data={item.details}
+            //columns={columnsDetails}
             className="-striped -highlight"
-            pageSize={item.details.length > 10 ? 10 : item.details.length}
+            // pageSize={item.details.length > 10 ? 10 : item.details.length}
           />
+
+          {data.length > 0 ? (
+            <Segment>
+              Общая сумма: {moneyFormat(totalServicePackage)} {currency}
+            </Segment>
+          ) : (
+            ''
+          )}
         </Segment>
       ))}
     </Segment>
