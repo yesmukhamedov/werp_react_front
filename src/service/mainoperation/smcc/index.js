@@ -205,14 +205,11 @@ function Smcc(props) {
     }
   }, [contract.bukrsId, contract.matnr]);
 
-  console.log(servFilter);
-
   useEffect(() => {
     if (monthTerms) {
       setServFilter(
         { ...servFilter },
         monthTerms.map(item => {
-          console.log(item);
           {
             servFilter.f1Mt = item.f1;
             servFilter.f2Mt = item.f2;

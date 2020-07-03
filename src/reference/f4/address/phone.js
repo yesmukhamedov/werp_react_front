@@ -39,9 +39,13 @@ function Phone(props) {
 
   useEffect(() => {
     props.f4FetchCountryList();
-    props.f4FetchPhone();
     props.f4FetchPhoneType();
   }, []);
+  useEffect(() => {
+    if (customerId) {
+      props.f4FetchPhone({ search: `customerId==${customerId}` });
+    }
+  }, [customerId]);
 
   const onPhoneSelect = value => {
     setList({ ...list, selectedPhone: value });

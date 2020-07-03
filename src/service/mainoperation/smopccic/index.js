@@ -76,7 +76,6 @@ const Smopccic = props => {
         value: item.id,
       };
     });
-  console.log(serviceAppStatus.filter(el => el.id === 5 || el.id === 7));
 
   //Вкладки
   const panes = [

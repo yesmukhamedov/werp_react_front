@@ -826,10 +826,10 @@ export function saveRfadd02(url, body, params, setIsLoading) {
   };
 }
 
-export function f4FetchPhone() {
+export function f4FetchPhone(param) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`phone?direction=DESC&orderBy=id`)
+    doGet(`phone?direction=DESC&orderBy=id`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
