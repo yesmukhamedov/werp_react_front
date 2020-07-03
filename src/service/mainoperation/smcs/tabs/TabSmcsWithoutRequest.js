@@ -57,6 +57,10 @@ const TabSmcsWithoutRequest = props => {
     masterList = [],
   } = props;
 
+  // useEffect((saveSmcs))
+
+  console.log('saveSmcs', saveSmcs);
+
   const emptyService = {
     address: '',
     applicationNumber: '',
@@ -144,35 +148,6 @@ const TabSmcsWithoutRequest = props => {
     // props.fetchServiceSmcs({ tovarSn });
     props.fetchServiceTypeId();
   }, []);
-
-  const [modalOpen, setModalOpen] = useState({
-    matnrF4ModalOpen: false,
-    staffF4ModalOpen: false,
-  });
-
-  const [staffF4ModalPosition, setStaffF4ModalPosition] = useState('');
-  const [serBranches, setSerBranches] = useState({});
-
-  useEffect(() => {
-    let serviceBA = [5, 6, 9];
-    let waSerBranches = {};
-    function optFunction(item) {
-      let option = {
-        key: item.branch_id,
-        value: item.branch_id,
-        text: item.text45,
-      };
-      if (serviceBA.includes(item.business_area_id)) {
-        if (!waSerBranches[item.bukrs]) {
-          waSerBranches[item.bukrs] = [];
-        }
-        waSerBranches[item.bukrs].push(option);
-      }
-    }
-
-    branches.forEach(optFunction);
-    setSerBranches(waSerBranches);
-  }, [branches]);
 
   //Поиск по заводскому номеру
 

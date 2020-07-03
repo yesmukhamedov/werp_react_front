@@ -6,7 +6,6 @@ import {
   FETCH_SERVICE_TYPE_ID,
   FETCH_MATNR_PRICE_SPARE_PART,
   FETCH_MATNR_PRICE_CARTRIDGE,
-  FETCH_SMCS_SERVICE_PACKET,
   FETCH_OPERATOR_LIST,
   FETCH_POSITION_SUMM,
   CHECK_SMCS_WITHOUT_REQUEST,
@@ -73,7 +72,7 @@ export default function(state = INITIAL_STATE, action) {
       return { ...state, checkSmcs: { ...action.data.data } };
 
     case SAVE_SMCS_WITHOUT_REQUEST:
-      return { ...state, saveSmcs: { ...action.data.data } };
+      return { ...state, saveSmcs: { ...action.data } };
 
     case FETCH_OPERATOR_LIST:
       return { ...state, operatorList: [...action.data.data] };
