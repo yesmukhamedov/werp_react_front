@@ -13,7 +13,7 @@ import 'react-table/react-table.css';
 import { fetchCRMSchedule } from '../smopccocAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
-import ModalColumns from '../../../../utils/ModalColumns';
+import ColumnsModal from '../../../../utils/ColumnsModal';
 import OutputErrors from '../../../../general/error/outputErrors';
 import { errorTableText } from '../../../../utils/helpers';
 import DatePicker from 'react-datepicker';
@@ -202,6 +202,22 @@ const AssignedCalls = props => {
     },
   ];
 
+  const [columnsForTable, setColumnsForTable] = useState([]);
+
+  useEffect(() => {
+    const transactionCodeText = localStorage.getItem('smopccocAssignedCalls');
+    if (transactionCodeText) {
+      let transactionCodeObject = JSON.parse(transactionCodeText);
+
+      let temp = initialColumns.map(item => {
+        return { ...item, show: transactionCodeObject[item.accessor] };
+      });
+      setColumnsForTable(temp);
+    } else {
+      setColumnsForTable(initialColumns);
+    }
+  }, []);
+
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
 
   useEffect(() => {
@@ -252,12 +268,6 @@ const AssignedCalls = props => {
       }
       return prevParam;
     });
-  };
-
-  const [columns, setColumns] = useState([...initialColumns]);
-
-  const finishColumns = data => {
-    setColumns([...data]);
   };
 
   const handleClear = fieldName => {
@@ -353,9 +363,20 @@ const AssignedCalls = props => {
           </div>
 
           <Form.Field className="alignBottom">
-            <ModalColumns
-              columns={initialColumns}
-              finishColumns={finishColumns}
+            <ColumnsModal
+              tableHeaderCols={columnsForTable}
+              tableThings={things => {
+                setColumnsForTable(things);
+                //store in localstorage
+                let temp = {};
+                things.map(el => {
+                  temp = { ...temp, [el.accessor]: el.show };
+                });
+                localStorage.setItem(
+                  'smopccocAssignedCalls',
+                  JSON.stringify(temp),
+                );
+              }}
             />
           </Form.Field>
         </Form.Group>
@@ -371,7 +392,7 @@ const AssignedCalls = props => {
 
       <ReactTableServerSideWrapper
         data={assignedCalls ? assignedCalls.data : []}
-        columns={columns}
+        columns={columnsForTable}
         filterable={true}
         defaultPageSize={20}
         showPagination={true}

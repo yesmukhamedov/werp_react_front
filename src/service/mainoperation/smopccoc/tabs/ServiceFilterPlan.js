@@ -16,7 +16,7 @@ import { errorTableText } from '../../../../utils/helpers';
 import { fetchServiceFilterPlan } from '../smopccocAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
-import ModalColumns from '../../../../utils/ModalColumns';
+import ColumnsModal from '../../../../utils/ColumnsModal';
 import CancelPlanModal from '../components/CancelPlanModal';
 import matchSorter from 'match-sorter';
 import TextAlignCenter from '../../../../utils/TextAlignCenter';
@@ -250,6 +250,22 @@ const ServiceFilterPlan = props => {
     },
   ];
 
+  const [columnsForTable, setColumnsForTable] = useState([]);
+
+  useEffect(() => {
+    const transactionCodeText = localStorage.getItem('smopccocServFilter');
+    if (transactionCodeText) {
+      let transactionCodeObject = JSON.parse(transactionCodeText);
+
+      let temp = initialColumns.map(item => {
+        return { ...item, show: transactionCodeObject[item.accessor] };
+      });
+      setColumnsForTable(temp);
+    } else {
+      setColumnsForTable(initialColumns);
+    }
+  }, []);
+
   useEffect(() => {
     if (param.bukrs) {
       setServiceBranchOptions(branchOptions[param.bukrs]);
@@ -312,11 +328,7 @@ const ServiceFilterPlan = props => {
       return prevParam;
     });
   };
-  const [columns, setColumns] = useState([...initialColumns]);
 
-  const finishColumns = data => {
-    setColumns([...data]);
-  };
   const handleClear = fieldName => {
     setParam(prev => {
       const prevParam = { ...prev };
@@ -449,9 +461,20 @@ const ServiceFilterPlan = props => {
           </Form.Button>
 
           <Form.Field className="alignBottom">
-            <ModalColumns
-              columns={initialColumns}
-              finishColumns={finishColumns}
+            <ColumnsModal
+              tableHeaderCols={columnsForTable}
+              tableThings={things => {
+                setColumnsForTable(things);
+                //store in localstorage
+                let temp = {};
+                things.map(el => {
+                  temp = { ...temp, [el.accessor]: el.show };
+                });
+                localStorage.setItem(
+                  'smopccocServFilter',
+                  JSON.stringify(temp),
+                );
+              }}
             />
           </Form.Field>
         </Form.Group>
@@ -467,7 +490,7 @@ const ServiceFilterPlan = props => {
 
       <ReactTableServerSideWrapper
         data={serviceFilterPlan ? serviceFilterPlan.data : []}
-        columns={columns}
+        columns={columnsForTable}
         resolveData={data => data.map(row => row)}
         filterable={true}
         defaultPageSize={20}

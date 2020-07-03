@@ -4,13 +4,12 @@ import { injectIntl } from 'react-intl';
 import { Form, Container, Divider, Icon, Segment } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
-import moment from 'moment';
 import OutputErrors from '../../../../general/error/outputErrors';
 import { errorTableText } from '../../../../utils/helpers';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import { fetchMyApplicationExodus } from '../smopccocAction';
-import ModalColumns from '../../../../utils/ModalColumns';
+import ColumnsModal from '../../../../utils/ColumnsModal';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Link } from 'react-router-dom';
@@ -18,7 +17,6 @@ import {
   momentToStringYYYYMMDD,
   stringYYYYMMDDToMoment,
 } from '../../../../utils/helpers';
-import { LinkToSmcuspor } from '../../../../utils/outlink';
 import DropdownClearable from '../../../../utils/DropdownClearable';
 
 const MyApplicationExodus = props => {
@@ -220,6 +218,22 @@ const MyApplicationExodus = props => {
     },
   ];
 
+  const [columnsForTable, setColumnsForTable] = useState([]);
+
+  useEffect(() => {
+    const transactionCodeText = localStorage.getItem('smopccocMyApp');
+    if (transactionCodeText) {
+      let transactionCodeObject = JSON.parse(transactionCodeText);
+
+      let temp = initialColumns.map(item => {
+        return { ...item, show: transactionCodeObject[item.accessor] };
+      });
+      setColumnsForTable(temp);
+    } else {
+      setColumnsForTable(initialColumns);
+    }
+  }, []);
+
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
 
   useEffect(() => {
@@ -272,12 +286,6 @@ const MyApplicationExodus = props => {
       }
       return prevParam;
     });
-  };
-
-  const [columns, setColumns] = useState([...initialColumns]);
-
-  const finishColumns = data => {
-    setColumns([...data]);
   };
 
   const handleClear = fieldName => {
@@ -393,9 +401,17 @@ const MyApplicationExodus = props => {
           </div>
 
           <Form.Field className="alignBottom">
-            <ModalColumns
-              columns={initialColumns}
-              finishColumns={finishColumns}
+            <ColumnsModal
+              tableHeaderCols={columnsForTable}
+              tableThings={things => {
+                setColumnsForTable(things);
+                //store in localstorage
+                let temp = {};
+                things.map(el => {
+                  temp = { ...temp, [el.accessor]: el.show };
+                });
+                localStorage.setItem('smopccocMyApp', JSON.stringify(temp));
+              }}
             />
           </Form.Field>
         </Form.Group>
@@ -411,7 +427,7 @@ const MyApplicationExodus = props => {
 
       <ReactTableServerSideWrapper
         data={myApplication ? myApplication.data : []}
-        columns={columns}
+        columns={columnsForTable}
         filterable={true}
         defaultPageSize={20}
         showPagination={true}
