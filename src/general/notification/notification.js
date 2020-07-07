@@ -33,19 +33,13 @@ class Notification extends Component {
           info: false,
           success: false,
         });
-      }, 2000);
+      }, 1200);
     }
   }
 
   render() {
     return (
-      <Modal
-        open={this.state.open}
-        closeOnEscape={false}
-        onClose={this.close}
-        dimmer={false}
-        size="tiny"
-      >
+      <Modal open={this.state.open} onClose={this.close} size="small">
         <Modal.Content>
           <Message
             header={this.props.header}
