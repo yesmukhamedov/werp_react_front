@@ -1,8 +1,5 @@
-import { doGet, doPost, doPut, doDelete } from '../../../utils/apiActions';
-import {
-  handleError,
-  notify,
-} from '../../../general/notification/notification_action';
+import { doGet, doPost } from '../../../utils/apiActions';
+import { handleError } from '../../../general/notification/notification_action';
 import { modifyLoader } from '../../../general/loader/loader_action';
 
 //План по сервис пакетам
@@ -19,14 +16,11 @@ export const FETCH_MY_APPLICATION = 'FETCH_MY_APPLICATION';
 
 export const POST_TO_CANCEL_PLAN_VC = 'POST_TO_CANCEL_PLAN_VC';
 
-const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-const language = localStorage.getItem('language');
-
 //План по сервис пакетам
 export const fetchServicePacketPlan = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopsp/serviceFilterVCPlan`, param)
+    doGet(`smopsp/serviceFilterVCPlan?direction=DESC&orderBy=id`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -45,7 +39,7 @@ export const fetchServicePacketPlan = param => {
 export const fetchRescheduledApplication = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopsp/rescheduledApplication`, param)
+    doGet(`smopsp/rescheduledApplication?direction=DESC&orderBy=id`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -64,7 +58,7 @@ export const fetchRescheduledApplication = param => {
 export const fetchAssignedCalls = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopsp/CRMSchedule`, param)
+    doGet(`smopsp/CRMSchedule?direction=DESC&orderBy=id`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -83,7 +77,7 @@ export const fetchAssignedCalls = param => {
 export const fetchMyApplication = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopsp/myApplication`, param)
+    doGet(`smopsp/myApplication?direction=DESC&orderBy=id`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
