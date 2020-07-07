@@ -57,10 +57,6 @@ const TabSmcsWithoutRequest = props => {
     masterList = [],
   } = props;
 
-  // useEffect((saveSmcs))
-
-  console.log('saveSmcs', saveSmcs);
-
   const emptyService = {
     address: '',
     applicationNumber: '',
@@ -349,7 +345,6 @@ const TabSmcsWithoutRequest = props => {
       item => item.serviceTypeId == value.value,
     );
 
-    console.log(servicesFilter);
     if (servicesFilter.length > 0) {
       alert(
         'Вы не можете добавить несколько одноименных услуг в эту сервис карту',
@@ -595,7 +590,6 @@ const TabSmcsWithoutRequest = props => {
         break;
       //F№ изменение
       case 'fnoEdit':
-        console.log('FNO CHANGE');
         setCartridgeList(
           cartridgeList.map(item =>
             item.id === original
@@ -647,7 +641,6 @@ const TabSmcsWithoutRequest = props => {
         break;
 
       case 'warrantyCartridge':
-        console.log('[WARRANTY CARTRIDGE', 'value', value, 'id', original);
         setCartridgeList(
           cartridgeList.map(item =>
             item.id === original
@@ -707,8 +700,6 @@ const TabSmcsWithoutRequest = props => {
   const [servicePackageInitial, setServicePackageInitial] = useState([]);
   const [servicePackageList, setServicePackageList] = useState([]);
   const [modalServicePackage, setModalServicePackage] = useState(false);
-
-  console.log('servicePackageInitial', servicePackageInitial);
 
   const onChangeServicePackage = (value, fieldName, original) => {
     switch (fieldName) {

@@ -71,6 +71,7 @@ const SaleCartridge = props => {
           options={fnoOptions}
         />
       ),
+      width: 150,
     },
     {
       Header: 'Количество',
@@ -139,7 +140,7 @@ const SaleCartridge = props => {
             <Table.HeaderCell width={5} textAlign="center">
               Наименование
             </Table.HeaderCell>
-            <Table.HeaderCell width={1} textAlign="center">
+            <Table.HeaderCell width={2} textAlign="center">
               f№
             </Table.HeaderCell>
             <Table.HeaderCell width={2} textAlign="center">

@@ -16,7 +16,6 @@ const ModalAddCartridge = props => {
 
   const { data = [], modalOpen = false, onChangeCartridge } = props;
 
-  console.log('MODAL CARTRIDGE DATA', data);
   const columnsSparePart = [
     {
       Header: '',

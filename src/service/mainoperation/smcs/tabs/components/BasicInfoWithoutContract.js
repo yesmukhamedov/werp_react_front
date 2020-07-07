@@ -186,6 +186,11 @@ const BasicInfoWithoutContract = props => {
           <Table.Cell>Срок гарантии</Table.Cell>
           <Table.Cell className="tableRow">
             <Input readOnly value={data.warrantyPeriodDate} />
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>Срок гарантии в месяц</Table.Cell>
+          <Table.Cell>
             <Input
               readOnly
               value={

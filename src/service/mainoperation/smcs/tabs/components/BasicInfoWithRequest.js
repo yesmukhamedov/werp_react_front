@@ -1,11 +1,11 @@
 import React from 'react';
-import { Button, Table, Icon, Input, Dropdown } from 'semantic-ui-react';
+import { Table, Input } from 'semantic-ui-react';
 
 const BasicInfoWithoutContract = props => {
   const { data = {} } = props;
 
   return (
-    <Table collapsing className="borderLess">
+    <Table>
       <Table.Body>
         <Table.Row>
           <Table.Cell>Номер заявки</Table.Cell>
@@ -100,8 +100,13 @@ const BasicInfoWithoutContract = props => {
         </Table.Row>
         <Table.Row>
           <Table.Cell>Срок гарантии</Table.Cell>
-          <Table.Cell className="tableRow">
+          <Table.Cell>
             <Input readOnly value={data.warrantyPeriodDate} />
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>Срок гарантии в месяц</Table.Cell>
+          <Table.Cell>
             <Input
               readOnly
               value={

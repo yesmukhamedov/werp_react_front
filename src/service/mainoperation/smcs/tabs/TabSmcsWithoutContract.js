@@ -59,7 +59,6 @@ const TabSmcsWithoutContract = props => {
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
-  console.log('SERVICE WITHOUT CONTRACT', service);
 
   const [editStatus, setEditStatus] = useState(true);
 

@@ -50,7 +50,7 @@ const TabSmcsWithRequest = props => {
     matnrPriceCartridge = [],
     matnrServicePackage = [],
     servicePacketDetails = [],
-    positionSumm,
+    positionSumm = {},
     checkSmcs = {},
     saveSmcs,
     operatorList = [],
@@ -152,17 +152,21 @@ const TabSmcsWithRequest = props => {
     props.f4FetchBranches();
   }, []);
 
-  //УСЛУГИ========================================================================================
+  //УСЛУГИ============================================================================================================================
+  //==================================================================================================================================
 
   const [services, setServices] = useState([]);
 
   const serviceOptions = serviceTypeId
-    .filter(item => item.id === '2')
+    .filter(
+      item =>
+        item.id == '2' || item.id == '5' || item.id == '6' || item.id == '7',
+    )
     .map(item => {
       return {
-        key: item.id,
+        key: parseInt(item.id),
         text: item.name,
-        value: item.id,
+        value: parseInt(item.id),
       };
     });
 
@@ -176,7 +180,7 @@ const TabSmcsWithRequest = props => {
         currencyId: null,
         currencyName: null,
         fno: null,
-        id: 2222 + length,
+        id: parseInt(`222${length}`),
         matnrId: null,
         matnrName: null,
         matnrPrice: null,
@@ -186,38 +190,82 @@ const TabSmcsWithRequest = props => {
         serviceId: null,
         servicePackageId: null,
         servicePackageName: null,
-        serviceTypeId: 2,
+        serviceTypeId: null,
         serviceTypeName: null,
         sum: null,
-        warranty: null,
+        warranty: false,
+        ss: 22,
       },
     ]);
   };
 
   //Select services
   const selectServices = (id, value) => {
-    setServices(
-      services.map(item =>
-        item.id === id ? { ...item, serviceTypeId: value.value } : item,
-      ),
+    let servicesData = services.filter(item => item.ss == 22);
+    let servicesFilter = servicesData.filter(
+      item => item.serviceTypeId == value.value,
     );
 
-    props.fetchPositionSumm(service.branchId, service.bukrs, ...services);
+    console.log(servicesFilter);
+    if (servicesFilter.length > 0) {
+      alert(
+        'Вы не можете добавить несколько одноименных услуг в эту сервис карту',
+      );
+    } else {
+      setServices(
+        services.map(item =>
+          item.id == id
+            ? {
+                ...item,
+                serviceTypeId: parseInt(value.value),
+              }
+            : item,
+        ),
+      );
+      let posParam = {
+        currencyId: null,
+        currencyName: '',
+        fno: null,
+        id: null,
+        matnrId: null,
+        matnrName: '',
+        matnrPrice: null,
+        operationId: null,
+        operationName: '',
+        quantity: null,
+        serviceId: null,
+        servicePackageId: null,
+        servicePackageName: '',
+        serviceTypeId: parseInt(value.value),
+        serviceTypeName: '',
+        sum: null,
+        warranty: false,
+      };
+
+      props.fetchPositionSumm(
+        service.branchId,
+        service.bukrs,
+        service.tovarId,
+        posParam,
+      );
+    }
   };
 
   useEffect(() => {
-    setServices(
-      services.map(item =>
-        item.serviceTypeId === '2'
-          ? {
-              ...item,
-              currencyId: positionSumm.currencyId,
-              currencyName: positionSumm.currencyName,
-              sum: positionSumm.sum,
-            }
-          : item,
-      ),
-    );
+    if (Object.keys(positionSumm).length > 0) {
+      setServices(
+        services.map(item =>
+          item.serviceTypeId == positionSumm.serviceTypeId
+            ? {
+                ...item,
+                currencyId: positionSumm.currencyId,
+                currencyName: positionSumm.currencyName,
+                sum: positionSumm.sum,
+              }
+            : item,
+        ),
+      );
+    }
   }, [positionSumm]);
 
   //Удалить услуг
@@ -464,7 +512,7 @@ const TabSmcsWithRequest = props => {
         {
           currencyId: item.currencyId,
           currencyName: item.currencyName,
-          fno: null,
+          fno: item.fno,
           id: item.matnrId + index,
           matnrId: item.matnrId,
           matnrCode: item.matnrCode,
@@ -557,7 +605,6 @@ const TabSmcsWithRequest = props => {
         break;
 
       case 'dimmerClose':
-        console.log('DIMMER');
         break;
       default:
         console.log('нет таких!');
@@ -758,6 +805,19 @@ const TabSmcsWithRequest = props => {
   useEffect(() => {
     if (Object.keys(smcsAppNumberData).length > 0) {
       setService({ ...smcsAppNumberData, positions: [] });
+
+      if (
+        smcsAppNumberData.branchId &&
+        smcsAppNumberData.bukrs &&
+        smcsAppNumberData.tovarId
+      ) {
+        let param = {
+          branchId: smcsAppNumberData.branchId,
+          bukrs: smcsAppNumberData.bukrs,
+          productId: smcsAppNumberData.tovarId,
+        };
+        props.fetchMatnrPriceServicePackage({ ...param });
+      }
     }
   }, [smcsAppNumberData]);
 
@@ -781,26 +841,10 @@ const TabSmcsWithRequest = props => {
     let masterId = smcsAppNumberData.masterId;
     let contractId = smcsAppNumberData.contractId;
 
-    if (
-      masterId === null ||
-      masterId === undefined ||
-      masterId === '' ||
-      masterId === 0
-    ) {
-    } else {
+    if (masterId) {
       props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart });
       props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge });
       setEditStatus(false);
-    }
-
-    if (
-      contractId === null ||
-      contractId === undefined ||
-      contractId === '' ||
-      contractId === 0
-    ) {
-    } else {
-      props.fetchMatnrPriceServicePackage({ contractId });
     }
   }, [service.masterId, service.contractId]);
 
@@ -888,7 +932,10 @@ const TabSmcsWithRequest = props => {
             />
 
             {/*Таблица*/}
-            <TableReportWithoutRequest data={service} />
+            <TableReportWithoutRequest
+              data={service}
+              currency={service.currencyName}
+            />
 
             {/*Проверить*/}
             <Button color="green" onClick={handleCheck}>

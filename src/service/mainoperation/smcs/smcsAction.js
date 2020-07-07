@@ -50,7 +50,6 @@ export const fetchTovarId = param => {
     dispatch(modifyLoader(true));
     doGet(`smcs/getTovarList`, param)
       .then(({ data }) => {
-        //console.log(data, 'ACTION');
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_TOVAR_ID,
@@ -69,7 +68,6 @@ export const fetchMasterList = param => {
     dispatch(modifyLoader(true));
     doGet(`smcs/getMasterList`, param)
       .then(({ data }) => {
-        //console.log(data, 'ACTION');
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_MASTER_LIST,
@@ -88,7 +86,6 @@ export const fetchServiceTypeId = param => {
     dispatch(modifyLoader(true));
     doGet(`smcs/getServiceTypeList`, param)
       .then(({ data }) => {
-        //console.log(data, 'ACTION');
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SERVICE_TYPE_ID,
