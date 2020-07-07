@@ -1,4 +1,8 @@
-import { FETCH_SMVS_LIST } from './smesAction';
+import {
+  FETCH_SMES_LIST,
+  FETCH_PAYMENT_OPTIONS,
+  ACCEPT_PAYMENT,
+} from './smesAction';
 
 const INITIAL_STATE = {
   smvsList: [],
@@ -6,11 +10,22 @@ const INITIAL_STATE = {
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case FETCH_SMVS_LIST:
+    case FETCH_SMES_LIST:
       return {
         ...state,
-        smvsList: { ...action.data.data },
-        editStat: true,
+        smesList: { ...action.data.data },
+      };
+    case FETCH_PAYMENT_OPTIONS:
+      console.log('REDUCER', action);
+      return {
+        ...state,
+        paymentOptions: [...action.data.hkontOptions],
+      };
+    case ACCEPT_PAYMENT:
+      console.log('REDUCER', action);
+      return {
+        ...state,
+        acceptPayment: [...action.data],
       };
 
     default:

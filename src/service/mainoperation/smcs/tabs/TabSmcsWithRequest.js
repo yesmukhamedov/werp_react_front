@@ -29,16 +29,17 @@ import {
 
 import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal';
 
-import ModalAddServicePacket from '../modals/ModalAddServicePacket';
 import ModalAddSparePart from '../modals/ModalAddSparePart';
 import ModalAddCartridge from '../modals/ModalAddCartridge';
+import ModalAddServicePacket from '../modals/ModalAddServicePacket';
+
 import 'react-datepicker/dist/react-datepicker.css';
 import Services from './components/Services';
 import SaleOfSparePart from './components/SaleOfSparePart';
 import SaleCartridge from './components/SaleCartridge';
-import BasicInfoWithRequest from './components/BasicInfoWithRequest';
 import ServicePackage from './components/ServicePackage';
 import TableReportWithoutRequest from './components/TableReportWithoutRequest';
+import BasicInfoWithRequest from './components/BasicInfoWithRequest';
 
 //Создание сервиса без заявки
 const TabSmcsWithRequest = props => {
