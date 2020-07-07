@@ -19,7 +19,7 @@ export const fetchSearchCustomer = param => {
   console.log(param);
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccic/search_customer`, param)
+    doGet(`smopccic/search_customer?direction=DESC&orderBy=contractId`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -35,10 +35,10 @@ export const fetchSearchCustomer = param => {
 };
 
 //Перенесенные заявки
-export const fetchTransferApplication = () => {
+export const fetchTransferApplication = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccic/rescheduledApplication`)
+    doGet(`smopccic/rescheduledApplication?direction=DESC&orderBy=id`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -57,7 +57,7 @@ export const fetchTransferApplication = () => {
 export const fetchMyApplicationExodus = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccic/myApplication`, param)
+    doGet(`smopccic/myApplication?direction=DESC&orderBy=id`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
