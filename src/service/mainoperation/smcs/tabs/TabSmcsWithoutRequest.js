@@ -486,6 +486,7 @@ const TabSmcsWithoutRequest = props => {
           fno: null,
           id: item.matnrId + index,
           matnrId: item.matnrId,
+          matnrCode: item.matnrCode,
           matnrName: item.matnrName,
           matnrPrice: item.price,
           operationId: null,
@@ -675,6 +676,7 @@ const TabSmcsWithoutRequest = props => {
           fno: item.fno,
           id: item.matnrId + index,
           matnrId: item.matnrId,
+          matnrCode: item.matnrCode,
           matnrName: item.matnrName,
           matnrPrice: item.price,
           operationId: null,
@@ -705,6 +707,8 @@ const TabSmcsWithoutRequest = props => {
   const [servicePackageInitial, setServicePackageInitial] = useState([]);
   const [servicePackageList, setServicePackageList] = useState([]);
   const [modalServicePackage, setModalServicePackage] = useState(false);
+
+  console.log('servicePackageInitial', servicePackageInitial);
 
   const onChangeServicePackage = (value, fieldName, original) => {
     switch (fieldName) {

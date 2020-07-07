@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Segment,
@@ -11,9 +11,24 @@ import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
 import { moneyFormat } from '../../../../utils/helpers';
 
 const ServicePackage = props => {
-  const { data = [], currency } = props;
+  const { data = [], currency, matnrServicePackage = [] } = props;
 
-  console.log('СЕРВИС ПАКЕТ', data);
+  const [servicePackage, setServicePackage] = useState([]);
+  console.log('servicePackage', servicePackage);
+  useEffect(() => {
+    if (data.length > 0 && matnrServicePackage.length > 0) {
+      setServicePackage(
+        matnrServicePackage.map(item => {
+          return {
+            ...item,
+            details: data.filter(el => el.servicePackageId == item.id),
+          };
+        }),
+      );
+    } else {
+      setServicePackage([]);
+    }
+  }, [matnrServicePackage, data]);
 
   const columnsDetails = [
     {
@@ -48,36 +63,40 @@ const ServicePackage = props => {
     <Segment>
       <h5>Сервис пакет</h5>
       <Divider />
-      {data.map(item => (
-        <Segment color="orange" key={item.servicePackageId}>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <p>{item.matnrName}</p>
-          </div>
+      {servicePackage.map((item, index) => {
+        if (item.details.length > 0) {
+          return (
+            <Segment color="orange" key={index}>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <p>{item.name}</p>
+              </div>
 
-          <Divider />
-          <ReactTableWrapper
-            //  data={item.details}
-            //columns={columnsDetails}
-            className="-striped -highlight"
-            // pageSize={item.details.length > 10 ? 10 : item.details.length}
-          />
+              <Divider />
+              <ReactTableWrapper
+                data={item.details}
+                columns={columnsDetails}
+                className="-striped -highlight"
+                pageSize={item.details.length > 10 ? 10 : item.details.length}
+              />
 
-          {data.length > 0 ? (
-            <Segment>
-              Общая сумма: {moneyFormat(totalServicePackage)} {currency}
+              {data.length > 0 ? (
+                <Segment>
+                  Общая сумма: {moneyFormat(totalServicePackage)} {currency}
+                </Segment>
+              ) : (
+                ''
+              )}
             </Segment>
-          ) : (
-            ''
-          )}
-        </Segment>
-      ))}
+          );
+        }
+      })}
     </Segment>
   );
 };

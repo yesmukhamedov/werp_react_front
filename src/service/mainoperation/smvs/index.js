@@ -12,8 +12,10 @@ import ServicePackage from './components/ServicePackage';
 import { fetchSmvsList } from './smvsAction';
 import './../../service.css';
 
+import { fetchMatnrPriceServicePackage } from '../smcs/smcsAction';
+
 const Smes = props => {
-  const { smvsList = {} } = props;
+  const { smvsList = {}, matnrServicePackage = [] } = props;
 
   const emptyDataSmvs = {
     address: null,
@@ -58,7 +60,6 @@ const Smes = props => {
 
   const [dataSmvs, setDataSmvs] = useState({ ...emptyDataSmvs });
 
-  console.log('dataSmvs', dataSmvs);
   const url = window.location.search;
 
   //СПИСОК УСЛУГ
@@ -83,20 +84,12 @@ const Smes = props => {
     item => item.serviceTypeId == 4,
   );
 
-  console.log('servicesList', servicesList);
-  console.log('sparePartList', sparePartList);
-  console.log('cartridgeList', cartridgeList);
-  console.log('servicePackageList', servicePackageList);
-
   const urlNumberService = url.slice(url.indexOf('=') + 1);
 
   const [serviceNumber, setServiceNumber] = useState(urlNumberService);
 
-  const [checkStatus, setCheckStatus] = useState(false);
-
   useEffect(() => {
-    if (serviceNumber !== '') {
-      console.log('serviceNumber', serviceNumber);
+    if (serviceNumber) {
       props.fetchSmvsList(serviceNumber);
     }
   }, []);
@@ -106,17 +99,26 @@ const Smes = props => {
       setDataSmvs({
         ...smvsList,
       });
+
+      if (smvsList.branchId && smvsList.bukrs && smvsList.tovarId) {
+        let param = {
+          branchId: smvsList.branchId,
+          bukrs: smvsList.bukrs,
+          productId: smvsList.tovarId,
+        };
+        props.fetchMatnrPriceServicePackage({ ...param });
+      }
     }
   }, [smvsList]);
 
   const onChangeBasicInfo = (value, fieldName) => {
     switch (fieldName) {
       case 'changeServiceNumber':
-        console.log('changeServiceNumber', value);
         setServiceNumber(value);
         break;
       case 'searchByServiceNumber':
         props.fetchSmvsList(serviceNumber);
+        setDataSmvs({ ...emptyDataSmvs });
         break;
       case '':
         break;
@@ -163,13 +165,16 @@ const Smes = props => {
 
             {/*Сервис пакет  */}
             <ServicePackage
-            // data={servicePackageList}
-            // disabledEdit={disabledEdit}
+              data={servicePackageList}
+              // disabledEdit={disabledEdit}
+
+              matnrServicePackage={matnrServicePackage}
             />
             <ReportService data={dataSmvs} />
           </Grid.Column>
         </Grid.Row>
       </Grid>
+      <Divider />
     </Form>
   );
 };
@@ -181,9 +186,11 @@ function mapStateToProps(state) {
     branchOptions: state.userInfo.branchOptionsAll,
     smvsList: state.smvsReducer.smvsList,
     editStat: state.smvsReducer.editStat,
+    matnrServicePackage: state.smcsReducer.matnrServicePackage,
   };
 }
 
 export default connect(mapStateToProps, {
   fetchSmvsList,
+  fetchMatnrPriceServicePackage,
 })(injectIntl(Smes));

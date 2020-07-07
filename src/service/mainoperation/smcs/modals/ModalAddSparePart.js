@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
 import checkedSparePart from '../tabs/TabSmcsWithoutRequest';
+import matchSorter from 'match-sorter';
 
 const ModalAddSparePart = props => {
   const {
@@ -29,26 +30,41 @@ const ModalAddSparePart = props => {
           onClick={() => checkedSparePart(original)}
         />
       ),
-      filterAll: true,
+      filterable: false,
       width: 50,
+    },
+    {
+      Header: 'Код',
+      accessor: 'matnrCode',
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, { keys: ['matnrCode'] }),
+      filterAll: true,
     },
     {
       Header: 'Название',
       accessor: 'matnrName',
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, { keys: ['matnrName'] }),
+      filterAll: true,
       width: 500,
+      maxWidth: 500,
+      minWidth: 300,
     },
     {
       Header: 'Цена',
       accessor: 'matnrPrice',
+      filterable: false,
     },
     {
       Header: 'Валюта',
       accessor: 'currencyName',
       filterAll: true,
+      filterable: false,
     },
     {
       Header: 'В подочете',
       accessor: 'menge',
+      filterable: false,
     },
   ];
   return (
@@ -56,6 +72,7 @@ const ModalAddSparePart = props => {
       <Header content="Добавление запчастей" />
       <Modal.Content>
         <ReactTableWrapper
+          filterable={true}
           data={data}
           columns={columnsSparePart}
           previousText={messages['Table.Previous']}
