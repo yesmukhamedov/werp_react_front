@@ -23,7 +23,7 @@ import {
   momentToStringYYYYMMDD,
 } from '../../../utils/helpers';
 import '../../service.css';
-import { LinkToSmcuspor } from '../../../utils/outlink';
+import { LinkToSmcuspor, LinkToSmvs } from '../../../utils/outlink';
 import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
 
 import DropdownClearable from '../../../utils/DropdownClearable';
@@ -226,6 +226,12 @@ const Srls = props => {
       accessor: 'id',
       checked: true,
       filterable: false,
+      Cell: original => (
+        <div style={{ textAlign: 'center' }}>
+          <LinkToSmvs serviceNumber={original.row.id} />
+        </div>
+      ),
+      fixed: 'right',
     },
     {
       Header: 'История клиента',

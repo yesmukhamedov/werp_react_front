@@ -256,6 +256,7 @@ const Srlsm = props => {
           <LinkToSmvs serviceNumber={row.value} />
         </div>
       ),
+      fixed: 'right',
     },
     {
       Header: 'История клиента',
