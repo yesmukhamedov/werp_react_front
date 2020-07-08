@@ -16,6 +16,7 @@ import {
   saveSmcsWithoutReques,
   fetchOperatorList,
   fetchSmcsByAppNumber,
+  fetchCheckWarranty,
 } from '../smcsAction';
 
 import {
@@ -40,6 +41,7 @@ import SaleCartridge from './components/SaleCartridge';
 import ServicePackage from './components/ServicePackage';
 import TableReportWithoutRequest from './components/TableReportWithoutRequest';
 import BasicInfoWithRequest from './components/BasicInfoWithRequest';
+import { emptyService } from '../components/directory';
 
 //Создание сервиса без заявки
 const TabSmcsWithRequest = props => {
@@ -57,49 +59,8 @@ const TabSmcsWithRequest = props => {
     operatorList = [],
     smcsAppNumberData = {},
     applicationNumber,
+    checkWarranty,
   } = props;
-
-  const emptyService = {
-    address: '',
-    applicationNumber: '',
-    awkey: null,
-    branchId: 0,
-    branchName: '',
-    bukrs: '',
-    bukrsName: '',
-    categoryId: 2,
-    categoryName: '',
-    contractDate: '',
-    contractId: 0,
-    contractNumber: '',
-    countryId: 0,
-    countryName: '',
-    currencyId: 0,
-    currencyName: '',
-    customerFullName: '',
-    customerId: 0,
-    discount: 0,
-    id: null,
-    masterFullName: '',
-    masterId: null,
-    masterPremium: 0,
-    operatorFullName: null,
-    operatorId: null,
-    operatorPremium: 0,
-    paid: 0,
-    positions: [],
-    serviceDate: '',
-    serviceStatusId: null,
-    serviceStatusName: null,
-    sumForPay: 0,
-    sumTotal: 0,
-    tovarId: 0,
-    tovarName: '',
-    tovarSn: '',
-    warrantyPeriodDate: '',
-    warrantyPeriodInMonth: 0,
-    status: '',
-  };
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
@@ -312,24 +273,45 @@ const TabSmcsWithRequest = props => {
       case 'quantitySparePart':
         let val = value.target.value;
         if (val <= original.menge) {
-          setSparePartInitial(
-            sparePartInitial.map(item =>
-              item.id === original.id
-                ? {
-                    ...item,
-                    quantity: val,
-                    sum: val * item.matnrPrice,
-                  }
-                : item,
-            ),
-          );
+          if (val < 0) {
+            setSparePartInitial(
+              sparePartInitial.map(item =>
+                item.id === original.id
+                  ? {
+                      ...item,
+                      quantity: 0,
+                      sum: 0 * item.matnrPrice,
+                    }
+                  : item,
+              ),
+            );
+          } else {
+            setSparePartInitial(
+              sparePartInitial.map(item =>
+                item.id === original.id
+                  ? {
+                      ...item,
+                      quantity: val,
+                      sum: val * item.matnrPrice,
+                    }
+                  : item,
+              ),
+            );
+          }
         } else {
           alert(`У Вас в подотчете ${original.menge}`);
         }
         break;
 
       case 'warrantySparePart':
-        console.log('VALUE', value, 'original', original);
+        // let param = {
+        //   contractId:,
+        //   matnrId:,
+        //   serviceDate:,
+        //   serviceTypeId:,
+        // }
+        // props.fetchCheckWarranty({...param})
+        console.log('VALUE WITH', value, 'original', original);
         break;
 
       default:
@@ -489,17 +471,31 @@ const TabSmcsWithRequest = props => {
       case 'quantityCartridge':
         let val = value.target.value;
         if (val <= original.menge) {
-          setCartridgeList(
-            cartridgeList.map(item =>
-              item.id === original.id
-                ? {
-                    ...item,
-                    quantity: val,
-                    sum: val * item.matnrPrice,
-                  }
-                : item,
-            ),
-          );
+          if (val < 0) {
+            setCartridgeList(
+              cartridgeList.map(item =>
+                item.id === original.id
+                  ? {
+                      ...item,
+                      quantity: 0,
+                      sum: 0 * item.matnrPrice,
+                    }
+                  : item,
+              ),
+            );
+          } else {
+            setCartridgeList(
+              cartridgeList.map(item =>
+                item.id === original.id
+                  ? {
+                      ...item,
+                      quantity: val,
+                      sum: val * item.matnrPrice,
+                    }
+                  : item,
+              ),
+            );
+          }
         } else {
           alert(`У Вас в подотчете ${original.menge}`);
         }
@@ -985,6 +981,7 @@ function mapStateToProps(state) {
     saveSmcs: state.smcsReducer.saveSmcs,
     operatorList: state.smcsReducer.operatorList,
     smcsAppNumberData: state.smcsReducer.smcsAppNumberData,
+    checkWarranty: state.smcsReducer.checkWarranty,
   };
 }
 
@@ -1007,4 +1004,5 @@ export default connect(mapStateToProps, {
   saveSmcsWithoutReques,
   fetchOperatorList,
   fetchSmcsByAppNumber,
+  fetchCheckWarranty,
 })(injectIntl(TabSmcsWithRequest));

@@ -211,7 +211,7 @@ const SaleCartridge = props => {
                   checked={item.warranty ? item.warranty : false}
                   label="Гарантия"
                   onChange={(e, value) =>
-                    onChangeCartridge(value, 'warrantyCartridge', value)
+                    onChangeCartridge(item, 'warrantyCartridge', value)
                   }
                 />
               </Table.Cell>

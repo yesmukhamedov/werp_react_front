@@ -1,5 +1,9 @@
 import { doGet, doPost } from '../../../utils/apiActions';
-import { handleError } from '../../../general/notification/notification_action';
+import {
+  handleError,
+  notify,
+} from '../../../general/notification/notification_action';
+import { errorTableText } from '../../../utils/helpers';
 import { modifyLoader } from '../../../general/loader/loader_action';
 
 //SMCS - создание сервиса
@@ -21,6 +25,8 @@ export const SAVE_SMCS_WITHOUT_REQUEST = 'SAVE_SMCS_WITHOUT_REQUEST';
 export const FETCH_OPERATOR_LIST = 'FETCH_OPERATOR_LIST';
 export const FETCH_SMCS_BY_APP_NUMBER = 'FETCH_SMCS_BY_APP_NUMBER';
 export const FETCH_MASTER_LIST = 'FETCH_MASTER_LIST';
+export const FETCH_CHECK_WARRANTY = 'FETCH_CHECK_WARRANTY';
+
 //--END
 // const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 // const language = localStorage.getItem('language');
@@ -253,10 +259,12 @@ export const saveSmcsWithoutReques = body => {
           type: SAVE_SMCS_WITHOUT_REQUEST,
           data: data,
         });
+        dispatch(notify('success', errorTableText(101)));
       })
       .catch(error => {
         dispatch(modifyLoader(false));
         handleError(error, dispatch);
+        dispatch(notify('error', errorTableText(133), errorTableText(132)));
       });
   };
 };
@@ -275,6 +283,24 @@ export const fetchSmcsByAppNumber = param => {
       })
       .catch(error => {
         dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+//Проверка гарантии
+export const fetchCheckWarranty = (param, funcWarranty) => {
+  console.log('ACTION PARAM', param);
+  const text = 'JAX';
+  return function(dispatch) {
+    doGet(`smcs/checkWarranty`, param)
+      .then(({ data }) => {
+        dispatch({
+          type: FETCH_CHECK_WARRANTY,
+          data: data,
+        });
+        funcWarranty(param, data, text);
+      })
+      .catch(error => {
         handleError(error, dispatch);
       });
   };

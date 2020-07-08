@@ -12,14 +12,7 @@ import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
 import { moneyFormat } from '../../../../../utils/helpers';
 
 const SaleOfSparePart = props => {
-  const {
-    data = [],
-    deleteSparePart,
-    quantitySparePart,
-    onChangeSparePart,
-    editStatus,
-    currency,
-  } = props;
+  const { data = [], onChangeSparePart, editStatus, currency } = props;
 
   const totalSparePart = data.reduce((total, item) => total + item.sum, 0);
 
@@ -161,7 +154,7 @@ const SaleOfSparePart = props => {
                   checked={item.warranty ? item.warranty : false}
                   label="Гарантия"
                   onChange={(e, value) =>
-                    onChangeSparePart(item, 'warrantySparePart', value)
+                    onChangeSparePart(item, 'warrantySparePart', value, index)
                   }
                 />
               </Table.Cell>

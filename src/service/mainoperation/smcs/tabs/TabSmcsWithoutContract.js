@@ -153,15 +153,16 @@ const TabSmcsWithoutContract = props => {
   });
 
   useEffect(() => {
-    if (service.bukrs !== '' && service.branchId !== 0) {
+    if (service.bukrs && service.branchId) {
       let param = {
         bukrs: service.bukrs,
         branchId: service.branchId,
+        categoryId: service.categoryId,
       };
       props.fetchMasterList({ ...param });
       props.fetchOperatorList({ ...param });
     }
-  }, [service.bukrs, service.branchId]);
+  }, [service.bukrs, service.branchId, service.categoryId]);
 
   useEffect(() => {
     let paramMatnrSparePart = {
@@ -360,24 +361,45 @@ const TabSmcsWithoutContract = props => {
       case 'quantitySparePart':
         let val = value.target.value;
         if (val <= original.menge) {
-          setSparePartInitial(
-            sparePartInitial.map(item =>
-              item.id === original.id
-                ? {
-                    ...item,
-                    quantity: val,
-                    sum: val * item.matnrPrice,
-                  }
-                : item,
-            ),
-          );
+          if (val < 0) {
+            setSparePartInitial(
+              sparePartInitial.map(item =>
+                item.id === original.id
+                  ? {
+                      ...item,
+                      quantity: 0,
+                      sum: 0 * item.matnrPrice,
+                    }
+                  : item,
+              ),
+            );
+          } else {
+            setSparePartInitial(
+              sparePartInitial.map(item =>
+                item.id === original.id
+                  ? {
+                      ...item,
+                      quantity: val,
+                      sum: val * item.matnrPrice,
+                    }
+                  : item,
+              ),
+            );
+          }
         } else {
           alert(`У Вас в подотчете ${original.menge}`);
         }
         break;
 
       case 'warrantySparePart':
-        console.log('VALUE', value);
+        // let param = {
+        //   contractId:service.contractId,
+        //   matnrId:,
+        //   serviceDate:,
+        //   serviceTypeId:,
+        // }
+        // props.fetchCheckWarranty({...param})
+        console.log('VALUE WITHOUT', value, 'original', original);
         break;
 
       default:
@@ -537,17 +559,31 @@ const TabSmcsWithoutContract = props => {
       case 'quantityCartridge':
         let val = value.target.value;
         if (val <= original.menge) {
-          setCartridgeList(
-            cartridgeList.map(item =>
-              item.id === original.id
-                ? {
-                    ...item,
-                    quantity: val,
-                    sum: val * item.matnrPrice,
-                  }
-                : item,
-            ),
-          );
+          if (val < 0) {
+            setCartridgeList(
+              cartridgeList.map(item =>
+                item.id === original.id
+                  ? {
+                      ...item,
+                      quantity: 0,
+                      sum: 0 * item.matnrPrice,
+                    }
+                  : item,
+              ),
+            );
+          } else {
+            setCartridgeList(
+              cartridgeList.map(item =>
+                item.id === original.id
+                  ? {
+                      ...item,
+                      quantity: val,
+                      sum: val * item.matnrPrice,
+                    }
+                  : item,
+              ),
+            );
+          }
         } else {
           alert(`У Вас в подотчете ${original.menge}`);
         }

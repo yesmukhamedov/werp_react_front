@@ -17,13 +17,12 @@ import {
   saveSmcsWithoutReques,
   fetchOperatorList,
   fetchMasterList,
+  fetchCheckWarranty,
 } from '../smcsAction';
 
 import {
   f4FetchConTypeList,
-  f4FetchBranches,
   f4FetchCountryList,
-  f4FetchCompanyOptions,
   f4fetchCategory,
   f4FetchCustomersById,
 } from '../../../../reference/f4/f4_action';
@@ -45,8 +44,6 @@ import { emptyService } from '../components/directory';
 const TabSmcsWithoutRequest = props => {
   const {
     contract = {},
-    companyOptions = [],
-    branches,
     serviceTypeId = [],
     matnrPriceSparePart = [],
     matnrPriceCartridge = [],
@@ -57,10 +54,18 @@ const TabSmcsWithoutRequest = props => {
     saveSmcs,
     operatorList = [],
     masterList = [],
+    checkWarranty,
   } = props;
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
+
+  console.log('SERVICE WITHOUT', service);
+  const funcWarranty = (param, data, text) => {
+    console.log('param', param);
+    console.log('data', data);
+    console.log('text', text);
+  };
 
   const [editStatus, setEditStatus] = useState(true);
 
@@ -100,8 +105,6 @@ const TabSmcsWithoutRequest = props => {
   };
 
   useEffect(() => {
-    //let tovarSn = service.tovarSn;
-    // props.fetchServiceSmcs({ tovarSn });
     props.fetchServiceTypeId();
   }, []);
 
@@ -166,10 +169,6 @@ const TabSmcsWithoutRequest = props => {
       value: item.staffId,
     };
   });
-
-  useEffect(() => {
-    props.f4FetchBranches();
-  }, []);
 
   useEffect(() => {
     let paramMatnrSparePart = {
@@ -249,8 +248,6 @@ const TabSmcsWithoutRequest = props => {
     }
   }, [service.masterId]);
 
-  useEffect(() => {}, []);
-
   //УСЛУГИ============================================================================================================================
   //==================================================================================================================================
 
@@ -294,6 +291,7 @@ const TabSmcsWithoutRequest = props => {
         sum: null,
         warranty: false,
         ss: 22,
+        pId: parseInt(`222${service.positions.length}`),
       },
     ]);
   };
@@ -380,7 +378,7 @@ const TabSmcsWithoutRequest = props => {
 
   const [modalSparePart, setModalSparePart] = useState(false);
 
-  const onChangeSparePart = (value, fildName, original) => {
+  const onChangeSparePart = (value, fildName, original, id) => {
     switch (fildName) {
       //Кнопка добавить запчасти
       case 'addSparePartBtn':
@@ -410,24 +408,45 @@ const TabSmcsWithoutRequest = props => {
       case 'quantitySparePart':
         let val = value.target.value;
         if (val <= original.menge) {
-          setSparePartInitial(
-            sparePartInitial.map(item =>
-              item.id === original.id
-                ? {
-                    ...item,
-                    quantity: val,
-                    sum: val * item.matnrPrice,
-                  }
-                : item,
-            ),
-          );
+          if (val < 0) {
+            setSparePartInitial(
+              sparePartInitial.map(item =>
+                item.id === original.id
+                  ? {
+                      ...item,
+                      quantity: 0,
+                      sum: 0 * item.matnrPrice,
+                    }
+                  : item,
+              ),
+            );
+          } else {
+            setSparePartInitial(
+              sparePartInitial.map(item =>
+                item.id === original.id
+                  ? {
+                      ...item,
+                      quantity: val,
+                      sum: val * item.matnrPrice,
+                    }
+                  : item,
+              ),
+            );
+          }
         } else {
           alert(`У Вас в подотчете ${original.menge}`);
         }
         break;
 
       case 'warrantySparePart':
-        console.log('VALUE', value);
+        let param = {
+          contractId: service.contractId,
+          matnrId: value.matnrId,
+          serviceDate: service.serviceDate,
+          serviceTypeId: value.serviceTypeId,
+        };
+        props.fetchCheckWarranty({ ...param }, funcWarranty);
+
         break;
 
       default:
@@ -512,7 +531,7 @@ const TabSmcsWithoutRequest = props => {
   const [cartridgeList, setCartridgeList] = useState([]);
   const [modalCartridge, setModalCartridge] = useState(false);
 
-  const onChangeCartridge = (value, fieldName, original) => {
+  const onChangeCartridge = (value, fieldName, original, id) => {
     switch (fieldName) {
       //Добавить картридж в список
       case 'checkedCartridge':
@@ -588,33 +607,56 @@ const TabSmcsWithoutRequest = props => {
       case 'quantityCartridge':
         let val = value.target.value;
         if (val <= original.menge) {
-          setCartridgeList(
-            cartridgeList.map(item =>
-              item.id === original.id
-                ? {
-                    ...item,
-                    quantity: val,
-                    sum: val * item.matnrPrice,
-                  }
-                : item,
-            ),
-          );
+          if (val < 0) {
+            setCartridgeList(
+              cartridgeList.map(item =>
+                item.id === original.id
+                  ? {
+                      ...item,
+                      quantity: 0,
+                      sum: 0 * item.matnrPrice,
+                    }
+                  : item,
+              ),
+            );
+          } else {
+            setCartridgeList(
+              cartridgeList.map(item =>
+                item.id === original.id
+                  ? {
+                      ...item,
+                      quantity: val,
+                      sum: val * item.matnrPrice,
+                    }
+                  : item,
+              ),
+            );
+          }
         } else {
           alert(`У Вас в подотчете ${original.menge}`);
         }
         break;
 
       case 'warrantyCartridge':
-        setCartridgeList(
-          cartridgeList.map(item =>
-            item.id === original
-              ? {
-                  ...item,
-                  warranty: value.checked,
-                }
-              : item,
-          ),
-        );
+        let param = {
+          contractId: service.contractId,
+          matnrId: value.matnrId,
+          serviceDate: service.serviceDate,
+          serviceTypeId: value.serviceTypeId,
+        };
+        props.fetchCheckWarranty({ ...param });
+        console.log('VALUE WITHOUT', value, 'original', original);
+
+        // setCartridgeList(
+        //   cartridgeList.map(item =>
+        //     item.id === original
+        //       ? {
+        //           ...item,
+        //           warranty: value.checked,
+        //         }
+        //       : item,
+        //   ),
+        // );
 
         break;
 
@@ -1020,10 +1062,7 @@ function mapStateToProps(state) {
     language: state.locales.lang,
     countryList: state.f4.countryList,
     contractTypeList: state.f4.contractTypeList,
-    branches: state.f4.branches,
     contract: state.smcsReducer.contract,
-    companyOptions: state.userInfo.companyOptions,
-    branchOptions: state.userInfo.branchOptionsMarketing,
     category: state.f4.category,
     customersById: state.f4.customersById,
     tovar: state.smcsReducer.tovar,
@@ -1037,15 +1076,15 @@ function mapStateToProps(state) {
     saveSmcs: state.smcsReducer.saveSmcs,
     operatorList: state.smcsReducer.operatorList,
     masterList: state.smcsReducer.masterList,
+    checkWarranty: state.smcsReducer.checkWarranty,
   };
 }
 
 export default connect(mapStateToProps, {
   fetchServiceSmcs,
   f4FetchConTypeList,
-  f4FetchBranches,
   f4FetchCountryList,
-  f4FetchCompanyOptions,
+
   f4fetchCategory,
   f4FetchCustomersById,
   fetchTovarId,
@@ -1060,4 +1099,5 @@ export default connect(mapStateToProps, {
   saveSmcsWithoutReques,
   fetchOperatorList,
   fetchMasterList,
+  fetchCheckWarranty,
 })(injectIntl(TabSmcsWithoutRequest));
