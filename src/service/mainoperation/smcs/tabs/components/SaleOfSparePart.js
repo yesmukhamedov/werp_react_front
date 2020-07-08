@@ -94,12 +94,7 @@ const SaleOfSparePart = props => {
     <Segment>
       <h5>Продажа запчастей</h5>
       <Divider />
-      {/* <ReactTableWrapper
-        data={data}
-        columns={columns}
-        className="-striped -highlight"
-        pageSize={data.length > 10 ? 10 : data.length}
-      /> */}
+
       <Table compact>
         <Table.Header>
           <Table.Row>
@@ -166,7 +161,7 @@ const SaleOfSparePart = props => {
                   checked={item.warranty ? item.warranty : false}
                   label="Гарантия"
                   onChange={(e, value) =>
-                    onChangeSparePart(value, 'warrantySparePart', item.id)
+                    onChangeSparePart(value, 'warrantySparePart', item)
                   }
                 />
               </Table.Cell>

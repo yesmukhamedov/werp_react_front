@@ -466,6 +466,10 @@ const TabSmcsWithoutRequest = props => {
         }
         break;
 
+      case 'warrantySparePart':
+        console.log('VALUE', value);
+        break;
+
       default:
         break;
     }

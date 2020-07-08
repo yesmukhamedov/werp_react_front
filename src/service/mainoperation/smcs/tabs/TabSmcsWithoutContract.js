@@ -376,6 +376,10 @@ const TabSmcsWithoutContract = props => {
         }
         break;
 
+      case 'warrantySparePart':
+        console.log('VALUE', value);
+        break;
+
       default:
         break;
     }
@@ -561,7 +565,7 @@ const TabSmcsWithoutContract = props => {
         {
           currencyId: item.currencyId,
           currencyName: item.currencyName,
-          fno: null,
+          fno: item.fno,
           id: item.matnrId + index,
           matnrId: item.matnrId,
           matnrCode: item.matnrCode,
@@ -655,6 +659,8 @@ const TabSmcsWithoutContract = props => {
 
       case 'dimmerClose':
         break;
+      case 'checkWarranty':
+        break;
       default:
         break;
     }
@@ -668,7 +674,7 @@ const TabSmcsWithoutContract = props => {
           index: null,
           currencyId: item.currencyId,
           currencyName: item.waers,
-          fno: null,
+          fno: item.fno,
           id: item.id,
           matnrId: item.matnrId,
           matnrName: item.name,
@@ -821,10 +827,9 @@ const TabSmcsWithoutContract = props => {
 
   const handleCheck = () => {
     if (service.operatorId) {
-      alert('Выберите оператора');
-    } else {
-      alert('CHECK');
       props.checkSmcsWithoutReques(service);
+    } else {
+      alert('Выберите оператора');
     }
   };
 

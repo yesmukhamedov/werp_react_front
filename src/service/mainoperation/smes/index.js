@@ -134,6 +134,8 @@ const Smes = props => {
     props.acceptPayment({ ...payData });
   };
 
+  console.log('dataSmes.serviceStatusId', dataSmes.serviceStatusId);
+
   return (
     <Form>
       <Modal open={modalPay} closeIcon onClose={() => setModalPay(false)}>
@@ -166,13 +168,14 @@ const Smes = props => {
         }}
       >
         <h3>Редактирование сервис карты</h3>
-        {dataSmes.serviceStatusId == 1 ? (
-          <Button color="orange" onClick={() => setModalPay(true)}>
-            Оплатить
-          </Button>
-        ) : (
-          ''
-        )}
+
+        <Button
+          disabled={dataSmes.serviceStatusId === 1 ? false : true}
+          color="orange"
+          onClick={() => setModalPay(true)}
+        >
+          Оплатить
+        </Button>
       </Segment>
       <Grid>
         <Grid.Row>

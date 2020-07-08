@@ -1,5 +1,9 @@
 import { doGet, doPut } from '../../../utils/apiActions';
-import { handleError } from '../../../general/notification/notification_action';
+import {
+  handleError,
+  notify,
+} from '../../../general/notification/notification_action';
+import { errorTableText } from '../../../utils/helpers';
 import { modifyLoader } from '../../../general/loader/loader_action';
 
 export const FETCH_SMES_LIST = 'FETCH_SMES_LIST';
@@ -50,6 +54,7 @@ export const acceptPayment = param => {
     dispatch(modifyLoader(true));
     doPut(`smes/acceptPayment?hkontS=${param.hkontS}&id=${param.id}`)
       .then(({ data }) => {
+        dispatch(notify('success', errorTableText(101)));
         dispatch(modifyLoader(false));
         dispatch({
           type: ACCEPT_PAYMENT,
@@ -58,7 +63,7 @@ export const acceptPayment = param => {
       })
       .catch(error => {
         dispatch(modifyLoader(false));
-        handleError(error, dispatch);
+        dispatch(notify('error', errorTableText(133), errorTableText(132)));
       });
   };
 };
