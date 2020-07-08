@@ -54,12 +54,14 @@ export const acceptPayment = param => {
     dispatch(modifyLoader(true));
     doPut(`smes/acceptPayment?hkontS=${param.hkontS}&id=${param.id}`)
       .then(({ data }) => {
-        dispatch(notify('success', errorTableText(101)));
-        dispatch(modifyLoader(false));
-        dispatch({
-          type: ACCEPT_PAYMENT,
-          data,
-        });
+        if (data.data.status === 200 || data.data.status === 'OK') {
+          dispatch(modifyLoader(false));
+          dispatch({
+            type: ACCEPT_PAYMENT,
+            data,
+          });
+          dispatch(notify('success', errorTableText(101)));
+        }
       })
       .catch(error => {
         dispatch(modifyLoader(false));

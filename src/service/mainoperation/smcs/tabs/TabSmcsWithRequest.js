@@ -328,6 +328,10 @@ const TabSmcsWithRequest = props => {
         }
         break;
 
+      case 'warrantySparePart':
+        console.log('VALUE', value, 'original', original);
+        break;
+
       default:
         break;
     }
@@ -499,6 +503,10 @@ const TabSmcsWithRequest = props => {
         } else {
           alert(`У Вас в подотчете ${original.menge}`);
         }
+        break;
+
+      case 'warrantyCartridge':
+        console.log('VALUE', value, 'original', original);
         break;
 
       default:

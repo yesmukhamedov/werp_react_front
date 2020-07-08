@@ -35,13 +35,22 @@ const BasicInfoWithoutContract = props => {
         <Table.Row>
           <Table.Cell>Клиент</Table.Cell>
           <Table.Cell>
-            <Input fluid readOnly value={data.customerFullName} />
+            <Input
+              fluid
+              readOnly
+              value={data.customerFullName ? data.customerFullName : ''}
+            />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell width={4}>Заводской номер</Table.Cell>
           <Table.Cell width={12}>
-            <Input fluid type="text" value={data.tovarSn} readOnly />
+            <Input
+              fluid
+              type="text"
+              value={data.tovarSn ? data.tovarSn : ''}
+              readOnly
+            />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -59,19 +68,27 @@ const BasicInfoWithoutContract = props => {
         <Table.Row>
           <Table.Cell>CN</Table.Cell>
           <Table.Cell>
-            <Input fluid readOnly value={data.contractNumber} />
+            <Input
+              fluid
+              readOnly
+              value={data.contractNumber ? data.contractNumber : ''}
+            />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>Адрес</Table.Cell>
           <Table.Cell>
-            <Input fluid readOnly value={data.address} />
+            <Input fluid readOnly value={data.address ? data.address : ''} />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>Дата покупки</Table.Cell>
           <Table.Cell>
-            <Input fluid readOnly value={data.contractDate} />
+            <Input
+              fluid
+              readOnly
+              value={data.contractDate ? data.contractDate : ''}
+            />
           </Table.Cell>
         </Table.Row>
 
@@ -101,7 +118,10 @@ const BasicInfoWithoutContract = props => {
         <Table.Row>
           <Table.Cell>Срок гарантии</Table.Cell>
           <Table.Cell>
-            <Input readOnly value={data.warrantyPeriodDate} />
+            <Input
+              readOnly
+              value={data.warrantyPeriodDate ? data.warrantyPeriodDate : ''}
+            />
           </Table.Cell>
         </Table.Row>
         <Table.Row>

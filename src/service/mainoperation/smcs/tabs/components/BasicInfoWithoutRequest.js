@@ -37,7 +37,12 @@ const BasicInfoWithoutRequest = props => {
         <Table.Row>
           <Table.Cell>Компания</Table.Cell>
           <Table.Cell>
-            <Input type="text" fluid readOnly value={data.bukrsName} />
+            <Input
+              type="text"
+              fluid
+              readOnly
+              value={data.bukrsName ? data.bukrsName : ''}
+            />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -107,7 +112,11 @@ const BasicInfoWithoutRequest = props => {
         <Table.Row>
           <Table.Cell>Дата покупки</Table.Cell>
           <Table.Cell>
-            <Input fluid readOnly value={data.contractDate} />
+            <Input
+              fluid
+              readOnly
+              value={data.contractDate ? data.contractDate : ''}
+            />
           </Table.Cell>
         </Table.Row>
 
@@ -155,13 +164,20 @@ const BasicInfoWithoutRequest = props => {
         <Table.Row>
           <Table.Cell>Дата сервиса</Table.Cell>
           <Table.Cell>
-            <Input fluid readOnly value={data.serviceDate} />
+            <Input
+              fluid
+              readOnly
+              value={data.serviceDate ? data.serviceDate : ''}
+            />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>Срок гарантии</Table.Cell>
           <Table.Cell className="tableRow">
-            <Input readOnly value={data.warrantyPeriodDate} />
+            <Input
+              readOnly
+              value={data.warrantyPeriodDate ? data.warrantyPeriodDate : ''}
+            />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -170,9 +186,7 @@ const BasicInfoWithoutRequest = props => {
             <Input
               readOnly
               value={
-                data.warrantyPeriodInMonth === 0
-                  ? ''
-                  : data.warrantyPeriodInMonth
+                data.warrantyPeriodInMonth ? data.warrantyPeriodInMonth : ''
               }
             />
           </Table.Cell>

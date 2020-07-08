@@ -137,9 +137,14 @@ const Smes = props => {
         }}
       >
         <h3>Просмотр сервис карты</h3>
-        <Button icon labelPosition="left" color="green">
-          <Icon name="pencil" />
-          Редактировать
+        <Button color="green">
+          <a
+            target="_blank"
+            href={`smes?serviceNumber=${serviceNumber}`}
+            rel="noopener noreferrer"
+          >
+            Редактировать
+          </a>
         </Button>
       </Segment>
       <Grid>

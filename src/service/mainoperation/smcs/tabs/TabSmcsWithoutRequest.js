@@ -39,6 +39,8 @@ import BasicInfoWithoutRequest from './components/BasicInfoWithoutRequest';
 import ServicePackage from './components/ServicePackage';
 import TableReportWithoutRequest from './components/TableReportWithoutRequest';
 
+import { emptyService } from '../components/directory';
+
 //Создание сервиса без заявки
 const TabSmcsWithoutRequest = props => {
   const {
@@ -56,48 +58,6 @@ const TabSmcsWithoutRequest = props => {
     operatorList = [],
     masterList = [],
   } = props;
-
-  const emptyService = {
-    address: '',
-    applicationNumber: '',
-    awkey: null,
-    branchId: 0,
-    branchName: '',
-    bukrs: '',
-    bukrsName: '',
-    categoryId: 0,
-    categoryName: '',
-    contractDate: '',
-    contractId: 0,
-    contractNumber: '',
-    countryId: 0,
-    countryName: '',
-    currencyId: 0,
-    currencyName: '',
-    customerFullName: '',
-    customerId: 0,
-    discount: 0,
-    id: null,
-    masterFullName: '',
-    masterId: null,
-    masterPremium: 0,
-    operatorFullName: null,
-    operatorId: null,
-    operatorPremium: 0,
-    paid: 0,
-    positions: [],
-    serviceDate: '',
-    serviceStatusId: null,
-    serviceStatusName: null,
-    sumForPay: 0,
-    sumTotal: 0,
-    tovarId: 0,
-    tovarName: '',
-    tovarSn: '',
-    warrantyPeriodDate: '',
-    warrantyPeriodInMonth: 0,
-    status: '',
-  };
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });

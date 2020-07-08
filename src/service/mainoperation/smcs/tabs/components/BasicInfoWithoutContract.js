@@ -194,9 +194,7 @@ const BasicInfoWithoutContract = props => {
             <Input
               readOnly
               value={
-                data.warrantyPeriodInMonth === 0
-                  ? ''
-                  : data.warrantyPeriodInMonth
+                data.warrantyPeriodInMonth ? data.warrantyPeriodInMonth : ''
               }
             />
           </Table.Cell>

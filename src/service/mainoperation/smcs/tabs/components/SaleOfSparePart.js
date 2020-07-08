@@ -161,7 +161,7 @@ const SaleOfSparePart = props => {
                   checked={item.warranty ? item.warranty : false}
                   label="Гарантия"
                   onChange={(e, value) =>
-                    onChangeSparePart(value, 'warrantySparePart', item)
+                    onChangeSparePart(item, 'warrantySparePart', value)
                   }
                 />
               </Table.Cell>
