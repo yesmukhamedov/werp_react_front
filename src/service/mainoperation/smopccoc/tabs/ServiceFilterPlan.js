@@ -513,10 +513,15 @@ const categoryOptions = [
 ];
 
 const configurationOptions = [
-  { key: 1, text: 'F-1', value: 1 },
-  { key: 2, text: 'F-2+3', value: 2 },
-  { key: 3, text: 'F-1+2+3', value: 3 },
-  { key: 4, text: 'F-1+2+3+4+5', value: 4 },
+  { key: 1, text: 'F1', value: 1 },
+  { key: 2, text: 'F1+M1', value: 2 },
+  { key: 3, text: 'F2', value: 3 },
+  { key: 4, text: 'F2+M1', value: 4 },
+  { key: 5, text: 'F3', value: 5 },
+  { key: 6, text: 'F3+M1', value: 6 },
+  { key: 7, text: 'F4', value: 7 },
+  { key: 8, text: 'F4+M1', value: 8 },
+  { key: 9, text: 'M1', value: 9 },
 ];
 
 function mapStateToProps(state) {

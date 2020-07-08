@@ -52,7 +52,6 @@ function Smcc(props) {
     contactPersonName: null,
     contractDate: moment(new Date()).format('YYYY-MM-DD'),
     contractTypeId: '',
-    // countryId: null,
     countryName: null,
     customerFIO: null,
     customerId: '',
