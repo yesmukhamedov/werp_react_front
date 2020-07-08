@@ -9,7 +9,6 @@ import {
   Dropdown,
   Table,
 } from 'semantic-ui-react';
-import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
 import { moneyFormat } from '../../../../../utils/helpers';
 
 const SaleCartridge = props => {
@@ -45,87 +44,6 @@ const SaleCartridge = props => {
     },
   ];
 
-  const columns = [
-    {
-      Header: '№',
-      accessor: 'matnrCode',
-      Cell: row => {
-        return <div>{row.index + 1}</div>;
-      },
-      width: 50,
-    },
-    {
-      Header: 'Наименование',
-      accessor: 'matnrName',
-      width: 500,
-    },
-    {
-      Header: 'F№',
-      accessor: 'fno',
-      Cell: ({ original }) => (
-        <Dropdown
-          fluid
-          selection
-          value={original.fno}
-          onChange={(e, value) => onChangeCartridge(value, 'fnoEdit', original)}
-          options={fnoOptions}
-        />
-      ),
-      width: 150,
-    },
-    {
-      Header: 'Количество',
-      accessor: 'quantity',
-      Cell: ({ original }) => (
-        <Input
-          readOnly
-          size="mini"
-          style={{ padding: '0' }}
-          value={original.quantity}
-          type="number"
-          label={{ content: 'шт' }}
-          labelPosition="right"
-          fluid
-          onChange={item =>
-            onChangeCartridge(item, 'quantityCartridge', original)
-          }
-        />
-      ),
-    },
-    {
-      Header: 'Сумма',
-      accessor: 'sum',
-    },
-    {
-      Header: 'Валюта',
-      accessor: 'currencyName',
-    },
-    {
-      Header: 'Гарантия',
-      accessor: 'warranty',
-      Cell: ({ original }) => (
-        <Checkbox
-          // checked={original.warranty}
-          label="Гарантия"
-          //   onChange={() => warrantySparePart(item)}
-        />
-      ),
-    },
-    {
-      Header: '',
-      accessor: 'delete',
-      Cell: ({ original }) => (
-        <Button
-          size="mini"
-          color="red"
-          onClick={() => onChangeCartridge(original, 'deleteCartridge')}
-        >
-          Удалить
-        </Button>
-      ),
-    },
-  ];
-
   return (
     <Segment>
       <h4>Продажа картриджей</h4>
@@ -134,7 +52,7 @@ const SaleCartridge = props => {
       <Table compact>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell width={1} textAlign="center">
+            <Table.HeaderCell width={2} textAlign="center">
               №
             </Table.HeaderCell>
             <Table.HeaderCell width={5} textAlign="center">

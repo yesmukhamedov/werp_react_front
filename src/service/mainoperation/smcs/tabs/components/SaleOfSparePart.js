@@ -8,80 +8,12 @@ import {
   Checkbox,
   Table,
 } from 'semantic-ui-react';
-import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
 import { moneyFormat } from '../../../../../utils/helpers';
 
 const SaleOfSparePart = props => {
   const { data = [], onChangeSparePart, editStatus, currency } = props;
 
   const totalSparePart = data.reduce((total, item) => total + item.sum, 0);
-
-  const columns = [
-    {
-      Header: '№',
-      id: 'row',
-      maxWidth: 50,
-      filterable: false,
-      Cell: row => {
-        return <div>{row.index + 1}</div>;
-      },
-    },
-    {
-      Header: 'Наименование',
-      accessor: 'matnrName',
-      width: 500,
-    },
-    {
-      Header: 'Количество',
-      accessor: 'quantity',
-      Cell: ({ original }) => (
-        <Input
-          size="mini"
-          style={{ padding: '0' }}
-          value={original.quantity}
-          type="number"
-          label={{ content: 'шт' }}
-          labelPosition="right"
-          fluid
-          onChange={item =>
-            onChangeSparePart(item, 'quantitySparePart', original)
-          }
-        />
-      ),
-    },
-    {
-      Header: 'Сумма',
-      accessor: 'sum',
-    },
-    {
-      Header: 'Валюта',
-      accessor: 'currencyName',
-    },
-    {
-      Header: 'Гарантия',
-      accessor: 'warranty',
-      Cell: ({ original }) => (
-        <Checkbox
-          // checked={original.warranty}
-          label="Гарантия"
-          //   onChange={() => warrantySparePart(item)}
-        />
-      ),
-    },
-    {
-      Header: '',
-      accessor: 'delete',
-      Cell: ({ original }) => (
-        <Button
-          size="mini"
-          color="red"
-          onClick={() => onChangeSparePart(original, 'deleteSparePart')}
-        >
-          Удалить
-        </Button>
-      ),
-    },
-  ];
 
   return (
     <Segment>
@@ -154,7 +86,7 @@ const SaleOfSparePart = props => {
                   checked={item.warranty ? item.warranty : false}
                   label="Гарантия"
                   onChange={(e, value) =>
-                    onChangeSparePart(item, 'warrantySparePart', value, index)
+                    onChangeSparePart(item, 'warrantySparePart', value)
                   }
                 />
               </Table.Cell>

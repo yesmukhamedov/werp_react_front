@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Grid, Form, Button, Icon, Table, Dropdown } from 'semantic-ui-react';
+import { Grid, Form, Button, Icon } from 'semantic-ui-react';
 
 import {
   fetchTovarId,
@@ -14,21 +14,14 @@ import {
   fetchPositionSumm,
   checkSmcsWithoutReques,
   saveSmcsWithoutReques,
-  fetchOperatorList,
   fetchSmcsByAppNumber,
   fetchCheckWarranty,
 } from '../smcsAction';
 
 import {
   f4FetchConTypeList,
-  f4FetchBranches,
-  f4FetchCountryList,
-  f4FetchCompanyOptions,
-  f4fetchCategory,
   f4FetchCustomersById,
 } from '../../../../reference/f4/f4_action';
-
-import StaffF4Modal from '../../../../reference/f4/staff/staffF4Modal';
 
 import ModalAddSparePart from '../modals/ModalAddSparePart';
 import ModalAddCartridge from '../modals/ModalAddCartridge';
@@ -46,8 +39,6 @@ import { emptyService } from '../components/directory';
 //Создание сервиса без заявки
 const TabSmcsWithRequest = props => {
   const {
-    companyOptions = [],
-    branches,
     serviceTypeId = [],
     matnrPriceSparePart = [],
     matnrPriceCartridge = [],
@@ -56,7 +47,6 @@ const TabSmcsWithRequest = props => {
     positionSumm = {},
     checkSmcs = {},
     saveSmcs,
-    operatorList = [],
     smcsAppNumberData = {},
     applicationNumber,
     checkWarranty,
@@ -69,49 +59,6 @@ const TabSmcsWithRequest = props => {
 
   useEffect(() => {
     props.fetchServiceTypeId();
-  }, []);
-
-  const [modalOpen, setModalOpen] = useState({
-    matnrF4ModalOpen: false,
-    staffF4ModalOpen: false,
-  });
-
-  const [staffF4ModalPosition, setStaffF4ModalPosition] = useState('');
-  const [serBranches, setSerBranches] = useState({});
-
-  useEffect(() => {
-    let serviceBA = [5, 6, 9];
-    let waSerBranches = {};
-    function optFunction(item) {
-      let option = {
-        key: item.branch_id,
-        value: item.branch_id,
-        text: item.text45,
-      };
-      if (serviceBA.includes(item.business_area_id)) {
-        if (!waSerBranches[item.bukrs]) {
-          waSerBranches[item.bukrs] = [];
-        }
-        waSerBranches[item.bukrs].push(option);
-      }
-    }
-
-    branches.forEach(optFunction);
-    setSerBranches(waSerBranches);
-  }, [branches]);
-
-  //Поиск по заводскому номеру
-
-  const inputChange = value => {
-    setService({
-      ...service,
-      masterId: value.staffId,
-      masterFullName: value.fio,
-    });
-  };
-
-  useEffect(() => {
-    props.f4FetchBranches();
   }, []);
 
   //УСЛУГИ============================================================================================================================
@@ -161,7 +108,7 @@ const TabSmcsWithRequest = props => {
     ]);
   };
 
-  //Select services
+  //Выбрать услуги
   const selectServices = (id, value) => {
     let servicesData = services.filter(item => item.ss == 22);
     let servicesFilter = servicesData.filter(
@@ -327,7 +274,7 @@ const TabSmcsWithRequest = props => {
           currencyId: item.currencyId,
           currencyName: item.currencyName,
           fno: null,
-          id: item.matnrId + index,
+          id: item.matnrId * 63 + index,
           matnrId: item.matnrId,
           matnrCode: item.matnrCode,
           matnrName: item.matnrName,
@@ -390,12 +337,16 @@ const TabSmcsWithRequest = props => {
     setSparePartInitial([...filterSparePart]);
   }, [sparePartList]);
 
-  //ПРОДАЖА КАРТРИДЖЕЙ==================================================================================
+  //ПРОДАЖА КАРТРИДЖЕЙ================================================================================================================
+  //==================================================================================================================================
+
   const [cartridgeInitial, setCartridgeInitial] = useState([]);
   const [cartridgeList, setCartridgeList] = useState([]);
   const [modalCartridge, setModalCartridge] = useState(false);
 
-  const onChangeCartridge = (value, fieldName, original) => {
+  console.log('cartridgeInitial', cartridgeInitial);
+
+  const onChangeCartridge = (value, fieldName, original, id) => {
     switch (fieldName) {
       //Добавить картридж в список
       case 'checkedCartridge':
@@ -439,7 +390,7 @@ const TabSmcsWithRequest = props => {
       case 'fnoEdit':
         setCartridgeList(
           cartridgeList.map(item =>
-            item.id === original.id
+            item.id === original
               ? {
                   ...item,
                   fno: parseInt(value.value, 10),
@@ -451,13 +402,13 @@ const TabSmcsWithRequest = props => {
       //Удалить картридж
       case 'deleteCartridge':
         let deleteFilter = cartridgeInitial.filter(
-          item => item.id !== value.id,
+          item => item.id !== original,
         );
         setCartridgeList([...deleteFilter]);
 
         setCartridgeList(
           cartridgeList.map(item =>
-            item.id === value.id
+            item.id === original
               ? {
                   ...item,
                   checked: false,
@@ -502,7 +453,26 @@ const TabSmcsWithRequest = props => {
         break;
 
       case 'warrantyCartridge':
-        console.log('VALUE', value, 'original', original);
+        let param = {
+          contractId: service.contractId,
+          matnrId: value.matnrId,
+          serviceDate: service.serviceDate,
+          serviceTypeId: value.serviceTypeId,
+        };
+        props.fetchCheckWarranty({ ...param });
+        console.log('VALUE WITHOUT', value, 'original', original);
+
+        // setCartridgeList(
+        //   cartridgeList.map(item =>
+        //     item.id === original
+        //       ? {
+        //           ...item,
+        //           warranty: value.checked,
+        //         }
+        //       : item,
+        //   ),
+        // );
+
         break;
 
       default:
@@ -518,7 +488,7 @@ const TabSmcsWithRequest = props => {
           currencyId: item.currencyId,
           currencyName: item.currencyName,
           fno: item.fno,
-          id: item.matnrId + index,
+          id: item.matnrId * 23 + index,
           matnrId: item.matnrId,
           matnrCode: item.matnrCode,
           matnrName: item.matnrName,
@@ -544,8 +514,8 @@ const TabSmcsWithRequest = props => {
     let filterCartridge = cartridgeList.filter(item => item.checked === true);
     setCartridgeInitial([...filterCartridge]);
   }, [cartridgeList]);
-
-  //СЕРВИС ПАКЕТ========================================================================================
+  //СЕРВИС ПАКЕТ======================================================================================================================
+  //==================================================================================================================================
 
   const [servicePackageInitial, setServicePackageInitial] = useState([]);
   const [servicePackageList, setServicePackageList] = useState([]);
@@ -610,6 +580,7 @@ const TabSmcsWithRequest = props => {
         break;
 
       case 'dimmerClose':
+        console.log('DIMMER');
         break;
       default:
         console.log('нет таких!');
@@ -774,7 +745,7 @@ const TabSmcsWithRequest = props => {
       ...service,
       positions: [...servicesF, ...sparePart, ...cartridge, ...servicePackage],
     });
-  }, [services, sparePartInitial, cartridgeInitial, servicePackageInitial]);
+  }, [, services, sparePartInitial, cartridgeInitial, servicePackageInitial]);
 
   const handleCheck = () => {
     if (
@@ -866,18 +837,6 @@ const TabSmcsWithRequest = props => {
 
   return (
     <Form>
-      <StaffF4Modal
-        open={modalOpen.staffF4ModalOpen}
-        closeModal={bool => setModalOpen({ staffF4ModalOpen: bool })}
-        onStaffSelect={item => inputChange(item, staffF4ModalPosition)}
-        trans="mmcc"
-        brnch={service.branchId}
-        branchOptions={serBranches}
-        bukrs={service.bukrs}
-        companyOptions={companyOptions}
-        bukrsDisabledParent
-      />
-
       <Grid>
         <Grid.Row>
           {/*BASIC INFO*/}
@@ -963,12 +922,7 @@ const TabSmcsWithRequest = props => {
 function mapStateToProps(state) {
   return {
     language: state.locales.lang,
-    countryList: state.f4.countryList,
     contractTypeList: state.f4.contractTypeList,
-    branches: state.f4.branches,
-    companyOptions: state.userInfo.companyOptions,
-    branchOptions: state.userInfo.branchOptionsMarketing,
-    category: state.f4.category,
     customersById: state.f4.customersById,
     tovar: state.smcsReducer.tovar,
     serviceTypeId: state.smcsReducer.serviceTypeId,
@@ -979,7 +933,6 @@ function mapStateToProps(state) {
     positionSumm: state.smcsReducer.smcsFetchPositionSumm,
     checkSmcs: state.smcsReducer.checkSmcs,
     saveSmcs: state.smcsReducer.saveSmcs,
-    operatorList: state.smcsReducer.operatorList,
     smcsAppNumberData: state.smcsReducer.smcsAppNumberData,
     checkWarranty: state.smcsReducer.checkWarranty,
   };
@@ -987,10 +940,6 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   f4FetchConTypeList,
-  f4FetchBranches,
-  f4FetchCountryList,
-  f4FetchCompanyOptions,
-  f4fetchCategory,
   f4FetchCustomersById,
   fetchTovarId,
   fetchServiceTypeId,
@@ -1002,7 +951,6 @@ export default connect(mapStateToProps, {
   fetchPositionSumm,
   checkSmcsWithoutReques,
   saveSmcsWithoutReques,
-  fetchOperatorList,
   fetchSmcsByAppNumber,
   fetchCheckWarranty,
 })(injectIntl(TabSmcsWithRequest));
