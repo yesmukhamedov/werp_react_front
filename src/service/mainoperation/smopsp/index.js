@@ -68,11 +68,6 @@ const Smopccoc = props => {
       text: 'Просроченный',
       value: 2,
     },
-    {
-      key: 3,
-      text: 'Тек. Просроченный',
-      value: 3,
-    },
   ];
 
   const warrantyOptions = [
@@ -135,7 +130,6 @@ const Smopccoc = props => {
             branchOptions={branchOptions}
             countryOptions={countryOptions}
             finStatusOption={finStatusOption}
-            serviceDateTypeOptions={serviceDateTypeOptions}
             categoryOptions={categoryOptions}
             warrantyOptions={warrantyOptions}
           />
@@ -151,7 +145,6 @@ const Smopccoc = props => {
             branchOptions={branchOptions}
             countryOptions={countryOptions}
             finStatusOption={finStatusOption}
-            serviceDateTypeOptions={serviceDateTypeOptions}
             categoryOptions={categoryOptions}
             warrantyOptions={warrantyOptions}
           />
@@ -167,7 +160,6 @@ const Smopccoc = props => {
             branchOptions={branchOptions}
             countryOptions={countryOptions}
             finStatusOption={finStatusOption}
-            serviceDateTypeOptions={serviceDateTypeOptions}
             categoryOptions={categoryOptions}
             warrantyOptions={warrantyOptions}
           />

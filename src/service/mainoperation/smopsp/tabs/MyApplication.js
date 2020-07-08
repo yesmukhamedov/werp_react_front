@@ -25,7 +25,6 @@ const MyApplication = props => {
     countryOptions,
     companyOptions = [],
     branchOptions = [],
-    serviceDateTypeOptions,
     serviceAppStatus = [],
   } = props;
 

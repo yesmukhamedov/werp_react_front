@@ -79,11 +79,6 @@ const Smopccoc = props => {
       text: 'Просроченный',
       value: 2,
     },
-    {
-      key: 3,
-      text: 'Тек. Просроченный',
-      value: 3,
-    },
   ];
 
   const crmCategoryOptions = [
@@ -135,7 +130,6 @@ const Smopccoc = props => {
             companyOptions={companyOptions}
             countryOptions={countryOptions}
             finStatusOption={finStatusOption}
-            serviceDateTypeOptions={serviceDateTypeOptions}
             crmCategoryOptions={crmCategoryOptions}
             serviceStatusOptions={serviceStatusOptions}
             contractStatusList={contractStatusList}
@@ -154,7 +148,6 @@ const Smopccoc = props => {
             companyOptions={companyOptions}
             countryOptions={countryOptions}
             finStatusOption={finStatusOption}
-            serviceDateTypeOptions={serviceDateTypeOptions}
             crmCategoryOptions={crmCategoryOptions}
             serviceStatusList={serviceStatusList}
             contractStatusList={contractStatusList}
