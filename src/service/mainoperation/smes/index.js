@@ -199,6 +199,20 @@ const Smes = props => {
   console.log('matnrPriceSparePart', matnrPriceSparePart);
   //ФОРМИРОВАТЬ СПИСОК ЗАПЧАСТЕЙ
   useEffect(() => {
+    let spar = sparePartList.filter(sparePart => {
+      if (
+        matnrPriceSparePart.some(
+          matnrPriceSparePart =>
+            matnrPriceSparePart.matnrId == sparePart.matnrId &&
+            matnrPriceSparePart.price == sparePart.matnrPrice,
+        )
+      ) {
+        return false;
+      } else return true;
+    });
+
+    console.log('SPAR', spar);
+
     matnrPriceSparePart.map((item, index) => {
       for (let i = 0; i < sparePartList.length; i++) {
         if (
@@ -206,35 +220,13 @@ const Smes = props => {
           item.price == sparePartList[i].matnrPrice
         ) {
           item.checked = true;
-        } else {
-          let arr = matnrPriceSparePart.map(ell => {
-            return {
-              currencyId: ell.currencyId,
-              currencyName: ell.currencyName,
-              fno: null,
-              id: ell.matnrId * 63 + index,
-              matnrId: ell.matnrId,
-              matnrCode: ell.matnrCode,
-              matnrName: ell.matnrName,
-              matnrPrice: ell.price,
-              operationId: null,
-              operationName: null,
-              menge: ell.menge,
-              quantity: 1,
-              serviceId: null,
-              servicePackageId: null,
-              servicePackageName: null,
-              serviceTypeId: 3,
-              serviceTypeName: null,
-              sum: null,
-              warranty: false,
-              checked: false,
-            };
-          });
-          setSparePartList([...sparePartList, ...arr]);
         }
       }
     });
+
+    let all = matnrPriceSparePart.concat(spar);
+
+    console.log('all', all);
   }, [matnrPriceSparePart]);
 
   //ENT ПРОДАЖА ЗАПЧАСТЕЙ********************************************************
