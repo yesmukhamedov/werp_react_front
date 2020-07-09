@@ -2,6 +2,7 @@ import {
   FETCH_SMES_LIST,
   FETCH_PAYMENT_OPTIONS,
   ACCEPT_PAYMENT,
+  CANCEL_PAYMENT,
 } from './smesAction';
 
 const INITIAL_STATE = {
@@ -16,16 +17,21 @@ export default function(state = INITIAL_STATE, action) {
         smesList: { ...action.data.data },
       };
     case FETCH_PAYMENT_OPTIONS:
-      console.log('REDUCER', action);
       return {
         ...state,
         paymentOptions: [...action.data.hkontOptions],
       };
     case ACCEPT_PAYMENT:
+      return {
+        ...state,
+        acceptPayment: { ...action.data },
+      };
+
+    case CANCEL_PAYMENT:
       console.log('REDUCER', action);
       return {
         ...state,
-        acceptPayment: [...action.data],
+        cancelPayment: { ...action.data },
       };
 
     default:

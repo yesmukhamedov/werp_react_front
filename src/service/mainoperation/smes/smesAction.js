@@ -9,6 +9,7 @@ import { modifyLoader } from '../../../general/loader/loader_action';
 export const FETCH_SMES_LIST = 'FETCH_SMES_LIST';
 export const FETCH_PAYMENT_OPTIONS = 'FETCH_PAYMENT_OPTIONS';
 export const ACCEPT_PAYMENT = 'ACCEPT_PAYMENT';
+export const CANCEL_PAYMENT = 'CANCEL_PAYMENT';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
@@ -64,6 +65,29 @@ export const acceptPayment = param => {
       .catch(error => {
         dispatch(modifyLoader(false));
         dispatch(notify('error', errorTableText(133), errorTableText(132)));
+      });
+  };
+};
+
+export const cancelPayment = (id, toSmvs) => {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPut(`smes/cancel?id=${id}`)
+      .then(({ data }) => {
+        console.log('ACTION DATA', data);
+
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: CANCEL_PAYMENT,
+          data,
+        });
+        toSmvs(data, id);
+        dispatch(notify('success', errorTableText(101)));
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+        //dispatch(notify('error', errorTableText(133), errorTableText(132)));
       });
   };
 };
