@@ -223,9 +223,8 @@ const Srls = props => {
     },
     {
       Header: 'Сервис №',
-      accessor: 'id',
+      accessor: 'serviceNumber',
       checked: true,
-      filterable: false,
       Cell: original => (
         <div style={{ textAlign: 'center' }}>
           <LinkToSmvs serviceNumber={original.row.id} />

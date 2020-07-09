@@ -248,9 +248,8 @@ const Srlsm = props => {
     {
       Header: `${messages['service']} №`,
 
-      accessor: 'id',
+      accessor: 'serviceNumber',
       show: true,
-      filterable: false,
       Cell: row => (
         <div style={{ textAlign: 'center' }}>
           <LinkToSmvs serviceNumber={row.value} />
