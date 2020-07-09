@@ -56,9 +56,10 @@ import {
 import { emptyService } from '../smcs/components/directory';
 
 const Smes = props => {
-  const { smesList = {}, paymentOptions = [], acceptPayment } = props;
-
   const {
+    smesList = {},
+    paymentOptions = [],
+    acceptPayment,
     matnrPriceSparePart = [],
     matnrPriceCartridge = [],
     matnrServicePackage = [],
@@ -66,40 +67,18 @@ const Smes = props => {
   } = props;
 
   const [service, setService] = useState({ ...emptyService });
-  const [tempService, setTempService] = useState({ ...emptyService });
 
-  useEffect(() => {
-    if (Object.keys(tempService).length > 0) {
-      setService({
-        ...tempService,
-        positions: tempService.positions.map((item, index) => {
-          return {
-            currencyId: item.currencyId,
-            currencyName: item.currencyName,
-            fno: item.fno,
-            id: item.id,
-            matnrId: item.matnrId,
-            matnrName: item.matnrName,
-            matnrPrice: item.matnrPrice,
-            operationId: item.operationId,
-            operationName: item.operationName,
-            quantity: item.quantity,
-            serviceId: item.serviceId,
-            servicePackageId: item.servicePackageId,
-            servicePackageName: item.servicePackageName,
-            serviceTypeId: item.serviceTypeId,
-            serviceTypeName: item.serviceTypeName,
-            sum: item.sum,
-            warranty: item.warranty,
-            tempId: item.tempId,
-          };
-        }),
-      });
-    }
-  }, [tempService]);
+  //СПИСОК ЗАПЧАСТЕЙ
+  const [sparePartList, setSparePartList] = useState([]);
 
-  console.log('SERVICE TEMP', tempService);
+  console.log('sparePartList', sparePartList);
 
+  const compareSparePart = () => {};
+  const sparePartListFinish = sparePartList.filter(
+    item => item.checked == true,
+  );
+
+  console.log('sparePartListFinish', sparePartListFinish);
   const [modalPay, setModalPay] = useState(false);
   const url = window.location.search;
   const urlNumberService = url.slice(url.indexOf('=') + 1);
@@ -114,83 +93,67 @@ const Smes = props => {
 
   useEffect(() => {
     if (Object.keys(smesList).length > 0) {
-      setTempService({
+      setService({
         ...smesList,
-        positions: smesList.positions.map((item, index) => {
-          return {
-            currencyId: item.currencyId,
-            currencyName: item.currencyName,
-            fno: item.fno,
-            id: item.id,
-            matnrId: item.matnrId,
-            matnrName: item.matnrName,
-            matnrPrice: item.matnrPrice,
-            operationId: item.operationId,
-            operationName: item.operationName,
-            quantity: item.quantity,
-            serviceId: item.serviceId,
-            servicePackageId: item.servicePackageId,
-            servicePackageName: item.servicePackageName,
-            serviceTypeId: item.serviceTypeId,
-            serviceTypeName: item.serviceTypeName,
-            sum: item.sum,
-            warranty: item.warranty,
-            tempId: item.matnrId * 96 + index,
-            checked: true,
-          };
-        }),
       });
 
-      if (smesList.branchId && smesList.bukrs && smesList.tovarId) {
+      setSparePartList(
+        smesList.positions
+          .filter(item => item.serviceTypeId == 3)
+          .map(item => {
+            return {
+              ...item,
+              checked: true,
+            };
+          }),
+      );
+    }
+  }, [smesList]);
+
+  useEffect(() => {
+    if (Object.keys(service).length > 0) {
+      //ПОЛУЧИТЬ СПИСОК СЕРВИС ПАКЕТОВ
+      if (service.branchId && service.bukrs && service.tovarId) {
         let param = {
-          branchId: smesList.branchId,
-          bukrs: smesList.bukrs,
-          productId: smesList.tovarId,
+          branchId: service.branchId,
+          bukrs: service.bukrs,
+          productId: service.tovarId,
         };
+
         props.fetchMatnrPriceServicePackage({ ...param });
       }
 
-      if (smesList.branchId && smesList.bukrs) {
+      //ПОЛУЧИТЬ СПИСОК PAYMENT
+      if (service.branchId && service.bukrs) {
         let param = {
-          brnch: smesList.branchId,
-          bukrs: smesList.bukrs,
+          brnch: service.branchId,
+          bukrs: service.bukrs,
         };
-
         props.fetchPaymentOptions({ ...param });
       }
 
-      if (smesList.masterId) {
+      //ПОЛУЧИТЬ СПИСОК ЗАПЧАСТЕЙ И СПИСОК КАРТРИДЖЕЙ
+      if (service.masterId) {
         let paramMatnrSparePart = {
-          branchId: smesList.branchId,
-          bukrs: smesList.bukrs,
-          masterId: smesList.masterId,
+          branchId: service.branchId,
+          bukrs: service.bukrs,
+          masterId: service.masterId,
           serviceTypeId: 3,
-          tovarId: smesList.tovarId,
+          tovarId: service.tovarId,
         };
 
         let paramMatnrCartridge = {
-          branchId: smesList.branchId,
-          bukrs: smesList.bukrs,
-          masterId: smesList.masterId,
+          branchId: service.branchId,
+          bukrs: service.bukrs,
+          masterId: service.masterId,
           serviceTypeId: 1,
-          tovarId: smesList.tovarId,
+          tovarId: service.tovarId,
         };
-
         props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart });
         props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge });
       }
-
-      if (smesList.branchId && smesList.bukrs && smesList.tovarId) {
-        let param = {
-          branchId: smesList.branchId,
-          bukrs: smesList.bukrs,
-          productId: smesList.tovarId,
-        };
-
-        props.fetchSmcsServicePacket({ ...param });
-      }
     }
-  }, [smesList]);
+  }, [service]);
 
   const onChangeBasicInfo = (value, fieldName) => {
     switch (fieldName) {
@@ -208,11 +171,7 @@ const Smes = props => {
 
   //ПРОДАЖА ЗАПЧАСТЕЙ=================================================================================================================
   //==================================================================================================================================
-  const tempSparePartList = tempService.positions.filter(
-    item => item.serviceTypeId == 3,
-  );
 
-  const [sparePartList, setSparePartList] = useState([]);
   const [modalSparePart, setModalSparePart] = useState(false);
 
   const onChangeSparePart = (value, fildName, original, id) => {
@@ -236,36 +195,49 @@ const Smes = props => {
   const handleApplySparePart = () => {
     setModalSparePart(false);
   };
+
+  console.log('matnrPriceSparePart', matnrPriceSparePart);
+  //ФОРМИРОВАТЬ СПИСОК ЗАПЧАСТЕЙ
   useEffect(() => {
     matnrPriceSparePart.map((item, index) => {
-      setSparePartList(prev => [
-        ...prev,
-        {
-          currencyId: item.currencyId,
-          currencyName: item.currencyName,
-          fno: null,
-          id: null,
-          matnrId: item.matnrId,
-          matnrCode: item.matnrCode,
-          matnrName: item.matnrName,
-          matnrPrice: item.price,
-          operationId: null,
-          operationName: null,
-          menge: item.menge,
-          quantity: 1,
-          serviceId: null,
-          servicePackageId: null,
-          servicePackageName: null,
-          serviceTypeId: 3,
-          serviceTypeName: null,
-          sum: null,
-          warranty: false,
-          checked: false,
-          tempId: parseInt(`33${item.matnrId * 63 + index}`),
-        },
-      ]);
+      for (let i = 0; i < sparePartList.length; i++) {
+        if (
+          item.matnrId == sparePartList[i].matnrId &&
+          item.price == sparePartList[i].matnrPrice
+        ) {
+          item.checked = true;
+        } else {
+          let arr = matnrPriceSparePart.map(ell => {
+            return {
+              currencyId: ell.currencyId,
+              currencyName: ell.currencyName,
+              fno: null,
+              id: ell.matnrId * 63 + index,
+              matnrId: ell.matnrId,
+              matnrCode: ell.matnrCode,
+              matnrName: ell.matnrName,
+              matnrPrice: ell.price,
+              operationId: null,
+              operationName: null,
+              menge: ell.menge,
+              quantity: 1,
+              serviceId: null,
+              servicePackageId: null,
+              servicePackageName: null,
+              serviceTypeId: 3,
+              serviceTypeName: null,
+              sum: null,
+              warranty: false,
+              checked: false,
+            };
+          });
+          setSparePartList([...sparePartList, ...arr]);
+        }
+      }
     });
   }, [matnrPriceSparePart]);
+
+  //ENT ПРОДАЖА ЗАПЧАСТЕЙ********************************************************
 
   //ПРОДАЖА КАРТРИДЖЕЙ=================================================================================================================
   //==================================================================================================================================
@@ -374,7 +346,7 @@ const Smes = props => {
 
             {/*Продажа запчастей */}
             <SaleOfSparePart
-              data={tempSparePartList}
+              data={sparePartListFinish}
               onChangeSparePart={onChangeSparePart}
               // editStatus={editStatus}
               // currency={service.currencyName}
