@@ -55,6 +55,32 @@ const TabSmcsWithRequest = props => {
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
 
+  const funcWarranty = (param, data, item) => {
+    if (parseInt(item.serviceTypeId) == 3) {
+      setSparePartList(
+        sparePartList.map(el =>
+          el.id === item.id
+            ? {
+                ...el,
+                warranty: data.data,
+              }
+            : el,
+        ),
+      );
+    } else if (parseInt(item.serviceTypeId) == 1) {
+      setCartridgeList(
+        cartridgeList.map(el =>
+          el.id === item.id
+            ? {
+                ...el,
+                warranty: data.data,
+              }
+            : el,
+        ),
+      );
+    }
+  };
+
   const [editStatus, setEditStatus] = useState(true);
 
   useEffect(() => {
@@ -251,14 +277,30 @@ const TabSmcsWithRequest = props => {
         break;
 
       case 'warrantySparePart':
-        // let param = {
-        //   contractId:,
-        //   matnrId:,
-        //   serviceDate:,
-        //   serviceTypeId:,
-        // }
-        // props.fetchCheckWarranty({...param})
-        console.log('VALUE WITH', value, 'original', original);
+        if (value.warranty == false) {
+          setSparePartList(
+            sparePartList.map(el =>
+              el.id === value.id
+                ? {
+                    ...el,
+                    warranty: true,
+                  }
+                : el,
+            ),
+          );
+        } else {
+          setSparePartList(
+            sparePartList.map(el =>
+              el.id === value.id
+                ? {
+                    ...el,
+                    warranty: false,
+                  }
+                : el,
+            ),
+          );
+        }
+
         break;
 
       default:
@@ -289,7 +331,7 @@ const TabSmcsWithRequest = props => {
           serviceTypeId: 3,
           serviceTypeName: null,
           sum: null,
-          warranty: null,
+          warranty: false,
           checked: false,
         },
       ]);
@@ -453,25 +495,30 @@ const TabSmcsWithRequest = props => {
         break;
 
       case 'warrantyCartridge':
-        let param = {
-          contractId: service.contractId,
-          matnrId: value.matnrId,
-          serviceDate: service.serviceDate,
-          serviceTypeId: value.serviceTypeId,
-        };
-        props.fetchCheckWarranty({ ...param });
-        console.log('VALUE WITHOUT', value, 'original', original);
-
-        // setCartridgeList(
-        //   cartridgeList.map(item =>
-        //     item.id === original
-        //       ? {
-        //           ...item,
-        //           warranty: value.checked,
-        //         }
-        //       : item,
-        //   ),
-        // );
+        console.log('warrantyCartridge', value.warranty);
+        if (value.warranty == false) {
+          setCartridgeList(
+            cartridgeList.map(el =>
+              el.id === value.id
+                ? {
+                    ...el,
+                    warranty: true,
+                  }
+                : el,
+            ),
+          );
+        } else {
+          setCartridgeList(
+            cartridgeList.map(el =>
+              el.id === value.id
+                ? {
+                    ...el,
+                    warranty: false,
+                  }
+                : el,
+            ),
+          );
+        }
 
         break;
 
@@ -503,7 +550,7 @@ const TabSmcsWithRequest = props => {
           serviceTypeId: 1,
           serviceTypeName: null,
           sum: null,
-          warranty: null,
+          warranty: false,
           checked: false,
         },
       ]);

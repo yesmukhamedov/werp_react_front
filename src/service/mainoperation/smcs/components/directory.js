@@ -1,3 +1,5 @@
+import moment from 'moment';
+import { momentToStringYYYYMMDD } from '../../../../utils/helpers';
 export const emptyService = {
   address: '',
   applicationNumber: '',
@@ -27,7 +29,7 @@ export const emptyService = {
   operatorPremium: null,
   paid: null,
   positions: [],
-  serviceDate: '',
+  serviceDate: momentToStringYYYYMMDD(moment(new Date())),
   serviceStatusId: null,
   serviceStatusName: null,
   sumForPay: null,

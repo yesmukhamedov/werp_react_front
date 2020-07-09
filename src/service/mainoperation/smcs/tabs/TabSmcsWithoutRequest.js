@@ -57,14 +57,10 @@ const TabSmcsWithoutRequest = props => {
     checkWarranty,
   } = props;
 
-  console.log('STypeID', serviceTypeId);
-
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
 
-  console.log('SERVICE 1', service);
   const funcWarranty = (param, data, item) => {
-    console.log('serviceTypeId', item.serviceTypeId);
     if (parseInt(item.serviceTypeId) == 3) {
       setSparePartList(
         sparePartList.map(el =>
@@ -664,7 +660,6 @@ const TabSmcsWithoutRequest = props => {
         break;
 
       case 'warrantyCartridge':
-        console.log('value.warranty', value);
         if (value.warranty == false) {
           let param = {
             contractId: service.contractId,
@@ -794,7 +789,6 @@ const TabSmcsWithoutRequest = props => {
         break;
 
       case 'dimmerClose':
-        console.log('DIMMER');
         break;
       default:
         console.log('нет таких!');

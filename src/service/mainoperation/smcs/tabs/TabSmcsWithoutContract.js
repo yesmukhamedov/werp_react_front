@@ -16,6 +16,7 @@ import {
   saveSmcsWithoutReques,
   fetchOperatorList,
   fetchMasterList,
+  fetchCheckWarranty,
 } from '../smcsAction';
 
 import {
@@ -256,7 +257,6 @@ const TabSmcsWithoutContract = props => {
       item => item.serviceTypeId == value.value,
     );
 
-    console.log(servicesFilter);
     if (servicesFilter.length > 0) {
       alert(
         'Вы не можете добавить несколько одноименных услуг в эту сервис карту',
@@ -392,14 +392,30 @@ const TabSmcsWithoutContract = props => {
         break;
 
       case 'warrantySparePart':
-        // let param = {
-        //   contractId:service.contractId,
-        //   matnrId:,
-        //   serviceDate:,
-        //   serviceTypeId:,
-        // }
-        // props.fetchCheckWarranty({...param})
-        console.log('VALUE WITHOUT', value, 'original', original);
+        if (value.warranty == false) {
+          setSparePartList(
+            sparePartList.map(el =>
+              el.id === value.id
+                ? {
+                    ...el,
+                    warranty: true,
+                  }
+                : el,
+            ),
+          );
+        } else {
+          setSparePartList(
+            sparePartList.map(el =>
+              el.id === value.id
+                ? {
+                    ...el,
+                    warranty: false,
+                  }
+                : el,
+            ),
+          );
+        }
+
         break;
 
       default:
@@ -415,7 +431,7 @@ const TabSmcsWithoutContract = props => {
           currencyId: item.currencyId,
           currencyName: item.currencyName,
           fno: item.fno,
-          id: item.matnrId + index,
+          id: item.matnrId * 63 + index,
           matnrId: item.matnrId,
           matnrCode: item.matnrCode,
           matnrName: item.matnrName,
@@ -430,7 +446,7 @@ const TabSmcsWithoutContract = props => {
           serviceTypeId: 3,
           serviceTypeName: null,
           sum: null,
-          warranty: null,
+          warranty: false,
           checked: false,
         },
       ]);
@@ -589,6 +605,33 @@ const TabSmcsWithoutContract = props => {
         }
         break;
 
+      case 'warrantyCartridge':
+        if (value.warranty == false) {
+          setCartridgeList(
+            cartridgeList.map(el =>
+              el.id === value.id
+                ? {
+                    ...el,
+                    warranty: true,
+                  }
+                : el,
+            ),
+          );
+        } else {
+          setCartridgeList(
+            cartridgeList.map(el =>
+              el.id === value.id
+                ? {
+                    ...el,
+                    warranty: false,
+                  }
+                : el,
+            ),
+          );
+        }
+
+        break;
+
       default:
         alert('Нет таких значений');
     }
@@ -602,7 +645,7 @@ const TabSmcsWithoutContract = props => {
           currencyId: item.currencyId,
           currencyName: item.currencyName,
           fno: item.fno,
-          id: item.matnrId + index,
+          id: item.matnrId * 23 + index,
           matnrId: item.matnrId,
           matnrCode: item.matnrCode,
           matnrName: item.matnrName,
@@ -617,7 +660,7 @@ const TabSmcsWithoutContract = props => {
           serviceTypeId: 1,
           serviceTypeName: null,
           sum: null,
-          warranty: null,
+          warranty: false,
           checked: false,
         },
       ]);
@@ -1021,4 +1064,5 @@ export default connect(mapStateToProps, {
   saveSmcsWithoutReques,
   fetchOperatorList,
   fetchMasterList,
+  fetchCheckWarranty,
 })(injectIntl(TabSmcsWithoutContract));

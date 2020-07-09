@@ -84,7 +84,11 @@ const SaleCartridge = props => {
                 <Input readOnly fluid value={index + 1} />
               </Table.Cell>
               <Table.Cell>
-                <Input readOnly fluid value={item.matnrName} />
+                <Input
+                  readOnly
+                  fluid
+                  value={item.matnrName ? item.matnrName : ''}
+                />
               </Table.Cell>
               <Table.Cell>
                 <Dropdown
