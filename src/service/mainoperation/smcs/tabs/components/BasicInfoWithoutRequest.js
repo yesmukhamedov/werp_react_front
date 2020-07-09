@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  Button,
-  Table,
-  Icon,
-  Input,
-  Dropdown,
-  Segment,
-  Form,
-} from 'semantic-ui-react';
+import { Button, Table, Input, Form } from 'semantic-ui-react';
 import DropdownClearable from '../../../../../utils/DropdownClearable';
 
 const BasicInfoWithoutRequest = props => {
@@ -143,7 +135,7 @@ const BasicInfoWithoutRequest = props => {
 
         <Table.Row>
           <Table.Cell>
-            <Form.Field required>
+            <Form.Field>
               <label>Оператор</label>
             </Form.Field>
           </Table.Cell>

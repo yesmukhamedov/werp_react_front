@@ -159,7 +159,7 @@ const BasicInfoWithoutContract = props => {
 
         <Table.Row>
           <Table.Cell>
-            <Form.Field required>
+            <Form.Field>
               <label>Оператор</label>
             </Form.Field>
           </Table.Cell>

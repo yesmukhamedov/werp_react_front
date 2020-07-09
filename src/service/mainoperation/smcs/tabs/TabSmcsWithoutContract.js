@@ -61,6 +61,32 @@ const TabSmcsWithoutContract = props => {
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
 
+  const funcWarranty = (param, data, item) => {
+    if (parseInt(item.serviceTypeId) == 3) {
+      setSparePartList(
+        sparePartList.map(el =>
+          el.id === item.id
+            ? {
+                ...el,
+                warranty: data.data,
+              }
+            : el,
+        ),
+      );
+    } else if (parseInt(item.serviceTypeId) == 1) {
+      setCartridgeList(
+        cartridgeList.map(el =>
+          el.id === item.id
+            ? {
+                ...el,
+                warranty: data.data,
+              }
+            : el,
+        ),
+      );
+    }
+  };
+
   const [editStatus, setEditStatus] = useState(true);
 
   //BasicInfo
@@ -393,16 +419,13 @@ const TabSmcsWithoutContract = props => {
 
       case 'warrantySparePart':
         if (value.warranty == false) {
-          setSparePartList(
-            sparePartList.map(el =>
-              el.id === value.id
-                ? {
-                    ...el,
-                    warranty: true,
-                  }
-                : el,
-            ),
-          );
+          let param = {
+            contractId: service.contractId,
+            matnrId: value.matnrId,
+            serviceDate: service.serviceDate,
+            serviceTypeId: value.serviceTypeId,
+          };
+          props.fetchCheckWarranty({ ...param }, funcWarranty, value);
         } else {
           setSparePartList(
             sparePartList.map(el =>
@@ -607,16 +630,13 @@ const TabSmcsWithoutContract = props => {
 
       case 'warrantyCartridge':
         if (value.warranty == false) {
-          setCartridgeList(
-            cartridgeList.map(el =>
-              el.id === value.id
-                ? {
-                    ...el,
-                    warranty: true,
-                  }
-                : el,
-            ),
-          );
+          let param = {
+            contractId: service.contractId,
+            matnrId: value.matnrId,
+            serviceDate: service.serviceDate,
+            serviceTypeId: value.serviceTypeId,
+          };
+          props.fetchCheckWarranty({ ...param }, funcWarranty, value);
         } else {
           setCartridgeList(
             cartridgeList.map(el =>
@@ -905,10 +925,10 @@ const TabSmcsWithoutContract = props => {
   }, [, services, sparePartInitial, cartridgeInitial, servicePackageInitial]);
 
   const handleCheck = () => {
-    if (service.operatorId) {
+    if (service.masterId) {
       props.checkSmcsWithoutReques(service);
     } else {
-      alert('Выберите оператора');
+      alert('Выберите мастера');
     }
   };
 

@@ -36,7 +36,7 @@ export const emptyService = {
   sumTotal: null,
   tovarId: null,
   tovarName: '',
-  tovarSn: '4835-030982',
+  tovarSn: '',
   warrantyPeriodDate: '',
   warrantyPeriodInMonth: null,
   status: '',
