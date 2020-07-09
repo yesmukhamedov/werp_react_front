@@ -5,6 +5,7 @@ import {
   f4FetchBranches,
   f4FetchServiceAppStatus,
   f4FetchCountryList,
+  f4FetchServiceStatusList,
 } from '../../../reference/f4/f4_action';
 import { fetchSrlsm, fetchServiceTypeList } from './srlsmAction';
 import { injectIntl } from 'react-intl';
@@ -44,7 +45,7 @@ const Srlsm = props => {
     category = [],
     companyOptions = [],
     branchOptionsService,
-    serviceAppStatus = [],
+    serviceStatusList = [],
     serviceType = [],
     srlsmListData = {},
     srlsmListSum = {},
@@ -70,10 +71,9 @@ const Srlsm = props => {
   const [currency, setCurrency] = useState('');
 
   useEffect(() => {
-    props.f4FetchServiceAppStatus();
     props.f4fetchCategory();
     props.f4FetchBranches();
-    props.f4FetchServiceAppStatus();
+    props.f4FetchServiceStatusList();
     props.fetchServiceTypeList();
     props.f4FetchCountryList();
   }, []);
@@ -94,7 +94,7 @@ const Srlsm = props => {
     };
   });
 
-  const serviceAppStatusOptions = serviceAppStatus.map(item => {
+  const serviceStatusListOptions = serviceStatusList.map(item => {
     return {
       key: item.id,
       text: item.name,
@@ -377,7 +377,7 @@ const Srlsm = props => {
             <Form.Select
               fluid
               placeholder="Статус сервиса"
-              options={serviceAppStatusOptions}
+              options={serviceStatusListOptions}
               onChange={(e, o) => onInputChange(o, 'serviceStatusId')}
               className="alignBottom"
               multiple
@@ -547,12 +547,12 @@ function mapStateToProps(state) {
     companyOptions: state.userInfo.companyOptions,
     category: state.f4.category,
     branchOptionsService: state.userInfo.branchOptionsService,
-    serviceAppStatus: state.f4.serviceAppStatus,
     contractStatusList: state.f4.contractStatusList,
     serviceTypeList: state.srlsmReducer.serviceTypeList,
     srlsmListData: state.srlsmReducer.srlsmListData,
     srlsmListSum: state.srlsmReducer.srlsmListSum,
     srlsmTotalPages: state.srlsmReducer.srlsmTotalPages,
+    serviceStatusList: state.f4.serviceStatusList,
   };
 }
 
@@ -563,4 +563,5 @@ export default connect(mapStateToProps, {
   fetchSrlsm,
   fetchServiceTypeList,
   f4FetchCountryList,
+  f4FetchServiceStatusList,
 })(injectIntl(Srlsm));
