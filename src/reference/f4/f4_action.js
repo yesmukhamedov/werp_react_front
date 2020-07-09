@@ -1020,7 +1020,7 @@ export function f4fetchCategory(data) {
 
 export function f4FetchServiceStatusList() {
   return function(dispatch) {
-    doGet('service_status')
+    doGet('service_status/view')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_SERVICE_STATUS_LIST,
