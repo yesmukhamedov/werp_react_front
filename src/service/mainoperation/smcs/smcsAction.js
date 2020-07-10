@@ -255,10 +255,10 @@ export const saveSmcsWithoutReques = (body, toSmvs) => {
     doPost(`smcs/create`, body)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        dispatch({
-          type: SAVE_SMCS_WITHOUT_REQUEST,
-          data: data,
-        });
+        // dispatch({
+        //   type: SAVE_SMCS_WITHOUT_REQUEST,
+        //   data: data,
+        // });
         dispatch(notify('success', errorTableText(101)));
         toSmvs(data);
       })

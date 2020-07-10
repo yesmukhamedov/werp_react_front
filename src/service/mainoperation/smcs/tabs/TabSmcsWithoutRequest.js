@@ -965,20 +965,15 @@ const TabSmcsWithoutRequest = props => {
   }, [, services, sparePartInitial, cartridgeInitial, servicePackageInitial]);
 
   const handleCheck = () => {
-    if (
-      service.operatorId === null ||
-      service.operatorId === 0 ||
-      service.operatorId === ''
-    ) {
-      alert('Выберите оператора');
-    } else {
-      alert('CHECK');
+    if (service.masterId) {
       props.checkSmcsWithoutReques(service);
+    } else {
+      alert('Выберите мастера');
     }
   };
 
   const handleSave = () => {
-    props.saveSmcsWithoutReques(service);
+    props.saveSmcsWithoutReques(checkSmcs);
   };
 
   useEffect(() => {

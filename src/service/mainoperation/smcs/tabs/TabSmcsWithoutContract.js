@@ -954,7 +954,7 @@ const TabSmcsWithoutContract = props => {
   };
 
   const handleSave = () => {
-    props.saveSmcsWithoutReques(service, toSmvs);
+    props.saveSmcsWithoutReques(checkSmcs);
   };
 
   useEffect(() => {
