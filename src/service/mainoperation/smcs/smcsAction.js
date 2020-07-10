@@ -249,7 +249,7 @@ export const checkSmcsWithoutReques = body => {
   };
 };
 //Создать сервис
-export const saveSmcsWithoutReques = body => {
+export const saveSmcsWithoutReques = (body, toSmvs) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doPost(`smcs/create`, body)
@@ -260,6 +260,7 @@ export const saveSmcsWithoutReques = body => {
           data: data,
         });
         dispatch(notify('success', errorTableText(101)));
+        toSmvs(data);
       })
       .catch(error => {
         dispatch(modifyLoader(false));

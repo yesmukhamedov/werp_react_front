@@ -59,6 +59,13 @@ const TabSmcsWithoutContract = props => {
     withoutRequestProps = {},
   } = props;
 
+  const toSmvs = data => {
+    console.log('DATA toSmvs', data);
+    // props.history.push(
+    //   `smcs?applicationNumber=${service.applicationNumber}`,
+    // )
+  };
+
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
 
@@ -927,7 +934,7 @@ const TabSmcsWithoutContract = props => {
 
   useEffect(() => {
     if (Object.keys(withoutRequestProps).length > 0) {
-      console.log('withoutRequestProps', withoutRequestProps.bukrs);
+      console.log('withoutRequestProps', withoutRequestProps);
       setService({
         ...service,
         bukrs: withoutRequestProps.bukrs,
@@ -947,7 +954,7 @@ const TabSmcsWithoutContract = props => {
   };
 
   const handleSave = () => {
-    props.saveSmcsWithoutReques(service);
+    props.saveSmcsWithoutReques(service, toSmvs);
   };
 
   useEffect(() => {
@@ -974,7 +981,11 @@ const TabSmcsWithoutContract = props => {
               operatorOptions={operatorOptions}
               onBasicInfoInputChange={onBasicInfoInputChange}
               companyOptions={companyOptions}
-              branchOptions={branchOptionsService[service.bukrs]}
+              branchOptions={
+                withoutRequestProps
+                  ? branchOptionsService[withoutRequestProps.bukrs]
+                  : branchOptionsService[service.bukrs]
+              }
               categoryOptions={categoryOptions}
               tovarOptions={tovarOptions}
               masterOptions={masterOptions}

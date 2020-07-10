@@ -57,7 +57,7 @@ const BasicInfoWithoutContract = props => {
           </Table.Cell>
           <Table.Cell>
             <DropdownClearable
-              value={data.branchId}
+              value={data.branchId ? data.branchId : ''}
               options={branchOptions}
               onChange={(e, value) =>
                 onBasicInfoInputChange(value, 'selectBranch')

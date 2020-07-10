@@ -19,7 +19,20 @@ const Smcs = props => {
       location.search === null ||
       location.search === undefined
     ) {
-      console.log('location.search', location.search);
+      console.log('Object.keys(location.state).length', location.state);
+      if (location.state) {
+        if (Object.keys(location.state).length == 1) {
+          setActiveTab(0);
+          setTovarSn(location.state.tovarSn);
+        }
+        if (Object.keys(location.state).length == 4) {
+          setActiveTab(1);
+          setWithoutRequestProps(location.state);
+        }
+        if (Object.keys(location.state).length == 0) {
+          setActiveTab(0);
+        }
+      }
     } else {
       setActiveTab(2);
       let searchString = '?applicationNumber=';
