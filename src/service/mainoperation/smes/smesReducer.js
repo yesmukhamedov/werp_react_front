@@ -21,6 +21,7 @@ export default function(state = INITIAL_STATE, action) {
         ...state,
         paymentOptions: [...action.data.hkontOptions],
       };
+
     case ACCEPT_PAYMENT:
       return {
         ...state,

@@ -231,7 +231,7 @@ export const fetchPositionSumm = (branchId, bukrs, productId, position) => {
   };
 };
 //Проверка сервиса и получение суммы
-export const checkSmcsWithoutReques = body => {
+export const checkSmcsWithoutReques = (body, successCheck) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doPost(`smcs/check`, body)
@@ -241,6 +241,7 @@ export const checkSmcsWithoutReques = body => {
           type: CHECK_SMCS_WITHOUT_REQUEST,
           data: data,
         });
+        successCheck();
       })
       .catch(error => {
         dispatch(modifyLoader(false));

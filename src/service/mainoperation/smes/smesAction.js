@@ -50,7 +50,7 @@ export const fetchPaymentOptions = param => {
       });
   };
 };
-export const acceptPayment = param => {
+export const acceptPayment = (param, successPayment) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doPut(`smes/acceptPayment?hkontS=${param.hkontS}&id=${param.id}`)
@@ -61,10 +61,11 @@ export const acceptPayment = param => {
           data,
         });
         dispatch(notify('success', errorTableText(101)));
+        successPayment();
       })
       .catch(error => {
         dispatch(modifyLoader(false));
-        dispatch(notify('error', errorTableText(133), errorTableText(132)));
+        handleError(error, dispatch);
       });
   };
 };

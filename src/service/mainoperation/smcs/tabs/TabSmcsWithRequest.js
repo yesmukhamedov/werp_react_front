@@ -55,6 +55,23 @@ const TabSmcsWithRequest = props => {
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
 
+  const [checkStatus, setCheckStatus] = useState(false);
+
+  useEffect(() => {
+    if (Object.keys(service).length > 0) {
+      setCheckStatus(false);
+    }
+  }, [service]);
+
+  const toSmvs = () => {
+    console.log('LINK TO SMVS');
+    setCheckStatus(false);
+  };
+
+  const successCheck = () => {
+    setCheckStatus(true);
+  };
+
   const funcWarranty = (param, data, item) => {
     if (parseInt(item.serviceTypeId) == 3) {
       setSparePartList(
@@ -787,14 +804,14 @@ const TabSmcsWithRequest = props => {
 
   const handleCheck = () => {
     if (service.masterId) {
-      props.checkSmcsWithoutReques(service);
+      props.checkSmcsWithoutReques(service, successCheck);
     } else {
       alert('Выберите мастера');
     }
   };
 
   const handleSave = () => {
-    props.saveSmcsWithoutReques(checkSmcs);
+    props.saveSmcsWithoutReques(checkSmcs, toSmvs);
   };
 
   useEffect(() => {
@@ -808,6 +825,7 @@ const TabSmcsWithRequest = props => {
         masterPremium: checkSmcs.masterPremium,
         operatorPremium: checkSmcs.operatorPremium,
       });
+      setCheckStatus(true);
     }
   }, [checkSmcs]);
 
@@ -935,13 +953,18 @@ const TabSmcsWithRequest = props => {
             />
 
             {/*Проверить*/}
-            <Button color="green" onClick={handleCheck}>
+            <Button disabled={checkStatus} color="green" onClick={handleCheck}>
               <Icon name="check" size="large" />
               Проверить
             </Button>
 
             {/*Сохранить*/}
-            <Button type="submit" primary onClick={handleSave}>
+            <Button
+              disabled={!checkStatus}
+              type="submit"
+              primary
+              onClick={handleSave}
+            >
               <Icon name="save" size="large" />
               Сохранить
             </Button>

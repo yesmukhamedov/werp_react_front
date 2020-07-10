@@ -5,7 +5,7 @@ import DropdownClearable from '../../../../../utils/DropdownClearable';
 const BasicInfoWithoutContract = props => {
   const {
     data = {},
-    operatorOptions,
+    operatorOptions = [],
     onBasicInfoInputChange,
     companyOptions,
     branchOptions = [],
@@ -13,6 +13,9 @@ const BasicInfoWithoutContract = props => {
     tovarOptions,
     masterOptions,
   } = props;
+
+  console.log('BR OPT', branchOptions);
+  console.log('OPER OPT', operatorOptions);
 
   return (
     <Table>
@@ -145,7 +148,7 @@ const BasicInfoWithoutContract = props => {
           </Table.Cell>
           <Table.Cell>
             <DropdownClearable
-              value={data.masterId}
+              value={data.masterId ? data.masterId : ''}
               options={masterOptions}
               onChange={(e, value) =>
                 onBasicInfoInputChange(value, 'selectMaster')
@@ -165,7 +168,7 @@ const BasicInfoWithoutContract = props => {
           </Table.Cell>
           <Table.Cell>
             <DropdownClearable
-              value={data.operatorId}
+              value={data.operatorId ? data.operatorId : ''}
               options={operatorOptions}
               onChange={(e, value) =>
                 onBasicInfoInputChange(value, 'selectOperator')

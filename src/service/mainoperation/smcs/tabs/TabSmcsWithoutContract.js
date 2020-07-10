@@ -59,15 +59,27 @@ const TabSmcsWithoutContract = props => {
     withoutRequestProps = {},
   } = props;
 
-  const toSmvs = data => {
-    console.log('DATA toSmvs', data);
-    // props.history.push(
-    //   `smcs?applicationNumber=${service.applicationNumber}`,
-    // )
-  };
-
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
+
+  const [checkStatus, setCheckStatus] = useState(false);
+
+  console.log('checkStatus', checkStatus);
+
+  useEffect(() => {
+    if (Object.keys(service).length > 0) {
+      setCheckStatus(false);
+    }
+  }, [service]);
+
+  const toSmvs = () => {
+    console.log('LINK TO SMVS');
+    setCheckStatus(false);
+  };
+
+  const successCheck = () => {
+    setCheckStatus(true);
+  };
 
   const funcWarranty = (param, data, item) => {
     if (parseInt(item.serviceTypeId) == 3) {
@@ -171,19 +183,19 @@ const TabSmcsWithoutContract = props => {
     staffF4ModalOpen: false,
   });
 
-  const operatorOptions = operatorList.map(item => {
+  const operatorOptions = operatorList.map((item, index) => {
     return {
-      key: item.staffId,
+      key: parseInt(item.staffId) * index,
       text: item.fullName,
-      value: item.staffId,
+      value: parseInt(item.staffId),
     };
   });
 
-  const masterOptions = masterList.map(item => {
+  const masterOptions = masterList.map((item, index) => {
     return {
-      key: item.staffId,
+      key: parseInt(item.staffId) * index,
       text: item.fullName,
-      value: item.staffId,
+      value: parseInt(item.staffId),
     };
   });
 
@@ -947,14 +959,14 @@ const TabSmcsWithoutContract = props => {
 
   const handleCheck = () => {
     if (service.masterId) {
-      props.checkSmcsWithoutReques(service);
+      props.checkSmcsWithoutReques(service, successCheck);
     } else {
       alert('Выберите мастера');
     }
   };
 
   const handleSave = () => {
-    props.saveSmcsWithoutReques(checkSmcs);
+    props.saveSmcsWithoutReques(checkSmcs, toSmvs);
   };
 
   useEffect(() => {
@@ -968,6 +980,7 @@ const TabSmcsWithoutContract = props => {
         masterPremium: checkSmcs.masterPremium,
         operatorPremium: checkSmcs.operatorPremium,
       });
+      setCheckStatus(true);
     }
   }, [checkSmcs]);
   return (
@@ -981,11 +994,7 @@ const TabSmcsWithoutContract = props => {
               operatorOptions={operatorOptions}
               onBasicInfoInputChange={onBasicInfoInputChange}
               companyOptions={companyOptions}
-              branchOptions={
-                withoutRequestProps
-                  ? branchOptionsService[withoutRequestProps.bukrs]
-                  : branchOptionsService[service.bukrs]
-              }
+              branchOptions={branchOptionsService[service.bukrs]}
               categoryOptions={categoryOptions}
               tovarOptions={tovarOptions}
               masterOptions={masterOptions}
@@ -1051,13 +1060,18 @@ const TabSmcsWithoutContract = props => {
             />
 
             {/*Проверить*/}
-            <Button color="green" onClick={handleCheck}>
+            <Button color="green" onClick={handleCheck} disabled={checkStatus}>
               <Icon name="check" size="large" />
               Проверить
             </Button>
 
             {/*Сохранить*/}
-            <Button type="submit" primary onClick={handleSave}>
+            <Button
+              type="submit"
+              primary
+              onClick={handleSave}
+              disabled={!checkStatus}
+            >
               <Icon name="save" size="large" />
               Сохранить
             </Button>

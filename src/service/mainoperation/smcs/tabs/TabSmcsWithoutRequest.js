@@ -61,6 +61,23 @@ const TabSmcsWithoutRequest = props => {
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
 
+  const [checkStatus, setCheckStatus] = useState(false);
+
+  useEffect(() => {
+    if (Object.keys(service).length > 0) {
+      setCheckStatus(false);
+    }
+  }, [service]);
+
+  const toSmvs = () => {
+    console.log('LINK TO SMVS');
+    setCheckStatus(false);
+  };
+
+  const successCheck = () => {
+    setCheckStatus(true);
+  };
+
   useEffect(() => {
     if (tovarSnProps != '') {
       let tovarSn = tovarSnProps;
@@ -173,18 +190,18 @@ const TabSmcsWithoutRequest = props => {
     }
   }, [contract]);
 
-  const operatorOptions = operatorList.map(item => {
+  const operatorOptions = operatorList.map((item, index) => {
     return {
-      key: item.staffId,
+      key: parseInt(item.staffId) * index,
       text: item.fullName,
-      value: item.staffId,
+      value: parseInt(item.staffId),
     };
   });
-  const masterOptions = masterList.map(item => {
+  const masterOptions = masterList.map((item, index) => {
     return {
-      key: item.staffId,
+      key: parseInt(item.staffId) * index,
       text: item.fullName,
-      value: item.staffId,
+      value: parseInt(item.staffId),
     };
   });
 
@@ -966,14 +983,14 @@ const TabSmcsWithoutRequest = props => {
 
   const handleCheck = () => {
     if (service.masterId) {
-      props.checkSmcsWithoutReques(service);
+      props.checkSmcsWithoutReques(service, successCheck);
     } else {
       alert('Выберите мастера');
     }
   };
 
   const handleSave = () => {
-    props.saveSmcsWithoutReques(checkSmcs);
+    props.saveSmcsWithoutReques(checkSmcs, toSmvs);
   };
 
   useEffect(() => {
@@ -987,6 +1004,8 @@ const TabSmcsWithoutRequest = props => {
         masterPremium: checkSmcs.masterPremium,
         operatorPremium: checkSmcs.operatorPremium,
       });
+
+      setCheckStatus(true);
     }
   }, [checkSmcs]);
 
@@ -1066,13 +1085,18 @@ const TabSmcsWithoutRequest = props => {
             />
 
             {/*Проверить*/}
-            <Button color="green" onClick={handleCheck}>
+            <Button disabled={checkStatus} color="green" onClick={handleCheck}>
               <Icon name="check" size="large" />
               Проверить
             </Button>
 
             {/*Сохранить*/}
-            <Button type="submit" primary onClick={handleSave}>
+            <Button
+              disabled={!checkStatus}
+              type="submit"
+              primary
+              onClick={handleSave}
+            >
               <Icon name="save" size="large" />
               Сохранить
             </Button>

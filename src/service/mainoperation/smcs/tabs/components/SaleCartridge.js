@@ -92,6 +92,7 @@ const SaleCartridge = props => {
               </Table.Cell>
               <Table.Cell>
                 <Dropdown
+                  readOnly
                   fluid
                   selection
                   value={item.fno}
@@ -103,6 +104,7 @@ const SaleCartridge = props => {
               </Table.Cell>
               <Table.Cell>
                 <Input
+                  readOnly
                   fluid
                   style={{ padding: '0' }}
                   value={item.quantity}

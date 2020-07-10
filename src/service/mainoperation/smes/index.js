@@ -129,10 +129,16 @@ const Smes = props => {
     });
   };
 
+  const successPayment = () => {
+    if (serviceNumber) {
+      props.fetchSmesList(serviceNumber);
+    }
+  };
+
   const handlePay = () => {
     console.log('payData', payData.hkontS);
     setModalPay(false);
-    props.acceptPayment({ ...payData });
+    props.acceptPayment({ ...payData }, successPayment);
   };
 
   const [newServiceStatus, setNewServiceStatus] = useState(false);
