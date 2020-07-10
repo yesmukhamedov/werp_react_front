@@ -78,7 +78,7 @@ function Smcc(props) {
     matnrName: null,
     serviceAddressId: '',
     serviceAddressName: null,
-    servBranchId: '',
+    serviceBranchId: '',
     serviceBranchName: null,
     serviceCrmCategoryId: null,
     serviceCrmCategoryName: null,
@@ -90,7 +90,7 @@ function Smcc(props) {
     warrantyEndedMonths: null,
     email: '',
     matnrListId: '',
-    lastState: 2,
+    lastStateId: 2,
     dealerName: '',
     customerName: '',
     addrService: '',
@@ -107,7 +107,7 @@ function Smcc(props) {
     contractNumber: null,
     crmCategoryId: null,
     crmCategoryName: null,
-    branchMonthTermsId: 501,
+    branchMonthTermsId: '',
     f1DateNext: null,
     f1DatePrev: null,
     f1Sid: null,
@@ -184,15 +184,15 @@ function Smcc(props) {
   }, []);
 
   useEffect(() => {
-    const { bukrsId, servBranchId, matnr } = contract;
-    if (bukrsId !== '' && servBranchId !== '' && matnr !== '') {
+    const { bukrsId, serviceBranchId, matnr } = contract;
+    if (bukrsId !== '' && serviceBranchId !== '' && matnr !== '') {
       props.f4FetchMonthTerms({
-        branchId: servBranchId,
+        branchId: serviceBranchId,
         bukrs: bukrsId,
         matnr,
       });
     }
-  }, [contract.bukrsId, contract.servBranchId, contract.matnr]);
+  }, [contract.bukrsId, contract.serviceBranchId, contract.matnr]);
 
   useEffect(() => {
     const { bukrsId, matnr } = contract;
@@ -206,21 +206,24 @@ function Smcc(props) {
 
   useEffect(() => {
     if (monthTerms) {
-      setServFilter(
-        { ...servFilter },
+      setServFilter(prev => {
+        const filter = { ...prev };
         monthTerms.map(item => {
           {
-            servFilter.f1Mt = item.f1;
-            servFilter.f2Mt = item.f2;
-            servFilter.f3Mt = item.f3;
-            servFilter.f4Mt = item.f4;
-            servFilter.f5Mt = item.f5;
-            servFilter.branchMonthTermsId = item.id;
+            filter.f1Mt = item.f1;
+            filter.f2Mt = item.f2;
+            filter.f3Mt = item.f3;
+            filter.f4Mt = item.f4;
+            filter.f5Mt = item.f5;
+            filter.branchMonthTermsId = item.id;
           }
-        }),
-      );
+        });
+        return filter;
+      });
     }
   }, [monthTerms]);
+
+  console.log(monthTerms, servFilter);
 
   useEffect(() => {
     const { tovarCategoryId } = contract;
@@ -282,8 +285,8 @@ function Smcc(props) {
             });
           setContractTypeOpts(waConOptions);
           break;
-        case 'servBranchId':
-          varContract.servBranchId = o.value;
+        case 'serviceBranchId':
+          varContract.serviceBranchId = o.value;
           setServFilter({ ...servFilter, serviceBranchId: o.value });
           break;
         case 'contractTypeId':
@@ -350,25 +353,25 @@ function Smcc(props) {
         case 'checkbox':
           varContract.check = o.checked;
           if (o.checked) {
-            varContract.lastState = 4;
+            varContract.lastStateId = 4;
           } else {
-            varContract.lastState = 2;
+            varContract.lastStateId = 2;
           }
           break;
         case 'serviceFilterF1':
-          setServFilter({ ...servFilter, f1: parseInt(o.value, 10) });
+          setServFilter({ ...servFilter, f1Mt: parseInt(o.value, 10) });
           break;
         case 'serviceFilterF2':
-          setServFilter({ ...servFilter, f2: parseInt(o.value, 10) });
+          setServFilter({ ...servFilter, f2Mt: parseInt(o.value, 10) });
           break;
         case 'serviceFilterF3':
-          setServFilter({ ...servFilter, f3: parseInt(o.value, 10) });
+          setServFilter({ ...servFilter, f3Mt: parseInt(o.value, 10) });
           break;
         case 'serviceFilterF4':
-          setServFilter({ ...servFilter, f4: parseInt(o.value, 10) });
+          setServFilter({ ...servFilter, f4Mt: parseInt(o.value, 10) });
           break;
         case 'serviceFilterF5':
-          setServFilter({ ...servFilter, f5: parseInt(o.value, 10) });
+          setServFilter({ ...servFilter, f5Mt: parseInt(o.value, 10) });
           break;
 
         default:
@@ -383,7 +386,7 @@ function Smcc(props) {
     const {
       bukrsId,
       branchId,
-      servBranchId,
+      serviceBranchId,
       contractTypeId,
       contractDate,
       customerId,
@@ -392,7 +395,7 @@ function Smcc(props) {
       serviceAddressId,
       matnrListId,
       info,
-      lastState,
+      lastStateId,
       tovarCategoryId,
     } = contract;
 
@@ -400,7 +403,7 @@ function Smcc(props) {
     if (
       bukrsId !== '' &&
       branchId !== '' &&
-      servBranchId !== '' &&
+      serviceBranchId !== '' &&
       contractTypeId !== '' &&
       customerId !== '' &&
       tovarSn !== '' &&
@@ -418,9 +421,8 @@ function Smcc(props) {
           customerId,
           dealerId,
           info,
-          lastState,
+          lastStateId,
           matnrListId,
-          serviceBranchId: servBranchId,
           tovarCategoryId,
           tovarSn,
         },
@@ -428,7 +430,7 @@ function Smcc(props) {
           ...servFilter,
           bukrsId,
           contractNumber: contractTypeId,
-          serviceBranchId: servBranchId,
+          serviceBranchId,
         },
       });
       clearContract();
@@ -439,7 +441,7 @@ function Smcc(props) {
     setContract({
       bukrsId: '',
       branchId: '',
-      servBranchId: '',
+      serviceBranchId: '',
       contractTypeId: '',
       contractDate: moment(new Date()).format('YYYY-MM-DD'),
       customerId: '',
@@ -449,7 +451,7 @@ function Smcc(props) {
       email: '',
       info: '',
       matnrListId: '',
-      lastState: 2,
+      lastStateId: 2,
       dealerName: '',
       customerName: '',
       addrService: '',
@@ -485,7 +487,7 @@ function Smcc(props) {
     if (contract.branchId === '') {
       errors.push(errorTableText(7));
     }
-    if (contract.servBranchId === '') {
+    if (contract.serviceBranchId === '') {
       errors.push(errorTableText(168));
     }
     if (contract.contractTypeId === '') {
@@ -550,8 +552,12 @@ function Smcc(props) {
                   <Table.Body>
                     <Table.Row>
                       <Table.Cell>
-                        <Icon name="folder" />
-                        {messages['bukrs']}
+                        <Form.Field required>
+                          <label>
+                            <Icon name="folder" />
+                            {messages['bukrs']}
+                          </label>
+                        </Form.Field>
                       </Table.Cell>
                       <Table.Cell>
                         <Dropdown
@@ -567,8 +573,12 @@ function Smcc(props) {
                     </Table.Row>
                     <Table.Row>
                       <Table.Cell>
-                        <Icon name="browser" />
-                        {messages['brnch']}
+                        <Form.Field required>
+                          <label>
+                            <Icon name="browser" />
+                            {messages['brnch']}
+                          </label>
+                        </Form.Field>
                       </Table.Cell>
                       <Table.Cell>
                         <Dropdown
@@ -588,8 +598,12 @@ function Smcc(props) {
                     </Table.Row>
                     <Table.Row>
                       <Table.Cell>
-                        <Icon name="archive" />
-                        {messages['service']}
+                        <Form.Field required>
+                          <label>
+                            <Icon name="archive" />
+                            {messages['service']}
+                          </label>
+                        </Form.Field>
                       </Table.Cell>
                       <Table.Cell>
                         <Dropdown
@@ -602,15 +616,21 @@ function Smcc(props) {
                               ? branchService[contract.bukrsId]
                               : []
                           }
-                          value={contract.servBranchId}
-                          onChange={(e, o) => onInputChange(o, 'servBranchId')}
+                          value={contract.serviceBranchId}
+                          onChange={(e, o) =>
+                            onInputChange(o, 'serviceBranchId')
+                          }
                         />
                       </Table.Cell>
                     </Table.Row>
                     <Table.Row>
                       <Table.Cell collapsing>
-                        <Icon name="clipboard" />
-                        {messages['contractType']}
+                        <Form.Field required>
+                          <label>
+                            <Icon name="clipboard" />
+                            {messages['contractType']}
+                          </label>
+                        </Form.Field>
                       </Table.Cell>
                       <Table.Cell>
                         <Dropdown
@@ -628,8 +648,12 @@ function Smcc(props) {
                     </Table.Row>
                     <Table.Row>
                       <Table.Cell>
-                        <Icon name="calendar" />
-                        {messages['contractDate']}
+                        <Form.Field>
+                          <label>
+                            <Icon name="calendar" />
+                            {messages['contractDate']}
+                          </label>
+                        </Form.Field>
                       </Table.Cell>
                       <Table.Cell>
                         <DatePicker
@@ -650,8 +674,12 @@ function Smcc(props) {
                     </Table.Row>
                     <Table.Row>
                       <Table.Cell>
-                        <Icon name="user" />
-                        {messages['client']}
+                        <Form.Field required>
+                          <label>
+                            <Icon name="user" />
+                            {messages['client']}
+                          </label>
+                        </Form.Field>
                       </Table.Cell>
                       <Table.Cell>
                         <LinkToCustomerHrc03
@@ -680,8 +708,12 @@ function Smcc(props) {
                     </Table.Row>
                     <Table.Row>
                       <Table.Cell>
-                        <Icon name="clipboard" />
-                        {messages['dealer']}
+                        <Form.Field>
+                          <label>
+                            <Icon name="clipboard" />
+                            {messages['dealer']}
+                          </label>
+                        </Form.Field>
                       </Table.Cell>
                       <Table.Cell>
                         <LinkToStaffCardView
@@ -714,8 +746,12 @@ function Smcc(props) {
                     </Table.Row>
                     <Table.Row>
                       <Table.Cell>
-                        <Icon name="factory" />
-                        {messages['productSerialNumber']}
+                        <Form.Field required>
+                          <label>
+                            <Icon name="factory" />
+                            {messages['productSerialNumber']}
+                          </label>
+                        </Form.Field>
                       </Table.Cell>
                       <Table.Cell>
                         <Input
@@ -748,8 +784,12 @@ function Smcc(props) {
                     </Table.Row>
                     <Table.Row>
                       <Table.Cell>
-                        <Icon name="bookmark" />
-                        {messages['lastStateInstalled']}
+                        <Form.Field>
+                          <label>
+                            <Icon name="bookmark" />
+                            {messages['lastStateInstalled']}
+                          </label>
+                        </Form.Field>
                       </Table.Cell>
                       <Table.Cell>
                         <Checkbox
@@ -771,7 +811,7 @@ function Smcc(props) {
                             className="input__set"
                             label="F1"
                             size="mini"
-                            value={servFilter.f1Mt}
+                            value={servFilter.f1Mt ? servFilter.f1Mt : 0}
                             onChange={(e, o) =>
                               onInputChange(o, 'serviceFilterF1')
                             }
@@ -780,7 +820,7 @@ function Smcc(props) {
                             className="input__set"
                             label="F2"
                             size="mini"
-                            value={servFilter.f2Mt}
+                            value={servFilter.f2Mt ? servFilter.f2Mt : 0}
                             onChange={(e, o) =>
                               onInputChange(o, 'serviceFilterF2')
                             }
@@ -789,7 +829,7 @@ function Smcc(props) {
                             className="input__set"
                             label="F3"
                             size="mini"
-                            value={servFilter.f3Mt}
+                            value={servFilter.f3Mt ? servFilter.f3Mt : 0}
                             onChange={(e, o) =>
                               onInputChange(o, 'serviceFilterF3')
                             }
@@ -798,7 +838,7 @@ function Smcc(props) {
                             className="input__set"
                             label="F4"
                             size="mini"
-                            value={servFilter.f4Mt}
+                            value={servFilter.f4Mt ? servFilter.f4Mt : 0}
                             onChange={(e, o) =>
                               onInputChange(o, 'serviceFilterF4')
                             }
@@ -807,7 +847,7 @@ function Smcc(props) {
                             className="input__set"
                             label="F5"
                             size="mini"
-                            value={servFilter.f5Mt}
+                            value={servFilter.f5Mt ? servFilter.f5Mt : 0}
                             onChange={(e, o) =>
                               onInputChange(o, 'serviceFilterF5')
                             }
@@ -827,8 +867,12 @@ function Smcc(props) {
                   <Table.Body>
                     <Table.Row>
                       <Table.Cell collapsing>
-                        <Icon name="address card" />
-                        {messages['addressService']}
+                        <Form.Field required>
+                          <label>
+                            <Icon name="address card" />
+                            {messages['addressService']}
+                          </label>
+                        </Form.Field>
                       </Table.Cell>
                       <Table.Cell>
                         <Input
@@ -917,15 +961,19 @@ function Smcc(props) {
                     </Table.Row>
                     <Table.Row>
                       <Table.Cell>
-                        <Icon
-                          name="info circle"
-                          style={{
-                            backgroundColor: 'transparent',
-                            color: 'black',
-                            cursor: 'auto',
-                          }}
-                        />
-                        {messages['extraInfo']}
+                        <Form.Field>
+                          <label>
+                            <Icon
+                              name="info circle"
+                              style={{
+                                backgroundColor: 'transparent',
+                                color: 'black',
+                                cursor: 'auto',
+                              }}
+                            />
+                            {messages['extraInfo']}
+                          </label>
+                        </Form.Field>
                       </Table.Cell>
                       <Table.Cell>
                         <TextArea
