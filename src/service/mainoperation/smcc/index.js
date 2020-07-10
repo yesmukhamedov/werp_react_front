@@ -223,8 +223,6 @@ function Smcc(props) {
     }
   }, [monthTerms]);
 
-  console.log(monthTerms, servFilter);
-
   useEffect(() => {
     const { tovarCategoryId } = contract;
     if (tovarCategoryId) {
@@ -250,6 +248,7 @@ function Smcc(props) {
           varContract.bukrsId = o.value;
           break;
         case 'branchId':
+          //get the selected branch
           let waSelectedBranch = {};
           branchOptions[contract.bukrsId]
             .filter(item => item.key === o.value)
@@ -257,10 +256,27 @@ function Smcc(props) {
               waSelectedBranch = item;
             });
 
+          //get service branch from the same city
+          let serBranchInSameCity = {};
+          branchService[contract.bukrsId]
+            .filter(
+              item => item.parentbranchid === waSelectedBranch.parentbranchid,
+            )
+            .forEach(item => {
+              serBranchInSameCity = item;
+            });
+
           varContract.countryId = waSelectedBranch.countryid;
           varContract.tovarCategoryId = waSelectedBranch.tovarcategory;
           varContract.branchId = o.value;
           varContract.tovarSn = '';
+
+          //service branch select
+          varContract.serviceBranchId = serBranchInSameCity.key;
+          setServFilter({
+            ...servFilter,
+            serviceBranchId: serBranchInSameCity.key,
+          });
 
           let wa = { ...emptyContract };
           wa.bukrsId = prev.bukrsId;
