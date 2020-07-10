@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 import {
   Segment,
   Grid,
@@ -14,14 +15,11 @@ import {
 } from 'semantic-ui-react';
 import BasicInfo from './components/BasicInfo';
 
-import Services from '../smcs/tabs/components/Services';
-import SaleOfSparePart from '../smcs/tabs/components/SaleOfSparePart';
-import SaleCartridge from '../smcs/tabs/components/SaleCartridge';
-import ServicePackage from '../smcs/tabs/components/ServicePackage';
-import TableReportWithoutRequest from '../smcs/tabs/components/TableReportWithoutRequest';
-import ModalAddSparePart from '../smcs/modals/ModalAddSparePart';
-import ModalAddCartridge from '../smcs/modals/ModalAddCartridge';
-import ModalAddServicePacket from '../smcs/modals/ModalAddServicePacket';
+import Services from './components/Services';
+import SaleOfSparePart from './components/SaleOfSparePart';
+import SaleCartridge from './components/SaleCartridge';
+import ServicePackage from './components/ServicePackage';
+import ReportService from './components/ReportService';
 import {
   fetchSmesList,
   fetchPaymentOptions,
@@ -60,25 +58,13 @@ const Smes = props => {
     smesList = {},
     paymentOptions = [],
     acceptPayment,
-    matnrPriceSparePart = [],
-    matnrPriceCartridge = [],
     matnrServicePackage = [],
-    servicePacketDetails = [],
   } = props;
 
   const [service, setService] = useState({ ...emptyService });
 
-  //СПИСОК ЗАПЧАСТЕЙ
-  const [sparePartList, setSparePartList] = useState([]);
+  console.log('SERVICE SMES', service);
 
-  console.log('sparePartList', sparePartList);
-
-  const compareSparePart = () => {};
-  const sparePartListFinish = sparePartList.filter(
-    item => item.checked == true,
-  );
-
-  console.log('sparePartListFinish', sparePartListFinish);
   const [modalPay, setModalPay] = useState(false);
   const url = window.location.search;
   const urlNumberService = url.slice(url.indexOf('=') + 1);
@@ -97,63 +83,16 @@ const Smes = props => {
         ...smesList,
       });
 
-      setSparePartList(
-        smesList.positions
-          .filter(item => item.serviceTypeId == 3)
-          .map(item => {
-            return {
-              ...item,
-              checked: true,
-            };
-          }),
-      );
-    }
-  }, [smesList]);
-
-  useEffect(() => {
-    if (Object.keys(service).length > 0) {
-      //ПОЛУЧИТЬ СПИСОК СЕРВИС ПАКЕТОВ
-      if (service.branchId && service.bukrs && service.tovarId) {
+      if (smesList.branchId && smesList.bukrs && smesList.tovarId) {
         let param = {
-          branchId: service.branchId,
-          bukrs: service.bukrs,
-          productId: service.tovarId,
+          branchId: smesList.branchId,
+          bukrs: smesList.bukrs,
+          productId: smesList.tovarId,
         };
-
         props.fetchMatnrPriceServicePackage({ ...param });
       }
-
-      //ПОЛУЧИТЬ СПИСОК PAYMENT
-      if (service.branchId && service.bukrs) {
-        let param = {
-          brnch: service.branchId,
-          bukrs: service.bukrs,
-        };
-        props.fetchPaymentOptions({ ...param });
-      }
-
-      //ПОЛУЧИТЬ СПИСОК ЗАПЧАСТЕЙ И СПИСОК КАРТРИДЖЕЙ
-      if (service.masterId) {
-        let paramMatnrSparePart = {
-          branchId: service.branchId,
-          bukrs: service.bukrs,
-          masterId: service.masterId,
-          serviceTypeId: 3,
-          tovarId: service.tovarId,
-        };
-
-        let paramMatnrCartridge = {
-          branchId: service.branchId,
-          bukrs: service.bukrs,
-          masterId: service.masterId,
-          serviceTypeId: 1,
-          tovarId: service.tovarId,
-        };
-        props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart });
-        props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge });
-      }
     }
-  }, [service]);
+  }, [smesList]);
 
   const onChangeBasicInfo = (value, fieldName) => {
     switch (fieldName) {
@@ -168,71 +107,6 @@ const Smes = props => {
         break;
     }
   };
-
-  //ПРОДАЖА ЗАПЧАСТЕЙ=================================================================================================================
-  //==================================================================================================================================
-
-  const [modalSparePart, setModalSparePart] = useState(false);
-
-  const onChangeSparePart = (value, fildName, original, id) => {
-    switch (fildName) {
-      //Кнопка добавить запчасти
-      case 'addSparePartBtn':
-        setModalSparePart(true);
-        break;
-
-      default:
-        break;
-    }
-  };
-
-  //Выбрать запчасть
-  const checkedSparePart = () => {
-    console.log('VALUE');
-  };
-
-  // Применить выбранные запчасти
-  const handleApplySparePart = () => {
-    setModalSparePart(false);
-  };
-
-  console.log('matnrPriceSparePart', matnrPriceSparePart);
-  //ФОРМИРОВАТЬ СПИСОК ЗАПЧАСТЕЙ
-  useEffect(() => {
-    let spar = sparePartList.filter(sparePart => {
-      if (
-        matnrPriceSparePart.some(
-          matnrPriceSparePart =>
-            matnrPriceSparePart.matnrId == sparePart.matnrId &&
-            matnrPriceSparePart.price == sparePart.matnrPrice,
-        )
-      ) {
-        return false;
-      } else return true;
-    });
-
-    console.log('SPAR', spar);
-
-    matnrPriceSparePart.map((item, index) => {
-      for (let i = 0; i < sparePartList.length; i++) {
-        if (
-          item.matnrId == sparePartList[i].matnrId &&
-          item.price == sparePartList[i].matnrPrice
-        ) {
-          item.checked = true;
-        }
-      }
-    });
-
-    let all = matnrPriceSparePart.concat(spar);
-
-    console.log('all', all);
-  }, [matnrPriceSparePart]);
-
-  //ENT ПРОДАЖА ЗАПЧАСТЕЙ********************************************************
-
-  //ПРОДАЖА КАРТРИДЖЕЙ=================================================================================================================
-  //==================================================================================================================================
 
   const [payData, setPayData] = useState({
     hkontS: '',
@@ -252,13 +126,59 @@ const Smes = props => {
     props.acceptPayment({ ...payData });
   };
 
-  const toSmvs = (data, id) => {
-    console.log('data tosmvs', data);
-    console.log('id tosmvs', id);
+  const [newServiceStatus, setNewServiceStatus] = useState(false);
+
+  const toSmvs = () => {
+    console.log('CANCEL SUCCESS');
+    setNewServiceStatus(true);
+    if (serviceNumber) {
+      props.fetchSmesList(serviceNumber);
+    }
   };
 
   const cancelPaymentClick = () => {
     props.cancelPayment(serviceNumber, toSmvs);
+  };
+
+  //===================================NEW====================================
+  //==========================================================================
+  //СПИСОК УСЛУГ
+  const servicesList = service.positions.filter(
+    item =>
+      item.serviceTypeId == 2 ||
+      item.serviceTypeId == 5 ||
+      item.serviceTypeId == 6 ||
+      item.serviceTypeId == 7,
+  );
+
+  //СПИСОК ПРОДАЖА ЗАПЧАСТЕЙ
+  const sparePartList = service.positions.filter(
+    item => item.serviceTypeId == 3,
+  );
+  //СПИСОК ПРОДАЖА КАРТРИДЖЕЙ
+  const cartridgeList = service.positions.filter(
+    item => item.serviceTypeId == 1,
+  );
+  //СПИСОК СЕРВИС ПАКЕТОВ
+  const servicePackageList = service.positions.filter(
+    item => item.serviceTypeId == 4,
+  );
+
+  const urlToSmcsClick = () => {
+    service.applicationNumber != null
+      ? props.history.push(
+          `smcs?applicationNumber=${service.applicationNumber}`,
+        ) //console.log(`smcs?applicationNumber=${service.applicationNumber}`) // С заявкой
+      : service.contractId == null
+      ? props.history.push(`smcs`, {
+          bukrs: service.bukrs,
+          branchId: service.branchId,
+          categoryId: service.categoryId,
+          tovarId: service.tovarId,
+        }) //console.log(`Без договора`) //Без договора
+      : props.history.push(`smcs`, {
+          tovarSn: service.tovarSn,
+        }); //console.log('Без заявки'); //Без заявки
   };
 
   return (
@@ -294,6 +214,14 @@ const Smes = props => {
       >
         <h3>Редактирование сервис карты</h3>
         <div>
+          {service.serviceStatusId == 6 ? (
+            <Button size="tiny" color="green" onClick={urlToSmcsClick}>
+              <p>Новый сервис</p>
+            </Button>
+          ) : (
+            ''
+          )}
+
           <Button
             disabled={service.serviceStatusId === 1 ? false : true}
             color="orange"
@@ -323,85 +251,22 @@ const Smes = props => {
           </Grid.Column>
 
           {/*SETTING*/}
-          <Grid.Column readOnly width={11}>
-            {/*Услуги */}
-            <Services
-            //data={servicesList}
-            // addServices={addServices}
-            // servicesOptions={serviceOptions}
-            // handleRemoveService={handleRemoveService}
-            // selectServices={selectServices}
-            // waers={service.currencyName}
-            // editStatus={editStatus}
-            // currency={service.currencyName}
-            />
-
+          <Grid.Column width={11}>
+            <Services data={servicesList} />
             {/*Продажа запчастей */}
-            <SaleOfSparePart
-              data={sparePartListFinish}
-              onChangeSparePart={onChangeSparePart}
-              // editStatus={editStatus}
-              // currency={service.currencyName}
-            />
+            <SaleOfSparePart data={sparePartList} />
 
-            <ModalAddSparePart
-              data={sparePartList}
-              modalOpen={modalSparePart}
-              checkedSparePart={checkedSparePart}
-              handleApplySparePart={handleApplySparePart}
-            />
+            {/*Продажа картриджи  */}
+            <SaleCartridge data={cartridgeList} />
 
-            {/*Продажа картриджей */}
-            <SaleCartridge
-            // data={cartridgeInitial}
-            // onChangeCartridge={onChangeCartridge}
-            // editStatus={editStatus}
-            // currency={service.currencyName}
-            />
-
-            <ModalAddCartridge
-            // data={cartridgeList}
-            // modalOpen={modalCartridge}
-            // onChangeCartridge={onChangeCartridge}
-            />
-
-            {/*Сервис пакет*/}
+            {/*Сервис пакет  */}
             <ServicePackage
-            // data={servicePackageInitial}
-            // onChangeServicePackage={onChangeServicePackage}
-            // editStatus={editStatus}
-            // currency={service.currencyName}
-            />
-            <ModalAddServicePacket
-            // data={servicePackageList}
-            // modalStatus={modalServicePackage}
-            // onChangeServicePackage={onChangeServicePackage}
-            />
+              data={servicePackageList}
+              // disabledEdit={disabledEdit}
 
-            {/*Таблица*/}
-            <TableReportWithoutRequest
-            // data={service}
-            // currency={service.currencyName}
+              matnrServicePackage={matnrServicePackage}
             />
-
-            {/*Проверить*/}
-            <Button
-              color="green"
-              //  onClick={handleCheck}
-            >
-              <Icon name="check" size="large" />
-              Проверить
-            </Button>
-
-            {/*Сохранить*/}
-            <Button
-              type="submit"
-              primary
-              //onClick={handleSave}
-            >
-              <Icon name="save" size="large" />
-              Сохранить
-            </Button>
+            <ReportService data={service} />
           </Grid.Column>
         </Grid.Row>
       </Grid>
@@ -418,10 +283,6 @@ function mapStateToProps(state) {
     smesList: state.smesReducer.smesList,
     editStat: state.smvsReducer.editStat,
     matnrServicePackage: state.smcsReducer.matnrServicePackage,
-    matnrPriceSparePart: state.smcsReducer.matnrPriceSparePart,
-    matnrPriceCartridge: state.smcsReducer.matnrPriceCartridge,
-    matnrServicePackage: state.smcsReducer.matnrServicePackage,
-    servicePacketDetails: state.smcsReducer.servicePacketDetails,
     paymentOptions: state.smesReducer.paymentOptions,
     acceptPayment: state.smesReducer.acceptPayment,
   };
@@ -437,7 +298,6 @@ export default connect(mapStateToProps, {
   fetchServiceTypeId,
   fetchMatnrPriceSparePart,
   fetchMatnrPriceCartridge,
-  fetchMatnrPriceServicePackage,
   fetchServicePackageDetails,
   fetchSmcsServicePacket,
   fetchPositionSumm,

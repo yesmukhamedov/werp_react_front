@@ -81,7 +81,7 @@ export const cancelPayment = (id, toSmvs) => {
           type: CANCEL_PAYMENT,
           data,
         });
-        toSmvs(data, id);
+        toSmvs();
         dispatch(notify('success', errorTableText(101)));
       })
       .catch(error => {
