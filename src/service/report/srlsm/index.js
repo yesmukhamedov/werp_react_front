@@ -28,7 +28,7 @@ import {
   moneyFormat,
 } from '../../../utils/helpers';
 import '../../service.css';
-import { LinkToSmcuspor, LinkToSmvs } from '../../../utils/outlink';
+import { LinkToSmcuspor, LinkToSmesManager } from '../../../utils/outlink';
 import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
 import TotalCountsTable from '../../../utils/TotalCountsTable';
 
@@ -252,7 +252,7 @@ const Srlsm = props => {
       show: true,
       Cell: row => (
         <div style={{ textAlign: 'center' }}>
-          <LinkToSmvs serviceNumber={row.value} />
+          <LinkToSmesManager serviceNumber={row.value} />
         </div>
       ),
       fixed: 'right',

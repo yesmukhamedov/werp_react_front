@@ -996,6 +996,7 @@ function Smcc(props) {
                       <Table.Cell>
                         <TextArea
                           placeholder={messages['extraInfo']}
+                          value={contract.info}
                           onChange={(e, o) => onInputChange(o, 'info')}
                         />
                       </Table.Cell>

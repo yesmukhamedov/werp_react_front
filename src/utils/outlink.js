@@ -225,6 +225,15 @@ export const LinkToSmes = props => {
     </Button>
   );
 };
+export const LinkToSmesManager = props => {
+  const { serviceNumber, text } = props;
+  const url = `../mainoperation/smes?serviceNumber=${serviceNumber}`;
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      {serviceNumber}
+    </a>
+  );
+};
 
 export const LinkToSmecam = props => {
   const { id } = props;
