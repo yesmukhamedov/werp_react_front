@@ -63,6 +63,8 @@ const Srlsm = props => {
     serviceStatusId: null,
     dateAt: null,
     dateTo: null,
+    direction: 'DESC',
+    orderBy: 'id',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
