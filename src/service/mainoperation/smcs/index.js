@@ -20,20 +20,20 @@ const Smcs = props => {
       location.search === undefined
     ) {
       console.log('location.search', location.search);
+      if (Object.keys(location.state).length == 1) {
+        setActiveTab(0);
+        setTovarSn(location.state.tovarSn);
+      }
+      if (Object.keys(location.state).length == 4) {
+        setActiveTab(1);
+        setWithoutRequestProps(location.state);
+      }
     } else {
       setActiveTab(2);
       let searchString = '?applicationNumber=';
       let appNumberStr = location.search.replace(searchString, '');
       let appNumber = parseInt(appNumberStr);
       setApplicationNumber(appNumber);
-    }
-    if (Object.keys(location.state).length == 1) {
-      setActiveTab(0);
-      setTovarSn(location.state.tovarSn);
-    }
-    if (Object.keys(location.state).length == 4) {
-      setActiveTab(1);
-      setWithoutRequestProps(location.state);
     }
   }, [location]);
 
