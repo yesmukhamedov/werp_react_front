@@ -94,13 +94,20 @@ const Srlsm = props => {
     };
   });
 
-  const serviceStatusListOptions = serviceStatusList.map(item => {
-    return {
-      key: item.id,
-      text: item.name,
-      value: item.id,
-    };
-  });
+  const serviceStatusListOptions = serviceStatusList
+    .filter(
+      item =>
+        parseInt(item.id) == 1 ||
+        parseInt(item.id) == 4 ||
+        parseInt(item.id) == 6,
+    )
+    .map(item => {
+      return {
+        key: item.id,
+        text: item.name,
+        value: item.id,
+      };
+    });
 
   const serviceTypeOptions = serviceTypeList.map(item => {
     return {

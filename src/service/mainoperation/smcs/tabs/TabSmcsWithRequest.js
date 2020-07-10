@@ -57,12 +57,6 @@ const TabSmcsWithRequest = props => {
 
   const [checkStatus, setCheckStatus] = useState(false);
 
-  useEffect(() => {
-    if (Object.keys(service).length > 0) {
-      setCheckStatus(false);
-    }
-  }, [service]);
-
   const toSmvs = () => {
     console.log('LINK TO SMVS');
     setCheckStatus(false);
@@ -811,7 +805,9 @@ const TabSmcsWithRequest = props => {
   };
 
   const handleSave = () => {
-    props.saveSmcsWithoutReques(checkSmcs, toSmvs);
+    props.saveSmcsWithoutReques(service, data => {
+      window.location = `smvs?serviceNumber=${data.data.id}`;
+    });
   };
 
   useEffect(() => {

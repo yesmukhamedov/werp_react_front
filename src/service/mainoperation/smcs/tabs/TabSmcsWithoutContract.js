@@ -38,6 +38,7 @@ import ServicePackage from './components/ServicePackage';
 import TableReportWithoutRequest from './components/TableReportWithoutRequest';
 import BasicInfoWithoutContract from './components/BasicInfoWithoutContract';
 import { emptyService } from '../components/directory';
+import { LinkToSmvs } from '../../../../utils/outlink';
 
 //Создание сервиса без заявки
 const TabSmcsWithoutContract = props => {
@@ -59,6 +60,8 @@ const TabSmcsWithoutContract = props => {
     withoutRequestProps = {},
   } = props;
 
+  console.log('PRRROPS', props);
+
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
 
@@ -66,19 +69,21 @@ const TabSmcsWithoutContract = props => {
 
   console.log('checkStatus', checkStatus);
 
-  useEffect(() => {
-    if (Object.keys(service).length > 0) {
-      setCheckStatus(false);
-    }
-  }, [service]);
-
-  const toSmvs = () => {
-    console.log('LINK TO SMVS');
-    setCheckStatus(false);
-  };
+  // useEffect(() => {
+  //   if (Object.keys(service).length > 0) {
+  //     setCheckStatus(false);
+  //   }
+  // }, [service]);
 
   const successCheck = () => {
+    console.log('CHECK STATUS++', checkStatus);
     setCheckStatus(true);
+  };
+
+  const toSmvs = data => {
+    console.log('LINK TO SMVS', data);
+    setCheckStatus(false);
+    return <LinkToSmvs serviceNumber={data.data.id} />;
   };
 
   const funcWarranty = (param, data, item) => {
@@ -957,18 +962,6 @@ const TabSmcsWithoutContract = props => {
     }
   }, [withoutRequestProps]);
 
-  const handleCheck = () => {
-    if (service.masterId) {
-      props.checkSmcsWithoutReques(service, successCheck);
-    } else {
-      alert('Выберите мастера');
-    }
-  };
-
-  const handleSave = () => {
-    props.saveSmcsWithoutReques(checkSmcs, toSmvs);
-  };
-
   useEffect(() => {
     if (checkSmcs.contractId === service.contractId) {
       setService({
@@ -980,9 +973,27 @@ const TabSmcsWithoutContract = props => {
         masterPremium: checkSmcs.masterPremium,
         operatorPremium: checkSmcs.operatorPremium,
       });
+    }
+    if (Object.keys(checkSmcs).length > 0) {
       setCheckStatus(true);
     }
   }, [checkSmcs]);
+
+  const handleCheck = () => {
+    if (service.masterId) {
+      props.checkSmcsWithoutReques(service, successCheck);
+    } else {
+      alert('Выберите мастера');
+    }
+  };
+
+  const handleSave = () => {
+    // props.saveSmcsWithoutReques(checkSmcs, toSmvs);
+    props.saveSmcsWithoutReques(service, data => {
+      window.location = `smvs?serviceNumber=${data.data.id}`;
+    });
+  };
+
   return (
     <Form>
       <Grid>
@@ -1060,17 +1071,17 @@ const TabSmcsWithoutContract = props => {
             />
 
             {/*Проверить*/}
-            <Button color="green" onClick={handleCheck} disabled={checkStatus}>
+            <Button disabled={checkStatus} color="green" onClick={handleCheck}>
               <Icon name="check" size="large" />
               Проверить
             </Button>
 
             {/*Сохранить*/}
             <Button
+              disabled={!checkStatus}
               type="submit"
               primary
               onClick={handleSave}
-              disabled={!checkStatus}
             >
               <Icon name="save" size="large" />
               Сохранить

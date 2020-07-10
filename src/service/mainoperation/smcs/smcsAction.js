@@ -266,7 +266,6 @@ export const saveSmcsWithoutReques = (body, toSmvs) => {
       .catch(error => {
         dispatch(modifyLoader(false));
         handleError(error, dispatch);
-        dispatch(notify('error', errorTableText(133), errorTableText(132)));
       });
   };
 };

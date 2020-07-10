@@ -990,7 +990,9 @@ const TabSmcsWithoutRequest = props => {
   };
 
   const handleSave = () => {
-    props.saveSmcsWithoutReques(checkSmcs, toSmvs);
+    props.saveSmcsWithoutReques(service, data => {
+      window.location = `smvs?serviceNumber=${data.data.id}`;
+    });
   };
 
   useEffect(() => {
