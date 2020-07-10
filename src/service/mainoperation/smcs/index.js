@@ -40,14 +40,14 @@ const Smcs = props => {
       let appNumber = parseInt(appNumberStr);
       setApplicationNumber(appNumber);
     }
-    if (Object.keys(location.state).length == 1) {
-      setActiveTab(0);
-      setTovarSn(location.state.tovarSn);
-    }
-    if (Object.keys(location.state).length == 4) {
-      setActiveTab(1);
-      setWithoutRequestProps(location.state);
-    }
+    // if (Object.keys(location.state).length == 1) {
+    //   setActiveTab(0);
+    //   setTovarSn(location.state.tovarSn);
+    // }
+    // if (Object.keys(location.state).length == 4) {
+    //   setActiveTab(1);
+    //   setWithoutRequestProps(location.state);
+    // }
   }, [location]);
 
   //Вкладки
