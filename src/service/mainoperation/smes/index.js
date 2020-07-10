@@ -12,6 +12,7 @@ import {
   Button,
   Icon,
   Dropdown,
+  Confirm,
 } from 'semantic-ui-react';
 import BasicInfo from './components/BasicInfo';
 
@@ -151,10 +152,6 @@ const Smes = props => {
     }
   };
 
-  const cancelPaymentClick = () => {
-    props.cancelPayment(serviceNumber, toSmvs);
-  };
-
   //===================================NEW====================================
   //==========================================================================
   //СПИСОК УСЛУГ
@@ -196,8 +193,22 @@ const Smes = props => {
         }); //Без заявки
   };
 
+  const [modalConfirm, setModalConfirm] = useState(false);
+  const cancelPaymentClick = () => {
+    setModalConfirm(false);
+    props.cancelPayment(serviceNumber, toSmvs);
+  };
   return (
     <Form>
+      <Confirm
+        header="Подтверждения"
+        content="Вы действительно хотите отменить?"
+        open={modalConfirm}
+        onCancel={() => setModalConfirm(false)}
+        onConfirm={cancelPaymentClick}
+        confirmButton="Да"
+        cancelButton="Нет"
+      />
       <Modal open={modalPay} closeIcon onClose={() => setModalPay(false)}>
         <Header content="Оплата" />
         <Modal.Content>
@@ -248,7 +259,7 @@ const Smes = props => {
           <Button
             disabled={service.serviceStatusId != 6 ? false : true}
             color="red"
-            onClick={cancelPaymentClick}
+            onClick={() => setModalConfirm(true)}
           >
             Отменить
           </Button>
