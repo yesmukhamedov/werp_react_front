@@ -88,7 +88,7 @@ function HistoryReactTable(props) {
           {
             Header: () => (
               <div style={{ textAlign: 'center' }}>
-                {messages['call_description']}
+                {messages['description']}
               </div>
             ),
             accessor: 'info',
@@ -131,6 +131,19 @@ function HistoryReactTable(props) {
             Cell: row => (
               <div style={{ textAlign: 'center' }}>
                 <LinkToSmvs serviceNumber={row.value} />
+              </div>
+            ),
+          },
+          {
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>
+                {messages['request_number']}
+              </div>
+            ),
+            accessor: 'applicationId',
+            Cell: row => (
+              <div style={{ textAlign: 'center' }}>
+                <LinkToSmvca id={row.value} />
               </div>
             ),
           },
@@ -183,6 +196,22 @@ function HistoryReactTable(props) {
             ),
             accessor: 'masterFIO',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+          },
+          {
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>
+                {messages['description']}
+              </div>
+            ),
+            accessor: 'info',
+            Cell: row => (
+              <Popup
+                content={row.value}
+                on="hover"
+                pinned="true"
+                trigger={<div style={{ textAlign: 'center' }}>{row.value}</div>}
+              />
+            ),
           },
           {
             Header: () => (
@@ -304,6 +333,22 @@ function HistoryReactTable(props) {
             ),
             accessor: 'operatorFIO',
             Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+          },
+          {
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>
+                {messages['description']}
+              </div>
+            ),
+            accessor: 'info',
+            Cell: row => (
+              <Popup
+                content={row.value}
+                on="hover"
+                pinned="true"
+                trigger={<div style={{ textAlign: 'center' }}>{row.value}</div>}
+              />
+            ),
           },
           {
             Header: () => (

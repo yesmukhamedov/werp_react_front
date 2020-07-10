@@ -124,8 +124,6 @@ function Smcca(props) {
   const [callAppData, setCallAppDate] = useState(moment(new Date()));
   const [error, setError] = useState([]);
 
-  console.log(request);
-
   const url = window.location.search;
   const contractNumber = url.slice(url.indexOf('=') + 1);
   const lang = localStorage.getItem('language');
