@@ -258,13 +258,15 @@ function Smcc(props) {
 
           //get service branch from the same city
           let serBranchInSameCity = {};
-          branchService[contract.bukrsId]
-            .filter(
-              item => item.parentbranchid === waSelectedBranch.parentbranchid,
-            )
-            .forEach(item => {
-              serBranchInSameCity = item;
-            });
+          if (contract.bukrsId !== 3000) {
+            branchService[contract.bukrsId]
+              .filter(
+                item => item.parentbranchid === waSelectedBranch.parentbranchid,
+              )
+              .forEach(item => {
+                serBranchInSameCity = item;
+              });
+          }
 
           varContract.countryId = waSelectedBranch.countryid;
           varContract.tovarCategoryId = waSelectedBranch.tovarcategory;
@@ -628,7 +630,7 @@ function Smcc(props) {
                           selection
                           search
                           options={
-                            contract.branchId
+                            contract.branchId && contract.bukrsId !== 3000
                               ? branchService[contract.bukrsId]
                               : []
                           }

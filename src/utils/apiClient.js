@@ -8,6 +8,9 @@ axiosInstance.interceptors.request.use(config => {
   // config.headers.Authorization = localStorage.getItem('token');
   config.headers['authorization'] = localStorage.getItem('token');
   config.headers['Content-Language'] = localStorage.getItem('language');
+  config.headers[
+    'Time-Zone'
+  ] = Intl.DateTimeFormat().resolvedOptions().timeZone;
   return config;
 });
 
