@@ -142,22 +142,8 @@ const Smsrcus = props => {
       checked: true,
     },
     {
-      Header: messages['Table.Date'],
+      Header: 'Дата продажи',
       accessor: 'contractDate',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      checked: true,
-      filterable: false,
-    },
-    {
-      Header: messages['financial_status'],
-      accessor: 'contractStatusName',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      checked: true,
-      filterable: false,
-    },
-    {
-      Header: 'Физический статус',
-      accessor: 'lastStateId',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
@@ -186,6 +172,21 @@ const Smsrcus = props => {
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
     },
+    {
+      Header: messages['financial_status'],
+      accessor: 'contractStatusName',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      checked: true,
+      filterable: false,
+    },
+    {
+      Header: 'Физический статус',
+      accessor: 'lastStateId',
+      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      checked: true,
+      filterable: false,
+    },
+
     {
       Header: messages['customer_story'],
       checked: true,

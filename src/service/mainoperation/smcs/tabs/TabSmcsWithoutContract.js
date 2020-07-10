@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Grid, Form, Button, Icon } from 'semantic-ui-react';
+import { Grid, Form, Button, Icon, Confirm } from 'semantic-ui-react';
 
 import {
   fetchTovarId,
@@ -986,8 +986,9 @@ const TabSmcsWithoutContract = props => {
       alert('Выберите мастера');
     }
   };
-
+  const [modalConfirm, setModalConfirm] = useState(false);
   const handleSave = () => {
+    setModalConfirm(false);
     // props.saveSmcsWithoutReques(checkSmcs, toSmvs);
     props.saveSmcsWithoutReques(service, data => {
       window.location = `smvs?serviceNumber=${data.data.id}`;
@@ -996,6 +997,15 @@ const TabSmcsWithoutContract = props => {
 
   return (
     <Form>
+      <Confirm
+        header="Подтверждения"
+        content="Вы действительно хотите сохранить?"
+        open={modalConfirm}
+        onCancel={() => setModalConfirm(false)}
+        onConfirm={handleSave}
+        confirmButton="Сохранить"
+        cancelButton="Отмена"
+      />
       <Grid>
         <Grid.Row>
           {/*BASIC INFO*/}
@@ -1081,7 +1091,7 @@ const TabSmcsWithoutContract = props => {
               disabled={!checkStatus}
               type="submit"
               primary
-              onClick={handleSave}
+              onClick={() => setModalConfirm(true)}
             >
               <Icon name="save" size="large" />
               Сохранить
