@@ -82,7 +82,7 @@ const SaleCartridge = props => {
         <Checkbox
           readOnly
           disabled={disabledEdit}
-          // checked={original.warranty}
+          checked={original.warranty}
           label="Гарантия"
           //   onChange={() => warrantySparePart(item)}
         />
