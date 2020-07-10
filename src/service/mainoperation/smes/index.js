@@ -91,6 +91,15 @@ const Smes = props => {
         };
         props.fetchMatnrPriceServicePackage({ ...param });
       }
+
+      if (smesList.branchId && smesList.bukrs) {
+        let param = {
+          brnch: smesList.branchId,
+          bukrs: smesList.bukrs,
+        };
+
+        props.fetchPaymentOptions({ ...param });
+      }
     }
   }, [smesList]);
 
