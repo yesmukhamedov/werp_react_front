@@ -56,6 +56,7 @@ const TabSmcsWithoutContract = props => {
     tovar = [],
     masterList = [],
     branchOptionsService,
+    withoutRequestProps = {},
   } = props;
 
   //Основной объект сервиса
@@ -923,6 +924,19 @@ const TabSmcsWithoutContract = props => {
       positions: [...servicesF, ...sparePart, ...cartridge, ...servicePackage],
     });
   }, [, services, sparePartInitial, cartridgeInitial, servicePackageInitial]);
+
+  useEffect(() => {
+    if (Object.keys(withoutRequestProps).length > 0) {
+      console.log('withoutRequestProps', withoutRequestProps.bukrs);
+      setService({
+        ...service,
+        bukrs: withoutRequestProps.bukrs,
+        branchId: withoutRequestProps.branchId,
+        categoryId: withoutRequestProps.categoryId,
+        tovarId: withoutRequestProps.tovarId,
+      });
+    }
+  }, [withoutRequestProps]);
 
   const handleCheck = () => {
     if (service.masterId) {

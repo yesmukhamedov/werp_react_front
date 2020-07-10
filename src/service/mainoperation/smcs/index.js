@@ -10,6 +10,8 @@ import './style.css';
 const Smcs = props => {
   const { location } = props;
   const [applicationNumber, setApplicationNumber] = useState();
+  const [tovarSn, setTovarSn] = useState('');
+  const [withoutRequestProps, setWithoutRequestProps] = useState({});
   const [activeTab, setActiveTab] = useState(0);
   useEffect(() => {
     if (
@@ -25,6 +27,14 @@ const Smcs = props => {
       let appNumber = parseInt(appNumberStr);
       setApplicationNumber(appNumber);
     }
+    if (Object.keys(location.state).length == 1) {
+      setActiveTab(0);
+      setTovarSn(location.state.tovarSn);
+    }
+    if (Object.keys(location.state).length == 4) {
+      setActiveTab(1);
+      setWithoutRequestProps(location.state);
+    }
   }, [location]);
 
   //Вкладки
@@ -36,7 +46,7 @@ const Smcs = props => {
       },
       pane: (
         <Tab.Pane key={1}>
-          <TabSmcsWithoutRequest />
+          <TabSmcsWithoutRequest tovarSnProps={tovarSn} />
         </Tab.Pane>
       ),
     },
@@ -47,7 +57,7 @@ const Smcs = props => {
       },
       pane: (
         <Tab.Pane key={2}>
-          <TabSmcsWithoutContract />
+          <TabSmcsWithoutContract withoutRequestProps={withoutRequestProps} />
         </Tab.Pane>
       ),
     },

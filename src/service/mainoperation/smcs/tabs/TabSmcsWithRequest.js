@@ -383,8 +383,6 @@ const TabSmcsWithRequest = props => {
   const [cartridgeList, setCartridgeList] = useState([]);
   const [modalCartridge, setModalCartridge] = useState(false);
 
-  console.log('cartridgeInitial', cartridgeInitial);
-
   const onChangeCartridge = (value, fieldName, original, id) => {
     switch (fieldName) {
       //Добавить картридж в список

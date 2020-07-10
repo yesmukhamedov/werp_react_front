@@ -55,10 +55,19 @@ const TabSmcsWithoutRequest = props => {
     operatorList = [],
     masterList = [],
     checkWarranty,
+    tovarSnProps,
   } = props;
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
+
+  useEffect(() => {
+    if (tovarSnProps != '') {
+      let tovarSn = tovarSnProps;
+      props.fetchServiceSmcs({ tovarSn });
+      props.fetchServiceTypeId();
+    }
+  }, [tovarSnProps]);
 
   const funcWarranty = (param, data, item) => {
     if (parseInt(item.serviceTypeId) == 3) {
