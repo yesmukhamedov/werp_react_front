@@ -183,17 +183,17 @@ const Smes = props => {
     service.applicationNumber != null
       ? props.history.push(
           `smcs?applicationNumber=${service.applicationNumber}`,
-        ) //console.log(`smcs?applicationNumber=${service.applicationNumber}`) // С заявкой
+        ) // С заявкой
       : service.contractId == null
       ? props.history.push(`smcs`, {
           bukrs: service.bukrs,
           branchId: service.branchId,
           categoryId: service.categoryId,
           tovarId: service.tovarId,
-        }) //console.log(`Без договора`) //Без договора
+        }) //Без договора
       : props.history.push(`smcs`, {
           tovarSn: service.tovarSn,
-        }); //console.log('Без заявки'); //Без заявки
+        }); //Без заявки
   };
 
   return (

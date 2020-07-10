@@ -242,6 +242,7 @@ export const checkSmcsWithoutReques = (body, successCheck) => {
           data: data,
         });
         successCheck();
+        dispatch(notify('success', 'Успешно проверено'));
       })
       .catch(error => {
         dispatch(modifyLoader(false));
