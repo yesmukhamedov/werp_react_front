@@ -103,6 +103,10 @@ const TabSmcsWithRequest = props => {
 
   const [services, setServices] = useState([]);
 
+  useEffect(() => {
+    setCheckStatus(false);
+  }, [services]);
+
   const serviceOptions = serviceTypeId
     .filter(
       item =>
@@ -385,6 +389,7 @@ const TabSmcsWithRequest = props => {
   useEffect(() => {
     let filterSparePart = sparePartList.filter(item => item.checked === true);
     setSparePartInitial([...filterSparePart]);
+    setCheckStatus(false);
   }, [sparePartList]);
 
   //ПРОДАЖА КАРТРИДЖЕЙ================================================================================================================
@@ -562,6 +567,7 @@ const TabSmcsWithRequest = props => {
   useEffect(() => {
     let filterCartridge = cartridgeList.filter(item => item.checked === true);
     setCartridgeInitial([...filterCartridge]);
+    setCheckStatus(false);
   }, [cartridgeList]);
   //СЕРВИС ПАКЕТ======================================================================================================================
   //==================================================================================================================================
@@ -689,6 +695,7 @@ const TabSmcsWithRequest = props => {
       item => item.checked === true,
     );
     setServicePackageInitial([...filterServicePackage]);
+    setCheckStatus(false);
   }, [servicePackageList]);
 
   useEffect(() => {

@@ -281,12 +281,20 @@ const TabSmcsWithoutRequest = props => {
       props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge });
       setEditStatus(false);
     }
+    setCheckStatus(false);
   }, [service.masterId]);
+
+  useEffect(() => {
+    setCheckStatus(false);
+  }, [service.operatorId]);
 
   //УСЛУГИ============================================================================================================================
   //==================================================================================================================================
 
   const [services, setServices] = useState([]);
+  useEffect(() => {
+    setCheckStatus(false);
+  }, [services]);
 
   const serviceOptions = serviceTypeId
     .filter(
@@ -571,6 +579,7 @@ const TabSmcsWithoutRequest = props => {
   useEffect(() => {
     let filterSparePart = sparePartList.filter(item => item.checked === true);
     setSparePartInitial([...filterSparePart]);
+    setCheckStatus(false);
   }, [sparePartList]);
 
   //ПРОДАЖА КАРТРИДЖЕЙ================================================================================================================
@@ -747,6 +756,7 @@ const TabSmcsWithoutRequest = props => {
   useEffect(() => {
     let filterCartridge = cartridgeList.filter(item => item.checked === true);
     setCartridgeInitial([...filterCartridge]);
+    setCheckStatus(false);
   }, [cartridgeList]);
 
   //СЕРВИС ПАКЕТ======================================================================================================================
@@ -874,6 +884,7 @@ const TabSmcsWithoutRequest = props => {
       item => item.checked === true,
     );
     setServicePackageInitial([...filterServicePackage]);
+    setCheckStatus(false);
   }, [servicePackageList]);
 
   useEffect(() => {

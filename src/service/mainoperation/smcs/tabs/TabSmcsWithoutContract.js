@@ -67,6 +67,17 @@ const TabSmcsWithoutContract = props => {
 
   const [checkStatus, setCheckStatus] = useState(false);
 
+  useEffect(() => {
+    setCheckStatus(false);
+  }, [
+    service.bukrs,
+    service.branchId,
+    service.categoryId,
+    service.tovarId,
+    service.masterId,
+    service.operatorId,
+  ]);
+
   console.log('checkStatus', checkStatus);
 
   // useEffect(() => {
@@ -258,6 +269,10 @@ const TabSmcsWithoutContract = props => {
   //==================================================================================================================================
 
   const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    setCheckStatus(false);
+  }, [services]);
 
   const serviceOptions = serviceTypeId
     .filter(
@@ -540,6 +555,7 @@ const TabSmcsWithoutContract = props => {
   useEffect(() => {
     let filterSparePart = sparePartList.filter(item => item.checked === true);
     setSparePartInitial([...filterSparePart]);
+    setCheckStatus(false);
   }, [sparePartList]);
 
   //ПРОДАЖА КАРТРИДЖЕЙ==================================================================================
@@ -715,6 +731,7 @@ const TabSmcsWithoutContract = props => {
   useEffect(() => {
     let filterCartridge = cartridgeList.filter(item => item.checked === true);
     setCartridgeInitial([...filterCartridge]);
+    setCheckStatus(false);
   }, [cartridgeList]);
 
   //СЕРВИС ПАКЕТ========================================================================================
@@ -842,6 +859,7 @@ const TabSmcsWithoutContract = props => {
       item => item.checked === true,
     );
     setServicePackageInitial([...filterServicePackage]);
+    setCheckStatus(false);
   }, [servicePackageList]);
 
   useEffect(() => {

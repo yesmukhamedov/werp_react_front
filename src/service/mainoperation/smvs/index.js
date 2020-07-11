@@ -13,6 +13,7 @@ import { fetchSmvsList } from './smvsAction';
 import './../../service.css';
 
 import { fetchMatnrPriceServicePackage } from '../smcs/smcsAction';
+import { Link } from 'react-router-dom';
 
 const Smes = props => {
   const { smvsList = {}, matnrServicePackage = [] } = props;
@@ -137,15 +138,15 @@ const Smes = props => {
         }}
       >
         <h3>Просмотр сервис карты</h3>
-        <Button color="green">
-          <a
-            target="_blank"
-            href={`smes?serviceNumber=${serviceNumber}`}
-            rel="noopener noreferrer"
-          >
-            Редактировать
-          </a>
-        </Button>
+
+        <Link
+          to={`smes?serviceNumber=${serviceNumber}`}
+          //href={`smes?serviceNumber=${serviceNumber}`}
+        >
+          <Button color="green">
+            <p>Редактировать</p>
+          </Button>
+        </Link>
       </Segment>
       <Grid>
         <Grid.Row>
