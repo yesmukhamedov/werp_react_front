@@ -404,11 +404,6 @@ const EditModal = props => {
                         locale={language}
                         id="datePicker"
                       />
-                      <i
-                        aria-hidden="true"
-                        className="calendar alternate outline big icon"
-                        id="calendarIcon"
-                      ></i>
                     </Input>
                   </Form.Field>{' '}
                 </Table.Cell>

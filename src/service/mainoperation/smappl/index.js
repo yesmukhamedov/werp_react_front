@@ -1,13 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import {
-  Segment,
-  Header,
-  Divider,
-  Button,
-  Form,
-  Icon,
-} from 'semantic-ui-react';
+import { Segment, Divider, Button, Form, Icon, Popup } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import OutputErrors from '../../../general/error/outputErrors';
@@ -201,17 +194,7 @@ const Smappl = props => {
       filterable: false,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
-    {
-      Header: `№ ${messages['Applications']}`,
-      accessor: 'id',
-      show: true,
-      filterable: false,
-      Cell: ({ row }) => (
-        <div style={{ textAlign: 'center' }}>
-          <LinkToSmecam id={row._original.id} />
-        </div>
-      ),
-    },
+
     {
       Header: `${messages['service']} №`,
 
@@ -236,6 +219,18 @@ const Smappl = props => {
         </div>
       ),
     },
+    {
+      Header: `№ ${messages['Applications']}`,
+      accessor: 'id',
+      show: true,
+      filterable: false,
+      Cell: ({ row }) => (
+        <div style={{ textAlign: 'center' }}>
+          <LinkToSmecam id={row._original.id} />
+        </div>
+      ),
+      fixed: 'right',
+    },
 
     {
       Header: messages['Table.View'],
@@ -248,11 +243,17 @@ const Smappl = props => {
           original.row.contractNumber == undefined ? (
           ''
         ) : (
-          <div style={{ textAlign: 'center' }}>
-            <Link to={url} target="_blank">
-              <Icon name="address card" color="black" />
-            </Link>
-          </div>
+          <Popup
+            content="История клиента"
+            size="tiny"
+            trigger={
+              <div style={{ textAlign: 'center' }}>
+                <Link to={url} target="_blank">
+                  <Icon name="address card" color="black" />
+                </Link>
+              </div>
+            }
+          />
         );
       },
       width: 60,
