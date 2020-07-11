@@ -70,7 +70,7 @@ const Smappl = props => {
     aDateFrom: null,
     aDateTo: null,
     tovarCategorys: null,
-    appStatusIds: [1, 5, 2, 3, 4],
+    appStatusIds: [1, 2, 3, 4],
     appTypeIds: null,
     direction: 'DESC',
     orderBy: 'id',
