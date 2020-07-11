@@ -335,7 +335,13 @@ const Smeca = props => {
                         <Input
                           fluid
                           readOnly
-                          value={smeca.installmentDate || ''}
+                          value={
+                            smeca.installmentDate
+                              ? moment(smeca.installmentDate).format(
+                                  'DD-MM-YYYY',
+                                )
+                              : ''
+                          }
                         />
                       </Table.Cell>
                     </Table.Row>
@@ -362,7 +368,15 @@ const Smeca = props => {
                         {`${messages['date_of_admission_to_the_service']} и время`}
                       </Table.Cell>
                       <Table.Cell>
-                        <Input fluid readOnly value={smeca.serviceDate || ''} />
+                        <Input
+                          fluid
+                          readOnly
+                          value={
+                            smeca.serviceDate
+                              ? moment(smeca.serviceDate).format('DD-MM-YYYY')
+                              : ''
+                          }
+                        />
                       </Table.Cell>
                     </Table.Row>
 

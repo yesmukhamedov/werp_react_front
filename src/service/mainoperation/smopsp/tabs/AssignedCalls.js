@@ -99,7 +99,11 @@ const AssignedCalls = props => {
       Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => (
+        <TextAlignCenter
+          text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        />
+      ),
       filterable: false,
       width: 80,
     },
@@ -107,7 +111,11 @@ const AssignedCalls = props => {
       Header: messages['appointment_date'],
       accessor: 'crmScheduleDate',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => (
+        <TextAlignCenter
+          text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        />
+      ),
       filterable: false,
       width: 80,
     },

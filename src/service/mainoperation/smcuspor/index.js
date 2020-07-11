@@ -393,7 +393,11 @@ function Smcuspor(props) {
                       <Input
                         size="small"
                         fluid
-                        value={contractDate ? contractDate : ''}
+                        value={
+                          contractDate
+                            ? moment(contractDate).format('DD-MM-YYYY')
+                            : ''
+                        }
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -407,7 +411,11 @@ function Smcuspor(props) {
                       <Input
                         size="small"
                         fluid
-                        value={installmentDate ? installmentDate : ''}
+                        value={
+                          installmentDate
+                            ? moment(installmentDate).format('DD-MM-YYYY')
+                            : ''
+                        }
                       />
                     </Table.Cell>
                   </Table.Row>
@@ -453,7 +461,13 @@ function Smcuspor(props) {
                               <Input
                                 size="small"
                                 fluid
-                                value={warrantyEndDate ? warrantyEndDate : ''}
+                                value={
+                                  warrantyEndDate
+                                    ? moment(warrantyEndDate).format(
+                                        'DD-MM-YYYY',
+                                      )
+                                    : ''
+                                }
                               />
                             </Table.Cell>
                             <Table.Cell>

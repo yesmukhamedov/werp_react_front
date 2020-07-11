@@ -11,11 +11,12 @@ import ModalColumns from '../../../../utils/ModalColumns';
 import { LinkToSmcuspor } from '../../../../utils/outlink';
 import { Link } from 'react-router-dom';
 import DropdownClearable from '../../../../utils/DropdownClearable';
+import moment from 'moment';
 
 const TransferApplicationEntry = props => {
   const {
     intl: { messages },
-    transferApplicationData,
+    transferApplicationData = [],
     companyOptions = [],
     countryOptions,
     branchOptions = [],
@@ -79,7 +80,11 @@ const TransferApplicationEntry = props => {
       Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div style={{ textAlign: 'center' }}>
+          {row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        </div>
+      ),
       filterable: false,
       width: 80,
     },
@@ -87,7 +92,11 @@ const TransferApplicationEntry = props => {
       Header: messages['transfer_date'],
       accessor: 'rescheduledDate',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div style={{ textAlign: 'center' }}>
+          {row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        </div>
+      ),
       filterable: false,
     },
 
@@ -95,7 +104,11 @@ const TransferApplicationEntry = props => {
       Header: messages['Application_Date'],
       accessor: 'applicationDate',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div style={{ textAlign: 'center' }}>
+          {row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        </div>
+      ),
       filterable: false,
     },
     {
@@ -349,7 +362,7 @@ const TransferApplicationEntry = props => {
 function mapStateToProps(state) {
   return {
     language: state.locales.lang,
-    transferApplicationData: state.smopccicReducer.transferApplicationData,
+    transferApplicationData: state.smopccicReducer.transferApplicationData.data,
   };
 }
 

@@ -25,6 +25,7 @@ import {
 } from '../../../../utils/helpers';
 import { Link } from 'react-router-dom';
 import DropdownClearable from '../../../../utils/DropdownClearable';
+import moment from 'moment';
 
 const AssignedCalls = props => {
   const {
@@ -82,7 +83,11 @@ const AssignedCalls = props => {
       Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => (
+        <TextAlignCenter
+          text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        />
+      ),
       width: 80,
       filterable: false,
     },
@@ -90,8 +95,12 @@ const AssignedCalls = props => {
       Header: messages['appointment_date'],
       accessor: 'crmScheduleDate',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
-
+      Cell: row => (
+        <TextAlignCenter
+          text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        />
+      ),
+      width: 80,
       filterable: false,
     },
 

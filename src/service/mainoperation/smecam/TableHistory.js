@@ -3,6 +3,7 @@ import { Container, Segment, Header, Popup } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import 'react-table/react-table.css';
 import TextAlignCenter from '../../../utils/TextAlignCenter';
+import moment from 'moment';
 
 const TableHistory = props => {
   const { data = [], messages } = props;
@@ -22,7 +23,11 @@ const TableHistory = props => {
     {
       Header: messages['operationDate'],
       accessor: 'revsttmp',
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => (
+        <TextAlignCenter
+          text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        />
+      ),
       filterAll: true,
     },
     {
@@ -89,7 +94,11 @@ const TableHistory = props => {
     {
       Header: 'Дата установки',
       accessor: 'installmentDate',
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => (
+        <TextAlignCenter
+          text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        />
+      ),
       filterAll: true,
     },
     {
@@ -107,19 +116,31 @@ const TableHistory = props => {
     {
       Header: 'Дата приема в сервисе',
       accessor: 'serviceDate',
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => (
+        <TextAlignCenter
+          text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        />
+      ),
       filterAll: true,
     },
     {
       Header: 'Время сервиса',
       accessor: 'serviceDate',
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => (
+        <TextAlignCenter
+          text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        />
+      ),
       filterAll: true,
     },
     {
       Header: 'Дата переноса',
       accessor: 'rescheduledDate',
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => (
+        <TextAlignCenter
+          text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        />
+      ),
       filterAll: true,
     },
     {

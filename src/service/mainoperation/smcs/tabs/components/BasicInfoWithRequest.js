@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table, Input } from 'semantic-ui-react';
+import moment from 'moment';
 
 const BasicInfoWithoutContract = props => {
   const { data = {} } = props;
@@ -87,7 +88,11 @@ const BasicInfoWithoutContract = props => {
             <Input
               fluid
               readOnly
-              value={data.contractDate ? data.contractDate : ''}
+              value={
+                data.contractDate
+                  ? moment(data.contractDate).format('DD-MM-YYYY')
+                  : ''
+              }
             />
           </Table.Cell>
         </Table.Row>
@@ -112,7 +117,15 @@ const BasicInfoWithoutContract = props => {
         <Table.Row>
           <Table.Cell>Дата сервиса</Table.Cell>
           <Table.Cell>
-            <Input fluid readOnly value={data.serviceDate} />
+            <Input
+              fluid
+              readOnly
+              value={
+                data.serviceDate
+                  ? moment(data.serviceDate).format('DD-MM-YYYY')
+                  : ''
+              }
+            />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
@@ -120,7 +133,11 @@ const BasicInfoWithoutContract = props => {
           <Table.Cell>
             <Input
               readOnly
-              value={data.warrantyPeriodDate ? data.warrantyPeriodDate : ''}
+              value={
+                data.warrantyPeriodDate
+                  ? moment(data.warrantyPeriodDate).format('DD-MM-YYYY')
+                  : ''
+              }
             />
           </Table.Cell>
         </Table.Row>

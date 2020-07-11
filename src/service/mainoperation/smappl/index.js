@@ -138,7 +138,11 @@ const Smappl = props => {
       Header: messages['Application_Date'],
       accessor: 'adate',
       show: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div style={{ textAlign: 'center' }}>
+          {moment(row.value).format('DD-MM-YYYY')}
+        </div>
+      ),
     },
     {
       Header: messages['Form.Reco.RecoName'],

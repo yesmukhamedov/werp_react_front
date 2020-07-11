@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Segment, Header } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import 'react-table/react-table.css';
+import moment from 'moment';
 
 const ListHistory = props => {
   const { historyDynamicObject, messages } = props;
@@ -15,12 +16,20 @@ const ListHistory = props => {
     {
       Header: messages['old'],
       accessor: 'date',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div style={{ textAlign: 'center' }}>
+          {row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        </div>
+      ),
     },
     {
       Header: messages['new'],
       accessor: 'date',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div style={{ textAlign: 'center' }}>
+          {row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        </div>
+      ),
     },
     {
       Header: messages['L__DESCRIPTION'],

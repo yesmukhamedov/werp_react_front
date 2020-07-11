@@ -23,6 +23,7 @@ import TextAlignCenter from '../../../../utils/TextAlignCenter';
 import { f4FetchBranchesByBukrs } from './../../../../reference/f4/f4_action';
 import { Link } from 'react-router-dom';
 import DropdownClearable from '../../../../utils/DropdownClearable';
+import moment from 'moment';
 
 const ServiceFilterPlan = props => {
   const {
@@ -89,7 +90,11 @@ const ServiceFilterPlan = props => {
       Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => (
+        <TextAlignCenter
+          text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        />
+      ),
       filterable: false,
       width: 80,
     },

@@ -10,7 +10,6 @@ import {
   Checkbox,
   Form,
   TextArea,
-  Label,
 } from 'semantic-ui-react';
 
 import { fetchServAppType } from '../../reference/srefAction';
@@ -495,7 +494,11 @@ function Smcca(props) {
                         size="small"
                         fluid
                         disabled
-                        value={installmentDate ? installmentDate : ''}
+                        value={
+                          installmentDate
+                            ? moment(installmentDate).format('DD-MM-YYYY')
+                            : ''
+                        }
                       />
                     </Table.Cell>
                   </Table.Row>

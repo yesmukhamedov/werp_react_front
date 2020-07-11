@@ -104,7 +104,11 @@ const MyApplication = props => {
     {
       Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div style={{ textAlign: 'center' }}>
+          {row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        </div>
+      ),
       checked: true,
       filterable: false,
       width: 80,
@@ -112,7 +116,11 @@ const MyApplication = props => {
     {
       Header: messages['Application_Date'],
       accessor: 'applicationDate',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div style={{ textAlign: 'center' }}>
+          {row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        </div>
+      ),
       checked: true,
       filterable: false,
       width: 80,

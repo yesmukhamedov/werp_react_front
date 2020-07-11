@@ -217,7 +217,9 @@ const Smecam = props => {
                                   readOnly
                                   value={
                                     smecam.applicationDate
-                                      ? smecam.applicationDate
+                                      ? moment(smecam.applicationDate).format(
+                                          'DD-MM-YYYY',
+                                        )
                                       : ''
                                   }
                                 />
@@ -337,7 +339,13 @@ const Smecam = props => {
                         <Input
                           fluid
                           readOnly
-                          value={smecam.installmentDate || ''}
+                          value={
+                            smecam.installmentDate
+                              ? moment(smecam.installmentDate).format(
+                                  'DD-MM-YYYY',
+                                )
+                              : ''
+                          }
                         />
                       </Table.Cell>
                     </Table.Row>
@@ -367,7 +375,11 @@ const Smecam = props => {
                         <Input
                           fluid
                           readOnly
-                          value={smecam.serviceDate || ''}
+                          value={
+                            smecam.serviceDate
+                              ? moment(smecam.serviceDate).format('DD-MM-YYYY')
+                              : ''
+                          }
                         />
                       </Table.Cell>
                     </Table.Row>

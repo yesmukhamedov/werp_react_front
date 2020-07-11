@@ -18,6 +18,7 @@ import {
   stringYYYYMMDDToMoment,
 } from '../../../../utils/helpers';
 import DropdownClearable from '../../../../utils/DropdownClearable';
+import moment from 'moment';
 
 const MyApplicationExodus = props => {
   const {
@@ -27,7 +28,6 @@ const MyApplicationExodus = props => {
     countryOptions,
     myApplication = [],
     branchOptions = [],
-    crmCategoryOptions = [],
   } = props;
 
   const emptyParam = {
@@ -88,7 +88,11 @@ const MyApplicationExodus = props => {
       Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div style={{ textAlign: 'center' }}>
+          {row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        </div>
+      ),
       width: 80,
       filterable: false,
     },
@@ -96,8 +100,12 @@ const MyApplicationExodus = props => {
       Header: messages['Application_Date'],
       accessor: 'applicationDate',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-
+      Cell: row => (
+        <div style={{ textAlign: 'center' }}>
+          {row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        </div>
+      ),
+      width: 80,
       filterable: false,
     },
     {

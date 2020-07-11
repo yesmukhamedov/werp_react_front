@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Input, Form } from 'semantic-ui-react';
 import DropdownClearable from '../../../../../utils/DropdownClearable';
+import moment from 'moment';
 
 const BasicInfoWithoutContract = props => {
   const {
@@ -133,7 +134,15 @@ const BasicInfoWithoutContract = props => {
         <Table.Row>
           <Table.Cell>Дата покупки</Table.Cell>
           <Table.Cell>
-            <Input fluid readOnly value={data.contractDate} />
+            <Input
+              fluid
+              readOnly
+              value={
+                data.contractDate
+                  ? moment(data.contractDate).format('DD-MM-YYYY')
+                  : ''
+              }
+            />
           </Table.Cell>
         </Table.Row>
 
@@ -179,13 +188,28 @@ const BasicInfoWithoutContract = props => {
         <Table.Row>
           <Table.Cell>Дата сервиса</Table.Cell>
           <Table.Cell>
-            <Input fluid readOnly value={data.serviceDate} />
+            <Input
+              fluid
+              readOnly
+              value={
+                data.serviceDate
+                  ? moment(data.serviceDate).format('DD-MM-YYYY')
+                  : ''
+              }
+            />
           </Table.Cell>
         </Table.Row>
         <Table.Row>
           <Table.Cell>Срок гарантии</Table.Cell>
           <Table.Cell className="tableRow">
-            <Input readOnly value={data.warrantyPeriodDate} />
+            <Input
+              readOnly
+              value={
+                data.warrantyPeriodDate
+                  ? moment(data.warrantyPeriodDate).format('DD-MM-YYYY')
+                  : ''
+              }
+            />
           </Table.Cell>
         </Table.Row>
         <Table.Row>

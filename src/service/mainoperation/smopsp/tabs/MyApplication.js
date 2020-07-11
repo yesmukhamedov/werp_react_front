@@ -114,7 +114,11 @@ const MyApplication = props => {
       Header: messages['Application_Date'],
       accessor: 'applicationDate',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div style={{ textAlign: 'center' }}>
+          {row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        </div>
+      ),
       width: 80,
     },
 

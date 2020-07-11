@@ -19,6 +19,7 @@ import {
   stringYYYYMMDDToMoment,
 } from '../../../../utils/helpers';
 import DropdownClearable from '../../../../utils/DropdownClearable';
+import moment from 'moment';
 
 const TransferApplicationExodus = props => {
   const {
@@ -74,7 +75,11 @@ const TransferApplicationExodus = props => {
       Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => (
+        <TextAlignCenter
+          text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        />
+      ),
       filterable: false,
       width: 80,
     },
@@ -82,14 +87,22 @@ const TransferApplicationExodus = props => {
       Header: messages['transfer_date'],
       accessor: 'rescheduledDate',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => (
+        <TextAlignCenter
+          text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        />
+      ),
       filterable: false,
     },
     {
       Header: messages['Application_Date'],
       accessor: 'applicationDate',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => (
+        <TextAlignCenter
+          text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        />
+      ),
       filterable: false,
     },
     {

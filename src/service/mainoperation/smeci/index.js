@@ -24,13 +24,13 @@ import AddressF4Modal from '../../../reference/f4/address/addressF4WithCreationP
 
 import { injectIntl } from 'react-intl';
 import './smeci.css';
+import moment from 'moment';
 
 function Smeci(props) {
   const url = window.location.search;
   const contractNumber = url.slice(url.indexOf('=') + 1);
 
   const emptyContract = {
-    manual: 0,
     f1Mt: '',
     f2Mt: '',
     f3Mt: '',
@@ -141,9 +141,6 @@ function Smeci(props) {
     setContract(prev => {
       const newContract = { ...prev };
       switch (fieldName) {
-        case 'manual':
-          newContract.manual = Number.parseInt(e.value, 10);
-          break;
         case 'f1Mt':
           newContract.f1Mt = e.value;
           break;
@@ -228,7 +225,6 @@ function Smeci(props) {
         info,
         info2,
         installmentDate,
-        manual,
         serviceBranchId,
         serviceBranchName,
         serviceCrmCategoryId: servCrmCategory,
@@ -247,7 +243,6 @@ function Smeci(props) {
 
   const clearContract = () => {
     setContract({
-      manual: 0,
       f1Mt: '',
       f2Mt: '',
       f3Mt: '',
@@ -486,7 +481,11 @@ function Smeci(props) {
                         <Input
                           size="small"
                           fluid
-                          value={contractDate ? contractDate : ''}
+                          value={
+                            contractDate
+                              ? moment(contractDate).format('DD-MM-YYYY')
+                              : ''
+                          }
                           disabled
                         />
                       </Table.Cell>
@@ -498,7 +497,11 @@ function Smeci(props) {
                         <Input
                           size="small"
                           fluid
-                          value={installmentDate ? installmentDate : ''}
+                          value={
+                            installmentDate
+                              ? moment(installmentDate).format('DD-MM-YYYY')
+                              : ''
+                          }
                           disabled
                         />
                       </Table.Cell>
@@ -538,7 +541,13 @@ function Smeci(props) {
                                 <Input
                                   size="small"
                                   fluid
-                                  value={warrantyEndDate ? warrantyEndDate : ''}
+                                  value={
+                                    warrantyEndDate
+                                      ? moment(warrantyEndDate).format(
+                                          'DD-MM-YYYY',
+                                        )
+                                      : ''
+                                  }
                                   disabled
                                 />
                               </Table.Cell>
@@ -572,10 +581,7 @@ function Smeci(props) {
                                   label={messages['automate']}
                                   name="changeTerm"
                                   value="0"
-                                  checked={contract.manual === 0}
-                                  onChange={(e, o) =>
-                                    onInputChange(o, 'manual')
-                                  }
+                                  checked={contractInfo.manual === 0}
                                 />
                               </Table.Cell>
                               <Table.Cell>
@@ -584,10 +590,7 @@ function Smeci(props) {
                                   label={messages['manual']}
                                   name="changeTerm"
                                   value="1"
-                                  checked={contract.manual === 1}
-                                  onChange={(e, o) =>
-                                    onInputChange(o, 'manual')
-                                  }
+                                  checked={contractInfo.manual === 1}
                                 />
                               </Table.Cell>
                             </Table.Row>
@@ -596,7 +599,7 @@ function Smeci(props) {
                       </Table.Cell>
                       <Table.Cell></Table.Cell>
                     </Table.Row>
-                    {contract.manual === 1 ? (
+                    {contractInfo.manual === 1 ? (
                       <Table.Row>
                         <Table.Cell>{messages['filter_term']}</Table.Cell>
                         <Table.Cell>

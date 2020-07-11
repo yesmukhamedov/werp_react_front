@@ -18,6 +18,7 @@ import {
   postSmecimContractInfo,
   fetchBranchList,
 } from '../../serviceAction';
+import moment from 'moment';
 
 import { f4FetchCrmCategory } from '../../../reference/f4/f4_action';
 
@@ -478,7 +479,11 @@ function Smecim(props) {
                         <Input
                           size="small"
                           fluid
-                          value={contractDate ? contractDate : ''}
+                          value={
+                            contractDate
+                              ? moment(contractDate).format('DD-MM-YYYY')
+                              : ''
+                          }
                           disabled
                         />
                       </Table.Cell>
@@ -490,7 +495,11 @@ function Smecim(props) {
                         <Input
                           size="small"
                           fluid
-                          value={installmentDate ? installmentDate : ''}
+                          value={
+                            installmentDate
+                              ? moment(installmentDate).format('DD-MM-YYYY')
+                              : ''
+                          }
                           disabled
                         />
                       </Table.Cell>
@@ -530,7 +539,13 @@ function Smecim(props) {
                                 <Input
                                   size="small"
                                   fluid
-                                  value={warrantyEndDate ? warrantyEndDate : ''}
+                                  value={
+                                    warrantyEndDate
+                                      ? moment(warrantyEndDate).format(
+                                          'DD-MM-YYYY',
+                                        )
+                                      : ''
+                                  }
                                   disabled
                                 />
                               </Table.Cell>

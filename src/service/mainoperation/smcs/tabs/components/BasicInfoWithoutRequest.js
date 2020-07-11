@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Table, Input, Form } from 'semantic-ui-react';
 import DropdownClearable from '../../../../../utils/DropdownClearable';
+import moment from 'moment';
 
 const BasicInfoWithoutRequest = props => {
   const {
@@ -107,7 +108,11 @@ const BasicInfoWithoutRequest = props => {
             <Input
               fluid
               readOnly
-              value={data.contractDate ? data.contractDate : ''}
+              value={
+                data.contractDate
+                  ? moment(data.contractDate).format('DD-MM-YYYY')
+                  : ''
+              }
             />
           </Table.Cell>
         </Table.Row>
@@ -159,7 +164,11 @@ const BasicInfoWithoutRequest = props => {
             <Input
               fluid
               readOnly
-              value={data.serviceDate ? data.serviceDate : ''}
+              value={
+                data.serviceDate
+                  ? moment(data.serviceDate).format('DD-MM-YYYY')
+                  : ''
+              }
             />
           </Table.Cell>
         </Table.Row>
@@ -168,7 +177,11 @@ const BasicInfoWithoutRequest = props => {
           <Table.Cell className="tableRow">
             <Input
               readOnly
-              value={data.warrantyPeriodDate ? data.warrantyPeriodDate : ''}
+              value={
+                data.warrantyPeriodDate
+                  ? moment(data.warrantyPeriodDate).format('DD-MM-YYYY')
+                  : ''
+              }
             />
           </Table.Cell>
         </Table.Row>

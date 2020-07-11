@@ -86,7 +86,11 @@ const SearchCustomer = props => {
       Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div style={{ textAlign: 'center' }}>
+          {row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        </div>
+      ),
       filterable: false,
       width: 80,
     },
@@ -107,7 +111,7 @@ const SearchCustomer = props => {
       width: 90,
     },
     {
-      Header: 'Физ статус',
+      Header: messages['phys_status'],
       accessor: 'lastStateId',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,

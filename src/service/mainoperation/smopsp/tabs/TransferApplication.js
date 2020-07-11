@@ -95,7 +95,11 @@ const TransferApplication = props => {
       Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => (
+        <TextAlignCenter
+          text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        />
+      ),
       filterable: false,
       width: 80,
     },
@@ -104,7 +108,11 @@ const TransferApplication = props => {
       Header: messages['transfer_date'],
       accessor: 'rescheduledDate',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => (
+        <TextAlignCenter
+          text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        />
+      ),
       filterable: false,
       width: 80,
     },
@@ -112,7 +120,11 @@ const TransferApplication = props => {
       Header: messages['Application_Date'],
       accessor: 'applicationDate',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => (
+        <TextAlignCenter
+          text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        />
+      ),
       filterable: false,
       width: 80,
     },
