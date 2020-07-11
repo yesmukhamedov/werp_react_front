@@ -73,7 +73,6 @@ export default function(state = INITIAL_STATE, action) {
       return { ...state, checkSmcs: { ...action.data.data } };
 
     case SAVE_SMCS_WITHOUT_REQUEST:
-      console.log('action.data ', action.data);
       return { ...state, saveSmcs: { ...action.data } };
 
     case FETCH_OPERATOR_LIST:

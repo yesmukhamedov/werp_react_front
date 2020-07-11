@@ -4,7 +4,7 @@ import { injectIntl } from 'react-intl';
 import TabSmcsWithoutContract from './tabs/TabSmcsWithoutContract';
 import TabSmcsWithRequest from './tabs/TabSmcsWithRequest';
 import TabSmcsWithoutRequest from './tabs/TabSmcsWithoutRequest';
-import { Container, Tab, Segment, Label } from 'semantic-ui-react';
+import { Container, Tab, Segment } from 'semantic-ui-react';
 import './style.css';
 
 const Smcs = props => {
@@ -19,7 +19,6 @@ const Smcs = props => {
       location.search === null ||
       location.search === undefined
     ) {
-      console.log('Object.keys(location.state).length', location.state);
       if (location.state) {
         if (Object.keys(location.state).length == 1) {
           setActiveTab(0);

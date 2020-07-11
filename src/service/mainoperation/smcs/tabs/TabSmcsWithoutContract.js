@@ -60,8 +60,6 @@ const TabSmcsWithoutContract = props => {
     withoutRequestProps = {},
   } = props;
 
-  console.log('PRRROPS', props);
-
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
 
@@ -78,21 +76,11 @@ const TabSmcsWithoutContract = props => {
     service.operatorId,
   ]);
 
-  console.log('checkStatus', checkStatus);
-
-  // useEffect(() => {
-  //   if (Object.keys(service).length > 0) {
-  //     setCheckStatus(false);
-  //   }
-  // }, [service]);
-
   const successCheck = () => {
-    console.log('CHECK STATUS++', checkStatus);
     setCheckStatus(true);
   };
 
   const toSmvs = data => {
-    console.log('LINK TO SMVS', data);
     setCheckStatus(false);
     return <LinkToSmvs serviceNumber={data.data.id} />;
   };
@@ -969,7 +957,6 @@ const TabSmcsWithoutContract = props => {
 
   useEffect(() => {
     if (Object.keys(withoutRequestProps).length > 0) {
-      console.log('withoutRequestProps', withoutRequestProps);
       setService({
         ...service,
         bukrs: withoutRequestProps.bukrs,

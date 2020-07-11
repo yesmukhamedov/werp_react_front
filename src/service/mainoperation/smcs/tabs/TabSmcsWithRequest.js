@@ -58,7 +58,6 @@ const TabSmcsWithRequest = props => {
   const [checkStatus, setCheckStatus] = useState(false);
 
   const toSmvs = () => {
-    console.log('LINK TO SMVS');
     setCheckStatus(false);
   };
 
@@ -156,7 +155,6 @@ const TabSmcsWithRequest = props => {
       item => item.serviceTypeId == value.value,
     );
 
-    console.log(servicesFilter);
     if (servicesFilter.length > 0) {
       alert(
         'Вы не можете добавить несколько одноименных услуг в эту сервис карту',
@@ -634,11 +632,8 @@ const TabSmcsWithRequest = props => {
         );
         break;
 
-      case 'dimmerClose':
-        console.log('DIMMER');
-        break;
       default:
-        console.log('нет таких!');
+        console.log('Нет таких значении!');
         break;
     }
   };

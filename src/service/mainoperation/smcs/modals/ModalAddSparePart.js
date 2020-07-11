@@ -69,7 +69,7 @@ const ModalAddSparePart = props => {
   ];
   return (
     <Modal open={modalOpen} closeOnDimmerClick dimmer={'blurring'}>
-      <Header content="Добавление запчастей" />
+      <Header content="Добавить запчасть" />
       <Modal.Content>
         <ReactTableWrapper
           filterable={true}

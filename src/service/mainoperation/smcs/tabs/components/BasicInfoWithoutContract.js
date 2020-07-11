@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Table, Icon, Input, Dropdown, Form } from 'semantic-ui-react';
+import { Table, Input, Form } from 'semantic-ui-react';
 import DropdownClearable from '../../../../../utils/DropdownClearable';
 
 const BasicInfoWithoutContract = props => {
@@ -13,9 +13,6 @@ const BasicInfoWithoutContract = props => {
     tovarOptions,
     masterOptions,
   } = props;
-
-  console.log('BR OPT', branchOptions);
-  console.log('OPER OPT', operatorOptions);
 
   return (
     <Table>

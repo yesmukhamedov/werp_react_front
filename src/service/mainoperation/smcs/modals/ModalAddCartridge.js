@@ -64,7 +64,7 @@ const ModalAddCartridge = props => {
 
   return (
     <Modal open={modalOpen} closeOnDimmerClick dimmer={'blurring'}>
-      <Header content="Добавление запчастей" />
+      <Header content="Добавить картридж" />
       <Modal.Content>
         <ReactTableWrapper
           filterable={true}

@@ -70,7 +70,6 @@ const TabSmcsWithoutRequest = props => {
   }, [service]);
 
   const toSmvs = () => {
-    console.log('LINK TO SMVS');
     setCheckStatus(false);
   };
 
@@ -827,7 +826,7 @@ const TabSmcsWithoutRequest = props => {
       case 'dimmerClose':
         break;
       default:
-        console.log('нет таких!');
+        console.log('Нет таких значении!');
         break;
     }
   };

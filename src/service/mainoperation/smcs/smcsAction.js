@@ -291,8 +291,6 @@ export const fetchSmcsByAppNumber = param => {
 };
 //Проверка гарантии
 export const fetchCheckWarranty = (param, funcWarranty, value) => {
-  console.log('ACTION PARAM', param);
-  const text = 'JAX';
   return function(dispatch) {
     doGet(`smcs/checkWarranty`, param)
       .then(({ data }) => {

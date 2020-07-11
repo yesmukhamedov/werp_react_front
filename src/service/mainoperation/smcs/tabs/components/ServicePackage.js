@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  Button,
-  Segment,
-  Icon,
-  Divider,
-  Input,
-  Checkbox,
-} from 'semantic-ui-react';
+import { Button, Segment, Icon, Divider } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
 import { moneyFormat } from '../../../../../utils/helpers';
 
