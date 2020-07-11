@@ -45,7 +45,7 @@ const MmccContactDetails = props => {
   }, [bukrsBranches, branchId]);
 
   useEffect(() => {
-    if (customerId) {
+    if (customerId && customerId > 0) {
       props.f4FetchPhone({
         search: `customerId==${customerId}`,
       });
@@ -74,7 +74,7 @@ const MmccContactDetails = props => {
         customerName={customerName}
         onCloseAddressF4={bool => {
           setAddressF4ModalOpen(bool);
-          if (!bool) {
+          if (!bool && customerId && customerId > 0) {
             props.f4FetchPhone({
               search: `customerId==${customerId}`,
             });
@@ -90,6 +90,9 @@ const MmccContactDetails = props => {
           <Table.Row>
             <Table.HeaderCell>{messages['addrType']}</Table.HeaderCell>
             <Table.HeaderCell>{messages['address']}</Table.HeaderCell>
+            <Table.HeaderCell>{messages['telDom']}</Table.HeaderCell>
+            <Table.HeaderCell>{messages['telMob1']}</Table.HeaderCell>
+            <Table.HeaderCell>{messages['telMob2']}</Table.HeaderCell>
             <Table.HeaderCell />
           </Table.Row>
         </Table.Header>
@@ -98,6 +101,15 @@ const MmccContactDetails = props => {
             <Table.Cell>{messages['addressHome']}</Table.Cell>
             <Table.Cell>
               <span>{addrHome.address}</span>
+            </Table.Cell>
+            <Table.Cell>
+              <span>{addrHome.telDom}</span>
+            </Table.Cell>
+            <Table.Cell>
+              <span>{addrHome.telMob1}</span>
+            </Table.Cell>
+            <Table.Cell>
+              <span>{addrHome.telMob2}</span>
             </Table.Cell>
             <Table.Cell>
               <span>
@@ -128,6 +140,15 @@ const MmccContactDetails = props => {
               <span>{addrWork.address}</span>
             </Table.Cell>
             <Table.Cell>
+              <span>{addrWork.telDom}</span>
+            </Table.Cell>
+            <Table.Cell>
+              <span>{addrWork.telMob1}</span>
+            </Table.Cell>
+            <Table.Cell>
+              <span>{addrWork.telMob2}</span>
+            </Table.Cell>
+            <Table.Cell>
               <span>
                 <Icon
                   name="clone"
@@ -154,6 +175,15 @@ const MmccContactDetails = props => {
             <Table.Cell>{messages['addressService']}</Table.Cell>
             <Table.Cell>
               <span>{addrService.address}</span>
+            </Table.Cell>
+            <Table.Cell>
+              <span>{addrService.telDom}</span>
+            </Table.Cell>
+            <Table.Cell>
+              <span>{addrService.telMob1}</span>
+            </Table.Cell>
+            <Table.Cell>
+              <span>{addrService.telMob2}</span>
             </Table.Cell>
             <Table.Cell>
               <span>

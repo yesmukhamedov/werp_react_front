@@ -88,9 +88,9 @@ const AddressSearchPage = props => {
 
     t1columns.push(t1r1c1);
     t1columns.push(t1r1c2);
-    // t1columns.push(t1r1c3);
-    // t1columns.push(t1r1c4);
-    // t1columns.push(t1r1c5);
+    t1columns.push(t1r1c3);
+    t1columns.push(t1r1c4);
+    t1columns.push(t1r1c5);
 
     return t1columns;
   };
