@@ -8,6 +8,7 @@ import {
   Icon,
   Popup,
   Segment,
+  Dropdown,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import OutputErrors from '../../../../general/error/outputErrors';
@@ -15,14 +16,16 @@ import { errorTableText } from '../../../../utils/helpers';
 import { fetchServicePacketPlan } from '../smopspAction';
 import { fetchServiceTypeId } from '../../smcs/smcsAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
-import { f4FetchCrmCategory } from '../../../../reference/f4/f4_action';
+import {
+  f4FetchCrmCategory,
+  f4FetchFilterPlanStatus,
+} from '../../../../reference/f4/f4_action';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import ModalColumns from './../../../../utils/ModalColumns';
 import TextAlignCenter from '../../../../utils/TextAlignCenter';
 import CancelPlanModalVC from '../components/CancelPlanModalVC';
 import { Link } from 'react-router-dom';
 import DropdownClearable from '../../../../utils/DropdownClearable';
-import moment from 'moment';
 
 const ServiceFilterVC = props => {
   const {
@@ -33,6 +36,7 @@ const ServiceFilterVC = props => {
     warrantyOptions,
     crmCategory,
     branchOptions,
+    filterPlanStatus = [],
   } = props;
 
   const {
@@ -49,6 +53,7 @@ const ServiceFilterVC = props => {
     crmCategory: '',
     serviceDateType: '',
     warranty: '',
+    planStatusId: [1, 6],
   };
 
   const [param, setParam] = useState({ ...emptyParam });
@@ -60,6 +65,7 @@ const ServiceFilterVC = props => {
 
   useEffect(() => {
     props.f4FetchCrmCategory();
+    props.f4FetchFilterPlanStatus();
   }, []);
 
   useEffect(() => {
@@ -268,6 +274,10 @@ const ServiceFilterVC = props => {
           prevParam.warranty = o.value;
           break;
 
+        case 'planStatusId':
+          prevParam.planStatusId = o.value.length > 0 ? o.value.join() : null;
+          break;
+
         default:
           prevParam[fieldName] = o.value;
       }
@@ -277,10 +287,15 @@ const ServiceFilterVC = props => {
 
   const handleClickApply = () => {
     validate();
-    if (param.bukrs !== '') {
+    if (param.bukrs !== '' && param.planStatusId !== null) {
       const page = 0;
       const size = 20;
-      fetchServicePacketPlan({ ...param, page, size });
+      fetchServicePacketPlan({
+        ...param,
+        page,
+        size,
+        planStatusId: param.planStatusId.toString(),
+      });
       setTurnOnReactFetch(true);
     }
   };
@@ -289,6 +304,9 @@ const ServiceFilterVC = props => {
     const errors = [];
     if (param.bukrs === '') {
       errors.push(errorTableText(5));
+    }
+    if (param.planStatusId === null) {
+      errors.push(errorTableText(176));
     }
     setError(() => errors);
   };
@@ -428,6 +446,17 @@ const ServiceFilterVC = props => {
               handleClear={() => handleClear('warranty')}
             />
           </Form.Field>
+          <Form.Field required>
+            <label>{messages['plan_status']}</label>
+            <Dropdown
+              multiple
+              selection
+              options={getFilterPlanStatus(filterPlanStatus)}
+              defaultValue={param.planStatusId}
+              placeholder={messages['plan_status']}
+              onChange={(e, o) => onInputChange(o, 'planStatusId')}
+            />
+          </Form.Field>
         </Form.Group>
 
         <Form.Group className="spaceBetween">
@@ -484,12 +513,28 @@ const getCrmCategory = crmCategory => {
   return out;
 };
 
+const getFilterPlanStatus = options => {
+  const opt = options;
+  if (!opt) {
+    return [];
+  }
+  let out = options.map(c => {
+    return {
+      key: parseInt(c.id, 10),
+      text: `${c.name}`,
+      value: parseInt(c.id, 10),
+    };
+  });
+  return out;
+};
+
 function mapStateToProps(state) {
   return {
     language: state.locales.lang,
     serviceTypeId: state.smcsReducer.serviceTypeId,
     servicePacket: state.smopspReducer.servicePacket,
     crmCategory: state.f4.crmCategory,
+    filterPlanStatus: state.f4.filterPlanStatus,
   };
 }
 
@@ -498,4 +543,5 @@ export default connect(mapStateToProps, {
   fetchServiceTypeId,
   fetchServicePacketPlan,
   f4FetchCrmCategory,
+  f4FetchFilterPlanStatus,
 })(injectIntl(ServiceFilterVC));

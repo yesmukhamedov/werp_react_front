@@ -8,6 +8,7 @@ import {
   Icon,
   Popup,
   Segment,
+  Dropdown,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
@@ -20,7 +21,10 @@ import ColumnsModal from '../../../../utils/ColumnsModal';
 import CancelPlanModal from '../components/CancelPlanModal';
 import matchSorter from 'match-sorter';
 import TextAlignCenter from '../../../../utils/TextAlignCenter';
-import { f4FetchBranchesByBukrs } from './../../../../reference/f4/f4_action';
+import {
+  f4FetchBranchesByBukrs,
+  f4FetchFilterPlanStatus,
+} from './../../../../reference/f4/f4_action';
 import { Link } from 'react-router-dom';
 import DropdownClearable from '../../../../utils/DropdownClearable';
 import moment from 'moment';
@@ -34,6 +38,7 @@ const ServiceFilterPlan = props => {
     branchOptions,
     finStatusOption,
     serviceFilterPlan = [],
+    filterPlanStatus = [],
   } = props;
 
   const emptyParam = {
@@ -44,6 +49,7 @@ const ServiceFilterPlan = props => {
     serviceDateType: '',
     crmCategoryId: '',
     configuration: '',
+    planStatusId: [1, 6],
   };
 
   //END Date option
@@ -258,6 +264,8 @@ const ServiceFilterPlan = props => {
   const [columnsForTable, setColumnsForTable] = useState([]);
 
   useEffect(() => {
+    props.f4FetchFilterPlanStatus();
+
     const transactionCodeText = localStorage.getItem('smopccocServFilter');
     if (transactionCodeText) {
       let transactionCodeObject = JSON.parse(transactionCodeText);
@@ -285,10 +293,15 @@ const ServiceFilterPlan = props => {
 
   const handleClickApply = () => {
     validate();
-    if (param.bukrs !== '') {
+    if (param.bukrs !== '' && param.planStatusId !== null) {
       const page = 0;
       const size = 20;
-      props.fetchServiceFilterPlan({ ...param, page, size });
+      props.fetchServiceFilterPlan({
+        ...param,
+        page,
+        size,
+        planStatusId: param.planStatusId.toString(),
+      });
       setTurnOnReactFetch(true);
     }
   };
@@ -297,6 +310,9 @@ const ServiceFilterPlan = props => {
     const errors = [];
     if (param.bukrs === '') {
       errors.push(errorTableText(5));
+    }
+    if (param.planStatusId === null) {
+      errors.push(errorTableText(176));
     }
     setError(() => errors);
   };
@@ -325,6 +341,9 @@ const ServiceFilterPlan = props => {
           break;
         case 'configuration':
           prevParam.configuration = o.value;
+          break;
+        case 'planStatusId':
+          prevParam.planStatusId = o.value.length > 0 ? o.value.join() : null;
           break;
 
         default:
@@ -454,6 +473,17 @@ const ServiceFilterPlan = props => {
               handleClear={() => handleClear('configuration')}
             />
           </Form.Field>
+          <Form.Field required>
+            <label>{messages['plan_status']}</label>
+            <Dropdown
+              multiple
+              selection
+              options={getFilterPlanStatus(filterPlanStatus)}
+              defaultValue={param.planStatusId}
+              placeholder={messages['plan_status']}
+              onChange={(e, o) => onInputChange(o, 'planStatusId')}
+            />
+          </Form.Field>
         </Form.Group>
         <Form.Group className="spaceBetween">
           <Form.Button
@@ -510,6 +540,21 @@ const ServiceFilterPlan = props => {
   );
 };
 
+const getFilterPlanStatus = options => {
+  const opt = options;
+  if (!opt) {
+    return [];
+  }
+  let out = options.map(c => {
+    return {
+      key: parseInt(c.id, 10),
+      text: `${c.name}`,
+      value: parseInt(c.id, 10),
+    };
+  });
+  return out;
+};
+
 const categoryOptions = [
   { key: 1, text: 'Зеленый', value: 1 },
   { key: 2, text: 'Желтый', value: 2 },
@@ -535,6 +580,7 @@ function mapStateToProps(state) {
     serviceTypeId: state.smcsReducer.serviceTypeId,
     serviceFilterPlan: state.smopccocReducer.serviceFilterPlan,
     branchService: state.userInfo.branchOptionsService,
+    filterPlanStatus: state.f4.filterPlanStatus,
   };
 }
 
@@ -542,4 +588,5 @@ export default connect(mapStateToProps, {
   f4FetchBranchesByBukrs,
   fetchServiceListManager,
   fetchServiceFilterPlan,
+  f4FetchFilterPlanStatus,
 })(injectIntl(ServiceFilterPlan));
