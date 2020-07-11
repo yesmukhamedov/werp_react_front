@@ -6,6 +6,11 @@
   margin-right: 0;
 }
 
+.displayFlexRow {
+  display: flex;
+  flex-direction: row;
+}
+
 .spaceBetween {
   display: flex;
   flex-direction: row;

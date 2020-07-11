@@ -123,7 +123,21 @@ const Smecam = props => {
         <Grid.Row>
           <Grid.Column mobile={16} tablet={16} computer={7}>
             <div className="spaceBetween">
-              <h2>Заявка клиента</h2>
+              <div>
+                <h2>Заявка клиента</h2>
+              </div>
+              <div>
+                <Link
+                  disabled={!editStatus}
+                  className="linkColor"
+                  target="_blank"
+                  to={`../mainoperation/smcs?applicationNumber=${id}`}
+                >
+                  <Button disabled={!editStatus} color="green" fluid>
+                    Создать сервис карточку
+                  </Button>
+                </Link>
+              </div>
             </div>
 
             <Segment>
@@ -446,19 +460,6 @@ const Smecam = props => {
                     disabled={editStatus}
                   >
                     {messages['save']}
-                  </Button>
-                </Form.Field>
-
-                <Form.Field>
-                  <Button disabled={!editStatus} color="green" fluid>
-                    <Link
-                      disabled={!editStatus}
-                      className="linkColor"
-                      target="_blank"
-                      to={`../mainoperation/smcs?applicationNumber=${id}`}
-                    >
-                      Создать сервис карточку
-                    </Link>
                   </Button>
                 </Form.Field>
               </Form>
