@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Dropdown, Icon, Form } from 'semantic-ui-react';
 
 const DropdownClearable = props => {
@@ -18,6 +18,12 @@ const DropdownClearable = props => {
     lineHeight: 1,
     zIndex: 1,
   };
+
+  useEffect(() => {
+    if (options.length === 1) {
+      onChange('', options[0]);
+    }
+  }, [options]);
 
   return (
     <div style={{ position: 'relative' }}>
