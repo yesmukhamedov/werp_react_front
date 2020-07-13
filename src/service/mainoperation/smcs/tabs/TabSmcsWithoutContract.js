@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Grid, Form, Button, Icon, Confirm } from 'semantic-ui-react';
+import {
+  Grid,
+  Form,
+  Button,
+  Icon,
+  Confirm,
+  Segment,
+  Checkbox,
+  Dropdown,
+  Table,
+} from 'semantic-ui-react';
 
 import {
   fetchTovarId,
@@ -14,9 +24,11 @@ import {
   fetchPositionSumm,
   checkSmcsWithoutReques,
   saveSmcsWithoutReques,
+  saveSmcsPayment,
   fetchOperatorList,
   fetchMasterList,
   fetchCheckWarranty,
+  fetchPaymentOptions,
 } from '../smcsAction';
 
 import {
@@ -39,6 +51,7 @@ import TableReportWithoutRequest from './components/TableReportWithoutRequest';
 import BasicInfoWithoutContract from './components/BasicInfoWithoutContract';
 import { emptyService } from '../components/directory';
 import { LinkToSmvs } from '../../../../utils/outlink';
+import '../style.css';
 
 //Создание сервиса без заявки
 const TabSmcsWithoutContract = props => {
@@ -58,10 +71,13 @@ const TabSmcsWithoutContract = props => {
     masterList = [],
     branchOptionsService,
     withoutRequestProps = {},
+    paymentOptions = [],
   } = props;
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
+  const [paymentChecked, setPaymentChecked] = useState(false);
+  const [hkontS, setHkontS] = useState('');
 
   const [checkStatus, setCheckStatus] = useState(false);
 
@@ -213,6 +229,15 @@ const TabSmcsWithoutContract = props => {
       props.fetchMasterList({ ...param });
       props.fetchOperatorList({ ...param });
     }
+
+    if (service.branchId && service.bukrs) {
+      let param = {
+        brnch: service.branchId,
+        bukrs: service.bukrs,
+      };
+
+      props.fetchPaymentOptions({ ...param });
+    }
   }, [service.bukrs, service.branchId, service.categoryId]);
 
   useEffect(() => {
@@ -243,6 +268,7 @@ const TabSmcsWithoutContract = props => {
     }
   }, [service.masterId, service.branchId, service.bukrs, service.tovarId]);
 
+  console.log('SERVICE', service);
   useEffect(() => {
     if (service.bukrs && service.categoryId) {
       let param = {
@@ -971,6 +997,8 @@ const TabSmcsWithoutContract = props => {
     if (checkSmcs.contractId === service.contractId) {
       setService({
         ...service,
+        currencyId: checkSmcs.currencyId,
+        currencyName: checkSmcs.currencyName,
         sumTotal: checkSmcs.sumTotal,
         discount: checkSmcs.discount,
         sumForPay: checkSmcs.sumForPay,
@@ -992,12 +1020,22 @@ const TabSmcsWithoutContract = props => {
     }
   };
   const [modalConfirm, setModalConfirm] = useState(false);
+
   const handleSave = () => {
     setModalConfirm(false);
-    // props.saveSmcsWithoutReques(checkSmcs, toSmvs);
-    props.saveSmcsWithoutReques(service, data => {
-      window.location = `smvs?serviceNumber=${data.data.id}`;
-    });
+    if (paymentChecked == false) {
+      props.saveSmcsWithoutReques(service, data => {
+        window.location = `smes?serviceNumber=${data.data.id}`;
+      });
+    } else {
+      if (hkontS) {
+        props.saveSmcsPayment(service, hkontS, data => {
+          window.location = `smes?serviceNumber=${data.data.id}`;
+        });
+      } else {
+        alert('Выберите кассу');
+      }
+    }
   };
 
   return (
@@ -1084,6 +1122,40 @@ const TabSmcsWithoutContract = props => {
               data={service}
               currency={service.currencyName}
             />
+            <Table celled>
+              <Table.Body>
+                <Table.Row>
+                  <Table.Cell width={4}>
+                    <Checkbox
+                      checked={paymentChecked}
+                      label="Оплатить"
+                      onChange={() => setPaymentChecked(!paymentChecked)}
+                    />
+                  </Table.Cell>
+                  {paymentChecked == true ? (
+                    <Table.Cell width={2}>Касса:</Table.Cell>
+                  ) : (
+                    ''
+                  )}
+                  {paymentChecked == true ? (
+                    <Table.Cell width={5}>
+                      <Dropdown
+                        placeholder="Выберите кассу для оплаты"
+                        selection
+                        fluid
+                        options={paymentOptions}
+                        value={parseInt(hkontS) ? parseInt(hkontS) : ''}
+                        onChange={(e, value) =>
+                          setHkontS(value.value.toString())
+                        }
+                      />
+                    </Table.Cell>
+                  ) : (
+                    ''
+                  )}
+                </Table.Row>
+              </Table.Body>
+            </Table>
 
             {/*Проверить*/}
             <Button disabled={checkStatus} color="green" onClick={handleCheck}>
@@ -1128,6 +1200,7 @@ function mapStateToProps(state) {
     saveSmcs: state.smcsReducer.saveSmcs,
     operatorList: state.smcsReducer.operatorList,
     masterList: state.smcsReducer.masterList,
+    paymentOptions: state.smcsReducer.paymentOptions,
   };
 }
 
@@ -1150,4 +1223,6 @@ export default connect(mapStateToProps, {
   fetchOperatorList,
   fetchMasterList,
   fetchCheckWarranty,
+  saveSmcsPayment,
+  fetchPaymentOptions,
 })(injectIntl(TabSmcsWithoutContract));

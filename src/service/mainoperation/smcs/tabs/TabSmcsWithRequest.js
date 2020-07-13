@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Grid, Form, Button, Icon, Confirm } from 'semantic-ui-react';
+import {
+  Grid,
+  Form,
+  Button,
+  Icon,
+  Confirm,
+  Checkbox,
+  Segment,
+  Table,
+  Dropdown,
+} from 'semantic-ui-react';
 
 import {
   fetchTovarId,
@@ -14,8 +24,10 @@ import {
   fetchPositionSumm,
   checkSmcsWithoutReques,
   saveSmcsWithoutReques,
+  saveSmcsPayment,
   fetchSmcsByAppNumber,
   fetchCheckWarranty,
+  fetchPaymentOptions,
 } from '../smcsAction';
 
 import {
@@ -50,10 +62,14 @@ const TabSmcsWithRequest = props => {
     smcsAppNumberData = {},
     applicationNumber,
     checkWarranty,
+    paymentOptions = [],
   } = props;
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
+
+  const [paymentChecked, setPaymentChecked] = useState(false);
+  const [hkontS, setHkontS] = useState('');
 
   const [checkStatus, setCheckStatus] = useState(false);
 
@@ -807,18 +823,30 @@ const TabSmcsWithRequest = props => {
   };
 
   const [modalConfirm, setModalConfirm] = useState(false);
+
   const handleSave = () => {
     setModalConfirm(false);
-    // props.saveSmcsWithoutReques(checkSmcs, toSmvs);
-    props.saveSmcsWithoutReques(service, data => {
-      window.location = `smvs?serviceNumber=${data.data.id}`;
-    });
+    if (paymentChecked == false) {
+      props.saveSmcsWithoutReques(service, data => {
+        window.location = `smes?serviceNumber=${data.data.id}`;
+      });
+    } else {
+      if (hkontS) {
+        props.saveSmcsPayment(service, hkontS, data => {
+          window.location = `smes?serviceNumber=${data.data.id}`;
+        });
+      } else {
+        alert('Выберите кассу');
+      }
+    }
   };
 
   useEffect(() => {
     if (checkSmcs.contractId === service.contractId) {
       setService({
         ...service,
+        currencyId: checkSmcs.currencyId,
+        currencyName: checkSmcs.currencyName,
         sumTotal: checkSmcs.sumTotal,
         discount: checkSmcs.discount,
         sumForPay: checkSmcs.sumForPay,
@@ -845,6 +873,14 @@ const TabSmcsWithRequest = props => {
           productId: smcsAppNumberData.tovarId,
         };
         props.fetchMatnrPriceServicePackage({ ...param });
+      }
+      if (smcsAppNumberData.branchId && smcsAppNumberData.bukrs) {
+        let param = {
+          brnch: smcsAppNumberData.branchId,
+          bukrs: smcsAppNumberData.bukrs,
+        };
+
+        props.fetchPaymentOptions({ ...param });
       }
     }
   }, [smcsAppNumberData]);
@@ -961,6 +997,40 @@ const TabSmcsWithRequest = props => {
               data={service}
               currency={service.currencyName}
             />
+            <Table celled>
+              <Table.Body>
+                <Table.Row>
+                  <Table.Cell width={4}>
+                    <Checkbox
+                      checked={paymentChecked}
+                      label="Оплатить"
+                      onChange={() => setPaymentChecked(!paymentChecked)}
+                    />
+                  </Table.Cell>
+                  {paymentChecked == true ? (
+                    <Table.Cell width={2}>Касса:</Table.Cell>
+                  ) : (
+                    ''
+                  )}
+                  {paymentChecked == true ? (
+                    <Table.Cell width={5}>
+                      <Dropdown
+                        placeholder="Выберите кассу для оплаты"
+                        selection
+                        fluid
+                        options={paymentOptions}
+                        value={parseInt(hkontS) ? parseInt(hkontS) : ''}
+                        onChange={(e, value) =>
+                          setHkontS(value.value.toString())
+                        }
+                      />
+                    </Table.Cell>
+                  ) : (
+                    ''
+                  )}
+                </Table.Row>
+              </Table.Body>
+            </Table>
 
             {/*Проверить*/}
             <Button disabled={checkStatus} color="green" onClick={handleCheck}>
@@ -1001,6 +1071,7 @@ function mapStateToProps(state) {
     saveSmcs: state.smcsReducer.saveSmcs,
     smcsAppNumberData: state.smcsReducer.smcsAppNumberData,
     checkWarranty: state.smcsReducer.checkWarranty,
+    paymentOptions: state.smcsReducer.paymentOptions,
   };
 }
 
@@ -1017,6 +1088,8 @@ export default connect(mapStateToProps, {
   fetchPositionSumm,
   checkSmcsWithoutReques,
   saveSmcsWithoutReques,
+  saveSmcsPayment,
   fetchSmcsByAppNumber,
   fetchCheckWarranty,
+  fetchPaymentOptions,
 })(injectIntl(TabSmcsWithRequest));

@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Grid, Form, Button, Icon, Confirm } from 'semantic-ui-react';
+import {
+  Grid,
+  Form,
+  Button,
+  Icon,
+  Confirm,
+  Segment,
+  Checkbox,
+  Table,
+  Dropdown,
+} from 'semantic-ui-react';
 
 import {
   fetchServiceSmcs,
@@ -18,6 +28,8 @@ import {
   fetchOperatorList,
   fetchMasterList,
   fetchCheckWarranty,
+  saveSmcsPayment,
+  fetchPaymentOptions,
 } from '../smcsAction';
 
 import {
@@ -56,10 +68,14 @@ const TabSmcsWithoutRequest = props => {
     masterList = [],
     checkWarranty,
     tovarSnProps,
+    paymentOptions = [],
   } = props;
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
+
+  const [paymentChecked, setPaymentChecked] = useState(false);
+  const [hkontS, setHkontS] = useState('');
 
   const [checkStatus, setCheckStatus] = useState(false);
 
@@ -185,6 +201,14 @@ const TabSmcsWithoutRequest = props => {
           productId: contract.tovarId,
         };
         props.fetchMatnrPriceServicePackage({ ...param });
+      }
+      if (contract.branchId && contract.bukrs) {
+        let param = {
+          brnch: contract.branchId,
+          bukrs: contract.bukrs,
+        };
+
+        props.fetchPaymentOptions({ ...param });
       }
     }
   }, [contract]);
@@ -1002,10 +1026,19 @@ const TabSmcsWithoutRequest = props => {
   const [modalConfirm, setModalConfirm] = useState(false);
   const handleSave = () => {
     setModalConfirm(false);
-    // props.saveSmcsWithoutReques(checkSmcs, toSmvs);
-    props.saveSmcsWithoutReques(service, data => {
-      window.location = `smvs?serviceNumber=${data.data.id}`;
-    });
+    if (paymentChecked == false) {
+      props.saveSmcsWithoutReques(service, data => {
+        window.location = `smes?serviceNumber=${data.data.id}`;
+      });
+    } else {
+      if (hkontS) {
+        props.saveSmcsPayment(service, hkontS, data => {
+          window.location = `smes?serviceNumber=${data.data.id}`;
+        });
+      } else {
+        alert('Выберите кассу');
+      }
+    }
   };
 
   useEffect(() => {
@@ -1108,6 +1141,41 @@ const TabSmcsWithoutRequest = props => {
               currency={service.currencyName}
             />
 
+            <Table celled>
+              <Table.Body>
+                <Table.Row>
+                  <Table.Cell width={4}>
+                    <Checkbox
+                      checked={paymentChecked}
+                      label="Оплатить"
+                      onChange={() => setPaymentChecked(!paymentChecked)}
+                    />
+                  </Table.Cell>
+                  {paymentChecked == true ? (
+                    <Table.Cell width={2}>Касса:</Table.Cell>
+                  ) : (
+                    ''
+                  )}
+                  {paymentChecked == true ? (
+                    <Table.Cell width={5}>
+                      <Dropdown
+                        placeholder="Выберите кассу для оплаты"
+                        selection
+                        fluid
+                        options={paymentOptions}
+                        value={parseInt(hkontS) ? parseInt(hkontS) : ''}
+                        onChange={(e, value) =>
+                          setHkontS(value.value.toString())
+                        }
+                      />
+                    </Table.Cell>
+                  ) : (
+                    ''
+                  )}
+                </Table.Row>
+              </Table.Body>
+            </Table>
+
             {/*Проверить*/}
             <Button disabled={checkStatus} color="green" onClick={handleCheck}>
               <Icon name="check" size="large" />
@@ -1151,6 +1219,7 @@ function mapStateToProps(state) {
     operatorList: state.smcsReducer.operatorList,
     masterList: state.smcsReducer.masterList,
     checkWarranty: state.smcsReducer.checkWarranty,
+    paymentOptions: state.smcsReducer.paymentOptions,
   };
 }
 
@@ -1171,7 +1240,9 @@ export default connect(mapStateToProps, {
   fetchPositionSumm,
   checkSmcsWithoutReques,
   saveSmcsWithoutReques,
+  saveSmcsPayment,
   fetchOperatorList,
   fetchMasterList,
   fetchCheckWarranty,
+  fetchPaymentOptions,
 })(injectIntl(TabSmcsWithoutRequest));

@@ -1,3 +1,14 @@
 .ui.dimmer {
   position: fixed !important;
 }
+
+.flexRow {
+  display: flex;
+  flex-direction: row;
+}
+
+.paymentDiv {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

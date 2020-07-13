@@ -22,10 +22,12 @@ export const FETCH_SMCS_SERVICE_PACKET = 'FETCH_SMCS_SERVICE_PACKET';
 export const FETCH_POSITION_SUMM = 'FETCH_POSITION_SUMM';
 export const CHECK_SMCS_WITHOUT_REQUEST = 'CHECK_SMCS_WITHOUT_REQUEST';
 export const SAVE_SMCS_WITHOUT_REQUEST = 'SAVE_SMCS_WITHOUT_REQUEST';
+export const SAVE_SMCS_PAYMENT = 'SAVE_SMCS_PAYMENT';
 export const FETCH_OPERATOR_LIST = 'FETCH_OPERATOR_LIST';
 export const FETCH_SMCS_BY_APP_NUMBER = 'FETCH_SMCS_BY_APP_NUMBER';
 export const FETCH_MASTER_LIST = 'FETCH_MASTER_LIST';
 export const FETCH_CHECK_WARRANTY = 'FETCH_CHECK_WARRANTY';
+export const FETCH_PAYMENT_OPTIONS = 'FETCH_PAYMENT_OPTIONS';
 
 //--END
 // const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
@@ -263,6 +265,41 @@ export const saveSmcsWithoutReques = (body, toSmvs) => {
         // });
         dispatch(notify('success', errorTableText(101)));
         toSmvs(data);
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+//Создать сервис с оплатой
+export const saveSmcsPayment = (body, hcont, toSmvs) => {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPost(`smcs/create_and_accept_payment?hkontS=${hcont}`, body)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+
+        dispatch(notify('success', errorTableText(101)));
+        toSmvs(data);
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+
+export const fetchPaymentOptions = param => {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`finance/mainoperation/fetchCashBankHkontsByBranch`, param)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_PAYMENT_OPTIONS,
+          data,
+        });
       })
       .catch(error => {
         dispatch(modifyLoader(false));

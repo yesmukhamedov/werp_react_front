@@ -15,6 +15,7 @@ import {
   FETCH_SMCS_BY_APP_NUMBER,
   FETCH_MASTER_LIST,
   FETCH_CHECK_WARRANTY,
+  FETCH_PAYMENT_OPTIONS,
 } from './smcsAction';
 
 const INITIAL_STATE = {
@@ -82,6 +83,11 @@ export default function(state = INITIAL_STATE, action) {
       return { ...state, smcsAppNumberData: { ...action.data.data } };
     case FETCH_CHECK_WARRANTY:
       return { ...state, checkWarranty: { ...action.data.data } };
+    case FETCH_PAYMENT_OPTIONS:
+      return {
+        ...state,
+        paymentOptions: [...action.data.hkontOptions],
+      };
     default:
       return state;
   }
