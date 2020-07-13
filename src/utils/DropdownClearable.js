@@ -19,11 +19,11 @@ const DropdownClearable = props => {
     zIndex: 1,
   };
 
-  useEffect(() => {
-    if (options.length === 1) {
-      onChange('', options[0]);
-    }
-  }, [options]);
+  // useEffect(() => {
+  //   if (options.length === 1) {
+  //     onChange('', options[0]);
+  //   }
+  // }, [options]);
 
   return (
     <div style={{ position: 'relative' }}>
