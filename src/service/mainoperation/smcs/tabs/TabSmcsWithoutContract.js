@@ -171,6 +171,9 @@ const TabSmcsWithoutContract = props => {
       case 'clearOperator':
         setService({ ...service, operatorFullName: '', operatorId: 0 });
         break;
+      case 'infoChange':
+        setService({ ...service, info: value });
+        break;
 
       default:
         alert('Нет таких значений');

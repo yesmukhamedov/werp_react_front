@@ -7,7 +7,11 @@ import {
   f4FetchCountryList,
   f4FetchServiceStatusList,
 } from '../../../reference/f4/f4_action';
-import { fetchSrlsm, fetchServiceTypeList } from './srlsmAction';
+import {
+  fetchSrlsm,
+  fetchServiceTypeList,
+  fetchAcceptPaymentUsers,
+} from './srlsmAction';
 import { injectIntl } from 'react-intl';
 import {
   Icon,
@@ -52,6 +56,7 @@ const Srlsm = props => {
     serviceTypeList = [],
     srlsmTotalPages,
     countryList = [],
+    acceptPaymentUsers,
   } = props;
 
   const emptyParam = {
@@ -561,6 +566,7 @@ function mapStateToProps(state) {
     srlsmListData: state.srlsmReducer.srlsmListData,
     srlsmListSum: state.srlsmReducer.srlsmListSum,
     srlsmTotalPages: state.srlsmReducer.srlsmTotalPages,
+    acceptPaymentUsers: state.srlsmReducer.acceptPaymentUsers,
     serviceStatusList: state.f4.serviceStatusList,
   };
 }
@@ -573,4 +579,5 @@ export default connect(mapStateToProps, {
   fetchServiceTypeList,
   f4FetchCountryList,
   f4FetchServiceStatusList,
+  fetchAcceptPaymentUsers,
 })(injectIntl(Srlsm));

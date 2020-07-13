@@ -152,6 +152,19 @@ const BasicInfoWithoutContract = props => {
             />
           </Table.Cell>
         </Table.Row>
+        <Table.Row>
+          <Table.Cell>Примечание</Table.Cell>
+          <Table.Cell className="tableRow">
+            <TextArea
+              placeholder="Примечание"
+              value={data.info}
+              onChange={(e, o) =>
+                onBasicInfoInputChange(e.target.value, 'infoChange')
+              }
+              style={{ minHeight: 100 }}
+            />
+          </Table.Cell>
+        </Table.Row>
       </Table.Body>
     </Table>
   );

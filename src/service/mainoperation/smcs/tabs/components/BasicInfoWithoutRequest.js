@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Table, Input, Form } from 'semantic-ui-react';
+import { Button, Table, Input, Form, TextArea } from 'semantic-ui-react';
 import DropdownClearable from '../../../../../utils/DropdownClearable';
 import moment from 'moment';
 
@@ -193,6 +193,19 @@ const BasicInfoWithoutRequest = props => {
               value={
                 data.warrantyPeriodInMonth ? data.warrantyPeriodInMonth : ''
               }
+            />
+          </Table.Cell>
+        </Table.Row>
+        <Table.Row>
+          <Table.Cell>Примечание</Table.Cell>
+          <Table.Cell className="tableRow">
+            <TextArea
+              placeholder="Примечание"
+              value={data.info}
+              onChange={(e, o) =>
+                onBasicInfoInputChange(e.target.value, 'infoChange')
+              }
+              style={{ minHeight: 100 }}
             />
           </Table.Cell>
         </Table.Row>

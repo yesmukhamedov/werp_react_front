@@ -1,4 +1,8 @@
-import { FETCH_SRLSM, FETCH_SERVICE_TYPE_LIST } from './srlsmAction';
+import {
+  FETCH_SRLSM,
+  FETCH_SERVICE_TYPE_LIST,
+  FETCH_ACCEPT_PAYMENT_USERS,
+} from './srlsmAction';
 
 const INITIAL_STATE = {
   dynamicObject: [],
@@ -18,6 +22,11 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         serviceTypeList: [...action.data.data],
+      };
+    case FETCH_ACCEPT_PAYMENT_USERS:
+      return {
+        ...state,
+        acceptPaymentUsers: [...action.data.data],
       };
 
     default:

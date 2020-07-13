@@ -158,6 +158,8 @@ const TabSmcsWithoutRequest = props => {
       case 'clearMaster':
         setService({ ...service, masterId: null });
         break;
+      case 'infoChange':
+        setService({ ...service, info: value.value });
 
       default:
         alert('Нет таких значений');

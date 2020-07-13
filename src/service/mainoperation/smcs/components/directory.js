@@ -40,4 +40,5 @@ export const emptyService = {
   warrantyPeriodDate: '',
   warrantyPeriodInMonth: null,
   status: '',
+  info: null,
 };
