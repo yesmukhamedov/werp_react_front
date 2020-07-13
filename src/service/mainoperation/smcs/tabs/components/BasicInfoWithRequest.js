@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Input } from 'semantic-ui-react';
+import { Button, Table, Input, Form, TextArea } from 'semantic-ui-react';
 import moment from 'moment';
 
 const BasicInfoWithoutContract = props => {

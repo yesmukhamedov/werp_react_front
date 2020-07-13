@@ -2,7 +2,6 @@ import React from 'react';
 import { Button, Table, Input, Form, TextArea } from 'semantic-ui-react';
 import DropdownClearable from '../../../../../utils/DropdownClearable';
 import moment from 'moment';
-import directory from '../../components/directory';
 
 const BasicInfoWithoutRequest = props => {
   const {

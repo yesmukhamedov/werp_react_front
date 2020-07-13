@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Input, Form } from 'semantic-ui-react';
+import { Table, Input, Form, TextArea } from 'semantic-ui-react';
 import DropdownClearable from '../../../../../utils/DropdownClearable';
 import moment from 'moment';
 
