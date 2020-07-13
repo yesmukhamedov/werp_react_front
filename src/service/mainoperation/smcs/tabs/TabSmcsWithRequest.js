@@ -164,6 +164,17 @@ const TabSmcsWithRequest = props => {
     ]);
   };
 
+  //BasicInfo
+  const onBasicInfoInputChange = (value, fieldName) => {
+    switch (fieldName) {
+      case 'infoChange':
+        setService({ ...service, info: value.value });
+
+      default:
+        alert('Нет таких значений');
+    }
+  };
+
   //Выбрать услуги
   const selectServices = (id, value) => {
     let servicesData = services.filter(item => item.ss == 22);

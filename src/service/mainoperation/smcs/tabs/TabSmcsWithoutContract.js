@@ -172,7 +172,7 @@ const TabSmcsWithoutContract = props => {
         setService({ ...service, operatorFullName: '', operatorId: 0 });
         break;
       case 'infoChange':
-        setService({ ...service, info: value });
+        setService({ ...service, info: value.value });
         break;
 
       default:
