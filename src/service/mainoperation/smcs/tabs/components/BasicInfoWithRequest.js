@@ -3,7 +3,7 @@ import { Table, Input } from 'semantic-ui-react';
 import moment from 'moment';
 
 const BasicInfoWithoutContract = props => {
-  const { data = {} } = props;
+  const { data = {}, onBasicInfoInputChange } = props;
 
   return (
     <Table>
