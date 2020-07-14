@@ -34,6 +34,8 @@ const Smecam = props => {
   const [smvca, setSmvca] = useState({});
   const [smvcaHis, setSmvcaHis] = useState([]);
   const [editStatus, setEditStatus] = useState(false);
+
+  console.log('SMECA EDIT STATUS', editStatus);
   useEffect(() => {
     if (availabledTransaction.length > 0) {
       availabledTransaction.map(item =>

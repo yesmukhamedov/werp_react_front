@@ -69,7 +69,8 @@ const Smes = props => {
       item.serviceTypeId == 2 ||
       item.serviceTypeId == 5 ||
       item.serviceTypeId == 6 ||
-      item.serviceTypeId == 7,
+      item.serviceTypeId == 7 ||
+      item.serviceTypeId == 8,
   );
 
   //СПИСОК ПРОДАЖА ЗАПЧАСТЕЙ
