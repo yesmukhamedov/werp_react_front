@@ -254,6 +254,21 @@ const TabSmcsWithRequest = props => {
     setServices([...servicesFilter]);
   };
 
+  const onChangeSumm = (id, value) => {
+    console.log('SERVICES value', value, 'ID', id);
+
+    setServices(
+      services.map(item =>
+        item.serviceTypeId == id
+          ? {
+              ...item,
+              sum: parseInt(value),
+            }
+          : item,
+      ),
+    );
+  };
+
   //ПРОДАЖА ЗАПЧАСТЕЙ========================================================================================
   const [sparePartInitial, setSparePartInitial] = useState([]);
 
@@ -970,6 +985,7 @@ const TabSmcsWithRequest = props => {
               selectServices={selectServices}
               waers={service.currencyName}
               editStatus={editStatus}
+              onChangeSumm={onChangeSumm}
             />
 
             {/*Продажа запчастей */}

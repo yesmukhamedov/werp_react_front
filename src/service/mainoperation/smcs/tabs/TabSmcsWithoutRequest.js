@@ -363,6 +363,21 @@ const TabSmcsWithoutRequest = props => {
     ]);
   };
 
+  const onChangeSumm = (id, value) => {
+    console.log('SERVICES value', value, 'ID', id);
+
+    setServices(
+      services.map(item =>
+        item.serviceTypeId == id
+          ? {
+              ...item,
+              sum: parseInt(value),
+            }
+          : item,
+      ),
+    );
+  };
+
   //Select services
   const selectServices = (id, value) => {
     let servicesData = services.filter(item => item.ss == 22);
@@ -1092,6 +1107,7 @@ const TabSmcsWithoutRequest = props => {
               waers={service.currencyName}
               editStatus={editStatus}
               currency={service.currencyName}
+              onChangeSumm={onChangeSumm}
             />
 
             {/*Продажа запчастей */}
