@@ -79,6 +79,8 @@ const TabSmcsWithoutContract = props => {
   const [paymentChecked, setPaymentChecked] = useState(false);
   const [hkontS, setHkontS] = useState('');
 
+  console.log('SERVICE CONTRACT', service);
+
   const [checkStatus, setCheckStatus] = useState(false);
 
   useEffect(() => {
@@ -172,6 +174,7 @@ const TabSmcsWithoutContract = props => {
         setService({ ...service, operatorFullName: '', operatorId: 0 });
         break;
       case 'infoChange':
+        console.log('VALUE', value.value);
         setService({ ...service, info: value.value });
         break;
 
@@ -1136,7 +1139,11 @@ const TabSmcsWithoutContract = props => {
                     />
                   </Table.Cell>
                   {paymentChecked == true ? (
-                    <Table.Cell width={2}>Касса:</Table.Cell>
+                    <Table.Cell width={2}>
+                      <Form.Field required>
+                        <label>Касса:</label>
+                      </Form.Field>
+                    </Table.Cell>
                   ) : (
                     ''
                   )}

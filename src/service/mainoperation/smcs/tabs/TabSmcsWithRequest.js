@@ -169,6 +169,7 @@ const TabSmcsWithRequest = props => {
     switch (fieldName) {
       case 'infoChange':
         setService({ ...service, info: value.value });
+        break;
 
       default:
         alert('Нет таких значений');
@@ -949,7 +950,10 @@ const TabSmcsWithRequest = props => {
         <Grid.Row>
           {/*BASIC INFO*/}
           <Grid.Column width={5}>
-            <BasicInfoWithRequest data={service} />
+            <BasicInfoWithRequest
+              data={service}
+              onBasicInfoInputChange={onBasicInfoInputChange}
+            />
           </Grid.Column>
 
           <Grid.Column readOnly width={11}>
@@ -1019,7 +1023,11 @@ const TabSmcsWithRequest = props => {
                     />
                   </Table.Cell>
                   {paymentChecked == true ? (
-                    <Table.Cell width={2}>Касса:</Table.Cell>
+                    <Table.Cell width={2}>
+                      <Form.Field required>
+                        <label>Касса:</label>
+                      </Form.Field>
+                    </Table.Cell>
                   ) : (
                     ''
                   )}

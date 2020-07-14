@@ -160,6 +160,7 @@ const TabSmcsWithoutRequest = props => {
         break;
       case 'infoChange':
         setService({ ...service, info: value.value });
+        break;
 
       default:
         alert('Нет таких значений');
@@ -1154,7 +1155,11 @@ const TabSmcsWithoutRequest = props => {
                     />
                   </Table.Cell>
                   {paymentChecked == true ? (
-                    <Table.Cell width={2}>Касса:</Table.Cell>
+                    <Table.Cell width={2}>
+                      <Form.Field required>
+                        <label>Касса:</label>
+                      </Form.Field>
+                    </Table.Cell>
                   ) : (
                     ''
                   )}

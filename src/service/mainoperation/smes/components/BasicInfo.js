@@ -1,5 +1,12 @@
 import React from 'react';
-import { Segment, Button, Table, Input, Icon } from 'semantic-ui-react';
+import {
+  Segment,
+  Button,
+  Table,
+  Input,
+  Icon,
+  TextArea,
+} from 'semantic-ui-react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -273,6 +280,17 @@ const BasicInfo = props => {
                     ? ''
                     : data.warrantyPeriodInMonth
                 }
+              />
+            </Table.Cell>
+          </Table.Row>
+          <Table.Row>
+            <Table.Cell>Примечание</Table.Cell>
+            <Table.Cell className="tableRow">
+              <TextArea
+                readOnly
+                placeholder="Примечание"
+                value={data.info ? data.info : ''}
+                style={{ minHeight: 100 }}
               />
             </Table.Cell>
           </Table.Row>
