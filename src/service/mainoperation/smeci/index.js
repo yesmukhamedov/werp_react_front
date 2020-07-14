@@ -96,6 +96,7 @@ function Smeci(props) {
     customerId,
     serviceAddressId,
     info,
+    lastStateName,
   } = contractInfo;
 
   useEffect(() => {
@@ -348,6 +349,18 @@ function Smeci(props) {
                           onChange={(e, o) =>
                             onInputChange(o, 'serviceBranchId')
                           }
+                        />
+                      </Table.Cell>
+                      <Table.Cell></Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>{messages['phys_status']}</Table.Cell>
+                      <Table.Cell>
+                        <Input
+                          size="small"
+                          fluid
+                          value={lastStateName ? lastStateName : ''}
+                          disabled
                         />
                       </Table.Cell>
                       <Table.Cell></Table.Cell>

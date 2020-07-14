@@ -864,5 +864,6 @@
   "plan_number_vc": "Номер плана по уборочной системе",
   "plan_status": "Статус плана",
   "contract": "Договор",
-  "service_contract": "Сервис договор"
+  "service_contract": "Сервис договор",
+  "contract_status": "Статус контракта"
 }

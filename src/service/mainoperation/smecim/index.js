@@ -20,7 +20,10 @@ import {
 } from '../../serviceAction';
 import moment from 'moment';
 
-import { f4FetchCrmCategory } from '../../../reference/f4/f4_action';
+import {
+  f4FetchCrmCategory,
+  f4FetchPhysStatus,
+} from '../../../reference/f4/f4_action';
 
 import AddressF4Modal from '../../../reference/f4/address/addressF4WithCreationPage';
 
@@ -46,6 +49,7 @@ function Smecim(props) {
     servCrmCategory: '',
     info: '',
     info2: '',
+    lastStateId: '',
   };
 
   const [contract, setContract] = useState({ ...emptyContract });
@@ -57,6 +61,7 @@ function Smecim(props) {
     intl: { messages },
     crmCategory = [],
     branchList = [],
+    physStatus = [],
   } = props;
 
   const {
@@ -98,12 +103,14 @@ function Smecim(props) {
     customerId,
     serviceAddressId,
     info,
+    lastStateId,
   } = contractInfo;
 
   useEffect(() => {
     if (contractNumber) {
       props.fetchSmeciContractInfo({ contractNumber });
       props.f4FetchCrmCategory();
+      props.f4FetchPhysStatus();
     }
   }, [contractNumber]);
   useEffect(() => {
@@ -141,6 +148,7 @@ function Smecim(props) {
         countryId: branch.countryid,
         servCrmCategory: serviceCrmCategoryId,
         info: info,
+        lastStateId: lastStateId,
       });
     }
   }, [branchId, branchOptions]);
@@ -186,6 +194,9 @@ function Smecim(props) {
         case 'info2':
           newContract.info2 = e.value;
           break;
+        case 'lastStateId':
+          newContract.lastStateId = e.value;
+          break;
         default:
           newContract.fieldName = e.value;
       }
@@ -208,6 +219,8 @@ function Smecim(props) {
       info2,
       manual,
       servCrmCategory,
+      contractStatusId,
+      lastStateId,
     } = contract;
     props.postSmecimContractInfo(
       {
@@ -218,6 +231,7 @@ function Smecim(props) {
         bukrsId,
         bukrsName,
         contactPersonName,
+        contractStatusId,
         contractDate,
         contractNumber,
         countryName,
@@ -251,6 +265,7 @@ function Smecim(props) {
         warranty,
         warrantyEndDate,
         warrantyEndedMonths,
+        lastStateId,
       },
       () => {
         props.history.push(`smcuspor?contractNumber=${contractNumber}`);
@@ -275,6 +290,7 @@ function Smecim(props) {
       servCrmCategory: '',
       info: '',
       info2: '',
+      lastStateId: '',
     });
   };
 
@@ -348,6 +364,25 @@ function Smecim(props) {
                           onChange={(e, o) =>
                             onInputChange(o, 'serviceBranchId')
                           }
+                        />
+                      </Table.Cell>
+                      <Table.Cell></Table.Cell>
+                    </Table.Row>
+                    <Table.Row>
+                      <Table.Cell>
+                        <Form.Field>
+                          <label>{messages['phys_status']}</label>
+                        </Form.Field>
+                      </Table.Cell>
+                      <Table.Cell>
+                        <Dropdown
+                          placeholder={messages['phys_status']}
+                          fluid
+                          selection
+                          options={getPhysStatus(physStatus)}
+                          value={contract.lastStateId}
+                          disabled={lastStateId === 4 ? true : false}
+                          onChange={(e, o) => onInputChange(o, 'lastStateId')}
                         />
                       </Table.Cell>
                       <Table.Cell></Table.Cell>
@@ -786,6 +821,23 @@ const getBranchList = branchList => {
   return out;
 };
 
+const getPhysStatus = value => {
+  const physStatus = value;
+  if (!physStatus) {
+    return [];
+  }
+  let out = value
+    .filter(item => item.id !== 3 && item.id !== 1)
+    .map(c => {
+      return {
+        key: c.id,
+        text: c.name,
+        value: parseInt(c.id, 10),
+      };
+    });
+  return out;
+};
+
 const labelColor = crmCategoryId => {
   if (crmCategoryId === 1) {
     return 'green';
@@ -804,6 +856,7 @@ function mapStateToProps(state) {
     contractInfo: state.serviceReducer.smeciContractInfo,
     crmCategory: state.f4.crmCategory,
     branchList: state.serviceReducer.branchList,
+    physStatus: state.f4.physStatus,
   };
 }
 
@@ -812,4 +865,5 @@ export default connect(mapStateToProps, {
   postSmecimContractInfo,
   f4FetchCrmCategory,
   fetchBranchList,
+  f4FetchPhysStatus,
 })(injectIntl(Smecim));

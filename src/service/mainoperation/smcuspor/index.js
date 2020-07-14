@@ -99,6 +99,7 @@ function Smcuspor(props) {
     f3MtLeft,
     f4MtLeft,
     f5MtLeft,
+    lastStateName,
   } = clientContract;
 
   useEffect(() => {
@@ -281,6 +282,20 @@ function Smcuspor(props) {
                         size="small"
                         fluid
                         value={matnrName ? matnrName : ''}
+                      />
+                    </Table.Cell>
+                  </Table.Row>
+                  <Table.Row>
+                    <Table.Cell>
+                      <Label size="large" basic>
+                        {messages['phys_status']}
+                      </Label>
+                    </Table.Cell>
+                    <Table.Cell>
+                      <Input
+                        size="small"
+                        fluid
+                        value={lastStateName ? lastStateName : ''}
                       />
                     </Table.Cell>
                   </Table.Row>

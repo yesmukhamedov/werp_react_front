@@ -323,9 +323,9 @@ const SearchCustomer = props => {
 
           <Form.Select
             fluid
-            label="Физ. статус"
-            placeholder="Физ. статус"
-            options={getPhysStatus(physStatusOptions, language)}
+            label={messages['phys_status']}
+            placeholder={messages['phys_status']}
+            options={getPhysStatus(physStatusOptions)}
             onChange={(e, o) => onInputChange(o, 'lastStateId')}
             className="alignBottom"
             multiple
@@ -426,7 +426,7 @@ const SearchCustomer = props => {
   );
 };
 
-const getPhysStatus = (value, lang) => {
+const getPhysStatus = value => {
   const physStatus = value;
   if (!physStatus) {
     return [];
