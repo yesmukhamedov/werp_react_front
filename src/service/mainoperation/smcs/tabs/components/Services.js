@@ -33,10 +33,10 @@ const Services = props => {
       <Table>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell width={1}>№</Table.HeaderCell>
-            <Table.HeaderCell width={5}>Наименование услуг</Table.HeaderCell>
-            <Table.HeaderCell width={2}>Сумма</Table.HeaderCell>
-            <Table.HeaderCell width={1}>Валюта</Table.HeaderCell>
+            <Table.HeaderCell>№</Table.HeaderCell>
+            <Table.HeaderCell>Наименование услуг</Table.HeaderCell>
+            <Table.HeaderCell>Сумма</Table.HeaderCell>
+            <Table.HeaderCell>Валюта</Table.HeaderCell>
             <Table.HeaderCell></Table.HeaderCell>
           </Table.Row>
         </Table.Header>
@@ -44,10 +44,10 @@ const Services = props => {
         <Table.Body>
           {servicesData.map((item, index) => (
             <Table.Row key={item.id}>
-              <Table.Cell>
-                <Input readOnly fluid value={index + 1} />
+              <Table.Cell width={1}>
+                <p>{index + 1}</p>
               </Table.Cell>
-              <Table.Cell>
+              <Table.Cell width={5}>
                 <Dropdown
                   placeholder="Выбрать услуги"
                   fluid
@@ -57,7 +57,7 @@ const Services = props => {
                   onChange={(e, value) => selectServices(item.id, value)}
                 />
               </Table.Cell>
-              <Table.Cell>
+              <Table.Cell width={2}>
                 <Input
                   type="number"
                   readOnly={item.serviceTypeId == 8 ? false : true}
@@ -68,14 +68,14 @@ const Services = props => {
                   }
                 />
               </Table.Cell>
-              <Table.Cell>
+              <Table.Cell width={2}>
                 <Input
                   readOnly
                   fluid
                   value={item.currencyName ? item.currencyName : ''}
                 />
               </Table.Cell>
-              <Table.Cell>
+              <Table.Cell width={2}>
                 <Button
                   size="mini"
                   color="red"

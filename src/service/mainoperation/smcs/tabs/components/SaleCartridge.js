@@ -52,7 +52,7 @@ const SaleCartridge = props => {
       <Table compact>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell width={2} textAlign="center">
+            <Table.HeaderCell width={1} textAlign="center">
               №
             </Table.HeaderCell>
             <Table.HeaderCell width={5} textAlign="center">
@@ -67,7 +67,7 @@ const SaleCartridge = props => {
             <Table.HeaderCell width={2} textAlign="center">
               Сумма
             </Table.HeaderCell>
-            <Table.HeaderCell width={1} textAlign="center">
+            <Table.HeaderCell width={2} textAlign="center">
               Валюта
             </Table.HeaderCell>
             <Table.HeaderCell width={2} textAlign="center">
@@ -81,7 +81,7 @@ const SaleCartridge = props => {
           {data.map((item, index) => (
             <Table.Row key={index}>
               <Table.Cell>
-                <Input readOnly fluid value={index + 1} />
+                <p>{index + 1}</p>
               </Table.Cell>
               <Table.Cell>
                 <Input
@@ -109,8 +109,6 @@ const SaleCartridge = props => {
                   style={{ padding: '0' }}
                   value={item.quantity}
                   type="number"
-                  label={{ content: 'шт' }}
-                  labelPosition="right"
                   onChange={(e, value) =>
                     onChangeCartridge(e, 'quantityCartridge', item)
                   }

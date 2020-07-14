@@ -23,7 +23,7 @@ const SaleOfSparePart = props => {
       <Table compact>
         <Table.Header>
           <Table.Row>
-            <Table.HeaderCell width={2} textAlign="center">
+            <Table.HeaderCell width={1} textAlign="center">
               №
             </Table.HeaderCell>
             <Table.HeaderCell width={5} textAlign="center">
@@ -35,7 +35,7 @@ const SaleOfSparePart = props => {
             <Table.HeaderCell width={2} textAlign="center">
               Сумма
             </Table.HeaderCell>
-            <Table.HeaderCell width={1} textAlign="center">
+            <Table.HeaderCell width={2} textAlign="center">
               Валюта
             </Table.HeaderCell>
             <Table.HeaderCell width={2} textAlign="center">
@@ -49,7 +49,7 @@ const SaleOfSparePart = props => {
           {data.map((item, index) => (
             <Table.Row key={index}>
               <Table.Cell>
-                <Input readOnly fluid value={index + 1} />
+                <p>{index + 1}</p>
               </Table.Cell>
               <Table.Cell>
                 <Input readOnly fluid value={item.matnrName} />
@@ -57,11 +57,8 @@ const SaleOfSparePart = props => {
               <Table.Cell>
                 <Input
                   fluid
-                  style={{ padding: '0' }}
                   value={item.quantity}
                   type="number"
-                  label={{ content: 'шт' }}
-                  labelPosition="right"
                   onChange={(e, value) =>
                     onChangeSparePart(e, 'quantitySparePart', item)
                   }
