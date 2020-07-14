@@ -794,10 +794,10 @@ export function fetchAppType() {
   };
 }
 
-export function fetchAppList(params) {
+export function fetchAppList(params, search) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet('smappl/appList', params)
+    doGet('smappl/appList', params, search)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

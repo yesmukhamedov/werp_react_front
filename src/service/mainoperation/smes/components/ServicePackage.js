@@ -12,11 +12,7 @@ import { moneyFormat } from '../../../../utils/helpers';
 
 const ServicePackage = props => {
   const { data = [], currency, matnrServicePackage = [] } = props;
-
-  console.log('matnrServicePackage', matnrServicePackage);
-
   const [servicePackage, setServicePackage] = useState([]);
-  console.log('servicePackage', servicePackage);
 
   useEffect(() => {
     if (data.length > 0 && matnrServicePackage.length > 0) {

@@ -70,7 +70,7 @@ const Smappl = props => {
     aDateFrom: null,
     aDateTo: null,
     tovarCategorys: null,
-    appStatusIds: [1, 2, 3, 4],
+    appStatusIds: '1, 2, 3, 4',
     appTypeIds: null,
     direction: 'DESC',
     orderBy: 'id',
@@ -325,8 +325,8 @@ const Smappl = props => {
           break;
         case 'status':
           console.log('value', value);
-          //varTs.appStatusIds = value.length > 0 ? value.join() : null;
-          varTs.appStatusIds = value;
+          varTs.appStatusIds = value.length > 0 ? value.join() : null;
+          //varTs.appStatusIds = value;
           break;
         case 'ApplicationType':
           varTs.appTypeIds = value.length > 0 ? value.join() : null;
@@ -356,6 +356,9 @@ const Smappl = props => {
     }
     setError(() => errors);
   };
+
+  const arrayAppStatus = search.appStatusIds.split(',').map(Number);
+  console.log('arrayAppStatus', arrayAppStatus);
 
   return (
     <Segment>
@@ -418,7 +421,7 @@ const Smappl = props => {
             fluid
             multiple
             selection
-            defaultValue={search.appStatusIds}
+            defaultValue={arrayAppStatus}
             options={applicationStatus}
             placeholder={messages['L__ORDER_STATUS']}
             onChange={(e, { value }) => onChange('status', value)}

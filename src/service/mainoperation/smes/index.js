@@ -64,8 +64,6 @@ const Smes = props => {
 
   const [service, setService] = useState({ ...emptyService });
 
-  console.log('SERVICE SMES', service);
-
   const [modalPay, setModalPay] = useState(false);
   const url = window.location.search;
   const urlNumberService = url.slice(url.indexOf('=') + 1);
@@ -137,7 +135,6 @@ const Smes = props => {
   };
 
   const handlePay = () => {
-    console.log('payData', payData.hkontS);
     setModalPay(false);
     props.acceptPayment({ ...payData }, successPayment);
   };
@@ -145,7 +142,6 @@ const Smes = props => {
   const [newServiceStatus, setNewServiceStatus] = useState(false);
 
   const toSmvs = () => {
-    console.log('CANCEL SUCCESS');
     setNewServiceStatus(true);
     if (serviceNumber) {
       props.fetchSmesList(serviceNumber);

@@ -1,22 +1,21 @@
 import React from 'react';
-import { Button, Segment, Icon, Divider, Dropdown } from 'semantic-ui-react';
+import {
+  Button,
+  Segment,
+  Icon,
+  Divider,
+  Dropdown,
+  Input,
+} from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
 import { moneyFormat } from '../../../../utils/helpers';
 
 const Services = props => {
-  const {
-    data = [],
-    addServices,
-    onChangeSettingService,
-    handleRemoveService,
-    servicesOptions,
-    selectServices,
-    disabledEdit,
-    serviceTypeOptions = [],
-    currency,
-  } = props;
+  const { data = [], currency } = props;
 
   const totalServices = data.reduce((total, item) => total + item.sum, 0);
+
+  console.log('DATA SERVICES', data);
 
   const columns = [
     {
@@ -30,20 +29,21 @@ const Services = props => {
     },
     {
       Header: 'Наименование услуг',
-      accessor: 'matnrName',
+      accessor: 'serviceTypeId',
       width: 500,
       Cell: ({ original }) => (
-        <Dropdown
-          disabled={disabledEdit}
-          placeholder="Выбрать"
-          fluid
-          selection
-          value={original.serviceTypeId}
-          options={serviceTypeOptions}
-          onChange={(e, value) =>
-            onChangeSettingService({ original, value }, 'changeServiceType')
-          }
-        />
+        <Input value={original.serviceTypeName} fluid />
+        // <Dropdown
+        //   disabled={disabledEdit}
+        //   placeholder="Выбрать"
+        //   fluid
+        //   selection
+        //   value={original.serviceTypeId}
+        //   options={serviceTypeOptions}
+        //   onChange={(e, value) =>
+        //     onChangeSettingService({ original, value }, 'changeServiceType')
+        //   }
+        // />
       ),
     },
     {

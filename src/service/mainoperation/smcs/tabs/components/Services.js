@@ -17,6 +17,7 @@ const Services = props => {
     handleRemoveService,
     servicesOptions = [],
     selectServices,
+    onChangeSumm,
     editStatus,
     currency,
   } = props;
@@ -58,9 +59,13 @@ const Services = props => {
               </Table.Cell>
               <Table.Cell>
                 <Input
-                  readOnly
+                  type="number"
+                  readOnly={item.serviceTypeId == 8 ? false : true}
                   fluid
-                  value={item.sum != null ? moneyFormat(item.sum) : ''}
+                  value={item.sum != null ? item.sum : ''}
+                  onChange={(e, value) =>
+                    onChangeSumm(item.serviceTypeId, e.target.value)
+                  }
                 />
               </Table.Cell>
               <Table.Cell>

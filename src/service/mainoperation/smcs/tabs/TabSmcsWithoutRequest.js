@@ -62,7 +62,7 @@ const TabSmcsWithoutRequest = props => {
     matnrServicePackage = [],
     servicePacketDetails = [],
     positionSumm = {},
-    checkSmcs = {},
+    checkSmcs1 = {},
     saveSmcs,
     operatorList = [],
     masterList = [],
@@ -78,12 +78,6 @@ const TabSmcsWithoutRequest = props => {
   const [hkontS, setHkontS] = useState('');
 
   const [checkStatus, setCheckStatus] = useState(false);
-
-  useEffect(() => {
-    if (Object.keys(service).length > 0) {
-      setCheckStatus(false);
-    }
-  }, [service]);
 
   const toSmvs = () => {
     setCheckStatus(false);
@@ -325,7 +319,11 @@ const TabSmcsWithoutRequest = props => {
   const serviceOptions = serviceTypeId
     .filter(
       item =>
-        item.id == '2' || item.id == '5' || item.id == '6' || item.id == '7',
+        item.id == '2' ||
+        item.id == '5' ||
+        item.id == '6' ||
+        item.id == '7' ||
+        item.id == '8',
     )
     .map(item => {
       return {
@@ -1020,7 +1018,7 @@ const TabSmcsWithoutRequest = props => {
 
   const handleCheck = () => {
     if (service.masterId) {
-      props.checkSmcsWithoutReques(service, successCheck);
+      props.checkSmcsWithoutReques(service, successCheck, 1);
     } else {
       alert('Выберите мастера');
     }
@@ -1045,20 +1043,20 @@ const TabSmcsWithoutRequest = props => {
   };
 
   useEffect(() => {
-    if (checkSmcs.contractId === service.contractId) {
+    if (checkSmcs1.contractId === service.contractId) {
       setService({
         ...service,
-        sumTotal: checkSmcs.sumTotal,
-        discount: checkSmcs.discount,
-        sumForPay: checkSmcs.sumForPay,
-        paid: checkSmcs.paid,
-        masterPremium: checkSmcs.masterPremium,
-        operatorPremium: checkSmcs.operatorPremium,
+        sumTotal: checkSmcs1.sumTotal,
+        discount: checkSmcs1.discount,
+        sumForPay: checkSmcs1.sumForPay,
+        paid: checkSmcs1.paid,
+        masterPremium: checkSmcs1.masterPremium,
+        operatorPremium: checkSmcs1.operatorPremium,
       });
 
       setCheckStatus(true);
     }
-  }, [checkSmcs]);
+  }, [checkSmcs1]);
 
   return (
     <Form>
@@ -1221,7 +1219,7 @@ function mapStateToProps(state) {
     matnrServicePackage: state.smcsReducer.matnrServicePackage,
     servicePacketDetails: state.smcsReducer.servicePacketDetails,
     positionSumm: state.smcsReducer.smcsFetchPositionSumm,
-    checkSmcs: state.smcsReducer.checkSmcs,
+    checkSmcs1: state.smcsReducer.checkSmcs1,
     saveSmcs: state.smcsReducer.saveSmcs,
     operatorList: state.smcsReducer.operatorList,
     masterList: state.smcsReducer.masterList,

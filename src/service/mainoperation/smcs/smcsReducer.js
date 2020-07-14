@@ -8,7 +8,9 @@ import {
   FETCH_MATNR_PRICE_CARTRIDGE,
   FETCH_OPERATOR_LIST,
   FETCH_POSITION_SUMM,
-  CHECK_SMCS_WITHOUT_REQUEST,
+  CHECK_SMCS_WITHOUT_REQUEST_1,
+  CHECK_SMCS_WITHOUT_REQUEST_2,
+  CHECK_SMCS_WITHOUT_REQUEST_3,
   SAVE_SMCS_WITHOUT_REQUEST,
   FETCH_MATNR_PRICE_SERVICE_PACKAGE,
   FETCH_SERVICE_PACKAGE_DETAILS,
@@ -70,8 +72,14 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_POSITION_SUMM:
       return { ...state, smcsFetchPositionSumm: { ...action.data.data } };
 
-    case CHECK_SMCS_WITHOUT_REQUEST:
-      return { ...state, checkSmcs: { ...action.data.data } };
+    case CHECK_SMCS_WITHOUT_REQUEST_1:
+      return { ...state, checkSmcs1: { ...action.data.data } };
+
+    case CHECK_SMCS_WITHOUT_REQUEST_2:
+      return { ...state, checkSmcs2: { ...action.data.data } };
+
+    case CHECK_SMCS_WITHOUT_REQUEST_3:
+      return { ...state, checkSmcs3: { ...action.data.data } };
 
     case SAVE_SMCS_WITHOUT_REQUEST:
       return { ...state, saveSmcs: { ...action.data } };

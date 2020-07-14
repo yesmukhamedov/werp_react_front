@@ -65,7 +65,7 @@ const Srlsm = props => {
     branchId: null,
     categoryId: null,
     serviceTypeId: null,
-    serviceStatusId: null,
+    serviceStatusId: [1, 2],
     dateAt: null,
     dateTo: null,
     direction: 'DESC',
@@ -145,7 +145,8 @@ const Srlsm = props => {
           varSrls.serviceTypeId = o.value.length > 0 ? o.value.join() : null;
           break;
         case 'serviceStatusId':
-          varSrls.serviceStatusId = o.value.length > 0 ? o.value.join() : null;
+          varSrls.serviceStatusId = o.value;
+          // varSrls.serviceStatusId = o.value.length > 0 ? o.value.join() : null;
           break;
         default:
           varSrls[fieldName] = o.value;

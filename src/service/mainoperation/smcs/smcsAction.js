@@ -20,7 +20,9 @@ export const FETCH_MATNR_PRICE_SERVICE_PACKAGE =
 export const FETCH_SERVICE_PACKAGE_DETAILS = 'FETCH_SERVICE_PACKAGE_DETAILS';
 export const FETCH_SMCS_SERVICE_PACKET = 'FETCH_SMCS_SERVICE_PACKET';
 export const FETCH_POSITION_SUMM = 'FETCH_POSITION_SUMM';
-export const CHECK_SMCS_WITHOUT_REQUEST = 'CHECK_SMCS_WITHOUT_REQUEST';
+export const CHECK_SMCS_WITHOUT_REQUEST_1 = 'CHECK_SMCS_WITHOUT_REQUEST_1';
+export const CHECK_SMCS_WITHOUT_REQUEST_2 = 'CHECK_SMCS_WITHOUT_REQUEST_2';
+export const CHECK_SMCS_WITHOUT_REQUEST_3 = 'CHECK_SMCS_WITHOUT_REQUEST_3';
 export const SAVE_SMCS_WITHOUT_REQUEST = 'SAVE_SMCS_WITHOUT_REQUEST';
 export const SAVE_SMCS_PAYMENT = 'SAVE_SMCS_PAYMENT';
 export const FETCH_OPERATOR_LIST = 'FETCH_OPERATOR_LIST';
@@ -233,16 +235,29 @@ export const fetchPositionSumm = (branchId, bukrs, productId, position) => {
   };
 };
 //Проверка сервиса и получение суммы
-export const checkSmcsWithoutReques = (body, successCheck) => {
+export const checkSmcsWithoutReques = (body, successCheck, trans) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doPost(`smcs/check`, body)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        dispatch({
-          type: CHECK_SMCS_WITHOUT_REQUEST,
-          data: data,
-        });
+        if (trans == 1) {
+          dispatch({
+            type: CHECK_SMCS_WITHOUT_REQUEST_1,
+            data: data,
+          });
+        } else if (trans == 2) {
+          dispatch({
+            type: CHECK_SMCS_WITHOUT_REQUEST_2,
+            data: data,
+          });
+        } else if (trans == 3) {
+          dispatch({
+            type: CHECK_SMCS_WITHOUT_REQUEST_3,
+            data: data,
+          });
+        }
+
         successCheck();
         dispatch(notify('success', 'Успешно проверено'));
       })

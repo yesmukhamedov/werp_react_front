@@ -59,7 +59,7 @@ const SaleCartridge = props => {
           readOnly
           size="mini"
           style={{ padding: '0' }}
-          value={original.quantity}
+          value={original.quantity ? original.quantity : ''}
           type="number"
           label={{ content: 'шт' }}
           labelPosition="right"

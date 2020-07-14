@@ -57,7 +57,7 @@ const TabSmcsWithRequest = props => {
     matnrServicePackage = [],
     servicePacketDetails = [],
     positionSumm = {},
-    checkSmcs = {},
+    checkSmcs3 = {},
     saveSmcs,
     smcsAppNumberData = {},
     applicationNumber,
@@ -125,7 +125,11 @@ const TabSmcsWithRequest = props => {
   const serviceOptions = serviceTypeId
     .filter(
       item =>
-        item.id == '2' || item.id == '5' || item.id == '6' || item.id == '7',
+        item.id == '2' ||
+        item.id == '5' ||
+        item.id == '6' ||
+        item.id == '7' ||
+        item.id == '8',
     )
     .map(item => {
       return {
@@ -828,7 +832,7 @@ const TabSmcsWithRequest = props => {
 
   const handleCheck = () => {
     if (service.masterId) {
-      props.checkSmcsWithoutReques(service, successCheck);
+      props.checkSmcsWithoutReques(service, successCheck, 3);
     } else {
       alert('Выберите мастера');
     }
@@ -854,21 +858,21 @@ const TabSmcsWithRequest = props => {
   };
 
   useEffect(() => {
-    if (checkSmcs.contractId === service.contractId) {
+    if (checkSmcs3.contractId === service.contractId) {
       setService({
         ...service,
-        currencyId: checkSmcs.currencyId,
-        currencyName: checkSmcs.currencyName,
-        sumTotal: checkSmcs.sumTotal,
-        discount: checkSmcs.discount,
-        sumForPay: checkSmcs.sumForPay,
-        paid: checkSmcs.paid,
-        masterPremium: checkSmcs.masterPremium,
-        operatorPremium: checkSmcs.operatorPremium,
+        currencyId: checkSmcs3.currencyId,
+        currencyName: checkSmcs3.currencyName,
+        sumTotal: checkSmcs3.sumTotal,
+        discount: checkSmcs3.discount,
+        sumForPay: checkSmcs3.sumForPay,
+        paid: checkSmcs3.paid,
+        masterPremium: checkSmcs3.masterPremium,
+        operatorPremium: checkSmcs3.operatorPremium,
       });
       setCheckStatus(true);
     }
-  }, [checkSmcs]);
+  }, [checkSmcs3]);
 
   useEffect(() => {
     if (Object.keys(smcsAppNumberData).length > 0) {
@@ -1086,7 +1090,7 @@ function mapStateToProps(state) {
     matnrServicePackage: state.smcsReducer.matnrServicePackage,
     servicePacketDetails: state.smcsReducer.servicePacketDetails,
     positionSumm: state.smcsReducer.smcsFetchPositionSumm,
-    checkSmcs: state.smcsReducer.checkSmcs,
+    checkSmcs3: state.smcsReducer.checkSmcs3,
     saveSmcs: state.smcsReducer.saveSmcs,
     smcsAppNumberData: state.smcsReducer.smcsAppNumberData,
     checkWarranty: state.smcsReducer.checkWarranty,

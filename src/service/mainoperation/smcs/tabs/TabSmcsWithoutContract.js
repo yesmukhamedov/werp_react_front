@@ -63,7 +63,7 @@ const TabSmcsWithoutContract = props => {
     matnrServicePackage = [],
     servicePacketDetails = [],
     positionSumm = {},
-    checkSmcs = {},
+    checkSmcs2 = {},
     saveSmcs,
     operatorList = [],
     category,
@@ -297,7 +297,11 @@ const TabSmcsWithoutContract = props => {
   const serviceOptions = serviceTypeId
     .filter(
       item =>
-        item.id == '2' || item.id == '5' || item.id == '6' || item.id == '7',
+        item.id == '2' ||
+        item.id == '5' ||
+        item.id == '6' ||
+        item.id == '7' ||
+        item.id == '8',
     )
     .map(item => {
       return {
@@ -385,6 +389,21 @@ const TabSmcsWithoutContract = props => {
         posParam,
       );
     }
+  };
+
+  const onChangeSumm = (id, value) => {
+    console.log('SERVICES value', value, 'ID', id);
+
+    setServices(
+      services.map(item =>
+        item.serviceTypeId == id
+          ? {
+              ...item,
+              sum: parseInt(value),
+            }
+          : item,
+      ),
+    );
   };
 
   useEffect(() => {
@@ -1000,27 +1019,27 @@ const TabSmcsWithoutContract = props => {
   }, [withoutRequestProps]);
 
   useEffect(() => {
-    if (checkSmcs.contractId === service.contractId) {
+    if (checkSmcs2.contractId === service.contractId) {
       setService({
         ...service,
-        currencyId: checkSmcs.currencyId,
-        currencyName: checkSmcs.currencyName,
-        sumTotal: checkSmcs.sumTotal,
-        discount: checkSmcs.discount,
-        sumForPay: checkSmcs.sumForPay,
-        paid: checkSmcs.paid,
-        masterPremium: checkSmcs.masterPremium,
-        operatorPremium: checkSmcs.operatorPremium,
+        currencyId: checkSmcs2.currencyId,
+        currencyName: checkSmcs2.currencyName,
+        sumTotal: checkSmcs2.sumTotal,
+        discount: checkSmcs2.discount,
+        sumForPay: checkSmcs2.sumForPay,
+        paid: checkSmcs2.paid,
+        masterPremium: checkSmcs2.masterPremium,
+        operatorPremium: checkSmcs2.operatorPremium,
       });
     }
-    if (Object.keys(checkSmcs).length > 0) {
+    if (Object.keys(checkSmcs2).length > 0) {
       setCheckStatus(true);
     }
-  }, [checkSmcs]);
+  }, [checkSmcs2]);
 
   const handleCheck = () => {
     if (service.masterId) {
-      props.checkSmcsWithoutReques(service, successCheck);
+      props.checkSmcsWithoutReques(service, successCheck, 2);
     } else {
       alert('Выберите мастера');
     }
@@ -1079,6 +1098,7 @@ const TabSmcsWithoutContract = props => {
               servicesOptions={serviceOptions}
               handleRemoveService={handleRemoveService}
               selectServices={selectServices}
+              onChangeSumm={onChangeSumm}
               waers={service.currencyName}
               editStatus={editStatus}
               currency={service.currencyName}
@@ -1206,7 +1226,7 @@ function mapStateToProps(state) {
     matnrServicePackage: state.smcsReducer.matnrServicePackage,
     servicePacketDetails: state.smcsReducer.servicePacketDetails,
     positionSumm: state.smcsReducer.smcsFetchPositionSumm,
-    checkSmcs: state.smcsReducer.checkSmcs,
+    checkSmcs2: state.smcsReducer.checkSmcs2,
     saveSmcs: state.smcsReducer.saveSmcs,
     operatorList: state.smcsReducer.operatorList,
     masterList: state.smcsReducer.masterList,

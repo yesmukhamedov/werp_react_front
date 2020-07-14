@@ -8,11 +8,13 @@ import '../../service.css';
 const Table = props => {
   const {
     appList,
-    searchParams,
+    searchParams = {},
     turnOnReactFetch,
     tableCols = [],
     fetchAppList,
   } = props;
+
+  console.log('searchParams', searchParams);
 
   const [tableColumns, setTableColumns] = useState([]);
   const [serviceRequests, setServiceRequests] = useState([]);
@@ -31,11 +33,25 @@ const Table = props => {
         data={serviceRequests}
         columns={tableColumns}
         filterable={true}
-        searchParam={searchParams}
         turnOnReactFetch={turnOnReactFetch}
         showPagination={false}
-        requestData={param => {
-          fetchAppList({ ...param });
+        // requestData={param => {
+        //   fetchAppList({ ...param });
+        // }}
+        requestData={params => {
+          console.log('params', params);
+          props.fetchAppList({
+            ...params,
+            bukrs: searchParams.bukrs,
+            branchId: searchParams.branchId,
+            dateOpenAt: searchParams.dateOpenAt,
+            dateOpenTo: searchParams.dateOpenTo,
+            aDateFrom: searchParams.aDateFrom,
+            aDateTo: searchParams.aDateTo,
+            tovarCategorys: searchParams.tovarCategorys,
+            appStatusIds: searchParams.appStatusIds,
+            appTypeIds: searchParams.appTypeIds,
+          });
         }}
         className="-striped -highlight"
       />
