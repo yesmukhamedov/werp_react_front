@@ -154,7 +154,7 @@ const Srls = props => {
     },
     {
       Header: 'Дата',
-      accessor: 'contractDate',
+      accessor: 'dateOpen',
       checked: true,
       filterable: false,
     },
