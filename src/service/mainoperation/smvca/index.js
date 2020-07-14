@@ -36,15 +36,6 @@ const Smecam = props => {
   const [editStatus, setEditStatus] = useState(false);
 
   console.log('SMECA EDIT STATUS', editStatus);
-  useEffect(() => {
-    if (availabledTransaction.length > 0) {
-      availabledTransaction.map(item =>
-        item.transactionCode == 'SMECA'
-          ? setEditStatus(true)
-          : setEditStatus(false),
-      );
-    }
-  }, [availabledTransaction]);
 
   const [errors, setErrors] = useState({});
 
@@ -60,6 +51,16 @@ const Smecam = props => {
     props.f4FetchAvailabledTransactionByUser();
     props.f4FetchCurrentStaff();
   }, []);
+
+  useEffect(() => {
+    if (availabledTransaction.length > 0) {
+      availabledTransaction.map(item =>
+        item.transactionCode == 'SMECA'
+          ? setEditStatus(true)
+          : setEditStatus(false),
+      );
+    }
+  }, [availabledTransaction]);
 
   return (
     <Container fluid>
