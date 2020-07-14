@@ -157,7 +157,7 @@ const Srlsm = props => {
   //Колоны ReactTable
   const initialColumns = [
     {
-      Header: 'Id',
+      Header: '#',
       accessor: 'id',
       checked: true,
       filterable: false,
