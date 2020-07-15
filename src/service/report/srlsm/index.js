@@ -56,8 +56,10 @@ const Srlsm = props => {
     serviceTypeList = [],
     srlsmTotalPages,
     countryList = [],
-    acceptPaymentUsers,
+    acceptPaymentUsers = [],
   } = props;
+
+  console.log('acceptPaymentUsers', acceptPaymentUsers);
 
   const emptyParam = {
     countryId: null,
@@ -66,6 +68,7 @@ const Srlsm = props => {
     categoryId: null,
     serviceTypeId: null,
     serviceStatusId: [1, 2],
+    acceptedPaymentById: null,
     dateAt: null,
     dateTo: null,
     direction: 'DESC',
@@ -84,6 +87,16 @@ const Srlsm = props => {
     props.fetchServiceTypeList();
     props.f4FetchCountryList();
   }, []);
+
+  useEffect(() => {
+    if (param.bukrs && param.branchId) {
+      let params = {
+        bukrs: param.bukrs,
+        branchId: param.branchId,
+      };
+      props.fetchAcceptPaymentUsers({ ...params });
+    }
+  }, [param.bukrs, param.branchId]);
 
   const countryOptions = countryList.map(item => {
     return {
@@ -124,6 +137,14 @@ const Srlsm = props => {
     };
   });
 
+  const acceptUsersOptions = acceptPaymentUsers.map((item, index) => {
+    return {
+      key: parseInt(item.userId) * index,
+      text: item.username,
+      value: item.userId,
+    };
+  });
+
   const onInputChange = (o, fieldName) => {
     setParam(prev => {
       const varSrls = { ...prev };
@@ -134,6 +155,9 @@ const Srlsm = props => {
         case 'bukrs':
           varSrls.bukrs = o.value;
           varSrls.branchId = '';
+          break;
+        case 'acceptPayment':
+          varSrls.acceptedPaymentById = o.value;
           break;
         case 'branchId':
           varSrls.branchId = o.value.length > 0 ? o.value.join() : null;
@@ -396,6 +420,20 @@ const Srlsm = props => {
               onChange={(e, o) => onInputChange(o, 'serviceStatusId')}
               className="alignBottom"
               multiple
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Принял автор</label>
+            <DropdownClearable
+              fluid
+              placeholder="Принял автор"
+              value={param.acceptedPaymentById}
+              options={acceptUsersOptions}
+              onChange={(e, o) => onInputChange(o, 'acceptPayment')}
+              className="alignBottom"
+              handleClear={() =>
+                setParam({ ...param, acceptedPaymentById: '' })
+              }
             />
           </Form.Field>
         </Form.Group>
