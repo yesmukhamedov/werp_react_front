@@ -88,6 +88,15 @@ function HistoryReactTable(props) {
           {
             Header: () => (
               <div style={{ textAlign: 'center' }}>
+                {messages['appointment_call_date']}
+              </div>
+            ),
+            accessor: 'crmScheduleDate',
+            Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+          },
+          {
+            Header: () => (
+              <div style={{ textAlign: 'center' }}>
                 {messages['description']}
               </div>
             ),

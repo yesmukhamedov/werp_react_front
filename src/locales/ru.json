@@ -847,6 +847,7 @@
   "my_outgoing_app": "Мои заявки исход",
   "service_period": "Срок сервиса",
   "appointment_date": "Дата назначения",
+  "appointment_call_date": "Дата назначения звонка",
   "service_packet_plan": "План по сервис пакетам",
   "my_applications": "Мои заявки",
   "prevention_plan": "План по профилактике",
