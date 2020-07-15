@@ -246,6 +246,34 @@ const TabSmcsWithoutContract = props => {
     }
   }, [service.bukrs, service.branchId, service.categoryId]);
 
+  // useEffect(() => {
+  //   let paramMatnrSparePart = {
+  //     branchId: service.branchId,
+  //     bukrs: service.bukrs,
+  //     masterId: service.masterId,
+  //     serviceTypeId: 3,
+  //     tovarId: service.tovarId,
+  //   };
+
+  //   let paramMatnrCartridge = {
+  //     branchId: service.branchId,
+  //     bukrs: service.bukrs,
+  //     masterId: service.masterId,
+  //     serviceTypeId: 1,
+  //     tovarId: service.tovarId,
+  //   };
+  //   if (
+  //     service.bukrs &&
+  //     service.branchId &&
+  //     service.masterId &&
+  //     service.tovarId
+  //   ) {
+  //     setEditStatus(false);
+  //     props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart });
+  //     props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge });
+  //   }
+  // }, [service.masterId, service.branchId, service.bukrs, service.tovarId]);
+
   useEffect(() => {
     let paramMatnrSparePart = {
       branchId: service.branchId,
@@ -262,17 +290,68 @@ const TabSmcsWithoutContract = props => {
       serviceTypeId: 1,
       tovarId: service.tovarId,
     };
+
+    let master = service.masterId;
+
     if (
-      service.bukrs &&
-      service.branchId &&
-      service.masterId &&
-      service.tovarId
+      master === null ||
+      master === undefined ||
+      master === '' ||
+      master === 0
     ) {
-      setEditStatus(false);
+      setServices([]);
+
+      setSparePartList(
+        sparePartList.map(item =>
+          item.checked === true
+            ? {
+                ...item,
+                checked: false,
+              }
+            : item,
+        ),
+      );
+      setCartridgeList(
+        cartridgeList.map(item =>
+          item.checked === true
+            ? {
+                ...item,
+                checked: false,
+              }
+            : item,
+        ),
+      );
+      setServicePackageList(
+        servicePackageList.map(item =>
+          item.checked === true
+            ? {
+                ...item,
+                checked: false,
+              }
+            : item,
+        ),
+      );
+      setEditStatus(true);
+    } else {
+      setServices([]);
+      setSparePartList(
+        sparePartList.map(item =>
+          item.checked === true
+            ? {
+                ...item,
+                checked: false,
+              }
+            : item,
+        ),
+      );
+      setCartridgeInitial([]);
+      setServicePackageInitial([]);
       props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart });
       props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge });
+      setEditStatus(false);
     }
-  }, [service.masterId, service.branchId, service.bukrs, service.tovarId]);
+    setCheckStatus(false);
+  }, [service.masterId]);
 
   console.log('SERVICE', service);
   useEffect(() => {
@@ -533,7 +612,9 @@ const TabSmcsWithoutContract = props => {
           currencyId: item.currencyId,
           currencyName: item.currencyName,
           fno: item.fno,
-          id: item.matnrId * 63 + index,
+          id: parseInt(
+            `${item.matnrId * 63 + index + Math.floor(Math.random() * 10000)}`,
+          ),
           matnrId: item.matnrId,
           matnrCode: item.matnrCode,
           matnrName: item.matnrName,
@@ -748,7 +829,9 @@ const TabSmcsWithoutContract = props => {
           currencyName: item.currencyName,
           fno: item.fno,
           tempFno: item.fno,
-          id: item.matnrId * 23 + index,
+          id: parseInt(
+            `${item.matnrId * 63 + index + Math.floor(Math.random() * 10000)}`,
+          ),
           matnrId: item.matnrId,
           matnrCode: item.matnrCode,
           matnrName: item.matnrName,

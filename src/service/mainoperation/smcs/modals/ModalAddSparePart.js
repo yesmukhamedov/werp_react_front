@@ -21,6 +21,8 @@ const ModalAddSparePart = props => {
     checkedSparePart,
   } = props;
 
+  console.log('DATA MODAL SPARE', data);
+
   const columnsSparePart = [
     {
       Header: '',
@@ -36,8 +38,8 @@ const ModalAddSparePart = props => {
     {
       Header: 'Код',
       accessor: 'matnrCode',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['matnrCode'] }),
+      filterMethod: (filter, original) =>
+        matchSorter(original, filter.value, { keys: ['matnrCode'] }),
       filterAll: true,
     },
     {

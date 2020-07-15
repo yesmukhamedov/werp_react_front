@@ -373,7 +373,9 @@ const TabSmcsWithRequest = props => {
           currencyId: item.currencyId,
           currencyName: item.currencyName,
           fno: null,
-          id: item.matnrId * 63 + index,
+          id: parseInt(
+            `${item.matnrId * 63 + index + Math.floor(Math.random() * 10000)}`,
+          ),
           matnrId: item.matnrId,
           matnrCode: item.matnrCode,
           matnrName: item.matnrName,
@@ -591,7 +593,9 @@ const TabSmcsWithRequest = props => {
           currencyName: item.currencyName,
           fno: item.fno,
           tempFno: item.fno,
-          id: item.matnrId * 23 + index,
+          id: parseInt(
+            `${item.matnrId * 63 + index + Math.floor(Math.random() * 10000)}`,
+          ),
           matnrId: item.matnrId,
           matnrCode: item.matnrCode,
           matnrName: item.matnrName,
@@ -847,7 +851,7 @@ const TabSmcsWithRequest = props => {
       ...service,
       positions: [...servicesF, ...sparePart, ...cartridge, ...servicePackage],
     });
-  }, [, services, sparePartInitial, cartridgeInitial, servicePackageInitial]);
+  }, [services, sparePartInitial, cartridgeInitial, servicePackageInitial]);
 
   const handleCheck = () => {
     if (service.masterId) {
@@ -922,30 +926,82 @@ const TabSmcsWithRequest = props => {
 
   useEffect(() => {
     let paramMatnrSparePart = {
-      branchId: smcsAppNumberData.branchId,
-      bukrs: smcsAppNumberData.bukrs,
-      masterId: smcsAppNumberData.masterId,
+      branchId: service.branchId,
+      bukrs: service.bukrs,
+      masterId: service.masterId,
       serviceTypeId: 3,
-      tovarId: smcsAppNumberData.tovarId,
+      tovarId: service.tovarId,
     };
 
     let paramMatnrCartridge = {
-      branchId: smcsAppNumberData.branchId,
-      bukrs: smcsAppNumberData.bukrs,
-      masterId: smcsAppNumberData.masterId,
+      branchId: service.branchId,
+      bukrs: service.bukrs,
+      masterId: service.masterId,
       serviceTypeId: 1,
-      tovarId: smcsAppNumberData.tovarId,
+      tovarId: service.tovarId,
     };
 
-    let masterId = smcsAppNumberData.masterId;
-    let contractId = smcsAppNumberData.contractId;
+    let master = service.masterId;
 
-    if (masterId) {
+    if (
+      master === null ||
+      master === undefined ||
+      master === '' ||
+      master === 0
+    ) {
+      setServices([]);
+
+      setSparePartList(
+        sparePartList.map(item =>
+          item.checked === true
+            ? {
+                ...item,
+                checked: false,
+              }
+            : item,
+        ),
+      );
+      setCartridgeList(
+        cartridgeList.map(item =>
+          item.checked === true
+            ? {
+                ...item,
+                checked: false,
+              }
+            : item,
+        ),
+      );
+      setServicePackageList(
+        servicePackageList.map(item =>
+          item.checked === true
+            ? {
+                ...item,
+                checked: false,
+              }
+            : item,
+        ),
+      );
+      setEditStatus(true);
+    } else {
+      setServices([]);
+      setSparePartList(
+        sparePartList.map(item =>
+          item.checked === true
+            ? {
+                ...item,
+                checked: false,
+              }
+            : item,
+        ),
+      );
+      setCartridgeInitial([]);
+      setServicePackageInitial([]);
       props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart });
       props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge });
       setEditStatus(false);
     }
-  }, [service.masterId, service.contractId]);
+    setCheckStatus(false);
+  }, [service.masterId]);
 
   useEffect(() => {
     if (

@@ -557,7 +557,9 @@ const TabSmcsWithoutRequest = props => {
           currencyId: item.currencyId,
           currencyName: item.currencyName,
           fno: null,
-          id: item.matnrId * 63 + index,
+          id: parseInt(
+            `${item.matnrId * 63 + index + Math.floor(Math.random() * 10000)}`,
+          ),
           matnrId: item.matnrId,
           matnrCode: item.matnrCode,
           matnrName: item.matnrName,
@@ -772,7 +774,9 @@ const TabSmcsWithoutRequest = props => {
           currencyName: item.currencyName,
           fno: item.fno,
           tempFno: item.fno,
-          id: item.matnrId * 23 + index,
+          id: parseInt(
+            `${item.matnrId * 63 + index + Math.floor(Math.random() * 10000)}`,
+          ),
           matnrId: item.matnrId,
           matnrCode: item.matnrCode,
           matnrName: item.matnrName,
