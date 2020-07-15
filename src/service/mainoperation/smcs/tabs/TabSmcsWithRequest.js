@@ -28,6 +28,9 @@ import {
   fetchSmcsByAppNumber,
   fetchCheckWarranty,
   fetchPaymentOptions,
+  clearMatnrPriceSparePart,
+  clearMatnrPriceCartridge,
+  clearMatnrPriceServicePackage,
 } from '../smcsAction';
 
 import {
@@ -925,6 +928,9 @@ const TabSmcsWithRequest = props => {
   }, [smcsAppNumberData]);
 
   useEffect(() => {
+    props.clearMatnrPriceSparePart();
+    props.clearMatnrPriceCartridge();
+    props.clearMatnrPriceServicePackage();
     let paramMatnrSparePart = {
       branchId: service.branchId,
       bukrs: service.bukrs,
@@ -942,58 +948,9 @@ const TabSmcsWithRequest = props => {
     };
 
     let master = service.masterId;
-
-    if (
-      master === null ||
-      master === undefined ||
-      master === '' ||
-      master === 0
-    ) {
+    if (master) {
       setServices([]);
-
-      setSparePartList(
-        sparePartList.map(item =>
-          item.checked === true
-            ? {
-                ...item,
-                checked: false,
-              }
-            : item,
-        ),
-      );
-      setCartridgeList(
-        cartridgeList.map(item =>
-          item.checked === true
-            ? {
-                ...item,
-                checked: false,
-              }
-            : item,
-        ),
-      );
-      setServicePackageList(
-        servicePackageList.map(item =>
-          item.checked === true
-            ? {
-                ...item,
-                checked: false,
-              }
-            : item,
-        ),
-      );
-      setEditStatus(true);
-    } else {
-      setServices([]);
-      setSparePartList(
-        sparePartList.map(item =>
-          item.checked === true
-            ? {
-                ...item,
-                checked: false,
-              }
-            : item,
-        ),
-      );
+      setSparePartList([]);
       setCartridgeInitial([]);
       setServicePackageInitial([]);
       props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart });
@@ -1191,4 +1148,7 @@ export default connect(mapStateToProps, {
   fetchSmcsByAppNumber,
   fetchCheckWarranty,
   fetchPaymentOptions,
+  clearMatnrPriceSparePart,
+  clearMatnrPriceCartridge,
+  clearMatnrPriceServicePackage,
 })(injectIntl(TabSmcsWithRequest));

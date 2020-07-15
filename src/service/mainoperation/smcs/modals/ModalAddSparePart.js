@@ -21,8 +21,6 @@ const ModalAddSparePart = props => {
     checkedSparePart,
   } = props;
 
-  console.log('DATA MODAL SPARE', data);
-
   const columnsSparePart = [
     {
       Header: '',

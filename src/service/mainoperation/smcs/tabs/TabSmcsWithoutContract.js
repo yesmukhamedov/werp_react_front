@@ -19,6 +19,7 @@ import {
   fetchMatnrPriceSparePart,
   fetchMatnrPriceCartridge,
   fetchMatnrPriceServicePackage,
+  clearMatnrPriceServicePackage,
   fetchServicePackageDetails,
   fetchSmcsServicePacket,
   fetchPositionSumm,
@@ -29,6 +30,8 @@ import {
   fetchMasterList,
   fetchCheckWarranty,
   fetchPaymentOptions,
+  clearMatnrPriceSparePart,
+  clearMatnrPriceCartridge,
 } from '../smcsAction';
 
 import {
@@ -78,8 +81,6 @@ const TabSmcsWithoutContract = props => {
   const [service, setService] = useState({ ...emptyService });
   const [paymentChecked, setPaymentChecked] = useState(false);
   const [hkontS, setHkontS] = useState('');
-
-  console.log('SERVICE CONTRACT', service);
 
   const [checkStatus, setCheckStatus] = useState(false);
 
@@ -246,35 +247,10 @@ const TabSmcsWithoutContract = props => {
     }
   }, [service.bukrs, service.branchId, service.categoryId]);
 
-  // useEffect(() => {
-  //   let paramMatnrSparePart = {
-  //     branchId: service.branchId,
-  //     bukrs: service.bukrs,
-  //     masterId: service.masterId,
-  //     serviceTypeId: 3,
-  //     tovarId: service.tovarId,
-  //   };
-
-  //   let paramMatnrCartridge = {
-  //     branchId: service.branchId,
-  //     bukrs: service.bukrs,
-  //     masterId: service.masterId,
-  //     serviceTypeId: 1,
-  //     tovarId: service.tovarId,
-  //   };
-  //   if (
-  //     service.bukrs &&
-  //     service.branchId &&
-  //     service.masterId &&
-  //     service.tovarId
-  //   ) {
-  //     setEditStatus(false);
-  //     props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart });
-  //     props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge });
-  //   }
-  // }, [service.masterId, service.branchId, service.bukrs, service.tovarId]);
-
   useEffect(() => {
+    props.clearMatnrPriceSparePart();
+    props.clearMatnrPriceCartridge();
+    props.clearMatnrPriceServicePackage();
     let paramMatnrSparePart = {
       branchId: service.branchId,
       bukrs: service.bukrs,
@@ -292,59 +268,10 @@ const TabSmcsWithoutContract = props => {
     };
 
     let master = service.masterId;
-
-    if (
-      master === null ||
-      master === undefined ||
-      master === '' ||
-      master === 0
-    ) {
+    if (master) {
       setServices([]);
-
-      setSparePartList(
-        sparePartList.map(item =>
-          item.checked === true
-            ? {
-                ...item,
-                checked: false,
-              }
-            : item,
-        ),
-      );
-      setCartridgeList(
-        cartridgeList.map(item =>
-          item.checked === true
-            ? {
-                ...item,
-                checked: false,
-              }
-            : item,
-        ),
-      );
-      setServicePackageList(
-        servicePackageList.map(item =>
-          item.checked === true
-            ? {
-                ...item,
-                checked: false,
-              }
-            : item,
-        ),
-      );
-      setEditStatus(true);
-    } else {
-      setServices([]);
-      setSparePartList(
-        sparePartList.map(item =>
-          item.checked === true
-            ? {
-                ...item,
-                checked: false,
-              }
-            : item,
-        ),
-      );
-      setCartridgeInitial([]);
+      setSparePartList([]);
+      setCartridgeList([]);
       setServicePackageInitial([]);
       props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart });
       props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge });
@@ -353,7 +280,6 @@ const TabSmcsWithoutContract = props => {
     setCheckStatus(false);
   }, [service.masterId]);
 
-  console.log('SERVICE', service);
   useEffect(() => {
     if (service.bukrs && service.categoryId) {
       let param = {
@@ -471,8 +397,6 @@ const TabSmcsWithoutContract = props => {
   };
 
   const onChangeSumm = (id, value) => {
-    console.log('SERVICES value', value, 'ID', id);
-
     setServices(
       services.map(item =>
         item.serviceTypeId == id
@@ -1329,8 +1253,11 @@ export default connect(mapStateToProps, {
   fetchTovarId,
   fetchServiceTypeId,
   fetchMatnrPriceSparePart,
+  clearMatnrPriceSparePart,
   fetchMatnrPriceCartridge,
+  clearMatnrPriceCartridge,
   fetchMatnrPriceServicePackage,
+  clearMatnrPriceServicePackage,
   fetchServicePackageDetails,
   fetchSmcsServicePacket,
   fetchPositionSumm,

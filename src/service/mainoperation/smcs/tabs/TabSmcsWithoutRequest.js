@@ -7,7 +7,6 @@ import {
   Button,
   Icon,
   Confirm,
-  Segment,
   Checkbox,
   Table,
   Dropdown,
@@ -18,8 +17,11 @@ import {
   fetchTovarId,
   fetchServiceTypeId,
   fetchMatnrPriceSparePart,
+  clearMatnrPriceSparePart,
   fetchMatnrPriceCartridge,
+  clearMatnrPriceCartridge,
   fetchMatnrPriceServicePackage,
+  clearMatnrPriceServicePackage,
   fetchServicePackageDetails,
   fetchSmcsServicePacket,
   fetchPositionSumm,
@@ -70,6 +72,9 @@ const TabSmcsWithoutRequest = props => {
     tovarSnProps,
     paymentOptions = [],
   } = props;
+
+  console.log('1 matnrPriceSparePart', matnrPriceSparePart);
+  console.log('2 matnrPriceCartridge', matnrPriceCartridge);
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
@@ -226,6 +231,9 @@ const TabSmcsWithoutRequest = props => {
   });
 
   useEffect(() => {
+    props.clearMatnrPriceSparePart();
+    props.clearMatnrPriceCartridge();
+    props.clearMatnrPriceServicePackage();
     let paramMatnrSparePart = {
       branchId: service.branchId,
       bukrs: service.bukrs,
@@ -244,58 +252,10 @@ const TabSmcsWithoutRequest = props => {
 
     let master = service.masterId;
 
-    if (
-      master === null ||
-      master === undefined ||
-      master === '' ||
-      master === 0
-    ) {
+    if (master) {
       setServices([]);
-
-      setSparePartList(
-        sparePartList.map(item =>
-          item.checked === true
-            ? {
-                ...item,
-                checked: false,
-              }
-            : item,
-        ),
-      );
-      setCartridgeList(
-        cartridgeList.map(item =>
-          item.checked === true
-            ? {
-                ...item,
-                checked: false,
-              }
-            : item,
-        ),
-      );
-      setServicePackageList(
-        servicePackageList.map(item =>
-          item.checked === true
-            ? {
-                ...item,
-                checked: false,
-              }
-            : item,
-        ),
-      );
-      setEditStatus(true);
-    } else {
-      setServices([]);
-      setSparePartList(
-        sparePartList.map(item =>
-          item.checked === true
-            ? {
-                ...item,
-                checked: false,
-              }
-            : item,
-        ),
-      );
-      setCartridgeInitial([]);
+      setSparePartList([]);
+      setCartridgeList([]);
       setServicePackageInitial([]);
       props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart });
       props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge });
@@ -1260,8 +1220,11 @@ export default connect(mapStateToProps, {
   fetchTovarId,
   fetchServiceTypeId,
   fetchMatnrPriceSparePart,
+  clearMatnrPriceSparePart,
   fetchMatnrPriceCartridge,
+  clearMatnrPriceCartridge,
   fetchMatnrPriceServicePackage,
+  clearMatnrPriceServicePackage,
   fetchServicePackageDetails,
   fetchSmcsServicePacket,
   fetchPositionSumm,

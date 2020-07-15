@@ -4,15 +4,23 @@ import {
   CLEAR_DYNOBJ_MARKETING,
   FETCH_TOVAR_ID,
   FETCH_SERVICE_TYPE_ID,
+  //
   FETCH_MATNR_PRICE_SPARE_PART,
+  CLEAR_MATNR_PRICE_SPARE_PART,
+  //
   FETCH_MATNR_PRICE_CARTRIDGE,
+  CLEAR_MATNR_PRICE_CARTRIDGE,
+  //
   FETCH_OPERATOR_LIST,
   FETCH_POSITION_SUMM,
   CHECK_SMCS_WITHOUT_REQUEST_1,
   CHECK_SMCS_WITHOUT_REQUEST_2,
   CHECK_SMCS_WITHOUT_REQUEST_3,
   SAVE_SMCS_WITHOUT_REQUEST,
+  //
   FETCH_MATNR_PRICE_SERVICE_PACKAGE,
+  CLEAR_MATNR_PRICE_SERVICE_PACKAGE,
+  //
   FETCH_SERVICE_PACKAGE_DETAILS,
   FETCH_SMCS_BY_APP_NUMBER,
   FETCH_MASTER_LIST,
@@ -60,11 +68,20 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_MATNR_PRICE_SPARE_PART:
       return { ...state, matnrPriceSparePart: [...action.data.data] };
 
+    case CLEAR_MATNR_PRICE_SPARE_PART:
+      return { ...state, matnrPriceSparePart: [] };
+
     case FETCH_MATNR_PRICE_CARTRIDGE:
       return { ...state, matnrPriceCartridge: [...action.data.data] };
 
+    case CLEAR_MATNR_PRICE_CARTRIDGE:
+      return { ...state, matnrPriceCartridge: [] };
+
     case FETCH_MATNR_PRICE_SERVICE_PACKAGE:
       return { ...state, matnrServicePackage: [...action.data.data] };
+
+    case CLEAR_MATNR_PRICE_SERVICE_PACKAGE:
+      return { ...state, matnrServicePackage: [] };
 
     case FETCH_SERVICE_PACKAGE_DETAILS:
       return { ...state, servicePacketDetails: [...action.data.data] };

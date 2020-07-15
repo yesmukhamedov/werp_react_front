@@ -13,10 +13,16 @@ export const CLEAR_DYNOBJ_MARKETING = 'CLEAR_DYNOBJ_MARKETING';
 export const FETCH_TOVAR_ID = 'FETCH_TOVAR_ID';
 export const FETCH_SERVICE_TYPE_ID = 'FETCH_SERVICE_TYPE_ID';
 export const FETCH_MATNR_PRICE_SPARE_PART = 'FETCH_MATNR_PRICE_SPARE_PART';
+export const CLEAR_MATNR_PRICE_SPARE_PART = 'CLEAR_MATNR_PRICE_SPARE_PART';
+
 export const FETCH_MATNR_PRICE_CARTRIDGE = 'FETCH_MATNR_PRICE_CARTRIDGE';
+export const CLEAR_MATNR_PRICE_CARTRIDGE = 'CLEAR_MATNR_PRICE_CARTRIDGE';
 //Сервис пакет
 export const FETCH_MATNR_PRICE_SERVICE_PACKAGE =
   'FETCH_MATNR_PRICE_SERVICE_PACKAGE';
+export const CLEAR_MATNR_PRICE_SERVICE_PACKAGE =
+  'CLEAR_MATNR_PRICE_SERVICE_PACKAGE';
+
 export const FETCH_SERVICE_PACKAGE_DETAILS = 'FETCH_SERVICE_PACKAGE_DETAILS';
 export const FETCH_SMCS_SERVICE_PACKET = 'FETCH_SMCS_SERVICE_PACKET';
 export const FETCH_POSITION_SUMM = 'FETCH_POSITION_SUMM';
@@ -126,6 +132,14 @@ export const fetchMatnrPriceSparePart = param => {
       });
   };
 };
+export const clearMatnrPriceSparePart = () => {
+  console.log('clearMatnrPriceSparePart');
+  return function(dispatch) {
+    dispatch({
+      type: CLEAR_MATNR_PRICE_SPARE_PART,
+    });
+  };
+};
 
 export const fetchMatnrPriceCartridge = param => {
   return function(dispatch) {
@@ -144,6 +158,14 @@ export const fetchMatnrPriceCartridge = param => {
       });
   };
 };
+export const clearMatnrPriceCartridge = () => {
+  console.log('clearMatnrPriceCartridge');
+  return function(dispatch) {
+    dispatch({
+      type: CLEAR_MATNR_PRICE_CARTRIDGE,
+    });
+  };
+};
 
 export const fetchMatnrPriceServicePackage = param => {
   return function(dispatch) {
@@ -160,6 +182,13 @@ export const fetchMatnrPriceServicePackage = param => {
         dispatch(modifyLoader(false));
         handleError(error, dispatch);
       });
+  };
+};
+export const clearMatnrPriceServicePackage = () => {
+  return function(dispatch) {
+    dispatch({
+      type: CLEAR_MATNR_PRICE_SERVICE_PACKAGE,
+    });
   };
 };
 
