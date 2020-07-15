@@ -93,6 +93,10 @@ function Smregc(props) {
             }
           });
           break;
+
+        default:
+          newCall[fieldname] = e.value;
+          break;
       }
       return newCall;
     });

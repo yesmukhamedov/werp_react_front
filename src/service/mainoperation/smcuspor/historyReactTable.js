@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { Popup } from 'semantic-ui-react';
 import moment from 'moment';
-import matchSorter, { rankings } from 'match-sorter';
+import matchSorter from 'match-sorter';
 
 import { LinkToSmvs, LinkToSmvca } from '../../../utils/outlink';
 

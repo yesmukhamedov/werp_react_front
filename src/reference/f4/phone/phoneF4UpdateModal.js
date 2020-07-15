@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Modal,
-  Icon,
-  Button,
-  Dropdown,
-  Input,
-  Table,
-  TextArea,
-  Form,
-} from 'semantic-ui-react';
+import { Modal, Icon, Button, Dropdown, Table, Form } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import MaskedInput from 'react-text-mask';

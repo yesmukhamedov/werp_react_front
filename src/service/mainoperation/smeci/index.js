@@ -74,7 +74,6 @@ function Smeci(props) {
     serviceCrmCategoryName,
     serviceCrmCategoryId,
     contractDate,
-    manual,
     installmentDate,
     dealerFIO,
     dealerId,

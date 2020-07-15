@@ -4,7 +4,6 @@ import { injectIntl } from 'react-intl';
 import { Modal, Icon, Table, Button } from 'semantic-ui-react';
 
 import { f4FetchPhoneHistory } from '../f4_action';
-const language = localStorage.getItem('language');
 
 function PhoneF4HistoryModal(props) {
   const {

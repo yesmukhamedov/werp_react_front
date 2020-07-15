@@ -56,9 +56,6 @@ function Smcuspor(props) {
 
   const {
     intl: { messages },
-    clientHistory = {
-      contractInfo: {},
-    },
     clientContract = {},
     contractHistory = [],
     crmHistoryAll = [],
@@ -79,7 +76,6 @@ function Smcuspor(props) {
     serviceBranchName,
     tovarSn,
     customerFIO,
-    customerId,
     contactPersonName,
     serviceAddressName,
     fullPhone,
@@ -144,6 +140,10 @@ function Smcuspor(props) {
         case 'requests':
           varHistory.reactColumns = fieldname;
           varHistory.activeButton = false;
+          break;
+
+        default:
+          varHistory.reactColumns = fieldname;
           break;
       }
       return varHistory;

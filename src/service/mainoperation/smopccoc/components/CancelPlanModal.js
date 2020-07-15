@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Modal, Icon, Button, Form, TextArea, Input } from 'semantic-ui-react';
+import { Modal, Icon, Button, Form, TextArea } from 'semantic-ui-react';
 import { postToCancelPlan } from '../smopccocAction';
 
 function CancelPlanModal(props) {
