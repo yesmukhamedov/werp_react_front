@@ -33,7 +33,9 @@ const ModalAddServicePacket = props => {
       Header: 'Название',
       accessor: 'matnrName',
       filterAll: true,
-      width: 500,
+      width: 300,
+      maxWidth: 300,
+      minWidth: 200,
     },
     {
       Header: 'Цена',

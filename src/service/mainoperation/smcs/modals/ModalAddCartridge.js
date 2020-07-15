@@ -38,11 +38,13 @@ const ModalAddCartridge = props => {
     {
       Header: 'Название',
       accessor: 'matnrName',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['matnrName'] }),
+      filterMethod: (filter, rows) => {
+        matchSorter(rows, filter.value, { keys: ['matnrName'] });
+      },
+
       filterAll: true,
       width: 300,
-      maxWidth: 400,
+      maxWidth: 300,
       minWidth: 200,
     },
     {

@@ -646,28 +646,30 @@ const TabSmcsWithoutContract = props => {
       case 'fnoEdit':
         setCartridgeList(
           cartridgeList.map(item =>
-            item.id === original.id
+            item.id === original
               ? {
                   ...item,
-                  fno: parseInt(value.value, 10),
+                  fno: parseInt(value.value),
                 }
               : item,
           ),
         );
         break;
+
       //Удалить картридж
       case 'deleteCartridge':
         let deleteFilter = cartridgeInitial.filter(
-          item => item.id !== value.id,
+          item => item.id !== original,
         );
         setCartridgeList([...deleteFilter]);
 
         setCartridgeList(
           cartridgeList.map(item =>
-            item.id === value.id
+            item.id === original
               ? {
                   ...item,
                   checked: false,
+                  fno: item.tempFno,
                 }
               : item,
           ),
@@ -745,6 +747,7 @@ const TabSmcsWithoutContract = props => {
           currencyId: item.currencyId,
           currencyName: item.currencyName,
           fno: item.fno,
+          tempFno: item.fno,
           id: item.matnrId * 23 + index,
           matnrId: item.matnrId,
           matnrCode: item.matnrCode,

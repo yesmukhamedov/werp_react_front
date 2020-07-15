@@ -484,6 +484,7 @@ const TabSmcsWithRequest = props => {
       case 'addCartridgeBtn':
         setModalCartridge(true);
         break;
+
       //F№ изменение
       case 'fnoEdit':
         setCartridgeList(
@@ -491,12 +492,13 @@ const TabSmcsWithRequest = props => {
             item.id === original
               ? {
                   ...item,
-                  fno: parseInt(value.value, 10),
+                  fno: parseInt(value.value),
                 }
               : item,
           ),
         );
         break;
+
       //Удалить картридж
       case 'deleteCartridge':
         let deleteFilter = cartridgeInitial.filter(
@@ -510,6 +512,7 @@ const TabSmcsWithRequest = props => {
               ? {
                   ...item,
                   checked: false,
+                  fno: item.tempFno,
                 }
               : item,
           ),
@@ -587,6 +590,7 @@ const TabSmcsWithRequest = props => {
           currencyId: item.currencyId,
           currencyName: item.currencyName,
           fno: item.fno,
+          tempFno: item.fno,
           id: item.matnrId * 23 + index,
           matnrId: item.matnrId,
           matnrCode: item.matnrCode,

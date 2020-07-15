@@ -46,9 +46,9 @@ const ModalAddSparePart = props => {
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['matnrName'] }),
       filterAll: true,
-      width: 500,
-      maxWidth: 500,
-      minWidth: 300,
+      width: 300,
+      maxWidth: 300,
+      minWidth: 200,
     },
     {
       Header: 'Цена',

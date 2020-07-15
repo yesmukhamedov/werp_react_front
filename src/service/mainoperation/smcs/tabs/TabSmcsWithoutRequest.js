@@ -693,6 +693,7 @@ const TabSmcsWithoutRequest = props => {
               ? {
                   ...item,
                   checked: false,
+                  fno: parseInt(item.tempFno),
                 }
               : item,
           ),
@@ -770,6 +771,7 @@ const TabSmcsWithoutRequest = props => {
           currencyId: item.currencyId,
           currencyName: item.currencyName,
           fno: item.fno,
+          tempFno: item.fno,
           id: item.matnrId * 23 + index,
           matnrId: item.matnrId,
           matnrCode: item.matnrCode,
