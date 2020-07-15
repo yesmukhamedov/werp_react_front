@@ -31,6 +31,7 @@ import {
   clearMatnrPriceSparePart,
   clearMatnrPriceCartridge,
   clearMatnrPriceServicePackage,
+  clearServicePackageDetails,
 } from '../smcsAction';
 
 import {
@@ -931,6 +932,7 @@ const TabSmcsWithRequest = props => {
     props.clearMatnrPriceSparePart();
     props.clearMatnrPriceCartridge();
     props.clearMatnrPriceServicePackage();
+    props.clearServicePackageDetails();
     let paramMatnrSparePart = {
       branchId: service.branchId,
       bukrs: service.bukrs,
@@ -951,7 +953,7 @@ const TabSmcsWithRequest = props => {
     if (master) {
       setServices([]);
       setSparePartList([]);
-      setCartridgeInitial([]);
+      setCartridgeList([]);
       setServicePackageInitial([]);
       props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart });
       props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge });
@@ -1151,4 +1153,5 @@ export default connect(mapStateToProps, {
   clearMatnrPriceSparePart,
   clearMatnrPriceCartridge,
   clearMatnrPriceServicePackage,
+  clearServicePackageDetails,
 })(injectIntl(TabSmcsWithRequest));

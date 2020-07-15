@@ -7,7 +7,6 @@ import {
   Button,
   Icon,
   Confirm,
-  Segment,
   Checkbox,
   Dropdown,
   Table,
@@ -19,7 +18,6 @@ import {
   fetchMatnrPriceSparePart,
   fetchMatnrPriceCartridge,
   fetchMatnrPriceServicePackage,
-  clearMatnrPriceServicePackage,
   fetchServicePackageDetails,
   fetchSmcsServicePacket,
   fetchPositionSumm,
@@ -32,6 +30,8 @@ import {
   fetchPaymentOptions,
   clearMatnrPriceSparePart,
   clearMatnrPriceCartridge,
+  clearMatnrPriceServicePackage,
+  clearServicePackageDetails,
 } from '../smcsAction';
 
 import {
@@ -251,6 +251,7 @@ const TabSmcsWithoutContract = props => {
     props.clearMatnrPriceSparePart();
     props.clearMatnrPriceCartridge();
     props.clearMatnrPriceServicePackage();
+    props.clearServicePackageDetails();
     let paramMatnrSparePart = {
       branchId: service.branchId,
       bukrs: service.bukrs,
@@ -1259,6 +1260,7 @@ export default connect(mapStateToProps, {
   fetchMatnrPriceServicePackage,
   clearMatnrPriceServicePackage,
   fetchServicePackageDetails,
+  clearServicePackageDetails,
   fetchSmcsServicePacket,
   fetchPositionSumm,
   checkSmcsWithoutReques,

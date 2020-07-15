@@ -22,8 +22,10 @@ export const FETCH_MATNR_PRICE_SERVICE_PACKAGE =
   'FETCH_MATNR_PRICE_SERVICE_PACKAGE';
 export const CLEAR_MATNR_PRICE_SERVICE_PACKAGE =
   'CLEAR_MATNR_PRICE_SERVICE_PACKAGE';
-
+//
 export const FETCH_SERVICE_PACKAGE_DETAILS = 'FETCH_SERVICE_PACKAGE_DETAILS';
+export const CLEAR_SERVICE_PACKAGE_DETAILS = 'CLEAR_SERVICE_PACKAGE_DETAILS';
+//
 export const FETCH_SMCS_SERVICE_PACKET = 'FETCH_SMCS_SERVICE_PACKET';
 export const FETCH_POSITION_SUMM = 'FETCH_POSITION_SUMM';
 export const CHECK_SMCS_WITHOUT_REQUEST_1 = 'CHECK_SMCS_WITHOUT_REQUEST_1';
@@ -205,6 +207,14 @@ export const fetchServicePackageDetails = param => {
         dispatch(modifyLoader(false));
         handleError(error, dispatch);
       });
+  };
+};
+
+export const clearServicePackageDetails = param => {
+  return function(dispatch) {
+    dispatch({
+      type: CLEAR_SERVICE_PACKAGE_DETAILS,
+    });
   };
 };
 

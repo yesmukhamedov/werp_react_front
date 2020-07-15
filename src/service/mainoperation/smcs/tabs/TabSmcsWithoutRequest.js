@@ -23,6 +23,7 @@ import {
   fetchMatnrPriceServicePackage,
   clearMatnrPriceServicePackage,
   fetchServicePackageDetails,
+  clearServicePackageDetails,
   fetchSmcsServicePacket,
   fetchPositionSumm,
   checkSmcsWithoutReques,
@@ -234,6 +235,8 @@ const TabSmcsWithoutRequest = props => {
     props.clearMatnrPriceSparePart();
     props.clearMatnrPriceCartridge();
     props.clearMatnrPriceServicePackage();
+    props.clearServicePackageDetails();
+
     let paramMatnrSparePart = {
       branchId: service.branchId,
       bukrs: service.bukrs,
@@ -1226,6 +1229,7 @@ export default connect(mapStateToProps, {
   fetchMatnrPriceServicePackage,
   clearMatnrPriceServicePackage,
   fetchServicePackageDetails,
+  clearServicePackageDetails,
   fetchSmcsServicePacket,
   fetchPositionSumm,
   checkSmcsWithoutReques,
