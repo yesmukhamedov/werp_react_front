@@ -24,6 +24,7 @@ const FinancialInfoPanelDisplay = props => {
     otherPurchases,
     currency,
     bankPartner,
+    tradeIn,
   } = financialDetails;
   return (
     <Segment raised>
@@ -56,6 +57,11 @@ const FinancialInfoPanelDisplay = props => {
                   {(residualAmount && `${residualAmount} ${currency}`) || (
                     <span>&mdash;</span>
                   )}
+                </List.Item>
+                <List.Item>
+                  <List.Header className="list-header">Trade-In</List.Header>
+
+                  {tradeIn || <span>&mdash;</span>}
                 </List.Item>
               </List>
 
@@ -100,6 +106,9 @@ const FinancialInfoPanelDisplay = props => {
                   </List.Header>
                   {financialAgent && constructFullName(financialAgent)}
                 </List.Item>
+                <List.Item>
+                  <List.Header className="list-header"></List.Header>
+                </List.Item>
               </List>
             </Grid.Column>
             <Grid.Column>
@@ -136,6 +145,10 @@ const FinancialInfoPanelDisplay = props => {
                   {(promotions && promotions.join(', ')) || (
                     <span>&mdash;</span>
                   )}
+                </List.Item>
+
+                <List.Item>
+                  <List.Header className="list-header"></List.Header>
                 </List.Item>
               </List>
             </Grid.Column>

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { List, Grid } from 'semantic-ui-react';
+import { List, Grid, Table } from 'semantic-ui-react';
 
 const renderContactItem = (item, label) =>
   item ? (
@@ -27,8 +27,8 @@ const renderContactItem = (item, label) =>
   );
 
 const ContactsPanelDisplay = props => {
-  const { contactDetails = {} } = props;
-  const { home, service, work } = contactDetails;
+  const { contactDetails = {}, messages } = props;
+  const { home, service, work, phoneList = [] } = contactDetails;
   const cols = Object.values(contactDetails).reduce(
     (acc, cur) => acc + ((cur && 1) || 0),
     0,
@@ -44,6 +44,28 @@ const ContactsPanelDisplay = props => {
           <Grid.Column>{renderContactItem(work, 'Адрес рабочий')}</Grid.Column>
         </Grid.Row>
       </Grid>
+      <Table striped selectable>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>{messages['phone_type']}</Table.HeaderCell>
+            <Table.HeaderCell>{messages['Table.PhoneNumber']}</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {phoneList.map((phone, key) => {
+            return (
+              <Table.Row key={key}>
+                <Table.Cell>
+                  <label>{phone.phoneTypeName}</label>
+                </Table.Cell>
+                <Table.Cell>
+                  <label>{phone.phone}</label>
+                </Table.Cell>
+              </Table.Row>
+            );
+          })}
+        </Table.Body>
+      </Table>
     </div>
   );
 };

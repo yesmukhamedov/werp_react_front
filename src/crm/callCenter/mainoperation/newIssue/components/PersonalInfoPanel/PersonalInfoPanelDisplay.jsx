@@ -5,7 +5,7 @@ import PortalComponent from '../../../../../../general/portal/PortalComponent';
 import { ContactsPanelDisplay } from '../ContactsPanel';
 import { constructFullName, formatDMY } from '../../../../../../utils/helpers';
 
-const PersonalInfoPanelDisplay = (props) => {
+const PersonalInfoPanelDisplay = props => {
   console.log('PIPD', props);
   const {
     contractNumber = '',
@@ -38,10 +38,14 @@ const PersonalInfoPanelDisplay = (props) => {
                 <List.Header className="list-header">
                   {messages.L__CONTRACT_DATE}:
                 </List.Header>
-                {(contractDate && formatDMY(contractDate)) || <span>&mdash;</span>}
+                {(contractDate && formatDMY(contractDate)) || (
+                  <span>&mdash;</span>
+                )}
               </List.Item>
               <List.Item>
-                <List.Header className="list-header">{messages.L__BRANCH}:</List.Header>
+                <List.Header className="list-header">
+                  {messages.L__BRANCH}:
+                </List.Header>
                 {branchName || <span>&mdash;</span>}
               </List.Item>
             </List>
@@ -52,17 +56,19 @@ const PersonalInfoPanelDisplay = (props) => {
                 <List.Header className="list-header">
                   {messages.L__CLIENT_FULLNAME}:
                 </List.Header>
-                {clientFullName &&
-                  constructFullName(clientFullName)}
+                {clientFullName && constructFullName(clientFullName)}
               </List.Item>
               <List.Item>
-                <List.Header className="list-header">{messages.L__CLIENT_IIN}:</List.Header>
+                <List.Header className="list-header">
+                  {messages.L__CLIENT_IIN}:
+                </List.Header>
                 {clientIIN}
               </List.Item>
               <List.Item>
-                <List.Header className="list-header">{messages.L__DEALER}:</List.Header>
-                {dealerFullName &&
-                  constructFullName(dealerFullName)}
+                <List.Header className="list-header">
+                  {messages.L__DEALER}:
+                </List.Header>
+                {dealerFullName && constructFullName(dealerFullName)}
               </List.Item>
             </List>
           </Grid.Column>
@@ -75,7 +81,9 @@ const PersonalInfoPanelDisplay = (props) => {
                 {clientStatus}
               </List.Item>
               <List.Item>
-                <List.Header className="list-header">{messages.L__ISSUED_TO}:</List.Header>
+                <List.Header className="list-header">
+                  {messages.L__ISSUED_TO}:
+                </List.Header>
                 {issueType || <span>&mdash;</span>}
               </List.Item>
               <PortalComponent
@@ -83,7 +91,10 @@ const PersonalInfoPanelDisplay = (props) => {
                 closeLabel={messages.BTN__HIDE_CONTACT_INFO}
                 title={messages.BTN__CONTACT_INFO}
               >
-                <ContactsPanelDisplay contactDetails={contactDetails} />
+                <ContactsPanelDisplay
+                  contactDetails={contactDetails}
+                  messages={messages}
+                />
               </PortalComponent>
             </List>
           </Grid.Column>
