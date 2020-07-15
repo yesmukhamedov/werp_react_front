@@ -255,7 +255,7 @@ const Srlsm = props => {
     },
     {
       Header: 'Принял',
-      accessor: 'prinyal',
+      accessor: 'acceptPaymentByName',
       checked: true,
       filterable: false,
     },
