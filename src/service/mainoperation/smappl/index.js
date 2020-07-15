@@ -70,7 +70,7 @@ const Smappl = props => {
     aDateFrom: null,
     aDateTo: null,
     tovarCategorys: null,
-    appStatusIds: '1, 2, 3, 4',
+    appStatusIds: '1,2,3,4',
     appTypeIds: null,
     direction: 'DESC',
     orderBy: 'id',
@@ -420,7 +420,6 @@ const Smappl = props => {
             selection
             fluid
             multiple
-            selection
             defaultValue={arrayAppStatus}
             options={applicationStatus}
             placeholder={messages['L__ORDER_STATUS']}

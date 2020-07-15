@@ -40,6 +40,7 @@ import DropdownClearable from '../../../utils/DropdownClearable';
 import OutputErrors from '../../../general/error/outputErrors';
 import { formatDMY, errorTableText } from '../../../utils/helpers';
 import moment from 'moment';
+import { date } from 'faker';
 require('moment/locale/ru');
 
 const Srlsm = props => {
@@ -67,9 +68,9 @@ const Srlsm = props => {
     branchId: null,
     categoryId: null,
     serviceTypeId: null,
-    serviceStatusId: [1, 2],
+    serviceStatusId: '1,4',
     acceptedPaymentById: null,
-    dateAt: null,
+    dateAt: momentToStringYYYYMMDD(moment(new Date())),
     dateTo: null,
     direction: 'DESC',
     orderBy: 'id',
@@ -123,11 +124,13 @@ const Srlsm = props => {
     )
     .map(item => {
       return {
-        key: item.id,
+        key: parseInt(item.id),
         text: item.name,
-        value: item.id,
+        value: parseInt(item.id),
       };
     });
+
+  console.log('serviceStatusListOptions', serviceStatusListOptions);
 
   const serviceTypeOptions = serviceTypeList.map(item => {
     return {
@@ -169,8 +172,8 @@ const Srlsm = props => {
           varSrls.serviceTypeId = o.value.length > 0 ? o.value.join() : null;
           break;
         case 'serviceStatusId':
-          varSrls.serviceStatusId = o.value;
-          // varSrls.serviceStatusId = o.value.length > 0 ? o.value.join() : null;
+          // varSrls.serviceStatusId = o.value;
+          varSrls.serviceStatusId = o.value.length > 0 ? o.value.join() : null;
           break;
         default:
           varSrls[fieldName] = o.value;
@@ -320,7 +323,12 @@ const Srlsm = props => {
     } else {
       const page = 0;
       const size = 20;
-      props.fetchSrlsm({ ...param, page, size });
+      props.fetchSrlsm({
+        ...param,
+        serviceStatusId: param.serviceStatusId.toString(),
+        page,
+        size,
+      });
     }
     setTurnOnReactFetch(true);
     setError(errors);
@@ -331,6 +339,9 @@ const Srlsm = props => {
   const finishColumns = data => {
     setColumns([...data]);
   };
+
+  const arrayAppStatus = param.serviceStatusId.split(',').map(Number);
+  console.log('arrayAppStatus', arrayAppStatus);
   return (
     <Container
       fluid
@@ -414,12 +425,14 @@ const Srlsm = props => {
           <Form.Field>
             <label>Статус сервиса</label>
             <Form.Select
+              clearable="true"
+              selection
               fluid
-              placeholder="Статус сервиса"
-              options={serviceStatusListOptions}
-              onChange={(e, o) => onInputChange(o, 'serviceStatusId')}
-              className="alignBottom"
               multiple
+              defaultValue={arrayAppStatus}
+              options={serviceStatusListOptions}
+              placeholder="Статус сервиса"
+              onChange={(e, o) => onInputChange(o, 'serviceStatusId')}
             />
           </Form.Field>
           <Form.Field>
