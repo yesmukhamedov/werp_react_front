@@ -251,23 +251,21 @@ const Srls = props => {
     },
   ];
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
-  const handleClickApply = () => {
-    // //validate();
-    // if (param.bukrs !== '') {
-    //   const page = 0;
-    //   const size = 20;
-    //   props.fetchSrls({ ...param, page, size });
-    // }
-    // setTurnOnReactFetch(true);
-    // setError(errors);
 
+  const [serverSideParams, setServerSideParams] = useState({});
+
+  const handleClickApply = () => {
     const errors = [];
-    if (param.bukrs == null || param.bukrs == '') {
-      errors.push(errorTableText(5));
+    const page = 0;
+    const size = 20;
+    if (param.bukrs) {
+      if (Object.keys(serverSideParams).length > 0) {
+        props.fetchSrls({ ...param, ...serverSideParams });
+      } else {
+        props.fetchSrls({ ...param, ...serverSideParams, page, size });
+      }
     } else {
-      const page = 0;
-      const size = 20;
-      props.fetchSrls({ ...param, page, size });
+      errors.push(errorTableText(5));
     }
     setTurnOnReactFetch(true);
     setError(errors);
@@ -434,6 +432,7 @@ const Srls = props => {
         showPagination={true}
         requestData={params => {
           props.fetchSrls({ ...params, ...param });
+          setServerSideParams({ ...params });
         }}
         pages={srlsTotalPages ? srlsTotalPages : ''}
         turnOnReactFetch={turnOnReactFetch}

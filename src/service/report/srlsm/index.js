@@ -316,6 +316,8 @@ const Srlsm = props => {
     },
   ];
 
+  const [serverSideParams, setServerSideParams] = useState({});
+
   const handleClickApply = () => {
     const errors = [];
     if (param.bukrs == null || param.bukrs == '') {
@@ -323,12 +325,20 @@ const Srlsm = props => {
     } else {
       const page = 0;
       const size = 20;
-      props.fetchSrlsm({
-        ...param,
-        serviceStatusId: param.serviceStatusId.toString(),
-        page,
-        size,
-      });
+      if (Object.keys(serverSideParams).length > 0) {
+        props.fetchSrlsm({
+          ...param,
+          ...serverSideParams,
+          serviceStatusId: param.serviceStatusId.toString(),
+        });
+      } else {
+        props.fetchSrlsm({
+          ...param,
+          serviceStatusId: param.serviceStatusId.toString(),
+          page,
+          size,
+        });
+      }
     }
     setTurnOnReactFetch(true);
     setError(errors);
@@ -598,6 +608,7 @@ const Srlsm = props => {
         showPagination={true}
         requestData={params => {
           props.fetchSrlsm({ ...params, ...param });
+          setServerSideParams({ ...params });
         }}
         pages={srlsmTotalPages ? srlsmTotalPages : ''}
         turnOnReactFetch={turnOnReactFetch}

@@ -55,9 +55,7 @@ const Smecam = props => {
   useEffect(() => {
     if (availabledTransaction.length > 0) {
       availabledTransaction.map(item =>
-        item.transactionCode == 'SMECA'
-          ? setEditStatus(true)
-          : setEditStatus(false),
+        item.transactionCode == 'SMECA' ? setEditStatus(true) : '',
       );
     }
   }, [availabledTransaction]);
