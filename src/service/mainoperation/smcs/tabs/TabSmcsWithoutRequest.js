@@ -74,9 +74,6 @@ const TabSmcsWithoutRequest = props => {
     paymentOptions = [],
   } = props;
 
-  console.log('1 matnrPriceSparePart', matnrPriceSparePart);
-  console.log('2 matnrPriceCartridge', matnrPriceCartridge);
-
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
 

@@ -12,10 +12,15 @@ import matchSorter from 'match-sorter';
 const ModalAddCartridge = props => {
   const {
     intl: { messages },
+    data = [],
+    modalOpen = false,
+    onChangeCartridge,
   } = props;
 
-  const { data = [], modalOpen = false, onChangeCartridge } = props;
+  const dataSort = data.sort((prev, next) => prev.fno - next.fno);
 
+  console.log('data', data); // → [{id: 3, name: "Ivan", age: 18}, {id: 2, name: "Olga", age: 25}, {id: 1, name: "Denis", age: 28}]
+  console.log('dataSort', dataSort);
   const columnsSparePart = [
     {
       Header: '',
@@ -34,6 +39,14 @@ const ModalAddCartridge = props => {
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['matnrCode'] }),
       filterAll: true,
+    },
+    {
+      Header: 'F№',
+      accessor: 'fno',
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, { keys: ['fno'] }),
+      filterable: false,
+      width: 70,
     },
     {
       Header: 'Название',
@@ -70,7 +83,7 @@ const ModalAddCartridge = props => {
       <Modal.Content>
         <ReactTableWrapper
           filterable={true}
-          data={data}
+          data={dataSort}
           columns={columnsSparePart}
           previousText={messages['Table.Previous']}
           nextText={messages['Table.Next']}
