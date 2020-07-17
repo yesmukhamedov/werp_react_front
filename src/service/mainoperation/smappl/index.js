@@ -25,7 +25,6 @@ import {
 } from '../../../utils/helpers';
 import ColumnsModal from '../../../utils/ColumnsModal';
 import './index.css';
-import ServiceRequestTable from './table';
 import {
   LinkToSmcuspor,
   LinkToSmecam,
@@ -41,6 +40,7 @@ import 'moment/locale/ru';
 import 'moment/locale/tr';
 
 import TotalCountsTable from '../../../utils/TotalCountsTable';
+import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
 
 const Smappl = props => {
   const {
@@ -75,8 +75,6 @@ const Smappl = props => {
     direction: 'DESC',
     orderBy: 'id',
   });
-
-  console.log('search', search);
 
   const categoryOptions = category.map(item => {
     return {
@@ -324,7 +322,6 @@ const Smappl = props => {
           varTs.tovarCategorys = value.length > 0 ? value.join() : null;
           break;
         case 'status':
-          console.log('value', value);
           varTs.appStatusIds = value.length > 0 ? value.join() : null;
           //varTs.appStatusIds = value;
           break;
@@ -337,6 +334,9 @@ const Smappl = props => {
       return varTs;
     });
   };
+
+  const [serverSideParams, setServerSideParams] = useState({});
+
   const onSearch = () => {
     const errors = [];
     if (search.bukrs === '') {
@@ -346,19 +346,33 @@ const Smappl = props => {
       errors.push(errorTableText(7));
     }
     if (errors.length === 0) {
-      props.fetchAppList({
-        ...search,
-        appStatusIds: search.appStatusIds.toString(),
-      });
-      props.fetchAppMasterList(search);
-      setTurnOnReactFetch(true);
-      props.fetchAppListSearchParam(search);
+      if (Object.keys(serverSideParams).length > 0) {
+        props.fetchAppList({
+          ...search,
+          appStatusIds: search.appStatusIds.toString(),
+          ...serverSideParams,
+        });
+        props.fetchAppMasterList(search);
+        setTurnOnReactFetch(true);
+        props.fetchAppListSearchParam(search);
+      } else {
+        const page = 0;
+        const size = 20;
+        props.fetchAppList({
+          ...search,
+          appStatusIds: search.appStatusIds.toString(),
+          page,
+          size,
+        });
+        props.fetchAppMasterList(search);
+        setTurnOnReactFetch(true);
+        props.fetchAppListSearchParam(search);
+      }
     }
     setError(() => errors);
   };
 
   const arrayAppStatus = search.appStatusIds.split(',').map(Number);
-  console.log('arrayAppStatus', arrayAppStatus);
 
   return (
     <Segment>
@@ -511,10 +525,18 @@ const Smappl = props => {
         />
       </Segment>
       <TotalCountsTable count={appList.totalElements} />
-      <ServiceRequestTable
+      <ReactTableServerSideWrapper
+        data={appList.data}
+        columns={columnsForTable}
+        filterable={true}
+        pageSize={20}
+        showPagination={true}
+        requestData={params => {
+          props.fetchAppList({ ...params, ...search });
+          setServerSideParams({ ...params });
+        }}
+        pages={appList.totalPages ? appList.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}
-        searchParams={search}
-        tableCols={columnsForTable}
       />
     </Segment>
   );
