@@ -310,8 +310,6 @@ const ServiceFilterVC = props => {
     }
   };
 
-  const [serverSideParams, setServerSideParams] = useState({});
-
   const validate = () => {
     const errors = [];
     if (param.bukrs === '') {
