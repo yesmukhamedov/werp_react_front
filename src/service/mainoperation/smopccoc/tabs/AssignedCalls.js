@@ -241,12 +241,18 @@ const AssignedCalls = props => {
     }
   }, [branchOptions, param.countryId, param.bukrs]);
 
+  const [serverSideParams, setServerSideParams] = useState({});
+
   const handleClickApplyAssigned = () => {
     validate();
     if (param.bukrs !== '') {
       const page = 0;
       const size = 20;
-      props.fetchCRMSchedule({ ...param, page, size });
+      if (Object.keys(serverSideParams).length > 0) {
+        props.fetchCRMSchedule({ ...param, ...serverSideParams });
+      } else {
+        props.fetchCRMSchedule({ ...param, page, size });
+      }
       setTurnOnReactFetch(true);
     }
   };
@@ -407,6 +413,7 @@ const AssignedCalls = props => {
         showPagination={true}
         requestData={params => {
           props.fetchCRMSchedule({ ...params, ...param });
+          setServerSideParams({ ...params });
         }}
         pages={assignedCalls ? assignedCalls.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}

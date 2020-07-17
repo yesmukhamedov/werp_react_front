@@ -99,7 +99,6 @@ function Smcca(props) {
     callDirectionName: null,
     callStatusId: null,
     callStatusName: null,
-    contractId: null,
     contractNumber: null,
     crmHistoryDate: null,
     id: null,
@@ -174,6 +173,12 @@ function Smcca(props) {
     f4MtLeft,
     f5MtLeft,
   } = clientContract;
+
+  const getaway = async () => {
+    let sw = await navigator.serviceWorker.register('./sw.js');
+    console.log(sw);
+  };
+  console.log(getaway());
 
   const onInputChange = (o, fieldName) => {
     setRequest(prev => {

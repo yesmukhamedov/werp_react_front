@@ -285,20 +285,32 @@ const ServiceFilterVC = props => {
     });
   };
 
+  const [serverSideParams, setServerSideParams] = useState({});
+
   const handleClickApply = () => {
     validate();
     if (param.bukrs !== '' && param.planStatusId !== null) {
       const page = 0;
       const size = 20;
-      fetchServicePacketPlan({
-        ...param,
-        page,
-        size,
-        planStatusId: param.planStatusId.toString(),
-      });
+      if (Object.keys(serverSideParams).length > 0) {
+        fetchServicePacketPlan({
+          ...param,
+          ...serverSideParams,
+          planStatusId: param.planStatusId.toString(),
+        });
+      } else {
+        fetchServicePacketPlan({
+          ...param,
+          page,
+          size,
+          planStatusId: param.planStatusId.toString(),
+        });
+      }
       setTurnOnReactFetch(true);
     }
   };
+
+  const [serverSideParams, setServerSideParams] = useState({});
 
   const validate = () => {
     const errors = [];
@@ -490,7 +502,10 @@ const ServiceFilterVC = props => {
         filterable={true}
         defaultPageSize={20}
         showPagination={true}
-        requestData={params => fetchServicePacketPlan({ ...params, ...param })}
+        requestData={params => {
+          fetchServicePacketPlan({ ...params, ...param });
+          setServerSideParams({ ...params });
+        }}
         pages={servicePacket ? servicePacket.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}
       />

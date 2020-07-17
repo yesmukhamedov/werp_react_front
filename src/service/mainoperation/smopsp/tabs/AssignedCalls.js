@@ -204,12 +204,18 @@ const AssignedCalls = props => {
     },
   ];
 
+  const [serverSideParams, setServerSideParams] = useState({});
+
   const handleClickApply = () => {
     validate();
     if (param.bukrs !== '') {
       const page = 0;
       const size = 20;
-      props.fetchAssignedCalls({ ...param, page, size });
+      if (Object.keys(serverSideParams).length > 0) {
+        props.fetchAssignedCalls({ ...param, ...serverSideParams });
+      } else {
+        props.fetchAssignedCalls({ ...param, page, size });
+      }
       setTurnOnReactFetch(true);
     }
   };
@@ -361,6 +367,7 @@ const AssignedCalls = props => {
         showPagination={true}
         requestData={params => {
           props.fetchAssignedCalls({ ...params, ...param });
+          setServerSideParams({ ...params });
         }}
         pages={assignedCalls ? assignedCalls.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}

@@ -244,12 +244,18 @@ const TransferApplicationExodus = props => {
     }
   }, [branchOptions, param.countryId, param.bukrs]);
 
+  const [serverSideParams, setServerSideParams] = useState({});
+
   const handleClickApplyTransfer = () => {
     validate();
     if (param.bukrs !== '') {
       const page = 0;
       const size = 20;
-      props.fetchTransferApplicationExodus({ ...param, page, size });
+      if (Object.keys(serverSideParams).length > 0) {
+        props.fetchTransferApplicationExodus({ ...param, ...serverSideParams });
+      } else {
+        props.fetchTransferApplicationExodus({ ...param, page, size });
+      }
       setTurnOnReactFetch(true);
     }
   };
@@ -413,7 +419,8 @@ const TransferApplicationExodus = props => {
         defaultPageSize={20}
         showPagination={true}
         requestData={params => {
-          props.fetchServiceFilterPlan({ ...params, ...param });
+          props.fetchTransferApplicationExodus({ ...params, ...param });
+          setServerSideParams({ ...params });
         }}
         pages={transfer ? transfer.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}

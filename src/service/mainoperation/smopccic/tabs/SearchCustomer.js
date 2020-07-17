@@ -211,12 +211,18 @@ const SearchCustomer = props => {
     });
   };
 
+  const [serverSideParams, setServerSideParams] = useState({});
+
   const handleClickApply = () => {
     validate();
     if (param.bukrs !== '') {
       const page = 0;
       const size = 20;
-      props.fetchSearchCustomer({ ...param, page, size });
+      if (Object.keys(serverSideParams).length > 0) {
+        props.fetchSearchCustomer({ ...param, ...serverSideParams });
+      } else {
+        props.fetchSearchCustomer({ ...param, page, size });
+      }
       setTurnOnReactFetch(true);
     }
   };
@@ -418,6 +424,7 @@ const SearchCustomer = props => {
         showPagination={true}
         requestData={params => {
           props.fetchSearchCustomer({ ...params, ...param });
+          setServerSideParams({ ...params });
         }}
         pages={searchCustomer ? searchCustomer.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}

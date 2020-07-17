@@ -291,17 +291,27 @@ const ServiceFilterPlan = props => {
     }
   }, [branchOptions, param.countryId, param.bukrs]);
 
+  const [serverSideParams, setServerSideParams] = useState({});
+
   const handleClickApply = () => {
     validate();
     if (param.bukrs !== '' && param.planStatusId !== null) {
       const page = 0;
       const size = 20;
-      props.fetchServiceFilterPlan({
-        ...param,
-        page,
-        size,
-        planStatusId: param.planStatusId.toString(),
-      });
+      if (Object.keys(serverSideParams).length > 0) {
+        props.fetchServiceFilterPlan({
+          ...param,
+          ...serverSideParams,
+          planStatusId: param.planStatusId.toString(),
+        });
+      } else {
+        props.fetchServiceFilterPlan({
+          ...param,
+          page,
+          size,
+          planStatusId: param.planStatusId.toString(),
+        });
+      }
       setTurnOnReactFetch(true);
     }
   };
@@ -532,6 +542,7 @@ const ServiceFilterPlan = props => {
         showPagination={true}
         requestData={params => {
           props.fetchServiceFilterPlan({ ...params, ...param });
+          setServerSideParams({ ...params });
         }}
         pages={serviceFilterPlan ? serviceFilterPlan.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}

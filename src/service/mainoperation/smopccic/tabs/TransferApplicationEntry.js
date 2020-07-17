@@ -225,12 +225,19 @@ const TransferApplicationEntry = props => {
       fixed: 'right',
     },
   ];
+
+  const [serverSideParams, setServerSideParams] = useState({});
+
   const handleClickApplyTransfer = () => {
     validate();
     if (param.bukrs !== '') {
       const page = 0;
       const size = 20;
-      props.fetchTransferApplication({ ...param, page, size });
+      if (Object.keys(serverSideParams).length > 0) {
+        props.fetchTransferApplication({ ...param, ...serverSideParams });
+      } else {
+        props.fetchTransferApplication({ ...param, page, size });
+      }
       setTurnOnReactFetch(true);
     }
   };
@@ -349,6 +356,7 @@ const TransferApplicationEntry = props => {
         showPagination={true}
         requestData={params => {
           props.fetchTransferApplication({ ...params, ...param });
+          setServerSideParams({ ...params });
         }}
         pages={
           transferApplicationData ? transferApplicationData.totalPages : ''

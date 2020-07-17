@@ -243,12 +243,18 @@ const MyApplication = props => {
     },
   ];
 
+  const [serverSideParams, setServerSideParams] = useState({});
+
   const handleClickApply = () => {
     validate();
     if (param.bukrs !== '') {
       const page = 0;
       const size = 20;
-      props.fetchMyApplicationExodus({ ...param, page, size });
+      if (Object.keys(serverSideParams).length > 0) {
+        props.fetchMyApplicationExodus({ ...param, ...serverSideParams });
+      } else {
+        props.fetchMyApplicationExodus({ ...param, page, size });
+      }
       setTurnOnReactFetch(true);
     }
   };
@@ -454,6 +460,7 @@ const MyApplication = props => {
         showPagination={true}
         requestData={params => {
           props.fetchMyApplicationExodus({ ...params, ...param });
+          setServerSideParams({ ...params });
         }}
         pages={myApplicationData ? myApplicationData.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}

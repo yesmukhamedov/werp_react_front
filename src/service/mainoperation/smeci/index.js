@@ -16,9 +16,11 @@ import {
 import {
   fetchSmeciContractInfo,
   postSmeciContractInfo,
-  fetchBranchList,
 } from '../../serviceAction';
-import { f4FetchCrmCategory } from '../../../reference/f4/f4_action';
+import {
+  f4FetchCrmCategory,
+  f4FetchBranches,
+} from '../../../reference/f4/f4_action';
 
 import AddressF4Modal from '../../../reference/f4/address/addressF4WithCreationPage';
 
@@ -54,7 +56,7 @@ function Smeci(props) {
     branchOptions = [],
     intl: { messages },
     crmCategory = [],
-    branchList = [],
+    branches = [],
   } = props;
 
   const {
@@ -100,15 +102,12 @@ function Smeci(props) {
 
   useEffect(() => {
     if (contractNumber) {
+      props.f4FetchBranches();
       props.fetchSmeciContractInfo({ contractNumber });
       props.f4FetchCrmCategory();
     }
   }, [contractNumber]);
-  useEffect(() => {
-    if (bukrsId) {
-      props.fetchBranchList({ bukrs: bukrsId });
-    }
-  }, [bukrsId]);
+
   useEffect(() => {
     if (!addressF4ModalOpen) {
       props.fetchSmeciContractInfo({ contractNumber });
@@ -136,6 +135,10 @@ function Smeci(props) {
       });
     }
   }, [branchId, branchOptions]);
+
+  console.log(serviceBranchId);
+  console.log(getBranchList(branches));
+  console.log(branches);
 
   const onInputChange = (e, fieldName) => {
     setContract(prev => {
@@ -343,7 +346,7 @@ function Smeci(props) {
                           placeholder={messages['service_branch']}
                           fluid
                           selection
-                          options={getBranchList(branchList)}
+                          options={getBranchList(branches)}
                           value={contract.serviceBranchId}
                           onChange={(e, o) =>
                             onInputChange(o, 'serviceBranchId')
@@ -775,18 +778,26 @@ const getCrmCategory = crmCategory => {
   return out;
 };
 
-const getBranchList = branchList => {
-  const list = branchList;
+const getBranchList = branches => {
+  const list = branches;
   if (!list) {
     return [];
   }
-  let out = branchList.map(item => {
-    return {
-      key: item.id,
-      text: item.text45,
-      value: item.id,
-    };
-  });
+  let out = branches
+    .filter(
+      item =>
+        item.business_area_id == 5 ||
+        item.business_area_id == 6 ||
+        item.business_area_id == 9,
+    )
+    .map(item => {
+      return {
+        key: item.branch_id,
+        text: item.text45,
+        value: item.branch_id,
+      };
+    });
+
   return out;
 };
 
@@ -807,7 +818,7 @@ function mapStateToProps(state) {
     branchOptions: state.userInfo.branchOptionsMarketing,
     contractInfo: state.serviceReducer.smeciContractInfo,
     crmCategory: state.f4.crmCategory,
-    branchList: state.serviceReducer.branchList,
+    branches: state.f4.branches,
   };
 }
 
@@ -815,5 +826,5 @@ export default connect(mapStateToProps, {
   fetchSmeciContractInfo,
   postSmeciContractInfo,
   f4FetchCrmCategory,
-  fetchBranchList,
+  f4FetchBranches,
 })(injectIntl(Smeci));

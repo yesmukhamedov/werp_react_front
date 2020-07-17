@@ -256,12 +256,18 @@ const MyApplicationExodus = props => {
     }
   }, [branchOptions, param.countryId, param.bukrs]);
 
+  const [serverSideParams, setServerSideParams] = useState({});
+
   const handleClickApplyMyApp = () => {
     validate();
     if (param.bukrs !== '') {
       const page = 0;
       const size = 20;
-      props.fetchMyApplicationExodus({ ...param, page, size });
+      if (Object.keys(serverSideParams).length > 0) {
+        props.fetchMyApplicationExodus({ ...param, ...serverSideParams });
+      } else {
+        props.fetchMyApplicationExodus({ ...param, page, size });
+      }
       setTurnOnReactFetch(true);
     }
   };
@@ -441,6 +447,7 @@ const MyApplicationExodus = props => {
         showPagination={true}
         requestData={params => {
           props.fetchMyApplicationExodus({ ...params, ...param });
+          setServerSideParams({ ...params });
         }}
         pages={myApplication ? myApplication.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}

@@ -230,12 +230,18 @@ const TransferApplication = props => {
     },
   ];
 
+  const [serverSideParams, setServerSideParams] = useState({});
+
   const handleClickApply = () => {
     validate();
     if (param.bukrs !== '') {
       const page = 0;
       const size = 20;
-      fetchRescheduledApplication({ ...param, page, size });
+      if (Object.keys(serverSideParams).length > 0) {
+        fetchRescheduledApplication({ ...param, ...serverSideParams });
+      } else {
+        fetchRescheduledApplication({ ...param, page, size });
+      }
       setTurnOnReactFetch(true);
     }
   };
@@ -392,6 +398,7 @@ const TransferApplication = props => {
         showPagination={true}
         requestData={params => {
           props.fetchRescheduledApplication({ ...params, ...param });
+          setServerSideParams({ ...params });
         }}
         pages={rescheduledApp ? rescheduledApp.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}
