@@ -6,7 +6,6 @@ import {
   Modal,
   Input,
   Form,
-  Select,
   Table,
 } from 'semantic-ui-react';
 import { connect } from 'react-redux';
@@ -14,7 +13,6 @@ import DatePicker from 'react-datepicker';
 import './index.css';
 import { Dropdown } from 'semantic-ui-react';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
-import moment from 'moment';
 import 'react-datepicker/dist/react-datepicker.css';
 import { injectIntl } from 'react-intl';
 import {
@@ -26,11 +24,9 @@ import {
 import {
   stringYYYYMMDDToMoment,
   handleFocus,
-  moneyInputHanler,
   moneyFormat,
   momentToStringYYYYMMDD,
 } from '../../../utils/helpers';
-import { doGet } from '../../../utils/apiActions';
 
 require('moment/locale/ru');
 require('moment/locale/tr');
@@ -42,14 +38,10 @@ const EditModal = props => {
     countryList = [],
     companyOptions = [],
     intl: { messages },
-    row,
     fetchSmsetppPut,
     fetchSmsetpp,
     param,
-    serviceType = [],
     serviceTypeOptions,
-    //productList = [],
-    getProduct,
     smsetppProductList = [],
     onChangeEditModal,
     modalOpenEdit,

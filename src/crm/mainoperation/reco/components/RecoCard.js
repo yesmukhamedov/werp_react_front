@@ -5,8 +5,8 @@ import {
   getCallerOptionsByLanguage,
   getRecoCategoriesOptionsByLanguage,
 } from '../../../crmUtil';
-import moment from 'moment';
-import DatePicker from 'react-datepicker';
+// import moment from 'moment';
+// import DatePicker from 'react-datepicker';
 
 /**
  * Используется в создании рекомендации

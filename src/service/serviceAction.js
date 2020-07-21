@@ -5,7 +5,7 @@ import {
 } from '../general/notification/notification_action';
 import { errorTableText } from '../utils/helpers';
 import { modifyLoader } from '../general/loader/loader_action';
-import { date } from 'yup';
+//import { date } from 'yup';
 export const SERVICE_ADD = 'SERVICE_ADD';
 export const FETCH_DYNOBJ_SERVICE = 'FETCH_DYNOBJ_SERVICE';
 export const CHANGE_DYNOBJ_SERVICE = 'CHANGE_DYNOBJ_SERVICE';
@@ -66,9 +66,9 @@ export const FETCH_BRANCH_LIST = 'FETCH_BRANCH_LIST';
 export const CLEAR_DYNOBJ_SERVICE = 'CLEAR_DYNOBJ_SERVICE';
 export const FETCH_SMCUSPORLE = 'FETCH_SMCUSPORLE';
 
-const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+//const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 
-const language = localStorage.getItem('language');
+//const language = localStorage.getItem('language');
 export function changeDynObjService(a_obj) {
   const obj = {
     type: CHANGE_DYNOBJ_SERVICE,
@@ -434,6 +434,8 @@ export function fetchServCrmHistoryAll(date, type) {
             handleError(error, dispatch);
           });
         break;
+      default:
+        alert('Нет таких значении');
     }
   };
 }

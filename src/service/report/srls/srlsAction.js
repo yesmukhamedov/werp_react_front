@@ -5,8 +5,8 @@ import { modifyLoader } from '../../../general/loader/loader_action';
 export const FETCH_SERVICE_LIST = 'FETCH_SERVICE_LIST';
 export const FETCH_SERVICE_TYPE_LIST = 'FETCH_SERVICE_TYPE_LIST';
 
-const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-const language = localStorage.getItem('language');
+// const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+// const language = localStorage.getItem('language');
 
 //SRLS список сервисов
 export const fetchSrls = param => {
