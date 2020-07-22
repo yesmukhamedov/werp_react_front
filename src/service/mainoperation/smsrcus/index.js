@@ -117,7 +117,7 @@ const Smsrcus = props => {
   let initialColumns = [
     {
       Header: messages['brnch'],
-      accessor: 'branchName',
+      accessor: 'serviceBranchName',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
@@ -127,6 +127,7 @@ const Smsrcus = props => {
       accessor: 'contractNumber',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
+      width: 80,
     },
     {
       Header: 'Продукт',
@@ -156,19 +157,20 @@ const Smsrcus = props => {
     },
     {
       Header: messages['customer_key'],
-      accessor: 'customerIin',
+      accessor: 'customerIinBin',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
     },
     {
       Header: messages['address'],
-      accessor: 'serviceAddressName',
+      accessor: 'fullAddress',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
+      filterable: true,
     },
     {
       Header: messages['telephone'],
-      accessor: 'phoneNumber',
+      accessor: 'fullPhone',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
     },
@@ -177,36 +179,47 @@ const Smsrcus = props => {
       accessor: 'f1MtLeft',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
+      width: 40,
+      filterable: false,
     },
     {
       Header: 'F2',
       accessor: 'f2MtLeft',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
+      width: 40,
+      filterable: false,
     },
     {
       Header: 'F3',
       accessor: 'f3MtLeft',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
+      width: 40,
+      filterable: false,
     },
     {
       Header: 'F4',
       accessor: 'f4MtLeft',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
+      width: 40,
+      filterable: false,
     },
     {
       Header: 'F5',
       accessor: 'f5MtLeft',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
+      width: 40,
+      filterable: false,
     },
     {
       Header: 'Категория',
       accessor: 'tovarCategoryName',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
+      filterable: false,
     },
     {
       Header: messages['financial_status'],
@@ -217,7 +230,8 @@ const Smsrcus = props => {
     },
     {
       Header: 'Физический статус',
-      accessor: 'lastStateId',
+      accessor: 'lastStateName',
+      style: { 'white-space': 'unset' },
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
@@ -360,44 +374,51 @@ const Smsrcus = props => {
   const serverSideSearch = ssParams => {
     let params = { ...ssParams };
 
-    if (params.contractNumber != undefined || params.contractNumber != null) {
+    if (params.contractNumber) {
       if (params.contractNumber.length > 2) {
-        props.fetchSmsrcusList({ ...params, ...param });
+        props.fetchSmsrcusList({ ...params });
       } else {
         props.clearSmsrcusList();
       }
     }
-    if (params.tovarSn != undefined || params.tovarSn != null) {
+    if (params.tovarSn) {
       if (params.tovarSn.length > 2) {
-        props.fetchSmsrcusList({ ...params, ...param });
+        props.fetchSmsrcusList({ ...params });
       } else {
         props.clearSmsrcusList();
       }
     }
-    if (params.customerFIO != undefined || params.customerFIO != null) {
+    if (params.customerFIO) {
       if (params.customerFIO.length > 2) {
-        props.fetchSmsrcusList({ ...params, ...param });
+        props.fetchSmsrcusList({ ...params });
       } else {
         props.clearSmsrcusList();
       }
     }
-    if (params.customerIinBin != undefined || params.customerIinBin != null) {
+    if (params.customerIinBin) {
       if (params.customerIinBin.length > 2) {
-        props.fetchSmsrcusList({ ...params, ...param });
+        props.fetchSmsrcusList({ ...params });
       } else {
         props.clearSmsrcusList();
       }
     }
-    if (params.address != undefined || params.address != null) {
+    if (params.address) {
       if (params.address.length > 2) {
-        props.fetchSmsrcusList({ ...params, ...param });
+        props.fetchSmsrcusList({ ...params });
       } else {
         props.clearSmsrcusList();
       }
     }
-    if (params.phoneNumber != undefined || params.phoneNumber != null) {
-      if (params.phoneNumber.length > 2) {
-        props.fetchSmsrcusList({ ...params, ...param });
+    if (params.fullPhone) {
+      if (params.fullPhone.length > 2) {
+        props.fetchSmsrcusList({ ...params });
+      } else {
+        props.clearSmsrcusList();
+      }
+    }
+    if (params.fullAddress) {
+      if (params.fullAddress.length > 2) {
+        props.fetchSmsrcusList({ ...params });
       } else {
         props.clearSmsrcusList();
       }
