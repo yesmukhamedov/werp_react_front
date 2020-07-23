@@ -9,6 +9,7 @@ import {
   Segment,
   Dropdown,
   Checkbox,
+  Popup,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../service.css';
@@ -245,19 +246,24 @@ const Smsrcus = props => {
     },
 
     {
-      Header: messages['customer_story'],
       checked: true,
       Cell: original => {
         return (
-          <div style={{ textAlign: 'center' }}>
-            <div></div>
-            <LinkToSmcusporFromSmsrcus
-              contractNumber={original.row.contractNumber}
-            />
-          </div>
+          <Popup
+            content={messages['customer_story']}
+            trigger={
+              <div style={{ textAlign: 'center' }}>
+                <LinkToSmcusporFromSmsrcus
+                  contractNumber={original.row.contractNumber}
+                />
+              </div>
+            }
+          />
         );
       },
       filterable: false,
+      width: 50,
+      fixed: 'right',
     },
   ];
 
