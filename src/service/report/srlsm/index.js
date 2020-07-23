@@ -114,12 +114,17 @@ const Srlsm = props => {
       let params = {
         bukrs: param.bukrs,
         branchId: param.branchId,
+        categoryId: param.categoryId,
       };
-      props.fetchAcceptPaymentUsers({ ...params });
+      let paramsAcceptPay = {
+        bukrs: param.bukrs,
+        branchId: param.branchId,
+      };
+      props.fetchAcceptPaymentUsers({ ...paramsAcceptPay });
       props.fetchMasterList({ ...params });
       props.fetchOperatorList({ ...params });
     }
-  }, [param.bukrs, param.branchId]);
+  }, [param.bukrs, param.branchId, param.categoryId]);
 
   const countryOptions = countryList.map(item => {
     return {
@@ -570,7 +575,6 @@ const Srlsm = props => {
               color="blue"
               className="alignBottom"
             >
-              <Icon name="search" />
               Применить
             </Form.Button>
           </div>
