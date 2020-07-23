@@ -60,9 +60,9 @@ const TabSmcsWithoutRequest = props => {
   const {
     contract = {},
     serviceTypeId = [],
-    matnrPriceSparePart = [],
-    matnrPriceCartridge = [],
-    matnrServicePackage = [],
+    matnrPriceSparePart1 = [],
+    matnrPriceCartridge1 = [],
+    matnrServicePackage1 = [],
     servicePacketDetails = [],
     positionSumm = {},
     checkSmcs1 = {},
@@ -158,6 +158,9 @@ const TabSmcsWithoutRequest = props => {
       case 'infoChange':
         setService({ ...service, info: value.value });
         break;
+      case 'changeServiceDate':
+        setService({ ...service, serviceDate: value });
+        break;
 
       default:
         alert('Нет таких значений');
@@ -200,7 +203,7 @@ const TabSmcsWithoutRequest = props => {
           bukrs: contract.bukrs,
           productId: contract.tovarId,
         };
-        props.fetchMatnrPriceServicePackage({ ...param });
+        props.fetchMatnrPriceServicePackage({ ...param }, 1);
       }
       if (contract.branchId && contract.bukrs) {
         let param = {
@@ -257,8 +260,9 @@ const TabSmcsWithoutRequest = props => {
       setSparePartList([]);
       setCartridgeList([]);
       setServicePackageInitial([]);
-      props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart });
-      props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge });
+
+      props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart }, 1);
+      props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge }, 1);
       setEditStatus(false);
     }
     setCheckStatus(false);
@@ -324,8 +328,6 @@ const TabSmcsWithoutRequest = props => {
   };
 
   const onChangeSumm = (id, value) => {
-    console.log('SERVICES value', value, 'ID', id);
-
     setServices(
       services.map(item =>
         item.serviceTypeId == id
@@ -510,7 +512,7 @@ const TabSmcsWithoutRequest = props => {
   };
 
   useEffect(() => {
-    matnrPriceSparePart.map((item, index) => {
+    matnrPriceSparePart1.map((item, index) => {
       setSparePartList(prev => [
         ...prev,
         {
@@ -539,7 +541,7 @@ const TabSmcsWithoutRequest = props => {
         },
       ]);
     });
-  }, [matnrPriceSparePart]);
+  }, [matnrPriceSparePart1]);
 
   //Выбрать запчасть
   const checkedSparePart = value => {
@@ -726,7 +728,7 @@ const TabSmcsWithoutRequest = props => {
   };
 
   useEffect(() => {
-    matnrPriceCartridge.map((item, index) => {
+    matnrPriceCartridge1.map((item, index) => {
       setCartridgeList(prev => [
         ...prev,
         {
@@ -756,7 +758,7 @@ const TabSmcsWithoutRequest = props => {
         },
       ]);
     });
-  }, [matnrPriceCartridge]);
+  }, [matnrPriceCartridge1]);
 
   useEffect(() => {
     let filterCartridge = cartridgeList.filter(item => item.checked === true);
@@ -832,13 +834,13 @@ const TabSmcsWithoutRequest = props => {
       case 'dimmerClose':
         break;
       default:
-        console.log('Нет таких значении!');
+        alert('Нет таких значении!');
         break;
     }
   };
 
   useEffect(() => {
-    matnrServicePackage.map((item, index) => {
+    matnrServicePackage1.map((item, index) => {
       setServicePackageList(prev => [
         ...prev,
         {
@@ -866,7 +868,7 @@ const TabSmcsWithoutRequest = props => {
         },
       ]);
     });
-  }, [matnrServicePackage]);
+  }, [matnrServicePackage1]);
 
   useEffect(() => {
     if (servicePacketDetails.length > 0) {
@@ -1196,9 +1198,9 @@ function mapStateToProps(state) {
     customersById: state.f4.customersById,
     tovar: state.smcsReducer.tovar,
     serviceTypeId: state.smcsReducer.serviceTypeId,
-    matnrPriceSparePart: state.smcsReducer.matnrPriceSparePart,
-    matnrPriceCartridge: state.smcsReducer.matnrPriceCartridge,
-    matnrServicePackage: state.smcsReducer.matnrServicePackage,
+    matnrPriceSparePart1: state.smcsReducer.matnrPriceSparePart1,
+    matnrPriceCartridge1: state.smcsReducer.matnrPriceCartridge1,
+    matnrServicePackage1: state.smcsReducer.matnrServicePackage1,
     servicePacketDetails: state.smcsReducer.servicePacketDetails,
     positionSumm: state.smcsReducer.smcsFetchPositionSumm,
     checkSmcs1: state.smcsReducer.checkSmcs1,

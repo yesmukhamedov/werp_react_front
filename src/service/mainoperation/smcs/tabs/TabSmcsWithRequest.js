@@ -56,9 +56,9 @@ import { emptyService } from '../components/directory';
 const TabSmcsWithRequest = props => {
   const {
     serviceTypeId = [],
-    matnrPriceSparePart = [],
-    matnrPriceCartridge = [],
-    matnrServicePackage = [],
+    matnrPriceSparePart3 = [],
+    matnrPriceCartridge3 = [],
+    matnrServicePackage3 = [],
     servicePacketDetails = [],
     positionSumm = {},
     checkSmcs3 = {},
@@ -177,6 +177,9 @@ const TabSmcsWithRequest = props => {
     switch (fieldName) {
       case 'infoChange':
         setService({ ...service, info: value.value });
+        break;
+      case 'changeServiceDate':
+        setService({ ...service, serviceDate: value });
         break;
 
       default:
@@ -370,7 +373,7 @@ const TabSmcsWithRequest = props => {
   };
 
   useEffect(() => {
-    matnrPriceSparePart.map((item, index) => {
+    matnrPriceSparePart3.map((item, index) => {
       setSparePartList(prev => [
         ...prev,
         {
@@ -399,7 +402,7 @@ const TabSmcsWithRequest = props => {
         },
       ]);
     });
-  }, [matnrPriceSparePart]);
+  }, [matnrPriceSparePart3]);
 
   //Выбрать запчасть
   const checkedSparePart = value => {
@@ -589,7 +592,7 @@ const TabSmcsWithRequest = props => {
   };
 
   useEffect(() => {
-    matnrPriceCartridge.map((item, index) => {
+    matnrPriceCartridge3.map((item, index) => {
       setCartridgeList(prev => [
         ...prev,
         {
@@ -619,7 +622,7 @@ const TabSmcsWithRequest = props => {
         },
       ]);
     });
-  }, [matnrPriceCartridge]);
+  }, [matnrPriceCartridge3]);
 
   useEffect(() => {
     let filterCartridge = cartridgeList.filter(item => item.checked === true);
@@ -698,7 +701,7 @@ const TabSmcsWithRequest = props => {
   };
 
   useEffect(() => {
-    matnrServicePackage.map((item, index) => {
+    matnrServicePackage3.map((item, index) => {
       setServicePackageList(prev => [
         ...prev,
         {
@@ -726,7 +729,7 @@ const TabSmcsWithRequest = props => {
         },
       ]);
     });
-  }, [matnrServicePackage]);
+  }, [matnrServicePackage3]);
 
   useEffect(() => {
     if (servicePacketDetails.length > 0) {
@@ -915,7 +918,7 @@ const TabSmcsWithRequest = props => {
           bukrs: smcsAppNumberData.bukrs,
           productId: smcsAppNumberData.tovarId,
         };
-        props.fetchMatnrPriceServicePackage({ ...param });
+        props.fetchMatnrPriceServicePackage({ ...param }, 3);
       }
       if (smcsAppNumberData.branchId && smcsAppNumberData.bukrs) {
         let param = {
@@ -955,8 +958,8 @@ const TabSmcsWithRequest = props => {
       setSparePartList([]);
       setCartridgeList([]);
       setServicePackageInitial([]);
-      props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart });
-      props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge });
+      props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart }, 3);
+      props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge }, 3);
       setEditStatus(false);
     }
     setCheckStatus(false);
@@ -1120,9 +1123,9 @@ function mapStateToProps(state) {
     customersById: state.f4.customersById,
     tovar: state.smcsReducer.tovar,
     serviceTypeId: state.smcsReducer.serviceTypeId,
-    matnrPriceSparePart: state.smcsReducer.matnrPriceSparePart,
-    matnrPriceCartridge: state.smcsReducer.matnrPriceCartridge,
-    matnrServicePackage: state.smcsReducer.matnrServicePackage,
+    matnrPriceSparePart3: state.smcsReducer.matnrPriceSparePart3,
+    matnrPriceCartridge3: state.smcsReducer.matnrPriceCartridge3,
+    matnrServicePackage3: state.smcsReducer.matnrServicePackage3,
     servicePacketDetails: state.smcsReducer.servicePacketDetails,
     positionSumm: state.smcsReducer.smcsFetchPositionSumm,
     checkSmcs3: state.smcsReducer.checkSmcs3,

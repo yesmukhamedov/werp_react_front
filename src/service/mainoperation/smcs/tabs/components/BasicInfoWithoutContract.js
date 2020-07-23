@@ -2,6 +2,11 @@ import React from 'react';
 import { Table, Input, Form, TextArea } from 'semantic-ui-react';
 import DropdownClearable from '../../../../../utils/DropdownClearable';
 import moment from 'moment';
+import {
+  stringYYYYMMDDToMoment,
+  momentToStringYYYYMMDD,
+} from '../../../../../utils/helpers';
+import DatePicker from 'react-datepicker';
 
 const BasicInfoWithoutContract = props => {
   const {
@@ -14,7 +19,7 @@ const BasicInfoWithoutContract = props => {
     tovarOptions,
     masterOptions,
   } = props;
-
+  const lang = localStorage.getItem('language');
   return (
     <Table>
       <Table.Body>
@@ -188,13 +193,19 @@ const BasicInfoWithoutContract = props => {
         <Table.Row>
           <Table.Cell>Дата сервиса</Table.Cell>
           <Table.Cell>
-            <Input
-              fluid
-              readOnly
-              value={
-                data.serviceDate
-                  ? moment(data.serviceDate).format('DD-MM-YYYY')
-                  : ''
+            <DatePicker
+              autoComplete="off"
+              dateFormat="DD.MM.YYYY"
+              selected={
+                data.serviceDate ? stringYYYYMMDDToMoment(data.serviceDate) : ''
+              }
+              dropdownMode="select"
+              locale={lang}
+              onChange={date =>
+                onBasicInfoInputChange(
+                  momentToStringYYYYMMDD(date),
+                  'changeServiceDate',
+                )
               }
             />
           </Table.Cell>

@@ -4,11 +4,15 @@ import {
   CLEAR_DYNOBJ_MARKETING,
   FETCH_TOVAR_ID,
   FETCH_SERVICE_TYPE_ID,
-  //
-  FETCH_MATNR_PRICE_SPARE_PART,
+  //Запчасть
+  FETCH_MATNR_PRICE_SPARE_PART1,
+  FETCH_MATNR_PRICE_SPARE_PART2,
+  FETCH_MATNR_PRICE_SPARE_PART3,
   CLEAR_MATNR_PRICE_SPARE_PART,
-  //
-  FETCH_MATNR_PRICE_CARTRIDGE,
+  //Картридж
+  FETCH_MATNR_PRICE_CARTRIDGE1,
+  FETCH_MATNR_PRICE_CARTRIDGE2,
+  FETCH_MATNR_PRICE_CARTRIDGE3,
   CLEAR_MATNR_PRICE_CARTRIDGE,
   //
   FETCH_OPERATOR_LIST,
@@ -17,8 +21,10 @@ import {
   CHECK_SMCS_WITHOUT_REQUEST_2,
   CHECK_SMCS_WITHOUT_REQUEST_3,
   SAVE_SMCS_WITHOUT_REQUEST,
-  //
-  FETCH_MATNR_PRICE_SERVICE_PACKAGE,
+  //Сервис пакет
+  FETCH_MATNR_PRICE_SERVICE_PACKAGE1,
+  FETCH_MATNR_PRICE_SERVICE_PACKAGE2,
+  FETCH_MATNR_PRICE_SERVICE_PACKAGE3,
   CLEAR_MATNR_PRICE_SERVICE_PACKAGE,
   //
   FETCH_SERVICE_PACKAGE_DETAILS,
@@ -66,21 +72,34 @@ export default function(state = INITIAL_STATE, action) {
 
     case FETCH_SERVICE_TYPE_ID:
       return { ...state, serviceTypeId: [...action.data.data] };
-
-    case FETCH_MATNR_PRICE_SPARE_PART:
-      return { ...state, matnrPriceSparePart: [...action.data.data] };
+    //Запчасть
+    case FETCH_MATNR_PRICE_SPARE_PART1:
+      return { ...state, matnrPriceSparePart1: [...action.data.data] };
+    case FETCH_MATNR_PRICE_SPARE_PART2:
+      return { ...state, matnrPriceSparePart2: [...action.data.data] };
+    case FETCH_MATNR_PRICE_SPARE_PART3:
+      return { ...state, matnrPriceSparePart3: [...action.data.data] };
 
     case CLEAR_MATNR_PRICE_SPARE_PART:
       return { ...state, matnrPriceSparePart: [] };
-
-    case FETCH_MATNR_PRICE_CARTRIDGE:
-      return { ...state, matnrPriceCartridge: [...action.data.data] };
+    //Картридж
+    case FETCH_MATNR_PRICE_CARTRIDGE1:
+      return { ...state, matnrPriceCartridge1: [...action.data.data] };
+    case FETCH_MATNR_PRICE_CARTRIDGE2:
+      return { ...state, matnrPriceCartridge2: [...action.data.data] };
+    case FETCH_MATNR_PRICE_CARTRIDGE3:
+      return { ...state, matnrPriceCartridge3: [...action.data.data] };
 
     case CLEAR_MATNR_PRICE_CARTRIDGE:
       return { ...state, matnrPriceCartridge: [] };
 
-    case FETCH_MATNR_PRICE_SERVICE_PACKAGE:
-      return { ...state, matnrServicePackage: [...action.data.data] };
+    //Сервис пакет
+    case FETCH_MATNR_PRICE_SERVICE_PACKAGE1:
+      return { ...state, matnrServicePackage1: [...action.data.data] };
+    case FETCH_MATNR_PRICE_SERVICE_PACKAGE2:
+      return { ...state, matnrServicePackage2: [...action.data.data] };
+    case FETCH_MATNR_PRICE_SERVICE_PACKAGE3:
+      return { ...state, matnrServicePackage3: [...action.data.data] };
 
     case CLEAR_MATNR_PRICE_SERVICE_PACKAGE:
       return { ...state, matnrServicePackage: [] };
