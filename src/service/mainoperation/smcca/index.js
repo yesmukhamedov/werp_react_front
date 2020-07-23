@@ -144,7 +144,7 @@ function Smcca(props) {
     intl: { messages },
     location: {
       state: {
-        clientContract = {},
+        clientContract = [],
         serviceFilterPlanId,
         serviceFilterVCPlanId,
         operatorId,
