@@ -41,6 +41,10 @@ import {
   FETCH_SMCUSPOR_CONTRACT_HISTORY,
   FETCH_BRANCH_LIST,
   FETCH_SMCUSPORLE,
+  FETCH_OPERATOR_LIST,
+  CLEAR_OPERATOR_LIST,
+  FETCH_MASTER_LIST,
+  CLEAR_MASTER_LIST,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -338,6 +342,26 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         smcusporle: { ...action.payload },
+      };
+    case FETCH_OPERATOR_LIST:
+      return {
+        ...state,
+        operatorListSmappl: [...action.data.data],
+      };
+    case CLEAR_OPERATOR_LIST:
+      return {
+        ...state,
+        operatorListSmappl: [],
+      };
+    case FETCH_MASTER_LIST:
+      return {
+        ...state,
+        masterListSmappl: [...action.data.data],
+      };
+    case CLEAR_MASTER_LIST:
+      return {
+        ...state,
+        masterListSmappl: [],
       };
     default:
       return state;

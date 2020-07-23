@@ -65,6 +65,10 @@ export const FETCH_SMCUSPOR_CONTRACT_HISTORY =
 export const FETCH_BRANCH_LIST = 'FETCH_BRANCH_LIST';
 export const CLEAR_DYNOBJ_SERVICE = 'CLEAR_DYNOBJ_SERVICE';
 export const FETCH_SMCUSPORLE = 'FETCH_SMCUSPORLE';
+export const FETCH_MASTER_LIST = 'FETCH_MASTER_LIST';
+export const CLEAR_MASTER_LIST = 'CLEAR_MASTER_LIST';
+export const FETCH_OPERATOR_LIST = 'FETCH_OPERATOR_LIST';
+export const CLEAR_OPERATOR_LIST = 'CLEAR_OPERATOR_LIST';
 
 //const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 
@@ -816,7 +820,7 @@ export function fetchAppList(params, search) {
 
 export function fetchAppMasterList(params) {
   return function(dispatch) {
-    doGet('smappl/masterList', params)
+    doGet('smappl/getMasterList', params)
       .then(({ data }) => {
         dispatch({
           type: FETCH_APP_MASTER_LIST,
@@ -964,3 +968,46 @@ export function fetchSmcusporle() {
       });
   };
 }
+
+export const fetchMasterList = param => {
+  return function(dispatch) {
+    doGet(`smappl/getMasterList`, param)
+      .then(({ data }) => {
+        dispatch({
+          type: FETCH_MASTER_LIST,
+          data: data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+};
+export const clearMasterList = () => {
+  return function(dispatch) {
+    dispatch({
+      type: CLEAR_MASTER_LIST,
+    });
+  };
+};
+export const fetchOperatorList = param => {
+  return function(dispatch) {
+    doGet(`smappl/getOperatorList`, param)
+      .then(({ data }) => {
+        dispatch({
+          type: FETCH_OPERATOR_LIST,
+          data: data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+};
+export const clearOperatorList = () => {
+  return function(dispatch) {
+    dispatch({
+      type: CLEAR_OPERATOR_LIST,
+    });
+  };
+};

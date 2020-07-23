@@ -27,7 +27,7 @@ const Masters = props => {
       let masters = appMasterList.map(item => {
         return {
           key: item.staffId,
-          text: item.fullFIO,
+          text: item.fullName,
           value: item.staffId,
         };
       });

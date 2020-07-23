@@ -77,8 +77,6 @@ const ServicePackage = props => {
         ''
       )}
 
-      <Divider />
-
       <Button
         // disabled={editStatus}
         icon

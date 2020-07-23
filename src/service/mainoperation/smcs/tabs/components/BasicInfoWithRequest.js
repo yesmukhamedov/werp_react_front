@@ -121,7 +121,11 @@ const BasicInfoWithoutContract = props => {
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>Дата сервиса</Table.Cell>
+          <Table.Cell>
+            <Form.Field>
+              <label>Дата сервиса</label>
+            </Form.Field>
+          </Table.Cell>
           <Table.Cell>
             <DatePicker
               autoComplete="off"

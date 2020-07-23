@@ -13,7 +13,7 @@ const INITIAL_STATE = {
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     case FETCH_SRLSM:
-      console.log('REDUCE SRLSM', action.data.data);
+      // console.log('REDUCE SRLSM', action.data.data);
       return {
         ...state,
         srlsmListData: { ...action.data.data.listData },

@@ -12,13 +12,16 @@ import {
   fetchAppMasterList,
   fetchClearAppList,
   fetchAppListSearchParam,
+  fetchMasterList,
+  fetchOperatorList,
+  clearOperatorList,
+  clearMasterList,
 } from '../../serviceAction';
 
 import { f4fetchCategory } from '../../../reference/f4/f4_action';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
-  formatDMY,
   errorTableText,
   momentToStringYYYYMMDD,
   stringYYYYMMDDToMoment,
@@ -26,18 +29,16 @@ import {
 import ColumnsModal from '../../../utils/ColumnsModal';
 import './index.css';
 import {
-  LinkToSmcuspor,
   LinkToSmecam,
   LinkToSmvs,
   LinkToSmcsEmpty,
-  LinkToSmcsWithRequest,
-  LinkToSmccald,
 } from '../../../utils/outlink';
 import Masters from './Masters';
 import DropdownClearable from '../../../utils/DropdownClearable';
 import moment from 'moment';
 import 'moment/locale/ru';
 import 'moment/locale/tr';
+import '../../service.css';
 
 import TotalCountsTable from '../../../utils/TotalCountsTable';
 import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
@@ -54,7 +55,12 @@ const Smappl = props => {
     fetchClearAppList,
     category,
     appList,
+    masterListSmappl = [],
+    operatorListSmappl = [],
   } = props;
+
+  console.log('masterListSmappl', masterListSmappl);
+  console.log('operatorListSmappl', operatorListSmappl);
 
   const [error, setError] = useState([]);
   const language = localStorage.getItem('language');
@@ -63,8 +69,8 @@ const Smappl = props => {
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
 
   const [search, setSearch] = useState({
-    bukrs: '',
-    branchId: '',
+    bukrs: null,
+    branchId: null,
     dateOpenAt: momentToStringYYYYMMDD(moment(new Date())),
     dateOpenTo: '',
     aDateFrom: null,
@@ -72,6 +78,8 @@ const Smappl = props => {
     tovarCategorys: null,
     appStatusIds: '1,2,3,4',
     appTypeIds: null,
+    masterId: null,
+    operatorId: null,
     direction: 'DESC',
     orderBy: 'id',
   });
@@ -81,6 +89,21 @@ const Smappl = props => {
       key: item.id,
       text: item.name,
       value: item.id,
+    };
+  });
+
+  const masterOptions = masterListSmappl.map((item, index) => {
+    return {
+      key: parseInt(`${Math.floor(Math.random() * 10000)}${item.staffId}`),
+      text: item.fullName,
+      value: item.staffId,
+    };
+  });
+  const operatorOptions = operatorListSmappl.map((item, index) => {
+    return {
+      key: parseInt(`${Math.floor(Math.random() * 10)}${item.staffId}`),
+      text: item.fullName,
+      value: item.staffId,
     };
   });
 
@@ -165,6 +188,7 @@ const Smappl = props => {
       Header: messages['Masters'],
       accessor: 'masterName',
       show: true,
+      filterable: false,
       Cell: ({ row }) => (
         <div style={{ textAlign: 'center' }}>
           {row._original.masterName}
@@ -188,6 +212,7 @@ const Smappl = props => {
       accessor: 'operatorName',
       show: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      filterable: false,
     },
     {
       Header: messages['type_of_application'],
@@ -265,6 +290,20 @@ const Smappl = props => {
   const [columnsForTable, setColumnsForTable] = useState([]);
 
   useEffect(() => {
+    props.clearOperatorList();
+    props.clearMasterList();
+    let param = {
+      bukrs: search.bukrs,
+      branchId: search.branchId,
+      categoryId: search.tovarCategorys,
+    };
+    if (search.bukrs) {
+      props.fetchMasterList({ ...param });
+      props.fetchOperatorList({ ...param });
+    }
+  }, [search.bukrs, search.branchId, search.tovarCategorys]);
+
+  useEffect(() => {
     props.fetchClearAppList();
     fetchAppStatus();
     fetchAppType();
@@ -313,7 +352,7 @@ const Smappl = props => {
       switch (text) {
         case 'bukrs':
           varTs.bukrs = value;
-          varTs.branchId = 0;
+          varTs.branchId = null;
           break;
         case 'branch':
           varTs.branchId = value;
@@ -328,6 +367,12 @@ const Smappl = props => {
         case 'ApplicationType':
           varTs.appTypeIds = value.length > 0 ? value.join() : null;
           break;
+        case 'changeMaster':
+          varTs.masterId = value.length > 0 ? value.join() : null;
+          break;
+        case 'changeOperator':
+          varTs.operatorId = value.length > 0 ? value.join() : null;
+          break;
         default:
           return varTs;
       }
@@ -339,6 +384,11 @@ const Smappl = props => {
 
   const onSearch = () => {
     const errors = [];
+    const param = {
+      branchId: search.branchId,
+      bukrs: search.bukrs,
+      categoryId: search.categoryId,
+    };
     if (search.bukrs === '') {
       errors.push(errorTableText(5));
     }
@@ -352,7 +402,7 @@ const Smappl = props => {
           appStatusIds: search.appStatusIds.toString(),
           ...serverSideParams,
         });
-        props.fetchAppMasterList(search);
+        props.fetchAppMasterList({ ...param });
         setTurnOnReactFetch(true);
         props.fetchAppListSearchParam(search);
       } else {
@@ -364,7 +414,7 @@ const Smappl = props => {
           page,
           size,
         });
-        props.fetchAppMasterList(search);
+        props.fetchAppMasterList({ ...param });
         setTurnOnReactFetch(true);
         props.fetchAppListSearchParam(search);
       }
@@ -456,9 +506,6 @@ const Smappl = props => {
             <DatePicker
               className="date-auto-width"
               autoComplete="off"
-              showMonthDropdown
-              showYearDropdown
-              dropdownMode="select"
               locale={language}
               selected={stringYYYYMMDDToMoment(search.dateOpenAt)}
               onChange={event =>
@@ -477,9 +524,6 @@ const Smappl = props => {
             <DatePicker
               className="date-auto-width"
               autoComplete="off"
-              showMonthDropdown
-              showYearDropdown
-              dropdownMode="select"
               selected={stringYYYYMMDDToMoment(search.dateOpenTo)}
               onChange={event =>
                 setSearch({
@@ -493,6 +537,31 @@ const Smappl = props => {
               isClearable
             />
           </Form.Field>
+          <Form.Field className="marginRight width25Rem">
+            <label>Мастер</label>
+            <Form.Select
+              clearable="true"
+              selection
+              fluid
+              multiple
+              //value={param.masterId ? param.masterId : ''}
+              options={masterOptions}
+              placeholder="Мастер"
+              onChange={(e, o) => onChange('changeMaster', o.value)}
+            />
+          </Form.Field>
+          <Form.Field className="marginRight width25Rem">
+            <label>Оператор</label>
+            <Form.Select
+              clearable="true"
+              selection
+              fluid
+              multiple
+              options={operatorOptions}
+              placeholder="Оператор"
+              onChange={(e, o) => onChange('changeOperator', o.value)}
+            />
+          </Form.Field>
 
           <Form.Field
             control={Button}
@@ -500,7 +569,6 @@ const Smappl = props => {
             style={{ marginTop: 24 }}
             onClick={onSearch}
           >
-            <Icon name="search" />
             {messages['search']}
           </Form.Field>
         </Form.Group>
@@ -552,6 +620,8 @@ const mapStateToProps = state => {
     appType: state.serviceReducer.appType,
     appMasterList: state.serviceReducer.appMasterList,
     category: state.f4.category,
+    masterListSmappl: state.serviceReducer.masterListSmappl,
+    operatorListSmappl: state.serviceReducer.operatorListSmappl,
   };
 };
 
@@ -564,4 +634,8 @@ export default connect(mapStateToProps, {
   fetchClearAppList,
   fetchAppListSearchParam,
   f4fetchCategory,
+  fetchMasterList,
+  fetchOperatorList,
+  clearOperatorList,
+  clearMasterList,
 })(injectIntl(Smappl));
