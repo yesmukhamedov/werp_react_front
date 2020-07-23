@@ -11,6 +11,8 @@ import {
   fetchSrlsm,
   fetchServiceTypeList,
   fetchAcceptPaymentUsers,
+  fetchMasterList,
+  fetchOperatorList,
 } from './srlsmAction';
 import { injectIntl } from 'react-intl';
 import {
@@ -58,9 +60,9 @@ const Srlsm = props => {
     srlsmTotalPages,
     countryList = [],
     acceptPaymentUsers = [],
+    masterList = [],
+    operatorList = [],
   } = props;
-
-  console.log('acceptPaymentUsers', acceptPaymentUsers);
 
   const emptyParam = {
     countryId: null,
@@ -69,6 +71,8 @@ const Srlsm = props => {
     categoryId: null,
     serviceTypeId: null,
     serviceStatusId: '1,4',
+    masterId: null,
+    operatorId: null,
     acceptedPaymentById: null,
     dateAt: momentToStringYYYYMMDD(moment(new Date())),
     dateTo: null,
@@ -80,6 +84,22 @@ const Srlsm = props => {
   const [error, setError] = useState([]);
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const [currency, setCurrency] = useState('');
+  console.log('masterId', param.masterId);
+
+  const masterOptions = masterList.map((item, index) => {
+    return {
+      key: item.staffId,
+      text: item.fullName,
+      value: item.staffId,
+    };
+  });
+  const operatorOptions = operatorList.map((item, index) => {
+    return {
+      key: item.staffId,
+      text: item.fullName,
+      value: item.staffId,
+    };
+  });
 
   useEffect(() => {
     props.f4fetchCategory();
@@ -94,10 +114,17 @@ const Srlsm = props => {
       let params = {
         bukrs: param.bukrs,
         branchId: param.branchId,
+        categoryId: param.categoryId,
       };
-      props.fetchAcceptPaymentUsers({ ...params });
+      let paramsAcceptPay = {
+        bukrs: param.bukrs,
+        branchId: param.branchId,
+      };
+      props.fetchAcceptPaymentUsers({ ...paramsAcceptPay });
+      props.fetchMasterList({ ...params });
+      props.fetchOperatorList({ ...params });
     }
-  }, [param.bukrs, param.branchId]);
+  }, [param.bukrs, param.branchId, param.categoryId]);
 
   const countryOptions = countryList.map(item => {
     return {
@@ -129,8 +156,6 @@ const Srlsm = props => {
         value: parseInt(item.id),
       };
     });
-
-  console.log('serviceStatusListOptions', serviceStatusListOptions);
 
   const serviceTypeOptions = serviceTypeList.map(item => {
     return {
@@ -174,6 +199,12 @@ const Srlsm = props => {
         case 'serviceStatusId':
           // varSrls.serviceStatusId = o.value;
           varSrls.serviceStatusId = o.value.length > 0 ? o.value.join() : null;
+          break;
+        case 'changeMaster':
+          varSrls.masterId = o.value.length > 0 ? o.value.join() : null;
+          break;
+        case 'changeOperator':
+          varSrls.operatorId = o.value.length > 0 ? o.value.join() : null;
           break;
         default:
           varSrls[fieldName] = o.value;
@@ -228,11 +259,13 @@ const Srlsm = props => {
       Header: 'Мастер',
       accessor: 'masterFIO',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'Оператор',
       accessor: 'operatorFIO',
       checked: true,
+      filterable: false,
     },
     {
       Header: 'Вид сервиса',
@@ -303,14 +336,17 @@ const Srlsm = props => {
       Header: 'История клиента',
       accessor: '16',
       filterable: false,
-      Cell: original => (
-        <div style={{ textAlign: 'center' }}>
-          <LinkToSmcuspor
-            contractNumber={original.row.contractNumber}
-            text="Просмотр"
-          />
-        </div>
-      ),
+      Cell: original =>
+        original.row.contractNumber ? (
+          <div style={{ textAlign: 'center' }}>
+            <LinkToSmcuspor
+              contractNumber={original.row.contractNumber}
+              text="Просмотр"
+            />
+          </div>
+        ) : (
+          ''
+        ),
       checked: true,
       fixed: 'right',
     },
@@ -351,7 +387,6 @@ const Srlsm = props => {
   };
 
   const arrayAppStatus = param.serviceStatusId.split(',').map(Number);
-  console.log('arrayAppStatus', arrayAppStatus);
   return (
     <Container
       fluid
@@ -510,12 +545,36 @@ const Srlsm = props => {
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
+            <Form.Field className="marginRight width25Rem">
+              <label>Мастер</label>
+              <Form.Select
+                clearable="true"
+                selection
+                fluid
+                multiple
+                //value={param.masterId ? param.masterId : ''}
+                options={masterOptions}
+                placeholder="Мастер"
+                onChange={(e, o) => onInputChange(o, 'changeMaster')}
+              />
+            </Form.Field>
+            <Form.Field className="marginRight width25Rem">
+              <label>Оператор</label>
+              <Form.Select
+                clearable="true"
+                selection
+                fluid
+                multiple
+                options={operatorOptions}
+                placeholder="Оператор"
+                onChange={(e, o) => onInputChange(o, 'changeOperator')}
+              />
+            </Form.Field>
             <Form.Button
               onClick={handleClickApply}
               color="blue"
               className="alignBottom"
             >
-              <Icon name="search" />
               Применить
             </Form.Button>
           </div>
@@ -628,6 +687,8 @@ function mapStateToProps(state) {
     serviceTypeList: state.srlsmReducer.serviceTypeList,
     srlsmListData: state.srlsmReducer.srlsmListData,
     srlsmListSum: state.srlsmReducer.srlsmListSum,
+    masterList: state.srlsmReducer.masterList,
+    operatorList: state.srlsmReducer.operatorList,
     srlsmTotalPages: state.srlsmReducer.srlsmTotalPages,
     acceptPaymentUsers: state.srlsmReducer.acceptPaymentUsers,
     serviceStatusList: state.f4.serviceStatusList,
@@ -643,4 +704,6 @@ export default connect(mapStateToProps, {
   f4FetchCountryList,
   f4FetchServiceStatusList,
   fetchAcceptPaymentUsers,
+  fetchMasterList,
+  fetchOperatorList,
 })(injectIntl(Srlsm));

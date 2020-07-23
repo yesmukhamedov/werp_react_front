@@ -164,3 +164,7 @@ input::-webkit-inner-spin-button {
 .marginBottom-0 {
   margin-bottom: 0px !important;
 }
+
+.width25Rem {
+  width: 25rem;
+}
