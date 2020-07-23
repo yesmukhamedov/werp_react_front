@@ -2,6 +2,8 @@ import {
   FETCH_SRLSM,
   FETCH_SERVICE_TYPE_LIST,
   FETCH_ACCEPT_PAYMENT_USERS,
+  FETCH_MASTER_LIST,
+  FETCH_OPERATOR_LIST,
 } from './srlsmAction';
 
 const INITIAL_STATE = {
@@ -27,6 +29,17 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         acceptPaymentUsers: [...action.data.data],
+      };
+
+    case FETCH_MASTER_LIST:
+      return {
+        ...state,
+        masterList: [...action.data.data],
+      };
+    case FETCH_OPERATOR_LIST:
+      return {
+        ...state,
+        operatorList: [...action.data.data],
       };
 
     default:

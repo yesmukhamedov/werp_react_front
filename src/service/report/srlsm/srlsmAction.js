@@ -5,9 +5,11 @@ import { modifyLoader } from '../../../general/loader/loader_action';
 export const FETCH_SRLSM = 'FETCH_SRLSM';
 export const FETCH_SERVICE_TYPE_LIST = 'FETCH_SERVICE_TYPE_LIST';
 export const FETCH_ACCEPT_PAYMENT_USERS = 'FETCH_ACCEPT_PAYMENT_USERS';
+export const FETCH_MASTER_LIST = 'FETCH_MASTER_LIST';
+export const FETCH_OPERATOR_LIST = 'FETCH_OPERATOR_LIST';
 
-const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-const language = localStorage.getItem('language');
+// const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+// const language = localStorage.getItem('language');
 
 //SRLS список сервисов
 export const fetchSrlsm = param => {
@@ -59,6 +61,34 @@ export const fetchServiceTypeList = param => {
       })
       .catch(error => {
         dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+export const fetchMasterList = param => {
+  return function(dispatch) {
+    doGet(`srlsm/getMasterList`, param)
+      .then(({ data }) => {
+        dispatch({
+          type: FETCH_MASTER_LIST,
+          data: data,
+        });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+};
+export const fetchOperatorList = param => {
+  return function(dispatch) {
+    doGet(`srlsm/getOperatorList`, param)
+      .then(({ data }) => {
+        dispatch({
+          type: FETCH_OPERATOR_LIST,
+          data: data,
+        });
+      })
+      .catch(error => {
         handleError(error, dispatch);
       });
   };
