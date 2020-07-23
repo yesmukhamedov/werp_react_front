@@ -251,10 +251,18 @@ const TransferApplicationExodus = props => {
     if (param.bukrs !== '') {
       const page = 0;
       const size = 20;
+      const orderBy = 'id';
+      const direction = 'DESC';
       if (Object.keys(serverSideParams).length > 0) {
         props.fetchTransferApplicationExodus({ ...param, ...serverSideParams });
       } else {
-        props.fetchTransferApplicationExodus({ ...param, page, size });
+        props.fetchTransferApplicationExodus({
+          ...param,
+          orderBy,
+          direction,
+          page,
+          size,
+        });
       }
       setTurnOnReactFetch(true);
     }

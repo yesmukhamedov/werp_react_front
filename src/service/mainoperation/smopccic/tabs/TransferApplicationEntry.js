@@ -233,10 +233,18 @@ const TransferApplicationEntry = props => {
     if (param.bukrs !== '') {
       const page = 0;
       const size = 20;
+      const orderBy = 'id';
+      const direction = 'DESC';
       if (Object.keys(serverSideParams).length > 0) {
         props.fetchTransferApplication({ ...param, ...serverSideParams });
       } else {
-        props.fetchTransferApplication({ ...param, page, size });
+        props.fetchTransferApplication({
+          ...param,
+          orderBy,
+          direction,
+          page,
+          size,
+        });
       }
       setTurnOnReactFetch(true);
     }

@@ -248,10 +248,12 @@ const AssignedCalls = props => {
     if (param.bukrs !== '') {
       const page = 0;
       const size = 20;
+      const orderBy = 'id';
+      const direction = 'DESC';
       if (Object.keys(serverSideParams).length > 0) {
         props.fetchCRMSchedule({ ...param, ...serverSideParams });
       } else {
-        props.fetchCRMSchedule({ ...param, page, size });
+        props.fetchCRMSchedule({ ...param, page, size, orderBy, direction });
       }
       setTurnOnReactFetch(true);
     }

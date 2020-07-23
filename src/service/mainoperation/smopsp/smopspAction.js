@@ -20,7 +20,10 @@ export const POST_TO_CANCEL_PLAN_VC = 'POST_TO_CANCEL_PLAN_VC';
 export const fetchServicePacketPlan = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopsp/serviceFilterVCPlan?direction=DESC&orderBy=id`, param)
+    doGet(`smopsp/serviceFilterVCPlan`, {
+      ...param,
+      planStatusId: param.planStatusId.toString(),
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -39,7 +42,7 @@ export const fetchServicePacketPlan = param => {
 export const fetchRescheduledApplication = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopsp/rescheduledApplication?direction=DESC&orderBy=id`, param)
+    doGet(`smopsp/rescheduledApplication`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -58,7 +61,7 @@ export const fetchRescheduledApplication = param => {
 export const fetchAssignedCalls = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopsp/CRMSchedule?direction=DESC&orderBy=id`, param)
+    doGet(`smopsp/CRMSchedule`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -77,7 +80,7 @@ export const fetchAssignedCalls = param => {
 export const fetchMyApplication = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopsp/myApplication?direction=DESC&orderBy=id`, param)
+    doGet(`smopsp/myApplication`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

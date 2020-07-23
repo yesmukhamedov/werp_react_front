@@ -211,10 +211,12 @@ const AssignedCalls = props => {
     if (param.bukrs !== '') {
       const page = 0;
       const size = 20;
+      const orderBy = 'id';
+      const direction = 'DESC';
       if (Object.keys(serverSideParams).length > 0) {
         props.fetchAssignedCalls({ ...param, ...serverSideParams });
       } else {
-        props.fetchAssignedCalls({ ...param, page, size });
+        props.fetchAssignedCalls({ ...param, orderBy, direction, page, size });
       }
       setTurnOnReactFetch(true);
     }

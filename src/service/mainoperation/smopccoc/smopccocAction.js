@@ -26,9 +26,13 @@ const language = localStorage.getItem('language');
 
 //План по замене картриджей
 export const fetchServiceFilterPlan = param => {
+  console.log(param);
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccoc/serviceFilterPlan?direction=DESC&orderBy=id`, param)
+    doGet(`smopccoc/serviceFilterPlan`, {
+      ...param,
+      planStatusId: param.planStatusId.toString(),
+    })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -47,7 +51,7 @@ export const fetchServiceFilterPlan = param => {
 export const fetchTransferApplicationExodus = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccoc/rescheduledApplication?direction=DESC&orderBy=id`, param)
+    doGet(`smopccoc/rescheduledApplication`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -66,7 +70,7 @@ export const fetchTransferApplicationExodus = param => {
 export const fetchCRMSchedule = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccoc/CRMSchedule?direction=DESC&orderBy=id`, param)
+    doGet(`smopccoc/CRMSchedule`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -85,7 +89,7 @@ export const fetchCRMSchedule = param => {
 export const fetchMyApplicationExodus = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccoc/myApplication?direction=DESC&orderBy=id`, param)
+    doGet(`smopccoc/myApplication`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

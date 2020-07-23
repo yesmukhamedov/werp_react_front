@@ -228,10 +228,12 @@ const MyApplication = props => {
     if (param.bukrs !== '') {
       const page = 0;
       const size = 20;
+      const orderBy = 'id';
+      const direction = 'DESC';
       if (Object.keys(serverSideParams).length > 0) {
         props.fetchMyApplication({ ...param, ...serverSideParams });
       } else {
-        props.fetchMyApplication({ ...param, page, size });
+        props.fetchMyApplication({ ...param, orderBy, direction, page, size });
       }
       setTurnOnReactFetch(true);
     }

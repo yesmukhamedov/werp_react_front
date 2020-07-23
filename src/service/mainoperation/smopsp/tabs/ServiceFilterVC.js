@@ -292,18 +292,20 @@ const ServiceFilterVC = props => {
     if (param.bukrs !== '' && param.planStatusId !== null) {
       const page = 0;
       const size = 20;
+      const orderBy = 'id';
+      const direction = 'DESC';
       if (Object.keys(serverSideParams).length > 0) {
         fetchServicePacketPlan({
           ...param,
           ...serverSideParams,
-          planStatusId: param.planStatusId.toString(),
         });
       } else {
         fetchServicePacketPlan({
           ...param,
           page,
           size,
-          planStatusId: param.planStatusId.toString(),
+          orderBy,
+          direction,
         });
       }
       setTurnOnReactFetch(true);

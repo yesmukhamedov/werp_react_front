@@ -218,10 +218,12 @@ const SearchCustomer = props => {
     if (param.bukrs !== '') {
       const page = 0;
       const size = 20;
+      const orderBy = 'contractId';
+      const direction = 'DESC';
       if (Object.keys(serverSideParams).length > 0) {
         props.fetchSearchCustomer({ ...param, ...serverSideParams });
       } else {
-        props.fetchSearchCustomer({ ...param, page, size });
+        props.fetchSearchCustomer({ ...param, orderBy, direction, page, size });
       }
       setTurnOnReactFetch(true);
     }

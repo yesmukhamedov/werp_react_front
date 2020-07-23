@@ -16,10 +16,9 @@ const language = localStorage.getItem('language');
 
 //Поиск клиентов
 export const fetchSearchCustomer = param => {
-  console.log(param);
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccic/search_customer?direction=DESC&orderBy=contractId`, param)
+    doGet(`smopccic/search_customer`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -38,7 +37,7 @@ export const fetchSearchCustomer = param => {
 export const fetchTransferApplication = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccic/rescheduledApplication?direction=DESC&orderBy=id`, param)
+    doGet(`smopccic/rescheduledApplication`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -57,7 +56,7 @@ export const fetchTransferApplication = param => {
 export const fetchMyApplicationExodus = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccic/myApplication?direction=DESC&orderBy=id`, param)
+    doGet(`smopccic/myApplication`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

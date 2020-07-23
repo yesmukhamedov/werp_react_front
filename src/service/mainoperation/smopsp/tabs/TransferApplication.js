@@ -237,10 +237,18 @@ const TransferApplication = props => {
     if (param.bukrs !== '') {
       const page = 0;
       const size = 20;
+      const orderBy = 'id';
+      const direction = 'DESC';
       if (Object.keys(serverSideParams).length > 0) {
         fetchRescheduledApplication({ ...param, ...serverSideParams });
       } else {
-        fetchRescheduledApplication({ ...param, page, size });
+        fetchRescheduledApplication({
+          ...param,
+          orderBy,
+          direction,
+          page,
+          size,
+        });
       }
       setTurnOnReactFetch(true);
     }
