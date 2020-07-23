@@ -175,8 +175,6 @@ const BasicInfoWithoutRequest = props => {
               }
               dropdownMode="select"
               locale={lang}
-              minDate={moment().subtract(1, 'months')}
-              maxDate={moment(new Date(), 5)}
               onChange={date =>
                 onBasicInfoInputChange(
                   momentToStringYYYYMMDD(date),

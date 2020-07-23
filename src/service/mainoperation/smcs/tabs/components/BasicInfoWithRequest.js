@@ -129,8 +129,6 @@ const BasicInfoWithoutContract = props => {
               selected={
                 data.serviceDate ? stringYYYYMMDDToMoment(data.serviceDate) : ''
               }
-              minDate={moment().subtract(1, 'months')}
-              maxDate={moment(new Date(), 5)}
               dropdownMode="select"
               locale={lang}
               onChange={date =>
