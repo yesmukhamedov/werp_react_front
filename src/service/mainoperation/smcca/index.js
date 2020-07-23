@@ -174,12 +174,6 @@ function Smcca(props) {
     f5MtLeft,
   } = clientContract;
 
-  const getaway = async () => {
-    let sw = await navigator.serviceWorker.register('./sw.js');
-    console.log(sw);
-  };
-  console.log(getaway());
-
   const onInputChange = (o, fieldName) => {
     setRequest(prev => {
       const varRequest = { ...prev };

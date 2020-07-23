@@ -211,6 +211,39 @@ function Smcuspor(props) {
           <Grid.Row>
             <Grid.Column mobile={16} table={16} computer={6}>
               <Segment>
+                <h3>{messages['filter_replacement_period']}</h3>
+                <Input
+                  size="mini"
+                  label="F1"
+                  className="input__filter_terms"
+                  value={f1MtLeft ? f1MtLeft : '0'}
+                />
+                <Input
+                  size="mini"
+                  label="F2"
+                  className="input__filter_terms"
+                  value={f2MtLeft ? f2MtLeft : '0'}
+                />
+                <Input
+                  size="mini"
+                  label="F3"
+                  className="input__filter_terms"
+                  value={f3MtLeft ? f3MtLeft : '0'}
+                />
+                <Input
+                  size="mini"
+                  label="F4"
+                  className="input__filter_terms"
+                  value={f4MtLeft ? f4MtLeft : '0'}
+                />
+                <Input
+                  size="mini"
+                  label="F5"
+                  className="input__filter_terms"
+                  value={f5MtLeft ? f5MtLeft : '0'}
+                />
+              </Segment>
+              <Segment>
                 <h3>{messages['L__CLIENT_INFO']}</h3>
               </Segment>
               <Table compact striped>
@@ -534,39 +567,6 @@ function Smcuspor(props) {
                   </Table.Row>
                 </Table.Body>
               </Table>
-              <Segment>
-                <h3>{messages['filter_replacement_period']}</h3>
-                <Input
-                  size="mini"
-                  label="F1"
-                  className="input__filter_terms"
-                  value={f1MtLeft ? f1MtLeft : '0'}
-                />
-                <Input
-                  size="mini"
-                  label="F2"
-                  className="input__filter_terms"
-                  value={f2MtLeft ? f2MtLeft : '0'}
-                />
-                <Input
-                  size="mini"
-                  label="F3"
-                  className="input__filter_terms"
-                  value={f3MtLeft ? f3MtLeft : '0'}
-                />
-                <Input
-                  size="mini"
-                  label="F4"
-                  className="input__filter_terms"
-                  value={f4MtLeft ? f4MtLeft : '0'}
-                />
-                <Input
-                  size="mini"
-                  label="F5"
-                  className="input__filter_terms"
-                  value={f5MtLeft ? f5MtLeft : '0'}
-                />
-              </Segment>
               <Button
                 color="blue"
                 fluid
