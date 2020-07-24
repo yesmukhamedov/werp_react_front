@@ -592,15 +592,14 @@ const Srlsm = props => {
       <Table celled>
         <Table.Body>
           <Table.Row>
-            <Table.Cell>Общая сумма</Table.Cell>
+            <Table.Cell>Общая сумма (со скидкой)</Table.Cell>
             <Table.Cell>
               <Input
                 readOnly
                 value={moneyFormat(
-                  srlsmListSum.sumTotal === undefined ||
-                    srlsmListSum.sumTotal === null
-                    ? ''
-                    : srlsmListSum.sumTotal,
+                  srlsmListSum.sumTotal
+                    ? srlsmListSum.sumTotal - srlsmListSum.discount
+                    : '',
                 )}
               />
             </Table.Cell>
