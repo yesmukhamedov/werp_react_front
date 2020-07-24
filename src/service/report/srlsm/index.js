@@ -652,8 +652,15 @@ const Srlsm = props => {
                 )}
               />
             </Table.Cell>
-            <Table.Cell></Table.Cell>
-            <Table.Cell></Table.Cell>
+            <Table.Cell>Скидка</Table.Cell>
+            <Table.Cell>
+              <Input
+                readOnly
+                value={moneyFormat(
+                  srlsmListSum.discount ? srlsmListSum.discount : '',
+                )}
+              />
+            </Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table>
