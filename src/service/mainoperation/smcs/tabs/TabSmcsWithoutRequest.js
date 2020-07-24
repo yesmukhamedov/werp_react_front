@@ -33,6 +33,7 @@ import {
   fetchCheckWarranty,
   saveSmcsPayment,
   fetchPaymentOptions,
+  fetchSmcsByContractNumber,
 } from '../smcsAction';
 
 import {
@@ -73,6 +74,8 @@ const TabSmcsWithoutRequest = props => {
     tovarSnProps,
     paymentOptions = [],
   } = props;
+
+  console.log('CONTRACT', contract);
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
@@ -135,11 +138,17 @@ const TabSmcsWithoutRequest = props => {
         props.fetchServiceSmcs({ tovarSn });
         props.fetchServiceTypeId();
         break;
-
+      case 'searchSN':
+        let contractNumber = service.contractNumber;
+        props.fetchSmcsByContractNumber({ contractNumber });
+        break;
       //Изменить серииный номер товара
       case 'inputChangeTovarSN':
         setService({ ...service, tovarSn: value.target.value });
+        break;
 
+      case 'inputChangeCN':
+        setService({ ...service, contractNumber: value.target.value });
         break;
 
       case 'changeOperator':
@@ -1238,4 +1247,5 @@ export default connect(mapStateToProps, {
   fetchMasterList,
   fetchCheckWarranty,
   fetchPaymentOptions,
+  fetchSmcsByContractNumber,
 })(injectIntl(TabSmcsWithoutRequest));

@@ -97,9 +97,28 @@ const BasicInfoWithoutRequest = props => {
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>CN</Table.Cell>
           <Table.Cell>
-            <Input fluid readOnly value={data.contractNumber} />
+            <Form.Field>
+              <label>CN</label>
+            </Form.Field>
+          </Table.Cell>
+          <Table.Cell>
+            {/* <Input fluid readOnly /> */}
+            <Input
+              fluid
+              type="text"
+              value={data.contractNumber}
+              placeholder="Введите CN"
+              onChange={item => onBasicInfoInputChange(item, 'inputChangeCN')}
+              action={
+                <Button
+                  icon="search"
+                  content="Поиск"
+                  primary
+                  onClick={item => onBasicInfoInputChange(item, 'searchSN')}
+                />
+              }
+            />
           </Table.Cell>
         </Table.Row>
         <Table.Row>

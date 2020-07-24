@@ -49,6 +49,7 @@ export const FETCH_SMCS_BY_APP_NUMBER = 'FETCH_SMCS_BY_APP_NUMBER';
 export const FETCH_MASTER_LIST = 'FETCH_MASTER_LIST';
 export const FETCH_CHECK_WARRANTY = 'FETCH_CHECK_WARRANTY';
 export const FETCH_PAYMENT_OPTIONS = 'FETCH_PAYMENT_OPTIONS';
+export const FETCH_SMCS_BY_CONTRACT_NUMBER = 'FETCH_SMCS_BY_CONTRACT_NUMBER';
 
 //--END
 // const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
@@ -419,6 +420,24 @@ export const fetchSmcsByAppNumber = param => {
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SMCS_BY_APP_NUMBER,
+          data: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+//Поиск по Contract Number
+export const fetchSmcsByContractNumber = param => {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`smcs/getServiceContract`, param)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SMCS_BY_CONTRACT_NUMBER,
           data: data,
         });
       })
