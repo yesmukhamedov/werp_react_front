@@ -16,7 +16,6 @@ class Notification extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     if (nextProps.type === 'info')
       this.setState({ info: true, success: false, error: false });
     else if (nextProps.type === 'success')

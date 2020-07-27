@@ -53,7 +53,7 @@ function Smeci(props) {
 
   const {
     contractInfo = [],
-    branchOptions = [],
+    branchOptionsService = [],
     intl: { messages },
     crmCategory = [],
     branches = [],
@@ -115,10 +115,10 @@ function Smeci(props) {
   }, [!addressF4ModalOpen]);
 
   useEffect(() => {
-    if (Object.entries(branchOptions).length !== 0 && bukrsId) {
+    if (Object.entries(branchOptionsService).length !== 0 && bukrsId) {
       let branch = {};
-      branchOptions[bukrsId]
-        .filter(item => item.key === branchId)
+      branchOptionsService[bukrsId]
+        .filter(item => item.key === serviceBranchId)
         .forEach(item => {
           branch = item;
         });
@@ -134,11 +134,7 @@ function Smeci(props) {
         info: info,
       });
     }
-  }, [branchId, branchOptions]);
-
-  console.log(serviceBranchId);
-  console.log(getBranchList(branches));
-  console.log(branches);
+  }, [branchId, branchOptionsService]);
 
   const onInputChange = (e, fieldName) => {
     setContract(prev => {
@@ -815,7 +811,7 @@ const labelColor = crmCategoryId => {
 
 function mapStateToProps(state) {
   return {
-    branchOptions: state.userInfo.branchOptionsMarketing,
+    branchOptionsService: state.userInfo.branchOptionsService,
     contractInfo: state.serviceReducer.smeciContractInfo,
     crmCategory: state.f4.crmCategory,
     branches: state.f4.branches,

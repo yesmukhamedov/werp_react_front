@@ -13,7 +13,7 @@
     "history": "^4.10.1",
     "js-cookie": "^2.2.1",
     "jwt-simple": "^0.5.1",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "lodash.debounce": "^4.0.8",
     "match-sorter": "^2.2.0",
     "moment": "^2.20.1",
@@ -50,6 +50,7 @@
     "string-format": "^2.0.0",
     "uuid": "^3.3.3",
     "velocity-react": "^1.4.1",
+    "xlsx": "^0.16.4",
     "yup": "^0.28.3"
   },
   "scripts": {
