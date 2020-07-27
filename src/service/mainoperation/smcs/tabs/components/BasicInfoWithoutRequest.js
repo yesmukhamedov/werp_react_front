@@ -1,5 +1,13 @@
 import React from 'react';
-import { Button, Table, Input, Form, TextArea } from 'semantic-ui-react';
+import {
+  Button,
+  Table,
+  Input,
+  Form,
+  TextArea,
+  Icon,
+  Popup,
+} from 'semantic-ui-react';
 import DropdownClearable from '../../../../../utils/DropdownClearable';
 
 import {
@@ -8,6 +16,8 @@ import {
 } from '../../../../../utils/helpers';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
+import '../../style.css';
 
 const BasicInfoWithoutRequest = props => {
   const {
@@ -97,28 +107,41 @@ const BasicInfoWithoutRequest = props => {
           </Table.Cell>
         </Table.Row>
         <Table.Row>
-          <Table.Cell>
+          <Table.Cell className="flexRow">
             <Form.Field>
               <label>CN</label>
             </Form.Field>
           </Table.Cell>
           <Table.Cell>
-            {/* <Input fluid readOnly /> */}
             <Input
               fluid
               type="text"
               value={data.contractNumber}
               placeholder="Введите CN"
               onChange={item => onBasicInfoInputChange(item, 'inputChangeCN')}
-              action={
-                <Button
-                  icon="search"
-                  content="Поиск"
-                  primary
-                  onClick={item => onBasicInfoInputChange(item, 'searchSN')}
-                />
-              }
-            />
+              action
+              actionPosition="left"
+            >
+              <Popup
+                content="История клиента"
+                trigger={
+                  <Link
+                    target="_blank"
+                    className="ui icon button primary"
+                    to={`/service/mainoperation/smcuspor?contractNumber=${data.contractNumber}`}
+                  >
+                    <Icon name="address card" size="small" />
+                  </Link>
+                }
+              />
+              <input />
+              <Button
+                icon="search"
+                content="Поиск"
+                primary
+                onClick={item => onBasicInfoInputChange(item, 'searchSN')}
+              />
+            </Input>
           </Table.Cell>
         </Table.Row>
         <Table.Row>

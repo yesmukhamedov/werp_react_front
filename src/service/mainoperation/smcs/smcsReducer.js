@@ -48,7 +48,7 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_SERVICE_SMCS:
       return {
         ...state,
-        contract: { ...action.data.service },
+        contract: { ...action.data },
       };
     case FETCH_MASTER_LIST:
       return {
@@ -130,8 +130,9 @@ export default function(state = INITIAL_STATE, action) {
 
     case FETCH_SMCS_BY_APP_NUMBER:
       return { ...state, smcsAppNumberData: { ...action.data.data } };
+
     case FETCH_SMCS_BY_CONTRACT_NUMBER:
-      return { ...state, contract: { ...action.data.data.service } };
+      return { ...state, contract: { ...action.data.data } };
     case FETCH_CHECK_WARRANTY:
       return { ...state, checkWarranty: { ...action.data.data } };
     case FETCH_PAYMENT_OPTIONS:

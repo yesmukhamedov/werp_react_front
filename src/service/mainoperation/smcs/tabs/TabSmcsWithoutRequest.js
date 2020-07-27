@@ -53,6 +53,7 @@ import SaleCartridge from './components/SaleCartridge';
 import BasicInfoWithoutRequest from './components/BasicInfoWithoutRequest';
 import ServicePackage from './components/ServicePackage';
 import TableReportWithoutRequest from './components/TableReportWithoutRequest';
+import ModalApplications from './components/ModalApplications';
 
 import { emptyService } from '../components/directory';
 
@@ -84,6 +85,9 @@ const TabSmcsWithoutRequest = props => {
   const [hkontS, setHkontS] = useState('');
 
   const [checkStatus, setCheckStatus] = useState(false);
+
+  const [modalApplications, setModalApplications] = useState(false);
+  const [contractApplications, setContractApplications] = useState([]);
 
   const toSmvs = () => {
     setCheckStatus(false);
@@ -182,45 +186,55 @@ const TabSmcsWithoutRequest = props => {
 
   useEffect(() => {
     if (Object.keys(contract).length > 0) {
-      setSparePartInitial([]);
-      setSparePartList([]);
-      setCartridgeInitial([]);
-      setCartridgeList([]);
-      setServicePackageInitial([]);
-      setServicePackageList([]);
-      setServices([]);
-      setService({ ...contract });
-      let param = {
-        branchId: contract.branchId,
-        bukrs: contract.bukrs,
-        categoryId: contract.categoryId,
-      };
-
-      if (contract.branchId && contract.bukrs) {
-        props.fetchOperatorList({
-          ...param,
-        });
-
-        props.fetchMasterList({
-          ...param,
-        });
-      }
-
-      if (contract.branchId && contract.bukrs && contract.tovarId) {
+      if (contract.applications.length > 0) {
+        console.log('contract.applications', contract.applications);
+        //setModalApplications(true);
+        // setContractApplications([...contract.applications]);
+      } else {
+        setSparePartInitial([]);
+        setSparePartList([]);
+        setCartridgeInitial([]);
+        setCartridgeList([]);
+        setServicePackageInitial([]);
+        setServicePackageList([]);
+        setServices([]);
+        setService({ ...contract.service });
         let param = {
-          branchId: contract.branchId,
-          bukrs: contract.bukrs,
-          productId: contract.tovarId,
-        };
-        props.fetchMatnrPriceServicePackage({ ...param }, 1);
-      }
-      if (contract.branchId && contract.bukrs) {
-        let param = {
-          brnch: contract.branchId,
-          bukrs: contract.bukrs,
+          branchId: contract.service.branchId,
+          bukrs: contract.service.bukrs,
+          categoryId: contract.service.categoryId,
         };
 
-        props.fetchPaymentOptions({ ...param });
+        if (contract.service.branchId && contract.service.bukrs) {
+          props.fetchOperatorList({
+            ...param,
+          });
+
+          props.fetchMasterList({
+            ...param,
+          });
+        }
+
+        if (
+          contract.service.branchId &&
+          contract.service.bukrs &&
+          contract.service.tovarId
+        ) {
+          let param = {
+            branchId: contract.service.branchId,
+            bukrs: contract.service.bukrs,
+            productId: contract.service.tovarId,
+          };
+          props.fetchMatnrPriceServicePackage({ ...param }, 1);
+        }
+        if (contract.service.branchId && contract.service.bukrs) {
+          let param = {
+            brnch: contract.service.branchId,
+            bukrs: contract.service.bukrs,
+          };
+
+          props.fetchPaymentOptions({ ...param });
+        }
       }
     }
   }, [contract]);
@@ -1060,6 +1074,11 @@ const TabSmcsWithoutRequest = props => {
         onConfirm={handleSave}
         confirmButton="Сохранить"
         cancelButton="Отмена"
+      />
+      <ModalApplications
+        open={modalApplications}
+        closeModal={() => setModalApplications(false)}
+        applications={contractApplications}
       />
       <Grid>
         <Grid.Row>
