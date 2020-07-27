@@ -1050,6 +1050,11 @@ const AsyncSmdis = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncPushNotification = Loadable({
+  loader: () => import('../components/PushNotification/SendPushNotification'),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
@@ -1192,6 +1197,7 @@ const getComponent = {
   Smslsp: AsyncSmslsp,
   Smsetplp: AsyncSmsetplp,
   Smdis: AsyncSmdis,
+  PushNotification: AsyncPushNotification,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1394,6 +1400,11 @@ const generateRoutes = transactionRoutes => {
         component={AsyncSmecim}
       />
       {/* dynamically generated URLs  */}
+      <Route
+        path="/components/PushNotification/SendPushNotification"
+        exact={true}
+        component={AsyncPushNotification}
+      />
 
       {transactionRoutes.map(route => {
         return (

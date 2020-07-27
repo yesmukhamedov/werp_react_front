@@ -9,6 +9,7 @@
     "classnames": "^2.2.6",
     "cross-env": "^5.2.1",
     "fbjs": "^1.0.0",
+    "firebase": "^7.16.0",
     "formik": "^2.1.4",
     "history": "^4.10.1",
     "js-cookie": "^2.2.1",
