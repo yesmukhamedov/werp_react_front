@@ -23,19 +23,20 @@ const PushNotification = props => {
 
   useEffect(() => {
     notificationPermission();
+    if (messaging !== undefined || messaging !== null) {
+      messaging.onMessage(payload => {
+        console.log(payload);
+        setNotification({
+          title: payload.notification.title,
+          body: payload.notification.body,
+          date: payload.data['gcm.notification.time'],
+          message: true,
+        });
+      });
+    }
   }, [messaging]);
 
-  messaging.onMessage(payload => {
-    console.log(payload);
-    setNotification({
-      title: payload.notification.title,
-      body: payload.notification.body,
-      date: payload.data['gcm.notification.time'],
-      message: true,
-    });
-  });
-
-  console.log(notification);
+  //   console.log(notification);
 
   const sendTokenToDb = async token => {
     const headers = {
