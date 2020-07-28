@@ -23,7 +23,7 @@ const PushNotification = props => {
 
   useEffect(() => {
     notificationPermission();
-    if (messaging !== undefined || messaging !== null) {
+    if (messaging !== undefined) {
       messaging.onMessage(payload => {
         console.log(payload);
         setNotification({
