@@ -688,6 +688,38 @@ const TabSmcsWithoutRequest = props => {
         );
         break;
 
+      case 'duplicateCartridge':
+        console.log('duplicateCartridge', value);
+        setCartridgeList([
+          ...cartridgeList,
+          {
+            currencyId: value.currencyId,
+            currencyName: value.currencyName,
+            fno: value.fno,
+            tempFno: value.fno,
+            id: parseInt(
+              `${value.matnrId * 63 + Math.floor(Math.random() * 10000)}99`,
+            ),
+            matnrId: value.matnrId,
+            matnrCode: value.matnrCode,
+            matnrName: value.matnrName,
+            matnrPrice: value.matnrPrice,
+            operationId: null,
+            operationName: null,
+            menge: value.menge,
+            quantity: 1,
+            serviceId: null,
+            servicePackageId: null,
+            servicePackageName: null,
+            serviceTypeId: 1,
+            serviceTypeName: value.serviceTypeName,
+            sum: value.sum,
+            warranty: false,
+            checked: true,
+          },
+        ]);
+        break;
+
       //Количество картриджей
       case 'quantityCartridge':
         let val = value.target.value;

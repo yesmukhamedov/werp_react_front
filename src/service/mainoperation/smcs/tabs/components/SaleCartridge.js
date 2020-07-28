@@ -8,6 +8,7 @@ import {
   Checkbox,
   Dropdown,
   Table,
+  Popup,
 } from 'semantic-ui-react';
 import { moneyFormat } from '../../../../../utils/helpers';
 
@@ -36,6 +37,7 @@ const SaleCartridge = props => {
       key: 4,
       text: 4,
       value: 4,
+      disabled: true,
     },
     {
       key: 5,
@@ -92,6 +94,7 @@ const SaleCartridge = props => {
               </Table.Cell>
               <Table.Cell>
                 <Dropdown
+                  disabled={item.fno == 4 ? true : false}
                   readOnly
                   fluid
                   selection
@@ -136,6 +139,26 @@ const SaleCartridge = props => {
                     onChangeCartridge(item, 'warrantyCartridge', value)
                   }
                 />
+              </Table.Cell>
+              <Table.Cell>
+                {item.fno == 4 ? (
+                  ''
+                ) : (
+                  <Popup
+                    content="Добавить еще"
+                    trigger={
+                      <Button
+                        size="mini"
+                        color="green"
+                        onClick={() =>
+                          onChangeCartridge(item, 'duplicateCartridge')
+                        }
+                      >
+                        +
+                      </Button>
+                    }
+                  />
+                )}
               </Table.Cell>
               <Table.Cell>
                 <Button
