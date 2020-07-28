@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Loader, Dimmer } from 'semantic-ui-react';
+import { Loader, Dimmer, Segment } from 'semantic-ui-react';
 import './App.css';
 import Signin from './components/Auth/Signin';
 import { fetchUnreadMessages } from './actions/inbox';
@@ -31,7 +31,6 @@ class App extends Component {
     if (token) {
       return (
         <div className="wrapper">
-          <PushNotification />
           <Header
             unread={this.props.unread}
             menuTouched={this.state.menuVisible}
@@ -49,7 +48,10 @@ class App extends Component {
           <Dimmer active={this.props.activeLoader}>
             <Loader />
           </Dimmer>
-          <main onClick={this.hideMenu}>{this.props.routes}</main>
+          <div className="main">
+            <PushNotification />
+            <main onClick={this.hideMenu}>{this.props.routes}</main>
+          </div>
         </div>
       );
     }

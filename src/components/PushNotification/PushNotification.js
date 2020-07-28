@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { Message } from 'semantic-ui-react';
 import { messaging } from './firebase';
 import axios from 'axios';
 import { notify } from '../../general/notification/notification_action';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
+import './PushNotification.css';
 
 const INSTANCE_TOKEN = 'instanceToken';
 const ROOT_URL = 'https://werp-push-notifications.firebaseio.com';
@@ -11,13 +13,29 @@ const SERVER_KEY =
   'AAAAC4wIc-w:APA91bH-bgd_s36jLCfOmwnDFiFIO2mLLphXl3_Ndyu2PQs-d7CMC23G0VKPcx9otjtwkf3qMb2YmxW5s9rthlyIe7-sMh49F_hWZZsKgQdZXp91mlgEpKu-6-cIE2AZacJ2qH5VfgkA';
 
 const PushNotification = props => {
+  const emptyNotification = {
+    title: '',
+    body: '',
+    date: '',
+    message: false,
+  };
+  const [notification, setNotification] = useState({ ...emptyNotification });
+
   useEffect(() => {
     notificationPermission();
   }, [messaging]);
 
-  messaging.onMessage(payload =>
-    props.notify('info', payload.notification.body, payload.notification.title),
-  );
+  messaging.onMessage(payload => {
+    console.log(payload);
+    setNotification({
+      title: payload.notification.title,
+      body: payload.notification.body,
+      date: payload.data['gcm.notification.time'],
+      message: true,
+    });
+  });
+
+  console.log(notification);
 
   const sendTokenToDb = async token => {
     const headers = {
@@ -78,7 +96,21 @@ const PushNotification = props => {
     }
   };
 
-  return <div></div>;
+  return (
+    <div>
+      {notification.message ? (
+        <div className="push_notify">
+          <Message
+            info
+            header={notification.title}
+            list={[notification.body, notification.date]}
+          />
+        </div>
+      ) : (
+        ''
+      )}
+    </div>
+  );
 };
 const mapStateToProps = state => {
   return {};
