@@ -6,6 +6,7 @@ import {
   TextArea,
   Button,
   Form,
+  Label,
 } from 'semantic-ui-react';
 import axios from 'axios';
 import firebase from 'firebase';
@@ -17,7 +18,6 @@ const SERVER_KEY =
 const SendPushNotification = () => {
   const [notification, setNotification] = useState({ title: '', body: '' });
   const [token, setToken] = useState([]);
-  const firebaseToken = localStorage.getItem('instanceToken');
 
   useEffect(() => {
     firebase
@@ -85,6 +85,9 @@ const SendPushNotification = () => {
           <Grid.Column mobile={16} tablet={16} computer={6}>
             <Form>
               <Segment>
+                <Label color={'violet'} ribbon>
+                  Title
+                </Label>
                 <Dropdown
                   options={titleOptions}
                   placeholder={'Title'}
@@ -95,8 +98,11 @@ const SendPushNotification = () => {
                 />
               </Segment>
               <Segment>
+                <Label color={'violet'} ribbon>
+                  Description
+                </Label>
                 <TextArea
-                  placeholder="Body"
+                  placeholder="Description"
                   onChange={(e, o) => onInputChange(o, 'body')}
                 />
               </Segment>

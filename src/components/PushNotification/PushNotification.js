@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Message } from 'semantic-ui-react';
+import { Message, Button } from 'semantic-ui-react';
 import { messaging } from './firebase';
 import axios from 'axios';
 import { notify } from '../../general/notification/notification_action';
@@ -102,12 +102,28 @@ const PushNotification = props => {
         <div className="push_notify">
           <Message
             info
+            onDismiss={() => setNotification({ message: false })}
             header={notification.title}
             list={[notification.body, notification.date]}
+            size={'small'}
           />
         </div>
       ) : (
-        ''
+        <div className="push_notify">
+          {/* <Button
+                            basic
+                            size='mini'
+                            color='blue'
+                            icon='angle double left'
+                            label={{
+                                as: 'a',
+                                basic: true,
+                                color: 'blue',
+                                pointing: 'left',
+                                content: '3',
+                            }}
+                        /> */}
+        </div>
       )}
     </div>
   );

@@ -31,6 +31,7 @@ class App extends Component {
     if (token) {
       return (
         <div className="wrapper">
+          <PushNotification />
           <Header
             unread={this.props.unread}
             menuTouched={this.state.menuVisible}
@@ -48,10 +49,7 @@ class App extends Component {
           <Dimmer active={this.props.activeLoader}>
             <Loader />
           </Dimmer>
-          <div className="main">
-            <PushNotification />
-            <main onClick={this.hideMenu}>{this.props.routes}</main>
-          </div>
+          <main onClick={this.hideMenu}>{this.props.routes}</main>
         </div>
       );
     }

@@ -36,7 +36,6 @@ if ('serviceWorker' in navigator) {
         icon: payload.notification.icon,
       };
       registration.showNotification(title, options);
-      // return dispatch( notify('info', payload.notification.body, payload.notification.title));
     });
   });
 }
