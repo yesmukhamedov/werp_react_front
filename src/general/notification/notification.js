@@ -32,7 +32,7 @@ class Notification extends Component {
           info: false,
           success: false,
         });
-      }, 1200);
+      }, 2200);
     }
   }
 

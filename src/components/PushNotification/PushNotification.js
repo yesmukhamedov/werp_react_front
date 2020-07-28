@@ -1,16 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { messaging } from './firebase';
 import axios from 'axios';
+import { notify } from '../../general/notification/notification_action';
+import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
 
 const INSTANCE_TOKEN = 'instanceToken';
 const ROOT_URL = 'https://werp-push-notifications.firebaseio.com';
 const SERVER_KEY =
   'AAAAC4wIc-w:APA91bH-bgd_s36jLCfOmwnDFiFIO2mLLphXl3_Ndyu2PQs-d7CMC23G0VKPcx9otjtwkf3qMb2YmxW5s9rthlyIe7-sMh49F_hWZZsKgQdZXp91mlgEpKu-6-cIE2AZacJ2qH5VfgkA';
 
-const PushNotification = () => {
+const PushNotification = props => {
   useEffect(() => {
     notificationPermission();
   }, [messaging]);
+
+  messaging.onMessage(payload =>
+    props.notify('info', payload.notification.body, payload.notification.title),
+  );
 
   const sendTokenToDb = async token => {
     const headers = {
@@ -73,5 +80,9 @@ const PushNotification = () => {
 
   return <div></div>;
 };
-
-export default PushNotification;
+const mapStateToProps = state => {
+  return {};
+};
+export default connect(mapStateToProps, {
+  notify,
+})(injectIntl(PushNotification));
