@@ -47,6 +47,7 @@ export const SAVE_SMCS_PAYMENT = 'SAVE_SMCS_PAYMENT';
 export const FETCH_OPERATOR_LIST = 'FETCH_OPERATOR_LIST';
 export const FETCH_SMCS_BY_APP_NUMBER = 'FETCH_SMCS_BY_APP_NUMBER';
 export const FETCH_MASTER_LIST = 'FETCH_MASTER_LIST';
+export const FETCH_MASTER_LIST_APP = 'FETCH_MASTER_LIST_APP';
 export const FETCH_CHECK_WARRANTY = 'FETCH_CHECK_WARRANTY';
 export const FETCH_PAYMENT_OPTIONS = 'FETCH_PAYMENT_OPTIONS';
 export const FETCH_SMCS_BY_CONTRACT_NUMBER = 'FETCH_SMCS_BY_CONTRACT_NUMBER';
@@ -93,16 +94,23 @@ export const fetchTovarId = param => {
   };
 };
 
-export const fetchMasterList = param => {
+export const fetchMasterList = (param, val) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`smcs/getMasterList`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        dispatch({
-          type: FETCH_MASTER_LIST,
-          data: data,
-        });
+        if (val == 1) {
+          dispatch({
+            type: FETCH_MASTER_LIST_APP,
+            data: data,
+          });
+        } else {
+          dispatch({
+            type: FETCH_MASTER_LIST,
+            data: data,
+          });
+        }
       })
       .catch(error => {
         dispatch(modifyLoader(false));
@@ -461,3 +469,16 @@ export const fetchCheckWarranty = (param, funcWarranty, value) => {
       });
   };
 };
+
+export function postApplicationsMaster(params, success) {
+  return function(dispatch) {
+    doPost('smappl/editApp', params)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        success();
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}

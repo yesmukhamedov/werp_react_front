@@ -35,6 +35,7 @@ import {
   FETCH_CHECK_WARRANTY,
   FETCH_PAYMENT_OPTIONS,
   FETCH_SMCS_BY_CONTRACT_NUMBER,
+  FETCH_MASTER_LIST_APP,
 } from './smcsAction';
 
 const INITIAL_STATE = {
@@ -54,6 +55,11 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         masterList: [...action.data.data],
+      };
+    case FETCH_MASTER_LIST_APP:
+      return {
+        ...state,
+        masterListApp: [...action.data.data],
       };
 
     case FETCH_SERVICE_MATNR_LIST:

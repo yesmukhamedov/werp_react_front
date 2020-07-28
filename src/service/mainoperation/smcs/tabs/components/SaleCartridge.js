@@ -194,30 +194,6 @@ const SaleCartridge = props => {
         <Icon name="plus" size="small" /> Добавить картриджей
       </Button>
     </Segment>
-    // <Segment>
-
-    //   <Divider />
-    //   <ReactTableWrapper
-    //     data={data}
-    //     columns={columns}
-    //     // className="-striped -highlight"
-    //     pageSize={data.length > 10 ? 10 : data.length}
-    //   />
-    //   <Divider />
-
-    //   <Button
-    //     // disabled={editStatus}
-    //     icon
-    //     labelPosition="left"
-    //     color="green"
-    //     size="small"
-    //     onClick={item => onChangeCartridge(item, 'addCartridgeBtn')}
-    //     disabled={editStatus}
-    //   >
-    //     <Icon name="plus" size="small" />
-    //     Добавить картриджей
-    //   </Button>
-    // </Segment>
   );
 };
 

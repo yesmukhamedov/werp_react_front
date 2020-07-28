@@ -1,9 +1,18 @@
 import React from 'react';
-import { Table, Modal, Header, Button, Icon } from 'semantic-ui-react';
+import { Table, Modal, Header, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
+import DropdownClearable from '../../../../../utils/DropdownClearable';
 
 const ModalApplications = props => {
-  const { open, closeModal, applications = [], onClose } = props;
+  const {
+    open,
+    closeModal,
+    applications = [],
+    onClose,
+    masterOptions = [],
+    onChangeMasterApp,
+    clearApplicationsMaster,
+  } = props;
   return (
     <Modal open={open} closeIcon onClose={onClose}>
       <Header content="Выберите доступные заявки" />
@@ -25,7 +34,16 @@ const ModalApplications = props => {
               <Table.Row key={item.applicationNumber}>
                 <Table.Cell>{item.contractNumber}</Table.Cell>
                 <Table.Cell>{item.customerFIO}</Table.Cell>
-                <Table.Cell>{item.masterFIO}</Table.Cell>
+                <Table.Cell>
+                  <DropdownClearable
+                    fluid
+                    selection
+                    options={masterOptions}
+                    value={item.masterId ? item.masterId : ''}
+                    onChange={(e, { value }) => onChangeMasterApp(item, value)}
+                    handleClear={() => clearApplicationsMaster(item)}
+                  />
+                </Table.Cell>
                 <Table.Cell>{item.operatorFIO}</Table.Cell>
                 <Table.Cell>{item.applicationTypeName}</Table.Cell>
                 <Table.Cell>

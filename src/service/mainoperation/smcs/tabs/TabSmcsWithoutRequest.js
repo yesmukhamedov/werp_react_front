@@ -34,6 +34,7 @@ import {
   saveSmcsPayment,
   fetchPaymentOptions,
   fetchSmcsByContractNumber,
+  postApplicationsMaster,
 } from '../smcsAction';
 
 import {
@@ -74,9 +75,11 @@ const TabSmcsWithoutRequest = props => {
     checkWarranty,
     tovarSnProps,
     paymentOptions = [],
+    masterListApp = [],
   } = props;
 
   console.log('CONTRACT', contract);
+  console.log('masterListApp', masterListApp);
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
@@ -191,6 +194,17 @@ const TabSmcsWithoutRequest = props => {
       if (contract.applications.length > 0) {
         setModalApplications(true);
         setContractApplications([...contract.applications]);
+        let param = {
+          branchId: contract.service.branchId,
+          bukrs: contract.service.bukrs,
+          categoryId: contract.service.categoryId,
+        };
+        props.fetchMasterList(
+          {
+            ...param,
+          },
+          1,
+        );
       } else {
         setSparePartInitial([]);
         setSparePartList([]);
@@ -248,6 +262,13 @@ const TabSmcsWithoutRequest = props => {
     };
   });
   const masterOptions = masterList.map((item, index) => {
+    return {
+      key: parseInt(item.staffId) * index,
+      text: item.fullName,
+      value: parseInt(item.staffId),
+    };
+  });
+  const masterOptionsApp = masterListApp.map((item, index) => {
     return {
       key: parseInt(item.staffId) * index,
       text: item.fullName,
@@ -1097,6 +1118,178 @@ const TabSmcsWithoutRequest = props => {
     }
   }, [checkSmcs1]);
 
+  const onChangeMasterApp = (app, value) => {
+    console.log('onChangeMasterApp', app);
+    let param = {
+      adate: app.applicationDate,
+      address: app.addressName,
+      appStatus: app.applicationStatusId,
+      appStatusName: app.applicationStatusName,
+      appType: app.applicationTypeId,
+      appTypeName: app.applicationTypeName,
+      applicantName: app.applicantName,
+      branchId: app.branchId,
+      branchName: app.branchName,
+      bukrs: app.bukrsId,
+      bukrsName: app.bukrsName,
+      contractDate: null,
+      contractNumber: app.contractNumber,
+      createdBy: app.contractNumber,
+      customerId: app.customerId,
+      f1MtLeft: app.f1MtLeft,
+      f2MtLeft: app.f2MtLeft,
+      f3MtLeft: app.f3MtLeft,
+      f4MtLeft: app.f4MtLeft,
+      f5MtLeft: app.f5MtLeft,
+      fitterName: app.fitterFIO,
+      fullPhone: app.fullPhone,
+      id: app.id,
+      inPhoneNum: app.inPhoneNum,
+      info: app.info,
+      installmentDate: app.installmentDate,
+      masterId: value,
+      masterName: app.masterFIO,
+      matnr: app.matnrId,
+      matnrName: app.matnrName,
+      operatorId: app.operatorId,
+      operatorName: app.operatorFIO,
+      rescheduledDate: app.rescheduledDate,
+      serviceDate: app.serviceDate,
+      serviceId: app.serviceId,
+      serviceTotalSum: null,
+      tovarCategory: app.tovarCategoryId,
+      tovarSn: app.tovarSn,
+      updatedBy: app.updatedBy,
+      updatedDate: app.updatedDate,
+      urgencyLevel: app.urgencyLevel,
+      warranty: null,
+      warrantyEndDate: null,
+      warrantyEndedMonths: null,
+    };
+    props.postApplicationsMaster({ ...param }, () =>
+      setContractApplications(
+        contractApplications.map(item =>
+          item.id === app.id
+            ? {
+                ...item,
+                masterId: value,
+              }
+            : item,
+        ),
+      ),
+    );
+  };
+
+  const clearApplicationsMaster = app => {
+    console.log('onChangeMasterApp', app);
+    let param = {
+      adate: app.applicationDate,
+      address: app.addressName,
+      appStatus: app.applicationStatusId,
+      appStatusName: app.applicationStatusName,
+      appType: app.applicationTypeId,
+      appTypeName: app.applicationTypeName,
+      applicantName: app.applicantName,
+      branchId: app.branchId,
+      branchName: app.branchName,
+      bukrs: app.bukrsId,
+      bukrsName: app.bukrsName,
+      contractDate: null,
+      contractNumber: app.contractNumber,
+      createdBy: app.contractNumber,
+      customerId: app.customerId,
+      f1MtLeft: app.f1MtLeft,
+      f2MtLeft: app.f2MtLeft,
+      f3MtLeft: app.f3MtLeft,
+      f4MtLeft: app.f4MtLeft,
+      f5MtLeft: app.f5MtLeft,
+      fitterName: app.fitterFIO,
+      fullPhone: app.fullPhone,
+      id: app.id,
+      inPhoneNum: app.inPhoneNum,
+      info: app.info,
+      installmentDate: app.installmentDate,
+      masterId: null,
+      masterName: null,
+      matnr: app.matnrId,
+      matnrName: app.matnrName,
+      operatorId: app.operatorId,
+      operatorName: app.operatorFIO,
+      rescheduledDate: app.rescheduledDate,
+      serviceDate: app.serviceDate,
+      serviceId: app.serviceId,
+      serviceTotalSum: null,
+      tovarCategory: app.tovarCategoryId,
+      tovarSn: app.tovarSn,
+      updatedBy: app.updatedBy,
+      updatedDate: app.updatedDate,
+      urgencyLevel: app.urgencyLevel,
+      warranty: null,
+      warrantyEndDate: null,
+      warrantyEndedMonths: null,
+    };
+    props.postApplicationsMaster({ ...param }, () =>
+      setContractApplications(
+        contractApplications.map(item =>
+          item.id === app.id
+            ? {
+                ...item,
+                masterId: null,
+              }
+            : item,
+        ),
+      ),
+    );
+  };
+
+  const cancelApplicationsModal = () => {
+    setModalApplications(false);
+    setSparePartInitial([]);
+    setSparePartList([]);
+    setCartridgeInitial([]);
+    setCartridgeList([]);
+    setServicePackageInitial([]);
+    setServicePackageList([]);
+    setServices([]);
+    setService({ ...contract.service });
+    let param = {
+      branchId: contract.service.branchId,
+      bukrs: contract.service.bukrs,
+      categoryId: contract.service.categoryId,
+    };
+
+    if (contract.service.branchId && contract.service.bukrs) {
+      props.fetchOperatorList({
+        ...param,
+      });
+
+      props.fetchMasterList({
+        ...param,
+      });
+    }
+
+    if (
+      contract.service.branchId &&
+      contract.service.bukrs &&
+      contract.service.tovarId
+    ) {
+      let param = {
+        branchId: contract.service.branchId,
+        bukrs: contract.service.bukrs,
+        productId: contract.service.tovarId,
+      };
+      props.fetchMatnrPriceServicePackage({ ...param }, 1);
+    }
+    if (contract.service.branchId && contract.service.bukrs) {
+      let param = {
+        brnch: contract.service.branchId,
+        bukrs: contract.service.bukrs,
+      };
+
+      props.fetchPaymentOptions({ ...param });
+    }
+  };
+
   return (
     <Form>
       <Confirm
@@ -1110,9 +1303,12 @@ const TabSmcsWithoutRequest = props => {
       />
       <ModalApplications
         open={modalApplications}
-        closeModal={() => setModalApplications(false)}
+        closeModal={cancelApplicationsModal}
         applications={contractApplications}
         onClose={() => setModalApplications(false)}
+        masterOptions={masterOptionsApp}
+        onChangeMasterApp={onChangeMasterApp}
+        clearApplicationsMaster={clearApplicationsMaster}
       />
       <Grid>
         <Grid.Row>
@@ -1269,6 +1465,7 @@ function mapStateToProps(state) {
     saveSmcs: state.smcsReducer.saveSmcs,
     operatorList: state.smcsReducer.operatorList,
     masterList: state.smcsReducer.masterList,
+    masterListApp: state.smcsReducer.masterListApp,
     checkWarranty: state.smcsReducer.checkWarranty,
     paymentOptions: state.smcsReducer.paymentOptions,
   };
@@ -1301,4 +1498,5 @@ export default connect(mapStateToProps, {
   fetchCheckWarranty,
   fetchPaymentOptions,
   fetchSmcsByContractNumber,
+  postApplicationsMaster,
 })(injectIntl(TabSmcsWithoutRequest));
