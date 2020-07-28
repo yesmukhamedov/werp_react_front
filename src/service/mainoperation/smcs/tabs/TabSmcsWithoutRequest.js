@@ -138,13 +138,15 @@ const TabSmcsWithoutRequest = props => {
     switch (fieldName) {
       //Поиск по серииному номеру товара(tovarSn)
       case 'searchTovarSN':
-        let tovarSn = service.tovarSn;
-        props.fetchServiceSmcs({ tovarSn });
+        props.fetchServiceSmcs({ tovarSn: service.tovarSn });
         props.fetchServiceTypeId();
+        setService({ ...emptyService, tovarSn: service.tovarSn });
         break;
-      case 'searchSN':
-        let contractNumber = service.contractNumber;
-        props.fetchSmcsByContractNumber({ contractNumber });
+      case 'searchCN':
+        props.fetchSmcsByContractNumber({
+          contractNumber: service.contractNumber,
+        });
+        setService({ ...emptyService, contractNumber: service.contractNumber });
         break;
       //Изменить серииный номер товара
       case 'inputChangeTovarSN':
@@ -187,9 +189,8 @@ const TabSmcsWithoutRequest = props => {
   useEffect(() => {
     if (Object.keys(contract).length > 0) {
       if (contract.applications.length > 0) {
-        console.log('contract.applications', contract.applications);
-        //setModalApplications(true);
-        // setContractApplications([...contract.applications]);
+        setModalApplications(true);
+        setContractApplications([...contract.applications]);
       } else {
         setSparePartInitial([]);
         setSparePartList([]);
@@ -1079,6 +1080,7 @@ const TabSmcsWithoutRequest = props => {
         open={modalApplications}
         closeModal={() => setModalApplications(false)}
         applications={contractApplications}
+        onClose={() => setModalApplications(false)}
       />
       <Grid>
         <Grid.Row>

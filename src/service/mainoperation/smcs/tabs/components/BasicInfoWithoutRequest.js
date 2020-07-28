@@ -139,7 +139,7 @@ const BasicInfoWithoutRequest = props => {
                 icon="search"
                 content="Поиск"
                 primary
-                onClick={item => onBasicInfoInputChange(item, 'searchSN')}
+                onClick={item => onBasicInfoInputChange(item, 'searchCN')}
               />
             </Input>
           </Table.Cell>
