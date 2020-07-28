@@ -1,5 +1,6 @@
 import firebase from 'firebase/app';
 import '@firebase/messaging';
+import { notify } from '../../general/notification/notification_action';
 
 const config = {
   apiKey: 'AIzaSyAJRmZRl_45V784UPi8USabVU7vrXDdjGk',
@@ -35,6 +36,7 @@ if ('serviceWorker' in navigator) {
         icon: payload.notification.icon,
       };
       registration.showNotification(title, options);
+      // return dispatch( notify('info', payload.notification.body, payload.notification.title));
     });
   });
 }

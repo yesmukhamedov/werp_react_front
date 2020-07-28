@@ -9,6 +9,7 @@ import {
 } from 'semantic-ui-react';
 import axios from 'axios';
 import firebase from 'firebase';
+import moment from 'moment';
 
 const SERVER_KEY =
   'AAAAC4wIc-w:APA91bH-bgd_s36jLCfOmwnDFiFIO2mLLphXl3_Ndyu2PQs-d7CMC23G0VKPcx9otjtwkf3qMb2YmxW5s9rthlyIe7-sMh49F_hWZZsKgQdZXp91mlgEpKu-6-cIE2AZacJ2qH5VfgkA';
@@ -59,8 +60,7 @@ const SendPushNotification = () => {
           notification: {
             title: notification.title,
             body: notification.body,
-            icon:
-              'https://pflalmaty.kz/wp-content/uploads/2017/04/AURA-LOGO-128x108.png',
+            time: moment(new Date()).format('DD-MM-YYYY HH:mm'),
           },
           registration_ids: token,
         },
