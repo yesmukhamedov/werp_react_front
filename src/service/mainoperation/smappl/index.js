@@ -422,7 +422,9 @@ const Smappl = props => {
     setError(() => errors);
   };
 
-  const arrayAppStatus = search.appStatusIds.split(',').map(Number);
+  const arrayAppStatus = search.appStatusIds
+    ? search.appStatusIds.split(',').map(Number)
+    : '';
 
   return (
     <Segment>
