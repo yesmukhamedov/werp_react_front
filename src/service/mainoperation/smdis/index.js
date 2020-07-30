@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
@@ -11,7 +11,7 @@ import {
   postSmrdOperatorsByBranch,
 } from './smdisAction';
 import { errorTableText } from '../../../utils/helpers';
-import { Container, Tab, Menu, Label, Header } from 'semantic-ui-react';
+import { Container, Tab, Menu, Header } from 'semantic-ui-react';
 
 import '../../service.css';
 import './style.css';
@@ -20,7 +20,7 @@ import { momentToStringYYYYMMDD } from '../../../utils/helpers';
 const Smdis = props => {
   const {
     intl: { messages },
-    language,
+    //language,
     smvod,
     smrdOperator,
     operatorsByBranch = [],
@@ -37,7 +37,7 @@ const Smdis = props => {
   };
 
   const [param, setParam] = useState({ ...emptyParam });
-  const [branch, setBranch] = useState('');
+  //const [branch, setBranch] = useState('');
   const [error, setError] = useState([]);
   const [smrd, setSmrd] = useState([]);
   const [showTable, setshowTable] = useState(false);
@@ -81,7 +81,7 @@ const Smdis = props => {
       operatorId: data.operatorId,
     };
 
-    setBranch(data.branchId);
+    //setBranch(data.branchId);
     setSmrd([]);
     setshowTable(false);
     props.fetchSmrdOperator({ ...smrdOperatorParam });

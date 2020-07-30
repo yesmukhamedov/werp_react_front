@@ -133,7 +133,7 @@ class SalaryCreatePage extends Component {
   render() {
     const { localDocument } = this.state;
     const items = localDocument['items'] || [];
-    const { messages, locale } = this.props.intl;
+    //const { messages, locale } = this.props.intl;
     const { positionList, currencyList } = this.props;
     let pageTitle = 'Добавление должностей Док №' + localDocument['id'];
     let managerOptions = this.getManagerOptions(localDocument['branchId']);
@@ -362,20 +362,17 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    toggleStaffListModal,
-    handleAction,
-    fetchAllDirectors,
-    f4FetchPositionList,
-    f4FetchBusinessAreaList,
-    f4FetchDepartmentList,
-    fetchAllManagers,
-    toggleSalaryListModal,
-    fetchAllCurrentStaffs,
-    notify,
-    f4FetchCurrencyList,
-    fetchDocument,
-  },
-)(injectIntl(SalaryCreatePage));
+export default connect(mapStateToProps, {
+  toggleStaffListModal,
+  handleAction,
+  fetchAllDirectors,
+  f4FetchPositionList,
+  f4FetchBusinessAreaList,
+  f4FetchDepartmentList,
+  fetchAllManagers,
+  toggleSalaryListModal,
+  fetchAllCurrentStaffs,
+  notify,
+  f4FetchCurrencyList,
+  fetchDocument,
+})(injectIntl(SalaryCreatePage));

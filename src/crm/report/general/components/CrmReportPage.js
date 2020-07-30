@@ -10,8 +10,8 @@ import {
   REP_DEMO_RECO_ID,
   REP_REC_SEARCH_ID,
 } from '../crmRepUtil';
-import RepSearch from './search/RepSearch';
-import RepTable from './table/RepTable';
+// import RepSearch from './search/RepSearch';
+// import RepTable from './table/RepTable';
 import CrmRepDemoSalePage from './CrmRepDemoSalePage';
 import CrmRepDemoPage from './CrmRepDemoPage';
 import CrmRepDemoRecoPage from './CrmRepDemoRecoPage';
@@ -95,12 +95,9 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchItems,
-    fetchMeta,
-    f4FetchBusinessAreaList,
-    clearState,
-  },
-)(CrmReportPage);
+export default connect(mapStateToProps, {
+  fetchItems,
+  fetchMeta,
+  f4FetchBusinessAreaList,
+  clearState,
+})(CrmReportPage);

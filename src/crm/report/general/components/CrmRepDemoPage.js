@@ -227,7 +227,10 @@ class CrmRepDemoPage extends Component {
       },
     ];
 
-    const { activeIndex, bukrs } = this.state;
+    const {
+      activeIndex,
+      // bukrs
+    } = this.state;
 
     return (
       <div>
@@ -255,10 +258,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchItems,
-    fetchChildItems,
-  },
-)(CrmRepDemoPage);
+export default connect(mapStateToProps, {
+  fetchItems,
+  fetchChildItems,
+})(CrmRepDemoPage);

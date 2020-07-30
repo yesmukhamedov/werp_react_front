@@ -27,7 +27,7 @@ import {
 require('moment/locale/ru');
 
 const TYPE_IN = 'in';
-const TYPE_OUT = 'out';
+//const TYPE_OUT = 'out';
 
 class WerksRequestListPage extends Component {
   constructor(props) {
@@ -237,10 +237,10 @@ class WerksRequestListPage extends Component {
   }
 
   render() {
-    let panes = [
-      { menuItem: 'Новые', render: () => this.renderDataTable() },
-      { menuItem: 'Закрытые', render: this.renderDataTable },
-    ];
+    // let panes = [
+    //   { menuItem: 'Новые', render: () => this.renderDataTable() },
+    //   { menuItem: 'Закрытые', render: this.renderDataTable },
+    // ];
 
     return (
       <Container

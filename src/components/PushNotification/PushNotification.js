@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Message, Button } from 'semantic-ui-react';
+import { Message } from 'semantic-ui-react';
 import { messaging } from './firebase';
 import axios from 'axios';
 import { notify } from '../../general/notification/notification_action';

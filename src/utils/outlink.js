@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { LEGACY_URL } from '../utils/constants';
-import { Icon, Popup, Button } from 'semantic-ui-react';
+import { Icon, Button } from 'semantic-ui-react';
 
 export const LinkToDmsc03 = props => {
   const { snNum } = props;
@@ -38,7 +38,10 @@ export const LinkToStaffCardView = props => {
 };
 
 export const LinkToStaffCardViewID = props => {
-  const { staffId, staffFio } = props;
+  const {
+    staffId,
+    //staffFio
+  } = props;
   const url = `${LEGACY_URL}/hr/staff/View.xhtml?staffId=${staffId}`;
   return (
     <a target="_blank" href={url} rel="noopener noreferrer">
@@ -61,7 +64,10 @@ export const LinkToMmcvNewTab = props => {
 };
 
 export const LinkToMatnrHistory = props => {
-  const { matnrListId, viewText } = props;
+  const {
+    matnrListId,
+    //viewText
+  } = props;
   const url = `${LEGACY_URL}/logistics/werks/matnrHistory.xhtml?matnrListId=${matnrListId}`;
   return (
     <a target="_blank" href={url} rel="noopener noreferrer">
@@ -182,7 +188,10 @@ export const LinkToSmdisTabSmvod = props => {
 };
 
 export const LinkToSmcuspor = props => {
-  const { contractNumber = '', text } = props;
+  const {
+    contractNumber = '',
+    // text
+  } = props;
   const url = `../mainoperation/smcuspor?contractNumber=${contractNumber}`;
   return (
     <a target="_blank" href={url} rel="noopener noreferrer">
@@ -192,7 +201,10 @@ export const LinkToSmcuspor = props => {
 };
 
 export const LinkToSmvs = props => {
-  const { serviceNumber, text } = props;
+  const {
+    serviceNumber,
+    //text
+  } = props;
   const url = `../mainoperation/smvs?serviceNumber=${serviceNumber}`;
   return (
     <a target="_blank" href={url} rel="noopener noreferrer">
@@ -210,7 +222,10 @@ export const LinkToSmvca = props => {
   );
 };
 export const LinkToSmes = props => {
-  const { serviceNumber, text } = props;
+  const {
+    serviceNumber,
+    // text
+  } = props;
   const url = `../mainoperation/smes?serviceNumber=${serviceNumber}`;
   return (
     <Button color="green">
@@ -226,7 +241,10 @@ export const LinkToSmes = props => {
   );
 };
 export const LinkToSmesManager = props => {
-  const { serviceNumber, text } = props;
+  const {
+    serviceNumber,
+    // text
+  } = props;
   const url = `../mainoperation/smes?serviceNumber=${serviceNumber}`;
   return (
     <a target="_blank" href={url} rel="noopener noreferrer">

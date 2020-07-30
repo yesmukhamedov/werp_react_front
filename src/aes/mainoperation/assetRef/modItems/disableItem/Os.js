@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Icon, Button } from 'semantic-ui-react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';

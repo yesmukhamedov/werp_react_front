@@ -18,7 +18,7 @@ import OutputErrors from '../../../general/error/outputErrors';
 import moment from 'moment';
 import ReactTable from 'react-table';
 import { Link } from 'react-router-dom';
-import _ from 'lodash';
+//import _ from 'lodash';
 import 'react-table/react-table.css';
 import { excelDownload } from '../../../utils/helpers';
 

@@ -509,15 +509,15 @@ class AesReport extends Component {
   loadCompBr(branch_id) {
     const queryParams = this.state.queryParams;
     if (queryParams.bukrs && queryParams.branch_id) {
-      const staffs = this.props.f4FetchStaffList(
-        'fcis',
-        queryParams.bukrs,
-        queryParams.branch_id,
-        '',
-        '',
-        false,
-        value => this.setState({ loading: false }),
-      );
+      // const staffs = this.props.f4FetchStaffList(
+      //   'fcis',
+      //   queryParams.bukrs,
+      //   queryParams.branch_id,
+      //   '',
+      //   '',
+      //   false,
+      //   value => this.setState({ loading: false }),
+      // );
       this.props.findCompBrCode(queryParams.bukrs, branch_id);
     }
   }

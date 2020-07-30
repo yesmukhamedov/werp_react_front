@@ -45,16 +45,16 @@ const Smsetpp = props => {
     fetchSmsetppPremiumPriceType,
     serviceType = [],
     fetchSmsetppType,
-    clearDynObjService,
+    //clearDynObjService,
     smsetppHistory = [],
-    smsetppServiceType = [],
+    //smsetppServiceType = [],
     productList = [],
-    premium,
+    //premium,
   } = props;
 
   const [error, setError] = useState([]);
   const [activeDropdown, setActiveDropdown] = useState(false);
-  const [typeOfService, setTypeOfService] = useState([]);
+  // const [typeOfService, setTypeOfService] = useState([]);
   const [secondActive, setSecondActive] = useState(false);
   const [serviceOptionPriceList, setServiceOptionPriceList] = useState([]);
   const [countryOptions, setCountryOptions] = useState([]);
@@ -137,12 +137,12 @@ const Smsetpp = props => {
     }
   }, [data]);
 
-  useEffect(() => {
-    let service = serviceType.map(item => {
-      return { key: item.id, text: item.name, value: item.id };
-    });
-    setTypeOfService(service);
-  }, [serviceType]);
+  // useEffect(() => {
+  //   let service = serviceType.map(item => {
+  //     return { key: item.id, text: item.name, value: item.id };
+  //   });
+  //   //setTypeOfService(service);
+  // }, [serviceType]);
 
   const onChange = (text, value) => {
     if (text === 'companyOptions') {
@@ -182,10 +182,10 @@ const Smsetpp = props => {
     setError(errors);
   };
 
-  const getProduct = param => {
-    let bukrs = param;
-    props.fetchSmsetppGetProductList(bukrs);
-  };
+  // const getProduct = param => {
+  //   let bukrs = param;
+  //   props.fetchSmsetppGetProductList(bukrs);
+  // };
 
   const getProductOptions = (productList, bukrs, countryId) => {
     if (!productList || !bukrs || !countryId) {

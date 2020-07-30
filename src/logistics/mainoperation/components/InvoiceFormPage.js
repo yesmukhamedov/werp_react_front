@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-  Header,
-  Container,
-  Segment,
-  Divider,
-  Tab,
-  Loader,
   Icon,
   Form,
   Input,
   Button,
-  Label,
   Grid,
   Table,
   TextArea,
@@ -693,15 +686,12 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchInvoices,
-    f4FetchWerksBranchList,
-    fetchMatnrs,
-    blankInvoice,
-    saveInvoice,
-    fetchInvoice,
-    setInvoiceModel,
-  },
-)(injectIntl(InvoiceFormPage));
+export default connect(mapStateToProps, {
+  fetchInvoices,
+  f4FetchWerksBranchList,
+  fetchMatnrs,
+  blankInvoice,
+  saveInvoice,
+  fetchInvoice,
+  setInvoiceModel,
+})(injectIntl(InvoiceFormPage));

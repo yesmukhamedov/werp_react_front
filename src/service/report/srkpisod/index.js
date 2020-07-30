@@ -20,11 +20,11 @@ import { LinkToSmcuspor } from '../../../utils/outlink';
 
 const Srkpiso = props => {
   const {
-    intl: { messages },
+    //intl: { messages },
     language,
     f4FetchCountryList,
     f4FetchBranches,
-    branches,
+    //branches,
     countryList,
     companyOptions,
   } = props;

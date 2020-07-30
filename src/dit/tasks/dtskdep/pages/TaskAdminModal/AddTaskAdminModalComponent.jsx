@@ -20,7 +20,7 @@ const validate = values => {
   return errors;
 };
 
-const clearForm = props => {};
+//const clearForm = props => {};
 
 const userSearchUrl = `mgru/users`;
 class AddTaskAdminModalComponent extends PureComponent {
@@ -108,10 +108,14 @@ class AddTaskAdminModalComponent extends PureComponent {
       handleSubmit,
       deptOptions,
       // userOptions,
-      lang,
+      //lang,
     } = this.props;
     const { messages } = this.props.intl;
-    const { isLoading, value, results } = this.state;
+    const {
+      isLoading,
+      // value,
+      results,
+    } = this.state;
     return (
       <Modal open={isOpen} onClose={this.handleFormClose}>
         <Modal.Header>{messages.H__ADD_TASK_ADMIN}</Modal.Header>

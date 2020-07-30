@@ -79,7 +79,6 @@ const TabSmcsWithoutContract = props => {
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
-  console.log('DATE CONTRACT', service.serviceDate);
   const [paymentChecked, setPaymentChecked] = useState(false);
   const [hkontS, setHkontS] = useState('');
 
@@ -100,10 +99,10 @@ const TabSmcsWithoutContract = props => {
     setCheckStatus(true);
   };
 
-  const toSmvs = data => {
-    setCheckStatus(false);
-    return <LinkToSmvs serviceNumber={data.data.id} />;
-  };
+  // const toSmvs = data => {
+  //   setCheckStatus(false);
+  //   return <LinkToSmvs serviceNumber={data.data.id} />;
+  // };
 
   const funcWarranty = (param, data, item) => {
     if (parseInt(item.serviceTypeId) == 3) {

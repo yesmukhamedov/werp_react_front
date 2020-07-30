@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Dropdown, Icon, Form } from 'semantic-ui-react';
+import React from 'react';
+import { Dropdown, Icon } from 'semantic-ui-react';
 
 const DropdownClearable = props => {
   const {

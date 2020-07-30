@@ -22,14 +22,12 @@ import '../../service.css';
 const Srkpiso = props => {
   const {
     intl: { messages },
-    language,
+    //language,
     companyOptions = [],
     countryList = [],
     branches = [],
     productList = [],
   } = props;
-
-  console.log('productList', productList);
 
   const emptyParam = {
     country: '',
@@ -149,8 +147,6 @@ const Srkpiso = props => {
               value: item.contract_type_id,
             };
           });
-
-  console.log('productListOptions', productListOptions);
 
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
 

@@ -16,7 +16,6 @@ import {
 } from './srlsmAction';
 import { injectIntl } from 'react-intl';
 import {
-  Icon,
   Container,
   Segment,
   Form,
@@ -40,9 +39,8 @@ import TotalCountsTable from '../../../utils/TotalCountsTable';
 
 import DropdownClearable from '../../../utils/DropdownClearable';
 import OutputErrors from '../../../general/error/outputErrors';
-import { formatDMY, errorTableText } from '../../../utils/helpers';
+import { errorTableText } from '../../../utils/helpers';
 import moment from 'moment';
-import { date } from 'faker';
 require('moment/locale/ru');
 
 const Srlsm = props => {
@@ -53,7 +51,7 @@ const Srlsm = props => {
     companyOptions = [],
     branchOptionsService,
     serviceStatusList = [],
-    serviceType = [],
+    //serviceType = [],
     srlsmListData = {},
     srlsmListSum = {},
     serviceTypeList = [],
@@ -83,7 +81,7 @@ const Srlsm = props => {
   const [param, setParam] = useState({ ...emptyParam });
   const [error, setError] = useState([]);
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
-  const [currency, setCurrency] = useState('');
+  //const [currency, setCurrency] = useState('');
   console.log('masterId', param.masterId);
 
   const masterOptions = masterList.map((item, index) => {

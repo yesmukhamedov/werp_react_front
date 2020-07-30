@@ -35,6 +35,7 @@ import {
   fetchPaymentOptions,
   fetchSmcsByContractNumber,
   postApplicationsMaster,
+  postApplicationsOperator,
 } from '../smcsAction';
 
 import {
@@ -69,17 +70,15 @@ const TabSmcsWithoutRequest = props => {
     servicePacketDetails = [],
     positionSumm = {},
     checkSmcs1 = {},
-    saveSmcs,
+    //saveSmcs,
     operatorList = [],
     masterList = [],
-    checkWarranty,
+    //checkWarranty,
     tovarSnProps,
     paymentOptions = [],
     masterListApp = [],
+    operatorListApp = [],
   } = props;
-
-  console.log('CONTRACT', contract);
-  console.log('masterListApp', masterListApp);
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
@@ -91,10 +90,6 @@ const TabSmcsWithoutRequest = props => {
 
   const [modalApplications, setModalApplications] = useState(false);
   const [contractApplications, setContractApplications] = useState([]);
-
-  const toSmvs = () => {
-    setCheckStatus(false);
-  };
 
   const successCheck = () => {
     setCheckStatus(true);
@@ -205,6 +200,12 @@ const TabSmcsWithoutRequest = props => {
           },
           1,
         );
+        props.fetchOperatorList(
+          {
+            ...param,
+          },
+          1,
+        );
       } else {
         setSparePartInitial([]);
         setSparePartList([]);
@@ -269,6 +270,13 @@ const TabSmcsWithoutRequest = props => {
     };
   });
   const masterOptionsApp = masterListApp.map((item, index) => {
+    return {
+      key: parseInt(item.staffId) * index,
+      text: item.fullName,
+      value: parseInt(item.staffId),
+    };
+  });
+  const operatorOptionsApp = operatorListApp.map((item, index) => {
     return {
       key: parseInt(item.staffId) * index,
       text: item.fullName,
@@ -1242,6 +1250,29 @@ const TabSmcsWithoutRequest = props => {
     );
   };
 
+  const onChangeOperatorApp = (app, value) => {
+    let param = {
+      applicationId: app.id,
+      operatorId: value,
+    };
+    props.postApplicationsOperator({ ...param }, () =>
+      setContractApplications(
+        contractApplications.map(item =>
+          item.id === app.id
+            ? {
+                ...item,
+                operatorId: value,
+              }
+            : item,
+        ),
+      ),
+    );
+  };
+
+  const clearApplicationsOperator = app => {
+    console.log('clearApplicationsOperator', app);
+  };
+
   const cancelApplicationsModal = () => {
     setModalApplications(false);
     setSparePartInitial([]);
@@ -1307,8 +1338,11 @@ const TabSmcsWithoutRequest = props => {
         applications={contractApplications}
         onClose={() => setModalApplications(false)}
         masterOptions={masterOptionsApp}
+        operatorOptions={operatorOptionsApp}
         onChangeMasterApp={onChangeMasterApp}
         clearApplicationsMaster={clearApplicationsMaster}
+        onChangeOperatorApp={onChangeOperatorApp}
+        clearApplicationsOperator={clearApplicationsOperator}
       />
       <Grid>
         <Grid.Row>
@@ -1466,6 +1500,7 @@ function mapStateToProps(state) {
     operatorList: state.smcsReducer.operatorList,
     masterList: state.smcsReducer.masterList,
     masterListApp: state.smcsReducer.masterListApp,
+    operatorListApp: state.smcsReducer.operatorListApp,
     checkWarranty: state.smcsReducer.checkWarranty,
     paymentOptions: state.smcsReducer.paymentOptions,
   };
@@ -1499,4 +1534,5 @@ export default connect(mapStateToProps, {
   fetchPaymentOptions,
   fetchSmcsByContractNumber,
   postApplicationsMaster,
+  postApplicationsOperator,
 })(injectIntl(TabSmcsWithoutRequest));

@@ -1,11 +1,11 @@
-import { doGet, doPost, doPut, doDelete } from '../../../utils/apiActions';
+import { doGet, doPost, doPut } from '../../../utils/apiActions';
 import {
   handleError,
   notify,
 } from '../../../general/notification/notification_action';
 import { errorTableText } from '../../../utils/helpers';
 import { modifyLoader } from '../../../general/loader/loader_action';
-import { date } from 'yup';
+//import { date } from 'yup';
 export const POST_SMSETCT = 'POST_SMSETCT';
 export const FETCH_SMSETCT = 'FETCH_SMSETCT';
 export const EDIT_SMSETCT = 'EDIT_SMSETCT';
@@ -14,9 +14,9 @@ export const FETCH_PRODUCT_LIST_SMSETCT = 'FETCH_PRODUCT_LIST_SMSETCT';
 export const CLEAR_DYNOBJ_SERVICE = 'CLEAR_DYNOBJ_SERVICE';
 export const CHANGE_DYNOBJ_SERVICE = 'CHANGE_DYNOBJ_SERVICE';
 
-const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+//const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 
-const language = localStorage.getItem('language');
+//const language = localStorage.getItem('language');
 export function changeDynObjService(a_obj) {
   const obj = {
     type: CHANGE_DYNOBJ_SERVICE,

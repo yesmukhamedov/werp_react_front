@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { connect } from 'react-redux';
@@ -14,7 +14,7 @@ const ReactTableWrapperFixedColumns = props => {
     intl: { messages },
   } = props;
 
-  const [selectedRow, setSelectedRow] = useState(-1);
+  //const [selectedRow, setSelectedRow] = useState(-1);
 
   const {
     showPagination = false,
@@ -59,7 +59,7 @@ const ReactTableWrapperFixedColumns = props => {
           if (typeof rowInfo !== 'undefined') {
             return {
               onClick: (e, handleOriginal) => {
-                setSelectedRow({ selected: rowInfo.index });
+                //setSelectedRow({ selected: rowInfo.index });
                 if (handleOriginal) {
                   handleOriginal();
                 }

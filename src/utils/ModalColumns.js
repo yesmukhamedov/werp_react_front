@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Header,
@@ -9,9 +9,13 @@ import {
 } from 'semantic-ui-react';
 
 const ModalColumns = props => {
-  const { columns = [], transaction, finishColumns } = props;
+  const {
+    columns = [],
+    // transaction,
+    finishColumns,
+  } = props;
   const [modal, setModal] = useState(false);
-  const [state, setState] = useState([]);
+  //const [state, setState] = useState([]);
   const [stateColumns, setStateColumns] = useState([...columns]);
 
   const changeChekcbox = value => {
@@ -42,7 +46,7 @@ const ModalColumns = props => {
 
   const saveColumns = () => {
     let columnsFilter = stateColumns.filter(item => item.checked === true);
-    setState([...columnsFilter]);
+    //setState([...columnsFilter]);
     finishColumns(columnsFilter);
     setModal(false);
   };

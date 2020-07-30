@@ -45,7 +45,7 @@ const Mmcei = props => {
   const {
     mmcei,
     intl: { messages },
-    language,
+    //language,
   } = props;
 
   //componentDidMount
@@ -257,10 +257,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchDynObjMarketing,
-    onSaveMmcTrans,
-  },
-)(injectIntl(Mmcei));
+export default connect(mapStateToProps, {
+  fetchDynObjMarketing,
+  onSaveMmcTrans,
+})(injectIntl(Mmcei));

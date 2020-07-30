@@ -23,7 +23,7 @@ const SearchCustomer = props => {
   const {
     intl: { messages },
     searchCustomer,
-    language,
+    // language,
     countryOptions = [],
     companyOptions = [],
     branchOptions = [],

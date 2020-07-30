@@ -79,19 +79,19 @@ export function RepSearch954(props) {
   );
 }
 
-function renderBranchSelect(props, multiple) {
-  return (
-    <Form.Select
-      name="branchId"
-      search
-      multiple={multiple}
-      label="Филиал"
-      options={props.branchOptions}
-      placeholder="Филиал"
-      onChange={props.handleChange}
-    />
-  );
-}
+// function renderBranchSelect(props, multiple) {
+//   return (
+//     <Form.Select
+//       name="branchId"
+//       search
+//       multiple={multiple}
+//       label="Филиал"
+//       options={props.branchOptions}
+//       placeholder="Филиал"
+//       onChange={props.handleChange}
+//     />
+//   );
+// }
 
 function renderMultipleBranchSelect(props) {
   return (
@@ -107,17 +107,17 @@ function renderMultipleBranchSelect(props) {
   );
 }
 
-function renderBusinessAreaSelect(props) {
-  return (
-    <Form.Select
-      name="businessAreaId"
-      label="Бизнес сфера"
-      options={props.businessAreaOptions}
-      placeholder="Бизнес сфера"
-      onChange={props.handleChange}
-    />
-  );
-}
+// function renderBusinessAreaSelect(props) {
+//   return (
+//     <Form.Select
+//       name="businessAreaId"
+//       label="Бизнес сфера"
+//       options={props.businessAreaOptions}
+//       placeholder="Бизнес сфера"
+//       onChange={props.handleChange}
+//     />
+//   );
+// }
 
 function renderBukrsSelect(props) {
   return (

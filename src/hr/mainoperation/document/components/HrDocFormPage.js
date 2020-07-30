@@ -345,7 +345,10 @@ class HrDocFormPage extends Component {
   render() {
     const { localDocument, pageLoading } = this.state;
     const currentType = localDocument['typeId'];
-    const { messages, locale } = this.props.intl;
+    const {
+      messages,
+      //locale
+    } = this.props.intl;
     let form;
     let pageTitle = 'Создание документа ' + this.state.localDocument.typeName;
     switch (currentType) {

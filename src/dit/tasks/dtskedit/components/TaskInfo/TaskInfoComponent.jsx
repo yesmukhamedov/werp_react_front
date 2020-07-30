@@ -66,14 +66,14 @@ class TaskInfoComponent extends Component {
         toggleModal,
         uploadble,
         estimatedAt,
-        modifiedAt,
+        //modifiedAt,
         messages,
       } = this.props;
 
       const { formatMessage } = this.props.intl;
 
-      const closedAt =
-        status.id === 5 ? formatDMYMS(modifiedAt) : <span>&mdash;</span>;
+      // const closedAt =
+      //   status.id === 5 ? formatDMYMS(modifiedAt) : <span>&mdash;</span>;
 
       return (
         <Segment.Group>

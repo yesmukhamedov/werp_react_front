@@ -284,7 +284,7 @@ function renderTransferData(props) {
 
 function renderDismissData(props) {
   const items = props.items;
-  const amountEditMode = props.amountEditMode || false;
+  // const amountEditMode = props.amountEditMode || false;
 
   if (!items) {
     return null;
@@ -338,7 +338,7 @@ function renderDismissData(props) {
 
 function renderChangeSalaryData(props) {
   const items = props.items;
-  const amountEditMode = props.amountEditMode || false;
+  //const amountEditMode = props.amountEditMode || false;
 
   if (!items) {
     return null;
@@ -389,7 +389,7 @@ function renderChangeSalaryData(props) {
 
 function renderProblemStaffData(props) {
   const items = props.items;
-  const amountEditMode = props.amountEditMode || false;
+  //const amountEditMode = props.amountEditMode || false;
 
   if (!items) {
     return null;

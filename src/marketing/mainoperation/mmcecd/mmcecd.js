@@ -10,7 +10,6 @@ import {
   Button,
   Icon,
   Input,
-  TextArea,
   Grid,
 } from 'semantic-ui-react';
 import queryString from 'query-string';

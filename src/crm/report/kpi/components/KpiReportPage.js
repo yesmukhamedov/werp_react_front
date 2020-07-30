@@ -12,7 +12,6 @@ import {
   Icon,
   Table,
   Form,
-  Label,
 } from 'semantic-ui-react';
 import KpiCard from './KpiCard';
 import CustomizedAxisTick from './CustomizedAxisTick';

@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { injectIntl, defineMessages } from 'react-intl';
+import {
+  injectIntl,
+  //defineMessages
+} from 'react-intl';
 import AssignedCalls from './tabs/AssignedCalls';
 import MyApplicationExodus from './tabs/MyApplicationExodus';
 import ServiceFilterPlan from './tabs/ServiceFilterPlan';

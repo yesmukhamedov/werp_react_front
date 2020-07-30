@@ -86,9 +86,9 @@ const Smcs = props => {
     },
   ];
 
-  const changeActiveIndex = (e, value) => {
-    setActiveTab(value);
-  };
+  // const changeActiveIndex = (e, value) => {
+  //   setActiveTab(value);
+  // };
 
   return (
     <Container

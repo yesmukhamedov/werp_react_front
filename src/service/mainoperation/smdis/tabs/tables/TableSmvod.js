@@ -1,9 +1,14 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import ReactTableWrapperFixedColumns from '../../../../../utils/ReactTableWrapperFixedColumns';
 import { Icon } from 'semantic-ui-react';
 
 const TableSmvod = props => {
-  const { options = [], data, footerData = {}, clickSmvodRow } = props;
+  const {
+    //options = [],
+    data,
+    footerData = {},
+    clickSmvodRow,
+  } = props;
 
   const columns = [
     {

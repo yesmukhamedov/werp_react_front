@@ -19,8 +19,6 @@ const ModalAddCartridge = props => {
 
   const dataSort = data.sort((prev, next) => prev.fno - next.fno);
 
-  console.log('data', data); // → [{id: 3, name: "Ivan", age: 18}, {id: 2, name: "Olga", age: 25}, {id: 1, name: "Denis", age: 28}]
-  console.log('dataSort', dataSort);
   const columnsSparePart = [
     {
       Header: '',

@@ -25,7 +25,7 @@ const Smecam = props => {
     smvcaData = {},
     smvcaHistory = [],
     availabledTransaction = [],
-    staffInfo = {},
+    //staffInfo = {},
   } = props;
 
   const url = window.location.search;

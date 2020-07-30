@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
-import { Dropdown } from 'semantic-ui-react';
+//import { Dropdown } from 'semantic-ui-react';
 
 const TableReDistribution1 = props => {
   const { data } = props;

@@ -9,11 +9,8 @@ import {
   Header,
   Grid,
   Segment,
-  Menu,
   Checkbox,
   List,
-  Input,
-  Label,
 } from 'semantic-ui-react';
 import { modifyLoader } from '../../../general/loader/loader_action';
 import OutputErrors from '../../../general/error/outputErrors';
@@ -24,7 +21,7 @@ import { messages } from '../../../locales/defineMessages';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import { LinkToStaffCardView } from '../../../utils/outlink';
-import { excelDownload } from '../../../utils/helpers';
+//import { excelDownload } from '../../../utils/helpers';
 import OutputEmployyeAccount from './outputEmployeeAccount';
 
 class Hrrsb extends Component {
@@ -112,9 +109,8 @@ class Hrrsb extends Component {
     // }
   }
   exportExcel(a_type) {
-    const { formatMessage } = this.props.intl;
-    let excelHeaders = [];
-
+    //const { formatMessage } = this.props.intl;
+    //let excelHeaders = [];
     // excelHeaders.push(messages['waers));
     // excelHeaders.push(messages['brnch));
     // excelHeaders.push(messages['balanceAccountMin));
@@ -133,7 +129,6 @@ class Hrrsb extends Component {
     // excelHeaders.push(
     //   messages['advancePaymentRequestAccountMin) + ' $',
     // );
-
     // excelDownload(
     //   '/api/finance/reports/frep7/downloadExcel',
     //   'Frep7Total.xls',
@@ -279,7 +274,7 @@ class Hrrsb extends Component {
     this.setState({ errors });
   }
   renderTotal() {
-    const { formatMessage } = this.props.intl;
+    //const { formatMessage } = this.props.intl;
     const { outputTable } = this.props;
     if (!outputTable) return '';
 
@@ -506,8 +501,8 @@ class Hrrsb extends Component {
 
   render() {
     const { messages } = this.props.intl;
-    const { activeIndex } = this.state;
-    const { outputTable, outputTableDetail } = this.props;
+    // const { activeIndex } = this.state;
+    // const { outputTable, outputTableDetail } = this.props;
 
     const {
       balanceAccountList,

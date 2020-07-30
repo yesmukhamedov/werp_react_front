@@ -10,7 +10,6 @@ import {
   Form,
   TextArea,
   Checkbox,
-  Label,
 } from 'semantic-ui-react';
 import { fetchServAppType } from '../../reference/srefAction';
 import {
@@ -27,7 +26,6 @@ import {
   errorTableText,
   stringYYYYMMDDHHMMSSToMoment,
   momentToStringYYYYMMDDHHMMSS,
-  momentToStringYYYYMMDD,
 } from '../../../utils/helpers';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
@@ -46,7 +44,7 @@ function Smccald(props) {
     smccaldProductList = [],
     currentStaff = {},
     intl: { messages },
-    smccaldCreate,
+    //smccaldCreate,
     smccaldPostStatus = {},
   } = props;
 

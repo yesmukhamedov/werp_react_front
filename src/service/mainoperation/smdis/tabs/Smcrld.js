@@ -10,7 +10,7 @@ import {
   Form,
   Divider,
 } from 'semantic-ui-react';
-import moment from 'moment';
+//import moment from 'moment';
 
 import {
   f4FetchCompanyOptions,
@@ -23,7 +23,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import ModalColumns from './../../../../utils/ModalColumns';
 import ReactTableWrapperFixedColumns from '../../../../utils/ReactTableWrapperFixedColumns';
 import {
-  momentToStringYYYYMMDD,
+  //momentToStringYYYYMMDD,
   stringYYYYMMDDToMoment,
 } from '../../../../utils/helpers';
 
@@ -39,11 +39,11 @@ const Smcrld = props => {
     smcrldListSum,
   } = props;
 
-  const [sum, setSum] = useState({});
+  // const [sum, setSum] = useState({});
 
-  useEffect(() => {
-    setSum({ ...smcrldListSum });
-  }, [smcrldListSum]);
+  // useEffect(() => {
+  //   setSum({ ...smcrldListSum });
+  // }, [smcrldListSum]);
 
   //Get category options
   const categoryOptions = category.map(item => {

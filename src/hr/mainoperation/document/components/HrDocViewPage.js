@@ -32,7 +32,7 @@ import {
   DOC_ACTION_ADD_AMOUNT,
   DOC_CREATE_PROBLEM_DOC,
   DOC_ACTION_ADD_SALARY,
-  DOC_TYPE_DISMISS,
+  //DOC_TYPE_DISMISS,
   DOC_TYPE_PROBLEM_STAFF,
   DOC_ACTION_SAVE,
 } from '../../../hrUtil';
@@ -392,20 +392,17 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchDocument,
-    handleAction,
-    fetchAllCurrentStaffs,
-    toggleStaffListModal,
-    localUpdateDocItems,
-    toggleItemAmountEditMode,
-    addAmount,
-    f4FetchCurrencyList,
-    removeApprove,
-    getBlankDocument,
-    fetchStaffProblems,
-    notify,
-  },
-)(HrDocViewPage);
+export default connect(mapStateToProps, {
+  fetchDocument,
+  handleAction,
+  fetchAllCurrentStaffs,
+  toggleStaffListModal,
+  localUpdateDocItems,
+  toggleItemAmountEditMode,
+  addAmount,
+  f4FetchCurrencyList,
+  removeApprove,
+  getBlankDocument,
+  fetchStaffProblems,
+  notify,
+})(HrDocViewPage);

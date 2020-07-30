@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Form, Button } from 'semantic-ui-react';
+import { Container, Button } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import {
   fetchSingleStaff,
@@ -20,7 +20,7 @@ import {
   f4FetchNationalityOptions,
   f4FetchAddrTypeOptions,
 } from '../../../../reference/f4/f4_action';
-import StaffAddressForm from './forms/StaffAddressForm';
+//import StaffAddressForm from './forms/StaffAddressForm';
 import SubCompanyListModal from '../../../../reference/mainoperation/components/SubCompanyListModal';
 import SalaryListModal from '../../salary/components/SalaryListModal';
 import StaffForm from './forms/StaffForm';
@@ -109,7 +109,7 @@ class StaffUpdatePage extends Component {
     });
 
     let localStaff = Object.assign({}, this.state.localStaff);
-    let exps = localStaff.experiences;
+    //let exps = localStaff.experiences;
     this.props
       .blankStaffExperience()
       .then(({ data }) => {
@@ -239,7 +239,7 @@ class StaffUpdatePage extends Component {
 
   renderForm() {
     const { localStaff } = this.state;
-    const addresses = localStaff.addresses || [];
+    //const addresses = localStaff.addresses || [];
     return (
       <div>
         <StaffForm
@@ -316,24 +316,21 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchSingleStaff,
-    f4FetchCountryList,
-    f4FetchStateList,
-    f4FetchCityList,
-    f4FetchCityregList,
-    f4FetchCompanyOptions,
-    saveStaff,
-    toggleStaffListModal,
-    fetchAllCurrentStaffs,
-    fetchBlankStaff,
-    f4FetchSubCompanies,
-    toggleSalaryListModal,
-    blankStaffExperience,
-    f4FetchNationalityOptions,
-    fetchMaritalStatusOptions,
-    f4FetchAddrTypeOptions,
-  },
-)(StaffUpdatePage);
+export default connect(mapStateToProps, {
+  fetchSingleStaff,
+  f4FetchCountryList,
+  f4FetchStateList,
+  f4FetchCityList,
+  f4FetchCityregList,
+  f4FetchCompanyOptions,
+  saveStaff,
+  toggleStaffListModal,
+  fetchAllCurrentStaffs,
+  fetchBlankStaff,
+  f4FetchSubCompanies,
+  toggleSalaryListModal,
+  blankStaffExperience,
+  f4FetchNationalityOptions,
+  fetchMaritalStatusOptions,
+  f4FetchAddrTypeOptions,
+})(StaffUpdatePage);

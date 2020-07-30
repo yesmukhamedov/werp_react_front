@@ -45,6 +45,7 @@ export const CHECK_SMCS_WITHOUT_REQUEST_3 = 'CHECK_SMCS_WITHOUT_REQUEST_3';
 export const SAVE_SMCS_WITHOUT_REQUEST = 'SAVE_SMCS_WITHOUT_REQUEST';
 export const SAVE_SMCS_PAYMENT = 'SAVE_SMCS_PAYMENT';
 export const FETCH_OPERATOR_LIST = 'FETCH_OPERATOR_LIST';
+export const FETCH_OPERATOR_LIST_APP = 'FETCH_OPERATOR_LIST_APP';
 export const FETCH_SMCS_BY_APP_NUMBER = 'FETCH_SMCS_BY_APP_NUMBER';
 export const FETCH_MASTER_LIST = 'FETCH_MASTER_LIST';
 export const FETCH_MASTER_LIST_APP = 'FETCH_MASTER_LIST_APP';
@@ -167,7 +168,6 @@ export const fetchMatnrPriceSparePart = (param, trans) => {
   };
 };
 export const clearMatnrPriceSparePart = () => {
-  console.log('clearMatnrPriceSparePart');
   return function(dispatch) {
     dispatch({
       type: CLEAR_MATNR_PRICE_SPARE_PART,
@@ -206,7 +206,6 @@ export const fetchMatnrPriceCartridge = (param, trans) => {
   };
 };
 export const clearMatnrPriceCartridge = () => {
-  console.log('clearMatnrPriceCartridge');
   return function(dispatch) {
     dispatch({
       type: CLEAR_MATNR_PRICE_CARTRIDGE,
@@ -292,16 +291,23 @@ export const fetchSmcsServicePacket = param => {
   };
 };
 
-export const fetchOperatorList = param => {
+export const fetchOperatorList = (param, val) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`smcs/getOperatorList`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        dispatch({
-          type: FETCH_OPERATOR_LIST,
-          data: data,
-        });
+        if (val == 1) {
+          dispatch({
+            type: FETCH_OPERATOR_LIST_APP,
+            data: data,
+          });
+        } else {
+          dispatch({
+            type: FETCH_OPERATOR_LIST,
+            data: data,
+          });
+        }
       })
       .catch(error => {
         dispatch(modifyLoader(false));
@@ -473,6 +479,20 @@ export const fetchCheckWarranty = (param, funcWarranty, value) => {
 export function postApplicationsMaster(params, success) {
   return function(dispatch) {
     doPost('smappl/editApp', params)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        success();
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+export function postApplicationsOperator(params, success) {
+  return function(dispatch) {
+    doPost(
+      `smappl/changeOperator?applicationId=${params.applicationId}&operatorId=${params.operatorId}`,
+    )
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         success();

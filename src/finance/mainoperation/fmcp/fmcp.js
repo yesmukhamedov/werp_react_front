@@ -28,7 +28,7 @@ import {
   moneyInputHanler,
 } from '../../../utils/helpers';
 import { LinkToMmcvNewTab } from '../../../utils/outlink';
-import { LEGACY_URL } from '../../../utils/constants';
+//import { LEGACY_URL } from '../../../utils/constants';
 import { BigNumber } from 'bignumber.js';
 import { injectIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -309,9 +309,7 @@ class Fmcp extends Component {
                   <Link
                     target="_blank"
                     className="ui icon button primary"
-                    to={`/finance/mainoperation/fa03?belnr=${
-                      contract.belnr
-                    }&bukrs=${contract.bukrs}&gjahr=${contract.gjahr}`}
+                    to={`/finance/mainoperation/fa03?belnr=${contract.belnr}&bukrs=${contract.bukrs}&gjahr=${contract.gjahr}`}
                   >
                     {formatMessage(messages.finDoc)}
                   </Link>
@@ -511,12 +509,9 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchFMCP,
-    changeDynObj,
-    clearDynObj,
-    saveFMCP,
-  },
-)(injectIntl(Fmcp));
+export default connect(mapStateToProps, {
+  fetchFMCP,
+  changeDynObj,
+  clearDynObj,
+  saveFMCP,
+})(injectIntl(Fmcp));

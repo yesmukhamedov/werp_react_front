@@ -4,8 +4,8 @@ import { modifyLoader } from '../../../general/loader/loader_action';
 
 export const FETCH_SMVS_LIST = 'FETCH_SMVS_LIST';
 
-const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-const language = localStorage.getItem('language');
+// const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+// const language = localStorage.getItem('language');
 
 //SRLS список сервисов
 export const fetchSmvsList = id => {

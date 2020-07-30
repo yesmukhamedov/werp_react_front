@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Grid, Table } from 'semantic-ui-react';
 import { fetchWerksRequest } from '../actions/logisticsActions';
 import { injectIntl } from 'react-intl';
-import _ from 'lodash';
+//import _ from 'lodash';
 
 class WerksRequestViewPage extends Component {
   constructor(props) {
@@ -35,7 +35,7 @@ class WerksRequestViewPage extends Component {
 
         <Table.Body>
           {matnrs.map((m, idx) => {
-            let key = 'matnrs[' + idx + '].';
+            //let key = 'matnrs[' + idx + '].';
             return (
               <Table.Row key={idx}>
                 <Table.Cell>{m.matnrName}</Table.Cell>

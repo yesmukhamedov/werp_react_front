@@ -16,7 +16,7 @@ function PhoneF4UpdateModal(props) {
   };
 
   const [list, setList] = useState({ ...emptyList });
-  const [errors, setErrors] = useState([]);
+  //const [errors, setErrors] = useState([]);
   const [errTextarea, setErrTextarea] = useState(false);
   const [errInput, setErrInput] = useState(false);
 
@@ -78,7 +78,7 @@ function PhoneF4UpdateModal(props) {
           props.f4FetchPhoneHistory();
         },
       );
-      setErrors(errors);
+      //setErrors(errors);
       clearList();
 
       props.onCloseUpdatePhoneF4(false);

@@ -1,6 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
-import { Table } from 'semantic-ui-react';
+//import { Table } from 'semantic-ui-react';
 // import {formatDMYMS} from '../../../../../utils/helpers'
 import WspaceDemoTable from '../WspaceDemoTable';
 import { Link } from 'react-router-dom';
@@ -80,39 +80,39 @@ function renderCallsTable(items, messages) {
   );
 }
 
-function renderCallsTable1(items) {
-  console.log(items);
-  return (
-    <Table celled padded>
-      <Table.Header>
-        <Table.Row>
-          <Table.HeaderCell singleLine>Дата-время звонка</Table.HeaderCell>
-          <Table.HeaderCell>Номер</Table.HeaderCell>
-          <Table.HeaderCell>Результат</Table.HeaderCell>
-          <Table.HeaderCell>Примечание</Table.HeaderCell>
-          <Table.HeaderCell />
-        </Table.Row>
-      </Table.Header>
+// function renderCallsTable1(items) {
+//   console.log(items);
+//   return (
+//     <Table celled padded>
+//       <Table.Header>
+//         <Table.Row>
+//           <Table.HeaderCell singleLine>Дата-время звонка</Table.HeaderCell>
+//           <Table.HeaderCell>Номер</Table.HeaderCell>
+//           <Table.HeaderCell>Результат</Table.HeaderCell>
+//           <Table.HeaderCell>Примечание</Table.HeaderCell>
+//           <Table.HeaderCell />
+//         </Table.Row>
+//       </Table.Header>
 
-      <Table.Body>
-        {items.map(item => (
-          <Table.Row key={item.id}>
-            <Table.Cell>{item.dateTime}</Table.Cell>
-            <Table.Cell singleLine>{item.phoneNumber}</Table.Cell>
-            <Table.Cell>{item.resultName}</Table.Cell>
-            <Table.Cell textAlign="right">{item.note}</Table.Cell>
-            <Table.Cell>
-              <Link
-                target="_blank"
-                className="ui icon button mini"
-                to={`/crm/reco/view/${item.recoId}`}
-              >
-                Просмотр рек.
-              </Link>
-            </Table.Cell>
-          </Table.Row>
-        ))}
-      </Table.Body>
-    </Table>
-  );
-}
+//       <Table.Body>
+//         {items.map(item => (
+//           <Table.Row key={item.id}>
+//             <Table.Cell>{item.dateTime}</Table.Cell>
+//             <Table.Cell singleLine>{item.phoneNumber}</Table.Cell>
+//             <Table.Cell>{item.resultName}</Table.Cell>
+//             <Table.Cell textAlign="right">{item.note}</Table.Cell>
+//             <Table.Cell>
+//               <Link
+//                 target="_blank"
+//                 className="ui icon button mini"
+//                 to={`/crm/reco/view/${item.recoId}`}
+//               >
+//                 Просмотр рек.
+//               </Link>
+//             </Table.Cell>
+//           </Table.Row>
+//         ))}
+//       </Table.Body>
+//     </Table>
+//   );
+// }

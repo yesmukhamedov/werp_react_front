@@ -16,7 +16,7 @@ import {
 import {
   fetchSmeciContractInfo,
   postSmecimContractInfo,
-  fetchBranchList,
+  //fetchBranchList,
 } from '../../serviceAction';
 import moment from 'moment';
 
@@ -61,7 +61,7 @@ function Smecim(props) {
     branchOptions = [],
     intl: { messages },
     crmCategory = [],
-    branchList = [],
+    //branchList = [],
     physStatus = [],
     branches = [],
   } = props;

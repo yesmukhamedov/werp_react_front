@@ -1,7 +1,12 @@
 import React from 'react';
 
 export default function CustomizedAxisTick(props) {
-  const { x, y, stroke, payload } = props;
+  const {
+    x,
+    y,
+    //stroke,
+    payload,
+  } = props;
 
   return (
     <g transform={`translate(${x},${y})`}>

@@ -1,9 +1,9 @@
-import {
-  handleError,
-  notify,
-} from '../../../../general/notification/notification_action';
-import { modifyLoader } from '../../../../general/loader/loader_action';
-import browserHistory from '../../../../utils/history';
+// import {
+//   handleError,
+//   notify,
+// } from '../../../../general/notification/notification_action';
+// import { modifyLoader } from '../../../../general/loader/loader_action';
+// import browserHistory from '../../../../utils/history';
 import axios from 'axios';
 import { doPost, doPut } from '../../../../utils/apiActions';
 
@@ -12,15 +12,15 @@ export const CALL_CREATED = 'CALL_CREATED';
 export const CALLING_FLAG = 'CALLING_FLAG';
 export const CALL_STATUS = 'CALL_STATUS';
 
-function doGet(uri) {
-  //return fetch(`${CONNECTOR_URL}` + uri);
+// function doGet(uri) {
+//   //return fetch(`${CONNECTOR_URL}` + uri);
 
-  return axios.get(`${CONNECTOR_URL}` + uri, {
-    headers: {
-      authorization: localStorage.getItem('token'),
-    },
-  });
-}
+//   return axios.get(`${CONNECTOR_URL}` + uri, {
+//     headers: {
+//       authorization: localStorage.getItem('token'),
+//     },
+//   });
+// }
 
 export function createCall(code, phoneNumber) {
   return dispatch =>

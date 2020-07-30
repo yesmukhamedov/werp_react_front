@@ -32,7 +32,7 @@ const TransferApplicationEntry = props => {
 
   const [param, setParam] = useState({ ...emptyParam });
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
-  const [error, setError] = useState([]);
+  // const [error, setError] = useState([]);
 
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
 
@@ -255,7 +255,7 @@ const TransferApplicationEntry = props => {
     if (param.bukrs === '') {
       errors.push(errorTableText(5));
     }
-    setError(() => errors);
+    //setError(() => errors);
   };
 
   const onInputChange = (o, fieldName) => {

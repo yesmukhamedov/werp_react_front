@@ -37,7 +37,7 @@ const Smecam = props => {
     smecamHistory = [],
     smecamPutStatus = {},
     serviceAppStatus = [],
-    smecamEditStatus,
+    //smecamEditStatus,
   } = props;
 
   const url = window.location.search;

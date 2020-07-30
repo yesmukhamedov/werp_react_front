@@ -1,6 +1,6 @@
 import React from 'react';
-import { DatePickerFormField } from '../../../../../utils/formFields';
-import { Field } from 'redux-form';
+// import { DatePickerFormField } from '../../../../../utils/formFields';
+// import { Field } from 'redux-form';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 import { Form, Input } from 'semantic-ui-react';

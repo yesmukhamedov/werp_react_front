@@ -241,7 +241,7 @@ class Faia extends Component {
     const { waers, bukrs, brnch } = this.props.bkpf;
     const {
       staffF4ModalOpen,
-      lifnr,
+      //lifnr,
       staffFio,
       shkzg,
       hkont,

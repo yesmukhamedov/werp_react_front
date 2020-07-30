@@ -1,7 +1,7 @@
-import { doGet, doPost, doPut, doDelete } from '../../../utils/apiActions';
+import { doGet } from '../../../utils/apiActions';
 import {
   handleError,
-  notify,
+  //notify,
 } from '../../../general/notification/notification_action';
 import { modifyLoader } from '../../../general/loader/loader_action';
 
@@ -9,8 +9,8 @@ import { modifyLoader } from '../../../general/loader/loader_action';
 export const FETCH_SMSRCUS_LIST = 'FETCH_SMSRCUS_LIST';
 export const CLEAR_SMSRCUS_LIST = 'CLEAR_SMSRCUS_LIST';
 
-const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-const language = localStorage.getItem('language');
+// const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+// const language = localStorage.getItem('language');
 
 //План по замене картриджей
 export const fetchSmsrcusList = param => {

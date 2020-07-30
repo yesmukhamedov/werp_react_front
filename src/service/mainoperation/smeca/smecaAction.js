@@ -9,8 +9,8 @@ import {
 export const FETCH_SMECA = 'FETCH_SMECA';
 export const EDIT_SMECA = 'EDIT_SMECA';
 
-const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-const language = localStorage.getItem('language');
+// const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+// const language = localStorage.getItem('language');
 
 export function fetchSmeca(id) {
   return function(dispatch) {

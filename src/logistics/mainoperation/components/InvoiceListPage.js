@@ -9,9 +9,7 @@ import {
   Loader,
   Icon,
   Form,
-  Input,
   Button,
-  Label,
 } from 'semantic-ui-react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
@@ -21,18 +19,18 @@ import {
   fetchInvoicesByStatus,
   setInvoicePage,
 } from '../actions/logisticsActions';
-import { formatDMYMS } from '../../../utils/helpers';
-import BukrsF4 from '../../../reference/f4/bukrs/BukrsF4';
-import BranchF4 from '../../../reference/f4/branch/BranchF4';
+// import { formatDMYMS } from '../../../utils/helpers';
+// import BukrsF4 from '../../../reference/f4/bukrs/BukrsF4';
+// import BranchF4 from '../../../reference/f4/branch/BranchF4';
 import moment from 'moment';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
-  WERKS_REQUEST_STATUS_NEW,
-  WERKS_REQUEST_STATUS_CLOSED,
-  Doctype,
+  //WERKS_REQUEST_STATUS_NEW,
+  // WERKS_REQUEST_STATUS_CLOSED,
+  // Doctype,
   getUriByDoctype,
-  getDoctypeByUri,
+  // getDoctypeByUri,
 } from '../../logUtil';
 import { injectIntl } from 'react-intl';
 
@@ -324,11 +322,8 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchInvoices,
-    setInvoicePage,
-    fetchInvoicesByStatus,
-  },
-)(injectIntl(InvoiceListPage));
+export default connect(mapStateToProps, {
+  fetchInvoices,
+  setInvoicePage,
+  fetchInvoicesByStatus,
+})(injectIntl(InvoiceListPage));

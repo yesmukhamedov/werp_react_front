@@ -10,8 +10,11 @@ const ModalApplications = props => {
     applications = [],
     onClose,
     masterOptions = [],
+    operatorOptions = [],
     onChangeMasterApp,
     clearApplicationsMaster,
+    onChangeOperatorApp,
+    clearApplicationsOperator,
   } = props;
   return (
     <Modal open={open} closeIcon onClose={onClose}>
@@ -44,12 +47,24 @@ const ModalApplications = props => {
                     handleClear={() => clearApplicationsMaster(item)}
                   />
                 </Table.Cell>
-                <Table.Cell>{item.operatorFIO}</Table.Cell>
+                <Table.Cell>
+                  <DropdownClearable
+                    fluid
+                    selection
+                    options={operatorOptions}
+                    value={item.operatorId ? item.operatorId : ''}
+                    onChange={(e, { value }) =>
+                      onChangeOperatorApp(item, value)
+                    }
+                    handleClear={() => clearApplicationsOperator(item)}
+                  />
+                </Table.Cell>
                 <Table.Cell>{item.applicationTypeName}</Table.Cell>
                 <Table.Cell>
                   <Link
                     target="_blank"
                     to={`../mainoperation/smcs?applicationNumber=${item.applicationNumber}`}
+                    onClick={onClose}
                   >
                     <Button color="green" fluid size="mini">
                       Перейти

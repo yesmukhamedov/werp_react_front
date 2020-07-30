@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Button,
-  Segment,
-  Icon,
-  Divider,
-  Input,
-  Checkbox,
-} from 'semantic-ui-react';
+import { Segment, Divider } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
 import { moneyFormat } from '../../../../utils/helpers';
 
@@ -14,7 +7,6 @@ const ServicePackage = props => {
   const { data = [], currency, matnrServicePackage = [] } = props;
 
   const [servicePackage, setServicePackage] = useState([]);
-  console.log('servicePackage', servicePackage);
   useEffect(() => {
     if (data.length > 0 && matnrServicePackage.length > 0) {
       setServicePackage(

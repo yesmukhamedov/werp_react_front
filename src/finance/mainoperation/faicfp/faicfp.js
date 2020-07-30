@@ -170,7 +170,13 @@ class Faicfp extends Component {
     const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
     const language = localStorage.getItem('language');
     const errors = [];
-    const { bukrs, brnch, dep, waers, bldat } = this.props.bkpf;
+    const {
+      bukrs,
+      brnch,
+      //dep,
+      waers,
+      bldat,
+    } = this.props.bkpf;
     if (bukrs === null || bukrs === undefined || !bukrs) {
       errors.push(errorTable[`5${language}`]);
     }

@@ -25,7 +25,7 @@ const MmcvBasicInfo = props => {
     tcode = '',
     urlContractNumber = '',
     intl: { messages },
-    language,
+    //language,
   } = props;
 
   //componentWillRecieveProps
@@ -232,7 +232,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { fetchDynObjMarketing },
-)(injectIntl(MmcvBasicInfo));
+export default connect(mapStateToProps, { fetchDynObjMarketing })(
+  injectIntl(MmcvBasicInfo),
+);

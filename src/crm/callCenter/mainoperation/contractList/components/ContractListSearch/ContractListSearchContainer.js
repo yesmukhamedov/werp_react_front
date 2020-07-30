@@ -1,6 +1,9 @@
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
-import { defineMessages, injectIntl } from 'react-intl';
+import {
+  //defineMessages,
+  injectIntl,
+} from 'react-intl';
 import ContractListSearchDisplay from './ContractListSearchDisplay';
 import { searchContracts } from '../../actions/ContractListAction';
 import { messages } from '../../../../../../locales/defineMessages';
@@ -18,7 +21,8 @@ function mapStateToProps(state) {
   };
 }
 
-const ContractListSearchContainer =
-  connect(mapStateToProps, { searchContracts })(injectIntl(ContractListSearchDisplay));
+const ContractListSearchContainer = connect(mapStateToProps, {
+  searchContracts,
+})(injectIntl(ContractListSearchDisplay));
 
 export default ContractListSearchContainer;

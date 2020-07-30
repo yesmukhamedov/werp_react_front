@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import AssignedCalls from './tabs/AssignedCalls';
@@ -36,7 +36,7 @@ const Smopccoc = props => {
     countryList,
     category,
     contractStatusList,
-    branches,
+    //branches,
     branchOptions,
   } = props;
 

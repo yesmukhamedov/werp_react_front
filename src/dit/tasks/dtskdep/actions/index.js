@@ -12,7 +12,7 @@ export const DTSKDEP_FETCH_TASKADMINS = 'DTSKDEP_FETCH_TASKADMINS';
 
 const departmentsUrl = `reference/departments`;
 const taskAdminUrl = `task-admins/all`;
-const usersUrl = `users?active=true`;
+//const usersUrl = `users?active=true`;
 
 const createTaskAdminUrl = `task-admins`;
 const removeTaskAdminUrl = `task-admins`;

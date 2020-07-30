@@ -9,7 +9,10 @@ import {
   Label,
 } from 'semantic-ui-react';
 import { OutCallPanelModalContainer } from '../OutCallPanelModal';
-import { formatDMYMS, constructFullName } from '../../../../../../utils/helpers';
+import {
+  formatDMYMS,
+  constructFullName,
+} from '../../../../../../utils/helpers';
 import { outCallStatusColorMap } from '../../../../../../utils/constants';
 
 const headerStyle = {
@@ -36,7 +39,7 @@ class OutCallPanelDisplay extends PureComponent {
 
   render() {
     const {
-      outCallId,
+      //outCallId,
       outCallInfo = {},
       statusOptions,
       createOutCallFromContract,
@@ -61,24 +64,32 @@ class OutCallPanelDisplay extends PureComponent {
               </Label>
             </Header>
             <Header as="h4" floated="right">
-              {
-                status.id &&
-                (status.id === 1000 ?
+              {status.id &&
+                (status.id === 1000 ? (
                   <Button
-                    style={{ background: 'rgba(84,170,169, 1)', color: 'white' }}
-                    onClick={() => createOutCallFromContract({ contractNumber })}
+                    style={{
+                      background: 'rgba(84,170,169, 1)',
+                      color: 'white',
+                    }}
+                    onClick={() =>
+                      createOutCallFromContract({ contractNumber })
+                    }
                   >
-                    <Icon name="add" />{messages.BTN__ASSIGN}
+                    <Icon name="add" />
+                    {messages.BTN__ASSIGN}
                   </Button>
-                  :
+                ) : (
                   <Button
-                    style={{ background: 'rgba(84,170,169, 1)', color: 'white' }}
+                    style={{
+                      background: 'rgba(84,170,169, 1)',
+                      color: 'white',
+                    }}
                     onClick={this.open}
                   >
-                    <Icon name="edit" />{messages.BTN__EDIT}
+                    <Icon name="edit" />
+                    {messages.BTN__EDIT}
                   </Button>
-                )
-              }
+                ))}
             </Header>
           </Segment>
           <Segment padded color="grey">
@@ -91,7 +102,9 @@ class OutCallPanelDisplay extends PureComponent {
                         <Item.Header style={headerStyle}>
                           {messages.L__CREATE_DATE}:
                         </Item.Header>
-                        <Item.Description>{formatDMYMS(createdAt) || <span>&mdash;</span>}</Item.Description>
+                        <Item.Description>
+                          {formatDMYMS(createdAt) || <span>&mdash;</span>}
+                        </Item.Description>
                       </Item.Content>
                     </Item>
                     <Item>
@@ -99,7 +112,9 @@ class OutCallPanelDisplay extends PureComponent {
                         <Item.Header style={headerStyle}>
                           {messages.L__MODIFIED_DATE}:
                         </Item.Header>
-                        <Item.Description>{formatDMYMS(modifiedAt) || <span>&mdash;</span>}</Item.Description>
+                        <Item.Description>
+                          {formatDMYMS(modifiedAt) || <span>&mdash;</span>}
+                        </Item.Description>
                       </Item.Content>
                     </Item>
                   </Item.Group>
@@ -108,9 +123,15 @@ class OutCallPanelDisplay extends PureComponent {
                   <Item.Group>
                     <Item>
                       <Item.Content verticalAlign="middle">
-                        <Item.Header style={headerStyle}>{messages.L__ORDER_ISSUER}:</Item.Header>
+                        <Item.Header style={headerStyle}>
+                          {messages.L__ORDER_ISSUER}:
+                        </Item.Header>
                         <Item.Description>
-                          {(status.id !== 1000 ? constructFullName(operator) : <span>&mdash;</span>)}
+                          {status.id !== 1000 ? (
+                            constructFullName(operator)
+                          ) : (
+                            <span>&mdash;</span>
+                          )}
                         </Item.Description>
                       </Item.Content>
                     </Item>

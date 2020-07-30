@@ -48,7 +48,12 @@ const DemoPriceForm = props => {
 };
 
 const renderForm = props => {
-  const { model, errors, companyOptions, branchOptions } = props;
+  const {
+    model,
+    // errors,
+    companyOptions,
+    branchOptions,
+  } = props;
   return (
     <Form>
       <Form.Select

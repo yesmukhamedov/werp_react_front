@@ -1,6 +1,6 @@
 import { CHANGE_LANGUAGE } from './types';
 import Cookies from 'js-cookie';
-import { setContentLanguageHeader } from '../utils/setHeaders';
+//import { setContentLanguageHeader } from '../utils/setHeaders';
 
 export default function changeLanguage(lang) {
   return dispatch => {

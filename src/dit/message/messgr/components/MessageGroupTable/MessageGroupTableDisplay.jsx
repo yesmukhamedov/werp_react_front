@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactTable from 'react-table';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 
 const MessageGroupTableDisplay = props => {

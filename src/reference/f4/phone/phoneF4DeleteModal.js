@@ -10,7 +10,7 @@ function PhoneF4DeleteModal(props) {
     description: '',
   };
   const [data, setData] = useState({ ...emptyData });
-  const [errors, setErrors] = useState([]);
+  //const [errors, setErrors] = useState([]);
 
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');
@@ -45,7 +45,7 @@ function PhoneF4DeleteModal(props) {
           props.f4FetchPhoneHistory();
         },
       );
-      setErrors(errors);
+      // setErrors(errors);
       props.onCloseDeletePhoneF4(false);
     }
   };

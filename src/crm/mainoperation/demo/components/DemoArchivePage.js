@@ -21,7 +21,7 @@ import {
 import { connect } from 'react-redux';
 import { demoResultOptions } from '../../../crmUtil';
 import { injectIntl } from 'react-intl';
-import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4';
+//import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4';
 
 class DemoArchivePage extends Component {
   constructor(props) {
@@ -372,7 +372,8 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { fetchDemoArchive, fetchDemoResults, fetchGroupDealers },
-)(injectIntl(DemoArchivePage));
+export default connect(mapStateToProps, {
+  fetchDemoArchive,
+  fetchDemoResults,
+  fetchGroupDealers,
+})(injectIntl(DemoArchivePage));

@@ -6,14 +6,7 @@ import {
 } from '../../../reference/f4/f4_action';
 import { fetchSrls, fetchServiceTypeList } from './srlsAction';
 import { injectIntl } from 'react-intl';
-import {
-  Icon,
-  Container,
-  Segment,
-  Form,
-  Divider,
-  Dropdown,
-} from 'semantic-ui-react';
+import { Icon, Container, Segment, Form, Dropdown } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -28,14 +21,14 @@ import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrap
 
 import DropdownClearable from '../../../utils/DropdownClearable';
 import OutputErrors from '../../../general/error/outputErrors';
-import { formatDMY, errorTableText } from '../../../utils/helpers';
+import { errorTableText } from '../../../utils/helpers';
 import TotalCountsTable from '../../../utils/TotalCountsTable';
 import moment from 'moment';
 require('moment/locale/ru');
 
 const Srls = props => {
   const {
-    intl: { messages },
+    //intl: { messages },
     language = '',
     category = [],
     companyOptions = [],

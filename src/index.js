@@ -14,13 +14,19 @@ import 'semantic-ui-css/semantic.min.css';
 
 import generateRoutes from './routes/routes';
 import reducers from './reducers';
-import { AUTH_USER, UNAUTH_USER } from './actions/types';
+import {
+  AUTH_USER,
+  // UNAUTH_USER
+} from './actions/types';
 import ConnectedIntlProvider from './ConnectedIntlProvider';
 import JwtRefresher from './middlewares/JwtRefresher';
-import jwt from 'jwt-simple';
+//import jwt from 'jwt-simple';
 import { resetLocalStorage } from './utils/helpers';
 import { loadLang, saveLang } from './utils/localStorage';
-import { DEFAULT_LANGUAGE, TOKEN_PASSWORD } from './utils/constants';
+import {
+  DEFAULT_LANGUAGE,
+  // TOKEN_PASSWORD
+} from './utils/constants';
 import AppWrapper from './AppWrapper';
 
 import './index.css';

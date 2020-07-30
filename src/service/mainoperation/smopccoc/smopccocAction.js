@@ -1,7 +1,7 @@
-import { doGet, doPost, doPut, doDelete } from '../../../utils/apiActions';
+import { doGet, doPost } from '../../../utils/apiActions';
 import {
   handleError,
-  notify,
+  //notify,
 } from '../../../general/notification/notification_action';
 import { modifyLoader } from '../../../general/loader/loader_action';
 
@@ -21,8 +21,8 @@ export const FETCH_SERVICE_MY_APPLICATION_EXODUS =
 
 export const POST_TO_CANCEL_PLAN = 'POST_TO_CANCEL_PLAN';
 
-const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-const language = localStorage.getItem('language');
+// const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+// const language = localStorage.getItem('language');
 
 //План по замене картриджей
 export const fetchServiceFilterPlan = param => {

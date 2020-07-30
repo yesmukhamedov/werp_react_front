@@ -22,7 +22,7 @@ const MmcefBasicInfo = props => {
     contract,
     urlContractNumber,
     intl: { messages },
-    language,
+    //language,
   } = props;
 
   //componentWillRecieveProps
@@ -177,9 +177,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchDynObjMarketing,
-  },
-)(injectIntl(MmcefBasicInfo));
+export default connect(mapStateToProps, {
+  fetchDynObjMarketing,
+})(injectIntl(MmcefBasicInfo));

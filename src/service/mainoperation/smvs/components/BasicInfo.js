@@ -1,25 +1,17 @@
 import React from 'react';
-import {
-  Segment,
-  Button,
-  Table,
-  Input,
-  Icon,
-  TextArea,
-} from 'semantic-ui-react';
-import DatePicker from 'react-datepicker';
+import { Segment, Button, Table, Input, TextArea } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const BasicInfo = props => {
   const {
     data = {},
-    searchByServiceNumber,
+    //searchByServiceNumber,
     onChangeBasicInfo,
     serviceNumber,
-    editStatus,
+    //editStatus,
   } = props;
 
-  const positions = data.positions;
+  //const positions = data.positions;
   return (
     <Segment>
       <Table>

@@ -12,9 +12,9 @@ import {
   renderDemoResultLabel,
   renderRecoStatusLabel,
   RECO_STATUS_NEW,
-  RECO_STATUS_DEMO_DONE,
+  // RECO_STATUS_DEMO_DONE,
   RECO_STATUS_PHONED,
-  CALL_RESULT_POSITIVE,
+  // CALL_RESULT_POSITIVE,
   CALL_RESULT_RECALL,
 } from '../../../CrmHelper';
 import moment from 'moment';

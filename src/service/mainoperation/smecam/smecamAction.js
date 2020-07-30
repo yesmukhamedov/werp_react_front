@@ -9,8 +9,8 @@ import {
 export const FETCH_SMECAM = 'FETCH_SMECAM';
 export const EDIT_SMECAM = 'EDIT_SMECAM';
 
-const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-const language = localStorage.getItem('language');
+// const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+// const language = localStorage.getItem('language');
 
 export function fetchSmecam(id) {
   return function(dispatch) {

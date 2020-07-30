@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Accordion, Image, Grid } from 'semantic-ui-react';
+import { Container, Image, Grid } from 'semantic-ui-react';
 
 import './cebilonUnique.css';
 import '../../../back.css';

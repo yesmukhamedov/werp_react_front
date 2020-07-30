@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 import Loadable from 'react-loadable';
-import RequireAuth from '../components/Auth/require_auth';
+// import RequireAuth from '../components/Auth/require_auth';
 import MainPanel from '../components/MainPanel/MainPanel';
 import Signin from '../components/Auth/Signin';
 import Signout from '../components/Auth/Signout';
@@ -533,29 +533,29 @@ const AsyncHrrsb = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncHrc01 = Loadable({
-  loader: () =>
-    import(
-      '../hr/mainoperation/customer/hrc01' /* webpackChunkName: "hrc01" */
-    ),
-  loading: () => <LoadingPage />,
-});
+// const AsyncHrc01 = Loadable({
+//   loader: () =>
+//     import(
+//       '../hr/mainoperation/customer/hrc01' /* webpackChunkName: "hrc01" */
+//     ),
+//   loading: () => <LoadingPage />,
+// });
 
-const AsyncHrc02 = Loadable({
-  loader: () =>
-    import(
-      '../hr/mainoperation/customer/hrc02' /* webpackChunkName: "hrc02" */
-    ),
-  loading: () => <LoadingPage />,
-});
+// const AsyncHrc02 = Loadable({
+//   loader: () =>
+//     import(
+//       '../hr/mainoperation/customer/hrc02' /* webpackChunkName: "hrc02" */
+//     ),
+//   loading: () => <LoadingPage />,
+// });
 
-const AsyncHrc03 = Loadable({
-  loader: () =>
-    import(
-      '../hr/mainoperation/customer/hrc03' /* webpackChunkName: "hrc03" */
-    ),
-  loading: () => <LoadingPage />,
-});
+// const AsyncHrc03 = Loadable({
+//   loader: () =>
+//     import(
+//       '../hr/mainoperation/customer/hrc03' /* webpackChunkName: "hrc03" */
+//     ),
+//   loading: () => <LoadingPage />,
+// });
 
 const AsyncMmcc = Loadable({
   loader: () =>
@@ -621,17 +621,17 @@ const AsyncMrcsch = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncRfadd01 = Loadable({
-  loader: () =>
-    import('../reference/f4/address/rfadd01' /* webpackChunkName: "rfadd01" */),
-  loading: () => <LoadingPage />,
-});
+// const AsyncRfadd01 = Loadable({
+//   loader: () =>
+//     import('../reference/f4/address/rfadd01' /* webpackChunkName: "rfadd01" */),
+//   loading: () => <LoadingPage />,
+// });
 
-const AsyncRfadd02 = Loadable({
-  loader: () =>
-    import('../reference/f4/address/rfadd02' /* webpackChunkName: "rfadd02" */),
-  loading: () => <LoadingPage />,
-});
+// const AsyncRfadd02 = Loadable({
+//   loader: () =>
+//     import('../reference/f4/address/rfadd02' /* webpackChunkName: "rfadd02" */),
+//   loading: () => <LoadingPage />,
+// });
 
 const AsyncHrRecruitmentPage = Loadable({
   loader: () =>

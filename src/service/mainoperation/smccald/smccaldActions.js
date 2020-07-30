@@ -1,4 +1,4 @@
-import { doGet, doPost, doPut, doDelete } from '../../../utils/apiActions';
+import { doGet, doPost } from '../../../utils/apiActions';
 import {
   handleError,
   notify,
@@ -10,8 +10,8 @@ export const FETCH_SMCCALD_GET_PRODUCT_LIST = 'FETCH_SMCCALD_GET_PRODUCT_LIST';
 export const FETCH_CURRENT_STAFF = 'FETCH_CURRENT_STAFF';
 export const POST_SMCCALD_CREATE_APP = 'POST_SMCCALD_CREATE_APP';
 
-const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-const language = localStorage.getItem('language');
+// const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+// const language = localStorage.getItem('language');
 
 export function fetchSmccaldGetProductList(param) {
   return function(dispatch) {

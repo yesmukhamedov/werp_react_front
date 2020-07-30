@@ -12,8 +12,8 @@ const AddressF4WithCreationPage = props => {
   const {
     intl: { messages },
     countryId,
-    phoneOpen,
-    onCloseAddressF4,
+    // phoneOpen,
+    // onCloseAddressF4,
   } = props;
 
   const close = () => {

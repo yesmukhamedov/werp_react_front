@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Container, Grid, Image } from 'semantic-ui-react';
 
 import { EDU_ROBO_ASSETS_URL } from '../../../../../../utils/constants';

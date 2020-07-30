@@ -1,13 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {
-  Modal,
-  Icon,
-  Button,
-  Dropdown,
-  Input,
-  Table,
-  Form,
-} from 'semantic-ui-react';
+import React, { useState } from 'react';
+import { Modal, Icon, Button, Table, Form } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import MaskedInput from 'react-text-mask';
@@ -22,7 +14,7 @@ function PhoneF4CreateModal(props) {
     description: 'CREATE NUMBER',
   };
   const [list, setList] = useState({ ...emptyList });
-  const [errors, setErrors] = useState([]);
+  //const [errors, setErrors] = useState([]);
   const [errDropdown, setErrDropdown] = useState(false);
   const [errInput, setErrInput] = useState(false);
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
@@ -69,7 +61,7 @@ function PhoneF4CreateModal(props) {
         country.countryId,
         () => props.f4FetchPhone(),
       );
-      setErrors(errors);
+      //setErrors(errors);
       close();
     }
   };

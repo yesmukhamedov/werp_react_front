@@ -1,6 +1,6 @@
 import firebase from 'firebase/app';
 import '@firebase/messaging';
-import { notify } from '../../general/notification/notification_action';
+//import { notify } from '../../general/notification/notification_action';
 
 const config = {
   apiKey: 'AIzaSyAJRmZRl_45V784UPi8USabVU7vrXDdjGk',

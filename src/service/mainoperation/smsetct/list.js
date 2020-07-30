@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import 'react-table/react-table.css';
 import {
   Header,
@@ -27,10 +27,10 @@ export default function List(props) {
     productList = [],
     fetchSmsetct = [],
     editSmsetct = [],
-    searchParams = [],
+    //searchParams = [],
     getBranchOptions = [],
-    setPostParams = [],
-    postParams = [],
+    //setPostParams = [],
+    //postParams = [],
     searchArray = [],
   } = props;
 

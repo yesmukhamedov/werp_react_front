@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Container, Segment } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 import TableSmvod from './tables/TableSmvod';
 import { fetchSmvodList } from '../smdisAction';
 const Smvod = props => {

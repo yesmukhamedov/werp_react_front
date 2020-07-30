@@ -13,7 +13,7 @@ import {
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../service.css';
-import moment from 'moment';
+//import moment from 'moment';
 import OutputErrors from '../../../general/error/outputErrors';
 import { errorTableText } from '../../../utils/helpers';
 import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';

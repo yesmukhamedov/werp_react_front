@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Button, Icon, Modal, Header, Checkbox } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
@@ -49,7 +49,7 @@ const ModalAddServicePacket = props => {
     },
   ];
 
-  const [close, setClose] = useState(true);
+  //const [close, setClose] = useState(true);
   return (
     <Modal open={modalStatus} closeOnDimmerClick={false} dimmer={'blurring'}>
       <Header content="Добавить сервис пакет" />

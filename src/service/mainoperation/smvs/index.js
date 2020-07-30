@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Segment, Grid, Form, Button, Icon, Divider } from 'semantic-ui-react';
+import { Segment, Grid, Form, Button, Divider } from 'semantic-ui-react';
 import BasicInfo from './components/BasicInfo';
 import ReportService from './components/ReportService';
 import Services from './components/Services';

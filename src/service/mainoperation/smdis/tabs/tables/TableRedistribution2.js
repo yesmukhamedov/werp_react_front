@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import ReactTableWrapper from '../../../../../utils/ReactTableWrapper';
 import { Dropdown, Input, Button } from 'semantic-ui-react';
 import './table.css';

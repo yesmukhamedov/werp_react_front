@@ -296,10 +296,10 @@ const TransferApplicationExodus = props => {
     });
   };
 
-  const [columns, setColumns] = useState([...initialColumns]);
-  const finishColumns = data => {
-    setColumns([...data]);
-  };
+  // const [columns, setColumns] = useState([...initialColumns]);
+  // const finishColumns = data => {
+  //   setColumns([...data]);
+  // };
   const handleClear = fieldName => {
     setParam(prev => {
       const prevParam = { ...prev };

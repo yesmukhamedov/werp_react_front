@@ -216,7 +216,7 @@ export const DatePickerFormField2 = props => {
     required,
     dateFormat,
     locale,
-    curDate,
+    //curDate,
     readOnly,
     disabled,
     defaultValue,

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Loader, Dimmer, Segment } from 'semantic-ui-react';
+import { Loader, Dimmer } from 'semantic-ui-react';
 import './App.css';
 import Signin from './components/Auth/Signin';
 import { fetchUnreadMessages } from './actions/inbox';

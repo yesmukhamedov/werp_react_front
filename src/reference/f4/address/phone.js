@@ -19,7 +19,7 @@ function Phone(props) {
     selectedPhone: {},
   };
   const [list, setList] = useState({ ...emptyList });
-  const [activeIndex, setActiveIndex] = useState(0);
+  // const [activeIndex, setActiveIndex] = useState(0);
   const [phoneF4HistoryModalOpen, setPhoneF4HistoryModalOpen] = useState(false);
   const [phoneF4CreateModalOpen, setPhoneF4CreateModalOpen] = useState(false);
   const [phoneF4UpdateModalOpen, setPhoneF4UpdateModalOpen] = useState(false);
@@ -106,9 +106,9 @@ function Phone(props) {
     </Table.Row>
   );
 
-  const close = () => {
-    props.onClosePhoneF4(false);
-  };
+  // const close = () => {
+  //   props.onClosePhoneF4(false);
+  // };
   return (
     <div>
       <PhoneF4HistoryModal

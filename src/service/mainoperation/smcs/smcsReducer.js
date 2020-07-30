@@ -16,6 +16,7 @@ import {
   CLEAR_MATNR_PRICE_CARTRIDGE,
   //
   FETCH_OPERATOR_LIST,
+  FETCH_OPERATOR_LIST_APP,
   FETCH_POSITION_SUMM,
   CHECK_SMCS_WITHOUT_REQUEST_1,
   CHECK_SMCS_WITHOUT_REQUEST_2,
@@ -133,6 +134,8 @@ export default function(state = INITIAL_STATE, action) {
 
     case FETCH_OPERATOR_LIST:
       return { ...state, operatorList: [...action.data.data] };
+    case FETCH_OPERATOR_LIST_APP:
+      return { ...state, operatorListApp: [...action.data.data] };
 
     case FETCH_SMCS_BY_APP_NUMBER:
       return { ...state, smcsAppNumberData: { ...action.data.data } };

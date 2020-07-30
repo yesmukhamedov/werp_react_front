@@ -1,17 +1,14 @@
 import React from 'react';
-import {
-  Button,
-  Segment,
-  Icon,
-  Divider,
-  Input,
-  Checkbox,
-} from 'semantic-ui-react';
+import { Segment, Divider, Input, Checkbox } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
 import { moneyFormat } from '../../../../utils/helpers';
 
 const SaleOfSparePart = props => {
-  const { data = [], currency, onChangeSparePart, disabledEdit } = props;
+  const {
+    data = [],
+    currency,
+    // onChangeSparePart, disabledEdit
+  } = props;
   const totalSparePart = data.reduce((total, item) => total + item.sum, 0);
   const columns = [
     {

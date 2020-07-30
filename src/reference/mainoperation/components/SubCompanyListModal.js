@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, List, Button, Table, Icon } from 'semantic-ui-react';
+import { Modal, Button, Table, Icon } from 'semantic-ui-react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 

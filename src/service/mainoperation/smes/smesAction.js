@@ -11,8 +11,8 @@ export const FETCH_PAYMENT_OPTIONS = 'FETCH_PAYMENT_OPTIONS';
 export const ACCEPT_PAYMENT = 'ACCEPT_PAYMENT';
 export const CANCEL_PAYMENT = 'CANCEL_PAYMENT';
 
-const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-const language = localStorage.getItem('language');
+// const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+// const language = localStorage.getItem('language');
 
 //SRLS список сервисов
 export const fetchSmesList = id => {

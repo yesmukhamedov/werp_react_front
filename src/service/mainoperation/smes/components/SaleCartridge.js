@@ -1,21 +1,14 @@
 import React from 'react';
-import {
-  Button,
-  Segment,
-  Icon,
-  Divider,
-  Input,
-  Checkbox,
-} from 'semantic-ui-react';
+import { Segment, Divider, Input, Checkbox } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
 import { moneyFormat } from '../../../../utils/helpers';
 
 const SaleCartridge = props => {
   const {
     data = [],
-    onChangeCartridge,
+    //onChangeCartridge,
     disabledEdit,
-    onChangeSettingService,
+    //onChangeSettingService,
     currency,
   } = props;
 

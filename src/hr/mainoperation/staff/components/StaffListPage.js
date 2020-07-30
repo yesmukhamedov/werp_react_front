@@ -10,8 +10,8 @@ import {
   Grid,
   Input,
 } from 'semantic-ui-react';
-import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4';
-import BranchF4 from '../../../../reference/f4/branch/BranchF4';
+// import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4';
+// import BranchF4 from '../../../../reference/f4/branch/BranchF4';
 import PositionF4 from '../../../../reference/f4/position/PositionF4';
 import { connect } from 'react-redux';
 import { fetchCurrentStaffs } from '../actions/hrStaffAction';
@@ -235,7 +235,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { fetchCurrentStaffs },
-)(StaffListPage);
+export default connect(mapStateToProps, { fetchCurrentStaffs })(StaffListPage);

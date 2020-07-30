@@ -55,7 +55,7 @@ const Smsetct = props => {
   const [searchArray, setSearchArray] = useState([]);
   const [show, setShow] = useState(false);
   const [postErrors, setPostErrors] = useState({});
-  const [selectedBranches, setSelectedBranches] = useState([]);
+  //const [selectedBranches, setSelectedBranches] = useState([]);
   const [branchF4IsOpen, setBranchF4IsOpen] = useState();
   const [messg, setMessg] = useState({ messgBrnch: false, messgMatnr: false });
   const {
@@ -285,15 +285,6 @@ const Smsetct = props => {
     }
   };
 
-  const iconStyle = {
-    position: 'absolute',
-    top: '1.5em',
-    bottom: 0,
-    margin: '1em',
-    right: '118.5em',
-    lineHeight: 1,
-    zIndex: 1,
-  };
   return (
     <div>
       <Container
@@ -562,7 +553,7 @@ const Smsetct = props => {
         isOpen={branchF4IsOpen}
         onClose={selectedBranches => {
           setBranchF4IsOpen(false);
-          setSelectedBranches(selectedBranches);
+          //setSelectedBranches(selectedBranches);
           if (selectedBranches.length !== 0) {
             setSearchArray(
               selectedBranches.map(item => {

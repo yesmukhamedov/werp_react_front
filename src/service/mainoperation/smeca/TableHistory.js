@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Segment, Header, Popup } from 'semantic-ui-react';
+import { Container, Segment, Popup } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import 'react-table/react-table.css';
 import TextAlignCenter from '../../../utils/TextAlignCenter';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Header, Image, Segment, Icon } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 import './style.css';
 
 const ForbiddenPage = props => {

@@ -1,16 +1,16 @@
 import React from 'react';
-import { Button, Segment, Icon, Divider, Dropdown } from 'semantic-ui-react';
+import { Segment, Divider, Dropdown } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
 import { moneyFormat } from '../../../../utils/helpers';
 
 const Services = props => {
   const {
     data = [],
-    addServices,
+    // addServices,
     onChangeSettingService,
-    handleRemoveService,
-    servicesOptions,
-    selectServices,
+    //handleRemoveService,
+    //servicesOptions,
+    // selectServices,
     disabledEdit,
     serviceTypeOptions = [],
     currency,

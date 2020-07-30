@@ -8,10 +8,10 @@ import { Table } from 'semantic-ui-react';
 export default function StaffContactTable(props) {
   let {
     addresses,
-    countryOptions,
-    stateOptions,
-    cityOptions,
-    regionOptions,
+    // countryOptions,
+    // stateOptions,
+    // cityOptions,
+    // regionOptions,
   } = props;
   if (!addresses) {
     addresses = [];
@@ -47,4 +47,4 @@ export default function StaffContactTable(props) {
   );
 }
 
-function getTextFromOptions(address) {}
+//function getTextFromOptions(address) {}

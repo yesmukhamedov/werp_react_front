@@ -164,7 +164,7 @@ class LeaveReasonListPage extends Component {
   }
 
   render() {
-    const { messages } = this.props.intl;
+    // const { messages } = this.props.intl;
 
     return (
       <Container

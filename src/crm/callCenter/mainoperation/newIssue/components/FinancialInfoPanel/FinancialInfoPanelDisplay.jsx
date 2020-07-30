@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Grid, Label, List, Loader, Segment, Button } from 'semantic-ui-react';
+import { Grid, Label, List, Loader, Segment } from 'semantic-ui-react';
 import PortalComponentDisplay from '../../../../../../general/portal/PortalComponent';
-import { LEGACY_URL } from '../../../../../../utils/constants';
+//import { LEGACY_URL } from '../../../../../../utils/constants';
 import { constructFullName } from '../../../../../../utils/helpers';
 import { LinkToMmcvNewTab } from '../../../../../../utils/outlink';
 import { PaymentBreakdownTableDisplay } from '../PaymentBreakdownTable';
@@ -21,7 +21,7 @@ const FinancialInfoPanelDisplay = props => {
     productSerialNumber,
     promotions,
     monthlyPayments,
-    otherPurchases,
+    //otherPurchases,
     currency,
     bankPartner,
     tradeIn,
