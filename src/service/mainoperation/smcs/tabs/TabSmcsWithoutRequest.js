@@ -1271,6 +1271,22 @@ const TabSmcsWithoutRequest = props => {
 
   const clearApplicationsOperator = app => {
     console.log('clearApplicationsOperator', app);
+    let param = {
+      applicationId: app.id,
+      operatorId: '',
+    };
+    props.postApplicationsOperator({ ...param }, () =>
+      setContractApplications(
+        contractApplications.map(item =>
+          item.id === app.id
+            ? {
+                ...item,
+                operatorId: '',
+              }
+            : item,
+        ),
+      ),
+    );
   };
 
   const cancelApplicationsModal = () => {
