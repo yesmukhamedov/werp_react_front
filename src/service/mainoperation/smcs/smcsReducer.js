@@ -28,6 +28,8 @@ import {
   FETCH_MATNR_PRICE_SERVICE_PACKAGE3,
   CLEAR_MATNR_PRICE_SERVICE_PACKAGE,
   //
+  FETCH_SMCS_SERVICE_PACKET,
+  //
   FETCH_SERVICE_PACKAGE_DETAILS,
   CLEAR_SERVICE_PACKAGE_DETAILS,
   //
@@ -108,6 +110,8 @@ export default function(state = INITIAL_STATE, action) {
       return { ...state, matnrServicePackage2: [...action.data.data] };
     case FETCH_MATNR_PRICE_SERVICE_PACKAGE3:
       return { ...state, matnrServicePackage3: [...action.data.data] };
+    case FETCH_SMCS_SERVICE_PACKET:
+      return { ...state, servicePackageListProps: [...action.data.data] };
 
     case CLEAR_MATNR_PRICE_SERVICE_PACKAGE:
       return { ...state, matnrServicePackage: [] };

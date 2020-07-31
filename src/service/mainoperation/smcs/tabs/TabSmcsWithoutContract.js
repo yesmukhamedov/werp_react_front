@@ -67,7 +67,7 @@ const TabSmcsWithoutContract = props => {
     servicePacketDetails = [],
     positionSumm = {},
     checkSmcs2 = {},
-    saveSmcs,
+    //saveSmcs,
     operatorList = [],
     category,
     tovar = [],
@@ -76,6 +76,8 @@ const TabSmcsWithoutContract = props => {
     withoutRequestProps = {},
     paymentOptions = [],
   } = props;
+
+  console.log('matnrServicePackage2', matnrServicePackage2);
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
@@ -293,6 +295,17 @@ const TabSmcsWithoutContract = props => {
       props.fetchTovarId({ ...param });
     }
   }, [service.bukrs, service.categoryId]);
+
+  useEffect(() => {
+    if (service.bukrs && service.branchId && service.tovarId) {
+      let param = {
+        bukrs: service.bukrs,
+        branchId: service.branchId,
+        productId: service.tovarId,
+      };
+      props.fetchMatnrPriceServicePackage({ ...param }, 2);
+    }
+  }, [service.bukrs, service.branchId, service.tovarId]);
 
   //УСЛУГИ============================================================================================================================
   //==================================================================================================================================

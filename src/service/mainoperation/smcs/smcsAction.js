@@ -279,14 +279,15 @@ export const fetchSmcsServicePacket = param => {
     dispatch(modifyLoader(true));
     doGet(`smcs/getServicePackageList`, param)
       .then(({ data }) => {
+        dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SMCS_SERVICE_PACKET,
           data: data,
         });
       })
       .catch(error => {
-        // dispatch(modifyLoader(false));
-        // handleError(error, dispatch);
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
       });
   };
 };
