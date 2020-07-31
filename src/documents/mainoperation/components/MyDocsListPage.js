@@ -116,10 +116,7 @@ class DocumentListPage extends Component {
 
   render() {
     let panes = [];
-    for (const [
-      //k,
-      v,
-    ] of Object.entries(getMdStatuses())) {
+    for (const [k, v] of Object.entries(getMdStatuses())) {
       panes.push({
         menuItem: v,
         render: () => this.renderDataTable(),
