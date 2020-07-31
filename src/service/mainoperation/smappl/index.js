@@ -84,6 +84,8 @@ const Smappl = props => {
     orderBy: 'id',
   });
 
+  console.log('search', search);
+
   const categoryOptions = category.map(item => {
     return {
       key: item.id,
@@ -361,7 +363,7 @@ const Smappl = props => {
           varTs.tovarCategorys = value.length > 0 ? value.join() : null;
           break;
         case 'status':
-          varTs.appStatusIds = value.length > 0 ? value.join() : null;
+          varTs.appStatusIds = value.length > 0 ? value.join() : '';
           //varTs.appStatusIds = value;
           break;
         case 'ApplicationType':
