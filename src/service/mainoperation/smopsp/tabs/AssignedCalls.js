@@ -41,7 +41,7 @@ const AssignedCalls = props => {
     countryId: '',
     bukrs: '',
     branchId: '',
-    crmScheduleDateAt: '',
+    crmScheduleDateAt: momentToStringYYYYMMDD(moment(new Date())),
   };
 
   const [param, setParam] = useState({ ...emptyParam });
