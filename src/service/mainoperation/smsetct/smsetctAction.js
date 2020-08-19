@@ -66,10 +66,10 @@ export function clearDynObjService() {
   return obj;
 }
 
-export function applySmsetct() {
+export function applySmsetct(param) {
   return dispatch => {
     dispatch(modifyLoader(true));
-    doGet(`smsetct/apply`)
+    doGet(`smsetct/apply`, param)
       .then(({ data }) => {
         if (data.status === 200 || data.status === 'OK') {
           dispatch(notify('success', errorTableText(101)));

@@ -58,6 +58,18 @@ const Smsetct = props => {
   //const [selectedBranches, setSelectedBranches] = useState([]);
   const [branchF4IsOpen, setBranchF4IsOpen] = useState();
   const [messg, setMessg] = useState({ messgBrnch: false, messgMatnr: false });
+
+  const [paramApply, setParamApply] = useState({
+    bukrs: '',
+    branchId: '',
+  });
+
+  useEffect(() => {
+    setParamApply({ ...paramApply, branchId: [...searchArray] });
+  }, [searchArray]);
+
+  console.log('searchArray', searchArray);
+  console.log('paramApply', paramApply);
   const {
     intl: { messages },
     companyOptions = [],
@@ -70,7 +82,6 @@ const Smsetct = props => {
     postSmsetct,
     editSmsetct,
     clearDynObjService,
-    applySmsetct,
   } = props;
 
   //componentDidMount
@@ -81,6 +92,7 @@ const Smsetct = props => {
 
   const searchInput = o => {
     setSearchParams({ bukrs: o.value });
+    setParamApply({ ...paramApply, bukrs: o.value });
     if (o.value.length > 0) setSearchError(false);
   };
 
@@ -127,6 +139,8 @@ const Smsetct = props => {
           props.fetchProductListSmsetct({ bukrs: o.value });
           errors.bukrs = o.value ? false : true;
 
+          console.log('bukrs', o.value);
+
           break;
 
         case 'countryId':
@@ -143,11 +157,13 @@ const Smsetct = props => {
           break;
 
         case 'branchId':
+          console.log('branchId', o.value);
           vars.branchId = o.value;
           errors.branchId = o.value ? false : true;
           messages.messgBrnch = false;
           messages.messgMatnr = messg.messgMatnr;
           setMessg({ ...messages });
+
           break;
 
         case 'matnr':
@@ -285,6 +301,10 @@ const Smsetct = props => {
     }
   };
 
+  const applySmsetctClick = () => {
+    props.applySmsetct({ ...paramApply });
+  };
+
   return (
     <div>
       <Container
@@ -302,7 +322,7 @@ const Smsetct = props => {
           </Header>
           <Button
             color="teal"
-            onClick={() => applySmsetct()}
+            onClick={() => applySmsetctClick()}
             floated="right"
             icon
             labelPosition="left"
@@ -500,7 +520,6 @@ const Smsetct = props => {
                 options={companyOptions || []}
                 value={searchParams.bukrs}
                 placeholder={messages['bukrs']}
-                onChange={(e, o) => searchInput(o)}
                 handleClear={() => handleClear('bukrs')}
                 onChange={(e, o) => searchInput(o)}
               />
