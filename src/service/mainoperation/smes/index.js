@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import {
   Segment,
   Grid,
@@ -58,7 +58,7 @@ const Smes = props => {
   const {
     smesList = {},
     paymentOptions = [],
-    acceptPayment,
+    //acceptPayment,
     matnrServicePackage = [],
   } = props;
 

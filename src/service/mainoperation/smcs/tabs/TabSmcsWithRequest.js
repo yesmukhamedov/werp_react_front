@@ -955,6 +955,7 @@ const TabSmcsWithRequest = props => {
         let param = {
           brnch: smcsAppNumberData.branchId,
           bukrs: smcsAppNumberData.bukrs,
+          waers: smcsAppNumberData.currencyName,
         };
 
         props.fetchPaymentOptions({ ...param });

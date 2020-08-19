@@ -41,7 +41,7 @@ const AssignedCalls = props => {
     countryId: '',
     bukrs: '',
     branchId: '',
-    dateOpenAt: '',
+    crmScheduleDateAt: '',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
@@ -322,14 +322,14 @@ const AssignedCalls = props => {
                 dropdownMode="select" //timezone="UTC"
                 placeholderText={messages['date']}
                 selected={
-                  param.dateOpenAt === ''
+                  param.crmScheduleDateAt === ''
                     ? ''
-                    : stringYYYYMMDDToMoment(param.dateOpenAt)
+                    : stringYYYYMMDDToMoment(param.crmScheduleDateAt)
                 }
                 onChange={date =>
                   setParam({
                     ...param,
-                    dateOpenAt: momentToStringYYYYMMDD(date),
+                    crmScheduleDateAt: momentToStringYYYYMMDD(date),
                   })
                 }
                 maxDate={moment(new Date())}

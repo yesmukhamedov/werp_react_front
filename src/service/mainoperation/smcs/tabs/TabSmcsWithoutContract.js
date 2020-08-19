@@ -246,6 +246,7 @@ const TabSmcsWithoutContract = props => {
       let param = {
         brnch: service.branchId,
         bukrs: service.bukrs,
+        waers: service.currencyName,
       };
 
       props.fetchPaymentOptions({ ...param });
