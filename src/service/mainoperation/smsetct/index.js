@@ -65,7 +65,17 @@ const Smsetct = props => {
   });
 
   useEffect(() => {
-    setParamApply({ ...paramApply, branchId: [...searchArray] });
+    if (searchArray) {
+      let mapSearchArray = searchArray.map(item => {
+        return item.branchId;
+      });
+
+      console.log('mapSearchArray', mapSearchArray);
+
+      setParamApply({ ...paramApply, branchId: mapSearchArray.toString() });
+    } else {
+      setParamApply({ ...paramApply, branchId: '' });
+    }
   }, [searchArray]);
 
   console.log('searchArray', searchArray);
@@ -516,6 +526,7 @@ const Smsetct = props => {
             <Form.Field required>
               <label>{messages['bukrs']}</label>
               <DropdownClearable
+                fluid
                 error={searchError ? true : false}
                 options={companyOptions || []}
                 value={searchParams.bukrs}
@@ -573,7 +584,7 @@ const Smsetct = props => {
         onClose={selectedBranches => {
           setBranchF4IsOpen(false);
           //setSelectedBranches(selectedBranches);
-          if (selectedBranches.length !== 0) {
+          if (selectedBranches) {
             setSearchArray(
               selectedBranches.map(item => {
                 return {
@@ -583,7 +594,7 @@ const Smsetct = props => {
               }),
             );
           } else {
-            setSearchParams({ bukrs: searchParams.bukrs });
+            setSearchParams({ bukrs: searchParams.bukrs, branchId: [] });
           }
         }}
         selection={'multiple'}
