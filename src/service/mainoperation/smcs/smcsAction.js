@@ -54,6 +54,7 @@ export const FETCH_PAYMENT_OPTIONS_1 = 'FETCH_PAYMENT_OPTIONS_1';
 export const FETCH_PAYMENT_OPTIONS_2 = 'FETCH_PAYMENT_OPTIONS_2';
 export const FETCH_PAYMENT_OPTIONS_3 = 'FETCH_PAYMENT_OPTIONS_3';
 export const FETCH_SMCS_BY_CONTRACT_NUMBER = 'FETCH_SMCS_BY_CONTRACT_NUMBER';
+export const FETCH_SERVICE_BRANCH_LIST = 'FETCH_SERVICE_BRANCH_LIST';
 
 //--END
 // const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
@@ -483,6 +484,23 @@ export const fetchSmcsByContractNumber = param => {
       });
   };
 };
+export const fetchServiceBranchList = param => {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`smcs/getBranchList`, param)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_SERVICE_BRANCH_LIST,
+          data: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
 //Проверка гарантии
 export const fetchCheckWarranty = (param, funcWarranty, value) => {
   return function(dispatch) {
@@ -490,6 +508,19 @@ export const fetchCheckWarranty = (param, funcWarranty, value) => {
       .then(({ data }) => {
         if (data.status == 'OK') {
           funcWarranty(param, data, value);
+        }
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+};
+export const fetchWaersByBranch = (param, funcSetWaers) => {
+  return function(dispatch) {
+    doGet(`smcs`, param)
+      .then(({ data }) => {
+        if (data.status == 'OK') {
+          funcSetWaers(data);
         }
       })
       .catch(error => {

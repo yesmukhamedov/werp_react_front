@@ -41,6 +41,7 @@ import {
   FETCH_PAYMENT_OPTIONS_3,
   FETCH_SMCS_BY_CONTRACT_NUMBER,
   FETCH_MASTER_LIST_APP,
+  FETCH_SERVICE_BRANCH_LIST,
 } from './smcsAction';
 
 const INITIAL_STATE = {
@@ -164,6 +165,12 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         paymentOptions3: [...action.data.hkontOptions],
+      };
+    case FETCH_SERVICE_BRANCH_LIST:
+      //console.log('FETCH_SERVICE_BRANCH_LIST', action);
+      return {
+        ...state,
+        smcsServiceBranchList: [...action.data.data],
       };
     default:
       return state;

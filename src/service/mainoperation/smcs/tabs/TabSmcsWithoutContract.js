@@ -32,6 +32,8 @@ import {
   clearMatnrPriceCartridge,
   clearMatnrPriceServicePackage,
   clearServicePackageDetails,
+  fetchWaersByBranch,
+  fetchServiceBranchList,
 } from '../smcsAction';
 
 import {
@@ -72,15 +74,14 @@ const TabSmcsWithoutContract = props => {
     category,
     tovar = [],
     masterList = [],
-    branchOptionsService,
+    serviceBranchList = [],
     withoutRequestProps = {},
     paymentOptions2 = [],
   } = props;
 
-  console.log('matnrServicePackage2', matnrServicePackage2);
-
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
+  console.log('service CONTRACT', service);
   const [paymentChecked, setPaymentChecked] = useState(false);
   const [hkontS, setHkontS] = useState('');
 
@@ -144,7 +145,24 @@ const TabSmcsWithoutContract = props => {
         setService({ ...service, bukrs: '', bukrsName: '' });
         break;
       case 'selectBranch':
-        setService({ ...service, branchId: value.value });
+        serviceBranchList.map(item => {
+          if (item.id === value.value) {
+            console.log(
+              'TRUE selectBranch VAL',
+              value.value,
+              'currencyId',
+              item.currencyId,
+              'currencyName',
+              item.currency,
+            );
+            setService({
+              ...service,
+              branchId: value.value,
+              currencyId: item.currencyId,
+              currencyName: item.currency,
+            });
+          }
+        });
         break;
       case 'clearBranch':
         setService({ ...service, branchId: '' });
@@ -242,7 +260,7 @@ const TabSmcsWithoutContract = props => {
       props.fetchOperatorList({ ...param });
     }
 
-    if (service.branchId && service.bukrs) {
+    if (service.branchId && service.bukrs && service.currencyName) {
       let param = {
         brnch: service.branchId,
         bukrs: service.bukrs,
@@ -251,6 +269,10 @@ const TabSmcsWithoutContract = props => {
 
       props.fetchPaymentOptions({ ...param }, 2);
     }
+
+    // if(service.branchId){
+    //   props.fetchWaersByBranch(service.branchId,()=>setService({...service, currencyId:}))
+    // }
   }, [service.bukrs, service.branchId, service.categoryId]);
 
   useEffect(() => {
@@ -280,8 +302,17 @@ const TabSmcsWithoutContract = props => {
       setSparePartList([]);
       setCartridgeList([]);
       setServicePackageInitial([]);
-      props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart }, 2);
-      props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge }, 2);
+      if (
+        (service.branchId,
+        service.bukrs,
+        service.masterId,
+        service.serviceTypeId,
+        service.tovarId)
+      ) {
+        props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart }, 2);
+        props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge }, 2);
+      }
+
       setEditStatus(false);
     }
     setCheckStatus(false);
@@ -305,6 +336,10 @@ const TabSmcsWithoutContract = props => {
         productId: service.tovarId,
       };
       props.fetchMatnrPriceServicePackage({ ...param }, 2);
+    }
+
+    if (service.bukrs) {
+      props.fetchServiceBranchList({ bukrs: service.bukrs });
     }
   }, [service.bukrs, service.branchId, service.tovarId]);
 
@@ -757,7 +792,6 @@ const TabSmcsWithoutContract = props => {
 
         break;
       case 'duplicateCartridge':
-        console.log('duplicateCartridge', value);
         setCartridgeList([
           ...cartridgeList,
           {
@@ -1105,6 +1139,14 @@ const TabSmcsWithoutContract = props => {
   };
   const [modalConfirm, setModalConfirm] = useState(false);
 
+  const serviceBranchOptions = serviceBranchList.map(item => {
+    return {
+      key: item.id,
+      text: item.text45,
+      value: item.id,
+    };
+  });
+
   const handleSave = () => {
     setModalConfirm(false);
     if (paymentChecked == false) {
@@ -1142,7 +1184,7 @@ const TabSmcsWithoutContract = props => {
               operatorOptions={operatorOptions}
               onBasicInfoInputChange={onBasicInfoInputChange}
               companyOptions={companyOptions}
-              branchOptions={branchOptionsService[service.bukrs]}
+              branchOptions={serviceBranchOptions}
               categoryOptions={categoryOptions}
               tovarOptions={tovarOptions}
               masterOptions={masterOptions}
@@ -1275,7 +1317,6 @@ function mapStateToProps(state) {
     countryList: state.f4.countryList,
     contractTypeList: state.f4.contractTypeList,
     companyOptions: state.userInfo.companyOptions,
-    branchOptionsService: state.userInfo.branchOptionsService,
     category: state.f4.category,
     customersById: state.f4.customersById,
     tovar: state.smcsReducer.tovar,
@@ -1290,6 +1331,7 @@ function mapStateToProps(state) {
     operatorList: state.smcsReducer.operatorList,
     masterList: state.smcsReducer.masterList,
     paymentOptions2: state.smcsReducer.paymentOptions2,
+    serviceBranchList: state.smcsReducer.smcsServiceBranchList,
   };
 }
 
@@ -1318,4 +1360,6 @@ export default connect(mapStateToProps, {
   fetchCheckWarranty,
   saveSmcsPayment,
   fetchPaymentOptions,
+  fetchWaersByBranch,
+  fetchServiceBranchList,
 })(injectIntl(TabSmcsWithoutContract));
