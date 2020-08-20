@@ -50,7 +50,9 @@ export const FETCH_SMCS_BY_APP_NUMBER = 'FETCH_SMCS_BY_APP_NUMBER';
 export const FETCH_MASTER_LIST = 'FETCH_MASTER_LIST';
 export const FETCH_MASTER_LIST_APP = 'FETCH_MASTER_LIST_APP';
 export const FETCH_CHECK_WARRANTY = 'FETCH_CHECK_WARRANTY';
-export const FETCH_PAYMENT_OPTIONS = 'FETCH_PAYMENT_OPTIONS';
+export const FETCH_PAYMENT_OPTIONS_1 = 'FETCH_PAYMENT_OPTIONS_1';
+export const FETCH_PAYMENT_OPTIONS_2 = 'FETCH_PAYMENT_OPTIONS_2';
+export const FETCH_PAYMENT_OPTIONS_3 = 'FETCH_PAYMENT_OPTIONS_3';
 export const FETCH_SMCS_BY_CONTRACT_NUMBER = 'FETCH_SMCS_BY_CONTRACT_NUMBER';
 
 //--END
@@ -408,16 +410,35 @@ export const saveSmcsPayment = (body, hcont, toSmvs) => {
   };
 };
 
-export const fetchPaymentOptions = param => {
+export const fetchPaymentOptions = (param, trans) => {
+  console.log('ACTION PARAM', param, 'ACTION TRANS', trans);
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`finance/mainoperation/fetchCashBankHkontsByBranch`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        dispatch({
-          type: FETCH_PAYMENT_OPTIONS,
-          data,
-        });
+
+        switch (trans) {
+          case 1:
+            console.log('DATA ACTIONS', data);
+            dispatch({
+              type: FETCH_PAYMENT_OPTIONS_1,
+              data,
+            });
+            break;
+          case 2:
+            dispatch({
+              type: FETCH_PAYMENT_OPTIONS_2,
+              data,
+            });
+            break;
+          case 3:
+            dispatch({
+              type: FETCH_PAYMENT_OPTIONS_3,
+              data,
+            });
+            break;
+        }
       })
       .catch(error => {
         dispatch(modifyLoader(false));

@@ -75,10 +75,12 @@ const TabSmcsWithoutRequest = props => {
     masterList = [],
     //checkWarranty,
     tovarSnProps,
-    paymentOptions = [],
+    paymentOptions1 = [],
     masterListApp = [],
     operatorListApp = [],
   } = props;
+
+  console.log('paymentOptions1', paymentOptions1);
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
@@ -243,14 +245,18 @@ const TabSmcsWithoutRequest = props => {
           };
           props.fetchMatnrPriceServicePackage({ ...param }, 1);
         }
-        if (contract.service.branchId && contract.service.bukrs) {
+        if (
+          contract.service.branchId &&
+          contract.service.bukrs &&
+          contract.service.currencyName
+        ) {
           let param = {
             brnch: contract.service.branchId,
             bukrs: contract.service.bukrs,
-            waers: contract.currencyName,
+            waers: contract.service.currencyName,
           };
 
-          props.fetchPaymentOptions({ ...param });
+          props.fetchPaymentOptions({ ...param }, 1);
         }
       }
     }
@@ -1328,14 +1334,18 @@ const TabSmcsWithoutRequest = props => {
       };
       props.fetchMatnrPriceServicePackage({ ...param }, 1);
     }
-    if (contract.service.branchId && contract.service.bukrs) {
+
+    if (
+      contract.service.branchId &&
+      contract.service.bukrs &&
+      contract.service.currencyName
+    ) {
       let param = {
         brnch: contract.service.branchId,
         bukrs: contract.service.bukrs,
-        waers: service.currencyName,
+        waers: contract.service.currencyName,
       };
-
-      props.fetchPaymentOptions({ ...param });
+      props.fetchPaymentOptions({ ...param }, 1);
     }
   };
 
@@ -1461,7 +1471,7 @@ const TabSmcsWithoutRequest = props => {
                         placeholder="Выберите кассу для оплаты"
                         selection
                         fluid
-                        options={paymentOptions}
+                        options={paymentOptions1}
                         value={parseInt(hkontS) ? parseInt(hkontS) : ''}
                         onChange={(e, value) =>
                           setHkontS(value.value.toString())
@@ -1520,7 +1530,7 @@ function mapStateToProps(state) {
     masterListApp: state.smcsReducer.masterListApp,
     operatorListApp: state.smcsReducer.operatorListApp,
     checkWarranty: state.smcsReducer.checkWarranty,
-    paymentOptions: state.smcsReducer.paymentOptions,
+    paymentOptions1: state.smcsReducer.paymentOptions1,
   };
 }
 

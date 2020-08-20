@@ -74,7 +74,7 @@ const TabSmcsWithoutContract = props => {
     masterList = [],
     branchOptionsService,
     withoutRequestProps = {},
-    paymentOptions = [],
+    paymentOptions2 = [],
   } = props;
 
   console.log('matnrServicePackage2', matnrServicePackage2);
@@ -249,7 +249,7 @@ const TabSmcsWithoutContract = props => {
         waers: service.currencyName,
       };
 
-      props.fetchPaymentOptions({ ...param });
+      props.fetchPaymentOptions({ ...param }, 2);
     }
   }, [service.bukrs, service.branchId, service.categoryId]);
 
@@ -1232,7 +1232,7 @@ const TabSmcsWithoutContract = props => {
                         placeholder="Выберите кассу для оплаты"
                         selection
                         fluid
-                        options={paymentOptions}
+                        options={paymentOptions2}
                         value={parseInt(hkontS) ? parseInt(hkontS) : ''}
                         onChange={(e, value) =>
                           setHkontS(value.value.toString())
@@ -1289,7 +1289,7 @@ function mapStateToProps(state) {
     saveSmcs: state.smcsReducer.saveSmcs,
     operatorList: state.smcsReducer.operatorList,
     masterList: state.smcsReducer.masterList,
-    paymentOptions: state.smcsReducer.paymentOptions,
+    paymentOptions2: state.smcsReducer.paymentOptions2,
   };
 }
 

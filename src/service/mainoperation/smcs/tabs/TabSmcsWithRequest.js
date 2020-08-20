@@ -66,7 +66,7 @@ const TabSmcsWithRequest = props => {
     smcsAppNumberData = {},
     applicationNumber,
     checkWarranty,
-    paymentOptions = [],
+    paymentOptions3 = [],
   } = props;
 
   //Основной объект сервиса
@@ -958,7 +958,7 @@ const TabSmcsWithRequest = props => {
           waers: smcsAppNumberData.currencyName,
         };
 
-        props.fetchPaymentOptions({ ...param });
+        props.fetchPaymentOptions({ ...param }, 3);
       }
     }
   }, [smcsAppNumberData]);
@@ -1111,7 +1111,7 @@ const TabSmcsWithRequest = props => {
                         placeholder="Выберите кассу для оплаты"
                         selection
                         fluid
-                        options={paymentOptions}
+                        options={paymentOptions3}
                         value={parseInt(hkontS) ? parseInt(hkontS) : ''}
                         onChange={(e, value) =>
                           setHkontS(value.value.toString())
@@ -1164,7 +1164,7 @@ function mapStateToProps(state) {
     saveSmcs: state.smcsReducer.saveSmcs,
     smcsAppNumberData: state.smcsReducer.smcsAppNumberData,
     checkWarranty: state.smcsReducer.checkWarranty,
-    paymentOptions: state.smcsReducer.paymentOptions,
+    paymentOptions3: state.smcsReducer.paymentOptions3,
   };
 }
 
