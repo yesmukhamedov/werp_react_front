@@ -8,8 +8,6 @@ const Services = props => {
 
   const totalServices = data.reduce((total, item) => total + item.sum, 0);
 
-  console.log('DATA SERVICES', data);
-
   const columns = [
     {
       Header: '№',

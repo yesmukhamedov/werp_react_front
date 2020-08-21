@@ -88,7 +88,7 @@ const Smes = props => {
           bukrs: smesList.bukrs,
           productId: smesList.tovarId,
         };
-        props.fetchMatnrPriceServicePackage({ ...param });
+        props.fetchMatnrPriceServicePackage({ ...param }, 1);
       }
 
       if (smesList.branchId && smesList.bukrs) {
@@ -305,7 +305,7 @@ function mapStateToProps(state) {
     branchOptions: state.userInfo.branchOptionsAll,
     smesList: state.smesReducer.smesList,
     editStat: state.smvsReducer.editStat,
-    matnrServicePackage: state.smcsReducer.matnrServicePackage,
+    matnrServicePackage: state.smcsReducer.matnrServicePackage1,
     paymentOptions: state.smesReducer.paymentOptions,
     acceptPayment: state.smesReducer.acceptPayment,
   };
