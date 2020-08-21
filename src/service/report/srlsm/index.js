@@ -218,16 +218,33 @@ const Srlsm = props => {
       accessor: 'id',
       checked: true,
       filterable: false,
+      width: 70,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: 'Филиал',
       accessor: 'branchId',
       checked: true,
       filterable: false,
+      width: 100,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: 'Дата сервиса',
       accessor: 'dateOpen',
+      Cell: row => (
+        <div className="flexCenter">
+          {row.value ? moment(row.value).format('DD.MM.YYYY') : ''}
+        </div>
+      ),
       checked: true,
       filterable: false,
     },
@@ -235,16 +252,33 @@ const Srlsm = props => {
       Header: 'CN',
       accessor: 'contractNumber',
       checked: true,
+      width: 70,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: 'Заводской номер',
       accessor: 'tovarSn',
       checked: true,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: 'ФИО клиента',
       accessor: 'customerFIO',
       checked: true,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+      width: 150,
     },
 
     {
@@ -252,24 +286,47 @@ const Srlsm = props => {
       accessor: 'serviceStatusId',
       checked: true,
       filterable: false,
+      width: 90,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: 'Мастер',
       accessor: 'masterFIO',
       checked: true,
       filterable: false,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+      width: 150,
     },
     {
       Header: 'Оператор',
       accessor: 'operatorFIO',
       checked: true,
       filterable: false,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+      width: 150,
     },
     {
       Header: 'Вид сервиса',
       accessor: 'serviceTypeId',
       checked: true,
       filterable: false,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: 'Сумма',
@@ -277,10 +334,11 @@ const Srlsm = props => {
       checked: true,
       filterable: false,
       Cell: original => (
-        <div style={{ textAlign: 'right' }}>
+        <div style={{ textAlign: 'center' }}>
           {moneyFormat(original.row.sumTotal)}
         </div>
       ),
+      width: 90,
     },
     {
       Header: 'Оплачено',
@@ -288,10 +346,11 @@ const Srlsm = props => {
       checked: true,
       filterable: false,
       Cell: original => (
-        <div style={{ textAlign: 'right' }}>
+        <div style={{ textAlign: 'center' }}>
           {moneyFormat(original.row.paid)}
         </div>
       ),
+      width: 90,
     },
     {
       Header: 'Остаток',
@@ -299,10 +358,11 @@ const Srlsm = props => {
       checked: true,
       filterable: false,
       Cell: original => (
-        <div style={{ textAlign: 'right' }}>
+        <div style={{ textAlign: 'center' }}>
           {moneyFormat(original.row.residue)}
         </div>
       ),
+      width: 90,
     },
     {
       Header: 'Валюта',
@@ -310,17 +370,27 @@ const Srlsm = props => {
       checked: true,
       filterable: false,
       width: 70,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: 'Принял',
       accessor: 'acceptPaymentByName',
       checked: true,
       filterable: false,
+      width: 90,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
 
     {
       Header: `${messages['service']} №`,
-
       accessor: 'serviceNumber',
       show: true,
       Cell: row => (
@@ -329,9 +399,10 @@ const Srlsm = props => {
         </div>
       ),
       fixed: 'right',
+      width: 100,
     },
     {
-      Header: 'История клиента',
+      Header: '',
       accessor: '16',
       filterable: false,
       Cell: original =>
@@ -347,6 +418,7 @@ const Srlsm = props => {
         ),
       checked: true,
       fixed: 'right',
+      width: 50,
     },
   ];
 
@@ -404,7 +476,7 @@ const Srlsm = props => {
             <label>Страна</label>
             <DropdownClearable
               fluid
-              placeholder="Страна"
+              placeholder="Все"
               value={param.countryId}
               options={countryOptions}
               onChange={(e, o) => onInputChange(o, 'countryId')}
@@ -417,7 +489,7 @@ const Srlsm = props => {
             <label>Компания</label>
             <DropdownClearable
               fluid
-              placeholder="Компания"
+              placeholder="Все"
               value={param.bukrs}
               options={companyOptions}
               onChange={(e, o) => onInputChange(o, 'bukrs')}
@@ -430,7 +502,7 @@ const Srlsm = props => {
             <Dropdown
               selection
               fluid
-              placeholder="Филиал"
+              placeholder="Все"
               options={
                 param.bukrs == '' || param.bukrs == null
                   ? []
@@ -446,7 +518,7 @@ const Srlsm = props => {
             <label>Вид сервиса</label>
             <Form.Select
               fluid
-              placeholder="Вид сервиса"
+              placeholder="Все"
               options={serviceTypeOptions}
               onChange={(e, o) => onInputChange(o, 'serviceTypeId')}
               className="alignBottom"
@@ -458,7 +530,7 @@ const Srlsm = props => {
             <label>Категория товара</label>
             <Form.Select
               fluid
-              placeholder="Категория товара"
+              placeholder="Все"
               options={tovarCategoryOptions}
               onChange={(e, o) => onInputChange(o, 'categoryId')}
               className="alignBottom"
@@ -474,7 +546,7 @@ const Srlsm = props => {
               multiple
               defaultValue={arrayAppStatus}
               options={serviceStatusListOptions}
-              placeholder="Статус сервиса"
+              placeholder="Все"
               onChange={(e, o) => onInputChange(o, 'serviceStatusId')}
             />
           </Form.Field>
@@ -482,7 +554,7 @@ const Srlsm = props => {
             <label>Принял автор</label>
             <DropdownClearable
               fluid
-              placeholder="Принял автор"
+              placeholder="Все"
               value={param.acceptedPaymentById}
               options={acceptUsersOptions}
               onChange={(e, o) => onInputChange(o, 'acceptPayment')}

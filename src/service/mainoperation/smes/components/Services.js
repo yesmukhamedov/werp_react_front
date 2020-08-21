@@ -22,20 +22,7 @@ const Services = props => {
       Header: 'Наименование услуг',
       accessor: 'serviceTypeId',
       width: 500,
-      Cell: ({ original }) => (
-        <Input value={original.serviceTypeName} fluid />
-        // <Dropdown
-        //   disabled={disabledEdit}
-        //   placeholder="Выбрать"
-        //   fluid
-        //   selection
-        //   value={original.serviceTypeId}
-        //   options={serviceTypeOptions}
-        //   onChange={(e, value) =>
-        //     onChangeSettingService({ original, value }, 'changeServiceType')
-        //   }
-        // />
-      ),
+      Cell: ({ original }) => <Input value={original.serviceTypeName} fluid />,
     },
     {
       Header: 'Сумма',

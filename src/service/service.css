@@ -178,3 +178,10 @@ input::-webkit-inner-spin-button {
 .text-wrap {
   white-space: normal;
 }
+
+.flexCenter {
+  display: flex;
+  flex-direction: row;
+  align-items: center !important;
+  justify-content: center;
+}

@@ -18,12 +18,14 @@ const DropdownClearable = props => {
     lineHeight: 1,
     zIndex: 1,
   };
-
-  // useEffect(() => {
-  //   if (options.length === 1) {
-  //     onChange('', options[0]);
-  //   }
-  // }, [options]);
+  const optionsArr = [
+    {
+      key: 696969,
+      text: 'Все',
+      value: '',
+    },
+    ...options,
+  ];
 
   return (
     <div style={{ position: 'relative' }}>
@@ -33,7 +35,7 @@ const DropdownClearable = props => {
         error={error}
         search
         selection
-        options={options}
+        options={optionsArr}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
