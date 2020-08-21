@@ -158,7 +158,7 @@ const BasicInfoWithoutRequest = props => {
               readOnly
               value={
                 data.contractDate
-                  ? moment(data.contractDate).format('DD-MM-YYYY')
+                  ? moment(data.contractDate).format('DD.MM.YYYY')
                   : ''
               }
             />
@@ -237,7 +237,7 @@ const BasicInfoWithoutRequest = props => {
               readOnly
               value={
                 data.warrantyPeriodDate
-                  ? moment(data.warrantyPeriodDate).format('DD-MM-YYYY')
+                  ? moment(data.warrantyPeriodDate).format('DD.MM.YYYY')
                   : ''
               }
             />

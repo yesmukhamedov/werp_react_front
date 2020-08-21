@@ -1,6 +1,7 @@
 import React from 'react';
 import { Segment, Button, Table, Input, TextArea } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
+import moment from 'moment';
 
 const BasicInfo = props => {
   const {
@@ -192,9 +193,9 @@ const BasicInfo = props => {
                 fluid
                 readOnly
                 value={
-                  data.contractDate === null || data.contractDate === undefined
-                    ? ''
-                    : data.contractDate
+                  data.contractDate
+                    ? moment(data.contractDate).format('DD.MM.YYYY')
+                    : ''
                 }
               />
             </Table.Cell>
@@ -238,9 +239,9 @@ const BasicInfo = props => {
                 fluid
                 readOnly
                 value={
-                  data.serviceDate === null || data.serviceDate === undefined
-                    ? ''
-                    : data.serviceDate
+                  data.serviceDate
+                    ? moment(data.serviceDate).format('DD.MM.YYYY')
+                    : ''
                 }
               />
             </Table.Cell>
@@ -252,10 +253,9 @@ const BasicInfo = props => {
                 fluid
                 readOnly
                 value={
-                  data.warrantyPeriodDate === null ||
-                  data.warrantyPeriodDate === undefined
-                    ? ''
-                    : data.warrantyPeriodDate
+                  data.warrantyPeriodDate
+                    ? moment(data.warrantyPeriodDate).format('DD.MM.YYYY')
+                    : ''
                 }
               />
             </Table.Cell>
@@ -267,10 +267,7 @@ const BasicInfo = props => {
                 fluid
                 readOnly
                 value={
-                  data.warrantyPeriodInMonth === null ||
-                  data.warrantyPeriodInMonth === undefined
-                    ? ''
-                    : data.warrantyPeriodInMonth
+                  data.warrantyPeriodInMonth ? data.warrantyPeriodInMonth : ''
                 }
               />
             </Table.Cell>

@@ -108,7 +108,7 @@ const Smes = props => {
           bukrs: smvsList.bukrs,
           productId: smvsList.tovarId,
         };
-        props.fetchMatnrPriceServicePackage({ ...param });
+        props.fetchMatnrPriceServicePackage({ ...param }, 1);
       }
     }
   }, [smvsList]);
@@ -193,7 +193,7 @@ function mapStateToProps(state) {
     branchOptions: state.userInfo.branchOptionsAll,
     smvsList: state.smvsReducer.smvsList,
     editStat: state.smvsReducer.editStat,
-    matnrServicePackage: state.smcsReducer.matnrServicePackage,
+    matnrServicePackage: state.smcsReducer.matnrServicePackage1,
   };
 }
 
