@@ -230,6 +230,10 @@ export function stringYYYYMMDDToMoment(stringVal) {
 export function momentToStringYYYYMMDD(momentVal) {
   return momentVal ? momentVal.format('YYYY-MM-DD') : '';
 }
+
+export function momentToStringDDMMYYYY(momentVal) {
+  return momentVal ? momentVal.format('DD.MM.YYYY') : '';
+}
 export function momentToStringYYYYMMDDHHMMSS(momentVal) {
   return momentVal ? momentVal.format('YYYY-MM-DD HH:mm:ss') : '';
 }

@@ -168,3 +168,13 @@ input::-webkit-inner-spin-button {
 .width25Rem {
   width: 25rem;
 }
+
+.flexWrap {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.text-wrap {
+  white-space: normal;
+}

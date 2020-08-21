@@ -23,6 +23,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import {
   momentToStringYYYYMMDD,
   stringYYYYMMDDToMoment,
+  momentToStringDDMMYYYY,
 } from '../../../utils/helpers';
 import { LinkToSmcusporFromSmsrcus } from '../../../utils/outlink';
 
@@ -133,7 +134,7 @@ const Smsrcus = props => {
     {
       Header: 'Продукт',
       accessor: 'matnrName',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <div className="text-wrap">{row.value}</div>,
       checked: true,
       filterable: false,
     },
@@ -146,14 +147,18 @@ const Smsrcus = props => {
     {
       Header: 'Дата продажи',
       accessor: 'contractDate',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => {
+        let momentDate = stringYYYYMMDDToMoment(row.value);
+        let date = momentToStringDDMMYYYY(momentDate);
+        return <div style={{ textAlign: 'center' }}>{date}</div>;
+      },
       checked: true,
       filterable: false,
     },
     {
       Header: messages['full_name_of_client'],
       accessor: 'customerFIO',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <div className="text-wrap">{row.value}</div>,
       checked: true,
     },
     {
@@ -218,7 +223,7 @@ const Smsrcus = props => {
     {
       Header: 'Категория',
       accessor: 'tovarCategoryName',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <div className="text-wrap">{row.value}</div>,
       checked: true,
       filterable: false,
     },
@@ -240,7 +245,14 @@ const Smsrcus = props => {
     {
       Header: 'ФИО диллера',
       accessor: 'dealerFIO',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <div className="text-wrap">{row.value}</div>,
+      checked: true,
+      filterable: false,
+    },
+    {
+      Header: 'Оператор',
+      accessor: 'operatorFIO',
+      Cell: row => <div className="text-wrap">{row.value}</div>,
       checked: true,
       filterable: false,
     },
@@ -309,11 +321,6 @@ const Smsrcus = props => {
     props.f4FetchBranches();
     props.f4FetchPhysStatus();
     props.f4FetchCurrentStaff();
-    // const page = 0;
-    // const size = 20;
-
-    // props.fetchSmsrcusList({ ...param, page, size });
-    // setTurnOnReactFetch(true);
   }, []);
 
   const handleClickSmsrcus = () => {
