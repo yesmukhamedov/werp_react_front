@@ -19,6 +19,8 @@ import {
 } from '../../../../utils/helpers';
 import DropdownClearable from '../../../../utils/DropdownClearable';
 
+import '../../../service.css';
+
 const SearchCustomer = props => {
   const {
     intl: { messages },
@@ -58,29 +60,33 @@ const SearchCustomer = props => {
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,
-      width: 55,
+      width: 70,
     },
     {
       Header: messages['brnch'],
       accessor: 'branchName',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       filterable: false,
-      width: 90,
+      width: 100,
     },
     {
       Header: 'CN',
       accessor: 'contractNumber',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 60,
+      width: 70,
     },
     {
       Header: messages['factory_number'],
       accessor: 'tovarSn',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 90,
+      width: 120,
     },
     {
       Header: messages['Crm.DateOfSale'],
@@ -88,17 +94,17 @@ const SearchCustomer = props => {
       checked: true,
       Cell: row => (
         <div style={{ textAlign: 'center' }}>
-          {row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+          {row.value ? moment(row.value).format('DD.MM.YYYY') : ''}
         </div>
       ),
       filterable: false,
-      width: 80,
+      width: 90,
     },
     {
       Header: messages['TBL_H__PRODUCT'],
       accessor: 'productName',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <div className="text-wrap">{row.value}</div>,
       filterable: false,
     },
 
@@ -106,7 +112,7 @@ const SearchCustomer = props => {
       Header: messages['fin_status'],
       accessor: 'contractStatusName',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <div className="text-wrap">{row.value}</div>,
       filterable: false,
       width: 90,
     },
@@ -123,7 +129,7 @@ const SearchCustomer = props => {
       Header: messages['fio'],
       accessor: 'customerFIO',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <div className="text-wrap">{row.value}</div>,
     },
 
     {
@@ -131,19 +137,26 @@ const SearchCustomer = props => {
       accessor: 'customerIinBin',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      width: 100,
+      width: 130,
     },
     {
       Header: messages['address'],
       accessor: 'address',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <div className="text-wrap">{row.value}</div>,
     },
     {
       Header: messages['Phone'],
       accessor: 'phoneNumber',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <div className="text-wrap">{row.value}</div>,
+    },
+
+    {
+      Header: 'Оператор',
+      accessor: 'operatorFIO',
+      checked: true,
+      Cell: row => <div className="text-wrap">{row.value}</div>,
     },
 
     {
