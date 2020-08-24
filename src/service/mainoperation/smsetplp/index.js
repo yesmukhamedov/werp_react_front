@@ -64,7 +64,7 @@ const Smsetplp = props => {
   const [brnchErr, setBrnchErr] = useState(false);
   const [postOpen, setPostOpen] = useState(false);
   const language = localStorage.getItem('language');
-  const [iss, setIss] = useState();
+  //const [iss, setIss] = useState();
 
   let allColumns = [
     {
@@ -325,7 +325,7 @@ const Smsetplp = props => {
                         ? setDateAt(momentToStringYYYYMMDD(date))
                         : setDateAt(date);
                     }}
-                    dateFormat="YYYY.MM.DD "
+                    dateFormat="DD.MM.YYYY"
                     placeholderText={messages['Table.Date']}
                   />
                 </Form.Field>
