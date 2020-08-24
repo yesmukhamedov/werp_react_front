@@ -57,8 +57,6 @@ const EditModal = props => {
     }
   }, [informations.bukrs]);
 
-  console.log('informations EDIT', informations);
-
   const [test, setTest] = useState(false);
 
   //Страна
@@ -104,12 +102,6 @@ const EditModal = props => {
   });
 
   const productOptions = [{ key: 66666, text: 'Все', value: 0 }, ...productOpt];
-
-  console.log('productOptions', productOptions);
-
-  const onChangeEditModalRR = (value, fieldName) => {
-    console.log(`${fieldName}`, value);
-  };
 
   return (
     <Modal open={modalOpenEdit}>

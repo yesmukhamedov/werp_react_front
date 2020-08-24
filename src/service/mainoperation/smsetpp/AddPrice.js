@@ -181,8 +181,6 @@ const AddPrice = props => {
 
   const productOptions = [{ key: 66666, text: 'Все', value: 0 }, ...productOpt];
 
-  console.log('productOptions ADD', productOptions);
-
   const onChangeDate = d => {
     setDateStart(stringYYYYMMDDToMoment(d));
     setInformations({
@@ -201,7 +199,6 @@ const AddPrice = props => {
       dateStart !== '' &&
       serviceTypeId !== null
     ) {
-      //console.log(param);
       setTest(false);
       setModalOpen(false);
       fetchSmsetppPost(informations, () => {
@@ -284,14 +281,14 @@ const AddPrice = props => {
   return (
     <Modal
       trigger={
-        <Form.Button
+        <Button
           color="green"
           floated="right"
           onClick={() => setModalOpen(true)}
         >
           <Icon name="plus" />
           {messages['toAdd']}
-        </Form.Button>
+        </Button>
       }
       open={modalOpen}
     >

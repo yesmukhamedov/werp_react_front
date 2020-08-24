@@ -9,6 +9,7 @@ const DropdownClearable = props => {
     onChange,
     placeholder,
     value,
+    disabled,
   } = props;
   const iconStyle = {
     position: 'absolute',
@@ -29,8 +30,14 @@ const DropdownClearable = props => {
 
   return (
     <div style={{ position: 'relative' }}>
-      <Icon link name="close" style={iconStyle} onClick={handleClear} />
+      {disabled == true ? (
+        ''
+      ) : (
+        <Icon link name="close" style={iconStyle} onClick={handleClear} />
+      )}
+
       <Dropdown
+        disabled={disabled}
         fluid
         error={error}
         search

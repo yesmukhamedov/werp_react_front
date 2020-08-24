@@ -32,6 +32,7 @@ import OutputErrors from '../../../general/error/outputErrors';
 import { errorTableText, moneyInputHanler } from '../../../utils/helpers';
 import { doGet } from '../../../utils/apiActions';
 import TextAlignCenter from '../../../utils/TextAlignCenter';
+import DropdownClearable from '../../../utils/DropdownClearable';
 
 const Smsetpp = props => {
   const {
@@ -77,6 +78,8 @@ const Smsetpp = props => {
     fc: null,
     mc: null,
   });
+
+  console.log('search', search);
 
   const serviceTypeOptions = serviceType.map(item => {
     return {
@@ -137,13 +140,6 @@ const Smsetpp = props => {
     }
   }, [data]);
 
-  // useEffect(() => {
-  //   let service = serviceType.map(item => {
-  //     return { key: item.id, text: item.name, value: item.id };
-  //   });
-  //   //setTypeOfService(service);
-  // }, [serviceType]);
-
   const onChange = (text, value) => {
     if (text === 'companyOptions') {
       setSearch({ ...search, bukrs: value });
@@ -154,7 +150,11 @@ const Smsetpp = props => {
       setSecondActive(true);
     }
     if (text === 'serviceType') {
-      setSearch({ ...search, serviceTypeId: value });
+      if (value == 1) {
+        setSearch({ ...search, serviceTypeId: value });
+      } else {
+        setSearch({ ...search, serviceTypeId: value, fc: null, mc: null });
+      }
       setSecondActive(true);
     }
     if (text === 'fc') {
@@ -334,48 +334,40 @@ const Smsetpp = props => {
 
       //Страна
       case 'countryId':
-        console.log('countryId', value);
         setInformations({ ...informations, countryId: value });
         break;
 
       //Продукт
       case 'productId':
-        console.log('productId', value);
         if (value === 0) {
           setInformations({ ...informations, productId: null });
         } else {
           setInformations({ ...informations, productId: value });
         }
-
         break;
 
       //Вид сервиса
       case 'serviceTypeIdEdit':
-        console.log('serviceTypeIdEdit', value);
         setInformations({ ...informations, serviceTypeId: value });
         break;
 
       //Вид суммы
       case 'typeOfSum':
-        console.log('typeOfSum', value);
         setInformations({ ...informations, typeOfSum: value });
         break;
 
       //Дата начало
       case 'dateStart':
-        console.log('date', value);
         setInformations({ ...informations, dateStart: value });
         break;
 
       //FC
       case 'fc':
-        console.log('fc', value);
         setInformations({ ...informations, fc: parseInt(value) });
         break;
 
       //MC
       case 'mc':
-        console.log('mc', value);
         setInformations({ ...informations, mc: parseInt(value) });
         break;
 
@@ -390,7 +382,6 @@ const Smsetpp = props => {
     switch (fieldName) {
       //Общая сумма
       case 'total':
-        console.log('setValue total', setValue);
         setInformations({
           ...informations,
           total: setValue,
@@ -487,81 +478,83 @@ const Smsetpp = props => {
       </Segment>
 
       <Form>
-        <div className="justifySpaceBetween">
-          <Form.Group className="alignBottom">
-            <Form.Field required>
-              <label>{messages['bukrs']}</label>
-              <Dropdown
-                clearable="true"
-                selection
-                options={companyOptions}
-                placeholder={messages['bukrs']}
-                onChange={(e, { value }) => onChange('companyOptions', value)}
-              />
-            </Form.Field>
-
-            <Form.Field required>
-              <label>{messages['country']}</label>
-              <Dropdown
-                clearable="true"
-                selection
-                options={activeDropdown ? countryOptions : []}
-                placeholder={messages['country']}
-                onChange={(e, { value }) => onChange('countries', value)}
-              />
-            </Form.Field>
-
-            <Form.Field>
-              <label>Вид сервиса</label>
-              <Dropdown
-                clearable="true"
-                selection
-                options={serviceTypeOptions}
-                placeholder="Вид сервиса"
-                onChange={(e, { value }) => onChange('serviceType', value)}
-              />
-            </Form.Field>
-
-            <Form.Field>
-              <label>FC</label>
-              <Dropdown
-                disabled={statusServiceType}
-                clearable="true"
-                selection
-                options={fcOptions}
-                placeholder="FC"
-                onChange={(e, { value }) => onChange('fc', value)}
-              />
-            </Form.Field>
-
-            <Form.Field>
-              <label>MC</label>
-              <Dropdown
-                disabled={statusServiceType}
-                clearable="true"
-                selection
-                options={mcOptions}
-                placeholder="MC"
-                onChange={(e, { value }) => onChange('mc', value)}
-              />
-            </Form.Field>
-            <Form.Button onClick={onClickButton} color="blue">
-              <Icon name="search"></Icon>
-              {messages['search']}
-            </Form.Button>
-          </Form.Group>
-          <Form.Group className="alignBottom">
-            <AddPrice
-              param={
-                search.bukrs !== 0 && search.countryId !== 0 ? search : null
-              }
-              serviceTypeOptions={serviceTypeOptions}
-              search={search}
-              productList={productList}
-              getProductOptions={getProductOptions}
+        {/* <div className="justifySpaceBetween"> */}
+        <Form.Group className="alignBottom" widths="equal">
+          <Form.Field required>
+            <label>{messages['bukrs']}</label>
+            <DropdownClearable
+              placeholder="Все"
+              options={companyOptions}
+              value={search.bukrs ? search.bukrs : ''}
+              onChange={(e, { value }) => onChange('companyOptions', value)}
+              handleClear={() => setSearch({ ...search, bukrs: '' })}
             />
-          </Form.Group>
-        </div>
+          </Form.Field>
+
+          <Form.Field required>
+            <label>{messages['country']}</label>
+
+            <DropdownClearable
+              placeholder="Все"
+              options={activeDropdown ? countryOptions : []}
+              value={search.countryId ? search.countryId : ''}
+              onChange={(e, { value }) => onChange('countries', value)}
+              handleClear={() => setSearch({ ...search, countryId: '' })}
+            />
+          </Form.Field>
+
+          <Form.Field>
+            <label>Вид сервиса</label>
+
+            <DropdownClearable
+              placeholder="Все"
+              options={serviceTypeOptions}
+              value={search.serviceTypeId ? search.serviceTypeId : ''}
+              onChange={(e, { value }) => onChange('serviceType', value)}
+              handleClear={() => setSearch({ ...search, serviceTypeId: '' })}
+            />
+          </Form.Field>
+
+          <Form.Field>
+            <label>FC</label>
+
+            <DropdownClearable
+              disabled={statusServiceType}
+              placeholder="Все"
+              options={fcOptions}
+              value={search.fc !== null ? search.fc : ''}
+              onChange={(e, { value }) => onChange('fc', value)}
+              handleClear={() => setSearch({ ...search, fc: '' })}
+            />
+          </Form.Field>
+
+          <Form.Field>
+            <label>MC</label>
+
+            <DropdownClearable
+              disabled={statusServiceType}
+              placeholder="Все"
+              options={mcOptions}
+              value={search.mc !== null ? search.mc : ''}
+              onChange={(e, { value }) => onChange('mc', value)}
+              handleClear={() => setSearch({ ...search, mc: '' })}
+            />
+          </Form.Field>
+          <Form.Button onClick={onClickButton} color="blue">
+            <Icon name="search"></Icon>
+            {messages['search']}
+          </Form.Button>
+        </Form.Group>
+        <Form.Group className="alignBottom">
+          <AddPrice
+            param={search.bukrs !== 0 && search.countryId !== 0 ? search : null}
+            serviceTypeOptions={serviceTypeOptions}
+            search={search}
+            productList={productList}
+            getProductOptions={getProductOptions}
+          />
+        </Form.Group>
+
         <OutputErrors errors={error} />
 
         <ReactTableWrapperFixedColumns
