@@ -522,7 +522,7 @@ const Smsetct = props => {
         </Segment>
 
         <Form>
-          <Form.Group>
+          <Form.Group widths="equal">
             <Form.Field required>
               <label>{messages['bukrs']}</label>
               <DropdownClearable
@@ -556,6 +556,8 @@ const Smsetct = props => {
                 Поиск
               </Button>
             </Form.Field>
+            <Form.Field></Form.Field>
+            <Form.Field></Form.Field>
           </Form.Group>
         </Form>
         <List
