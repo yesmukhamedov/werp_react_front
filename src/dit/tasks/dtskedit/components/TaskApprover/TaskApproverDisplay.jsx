@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-//import jwt from 'jwt-simple';
+import jwt from 'jwt-simple';
 import {
   Form,
   Grid,
@@ -9,7 +9,7 @@ import {
   Checkbox,
 } from 'semantic-ui-react';
 import { constructFullName } from '../../../../../utils/helpers';
-//import { TOKEN_PASSWORD } from '../../../../../utils/constants';
+import { TOKEN_PASSWORD } from '../../../../../utils/constants';
 
 class TaskApproverDisplay extends Component {
   constructor(props) {
@@ -46,12 +46,7 @@ class TaskApproverDisplay extends Component {
   }
 
   getUserId() {
-    const token = localStorage.getItem('token');
-    if (token) {
-      //const payload = jwt.decode(token, TOKEN_PASSWORD);
-      const userId = localStorage.getItem('userId');
-      return userId;
-    }
+    return localStorage.getItem('userId');
   }
 
   getTaskDoc() {
