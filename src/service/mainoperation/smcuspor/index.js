@@ -461,7 +461,7 @@ function Smcuspor(props) {
                         fluid
                         value={
                           installmentDate
-                            ? moment(installmentDate).format('DD-MM-YYYY')
+                            ? moment(installmentDate).format('DD.MM.YYYY')
                             : ''
                         }
                       />
@@ -512,7 +512,7 @@ function Smcuspor(props) {
                                 value={
                                   warrantyEndDate
                                     ? moment(warrantyEndDate).format(
-                                        'DD-MM-YYYY',
+                                        'DD.MM.YYYY',
                                       )
                                     : ''
                                 }
@@ -632,7 +632,7 @@ function Smcuspor(props) {
                       {messages['Form.DateFrom']}
                       <DatePicker
                         autoComplete="off"
-                        dateFormat="DD/MM/YYYY"
+                        dateFormat="DD.MM.YYYY"
                         placeholderText={messages['Form.DateFrom']}
                         selected={
                           dateAt === null ? '' : stringYYYYMMDDToMoment(dateAt)
@@ -649,7 +649,7 @@ function Smcuspor(props) {
                       {messages['Form.DateTo']}
                       <DatePicker
                         autoComplete="off"
-                        dateFormat="DD/MM/YYYY"
+                        dateFormat="DD.MM.YYYY"
                         placeholderText={messages['Form.DateTo']}
                         selected={
                           dateTo === null ? '' : stringYYYYMMDDToMoment(dateTo)

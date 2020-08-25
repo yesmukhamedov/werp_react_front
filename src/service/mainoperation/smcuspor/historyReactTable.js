@@ -65,7 +65,9 @@ function HistoryReactTable(props) {
             // filterAll: true,
             Cell: row => (
               <div style={{ textAlign: 'center' }}>
-                {row.original.crmHistoryDate}
+                {moment(row.original.crmHistoryDate).format(
+                  'DD.MM.YYYY HH:mm:ss',
+                )}
               </div>
             ),
           },
@@ -181,7 +183,11 @@ function HistoryReactTable(props) {
               <div style={{ textAlign: 'center' }}>{messages['date']}</div>
             ),
             accessor: 'crmHistoryDate',
-            Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+            Cell: row => (
+              <div style={{ textAlign: 'center' }}>
+                {moment(row.value).format('DD.MM.YYYY HH:mm:ss')}
+              </div>
+            ),
           },
           {
             Header: () => (
@@ -258,7 +264,11 @@ function HistoryReactTable(props) {
               <div style={{ textAlign: 'center' }}>{messages['date']}</div>
             ),
             accessor: 'crmHistoryDate',
-            Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+            Cell: row => (
+              <div style={{ textAlign: 'center' }}>
+                {moment(row.value).format('DD.MM.YYYY HH:mm:ss')}
+              </div>
+            ),
           },
           {
             Header: () => (
@@ -325,7 +335,11 @@ function HistoryReactTable(props) {
               <div style={{ textAlign: 'center' }}>{messages['date']}</div>
             ),
             accessor: 'crmHistoryDate',
-            Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+            Cell: row => (
+              <div style={{ textAlign: 'center' }}>
+                {moment(row.value).format('DD.MM.YYYY HH:mm:ss')}
+              </div>
+            ),
           },
           {
             Header: () => (
