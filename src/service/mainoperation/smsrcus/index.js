@@ -118,11 +118,16 @@ const Smsrcus = props => {
 
   let initialColumns = [
     {
-      Header: messages['brnch'],
+      Header: (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {messages['brnch']}
+        </div>
+      ),
       accessor: 'serviceBranchName',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
+      width: 90,
     },
     {
       Header: 'CN',
@@ -139,13 +144,22 @@ const Smsrcus = props => {
       filterable: false,
     },
     {
-      Header: messages['factory_number'],
+      Header: (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {messages['factory_number']}
+        </div>
+      ),
       accessor: 'tovarSn',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
+      width: 110,
     },
     {
-      Header: 'Дата продажи',
+      Header: () => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          Дата продажи
+        </div>
+      ),
       accessor: 'contractDate',
       Cell: row => {
         let momentDate = stringYYYYMMDDToMoment(row.value);
@@ -154,6 +168,7 @@ const Smsrcus = props => {
       },
       checked: true,
       filterable: false,
+      width: 90,
     },
     {
       Header: messages['full_name_of_client'],
@@ -177,6 +192,7 @@ const Smsrcus = props => {
       ),
       checked: true,
       filterable: true,
+      width: 200,
     },
     {
       Header: messages['telephone'],
@@ -236,19 +252,29 @@ const Smsrcus = props => {
       filterable: false,
     },
     {
-      Header: messages['financial_status'],
+      Header: (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {messages['financial_status']}
+        </div>
+      ),
       accessor: 'contractStatusName',
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
+      width: 100,
     },
     {
-      Header: 'Физический статус',
+      Header: (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          Физический статус
+        </div>
+      ),
       accessor: 'lastStateName',
       style: { 'white-space': 'unset' },
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       checked: true,
       filterable: false,
+      width: 100,
     },
     {
       Header: 'ФИО диллера',
