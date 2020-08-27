@@ -170,14 +170,22 @@ const Smsrcus = props => {
     {
       Header: messages['address'],
       accessor: 'fullAddress',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       filterable: true,
     },
     {
       Header: messages['telephone'],
       accessor: 'fullPhone',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
     },
     {
