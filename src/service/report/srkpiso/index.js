@@ -8,6 +8,8 @@ import {
   Icon,
   Divider,
   Dropdown,
+  Modal,
+  Button,
 } from 'semantic-ui-react';
 import {
   f4FetchBranches,
@@ -51,6 +53,14 @@ const Srkpiso = props => {
   };
   const [param, setParam] = useState({ ...emptyParam });
 
+  const [modalDetalOpen, setModalDetalOpen] = useState(false);
+
+  const toDetalization = original => {
+    console.log('row original', original);
+    setModalDetalOpen(true);
+    // window.location = `srkpisod?serviceNumber=${original}`;
+  };
+
   const initialColumns = [
     {
       Header: '#',
@@ -91,11 +101,8 @@ const Srkpiso = props => {
     },
 
     {
-      Header: () => (
-        <div className="text-wrap" style={{ backgroundColor: '#ff0000' }}>
-          Текущий
-        </div>
-      ),
+      Header: () => <div className="text-wrap">Текущий</div>,
+      headerStyle: { background: 'teal', color: '#fff' },
       columns: [
         {
           Header: () => <div className="text-wrap">Текущий план</div>,
@@ -103,8 +110,19 @@ const Srkpiso = props => {
           filterable: false,
           checked: true,
           Cell: row => (
-            <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+            <div
+              className="flexJustifySpaceBeetween"
+              style={{ textAlign: 'center' }}
+            >
+              <p>{row.value}</p>
+
+              <Icon
+                color="teal"
+                name="search"
+                onClick={() => {
+                  toDetalization(row.original);
+                }}
+              />
             </div>
           ),
         },
@@ -145,6 +163,11 @@ const Srkpiso = props => {
     },
     {
       Header: () => <div className="text-wrap">Просроченный</div>,
+      headerStyle: {
+        background: 'red',
+        color: '#fff',
+        height: '2rem',
+      },
       columns: [
         {
           Header: () => <div className="text-wrap">Просроченный план</div>,
@@ -197,14 +220,27 @@ const Srkpiso = props => {
       Header: () => <div className="text-wrap">KPI по %</div>,
       columns: [
         {
-          Header: 'Просроченная сумма',
+          Header: () => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              Просроченная сумма
+            </div>
+          ),
+          headerStyle: {
+            background: 'red',
+            color: '#fff',
+          },
           accessor: 'overDueSum',
-          Cell: row => <div className="text-wrap">{row.value}</div>,
+          Cell: row => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {row.value}
+            </div>
+          ),
           filterable: false,
           checked: true,
         },
         {
-          Header: 'Текущая сумма',
+          Header: () => <div className="text-wrap">Текущая сумма</div>,
+          headerStyle: { background: 'teal', color: '#fff' },
           accessor: 'currentPlanSum',
           Cell: row => <div className="text-wrap">{row.value}</div>,
           filterable: false,
@@ -274,6 +310,194 @@ const Srkpiso = props => {
   };
 
   const [columns, setColumns] = useState([...initialColumns]);
+  const detalColumns = [
+    {
+      Header: '#',
+      accessor: 'recommenderId',
+      filterable: false,
+      checked: true,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+      width: 80,
+    },
+    {
+      Header: () => <div className="text-wrap"> {messages['brnch']}</div>,
+      accessor: 'branchName',
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, { keys: ['recommenderBranchName'] }),
+      checked: true,
+      filterable: false,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+    },
+    {
+      Header: () => <div className="text-wrap">CN</div>,
+      accessor: 'contractNumber',
+      checked: true,
+      filterable: false,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+    },
+
+    {
+      Header: () => <div className="text-wrap">Заводской номер</div>,
+      accessor: 'tovarSn',
+      checked: true,
+      filterable: false,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+    },
+    {
+      Header: 'Дата',
+      accessor: 'date',
+      checked: true,
+      filterable: false,
+      width: 250,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+    },
+    {
+      Header: 'Адрес',
+      accessor: 'currentPlanPercent',
+      filterable: false,
+      checked: true,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+    },
+    {
+      Header: 'Телефон',
+      accessor: 'currentRescheduledPlan',
+      filterable: false,
+      checked: true,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+    },
+    {
+      Header: () => <div className="text-wrap">ФИО мастер</div>,
+      accessor: 'currentCanceledPlan',
+      filterable: false,
+      checked: true,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+    },
+    {
+      Header: 'F1',
+      accessor: 'f1',
+      filterable: false,
+      checked: true,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+      width: 70,
+    },
+    {
+      Header: 'F2',
+      accessor: 'f2',
+      filterable: false,
+      checked: true,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+      width: 70,
+    },
+    {
+      Header: 'F3',
+      accessor: 'f3',
+      filterable: false,
+      checked: true,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+      width: 70,
+    },
+    {
+      Header: 'F4',
+      accessor: 'f4',
+      filterable: false,
+      checked: true,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+      width: 70,
+    },
+    {
+      Header: 'F5',
+      accessor: 'f5',
+      filterable: false,
+      checked: true,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+      width: 70,
+    },
+    {
+      Header: 'Категория',
+      accessor: 'overDuePlanPercent',
+      filterable: false,
+      checked: true,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+    },
+    {
+      Header: 'Заявка',
+      accessor: 'overDueRescheduledPlan',
+      filterable: false,
+      checked: true,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+    },
+    {
+      Header: 'Просмотр',
+      accessor: 'overDueCanceledPlan',
+      filterable: false,
+      checked: true,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+    },
+  ];
 
   const finishColumns = data => {
     setColumns([...data]);
@@ -292,6 +516,26 @@ const Srkpiso = props => {
       <Segment>
         <h3>KPI Сервис операторов</h3>
       </Segment>
+
+      <Modal
+        onClose={() => setModalDetalOpen(false)}
+        open={modalDetalOpen}
+        size="fullscreen"
+      >
+        <Modal.Header>KPI сервис операторов(Детализация) </Modal.Header>
+        <Modal.Content>
+          <ReactTableWrapper
+            filterable={true}
+            defaultPageSize={5}
+            pageSize={5}
+            showPagination={true}
+            columns={detalColumns}
+          />
+        </Modal.Content>
+        <Modal.Actions>
+          <Button onClick={() => setModalDetalOpen(false)}>Ок</Button>
+        </Modal.Actions>
+      </Modal>
       <Form>
         <Form.Group widths="equal">
           <Form.Field>

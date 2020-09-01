@@ -9,6 +9,7 @@ import {
   Popup,
   Segment,
   Dropdown,
+  Label,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../../service.css';
@@ -184,7 +185,24 @@ const ServiceFilterPlan = props => {
       Header: messages['category'],
       accessor: 'crmCategoryName',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => (
+        <div style={{ textAlign: 'center' }}>
+          <Label
+            color={
+              row.value == 'КРАСНЫЙ'
+                ? 'red'
+                : row.value == 'ЗЕЛЕНЫЙ'
+                ? 'green'
+                : row.value == 'ЧЕРНЫЙ'
+                ? 'black'
+                : 'yellow'
+            }
+            horizontal
+          >
+            {row.value}
+          </Label>{' '}
+        </div>
+      ),
       filterable: false,
     },
     {
@@ -193,6 +211,20 @@ const ServiceFilterPlan = props => {
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
+      getProps: (state, rowInfo, column) => {
+        return {
+          style: {
+            background:
+              rowInfo && rowInfo.row.contractStatusName == 'СУД'
+                ? '#f5a61d'
+                : null,
+            color:
+              rowInfo && rowInfo.row.contractStatusName == 'СУД'
+                ? '#ffffff'
+                : null,
+          },
+        };
+      },
     },
     {
       Header: messages['plan_status'],

@@ -79,6 +79,8 @@ const Srlsm = props => {
   };
 
   const [param, setParam] = useState({ ...emptyParam });
+
+  console.log('param', param);
   const [error, setError] = useState([]);
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
 
@@ -427,22 +429,15 @@ const Srlsm = props => {
     if (param.bukrs == null || param.bukrs == '') {
       errors.push(errorTableText(5));
     } else {
-      const page = 0;
-      const size = 20;
-      if (Object.keys(serverSideParams).length > 0) {
-        props.fetchSrlsm({
-          ...param,
-          ...serverSideParams,
-          serviceStatusId: param.serviceStatusId.toString(),
-        });
-      } else {
-        props.fetchSrlsm({
-          ...param,
-          serviceStatusId: param.serviceStatusId.toString(),
-          page,
-          size,
-        });
-      }
+      let page = 0;
+      let size = 20;
+
+      props.fetchSrlsm({
+        ...param,
+        serviceStatusId: param.serviceStatusId.toString(),
+        page: page,
+        size: size,
+      });
     }
     setTurnOnReactFetch(true);
     setError(errors);
