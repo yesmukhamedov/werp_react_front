@@ -226,7 +226,11 @@ const Srlsm = props => {
       ),
     },
     {
-      Header: 'Филиал',
+      Header: (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          Филиал
+        </div>
+      ),
       accessor: 'branchId',
       checked: true,
       filterable: false,
@@ -238,7 +242,11 @@ const Srlsm = props => {
       ),
     },
     {
-      Header: 'Дата сервиса',
+      Header: () => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          Дата сервиса
+        </div>
+      ),
       accessor: 'dateOpen',
       Cell: row => (
         <div className="flexCenter">
@@ -247,9 +255,14 @@ const Srlsm = props => {
       ),
       checked: true,
       filterable: false,
+      width: 120,
     },
     {
-      Header: 'CN',
+      Header: () => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          CN
+        </div>
+      ),
       accessor: 'contractNumber',
       checked: true,
       width: 70,
@@ -260,9 +273,14 @@ const Srlsm = props => {
       ),
     },
     {
-      Header: 'Заводской номер',
+      Header: () => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          Заводской номер
+        </div>
+      ),
       accessor: 'tovarSn',
       checked: true,
+      width: 120,
       Cell: row => (
         <div className="text-wrap" style={{ textAlign: 'center' }}>
           {row.value}
@@ -270,7 +288,11 @@ const Srlsm = props => {
       ),
     },
     {
-      Header: 'ФИО клиента',
+      Header: () => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          ФИО клиента
+        </div>
+      ),
       accessor: 'customerFIO',
       checked: true,
       Cell: row => (
@@ -278,11 +300,15 @@ const Srlsm = props => {
           {row.value}
         </div>
       ),
-      width: 150,
+      width: 200,
     },
 
     {
-      Header: 'Статус сервиса',
+      Header: () => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          Статус сервиса
+        </div>
+      ),
       accessor: 'serviceStatusId',
       checked: true,
       filterable: false,
@@ -424,11 +450,19 @@ const Srlsm = props => {
 
   const [serverSideParams, setServerSideParams] = useState({});
 
+  useEffect(() => {
+    if (param.bukrs) {
+      console.log('serverSideParams', serverSideParams);
+      props.fetchSrlsm({ ...serverSideParams, ...param });
+    }
+  }, [serverSideParams]);
+
   const handleClickApply = () => {
     const errors = [];
     if (param.bukrs == null || param.bukrs == '') {
       errors.push(errorTableText(5));
     } else {
+      setServerSideParams({});
       let page = 0;
       let size = 20;
 
@@ -735,7 +769,7 @@ const Srlsm = props => {
         pageSize={20}
         showPagination={true}
         requestData={params => {
-          props.fetchSrlsm({ ...params, ...param });
+          setTurnOnReactFetch(true);
           setServerSideParams({ ...params });
         }}
         pages={srlsmTotalPages ? srlsmTotalPages : ''}
