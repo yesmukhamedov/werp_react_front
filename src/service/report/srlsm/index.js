@@ -81,8 +81,6 @@ const Srlsm = props => {
   const [param, setParam] = useState({ ...emptyParam });
   const [error, setError] = useState([]);
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
-  //const [currency, setCurrency] = useState('');
-  console.log('masterId', param.masterId);
 
   const masterOptions = masterList.map((item, index) => {
     return {

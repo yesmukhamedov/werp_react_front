@@ -2,7 +2,7 @@ import { doGet, doPost } from '../../../utils/apiActions';
 import { handleError } from '../../../general/notification/notification_action';
 import { modifyLoader } from '../../../general/loader/loader_action';
 
-export const FETCH_SMCRLD_LIST = 'FETCH_SRKPISO';
+export const FETCH_SMCRLD_LIST = 'FETCH_SMCRLD_LIST';
 export const POST_SMCRLD_FORMPLAN = 'POST_SMCRLD_FORMPLAN';
 export const FETCH_SMCRLD = 'FETCH_SMCRLD';
 export const FETCH_SMVOD_LIST = 'FETCH_SMVOD_LIST';
