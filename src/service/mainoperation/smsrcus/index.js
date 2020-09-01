@@ -124,22 +124,34 @@ const Smsrcus = props => {
         </div>
       ),
       accessor: 'serviceBranchName',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
-      filterable: false,
+      filterable: true,
       width: 90,
     },
     {
       Header: 'CN',
       accessor: 'contractNumber',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       width: 80,
     },
     {
       Header: 'Продукт',
       accessor: 'matnrName',
-      Cell: row => <div className="text-wrap">{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       filterable: false,
     },
@@ -150,7 +162,11 @@ const Smsrcus = props => {
         </div>
       ),
       accessor: 'tovarSn',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       width: 110,
     },
@@ -164,7 +180,11 @@ const Smsrcus = props => {
       Cell: row => {
         let momentDate = stringYYYYMMDDToMoment(row.value);
         let date = momentToStringDDMMYYYY(momentDate);
-        return <div style={{ textAlign: 'center' }}>{date}</div>;
+        return (
+          <div className="text-wrap" style={{ textAlign: 'center' }}>
+            {date}
+          </div>
+        );
       },
       checked: true,
       filterable: false,
@@ -173,13 +193,21 @@ const Smsrcus = props => {
     {
       Header: messages['full_name_of_client'],
       accessor: 'customerFIO',
-      Cell: row => <div className="text-wrap">{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
     },
     {
       Header: messages['customer_key'],
       accessor: 'customerIinBin',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
     },
     {
@@ -207,7 +235,11 @@ const Smsrcus = props => {
     {
       Header: 'F1',
       accessor: 'f1MtLeft',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       width: 40,
       filterable: false,
@@ -215,7 +247,11 @@ const Smsrcus = props => {
     {
       Header: 'F2',
       accessor: 'f2MtLeft',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       width: 40,
       filterable: false,
@@ -223,7 +259,11 @@ const Smsrcus = props => {
     {
       Header: 'F3',
       accessor: 'f3MtLeft',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       width: 40,
       filterable: false,
@@ -231,7 +271,11 @@ const Smsrcus = props => {
     {
       Header: 'F4',
       accessor: 'f4MtLeft',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       width: 40,
       filterable: false,
@@ -239,7 +283,11 @@ const Smsrcus = props => {
     {
       Header: 'F5',
       accessor: 'f5MtLeft',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       width: 40,
       filterable: false,
@@ -247,7 +295,11 @@ const Smsrcus = props => {
     {
       Header: 'Категория',
       accessor: 'tovarCategoryName',
-      Cell: row => <div className="text-wrap">{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       filterable: false,
     },
@@ -258,7 +310,11 @@ const Smsrcus = props => {
         </div>
       ),
       accessor: 'contractStatusName',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       filterable: false,
       width: 100,
@@ -271,7 +327,11 @@ const Smsrcus = props => {
       ),
       accessor: 'lastStateName',
       style: { 'white-space': 'unset' },
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       filterable: false,
       width: 100,
@@ -279,14 +339,22 @@ const Smsrcus = props => {
     {
       Header: 'ФИО диллера',
       accessor: 'dealerFIO',
-      Cell: row => <div className="text-wrap">{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       filterable: false,
     },
     {
       Header: 'Оператор',
       accessor: 'operatorFIO',
-      Cell: row => <div className="text-wrap">{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       filterable: false,
     },
@@ -298,7 +366,7 @@ const Smsrcus = props => {
           <Popup
             content={messages['customer_story']}
             trigger={
-              <div style={{ textAlign: 'center' }}>
+              <div className="text-wrap" style={{ textAlign: 'center' }}>
                 <LinkToSmcusporFromSmsrcus
                   contractNumber={original.row.contractNumber}
                 />
@@ -465,6 +533,13 @@ const Smsrcus = props => {
     }
     if (params.fullAddress) {
       if (params.fullAddress.length > 2) {
+        props.fetchSmsrcusList({ ...params });
+      } else {
+        props.clearSmsrcusList();
+      }
+    }
+    if (params.serviceBranchName) {
+      if (params.serviceBranchName.length > 2) {
         props.fetchSmsrcusList({ ...params });
       } else {
         props.clearSmsrcusList();
