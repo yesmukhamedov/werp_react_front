@@ -65,7 +65,7 @@ const Srlsm = props => {
   const emptyParam = {
     countryId: null,
     bukrs: null,
-    branchId: null,
+    branchId: '',
     categoryId: null,
     serviceTypeId: null,
     serviceStatusId: '1,4',
@@ -181,18 +181,32 @@ const Srlsm = props => {
         case 'bukrs':
           varSrls.bukrs = o.value;
           varSrls.branchId = '';
+          varSrls.categoryId = '';
+          varSrls.serviceTypeId = '';
+          varSrls.masterId = '';
+          varSrls.operatorId = '';
           break;
         case 'acceptPayment':
           varSrls.acceptedPaymentById = o.value;
+
           break;
         case 'branchId':
           varSrls.branchId = o.value.length > 0 ? o.value.join() : null;
+          varSrls.categoryId = '';
+          varSrls.serviceTypeId = '';
+          varSrls.masterId = '';
+          varSrls.operatorId = '';
           break;
         case 'categoryId':
           varSrls.categoryId = o.value.length > 0 ? o.value.join() : null;
+          varSrls.masterId = '';
+          varSrls.operatorId = '';
           break;
         case 'serviceTypeId':
           varSrls.serviceTypeId = o.value.length > 0 ? o.value.join() : null;
+
+          varSrls.masterId = '';
+          varSrls.operatorId = '';
           break;
         case 'serviceStatusId':
           // varSrls.serviceStatusId = o.value;
@@ -403,6 +417,17 @@ const Srlsm = props => {
       ),
     },
     {
+      Header: 'Гарантия',
+      accessor: 'warrant',
+      checked: true,
+      filterable: false,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+    },
+    {
       Header: 'Принял',
       accessor: 'acceptPaymentByName',
       checked: true,
@@ -483,7 +508,6 @@ const Srlsm = props => {
     setColumns([...data]);
   };
 
-  const arrayAppStatus = param.serviceStatusId.split(',').map(Number);
   return (
     <Container
       fluid
@@ -538,6 +562,9 @@ const Srlsm = props => {
               onChange={(e, o) => onInputChange(o, 'branchId')}
               className="alignBottom"
               multiple
+              value={
+                param.branchId ? param.branchId.split(',').map(Number) : []
+              }
             />
           </Form.Field>
 
@@ -550,6 +577,11 @@ const Srlsm = props => {
               onChange={(e, o) => onInputChange(o, 'serviceTypeId')}
               className="alignBottom"
               multiple
+              value={
+                param.serviceTypeId
+                  ? param.serviceTypeId.split(',').map(Number)
+                  : []
+              }
             />
           </Form.Field>
 
@@ -562,6 +594,9 @@ const Srlsm = props => {
               onChange={(e, o) => onInputChange(o, 'categoryId')}
               className="alignBottom"
               multiple
+              value={
+                param.categoryId ? param.categoryId.split(',').map(Number) : []
+              }
             />
           </Form.Field>
           <Form.Field>
@@ -571,7 +606,11 @@ const Srlsm = props => {
               selection
               fluid
               multiple
-              defaultValue={arrayAppStatus}
+              value={
+                param.serviceStatusId
+                  ? param.serviceStatusId.split(',').map(Number)
+                  : []
+              }
               options={serviceStatusListOptions}
               placeholder="Все"
               onChange={(e, o) => onInputChange(o, 'serviceStatusId')}
@@ -649,10 +688,12 @@ const Srlsm = props => {
                 selection
                 fluid
                 multiple
-                //value={param.masterId ? param.masterId : ''}
                 options={masterOptions}
                 placeholder="Мастер"
                 onChange={(e, o) => onInputChange(o, 'changeMaster')}
+                value={
+                  param.masterId ? param.masterId.split(',').map(Number) : []
+                }
               />
             </Form.Field>
             <Form.Field className="marginRight width25Rem">
@@ -665,6 +706,11 @@ const Srlsm = props => {
                 options={operatorOptions}
                 placeholder="Оператор"
                 onChange={(e, o) => onInputChange(o, 'changeOperator')}
+                value={
+                  param.operatorId
+                    ? param.operatorId.split(',').map(Number)
+                    : []
+                }
               />
             </Form.Field>
             <Form.Button

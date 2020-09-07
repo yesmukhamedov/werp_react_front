@@ -72,6 +72,17 @@ const Smsrcus = props => {
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(true);
   const [error, setError] = useState([]);
 
+  console.log('branchOptionsService', branchOptionsService);
+  console.log('VAL', Object.values(branchOptionsService));
+
+  const serviceBranchArr = Object.values(branchOptionsService);
+
+  const allServiceBranches = [];
+  for (let i = 0; i < Object.keys(branchOptionsService).length; i++) {
+    allServiceBranches.push(...serviceBranchArr[i]);
+  }
+
+  console.log('allServiceBranches', allServiceBranches);
   useEffect(() => {
     setParam({ ...param, branchId: '' });
     let servBrOptions = branches
@@ -116,270 +127,286 @@ const Smsrcus = props => {
     }
   }, [branches, param.countryId, param.bukrs]);
 
-  let initialColumns = [
-    {
-      Header: (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {messages['brnch']}
-        </div>
-      ),
-      accessor: 'serviceBranchName',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      checked: true,
-      filterable: true,
-      width: 90,
-    },
-    {
-      Header: 'CN',
-      accessor: 'contractNumber',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      checked: true,
-      width: 80,
-    },
-    {
-      Header: 'Продукт',
-      accessor: 'matnrName',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      checked: true,
-      filterable: false,
-    },
-    {
-      Header: (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {messages['factory_number']}
-        </div>
-      ),
-      accessor: 'tovarSn',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      checked: true,
-      width: 110,
-    },
-    {
-      Header: () => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          Дата продажи
-        </div>
-      ),
-      accessor: 'contractDate',
-      Cell: row => {
-        let momentDate = stringYYYYMMDDToMoment(row.value);
-        let date = momentToStringDDMMYYYY(momentDate);
-        return (
-          <div className="text-wrap" style={{ textAlign: 'center' }}>
-            {date}
-          </div>
-        );
-      },
-      checked: true,
-      filterable: false,
-      width: 90,
-    },
-    {
-      Header: messages['full_name_of_client'],
-      accessor: 'customerFIO',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      checked: true,
-    },
-    {
-      Header: messages['customer_key'],
-      accessor: 'customerIinBin',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      checked: true,
-    },
-    {
-      Header: messages['address'],
-      accessor: 'fullAddress',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      checked: true,
-      filterable: true,
-      width: 200,
-    },
-    {
-      Header: messages['telephone'],
-      accessor: 'fullPhone',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      checked: true,
-    },
-    {
-      Header: 'F1',
-      accessor: 'f1MtLeft',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      checked: true,
-      width: 40,
-      filterable: false,
-    },
-    {
-      Header: 'F2',
-      accessor: 'f2MtLeft',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      checked: true,
-      width: 40,
-      filterable: false,
-    },
-    {
-      Header: 'F3',
-      accessor: 'f3MtLeft',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      checked: true,
-      width: 40,
-      filterable: false,
-    },
-    {
-      Header: 'F4',
-      accessor: 'f4MtLeft',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      checked: true,
-      width: 40,
-      filterable: false,
-    },
-    {
-      Header: 'F5',
-      accessor: 'f5MtLeft',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      checked: true,
-      width: 40,
-      filterable: false,
-    },
-    {
-      Header: 'Категория',
-      accessor: 'tovarCategoryName',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      checked: true,
-      filterable: false,
-    },
-    {
-      Header: (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {messages['financial_status']}
-        </div>
-      ),
-      accessor: 'contractStatusName',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      checked: true,
-      filterable: false,
-      width: 100,
-    },
-    {
-      Header: (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          Физический статус
-        </div>
-      ),
-      accessor: 'lastStateName',
-      style: { 'white-space': 'unset' },
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      checked: true,
-      filterable: false,
-      width: 100,
-    },
-    {
-      Header: 'ФИО диллера',
-      accessor: 'dealerFIO',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      checked: true,
-      filterable: false,
-    },
-    {
-      Header: 'Оператор',
-      accessor: 'operatorFIO',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      checked: true,
-      filterable: false,
-    },
-
-    {
-      checked: true,
-      Cell: original => {
-        return (
-          <Popup
-            content={messages['customer_story']}
-            trigger={
+  let initialColumns = allServiceBranches
+    ? [
+        {
+          Header: (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {messages['brnch']}
+            </div>
+          ),
+          accessor: 'serviceBranchName',
+          Cell: row => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {row.value}
+            </div>
+          ),
+          Filter: ({ filter, onChange }) => (
+            <select
+              onChange={event => onChange(event.target.value)}
+              style={{ width: '100%' }}
+              value={filter ? filter.value : ''}
+            >
+              <option value="">Все</option>
+              {allServiceBranches.map(item => (
+                <option key={item.key} value={item.value}>
+                  {item.text}
+                </option>
+              ))}
+            </select>
+          ),
+          checked: true,
+          filterable: true,
+          width: 90,
+        },
+        {
+          Header: 'CN',
+          accessor: 'contractNumber',
+          Cell: row => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {row.value}
+            </div>
+          ),
+          checked: true,
+          width: 80,
+        },
+        {
+          Header: 'Продукт',
+          accessor: 'matnrName',
+          Cell: row => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {row.value}
+            </div>
+          ),
+          checked: true,
+          filterable: false,
+        },
+        {
+          Header: (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {messages['factory_number']}
+            </div>
+          ),
+          accessor: 'tovarSn',
+          Cell: row => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {row.value}
+            </div>
+          ),
+          checked: true,
+          width: 110,
+        },
+        {
+          Header: () => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              Дата продажи
+            </div>
+          ),
+          accessor: 'contractDate',
+          Cell: row => {
+            let momentDate = stringYYYYMMDDToMoment(row.value);
+            let date = momentToStringDDMMYYYY(momentDate);
+            return (
               <div className="text-wrap" style={{ textAlign: 'center' }}>
-                <LinkToSmcusporFromSmsrcus
-                  contractNumber={original.row.contractNumber}
-                />
+                {date}
               </div>
-            }
-          />
-        );
-      },
-      filterable: false,
-      width: 50,
-      fixed: 'right',
-    },
-  ];
+            );
+          },
+          checked: true,
+          filterable: false,
+          width: 90,
+        },
+        {
+          Header: messages['full_name_of_client'],
+          accessor: 'customerFIO',
+          Cell: row => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {row.value}
+            </div>
+          ),
+          checked: true,
+        },
+        {
+          Header: messages['customer_key'],
+          accessor: 'customerIinBin',
+          Cell: row => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {row.value}
+            </div>
+          ),
+          checked: true,
+        },
+        {
+          Header: messages['address'],
+          accessor: 'fullAddress',
+          Cell: row => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {row.value}
+            </div>
+          ),
+          checked: true,
+          filterable: true,
+          width: 200,
+        },
+        {
+          Header: messages['telephone'],
+          accessor: 'fullPhone',
+          Cell: row => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {row.value}
+            </div>
+          ),
+          checked: true,
+        },
+        {
+          Header: 'F1',
+          accessor: 'f1MtLeft',
+          Cell: row => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {row.value}
+            </div>
+          ),
+          checked: true,
+          width: 40,
+          filterable: false,
+        },
+        {
+          Header: 'F2',
+          accessor: 'f2MtLeft',
+          Cell: row => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {row.value}
+            </div>
+          ),
+          checked: true,
+          width: 40,
+          filterable: false,
+        },
+        {
+          Header: 'F3',
+          accessor: 'f3MtLeft',
+          Cell: row => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {row.value}
+            </div>
+          ),
+          checked: true,
+          width: 40,
+          filterable: false,
+        },
+        {
+          Header: 'F4',
+          accessor: 'f4MtLeft',
+          Cell: row => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {row.value}
+            </div>
+          ),
+          checked: true,
+          width: 40,
+          filterable: false,
+        },
+        {
+          Header: 'F5',
+          accessor: 'f5MtLeft',
+          Cell: row => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {row.value}
+            </div>
+          ),
+          checked: true,
+          width: 40,
+          filterable: false,
+        },
+        {
+          Header: 'Категория',
+          accessor: 'tovarCategoryName',
+          Cell: row => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {row.value}
+            </div>
+          ),
+          checked: true,
+          filterable: false,
+        },
+        {
+          Header: (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {messages['financial_status']}
+            </div>
+          ),
+          accessor: 'contractStatusName',
+          Cell: row => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {row.value}
+            </div>
+          ),
+          checked: true,
+          filterable: false,
+          width: 100,
+        },
+        {
+          Header: (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              Физический статус
+            </div>
+          ),
+          accessor: 'lastStateName',
+          style: { 'white-space': 'unset' },
+          Cell: row => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {row.value}
+            </div>
+          ),
+          checked: true,
+          filterable: false,
+          width: 100,
+        },
+        {
+          Header: 'ФИО диллера',
+          accessor: 'dealerFIO',
+          Cell: row => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {row.value}
+            </div>
+          ),
+          checked: true,
+          filterable: false,
+        },
+        {
+          Header: 'Оператор',
+          accessor: 'operatorFIO',
+          Cell: row => (
+            <div className="text-wrap" style={{ textAlign: 'center' }}>
+              {row.value}
+            </div>
+          ),
+          checked: true,
+          filterable: false,
+        },
+
+        {
+          checked: true,
+          Cell: original => {
+            return (
+              <Popup
+                content={messages['customer_story']}
+                trigger={
+                  <div className="text-wrap" style={{ textAlign: 'center' }}>
+                    <LinkToSmcusporFromSmsrcus
+                      contractNumber={original.row.contractNumber}
+                    />
+                  </div>
+                }
+              />
+            );
+          },
+          filterable: false,
+          width: 50,
+          fixed: 'right',
+        },
+      ]
+    : [];
 
   //Список компании
   const countryOptions = countryList.map(item => {
@@ -714,17 +741,21 @@ const Smsrcus = props => {
       <Divider />
 
       <TotalCountsTable count={smsrcusData.totalElements} />
-      <ReactTableServerSideWrapper
-        data={smsrcusData ? smsrcusData.data : []}
-        columns={columns}
-        filterable={true}
-        defaultPageSize={20}
-        showPagination={true}
-        requestData={params => serverSideSearch(params)}
-        pages={smsrcusData ? smsrcusData.totalPages : ''}
-        turnOnReactFetch={turnOnReactFetch}
-        style={{ height: 500 }}
-      />
+      {allServiceBranches ? (
+        <ReactTableServerSideWrapper
+          data={smsrcusData ? smsrcusData.data : []}
+          columns={columns}
+          filterable={true}
+          defaultPageSize={20}
+          showPagination={true}
+          requestData={params => serverSideSearch(params)}
+          pages={smsrcusData ? smsrcusData.totalPages : ''}
+          turnOnReactFetch={turnOnReactFetch}
+          style={{ height: 500 }}
+        />
+      ) : (
+        ''
+      )}
     </Container>
   );
 };
