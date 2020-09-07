@@ -365,7 +365,6 @@ const MyApplication = props => {
                     dateOpenAt: momentToStringYYYYMMDD(date),
                   })
                 }
-                maxDate={moment(new Date())}
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
