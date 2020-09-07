@@ -22,6 +22,8 @@ import {
   Table,
   Input,
   Dropdown,
+  Modal,
+  Button,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import DatePicker from 'react-datepicker';
@@ -35,6 +37,7 @@ import {
 import '../../service.css';
 import { LinkToSmcuspor, LinkToSmesManager } from '../../../utils/outlink';
 import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
+import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import TotalCountsTable from '../../../utils/TotalCountsTable';
 
 import DropdownClearable from '../../../utils/DropdownClearable';
@@ -54,6 +57,7 @@ const Srlsm = props => {
     //serviceType = [],
     srlsmListData = {},
     srlsmListSum = {},
+    premiumSum = [],
     serviceTypeList = [],
     srlsmTotalPages,
     countryList = [],
@@ -62,6 +66,7 @@ const Srlsm = props => {
     operatorList = [],
   } = props;
 
+  console.log('premiumSum', premiumSum);
   const emptyParam = {
     countryId: null,
     bukrs: null,
@@ -83,6 +88,8 @@ const Srlsm = props => {
   console.log('param', param);
   const [error, setError] = useState([]);
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
+
+  const [modalDetails, setModalDetails] = useState(false);
 
   const masterOptions = masterList.map((item, index) => {
     return {
@@ -508,6 +515,56 @@ const Srlsm = props => {
     setColumns([...data]);
   };
 
+  const detailColumns = [
+    {
+      Header: 'Вид сервиса',
+      accessor: 'serviceTypeName',
+
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+    },
+    {
+      Header: 'Премя мастера',
+      accessor: 'masterPremium',
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {moneyFormat(row.value)}
+        </div>
+      ),
+    },
+    {
+      Header: 'Премя оператора',
+      accessor: 'operatorPremium',
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {moneyFormat(row.value)}
+        </div>
+      ),
+    },
+    {
+      Header: 'Скидка',
+      accessor: 'discount',
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {moneyFormat(row.value)}
+        </div>
+      ),
+    },
+
+    {
+      Header: 'Общая сумма',
+      accessor: 'totalSum',
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {moneyFormat(row.value)}
+        </div>
+      ),
+    },
+  ];
+
   return (
     <Container
       fluid
@@ -521,6 +578,22 @@ const Srlsm = props => {
       <Segment>
         <h3>Список сервисов(Менеджер)</h3>
       </Segment>
+      <Modal
+        onClose={() => setModalDetails(false)}
+        open={modalDetails}
+        closeIcon
+        size="large"
+      >
+        <Modal.Header>Детальный просмотр</Modal.Header>
+        <Modal.Content>
+          <ReactTableWrapper
+            data={premiumSum}
+            columns={detailColumns}
+            pageSize={8}
+            showPagination
+          />
+        </Modal.Content>
+      </Modal>
       <Form>
         <Form.Group widths="equal">
           <Form.Field>
@@ -723,6 +796,9 @@ const Srlsm = props => {
           </div>
 
           <Form.Field className="alignBottom">
+            <Button onClick={() => setModalDetails(true)} color="orange">
+              Подробно
+            </Button>
             <ModalColumns
               columns={initialColumns}
               finishColumns={finishColumns}
@@ -836,6 +912,7 @@ function mapStateToProps(state) {
     serviceTypeList: state.srlsmReducer.serviceTypeList,
     srlsmListData: state.srlsmReducer.srlsmListData,
     srlsmListSum: state.srlsmReducer.srlsmListSum,
+    premiumSum: state.srlsmReducer.premiumSum,
     masterList: state.srlsmReducer.masterList,
     operatorList: state.srlsmReducer.operatorList,
     srlsmTotalPages: state.srlsmReducer.srlsmTotalPages,

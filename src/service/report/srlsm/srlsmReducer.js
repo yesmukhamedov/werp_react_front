@@ -19,6 +19,7 @@ export default function(state = INITIAL_STATE, action) {
         srlsmListData: { ...action.data.data.listData },
         srlsmListSum: { ...action.data.data.listSum },
         srlsmTotalPages: action.data.data.listData.totalPages,
+        premiumSum: [...action.data.data.premiumSum],
       };
     case FETCH_SERVICE_TYPE_LIST:
       return {
