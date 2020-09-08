@@ -106,7 +106,7 @@ const Srkpiso = props => {
       columns: [
         {
           Header: () => <div className="text-wrap">Текущий план</div>,
-          accessor: 'currentPlanPercent',
+          accessor: 'currentPlanSum',
           filterable: false,
           checked: true,
           Cell: row => (
@@ -171,7 +171,7 @@ const Srkpiso = props => {
       columns: [
         {
           Header: () => <div className="text-wrap">Просроченный план</div>,
-          accessor: 'overDuePlanPercent',
+          accessor: 'overDueSum',
           filterable: false,
           checked: true,
           Cell: row => (
@@ -229,7 +229,7 @@ const Srkpiso = props => {
             background: 'red',
             color: '#fff',
           },
-          accessor: 'overDueSum',
+          accessor: 'overDuePlanPercent',
           Cell: row => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
               {row.value}
@@ -241,7 +241,7 @@ const Srkpiso = props => {
         {
           Header: () => <div className="text-wrap">Текущая сумма</div>,
           headerStyle: { background: 'teal', color: '#fff' },
-          accessor: 'currentPlanSum',
+          accessor: 'currentPlanPercent',
           Cell: row => <div className="text-wrap">{row.value}</div>,
           filterable: false,
           checked: true,
