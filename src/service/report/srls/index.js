@@ -245,25 +245,6 @@ const Srls = props => {
   ];
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
 
-  const [serverSideParams, setServerSideParams] = useState({});
-
-  const handleClickApply = () => {
-    const errors = [];
-    const page = 0;
-    const size = 20;
-    if (param.bukrs) {
-      if (Object.keys(serverSideParams).length > 0) {
-        props.fetchSrls({ ...param, ...serverSideParams });
-      } else {
-        props.fetchSrls({ ...param, ...serverSideParams, page, size });
-      }
-    } else {
-      errors.push(errorTableText(5));
-    }
-    setTurnOnReactFetch(true);
-    setError(errors);
-  };
-
   const [columns, setColumns] = useState([...initialColumns]);
 
   const finishColumns = data => {
@@ -275,6 +256,33 @@ const Srls = props => {
       setParam({ ...param, branchId: '' });
     }
   }, [param.bukrs]);
+
+  const [filtered, setFiltered] = useState([]);
+
+  const [serverSideParams, setServerSideParams] = useState({});
+
+  useEffect(() => {
+    if (param.bukrs) {
+      setTimeout(
+        () => props.fetchSrls({ ...serverSideParams, ...param }),
+        2000,
+      );
+    }
+  }, [serverSideParams]);
+
+  const handleClickApply = () => {
+    const errors = [];
+    const page = 0;
+    const size = 20;
+    if (param.bukrs) {
+      setFiltered([]);
+      props.fetchSrls({ ...param, page, size });
+    } else {
+      errors.push(errorTableText(5));
+    }
+    setTurnOnReactFetch(true);
+    setError(errors);
+  };
 
   return (
     <Container
@@ -424,11 +432,16 @@ const Srls = props => {
         pageSize={20}
         showPagination={true}
         requestData={params => {
-          props.fetchSrls({ ...params, ...param });
           setServerSideParams({ ...params });
+          setTurnOnReactFetch(true);
         }}
         pages={srlsTotalPages ? srlsTotalPages : ''}
         turnOnReactFetch={turnOnReactFetch}
+        filtered={filtered}
+        onFilteredChange={filter => {
+          setTurnOnReactFetch(true);
+          setFiltered([...filter]);
+        }}
       />
     </Container>
   );

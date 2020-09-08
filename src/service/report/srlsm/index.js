@@ -66,7 +66,6 @@ const Srlsm = props => {
     operatorList = [],
   } = props;
 
-  console.log('premiumSum', premiumSum);
   const emptyParam = {
     countryId: null,
     bukrs: null,
@@ -84,8 +83,6 @@ const Srlsm = props => {
   };
 
   const [param, setParam] = useState({ ...emptyParam });
-
-  console.log('param', param);
   const [error, setError] = useState([]);
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
 
@@ -480,35 +477,6 @@ const Srlsm = props => {
     },
   ];
 
-  const [serverSideParams, setServerSideParams] = useState({});
-
-  useEffect(() => {
-    if (param.bukrs) {
-      console.log('serverSideParams', serverSideParams);
-      props.fetchSrlsm({ ...serverSideParams, ...param });
-    }
-  }, [serverSideParams]);
-
-  const handleClickApply = () => {
-    const errors = [];
-    if (param.bukrs == null || param.bukrs == '') {
-      errors.push(errorTableText(5));
-    } else {
-      setServerSideParams({});
-      let page = 0;
-      let size = 20;
-
-      props.fetchSrlsm({
-        ...param,
-        serviceStatusId: param.serviceStatusId.toString(),
-        page: page,
-        size: size,
-      });
-    }
-    setTurnOnReactFetch(true);
-    setError(errors);
-  };
-
   const [columns, setColumns] = useState([...initialColumns]);
 
   const finishColumns = data => {
@@ -565,6 +533,29 @@ const Srlsm = props => {
     },
   ];
 
+  const [filtered, setFiltered] = useState([]);
+
+  console.log('FILTERED', filtered);
+
+  const handleClickApply = () => {
+    const errors = [];
+    if (param.bukrs) {
+      let page = 0;
+      let size = 20;
+      setFiltered([]);
+
+      props.fetchSrlsm({
+        ...param,
+        serviceStatusId: param.serviceStatusId.toString(),
+        page: page,
+        size: size,
+      });
+    } else {
+      errors.push(errorTableText(5));
+    }
+    setTurnOnReactFetch(true);
+    setError(errors);
+  };
   return (
     <Container
       fluid
@@ -892,10 +883,15 @@ const Srlsm = props => {
         showPagination={true}
         requestData={params => {
           setTurnOnReactFetch(true);
-          setServerSideParams({ ...params });
+          setTimeout(props.fetchSrlsm({ ...param, ...params }), 5000);
         }}
         pages={srlsmTotalPages ? srlsmTotalPages : ''}
         turnOnReactFetch={turnOnReactFetch}
+        filtered={filtered}
+        onFilteredChange={filter => {
+          setTurnOnReactFetch(true);
+          setFiltered([...filter]);
+        }}
       />
     </Container>
   );
