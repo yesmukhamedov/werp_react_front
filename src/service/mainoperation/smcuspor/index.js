@@ -216,31 +216,31 @@ function Smcuspor(props) {
                   size="mini"
                   label="F1"
                   className="input__filter_terms"
-                  value={f1MtLeft ? f1MtLeft : '0'}
+                  value={f1MtLeft || f1MtLeft == 0 ? f1MtLeft : ''}
                 />
                 <Input
                   size="mini"
                   label="F2"
                   className="input__filter_terms"
-                  value={f2MtLeft ? f2MtLeft : '0'}
+                  value={f2MtLeft || f2MtLeft == 0 ? f2MtLeft : ''}
                 />
                 <Input
                   size="mini"
                   label="F3"
                   className="input__filter_terms"
-                  value={f3MtLeft ? f3MtLeft : '0'}
+                  value={f3MtLeft || f3MtLeft == 0 ? f3MtLeft : ''}
                 />
                 <Input
                   size="mini"
                   label="F4"
                   className="input__filter_terms"
-                  value={f4MtLeft ? f4MtLeft : '0'}
+                  value={f4MtLeft || f4MtLeft == 0 ? f4MtLeft : ''}
                 />
                 <Input
                   size="mini"
                   label="F5"
                   className="input__filter_terms"
-                  value={f5MtLeft ? f5MtLeft : '0'}
+                  value={f5MtLeft || f5MtLeft == 0 ? f5MtLeft : ''}
                 />
               </Segment>
               <Segment>

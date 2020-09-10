@@ -174,6 +174,8 @@ function Smcca(props) {
     f5MtLeft,
   } = clientContract;
 
+  console.log('SMCCA clientContract', clientContract);
+
   const onInputChange = (o, fieldName) => {
     setRequest(prev => {
       const varRequest = { ...prev };
@@ -410,31 +412,41 @@ function Smcca(props) {
                                 size="mini"
                                 label="F1"
                                 className="input__filter_terms"
-                                value={f1MtLeft ? f1MtLeft : ''}
+                                value={
+                                  f1MtLeft || f1MtLeft == 0 ? f1MtLeft : ''
+                                }
                               />
                               <Input
                                 size="mini"
                                 label="F2"
                                 className="input__filter_terms"
-                                value={f2MtLeft ? f2MtLeft : ''}
+                                value={
+                                  f2MtLeft || f2MtLeft == 0 ? f2MtLeft : ''
+                                }
                               />
                               <Input
                                 size="mini"
                                 label="F3"
                                 className="input__filter_terms"
-                                value={f3MtLeft ? f3MtLeft : ''}
+                                value={
+                                  f3MtLeft || f3MtLeft == 0 ? f3MtLeft : ''
+                                }
                               />
                               <Input
                                 size="mini"
                                 label="F4"
                                 className="input__filter_terms"
-                                value={f4MtLeft ? f4MtLeft : ''}
+                                value={
+                                  f4MtLeft || f4MtLeft == 0 ? f4MtLeft : ''
+                                }
                               />
                               <Input
                                 size="mini"
                                 label="F5"
                                 className="input__filter_terms"
-                                value={f5MtLeft ? f5MtLeft : ''}
+                                value={
+                                  f5MtLeft || f5MtLeft == 0 ? f5MtLeft : ''
+                                }
                               />
                             </Table.Cell>
                           </Table.Row>
