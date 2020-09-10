@@ -576,7 +576,7 @@ const Smsrcus = props => {
 
   return (
     <Container fluid className="containerMargin">
-      <Segment>
+      <Segment className="justifySegment">
         <h3>Поиск клиентов</h3>
         {blackListChecked == true ? (
           <Checkbox
@@ -587,6 +587,9 @@ const Smsrcus = props => {
         ) : (
           ''
         )}
+        <Form.Field className="alignBottom">
+          <ModalColumns columns={columns} finishColumns={finishColumns} />
+        </Form.Field>
       </Segment>
       {blackListChecked == true ? (
         <Segment>
@@ -726,10 +729,6 @@ const Smsrcus = props => {
                   {messages['apply']}
                 </Form.Button>
               </div>
-
-              <Form.Field className="alignBottom">
-                <ModalColumns columns={columns} finishColumns={finishColumns} />
-              </Form.Field>
             </Form.Group>
             <OutputErrors errors={error} />
           </Form>
