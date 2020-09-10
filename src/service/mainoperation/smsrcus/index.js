@@ -141,20 +141,6 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
-          Filter: ({ filter, onChange }) => (
-            <select
-              onChange={event => onChange(event.target.value)}
-              style={{ width: '100%' }}
-              value={filter ? filter.value : ''}
-            >
-              <option value="">Все</option>
-              {allServiceBranches.map(item => (
-                <option key={item.key} value={item.value}>
-                  {item.text}
-                </option>
-              ))}
-            </select>
-          ),
           checked: true,
           filterable: true,
           width: 90,
@@ -516,6 +502,13 @@ const Smsrcus = props => {
   const serverSideSearch = ssParams => {
     let params = { ...ssParams };
 
+    if (params.serviceBranchName) {
+      if (params.serviceBranchName.length > 2) {
+        props.fetchSmsrcusList({ ...params });
+      } else {
+        props.clearSmsrcusList();
+      }
+    }
     if (params.contractNumber) {
       if (params.contractNumber.length > 2) {
         props.fetchSmsrcusList({ ...params });
