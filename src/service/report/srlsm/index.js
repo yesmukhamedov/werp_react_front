@@ -39,6 +39,7 @@ import { LinkToSmcuspor, LinkToSmesManager } from '../../../utils/outlink';
 import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import TotalCountsTable from '../../../utils/TotalCountsTable';
+import debounce from 'lodash/debounce';
 
 import DropdownClearable from '../../../utils/DropdownClearable';
 import OutputErrors from '../../../general/error/outputErrors';
@@ -83,6 +84,53 @@ const Srlsm = props => {
   };
 
   const [param, setParam] = useState({ ...emptyParam });
+
+  const [serverSideParams, setServerSideParams] = useState({});
+
+  useEffect(() => {
+    if (param.bukrs) {
+      if (Object.keys(serverSideParams).length > 0) {
+        if (serverSideParams.contractNumber) {
+          if (serverSideParams.contractNumber.length > 2) {
+            console.log(
+              'serverSideParams.contractNumber',
+              serverSideParams.contractNumber,
+            );
+            props.fetchSrlsm({
+              ...param,
+              serviceStatusId: param.serviceStatusId.toString(),
+              ...serverSideParams,
+            });
+          }
+        }
+
+        if (serverSideParams.tovarSn) {
+          if (serverSideParams.tovarSn.length > 2) {
+            console.log('serverSideParams.tovarSn', serverSideParams.tovarSn);
+            props.fetchSrlsm({
+              ...param,
+              serviceStatusId: param.serviceStatusId.toString(),
+              ...serverSideParams,
+            });
+          }
+        }
+        if (serverSideParams.customerFIO) {
+          if (serverSideParams.customerFIO.length > 2) {
+            console.log(
+              'serverSideParams.customerFIO',
+              serverSideParams.customerFIO,
+            );
+            props.fetchSrlsm({
+              ...param,
+              serviceStatusId: param.serviceStatusId.toString(),
+              ...serverSideParams,
+            });
+          }
+        }
+      }
+    }
+  }, [serverSideParams]);
+
   const [error, setError] = useState([]);
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
 
@@ -883,7 +931,22 @@ const Srlsm = props => {
         showPagination={true}
         requestData={params => {
           setTurnOnReactFetch(true);
-          setTimeout(props.fetchSrlsm({ ...param, ...params }), 5000);
+          if (params != serverSideParams) {
+            console.log('TRUE');
+            setServerSideParams({ ...params });
+          }
+
+          if (params.page) {
+            if (params.page != serverSideParams.page) {
+              props.fetchSrlsm({
+                ...param,
+                serviceStatusId: param.serviceStatusId.toString(),
+                ...params,
+              });
+            }
+          }
+          // setTimeout(() => console.log('params', params), 3000);
+          // // debounce(console.log('params', params), 3000);
         }}
         pages={srlsmTotalPages ? srlsmTotalPages : ''}
         turnOnReactFetch={turnOnReactFetch}
