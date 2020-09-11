@@ -61,6 +61,23 @@ const ServiceFilterPlan = props => {
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const [cancelPlanModal, setCancelPlanModal] = useState(false);
 
+  const StatusTrial = props => {
+    let { text = '' } = props;
+    return (
+      <div
+        className="text-wrap"
+        style={{
+          backgroundColor: '#fbbd08',
+          padding: '3px 0em 3px 0px',
+          borderRadius: '4px',
+          textAlign: 'center',
+        }}
+      >
+        {text}
+      </div>
+    );
+  };
+
   const initialColumns = [
     {
       Header: '#',
@@ -80,36 +97,68 @@ const ServiceFilterPlan = props => {
       Header: 'CN',
       accessor: 'contractNumber',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => {
+        if (row.original.contractStatusName == 'СУД') {
+          return <StatusTrial text={row.value} />;
+        } else {
+          return <TextAlignCenter text={row.value} />;
+        }
+      },
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['contractNumber'] }),
       width: 60,
     },
     {
       Header: messages['factory_number'],
+      headerStyle: { whiteSpace: 'pre-wrap' },
       accessor: 'tovarSn',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => {
+        if (row.original.contractStatusName == 'СУД') {
+          return <StatusTrial text={row.value} />;
+        } else {
+          return <TextAlignCenter text={row.value} />;
+        }
+      },
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['tovarSn'] }),
     },
     {
       Header: messages['Crm.DateOfSale'],
+      headerStyle: { whiteSpace: 'pre-wrap' },
       accessor: 'contractDate',
       checked: true,
-      Cell: row => (
-        <TextAlignCenter
-          text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
-        />
-      ),
+
+      Cell: row => {
+        if (row.original.contractStatusName == 'СУД') {
+          return (
+            <StatusTrial
+              text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+            />
+          );
+        } else {
+          return (
+            <TextAlignCenter
+              text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+            />
+          );
+        }
+      },
       filterable: false,
-      width: 80,
+      width: 100,
     },
     {
       Header: messages['fio'],
+      headerStyle: { whiteSpace: 'pre-wrap' },
       accessor: 'customerFIO',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => {
+        if (row.original.contractStatusName == 'СУД') {
+          return <StatusTrial text={row.value} />;
+        } else {
+          return <TextAlignCenter text={row.value} />;
+        }
+      },
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['customerFIO'] }),
       filterAll: true,
@@ -118,22 +167,36 @@ const ServiceFilterPlan = props => {
       Header: messages['customer_key'],
       accessor: 'customerIinBin',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => {
+        if (row.original.contractStatusName == 'СУД') {
+          return <StatusTrial text={row.value} />;
+        } else {
+          return <TextAlignCenter text={row.value} />;
+        }
+      },
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['customerIinBin'] }),
       filterAll: true,
     },
     {
       Header: messages['address'],
+      headerStyle: { whiteSpace: 'pre-wrap' },
       accessor: 'address',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => {
+        if (row.original.contractStatusName == 'СУД') {
+          return <StatusTrial text={row.value} />;
+        } else {
+          return <TextAlignCenter text={row.value} />;
+        }
+      },
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['address'] }),
       filterAll: true,
     },
     {
       Header: messages['Dealer.Fullname'],
+      headerStyle: { whiteSpace: 'pre-wrap' },
       accessor: 'dealerFIO',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
@@ -200,7 +263,7 @@ const ServiceFilterPlan = props => {
             horizontal
           >
             {row.value}
-          </Label>{' '}
+          </Label>
         </div>
       ),
       filterable: false,
@@ -209,22 +272,14 @@ const ServiceFilterPlan = props => {
       Header: messages['fin_status'],
       accessor: 'contractStatusName',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
-      filterable: false,
-      getProps: (state, rowInfo, column) => {
-        return {
-          style: {
-            background:
-              rowInfo && rowInfo.row.contractStatusName == 'СУД'
-                ? '#f5a61d'
-                : null,
-            color:
-              rowInfo && rowInfo.row.contractStatusName == 'СУД'
-                ? '#ffffff'
-                : null,
-          },
-        };
+      Cell: row => {
+        if (row.original.contractStatusName == 'СУД') {
+          return <StatusTrial text={row.value} />;
+        } else {
+          return <TextAlignCenter text={row.value} />;
+        }
       },
+      filterable: false,
     },
     {
       Header: messages['plan_status'],
