@@ -17,7 +17,7 @@ import '../../service.css';
 import OutputErrors from '../../../general/error/outputErrors';
 import { errorTableText } from '../../../utils/helpers';
 import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
-import ModalColumns from '../../../utils/ModalColumns';
+import ColumnsModal from '../../../utils/ColumnsModal';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
@@ -72,8 +72,7 @@ const Smsrcus = props => {
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(true);
   const [error, setError] = useState([]);
 
-  console.log('branchOptionsService', branchOptionsService);
-  console.log('VAL', Object.values(branchOptionsService));
+  const [columnsForTable, setColumnsForTable] = useState([]);
 
   const serviceBranchArr = Object.values(branchOptionsService);
 
@@ -130,18 +129,13 @@ const Smsrcus = props => {
   let initialColumns = allServiceBranches
     ? [
         {
-          Header: (
-            <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {messages['brnch']}
-            </div>
-          ),
+          Header: messages['brnch'],
           accessor: 'serviceBranchName',
           Cell: row => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
               {row.value}
             </div>
           ),
-          checked: true,
           filterable: true,
           width: 90,
         },
@@ -153,7 +147,6 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
-          checked: true,
           width: 80,
         },
         {
@@ -164,30 +157,22 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
-          checked: true,
           filterable: false,
         },
         {
-          Header: (
-            <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {messages['factory_number']}
-            </div>
-          ),
+          Header: messages['factory_number'],
+          headerStyle: { whiteSpace: 'pre-wrap' },
           accessor: 'tovarSn',
           Cell: row => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
               {row.value}
             </div>
           ),
-          checked: true,
           width: 110,
         },
         {
-          Header: () => (
-            <div className="text-wrap" style={{ textAlign: 'center' }}>
-              Дата продажи
-            </div>
-          ),
+          Header: messages['Crm.DateOfSale'],
+          headerStyle: { whiteSpace: 'pre-wrap' },
           accessor: 'contractDate',
           Cell: row => {
             let momentDate = stringYYYYMMDDToMoment(row.value);
@@ -198,7 +183,6 @@ const Smsrcus = props => {
               </div>
             );
           },
-          checked: true,
           filterable: false,
           width: 90,
         },
@@ -210,7 +194,6 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
-          checked: true,
         },
         {
           Header: messages['customer_key'],
@@ -220,7 +203,6 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
-          checked: true,
         },
         {
           Header: messages['address'],
@@ -230,7 +212,6 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
-          checked: true,
           filterable: true,
           width: 200,
         },
@@ -242,7 +223,6 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
-          checked: true,
         },
         {
           Header: 'F1',
@@ -252,7 +232,6 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
-          checked: true,
           width: 40,
           filterable: false,
         },
@@ -264,7 +243,6 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
-          checked: true,
           width: 40,
           filterable: false,
         },
@@ -276,7 +254,6 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
-          checked: true,
           width: 40,
           filterable: false,
         },
@@ -288,7 +265,6 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
-          checked: true,
           width: 40,
           filterable: false,
         },
@@ -300,7 +276,6 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
-          checked: true,
           width: 40,
           filterable: false,
         },
@@ -312,31 +287,23 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
-          checked: true,
           filterable: false,
         },
         {
-          Header: (
-            <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {messages['financial_status']}
-            </div>
-          ),
+          Header: messages['financial_status'],
+          headerStyle: { whiteSpace: 'pre-wrap' },
           accessor: 'contractStatusName',
           Cell: row => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
               {row.value}
             </div>
           ),
-          checked: true,
           filterable: false,
           width: 100,
         },
         {
-          Header: (
-            <div className="text-wrap" style={{ textAlign: 'center' }}>
-              Физический статус
-            </div>
-          ),
+          Header: 'Физический статус',
+          headerStyle: { whiteSpace: 'pre-wrap' },
           accessor: 'lastStateName',
           style: { 'white-space': 'unset' },
           Cell: row => (
@@ -344,7 +311,6 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
-          checked: true,
           filterable: false,
           width: 100,
         },
@@ -356,7 +322,6 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
-          checked: true,
           filterable: false,
         },
         {
@@ -367,12 +332,11 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
-          checked: true,
           filterable: false,
         },
 
         {
-          checked: true,
+          accessor: 'contractNumberBtnLink',
           Cell: original => {
             return (
               <Popup
@@ -393,6 +357,22 @@ const Smsrcus = props => {
         },
       ]
     : [];
+
+  useEffect(() => {
+    const transactionCodeText = localStorage.getItem('smsrcusTable');
+    if (transactionCodeText) {
+      let transactionCodeObject = JSON.parse(transactionCodeText);
+
+      let temp = initialColumns.map(item => {
+        return { ...item, show: transactionCodeObject[item.accessor] };
+      });
+
+      console.log('table temp', temp);
+      setColumnsForTable(temp);
+    } else {
+      setColumnsForTable(initialColumns);
+    }
+  }, []);
 
   //Список компании
   const countryOptions = countryList.map(item => {
@@ -581,7 +561,18 @@ const Smsrcus = props => {
           ''
         )}
         <Form.Field className="alignBottom">
-          <ModalColumns columns={columns} finishColumns={finishColumns} />
+          <ColumnsModal
+            tableHeaderCols={columnsForTable}
+            tableThings={things => {
+              setColumnsForTable(things);
+              //store in localstorage
+              let temp = {};
+              things.map(el => {
+                temp = { ...temp, [el.accessor]: el.show };
+              });
+              localStorage.setItem('smsrcusTable', JSON.stringify(temp));
+            }}
+          />
         </Form.Field>
       </Segment>
       {blackListChecked == true ? (
@@ -736,7 +727,7 @@ const Smsrcus = props => {
       {allServiceBranches ? (
         <ReactTableServerSideWrapper
           data={smsrcusData ? smsrcusData.data : []}
-          columns={columns}
+          columns={columnsForTable}
           filterable={true}
           defaultPageSize={20}
           showPagination={true}
