@@ -15,14 +15,17 @@ export const CLEAR_SMSRCUS_LIST = 'CLEAR_SMSRCUS_LIST';
 //План по замене картриджей
 export const fetchSmsrcusList = param => {
   return function(dispatch) {
+    dispatch(modifyLoader(true));
     doGet(`smsrcus/list`, param)
       .then(({ data }) => {
+        dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SMSRCUS_LIST,
           payload: data,
         });
       })
       .catch(error => {
+        dispatch(modifyLoader(false));
         handleError(error, dispatch);
       });
   };

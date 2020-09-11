@@ -136,6 +136,19 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
+
+          Filter: ({ filter, onChange }) => {
+            return (
+              <input
+                onKeyPress={event => {
+                  if (event.keyCode === 13 || event.which === 13) {
+                    setTurnOnReactFetch(true);
+                    onChange(event.target.value);
+                  }
+                }}
+              />
+            );
+          },
           filterable: true,
           width: 90,
         },
@@ -147,6 +160,19 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
+          Filter: ({ filter, onChange }) => {
+            return (
+              <input
+                onKeyPress={event => {
+                  if (event.keyCode === 13 || event.which === 13) {
+                    setTurnOnReactFetch(true);
+                    onChange(event.target.value);
+                  }
+                }}
+              />
+            );
+          },
+
           width: 80,
         },
         {
@@ -168,6 +194,18 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
+          Filter: ({ filter, onChange }) => {
+            return (
+              <input
+                onKeyPress={event => {
+                  if (event.keyCode === 13 || event.which === 13) {
+                    setTurnOnReactFetch(true);
+                    onChange(event.target.value);
+                  }
+                }}
+              />
+            );
+          },
           width: 110,
         },
         {
@@ -194,6 +232,18 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
+          Filter: ({ filter, onChange }) => {
+            return (
+              <input
+                onKeyPress={event => {
+                  if (event.keyCode === 13 || event.which === 13) {
+                    setTurnOnReactFetch(true);
+                    onChange(event.target.value);
+                  }
+                }}
+              />
+            );
+          },
         },
         {
           Header: messages['customer_key'],
@@ -203,6 +253,18 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
+          Filter: ({ filter, onChange }) => {
+            return (
+              <input
+                onKeyPress={event => {
+                  if (event.keyCode === 13 || event.which === 13) {
+                    setTurnOnReactFetch(true);
+                    onChange(event.target.value);
+                  }
+                }}
+              />
+            );
+          },
         },
         {
           Header: messages['address'],
@@ -212,6 +274,18 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
+          Filter: ({ filter, onChange }) => {
+            return (
+              <input
+                onKeyPress={event => {
+                  if (event.keyCode === 13 || event.which === 13) {
+                    setTurnOnReactFetch(true);
+                    onChange(event.target.value);
+                  }
+                }}
+              />
+            );
+          },
           filterable: true,
           width: 200,
         },
@@ -223,6 +297,18 @@ const Smsrcus = props => {
               {row.value}
             </div>
           ),
+          Filter: ({ filter, onChange }) => {
+            return (
+              <input
+                onKeyPress={event => {
+                  if (event.keyCode === 13 || event.which === 13) {
+                    setTurnOnReactFetch(true);
+                    onChange(event.target.value);
+                  }
+                }}
+              />
+            );
+          },
         },
         {
           Header: 'F1',
@@ -419,13 +505,12 @@ const Smsrcus = props => {
   }, []);
 
   const handleClickSmsrcus = () => {
-    validate();
-    if (param.bukrs !== '') {
-      const page = 0;
-      const size = 20;
-      props.fetchSmsrcusList({ ...param, page, size });
-      setTurnOnReactFetch(true);
-    }
+    // validate();
+    // if (param.bukrs !== '') {
+    //   const page = 0;
+    //   const size = 20;
+    //   setTurnOnReactFetch(true);
+    // }
   };
 
   const validate = () => {
@@ -471,80 +556,6 @@ const Smsrcus = props => {
       }
       return prevParam;
     });
-  };
-
-  const [columns, setColumns] = useState([...initialColumns]);
-
-  const finishColumns = data => {
-    setColumns([...data]);
-  };
-
-  const serverSideSearch = ssParams => {
-    let params = { ...ssParams };
-
-    if (params.serviceBranchName) {
-      if (params.serviceBranchName.length > 2) {
-        props.fetchSmsrcusList({ ...params });
-      } else {
-        props.clearSmsrcusList();
-      }
-    }
-    if (params.contractNumber) {
-      if (params.contractNumber.length > 2) {
-        props.fetchSmsrcusList({ ...params });
-      } else {
-        props.clearSmsrcusList();
-      }
-    }
-    if (params.tovarSn) {
-      if (params.tovarSn.length > 2) {
-        props.fetchSmsrcusList({ ...params });
-      } else {
-        props.clearSmsrcusList();
-      }
-    }
-    if (params.customerFIO) {
-      if (params.customerFIO.length > 2) {
-        props.fetchSmsrcusList({ ...params });
-      } else {
-        props.clearSmsrcusList();
-      }
-    }
-    if (params.customerIinBin) {
-      if (params.customerIinBin.length > 2) {
-        props.fetchSmsrcusList({ ...params });
-      } else {
-        props.clearSmsrcusList();
-      }
-    }
-    if (params.address) {
-      if (params.address.length > 2) {
-        props.fetchSmsrcusList({ ...params });
-      } else {
-        props.clearSmsrcusList();
-      }
-    }
-    if (params.fullPhone) {
-      if (params.fullPhone.length > 2) {
-        props.fetchSmsrcusList({ ...params });
-      } else {
-        props.clearSmsrcusList();
-      }
-    }
-    if (params.fullAddress) {
-      if (params.fullAddress.length > 2) {
-        props.fetchSmsrcusList({ ...params });
-      } else {
-        props.clearSmsrcusList();
-      }
-    }
-    if (params.serviceBranchName) {
-      if (params.serviceBranchName.length > 2) {
-        props.fetchSmsrcusList({ ...params });
-      } else {
-        props.clearSmsrcusList();
-      }
-    }
   };
 
   return (
@@ -731,7 +742,21 @@ const Smsrcus = props => {
           filterable={true}
           defaultPageSize={20}
           showPagination={true}
-          requestData={params => serverSideSearch(params)}
+          requestData={params => {
+            console.log('params', params);
+            if (Object.keys(params).length > 3) {
+              let initParams = {
+                orderBy: null,
+                direction: null,
+                page: 0,
+                size: 20,
+              };
+
+              if (JSON.stringify(initParams) !== JSON.stringify(params)) {
+                props.fetchSmsrcusList({ ...params });
+              }
+            }
+          }}
           pages={smsrcusData ? smsrcusData.totalPages : ''}
           turnOnReactFetch={turnOnReactFetch}
           style={{ height: 500 }}
