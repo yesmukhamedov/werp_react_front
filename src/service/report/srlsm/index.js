@@ -569,6 +569,16 @@ const Srlsm = props => {
         </div>
       ),
     },
+    {
+      Header: 'Количество',
+      accessor: 'serviceCount',
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {moneyFormat(row.value)}
+        </div>
+      ),
+      width: 90,
+    },
 
     {
       Header: 'Общая сумма',
