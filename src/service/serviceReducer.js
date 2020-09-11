@@ -45,6 +45,7 @@ import {
   CLEAR_OPERATOR_LIST,
   FETCH_MASTER_LIST,
   CLEAR_MASTER_LIST,
+  PUT_RESOLD,
 } from './serviceAction';
 
 const INITIAL_STATE = {
@@ -362,6 +363,11 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         masterListSmappl: [],
+      };
+    case PUT_RESOLD:
+      return {
+        ...state,
+        resoldData: { ...action },
       };
     default:
       return state;

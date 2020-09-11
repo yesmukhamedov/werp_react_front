@@ -12,10 +12,13 @@ import {
   Label,
   Checkbox,
   Dropdown,
+  Modal,
+  Header,
 } from 'semantic-ui-react';
 import {
   fetchSmeciContractInfo,
   postSmecimContractInfo,
+  putResold,
   //fetchBranchList,
 } from '../../serviceAction';
 import moment from 'moment';
@@ -30,10 +33,13 @@ import AddressF4Modal from '../../../reference/f4/address/addressF4WithCreationP
 
 import { injectIntl } from 'react-intl';
 import './smecim.css';
+import '../../service.css';
 
 function Smecim(props) {
   const url = window.location.search;
   const contractNumber = url.slice(url.indexOf('=') + 1);
+
+  console.log('contractNumber', contractNumber);
 
   const emptyContract = {
     manual: 0,
@@ -54,6 +60,7 @@ function Smecim(props) {
   };
 
   const [contract, setContract] = useState({ ...emptyContract });
+
   const [addressF4ModalOpen, setAddressF4ModalOpen] = useState(false);
 
   const {
@@ -64,7 +71,10 @@ function Smecim(props) {
     //branchList = [],
     physStatus = [],
     branches = [],
+    resoldData = {},
   } = props;
+
+  console.log('resoldData', resoldData);
 
   const {
     countryName,
@@ -293,6 +303,25 @@ function Smecim(props) {
     });
   };
 
+  const [resold, setResold] = useState({
+    modal: false,
+    statusDisabled: true,
+  });
+
+  useEffect(() => {
+    if (contractInfo) {
+      if (contractInfo.contractStatusId == 17) {
+        setResold({ ...resold, statusDisabled: true });
+      } else {
+        setResold({ ...resold, statusDisabled: false });
+      }
+    }
+  }, [contractInfo]);
+
+  const btnResold = () => {
+    setResold({ ...resold, modal: true });
+  };
+
   return (
     <div>
       <AddressF4Modal
@@ -302,13 +331,51 @@ function Smecim(props) {
         onAddressSelect={item => onInputChange(item, 'serviceAddressId')}
         countryId={contract.countryId}
       />
+      <Modal
+        closeIcon
+        open={resold.modal}
+        onClose={() => setResold({ ...resold, modal: false })}
+      >
+        <Header content='Вы действительно хотите изменить статус на "ПЕРЕПРОДАН"?' />
+
+        <Modal.Actions>
+          <Button
+            color="red"
+            onClick={() => setResold({ ...resold, modal: false })}
+          >
+            <Icon name="remove" /> Нет
+          </Button>
+          <Button
+            color="green"
+            onClick={() => {
+              setResold({ ...resold, modal: false });
+              props.putResold(contractNumber, () =>
+                props.fetchSmeciContractInfo({ contractNumber }),
+              );
+            }}
+          >
+            <Icon name="checkmark" /> Да
+          </Button>
+        </Modal.Actions>
+      </Modal>
+
+      <Modal></Modal>
       <Grid centered>
         <Grid.Row>
           <Grid.Column mobile={16} tablet={16} computer={7}>
             <h1>{messages['editing']}</h1>
             <Segment>
               <Form>
-                <h3>{messages['L__CLIENT_INFO']} </h3>
+                <div className="flexJustifySpaceBeetween">
+                  <h3>{messages['L__CLIENT_INFO']} </h3>
+                  <Button
+                    disabled={resold.statusDisabled}
+                    color="teal"
+                    onClick={btnResold}
+                  >
+                    Перепродан
+                  </Button>
+                </div>
                 <Table compact striped>
                   <Table.Body>
                     <Table.Row>
@@ -861,6 +928,7 @@ function mapStateToProps(state) {
   return {
     branchOptions: state.userInfo.branchOptionsMarketing,
     contractInfo: state.serviceReducer.smeciContractInfo,
+    resoldData: state.serviceReducer.resoldData,
     crmCategory: state.f4.crmCategory,
     physStatus: state.f4.physStatus,
     branches: state.f4.branches,
@@ -873,4 +941,5 @@ export default connect(mapStateToProps, {
   f4FetchCrmCategory,
   f4FetchPhysStatus,
   f4FetchBranches,
+  putResold,
 })(injectIntl(Smecim));

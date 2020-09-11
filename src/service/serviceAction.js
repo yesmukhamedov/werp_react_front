@@ -69,6 +69,7 @@ export const FETCH_MASTER_LIST = 'FETCH_MASTER_LIST';
 export const CLEAR_MASTER_LIST = 'CLEAR_MASTER_LIST';
 export const FETCH_OPERATOR_LIST = 'FETCH_OPERATOR_LIST';
 export const CLEAR_OPERATOR_LIST = 'CLEAR_OPERATOR_LIST';
+export const PUT_RESOLD = 'PUT_RESOLD';
 
 //const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 
@@ -1011,3 +1012,22 @@ export const clearOperatorList = () => {
     });
   };
 };
+
+export function putResold(params, fetchSmeciContractInfo) {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doPut(`smecim/resold?contractNumber=${params}`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: PUT_RESOLD,
+          payload: data,
+        });
+        fetchSmeciContractInfo();
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+}
