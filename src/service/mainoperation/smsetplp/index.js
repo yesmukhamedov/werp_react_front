@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchSmsetplpList } from './smsetplpAction';
+import {
+  fetchSmsetplpById,
+  fetchSmsetplpList,
+  postSmsetplpForm,
+  updateSmsetplp,
+} from './smsetplpAction';
 import { injectIntl } from 'react-intl';
 import { Container, Segment, Form, Dropdown } from 'semantic-ui-react';
 import 'react-table/react-table.css';
@@ -17,11 +22,13 @@ import '../../service.css';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import TotalCountsTable from '../../../utils/TotalCountsTable';
 import debounce from 'lodash/debounce';
+import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 
 import DropdownClearable from '../../../utils/DropdownClearable';
 import OutputErrors from '../../../general/error/outputErrors';
 import { errorTableText } from '../../../utils/helpers';
 import moment from 'moment';
+import { Header } from 'semantic-ui-react';
 require('moment/locale/ru');
 
 const Smsetplp = props => {
@@ -31,10 +38,8 @@ const Smsetplp = props => {
     countryList = [],
     companyOptions = [],
     branchOptionsService,
-    smsetplpList,
+    smsetplpList = [],
   } = props;
-
-  console.log('smsetplpList', smsetplpList);
 
   const initialState = {
     countryId: '',
@@ -47,6 +52,22 @@ const Smsetplp = props => {
     ...initialState,
   });
 
+  const [formStatus, setFormStatus] = useState(true);
+
+  console.log('formStatus', formStatus);
+
+  useEffect(() => {
+    props.f4FetchCountryList();
+  }, []);
+
+  useEffect(() => {
+    if (smsetplpList) {
+      setFormStatus(false);
+    } else {
+      setFormStatus(true);
+    }
+  }, [smsetplpList]);
+
   const countryOptions = countryList.map(item => {
     return {
       key: item.countryId,
@@ -57,7 +78,17 @@ const Smsetplp = props => {
 
   const onInputChange = (value, fieldName) => {
     switch (fieldName) {
-      case '':
+      case 'countryId':
+        setParam({ ...param, countryId: value });
+        break;
+      case 'bukrs':
+        setParam({ ...param, bukrs: value, branchId: '' });
+        break;
+      case 'branchId':
+        setParam({
+          ...param,
+          branchId: value.length > 0 ? value.join() : '',
+        });
         break;
 
       default:
@@ -66,95 +97,326 @@ const Smsetplp = props => {
   };
 
   //Колоны ReactTable
-  const initialColumns = React.useMemo(
-    () => [
-      {
-        Header: '№',
-        accessor: 'id',
-      },
-      {
-        Header: 'Компания',
-        accessor: 'id',
-      },
-      {
-        Header: 'Филиал',
-        accessor: 'id',
-      },
-      {
-        Header: 'Система по очистке воды',
-        columns: [
-          {
-            Header: 'Замена картриджей',
-            columns: [
-              {
-                Header: 'План по количеству (текущий)',
-                accessor: 'id',
-              },
-              {
-                Header: 'Текущий план база',
-                accessor: 'id',
-              },
-              {
-                Header: 'Текущий план',
-                accessor: 'id',
-              },
-              {
-                Header: 'План по количеству (просроченный)',
-                accessor: 'id',
-              },
-              {
-                Header: 'Просроченный план база',
-                accessor: 'id',
-              },
-              {
-                Header: 'Просроченный',
-                accessor: 'id',
-              },
-              {
-                Header: 'Общий план',
-                accessor: 'id',
-              },
-              {
-                Header: 'Выполненный план',
-                accessor: 'id',
-              },
-            ],
-          },
-          {
-            Header: 'Сервис пакет',
-            columns: [
-              {
-                Header: 'План',
-                accessor: 'id',
-              },
-              {
-                Header: 'Выполненный план',
-                accessor: 'id',
-              },
-            ],
-          },
-          {
-            Header: 'Продажа запчастей',
-            columns: [
-              {
-                Header: 'План',
-                accessor: 'id',
-              },
-              {
-                Header: 'Выполненный план',
-                accessor: 'id',
-              },
-            ],
-          },
-        ],
-      },
-    ],
-    [],
-  );
+  const initialColumns = [
+    {
+      Header: '#',
+      accessor: 'id',
+      headerStyle: { whiteSpace: 'pre-wrap', border: '2px solid #e48b44' },
+    },
+    {
+      Header: 'Компания',
+      accessor: 'bukrsName',
+      headerStyle: { whiteSpace: 'pre-wrap', border: '2px solid #e48b44' },
+    },
+    {
+      Header: 'Филиал',
+      accessor: 'branchName',
+      headerStyle: { whiteSpace: 'pre-wrap', border: '2px solid #e48b44' },
+    },
 
+    {
+      Header: 'Замена картриджей(Система по очистке воды)',
+      headerStyle: {
+        whiteSpace: 'pre-wrap',
+        background: '#72e89c',
+        border: '2px solid #e48b44',
+      },
+      columns: [
+        {
+          Header: 'План по количеству (текущий)',
+          accessor: 'filterCurrentDatabasePlanCount',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(114, 232, 156)',
+            border: '2px solid #e48b44',
+          },
+        },
+        {
+          Header: 'Текущий план база',
+          accessor: 'filterCurrentDatabasePlanSum',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(114, 232, 156)',
+            border: '2px solid #e48b44',
+          },
+        },
+        {
+          Header: 'Текущий план',
+          accessor: 'filterCurrentPlanSum',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(114, 232, 156)',
+            border: '2px solid #e48b44',
+          },
+        },
+        {
+          Header: 'План по количеству (просроченный)',
+          accessor: 'filterOverDueDatabasePlanCount',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(114, 232, 156)',
+            border: '2px solid #e48b44',
+          },
+        },
+        {
+          Header: 'Просроченный план база',
+          accessor: 'filterOverDueDatabasePlanSum',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(114, 232, 156)',
+            border: '2px solid #e48b44',
+          },
+        },
+        {
+          Header: 'Просроченный',
+          accessor: 'filterOverDuePlanSum',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(114, 232, 156)',
+            border: '2px solid #e48b44',
+          },
+        },
+        {
+          Header: 'Общий план',
+          accessor: 'filterTotalPlanSum',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(114, 232, 156)',
+            border: '2px solid #e48b44',
+          },
+        },
+        {
+          Header: 'Выполненный план',
+          accessor: 'filterDonePlanSum',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(114, 232, 156)',
+            border: '2px solid #e48b44',
+          },
+        },
+      ],
+    },
+    {
+      Header: 'Сервис пакет(Система по очистке воды)',
+      headerStyle: {
+        whiteSpace: 'pre-wrap',
+        background: '#72e89c',
+        border: '2px solid #e48b44',
+      },
+      columns: [
+        {
+          Header: 'План',
+          accessor: 'filterServicePacketPlanSum',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(114, 232, 156)',
+            border: '2px solid #e48b44',
+          },
+        },
+        {
+          Header: 'Выполненный план',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(114, 232, 156)',
+            border: '2px solid #e48b44',
+          },
+          accessor: 'filterServicePacketDonePlanSum',
+        },
+      ],
+    },
+    {
+      Header: 'Продажа запчастей(Система по очистке воды)',
+      headerStyle: {
+        whiteSpace: 'pre-wrap',
+        background: '#72e89c',
+        border: '2px solid #e48b44',
+      },
+      columns: [
+        {
+          Header: 'План',
+          accessor: 'filterPartsPlanSum',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(114, 232, 156)',
+            border: '2px solid #e48b44',
+          },
+        },
+        {
+          Header: 'Выполненный план',
+          accessor: 'filterPartsDonePlanSum',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(114, 232, 156)',
+            border: '2px solid #e48b44',
+          },
+        },
+      ],
+    },
+    {
+      Header: 'Сервис пакет(Уборочная система)',
+      headerStyle: {
+        whiteSpace: 'pre-wrap',
+        background: 'rgb(54 137 239)',
+        border: '2px solid #e48b44',
+      },
+      columns: [
+        {
+          Header: 'План',
+          accessor: 'id',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(54 137 239)',
+            border: '2px solid #e48b44',
+          },
+        },
+        {
+          Header: 'Выполненный план',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(54 137 239)',
+            border: '2px solid #e48b44',
+          },
+          accessor: 'id',
+        },
+      ],
+    },
+    {
+      Header: 'Сервис пакет(Уборочная система)',
+      headerStyle: {
+        whiteSpace: 'pre-wrap',
+        background: 'rgb(54 137 239)',
+        background: 'rgb(54 137 239)',
+        border: '2px solid #e48b44',
+      },
+      columns: [
+        {
+          Header: 'Текущий план по количеству',
+          accessor: 'filterVCServicePacketCurrentDatabasePlanCount',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(54 137 239)',
+            border: '2px solid #e48b44',
+          },
+        },
+        {
+          Header: 'Текущий план база',
+          accessor: 'filterVCServicePacketCurrentDatabasePlanSum',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(54 137 239)',
+            border: '2px solid #e48b44',
+          },
+        },
+        {
+          Header: 'Просроченный план по количеству база',
+          accessor: 'filterVCServicePacketOverDueDatabasePlanCount',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(54 137 239)',
+            border: '2px solid #e48b44',
+          },
+        },
+        {
+          Header: 'Просроченный план база',
+          accessor: 'filterVCServicePacketOverDueDatabasePlanSum;',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(54 137 239)',
+            border: '2px solid #e48b44',
+          },
+        },
+        {
+          Header: 'План',
+          accessor: 'filterVCServicePacketPlanSum',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(54 137 239)',
+            border: '2px solid #e48b44',
+          },
+        },
+        {
+          Header: 'Выполненный план',
+          accessor: 'filterVCServicePacketDonePlanSum',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(54 137 239)',
+            border: '2px solid #e48b44',
+          },
+        },
+      ],
+    },
+    {
+      Header: 'Продажа запчастей(Уборочная система)',
+      headerStyle: {
+        whiteSpace: 'pre-wrap',
+        background: 'rgb(54 137 239)',
+        background: 'rgb(54 137 239)',
+        border: '2px solid #e48b44',
+      },
+      columns: [
+        {
+          Header: 'План',
+          accessor: 'filterVCPartsPlanSum',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(54 137 239)',
+            border: '2px solid #e48b44',
+          },
+        },
+        {
+          Header: 'Выполненный план',
+          accessor: 'filterVCPartsDonePlanSum',
+          headerStyle: {
+            whiteSpace: 'pre-wrap',
+            background: 'rgb(54 137 239)',
+            border: '2px solid #e48b44',
+          },
+        },
+      ],
+    },
+    {
+      Header: '',
+      columns: [
+        {
+          Header: 'Общая сумма плана',
+          accessor: 'totalPlanSum',
+          headerStyle: { whiteSpace: 'pre-wrap', border: '2px solid #e48b44' },
+          Footer: 'Общий:',
+        },
+        {
+          Header: 'Выполненный план',
+          accessor: 'totalDonePlanSum',
+          headerStyle: { whiteSpace: 'pre-wrap', border: '2px solid #e48b44' },
+        },
+        {
+          Header: '%',
+          accessor: 'donePlanPercent',
+          headerStyle: { whiteSpace: 'pre-wrap', border: '2px solid #e48b44' },
+        },
+        {
+          Header: 'Действие',
+          accessor: 'id',
+          headerStyle: { whiteSpace: 'pre-wrap', border: '2px solid #e48b44' },
+        },
+      ],
+    },
+  ];
+
+  //Применить
   const handleClickApply = () => {
     console.log('Применить');
+    props.fetchSmsetplpList({ ...param });
   };
+
+  //Формировать
+  const handleClickForm = () => {
+    if (param.dateAt) {
+      props.postSmsetplpForm(param.dateAt);
+    } else {
+      alert('ВЫБЕРИТЕ ДАТУ ФОРМИРОВАНИЯ');
+    }
+  };
+
   return (
     <Container
       fluid
@@ -178,7 +440,7 @@ const Smsetplp = props => {
               placeholder="Все"
               value={param.countryId}
               options={countryOptions}
-              onChange={(e, o) => onInputChange(o, 'countryId')}
+              onChange={(e, { value }) => onInputChange(value, 'countryId')}
               className="alignBottom"
               handleClear={() => setParam({ ...param, countryId: '' })}
             />
@@ -191,7 +453,7 @@ const Smsetplp = props => {
               placeholder="Все"
               value={param.bukrs}
               options={companyOptions}
-              onChange={(e, o) => onInputChange(o, 'bukrs')}
+              onChange={(e, { value }) => onInputChange(value, 'bukrs')}
               className="alignBottom"
               handleClear={() => setParam({ ...param, bukrs: '' })}
             />
@@ -207,7 +469,7 @@ const Smsetplp = props => {
                   ? []
                   : branchOptionsService[param.bukrs]
               }
-              onChange={(e, o) => onInputChange(o, 'branchId')}
+              onChange={(e, { value }) => onInputChange(value, 'branchId')}
               className="alignBottom"
               multiple
               value={
@@ -247,7 +509,8 @@ const Smsetplp = props => {
             Применить
           </Form.Button>
           <Form.Button
-            // onClick={handleClickApply}
+            disabled={formStatus}
+            onClick={handleClickForm}
             color="green"
             className="alignBottom"
           >
@@ -263,7 +526,7 @@ const Smsetplp = props => {
       //count={srlsmListData.totalElements}
       />
       <ReactTableWrapper
-        // data={srlsmListData.data}
+        data={smsetplpList ? smsetplpList : []}
         columns={initialColumns}
       />
     </Container>
@@ -281,5 +544,9 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps, {
+  fetchSmsetplpById,
   fetchSmsetplpList,
+  postSmsetplpForm,
+  updateSmsetplp,
+  f4FetchCountryList,
 })(injectIntl(Smsetplp));
