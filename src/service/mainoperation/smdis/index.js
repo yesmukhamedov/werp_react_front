@@ -43,7 +43,7 @@ const Smdis = props => {
   const [showTable, setshowTable] = useState(false);
 
   const [defaultPane, setDefaultPane] = useState(0);
-
+  console.log('PARAM', param);
   //Operator options
 
   //Распределение списка замена картриджа
@@ -109,6 +109,13 @@ const Smdis = props => {
 
         case 'categoryId':
           prevParam.categoryId = o.value;
+          break;
+        case 'clearBukrsId':
+          prevParam.bukrsId = '';
+          break;
+
+        case 'clearCategoryId':
+          prevParam.categoryId = '';
           break;
 
         case 'date':

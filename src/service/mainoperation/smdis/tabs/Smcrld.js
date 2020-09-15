@@ -26,6 +26,7 @@ import {
   //momentToStringYYYYMMDD,
   stringYYYYMMDDToMoment,
 } from '../../../../utils/helpers';
+import DropdownClearable from '../../../../utils/DropdownClearable';
 
 const Smcrld = props => {
   const {
@@ -406,27 +407,28 @@ const Smcrld = props => {
     <Container fluid>
       <Form>
         <Form.Group widths="equal">
-          <Form.Select
-            required
-            fluid
-            label="Компания"
-            value={param.bukrsId}
-            placeholder="Компания"
-            options={companyOptions}
-            onChange={(e, o) => props.onInputChange(o, 'bukrsId')}
-            className="alignBottom"
-          />
-
-          <Form.Select
-            required
-            fluid
-            label="Категория товара"
-            placeholder="Категория товара"
-            value={param.categoryId}
-            options={categoryOptions}
-            onChange={(e, o) => props.onInputChange(o, 'categoryId')}
-            className="alignBottom"
-          />
+          <Form.Field required>
+            <label>Компания</label>
+            <DropdownClearable
+              fluid
+              value={param.bukrsId ? param.bukrsId : ''}
+              placeholder="Все"
+              options={companyOptions ? companyOptions : []}
+              onChange={(e, o) => props.onInputChange(o, 'bukrsId')}
+              handleClear={(e, o) => props.onInputChange(o, 'clearBukrsId')}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>Категория товара</label>
+            <DropdownClearable
+              fluid
+              placeholder="Все"
+              value={param.categoryId ? param.categoryId : ''}
+              options={categoryOptions ? categoryOptions : []}
+              onChange={(e, o) => props.onInputChange(o, 'categoryId')}
+              handleClear={(e, o) => props.onInputChange(o, 'clearCategoryId')}
+            />
+          </Form.Field>
         </Form.Group>
         <Form.Group className="spaceBetween">
           <div className="flexDirectionRow">

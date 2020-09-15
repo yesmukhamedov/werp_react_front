@@ -29,7 +29,7 @@ const DropdownClearable = props => {
           },
           ...options,
         ]
-      : '';
+      : [];
 
   return (
     <div style={{ position: 'relative' }}>
