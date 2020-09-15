@@ -19,14 +19,17 @@ const DropdownClearable = props => {
     lineHeight: 1,
     zIndex: 1,
   };
-  const optionsArr = [
-    {
-      key: 696969,
-      text: 'Все',
-      value: '',
-    },
-    ...options,
-  ];
+  const optionsArr =
+    options.length > 0
+      ? [
+          {
+            key: 696969,
+            text: 'Все',
+            value: '',
+          },
+          ...options,
+        ]
+      : '';
 
   return (
     <div style={{ position: 'relative' }}>

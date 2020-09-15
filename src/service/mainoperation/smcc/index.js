@@ -42,6 +42,7 @@ import {
   LinkToStaffCardView,
   LinkToCustomerHrc03,
 } from '../../../utils/outlink';
+import DropdownClearable from '../../../utils/DropdownClearable';
 
 function Smcc(props) {
   const emptyContract = {
@@ -247,6 +248,7 @@ function Smcc(props) {
         case 'bukrsId':
           varContract.bukrsId = o.value;
           break;
+
         case 'branchId':
           //get the selected branch
           let waSelectedBranch = {};
@@ -390,6 +392,30 @@ function Smcc(props) {
           break;
         case 'serviceFilterF5':
           setServFilter({ ...servFilter, f5Mt: parseInt(o.value, 10) });
+          break;
+
+        case 'clearBukrsId':
+          setContract({
+            ...contract,
+            bukrsId: '',
+            branchId: '',
+            serviceBranchId: '',
+            contractTypeId: '',
+          });
+          break;
+        case 'clearBranchId':
+          setContract({
+            ...contract,
+            branchId: '',
+            serviceBranchId: '',
+            contractTypeId: '',
+          });
+          break;
+        case 'clearServiceBranchId':
+          setContract({ ...contract, serviceBranchId: '', contractTypeId: '' });
+          break;
+        case 'clearContractTypeId':
+          setContract({ ...contract, contractTypeId: '' });
           break;
 
         default:
@@ -578,7 +604,9 @@ function Smcc(props) {
                         </Form.Field>
                       </Table.Cell>
                       <Table.Cell>
-                        <Dropdown
+                        {/* <Dropdown /> */}
+
+                        <DropdownClearable
                           placeholder={messages['bukrs']}
                           fluid
                           selection
@@ -586,6 +614,9 @@ function Smcc(props) {
                           options={getCompanyOptions(companyOptions)}
                           value={contract.bukrsId}
                           onChange={(e, o) => onInputChange(o, 'bukrsId')}
+                          handleClear={(e, value) =>
+                            onInputChange(value, 'clearBukrsId')
+                          }
                         />
                       </Table.Cell>
                     </Table.Row>
@@ -599,7 +630,7 @@ function Smcc(props) {
                         </Form.Field>
                       </Table.Cell>
                       <Table.Cell>
-                        <Dropdown
+                        <DropdownClearable
                           placeholder={messages['brnch']}
                           fluid
                           selection
@@ -611,7 +642,11 @@ function Smcc(props) {
                           }
                           value={contract.branchId}
                           onChange={(e, o) => onInputChange(o, 'branchId')}
+                          handleClear={(e, value) =>
+                            onInputChange(value, 'clearBranchId')
+                          }
                         />
+                        {/* <Dropdown /> */}
                       </Table.Cell>
                     </Table.Row>
                     <Table.Row>
@@ -624,7 +659,7 @@ function Smcc(props) {
                         </Form.Field>
                       </Table.Cell>
                       <Table.Cell>
-                        <Dropdown
+                        <DropdownClearable
                           placeholder={messages['service']}
                           fluid
                           selection
@@ -638,7 +673,11 @@ function Smcc(props) {
                           onChange={(e, o) =>
                             onInputChange(o, 'serviceBranchId')
                           }
+                          handleClear={(e, value) =>
+                            onInputChange(value, 'clearServiceBranchId')
+                          }
                         />
+                        {/* <Dropdown /> */}
                       </Table.Cell>
                     </Table.Row>
                     <Table.Row>
@@ -651,7 +690,7 @@ function Smcc(props) {
                         </Form.Field>
                       </Table.Cell>
                       <Table.Cell>
-                        <Dropdown
+                        <DropdownClearable
                           placeholder={messages['contractType']}
                           fluid
                           search
@@ -661,7 +700,11 @@ function Smcc(props) {
                           onChange={(e, o) =>
                             onInputChange(o, 'contractTypeId')
                           }
+                          handleClear={(e, value) =>
+                            onInputChange(value, 'clearContractTypeId')
+                          }
                         />
+                        {/* <Dropdown /> */}
                       </Table.Cell>
                     </Table.Row>
                     <Table.Row>
