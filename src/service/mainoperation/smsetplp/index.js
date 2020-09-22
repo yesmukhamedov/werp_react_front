@@ -125,7 +125,7 @@ const Smsetplp = props => {
       },
       columns: [
         {
-          Header: 'План по количеству (текущий)',
+          Header: 'Текущий план база по количеству',
           accessor: 'filterCurrentDatabasePlanCount',
           headerStyle: {
             whiteSpace: 'pre-wrap',
@@ -152,7 +152,7 @@ const Smsetplp = props => {
           },
         },
         {
-          Header: 'План по количеству (просроченный)',
+          Header: 'Просроченный план по количеству',
           accessor: 'filterOverDueDatabasePlanCount',
           headerStyle: {
             whiteSpace: 'pre-wrap',
@@ -170,7 +170,7 @@ const Smsetplp = props => {
           },
         },
         {
-          Header: 'Просроченный',
+          Header: 'Просроченный план',
           accessor: 'filterOverDuePlanSum',
           headerStyle: {
             whiteSpace: 'pre-wrap',
@@ -254,34 +254,7 @@ const Smsetplp = props => {
         },
       ],
     },
-    {
-      Header: 'Сервис пакет(Уборочная система)',
-      headerStyle: {
-        whiteSpace: 'pre-wrap',
-        background: 'rgb(54 137 239)',
-        border: '2px solid #e48b44',
-      },
-      columns: [
-        {
-          Header: 'План',
-          accessor: 'id',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(54 137 239)',
-            border: '2px solid #e48b44',
-          },
-        },
-        {
-          Header: 'Выполненный план',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(54 137 239)',
-            border: '2px solid #e48b44',
-          },
-          accessor: 'id',
-        },
-      ],
-    },
+
     {
       Header: 'Сервис пакет(Уборочная система)',
       headerStyle: {
@@ -292,7 +265,7 @@ const Smsetplp = props => {
       },
       columns: [
         {
-          Header: 'Текущий план по количеству',
+          Header: 'Текущий план база по количеству',
           accessor: 'filterVCServicePacketCurrentDatabasePlanCount',
           headerStyle: {
             whiteSpace: 'pre-wrap',
@@ -310,7 +283,7 @@ const Smsetplp = props => {
           },
         },
         {
-          Header: 'Просроченный план по количеству база',
+          Header: 'Просроченный план база по количеству',
           accessor: 'filterVCServicePacketOverDueDatabasePlanCount',
           headerStyle: {
             whiteSpace: 'pre-wrap',
@@ -397,7 +370,6 @@ const Smsetplp = props => {
         },
         {
           Header: 'Действие',
-          accessor: 'id',
           headerStyle: { whiteSpace: 'pre-wrap', border: '2px solid #e48b44' },
         },
       ],
