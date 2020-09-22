@@ -407,7 +407,11 @@ const Smsetplp = props => {
   //Применить
   const handleClickApply = () => {
     console.log('Применить');
-    props.fetchSmsetplpList({ ...param });
+    if (param.bukrs) {
+      props.fetchSmsetplpList({ ...param });
+    } else {
+      alert('ВЫБЕРИТЕ КОМПАНИЮ');
+    }
   };
 
   //Формировать
