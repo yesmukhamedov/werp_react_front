@@ -62,9 +62,11 @@ const Smsetplp = props => {
 
   useEffect(() => {
     if (smsetplpList) {
-      setFormStatus(true);
-    } else {
-      setFormStatus(false);
+      if (smsetplpList.length > 0) {
+        setFormStatus(true);
+      } else {
+        setFormStatus(false);
+      }
     }
   }, [smsetplpList]);
 
