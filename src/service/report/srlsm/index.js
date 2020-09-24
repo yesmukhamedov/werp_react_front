@@ -536,6 +536,22 @@ const Srlsm = props => {
     {
       Header: 'Премя мастера',
       accessor: 'masterPremium',
+
+      Footer: info => {
+        let total = info.data.reduce(
+          (total, item) => total + item.masterPremium,
+          0,
+        );
+
+        console.log('INFO', info);
+        console.log('total', total);
+
+        return (
+          <div className="text-wrap" style={{ textAlign: 'center' }}>
+            Всего: {moneyFormat(total)}
+          </div>
+        );
+      },
       Cell: row => (
         <div className="text-wrap" style={{ textAlign: 'center' }}>
           {moneyFormat(row.value)}
@@ -545,6 +561,21 @@ const Srlsm = props => {
     {
       Header: 'Премя оператора',
       accessor: 'operatorPremium',
+      Footer: info => {
+        let total = info.data.reduce(
+          (total, item) => total + item.operatorPremium,
+          0,
+        );
+
+        console.log('INFO', info);
+        console.log('total', total);
+
+        return (
+          <div className="text-wrap" style={{ textAlign: 'center' }}>
+            Всего: {moneyFormat(total)}
+          </div>
+        );
+      },
       Cell: row => (
         <div className="text-wrap" style={{ textAlign: 'center' }}>
           {moneyFormat(row.value)}
@@ -554,6 +585,18 @@ const Srlsm = props => {
     {
       Header: 'Скидка',
       accessor: 'discount',
+      Footer: info => {
+        let total = info.data.reduce((total, item) => total + item.discount, 0);
+
+        console.log('INFO', info);
+        console.log('total', total);
+
+        return (
+          <div className="text-wrap" style={{ textAlign: 'center' }}>
+            Всего: {moneyFormat(total)}
+          </div>
+        );
+      },
       Cell: row => (
         <div className="text-wrap" style={{ textAlign: 'center' }}>
           {moneyFormat(row.value)}
@@ -563,6 +606,11 @@ const Srlsm = props => {
     {
       Header: 'Количество',
       accessor: 'serviceCount',
+      Footer: () => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          Всего: {srlsmListData.totalElements}
+        </div>
+      ),
       Cell: row => (
         <div className="text-wrap" style={{ textAlign: 'center' }}>
           {moneyFormat(row.value)}
@@ -574,6 +622,18 @@ const Srlsm = props => {
     {
       Header: 'Общая сумма со скидкой',
       accessor: 'totalSum',
+      Footer: info => {
+        let total = info.data.reduce((total, item) => total + item.totalSum, 0);
+
+        console.log('INFO', info);
+        console.log('total', total);
+
+        return (
+          <div className="text-wrap" style={{ textAlign: 'center' }}>
+            Всего: {moneyFormat(total)}
+          </div>
+        );
+      },
       Cell: row => (
         <div className="text-wrap" style={{ textAlign: 'center' }}>
           {moneyFormat(row.value)}
