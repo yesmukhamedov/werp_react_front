@@ -325,9 +325,31 @@ const TabSmcsWithRequest = props => {
                   : item,
               ),
             );
+            setSparePartList(
+              sparePartList.map(item =>
+                item.id === original.id
+                  ? {
+                      ...item,
+                      quantity: 0,
+                      sum: 0 * item.matnrPrice,
+                    }
+                  : item,
+              ),
+            );
           } else {
             setSparePartInitial(
               sparePartInitial.map(item =>
+                item.id === original.id
+                  ? {
+                      ...item,
+                      quantity: val,
+                      sum: val * item.matnrPrice,
+                    }
+                  : item,
+              ),
+            );
+            setSparePartList(
+              sparePartList.map(item =>
                 item.id === original.id
                   ? {
                       ...item,
@@ -413,7 +435,7 @@ const TabSmcsWithRequest = props => {
             ? {
                 ...item,
                 checked: false,
-                quantity: item.quantity,
+                quantity: 1,
                 sum: item.sum,
               }
             : item,
@@ -426,8 +448,8 @@ const TabSmcsWithRequest = props => {
             ? {
                 ...item,
                 checked: true,
-                quantity: item.quantity,
-                sum: item.matnrPrice * item.quantity,
+                quantity: 1,
+                sum: item.matnrPrice * 1,
               }
             : item,
         ),
