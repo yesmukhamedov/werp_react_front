@@ -621,12 +621,12 @@ const Srlsm = props => {
 
     {
       Header: 'Общая сумма(со скидкой)',
-      accessor: 'totalSum',
+      accessor: 'totalSumWithDiscount',
       Footer: info => {
-        let total = info.data.reduce((total, item) => total + item.totalSum, 0);
-
-        console.log('INFO', info);
-        console.log('total', total);
+        let total = info.data.reduce(
+          (total, item) => total + item.totalSumWithDiscount,
+          0,
+        );
 
         return (
           <div className="text-wrap" style={{ textAlign: 'center' }}>
