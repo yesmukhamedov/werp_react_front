@@ -620,7 +620,7 @@ const Srlsm = props => {
     },
 
     {
-      Header: 'Общая сумма со скидкой',
+      Header: 'Общая сумма(со скидкой)',
       accessor: 'totalSum',
       Footer: info => {
         let total = info.data.reduce((total, item) => total + item.totalSum, 0);
