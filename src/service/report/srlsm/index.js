@@ -36,10 +36,9 @@ import {
 } from '../../../utils/helpers';
 import '../../service.css';
 import { LinkToSmcuspor, LinkToSmesManager } from '../../../utils/outlink';
-import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
+import ReactTableServerSideWrapperFilteredState from '../../../utils/ReactTableServerSideWrapperFilteredState';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import TotalCountsTable from '../../../utils/TotalCountsTable';
-import debounce from 'lodash/debounce';
 
 import DropdownClearable from '../../../utils/DropdownClearable';
 import OutputErrors from '../../../general/error/outputErrors';
@@ -79,62 +78,17 @@ const Srlsm = props => {
     acceptedPaymentById: null,
     dateAt: momentToStringYYYYMMDD(moment(new Date())),
     dateTo: null,
-    direction: 'DESC',
-    orderBy: 'id',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
-
-  const [serverSideParams, setServerSideParams] = useState({});
-
-  useEffect(() => {
-    if (param.bukrs) {
-      if (Object.keys(serverSideParams).length > 0) {
-        if (serverSideParams.contractNumber) {
-          if (serverSideParams.contractNumber.length > 2) {
-            console.log(
-              'serverSideParams.contractNumber',
-              serverSideParams.contractNumber,
-            );
-            props.fetchSrlsm({
-              ...param,
-              serviceStatusId: param.serviceStatusId.toString(),
-              ...serverSideParams,
-            });
-          }
-        }
-
-        if (serverSideParams.tovarSn) {
-          if (serverSideParams.tovarSn.length > 2) {
-            console.log('serverSideParams.tovarSn', serverSideParams.tovarSn);
-            props.fetchSrlsm({
-              ...param,
-              serviceStatusId: param.serviceStatusId.toString(),
-              ...serverSideParams,
-            });
-          }
-        }
-        if (serverSideParams.customerFIO) {
-          if (serverSideParams.customerFIO.length > 2) {
-            console.log(
-              'serverSideParams.customerFIO',
-              serverSideParams.customerFIO,
-            );
-            props.fetchSrlsm({
-              ...param,
-              serviceStatusId: param.serviceStatusId.toString(),
-              ...serverSideParams,
-            });
-          }
-        }
-      }
-    }
-  }, [serverSideParams]);
 
   const [error, setError] = useState([]);
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
 
   const [modalDetails, setModalDetails] = useState(false);
+  const [filtered, setFiltered] = useState([]);
+
+  console.log('filtered', filtered);
 
   const masterOptions = masterList.map((item, index) => {
     return {
@@ -143,6 +97,7 @@ const Srlsm = props => {
       value: item.staffId,
     };
   });
+
   const operatorOptions = operatorList.map((item, index) => {
     return {
       key: item.staffId,
@@ -277,7 +232,7 @@ const Srlsm = props => {
     });
   };
 
-  //Колоны ReactTable
+  //Колонки ReactTable
   const initialColumns = [
     {
       Header: '#',
@@ -337,6 +292,18 @@ const Srlsm = props => {
           {row.value}
         </div>
       ),
+      Filter: ({ filter, onChange }) => {
+        return (
+          <input
+            onKeyPress={event => {
+              if (event.keyCode === 13 || event.which === 13) {
+                setTurnOnReactFetch(true);
+                onChange(event.target.value);
+              }
+            }}
+          />
+        );
+      },
     },
     {
       Header: () => (
@@ -352,6 +319,18 @@ const Srlsm = props => {
           {row.value}
         </div>
       ),
+      Filter: ({ filter, onChange }) => {
+        return (
+          <input
+            onKeyPress={event => {
+              if (event.keyCode === 13 || event.which === 13) {
+                setTurnOnReactFetch(true);
+                onChange(event.target.value);
+              }
+            }}
+          />
+        );
+      },
     },
     {
       Header: () => (
@@ -366,6 +345,18 @@ const Srlsm = props => {
           {row.value}
         </div>
       ),
+      Filter: ({ filter, onChange }) => {
+        return (
+          <input
+            onKeyPress={event => {
+              if (event.keyCode === 13 || event.which === 13) {
+                setTurnOnReactFetch(true);
+                onChange(event.target.value);
+              }
+            }}
+          />
+        );
+      },
       width: 200,
     },
 
@@ -591,27 +582,21 @@ const Srlsm = props => {
     },
   ];
 
-  const [filtered, setFiltered] = useState([]);
-
-  console.log('FILTERED', filtered);
-
   const handleClickApply = () => {
     const errors = [];
+    setColumns([...initialColumns]);
+    setFiltered([]);
     if (param.bukrs) {
-      let page = 0;
-      let size = 20;
-      setFiltered([]);
-
       props.fetchSrlsm({
         ...param,
         serviceStatusId: param.serviceStatusId.toString(),
-        page: page,
-        size: size,
+        page: 0,
+        size: 20,
       });
     } else {
       errors.push(errorTableText(5));
     }
-    setTurnOnReactFetch(true);
+    //setTurnOnReactFetch(true);
     setError(errors);
   };
   return (
@@ -933,37 +918,22 @@ const Srlsm = props => {
         </Table.Body>
       </Table>
       <TotalCountsTable count={srlsmListData.totalElements} />
-      <ReactTableServerSideWrapper
+
+      <ReactTableServerSideWrapperFilteredState
         data={srlsmListData.data}
         columns={columns}
-        filterable={true}
+        filterable
         pageSize={20}
         showPagination={true}
         requestData={params => {
-          setTurnOnReactFetch(true);
-          if (params != serverSideParams) {
-            console.log('TRUE');
-            setServerSideParams({ ...params });
-          }
-
-          if (params.page) {
-            if (params.page != serverSideParams.page) {
-              props.fetchSrlsm({
-                ...param,
-                serviceStatusId: param.serviceStatusId.toString(),
-                ...params,
-              });
-            }
-          }
-          // setTimeout(() => console.log('params', params), 3000);
-          // // debounce(console.log('params', params), 3000);
+          props.fetchSrlsm({ ...param, ...params });
         }}
         pages={srlsmTotalPages ? srlsmTotalPages : ''}
         turnOnReactFetch={turnOnReactFetch}
         filtered={filtered}
         onFilteredChange={filter => {
+          setFiltered(filter);
           setTurnOnReactFetch(true);
-          setFiltered([...filter]);
         }}
       />
     </Container>
