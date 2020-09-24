@@ -368,13 +368,13 @@ function Smecim(props) {
               <Form>
                 <div className="flexJustifySpaceBeetween">
                   <h3>{messages['L__CLIENT_INFO']} </h3>
-                  <Button
+                  {/* <Button
                     disabled={resold.statusDisabled}
                     color="teal"
                     onClick={btnResold}
                   >
                     Перепродан
-                  </Button>
+                  </Button> */}
                 </div>
                 <Table compact striped>
                   <Table.Body>
