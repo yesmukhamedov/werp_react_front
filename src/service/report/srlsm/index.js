@@ -572,7 +572,7 @@ const Srlsm = props => {
     },
 
     {
-      Header: 'Общая сумма',
+      Header: 'Общая сумма со скидкой',
       accessor: 'totalSum',
       Cell: row => (
         <div className="text-wrap" style={{ textAlign: 'center' }}>
