@@ -98,7 +98,15 @@ const ServiceFilterPlan = props => {
       accessor: 'contractNumber',
       checked: true,
       Cell: row => {
-        if (row.original.contractStatusName == 'СУД') {
+        if (
+          row.original.contractStatusId == 8 ||
+          row.original.contractStatusId == 9 ||
+          row.original.contractStatusId == 4 ||
+          row.original.contractStatusId == 12 ||
+          row.original.contractStatusId == 13 ||
+          row.original.contractStatusId == 14 ||
+          row.original.contractStatusId == 15
+        ) {
           return <StatusTrial text={row.value} />;
         } else {
           return <TextAlignCenter text={row.value} />;
@@ -114,7 +122,15 @@ const ServiceFilterPlan = props => {
       accessor: 'tovarSn',
       checked: true,
       Cell: row => {
-        if (row.original.contractStatusName == 'СУД') {
+        if (
+          row.original.contractStatusId == 8 ||
+          row.original.contractStatusId == 9 ||
+          row.original.contractStatusId == 4 ||
+          row.original.contractStatusId == 12 ||
+          row.original.contractStatusId == 13 ||
+          row.original.contractStatusId == 14 ||
+          row.original.contractStatusId == 15
+        ) {
           return <StatusTrial text={row.value} />;
         } else {
           return <TextAlignCenter text={row.value} />;
@@ -130,7 +146,15 @@ const ServiceFilterPlan = props => {
       checked: true,
 
       Cell: row => {
-        if (row.original.contractStatusName == 'СУД') {
+        if (
+          row.original.contractStatusId == 8 ||
+          row.original.contractStatusId == 9 ||
+          row.original.contractStatusId == 4 ||
+          row.original.contractStatusId == 12 ||
+          row.original.contractStatusId == 13 ||
+          row.original.contractStatusId == 14 ||
+          row.original.contractStatusId == 15
+        ) {
           return (
             <StatusTrial
               text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
@@ -153,7 +177,15 @@ const ServiceFilterPlan = props => {
       accessor: 'customerFIO',
       checked: true,
       Cell: row => {
-        if (row.original.contractStatusName == 'СУД') {
+        if (
+          row.original.contractStatusId == 8 ||
+          row.original.contractStatusId == 9 ||
+          row.original.contractStatusId == 4 ||
+          row.original.contractStatusId == 12 ||
+          row.original.contractStatusId == 13 ||
+          row.original.contractStatusId == 14 ||
+          row.original.contractStatusId == 15
+        ) {
           return <StatusTrial text={row.value} />;
         } else {
           return <TextAlignCenter text={row.value} />;
@@ -168,7 +200,15 @@ const ServiceFilterPlan = props => {
       accessor: 'customerIinBin',
       checked: true,
       Cell: row => {
-        if (row.original.contractStatusName == 'СУД') {
+        if (
+          row.original.contractStatusId == 8 ||
+          row.original.contractStatusId == 9 ||
+          row.original.contractStatusId == 4 ||
+          row.original.contractStatusId == 12 ||
+          row.original.contractStatusId == 13 ||
+          row.original.contractStatusId == 14 ||
+          row.original.contractStatusId == 15
+        ) {
           return <StatusTrial text={row.value} />;
         } else {
           return <TextAlignCenter text={row.value} />;
@@ -184,7 +224,15 @@ const ServiceFilterPlan = props => {
       accessor: 'address',
       checked: true,
       Cell: row => {
-        if (row.original.contractStatusName == 'СУД') {
+        if (
+          row.original.contractStatusId == 8 ||
+          row.original.contractStatusId == 9 ||
+          row.original.contractStatusId == 4 ||
+          row.original.contractStatusId == 12 ||
+          row.original.contractStatusId == 13 ||
+          row.original.contractStatusId == 14 ||
+          row.original.contractStatusId == 15
+        ) {
           return <StatusTrial text={row.value} />;
         } else {
           return <TextAlignCenter text={row.value} />;
@@ -273,7 +321,15 @@ const ServiceFilterPlan = props => {
       accessor: 'contractStatusName',
       checked: true,
       Cell: row => {
-        if (row.original.contractStatusName == 'СУД') {
+        if (
+          row.original.contractStatusId == 8 ||
+          row.original.contractStatusId == 9 ||
+          row.original.contractStatusId == 4 ||
+          row.original.contractStatusId == 12 ||
+          row.original.contractStatusId == 13 ||
+          row.original.contractStatusId == 14 ||
+          row.original.contractStatusId == 15
+        ) {
           return <StatusTrial text={row.value} />;
         } else {
           return <TextAlignCenter text={row.value} />;
