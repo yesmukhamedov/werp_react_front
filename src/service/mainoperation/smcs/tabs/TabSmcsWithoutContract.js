@@ -516,6 +516,7 @@ const TabSmcsWithoutContract = props => {
               : item,
           ),
         );
+        setCheckStatus(false);
         break;
 
       //Количество запчастей
@@ -650,6 +651,7 @@ const TabSmcsWithoutContract = props => {
             : item,
         ),
       );
+      setCheckStatus(false);
     } else {
       setSparePartList(
         sparePartList.map(item =>
@@ -663,6 +665,7 @@ const TabSmcsWithoutContract = props => {
             : item,
         ),
       );
+      setCheckStatus(false);
     }
   };
 

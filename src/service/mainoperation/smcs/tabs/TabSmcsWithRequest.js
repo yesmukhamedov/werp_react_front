@@ -307,6 +307,7 @@ const TabSmcsWithRequest = props => {
               : item,
           ),
         );
+        setCheckStatus(false);
         break;
 
       //Количество запчастей
@@ -441,6 +442,7 @@ const TabSmcsWithRequest = props => {
             : item,
         ),
       );
+      setCheckStatus(false);
     } else {
       setSparePartList(
         sparePartList.map(item =>
@@ -454,6 +456,7 @@ const TabSmcsWithRequest = props => {
             : item,
         ),
       );
+      setCheckStatus(false);
     }
   };
 
