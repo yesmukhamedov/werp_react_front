@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-
 import {
   fetchSmsetplpById,
   fetchSmsetplpList,
+  clearSmsetplpList,
   postSmsetplpForm,
   updateSmsetplp,
 } from './smsetplpAction';
@@ -19,16 +19,16 @@ import {
   moneyFormat,
 } from '../../../utils/helpers';
 import '../../service.css';
-import ReactTableWrapper from '../../../utils/ReactTableWrapper';
+
 import TotalCountsTable from '../../../utils/TotalCountsTable';
-import debounce from 'lodash/debounce';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 
 import DropdownClearable from '../../../utils/DropdownClearable';
 import OutputErrors from '../../../general/error/outputErrors';
 import { errorTableText } from '../../../utils/helpers';
-import moment from 'moment';
-import { Header } from 'semantic-ui-react';
+
+import Table from './Table';
+import { Divider } from 'semantic-ui-react';
 require('moment/locale/ru');
 
 const Smsetplp = props => {
@@ -52,9 +52,24 @@ const Smsetplp = props => {
     ...initialState,
   });
 
-  const [formStatus, setFormStatus] = useState(true);
+  const [stateSmsetplpList, setStateSmsetplpList] = useState([]);
 
-  console.log('formStatus', formStatus);
+  console.log('stateSmsetplpList', stateSmsetplpList);
+
+  useEffect(() => {
+    if (smsetplpList.length !== 0) {
+      setStateSmsetplpList(
+        smsetplpList.map(item => {
+          return {
+            ...item,
+            editStatus: true,
+          };
+        }),
+      );
+    }
+  }, [smsetplpList]);
+
+  const [formStatus, setFormStatus] = useState(true);
 
   useEffect(() => {
     props.f4FetchCountryList();
@@ -98,289 +113,13 @@ const Smsetplp = props => {
     }
   };
 
-  //Колоны ReactTable
-  const initialColumns = [
-    {
-      Header: '#',
-      accessor: 'id',
-      headerStyle: { whiteSpace: 'pre-wrap', border: '2px solid #e48b44' },
-    },
-    {
-      Header: 'Компания',
-      accessor: 'bukrsName',
-      headerStyle: { whiteSpace: 'pre-wrap', border: '2px solid #e48b44' },
-    },
-    {
-      Header: 'Филиал',
-      accessor: 'branchName',
-      headerStyle: { whiteSpace: 'pre-wrap', border: '2px solid #e48b44' },
-    },
-
-    {
-      Header: 'Замена картриджей(Система по очистке воды)',
-      headerStyle: {
-        whiteSpace: 'pre-wrap',
-        background: '#72e89c',
-        border: '2px solid #e48b44',
-      },
-      columns: [
-        {
-          Header: 'Текущий план база по количеству',
-          accessor: 'filterCurrentDatabasePlanCount',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(114, 232, 156)',
-            border: '2px solid #e48b44',
-          },
-        },
-        {
-          Header: 'Текущий план база',
-          accessor: 'filterCurrentDatabasePlanSum',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(114, 232, 156)',
-            border: '2px solid #e48b44',
-          },
-        },
-        {
-          Header: 'Текущий план',
-          accessor: 'filterCurrentPlanSum',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(114, 232, 156)',
-            border: '2px solid #e48b44',
-          },
-        },
-        {
-          Header: 'Просроченный план по количеству',
-          accessor: 'filterOverDueDatabasePlanCount',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(114, 232, 156)',
-            border: '2px solid #e48b44',
-          },
-        },
-        {
-          Header: 'Просроченный план база',
-          accessor: 'filterOverDueDatabasePlanSum',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(114, 232, 156)',
-            border: '2px solid #e48b44',
-          },
-        },
-        {
-          Header: 'Просроченный план',
-          accessor: 'filterOverDuePlanSum',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(114, 232, 156)',
-            border: '2px solid #e48b44',
-          },
-        },
-        {
-          Header: 'Общий план',
-          accessor: 'filterTotalPlanSum',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(114, 232, 156)',
-            border: '2px solid #e48b44',
-          },
-        },
-        {
-          Header: 'Выполненный план',
-          accessor: 'filterDonePlanSum',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(114, 232, 156)',
-            border: '2px solid #e48b44',
-          },
-        },
-      ],
-    },
-    {
-      Header: 'Сервис пакет(Система по очистке воды)',
-      headerStyle: {
-        whiteSpace: 'pre-wrap',
-        background: '#72e89c',
-        border: '2px solid #e48b44',
-      },
-      columns: [
-        {
-          Header: 'План',
-          accessor: 'filterServicePacketPlanSum',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(114, 232, 156)',
-            border: '2px solid #e48b44',
-          },
-        },
-        {
-          Header: 'Выполненный план',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(114, 232, 156)',
-            border: '2px solid #e48b44',
-          },
-          accessor: 'filterServicePacketDonePlanSum',
-        },
-      ],
-    },
-    {
-      Header: 'Продажа запчастей(Система по очистке воды)',
-      headerStyle: {
-        whiteSpace: 'pre-wrap',
-        background: '#72e89c',
-        border: '2px solid #e48b44',
-      },
-      columns: [
-        {
-          Header: 'План',
-          accessor: 'filterPartsPlanSum',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(114, 232, 156)',
-            border: '2px solid #e48b44',
-          },
-        },
-        {
-          Header: 'Выполненный план',
-          accessor: 'filterPartsDonePlanSum',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(114, 232, 156)',
-            border: '2px solid #e48b44',
-          },
-        },
-      ],
-    },
-
-    {
-      Header: 'Сервис пакет(Уборочная система)',
-      headerStyle: {
-        whiteSpace: 'pre-wrap',
-        background: 'rgb(54 137 239)',
-        background: 'rgb(54 137 239)',
-        border: '2px solid #e48b44',
-      },
-      columns: [
-        {
-          Header: 'Текущий план база по количеству',
-          accessor: 'filterVCServicePacketCurrentDatabasePlanCount',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(54 137 239)',
-            border: '2px solid #e48b44',
-          },
-        },
-        {
-          Header: 'Текущий план база',
-          accessor: 'filterVCServicePacketCurrentDatabasePlanSum',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(54 137 239)',
-            border: '2px solid #e48b44',
-          },
-        },
-        {
-          Header: 'Просроченный план база по количеству',
-          accessor: 'filterVCServicePacketOverDueDatabasePlanCount',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(54 137 239)',
-            border: '2px solid #e48b44',
-          },
-        },
-        {
-          Header: 'Просроченный план база',
-          accessor: 'filterVCServicePacketOverDueDatabasePlanSum;',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(54 137 239)',
-            border: '2px solid #e48b44',
-          },
-        },
-        {
-          Header: 'План',
-          accessor: 'filterVCServicePacketPlanSum',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(54 137 239)',
-            border: '2px solid #e48b44',
-          },
-        },
-        {
-          Header: 'Выполненный план',
-          accessor: 'filterVCServicePacketDonePlanSum',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(54 137 239)',
-            border: '2px solid #e48b44',
-          },
-        },
-      ],
-    },
-    {
-      Header: 'Продажа запчастей(Уборочная система)',
-      headerStyle: {
-        whiteSpace: 'pre-wrap',
-        background: 'rgb(54 137 239)',
-        background: 'rgb(54 137 239)',
-        border: '2px solid #e48b44',
-      },
-      columns: [
-        {
-          Header: 'План',
-          accessor: 'filterVCPartsPlanSum',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(54 137 239)',
-            border: '2px solid #e48b44',
-          },
-        },
-        {
-          Header: 'Выполненный план',
-          accessor: 'filterVCPartsDonePlanSum',
-          headerStyle: {
-            whiteSpace: 'pre-wrap',
-            background: 'rgb(54 137 239)',
-            border: '2px solid #e48b44',
-          },
-        },
-      ],
-    },
-    {
-      Header: '',
-      columns: [
-        {
-          Header: 'Общая сумма плана',
-          accessor: 'totalPlanSum',
-          headerStyle: { whiteSpace: 'pre-wrap', border: '2px solid #e48b44' },
-          Footer: 'Общий:',
-        },
-        {
-          Header: 'Выполненный план',
-          accessor: 'totalDonePlanSum',
-          headerStyle: { whiteSpace: 'pre-wrap', border: '2px solid #e48b44' },
-        },
-        {
-          Header: '%',
-          accessor: 'donePlanPercent',
-          headerStyle: { whiteSpace: 'pre-wrap', border: '2px solid #e48b44' },
-        },
-        {
-          Header: 'Действие',
-          headerStyle: { whiteSpace: 'pre-wrap', border: '2px solid #e48b44' },
-        },
-      ],
-    },
-  ];
-
   //Применить
   const handleClickApply = () => {
-    console.log('Применить');
     if (param.bukrs) {
-      props.fetchSmsetplpList({ ...param });
+      props.fetchSmsetplpList({ ...param }, () => {
+        props.clearSmsetplpList();
+        setStateSmsetplpList([]);
+      });
     } else {
       alert('ВЫБЕРИТЕ КОМПАНИЮ');
     }
@@ -392,6 +131,142 @@ const Smsetplp = props => {
       props.postSmsetplpForm(param.dateAt);
     } else {
       alert('ВЫБЕРИТЕ ДАТУ ФОРМИРОВАНИЯ');
+    }
+  };
+
+  const onChangeTable = (fieldName, original, value) => {
+    switch (fieldName) {
+      case 'editRowTable':
+        setStateSmsetplpList(
+          stateSmsetplpList.map(item =>
+            item.id == original.id ? { ...item, editStatus: false } : item,
+          ),
+        );
+
+        break;
+      case 'saveRowTable':
+        setStateSmsetplpList(
+          stateSmsetplpList.map(item =>
+            item.id == original.id ? { ...item, editStatus: true } : item,
+          ),
+        );
+
+        props.updateSmsetplp({
+          branchId: original.branchId,
+          branchName: original.branchName,
+          bukrs: original.bukrs,
+          bukrsName: original.bukrsName,
+          countryId: original.countryId,
+          countryName: original.countryName,
+          dateAt: original.dateAt,
+          donePlanPercent: original.donePlanPercent,
+          filterCurrentDatabasePlanCount:
+            original.filterCurrentDatabasePlanCount,
+          filterCurrentDatabasePlanSum: original.filterCurrentDatabasePlanSum,
+          filterCurrentPlanSum: original.filterCurrentPlanSum,
+          filterDonePlanSum: original.filterDonePlanSum,
+          filterOverDueDatabasePlanCount:
+            original.filterOverDueDatabasePlanCount,
+          filterOverDueDatabasePlanSum: original.filterOverDueDatabasePlanSum,
+          filterOverDuePlanSum: original.filterOverDuePlanSum,
+          filterPartsDonePlanSum: original.filterPartsDonePlanSum,
+          filterPartsPlanSum: original.filterPartsPlanSum,
+          filterServicePacketDonePlanSum:
+            original.filterServicePacketDonePlanSum,
+          filterServicePacketPlanSum: original.filterServicePacketPlanSum,
+          filterTotalPlanSum: original.filterTotalPlanSum,
+          filterVCPartsDonePlanSum: original.filterVCPartsDonePlanSum,
+          filterVCPartsPlanSum: original.filterVCPartsPlanSum,
+          filterVCServicePacketCurrentDatabasePlanCount:
+            original.filterVCServicePacketCurrentDatabasePlanCount,
+          filterVCServicePacketCurrentDatabasePlanSum:
+            original.filterVCServicePacketCurrentDatabasePlanSum,
+          filterVCServicePacketDonePlanSum:
+            original.filterVCServicePacketDonePlanSum,
+          filterVCServicePacketOverDueDatabasePlanCount:
+            original.filterVCServicePacketOverDueDatabasePlanCount,
+          filterVCServicePacketOverDueDatabasePlanSum:
+            original.filterVCServicePacketOverDueDatabasePlanSum,
+          filterVCServicePacketPlanSum: original.filterVCServicePacketPlanSum,
+          id: original.id,
+          totalDonePlanSum: original.totalDonePlanSum,
+          totalPlanSum: original.totalPlanSum,
+        });
+        break;
+
+      //Редактирование Текущий план
+      case 'changeFilterCurrentPlanSum':
+        console.log('changeFilterCurrentPlanSum', value);
+        setStateSmsetplpList(
+          stateSmsetplpList.map(item =>
+            item.id == original.id
+              ? { ...item, filterCurrentPlanSum: parseInt(value) }
+              : item,
+          ),
+        );
+        break;
+
+      //Редактирование Просроченный план по количеству
+      case 'changeFilterOverDuePlanSum':
+        console.log('changeFilterOverDuePlanSum', value);
+        setStateSmsetplpList(
+          stateSmsetplpList.map(item =>
+            item.id == original.id
+              ? { ...item, filterOverDuePlanSum: parseInt(value) }
+              : item,
+          ),
+        );
+        break;
+
+      //Редактирование Сервис пакет(Система по очистке воды) План
+      case 'changeFilterServicePacketPlanSum':
+        console.log('changeFilterServicePacketPlanSum', value);
+        setStateSmsetplpList(
+          stateSmsetplpList.map(item =>
+            item.id == original.id
+              ? { ...item, filterServicePacketPlanSum: parseInt(value) }
+              : item,
+          ),
+        );
+        break;
+
+      //Редактирование Продажа запчастей(Система по очистке воды) План
+      case 'changeFilterPartsPlanSum':
+        console.log('changeFilterPartsPlanSum', value);
+        setStateSmsetplpList(
+          stateSmsetplpList.map(item =>
+            item.id == original.id
+              ? { ...item, filterPartsPlanSum: parseInt(value) }
+              : item,
+          ),
+        );
+        break;
+
+      //Редактирование Сервис пакет(Уборочная система) План
+      case 'changeFilterVCServicePacketPlanSum':
+        console.log('changeFilterVCServicePacketPlanSum', value);
+        setStateSmsetplpList(
+          stateSmsetplpList.map(item =>
+            item.id == original.id
+              ? { ...item, filterVCServicePacketPlanSum: parseInt(value) }
+              : item,
+          ),
+        );
+        break;
+      //Редактирование Продажа запчастей(Уборочная система) План
+      case 'changeFilterVCPartsPlanSum':
+        console.log('changeFilterVCPartsPlanSum', value);
+        setStateSmsetplpList(
+          stateSmsetplpList.map(item =>
+            item.id == original.id
+              ? { ...item, filterVCPartsPlanSum: parseInt(value) }
+              : item,
+          ),
+        );
+        break;
+
+      default:
+        alert('Нет такое значение');
     }
   };
 
@@ -457,26 +332,26 @@ const Smsetplp = props => {
           </Form.Field>
 
           <Form.Field className="marginRight">
-            <label>Дата с</label>
+            <label>Дата</label>
+
             <DatePicker
-              placeholderText="Дата с"
-              isClearable
-              className="date-auto-width"
+              dateFormat="MMMM YYYY"
+              showMonthYearPicker
+              placeholderText="Месяц"
               autoComplete="off"
-              locale={language}
-              dropdownMode="select" //timezone="UTC"
               selected={
                 param.dateAt === null
                   ? ''
                   : stringYYYYMMDDToMoment(param.dateAt)
               }
+              dropdownMode="select" //timezone="UTC"
+              locale={language}
               onChange={date =>
                 setParam({
                   ...param,
                   dateAt: momentToStringYYYYMMDD(date),
                 })
               }
-              dateFormat="DD.MM.YYYY"
             />
           </Form.Field>
           <Form.Button
@@ -499,13 +374,12 @@ const Smsetplp = props => {
       <OutputErrors
       //errors={error}
       />
-
-      <TotalCountsTable
-      //count={srlsmListData.totalElements}
-      />
-      <ReactTableWrapper
-        data={smsetplpList ? smsetplpList : []}
-        columns={initialColumns}
+      <Divider />
+      <Table
+        data={stateSmsetplpList ? stateSmsetplpList : []}
+        messages={props.intl.messages}
+        onChangeTable={onChangeTable}
+        // editStatus={editStatus}
       />
     </Container>
   );
@@ -524,6 +398,7 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
   fetchSmsetplpById,
   fetchSmsetplpList,
+  clearSmsetplpList,
   postSmsetplpForm,
   updateSmsetplp,
   f4FetchCountryList,

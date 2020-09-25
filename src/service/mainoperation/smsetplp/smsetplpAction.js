@@ -4,6 +4,7 @@ import { modifyLoader } from '../../../general/loader/loader_action';
 
 export const FETCH_SMSETPLP_BY_ID = 'FETCH_SMSETPLP_BY_ID';
 export const FETCH_SMSETPLP_LIST = 'FETCH_SMSETPLP_LIST';
+export const CLEAR_SMSETPLP_LIST = 'CLEAR_SMSETPLP_LIST';
 export const POST_SMSETPLP_FORM = 'POST_SMSETPLP_FORM';
 export const UPDATE_SMSETPLP = 'UPDATE_SMSETPLP';
 
@@ -29,7 +30,7 @@ export const fetchSmsetplpById = id => {
   };
 };
 //SMSETPLP получить список
-export const fetchSmsetplpList = param => {
+export const fetchSmsetplpList = (param, clearFn) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`smsetplp/view`, param)
@@ -39,6 +40,12 @@ export const fetchSmsetplpList = param => {
           type: FETCH_SMSETPLP_LIST,
           data,
         });
+        if (data.data.length > 0) {
+          console.log('TRUE', data.data.length);
+        } else {
+          clearFn();
+          console.log('FALSE', data.data.length);
+        }
       })
       .catch(error => {
         dispatch(modifyLoader(false));
@@ -46,6 +53,15 @@ export const fetchSmsetplpList = param => {
       });
   };
 };
+//SMSETPLP получить список
+
+export function clearSmsetplpList() {
+  return function(dispatch) {
+    dispatch({
+      type: CLEAR_SMSETPLP_LIST,
+    });
+  };
+}
 
 // Сформировать
 export const postSmsetplpForm = param => {

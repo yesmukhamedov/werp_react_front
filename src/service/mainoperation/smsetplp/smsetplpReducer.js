@@ -1,6 +1,7 @@
 import {
   FETCH_SMSETPLP_BY_ID,
   FETCH_SMSETPLP_LIST,
+  CLEAR_SMSETPLP_LIST,
   POST_SMSETPLP_FORM,
   UPDATE_SMSETPLP,
 } from './smsetplpAction';
@@ -20,6 +21,12 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         smsetplpList: [...action.data.data],
+      };
+
+    case CLEAR_SMSETPLP_LIST:
+      return {
+        ...state,
+        smsetplpList: [],
       };
     case POST_SMSETPLP_FORM:
       return {
