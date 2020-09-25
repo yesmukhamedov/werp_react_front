@@ -492,6 +492,19 @@ const Srlsm = props => {
           <LinkToSmesManager serviceNumber={row.value} />
         </div>
       ),
+
+      Filter: ({ filter, onChange }) => {
+        return (
+          <input
+            onKeyPress={event => {
+              if (event.keyCode === 13 || event.which === 13) {
+                setTurnOnReactFetch(true);
+                onChange(event.target.value);
+              }
+            }}
+          />
+        );
+      },
       fixed: 'right',
       width: 100,
     },
