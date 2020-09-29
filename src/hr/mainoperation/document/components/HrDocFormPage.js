@@ -320,7 +320,9 @@ class HrDocFormPage extends Component {
 
     if (fieldName === 'beginDate' || fieldName === 'endDate') {
       if (fieldValue) {
-        fieldValue = fieldValue.valueOf();
+        fieldValue =
+          fieldValue.valueOf() -
+          3600000 * (new Date().getTimezoneOffset() / 60);
       } else {
         fieldValue = null;
       }
