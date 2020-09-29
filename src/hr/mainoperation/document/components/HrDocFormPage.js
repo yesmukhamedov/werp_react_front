@@ -321,7 +321,7 @@ class HrDocFormPage extends Component {
     console.log(fieldName, fieldValue);
     //console.log(fieldName, fieldValue.getTime());
     console.log(fieldName, fieldValue.toDate());
-    console.log(fieldName, fieldValue.toDate().getTime());
+    console.log(fieldName, fieldValue.toDate().getMilliseconds());
 
     if (fieldName === 'beginDate' || fieldName === 'endDate') {
       if (fieldValue) {
