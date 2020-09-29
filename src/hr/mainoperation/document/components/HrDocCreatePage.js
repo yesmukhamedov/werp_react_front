@@ -277,6 +277,8 @@ class HrDocCreatePage extends Component {
   };
 
   handleItemChange = (index, fieldName, fieldValue) => {
+    console.log(fieldName, fieldValue);
+
     let doc = Object.assign({}, this.state.localDocument);
     let items = doc.items || [];
     if (!items[index]) {
