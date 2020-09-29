@@ -319,6 +319,7 @@ class HrDocFormPage extends Component {
     }
 
     console.log(fieldName, fieldValue);
+    console.log(fieldName, fieldValue.toDate());
 
     if (fieldName === 'beginDate' || fieldName === 'endDate') {
       if (fieldValue) {
