@@ -318,20 +318,11 @@ class HrDocFormPage extends Component {
       return;
     }
 
-    console.log(fieldName, fieldValue);
-    //console.log(fieldName, fieldValue.getTime());
-    console.log(fieldName, fieldValue.toDate());
-    console.log(fieldName, fieldValue.toDate().getTimezoneOffset());
-    console.log(
-      fieldName,
-      fieldValue.toDate().valueOf() +
-        fieldValue.toDate().getTimezoneOffset() * 60000,
-    );
+    console.log('1', Intl.DateTimeFormat().resolvedOptions().timeZone);
 
     if (fieldName === 'beginDate' || fieldName === 'endDate') {
       if (fieldValue) {
-        fieldValue = fieldValue.valueOf();
-        console.log(fieldName + '+', fieldValue);
+        fieldValue = fieldValue.valueOf() + 3600000 * 6;
       } else {
         fieldValue = null;
       }
@@ -349,8 +340,6 @@ class HrDocFormPage extends Component {
       ...this.state,
       localDocument: doc,
     });
-
-    console.log('doc', doc);
   };
 
   handleAction = actionType => {
