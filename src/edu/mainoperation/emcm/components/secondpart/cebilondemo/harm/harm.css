@@ -1,0 +1,14 @@
+.harm {
+  height: 140%;
+  padding: 90px 0 50px 0;
+}
+.harm__name {
+  padding-bottom: 50px;
+  text-align: center;
+}
+.harm__content {
+  font-size: 20px;
+}
+.harm__content__acc {
+  font-size: 18px;
+}

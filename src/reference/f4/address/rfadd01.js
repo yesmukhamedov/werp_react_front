@@ -30,9 +30,6 @@ const Rfadd01 = props => {
     ap_number: '',
     ap_drob: '',
     flat_number: '',
-    telDom: '',
-    telMob1: '',
-    telMob2: '',
   };
   const [address, setAddress] = useState({ ...emptyAddress });
   const [countryOptions, setCountryOptions] = useState([]);
@@ -154,23 +151,26 @@ const Rfadd01 = props => {
       avenue,
       street,
       ap_number,
-      telMob1,
     } = address;
 
     if (
       customerId === null ||
       customerId === undefined ||
       !customerId ||
-      (addrType === null || !['1', '2', '3', '4'].includes(addrType)) ||
-      (countryId === null || countryId === undefined || !countryId) ||
-      (stateId === null || stateId === undefined || !stateId) ||
-      (cityId === null || cityId === undefined || !cityId) ||
-      (ap_number === null ||
-        ap_number === undefined ||
-        ap_number.replace(/\s/g, '').length === 0) ||
-      (telMob1 === null ||
-        telMob1 === undefined ||
-        telMob1.replace(/\s/g, '').length === 0)
+      addrType === null ||
+      !['1', '2', '3', '4'].includes(addrType) ||
+      countryId === null ||
+      countryId === undefined ||
+      !countryId ||
+      stateId === null ||
+      stateId === undefined ||
+      !stateId ||
+      cityId === null ||
+      cityId === undefined ||
+      !cityId ||
+      ap_number === null ||
+      ap_number === undefined ||
+      ap_number.replace(/\s/g, '').length === 0
     ) {
       errors.push(errorTable[`20${language}`]);
       return errors;
@@ -430,44 +430,6 @@ const Rfadd01 = props => {
             </td>
           </tr>
           <tr>
-            <td>{messages['telDom']}</td>
-            <td>
-              <input
-                value={address.telDom}
-                onChange={event => onInputChange(event.target.value, 'telDom')}
-                size="25"
-                autoComplete="off"
-                maxLength="15"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              {messages['telMob1']} <span className="reqTxt">*</span>
-            </td>
-            <td>
-              <input
-                value={address.telMob1}
-                onChange={event => onInputChange(event.target.value, 'telMob1')}
-                size="20"
-                autoComplete="off"
-                maxLength="15"
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>{messages['telMob2']}</td>
-            <td>
-              <input
-                value={address.telMob2}
-                onChange={event => onInputChange(event.target.value, 'telMob2')}
-                size="25"
-                autoComplete="off"
-                maxLength="15"
-              />
-            </td>
-          </tr>
-          <tr>
             <td colSpan="2">
               <span className="infoTxt reqTxt">
                 {messages['fieldsReqToFill']}
@@ -514,15 +476,12 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    f4FetchCountryList,
-    f4ClearAnyObject,
-    f4FetchAddrTypeOptions,
-    f4FetchStateList,
-    f4FetchCityList,
-    f4FetchCityregList,
-    saveRfadd01,
-  },
-)(injectIntl(Rfadd01));
+export default connect(mapStateToProps, {
+  f4FetchCountryList,
+  f4ClearAnyObject,
+  f4FetchAddrTypeOptions,
+  f4FetchStateList,
+  f4FetchCityList,
+  f4FetchCityregList,
+  saveRfadd01,
+})(injectIntl(Rfadd01));

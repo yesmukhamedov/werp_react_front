@@ -6,7 +6,6 @@ import HrDocActions from './HrDocActions';
 import {
   DOC_TYPE_RECRUITMENT,
   DOC_TYPE_TRANSFER,
-  DOC_ACTION_SAVE,
   DOC_TYPE_CHANGE_SALARY,
   DOC_TYPE_DISMISS,
   DOC_TYPE_EXCLUDE_FROM_KPI,
@@ -346,7 +345,10 @@ class HrDocFormPage extends Component {
   render() {
     const { localDocument, pageLoading } = this.state;
     const currentType = localDocument['typeId'];
-    const { messages, locale } = this.props.intl;
+    const {
+      messages,
+      //locale
+    } = this.props.intl;
     let form;
     let pageTitle = 'Создание документа ' + this.state.localDocument.typeName;
     switch (currentType) {
@@ -581,23 +583,20 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    blankDocument,
-    toggleStaffListModal,
-    handleAction,
-    fetchAllDirectors,
-    f4FetchPositionList,
-    f4FetchBusinessAreaList,
-    f4FetchDepartmentList,
-    fetchAllManagers,
-    toggleSalaryListModal,
-    fetchAllCurrentStaffs,
-    notify,
-    f4FetchCurrencyList,
-    fetchDocument,
-    fetchCurrentSalaries,
-    fetchLeaveReasons,
-  },
-)(injectIntl(HrDocFormPage));
+export default connect(mapStateToProps, {
+  blankDocument,
+  toggleStaffListModal,
+  handleAction,
+  fetchAllDirectors,
+  f4FetchPositionList,
+  f4FetchBusinessAreaList,
+  f4FetchDepartmentList,
+  fetchAllManagers,
+  toggleSalaryListModal,
+  fetchAllCurrentStaffs,
+  notify,
+  f4FetchCurrencyList,
+  fetchDocument,
+  fetchCurrentSalaries,
+  fetchLeaveReasons,
+})(injectIntl(HrDocFormPage));

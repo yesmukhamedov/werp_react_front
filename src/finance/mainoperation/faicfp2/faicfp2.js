@@ -14,7 +14,6 @@ import {
   Input,
   TextArea,
 } from 'semantic-ui-react';
-import moment from 'moment';
 import {
   f4FetchCurrencyList,
   f4FetchExchangeRateNational,
@@ -36,8 +35,15 @@ import 'react-datepicker/dist/react-datepicker.css';
 import '../../fa.css';
 import { handleFocus, moneyFormat } from '../../../utils/helpers';
 
-require('moment/locale/ru');
+import moment from 'moment';
+import {
+  stringYYYYMMDDToMoment,
+  momentToStringYYYYMMDD,
+} from '../../../utils/helpers';
+
 require('moment/locale/tr');
+require('moment/locale/ru');
+
 let initialBseg = [
   {
     shkzg: '',
@@ -61,8 +67,8 @@ let initialBkpf = {
   kursf: 0,
   bktxt: '',
   official: false,
-  bldat: moment().format('DD.MM.YYYY'),
-  budat: moment().format('DD.MM.YYYY'),
+  bldat: moment().format('YYYY-MM-DD'),
+  budat: moment().format('YYYY-MM-DD'),
   zreg: '',
 };
 
@@ -135,7 +141,7 @@ class Faicfp2 extends Component {
         bkpf[stateFieldName] = value;
       } else if (stateFieldName === 'budat' || stateFieldName === 'bldat') {
         if (value !== null && value !== undefined) {
-          bkpf[stateFieldName] = value.format('DD.MM.YYYY');
+          bkpf[stateFieldName] = value;
         } else bkpf[stateFieldName] = '';
       } else if (stateFieldName === 'bukrs') {
         bkpf[stateFieldName] = value;
@@ -216,12 +222,13 @@ class Faicfp2 extends Component {
 
     this.setState({ errors });
   }
+
   validate() {
     // getter
     // console.log(localStorage.getItem('language'),'error');
 
     const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
-    const language = localStorage.getItem('language');
+    const language = this.props.language;
     const errors = [];
     const { bukrs, brnch, waers, bldat } = this.state.bkpf;
     if (bukrs === null || bukrs === undefined || !bukrs) {
@@ -308,7 +315,8 @@ class Faicfp2 extends Component {
       { key: 1, text: formatMessage(messages.incoming), value: 'S' },
       { key: 2, text: formatMessage(messages.outgoing), value: 'H' },
     ];
-    const language = localStorage.getItem('language');
+
+    const language = this.props.language;
     // console.log(cityBranches,'cityBranches');
     return (
       <Container
@@ -458,10 +466,14 @@ class Faicfp2 extends Component {
                           showMonthDropdown
                           showYearDropdown
                           dropdownMode="select" // timezone="UTC"
-                          selected={budat ? moment(budat, 'DD.MM.YYYY') : ''}
+                          selected={stringYYYYMMDDToMoment(budat)}
                           locale={language}
                           onChange={event =>
-                            this.onInputChange(event, 'budat', null)
+                            this.onInputChange(
+                              momentToStringYYYYMMDD(event),
+                              'budat',
+                              null,
+                            )
                           }
                           dateFormat="DD.MM.YYYY"
                           disabled
@@ -482,10 +494,14 @@ class Faicfp2 extends Component {
                           showMonthDropdown
                           showYearDropdown
                           dropdownMode="select" // timezone="UTC"
-                          selected={bldat ? moment(bldat, 'DD.MM.YYYY') : ''}
+                          selected={stringYYYYMMDDToMoment(bldat)}
                           locale={language}
                           onChange={event =>
-                            this.onInputChange(event, 'bldat', null)
+                            this.onInputChange(
+                              momentToStringYYYYMMDD(event),
+                              'bldat',
+                              null,
+                            )
                           }
                           dateFormat="DD.MM.YYYY"
                         />
@@ -633,6 +649,7 @@ class Faicfp2 extends Component {
 
 function mapStateToProps(state) {
   return {
+    language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
     currencyOptions: state.f4.currencyOptions,
     exRateNational: state.f4.exRateNational,

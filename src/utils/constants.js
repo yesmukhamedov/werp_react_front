@@ -25,15 +25,10 @@ export const LEGACY_URL = isLocalIpAddress()
  * Token refresh limit equals to 10 minutes
  * @type {number} in seconds
  */
-export const TOKEN_REFRESH_LIMIT = 30 * 60;
+export const TOKEN_REFRESH_LIMIT = 70 * 60;
 export const TOKEN_PASSWORD = 'secret'; // so genious :)
 
 export const YEAR_OPTIONS = [
-  {
-    key: 2017,
-    text: 2017,
-    value: 2017,
-  },
   {
     key: 2018,
     text: 2018,
@@ -43,6 +38,11 @@ export const YEAR_OPTIONS = [
     key: 2019,
     text: 2019,
     value: 2019,
+  },
+  {
+    key: 2020,
+    text: 2020,
+    value: 2020,
   },
 ];
 
@@ -118,3 +118,9 @@ export const outCallStatusColorMap = {
 };
 
 export const DEFAULT_LANGUAGE = 'ru';
+
+export const EDU_CEB_ASSETS_URL =
+  'http://192.168.0.15/assets/images/prod/education/assetsCebilon/';
+
+export const EDU_ROBO_ASSETS_URL =
+  'http://192.168.0.15/assets/images/prod/education/assetsRoboclean/';

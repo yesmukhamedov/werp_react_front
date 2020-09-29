@@ -1,0 +1,20 @@
+.forbidden {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: center;
+  align-items: center;
+  height: 90%;
+}
+.text403 {
+  color: #888;
+  font-size: 90pt !important;
+  margin-bottom: 4rem;
+}
+
+.background {
+  width: 40rem;
+  height: 25rem;
+  background-image: url('../assets/images/forbiddenGif.gif');
+  background-repeat: no-repeat;
+  background-position: center;
+}

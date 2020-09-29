@@ -158,8 +158,8 @@ class Faia extends Component {
   initializeBkpfBseg() {
     const bkpf = Object.assign({}, this.props.initialBkpf);
     bkpf.blart = 'IA';
-    bkpf.budat = moment().format('DD.MM.YYYY');
-    bkpf.bldat = moment().format('DD.MM.YYYY');
+    bkpf.budat = moment().format('YYYY-MM-DD');
+    bkpf.bldat = moment().format('YYYY-MM-DD');
 
     this.props.changefaBkpf(bkpf);
     this.initialBseg();
@@ -241,7 +241,7 @@ class Faia extends Component {
     const { waers, bukrs, brnch } = this.props.bkpf;
     const {
       staffF4ModalOpen,
-      lifnr,
+      //lifnr,
       staffFio,
       shkzg,
       hkont,
@@ -448,6 +448,7 @@ class Faia extends Component {
 function mapStateToProps(state) {
   // console.log(state,'state');
   return {
+    language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,
     currencyOptions: state.f4.currencyOptions,
@@ -462,19 +463,16 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    f4FetchDepartmentList,
-    f4FetchCurrencyList,
-    f4ClearAnyObject,
-    modifyLoader,
-    saveFaia,
-    f4FetchExchangeRateNational,
-    changefaBkpf,
-    clearfaBkpf,
-    fetchCashBankHkontsByBranch,
-    changeDynObj,
-    clearDynObj,
-  },
-)(injectIntl(Faia));
+export default connect(mapStateToProps, {
+  f4FetchDepartmentList,
+  f4FetchCurrencyList,
+  f4ClearAnyObject,
+  modifyLoader,
+  saveFaia,
+  f4FetchExchangeRateNational,
+  changefaBkpf,
+  clearfaBkpf,
+  fetchCashBankHkontsByBranch,
+  changeDynObj,
+  clearDynObj,
+})(injectIntl(Faia));

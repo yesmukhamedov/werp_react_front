@@ -1,0 +1,14 @@
+.waterhelp {
+  height: 140%;
+  padding: 90px 0 50px 0;
+}
+.waterhelp__name {
+  padding-bottom: 50px;
+  text-align: center;
+}
+.waterhelp__content {
+  font-size: 20px;
+}
+.waterhelp__content__acc {
+  font-size: 18px;
+}

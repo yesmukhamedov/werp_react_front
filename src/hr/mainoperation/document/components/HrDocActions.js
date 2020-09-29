@@ -1,10 +1,13 @@
 import React from 'react';
 import { Button } from 'semantic-ui-react';
-import { DOC_ACTION_GO_TO_LIST, DOC_ACTION_SAVE } from '../../../hrUtil';
+import {
+  //DOC_ACTION_GO_TO_LIST,
+  DOC_ACTION_SAVE,
+} from '../../../hrUtil';
 
 export default function HrDocActions(props) {
   const { items, action } = props;
-  const isUpdate = props.isUpdate || false;
+  //const isUpdate = props.isUpdate || false;
   if (!items) {
     return null;
   }
@@ -32,12 +35,12 @@ export default function HrDocActions(props) {
   );
 }
 
-function actionHandler(actionType) {
-  switch (actionType) {
-    case DOC_ACTION_GO_TO_LIST:
-      break;
+// function actionHandler(actionType) {
+//   switch (actionType) {
+//     case DOC_ACTION_GO_TO_LIST:
+//       break;
 
-    default:
-      window.alert('Unknown Action');
-  }
-}
+//     default:
+//       window.alert('Unknown Action');
+//   }
+// }

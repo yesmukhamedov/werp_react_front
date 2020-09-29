@@ -127,8 +127,8 @@ class Faicfp extends Component {
   initializeBkpfBseg() {
     const bkpf = Object.assign({}, this.props.initialBkpf);
     bkpf.blart = 'IF';
-    bkpf.budat = moment().format('DD.MM.YYYY');
-    bkpf.bldat = moment().format('DD.MM.YYYY');
+    bkpf.budat = moment().format('YYYY-MM-DD');
+    bkpf.bldat = moment().format('YYYY-MM-DD');
 
     this.props.changefaBkpf(bkpf);
     this.initialBseg();
@@ -170,7 +170,13 @@ class Faicfp extends Component {
     const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
     const language = localStorage.getItem('language');
     const errors = [];
-    const { bukrs, brnch, dep, waers, bldat } = this.props.bkpf;
+    const {
+      bukrs,
+      brnch,
+      //dep,
+      waers,
+      bldat,
+    } = this.props.bkpf;
     if (bukrs === null || bukrs === undefined || !bukrs) {
       errors.push(errorTable[`5${language}`]);
     }
@@ -315,6 +321,7 @@ class Faicfp extends Component {
 function mapStateToProps(state) {
   // console.log(state,'state');
   return {
+    language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,
     currencyOptions: state.f4.currencyOptions,
@@ -328,20 +335,17 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    f4FetchCurrencyList,
-    f4FetchHkontList,
-    f4ClearAnyObject,
-    modifyLoader,
-    f4FetchExchangeRateNational,
-    changefaBkpf,
-    clearfaBkpf,
-    fetchCashBankHkontsByBranch,
-    changeDynObj,
-    clearDynObj,
-    clearAnyObject,
-    saveFiSrcDocs,
-  },
-)(injectIntl(Faicfp));
+export default connect(mapStateToProps, {
+  f4FetchCurrencyList,
+  f4FetchHkontList,
+  f4ClearAnyObject,
+  modifyLoader,
+  f4FetchExchangeRateNational,
+  changefaBkpf,
+  clearfaBkpf,
+  fetchCashBankHkontsByBranch,
+  changeDynObj,
+  clearDynObj,
+  clearAnyObject,
+  saveFiSrcDocs,
+})(injectIntl(Faicfp));

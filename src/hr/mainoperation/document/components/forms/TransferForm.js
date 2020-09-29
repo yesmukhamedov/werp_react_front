@@ -13,9 +13,9 @@ export default function TransferForm(props) {
   const items = document.items || [];
   const departmentList = props.departmentList || [];
   const positionList = props.positionList || [];
-  const managerOptions = props.managerOptions || [];
+  //const managerOptions = props.managerOptions || [];
   const directorOptions = props.directorOptions || [];
-  const businessAreaOptions = props.businessAreaOptions || [];
+  // const businessAreaOptions = props.businessAreaOptions || [];
 
   return (
     <div>

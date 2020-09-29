@@ -19,7 +19,7 @@ import {
   fetchSoldDemos,
 } from '../actions/demoAction';
 import { connect } from 'react-redux';
-import { demoResultOptions } from '../../../crmUtil';
+//import { demoResultOptions } from '../../../crmUtil';
 import { injectIntl } from 'react-intl';
 
 class DemoSoldDemosPage extends Component {
@@ -298,7 +298,8 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { fetchSoldDemos, fetchDemoResults, fetchGroupDealers },
-)(injectIntl(DemoSoldDemosPage));
+export default connect(mapStateToProps, {
+  fetchSoldDemos,
+  fetchDemoResults,
+  fetchGroupDealers,
+})(injectIntl(DemoSoldDemosPage));

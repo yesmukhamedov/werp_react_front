@@ -3,8 +3,8 @@ import { Segment, Form } from 'semantic-ui-react';
 import 'react-datepicker/dist/react-datepicker.css';
 import { MENU_BY_RECO } from '../wspaceUtil';
 import {
-  RECO_CATEGORIES,
-  DEMO_RESULT_OPTIONS,
+  //RECO_CATEGORIES,
+  //DEMO_RESULT_OPTIONS,
   getRecoCategoriesOptionsByLanguage,
 } from '../../../crmUtil';
 

@@ -1,6 +1,9 @@
 import { connect } from 'react-redux';
 import { formValueSelector } from 'redux-form';
-import { defineMessages, injectIntl } from 'react-intl';
+import {
+  // defineMessages,
+  injectIntl,
+} from 'react-intl';
 import { searchTasks } from '../../actions/TaskMonitorAction';
 // import { messages } from '../../../dtskl/components/DeptTaskListSearch/DeptTaskListSearchContainer';
 import TaskMonitorSearchDisplay from './TaskMonitorSearchDisplay';
@@ -19,7 +22,8 @@ function mapStateToProps(state) {
   };
 }
 
-const TaskMonitorSearchContainer =
-  connect(mapStateToProps, { searchTasks })(injectIntl(TaskMonitorSearchDisplay));
+const TaskMonitorSearchContainer = connect(mapStateToProps, { searchTasks })(
+  injectIntl(TaskMonitorSearchDisplay),
+);
 
 export default TaskMonitorSearchContainer;

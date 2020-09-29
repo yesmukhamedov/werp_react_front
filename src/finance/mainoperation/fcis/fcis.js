@@ -33,6 +33,7 @@ import { injectIntl } from 'react-intl';
 import { messages } from '../../../locales/defineMessages';
 
 require('moment/locale/ru');
+require('moment/locale/tr');
 
 class Fcis extends Component {
   constructor(props) {
@@ -124,8 +125,8 @@ class Fcis extends Component {
   initializeBkpfBseg() {
     const bkpf = Object.assign({}, this.props.initialBkpf);
     bkpf.blart = 'S2';
-    bkpf.budat = moment().format('DD.MM.YYYY');
-    bkpf.bldat = moment().format('DD.MM.YYYY');
+    bkpf.budat = moment().format('YYYY-MM-DD');
+    bkpf.bldat = moment().format('YYYY-MM-DD');
 
     this.props.changefaBkpf(bkpf);
     this.initialBseg();
@@ -310,6 +311,7 @@ class Fcis extends Component {
 function mapStateToProps(state) {
   // console.log(state,'state');
   return {
+    language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,
     currencyOptions: state.f4.currencyOptions,
@@ -324,20 +326,17 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    f4FetchDepartmentList,
-    f4FetchCurrencyList,
-    f4ClearAnyObject,
-    modifyLoader,
-    saveFcis,
-    f4FetchBusinessAreaList2,
-    f4FetchExchangeRateNational,
-    changefaBkpf,
-    clearfaBkpf,
-    fetchCashBankHkontsByBranch,
-    changeDynObj,
-    clearDynObj,
-  },
-)(injectIntl(Fcis));
+export default connect(mapStateToProps, {
+  f4FetchDepartmentList,
+  f4FetchCurrencyList,
+  f4ClearAnyObject,
+  modifyLoader,
+  saveFcis,
+  f4FetchBusinessAreaList2,
+  f4FetchExchangeRateNational,
+  changefaBkpf,
+  clearfaBkpf,
+  fetchCashBankHkontsByBranch,
+  changeDynObj,
+  clearDynObj,
+})(injectIntl(Fcis));

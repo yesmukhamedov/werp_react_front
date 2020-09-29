@@ -1,8 +1,8 @@
 import React from 'react';
-import { Table, Header } from 'semantic-ui-react';
+import { Table } from 'semantic-ui-react';
 import { formatDate } from '../../../../../../../src/utils/helpers';
 
-const PaymentBreakdownTableDisplay = (props) => {
+const PaymentBreakdownTableDisplay = props => {
   const { monthlyPayments, currency } = props;
   return (
     <Table structured celled fixed>

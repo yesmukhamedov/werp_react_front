@@ -13,8 +13,8 @@ import {
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import moment from 'moment';
-import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4';
-import BranchF4 from '../../../../reference/f4/branch/BranchF4';
+// import BukrsF4 from '../../../../reference/f4/bukrs/BukrsF4';
+// import BranchF4 from '../../../../reference/f4/branch/BranchF4';
 import LazyPagination from '../../../../general/pagination/LazyPagination';
 import RecoStatusLabel from './RecoStatusLabel';
 import { fetchRecoArchive, fetchRecoStatuses } from '../actions/recoAction';
@@ -378,11 +378,8 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchRecoArchive,
-    fetchRecoStatuses,
-    fetchGroupDealers,
-  },
-)(injectIntl(RecoArchivePage));
+export default connect(mapStateToProps, {
+  fetchRecoArchive,
+  fetchRecoStatuses,
+  fetchGroupDealers,
+})(injectIntl(RecoArchivePage));

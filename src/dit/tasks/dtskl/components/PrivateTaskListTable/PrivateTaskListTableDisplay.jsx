@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactTable from 'react-table';
 import { Link } from 'react-router-dom';
 import { Label } from 'semantic-ui-react';
-import matchSorter from 'match-sorter';
+//import matchSorter from 'match-sorter';
 import 'react-table/react-table.css';
 import PropTypes from 'prop-types';
 import { outCallStatusColorMap } from '../../../../../utils/constants';

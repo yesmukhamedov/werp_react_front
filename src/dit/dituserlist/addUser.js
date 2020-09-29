@@ -133,7 +133,7 @@ class AddUser extends Component {
     const {
       username,
       password,
-      internal_number,
+      //internal_number,
       bukrs,
       branchId,
       rids,

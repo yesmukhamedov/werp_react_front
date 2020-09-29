@@ -10,7 +10,7 @@ const MmcvSourceDocs = props => {
     sourceDocs = [],
     totalSourceDoscPayment = 0,
     waers,
-    language,
+    // language,
     intl: { messages },
   } = props;
 
@@ -77,7 +77,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {},
-)(injectIntl(MmcvSourceDocs));
+export default connect(mapStateToProps, {})(injectIntl(MmcvSourceDocs));

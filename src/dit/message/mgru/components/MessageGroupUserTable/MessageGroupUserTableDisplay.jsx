@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactTable from 'react-table';
-import { Button, Icon } from 'semantic-ui-react';
+import { Button } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import { constructFullName } from '../../../../../utils/helpers';
 
@@ -9,7 +9,7 @@ const MessageGroupUserTableDisplay = props => {
     messageGroupUserList = [],
     removeMessageGroupUser,
     fetchMessageGroupUsers,
-    open,
+    //open,
     lang,
     messages,
   } = props;
@@ -61,21 +61,21 @@ const MessageGroupUserTableDisplay = props => {
       Cell: row => {
         const {
           mguId,
-          messageGroup,
-          user,
-          branch,
-          department,
-          supervisor,
+          //messageGroup,
+          // user,
+          //branch,
+          //department,
+          //supervisor,
         } = row.original;
-        const modalData = {
-          mguId,
-          groupId: messageGroup.groupId,
-          // userId: user.id,
-          // companyId: user.bukrs,
-          branchId: branch.id,
-          departmentId: department.id,
-          supervisorId: supervisor.id,
-        };
+        // const modalData = {
+        //   mguId,
+        //   groupId: messageGroup.groupId,
+        //   // userId: user.id,
+        //   // companyId: user.bukrs,
+        //   branchId: branch.id,
+        //   departmentId: department.id,
+        //   supervisorId: supervisor.id,
+        // };
         return (
           <div style={{ textAlign: 'center' }}>
             <Button.Group icon size="mini">

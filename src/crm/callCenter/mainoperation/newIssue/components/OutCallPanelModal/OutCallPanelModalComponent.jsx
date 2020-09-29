@@ -49,10 +49,10 @@ class OutCallPanelModalComponent extends PureComponent {
   render() {
     const {
       isOpen,
-      open,
+      //open,
       close,
       handleSubmit,
-      reset,
+      //reset,
       statusOptions,
       selectedStatus,
       messages,

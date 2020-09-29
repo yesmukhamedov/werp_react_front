@@ -184,8 +184,8 @@ function TSRep4(props) {
                 autoComplete="off"
                 locale={language}
                 dropdownMode="select" //timezone="UTC"
-                selected={startDates}
-                onChange={date => setStartDates(date)}
+                selected={endDates}
+                onChange={date => setEndDates(date)}
                 dateFormat="DD/MM/YYYY"
                 maxDate={new Date()}
               />

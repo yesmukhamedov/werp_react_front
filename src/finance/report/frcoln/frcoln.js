@@ -28,7 +28,7 @@ import {
   clearState,
   frcolnSaveData,
 } from './frcoln_action';
-import { LEGACY_URL } from '../../../utils/constants';
+//import { LEGACY_URL } from '../../../utils/constants';
 import { LinkToMmcvNewTab } from '../../../utils/outlink';
 import { injectIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -960,9 +960,7 @@ class Frcoln extends Component {
               <Link
                 target="_blank"
                 className="ui icon button primary"
-                to={`/finance/mainoperation/fa03?belnr=${
-                  obj.original.belnr
-                }&bukrs=${obj.original.bukrs}&gjahr=${obj.original.gjahr}`}
+                to={`/finance/mainoperation/fa03?belnr=${obj.original.belnr}&bukrs=${obj.original.bukrs}&gjahr=${obj.original.gjahr}`}
               >
                 {obj.original.belnr}
               </Link>
@@ -1230,15 +1228,12 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    notify,
-    frcolnSearchData,
-    frcolnFetchBranchData,
-    changeTab,
-    frcolnFetchCollectorData,
-    frcolnSaveData,
-    clearState,
-  },
-)(injectIntl(Frcoln));
+export default connect(mapStateToProps, {
+  notify,
+  frcolnSearchData,
+  frcolnFetchBranchData,
+  changeTab,
+  frcolnFetchCollectorData,
+  frcolnSaveData,
+  clearState,
+})(injectIntl(Frcoln));

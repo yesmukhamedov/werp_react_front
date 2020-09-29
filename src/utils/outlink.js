@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { LEGACY_URL } from '../utils/constants';
+import { Icon, Button } from 'semantic-ui-react';
 
 export const LinkToDmsc03 = props => {
   const { snNum } = props;
@@ -37,7 +38,10 @@ export const LinkToStaffCardView = props => {
 };
 
 export const LinkToStaffCardViewID = props => {
-  const { staffId, staffFio } = props;
+  const {
+    staffId,
+    //staffFio
+  } = props;
   const url = `${LEGACY_URL}/hr/staff/View.xhtml?staffId=${staffId}`;
   return (
     <a target="_blank" href={url} rel="noopener noreferrer">
@@ -60,7 +64,10 @@ export const LinkToMmcvNewTab = props => {
 };
 
 export const LinkToMatnrHistory = props => {
-  const { matnrListId, viewText } = props;
+  const {
+    matnrListId,
+    //viewText
+  } = props;
   const url = `${LEGACY_URL}/logistics/werks/matnrHistory.xhtml?matnrListId=${matnrListId}`;
   return (
     <a target="_blank" href={url} rel="noopener noreferrer">
@@ -166,6 +173,133 @@ export const LinkToMmceg = props => {
   return (
     <a target="_blank" href={url} rel="noopener noreferrer">
       {text}
+    </a>
+  );
+};
+
+export const LinkToSmdisTabSmvod = props => {
+  const { clickViewService } = props;
+
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <Icon color="teal" link name="search" onClick={clickViewService} />
+    </div>
+  );
+};
+
+export const LinkToSmcuspor = props => {
+  const {
+    contractNumber = '',
+    // text
+  } = props;
+  const url = `../mainoperation/smcuspor?contractNumber=${contractNumber}`;
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      <Icon color="black" name="address card" />
+    </a>
+  );
+};
+
+export const LinkToSmvs = props => {
+  const {
+    serviceNumber,
+    //text
+  } = props;
+  const url = `../mainoperation/smvs?serviceNumber=${serviceNumber}`;
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      {serviceNumber}
+    </a>
+  );
+};
+export const LinkToSmvca = props => {
+  const { id } = props;
+  const url = `../mainoperation/smvca?id=${id}`;
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      {id}
+    </a>
+  );
+};
+export const LinkToSmes = props => {
+  const {
+    serviceNumber,
+    // text
+  } = props;
+  const url = `../mainoperation/smes?serviceNumber=${serviceNumber}`;
+  return (
+    <Button color="green">
+      <a
+        style={{ color: 'white' }}
+        target="_blank"
+        href={url}
+        rel="noopener noreferrer"
+      >
+        Редактировать
+      </a>
+    </Button>
+  );
+};
+export const LinkToSmesManager = props => {
+  const {
+    serviceNumber,
+    // text
+  } = props;
+  const url = `../mainoperation/smes?serviceNumber=${serviceNumber}`;
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      {serviceNumber}
+    </a>
+  );
+};
+
+export const LinkToSmecam = props => {
+  const { id } = props;
+  const url = `smecam?id=${id}`;
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      {id}
+    </a>
+  );
+};
+
+export const LinkToSmcsEmpty = props => {
+  const url = `/service/mainoperation/smcs`;
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      <Button primary>Новый сервис</Button>
+    </a>
+  );
+};
+
+export const LinkToSmcsWithRequest = props => {
+  const { applicationNumber } = props;
+  let url = `smcs?applicationNumber=${applicationNumber}`;
+
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      <Button primary>Создать сервис</Button>
+    </a>
+  );
+};
+
+export const LinkToSmcusporFromSmsrcus = props => {
+  const { contractNumber } = props;
+  const url = `../mainoperation/smcuspor?contractNumber=${contractNumber}`;
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      <Icon name="address card" color="black" />
+    </a>
+  );
+};
+
+export const LinkToSmccald = props => {
+  const url = `../mainoperation/smccald`;
+  const { buttonName } = props;
+
+  return (
+    <a target="_blank" href={url} rel="noopener noreferrer">
+      <Button color="blue">{buttonName}</Button>
     </a>
   );
 };

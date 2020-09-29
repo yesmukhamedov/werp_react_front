@@ -21,56 +21,65 @@ const PriceListF4 = props => {
       t1r1c4 = {},
       t1r1c5 = {},
       t1r1c6 = {},
-      t1r1c7 = {};
+      t1r1c7 = {},
+      t1r1c8 = {};
 
     t1r1c1 = {
       Header: ({ value }) => <b>{messages['waers']}</b>,
       id: 'waers',
       accessor: d => d.waers,
-      width: 80,
+      width: 60,
       className: 'clickableItem',
     };
     t1r1c2 = {
       Header: ({ value }) => <b>{messages['price']}</b>,
       accessor: 'price',
-      width: 160,
+      width: 120,
       className: 'clickableItem',
       Cell: obj => <span>{moneyFormat(obj.original.price)}</span>,
     };
     t1r1c3 = {
       Header: ({ value }) => <b>{messages['firstPayment']}</b>,
       accessor: 'firstPayment',
-      width: 160,
+      width: 120,
       className: 'clickableItem',
       Cell: obj => <span>{moneyFormat(obj.original.firstPayment)}</span>,
     };
     t1r1c4 = {
       Header: ({ value }) => <b>{messages['remainder']}</b>,
       accessor: 'remain',
-      width: 160,
+      width: 120,
       className: 'clickableItem',
       Cell: obj => <span>{moneyFormat(obj.original.remain)}</span>,
     };
     t1r1c5 = {
       Header: ({ value }) => <b>{messages['termInMonth']}</b>,
       accessor: 'month',
-      width: 80,
+      width: 60,
       className: 'clickableItem',
       Cell: obj => <span>{obj.original.month}</span>,
     };
     t1r1c6 = {
       Header: ({ value }) => <b>{messages['premTermInMonth']}</b>,
       accessor: 'premDiv',
-      width: 80,
+      width: 60,
       className: 'clickableItem',
       Cell: obj => <span>{obj.original.premDiv}</span>,
     };
     t1r1c7 = {
       Header: ({ value }) => <b>Trade-In</b>,
       accessor: 'tradeIn',
-      width: 160,
+      width: 90,
       className: 'clickableItem',
       Cell: obj => <span>{getTradeIn(obj.original.tradeIn)}</span>,
+    };
+
+    t1r1c8 = {
+      Header: ({ value }) => <b>{messages['bank']}</b>,
+      accessor: 'bankPartnerName',
+      width: 100,
+      className: 'clickableItem',
+      Cell: obj => <span>{obj.original.bankPartnerName}</span>,
     };
 
     t1columns.push(t1r1c1);
@@ -80,6 +89,7 @@ const PriceListF4 = props => {
     t1columns.push(t1r1c5);
     t1columns.push(t1r1c6);
     t1columns.push(t1r1c7);
+    t1columns.push(t1r1c8);
 
     return t1columns;
   };
@@ -131,7 +141,4 @@ function mapStateToProps(state) {
   return {};
 }
 
-export default connect(
-  mapStateToProps,
-  {},
-)(injectIntl(PriceListF4));
+export default connect(mapStateToProps, {})(injectIntl(PriceListF4));

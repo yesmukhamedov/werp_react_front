@@ -1,0 +1,14 @@
+.airwash {
+  height: 190%;
+  padding: 90px 0 50px 0;
+}
+.airwash__name {
+  padding-bottom: 50px;
+  text-align: center;
+}
+.airwash__content {
+  font-size: 20px;
+}
+.airwash__content__acc {
+  font-size: 18px;
+}

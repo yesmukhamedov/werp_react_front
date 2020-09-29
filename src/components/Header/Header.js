@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Menu, Breadcrumb, Dropdown, Label, Icon } from 'semantic-ui-react';
-import jwt from 'jwt-simple';
+//import jwt from 'jwt-simple';
 import { defineMessages, intlShape, injectIntl } from 'react-intl';
 import LanguageSwitcher from './LanguageSwitcher';
 import TransactionSearchbar from './TransactionSearchbar';
@@ -11,22 +11,21 @@ import { calcBreadcrumb } from '../../utils/helpers';
 import { fetchTreeMenu } from '../../actions/tree_menu';
 import { fetchUserInfo } from '../../general/userInfo/userInfo_action';
 import { signoutUser, clearUserAuth } from '../../actions/auth';
-import { TOKEN_PASSWORD } from '../../utils/constants';
+//import { TOKEN_PASSWORD } from '../../utils/constants';
 
 class Header extends Component {
   componentWillMount() {
     if (this.props.authenticated) {
-      const token = localStorage.getItem('token');
-      if (token) {
-        try {
-          const payload = jwt.decode(token, TOKEN_PASSWORD);
-          const { userId } = payload;
-          this.props.fetchUnreadMessages({ userId });
-          this.props.fetchTreeMenu(userId);
-          this.props.fetchUserInfo();
-        } catch (e) {
-          this.props.clearUserAuth();
-        }
+      try {
+        //const payload = jwt.decode(token, TOKEN_PASSWORD);
+        //const { userId } = payload;
+        const userId = localStorage.getItem('userId');
+        this.props.fetchUnreadMessages({ userId });
+        this.props.fetchTreeMenu(userId);
+        this.props.fetchUserInfo();
+      } catch (e) {
+        console.log('error15', e);
+        this.props.clearUserAuth();
       }
     }
   }

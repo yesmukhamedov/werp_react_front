@@ -15,7 +15,7 @@ import {
   createWerksRequest,
 } from '../actions/logisticsActions';
 import EnumFormField from './fields/EnumFormField';
-import MatnrsModalField from './fields/MatnrsModalField';
+//import MatnrsModalField from './fields/MatnrsModalField';
 import MatnrsGridModal from './MatnrsGridModal';
 import { injectIntl } from 'react-intl';
 import { messages } from '../../../locales/defineMessages';

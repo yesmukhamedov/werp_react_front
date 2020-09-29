@@ -1,12 +1,12 @@
 import axios from 'axios';
 import React, { Component } from 'react';
-import { Form, Search, Segment, Button } from 'semantic-ui-react';
+import { Form, Search, Button } from 'semantic-ui-react';
 import hash from 'object-hash';
 import { doGet, doGetCancelToken } from '../../../../../utils/apiActions';
 import _ from 'lodash';
 import WarnMessage from './WarnMessage';
 import { constructFullName } from '../../../../../utils/helpers';
-import { defineMessages } from 'react-intl';
+//import { defineMessages } from 'react-intl';
 
 const assigneeSearchUrl = `tasks/assignee?keyword=`;
 const assigneeDetailsUrl = `tasks/assignee`;

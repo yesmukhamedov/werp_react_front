@@ -117,7 +117,7 @@ class VisitCreateModal extends Component {
 
   handleChange(fieldName, o) {
     const localVisit = Object.assign({}, this.state.localVisit);
-    const client = Object.assign({}, localVisit.client);
+    //const client = Object.assign({}, localVisit.client);
     let { phoneNumber, phoneNumberDisplay } = this.state;
     const { phoneMeta } = this.props;
     // console.log(o);
@@ -255,13 +255,10 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchSingleVisit,
-    createVisit,
-    modalToggle,
-    updateVisit,
-    visitModalClearState,
-  },
-)(injectIntl(VisitCreateModal));
+export default connect(mapStateToProps, {
+  fetchSingleVisit,
+  createVisit,
+  modalToggle,
+  updateVisit,
+  visitModalClearState,
+})(injectIntl(VisitCreateModal));

@@ -88,6 +88,7 @@ class RepSearch extends Component {
     switch (name) {
       case 'bukrs':
         search['branchId'] = null;
+        break;
 
       default:
         search[name] = value;
@@ -212,10 +213,7 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchItems,
-    fetchAllManagers,
-  },
-)(RepSearch);
+export default connect(mapStateToProps, {
+  fetchItems,
+  fetchAllManagers,
+})(RepSearch);

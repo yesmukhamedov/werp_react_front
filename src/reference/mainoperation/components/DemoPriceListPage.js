@@ -68,7 +68,10 @@ class DemoPriceListPage extends Component {
   }
 
   renderTable(items) {
-    const { messages, locale } = this.props.intl;
+    const {
+      messages,
+      // locale
+    } = this.props.intl;
 
     return (
       <div>
@@ -162,7 +165,7 @@ class DemoPriceListPage extends Component {
   }
 
   render() {
-    const { messages } = this.props.intl;
+    //const { messages } = this.props.intl;
     const { model, modalOpened, errors } = this.state;
 
     return (
@@ -209,14 +212,11 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    blankDemoPrice,
-    createDemoPrice,
-    updateDemoPrice,
-    fetchDemoPrice,
-    fetchDemoPrices,
-    notify,
-  },
-)(injectIntl(DemoPriceListPage));
+export default connect(mapStateToProps, {
+  blankDemoPrice,
+  createDemoPrice,
+  updateDemoPrice,
+  fetchDemoPrice,
+  fetchDemoPrices,
+  notify,
+})(injectIntl(DemoPriceListPage));

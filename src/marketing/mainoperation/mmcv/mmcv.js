@@ -95,6 +95,7 @@ const Mmcv = props => {
   const [contractHistory, setContractHistory] = useState([]);
   const [contractCRMHistory, setContractCRMHistory] = useState([]);
   const [urlContractNumber, setUrlContractNumber] = useState('');
+  const [phoneList, setPhoneList] = useState([]);
 
   const {
     mmcv,
@@ -131,6 +132,7 @@ const Mmcv = props => {
       setSourceDocs([...mmcv.sourceDocs]);
       setTotalSourceDoscPayment(mmcv.totalSourceDoscPayment);
     }
+    if (mmcv && mmcv.phoneList) setPhoneList([...mmcv.phoneList]);
   }, [mmcv]);
 
   const panes = [
@@ -146,6 +148,7 @@ const Mmcv = props => {
             addrHome={addrHome}
             addrWork={addrWork}
             addrService={addrService}
+            phoneList={phoneList}
             contract={contract}
           />
         </Tab.Pane>
@@ -269,9 +272,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    //reference
-  },
-)(injectIntl(Mmcv));
+export default connect(mapStateToProps, {
+  //reference
+})(injectIntl(Mmcv));

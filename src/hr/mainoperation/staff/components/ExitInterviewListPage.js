@@ -60,12 +60,12 @@ class ExitInterviewListPage extends Component {
   };
 
   renderSearchPanel() {
-    const genders = [
-      { key: '', text: 'Не выбрано', value: '' },
-      { key: 'non_select', text: 'Без значение', value: 'non_select' },
-      { key: 'male', text: 'Муж', value: 'male' },
-      { key: 'female', text: 'Жен', value: 'female' },
-    ];
+    // const genders = [
+    //   { key: '', text: 'Не выбрано', value: '' },
+    //   { key: 'non_select', text: 'Без значение', value: 'non_select' },
+    //   { key: 'male', text: 'Муж', value: 'male' },
+    //   { key: 'female', text: 'Жен', value: 'female' },
+    // ];
     const companyOptions = this.props.companyOptions || [];
     return (
       <div>
@@ -279,7 +279,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { fetchExitInterviews },
-)(ExitInterviewListPage);
+export default connect(mapStateToProps, { fetchExitInterviews })(
+  ExitInterviewListPage,
+);

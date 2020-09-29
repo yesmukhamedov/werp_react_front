@@ -43,7 +43,7 @@ import {
   CALL_STATUS_FINISHED,
   CALL_STATUS_NOTHING,
 } from '../../call/callConstant';
-import { doGet, doPut, doDelete, doPost } from '../../../../utils/apiActions';
+import { doGet } from '../../../../utils/apiActions';
 
 require('moment/locale/ru');
 
@@ -128,7 +128,7 @@ class Phone extends Component {
   }
 
   renderCallModal(messages) {
-    let internalNumber = localStorage.getItem('internalNumber');
+    // let internalNumber = localStorage.getItem('internalNumber');
     const panes = [
       {
         menuItem: messages['Crm.HistoryOfNumber'],
@@ -354,7 +354,7 @@ class Phone extends Component {
 
   renderCallFormNew() {
     const { messages, locale } = this.props.intl;
-    const call = Object.assign({}, this.state.call);
+    //const call = Object.assign({}, this.state.call);
     const { callStatus } = this.props;
     return (
       <Form>
@@ -444,7 +444,7 @@ class Phone extends Component {
 
   renderCallFormOld() {
     const { messages, locale } = this.props.intl;
-    const call = Object.assign({}, this.state.call);
+    // const call = Object.assign({}, this.state.call);
     return (
       <Form>
         <Form.Group widths="equal">

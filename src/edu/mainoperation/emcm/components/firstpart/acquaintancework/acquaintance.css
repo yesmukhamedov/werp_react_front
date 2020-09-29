@@ -1,0 +1,10 @@
+.acquaintance {
+  height: 100%;
+  padding: 90px 0 50px 0;
+}
+.acquaintance__name {
+  padding-bottom: 50px;
+}
+.acquaintance__content p {
+  font-size: 20px;
+}

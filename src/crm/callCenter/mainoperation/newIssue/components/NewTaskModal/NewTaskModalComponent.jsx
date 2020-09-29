@@ -63,7 +63,7 @@ class NewTaskModalComponent extends PureComponent {
     const {
       isOpen,
       handleSubmit,
-      reset,
+      //reset,
       statusOptions,
       priorityOptions,
       branchOptions = [],

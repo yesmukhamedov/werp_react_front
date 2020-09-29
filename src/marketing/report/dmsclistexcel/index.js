@@ -179,6 +179,7 @@ class DmscListExcel extends Component {
     excelHeaders.push(messages['paid']);
     excelHeaders.push(messages['remainder']);
     excelHeaders.push('Trade In');
+    excelHeaders.push(messages['registeredTo']);
     excelHeaders.push(messages['extraInfo']);
     excelDownload(
       'marketing/report/dmsclist/excel',
@@ -213,6 +214,7 @@ class DmscListExcel extends Component {
           <Menu.Menu position="right">
             <Menu.Item>
               <img
+                alt=""
                 className="clickableItem"
                 src="/assets/img/xlsx_export_icon.png"
                 onClick={() => this.exportExcel(messages)}

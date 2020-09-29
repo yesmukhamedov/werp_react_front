@@ -1,0 +1,12 @@
+.takeexam {
+  height: 100%;
+  padding: 90px 0 50px 0;
+}
+.takeexam__name {
+  padding-bottom: 50px;
+  text-align: center;
+}
+.takeexam__content {
+  font-size: 20px;
+  text-align: justify;
+}

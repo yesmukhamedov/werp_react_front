@@ -82,11 +82,11 @@ class VisitArchivePage extends Component {
               minWidth: 150,
               Cell: row => row.original.visitorName,
               filterMethod: (filter, d) => {
-                if (filter.value == 0) {
+                if (filter.value === 0) {
                   return true;
                 }
 
-                return filter.value == d[filter.id];
+                return filter.value === d[filter.id];
               },
               Filter: ({ filter, onChange }) => (
                 <select
@@ -177,14 +177,11 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchArchive,
-    modalToggle,
-    setVisitForUpdate,
-    blankForCreate,
-    fetchGroupDealers,
-    fetchPhoneMeta,
-  },
-)(injectIntl(VisitArchivePage));
+export default connect(mapStateToProps, {
+  fetchArchive,
+  modalToggle,
+  setVisitForUpdate,
+  blankForCreate,
+  fetchGroupDealers,
+  fetchPhoneMeta,
+})(injectIntl(VisitArchivePage));

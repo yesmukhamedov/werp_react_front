@@ -37,7 +37,7 @@ class AmsgPosition extends PureComponent {
       selectedRowIndex: null,
     };
   }
-  componentWillMount() {
+  componentDidMount() {
     this.addRow();
   }
   componentWillReceiveProps(nextProps) {

@@ -7,7 +7,11 @@ import { Link } from 'react-router-dom';
 import { Icon, Label } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import OperatorEditModal from '../OperatorEdit/OperatorEditModal';
-import { formatDMY, formatDMYMS, constructFullName } from '../../../../../../../utils/helpers';
+import {
+  formatDMY,
+  formatDMYMS,
+  constructFullName,
+} from '../../../../../../../utils/helpers';
 import { outCallStatusColorMap } from '../../../../../../../utils/constants';
 
 class ContractListTableComponent extends Component {
@@ -43,11 +47,13 @@ class ContractListTableComponent extends Component {
       let visited = {};
       const opers = this.props.result.map(item => item.operator);
       visited = _.mapKeys(opers, 'id');
-      options = Object.values(visited).map((operator) => {
+      options = Object.values(visited).map(operator => {
         if (operator) {
-          return (<option value={operator.id} key={operator.id}>
-            {operator.lastName} {operator.firstName}
-                  </option>);
+          return (
+            <option value={operator.id} key={operator.id}>
+              {operator.lastName} {operator.firstName}
+            </option>
+          );
         }
       });
     }
@@ -57,7 +63,7 @@ class ContractListTableComponent extends Component {
       {
         Header: '#',
         accessor: 'timestamp',
-        Cell: (props) => {
+        Cell: props => {
           const { index } = props;
           return <div>{index + 1}</div>;
         },
@@ -68,10 +74,13 @@ class ContractListTableComponent extends Component {
         accessor: 'contractNumber',
         maxWidth: 100,
         filterable: true,
-        Cell: (props) => {
+        Cell: props => {
           const { contractNumber } = props.original;
           return (
-            <Link target="_blank" to={`/crm/callcenter/ccasoc/${contractNumber}`}>
+            <Link
+              target="_blank"
+              to={`/crm/callcenter/ccasoc/${contractNumber}`}
+            >
               {contractNumber}
             </Link>
           );
@@ -86,7 +95,7 @@ class ContractListTableComponent extends Component {
       {
         Header: formatMessage(messages.contractDate),
         accessor: 'contractDate',
-        Cell: (props) => {
+        Cell: props => {
           const { contractDate } = props.original;
           return formatDMY(contractDate);
         },
@@ -95,11 +104,12 @@ class ContractListTableComponent extends Component {
       {
         Header: formatMessage(messages.fullName),
         accessor: 'customer.lastName',
-        Cell: (props) => {
+        Cell: props => {
           const { customer } = props.original;
           return (
             <div>
-              {customer && customer.lastName} {customer && customer.firstName} {customer && customer.patronymic}
+              {customer && customer.lastName} {customer && customer.firstName}{' '}
+              {customer && customer.patronymic}
             </div>
           );
         },
@@ -118,27 +128,20 @@ class ContractListTableComponent extends Component {
       {
         Header: formatMessage(messages.dealerFullname),
         accessor: 'dealer.lastName',
-        Cell: (props) => {
+        Cell: props => {
           const { dealer } = props.original;
-          return (
-            <div>
-              {dealer && constructFullName(dealer)}
-            </div>
-          );
+          return <div>{dealer && constructFullName(dealer)}</div>;
         },
         // maxWidth: 270,
       },
       {
         Header: formatMessage(messages.status),
         accessor: 'status.id',
-        Cell: (props) => {
+        Cell: props => {
           const { status } = props.original;
           return (
             <div>
-              <Label
-                color={outCallStatusColorMap[status.id]}
-                size="mini"
-              >
+              <Label color={outCallStatusColorMap[status.id]} size="mini">
                 {status[this.props.lang]}
               </Label>
             </div>
@@ -154,7 +157,7 @@ class ContractListTableComponent extends Component {
       {
         Header: formatMessage(messages.modified),
         accessor: 'modifiedAt',
-        Cell: (props) => {
+        Cell: props => {
           const { modifiedAt } = props.original;
           return formatDMYMS(modifiedAt);
         },
@@ -165,13 +168,9 @@ class ContractListTableComponent extends Component {
         accessor: 'operator.id',
         id: 'opr',
         maxWidth: 270,
-        Cell: (props) => {
+        Cell: props => {
           const { operator } = props.original;
-          return (
-            <div>
-              {operator && constructFullName(operator)}
-            </div>
-          );
+          return <div>{operator && constructFullName(operator)}</div>;
         },
         filterable: true,
         filterMethod: (filter, row) => {
@@ -180,23 +179,40 @@ class ContractListTableComponent extends Component {
           }
           return String(row[filter.id]) === filter.value;
         },
-        Filter: ({ filter, onChange }) =>
-          (<select
+        Filter: ({ filter, onChange }) => (
+          <select
             onChange={event => onChange(event.target.value)}
             style={{ width: '100%' }}
             value={filter ? filter.value : '0'}
           >
             <option value="0">{formatMessage(messages.allOption)}</option>
             {options}
-           </select>),
+          </select>
+        ),
+      },
+      {
+        Header: 'Trade-In',
+        accessor: 'tradeIn',
+        Cell: props => {
+          const { tradeIn } = props.original;
+          return <div>{tradeIn}</div>;
+        },
+        // maxWidth: 270,
       },
       {
         accessor: 'contractNumber',
         maxWidth: 60,
         Cell: () => (
           <div style={{ textAlign: 'center' }}>
-            <Icon link name="edit" size="large" color="black" onClick={this.handleEditModal} />
-          </div>),
+            <Icon
+              link
+              name="edit"
+              size="large"
+              color="black"
+              onClick={this.handleEditModal}
+            />
+          </div>
+        ),
       },
     ];
     return (
@@ -221,11 +237,17 @@ class ContractListTableComponent extends Component {
                 selectedIdx: rowInfo.index,
                 contractNumber: rowInfo.original.contractNumber,
                 contractId: rowInfo.original.id,
-                operatorId: rowInfo.original.operator && rowInfo.original.operator.id,
+                operatorId:
+                  rowInfo.original.operator && rowInfo.original.operator.id,
               });
             },
             style: {
-              background: (rowInfo === undefined ? '' : (this.state.selectedIdx === rowInfo.index ? 'rgba(241,250,229, 1)' : '')),
+              background:
+                rowInfo === undefined
+                  ? ''
+                  : this.state.selectedIdx === rowInfo.index
+                  ? 'rgba(241,250,229, 1)'
+                  : '',
             },
           })}
           getTheadProps={() => ({

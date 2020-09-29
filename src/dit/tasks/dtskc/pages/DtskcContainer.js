@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { formValueSelector } from 'redux-form';
+//import { formValueSelector } from 'redux-form';
 import moment from 'moment';
 import DtskcComponent from './DtskcComponent';
 import {
@@ -31,15 +31,12 @@ const mapStateToProps = state => ({
   userId: state.auth.userId,
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchReferences,
-    fetchUsers,
-    createTask,
-    toggleAssigneeModal,
-    removeAssigneeGroup,
-    removeAssigneePerson,
-    clearTransaction,
-  },
-)(DtskcComponent);
+export default connect(mapStateToProps, {
+  fetchReferences,
+  fetchUsers,
+  createTask,
+  toggleAssigneeModal,
+  removeAssigneeGroup,
+  removeAssigneePerson,
+  clearTransaction,
+})(DtskcComponent);

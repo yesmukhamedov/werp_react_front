@@ -1,0 +1,10 @@
+.profit {
+  height: 100%;
+  padding: 90px 0 50px 0;
+}
+.profit__name {
+  padding-bottom: 50px;
+}
+.profit__content p {
+  font-size: 20px;
+}

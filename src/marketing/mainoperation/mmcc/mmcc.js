@@ -115,6 +115,7 @@ const Mmcc = props => {
     branches,
     intl: { messages },
   } = props;
+
   const [serBranches, setSerBranches] = useState({});
   const [finBranches, setFinBranches] = useState({});
   const [contractTypeOpts, setContractTypeOpts] = useState([]);
@@ -455,6 +456,7 @@ const Mmcc = props => {
           waers: value.waers,
           priceListId: value.priceListId,
           paymentSchedule: month,
+          bankPartnerId: value.bankPartnerId,
         };
       });
     } else if (fieldName === 'dealerSubtract') {

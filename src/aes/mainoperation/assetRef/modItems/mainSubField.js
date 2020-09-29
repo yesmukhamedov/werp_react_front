@@ -16,7 +16,10 @@ import DisableType3 from './disableItem/Type3';
 import DisableDetail from './disableItem/Detail';
 
 export default function MainSubField(props) {
-  const { open, dimmer } = props;
+  const {
+    open,
+    // dimmer
+  } = props;
   const { messages } = props;
   const isEnabledType1 =
     props.queryParams.os_id === undefined || props.queryParams.os_id === null;

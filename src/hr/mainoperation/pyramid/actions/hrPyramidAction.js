@@ -1,6 +1,6 @@
 import { modifyLoader } from '../../../../general/loader/loader_action';
 import { handleError } from '../../../../general/notification/notification_action';
-import browserHistory from '../../../../utils/history';
+//import browserHistory from '../../../../utils/history';
 import { doGet, doPut, doPost, doDelete } from '../../../../utils/apiActions';
 
 export const HR_PYRAMID_FETCH_BUKRS_TREE = 'HR_PYRAMID_FETCH_BUKRS_TREE';

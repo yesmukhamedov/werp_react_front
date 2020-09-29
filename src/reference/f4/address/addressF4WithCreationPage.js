@@ -4,12 +4,16 @@ import { Modal, Icon, Tab } from 'semantic-ui-react';
 import { injectIntl } from 'react-intl';
 import AddressSearchPage from './addressSearchPage';
 import Rfadd01 from './rfadd01';
+import Phone from './phone';
 
 const AddressF4WithCreationPage = props => {
   const [activeIndex, setActiveIndex] = useState(0);
   const handleTabChange = (e, { activeIndex }) => setActiveIndex(activeIndex);
   const {
     intl: { messages },
+    countryId,
+    // phoneOpen,
+    // onCloseAddressF4,
   } = props;
 
   const close = () => {
@@ -37,6 +41,14 @@ const AddressF4WithCreationPage = props => {
             customerId={props.customerId}
             customerName={props.customerName}
           />
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: { key: 'phone', icon: 'phone', content: messages['Phone'] },
+      render: () => (
+        <Tab.Pane>
+          <Phone customerId={props.customerId} countryId={countryId} />
         </Tab.Pane>
       ),
     },

@@ -1,0 +1,14 @@
+.fingershow {
+  height: 140%;
+  padding: 90px 0 50px 0;
+}
+.fingershow__name {
+  padding-bottom: 50px;
+  text-align: center;
+}
+.fingershow__content {
+  font-size: 20px;
+}
+.fingershow__content__acc {
+  font-size: 18px;
+}

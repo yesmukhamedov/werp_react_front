@@ -1,0 +1,13 @@
+.business {
+  height: 100%;
+  padding: 90px 0 50px 0;
+}
+.business__name {
+  padding-bottom: 50px;
+}
+.business__content p {
+  font-size: 20px;
+}
+.business__content h2 {
+  text-align: center;
+}

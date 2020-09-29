@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  Header,
-  Grid,
-  Segment,
-  Button,
-  Container,
-  Dropdown,
-  Form,
-} from 'semantic-ui-react';
+import { Segment } from 'semantic-ui-react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
 import matchSorter from 'match-sorter';

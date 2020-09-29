@@ -1,0 +1,13 @@
+.prepexam {
+  height: 100%;
+
+  padding: 90px 0 50px 0;
+}
+.prepexam__name {
+  padding-bottom: 50px;
+  text-align: center;
+}
+.prepexam__content {
+  font-size: 20px;
+  text-align: justify;
+}

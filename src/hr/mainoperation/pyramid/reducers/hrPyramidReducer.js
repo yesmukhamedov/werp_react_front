@@ -1,13 +1,16 @@
 import {
   HR_PYRAMID_FETCH_BUKRS_TREE,
   HR_PYRAMID_TREE_CHANGED,
-  HR_PYRAMID_TREE_DELETED,
+  //HR_PYRAMID_TREE_DELETED,
   HR_PYRAMID_BLANK_ITEM,
   HR_PYRAMID_FORM_MODAL_TOGGLE,
   HR_PYRAMID_FETCH_ITEM,
   HR_PYRAMID_ITEM_UPDATED,
 } from '../actions/hrPyramidAction';
-import { removeNodeAtPath, changeNodeAtPath } from 'react-sortable-tree';
+import {
+  // removeNodeAtPath,
+  changeNodeAtPath,
+} from 'react-sortable-tree';
 
 const INITIAL_STATE = {
   treeData: [],

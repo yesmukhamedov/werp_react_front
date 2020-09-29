@@ -1,7 +1,14 @@
 import React from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-export const ReactTableWrapper = props => {
+import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
+
+const ReactTableWrapper = props => {
+  const {
+    intl: { messages },
+  } = props;
+
   const {
     showPagination = false,
     defaultPageSize = 20,
@@ -11,14 +18,15 @@ export const ReactTableWrapper = props => {
     refToChild = null,
     data = [],
     filterable = false,
-    loadingText = undefined,
-    noDataText = undefined,
-    previousText = undefined,
-    nextText = undefined,
-    rowsText = undefined,
-    pageText = undefined,
-    ofText = undefined,
+    loadingText = messages['loadingText'],
+    noDataText = messages['noDataText'],
+    previousText = messages['previousText'],
+    nextText = messages['nextText'],
+    rowsText = messages['rowsText'],
+    pageText = messages['pageText'],
+    ofText = messages['ofText'],
     onFilterChangeReactTable = null,
+    onRowClick = null,
   } = props;
 
   return (
@@ -40,7 +48,23 @@ export const ReactTableWrapper = props => {
         pageText={pageText}
         ofText={ofText}
         onFilteredChange={onFilterChangeReactTable}
+        getTdProps={(state, rowInfo, column, instance) => {
+          return {
+            onClick: (e, handleOriginal) => {
+              // console.log(column.id, 'column clicked');
+              if (onRowClick && rowInfo) {
+                onRowClick(rowInfo.original, rowInfo.index, column.id);
+              }
+            },
+          };
+        }}
       />
     </div>
   );
 };
+
+const mapStateToProps = state => {
+  return {};
+};
+
+export default connect(mapStateToProps, {})(injectIntl(ReactTableWrapper));

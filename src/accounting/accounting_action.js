@@ -222,6 +222,7 @@ export function saveAccSrcDocs(args, tcode, initFun) {
   let url = '';
   if (tcode === 'AMPI') url = `accounting/mainoperation/ampi/save`;
   else if (tcode === 'AMRI') url = `accounting/mainoperation/amri/save`;
+  else if (tcode === 'AMTBS') url = `accounting/mainoperation/amtbs/save`;
 
   const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
   const language = localStorage.getItem('language');

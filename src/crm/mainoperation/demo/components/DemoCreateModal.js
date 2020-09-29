@@ -10,7 +10,7 @@ import {
   DEMO_RESULT_DONE,
   DEMO_RESULT_MOVED,
   getReasonsByResultId,
-  LOCATION_OPTIONS,
+  //LOCATION_OPTIONS,
   getLocationOptionsByLanguage,
 } from '../../../crmUtil';
 import { injectIntl } from 'react-intl';

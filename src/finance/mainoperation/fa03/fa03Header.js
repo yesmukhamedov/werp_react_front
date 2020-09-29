@@ -93,9 +93,9 @@ class Fa03Header extends PureComponent {
     const stornoOriginalGjahr = !this.props.stornoOriginalGjahr
       ? ''
       : this.props.stornoOriginalGjahr;
-    const stornoOriginalBukrs = !this.props.stornoOriginalBukrs
-      ? ''
-      : this.props.stornoOriginalBukrs;
+    // const stornoOriginalBukrs = !this.props.stornoOriginalBukrs
+    //   ? ''
+    //   : this.props.stornoOriginalBukrs;
 
     let docName = '';
     if (stornoOriginal === 'storno')
@@ -395,9 +395,7 @@ class Fa03Header extends PureComponent {
                       {stornoOriginalBelnr && (
                         <Link
                           target="_blank"
-                          to={`/finance/mainoperation/fa03?belnr=${stornoOriginalBelnr}&bukrs=${
-                            bkpf.bukrs
-                          }&gjahr=${stornoOriginalGjahr}`}
+                          to={`/finance/mainoperation/fa03?belnr=${stornoOriginalBelnr}&bukrs=${bkpf.bukrs}&gjahr=${stornoOriginalGjahr}`}
                         >
                           {stornoOriginalBelnr} {stornoOriginalGjahr}
                         </Link>
@@ -468,9 +466,7 @@ class Fa03Header extends PureComponent {
                       {awkeyBelnr.length > 0 && (
                         <Link
                           target="_blank"
-                          to={`/finance/mainoperation/fa03?belnr=${awkeyBelnr}&bukrs=${
-                            bkpf.bukrs
-                          }&gjahr=${awkeyGjahr}`}
+                          to={`/finance/mainoperation/fa03?belnr=${awkeyBelnr}&bukrs=${bkpf.bukrs}&gjahr=${awkeyGjahr}`}
                         >
                           {bkpf.awkey}
                         </Link>

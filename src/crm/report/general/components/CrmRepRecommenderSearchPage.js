@@ -1,15 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Tab,
-  Table,
-  Button,
-  Icon,
-  Form,
-  Input,
-  Card,
-  Header,
-  Grid,
-} from 'semantic-ui-react';
+import { Table, Form, Input, Card, Header, Grid } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
 import { fetchDemoRecommender } from '../actions/crmReportAction';
@@ -231,7 +221,7 @@ class CrmRepRecommenderSearchPage extends Component {
       recos = this.props.visitChildRecos || [];
     }
     let firstCreatedAt = null;
-    let dateColorMap = {};
+    //let dateColorMap = {};
     return (
       <Card fluid>
         <Card.Content>
@@ -291,12 +281,9 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchDemoRecommender,
-    fetchDemoChildRecos,
-    fetchVisitChildRecos,
-    notify,
-  },
-)(CrmRepRecommenderSearchPage);
+export default connect(mapStateToProps, {
+  fetchDemoRecommender,
+  fetchDemoChildRecos,
+  fetchVisitChildRecos,
+  notify,
+})(CrmRepRecommenderSearchPage);

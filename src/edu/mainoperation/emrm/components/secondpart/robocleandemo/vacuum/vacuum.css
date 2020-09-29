@@ -1,0 +1,14 @@
+.vacuum {
+  height: 120%;
+  padding: 90px 0 50px 0;
+}
+.vacuum__name {
+  padding-bottom: 50px;
+  text-align: center;
+}
+.vacuum__content {
+  font-size: 20px;
+}
+.vacuum__content__acc {
+  font-size: 18px;
+}

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Table, Button, Icon, Segment, List, Label } from 'semantic-ui-react';
+import { Table, Button, Icon } from 'semantic-ui-react';
 
-const AssigneePanelDisplay = (props) => {
+const AssigneePanelDisplay = props => {
   const {
     messages,
     toggleModal,
@@ -15,7 +15,7 @@ const AssigneePanelDisplay = (props) => {
 
   return (
     <div>
-      { children }
+      {children}
       <Table fixed>
         <Table.Header>
           <Table.Row>

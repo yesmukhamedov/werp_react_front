@@ -1,0 +1,11 @@
+.nozzle {
+  height: 120%;
+  padding: 90px 0 50px 0;
+}
+.nozzle__name {
+  padding-bottom: 50px;
+  text-align: center;
+}
+.nozzle__content {
+  font-size: 20px;
+}

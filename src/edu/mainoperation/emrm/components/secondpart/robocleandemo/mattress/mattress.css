@@ -1,0 +1,14 @@
+.mattress {
+  height: 145%;
+  padding: 90px 0 50px 0;
+}
+.mattress__name {
+  padding-bottom: 50px;
+  text-align: center;
+}
+.mattress__content {
+  font-size: 20px;
+}
+.mattress__content__acc {
+  font-size: 18px;
+}

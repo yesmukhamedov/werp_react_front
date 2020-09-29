@@ -1,0 +1,12 @@
+.recommendations {
+  height: 120%;
+  padding: 90px 0 50px 0;
+}
+.recommendations__name {
+  padding-bottom: 50px;
+  text-align: center;
+}
+.recommendations__content__acc {
+  font-size: 18px;
+  text-align: justify;
+}

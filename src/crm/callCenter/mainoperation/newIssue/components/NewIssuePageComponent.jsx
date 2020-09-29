@@ -9,7 +9,6 @@ import { OutCallDetailsPanelContainer } from './OutCallDetailsPanel';
 import { OutCallPanelContainer } from './OutCallPanel';
 import './styles.css';
 
-
 class NewIssuePage extends Component {
   constructor(props) {
     super(props);
@@ -37,25 +36,41 @@ class NewIssuePage extends Component {
     });
   }
 
-  handleAccordionClick = () => this.handleClick('showDetailedInfo', !this.state.showDetailedInfo);
+  handleAccordionClick = () =>
+    this.handleClick('showDetailedInfo', !this.state.showDetailedInfo);
 
   render() {
-    const { contractDetails, directories, outCallInfo, contractNumber }  = this.props;
+    const {
+      contractDetails,
+      directories,
+      outCallInfo,
+      contractNumber,
+    } = this.props;
     const { messages } = this.props.intl;
     return (
       <Container>
-        <Accordion fluid styled style={{ marginTop: '20px', marginBottom: '20px' }}>
+        <Accordion
+          fluid
+          styled
+          style={{ marginTop: '20px', marginBottom: '20px' }}
+        >
           <Accordion.Title
             active={this.state.showDetailedInfo}
             index={0}
-            onClick={ this.handleAccordionClick }
+            onClick={this.handleAccordionClick}
           >
             <Icon name="dropdown" />
             {messages.L__CONTRACT_INFO}
           </Accordion.Title>
           <Accordion.Content active={this.state.showDetailedInfo}>
-            <PersonalInfoPanelDisplay {...contractDetails} messages={messages} />
-            <FinancialInfoPanelDisplay {...contractDetails} messages={messages} />
+            <PersonalInfoPanelDisplay
+              {...contractDetails}
+              messages={messages}
+            />
+            <FinancialInfoPanelDisplay
+              {...contractDetails}
+              messages={messages}
+            />
             <PurchasesPanelDisplay {...contractDetails} messages={messages} />
           </Accordion.Content>
         </Accordion>
@@ -65,10 +80,7 @@ class NewIssuePage extends Component {
           statusOptions={directories.statusOptions}
           messages={messages}
         />
-        <TaskPanelContainer
-          directories={directories}
-          messages={messages}
-        />
+        <TaskPanelContainer directories={directories} messages={messages} />
         <OutCallDetailsPanelContainer messages={messages} />
       </Container>
     );

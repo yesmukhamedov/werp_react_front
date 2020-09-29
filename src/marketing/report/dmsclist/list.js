@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import matchSorter from 'match-sorter';
+import matchSorter, { rankings } from 'match-sorter';
 import { LinkToMmcvNewTab } from '../../../utils/outlink';
 import { moneyFormat } from '../../../utils/helpers';
 
@@ -128,6 +128,17 @@ export default function List(props) {
       accessor: 'tradeIn',
       filterMethod: (filter, rows) =>
         matchSorter(rows, filter.value, { keys: ['tradeIn'] }),
+      filterAll: true,
+    },
+    {
+      Header: messages['registeredTo'],
+      accessor: 'legalEntityName',
+
+      filterMethod: (filter, rows) =>
+        matchSorter(rows, filter.value, {
+          keys: [{ threshold: rankings.CONTAINS, key: 'legalEntityName' }],
+        }),
+
       filterAll: true,
     },
     {

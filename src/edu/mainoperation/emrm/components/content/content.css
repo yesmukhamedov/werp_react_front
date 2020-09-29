@@ -1,0 +1,29 @@
+.breadcrumbs {
+  text-align: left;
+  width: 100%;
+}
+.content__edu {
+  padding-top: 50px;
+  padding-bottom: 100px;
+}
+
+.intro__content__edu {
+  padding: 10px 85px;
+  font-size: 22px;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+.part__name {
+  font-size: 23px;
+  padding-top: 70px;
+  font-weight: 600;
+  text-decoration: underline;
+}
+.content__links p {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 22px;
+  opacity: 0.85;
+}
+.content__links p:hover {
+  opacity: 1;
+}

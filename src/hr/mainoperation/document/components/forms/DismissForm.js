@@ -1,20 +1,6 @@
 import React from 'react';
-import {
-  Segment,
-  Grid,
-  Label,
-  List,
-  Select,
-  Form,
-  Table,
-  Button,
-} from 'semantic-ui-react';
-import {
-  formatDMYMS,
-  formatDMY,
-  moneyFormat,
-} from '../../../../../utils/helpers';
-import { Link } from 'react-router-dom';
+import { Segment, Label, Form, Table, Button } from 'semantic-ui-react';
+import { formatDMYMS } from '../../../../../utils/helpers';
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
@@ -26,8 +12,8 @@ export default function DismissForm(props) {
   const branchOptions = props.branchOptions || [];
   const items = document.items || [];
   const departmentList = props.departmentList || [];
-  const positionList = props.positionList || [];
-  const managerOptions = props.managerOptions || [];
+  //const positionList = props.positionList || [];
+  //const managerOptions = props.managerOptions || [];
   const directorOptions = props.directorOptions || [];
   const reasonOptions = props.leaveReasons || [];
 

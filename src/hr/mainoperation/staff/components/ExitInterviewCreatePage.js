@@ -1,15 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import {
-  Container,
-  Divider,
-  Header,
-  Button,
-  Segment,
-  Form,
-  Grid,
-  Input,
-} from 'semantic-ui-react';
+//import { Link } from 'react-router-dom';
+import { Container, Divider, Header, Button, Segment } from 'semantic-ui-react';
 
 import { connect } from 'react-redux';
 import {
@@ -187,7 +178,8 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { blankExitInterview, fetchLeaveReasons, saveExitInterview },
-)(injectIntl(ExitInterviewCreatePage));
+export default connect(mapStateToProps, {
+  blankExitInterview,
+  fetchLeaveReasons,
+  saveExitInterview,
+})(injectIntl(ExitInterviewCreatePage));

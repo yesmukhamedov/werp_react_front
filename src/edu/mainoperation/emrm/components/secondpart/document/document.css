@@ -1,0 +1,12 @@
+.document {
+  height: 100%;
+  padding: 90px 0 50px 0;
+}
+.document__name {
+  padding-bottom: 50px;
+  text-align: center;
+}
+.document__content {
+  font-size: 20px;
+  text-align: justify;
+}

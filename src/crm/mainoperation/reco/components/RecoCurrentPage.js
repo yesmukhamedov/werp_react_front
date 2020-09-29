@@ -2,16 +2,9 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 import 'react-table/react-table.css';
-import {
-  Tab,
-  Header,
-  Container,
-  Icon,
-  Segment,
-  Label,
-} from 'semantic-ui-react';
+import { Tab, Header, Container, Icon, Segment } from 'semantic-ui-react';
 import Phone from './Phone';
-import moment from 'moment';
+//import moment from 'moment';
 import { connect } from 'react-redux';
 import {
   fetchRecoCurrentData,
@@ -343,13 +336,10 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchRecoCurrentData,
-    fetchReasons,
-    fetchCallResults,
-    fetchRecoStatuses,
-    fetchDemoPrices,
-  },
-)(injectIntl(RecoCurrentPage));
+export default connect(mapStateToProps, {
+  fetchRecoCurrentData,
+  fetchReasons,
+  fetchCallResults,
+  fetchRecoStatuses,
+  fetchDemoPrices,
+})(injectIntl(RecoCurrentPage));

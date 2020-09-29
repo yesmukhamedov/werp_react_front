@@ -16,7 +16,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { modifyLoader } from '../../../general/loader/loader_action';
 import OutputErrors from '../../../general/error/outputErrors';
 import moment from 'moment';
-import { ReactTableWrapper } from '../../../utils/ReactTableWrapper';
+import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import { Link } from 'react-router-dom';
 
 import {} from '../../../reference/f4/f4_action';
@@ -371,6 +371,7 @@ class Rfcoj extends Component {
 
     const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
     const language = localStorage.getItem('language');
+
     const errors = [];
     const {
       bukrs,
@@ -665,6 +666,7 @@ class Rfcoj extends Component {
           <Menu stackable size="small">
             <Menu.Item>
               <img
+                alt=""
                 className="clickableItem"
                 src="/assets/img/xlsx_export_icon.png"
                 onClick={() => this.exportExcel()}
@@ -681,13 +683,6 @@ class Rfcoj extends Component {
           defaultPageSize={20}
           showPagination={true}
           className="-striped -highlight"
-          loadingText={messages['loadingText']}
-          noDataText={messages['noDataText']}
-          previousText={messages['previousText']}
-          nextText={messages['nextText']}
-          rowsText={messages['rowsText']}
-          pageText={messages['pageText']}
-          ofText={messages['ofText']}
           onFilterChangeReactTable={filtered =>
             this.onFilterChangeReactTable(filtered)
           }

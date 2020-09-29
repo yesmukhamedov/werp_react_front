@@ -1,10 +1,12 @@
 //Contract contact details
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 
 import { Table } from 'semantic-ui-react';
 import { LinkToMmcecd } from '../../../utils/outlink';
+
+import { f4FetchPhoneType } from '../../../reference/f4/f4_action';
 
 const MmcvContactDetails = props => {
   const {
@@ -13,8 +15,22 @@ const MmcvContactDetails = props => {
     addrWork = {},
     addrService = {},
     intl: { messages },
+    phoneList = [],
+    phoneTypeList = [],
     language,
   } = props;
+
+  useEffect(() => {
+    props.f4FetchPhoneType();
+
+    //unmount
+    return () => {};
+  }, []);
+
+  const findPhoneType = id => {
+    return phoneTypeList.find(element => element.id === id);
+  };
+
   return (
     <div>
       <LinkToMmcecd
@@ -80,6 +96,36 @@ const MmcvContactDetails = props => {
           </Table.Row>
         </Table.Body>
       </Table>
+      <Table striped selectable>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>{messages['phone_type']}</Table.HeaderCell>
+            <Table.HeaderCell>{messages['Table.PhoneNumber']}</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+        <Table.Body>
+          {phoneList.map((phone, key) => {
+            const phontType = findPhoneType(phone.typeId);
+            return (
+              <Table.Row key={key}>
+                <Table.Cell>
+                  <label>
+                    {
+                      phontType[
+                        `name${language.charAt(0).toUpperCase() +
+                          language.slice(1)}`
+                      ]
+                    }
+                  </label>
+                </Table.Cell>
+                <Table.Cell>
+                  <label>{phone.phone}</label>
+                </Table.Cell>
+              </Table.Row>
+            );
+          })}
+        </Table.Body>
+      </Table>
     </div>
     // </Segment>
   );
@@ -89,10 +135,10 @@ function mapStateToProps(state) {
   // console.log(state,'state')
   return {
     language: state.locales.lang,
+    phoneTypeList: state.f4.phoneType.data,
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {},
-)(injectIntl(MmcvContactDetails));
+export default connect(mapStateToProps, {
+  f4FetchPhoneType,
+})(injectIntl(MmcvContactDetails));

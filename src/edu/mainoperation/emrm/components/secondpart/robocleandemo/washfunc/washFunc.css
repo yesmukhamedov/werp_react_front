@@ -1,0 +1,14 @@
+.washfunc {
+  height: 120%;
+  padding: 90px 0 50px 0;
+}
+.washfunc__name {
+  padding-bottom: 50px;
+  text-align: center;
+}
+.washfunc__content {
+  font-size: 20px;
+}
+.washfunc__content__acc {
+  font-size: 18px;
+}

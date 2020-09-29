@@ -1,21 +1,12 @@
 import React from 'react';
-import {
-  Label,
-  Form,
-  Grid,
-  Segment,
-  Button,
-  Input,
-  Popup,
-  Icon,
-} from 'semantic-ui-react';
+import { Label, Form, Grid, Segment, Button, Input } from 'semantic-ui-react';
 import '../css/recoCard.css';
 import {
   getCallerOptionsByLanguage,
   getRecoCategoriesOptionsByLanguage,
 } from '../../../crmUtil';
-import moment from 'moment';
-import DatePicker from 'react-datepicker';
+// import moment from 'moment';
+// import DatePicker from 'react-datepicker';
 
 /**
  * Используется в создании рекомендации
@@ -33,7 +24,6 @@ export default function RecoCard(props) {
     phoneErrors,
     loadingPhones,
     phonePattern,
-    recoErrors,
     messages,
     locale,
     errors,
@@ -69,27 +59,27 @@ export default function RecoCard(props) {
     return loadingPhones[item[name]];
   };
 
-  const renderCallDate = (item, index) => {
-    if (item.switchDate === 1) {
-      return (
-        <DatePicker
-          locale={locale}
-          label=""
-          autoComplete="off"
-          placeholderText={messages['Crm.CallDateTime']}
-          showMonthDropdown
-          showYearDropdown
-          showTimeSelect
-          dropdownMode="select"
-          dateFormat="DD.MM.YYYY HH:mm"
-          selected={item.callDate ? moment(item.callDate) : null}
-          onChange={v => props.handleChangeDate(v, index)}
-        />
-      );
-    }
+  // const renderCallDate = (item, index) => {
+  //   if (item.switchDate === 1) {
+  //     return (
+  //       <DatePicker
+  //         locale={locale}
+  //         label=""
+  //         autoComplete="off"
+  //         placeholderText={messages['Crm.CallDateTime']}
+  //         showMonthDropdown
+  //         showYearDropdown
+  //         showTimeSelect
+  //         dropdownMode="select"
+  //         dateFormat="DD.MM.YYYY HH:mm"
+  //         selected={item.callDate ? moment(item.callDate) : null}
+  //         onChange={v => props.handleChangeDate(v, index)}
+  //       />
+  //     );
+  //   }
 
-    return '';
-  };
+  //   return '';
+  // };
 
   return (
     <Grid.Column color={'grey'} key={item.id} floated="left" width={4}>

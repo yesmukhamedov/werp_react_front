@@ -1,0 +1,14 @@
+.unique {
+  height: 140%;
+  padding: 130px 0 270px 0;
+}
+.unique__name {
+  padding-bottom: 50px;
+  text-align: center;
+}
+.unique__content {
+  font-size: 20px;
+}
+.unique__content__acc {
+  font-size: 18px;
+}

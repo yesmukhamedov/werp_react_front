@@ -1,5 +1,8 @@
 import { connect } from 'react-redux';
-import { defineMessages, injectIntl } from 'react-intl';
+import {
+  // defineMessages,
+  injectIntl,
+} from 'react-intl';
 import DeptTaskListTableDisplay from './DeptTaskListTableDisplay';
 import { messages } from '../../../../../locales/defineMessages';
 
@@ -11,6 +14,8 @@ function mapStateToProps(state) {
   };
 }
 
-const DeptTaskListTableContainer = connect(mapStateToProps)(injectIntl(DeptTaskListTableDisplay));
+const DeptTaskListTableContainer = connect(mapStateToProps)(
+  injectIntl(DeptTaskListTableDisplay),
+);
 
 export default DeptTaskListTableContainer;

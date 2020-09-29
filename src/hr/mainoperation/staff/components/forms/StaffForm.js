@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  Form,
-  Input,
-  Button,
-  Icon,
-  Segment,
-  Header,
-  Grid,
-} from 'semantic-ui-react';
+import { Form, Input, Button, Segment, Header, Grid } from 'semantic-ui-react';
 import ExperienceForm from '../forms/ExperienceForm';
 import StaffAddresses from '../forms/StaffAddresses';
 import DatePicker from 'react-datepicker';

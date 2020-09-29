@@ -10,7 +10,6 @@ import {
   Button,
   Icon,
   Input,
-  TextArea,
   Grid,
 } from 'semantic-ui-react';
 import queryString from 'query-string';
@@ -18,6 +17,12 @@ import { handleFocus } from '../../../utils/helpers';
 import { fetchDynObjMarketing, onSaveMmcTrans } from '../../marketingAction';
 import { LinkToCustomerHrc03, LinkToMmcvNewTab } from '../../../utils/outlink';
 import AddressF4Modal from '../../../reference/f4/address/addressF4WithCreationPage';
+
+import {
+  f4FetchPhoneType,
+  f4FetchBranchesByBukrs,
+  f4FetchPhone,
+} from '../../../reference/f4/f4_action';
 
 const Mmcecd = props => {
   const emptyContract = {
@@ -50,12 +55,17 @@ const Mmcecd = props => {
   const [newAddrWork, setNewAddrWork] = useState({});
   const [newAddrService, setNewAddrService] = useState({});
 
+  const [countryId, setCountryId] = useState({});
+
   const [addressF4ModalOpen, setAddressF4ModalOpen] = useState(false);
   const [addressF4ModalType, setAddressF4ModalType] = useState('');
 
   const {
     mmcecd,
     intl: { messages },
+    phoneTypeList = [],
+    bukrsBranches = [],
+    phoneList = [],
     language,
   } = props;
 
@@ -64,13 +74,20 @@ const Mmcecd = props => {
     const url = props.location.search;
     const params = queryString.parse(url);
 
+    props.f4FetchPhoneType();
+
     if (params.contractNumber) {
       setContractNumberSearch(params.contractNumber);
       onSearchContract(params.contractNumber);
     }
+
     //unmount
     return () => {};
   }, []);
+
+  const findPhoneType = id => {
+    return phoneTypeList.find(element => element.id === id);
+  };
 
   //componentWillRecieveProps
   useEffect(() => {
@@ -89,7 +106,26 @@ const Mmcecd = props => {
     if (mmcecd && mmcecd.oldAddrService)
       setNewAddrService({ ...mmcecd.oldAddrService });
     if (mmcecd && mmcecd.oldAddrWork) setNewAddrWork({ ...mmcecd.oldAddrWork });
+
+    if (mmcecd && mmcecd.contract && mmcecd.contract.bukrs) {
+      props.f4FetchBranchesByBukrs(mmcecd.contract.bukrs);
+    }
+
+    if (mmcecd && mmcecd.contract && mmcecd.contract.customerId) {
+      props.f4FetchPhone({
+        search: `customerId==${mmcecd.contract.customerId}`,
+      });
+    }
   }, [mmcecd]);
+
+  useEffect(() => {
+    if (bukrsBranches && bukrsBranches.length > 0) {
+      const branch = bukrsBranches.find(
+        item => item.branch_id === contract.branchId,
+      );
+      setCountryId(branch.country_id);
+    }
+  }, [bukrsBranches]);
 
   const onSearchContract = contractNumber => {
     props.fetchDynObjMarketing(
@@ -174,8 +210,16 @@ const Mmcecd = props => {
         open={addressF4ModalOpen}
         customerId={contract.customerId}
         customerName={contract.customerName}
-        onCloseAddressF4={bool => setAddressF4ModalOpen(bool)}
+        onCloseAddressF4={bool => {
+          setAddressF4ModalOpen(bool);
+          if (!bool && contract.customerId && contract.customerId > 0) {
+            props.f4FetchPhone({
+              search: `customerId==${contract.customerId}`,
+            });
+          }
+        }}
         onAddressSelect={item => onInputChange(item, addressF4ModalType)}
+        countryId={countryId}
       />
 
       <Grid>
@@ -393,10 +437,42 @@ const Mmcecd = props => {
                     </Table.Cell>
                     <Table.Cell />
                     <Table.Cell />
-                    <Table.Cell />
-                    <Table.Cell />
-                    <Table.Cell />
                   </Table.Row>
+                </Table.Body>
+              </Table>
+
+              <Table striped selectable>
+                <Table.Header>
+                  <Table.Row>
+                    <Table.HeaderCell>
+                      {messages['phone_type']}
+                    </Table.HeaderCell>
+                    <Table.HeaderCell>
+                      {messages['Table.PhoneNumber']}
+                    </Table.HeaderCell>
+                  </Table.Row>
+                </Table.Header>
+                <Table.Body>
+                  {phoneList.map((phone, key) => {
+                    const phontType = findPhoneType(phone.typeId);
+                    return (
+                      <Table.Row key={key}>
+                        <Table.Cell>
+                          <label>
+                            {
+                              phontType[
+                                `name${language.charAt(0).toUpperCase() +
+                                  language.slice(1)}`
+                              ]
+                            }
+                          </label>
+                        </Table.Cell>
+                        <Table.Cell>
+                          <label>{phone.phone}</label>
+                        </Table.Cell>
+                      </Table.Row>
+                    );
+                  })}
                 </Table.Body>
               </Table>
             </div>
@@ -412,13 +488,16 @@ function mapStateToProps(state) {
   return {
     language: state.locales.lang,
     mmcecd: state.marketing.dynamicObject.mmcecd,
+    phoneTypeList: state.f4.phoneType.data,
+    bukrsBranches: state.f4.bukrsBranches,
+    phoneList: state.f4.phoneList.data,
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchDynObjMarketing,
-    onSaveMmcTrans,
-  },
-)(injectIntl(Mmcecd));
+export default connect(mapStateToProps, {
+  fetchDynObjMarketing,
+  onSaveMmcTrans,
+  f4FetchPhoneType,
+  f4FetchBranchesByBukrs,
+  f4FetchPhone,
+})(injectIntl(Mmcecd));

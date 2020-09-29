@@ -11,19 +11,19 @@ require('moment/locale/ru');
 
 export default function ExitInterviewForm(props) {
   const {
-    address,
+    //address,
     reasonOptions,
     feedbackOptions,
-    stateOptions,
-    cityOptions,
-    regionOptions,
-    addressTypeOptions,
-    index,
+    //stateOptions,
+    //cityOptions,
+    // regionOptions,
+    // addressTypeOptions,
+    //index,
     model,
   } = props;
 
-  let staff = {};
-  let nationalityOptions = [];
+  // let staff = {};
+  // let nationalityOptions = [];
   return (
     <Form>
       <div className="ui segments">

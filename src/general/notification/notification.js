@@ -16,7 +16,6 @@ class Notification extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log();
     if (nextProps.type === 'info')
       this.setState({ info: true, success: false, error: false });
     else if (nextProps.type === 'success')
@@ -25,25 +24,21 @@ class Notification extends Component {
       this.setState({ info: false, success: false, error: true });
 
     this.setState({ open: true });
-    setTimeout(() => {
-      this.setState({
-        open: false,
-        info: false,
-        success: false,
-        error: false,
-      });
-    }, 2000);
+
+    if (nextProps.type !== 'error') {
+      setTimeout(() => {
+        this.setState({
+          open: false,
+          info: false,
+          success: false,
+        });
+      }, 2200);
+    }
   }
 
   render() {
     return (
-      <Modal
-        open={this.state.open}
-        closeOnEscape={false}
-        onClose={this.close}
-        dimmer={false}
-        size="tiny"
-      >
+      <Modal open={this.state.open} onClose={this.close} size="small">
         <Modal.Content>
           <Message
             header={this.props.header}
@@ -51,6 +46,7 @@ class Notification extends Component {
             info={this.state.info}
             success={this.state.success}
             error={this.state.error}
+            onDismiss={() => this.setState({ open: false })}
           />
         </Modal.Content>
       </Modal>
@@ -67,7 +63,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {},
-)(Notification);
+export default connect(mapStateToProps, {})(Notification);

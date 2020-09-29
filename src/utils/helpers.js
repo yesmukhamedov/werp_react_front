@@ -6,7 +6,9 @@ export function resetLocalStorage() {
   localStorage.removeItem('currentPathName');
   localStorage.removeItem('breadcrumb');
   localStorage.removeItem('token');
+  localStorage.removeItem('refresh_token');
   localStorage.removeItem('username');
+  localStorage.removeItem('userId');
 }
 
 /**
@@ -224,8 +226,27 @@ export function monthsArrayToOptions(months) {
 export function stringYYYYMMDDToMoment(stringVal) {
   return stringVal ? moment(stringVal, 'YYYY-MM-DD') : '';
 }
+
 export function momentToStringYYYYMMDD(momentVal) {
   return momentVal ? momentVal.format('YYYY-MM-DD') : '';
+}
+
+export function momentToStringDDMMYYYY(momentVal) {
+  return momentVal ? momentVal.format('DD.MM.YYYY') : '';
+}
+export function momentToStringYYYYMMDDHHMMSS(momentVal) {
+  return momentVal ? momentVal.format('YYYY-MM-DD HH:mm:ss') : '';
+}
+
+export function stringYYYYMMDDHHMMSSToMoment(stringVal) {
+  return stringVal ? moment(stringVal, 'YYYY-MM-DD HH:mm:ss') : moment();
+}
+
+export function stringToMoment(stringVal, format) {
+  return stringVal ? moment(stringVal, format) : '';
+}
+export function momentToString(momentVal, format) {
+  return momentVal ? momentVal.format(format) : '';
 }
 
 export function excelDownload(
@@ -261,4 +282,27 @@ export function excelDownload(
   //     responseType: 'blob',
   //   },
   // )
+}
+
+export function errorTableText(id) {
+  // get errors in localStorage
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString2'));
+  // get language in localStorage
+  const language = localStorage.getItem('language');
+  // find error in errorTable by id
+  const findError = errorTable.find(({ errorId }) => errorId === id);
+  // text which save error text
+  let errorText = '';
+  // put the errors to errorText by language
+  if (language === 'ru') {
+    errorText = findError.textRu;
+  }
+  if (language === 'en') {
+    errorText = findError.textEn;
+  }
+  if (language === 'tr') {
+    errorText = findError.textTr;
+  }
+
+  return errorText;
 }

@@ -14,7 +14,7 @@ import {
 } from '../../../utils/helpers';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import moment from 'moment';
+//import moment from 'moment';
 require('moment/locale/ru');
 require('moment/locale/tr');
 
@@ -253,9 +253,6 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchDynObjMarketing,
-  },
-)(injectIntl(MmccLogistics));
+export default connect(mapStateToProps, {
+  fetchDynObjMarketing,
+})(injectIntl(MmccLogistics));

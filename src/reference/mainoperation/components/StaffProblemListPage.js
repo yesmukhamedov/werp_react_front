@@ -67,7 +67,10 @@ class StaffProblemListPage extends Component {
   }
 
   renderTable(items) {
-    const { messages, locale } = this.props.intl;
+    const {
+      messages,
+      // locale
+    } = this.props.intl;
 
     return (
       <div>
@@ -164,7 +167,7 @@ class StaffProblemListPage extends Component {
   }
 
   render() {
-    const { messages } = this.props.intl;
+    //const { messages } = this.props.intl;
 
     return (
       <Container
@@ -205,13 +208,10 @@ function mapStateToProps(state) {
   return {};
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    blankStaffProblem,
-    createStaffProblem,
-    updateStaffProblem,
-    fetchStaffProblem,
-    fetchStaffProblems,
-  },
-)(injectIntl(StaffProblemListPage));
+export default connect(mapStateToProps, {
+  blankStaffProblem,
+  createStaffProblem,
+  updateStaffProblem,
+  fetchStaffProblem,
+  fetchStaffProblems,
+})(injectIntl(StaffProblemListPage));

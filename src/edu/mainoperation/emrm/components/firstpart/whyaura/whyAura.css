@@ -1,0 +1,10 @@
+.whyaura {
+  height: 100%;
+  padding: 90px 0 50px 0;
+}
+.whyaura__name {
+  padding-bottom: 50px;
+}
+.whyaura__content p {
+  font-size: 20px;
+}

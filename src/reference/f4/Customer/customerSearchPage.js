@@ -392,7 +392,8 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  { f4FetchCountryList, f4ClearAnyObject, f4FetchCustomers },
-)(injectIntl(CustomerSearchPage));
+export default connect(mapStateToProps, {
+  f4FetchCountryList,
+  f4ClearAnyObject,
+  f4FetchCustomers,
+})(injectIntl(CustomerSearchPage));

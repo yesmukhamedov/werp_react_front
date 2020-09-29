@@ -1,0 +1,20 @@
+.roboclean {
+  height: 100vh;
+
+  text-align: center;
+
+  padding: 90px 0 50px 0;
+}
+.roboclean__name {
+  padding-bottom: 50px;
+}
+.roboclean__content p {
+  font-size: 22px;
+  padding-left: 100px;
+  opacity: 0.85;
+  font-weight: 600;
+  cursor: pointer;
+}
+.roboclean__content p:hover {
+  opacity: 1;
+}

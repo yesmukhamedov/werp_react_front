@@ -1,0 +1,14 @@
+.tds {
+  height: 160%;
+  padding: 90px 0 50px 0;
+}
+.tds__name {
+  padding-bottom: 50px;
+  text-align: center;
+}
+.tds__content {
+  font-size: 20px;
+}
+.tds__content__acc {
+  font-size: 18px;
+}

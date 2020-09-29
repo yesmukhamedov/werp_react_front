@@ -1,0 +1,17 @@
+.cebilonDemo {
+  height: 115%;
+  padding: 90px 0 50px 0;
+}
+.cebilonDemo__name {
+  padding-bottom: 50px;
+}
+.cebilonDemo__content p {
+  font-size: 22px;
+  padding-left: 100px;
+  opacity: 0.85;
+  font-weight: 600;
+  cursor: pointer;
+}
+.cebilonDemo__content p:hover {
+  opacity: 1;
+}

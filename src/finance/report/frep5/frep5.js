@@ -673,6 +673,7 @@ class Frep5 extends Component {
             <Menu stackable size="small">
               <Menu.Item>
                 <img
+                  alt=""
                   className="clickableItem"
                   src="/assets/img/xlsx_export_icon.png"
                   onClick={() => this.exportExcel()}

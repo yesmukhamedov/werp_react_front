@@ -1,0 +1,9 @@
+.back {
+  background-image: url('http://192.168.0.15/assets/images/prod/education/assetsRoboclean/back.png');
+  width: 100%;
+  min-height: 100%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  text-align: center;
+  background-attachment: fixed;
+}

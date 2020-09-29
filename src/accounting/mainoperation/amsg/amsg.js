@@ -13,7 +13,6 @@ import FaHeader from '../../../finance/faHeader';
 import AmsgPosition from './amsgPosition';
 import AmsgPaySchedule from './amsgPaySchedule';
 import OutputErrors from '../../../general/error/outputErrors';
-import moment from 'moment';
 import {
   f4FetchDepartmentList,
   f4FetchCurrencyList,
@@ -25,6 +24,8 @@ import { amsgSave } from '../../../accounting/accounting_action';
 import { modifyLoader } from '../../../general/loader/loader_action';
 import { changefaBkpf, clearfaBkpf } from '../../../finance/fa_action';
 import { injectIntl } from 'react-intl';
+
+import moment from 'moment';
 
 class Amsg extends Component {
   constructor(props) {
@@ -58,16 +59,16 @@ class Amsg extends Component {
 
       psRows: [],
       emptyPsRow: {
-        payment_date: moment().format('DD.MM.YYYY'),
+        payment_date: moment().format('YYYY-MM-DD'),
         sum2: 0,
       },
     };
   }
 
-  componentWillMount() {
+  componentDidMount() {
     // console.log(this.props)
     // this.props.f4FetchBonusTypeList('hrb02');
-    this.props.f4FetchCurrencyList('amsg');
+    this.props.f4FetchCurrencyList('');
     this.props.f4FetchDepartmentList();
     this.props.f4FetchBusinessAreaList2();
     this.props.f4FetchExchangeRateNational();
@@ -94,8 +95,8 @@ class Amsg extends Component {
   initializeBkpfBseg() {
     const bkpf = Object.assign({}, this.props.initialBkpf);
     bkpf.blart = 'G2';
-    bkpf.budat = moment().format('DD.MM.YYYY');
-    bkpf.bldat = moment().format('DD.MM.YYYY');
+    bkpf.budat = moment().format('YYYY-MM-DD');
+    bkpf.bldat = moment().format('YYYY-MM-DD');
 
     this.props.changefaBkpf(bkpf);
 
@@ -110,7 +111,15 @@ class Amsg extends Component {
 
   initializePsRows() {
     const psRow0 = Object.assign({}, this.state.emptyPsRow);
-    const psRow1 = Object.assign({}, this.state.emptyPsRow);
+    let psRow1 = Object.assign({}, this.state.emptyPsRow);
+
+    psRow1 = {
+      ...psRow1,
+      payment_date: moment(psRow1.payment_date, 'YYYY-MM-DD')
+        .add(1, 'M')
+        .format('YYYY-MM-DD'),
+    };
+
     const psRows = [];
     psRows.push(psRow0);
     psRows.push(psRow1);
@@ -364,6 +373,7 @@ class Amsg extends Component {
 
 function mapStateToProps(state) {
   return {
+    language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsAll,
     currencyOptions: state.f4.currencyOptions,
@@ -378,17 +388,14 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    changefaBkpf,
-    clearfaBkpf,
-    amsgSave,
-    modifyLoader,
-    f4FetchWerksBranchList,
-    f4FetchDepartmentList,
-    f4FetchCurrencyList,
-    f4FetchBusinessAreaList2,
-    f4FetchExchangeRateNational,
-  },
-)(injectIntl(Amsg));
+export default connect(mapStateToProps, {
+  changefaBkpf,
+  clearfaBkpf,
+  amsgSave,
+  modifyLoader,
+  f4FetchWerksBranchList,
+  f4FetchDepartmentList,
+  f4FetchCurrencyList,
+  f4FetchBusinessAreaList2,
+  f4FetchExchangeRateNational,
+})(injectIntl(Amsg));
