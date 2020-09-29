@@ -201,9 +201,10 @@ export default function RecruitmentForm(props) {
                       dropdownMode="select"
                       dateFormat="DD.MM.YYYY"
                       selected={item.beginDate ? moment(item.beginDate) : null}
-                      onChange={v =>
-                        props.handleItemChange(idx, 'beginDate', v)
-                      }
+                      onChange={v => {
+                        console.log('beginDate', v);
+                        props.handleItemChange(idx, 'beginDate', v);
+                      }}
                     />
                   }
                 </Table.Cell>
