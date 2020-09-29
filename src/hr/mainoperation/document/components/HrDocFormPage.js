@@ -323,6 +323,7 @@ class HrDocFormPage extends Component {
     if (fieldName === 'beginDate' || fieldName === 'endDate') {
       if (fieldValue) {
         fieldValue = fieldValue.valueOf();
+        console.log(fieldName + '+', fieldValue);
       } else {
         fieldValue = null;
       }
@@ -331,6 +332,8 @@ class HrDocFormPage extends Component {
     if (fieldName === 'branchId') {
       items[index]['managerId'] = null;
     }
+
+    console.log('+', fieldValue);
 
     items[index][fieldName] = fieldValue;
     doc['items'] = items;
