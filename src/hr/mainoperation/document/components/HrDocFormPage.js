@@ -338,6 +338,8 @@ class HrDocFormPage extends Component {
       ...this.state,
       localDocument: doc,
     });
+
+    console.log('doc', doc);
   };
 
   handleAction = actionType => {
