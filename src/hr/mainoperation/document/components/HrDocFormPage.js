@@ -321,6 +321,7 @@ class HrDocFormPage extends Component {
     console.log(fieldName, fieldValue);
     //console.log(fieldName, fieldValue.getTime());
     console.log(fieldName, fieldValue.toDate());
+    console.log(fieldName, fieldValue.toDate().getTimezoneOffset());
     console.log(
       fieldName,
       fieldValue.toDate().valueOf() +
