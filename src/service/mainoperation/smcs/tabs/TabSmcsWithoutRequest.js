@@ -80,8 +80,6 @@ const TabSmcsWithoutRequest = props => {
     operatorListApp = [],
   } = props;
 
-  console.log('paymentOptions1', paymentOptions1);
-
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
 
@@ -101,7 +99,7 @@ const TabSmcsWithoutRequest = props => {
     if (tovarSnProps != '') {
       let tovarSn = tovarSnProps;
       props.fetchServiceSmcs({ tovarSn });
-      props.fetchServiceTypeId();
+      // props.fetchServiceTypeId();
     }
   }, [tovarSnProps]);
 
@@ -133,13 +131,22 @@ const TabSmcsWithoutRequest = props => {
 
   const [editStatus, setEditStatus] = useState(true);
 
+  useEffect(() => {
+    if (service.contractNumber) {
+      props.fetchServiceTypeId({
+        contractNumber: service.contractNumber,
+      });
+    } else {
+      props.fetchServiceTypeId();
+    }
+  }, [service.contractNumber]);
+
   //BasicInfo
   const onBasicInfoInputChange = (value, fieldName) => {
     switch (fieldName) {
       //Поиск по серииному номеру товара(tovarSn)
       case 'searchTovarSN':
         props.fetchServiceSmcs({ tovarSn: service.tovarSn });
-        props.fetchServiceTypeId();
         setService({ ...emptyService, tovarSn: service.tovarSn });
         break;
       case 'searchCN':
@@ -182,9 +189,9 @@ const TabSmcsWithoutRequest = props => {
     }
   };
 
-  useEffect(() => {
-    props.fetchServiceTypeId();
-  }, []);
+  // useEffect(() => {
+  //   props.fetchServiceTypeId();
+  // }, []);
 
   useEffect(() => {
     if (Object.keys(contract).length > 0) {

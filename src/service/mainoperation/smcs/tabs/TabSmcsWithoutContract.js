@@ -216,9 +216,18 @@ const TabSmcsWithoutContract = props => {
   });
 
   useEffect(() => {
-    props.fetchServiceTypeId();
     props.f4fetchCategory();
   }, []);
+
+  useEffect(() => {
+    if (service.contractNumber) {
+      props.fetchServiceTypeId({
+        contractNumber: service.contractNumber,
+      });
+    } else {
+      props.fetchServiceTypeId();
+    }
+  }, [service.contractNumber]);
 
   const categoryOptions = category.map(item => {
     return {

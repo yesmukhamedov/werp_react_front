@@ -126,7 +126,7 @@ export const fetchMasterList = (param, val) => {
 export const fetchServiceTypeId = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcs/getServiceTypeList`, param)
+    doGet(`smcs/getServiceList`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

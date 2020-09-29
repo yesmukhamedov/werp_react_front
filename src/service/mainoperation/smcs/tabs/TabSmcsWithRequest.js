@@ -113,10 +113,6 @@ const TabSmcsWithRequest = props => {
 
   const [editStatus, setEditStatus] = useState(true);
 
-  useEffect(() => {
-    props.fetchServiceTypeId();
-  }, []);
-
   //УСЛУГИ============================================================================================================================
   //==================================================================================================================================
 
@@ -1032,6 +1028,16 @@ const TabSmcsWithRequest = props => {
       props.fetchSmcsByAppNumber({ applicationNumber });
     }
   }, [applicationNumber]);
+
+  useEffect(() => {
+    if (service.contractNumber) {
+      props.fetchServiceTypeId({
+        contractNumber: service.contractNumber,
+      });
+    } else {
+      props.fetchServiceTypeId();
+    }
+  }, [service.contractNumber]);
 
   return (
     <Form>
