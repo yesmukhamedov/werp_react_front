@@ -318,11 +318,11 @@ class HrDocFormPage extends Component {
       return;
     }
 
+    console.log('1', new Date().getTimezoneOffset() / 60);
+
     if (fieldName === 'beginDate' || fieldName === 'endDate') {
       if (fieldValue) {
-        fieldValue =
-          fieldValue.valueOf() -
-          3600000 * (new Date().getTimezoneOffset() / 60);
+        fieldValue = fieldValue.valueOf() + 3600000 * 6;
       } else {
         fieldValue = null;
       }
@@ -331,6 +331,8 @@ class HrDocFormPage extends Component {
     if (fieldName === 'branchId') {
       items[index]['managerId'] = null;
     }
+
+    console.log('+', fieldValue);
 
     items[index][fieldName] = fieldValue;
     doc['items'] = items;
