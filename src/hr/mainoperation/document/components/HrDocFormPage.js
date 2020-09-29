@@ -318,7 +318,7 @@ class HrDocFormPage extends Component {
       return;
     }
 
-    console.log('1', new Date().getTimezoneOffset() / 60);
+    console.log('1', Intl.DateTimeFormat().resolvedOptions().timeZone);
 
     if (fieldName === 'beginDate' || fieldName === 'endDate') {
       if (fieldValue) {
