@@ -513,6 +513,12 @@ const AsyncFrep8 = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncFoea = Loadable({
+  loader: () =>
+    import('../finance/other/foea/foea' /* webpackChunkName: "foea" */),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncFahrb = Loadable({
   loader: () =>
     import(
@@ -1086,6 +1092,7 @@ const getComponent = {
   Frep6: AsyncFrep6,
   Frep7: AsyncFrep7,
   Frep8: AsyncFrep8,
+  Foea: AsyncFoea,
   Rfcoj: AsyncRfcoj,
   Hrrsb: AsyncHrrsb,
   Mmcc: AsyncMmcc,
@@ -1232,6 +1239,7 @@ const generateRoutes = transactionRoutes => {
       <Route path="/marketing/mainoperation/mmceg" component={AsyncMmceg} /> */}
       <Route path="/marketing/mainoperation/mmcef" component={AsyncMmcef} />
       <Route path="/marketing/mainoperation/mmcefa" component={AsyncMmcefa} />
+      <Route path="/finance/other/foea" component={AsyncFoea} />
 
       <Route
         path="/hr/exitinterviews"
@@ -1289,11 +1297,6 @@ const generateRoutes = transactionRoutes => {
         exact={true}
         component={AsyncLogInvoicesForm}
       />
-      {/* <Route
-        path="/service/mainoperation/smecam"
-        exact={true}
-        component={AsyncSmecam}
-      /> */}
       <Route
         path="/service/report/srkpisod"
         exact={true}
@@ -1304,101 +1307,7 @@ const generateRoutes = transactionRoutes => {
         exact={true}
         component={AsyncSmvs}
       />
-      {/* <Route
-        path="/service/mainoperation/smeca"
-        exact={true}
-        component={AsyncSmeca}
-      /> */}
-      {/* <Route
-        path="/service/mainoperation/smvca"
-        exact={true}
-        component={AsyncSmvca}
-      /> */}
-      {/* <Route
-        path="/service/mainoperation/smsetpp"
-        exact={true}
-        component={AsyncSmsetpp}
-      />  <Route
-        path="/service/mainoperation/smsetct"
-        exact={true}
-        component={AsyncSmsetct}
-      />
-      
-    
-      <Route
-        path="/service/mainoperation/smsrcus"
-        exact={true}
-        component={AsyncSmsrcus}
-      />
-      <Route
-        path="/service/mainoperation/smsetplp"
-        exact={true}
-        component={AsyncSmsetplp}
-      />
-      {/* 
-      <Route
-        path="/service/mainoperation/smplb"
-        exact={true}
-        component={AsyncSmplb}
-      />
-      <Route
-        path="/service/mainoperation/smcs"
-        exact={true}
-        component={AsyncSmcs}
-      /> 
-      <Route
-        path="/service/mainoperation/smslsp"
-        exact={true}
-        component={AsyncSmslsp}
-      />     
- 
-      <Route
-        path="/service/mainoperation/smvs"
-        exact={true}
-        component={AsyncSmvs}
-      />
-      <Route
-        path="/service/mainoperation/smes"
-        exact={true}
-        component={AsyncSmes}
-      />
-      <Route path="/service/report/srlsm" exact={true} component={AsyncSrlsm} />
-      <Route path="/service/report/srls" exact={true} component={AsyncSrls} />
-      <Route
-        path="/service/mainoperation/smcuspor"
-        exact={true}
-        component={AsyncSmcuspor}
-      />
-      <Route
-        path="/service/mainoperation/smregc"
-        exact={true}
-        component={AsyncSmregc}
-      />
-      <Route
-        path="/service/mainoperation/smeci"
-        exact={true}
-        component={AsyncSmeci}
-      />
-      <Route
-      path="/service/mainoperation/smcca"
-      exact={true}
-      component={AsyncSmcca}
-      />
-      <Route
-      path="/service/mainoperation/smccald"
-      exact={true}
-      component={AsyncSmccald}
-      />
-      <Route
-      path="/service/mainoperation/smappl"
-      exact={true}
-      component={AsyncSmappl} 
-      />   
-      <Route
-        path="/service/mainoperation/smecim"
-        exact={true}
-        component={AsyncSmecim}
-      />
+
       {/* dynamically generated URLs  */}
       <Route
         path="/components/PushNotification/SendPushNotification"

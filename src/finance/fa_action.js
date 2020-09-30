@@ -18,6 +18,12 @@ export const FETCH_DYNOBJ_FI = 'FETCH_DYNOBJ_FI';
 export const CHANGE_DYNOBJ_FI = 'CHANGE_DYNOBJ_FI';
 export const CLEAR_DYNOBJ_FI = 'CLEAR_DYNOBJ_FI';
 
+export const FETCH_FOEA_OUTPUTTABLE = 'FETCH_FOEA_OUTPUTTABLE';
+export const FETCH_FOEA_DETAILTABLE = 'FETCH_FOEA_DETAILTABLE';
+export const CHANGE_FOEA_SEARCH_PARAMS = 'CHANGE_FOEA_SEARCH_PARAMS';
+export const CLEAR_FOEA = 'CLEAR_FOEA';
+export const CLEAR_FOEA_OUTPUTTABLE = 'CLEAR_FOEA_OUTPUTTABLE';
+
 export function fetchCashBankHkontsByBranch(a_bukrs, a_brnch) {
   return function(dispatch) {
     doGet(`finance/mainoperation/fetchCashBankHkontsByBranch`, {
@@ -466,3 +472,111 @@ export function saveFahrb(a_searchParameters) {
   };
 }
 // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+export function fetchFoeaOutputTableAction(
+  params,
+  callBackBeforeAxios,
+  callBackOnSuccess,
+  callBackOnerror,
+) {
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
+  return function(dispatch) {
+    callBackBeforeAxios();
+    doGet(`finance/other/foea/search`, {
+      ...params,
+    })
+      .then(({ data }) => {
+        // console.log('action', data);
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_FOEA_OUTPUTTABLE,
+          data: data.outputTable,
+        });
+        callBackOnSuccess();
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+        dispatch(modifyLoader(false));
+        callBackOnerror();
+      });
+  };
+}
+
+export function fetchFoeaDetailTableAction(
+  params,
+  callBackBeforeAxios,
+  callBackOnSuccess,
+  callBackOnerror,
+) {
+  const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+  const language = localStorage.getItem('language');
+  return function(dispatch) {
+    callBackBeforeAxios();
+    doGet(`finance/other/foea/searchDetail`, {
+      ...params,
+    })
+      .then(({ data }) => {
+        // console.log('action', data);
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_FOEA_DETAILTABLE,
+          data: data.detailTable,
+        });
+        callBackOnSuccess();
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+        dispatch(modifyLoader(false));
+        callBackOnerror();
+      });
+  };
+}
+export function processSelectedItemsAction(
+  body,
+  params,
+  callBackBeforeAxios,
+  callBackOnSuccess,
+  callBackOnerror,
+) {
+  return function(dispatch) {
+    const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
+    const language = localStorage.getItem('language');
+    callBackBeforeAxios();
+
+    doPost(`finance/other/foea/process`, body, { ...params })
+      .then(({ data }) => {
+        // console.log('action', data);
+        if (data.result) {
+          dispatch(
+            notify(
+              'success',
+              errorTable[`104${language}`],
+              errorTable[`101${language}`],
+            ),
+          );
+        } else {
+          dispatch(
+            notify(
+              'info',
+              errorTable[`133${language}`],
+              errorTable[`132${language}`],
+            ),
+          );
+        }
+        callBackOnSuccess();
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+        callBackOnerror();
+      });
+  };
+}
+
+export function changeFoeaSearchParamsAction(a_obj) {
+  const obj = {
+    type: CHANGE_FOEA_SEARCH_PARAMS,
+    data: a_obj,
+  };
+  return obj;
+}

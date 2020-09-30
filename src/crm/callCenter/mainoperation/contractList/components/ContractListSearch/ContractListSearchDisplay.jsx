@@ -18,8 +18,20 @@ class ContractListSearchDisplay extends Component {
   }
 
   handleFormSubmit(values) {
-    const startDateUtc = moment.utc(values.startDate).format();
-    const endDateUtc = moment.utc(values.endDate).format();
+    // const startDateUtc = moment(values.startDate, 'DD.MM.YYYY').format(
+    //   'YYYY-MM-DD',
+    // );
+    // const endDateUtc = moment(values.endDate, 'DD.MM.YYYY').format(
+    //   'YYYY-MM-DD',
+    // );
+
+    const startDateUtc = moment.utc(values.startDate, 'DD.MM.YYYY').format();
+    const endDateUtc = moment.utc(values.endDate, 'DD.MM.YYYY').format();
+    // const startDateUtc = moment.utc(values.startDate).format();
+    // const endDateUtc = moment.utc(values.endDate).format();
+    // console.log(values);
+    // console.log(startDateUtc);
+    // console.log(endDateUtc);
 
     const paramsDict = {
       bukrs: values.company,
@@ -87,6 +99,7 @@ class ContractListSearchDisplay extends Component {
                   label={formatMessage(messages.dateFrom)}
                   component={DatePickerFormField}
                   autoComplete="off"
+                  dateFormat="DD.MM.YYYY"
                 />
               </Grid.Column>
               <Grid.Column width={2}>
@@ -96,6 +109,7 @@ class ContractListSearchDisplay extends Component {
                   label={formatMessage(messages.dateTo)}
                   component={DatePickerFormField}
                   autoComplete="off"
+                  dateFormat="DD.MM.YYYY"
                 />
               </Grid.Column>
               <Grid.Column width={2}>

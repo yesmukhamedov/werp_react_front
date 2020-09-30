@@ -638,6 +638,14 @@
   "no": "No",
   "questionAreYouSure": "Are you sure?",
   "bank": "Bank",
+  "selected": "Selected",
+  "created": "Created",
+  "blartTypeAE": "Adm exp. accruals",
+  "blartTypeKP": "Acc. Payable payment",
+  "blartTypeOR": "Other income",
+  "blartTypeDP": "Acc. receivable receipt",
+  "blartTypeG2": "Spare parts sales",
+  "reward": "Reward",
 
   "transNameFmcp": "FMCP: Receipt from Sales Contract",
   "transNameFcis": "FCIS: Employee acc.cash inquiry",
@@ -673,6 +681,8 @@
   "transNameMmcef": "MMCEF: Contract - edit for Finance manager",
   "transNameMmceg": "MMCEG: Contract - edit goods",
   "transNameMrcsch": "MRCSCH: Operation history of contracts fin.status",
+  "transNameFoea": "FOEA: Approve expenses",
+
   "asset_mant": "Asset management",
   "add_assets": "Adding fixed assets",
   "midify_assets": "Modifying fixed assets",
