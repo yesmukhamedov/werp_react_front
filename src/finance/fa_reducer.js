@@ -10,6 +10,11 @@ import {
   CLEAR_EXPENSEHKONTS_BY_BUKRS,
   FETCH_WORK_ACCOUNTABLE_LIST,
   CLEAR_WORK_ACCOUNTABLE_LIST,
+  FETCH_FOEA_OUTPUTTABLE,
+  FETCH_FOEA_DETAILTABLE,
+  CHANGE_FOEA_SEARCH_PARAMS,
+  CLEAR_FOEA,
+  CLEAR_FOEA_OUTPUTTABLE,
 } from './fa_action';
 
 const INITIAL_STATE = {
@@ -47,6 +52,16 @@ const INITIAL_STATE = {
   },
   dynamicObject: {},
   workAccountableList: [],
+  foea: {
+    searchParams: {
+      bukrs: '',
+      bldatFrom: '',
+      bldatTo: '',
+      selectedBranches: [],
+      selectedStatuses: [],
+      selectedTypes: [],
+    },
+  },
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -90,6 +105,37 @@ export default function(state = INITIAL_STATE, action) {
     case CLEAR_WORK_ACCOUNTABLE_LIST:
       return { ...state, workAccountableList: [] };
 
+    case FETCH_FOEA_OUTPUTTABLE:
+      return {
+        ...state,
+        foea: { ...state.foea, outputTable: action.data },
+      };
+
+    case FETCH_FOEA_DETAILTABLE:
+      return {
+        ...state,
+        foea: { ...state.foea, detailTable: action.data },
+      };
+
+    case CLEAR_FOEA:
+      return { ...state, foea: {} };
+
+    case CHANGE_FOEA_SEARCH_PARAMS:
+      return {
+        ...state,
+        foea: {
+          ...state.foea,
+          searchParams: { ...state.foea.searchParams, ...action.data },
+          detailTable: [],
+          outputTable: [],
+        },
+      };
+
+    case CLEAR_FOEA_OUTPUTTABLE:
+      return {
+        ...state,
+        foea: { ...state.foea, detailTable: [], outputTable: [] },
+      };
     default:
       return state;
   }

@@ -1,0 +1,16 @@
+.selectedRow {
+  color: #f75151;
+}
+
+.selectedRow:hover {
+  cursor: pointer;
+}
+
+.unSelectedRow:hover {
+  cursor: pointer;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
