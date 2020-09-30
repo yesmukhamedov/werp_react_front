@@ -669,7 +669,7 @@ const Srlsm = props => {
     } else {
       errors.push(errorTableText(5));
     }
-    //setTurnOnReactFetch(true);
+    setTurnOnReactFetch(true);
     setError(errors);
   };
   return (
@@ -1006,7 +1006,6 @@ const Srlsm = props => {
         filtered={filtered}
         onFilteredChange={filter => {
           setFiltered(filter);
-          setTurnOnReactFetch(true);
         }}
       />
     </Container>
