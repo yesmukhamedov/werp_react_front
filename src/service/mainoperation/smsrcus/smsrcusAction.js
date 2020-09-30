@@ -32,8 +32,9 @@ export const fetchSmsrcusList = param => {
 };
 
 export function clearSmsrcusList() {
-  const obj = {
-    type: CLEAR_SMSRCUS_LIST,
+  return function(dispatch) {
+    dispatch({
+      type: CLEAR_SMSRCUS_LIST,
+    });
   };
-  return obj;
 }
