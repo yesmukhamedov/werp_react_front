@@ -297,7 +297,7 @@ const Srlsm = props => {
           <input
             onKeyPress={event => {
               if (event.keyCode === 13 || event.which === 13) {
-                setTurnOnReactFetch(true);
+                //setTurnOnReactFetch(true);
                 onChange(event.target.value);
               }
             }}
@@ -324,7 +324,7 @@ const Srlsm = props => {
           <input
             onKeyPress={event => {
               if (event.keyCode === 13 || event.which === 13) {
-                setTurnOnReactFetch(true);
+                // setTurnOnReactFetch(true);
                 onChange(event.target.value);
               }
             }}
@@ -350,7 +350,7 @@ const Srlsm = props => {
           <input
             onKeyPress={event => {
               if (event.keyCode === 13 || event.which === 13) {
-                setTurnOnReactFetch(true);
+                // setTurnOnReactFetch(true);
                 onChange(event.target.value);
               }
             }}
@@ -498,7 +498,7 @@ const Srlsm = props => {
           <input
             onKeyPress={event => {
               if (event.keyCode === 13 || event.which === 13) {
-                setTurnOnReactFetch(true);
+                //setTurnOnReactFetch(true);
                 onChange(event.target.value);
               }
             }}
@@ -534,6 +534,8 @@ const Srlsm = props => {
   const finishColumns = data => {
     setColumns([...data]);
   };
+
+  const [serverSideParams, setServerSideParams] = useState({});
 
   const detailColumns = [
     {
@@ -659,17 +661,23 @@ const Srlsm = props => {
     const errors = [];
     setColumns([...initialColumns]);
     setFiltered([]);
+    const ssParam =
+      Object.keys(serverSideParams).length > 0
+        ? serverSideParams
+        : { page: 0, size: 20 };
     if (param.bukrs) {
-      props.fetchSrlsm({
-        ...param,
-        serviceStatusId: param.serviceStatusId.toString(),
-        page: 0,
-        size: 20,
-      });
+      props.fetchSrlsm(
+        {
+          ...param,
+          serviceStatusId: param.serviceStatusId.toString(),
+          ...ssParam,
+        },
+        () => setTurnOnReactFetch(true),
+      );
     } else {
       errors.push(errorTableText(5));
     }
-    setTurnOnReactFetch(true);
+    setTurnOnReactFetch(false);
     setError(errors);
   };
   return (
@@ -999,12 +1007,17 @@ const Srlsm = props => {
         pageSize={20}
         showPagination={true}
         requestData={params => {
-          props.fetchSrlsm({ ...param, ...params });
+          setServerSideParams({ ...params });
+          console.log('SS params', params);
+          props.fetchSrlsm({ ...param, ...params }, () =>
+            setTurnOnReactFetch(true),
+          );
         }}
         pages={srlsmTotalPages ? srlsmTotalPages : ''}
         turnOnReactFetch={turnOnReactFetch}
         filtered={filtered}
         onFilteredChange={filter => {
+          console.log('FILTER', filter);
           setFiltered(filter);
         }}
       />

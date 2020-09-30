@@ -12,11 +12,12 @@ export const FETCH_OPERATOR_LIST = 'FETCH_OPERATOR_LIST';
 // const language = localStorage.getItem('language');
 
 //SRLS список сервисов
-export const fetchSrlsm = param => {
+export const fetchSrlsm = (param, setFunc) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`srlsm`, param)
       .then(({ data }) => {
+        setFunc();
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SRLSM,
