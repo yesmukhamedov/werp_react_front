@@ -4,7 +4,6 @@ import {
   Segment,
   Grid,
   Form,
-  Dropdown,
   Table,
   Icon,
   Input,
@@ -23,6 +22,7 @@ import {
   f4FetchPhoneType,
   f4FetchMatnrListView,
   f4CreateServContract,
+  f4FetchBranchOptions,
 } from '../../../reference/f4/f4_action';
 
 import OutputErrors from '../../../general/error/outputErrors';
@@ -43,6 +43,7 @@ import {
   LinkToCustomerHrc03,
 } from '../../../utils/outlink';
 import DropdownClearable from '../../../utils/DropdownClearable';
+import { ItemMeta } from 'semantic-ui-react';
 
 function Smcc(props) {
   const emptyContract = {
@@ -168,7 +169,24 @@ function Smcc(props) {
     language,
     matnrListView,
     intl: { messages },
+    branchOptionsf4,
+    bukrsBranches = [],
   } = props;
+
+  console.log('bukrsBranches', bukrsBranches);
+
+  const branchOptionsByBukrs = bukrsBranches
+    .filter(item => item.business_area_id !== 5)
+    .filter(item => item.business_area_id !== 6)
+    .filter(item => item.business_area_id !== 9)
+    .map(item => {
+      return {
+        key: item.branch_id,
+        text: item.text45,
+        value: item.branch_id,
+      };
+    });
+  console.log('branchOptionsByBukrs', branchOptionsByBukrs);
 
   const lang = language.charAt(0).toUpperCase() + language.slice(1);
 
@@ -177,6 +195,8 @@ function Smcc(props) {
     props.f4FetchPhoneType();
     props.f4FetchConTypeList();
     props.f4FetchBranches();
+    props.f4FetchBranchOptions();
+
     return () => {
       props.f4ClearAnyObject('F4_CLEAR_CONTYPE_LIST');
       props.f4ClearAnyObject('F4_CLEAR_BRANCHES');
@@ -192,6 +212,9 @@ function Smcc(props) {
         bukrs: bukrsId,
         matnr,
       });
+    }
+    if (bukrsId) {
+      props.f4FetchBranchesByBukrs(bukrsId);
     }
   }, [contract.bukrsId, contract.serviceBranchId, contract.matnr]);
 
@@ -635,11 +658,7 @@ function Smcc(props) {
                           fluid
                           selection
                           search
-                          options={
-                            contract.bukrsId
-                              ? branchOptions[contract.bukrsId]
-                              : []
-                          }
+                          options={branchOptionsByBukrs}
                           value={contract.branchId}
                           onChange={(e, o) => onInputChange(o, 'branchId')}
                           handleClear={(e, value) =>
@@ -1089,6 +1108,8 @@ function mapStateToProps(state) {
     phoneListType: state.f4.phoneType.data,
     monthTerms: state.f4.monthTerms.data,
     matnrListView: state.f4.matnrListView.data,
+    branchOptionsf4: state.f4.branchOptions,
+    bukrsBranches: state.f4.bukrsBranches,
   };
 }
 
@@ -1102,4 +1123,5 @@ export default connect(mapStateToProps, {
   f4FetchMonthTerms,
   f4FetchMatnrListView,
   f4CreateServContract,
+  f4FetchBranchOptions,
 })(injectIntl(Smcc));
