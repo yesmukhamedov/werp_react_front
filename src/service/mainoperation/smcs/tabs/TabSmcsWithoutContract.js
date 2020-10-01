@@ -282,7 +282,24 @@ const TabSmcsWithoutContract = props => {
     // if(service.branchId){
     //   props.fetchWaersByBranch(service.branchId,()=>setService({...service, currencyId:}))
     // }
-  }, [service.bukrs, service.branchId, service.categoryId]);
+  }, [
+    service.bukrs,
+    service.branchId,
+    service.categoryId,
+    service.currencyName,
+  ]);
+
+  // useEffect(() => {
+  //   if (service.branchId && service.bukrs && service.currencyName) {
+  //     let param = {
+  //       brnch: service.branchId,
+  //       bukrs: service.bukrs,
+  //       waers: service.currencyName,
+  //     };
+
+  //     props.fetchPaymentOptions({ ...param }, 2);
+  //   }
+  // }, []);
 
   useEffect(() => {
     props.clearMatnrPriceSparePart();
@@ -1141,6 +1158,8 @@ const TabSmcsWithoutContract = props => {
         branchId: withoutRequestProps.branchId,
         categoryId: withoutRequestProps.categoryId,
         tovarId: withoutRequestProps.tovarId,
+        currencyId: withoutRequestProps.currencyId,
+        currencyName: withoutRequestProps.currencyName,
       });
     }
   }, [withoutRequestProps]);

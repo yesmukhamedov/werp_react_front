@@ -63,8 +63,6 @@ const Smsrcus = props => {
 
   const [tablePage, setTablePage] = useState(0);
 
-  console.log('tablePage', tablePage);
-
   let initialColumns = [
     {
       Header: messages['brnch'],
@@ -320,13 +318,9 @@ const Smsrcus = props => {
     setColumnsForTable([...initialColumns]);
     props.clearSmsrcusList();
     setServerSideParams({});
-    const ssParam =
-      Object.keys(serverSideParams).length > 0
-        ? serverSideParams
-        : { page: 0, size: 20 };
-    //console.log('handleApplySearch');
+
     setTablePage(0);
-    props.fetchSmsrcusList({ ...param, page: tablePage, size: 20 }, () =>
+    props.fetchSmsrcusList({ ...param, page: 0, size: 20 }, () =>
       setTurnOnReactFetch(true),
     );
   };

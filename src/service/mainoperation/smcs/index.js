@@ -24,7 +24,7 @@ const Smcs = props => {
           setActiveTab(0);
           setTovarSn(location.state.tovarSn);
         }
-        if (Object.keys(location.state).length == 4) {
+        if (Object.keys(location.state).length == 6) {
           setActiveTab(1);
           setWithoutRequestProps(location.state);
         }

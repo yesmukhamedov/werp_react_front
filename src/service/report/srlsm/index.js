@@ -87,8 +87,7 @@ const Srlsm = props => {
 
   const [modalDetails, setModalDetails] = useState(false);
   const [filtered, setFiltered] = useState([]);
-
-  console.log('filtered', filtered);
+  const [tablePage, setTablePage] = useState(0);
 
   const masterOptions = masterList.map((item, index) => {
     return {
@@ -661,6 +660,7 @@ const Srlsm = props => {
     const errors = [];
     setColumns([...initialColumns]);
     setFiltered([]);
+    setTablePage(0);
     const ssParam =
       Object.keys(serverSideParams).length > 0
         ? serverSideParams
@@ -670,7 +670,8 @@ const Srlsm = props => {
         {
           ...param,
           serviceStatusId: param.serviceStatusId.toString(),
-          ...ssParam,
+          page: tablePage,
+          size: 20,
         },
         () => setTurnOnReactFetch(true),
       );
@@ -1008,7 +1009,7 @@ const Srlsm = props => {
         showPagination={true}
         requestData={params => {
           setServerSideParams({ ...params });
-          console.log('SS params', params);
+          // console.log('SS params', params);
           props.fetchSrlsm({ ...param, ...params }, () =>
             setTurnOnReactFetch(true),
           );
@@ -1020,6 +1021,8 @@ const Srlsm = props => {
           console.log('FILTER', filter);
           setFiltered(filter);
         }}
+        page={tablePage}
+        onPageChange={pageIndex => setTablePage(pageIndex)}
       />
     </Container>
   );

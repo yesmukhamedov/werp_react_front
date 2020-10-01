@@ -184,6 +184,8 @@ const Smes = props => {
           branchId: service.branchId,
           categoryId: service.categoryId,
           tovarId: service.tovarId,
+          currencyId: service.currencyId,
+          currencyName: service.currencyName,
         }) //Без договора
       : props.history.push(`smcs`, {
           tovarSn: service.tovarSn,
