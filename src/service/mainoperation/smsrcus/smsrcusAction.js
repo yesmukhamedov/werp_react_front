@@ -13,11 +13,12 @@ export const CLEAR_SMSRCUS_LIST = 'CLEAR_SMSRCUS_LIST';
 // const language = localStorage.getItem('language');
 
 //План по замене картриджей
-export const fetchSmsrcusList = param => {
+export const fetchSmsrcusList = (param, setFunc) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`smsrcus/list`, param)
       .then(({ data }) => {
+        setFunc();
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SMSRCUS_LIST,

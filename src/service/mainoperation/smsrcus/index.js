@@ -20,7 +20,7 @@ import {
   stringYYYYMMDDToMoment,
   momentToStringDDMMYYYY,
 } from '../../../utils/helpers';
-import { LinkToDmsc03 } from '../../../utils/outlink';
+import { LinkToDmsc03, LinkToSmcuspor } from '../../../utils/outlink';
 
 import {
   f4fetchCategory,
@@ -57,13 +57,13 @@ const Smsrcus = props => {
     fullPhone: null,
   };
   const [serverSideParams, setServerSideParams] = useState({});
-  const [turnOnReactFetch, setTurnOnReactFetch] = useState(true);
+  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
 
   const [param, setParam] = useState({ ...emptyParam });
 
-  const [filtered, setFiltered] = useState([]);
-  console.log('FILTERED', filtered);
-  console.log('serverSideParams', serverSideParams);
+  const [tablePage, setTablePage] = useState(0);
+
+  console.log('tablePage', tablePage);
 
   let initialColumns = [
     {
@@ -82,7 +82,7 @@ const Smsrcus = props => {
       accessor: 'contractNumber',
       Cell: row => (
         <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
+          <LinkToDmsc03 snNum={row.value} />
         </div>
       ),
 
@@ -280,7 +280,7 @@ const Smsrcus = props => {
       Cell: original => {
         return (
           <div className="text-wrap" style={{ textAlign: 'center' }}>
-            <LinkToDmsc03 snNum={original.row.contractNumber} />
+            <LinkToSmcuspor contractNumber={original.row.contractNumber} />
           </div>
         );
       },
@@ -307,20 +307,6 @@ const Smsrcus = props => {
   }, []);
 
   useEffect(() => {
-    if (
-      param.contractNumber ||
-      param.customerFIO ||
-      param.customerIinBin ||
-      param.fullAddress ||
-      param.fullPhone ||
-      param.serviceBranchId ||
-      param.tovarSn
-    ) {
-      props.fetchSmsrcusList({ ...param, ...serverSideParams });
-    }
-  }, [serverSideParams]);
-
-  useEffect(() => {
     props.f4fetchCategory();
     props.f4FetchCountryList();
     props.f4FetchConStatusList();
@@ -331,10 +317,18 @@ const Smsrcus = props => {
 
   //Поиск
   const handleApplySearch = () => {
-    console.log('handleApplySearch');
-    props.fetchSmsrcusList({ ...param, ...serverSideParams });
-    setTurnOnReactFetch(true);
+    setColumnsForTable([...initialColumns]);
     props.clearSmsrcusList();
+    setServerSideParams({});
+    const ssParam =
+      Object.keys(serverSideParams).length > 0
+        ? serverSideParams
+        : { page: 0, size: 20 };
+    //console.log('handleApplySearch');
+    setTablePage(0);
+    props.fetchSmsrcusList({ ...param, page: tablePage, size: 20 }, () =>
+      setTurnOnReactFetch(true),
+    );
   };
 
   //Очистить фильтр
@@ -344,7 +338,7 @@ const Smsrcus = props => {
     props.clearSmsrcusList();
   };
 
-  console.log('PARAM', param);
+  const [filtered, setFiltered] = useState([]);
 
   return (
     <Container fluid className="containerMargin">
@@ -381,10 +375,15 @@ const Smsrcus = props => {
                 options={arrMain.length > 0 ? arrMain : []}
                 onChange={(o, { value }) => {
                   console.log('VALUE', value);
-                  setParam({ ...param, serviceBranchId: value.toString() });
+                  setParam({ ...param, serviceBranchId: value.join() });
                 }}
                 className="alignBottom"
                 multiple
+                value={
+                  param.serviceBranchId
+                    ? param.serviceBranchId.split(',').map(Number)
+                    : []
+                }
               />
             </Form.Field>
             <Form.Field>
@@ -484,9 +483,17 @@ const Smsrcus = props => {
         requestData={params => {
           //props.fetchSmsrcusList({ ...param, ...params });
           setServerSideParams({ ...params });
+          props.fetchSmsrcusList({ ...param, ...params }, () =>
+            setTurnOnReactFetch(true),
+          );
         }}
         filtered={filtered}
-        onFilteredChange={filtered => setFiltered(filtered)}
+        onFilteredChange={filtered => {
+          console.log('filtered', filtered);
+          // this.setState({ filtered });
+        }}
+        page={tablePage}
+        onPageChange={pageIndex => setTablePage(pageIndex)}
         pages={smsrcusData ? smsrcusData.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}
         style={{ height: 500 }}

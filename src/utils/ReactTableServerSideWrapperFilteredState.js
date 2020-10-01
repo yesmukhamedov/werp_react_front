@@ -38,6 +38,8 @@ const ReactTableServerSideWrapperFilteredState = props => {
     onRowClick = null,
     filtered = [],
     onFilteredChange = () => {},
+    page,
+    onPageChange = () => {},
   } = props;
 
   const fetchData = (params, instance) => {
@@ -84,6 +86,8 @@ const ReactTableServerSideWrapperFilteredState = props => {
   return (
     <div>
       <ReactTableFixedColumns
+        page={page}
+        onPageChange={onPageChange}
         manual // Forces table not to paginate or sort automatically, so we can handle it server-side
         data={data}
         pages={pages} // Display the total number of pages
