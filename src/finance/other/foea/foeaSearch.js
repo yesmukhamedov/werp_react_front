@@ -32,9 +32,9 @@ const FoeaSearch = props => {
     bukrs,
     bldatFrom,
     bldatTo,
-    selectedBranches,
-    selectedStatuses,
-    selectedTypes,
+    // selectedBranches,
+    // selectedStatuses,
+    // selectedTypes,
   } = props.searchParams;
 
   // var date = new Date(),
