@@ -645,6 +645,9 @@
   "blartTypeOR": "Other income",
   "blartTypeDP": "Acc. receivable receipt",
   "blartTypeG2": "Spare parts sales",
+  "blartTypeIF": "Fond Transfer Inside Company",
+  "blartTypeZK": "Fond Reciepts From Group Companies",
+  "blartTypeZD": "Fond Transfer to Group Companies",
   "reward": "Reward",
 
   "transNameFmcp": "FMCP: Receipt from Sales Contract",

@@ -19,16 +19,8 @@ import {
 } from '../../fa_action';
 
 import OutputErrors from '../../../general/error/outputErrors';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-import {
-  stringYYYYMMDDToMoment,
-  momentToStringYYYYMMDD,
-} from '../../../utils/helpers';
-import moment from 'moment';
 
-require('moment/locale/ru');
-require('moment/locale/tr');
+import moment from 'moment';
 
 const Foea = props => {
   const tcode = 'FOEA';
@@ -93,6 +85,24 @@ const Foea = props => {
         key: 'G2',
         value: 'G2',
         text: messages['blartTypeG2'],
+        isSelected: true,
+      },
+      {
+        key: 'IF',
+        value: 'IF',
+        text: messages['blartTypeIF'],
+        isSelected: true,
+      },
+      {
+        key: 'ZK',
+        value: 'ZK',
+        text: messages['blartTypeZK'],
+        isSelected: true,
+      },
+      {
+        key: 'ZD',
+        value: 'ZD',
+        text: messages['blartTypeZD'],
         isSelected: true,
       },
     ];
