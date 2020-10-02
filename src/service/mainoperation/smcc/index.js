@@ -173,12 +173,11 @@ function Smcc(props) {
     bukrsBranches = [],
   } = props;
 
-  console.log('bukrsBranches', bukrsBranches);
-
   const branchOptionsByBukrs = bukrsBranches
-    .filter(item => item.business_area_id !== 5)
-    .filter(item => item.business_area_id !== 6)
-    .filter(item => item.business_area_id !== 9)
+
+    .filter(item => item.type == 3)
+
+    .filter(item => item.tovarCategory == 2 || item.tovarCategory == 1)
     .map(item => {
       return {
         key: item.branch_id,
@@ -186,7 +185,6 @@ function Smcc(props) {
         value: item.branch_id,
       };
     });
-  console.log('branchOptionsByBukrs', branchOptionsByBukrs);
 
   const lang = language.charAt(0).toUpperCase() + language.slice(1);
 
