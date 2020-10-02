@@ -36,7 +36,7 @@ export default function(state = INITIAL_STATE, action) {
     case UPDATE_SMSETPLP:
       return {
         ...state,
-        updateSmsetplpData: { ...action.data },
+        updateSmsetplpData: { ...action.data.data },
       };
 
     default:

@@ -12,7 +12,6 @@ import { Container, Segment, Form, Dropdown } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import ModalColumns from './../../../utils/ModalColumns';
 import {
   stringYYYYMMDDToMoment,
   momentToStringYYYYMMDD,
@@ -20,12 +19,10 @@ import {
 } from '../../../utils/helpers';
 import '../../service.css';
 
-import TotalCountsTable from '../../../utils/TotalCountsTable';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 
 import DropdownClearable from '../../../utils/DropdownClearable';
 import OutputErrors from '../../../general/error/outputErrors';
-import { errorTableText } from '../../../utils/helpers';
 
 import Table from './Table';
 import EditModalSmsetplp from './EditModalSmsetplp';
@@ -40,8 +37,10 @@ const Smsetplp = props => {
     companyOptions = [],
     branchOptionsService,
     smsetplpList = [],
-    updateSmsetplpData = [],
+    updateSmsetplpData = {},
   } = props;
+
+  console.log('updateSmsetplpData', updateSmsetplpData);
 
   const initialState = {
     countryId: '',
@@ -154,28 +153,28 @@ const Smsetplp = props => {
         setEditModal(false);
         break;
       case 'changeFilterCurrentPlanSum':
-        console.log('changeFilterCurrentPlanSum', value);
-        setModalData({ ...modalData, filterCurrentPlanSum: value });
+        setModalData({ ...modalData, filterCurrentPlanSum: parseInt(value) });
         break;
       case 'changeFilterOverDuePlanSum':
-        console.log('changeFilterOverDuePlanSum', value);
-        setModalData({ ...modalData, filterOverDuePlanSum: value });
+        setModalData({ ...modalData, filterOverDuePlanSum: parseInt(value) });
         break;
       case 'changeFilterServicePacketPlanSum':
-        console.log('changeFilterServicePacketPlanSum', value);
-        setModalData({ ...modalData, filterServicePacketPlanSum: value });
+        setModalData({
+          ...modalData,
+          filterServicePacketPlanSum: parseInt(value),
+        });
         break;
       case 'changeFilterPartsPlanSum':
-        console.log('changeFilterPartsPlanSum', value);
-        setModalData({ ...modalData, filterPartsPlanSum: value });
+        setModalData({ ...modalData, filterPartsPlanSum: parseInt(value) });
         break;
       case 'changeFilterVCServicePacketPlanSum':
-        console.log('changeFilterVCServicePacketPlanSum', value);
-        setModalData({ ...modalData, filterVCServicePacketPlanSum: value });
+        setModalData({
+          ...modalData,
+          filterVCServicePacketPlanSum: parseInt(value),
+        });
         break;
       case 'changeFilterVCPartsPlanSum':
-        console.log('changeFilterVCPartsPlanSum', value);
-        setModalData({ ...modalData, filterVCPartsPlanSum: value });
+        setModalData({ ...modalData, filterVCPartsPlanSum: parseInt(value) });
         break;
       default:
         alert('НЕТ ТАКОЕ ЗНАЧЕНИЕ');
@@ -270,7 +269,7 @@ const Smsetplp = props => {
             />
           </Form.Field>
 
-          <Form.Field className="marginRight">
+          <Form.Field className="marginRight" required>
             <label>Дата</label>
 
             <DatePicker
