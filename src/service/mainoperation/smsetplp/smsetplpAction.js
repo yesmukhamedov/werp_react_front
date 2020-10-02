@@ -83,7 +83,7 @@ export const postSmsetplpForm = param => {
 };
 
 //SMSETPLP редактировать
-export const updateSmsetplp = param => {
+export const updateSmsetplp = (param, setFunc) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doPut(`smsetplp/update`, param)
@@ -93,6 +93,7 @@ export const updateSmsetplp = param => {
           type: UPDATE_SMSETPLP,
           data,
         });
+        setFunc();
       })
       .catch(error => {
         dispatch(modifyLoader(false));

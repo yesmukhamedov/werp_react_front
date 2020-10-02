@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffectб, createRef } from 'react';
 import ReactTableWrapperFixedColumns from '../../../utils/ReactTableWrapperFixedColumns';
 import { Popup, Button, Input } from 'semantic-ui-react';
 import '../../service.css';
+import { moneyFormat } from '../../../utils/helpers';
 
 const Table = props => {
   const { data = [], messages = {}, editStatus, onChangeTable } = props;
@@ -28,6 +29,12 @@ const Table = props => {
 
   const cellStyleGreen = {
     background: 'rgb(14, 230, 65)',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  };
+  const cellStylePinkSiren = {
+    background: 'rgb(239 142 142)',
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
@@ -109,7 +116,7 @@ const Table = props => {
           },
           Cell: row => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+              {moneyFormat(row.value)}
             </div>
           ),
         },
@@ -124,7 +131,7 @@ const Table = props => {
           },
           Cell: row => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+              {moneyFormat(row.value)}
             </div>
           ),
         },
@@ -140,28 +147,9 @@ const Table = props => {
 
           Cell: ({ original }) => (
             <div>
-              {original.editStatus === false ? (
-                <Input
-                  fluid
-                  size="mini"
-                  value={
-                    original.filterCurrentPlanSum
-                      ? original.filterCurrentPlanSum
-                      : ''
-                  }
-                  onChange={event =>
-                    onChangeTable(
-                      'changeFilterCurrentPlanSum',
-                      original,
-                      event.target.value,
-                    )
-                  }
-                />
-              ) : (
-                <div className="text-wrap" style={{ textAlign: 'center' }}>
-                  {original.filterCurrentPlanSum}
-                </div>
-              )}
+              <div className="text-wrap" style={{ textAlign: 'center' }}>
+                {moneyFormat(original.filterCurrentPlanSum)}
+              </div>
             </div>
           ),
         },
@@ -176,7 +164,7 @@ const Table = props => {
           },
           Cell: row => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+              {moneyFormat(row.value)}
             </div>
           ),
         },
@@ -191,7 +179,7 @@ const Table = props => {
           },
           Cell: row => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+              {moneyFormat(row.value)}
             </div>
           ),
         },
@@ -206,24 +194,9 @@ const Table = props => {
           },
           Cell: ({ original }) => (
             <div>
-              {original.editStatus === false ? (
-                <Input
-                  fluid
-                  size="mini"
-                  value={original.filterOverDuePlanSum}
-                  onChange={event =>
-                    onChangeTable(
-                      'changeFilterOverDuePlanSum',
-                      original,
-                      event.target.value,
-                    )
-                  }
-                />
-              ) : (
-                <div className="text-wrap" style={{ textAlign: 'center' }}>
-                  {original.filterOverDuePlanSum}
-                </div>
-              )}
+              <div className="text-wrap" style={{ textAlign: 'center' }}>
+                {moneyFormat(original.filterOverDuePlanSum)}
+              </div>
             </div>
           ),
         },
@@ -238,7 +211,7 @@ const Table = props => {
           },
           Cell: row => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+              {moneyFormat(row.value)}
             </div>
           ),
         },
@@ -248,12 +221,12 @@ const Table = props => {
           headerStyle: headerStyleGreen,
           getProps: (state, rowInfo, column) => {
             return {
-              style: mainCellStyle,
+              style: cellStylePinkSiren,
             };
           },
           Cell: row => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+              {moneyFormat(row.value)}
             </div>
           ),
         },
@@ -274,24 +247,9 @@ const Table = props => {
           },
           Cell: ({ original }) => (
             <div>
-              {original.editStatus === false ? (
-                <Input
-                  fluid
-                  size="mini"
-                  value={original.filterServicePacketPlanSum}
-                  onChange={event =>
-                    onChangeTable(
-                      'changeFilterServicePacketPlanSum',
-                      original,
-                      event.target.value,
-                    )
-                  }
-                />
-              ) : (
-                <div className="text-wrap" style={{ textAlign: 'center' }}>
-                  {original.filterServicePacketPlanSum}
-                </div>
-              )}
+              <div className="text-wrap" style={{ textAlign: 'center' }}>
+                {moneyFormat(original.filterServicePacketPlanSum)}
+              </div>
             </div>
           ),
         },
@@ -301,12 +259,12 @@ const Table = props => {
           accessor: 'filterServicePacketDonePlanSum',
           getProps: (state, rowInfo, column) => {
             return {
-              style: mainCellStyle,
+              style: cellStylePinkSiren,
             };
           },
           Cell: row => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+              {moneyFormat(row.value)}
             </div>
           ),
         },
@@ -327,24 +285,9 @@ const Table = props => {
           },
           Cell: ({ original }) => (
             <div>
-              {original.editStatus === false ? (
-                <Input
-                  fluid
-                  size="mini"
-                  value={original.filterPartsPlanSum}
-                  onChange={event =>
-                    onChangeTable(
-                      'changeFilterPartsPlanSum',
-                      original,
-                      event.target.value,
-                    )
-                  }
-                />
-              ) : (
-                <div className="text-wrap" style={{ textAlign: 'center' }}>
-                  {original.filterPartsPlanSum}
-                </div>
-              )}
+              <div className="text-wrap" style={{ textAlign: 'center' }}>
+                {moneyFormat(original.filterPartsPlanSum)}
+              </div>
             </div>
           ),
         },
@@ -354,12 +297,12 @@ const Table = props => {
           headerStyle: headerStyleGreen,
           getProps: (state, rowInfo, column) => {
             return {
-              style: mainCellStyle,
+              style: cellStylePinkSiren,
             };
           },
           Cell: row => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+              {moneyFormat(row.value)}
             </div>
           ),
         },
@@ -381,7 +324,7 @@ const Table = props => {
           },
           Cell: row => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+              {moneyFormat(row.value)}
             </div>
           ),
         },
@@ -396,7 +339,7 @@ const Table = props => {
           },
           Cell: row => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+              {moneyFormat(row.value)}
             </div>
           ),
         },
@@ -411,7 +354,7 @@ const Table = props => {
           },
           Cell: row => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+              {moneyFormat(row.value)}
             </div>
           ),
         },
@@ -426,7 +369,7 @@ const Table = props => {
           },
           Cell: row => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+              {moneyFormat(row.value)}
             </div>
           ),
         },
@@ -441,24 +384,9 @@ const Table = props => {
           },
           Cell: ({ original }) => (
             <div>
-              {original.editStatus === false ? (
-                <Input
-                  fluid
-                  size="mini"
-                  value={original.filterVCServicePacketPlanSum}
-                  onChange={event =>
-                    onChangeTable(
-                      'changeFilterVCServicePacketPlanSum',
-                      original,
-                      event.target.value,
-                    )
-                  }
-                />
-              ) : (
-                <div className="text-wrap" style={{ textAlign: 'center' }}>
-                  {original.filterVCServicePacketPlanSum}
-                </div>
-              )}
+              <div className="text-wrap" style={{ textAlign: 'center' }}>
+                {moneyFormat(original.filterVCServicePacketPlanSum)}
+              </div>
             </div>
           ),
         },
@@ -468,12 +396,12 @@ const Table = props => {
           headerStyle: headerStyleBlue,
           getProps: (state, rowInfo, column) => {
             return {
-              style: mainCellStyle,
+              style: cellStylePinkSiren,
             };
           },
           Cell: row => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+              {moneyFormat(row.value)}
             </div>
           ),
         },
@@ -494,24 +422,9 @@ const Table = props => {
           },
           Cell: ({ original }) => (
             <div>
-              {original.editStatus === false ? (
-                <Input
-                  fluid
-                  size="mini"
-                  value={original.filterVCPartsPlanSum}
-                  onChange={event =>
-                    onChangeTable(
-                      'changeFilterVCPartsPlanSum',
-                      original,
-                      event.target.value,
-                    )
-                  }
-                />
-              ) : (
-                <div className="text-wrap" style={{ textAlign: 'center' }}>
-                  {original.filterVCPartsPlanSum}
-                </div>
-              )}
+              <div className="text-wrap" style={{ textAlign: 'center' }}>
+                {moneyFormat(original.filterVCPartsPlanSum)}
+              </div>
             </div>
           ),
         },
@@ -521,12 +434,12 @@ const Table = props => {
           headerStyle: headerStyleBlue,
           getProps: (state, rowInfo, column) => {
             return {
-              style: mainCellStyle,
+              style: cellStylePinkSiren,
             };
           },
           Cell: row => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+              {moneyFormat(row.value)}
             </div>
           ),
         },
@@ -550,7 +463,7 @@ const Table = props => {
 
           Cell: ({ value }) => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {value}
+              {moneyFormat(value)}
             </div>
           ),
         },
@@ -560,12 +473,12 @@ const Table = props => {
           headerStyle: mainHeaderStyle,
           getProps: (state, rowInfo, column) => {
             return {
-              style: mainCellStyle,
+              style: cellStylePinkSiren,
             };
           },
           Cell: row => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+              {moneyFormat(row.value)}
             </div>
           ),
         },
@@ -581,7 +494,7 @@ const Table = props => {
 
           Cell: row => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+              {`${moneyFormat(row.value)} %`}
             </div>
           ),
         },
@@ -596,31 +509,17 @@ const Table = props => {
           Cell: ({ original }) => {
             return (
               <div className="text-wrap" style={{ textAlign: 'center' }}>
-                {original.editStatus == true ? (
-                  <Popup
-                    content="Редактировать"
-                    trigger={
-                      <Button
-                        circular
-                        icon="pencil"
-                        color="green"
-                        onClick={() => onChangeTable('editRowTable', original)}
-                      />
-                    }
-                  />
-                ) : (
-                  <Popup
-                    content="Сохранить"
-                    trigger={
-                      <Button
-                        circular
-                        icon="save"
-                        color="blue"
-                        onClick={() => onChangeTable('saveRowTable', original)}
-                      />
-                    }
-                  />
-                )}
+                <Popup
+                  content="Редактировать"
+                  trigger={
+                    <Button
+                      circular
+                      icon="pencil"
+                      color="green"
+                      onClick={() => onChangeTable('editRowTable', original)}
+                    />
+                  }
+                />
               </div>
             );
           },

@@ -28,6 +28,7 @@ import OutputErrors from '../../../general/error/outputErrors';
 import { errorTableText } from '../../../utils/helpers';
 
 import Table from './Table';
+import EditModalSmsetplp from './EditModalSmsetplp';
 import { Divider } from 'semantic-ui-react';
 require('moment/locale/ru');
 
@@ -39,6 +40,7 @@ const Smsetplp = props => {
     companyOptions = [],
     branchOptionsService,
     smsetplpList = [],
+    updateSmsetplpData = [],
   } = props;
 
   const initialState = {
@@ -52,9 +54,11 @@ const Smsetplp = props => {
     ...initialState,
   });
 
+  const [modalData, setModalData] = useState({});
+
   const [stateSmsetplpList, setStateSmsetplpList] = useState([]);
 
-  console.log('stateSmsetplpList', stateSmsetplpList);
+  const [editModal, setEditModal] = useState(false);
 
   useEffect(() => {
     if (smsetplpList.length !== 0) {
@@ -113,6 +117,71 @@ const Smsetplp = props => {
     }
   };
 
+  const onChangeTable = (fieldName, original) => {
+    switch (fieldName) {
+      case 'editRowTable':
+        console.log('editRowTable', original);
+        setModalData(original);
+        setEditModal(true);
+        break;
+
+      case '':
+        break;
+      default:
+        alert('НЕТ ТАКОЕ ЗНАЧЕНИЕ');
+    }
+  };
+
+  const onChangeEditModal = (fieldName, value) => {
+    switch (fieldName) {
+      case 'onCloseModal':
+        console.log('onCloseModal');
+        setEditModal(false);
+        break;
+      case 'onSaveModal':
+        console.log('onSaveModal', modalData);
+        props.updateSmsetplp(
+          {
+            ...modalData,
+          },
+          () =>
+            setStateSmsetplpList(
+              stateSmsetplpList.map(item =>
+                item.id == modalData.id ? modalData : item,
+              ),
+            ),
+        );
+        setEditModal(false);
+        break;
+      case 'changeFilterCurrentPlanSum':
+        console.log('changeFilterCurrentPlanSum', value);
+        setModalData({ ...modalData, filterCurrentPlanSum: value });
+        break;
+      case 'changeFilterOverDuePlanSum':
+        console.log('changeFilterOverDuePlanSum', value);
+        setModalData({ ...modalData, filterOverDuePlanSum: value });
+        break;
+      case 'changeFilterServicePacketPlanSum':
+        console.log('changeFilterServicePacketPlanSum', value);
+        setModalData({ ...modalData, filterServicePacketPlanSum: value });
+        break;
+      case 'changeFilterPartsPlanSum':
+        console.log('changeFilterPartsPlanSum', value);
+        setModalData({ ...modalData, filterPartsPlanSum: value });
+        break;
+      case 'changeFilterVCServicePacketPlanSum':
+        console.log('changeFilterVCServicePacketPlanSum', value);
+        setModalData({ ...modalData, filterVCServicePacketPlanSum: value });
+        break;
+      case 'changeFilterVCPartsPlanSum':
+        console.log('changeFilterVCPartsPlanSum', value);
+        setModalData({ ...modalData, filterVCPartsPlanSum: value });
+        break;
+      default:
+        alert('НЕТ ТАКОЕ ЗНАЧЕНИЕ');
+    }
+  };
+
   //Применить
   const handleClickApply = () => {
     if (param.bukrs) {
@@ -134,142 +203,6 @@ const Smsetplp = props => {
     }
   };
 
-  const onChangeTable = (fieldName, original, value) => {
-    switch (fieldName) {
-      case 'editRowTable':
-        setStateSmsetplpList(
-          stateSmsetplpList.map(item =>
-            item.id == original.id ? { ...item, editStatus: false } : item,
-          ),
-        );
-
-        break;
-      case 'saveRowTable':
-        setStateSmsetplpList(
-          stateSmsetplpList.map(item =>
-            item.id == original.id ? { ...item, editStatus: true } : item,
-          ),
-        );
-
-        props.updateSmsetplp({
-          branchId: original.branchId,
-          branchName: original.branchName,
-          bukrs: original.bukrs,
-          bukrsName: original.bukrsName,
-          countryId: original.countryId,
-          countryName: original.countryName,
-          dateAt: original.dateAt,
-          donePlanPercent: original.donePlanPercent,
-          filterCurrentDatabasePlanCount:
-            original.filterCurrentDatabasePlanCount,
-          filterCurrentDatabasePlanSum: original.filterCurrentDatabasePlanSum,
-          filterCurrentPlanSum: original.filterCurrentPlanSum,
-          filterDonePlanSum: original.filterDonePlanSum,
-          filterOverDueDatabasePlanCount:
-            original.filterOverDueDatabasePlanCount,
-          filterOverDueDatabasePlanSum: original.filterOverDueDatabasePlanSum,
-          filterOverDuePlanSum: original.filterOverDuePlanSum,
-          filterPartsDonePlanSum: original.filterPartsDonePlanSum,
-          filterPartsPlanSum: original.filterPartsPlanSum,
-          filterServicePacketDonePlanSum:
-            original.filterServicePacketDonePlanSum,
-          filterServicePacketPlanSum: original.filterServicePacketPlanSum,
-          filterTotalPlanSum: original.filterTotalPlanSum,
-          filterVCPartsDonePlanSum: original.filterVCPartsDonePlanSum,
-          filterVCPartsPlanSum: original.filterVCPartsPlanSum,
-          filterVCServicePacketCurrentDatabasePlanCount:
-            original.filterVCServicePacketCurrentDatabasePlanCount,
-          filterVCServicePacketCurrentDatabasePlanSum:
-            original.filterVCServicePacketCurrentDatabasePlanSum,
-          filterVCServicePacketDonePlanSum:
-            original.filterVCServicePacketDonePlanSum,
-          filterVCServicePacketOverDueDatabasePlanCount:
-            original.filterVCServicePacketOverDueDatabasePlanCount,
-          filterVCServicePacketOverDueDatabasePlanSum:
-            original.filterVCServicePacketOverDueDatabasePlanSum,
-          filterVCServicePacketPlanSum: original.filterVCServicePacketPlanSum,
-          id: original.id,
-          totalDonePlanSum: original.totalDonePlanSum,
-          totalPlanSum: original.totalPlanSum,
-        });
-        break;
-
-      //Редактирование Текущий план
-      case 'changeFilterCurrentPlanSum':
-        console.log('changeFilterCurrentPlanSum', value);
-        setStateSmsetplpList(
-          stateSmsetplpList.map(item =>
-            item.id == original.id
-              ? { ...item, filterCurrentPlanSum: parseInt(value) }
-              : item,
-          ),
-        );
-        break;
-
-      //Редактирование Просроченный план по количеству
-      case 'changeFilterOverDuePlanSum':
-        console.log('changeFilterOverDuePlanSum', value);
-        setStateSmsetplpList(
-          stateSmsetplpList.map(item =>
-            item.id == original.id
-              ? { ...item, filterOverDuePlanSum: parseInt(value) }
-              : item,
-          ),
-        );
-        break;
-
-      //Редактирование Сервис пакет(Система по очистке воды) План
-      case 'changeFilterServicePacketPlanSum':
-        console.log('changeFilterServicePacketPlanSum', value);
-        setStateSmsetplpList(
-          stateSmsetplpList.map(item =>
-            item.id == original.id
-              ? { ...item, filterServicePacketPlanSum: parseInt(value) }
-              : item,
-          ),
-        );
-        break;
-
-      //Редактирование Продажа запчастей(Система по очистке воды) План
-      case 'changeFilterPartsPlanSum':
-        console.log('changeFilterPartsPlanSum', value);
-        setStateSmsetplpList(
-          stateSmsetplpList.map(item =>
-            item.id == original.id
-              ? { ...item, filterPartsPlanSum: parseInt(value) }
-              : item,
-          ),
-        );
-        break;
-
-      //Редактирование Сервис пакет(Уборочная система) План
-      case 'changeFilterVCServicePacketPlanSum':
-        console.log('changeFilterVCServicePacketPlanSum', value);
-        setStateSmsetplpList(
-          stateSmsetplpList.map(item =>
-            item.id == original.id
-              ? { ...item, filterVCServicePacketPlanSum: parseInt(value) }
-              : item,
-          ),
-        );
-        break;
-      //Редактирование Продажа запчастей(Уборочная система) План
-      case 'changeFilterVCPartsPlanSum':
-        console.log('changeFilterVCPartsPlanSum', value);
-        setStateSmsetplpList(
-          stateSmsetplpList.map(item =>
-            item.id == original.id
-              ? { ...item, filterVCPartsPlanSum: parseInt(value) }
-              : item,
-          ),
-        );
-        break;
-
-      default:
-        alert('Нет такое значение');
-    }
-  };
-
   return (
     <Container
       fluid
@@ -283,6 +216,12 @@ const Smsetplp = props => {
       <Segment>
         <h3>Настройка планов и процентов</h3>
       </Segment>
+
+      <EditModalSmsetplp
+        data={modalData}
+        open={editModal}
+        onChangeEditModal={onChangeEditModal}
+      />
 
       <Form>
         <Form.Group widths="equal">
@@ -392,6 +331,7 @@ function mapStateToProps(state) {
     companyOptions: state.userInfo.companyOptions,
     branchOptionsService: state.userInfo.branchOptionsService,
     smsetplpList: state.smsetplpReducer.smsetplpList,
+    updateSmsetplpData: state.smsetplpReducer.updateSmsetplpData,
   };
 }
 
