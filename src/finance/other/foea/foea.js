@@ -179,6 +179,7 @@ const Foea = props => {
       bldatTo,
       selectedStatuses,
       selectedTypes,
+      selectedBranches,
     } = newParams;
 
     const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
@@ -186,6 +187,14 @@ const Foea = props => {
     if (bukrs === null || bukrs === undefined || !bukrs) {
       errors.push(errorTable[`5${language}`]);
     }
+    if (
+      selectedBranches === null ||
+      selectedBranches === undefined ||
+      selectedBranches.length === 0
+    ) {
+      errors.push(errorTable[`7${language}`]);
+    }
+
     if (bldatFrom === null || bldatFrom === undefined || !bldatFrom) {
       errors.push(errorTable[`13${language}`]);
     }
@@ -329,7 +338,7 @@ const Foea = props => {
 };
 
 function mapStateToProps(state) {
-  // console.log(state, 'state');
+  // console.log(state.fa.foea.searchParams, 'state');
 
   return {
     language: state.locales.lang,
