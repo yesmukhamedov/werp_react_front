@@ -10,6 +10,7 @@ const DropdownClearable = props => {
     placeholder,
     value,
     disabled,
+    allSelect = true,
   } = props;
   const iconStyle = {
     position: 'absolute',
@@ -45,7 +46,7 @@ const DropdownClearable = props => {
         error={error}
         search
         selection
-        options={optionsArr}
+        options={allSelect == true ? optionsArr : options}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
