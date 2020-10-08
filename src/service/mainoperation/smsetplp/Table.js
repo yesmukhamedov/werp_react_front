@@ -97,7 +97,9 @@ const Table = props => {
   );
 
   const totalDonePlanPercent =
-    Math.round((totalTotalDonePlanSum / totalTotalPlanSum) * 10000) / 100;
+    totalTotalDonePlanSum == 0 || totalTotalPlanSum == 0
+      ? 0
+      : Math.round((totalTotalDonePlanSum / totalTotalPlanSum) * 10000) / 100;
 
   const headerStyleGreen = {
     whiteSpace: 'pre-wrap',
@@ -397,7 +399,7 @@ const Table = props => {
           accessor: 'filterServicePacketDonePlanSum',
           Footer: () => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {`${moneyFormat(totalFilterPartsPlanSum)}`}
+              {`${moneyFormat(totalFilterServicePacketDonePlanSum)}`}
             </div>
           ),
           getProps: (state, rowInfo, column) => {
