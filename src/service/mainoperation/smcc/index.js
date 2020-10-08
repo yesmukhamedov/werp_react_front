@@ -638,6 +638,7 @@ function Smcc(props) {
                           handleClear={(e, value) =>
                             onInputChange(value, 'clearBukrsId')
                           }
+                          allSelect={false}
                         />
                       </Table.Cell>
                     </Table.Row>
@@ -658,6 +659,7 @@ function Smcc(props) {
                           search
                           options={branchOptionsByBukrs}
                           value={contract.branchId}
+                          allSelect={false}
                           onChange={(e, o) => onInputChange(o, 'branchId')}
                           handleClear={(e, value) =>
                             onInputChange(value, 'clearBranchId')
@@ -681,6 +683,7 @@ function Smcc(props) {
                           fluid
                           selection
                           search
+                          allSelect={false}
                           options={
                             contract.branchId && contract.bukrsId !== 3000
                               ? branchService[contract.bukrsId]
@@ -712,6 +715,7 @@ function Smcc(props) {
                           fluid
                           search
                           selection
+                          allSelect={false}
                           options={contractTypeOpts ? contractTypeOpts : []}
                           value={contract.contractTypeId}
                           onChange={(e, o) =>

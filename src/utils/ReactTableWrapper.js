@@ -27,6 +27,7 @@ const ReactTableWrapper = props => {
     ofText = messages['ofText'],
     onFilterChangeReactTable = null,
     onRowClick = null,
+    loading = false,
   } = props;
 
   return (
@@ -35,6 +36,7 @@ const ReactTableWrapper = props => {
         filterable={filterable}
         ref={refToChild}
         data={data}
+        loading={loading}
         columns={columns}
         pageSize={pageSize}
         defaultPageSize={defaultPageSize}
