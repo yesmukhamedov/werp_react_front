@@ -11,6 +11,7 @@ const Table = props => {
     (total, item) => total + item.filterCurrentDatabasePlanCount,
     0,
   );
+
   const totalFilterCurrentDatabasePlanSum = data.reduce(
     (total, item) => total + item.filterCurrentDatabasePlanSum,
     0,
@@ -407,9 +408,9 @@ const Table = props => {
               style: cellStylePinkSiren,
             };
           },
-          Cell: row => (
+          Cell: ({ original }) => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {moneyFormat(row.value)}
+              {moneyFormat(original.filterServicePacketDonePlanSum)}
             </div>
           ),
         },
@@ -455,9 +456,9 @@ const Table = props => {
               style: cellStylePinkSiren,
             };
           },
-          Cell: row => (
+          Cell: ({ original }) => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {moneyFormat(row.value)}
+              {moneyFormat(original.filterPartsDonePlanSum)}
             </div>
           ),
         },
@@ -562,7 +563,7 @@ const Table = props => {
           headerStyle: headerStyleBlue,
           Footer: () => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {`${moneyFormat()}`}
+              {`${moneyFormat(totalFilterVCServicePacketPlanSum)}`}
             </div>
           ),
           getProps: (state, rowInfo, column) => {
