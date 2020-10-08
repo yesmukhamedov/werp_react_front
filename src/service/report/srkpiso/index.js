@@ -10,26 +10,32 @@ import {
   Dropdown,
   Modal,
   Button,
+  Popup,
 } from 'semantic-ui-react';
 import {
-  f4FetchBranches,
   f4FetchCountryList,
   f4FetchConTypeList,
+  f4fetchCategory,
 } from '../../../reference/f4/f4_action';
-import { fetchSrkpiso } from './srkpisoAction';
+import {
+  fetchSrkpiso,
+  fetchSrkpisoDetal,
+  clearSrkpisoDetal,
+  clearSrkpiso,
+} from './srkpisoAction';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
 import {
   stringYYYYMMDDToMoment,
   momentToStringYYYYMMDD,
 } from '../../../utils/helpers';
-import matchSorter from 'match-sorter';
 import ModalColumns from './../../../utils/ModalColumns';
 import '../../service.css';
 
 import DropdownClearable from '../../../utils/DropdownClearable';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 const Srkpiso = props => {
   const {
@@ -37,28 +43,44 @@ const Srkpiso = props => {
     language,
     companyOptions = [],
     countryList = [],
-    branches = [],
     productList = [],
     branchOptionsService,
     srkpisoData = [],
+    srkpisoDetal = [],
+    category = [],
   } = props;
 
   const emptyParam = {
-    countryId: '',
-    bukrs: '',
-    branchId: '',
-    product: '',
-    dateAt: '',
-    dateTo: '',
+    countryId: null,
+    bukrs: null,
+    branchId: null,
+    categoryId: null,
+    product: null,
+    dateAt: null,
+    dateTo: null,
   };
   const [param, setParam] = useState({ ...emptyParam });
-
   const [modalDetalOpen, setModalDetalOpen] = useState(false);
+  const [loaderTableDetal, setLoaderTableDetal] = useState(false);
 
-  const toDetalization = original => {
-    console.log('row original', original);
+  const toDetalization = (original, confId) => {
+    props.clearSrkpisoDetal();
+
     setModalDetalOpen(true);
-    // window.location = `srkpisod?serviceNumber=${original}`;
+
+    let paramDetal = {
+      branchId: original.branchId,
+      bukrs: original.bukrs,
+      categoryId: original.categoryId,
+      configurationId: confId,
+      countryId: original.countryId,
+      operatorId: original.operatorId,
+      productId: original.productId,
+    };
+    setLoaderTableDetal(true);
+    props.fetchSrkpisoDetal({ ...paramDetal }, () =>
+      setLoaderTableDetal(false),
+    );
   };
 
   const initialColumns = [
@@ -77,8 +99,7 @@ const Srkpiso = props => {
     {
       Header: () => <div className="text-wrap">{messages['brnch']}</div>,
       accessor: 'branchName',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['recommenderBranchName'] }),
+      filterable: false,
       checked: true,
       Cell: row => (
         <div className="text-wrap" style={{ textAlign: 'center' }}>
@@ -89,8 +110,7 @@ const Srkpiso = props => {
     {
       Header: () => <div className="text-wrap">Оператор</div>,
       accessor: 'operatorName',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['recommenderName'] }),
+      filterable: false,
       checked: true,
       width: 250,
       Cell: row => (
@@ -115,13 +135,19 @@ const Srkpiso = props => {
               style={{ textAlign: 'center' }}
             >
               <p>{row.value}</p>
-
-              <Icon
-                color="teal"
-                name="search"
-                onClick={() => {
-                  toDetalization(row.original);
-                }}
+              <Popup
+                content="Детализация"
+                trigger={
+                  <Button
+                    circular
+                    color="green"
+                    icon="search"
+                    size="mini"
+                    onClick={() => {
+                      toDetalization(row.original, 1);
+                    }}
+                  />
+                }
               />
             </div>
           ),
@@ -132,8 +158,25 @@ const Srkpiso = props => {
           filterable: false,
           checked: true,
           Cell: row => (
-            <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+            <div
+              className="flexJustifySpaceBeetween"
+              style={{ textAlign: 'center' }}
+            >
+              <p>{row.value}</p>
+              <Popup
+                content="Детализация"
+                trigger={
+                  <Button
+                    circular
+                    color="green"
+                    icon="search"
+                    size="mini"
+                    onClick={() => {
+                      toDetalization(row.original, 2);
+                    }}
+                  />
+                }
+              />
             </div>
           ),
         },
@@ -143,8 +186,25 @@ const Srkpiso = props => {
           filterable: false,
           checked: true,
           Cell: row => (
-            <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+            <div
+              className="flexJustifySpaceBeetween"
+              style={{ textAlign: 'center' }}
+            >
+              <p>{row.value}</p>
+              <Popup
+                content="Детализация"
+                trigger={
+                  <Button
+                    circular
+                    color="green"
+                    icon="search"
+                    size="mini"
+                    onClick={() => {
+                      toDetalization(row.original, 3);
+                    }}
+                  />
+                }
+              />
             </div>
           ),
         },
@@ -154,8 +214,25 @@ const Srkpiso = props => {
           filterable: false,
           checked: true,
           Cell: row => (
-            <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+            <div
+              className="flexJustifySpaceBeetween"
+              style={{ textAlign: 'center' }}
+            >
+              <p>{row.value}</p>
+              <Popup
+                content="Детализация"
+                trigger={
+                  <Button
+                    circular
+                    color="green"
+                    icon="search"
+                    size="mini"
+                    onClick={() => {
+                      toDetalization(row.original, 4);
+                    }}
+                  />
+                }
+              />
             </div>
           ),
         },
@@ -175,8 +252,25 @@ const Srkpiso = props => {
           filterable: false,
           checked: true,
           Cell: row => (
-            <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+            <div
+              className="flexJustifySpaceBeetween"
+              style={{ textAlign: 'center' }}
+            >
+              <p>{row.value}</p>
+              <Popup
+                content="Детализация"
+                trigger={
+                  <Button
+                    circular
+                    color="green"
+                    icon="search"
+                    size="mini"
+                    onClick={() => {
+                      toDetalization(row.original, 5);
+                    }}
+                  />
+                }
+              />
             </div>
           ),
         },
@@ -186,8 +280,25 @@ const Srkpiso = props => {
           filterable: false,
           checked: true,
           Cell: row => (
-            <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+            <div
+              className="flexJustifySpaceBeetween"
+              style={{ textAlign: 'center' }}
+            >
+              <p>{row.value}</p>
+              <Popup
+                content="Детализация"
+                trigger={
+                  <Button
+                    circular
+                    color="green"
+                    icon="search"
+                    size="mini"
+                    onClick={() => {
+                      toDetalization(row.original, 6);
+                    }}
+                  />
+                }
+              />
             </div>
           ),
         },
@@ -197,8 +308,25 @@ const Srkpiso = props => {
           filterable: false,
           checked: true,
           Cell: row => (
-            <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+            <div
+              className="flexJustifySpaceBeetween"
+              style={{ textAlign: 'center' }}
+            >
+              <p>{row.value}</p>
+              <Popup
+                content="Детализация"
+                trigger={
+                  <Button
+                    circular
+                    color="green"
+                    icon="search"
+                    size="mini"
+                    onClick={() => {
+                      toDetalization(row.original, 7);
+                    }}
+                  />
+                }
+              />
             </div>
           ),
         },
@@ -208,8 +336,25 @@ const Srkpiso = props => {
           filterable: false,
           checked: true,
           Cell: row => (
-            <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {row.value}
+            <div
+              className="flexJustifySpaceBeetween"
+              style={{ textAlign: 'center' }}
+            >
+              <p>{row.value}</p>
+              <Popup
+                content="Детализация"
+                trigger={
+                  <Button
+                    circular
+                    color="green"
+                    icon="search"
+                    size="mini"
+                    onClick={() => {
+                      toDetalization(row.original, 8);
+                    }}
+                  />
+                }
+              />
             </div>
           ),
         },
@@ -253,6 +398,7 @@ const Srkpiso = props => {
   useEffect(() => {
     props.f4FetchCountryList();
     props.f4FetchConTypeList();
+    props.f4fetchCategory();
   }, []);
 
   const countryOptions = countryList.map(item => {
@@ -260,6 +406,14 @@ const Srkpiso = props => {
       key: item.countryId,
       text: item.country,
       value: item.countryId,
+    };
+  });
+
+  const tovarCategoryOptions = category.map(item => {
+    return {
+      key: item.id,
+      text: item.name,
+      value: item.id,
     };
   });
 
@@ -288,12 +442,18 @@ const Srkpiso = props => {
         setParam({ ...param, countryId: value });
         break;
       case 'bukrs':
-        setParam({ ...param, bukrs: value, branchId: '' });
+        setParam({ ...param, bukrs: value, branchId: null });
         break;
       case 'branchId':
         setParam({
           ...param,
           branchId: value.length > 0 ? value.join() : null,
+        });
+        break;
+      case 'categoryId':
+        setParam({
+          ...param,
+          categoryId: value.length > 0 ? value.join() : null,
         });
         break;
       case 'product':
@@ -306,196 +466,174 @@ const Srkpiso = props => {
   };
 
   const handleClickApply = () => {
-    props.fetchSrkpiso({ ...param });
+    if (param.bukrs && param.categoryId) {
+      props.clearSrkpiso();
+      props.clearSrkpisoDetal();
+      props.fetchSrkpiso({ ...param });
+    } else {
+      alert('Выберите все обязательные поля');
+    }
   };
 
   const [columns, setColumns] = useState([...initialColumns]);
+
   const detalColumns = [
     {
       Header: '#',
-      accessor: 'recommenderId',
-      filterable: false,
+      accessor: 'id',
       checked: true,
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      width: 80,
+      Cell: row => <div>{row.value}</div>,
+      filterable: false,
+      width: 55,
     },
     {
-      Header: () => <div className="text-wrap"> {messages['brnch']}</div>,
+      Header: messages['brnch'],
       accessor: 'branchName',
-      filterMethod: (filter, rows) =>
-        matchSorter(rows, filter.value, { keys: ['recommenderBranchName'] }),
       checked: true,
       filterable: false,
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
+      Cell: row => <div>{row.value}</div>,
     },
     {
-      Header: () => <div className="text-wrap">CN</div>,
+      Header: 'CN',
       accessor: 'contractNumber',
       checked: true,
+      Cell: row => <div>{row.value}</div>,
       filterable: false,
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
+      width: 60,
     },
-
     {
-      Header: () => <div className="text-wrap">Заводской номер</div>,
+      Header: messages['factory_number'],
+      headerStyle: { whiteSpace: 'pre-wrap' },
       accessor: 'tovarSn',
       checked: true,
+      Cell: row => <div>{row.value}</div>,
       filterable: false,
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
     },
     {
-      Header: 'Дата',
-      accessor: 'date',
+      Header: messages['Crm.DateOfSale'],
+      headerStyle: { whiteSpace: 'pre-wrap' },
+      accessor: 'contractDate',
       checked: true,
+      Cell: row => <div>{row.value}</div>,
       filterable: false,
-      width: 250,
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
+      width: 100,
     },
     {
-      Header: 'Адрес',
-      accessor: 'currentPlanPercent',
-      filterable: false,
+      Header: messages['fio'],
+      headerStyle: { whiteSpace: 'pre-wrap' },
+      accessor: 'customerFIO',
       checked: true,
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
+      Cell: row => <div>{row.value}</div>,
+      filterable: false,
     },
     {
-      Header: 'Телефон',
-      accessor: 'currentRescheduledPlan',
-      filterable: false,
+      Header: messages['customer_key'],
+      accessor: 'customerIinBin',
       checked: true,
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
+      Cell: row => <div>{row.value}</div>,
+      filterable: false,
     },
     {
-      Header: () => <div className="text-wrap">ФИО мастер</div>,
-      accessor: 'currentCanceledPlan',
-      filterable: false,
+      Header: messages['address'],
+      headerStyle: { whiteSpace: 'pre-wrap' },
+      accessor: 'address',
       checked: true,
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
+      Cell: row => <div>{row.value}</div>,
+
+      filterable: false,
+    },
+    {
+      Header: messages['Dealer.Fullname'],
+      headerStyle: { whiteSpace: 'pre-wrap' },
+      accessor: 'dealerFIO',
+      checked: true,
+      Cell: row => <div>{row.value}</div>,
+
+      filterable: false,
     },
     {
       Header: 'F1',
       accessor: 'f1',
-      filterable: false,
       checked: true,
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      width: 70,
+      Cell: row => <div>{row.value}</div>,
+      filterable: false,
+      width: 40,
     },
     {
       Header: 'F2',
       accessor: 'f2',
-      filterable: false,
       checked: true,
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      width: 70,
+      Cell: row => <div>{row.value}</div>,
+      filterable: false,
+      width: 40,
     },
     {
       Header: 'F3',
       accessor: 'f3',
-      filterable: false,
       checked: true,
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      width: 70,
+      Cell: row => <div>{row.value}</div>,
+      filterable: false,
+      width: 40,
     },
     {
       Header: 'F4',
       accessor: 'f4',
-      filterable: false,
       checked: true,
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      width: 70,
+      Cell: row => <div>{row.value}</div>,
+      filterable: false,
+      width: 40,
     },
     {
       Header: 'F5',
       accessor: 'f5',
-      filterable: false,
       checked: true,
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      width: 70,
+      Cell: row => <div>{row.value}</div>,
+      filterable: false,
+      width: 40,
     },
     {
-      Header: 'Категория',
-      accessor: 'overDuePlanPercent',
-      filterable: false,
+      Header: messages['category'],
+      accessor: 'crmCategoryName',
       checked: true,
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
+      Cell: row => <div>{row.value}</div>,
+      filterable: false,
     },
     {
-      Header: 'Заявка',
-      accessor: 'overDueRescheduledPlan',
-      filterable: false,
+      Header: messages['fin_status'],
+      accessor: 'contractStatusName',
       checked: true,
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
+      Cell: row => <div>{row.value}</div>,
+      filterable: false,
     },
     {
-      Header: 'Просмотр',
-      accessor: 'overDueCanceledPlan',
-      filterable: false,
+      Header: messages['plan_status'],
+      accessor: 'planStatusName',
       checked: true,
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
+      Cell: row => <div>{row.value}</div>,
+      filterable: false,
+    },
+    {
+      accessor: '16',
+      filterable: false,
+
+      Cell: original => {
+        const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}`;
+        return (
+          <div style={{ textAlign: 'center' }}>
+            <Popup
+              content="История клиента"
+              trigger={
+                <Link to={url} target="_blank">
+                  <Icon circular name="history" color="teal" />
+                </Link>
+              }
+            />
+          </div>
+        );
+      },
+      checked: true,
+      width: 50,
+      fixed: 'right',
     },
   ];
 
@@ -513,11 +651,12 @@ const Srkpiso = props => {
         paddingRight: '2em',
       }}
     >
-      <Segment>
+      <Segment className="spaceBetween">
         <h3>KPI Сервис операторов</h3>
       </Segment>
 
       <Modal
+        closeIcon
         onClose={() => setModalDetalOpen(false)}
         open={modalDetalOpen}
         size="fullscreen"
@@ -525,15 +664,19 @@ const Srkpiso = props => {
         <Modal.Header>KPI сервис операторов(Детализация) </Modal.Header>
         <Modal.Content>
           <ReactTableWrapper
+            data={srkpisoDetal ? srkpisoDetal : []}
+            loading={loaderTableDetal}
             filterable={true}
-            defaultPageSize={5}
-            pageSize={5}
+            defaultPageSize={10}
+            pageSize={10}
             showPagination={true}
             columns={detalColumns}
           />
         </Modal.Content>
         <Modal.Actions>
-          <Button onClick={() => setModalDetalOpen(false)}>Ок</Button>
+          <Button color="blue" onClick={() => setModalDetalOpen(false)}>
+            Ok
+          </Button>
         </Modal.Actions>
       </Modal>
       <Form>
@@ -545,17 +688,17 @@ const Srkpiso = props => {
               options={countryOptions}
               value={param.countryId ? param.countryId : ''}
               onChange={(e, { value }) => onInputChange(value, 'countryId')}
-              handleClear={() => setParam({ ...param, countryId: '' })}
+              handleClear={() => setParam({ ...param, countryId: null })}
             />
           </Form.Field>
-          <Form.Field>
+          <Form.Field required>
             <label>Компания</label>
             <DropdownClearable
               placeholder="Все"
               options={companyOptions}
               value={param.bukrs ? param.bukrs : ''}
               onChange={(e, { value }) => onInputChange(value, 'bukrs')}
-              handleClear={() => setParam({ ...param, bukrs: '' })}
+              handleClear={() => setParam({ ...param, bukrs: null })}
             />
           </Form.Field>
 
@@ -575,6 +718,26 @@ const Srkpiso = props => {
               }
               onChange={(e, { value }) => onInputChange(value, 'branchId')}
               className="alignBottom"
+              value={
+                param.branchId ? param.branchId.split(',').map(Number) : []
+              }
+            />
+          </Form.Field>
+
+          <Form.Field required>
+            <label>Категория товара</label>
+            <Dropdown
+              fluid
+              selection
+              placeholder="Все"
+              clearable="true"
+              multiple
+              options={tovarCategoryOptions}
+              onChange={(e, { value }) => onInputChange(value, 'categoryId')}
+              className="alignBottom"
+              value={
+                param.categoryId ? param.categoryId.split(',').map(Number) : []
+              }
             />
           </Form.Field>
 
@@ -589,6 +752,7 @@ const Srkpiso = props => {
               options={productListOptions}
               onChange={(e, { value }) => onInputChange(value, 'product')}
               className="alignBottom"
+              value={param.product ? param.product.split(',').map(Number) : []}
             />
           </Form.Field>
         </Form.Group>
@@ -679,15 +843,20 @@ function mapStateToProps(state) {
     language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
     countryList: state.f4.countryList,
+    category: state.f4.category,
     productList: state.f4.contractTypeList,
     srkpisoData: state.srkpisoReducer.srkpisoData,
+    srkpisoDetal: state.srkpisoReducer.srkpisoDetal,
     branchOptionsService: state.userInfo.branchOptionsService,
   };
 }
 
 export default connect(mapStateToProps, {
-  f4FetchBranches,
   f4FetchCountryList,
   f4FetchConTypeList,
+  f4fetchCategory,
   fetchSrkpiso,
+  fetchSrkpisoDetal,
+  clearSrkpisoDetal,
+  clearSrkpiso,
 })(injectIntl(Srkpiso));
