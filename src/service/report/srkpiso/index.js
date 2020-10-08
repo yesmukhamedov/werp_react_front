@@ -36,6 +36,7 @@ import DropdownClearable from '../../../utils/DropdownClearable';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+require('moment/locale/ru');
 
 const Srkpiso = props => {
   const {
@@ -482,7 +483,11 @@ const Srkpiso = props => {
       Header: '#',
       accessor: 'id',
       checked: true,
-      Cell: row => <div>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       filterable: false,
       width: 55,
     },
@@ -491,13 +496,21 @@ const Srkpiso = props => {
       accessor: 'branchName',
       checked: true,
       filterable: false,
-      Cell: row => <div>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: 'CN',
       accessor: 'contractNumber',
       checked: true,
-      Cell: row => <div>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       filterable: false,
       width: 60,
     },
@@ -506,7 +519,11 @@ const Srkpiso = props => {
       headerStyle: { whiteSpace: 'pre-wrap' },
       accessor: 'tovarSn',
       checked: true,
-      Cell: row => <div>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       filterable: false,
     },
     {
@@ -514,7 +531,11 @@ const Srkpiso = props => {
       headerStyle: { whiteSpace: 'pre-wrap' },
       accessor: 'contractDate',
       checked: true,
-      Cell: row => <div>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value ? moment(row.value).format('DD.MM.YYYY') : ''}
+        </div>
+      ),
       filterable: false,
       width: 100,
     },
@@ -523,14 +544,22 @@ const Srkpiso = props => {
       headerStyle: { whiteSpace: 'pre-wrap' },
       accessor: 'customerFIO',
       checked: true,
-      Cell: row => <div>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       filterable: false,
     },
     {
       Header: messages['customer_key'],
       accessor: 'customerIinBin',
       checked: true,
-      Cell: row => <div>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       filterable: false,
     },
     {
@@ -538,7 +567,11 @@ const Srkpiso = props => {
       headerStyle: { whiteSpace: 'pre-wrap' },
       accessor: 'address',
       checked: true,
-      Cell: row => <div>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
 
       filterable: false,
     },
@@ -547,7 +580,11 @@ const Srkpiso = props => {
       headerStyle: { whiteSpace: 'pre-wrap' },
       accessor: 'dealerFIO',
       checked: true,
-      Cell: row => <div>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
 
       filterable: false,
     },
@@ -555,7 +592,11 @@ const Srkpiso = props => {
       Header: 'F1',
       accessor: 'f1',
       checked: true,
-      Cell: row => <div>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       filterable: false,
       width: 40,
     },
@@ -563,7 +604,11 @@ const Srkpiso = props => {
       Header: 'F2',
       accessor: 'f2',
       checked: true,
-      Cell: row => <div>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       filterable: false,
       width: 40,
     },
@@ -571,7 +616,11 @@ const Srkpiso = props => {
       Header: 'F3',
       accessor: 'f3',
       checked: true,
-      Cell: row => <div>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       filterable: false,
       width: 40,
     },
@@ -579,7 +628,11 @@ const Srkpiso = props => {
       Header: 'F4',
       accessor: 'f4',
       checked: true,
-      Cell: row => <div>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       filterable: false,
       width: 40,
     },
@@ -587,7 +640,11 @@ const Srkpiso = props => {
       Header: 'F5',
       accessor: 'f5',
       checked: true,
-      Cell: row => <div>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       filterable: false,
       width: 40,
     },
@@ -595,21 +652,33 @@ const Srkpiso = props => {
       Header: messages['category'],
       accessor: 'crmCategoryName',
       checked: true,
-      Cell: row => <div>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       filterable: false,
     },
     {
       Header: messages['fin_status'],
       accessor: 'contractStatusName',
       checked: true,
-      Cell: row => <div>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       filterable: false,
     },
     {
       Header: messages['plan_status'],
       accessor: 'planStatusName',
       checked: true,
-      Cell: row => <div>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       filterable: false,
     },
     {
@@ -762,7 +831,7 @@ const Srkpiso = props => {
             <Form.Field className="marginRight">
               <label>Дата с</label>
               <DatePicker
-                placeholderText="Дата"
+                placeholderText="Дата c"
                 isClearable
                 className="date-auto-width"
                 autoComplete="off"
