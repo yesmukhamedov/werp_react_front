@@ -219,7 +219,7 @@ function Smcc(props) {
 
   useEffect(() => {
     const { bukrsId, matnr } = contract;
-    if (bukrsId !== '' && matnr !== '') {
+    if (bukrsId && matnr) {
       props.f4FetchMatnrListView({
         bukrs: bukrsId,
         matnr,
