@@ -4,6 +4,7 @@ import {
   FETCH_ASSIGNED_CALLS,
   FETCH_MY_APPLICATION,
   POST_TO_CANCEL_PLAN_VC,
+  CLEAR_SMOPSP_MY_APPLICATION,
 } from './smopspAction';
 
 const INITIAL_STATE = {
@@ -37,6 +38,11 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         myApplication: { ...action.payload.data },
+      };
+    case CLEAR_SMOPSP_MY_APPLICATION:
+      return {
+        ...state,
+        myApplication: {},
       };
 
     case POST_TO_CANCEL_PLAN_VC:
