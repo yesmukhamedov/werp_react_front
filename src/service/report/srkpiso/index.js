@@ -758,7 +758,6 @@ const Srkpiso = props => {
             loading={loaderTableDetal}
             filterable={true}
             defaultPageSize={10}
-            pageSize={10}
             showPagination={true}
             columns={detalColumns}
           />
@@ -813,22 +812,6 @@ const Srkpiso = props => {
               }
             />
           </Form.Field>
-
-          {/* <Form.Field required>
-            <Dropdown
-              fluid
-              selection
-              placeholder="Все"
-              clearable="true"
-              multiple
-              options={tovarCategoryOptions}
-              onChange={(e, { value }) => onInputChange(value, 'categoryId')}
-              className="alignBottom"
-              value={
-                param.categoryId ? param.categoryId.split(',').map(Number) : []
-              }
-            />
-          </Form.Field> */}
 
           <Form.Field required>
             <label>Категория товара</label>
