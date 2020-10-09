@@ -658,6 +658,10 @@ const Table = props => {
           Header: 'Общая сумма плана',
           accessor: 'totalPlanSum',
           headerStyle: mainHeaderStyle,
+          width: 120,
+          minWidth: 120,
+          maxWidth: 120,
+          fixed: 'right',
           Footer: () => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
               {`${moneyFormat(totalTotalPlanSum)}`}
@@ -674,6 +678,10 @@ const Table = props => {
           Header: 'Выполненный план',
           accessor: 'totalDonePlanSum',
           headerStyle: mainHeaderStyle,
+          width: 120,
+          minWidth: 120,
+          maxWidth: 120,
+          fixed: 'right',
           Footer: () => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
               {`${moneyFormat(totalTotalDonePlanSum)}`}
@@ -694,6 +702,10 @@ const Table = props => {
           Header: '%',
           accessor: 'donePlanPercent',
           headerStyle: mainHeaderStyle,
+          width: 120,
+          minWidth: 120,
+          maxWidth: 120,
+          fixed: 'right',
           Footer: () => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
               {`${moneyFormat(totalDonePlanPercent)} %`}
@@ -714,6 +726,10 @@ const Table = props => {
         {
           Header: 'Действие',
           headerStyle: mainHeaderStyle,
+          width: 120,
+          minWidth: 120,
+          maxWidth: 120,
+          fixed: 'right',
           getProps: (state, rowInfo, column) => {
             return {
               style: mainCellStyle,
