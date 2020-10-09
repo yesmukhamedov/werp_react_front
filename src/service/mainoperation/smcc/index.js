@@ -149,6 +149,7 @@ function Smcc(props) {
   };
 
   const [contract, setContract] = useState({ ...emptyContract });
+  console.log('contract', contract);
   const [servFilter, setServFilter] = useState({ ...emptyServFilter });
   const [startDate, setStartDate] = useState(moment(new Date()));
   const [customerF4ModalOpen, setCustomerF4ModalOpen] = useState(false);
@@ -268,6 +269,10 @@ function Smcc(props) {
       switch (fieldName) {
         case 'bukrsId':
           varContract.bukrsId = o.value;
+          varContract.branchId = '';
+          varContract.serviceBranchId = '';
+          varContract.contractTypeId = '';
+          varContract.matnr = '';
           break;
 
         case 'branchId':
