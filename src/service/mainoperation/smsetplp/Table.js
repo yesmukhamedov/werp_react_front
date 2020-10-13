@@ -537,7 +537,7 @@ const Table = props => {
         },
         {
           Header: 'Просроченный план база',
-          accessor: 'filterVCServicePacketOverDueDatabasePlanSum;',
+          accessor: 'filterVCServicePacketOverDueDatabasePlanSum',
           headerStyle: headerStyleBlue,
           Footer: () => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
