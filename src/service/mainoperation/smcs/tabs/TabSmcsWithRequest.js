@@ -32,6 +32,7 @@ import {
   clearMatnrPriceCartridge,
   clearMatnrPriceServicePackage,
   clearServicePackageDetails,
+  fetchOperatorList,
 } from '../smcsAction';
 
 import {
@@ -67,15 +68,29 @@ const TabSmcsWithRequest = props => {
     applicationNumber,
     checkWarranty,
     paymentOptions3 = [],
+    operatorList = [],
   } = props;
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
 
+  console.log('SERVICE', service);
+
   const [paymentChecked, setPaymentChecked] = useState(false);
   const [hkontS, setHkontS] = useState('');
 
   const [checkStatus, setCheckStatus] = useState(false);
+
+  useEffect(() => {
+    if (service.bukrs && service.branchId && service.categoryId) {
+      let param = {
+        bukrs: service.bukrs,
+        branchId: service.branchId,
+        categoryId: service.categoryId,
+      };
+      props.fetchOperatorList({ ...param });
+    }
+  }, [service.bukrs, service.branchId, service.categoryId]);
 
   const toSmvs = () => {
     setCheckStatus(false);
@@ -113,6 +128,13 @@ const TabSmcsWithRequest = props => {
 
   const [editStatus, setEditStatus] = useState(true);
 
+  const operatorOptions = operatorList.map((item, index) => {
+    return {
+      key: parseInt(item.staffId) * index,
+      text: item.fullName,
+      value: parseInt(item.staffId),
+    };
+  });
   //УСЛУГИ============================================================================================================================
   //==================================================================================================================================
 
@@ -176,6 +198,12 @@ const TabSmcsWithRequest = props => {
         break;
       case 'changeServiceDate':
         setService({ ...service, serviceDate: value });
+        break;
+      case 'selectOperator':
+        setService({ ...service, operatorFullName: null, operatorId: value });
+        break;
+      case 'clearOperator':
+        setService({ ...service, operatorFullName: null, operatorId: null });
         break;
 
       default:
@@ -1057,6 +1085,7 @@ const TabSmcsWithRequest = props => {
             <BasicInfoWithRequest
               data={service}
               onBasicInfoInputChange={onBasicInfoInputChange}
+              operatorOptions={operatorOptions}
             />
           </Grid.Column>
 
@@ -1196,6 +1225,7 @@ function mapStateToProps(state) {
     smcsAppNumberData: state.smcsReducer.smcsAppNumberData,
     checkWarranty: state.smcsReducer.checkWarranty,
     paymentOptions3: state.smcsReducer.paymentOptions3,
+    operatorList: state.smcsReducer.operatorList,
   };
 }
 
@@ -1220,4 +1250,5 @@ export default connect(mapStateToProps, {
   clearMatnrPriceCartridge,
   clearMatnrPriceServicePackage,
   clearServicePackageDetails,
+  fetchOperatorList,
 })(injectIntl(TabSmcsWithRequest));

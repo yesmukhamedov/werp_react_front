@@ -64,12 +64,36 @@ const Srkpiso = props => {
   const [modalDetalOpen, setModalDetalOpen] = useState(false);
   const [loaderTableDetal, setLoaderTableDetal] = useState(false);
 
-  const toDetalization = (original, confId) => {
+  // let emptyParamDetal = {
+  //   branchId: null,
+  //   bukrs: null,
+  //   categoryId: null,
+  //   configurationId: null,
+  //   countryId: null,
+  //   operatorId: null,
+  //   productId: null,
+  //   dateAt: param.dateAt,
+  //   dateTo: param.dateTo,
+  // };
+
+  const [detalParam, setDetalParam] = useState({});
+
+  useEffect(() => {
+    if (Object.keys(detalParam).length > 0) {
+      setLoaderTableDetal(true);
+      props.fetchSrkpisoDetal(
+        { ...detalParam, dateAt: param.dateAt, dateTo: param.dateTo },
+        () => setLoaderTableDetal(false),
+      );
+    }
+  }, [detalParam]);
+
+  const toDetalization = (original, confId, param) => {
     props.clearSrkpisoDetal();
-
     setModalDetalOpen(true);
-
-    let paramDetal = {
+    console.log('original', original, 'confId', confId);
+    setDetalParam({
+      ...detalParam,
       branchId: original.branchId,
       bukrs: original.bukrs,
       categoryId: original.categoryId,
@@ -77,11 +101,7 @@ const Srkpiso = props => {
       countryId: original.countryId,
       operatorId: original.operatorId,
       productId: original.productId,
-    };
-    setLoaderTableDetal(true);
-    props.fetchSrkpisoDetal({ ...paramDetal }, () =>
-      setLoaderTableDetal(false),
-    );
+    });
   };
 
   const initialColumns = [
@@ -130,6 +150,7 @@ const Srkpiso = props => {
           accessor: 'currentPlanSum',
           filterable: false,
           checked: true,
+
           Cell: row => (
             <div
               className="flexJustifySpaceBeetween"
@@ -454,7 +475,7 @@ const Srkpiso = props => {
       case 'categoryId':
         setParam({
           ...param,
-          categoryId: value.length > 0 ? value.join() : null,
+          categoryId: value,
         });
         break;
       case 'product':
@@ -737,7 +758,6 @@ const Srkpiso = props => {
             loading={loaderTableDetal}
             filterable={true}
             defaultPageSize={10}
-            pageSize={10}
             showPagination={true}
             columns={detalColumns}
           />
@@ -795,18 +815,12 @@ const Srkpiso = props => {
 
           <Form.Field required>
             <label>Категория товара</label>
-            <Dropdown
-              fluid
-              selection
+            <DropdownClearable
               placeholder="Все"
-              clearable="true"
-              multiple
               options={tovarCategoryOptions}
+              value={param.categoryId ? param.categoryId : ''}
               onChange={(e, { value }) => onInputChange(value, 'categoryId')}
-              className="alignBottom"
-              value={
-                param.categoryId ? param.categoryId.split(',').map(Number) : []
-              }
+              handleClear={() => setParam({ ...param, categoryId: null })}
             />
           </Form.Field>
 

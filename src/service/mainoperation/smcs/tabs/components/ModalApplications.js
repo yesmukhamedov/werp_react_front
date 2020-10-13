@@ -17,17 +17,17 @@ const ModalApplications = props => {
     clearApplicationsOperator,
   } = props;
   return (
-    <Modal open={open} closeIcon onClose={onClose}>
+    <Modal open={open} closeIcon onClose={onClose} size="large">
       <Header content="Выберите доступные заявки" />
       <Modal.Content>
         <Table celled>
           <Table.Header>
             <Table.Row>
-              <Table.HeaderCell>CN</Table.HeaderCell>
-              <Table.HeaderCell>ФИО клиента</Table.HeaderCell>
-              <Table.HeaderCell>Мастер</Table.HeaderCell>
-              <Table.HeaderCell>Оператор</Table.HeaderCell>
-              <Table.HeaderCell>Вид заявки</Table.HeaderCell>
+              <Table.HeaderCell width={2}>CN</Table.HeaderCell>
+              <Table.HeaderCell width={4}>ФИО клиента</Table.HeaderCell>
+              <Table.HeaderCell width={4}>Мастер</Table.HeaderCell>
+              <Table.HeaderCell width={4}>Оператор</Table.HeaderCell>
+              <Table.HeaderCell width={2}>Вид заявки</Table.HeaderCell>
               <Table.HeaderCell></Table.HeaderCell>
             </Table.Row>
           </Table.Header>
@@ -45,6 +45,7 @@ const ModalApplications = props => {
                     value={item.masterId ? item.masterId : ''}
                     onChange={(e, { value }) => onChangeMasterApp(item, value)}
                     handleClear={() => clearApplicationsMaster(item)}
+                    allSelect={false}
                   />
                 </Table.Cell>
                 <Table.Cell>
@@ -57,6 +58,7 @@ const ModalApplications = props => {
                       onChangeOperatorApp(item, value)
                     }
                     handleClear={() => clearApplicationsOperator(item)}
+                    allSelect={false}
                   />
                 </Table.Cell>
                 <Table.Cell>{item.applicationTypeName}</Table.Cell>

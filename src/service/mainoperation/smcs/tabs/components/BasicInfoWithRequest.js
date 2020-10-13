@@ -6,9 +6,10 @@ import {
   momentToStringYYYYMMDD,
 } from '../../../../../utils/helpers';
 import DatePicker from 'react-datepicker';
+import DropdownClearable from '../../../../../utils/DropdownClearable';
 
 const BasicInfoWithoutContract = props => {
-  const { data = {}, onBasicInfoInputChange } = props;
+  const { data = {}, onBasicInfoInputChange, operatorOptions = [] } = props;
   const lang = localStorage.getItem('language');
 
   return (
@@ -113,10 +114,15 @@ const BasicInfoWithoutContract = props => {
         <Table.Row>
           <Table.Cell>Оператор</Table.Cell>
           <Table.Cell>
-            <Input
-              fluid
-              readOnly
-              value={data.operatorFullName ? data.operatorFullName : ''}
+            <DropdownClearable
+              value={data.operatorId ? data.operatorId : ''}
+              options={operatorOptions}
+              onChange={(e, { value }) =>
+                onBasicInfoInputChange(value, 'selectOperator')
+              }
+              handleClear={(e, value) =>
+                onBasicInfoInputChange(value, 'clearOperator')
+              }
             />
           </Table.Cell>
         </Table.Row>

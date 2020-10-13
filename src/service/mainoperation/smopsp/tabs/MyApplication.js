@@ -5,7 +5,7 @@ import { Container, Form, Divider, Segment, Icon } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import OutputErrors from '../../../../general/error/outputErrors';
 import { errorTableText } from '../../../../utils/helpers';
-import { fetchMyApplication } from '../smopspAction';
+import { fetchMyApplication, clearSmopspMyApplication } from '../smopspAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import { f4FetchServiceAppStatus } from '../../../../reference/f4/f4_action';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
@@ -38,7 +38,7 @@ const MyApplication = props => {
     countryId: '',
     bukrs: '',
     branchId: '',
-    dateOpenAt: '',
+    dateAt: momentToStringYYYYMMDD(moment(new Date())),
     applicationStatusId: '',
   };
 
@@ -224,6 +224,7 @@ const MyApplication = props => {
   const [serverSideParams, setServerSideParams] = useState({});
 
   const handleClickApply = () => {
+    props.clearSmopspMyApplication();
     validate();
     if (param.bukrs !== '') {
       const page = 0;
@@ -355,14 +356,14 @@ const MyApplication = props => {
                 dropdownMode="select" //timezone="UTC"
                 placeholderText={messages['date']}
                 selected={
-                  param.dateOpenAt === ''
+                  param.dateAt === ''
                     ? ''
-                    : stringYYYYMMDDToMoment(param.dateOpenAt)
+                    : stringYYYYMMDDToMoment(param.dateAt)
                 }
                 onChange={date =>
                   setParam({
                     ...param,
-                    dateOpenAt: momentToStringYYYYMMDD(date),
+                    dateAt: momentToStringYYYYMMDD(date),
                   })
                 }
                 dateFormat="DD.MM.YYYY"
@@ -435,5 +436,6 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
   fetchServiceListManager,
   fetchMyApplication,
+  clearSmopspMyApplication,
   f4FetchServiceAppStatus,
 })(injectIntl(MyApplication));

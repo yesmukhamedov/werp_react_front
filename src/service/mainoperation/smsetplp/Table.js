@@ -11,6 +11,7 @@ const Table = props => {
     (total, item) => total + item.filterCurrentDatabasePlanCount,
     0,
   );
+
   const totalFilterCurrentDatabasePlanSum = data.reduce(
     (total, item) => total + item.filterCurrentDatabasePlanSum,
     0,
@@ -97,7 +98,9 @@ const Table = props => {
   );
 
   const totalDonePlanPercent =
-    Math.round((totalTotalDonePlanSum / totalTotalPlanSum) * 10000) / 100;
+    totalTotalDonePlanSum == 0 || totalTotalPlanSum == 0
+      ? 0
+      : Math.round((totalTotalDonePlanSum / totalTotalPlanSum) * 10000) / 100;
 
   const headerStyleGreen = {
     whiteSpace: 'pre-wrap',
@@ -397,7 +400,7 @@ const Table = props => {
           accessor: 'filterServicePacketDonePlanSum',
           Footer: () => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {`${moneyFormat(totalFilterPartsPlanSum)}`}
+              {`${moneyFormat(totalFilterServicePacketDonePlanSum)}`}
             </div>
           ),
           getProps: (state, rowInfo, column) => {
@@ -405,9 +408,9 @@ const Table = props => {
               style: cellStylePinkSiren,
             };
           },
-          Cell: row => (
+          Cell: ({ original }) => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {moneyFormat(row.value)}
+              {moneyFormat(original.filterServicePacketDonePlanSum)}
             </div>
           ),
         },
@@ -453,9 +456,9 @@ const Table = props => {
               style: cellStylePinkSiren,
             };
           },
-          Cell: row => (
+          Cell: ({ original }) => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {moneyFormat(row.value)}
+              {moneyFormat(original.filterPartsDonePlanSum)}
             </div>
           ),
         },
@@ -560,7 +563,7 @@ const Table = props => {
           headerStyle: headerStyleBlue,
           Footer: () => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              {`${moneyFormat()}`}
+              {`${moneyFormat(totalFilterVCServicePacketPlanSum)}`}
             </div>
           ),
           getProps: (state, rowInfo, column) => {
@@ -655,6 +658,10 @@ const Table = props => {
           Header: 'Общая сумма плана',
           accessor: 'totalPlanSum',
           headerStyle: mainHeaderStyle,
+          width: 120,
+          minWidth: 120,
+          maxWidth: 120,
+          fixed: 'right',
           Footer: () => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
               {`${moneyFormat(totalTotalPlanSum)}`}
@@ -671,6 +678,10 @@ const Table = props => {
           Header: 'Выполненный план',
           accessor: 'totalDonePlanSum',
           headerStyle: mainHeaderStyle,
+          width: 120,
+          minWidth: 120,
+          maxWidth: 120,
+          fixed: 'right',
           Footer: () => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
               {`${moneyFormat(totalTotalDonePlanSum)}`}
@@ -691,6 +702,10 @@ const Table = props => {
           Header: '%',
           accessor: 'donePlanPercent',
           headerStyle: mainHeaderStyle,
+          width: 120,
+          minWidth: 120,
+          maxWidth: 120,
+          fixed: 'right',
           Footer: () => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
               {`${moneyFormat(totalDonePlanPercent)} %`}
@@ -711,6 +726,10 @@ const Table = props => {
         {
           Header: 'Действие',
           headerStyle: mainHeaderStyle,
+          width: 120,
+          minWidth: 120,
+          maxWidth: 120,
+          fixed: 'right',
           getProps: (state, rowInfo, column) => {
             return {
               style: mainCellStyle,

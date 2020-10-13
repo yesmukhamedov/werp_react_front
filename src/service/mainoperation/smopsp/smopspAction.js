@@ -13,6 +13,7 @@ export const FETCH_ASSIGNED_CALLS = 'FETCH_ASSIGNED_CALLS';
 
 //Мои заявки
 export const FETCH_MY_APPLICATION = 'FETCH_MY_APPLICATION';
+export const CLEAR_SMOPSP_MY_APPLICATION = 'CLEAR_SMOPSP_MY_APPLICATION';
 
 export const POST_TO_CANCEL_PLAN_VC = 'POST_TO_CANCEL_PLAN_VC';
 
@@ -94,6 +95,13 @@ export const fetchMyApplication = param => {
       });
   };
 };
+export function clearSmopspMyApplication() {
+  return function(dispatch) {
+    dispatch({
+      type: CLEAR_SMOPSP_MY_APPLICATION,
+    });
+  };
+}
 
 //Отмена заявки
 export const postToCancelPlanVC = (param, fetchServPacketVC) => {
