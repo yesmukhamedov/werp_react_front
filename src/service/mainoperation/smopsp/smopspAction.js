@@ -78,11 +78,12 @@ export const fetchAssignedCalls = param => {
 };
 
 //Мои заявки
-export const fetchMyApplication = param => {
+export const fetchMyApplication = (param, setFunc) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`smopsp/myApplication`, param)
       .then(({ data }) => {
+        setFunc();
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_MY_APPLICATION,
@@ -95,6 +96,7 @@ export const fetchMyApplication = param => {
       });
   };
 };
+
 export function clearSmopspMyApplication() {
   return function(dispatch) {
     dispatch({
