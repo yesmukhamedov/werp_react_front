@@ -10,7 +10,7 @@ import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import { f4FetchServiceAppStatus } from '../../../../reference/f4/f4_action';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import DatePicker from 'react-datepicker';
-import moment from 'moment';
+
 import 'react-datepicker/dist/react-datepicker.css';
 import ModalColumns from './../../../../utils/ModalColumns';
 import { Link } from 'react-router-dom';
@@ -20,6 +20,8 @@ import {
 } from '../../../../utils/helpers';
 import DropdownClearable from '../../../../utils/DropdownClearable';
 import ReactTableServerSideWrapperFilteredState from '../../../../utils/ReactTableServerSideWrapperFilteredState';
+import moment from 'moment';
+require('moment/locale/ru');
 
 const MyApplication = props => {
   const {
@@ -403,19 +405,6 @@ const MyApplication = props => {
           <h4>{`Общее количество ${myApplication.totalElements}`}</h4>
         </Segment>
       ) : null}
-      {/* <ReactTableServerSideWrapper
-        data={myApplication ? myApplication.data : []}
-        columns={columns}
-        filterable={true}
-        defaultPageSize={20}
-        showPagination={true}
-        requestData={params => {
-          props.fetchMyApplication({ ...params, ...param });
-          setServerSideParams({ ...params });
-        }}
-        pages={myApplication ? myApplication.totalPages : ''}
-        turnOnReactFetch={turnOnReactFetch}
-      /> */}
 
       <ReactTableServerSideWrapperFilteredState
         data={myApplication ? myApplication.data : []}
