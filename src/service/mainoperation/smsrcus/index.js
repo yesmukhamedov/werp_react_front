@@ -11,6 +11,10 @@ import {
   Input,
   Checkbox,
   Label,
+  Table,
+  Button,
+  Popup,
+  Modal,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import '../../service.css';
@@ -39,8 +43,12 @@ import {
 import {
   fetchSmsrcusList,
   clearSmsrcusList,
+  //
+  fetchSmsrcusClient,
+  //
   fetchSmsrcusBlackList,
   clearSmsrcusBlackList,
+  postSmsrcusDeactivateClientFilter,
 } from './smsrcusAction';
 import TotalCountsTable from '../../../utils/TotalCountsTable';
 
@@ -60,6 +68,7 @@ const Smsrcus = props => {
     companyOptions = [],
     branchOptions = [],
     physStatusOptions = [],
+    smsrcusClient = {},
   } = props;
 
   const branchObjValues = Object.values(branchOptionsService);
@@ -67,6 +76,13 @@ const Smsrcus = props => {
   const arr = branchObjValues.map(item => {
     arrMain.push(...item);
   });
+
+  const mainCellStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  };
 
   const emptyParam = {
     serviceBranchId: null,
@@ -90,7 +106,9 @@ const Smsrcus = props => {
   };
 
   const [serverSideParams, setServerSideParams] = useState({});
+  const [serverSideParamsBlack, setServerSideParamsBlack] = useState({});
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
+  const [turnOnReactFetchBlack, setTurnOnReactFetchBlack] = useState(false);
 
   const [param, setParam] = useState({ ...emptyParam });
 
@@ -99,11 +117,74 @@ const Smsrcus = props => {
     ...emptyBlackListParam,
   });
 
-  const [blackList, setBlackList] = useState(true);
+  const [blackList, setBlackList] = useState(false);
 
   const [tablePage, setTablePage] = useState(0);
+  const [tablePageBlack, setTablePageBlack] = useState(0);
+
+  const [smsrcusClientList, setSmsrcusClientList] = useState([]);
+  console.log('smsrcusClientList', smsrcusClientList);
+
+  useEffect(() => {
+    if (Object.keys(smsrcusClient).length > 0) {
+      if (smsrcusClientList.length > 0) {
+        smsrcusClientList.map(item =>
+          item.contractnumber == smsrcusClient.contractnumber
+            ? setSmsrcusClientList(
+                smsrcusClientList.map(item =>
+                  item.contractnumber == smsrcusClient.contractnumber
+                    ? { ...smsrcusClient }
+                    : item,
+                ),
+              )
+            : setSmsrcusClientList([...smsrcusClientList, smsrcusClient]),
+        );
+      } else {
+        setSmsrcusClientList([...smsrcusClientList, smsrcusClient]);
+      }
+    }
+  }, [smsrcusClient]);
 
   let initialColumns = [
+    {
+      expander: true,
+      Header: '',
+      width: 65,
+      getProps: (state, rowInfo, column) => {
+        return {
+          style: mainCellStyle,
+        };
+      },
+      Expander: ({ isExpanded, original, ...rest }) => {
+        return (
+          <div className="fullCell">
+            {isExpanded ? (
+              <div className="expandPlus" style={mainCellStyle}>
+                <Icon color="blue" name="minus square outline" />
+              </div>
+            ) : (
+              <div
+                className="expandPlus"
+                onClick={() =>
+                  props.fetchSmsrcusClient(original.contractNumber)
+                }
+                style={mainCellStyle}
+              >
+                <Icon color="blue" name="plus square outline" />
+              </div>
+            )}
+          </div>
+        );
+      },
+      style: {
+        cursor: 'pointer',
+        fontSize: 25,
+        padding: '0',
+        textAlign: 'center',
+        userSelect: 'none',
+        color: 'green',
+      },
+    },
     {
       Header: messages['brnch'],
       accessor: 'serviceBranchName',
@@ -128,7 +209,7 @@ const Smsrcus = props => {
     },
     {
       Header: 'Продукт',
-      accessor: 'matnrName',
+      accessor: 'contractTypeName',
       Cell: row => (
         <div className="text-wrap" style={{ textAlign: 'center' }}>
           {row.value}
@@ -203,71 +284,7 @@ const Smsrcus = props => {
         </div>
       ),
     },
-    {
-      Header: 'F1',
-      accessor: 'f1MtLeft',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      width: 40,
-      filterable: false,
-    },
-    {
-      Header: 'F2',
-      accessor: 'f2MtLeft',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      width: 40,
-      filterable: false,
-    },
-    {
-      Header: 'F3',
-      accessor: 'f3MtLeft',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      width: 40,
-      filterable: false,
-    },
-    {
-      Header: 'F4',
-      accessor: 'f4MtLeft',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      width: 40,
-      filterable: false,
-    },
-    {
-      Header: 'F5',
-      accessor: 'f5MtLeft',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      width: 40,
-      filterable: false,
-    },
-    {
-      Header: 'Категория',
-      accessor: 'tovarCategoryName',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      filterable: false,
-    },
+
     {
       Header: messages['financial_status'],
       headerStyle: { whiteSpace: 'pre-wrap' },
@@ -291,26 +308,6 @@ const Smsrcus = props => {
       ),
       filterable: false,
       width: 100,
-    },
-    {
-      Header: 'ФИО диллера',
-      accessor: 'dealerFIO',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      filterable: false,
-    },
-    {
-      Header: 'Оператор',
-      accessor: 'operatorFIO',
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-      filterable: false,
     },
 
     {
@@ -412,6 +409,7 @@ const Smsrcus = props => {
   };
 
   const [filtered, setFiltered] = useState([]);
+  const [filteredBlack, setFilteredBlack] = useState([]);
 
   const onChangeBlackList = (value, fieldName) => {
     switch (fieldName) {
@@ -459,14 +457,52 @@ const Smsrcus = props => {
     }
   };
 
+  //Поиск по черным клиентам
   const handleApplyBlackList = () => {
-    console.log('BlackListParam', blackListParam);
     if (blackListParam.bukrs) {
-      props.fetchSmsrcusBlackList({ ...blackListParam });
+      setColumnsForTable([...initialColumns]);
+      props.clearSmsrcusBlackList();
+      setServerSideParamsBlack({});
+      setTablePageBlack(0);
+      props.fetchSmsrcusBlackList(
+        { ...blackListParam, page: 0, size: 20 },
+        () => setTurnOnReactFetchBlack(true),
+      );
     } else {
       alert('Выберите компанию');
     }
   };
+
+  const [modalDelete, setModalDelete] = useState(false);
+  const [deleteModalData, setDeleteModalData] = useState({});
+  console.log('deleteModalData', deleteModalData);
+
+  const btnDeactivateFilter = (contractNumber, id) => {
+    setModalDelete(true);
+    setDeleteModalData({
+      contractNumber: contractNumber,
+      id: id,
+    });
+    console.log('contractNumber', contractNumber);
+    console.log('id', id);
+  };
+
+  const confirmDeleteFilter = () => {
+    props.postSmsrcusDeactivateClientFilter(
+      deleteModalData.contractNumber,
+      deleteModalData.id,
+
+      () => {
+        let deleteFilter = smsrcusClientList.filter(
+          item => item.contractnumber !== deleteModalData.contractNumber,
+        );
+
+        setSmsrcusClientList([...deleteFilter]);
+        setModalDelete(false);
+      },
+    );
+  };
+
   return (
     <Container fluid className="containerMargin">
       <Segment className="justifySegment">
@@ -478,6 +514,19 @@ const Smsrcus = props => {
           onChange={(o, event) => setBlackList(event.checked)}
         />
       </Segment>
+      <Modal closeIcon open={modalDelete} onClose={() => setModalDelete(false)}>
+        <Modal.Content>
+          <h3>Вы действительно хотите деактивировать?</h3>
+        </Modal.Content>
+        <Modal.Actions>
+          <Button color="red" onClick={() => setModalDelete(false)}>
+            <Icon name="remove" /> Нет
+          </Button>
+          <Button color="green" onClick={() => confirmDeleteFilter()}>
+            <Icon name="checkmark" /> Да
+          </Button>
+        </Modal.Actions>
+      </Modal>
 
       <Divider />
       {blackList == true ? (
@@ -616,6 +665,100 @@ const Smsrcus = props => {
               </div>
             </Form.Group>
           </Form>
+          <ReactTableServerSideWrapperFilteredState
+            data={smsrcusBlackListData.data}
+            columns={columnsForTable}
+            filterable={false}
+            defaultPageSize={20}
+            showPagination={true}
+            requestData={params => {
+              //props.fetchSmsrcusList({ ...param, ...params });
+              setServerSideParamsBlack({ ...params });
+              props.fetchSmsrcusBlackList(
+                { ...blackListParam, ...params },
+                () => setTurnOnReactFetchBlack(true),
+              );
+            }}
+            filtered={filteredBlack}
+            onFilteredChange={filtered => {
+              console.log('filtered', filtered);
+              // this.setState({ filtered });
+            }}
+            page={tablePageBlack}
+            onPageChange={pageIndex => setTablePageBlack(pageIndex)}
+            pages={smsrcusBlackListData ? smsrcusBlackListData.totalPages : ''}
+            turnOnReactFetch={turnOnReactFetchBlack}
+            style={{ height: 500 }}
+            SubComponent={({ row }) => {
+              const filterSubRow = smsrcusClientList.filter(
+                item => item.contractnumber === row.contractNumber,
+              );
+              return (
+                <Segment
+                  style={{ backgroundColor: 'rgb(202 241 222)' }}
+                  className="flexColumn"
+                >
+                  <div>
+                    ФИО диллера:{' '}
+                    {filterSubRow.length > 0
+                      ? filterSubRow[0].contract.dealerFIO
+                      : ''}
+                  </div>
+                  <Table celled color="violet">
+                    <Table.Header>
+                      <Table.Row>
+                        <Table.HeaderCell>#</Table.HeaderCell>
+                        <Table.HeaderCell>Категория</Table.HeaderCell>
+                        <Table.HeaderCell>Оператор</Table.HeaderCell>
+                        <Table.HeaderCell>F1</Table.HeaderCell>
+                        <Table.HeaderCell>F2</Table.HeaderCell>
+                        <Table.HeaderCell>F3</Table.HeaderCell>
+                        <Table.HeaderCell>F4</Table.HeaderCell>
+                        <Table.HeaderCell>F5</Table.HeaderCell>
+                        <Table.HeaderCell>Дейсвия</Table.HeaderCell>
+                      </Table.Row>
+                    </Table.Header>
+
+                    <Table.Body>
+                      {filterSubRow.length > 0
+                        ? filterSubRow[0].filter.map((item, index) => (
+                            <Table.Row key={index}>
+                              <Table.Cell>{item.id}</Table.Cell>
+                              <Table.Cell>{item.crmCategoryName}</Table.Cell>
+                              <Table.Cell>{item.planOperatorFIO}</Table.Cell>
+                              <Table.Cell>{item.f1MtLeft}</Table.Cell>
+                              <Table.Cell>{item.f2MtLeft}</Table.Cell>
+                              <Table.Cell>{item.f3MtLeft}</Table.Cell>
+                              <Table.Cell>{item.f4MtLeft}</Table.Cell>
+                              <Table.Cell>{item.f5MtLeft}</Table.Cell>
+                              <Table.Cell>
+                                <Popup
+                                  content="Деактивировать"
+                                  trigger={
+                                    <Button
+                                      size="mini"
+                                      circular
+                                      color="red"
+                                      icon="x"
+                                      onClick={() =>
+                                        btnDeactivateFilter(
+                                          filterSubRow[0].contractnumber,
+                                          item.id,
+                                        )
+                                      }
+                                    />
+                                  }
+                                />
+                              </Table.Cell>
+                            </Table.Row>
+                          ))
+                        : ''}
+                    </Table.Body>
+                  </Table>
+                </Segment>
+              );
+            }}
+          />
         </Segment>
       ) : (
         <Segment>
@@ -727,6 +870,99 @@ const Smsrcus = props => {
               </Form.Button>
             </Form.Group>
           </Form>
+          <ReactTableServerSideWrapperFilteredState
+            data={smsrcusData.data}
+            columns={columnsForTable}
+            filterable={false}
+            defaultPageSize={20}
+            showPagination={true}
+            requestData={params => {
+              //props.fetchSmsrcusList({ ...param, ...params });
+              setServerSideParams({ ...params });
+              props.fetchSmsrcusList({ ...param, ...params }, () =>
+                setTurnOnReactFetch(true),
+              );
+            }}
+            filtered={filtered}
+            onFilteredChange={filtered => {
+              console.log('filtered', filtered);
+              // this.setState({ filtered });
+            }}
+            page={tablePage}
+            onPageChange={pageIndex => setTablePage(pageIndex)}
+            pages={smsrcusData ? smsrcusData.totalPages : ''}
+            turnOnReactFetch={turnOnReactFetch}
+            style={{ height: 500 }}
+            SubComponent={({ row }) => {
+              const filterSubRow = smsrcusClientList.filter(
+                item => item.contractnumber === row.contractNumber,
+              );
+              return (
+                <Segment
+                  style={{ backgroundColor: 'rgb(202 241 222)' }}
+                  className="flexColumn"
+                >
+                  <div>
+                    ФИО диллера:{' '}
+                    {filterSubRow.length > 0
+                      ? filterSubRow[0].contract.dealerFIO
+                      : ''}
+                  </div>
+                  <Table celled color="violet">
+                    <Table.Header>
+                      <Table.Row>
+                        <Table.HeaderCell>#</Table.HeaderCell>
+                        <Table.HeaderCell>Категория</Table.HeaderCell>
+                        <Table.HeaderCell>Оператор</Table.HeaderCell>
+                        <Table.HeaderCell>F1</Table.HeaderCell>
+                        <Table.HeaderCell>F2</Table.HeaderCell>
+                        <Table.HeaderCell>F3</Table.HeaderCell>
+                        <Table.HeaderCell>F4</Table.HeaderCell>
+                        <Table.HeaderCell>F5</Table.HeaderCell>
+                        <Table.HeaderCell>Дейсвия</Table.HeaderCell>
+                      </Table.Row>
+                    </Table.Header>
+
+                    <Table.Body>
+                      {filterSubRow.length > 0
+                        ? filterSubRow[0].filter.map((item, index) => (
+                            <Table.Row key={index}>
+                              <Table.Cell>{item.id}</Table.Cell>
+                              <Table.Cell>{item.crmCategoryName}</Table.Cell>
+                              <Table.Cell>{item.planOperatorFIO}</Table.Cell>
+                              <Table.Cell>{item.f1MtLeft}</Table.Cell>
+                              <Table.Cell>{item.f2MtLeft}</Table.Cell>
+                              <Table.Cell>{item.f3MtLeft}</Table.Cell>
+                              <Table.Cell>{item.f4MtLeft}</Table.Cell>
+                              <Table.Cell>{item.f5MtLeft}</Table.Cell>
+                              <Table.Cell>
+                                <Popup
+                                  content="Деактивировать"
+                                  trigger={
+                                    <Button
+                                      size="mini"
+                                      circular
+                                      color="red"
+                                      icon="x"
+                                      onClick={() =>
+                                        btnDeactivateFilter(
+                                          filterSubRow[0].contractnumber,
+                                          item.id,
+                                        )
+                                      }
+                                    />
+                                  }
+                                />
+                              </Table.Cell>
+                            </Table.Row>
+                          ))
+                        : ''}
+                    </Table.Body>
+                  </Table>
+                </Segment>
+              );
+            }}
+          />
         </Segment>
       )}
       <div className="flexJustifySpaceBeetween">
@@ -744,31 +980,6 @@ const Smsrcus = props => {
           }}
         />
       </div>
-
-      <ReactTableServerSideWrapperFilteredState
-        data={blackList !== true ? smsrcusData.data : smsrcusBlackListData.data}
-        columns={columnsForTable}
-        filterable={false}
-        defaultPageSize={20}
-        showPagination={true}
-        requestData={params => {
-          //props.fetchSmsrcusList({ ...param, ...params });
-          setServerSideParams({ ...params });
-          props.fetchSmsrcusList({ ...param, ...params }, () =>
-            setTurnOnReactFetch(true),
-          );
-        }}
-        filtered={filtered}
-        onFilteredChange={filtered => {
-          console.log('filtered', filtered);
-          // this.setState({ filtered });
-        }}
-        page={tablePage}
-        onPageChange={pageIndex => setTablePage(pageIndex)}
-        pages={smsrcusData ? smsrcusData.totalPages : ''}
-        turnOnReactFetch={turnOnReactFetch}
-        style={{ height: 500 }}
-      />
     </Container>
   );
 };
@@ -778,6 +989,7 @@ function mapStateToProps(state) {
     language: state.locales.lang,
     myApplication: state.smopccocReducer.myApplication,
     smsrcusData: state.smsrcusReducer.smsrcusData,
+    smsrcusClient: state.smsrcusReducer.smsrcusClient,
     smsrcusBlackListData: state.smsrcusReducer.smsrcusBlackListData,
     branchOptionsService: state.userInfo.branchOptionsService,
     //
@@ -792,6 +1004,7 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   fetchSmsrcusList,
+  fetchSmsrcusClient,
   f4fetchCategory,
   f4FetchCountryList,
   f4FetchConStatusList,
@@ -801,4 +1014,5 @@ export default connect(mapStateToProps, {
   clearSmsrcusList,
   fetchSmsrcusBlackList,
   clearSmsrcusBlackList,
+  postSmsrcusDeactivateClientFilter,
 })(injectIntl(Smsrcus));
