@@ -657,11 +657,16 @@ const Table = props => {
         {
           Header: 'Общая сумма плана',
           accessor: 'totalPlanSum',
-          headerStyle: mainHeaderStyle,
+          headerStyle: headerStyleGreen,
           width: 120,
           minWidth: 120,
           maxWidth: 120,
           fixed: 'right',
+          getProps: (state, rowInfo, column) => {
+            return {
+              style: cellStyleGreen,
+            };
+          },
           Footer: () => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
               {`${moneyFormat(totalTotalPlanSum)}`}
