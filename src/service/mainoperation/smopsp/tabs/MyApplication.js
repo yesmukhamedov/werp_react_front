@@ -10,7 +10,7 @@ import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import { f4FetchServiceAppStatus } from '../../../../reference/f4/f4_action';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import DatePicker from 'react-datepicker';
-import moment from 'moment';
+
 import 'react-datepicker/dist/react-datepicker.css';
 import ModalColumns from './../../../../utils/ModalColumns';
 import { Link } from 'react-router-dom';
@@ -19,6 +19,9 @@ import {
   stringYYYYMMDDToMoment,
 } from '../../../../utils/helpers';
 import DropdownClearable from '../../../../utils/DropdownClearable';
+import ReactTableServerSideWrapperFilteredState from '../../../../utils/ReactTableServerSideWrapperFilteredState';
+import moment from 'moment';
+require('moment/locale/ru');
 
 const MyApplication = props => {
   const {
@@ -46,7 +49,8 @@ const MyApplication = props => {
   const [serviceBranchOptions, setServiceBranchOptions] = useState([]);
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const [error, setError] = useState([]);
-
+  const [page, setPage] = useState(0);
+  console.log('page', page);
   useEffect(() => {
     props.f4FetchServiceAppStatus();
   }, []);
@@ -221,22 +225,30 @@ const MyApplication = props => {
     },
   ];
 
-  const [serverSideParams, setServerSideParams] = useState({});
+  const initialServerSideParams = {
+    page: 0,
+    size: 20,
+    orderBy: 'id',
+    direction: 'DESC',
+  };
+
+  const [serverSideParams, setServerSideParams] = useState({
+    ...initialServerSideParams,
+  });
+
+  console.log('serverSideParams', serverSideParams);
 
   const handleClickApply = () => {
+    setServerSideParams({
+      ...initialServerSideParams,
+    });
+
     props.clearSmopspMyApplication();
     validate();
     if (param.bukrs !== '') {
-      const page = 0;
-      const size = 20;
-      const orderBy = 'id';
-      const direction = 'DESC';
-      if (Object.keys(serverSideParams).length > 0) {
-        props.fetchMyApplication({ ...param, ...serverSideParams });
-      } else {
-        props.fetchMyApplication({ ...param, orderBy, direction, page, size });
-      }
-      setTurnOnReactFetch(true);
+      props.fetchMyApplication({ ...param, ...initialServerSideParams }, () =>
+        setTurnOnReactFetch(true),
+      );
     }
   };
 
@@ -393,18 +405,24 @@ const MyApplication = props => {
           <h4>{`Общее количество ${myApplication.totalElements}`}</h4>
         </Segment>
       ) : null}
-      <ReactTableServerSideWrapper
+
+      <ReactTableServerSideWrapperFilteredState
         data={myApplication ? myApplication.data : []}
         columns={columns}
         filterable={true}
         defaultPageSize={20}
+        pageSize={serverSideParams.size}
         showPagination={true}
         requestData={params => {
-          props.fetchMyApplication({ ...params, ...param });
+          props.fetchMyApplication({ ...params, ...param }, () =>
+            setTurnOnReactFetch(true),
+          );
           setServerSideParams({ ...params });
         }}
         pages={myApplication ? myApplication.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}
+        page={serverSideParams.page}
+        //onPageChange={newPage => setSer(newPage)}
       />
     </Container>
   );

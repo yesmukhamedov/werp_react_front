@@ -39,6 +39,7 @@ export default function(state = INITIAL_STATE, action) {
         ...state,
         myApplication: { ...action.payload.data },
       };
+
     case CLEAR_SMOPSP_MY_APPLICATION:
       return {
         ...state,

@@ -36,10 +36,13 @@ const ReactTableServerSideWrapperFilteredState = props => {
     loading = false,
     turnOnReactFetch = false,
     onRowClick = null,
-    filtered = [],
-    onFilteredChange = () => {},
+    filtered,
+    onFilteredChange,
     page,
     onPageChange = () => {},
+    pageSize,
+    SubComponent,
+    getTdProps,
   } = props;
 
   const fetchData = (params, instance) => {
@@ -106,6 +109,11 @@ const ReactTableServerSideWrapperFilteredState = props => {
         filterable={filterable}
         filtered={filtered}
         onFilteredChange={onFilteredChange}
+        page={page}
+        pageSize={pageSize}
+        onPageChange={onPageChange}
+        SubComponent={SubComponent}
+        getTdProps={getTdProps}
         getTdProps={(state, rowInfo, column, instance) => {
           if (typeof rowInfo !== 'undefined') {
             return {
