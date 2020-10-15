@@ -528,7 +528,6 @@ const Smsrcus = props => {
         </Modal.Actions>
       </Modal>
 
-      <Divider />
       {blackList == true ? (
         <Segment>
           <Form>
@@ -665,6 +664,22 @@ const Smsrcus = props => {
               </div>
             </Form.Group>
           </Form>
+          <Divider />
+          <div className="flexJustifySpaceBeetween">
+            <TotalCountsTable count={smsrcusBlackListData.totalElements} />
+            <ColumnsModal
+              tableHeaderCols={columnsForTable}
+              tableThings={things => {
+                setColumnsForTable(things);
+                //store in localstorage
+                let temp = {};
+                things.map(el => {
+                  temp = { ...temp, [el.accessor]: el.show };
+                });
+                localStorage.setItem('smsrcusTable', JSON.stringify(temp));
+              }}
+            />
+          </div>
           <ReactTableServerSideWrapperFilteredState
             data={smsrcusBlackListData.data}
             columns={columnsForTable}
@@ -870,6 +885,22 @@ const Smsrcus = props => {
               </Form.Button>
             </Form.Group>
           </Form>
+          <Divider />
+          <div className="flexJustifySpaceBeetween">
+            <TotalCountsTable count={smsrcusData.totalElements} />
+            <ColumnsModal
+              tableHeaderCols={columnsForTable}
+              tableThings={things => {
+                setColumnsForTable(things);
+                //store in localstorage
+                let temp = {};
+                things.map(el => {
+                  temp = { ...temp, [el.accessor]: el.show };
+                });
+                localStorage.setItem('smsrcusTable', JSON.stringify(temp));
+              }}
+            />
+          </div>
           <ReactTableServerSideWrapperFilteredState
             data={smsrcusData.data}
             columns={columnsForTable}
@@ -965,21 +996,6 @@ const Smsrcus = props => {
           />
         </Segment>
       )}
-      <div className="flexJustifySpaceBeetween">
-        <TotalCountsTable count={smsrcusData.totalElements} />
-        <ColumnsModal
-          tableHeaderCols={columnsForTable}
-          tableThings={things => {
-            setColumnsForTable(things);
-            //store in localstorage
-            let temp = {};
-            things.map(el => {
-              temp = { ...temp, [el.accessor]: el.show };
-            });
-            localStorage.setItem('smsrcusTable', JSON.stringify(temp));
-          }}
-        />
-      </div>
     </Container>
   );
 };
