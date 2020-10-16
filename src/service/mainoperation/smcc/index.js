@@ -101,6 +101,7 @@ function Smcc(props) {
     check: false,
     disabled: true,
   };
+
   const emptyServFilter = {
     active: true,
     bukrsId: '',
@@ -149,7 +150,6 @@ function Smcc(props) {
   };
 
   const [contract, setContract] = useState({ ...emptyContract });
-  console.log('contract', contract);
   const [servFilter, setServFilter] = useState({ ...emptyServFilter });
   const [startDate, setStartDate] = useState(moment(new Date()));
   const [customerF4ModalOpen, setCustomerF4ModalOpen] = useState(false);
@@ -158,6 +158,8 @@ function Smcc(props) {
   const [contractTypeOpts, setContractTypeOpts] = useState([]);
   const [matnrListF4ModalOpen, setMatnrListF4ModalOpen] = useState(false);
   const [error, setError] = useState([]);
+
+  console.log('contract', contract);
 
   const {
     companyOptions = [],
@@ -174,10 +176,19 @@ function Smcc(props) {
     bukrsBranches = [],
   } = props;
 
+  const filterContractType = contractTypeList
+    .filter(item => parseInt(item.bukrs) == contract.bukrsId)
+    .map(el => {
+      return {
+        key: el.contract_type_id,
+        text: el.name,
+        value: el.contract_type_id,
+        matnr: el.matnr,
+      };
+    });
+
   const branchOptionsByBukrs = bukrsBranches
-
     .filter(item => item.type == 3)
-
     .filter(item => item.tovarCategory == 2 || item.tovarCategory == 1)
     .map(item => {
       return {
@@ -276,66 +287,69 @@ function Smcc(props) {
           break;
 
         case 'branchId':
-          //get the selected branch
-          let waSelectedBranch = {};
-          branchOptions[contract.bukrsId]
-            .filter(item => item.key === o.value)
-            .forEach(item => {
-              waSelectedBranch = item;
-            });
+          varContract.branchId = o;
 
-          //get service branch from the same city
-          let serBranchInSameCity = {};
-          if (contract.bukrsId !== 3000) {
-            branchService[contract.bukrsId]
-              .filter(
-                item => item.parentbranchid === waSelectedBranch.parentbranchid,
-              )
-              .forEach(item => {
-                serBranchInSameCity = item;
-              });
-          }
+          // // //get the selected branch
+          // let waSelectedBranch = {};
+          // branchOptions[contract.bukrsId]
+          //   .filter(item => item.key === o.value)
+          //   .forEach(item => {
+          //     waSelectedBranch = item;
+          //   });
 
-          varContract.countryId = waSelectedBranch.countryid;
-          varContract.tovarCategoryId = waSelectedBranch.tovarcategory;
-          varContract.branchId = o.value;
-          varContract.tovarSn = '';
+          // // //get service branch from the same city
+          // let serBranchInSameCity = {};
+          // if (contract.bukrsId !== 3000) {
+          //   branchService[contract.bukrsId]
+          //     .filter(
+          //       item => item.parentbranchid === waSelectedBranch.parentbranchid,
+          //     )
+          //     .forEach(item => {
+          //       serBranchInSameCity = item;
+          //     });
+          // }
 
-          //service branch select
-          varContract.serviceBranchId = serBranchInSameCity.key;
-          setServFilter({
-            ...servFilter,
-            serviceBranchId: serBranchInSameCity.key,
-          });
+          // varContract.countryId = waSelectedBranch.countryid;
+          // varContract.tovarCategoryId = waSelectedBranch.tovarcategory;
+          // varContract.branchId = o.value;
+          // varContract.tovarSn = '';
 
-          let wa = { ...emptyContract };
-          wa.bukrsId = prev.bukrsId;
-          wa.branchId = o;
+          // //service branch select
+          // varContract.serviceBranchId = serBranchInSameCity.key;
+          // setServFilter({
+          //   ...servFilter,
+          //   serviceBranchId: serBranchInSameCity.key,
+          // });
 
-          let waConOptions = contractTypeList
-            .filter(
-              item =>
-                (item.bukrs == wa.bukrsId &&
-                  item.business_area_id === waSelectedBranch.businessareaid) ||
-                (item.bukrs === wa.bukrsId &&
-                  item.businessareaid === 4 &&
-                  waSelectedBranch.branchId === 210),
-            )
-            .map(item => {
-              return {
-                key: item.contract_type_id,
-                value: item.contract_type_id,
-                text: item.name,
-                matnr: item.matnr,
-              };
-            });
-          setContractTypeOpts(waConOptions);
+          // let wa = { ...emptyContract };
+          // wa.bukrsId = prev.bukrsId;
+          // wa.branchId = o;
+
+          // let waConOptions = contractTypeList
+          //   .filter(
+          //     item =>
+          //       (item.bukrs == wa.bukrsId &&
+          //         item.business_area_id === waSelectedBranch.businessareaid) ||
+          //       (item.bukrs === wa.bukrsId &&
+          //         item.businessareaid === 4 &&
+          //         waSelectedBranch.branchId === 210),
+          //   )
+          //   .map(item => {
+          //     return {
+          //       key: item.contract_type_id,
+          //       value: item.contract_type_id,
+          //       text: item.name,
+          //       matnr: item.matnr,
+          //     };
+          //   });
+          // setContractTypeOpts(waConOptions);
           break;
         case 'serviceBranchId':
           varContract.serviceBranchId = o.value;
           setServFilter({ ...servFilter, serviceBranchId: o.value });
           break;
         case 'contractTypeId':
+          console.log('o', o);
           let matnr = 0;
           for (let i = 0; i < o.options.length; i++) {
             if (o.value === o.options[i].value) {
@@ -479,31 +493,33 @@ function Smcc(props) {
       tovarSn !== '' &&
       serviceAddressId
     ) {
-      props.f4CreateServContract({
-        branchMonthTermsId,
-        contract: {
-          ...contract,
-          serviceAddressId,
-          branchId,
-          bukrsId,
-          contractDate,
-          contractNumber: contractTypeId,
-          customerId,
-          dealerId,
-          info,
-          lastStateId,
-          matnrListId,
-          tovarCategoryId,
-          tovarSn,
+      props.f4CreateServContract(
+        {
+          branchMonthTermsId,
+          contract: {
+            ...contract,
+            serviceAddressId,
+            branchId,
+            bukrsId,
+            contractDate,
+            contractNumber: contractTypeId,
+            customerId,
+            dealerId,
+            info,
+            lastStateId,
+            matnrListId,
+            tovarCategoryId,
+            tovarSn,
+          },
+          serviceFilter: {
+            ...servFilter,
+            bukrsId,
+            contractNumber: contractTypeId,
+            serviceBranchId,
+          },
         },
-        serviceFilter: {
-          ...servFilter,
-          bukrsId,
-          contractNumber: contractTypeId,
-          serviceBranchId,
-        },
-      });
-      clearContract();
+        () => clearContract(),
+      );
     }
   };
 
@@ -665,7 +681,9 @@ function Smcc(props) {
                           options={branchOptionsByBukrs}
                           value={contract.branchId}
                           allSelect={false}
-                          onChange={(e, o) => onInputChange(o, 'branchId')}
+                          onChange={(e, { value }) =>
+                            onInputChange(value, 'branchId')
+                          }
                           handleClear={(e, value) =>
                             onInputChange(value, 'clearBranchId')
                           }
@@ -721,7 +739,7 @@ function Smcc(props) {
                           search
                           selection
                           allSelect={false}
-                          options={contractTypeOpts ? contractTypeOpts : []}
+                          options={filterContractType}
                           value={contract.contractTypeId}
                           onChange={(e, o) =>
                             onInputChange(o, 'contractTypeId')
