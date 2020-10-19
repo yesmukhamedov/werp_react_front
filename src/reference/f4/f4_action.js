@@ -987,7 +987,6 @@ export function f4CreateServContract(contract, clear) {
           type: F4_POST_SERV_CONTRACT,
           payload: data,
         });
-        clear();
         dispatch(
           notify(
             'success',
@@ -995,6 +994,7 @@ export function f4CreateServContract(contract, clear) {
             errorTable[`104${language}`],
           ),
         );
+        clear();
       })
       .catch(error => {
         dispatch(modifyLoader(false));

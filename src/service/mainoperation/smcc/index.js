@@ -4,6 +4,7 @@ import {
   Segment,
   Grid,
   Form,
+  Dropdown,
   Table,
   Icon,
   Input,
@@ -22,7 +23,6 @@ import {
   f4FetchPhoneType,
   f4FetchMatnrListView,
   f4CreateServContract,
-  f4FetchBranchOptions,
 } from '../../../reference/f4/f4_action';
 
 import OutputErrors from '../../../general/error/outputErrors';
@@ -43,7 +43,6 @@ import {
   LinkToCustomerHrc03,
 } from '../../../utils/outlink';
 import DropdownClearable from '../../../utils/DropdownClearable';
-import { ItemMeta } from 'semantic-ui-react';
 
 function Smcc(props) {
   const emptyContract = {
@@ -159,11 +158,9 @@ function Smcc(props) {
   const [matnrListF4ModalOpen, setMatnrListF4ModalOpen] = useState(false);
   const [error, setError] = useState([]);
 
-  console.log('contract', contract);
-
   const {
     companyOptions = [],
-    branchOptions = [],
+    //branchOptions = [],
     phoneList = [],
     phoneListType,
     branchService,
@@ -171,32 +168,116 @@ function Smcc(props) {
     monthTerms,
     language,
     matnrListView,
-    intl: { messages },
-    branchOptionsf4,
+    branchOptionsAll,
     bukrsBranches = [],
+    intl: { messages },
   } = props;
 
-  const filterContractType = contractTypeList
-    .filter(item => parseInt(item.bukrs) == contract.bukrsId)
-    .map(el => {
-      return {
-        key: el.contract_type_id,
-        text: el.name,
-        value: el.contract_type_id,
-        matnr: el.matnr,
-      };
-    });
-
-  const branchOptionsByBukrs = bukrsBranches
+  const bukrs1000BranchesOptions = bukrsBranches
+    .filter(item => item.bukrs == '1000')
     .filter(item => item.type == 3)
-    .filter(item => item.tovarCategory == 2 || item.tovarCategory == 1)
+    .filter(item => item.tovarCategory == 1 || item.tovarCategory == 2)
+
     .map(item => {
       return {
+        businessareaid: item.business_area_id,
+        countryid: item.country_id,
         key: item.branch_id,
+        parentbranchid: item.parent_branch_id,
         text: item.text45,
+        tovarcategory: item.tovarCategory,
         value: item.branch_id,
       };
     });
+  const bukrs2000BranchesOptions = bukrsBranches
+    .filter(item => item.bukrs == '2000')
+    .filter(item => item.type == 3)
+    .filter(item => item.tovarCategory == 1 || item.tovarCategory == 2)
+
+    .map(item => {
+      return {
+        businessareaid: item.business_area_id,
+        countryid: item.country_id,
+        key: item.branch_id,
+        parentbranchid: item.parent_branch_id,
+        text: item.text45,
+        tovarcategory: item.tovarCategory,
+        value: item.branch_id,
+      };
+    });
+  const bukrs3000BranchesOptions = bukrsBranches
+    .filter(item => item.bukrs == '3000')
+    .filter(item => item.type == 3)
+    .filter(item => item.tovarCategory == 1 || item.tovarCategory == 2)
+
+    .map(item => {
+      return {
+        businessareaid: item.business_area_id,
+        countryid: item.country_id,
+        key: item.branch_id,
+        parentbranchid: item.parent_branch_id,
+        text: item.text45,
+        tovarcategory: item.tovarCategory,
+        value: item.branch_id,
+      };
+    });
+  const bukrs4000BranchesOptions = bukrsBranches
+    .filter(item => item.bukrs == '4000')
+    .filter(item => item.type == 3)
+    .filter(item => item.tovarCategory == 1 || item.tovarCategory == 2)
+
+    .map(item => {
+      return {
+        businessareaid: item.business_area_id,
+        countryid: item.country_id,
+        key: item.branch_id,
+        parentbranchid: item.parent_branch_id,
+        text: item.text45,
+        tovarcategory: item.tovarCategory,
+        value: item.branch_id,
+      };
+    });
+  const bukrs5000BranchesOptions = bukrsBranches
+    .filter(item => item.bukrs == '5000')
+    .filter(item => item.type == 3)
+    .filter(item => item.tovarCategory == 1 || item.tovarCategory == 2)
+
+    .map(item => {
+      return {
+        businessareaid: item.business_area_id,
+        countryid: item.country_id,
+        key: item.branch_id,
+        parentbranchid: item.parent_branch_id,
+        text: item.text45,
+        tovarcategory: item.tovarCategory,
+        value: item.branch_id,
+      };
+    });
+  const bukrs6000BranchesOptions = bukrsBranches
+    .filter(item => item.bukrs == '6000')
+    .filter(item => item.type == 3)
+    .filter(item => item.tovarCategory == 1 || item.tovarCategory == 2)
+
+    .map(item => {
+      return {
+        businessareaid: item.business_area_id,
+        countryid: item.country_id,
+        key: item.branch_id,
+        parentbranchid: item.parent_branch_id,
+        text: item.text45,
+        tovarcategory: item.tovarCategory,
+        value: item.branch_id,
+      };
+    });
+
+  const branchOptions = {
+    1000: [...bukrs1000BranchesOptions],
+    2000: [...bukrs2000BranchesOptions],
+    3000: [...bukrs3000BranchesOptions],
+    4000: [...bukrs4000BranchesOptions],
+    5000: [...bukrs5000BranchesOptions],
+    6000: [...bukrs6000BranchesOptions],
+  };
 
   const lang = language.charAt(0).toUpperCase() + language.slice(1);
 
@@ -205,8 +286,6 @@ function Smcc(props) {
     props.f4FetchPhoneType();
     props.f4FetchConTypeList();
     props.f4FetchBranches();
-    props.f4FetchBranchOptions();
-
     return () => {
       props.f4ClearAnyObject('F4_CLEAR_CONTYPE_LIST');
       props.f4ClearAnyObject('F4_CLEAR_BRANCHES');
@@ -223,18 +302,19 @@ function Smcc(props) {
         matnr,
       });
     }
-    if (bukrsId) {
-      props.f4FetchBranchesByBukrs(bukrsId);
-    }
   }, [contract.bukrsId, contract.serviceBranchId, contract.matnr]);
 
   useEffect(() => {
     const { bukrsId, matnr } = contract;
-    if (bukrsId && matnr) {
+    if (bukrsId !== '' && matnr !== '') {
       props.f4FetchMatnrListView({
         bukrs: bukrsId,
         matnr,
       });
+    }
+
+    if (contract.bukrsId) {
+      props.f4FetchBranchesByBukrs(contract.bukrsId);
     }
   }, [contract.bukrsId, contract.matnr]);
 
@@ -280,76 +360,69 @@ function Smcc(props) {
       switch (fieldName) {
         case 'bukrsId':
           varContract.bukrsId = o.value;
-          varContract.branchId = '';
-          varContract.serviceBranchId = '';
-          varContract.contractTypeId = '';
-          varContract.matnr = '';
           break;
 
         case 'branchId':
-          varContract.branchId = o;
+          //get the selected branch
+          let waSelectedBranch = {};
+          branchOptions[contract.bukrsId]
+            .filter(item => item.key === o.value)
+            .forEach(item => {
+              waSelectedBranch = item;
+            });
 
-          // // //get the selected branch
-          // let waSelectedBranch = {};
-          // branchOptions[contract.bukrsId]
-          //   .filter(item => item.key === o.value)
-          //   .forEach(item => {
-          //     waSelectedBranch = item;
-          //   });
+          //get service branch from the same city
+          let serBranchInSameCity = {};
+          if (contract.bukrsId !== 3000) {
+            branchService[contract.bukrsId]
+              .filter(
+                item => item.parentbranchid === waSelectedBranch.parentbranchid,
+              )
+              .forEach(item => {
+                serBranchInSameCity = item;
+              });
+          }
 
-          // // //get service branch from the same city
-          // let serBranchInSameCity = {};
-          // if (contract.bukrsId !== 3000) {
-          //   branchService[contract.bukrsId]
-          //     .filter(
-          //       item => item.parentbranchid === waSelectedBranch.parentbranchid,
-          //     )
-          //     .forEach(item => {
-          //       serBranchInSameCity = item;
-          //     });
-          // }
+          varContract.countryId = waSelectedBranch.countryid;
+          varContract.tovarCategoryId = waSelectedBranch.tovarcategory;
+          varContract.branchId = o.value;
+          varContract.tovarSn = '';
 
-          // varContract.countryId = waSelectedBranch.countryid;
-          // varContract.tovarCategoryId = waSelectedBranch.tovarcategory;
-          // varContract.branchId = o.value;
-          // varContract.tovarSn = '';
+          //service branch select
+          varContract.serviceBranchId = serBranchInSameCity.key;
+          setServFilter({
+            ...servFilter,
+            serviceBranchId: serBranchInSameCity.key,
+          });
 
-          // //service branch select
-          // varContract.serviceBranchId = serBranchInSameCity.key;
-          // setServFilter({
-          //   ...servFilter,
-          //   serviceBranchId: serBranchInSameCity.key,
-          // });
+          let wa = { ...emptyContract };
+          wa.bukrsId = prev.bukrsId;
+          wa.branchId = o;
 
-          // let wa = { ...emptyContract };
-          // wa.bukrsId = prev.bukrsId;
-          // wa.branchId = o;
-
-          // let waConOptions = contractTypeList
-          //   .filter(
-          //     item =>
-          //       (item.bukrs == wa.bukrsId &&
-          //         item.business_area_id === waSelectedBranch.businessareaid) ||
-          //       (item.bukrs === wa.bukrsId &&
-          //         item.businessareaid === 4 &&
-          //         waSelectedBranch.branchId === 210),
-          //   )
-          //   .map(item => {
-          //     return {
-          //       key: item.contract_type_id,
-          //       value: item.contract_type_id,
-          //       text: item.name,
-          //       matnr: item.matnr,
-          //     };
-          //   });
-          // setContractTypeOpts(waConOptions);
+          let waConOptions = contractTypeList
+            .filter(
+              item =>
+                (item.bukrs == wa.bukrsId &&
+                  item.business_area_id === waSelectedBranch.businessareaid) ||
+                (item.bukrs === wa.bukrsId &&
+                  item.businessareaid === 4 &&
+                  waSelectedBranch.branchId === 210),
+            )
+            .map(item => {
+              return {
+                key: item.contract_type_id,
+                value: item.contract_type_id,
+                text: item.name,
+                matnr: item.matnr,
+              };
+            });
+          setContractTypeOpts(waConOptions);
           break;
         case 'serviceBranchId':
           varContract.serviceBranchId = o.value;
           setServFilter({ ...servFilter, serviceBranchId: o.value });
           break;
         case 'contractTypeId':
-          console.log('o', o);
           let matnr = 0;
           for (let i = 0; i < o.options.length; i++) {
             if (o.value === o.options[i].value) {
@@ -659,7 +732,6 @@ function Smcc(props) {
                           handleClear={(e, value) =>
                             onInputChange(value, 'clearBukrsId')
                           }
-                          allSelect={false}
                         />
                       </Table.Cell>
                     </Table.Row>
@@ -678,12 +750,13 @@ function Smcc(props) {
                           fluid
                           selection
                           search
-                          options={branchOptionsByBukrs}
-                          value={contract.branchId}
-                          allSelect={false}
-                          onChange={(e, { value }) =>
-                            onInputChange(value, 'branchId')
+                          options={
+                            contract.bukrsId
+                              ? branchOptions[contract.bukrsId]
+                              : []
                           }
+                          value={contract.branchId}
+                          onChange={(e, o) => onInputChange(o, 'branchId')}
                           handleClear={(e, value) =>
                             onInputChange(value, 'clearBranchId')
                           }
@@ -706,7 +779,6 @@ function Smcc(props) {
                           fluid
                           selection
                           search
-                          allSelect={false}
                           options={
                             contract.branchId && contract.bukrsId !== 3000
                               ? branchService[contract.bukrsId]
@@ -738,8 +810,7 @@ function Smcc(props) {
                           fluid
                           search
                           selection
-                          allSelect={false}
-                          options={filterContractType}
+                          options={contractTypeOpts ? contractTypeOpts : []}
                           value={contract.contractTypeId}
                           onChange={(e, o) =>
                             onInputChange(o, 'contractTypeId')
@@ -1126,15 +1197,15 @@ function mapStateToProps(state) {
   return {
     language: state.locales.lang,
     companyOptions: state.userInfo.companyOptions,
+    branchOptionsAll: state.userInfo.branchOptionsAll,
     branchOptions: state.userInfo.branchOptionsMarketing,
     branchService: state.userInfo.branchOptionsService,
     contractTypeList: state.f4.contractTypeList,
+    bukrsBranches: state.f4.bukrsBranches,
     phoneList: state.f4.phoneList.data,
     phoneListType: state.f4.phoneType.data,
     monthTerms: state.f4.monthTerms.data,
     matnrListView: state.f4.matnrListView.data,
-    branchOptionsf4: state.f4.branchOptions,
-    bukrsBranches: state.f4.bukrsBranches,
   };
 }
 
@@ -1148,5 +1219,4 @@ export default connect(mapStateToProps, {
   f4FetchMonthTerms,
   f4FetchMatnrListView,
   f4CreateServContract,
-  f4FetchBranchOptions,
 })(injectIntl(Smcc));
