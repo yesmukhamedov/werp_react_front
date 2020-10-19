@@ -72,7 +72,7 @@ const AssignedCalls = props => {
     },
     {
       Header: messages['brnch'],
-      accessor: 'branchName',
+      accessor: 'branchId',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
     },
@@ -83,12 +83,7 @@ const AssignedCalls = props => {
       Cell: row => <TextAlignCenter text={row.value} />,
       width: 60,
     },
-    {
-      Header: messages['brnch'],
-      accessor: 'branchId',
-      checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
-    },
+
     {
       Header: messages['factory_number'],
       accessor: 'tovarSn',
