@@ -8,7 +8,10 @@ import OutputErrors from '../../../../general/error/outputErrors';
 import { errorTableText } from '../../../../utils/helpers';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
-import { fetchMyApplicationExodus } from '../smopccocAction';
+import {
+  fetchMyApplicationExodus,
+  clearMyApplicationExodus,
+} from '../smopccocAction';
 import ColumnsModal from '../../../../utils/ColumnsModal';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -19,6 +22,7 @@ import {
 } from '../../../../utils/helpers';
 import DropdownClearable from '../../../../utils/DropdownClearable';
 import moment from 'moment';
+import ReactTableServerSideWrapperFilteredState from '../../../../utils/ReactTableServerSideWrapperFilteredState';
 
 const MyApplicationExodus = props => {
   const {
@@ -31,9 +35,9 @@ const MyApplicationExodus = props => {
   } = props;
 
   const emptyParam = {
-    countryId: '',
-    bukrs: '',
-    branchId: '',
+    countryId: null,
+    bukrs: null,
+    branchId: null,
     dateOpenAt: '',
     dateOpenTo: '',
   };
@@ -248,7 +252,7 @@ const MyApplicationExodus = props => {
     if (param.bukrs) {
       setServiceBranchOptions(branchOptions[param.bukrs]);
     }
-    if (param.bukrs !== '' && param.countryId !== '' && branchOptions) {
+    if (param.bukrs && param.countryId && branchOptions) {
       let brnchOpt = branchOptions[param.bukrs].filter(
         item => item.countryid === param.countryId,
       );
@@ -256,36 +260,38 @@ const MyApplicationExodus = props => {
     }
   }, [branchOptions, param.countryId, param.bukrs]);
 
-  const [serverSideParams, setServerSideParams] = useState({});
-
-  const handleClickApplyMyApp = () => {
-    validate();
-    if (param.bukrs !== '') {
-      const page = 0;
-      const size = 20;
-      const orderBy = 'id';
-      const direction = 'DESC';
-      if (Object.keys(serverSideParams).length > 0) {
-        props.fetchMyApplicationExodus({ ...param, ...serverSideParams });
-      } else {
-        props.fetchMyApplicationExodus({
-          ...param,
-          orderBy,
-          direction,
-          page,
-          size,
-        });
-      }
-      setTurnOnReactFetch(true);
-    }
+  const initialServerSideParams = {
+    page: 0,
+    size: 20,
+    orderBy: 'id',
+    direction: 'DESC',
   };
 
-  const validate = () => {
-    const errors = [];
-    if (param.bukrs === '') {
+  const [serverSideParams, setServerSideParams] = useState({
+    ...initialServerSideParams,
+  });
+
+  const [filtered, setFiltered] = useState([]);
+
+  //Поиск
+  const handleClickApplyMyApp = () => {
+    if (param.bukrs) {
+      props.clearMyApplicationExodus();
+      setFiltered([]);
+      setTurnOnReactFetch(false);
+      props.fetchMyApplicationExodus(
+        { ...param, ...initialServerSideParams },
+        () => setTurnOnReactFetch(true),
+      );
+      setServerSideParams({
+        ...initialServerSideParams,
+      });
+      setError([]);
+    } else {
+      const errors = [];
       errors.push(errorTableText(5));
+      setError(() => errors);
     }
-    setError(() => errors);
   };
 
   const onInputChange = (o, fieldName) => {
@@ -315,13 +321,13 @@ const MyApplicationExodus = props => {
       const prevParam = { ...prev };
       switch (fieldName) {
         case 'countryId':
-          prevParam.countryId = '';
+          prevParam.countryId = null;
           break;
         case 'bukrs':
-          prevParam.bukrs = '';
+          prevParam.bukrs = null;
           break;
         case 'branchId':
-          prevParam.branchId = '';
+          prevParam.branchId = null;
           break;
         default:
           prevParam[fieldName] = '';
@@ -329,6 +335,7 @@ const MyApplicationExodus = props => {
       return prevParam;
     });
   };
+
   return (
     <Container fluid className="containerMargin">
       <Form>
@@ -337,7 +344,7 @@ const MyApplicationExodus = props => {
             <label>{messages['country']}</label>
             <DropdownClearable
               options={countryOptions}
-              value={param.countryId}
+              value={param.countryId ? param.countryId : ''}
               placeholder={messages['country']}
               onChange={(e, o) => onInputChange(o, 'countryId')}
               handleClear={() => handleClear('countryId')}
@@ -347,7 +354,7 @@ const MyApplicationExodus = props => {
             <label>{messages['bukrs']}</label>
             <DropdownClearable
               options={companyOptions}
-              value={param.bukrs}
+              value={param.bukrs ? param.bukrs : ''}
               placeholder={messages['bukrs']}
               onChange={(e, o) => onInputChange(o, 'bukrs')}
               handleClear={() => handleClear('bukrs')}
@@ -357,7 +364,7 @@ const MyApplicationExodus = props => {
             <label>{messages['brnch']}</label>
             <DropdownClearable
               options={serviceBranchOptions}
-              value={param.branchId}
+              value={param.branchId ? param.branchId : ''}
               placeholder={messages['brnch']}
               onChange={(e, o) => onInputChange(o, 'branchId')}
               handleClear={() => handleClear('branchId')}
@@ -447,18 +454,25 @@ const MyApplicationExodus = props => {
         </Segment>
       ) : null}
 
-      <ReactTableServerSideWrapper
+      <ReactTableServerSideWrapperFilteredState
         data={myApplication ? myApplication.data : []}
         columns={columnsForTable}
         filterable={true}
-        defaultPageSize={20}
+        pageSize={serverSideParams.size}
         showPagination={true}
         requestData={params => {
-          props.fetchMyApplicationExodus({ ...params, ...param });
+          props.fetchMyApplicationExodus({ ...param, ...params }, () =>
+            setTurnOnReactFetch(true),
+          );
           setServerSideParams({ ...params });
         }}
         pages={myApplication ? myApplication.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}
+        page={serverSideParams.page}
+        filtered={filtered}
+        onFilteredChange={filter => {
+          setFiltered(filter);
+        }}
       />
     </Container>
   );
@@ -474,4 +488,5 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
   fetchServiceListManager,
   fetchMyApplicationExodus,
+  clearMyApplicationExodus,
 })(injectIntl(MyApplicationExodus));

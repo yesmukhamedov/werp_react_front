@@ -3,6 +3,7 @@ import {
   FETCH_SERVICE_TRANSFER_APPLICATION_EXODUS,
   FETCH_SERVICE_CRMSchedule,
   FETCH_SERVICE_MY_APPLICATION_EXODUS,
+  CLEAR_MY_APPLICATION_EXODUS,
   POST_TO_CANCEL_PLAN,
 } from './smopccocAction';
 
@@ -36,6 +37,11 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         myApplication: { ...action.payload.data },
+      };
+    case CLEAR_MY_APPLICATION_EXODUS:
+      return {
+        ...state,
+        myApplication: {},
       };
 
     case POST_TO_CANCEL_PLAN:

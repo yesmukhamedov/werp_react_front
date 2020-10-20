@@ -1009,7 +1009,6 @@ const Srlsm = props => {
         showPagination={true}
         requestData={params => {
           setServerSideParams({ ...params });
-          // console.log('SS params', params);
           props.fetchSrlsm({ ...param, ...params }, () =>
             setTurnOnReactFetch(true),
           );
@@ -1018,7 +1017,6 @@ const Srlsm = props => {
         turnOnReactFetch={turnOnReactFetch}
         filtered={filtered}
         onFilteredChange={filter => {
-          console.log('FILTER', filter);
           setFiltered(filter);
         }}
         page={tablePage}

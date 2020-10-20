@@ -18,6 +18,7 @@ export const FETCH_SERVICE_CRMSchedule = 'FETCH_SERVICE_CRMSchedule';
 //Мои заявки
 export const FETCH_SERVICE_MY_APPLICATION_EXODUS =
   'FETCH_SERVICE_MY_APPLICATION_EXODUS';
+export const CLEAR_MY_APPLICATION_EXODUS = 'CLEAR_MY_APPLICATION_EXODUS';
 
 export const POST_TO_CANCEL_PLAN = 'POST_TO_CANCEL_PLAN';
 
@@ -86,7 +87,7 @@ export const fetchCRMSchedule = param => {
 };
 
 //Мои заявки
-export const fetchMyApplicationExodus = param => {
+export const fetchMyApplicationExodus = (param, setFunc) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`smopccoc/myApplication`, param)
@@ -96,6 +97,7 @@ export const fetchMyApplicationExodus = param => {
           type: FETCH_SERVICE_MY_APPLICATION_EXODUS,
           payload: data,
         });
+        setFunc();
       })
       .catch(error => {
         dispatch(modifyLoader(false));
@@ -103,6 +105,13 @@ export const fetchMyApplicationExodus = param => {
       });
   };
 };
+export function clearMyApplicationExodus() {
+  return function(dispatch) {
+    dispatch({
+      type: CLEAR_MY_APPLICATION_EXODUS,
+    });
+  };
+}
 
 //Отмена заявки
 export const postToCancelPlan = (param, fetchFilterPlan) => {
