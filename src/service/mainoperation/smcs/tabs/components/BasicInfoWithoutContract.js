@@ -44,6 +44,7 @@ const BasicInfoWithoutContract = props => {
           </Table.Cell>
           <Table.Cell>
             <DropdownClearable
+              allSelect={false}
               value={data.bukrs ? data.bukrs : ''}
               options={companyOptions}
               onChange={(e, value) =>
@@ -63,6 +64,7 @@ const BasicInfoWithoutContract = props => {
           </Table.Cell>
           <Table.Cell>
             <DropdownClearable
+              allSelect={false}
               value={data.branchId ? data.branchId : ''}
               options={branchOptions}
               onChange={(e, value) =>
@@ -94,6 +96,7 @@ const BasicInfoWithoutContract = props => {
           </Table.Cell>
           <Table.Cell>
             <DropdownClearable
+              allSelect={false}
               value={data.categoryId}
               options={categoryOptions}
               onChange={(e, value) =>
@@ -113,6 +116,7 @@ const BasicInfoWithoutContract = props => {
           </Table.Cell>
           <Table.Cell>
             <DropdownClearable
+              allSelect={false}
               value={data.tovarId}
               options={tovarOptions}
               onChange={(e, value) =>
