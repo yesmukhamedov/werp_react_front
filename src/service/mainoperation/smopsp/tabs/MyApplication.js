@@ -8,7 +8,6 @@ import { errorTableText } from '../../../../utils/helpers';
 import { fetchMyApplication, clearSmopspMyApplication } from '../smopspAction';
 import { fetchServiceListManager } from '../../../report/serviceReportAction';
 import { f4FetchServiceAppStatus } from '../../../../reference/f4/f4_action';
-import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
 import DatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -92,7 +91,7 @@ const MyApplication = props => {
     },
     {
       Header: messages['brnch'],
-      accessor: 'branchName',
+      accessor: 'branchId',
       checked: true,
     },
     {
@@ -102,12 +101,7 @@ const MyApplication = props => {
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       width: 60,
     },
-    {
-      Header: messages['brnch'],
-      accessor: 'branchId',
-      checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-    },
+
     {
       Header: messages['factory_number'],
       accessor: 'tovarSn',
@@ -422,7 +416,6 @@ const MyApplication = props => {
         pages={myApplication ? myApplication.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}
         page={serverSideParams.page}
-        //onPageChange={newPage => setSer(newPage)}
       />
     </Container>
   );

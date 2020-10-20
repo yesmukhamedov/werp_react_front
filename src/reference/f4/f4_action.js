@@ -974,7 +974,7 @@ export function f4FetchMatnrListView(data) {
   };
 }
 
-export function f4CreateServContract(contract) {
+export function f4CreateServContract(contract, clear) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     console.log(contract);
@@ -994,6 +994,7 @@ export function f4CreateServContract(contract) {
             errorTable[`104${language}`],
           ),
         );
+        clear();
       })
       .catch(error => {
         dispatch(modifyLoader(false));
