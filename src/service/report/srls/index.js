@@ -4,7 +4,7 @@ import {
   f4fetchCategory,
   f4FetchServiceAppStatus,
 } from '../../../reference/f4/f4_action';
-import { fetchSrls, fetchServiceTypeList } from './srlsAction';
+import { fetchSrls, fetchServiceTypeList, clearSrls } from './srlsAction';
 import { injectIntl } from 'react-intl';
 import { Icon, Container, Segment, Form, Dropdown } from 'semantic-ui-react';
 import 'react-table/react-table.css';
@@ -17,7 +17,7 @@ import {
 } from '../../../utils/helpers';
 import '../../service.css';
 import { LinkToSmcuspor, LinkToSmvs } from '../../../utils/outlink';
-import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
+import ReactTableServerSideWrapperFilteredState from '../../../utils/ReactTableServerSideWrapperFilteredState';
 
 import DropdownClearable from '../../../utils/DropdownClearable';
 import OutputErrors from '../../../general/error/outputErrors';
@@ -34,47 +34,27 @@ const Srls = props => {
     companyOptions = [],
     serviceAppStatus = [],
     serviceTypeList = [],
-    srlsData = [],
-    srlsTotalPages,
-    srlsTotalElements,
+    srlsData = {},
     branchOptionsService,
   } = props;
   const emptyParam = {
-    bukrs: '',
-    branchId: '',
-    categoryId: '',
-    serviceTypeId: '',
-    serviceStatusId: '',
+    bukrs: null,
+    branchId: null,
+    categoryId: null,
+    serviceTypeId: null,
+    serviceStatusId: null,
     dateAt: '',
     dateTo: '',
-    direction: 'DESC',
-    orderBy: 'id',
   };
 
   const [param, setParam] = useState({ ...emptyParam });
+
+  console.log('PARAM', param);
   const [error, setError] = useState([]);
-  const [maxDateAt, setMaxDateAt] = useState(
-    param.dateTo == ''
-      ? moment(new Date())
-      : stringYYYYMMDDToMoment(param.dateTo),
-  );
-
-  const [maxDateTo, setMaxDateTo] = useState(
-    param.dateTo == ''
-      ? moment(new Date())
-      : stringYYYYMMDDToMoment(param.dateTo),
-  );
-
-  useEffect(() => {
-    if (stringYYYYMMDDToMoment(param.dateTo) != '') {
-      setMaxDateAt(stringYYYYMMDDToMoment(param.dateTo));
-    }
-  }, [param.dateAt, param.dateTo]);
 
   useEffect(() => {
     props.f4FetchServiceAppStatus();
     props.f4fetchCategory();
-
     props.f4FetchServiceAppStatus();
     props.fetchServiceTypeList();
   }, []);
@@ -109,19 +89,19 @@ const Srls = props => {
       switch (fieldName) {
         case 'bukrs':
           varSrls.bukrs = o.value;
+          varSrls.branchId = null;
           break;
         case 'branchId':
-          //varSrls.branchId = o.value;
-          varSrls.branchId = o.value.length > 0 ? o.value.join() : '';
+          varSrls.branchId = o.value.length > 0 ? o.value.join() : null;
           break;
         case 'categoryId':
-          varSrls.categoryId = o.value.length > 0 ? o.value.join() : '';
+          varSrls.categoryId = o.value.length > 0 ? o.value.join() : null;
           break;
         case 'serviceTypeId':
-          varSrls.serviceTypeId = o.value.length > 0 ? o.value.join() : '';
+          varSrls.serviceTypeId = o.value.length > 0 ? o.value.join() : null;
           break;
         case 'serviceStatusId':
-          varSrls.serviceStatusId = o.value.length > 0 ? o.value.join() : '';
+          varSrls.serviceStatusId = o.value.length > 0 ? o.value.join() : null;
           break;
         default:
           varSrls[fieldName] = o.value;
@@ -251,37 +231,37 @@ const Srls = props => {
     setColumns([...data]);
   };
 
-  useEffect(() => {
-    if (param.bukrs == '') {
-      setParam({ ...param, branchId: '' });
-    }
-  }, [param.bukrs]);
+  const initialServerSideParams = {
+    page: 0,
+    size: 20,
+    orderBy: 'id',
+    direction: 'DESC',
+  };
+
+  const [serverSideParams, setServerSideParams] = useState({
+    ...initialServerSideParams,
+  });
 
   const [filtered, setFiltered] = useState([]);
 
-  const [serverSideParams, setServerSideParams] = useState({});
-
-  useEffect(() => {
-    if (param.bukrs) {
-      setTimeout(
-        () => props.fetchSrls({ ...serverSideParams, ...param }),
-        2000,
-      );
-    }
-  }, [serverSideParams]);
-
+  //Поиск
   const handleClickApply = () => {
-    const errors = [];
-    const page = 0;
-    const size = 20;
     if (param.bukrs) {
+      props.clearSrls();
       setFiltered([]);
-      props.fetchSrls({ ...param, page, size });
+      setTurnOnReactFetch(false);
+      props.fetchSrls({ ...param, ...initialServerSideParams }, () =>
+        setTurnOnReactFetch(true),
+      );
+      setServerSideParams({
+        ...initialServerSideParams,
+      });
+      setError([]);
     } else {
+      const errors = [];
       errors.push(errorTableText(5));
+      setError(() => errors);
     }
-    setTurnOnReactFetch(true);
-    setError(errors);
   };
 
   return (
@@ -306,7 +286,9 @@ const Srls = props => {
               options={companyOptions}
               onChange={(e, o) => onInputChange(o, 'bukrs')}
               value={param.bukrs}
-              handleClear={() => setParam({ ...param, bukrs: '' })}
+              handleClear={() =>
+                setParam({ ...param, bukrs: null, branchId: null })
+              }
             />
           </Form.Field>
 
@@ -375,7 +357,6 @@ const Srls = props => {
                     dateAt: momentToStringYYYYMMDD(date),
                   })
                 }
-                maxDate={maxDateAt}
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
@@ -399,7 +380,6 @@ const Srls = props => {
                     dateTo: momentToStringYYYYMMDD(date),
                   })
                 }
-                maxDate={maxDateTo}
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
@@ -423,24 +403,26 @@ const Srls = props => {
       </Form>
       <OutputErrors errors={error} />
 
-      <TotalCountsTable count={srlsTotalElements ? srlsTotalElements : 0} />
+      <TotalCountsTable count={srlsData ? srlsData.totalElements : 0} />
 
-      <ReactTableServerSideWrapper
-        data={srlsData}
+      <ReactTableServerSideWrapperFilteredState
+        data={srlsData ? srlsData.data : []}
         columns={columns}
         filterable={true}
-        pageSize={20}
         showPagination={true}
+        pageSize={serverSideParams.size}
         requestData={params => {
+          props.fetchSrls({ ...param, ...params }, () =>
+            setTurnOnReactFetch(true),
+          );
           setServerSideParams({ ...params });
-          setTurnOnReactFetch(true);
         }}
-        pages={srlsTotalPages ? srlsTotalPages : ''}
+        pages={srlsData ? srlsData.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}
+        page={serverSideParams.page}
         filtered={filtered}
         onFilteredChange={filter => {
-          setTurnOnReactFetch(true);
-          setFiltered([...filter]);
+          setFiltered(filter);
         }}
       />
     </Container>
@@ -457,8 +439,6 @@ function mapStateToProps(state) {
     contractStatusList: state.f4.contractStatusList,
     serviceTypeList: state.srlsmReducer.serviceTypeList,
     srlsData: state.srlsReducer.srlsData,
-    srlsTotalPages: state.srlsReducer.srlsTotalPages,
-    srlsTotalElements: state.srlsReducer.srlsTotalElements,
   };
 }
 
@@ -466,5 +446,6 @@ export default connect(mapStateToProps, {
   f4fetchCategory,
   f4FetchServiceAppStatus,
   fetchSrls,
+  clearSrls,
   fetchServiceTypeList,
 })(injectIntl(Srls));
