@@ -162,11 +162,11 @@ const BasicInfoWithoutContract = props => {
               allSelect={false}
               value={data.masterId ? data.masterId : ''}
               options={masterOptions}
-              onChange={(e, value) =>
+              onChange={(e, { value }) =>
                 onBasicInfoInputChange(value, 'selectMaster')
               }
-              handleClear={(e, value) =>
-                onBasicInfoInputChange(value, 'clearMaster')
+              handleClear={(e, item) =>
+                onBasicInfoInputChange(item, 'clearMaster')
               }
             />
           </Table.Cell>
@@ -183,11 +183,11 @@ const BasicInfoWithoutContract = props => {
               allSelect={false}
               value={data.operatorId ? data.operatorId : ''}
               options={operatorOptions}
-              onChange={(e, value) =>
+              onChange={(e, { value }) =>
                 onBasicInfoInputChange(value, 'selectOperator')
               }
-              handleClear={(e, value) =>
-                onBasicInfoInputChange(value, 'clearOperator')
+              handleClear={(e, item) =>
+                onBasicInfoInputChange(item, 'clearOperator')
               }
             />
           </Table.Cell>

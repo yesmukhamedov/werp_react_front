@@ -337,7 +337,6 @@ const TabSmcsWithoutRequest = props => {
 
   const [services, setServices] = useState([]);
 
-  console.log('services', services);
   useEffect(() => {
     setCheckStatus(false);
   }, [services]);
