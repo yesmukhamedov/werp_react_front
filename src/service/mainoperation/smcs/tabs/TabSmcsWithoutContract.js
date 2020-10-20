@@ -81,7 +81,6 @@ const TabSmcsWithoutContract = props => {
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
-  console.log('service CONTRACT', service);
   const [paymentChecked, setPaymentChecked] = useState(false);
   const [hkontS, setHkontS] = useState('');
 
@@ -195,7 +194,6 @@ const TabSmcsWithoutContract = props => {
         setService({ ...service, operatorFullName: '', operatorId: 0 });
         break;
       case 'infoChange':
-        console.log('VALUE', value.value);
         setService({ ...service, info: value.value });
         break;
       case 'changeServiceDate':

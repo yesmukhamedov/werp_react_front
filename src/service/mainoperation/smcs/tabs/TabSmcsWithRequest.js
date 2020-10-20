@@ -74,8 +74,6 @@ const TabSmcsWithRequest = props => {
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
 
-  console.log('SERVICE', service);
-
   const [paymentChecked, setPaymentChecked] = useState(false);
   const [hkontS, setHkontS] = useState('');
 
@@ -286,8 +284,6 @@ const TabSmcsWithRequest = props => {
   };
 
   const onChangeSumm = (id, value) => {
-    console.log('SERVICES value', value, 'ID', id);
-
     setServices(
       services.map(item =>
         item.serviceTypeId == id
@@ -635,7 +631,6 @@ const TabSmcsWithRequest = props => {
 
         break;
       case 'duplicateCartridge':
-        console.log('duplicateCartridge', value);
         setCartridgeList([
           ...cartridgeList,
           {

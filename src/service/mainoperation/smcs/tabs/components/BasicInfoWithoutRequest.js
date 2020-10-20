@@ -173,6 +173,7 @@ const BasicInfoWithoutRequest = props => {
           </Table.Cell>
           <Table.Cell>
             <DropdownClearable
+              allSelect={false}
               options={masterOptions}
               value={data.masterId ? data.masterId : ''}
               placeholder="Мастер"
@@ -194,6 +195,7 @@ const BasicInfoWithoutRequest = props => {
           </Table.Cell>
           <Table.Cell>
             <DropdownClearable
+              allSelect={false}
               options={operatorOptions}
               value={data.operatorId ? data.operatorId : ''}
               placeholder="Оператор"

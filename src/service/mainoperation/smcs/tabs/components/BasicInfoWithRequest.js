@@ -115,6 +115,7 @@ const BasicInfoWithoutContract = props => {
           <Table.Cell>Оператор</Table.Cell>
           <Table.Cell>
             <DropdownClearable
+              allSelect={false}
               value={data.operatorId ? data.operatorId : ''}
               options={operatorOptions}
               onChange={(e, { value }) =>
