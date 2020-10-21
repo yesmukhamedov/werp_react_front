@@ -1,92 +1,121 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Segment, Divider, Button, Form, Icon, Popup } from 'semantic-ui-react';
 import { connect } from 'react-redux';
-import { injectIntl } from 'react-intl';
-import OutputErrors from '../../../general/error/outputErrors';
-import {
-  clearDynObjService,
-  fetchAppStatus,
-  fetchAppType,
-  fetchAppList,
-  fetchAppMasterList,
-  fetchClearAppList,
-  fetchAppListSearchParam,
-  fetchMasterList,
-  fetchOperatorList,
-  clearOperatorList,
-  clearMasterList,
-} from '../../serviceAction';
+import { Link } from 'react-router-dom';
 
-import { f4fetchCategory } from '../../../reference/f4/f4_action';
+import {
+  fetchSmapplList,
+  clearSmapplList,
+  //
+  postApplicationsOperator,
+  postEditApp,
+  //
+  fetchMasterListSmappl,
+  clearMasterListSmappl,
+  //
+  fetchOperatorListSmappl,
+  clearOperatorListSmappl,
+  //
+  smapplFetchCategory,
+  smapplFetchAppStatus,
+  smapplFetchAppType,
+} from './smapplAction';
+import { injectIntl } from 'react-intl';
+import {
+  Icon,
+  Container,
+  Segment,
+  Form,
+  Dropdown,
+  Popup,
+  Button,
+  Modal,
+  Header,
+} from 'semantic-ui-react';
+import 'react-table/react-table.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import ModalColumns from './../../../utils/ModalColumns';
 import {
-  errorTableText,
-  momentToStringYYYYMMDD,
   stringYYYYMMDDToMoment,
+  momentToStringYYYYMMDD,
 } from '../../../utils/helpers';
-import ColumnsModal from '../../../utils/ColumnsModal';
-import './index.css';
+import '../../service.css';
 import {
+  LinkToSmcsEmpty,
+  LinkToSmcuspor,
   LinkToSmecam,
   LinkToSmvs,
-  LinkToSmcsEmpty,
 } from '../../../utils/outlink';
-import Masters from './Masters';
-import DropdownClearable from '../../../utils/DropdownClearable';
-import moment from 'moment';
-import 'moment/locale/ru';
-import 'moment/locale/tr';
-import '../../service.css';
+import ReactTableServerSideWrapperFilteredState from '../../../utils/ReactTableServerSideWrapperFilteredState';
 
+import DropdownClearable from '../../../utils/DropdownClearable';
+import OutputErrors from '../../../general/error/outputErrors';
+import { errorTableText } from '../../../utils/helpers';
 import TotalCountsTable from '../../../utils/TotalCountsTable';
-import ReactTableServerSideWrapper from '../../../utils/ReactTableServerSideWrapper';
+import moment from 'moment';
+require('moment/locale/ru');
 
 const Smappl = props => {
   const {
-    companyPosition = [],
     intl: { messages },
-    branchOptions,
-    fetchAppStatus,
-    appStatus,
-    fetchAppType,
-    appType,
-    fetchClearAppList,
-    category,
-    appList,
-    masterListSmappl = [],
+    language = '',
+    branchOptionsService,
+    companyOptions = [],
+    smapplList = {},
+    category = [],
+    smapplAppStatus = [],
+    smapplAppType = [],
     operatorListSmappl = [],
+    masterListSmappl = [],
   } = props;
 
-  console.log('masterListSmappl', masterListSmappl);
-  console.log('operatorListSmappl', operatorListSmappl);
-
-  const [error, setError] = useState([]);
-  const language = localStorage.getItem('language');
-  const [applicationStatus, setApplicationStatus] = useState([]);
-  const [applicationType, setApplicationType] = useState([]);
-  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
-
-  const [search, setSearch] = useState({
+  const emptyParam = {
     bukrs: null,
     branchId: null,
-    dateOpenAt: momentToStringYYYYMMDD(moment(new Date())),
-    dateOpenTo: '',
-    aDateFrom: null,
-    aDateTo: null,
-    tovarCategorys: null,
+    categoryId: null,
+    serviceTypeId: null,
     appStatusIds: '1,2,3,4',
-    appTypeIds: null,
     masterId: null,
     operatorId: null,
-    direction: 'DESC',
+    dateOpenAt: momentToStringYYYYMMDD(moment(new Date())),
+    dateOpenTo: '',
+  };
+  const [param, setParam] = useState({ ...emptyParam });
+  const [error, setError] = useState([]);
+
+  const [tempMaster, setTempMaster] = useState({});
+  const [modalMaster, setModalMaster] = useState(false);
+
+  const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
+
+  const initialServerSideParams = {
+    page: 0,
+    size: 20,
     orderBy: 'id',
+    direction: 'DESC',
+  };
+
+  const [serverSideParams, setServerSideParams] = useState({
+    ...initialServerSideParams,
   });
 
-  console.log('search', search);
+  const [filtered, setFiltered] = useState([]);
 
-  const categoryOptions = category.map(item => {
+  useEffect(() => {
+    if (param.bukrs) {
+      let params = {
+        bukrs: param.bukrs,
+        branchId: param.branchId,
+        categoryId: param.categoryId,
+      };
+      props.fetchMasterListSmappl({
+        ...params,
+      });
+      props.fetchOperatorListSmappl({ ...params });
+    }
+  }, [param.bukrs, param.branchId, param.categoryId]);
+
+  const tovarCategoryOptions = category.map(item => {
     return {
       key: item.id,
       text: item.name,
@@ -94,20 +123,106 @@ const Smappl = props => {
     };
   });
 
-  const masterOptions = masterListSmappl.map((item, index) => {
+  const serviceAppStatusOptions = smapplAppStatus.map(item => {
+    return {
+      key: item.id,
+      text: item.name,
+      value: item.id,
+    };
+  });
+
+  const serviceTypeOptions = smapplAppType.map(item => {
+    return {
+      key: item.id,
+      text: item.name,
+      value: item.id,
+    };
+  });
+
+  const masterListOptions = masterListSmappl.map(item => {
     return {
       key: parseInt(`${Math.floor(Math.random() * 10000)}${item.staffId}`),
       text: item.fullName,
       value: item.staffId,
     };
   });
-  const operatorOptions = operatorListSmappl.map((item, index) => {
+  const operatorListOptions = operatorListSmappl.map(item => {
     return {
       key: parseInt(`${Math.floor(Math.random() * 10)}${item.staffId}`),
       text: item.fullName,
       value: item.staffId,
     };
   });
+
+  useEffect(() => {
+    props.smapplFetchCategory();
+    props.smapplFetchAppStatus();
+    props.smapplFetchAppType();
+  }, []);
+
+  const onChange = (value, fieldName) => {
+    setParam(prev => {
+      const varSmappl = { ...prev };
+      switch (fieldName) {
+        case 'bukrs':
+          varSmappl.bukrs = value;
+          varSmappl.branchId = null;
+          varSmappl.masterId = null;
+          varSmappl.operatorId = null;
+          break;
+        case 'branchId':
+          varSmappl.branchId = value;
+          varSmappl.masterId = null;
+          varSmappl.operatorId = null;
+          break;
+        case 'categoryId':
+          varSmappl.categoryId = value;
+          varSmappl.masterId = null;
+          varSmappl.operatorId = null;
+          break;
+        case 'serviceTypeId':
+          varSmappl.serviceTypeId = value.length > 0 ? value.join() : null;
+          break;
+        case 'appStatusIds':
+          varSmappl.appStatusIds = value.length > 0 ? value.join() : '';
+          break;
+        case 'masterId':
+          varSmappl.masterId = value;
+          break;
+        case 'operatorId':
+          varSmappl.operatorId = value;
+          break;
+        case 'changeModalMasterId':
+          setTempMaster({ ...tempMaster, masterId: value, masterName: null });
+          break;
+        case 'saveChangeMaster':
+          props.postEditApp(
+            { ...tempMaster },
+            () => {
+              setModalMaster(false);
+              props.clearSmapplList();
+              setFiltered([]);
+              setTurnOnReactFetch(false);
+              props.fetchSmapplList(
+                { ...param, ...initialServerSideParams },
+                () => setTurnOnReactFetch(true),
+              );
+              setServerSideParams({
+                ...initialServerSideParams,
+              });
+            },
+            () => {
+              setModalMaster(false);
+              setTempMaster({});
+            },
+          );
+          break;
+        default:
+          varSmappl[fieldName] = value;
+      }
+      return varSmappl;
+    });
+  };
 
   const allColumns = [
     {
@@ -192,12 +307,27 @@ const Smappl = props => {
       show: true,
       filterable: false,
       Cell: ({ row }) => (
-        <div style={{ textAlign: 'center' }}>
-          {row._original.masterName}
-          <Masters
-            master={row._original.masterName}
-            id={row._original.masterId}
-            request={row._original}
+        <div>
+          <div style={{ textAlign: 'center' }}>{row._original.masterName}</div>
+          <Popup
+            content="Редактировать"
+            size="tiny"
+            trigger={
+              <div style={{ textAlign: 'center' }}>
+                <Button
+                  size="mini"
+                  circular
+                  color="green"
+                  icon="pencil"
+                  onClick={() => {
+                    setTempMaster({
+                      ...row._original,
+                    });
+                    setModalMaster(true);
+                  }}
+                />
+              </div>
+            }
           />
         </div>
       ),
@@ -289,148 +419,45 @@ const Smappl = props => {
       fixed: 'right',
     },
   ];
-  const [columnsForTable, setColumnsForTable] = useState([]);
 
-  useEffect(() => {
-    props.clearOperatorList();
-    props.clearMasterList();
-    let param = {
-      bukrs: search.bukrs,
-      branchId: search.branchId,
-      categoryId: search.tovarCategorys,
-    };
-    if (search.bukrs) {
-      props.fetchMasterList({ ...param });
-      props.fetchOperatorList({ ...param });
-    }
-  }, [search.bukrs, search.branchId, search.tovarCategorys]);
-
-  useEffect(() => {
-    props.fetchClearAppList();
-    fetchAppStatus();
-    fetchAppType();
-    props.f4fetchCategory();
-  }, []);
-
-  useEffect(() => {
-    const transactionCodeText = localStorage.getItem('smappl');
-    if (transactionCodeText) {
-      let transactionCodeObject = JSON.parse(transactionCodeText);
-
-      let temp = allColumns.map(item => {
-        return { ...item, show: transactionCodeObject[item.accessor] };
+  //Поиск
+  const handleClickApply = () => {
+    if (param.bukrs && param.branchId) {
+      props.clearSmapplList();
+      setFiltered([]);
+      setTurnOnReactFetch(false);
+      props.fetchSmapplList({ ...param, ...initialServerSideParams }, () =>
+        setTurnOnReactFetch(true),
+      );
+      setServerSideParams({
+        ...initialServerSideParams,
       });
-      setColumnsForTable(temp);
+      setError([]);
     } else {
-      setColumnsForTable(allColumns);
-    }
-  }, []);
-
-  useEffect(() => {
-    const app = appStatus.map(item => {
-      return {
-        key: item.id,
-        text: item.name,
-        value: item.id,
-      };
-    });
-    setApplicationStatus(app);
-  }, [appStatus]);
-
-  useEffect(() => {
-    const app = appType.map(item => {
-      return {
-        key: item.id,
-        text: item.name,
-        value: item.id,
-      };
-    });
-    setApplicationType(app);
-  }, [appType]);
-
-  const onChange = (text, value) => {
-    setSearch(prev => {
-      const varTs = { ...prev };
-      switch (text) {
-        case 'bukrs':
-          varTs.bukrs = value;
-          varTs.branchId = null;
-          break;
-        case 'branch':
-          varTs.branchId = value;
-          break;
-        case 'product':
-          varTs.tovarCategorys = value.length > 0 ? value.join() : null;
-          break;
-        case 'status':
-          varTs.appStatusIds = value.length > 0 ? value.join() : '';
-          //varTs.appStatusIds = value;
-          break;
-        case 'ApplicationType':
-          varTs.appTypeIds = value.length > 0 ? value.join() : null;
-          break;
-        case 'changeMaster':
-          varTs.masterId = value.length > 0 ? value.join() : null;
-          break;
-        case 'changeOperator':
-          varTs.operatorId = value.length > 0 ? value.join() : null;
-          break;
-        default:
-          return varTs;
-      }
-      return varTs;
-    });
-  };
-
-  const [serverSideParams, setServerSideParams] = useState({});
-
-  const onSearch = () => {
-    const errors = [];
-    const param = {
-      branchId: search.branchId,
-      bukrs: search.bukrs,
-      categoryId: search.categoryId,
-    };
-    if (search.bukrs === '') {
-      errors.push(errorTableText(5));
-    }
-    if (search.branchId === 0 || search.branchId === '') {
-      errors.push(errorTableText(7));
-    }
-    if (errors.length === 0) {
-      if (Object.keys(serverSideParams).length > 0) {
-        props.fetchAppList({
-          ...search,
-          appStatusIds: search.appStatusIds.toString(),
-          ...serverSideParams,
-        });
-        props.fetchAppMasterList({ ...param });
-        setTurnOnReactFetch(true);
-        props.fetchAppListSearchParam(search);
+      const errors = [];
+      if (param.bukrs) {
       } else {
-        const page = 0;
-        const size = 20;
-        props.fetchAppList({
-          ...search,
-          appStatusIds: search.appStatusIds.toString(),
-          page,
-          size,
-        });
-        props.fetchAppMasterList({ ...param });
-        setTurnOnReactFetch(true);
-        props.fetchAppListSearchParam(search);
+        errors.push(errorTableText(5));
       }
-    }
-    setError(() => errors);
-  };
+      if (param.branchId) {
+      } else {
+        errors.push(errorTableText(7));
+      }
 
-  const arrayAppStatus = search.appStatusIds
-    ? search.appStatusIds.split(',').map(Number)
-    : '';
+      setError(() => errors);
+    }
+  };
 
   return (
-    <Segment>
-      <Divider hidden></Divider>
+    <Container
+      fluid
+      style={{
+        marginTop: '2em',
+        marginBottom: '2em',
+        paddingLeft: '2em',
+        paddingRight: '2em',
+      }}
+    >
       <Segment>
         <div
           style={{
@@ -446,19 +473,42 @@ const Smappl = props => {
         </div>
       </Segment>
 
-      <Divider />
-
+      <Modal closeIcon open={modalMaster} onClose={() => setModalMaster(false)}>
+        <Header content="Редактировать" />
+        <Modal.Content>
+          <DropdownClearable
+            selection
+            options={masterListOptions}
+            value={tempMaster.masterId ? tempMaster.masterId : ''}
+            placeholder="Мастер"
+            onChange={(e, { value }) => onChange(value, 'changeModalMasterId')}
+            handleClear={() =>
+              setTempMaster({ ...tempMaster, masterId: null, masterName: null })
+            }
+          />
+        </Modal.Content>
+        <Modal.Actions>
+          <Button color="red" onClick={() => setModalMaster(false)}>
+            <Icon name="remove" /> Отмена
+          </Button>
+          <Button color="green" onClick={() => onChange(0, 'saveChangeMaster')}>
+            <Icon name="checkmark" /> Сохранить
+          </Button>
+        </Modal.Actions>
+      </Modal>
       <Form>
         <Form.Group widths="equal">
           <Form.Field required>
             <label>{messages['bukrs']}</label>
             <DropdownClearable
               selection
-              options={companyPosition}
-              value={search.bukrs}
+              options={companyOptions ? companyOptions : []}
+              value={param.bukrs}
               placeholder={messages['bukrs']}
-              onChange={(e, { value }) => onChange('bukrs', value)}
-              handleClear={() => setSearch({ ...search, bukrs: '' })}
+              onChange={(e, { value }) => onChange(value, 'bukrs')}
+              handleClear={() =>
+                setParam({ ...param, bukrs: null, branchId: null })
+              }
             />
           </Form.Field>
 
@@ -466,42 +516,50 @@ const Smappl = props => {
             <label>{messages['Task.Branch']}</label>
             <DropdownClearable
               selection
-              options={search.bukrs ? branchOptions[search.bukrs] : []}
-              value={search.branchId}
+              options={param.bukrs ? branchOptionsService[param.bukrs] : []}
+              value={param.branchId}
               placeholder={messages['Task.Branch']}
-              onChange={(e, { value }) => onChange('branch', value)}
-              handleClear={() => setSearch({ ...search, branchId: '' })}
+              onChange={(e, { value }) => onChange(value, 'branchId')}
+              handleClear={() => setParam({ ...param, branchId: null })}
             />
           </Form.Field>
-          <Form.Select
-            label={messages['product_category']}
-            clearable="true"
-            multiple
-            selection
-            options={categoryOptions}
-            placeholder={messages['product_category']}
-            onChange={(e, { value }) => onChange('product', value)}
-          />
-          <Form.Select
-            label={messages['L__ORDER_STATUS']}
-            clearable="true"
-            selection
-            fluid
-            multiple
-            defaultValue={arrayAppStatus}
-            options={applicationStatus}
-            placeholder={messages['L__ORDER_STATUS']}
-            onChange={(e, { value }) => onChange('status', value)}
-          />
-          <Form.Select
-            label={messages['type_of_application']}
-            clearable="true"
-            selection
-            multiple
-            options={applicationType}
-            placeholder={messages['type_of_application']}
-            onChange={(e, { value }) => onChange('ApplicationType', value)}
-          />
+          <Form.Field>
+            <label>{messages['product_category']}</label>
+            <DropdownClearable
+              selection
+              options={tovarCategoryOptions}
+              value={param.categoryId}
+              placeholder={messages['product_category']}
+              onChange={(e, { value }) => onChange(value, 'categoryId')}
+              handleClear={() => setParam({ ...param, categoryId: null })}
+            />
+          </Form.Field>
+
+          <Form.Field>
+            <label>{messages['L__ORDER_STATUS']}</label>
+            <Dropdown
+              placeholder={messages['L__ORDER_STATUS']}
+              clearable="true"
+              selection
+              fluid
+              multiple
+              defaultValue={param.appStatusIds.split(',').map(Number)}
+              options={serviceAppStatusOptions}
+              onChange={(e, { value }) => onChange(value, 'appStatusIds')}
+            />
+          </Form.Field>
+          <Form.Field>
+            <label>{messages['type_of_application']}</label>
+            <Dropdown
+              placeholder={messages['type_of_application']}
+              clearable="true"
+              selection
+              fluid
+              multiple
+              options={serviceTypeOptions}
+              onChange={(e, { value }) => onChange(value, 'serviceTypeId')}
+            />
+          </Form.Field>
         </Form.Group>
 
         <Form.Group>
@@ -511,10 +569,10 @@ const Smappl = props => {
               className="date-auto-width"
               autoComplete="off"
               locale={language}
-              selected={stringYYYYMMDDToMoment(search.dateOpenAt)}
+              selected={stringYYYYMMDDToMoment(param.dateOpenAt)}
               onChange={event =>
-                setSearch({
-                  ...search,
+                setParam({
+                  ...param,
                   dateOpenAt: momentToStringYYYYMMDD(event),
                 })
               }
@@ -528,10 +586,10 @@ const Smappl = props => {
             <DatePicker
               className="date-auto-width"
               autoComplete="off"
-              selected={stringYYYYMMDDToMoment(search.dateOpenTo)}
+              selected={stringYYYYMMDDToMoment(param.dateOpenTo)}
               onChange={event =>
-                setSearch({
-                  ...search,
+                setParam({
+                  ...param,
                   dateOpenTo: momentToStringYYYYMMDD(event),
                 })
               }
@@ -543,103 +601,91 @@ const Smappl = props => {
           </Form.Field>
           <Form.Field className="marginRight width25Rem">
             <label>Мастер</label>
-            <Form.Select
-              clearable="true"
+            <DropdownClearable
               selection
-              fluid
-              multiple
-              //value={param.masterId ? param.masterId : ''}
-              options={masterOptions}
+              value={param.masterId ? param.masterId : ''}
+              options={masterListOptions}
               placeholder="Мастер"
-              onChange={(e, o) => onChange('changeMaster', o.value)}
+              onChange={(e, { value }) => onChange(value, 'masterId')}
+              handleClear={() => setParam({ ...param, masterId: null })}
             />
           </Form.Field>
           <Form.Field className="marginRight width25Rem">
             <label>Оператор</label>
-            <Form.Select
-              clearable="true"
+            <DropdownClearable
               selection
-              fluid
-              multiple
-              options={operatorOptions}
+              options={operatorListOptions}
+              value={param.operatorId ? param.operatorId : ''}
               placeholder="Оператор"
-              onChange={(e, o) => onChange('changeOperator', o.value)}
+              onChange={(e, { value }) => onChange(value, 'operatorId')}
+              handleClear={() => setParam({ ...param, operatorId: null })}
             />
           </Form.Field>
 
-          <Form.Field
-            control={Button}
+          <Form.Button
+            // control={Button}
             color="blue"
-            style={{ marginTop: 24 }}
-            onClick={onSearch}
+            // style={{ marginTop: 24 }}
+            onClick={handleClickApply}
+            className="alignBottom"
           >
             {messages['search']}
-          </Form.Field>
+          </Form.Button>
         </Form.Group>
       </Form>
-
       <OutputErrors errors={error} />
 
-      <Divider></Divider>
+      <TotalCountsTable count={smapplList ? smapplList.totalElements : 0} />
 
-      <Segment basic textAlign="right">
-        <ColumnsModal
-          tableHeaderCols={columnsForTable}
-          tableThings={things => {
-            setColumnsForTable(things);
-            //store in localstorage
-            let temp = {};
-            things.map(el => {
-              temp = { ...temp, [el.accessor]: el.show };
-            });
-            localStorage.setItem('smappl', JSON.stringify(temp));
-          }}
-        />
-      </Segment>
-      <TotalCountsTable count={appList.totalElements} />
-      <ReactTableServerSideWrapper
-        data={appList.data}
-        columns={columnsForTable}
+      <ReactTableServerSideWrapperFilteredState
+        data={smapplList ? smapplList.data : []}
+        columns={allColumns}
         filterable={true}
-        pageSize={20}
         showPagination={true}
+        pageSize={serverSideParams.size}
         requestData={params => {
-          props.fetchAppList({ ...params, ...search });
           setServerSideParams({ ...params });
+          props.fetchSmapplList({ ...param, ...params }, () =>
+            setTurnOnReactFetch(true),
+          );
         }}
-        pages={appList.totalPages ? appList.totalPages : ''}
+        pages={smapplList ? smapplList.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}
+        page={serverSideParams.page}
+        filtered={filtered}
+        onFilteredChange={filter => {
+          setFiltered(filter);
+        }}
       />
-    </Segment>
+    </Container>
   );
 };
 
-const mapStateToProps = state => {
+function mapStateToProps(state) {
   return {
-    state,
-    appList: state.serviceReducer.appList,
-    companyPosition: state.userInfo.companyOptions,
-    branchOptions: state.userInfo.branchOptionsService,
-    appStatus: state.serviceReducer.appStatus,
-    appType: state.serviceReducer.appType,
-    appMasterList: state.serviceReducer.appMasterList,
-    category: state.f4.category,
-    masterListSmappl: state.serviceReducer.masterListSmappl,
-    operatorListSmappl: state.serviceReducer.operatorListSmappl,
+    language: state.locales.lang,
+    companyOptions: state.userInfo.companyOptions,
+    branchOptionsService: state.userInfo.branchOptionsService,
+    //
+    smapplAppStatus: state.smapplReducer.smapplAppStatus,
+    smapplAppType: state.smapplReducer.smapplAppType,
+    smapplList: state.smapplReducer.smapplList,
+    category: state.smapplReducer.smapplCategory,
+    masterListSmappl: state.smapplReducer.masterListSmappl,
+    operatorListSmappl: state.smapplReducer.operatorListSmappl,
   };
-};
+}
 
 export default connect(mapStateToProps, {
-  clearDynObjService,
-  fetchAppStatus,
-  fetchAppType,
-  fetchAppList,
-  fetchAppMasterList,
-  fetchClearAppList,
-  fetchAppListSearchParam,
-  f4fetchCategory,
-  fetchMasterList,
-  fetchOperatorList,
-  clearOperatorList,
-  clearMasterList,
+  smapplFetchCategory,
+  smapplFetchAppStatus,
+  smapplFetchAppType,
+  fetchSmapplList,
+  clearSmapplList,
+  postApplicationsOperator,
+  postEditApp,
+  fetchMasterListSmappl,
+  clearMasterListSmappl,
+  fetchOperatorListSmappl,
+  clearOperatorListSmappl,
 })(injectIntl(Smappl));
