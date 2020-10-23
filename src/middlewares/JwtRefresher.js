@@ -9,7 +9,7 @@ import { resetLocalStorage } from '../utils/helpers';
 import { UNAUTH_USER, AUTH_ERROR, CHANGE_LANGUAGE } from '../actions/types';
 //import { doGet, doPost } from '../utils/apiActions';
 import axios from 'axios';
-import { ROOT_URL } from '../utils/constants';
+import { ROOT_URL, AUTH_URL } from '../utils/constants';
 
 const signoutUser = (dispatch, errorMsg) => {
   resetLocalStorage();
@@ -33,7 +33,7 @@ const requestToken = (dispatch, token, language) => {
   bodyFormData.set('refresh_token', localStorage.getItem('refresh_token'));
 
   axios
-    .post(`${ROOT_URL}/api/v1/werp/auth-server/oauth/token`, bodyFormData, {
+    .post(`${AUTH_URL}/oauth/token`, bodyFormData, {
       headers: headers,
     })
     .then(({ data }) => {

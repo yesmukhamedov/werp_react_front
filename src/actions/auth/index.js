@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ROOT_URL } from '../../utils/constants';
+import { ROOT_URL, AUTH_URL } from '../../utils/constants';
 import { doGet, doPost } from '../../utils/apiActions';
 import browserHistory from '../../utils/history';
 import { resetLocalStorage } from '../../utils/helpers';
@@ -50,7 +50,7 @@ export function signinUser({ username, password }, language) {
     console.log('Authorization', headers.Authorization);
 
     axios
-      .post(`${ROOT_URL}/api/v1/werp/auth-server/oauth/token`, bodyFormData, {
+      .post(`${AUTH_URL}/oauth/token`, bodyFormData, {
         headers: headers,
       })
 
@@ -78,7 +78,7 @@ export function signinUser({ username, password }, language) {
         axios
           .get(`${ROOT_URL}/api/error_table`, {
             headers: {
-              Authorization: access_token,
+              Authorization: 'Bearer ' + access_token,
             },
           })
 
@@ -91,7 +91,7 @@ export function signinUser({ username, password }, language) {
         axios
           .get(`${ROOT_URL}/api/error_table/map`, {
             headers: {
-              Authorization: access_token,
+              Authorization: 'Bearer ' + access_token,
             },
           })
 

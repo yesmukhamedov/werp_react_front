@@ -6,7 +6,8 @@ const axiosInstance = axios.create();
 axiosInstance.interceptors.request.use(config => {
   config.withCredentials = true;
   // config.headers.Authorization = localStorage.getItem('token');
-  config.headers['authorization'] = localStorage.getItem('token');
+  config.headers['Authorization'] = 'Bearer ' + localStorage.getItem('token');
+  //config.headers['authorization'] = localStorage.getItem('token');
   config.headers['Content-Language'] = localStorage.getItem('language');
   config.headers[
     'Time-Zone'
