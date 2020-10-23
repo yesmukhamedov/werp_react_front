@@ -6,16 +6,18 @@ import {
 import { modifyLoader } from '../../../general/loader/loader_action';
 
 export const FETCH_SEARCH_CUSTOMER = 'FETCH_SEARCH_CUSTOMER';
+export const CLEAR_SEARCH_CUSTOMER = 'CLEAR_SEARCH_CUSTOMER';
 
 export const FETCH_TRANSFER_APPLICATION = 'FETCH_TRANSFER_APPLICATION';
 
 export const FETCH_MY_APPLICATION = 'FETCH_MY_APPLICATION';
+export const CLEAR_MY_APPLICATION_EXODUS = 'CLEAR_MY_APPLICATION_EXODUS';
 
 // const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 // const language = localStorage.getItem('language');
 
 //Поиск клиентов
-export const fetchSearchCustomer = param => {
+export const fetchSearchCustomer = (param, setFunc) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`smopccic/search_customer`, param)
@@ -25,6 +27,7 @@ export const fetchSearchCustomer = param => {
           type: FETCH_SEARCH_CUSTOMER,
           payload: data,
         });
+        setFunc();
       })
       .catch(error => {
         dispatch(modifyLoader(false));
@@ -32,6 +35,14 @@ export const fetchSearchCustomer = param => {
       });
   };
 };
+
+export function clearSearchCustomer() {
+  return function(dispatch) {
+    dispatch({
+      type: CLEAR_SEARCH_CUSTOMER,
+    });
+  };
+}
 
 //Перенесенные заявки
 export const fetchTransferApplication = param => {
@@ -53,7 +64,7 @@ export const fetchTransferApplication = param => {
 };
 
 //Мои заявки
-export const fetchMyApplicationExodus = param => {
+export const fetchMyApplicationExodus = (param, setFunc) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`smopccic/myApplication`, param)
@@ -63,6 +74,7 @@ export const fetchMyApplicationExodus = param => {
           type: FETCH_MY_APPLICATION,
           payload: data,
         });
+        setFunc();
       })
       .catch(error => {
         dispatch(modifyLoader(false));
@@ -70,3 +82,11 @@ export const fetchMyApplicationExodus = param => {
       });
   };
 };
+
+export function clearMyApplicationExodus() {
+  return function(dispatch) {
+    dispatch({
+      type: CLEAR_MY_APPLICATION_EXODUS,
+    });
+  };
+}

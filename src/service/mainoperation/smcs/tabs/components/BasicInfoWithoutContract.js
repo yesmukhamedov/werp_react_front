@@ -44,6 +44,7 @@ const BasicInfoWithoutContract = props => {
           </Table.Cell>
           <Table.Cell>
             <DropdownClearable
+              allSelect={false}
               value={data.bukrs ? data.bukrs : ''}
               options={companyOptions}
               onChange={(e, value) =>
@@ -63,6 +64,7 @@ const BasicInfoWithoutContract = props => {
           </Table.Cell>
           <Table.Cell>
             <DropdownClearable
+              allSelect={false}
               value={data.branchId ? data.branchId : ''}
               options={branchOptions}
               onChange={(e, value) =>
@@ -94,6 +96,7 @@ const BasicInfoWithoutContract = props => {
           </Table.Cell>
           <Table.Cell>
             <DropdownClearable
+              allSelect={false}
               value={data.categoryId}
               options={categoryOptions}
               onChange={(e, value) =>
@@ -113,6 +116,7 @@ const BasicInfoWithoutContract = props => {
           </Table.Cell>
           <Table.Cell>
             <DropdownClearable
+              allSelect={false}
               value={data.tovarId}
               options={tovarOptions}
               onChange={(e, value) =>
@@ -159,13 +163,14 @@ const BasicInfoWithoutContract = props => {
           </Table.Cell>
           <Table.Cell>
             <DropdownClearable
+              allSelect={false}
               value={data.masterId ? data.masterId : ''}
               options={masterOptions}
-              onChange={(e, value) =>
+              onChange={(e, { value }) =>
                 onBasicInfoInputChange(value, 'selectMaster')
               }
-              handleClear={(e, value) =>
-                onBasicInfoInputChange(value, 'clearMaster')
+              handleClear={(e, item) =>
+                onBasicInfoInputChange(item, 'clearMaster')
               }
             />
           </Table.Cell>
@@ -179,13 +184,14 @@ const BasicInfoWithoutContract = props => {
           </Table.Cell>
           <Table.Cell>
             <DropdownClearable
+              allSelect={false}
               value={data.operatorId ? data.operatorId : ''}
               options={operatorOptions}
-              onChange={(e, value) =>
+              onChange={(e, { value }) =>
                 onBasicInfoInputChange(value, 'selectOperator')
               }
-              handleClear={(e, value) =>
-                onBasicInfoInputChange(value, 'clearOperator')
+              handleClear={(e, item) =>
+                onBasicInfoInputChange(item, 'clearOperator')
               }
             />
           </Table.Cell>

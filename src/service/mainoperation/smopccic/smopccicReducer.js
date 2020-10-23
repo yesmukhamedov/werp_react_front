@@ -1,7 +1,9 @@
 import {
   FETCH_SEARCH_CUSTOMER,
+  CLEAR_SEARCH_CUSTOMER,
   FETCH_TRANSFER_APPLICATION,
   FETCH_MY_APPLICATION,
+  CLEAR_MY_APPLICATION_EXODUS,
 } from './smopccicAction';
 
 const INITIAL_STATE = {
@@ -19,6 +21,12 @@ export default function(state = INITIAL_STATE, action) {
         searchCustomerData: { ...action.payload.data },
       };
 
+    case CLEAR_SEARCH_CUSTOMER:
+      return {
+        ...state,
+        searchCustomerData: {},
+      };
+
     case FETCH_TRANSFER_APPLICATION:
       return {
         ...state,
@@ -29,6 +37,11 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         myApplicationData: { ...action.payload.data },
+      };
+    case CLEAR_MY_APPLICATION_EXODUS:
+      return {
+        ...state,
+        myApplicationData: {},
       };
 
     default:

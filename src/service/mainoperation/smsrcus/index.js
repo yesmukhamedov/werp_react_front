@@ -35,6 +35,7 @@ import {
   f4fetchCategory,
   f4FetchCountryList,
   f4FetchConStatusList,
+  f4FetchConTypeList,
   f4FetchBranches,
   f4FetchPhysStatus,
   f4FetchCurrentStaff,
@@ -60,16 +61,23 @@ const Smsrcus = props => {
     smsrcusData = {},
     smsrcusBlackListData = {},
     branchOptionsService = {},
-    //
-
     countryList = [],
     category = [],
     contractStatusList = [],
+    contractTypeList = [],
     companyOptions = [],
     branchOptions = [],
     physStatusOptions = [],
     smsrcusClient = {},
   } = props;
+
+  const productOptions = contractTypeList.map(item => {
+    return {
+      key: item.contract_type_id,
+      text: item.name,
+      value: item.contract_type_id,
+    };
+  });
 
   const branchObjValues = Object.values(branchOptionsService);
   const arrMain = [];
@@ -87,6 +95,7 @@ const Smsrcus = props => {
   const emptyParam = {
     serviceBranchId: null,
     contractNumber: null,
+    contractTypeId: null,
     tovarSn: null,
     customerFIO: null,
     customerIinBin: null,
@@ -383,6 +392,7 @@ const Smsrcus = props => {
   useEffect(() => {
     props.f4fetchCategory();
     props.f4FetchCountryList();
+    props.f4FetchConTypeList();
     props.f4FetchConStatusList();
     props.f4FetchBranches();
     props.f4FetchPhysStatus();
@@ -800,6 +810,25 @@ const Smsrcus = props => {
                 />
               </Form.Field>
               <Form.Field>
+                <label>Продукт</label>
+                <Dropdown
+                  selection
+                  fluid
+                  placeholder="Филиал"
+                  options={productOptions}
+                  onChange={(o, { value }) => {
+                    setParam({ ...param, contractTypeId: value.join() });
+                  }}
+                  className="alignBottom"
+                  multiple
+                  value={
+                    param.contractTypeId
+                      ? param.contractTypeId.split(',').map(Number)
+                      : []
+                  }
+                />
+              </Form.Field>
+              <Form.Field>
                 <label>CN</label>
                 <Input
                   value={param.contractNumber ? param.contractNumber : ''}
@@ -1013,6 +1042,7 @@ function mapStateToProps(state) {
     countryList: state.f4.countryList,
     category: state.f4.category,
     contractStatusList: state.f4.contractStatusList,
+    contractTypeList: state.f4.contractTypeList,
     branches: state.f4.branches,
     physStatusOptions: state.f4.physStatus,
   };
@@ -1027,6 +1057,7 @@ export default connect(mapStateToProps, {
   f4FetchBranches,
   f4FetchPhysStatus,
   f4FetchCurrentStaff,
+  f4FetchConTypeList,
   clearSmsrcusList,
   fetchSmsrcusBlackList,
   clearSmsrcusBlackList,

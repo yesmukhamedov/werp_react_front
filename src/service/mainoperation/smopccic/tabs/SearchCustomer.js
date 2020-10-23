@@ -5,9 +5,9 @@ import { Container, Form, Icon, Divider, Segment } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import OutputErrors from '../../../../general/error/outputErrors';
 import { errorTableText } from '../../../../utils/helpers';
-import { fetchSearchCustomer } from '../smopccicAction';
+import { fetchSearchCustomer, clearSearchCustomer } from '../smopccicAction';
 import { f4FetchPhysStatus } from '../../../../reference/f4/f4_action';
-import ReactTableServerSideWrapper from '../../../../utils/ReactTableServerSideWrapper';
+import ReactTableServerSideWrapperFilteredState from '../../../../utils/ReactTableServerSideWrapperFilteredState';
 import ModalColumns from '../../../../utils/ModalColumns';
 import { LinkToSmcusporFromSmsrcus } from '../../../../utils/outlink';
 import moment from 'moment';
@@ -35,17 +35,18 @@ const SearchCustomer = props => {
   } = props;
 
   const emptyParam = {
-    countryId: '',
-    bukrs: '',
-    branchId: '',
-    tovarCategoryId: '',
+    countryId: null,
+    bukrs: null,
+    branchId: null,
+    tovarCategoryId: null,
     contractStatusId: [],
     contractDateFrom: '',
     contractDateTo: '',
-    lastStateId: '',
+    lastStateId: null,
   };
 
   const [param, setParam] = useState({ ...emptyParam });
+
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
   const [error, setError] = useState([]);
 
@@ -185,7 +186,7 @@ const SearchCustomer = props => {
     if (param.bukrs) {
       setServiceBranchOptions(branchOptions[param.bukrs]);
     }
-    if (param.bukrs !== '' && param.countryId !== '' && branchOptions) {
+    if (param.bukrs && param.countryId && branchOptions) {
       let brnchOpt = branchOptions[param.bukrs].filter(
         item => item.countryid === param.countryId,
       );
@@ -224,30 +225,36 @@ const SearchCustomer = props => {
     });
   };
 
-  const [serverSideParams, setServerSideParams] = useState({});
-
-  const handleClickApply = () => {
-    validate();
-    if (param.bukrs !== '') {
-      const page = 0;
-      const size = 20;
-      const orderBy = 'contractId';
-      const direction = 'DESC';
-      if (Object.keys(serverSideParams).length > 0) {
-        props.fetchSearchCustomer({ ...param, ...serverSideParams });
-      } else {
-        props.fetchSearchCustomer({ ...param, orderBy, direction, page, size });
-      }
-      setTurnOnReactFetch(true);
-    }
+  const initialServerSideParams = {
+    page: 0,
+    size: 20,
+    orderBy: 'id',
+    direction: 'DESC',
   };
 
-  const validate = () => {
-    const errors = [];
-    if (param.bukrs === '') {
+  const [serverSideParams, setServerSideParams] = useState({
+    ...initialServerSideParams,
+  });
+
+  const [filtered, setFiltered] = useState([]);
+
+  const handleClickApply = () => {
+    if (param.bukrs) {
+      props.clearSearchCustomer();
+      setFiltered([]);
+      setTurnOnReactFetch(false);
+      props.fetchSearchCustomer({ ...param, ...initialServerSideParams }, () =>
+        setTurnOnReactFetch(true),
+      );
+      setServerSideParams({
+        ...initialServerSideParams,
+      });
+      setError([]);
+    } else {
+      const errors = [];
       errors.push(errorTableText(5));
+      setError(() => errors);
     }
-    setError(() => errors);
   };
 
   const [columns, setColumns] = useState([...initialColumns]);
@@ -260,22 +267,22 @@ const SearchCustomer = props => {
       const prevParam = { ...prev };
       switch (fieldName) {
         case 'countryId':
-          prevParam.countryId = '';
+          prevParam.countryId = null;
           break;
         case 'bukrs':
-          prevParam.bukrs = '';
+          prevParam.bukrs = null;
           break;
         case 'branchId':
-          prevParam.branchId = '';
+          prevParam.branchId = null;
           break;
         case 'tovarCategoryId':
-          prevParam.tovarCategoryId = '';
+          prevParam.tovarCategoryId = null;
           break;
         case 'contractStatusId':
-          prevParam.contractStatusId = '';
+          prevParam.contractStatusId = null;
           break;
         case 'lastStateId':
-          prevParam.lastStateId = '';
+          prevParam.lastStateId = null;
           break;
 
         default:
@@ -293,7 +300,7 @@ const SearchCustomer = props => {
             <label>{messages['country']}</label>
             <DropdownClearable
               options={countryOptions}
-              value={param.countryId}
+              value={param.countryId ? param.countryId : ''}
               placeholder={messages['country']}
               onChange={(e, o) => onInputChange(o, 'countryId')}
               handleClear={() => handleClear('countryId')}
@@ -304,7 +311,7 @@ const SearchCustomer = props => {
             <label>{messages['bukrs']}</label>
             <DropdownClearable
               options={companyOptions}
-              value={param.bukrs}
+              value={param.bukrs ? param.bukrs : ''}
               placeholder={messages['bukrs']}
               onChange={(e, o) => onInputChange(o, 'bukrs')}
               handleClear={() => handleClear('bukrs')}
@@ -315,7 +322,7 @@ const SearchCustomer = props => {
             <label>{messages['brnch']}</label>
             <DropdownClearable
               options={serviceBranchOptions}
-              value={param.branchId}
+              value={param.branchId ? param.branchId : ''}
               placeholder={messages['brnch']}
               onChange={(e, o) => onInputChange(o, 'branchId')}
               handleClear={() => handleClear('branchId')}
@@ -326,7 +333,7 @@ const SearchCustomer = props => {
             <label>{messages['category']}</label>
             <DropdownClearable
               options={tovarCategoryOptions}
-              value={param.tovarCategoryId}
+              value={param.tovarCategoryId ? param.tovarCategoryId : ''}
               placeholder={messages['category']}
               onChange={(e, o) => onInputChange(o, 'tovarCategoryId')}
               handleClear={() => handleClear('tovarCategoryId')}
@@ -431,18 +438,26 @@ const SearchCustomer = props => {
         ) : null}
       </Form>
       <Divider />
-      <ReactTableServerSideWrapper
+
+      <ReactTableServerSideWrapperFilteredState
         data={searchCustomer ? searchCustomer.data : []}
-        filterable={true}
         columns={columns}
-        defaultPageSize={20}
+        filterable={true}
         showPagination={true}
+        pageSize={serverSideParams.size}
         requestData={params => {
-          props.fetchSearchCustomer({ ...params, ...param });
+          props.fetchSearchCustomer({ ...param, ...params }, () =>
+            setTurnOnReactFetch(true),
+          );
           setServerSideParams({ ...params });
         }}
         pages={searchCustomer ? searchCustomer.totalPages : ''}
         turnOnReactFetch={turnOnReactFetch}
+        page={serverSideParams.page}
+        filtered={filtered}
+        onFilteredChange={filter => {
+          setFiltered(filter);
+        }}
       />
     </Container>
   );
@@ -473,5 +488,6 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   fetchSearchCustomer,
+  clearSearchCustomer,
   f4FetchPhysStatus,
 })(injectIntl(SearchCustomer));

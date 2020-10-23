@@ -1,5 +1,6 @@
 import React from 'react';
 import { Segment } from 'semantic-ui-react';
+import { moneyFormat } from './helpers';
 
 const TotalCountsTable = props => {
   const { count } = props;
@@ -7,7 +8,7 @@ const TotalCountsTable = props => {
     <Segment>
       <h5>
         {`Общее количество: 
-    ${count ? count : 0}`}
+    ${count ? moneyFormat(count) : 0}`}
       </h5>
     </Segment>
   );

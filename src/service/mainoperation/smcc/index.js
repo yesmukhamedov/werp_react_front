@@ -722,6 +722,7 @@ function Smcc(props) {
                         {/* <Dropdown /> */}
 
                         <DropdownClearable
+                          allSelect={false}
                           placeholder={messages['bukrs']}
                           fluid
                           selection
@@ -746,6 +747,7 @@ function Smcc(props) {
                       </Table.Cell>
                       <Table.Cell>
                         <DropdownClearable
+                          allSelect={false}
                           placeholder={messages['brnch']}
                           fluid
                           selection
@@ -775,6 +777,7 @@ function Smcc(props) {
                       </Table.Cell>
                       <Table.Cell>
                         <DropdownClearable
+                          allSelect={false}
                           placeholder={messages['service']}
                           fluid
                           selection
@@ -806,6 +809,7 @@ function Smcc(props) {
                       </Table.Cell>
                       <Table.Cell>
                         <DropdownClearable
+                          allSelect={false}
                           placeholder={messages['contractType']}
                           fluid
                           search

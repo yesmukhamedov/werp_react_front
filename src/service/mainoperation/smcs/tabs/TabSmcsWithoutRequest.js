@@ -131,16 +131,6 @@ const TabSmcsWithoutRequest = props => {
 
   const [editStatus, setEditStatus] = useState(true);
 
-  useEffect(() => {
-    if (service.contractNumber) {
-      props.fetchServiceTypeId({
-        contractNumber: service.contractNumber,
-      });
-    } else {
-      props.fetchServiceTypeId();
-    }
-  }, [service.contractNumber]);
-
   //BasicInfo
   const onBasicInfoInputChange = (value, fieldName) => {
     switch (fieldName) {
@@ -154,6 +144,9 @@ const TabSmcsWithoutRequest = props => {
           contractNumber: service.contractNumber,
         });
         setService({ ...emptyService, contractNumber: service.contractNumber });
+        props.fetchServiceTypeId({
+          contractNumber: service.contractNumber,
+        });
         break;
       //Изменить серииный номер товара
       case 'inputChangeTovarSN':
@@ -343,6 +336,7 @@ const TabSmcsWithoutRequest = props => {
   //==================================================================================================================================
 
   const [services, setServices] = useState([]);
+
   useEffect(() => {
     setCheckStatus(false);
   }, [services]);
@@ -757,7 +751,6 @@ const TabSmcsWithoutRequest = props => {
         break;
 
       case 'duplicateCartridge':
-        console.log('duplicateCartridge', value);
         setCartridgeList([
           ...cartridgeList,
           {
@@ -1166,7 +1159,6 @@ const TabSmcsWithoutRequest = props => {
   }, [checkSmcs1]);
 
   const onChangeMasterApp = (app, value) => {
-    console.log('onChangeMasterApp', app);
     let param = {
       adate: app.applicationDate,
       address: app.addressName,
@@ -1228,7 +1220,6 @@ const TabSmcsWithoutRequest = props => {
   };
 
   const clearApplicationsMaster = app => {
-    console.log('onChangeMasterApp', app);
     let param = {
       adate: app.applicationDate,
       address: app.addressName,
@@ -1309,7 +1300,6 @@ const TabSmcsWithoutRequest = props => {
   };
 
   const clearApplicationsOperator = app => {
-    console.log('clearApplicationsOperator', app);
     let param = {
       applicationId: app.id,
       operatorId: '',

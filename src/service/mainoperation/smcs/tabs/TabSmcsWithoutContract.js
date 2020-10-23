@@ -55,7 +55,6 @@ import ServicePackage from './components/ServicePackage';
 import TableReportWithoutRequest from './components/TableReportWithoutRequest';
 import BasicInfoWithoutContract from './components/BasicInfoWithoutContract';
 import { emptyService } from '../components/directory';
-import { LinkToSmvs } from '../../../../utils/outlink';
 import '../style.css';
 
 //Создание сервиса без заявки
@@ -81,10 +80,8 @@ const TabSmcsWithoutContract = props => {
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
-  console.log('service CONTRACT', service);
   const [paymentChecked, setPaymentChecked] = useState(false);
   const [hkontS, setHkontS] = useState('');
-
   const [checkStatus, setCheckStatus] = useState(false);
 
   useEffect(() => {
@@ -101,11 +98,6 @@ const TabSmcsWithoutContract = props => {
   const successCheck = () => {
     setCheckStatus(true);
   };
-
-  // const toSmvs = data => {
-  //   setCheckStatus(false);
-  //   return <LinkToSmvs serviceNumber={data.data.id} />;
-  // };
 
   const funcWarranty = (param, data, item) => {
     if (parseInt(item.serviceTypeId) == 3) {
@@ -179,23 +171,27 @@ const TabSmcsWithoutContract = props => {
       case 'clearTovar':
         setService({ ...service, tovarId: '' });
         break;
+      //---------------
       case 'selectMaster':
-        setService({ ...service, masterId: value.value });
+        setService({ ...service, masterId: value });
         break;
+
       case 'clearMaster':
         setService({
           ...service,
-          masterFullName: '',
-          masterId: 0,
+          masterId: null,
         });
+        break;
+      //---------------
       case 'selectOperator':
-        setService({ ...service, operatorId: value.value });
+        setService({ ...service, operatorId: value });
         break;
+
       case 'clearOperator':
-        setService({ ...service, operatorFullName: '', operatorId: 0 });
+        setService({ ...service, operatorId: null });
         break;
+      //---------------
       case 'infoChange':
-        console.log('VALUE', value.value);
         setService({ ...service, info: value.value });
         break;
       case 'changeServiceDate':
@@ -278,28 +274,12 @@ const TabSmcsWithoutContract = props => {
 
       props.fetchPaymentOptions({ ...param }, 2);
     }
-
-    // if(service.branchId){
-    //   props.fetchWaersByBranch(service.branchId,()=>setService({...service, currencyId:}))
-    // }
   }, [
     service.bukrs,
     service.branchId,
     service.categoryId,
     service.currencyName,
   ]);
-
-  // useEffect(() => {
-  //   if (service.branchId && service.bukrs && service.currencyName) {
-  //     let param = {
-  //       brnch: service.branchId,
-  //       bukrs: service.bukrs,
-  //       waers: service.currencyName,
-  //     };
-
-  //     props.fetchPaymentOptions({ ...param }, 2);
-  //   }
-  // }, []);
 
   useEffect(() => {
     props.clearMatnrPriceSparePart();
@@ -626,6 +606,7 @@ const TabSmcsWithoutContract = props => {
         break;
 
       default:
+        alert('НЕТ ТАКОЕ ЗНАЧЕНИЕ');
         break;
     }
   };

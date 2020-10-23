@@ -53,7 +53,6 @@ export const fetchSmsetplpList = (param, clearFn) => {
       });
   };
 };
-//SMSETPLP получить список
 
 export function clearSmsetplpList() {
   return function(dispatch) {
