@@ -103,7 +103,7 @@ const SearchCustomer = props => {
     },
     {
       Header: messages['TBL_H__PRODUCT'],
-      accessor: 'productName',
+      accessor: 'contractTypeName',
       checked: true,
       Cell: row => <div className="text-wrap">{row.value}</div>,
       filterable: false,
@@ -119,7 +119,7 @@ const SearchCustomer = props => {
     },
     {
       Header: messages['phys_status'],
-      accessor: 'lastStateId',
+      accessor: 'lastStateName',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,
@@ -142,13 +142,13 @@ const SearchCustomer = props => {
     },
     {
       Header: messages['address'],
-      accessor: 'address',
+      accessor: 'fullAddress',
       checked: true,
       Cell: row => <div className="text-wrap">{row.value}</div>,
     },
     {
       Header: messages['Phone'],
-      accessor: 'phoneNumber',
+      accessor: 'fullPhone',
       checked: true,
       Cell: row => <div className="text-wrap">{row.value}</div>,
     },
