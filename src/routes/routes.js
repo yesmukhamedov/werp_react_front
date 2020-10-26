@@ -1060,6 +1060,10 @@ const AsyncPushNotification = Loadable({
   loader: () => import('../components/PushNotification/SendPushNotification'),
   loading: () => <LoadingPage />,
 });
+const AsyncHrSlc = Loadable({
+  loader: () => import('../hr/hrSlc'),
+  loading: () => <LoadingPage />,
+});
 
 const getComponent = {
   Dtrlist: AsyncTransaction,
@@ -1205,6 +1209,7 @@ const getComponent = {
   Smsetplp: AsyncSmsetplp,
   Smdis: AsyncSmdis,
   PushNotification: AsyncPushNotification,
+  HrSlc: AsyncHrSlc,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1313,6 +1318,8 @@ const generateRoutes = transactionRoutes => {
         exact={true}
         component={AsyncPushNotification}
       />
+
+      <Route path="/hr/hrslc" exact={true} component={AsyncHrSlc} />
 
       {transactionRoutes.map(route => {
         return (
