@@ -133,9 +133,7 @@ function Smregc(props) {
           },
         },
         () => {
-          props.history.push(
-            `service/smcuspor?contractNumber=${contractNumber}`,
-          );
+          props.history.push(`smcuspor?contractNumber=${contractNumber}`);
         },
       );
     }
