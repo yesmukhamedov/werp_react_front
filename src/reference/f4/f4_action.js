@@ -941,7 +941,7 @@ export function f4FetchPhoneHistory() {
 export function f4FetchMonthTerms(data) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet('smcc/branchMonthTerms', data)
+    doGet('service/smcc/branchMonthTerms', data)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -959,7 +959,7 @@ export function f4FetchMonthTerms(data) {
 export function f4FetchMatnrListView(data) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet('smcc/matnrListView', data)
+    doGet('service/smcc/matnrListView', data)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -978,7 +978,7 @@ export function f4CreateServContract(contract, clear) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     console.log(contract);
-    doPost('smcc/createContract', contract)
+    doPost('service/smcc/createContract', contract)
       .then(({ data }) => {
         console.log(data);
 
@@ -1006,7 +1006,7 @@ export function f4CreateServContract(contract, clear) {
 //Категория
 export function f4fetchCategory(data) {
   return function(dispatch) {
-    doGet('service_category/view', data)
+    doGet('service/service_category/view', data)
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_CATEGORY,
@@ -1021,7 +1021,7 @@ export function f4fetchCategory(data) {
 
 export function f4FetchServiceStatusList() {
   return function(dispatch) {
-    doGet('service_status/view')
+    doGet('service/service_status/view')
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_SERVICE_STATUS_LIST,
@@ -1035,7 +1035,7 @@ export function f4FetchServiceStatusList() {
 }
 export function f4FetchOperatorsByBranchId(param) {
   return function(dispatch) {
-    doGet('smrd/operatorsByBranchId', param)
+    doGet('service/smrd/operatorsByBranchId', param)
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_OPERATORS_BY_BRANCH_ID,
@@ -1083,7 +1083,7 @@ export function f4FetchServiceAppType() {
 
 export function f4FetchServicType() {
   return function(dispatch) {
-    doGet('service_type')
+    doGet('service/service_type')
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -1099,7 +1099,7 @@ export function f4FetchServicType() {
 
 export const f4FetchMatnrPriceList = param => {
   return function(dispatch) {
-    doGet(`smcs/matnr_pricelist`, param)
+    doGet(`service/smcs/matnr_pricelist`, param)
       .then(({ data }) => {
         //console.log(data, 'ACTION');
         dispatch(modifyLoader(false));
@@ -1116,7 +1116,7 @@ export const f4FetchMatnrPriceList = param => {
 };
 export const f4FetchFilterPlanStatus = param => {
   return function(dispatch) {
-    doGet(`filterPlan_status/view?direction=ASC`, param)
+    doGet(`service/filterPlan_status/view?direction=ASC`, param)
       .then(({ data }) => {
         //console.log(data, 'ACTION');
         dispatch(modifyLoader(false));
@@ -1135,7 +1135,7 @@ export const f4FetchFilterPlanStatus = param => {
 export function f4FetchPhysStatus() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`ContractLastState/view`)
+    doGet(`service/ContractLastState/view`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -1153,7 +1153,7 @@ export function f4FetchPhysStatus() {
 export function f4FetchCrmCategory() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`crm_category/view`)
+    doGet(`service/crm_category/view`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
