@@ -15,7 +15,7 @@ export const FETCH_OPERATOR_LIST = 'FETCH_OPERATOR_LIST';
 export const fetchSrlsm = (param, setFunc) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`service/srlsm`, param)
+    doGet(`service/report/srlsm`, param)
       .then(({ data }) => {
         setFunc();
         dispatch(modifyLoader(false));
@@ -33,7 +33,7 @@ export const fetchSrlsm = (param, setFunc) => {
 export const fetchAcceptPaymentUsers = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`service/srlsm/accepted_payment_users`, param)
+    doGet(`service/report/srlsm/accepted_payment_users`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -68,7 +68,7 @@ export const fetchServiceTypeList = param => {
 };
 export const fetchMasterList = param => {
   return function(dispatch) {
-    doGet(`service/srlsm/getMasterList`, param)
+    doGet(`service/report/srlsm/getMasterList`, param)
       .then(({ data }) => {
         dispatch({
           type: FETCH_MASTER_LIST,
@@ -82,7 +82,7 @@ export const fetchMasterList = param => {
 };
 export const fetchOperatorList = param => {
   return function(dispatch) {
-    doGet(`service/srlsm/getOperatorList`, param)
+    doGet(`service/report/srlsm/getOperatorList`, param)
       .then(({ data }) => {
         dispatch({
           type: FETCH_OPERATOR_LIST,

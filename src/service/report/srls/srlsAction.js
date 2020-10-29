@@ -13,7 +13,7 @@ export const FETCH_SERVICE_TYPE_LIST = 'FETCH_SERVICE_TYPE_LIST';
 export const fetchSrls = (param, setFunc) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`service/srls`, param)
+    doGet(`service/report/srls`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

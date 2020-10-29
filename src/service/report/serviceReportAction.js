@@ -33,7 +33,7 @@ export const fetchServiceList = param => {
 export const fetchServiceListManager = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`service/srlsm`, param)
+    doGet(`service/report/srlsm`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
