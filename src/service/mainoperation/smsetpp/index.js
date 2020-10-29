@@ -320,7 +320,7 @@ const Smsetpp = props => {
 
   const onClickEdit = value => {
     setModalOpenEdit(true);
-    doGet(`smsetpp/${value}`).then(({ data }) => {
+    doGet(`service/smsetpp/${value}`).then(({ data }) => {
       setDataEdit(data.data);
     });
   };
