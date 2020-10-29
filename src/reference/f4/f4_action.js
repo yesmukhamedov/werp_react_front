@@ -1170,7 +1170,7 @@ export function f4FetchCrmCategory() {
 
 export function f4FetchCurrentStaff() {
   return function(dispatch) {
-    doGet(`reference/currentStaff`)
+    doGet(`service/reference/currentStaff`)
       .then(({ data }) => {
         dispatch({
           type: F4_FETCH_CURRENT_STAFF,
@@ -1186,7 +1186,7 @@ export function f4FetchCurrentStaff() {
 export function f4FetchAvailabledTransactionByUser() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`reference/transactions`)
+    doGet(`service/reference/transactions`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
