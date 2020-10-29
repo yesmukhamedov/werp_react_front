@@ -15,6 +15,7 @@ export const ROOT_URL = isLocalIpAddress()
   : process.env.REACT_APP_ROOT_URL_REMOTE;
 
 export const AUTH_URL = process.env.REACT_APP_ROOT_URL_AUTH;
+export const SERVICE_URL = process.env.REACT_APP_ROOT_URL_SERVICE;
 
 /**
  * Back-end URL of the legacy (old) system

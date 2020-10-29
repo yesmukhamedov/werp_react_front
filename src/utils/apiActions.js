@@ -1,39 +1,59 @@
 import axiosInstance from './apiClient';
-import { ROOT_URL } from './constants';
+import { ROOT_URL, SERVICE_URL } from './constants';
+
+const defineBackendUrl = uri => {
+  let arr = uri.split('/');
+  if (arr && arr.length > 0) {
+    switch (arr[0].toUpperCase()) {
+      case 'SERVICE':
+        return SERVICE_URL;
+      case 'CORE':
+        return ROOT_URL;
+      default:
+        return ROOT_URL;
+    }
+  } else return ROOT_URL;
+};
 
 export const doGet = (uri, params = {}) => {
-  return axiosInstance.get(`${ROOT_URL}` + '/api/' + uri, {
+  let url = defineBackendUrl(uri);
+  return axiosInstance.get(url + '/api/' + uri, {
     params,
   });
 };
 
 export const doPost = (uri, postData, params = {}) => {
-  return axiosInstance.post(`${ROOT_URL}` + '/api/' + uri, postData, {
+  let url = defineBackendUrl(uri);
+  return axiosInstance.post(url + '/api/' + uri, postData, {
     params,
   });
 };
 
 export const doPut = (uri, putData, params = {}) => {
-  return axiosInstance.put(`${ROOT_URL}` + '/api/' + uri, putData, {
+  let url = defineBackendUrl(uri);
+  return axiosInstance.put(url + '/api/' + uri, putData, {
     params,
   });
 };
 
 export const doDelete = (uri, delData, params = {}) => {
-  return axiosInstance.delete(`${ROOT_URL}` + '/api/' + uri, delData, {
+  let url = defineBackendUrl(uri);
+  return axiosInstance.delete(url + '/api/' + uri, delData, {
     params,
   });
 };
 
 export const doGetCancelToken = (uri, token, params = {}) => {
-  return axiosInstance.get(`${ROOT_URL}` + '/api/' + uri, {
+  let url = defineBackendUrl(uri);
+  return axiosInstance.get(url + '/api/' + uri, {
     params,
     cancelToken: token,
   });
 };
 
 export const doPostExcel = (uri, postData, params = {}) => {
-  return axiosInstance.post(`${ROOT_URL}` + '/api/' + uri, postData, {
+  let url = defineBackendUrl(uri);
+  return axiosInstance.post(url + '/api/' + uri, postData, {
     params,
     responseType: 'blob',
   });
