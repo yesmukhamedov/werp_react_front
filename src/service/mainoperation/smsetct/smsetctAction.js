@@ -27,7 +27,7 @@ export function changeDynObjService(a_obj) {
 
 export function postSmsetct(postParams, fetchSmsetct) {
   return function(dispatch) {
-    doPost(`smsetct/create`, postParams)
+    doPost(`service/smsetct/create`, postParams)
       .then(data => {
         if (data.data.status === 200 || data.data.status === 'OK') {
           dispatch(notify('success', errorTableText(101)));
@@ -44,7 +44,7 @@ export function postSmsetct(postParams, fetchSmsetct) {
 
 export function editSmsetct(editParams, fetchSmsetct) {
   return function(dispatch) {
-    doPut(`smsetct/update`, editParams)
+    doPut(`service/smsetct/update`, editParams)
       .then(data => {
         if (data.data.status === 200 || data.data.status === 'OK') {
           dispatch(notify('success', errorTableText(104), errorTableText(101)));
@@ -69,7 +69,7 @@ export function clearDynObjService() {
 export function applySmsetct(param) {
   return dispatch => {
     dispatch(modifyLoader(true));
-    doGet(`smsetct/apply`, param)
+    doGet(`service/smsetct/apply`, param)
       .then(({ data }) => {
         if (data.status === 200 || data.status === 'OK') {
           dispatch(notify('success', errorTableText(101)));
@@ -89,7 +89,7 @@ export function applySmsetct(param) {
 export function fetchProductListSmsetct(param) {
   return dispatch => {
     dispatch(modifyLoader(true));
-    doGet(`smsetct/getProductList`, param)
+    doGet(`service/smsetct/getProductList`, param)
       .then(({ data }) => {
         dispatch({
           type: FETCH_PRODUCT_LIST_SMSETCT,
@@ -113,7 +113,10 @@ export function fetchSmsetct(searchParams, searchArray) {
   }
   return dispatch => {
     dispatch(modifyLoader(true));
-    doGet(`smsetct/view?direction=DESC&orderBy=id&${queryString}`, searchParams)
+    doGet(
+      `service/smsetct/view?direction=DESC&orderBy=id&${queryString}`,
+      searchParams,
+    )
       .then(({ data }) => {
         dispatch({
           type: FETCH_SMSETCT,
@@ -121,7 +124,7 @@ export function fetchSmsetct(searchParams, searchArray) {
         });
 
         doGet(
-          `smsetct/audit?direction=DESC&orderBy=id&${queryString}`,
+          `service/smsetct/audit?direction=DESC&orderBy=id&${queryString}`,
           searchParams,
         )
           .then(({ data }) => {

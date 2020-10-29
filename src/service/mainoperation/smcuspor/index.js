@@ -32,17 +32,21 @@ import './smcuspor.css';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 
 function Smcuspor(props) {
+  //--
   const urlString = window.location.href;
   const url = new URL(urlString);
   const contractNumber = url.searchParams.get('contractNumber');
+  //--
   const planId =
     url.searchParams.get('filterPlanId') !== 'null'
       ? url.searchParams.get('filterPlanId')
       : null;
+  //--
   const vcId =
     url.searchParams.get('filterVCId') !== 'null'
       ? url.searchParams.get('filterVCId')
       : null;
+  //--
 
   const emptyHistory = {
     activeButton: true,
@@ -82,7 +86,7 @@ function Smcuspor(props) {
     serviceCrmCategoryName,
     serviceCrmCategoryId,
     contractDate,
-    matnrName,
+    contractTypeName,
     installmentDate,
     dealerFIO,
     fitterFIO,
@@ -105,9 +109,6 @@ function Smcuspor(props) {
       props.fetchSmcusporContract({ contractNumber });
       props.fetchSmcusporContractHistory({ contractNumber });
       props.fetchServCrmHistoryAll({ contractNumber }, 'all');
-      props.fetchServCrmHistoryAll({ contractNumber }, 'services');
-      props.fetchServCrmHistoryAll({ contractNumber }, 'calls');
-      props.fetchServCrmHistoryAll({ contractNumber }, 'requests');
     }
   }, [contractNumber]);
 
@@ -132,14 +133,19 @@ function Smcuspor(props) {
         case 'services':
           varHistory.reactColumns = fieldname;
           varHistory.activeButton = false;
+          props.fetchServCrmHistoryAll({ contractNumber }, 'services');
+
           break;
         case 'calls':
           varHistory.reactColumns = fieldname;
           varHistory.activeButton = false;
+          props.fetchServCrmHistoryAll({ contractNumber }, 'calls');
+
           break;
         case 'requests':
           varHistory.reactColumns = fieldname;
           varHistory.activeButton = false;
+          props.fetchServCrmHistoryAll({ contractNumber }, 'requests');
           break;
 
         default:
@@ -217,30 +223,35 @@ function Smcuspor(props) {
                   label="F1"
                   className="input__filter_terms"
                   value={f1MtLeft || f1MtLeft == 0 ? f1MtLeft : ''}
+                  readOnly
                 />
                 <Input
                   size="mini"
                   label="F2"
                   className="input__filter_terms"
                   value={f2MtLeft || f2MtLeft == 0 ? f2MtLeft : ''}
+                  readOnly
                 />
                 <Input
                   size="mini"
                   label="F3"
                   className="input__filter_terms"
                   value={f3MtLeft || f3MtLeft == 0 ? f3MtLeft : ''}
+                  readOnly
                 />
                 <Input
                   size="mini"
                   label="F4"
                   className="input__filter_terms"
                   value={f4MtLeft || f4MtLeft == 0 ? f4MtLeft : ''}
+                  readOnly
                 />
                 <Input
                   size="mini"
                   label="F5"
                   className="input__filter_terms"
                   value={f5MtLeft || f5MtLeft == 0 ? f5MtLeft : ''}
+                  readOnly
                 />
               </Segment>
               <Segment>
@@ -250,163 +261,150 @@ function Smcuspor(props) {
                 <Table.Body>
                   <Table.Row>
                     <Table.Cell>
-                      <Label size="large" basic>
-                        {messages['country']}
-                      </Label>
+                      <label>{messages['country']}</label>
                     </Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
                         fluid
                         value={countryName ? countryName : ''}
+                        readOnly
                       />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label size="large" basic>
-                        {messages['bukrs']}
-                      </Label>
+                      <label>{messages['bukrs']}</label>
                     </Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
                         fluid
                         value={bukrsName ? bukrsName : ''}
+                        readOnly
                       />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label size="large" basic>
-                        {messages['Task.Branch']}
-                      </Label>
+                      <label>{messages['Task.Branch']}</label>
                     </Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
                         fluid
                         value={branchName ? branchName : ''}
+                        readOnly
                       />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label size="large" basic>
-                        {messages['service_branch']}
-                      </Label>
+                      <label>{messages['service_branch']}</label>
                     </Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
                         fluid
                         value={serviceBranchName ? serviceBranchName : ''}
+                        readOnly
                       />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label size="large" basic>
-                        {messages['Product']}
-                      </Label>
+                      <label>{messages['Product']}</label>
                     </Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
                         fluid
-                        value={matnrName ? matnrName : ''}
+                        value={contractTypeName ? contractTypeName : ''}
+                        readOnly
                       />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label size="large" basic>
-                        {messages['phys_status']}
-                      </Label>
+                      <label>{messages['phys_status']}</label>
                     </Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
                         fluid
                         value={lastStateName ? lastStateName : ''}
+                        readOnly
                       />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label size="large" basic>
-                        CN
-                      </Label>
+                      <label>CN</label>
                     </Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
                         fluid
                         value={contractNumber ? contractNumber : ''}
+                        readOnly
                       />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label size="large" basic>
-                        {messages['productSerialNumber']}
-                      </Label>
+                      <label>{messages['productSerialNumber']}</label>
                     </Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
                         fluid
                         value={tovarSn ? tovarSn : ''}
+                        readOnly
                       />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label size="large" basic>
-                        {messages['fioClient']}
-                      </Label>
+                      <label>{messages['fioClient']}</label>
                     </Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
                         fluid
                         value={customerFIO ? customerFIO : ''}
+                        readOnly
                       />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label size="large" basic>
-                        {messages['contactDetails']}
-                      </Label>
+                      <label>{messages['contactDetails']}</label>
                     </Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
                         fluid
                         value={contactPersonName ? contactPersonName : ''}
+                        readOnly
                       />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label size="large" basic>
-                        {messages['addressService']}
-                      </Label>
+                      <label>{messages['addressService']}</label>
                     </Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
                         fluid
                         value={serviceAddressName ? serviceAddressName : ''}
+                        readOnly
                       />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell collapsing>
-                      <Label size="large" basic>
-                        {messages['contacts']}
-                      </Label>
+                      <label>{messages['contacts']}</label>
                     </Table.Cell>
                     <Table.Cell>
                       <TextArea
@@ -428,14 +426,13 @@ function Smcuspor(props) {
                         value={
                           serviceCrmCategoryName ? serviceCrmCategoryName : ''
                         }
+                        readOnly
                       />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label size="large" basic>
-                        {messages['buying_date']}
-                      </Label>
+                      <label>{messages['buying_date']}</label>
                     </Table.Cell>
                     <Table.Cell>
                       <Input
@@ -446,14 +443,13 @@ function Smcuspor(props) {
                             ? moment(contractDate).format('DD-MM-YYYY')
                             : ''
                         }
+                        readOnly
                       />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label size="large" basic>
-                        {messages['installation_date']}
-                      </Label>
+                      <label>{messages['installation_date']}</label>
                     </Table.Cell>
                     <Table.Cell>
                       <Input
@@ -464,42 +460,39 @@ function Smcuspor(props) {
                             ? moment(installmentDate).format('DD.MM.YYYY')
                             : ''
                         }
+                        readOnly
                       />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label size="large" basic>
-                        {messages['dealer']}
-                      </Label>
+                      <label>{messages['dealer']}</label>
                     </Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
                         fluid
                         value={dealerFIO ? dealerFIO : ''}
+                        readOnly
                       />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label size="large" basic>
-                        {messages['goodsInstaller']}
-                      </Label>
+                      <label>{messages['goodsInstaller']}</label>
                     </Table.Cell>
                     <Table.Cell>
                       <Input
                         size="small"
                         fluid
                         value={fitterFIO ? fitterFIO : ''}
+                        readOnly
                       />
                     </Table.Cell>
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label size="large" basic>
-                        {messages['guarantee_period']}
-                      </Label>
+                      <label>{messages['guarantee_period']}</label>
                     </Table.Cell>
                     <Table.Cell>
                       <Table>
@@ -516,6 +509,7 @@ function Smcuspor(props) {
                                       )
                                     : ''
                                 }
+                                readOnly
                               />
                             </Table.Cell>
                             <Table.Cell>
@@ -525,6 +519,7 @@ function Smcuspor(props) {
                                 value={`${
                                   warrantyEndedMonths ? warrantyEndedMonths : ''
                                 } / ${warranty ? warranty : ''}`}
+                                readOnly
                               />
                             </Table.Cell>
                           </Table.Row>
@@ -534,9 +529,7 @@ function Smcuspor(props) {
                   </Table.Row>
                   <Table.Row>
                     <Table.Cell>
-                      <Label size="large" basic>
-                        {messages['replacement_period']}
-                      </Label>
+                      <label>{messages['replacement_period']}</label>
                     </Table.Cell>
                     <Table.Cell>
                       <Table>

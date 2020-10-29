@@ -18,7 +18,7 @@ export const CANCEL_PAYMENT = 'CANCEL_PAYMENT';
 export const fetchSmesList = id => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smvs/${id}`)
+    doGet(`service/smvs/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -53,7 +53,7 @@ export const fetchPaymentOptions = param => {
 export const acceptPayment = (param, successPayment) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPut(`smes/acceptPayment?hkontS=${param.hkontS}&id=${param.id}`)
+    doPut(`service/smes/acceptPayment?hkontS=${param.hkontS}&id=${param.id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -73,7 +73,7 @@ export const acceptPayment = (param, successPayment) => {
 export const cancelPayment = (id, toSmvs) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPut(`smes/cancel?id=${id}`)
+    doPut(`service/smes/cancel?id=${id}`)
       .then(({ data }) => {
         console.log('ACTION DATA', data);
 

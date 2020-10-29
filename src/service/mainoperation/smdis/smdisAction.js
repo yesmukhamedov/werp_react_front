@@ -14,7 +14,7 @@ export const POST_REDIST_SMRD_OPERATOR = 'POST_REDIST_SMRD_OPERATOR';
 export const fetchSmcrldList = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcrld`, param)
+    doGet(`service/smcrld`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -36,7 +36,7 @@ export const postSmcrldFormplan = param => {
     .join('&');
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`smcrld/formPlan?${queryString}`)
+    doPost(`service/smcrld/formPlan?${queryString}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -54,7 +54,7 @@ export const postSmcrldFormplan = param => {
 //SMCRLD Получить список распределении
 export const fetchSmcrld = param => {
   return function(dispatch) {
-    doGet(`smcrld/view`, param)
+    doGet(`service/smcrld/view`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -73,7 +73,7 @@ export const fetchSmcrld = param => {
 export const fetchSmvodList = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smvod`, param)
+    doGet(`service/smvod`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -92,7 +92,7 @@ export const fetchSmvodList = param => {
 export const fetchSmrdOperator = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smrd`, param)
+    doGet(`service/smrd`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -114,7 +114,7 @@ export const postSmrdOperatorsByBranch = param => {
     .join('&');
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`smrd/operatorsByBranchId?${queryString}`)
+    doPost(`service/smrd/operatorsByBranchId?${queryString}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -136,7 +136,7 @@ export const postRedistSmrdOperator = (param, toOperators, fetchOperator) => {
     .join('&');
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`smrd/reDistributionOperator?${queryString}`, toOperators)
+    doPost(`service/smrd/reDistributionOperator?${queryString}`, toOperators)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

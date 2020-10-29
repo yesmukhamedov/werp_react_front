@@ -13,7 +13,7 @@ export const FETCH_SERVICE_LIST_MANAGER = 'FETCH_SERVICE_LIST_MANAGER';
 export const fetchServiceList = param => {
   console.log('PARAMETR', param);
   return function(dispatch) {
-    doGet(`werp/mservice/report/srls`, param)
+    doGet(`service/report/srls`, param)
       .then(({ data }) => {
         console.log('ACTION', data);
         dispatch(modifyLoader(false));
@@ -33,7 +33,7 @@ export const fetchServiceList = param => {
 export const fetchServiceListManager = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`srlsm`, param)
+    doGet(`service/srlsm`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

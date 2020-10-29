@@ -15,7 +15,7 @@ export const CLEAR_DYNOBJ_SERVICE = 'CLEAR_DYNOBJ_SERVICE';
 export function fetchSmvca(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smvca/${id}`)
+    doGet(`service/smvca/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

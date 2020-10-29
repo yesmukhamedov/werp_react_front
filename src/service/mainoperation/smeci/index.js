@@ -234,7 +234,7 @@ function Smeci(props) {
         warrantyEndedMonths,
       },
       () => {
-        props.history.push(`smcuspor?contractNumber=${contractNumber}`);
+        props.history.push(`service/smcuspor?contractNumber=${contractNumber}`);
       },
     );
     clearContract();

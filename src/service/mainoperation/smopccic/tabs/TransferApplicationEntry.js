@@ -50,16 +50,8 @@ const TransferApplicationEntry = props => {
 
   const initialColumns = [
     {
-      Header: '#',
-      accessor: 'id',
-      checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      filterable: false,
-      width: 55,
-    },
-    {
       Header: messages['brnch'],
-      accessor: 'branchId',
+      accessor: 'branchName',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
@@ -119,13 +111,13 @@ const TransferApplicationEntry = props => {
     },
     {
       Header: messages['address'],
-      accessor: 'address',
+      accessor: 'fullAddress',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
       Header: messages['Phone'],
-      accessor: 'phoneNumber',
+      accessor: 'fullPhone',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
@@ -177,14 +169,14 @@ const TransferApplicationEntry = props => {
     },
     {
       Header: messages['category'],
-      accessor: 'crmCategoryId',
+      accessor: 'crmCategoryName',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,
     },
     {
       Header: messages['application_status'],
-      accessor: 'applicationStatusId',
+      accessor: 'applicationStatusName',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
       filterable: false,

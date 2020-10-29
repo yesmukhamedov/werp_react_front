@@ -15,7 +15,7 @@ export const UPDATE_SMSETPLP = 'UPDATE_SMSETPLP';
 export const fetchSmsetplpById = id => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smsetplp/${id}`)
+    doGet(`service/smsetplp/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -33,7 +33,7 @@ export const fetchSmsetplpById = id => {
 export const fetchSmsetplpList = (param, clearFn) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smsetplp/view`, param)
+    doGet(`service/smsetplp/view`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -66,7 +66,7 @@ export function clearSmsetplpList() {
 export const postSmsetplpForm = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`smsetplp/form?dateAt=${param}`)
+    doPost(`service/smsetplp/form?dateAt=${param}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -85,7 +85,7 @@ export const postSmsetplpForm = param => {
 export const updateSmsetplp = (param, setFunc) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPut(`smsetplp/update`, param)
+    doPut(`service/smsetplp/update`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

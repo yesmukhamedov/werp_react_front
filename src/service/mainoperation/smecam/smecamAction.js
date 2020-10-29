@@ -15,7 +15,7 @@ export const EDIT_SMECAM = 'EDIT_SMECAM';
 export function fetchSmecam(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smecam/${id}`)
+    doGet(`service/smecam/${id}`)
       .then(({ data }) => {
         dispatch({
           type: FETCH_SMECAM,
@@ -33,7 +33,7 @@ export function fetchSmecam(id) {
 export function editSmecam(param) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPut('smecam/edit', { ...param })
+    doPut('service/smecam/edit', { ...param })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

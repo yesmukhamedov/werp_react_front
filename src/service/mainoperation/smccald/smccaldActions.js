@@ -15,7 +15,7 @@ export const POST_SMCCALD_CREATE_APP = 'POST_SMCCALD_CREATE_APP';
 
 export function fetchSmccaldGetProductList(param) {
   return function(dispatch) {
-    doGet(`smccald/getProductList`, param)
+    doGet(`service/smccald/getProductList`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -32,7 +32,7 @@ export function fetchSmccaldGetProductList(param) {
 
 export function fetchCurrentStaff() {
   return function(dispatch) {
-    doGet(`smccald/`)
+    doGet(`service/smccald/`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -50,7 +50,7 @@ export function fetchCurrentStaff() {
 export function postSmccaldCreateApp(application) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`smccald/create`, application)
+    doPost(`service/smccald/create`, application)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

@@ -70,16 +70,12 @@ const Smsetct = props => {
         return item.branchId;
       });
 
-      console.log('mapSearchArray', mapSearchArray);
-
       setParamApply({ ...paramApply, branchId: mapSearchArray.toString() });
     } else {
       setParamApply({ ...paramApply, branchId: '' });
     }
   }, [searchArray]);
 
-  console.log('searchArray', searchArray);
-  console.log('paramApply', paramApply);
   const {
     intl: { messages },
     companyOptions = [],

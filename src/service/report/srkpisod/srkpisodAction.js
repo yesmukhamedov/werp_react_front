@@ -7,7 +7,7 @@ export const FETCH_SRKPISOD = 'FETCH_SRKPISOD';
 //SRKPISO  KPI Сервис операторов
 export const fetchSrkpisod = param => {
   return function(dispatch) {
-    doGet(`srkpiso`, param)
+    doGet(`service/srkpiso`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

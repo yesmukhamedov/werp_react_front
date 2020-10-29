@@ -21,7 +21,7 @@ export const SMAPPL_FETCH_APP_TYPE = 'SMAPPL_FETCH_APP_TYPE';
 export function fetchSmapplList(params, setFunc) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet('smappl/appList', params)
+    doGet('service/smappl/appList', params)
       .then(({ data }) => {
         setFunc();
         dispatch(modifyLoader(false));
@@ -48,7 +48,7 @@ export function clearSmapplList() {
 export function postApplicationsOperator(params, success) {
   return function(dispatch) {
     doPost(
-      `smappl/changeOperator?applicationId=${params.applicationId}&operatorId=${params.operatorId}`,
+      `service/smappl/changeOperator?applicationId=${params.applicationId}&operatorId=${params.operatorId}`,
     )
       .then(({ data }) => {
         dispatch(modifyLoader(false));
@@ -62,7 +62,7 @@ export function postApplicationsOperator(params, success) {
 
 export function postEditApp(params, setFunc, clearFunc) {
   return function(dispatch) {
-    doPost('smappl/editApp', params)
+    doPost('service/smappl/editApp', params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         setFunc();
@@ -76,7 +76,7 @@ export function postEditApp(params, setFunc, clearFunc) {
 
 export function fetchMasterListSmappl(params) {
   return function(dispatch) {
-    doGet('smappl/getMasterList', params)
+    doGet('service/smappl/getMasterList', params)
       .then(({ data }) => {
         dispatch({
           type: FETCH_MASTER_LIST_SMAPPL,
@@ -99,7 +99,7 @@ export function clearMasterListSmappl() {
 
 export const fetchOperatorListSmappl = param => {
   return function(dispatch) {
-    doGet(`smappl/getOperatorList`, param)
+    doGet(`service/smappl/getOperatorList`, param)
       .then(({ data }) => {
         dispatch({
           type: FETCH_OPERATOR_LIST_SMAPPL,
@@ -121,7 +121,7 @@ export function clearOperatorListSmappl() {
 
 export function smapplFetchCategory(data) {
   return function(dispatch) {
-    doGet('service_category/view', data)
+    doGet('service/service_category/view', data)
       .then(({ data }) => {
         dispatch({
           type: SMAPPL_FETCH_CATEGORY,

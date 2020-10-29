@@ -164,7 +164,6 @@ function HistoryReactTable(props) {
         previousText={messages['Table.Previous']}
         nextText={messages['Table.Next']}
         showPagination={true}
-        className="-striped -highlight"
         pageSizeOptions={[20, 30, 40]}
         loadingText={messages['Table.Next']}
         noDataText={messages['Table.NoData']}

@@ -38,7 +38,7 @@ const EditPosition = props => {
 
   useEffect(() => {
     if (edit_id !== null) {
-      doGet(`smplb/${edit_id}`).then(res => {
+      doGet(`service/smplb/${edit_id}`).then(res => {
         const data = res.data.data;
         setEditInfo({
           bukrs: data.bukrs,

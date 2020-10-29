@@ -25,7 +25,7 @@ export const POST_SMSRCUS_DEACTIVATE_CLIENT_FILTER =
 export const fetchSmsrcusList = (param, setFunc) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smsrcus/list`, param)
+    doGet(`service/smsrcus/list`, param)
       .then(({ data }) => {
         setFunc();
         dispatch(modifyLoader(false));
@@ -52,7 +52,7 @@ export function clearSmsrcusList() {
 export const fetchSmsrcusClient = contractNumber => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smsrcus/list/${contractNumber}`)
+    doGet(`service/smsrcus/list/${contractNumber}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -78,7 +78,7 @@ export function clearSmsrcusClient() {
 export const fetchSmsrcusBlackList = (param, setFunc) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smsrcus/listCRMBlackClients`, param)
+    doGet(`service/smsrcus/listCRMBlackClients`, param)
       .then(({ data }) => {
         setFunc();
         dispatch(modifyLoader(false));
@@ -101,7 +101,7 @@ export const postSmsrcusDeactivateClientFilter = (
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doPost(
-      `smsrcus/deactivate?contractNumber=${contractNumber}&filterId=${filterId}`,
+      `service/smsrcus/deactivate?contractNumber=${contractNumber}&filterId=${filterId}`,
     )
       .then(({ data }) => {
         dispatch(modifyLoader(false));

@@ -65,7 +65,7 @@ export const FETCH_SERVICE_BRANCH_LIST = 'FETCH_SERVICE_BRANCH_LIST';
 export const fetchServiceSmcs = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcs/getContractByTovarSn`, param)
+    doGet(`service/smcs/getContractByTovarSn`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -83,7 +83,7 @@ export const fetchServiceSmcs = param => {
 export const fetchTovarId = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcs/getTovarList`, param)
+    doGet(`service/smcs/getTovarList`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -101,7 +101,7 @@ export const fetchTovarId = param => {
 export const fetchMasterList = (param, val) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcs/getMasterList`, param)
+    doGet(`service/smcs/getMasterList`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (val == 1) {
@@ -126,7 +126,7 @@ export const fetchMasterList = (param, val) => {
 export const fetchServiceTypeId = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcs/getServiceList`, param)
+    doGet(`service/smcs/getServiceList`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -144,7 +144,7 @@ export const fetchServiceTypeId = param => {
 export const fetchMatnrPriceSparePart = (param, trans) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcs/getMatnrPriceList`, param)
+    doGet(`service/smcs/getMatnrPriceList`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (trans == 1) {
@@ -181,7 +181,7 @@ export const clearMatnrPriceSparePart = () => {
 export const fetchMatnrPriceCartridge = (param, trans) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcs/getMatnrPriceList`, param)
+    doGet(`service/smcs/getMatnrPriceList`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
 
@@ -219,7 +219,7 @@ export const clearMatnrPriceCartridge = () => {
 export const fetchMatnrPriceServicePackage = (param, trans) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcs/getServicePackageList`, param)
+    doGet(`service/smcs/getServicePackageList`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (trans == 1) {
@@ -255,7 +255,7 @@ export const clearMatnrPriceServicePackage = () => {
 
 export const fetchServicePackageDetails = param => {
   return function(dispatch) {
-    doGet(`smcs/getServicePackageDetails`, param)
+    doGet(`service/smcs/getServicePackageDetails`, param)
       .then(({ data }) => {
         dispatch({
           type: FETCH_SERVICE_PACKAGE_DETAILS,
@@ -280,7 +280,7 @@ export const clearServicePackageDetails = param => {
 export const fetchSmcsServicePacket = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcs/getServicePackageList`, param)
+    doGet(`service/smcs/getServicePackageList`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -298,7 +298,7 @@ export const fetchSmcsServicePacket = param => {
 export const fetchOperatorList = (param, val) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcs/getOperatorList`, param)
+    doGet(`service/smcs/getOperatorList`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (val == 1) {
@@ -324,7 +324,7 @@ export const fetchPositionSumm = (branchId, bukrs, productId, position) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doPost(
-      `smcs/getPositionSum?branchId=${branchId}&bukrs=${bukrs}&productId=${productId}`,
+      `service/smcs/getPositionSum?branchId=${branchId}&bukrs=${bukrs}&productId=${productId}`,
       position,
     )
       .then(({ data }) => {
@@ -344,7 +344,7 @@ export const fetchPositionSumm = (branchId, bukrs, productId, position) => {
 export const checkSmcsWithoutReques = (body, successCheck, trans) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`smcs/check`, body)
+    doPost(`service/smcs/check`, body)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (trans == 1) {
@@ -377,7 +377,7 @@ export const checkSmcsWithoutReques = (body, successCheck, trans) => {
 export const saveSmcsWithoutReques = (body, toSmvs) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`smcs/create`, body)
+    doPost(`service/smcs/create`, body)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         // dispatch({
@@ -397,7 +397,7 @@ export const saveSmcsWithoutReques = (body, toSmvs) => {
 export const saveSmcsPayment = (body, hcont, toSmvs) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`smcs/create_and_accept_payment?hkontS=${hcont}`, body)
+    doPost(`service/smcs/create_and_accept_payment?hkontS=${hcont}`, body)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
 
@@ -412,7 +412,6 @@ export const saveSmcsPayment = (body, hcont, toSmvs) => {
 };
 
 export const fetchPaymentOptions = (param, trans) => {
-  console.log('ACTION PARAM', param, 'ACTION TRANS', trans);
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`finance/mainoperation/fetchCashBankHkontsByBranch`, param)
@@ -421,7 +420,6 @@ export const fetchPaymentOptions = (param, trans) => {
 
         switch (trans) {
           case 1:
-            console.log('DATA ACTIONS', data);
             dispatch({
               type: FETCH_PAYMENT_OPTIONS_1,
               data,
@@ -452,7 +450,7 @@ export const fetchPaymentOptions = (param, trans) => {
 export const fetchSmcsByAppNumber = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcs/getServiceApplication`, param)
+    doGet(`service/smcs/getServiceApplication`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -470,7 +468,7 @@ export const fetchSmcsByAppNumber = param => {
 export const fetchSmcsByContractNumber = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcs/getServiceContract`, param)
+    doGet(`service/smcs/getServiceContract`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -487,7 +485,7 @@ export const fetchSmcsByContractNumber = param => {
 export const fetchServiceBranchList = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcs/getBranchList`, param)
+    doGet(`service/smcs/getBranchList`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -504,7 +502,7 @@ export const fetchServiceBranchList = param => {
 //Проверка гарантии
 export const fetchCheckWarranty = (param, funcWarranty, value) => {
   return function(dispatch) {
-    doGet(`smcs/checkWarranty`, param)
+    doGet(`service/smcs/checkWarranty`, param)
       .then(({ data }) => {
         if (data.status == 'OK') {
           funcWarranty(param, data, value);
@@ -517,7 +515,7 @@ export const fetchCheckWarranty = (param, funcWarranty, value) => {
 };
 export const fetchWaersByBranch = (param, funcSetWaers) => {
   return function(dispatch) {
-    doGet(`smcs`, param)
+    doGet(`service/smcs`, param)
       .then(({ data }) => {
         if (data.status == 'OK') {
           funcSetWaers(data);
@@ -531,7 +529,7 @@ export const fetchWaersByBranch = (param, funcSetWaers) => {
 
 export function postApplicationsMaster(params, success) {
   return function(dispatch) {
-    doPost('smappl/editApp', params)
+    doPost('service/smappl/editApp', params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         success();
@@ -544,7 +542,7 @@ export function postApplicationsMaster(params, success) {
 export function postApplicationsOperator(params, success) {
   return function(dispatch) {
     doPost(
-      `smappl/changeOperator?applicationId=${params.applicationId}&operatorId=${params.operatorId}`,
+      `service/smappl/changeOperator?applicationId=${params.applicationId}&operatorId=${params.operatorId}`,
     )
       .then(({ data }) => {
         dispatch(modifyLoader(false));

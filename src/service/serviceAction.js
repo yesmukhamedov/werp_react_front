@@ -85,7 +85,7 @@ export function changeDynObjService(a_obj) {
 export function fetchSmsetpp(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smsetpp/view?direction=DESC&orderBy=id`, params)
+    doGet(`service/smsetpp/view?direction=DESC&orderBy=id`, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -110,7 +110,7 @@ export function clearDynObjService() {
 export function fetchSmsetppHistory(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smsetpp/audit`, params)
+    doGet(`service/smsetpp/audit`, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -128,7 +128,7 @@ export function fetchSmsetppHistory(params) {
 export function fetchSmsetppPut(params, fetchSmsetpp) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPut(`smsetpp/update`, params)
+    doPut(`service/smsetpp/update`, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -147,7 +147,7 @@ export function fetchSmsetppPut(params, fetchSmsetpp) {
 export function fetchSmsetppPremiumPriceType() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`premium_price_type/view`)
+    doGet(`service/premium_price_type/view`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -164,7 +164,7 @@ export function fetchSmsetppPremiumPriceType() {
 
 export function fetchSmsetppType() {
   return function(dispatch) {
-    doGet(`service_type/view`)
+    doGet(`service/service_type/view`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -181,7 +181,7 @@ export function fetchSmsetppType() {
 
 export function fetchSmsetppServiceTypeId() {
   return function(dispatch) {
-    doGet(`smcs/getServiceTypeList`)
+    doGet(`service/smcs/getServiceTypeList`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -197,7 +197,7 @@ export function fetchSmsetppServiceTypeId() {
 }
 export function fetchSmsetppGetProductList(param) {
   return function(dispatch) {
-    doGet(`smsetpp/getProductList`, param)
+    doGet(`service/smsetpp/getProductList`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -215,7 +215,7 @@ export function fetchSmsetppGetProductList(param) {
 export function fetchSmsetppPost(informations, fetchSmsetpp) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`smsetpp/create`, informations)
+    doPost(`service/smsetpp/create`, informations)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -234,7 +234,7 @@ export function fetchSmsetppPost(informations, fetchSmsetpp) {
 export function fetchSrls() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`werp/mservice/report/srls`)
+    doGet(`service/report/srls`)
       .then(({ data }) => {
         console.log('SRLS ACTION', data.data.data);
         dispatch(modifyLoader(false));
@@ -271,7 +271,7 @@ export function fetchDynObjService(url, params) {
 export function fetchSmplb(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smplb/list`, params)
+    doGet(`service/smplb/list`, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -289,7 +289,7 @@ export function fetchSmplb(params) {
 export function fetchSmplbPost(docs, fetchSmplb) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`smplb/create`, docs)
+    doPost(`service/smplb/create`, docs)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -308,7 +308,7 @@ export function fetchSmplbPost(docs, fetchSmplb) {
 export function fetchSmplbPut(params, fetchSmplb) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPut(`smplb/update`, params)
+    doPut(`service/smplb/update`, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -327,7 +327,7 @@ export function fetchSmplbPut(params, fetchSmplb) {
 export function fetchSmplbDelete(id, fetchSmplb) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doDelete(`smplb/delete/${id}`)
+    doDelete(`service/smplb/delete/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -346,7 +346,7 @@ export function fetchSmplbDelete(id, fetchSmplb) {
 export function fetchSmcusporContract(contractNumber) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcuspor/contract`, contractNumber)
+    doGet(`service/smcuspor/contract`, contractNumber)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -364,7 +364,7 @@ export function fetchSmcusporContract(contractNumber) {
 export function fetchSmcusporContractHistory(contractNumber) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smcuspor/contractHistory`, contractNumber)
+    doGet(`service/smcuspor/contractHistory`, contractNumber)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -384,7 +384,7 @@ export function fetchServCrmHistoryAll(date, type) {
     dispatch(modifyLoader(true));
     switch (type) {
       case 'all':
-        doGet(`smcuspor/serviceCrmHistoryAll`, date)
+        doGet(`service/smcuspor/serviceCrmHistoryAll`, date)
           .then(({ data }) => {
             dispatch(modifyLoader(false));
             dispatch({
@@ -398,7 +398,7 @@ export function fetchServCrmHistoryAll(date, type) {
           });
         break;
       case 'services':
-        doGet(`smcuspor/serviceCrmHistoryService`, date)
+        doGet(`service/smcuspor/serviceCrmHistoryService`, date)
           .then(({ data }) => {
             dispatch(modifyLoader(false));
             dispatch({
@@ -412,7 +412,7 @@ export function fetchServCrmHistoryAll(date, type) {
           });
         break;
       case 'calls':
-        doGet(`smcuspor/serviceCrmHistoryCall`, date)
+        doGet(`service/smcuspor/serviceCrmHistoryCall`, date)
           .then(({ data }) => {
             dispatch(modifyLoader(false));
             dispatch({
@@ -426,7 +426,7 @@ export function fetchServCrmHistoryAll(date, type) {
           });
         break;
       case 'requests':
-        doGet(`smcuspor/serviceCrmHistoryApplication`, date)
+        doGet(`service/smcuspor/serviceCrmHistoryApplication`, date)
           .then(({ data }) => {
             dispatch(modifyLoader(false));
             dispatch({
@@ -448,7 +448,7 @@ export function fetchServCrmHistoryAll(date, type) {
 export function fetchSmeciContractInfo(contractNumber) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smeci/contractInfo`, contractNumber)
+    doGet(`service/smeci/contractInfo`, contractNumber)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -467,7 +467,7 @@ export function fetchSmeciContractInfo(contractNumber) {
 export function postSmeciContractInfo(contract, fetchSmcuspor) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`smeci/edit`, contract)
+    doPost(`service/smeci/edit`, contract)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -487,7 +487,7 @@ export function postSmeciContractInfo(contract, fetchSmcuspor) {
 export function postSmecimContractInfo(contract, fetchSmcuspor) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`smecim/edit`, contract)
+    doPost(`service/smecim/edit`, contract)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -506,7 +506,7 @@ export function postSmecimContractInfo(contract, fetchSmcuspor) {
 export function fetchServCrmCallStatus() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`serv_crm_call_status`)
+    doGet(`service/serv_crm_call_status`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -524,7 +524,7 @@ export function fetchServCrmCallStatus() {
 export function postSmregcCreateCall(call, back) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`smregc/createCrmHistory`, call)
+    doPost(`service/smregc/createCrmHistory`, call)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -543,7 +543,7 @@ export function postSmregcCreateCall(call, back) {
 export function postSmccaCreateApp(application, back) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`smcca/create`, application)
+    doPost(`service/smcca/create`, application)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -562,7 +562,7 @@ export function postSmccaCreateApp(application, back) {
 export function fetchSmsrcus(searchParams) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet('smsrcus/list', searchParams)
+    doGet('service/smsrcus/list', searchParams)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (data.status === 200 || data.status === 'OK') {
@@ -582,7 +582,7 @@ export function fetchSmsrcus(searchParams) {
 export function fetchTovarCategorys() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet('smcs/getCategoryList')
+    doGet('service/smcs/getCategoryList')
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -598,7 +598,7 @@ export function fetchTovarCategorys() {
 export function fetchBranchList(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet('smcs/getBranchList', params)
+    doGet('service/smcs/getBranchList', params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -615,7 +615,7 @@ export function fetchBranchList(params) {
 export function fetchContractStatus() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet('ContractStatus/view')
+    doGet('service/contract_status/view')
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -632,7 +632,7 @@ export function fetchContractStatus() {
 export function fetchSmecam(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smecam/${id}`)
+    doGet(`service/smecam/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -667,7 +667,7 @@ export function fetchServAppStatus() {
 export function fetchSmsetplp(params) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smsetplp/view?direction=DESC&orderBy=id`, params)
+    doGet(`service/smsetplp/view?direction=DESC&orderBy=id`, params)
       .then(data => {
         console.log('data', data);
         dispatch(modifyLoader(false));
@@ -688,7 +688,7 @@ export function fetchSmsetplp(params) {
 export function fetchSmsetplpId(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smsetplp/${id}`)
+    doGet(`service/smsetplp/${id}`)
       .then(data => {
         if (data.data.status === 200 || data.data.status === 'OK') {
           dispatch({
@@ -708,7 +708,7 @@ export function fetchSmsetplpId(id) {
 export function postSmsetplp(params, fetchSmsetplp) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`smsetplp/create`, params)
+    doPost(`service/smsetplp/create`, params)
       .then(data => {
         dispatch(modifyLoader(false));
         if (data.data.status === 200 || data.data.status === 'OK') {
@@ -731,7 +731,7 @@ export function postSmsetplp(params, fetchSmsetplp) {
 
 export function editSmecam(editParams, fetchSmecam) {
   return function(dispatch) {
-    doPut('smecam/edit', editParams)
+    doPut('service/smecam/edit', editParams)
       .then(data => {
         if (data.status === 200 || data.status === 'OK') {
           dispatch({
@@ -752,7 +752,7 @@ export function editSmecam(editParams, fetchSmecam) {
 
 export function editSmeca(editParams, fetchSmeca) {
   return function(dispatch) {
-    doPut('smeca/edit', editParams)
+    doPut('service/smeca/edit', editParams)
       .then(data => {
         if (data.status === 200 || data.status === 'OK') {
           dispatch({
@@ -804,7 +804,7 @@ export function fetchAppType() {
 export function fetchAppList(params, search) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet('smappl/appList', params, search)
+    doGet('service/smappl/appList', params, search)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -821,7 +821,7 @@ export function fetchAppList(params, search) {
 
 export function fetchAppMasterList(params) {
   return function(dispatch) {
-    doGet('smappl/getMasterList', params)
+    doGet('service/smappl/getMasterList', params)
       .then(({ data }) => {
         dispatch({
           type: FETCH_APP_MASTER_LIST,
@@ -836,7 +836,7 @@ export function fetchAppMasterList(params) {
 
 export function fetchEditApp(params, fetchAppList) {
   return function(dispatch) {
-    doPost('smappl/editApp', params)
+    doPost('service/smappl/editApp', params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         fetchAppList();
@@ -857,7 +857,7 @@ export function fetchClearAppList() {
 
 export function fetchSmslsp(params) {
   return function(dispatch) {
-    doGet('smslspl?direction=ASC', params)
+    doGet('service/smslspl?direction=ASC', params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -874,7 +874,7 @@ export function fetchSmslsp(params) {
 export function fetchSmeca(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smeca/${id}`)
+    doGet(`service/smeca/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -892,7 +892,7 @@ export function fetchSmeca(id) {
 export function fetchSmvca(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smvca/${id}`)
+    doGet(`service/smvca/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -910,7 +910,7 @@ export function fetchSmvca(id) {
 export function editSmsetplp(params, fetchSmsetplp) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPut(`smsetplp/update`, params)
+    doPut(`service/smsetplp/update`, params)
       .then(data => {
         dispatch(modifyLoader(false));
         if (data.data.status === 200 || data.data.status === 'OK') {
@@ -930,7 +930,7 @@ export function editSmsetplp(params, fetchSmsetplp) {
 export function fetchOperationTypeList() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet('service_operation_type/view')
+    doGet('service/service_operation_type/view')
       .then(data => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -956,7 +956,7 @@ export function fetchAppListSearchParam(data) {
 
 export function fetchSmcusporle() {
   return function(dispatch) {
-    doGet('smcusporle')
+    doGet('service/smcusporle')
       .then(data => {
         dispatch({
           type: FETCH_SMCUSPORLE,
@@ -972,7 +972,7 @@ export function fetchSmcusporle() {
 
 export const fetchMasterList = param => {
   return function(dispatch) {
-    doGet(`smappl/getMasterList`, param)
+    doGet(`service/smappl/getMasterList`, param)
       .then(({ data }) => {
         dispatch({
           type: FETCH_MASTER_LIST,
@@ -993,7 +993,7 @@ export const clearMasterList = () => {
 };
 export const fetchOperatorList = param => {
   return function(dispatch) {
-    doGet(`smappl/getOperatorList`, param)
+    doGet(`service/smappl/getOperatorList`, param)
       .then(({ data }) => {
         dispatch({
           type: FETCH_OPERATOR_LIST,
@@ -1016,7 +1016,7 @@ export const clearOperatorList = () => {
 export function putResold(params, fetchSmeciContractInfo) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPut(`smecim/resold?contractNumber=${params}`)
+    doPut(`service/smecim/resold?contractNumber=${params}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

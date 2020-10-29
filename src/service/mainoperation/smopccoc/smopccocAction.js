@@ -30,7 +30,7 @@ export const fetchServiceFilterPlan = param => {
   console.log(param);
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccoc/serviceFilterPlan`, {
+    doGet(`service/smopccoc/serviceFilterPlan`, {
       ...param,
       planStatusId: param.planStatusId.toString(),
     })
@@ -52,7 +52,7 @@ export const fetchServiceFilterPlan = param => {
 export const fetchTransferApplicationExodus = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccoc/rescheduledApplication`, param)
+    doGet(`service/smopccoc/rescheduledApplication`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -71,7 +71,7 @@ export const fetchTransferApplicationExodus = param => {
 export const fetchCRMSchedule = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccoc/CRMSchedule`, param)
+    doGet(`service/smopccoc/CRMSchedule`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -90,7 +90,7 @@ export const fetchCRMSchedule = param => {
 export const fetchMyApplicationExodus = (param, setFunc) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccoc/myApplication`, param)
+    doGet(`service/smopccoc/myApplication`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -120,7 +120,7 @@ export const postToCancelPlan = (param, fetchFilterPlan) => {
     .join('&');
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPost(`smopccoc/toCancelPlan?${queryString}`)
+    doPost(`service/smopccoc/toCancelPlan?${queryString}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

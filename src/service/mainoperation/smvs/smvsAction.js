@@ -11,7 +11,7 @@ export const FETCH_SMVS_LIST = 'FETCH_SMVS_LIST';
 export const fetchSmvsList = id => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smvs/${id}`)
+    doGet(`service/smvs/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

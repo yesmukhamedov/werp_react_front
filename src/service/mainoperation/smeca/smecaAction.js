@@ -15,7 +15,7 @@ export const EDIT_SMECA = 'EDIT_SMECA';
 export function fetchSmeca(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smeca/${id}`)
+    doGet(`service/smeca/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -33,7 +33,7 @@ export function fetchSmeca(id) {
 export function editSmeca(param) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doPut('smeca/edit', { ...param })
+    doPut('service/smeca/edit', { ...param })
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

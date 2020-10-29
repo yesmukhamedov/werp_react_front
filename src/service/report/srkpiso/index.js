@@ -64,18 +64,6 @@ const Srkpiso = props => {
   const [modalDetalOpen, setModalDetalOpen] = useState(false);
   const [loaderTableDetal, setLoaderTableDetal] = useState(false);
 
-  // let emptyParamDetal = {
-  //   branchId: null,
-  //   bukrs: null,
-  //   categoryId: null,
-  //   configurationId: null,
-  //   countryId: null,
-  //   operatorId: null,
-  //   productId: null,
-  //   dateAt: param.dateAt,
-  //   dateTo: param.dateTo,
-  // };
-
   const [detalParam, setDetalParam] = useState({});
 
   useEffect(() => {

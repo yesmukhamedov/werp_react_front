@@ -20,7 +20,7 @@ export const CLEAR_MY_APPLICATION_EXODUS = 'CLEAR_MY_APPLICATION_EXODUS';
 export const fetchSearchCustomer = (param, setFunc) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccic/search_customer`, param)
+    doGet(`service/smopccic/search_customer`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -48,7 +48,7 @@ export function clearSearchCustomer() {
 export const fetchTransferApplication = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccic/rescheduledApplication`, param)
+    doGet(`service/smopccic/rescheduledApplication`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -67,7 +67,7 @@ export const fetchTransferApplication = param => {
 export const fetchMyApplicationExodus = (param, setFunc) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`smopccic/myApplication`, param)
+    doGet(`service/smopccic/myApplication`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

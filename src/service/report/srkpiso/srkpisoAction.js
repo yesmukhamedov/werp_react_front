@@ -11,7 +11,7 @@ export const CLEAR_SRKPISO_DETAL = 'CLEAR_SRKPISO_DETAL';
 export const fetchSrkpiso = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`srkpiso`, param)
+    doGet(`service/srkpiso`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -29,7 +29,7 @@ export const fetchSrkpiso = param => {
 export const fetchSrkpisoDetal = (param, setFunc) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`srkpisod`, param)
+    doGet(`service/srkpisod`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
