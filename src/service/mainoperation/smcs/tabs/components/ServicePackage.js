@@ -78,7 +78,6 @@ const ServicePackage = props => {
       )}
 
       <Button
-        // disabled={editStatus}
         icon
         labelPosition="left"
         color="green"
@@ -86,7 +85,7 @@ const ServicePackage = props => {
         onClick={item =>
           onChangeServicePackage(item, 'modalOpenServicePackage')
         }
-        disabled={editStatus}
+        disabled={!editStatus}
       >
         <Icon name="plus" size="small" />
         Добавить сервис пакет

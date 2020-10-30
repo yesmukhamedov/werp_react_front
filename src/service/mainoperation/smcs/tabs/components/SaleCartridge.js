@@ -189,7 +189,7 @@ const SaleCartridge = props => {
         labelPosition="left"
         color="green"
         size="small"
-        disabled={editStatus}
+        disabled={!editStatus}
       >
         <Icon name="plus" size="small" /> Добавить картриджей
       </Button>

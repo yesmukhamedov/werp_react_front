@@ -62,7 +62,7 @@ export const FETCH_SERVICE_BRANCH_LIST = 'FETCH_SERVICE_BRANCH_LIST';
 
 //SMCS ACTIONS
 //---Получить договор
-export const fetchServiceSmcs = param => {
+export const fetchServiceSmcs = (param, setFunc) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`service/smcs/getContractByTovarSn`, param)
@@ -72,6 +72,7 @@ export const fetchServiceSmcs = param => {
           type: FETCH_SERVICE_SMCS,
           data: data.data,
         });
+        setFunc(data.data.service.contractNumber);
       })
       .catch(error => {
         dispatch(modifyLoader(false));

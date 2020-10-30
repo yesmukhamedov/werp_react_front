@@ -82,10 +82,10 @@ const TabSmcsWithoutRequest = props => {
 
   //Основной объект сервиса
   const [service, setService] = useState({ ...emptyService });
-
   const [paymentChecked, setPaymentChecked] = useState(false);
   const [hkontS, setHkontS] = useState('');
-
+  //Статус редактирование
+  const [editStatus, setEditStatus] = useState(false);
   const [checkStatus, setCheckStatus] = useState(false);
 
   const [modalApplications, setModalApplications] = useState(false);
@@ -129,24 +129,33 @@ const TabSmcsWithoutRequest = props => {
     }
   };
 
-  const [editStatus, setEditStatus] = useState(true);
-
   //BasicInfo
   const onBasicInfoInputChange = (value, fieldName) => {
     switch (fieldName) {
       //Поиск по серииному номеру товара(tovarSn)
       case 'searchTovarSN':
-        props.fetchServiceSmcs({ tovarSn: service.tovarSn });
-        setService({ ...emptyService, tovarSn: service.tovarSn });
+        props.fetchServiceSmcs({ tovarSn: service.tovarSn }, contractNumber => {
+          if (contractNumber) {
+            props.fetchServiceTypeId({
+              contractNumber: contractNumber,
+            });
+          } else {
+            props.fetchServiceTypeId();
+          }
+        });
+        setService({ ...emptyService });
+        // setService({ ...emptyService, tovarSn: service.tovarSn });
         break;
+      //Поиск по contractNumber
       case 'searchCN':
         props.fetchSmcsByContractNumber({
           contractNumber: service.contractNumber,
         });
-        setService({ ...emptyService, contractNumber: service.contractNumber });
+        setService({ ...emptyService });
         props.fetchServiceTypeId({
           contractNumber: service.contractNumber,
         });
+        setService({ ...emptyService });
         break;
       //Изменить серииный номер товара
       case 'inputChangeTovarSN':
@@ -313,16 +322,16 @@ const TabSmcsWithoutRequest = props => {
       tovarId: service.tovarId,
     };
 
-    let master = service.masterId;
+    setServices([]);
+    setSparePartList([]);
+    setCartridgeList([]);
+    setServicePackageInitial([]);
 
-    if (master) {
-      setServices([]);
-      setSparePartList([]);
-      setCartridgeList([]);
-      setServicePackageInitial([]);
-
+    if (service.masterId) {
       props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart }, 1);
       props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge }, 1);
+      setEditStatus(true);
+    } else {
       setEditStatus(false);
     }
     setCheckStatus(false);

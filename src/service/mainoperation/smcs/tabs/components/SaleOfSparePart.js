@@ -109,13 +109,12 @@ const SaleOfSparePart = props => {
         ''
       )}
       <Button
-        // disabled={editStatus}
         icon
         labelPosition="left"
         color="green"
         size="small"
         onClick={item => onChangeSparePart(item, 'addSparePartBtn')}
-        disabled={editStatus}
+        disabled={!editStatus}
       >
         <Icon name="plus" size="small" />
         Добавить запчасти
