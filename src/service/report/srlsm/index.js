@@ -458,17 +458,7 @@ const Srlsm = props => {
         </div>
       ),
     },
-    {
-      Header: 'Гарантия',
-      accessor: 'warrant',
-      checked: true,
-      filterable: false,
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-    },
+
     {
       Header: 'Принял',
       accessor: 'acceptPaymentByName',
