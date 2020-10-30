@@ -71,20 +71,6 @@ const Smsrcus = props => {
     smsrcusClient = {},
   } = props;
 
-  const productOptions = contractTypeList.map(item => {
-    return {
-      key: item.contract_type_id,
-      text: item.name,
-      value: item.contract_type_id,
-    };
-  });
-
-  const branchObjValues = Object.values(branchOptionsService);
-  const arrMain = [];
-  const arr = branchObjValues.map(item => {
-    arrMain.push(...item);
-  });
-
   const mainCellStyle = {
     display: 'flex',
     flexDirection: 'column',
@@ -120,7 +106,7 @@ const Smsrcus = props => {
   const [turnOnReactFetchBlack, setTurnOnReactFetchBlack] = useState(false);
 
   const [param, setParam] = useState({ ...emptyParam });
-
+  const [bukrs, setBukrs] = useState(null);
   //Параметры черного списка
   const [blackListParam, setBlackListParam] = useState({
     ...emptyBlackListParam,
@@ -132,7 +118,33 @@ const Smsrcus = props => {
   const [tablePageBlack, setTablePageBlack] = useState(0);
 
   const [smsrcusClientList, setSmsrcusClientList] = useState([]);
-  console.log('smsrcusClientList', smsrcusClientList);
+
+  const productOptions = bukrs
+    ? contractTypeList
+        .filter(item => parseInt(item.bukrs) == parseInt(bukrs))
+        .map(item => {
+          return {
+            key: item.contract_type_id,
+            text: item.name,
+            value: item.contract_type_id,
+          };
+        })
+    : contractTypeList.map(item => {
+        return {
+          key: item.contract_type_id,
+          text: item.name,
+          value: item.contract_type_id,
+        };
+      });
+
+  const branchObjValues = Object.values(branchOptionsService);
+  const servBrOptions = [];
+  const arr = branchObjValues.map(item => {
+    servBrOptions.push(...item);
+  });
+  const serviceBranchOptions = bukrs
+    ? branchOptionsService[bukrs]
+    : servBrOptions;
 
   useEffect(() => {
     if (Object.keys(smsrcusClient).length > 0) {
@@ -413,8 +425,8 @@ const Smsrcus = props => {
 
   //Очистить фильтр
   const handleClearAllFilter = () => {
-    console.log('handleClearAllFilter');
     setParam({ ...emptyParam });
+    setBukrs(null);
     props.clearSmsrcusList();
   };
 
@@ -485,7 +497,6 @@ const Smsrcus = props => {
 
   const [modalDelete, setModalDelete] = useState(false);
   const [deleteModalData, setDeleteModalData] = useState({});
-  console.log('deleteModalData', deleteModalData);
 
   const btnDeactivateFilter = (contractNumber, id) => {
     setModalDelete(true);
@@ -493,8 +504,6 @@ const Smsrcus = props => {
       contractNumber: contractNumber,
       id: id,
     });
-    console.log('contractNumber', contractNumber);
-    console.log('id', id);
   };
 
   const confirmDeleteFilter = () => {
@@ -570,7 +579,9 @@ const Smsrcus = props => {
               <Form.Field>
                 <label>{messages['brnch']}</label>
                 <DropdownClearable
-                  options={arrMain.length > 0 ? arrMain : []}
+                  options={
+                    serviceBranchOptions.length > 0 ? serviceBranchOptions : []
+                  }
                   value={blackListParam.serviceBranchId}
                   placeholder={messages['brnch']}
                   onChange={(e, { value }) =>
@@ -706,7 +717,6 @@ const Smsrcus = props => {
             }}
             filtered={filteredBlack}
             onFilteredChange={filtered => {
-              console.log('filtered', filtered);
               // this.setState({ filtered });
             }}
             page={tablePageBlack}
@@ -790,14 +800,37 @@ const Smsrcus = props => {
           <Form>
             <Form.Group widths="equal">
               <Form.Field>
+                <label>{messages['bukrs']}</label>
+                <DropdownClearable
+                  options={companyOptions}
+                  value={bukrs ? bukrs : ''}
+                  placeholder={messages['bukrs']}
+                  onChange={(e, { value }) => {
+                    setBukrs(value);
+                    setParam({
+                      ...param,
+                      serviceBranchId: null,
+                      contractTypeId: null,
+                    });
+                  }}
+                  handleClear={() => {
+                    setBukrs(null);
+                    setParam({
+                      ...param,
+                      serviceBranchId: null,
+                      contractTypeId: null,
+                    });
+                  }}
+                />
+              </Form.Field>
+              <Form.Field>
                 <label>Филиал</label>
                 <Dropdown
                   selection
                   fluid
                   placeholder="Филиал"
-                  options={arrMain.length > 0 ? arrMain : []}
+                  options={serviceBranchOptions}
                   onChange={(o, { value }) => {
-                    console.log('VALUE', value);
                     setParam({ ...param, serviceBranchId: value.join() });
                   }}
                   className="alignBottom"
@@ -850,6 +883,8 @@ const Smsrcus = props => {
                   }
                 />
               </Form.Field>
+            </Form.Group>
+            <Form.Group widths="equal">
               <Form.Field>
                 <label>ФИО клиента</label>
                 <Input
@@ -945,7 +980,6 @@ const Smsrcus = props => {
             }}
             filtered={filtered}
             onFilteredChange={filtered => {
-              console.log('filtered', filtered);
               // this.setState({ filtered });
             }}
             page={tablePage}
