@@ -21,6 +21,7 @@ import {
   stringYYYYMMDDToMoment,
 } from '../../../../utils/helpers';
 import DropdownClearable from '../../../../utils/DropdownClearable';
+import CRMCategoryColor from '../../../../utils/CRMCategoryColor';
 import moment from 'moment';
 import ReactTableServerSideWrapperFilteredState from '../../../../utils/ReactTableServerSideWrapperFilteredState';
 
@@ -51,19 +52,31 @@ const MyApplicationExodus = props => {
       Header: messages['brnch'],
       accessor: 'branchName',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: messages['factory_number'],
       accessor: 'tovarSn',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: 'CN',
       accessor: 'contractNumber',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       width: 60,
     },
     {
@@ -71,11 +84,11 @@ const MyApplicationExodus = props => {
       accessor: 'contractDate',
       checked: true,
       Cell: row => (
-        <div style={{ textAlign: 'center' }}>
-          {row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value ? moment(row.value).format('DD.MM.YYYY') : ''}
         </div>
       ),
-      width: 80,
+      width: 100,
       filterable: false,
     },
     {
@@ -83,42 +96,62 @@ const MyApplicationExodus = props => {
       accessor: 'applicationDate',
       checked: true,
       Cell: row => (
-        <div style={{ textAlign: 'center' }}>
-          {row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value ? moment(row.value).format('DD.MM.YYYY') : ''}
         </div>
       ),
-      width: 80,
+      width: 100,
       filterable: false,
     },
     {
       Header: messages['fio'],
       accessor: 'customerFIO',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: messages['address'],
       accessor: 'fullAddress',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: messages['Phone'],
       accessor: 'fullPhone',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: messages['master'],
       accessor: 'masterFIO',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: 'F1',
       accessor: 'f1',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       width: 40,
       filterable: false,
     },
@@ -126,7 +159,11 @@ const MyApplicationExodus = props => {
       Header: 'F2',
       accessor: 'f2',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       width: 40,
       filterable: false,
     },
@@ -134,7 +171,11 @@ const MyApplicationExodus = props => {
       Header: 'F3',
       accessor: 'f3',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       width: 40,
       filterable: false,
     },
@@ -142,7 +183,11 @@ const MyApplicationExodus = props => {
       Header: 'F4',
       accessor: 'f4',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       width: 40,
       filterable: false,
     },
@@ -150,7 +195,11 @@ const MyApplicationExodus = props => {
       Header: 'F5',
       accessor: 'f5',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       width: 40,
       filterable: false,
     },
@@ -158,7 +207,7 @@ const MyApplicationExodus = props => {
       Header: messages['category'],
       accessor: 'crmCategoryName',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <CRMCategoryColor value={row.value} />,
 
       filterable: false,
     },
@@ -166,7 +215,11 @@ const MyApplicationExodus = props => {
       Header: messages['application_status'],
       accessor: 'applicationStatusName',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
 
       filterable: false,
     },
@@ -177,7 +230,7 @@ const MyApplicationExodus = props => {
       Cell: original => {
         const url = `../mainoperation/smvca?id=${original.value}`;
         return (
-          <div style={{ textAlign: 'center' }}>
+          <div className="text-wrap" style={{ textAlign: 'center' }}>
             <Link to={url} target="_blank">
               {original.value}
             </Link>
@@ -196,7 +249,7 @@ const MyApplicationExodus = props => {
       Cell: original => {
         const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}&filterPlanId=${original.original.serviceFilterPlanId}`;
         return (
-          <div style={{ textAlign: 'center' }}>
+          <div className="text-wrap" style={{ textAlign: 'center' }}>
             <Link to={url} target="_blank">
               <Icon name="address card" color="black" />
             </Link>

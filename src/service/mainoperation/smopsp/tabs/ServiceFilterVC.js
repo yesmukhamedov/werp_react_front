@@ -26,6 +26,7 @@ import TextAlignCenter from '../../../../utils/TextAlignCenter';
 import CancelPlanModalVC from '../components/CancelPlanModalVC';
 import { Link } from 'react-router-dom';
 import DropdownClearable from '../../../../utils/DropdownClearable';
+import CRMCategoryColor from '../../../../utils/CRMCategoryColor';
 
 const ServiceFilterVC = props => {
   const {
@@ -159,7 +160,7 @@ const ServiceFilterVC = props => {
       Header: messages['category'],
       accessor: 'crmCategoryName',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => <CRMCategoryColor value={row.value} />,
       filterable: false,
     },
     {

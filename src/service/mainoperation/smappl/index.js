@@ -30,6 +30,7 @@ import {
   Button,
   Modal,
   Header,
+  Label,
 } from 'semantic-ui-react';
 import 'react-table/react-table.css';
 import DatePicker from 'react-datepicker';
@@ -85,6 +86,7 @@ const Smappl = props => {
 
   const [tempMaster, setTempMaster] = useState({});
   const [modalMaster, setModalMaster] = useState(false);
+  console.log('tempMaster', tempMaster);
 
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
 
@@ -193,6 +195,7 @@ const Smappl = props => {
           varSmappl.operatorId = value;
           break;
         case 'changeModalMasterId':
+          console.log('masterId', value);
           setTempMaster({ ...tempMaster, masterId: value, masterName: null });
           break;
         case 'saveChangeMaster':
@@ -226,84 +229,116 @@ const Smappl = props => {
 
   const allColumns = [
     {
-      Header: `id`,
-      accessor: 'id',
+      Header: `№ ${messages['Applications']}`,
+      accessor: 'applicationNumber',
       show: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      getProps: (state, rowInfo, column) => {
-        return {
-          style: {
-            background:
-              rowInfo && rowInfo.original.urgencyLevel === true
-                ? '#cc0000'
-                : null,
-            color:
-              rowInfo && rowInfo.original.urgencyLevel === true
-                ? 'white'
-                : 'black',
-          },
-        };
-      },
+      filterable: false,
+
+      Cell: ({ row }) => (
+        <div style={{ textAlign: 'center' }}>
+          {row._original.urgencyLevel === true ? (
+            <Popup
+              content="Срочный"
+              size="tiny"
+              trigger={
+                <Label color="red" horizontal>
+                  <LinkToSmecam id={row._original.applicationNumber} />
+                </Label>
+              }
+            />
+          ) : (
+            <LinkToSmecam id={row._original.applicationNumber} />
+          )}
+        </div>
+      ),
       fixed: 'left',
     },
     {
       Header: `Филиал`,
       accessor: 'branchName',
       show: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: `CN `,
       accessor: 'contractNumber',
       show: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
 
     {
       Header: messages['productSerialNumber'],
       accessor: 'tovarSn',
       show: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: messages['TBL_H__PRODUCT'],
-      accessor: 'matnrName',
+      accessor: 'contractTypeName',
       show: true,
       filterable: false,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: messages['Application_Date'],
       accessor: 'adate',
       show: true,
       Cell: row => (
-        <div style={{ textAlign: 'center' }}>
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
           {moment(row.value).format('DD-MM-YYYY')}
         </div>
       ),
     },
     {
       Header: messages['Form.Reco.RecoName'],
-      accessor: 'applicantName',
+      accessor: 'customerFIO',
       show: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: messages['Table.Address'],
-      accessor: 'address',
+      accessor: 'fullAddress',
       show: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: messages['Phone'],
       accessor: 'fullPhone',
       show: true,
       filterable: false,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: messages['Masters'],
-      accessor: 'masterName',
+      accessor: 'masterFIO',
       show: true,
       filterable: false,
       Cell: ({ row }) => (
@@ -334,30 +369,42 @@ const Smappl = props => {
     },
     {
       Header: messages['L__ORDER_STATUS'],
-      accessor: 'appStatusName',
+      accessor: 'applicationStatusName',
       show: true,
       filterable: false,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: messages['Operator'],
-      accessor: 'operatorName',
+      accessor: 'operatorFIO',
       show: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       filterable: false,
     },
     {
       Header: messages['type_of_application'],
-      accessor: 'appTypeName',
+      accessor: 'applicationTypeName',
       show: true,
       filterable: false,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
 
     {
       Header: `${messages['service']} №`,
 
-      accessor: 'serviceId',
+      accessor: 'serviceNumber',
       Footer: original => {
         let total = 0;
         original.data.map((item, index) => {
@@ -373,22 +420,10 @@ const Smappl = props => {
       show: true,
       filterable: false,
       Cell: row => (
-        <div style={{ textAlign: 'center' }}>
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
           <LinkToSmvs serviceNumber={row.value} />
         </div>
       ),
-    },
-    {
-      Header: `№ ${messages['Applications']}`,
-      accessor: 'id',
-      show: true,
-      filterable: false,
-      Cell: ({ row }) => (
-        <div style={{ textAlign: 'center' }}>
-          <LinkToSmecam id={row._original.id} />
-        </div>
-      ),
-      fixed: 'right',
     },
 
     {

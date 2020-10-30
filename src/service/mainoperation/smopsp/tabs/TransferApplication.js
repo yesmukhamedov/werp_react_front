@@ -19,6 +19,7 @@ import {
 } from '../../../../utils/helpers';
 import ModalColumns from '../../../../utils/ModalColumns';
 import DropdownClearable from '../../../../utils/DropdownClearable';
+import CRMCategoryColor from '../../../../utils/CRMCategoryColor';
 
 const TransferApplication = props => {
   const {
@@ -168,7 +169,7 @@ const TransferApplication = props => {
       Header: messages['category'],
       accessor: 'crmCategoryName',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => <CRMCategoryColor value={row.value} />,
       filterable: false,
     },
 

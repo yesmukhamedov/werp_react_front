@@ -19,6 +19,7 @@ import {
   stringYYYYMMDDToMoment,
 } from '../../../../utils/helpers';
 import DropdownClearable from '../../../../utils/DropdownClearable';
+import CRMCategoryColor from '../../../../utils/CRMCategoryColor';
 import moment from 'moment';
 
 const TransferApplicationExodus = props => {
@@ -173,7 +174,7 @@ const TransferApplicationExodus = props => {
       Header: messages['category'],
       accessor: 'crmCategoryName',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => <CRMCategoryColor value={row.value} />,
       filterable: false,
     },
     {

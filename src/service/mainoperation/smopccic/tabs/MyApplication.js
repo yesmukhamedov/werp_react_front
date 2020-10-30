@@ -20,6 +20,7 @@ import {
 } from '../../../../utils/helpers';
 import { Link } from 'react-router-dom';
 import DropdownClearable from '../../../../utils/DropdownClearable';
+import CRMCategoryColor from '../../../../utils/CRMCategoryColor';
 
 const MyApplication = props => {
   const {
@@ -64,28 +65,40 @@ const MyApplication = props => {
     {
       Header: messages['brnch'],
       accessor: 'branchName',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
     },
     {
       Header: 'CN',
       accessor: 'contractNumber',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       width: 60,
     },
     {
       Header: messages['factory_number'],
       accessor: 'tovarSn',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
     },
     {
       Header: messages['Crm.DateOfSale'],
       accessor: 'contractDate',
       Cell: row => (
-        <div style={{ textAlign: 'center' }}>
-          {row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value ? moment(row.value).format('DD.MM.YYYY') : ''}
         </div>
       ),
       checked: true,
@@ -96,8 +109,8 @@ const MyApplication = props => {
       Header: messages['Application_Date'],
       accessor: 'applicationDate',
       Cell: row => (
-        <div style={{ textAlign: 'center' }}>
-          {row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value ? moment(row.value).format('DD.MM.YYYY') : ''}
         </div>
       ),
       checked: true,
@@ -107,31 +120,51 @@ const MyApplication = props => {
     {
       Header: messages['fio'],
       accessor: 'customerFIO',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
     },
     {
       Header: messages['address'],
       accessor: 'fullAddress',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
     },
     {
       Header: messages['Phone'],
       accessor: 'fullPhone',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
     },
     {
       Header: messages['master'],
       accessor: 'masterFIO',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
     },
     {
       Header: 'F1',
       accessor: 'f1',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       filterable: false,
       width: 40,
@@ -139,7 +172,11 @@ const MyApplication = props => {
     {
       Header: 'F2',
       accessor: 'f2',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       filterable: false,
       width: 40,
@@ -147,7 +184,11 @@ const MyApplication = props => {
     {
       Header: 'F3',
       accessor: 'f3',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       filterable: false,
       width: 40,
@@ -155,7 +196,11 @@ const MyApplication = props => {
     {
       Header: 'F4',
       accessor: 'f4',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       filterable: false,
       width: 40,
@@ -163,7 +208,11 @@ const MyApplication = props => {
     {
       Header: 'F5',
       accessor: 'f5',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       filterable: false,
       width: 40,
@@ -171,17 +220,21 @@ const MyApplication = props => {
     {
       Header: messages['category'],
       accessor: 'crmCategoryName',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <CRMCategoryColor value={row.value} />,
       checked: true,
       filterable: false,
     },
     {
       Header: messages['application_status'],
       accessor: 'applicationStatusName',
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
       checked: true,
       filterable: false,
-      width: 70,
+      width: 100,
     },
     {
       Header: messages['request_number'],
@@ -189,7 +242,7 @@ const MyApplication = props => {
       Cell: original => {
         const url = `../mainoperation/smvca?id=${original.value}`;
         return (
-          <div style={{ textAlign: 'center' }}>
+          <div className="text-wrap" style={{ textAlign: 'center' }}>
             <Link to={url} target="_blank">
               {original.value}
             </Link>
@@ -210,7 +263,7 @@ const MyApplication = props => {
       Cell: original => {
         const url = `../mainoperation/smcuspor?contractNumber=${original.row.contractNumber}`;
         return original.row.contractNumber ? (
-          <div style={{ textAlign: 'center' }}>
+          <div className="text-wrap" style={{ textAlign: 'center' }}>
             <Link to={url} target="_blank">
               <Icon name="address card" color="black" />
             </Link>

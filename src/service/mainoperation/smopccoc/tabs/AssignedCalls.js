@@ -25,6 +25,7 @@ import {
 } from '../../../../utils/helpers';
 import { Link } from 'react-router-dom';
 import DropdownClearable from '../../../../utils/DropdownClearable';
+import CRMCategoryColor from '../../../../utils/CRMCategoryColor';
 import moment from 'moment';
 
 const AssignedCalls = props => {
@@ -58,7 +59,7 @@ const AssignedCalls = props => {
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
-      width: 55,
+      width: 80,
     },
     {
       Header: messages['brnch'],
@@ -85,10 +86,10 @@ const AssignedCalls = props => {
       checked: true,
       Cell: row => (
         <TextAlignCenter
-          text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+          text={row.value ? moment(row.value).format('DD.MM.YYYY') : ''}
         />
       ),
-      width: 80,
+      width: 100,
       filterable: false,
     },
     {
@@ -97,10 +98,10 @@ const AssignedCalls = props => {
       checked: true,
       Cell: row => (
         <TextAlignCenter
-          text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
+          text={row.value ? moment(row.value).format('DD.MM.YYYY') : ''}
         />
       ),
-      width: 80,
+      width: 100,
       filterable: false,
     },
 
@@ -173,7 +174,7 @@ const AssignedCalls = props => {
       Header: messages['category'],
       accessor: 'crmCategoryName',
       checked: true,
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => <CRMCategoryColor value={row.value} />,
 
       filterable: false,
     },

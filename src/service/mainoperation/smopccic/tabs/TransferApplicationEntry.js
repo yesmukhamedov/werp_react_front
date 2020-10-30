@@ -11,6 +11,7 @@ import ModalColumns from '../../../../utils/ModalColumns';
 import { LinkToSmcuspor } from '../../../../utils/outlink';
 import { Link } from 'react-router-dom';
 import DropdownClearable from '../../../../utils/DropdownClearable';
+import CRMCategoryColor from '../../../../utils/CRMCategoryColor';
 import moment from 'moment';
 
 const TransferApplicationEntry = props => {
@@ -171,7 +172,7 @@ const TransferApplicationEntry = props => {
       Header: messages['category'],
       accessor: 'crmCategoryName',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <CRMCategoryColor value={row.value} />,
       filterable: false,
     },
     {

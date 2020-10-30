@@ -28,6 +28,7 @@ import {
 } from './../../../../reference/f4/f4_action';
 import { Link } from 'react-router-dom';
 import DropdownClearable from '../../../../utils/DropdownClearable';
+import CRMCategoryColor from '../../../../utils/CRMCategoryColor';
 import moment from 'moment';
 
 const ServiceFilterPlan = props => {
@@ -298,20 +299,7 @@ const ServiceFilterPlan = props => {
       checked: true,
       Cell: row => (
         <div style={{ textAlign: 'center' }}>
-          <Label
-            color={
-              row.value == 'КРАСНЫЙ'
-                ? 'red'
-                : row.value == 'ЗЕЛЕНЫЙ'
-                ? 'green'
-                : row.value == 'ЧЕРНЫЙ'
-                ? 'black'
-                : 'yellow'
-            }
-            horizontal
-          >
-            {row.value}
-          </Label>
+          <CRMCategoryColor value={row.value} />
         </div>
       ),
       filterable: false,

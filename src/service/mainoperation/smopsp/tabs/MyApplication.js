@@ -18,6 +18,7 @@ import {
   stringYYYYMMDDToMoment,
 } from '../../../../utils/helpers';
 import DropdownClearable from '../../../../utils/DropdownClearable';
+import CRMCategoryColor from '../../../../utils/CRMCategoryColor';
 import ReactTableServerSideWrapperFilteredState from '../../../../utils/ReactTableServerSideWrapperFilteredState';
 import moment from 'moment';
 require('moment/locale/ru');
@@ -167,7 +168,7 @@ const MyApplication = props => {
       Header: messages['category'],
       accessor: 'crmCategoryName',
       checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
+      Cell: row => <CRMCategoryColor value={row.value} />,
 
       filterable: false,
     },

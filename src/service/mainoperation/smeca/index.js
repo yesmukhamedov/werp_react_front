@@ -38,13 +38,11 @@ const Smeca = props => {
     serviceAppStatus = [],
   } = props;
   const language = localStorage.getItem('language');
-  console.log('language', language);
 
   const url = window.location.search;
   const id = url.slice(url.indexOf('=') + 1);
 
   const [smeca, setSmeca] = useState({});
-  console.log('smeca', smeca);
   const [smecaHis, setSmecaHis] = useState([]);
   const [postStatus, setPostStatus] = useState(false);
   const [editStatus, setEditStatus] = useState(true);

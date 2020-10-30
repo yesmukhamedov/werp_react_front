@@ -34,6 +34,7 @@ import '../../service.css';
 
 import DropdownClearable from '../../../utils/DropdownClearable';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
+import CRMCategoryColor from '../../../utils/CRMCategoryColor';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 require('moment/locale/ru');
@@ -661,11 +662,7 @@ const Srkpiso = props => {
       Header: messages['category'],
       accessor: 'crmCategoryName',
       checked: true,
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
+      Cell: row => <CRMCategoryColor value={row.value} />,
       filterable: false,
     },
     {
