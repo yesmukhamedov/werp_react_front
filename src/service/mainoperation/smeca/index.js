@@ -52,6 +52,7 @@ const Smeca = props => {
       item =>
         item.id == smecaData.applicationStatusId ||
         item.id == 1 ||
+        item.id == 7 ||
         item.id == 6,
     )
     .map(item => {
