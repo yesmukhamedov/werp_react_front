@@ -73,6 +73,21 @@ export function postEditApp(params, setFunc, clearFunc) {
       });
   };
 }
+export function chageMaster(params, setFunc, clearFunc) {
+  return function(dispatch) {
+    doPost(
+      `service/smappl/editApp?applicationId=${params.applicationId}&masterId=${params.masterId}`,
+    )
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        setFunc();
+      })
+      .catch(error => {
+        clearFunc();
+        handleError(error, dispatch);
+      });
+  };
+}
 
 export function fetchMasterListSmappl(params) {
   return function(dispatch) {

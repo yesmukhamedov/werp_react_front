@@ -7,7 +7,7 @@ import {
   clearSmapplList,
   //
   postApplicationsOperator,
-  postEditApp,
+  chageMaster,
   //
   fetchMasterListSmappl,
   clearMasterListSmappl,
@@ -43,7 +43,6 @@ import {
 import '../../service.css';
 import {
   LinkToSmcsEmpty,
-  LinkToSmcuspor,
   LinkToSmecam,
   LinkToSmvs,
 } from '../../../utils/outlink';
@@ -85,6 +84,7 @@ const Smappl = props => {
   const [error, setError] = useState([]);
 
   const [tempMaster, setTempMaster] = useState({});
+  console.log('tempMaster', tempMaster);
   const [modalMaster, setModalMaster] = useState(false);
   console.log('tempMaster', tempMaster);
 
@@ -196,10 +196,10 @@ const Smappl = props => {
           break;
         case 'changeModalMasterId':
           console.log('masterId', value);
-          setTempMaster({ ...tempMaster, masterId: value, masterName: null });
+          setTempMaster({ ...tempMaster, masterId: value });
           break;
         case 'saveChangeMaster':
-          props.postEditApp(
+          props.chageMaster(
             { ...tempMaster },
             () => {
               setModalMaster(false);
@@ -343,7 +343,7 @@ const Smappl = props => {
       filterable: false,
       Cell: ({ row }) => (
         <div>
-          <div style={{ textAlign: 'center' }}>{row._original.masterName}</div>
+          <div style={{ textAlign: 'center' }}>{row._original.masterFIO}</div>
           <Popup
             content="Редактировать"
             size="tiny"
@@ -356,7 +356,8 @@ const Smappl = props => {
                   icon="pencil"
                   onClick={() => {
                     setTempMaster({
-                      ...row._original,
+                      applicationId: row._original.applicationNumber,
+                      masterId: row._original.masterId,
                     });
                     setModalMaster(true);
                   }}
@@ -517,9 +518,7 @@ const Smappl = props => {
             value={tempMaster.masterId ? tempMaster.masterId : ''}
             placeholder="Мастер"
             onChange={(e, { value }) => onChange(value, 'changeModalMasterId')}
-            handleClear={() =>
-              setTempMaster({ ...tempMaster, masterId: null, masterName: null })
-            }
+            handleClear={() => setTempMaster({ ...tempMaster, masterId: null })}
           />
         </Modal.Content>
         <Modal.Actions>
@@ -718,7 +717,7 @@ export default connect(mapStateToProps, {
   fetchSmapplList,
   clearSmapplList,
   postApplicationsOperator,
-  postEditApp,
+  chageMaster,
   fetchMasterListSmappl,
   clearMasterListSmappl,
   fetchOperatorListSmappl,
