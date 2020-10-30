@@ -54,7 +54,7 @@ const TransferApplicationExodus = props => {
     },
     {
       Header: messages['brnch'],
-      accessor: 'branchId',
+      accessor: 'branchName',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
     },
@@ -113,13 +113,13 @@ const TransferApplicationExodus = props => {
     },
     {
       Header: messages['address'],
-      accessor: 'address',
+      accessor: 'fullAddress',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
     },
     {
       Header: messages['Phone'],
-      accessor: 'phoneNumber',
+      accessor: 'fullPhone',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
     },
@@ -171,7 +171,7 @@ const TransferApplicationExodus = props => {
     },
     {
       Header: messages['category'],
-      accessor: 'crmCategoryId',
+      accessor: 'crmCategoryName',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,

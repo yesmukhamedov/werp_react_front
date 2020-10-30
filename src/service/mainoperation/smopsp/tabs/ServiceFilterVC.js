@@ -129,7 +129,7 @@ const ServiceFilterVC = props => {
     },
     {
       Header: messages['address'],
-      accessor: 'address',
+      accessor: 'fullAddress',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
     },

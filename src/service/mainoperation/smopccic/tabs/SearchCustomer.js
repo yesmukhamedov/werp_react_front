@@ -56,16 +56,8 @@ const SearchCustomer = props => {
 
   const initialColumns = [
     {
-      Header: '#',
-      accessor: 'contractId',
-      checked: true,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      filterable: false,
-      width: 70,
-    },
-    {
       Header: messages['brnch'],
-      accessor: 'branchName',
+      accessor: 'serviceBranchName',
       checked: true,
       Cell: row => (
         <div className="text-wrap" style={{ textAlign: 'center' }}>

@@ -68,7 +68,7 @@ const TransferApplication = props => {
     },
     {
       Header: messages['brnch'],
-      accessor: 'branchId',
+      accessor: 'branchName',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
     },
@@ -137,7 +137,7 @@ const TransferApplication = props => {
     },
     {
       Header: messages['address'],
-      accessor: 'address',
+      accessor: 'fullAddress',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
     },
@@ -158,7 +158,7 @@ const TransferApplication = props => {
     },
     {
       Header: messages['guarantee'],
-      accessor: 'warrantyId',
+      accessor: 'warrantyName',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
@@ -166,7 +166,7 @@ const TransferApplication = props => {
 
     {
       Header: messages['category'],
-      accessor: 'crmCategoryId',
+      accessor: 'crmCategoryName',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
@@ -174,14 +174,14 @@ const TransferApplication = props => {
 
     {
       Header: messages['application_status'],
-      accessor: 'applicationStatusId',
+      accessor: 'applicationStatusName',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,
     },
     {
       Header: messages['fin_status'],
-      accessor: 'contractStatusId',
+      accessor: 'contractStatusName',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
       filterable: false,

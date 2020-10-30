@@ -91,7 +91,7 @@ const MyApplication = props => {
     },
     {
       Header: messages['brnch'],
-      accessor: 'branchId',
+      accessor: 'branchName',
       checked: true,
     },
     {
@@ -134,13 +134,13 @@ const MyApplication = props => {
     },
     {
       Header: messages['address'],
-      accessor: 'address',
+      accessor: 'fullAddress',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
       Header: messages['Dealer.Fullname'],
-      accessor: 'dealerFIO',
+      accessor: 'fullPhone',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
 
@@ -156,7 +156,7 @@ const MyApplication = props => {
     },
     {
       Header: messages['guarantee'],
-      accessor: 'warrantyId',
+      accessor: 'warrantyName',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
 
@@ -165,7 +165,7 @@ const MyApplication = props => {
 
     {
       Header: messages['category'],
-      accessor: 'crmCategoryId',
+      accessor: 'crmCategoryName',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
 
@@ -174,7 +174,7 @@ const MyApplication = props => {
 
     {
       Header: messages['fin_status'],
-      accessor: 'contractStatusId',
+      accessor: 'contractStatusName',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
 

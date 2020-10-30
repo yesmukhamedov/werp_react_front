@@ -48,30 +48,8 @@ const MyApplicationExodus = props => {
 
   const initialColumns = [
     {
-      Header: '#',
-      accessor: 'id',
-      checked: true,
-      filterable: false,
-      Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
-      getProps: (state, rowInfo, column) => {
-        return {
-          style: {
-            background:
-              rowInfo && rowInfo.original.urgencyLevel === true
-                ? '#cc0000'
-                : null,
-            color:
-              rowInfo && rowInfo.original.urgencyLevel === true
-                ? 'white'
-                : 'black',
-          },
-        };
-      },
-      width: 55,
-    },
-    {
       Header: messages['brnch'],
-      accessor: 'branchId',
+      accessor: 'branchName',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
@@ -120,13 +98,13 @@ const MyApplicationExodus = props => {
     },
     {
       Header: messages['address'],
-      accessor: 'address',
+      accessor: 'fullAddress',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
     {
       Header: messages['Phone'],
-      accessor: 'phoneNumber',
+      accessor: 'fullPhone',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
     },
@@ -178,7 +156,7 @@ const MyApplicationExodus = props => {
     },
     {
       Header: messages['category'],
-      accessor: 'crmCategoryId',
+      accessor: 'crmCategoryName',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
 
@@ -186,7 +164,7 @@ const MyApplicationExodus = props => {
     },
     {
       Header: messages['application_status'],
-      accessor: 'applicationStatusId',
+      accessor: 'applicationStatusName',
       checked: true,
       Cell: row => <div style={{ textAlign: 'center' }}>{row.value}</div>,
 

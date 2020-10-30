@@ -72,7 +72,7 @@ const AssignedCalls = props => {
     },
     {
       Header: messages['brnch'],
-      accessor: 'branchId',
+      accessor: 'branchName',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
     },
@@ -122,7 +122,7 @@ const AssignedCalls = props => {
     },
     {
       Header: messages['address'],
-      accessor: 'address',
+      accessor: 'fullAddress',
       checked: true,
       Cell: row => <TextAlignCenter text={row.value} />,
     },
