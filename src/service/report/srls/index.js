@@ -114,14 +114,14 @@ const Srls = props => {
   const initialColumns = [
     {
       Header: '#',
-      accessor: 'id',
+      accessor: 'serviceNumber',
       checked: true,
       filterable: false,
       width: 50,
     },
     {
       Header: 'Филиал',
-      accessor: 'branchId',
+      accessor: 'branchName',
       checked: true,
       filterable: false,
     },
@@ -149,7 +149,7 @@ const Srls = props => {
 
     {
       Header: 'Статус сервиса',
-      accessor: 'serviceStatusId',
+      accessor: 'serviceStatusName',
       checked: true,
       filterable: false,
     },
@@ -165,7 +165,7 @@ const Srls = props => {
     },
     {
       Header: 'Вид сервиса',
-      accessor: 'serviceTypeId',
+      accessor: 'serviceTypeName',
       checked: true,
       filterable: false,
     },
@@ -178,7 +178,7 @@ const Srls = props => {
 
     {
       Header: 'Валюта',
-      accessor: 'currencyId',
+      accessor: 'currencyName',
       checked: true,
       filterable: false,
       width: 100,

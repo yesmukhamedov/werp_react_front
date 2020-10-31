@@ -235,7 +235,7 @@ const Srlsm = props => {
   const initialColumns = [
     {
       Header: '#',
-      accessor: 'id',
+      accessor: 'serviceNumber',
       checked: true,
       filterable: false,
       width: 70,
@@ -251,7 +251,7 @@ const Srlsm = props => {
           Филиал
         </div>
       ),
-      accessor: 'branchId',
+      accessor: 'branchName',
       checked: true,
       filterable: false,
       width: 100,
@@ -365,7 +365,7 @@ const Srlsm = props => {
           Статус сервиса
         </div>
       ),
-      accessor: 'serviceStatusId',
+      accessor: 'serviceStatusName',
       checked: true,
       filterable: false,
       width: 90,
@@ -401,7 +401,7 @@ const Srlsm = props => {
     },
     {
       Header: 'Вид сервиса',
-      accessor: 'serviceTypeId',
+      accessor: 'serviceTypeName',
       checked: true,
       filterable: false,
       Cell: row => (
