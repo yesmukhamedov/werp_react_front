@@ -530,7 +530,9 @@ export const fetchWaersByBranch = (param, funcSetWaers) => {
 
 export function postApplicationsMaster(params, success) {
   return function(dispatch) {
-    doPost('service/smappl/editApp', params)
+    doPost(
+      `service/smappl/editApp?applicationId=${params.applicationId}&masterId=${params.masterId}`,
+    )
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         success();
