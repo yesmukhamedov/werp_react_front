@@ -124,7 +124,7 @@ const TabSmcsWithRequest = props => {
     }
   };
 
-  const [editStatus, setEditStatus] = useState(true);
+  const [editStatus, setEditStatus] = useState(false);
 
   const operatorOptions = operatorList.map((item, index) => {
     return {
@@ -1036,7 +1036,7 @@ const TabSmcsWithRequest = props => {
       setServicePackageInitial([]);
       props.fetchMatnrPriceSparePart({ ...paramMatnrSparePart }, 3);
       props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge }, 3);
-      setEditStatus(false);
+      setEditStatus(true);
     }
     setCheckStatus(false);
   }, [service.masterId]);

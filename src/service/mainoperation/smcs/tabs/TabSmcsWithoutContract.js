@@ -125,7 +125,7 @@ const TabSmcsWithoutContract = props => {
     }
   };
 
-  const [editStatus, setEditStatus] = useState(true);
+  const [editStatus, setEditStatus] = useState(false);
 
   //BasicInfo
   const onBasicInfoInputChange = (value, fieldName) => {
@@ -319,7 +319,7 @@ const TabSmcsWithoutContract = props => {
         props.fetchMatnrPriceCartridge({ ...paramMatnrCartridge }, 2);
       }
 
-      setEditStatus(false);
+      setEditStatus(true);
     }
     setCheckStatus(false);
   }, [service.masterId]);
