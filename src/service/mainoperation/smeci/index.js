@@ -108,11 +108,11 @@ function Smeci(props) {
     }
   }, [contractNumber]);
 
-  useEffect(() => {
-    if (!addressF4ModalOpen) {
-      props.fetchSmeciContractInfo({ contractNumber });
-    }
-  }, [!addressF4ModalOpen]);
+  // useEffect(() => {
+  //   if (!addressF4ModalOpen) {
+  //     props.fetchSmeciContractInfo({ contractNumber });
+  //   }
+  // }, [!addressF4ModalOpen]);
 
   useEffect(() => {
     if (Object.entries(branchOptionsService).length !== 0 && bukrsId) {
