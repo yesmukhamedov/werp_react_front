@@ -24,6 +24,14 @@ const YMaps = props => {
         return {
           balloonContentHeader: '<h3>' + staff.fullName + '</h3>',
           balloonContentBody:
+            //Компания
+            '<p>Компания:  <strong>' +
+            staff.bukrs +
+            '</strong> </p>' +
+            //Филиал
+            '<p>Филиал:  <strong>' +
+            staff.branch +
+            '</strong> </p>' +
             //Должность
             '<p>Должность:  <strong>' +
             staff.position +
@@ -36,11 +44,18 @@ const YMaps = props => {
             '<p>Статус:  <strong>' +
             staff.status +
             '</strong></p>' +
-            //Название адреса
-            '<p>Адрес:  <strong>Алматы, Мамыр-4, 71</strong></p>',
+            //Текущий адрес
+            '<p>Адрес:  <strong>' +
+            staff.address +
+            '</strong></p>',
 
           clusterCaption:
-            'Сотрудник: <strong>' + staff.fullName + '</strong> </p>',
+            //Сотрудник
+            '<p><strong>' +
+            staff.fullName +
+            '(' +
+            staff.position +
+            ')</strong> </p></div>',
         };
       },
       getPointOptions = function() {
