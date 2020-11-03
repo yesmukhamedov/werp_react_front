@@ -1,5 +1,6 @@
 import {
   FETCH_SRLSM,
+  CLEAR_SRLSM,
   FETCH_SERVICE_TYPE_LIST,
   FETCH_ACCEPT_PAYMENT_USERS,
   FETCH_MASTER_LIST,
@@ -20,6 +21,15 @@ export default function(state = INITIAL_STATE, action) {
         srlsmListSum: { ...action.data.data.listSum },
         srlsmTotalPages: action.data.data.listData.totalPages,
         premiumSum: [...action.data.data.premiumSum],
+      };
+
+    case CLEAR_SRLSM:
+      return {
+        ...state,
+        srlsmListData: {},
+        srlsmListSum: {},
+        srlsmTotalPages: 0,
+        premiumSum: [],
       };
     case FETCH_SERVICE_TYPE_LIST:
       return {

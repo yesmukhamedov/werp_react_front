@@ -9,6 +9,7 @@ import {
 } from '../../../reference/f4/f4_action';
 import {
   fetchSrlsm,
+  clearSrlsm,
   fetchServiceTypeList,
   fetchAcceptPaymentUsers,
   fetchMasterList,
@@ -86,7 +87,6 @@ const Srlsm = props => {
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
 
   const [modalDetails, setModalDetails] = useState(false);
-  const [filtered, setFiltered] = useState([]);
   const [tablePage, setTablePage] = useState(0);
 
   const masterOptions = masterList.map((item, index) => {
@@ -524,7 +524,18 @@ const Srlsm = props => {
     setColumns([...data]);
   };
 
-  const [serverSideParams, setServerSideParams] = useState({});
+  const initialServerSideParams = {
+    page: 0,
+    size: 20,
+    orderBy: 'dateOpen',
+    direction: 'DESC',
+  };
+
+  const [serverSideParams, setServerSideParams] = useState({
+    ...initialServerSideParams,
+  });
+
+  const [filtered, setFiltered] = useState([]);
 
   const detailColumns = [
     {
@@ -647,29 +658,22 @@ const Srlsm = props => {
   ];
 
   const handleClickApply = () => {
-    const errors = [];
-    setColumns([...initialColumns]);
-    setFiltered([]);
-    setTablePage(0);
-    const ssParam =
-      Object.keys(serverSideParams).length > 0
-        ? serverSideParams
-        : { page: 0, size: 20 };
     if (param.bukrs) {
-      props.fetchSrlsm(
-        {
-          ...param,
-          serviceStatusId: param.serviceStatusId.toString(),
-          page: tablePage,
-          size: 20,
-        },
-        () => setTurnOnReactFetch(true),
+      props.clearSrlsm();
+      setFiltered([]);
+      setTurnOnReactFetch(false);
+      props.fetchSrlsm({ ...param, ...initialServerSideParams }, () =>
+        setTurnOnReactFetch(true),
       );
+      setServerSideParams({
+        ...initialServerSideParams,
+      });
+      setError([]);
     } else {
+      const errors = [];
       errors.push(errorTableText(5));
+      setError(() => errors);
     }
-    setTurnOnReactFetch(false);
-    setError(errors);
   };
   return (
     <Container
@@ -994,23 +998,32 @@ const Srlsm = props => {
       <ReactTableServerSideWrapperFilteredState
         data={srlsmListData.data}
         columns={columns}
-        filterable
-        pageSize={20}
+        filterable={true}
         showPagination={true}
+        pageSize={serverSideParams.size}
         requestData={params => {
           setServerSideParams({ ...params });
-          props.fetchSrlsm({ ...param, ...params }, () =>
-            setTurnOnReactFetch(true),
+          props.fetchSrlsm(
+            {
+              ...param,
+              ...params,
+              orderBy: params.orderBy
+                ? params.orderBy
+                : serverSideParams.orderBy,
+              direction: params.direction
+                ? params.direction
+                : serverSideParams.direction,
+            },
+            () => setTurnOnReactFetch(true),
           );
         }}
         pages={srlsmTotalPages ? srlsmTotalPages : ''}
         turnOnReactFetch={turnOnReactFetch}
+        page={serverSideParams.page}
         filtered={filtered}
         onFilteredChange={filter => {
           setFiltered(filter);
         }}
-        page={tablePage}
-        onPageChange={pageIndex => setTablePage(pageIndex)}
       />
     </Container>
   );
@@ -1041,6 +1054,7 @@ export default connect(mapStateToProps, {
   f4FetchBranches,
   f4FetchServiceAppStatus,
   fetchSrlsm,
+  clearSrlsm,
   fetchServiceTypeList,
   f4FetchCountryList,
   f4FetchServiceStatusList,

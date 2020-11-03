@@ -3,6 +3,7 @@ import { handleError } from '../../../general/notification/notification_action';
 import { modifyLoader } from '../../../general/loader/loader_action';
 
 export const FETCH_SRLSM = 'FETCH_SRLSM';
+export const CLEAR_SRLSM = 'CLEAR_SRLSM';
 export const FETCH_SERVICE_TYPE_LIST = 'FETCH_SERVICE_TYPE_LIST';
 export const FETCH_ACCEPT_PAYMENT_USERS = 'FETCH_ACCEPT_PAYMENT_USERS';
 export const FETCH_MASTER_LIST = 'FETCH_MASTER_LIST';
@@ -30,6 +31,14 @@ export const fetchSrlsm = (param, setFunc) => {
       });
   };
 };
+
+export function clearSrlsm() {
+  return function(dispatch) {
+    dispatch({
+      type: CLEAR_SRLSM,
+    });
+  };
+}
 export const fetchAcceptPaymentUsers = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
