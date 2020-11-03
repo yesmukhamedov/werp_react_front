@@ -222,7 +222,7 @@ const ServiceFilterPlan = props => {
     {
       Header: messages['address'],
       headerStyle: { whiteSpace: 'pre-wrap' },
-      accessor: 'fullAddress',
+      accessor: 'address',
       checked: true,
       Cell: row => {
         if (
