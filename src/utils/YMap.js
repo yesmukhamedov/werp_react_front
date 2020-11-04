@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import DropdownClearable from '../../../utils/DropdownClearable';
-import '../../../../public/assets/img/pointIcon.svg';
-import { Icon } from 'semantic-ui-react';
 
 const YMaps = props => {
   const { ymaps } = window;
@@ -68,21 +65,20 @@ const YMaps = props => {
             // Необходимо указать данный тип макета.
             iconLayout: 'default#image',
             // Своё изображение иконки метки.
-            iconImageHref: '/assets/img/pointDealer.svg',
+            iconImageHref: '/assets/img/dealerIcon.svg',
             // Размеры метки.
-            iconImageSize: [60, 68],
+            iconImageSize: [42, 48],
             // Смещение левого верхнего угла иконки относительно
             // её "ножки" (точки привязки).
             iconImageOffset: [-30, -62],
           };
-        } else if (points.position === 'Головной офис') {
-          console.log('points.position Golovnoi', points.position);
+        } else if (points.position === 'Мастер') {
           return {
             // Опции.
             // Необходимо указать данный тип макета.
             iconLayout: 'default#image',
             // Своё изображение иконки метки.
-            iconImageHref: '/assets/img/pointIcon.svg',
+            iconImageHref: '/assets/img/masterIcon.svg',
             // Размеры метки.
             iconImageSize: [42, 48],
             // Смещение левого верхнего угла иконки относительно
@@ -90,15 +86,14 @@ const YMaps = props => {
             iconImageOffset: [-30, -62],
           };
         } else {
-          console.log('points.position ELSE', points.position);
           return {
             // Опции.
             // Необходимо указать данный тип макета.
             iconLayout: 'default#image',
             // Своё изображение иконки метки.
-            iconImageHref: '/assets/img/pointIcon.svg',
+            iconImageHref: '/assets/img/staffIcon.svg',
             // Размеры метки.
-            iconImageSize: [60, 68],
+            iconImageSize: [42, 48],
             // Смещение левого верхнего угла иконки относительно
             // её "ножки" (точки привязки).
             iconImageOffset: [-30, -62],

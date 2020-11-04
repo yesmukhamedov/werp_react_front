@@ -10,7 +10,9 @@ import {
   Sidebar,
   Form,
 } from 'semantic-ui-react';
-import YMaps from './components/YMap';
+import YMaps from '../../utils/YMap';
+
+import { pointsYMap } from './components/pointsYMap';
 
 import DropdownClearable from '../../utils/DropdownClearable';
 const HorizontalSidebar = ({ animation, direction, visible }) => {
@@ -72,74 +74,7 @@ const Hrslc = props => {
   const [mapState, setMapState] = useState({
     center: [43.22387586, 76.92826238],
     zoom: 8,
-    pointsM: [
-      {
-        bukrs: 'AURA',
-        branch: 'Головной офис',
-        location: [43.23626709, 76.94602374],
-        id: 4545,
-        fullName: 'Есмухамбетов Нұрғали',
-        position: 'BackEnd разработчик',
-        phone: '+7(707)-505-6858',
-        status: 'На работе',
-        address: 'Алматы, Мамыр-4, 71',
-      },
-      {
-        bukrs: 'AURA',
-        branch: 'Головной офис',
-        location: [43.21681012, 76.85060147],
-        id: 4546,
-        fullName: 'Сейтбеков Жаксылык',
-        position: 'FrontEnd разработчик',
-        phone: '+7(707)-505-6111',
-        status: 'В отпуске',
-        address: 'Алматы, Мамыр-4, 71',
-      },
-      {
-        bukrs: 'AURA',
-        branch: 'ALM-CEB1',
-        location: [42.90135108, 71.36979703],
-        id: 4547,
-        fullName: 'Сұлтан',
-        position: 'Дилер',
-        phone: '+7(707)-505-6999',
-        status: 'Демонстрация',
-        address: 'Алматы, Мамыр-4, 71',
-      },
-      {
-        bukrs: 'AURA',
-        branch: 'AST-ROB1',
-        location: [51.15062725, 71.40013818],
-        id: 4548,
-        fullName: 'Жахангир',
-        position: 'Дилер',
-        phone: '+7(707)-505-6888',
-        status: 'Завершил демонстрацию',
-        address: 'Нұрсұлтан, Бейбітшілік 45',
-      },
-      {
-        bukrs: 'AURA',
-        branch: 'Головной офис',
-        location: [43.21109737, 76.85371283],
-        id: 4549,
-        fullName: 'Азамат Сембекович',
-        position: 'Начальник IT отдела',
-        phone: '+7(707)-505-6777',
-        status: 'На работе',
-        address: 'Алматы, Мамыр-4, 71',
-      },
-      {
-        bukrs: 'AURA',
-        branch: 'Головной офис',
-        location: [43.21280812, 76.85343389],
-        id: 4550,
-        fullName: 'Хандемир',
-        position: 'Системный администратор',
-        phone: '+7(707)-505-6069',
-        status: 'Отгул 1 день',
-        address: 'Алматы, Мамыр-4, 71',
-      },
-    ],
+    pointsM: pointsYMap,
   });
 
   console.log('STATE', state);
