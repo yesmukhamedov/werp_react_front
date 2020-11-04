@@ -1,0 +1,21 @@
+<svg width="60" height="68" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <filter color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse" height="64" width="58" y="1" x="1" id="e52e95270498b8a219f4e40e07d7300b__a">
+   <feGaussianBlur stdDeviation="3"/>
+  </filter>
+ </defs>
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="602" width="802" y="-1" x="-1"/>
+ </g>
+ <g>
+  <title>Layer 1</title>
+  <g id="svg_1" filter="url(#e52e95270498b8a219f4e40e07d7300b__a)">
+   <path id="svg_2" fill="#10a8a8" d="m30.51,56.523a0.5,0.5 0 0 1 -0.499,0.477c-0.29,0 -0.51,-0.21 -0.522,-0.477c-0.144,-3.168 -1.755,-5.217 -4.831,-6.147c-10.128,-2.408 -17.658,-11.513 -17.658,-22.376c0,-12.703 10.297,-23 23,-23s23,10.297 23,23c0,10.863 -7.531,19.968 -17.658,22.376c-3.076,0.93 -4.687,2.979 -4.831,6.147l-0.001,0z"/>
+  </g>
+  <path id="svg_3" fill="#fff" d="m30,68a4,4 0 1 1 0,-8a4,4 0 0 1 0,8z"/>
+  <path id="svg_4" fill="#10a8a8" d="m30,66a2,2 0 1 0 0,-4a2,2 0 0 0 0,4z" clip-rule="evenodd" fill-rule="evenodd"/>
+  <text xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="24" id="svg_6" y="26.80664" x="-30.6875" stroke-opacity="null" stroke-width="0" stroke="null" fill="#14bcbc">D</text>
+  <text font-weight="bold" stroke="null" transform="matrix(0.969624780925642,0,0,0.969624780925642,-3.1613999650986955,-5.186076346769916) " xml:space="preserve" text-anchor="start" font-family="Euphoria, sans-serif" font-size="24" id="svg_7" y="40.45763" x="25.4636" stroke-opacity="null" stroke-width="0" fill="#f7f2f2">Д</text>
+ </g>
+</svg>

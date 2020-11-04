@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import { injectIntl } from 'react-intl';
 import { Container } from 'semantic-ui-react';
 import {
   Button,
-  Checkbox,
   Grid,
   Header,
-  Icon,
-  Image,
-  Menu,
   Segment,
   Sidebar,
   Form,
@@ -15,7 +13,6 @@ import {
 import YMaps from './components/YMap';
 
 import DropdownClearable from '../../utils/DropdownClearable';
-
 const HorizontalSidebar = ({ animation, direction, visible }) => {
   const handleSubmit = () => {
     console.log('handleSubmit');
@@ -64,7 +61,7 @@ const HorizontalSidebar = ({ animation, direction, visible }) => {
   );
 };
 
-const Hrslc = () => {
+const Hrslc = props => {
   const [state, setState] = useState({
     animation: 'overlay',
     direction: 'top',
@@ -101,7 +98,7 @@ const Hrslc = () => {
       {
         bukrs: 'AURA',
         branch: 'ALM-CEB1',
-        location: [43.21749279, 76.85226444],
+        location: [42.90135108, 71.36979703],
         id: 4547,
         fullName: 'Сұлтан',
         position: 'Дилер',
@@ -179,4 +176,8 @@ const Hrslc = () => {
   );
 };
 
-export default Hrslc;
+function mapStateToProps(state) {
+  return {};
+}
+
+export default connect(mapStateToProps, {})(injectIntl(Hrslc));

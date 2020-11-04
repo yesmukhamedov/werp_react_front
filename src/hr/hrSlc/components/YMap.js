@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DropdownClearable from '../../../utils/DropdownClearable';
+import '../../../../public/assets/img/pointIcon.svg';
+import { Icon } from 'semantic-ui-react';
 
 const YMaps = props => {
   const { ymaps } = window;
@@ -20,7 +22,6 @@ const YMaps = props => {
         geoObjectHideIconOnBalloonOpen: true,
       }),
       getPointData = function(staff) {
-        console.log('staff', staff);
         return {
           balloonContentHeader: '<h3>' + staff.fullName + '</h3>',
           balloonContentBody:
@@ -58,10 +59,51 @@ const YMaps = props => {
             ')</strong> </p></div>',
         };
       },
-      getPointOptions = function() {
-        return {
-          preset: 'islands#darkBlueDotIcon',
-        };
+      getPointOptions = function(points) {
+        console.log('points', points);
+        if (points.position === 'Дилер') {
+          console.log('points.position DEALER', points.position);
+          return {
+            // Опции.
+            // Необходимо указать данный тип макета.
+            iconLayout: 'default#image',
+            // Своё изображение иконки метки.
+            iconImageHref: '/assets/img/pointDealer.svg',
+            // Размеры метки.
+            iconImageSize: [60, 68],
+            // Смещение левого верхнего угла иконки относительно
+            // её "ножки" (точки привязки).
+            iconImageOffset: [-30, -62],
+          };
+        } else if (points.position === 'Головной офис') {
+          console.log('points.position Golovnoi', points.position);
+          return {
+            // Опции.
+            // Необходимо указать данный тип макета.
+            iconLayout: 'default#image',
+            // Своё изображение иконки метки.
+            iconImageHref: '/assets/img/pointIcon.svg',
+            // Размеры метки.
+            iconImageSize: [42, 48],
+            // Смещение левого верхнего угла иконки относительно
+            // её "ножки" (точки привязки).
+            iconImageOffset: [-30, -62],
+          };
+        } else {
+          console.log('points.position ELSE', points.position);
+          return {
+            // Опции.
+            // Необходимо указать данный тип макета.
+            iconLayout: 'default#image',
+            // Своё изображение иконки метки.
+            iconImageHref: '/assets/img/pointIcon.svg',
+            // Размеры метки.
+            iconImageSize: [60, 68],
+            // Смещение левого верхнего угла иконки относительно
+            // её "ножки" (точки привязки).
+            iconImageOffset: [-30, -62],
+          };
+        }
       },
       points = pointsM,
       geoObjects = [];
@@ -70,7 +112,7 @@ const YMaps = props => {
       geoObjects[i] = new ymaps.Placemark(
         points[i].location,
         getPointData(points[i]),
-        getPointOptions(),
+        getPointOptions(points[i]),
       );
     }
 
@@ -81,7 +123,6 @@ const YMaps = props => {
 
     clusterer.add(geoObjects);
     myMap.geoObjects.add(clusterer);
-
     myMap.setBounds(clusterer.getBounds(), {
       checkZoomRange: true,
     });

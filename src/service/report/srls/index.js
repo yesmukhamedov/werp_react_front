@@ -14,6 +14,7 @@ import ModalColumns from './../../../utils/ModalColumns';
 import {
   stringYYYYMMDDToMoment,
   momentToStringYYYYMMDD,
+  moneyFormat,
 } from '../../../utils/helpers';
 import '../../service.css';
 import { LinkToSmcuspor, LinkToSmvs } from '../../../utils/outlink';
@@ -113,38 +114,69 @@ const Srls = props => {
   //Колоны ReactTable
   const initialColumns = [
     {
-      Header: '#',
+      Header: 'Сервис №',
       accessor: 'serviceNumber',
       checked: true,
-      filterable: false,
-      width: 50,
+      width: 120,
+
+      Cell: original => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          <LinkToSmvs serviceNumber={original.row.serviceNumber} />
+        </div>
+      ),
+      fixed: 'left',
     },
     {
       Header: 'Филиал',
       accessor: 'branchName',
       checked: true,
       filterable: false,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: 'Дата',
       accessor: 'dateOpen',
       checked: true,
       filterable: false,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value ? moment(row.value).format('DD.MM.YYYY') : ''}
+        </div>
+      ),
     },
     {
       Header: 'CN',
       accessor: 'contractNumber',
       checked: true,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: 'Заводской номер',
       accessor: 'tovarSn',
       checked: true,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: 'ФИО клиента',
       accessor: 'customerFIO',
       checked: true,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
 
     {
@@ -152,28 +184,53 @@ const Srls = props => {
       accessor: 'serviceStatusName',
       checked: true,
       filterable: false,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: 'Мастер',
       accessor: 'masterFIO',
       checked: true,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: 'Оператор',
       accessor: 'operatorFIO',
       checked: true,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: 'Вид сервиса',
       accessor: 'serviceTypeName',
       checked: true,
       filterable: false,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: 'Сумма',
       accessor: 'sumTotal',
       checked: true,
       filterable: false,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {moneyFormat(row.value)}
+        </div>
+      ),
     },
 
     {
@@ -181,7 +238,12 @@ const Srls = props => {
       accessor: 'currencyName',
       checked: true,
       filterable: false,
-      width: 100,
+      width: 50,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
 
     {
@@ -189,30 +251,30 @@ const Srls = props => {
       accessor: 'paid',
       checked: true,
       filterable: false,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
     },
     {
       Header: 'Остаток',
       accessor: 'residue',
       checked: true,
       filterable: false,
-    },
-    {
-      Header: 'Сервис №',
-      accessor: 'serviceNumber',
-      checked: true,
-      Cell: original => (
-        <div style={{ textAlign: 'center' }}>
-          <LinkToSmvs serviceNumber={original.row.id} />
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
         </div>
       ),
-      fixed: 'right',
     },
+
     {
       Header: 'История клиента',
       accessor: '16',
       filterable: false,
       Cell: original => (
-        <div style={{ textAlign: 'center' }}>
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
           <LinkToSmcuspor
             contractNumber={original.row.contractNumber}
             text="Просмотр"
@@ -234,7 +296,7 @@ const Srls = props => {
   const initialServerSideParams = {
     page: 0,
     size: 20,
-    orderBy: 'id',
+    orderBy: 'serviceNumber',
     direction: 'DESC',
   };
 
@@ -412,8 +474,18 @@ const Srls = props => {
         showPagination={true}
         pageSize={serverSideParams.size}
         requestData={params => {
-          props.fetchSrls({ ...param, ...params }, () =>
-            setTurnOnReactFetch(true),
+          props.fetchSrls(
+            {
+              ...param,
+              ...params,
+              orderBy: params.orderBy
+                ? params.orderBy
+                : serverSideParams.orderBy,
+              direction: params.direction
+                ? params.direction
+                : serverSideParams.direction,
+            },
+            () => setTurnOnReactFetch(true),
           );
           setServerSideParams({ ...params });
         }}

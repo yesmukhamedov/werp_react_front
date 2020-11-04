@@ -527,7 +527,7 @@ const Srlsm = props => {
   const initialServerSideParams = {
     page: 0,
     size: 20,
-    orderBy: 'dateOpen',
+    orderBy: 'serviceNumber',
     direction: 'DESC',
   };
 
