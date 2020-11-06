@@ -23,6 +23,7 @@ const YMaps = props => {
         clusterHideIconOnBalloonOpen: true,
         geoObjectHideIconOnBalloonOpen: true,
       }),
+      objects = ymaps.geoQuery([...pointsM]).addToMap(myMap),
       getPointData = function(staff) {
         return {
           balloonContentHeader: '<h3>' + staff.fullName + '</h3>',
@@ -73,7 +74,7 @@ const YMaps = props => {
             iconImageSize: [42, 48],
             // Смещение левого верхнего угла иконки относительно
             // её "ножки" (точки привязки).
-            iconImageOffset: [-30, -62],
+            iconImageOffset: [-20, -45],
           };
         } else if (points.position === 'Мастер') {
           return {
@@ -86,7 +87,7 @@ const YMaps = props => {
             iconImageSize: [42, 48],
             // Смещение левого верхнего угла иконки относительно
             // её "ножки" (точки привязки).
-            iconImageOffset: [-30, -62],
+            iconImageOffset: [-20, -45],
           };
         } else {
           return {
@@ -99,14 +100,61 @@ const YMaps = props => {
             iconImageSize: [42, 48],
             // Смещение левого верхнего угла иконки относительно
             // её "ножки" (точки привязки).
-            iconImageOffset: [-30, -62],
+            iconImageOffset: [-20, -45],
           };
         }
       },
       //Метки
       points = pointsM,
-      geoObjects = [];
+      polygon = new ymaps.Polygon(
+        [
+          [
+            // Задаем координаты диагональных углов прямоугольника.
+            [43.21693568, 76.85038153],
+            [43.21700237, 76.85066048],
+            [43.21665319, 76.85083751],
+            [43.21664142, 76.85052637],
+          ],
+        ],
 
+        {
+          //Свойства
+          hintContent:
+            'Рабочее время штатные сотрудники головного офиса  должны находиться на этой территории',
+          balloonContent: 'Территория головного офиса AURA',
+        },
+        {
+          draggable: true,
+          // Опции.
+          // Цвет и прозрачность заливки.
+          fillColor: '#7df9ff33',
+          // Дополнительная прозрачность заливки..
+          // Итоговая прозрачность будет не #33(0.2), а 0.1(0.2*0.5).
+          // fillOpacity: 0,
+          // Цвет обводки.
+          strokeColor: '#0000FF',
+          // Прозрачность обводки.
+          strokeOpacity: 0.5,
+          // Ширина линии.
+          strokeWidth: 2,
+          // Радиус скругления углов.
+          // Данная опция принимается только прямоугольником.
+          borderRadius: 6,
+        },
+      ),
+      geoObjects = [];
+    // Попадание сотрудников на рабочую территорию
+    polygon.events.add('drag', function() {
+      // Объекты, попадающие в круг, будут становиться красными.
+      var objectsInsidePolygon = objects.searchInside(polygon);
+      // objectsInsidePolygon.setOptions('preset', 'islands#redIcon');
+      console.log('Сотрудник на работе!');
+      // Оставшиеся объекты - синими.
+
+      objects
+        .remove(objectsInsidePolygon)
+        .setOptions('preset', 'islands#blueIcon');
+    });
     for (var i = 0, len = points.length; i < len; i++) {
       geoObjects[i] = new ymaps.Placemark(
         points[i].location,
@@ -122,14 +170,14 @@ const YMaps = props => {
 
     clusterer.add(geoObjects);
     myMap.geoObjects.add(clusterer);
+    myMap.geoObjects.add(polygon);
     myMap.setBounds(clusterer.getBounds(), {
       checkZoomRange: true,
     });
   });
 
   useEffect(() => {
-    ymaps.ready(init);
-    console.log('INIT');
+    console.log('INIT', init);
   }, [pointsM]);
 
   return <div id="map" style={{ width: '100%', height: '900px' }}></div>;
