@@ -2,14 +2,19 @@ import React, { useState, useEffect } from 'react';
 
 const YMaps = props => {
   const { ymaps } = window;
-  const { mainState = {}, onChangeMap = () => {} } = props;
+  const {
+    mainState = {},
+    onChangeMap = () => {},
+    pointsM = [],
+    reRender,
+  } = props;
+  const { center, zoom } = mainState;
 
-  const { center, zoom, pointsM = [] } = mainState;
-
-  ymaps.ready(function() {
+  let init = ymaps.ready(() => {
     var myMap = new ymaps.Map('map', {
         center: center,
         zoom: zoom,
+        controls: [],
       }),
       clusterer = new ymaps.Clusterer({
         preset: 'islands#invertedBlueClusterIcons',
@@ -57,9 +62,7 @@ const YMaps = props => {
         };
       },
       getPointOptions = function(points) {
-        console.log('points', points);
         if (points.position === 'Дилер') {
-          console.log('points.position DEALER', points.position);
           return {
             // Опции.
             // Необходимо указать данный тип макета.
@@ -100,6 +103,7 @@ const YMaps = props => {
           };
         }
       },
+      //Метки
       points = pointsM,
       geoObjects = [];
 
@@ -123,7 +127,11 @@ const YMaps = props => {
     });
   });
 
+  useEffect(() => {
+    ymaps.ready(init);
+    console.log('INIT');
+  }, [pointsM]);
+
   return <div id="map" style={{ width: '100%', height: '900px' }}></div>;
 };
-
 export default YMaps;

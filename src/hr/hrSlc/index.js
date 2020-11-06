@@ -2,108 +2,143 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { Container } from 'semantic-ui-react';
-import {
-  Button,
-  Grid,
-  Header,
-  Segment,
-  Sidebar,
-  Form,
-} from 'semantic-ui-react';
+import { Button, Segment, Sidebar, Popup, Divider } from 'semantic-ui-react';
 import YMaps from '../../utils/YMap';
+import VerticalSidebar from './components/VerticalSidebar';
+import ReportSlc from './components/ReportSlc';
 
+import { f4FetchCountryList } from '../../reference/f4/f4_action';
 import { pointsYMap } from './components/pointsYMap';
 
-import DropdownClearable from '../../utils/DropdownClearable';
-const HorizontalSidebar = ({ animation, direction, visible }) => {
-  const handleSubmit = () => {
-    console.log('handleSubmit');
-  };
-  return (
-    <Sidebar
-      as={Segment}
-      animation={animation}
-      direction={direction}
-      visible={visible}
-    >
-      <Form onSubmit={handleSubmit}>
-        <Form.Group>
-          <Form.Field>
-            <label></label>
-            <DropdownClearable
-              selection
-              options={[]}
-              value={''}
-              placeholder="Компания"
-              onChange={(e, { value }) => console.log('onChange')}
-              handleClear={() => console.log('handleClear')}
-            />
-          </Form.Field>
-        </Form.Group>
-      </Form>
-      <Grid textAlign="center">
-        <Grid.Row columns={1}>
-          <Grid.Column>
-            <Header as="h3">New Content Awaits</Header>
-          </Grid.Column>
-        </Grid.Row>
-        <Grid.Row columns={3}>
-          <Grid.Column>
-            <Button color="red">Button</Button>
-          </Grid.Column>
-          <Grid.Column>
-            <Button color="teal">Button</Button>
-          </Grid.Column>
-          <Grid.Column>
-            <Button color="green">Button</Button>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
-    </Sidebar>
-  );
-};
-
 const Hrslc = props => {
+  const { countryList = [], language, companyOptions = [] } = props;
+
   const [state, setState] = useState({
-    animation: 'overlay',
-    direction: 'top',
+    animation: 'slide along',
+    direction: 'left',
     dimmed: false,
-    visible: false,
+    visible: true,
   });
+
+  const [reRender, setReRender] = useState(true);
+  console.log('reRender', reRender);
+  const mapCompanyOptions = companyOptions.map(item => {
+    return {
+      key: item.key,
+      text: item.text,
+      value: item.text,
+    };
+  });
+  const mapCountryOptions = countryList.map(item => {
+    return {
+      key: item.countryId,
+      text: item.country,
+      value: item.country,
+    };
+  });
+
+  const [param, setParam] = useState({
+    country: null,
+    bukrs: null,
+    branch: null,
+  });
+
+  const filterMapPoints = pointsYMap
+    .filter(item =>
+      param.country ? item.country == param.country : item.country,
+    )
+    .filter(item => (param.bukrs ? item.bukrs == param.bukrs : item.bukrs));
+
+  useEffect(() => {
+    setReRender(false);
+  }, [param]);
 
   const [mapState, setMapState] = useState({
     center: [43.22387586, 76.92826238],
-    zoom: 8,
-    pointsM: pointsYMap,
+    zoom: 7,
   });
 
-  console.log('STATE', state);
+  const [toggleStatus, setToggleStatus] = useState(true);
+
+  useEffect(() => {
+    props.f4FetchCountryList();
+  }, []);
 
   const { animation, dimmed, direction, visible } = state;
-  const vertical = direction === 'bottom' || direction === 'top';
+
+  const onChangeVerticalSideBar = (fieldName, value) => {
+    switch (fieldName) {
+      case 'changeCountry':
+        setParam({ ...param, country: value });
+        break;
+      case 'clearCountry':
+        setParam({ ...param, country: null });
+        break;
+      case 'changeCompany':
+        setParam({ ...param, bukrs: value });
+        break;
+      case 'clearCompany':
+        setParam({ ...param, bukrs: null });
+        break;
+      case 'toggleFilter':
+        setToggleStatus(!toggleStatus);
+        break;
+    }
+  };
 
   return (
-    <Container fluid style={{ height: '100%' }}>
+    <Container
+      style={{ display: 'flex' }}
+      fluid
+      style={{
+        height: '100%',
+      }}
+    >
       <Sidebar.Pushable as={Segment} style={{ overflow: 'hidden' }}>
-        <Button
-          icon="filter"
-          style={{ position: 'absolute', zIndex: '1000' }}
-          color="blue"
-          onClick={() => setState({ ...state, visible: !visible })}
+        <VerticalSidebar
+          animation={animation}
+          direction={direction}
+          visible={visible}
+          param={param}
+          companyOptions={mapCompanyOptions}
+          countryOptions={mapCountryOptions}
+          onChangeVerticalSideBar={onChangeVerticalSideBar}
+          toggleStatus={toggleStatus}
         />
-        {vertical && (
-          <HorizontalSidebar
-            animation={animation}
-            direction={direction}
-            visible={visible}
-          />
-        )}
-
+        <Divider vertical>And</Divider>
         <Sidebar.Pusher dimmed={dimmed && visible}>
           <Segment
-            style={{ positions: 'relative', height: '100%', width: '100%' }}
+            style={{
+              height: '100%',
+              width: '100%',
+              padding: '1px',
+            }}
           >
-            <YMaps mainState={mapState} style={{ positions: 'absolute' }} />
+            <Popup
+              content={state.visible ? 'Скрыть фильтр' : 'Показать фильтр'}
+              trigger={
+                <Button
+                  style={{ position: 'absolute', zIndex: '1000' }}
+                  onClick={() => setState({ ...state, visible: !visible })}
+                  circular
+                  color="teal"
+                  icon="filter"
+                />
+              }
+            />
+            {toggleStatus ? (
+              <YMaps
+                reRender={reRender}
+                pointsM={filterMapPoints}
+                mainState={mapState}
+                style={{ positions: 'absolute' }}
+              />
+            ) : (
+              <ReportSlc
+                style={{ positions: 'relative', height: '100%' }}
+                filterMapPoints={filterMapPoints}
+              />
+            )}
           </Segment>
         </Sidebar.Pusher>
       </Sidebar.Pushable>
@@ -112,7 +147,13 @@ const Hrslc = props => {
 };
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    language: state.locales.lang,
+    countryList: state.f4.countryList,
+    companyOptions: state.userInfo.companyOptions,
+  };
 }
 
-export default connect(mapStateToProps, {})(injectIntl(Hrslc));
+export default connect(mapStateToProps, {
+  f4FetchCountryList,
+})(injectIntl(Hrslc));
