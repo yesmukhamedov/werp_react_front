@@ -210,17 +210,17 @@ const Srls = props => {
         </div>
       ),
     },
-    {
-      Header: 'Вид сервиса',
-      accessor: 'serviceTypeName',
-      checked: true,
-      filterable: false,
-      Cell: row => (
-        <div className="text-wrap" style={{ textAlign: 'center' }}>
-          {row.value}
-        </div>
-      ),
-    },
+    // {
+    //   Header: 'Вид сервиса',
+    //   accessor: 'serviceTypeName',
+    //   checked: true,
+    //   filterable: false,
+    //   Cell: row => (
+    //     <div className="text-wrap" style={{ textAlign: 'center' }}>
+    //       {row.value}
+    //     </div>
+    //   ),
+    // },
     {
       Header: 'Сумма',
       accessor: 'sumTotal',
