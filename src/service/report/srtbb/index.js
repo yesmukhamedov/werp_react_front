@@ -7,6 +7,7 @@ import {
   Segment,
   Form,
   Dropdown,
+  Divider,
   Label,
 } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
@@ -24,6 +25,8 @@ import {
   f4FetchServiceAppStatus,
   f4fetchCategory,
 } from '../../../reference/f4/f4_action';
+import OutputErrors from '../../../general/error/outputErrors';
+import { errorTableText } from '../../../utils/helpers';
 require('moment/locale/ru');
 
 //Сервис отчеты: Итого по филиалам
@@ -36,22 +39,17 @@ const SrTbb = props => {
     branchOptionsService = {},
     category = [],
   } = props;
-  console.log('category', category);
 
-  const categoryOptions = category.map(item => {
-    return {
-      key: item.id,
-      text: item.name,
-      value: item.id,
-    };
-  });
   const [param, setParam] = useState({
     bukrs: null,
     branchId: null,
     dateAt: '',
+    dateTo: '',
     serviceStatus: [],
     categoryId: null,
   });
+
+  const [error, setError] = useState([]);
 
   useEffect(() => {
     props.f4FetchServiceAppStatus();
@@ -59,6 +57,14 @@ const SrTbb = props => {
   }, []);
 
   const serviceAppStatusOptions = serviceAppStatus.map(item => {
+    return {
+      key: item.id,
+      text: item.name,
+      value: item.id,
+    };
+  });
+
+  const categoryOptions = category.map(item => {
     return {
       key: item.id,
       text: item.name,
@@ -104,7 +110,35 @@ const SrTbb = props => {
   ];
 
   const handleClickApply = () => {
-    console.log('handleClickApply');
+    //ВАЛИДАЦИЯ
+    if (
+      param.bukrs &&
+      param.branchId &&
+      param.dateAt &&
+      param.dateTo &&
+      param.categoryId &&
+      param.serviceStatus
+    ) {
+      console.log('ЗАПРОС НА СЕРВЕР ====>');
+    } else {
+      const errors = [];
+      if (!param.bukrs) {
+        errors.push(errorTableText(5));
+      }
+      if (!param.branchId) {
+        errors.push(errorTableText(7));
+      }
+      if (!param.dateAt) {
+        errors.push(errorTableText(13));
+      }
+      if (!param.dateTo) {
+        errors.push(errorTableText(14));
+      }
+      if (!param.categoryId) {
+        errors.push(errorTableText(109));
+      }
+      setError(() => errors);
+    }
   };
 
   const onChangeMultiSelectBox = (fieldName, value) => {
@@ -123,6 +157,9 @@ const SrTbb = props => {
 
   return (
     <div>
+      <Segment>
+        <h3>Сервис отчеты: Итого по филиалам</h3>
+      </Segment>
       <Segment>
         <Form>
           <Form.Group widths="equal">
@@ -231,6 +268,9 @@ const SrTbb = props => {
           </Form.Group>
         </Form>
       </Segment>
+      <OutputErrors errors={error} />
+      <Divider />
+
       <ReactTableWrapper
         //data={data}
         columns={columns}
