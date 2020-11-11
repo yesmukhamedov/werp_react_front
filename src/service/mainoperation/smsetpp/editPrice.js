@@ -369,14 +369,22 @@ const EditModal = props => {
                     <label>{messages['Task.StartDate']}</label>
                     <Input>
                       <DatePicker
+                        placeholderText="Дата начало"
+                        isClearable
                         className="date-auto-width"
                         autoComplete="off"
-                        showMonthDropdown
-                        showYearDropdown
-                        dropdownMode="select"
-                        selected={stringYYYYMMDDToMoment(
-                          informations.dateStart,
-                        )}
+                        locale={language}
+                        dropdownMode="select" //timezone="UTC"
+                        selected={
+                          informations.dateStart
+                            ? stringYYYYMMDDToMoment(informations.dateStart)
+                            : ''
+                        }
+                        value={
+                          informations.dateStart
+                            ? stringYYYYMMDDToMoment(informations.dateStart)
+                            : ''
+                        }
                         onChange={date =>
                           onChangeEditModal1(
                             momentToStringYYYYMMDD(date),
@@ -384,12 +392,9 @@ const EditModal = props => {
                           )
                         }
                         dateFormat="DD.MM.YYYY"
-                        value={informations.dateStart}
-                        locale={language}
-                        id="datePicker"
                       />
                     </Input>
-                  </Form.Field>{' '}
+                  </Form.Field>
                 </Table.Cell>
               </Table.Row>
               <Table.Row>
