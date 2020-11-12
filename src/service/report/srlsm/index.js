@@ -254,7 +254,7 @@ const Srlsm = props => {
       accessor: 'branchName',
       checked: true,
       filterable: false,
-      width: 100,
+      minWidth: 100,
       Cell: row => (
         <div className="text-wrap" style={{ textAlign: 'center' }}>
           {row.value}
@@ -285,7 +285,7 @@ const Srlsm = props => {
       ),
       accessor: 'contractNumber',
       checked: true,
-      width: 70,
+      minWidth: 100,
       Cell: row => (
         <div className="text-wrap" style={{ textAlign: 'center' }}>
           {row.value}
@@ -312,7 +312,7 @@ const Srlsm = props => {
       ),
       accessor: 'tovarSn',
       checked: true,
-      width: 120,
+      minWidth: 120,
       Cell: row => (
         <div className="text-wrap" style={{ textAlign: 'center' }}>
           {row.value}
@@ -356,7 +356,7 @@ const Srlsm = props => {
           />
         );
       },
-      width: 200,
+      minWidth: 200,
     },
 
     {
