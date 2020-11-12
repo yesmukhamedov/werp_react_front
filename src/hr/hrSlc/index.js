@@ -3,15 +3,21 @@ import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
 import { Container } from 'semantic-ui-react';
 import { Button, Segment, Sidebar, Popup, Divider } from 'semantic-ui-react';
-import YMaps from '../../utils/YMap';
+
 import VerticalSidebar from './components/VerticalSidebar';
 import ReportSlc from './components/ReportSlc';
-
+import { YMaps, Map, Clusterer, Placemark } from 'react-yandex-maps';
 import { f4FetchCountryList } from '../../reference/f4/f4_action';
+import { fetchYandexMap } from './hrslcAction';
 import { pointsYMap } from './components/pointsYMap';
 
 const Hrslc = props => {
-  const { countryList = [], language, companyOptions = [] } = props;
+  const {
+    countryList = [],
+    language,
+    companyOptions = [],
+    yandexMapData,
+  } = props;
 
   const [state, setState] = useState({
     animation: 'slide along',
@@ -21,7 +27,6 @@ const Hrslc = props => {
   });
 
   const [reRender, setReRender] = useState(true);
-  console.log('reRender', reRender);
   const mapCompanyOptions = companyOptions.map(item => {
     return {
       key: item.key,
@@ -62,6 +67,7 @@ const Hrslc = props => {
 
   useEffect(() => {
     props.f4FetchCountryList();
+    props.fetchYandexMap();
   }, []);
 
   const { animation, dimmed, direction, visible } = state;
@@ -86,15 +92,30 @@ const Hrslc = props => {
     }
   };
 
+  const getPointData = index => {
+    return {
+      balloonContentBody: 'placemark <strong>balloon ' + index + '</strong>',
+      clusterCaption: 'placemark <strong>' + index + '</strong>',
+    };
+  };
+
+  const getPointOptions = () => {
+    return {
+      preset: 'islands#violetIcon',
+    };
+  };
+
   return (
     <Container
       style={{ display: 'flex' }}
       fluid
-      style={{
-        height: '100%',
-      }}
+      style={{ width: '100%', height: '100%' }}
     >
-      <Sidebar.Pushable as={Segment} style={{ overflow: 'hidden' }}>
+      <Sidebar.Pushable
+        as={Segment}
+        style={{ overflow: 'hidden' }}
+        style={{ width: '100%', height: '100%' }}
+      >
         <VerticalSidebar
           animation={animation}
           direction={direction}
@@ -106,7 +127,10 @@ const Hrslc = props => {
           toggleStatus={toggleStatus}
         />
         <Divider vertical>And</Divider>
-        <Sidebar.Pusher dimmed={dimmed && visible}>
+        <Sidebar.Pusher
+          dimmed={dimmed && visible}
+          style={{ width: '100%', height: '100%' }}
+        >
           <Segment
             style={{
               height: '100%',
@@ -127,17 +151,30 @@ const Hrslc = props => {
               }
             />
             {toggleStatus ? (
-              <YMaps
-                reRender={reRender}
-                pointsM={filterMapPoints}
-                mainState={mapState}
-                style={{ positions: 'absolute' }}
-              />
+              <YMaps style={{ width: '100%', height: '100%' }}>
+                <Map state={mapState} style={{ width: '100%', height: '100%' }}>
+                  <Clusterer
+                    options={{
+                      preset: 'islands#invertedVioletClusterIcons',
+                      groupByCoordinates: false,
+                      clusterDisableClickZoom: true,
+                      clusterHideIconOnBalloonOpen: false,
+                      geoObjectHideIconOnBalloonOpen: false,
+                    }}
+                  >
+                    {pointsYMap.map((coordinates, index) => (
+                      <Placemark
+                        key={index}
+                        geometry={coordinates.location}
+                        properties={getPointData(index)}
+                        options={getPointOptions()}
+                      />
+                    ))}
+                  </Clusterer>
+                </Map>
+              </YMaps>
             ) : (
-              <ReportSlc
-                style={{ positions: 'relative', height: '100%' }}
-                filterMapPoints={filterMapPoints}
-              />
+              <ReportSlc filterMapPoints={filterMapPoints} />
             )}
           </Segment>
         </Sidebar.Pusher>
@@ -151,9 +188,11 @@ function mapStateToProps(state) {
     language: state.locales.lang,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
+    yandexMapData: state.hrslcReducer.yandexMapData,
   };
 }
 
 export default connect(mapStateToProps, {
   f4FetchCountryList,
+  fetchYandexMap,
 })(injectIntl(Hrslc));

@@ -29,8 +29,6 @@ const VerticalSidebar = props => {
       animation={animation}
       direction={direction}
       icon="labeled"
-      inverted
-      vertical
       visible={visible}
       width="wide"
     >
