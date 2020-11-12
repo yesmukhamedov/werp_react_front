@@ -11,7 +11,7 @@ export default function StaffFilesTable(props) {
     multiple: true,
     withCredentials: true,
     headers: {
-      Authorization: localStorage.getItem('token'),
+      Authorization: 'Bearer ' + localStorage.getItem('token'),
     },
     onSuccess(file) {
       onUploadSuccess(file);
