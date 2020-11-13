@@ -6,13 +6,11 @@ import {
   Container,
   Segment,
   Form,
-  Dropdown,
   Divider,
-  Label,
   Checkbox,
+  Menu,
 } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
-import moment from 'moment';
 import TextAlignCenter from '../../../utils/TextAlignCenter';
 import DropdownClearable from '../../../utils/DropdownClearable';
 import SelectWithCheckBox from '../../../utils/Dropdown/selectWithCheckBox';
@@ -22,9 +20,11 @@ import {
   momentToStringYYYYMMDD,
   stringYYYYMMDDToMoment,
 } from '../../../utils/helpers';
+import { fetchSrqpwgsList, clearSrqpwgsList } from './srqpwgsAction';
 import { f4fetchCategory } from '../../../reference/f4/f4_action';
 import OutputErrors from '../../../general/error/outputErrors';
-import { errorTableText } from '../../../utils/helpers';
+import { errorTableText, excelDownload } from '../../../utils/helpers';
+import moment from 'moment';
 require('moment/locale/ru');
 
 //Сервис отчеты: Количество и зав цены списанных товаров по сервису
@@ -35,6 +35,7 @@ const Srqpwgs = props => {
     language,
     branchOptionsService = {},
     category = [],
+    srqpwgsList,
   } = props;
 
   const [param, setParam] = useState({
@@ -56,7 +57,7 @@ const Srqpwgs = props => {
 
   const columns = [
     {
-      Header: 'Филиал',
+      Header: messages['bukrs'],
       accessor: 'id',
       Cell: row => <TextAlignCenter text={row.value} />,
       filterAll: true,
@@ -138,6 +139,27 @@ const Srqpwgs = props => {
       }
       setError(() => errors);
     }
+  };
+
+  const exportExcel = () => {
+    let excelHeaders = [];
+    excelHeaders.push(messages['brnch']);
+    excelHeaders.push(messages['snNum']);
+    excelHeaders.push(messages['oldSn']);
+    excelHeaders.push(messages['customer']);
+    excelHeaders.push(messages['budat']);
+    excelHeaders.push(messages['waers']);
+    excelHeaders.push(messages['amount']);
+    excelHeaders.push(messages['remainder']);
+    excelHeaders.push(messages['registeredTo']);
+
+    excelDownload(
+      'finance/reports/frep8/downloadExcel',
+      'srqpwgsResult.xls',
+      'outputTable',
+      srqpwgsList,
+      excelHeaders,
+    );
   };
 
   return (
@@ -252,6 +274,18 @@ const Srqpwgs = props => {
       </Segment>
       <OutputErrors errors={error} />
       <Divider />
+
+      <Menu stackable size="small">
+        <Menu.Item>
+          <img
+            alt=""
+            className="clickableItem"
+            src="/assets/img/xlsx_export_icon.png"
+            onClick={exportExcel}
+          />
+        </Menu.Item>
+      </Menu>
+
       <ReactTableWrapper
         //data={data}
         columns={columns}
@@ -268,9 +302,12 @@ function mapStateToProps(state) {
     companyOptions: state.userInfo.companyOptions,
     branchOptionsService: state.userInfo.branchOptionsService,
     category: state.f4.category,
+    srqpwgsList: state.srqpwgsReducer.srqpwgsList,
   };
 }
 
 export default connect(mapStateToProps, {
   f4fetchCategory,
+  fetchSrqpwgsList,
+  clearSrqpwgsList,
 })(injectIntl(Srqpwgs));

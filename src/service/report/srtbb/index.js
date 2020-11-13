@@ -25,6 +25,7 @@ import {
   f4FetchServiceAppStatus,
   f4fetchCategory,
 } from '../../../reference/f4/f4_action';
+import { fetchSrtbbList, clearSrtbbList } from './srtbbAction';
 import OutputErrors from '../../../general/error/outputErrors';
 import { errorTableText } from '../../../utils/helpers';
 require('moment/locale/ru');
@@ -38,6 +39,7 @@ const SrTbb = props => {
     serviceAppStatus = [],
     branchOptionsService = {},
     category = [],
+    srtbbList,
   } = props;
 
   const [param, setParam] = useState({
@@ -288,10 +290,13 @@ function mapStateToProps(state) {
     branchOptionsService: state.userInfo.branchOptionsService,
     serviceAppStatus: state.f4.serviceAppStatus,
     category: state.f4.category,
+    srtbbList: state.srtbbReducer.srtbbList,
   };
 }
 
 export default connect(mapStateToProps, {
   f4FetchServiceAppStatus,
   f4fetchCategory,
+  fetchSrtbbList,
+  clearSrtbbList,
 })(injectIntl(SrTbb));
