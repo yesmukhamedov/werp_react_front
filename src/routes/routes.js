@@ -19,38 +19,6 @@ const AsyncSettings = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncSerrep1 = Loadable({
-  loader: () =>
-    import(
-      '../service/report/serrep1/serrep1' /* webpackChunkName: "serrep1" */
-    ),
-  loading: () => <LoadingPage />,
-});
-
-const AsyncSerrep2 = Loadable({
-  loader: () =>
-    import(
-      '../service/report/serrep2/serrep2' /* webpackChunkName: "serrep2" */
-    ),
-  loading: () => <LoadingPage />,
-});
-
-const AsyncSerrep3 = Loadable({
-  loader: () =>
-    import(
-      '../service/report/serrep3/serrep3' /* webpackChunkName: "serrep3" */
-    ),
-  loading: () => <LoadingPage />,
-});
-
-const AsyncSerrep4 = Loadable({
-  loader: () =>
-    import(
-      '../service/report/serrep4/serrep4' /* webpackChunkName: "serrep4" */
-    ),
-  loading: () => <LoadingPage />,
-});
-
 const AsyncKpiReportPage = Loadable({
   loader: () =>
     import(
@@ -1115,10 +1083,6 @@ const getComponent = {
   SpList: AsyncSpListPage,
   LogRepAccStaff: AsyncAccountabilityStaffListPage,
   LogRepAccStaffDetail: AsyncAccountabilityStaffDetailPage,
-  Serrep1: AsyncSerrep1,
-  Serrep2: AsyncSerrep2,
-  Serrep4: AsyncSerrep4,
-  Serrep3: AsyncSerrep3,
   CrmRepKpi: AsyncKpiReportPage,
   CrmRepKpiRtg: AsyncKpiRatingReportPage,
   Prcltgs: AsyncPrcltgs,
