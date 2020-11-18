@@ -114,7 +114,7 @@ const Srls = props => {
   //Колоны ReactTable
   const initialColumns = [
     {
-      Header: 'Сервис №',
+      Header: `${messages['service']} №`,
       accessor: 'serviceNumber',
       checked: true,
       width: 120,
@@ -127,7 +127,7 @@ const Srls = props => {
       fixed: 'left',
     },
     {
-      Header: 'Филиал',
+      Header: messages['L__BRANCH'],
       accessor: 'branchName',
       checked: true,
       filterable: false,
@@ -138,7 +138,7 @@ const Srls = props => {
       ),
     },
     {
-      Header: 'Дата',
+      Header: messages['TBL_H__DATE'],
       accessor: 'dateOpen',
       checked: true,
       filterable: false,
@@ -159,7 +159,7 @@ const Srls = props => {
       ),
     },
     {
-      Header: 'Заводской номер',
+      Header: messages['productSerialNumber'],
       accessor: 'tovarSn',
       checked: true,
       Cell: row => (
@@ -169,7 +169,7 @@ const Srls = props => {
       ),
     },
     {
-      Header: 'ФИО клиента',
+      Header: messages['full_name_of_client'],
       accessor: 'customerFIO',
       checked: true,
       Cell: row => (
@@ -180,7 +180,7 @@ const Srls = props => {
     },
 
     {
-      Header: 'Статус сервиса',
+      Header: messages['service_status'],
       accessor: 'serviceStatusName',
       checked: true,
       filterable: false,
@@ -191,7 +191,7 @@ const Srls = props => {
       ),
     },
     {
-      Header: 'Мастер',
+      Header: messages['master'],
       accessor: 'masterFIO',
       checked: true,
       Cell: row => (
@@ -201,7 +201,7 @@ const Srls = props => {
       ),
     },
     {
-      Header: 'Оператор',
+      Header: messages['Operator'],
       accessor: 'operatorFIO',
       checked: true,
       Cell: row => (
@@ -222,7 +222,7 @@ const Srls = props => {
     //   ),
     // },
     {
-      Header: 'Сумма',
+      Header: messages['amount'],
       accessor: 'sumTotal',
       checked: true,
       filterable: false,
@@ -234,11 +234,11 @@ const Srls = props => {
     },
 
     {
-      Header: 'Валюта',
+      Header: messages['waers'],
       accessor: 'currencyName',
       checked: true,
       filterable: false,
-      width: 50,
+      width: 80,
       Cell: row => (
         <div className="text-wrap" style={{ textAlign: 'center' }}>
           {row.value}
@@ -247,7 +247,7 @@ const Srls = props => {
     },
 
     {
-      Header: 'Оплачено',
+      Header: messages['paid'],
       accessor: 'paid',
       checked: true,
       filterable: false,
@@ -258,7 +258,7 @@ const Srls = props => {
       ),
     },
     {
-      Header: 'Остаток',
+      Header: messages['remainder'],
       accessor: 'residue',
       checked: true,
       filterable: false,
@@ -270,7 +270,7 @@ const Srls = props => {
     },
 
     {
-      Header: 'История клиента',
+      Header: messages['customer_story'],
       accessor: '16',
       filterable: false,
       Cell: original => (
@@ -337,14 +337,14 @@ const Srls = props => {
       }}
     >
       <Segment>
-        <h3>Список сервисов(Общий)</h3>
+        <h3>{`${messages['Services_list']} (${messages['Common']})`}</h3>
       </Segment>
       <Form>
         <Form.Group widths="equal">
           <Form.Field required>
-            <label>Компания</label>
+            <label>{messages['Form.Company']}</label>
             <DropdownClearable
-              placeholder="Компания"
+              placeholder={messages['Form.Company']}
               options={companyOptions}
               onChange={(e, o) => onInputChange(o, 'bukrs')}
               value={param.bukrs}
@@ -355,44 +355,44 @@ const Srls = props => {
           </Form.Field>
 
           <Form.Field>
-            <label>Филиал</label>
+            <label>{messages['Form.Branch']}</label>
             <Dropdown
               selection
               multiple
-              placeholder="Филиал"
+              placeholder={messages['Form.Branch']}
               options={param.bukrs ? branchOptionsService[param.bukrs] : []}
               onChange={(e, o) => onInputChange(o, 'branchId')}
             />
           </Form.Field>
 
           <Form.Field>
-            <label>Категория товара</label>
+            <label>{messages['product_category']}</label>
             <Dropdown
               selection
               multiple
-              placeholder="Категория товара"
+              placeholder={messages['product_category']}
               options={tovarCategoryOptions ? tovarCategoryOptions : []}
               onChange={(e, o) => onInputChange(o, 'categoryId')}
             />
           </Form.Field>
 
           <Form.Field>
-            <label>Вид сервиса</label>
+            <label>{messages['typeOfService']}</label>
             <Dropdown
               selection
               multiple
-              placeholder="Вид сервиса"
+              placeholder={messages['typeOfService']}
               options={serviceTypeOptions ? serviceTypeOptions : []}
               onChange={(e, o) => onInputChange(o, 'serviceTypeId')}
             />
           </Form.Field>
 
           <Form.Field>
-            <label>Статус сервиса</label>
+            <label>{messages['service_status']}</label>
             <Dropdown
               selection
               multiple
-              placeholder="Статус сервиса"
+              placeholder={messages['service_status']}
               options={serviceAppStatusOptions ? serviceAppStatusOptions : []}
               onChange={(e, o) => onInputChange(o, 'serviceStatusId')}
             />
@@ -402,10 +402,10 @@ const Srls = props => {
         <Form.Group className="spaceBetween">
           <div className="flexDirectionRow">
             <Form.Field className="marginRight">
-              <label>Дата с</label>
+              <label>{messages['Form.DateFrom']}</label>
               <DatePicker
                 isClearable
-                placeholderText="Дата с"
+                placeholderText={messages['Form.DateFrom']}
                 className="date-auto-width"
                 autoComplete="off"
                 locale={`${language}`}
@@ -424,11 +424,11 @@ const Srls = props => {
             </Form.Field>
 
             <Form.Field className="marginRight">
-              <label>Дата по</label>
+              <label>{messages['Form.DateTo']}</label>
               <DatePicker
                 isClearable
                 locale={language}
-                placeholderText="Дата по"
+                placeholderText={messages['Form.DateTo']}
                 className="date-auto-width"
                 autoComplete="off"
                 locale={language}
@@ -451,7 +451,7 @@ const Srls = props => {
               className="alignBottom"
             >
               <Icon name="search" />
-              Применить
+              {messages['apply']}
             </Form.Button>
           </div>
 
