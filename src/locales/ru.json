@@ -886,5 +886,13 @@
   "srtbb": "Израсходованные материалы за период",
   "service_status": "Статус сервиса",
   "master_award": "Премия мастера",
-  "operator_award": "Премия оператора"
+  "operator_award": "Премия оператора",
+  "accepted_by_the_author": "Принял автор",
+  "in_detail": "Подробно",
+  "Total_amount_discounted": "Общая сумма (со скидкой)",
+  "Services_list": "Список сервисов",
+  "Manager": "Менеджер",
+  "Detailed_view": "Детальный просмотр",
+  "Service_date": "Дата сервиса",
+  "Accepted": "Принял"
 }

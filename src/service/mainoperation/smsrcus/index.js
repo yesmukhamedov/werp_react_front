@@ -687,7 +687,10 @@ const Smsrcus = props => {
           </Form>
           <Divider />
           <div className="flexJustifySpaceBeetween">
-            <TotalCountsTable count={smsrcusBlackListData.totalElements} />
+            <TotalCountsTable
+              text={messages['overallAmount']}
+              count={smsrcusBlackListData.totalElements}
+            />
             <ColumnsModal
               tableHeaderCols={columnsForTable}
               tableThings={things => {
@@ -951,7 +954,10 @@ const Smsrcus = props => {
           </Form>
           <Divider />
           <div className="flexJustifySpaceBeetween">
-            <TotalCountsTable count={smsrcusData.totalElements} />
+            <TotalCountsTable
+              text={messages['overallAmount']}
+              count={smsrcusData.totalElements}
+            />
             <ColumnsModal
               tableHeaderCols={columnsForTable}
               tableThings={things => {

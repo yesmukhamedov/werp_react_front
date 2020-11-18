@@ -888,5 +888,13 @@
   "srtbb": "Materials consumed for the period",
   "service_status": "Service status",
   "master_award": "Master award",
-  "operator_award": "Operator award"
+  "operator_award": "Operator award",
+  "accepted_by_the_author": "Accepted by the author",
+  "in_detail": "In detail",
+  "Total_amount_discounted": "Total amount (discounted)",
+  "Services_list": "Services list",
+  "Manager": "Manager",
+  "Detailed_view": "Detailed view",
+  "Service_date": "Service date",
+  "Accepted": "Accepted"
 }

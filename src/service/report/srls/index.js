@@ -29,7 +29,7 @@ require('moment/locale/ru');
 
 const Srls = props => {
   const {
-    //intl: { messages },
+    intl: { messages },
     language = '',
     category = [],
     companyOptions = [],
@@ -465,7 +465,10 @@ const Srls = props => {
       </Form>
       <OutputErrors errors={error} />
 
-      <TotalCountsTable count={srlsData ? srlsData.totalElements : 0} />
+      <TotalCountsTable
+        text={messages['overallAmount']}
+        count={srlsData ? srlsData.totalElements : 0}
+      />
 
       <ReactTableServerSideWrapperFilteredState
         data={srlsData ? srlsData.data : []}

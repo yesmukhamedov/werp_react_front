@@ -248,7 +248,7 @@ const Srlsm = props => {
     {
       Header: (
         <div className="text-wrap" style={{ textAlign: 'center' }}>
-          Филиал
+          {messages['L__BRANCH']}
         </div>
       ),
       accessor: 'branchName',
@@ -264,7 +264,7 @@ const Srlsm = props => {
     {
       Header: () => (
         <div className="text-wrap" style={{ textAlign: 'center' }}>
-          Дата сервиса
+          {messages['Service_date']}
         </div>
       ),
       accessor: 'dateOpen',
@@ -307,7 +307,7 @@ const Srlsm = props => {
     {
       Header: () => (
         <div className="text-wrap" style={{ textAlign: 'center' }}>
-          Заводской номер
+          {messages['productSerialNumber']}
         </div>
       ),
       accessor: 'tovarSn',
@@ -334,7 +334,7 @@ const Srlsm = props => {
     {
       Header: () => (
         <div className="text-wrap" style={{ textAlign: 'center' }}>
-          ФИО клиента
+          {messages['full_name_of_client']}
         </div>
       ),
       accessor: 'customerFIO',
@@ -362,7 +362,7 @@ const Srlsm = props => {
     {
       Header: () => (
         <div className="text-wrap" style={{ textAlign: 'center' }}>
-          Статус сервиса
+          {messages['service_status']}
         </div>
       ),
       accessor: 'serviceStatusName',
@@ -376,7 +376,7 @@ const Srlsm = props => {
       ),
     },
     {
-      Header: 'Мастер',
+      Header: messages['master'],
       accessor: 'masterFIO',
       checked: true,
       filterable: false,
@@ -388,7 +388,7 @@ const Srlsm = props => {
       width: 150,
     },
     {
-      Header: 'Оператор',
+      Header: messages['Operator'],
       accessor: 'operatorFIO',
       checked: true,
       filterable: false,
@@ -411,7 +411,7 @@ const Srlsm = props => {
     //   ),
     // },
     {
-      Header: 'Сумма',
+      Header: messages['amount'],
       accessor: 'sumTotal',
       checked: true,
       filterable: false,
@@ -423,7 +423,7 @@ const Srlsm = props => {
       width: 90,
     },
     {
-      Header: 'Оплачено',
+      Header: messages['paid'],
       accessor: 'paid',
       checked: true,
       filterable: false,
@@ -435,7 +435,7 @@ const Srlsm = props => {
       width: 90,
     },
     {
-      Header: 'Остаток',
+      Header: messages['remainder'],
       accessor: 'residue',
       checked: true,
       filterable: false,
@@ -447,7 +447,7 @@ const Srlsm = props => {
       width: 90,
     },
     {
-      Header: 'Валюта',
+      Header: messages['waers'],
       accessor: 'currencyId',
       checked: true,
       filterable: false,
@@ -460,7 +460,7 @@ const Srlsm = props => {
     },
 
     {
-      Header: 'Принял',
+      Header: messages['Accepted'],
       accessor: 'acceptPaymentByName',
       checked: true,
       filterable: false,
@@ -539,7 +539,7 @@ const Srlsm = props => {
 
   const detailColumns = [
     {
-      Header: 'Вид сервиса',
+      Header: messages['typeOfService'],
       accessor: 'serviceTypeName',
 
       Cell: row => (
@@ -549,7 +549,7 @@ const Srlsm = props => {
       ),
     },
     {
-      Header: 'Премя мастера',
+      Header: messages['master_award'],
       accessor: 'masterPremium',
 
       Footer: info => {
@@ -563,7 +563,7 @@ const Srlsm = props => {
 
         return (
           <div className="text-wrap" style={{ textAlign: 'center' }}>
-            Всего: {moneyFormat(total)}
+            {`${messages['overallSum']}: ${moneyFormat(total)}`}
           </div>
         );
       },
@@ -574,7 +574,7 @@ const Srlsm = props => {
       ),
     },
     {
-      Header: 'Премя оператора',
+      Header: messages['operator_award'],
       accessor: 'operatorPremium',
       Footer: info => {
         let total = info.data.reduce(
@@ -587,7 +587,7 @@ const Srlsm = props => {
 
         return (
           <div className="text-wrap" style={{ textAlign: 'center' }}>
-            Всего: {moneyFormat(total)}
+            {`${messages['overallSum']}: ${moneyFormat(total)}`}
           </div>
         );
       },
@@ -598,7 +598,7 @@ const Srlsm = props => {
       ),
     },
     {
-      Header: 'Скидка',
+      Header: messages['discount'],
       accessor: 'discount',
       Footer: info => {
         let total = info.data.reduce((total, item) => total + item.discount, 0);
@@ -608,7 +608,7 @@ const Srlsm = props => {
 
         return (
           <div className="text-wrap" style={{ textAlign: 'center' }}>
-            Всего: {moneyFormat(total)}
+            {`${messages['overallSum']}: ${moneyFormat(total)}`}
           </div>
         );
       },
@@ -619,11 +619,13 @@ const Srlsm = props => {
       ),
     },
     {
-      Header: 'Количество',
+      Header: messages['Table.Amount'],
       accessor: 'serviceCount',
       Footer: () => (
         <div className="text-wrap" style={{ textAlign: 'center' }}>
-          Всего: {srlsmListData.totalElements}
+          {`${messages['overallSum']}: ${
+            srlsmListData.totalElements ? srlsmListData.totalElements : 0
+          }`}
         </div>
       ),
       Cell: row => (
@@ -635,7 +637,7 @@ const Srlsm = props => {
     },
 
     {
-      Header: 'Общая сумма(со скидкой)',
+      Header: messages['Total_amount_discounted'],
       accessor: 'totalSumWithDiscount',
       Footer: info => {
         let total = info.data.reduce(
@@ -645,7 +647,7 @@ const Srlsm = props => {
 
         return (
           <div className="text-wrap" style={{ textAlign: 'center' }}>
-            Всего: {moneyFormat(total)}
+            {`${messages['overallSum']}: ${moneyFormat(total)}`}
           </div>
         );
       },
@@ -686,7 +688,7 @@ const Srlsm = props => {
       }}
     >
       <Segment>
-        <h3>Список сервисов(Менеджер)</h3>
+        <h3>{`${messages['Services_list']} (${messages['Manager']})`}</h3>
       </Segment>
       <Modal
         onClose={() => setModalDetails(false)}
@@ -694,7 +696,7 @@ const Srlsm = props => {
         closeIcon
         size="large"
       >
-        <Modal.Header>Детальный просмотр</Modal.Header>
+        <Modal.Header>{messages['Detailed_view']}</Modal.Header>
         <Modal.Content>
           <ReactTableWrapper
             data={premiumSum}
@@ -707,10 +709,10 @@ const Srlsm = props => {
       <Form>
         <Form.Group widths="equal">
           <Form.Field>
-            <label>Страна</label>
+            <label>{messages['country']}</label>
             <DropdownClearable
               fluid
-              placeholder="Все"
+              placeholder={messages['country']}
               value={param.countryId}
               options={countryOptions}
               onChange={(e, o) => onInputChange(o, 'countryId')}
@@ -720,10 +722,10 @@ const Srlsm = props => {
           </Form.Field>
 
           <Form.Field required>
-            <label>Компания</label>
+            <label>{messages['bukrs']}</label>
             <DropdownClearable
               fluid
-              placeholder="Все"
+              placeholder={messages['bukrs']}
               value={param.bukrs}
               options={companyOptions}
               onChange={(e, o) => onInputChange(o, 'bukrs')}
@@ -732,11 +734,11 @@ const Srlsm = props => {
             />
           </Form.Field>
           <Form.Field>
-            <label>Филиал</label>
+            <label>{messages['L__BRANCH']}</label>
             <Dropdown
               selection
               fluid
-              placeholder="Все"
+              placeholder={messages['L__BRANCH']}
               options={
                 param.bukrs == '' || param.bukrs == null
                   ? []
@@ -752,10 +754,10 @@ const Srlsm = props => {
           </Form.Field>
 
           <Form.Field>
-            <label>Вид сервиса</label>
+            <label>{messages['typeOfService']}</label>
             <Form.Select
               fluid
-              placeholder="Все"
+              placeholder={messages['typeOfService']}
               options={serviceTypeOptions}
               onChange={(e, o) => onInputChange(o, 'serviceTypeId')}
               className="alignBottom"
@@ -769,10 +771,10 @@ const Srlsm = props => {
           </Form.Field>
 
           <Form.Field>
-            <label>Категория товара</label>
+            <label>{messages['product_category']}</label>
             <Form.Select
               fluid
-              placeholder="Все"
+              placeholder={messages['product_category']}
               options={tovarCategoryOptions}
               onChange={(e, o) => onInputChange(o, 'categoryId')}
               className="alignBottom"
@@ -783,7 +785,7 @@ const Srlsm = props => {
             />
           </Form.Field>
           <Form.Field>
-            <label>Статус сервиса</label>
+            <label>{messages['service_status']}</label>
             <Form.Select
               clearable="true"
               selection
@@ -795,15 +797,15 @@ const Srlsm = props => {
                   : []
               }
               options={serviceStatusListOptions}
-              placeholder="Все"
+              placeholder={messages['service_status']}
               onChange={(e, o) => onInputChange(o, 'serviceStatusId')}
             />
           </Form.Field>
           <Form.Field>
-            <label>Принял автор</label>
+            <label>{messages['accepted_by_the_author']}</label>
             <DropdownClearable
               fluid
-              placeholder="Все"
+              placeholder={messages['accepted_by_the_author']}
               value={param.acceptedPaymentById}
               options={acceptUsersOptions}
               onChange={(e, o) => onInputChange(o, 'acceptPayment')}
@@ -818,9 +820,9 @@ const Srlsm = props => {
         <Form.Group className="spaceBetween">
           <div className="flexDirectionRow">
             <Form.Field className="marginRight">
-              <label>Дата с</label>
+              <label>{messages['Form.DateFrom']}</label>
               <DatePicker
-                placeholderText="Дата с"
+                placeholderText={messages['Form.DateFrom']}
                 isClearable
                 className="date-auto-width"
                 autoComplete="off"
@@ -842,9 +844,9 @@ const Srlsm = props => {
             </Form.Field>
 
             <Form.Field className="marginRight">
-              <label>Дата по</label>
+              <label>{messages['Form.DateTo']}</label>
               <DatePicker
-                placeholderText="Дата по"
+                placeholderText={messages['Form.DateTo']}
                 isClearable
                 className="date-auto-width"
                 autoComplete="off"
@@ -865,14 +867,14 @@ const Srlsm = props => {
               />
             </Form.Field>
             <Form.Field className="marginRight width25Rem">
-              <label>Мастер</label>
+              <label>{messages['master']}</label>
               <Form.Select
                 clearable="true"
                 selection
                 fluid
                 multiple
                 options={masterOptions}
-                placeholder="Мастер"
+                placeholder={messages['master']}
                 onChange={(e, o) => onInputChange(o, 'changeMaster')}
                 value={
                   param.masterId ? param.masterId.split(',').map(Number) : []
@@ -880,14 +882,14 @@ const Srlsm = props => {
               />
             </Form.Field>
             <Form.Field className="marginRight width25Rem">
-              <label>Оператор</label>
+              <label>{messages['Operator']}</label>
               <Form.Select
                 clearable="true"
                 selection
                 fluid
                 multiple
                 options={operatorOptions}
-                placeholder="Оператор"
+                placeholder={messages['Operator']}
                 onChange={(e, o) => onInputChange(o, 'changeOperator')}
                 value={
                   param.operatorId
@@ -901,13 +903,13 @@ const Srlsm = props => {
               color="blue"
               className="alignBottom"
             >
-              Применить
+              {messages['apply']}
             </Form.Button>
           </div>
 
           <Form.Field className="alignBottom">
             <Button onClick={() => setModalDetails(true)} color="orange">
-              Подробно
+              {messages['in_detail']}
             </Button>
             <ModalColumns
               columns={initialColumns}
@@ -921,7 +923,7 @@ const Srlsm = props => {
       <Table celled>
         <Table.Body>
           <Table.Row>
-            <Table.Cell>Общая сумма (со скидкой)</Table.Cell>
+            <Table.Cell>{messages['Total_amount_discounted']}</Table.Cell>
             <Table.Cell>
               <Input
                 readOnly
@@ -932,7 +934,7 @@ const Srlsm = props => {
                 )}
               />
             </Table.Cell>
-            <Table.Cell>Оплачено</Table.Cell>
+            <Table.Cell>{messages['paid']}</Table.Cell>
             <Table.Cell>
               <Input
                 readOnly
@@ -943,7 +945,7 @@ const Srlsm = props => {
                 )}
               />
             </Table.Cell>
-            <Table.Cell>Остаток</Table.Cell>
+            <Table.Cell>{messages['remainder']}</Table.Cell>
             <Table.Cell>
               <Input
                 readOnly
@@ -957,7 +959,7 @@ const Srlsm = props => {
             </Table.Cell>
           </Table.Row>
           <Table.Row>
-            <Table.Cell>Премия мастера</Table.Cell>
+            <Table.Cell>{messages['master_award']}</Table.Cell>
             <Table.Cell>
               <Input
                 readOnly
@@ -969,7 +971,7 @@ const Srlsm = props => {
                 )}
               />
             </Table.Cell>
-            <Table.Cell>Премия оператора</Table.Cell>
+            <Table.Cell>{messages['operator_award']}</Table.Cell>
             <Table.Cell>
               <Input
                 readOnly
@@ -981,7 +983,7 @@ const Srlsm = props => {
                 )}
               />
             </Table.Cell>
-            <Table.Cell>Скидка</Table.Cell>
+            <Table.Cell>{messages['discount']}</Table.Cell>
             <Table.Cell>
               <Input
                 readOnly
@@ -993,7 +995,10 @@ const Srlsm = props => {
           </Table.Row>
         </Table.Body>
       </Table>
-      <TotalCountsTable count={srlsmListData.totalElements} />
+      <TotalCountsTable
+        text={messages['overallAmount']}
+        count={srlsmListData.totalElements}
+      />
 
       <ReactTableServerSideWrapperFilteredState
         data={srlsmListData.data}

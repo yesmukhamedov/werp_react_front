@@ -669,7 +669,10 @@ const Smappl = props => {
       </Form>
       <OutputErrors errors={error} />
 
-      <TotalCountsTable count={smapplList ? smapplList.totalElements : 0} />
+      <TotalCountsTable
+        text={messages['overallAmount']}
+        count={smapplList ? smapplList.totalElements : 0}
+      />
 
       <ReactTableServerSideWrapperFilteredState
         data={smapplList ? smapplList.data : []}
