@@ -54,7 +54,6 @@ import smopccicReducer from '../service/mainoperation/smopccic/smopccicReducer';
 import smopspReducer from '../service/mainoperation/smopsp/smopspReducer';
 import smdisReducer from '../service/mainoperation/smdis/smdisReducer';
 import srkpisoReducer from '../service/report/srkpiso/srkpisoReducer';
-import srkpisodReducer from '../service/report/srkpisod/srkpisodReducer';
 import srlsReducer from '../service/report/srls/srlsReducer';
 import srlsmReducer from '../service/report/srlsm/srlsmReducer';
 import smvsReducer from '../service/mainoperation/smvs/smvsReducer';
@@ -126,7 +125,6 @@ const appReducer = combineReducers({
   smopspReducer: smopspReducer,
   smdisReducer: smdisReducer,
   srkpisoReducer: srkpisoReducer,
-  srkpisodReducer: srkpisodReducer,
   srlsReducer: srlsReducer,
   srlsmReducer: srlsmReducer,
   smvsReducer: smvsReducer,
