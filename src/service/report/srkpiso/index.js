@@ -118,7 +118,7 @@ const Srkpiso = props => {
       ),
     },
     {
-      Header: () => <div className="text-wrap">Оператор</div>,
+      Header: () => <div className="text-wrap">{messages['Operator']}</div>,
       accessor: 'operatorName',
       filterable: false,
       checked: true,
@@ -131,11 +131,13 @@ const Srkpiso = props => {
     },
 
     {
-      Header: () => <div className="text-wrap">Текущий</div>,
+      Header: () => <div className="text-wrap">{messages['current']}</div>,
       headerStyle: { background: 'teal', color: '#fff' },
       columns: [
         {
-          Header: () => <div className="text-wrap">Текущий план</div>,
+          Header: () => (
+            <div className="text-wrap">{messages['current_plan']}</div>
+          ),
           accessor: 'currentPlanSum',
           filterable: false,
           checked: true,
@@ -164,7 +166,9 @@ const Srkpiso = props => {
           ),
         },
         {
-          Header: () => <div className="text-wrap">Текущий перенос</div>,
+          Header: () => (
+            <div className="text-wrap">{messages['Current_transfer']}</div>
+          ),
           accessor: 'currentRescheduledPlan',
           filterable: false,
           checked: true,
@@ -192,7 +196,9 @@ const Srkpiso = props => {
           ),
         },
         {
-          Header: () => <div className="text-wrap">Текущий отмена</div>,
+          Header: () => (
+            <div className="text-wrap">{messages['Current_cancel']}</div>
+          ),
           accessor: 'currentCanceledPlan',
           filterable: false,
           checked: true,
@@ -220,7 +226,9 @@ const Srkpiso = props => {
           ),
         },
         {
-          Header: () => <div className="text-wrap">Текущий выполнен</div>,
+          Header: () => (
+            <div className="text-wrap">{messages['Current_completed']}</div>
+          ),
           accessor: 'currentCompletedPlan',
           filterable: false,
           checked: true,
@@ -231,7 +239,7 @@ const Srkpiso = props => {
             >
               <p>{row.value}</p>
               <Popup
-                content="Детализация"
+                content={messages['Detailing']}
                 trigger={
                   <Button
                     circular
@@ -250,7 +258,7 @@ const Srkpiso = props => {
       ],
     },
     {
-      Header: () => <div className="text-wrap">Просроченный</div>,
+      Header: () => <div className="text-wrap">{messages['Overdue']}</div>,
       headerStyle: {
         background: 'red',
         color: '#fff',
@@ -258,7 +266,9 @@ const Srkpiso = props => {
       },
       columns: [
         {
-          Header: () => <div className="text-wrap">Просроченный план</div>,
+          Header: () => (
+            <div className="text-wrap">{messages['overdue_plan']}</div>
+          ),
           accessor: 'overDueSum',
           filterable: false,
           checked: true,
@@ -269,7 +279,7 @@ const Srkpiso = props => {
             >
               <p>{row.value}</p>
               <Popup
-                content="Детализация"
+                content={messages['Detailing']}
                 trigger={
                   <Button
                     circular
@@ -286,7 +296,9 @@ const Srkpiso = props => {
           ),
         },
         {
-          Header: () => <div className="text-wrap">Просроченный перенос</div>,
+          Header: () => (
+            <div className="text-wrap">{messages['Overdue_transfer']}</div>
+          ),
           accessor: 'overDueRescheduledPlan',
           filterable: false,
           checked: true,
@@ -297,7 +309,7 @@ const Srkpiso = props => {
             >
               <p>{row.value}</p>
               <Popup
-                content="Детализация"
+                content={messages['Detailing']}
                 trigger={
                   <Button
                     circular
@@ -314,7 +326,9 @@ const Srkpiso = props => {
           ),
         },
         {
-          Header: () => <div className="text-wrap">Просроченный отмена</div>,
+          Header: () => (
+            <div className="text-wrap">{messages['Overdue_cancellation']}</div>
+          ),
           accessor: 'overDueCanceledPlan',
           filterable: false,
           checked: true,
@@ -325,7 +339,7 @@ const Srkpiso = props => {
             >
               <p>{row.value}</p>
               <Popup
-                content="Детализация"
+                content={messages['Detailing']}
                 trigger={
                   <Button
                     circular
@@ -342,7 +356,9 @@ const Srkpiso = props => {
           ),
         },
         {
-          Header: () => <div className="text-wrap">Просроченный выполнен</div>,
+          Header: () => (
+            <div className="text-wrap">{messages['Overdue_completed']}</div>
+          ),
           accessor: 'overDueCompletedPlan',
           filterable: false,
           checked: true,
@@ -353,7 +369,7 @@ const Srkpiso = props => {
             >
               <p>{row.value}</p>
               <Popup
-                content="Детализация"
+                content={messages['Detailing']}
                 trigger={
                   <Button
                     circular
@@ -373,12 +389,12 @@ const Srkpiso = props => {
     },
 
     {
-      Header: () => <div className="text-wrap">KPI по %</div>,
+      Header: () => <div className="text-wrap">{messages['KPI%']}</div>,
       columns: [
         {
           Header: () => (
             <div className="text-wrap" style={{ textAlign: 'center' }}>
-              Просроченная сумма
+              {messages['Overdue_amount']}
             </div>
           ),
           headerStyle: {
@@ -395,7 +411,9 @@ const Srkpiso = props => {
           checked: true,
         },
         {
-          Header: () => <div className="text-wrap">Текущая сумма</div>,
+          Header: () => (
+            <div className="text-wrap">{messages['Current_amount']}</div>
+          ),
           headerStyle: { background: 'teal', color: '#fff' },
           accessor: 'currentPlanPercent',
           Cell: row => <div className="text-wrap">{row.value}</div>,
@@ -727,7 +745,7 @@ const Srkpiso = props => {
       }}
     >
       <Segment className="spaceBetween">
-        <h3>KPI Сервис операторов</h3>
+        <h3>{messages['KPI_Operator_Service']}</h3>
       </Segment>
 
       <Modal
@@ -736,7 +754,7 @@ const Srkpiso = props => {
         open={modalDetalOpen}
         size="fullscreen"
       >
-        <Modal.Header>KPI сервис операторов(Детализация) </Modal.Header>
+        <Modal.Header>{`${messages['KPI_Operator_Service']}(${messages['Detailing']})`}</Modal.Header>
         <Modal.Content>
           <ReactTableWrapper
             data={srkpisoDetal ? srkpisoDetal : []}
@@ -756,9 +774,9 @@ const Srkpiso = props => {
       <Form>
         <Form.Group widths="equal">
           <Form.Field>
-            <label>Страна</label>
+            <label>{messages['country']}</label>
             <DropdownClearable
-              placeholder="Все"
+              placeholder={messages['country']}
               options={countryOptions}
               value={param.countryId ? param.countryId : ''}
               onChange={(e, { value }) => onInputChange(value, 'countryId')}
@@ -766,9 +784,9 @@ const Srkpiso = props => {
             />
           </Form.Field>
           <Form.Field required>
-            <label>Компания</label>
+            <label>{messages['Form.Company']}</label>
             <DropdownClearable
-              placeholder="Все"
+              placeholder={messages['Form.Company']}
               options={companyOptions}
               value={param.bukrs ? param.bukrs : ''}
               onChange={(e, { value }) => onInputChange(value, 'bukrs')}
@@ -777,12 +795,11 @@ const Srkpiso = props => {
           </Form.Field>
 
           <Form.Field>
-            <label>Филиал</label>
+            <label>{messages['Form.Branch']}</label>
             <Dropdown
               fluid
               selection
-              label="Филиал"
-              placeholder="Все"
+              placeholder={messages['Form.Branch']}
               clearable="true"
               multiple
               options={
@@ -799,9 +816,9 @@ const Srkpiso = props => {
           </Form.Field>
 
           <Form.Field required>
-            <label>Категория товара</label>
+            <label>{messages['product_category']}</label>
             <DropdownClearable
-              placeholder="Все"
+              placeholder={messages['product_category']}
               options={tovarCategoryOptions}
               value={param.categoryId ? param.categoryId : ''}
               onChange={(e, { value }) => onInputChange(value, 'categoryId')}
@@ -810,11 +827,11 @@ const Srkpiso = props => {
           </Form.Field>
 
           <Form.Field>
-            <label>Продукт</label>
+            <label>{messages['TBL_H__PRODUCT']}</label>
             <Dropdown
               fluid
               selection
-              placeholder="Все"
+              placeholder={messages['TBL_H__PRODUCT']}
               clearable="true"
               multiple
               options={productListOptions}
@@ -828,9 +845,9 @@ const Srkpiso = props => {
         <Form.Group className="spaceBetween">
           <div className="flexDirectionRow">
             <Form.Field className="marginRight">
-              <label>Дата с</label>
+              <label>{messages['Form.DateFrom']}</label>
               <DatePicker
-                placeholderText="Дата c"
+                placeholderText={messages['Form.DateFrom']}
                 isClearable
                 className="date-auto-width"
                 autoComplete="off"
@@ -852,9 +869,9 @@ const Srkpiso = props => {
             </Form.Field>
 
             <Form.Field className="marginRight">
-              <label>Дата по</label>
+              <label>{messages['Form.DateTo']}</label>
               <DatePicker
-                placeholderText="Дата по"
+                placeholderText={messages['Form.DateTo']}
                 isClearable
                 className="date-auto-width"
                 autoComplete="off"
@@ -881,7 +898,7 @@ const Srkpiso = props => {
               className="alignBottom"
             >
               <Icon name="search" />
-              Применить
+              {messages['apply']}
             </Form.Button>
           </div>
 

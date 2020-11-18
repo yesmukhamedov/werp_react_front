@@ -898,5 +898,17 @@
   "Detailed_view": "Detailed view",
   "Service_date": "Service date",
   "Accepted": "Accepted",
-  "Common": "Common"
+  "Common": "Common",
+  "KPI_Operator_Service": "KPI Operator Service",
+  "Detailing": "Detailing",
+  "Current_transfer": "Current transfer",
+  "Current_cancel": "Current cancel",
+  "Current_completed": "Current completed",
+  "Overdue": "Overdue",
+  "Overdue_transfer": "Overdue transfer",
+  "Overdue_cancellation": "Overdue cancellation",
+  "Overdue_completed": "Overdue completed",
+  "KPI%": "KPI %",
+  "Overdue_amount": "Overdue amount",
+  "Current_amount": "Current amount"
 }

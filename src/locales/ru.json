@@ -895,5 +895,17 @@
   "Detailed_view": "Детальный просмотр",
   "Service_date": "Дата сервиса",
   "Accepted": "Принял",
-  "Common": "Общий"
+  "Common": "Общий",
+  "KPI_Operator_Service": "KPI Сервис операторов",
+  "Detailing": "Детализация",
+  "Current_transfer": "Текущий перенос",
+  "Current_cancel": "Текущий отмена",
+  "Current_completed": "Текущий выполнен",
+  "Overdue": "Просроченный",
+  "Overdue_transfer": "Просроченный перенос",
+  "Overdue_cancellation": "Просроченный отмена",
+  "Overdue_completed": "Просроченный выполнен",
+  "KPI%": "KPI по %",
+  "Overdue_amount": "Просроченная сумма",
+  "Current_amount": "Текущая сумма"
 }
