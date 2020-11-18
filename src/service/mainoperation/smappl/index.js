@@ -35,7 +35,6 @@ import {
 import 'react-table/react-table.css';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import ModalColumns from './../../../utils/ModalColumns';
 import {
   stringYYYYMMDDToMoment,
   momentToStringYYYYMMDD,
@@ -84,9 +83,7 @@ const Smappl = props => {
   const [error, setError] = useState([]);
 
   const [tempMaster, setTempMaster] = useState({});
-  console.log('tempMaster', tempMaster);
   const [modalMaster, setModalMaster] = useState(false);
-  console.log('tempMaster', tempMaster);
 
   const [turnOnReactFetch, setTurnOnReactFetch] = useState(false);
 
@@ -195,7 +192,6 @@ const Smappl = props => {
           varSmappl.operatorId = value;
           break;
         case 'changeModalMasterId':
-          console.log('masterId', value);
           setTempMaster({ ...tempMaster, masterId: value });
           break;
         case 'saveChangeMaster':
@@ -254,7 +250,7 @@ const Smappl = props => {
       fixed: 'left',
     },
     {
-      Header: `Филиал`,
+      Header: messages['L__BRANCH'],
       accessor: 'branchName',
       show: true,
       Cell: row => (
@@ -345,7 +341,7 @@ const Smappl = props => {
         <div>
           <div style={{ textAlign: 'center' }}>{row._original.masterFIO}</div>
           <Popup
-            content="Редактировать"
+            content={messages['BTN__EDIT']}
             size="tiny"
             trigger={
               <div style={{ textAlign: 'center' }}>
@@ -504,13 +500,12 @@ const Smappl = props => {
           }}
         >
           <h3>{messages['service_requests']}</h3>
-          {/* <LinkToSmccald buttonName="Создать заявку без данных" /> */}
           <LinkToSmcsEmpty />
         </div>
       </Segment>
 
       <Modal closeIcon open={modalMaster} onClose={() => setModalMaster(false)}>
-        <Header content="Редактировать" />
+        <Header content={messages['toEdit']} />
         <Modal.Content>
           <DropdownClearable
             selection
@@ -523,10 +518,10 @@ const Smappl = props => {
         </Modal.Content>
         <Modal.Actions>
           <Button color="red" onClick={() => setModalMaster(false)}>
-            <Icon name="remove" /> Отмена
+            <Icon name="remove" /> {messages['Button.No']}
           </Button>
           <Button color="green" onClick={() => onChange(0, 'saveChangeMaster')}>
-            <Icon name="checkmark" /> Сохранить
+            <Icon name="checkmark" /> {messages['Form.Save']}
           </Button>
         </Modal.Actions>
       </Modal>
@@ -634,23 +629,23 @@ const Smappl = props => {
             />
           </Form.Field>
           <Form.Field className="marginRight width25Rem">
-            <label>Мастер</label>
+            <label>{messages['master']}</label>
             <DropdownClearable
               selection
               value={param.masterId ? param.masterId : ''}
               options={masterListOptions}
-              placeholder="Мастер"
+              placeholder={messages['master']}
               onChange={(e, { value }) => onChange(value, 'masterId')}
               handleClear={() => setParam({ ...param, masterId: null })}
             />
           </Form.Field>
           <Form.Field className="marginRight width25Rem">
-            <label>Оператор</label>
+            <label>{messages['Operator']}</label>
             <DropdownClearable
               selection
               options={operatorListOptions}
               value={param.operatorId ? param.operatorId : ''}
-              placeholder="Оператор"
+              placeholder={messages['Operator']}
               onChange={(e, { value }) => onChange(value, 'operatorId')}
               handleClear={() => setParam({ ...param, operatorId: null })}
             />
