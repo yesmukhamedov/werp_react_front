@@ -6,7 +6,6 @@ import {
   Container,
   Segment,
   Form,
-  Divider,
   Checkbox,
   Menu,
 } from 'semantic-ui-react';
@@ -25,6 +24,7 @@ import { f4fetchCategory } from '../../../reference/f4/f4_action';
 import OutputErrors from '../../../general/error/outputErrors';
 import { errorTableText, excelDownload } from '../../../utils/helpers';
 import moment from 'moment';
+import TotalCountsTable from '../../../utils/TotalCountsTable';
 require('moment/locale/ru');
 
 //Сервис отчеты: Количество и зав цены списанных товаров по сервису
@@ -33,9 +33,9 @@ const Srqpwgs = props => {
     intl: { messages },
     companyOptions = [],
     language,
-    branchOptionsService = {},
+    branchOptionsService = [],
     category = [],
-    srqpwgsList,
+    srqpwgsList = [],
   } = props;
 
   const [param, setParam] = useState({
@@ -49,58 +49,42 @@ const Srqpwgs = props => {
 
   const [error, setError] = useState([]);
 
-  console.log('PARAM', param);
-
   useEffect(() => {
     props.f4fetchCategory();
   }, []);
 
   const columns = [
     {
-      Header: messages['bukrs'],
-      accessor: 'id',
+      Header: messages['Form.Branch'],
+      accessor: 'branchName',
       Cell: row => <TextAlignCenter text={row.value} />,
       filterAll: true,
     },
     {
-      Header: 'Код',
+      Header: messages['goods_code'],
       accessor: 'code',
       Cell: row => <TextAlignCenter text={row.value} />,
       filterAll: true,
     },
     {
-      Header: 'Название',
+      Header: messages['L__TITLE'],
       accessor: 'matnrName',
       Cell: row => <TextAlignCenter text={row.value} />,
       filterAll: true,
     },
     {
-      Header: 'Заводская цена',
+      Header: messages['factory_price'],
       accessor: 'fabPrice',
       Cell: row => <TextAlignCenter text={row.value} />,
       filterAll: true,
     },
     {
-      Header: 'Количество',
+      Header: messages['count'],
       accessor: 'quantity',
       Cell: row => <TextAlignCenter text={row.value} />,
       filterAll: true,
     },
   ];
-
-  const onChangeMultiSelectBox = (fieldName, value) => {
-    switch (fieldName) {
-      case 'selectServiceStatus':
-        let arr = value.map(item => item.value);
-        console.log(' selectServiceStatus value', value);
-        //  setParam({ ...param, serviceStatus: [...arr] });
-        break;
-      case 'changeCategory':
-        console.log('arr', value);
-        //setParam({ ...param, serviceStatus: value });
-        break;
-    }
-  };
 
   const categoryOptions = category.map(item => {
     return {
@@ -119,7 +103,9 @@ const Srqpwgs = props => {
       param.dateTo &&
       param.categoryId
     ) {
-      console.log('ЗАПРОС НА СЕРВЕР ====>');
+      props.fetchSrqpwgsList({ ...param });
+      setError([]);
+      props.clearSrqpwgsList();
     } else {
       const errors = [];
       if (!param.bukrs) {
@@ -141,20 +127,17 @@ const Srqpwgs = props => {
     }
   };
 
+  //Excel export
   const exportExcel = () => {
     let excelHeaders = [];
-    excelHeaders.push(messages['brnch']);
-    excelHeaders.push(messages['snNum']);
-    excelHeaders.push(messages['oldSn']);
-    excelHeaders.push(messages['customer']);
-    excelHeaders.push(messages['budat']);
-    excelHeaders.push(messages['waers']);
-    excelHeaders.push(messages['amount']);
-    excelHeaders.push(messages['remainder']);
-    excelHeaders.push(messages['registeredTo']);
+    excelHeaders.push(messages['Form.Branch']);
+    excelHeaders.push(messages['goods_code']);
+    excelHeaders.push(messages['L__TITLE']);
+    excelHeaders.push(messages['factory_price']);
+    excelHeaders.push(messages['count']);
 
     excelDownload(
-      'finance/reports/frep8/downloadExcel',
+      'service/report/srqpwgs/downloadExcel',
       'srqpwgsResult.xls',
       'outputTable',
       srqpwgsList,
@@ -165,19 +148,17 @@ const Srqpwgs = props => {
   return (
     <Container fluid style={{ padding: '10px' }}>
       <Segment>
-        <h3>
-          Сервис отчеты: Количество и зав цены списанных товаров по сервису
-        </h3>
+        <h3>{`${messages['service_report']}: ${messages['srqpwgs']}`}</h3>
       </Segment>
       <Segment>
         <Form>
           <Form.Group widths="equal">
             <Form.Field required>
-              <label>Компания</label>
+              <label>{messages['bukrs']}</label>
               <DropdownClearable
                 selection
                 options={companyOptions}
-                placeholder="Компания"
+                placeholder={messages['bukrs']}
                 onChange={(o, { value }) =>
                   setParam({ ...param, bukrs: value })
                 }
@@ -189,16 +170,22 @@ const Srqpwgs = props => {
               />
             </Form.Field>
             <Form.Field required>
-              <label>Филиал</label>
+              <label>{messages['branches']}</label>
               <SelectWithCheckBox
                 listItem={branchOptionsService[param.bukrs]}
+                onSelectDone={selBranchesFromChild => {
+                  let arrBranchId = selBranchesFromChild
+                    .map(element => element.value)
+                    .join();
+                  setParam({ ...param, branchId: arrBranchId });
+                }}
               />
             </Form.Field>
             <Form.Field className="marginRight" required>
-              <label>Дата с</label>
+              <label>{messages['Form.DateFrom']}</label>
               <DatePicker
                 isClearable
-                placeholderText="Дата с"
+                placeholderText={messages['Form.DateFrom']}
                 className="date-auto-width"
                 autoComplete="off"
                 locale={`${language}`}
@@ -216,10 +203,10 @@ const Srqpwgs = props => {
               />
             </Form.Field>
             <Form.Field className="marginRight" required>
-              <label>Дата по</label>
+              <label>{messages['Form.DateTo']}</label>
               <DatePicker
                 isClearable
-                placeholderText="Дата по"
+                placeholderText={messages['Form.DateTo']}
                 className="date-auto-width"
                 autoComplete="off"
                 locale={`${language}`}
@@ -238,12 +225,12 @@ const Srqpwgs = props => {
             </Form.Field>
 
             <Form.Field required>
-              <label>Категория товара</label>
+              <label>{messages['product_category']}</label>
 
               <DropdownClearable
                 selection
                 options={categoryOptions}
-                placeholder="Категория"
+                placeholder={messages['product_category']}
                 onChange={(o, { value }) =>
                   setParam({ ...param, categoryId: value })
                 }
@@ -255,7 +242,7 @@ const Srqpwgs = props => {
             <Form.Field className="alignBottom">
               <Checkbox
                 checked={param.warranty}
-                label="Гарантия"
+                label={messages['guarantee']}
                 onChange={() =>
                   setParam({ ...param, warranty: !param.warranty })
                 }
@@ -267,27 +254,33 @@ const Srqpwgs = props => {
               className="alignBottom"
             >
               <Icon name="search" />
-              Применить
+              {messages['apply']}
             </Form.Button>
           </Form.Group>
         </Form>
       </Segment>
       <OutputErrors errors={error} />
-      <Divider />
-
-      <Menu stackable size="small">
-        <Menu.Item>
-          <img
-            alt=""
-            className="clickableItem"
-            src="/assets/img/xlsx_export_icon.png"
-            onClick={exportExcel}
-          />
-        </Menu.Item>
-      </Menu>
+      <TotalCountsTable
+        count={srqpwgsList.length}
+        text={messages['overallAmount']}
+      />
+      {srqpwgsList.length > 0 ? (
+        <Menu stackable size="small">
+          <Menu.Item>
+            <img
+              alt=""
+              className="clickableItem"
+              src="/assets/img/xlsx_export_icon.png"
+              onClick={exportExcel}
+            />
+          </Menu.Item>
+        </Menu>
+      ) : (
+        ''
+      )}
 
       <ReactTableWrapper
-        //data={data}
+        data={srqpwgsList ? srqpwgsList : []}
         columns={columns}
         showPagination={true}
         className="-striped -highlight"

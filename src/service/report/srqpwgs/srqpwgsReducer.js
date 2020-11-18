@@ -9,12 +9,12 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_SRQPWGS_LIST:
       return {
         ...state,
-        srqpwgsList: { ...action.data.data },
+        srqpwgsList: [...action.data.outputTable],
       };
     case CLEAR_SRQPWGS_LIST:
       return {
         ...state,
-        srqpwgsList: {},
+        srqpwgsList: [],
       };
 
     default:

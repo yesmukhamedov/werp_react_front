@@ -1,15 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { injectIntl } from 'react-intl';
-import {
-  Icon,
-  Container,
-  Segment,
-  Form,
-  Dropdown,
-  Divider,
-  Label,
-} from 'semantic-ui-react';
+import { Icon, Segment, Form, Dropdown, Menu } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../utils/ReactTableWrapper';
 import moment from 'moment';
 import TextAlignCenter from '../../../utils/TextAlignCenter';
@@ -19,6 +11,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
   momentToStringYYYYMMDD,
+  moneyFormat,
   stringYYYYMMDDToMoment,
 } from '../../../utils/helpers';
 import {
@@ -27,19 +20,20 @@ import {
 } from '../../../reference/f4/f4_action';
 import { fetchSrtbbList, clearSrtbbList } from './srtbbAction';
 import OutputErrors from '../../../general/error/outputErrors';
-import { errorTableText } from '../../../utils/helpers';
+import { errorTableText, excelDownload } from '../../../utils/helpers';
+import TotalCountsTable from '../../../utils/TotalCountsTable';
 require('moment/locale/ru');
 
 //Сервис отчеты: Итого по филиалам
-const SrTbb = props => {
+const Srtbb = props => {
   const {
     intl: { messages },
     companyOptions = [],
     language,
     serviceAppStatus = [],
-    branchOptionsService = {},
+    branchOptionsService = [],
     category = [],
-    srtbbList,
+    srtbbList = [],
   } = props;
 
   const [param, setParam] = useState({
@@ -47,7 +41,7 @@ const SrTbb = props => {
     branchId: null,
     dateAt: '',
     dateTo: '',
-    serviceStatus: [],
+    serviceStatusId: null,
     categoryId: null,
   });
 
@@ -76,37 +70,33 @@ const SrTbb = props => {
 
   const columns = [
     {
-      Header: 'Филиал',
-      accessor: 'id',
+      Header: messages['L__BRANCH'],
+      accessor: 'branchName',
       Cell: row => <TextAlignCenter text={row.value} />,
       filterAll: true,
     },
     {
-      Header: 'Валюта',
+      Header: messages['waers'],
       accessor: 'waers',
       Cell: row => <TextAlignCenter text={row.value} />,
       filterAll: true,
     },
     {
-      Header: 'Общая сумма',
+      Header: messages['totalAmount'],
       accessor: 'totalAmount',
-      Cell: row => (
-        <TextAlignCenter
-          text={row.value ? moment(row.value).format('DD-MM-YYYY') : ''}
-        />
-      ),
+      Cell: row => <TextAlignCenter text={moneyFormat(row.value)} />,
       filterAll: true,
     },
     {
-      Header: 'Премия мастера',
+      Header: messages['master_award'],
       accessor: 'masterAmount',
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => <TextAlignCenter text={moneyFormat(row.value)} />,
       filterAll: true,
     },
     {
-      Header: 'Премия оператора',
+      Header: messages['operator_award'],
       accessor: 'operatorAmount',
-      Cell: row => <TextAlignCenter text={row.value} />,
+      Cell: row => <TextAlignCenter text={moneyFormat(row.value)} />,
       filterAll: true,
     },
   ];
@@ -119,9 +109,11 @@ const SrTbb = props => {
       param.dateAt &&
       param.dateTo &&
       param.categoryId &&
-      param.serviceStatus
+      param.serviceStatusId
     ) {
-      console.log('ЗАПРОС НА СЕРВЕР ====>');
+      props.clearSrtbbList();
+      props.fetchSrtbbList({ ...param });
+      setError([]);
     } else {
       const errors = [];
       if (!param.bukrs) {
@@ -139,64 +131,71 @@ const SrTbb = props => {
       if (!param.categoryId) {
         errors.push(errorTableText(109));
       }
+      if (!param.serviceStatusId) {
+        errors.push(errorTableText(109));
+      }
       setError(() => errors);
     }
   };
+  //Excel export
+  const exportExcel = () => {
+    let excelHeaders = [];
+    excelHeaders.push(messages['L__BRANCH']);
+    excelHeaders.push(messages['waers']);
+    excelHeaders.push(messages['totalAmount']);
+    excelHeaders.push(messages['master_award']);
+    excelHeaders.push(messages['operator_award']);
 
-  const onChangeMultiSelectBox = (fieldName, value) => {
-    switch (fieldName) {
-      case 'selectServiceStatus':
-        let arr = value.map(item => item.value);
-        console.log(' selectServiceStatus value', value);
-        //  setParam({ ...param, serviceStatus: [...arr] });
-        break;
-      case 'changeCategory':
-        console.log('arr', value);
-        //setParam({ ...param, serviceStatus: value });
-        break;
-    }
+    excelDownload(
+      'service/report/srtbb/downloadExcel',
+      'srtbbResult.xls',
+      'outputTable',
+      srtbbList,
+      excelHeaders,
+    );
   };
 
   return (
     <div>
       <Segment>
-        <h3>Сервис отчеты: Итого по филиалам</h3>
+        <h3>{`${messages['service_report']}: ${messages['srtbb']}`}</h3>
       </Segment>
       <Segment>
         <Form>
           <Form.Group widths="equal">
             <Form.Field required>
-              <label>Компания</label>
+              <label>{messages['bukrs']}</label>
               <DropdownClearable
                 selection
                 options={companyOptions}
-                placeholder="Компания"
+                placeholder={messages['bukrs']}
                 onChange={(o, { value }) =>
                   setParam({ ...param, bukrs: value })
                 }
-                value={param.value ? param.value : ''}
+                value={param.bukrs ? param.bukrs : ''}
                 allSelect={false}
-                handleClear={() => setParam({ ...param, bukrs: null })}
+                handleClear={() =>
+                  setParam({ ...param, bukrs: null, branchId: null })
+                }
               />
             </Form.Field>
             <Form.Field required>
-              <label>Филиал</label>
+              <label>{messages['TBL_H__BRANCH']}</label>
               <SelectWithCheckBox
                 listItem={branchOptionsService[param.bukrs]}
-                // onSelectDone={selTypesFromChild =>
-                //   changeFoeaSearchParamsAction({
-                //     selectedTypes: selTypesFromChild
-                //       .map(element => element.value)
-                //       .join(),
-                //   })
-                // }
+                onSelectDone={selBranchesFromChild => {
+                  let arrBranchId = selBranchesFromChild
+                    .map(element => element.value)
+                    .join();
+                  setParam({ ...param, branchId: arrBranchId });
+                }}
               />
             </Form.Field>
             <Form.Field className="marginRight" required>
-              <label>Дата с</label>
+              <label>{messages['Form.DateFrom']}</label>
               <DatePicker
                 isClearable
-                placeholderText="Дата с"
+                placeholderText={messages['Form.DateFrom']}
                 className="date-auto-width"
                 autoComplete="off"
                 locale={`${language}`}
@@ -213,50 +212,65 @@ const SrTbb = props => {
                 dateFormat="DD.MM.YYYY"
               />
             </Form.Field>
+            <Form.Field className="marginRight" required>
+              <label>{messages['Form.DateTo']}</label>
+              <DatePicker
+                isClearable
+                placeholderText={messages['Form.DateTo']}
+                className="date-auto-width"
+                autoComplete="off"
+                locale={`${language}`}
+                dropdownMode="select" //timezone="UTC"
+                selected={
+                  param.dateTo == '' ? '' : stringYYYYMMDDToMoment(param.dateTo)
+                }
+                onChange={date =>
+                  setParam({
+                    ...param,
+                    dateTo: momentToStringYYYYMMDD(date),
+                  })
+                }
+                dateFormat="DD.MM.YYYY"
+              />
+            </Form.Field>
             <Form.Field required>
-              <label>Статус сервиса</label>
-              {/* <Dropdown
+              <label>{messages['service_status']}</label>
+              <Dropdown
                 selection
                 multiple
-                placeholder="Статус сервиса"
+                placeholder={messages['service_status']}
                 options={serviceAppStatusOptions ? serviceAppStatusOptions : []}
                 onChange={(e, { value }) =>
                   setParam({
                     ...param,
-                    serviceStatus: value.length > 0 ? value.join() : null,
+                    serviceStatusId: value.length > 0 ? value.join() : null,
                   })
                 }
-              /> */}
-              <SelectWithCheckBox
-                listItem={
-                  serviceAppStatusOptions ? serviceAppStatusOptions : []
-                }
-                onSelectDone={item =>
-                  onChangeMultiSelectBox('selectServiceStatus', item)
+                value={
+                  param.serviceStatusId
+                    ? param.serviceStatusId.split(',').map(Number)
+                    : []
                 }
               />
             </Form.Field>
             <Form.Field required>
-              <label>Категория товара</label>
-              {/* <Dropdown
+              <label>{messages['product_category']}</label>
+              <Dropdown
                 selection
                 multiple
-                placeholder="Статус сервиса"
-                options={serviceAppStatusOptions ? serviceAppStatusOptions : []}
+                placeholder={messages['product_category']}
+                options={categoryOptions ? categoryOptions : []}
                 onChange={(e, { value }) =>
                   setParam({
                     ...param,
-                    serviceStatus: value.length > 0 ? value.join() : null,
+                    categoryId: value.length > 0 ? value.join() : null,
                   })
                 }
-              /> */}
-              <SelectWithCheckBox
-                listItem={categoryOptions ? categoryOptions : []}
-                onSelectDone={item => {
-                  console.log('selTypesFromChild', item);
-                  let arrCatTov = item.map(item => item.value);
-                  onChangeMultiSelectBox('changeCategory', arrCatTov);
-                }}
+                value={
+                  param.categoryId
+                    ? param.categoryId.split(',').map(Number)
+                    : []
+                }
               />
             </Form.Field>
             <Form.Button
@@ -265,16 +279,32 @@ const SrTbb = props => {
               className="alignBottom"
             >
               <Icon name="search" />
-              Применить
+              {messages['apply']}
             </Form.Button>
           </Form.Group>
         </Form>
       </Segment>
       <OutputErrors errors={error} />
-      <Divider />
-
+      <TotalCountsTable
+        text={messages['overallAmount']}
+        count={srtbbList.length}
+      />
+      {srtbbList.length > 0 ? (
+        <Menu stackable size="small">
+          <Menu.Item>
+            <img
+              alt=""
+              className="clickableItem"
+              src="/assets/img/xlsx_export_icon.png"
+              onClick={exportExcel}
+            />
+          </Menu.Item>
+        </Menu>
+      ) : (
+        ''
+      )}
       <ReactTableWrapper
-        //data={data}
+        data={srtbbList ? srtbbList : []}
         columns={columns}
         showPagination={true}
         className="-striped -highlight"
@@ -299,4 +329,4 @@ export default connect(mapStateToProps, {
   f4fetchCategory,
   fetchSrtbbList,
   clearSrtbbList,
-})(injectIntl(SrTbb));
+})(injectIntl(Srtbb));

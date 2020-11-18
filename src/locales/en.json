@@ -882,5 +882,12 @@
   "plan_status": "Plan status",
   "contract": "Contract",
   "service_contract": "Service contract",
-  "contract_status": "Contract status"
+  "contract_status": "Contract status",
+  "factory_price": "Factory price",
+  "service_report": "Service report",
+  "srqpwgs": "Service for the period by branches",
+  "srtbb": "Materials consumed for the period",
+  "service_status": "Service status",
+  "master_award": "Master award",
+  "operator_award": "Operator award"
 }

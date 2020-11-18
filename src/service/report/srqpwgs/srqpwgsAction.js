@@ -9,8 +9,9 @@ export const CLEAR_SRQPWGS_LIST = 'CLEAR_SRQPWGS_LIST';
 export const fetchSrqpwgsList = (param, setFunc) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`service/report/srls`, param)
+    doGet(`service/report/srqpwgs/search`, param)
       .then(({ data }) => {
+        console.log('data', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SRQPWGS_LIST,

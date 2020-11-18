@@ -9,12 +9,12 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_SRTBB_LIST:
       return {
         ...state,
-        srtbbList: { ...action.data.data },
+        srtbbList: [...action.data.outputTable],
       };
     case CLEAR_SRTBB_LIST:
       return {
         ...state,
-        srtbbList: {},
+        srtbbList: [],
       };
 
     default:

@@ -1064,7 +1064,7 @@ const AsyncHrSlc = Loadable({
   loader: () => import('../hr/hrSlc'),
   loading: () => <LoadingPage />,
 });
-const AsyncSrTbb = Loadable({
+const AsyncSrtbb = Loadable({
   loader: () => import('../service/report/srtbb'),
   loading: () => <LoadingPage />,
 });
@@ -1218,7 +1218,7 @@ const getComponent = {
   Smdis: AsyncSmdis,
   PushNotification: AsyncPushNotification,
   HrSlc: AsyncHrSlc,
-  SrTbb: AsyncSrTbb,
+  Srtbb: AsyncSrtbb,
   Srqpwgs: AsyncSrqpwgs,
 };
 
@@ -1330,12 +1330,6 @@ const generateRoutes = transactionRoutes => {
       />
 
       <Route path="/hr/hrslc" exact={true} component={AsyncHrSlc} />
-      <Route path="/service/report/srtbb" exact={true} component={AsyncSrTbb} />
-      <Route
-        path="/service/report/srqpwgs"
-        exact={true}
-        component={AsyncSrqpwgs}
-      />
 
       {transactionRoutes.map(route => {
         return (

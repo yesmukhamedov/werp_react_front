@@ -9,7 +9,7 @@ export const CLEAR_SRTBB_LIST = 'CLEAR_SRTBB_LIST';
 export const fetchSrtbbList = (param, setFunc) => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`service/report/srls`, param)
+    doGet(`service/report/srtbb/search`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
