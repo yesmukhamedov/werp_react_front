@@ -18,8 +18,10 @@ const VerticalSidebar = props => {
     direction,
     visible,
     companyOptions = [],
+    branchOptions = [],
     countryOptions = [],
     positionOptions = [],
+    staffOptions = [],
     param = {},
     onChangeVerticalSideBar = () => {},
     toggleStatus,
@@ -47,7 +49,7 @@ const VerticalSidebar = props => {
           <DropdownClearable
             fluid
             placeholder="Страна"
-            value={param.country ? param.country : ''}
+            value={param.countryId ? param.countryId : ''}
             options={countryOptions ? countryOptions : []}
             onChange={(e, { value }) =>
               onChangeVerticalSideBar('changeCountry', value)
@@ -77,11 +79,13 @@ const VerticalSidebar = props => {
           <DropdownClearable
             fluid
             placeholder="Филиал"
-            value={''}
-            options={[]}
-            onChange={(e, o) => console.log('onChange')}
+            value={param.branchId ? param.branchId : ''}
+            options={branchOptions}
+            onChange={(e, { value }) =>
+              onChangeVerticalSideBar('changeBranch', value)
+            }
             className="alignBottom"
-            handleClear={() => console.log('handleClear')}
+            handleClear={() => onChangeVerticalSideBar('clearBranch')}
             allSelect={false}
           />
         </Form.Field>
@@ -90,15 +94,36 @@ const VerticalSidebar = props => {
           <DropdownClearable
             fluid
             placeholder="Должность"
-            value={''}
+            value={param.positionId ? param.positionId : ''}
             options={positionOptions ? positionOptions : []}
-            onChange={(e, o) => console.log('onChange')}
+            onChange={(e, { value }) =>
+              onChangeVerticalSideBar('changePosition', value)
+            }
             className="alignBottom"
-            handleClear={() => console.log('handleClear')}
+            handleClear={() => onChangeVerticalSideBar('clearPosition')}
             allSelect={false}
           />
         </Form.Field>
-        <Button color="blue" type="submit">
+        <Form.Field>
+          <label>Сотрудник</label>
+          <DropdownClearable
+            fluid
+            placeholder="Сотрудник"
+            value={param.staffId ? param.staffId : ''}
+            options={staffOptions ? staffOptions : []}
+            onChange={(e, { value }) =>
+              onChangeVerticalSideBar('changeStaff', value)
+            }
+            className="alignBottom"
+            handleClear={() => onChangeVerticalSideBar('clearStaff')}
+            allSelect={false}
+          />
+        </Form.Field>
+        <Button
+          color="blue"
+          type="submit"
+          onClick={() => onChangeVerticalSideBar('buttonSearch')}
+        >
           Поиск
         </Button>
         <Divider horizontal>Отчеты</Divider>

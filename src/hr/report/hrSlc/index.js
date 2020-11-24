@@ -23,10 +23,14 @@ const Hrslc = props => {
     countryList = [],
     language,
     companyOptions = [],
-    staffHrslcList,
-    workStatusList,
-    businessProcessList,
+    branchOptionsAll = {},
+    staffHrslcList = [],
+    workStatusList = [],
+    businessProcessList = [],
   } = props;
+
+  console.log('staffHrslcList', staffHrslcList);
+  console.log('companyOptions', companyOptions);
 
   const [state, setState] = useState({
     animation: 'slide along',
@@ -37,16 +41,61 @@ const Hrslc = props => {
 
   const [reRender, setReRender] = useState(true);
 
+  const [param, setParam] = useState({
+    countryId: null,
+    bukrs: null,
+    branchId: null,
+    positionId: null,
+    staffId: null,
+  });
+
+  const staffOptions = staffHrslcList.map(item => {
+    return {
+      key: item.staff_id,
+      text: item.fullFIO,
+      value: item.staff_id,
+    };
+  });
+
+  useEffect(() => {
+    if (param.bukrs) {
+      props.fetchStaffHrSlcList({ bukrs: param.bukrs });
+    }
+    if (param.bukrs && param.countryId) {
+      props.fetchStaffHrSlcList({
+        bukrs: param.bukrs,
+        countryId: param.countryId,
+      });
+    }
+    if (param.countryId && param.bukrs && param.branchId) {
+      props.fetchStaffHrSlcList({
+        countryId: param.countryId,
+        bukrs: param.bukrs,
+        branchId: param.branchId,
+      });
+    }
+    if (param.countryId && param.bukrs && param.branchId && param.positionId) {
+      props.fetchStaffHrSlcList({
+        countryId: param.countryId,
+        bukrs: param.bukrs,
+        branchId: param.branchId,
+        positionId: param.positionId,
+      });
+    }
+  }, [param.countryId, param.bukrs, param.branchId, param.positionId]);
+
+  console.log('param', param);
   useEffect(() => {
     props.f4FetchCountryList();
     props.fetchWorkStatusList();
     props.fetchBusinessProcessList();
   }, []);
+
   const mapCompanyOptions = companyOptions.map(item => {
     return {
       key: item.key,
       text: item.text,
-      value: item.text,
+      value: item.value,
     };
   });
 
@@ -54,7 +103,7 @@ const Hrslc = props => {
     return {
       key: item.countryId,
       text: item.country,
-      value: item.country,
+      value: item.countryId,
     };
   });
 
@@ -81,12 +130,6 @@ const Hrslc = props => {
     },
   ];
 
-  const [param, setParam] = useState({
-    country: null,
-    bukrs: null,
-    branch: null,
-  });
-
   const filterMapPoints = pointsYMap
     .filter(item =>
       param.country ? item.country == param.country : item.country,
@@ -108,20 +151,48 @@ const Hrslc = props => {
 
   const onChangeVerticalSideBar = (fieldName, value) => {
     switch (fieldName) {
+      //Страна --
       case 'changeCountry':
-        setParam({ ...param, country: value });
+        setParam({ ...param, countryId: value });
         break;
       case 'clearCountry':
-        setParam({ ...param, country: null });
+        setParam({ ...param, countryId: null });
         break;
+      //Компания --
       case 'changeCompany':
-        setParam({ ...param, bukrs: value });
+        setParam({ ...param, bukrs: value, branchId: null });
         break;
       case 'clearCompany':
-        setParam({ ...param, bukrs: null });
+        setParam({ ...param, bukrs: null, branchId: null });
         break;
+      //Филиал --
+      case 'changeBranch':
+        setParam({ ...param, branchId: value });
+        break;
+      case 'clearBranch':
+        setParam({ ...param, branchId: null });
+        break;
+      //Должность --
+      case 'changePosition':
+        setParam({ ...param, positionId: value });
+        break;
+      case 'clearPosition':
+        setParam({ ...param, positionId: null });
+        break;
+      //Сотрудник --
+      case 'changeStaff':
+        setParam({ ...param, staffId: value });
+        break;
+      case 'clearStaff':
+        setParam({ ...param, staffId: null });
+        break;
+      //--
       case 'toggleFilter':
         setToggleStatus(!toggleStatus);
+        break;
+      case 'buttonSearch':
+        console.log('buttonSearch');
+
         break;
     }
   };
@@ -157,9 +228,11 @@ const Hrslc = props => {
           param={param}
           companyOptions={mapCompanyOptions}
           countryOptions={mapCountryOptions}
+          branchOptions={branchOptionsAll[param.bukrs]}
           onChangeVerticalSideBar={onChangeVerticalSideBar}
           toggleStatus={toggleStatus}
           positionOptions={positionOptions}
+          staffOptions={staffOptions}
         />
         <Divider vertical>And</Divider>
         <Sidebar.Pusher
@@ -223,6 +296,7 @@ function mapStateToProps(state) {
     language: state.locales.lang,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
+    branchOptionsAll: state.userInfo.branchOptionsAll,
     //
     staffHrslcList: state.hrslcReducer.staffHrslcList,
     workStatusList: state.hrslcReducer.workStatusList,

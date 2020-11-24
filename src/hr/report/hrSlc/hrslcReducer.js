@@ -17,33 +17,33 @@ export default function(state = INITIAL_STATE, action) {
     case FETCH_STAFF_HRSLC_LIST:
       return {
         ...state,
-        staffHrslcList: { ...action.data.data },
+        staffHrslcList: [...action.data.data],
       };
     case CLEAR_STAFF_HRSLC_LIST:
       return {
         ...state,
-        staffHrslcList: {},
+        staffHrslcList: [],
       };
 
     case FETCH_WORK_STATUS_LIST:
       return {
         ...state,
-        workStatusList: { ...action.data.data },
+        workStatusList: [...action.data.data],
       };
     case CLEAR_WORK_STATUS_LIST:
       return {
         ...state,
-        workStatusList: {},
+        workStatusList: [],
       };
     case FETCH_BUSINESS_PROCESS_LIST:
       return {
         ...state,
-        businessProcessList: { ...action.data.data },
+        businessProcessList: [...action.data.data],
       };
     case CLEAR_BUSINESS_PROCESS_LIST:
       return {
         ...state,
-        businessProcessList: {},
+        businessProcessList: [],
       };
     case FETCH_YANDEX_MAP:
       return {
