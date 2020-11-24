@@ -1284,7 +1284,7 @@ const generateRoutes = transactionRoutes => {
         component={AsyncPushNotification}
       />
 
-      <Route path="/hr/hrslc" exact={true} component={AsyncHrSlc} />
+      <Route path="/hr/report/hrslc" exact={true} component={AsyncHrSlc} />
 
       {transactionRoutes.map(route => {
         return (
