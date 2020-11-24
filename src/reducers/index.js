@@ -66,7 +66,7 @@ import smecaReducer from '../service/mainoperation/smeca/smecaReducer';
 import smesReducer from '../service/mainoperation/smes/smesReducer';
 import smsetplpReducer from '../service/mainoperation/smsetplp/smsetplpReducer';
 import smapplReducer from '../service/mainoperation/smappl/smapplReducer';
-import hrslcReducer from '../hr/hrSlc/hrslcReducer';
+import hrslcReducer from '../hr/report/hrSlc/hrslcReducer';
 import srtbbReducer from '../service/report/srtbb/srtbbReducer';
 import srqpwgsReducer from '../service/report/srqpwgs/srqpwgsReducer';
 

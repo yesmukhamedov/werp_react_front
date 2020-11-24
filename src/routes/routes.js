@@ -1025,7 +1025,7 @@ const AsyncPushNotification = Loadable({
   loading: () => <LoadingPage />,
 });
 const AsyncHrSlc = Loadable({
-  loader: () => import('../hr/hrSlc'),
+  loader: () => import('../hr/report/hrSlc'),
   loading: () => <LoadingPage />,
 });
 const AsyncSrtbb = Loadable({

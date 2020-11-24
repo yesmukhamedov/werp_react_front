@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import DropdownClearable from '../../../utils/DropdownClearable';
+import DropdownClearable from '../../../../utils/DropdownClearable';
 import {
   Button,
   Grid,
@@ -19,8 +19,9 @@ const VerticalSidebar = props => {
     visible,
     companyOptions = [],
     countryOptions = [],
+    positionOptions = [],
     param = {},
-    onChangeVerticalSideBar,
+    onChangeVerticalSideBar = () => {},
     toggleStatus,
   } = props;
 
@@ -88,9 +89,9 @@ const VerticalSidebar = props => {
           <label>Должность</label>
           <DropdownClearable
             fluid
-            placeholder="Филиал"
+            placeholder="Должность"
             value={''}
-            options={[]}
+            options={positionOptions ? positionOptions : []}
             onChange={(e, o) => console.log('onChange')}
             className="alignBottom"
             handleClear={() => console.log('handleClear')}

@@ -7,8 +7,15 @@ import { Button, Segment, Sidebar, Popup, Divider } from 'semantic-ui-react';
 import VerticalSidebar from './components/VerticalSidebar';
 import ReportSlc from './components/ReportSlc';
 import { YMaps, Map, Clusterer, Placemark } from 'react-yandex-maps';
-import { f4FetchCountryList } from '../../reference/f4/f4_action';
-import { fetchYandexMap } from './hrslcAction';
+import { f4FetchCountryList } from '../../../reference/f4/f4_action';
+import {
+  fetchStaffHrSlcList,
+  clearStaffHrSlcList,
+  fetchWorkStatusList,
+  clearWorkStatusList,
+  fetchBusinessProcessList,
+  clearBusinessProcessList,
+} from './hrslcAction';
 import { pointsYMap } from './components/pointsYMap';
 
 const Hrslc = props => {
@@ -16,7 +23,9 @@ const Hrslc = props => {
     countryList = [],
     language,
     companyOptions = [],
-    yandexMapData,
+    staffHrslcList,
+    workStatusList,
+    businessProcessList,
   } = props;
 
   const [state, setState] = useState({
@@ -27,6 +36,12 @@ const Hrslc = props => {
   });
 
   const [reRender, setReRender] = useState(true);
+
+  useEffect(() => {
+    props.f4FetchCountryList();
+    props.fetchWorkStatusList();
+    props.fetchBusinessProcessList();
+  }, []);
   const mapCompanyOptions = companyOptions.map(item => {
     return {
       key: item.key,
@@ -34,6 +49,7 @@ const Hrslc = props => {
       value: item.text,
     };
   });
+
   const mapCountryOptions = countryList.map(item => {
     return {
       key: item.countryId,
@@ -41,6 +57,29 @@ const Hrslc = props => {
       value: item.country,
     };
   });
+
+  const positionOptions = [
+    {
+      key: 9,
+      text: 'Финансовый агент',
+      value: 9,
+    },
+    {
+      key: 4,
+      text: 'Дилер',
+      value: 4,
+    },
+    {
+      key: 16,
+      text: 'Мастер уборочной системы',
+      value: 16,
+    },
+    {
+      key: 17,
+      text: 'Мастер системы очистки воды',
+      value: 17,
+    },
+  ];
 
   const [param, setParam] = useState({
     country: null,
@@ -64,11 +103,6 @@ const Hrslc = props => {
   });
 
   const [toggleStatus, setToggleStatus] = useState(true);
-
-  useEffect(() => {
-    props.f4FetchCountryList();
-    props.fetchYandexMap();
-  }, []);
 
   const { animation, dimmed, direction, visible } = state;
 
@@ -125,6 +159,7 @@ const Hrslc = props => {
           countryOptions={mapCountryOptions}
           onChangeVerticalSideBar={onChangeVerticalSideBar}
           toggleStatus={toggleStatus}
+          positionOptions={positionOptions}
         />
         <Divider vertical>And</Divider>
         <Sidebar.Pusher
@@ -188,11 +223,20 @@ function mapStateToProps(state) {
     language: state.locales.lang,
     countryList: state.f4.countryList,
     companyOptions: state.userInfo.companyOptions,
-    yandexMapData: state.hrslcReducer.yandexMapData,
+    //
+    staffHrslcList: state.hrslcReducer.staffHrslcList,
+    workStatusList: state.hrslcReducer.workStatusList,
+    businessProcessList: state.hrslcReducer.businessProcessList,
   };
 }
 
 export default connect(mapStateToProps, {
   f4FetchCountryList,
-  fetchYandexMap,
+  //
+  fetchStaffHrSlcList,
+  clearStaffHrSlcList,
+  fetchWorkStatusList,
+  clearWorkStatusList,
+  fetchBusinessProcessList,
+  clearBusinessProcessList,
 })(injectIntl(Hrslc));
