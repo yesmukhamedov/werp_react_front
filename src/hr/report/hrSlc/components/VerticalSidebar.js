@@ -21,12 +21,10 @@ const VerticalSidebar = props => {
     branchOptions = [],
     countryOptions = [],
     positionOptions = [],
-    staffOptions = [],
     param = {},
     onChangeVerticalSideBar = () => {},
     toggleStatus,
   } = props;
-
   return (
     <Sidebar
       animation={animation}
@@ -59,7 +57,7 @@ const VerticalSidebar = props => {
             allSelect={false}
           />
         </Form.Field>
-        <Form.Field>
+        <Form.Field required>
           <label>Компания</label>
           <DropdownClearable
             fluid
@@ -104,21 +102,7 @@ const VerticalSidebar = props => {
             allSelect={false}
           />
         </Form.Field>
-        <Form.Field>
-          <label>Сотрудник</label>
-          <DropdownClearable
-            fluid
-            placeholder="Сотрудник"
-            value={param.staffId ? param.staffId : ''}
-            options={staffOptions ? staffOptions : []}
-            onChange={(e, { value }) =>
-              onChangeVerticalSideBar('changeStaff', value)
-            }
-            className="alignBottom"
-            handleClear={() => onChangeVerticalSideBar('clearStaff')}
-            allSelect={false}
-          />
-        </Form.Field>
+
         <Button
           color="blue"
           type="submit"

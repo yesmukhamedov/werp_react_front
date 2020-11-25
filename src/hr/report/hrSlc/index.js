@@ -9,14 +9,17 @@ import ReportSlc from './components/ReportSlc';
 import { YMaps, Map, Clusterer, Placemark } from 'react-yandex-maps';
 import { f4FetchCountryList } from '../../../reference/f4/f4_action';
 import {
-  fetchStaffHrSlcList,
-  clearStaffHrSlcList,
+  fetchHrslcList,
+  clearHrslcList,
+  fetchStaffList,
+  clearStaffList,
   fetchWorkStatusList,
   clearWorkStatusList,
   fetchBusinessProcessList,
   clearBusinessProcessList,
 } from './hrslcAction';
 import { pointsYMap } from './components/pointsYMap';
+import { Grid } from 'semantic-ui-react';
 
 const Hrslc = props => {
   const {
@@ -24,13 +27,11 @@ const Hrslc = props => {
     language,
     companyOptions = [],
     branchOptionsAll = {},
+    hrslcList = [],
     staffHrslcList = [],
     workStatusList = [],
     businessProcessList = [],
   } = props;
-
-  console.log('staffHrslcList', staffHrslcList);
-  console.log('companyOptions', companyOptions);
 
   const [state, setState] = useState({
     animation: 'slide along',
@@ -38,8 +39,6 @@ const Hrslc = props => {
     dimmed: false,
     visible: true,
   });
-
-  const [reRender, setReRender] = useState(true);
 
   const [param, setParam] = useState({
     countryId: null,
@@ -49,42 +48,36 @@ const Hrslc = props => {
     staffId: null,
   });
 
-  const staffOptions = staffHrslcList.map(item => {
-    return {
-      key: item.staff_id,
-      text: item.fullFIO,
-      value: item.staff_id,
-    };
-  });
-
   useEffect(() => {
-    if (param.bukrs) {
-      props.fetchStaffHrSlcList({ bukrs: param.bukrs });
-    }
-    if (param.bukrs && param.countryId) {
-      props.fetchStaffHrSlcList({
-        bukrs: param.bukrs,
-        countryId: param.countryId,
-      });
-    }
-    if (param.countryId && param.bukrs && param.branchId) {
-      props.fetchStaffHrSlcList({
-        countryId: param.countryId,
-        bukrs: param.bukrs,
-        branchId: param.branchId,
-      });
-    }
     if (param.countryId && param.bukrs && param.branchId && param.positionId) {
-      props.fetchStaffHrSlcList({
+      props.fetchStaffList({
         countryId: param.countryId,
         bukrs: param.bukrs,
         branchId: param.branchId,
         positionId: param.positionId,
       });
+    } else if (param.countryId && param.bukrs && param.branchId) {
+      props.fetchStaffList({
+        countryId: param.countryId,
+        bukrs: param.bukrs,
+        branchId: param.branchId,
+      });
+    } else if (param.bukrs && param.branchId && param.positionId) {
+      props.fetchStaffList({
+        bukrs: param.bukrs,
+        branchId: param.branchId,
+        positionId: param.positionId,
+      });
+    } else if (param.bukrs && param.branchId) {
+      props.fetchStaffList({
+        bukrs: param.bukrs,
+        branchId: param.branchId,
+      });
+    } else {
+      props.clearStaffList();
     }
   }, [param.countryId, param.bukrs, param.branchId, param.positionId]);
 
-  console.log('param', param);
   useEffect(() => {
     props.f4FetchCountryList();
     props.fetchWorkStatusList();
@@ -136,16 +129,12 @@ const Hrslc = props => {
     )
     .filter(item => (param.bukrs ? item.bukrs == param.bukrs : item.bukrs));
 
-  useEffect(() => {
-    setReRender(false);
-  }, [param]);
-
   const [mapState, setMapState] = useState({
     center: [43.22387586, 76.92826238],
     zoom: 7,
   });
 
-  const [toggleStatus, setToggleStatus] = useState(true);
+  const [toggleStatus, setToggleStatus] = useState(false);
 
   const { animation, dimmed, direction, visible } = state;
 
@@ -192,6 +181,7 @@ const Hrslc = props => {
         break;
       case 'buttonSearch':
         console.log('buttonSearch');
+        props.fetchHrslcList(param);
 
         break;
     }
@@ -232,7 +222,6 @@ const Hrslc = props => {
           onChangeVerticalSideBar={onChangeVerticalSideBar}
           toggleStatus={toggleStatus}
           positionOptions={positionOptions}
-          staffOptions={staffOptions}
         />
         <Divider vertical>And</Divider>
         <Sidebar.Pusher
@@ -270,10 +259,10 @@ const Hrslc = props => {
                       geoObjectHideIconOnBalloonOpen: false,
                     }}
                   >
-                    {pointsYMap.map((coordinates, index) => (
+                    {hrslcList.map((item, index) => (
                       <Placemark
                         key={index}
-                        geometry={coordinates.location}
+                        geometry={[item.latitude, item.longitude]}
                         properties={getPointData(index)}
                         options={getPointOptions()}
                       />
@@ -282,7 +271,17 @@ const Hrslc = props => {
                 </Map>
               </YMaps>
             ) : (
-              <ReportSlc filterMapPoints={filterMapPoints} />
+              <Grid columns={2}>
+                <Grid.Row>
+                  <Grid.Column width={13}>
+                    <ReportSlc
+                      data={hrslcList}
+                      filterMapPoints={filterMapPoints}
+                    />
+                  </Grid.Column>
+                  <Grid.Column width={3}></Grid.Column>
+                </Grid.Row>
+              </Grid>
             )}
           </Segment>
         </Sidebar.Pusher>
@@ -298,6 +297,8 @@ function mapStateToProps(state) {
     companyOptions: state.userInfo.companyOptions,
     branchOptionsAll: state.userInfo.branchOptionsAll,
     //
+
+    hrslcList: state.hrslcReducer.hrslcList,
     staffHrslcList: state.hrslcReducer.staffHrslcList,
     workStatusList: state.hrslcReducer.workStatusList,
     businessProcessList: state.hrslcReducer.businessProcessList,
@@ -307,8 +308,10 @@ function mapStateToProps(state) {
 export default connect(mapStateToProps, {
   f4FetchCountryList,
   //
-  fetchStaffHrSlcList,
-  clearStaffHrSlcList,
+  fetchHrslcList,
+  clearHrslcList,
+  fetchStaffList,
+  clearStaffList,
   fetchWorkStatusList,
   clearWorkStatusList,
   fetchBusinessProcessList,

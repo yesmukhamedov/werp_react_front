@@ -7,146 +7,57 @@ import {
   Icon,
   Container,
   Divider,
+  Tab,
 } from 'semantic-ui-react';
+import TabDealers from './TabDealers';
+import TabFinAgent from './TabFinAgent';
+import TabMasterHarvestingSystem from './TabMasterHarvestingSystem';
+import TabMasterWaterClean from './TabMasterWaterClean';
 
 const ReportSlc = props => {
-  const { filterMapPoints = [] } = props;
-
+  const { filterMapPoints = [], data = [] } = props;
+  const panes = [
+    {
+      menuItem: <Menu.Item key={1}>Результат</Menu.Item>,
+      pane: (
+        <Tab.Pane key={1}>
+          <TabDealers data={data} />
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: <Menu.Item key={2}>Финансовые агенты</Menu.Item>,
+      pane: (
+        <Tab.Pane key={2}>
+          <TabFinAgent data={data} />
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: <Menu.Item key={3}>Мастер по уборочной системы</Menu.Item>,
+      pane: (
+        <Tab.Pane key={3}>
+          <TabMasterHarvestingSystem data={data} />
+        </Tab.Pane>
+      ),
+    },
+    {
+      menuItem: <Menu.Item key={4}>Мастер система очистки воды</Menu.Item>,
+      pane: (
+        <Tab.Pane key={4}>
+          <TabMasterWaterClean data={data} />
+        </Tab.Pane>
+      ),
+    },
+  ];
   const filterDealer = filterMapPoints.filter(item => item.position == 'Дилер');
   return (
     <Container fluid style={{ padding: '30px', height: '100%' }}>
-      <Divider horizontal>Дилеры</Divider>
-      <Table celled size="small">
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>№</Table.HeaderCell>
-            <Table.HeaderCell>ФИО</Table.HeaderCell>
-            <Table.HeaderCell>Должность</Table.HeaderCell>
-            <Table.HeaderCell>Статус</Table.HeaderCell>
-            <Table.HeaderCell></Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-
-        <Table.Body>
-          {filterDealer.map((item, index) => (
-            <Table.Row>
-              <Table.Cell>{index + 1}</Table.Cell>
-              <Table.Cell>{item.fullName}</Table.Cell>
-              <Table.Cell>{item.position}</Table.Cell>
-              <Table.Cell>{item.status}</Table.Cell>
-              <Table.Cell></Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
-      <Divider horizontal>Мастеры</Divider>
-      <Table celled size="small">
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>№</Table.HeaderCell>
-            <Table.HeaderCell>ФИО</Table.HeaderCell>
-            <Table.HeaderCell>Должность</Table.HeaderCell>
-            <Table.HeaderCell>Статус</Table.HeaderCell>
-            <Table.HeaderCell></Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-
-        <Table.Body>
-          <Table.Row>
-            <Table.Cell>1</Table.Cell>
-            <Table.Cell>Арман</Table.Cell>
-            <Table.Cell>Дилер</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table>
-      <Divider horizontal>Штатные сотрудники</Divider>
-      <Table celled>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>№</Table.HeaderCell>
-            <Table.HeaderCell>ФИО</Table.HeaderCell>
-            <Table.HeaderCell>Должность</Table.HeaderCell>
-            <Table.HeaderCell>Статус</Table.HeaderCell>
-            <Table.HeaderCell></Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-
-        <Table.Body>
-          <Table.Row>
-            <Table.Cell>1</Table.Cell>
-            <Table.Cell>Арман</Table.Cell>
-            <Table.Cell>Дилер</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table>
-      <Divider horizontal>Финансовые агенты</Divider>
-      <Table celled>
-        <Table.Header>
-          <Table.Row>
-            <Table.HeaderCell>№</Table.HeaderCell>
-            <Table.HeaderCell>ФИО</Table.HeaderCell>
-            <Table.HeaderCell>Должность</Table.HeaderCell>
-            <Table.HeaderCell>Статус</Table.HeaderCell>
-            <Table.HeaderCell></Table.HeaderCell>
-          </Table.Row>
-        </Table.Header>
-
-        <Table.Body>
-          <Table.Row>
-            <Table.Cell>1</Table.Cell>
-            <Table.Cell>Арман</Table.Cell>
-            <Table.Cell>Дилер</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-          </Table.Row>
-          <Table.Row>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-            <Table.Cell>Cell</Table.Cell>
-          </Table.Row>
-        </Table.Body>
-      </Table>
+      <Tab
+        menu={{ attached: true, tabular: false, pointing: true }}
+        panes={panes}
+        renderActiveOnly={false}
+      />
     </Container>
   );
 };

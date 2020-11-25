@@ -1,4 +1,6 @@
 import {
+  FETCH_HRSLC_LIST,
+  CLEAR_HRSLC_LIST,
   FETCH_STAFF_HRSLC_LIST,
   CLEAR_STAFF_HRSLC_LIST,
   FETCH_WORK_STATUS_LIST,
@@ -14,6 +16,16 @@ const INITIAL_STATE = {
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
+    case FETCH_HRSLC_LIST:
+      return {
+        ...state,
+        hrslcList: [...action.data.data],
+      };
+    case CLEAR_HRSLC_LIST:
+      return {
+        ...state,
+        hrslcList: [],
+      };
     case FETCH_STAFF_HRSLC_LIST:
       return {
         ...state,

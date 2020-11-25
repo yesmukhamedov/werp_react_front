@@ -3,6 +3,8 @@ import { handleError } from '../../../general/notification/notification_action';
 import { modifyLoader } from '../../../general/loader/loader_action';
 import axios from 'axios';
 
+export const FETCH_HRSLC_LIST = 'FETCH_HRSLC_LIST';
+export const CLEAR_HRSLC_LIST = 'CLEAR_HRSLC_LIST';
 export const FETCH_STAFF_HRSLC_LIST = 'FETCH_STAFF_HRSLC_LIST';
 export const CLEAR_STAFF_HRSLC_LIST = 'CLEAR_STAFF_HRSLC_LIST';
 export const FETCH_WORK_STATUS_LIST = 'FETCH_WORK_STATUS_LIST';
@@ -14,10 +16,36 @@ export const FETCH_YANDEX_MAP = 'FETCH_YANDEX_MAP';
 // const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 // const language = localStorage.getItem('language');
 
-export const fetchStaffHrSlcList = param => {
+export const fetchHrslcList = param => {
   return function(dispatch) {
     dispatch(modifyLoader(true));
     doGet(`hr/staff/report/hrslc/list`, param)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: FETCH_HRSLC_LIST,
+          data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+
+export function clearHrslcList() {
+  return function(dispatch) {
+    dispatch({
+      type: CLEAR_HRSLC_LIST,
+    });
+  };
+}
+
+export const fetchStaffList = param => {
+  return function(dispatch) {
+    dispatch(modifyLoader(true));
+    doGet(`hr/staff/report/hrslc/list_staff`, param)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -32,7 +60,7 @@ export const fetchStaffHrSlcList = param => {
   };
 };
 
-export function clearStaffHrSlcList() {
+export function clearStaffList() {
   return function(dispatch) {
     dispatch({
       type: CLEAR_STAFF_HRSLC_LIST,
