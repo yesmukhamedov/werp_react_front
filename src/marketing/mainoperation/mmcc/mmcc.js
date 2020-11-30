@@ -568,7 +568,8 @@ const Mmcc = props => {
       `/marketing/mainoperation/mmcv?contractNumber=${contractNumber}`,
     );
   };
-  const onSave = () => {
+  const onSave = event => {
+    event.preventDefault();
     props.modifyLoader(true);
     let errors = [];
     errors = validateOnSaveMmcc();
