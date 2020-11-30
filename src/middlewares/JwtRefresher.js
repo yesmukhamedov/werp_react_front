@@ -55,46 +55,46 @@ const requestToken = (dispatch, token, language) => {
 };
 
 const tokenRefresherMiddleware = ({ dispatch }) => next => action => {
-  let isRenewingToken = false;
-  const token = localStorage.getItem('token');
-  const language = localStorage.getItem('language');
-  const formAction =
-    (action.meta && action.meta.form) || typeof action === 'function';
+  // let isRenewingToken = false;
+  // const token = localStorage.getItem('token');
+  // const language = localStorage.getItem('language');
+  // const formAction =
+  //   (action.meta && action.meta.form) || typeof action === 'function';
 
-  if (action.type === CHANGE_LANGUAGE) {
-    try {
-      //jwt.decode(token, TOKEN_PASSWORD);
-      token && requestToken(dispatch, token, language);
-      return next(action);
-    } catch (error) {
-      console.log('error12', error);
-      return next(action);
-    }
-  }
+  // if (action.type === CHANGE_LANGUAGE) {
+  //   try {
+  //     //jwt.decode(token, TOKEN_PASSWORD);
+  //     token && requestToken(dispatch, token, language);
+  //     return next(action);
+  //   } catch (error) {
+  //     console.log('error12', error);
+  //     return next(action);
+  //   }
+  // }
 
-  if (formAction || !token) {
-    return next(action);
-  }
+  // if (formAction || !token) {
+  //   return next(action);
+  // }
 
-  if (!isRenewingToken) {
-    try {
-      const token_time = localStorage.getItem('token_time');
-      const language = localStorage.getItem('language');
-      const exp = moment.utc(parseInt(token_time));
-      const now = moment.utc();
+  // if (!isRenewingToken) {
+  //   try {
+  //     const token_time = localStorage.getItem('token_time');
+  //     const language = localStorage.getItem('language');
+  //     const exp = moment.utc(parseInt(token_time));
+  //     const now = moment.utc();
 
-      const remainedUntilRefresh = exp.diff(now, 's');
-      if (remainedUntilRefresh > TOKEN_REFRESH_LIMIT) {
-        isRenewingToken = true;
-        requestToken(dispatch, token, language);
-        isRenewingToken = false;
-      }
-    } catch (error) {
-      console.log('error13', error);
-      isRenewingToken = false;
-      signoutUser(dispatch, error.message);
-    }
-  }
+  //     const remainedUntilRefresh = exp.diff(now, 's');
+  //     if (remainedUntilRefresh > TOKEN_REFRESH_LIMIT) {
+  //       isRenewingToken = true;
+  //       requestToken(dispatch, token, language);
+  //       isRenewingToken = false;
+  //     }
+  //   } catch (error) {
+  //     console.log('error13', error);
+  //     isRenewingToken = false;
+  //     signoutUser(dispatch, error.message);
+  //   }
+  // }
 
   next(action);
 };
