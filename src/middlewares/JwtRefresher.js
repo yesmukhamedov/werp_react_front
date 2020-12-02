@@ -56,10 +56,10 @@ const requestToken = (dispatch, token, language) => {
 
 const tokenRefresherMiddleware = ({ dispatch }) => next => action => {
   // let isRenewingToken = false;
-  // const token = localStorage.getItem('token');
+  const token = localStorage.getItem('token');
   // const language = localStorage.getItem('language');
-  // const formAction =
-  //   (action.meta && action.meta.form) || typeof action === 'function';
+  const formAction =
+    (action.meta && action.meta.form) || typeof action === 'function';
 
   // if (action.type === CHANGE_LANGUAGE) {
   //   try {
@@ -72,9 +72,21 @@ const tokenRefresherMiddleware = ({ dispatch }) => next => action => {
   //   }
   // }
 
-  // if (formAction || !token) {
-  //   return next(action);
-  // }
+  if (formAction || !token) {
+    return next(action);
+  }
+
+  const token_time = localStorage.getItem('token_time');
+  const exp = moment.utc(parseInt(token_time));
+  const now = moment.utc();
+
+  // console.log(exp.format('YYYY-MM-DD hh:mm:ss'),'exp')
+  // console.log(now.format('YYYY-MM-DD hh:mm:ss'),'now')
+  // console.log(exp.diff(now, 's'),'exp.diff')
+
+  if (exp.diff(now, 's') < -28800) {
+    signoutUser(dispatch, 'Time out');
+  }
 
   // if (!isRenewingToken) {
   //   try {

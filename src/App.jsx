@@ -12,7 +12,7 @@ import {
 import Header from './components/Header/Header';
 import TreeViewMenu from './components/TreeViewMenu/TreeViewMenu';
 import Notification from './general/notification/notification';
-import PushNotification from './components/PushNotification/PushNotification';
+// import PushNotification from './components/PushNotification/PushNotification';
 
 class App extends Component {
   constructor(props) {
@@ -31,7 +31,7 @@ class App extends Component {
     if (token) {
       return (
         <div className="wrapper">
-          <PushNotification />
+          {/* <PushNotification /> */}
           <Header
             unread={this.props.unread}
             menuTouched={this.state.menuVisible}

@@ -47,7 +47,7 @@ export function signinUser({ username, password }, language) {
     bodyFormData.set('username', username);
     bodyFormData.set('password', password);
 
-    console.log('Authorization', headers.Authorization);
+    // console.log('Authorization', headers.Authorization);
 
     axios
       .post(`${AUTH_URL}/oauth/token`, bodyFormData, {
@@ -125,14 +125,18 @@ export function signinUser({ username, password }, language) {
       .catch(error => {
         // If request is bad...
         // - Show an error to the user
+        // console.log(error,'error')
+        if (language && language === 'ru')
+          dispatch(authError('Неверные учетные данные'));
+        else dispatch(authError('Incorrect credentials'));
 
-        if (error.response) {
-          dispatch(authError(error.response.data.message));
-        } else if (error.stack) {
-          Promise.resolve({ error }).then(response =>
-            dispatch(authError(response.error.message)),
-          );
-        }
+        // if (error.response) {
+        //   dispatch(authError(error.response.data.message));
+        // } else if (error.stack) {
+        //   Promise.resolve({ error }).then(response =>
+        //     dispatch(authError(response.error.message)),
+        //   );
+        // }
       });
   };
 }

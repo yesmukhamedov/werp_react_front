@@ -1020,10 +1020,6 @@ const AsyncSmdis = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncPushNotification = Loadable({
-  loader: () => import('../components/PushNotification/SendPushNotification'),
-  loading: () => <LoadingPage />,
-});
 const AsyncHrSlc = Loadable({
   loader: () => import('../hr/report/hrSlc'),
   loading: () => <LoadingPage />,
@@ -1175,7 +1171,6 @@ const getComponent = {
   Smslsp: AsyncSmslsp,
   Smsetplp: AsyncSmsetplp,
   Smdis: AsyncSmdis,
-  PushNotification: AsyncPushNotification,
   HrSlc: AsyncHrSlc,
   Srtbb: AsyncSrtbb,
   Srqpwgs: AsyncSrqpwgs,
@@ -1278,11 +1273,6 @@ const generateRoutes = transactionRoutes => {
       />
 
       {/* dynamically generated URLs  */}
-      <Route
-        path="/components/PushNotification/SendPushNotification"
-        exact={true}
-        component={AsyncPushNotification}
-      />
 
       <Route path="/hr/report/hrslc" exact={true} component={AsyncHrSlc} />
 

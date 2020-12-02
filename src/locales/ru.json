@@ -634,6 +634,7 @@
   "blartTypeZK": "Получение денег от фирмы",
   "blartTypeZD": "Перевод денег на фирму",
   "reward": "Вознаграждение",
+  "incorrectCredentials": "Неверные учетные данные",
 
   "transNameFmcp": "FMCP: Взнос по договору",
   "transNameFcis": "FCIS: Взнос в счет сотрудника",

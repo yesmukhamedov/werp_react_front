@@ -649,6 +649,7 @@
   "blartTypeZK": "Fond Reciepts From Group Companies",
   "blartTypeZD": "Fond Transfer to Group Companies",
   "reward": "Reward",
+  "incorrectCredentials": "Неверные учетные данные",
 
   "transNameFmcp": "FMCP: Receipt from Sales Contract",
   "transNameFcis": "FCIS: Employee acc.cash inquiry",

@@ -116,6 +116,7 @@ const messages = defineMessages({
 });
 
 function mapStateToProps(state) {
+  // console.log(state.auth,'state.auth')
   return {
     errorMessage: state.auth.error,
     locales: state.locales,
@@ -130,7 +131,4 @@ Signin = reduxForm({
   form: 'signin',
 })(Signin);
 
-export default connect(
-  mapStateToProps,
-  actions,
-)(injectIntl(Signin));
+export default connect(mapStateToProps, actions)(injectIntl(Signin));
