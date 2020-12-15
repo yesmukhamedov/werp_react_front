@@ -14,7 +14,7 @@ import { ROOT_URL, AUTH_URL } from '../utils/constants';
 const signoutUser = (dispatch, errorMsg) => {
   resetLocalStorage();
   dispatch({ type: UNAUTH_USER });
-  dispatch({ type: AUTH_ERROR, payload: errorMsg });
+  // dispatch({ type: AUTH_ERROR, payload: errorMsg });
   browserHistory.push('/');
 };
 
@@ -46,20 +46,23 @@ const requestToken = (dispatch, token, language) => {
       localStorage.setItem('refresh_token', refresh_token);
       localStorage.setItem('token_time', new Date().getTime());
       // setAuthorizationHeader(data.token);
-    })
-    .catch(error => {
-      console.log('err14', error);
-
-      signoutUser(dispatch, '');
     });
 };
 
 const tokenRefresherMiddleware = ({ dispatch }) => next => action => {
-  // let isRenewingToken = false;
-  const token = localStorage.getItem('token');
-  // const language = localStorage.getItem('language');
-  const formAction =
-    (action.meta && action.meta.form) || typeof action === 'function';
+  return next(action);
+
+  // // let isRenewingToken = false;
+  // const token = localStorage.getItem('token');
+  // // const language = localStorage.getItem('language');
+  // const formAction =
+  //   (action.meta && action.meta.form) || typeof action === 'function';
+
+  // console.log(action,'action')
+  // return next(action);
+  // if (action && action.type && !action.type.includes["REQUEST"]) {
+  //   return next(action);
+  // }
 
   // if (action.type === CHANGE_LANGUAGE) {
   //   try {
@@ -71,22 +74,38 @@ const tokenRefresherMiddleware = ({ dispatch }) => next => action => {
   //     return next(action);
   //   }
   // }
+  // console.log(action.type,'next')
+  // console.log(1)
 
-  if (formAction || !token) {
-    return next(action);
-  }
+  //   console.log(action)
+  //   if (formAction ) {
+  //   console.log(2)
+  //   return next(action);
+  // }
 
-  const token_time = localStorage.getItem('token_time');
-  const exp = moment.utc(parseInt(token_time));
-  const now = moment.utc();
+  // // console.log(3)
+  // const token_time = localStorage.getItem('token_time');
+  // const exp = moment.utc(parseInt(token_time));
+  // const now = moment.utc();
+  // console.log(exp.diff(now, 's'),'exp.diff(no')
+  // if (exp.diff(now, 's') < -10) {
+  //   console.log(4)
+  //   signoutUser(dispatch, 'Time out');
+  // }
+
+  // if (formAction && token) {
+  //   console.log(2)
+  //   return next(action);
+  // }
+  // console.log(5)
 
   // console.log(exp.format('YYYY-MM-DD hh:mm:ss'),'exp')
   // console.log(now.format('YYYY-MM-DD hh:mm:ss'),'now')
   // console.log(exp.diff(now, 's'),'exp.diff')
 
-  if (exp.diff(now, 's') < -28800) {
-    signoutUser(dispatch, 'Time out');
-  }
+  // if (exp.diff(now, 's') < -28800) {
+  //   signoutUser(dispatch, 'Time out');
+  // }
 
   // if (!isRenewingToken) {
   //   try {
@@ -108,7 +127,7 @@ const tokenRefresherMiddleware = ({ dispatch }) => next => action => {
   //   }
   // }
 
-  next(action);
+  // return next(action);
 };
 
 export default tokenRefresherMiddleware;

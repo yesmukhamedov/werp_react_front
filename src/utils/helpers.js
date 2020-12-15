@@ -9,6 +9,7 @@ export function resetLocalStorage() {
   localStorage.removeItem('refresh_token');
   localStorage.removeItem('username');
   localStorage.removeItem('userId');
+  localStorage.removeItem('token_time');
 }
 
 /**
