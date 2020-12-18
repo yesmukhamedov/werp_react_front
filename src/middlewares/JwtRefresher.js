@@ -6,7 +6,16 @@ import {
   //TOKEN_PASSWORD
 } from '../utils/constants';
 import { resetLocalStorage } from '../utils/helpers';
-import { UNAUTH_USER, AUTH_ERROR, CHANGE_LANGUAGE } from '../actions/types';
+import {
+  UNAUTH_USER,
+  CHANGE_LANGUAGE,
+  AUTH_USER,
+  TREE_MENU,
+  INBOX_UNREAD,
+} from '../actions/types';
+
+import { FETCH_USER_INFO } from '../general/userInfo/userInfo_action';
+
 //import { doGet, doPost } from '../utils/apiActions';
 import axios from 'axios';
 import { ROOT_URL, AUTH_URL } from '../utils/constants';
@@ -49,8 +58,43 @@ const requestToken = (dispatch, token, language) => {
     });
 };
 
+// 'change_language','auth_user', 'tree_menu', 'inbox_unread','FETCH_USER_INFO', 'unauth_user'
+
 const tokenRefresherMiddleware = ({ dispatch }) => next => action => {
-  return next(action);
+  const actionTypes = [];
+  actionTypes.push(CHANGE_LANGUAGE);
+  actionTypes.push(AUTH_USER);
+  actionTypes.push(TREE_MENU);
+  actionTypes.push(INBOX_UNREAD);
+  actionTypes.push(UNAUTH_USER);
+  actionTypes.push(FETCH_USER_INFO);
+
+  // console.log(typeof action, action.type)
+
+  if (typeof action === 'object' && !actionTypes.includes(action.type)) {
+    const token_time = localStorage.getItem('token_time');
+    const refresh_token = localStorage.getItem('refresh_token');
+    const exp = token_time ? moment.utc(parseInt(token_time)) : moment.utc();
+    const now = moment.utc();
+    const diff = exp.diff(now, 's') * -1;
+
+    //34200 is 9.5 hours
+    //at the server, token expires after 10 hours
+    //so, after 9.5 hours and if refresh token exists, refresh token
+    if (diff > 34200 && refresh_token) {
+      requestToken(dispatch);
+    }
+
+    return next(action);
+  } else {
+    return next(action);
+  }
+
+  // const formAction =
+  //   (action.meta && action.meta.form) || typeof action === 'function';
+
+  // console.log(action.type,'action.type')
+  // console.log(typeof action,'action.typeof')
 
   // // let isRenewingToken = false;
   // const token = localStorage.getItem('token');

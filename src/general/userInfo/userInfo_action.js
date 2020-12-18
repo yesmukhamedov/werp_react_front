@@ -1,4 +1,7 @@
-import { notify } from '../../general/notification/notification_action';
+import {
+  notify,
+  handleError,
+} from '../../general/notification/notification_action';
 import { doGet } from '../../utils/apiActions';
 
 /* action types */
@@ -27,23 +30,24 @@ export function fetchUserInfo() {
       })
       .catch(error => {
         // console.log(error);
-        if (error.response) {
-          if (error.response.status && error.response.status === 403) {
-            // blog post has been created, navigate the user to the index
-            // We navigate by calling this.context.router.push with the new path to navigate to
-            this.context.router.push('/forbidden');
-          } else if (error.response.status && error.response.status === 500) {
-            // blog post has been created, navigate the user to the index
-            // We navigate by calling this.context.router.push with the new path to navigate to
-            if (this && this.context && this.context.router)
-              this.context.router.push('/');
-          }
-          dispatch(notify('error', error.response.data.message, 'Ошибка'));
-        }
-        // else {
-        //   Promise.resolve({ error }).then(response =>
-        //     dispatch(notify('error', error.response.data.message, 'Ошибка')));
+        handleError(error, dispatch);
+        // if (error.response) {
+        //   if (error.response.status && error.response.status === 403) {
+        //     // blog post has been created, navigate the user to the index
+        //     // We navigate by calling this.context.router.push with the new path to navigate to
+        //     this.context.router.push('/forbidden');
+        //   } else if (error.response.status && error.response.status === 500) {
+        //     // blog post has been created, navigate the user to the index
+        //     // We navigate by calling this.context.router.push with the new path to navigate to
+        //     if (this && this.context && this.context.router)
+        //       this.context.router.push('/');
+        //   }
+        //   dispatch(notify('error', error.response.data.message, 'Ошибка'));
         // }
+        // // else {
+        // //   Promise.resolve({ error }).then(response =>
+        // //     dispatch(notify('error', error.response.data.message, 'Ошибка')));
+        // // }
       });
   };
 }

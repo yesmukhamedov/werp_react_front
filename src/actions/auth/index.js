@@ -143,6 +143,7 @@ export function signinUser({ username, password }, language) {
 
 export function signoutUser() {
   // setAuthorizationHeader();
+
   return dispatch => {
     // .post(`${ROOT_URL}/signout`)
     doPost(`signout`)
@@ -154,6 +155,7 @@ export function signoutUser() {
         browserHistory.push('/');
       })
       .catch(error => {
+        resetLocalStorage();
         console.log(error.response);
       });
   };
@@ -163,7 +165,7 @@ export function clearUserAuth() {
   // setAuthorizationHeader();
   return dispatch => {
     // .post(`${ROOT_URL}/signout`)
-    //resetLocalStorage();
+    resetLocalStorage();
     dispatch({
       type: UNAUTH_USER,
     });
