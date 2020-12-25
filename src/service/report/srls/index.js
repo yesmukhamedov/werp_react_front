@@ -25,6 +25,7 @@ import OutputErrors from '../../../general/error/outputErrors';
 import { errorTableText } from '../../../utils/helpers';
 import TotalCountsTable from '../../../utils/TotalCountsTable';
 import moment from 'moment';
+
 require('moment/locale/ru');
 
 const Srls = props => {
@@ -57,7 +58,7 @@ const Srls = props => {
     props.f4FetchServiceAppStatus();
     props.fetchServiceTypeList();
   }, []);
-
+  console.log('HELLO');
   const tovarCategoryOptions = category.map(item => {
     return {
       key: item.id,
