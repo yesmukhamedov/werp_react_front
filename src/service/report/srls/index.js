@@ -58,7 +58,6 @@ const Srls = props => {
     props.f4FetchServiceAppStatus();
     props.fetchServiceTypeList();
   }, []);
-  console.log('HELLO');
   const tovarCategoryOptions = category.map(item => {
     return {
       key: item.id,
