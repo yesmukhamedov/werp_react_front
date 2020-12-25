@@ -49,6 +49,7 @@ const Srls = props => {
   };
 
   const [param, setParam] = useState({ ...emptyParam });
+  console.log('hi man');
 
   console.log('PARAM', param);
   const [error, setError] = useState([]);
