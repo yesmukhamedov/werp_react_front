@@ -41,10 +41,11 @@ export const fetchServiceTypeList = param => {
     dispatch(modifyLoader(true));
     doGet(`service/service_type`, param)
       .then(({ data }) => {
+        //console.log(data, 'ACTION');
         dispatch(modifyLoader(false));
         dispatch({
           type: FETCH_SERVICE_TYPE_LIST,
-          data,
+          data: data,
         });
       })
       .catch(error => {
