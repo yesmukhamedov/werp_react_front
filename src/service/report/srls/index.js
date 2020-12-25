@@ -52,6 +52,8 @@ const Srls = props => {
   const [param, setParam] = useState({ ...emptyParam });
   const [error, setError] = useState([]);
 
+  console.log('tEST');
+
   useEffect(() => {
     props.f4FetchServiceAppStatus();
     props.f4fetchCategory();
