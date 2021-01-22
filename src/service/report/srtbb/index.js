@@ -68,6 +68,19 @@ const Srtbb = props => {
     };
   });
 
+  const totalAmountT = srtbbList.reduce(
+    (total, item) => total + item.totalAmount,
+    0,
+  );
+  const totalMasterAmount = srtbbList.reduce(
+    (total, item) => total + item.masterAmount,
+    0,
+  );
+  const totalOperatorAmount = srtbbList.reduce(
+    (total, item) => total + item.operatorAmount,
+    0,
+  );
+
   const columns = [
     {
       Header: messages['L__BRANCH'],
@@ -86,18 +99,42 @@ const Srtbb = props => {
       accessor: 'totalAmount',
       Cell: row => <TextAlignCenter text={moneyFormat(row.value)} />,
       filterAll: true,
+      Footer: () => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {`
+        ${messages['Common']}:         
+         ${moneyFormat(totalAmountT)}
+        `}
+        </div>
+      ),
     },
     {
       Header: messages['master_award'],
       accessor: 'masterAmount',
       Cell: row => <TextAlignCenter text={moneyFormat(row.value)} />,
       filterAll: true,
+      Footer: () => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {`
+        ${messages['Common']}:  
+        ${moneyFormat(totalMasterAmount)}
+        `}
+        </div>
+      ),
     },
     {
       Header: messages['operator_award'],
       accessor: 'operatorAmount',
       Cell: row => <TextAlignCenter text={moneyFormat(row.value)} />,
       filterAll: true,
+      Footer: () => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {`
+        ${messages['Common']}:  
+        ${moneyFormat(totalOperatorAmount)}
+        `}
+        </div>
+      ),
     },
   ];
 
