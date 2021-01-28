@@ -17,6 +17,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import {
   momentToStringYYYYMMDD,
+  moneyFormat,
   stringYYYYMMDDToMoment,
 } from '../../../utils/helpers';
 import { fetchSrqpwgsList, clearSrqpwgsList } from './srqpwgsAction';
@@ -53,6 +54,9 @@ const Srqpwgs = props => {
     props.f4fetchCategory();
   }, []);
 
+  const total1 = srqpwgsList.reduce((total, item) => total + item.fabPrice, 0);
+  const total2 = srqpwgsList.reduce((total, item) => total + item.quantity, 0);
+
   const columns = [
     {
       Header: messages['Form.Branch'],
@@ -77,12 +81,28 @@ const Srqpwgs = props => {
       accessor: 'fabPrice',
       Cell: row => <TextAlignCenter text={row.value} />,
       filterAll: true,
+      Footer: () => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {`
+        ${messages['Common']}:  
+        ${moneyFormat(total1)}
+        `}
+        </div>
+      ),
     },
     {
       Header: messages['count'],
       accessor: 'quantity',
       Cell: row => <TextAlignCenter text={row.value} />,
       filterAll: true,
+      Footer: () => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {`
+        ${messages['Common']}:  
+        ${total2}
+        `}
+        </div>
+      ),
     },
   ];
 
