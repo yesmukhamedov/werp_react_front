@@ -17,6 +17,7 @@ import queryString from 'query-string';
 import { handleFocus } from '../../../utils/helpers';
 import { fetchDynObjMarketing, onSaveMmcTrans } from '../../marketingAction';
 import { LinkToCustomerHrc03, LinkToMmcvNewTab } from '../../../utils/outlink';
+import ContractDescription from './../contractAdditionaComponents/contractDescription';
 
 const Mmcei = props => {
   const emptyContract = {
@@ -33,6 +34,15 @@ const Mmcei = props => {
     info2: '',
   };
 
+  const emptyContractDescription = {
+    description: '',
+    descriptionDate: '',
+    userId: '',
+    username: '',
+    contractNumber: '',
+    id: '',
+  };
+
   const tcode = 'MMCEI';
 
   const [contract, setContract] = useState({ ...emptyContract });
@@ -41,6 +51,19 @@ const Mmcei = props => {
   const [isLoadingContract, setIsLoadingContract] = useState(false);
   const [isSavingContract, setIsSavingContract] = useState(false);
   const [isDisabledSaveButton, setIsDisabledSaveButton] = useState(true);
+  const [contractDescriptionList, setContractDescriptionList] = useState([]);
+
+  const [
+    isDisabledSaveContractDescriptionButton,
+    setIsDisabledSaveContractDescriptionButton,
+  ] = useState(true);
+  const [
+    isSavingContractDescription,
+    setIsSavingContractDescription,
+  ] = useState(false);
+  const [newContractDescription, setNewContractDescription] = useState({
+    ...emptyContractDescription,
+  });
 
   const {
     mmcei,
@@ -57,6 +80,7 @@ const Mmcei = props => {
       setContractNumberSearch(params.contractNumber);
       onSearchContract(params.contractNumber);
     }
+
     //unmount
     return () => {};
   }, []);
@@ -68,6 +92,8 @@ const Mmcei = props => {
       setNewContract({ ...mmcei.contract });
       setIsDisabledSaveButton(true);
     }
+    if (mmcei && mmcei.contractDescriptionList)
+      setContractDescriptionList([...mmcei.contractDescriptionList]);
   }, [mmcei]);
 
   const onSearchContract = contractNumber => {
@@ -94,12 +120,53 @@ const Mmcei = props => {
     });
   };
 
+  const onInputChangeContractDescription = (value, fieldName) => {
+    setNewContractDescription(prev => {
+      const waNewContractDescription = { ...prev };
+      waNewContractDescription[fieldName] = value;
+
+      if (value.length > 0) setIsDisabledSaveContractDescriptionButton(false);
+      else setIsDisabledSaveContractDescriptionButton(true);
+
+      return waNewContractDescription;
+    });
+  };
+
   const onSave = () => {
     props.onSaveMmcTrans(
       'marketing/contract/mmcei/saveContract',
-      { contract, newContract },
+      {
+        contract,
+        newContract,
+        contractDescriptionList,
+        newContractDescription: { ...emptyContractDescription },
+      },
       { tcode },
       setIsSavingContract,
+    );
+  };
+
+  const onSaveContractDescription = () => {
+    props.onSaveMmcTrans(
+      'marketing/contract/mmcei/addContractDescription',
+      {
+        contract,
+        contractDescriptionList,
+        newContractDescription: {
+          description: newContractDescription.description,
+          descriptionDate: '',
+          userId: '',
+          username: '',
+          contractNumber: contract.contractNumber,
+          id: '',
+        },
+      },
+      { tcode },
+      setIsSavingContractDescription,
+      () => {
+        setNewContractDescription({ ...emptyContractDescription });
+        setIsDisabledSaveContractDescriptionButton(true);
+      },
     );
   };
 
@@ -187,6 +254,48 @@ const Mmcei = props => {
                 </Table.Row>
               </Table.Body>
             </Table>
+            <Table collapsing className="borderLess">
+              <Table.Body>
+                <Table.Row>
+                  <Table.Cell>
+                    <TextArea
+                      style={{
+                        maxHeight: 160,
+                        minHeight: 160,
+                        minWidth: 280,
+                        maxWidth: 280,
+                      }}
+                      value={newContractDescription.description}
+                      maxLength="255"
+                      onChange={(e, { value }) =>
+                        onInputChangeContractDescription(value, 'description')
+                      }
+                    />
+                  </Table.Cell>
+                </Table.Row>
+                <Table.Row>
+                  <Table.Cell>
+                    <Button
+                      icon
+                      labelPosition="left"
+                      primary
+                      size="small"
+                      disabled={isDisabledSaveContractDescriptionButton}
+                      loading={isSavingContractDescription}
+                      onClick={() => onSaveContractDescription()}
+                    >
+                      <Icon name="save" size="large" />
+                      {messages['toAdd']} {messages['H__COMMENT']}
+                    </Button>
+                  </Table.Cell>
+                </Table.Row>
+              </Table.Body>
+            </Table>
+
+            <ContractDescription
+              contractDescriptionList={contractDescriptionList}
+              tcode="MMCV"
+            />
           </Grid.Column>
           <Grid.Column mobile={16} tablet={11} computer={11}>
             <Table collapsing className="borderLess">

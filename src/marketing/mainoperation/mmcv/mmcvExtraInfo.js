@@ -4,10 +4,12 @@ import { injectIntl } from 'react-intl';
 
 import { Segment, Label, List } from 'semantic-ui-react';
 import { LinkToMmcei } from '../../../utils/outlink';
+import ContractDescription from './../contractAdditionaComponents/contractDescription';
 
 const MmcvExtraInfo = props => {
   const {
     contract = {},
+    contractDescriptionList = [],
     intl: { messages },
   } = props;
 
@@ -40,6 +42,11 @@ const MmcvExtraInfo = props => {
             </List.Content>
           </List.Item>
         </List>
+
+        <ContractDescription
+          contractDescriptionList={contractDescriptionList}
+          tcode="MMCV"
+        />
       </Segment>
     </div>
   );

@@ -96,6 +96,7 @@ const Mmcv = props => {
   const [contractCRMHistory, setContractCRMHistory] = useState([]);
   const [urlContractNumber, setUrlContractNumber] = useState('');
   const [phoneList, setPhoneList] = useState([]);
+  const [contractDescriptionList, setContractDescriptionList] = useState([]);
 
   const {
     mmcv,
@@ -133,6 +134,9 @@ const Mmcv = props => {
       setTotalSourceDoscPayment(mmcv.totalSourceDoscPayment);
     }
     if (mmcv && mmcv.phoneList) setPhoneList([...mmcv.phoneList]);
+
+    if (mmcv && mmcv.contractDescriptionList)
+      setContractDescriptionList([...mmcv.contractDescriptionList]);
   }, [mmcv]);
 
   const panes = [
@@ -249,7 +253,11 @@ const Mmcv = props => {
               urlContractNumber={urlContractNumber}
               tcode="MMCV"
             />
-            <MmcvExtraInfo contract={contract} tcode="MMCV" />
+            <MmcvExtraInfo
+              contract={contract}
+              tcode="MMCV"
+              contractDescriptionList={contractDescriptionList}
+            />
           </Grid.Column>
           <Grid.Column mobile={16} tablet={11} computer={11}>
             <Tab

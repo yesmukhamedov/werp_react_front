@@ -282,7 +282,13 @@ export function clearDynObjMarketing() {
   return obj;
 }
 
-export function onSaveMmcTrans(url, body, params, setIsSaving) {
+export function onSaveMmcTrans(
+  url,
+  body,
+  params,
+  setIsSaving,
+  onSuccessCallBack,
+) {
   setIsSaving(true);
   return function(dispatch) {
     dispatch(modifyLoader(true));
@@ -301,6 +307,7 @@ export function onSaveMmcTrans(url, body, params, setIsSaving) {
             errorTable[`101${language}`],
           ),
         );
+        onSuccessCallBack();
       })
       .catch(error => {
         handleError(error, dispatch);
@@ -309,6 +316,7 @@ export function onSaveMmcTrans(url, body, params, setIsSaving) {
       });
   };
 }
+
 export function onSaveContractMmcc(
   url,
   body,

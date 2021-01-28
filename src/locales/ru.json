@@ -43,6 +43,7 @@
   "TBL_H__MODIFIED_DATE": "Обновлена",
   "BTN__NEW_TASK": "Новая задача",
   "H__COMMENTS": "Комментарии",
+  "H__COMMENT": "Комментарий",
   "H__ORDER_EDIT": "Изменение заявки",
   "L__STATUS": "Статус",
   "L__EDIT_DESCRIPTION": "Описание изменения",
