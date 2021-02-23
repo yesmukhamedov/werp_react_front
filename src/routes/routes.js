@@ -1033,6 +1033,11 @@ const AsyncSrqpwgs = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncNewReco = Loadable({
+  loader: () => import('../crm/mainoperation/reco/new_reco'),
+  loading: () => <LoadingPage />,
+});
+
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
@@ -1174,6 +1179,7 @@ const getComponent = {
   HrSlc: AsyncHrSlc,
   Srtbb: AsyncSrtbb,
   Srqpwgs: AsyncSrqpwgs,
+  NewReco: AsyncNewReco,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1275,6 +1281,7 @@ const generateRoutes = transactionRoutes => {
       {/* dynamically generated URLs  */}
 
       <Route path="/hr/report/hrslc" exact={true} component={AsyncHrSlc} />
+      <Route path="/crm/new_reco" component={AsyncNewReco} />
 
       {transactionRoutes.map(route => {
         return (
