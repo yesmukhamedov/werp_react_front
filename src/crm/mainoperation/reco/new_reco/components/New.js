@@ -4,7 +4,7 @@ const New = props => {
   const { messages, language } = props;
   const columns = [
     {
-      Header: 'ФИО клиента',
+      Header: messages['Table.ClientFullName'],
       accessor: '1',
       filterable: false,
       Cell: row => (
@@ -14,7 +14,17 @@ const New = props => {
       ),
     },
     {
-      Header: 'Рекомендатель',
+      Header: messages['recommender'],
+      accessor: '3',
+      filterable: false,
+      Cell: row => (
+        <div className="text-wrap" style={{ textAlign: 'center' }}>
+          {row.value}
+        </div>
+      ),
+    },
+    {
+      Header: messages['Crm.CallDateTime'],
       accessor: '3',
       filterable: false,
       Cell: row => (
