@@ -1037,7 +1037,10 @@ const AsyncNewReco = Loadable({
   loader: () => import('../crm/mainoperation/reco/new_reco'),
   loading: () => <LoadingPage />,
 });
-
+const AsyncReception = Loadable({
+  loader: () => import('../crm/reception'),
+  loading: () => <LoadingPage />,
+});
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
@@ -1180,6 +1183,7 @@ const getComponent = {
   Srtbb: AsyncSrtbb,
   Srqpwgs: AsyncSrqpwgs,
   NewReco: AsyncNewReco,
+  Reception: AsyncReception,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1281,6 +1285,7 @@ const generateRoutes = transactionRoutes => {
       {/* dynamically generated URLs  */}
 
       <Route path="/hr/report/hrslc" exact={true} component={AsyncHrSlc} />
+      <Route path="/crm/reception" exact={true} component={AsyncReception} />
       <Route path="/crm/new_reco" component={AsyncNewReco} />
 
       {transactionRoutes.map(route => {
