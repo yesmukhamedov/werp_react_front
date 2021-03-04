@@ -1,30 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import DropdownClearable from '../../../../utils/DropdownClearable';
-import {
-  Button,
-  Grid,
-  Header,
-  Segment,
-  Sidebar,
-  Divider,
-  Form,
-  Menu,
-  Icon,
-  Radio,
-} from 'semantic-ui-react';
+import { Button, Sidebar, Divider, Form, Radio } from 'semantic-ui-react';
 const VerticalSidebar = props => {
   const {
     animation,
     direction,
     visible,
     companyOptions = [],
-    branchOptions = [],
+    branchByBukrs = [],
     countryOptions = [],
     positionOptions = [],
     param = {},
     onChangeVerticalSideBar = () => {},
     toggleStatus,
   } = props;
+
+  const branchOptions = branchByBukrs.map(item => {
+    return {
+      key: item.key,
+      text: item.text,
+      value: item.value,
+    };
+  });
   return (
     <Sidebar
       animation={animation}

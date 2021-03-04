@@ -7,7 +7,10 @@ import { Button, Segment, Sidebar, Popup, Divider } from 'semantic-ui-react';
 import VerticalSidebar from './components/VerticalSidebar';
 import ReportSlc from './components/ReportSlc';
 import { YMaps, Map, Clusterer, Placemark } from 'react-yandex-maps';
-import { f4FetchCountryList } from '../../../reference/f4/f4_action';
+import {
+  f4FetchCountryList,
+  f4GetLocationAddressYandex,
+} from '../../../reference/f4/f4_action';
 import {
   fetchHrslcList,
   clearHrslcList,
@@ -24,14 +27,33 @@ import { Grid } from 'semantic-ui-react';
 const Hrslc = props => {
   const {
     countryList = [],
-    language,
+    //language,
     companyOptions = [],
     branchOptionsAll = {},
     hrslcList = [],
-    staffHrslcList = [],
-    workStatusList = [],
-    businessProcessList = [],
+    //staffHrslcList = [],
+    //workStatusList = [],
+    //businessProcessList = [],
+    //yandexData = {},
   } = props;
+
+  const [stateHrslcList, setStateHrslcList] = useState([]);
+  const [tempAddress, setTempAddress] = useState('');
+  useEffect(() => {
+    if (hrslcList.length > 0) {
+      setStateHrslcList(
+        hrslcList.map((item, index) => {
+          return {
+            ...item,
+            address: '',
+            tempId: parseInt(
+              `${index + 1}${Math.floor(Math.random() * 10000)}`,
+            ),
+          };
+        }),
+      );
+    }
+  }, [hrslcList]);
 
   const [state, setState] = useState({
     animation: 'slide along',
@@ -112,6 +134,11 @@ const Hrslc = props => {
       value: 4,
     },
     {
+      key: 3,
+      text: 'Менеджер',
+      value: 3,
+    },
+    {
       key: 16,
       text: 'Мастер уборочной системы',
       value: 16,
@@ -129,10 +156,31 @@ const Hrslc = props => {
     )
     .filter(item => (param.bukrs ? item.bukrs == param.bukrs : item.bukrs));
 
+  const initialMapState = {
+    center: [46.1258678, 63.4084559],
+    zoom: 5,
+  };
+
   const [mapState, setMapState] = useState({
-    center: [43.22387586, 76.92826238],
-    zoom: 7,
+    ...initialMapState,
   });
+
+  const mapp = param.branchId
+    ? branchOptionsAll[param.bukrs].filter(
+        item => item.value === param.branchId,
+      )
+    : '';
+
+  const mapCenter =
+    mapp.length > 0
+      ? [mapp[0].centerLatitude, mapp[0].centerLongitude]
+      : initialMapState.center;
+  useEffect(() => {
+    param.branchId
+      ? setMapState({ ...mapState, center: mapCenter, zoom: 12 })
+      : setMapState({ ...initialMapState });
+  }, [param.branchId]);
+  console.log('mapState', mapState);
 
   const [toggleStatus, setToggleStatus] = useState(false);
 
@@ -179,25 +227,84 @@ const Hrslc = props => {
       case 'toggleFilter':
         setToggleStatus(!toggleStatus);
         break;
+
       case 'buttonSearch':
-        console.log('buttonSearch');
+        setStateHrslcList([]);
+        props.clearHrslcList();
         props.fetchHrslcList(param);
 
         break;
     }
   };
 
-  const getPointData = index => {
+  console.log('stateHrslcList', stateHrslcList);
+
+  const getPointData = data => {
     return {
-      balloonContentBody: 'placemark <strong>balloon ' + index + '</strong>',
-      clusterCaption: 'placemark <strong>' + index + '</strong>',
+      balloonContentHeader: data.staffFIO,
+      balloonContentBody:
+        '</table>' +
+        '<tr><td>Страна: </td><td><strong>' +
+        data.countryName +
+        '</strong><br></td></tr>' +
+        '<tr><td>Компания: </td><td><strong>' +
+        data.companyName +
+        '</strong><br></td></tr>' +
+        '<tr><td>Филиал: </td><td><strong>' +
+        data.branchName +
+        '</strong><br></td></tr>' +
+        '<tr><td>Должность: </td><td><strong>' +
+        data.positionName +
+        '</strong><br></td></tr>' +
+        '<tr><td>Статус: </td><td><strong>' +
+        data.maTrackStepName +
+        '</strong><br></td></tr>' +
+        '<tr><td>Адрес: </td><td><strong>' +
+        data.address +
+        '</strong></td></tr></table>',
+      clusterCaption: 'placemark <strong>' + data.index + '</strong>',
     };
   };
 
-  const getPointOptions = () => {
-    return {
-      preset: 'islands#violetIcon',
-    };
+  // const getPointOptions = () => {
+  //   return {
+  //     preset: 'islands#violetIcon',
+  //   };
+  // };
+
+  const balloonContent = () => {
+    return <div>balloon 555</div>;
+  };
+
+  const closeCurrentBalloon = () => {
+    let close = document.querySelector(
+      'ymaps[class$="-balloon__close-button"]',
+    );
+    if (close != null) {
+      close.click();
+    }
+  };
+
+  const handleClickPlacemark = data => {
+    setTempAddress('');
+    props.f4GetLocationAddressYandex(
+      {
+        geocode: `${data.longitude},${data.latitude}`,
+      },
+      address => {
+        setTempAddress(address);
+        setStateHrslcList(
+          stateHrslcList.map(item =>
+            item.tempId == data.tempId
+              ? {
+                  ...item,
+                  address: address,
+                }
+              : item,
+          ),
+        );
+      },
+    );
   };
 
   return (
@@ -218,7 +325,7 @@ const Hrslc = props => {
           param={param}
           companyOptions={mapCompanyOptions}
           countryOptions={mapCountryOptions}
-          branchOptions={branchOptionsAll[param.bukrs]}
+          branchByBukrs={branchOptionsAll[param.bukrs]}
           onChangeVerticalSideBar={onChangeVerticalSideBar}
           toggleStatus={toggleStatus}
           positionOptions={positionOptions}
@@ -249,22 +356,44 @@ const Hrslc = props => {
             />
             {toggleStatus ? (
               <YMaps style={{ width: '100%', height: '100%' }}>
-                <Map state={mapState} style={{ width: '100%', height: '100%' }}>
+                <Map
+                  state={mapState}
+                  style={{ width: '100%', height: '100%' }}
+                  onClick={closeCurrentBalloon}
+                >
                   <Clusterer
                     options={{
-                      preset: 'islands#invertedVioletClusterIcons',
+                      preset: 'islands#invertedNightClusterIcons',
                       groupByCoordinates: false,
                       clusterDisableClickZoom: true,
                       clusterHideIconOnBalloonOpen: false,
                       geoObjectHideIconOnBalloonOpen: false,
                     }}
                   >
-                    {hrslcList.map((item, index) => (
+                    {stateHrslcList.map((item, index) => (
                       <Placemark
                         key={index}
                         geometry={[item.latitude, item.longitude]}
-                        properties={getPointData(index)}
-                        options={getPointOptions()}
+                        properties={getPointData(item)}
+                        onClick={() => handleClickPlacemark(item)}
+                        modules={[
+                          'geoObject.addon.balloon',
+                          'geoObject.addon.hint',
+                        ]}
+                        options={{
+                          preset:
+                            item.positionId === 3
+                              ? 'islands#bluePersonIcon'
+                              : item.positionId === 4
+                              ? 'islands#bluePersonIcon'
+                              : item.positionId === 9
+                              ? 'islands#blueMoneyIcon'
+                              : item.positionId === 16
+                              ? 'islands#oliveRepairShopIcon'
+                              : item.positionId === 17
+                              ? 'islands#greenRepairShopIcon'
+                              : 'islands#blueStarIcon',
+                        }}
                       />
                     ))}
                   </Clusterer>
@@ -275,8 +404,10 @@ const Hrslc = props => {
                 <Grid.Row>
                   <Grid.Column width={13}>
                     <ReportSlc
-                      data={hrslcList}
+                      data={stateHrslcList}
                       filterMapPoints={filterMapPoints}
+                      handleClickPlacemark={handleClickPlacemark}
+                      tempAddress={tempAddress}
                     />
                   </Grid.Column>
                   <Grid.Column width={3}></Grid.Column>
@@ -297,7 +428,7 @@ function mapStateToProps(state) {
     companyOptions: state.userInfo.companyOptions,
     branchOptionsAll: state.userInfo.branchOptionsAll,
     //
-
+    yandexData: state.f4.yandexData,
     hrslcList: state.hrslcReducer.hrslcList,
     staffHrslcList: state.hrslcReducer.staffHrslcList,
     workStatusList: state.hrslcReducer.workStatusList,
@@ -307,6 +438,7 @@ function mapStateToProps(state) {
 
 export default connect(mapStateToProps, {
   f4FetchCountryList,
+  f4GetLocationAddressYandex,
   //
   fetchHrslcList,
   clearHrslcList,
