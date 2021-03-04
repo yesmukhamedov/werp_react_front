@@ -1,5 +1,6 @@
+import axios from 'axios';
 import axiosInstance from './apiClient';
-import { ROOT_URL, SERVICE_URL } from './constants';
+import { ROOT_URL, SERVICE_URL, YANDEX_GEOCODE } from './constants';
 
 const defineBackendUrl = uri => {
   let arr = uri.split('/');
@@ -9,6 +10,8 @@ const defineBackendUrl = uri => {
         return SERVICE_URL;
       case 'CORE':
         return ROOT_URL;
+      case 'YANDEX_GEOCODE':
+        return YANDEX_GEOCODE;
       default:
         return ROOT_URL;
     }
@@ -18,6 +21,12 @@ const defineBackendUrl = uri => {
 export const doGet = (uri, params = {}) => {
   let url = defineBackendUrl(uri);
   return axiosInstance.get(url + '/api/' + uri, {
+    params,
+  });
+};
+
+export const doGetYandex = (params = {}) => {
+  return axios.get('https://geocode-maps.yandex.ru/1.x', {
     params,
   });
 };

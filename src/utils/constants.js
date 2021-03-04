@@ -16,7 +16,7 @@ export const ROOT_URL = isLocalIpAddress()
 
 export const AUTH_URL = process.env.REACT_APP_ROOT_URL_AUTH;
 export const SERVICE_URL = process.env.REACT_APP_ROOT_URL_SERVICE;
-
+export const YANDEX_GEOCODE = process.env.REACT_APP_ROOT_URL_YANDEX_GEOCODE;
 /**
  * Back-end URL of the legacy (old) system
  */
