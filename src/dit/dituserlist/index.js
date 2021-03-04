@@ -8,7 +8,10 @@ import {
   Container,
   Modal,
 } from 'semantic-ui-react';
-import { f4FetchCompanyOptions } from '../../reference/f4/f4_action';
+import {
+  f4FetchCompanyOptions,
+  f4FetchCountryList,
+} from '../../reference/f4/f4_action';
 import {
   fetchDSUserAll,
   saveNewDSUser,
@@ -37,6 +40,10 @@ class SystemUsers extends Component {
       username: '',
       rids: '',
     };
+  }
+
+  componentDidMount() {
+    this.props.f4FetchCountryList();
   }
 
   componentWillMount() {
@@ -88,13 +95,17 @@ class SystemUsers extends Component {
     });
   }
 
-  newUser(sysUser) {
-    this.props.saveNewDSUser(sysUser);
-  }
-
   render() {
     const { messages } = this.props.intl;
     const { staffs } = this.props;
+
+    const countryCodeOptions = this.props.countryList.map(item => {
+      return {
+        key: item.countryId,
+        text: item.code,
+        value: item.code,
+      };
+    });
     return (
       <Container
         fluid
@@ -163,8 +174,10 @@ class SystemUsers extends Component {
             branchOptions={this.getBranchOptions()}
             messages={messages}
             username={this.state.username}
-            newUser={this.newUser.bind(this)}
+            newUser={() => saveNewDSUser}
             getBrByBukrSysUser={this.props.getBrByBukrDSysUser}
+            countryCodeOptions={countryCodeOptions}
+            countryList={this.props.countryList}
           />
         </div>
       </Container>
@@ -229,19 +242,18 @@ function mapStateToProps(state) {
     staffs: state.ditReducer.staffs,
     addModalOpened: state.ditReducer.addModalOpened,
     updateModalOpened: state.ditReducer.updateModalOpened,
+    countryList: state.f4.countryList,
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchDSUserAll,
-    f4FetchCompanyOptions,
-    updateDSUserRow,
-    searchStafforDSUser,
-    saveNewDSUser,
-    getBrByBukrDSysUser,
-    showAddModal,
-    showUpdateModal,
-  },
-)(injectIntl(SystemUsers));
+export default connect(mapStateToProps, {
+  fetchDSUserAll,
+  f4FetchCompanyOptions,
+  f4FetchCountryList,
+  updateDSUserRow,
+  searchStafforDSUser,
+  saveNewDSUser,
+  getBrByBukrDSysUser,
+  showAddModal,
+  showUpdateModal,
+})(injectIntl(SystemUsers));

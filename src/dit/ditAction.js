@@ -102,12 +102,13 @@ export function fetchDSUserAll() {
   };
 }
 
-export function saveNewDSUser(newUser) {
+export function saveNewDSUser(newUser, successClear) {
   return function(dispatch) {
     dispatch(modifyLoader(false));
     doPost(`dituserlist/ditsaveSUser`, newUser)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
+        successClear();
         if (data) {
           dispatch(successed());
           dispatch({
