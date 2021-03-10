@@ -908,5 +908,9 @@
   "Overdue_completed": "Просроченный выполнен",
   "KPI%": "KPI по %",
   "Overdue_amount": "Просроченная сумма",
-  "Current_amount": "Текущая сумма"
+  "Current_amount": "Текущая сумма",
+  "CRM_Reception": "CRM ресепшн",
+  "taxiExpence": "Сумма проезда",
+  "moneyStatuses": "Статусы денег",
+  "marketingTaxiExpence": "Создание активов на такси"
 }
