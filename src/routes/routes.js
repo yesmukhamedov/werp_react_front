@@ -1041,9 +1041,14 @@ const AsyncReception = Loadable({
   loader: () => import('../crm/reception'),
   loading: () => <LoadingPage />,
 });
+const AsyncDitUserListNew = Loadable({
+  loader: () => import('../dit/dituserlistnew'),
+  loading: () => <LoadingPage />,
+});
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
+  DitUserListNew: AsyncDitUserListNew,
   Hrb02: AsyncHrb02,
 
   Amsg: AsyncAmsg,
@@ -1280,6 +1285,11 @@ const generateRoutes = transactionRoutes => {
         path="/service/mainoperation/smvs/serviceNumber=:id"
         exact={true}
         component={AsyncSmvs}
+      />
+      <Route
+        path="/dit/dituserlistnew"
+        exact={true}
+        component={AsyncDitUserListNew}
       />
 
       {/* dynamically generated URLs  */}
