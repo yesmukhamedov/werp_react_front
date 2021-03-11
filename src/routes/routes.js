@@ -1045,6 +1045,10 @@ const AsyncDitUserListNew = Loadable({
   loader: () => import('../dit/dituserlistnew'),
   loading: () => <LoadingPage />,
 });
+const AsyncTaxiExpence = Loadable({
+  loader: () => import('../crm/taxiExpence'),
+  loading: () => <LoadingPage />,
+});
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
@@ -1189,6 +1193,7 @@ const getComponent = {
   Srqpwgs: AsyncSrqpwgs,
   NewReco: AsyncNewReco,
   Reception: AsyncReception,
+  TaxiExpence: AsyncTaxiExpence,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1297,6 +1302,11 @@ const generateRoutes = transactionRoutes => {
       <Route path="/hr/report/hrslc" exact={true} component={AsyncHrSlc} />
       <Route path="/crm/reception" exact={true} component={AsyncReception} />
       <Route path="/crm/new_reco" component={AsyncNewReco} />
+      <Route
+        path="/crm/taxiExpence"
+        exact={true}
+        component={AsyncTaxiExpence}
+      />
 
       {transactionRoutes.map(route => {
         return (

@@ -911,5 +911,9 @@
   "Overdue_completed": "Overdue completed",
   "KPI%": "KPI %",
   "Overdue_amount": "Overdue amount",
-  "Current_amount": "Current amount"
+  "Current_amount": "Current amount",
+  "CRM_Reception": "CRM reception",
+  "taxiExpence": "Taxi expense",
+  "moneyStatuses": "Money statuses",
+  "marketingTaxiExpence": "Taxi asset creation"
 }
