@@ -107,7 +107,7 @@ class AddUser extends Component {
         radioCheck.is_root = o.checked;
         break;
       case 'phone':
-        sysUser.mobileNumber = o;
+        sysUser.mobile = o;
         break;
 
       default:
@@ -124,10 +124,23 @@ class AddUser extends Component {
   submitForm() {
     const successClear = () => {
       this.setState({
-        ...this.state,
-        password: '',
+        sysUser: {
+          password: '',
+          username: '',
+          internal_number: '',
+          rname: [],
+          mobileNumber: '',
+        },
+        radioCheck: {
+          checked: false,
+          is_root: false,
+        },
+        hidden: true,
+        randomPass: '',
+        countryCode: 'KZ',
       });
     };
+
     const sysUser = Object.assign({}, this.state.sysUser);
     const radioCheck = Object.assign({}, this.state.radioCheck);
     sysUser['staff_id'] = this.props.selStaff.staff_id;
@@ -137,7 +150,7 @@ class AddUser extends Component {
     errors = this.validate();
 
     if (errors === null || errors === undefined || errors.length === 0) {
-      this.props.newUser(sysUser, successClear());
+      this.props.newUser(sysUser, () => successClear());
 
       console.log('newUser action');
     }
@@ -274,9 +287,7 @@ class AddUser extends Component {
               />
               <MaskedInput
                 value={
-                  this.state.sysUser.mobileNumber
-                    ? this.state.sysUser.mobileNumber
-                    : ''
+                  this.state.sysUser.mobile ? this.state.sysUser.mobile : ''
                 }
                 mask={phoneMask(this.state.countryCode)}
                 placeholder={

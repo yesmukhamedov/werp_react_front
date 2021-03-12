@@ -54,8 +54,6 @@ const DitUserListNew = props => {
     tempData: {},
   });
 
-  console.log('stateRowUpdate', stateRowUpdate.tempData);
-
   const updateRow = data => {
     console.log('click updateRow', data);
     setStateRowUpdate({ ...stateRowUpdate, modalOpen: true, tempData: data });
