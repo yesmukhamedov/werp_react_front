@@ -163,6 +163,8 @@ class SystemUsers extends Component {
             showUpdateModal={this.props.showUpdateModal}
             close={this.close.bind(this)}
             updateModalOpened={this.props.updateModalOpened}
+            countryList={this.props.countryList}
+            countryCodeOptions={countryCodeOptions}
           />
 
           <AddUser
@@ -174,7 +176,7 @@ class SystemUsers extends Component {
             branchOptions={this.getBranchOptions()}
             messages={messages}
             username={this.state.username}
-            newUser={() => saveNewDSUser}
+            newUser={this.props.saveNewDSUser}
             getBrByBukrSysUser={this.props.getBrByBukrDSysUser}
             countryCodeOptions={countryCodeOptions}
             countryList={this.props.countryList}

@@ -81,6 +81,7 @@ export default function(state = INITIAL_STATE, action) {
         ...state,
         allRoles: action.payload.roles,
         allUsers: action.payload.users,
+        lSUsers: { ...state.lSUsers, ...action.payload },
       };
 
     case STAFF_FOR_DITUSRLST:

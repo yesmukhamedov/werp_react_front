@@ -126,7 +126,6 @@ class AddUser extends Component {
       this.setState({
         ...this.state,
         password: '',
-        mobileNumber: '',
       });
     };
     const sysUser = Object.assign({}, this.state.sysUser);
@@ -139,6 +138,8 @@ class AddUser extends Component {
 
     if (errors === null || errors === undefined || errors.length === 0) {
       this.props.newUser(sysUser, successClear());
+
+      console.log('newUser action');
     }
     this.setState({ errors });
   }
@@ -156,27 +157,10 @@ class AddUser extends Component {
       rids,
     } = this.state.sysUser;
 
-    if (
-      username === null ||
-      username === undefined ||
-      !username ||
-      password === null ||
-      password === undefined ||
-      !password
-    ) {
+    if (!username || !password) {
       errors.push(errorTable['134' + language]);
     }
-    if (
-      bukrs === null ||
-      bukrs === undefined ||
-      !bukrs ||
-      branchId === null ||
-      branchId === undefined ||
-      !branchId ||
-      rids === null ||
-      rids === undefined ||
-      !rids
-    ) {
+    if (!bukrs || !branchId || !rids) {
       errors.push(errorTable['138' + language]);
     }
     return errors;
@@ -205,7 +189,6 @@ class AddUser extends Component {
 
   render() {
     const { messages } = this.props;
-
     return (
       <Modal size={'small'} open={this.props.showAdd}>
         <Modal.Header>{messages['BTN__ADD']}</Modal.Header>
@@ -224,8 +207,6 @@ class AddUser extends Component {
     const filterCountry = countryList.filter(
       item => item.code == this.state.countryCode,
     );
-
-    console.log('PROPS', this.props);
 
     return (
       <Form>

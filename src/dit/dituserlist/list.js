@@ -14,6 +14,7 @@ class List extends Component {
         internal_number: '',
       },
       passtype: 'password',
+      countryCode: 'KZ',
     };
   }
 
@@ -31,6 +32,7 @@ class List extends Component {
 
   handleChange(fieldName, o) {
     const row = Object.assign({}, this.state.row);
+    let countryCode = this.state.countryCode;
     switch (fieldName) {
       case 'active':
         row.active = o.checked;
@@ -70,6 +72,13 @@ class List extends Component {
       case 'internal_number':
         row.internal_number = o.value;
         break;
+      case 'mobileNumber':
+        row.mobile = o;
+        break;
+      case 'countryCode':
+        countryCode = o;
+
+        break;
       case 'role_id':
         row.rids = o.value;
         row.rname = [];
@@ -91,6 +100,7 @@ class List extends Component {
     this.setState({
       ...this.state,
       row,
+      countryCode,
     });
   }
 
@@ -100,7 +110,11 @@ class List extends Component {
 
   render() {
     const { users } = this.props;
-    const { messages } = this.props;
+    const { messages, countryList = [], countryCodeOptions } = this.props;
+    const filterCountry = countryList.filter(
+      item => item.code == this.state.countryCode,
+    );
+
     const columns = [
       {
         Header: 'ID',
@@ -296,6 +310,9 @@ class List extends Component {
           {...this.state}
           iconClicked={this.iconClicked.bind(this)}
           randomGenerate={this.randomGenerate.bind(this)}
+          filterCountry={filterCountry}
+          countryCodeOptions={countryCodeOptions}
+          changeCountryCode={this.changeCountryCode}
         />
       </div>
     );
