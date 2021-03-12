@@ -77,7 +77,13 @@ export default function(state = INITIAL_STATE, action) {
     /******************************************************************        DIT_USER_LST        */
 
     case ALL_DITUSRLST:
-      return { ...state, lSUsers: { ...state.lSUsers, ...action.payload } };
+      return {
+        ...state,
+        allRoles: action.payload.roles,
+        allUsers: action.payload.users,
+        lSUsers: { ...state.lSUsers, ...action.payload },
+      };
+
     case STAFF_FOR_DITUSRLST:
       return { ...state, staffs: action.payload };
     case NEW_DITUSRLST:

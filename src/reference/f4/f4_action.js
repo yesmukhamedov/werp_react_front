@@ -1,4 +1,10 @@
-import { doGet, doPost, doPut, doDelete } from '../../utils/apiActions';
+import {
+  doGet,
+  doPost,
+  doPut,
+  doDelete,
+  doGetYandex,
+} from '../../utils/apiActions';
 import {
   handleError,
   notify,
@@ -148,6 +154,10 @@ export const F4_FETCH_AVAILABLED_TRANSACTION_BY_USER =
 
 export const F4_FETCH_CURRENT_STAFF = 'F4_FETCH_CURRENT_STAFF';
 export const F4_CLEAR_CURRENT_STAFF = 'F4_CLEAR_CURRENT_STAFF';
+
+export const F4_GET_LOCATION_ADDRESS_YANDEX = 'F4_GET_LOCATION_ADDRESS_YANDEX';
+export const F4_CLEAR_LOCATION_ADDRESS_YANDEX =
+  'F4_CLEAR_LOCATION_ADDRESS_YANDEX';
 
 const errorTable = JSON.parse(localStorage.getItem('errorTableString'));
 const language = localStorage.getItem('language');
@@ -1193,6 +1203,29 @@ export function f4FetchAvailabledTransactionByUser() {
           type: F4_FETCH_AVAILABLED_TRANSACTION_BY_USER,
           payload: data,
         });
+      })
+      .catch(error => {
+        handleError(error, dispatch);
+      });
+  };
+}
+
+export function f4GetLocationAddressYandex(geocode, success) {
+  return function(dispatch) {
+    doGetYandex({
+      apikey: '42cf1ae0-38c3-454d-a55d-7d7732c05c71',
+      format: 'json',
+      ...geocode,
+    })
+      .then(data => {
+        dispatch({
+          type: F4_GET_LOCATION_ADDRESS_YANDEX,
+          data,
+        });
+        success(
+          data.data.response.GeoObjectCollection.featureMember[0].GeoObject
+            .metaDataProperty.GeocoderMetaData.text,
+        );
       })
       .catch(error => {
         handleError(error, dispatch);

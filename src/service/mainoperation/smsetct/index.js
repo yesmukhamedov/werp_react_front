@@ -549,7 +549,7 @@ const Smsetct = props => {
               </label>
               <Button color="teal" onClick={clickSearch} icon>
                 <Icon name="search" />
-                Поиск
+                {messages['Button.Search']}
               </Button>
             </Form.Field>
             <Form.Field></Form.Field>

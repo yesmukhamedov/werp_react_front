@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
-import { Segment, Icon, Popup, Button } from 'semantic-ui-react';
+import { Popup, Button } from 'semantic-ui-react';
 import ReactTableWrapper from '../../../../utils/ReactTableWrapper';
 import YmapModal from './YmapModal';
 
 const TabDealers = props => {
-  const { data = [] } = props;
+  const { data = [], handleClickPlacemark, tempAddress } = props;
   const [mapData, setMapData] = useState({});
   const [openModalMap, setOpenModalMap] = useState(false);
 
@@ -86,7 +86,7 @@ const TabDealers = props => {
                 size="mini"
                 circular
                 color="blue"
-                icon="map marker alternate"
+                icon="map pin"
                 onClick={() => {
                   setMapData(row.original);
                   setOpenModalMap(true);
@@ -102,9 +102,11 @@ const TabDealers = props => {
   return (
     <div>
       <YmapModal
-        mapData={mapData}
+        data={mapData}
         open={openModalMap}
         onClose={() => setOpenModalMap(false)}
+        handleClickPlacemark={handleClickPlacemark}
+        tempAddress={tempAddress}
       />
       <ReactTableWrapper
         columns={columns}

@@ -86,6 +86,7 @@ import {
   F4_FETCH_AVAILABLED_TRANSACTION_BY_USER,
   F4_FETCH_CURRENT_STAFF,
   F4_CLEAR_CURRENT_STAFF,
+  F4_GET_LOCATION_ADDRESS_YANDEX,
 } from './f4_action';
 
 const INITIAL_STATE = {
@@ -393,6 +394,14 @@ export default function(state = INITIAL_STATE, action) {
 
     case F4_CLEAR_CURRENT_STAFF:
       return { ...state, staffInfo: [] };
+
+    case F4_GET_LOCATION_ADDRESS_YANDEX:
+      return {
+        ...state,
+        yandexData:
+          action.data.data.response.GeoObjectCollection.featureMember[0]
+            .GeoObject.metaDataProperty.GeocoderMetaData.Address.formatted,
+      };
     default:
       return state;
   }

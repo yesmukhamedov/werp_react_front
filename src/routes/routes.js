@@ -1033,9 +1033,26 @@ const AsyncSrqpwgs = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncNewReco = Loadable({
+  loader: () => import('../crm/mainoperation/reco/new_reco'),
+  loading: () => <LoadingPage />,
+});
+const AsyncReception = Loadable({
+  loader: () => import('../crm/reception'),
+  loading: () => <LoadingPage />,
+});
+const AsyncDitUserListNew = Loadable({
+  loader: () => import('../dit/dituserlistnew'),
+  loading: () => <LoadingPage />,
+});
+const AsyncTaxiExpence = Loadable({
+  loader: () => import('../crm/taxiExpence'),
+  loading: () => <LoadingPage />,
+});
 const getComponent = {
   Dtrlist: AsyncTransaction,
   Ditaub: AsyncAssignUserBranch,
+  DitUserListNew: AsyncDitUserListNew,
   Hrb02: AsyncHrb02,
 
   Amsg: AsyncAmsg,
@@ -1174,6 +1191,9 @@ const getComponent = {
   HrSlc: AsyncHrSlc,
   Srtbb: AsyncSrtbb,
   Srqpwgs: AsyncSrqpwgs,
+  NewReco: AsyncNewReco,
+  Reception: AsyncReception,
+  TaxiExpence: AsyncTaxiExpence,
 };
 
 const generateRoutes = transactionRoutes => {
@@ -1271,10 +1291,22 @@ const generateRoutes = transactionRoutes => {
         exact={true}
         component={AsyncSmvs}
       />
+      <Route
+        path="/dit/dituserlistnew"
+        exact={true}
+        component={AsyncDitUserListNew}
+      />
 
       {/* dynamically generated URLs  */}
 
       <Route path="/hr/report/hrslc" exact={true} component={AsyncHrSlc} />
+      <Route path="/crm/reception" exact={true} component={AsyncReception} />
+      <Route path="/crm/new_reco" component={AsyncNewReco} />
+      <Route
+        path="/crm/taxiExpence"
+        exact={true}
+        component={AsyncTaxiExpence}
+      />
 
       {transactionRoutes.map(route => {
         return (
