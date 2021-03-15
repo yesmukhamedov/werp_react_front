@@ -22,7 +22,6 @@ class AddUser extends Component {
         username: '',
         internal_number: '',
         rname: [],
-        mobileNumber: '',
       },
       radioCheck: {
         checked: false,
@@ -150,9 +149,12 @@ class AddUser extends Component {
     errors = this.validate();
 
     if (errors === null || errors === undefined || errors.length === 0) {
-      this.props.newUser(sysUser, () => successClear());
-
-      console.log('newUser action');
+      let mobileFinish = this.state.sysUser.mobile
+        ? this.state.sysUser.mobile.replace(/[() -]/g, '')
+        : '';
+      this.props.newUser({ ...sysUser, mobile: mobileFinish }, () =>
+        successClear(),
+      );
     }
     this.setState({ errors });
   }

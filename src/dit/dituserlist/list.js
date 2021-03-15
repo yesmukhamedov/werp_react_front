@@ -105,7 +105,10 @@ class List extends Component {
   }
 
   submitUpdate() {
-    this.props.submitUpdate(this.state.row);
+    let mobileFinish = this.state.row.mobile
+      ? this.state.row.mobile.replace(/[() -]/g, '')
+      : '';
+    this.props.submitUpdate({ ...this.state.row, mobile: mobileFinish });
   }
 
   render() {
