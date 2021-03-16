@@ -1299,7 +1299,6 @@ const generateRoutes = transactionRoutes => {
 
       {/* dynamically generated URLs  */}
 
-      <Route path="/hr/report/hrslc" exact={true} component={AsyncHrSlc} />
       <Route path="/crm/reception" exact={true} component={AsyncReception} />
       <Route path="/crm/new_reco" component={AsyncNewReco} />
       <Route
