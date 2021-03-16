@@ -1020,8 +1020,8 @@ const AsyncSmdis = Loadable({
   loading: () => <LoadingPage />,
 });
 
-const AsyncHrSlc = Loadable({
-  loader: () => import('../hr/report/hrSlc'),
+const AsyncHrslc = Loadable({
+  loader: () => import('../hr/report/hrslc'),
   loading: () => <LoadingPage />,
 });
 const AsyncSrtbb = Loadable({
@@ -1188,7 +1188,7 @@ const getComponent = {
   Smslsp: AsyncSmslsp,
   Smsetplp: AsyncSmsetplp,
   Smdis: AsyncSmdis,
-  HrSlc: AsyncHrSlc,
+  Hrslc: AsyncHrslc,
   Srtbb: AsyncSrtbb,
   Srqpwgs: AsyncSrqpwgs,
   NewReco: AsyncNewReco,
