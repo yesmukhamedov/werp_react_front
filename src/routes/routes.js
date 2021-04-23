@@ -1208,7 +1208,6 @@ const generateRoutes = transactionRoutes => {
       <Route path="/marketing/mainoperation/mmceg" component={AsyncMmceg} /> */}
       <Route path="/marketing/mainoperation/mmcef" component={AsyncMmcef} />
       <Route path="/marketing/mainoperation/mmcefa" component={AsyncMmcefa} />
-
       <Route
         path="/hr/exitinterviews"
         exact={true}
@@ -1265,7 +1264,6 @@ const generateRoutes = transactionRoutes => {
         exact={true}
         component={AsyncLogInvoicesForm}
       />
-
       <Route
         path="/service/mainoperation/smvs/serviceNumber=:id"
         exact={true}

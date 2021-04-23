@@ -1,0 +1,16 @@
+.ui.table td.positive,
+.ui.table tr.positive {
+  background: #bce0b8 !important;
+  color: #2c662d !important;
+}
+
+.ui.table td.negative,
+.ui.table tr.negative {
+  background: #f78484 !important;
+  color: #381110 !important;
+}
+
+.ui.table td.warning,
+.ui.table tr.warning {
+  background: #ceca2a !important;
+}
