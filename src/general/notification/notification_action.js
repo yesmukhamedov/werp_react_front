@@ -69,7 +69,7 @@ export function handleError(error, dispatch) {
     } else if (get(error, 'error') !== undefined) {
       message = error;
     } else {
-      message = 'TypeError, check console';
+      message = 'TypeError, check console ' + '(' + error.message + ')';
       console.log(error);
     }
 

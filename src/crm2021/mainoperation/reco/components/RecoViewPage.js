@@ -106,11 +106,11 @@ class RecoViewPage extends Component {
   renderActions(messages) {
     return (
       <div>
-        <Link className={'ui icon button'} to={`/crm/reco/current`}>
+        <Link className={'ui icon button'} to={`/crm2021/reco/current`}>
           {messages['Crm.ToCurrentList']}
         </Link>
 
-        <Link className={'ui icon button'} to={`/crm/reco/archive`}>
+        <Link className={'ui icon button'} to={`/crm2021/reco/archive`}>
           {messages['Crm.ToArchiveList']}
         </Link>
         {/*<Button onClick={this.prepareForVisitCreate}>Добавить визит</Button>*/}
@@ -128,6 +128,7 @@ class RecoViewPage extends Component {
   render() {
     const { reco } = this.props;
     const { messages } = this.props.intl;
+
     return (
       <Container
         fluid

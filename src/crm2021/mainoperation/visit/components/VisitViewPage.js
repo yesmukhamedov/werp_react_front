@@ -175,7 +175,7 @@ class VisitViewPage extends Component {
                 </Table.Cell>
                 <Table.Cell>
                   {parentReco.id ? (
-                    <Link to={`/crm/reco/view/${parentReco.id}`}>
+                    <Link to={`/crm2021/reco/view/${parentReco.id}`}>
                       {messages['Crm.Recommendation']} №{parentReco.id}
                     </Link>
                   ) : (

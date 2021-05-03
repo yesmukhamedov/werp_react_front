@@ -107,7 +107,7 @@ class RecoArchivePage extends Component {
           <Link
             target="_blank"
             className="ui icon button mini"
-            to={`/crm/reco/view/${item.id}`}
+            to={`/crm2021/reco/view/${item.id}`}
           >
             {messages['Table.View']}
           </Link>

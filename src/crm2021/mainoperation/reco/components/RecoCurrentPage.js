@@ -10,11 +10,13 @@ import {
   fetchRecoCurrentData,
   fetchCallResults,
   fetchRecoStatuses,
+  // saveReco,
 } from '../actions/recoAction';
 import { fetchReasons } from '../../demo/actions/demoAction';
 import { getRecoCategoriesOptionsByLanguage } from '../../../crmUtil';
 import { injectIntl } from 'react-intl';
 import { fetchDemoPrices } from '../../../../reference/mainoperation/actions/referenceAction';
+import { Button } from 'react-yandex-maps';
 
 class RecoCurrentPage extends Component {
   constructor(props) {
@@ -128,7 +130,7 @@ class RecoCurrentPage extends Component {
           data={items}
           columns={[
             {
-              Header: messages.fioClient,
+              Header: 'TTT',
               accessor: 'clientName',
             },
             {
@@ -220,7 +222,7 @@ class RecoCurrentPage extends Component {
                 <Link
                   target="_blank"
                   className="ui icon button mini"
-                  to={`/crm/reco/view/${value}`}
+                  to={`/crm2021/reco/view/${value}`}
                 >
                   {messages['Table.View']}
                 </Link>
@@ -290,6 +292,7 @@ class RecoCurrentPage extends Component {
   }
 
   render() {
+    console.log('PROPS USED', this.props);
     const { messages } = this.props.intl;
     const panes = [
       { menuItem: messages['Crm.Used'], render: this.renderTabUsed },
@@ -333,6 +336,7 @@ function mapStateToProps(state) {
     reasons: state.crmReco.reasons,
     callResults: state.crmReco.callResults,
     statuses: state.crmReco.statuses,
+    saveCrmResponse: state.crmReco.saveCrmResponse,
   };
 }
 
@@ -342,4 +346,5 @@ export default connect(mapStateToProps, {
   fetchCallResults,
   fetchRecoStatuses,
   fetchDemoPrices,
+  // saveReco,
 })(injectIntl(RecoCurrentPage));

@@ -170,6 +170,13 @@ const AsyncRecoCurrentPage = Loadable({
     ),
   loading: () => <LoadingPage />,
 });
+const AsyncRecoCurrentPage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/mainoperation/reco/components/RecoCurrentPage' /* webpackChunkName: "RecoCurrentPage" */
+    ),
+  loading: () => <LoadingPage />,
+});
 
 const AsyncRecoArchivePage = Loadable({
   loader: () =>
@@ -215,6 +222,13 @@ const AsyncRecoViewPage = Loadable({
   loader: () =>
     import(
       '../crm/mainoperation/reco/components/RecoViewPage' /* webpackChunkName: "RecoViewPage" */
+    ),
+  loading: () => <LoadingPage />,
+});
+const AsyncRecoViewPage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/mainoperation/reco/components/RecoViewPage' /* webpackChunkName: "RecoViewPage" */
     ),
   loading: () => <LoadingPage />,
 });
@@ -1032,6 +1046,10 @@ const AsyncSrqpwgs = Loadable({
   loader: () => import('../service/report/srqpwgs'),
   loading: () => <LoadingPage />,
 });
+const AsyncExample = Loadable({
+  loader: () => import('../crm2021/example'),
+  loading: () => <LoadingPage />,
+});
 
 const getComponent = {
   Dtrlist: AsyncTransaction,
@@ -1083,12 +1101,14 @@ const getComponent = {
   CrmRepKpiRtg: AsyncKpiRatingReportPage,
   Prcltgs: AsyncPrcltgs,
   CrmRecoCurrent: AsyncRecoCurrentPage,
+  CrmRecoCurrent2021: AsyncRecoCurrentPage2021,
   CrmRecoArchive: AsyncRecoArchivePage,
   CrmRecoCreate: AsyncRecoCreatePage,
   CrmDemoCurrent: AsyncDemoCurrentPage,
   CrmDemoArchive: AsyncDemoArchivePage,
   CrmVisitArchive: AsyncVisitArchivePage,
   CrmRecoView: AsyncRecoViewPage,
+  CrmRecoView2021: AsyncRecoViewPage2021,
   CrmDemoView: AsyncDemoViewPage,
   CrmVisitView: AsyncVisitViewPage,
   CrmKpiSetting: AsyncKpiSettingPage,
@@ -1174,6 +1194,7 @@ const getComponent = {
   HrSlc: AsyncHrSlc,
   Srtbb: AsyncSrtbb,
   Srqpwgs: AsyncSrqpwgs,
+  Example: AsyncExample,
 };
 
 const generateRoutes = transactionRoutes => {

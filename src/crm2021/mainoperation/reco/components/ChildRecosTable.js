@@ -35,7 +35,7 @@ export default function ChildRecosTable(props) {
                 <Table.Cell>
                   <Link
                     className="ui icon button"
-                    to={`/crm/reco/view/${item.id}`}
+                    to={`/crm2021/reco/view/${item.id}`}
                   >
                     <Icon name="eye" />
                   </Link>
