@@ -50,7 +50,7 @@ const ChildDemosTable = props => {
                 <Table.Cell>
                   <Link
                     className="ui icon button"
-                    to={`/crm/demo/view/${item.id}`}
+                    to={`/crm2021/demo/view/${item.id}`}
                   >
                     <Icon name="eye" />
                   </Link>

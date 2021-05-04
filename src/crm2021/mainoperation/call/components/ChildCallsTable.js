@@ -9,25 +9,9 @@ import moment from 'moment';
 
 const ChildCallsTable = props => {
   // Список звонков
-  const initialState = [
-    {
-      id: 0,
-      companyId: '0',
-      companyName: '0',
-      branchId: 0,
-      branchName: '0',
-      dateTime: '0',
-      callerId: 0,
-      callerName: '0',
-      note: '0',
-      result: '0',
-      resultName: '0',
-    },
-  ];
-  const { messages } = props;
-  const items =
-    Object.keys(props.items).length === 0 ? initialState : props.items;
-  console.log('items', items);
+
+  const { items, messages } = props;
+
   return (
     <Card fluid>
       <Card.Content>

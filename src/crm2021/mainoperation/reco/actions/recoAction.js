@@ -56,6 +56,8 @@ export const NEW_CRM_SAVE_RECO = 'NEW_CRM_SAVE_RECO';
 
 export const CRM_RECO_FETCH_CALL_DETAILS = 'CRM_RECO_FETCH_CALL_DETAILS';
 
+export const CRM_RECO_FETCH_DEMO_DETAILS = 'CRM_RECO_FETCH_DEMO_DETAILS';
+
 export const fetchPhoneNumberHistory = phoneId => {
   return dispatch => {
     doGet(`crm/call/number-history/${phoneId}`)
@@ -111,6 +113,23 @@ export const fetchCallDetails = id => {
         dispatch(modifyLoader(false));
         dispatch({
           type: CRM_RECO_FETCH_CALL_DETAILS,
+          payload: data,
+        });
+      })
+      .catch(e => {
+        handleError(e, dispatch);
+      });
+  };
+};
+
+export const fetchDemoDetails = id => {
+  return dispatch => {
+    dispatch(modifyLoader(true));
+    doGet2(`demo/by-reco/${id}`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: CRM_RECO_FETCH_DEMO_DETAILS,
           payload: data,
         });
       })
@@ -264,7 +283,7 @@ export const toggleRecoUpdateModal = flag => {
 
 export const deleteReco = recoId => {
   return dispatch => {
-    doDelete2(`crm/reco/${recoId}`)
+    doDelete2(`reco/${recoId}`)
       .then(response => {
         browserHistory.push('/crm/reco/current');
       })
@@ -275,7 +294,7 @@ export const deleteReco = recoId => {
 };
 
 export const createRecoListNew = o => {
-  return dispatch => doPost2(`crm/reco`, o);
+  return dispatch => doPost2(`reco`, o);
 };
 
 export const blankReco = (context, contextId) => {
@@ -306,7 +325,7 @@ export const blankReco = (context, contextId) => {
 export const createRecoList = (o, callBackOnError) => {
   return dispatch => {
     dispatch(modifyLoader(true));
-    doPost(`crm/reco`, o)
+    doPost2(`reco`, o)
       .then(() => {
         browserHistory.push('/crm/reco/current');
       })
