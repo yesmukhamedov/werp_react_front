@@ -11,6 +11,8 @@ const defineBackendUrl = uri => {
         return ROOT_URL;
       case 'RECO':
         return CRM_URL;
+      case 'CALL':
+        return CRM_URL;
       default:
         return ROOT_URL;
     }

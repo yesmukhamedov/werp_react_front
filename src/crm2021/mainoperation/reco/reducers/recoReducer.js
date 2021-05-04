@@ -18,6 +18,7 @@ import {
   CRM_RECO_BAD_REQUEST,
   CRM_FETCH_PHONE_META,
   NEW_CRM_SAVE_RECO,
+  CRM_RECO_FETCH_CALL_DETAILS,
 } from '../actions/recoAction';
 
 const INITIAL_STATE = {
@@ -45,6 +46,7 @@ const INITIAL_STATE = {
   recoBlankedItem: {},
   recoErrors: {},
   phoneMeta: {},
+  callDetails: {},
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -131,6 +133,9 @@ export default function(state = INITIAL_STATE, action) {
 
     case NEW_CRM_SAVE_RECO:
       return { ...state, saveCrmResponse: action.payload };
+
+    case CRM_RECO_FETCH_CALL_DETAILS:
+      return { ...state, callDetails: action.payload };
 
     default:
       return state;

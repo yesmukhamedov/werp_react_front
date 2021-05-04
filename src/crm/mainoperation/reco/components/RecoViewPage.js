@@ -128,6 +128,7 @@ class RecoViewPage extends Component {
   render() {
     const { reco } = this.props;
     const { messages } = this.props.intl;
+    console.log(reco);
     return (
       <Container
         fluid
@@ -177,16 +178,13 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(
-  mapStateToProps,
-  {
-    fetchSingleReco,
-    toggleRecoUpdateModal,
-    fetchCallResults,
-    fetchReasons,
-    deleteReco,
-    blankForCreate,
-    modalToggle,
-    fetchDemoPrices,
-  },
-)(injectIntl(RecoViewPage));
+export default connect(mapStateToProps, {
+  fetchSingleReco,
+  toggleRecoUpdateModal,
+  fetchCallResults,
+  fetchReasons,
+  deleteReco,
+  blankForCreate,
+  modalToggle,
+  fetchDemoPrices,
+})(injectIntl(RecoViewPage));

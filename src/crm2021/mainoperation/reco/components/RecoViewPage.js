@@ -15,6 +15,7 @@ import {
   toggleRecoUpdateModal,
   fetchCallResults,
   deleteReco,
+  fetchCallDetails,
 } from '../actions/recoAction';
 import { blankForCreate, modalToggle } from '../../visit/actions/visitAction';
 import { fetchReasons } from '../../demo/actions/demoAction';
@@ -50,10 +51,10 @@ class RecoViewPage extends Component {
 
   componentWillMount() {
     const id = parseInt(this.props.match.params.id, 10);
-
     this.props.fetchSingleReco(id);
     this.props.fetchCallResults();
     this.props.fetchReasons();
+    this.props.fetchCallDetails(this.props.match.params.id);
   }
 
   componentDidMount() {
@@ -128,7 +129,8 @@ class RecoViewPage extends Component {
   render() {
     const { reco } = this.props;
     const { messages } = this.props.intl;
-
+    const items =
+      this.props.callDetails != undefined ? this.props.callDetails : [];
     return (
       <Container
         fluid
@@ -159,7 +161,7 @@ class RecoViewPage extends Component {
             </Grid.Column>
 
             <Grid.Column width={10}>
-              <ChildCallsTable messages={messages} items={reco.calls || []} />
+              <ChildCallsTable messages={messages} items={items} />
               <ChildDemosTable messages={messages} items={reco.demos || []} />
               <ChildVisitsTable messages={messages} items={reco.visits || []} />
             </Grid.Column>
@@ -175,6 +177,7 @@ function mapStateToProps(state) {
   return {
     reco: state.crmReco.reco,
     loader: state.loader,
+    callDetails: state.crmReco2021.callDetails,
   };
 }
 
@@ -187,4 +190,5 @@ export default connect(mapStateToProps, {
   blankForCreate,
   modalToggle,
   fetchDemoPrices,
+  fetchCallDetails,
 })(injectIntl(RecoViewPage));

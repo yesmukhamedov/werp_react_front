@@ -54,6 +54,8 @@ export const CRM_FETCH_PHONE_META = 'CRM_FETCH_PHONE_META';
 
 export const NEW_CRM_SAVE_RECO = 'NEW_CRM_SAVE_RECO';
 
+export const CRM_RECO_FETCH_CALL_DETAILS = 'CRM_RECO_FETCH_CALL_DETAILS';
+
 export const fetchPhoneNumberHistory = phoneId => {
   return dispatch => {
     doGet(`crm/call/number-history/${phoneId}`)
@@ -92,6 +94,23 @@ export const fetchSingleReco = id => {
         dispatch(modifyLoader(false));
         dispatch({
           type: CRM_RECO_FETCH_SINGLE,
+          payload: data,
+        });
+      })
+      .catch(e => {
+        handleError(e, dispatch);
+      });
+  };
+};
+
+export const fetchCallDetails = id => {
+  return dispatch => {
+    dispatch(modifyLoader(true));
+    doGet2(`call/by-reco/${id}`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: CRM_RECO_FETCH_CALL_DETAILS,
           payload: data,
         });
       })
