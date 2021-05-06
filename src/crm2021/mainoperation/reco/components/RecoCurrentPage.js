@@ -130,7 +130,7 @@ class RecoCurrentPage extends Component {
           data={items}
           columns={[
             {
-              Header: 'TTT',
+              Header: 'ФИО',
               accessor: 'clientName',
             },
             {
@@ -293,6 +293,7 @@ class RecoCurrentPage extends Component {
 
   render() {
     const { messages } = this.props.intl;
+    // console.log('message geldi', this.props.messages)
     const panes = [
       { menuItem: messages['Crm.Used'], render: this.renderTabUsed },
       { menuItem: messages['Crm.New'], render: this.renderTabNew },
@@ -328,14 +329,14 @@ class RecoCurrentPage extends Component {
 
 function mapStateToProps(state) {
   return {
-    newItems: state.crmReco.newItems,
-    doneItems: state.crmReco.doneItems,
-    usedItems: state.crmReco.usedItems,
-    movedItems: state.crmReco.movedItems,
-    reasons: state.crmReco.reasons,
-    callResults: state.crmReco.callResults,
-    statuses: state.crmReco.statuses,
-    saveCrmResponse: state.crmReco.saveCrmResponse,
+    newItems: state.crmReco2021.newItems,
+    doneItems: state.crmReco2021.doneItems,
+    usedItems: state.crmReco2021.usedItems,
+    movedItems: state.crmReco2021.movedItems,
+    reasons: state.crmReco2021.reasons,
+    callResults: state.crmReco2021.callResults,
+    statuses: state.crmReco2021.statuses,
+    saveCrmResponse: state.crmReco2021.saveCrmResponse,
   };
 }
 

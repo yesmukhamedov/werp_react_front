@@ -66,7 +66,7 @@ class DemoCurrentPage extends Component {
                 <Link
                   target="_blank"
                   className="ui icon button mini"
-                  to={`/crm/demo/view/${value}`}
+                  to={`/crm2021/demo/view/${value}`}
                 >
                   Просмотр
                 </Link>

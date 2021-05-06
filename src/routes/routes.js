@@ -185,11 +185,26 @@ const AsyncRecoArchivePage = Loadable({
     ),
   loading: () => <LoadingPage />,
 });
+const AsyncRecoArchivePage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/mainoperation/reco/components/RecoArchivePage' /* webpackChunkName: "RecoArchivePage" */
+    ),
+  loading: () => <LoadingPage />,
+});
 
 const AsyncDemoCurrentPage = Loadable({
   loader: () =>
     import(
       '../crm/mainoperation/demo/components/DemoCurrentPage' /* webpackChunkName: "DemoCurrentPage" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncDemoCurrentPage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/mainoperation/demo/components/DemoCurrentPage' /* webpackChunkName: "DemoCurrentPage" */
     ),
   loading: () => <LoadingPage />,
 });
@@ -240,11 +255,26 @@ const AsyncRecoCreatePage = Loadable({
     ),
   loading: () => <LoadingPage />,
 });
+const AsyncRecoCreatePage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/mainoperation/reco/components/RecoCreatePage' /* webpackChunkName: "RecoCreatePage" */
+    ),
+  loading: () => <LoadingPage />,
+});
 
 const AsyncDemoViewPage = Loadable({
   loader: () =>
     import(
       '../crm/mainoperation/demo/components/DemoViewPage' /* webpackChunkName: "DemoViewPage" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncDemoViewPage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/mainoperation/demo/components/DemoViewPage' /* webpackChunkName: "DemoViewPage" */
     ),
   loading: () => <LoadingPage />,
 });
@@ -1103,13 +1133,17 @@ const getComponent = {
   CrmRecoCurrent: AsyncRecoCurrentPage,
   CrmRecoCurrent2021: AsyncRecoCurrentPage2021,
   CrmRecoArchive: AsyncRecoArchivePage,
+  CrmRecoArchive2021: AsyncRecoArchivePage2021,
   CrmRecoCreate: AsyncRecoCreatePage,
+  CrmRecoCreate2021: AsyncRecoCreatePage2021,
   CrmDemoCurrent: AsyncDemoCurrentPage,
+  CrmDemoCurrent2021: AsyncDemoCurrentPage2021,
   CrmDemoArchive: AsyncDemoArchivePage,
   CrmVisitArchive: AsyncVisitArchivePage,
   CrmRecoView: AsyncRecoViewPage,
   CrmRecoView2021: AsyncRecoViewPage2021,
   CrmDemoView: AsyncDemoViewPage,
+  CrmDemoView2021: AsyncDemoViewPage2021,
   CrmVisitView: AsyncVisitViewPage,
   CrmKpiSetting: AsyncKpiSettingPage,
   OutCallTaskPage: AsyncOutCallTaskPage,

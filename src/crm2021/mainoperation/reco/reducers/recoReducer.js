@@ -1,12 +1,11 @@
 import {
-  CRM_RECO_FETCH_CURRENT_DEMO_DONE,
-  CRM_RECO_FETCH_CURRENT_MOVED,
-  CRM_RECO_FETCH_CURRENT_NEW,
-  CRM_RECO_FETCH_CURRENT_USED,
+  CRM_RECO_FETCH_CURRENT_DEMO_DONE_2021,
+  CRM_RECO_FETCH_CURRENT_MOVED_2021,
+  CRM_RECO_FETCH_CURRENT_NEW_2021,
+  CRM_RECO_FETCH_CURRENT_USED_2021,
   CRM_RECO_CLEAR_STATE,
   CRM_FETCH_REASONS,
   CRM_CALL_FETCH_RESULTS,
-  CRM_RECO_FETCH_ARCHIVE,
   CRM_RECO_FETCH_STATUSES,
   CRM_RECO_FETCH_SINGLE,
   CRM_RECO_UPDATE_MODAL_TOGGLE,
@@ -20,6 +19,7 @@ import {
   NEW_CRM_SAVE_RECO,
   CRM_RECO_FETCH_CALL_DETAILS,
   CRM_RECO_FETCH_DEMO_DETAILS,
+  CRM_RECO_FETCH_ARCHIVE_2021,
 } from '../actions/recoAction';
 
 const INITIAL_STATE = {
@@ -35,6 +35,9 @@ const INITIAL_STATE = {
     totalRows: 0,
     perPage: 0,
     page: 0,
+    totalElements: 0,
+    number: 0,
+    size: 0,
   },
   reco: {},
   updateModalOpened: false,
@@ -59,16 +62,16 @@ export default function(state = INITIAL_STATE, action) {
 
     case CRM_FETCH_PHONE_NUMBER_HISTORY:
       return { ...state, phoneNumberHistory: action.payload };
-    case CRM_RECO_FETCH_CURRENT_DEMO_DONE:
+    case CRM_RECO_FETCH_CURRENT_DEMO_DONE_2021:
       return { ...state, doneItems: action.items };
 
-    case CRM_RECO_FETCH_CURRENT_MOVED:
+    case CRM_RECO_FETCH_CURRENT_MOVED_2021:
       return { ...state, movedItems: action.items };
 
-    case CRM_RECO_FETCH_CURRENT_NEW:
+    case CRM_RECO_FETCH_CURRENT_NEW_2021:
       return { ...state, newItems: action.items };
 
-    case CRM_RECO_FETCH_CURRENT_USED:
+    case CRM_RECO_FETCH_CURRENT_USED_2021:
       return { ...state, usedItems: action.items };
 
     case CRM_CALL_FETCH_RESULTS:
@@ -93,7 +96,7 @@ export default function(state = INITIAL_STATE, action) {
 
       return { ...state, phoneErrors, loadingPhones: loadedPhones };
 
-    case CRM_RECO_FETCH_ARCHIVE:
+    case CRM_RECO_FETCH_ARCHIVE_2021:
       return {
         ...state,
         items: action.items,

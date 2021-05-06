@@ -18,11 +18,13 @@ import {
 /**
  * Страница Текущие рекомендации
  */
-export const CRM_RECO_FETCH_CURRENT_USED = 'CRM_RECO_FETCH_CURRENT_USED';
-export const CRM_RECO_FETCH_CURRENT_NEW = 'CRM_RECO_FETCH_CURRENT_NEW';
-export const CRM_RECO_FETCH_CURRENT_DEMO_DONE =
-  'CRM_RECO_FETCH_CURRENT_DEMO_DONE';
-export const CRM_RECO_FETCH_CURRENT_MOVED = 'CRM_RECO_FETCH_CURRENT_MOVED';
+export const CRM_RECO_FETCH_CURRENT_USED_2021 = 'CRM_RECO_FETCH_CURRENT_USED';
+export const CRM_RECO_FETCH_CURRENT_NEW_2021 =
+  'CRM_RECO_FETCH_CURRENT_NEW_2021';
+export const CRM_RECO_FETCH_CURRENT_DEMO_DONE_2021 =
+  'CRM_RECO_FETCH_CURRENT_DEMO_DONE_2021';
+export const CRM_RECO_FETCH_CURRENT_MOVED_2021 =
+  'CRM_RECO_FETCH_CURRENT_MOVED_2021';
 
 // After checked
 export const CRM_RECO_CHECKED_PHONE_NUMBER = 'CRM_RECO_CHECKED_PHONE_NUMBER';
@@ -33,6 +35,8 @@ export const CRM_RECO_CHECKING_PHONE_NUMBER = 'CRM_RECO_CHECKING_PHONE_NUMBER';
  *
  */
 export const CRM_RECO_FETCH_ARCHIVE = 'CRM_RECO_FETCH_ARCHIVE';
+
+export const CRM_RECO_FETCH_ARCHIVE_2021 = 'CRM_RECO_FETCH_ARCHIVE_2021';
 
 export const CRM_RECO_FETCH_STATUSES = 'CRM_RECO_FETCH_STATUSES';
 
@@ -75,7 +79,7 @@ export const fetchPhoneNumberHistory = phoneId => {
 
 export const updateReco = reco => {
   return dispatch => {
-    doPut(`crm/reco/${reco.id}`, { ...reco })
+    doPut(`reco/${reco.id}`, { ...reco })
       .then(({ data }) => {
         dispatch({
           type: CRM_RECO_UPDATE,
@@ -91,7 +95,7 @@ export const updateReco = reco => {
 export const fetchSingleReco = id => {
   return dispatch => {
     dispatch(modifyLoader(true));
-    doGet2(`reco/${id}`)
+    doGet(`reco/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -108,7 +112,7 @@ export const fetchSingleReco = id => {
 export const fetchCallDetails = id => {
   return dispatch => {
     dispatch(modifyLoader(true));
-    doGet2(`call/by-reco/${id}`)
+    doGet(`call/by-reco/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -125,7 +129,7 @@ export const fetchCallDetails = id => {
 export const fetchDemoDetails = id => {
   return dispatch => {
     dispatch(modifyLoader(true));
-    doGet2(`demo/by-reco/${id}`)
+    doGet(`demo/by-reco/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -142,24 +146,25 @@ export const fetchDemoDetails = id => {
 export const fetchRecoCurrentData = type => {
   return dispatch => {
     dispatch(modifyLoader(true));
-    doGet2(`reco/current/${type}`)
+    doGet(`reco/current/${type}`)
       .then(({ data }) => {
+        console.log('reco current data: ', data);
         let actionType;
         switch (type) {
           case 'new':
-            actionType = CRM_RECO_FETCH_CURRENT_NEW;
+            actionType = CRM_RECO_FETCH_CURRENT_NEW_2021;
             break;
 
           case 'demo-done':
-            actionType = CRM_RECO_FETCH_CURRENT_DEMO_DONE;
+            actionType = CRM_RECO_FETCH_CURRENT_DEMO_DONE_2021;
             break;
 
           case 'moved':
-            actionType = CRM_RECO_FETCH_CURRENT_MOVED;
+            actionType = CRM_RECO_FETCH_CURRENT_MOVED_2021;
             break;
 
           default:
-            actionType = CRM_RECO_FETCH_CURRENT_USED;
+            actionType = CRM_RECO_FETCH_CURRENT_USED_2021;
             break;
         }
         dispatch(modifyLoader(false));
@@ -198,13 +203,13 @@ export const fetchCallResults = () => {
 export const fetchRecoArchive = params => {
   return dispatch => {
     dispatch(modifyLoader(true));
-    doGet2(`crm/reco/archive`, params)
+    doGet(`reco/archive`, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
-          type: CRM_RECO_FETCH_ARCHIVE,
-          items: data.items,
-          meta: data.meta,
+          type: CRM_RECO_FETCH_ARCHIVE_2021,
+          items: data.content,
+          meta: data,
         });
       })
       .catch(e => {
@@ -235,8 +240,9 @@ export const checkPhoneNumber = (staffId, phoneNumber) => {
 
 export const fetchRecoStatuses = () => {
   return dispatch => {
-    doGet2(`reco/statuses`)
+    doGet(`reco/statuses`)
       .then(res => {
+        console.log('statuses: ', res);
         const loaded = Object.keys(res.data).map(k => ({
           key: k,
           text: res.data[k],
@@ -325,7 +331,7 @@ export const blankReco = (context, contextId) => {
 export const createRecoList = (o, callBackOnError) => {
   return dispatch => {
     dispatch(modifyLoader(true));
-    doPost2(`reco`, o)
+    doPost(`reco`, o)
       .then(() => {
         browserHistory.push('/crm/reco/current');
       })

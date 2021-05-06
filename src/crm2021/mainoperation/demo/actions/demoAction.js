@@ -59,8 +59,9 @@ export const fetchDemo = id => {
 export const fetchDemoChildRecos = id => {
   return dispatch => {
     dispatch(modifyLoader(true));
-    doGet(`crm/demo/${id}/child-recos`)
+    doGet(`demo/${id}/child-recos`)
       .then(({ data }) => {
+        console.log('demo view data: ', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: CRM_DEMO_FETCH_CHILD_RECOS,
@@ -77,7 +78,7 @@ export const fetchDemoChildRecos = id => {
 export const fetchDemoCurrentData = () => {
   return dispatch => {
     dispatch(modifyLoader(true));
-    doGet(`crm/demo/current`)
+    doGet(`demo/current`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

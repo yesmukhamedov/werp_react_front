@@ -71,6 +71,7 @@ import srtbbReducer from '../service/report/srtbb/srtbbReducer';
 import srqpwgsReducer from '../service/report/srqpwgs/srqpwgsReducer';
 import exampleReducer from '../crm2021/example/exampleReducer';
 import recoReducer2021 from '../crm2021/mainoperation/reco/reducers/recoReducer';
+import demoReducer2021 from '../crm2021/mainoperation/demo/reducers/demoReducer';
 
 const appReducer = combineReducers({
   form,
@@ -144,6 +145,7 @@ const appReducer = combineReducers({
   srqpwgsReducer: srqpwgsReducer,
   exampleReducer: exampleReducer,
   crmReco2021: recoReducer2021,
+  crmDemo2021: demoReducer2021,
 });
 
 const rootReducer = (state, action) => {

@@ -210,7 +210,7 @@ class RecoArchivePage extends Component {
             name="branch"
             multiple
             search
-            selection
+            selected
             label="Филиал"
             options={branchOptions[queryParams['bukrs']] || []}
             placeholder="Филиал"
@@ -225,7 +225,6 @@ class RecoArchivePage extends Component {
             placeholder={messages['Form.Status']}
             onChange={this.handleDropdownChange}
           />
-
           {this.props.dealers
             ? this.getDealersSelect(this.props.dealers, messages)
             : ''}
@@ -297,14 +296,14 @@ class RecoArchivePage extends Component {
       <Table.Footer>
         <Table.Row>
           <Table.HeaderCell colSpan="2">
-            {messages.overallSum}: {this.props.meta.totalRows}
+            {messages.overallSum}: {this.props.meta.totalElements}
           </Table.HeaderCell>
           <Table.HeaderCell colSpan="6">
             <LazyPagination
               onItemClick={this.loadItems}
-              totalRows={this.props.meta.totalRows}
-              currentPage={this.props.meta.page}
-              perPage={this.props.meta.perPage}
+              totalRows={this.props.meta.totalElements}
+              currentPage={this.props.meta.number}
+              perPage={this.props.meta.size}
             />
           </Table.HeaderCell>
         </Table.Row>
@@ -368,8 +367,8 @@ class RecoArchivePage extends Component {
 
 function mapStateToProps(state) {
   return {
-    items: state.crmReco.items,
-    meta: state.crmReco.meta,
+    items: state.crmReco2021.items,
+    meta: state.crmReco2021.meta,
     statuses: state.crmReco.statuses,
     loader: state.loader,
     dealers: state.crmDemo.dealers,
