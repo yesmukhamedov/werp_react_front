@@ -1,4 +1,4 @@
-import { doGet2 } from '../../utils/apiActions';
+import { doGet } from '../../utils/apiActions';
 import { handleError } from '../../general/notification/notification_action';
 import { modifyLoader } from '../../general/loader/loader_action';
 
@@ -12,7 +12,7 @@ export const fetchExample = param => {
   console.log('ACTION');
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet2(`reco/archive`)
+    doGet(`reco/archive`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

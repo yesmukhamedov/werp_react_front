@@ -27,24 +27,10 @@ export const doGet = (uri, params = {}) => {
     params,
   });
 };
-export const doGet2 = (uri, params = {}) => {
-  let url = defineBackendUrl(uri);
-  console.log('uri: ' + uri, 'url: ' + url);
-  return axiosInstance.get(url + '/' + uri, {
-    params,
-  });
-};
 
 export const doPost = (uri, postData, params = {}) => {
   let url = defineBackendUrl(uri);
   return axiosInstance.post(url + '/api/' + uri, postData, {
-    params,
-  });
-};
-
-export const doPost2 = (uri, postData, params = {}) => {
-  let url = defineBackendUrl(uri);
-  return axiosInstance.post(url + uri, postData, {
     params,
   });
 };
@@ -56,23 +42,9 @@ export const doPut = (uri, putData, params = {}) => {
   });
 };
 
-export const doPut2 = (uri, putData, params = {}) => {
-  let url = defineBackendUrl(uri);
-  return axiosInstance.put(url + uri, putData, {
-    params,
-  });
-};
-
 export const doDelete = (uri, delData, params = {}) => {
   let url = defineBackendUrl(uri);
   return axiosInstance.delete(url + '/api/' + uri, delData, {
-    params,
-  });
-};
-
-export const doDelete2 = (uri, delData, params = {}) => {
-  let url = defineBackendUrl(uri);
-  return axiosInstance.delete(url + uri, delData, {
     params,
   });
 };

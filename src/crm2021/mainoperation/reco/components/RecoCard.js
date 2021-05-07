@@ -109,18 +109,16 @@ export default function RecoCard(props) {
           <br />
 
           <Form.Dropdown
-            value={item.categoryId || 0}
-            error={!item.categoryId || item.categoryId === 0}
+            value={item.category}
+            error={!item.category}
             fluid
             selection
             label={messages['Form.Reco.Category']}
             placeholder={messages['Form.Reco.Category']}
             options={getRecoCategoriesOptionsByLanguage(locale)}
-            onChange={(e, d) =>
-              props.handleChange('categoryId', index, d.value)
-            }
+            onChange={(e, d) => props.handleChange('category', index, d.value)}
           />
-          <div style={errorBlockCss}>{errors[errorKey + 'categoryId']}</div>
+          <div style={errorBlockCss}>{errors[errorKey + 'category']}</div>
           <br />
 
           <Form.Input

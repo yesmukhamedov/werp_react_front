@@ -36,11 +36,11 @@ class RecoCreatePage extends Component {
     this.loadedSuccess = true;
     this.state = {
       reco: {
-        context: this.props.match.params.context || DEFAULT_CONTEXT,
-        contextId: this.props.match.params.contextId || 0,
+        context: null,
+        contextId: null,
         tempRecommender: '',
         recommenderInfo: '',
-        responsibleId: 0,
+        responsibleId: null,
         items: [],
       },
       itemPhones: [],
@@ -61,18 +61,6 @@ class RecoCreatePage extends Component {
     this.props.fetchGroupDealers();
     let context = this.props.match.params.context;
     let contextId = this.props.match.params.contextId;
-
-    this.props
-      .blankReco(context || DEFAULT_CONTEXT, contextId || 0)
-      .then(res => {
-        this.setState({
-          ...this.state,
-          reco: res.data,
-        });
-      })
-      .catch(e => {
-        console.log(e);
-      });
   }
 
   handleItemChange(fieldName, index, value) {
@@ -166,13 +154,10 @@ class RecoCreatePage extends Component {
 
   addReco() {
     let { reco } = this.state;
-    if (
-      !reco['responsibleId'] ||
-      reco['responsibleId'] === null ||
-      reco['responsibleId'] === 0
-    ) {
+    if (!reco['responsibleId']) {
       return;
     }
+
     let itemIndex = reco.items.length;
     let form = {
       clientName: '',

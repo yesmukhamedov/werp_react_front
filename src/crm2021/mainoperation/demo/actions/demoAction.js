@@ -41,7 +41,7 @@ export const updateDemo = demo => {
 export const fetchDemo = id => {
   return dispatch => {
     dispatch(modifyLoader(true));
-    doGet(`crm/demo/${id}`)
+    doGet(`demo/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

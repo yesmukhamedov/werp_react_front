@@ -4,21 +4,13 @@ import {
 } from '../../../../general/notification/notification_action';
 import { modifyLoader } from '../../../../general/loader/loader_action';
 import browserHistory from '../../../../utils/history';
-import {
-  doGet,
-  doGet2,
-  doPut2,
-  doPut,
-  doDelete,
-  doPost2,
-  doPost,
-  doDelete2,
-} from '../../../../utils/apiActions';
+import { doGet, doPut, doDelete, doPost } from '../../../../utils/apiActions';
 
 /**
  * Страница Текущие рекомендации
  */
-export const CRM_RECO_FETCH_CURRENT_USED_2021 = 'CRM_RECO_FETCH_CURRENT_USED';
+export const CRM_RECO_FETCH_CURRENT_USED_2021 =
+  'CRM_RECO_FETCH_CURRENT_USED_2021';
 export const CRM_RECO_FETCH_CURRENT_NEW_2021 =
   'CRM_RECO_FETCH_CURRENT_NEW_2021';
 export const CRM_RECO_FETCH_CURRENT_DEMO_DONE_2021 =
@@ -148,7 +140,6 @@ export const fetchRecoCurrentData = type => {
     dispatch(modifyLoader(true));
     doGet(`reco/current/${type}`)
       .then(({ data }) => {
-        console.log('reco current data: ', data);
         let actionType;
         switch (type) {
           case 'new':
@@ -242,7 +233,6 @@ export const fetchRecoStatuses = () => {
   return dispatch => {
     doGet(`reco/statuses`)
       .then(res => {
-        console.log('statuses: ', res);
         const loaded = Object.keys(res.data).map(k => ({
           key: k,
           text: res.data[k],
@@ -289,9 +279,9 @@ export const toggleRecoUpdateModal = flag => {
 
 export const deleteReco = recoId => {
   return dispatch => {
-    doDelete2(`reco/${recoId}`)
+    doDelete(`reco/${recoId}`)
       .then(response => {
-        browserHistory.push('/crm/reco/current');
+        browserHistory.push('reco/current');
       })
       .catch(e => {
         handleError(e, dispatch);
@@ -300,12 +290,12 @@ export const deleteReco = recoId => {
 };
 
 export const createRecoListNew = o => {
-  return dispatch => doPost2(`reco`, o);
+  return dispatch => doPost(`reco`, o);
 };
 
 export const blankReco = (context, contextId) => {
   return dispatch =>
-    doGet(`crm/reco/create?context=${context}&contextId=${contextId}`);
+    doGet(`reco/create?context=${context}&contextId=${contextId}`);
 };
 
 // export const saveReco  =(body)=>{
@@ -333,7 +323,7 @@ export const createRecoList = (o, callBackOnError) => {
     dispatch(modifyLoader(true));
     doPost(`reco`, o)
       .then(() => {
-        browserHistory.push('/crm/reco/current');
+        browserHistory.push('reco/current');
       })
       .catch(e => {
         if (callBackOnError) {
