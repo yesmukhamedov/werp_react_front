@@ -54,6 +54,8 @@ export const CRM_RECO_FETCH_CALL_DETAILS = 'CRM_RECO_FETCH_CALL_DETAILS';
 
 export const CRM_RECO_FETCH_DEMO_DETAILS = 'CRM_RECO_FETCH_DEMO_DETAILS';
 
+export const CRM_RECO_CATEGORIES_FETCHED = 'CRM_RECO_CATEGORIES_FETCHED';
+
 export const fetchPhoneNumberHistory = phoneId => {
   return dispatch => {
     doGet(`crm/call/number-history/${phoneId}`)
@@ -384,6 +386,27 @@ export const fetchPhoneMeta = () => {
         dispatch({
           type: CRM_FETCH_PHONE_META,
           payload: data,
+        });
+      })
+      .catch(e => {
+        handleError(e, dispatch);
+      });
+  };
+};
+
+export const fetchRecoCategories = () => {
+  return dispatch => {
+    doGet(`reco/categories`)
+      .then(({ data }) => {
+        const loaded = Object.keys(data).map(k => ({
+          key: k,
+          text: data[k],
+          value: k,
+        }));
+
+        dispatch({
+          type: CRM_RECO_CATEGORIES_FETCHED,
+          payload: loaded,
         });
       })
       .catch(e => {

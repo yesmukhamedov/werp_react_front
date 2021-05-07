@@ -24,6 +24,7 @@ import {
   createRecoListNew,
   blankRecoItem,
   blankReco,
+  fetchRecoCategories,
 } from '../actions/recoAction';
 import { injectIntl } from 'react-intl';
 require('moment/locale/ru');
@@ -35,6 +36,8 @@ class RecoCreatePage extends Component {
     super(props);
     this.loadedSuccess = true;
     this.state = {
+      phonePattern: '(999)-999-99-99',
+      phoneCode: '+7',
       reco: {
         context: null,
         contextId: null,
@@ -57,10 +60,15 @@ class RecoCreatePage extends Component {
     this.handleItemChange = this.handleItemChange.bind(this);
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.fetchGroupDealers();
+    this.props.fetchRecoCategories();
+
     let context = this.props.match.params.context;
     let contextId = this.props.match.params.contextId;
+    let reco = Object.assign({}, this.state.reco);
+    reco['context'] = context || null;
+    reco['contextId'] = contextId || null;
   }
 
   handleItemChange(fieldName, index, value) {
@@ -75,7 +83,7 @@ class RecoCreatePage extends Component {
         if (fieldName === 'phoneNumber2') {
           displayName = 'displayPhone2';
         }
-        const phonePattern = this.state.reco.phonePattern || '';
+        const phonePattern = this.state.phonePattern || '';
         const ppLenght = phonePattern.replace(/[^0-9]+/g, '').length;
         let v = value.replace(/[^0-9]+/g, '');
         if (v.length === 0) {
@@ -161,9 +169,9 @@ class RecoCreatePage extends Component {
     let itemIndex = reco.items.length;
     let form = {
       clientName: '',
-      districtName: '',
-      professionName: '',
-      relativeName: '',
+      district: '',
+      profession: '',
+      relative: '',
       callDate: null,
       callerIsDealer: 0,
       note: '',
@@ -171,11 +179,7 @@ class RecoCreatePage extends Component {
       displayPhone1: '',
       phoneNumber2: '',
       displayPhone2: '',
-      hasChild: 0,
-      hasAnimal: 0,
-      hasAllergy: 0,
-      hasAsthma: 0,
-      categoryId: 0,
+      category: null,
       switchDate: 0,
     };
 
@@ -187,18 +191,20 @@ class RecoCreatePage extends Component {
   }
 
   renderRecoForms() {
+    console.log(this.props);
     const { messages, locale } = this.props.intl;
     let { items } = this.state.reco;
     const { errors } = this.state;
     return items.map((item, index) => {
       return (
         <RecoCard
+          categories={this.props.categories}
           messages={messages}
           locale={locale}
           handleChangeDate={this.handleChangeDate}
           itemPhones={this.state.itemPhones}
-          phoneCode={this.state.reco['phoneCode']}
-          phonePattern={this.state.reco['phonePattern']}
+          phoneCode={this.state.phoneCode}
+          phonePattern={this.state.phonePattern}
           handleChange={this.handleItemChange}
           removeReco={this.removeReco}
           key={index}
@@ -239,7 +245,7 @@ class RecoCreatePage extends Component {
             let stateErrors = {};
             if (error && error.response && error.response.status) {
               if (400 === error.response.status) {
-                stateErrors = error.response.data;
+                stateErrors = error.response.data['messages'] || {};
               }
             }
             _this.setState({
@@ -387,9 +393,10 @@ class RecoCreatePage extends Component {
 const mapStateToProps = state => {
   return {
     dealers: state.crmDemo.dealers,
-    phoneErrors: state.crmReco.phoneErrors,
+    phoneErrors: state.crmReco2021.phoneErrors,
     loadingPhones: state.crmReco.loadingPhones,
-    recoErrors: state.crmReco.recoErrors,
+    recoErrors: state.crmReco2021.recoErrors,
+    categories: state.crmReco2021.recoCategories,
   };
 };
 
@@ -400,4 +407,5 @@ export default connect(mapStateToProps, {
   createRecoListNew,
   blankRecoItem,
   blankReco,
+  fetchRecoCategories,
 })(injectIntl(RecoCreatePage));

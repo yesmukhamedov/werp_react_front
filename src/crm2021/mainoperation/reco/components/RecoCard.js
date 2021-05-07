@@ -27,8 +27,9 @@ export default function RecoCard(props) {
     messages,
     locale,
     errors,
+    categories,
   } = props;
-
+  console.log(errors);
   const patternLength = phonePattern.replace(/[^0-9]+/g, '').length;
   const errorKey = `items[${index}].`;
   const phoneHasError = name => {
@@ -115,7 +116,7 @@ export default function RecoCard(props) {
             selection
             label={messages['Form.Reco.Category']}
             placeholder={messages['Form.Reco.Category']}
-            options={getRecoCategoriesOptionsByLanguage(locale)}
+            options={categories}
             onChange={(e, d) => props.handleChange('category', index, d.value)}
           />
           <div style={errorBlockCss}>{errors[errorKey + 'category']}</div>
@@ -124,23 +125,19 @@ export default function RecoCard(props) {
           <Form.Input
             label={messages['Form.Reco.District']}
             placeholder={messages['Form.Reco.District']}
-            onChange={(e, d) =>
-              props.handleChange('districtName', index, d.value)
-            }
-            value={item.districtName || ''}
+            onChange={(e, d) => props.handleChange('district', index, d.value)}
+            value={item.district || ''}
           />
-          <div style={errorBlockCss}>{errors[errorKey + 'districtName']}</div>
+          <div style={errorBlockCss}>{errors[errorKey + 'district']}</div>
           <br />
 
           <Form.Input
-            value={item.relativeName || ''}
+            value={item.relative || ''}
             label={messages['Form.Reco.Relative']}
             placeholder={messages['Form.Reco.Relative']}
-            onChange={(e, d) =>
-              props.handleChange('relativeName', index, d.value)
-            }
+            onChange={(e, d) => props.handleChange('relative', index, d.value)}
           />
-          <div style={errorBlockCss}>{errors[errorKey + 'relativeName']}</div>
+          <div style={errorBlockCss}>{errors[errorKey + 'relative']}</div>
           <br />
 
           <Form.Dropdown

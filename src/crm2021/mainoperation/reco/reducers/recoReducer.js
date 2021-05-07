@@ -20,6 +20,7 @@ import {
   CRM_RECO_FETCH_CALL_DETAILS,
   CRM_RECO_FETCH_DEMO_DETAILS,
   CRM_RECO_FETCH_ARCHIVE_2021,
+  CRM_RECO_CATEGORIES_FETCHED,
 } from '../actions/recoAction';
 
 const INITIAL_STATE = {
@@ -52,11 +53,15 @@ const INITIAL_STATE = {
   phoneMeta: {},
   callDetails: [],
   demoDetails: [],
+  recoCategories: {},
 };
 
 export default function(state = INITIAL_STATE, action) {
   // state.recoBlankedItem = {}
   switch (action.type) {
+    case CRM_RECO_CATEGORIES_FETCHED:
+      return { ...state, recoCategories: action.payload };
+
     case CRM_FETCH_PHONE_META:
       return { ...state, phoneMeta: action.payload };
 
