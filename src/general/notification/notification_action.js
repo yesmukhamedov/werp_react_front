@@ -18,7 +18,6 @@ export function handleError(error, dispatch) {
   const language = localStorage.getItem('language');
 
   if (error.response) {
-    // console.log(error);
     if (error.response.status && error.response.status === 403) {
       browserHistory.push('/forbidden');
     } else if (error.response.status && error.response.status === 500) {
@@ -70,7 +69,6 @@ export function handleError(error, dispatch) {
       message = error;
     } else {
       message = 'TypeError, check console ' + '(' + error.message + ')';
-      console.log(error);
     }
 
     Promise.resolve({ error }).then(response =>

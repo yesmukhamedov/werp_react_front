@@ -15,6 +15,10 @@ const defineBackendUrl = uri => {
         return CRM_URL;
       case 'DEMO':
         return CRM_URL;
+      case 'VISIT':
+        return CRM_URL;
+      case 'WSPACE':
+        return CRM_URL;
       default:
         return ROOT_URL;
     }

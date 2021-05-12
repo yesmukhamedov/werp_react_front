@@ -9,6 +9,7 @@ import {
   CRM_DEMO_UPDATE,
   CRM_DEMO_UPDATE_MODAL_TOGGLE,
   CRM_DEMO_CREATE_MODAL_TOGGLE,
+  CRM_DEMO_FETCH_CHILD_DEMOS,
   CRM_DEMO_FETCH_CHILD_RECOS,
 } from '../actions/demoAction';
 
@@ -25,6 +26,9 @@ const INITIAL_STATE = {
     totalRows: 0,
     perPage: 0,
     page: 0,
+    totalElements: 0,
+    number: 0,
+    size: 1,
   },
   dealers: [],
   openDemoUpdateModal: false,
@@ -63,8 +67,11 @@ export default function(state = INITIAL_STATE, action) {
     case CRM_DEMO_CLEAR_STATE:
       return { ...state, INITIAL_STATE };
 
+    case CRM_DEMO_FETCH_CHILD_DEMOS:
+      return { ...state, childDemos: action.payload };
+
     case CRM_DEMO_FETCH_CHILD_RECOS:
-      return { ...state, childRecos: action.payload };
+      return { ...state, childDemos: action.payload };
 
     default:
       return state;

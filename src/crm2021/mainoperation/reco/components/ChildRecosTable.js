@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom';
 export default function ChildRecosTable(props) {
   // Список рекомендации
   const { items, messages } = props;
-
   return (
     <Card fluid>
       <Card.Content>

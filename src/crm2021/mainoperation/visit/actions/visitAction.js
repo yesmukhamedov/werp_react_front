@@ -22,7 +22,7 @@ export const CRM_VISIT_FETCH_CHILD_RECOS = 'CRM_VISIT_FETCH_CHILD_RECOS';
 export function fetchArchive() {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`crm/visit/archive`)
+    doGet(`visit/archive`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -40,7 +40,7 @@ export function fetchArchive() {
 export function fetchSingleVisit(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`crm/visit/${id}`)
+    doGet(`visit/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -58,10 +58,10 @@ export function fetchSingleVisit(id) {
 export function deleteVisit(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doDelete(`crm/visit/${id}`)
+    doDelete(`visit/${id}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
-        browserHistory.push('/crm/visit/archive');
+        browserHistory.push('/crm2021/visit/archive');
       })
       .catch(e => {
         dispatch(modifyLoader(false));
@@ -74,7 +74,7 @@ export function createVisit(o) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
 
-    doPost(`crm/visit/`, o)
+    doPost(`visit/`, o)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -105,7 +105,7 @@ export function updateVisit(o, fromComponent) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
 
-    doPut(`crm/visit/`, o)
+    doPut(`visit/`, o)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         if (fromComponent === 'archive') {
@@ -157,7 +157,7 @@ export function blankForCreate(recoId, staffId) {
 export function fetchVisitChildRecos(id) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-    doGet(`crm/visit/${id}/child-recos`)
+    doGet(`visit/${id}/recos`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({

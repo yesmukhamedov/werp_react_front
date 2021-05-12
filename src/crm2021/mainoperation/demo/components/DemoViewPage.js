@@ -18,6 +18,7 @@ import {
   toggleDemoCreateModal,
   deleteDemo,
   clearState,
+  fetchDemoChildDemos,
   fetchDemoChildRecos,
 } from '../actions/demoAction';
 import { connect } from 'react-redux';
@@ -49,7 +50,9 @@ class DemoViewPage extends Component {
 
   componentWillMount() {
     const id = parseInt(this.props.match.params.id, 10);
+    console.log('demo view props: ', this.props);
     this.props.fetchDemo(id);
+    this.props.fetchDemoChildDemos(id);
     this.props.fetchDemoChildRecos(id);
   }
 
@@ -180,6 +183,7 @@ class DemoViewPage extends Component {
   render() {
     const { demo } = this.props;
     const { messages } = this.props.intl;
+    // console.log('demo view props: ',this.props)
     return (
       <Container
         fluid
@@ -246,11 +250,11 @@ class DemoViewPage extends Component {
 
 function mapStateToProps(state) {
   return {
-    dealers: state.crmDemo.dealers,
+    dealers: state.crmDemo2021.dealers,
     loader: state.loader,
-    demo: state.crmDemo.demo,
-    recommender: state.crmDemo.recommender,
-    childRecos: state.crmDemo.childRecos,
+    demo: state.crmDemo2021.demo,
+    recommender: state.crmDemo2021.recommender,
+    childRecos: state.crmDemo2021.childRecos,
   };
 }
 
@@ -260,5 +264,6 @@ export default connect(mapStateToProps, {
   toggleDemoCreateModal,
   deleteDemo,
   clearState,
+  fetchDemoChildDemos,
   fetchDemoChildRecos,
 })(injectIntl(DemoViewPage));

@@ -128,7 +128,6 @@ class RecoViewPage extends Component {
   render() {
     const { reco } = this.props;
     const { messages } = this.props.intl;
-    console.log(reco);
     return (
       <Container
         fluid

@@ -10,6 +10,8 @@ export const CRM_DEMO_FETCH_ARCHIVE = 'CRM_DEMO_FETCH_ARCHIVE';
 export const CRM_DEMO_FETCH_SINGLE = 'CRM_DEMO_FETCH_SINGLE';
 export const CRM_DEMO_UPDATE = 'CRM_DEMO_UPDATE';
 
+export const CRM_DEMO_FETCH_CHILD_DEMOS = 'CRM_DEMO_FETCH_CHILD_DEMOS';
+
 export const CRM_DEMO_FETCH_CHILD_RECOS = 'CRM_DEMO_FETCH_CHILD_RECOS';
 /**
  *
@@ -25,7 +27,7 @@ export const CRM_DEMO_CREATE_MODAL_TOGGLE = 'CRM_DEMO_CREATE_MODAL_TOGGLE';
 
 export const updateDemo = demo => {
   return dispatch => {
-    doPut(`crm/demo/${demo.id}`, { ...demo })
+    doPut(`demo/${demo.id}`, { ...demo })
       .then(({}) => {
         dispatch({
           type: CRM_DEMO_UPDATE,
@@ -46,7 +48,7 @@ export const fetchDemo = id => {
         dispatch(modifyLoader(false));
         dispatch({
           type: CRM_DEMO_FETCH_SINGLE,
-          demo: data.demo,
+          demo: data,
           recommender: data.recommender,
         });
       })
@@ -56,12 +58,29 @@ export const fetchDemo = id => {
   };
 };
 
+export const fetchDemoChildDemos = id => {
+  return dispatch => {
+    dispatch(modifyLoader(true));
+    doGet(`demo/${id}/child-demos`)
+      .then(({ data }) => {
+        dispatch(modifyLoader(false));
+        dispatch({
+          type: CRM_DEMO_FETCH_CHILD_DEMOS,
+          payload: data,
+        });
+      })
+      .catch(error => {
+        dispatch(modifyLoader(false));
+        handleError(error, dispatch);
+      });
+  };
+};
+
 export const fetchDemoChildRecos = id => {
   return dispatch => {
     dispatch(modifyLoader(true));
-    doGet(`demo/${id}/child-recos`)
+    doGet(`demo/${id}/recos`)
       .then(({ data }) => {
-        console.log('demo view data: ', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: CRM_DEMO_FETCH_CHILD_RECOS,
@@ -95,12 +114,12 @@ export const fetchDemoCurrentData = () => {
 export const fetchDemoArchive = q => {
   return dispatch => {
     dispatch(modifyLoader(true));
-    doGet(`crm/demo/archive?${q}`)
+    doGet(`demo/archive?${q}`)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
           type: CRM_DEMO_FETCH_ARCHIVE,
-          items: data.items,
+          items: data.content,
           meta: data.meta,
         });
       })
@@ -113,8 +132,9 @@ export const fetchDemoArchive = q => {
 export const fetchSoldDemos = params => {
   return dispatch => {
     dispatch(modifyLoader(true));
-    doGet('crm/demo/sold-demos', params)
+    doGet('crm2021/demo/archive', params)
       .then(({ data }) => {
+        console.log('sold demos: ', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: CRM_DEMO_FETCH_ARCHIVE,
@@ -130,7 +150,7 @@ export const fetchSoldDemos = params => {
 
 export const fetchDemoResults = () => {
   return dispatch => {
-    doGet(`crm/demo/results`)
+    doGet(`demo/results`)
       .then(({ data }) => {
         dispatch({
           type: CRM_DEMO_FETCH_RESULTS,
@@ -187,9 +207,9 @@ export const fetchReasons = () => {
 
 export const deleteDemo = demoId => {
   return dispatch => {
-    doDelete(`crm/demo/${demoId}`)
+    doDelete(`demo/${demoId}`)
       .then(response => {
-        browserHistory.push('/crm/demo/current');
+        browserHistory.push('/crm2021/demo/current');
       })
       .catch(e => {
         handleError(e, dispatch);

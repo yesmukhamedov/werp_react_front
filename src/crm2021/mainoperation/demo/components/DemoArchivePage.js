@@ -55,9 +55,10 @@ class DemoArchivePage extends Component {
 
   loadItems(page) {
     let { searchModel } = this.state;
+    console.log('demo archive page props: ', this.props);
     let temp = [];
     temp.push('page=' + page);
-    temp.push('perPage=' + this.state.perPage);
+    temp.push('perPage=' + this.props.meta.size);
     for (let key in searchModel) {
       if (searchModel.hasOwnProperty(key)) {
         if (
@@ -258,7 +259,7 @@ class DemoArchivePage extends Component {
   }
 
   renderTableBody(messages) {
-    if (this.props.items.length === 0) {
+    if (this.props.items === undefined || this.props.items.length === 0) {
       return (
         <Table.Row>
           <Table.Cell colSpan={8}>Нет данных</Table.Cell>
@@ -284,7 +285,7 @@ class DemoArchivePage extends Component {
             <Link
               target={'_blank'}
               className={'ui icon button mini'}
-              to={`/crm/demo/view/` + item.id}
+              to={`/crm2021/demo/view/` + item.id}
             >
               {messages['Table.View']}
             </Link>
@@ -320,14 +321,14 @@ class DemoArchivePage extends Component {
         <Table.Footer>
           <Table.Row>
             <Table.HeaderCell colSpan="2">
-              {messages['overallSum']}: {this.props.meta.totalRows}
+              {messages['overallSum']}: {this.props.totalElements}
             </Table.HeaderCell>
             <Table.HeaderCell colSpan="6">
               <LazyPagination
                 onItemClick={this.onPaginationItemClick}
-                totalRows={this.props.meta.totalRows}
-                currentPage={this.props.meta.page}
-                perPage={this.props.meta.perPage}
+                totalRows={this.props.totalElements}
+                currentPage={this.props.number}
+                perPage={this.props.size}
               />
             </Table.HeaderCell>
           </Table.Row>
@@ -362,11 +363,11 @@ class DemoArchivePage extends Component {
 
 function mapStateToProps(state) {
   return {
-    items: state.crmDemo.items,
+    items: state.crmDemo2021.items,
     loader: state.loader,
-    meta: state.crmDemo.meta,
-    dealers: state.crmDemo.dealers,
-    demoResults: state.crmDemo.demoResults,
+    meta: state.crmDemo2021.meta,
+    dealers: state.crmDemo2021.dealers,
+    demoResults: state.crmDemo2021.demoResults,
     companyOptions: state.userInfo.companyOptions,
     branchOptions: state.userInfo.branchOptionsMarketing,
   };

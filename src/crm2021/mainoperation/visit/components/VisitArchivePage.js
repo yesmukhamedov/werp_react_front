@@ -116,7 +116,7 @@ class VisitArchivePage extends Component {
                 <div>
                   <Link
                     className="ui icon button mini"
-                    to={`/crm/visit/view/${row.value}`}
+                    to={`/crm2021/visit/view/${row.value}`}
                   >
                     <Icon name="eye" />
                   </Link>
@@ -173,7 +173,7 @@ class VisitArchivePage extends Component {
 function mapStateToProps(state) {
   return {
     visits: state.crmVisit.visits,
-    dealers: state.crmDemo.dealers,
+    dealers: state.crmDemo2021.dealers,
   };
 }
 

@@ -283,7 +283,7 @@ export const deleteReco = recoId => {
   return dispatch => {
     doDelete(`reco/${recoId}`)
       .then(response => {
-        browserHistory.push('reco/current');
+        browserHistory.push('crm2021/reco/current');
       })
       .catch(e => {
         handleError(e, dispatch);
@@ -325,7 +325,7 @@ export const createRecoList = (o, callBackOnError) => {
     dispatch(modifyLoader(true));
     doPost(`reco`, o)
       .then(() => {
-        browserHistory.push('reco/current');
+        browserHistory.push('crm2021/reco/current');
       })
       .catch(e => {
         if (callBackOnError) {
