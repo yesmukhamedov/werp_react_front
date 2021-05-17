@@ -19,6 +19,8 @@ const defineBackendUrl = uri => {
         return CRM_URL;
       case 'WSPACE':
         return CRM_URL;
+      // case 'REFERENCE':
+      //   return CRM_URL;
       default:
         return ROOT_URL;
     }
@@ -27,6 +29,13 @@ const defineBackendUrl = uri => {
 
 export const doGet = (uri, params = {}) => {
   let url = defineBackendUrl(uri);
+  return axiosInstance.get(url + '/api/' + uri, {
+    params,
+  });
+};
+
+export const doGet2 = (uri, params = {}) => {
+  let url = CRM_URL;
   return axiosInstance.get(url + '/api/' + uri, {
     params,
   });

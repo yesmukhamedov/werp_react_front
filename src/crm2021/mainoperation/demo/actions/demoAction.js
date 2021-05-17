@@ -1,7 +1,7 @@
 import { modifyLoader } from '../../../../general/loader/loader_action';
 import { handleError } from '../../../../general/notification/notification_action';
 import browserHistory from '../../../../utils/history';
-import { doGet, doPut, doDelete } from '../../../../utils/apiActions';
+import { doGet, doGet2, doPut, doDelete } from '../../../../utils/apiActions';
 
 export const CRM_DEMO_FETCH_CURRENT = 'CRM_DEMO_FETCH_CURRENT';
 export const CRM_DEMO_FETCH_ARCHIVE = 'CRM_DEMO_FETCH_ARCHIVE';
@@ -192,7 +192,7 @@ export const fetchGroupDealers = () => {
 
 export const fetchReasons = () => {
   return dispatch => {
-    doGet(`reference/reasons/0`)
+    doGet2(`reference/reasons`)
       .then(({ data }) => {
         dispatch({
           type: CRM_DEMO_FETCH_REASONS,
