@@ -26,6 +26,7 @@ import hrStaffReducer from '../hr/mainoperation/staff/reducers/hrStaffReducer';
 import hrPyramidReducer from '../hr/mainoperation/pyramid/reducers/hrPyramidReducer';
 import hrb02Reducer from '../hr/mainoperation/hrb02/hrb02_reducer';
 import kpiSettingReducer from '../crm/mainoperation/kpi/reducers/kpiSettingReducer';
+import kpiSettingReducer2021 from '../crm2021/mainoperation/kpi/reducers/kpiSettingReducer';
 import hrTimesheetReducer from '../hr/mainoperation/timesheet/reducers/hrTimesheetReducer';
 import crmReportReducer from '../crm/report/general/reducers/crmReportReducer';
 import hrReportReducer from '../hr/report/general/reducers/hrReportReducer';
@@ -148,6 +149,7 @@ const appReducer = combineReducers({
   crmReco2021: recoReducer2021,
   crmDemo2021: demoReducer2021,
   crmVisit2021: visitReducer2021,
+  crmKpiSetting2021: kpiSettingReducer2021,
 });
 
 const rootReducer = (state, action) => {

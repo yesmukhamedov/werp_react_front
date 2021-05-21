@@ -83,11 +83,11 @@ class DemoViewPage extends Component {
     const notDemoDone = demo.resultId === 0 || demo.resultId === 7;
     return (
       <div>
-        <Link className="ui icon button" to="/crm/demo/current">
+        <Link className="ui icon button" to="/crm2021/demo/current">
           {messages['Crm.ToCurrentList']}
         </Link>
 
-        <Link className="ui icon button" to="/crm/demo/archive">
+        <Link className="ui icon button" to="/crm2021/demo/archive">
           {messages['Crm.ToArchiveList']}
         </Link>
         <ReactToPrint
@@ -100,7 +100,7 @@ class DemoViewPage extends Component {
         ) : (
           <Link
             className="ui icon button"
-            to={`/crm/reco/create/demo/${demo.id}`}
+            to={`/crm2021/reco/create/demo/${demo.id}`}
           >
             {messages['Crm.ToAddReco']}
           </Link>

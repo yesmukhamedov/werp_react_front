@@ -58,7 +58,7 @@ export const CRM_RECO_CATEGORIES_FETCHED = 'CRM_RECO_CATEGORIES_FETCHED';
 
 export const fetchPhoneNumberHistory = phoneId => {
   return dispatch => {
-    doGet(`crm/call/number-history/${phoneId}`)
+    doGet(`call/number-history/${phoneId}`)
       .then(({ data }) => {
         dispatch({
           type: CRM_FETCH_PHONE_NUMBER_HISTORY,
@@ -73,7 +73,7 @@ export const fetchPhoneNumberHistory = phoneId => {
 
 export const updateReco = reco => {
   return dispatch => {
-    doPut(`reco/${reco.id}`, { ...reco })
+    doPut(`reco/`, { ...reco })
       .then(({ data }) => {
         dispatch({
           type: CRM_RECO_UPDATE,
@@ -174,7 +174,7 @@ export const fetchRecoCurrentData = type => {
 
 export const fetchCallResults = () => {
   return dispatch => {
-    doGet(`crm/call/results`)
+    doGet(`call/results`)
       .then(({ data }) => {
         const loaded = Object.keys(data).map(k => ({
           key: k,

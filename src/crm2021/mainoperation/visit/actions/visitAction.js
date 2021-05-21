@@ -42,6 +42,7 @@ export function fetchSingleVisit(id) {
     dispatch(modifyLoader(true));
     doGet(`visit/${id}`)
       .then(({ data }) => {
+        console.log('fetchSingleVisit data: ', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: CRM_VISIT_FETCH_SINGLE,
@@ -73,9 +74,9 @@ export function deleteVisit(id) {
 export function createVisit(o) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
-
-    doPost(`visit/`, o)
+    doPost(`visit`, o)
       .then(({ data }) => {
+        console.log('createVisit data: ', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: CRM_VISIT_CREATE,
@@ -93,7 +94,7 @@ export function createVisit(o) {
           e.response.status === 303
         ) {
           dispatch(modalToggle(false));
-          browserHistory.push(`/crm/reco/view/${e.response.data.recoId}`);
+          browserHistory.push(`/crm2021/reco/view/${e.response.data.recoId}`);
         } else {
           handleError(e, dispatch);
         }
@@ -101,12 +102,13 @@ export function createVisit(o) {
   };
 }
 
-export function updateVisit(o, fromComponent) {
+export function updateVisit(o, fromComponent, fun) {
   return function(dispatch) {
     dispatch(modifyLoader(true));
 
-    doPut(`visit/`, o)
+    doPut(`visit`, o)
       .then(({ data }) => {
+        console.log('update visit data: ', data);
         dispatch(modifyLoader(false));
         if (fromComponent === 'archive') {
           dispatch(fetchArchive());

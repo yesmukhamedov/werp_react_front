@@ -207,7 +207,7 @@ class WspaceMainPage extends Component {
               <Link
                 target={'blank'}
                 className={'ui icon button primary right floated'}
-                to={`/crm/reco/create`}
+                to={`/crm2021/reco/create`}
               >
                 <Icon name="plus" /> {messages['Crm.Wspace.CreateFromArchive']}
               </Link>

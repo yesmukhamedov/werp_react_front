@@ -197,21 +197,32 @@ class VisitCreateModal extends Component {
 
   saveVisit() {
     const localVisit = Object.assign({}, this.state.localVisit);
-    const client = Object.assign({}, localVisit.client);
+    const client = {
+      address: localVisit.address,
+      branchId: localVisit.branchId,
+      bukrs: localVisit.bukrs,
+      clientName: localVisit.clientName,
+      docDate: localVisit.docDate,
+      id: this.props.visit.id,
+      note: localVisit.note,
+      phoneNumber: localVisit.phoneNumber,
+      visitorId: localVisit.visitorId,
+    };
     const phoneNumber = this.state.phoneNumber;
 
-    const phones = [];
-    if (phoneNumber) {
-      phones[0] = { phoneNumber };
-    }
-    client.phones = phones;
-    localVisit.client = client;
+    // const phones = [];
+    // if (phoneNumber) {
+    //   phones[0] = { phoneNumber: phoneNumber };
+    // }
+    client.phoneNumber = phoneNumber;
+    // localVisit.client = client;
 
     if (this.state.isUpdate) {
-      this.props.updateVisit(localVisit, 'view');
+      this.props.updateVisit(client, 'view');
     } else {
-      this.props.createVisit(localVisit);
+      this.props.createVisit(client);
     }
+    console.log(client);
   }
 
   componentWillUnmount() {
@@ -248,10 +259,10 @@ class VisitCreateModal extends Component {
 
 function mapStateToProps(state) {
   return {
-    modalOpened: state.crmVisit.modalOpened,
-    visit: state.crmVisit.visit,
-    dealers: state.crmDemo.dealers,
-    phoneMeta: state.crmReco.phoneMeta,
+    modalOpened: state.crmVisit2021.modalOpened,
+    visit: state.crmVisit2021.visit,
+    dealers: state.crmDemo2021.dealers,
+    phoneMeta: state.crmReco2021.phoneMeta,
   };
 }
 

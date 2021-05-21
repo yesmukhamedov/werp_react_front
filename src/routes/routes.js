@@ -335,6 +335,14 @@ const AsyncKpiSettingPage = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncKpiSettingPage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/mainoperation/kpi/components/KpiSettingPage' /* webpackChunkName: "KpiSettingPage2021" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncNewIssuePageContainer = Loadable({
   loader: () =>
     import(
@@ -1189,6 +1197,7 @@ const getComponent = {
   CrmVisitView: AsyncVisitViewPage,
   CrmVisitView2021: AsyncVisitViewPage2021,
   CrmKpiSetting: AsyncKpiSettingPage,
+  CrmKpiSetting2021: AsyncKpiSettingPage2021,
   OutCallTaskPage: AsyncOutCallTaskPage,
   HrStaffList: AsyncStaffListPage,
   HrStaffUpdate: AsyncStaffUpdatePage,

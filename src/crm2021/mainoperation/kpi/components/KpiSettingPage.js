@@ -289,10 +289,10 @@ class KpiSettingPage extends Component {
 
 function mapStateToProps(state) {
   return {
-    items: state.crmKpiSetting.items,
+    items: state.crmKpiSetting2021.items,
     branchOptionsMarketing: state.userInfo.branchOptionsMarketing,
     companyOptions: state.userInfo.companyOptions,
-    indicators: state.crmKpiSetting.indicators,
+    indicators: state.crmKpiSetting2021.indicators,
   };
 }
 

@@ -19,6 +19,8 @@ const defineBackendUrl = uri => {
         return CRM_URL;
       case 'WSPACE':
         return CRM_URL;
+      case 'KPI-SETTING':
+        return CRM_URL;
       // case 'REFERENCE':
       //   return CRM_URL;
       default:

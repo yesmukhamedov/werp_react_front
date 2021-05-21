@@ -17,7 +17,7 @@ export const CRM_KPI_CLEAR_STATE = 'CRM_KPI_CLEAR_STATE';
 export const fetchItems = params => {
   return dispatch => {
     dispatch(modifyLoader(true));
-    doGet(`crm/kpi/setting`, params)
+    doGet(`kpi-setting`, params)
       .then(({ data }) => {
         dispatch(modifyLoader(false));
         dispatch({
@@ -65,7 +65,7 @@ export const blankItem = () => {
 
 export const createItem = item => {
   return dispatch => {
-    doPost(`crm/kpi/setting`, { ...item })
+    doPost(`kpi-setting`, { ...item })
       .then(({ data }) => {
         dispatch({
           type: CRM_KPI_ITEM_CREATED,
