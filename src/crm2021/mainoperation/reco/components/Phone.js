@@ -57,7 +57,9 @@ class Phone extends Component {
       recommender: {},
       opened: false,
       buttonLoading: false,
-      call: {},
+      call: {
+        callDate: moment(),
+      },
       callContinue: false,
       duration: {
         h: 0,
@@ -105,13 +107,11 @@ class Phone extends Component {
 
     this.props.fetchPhoneNumberHistory(this.props.phoneId);
 
-    doGet(`crm/call/create/${this.props.phoneId}`)
+    doGet(`crm/reco/recommender-by-phone-id/${this.props.phoneId}`)
       .then(res => {
-        res.data.call.callDate = moment();
         this.setState({
           ...this.state,
-          call: res.data.call,
-          recommender: res.data.recommender,
+          recommender: res.data,
         });
       })
       .catch(e => {
