@@ -104,7 +104,7 @@ class KpiReportPage extends Component {
       // branchId: branchId || null,
     })
       .then(res => {
-        console.log('current kpi response: ', res);
+        console.log(res.data);
         if (context === 'branch') {
           this.loadBranches(contextId);
           currentBukrsName = bukrsMap[contextId];
@@ -123,7 +123,6 @@ class KpiReportPage extends Component {
           // breadcrumbs: res.data.breadcrumbs,
           userPosition: res.data.userPosition,
         });
-        console.log(this.state);
       })
       .catch(e => {
         console.log(e);

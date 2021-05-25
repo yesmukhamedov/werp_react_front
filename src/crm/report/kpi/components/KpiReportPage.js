@@ -104,6 +104,7 @@ class KpiReportPage extends Component {
       branchId: branchId || null,
     })
       .then(res => {
+        console.log('old kpireport: ', res);
         if (context === 'branch') {
           this.loadBranches(contextId);
           currentBukrsName = bukrsMap[contextId];
