@@ -47,7 +47,7 @@ export function setCurrentRecommender(recommender) {
 export function fetchRecosByReco(staffId) {
   return function(dispatch) {
     dispatch(modifyLoader(MENU_BY_RECO, true));
-    doGet(`wspace/by-reco/${staffId}`)
+    doGet(`crm2/wspace/by-reco/${staffId}`)
       .then(({ data }) => {
         dispatch(modifyLoader(MENU_BY_RECO, false));
         dispatch({
@@ -66,7 +66,7 @@ export function fetchRecosByReco(staffId) {
 export function fetchRecosByDate(staffId) {
   return function(dispatch) {
     dispatch(modifyLoader(MENU_BY_DATE, true));
-    doGet(`wspace/by-date/${staffId}`)
+    doGet(`crm2/wspace/by-date/${staffId}`)
       .then(({ data }) => {
         console.log('by-date');
         dispatch(modifyLoader(MENU_BY_DATE, false));
@@ -105,7 +105,7 @@ export function fetchMovedRecos(staffId) {
 export function fetchDemoRecos(demoId) {
   return function(dispatch) {
     dispatch(modifyLoader(RECO_MODAL_ITEMS, true));
-    doGet(`wspace/demo-recommends/${demoId}`)
+    doGet(`crm2/wspace/demo-recommends/${demoId}`)
       .then(({ data }) => {
         dispatch(modifyLoader(RECO_MODAL_ITEMS, false));
         dispatch({
@@ -141,7 +141,7 @@ export function fetchVisitRecos(visitId) {
 export function fetchTodayCalls() {
   return function(dispatch) {
     dispatch(modifyLoader(WSP_FETCH_TODAY_CALLS, true));
-    doGet(`wspace/today-calls`)
+    doGet(`crm2/wspace/today-calls`)
       .then(({ data }) => {
         dispatch(modifyLoader(WSP_FETCH_TODAY_CALLS, false));
         dispatch({
@@ -177,7 +177,7 @@ export function fetchTodayDemos() {
 export function fetchKpi(year, month) {
   return function(dispatch) {
     dispatch(modifyLoader(WSP_FETCH_KPI, true));
-    doGet(`wspace/kpi`, {
+    doGet(`crm2/wspace/kpi`, {
       year,
       month,
     })
@@ -216,7 +216,7 @@ export function archiveReco(recoId) {
 export function fetchPhoneNumberHistory(phoneId) {
   return function(dispatch) {
     dispatch(modifyLoader(`PHONE_${phoneId}`, true));
-    doGet(`wspace/phone-info/${phoneId}`)
+    doGet(`crm2/wspace/phone-info/${phoneId}`)
       .then(({ data }) => {
         dispatch(modifyLoader(`PHONE_${phoneId}`, false));
         dispatch({
@@ -234,7 +234,7 @@ export function fetchPhoneNumberHistory(phoneId) {
 export function fetchCurrentDemos(staffId) {
   return function(dispatch) {
     dispatch(modifyLoader(MENU_CURRENT_DEMO, true));
-    doGet(`wspace/current-demos/${staffId}`)
+    doGet(`crm2/wspace/current-demos/${staffId}`)
       .then(({ data }) => {
         dispatch(modifyLoader(MENU_CURRENT_DEMO, false));
         dispatch({
@@ -253,7 +253,7 @@ export function fetchCurrentDemos(staffId) {
 export function fetchCurrentVisits(staffId) {
   return function(dispatch) {
     dispatch(modifyLoader(MENU_CURRENT_VISIT, true));
-    doGet(`wspace/current-visits/${staffId}`)
+    doGet(`crm2/wspace/current-visits/${staffId}`)
       .then(({ data }) => {
         dispatch(modifyLoader(MENU_CURRENT_VISIT, false));
         dispatch({

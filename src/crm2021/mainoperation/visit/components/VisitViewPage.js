@@ -62,7 +62,7 @@ class VisitViewPage extends Component {
   renderActions(messages) {
     return (
       <div>
-        <Link className="ui icon button" to="/crm/visit/archive">
+        <Link className="ui icon button" to="/crm2021/visit/archive">
           {messages['Crm.ToList']}
         </Link>
         {/* <Button onClick={this.openUpdateModal}>Редактировать</Button> */}

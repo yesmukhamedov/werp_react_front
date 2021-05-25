@@ -9,20 +9,8 @@ const defineBackendUrl = uri => {
         return SERVICE_URL;
       case 'CORE':
         return ROOT_URL;
-      case 'RECO':
+      case 'CRM2':
         return CRM_URL;
-      case 'CALL':
-        return CRM_URL;
-      case 'DEMO':
-        return CRM_URL;
-      case 'VISIT':
-        return CRM_URL;
-      case 'WSPACE':
-        return CRM_URL;
-      case 'KPI-SETTING':
-        return CRM_URL;
-      // case 'REFERENCE':
-      //   return CRM_URL;
       default:
         return ROOT_URL;
     }
