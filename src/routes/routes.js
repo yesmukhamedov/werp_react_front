@@ -27,10 +27,26 @@ const AsyncKpiReportPage = Loadable({
   loading: () => <LoadingPage />,
 });
 
+const AsyncKpiReportPage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/report/kpi/components/KpiReportPage' /* webpackChunkName: "KpiReportPage2021" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
 const AsyncKpiRatingReportPage = Loadable({
   loader: () =>
     import(
       '../crm/report/kpi/components/KpiRatingReportPage' /* webpackChunkName: "KpiRatingReportPage" */
+    ),
+  loading: () => <LoadingPage />,
+});
+
+const AsyncKpiRatingReportPage2021 = Loadable({
+  loader: () =>
+    import(
+      '../crm2021/report/kpi/components/KpiRatingReportPage' /* webpackChunkName: "KpiRatingReportPage2021" */
     ),
   loading: () => <LoadingPage />,
 });
@@ -1176,7 +1192,9 @@ const getComponent = {
   LogRepAccStaff: AsyncAccountabilityStaffListPage,
   LogRepAccStaffDetail: AsyncAccountabilityStaffDetailPage,
   CrmRepKpi: AsyncKpiReportPage,
+  CrmRepKpi2021: AsyncKpiReportPage2021,
   CrmRepKpiRtg: AsyncKpiRatingReportPage,
+  CrmRepKpiRtg2021: AsyncKpiRatingReportPage2021,
   Prcltgs: AsyncPrcltgs,
   CrmRecoCurrent: AsyncRecoCurrentPage,
   CrmRecoCurrent2021: AsyncRecoCurrentPage2021,
