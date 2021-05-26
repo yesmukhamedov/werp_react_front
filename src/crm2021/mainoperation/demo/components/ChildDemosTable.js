@@ -10,7 +10,6 @@ import moment from 'moment';
 const ChildDemosTable = props => {
   // Список демо
   const { items, messages } = props;
-  console.log('ChildDemosTable: ', props);
   return (
     <Card fluid>
       <Card.Content>

@@ -58,7 +58,7 @@ class KpiRatingReportPage extends Component {
       loading: true,
     });
     const { bukrs, branches, positionId, year, month, items } = this.state;
-    doGet(`crm/report/kpi-rating`, {
+    doGet(`crm2/report/kpi-rating`, {
       bukrs,
       branchIds: branches.join(','),
       year,
@@ -159,6 +159,7 @@ class KpiRatingReportPage extends Component {
   handleDropdownChange(e, result) {
     const { value, name } = result;
     let { bukrs, branches, month, year } = this.state;
+    console.log(this.state.branches);
     if (name === 'bukrs') {
       bukrs = value;
     } else if (name === 'branch') {
@@ -168,7 +169,6 @@ class KpiRatingReportPage extends Component {
     } else if (name === 'year') {
       year = value;
     }
-    console.log(name);
     this.setState({
       ...this.state,
       bukrs,
@@ -184,6 +184,7 @@ class KpiRatingReportPage extends Component {
         <Form.Group widths="equal">
           <BukrsF4 handleChange={this.handleDropdownChange} />
           <BranchF4
+            value={this.state.branches}
             search
             multiple
             handleChange={this.handleDropdownChange}

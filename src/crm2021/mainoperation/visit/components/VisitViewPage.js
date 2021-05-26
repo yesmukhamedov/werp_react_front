@@ -210,7 +210,6 @@ class VisitViewPage extends Component {
   render() {
     const { visit } = this.props;
     const { messages } = this.props.intl;
-    console.log('visit view page: ', this.props.visit);
     return (
       <Container
         fluid
