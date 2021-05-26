@@ -14,6 +14,7 @@ import moment from 'moment';
 import DemoCreateModal from '../../demo/components/DemoCreateModal';
 import {
   fetchSingleVisit,
+  fetchVisitChildRecos,
   deleteVisit,
   modalToggle,
   setVisitForUpdate,
@@ -49,6 +50,7 @@ class VisitViewPage extends Component {
   componentWillMount() {
     const id = parseInt(this.props.match.params.id, 10);
     this.props.fetchSingleVisit(id);
+    this.props.fetchVisitChildRecos(id);
     // Для создания демо
     this.props.fetchGroupDealers();
     // this.props.fetchDemoResults()
@@ -208,6 +210,7 @@ class VisitViewPage extends Component {
   render() {
     const { visit } = this.props;
     const { messages } = this.props.intl;
+    console.log('visit view page: ', this.props.visit);
     return (
       <Container
         fluid
@@ -240,12 +243,7 @@ class VisitViewPage extends Component {
             </Grid.Column>
 
             <Grid.Column width={8}>
-              {
-                <ChildRecosTable
-                  messages={messages}
-                  items={visit.recos || []}
-                />
-              }
+              {<ChildRecosTable messages={messages} items={visit || []} />}
               {
                 <ChildDemosTable
                   messages={messages}
@@ -261,12 +259,13 @@ class VisitViewPage extends Component {
 }
 function mapStateToProps(state) {
   return {
-    visit: state.crmVisit.visit,
+    visit: state.crmVisit2021.childRecos,
   };
 }
 
 export default connect(mapStateToProps, {
   fetchSingleVisit,
+  fetchVisitChildRecos,
   toggleDemoCreateModal,
   fetchGroupDealers,
   fetchDemoResults,

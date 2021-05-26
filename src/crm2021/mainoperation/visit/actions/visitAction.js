@@ -161,6 +161,7 @@ export function fetchVisitChildRecos(id) {
     dispatch(modifyLoader(true));
     doGet(`crm2/visit/${id}/recos`)
       .then(({ data }) => {
+        console.log('visit recos: ', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: CRM_VISIT_FETCH_CHILD_RECOS,
