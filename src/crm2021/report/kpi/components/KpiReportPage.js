@@ -64,7 +64,7 @@ class KpiReportPage extends Component {
         }
       })
       .catch(e => {
-        console.log(e);
+        // console.log(e);
         this.setState({
           ...this.state,
           loading: false,
@@ -96,15 +96,14 @@ class KpiReportPage extends Component {
       loading: true,
     });
     doGet(`crm2/report/kpi-current`, {
-      // context,
-      // contextId,
-      // year: this.state.year,
-      // month: this.state.month,
-      // bukrs: bukrs || null,
-      // branchId: branchId || null,
+      context: context || null,
+      contextId: contextId || null,
+      year: this.state.year,
+      month: this.state.month,
+      bukrs: bukrs || null,
+      branchId: branchId || null,
     })
       .then(res => {
-        console.log(res.data);
         if (context === 'branch') {
           this.loadBranches(contextId);
           currentBukrsName = bukrsMap[contextId];
@@ -120,12 +119,12 @@ class KpiReportPage extends Component {
           contextId: res.data.contextId,
           currentBukrsName,
           currentBranchName,
-          // breadcrumbs: res.data.breadcrumbs,
+          breadcrumbs: res.data.breadcrumbs || [],
           userPosition: res.data.userPosition,
         });
       })
       .catch(e => {
-        console.log(e);
+        // console.log(e);
         this.setState({
           ...this.state,
           loading: false,

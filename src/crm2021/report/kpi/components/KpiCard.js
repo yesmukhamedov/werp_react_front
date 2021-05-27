@@ -139,6 +139,7 @@ class KpiCard extends Component {
 
   render() {
     const { cardData, context } = this.props;
+    console.log('kpiCard: ', this.props);
     if (context === 'manager') {
       return this.renderForManager(cardData);
     }
