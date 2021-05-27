@@ -239,6 +239,7 @@ class KpiSettingPage extends Component {
           />
 
           <BranchF4
+            value={this.state.branchId}
             search
             handleChange={this.handleDropdownChange}
             bukrs={this.state.bukrs}
