@@ -74,7 +74,7 @@ class VisitArchivePage extends Component {
               filterMethod: (filter, rows) =>
                 matchSorter(rows, filter.value, { keys: ['docDate'] }),
               filterAll: true,
-              Cell: row => moment(row.value).format('DD.MM.YYYY'),
+              // Cell: row => moment(row.value).format('DD.MM.YYYY'),
             },
             {
               Header: messages['Table.Visitor'],
@@ -172,7 +172,7 @@ class VisitArchivePage extends Component {
 
 function mapStateToProps(state) {
   return {
-    visits: state.crmVisit.visits,
+    visits: state.crmVisit2021.visits,
     dealers: state.crmDemo2021.dealers,
   };
 }
