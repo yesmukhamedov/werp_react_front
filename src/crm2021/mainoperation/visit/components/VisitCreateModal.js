@@ -124,7 +124,7 @@ class VisitCreateModal extends Component {
     switch (fieldName) {
       case 'docDate':
         if (o) {
-          localVisit[fieldName] = o.valueOf();
+          localVisit[fieldName] = o;
         } else {
           localVisit[fieldName] = null;
         }
@@ -222,7 +222,6 @@ class VisitCreateModal extends Component {
     } else {
       this.props.createVisit(client);
     }
-    console.log(client);
   }
 
   componentWillUnmount() {

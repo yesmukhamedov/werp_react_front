@@ -73,6 +73,7 @@ export function deleteVisit(id) {
 
 export function createVisit(o) {
   return function(dispatch) {
+    console.log(o);
     dispatch(modifyLoader(true));
     doPost(`crm2/visit`, o)
       .then(({ data }) => {
