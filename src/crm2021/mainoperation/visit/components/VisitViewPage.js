@@ -70,7 +70,7 @@ class VisitViewPage extends Component {
         {/* <Button onClick={this.openUpdateModal}>Редактировать</Button> */}
         <Link
           className="ui icon button"
-          to={`/crm/reco/create/visit/${this.props.visit.id}`}
+          to={`/crm2021/reco/create/visit/${this.props.visit.id}`}
         >
           {messages['Crm.ToAddReco']}
         </Link>
@@ -242,7 +242,12 @@ class VisitViewPage extends Component {
             </Grid.Column>
 
             <Grid.Column width={8}>
-              {<ChildRecosTable messages={messages} items={visit || []} />}
+              {
+                <ChildRecosTable
+                  messages={messages}
+                  items={visit.recos || []}
+                />
+              }
               {
                 <ChildDemosTable
                   messages={messages}
@@ -258,7 +263,7 @@ class VisitViewPage extends Component {
 }
 function mapStateToProps(state) {
   return {
-    visit: state.crmVisit2021.childRecos,
+    visit: state.crmVisit2021.visit,
   };
 }
 

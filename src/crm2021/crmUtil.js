@@ -144,7 +144,6 @@ export const getCallerOptionsByLanguage = language => {
 };
 
 export const getLocationOptionsByLanguage = language => {
-  console.log(language);
   if (language === 'en') {
     return [
       {

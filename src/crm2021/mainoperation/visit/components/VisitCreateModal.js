@@ -156,7 +156,6 @@ class VisitCreateModal extends Component {
               temp += userChar;
             }
           }
-          // console.log(phonePattern,temp)
           phoneNumberDisplay = temp;
           phoneNumber = v.substring(0, ppLenght);
         }
@@ -210,18 +209,19 @@ class VisitCreateModal extends Component {
     };
     const phoneNumber = this.state.phoneNumber;
 
-    // const phones = [];
-    // if (phoneNumber) {
-    //   phones[0] = { phoneNumber: phoneNumber };
-    // }
+    const phones = [];
+    if (phoneNumber) {
+      phones[0] = { phoneNumber: phoneNumber };
+    }
     client.phoneNumber = phoneNumber;
-    // localVisit.client = client;
+    localVisit.client = client;
 
     if (this.state.isUpdate) {
       this.props.updateVisit(client, 'view');
     } else {
       this.props.createVisit(client);
     }
+    this.props.modalToggle(false);
   }
 
   componentWillUnmount() {

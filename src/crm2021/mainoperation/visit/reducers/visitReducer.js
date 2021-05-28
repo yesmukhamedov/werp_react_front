@@ -36,6 +36,10 @@ const INITIAL_STATE = {
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
     case CRM_VISIT_FETCH_SINGLE:
+      return {
+        ...state,
+        visit: action.payload,
+      };
     case CRM_VISIT_UPDATE:
       return {
         ...state,

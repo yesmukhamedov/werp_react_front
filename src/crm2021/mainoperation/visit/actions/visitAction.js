@@ -42,7 +42,6 @@ export function fetchSingleVisit(id) {
     dispatch(modifyLoader(true));
     doGet(`crm2/visit/${id}`)
       .then(({ data }) => {
-        console.log('fetchSingleVisit data: ', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: CRM_VISIT_FETCH_SINGLE,
@@ -77,7 +76,6 @@ export function createVisit(o) {
     dispatch(modifyLoader(true));
     doPost(`crm2/visit`, o)
       .then(({ data }) => {
-        console.log('createVisit data: ', data);
         dispatch(modifyLoader(false));
         dispatch({
           type: CRM_VISIT_CREATE,
@@ -109,7 +107,6 @@ export function updateVisit(o, fromComponent, fun) {
 
     doPut(`crm2/visit`, o)
       .then(({ data }) => {
-        console.log('update visit data: ', data);
         dispatch(modifyLoader(false));
         if (fromComponent === 'archive') {
           dispatch(fetchArchive());
