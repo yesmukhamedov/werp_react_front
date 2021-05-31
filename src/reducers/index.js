@@ -31,6 +31,7 @@ import hrTimesheetReducer from '../hr/mainoperation/timesheet/reducers/hrTimeshe
 import crmReportReducer from '../crm/report/general/reducers/crmReportReducer';
 import hrReportReducer from '../hr/report/general/reducers/hrReportReducer';
 import crmWspaceReducer from '../crm/mainoperation/wspace/reducers/wspaceReducer';
+import crmWspaceReducer2021 from '../crm2021/mainoperation/wspace/reducers/wspaceReducer';
 import faReducer from '../finance/fa_reducer';
 import accountingReducer from '../accounting/accounting_reducer';
 import dtskcTransactionReducer from '../dit/tasks/dtskc/reducers';
@@ -106,6 +107,7 @@ const appReducer = combineReducers({
   crmReportReducer,
   hrReportReducer,
   crmWspaceReducer,
+  crmWspaceReducer2021,
   accounting: accountingReducer,
   dtskcTransaction: dtskcTransactionReducer,
   dtskdepTransaction: dtskdepTranscationReducer,

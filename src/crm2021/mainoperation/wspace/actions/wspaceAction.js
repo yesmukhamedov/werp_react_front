@@ -68,7 +68,6 @@ export function fetchRecosByDate(staffId) {
     dispatch(modifyLoader(MENU_BY_DATE, true));
     doGet(`crm2/wspace/by-date/${staffId}`)
       .then(({ data }) => {
-        console.log('by-date');
         dispatch(modifyLoader(MENU_BY_DATE, false));
         dispatch({
           key: MENU_BY_DATE,

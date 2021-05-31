@@ -330,13 +330,13 @@ class WspaceMainPage extends Component {
 function mapStateToProps(state) {
   let filters = state.crmWspaceReducer.filters;
   return {
-    dealers: state.crmDemo.dealers,
-    demoResults: state.crmDemo.demoResults,
-    recoListModalOpened: state.crmWspaceReducer.recoListModalOpened,
-    currentRecommender: state.crmWspaceReducer.currentRecommender,
-    staffRecoData: state.crmWspaceReducer.staffRecoData,
-    currentRecommenderRecos: state.crmWspaceReducer.currentRecommenderRecos,
-    loaders: state.crmWspaceReducer.loaders,
+    dealers: state.crmDemo2021.dealers,
+    demoResults: state.crmDemo2021.demoResults,
+    recoListModalOpened: state.crmWspaceReducer2021.recoListModalOpened,
+    currentRecommender: state.crmWspaceReducer2021.currentRecommender,
+    staffRecoData: state.crmWspaceReducer2021.staffRecoData,
+    currentRecommenderRecos: state.crmWspaceReducer2021.currentRecommenderRecos,
+    loaders: state.crmWspaceReducer2021.loaders,
     filters: filters,
   };
 }

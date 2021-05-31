@@ -47,6 +47,7 @@ export default function WspaceRecoCard(props) {
 
 function renderRecosInModal(props) {
   const { item, messages } = props;
+  // console.log('category ID: ',this.props.categoryId)
   switch (item.statusId) {
     case RECO_STATUS_NEW:
       return renderNewReco(item, messages);
@@ -316,7 +317,7 @@ function renderByDate(props) {
             style={{ float: 'left' }}
             trigger={
               <Label color="blue" size="small">
-                <i>{item.callDate}</i>
+                <i>{item.callDateTime}</i>
               </Label>
             }
             content={messages['Crm.RecallDateTime']}
@@ -351,6 +352,7 @@ function renderByDate(props) {
 function renderByReco(props) {
   const { item, messages } = props;
   let { parentReco } = item;
+  console.log('renderByReco: ', item);
   if (!parentReco) {
     parentReco = {};
   }
@@ -373,10 +375,7 @@ function renderByReco(props) {
             />
           </span>
           <span style={{ float: 'right' }}>
-            {renderRecoCategoryBtn(
-              parentReco.categoryId,
-              parentReco.categoryName,
-            )}
+            {renderRecoCategoryBtn(item.category, item.categoryName)}
           </span>
         </Card.Meta>
       </Card.Content>
@@ -389,7 +388,7 @@ function renderByReco(props) {
         </span>
       </Card.Content>
       <Card.Content extra>
-        {renderDemoResultLabel(item.resultId, item.resultName)}
+        {renderDemoResultLabel(item.result, item.resultName)}
         <Label>
           <Icon name="users" /> {item.recoCount}
         </Label>

@@ -191,7 +191,6 @@ class RecoCreatePage extends Component {
   }
 
   renderRecoForms() {
-    console.log(this.props);
     const { messages, locale } = this.props.intl;
     let { items } = this.state.reco;
     const { errors } = this.state;
@@ -289,6 +288,7 @@ class RecoCreatePage extends Component {
 
   renderHeaderForm(messages) {
     const { errors } = this.state;
+    console.log(this.state);
     return (
       <Form>
         <Form.Group widths="equal">
